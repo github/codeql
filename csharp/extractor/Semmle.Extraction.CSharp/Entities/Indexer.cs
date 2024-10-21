@@ -51,6 +51,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
+            PopulateAttributes();
             PopulateModifiers(trapFile);
             BindComments();
 

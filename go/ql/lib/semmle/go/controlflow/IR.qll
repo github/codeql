@@ -358,11 +358,7 @@ module IR {
 
     override predicate reads(ValueEntity v) { v = field }
 
-    override Type getResultType() {
-      if field.getType() instanceof PointerType
-      then result = field.getType().(PointerType).getBaseType()
-      else result = field.getType()
-    }
+    override Type getResultType() { result = lookThroughPointerType(field.getType()) }
 
     override ControlFlow::Root getRoot() { result.isRootOf(e) }
 
@@ -501,10 +497,11 @@ module IR {
     override StructLit lit;
 
     /** Gets the name of the initialized field. */
+    pragma[nomagic]
     string getFieldName() {
       if elt instanceof KeyValueExpr
       then result = elt.(KeyValueExpr).getKey().(Ident).getName()
-      else lit.getStructType().hasOwnField(i, result, _, _)
+      else pragma[only_bind_out](lit.getStructType()).hasOwnField(i, result, _, _)
     }
 
     /** Gets the initialized field. */
@@ -1480,7 +1477,7 @@ module IR {
 
     override predicate refersTo(ValueEntity e) {
       this instanceof MkLhs and
-      loc = e.getAReference()
+      pragma[only_bind_out](loc) = e.getAReference()
       or
       exists(WriteResultInstruction wr | this = MkResultWriteTarget(wr) |
         e = wr.getResultVariable()

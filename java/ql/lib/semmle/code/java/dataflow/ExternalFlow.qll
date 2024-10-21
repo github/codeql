@@ -416,16 +416,16 @@ private predicate elementSpec(
   or
   summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
-  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
+  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = true
 }
 
 private string getNestedName(Type t) {
   not t instanceof RefType and result = t.toString()
   or
-  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).nestedName()
+  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).getNestedName()
   or
   result =
-    t.(Array).getElementType().(NestedType).getEnclosingType().nestedName() + "$" + t.getName()
+    t.(Array).getElementType().(NestedType).getEnclosingType().getNestedName() + "$" + t.getName()
 }
 
 private string getQualifiedName(Type t) {

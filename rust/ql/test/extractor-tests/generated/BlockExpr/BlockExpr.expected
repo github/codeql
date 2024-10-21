@@ -1,0 +1,3 @@
+| gen_block_expr.rs:3:28:12:1 | BlockExpr | getNumberOfAttrs: | 0 | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isTry: | no | isUnsafe: | no | hasLabel: | no | hasStmtList: | yes |
+| gen_block_expr.rs:5:5:7:5 | BlockExpr | getNumberOfAttrs: | 0 | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isTry: | no | isUnsafe: | no | hasLabel: | no | hasStmtList: | yes |
+| gen_block_expr.rs:8:5:11:5 | BlockExpr | getNumberOfAttrs: | 0 | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isTry: | no | isUnsafe: | no | hasLabel: | yes | hasStmtList: | yes |

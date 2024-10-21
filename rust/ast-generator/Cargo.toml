@@ -1,0 +1,10 @@
+[package]
+name = "ast-generator"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ungrammar = "1.16.1"
+proc-macro2 = "1.0.33"
+quote = "1.0.12"
+itertools = "0.10.1"

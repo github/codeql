@@ -44,3 +44,6 @@ void test_custom_printf2()
 	printf("",           "%i %i",  100, 200); // GOOD
 	printf("%i %i",      ""        );         // GOOD
 }
+
+extern "C" void my_logger(int param, char *fmt, ...) __attribute__((format(printf, 2, 3))) {}
+

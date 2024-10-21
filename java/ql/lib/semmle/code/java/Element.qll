@@ -115,7 +115,7 @@ private predicate hasChildElement(Element parent, Element e) {
   or
   params(e, _, _, parent, _)
   or
-  fields(e, _, _, parent, _)
+  fields(e, _, _, parent)
   or
-  typeVars(e, _, _, _, parent)
+  typeVars(e, _, _, parent)
 }

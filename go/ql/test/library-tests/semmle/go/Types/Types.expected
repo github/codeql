@@ -1,3 +1,4 @@
+| aliases.go:19:6:19:7 | S3 | S3 |
 | cyclic.go:3:6:3:6 | s | s |
 | cyclic.go:7:6:7:6 | t | t |
 | cyclic.go:12:6:12:6 | u | u |
@@ -89,6 +90,7 @@
 | pkg1/interfaces.go:21:6:21:7 | AC | AC |
 | pkg1/interfaces.go:26:6:26:14 | AExtended | AExtended |
 | pkg1/interfaces.go:31:6:31:7 | A2 | A2 |
+| pkg1/interfaces.go:35:6:35:24 | MixedExportedAndNot | MixedExportedAndNot |
 | pkg1/tst.go:3:6:3:6 | T | T |
 | pkg1/tst.go:9:6:9:7 | T2 | T2 |
 | pkg1/tst.go:14:6:14:7 | T3 | T3 |
@@ -97,3 +99,6 @@
 | pkg1/tst.go:29:6:29:8 | Bar | Bar |
 | pkg2/tst.go:3:6:3:6 | T | T |
 | pkg2/tst.go:7:6:7:6 | G | G |
+| pkg2/tst.go:11:6:11:24 | MixedExportedAndNot | MixedExportedAndNot |
+| struct_tags.go:3:6:3:7 | S1 | S1 |
+| struct_tags.go:8:6:8:7 | S2 | S2 |

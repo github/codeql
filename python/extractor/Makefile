@@ -21,19 +21,19 @@ $(TOKENIZER_FILE): $(TOKENIZER_DEPS)
 
 MASTER_FILE = semmle/python/master.py
 
-DBSCHEME_FILE = $(GIT_ROOT)/ql/python/ql/lib/semmlecode.python.dbscheme
+DBSCHEME_FILE = $(GIT_ROOT)/python/ql/lib/semmlecode.python.dbscheme
 
 .PHONY: dbscheme
 dbscheme: $(MASTER_FILE)
 	python3 -m semmle.dbscheme_gen $(DBSCHEME_FILE)
 
-AST_GENERATED_DIR = $(GIT_ROOT)/ql/python/ql/lib/semmle/python/
+AST_GENERATED_DIR = $(GIT_ROOT)/python/ql/lib/semmle/python/
 AST_GENERATED_FILE = $(AST_GENERATED_DIR)AstGenerated.qll
 
 .PHONY: ast
 ast: $(MASTER_FILE)
 	python3 -m semmle.query_gen $(AST_GENERATED_DIR)
-	$(GIT_ROOT)/target/intree/codeql/codeql query format --in-place $(AST_GENERATED_FILE)
+	codeql query format --in-place $(AST_GENERATED_FILE)
 
 ################################################################################
 # Tests

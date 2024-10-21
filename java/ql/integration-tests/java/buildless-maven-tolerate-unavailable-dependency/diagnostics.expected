@@ -1,0 +1,126 @@
+{
+  "markdownMessage": "At least one dependency JAR suggested by the build system could not be downloaded. This means the analysis will try to satisfy the dependency with its default choice for the required external package name, which may be the wrong version or the wrong package entirely. This may lead to partial analysis of code using this dependency. See the extraction log for full details. If the cause appears to be a temporary outage, consider retrying the analysis.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/extractor/buildless/suggested-classpath-fetches-failed",
+    "name": "Some build-system suggested dependencies could not be fetched"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Buildless extraction tried and failed to fetch a jar (`https://repo1.maven.org/maven2, junit:junit:jar:9.9.9`). If a temporary network outage is likely, consider retrying the scan.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/extractor/buildless/jar-fetch-failed",
+    "name": "Fetching a dependency jar failed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis used build tool Maven to pick a JDK version and/or to recommend external dependencies.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/using-build-tool-advice",
+    "name": "Java analysis used build tool Maven to pick a JDK version and/or to recommend external dependencies"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis used the system default JDK.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/jdk-system-default",
+    "name": "Java analysis used the system default JDK"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis with build-mode 'none' completed.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/complete",
+    "name": "Java analysis with build-mode 'none' completed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java was extracted with build-mode set to 'none'. This means that all Java source in the working directory will be scanned, with build tools such as Maven and Gradle only contributing information about external dependencies.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/mode-active",
+    "name": "Java was extracted with build-mode set to 'none'"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Reading the dependency graph from build files provided 1 classpath entries",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/depgraph-provided-by-maven",
+    "name": "Java analysis extracted precise dependency graph information from tool Maven"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Running the Maven plugin `com.github.ferstl:depgraph-maven-plugin:4.0.3:graph` yielded an artifact transfer exception. This means some dependency information will be unavailable, and so some dependencies will be guessed based on Java package names. Consider investigating why this plugin encountered errors retrieving dependencies.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/depgraph-maven-plugin-transfer-exception",
+    "name": "Java analysis encountered a transfer exception dependency graph from Maven"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Some classpath entries had to be inferred from external package names used in source code -- for example, guessing that if `javax.xml.bind` is referred to, then JAXB should be added to the classpath. This means that the dependency information extracted from build scripts was insufficient. The dependencies guessed this way might be the wrong versions, leading to failure to extract some uses of those external libraries. The cause may be missing dependencies that should be generated at build time -- in this case, consider using a build mode other than 'none'. See the full analysis log for details of the inferred classpath entries.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/extractor/buildless/supplied-classpath-insufficient",
+    "name": "Some classpath entries were inferred from used external package names"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

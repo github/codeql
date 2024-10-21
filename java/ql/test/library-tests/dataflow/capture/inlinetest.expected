@@ -254,6 +254,46 @@ edges
 | B.java:247:5:247:18 | new MyLocal2(...) [pre constructor] : MyLocal2 [String s] : String | B.java:247:5:247:18 | new MyLocal2(...) : MyLocal2 [List<String> l, <element>] : String | provenance | MaD:2 |
 | B.java:248:10:248:10 | l : ArrayList [<element>] : String | B.java:248:10:248:17 | get(...) | provenance | MaD:3 |
 | B.java:249:10:249:11 | l2 : ArrayList [<element>] : String | B.java:249:10:249:18 | get(...) | provenance | MaD:3 |
+| B.java:254:16:254:29 | source(...) : String | B.java:261:5:261:18 | String s : String | provenance |  |
+| B.java:255:11:255:18 | parameter this : MyLocal3 [String s] : String | B.java:255:11:255:18 | this <.method> : MyLocal3 [String s] : String | provenance |  |
+| B.java:255:11:255:18 | parameter this : MyLocal3 [String s] : String | B.java:256:18:256:18 | this : MyLocal3 [String s] : String | provenance |  |
+| B.java:255:11:255:18 | this <.method> : MyLocal3 [String s] : String | B.java:255:11:255:18 | parameter this : MyLocal3 [String s] : String | provenance |  |
+| B.java:255:11:255:18 | this <.method> : MyLocal3 [String s] : String | B.java:255:11:255:18 | this <.method> [post update] : MyLocal3 [f] : String | provenance |  |
+| B.java:255:11:255:18 | this <.method> [post update] : MyLocal3 [f] : String | B.java:255:11:255:18 | parameter this [Return] : MyLocal3 [f] : String | provenance |  |
+| B.java:256:7:256:19 | this <.field> [post update] : MyLocal3 [f] : String | B.java:255:11:255:18 | parameter this [Return] : MyLocal3 [f] : String | provenance |  |
+| B.java:256:18:256:18 | s : String | B.java:256:7:256:19 | this <.field> [post update] : MyLocal3 [f] : String | provenance |  |
+| B.java:256:18:256:18 | this : MyLocal3 [String s] : String | B.java:256:18:256:18 | s : String | provenance |  |
+| B.java:257:12:257:14 | parameter this : MyLocal3 [f] : String | B.java:258:14:258:17 | this : MyLocal3 [f] : String | provenance |  |
+| B.java:258:14:258:17 | this : MyLocal3 [f] : String | B.java:258:14:258:19 | this.f | provenance |  |
+| B.java:261:5:261:18 | String s : String | B.java:261:5:261:18 | new MyLocal3(...) [pre constructor] : MyLocal3 [String s] : String | provenance |  |
+| B.java:261:5:261:18 | new MyLocal3(...) : MyLocal3 [f] : String | B.java:257:12:257:14 | parameter this : MyLocal3 [f] : String | provenance |  |
+| B.java:261:5:261:18 | new MyLocal3(...) [pre constructor] : MyLocal3 [String s] : String | B.java:255:11:255:18 | parameter this : MyLocal3 [String s] : String | provenance |  |
+| B.java:261:5:261:18 | new MyLocal3(...) [pre constructor] : MyLocal3 [String s] : String | B.java:261:5:261:18 | new MyLocal3(...) : MyLocal3 [f] : String | provenance |  |
+| B.java:266:16:266:29 | source(...) : String | B.java:279:10:279:23 | String s : String | provenance |  |
+| B.java:266:16:266:29 | source(...) : String | B.java:280:10:280:24 | String s : String | provenance |  |
+| B.java:269:7:269:14 | parameter this : MyLocal4 [String s] : String | B.java:270:9:270:17 | this <constr(this)> : MyLocal4 [String s] : String | provenance |  |
+| B.java:270:9:270:17 | this <constr(this)> : MyLocal4 [String s] : String | B.java:270:9:270:17 | this <constr(this)> [post update] : MyLocal4 [f] : String | provenance |  |
+| B.java:270:9:270:17 | this <constr(this)> : MyLocal4 [String s] : String | B.java:272:7:272:14 | parameter this : MyLocal4 [String s] : String | provenance |  |
+| B.java:270:9:270:17 | this <constr(this)> [post update] : MyLocal4 [f] : String | B.java:269:7:269:14 | parameter this [Return] : MyLocal4 [f] : String | provenance |  |
+| B.java:272:7:272:14 | parameter this : MyLocal4 [String s] : String | B.java:273:13:273:13 | this : MyLocal4 [String s] : String | provenance |  |
+| B.java:273:9:273:9 | this <.field> [post update] : MyLocal4 [f] : String | B.java:272:7:272:14 | parameter this [Return] : MyLocal4 [f] : String | provenance |  |
+| B.java:273:13:273:13 | s : String | B.java:273:9:273:9 | this <.field> [post update] : MyLocal4 [f] : String | provenance |  |
+| B.java:273:13:273:13 | this : MyLocal4 [String s] : String | B.java:273:13:273:13 | s : String | provenance |  |
+| B.java:275:14:275:16 | parameter this : MyLocal4 [f] : String | B.java:276:16:276:19 | this : MyLocal4 [f] : String | provenance |  |
+| B.java:276:16:276:19 | this : MyLocal4 [f] : String | B.java:276:16:276:21 | this.f : String | provenance |  |
+| B.java:279:10:279:23 | String s : String | B.java:279:10:279:23 | new MyLocal4(...) : MyLocal4 [String s] : String | provenance |  |
+| B.java:279:10:279:23 | String s : String | B.java:279:10:279:23 | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String | provenance |  |
+| B.java:279:10:279:23 | String s : String | B.java:280:10:280:24 | String s : String | provenance |  |
+| B.java:279:10:279:23 | new MyLocal4(...) : MyLocal4 [String s] : String | B.java:279:10:279:23 | String s : String | provenance |  |
+| B.java:279:10:279:23 | new MyLocal4(...) : MyLocal4 [f] : String | B.java:275:14:275:16 | parameter this : MyLocal4 [f] : String | provenance |  |
+| B.java:279:10:279:23 | new MyLocal4(...) : MyLocal4 [f] : String | B.java:279:10:279:29 | get(...) | provenance |  |
+| B.java:279:10:279:23 | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String | B.java:269:7:269:14 | parameter this : MyLocal4 [String s] : String | provenance |  |
+| B.java:279:10:279:23 | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String | B.java:279:10:279:23 | new MyLocal4(...) : MyLocal4 [f] : String | provenance |  |
+| B.java:280:10:280:24 | String s : String | B.java:280:10:280:24 | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String | provenance |  |
+| B.java:280:10:280:24 | new MyLocal4(...) : MyLocal4 [f] : String | B.java:275:14:275:16 | parameter this : MyLocal4 [f] : String | provenance |  |
+| B.java:280:10:280:24 | new MyLocal4(...) : MyLocal4 [f] : String | B.java:280:10:280:30 | get(...) | provenance |  |
+| B.java:280:10:280:24 | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String | B.java:272:7:272:14 | parameter this : MyLocal4 [String s] : String | provenance |  |
+| B.java:280:10:280:24 | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String | B.java:280:10:280:24 | new MyLocal4(...) : MyLocal4 [f] : String | provenance |  |
 nodes
 | B.java:11:5:11:6 | l1 [post update] : ArrayList [<element>] : String | semmle.label | l1 [post update] : ArrayList [<element>] : String |
 | B.java:11:12:11:22 | source(...) : String | semmle.label | source(...) : String |
@@ -511,6 +551,45 @@ nodes
 | B.java:248:10:248:17 | get(...) | semmle.label | get(...) |
 | B.java:249:10:249:11 | l2 : ArrayList [<element>] : String | semmle.label | l2 : ArrayList [<element>] : String |
 | B.java:249:10:249:18 | get(...) | semmle.label | get(...) |
+| B.java:254:16:254:29 | source(...) : String | semmle.label | source(...) : String |
+| B.java:255:11:255:18 | parameter this : MyLocal3 [String s] : String | semmle.label | parameter this : MyLocal3 [String s] : String |
+| B.java:255:11:255:18 | parameter this : MyLocal3 [String s] : String | semmle.label | parameter this : MyLocal3 [String s] : String |
+| B.java:255:11:255:18 | parameter this [Return] : MyLocal3 [f] : String | semmle.label | parameter this [Return] : MyLocal3 [f] : String |
+| B.java:255:11:255:18 | parameter this [Return] : MyLocal3 [f] : String | semmle.label | parameter this [Return] : MyLocal3 [f] : String |
+| B.java:255:11:255:18 | this <.method> : MyLocal3 [String s] : String | semmle.label | this <.method> : MyLocal3 [String s] : String |
+| B.java:255:11:255:18 | this <.method> [post update] : MyLocal3 [f] : String | semmle.label | this <.method> [post update] : MyLocal3 [f] : String |
+| B.java:256:7:256:19 | this <.field> [post update] : MyLocal3 [f] : String | semmle.label | this <.field> [post update] : MyLocal3 [f] : String |
+| B.java:256:18:256:18 | s : String | semmle.label | s : String |
+| B.java:256:18:256:18 | this : MyLocal3 [String s] : String | semmle.label | this : MyLocal3 [String s] : String |
+| B.java:257:12:257:14 | parameter this : MyLocal3 [f] : String | semmle.label | parameter this : MyLocal3 [f] : String |
+| B.java:258:14:258:17 | this : MyLocal3 [f] : String | semmle.label | this : MyLocal3 [f] : String |
+| B.java:258:14:258:19 | this.f | semmle.label | this.f |
+| B.java:261:5:261:18 | String s : String | semmle.label | String s : String |
+| B.java:261:5:261:18 | new MyLocal3(...) : MyLocal3 [f] : String | semmle.label | new MyLocal3(...) : MyLocal3 [f] : String |
+| B.java:261:5:261:18 | new MyLocal3(...) [pre constructor] : MyLocal3 [String s] : String | semmle.label | new MyLocal3(...) [pre constructor] : MyLocal3 [String s] : String |
+| B.java:266:16:266:29 | source(...) : String | semmle.label | source(...) : String |
+| B.java:269:7:269:14 | parameter this : MyLocal4 [String s] : String | semmle.label | parameter this : MyLocal4 [String s] : String |
+| B.java:269:7:269:14 | parameter this [Return] : MyLocal4 [f] : String | semmle.label | parameter this [Return] : MyLocal4 [f] : String |
+| B.java:270:9:270:17 | this <constr(this)> : MyLocal4 [String s] : String | semmle.label | this <constr(this)> : MyLocal4 [String s] : String |
+| B.java:270:9:270:17 | this <constr(this)> [post update] : MyLocal4 [f] : String | semmle.label | this <constr(this)> [post update] : MyLocal4 [f] : String |
+| B.java:272:7:272:14 | parameter this : MyLocal4 [String s] : String | semmle.label | parameter this : MyLocal4 [String s] : String |
+| B.java:272:7:272:14 | parameter this [Return] : MyLocal4 [f] : String | semmle.label | parameter this [Return] : MyLocal4 [f] : String |
+| B.java:273:9:273:9 | this <.field> [post update] : MyLocal4 [f] : String | semmle.label | this <.field> [post update] : MyLocal4 [f] : String |
+| B.java:273:13:273:13 | s : String | semmle.label | s : String |
+| B.java:273:13:273:13 | this : MyLocal4 [String s] : String | semmle.label | this : MyLocal4 [String s] : String |
+| B.java:275:14:275:16 | parameter this : MyLocal4 [f] : String | semmle.label | parameter this : MyLocal4 [f] : String |
+| B.java:276:16:276:19 | this : MyLocal4 [f] : String | semmle.label | this : MyLocal4 [f] : String |
+| B.java:276:16:276:21 | this.f : String | semmle.label | this.f : String |
+| B.java:279:10:279:23 | String s : String | semmle.label | String s : String |
+| B.java:279:10:279:23 | String s : String | semmle.label | String s : String |
+| B.java:279:10:279:23 | new MyLocal4(...) : MyLocal4 [String s] : String | semmle.label | new MyLocal4(...) : MyLocal4 [String s] : String |
+| B.java:279:10:279:23 | new MyLocal4(...) : MyLocal4 [f] : String | semmle.label | new MyLocal4(...) : MyLocal4 [f] : String |
+| B.java:279:10:279:23 | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String | semmle.label | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String |
+| B.java:279:10:279:29 | get(...) | semmle.label | get(...) |
+| B.java:280:10:280:24 | String s : String | semmle.label | String s : String |
+| B.java:280:10:280:24 | new MyLocal4(...) : MyLocal4 [f] : String | semmle.label | new MyLocal4(...) : MyLocal4 [f] : String |
+| B.java:280:10:280:24 | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String | semmle.label | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String |
+| B.java:280:10:280:30 | get(...) | semmle.label | get(...) |
 subpaths
 | B.java:13:5:13:6 | l1 : ArrayList [<element>] : String | B.java:13:16:13:16 | e : String | B.java:13:16:13:29 | parameter this [Return] : new Consumer<String>(...) { ... } [List<String> l2, <element>] : String | B.java:13:16:13:29 | ...->... [post update] : new Consumer<String>(...) { ... } [List<String> l2, <element>] : String |
 | B.java:30:14:30:24 | source(...) : String | B.java:22:26:22:26 | x : String | B.java:22:26:22:71 | parameter this [Return] : new Consumer<String>(...) { ... } [B other, bf1] : String | B.java:30:5:30:5 | f [post update] : new Consumer<String>(...) { ... } [B other, bf1] : String |
@@ -530,4 +609,11 @@ subpaths
 | B.java:178:10:178:11 | m2 : MyLocal [List<String> l, <element>] : String | B.java:169:14:169:16 | parameter this : MyLocal [List<String> l, <element>] : String | B.java:170:16:170:23 | get(...) : String | B.java:178:10:178:17 | get(...) |
 | B.java:247:5:247:18 | new MyLocal2(...) : MyLocal2 [List<String> l, <element>] : String | B.java:240:12:240:14 | parameter this : MyLocal2 [List<String> l, <element>] : String | B.java:240:12:240:14 | parameter this [Return] : MyLocal2 [List<String> l2, <element>] : String | B.java:247:5:247:18 | new MyLocal2(...) [post update] : MyLocal2 [List<String> l2, <element>] : String |
 | B.java:247:5:247:18 | new MyLocal2(...) [pre constructor] : MyLocal2 [String s] : String | B.java:235:7:235:14 | parameter this : MyLocal2 [String s] : String | B.java:235:7:235:14 | parameter this [Return] : MyLocal2 [List<String> l, <element>] : String | B.java:247:5:247:18 | new MyLocal2(...) : MyLocal2 [List<String> l, <element>] : String |
+| B.java:255:11:255:18 | this <.method> : MyLocal3 [String s] : String | B.java:255:11:255:18 | parameter this : MyLocal3 [String s] : String | B.java:255:11:255:18 | parameter this [Return] : MyLocal3 [f] : String | B.java:255:11:255:18 | this <.method> [post update] : MyLocal3 [f] : String |
+| B.java:261:5:261:18 | new MyLocal3(...) [pre constructor] : MyLocal3 [String s] : String | B.java:255:11:255:18 | parameter this : MyLocal3 [String s] : String | B.java:255:11:255:18 | parameter this [Return] : MyLocal3 [f] : String | B.java:261:5:261:18 | new MyLocal3(...) : MyLocal3 [f] : String |
+| B.java:270:9:270:17 | this <constr(this)> : MyLocal4 [String s] : String | B.java:272:7:272:14 | parameter this : MyLocal4 [String s] : String | B.java:272:7:272:14 | parameter this [Return] : MyLocal4 [f] : String | B.java:270:9:270:17 | this <constr(this)> [post update] : MyLocal4 [f] : String |
+| B.java:279:10:279:23 | new MyLocal4(...) : MyLocal4 [f] : String | B.java:275:14:275:16 | parameter this : MyLocal4 [f] : String | B.java:276:16:276:21 | this.f : String | B.java:279:10:279:29 | get(...) |
+| B.java:279:10:279:23 | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String | B.java:269:7:269:14 | parameter this : MyLocal4 [String s] : String | B.java:269:7:269:14 | parameter this [Return] : MyLocal4 [f] : String | B.java:279:10:279:23 | new MyLocal4(...) : MyLocal4 [f] : String |
+| B.java:280:10:280:24 | new MyLocal4(...) : MyLocal4 [f] : String | B.java:275:14:275:16 | parameter this : MyLocal4 [f] : String | B.java:276:16:276:21 | this.f : String | B.java:280:10:280:30 | get(...) |
+| B.java:280:10:280:24 | new MyLocal4(...) [pre constructor] : MyLocal4 [String s] : String | B.java:272:7:272:14 | parameter this : MyLocal4 [String s] : String | B.java:272:7:272:14 | parameter this [Return] : MyLocal4 [f] : String | B.java:280:10:280:24 | new MyLocal4(...) : MyLocal4 [f] : String |
 testFailures

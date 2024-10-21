@@ -147,7 +147,14 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
   }
 
   class Callable extends J::Callable {
-    predicate isConstructor() { this instanceof Constructor }
+    predicate isConstructor() {
+      // InstanceInitializers are called from constructors and are equally likely
+      // to capture variables for the purpose of field initialization, so we treat
+      // them as constructors for the heuristic identification of whether to allow
+      // this-to-this summaries.
+      this instanceof Constructor or
+      this instanceof InstanceInitializer
+    }
   }
 }
 
@@ -753,7 +760,7 @@ ContentApprox getContentApprox(Content c) {
 /**
  * Holds if the the content `c` is a container.
  */
-predicate containerContent(Content c) {
+predicate containerContent(ContentSet c) {
   c instanceof ArrayContent or
   c instanceof CollectionContent or
   c instanceof MapKeyContent or

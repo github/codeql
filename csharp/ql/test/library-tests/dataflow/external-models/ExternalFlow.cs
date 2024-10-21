@@ -291,4 +291,61 @@ namespace My.Qltest
 
         static void Sink(object o) { }
     }
+
+    // Test synthetic fields
+    public class K
+    {
+
+        public object MyField;
+
+        public void SetMySyntheticField(object o) => throw null;
+
+        public object GetMySyntheticField() => throw null;
+
+        public void SetMyNestedSyntheticField(object o) => throw null;
+
+        public object GetMyNestedSyntheticField() => throw null;
+
+        public void SetMyFieldOnSyntheticField(object o) => throw null;
+
+        public object GetMyFieldOnSyntheticField() => throw null;
+
+        public void M1()
+        {
+            var o = new object();
+            SetMySyntheticField(o);
+            Sink(GetMySyntheticField());
+        }
+
+        public void M2()
+        {
+            var o = new object();
+            SetMyNestedSyntheticField(o);
+            Sink(GetMyNestedSyntheticField());
+        }
+
+        public void M3()
+        {
+            var o = new object();
+            SetMyFieldOnSyntheticField(o);
+            Sink(GetMyFieldOnSyntheticField());
+        }
+
+        static void Sink(object o) { }
+    }
+
+    // Test content data flow provenance.
+    public class L
+    {
+        public void M1()
+        {
+            var l = new Library();
+            var o = new object();
+            l.SetValue(o);
+            Sink(l.GetValue());
+        }
+
+        static void Sink(object o) { }
+    }
+
 }

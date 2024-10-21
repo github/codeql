@@ -46,7 +46,7 @@ tar.extractall(members=tar)
 #Sanitize members
 def safemembers(members):
     for info in members:
-        if badpath(info):
+        if os.path.isabs(info.name) or ".." in info.name:
             raise
         yield info
 

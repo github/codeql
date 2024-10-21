@@ -78,14 +78,10 @@ edges
 | semantics.rb:60:5:60:5 | a | semantics.rb:66:14:66:15 | &... | provenance |  |
 | semantics.rb:60:9:60:18 | call to source | semantics.rb:60:5:60:5 | a | provenance |  |
 | semantics.rb:60:9:60:18 | call to source | semantics.rb:60:5:60:5 | a | provenance |  |
-| semantics.rb:61:10:61:15 | call to s10 [element 0] | semantics.rb:61:10:61:15 | call to s10 | provenance |  |
 | semantics.rb:61:14:61:14 | a | semantics.rb:61:10:61:15 | call to s10 | provenance |  |
 | semantics.rb:61:14:61:14 | a | semantics.rb:61:10:61:15 | call to s10 | provenance |  |
-| semantics.rb:61:14:61:14 | a | semantics.rb:61:10:61:15 | call to s10 [element 0] | provenance |  |
-| semantics.rb:62:10:62:18 | call to s10 [element 1] | semantics.rb:62:10:62:18 | call to s10 | provenance |  |
 | semantics.rb:62:17:62:17 | a | semantics.rb:62:10:62:18 | call to s10 | provenance |  |
 | semantics.rb:62:17:62:17 | a | semantics.rb:62:10:62:18 | call to s10 | provenance |  |
-| semantics.rb:62:17:62:17 | a | semantics.rb:62:10:62:18 | call to s10 [element 1] | provenance |  |
 | semantics.rb:63:19:63:19 | a | semantics.rb:63:10:63:20 | call to s10 | provenance |  |
 | semantics.rb:63:19:63:19 | a | semantics.rb:63:10:63:20 | call to s10 | provenance |  |
 | semantics.rb:64:27:64:27 | a | semantics.rb:64:10:64:28 | call to s10 | provenance |  |
@@ -192,10 +188,8 @@ edges
 | semantics.rb:126:5:126:5 | b | semantics.rb:129:17:129:17 | b | provenance |  |
 | semantics.rb:126:9:126:18 | call to source | semantics.rb:126:5:126:5 | b | provenance |  |
 | semantics.rb:126:9:126:18 | call to source | semantics.rb:126:5:126:5 | b | provenance |  |
-| semantics.rb:127:10:127:18 | call to s17 [element 0] | semantics.rb:127:10:127:18 | call to s17 | provenance |  |
-| semantics.rb:127:10:127:18 | call to s17 [element 1] | semantics.rb:127:10:127:18 | call to s17 | provenance |  |
-| semantics.rb:127:14:127:14 | a | semantics.rb:127:10:127:18 | call to s17 [element 0] | provenance |  |
-| semantics.rb:127:17:127:17 | b | semantics.rb:127:10:127:18 | call to s17 [element 1] | provenance |  |
+| semantics.rb:127:14:127:14 | a | semantics.rb:127:10:127:18 | call to s17 | provenance |  |
+| semantics.rb:127:17:127:17 | b | semantics.rb:127:10:127:18 | call to s17 | provenance |  |
 | semantics.rb:128:10:128:18 | call to s17 [element 0] | semantics.rb:128:10:128:21 | ...[...] | provenance |  |
 | semantics.rb:128:10:128:18 | call to s17 [element 0] | semantics.rb:128:10:128:21 | ...[...] | provenance |  |
 | semantics.rb:128:14:128:14 | a | semantics.rb:128:10:128:18 | call to s17 [element 0] | provenance |  |
@@ -1191,12 +1185,10 @@ nodes
 | semantics.rb:60:9:60:18 | call to source | semmle.label | call to source |
 | semantics.rb:61:10:61:15 | call to s10 | semmle.label | call to s10 |
 | semantics.rb:61:10:61:15 | call to s10 | semmle.label | call to s10 |
-| semantics.rb:61:10:61:15 | call to s10 [element 0] | semmle.label | call to s10 [element 0] |
 | semantics.rb:61:14:61:14 | a | semmle.label | a |
 | semantics.rb:61:14:61:14 | a | semmle.label | a |
 | semantics.rb:62:10:62:18 | call to s10 | semmle.label | call to s10 |
 | semantics.rb:62:10:62:18 | call to s10 | semmle.label | call to s10 |
-| semantics.rb:62:10:62:18 | call to s10 [element 1] | semmle.label | call to s10 [element 1] |
 | semantics.rb:62:17:62:17 | a | semmle.label | a |
 | semantics.rb:62:17:62:17 | a | semmle.label | a |
 | semantics.rb:63:10:63:20 | call to s10 | semmle.label | call to s10 |
@@ -1322,8 +1314,6 @@ nodes
 | semantics.rb:126:9:126:18 | call to source | semmle.label | call to source |
 | semantics.rb:126:9:126:18 | call to source | semmle.label | call to source |
 | semantics.rb:127:10:127:18 | call to s17 | semmle.label | call to s17 |
-| semantics.rb:127:10:127:18 | call to s17 [element 0] | semmle.label | call to s17 [element 0] |
-| semantics.rb:127:10:127:18 | call to s17 [element 1] | semmle.label | call to s17 [element 1] |
 | semantics.rb:127:14:127:14 | a | semmle.label | a |
 | semantics.rb:127:17:127:17 | b | semmle.label | b |
 | semantics.rb:128:10:128:18 | call to s17 [element 0] | semmle.label | call to s17 [element 0] |

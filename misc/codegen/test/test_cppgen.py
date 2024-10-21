@@ -156,10 +156,10 @@ def test_classes_with_dirs(generate_grouped):
     cbase = cpp.Class(name="CBase")
     assert generate_grouped([
         schema.Class(name="A"),
-        schema.Class(name="B", group="foo"),
-        schema.Class(name="CBase", derived={"C"}, group="bar"),
-        schema.Class(name="C", bases=["CBase"], group="bar"),
-        schema.Class(name="D", group="foo/bar/baz"),
+        schema.Class(name="B", pragmas={"group": "foo"}),
+        schema.Class(name="CBase", derived={"C"}, pragmas={"group": "bar"}),
+        schema.Class(name="C", bases=["CBase"], pragmas={"group": "bar"}),
+        schema.Class(name="D", pragmas={"group": "foo/bar/baz"}),
     ]) == {
         ".": [cpp.Class(name="A", trap_name="As", final=True)],
         "foo": [cpp.Class(name="B", trap_name="Bs", final=True)],
@@ -185,15 +185,15 @@ def test_synth_classes_ignored(generate):
     assert generate([
         schema.Class(
             name="W",
-            synth=schema.SynthInfo(),
+            pragmas={"synth": schema.SynthInfo()},
         ),
         schema.Class(
             name="X",
-            synth=schema.SynthInfo(from_class="A"),
+            pragmas={"synth": schema.SynthInfo(from_class="A")},
         ),
         schema.Class(
             name="Y",
-            synth=schema.SynthInfo(on_arguments={"a": "A", "b": "int"}),
+            pragmas={"synth": schema.SynthInfo(on_arguments={"a": "A", "b": "int"})},
         ),
         schema.Class(
             name="Z",

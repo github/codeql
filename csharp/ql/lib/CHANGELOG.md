@@ -1,3 +1,42 @@
+## 3.0.1
+
+No user-facing changes.
+
+## 3.0.0
+
+### Breaking Changes
+
+* C#: Add support for MaD directly on properties and indexers using *attributes*. Using `Attribute.Getter` or `Attribute.Setter` in the model `ext` field applies the model to the getter or setter for properties and indexers. Prior to this change `Attribute` models unintentionally worked for property setters (if the property is decorated with the matching attribute). That is, a model that uses the `Attribute` feature directly on a property for a property setter needs to be changed to `Attribute.Setter`.
+* C#: Remove all CIL tables and related QL library functionality.
+
+### Deprecated APIs
+
+* The class `ThreatModelFlowSource` has been renamed to `ActiveThreatModelSource` to more clearly reflect it only contains the currently active threat model sources. `ThreatModelFlowSource` has been marked as deprecated.
+
+### Minor Analysis Improvements
+
+* `DataFlow::Node` instances are no longer created for library methods and fields that are not callable (either statically or dynamically) or otherwise referred to from source code. This may affect third-party queries that use these nodes to identify library methods or fields that are present in DLL files where those methods or fields are unreferenced. If this presents a problem, consider using `Callable` and other non-dataflow classes to identify such library entities.
+* C#: Add extractor support for attributes on indexers.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+
+### Minor Analysis Improvements
+
+* Parameters of public methods in abstract controller-like classes are now considered remote flow sources.
+* The reported location of `partial` methods has been changed from the definition to the implementation part.
+
+## 1.2.0
+
+### New Features
+
+* C# support for `build-mode: none` is now out of beta, and generally available.
+
 ## 1.1.0
 
 ### Major Analysis Improvements

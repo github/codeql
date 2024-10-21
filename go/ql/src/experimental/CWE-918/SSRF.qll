@@ -87,14 +87,14 @@ module ServerSideRequestForgery {
   abstract class SanitizerEdge extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `ThreatModelFlowSource` or `Source` instead.
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
    */
   deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
 
   /**
    * An user controlled input, considered as a flow source for request forgery.
    */
-  private class ThreatModelFlowAsSource extends Source instanceof ThreatModelFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
   /**
    * The URL of an HTTP request, viewed as a sink for request forgery.

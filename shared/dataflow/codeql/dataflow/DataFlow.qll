@@ -298,7 +298,7 @@ signature module InputSig<LocationSig Location> {
   /** Extra data-flow steps needed for lambda flow analysis. */
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue);
 
-  predicate knownSourceModel(Node sink, string model);
+  predicate knownSourceModel(Node source, string model);
 
   predicate knownSinkModel(Node sink, string model);
 
@@ -431,6 +431,17 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * is not visualized (as it is in a `path-problem` query).
      */
     default predicate includeHiddenNodes() { none() }
+
+    /**
+     * Holds if sources and sinks should be filtered to only include those that
+     * may lead to a flow path with either a source or a sink in the location
+     * range given by `AlertFiltering`. This only has an effect when running
+     * in diff-informed incremental mode.
+     *
+     * This flag should only be applied to flow configurations whose results
+     * are used directly in a query result.
+     */
+    default predicate observeDiffInformedIncrementalMode() { none() }
   }
 
   /** An input configuration for data flow using flow state. */
@@ -547,6 +558,17 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * is not visualized (as it is in a `path-problem` query).
      */
     default predicate includeHiddenNodes() { none() }
+
+    /**
+     * Holds if sources and sinks should be filtered to only include those that
+     * may lead to a flow path with either a source or a sink in the location
+     * range given by `AlertFiltering`. This only has an effect when running
+     * in diff-informed incremental mode.
+     *
+     * This flag should only be applied to flow configurations whose results
+     * are used directly in a query result.
+     */
+    default predicate observeDiffInformedIncrementalMode() { none() }
   }
 }
 

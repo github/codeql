@@ -289,17 +289,4 @@ module CleartextSources {
 
     override string describe() { result = "a call to " + name }
   }
-
-  /** Holds if `nodeFrom` taints `nodeTo`. */
-  deprecated predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    exists(string name, ElementReference ref, LocalVariable hashVar |
-      // from `hsh[password] = "changeme"` to a `hsh[password]` read
-      nodeFrom.(HashKeyWriteSensitiveSource).getName() = name and
-      nodeTo.asExpr().getExpr() = ref and
-      ref.getArgument(0).getConstantValue().getStringlikeValue() = name and
-      nodeFrom.(HashKeyWriteSensitiveSource).getVariable() = hashVar and
-      ref.getReceiver().(VariableReadAccess).getVariable() = hashVar and
-      nodeFrom.asExpr().getASuccessor*() = nodeTo.asExpr()
-    )
-  }
 }

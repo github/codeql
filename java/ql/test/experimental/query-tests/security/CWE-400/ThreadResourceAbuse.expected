@@ -19,7 +19,7 @@ edges
 | ThreadResourceAbuse.java:67:4:67:7 | this [post update] : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:66:10:66:28 | parameter this [Return] : UncheckedSyncAction [waitTime] : Number | provenance |  |
 | ThreadResourceAbuse.java:67:20:67:27 | waitTime : Number | ThreadResourceAbuse.java:67:4:67:7 | this [post update] : UncheckedSyncAction [waitTime] : Number | provenance |  |
 | ThreadResourceAbuse.java:71:15:71:17 | parameter this : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | this <.field> : UncheckedSyncAction [waitTime] : Number | provenance |  |
-| ThreadResourceAbuse.java:74:18:74:25 | this <.field> : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | waitTime | provenance |  Sink:MaD:1 |
+| ThreadResourceAbuse.java:74:18:74:25 | this <.field> : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | waitTime | provenance | Sink:MaD:1 |
 | ThreadResourceAbuse.java:141:27:141:43 | getValue(...) : String | ThreadResourceAbuse.java:144:34:144:42 | delayTime | provenance | Src:MaD:3 TaintPreservingCallable Sink:MaD:2 |
 | ThreadResourceAbuse.java:172:19:172:50 | getHeader(...) : String | ThreadResourceAbuse.java:176:17:176:26 | retryAfter | provenance | Src:MaD:4 TaintPreservingCallable Sink:MaD:1 |
 | ThreadResourceAbuse.java:206:28:206:56 | getParameter(...) : String | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | provenance | Src:MaD:5 TaintPreservingCallable |
@@ -30,7 +30,7 @@ edges
 | ThreadResourceAbuse.java:219:17:219:26 | retryAfter : Number | ThreadResourceAbuse.java:219:17:219:33 | ... * ... | provenance | Config Sink:MaD:1 |
 | ThreadResourceAbuse.java:227:19:227:50 | getHeader(...) : String | ThreadResourceAbuse.java:230:3:230:12 | retryAfter : Number | provenance | Src:MaD:4 TaintPreservingCallable |
 | ThreadResourceAbuse.java:230:3:230:12 | retryAfter : Number | ThreadResourceAbuse.java:230:3:230:20 | ...*=... : Number | provenance | Config |
-| ThreadResourceAbuse.java:230:3:230:20 | ...*=... : Number | ThreadResourceAbuse.java:233:17:233:26 | retryAfter | provenance |  Sink:MaD:1 |
+| ThreadResourceAbuse.java:230:3:230:20 | ...*=... : Number | ThreadResourceAbuse.java:233:17:233:26 | retryAfter | provenance | Sink:MaD:1 |
 | UploadListener.java:15:24:15:44 | sleepMilliseconds : Number | UploadListener.java:16:17:16:33 | sleepMilliseconds : Number | provenance |  |
 | UploadListener.java:16:3:16:13 | this <.field> [post update] : UploadListener [slowUploads] : Number | UploadListener.java:15:9:15:22 | parameter this [Return] : UploadListener [slowUploads] : Number | provenance |  |
 | UploadListener.java:16:17:16:33 | sleepMilliseconds : Number | UploadListener.java:16:3:16:13 | this <.field> [post update] : UploadListener [slowUploads] : Number | provenance |  |
@@ -38,9 +38,9 @@ edges
 | UploadListener.java:29:3:29:11 | this <.field> : UploadListener [slowUploads] : Number | UploadListener.java:30:3:30:15 | this <.field> : UploadListener [slowUploads] : Number | provenance |  |
 | UploadListener.java:30:3:30:15 | this <.field> : UploadListener [slowUploads] : Number | UploadListener.java:33:7:33:17 | this <.field> : UploadListener [slowUploads] : Number | provenance |  |
 | UploadListener.java:30:3:30:15 | this <.field> : UploadListener [slowUploads] : Number | UploadListener.java:35:18:35:28 | this <.field> : UploadListener [slowUploads] : Number | provenance |  |
-| UploadListener.java:33:7:33:17 | slowUploads : Number | UploadListener.java:35:18:35:28 | slowUploads | provenance |  Sink:MaD:1 |
+| UploadListener.java:33:7:33:17 | slowUploads : Number | UploadListener.java:35:18:35:28 | slowUploads | provenance | Sink:MaD:1 |
 | UploadListener.java:33:7:33:17 | this <.field> : UploadListener [slowUploads] : Number | UploadListener.java:33:7:33:17 | slowUploads : Number | provenance |  |
-| UploadListener.java:35:18:35:28 | this <.field> : UploadListener [slowUploads] : Number | UploadListener.java:35:18:35:28 | slowUploads | provenance |  Sink:MaD:1 |
+| UploadListener.java:35:18:35:28 | this <.field> : UploadListener [slowUploads] : Number | UploadListener.java:35:18:35:28 | slowUploads | provenance | Sink:MaD:1 |
 models
 | 1 | Sink: java.lang; Thread; true; sleep; ; ; Argument[0]; thread-pause; manual |
 | 2 | Sink: java.util.concurrent; TimeUnit; true; sleep; ; ; Argument[0]; thread-pause; manual |

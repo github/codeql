@@ -7,6 +7,7 @@ edges
 | CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | CookieWithoutHttpOnly.go:15:20:15:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | CookieWithoutHttpOnly.go:15:20:15:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | CookieWithoutHttpOnly.go:15:21:15:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:15:21:15:21 | c | CookieWithoutHttpOnly.go:15:20:15:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:15:21:15:21 | c | CookieWithoutHttpOnly.go:15:20:15:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:19:7:23:2 | struct literal | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
@@ -24,6 +25,8 @@ edges
 | CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:21:24:21 | c | provenance |  |
 | CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | CookieWithoutHttpOnly.go:24:21:24:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:24:21:24:21 | c | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:24:21:24:21 | c | CookieWithoutHttpOnly.go:24:20:24:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:24:21:24:21 | c | CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:24:21:24:21 | c | CookieWithoutHttpOnly.go:24:20:24:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:28:7:32:2 | struct literal | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
@@ -42,6 +45,8 @@ edges
 | CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:21:33:21 | c | provenance |  |
 | CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | CookieWithoutHttpOnly.go:33:21:33:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:33:21:33:21 | c | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:33:21:33:21 | c | CookieWithoutHttpOnly.go:33:20:33:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:33:21:33:21 | c | CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:33:21:33:21 | c | CookieWithoutHttpOnly.go:33:20:33:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:37:7:40:2 | struct literal | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
@@ -60,6 +65,8 @@ edges
 | CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:21:42:21 | c | provenance |  |
 | CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | CookieWithoutHttpOnly.go:42:21:42:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:42:21:42:21 | c | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:42:21:42:21 | c | CookieWithoutHttpOnly.go:42:20:42:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:42:21:42:21 | c | CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:42:21:42:21 | c | CookieWithoutHttpOnly.go:42:20:42:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:46:7:49:2 | struct literal | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
@@ -78,6 +85,8 @@ edges
 | CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:21:51:21 | c | provenance |  |
 | CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | CookieWithoutHttpOnly.go:51:21:51:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:51:21:51:21 | c | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:51:21:51:21 | c | CookieWithoutHttpOnly.go:51:20:51:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:51:21:51:21 | c | CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:51:21:51:21 | c | CookieWithoutHttpOnly.go:51:20:51:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:55:2:55:4 | definition of val | CookieWithoutHttpOnly.go:59:13:59:15 | val | provenance |  |
@@ -98,6 +107,8 @@ edges
 | CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:21:61:21 | c | provenance |  |
 | CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | CookieWithoutHttpOnly.go:61:21:61:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:61:21:61:21 | c | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:61:21:61:21 | c | CookieWithoutHttpOnly.go:61:20:61:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:61:21:61:21 | c | CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:61:21:61:21 | c | CookieWithoutHttpOnly.go:61:20:61:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:65:2:65:4 | definition of val | CookieWithoutHttpOnly.go:69:13:69:15 | val | provenance |  |
@@ -118,6 +129,8 @@ edges
 | CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:21:71:21 | c | provenance |  |
 | CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | CookieWithoutHttpOnly.go:71:21:71:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:71:21:71:21 | c | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:71:21:71:21 | c | CookieWithoutHttpOnly.go:71:20:71:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:71:21:71:21 | c | CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:71:21:71:21 | c | CookieWithoutHttpOnly.go:71:20:71:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:75:2:75:4 | definition of val | CookieWithoutHttpOnly.go:80:15:80:17 | val | provenance |  |
@@ -138,6 +151,8 @@ edges
 | CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:21:81:21 | c | provenance |  |
 | CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | CookieWithoutHttpOnly.go:81:21:81:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:81:21:81:21 | c | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:81:21:81:21 | c | CookieWithoutHttpOnly.go:81:20:81:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:81:21:81:21 | c | CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:81:21:81:21 | c | CookieWithoutHttpOnly.go:81:20:81:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:85:2:85:4 | definition of val | CookieWithoutHttpOnly.go:90:15:90:17 | val | provenance |  |
@@ -158,6 +173,8 @@ edges
 | CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:21:91:21 | c | provenance |  |
 | CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | CookieWithoutHttpOnly.go:91:21:91:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:91:21:91:21 | c | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:91:21:91:21 | c | CookieWithoutHttpOnly.go:91:20:91:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:91:21:91:21 | c | CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:91:21:91:21 | c | CookieWithoutHttpOnly.go:91:20:91:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:95:7:98:2 | struct literal | CookieWithoutHttpOnly.go:100:20:100:21 | &... | provenance |  |
@@ -168,6 +185,7 @@ edges
 | CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | CookieWithoutHttpOnly.go:100:20:100:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | CookieWithoutHttpOnly.go:100:20:100:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | CookieWithoutHttpOnly.go:100:21:100:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:100:21:100:21 | c | CookieWithoutHttpOnly.go:100:20:100:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:100:21:100:21 | c | CookieWithoutHttpOnly.go:100:20:100:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:104:10:104:18 | "session" | CookieWithoutHttpOnly.go:106:10:106:13 | name | provenance |  |
 | CookieWithoutHttpOnly.go:105:7:108:2 | struct literal | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
@@ -186,6 +204,8 @@ edges
 | CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:21:110:21 | c | provenance |  |
 | CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | CookieWithoutHttpOnly.go:110:21:110:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:110:21:110:21 | c | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:110:21:110:21 | c | CookieWithoutHttpOnly.go:110:20:110:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:110:21:110:21 | c | CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:110:21:110:21 | c | CookieWithoutHttpOnly.go:110:20:110:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:114:13:114:24 | "login_name" | CookieWithoutHttpOnly.go:116:10:116:16 | session | provenance |  |
@@ -205,6 +225,8 @@ edges
 | CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:21:120:21 | c | provenance |  |
 | CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | CookieWithoutHttpOnly.go:120:21:120:21 | c | provenance |  |
+| CookieWithoutHttpOnly.go:120:21:120:21 | c | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
+| CookieWithoutHttpOnly.go:120:21:120:21 | c | CookieWithoutHttpOnly.go:120:20:120:21 | &... | provenance |  |
 | CookieWithoutHttpOnly.go:120:21:120:21 | c | CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:120:21:120:21 | c | CookieWithoutHttpOnly.go:120:20:120:21 | &... [pointer] | provenance |  |
 | CookieWithoutHttpOnly.go:123:13:123:49 | call to NewCookieStore | CookieWithoutHttpOnly.go:126:16:126:20 | store | provenance |  |

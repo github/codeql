@@ -1,7 +1,7 @@
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) |
 | file://:0:0:0:0 | definition of fp_offset |
 | file://:0:0:0:0 | definition of gp_offset |
 | file://:0:0:0:0 | definition of overflow_arg_area |
