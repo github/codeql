@@ -1,7 +1,6 @@
 gen:
-	bash -c "echo $$PATH"
 	bash -c "bazel version"
-
-	where bazel
+	bash -c "type -a bazel"
 	bazel version
+	bash -c 'echo "$$PATH"'
 	pwd
