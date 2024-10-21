@@ -1,6 +1,7 @@
+SHELL := /bin/bash
 gen:
 	bash -c "bazel version"
-	bash -c "type -a bazel"
+	/bin/sh -c "bazel version"
 	bazel version
 	bash -c 'echo "$$PATH"'
 	pwd
