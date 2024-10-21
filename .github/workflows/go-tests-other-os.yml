@@ -32,17 +32,10 @@ jobs:
           where bazel
           declare -px
           bazel version
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: "~1.23.1"
-          cache: false
-        id: go
-      - name: dump env bash again
+      - name: Test
         shell: bash
         run: |
-          where bazel
-          declare -px
-          bazel version
-      - name: Run tests
-        uses: ./go/actions/test
+          cd go
+          make test
+      # - name: Run tests
+      #   uses: ./go/actions/test
