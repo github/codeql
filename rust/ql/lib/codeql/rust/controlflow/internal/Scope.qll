@@ -27,7 +27,7 @@ final class FunctionScope extends CfgScope, Function {
 
 final class ClosureScope extends CfgScope, ClosureExpr {
   override predicate scopeFirst(AstNode node) {
-    first(this.(ClosureExprTree).getFirstChildNode(), node)
+    first(this.(ExprTrees::ClosureExprTree).getFirstChildNode(), node)
   }
 
   override predicate scopeLast(AstNode node, Completion c) { last(this.getBody(), node, c) }
