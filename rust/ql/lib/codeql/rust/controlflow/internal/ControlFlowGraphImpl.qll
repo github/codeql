@@ -238,7 +238,7 @@ module ExprTrees {
     }
   }
 
-  class LogicalOrTree extends PostOrderTree, LogicalOrExpr {
+  class LogicalOrExprTree extends PostOrderTree, LogicalOrExpr {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getAnOperand() }
 
     override predicate first(AstNode node) { first(this.getLhs(), node) }
@@ -261,7 +261,7 @@ module ExprTrees {
     }
   }
 
-  class LogicalAndTree extends PostOrderTree, LogicalAndExpr {
+  class LogicalAndExprTree extends PostOrderTree, LogicalAndExpr {
     final override predicate propagatesAbnormal(AstNode child) { child = this.getAnOperand() }
 
     override predicate first(AstNode node) { first(this.getLhs(), node) }
