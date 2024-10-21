@@ -92,9 +92,9 @@ module Pycurl {
       ) {
         sslverifypeer().getAValueReachableFromSource() = this.getArg(0) and
         (
-          exists(IntegerLiteral i | i.getValue() = 0 and this.getArg(1).asExpr() = i)
+          this.getArg(1).asExpr().(IntegerLiteral).getValue() = 0
           or
-          exists(BooleanLiteral b | b.booleanValue() = false and this.getArg(_).asExpr() = b)
+          this.getArg(1).asExpr().(BooleanLiteral).booleanValue() = false
         ) and
         (disablingNode = this and argumentOrigin = this.getArg(1))
       }
