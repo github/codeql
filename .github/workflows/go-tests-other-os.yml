@@ -29,6 +29,7 @@ jobs:
       - name: dump env bash
         shell: bash
         run: |
+          cd go
           where bazel
           declare -px
           bazel version
