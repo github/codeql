@@ -10,32 +10,28 @@ on:
       - MODULE.bazel
       - .bazelrc
       - misc/bazel/**
-
+  push:
+    branches:
+      - criemen/debug
 permissions:
   contents: read
 
 jobs:
-  test-mac:
-    name: Test MacOS
-    runs-on: macos-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Run tests
-        uses: ./go/actions/test
-
   test-win:
-    if: github.repository_owner == 'github'
     name: Test Windows
     runs-on: windows-latest-xl
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: go
+
       - name: dump env bash
         shell: bash
         run: |
           where bazel
           declare -px
+          bazel version
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
@@ -47,14 +43,6 @@ jobs:
         run: |
           where bazel
           declare -px
-      - name: test1
-        run: |
-          C:\npm\prefix\bazel version
-      - name: test2
-        run: |
-          C:\ProgramData\Chocolatey\bin\bazel.exe version
-      - name: test3
-        run: |
-          C:\npm\prefix\bazelisk version
+          bazel version
       - name: Run tests
         uses: ./go/actions/test
