@@ -31,3 +31,5 @@ query predicate multipleToString(AstNode n, string s) {
 }
 
 query predicate extractionError(ExtractionError error) { any() }
+
+query predicate extractionWarning(ExtractionWarning error) { any() }

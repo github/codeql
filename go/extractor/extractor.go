@@ -81,11 +81,27 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 		}
 	}
 
-	testMessage := ""
-	if extractTests {
-		testMessage = " (test extraction enabled)"
+	// If CODEQL_EXTRACTOR_GO_[OPTION_]EXTRACT_VENDOR_DIRS is "true", we extract `vendor` directories;
+	// otherwise (the default) is to exclude them from extraction
+	includeVendor, oldOptionUsed := util.IsVendorDirExtractionEnabled()
+
+	if oldOptionUsed {
+		log.Println("Warning: obsolete option \"CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS\" was set. Use \"CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_VENDOR_DIRS\" or pass `--extractor-option extract_vendor_dirs=true` instead.")
 	}
-	log.Printf("Running packages.Load%s.", testMessage)
+
+	modeNotifications := make([]string, 0, 2)
+	if extractTests {
+		modeNotifications = append(modeNotifications, "test extraction enabled")
+	}
+	if includeVendor {
+		modeNotifications = append(modeNotifications, "extracting vendor directories")
+	}
+
+	modeMessage := strings.Join(modeNotifications, ", ")
+	if modeMessage != "" {
+		modeMessage = " (" + modeMessage + ")"
+	}
+	log.Printf("Running packages.Load%s.", modeMessage)
 
 	// This includes test packages if either we're tracing a `go test` command,
 	// or if CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_TESTS is set to "true".
@@ -233,9 +249,6 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool)
 	// Construct a list of directory segments to exclude from extraction, starting with ".."
 	excludedDirs := []string{`\.\.`}
 
-	// If CODEQL_EXTRACTOR_GO_EXTRACT_VENDOR_DIRS is "true", we extract `vendor` directories;
-	// otherwise (the default) is to exclude them from extraction
-	includeVendor := util.IsVendorDirExtractionEnabled()
 	if !includeVendor {
 		excludedDirs = append(excludedDirs, "vendor")
 	}
@@ -1611,6 +1624,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 					name = ""
 				}
 				extractComponentType(tw, lbl, i, name, field.Type())
+				if tp.Tag(i) != "" {
+					dbscheme.StructTagsTable.Emit(tw, lbl, i, tp.Tag(i))
+				}
 			}
 		case *types.Pointer:
 			kind = dbscheme.PointerType.Index()
@@ -1628,6 +1644,10 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				extractMethod(tw, meth)
 
 				extractComponentType(tw, lbl, i, meth.Name(), meth.Type())
+
+				if !meth.Exported() {
+					dbscheme.InterfacePrivateMethodIdsTable.Emit(tw, lbl, i, meth.Id())
+				}
 			}
 			for i := 0; i < tp.NumEmbeddeds(); i++ {
 				component := tp.EmbeddedType(i)

@@ -37,7 +37,7 @@ explicit_argv_parsing = parser.parse_args(sys.argv) # $ threatModelSource[comman
 ensure_tainted(explicit_argv_parsing.foo) # $ tainted
 
 fake_args = parser.parse_args(["<foo>"])
-ensure_not_tainted(fake_args.foo) # $ SPURIOUS: tainted
+ensure_not_tainted(fake_args.foo)
 
 ########################################
 # reading input from stdin

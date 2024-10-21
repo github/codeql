@@ -46,8 +46,6 @@ private module Cached {
       or
       containerStep(nodeFrom, nodeTo)
       or
-      copyStep(nodeFrom, nodeTo)
-      or
       DataFlowPrivate::forReadStep(nodeFrom, _, nodeTo)
       or
       DataFlowPrivate::iterableUnpackingReadStep(nodeFrom, _, nodeTo)
@@ -188,19 +186,7 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // TODO: once we have proper flow-summary modeling, we might not need this step any
   // longer -- but there needs to be a matching read-step for the store-step, and we
   // don't provide that right now.
-  DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
-}
-
-/**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to copying.
- */
-predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
-  exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall() and
-    call.getArg(0) = nodeFrom
-  )
-  or
-  nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, "copy")
+  DataFlowPrivate::yieldStoreStep(nodeFrom, _, nodeTo)
 }
 
 /**

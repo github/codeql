@@ -79,6 +79,7 @@ class AstNode extends @node, Locatable {
   }
 
   /** Gets the innermost function definition to which this AST node belongs, if any. */
+  pragma[nomagic]
   FuncDef getEnclosingFunction() { result = this.getParent().parentInSameFunction*() }
 
   /**

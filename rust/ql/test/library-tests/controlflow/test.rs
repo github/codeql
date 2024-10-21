@@ -51,16 +51,45 @@ mod loop_expression {
         }
     }
 
-    fn test_while() {
+    fn test_loop_label_shadowing(b: bool) -> ! {
+        'loop: loop {
+            1;
+            'loop: loop {
+                if b {
+                    continue;
+                } else if b {
+                    continue 'loop;
+                }
+                continue 'loop;
+            }
+        }
+    }
+
+    fn test_while(i: i64) {
         let mut b = true;
         while b {
             1;
+            if (i > 0) {
+                break;
+            }
             b = false;
         }
     }
 
-    fn test_for() {
+    fn test_while_let() {
+        let mut iter = 1..10;
+        while let Some(x) = iter.next() {
+            if (i = 5) {
+                break;
+            }
+        }
+    }
+
+    fn test_for(j: i64) {
         for i in 0..10 {
+            if (i == j) {
+                break;
+            }
             1;
         }
     }
@@ -219,11 +248,39 @@ mod logical_operators {
     }
 }
 
-fn test_match(maybe_digit: Option<i64>) -> i64 {
-    match maybe_digit {
-        Option::Some(x) if x < 10 => x + 5,
-        Option::Some(x) => x,
-        Option::None => 5,
+mod question_mark_operator {
+
+    fn test_question_mark_operator_1(s: &str) -> Option<i32> {
+        str.parse::<u32>()? + 4
+    }
+
+    fn test_question_mark_operator_2(b: Option<bool>) -> Option<bool> {
+        match b? {
+            true => Some(false),
+            false => Some(true),
+        }
+    }
+}
+
+mod match_expression {
+
+    fn test_match(maybe_digit: Option<i64>) -> i64 {
+        match maybe_digit {
+            Option::Some(x) if x < 10 => x + 5,
+            Option::Some(x) => x,
+            Option::None => 5,
+        }
+    }
+
+    fn test_match_with_return_in_scrutinee(maybe_digit: Option<i64>) -> i64 {
+        match (if maybe_digit == Some(3) {
+            return 3;
+        } else {
+            maybe_digit
+        }) {
+            Option::Some(x) => x + 5,
+            Option::None => 5,
+        }
     }
 }
 
@@ -248,7 +305,7 @@ fn dead_code() -> i64 {
     return 1;
 }
 
-fn labelled_block() -> i64 {
+fn labelled_block1() -> i64 {
     let result = 'block: {
         do_thing();
         if condition_not_met() {
@@ -261,4 +318,22 @@ fn labelled_block() -> i64 {
         do_last_thing();
         3
     };
+}
+
+fn labelled_block2() -> i64 {
+    let result = 'block: {
+        let x: Option<i64> = None;
+        let Some(y) = x else {
+            break 'block 1;
+        };
+        x
+    };
+}
+
+fn test_nested_function() {
+    let mut x = 0;
+    fn nested(x: &mut i64) {
+        *x += 1;
+    }
+    nested(&mut x);
 }

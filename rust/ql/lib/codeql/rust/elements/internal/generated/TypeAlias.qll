@@ -69,6 +69,11 @@ module Generated {
     final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
 
     /**
+     * Holds if this type alias is default.
+     */
+    predicate isDefault() { Synth::convertTypeAliasToRaw(this).(Raw::TypeAlias).isDefault() }
+
+    /**
      * Gets the name of this type alias, if it exists.
      */
     Name getName() {
