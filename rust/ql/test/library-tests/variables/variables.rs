@@ -1,11 +1,11 @@
 use std::ops::AddAssign;
 
-fn print_str(s: &str) {
-    println!("{}", s);
+fn print_str(s: &str) { // s
+    println!("{}", s); // $ read_access=s
 }
 
-fn print_i64(i: i64) {
-    println!("{}", i);
+fn print_i64(i: i64) { // i
+    println!("{}", i); // $ read_access=i
 }
 
 fn immutable_variable() {
@@ -342,16 +342,39 @@ fn mutate() {
     print_i64(i); // $ read_access=i
 }
 
-fn mutate_param(x : &mut i64) { // x
+fn mutate_param(x : &mut i64) -> &mut i64 {
     *x = // $ read_access=x
         *x + // $ read_access=x
         *x; // $ read_access=x
+    return x; // $ read_access=x
+}
+
+fn mutate_param2<'a>(x : &'a mut i64, y :&mut &'a mut i64) {
+    *x = // $ read_access=x
+        *x + // $ read_access=x
+        *x; // $ read_access=x
+    *y = // $ read_access=y
+        x; // $ read_access=x
 }
 
 fn mutate_arg() {
     let mut x = 2; // x
-    mutate_param(&mut x); // $ access=x
+    let y = // y
+        mutate_param(&mut x); // $ access=x
+    *y = 10; // $ read_access=y
+    // prints 10, not 4
     print_i64(x); // $ read_access=x
+
+    let mut z = 4; // z
+    let w = // w
+        &mut &mut x; // $ access=x
+    mutate_param2(
+        &mut z, // $ access=z
+        w // $ read_access=w
+    );
+    **w = 11; // $ read_access=w
+    // prints 11, not 8
+    print_i64(z); // $ read_access=z
 }
 
 fn alias() {
@@ -362,7 +385,7 @@ fn alias() {
     print_i64(x); // $ read_access=x
 }
 
-fn capture() {
+fn capture_mut() {
     let mut x = 10; // x
     let mut cap = || {
         print_i64(x); // $ read_access=x
@@ -370,6 +393,96 @@ fn capture() {
     };
     cap(); // $ read_access=cap
     print_i64(x); // $ read_access=x
+}
+
+fn capture_immut() {
+    let x = 100; // x
+    let mut cap = || {
+        print_i64(x); // $ read_access=x
+    };
+    cap(); // $ read_access=cap
+    print_i64(x); // $ read_access=x
+}
+
+fn phi(b : bool) {
+    let mut x = 1; // x
+    print_i64(x); // $ read_access=x
+    print_i64(x + 1); // $ read_access=x
+    if b { // $ read_access=b
+        x = 2; // $ write_access=x
+        print_i64(x); // $ read_access=x
+        print_i64(x + 1); // $ read_access=x
+    } else {
+        x = 3; // $ write_access=x
+        print_i64(x); // $ read_access=x
+        print_i64(x + 1); // $ read_access=x
+    }
+    print_i64(x); // $ read_access=x
+}
+
+fn phi_read(b1 : bool, b2 : bool) {
+    let x = 1; // x
+    if b1 { // $ read_access=b1
+        print_i64(x); // $ read_access=x
+    } else {
+        print_i64(x); // $ read_access=x
+    }
+
+    if b2 { // $ read_access=b2
+        print_i64(x); // $ read_access=x
+    } else {
+        print_i64(x); // $ read_access=x
+    }
+}
+
+#[derive(Debug)]
+struct MyStruct {
+    val: i64,
+}
+
+impl MyStruct {
+    fn my_get(&mut self) -> i64 {
+        return self.val;
+    }
+}
+
+fn structs() {
+    let mut a = MyStruct { val: 1 }; // a
+    print_i64(a.my_get()); // $ read_access=a
+    a.val = 5; // $ read_access=a
+    print_i64(a.my_get()); // $ read_access=a
+    a = MyStruct { val: 2 }; // $ write_access=a
+    print_i64(a.my_get()); // $ read_access=a
+}
+
+fn ref_param(x: &i64) {
+    print_i64(*x) // $ read_access=x
+}
+
+fn ref_arg() {
+    let x = 16; // x
+    ref_param(&x); // $ access=x
+    print_i64(x); // $ read_access=x
+
+    let z = 17; // z
+    ref_param(&z); // $ access=z
+}
+
+trait Bar {
+  fn bar(&self);
+}
+
+impl MyStruct {
+  fn bar(&mut self) {
+    *self = MyStruct { val: 3 };
+  }
+}
+
+fn ref_methodcall_receiver() {
+  let mut a = MyStruct { val: 1 }; // a
+  a.bar(); // $ read_access=a
+  // prints 3, not 1
+  print_i64(a.val); // $ read_access=a
 }
 
 fn main() {
@@ -399,5 +512,9 @@ fn main() {
     mutate();
     mutate_arg();
     alias();
-    capture();
+    capture_mut();
+    capture_immut();
+    structs();
+    ref_arg();
+    ref_methodcall_receiver();
 }

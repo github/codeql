@@ -55,6 +55,8 @@ class AstNode extends @node, Locatable {
     kind = "commentgroup" and result = this.(File).getCommentGroup(i)
     or
     kind = "comment" and result = this.(CommentGroup).getComment(i)
+    or
+    kind = "typeparamdecl" and result = this.(TypeParamDeclParent).getTypeParameterDecl(i)
   }
 
   /**

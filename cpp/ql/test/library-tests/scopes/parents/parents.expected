@@ -1,5 +1,8 @@
 | 0 | file://:0:0:0:0 | (global namespace) | file://:0:0:0:0 | __va_list_tag |
 | 0 | file://:0:0:0:0 | (global namespace) | parents.cpp:2:11:2:13 | foo |
+| 0 | file://:0:0:0:0 | (global namespace) | parents.cpp:18:3:18:3 | var |
+| 0 | file://:0:0:0:0 | (global namespace) | parents.cpp:18:7:18:7 | var |
+| 0 | file://:0:0:0:0 | (global namespace) | parents.cpp:20:5:20:5 | g |
 | 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | fp_offset |
 | 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | gp_offset |
 | 1 | file://:0:0:0:0 | __va_list_tag | file://:0:0:0:0 | operator= |
@@ -14,7 +17,11 @@
 | 1 | parents.cpp:4:10:4:10 | f | parents.cpp:4:19:13:5 | { ... } |
 | 1 | parents.cpp:4:19:13:5 | { ... } | parents.cpp:5:11:5:11 | j |
 | 1 | parents.cpp:4:19:13:5 | { ... } | parents.cpp:6:11:10:7 | { ... } |
+| 1 | parents.cpp:4:19:13:5 | { ... } | parents.cpp:11:18:11:18 | e |
 | 1 | parents.cpp:4:19:13:5 | { ... } | parents.cpp:11:21:12:7 | { ... } |
 | 1 | parents.cpp:6:11:10:7 | { ... } | parents.cpp:7:9:9:9 | for(...;...;...) ... |
 | 1 | parents.cpp:6:11:10:7 | { ... } | parents.cpp:7:33:9:9 | { ... } |
 | 1 | parents.cpp:7:33:9:9 | { ... } | parents.cpp:8:15:8:15 | k |
+| 1 | parents.cpp:18:7:18:7 | var | parents.cpp:17:19:17:19 | T |
+| 1 | parents.cpp:20:5:20:5 | g | parents.cpp:20:9:24:1 | { ... } |
+| 1 | parents.cpp:20:9:24:1 | { ... } | parents.cpp:21:16:21:16 | l |

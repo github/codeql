@@ -20,6 +20,8 @@ import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.BoxPat
 import codeql.rust.elements.BreakExpr
 import codeql.rust.elements.CallExpr
+import codeql.rust.elements.CallExprBase
+import codeql.rust.elements.Callable
 import codeql.rust.elements.CastExpr
 import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.ClosureExpr
@@ -72,8 +74,10 @@ import codeql.rust.elements.LoopExpr
 import codeql.rust.elements.MacroCall
 import codeql.rust.elements.MacroDef
 import codeql.rust.elements.MacroExpr
+import codeql.rust.elements.MacroItems
 import codeql.rust.elements.MacroPat
 import codeql.rust.elements.MacroRules
+import codeql.rust.elements.MacroStmts
 import codeql.rust.elements.MacroType
 import codeql.rust.elements.MatchArm
 import codeql.rust.elements.MatchArmList
