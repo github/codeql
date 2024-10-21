@@ -358,11 +358,7 @@ module IR {
 
     override predicate reads(ValueEntity v) { v = field }
 
-    override Type getResultType() {
-      if field.getType() instanceof PointerType
-      then result = field.getType().(PointerType).getBaseType()
-      else result = field.getType()
-    }
+    override Type getResultType() { result = lookThroughPointerType(field.getType()) }
 
     override ControlFlow::Root getRoot() { result.isRootOf(e) }
 

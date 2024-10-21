@@ -14,6 +14,13 @@ namespace foo {
   }
 }
 
+template<typename T>
+T var = 42;
 
-                        
+int g() {
+  requires(int l) { l; };
 
+  return var<int>;
+}
+
+// semmle-extractor-options: -std=c++20

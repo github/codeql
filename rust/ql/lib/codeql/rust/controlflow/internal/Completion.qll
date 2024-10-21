@@ -36,13 +36,7 @@ class SimpleCompletion extends NormalCompletion, TSimpleCompletion {
 
   // `SimpleCompletion` is the "default" completion type, thus it is valid for
   // any node where there isn't another more specific completion type.
-  override predicate isValidFor(AstNode e) {
-    not any(Completion c).isValidForSpecific(e)
-    or
-    // A `?` expression can both proceed normally or cause an early return, so
-    // we explicitly allow the former here.
-    e instanceof TryExpr
-  }
+  override predicate isValidFor(AstNode e) { not any(Completion c).isValidForSpecific(e) }
 
   override string toString() { result = "simple" }
 }
@@ -177,6 +171,8 @@ class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
   override predicate isValidForSpecific(AstNode e) {
     e instanceof Pat and
     if isExhaustiveMatch(e) then value = true else any()
+    or
+    e instanceof TryExpr and value = true
   }
 
   override MatchSuccessor getAMatchingSuccessorType() { result.getValue() = value }

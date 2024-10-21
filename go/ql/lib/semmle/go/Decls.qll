@@ -212,10 +212,7 @@ class MethodDecl extends FuncDecl {
    *
    * is `Rectangle`.
    */
-  NamedType getReceiverBaseType() {
-    result = this.getReceiverType() or
-    result = this.getReceiverType().(PointerType).getBaseType()
-  }
+  NamedType getReceiverBaseType() { result = lookThroughPointerType(this.getReceiverType()) }
 
   /**
    * Gets the receiver variable of this method.

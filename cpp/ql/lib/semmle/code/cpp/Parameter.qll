@@ -73,7 +73,8 @@ class Parameter extends LocalScopeVariable, @parameter {
   }
 
   private VariableDeclarationEntry getANamedDeclarationEntry() {
-    result = this.getAnEffectiveDeclarationEntry() and result.getName() != ""
+    result = this.getAnEffectiveDeclarationEntry() and
+    exists(string name | var_decls(unresolveElement(result), _, _, name, _) | name != "")
   }
 
   /**
