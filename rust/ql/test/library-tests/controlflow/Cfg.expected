@@ -681,6 +681,8 @@ edges
 | test.rs:311:26:311:30 | value | test.rs:310:9:313:9 | MatchExpr |  |
 | test.rs:312:13:312:22 | TupleStructPat | test.rs:312:17:312:21 | never | match |
 | test.rs:312:17:312:21 | never | test.rs:312:33:312:37 | never | match |
+| test.rs:312:27:312:40 | MatchExpr | test.rs:310:9:313:9 | MatchExpr |  |
+| test.rs:312:33:312:37 | never | test.rs:312:27:312:40 | MatchExpr |  |
 | test.rs:319:5:322:5 | enter test_let_match | test.rs:319:23:319:23 | a |  |
 | test.rs:319:5:322:5 | exit test_let_match (normal) | test.rs:319:5:322:5 | exit test_let_match |  |
 | test.rs:319:23:319:23 | a | test.rs:319:23:319:36 | Param | match |
