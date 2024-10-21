@@ -14,6 +14,7 @@ edges
 | .github/workflows/artifactpoisoning71.yml:9:9:16:6 | Uses Step | .github/workflows/artifactpoisoning71.yml:17:14:18:40 | sed -f config foo.md > bar.md\n | provenance | Config |
 | .github/workflows/artifactpoisoning81.yml:28:9:31:6 | Uses Step | .github/workflows/artifactpoisoning81.yml:31:14:31:27 | python test.py | provenance | Config |
 | .github/workflows/artifactpoisoning101.yml:10:9:16:6 | Uses Step | .github/workflows/artifactpoisoning101.yml:17:14:19:59 | PR_NUMBER=$(./get_pull_request_number.sh pr_number.txt)\necho "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT \n | provenance | Config |
+| .github/workflows/test18.yml:12:15:33:12 | Uses Step | .github/workflows/test18.yml:36:15:40:58 | Uses Step | provenance | Config |
 nodes
 | .github/actions/download-artifact-2/action.yaml:6:7:25:4 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning11.yml:13:9:32:6 | Uses Step | semmle.label | Uses Step |
@@ -44,5 +45,7 @@ nodes
 | .github/workflows/artifactpoisoning92.yml:29:14:29:26 | make snapshot | semmle.label | make snapshot |
 | .github/workflows/artifactpoisoning101.yml:10:9:16:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/artifactpoisoning101.yml:17:14:19:59 | PR_NUMBER=$(./get_pull_request_number.sh pr_number.txt)\necho "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT \n | semmle.label | PR_NUMBER=$(./get_pull_request_number.sh pr_number.txt)\necho "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT \n |
+| .github/workflows/test18.yml:12:15:33:12 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test18.yml:36:15:40:58 | Uses Step | semmle.label | Uses Step |
 subpaths
 #select

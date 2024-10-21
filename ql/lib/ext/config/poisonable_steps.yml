@@ -10,6 +10,7 @@ extensions:
       - ["ruby/setup-ruby"]
       - ["actions/jekyll-build-pages"]
       - ["qcastel/github-actions-maven/actions/maven"]
+      - ["sonarsource/sonarcloud-github-action"]
   - addsTo:
       pack: github/actions-all
       extensible: poisonableCommandsDataModel
