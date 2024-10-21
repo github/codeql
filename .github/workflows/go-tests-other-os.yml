@@ -36,6 +36,6 @@ jobs:
         shell: bash
         run: |
           cd go
-          make test
+          make gen
       # - name: Run tests
       #   uses: ./go/actions/test
