@@ -707,10 +707,10 @@ edges
 | variables.rs:332:5:332:17 | ExprStmt | variables.rs:332:5:332:13 | PathExpr |  |
 | variables.rs:332:15:332:15 | a | variables.rs:332:5:332:16 | CallExpr |  |
 | variables.rs:333:5:333:27 | MethodCallExpr | variables.rs:334:5:334:17 | ExprStmt |  |
-| variables.rs:333:5:333:28 | ExprStmt | variables.rs:333:25:333:26 | 10 |  |
-| variables.rs:333:6:333:11 | RefExpr | variables.rs:333:5:333:27 | MethodCallExpr |  |
+| variables.rs:333:5:333:28 | ExprStmt | variables.rs:333:11:333:11 | a |  |
+| variables.rs:333:6:333:11 | RefExpr | variables.rs:333:25:333:26 | 10 |  |
 | variables.rs:333:11:333:11 | a | variables.rs:333:6:333:11 | RefExpr |  |
-| variables.rs:333:25:333:26 | 10 | variables.rs:333:11:333:11 | a |  |
+| variables.rs:333:25:333:26 | 10 | variables.rs:333:5:333:27 | MethodCallExpr |  |
 | variables.rs:334:5:334:13 | PathExpr | variables.rs:334:15:334:15 | a |  |
 | variables.rs:334:5:334:16 | CallExpr | variables.rs:329:17:335:1 | BlockExpr |  |
 | variables.rs:334:5:334:17 | ExprStmt | variables.rs:334:5:334:13 | PathExpr |  |

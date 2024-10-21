@@ -147,23 +147,15 @@ class BlockExprTree extends StandardPostOrderTree, BlockExpr {
   override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
 }
 
-class BreakExprTree extends PostOrderTree, BreakExpr {
-  override predicate propagatesAbnormal(AstNode child) { child = this.getExpr() }
-
-  override predicate first(AstNode node) {
-    first(this.getExpr(), node)
-    or
-    not this.hasExpr() and node = this
-  }
+class BreakExprTree extends StandardPostOrderTree, BreakExpr {
+  override AstNode getChildNode(int i) { i = 0 and result = this.getExpr() }
 
   override predicate last(AstNode last, Completion c) { none() }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    last(super.getExpr(), pred, c) and succ = this
+    super.succ(pred, succ, c)
     or
-    pred = this and
-    c.isValidFor(pred) and
-    succ = this.getTarget()
+    pred = this and c.isValidFor(pred) and succ = this.getTarget()
   }
 }
 
@@ -325,7 +317,7 @@ class LetStmtTree extends PreOrderTree, LetStmt {
     not this.hasInitializer()
     or
     // Edge from end of initializer to pattern.
-    last(this.getInitializer(), pred, c) and first(this.getPat(), succ)
+    last(this.getInitializer(), pred, c) and first(this.getPat(), succ) and completionIsNormal(c)
     or
     // Edge from failed pattern to `else` branch.
     last(this.getPat(), pred, c) and
@@ -502,14 +494,21 @@ class MatchExprTree extends PostOrderTree instanceof MatchExpr {
   override predicate first(AstNode node) { first(super.getExpr(), node) }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    // Edge from the scrutinee to the first arm.
+    // Edge from the scrutinee to the first arm or to the match expression if no arms.
     last(super.getExpr(), pred, c) and
-    first(super.getArm(0).getPat(), succ) and
+    (
+      first(super.getArm(0).getPat(), succ)
+      or
+      not exists(super.getArm(0)) and succ = this
+    ) and
     completionIsNormal(c)
     or
-    // Edge from a failed match/guard in one arm to the beginning of the next arm.
+    // Edge from a failed pattern or guard in one arm to the beginning of the next arm.
     exists(int i |
-      last(super.getArm(i), pred, c) and
+      (
+        last(super.getArm(i).getPat(), pred, c) or
+        last(super.getArm(i).getGuard().getCondition(), pred, c)
+      ) and
       first(super.getArm(i + 1), succ) and
       c.(ConditionalCompletion).failed()
     )
@@ -521,10 +520,7 @@ class MatchExprTree extends PostOrderTree instanceof MatchExpr {
 
 class MethodCallExprTree extends StandardPostOrderTree, MethodCallExpr {
   override AstNode getChildNode(int i) {
-    i = 0 and
-    result = this.getReceiver()
-    or
-    result = this.getArgList().getArg(i + 1)
+    if i = 0 then result = this.getReceiver() else result = this.getArgList().getArg(i - 1)
   }
 }
 
@@ -605,75 +601,36 @@ class YeetExprTree extends StandardPostOrderTree instanceof YeetExpr {
  * `OrPat`s and `IdentPat`s.
  */
 module PatternTrees {
-  abstract class PreOrderPatTree extends PreOrderTree {
+  abstract class StandardPatTree extends StandardTree {
     abstract Pat getPat(int i);
 
-    private Pat getPatRanked(int i) {
+    Pat getPatRanked(int i) {
       result = rank[i + 1](Pat pat, int j | pat = this.getPat(j) | pat order by j)
     }
 
-    override predicate propagatesAbnormal(AstNode child) { child = this.getPatRanked(_) }
+    override AstNode getChildNode(int i) { result = this.getPat(i) }
+  }
 
+  abstract class PreOrderPatTree extends StandardPatTree, StandardPreOrderTree {
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      pred = this and
-      completionIsValidFor(c, this) and
       c.(MatchCompletion).succeeded() and
-      first(this.getPatRanked(0), succ)
-      or
-      exists(int i | last(this.getPatRanked(i), pred, c) |
-        // Edge from successful pattern to the next
-        c.(MatchCompletion).succeeded() and
-        first(this.getPatRanked(i + 1), succ)
+      (
+        StandardPatTree.super.succ(pred, succ, c)
+        or
+        pred = this and first(this.getFirstChildNode(), succ) and completionIsValidFor(c, this)
       )
     }
 
     override predicate last(AstNode node, Completion c) {
-      node = this and
+      super.last(node, c)
+      or
+      c.(MatchCompletion).failed() and
       completionIsValidFor(c, this) and
-      c.(MatchCompletion).failed()
-      or
-      exists(int i | last(this.getPatRanked(i), node, c) |
-        c.(MatchCompletion).failed()
-        or
-        not exists(this.getPatRanked(i + 1)) and
-        completionIsNormal(c)
-      )
+      (node = this or last(this.getPatRanked(_), node, c))
     }
   }
 
-  abstract class PostOrderPatTree extends PostOrderTree {
-    abstract Pat getPat(int i);
-
-    private Pat getPatRanked(int i) {
-      result = rank[i + 1](Pat pat, int j | pat = this.getPat(j) | pat order by j)
-    }
-
-    override predicate propagatesAbnormal(AstNode child) { child = this.getPatRanked(_) }
-
-    override predicate first(AstNode node) {
-      first(this.getPat(0), node)
-      or
-      not exists(this.getPat(_)) and
-      node = this
-    }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      exists(int i | last(this.getPat(i), pred, c) |
-        // Edge from unsuccessful pattern to the next
-        c.(MatchCompletion).failed() and
-        first(this.getPat(i + 1), succ)
-        or
-        // Edge from successful pattern to this
-        c.(MatchCompletion).succeeded() and
-        succ = this
-        or
-        // Edge from last pattern to this
-        not exists(this.getPat(i + 1)) and
-        succ = this and
-        completionIsNormal(c)
-      )
-    }
-  }
+  abstract class PostOrderPatTree extends StandardPatTree, StandardPostOrderTree { }
 
   class IdentPatTree extends PostOrderPatTree, IdentPat {
     override Pat getPat(int i) { i = 0 and result = this.getPat() }
@@ -681,13 +638,11 @@ module PatternTrees {
     override predicate last(AstNode node, Completion c) {
       super.last(node, c)
       or
-      last(this.getPat(), node, c) and
-      c.(MatchCompletion).failed()
+      last(this.getPat(), node, c) and c.(MatchCompletion).failed()
     }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      super.succ(pred, succ, c) and
-      not (succ = this and c.(MatchCompletion).failed())
+      super.succ(pred, succ, c) and c.(MatchCompletion).succeeded()
     }
   }
 
@@ -705,6 +660,14 @@ module PatternTrees {
 
   class OrPatTree extends PostOrderPatTree instanceof OrPat {
     override Pat getPat(int i) { result = OrPat.super.getPat(i) }
+
+    override predicate succ(AstNode pred, AstNode succ, Completion c) {
+      // Failed patterns advance normally between children
+      c.(MatchCompletion).failed() and super.succ(pred, succ, c)
+      or
+      // Successful pattern step to this
+      c.(MatchCompletion).succeeded() and succ = this and last(this.getPat(_), pred, c)
+    }
   }
 
   class ParenPatTree extends ControlFlowTree, ParenPat {
