@@ -3,6 +3,7 @@
  */
 
 import rust
+import codeql.rust.AstConsistency as AstConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
 
 /**
@@ -15,6 +16,13 @@ int getLinesOfCode() { result = sum(File f | | f.getNumberOfLinesOfCode()) }
  */
 int getLinesOfUserCode() {
   result = sum(File f | exists(f.getRelativePath()) | f.getNumberOfLinesOfCode())
+}
+
+/**
+ * Gets a count of the total number of abstract syntax tree inconsistencies in the database.
+ */
+int getTotalAstInconsistencies() {
+  result = sum(string type | | AstConsistency::getAstInconsistencyCounts(type))
 }
 
 /**
