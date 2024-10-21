@@ -29,9 +29,11 @@ jobs:
       - name: dump env bash
         shell: bash
         run: |
+          set -x
           cd go
+          type -a bazel
           where bazel
-          declare -px
+          echo $PATH
           bazel version
       - name: Test
         shell: bash
