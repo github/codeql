@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::convert::Infallible;
 
 mod calls {
     fn function_call() {
@@ -303,6 +304,13 @@ mod match_expression {
             Some(a) => a,
             _ => false,
         }) && cond
+    }
+
+    fn test_match_with_no_arms<T>(r: Result<T, Infallible>) -> T {
+        match r {
+            Ok(value) => value,
+            Err(never) => match never {},
+        }
     }
 }
 
