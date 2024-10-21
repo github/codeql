@@ -13,7 +13,6 @@ rm -rf db
 
 $CODEQL database create db --language python --source-root repo_dir/
 
-# Note the negation in front -- it witnesses the fact that currently the dataset check FAILS.
-! $CODEQL dataset check db/db-python
+$CODEQL dataset check db/db-python
 
 echo "Test successfully completed."
