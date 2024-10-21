@@ -19,7 +19,7 @@ permissions:
 jobs:
   test-win:
     name: Test Windows
-    runs-on: windows-latest-xl
+    runs-on: windows-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v4
