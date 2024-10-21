@@ -1,5 +1,5 @@
 gen:
-	declare -px
+	export
 	where bazel
 	bazel version
 	pwd
