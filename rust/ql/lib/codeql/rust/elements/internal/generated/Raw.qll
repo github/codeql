@@ -2061,7 +2061,21 @@ module Raw {
    * todo!()
    * ```
    */
-  class Item extends @item, Stmt { }
+  class Item extends @item, Stmt {
+    /**
+     * Gets the canonical path of this item, if it exists.
+     *
+     * See https://doc.rust-lang.org/reference/paths.html#canonical-paths.
+     */
+    string getCanonicalPath() { item_canonical_paths(this, result) }
+
+    /**
+     * Gets the crate origin of this item, if it exists.
+     *
+     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
+     */
+    string getCrateOrigin() { item_crate_origins(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.

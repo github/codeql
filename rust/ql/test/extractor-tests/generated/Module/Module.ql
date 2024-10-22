@@ -2,13 +2,18 @@
 import codeql.rust.elements
 import TestUtils
 
-from Module x, int getNumberOfAttrs, string hasItemList, string hasName, string hasVisibility
+from
+  Module x, string hasCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
+  string hasItemList, string hasName, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasCanonicalPath() then hasCanonicalPath = "yes" else hasCanonicalPath = "no") and
+  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasItemList() then hasItemList = "yes" else hasItemList = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasItemList:", hasItemList, "hasName:", hasName,
+select x, "hasCanonicalPath:", hasCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
+  "getNumberOfAttrs:", getNumberOfAttrs, "hasItemList:", hasItemList, "hasName:", hasName,
   "hasVisibility:", hasVisibility

@@ -1795,3 +1795,8 @@ class FormatArgument(Locatable):
     ```
     """
     parent: Format
+
+@annotate(Item)
+class _:
+    canonical_path: optional[string] | desc("See https://doc.rust-lang.org/reference/paths.html#canonical-paths.") | rust.detach
+    crate_origin: optional[string] | desc("One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.") | rust.detach | ql.internal

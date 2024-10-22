@@ -3,17 +3,21 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  Enum x, int getNumberOfAttrs, string hasGenericParamList, string hasName, string hasVariantList,
-  string hasVisibility, string hasWhereClause
+  Enum x, string hasCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
+  string hasGenericParamList, string hasName, string hasVariantList, string hasVisibility,
+  string hasWhereClause
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasCanonicalPath() then hasCanonicalPath = "yes" else hasCanonicalPath = "no") and
+  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
   (if x.hasVariantList() then hasVariantList = "yes" else hasVariantList = "no") and
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList,
-  "hasName:", hasName, "hasVariantList:", hasVariantList, "hasVisibility:", hasVisibility,
-  "hasWhereClause:", hasWhereClause
+select x, "hasCanonicalPath:", hasCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
+  "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList, "hasName:",
+  hasName, "hasVariantList:", hasVariantList, "hasVisibility:", hasVisibility, "hasWhereClause:",
+  hasWhereClause
