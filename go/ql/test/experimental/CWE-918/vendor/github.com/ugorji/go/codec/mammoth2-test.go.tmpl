@@ -1,6 +1,6 @@
-// +build !notfastpath
+// +build !codec.notmammoth
 
-// Copyright (c) 2012-2018 Ugorji Nwoke. All rights reserved.
+// Copyright (c) 2012-2020 Ugorji Nwoke. All rights reserved.
 // Use of this source code is governed by a MIT license found in the LICENSE file.
 
 // Code generated from mammoth2-test.go.tmpl - DO NOT EDIT.
@@ -9,15 +9,16 @@ package codec
 
 // Increase codecoverage by covering all the codecgen paths, in fast-path and gen-helper.go....
 //
-// Add:
-// - test file for creating a mammoth generated file as _mammoth_generated.go
-//   - generate a second mammoth files in a different file: mammoth2_generated_test.go
-//     - mammoth-test.go.tmpl will do this
-//   - run codecgen on it, into mammoth2_codecgen_generated_test.go (no build tags)
-//   - as part of TestMammoth, run it also
-//   - this will cover all the codecgen, gen-helper, etc in one full run
-//   - check in mammoth* files into github also
-// - then
+// Note: even though this is built based on fast-path and gen-helper, we will run these tests
+// in all modes, including notfastpath, etc.
+//
+// Add test file for creating a mammoth generated file as _mammoth_generated.go
+//  - generate a second mammoth files in a different file: mammoth2_generated_test.go
+//    mammoth-test.go.tmpl will do this
+//  - run codecgen on it, into mammoth2_codecgen_generated_test.go (no build tags)
+//  - as part of TestMammoth, run it also
+//  - this will cover all the codecgen, gen-helper, etc in one full run
+//  - check in mammoth* files into github also
 //
 // Now, add some types:
 //  - some that implement BinaryMarshal, TextMarshal, JSONMarshal, and one that implements none of it
@@ -26,6 +27,7 @@ package codec
 
 
 // import "encoding/binary"
+
 import "fmt"
 
 type TestMammoth2 struct {
@@ -52,11 +54,11 @@ type TestMammoth2 struct {
 type testMammoth2Binary uint64
 func (x testMammoth2Binary) MarshalBinary() (data []byte, err error) {
 data = make([]byte, 8)
-bigen.PutUint64(data, uint64(x))
+bigenstd.PutUint64(data, uint64(x))
 return
 }
 func (x *testMammoth2Binary) UnmarshalBinary(data []byte) (err error) {
-*x = testMammoth2Binary(bigen.Uint64(data))
+*x = testMammoth2Binary(bigenstd.Uint64(data))
 return
 }
 
@@ -83,12 +85,17 @@ return
 type testMammoth2Basic [4]uint64
 
 type TestMammoth2Wrapper struct {
-  V TestMammoth2
-  T testMammoth2Text
-  B testMammoth2Binary
-  J testMammoth2Json
-  C testMammoth2Basic
-  M map[testMammoth2Basic]TestMammoth2
-  L []TestMammoth2
-  A [4]int64
+	V TestMammoth2
+	T testMammoth2Text
+	B testMammoth2Binary
+	J testMammoth2Json
+	C testMammoth2Basic
+	M map[testMammoth2Basic]TestMammoth2
+	L []TestMammoth2
+	A [4]int64
+	
+  	Tcomplex128 complex128
+	Tcomplex64 complex64
+	Tbytes []uint8
+	Tpbytes *[]uint8
 }

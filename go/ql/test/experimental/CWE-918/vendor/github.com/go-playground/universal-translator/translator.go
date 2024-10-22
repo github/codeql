@@ -159,13 +159,13 @@ func (t *translator) AddCardinal(key interface{}, text string, rule locales.Plur
 		}
 
 	} else {
-		tarr = make([]*transText, 7, 7)
+		tarr = make([]*transText, 7)
 		t.cardinalTanslations[key] = tarr
 	}
 
 	trans := &transText{
 		text:    text,
-		indexes: make([]int, 2, 2),
+		indexes: make([]int, 2),
 	}
 
 	tarr[rule] = trans
@@ -211,13 +211,13 @@ func (t *translator) AddOrdinal(key interface{}, text string, rule locales.Plura
 		}
 
 	} else {
-		tarr = make([]*transText, 7, 7)
+		tarr = make([]*transText, 7)
 		t.ordinalTanslations[key] = tarr
 	}
 
 	trans := &transText{
 		text:    text,
-		indexes: make([]int, 2, 2),
+		indexes: make([]int, 2),
 	}
 
 	tarr[rule] = trans
@@ -261,13 +261,13 @@ func (t *translator) AddRange(key interface{}, text string, rule locales.PluralR
 		}
 
 	} else {
-		tarr = make([]*transText, 7, 7)
+		tarr = make([]*transText, 7)
 		t.rangeTanslations[key] = tarr
 	}
 
 	trans := &transText{
 		text:    text,
-		indexes: make([]int, 4, 4),
+		indexes: make([]int, 4),
 	}
 
 	tarr[rule] = trans

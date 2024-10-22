@@ -1,11 +1,13 @@
-// Copyright (c) 2012-2018 Ugorji Nwoke. All rights reserved.
+// Copyright (c) 2012-2020 Ugorji Nwoke. All rights reserved.
 // Use of this source code is governed by a MIT license found in the LICENSE file.
 
 package codec
 
 import (
 	"math"
+	"reflect"
 	"time"
+	"unicode/utf8"
 )
 
 // major
@@ -69,55 +71,58 @@ const (
 // 	cborSelfDesrTag3 byte = 0xf7
 // )
 
-func cbordesc(bd byte) string {
-	switch bd >> 5 {
-	case cborMajorUint:
-		return "(u)int"
-	case cborMajorNegInt:
-		return "int"
-	case cborMajorBytes:
-		return "bytes"
-	case cborMajorString:
-		return "string"
-	case cborMajorArray:
-		return "array"
-	case cborMajorMap:
-		return "map"
-	case cborMajorTag:
-		return "tag"
-	case cborMajorSimpleOrFloat: // default
-		switch bd {
-		case cborBdNil:
-			return "nil"
-		case cborBdFalse:
-			return "false"
-		case cborBdTrue:
-			return "true"
-		case cborBdFloat16, cborBdFloat32, cborBdFloat64:
-			return "float"
-		case cborBdIndefiniteBytes:
-			return "bytes*"
-		case cborBdIndefiniteString:
-			return "string*"
-		case cborBdIndefiniteArray:
-			return "array*"
-		case cborBdIndefiniteMap:
-			return "map*"
-		default:
-			return "unknown(simple)"
+var (
+	cbordescSimpleNames = map[byte]string{
+		cborBdNil:     "nil",
+		cborBdFalse:   "false",
+		cborBdTrue:    "true",
+		cborBdFloat16: "float",
+		cborBdFloat32: "float",
+		cborBdFloat64: "float",
+		cborBdBreak:   "break",
+	}
+	cbordescIndefNames = map[byte]string{
+		cborBdIndefiniteBytes:  "bytes*",
+		cborBdIndefiniteString: "string*",
+		cborBdIndefiniteArray:  "array*",
+		cborBdIndefiniteMap:    "map*",
+	}
+	cbordescMajorNames = map[byte]string{
+		cborMajorUint:          "(u)int",
+		cborMajorNegInt:        "int",
+		cborMajorBytes:         "bytes",
+		cborMajorString:        "string",
+		cborMajorArray:         "array",
+		cborMajorMap:           "map",
+		cborMajorTag:           "tag",
+		cborMajorSimpleOrFloat: "simple",
+	}
+)
+
+func cbordesc(bd byte) (s string) {
+	bm := bd >> 5
+	if bm == cborMajorSimpleOrFloat {
+		s = cbordescSimpleNames[bd]
+	} else {
+		s = cbordescMajorNames[bm]
+		if s == "" {
+			s = cbordescIndefNames[bd]
 		}
 	}
-	return "unknown"
+	if s == "" {
+		s = "unknown"
+	}
+	return
 }
 
 // -------------------
 
 type cborEncDriver struct {
 	noBuiltInTypes
+	encDriverNoState
 	encDriverNoopContainerWriter
 	h *CborHandle
-	x [8]byte
-	_ [6]uint64 // padding
+
 	e Encoder
 }
 
@@ -138,13 +143,27 @@ func (e *cborEncDriver) EncodeBool(b bool) {
 }
 
 func (e *cborEncDriver) EncodeFloat32(f float32) {
+	b := math.Float32bits(f)
+	if e.h.OptimumSize {
+		if h := floatToHalfFloatBits(b); halfFloatToFloatBits(h) == b {
+			e.e.encWr.writen1(cborBdFloat16)
+			bigen.writeUint16(e.e.w(), h)
+			return
+		}
+	}
 	e.e.encWr.writen1(cborBdFloat32)
-	bigenHelper{e.x[:4], e.e.w()}.writeUint32(math.Float32bits(f))
+	bigen.writeUint32(e.e.w(), b)
 }
 
 func (e *cborEncDriver) EncodeFloat64(f float64) {
+	if e.h.OptimumSize {
+		if f32 := float32(f); float64(f32) == f {
+			e.EncodeFloat32(f32)
+			return
+		}
+	}
 	e.e.encWr.writen1(cborBdFloat64)
-	bigenHelper{e.x[:8], e.e.w()}.writeUint64(math.Float64bits(f))
+	bigen.writeUint64(e.e.w(), math.Float64bits(f))
 }
 
 func (e *cborEncDriver) encUint(v uint64, bd byte) {
@@ -154,13 +173,13 @@ func (e *cborEncDriver) encUint(v uint64, bd byte) {
 		e.e.encWr.writen2(bd+0x18, uint8(v))
 	} else if v <= math.MaxUint16 {
 		e.e.encWr.writen1(bd + 0x19)
-		bigenHelper{e.x[:2], e.e.w()}.writeUint16(uint16(v))
+		bigen.writeUint16(e.e.w(), uint16(v))
 	} else if v <= math.MaxUint32 {
 		e.e.encWr.writen1(bd + 0x1a)
-		bigenHelper{e.x[:4], e.e.w()}.writeUint32(uint32(v))
+		bigen.writeUint32(e.e.w(), uint32(v))
 	} else { // if v <= math.MaxUint64 {
 		e.e.encWr.writen1(bd + 0x1b)
-		bigenHelper{e.x[:8], e.e.w()}.writeUint64(v)
+		bigen.writeUint64(e.e.w(), v)
 	}
 }
 
@@ -198,11 +217,10 @@ func (e *cborEncDriver) EncodeTime(t time.Time) {
 	}
 }
 
-func (e *cborEncDriver) EncodeExt(rv interface{}, xtag uint64, ext Ext) {
+func (e *cborEncDriver) EncodeExt(rv interface{}, basetype reflect.Type, xtag uint64, ext Ext) {
 	e.encUint(uint64(xtag), cborBaseTag)
 	if ext == SelfExt {
-		rv2 := baseRV(rv)
-		e.e.encodeValue(rv2, e.h.fnNoExt(rv2.Type()))
+		e.e.encodeValue(baseRV(rv), e.h.fnNoExt(basetype))
 	} else if v := ext.ConvertExt(rv); v == nil {
 		e.EncodeNil()
 	} else {
@@ -249,11 +267,11 @@ func (e *cborEncDriver) WriteArrayEnd() {
 }
 
 func (e *cborEncDriver) EncodeString(v string) {
+	bb := cborBaseString
 	if e.h.StringToRaw {
-		e.EncodeStringBytesRaw(bytesView(v))
-		return
+		bb = cborBaseBytes
 	}
-	e.encStringBytesS(cborBaseString, v)
+	e.encStringBytesS(bb, v)
 }
 
 func (e *cborEncDriver) EncodeStringBytesRaw(v []byte) {
@@ -301,18 +319,21 @@ func (e *cborEncDriver) encStringBytesS(bb byte, v string) {
 
 type cborDecDriver struct {
 	decDriverNoopContainerReader
-	h      *CborHandle
-	bdRead bool
-	bd     byte
-	st     bool // skip tags
-	fnil   bool // found nil
+	decDriverNoopNumberHelper
+	h *CborHandle
+	bdAndBdread
+	st bool // skip tags
+	_  bool // found nil
 	noBuiltInTypes
-	_ [6]uint64 // padding cache-aligned
 	d Decoder
 }
 
 func (d *cborDecDriver) decoder() *Decoder {
 	return &d.d
+}
+
+func (d *cborDecDriver) descBd() string {
+	return sprintf("%v (%s)", d.bd, cbordesc(d.bd))
 }
 
 func (d *cborDecDriver) readNextBd() {
@@ -321,16 +342,18 @@ func (d *cborDecDriver) readNextBd() {
 }
 
 func (d *cborDecDriver) advanceNil() (null bool) {
-	d.fnil = false
 	if !d.bdRead {
 		d.readNextBd()
 	}
 	if d.bd == cborBdNil || d.bd == cborBdUndefined {
 		d.bdRead = false
-		d.fnil = true
-		null = true
+		return true // null = true
 	}
 	return
+}
+
+func (d *cborDecDriver) TryNil() bool {
+	return d.advanceNil()
 }
 
 // skipTags is called to skip any tags in the stream.
@@ -347,15 +370,7 @@ func (d *cborDecDriver) skipTags() {
 	}
 }
 
-func (d *cborDecDriver) uncacheRead() {
-	if d.bdRead {
-		d.d.decRd.unreadn1()
-		d.bdRead = false
-	}
-}
-
 func (d *cborDecDriver) ContainerType() (vt valueType) {
-	d.fnil = false
 	if !d.bdRead {
 		d.readNextBd()
 	}
@@ -364,26 +379,19 @@ func (d *cborDecDriver) ContainerType() (vt valueType) {
 	}
 	if d.bd == cborBdNil {
 		d.bdRead = false // always consume nil after seeing it in container type
-		d.fnil = true
 		return valueTypeNil
-	} else if d.bd == cborBdIndefiniteBytes || (d.bd>>5 == cborMajorBytes) {
+	}
+	major := d.bd >> 5
+	if major == cborMajorBytes {
 		return valueTypeBytes
-	} else if d.bd == cborBdIndefiniteString || (d.bd>>5 == cborMajorString) {
+	} else if major == cborMajorString {
 		return valueTypeString
-	} else if d.bd == cborBdIndefiniteArray || (d.bd>>5 == cborMajorArray) {
+	} else if major == cborMajorArray {
 		return valueTypeArray
-	} else if d.bd == cborBdIndefiniteMap || (d.bd>>5 == cborMajorMap) {
+	} else if major == cborMajorMap {
 		return valueTypeMap
 	}
 	return valueTypeUnset
-}
-
-func (d *cborDecDriver) Nil() bool {
-	return d.fnil
-}
-
-func (d *cborDecDriver) TryNil() bool {
-	return d.advanceNil()
 }
 
 func (d *cborDecDriver) CheckBreak() (v bool) {
@@ -401,44 +409,16 @@ func (d *cborDecDriver) decUint() (ui uint64) {
 	v := d.bd & 0x1f
 	if v <= 0x17 {
 		ui = uint64(v)
+	} else if v == 0x18 {
+		ui = uint64(d.d.decRd.readn1())
+	} else if v == 0x19 {
+		ui = uint64(bigen.Uint16(d.d.decRd.readn2()))
+	} else if v == 0x1a {
+		ui = uint64(bigen.Uint32(d.d.decRd.readn4()))
+	} else if v == 0x1b {
+		ui = uint64(bigen.Uint64(d.d.decRd.readn8()))
 	} else {
-		if v == 0x18 {
-			ui = uint64(d.d.decRd.readn1())
-		} else if v == 0x19 {
-			ui = uint64(bigen.Uint16(d.d.decRd.readx(2)))
-		} else if v == 0x1a {
-			ui = uint64(bigen.Uint32(d.d.decRd.readx(4)))
-		} else if v == 0x1b {
-			ui = uint64(bigen.Uint64(d.d.decRd.readx(8)))
-		} else {
-			d.d.errorf("invalid descriptor decoding uint: %x/%s", d.bd, cbordesc(d.bd))
-			return
-		}
-	}
-	return
-}
-
-func (d *cborDecDriver) decCheckInteger() (neg bool) {
-	if d.st {
-		d.skipTags()
-	}
-	major := d.bd >> 5
-	if major == cborMajorUint {
-	} else if major == cborMajorNegInt {
-		neg = true
-	} else {
-		d.d.errorf("invalid integer; got major %v from descriptor %x/%s, expected %v or %v",
-			major, d.bd, cbordesc(d.bd), cborMajorUint, cborMajorNegInt)
-	}
-	return
-}
-
-func cborDecInt64(ui uint64, neg bool) (i int64) {
-	// check if this number can be converted to an int without overflow
-	if neg {
-		i = -(chkOvf.SignedIntV(ui + 1))
-	} else {
-		i = chkOvf.SignedIntV(ui)
+		d.d.errorf("invalid descriptor decoding uint: %x/%s", d.bd, cbordesc(d.bd))
 	}
 	return
 }
@@ -451,8 +431,8 @@ func (d *cborDecDriver) decAppendIndefiniteBytes(bs []byte) []byte {
 	d.bdRead = false
 	for !d.CheckBreak() {
 		if major := d.bd >> 5; major != cborMajorBytes && major != cborMajorString {
-			d.d.errorf("invalid indefinite string/bytes; got major %v, expected %x/%s",
-				major, d.bd, cbordesc(d.bd))
+			d.d.errorf("invalid indefinite string/bytes %x (%s); got major %v, expected %v or %v",
+				d.bd, cbordesc(d.bd), major, cborMajorBytes, cborMajorString)
 		}
 		n := uint(d.decLen())
 		oldLen := uint(len(bs))
@@ -465,31 +445,61 @@ func (d *cborDecDriver) decAppendIndefiniteBytes(bs []byte) []byte {
 			bs = bs[:newLen]
 		}
 		d.d.decRd.readb(bs[oldLen:newLen])
-		// bs = append(bs, d.d.decRd.readn()...)
 		d.bdRead = false
 	}
 	d.bdRead = false
 	return bs
 }
 
+func (d *cborDecDriver) decFloat() (f float64, ok bool) {
+	ok = true
+	switch d.bd {
+	case cborBdFloat16:
+		f = float64(math.Float32frombits(halfFloatToFloatBits(bigen.Uint16(d.d.decRd.readn2()))))
+	case cborBdFloat32:
+		f = float64(math.Float32frombits(bigen.Uint32(d.d.decRd.readn4())))
+	case cborBdFloat64:
+		f = math.Float64frombits(bigen.Uint64(d.d.decRd.readn8()))
+	default:
+		ok = false
+	}
+	return
+}
+
+func (d *cborDecDriver) decInteger() (ui uint64, neg, ok bool) {
+	ok = true
+	switch d.bd >> 5 {
+	case cborMajorUint:
+		ui = d.decUint()
+	case cborMajorNegInt:
+		ui = d.decUint()
+		neg = true
+	default:
+		ok = false
+	}
+	return
+}
+
 func (d *cborDecDriver) DecodeInt64() (i int64) {
 	if d.advanceNil() {
 		return
 	}
-	neg := d.decCheckInteger()
-	ui := d.decUint()
+	if d.st {
+		d.skipTags()
+	}
+	i = decNegintPosintFloatNumberHelper{&d.d}.int64(d.decInteger())
 	d.bdRead = false
-	return cborDecInt64(ui, neg)
+	return
 }
 
 func (d *cborDecDriver) DecodeUint64() (ui uint64) {
 	if d.advanceNil() {
 		return
 	}
-	if d.decCheckInteger() {
-		d.d.errorf("cannot assign negative signed value to unsigned type")
+	if d.st {
+		d.skipTags()
 	}
-	ui = d.decUint()
+	ui = decNegintPosintFloatNumberHelper{&d.d}.uint64(d.decInteger())
 	d.bdRead = false
 	return
 }
@@ -501,24 +511,7 @@ func (d *cborDecDriver) DecodeFloat64() (f float64) {
 	if d.st {
 		d.skipTags()
 	}
-	switch d.bd {
-	case cborBdFloat16:
-		f = float64(math.Float32frombits(halfFloatToFloatBits(bigen.Uint16(d.d.decRd.readx(2)))))
-	case cborBdFloat32:
-		f = float64(math.Float32frombits(bigen.Uint32(d.d.decRd.readx(4))))
-	case cborBdFloat64:
-		f = math.Float64frombits(bigen.Uint64(d.d.decRd.readx(8)))
-	default:
-		major := d.bd >> 5
-		if major == cborMajorUint {
-			f = float64(cborDecInt64(d.decUint(), false))
-		} else if major == cborMajorNegInt {
-			f = float64(cborDecInt64(d.decUint(), true))
-		} else {
-			d.d.errorf("invalid float descriptor; got %d/%s, expected float16/32/64 or (-)int",
-				d.bd, cbordesc(d.bd))
-		}
-	}
+	f = decNegintPosintFloatNumberHelper{&d.d}.float64(d.decFloat())
 	d.bdRead = false
 	return
 }
@@ -536,7 +529,6 @@ func (d *cborDecDriver) DecodeBool() (b bool) {
 	} else if d.bd == cborBdFalse {
 	} else {
 		d.d.errorf("not bool - %s %x/%s", msgBadDesc, d.bd, cbordesc(d.bd))
-		return
 	}
 	d.bdRead = false
 	return
@@ -544,41 +536,40 @@ func (d *cborDecDriver) DecodeBool() (b bool) {
 
 func (d *cborDecDriver) ReadMapStart() (length int) {
 	if d.advanceNil() {
-		return decContainerLenNil
+		return containerLenNil
 	}
 	if d.st {
 		d.skipTags()
 	}
 	d.bdRead = false
 	if d.bd == cborBdIndefiniteMap {
-		return decContainerLenUnknown
+		return containerLenUnknown
 	}
 	if d.bd>>5 != cborMajorMap {
-		d.d.errorf("error reading map; got major type: %x, expected %x/%s",
-			d.bd>>5, cborMajorMap, cbordesc(d.bd))
+		d.d.errorf("error reading map; got major type: %x, expected %x/%s", d.bd>>5, cborMajorMap, cbordesc(d.bd))
 	}
 	return d.decLen()
 }
 
 func (d *cborDecDriver) ReadArrayStart() (length int) {
 	if d.advanceNil() {
-		return decContainerLenNil
+		return containerLenNil
 	}
 	if d.st {
 		d.skipTags()
 	}
 	d.bdRead = false
 	if d.bd == cborBdIndefiniteArray {
-		return decContainerLenUnknown
+		return containerLenUnknown
 	}
 	if d.bd>>5 != cborMajorArray {
-		d.d.errorf("invalid array; got major type: %x, expect: %x/%s",
-			d.bd>>5, cborMajorArray, cbordesc(d.bd))
+		d.d.errorf("invalid array; got major type: %x, expect: %x/%s", d.bd>>5, cborMajorArray, cbordesc(d.bd))
 	}
 	return d.decLen()
 }
 
-func (d *cborDecDriver) DecodeBytes(bs []byte, zerocopy bool) (bsOut []byte) {
+func (d *cborDecDriver) DecodeBytes(bs []byte) (bsOut []byte) {
+	d.d.decByteState = decByteStateNone
 	if d.advanceNil() {
 		return
 	}
@@ -588,20 +579,16 @@ func (d *cborDecDriver) DecodeBytes(bs []byte, zerocopy bool) (bsOut []byte) {
 	if d.bd == cborBdIndefiniteBytes || d.bd == cborBdIndefiniteString {
 		d.bdRead = false
 		if bs == nil {
-			if zerocopy {
-				return d.decAppendIndefiniteBytes(d.d.b[:0])
-			}
-			return d.decAppendIndefiniteBytes(zeroByteSlice)
+			d.d.decByteState = decByteStateReuseBuf
+			return d.decAppendIndefiniteBytes(d.d.b[:0])
 		}
 		return d.decAppendIndefiniteBytes(bs[:0])
 	}
 	if d.bd == cborBdIndefiniteArray {
 		d.bdRead = false
-		if zerocopy && len(bs) == 0 {
-			bs = d.d.b[:]
-		}
 		if bs == nil {
-			bs = []byte{}
+			d.d.decByteState = decByteStateReuseBuf
+			bs = d.d.b[:0]
 		} else {
 			bs = bs[:0]
 		}
@@ -612,30 +599,42 @@ func (d *cborDecDriver) DecodeBytes(bs []byte, zerocopy bool) (bsOut []byte) {
 	}
 	if d.bd>>5 == cborMajorArray {
 		d.bdRead = false
-		if zerocopy && len(bs) == 0 {
+		if bs == nil {
+			d.d.decByteState = decByteStateReuseBuf
 			bs = d.d.b[:]
 		}
 		slen := d.decLen()
-		bs = usableByteSlice(bs, slen)
+		var changed bool
+		if bs, changed = usableByteSlice(bs, slen); changed {
+			d.d.decByteState = decByteStateNone
+		}
 		for i := 0; i < len(bs); i++ {
 			bs[i] = uint8(chkOvf.UintV(d.DecodeUint64(), 8))
+		}
+		for i := len(bs); i < slen; i++ {
+			bs = append(bs, uint8(chkOvf.UintV(d.DecodeUint64(), 8)))
 		}
 		return bs
 	}
 	clen := d.decLen()
 	d.bdRead = false
-	if zerocopy {
-		if d.d.bytes {
-			return d.d.decRd.readx(uint(clen))
-		} else if len(bs) == 0 {
-			bs = d.d.b[:]
-		}
+	if d.d.zerocopy() {
+		d.d.decByteState = decByteStateZerocopy
+		return d.d.decRd.rb.readx(uint(clen))
+	}
+	if bs == nil {
+		d.d.decByteState = decByteStateReuseBuf
+		bs = d.d.b[:]
 	}
 	return decByteSlice(d.d.r(), clen, d.h.MaxInitLen, bs)
 }
 
 func (d *cborDecDriver) DecodeStringAsBytes() (s []byte) {
-	return d.DecodeBytes(d.d.b[:], true)
+	s = d.DecodeBytes(nil)
+	if d.h.ValidateUnicode && !utf8.Valid(s) {
+		d.d.errorf("DecodeStringAsBytes: invalid UTF-8: %s", s)
+	}
+	return
 }
 
 func (d *cborDecDriver) DecodeTime() (t time.Time) {
@@ -654,9 +653,8 @@ func (d *cborDecDriver) decodeTime(xtag uint64) (t time.Time) {
 	switch xtag {
 	case 0:
 		var err error
-		if t, err = time.Parse(time.RFC3339, stringView(d.DecodeStringAsBytes())); err != nil {
-			d.d.errorv(err)
-		}
+		t, err = time.Parse(time.RFC3339, stringView(d.DecodeStringAsBytes()))
+		d.d.onerror(err)
 	case 1:
 		f1, f2 := math.Modf(d.DecodeFloat64())
 		t = time.Unix(int64(f1), int64(f2*1e9))
@@ -667,7 +665,7 @@ func (d *cborDecDriver) decodeTime(xtag uint64) (t time.Time) {
 	return
 }
 
-func (d *cborDecDriver) DecodeExt(rv interface{}, xtag uint64, ext Ext) {
+func (d *cborDecDriver) DecodeExt(rv interface{}, basetype reflect.Type, xtag uint64, ext Ext) {
 	if d.advanceNil() {
 		return
 	}
@@ -682,10 +680,8 @@ func (d *cborDecDriver) DecodeExt(rv interface{}, xtag uint64, ext Ext) {
 		d.d.decode(&re.Value)
 	} else if xtag != realxtag {
 		d.d.errorf("Wrong extension tag. Got %b. Expecting: %v", realxtag, xtag)
-		return
 	} else if ext == SelfExt {
-		rv2 := baseRV(rv)
-		d.d.decodeValue(rv2, d.h.fnNoExt(rv2.Type()))
+		d.d.decodeValue(baseRV(rv), d.h.fnNoExt(basetype))
 	} else {
 		d.d.interfaceExtConvertAndDecode(rv, ext)
 	}
@@ -697,7 +693,6 @@ func (d *cborDecDriver) DecodeNaked() {
 		d.readNextBd()
 	}
 
-	d.fnil = false
 	n := d.d.naked()
 	var decodeFurther bool
 
@@ -714,10 +709,10 @@ func (d *cborDecDriver) DecodeNaked() {
 		n.v = valueTypeInt
 		n.i = d.DecodeInt64()
 	case cborMajorBytes:
-		decNakedReadRawBytes(d, &d.d, n, d.h.RawToString)
+		d.d.fauxUnionReadRawBytes(false)
 	case cborMajorString:
 		n.v = valueTypeString
-		n.s = string(d.DecodeStringAsBytes())
+		n.s = d.d.stringZC(d.DecodeStringAsBytes())
 	case cborMajorArray:
 		n.v = valueTypeArray
 		decodeFurther = true
@@ -742,7 +737,6 @@ func (d *cborDecDriver) DecodeNaked() {
 		switch d.bd {
 		case cborBdNil, cborBdUndefined:
 			n.v = valueTypeNil
-			d.fnil = true
 		case cborBdFalse:
 			n.v = valueTypeBool
 			n.b = false
@@ -752,17 +746,6 @@ func (d *cborDecDriver) DecodeNaked() {
 		case cborBdFloat16, cborBdFloat32, cborBdFloat64:
 			n.v = valueTypeFloat
 			n.f = d.DecodeFloat64()
-		case cborBdIndefiniteBytes:
-			decNakedReadRawBytes(d, &d.d, n, d.h.RawToString)
-		case cborBdIndefiniteString:
-			n.v = valueTypeString
-			n.s = string(d.DecodeStringAsBytes())
-		case cborBdIndefiniteArray:
-			n.v = valueTypeArray
-			decodeFurther = true
-		case cborBdIndefiniteMap:
-			n.v = valueTypeMap
-			decodeFurther = true
 		default:
 			d.d.errorf("decodeNaked: Unrecognized d.bd: 0x%x", d.bd)
 		}
@@ -772,6 +755,139 @@ func (d *cborDecDriver) DecodeNaked() {
 	if !decodeFurther {
 		d.bdRead = false
 	}
+}
+
+func (d *cborDecDriver) uintBytes() (v []byte, ui uint64) {
+	// this is only used by nextValueBytes, so it's ok to
+	// use readx and bigenstd here.
+	switch vv := d.bd & 0x1f; vv {
+	case 0x18:
+		v = d.d.decRd.readx(1)
+		ui = uint64(v[0])
+	case 0x19:
+		v = d.d.decRd.readx(2)
+		ui = uint64(bigenstd.Uint16(v))
+	case 0x1a:
+		v = d.d.decRd.readx(4)
+		ui = uint64(bigenstd.Uint32(v))
+	case 0x1b:
+		v = d.d.decRd.readx(8)
+		ui = uint64(bigenstd.Uint64(v))
+	default:
+		if vv > 0x1b {
+			d.d.errorf("invalid descriptor decoding uint: %x/%s", d.bd, cbordesc(d.bd))
+		}
+		ui = uint64(vv)
+	}
+	return
+}
+
+func (d *cborDecDriver) nextValueBytes(v0 []byte) (v []byte) {
+	if !d.bdRead {
+		d.readNextBd()
+	}
+	v = v0
+	var h = decNextValueBytesHelper{d: &d.d}
+	var cursor = d.d.rb.c - 1
+	h.append1(&v, d.bd)
+	v = d.nextValueBytesBdReadR(v)
+	d.bdRead = false
+	h.bytesRdV(&v, cursor)
+	return
+}
+
+func (d *cborDecDriver) nextValueBytesR(v0 []byte) (v []byte) {
+	d.readNextBd()
+	v = v0
+	var h = decNextValueBytesHelper{d: &d.d}
+	h.append1(&v, d.bd)
+	return d.nextValueBytesBdReadR(v)
+}
+
+func (d *cborDecDriver) nextValueBytesBdReadR(v0 []byte) (v []byte) {
+	v = v0
+	var h = decNextValueBytesHelper{d: &d.d}
+
+	var bs []byte
+	var ui uint64
+
+	switch d.bd >> 5 {
+	case cborMajorUint, cborMajorNegInt:
+		bs, _ = d.uintBytes()
+		h.appendN(&v, bs...)
+	case cborMajorString, cborMajorBytes:
+		if d.bd == cborBdIndefiniteBytes || d.bd == cborBdIndefiniteString {
+			for {
+				d.readNextBd()
+				h.append1(&v, d.bd)
+				if d.bd == cborBdBreak {
+					break
+				}
+				bs, ui = d.uintBytes()
+				h.appendN(&v, bs...)
+				h.appendN(&v, d.d.decRd.readx(uint(ui))...)
+			}
+		} else {
+			bs, ui = d.uintBytes()
+			h.appendN(&v, bs...)
+			h.appendN(&v, d.d.decRd.readx(uint(ui))...)
+		}
+	case cborMajorArray:
+		if d.bd == cborBdIndefiniteArray {
+			for {
+				d.readNextBd()
+				h.append1(&v, d.bd)
+				if d.bd == cborBdBreak {
+					break
+				}
+				v = d.nextValueBytesBdReadR(v)
+			}
+		} else {
+			bs, ui = d.uintBytes()
+			h.appendN(&v, bs...)
+			for i := uint64(0); i < ui; i++ {
+				v = d.nextValueBytesR(v)
+			}
+		}
+	case cborMajorMap:
+		if d.bd == cborBdIndefiniteMap {
+			for {
+				d.readNextBd()
+				h.append1(&v, d.bd)
+				if d.bd == cborBdBreak {
+					break
+				}
+				v = d.nextValueBytesBdReadR(v)
+				v = d.nextValueBytesR(v)
+			}
+		} else {
+			bs, ui = d.uintBytes()
+			h.appendN(&v, bs...)
+			for i := uint64(0); i < ui; i++ {
+				v = d.nextValueBytesR(v)
+				v = d.nextValueBytesR(v)
+			}
+		}
+	case cborMajorTag:
+		bs, _ = d.uintBytes()
+		h.appendN(&v, bs...)
+		v = d.nextValueBytesR(v)
+	case cborMajorSimpleOrFloat:
+		switch d.bd {
+		case cborBdNil, cborBdUndefined, cborBdFalse, cborBdTrue: // pass
+		case cborBdFloat16:
+			h.appendN(&v, d.d.decRd.readx(2)...)
+		case cborBdFloat32:
+			h.appendN(&v, d.d.decRd.readx(4)...)
+		case cborBdFloat64:
+			h.appendN(&v, d.d.decRd.readx(8)...)
+		default:
+			d.d.errorf("nextValueBytes: Unrecognized d.bd: 0x%x", d.bd)
+		}
+	default: // should never happen
+		d.d.errorf("nextValueBytes: Unrecognized d.bd: 0x%x", d.bd)
+	}
+	return
 }
 
 // -------------------------
@@ -808,12 +924,12 @@ type CborHandle struct {
 	//
 	// Furthermore, this allows the skipping over of the Self Describing Tag 0xd9d9f7.
 	SkipUnexpectedTags bool
-
-	_ [7]uint64 // padding (cache-aligned)
 }
 
 // Name returns the name of the handle: cbor
 func (h *CborHandle) Name() string { return "cbor" }
+
+func (h *CborHandle) desc(bd byte) string { return cbordesc(bd) }
 
 func (h *CborHandle) newEncDriver() encDriver {
 	var e = &cborEncDriver{h: h}
@@ -832,13 +948,8 @@ func (h *CborHandle) newDecDriver() decDriver {
 	return d
 }
 
-func (e *cborEncDriver) reset() {
-}
-
 func (d *cborDecDriver) reset() {
-	d.bd = 0
-	d.bdRead = false
-	d.fnil = false
+	d.bdAndBdread.reset()
 	d.st = d.h.SkipUnexpectedTags
 }
 
