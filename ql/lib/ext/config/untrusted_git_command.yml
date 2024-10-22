@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: github/actions-all
-      extensible: untrustedGitCommandsDataModel 
+      extensible: untrustedGitCommandDataModel 
     data:
       # FILES=$(git diff-tree --no-commit-id --name-only HEAD -r)
       - ["git\\b.*\\bdiff-tree\\b", "filename,multiline"]

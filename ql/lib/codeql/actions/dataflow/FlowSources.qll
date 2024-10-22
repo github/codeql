@@ -80,7 +80,7 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
 
   GitCommandSource() {
     exists(Step checkout, string cmd_regex |
-      // This shoould be:
+      // This should be:
       // source instanceof PRHeadCheckoutStep
       // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
       // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
@@ -105,8 +105,8 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
       checkout.getAFollowingStep() = run and
       run.getScript().getAStmt() = cmd and
       cmd.indexOf("git") = 0 and
-      untrustedGitCommandsDataModel(cmd_regex, flag) and
-      cmd.regexpMatch(".*" + cmd_regex + ".*")
+      untrustedGitCommandDataModel(cmd_regex, flag) and
+      cmd.regexpMatch(cmd_regex + ".*")
     )
   }
 
@@ -115,6 +115,28 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
   override string getCommand() { result = cmd }
 
   override Run getEnclosingRun() { result = run }
+}
+
+class GhCLICommandSource extends RemoteFlowSource, CommandSource {
+  Run run;
+  string cmd;
+  string flag;
+
+  GhCLICommandSource() {
+    exists(string cmd_regex |
+      this.asExpr() = run.getScript() and
+      run.getScript().getAStmt() = cmd and
+      cmd.indexOf("gh ") = 0 and
+      untrustedGhCommandDataModel(cmd_regex, flag) and
+      cmd.regexpMatch(cmd_regex + ".*")
+    )
+  }
+
+  override string getSourceType() { result = flag }
+
+  override Run getEnclosingRun() { result = run }
+
+  override string getCommand() { result = cmd }
 }
 
 class GitHubEventPathSource extends RemoteFlowSource, CommandSource {
@@ -206,7 +228,7 @@ class ArtifactSource extends RemoteFlowSource, FileSource {
  */
 private class CheckoutSource extends RemoteFlowSource, FileSource {
   CheckoutSource() {
-    // This shoould be:
+    // This should be:
     // source instanceof PRHeadCheckoutStep
     // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
     // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
