@@ -963,7 +963,7 @@ module.exports = grammar({
       field('type', $.type)
     )),
 
-    type: $ => $.expression,
+    type: $ => choice($.list_splat, $.expression),
 
     keyword_argument: $ => seq(
       field('name', choice($.identifier, $.keyword_identifier)),

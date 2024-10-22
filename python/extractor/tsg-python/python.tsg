@@ -3169,11 +3169,11 @@
             (typed_parameter
                 (identifier) @name
                 .
-                type: (type (expression) @type)
+                type: (type (_) @type)
             )
             (typed_default_parameter
                 name: (_) @name
-                type: (type (expression) @type)
+                type: (type (_) @type)
                 value: (_) @value
             )
         ] @param
@@ -3228,7 +3228,7 @@
             (list_splat_pattern vararg: (_) @name) @starred
             (typed_parameter
                 (list_splat_pattern vararg: (_) @name) @starred
-                type: (type (expression) @type)
+                type: (type (_) @type)
             )
         ]
     ) @params
@@ -3245,7 +3245,7 @@
 
 ; Return type
 (function_definition
-    return_type: (type (expression) @type)
+    return_type: (type (_) @type)
 ) @funcdef
 {
     attr (@funcdef.funcexpr) returns = @type.node
@@ -3259,7 +3259,7 @@
             (dictionary_splat_pattern kwarg: (identifier) @name)
             (typed_parameter
                 (dictionary_splat_pattern kwarg: (identifier) @name)
-                type: (type (expression) @type)
+                type: (type (_) @type)
             )
         ]
     ) @params
