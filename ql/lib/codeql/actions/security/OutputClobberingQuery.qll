@@ -20,7 +20,7 @@ class OutputClobberingFromFileReadSink extends OutputClobberingSink {
       (
         step instanceof UntrustedArtifactDownloadStep
         or
-        // This shoould be:
+        // This should be:
         // artifact instanceof PRHeadCheckoutStep
         // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
         // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround

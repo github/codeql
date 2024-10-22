@@ -61,4 +61,9 @@ extensible predicate vulnerableActionsDataModel(
 /**
  * Holds for git commands that may introduce untrusted data when called on an attacker controlled branch.
  */
-extensible predicate untrustedGitCommandsDataModel(string cmd_regex, string flag);
+extensible predicate untrustedGitCommandDataModel(string cmd_regex, string flag);
+
+/**
+ * Holds for gh commands that may introduce untrusted data
+ */
+extensible predicate untrustedGhCommandDataModel(string cmd_regex, string flag);
