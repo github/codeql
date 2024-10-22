@@ -12,6 +12,7 @@
 
 import csharp
 import InsecureSqlConnection::PathGraph
+import InsecureSQLConnection
 
 class Source extends DataFlow::Node {
   string sourcestring;
@@ -48,6 +49,11 @@ class Sink extends DataFlow::Node {
 predicate isEncryptTrue(Source source, Sink sink) {
   sink.isEncryptedByDefault() and
   not source.setsEncryptFalse()
+  or
+  exists(ObjectCreation oc, Expr e | oc.getRuntimeArgument(0) = sink.asExpr() |
+    getInfoForInitializedConnEncryption(oc, e) and
+    e.getValue().toLowerCase() = "true"
+  )
 }
 
 /**
