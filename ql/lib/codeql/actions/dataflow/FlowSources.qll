@@ -90,7 +90,8 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
           checkout = uses and
           uses.getCallee() = "actions/checkout" and
           exists(uses.getArgument("ref")) and
-          not uses.getArgument("ref").matches("%base%")
+          not uses.getArgument("ref").matches("%base%") and
+          uses.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers()
         )
         or
         checkout instanceof GitMutableRefCheckout
@@ -237,7 +238,8 @@ private class CheckoutSource extends RemoteFlowSource, FileSource {
       this.asExpr() = uses and
       uses.getCallee() = "actions/checkout" and
       exists(uses.getArgument("ref")) and
-      not uses.getArgument("ref").matches("%base%")
+      not uses.getArgument("ref").matches("%base%") and
+      uses.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers()
     )
     or
     this.asExpr() instanceof GitMutableRefCheckout
