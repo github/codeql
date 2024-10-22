@@ -354,6 +354,14 @@ class SystemStringClass extends StringType {
     result.getReturnType() instanceof StringType
   }
 
+  /** Gets the `ReplaceLineEndings(string) method. */
+  Method getReplaceLineEndingsMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("ReplaceLineEndings") and
+    result.getNumberOfParameters() = 1 and
+    result.getReturnType() instanceof StringType
+  }
+
   /** Gets a `Format(...)` method. */
   Method getFormatMethod() {
     result.getDeclaringType() = this and

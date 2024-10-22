@@ -70,7 +70,9 @@ private class ExternalLoggingExprSink extends Sink {
 private class StringReplaceSanitizer extends Sanitizer {
   StringReplaceSanitizer() {
     exists(Method m |
-      exists(SystemStringClass s | m = s.getReplaceMethod() or m = s.getRemoveMethod())
+      exists(SystemStringClass s |
+        m = s.getReplaceMethod() or m = s.getRemoveMethod() or m = s.getReplaceLineEndingsMethod()
+      )
       or
       m = any(SystemTextRegularExpressionsRegexClass r).getAReplaceMethod()
     |
