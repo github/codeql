@@ -35,7 +35,7 @@ function test() {
   provideTaint2(x => sink(x)); // NOT OK
 
   forwardTaint2(source(), x => sink(x)); // NOT OK
-  forwardTaint2("safe", x => sink(x)); // OK [INCONSISTENCY]
+  forwardTaint2("safe", x => sink(x)); // OK
 
   function helper1(x) {
     sink(x); // NOT OK

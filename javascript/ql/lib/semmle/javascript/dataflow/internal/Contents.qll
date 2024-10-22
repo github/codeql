@@ -1,6 +1,7 @@
 private import javascript
 private import semmle.javascript.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
+private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 
 module Private {
@@ -75,7 +76,8 @@ module Private {
     MkIteratorError() or
     MkPromiseValue() or
     MkPromiseError() or
-    MkCapturedContent(LocalVariable v) { v.isCaptured() }
+    MkCapturedContent(LocalVariable v) { v.isCaptured() } or
+    MkArgumentContent(DataFlowPrivate::ArgumentPosition pos)
 
   cached
   newtype TContentSet =
@@ -153,6 +155,11 @@ module Public {
       result = "PromiseError"
       or
       result = this.asCapturedVariable().getName()
+      or
+      exists(DataFlowPrivate::ArgumentPosition pos |
+        this = MkArgumentContent(pos) and
+        result = "Argument(" + pos + ")"
+      )
     }
 
     /** Gets the property name represented by this content, if any. */
