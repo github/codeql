@@ -52,7 +52,7 @@ predicate isEncryptTrue(Source source, Sink sink) {
   or
   exists(ObjectCreation oc, Expr e | oc.getRuntimeArgument(0) = sink.asExpr() |
     getInfoForInitializedConnEncryption(oc, e) and
-    e.getValue().toString().toLowerCase() = "true"
+    e.getValue().toLowerCase() = "true"
   )
 }
 
