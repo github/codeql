@@ -1,3 +1,8 @@
+# On Windows, make's path resolution algorithm is incorrect. It picks up a bazel.exe in PATH that's
+# after a bazel binary. In particular, on actions, the non-exe binary is a bazelisk instance, whereas
+# bazel.exe is a bazel installation.
+# This means we pick up the wrong bazel version, and if the differences between the bazel we want
+# and that we actually get are too big, the build fails on CI.
 BAZEL := $(shell bash -c "which bazel")
 
 all: gen extractor
