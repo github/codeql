@@ -25,6 +25,9 @@
 [ (expression_list) (tuple) (tuple_pattern) (pattern_list) ] @tuple
 { let @tuple.node = (ast-node @tuple "Tuple") }
 
+(list_pattern) @list
+{ let @list.node = (ast-node @list "List") }
+
 (call) @call { let @call.node = (ast-node @call "Call") }
 
 (for_statement) @for
@@ -3436,6 +3439,9 @@
     ; Left hand side of an assignment such as `foo, bar = ...`
     (pattern_list element: (_) @elt) @parent
 
+    ; Left hand side of an assignment such as `[foo, bar] = ...`
+    (list_pattern element: (_) @elt) @parent
+
     ; An unadorned tuple (such as in `x = y, z`)
     (expression_list element: (_) @elt) @parent
 
@@ -3472,6 +3478,7 @@
     (tuple element: (_) @elt)
     (tuple_pattern element: (_) @elt)
     (pattern_list element: (_) @elt)
+    (list_pattern element: (_) @elt)
     (expression_list element: (_) @elt)
     (parenthesized_expression inner: (_) @elt)
     (set element: (_) @elt)
