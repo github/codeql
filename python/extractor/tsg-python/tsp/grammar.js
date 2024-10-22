@@ -309,7 +309,8 @@ module.exports = grammar({
     ),
 
     except_group_clause: $ => seq(
-      'except*',
+      'except',
+      '*',
       seq(
         field('type', $.expression),
         optional(seq(
