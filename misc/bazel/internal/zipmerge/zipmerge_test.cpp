@@ -75,7 +75,7 @@ std::string get_file(const char* name) {
     return ret;
   }();
   // this works from both `codeql` and the internal repository
-  for (auto prefix : {"_main", "ql~"}) {
+  for (auto prefix : {"_main", "ql+"}) {
     auto ret = runfiles->Rlocation(prefix + "/misc/bazel/internal/zipmerge/test-files/"s + name);
     if (fs::exists(ret)) {
       return ret;

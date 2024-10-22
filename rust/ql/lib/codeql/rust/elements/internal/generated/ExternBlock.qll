@@ -74,5 +74,10 @@ module Generated {
      * Holds if `getExternItemList()` exists.
      */
     final predicate hasExternItemList() { exists(this.getExternItemList()) }
+
+    /**
+     * Holds if this extern block is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertExternBlockToRaw(this).(Raw::ExternBlock).isUnsafe() }
   }
 }

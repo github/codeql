@@ -53,7 +53,6 @@ private predicate idOf(AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 private module CfgInput implements CfgShared::InputSig<Location> {
   private import ControlFlowGraphImpl as Impl
   private import Completion as Comp
-  private import Splitting as Splitting
   private import SuccessorType as ST
   private import semmle.code.csharp.Caching
 
@@ -80,10 +79,6 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     Impl::scopeLast(scope, last, c)
   }
 
-  class SplitKindBase = Splitting::TSplitKind;
-
-  class Split = Splitting::Split;
-
   class SuccessorType = ST::SuccessorType;
 
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
@@ -102,7 +97,21 @@ private module CfgInput implements CfgShared::InputSig<Location> {
   }
 }
 
-import CfgShared::Make<Location, CfgInput>
+private module CfgSplittingInput implements CfgShared::SplittingInputSig<Location, CfgInput> {
+  private import Splitting as S
+
+  class SplitKindBase = S::TSplitKind;
+
+  class Split = S::Split;
+}
+
+private module ConditionalCompletionSplittingInput implements
+  CfgShared::ConditionalCompletionSplittingInputSig<Location, CfgInput, CfgSplittingInput>
+{
+  import Splitting::ConditionalCompletionSplitting::ConditionalCompletionSplittingInput
+}
+
+import CfgShared::MakeWithSplitting<Location, CfgInput, CfgSplittingInput, ConditionalCompletionSplittingInput>
 
 /**
  * A compilation.

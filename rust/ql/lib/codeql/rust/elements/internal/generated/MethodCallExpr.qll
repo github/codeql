@@ -6,10 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.ArgList
-import codeql.rust.elements.Attr
+import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 import codeql.rust.elements.Expr
-import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
 
@@ -27,43 +25,8 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::MethodCallExpr` class directly.
    * Use the subclass `MethodCallExpr`, where the following predicates are available.
    */
-  class MethodCallExpr extends Synth::TMethodCallExpr, ExprImpl::Expr {
+  class MethodCallExpr extends Synth::TMethodCallExpr, CallExprBaseImpl::CallExprBase {
     override string getAPrimaryQlClass() { result = "MethodCallExpr" }
-
-    /**
-     * Gets the argument list of this method call expression, if it exists.
-     */
-    ArgList getArgList() {
-      result =
-        Synth::convertArgListFromRaw(Synth::convertMethodCallExprToRaw(this)
-              .(Raw::MethodCallExpr)
-              .getArgList())
-    }
-
-    /**
-     * Holds if `getArgList()` exists.
-     */
-    final predicate hasArgList() { exists(this.getArgList()) }
-
-    /**
-     * Gets the `index`th attr of this method call expression (0-based).
-     */
-    Attr getAttr(int index) {
-      result =
-        Synth::convertAttrFromRaw(Synth::convertMethodCallExprToRaw(this)
-              .(Raw::MethodCallExpr)
-              .getAttr(index))
-    }
-
-    /**
-     * Gets any of the attrs of this method call expression.
-     */
-    final Attr getAnAttr() { result = this.getAttr(_) }
-
-    /**
-     * Gets the number of attrs of this method call expression.
-     */
-    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the generic argument list of this method call expression, if it exists.

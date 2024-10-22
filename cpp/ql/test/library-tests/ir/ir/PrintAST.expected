@@ -9055,6 +9055,8 @@ ir.cpp:
 #  733|                 Value = [Literal] 7
 #  733|                 ValueCategory = prvalue
 #  735|       getChild(1): [Handler] <handler>
+#  735|         getParameter(): [Parameter] s
+#  735|             Type = [PointerType] const char *
 #  735|         getBlock(): [CatchBlock] { ... }
 #  736|           getStmt(0): [ExprStmt] ExprStmt
 #  736|             getExpr(): [ThrowExpr] throw ...
@@ -9067,6 +9069,8 @@ ir.cpp:
 #  736|                     Type = [PointerType] const char *
 #  736|                     ValueCategory = prvalue(load)
 #  738|       getChild(2): [Handler] <handler>
+#  738|         getParameter(): [Parameter] e
+#  738|             Type = [LValueReferenceType] const String &
 #  738|         getBlock(): [CatchBlock] { ... }
 #  740|       getChild(3): [Handler] <handler>
 #  740|         getBlock(): [CatchAnyBlock] { ... }
@@ -12852,6 +12856,8 @@ ir.cpp:
 # 1200|                 Value = [Literal] 7
 # 1200|                 ValueCategory = prvalue
 # 1202|       getChild(1): [Handler] <handler>
+# 1202|         getParameter(): [Parameter] s
+# 1202|             Type = [PointerType] const char *
 # 1202|         getBlock(): [CatchBlock] { ... }
 # 1203|           getStmt(0): [ExprStmt] ExprStmt
 # 1203|             getExpr(): [ThrowExpr] throw ...
@@ -12864,6 +12870,8 @@ ir.cpp:
 # 1203|                     Type = [PointerType] const char *
 # 1203|                     ValueCategory = prvalue(load)
 # 1205|       getChild(2): [Handler] <handler>
+# 1205|         getParameter(): [Parameter] e
+# 1205|             Type = [LValueReferenceType] const String &
 # 1205|         getBlock(): [CatchBlock] { ... }
 # 1207|     getStmt(1): [ReturnStmt] return ...
 # 1211| [TopLevelFunction] void VectorTypes(int)
@@ -20586,6 +20594,8 @@ ir.cpp:
 # 2281|               Type = [Struct] String
 # 2281|               ValueCategory = lvalue
 # 2282|       getChild(1): [Handler] <handler>
+# 2282|         getParameter(): [Parameter] s
+# 2282|             Type = [PointerType] const char *
 # 2282|         getBlock(): [CatchBlock] { ... }
 # 2283|           getStmt(0): [ExprStmt] ExprStmt
 # 2283|             getExpr(): [ThrowExpr] throw ...
@@ -20598,6 +20608,8 @@ ir.cpp:
 # 2283|                     Type = [PointerType] const char *
 # 2283|                     ValueCategory = prvalue(load)
 # 2285|       getChild(2): [Handler] <handler>
+# 2285|         getParameter(): [Parameter] e
+# 2285|             Type = [LValueReferenceType] const String &
 # 2285|         getBlock(): [CatchBlock] { ... }
 # 2287|       getChild(3): [Handler] <handler>
 # 2287|         getBlock(): [CatchAnyBlock] { ... }
@@ -22845,6 +22857,8 @@ ir.cpp:
 # 2537|                 Value = [Literal] 42
 # 2537|                 ValueCategory = prvalue
 # 2539|       getChild(1): [Handler] <handler>
+# 2539|         getParameter(): [Parameter] (unnamed parameter 0)
+# 2539|             Type = [PlainCharType] char
 # 2539|         getBlock(): [CatchBlock] { ... }
 # 2541|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
 # 2541|             Type = [VoidType] void
@@ -23564,6 +23578,42 @@ ir.cpp:
 # 2686|           Value = [CStyleCast] 0
 # 2686|           ValueCategory = prvalue
 # 2687|     getStmt(1): [ReturnStmt] return ...
+# 2691| [TopLevelFunction] int concepts::requires_use()
+# 2691|   <params>: 
+# 2691|   getEntryPoint(): [BlockStmt] { ... }
+# 2692|     getStmt(0): [DeclStmt] declaration
+# 2692|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2692|           Type = [IntType] int
+# 2692|         getVariable().getInitializer(): [Initializer] initializer for y
+#-----|           getExpr(): [RequiresExpr] requires { ... }
+#-----|               Type = [BoolType] bool
+#-----|               Value = [RequiresExpr] 1
+#-----|               ValueCategory = prvalue
+#-----|             <params>: 
+# 2692|             getRequirement(0): [GTExpr,SimpleRequirementExpr] ... > ...
+# 2692|                 Type = [BoolType] bool
+# 2692|                 ValueCategory = prvalue
+# 2692|               getGreaterOperand(): [SizeofTypeOperator] sizeof(int)
+# 2692|                   Type = [LongType] unsigned long
+# 2692|                   Value = [SizeofTypeOperator] 4
+# 2692|                   ValueCategory = prvalue
+# 2692|               getLesserOperand(): [Literal] 0
+# 2692|                   Type = [IntType] int
+# 2692|                   Value = [Literal] 0
+# 2692|                   ValueCategory = prvalue
+# 2692|               getLesserOperand().getFullyConverted(): [CStyleCast] (unsigned long)...
+# 2692|                   Conversion = [IntegralConversion] integral conversion
+# 2692|                   Type = [LongType] unsigned long
+# 2692|                   ValueCategory = prvalue
+#-----|           getExpr().getFullyConverted(): [CStyleCast] (int)...
+#-----|               Conversion = [IntegralConversion] integral conversion
+#-----|               Type = [IntType] int
+#-----|               Value = [CStyleCast] 1
+#-----|               ValueCategory = prvalue
+# 2693|     getStmt(1): [ReturnStmt] return ...
+# 2693|       getExpr(): [VariableAccess] y
+# 2693|           Type = [IntType] int
+# 2693|           ValueCategory = prvalue(load)
 many-defs-per-use.cpp:
 #   34| [TopLevelFunction] void many_defs_per_use()
 #   34|   <params>: 

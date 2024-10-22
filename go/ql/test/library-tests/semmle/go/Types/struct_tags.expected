@@ -1,0 +1,4 @@
+| struct { field1 int `tag1a`; field2 int `tag2a` } | struct_tags.go:4:2:4:7 | field1 | tag1a |
+| struct { field1 int `tag1a`; field2 int `tag2a` } | struct_tags.go:5:2:5:7 | field2 | tag2a |
+| struct { field1 int `tag1b`; field2 int `tag2b` } | struct_tags.go:9:2:9:7 | field1 | tag1b |
+| struct { field1 int `tag1b`; field2 int `tag2b` } | struct_tags.go:10:2:10:7 | field2 | tag2b |

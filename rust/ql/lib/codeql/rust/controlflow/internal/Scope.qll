@@ -12,13 +12,23 @@ abstract class CfgScope extends AstNode {
 }
 
 final class FunctionScope extends CfgScope, Function {
-  override predicate scopeFirst(AstNode node) { first(this.getBody(), node) }
+  FunctionScope() {
+    // A function without a body corresponds to a trait method signature and
+    // should not have a CFG scope.
+    this.hasBody()
+  }
+
+  override predicate scopeFirst(AstNode node) {
+    first(this.(FunctionTree).getFirstChildNode(), node)
+  }
 
   override predicate scopeLast(AstNode node, Completion c) { last(this.getBody(), node, c) }
 }
 
 final class ClosureScope extends CfgScope, ClosureExpr {
-  override predicate scopeFirst(AstNode node) { first(this.getBody(), node) }
+  override predicate scopeFirst(AstNode node) {
+    first(this.(ExprTrees::ClosureExprTree).getFirstChildNode(), node)
+  }
 
   override predicate scopeLast(AstNode node, Completion c) { last(this.getBody(), node, c) }
 }

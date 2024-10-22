@@ -870,6 +870,8 @@ Throw.cpp:
 #    8|               Type = [BoolType] bool
 #    8|               ValueCategory = prvalue
 #   12|       getChild(1): [Handler] <handler>
+#   12|         getParameter(): [Parameter] e
+#   12|             Type = [PointerType] E *
 #   12|         getBlock(): [CatchBlock] { ... }
 #   13|           getStmt(0): [ExprStmt] ExprStmt
 #   13|             getExpr(): [ReThrowExpr] re-throw exception 

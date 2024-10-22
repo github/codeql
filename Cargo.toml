@@ -7,7 +7,7 @@ members = [
     "ruby/extractor",
     "rust/extractor",
     "rust/extractor/macros",
-    "rust/generate-schema",
+    "rust/ast-generator",
 ]
 
 [patch.crates-io]
