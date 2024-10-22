@@ -1,7 +1,4 @@
-SHELL := /bin/bash
+BAZEL := $(shell bash -c "which bazel")
+
 gen:
-	bash -c "bazel version"
-	/bin/sh -c "bazel version"
-	bazel version
-	bash -c 'echo "$$PATH"'
-	pwd
+	$(BAZEL) version
