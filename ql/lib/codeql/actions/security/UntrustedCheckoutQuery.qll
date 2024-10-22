@@ -197,9 +197,23 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
   ActionsMutableRefCheckout() {
     this.getCallee() = "actions/checkout" and
     (
-      exists(ActionsMutableRefCheckoutFlow::PathNode sink |
-        ActionsMutableRefCheckoutFlow::flowPath(_, sink) and
-        sink.getNode().asExpr() = this.getArgumentExpr(["ref", "repository"])
+      exists(
+        ActionsMutableRefCheckoutFlow::PathNode source, ActionsMutableRefCheckoutFlow::PathNode sink
+      |
+        ActionsMutableRefCheckoutFlow::flowPath(source, sink) and
+        sink.getNode().asExpr() = this.getArgumentExpr(["ref", "repository"]) and
+        (
+          not source.getNode() instanceof GitHubEventCtxSource
+          or
+          source.getNode() instanceof GitHubEventCtxSource and
+          // the context is available for the job trigger events
+          exists(string context, string context_prefix |
+            contextTriggerDataModel(this.getEnclosingWorkflow().getATriggerEvent().getName(),
+              context_prefix) and
+            context = source.getNode().(GitHubEventCtxSource).getContext() and
+            normalizeExpr(context).matches("%" + context_prefix + "%")
+          )
+        )
       )
       or
       // heuristic base on the step id and field name
@@ -241,9 +255,21 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
   ActionsSHACheckout() {
     this.getCallee() = "actions/checkout" and
     (
-      exists(ActionsSHACheckoutFlow::PathNode sink |
-        ActionsSHACheckoutFlow::flowPath(_, sink) and
-        sink.getNode().asExpr() = this.getArgumentExpr(["ref", "repository"])
+      exists(ActionsSHACheckoutFlow::PathNode source, ActionsSHACheckoutFlow::PathNode sink |
+        ActionsSHACheckoutFlow::flowPath(source, sink) and
+        sink.getNode().asExpr() = this.getArgumentExpr(["ref", "repository"]) and
+        (
+          not source.getNode() instanceof GitHubEventCtxSource
+          or
+          source.getNode() instanceof GitHubEventCtxSource and
+          // the context is available for the job trigger events
+          exists(string context, string context_prefix |
+            contextTriggerDataModel(this.getEnclosingWorkflow().getATriggerEvent().getName(),
+              context_prefix) and
+            context = source.getNode().(GitHubEventCtxSource).getContext() and
+            normalizeExpr(context).matches("%" + context_prefix + "%")
+          )
+        )
       )
       or
       // heuristic base on the step id and field name

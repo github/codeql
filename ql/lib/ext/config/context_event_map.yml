@@ -40,8 +40,6 @@ extensions:
       - ["push", "github.event.commits"]
       - ["push", "github.event.head_commit"]
       - ["push", "github.event.changes"] 
-      - ["repository_dispatch", "github.event.client_payload"]
-      - ["workflow_dispatch", "github.event.inputs"]
       - ["workflow_run", "github.event.workflow"]
       - ["workflow_run", "github.event.workflow_run"]
       - ["workflow_run", "github.event.changes"] 
