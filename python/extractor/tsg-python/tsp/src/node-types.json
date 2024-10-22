@@ -3965,10 +3965,6 @@
     "named": false
   },
   {
-    "type": "except*",
-    "named": false
-  },
-  {
     "type": "exec",
     "named": false
   },

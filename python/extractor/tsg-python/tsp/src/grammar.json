@@ -1169,7 +1169,11 @@
       "members": [
         {
           "type": "STRING",
-          "value": "except*"
+          "value": "except"
+        },
+        {
+          "type": "STRING",
+          "value": "*"
         },
         {
           "type": "SEQ",
