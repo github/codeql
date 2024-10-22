@@ -40,9 +40,10 @@ class GitHubCtxSource extends RemoteFlowSource {
 
 class GitHubEventCtxSource extends RemoteFlowSource {
   string flag;
+  string context;
 
   GitHubEventCtxSource() {
-    exists(Expression e, string context, string regexp |
+    exists(Expression e, string regexp |
       this.asExpr() = e and
       context = e.getExpression() and
       (
@@ -62,6 +63,8 @@ class GitHubEventCtxSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = flag }
+
+  string getContext() { result = context }
 }
 
 abstract class CommandSource extends RemoteFlowSource {

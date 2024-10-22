@@ -1,3 +1,7 @@
+| .github/workflows/issue_comment_3rd_party_action.yml:16:9:22:2 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
+| .github/workflows/issue_comment_3rd_party_action.yml:30:9:36:2 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
+| .github/workflows/issue_comment_3rd_party_action.yml:45:9:49:6 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
+| .github/workflows/issue_comment_3rd_party_action.yml:49:9:52:25 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
 | .github/workflows/issue_comment_direct.yml:12:9:16:2 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
 | .github/workflows/issue_comment_direct.yml:20:9:24:2 | Uses Step | Potential execution of untrusted code on a privileged workflow. |
 | .github/workflows/issue_comment_direct.yml:28:9:32:2 | Uses Step | Potential execution of untrusted code on a privileged workflow. |

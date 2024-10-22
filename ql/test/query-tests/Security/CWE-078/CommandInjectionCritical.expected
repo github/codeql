@@ -1,13 +1,6 @@
 edges
-| .github/actions/run-airbyte-ci/action.yaml:4:3:4:12 | input subcommand | .github/actions/run-airbyte-ci/action.yaml:163:118:163:141 | inputs.subcommand | provenance |  |
-| .github/workflows/test1.yml:46:42:46:90 | github.event.client_payload.connector_name | .github/actions/run-airbyte-ci/action.yaml:4:3:4:12 | input subcommand | provenance |  |
-| .github/workflows/test1.yml:63:42:63:90 | github.event.client_payload.connector_name | .github/actions/run-airbyte-ci/action.yaml:4:3:4:12 | input subcommand | provenance |  |
 nodes
-| .github/actions/run-airbyte-ci/action.yaml:4:3:4:12 | input subcommand | semmle.label | input subcommand |
-| .github/actions/run-airbyte-ci/action.yaml:163:118:163:141 | inputs.subcommand | semmle.label | inputs.subcommand |
 | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | semmle.label | github.event.comment.body |
-| .github/workflows/test1.yml:46:42:46:90 | github.event.client_payload.connector_name | semmle.label | github.event.client_payload.connector_name |
-| .github/workflows/test1.yml:63:42:63:90 | github.event.client_payload.connector_name | semmle.label | github.event.client_payload.connector_name |
 subpaths
 #select
 | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | Potential command injection in $@, which may be controlled by an external user. | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | ${{ github.event.comment.body }} |
