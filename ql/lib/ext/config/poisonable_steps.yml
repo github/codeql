@@ -4,6 +4,7 @@ extensions:
       extensible: poisonableActionsDataModel
     # source: https://boostsecurityio.github.io/lotp/
     data:
+      - ["azure/powershell"]
       - ["pre-commit/action"]
       - ["oxsecurity/megalinter"]
       - ["bridgecrewio/checkov-action"]
