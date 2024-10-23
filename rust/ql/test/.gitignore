@@ -1,4 +1,5 @@
 Cargo.toml
 Cargo.lock
+.rust-project.json
 lib.rs
 target/
