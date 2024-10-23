@@ -3472,13 +3472,7 @@ class TranslatedVarArg extends TranslatedNonConstantExpr {
     result = this.getInstruction(VarArgsVAListStoreTag())
     or
     tag = VarArgsVAListStoreTag() and
-    (
-      result = this.getParent().getChildSuccessor(this, kind)
-      or
-      // All store instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
-    )
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -3600,22 +3594,10 @@ class TranslatedVarArgCopy extends TranslatedNonConstantExpr {
 
   final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = VarArgsVAListLoadTag() and
-    (
-      result = this.getDestinationVAList().getFirstInstruction(kind)
-      or
-      // All load instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
-    )
+    result = this.getDestinationVAList().getFirstInstruction(kind)
     or
     tag = VarArgsVAListStoreTag() and
-    (
-      result = this.getParent().getChildSuccessor(this, kind)
-      or
-      // All store instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
-    )
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -3819,13 +3801,7 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
     )
     or
     tag = LoadTag() and
-    (
-      result = this.getParent().getChildSuccessor(this, kind)
-      or
-      // All load instruction could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
-    )
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
