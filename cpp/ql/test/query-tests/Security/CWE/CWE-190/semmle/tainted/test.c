@@ -7,7 +7,7 @@ void startServer(int heapSize);
 typedef unsigned long size_t;
 size_t strlen(const char *s);
 
-int main(int argc, char** argv) {
+int main1(int argc, char** argv) {
   int maxConnections = atoi(argv[1]);
 
   // BAD: arithmetic on a user input without any validation

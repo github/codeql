@@ -8,7 +8,7 @@
 
 private import python
 import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.internal.TaintTrackingPrivate as TTP
+private import semmle.python.ApiGraphs
 
 /**
  * Provides a data-flow configuration for detecting modifications of a parameters default value.
@@ -73,7 +73,13 @@ module ModificationOfParameterWithDefault {
       or
       // the target of a copy step is (presumably) a different object, and hence modifications of
       // this object no longer matter for the purposes of this query.
-      TTP::copyStep(_, node) and state in [true, false]
+      copyTarget(node) and state in [true, false]
+    }
+
+    private predicate copyTarget(DataFlow::Node node) {
+      node = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall()
+      or
+      node.(DataFlow::MethodCallNode).calls(_, "copy")
     }
   }
 

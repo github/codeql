@@ -241,6 +241,10 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
         name != "" and result = name
         or
         name = "" and result = this.getVariable().(LocalVariable).getName()
+        or
+        name = "" and
+        not this instanceof ParameterDeclarationEntry and
+        result = this.getVariable().(Parameter).getName()
       )
     )
   }
@@ -295,19 +299,11 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
 
   private string getAnonymousParameterDescription() {
     not exists(this.getName()) and
-    exists(string idx |
-      idx =
-        ((this.getIndex() + 1).toString() + "th")
-            .replaceAll("1th", "1st")
-            .replaceAll("2th", "2nd")
-            .replaceAll("3th", "3rd")
-            .replaceAll("11st", "11th")
-            .replaceAll("12nd", "12th")
-            .replaceAll("13rd", "13th") and
+    exists(string anon |
+      anon = "(unnamed parameter " + this.getIndex().toString() + ")" and
       if exists(this.getCanonicalName())
-      then
-        result = "declaration of " + this.getCanonicalName() + " as anonymous " + idx + " parameter"
-      else result = "declaration of " + idx + " parameter"
+      then result = "declaration of " + this.getCanonicalName() + " as " + anon
+      else result = "declaration of " + anon
     )
   }
 

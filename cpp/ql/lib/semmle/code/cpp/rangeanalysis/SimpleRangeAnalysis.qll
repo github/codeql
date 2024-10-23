@@ -193,6 +193,37 @@ private class UnsignedMulExpr extends MulExpr {
 }
 
 /**
+ * Gets the value of the `EOF` macro.
+ *
+ * This is typically `"-1"`, but this is not guaranteed to be the case on all
+ * systems.
+ */
+private int getEofValue() {
+  exists(MacroInvocation mi |
+    mi.getMacroName() = "EOF" and
+    result = unique( | | mi.getExpr().getValue().toInt())
+  )
+}
+
+/** Get standard `getc` function or related variants. */
+private class Getc extends Function {
+  Getc() { this.hasGlobalOrStdOrBslName(["fgetc", "getc"]) }
+}
+
+/** A call to `getc` */
+private class CallToGetc extends FunctionCall {
+  CallToGetc() { this.getTarget() instanceof Getc }
+}
+
+/**
+ * A call to `getc` that we can analyze because we know
+ * the value of the `EOF` macro.
+ */
+private class AnalyzableCallToGetc extends CallToGetc {
+  AnalyzableCallToGetc() { exists(getEofValue()) }
+}
+
+/**
  * Holds if `expr` is effectively a multiplication of `operand` with the
  * positive constant `positive`.
  */
@@ -286,6 +317,8 @@ private predicate analyzableExpr(Expr e) {
     e instanceof CrementOperation
     or
     e instanceof RemExpr
+    or
+    e instanceof AnalyzableCallToGetc
     or
     // A conversion is analyzable, provided that its child has an arithmetic
     // type. (Sometimes the child is a reference type, and so does not get
@@ -861,6 +894,14 @@ private float getLowerBoundsImpl(Expr expr) {
       )
     )
     or
+    exists(AnalyzableCallToGetc getc |
+      expr = getc and
+      // from https://en.cppreference.com/w/c/io/fgetc:
+      // On success, returns the obtained character as an unsigned char
+      // converted to an int. On failure, returns EOF.
+      result = min([typeLowerBound(any(UnsignedCharType pct)), getEofValue()])
+    )
+    or
     // If the conversion is to an arithmetic type then we just return the
     // lower bound of the child. We do not need to handle truncation and
     // overflow here, because that is done in `getTruncatedLowerBounds`.
@@ -1053,6 +1094,14 @@ private float getUpperBoundsImpl(Expr expr) {
       |
         result = -rhsLB + 1
       )
+    )
+    or
+    exists(AnalyzableCallToGetc getc |
+      expr = getc and
+      // from https://en.cppreference.com/w/c/io/fgetc:
+      // On success, returns the obtained character as an unsigned char
+      // converted to an int. On failure, returns EOF.
+      result = max([typeUpperBound(any(UnsignedCharType pct)), getEofValue()])
     )
     or
     // If the conversion is to an arithmetic type then we just return the

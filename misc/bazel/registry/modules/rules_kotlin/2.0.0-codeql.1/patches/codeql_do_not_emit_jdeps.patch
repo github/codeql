@@ -1,0 +1,16 @@
+Emitting jdeps is broken for the 2.0.0 kotlin extractor, and we don't need those files.
+Patching it here rather than passing `--@rules_kotlin//kotlin/settings:jvm_emit_jdeps=false`
+allows us to not have to specify that option (and therefore pull in `rules_kotlin`) in `semmle-code`.
+diff --git a/kotlin/settings/BUILD.bazel b/kotlin/settings/BUILD.bazel
+index 2c93c11..f352b80 100644
+--- a/kotlin/settings/BUILD.bazel
++++ b/kotlin/settings/BUILD.bazel
+@@ -25,7 +25,7 @@ release_archive(
+ # Flag that controls the emission of jdeps files during kotlin jvm compilation.
+ bool_flag(
+     name = "jvm_emit_jdeps",
+-    build_setting_default = True,  # Upstream default behavior
++    build_setting_default = False,
+     visibility = ["//visibility:public"],
+ )
+ 

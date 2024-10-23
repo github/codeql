@@ -5,6 +5,7 @@
 
 private import codeql.util.Location
 private import codeql.util.FileSystem
+private import codeql.util.Void
 
 /** Provides the language-specific input specification. */
 signature module InputSig<LocationSig Location> {
@@ -56,18 +57,6 @@ signature module InputSig<LocationSig Location> {
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */
   predicate scopeLast(CfgScope scope, AstNode last, Completion c);
 
-  /** Gets the maximum number of splits allowed for a given node. */
-  default int maxSplits() { result = 5 }
-
-  /** The base class of `SplitKind`. */
-  class SplitKindBase;
-
-  /** A split. */
-  class Split {
-    /** Gets a textual representation of this split. */
-    string toString();
-  }
-
   /** A type of a control flow successor. */
   class SuccessorType {
     /** Gets a textual representation of this successor type. */
@@ -88,6 +77,56 @@ signature module InputSig<LocationSig Location> {
 
   /** Holds if `t` is an abnormal exit type out of a CFG scope. */
   predicate isAbnormalExitType(SuccessorType t);
+}
+
+/** Provides input needed for CFG splitting. */
+signature module SplittingInputSig<LocationSig Location, InputSig<Location> Input> {
+  /** Gets the maximum number of splits allowed for a given node. */
+  default int maxSplits() { result = 5 }
+
+  /** The base class of `SplitKind`. */
+  class SplitKindBase;
+
+  /** A split. */
+  class Split {
+    /** Gets a textual representation of this split. */
+    string toString();
+  }
+}
+
+/** Provides input needed for `ConditionalCompletionSplitting`. */
+signature module ConditionalCompletionSplittingInputSig<
+  LocationSig Location, InputSig<Location> Input, SplittingInputSig<Location, Input> SplittingInput>
+{
+  /** A conditional control-flow completion. */
+  class ConditionalCompletion extends Input::Completion;
+
+  /** A split kind for `ConditionalCompletionSplitting`. */
+  class ConditionalCompletionSplitKind extends SplittingInput::SplitKindBase;
+
+  /** The user-facing split class. */
+  class ConditionalCompletionSplit extends SplittingInput::Split {
+    /** Gets the completion recorded in this split. */
+    ConditionalCompletion getCompletion();
+  }
+
+  /**
+   * Holds if `child` is a sub expression of `parent`, and whenever a last node
+   * of `child` (normally `child` itself) has `parent` as a successor with label
+   * `childCompletion`, then edges out of `parent` must have label
+   * `parentCompletion`.
+   *
+   * For example, for an expression `!x`, when `child = x` has conditional
+   * completion `c` then `parent = !x` must have the dual completion of `c`.
+   *
+   * Similarly, for an expression `x && y`, when `child = {x, y}` has conditional
+   * completion `c`, then `parent = x && y` must have the same completion of `c`.
+   */
+  bindingset[parent, parentCompletion]
+  predicate condPropagateExpr(
+    Input::AstNode parent, ConditionalCompletion parentCompletion, Input::AstNode child,
+    ConditionalCompletion childCompletion
+  );
 }
 
 /**
@@ -122,8 +161,14 @@ signature module InputSig<LocationSig Location> {
  * loop break will be caught up by its surrounding loop and turned into a normal
  * completion.
  */
-module Make<LocationSig Location, InputSig<Location> Input> {
+module MakeWithSplitting<
+  LocationSig Location, //
+  InputSig<Location> Input, //
+  SplittingInputSig<Location, Input> SplittingInput, //
+  ConditionalCompletionSplittingInputSig<Location, Input, SplittingInput> ConditionalCompletionSplittingInput>
+{
   private import Input
+  private import SplittingInput
 
   final private class AstNodeFinal = AstNode;
 
@@ -1133,6 +1178,71 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   final class AstCfgNode = AstCfgNodeImpl;
 
+  /** Provides logic for common CFG split implementations that can be reused across languages. */
+  module SplitImplementations {
+    /**
+     * Provides an implementation of splitting for conditional completions.
+     *
+     * For example, in
+     *
+     * ```rust
+     * if x && !y {
+     *   // ...
+     * }
+     * ```
+     *
+     * we record whether `x`, `y`, and `!y` evaluate to `true` or `false`, and restrict
+     * the edges out of `!y` and `x && !y` accordingly.
+     */
+    module ConditionalCompletionSplitting {
+      private import ConditionalCompletionSplittingInput
+
+      final private class ConditionalCompletionSplitFinal =
+        ConditionalCompletionSplittingInput::ConditionalCompletionSplit;
+
+      /** A split for conditional completions. */
+      class ConditionalCompletionSplitImpl extends SplitImpl, ConditionalCompletionSplitFinal {
+        ConditionalCompletion completion;
+
+        ConditionalCompletionSplitImpl() { completion = this.getCompletion() }
+
+        override SplitKind getKind() { result instanceof ConditionalCompletionSplitKind }
+
+        override predicate hasEntry(AstNode pred, AstNode succ, Completion c) {
+          exists(AstNode child, AstNode parent |
+            last(parent, succ, completion) and
+            condPropagateExpr(parent, completion, child, c) and
+            succ(pred, succ, c) and
+            last(child, pred, c)
+          )
+        }
+
+        override predicate hasEntryScope(CfgScope scope, AstNode first) { none() }
+
+        override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
+          this.appliesTo(pred) and
+          succ(pred, succ, c) and
+          if c instanceof ConditionalCompletion
+          then completion = c
+          else not this.hasSuccessor(pred, succ, c)
+        }
+
+        override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
+          this.appliesTo(last) and
+          scopeLast(scope, last, c) and
+          if c instanceof ConditionalCompletion then completion = c else any()
+        }
+
+        override predicate hasSuccessor(AstNode pred, AstNode succ, Completion c) {
+          this.appliesTo(pred) and
+          succ(pred, succ, c) and
+          not c instanceof ConditionalCompletion and
+          completionIsNormal(c)
+        }
+      }
+    }
+  }
+
   /** A node to be included in the output of `TestOutput`. */
   signature class RelevantNodeSig extends Node;
 
@@ -1152,6 +1262,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         )
     }
 
+    /**
+     * Provides logic for representing a CFG as a [Mermaid diagram](https://mermaid.js.org/).
+     */
     module Mermaid {
       private string nodeId(RelevantNode n) {
         result =
@@ -1200,6 +1313,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           )
       }
 
+      /** Holds if the Mermaid representation is `s`. */
       query predicate mermaid(string s) { s = "flowchart TD\n" + nodes() + "\n\n" + edges() }
     }
   }
@@ -1277,6 +1391,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     import Output::Mermaid
 
+    /** Holds if `pred` -> `succ` is an edge in the CFG. */
     query predicate edges(RelevantNode pred, RelevantNode succ, string attr, string val) {
       attr = "semmle.label" and
       Output::edges(pred, succ, val)
@@ -1388,12 +1503,70 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /** Holds if `n` has multiple textual representations. */
+    predicate multipleToString(Node n) { strictcount(n.toString()) > 1 }
+
+    /** Holds if `n` has multiple textual representations. */
     query predicate multipleToString(Node n, string s) {
-      s = strictconcat(n.toString(), ",") and
-      strictcount(n.toString()) > 1
+      multipleToString(n) and
+      s = strictconcat(n.toString(), ",")
     }
 
     /** Holds if CFG scope `scope` lacks an initial AST node. */
     query predicate scopeNoFirst(CfgScope scope) { not scopeFirst(scope, _) }
   }
+}
+
+/** Provides a disabled `SplittingInputSig` implementation. */
+module NoSplittingInput<LocationSig Location, InputSig<Location> Input> implements
+  SplittingInputSig<Location, Input>
+{
+  int maxSplits() { result = 0 }
+
+  class SplitKindBase = Void;
+
+  class Split = Void;
+}
+
+/** Provides a disabled `ConditionalCompletionSplittingInputSig` implementation. */
+module NoConditionalCompletionSplittingInput<
+  LocationSig Location, InputSig<Location> Input, SplittingInputSig<Location, Input> SplittingInput>
+  implements ConditionalCompletionSplittingInputSig<Location, Input, SplittingInput>
+{
+  final private class Completion = Input::Completion;
+
+  class ConditionalCompletion extends Completion {
+    ConditionalCompletion() { none() }
+  }
+
+  final private class SplitKindBase = SplittingInput::SplitKindBase;
+
+  class ConditionalCompletionSplitKind extends SplitKindBase {
+    ConditionalCompletionSplitKind() { none() }
+
+    /** Gets a textual representation of this split kind. */
+    string toString() { none() }
+  }
+
+  final private class Split = SplittingInput::Split;
+
+  class ConditionalCompletionSplit extends Split {
+    ConditionalCompletion getCompletion() { none() }
+  }
+
+  predicate condPropagateExpr(
+    Input::AstNode parent, ConditionalCompletion parentCompletion, Input::AstNode child,
+    ConditionalCompletion childCompletion
+  ) {
+    none()
+  }
+}
+
+/** Same as `MakeWithSplitting`, but without CFG splitting. */
+module Make<LocationSig Location, InputSig<Location> Input> {
+  private module SplittingInput = NoSplittingInput<Location, Input>;
+
+  private module ConditionalCompletionSplittingInput =
+    NoConditionalCompletionSplittingInput<Location, Input, SplittingInput>;
+
+  import MakeWithSplitting<Location, Input, SplittingInput, ConditionalCompletionSplittingInput>
 }

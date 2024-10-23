@@ -190,6 +190,7 @@ predicate sliceStep(DataFlow::Node pred, DataFlow::Node succ) {
  */
 abstract class FunctionModel extends Function {
   /** Holds if taint propagates through this function from `input` to `output`. */
+  pragma[nomagic]
   abstract predicate hasTaintFlow(FunctionInput input, FunctionOutput output);
 
   /** Gets an input node for this model for the call `c`. */
@@ -202,8 +203,8 @@ abstract class FunctionModel extends Function {
   predicate taintStepForCall(DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode c) {
     c = this.getACall() and
     exists(FunctionInput inp, FunctionOutput outp | this.hasTaintFlow(inp, outp) |
-      pred = inp.getNode(c) and
-      succ = outp.getNode(c)
+      pred = pragma[only_bind_out](inp).getNode(c) and
+      succ = pragma[only_bind_out](outp).getNode(c)
     )
   }
 
@@ -382,9 +383,9 @@ predicate inputIsConstantIfOutputHasProperty(
 ) {
   exists(Function f, FunctionInput inp, FunctionOutput outp, DataFlow::CallNode call |
     functionEnsuresInputIsConstant(f, inp, outp, p) and
-    call = f.getACall() and
-    inputNode = inp.getNode(call) and
-    DataFlow::localFlow(outp.getNode(call), outputNode)
+    call = pragma[only_bind_out](f).getACall() and
+    inputNode = pragma[only_bind_out](inp).getNode(call) and
+    DataFlow::localFlow(pragma[only_bind_out](outp).getNode(call), outputNode)
   )
 }
 

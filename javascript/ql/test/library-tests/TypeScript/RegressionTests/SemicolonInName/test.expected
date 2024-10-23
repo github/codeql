@@ -1,2 +1,2 @@
 | Bar.Foo in global scope | Bar in global scope |
-| fn in library-tests/TypeScript/RegressionTests/SemicolonInName/test.ts | library-tests/TypeScript/RegressionTests/SemicolonInName/test.ts |
+| fn in test.ts | test.ts |
