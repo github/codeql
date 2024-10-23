@@ -475,10 +475,8 @@ SourceSinkInterpretationInput::SourceOrSinkElement interpretElement(
   // Go does not need to distinguish functions with signature
   signature = "" and
   exists(string p | p = interpretPackage(pkg) |
-    exists(Field f | f.hasQualifiedName(p, type, name) |
-      result.asEntity() = f and
-      result.hasTypeInfo(p, type, subtypes)
-    )
+    result.asEntity().(Field).hasQualifiedName(p, type, name) and
+    result.hasTypeInfo(p, type, subtypes)
     or
     exists(Method m | m.hasQualifiedName(p, type, name) |
       result.asEntity() = m and
