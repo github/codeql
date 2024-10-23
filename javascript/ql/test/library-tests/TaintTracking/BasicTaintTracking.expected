@@ -36,6 +36,7 @@ legacyDataFlowDifference
 | sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
 | spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y | only flow with NEW data flow library |
 | spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y | only flow with NEW data flow library |
+| tst.js:2:13:2:20 | source() | tst.js:17:10:17:10 | a | only flow with OLD data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
 consistencyIssue
 | nested-props.js:20 | expected an alert, but found none | NOT OK - but not found | Consistency |
@@ -280,7 +281,6 @@ flow
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
 | tst.js:2:13:2:20 | source() | tst.js:5:10:5:22 | "/" + x + "!" |
 | tst.js:2:13:2:20 | source() | tst.js:14:10:14:17 | x.sort() |
-| tst.js:2:13:2:20 | source() | tst.js:17:10:17:10 | a |
 | tst.js:2:13:2:20 | source() | tst.js:19:10:19:10 | a |
 | tst.js:2:13:2:20 | source() | tst.js:23:10:23:10 | b |
 | tst.js:2:13:2:20 | source() | tst.js:25:10:25:16 | x.pop() |
