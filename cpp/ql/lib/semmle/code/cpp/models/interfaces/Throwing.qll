@@ -20,11 +20,15 @@ newtype TException =
  * to use the most restricted interpretation, meaning taking options
  * that stipulate no exception is raised, before the exception is always raised,
  * before conditional exceptions.
- * 
+ *
  * Annotations must specify if the exception is from SEH (structured exception handling)
  * or ordinary c++ exceptions.
  */
-private abstract class ExceptionAnnotation extends Function {
+abstract private class ExceptionAnnotation extends Function {
+  /**
+   * Returns the type of exception this annotation is for,
+   * either a CPP exception or a STructured Exception Handling (SEH) exception.
+   */
   abstract TException getExceptionType();
 
   final predicate isSEH() { this.getExceptionType() = TSEHException() }
@@ -50,7 +54,14 @@ abstract class ThrowingFunction extends ExceptionAnnotation {
    */
   abstract predicate raisesException(boolean unconditional);
 
+  /**
+   * Holds if this function will always raise an exception if called
+   */
   final predicate alwaysRaisesException() { this.raisesException(true) }
 
+  /**
+   * Holds if this function may raise an exception if called but
+   * it is not guaranteed to do so. I.e., the function does not always raise an exception.
+   */
   final predicate mayRaiseException() { this.raisesException(false) }
 }
