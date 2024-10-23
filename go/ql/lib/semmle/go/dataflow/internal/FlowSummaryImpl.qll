@@ -178,7 +178,7 @@ module SourceSinkInterpretationInput implements
     AstNode asAstNode() { this = TAstElement(result) }
 
     /**
-     * Holds if this source or sink element is a method that was specified
+     * Holds if this source or sink element is a method or field that was specified
      * with the given values for `pkg`, `type` and `subtypes`.
      */
     predicate hasTypeInfo(string pkg, string type, boolean subtypes) {
