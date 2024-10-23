@@ -285,7 +285,8 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All store instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and kind.(ExceptionEdge).isSEH()
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
+      kind.(ExceptionEdge).isSEH()
     )
   }
 
@@ -362,13 +363,13 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
   }
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
-   
     tag = InitializerLoadStringTag() and
     (
-      result = this.getInstruction(InitializerStoreTag())  and kind instanceof GotoEdge
+      result = this.getInstruction(InitializerStoreTag()) and kind instanceof GotoEdge
       or
       // All store instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and kind.(ExceptionEdge).isSEH()
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
+      kind.(ExceptionEdge).isSEH()
     )
     or
     if this.zeroInitRange(_, _)
@@ -664,7 +665,8 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All store instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and kind.(ExceptionEdge).isSEH()
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
+      kind.(ExceptionEdge).isSEH()
     )
   }
 
@@ -869,7 +871,8 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
       result = this.getParent().getChildSuccessor(this, kind)
       or
       // All store instructions could throw an SEH exception
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and kind.(ExceptionEdge).isSEH()
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
+      kind.(ExceptionEdge).isSEH()
     )
   }
 
