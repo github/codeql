@@ -8,6 +8,7 @@ use log::Level;
 use ra_ap_base_db::CrateOrigin;
 use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir::{Adt, ItemContainer, Module, Semantics, Type};
+use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_def::type_ref::Mutability;
 use ra_ap_hir_expand::ExpandTo;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
@@ -346,6 +347,10 @@ impl<'a> Translator<'a> {
     }
 
     fn canonical_path_from_hir_module(&self, item: Module) -> Option<String> {
+        if ModuleId::from(item).is_block_module() {
+            // this means this is a block module, i.e. a virtual module for a block scope
+            return None;
+        }
         if item.is_crate_root() {
             return Some("crate".into());
         }

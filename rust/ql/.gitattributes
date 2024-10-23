@@ -641,9 +641,6 @@
 /test/extractor-tests/generated/AsmExpr/AsmExpr.ql linguist-generated
 /test/extractor-tests/generated/AsmExpr/AsmExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/AsmExpr/AsmExpr_getExpr.ql linguist-generated
-/test/extractor-tests/generated/AssocItemList/AssocItemList.ql linguist-generated
-/test/extractor-tests/generated/AssocItemList/AssocItemList_getAssocItem.ql linguist-generated
-/test/extractor-tests/generated/AssocItemList/AssocItemList_getAttr.ql linguist-generated
 /test/extractor-tests/generated/AssocTypeArg/AssocTypeArg.ql linguist-generated
 /test/extractor-tests/generated/AssocTypeArg/AssocTypeArg_getConstArg.ql linguist-generated
 /test/extractor-tests/generated/AssocTypeArg/AssocTypeArg_getGenericArgList.ql linguist-generated
@@ -1044,6 +1041,9 @@
 /test/extractor-tests/generated/Struct/Struct_getVisibility.ql linguist-generated
 /test/extractor-tests/generated/Struct/Struct_getWhereClause.ql linguist-generated
 /test/extractor-tests/generated/TokenTree/TokenTree.ql linguist-generated
+/test/extractor-tests/generated/Trait/AssocItemList.ql linguist-generated
+/test/extractor-tests/generated/Trait/AssocItemList_getAssocItem.ql linguist-generated
+/test/extractor-tests/generated/Trait/AssocItemList_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Trait/Trait.ql linguist-generated
 /test/extractor-tests/generated/Trait/Trait_getAssocItemList.ql linguist-generated
 /test/extractor-tests/generated/Trait/Trait_getAttr.ql linguist-generated
