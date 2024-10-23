@@ -129,7 +129,13 @@ class GhCLICommandSource extends RemoteFlowSource, CommandSource {
       run.getScript().getAStmt() = cmd and
       cmd.indexOf("gh ") = 0 and
       untrustedGhCommandDataModel(cmd_regex, flag) and
-      cmd.regexpMatch(cmd_regex + ".*")
+      cmd.regexpMatch(cmd_regex + ".*") and
+      (
+        cmd.regexpMatch(".*\\b(pr|pulls)\\b.*") and
+        run.getATriggerEvent().getName() = checkoutTriggers()
+        or
+        not cmd.regexpMatch(".*\\b(pr|pulls)\\b.*")
+      )
     )
   }
 
