@@ -276,42 +276,23 @@ module SourceSinkInterpretationInput implements
       or
       exists(DataFlow::Write fw | fw.writesField(recv, sse.asEntity(), _))
     ) and
-    exists(string pkg, string typename, boolean subtypes, Type syntacticRecvBaseType |
+    exists(string pkg, string typename, boolean subtypes, Type syntacticRecvBaseType, Type targetType |
       sse.hasTypeInfo(pkg, typename, subtypes) and
+      targetType.hasQualifiedName(pkg, typename) and
       syntacticRecvBaseType = lookThroughPointerType(getSyntacticRecv(recv).getType())
     |
       subtypes = [true, false] and
-      syntacticRecvBaseType.hasQualifiedName(pkg, typename)
+      syntacticRecvBaseType = targetType
       or
       subtypes = true and
       (
         // `syntacticRecvBaseType`'s underlying type might be an interface type and `sse`
         // might be a method defined on an interface which is a subtype of it.
-        exists(Type t |
-          t = syntacticRecvBaseType.getUnderlyingType().(InterfaceType).getAnEmbeddedInterface() and
-          t.hasQualifiedName(pkg, typename) and
-          sse.asEntity().(Method).hasQualifiedName(pkg, typename, _)
-        )
+        targetType = syntacticRecvBaseType.getUnderlyingType().(InterfaceType).getAnEmbeddedInterface()
         or
         // `syntacticRecvBaseType`'s underlying type might be a struct type and `sse`
         // might be a promoted method or field.
-        exists(StructType st, Field field1, Field field2, int depth1, int depth2, Type t1, Type t2 |
-          st = syntacticRecvBaseType.getUnderlyingType() and
-          field1 = st.getFieldAtDepth(_, depth1) and
-          field2 = st.getFieldAtDepth(_, depth2) and
-          t1 = lookThroughPointerType(field1.getType()) and
-          t2 = lookThroughPointerType(field2.getType()) and
-          (
-            field1 = field2
-            or
-            field2 = t1.getUnderlyingType().(StructType).getFieldAtDepth(_, depth2 - depth1 - 1)
-          ) and
-          matchTypeInfo(sse, t1)
-        |
-          sse.asEntity().(Method).getReceiverBaseType() = t2
-          or
-          sse.asEntity().(Field).getDeclaringType() = t2.getUnderlyingType()
-        )
+        syntacticRecvBaseType.getUnderlyingType().(StructType).hasEmbeddedField(targetType, _)
       )
     )
   }
@@ -341,15 +322,6 @@ module SourceSinkInterpretationInput implements
           .asInstruction()
           .(IR::ImplicitFieldReadInstruction)
           .getBaseInstruction()
-  }
-
-  bindingset[sse, t]
-  pragma[inline_late]
-  private predicate matchTypeInfo(SourceOrSinkElement sse, Type t) {
-    exists(string pkg, string typename |
-      sse.hasTypeInfo(pkg, typename, true) and
-      t.hasQualifiedName(pkg, typename)
-    )
   }
 
   /** Provides additional sink specification logic. */
