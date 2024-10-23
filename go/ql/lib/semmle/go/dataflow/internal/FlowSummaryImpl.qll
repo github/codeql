@@ -271,6 +271,14 @@ module SourceSinkInterpretationInput implements
     }
   }
 
+  /**
+   * Holds if method or field spec `sse` applies in the context of qualifier `qual`.
+   *
+   * Note that naively checking `sse.asEntity()`'s qualified name is not correct, because
+   * `Method`s and `Field`s may have multiple qualified names due to embedding. We must instead
+   * check that the specific name given be `sse.hasTypeInfo` refers to either `qual`'s type
+   * or to a type it embeds.
+   */
   private predicate elementAppliesToQualifier(SourceOrSinkElement sse, DataFlow::Node qual) {
     (
       exists(DataFlow::CallNode cn | cn.getReceiver() = qual and cn.getTarget() = sse.asEntity())
