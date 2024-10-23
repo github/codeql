@@ -244,7 +244,7 @@ module SourceSinkInterpretationInput implements
         (
           not callTarget instanceof Method
           or
-          ensureCorrectTypeInfo(result, cn.getReceiver())
+          elementAppliesToQualifier(result, cn.getReceiver())
         )
       )
     }
@@ -271,36 +271,39 @@ module SourceSinkInterpretationInput implements
     }
   }
 
-  private predicate ensureCorrectTypeInfo(SourceOrSinkElement sse, DataFlow::Node recv) {
+  private predicate elementAppliesToQualifier(SourceOrSinkElement sse, DataFlow::Node qual) {
     (
-      exists(DataFlow::CallNode cn | cn.getReceiver() = recv and cn.getTarget() = sse.asEntity())
+      exists(DataFlow::CallNode cn | cn.getReceiver() = qual and cn.getTarget() = sse.asEntity())
       or
-      exists(DataFlow::FieldReadNode frn | frn.getBase() = recv and frn.getField() = sse.asEntity())
+      exists(DataFlow::FieldReadNode frn | frn.getBase() = qual and frn.getField() = sse.asEntity())
       or
-      exists(DataFlow::Write fw | fw.writesField(recv, sse.asEntity(), _))
+      exists(DataFlow::Write fw | fw.writesField(qual, sse.asEntity(), _))
     ) and
-    exists(string pkg, string typename, boolean subtypes, Type syntacticRecvBaseType, Type targetType |
+    exists(
+      string pkg, string typename, boolean subtypes, Type syntacticQualBaseType, Type targetType
+    |
       sse.hasTypeInfo(pkg, typename, subtypes) and
       targetType.hasQualifiedName(pkg, typename) and
-      syntacticRecvBaseType = lookThroughPointerType(getSyntacticRecv(recv).getType())
+      syntacticQualBaseType = lookThroughPointerType(getSyntacticQualifier(qual).getType())
     |
       subtypes = [true, false] and
-      syntacticRecvBaseType = targetType
+      syntacticQualBaseType = targetType
       or
       subtypes = true and
       (
-        // `syntacticRecvBaseType`'s underlying type might be an interface type and `sse`
+        // `syntacticQualBaseType`'s underlying type might be an interface type and `sse`
         // might be a method defined on an interface which is a subtype of it.
-        targetType = syntacticRecvBaseType.getUnderlyingType().(InterfaceType).getAnEmbeddedInterface()
+        targetType =
+          syntacticQualBaseType.getUnderlyingType().(InterfaceType).getAnEmbeddedInterface()
         or
-        // `syntacticRecvBaseType`'s underlying type might be a struct type and `sse`
+        // `syntacticQualBaseType`'s underlying type might be a struct type and `sse`
         // might be a promoted method or field.
-        syntacticRecvBaseType.getUnderlyingType().(StructType).hasEmbeddedField(targetType, _)
+        syntacticQualBaseType.getUnderlyingType().(StructType).hasEmbeddedField(targetType, _)
       )
     )
   }
 
-  private DataFlow::Node getSyntacticRecv(DataFlow::Node n) {
+  private DataFlow::Node getSyntacticQualifier(DataFlow::Node n) {
     exists(DataFlow::Node n2 |
       // look through implicit dereference, if there is one
       not exists(n.asInstruction().(IR::EvalImplicitDerefInstruction).getOperand()) and
@@ -346,7 +349,7 @@ module SourceSinkInterpretationInput implements
       exists(DataFlow::FieldReadNode frn | frn = n |
         c = "" and
         frn.getField() = e.asEntity() and
-        ensureCorrectTypeInfo(e, frn.getBase())
+        elementAppliesToQualifier(e, frn.getBase())
       )
     )
   }
@@ -367,7 +370,7 @@ module SourceSinkInterpretationInput implements
     |
       c = "" and
       fw.writesField(base, f, node.asNode()) and
-      ensureCorrectTypeInfo(e, base)
+      elementAppliesToQualifier(e, base)
     )
   }
 }
