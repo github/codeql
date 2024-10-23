@@ -7,19 +7,19 @@ extensions:
       - ["javax.xml.catalog", "CatalogException", True, "CatalogException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.xml.catalog", "CatalogException", True, "CatalogException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.xml.catalog", "CatalogException", True, "CatalogException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["javax.xml.catalog", "CatalogFeatures$Builder", True, "with", "(CatalogFeatures$Feature,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["javax.xml.catalog", "CatalogFeatures$Builder", True, "with", "(CatalogFeatures$Feature,String)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["javax.xml.catalog", "CatalogFeatures$Builder", True, "with", "(CatalogFeatures$Feature,String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["javax.xml.catalog", "CatalogFeatures", True, "get", "(CatalogFeatures$Feature)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.catalog", "CatalogManager", False, "catalog", "(CatalogFeatures,URI[])", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.catalog", "CatalogManager", False, "catalog", "(CatalogFeatures,URI[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.catalog", "CatalogManager", False, "catalogResolver", "(Catalog)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.catalog", "CatalogManager", False, "catalogResolver", "(CatalogFeatures,URI[])", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["javax.xml.catalog", "CatalogManager", False, "catalogResolver", "(CatalogFeatures,URI[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.catalog", "CatalogResolver", True, "resolveEntity", "(String,String)", "", "Argument[1]", "ReturnValue", "taint", "dfc-generated"]
+      - ["javax.xml.catalog", "CatalogResolver", True, "resolveResource", "(String,String,String,String,String)", "", "Argument[3]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["javax.xml.catalog", "Catalog", "catalogs", "()", "summary", "df-generated"]
       - ["javax.xml.catalog", "CatalogFeatures$Builder", "build", "()", "summary", "df-generated"]
       - ["javax.xml.catalog", "CatalogFeatures$Feature", "defaultValue", "()", "summary", "df-generated"]
       - ["javax.xml.catalog", "CatalogFeatures$Feature", "getPropertyName", "()", "summary", "df-generated"]

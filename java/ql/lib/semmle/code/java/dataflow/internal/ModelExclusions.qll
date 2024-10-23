@@ -78,6 +78,7 @@ predicate isUninterestingForModels(Callable c) {
   isInTestFile(c.getCompilationUnit().getFile()) or
   isInternal(c.getCompilationUnit()) or
   c instanceof MainMethod or
+  c instanceof CloneMethod or
   c instanceof ToStringMethod or
   c instanceof LambdaFlowMethod or
   c instanceof StaticInitializer or
