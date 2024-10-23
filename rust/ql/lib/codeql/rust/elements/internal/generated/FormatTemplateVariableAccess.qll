@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
+import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `FormatTemplateVariableAccess` and should not
@@ -17,7 +17,9 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::FormatTemplateVariableAccess` class directly.
    * Use the subclass `FormatTemplateVariableAccess`, where the following predicates are available.
    */
-  class FormatTemplateVariableAccess extends Synth::TFormatTemplateVariableAccess, ExprImpl::Expr {
+  class FormatTemplateVariableAccess extends Synth::TFormatTemplateVariableAccess,
+    PathExprBaseImpl::PathExprBase
+  {
     override string getAPrimaryQlClass() { result = "FormatTemplateVariableAccess" }
   }
 }

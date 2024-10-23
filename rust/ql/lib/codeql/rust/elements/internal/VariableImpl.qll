@@ -1,7 +1,6 @@
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
-private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-private import codeql.rust.elements.internal.PathExprImpl::Impl as PathExprImpl
+private import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
 private import codeql.rust.elements.internal.FormatTemplateVariableAccessImpl::Impl as FormatTemplateVariableAccessImpl
 private import codeql.util.DenseRank
 
@@ -140,7 +139,7 @@ module Impl {
   }
 
   /** A path expression that may access a local variable. */
-  private class VariableAccessCand extends TVariableAccess {
+  private class VariableAccessCand extends PathExprBase {
     string name_;
 
     VariableAccessCand() {
@@ -448,10 +447,8 @@ module Impl {
 
   private import codeql.rust.elements.internal.generated.Synth
 
-  private class TVariableAccess = Synth::TPathExpr or Synth::TFormatTemplateVariableAccess;
-
   /** A variable access. */
-  abstract class VariableAccess extends ExprImpl::Expr, TVariableAccess instanceof VariableAccessCand
+  abstract class VariableAccess extends PathExprBaseImpl::PathExprBase instanceof VariableAccessCand
   {
     private string name;
     private Variable v;
@@ -467,18 +464,6 @@ module Impl {
     override string toString() { result = name }
 
     override string getAPrimaryQlClass() { result = "VariableAccess" }
-  }
-
-  private class VariableAccessPathExpr extends VariableAccess, PathExprImpl::PathExpr {
-    override string getAPrimaryQlClass() { result = VariableAccess.super.getAPrimaryQlClass() }
-  }
-
-  private class VariableAccessFormatTemplateVariableAccess extends VariableAccess,
-    FormatTemplateVariableAccessImpl::FormatTemplateVariableAccess
-  {
-    override string toString() { result = VariableAccess.super.toString() }
-
-    override string getAPrimaryQlClass() { result = VariableAccess.super.getAPrimaryQlClass() }
   }
 
   /** Holds if `e` occurs in the LHS of an assignment or compound assignment. */

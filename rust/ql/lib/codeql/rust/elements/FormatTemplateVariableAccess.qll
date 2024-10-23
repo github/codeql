@@ -4,6 +4,6 @@
  */
 
 private import internal.FormatTemplateVariableAccessImpl
-import codeql.rust.elements.Expr
+import codeql.rust.elements.PathExprBase
 
 final class FormatTemplateVariableAccess = Impl::FormatTemplateVariableAccess;

@@ -101,7 +101,13 @@ class _:
     """
 
 
-@annotate(PathExpr)
+class PathExprBase(Expr):
+    """
+    A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.
+    """
+
+
+@annotate(PathExpr, replace_bases={Expr: PathExprBase})
 class _:
     """
     A path expression. For example:
@@ -1758,7 +1764,7 @@ class _:
 
 @qltest.skip
 @synth.on_arguments(parent="FormatArgsExpr", index=int, kind=int)
-class FormatTemplateVariableAccess(Expr):
+class FormatTemplateVariableAccess(PathExprBase):
     pass
 
 

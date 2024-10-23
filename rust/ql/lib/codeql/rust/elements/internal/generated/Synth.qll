@@ -647,11 +647,10 @@ module Synth {
   class TExpr =
     TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBlockExpr or
         TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
-        TForExpr or TFormatArgsExpr or TFormatTemplateVariableAccess or TIfExpr or TIndexExpr or
-        TLetExpr or TLiteralExpr or TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or
-        TParenExpr or TPathExpr or TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or
-        TReturnExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or
-        TYieldExpr;
+        TForExpr or TFormatArgsExpr or TIfExpr or TIndexExpr or TLetExpr or TLiteralExpr or
+        TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExprBase or
+        TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTryExpr or
+        TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -693,6 +692,11 @@ module Synth {
     TBoxPat or TConstBlockPat or TIdentPat or TLiteralPat or TMacroPat or TOrPat or TParenPat or
         TPathPat or TRangePat or TRecordPat or TRefPat or TRestPat or TSlicePat or TTuplePat or
         TTupleStructPat or TWildcardPat;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TPathExprBase = TFormatTemplateVariableAccess or TPathExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1804,8 +1808,6 @@ module Synth {
     or
     result = convertFormatArgsExprFromRaw(e)
     or
-    result = convertFormatTemplateVariableAccessFromRaw(e)
-    or
     result = convertIfExprFromRaw(e)
     or
     result = convertIndexExprFromRaw(e)
@@ -1824,7 +1826,7 @@ module Synth {
     or
     result = convertParenExprFromRaw(e)
     or
-    result = convertPathExprFromRaw(e)
+    result = convertPathExprBaseFromRaw(e)
     or
     result = convertPrefixExprFromRaw(e)
     or
@@ -1987,6 +1989,16 @@ module Synth {
     result = convertTupleStructPatFromRaw(e)
     or
     result = convertWildcardPatFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TPathExprBase`, if possible.
+   */
+  TPathExprBase convertPathExprBaseFromRaw(Raw::Element e) {
+    result = convertFormatTemplateVariableAccessFromRaw(e)
+    or
+    result = convertPathExprFromRaw(e)
   }
 
   /**
@@ -3136,8 +3148,6 @@ module Synth {
     or
     result = convertFormatArgsExprToRaw(e)
     or
-    result = convertFormatTemplateVariableAccessToRaw(e)
-    or
     result = convertIfExprToRaw(e)
     or
     result = convertIndexExprToRaw(e)
@@ -3156,7 +3166,7 @@ module Synth {
     or
     result = convertParenExprToRaw(e)
     or
-    result = convertPathExprToRaw(e)
+    result = convertPathExprBaseToRaw(e)
     or
     result = convertPrefixExprToRaw(e)
     or
@@ -3319,6 +3329,16 @@ module Synth {
     result = convertTupleStructPatToRaw(e)
     or
     result = convertWildcardPatToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPathExprBase` to a raw DB element, if possible.
+   */
+  Raw::Element convertPathExprBaseToRaw(TPathExprBase e) {
+    result = convertFormatTemplateVariableAccessToRaw(e)
+    or
+    result = convertPathExprToRaw(e)
   }
 
   /**

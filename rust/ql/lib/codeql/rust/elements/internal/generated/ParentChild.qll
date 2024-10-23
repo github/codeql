@@ -1790,21 +1790,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfFormatTemplateVariableAccess(
-    FormatTemplateVariableAccess e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bExpr, int n |
-      b = 0 and
-      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
-      (
-        none()
-        or
-        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfIdentPat(IdentPat e, int index, string partialPredicateCall) {
     exists(int b, int bPat, int n, int nAttr, int nName, int nPat |
       b = 0 and
@@ -2257,22 +2242,17 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfPathExpr(PathExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nAttr, int nPath |
+  private Element getImmediateChildOfPathExprBase(
+    PathExprBase e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nPath = nAttr + 1 and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
-        or
-        result = e.getAttr(index - n) and
-        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
-        or
-        index = nAttr and result = e.getPath() and partialPredicateCall = "Path()"
       )
     )
   }
@@ -2983,6 +2963,22 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfFormatTemplateVariableAccess(
+    FormatTemplateVariableAccess e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bPathExprBase, int n |
+      b = 0 and
+      bPathExprBase =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPathExprBase(e, i, _)) | i) and
+      n = bPathExprBase and
+      (
+        none()
+        or
+        result = getImmediateChildOfPathExprBase(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfFunction(Function e, int index, string partialPredicateCall) {
     exists(
       int b, int bAssocItem, int bExternItem, int bItem, int bCallable, int n, int nAbi, int nBody,
@@ -3215,6 +3211,27 @@ private module Impl {
         index = nItemList and result = e.getName() and partialPredicateCall = "Name()"
         or
         index = nName and result = e.getVisibility() and partialPredicateCall = "Visibility()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPathExpr(PathExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bPathExprBase, int n, int nAttr, int nPath |
+      b = 0 and
+      bPathExprBase =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPathExprBase(e, i, _)) | i) and
+      n = bPathExprBase and
+      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nPath = nAttr + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfPathExprBase(e, index - b, partialPredicateCall)
+        or
+        result = e.getAttr(index - n) and
+        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
+        or
+        index = nAttr and result = e.getPath() and partialPredicateCall = "Path()"
       )
     )
   }
@@ -3652,8 +3669,6 @@ private module Impl {
     or
     result = getImmediateChildOfFormatArgsExpr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfFormatTemplateVariableAccess(e, index, partialAccessor)
-    or
     result = getImmediateChildOfIdentPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfIfExpr(e, index, partialAccessor)
@@ -3697,8 +3712,6 @@ private module Impl {
     result = getImmediateChildOfParenPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfParenType(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfPathExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfPathPat(e, index, partialAccessor)
     or
@@ -3768,6 +3781,8 @@ private module Impl {
     or
     result = getImmediateChildOfExternCrate(e, index, partialAccessor)
     or
+    result = getImmediateChildOfFormatTemplateVariableAccess(e, index, partialAccessor)
+    or
     result = getImmediateChildOfFunction(e, index, partialAccessor)
     or
     result = getImmediateChildOfImpl(e, index, partialAccessor)
@@ -3781,6 +3796,8 @@ private module Impl {
     result = getImmediateChildOfMethodCallExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfModule(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPathExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfStatic(e, index, partialAccessor)
     or
