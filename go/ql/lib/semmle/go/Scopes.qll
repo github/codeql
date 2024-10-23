@@ -472,7 +472,7 @@ class Function extends ValueEntity, @functionobject {
   /** Gets a parameter of this function. */
   Parameter getAParameter() { result = this.getParameter(_) }
 
-  /** Gets the `i`th reslt variable of this function. */
+  /** Gets the `i`th result variable of this function. */
   ResultVariable getResult(int i) { result.isResultOf(this.getFuncDecl(), i) }
 
   /** Gets a result variable of this function. */

@@ -32,16 +32,6 @@ module Log {
     override int getFormatStringIndex() { result = 0 }
   }
 
-  private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
-    LogFunction target;
-
-    LogCall() { this = target.getACall() }
-
-    override DataFlow::Node getAMessageComponent() {
-      result = this.getSyntacticArgument(any(int i | i >= target.getFirstPrintedArg()))
-    }
-  }
-
   /** A fatal log function, which calls `os.Exit`. */
   private class FatalLogFunction extends Function {
     FatalLogFunction() { this.hasQualifiedName("log", ["Fatal", "Fatalf", "Fatalln"]) }

@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/davecgh/go-spew/spew", "", True, "Dump", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["github.com/davecgh/go-spew/spew", "", True, "Errorf", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["github.com/davecgh/go-spew/spew", "", True, "Fdump", "", "", "Argument[1]", "log-injection", "manual"]
+      - ["github.com/davecgh/go-spew/spew", "", True, "Fprint", "", "", "Argument[1]", "log-injection", "manual"]
+      - ["github.com/davecgh/go-spew/spew", "", True, "Fprintf", "", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["github.com/davecgh/go-spew/spew", "", True, "Fprintln", "", "", "Argument[1]", "log-injection", "manual"]
+      - ["github.com/davecgh/go-spew/spew", "", True, "Print", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["github.com/davecgh/go-spew/spew", "", True, "Printf", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["github.com/davecgh/go-spew/spew", "", True, "Println", "", "", "Argument[0]", "log-injection", "manual"]
