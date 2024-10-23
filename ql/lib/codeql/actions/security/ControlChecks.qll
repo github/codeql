@@ -159,14 +159,16 @@ abstract class CommentVsHeadDateCheck extends ControlCheck {
 
 /* Specific implementations of control checks */
 class LabelIfCheck extends LabelCheck instanceof If {
+  string condition;
+
   LabelIfCheck() {
-    // eg: contains(github.event.pull_request.labels.*.name, 'safe to test')
-    // eg: github.event.label.name == 'safe to test'
-    exists(
-      normalizeExpr(this.getCondition())
-          .regexpFind([
-              "\\bgithub\\.event\\.pull_request\\.labels\\b", "\\bgithub\\.event\\.label\\.name\\b"
-            ], _, _)
+    condition = normalizeExpr(this.getCondition()) and
+    (
+      // eg: contains(github.event.pull_request.labels.*.name, 'safe to test')
+      condition.regexpMatch("(^|[^!])contains\\(\\s*github\\.event\\.pull_request\\.labels\\b.*")
+      or
+      // eg: github.event.label.name == 'safe to test'
+      condition.regexpMatch(".*\\bgithub\\.event\\.label\\.name\\s*==.*")
     )
   }
 }

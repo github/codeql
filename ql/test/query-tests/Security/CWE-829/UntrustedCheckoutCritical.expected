@@ -101,10 +101,14 @@ edges
 | .github/workflows/issue_comment_octokit.yml:66:9:79:6 | Uses Step: sha | .github/workflows/issue_comment_octokit.yml:79:9:83:2 | Uses Step |
 | .github/workflows/issue_comment_octokit.yml:87:9:95:6 | Uses Step: sha | .github/workflows/issue_comment_octokit.yml:95:9:100:2 | Uses Step |
 | .github/workflows/issue_comment_octokit.yml:103:9:109:6 | Uses Step: request | .github/workflows/issue_comment_octokit.yml:109:9:114:66 | Uses Step |
-| .github/workflows/label_trusted_checkout.yml:11:7:15:4 | Uses Step | .github/workflows/label_trusted_checkout.yml:15:7:16:4 | Uses Step |
-| .github/workflows/label_trusted_checkout.yml:15:7:16:4 | Uses Step | .github/workflows/label_trusted_checkout.yml:16:7:20:4 | Run Step |
-| .github/workflows/label_trusted_checkout.yml:16:7:20:4 | Run Step | .github/workflows/label_trusted_checkout.yml:20:7:24:4 | Uses Step |
-| .github/workflows/label_trusted_checkout.yml:20:7:24:4 | Uses Step | .github/workflows/label_trusted_checkout.yml:24:7:27:21 | Uses Step |
+| .github/workflows/label_trusted_checkout1.yml:11:7:15:4 | Uses Step | .github/workflows/label_trusted_checkout1.yml:15:7:16:4 | Uses Step |
+| .github/workflows/label_trusted_checkout1.yml:15:7:16:4 | Uses Step | .github/workflows/label_trusted_checkout1.yml:16:7:20:4 | Run Step |
+| .github/workflows/label_trusted_checkout1.yml:16:7:20:4 | Run Step | .github/workflows/label_trusted_checkout1.yml:20:7:24:4 | Uses Step |
+| .github/workflows/label_trusted_checkout1.yml:20:7:24:4 | Uses Step | .github/workflows/label_trusted_checkout1.yml:24:7:27:21 | Uses Step |
+| .github/workflows/label_trusted_checkout2.yml:12:7:16:4 | Uses Step | .github/workflows/label_trusted_checkout2.yml:16:7:17:4 | Uses Step |
+| .github/workflows/label_trusted_checkout2.yml:16:7:17:4 | Uses Step | .github/workflows/label_trusted_checkout2.yml:17:7:21:4 | Run Step |
+| .github/workflows/label_trusted_checkout2.yml:17:7:21:4 | Run Step | .github/workflows/label_trusted_checkout2.yml:21:7:25:4 | Uses Step |
+| .github/workflows/label_trusted_checkout2.yml:21:7:25:4 | Uses Step | .github/workflows/label_trusted_checkout2.yml:25:7:28:21 | Uses Step |
 | .github/workflows/level0.yml:33:9:36:6 | Uses Step | .github/workflows/level0.yml:36:9:39:6 | Uses Step |
 | .github/workflows/level0.yml:36:9:39:6 | Uses Step | .github/workflows/level0.yml:39:9:52:2 | Run Step: check_profanities |
 | .github/workflows/level0.yml:62:9:65:6 | Uses Step | .github/workflows/level0.yml:65:9:86:2 | Uses Step |
@@ -310,6 +314,7 @@ edges
 | .github/workflows/auto_ci.yml:84:9:93:6 | Run Step | .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:84:9:93:6 | Run Step | Execution of untrusted code on a privileged workflow ($@) | .github/workflows/auto_ci.yml:6:3:6:21 | pull_request_target | .github/workflows/auto_ci.yml |
 | .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone | .github/workflows/dependabot3.yml:15:9:20:6 | Uses Step | .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone | Execution of untrusted code on a privileged workflow ($@) | .github/workflows/dependabot3.yml:3:5:3:23 | pull_request_target | .github/workflows/dependabot3.yml |
 | .github/workflows/gitcheckout.yml:21:11:23:22 | Run Step | .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step | .github/workflows/gitcheckout.yml:21:11:23:22 | Run Step | Execution of untrusted code on a privileged workflow ($@) | .github/workflows/gitcheckout.yml:2:3:2:21 | pull_request_target | .github/workflows/gitcheckout.yml |
+| .github/workflows/label_trusted_checkout2.yml:17:7:21:4 | Run Step | .github/workflows/label_trusted_checkout2.yml:12:7:16:4 | Uses Step | .github/workflows/label_trusted_checkout2.yml:17:7:21:4 | Run Step | Execution of untrusted code on a privileged workflow ($@) | .github/workflows/label_trusted_checkout2.yml:2:3:2:21 | pull_request_target | .github/workflows/label_trusted_checkout2.yml |
 | .github/workflows/level0.yml:107:9:112:2 | Run Step | .github/workflows/level0.yml:99:9:103:6 | Uses Step | .github/workflows/level0.yml:107:9:112:2 | Run Step | Execution of untrusted code on a privileged workflow ($@) | .github/workflows/level0.yml:3:3:3:8 | issues | .github/workflows/level0.yml |
 | .github/workflows/level0.yml:107:9:112:2 | Run Step | .github/workflows/level0.yml:99:9:103:6 | Uses Step | .github/workflows/level0.yml:107:9:112:2 | Run Step | Execution of untrusted code on a privileged workflow ($@) | .github/workflows/level0.yml:5:3:5:15 | issue_comment | .github/workflows/level0.yml |
 | .github/workflows/level0.yml:107:9:112:2 | Run Step | .github/workflows/level0.yml:99:9:103:6 | Uses Step | .github/workflows/level0.yml:107:9:112:2 | Run Step | Execution of untrusted code on a privileged workflow ($@) | .github/workflows/level0.yml:7:3:7:21 | pull_request_target | .github/workflows/level0.yml |
