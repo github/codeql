@@ -3460,7 +3460,8 @@ class TranslatedVarArg extends TranslatedNonConstantExpr {
 
   final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = VarArgsVAListLoadTag() and
-    (kind instanceof GotoEdge and result = this.getInstruction(VarArgsArgAddressTag()))
+    kind instanceof GotoEdge and
+    result = this.getInstruction(VarArgsArgAddressTag())
     or
     tag = VarArgsArgAddressTag() and
     kind instanceof GotoEdge and
