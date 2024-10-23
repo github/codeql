@@ -316,13 +316,13 @@ module SourceSinkInterpretationInput implements
   }
 
   private DataFlow::Node skipImplicitFieldReads(DataFlow::Node n) {
-    not exists(getImplicitFieldReadInstruction(n)) and result = n
+    not exists(lookThroughImplicitFieldRead(n)) and result = n
     or
-    result = skipImplicitFieldReads(getImplicitFieldReadInstruction(n))
+    result = skipImplicitFieldReads(lookThroughImplicitFieldRead(n))
   }
 
   pragma[inline]
-  private DataFlow::Node getImplicitFieldReadInstruction(DataFlow::Node n) {
+  private DataFlow::Node lookThroughImplicitFieldRead(DataFlow::Node n) {
     result.asInstruction() =
       n.(DataFlow::InstructionNode)
           .asInstruction()
