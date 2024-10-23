@@ -1,0 +1,2 @@
+| gen_trait.rs:3:1:8:1 | Trait | gen_trait.rs:4:7:4:18 | Name |
+| gen_trait.rs:10:1:10:53 | Trait | gen_trait.rs:10:7:10:9 | Name |

@@ -1,0 +1,2 @@
+| gen_trait.rs:3:1:8:1 | Trait | hasCanonicalPath: | yes | hasCrateOrigin: | yes | hasAssocItemList: | yes | getNumberOfAttrs: | 0 | hasGenericParamList: | no | isAuto: | no | isUnsafe: | no | hasName: | yes | hasTypeBoundList: | no | hasVisibility: | no | hasWhereClause: | no |
+| gen_trait.rs:10:1:10:53 | Trait | hasCanonicalPath: | yes | hasCrateOrigin: | yes | hasAssocItemList: | yes | getNumberOfAttrs: | 0 | hasGenericParamList: | yes | isAuto: | no | isUnsafe: | no | hasName: | yes | hasTypeBoundList: | no | hasVisibility: | no | hasWhereClause: | yes |

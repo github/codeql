@@ -1,0 +1,24 @@
+| canonical_paths.rs:1:1:23:1 | Module | None |
+| canonical_paths.rs:2:5:2:22 | Struct | crate::canonical_paths::a::Struct |
+| canonical_paths.rs:4:5:6:5 | Trait | crate::canonical_paths::a::Trait |
+| canonical_paths.rs:5:9:5:20 | f | crate::canonical_paths::a::Trait::f |
+| canonical_paths.rs:8:5:10:5 | Impl | None |
+| canonical_paths.rs:9:9:9:22 | f | <crate::canonical_paths::a::Struct as crate::canonical_paths::a::Trait>::f |
+| canonical_paths.rs:12:5:14:5 | Impl | None |
+| canonical_paths.rs:13:9:13:22 | g | <crate::canonical_paths::a::Struct>::g |
+| canonical_paths.rs:16:5:18:5 | Trait | crate::canonical_paths::a::TraitWithBlanketImpl |
+| canonical_paths.rs:17:9:17:20 | h | crate::canonical_paths::a::TraitWithBlanketImpl::h |
+| canonical_paths.rs:20:5:22:5 | Impl | None |
+| canonical_paths.rs:21:9:21:22 | h | <_ as crate::canonical_paths::a::TraitWithBlanketImpl>::h |
+| canonical_paths.rs:25:1:45:1 | Module | None |
+| canonical_paths.rs:26:5:44:5 | canonicals | crate::canonical_paths::without::canonicals |
+| canonical_paths.rs:27:9:27:27 | Struct | crate::OtherStruct |
+| canonical_paths.rs:29:9:31:9 | Trait | crate::OtherTrait |
+| canonical_paths.rs:30:13:30:24 | g | crate::OtherTrait::g |
+| canonical_paths.rs:33:9:35:9 | Impl | None |
+| canonical_paths.rs:34:13:34:26 | g | <crate::OtherStruct as crate::OtherTrait>::g |
+| canonical_paths.rs:37:9:39:9 | Impl | None |
+| canonical_paths.rs:38:13:38:26 | g | None |
+| canonical_paths.rs:41:9:43:9 | Impl | None |
+| canonical_paths.rs:42:13:42:26 | f | <crate::OtherStruct>::f |
+| lib.rs:2:1:2:20 | Module | None |

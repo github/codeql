@@ -3,12 +3,14 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  Trait x, string hasAssocItemList, int getNumberOfAttrs, string hasGenericParamList, string isAuto,
-  string isUnsafe, string hasName, string hasTypeBoundList, string hasVisibility,
-  string hasWhereClause
+  Trait x, string hasCanonicalPath, string hasCrateOrigin, string hasAssocItemList,
+  int getNumberOfAttrs, string hasGenericParamList, string isAuto, string isUnsafe, string hasName,
+  string hasTypeBoundList, string hasVisibility, string hasWhereClause
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasCanonicalPath() then hasCanonicalPath = "yes" else hasCanonicalPath = "no") and
+  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
   (if x.hasAssocItemList() then hasAssocItemList = "yes" else hasAssocItemList = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
@@ -18,7 +20,8 @@ where
   (if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no") and
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "hasAssocItemList:", hasAssocItemList, "getNumberOfAttrs:", getNumberOfAttrs,
+select x, "hasCanonicalPath:", hasCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
+  "hasAssocItemList:", hasAssocItemList, "getNumberOfAttrs:", getNumberOfAttrs,
   "hasGenericParamList:", hasGenericParamList, "isAuto:", isAuto, "isUnsafe:", isUnsafe, "hasName:",
   hasName, "hasTypeBoundList:", hasTypeBoundList, "hasVisibility:", hasVisibility,
   "hasWhereClause:", hasWhereClause

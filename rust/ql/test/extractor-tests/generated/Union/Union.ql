@@ -3,17 +3,21 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  Union x, int getNumberOfAttrs, string hasGenericParamList, string hasName,
-  string hasRecordFieldList, string hasVisibility, string hasWhereClause
+  Union x, string hasCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
+  string hasGenericParamList, string hasName, string hasRecordFieldList, string hasVisibility,
+  string hasWhereClause
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasCanonicalPath() then hasCanonicalPath = "yes" else hasCanonicalPath = "no") and
+  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
   (if x.hasRecordFieldList() then hasRecordFieldList = "yes" else hasRecordFieldList = "no") and
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList,
-  "hasName:", hasName, "hasRecordFieldList:", hasRecordFieldList, "hasVisibility:", hasVisibility,
+select x, "hasCanonicalPath:", hasCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
+  "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList, "hasName:",
+  hasName, "hasRecordFieldList:", hasRecordFieldList, "hasVisibility:", hasVisibility,
   "hasWhereClause:", hasWhereClause

@@ -2,7 +2,8 @@
 
 #![cfg_attr(any(), rustfmt::skip)]
 
-use super::base::{TextValue, Translator};
+use super::base::Translator;
+use super::mappings::TextValue;
 use crate::emit_detached;
 use crate::generated;
 use crate::trap::{Label, TrapId};

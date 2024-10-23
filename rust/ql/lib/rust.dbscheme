@@ -1843,6 +1843,18 @@ infer_types(
 | @use
 ;
 
+#keyset[id]
+item_canonical_paths(
+  int id: @item ref,
+  string canonical_path: string ref
+);
+
+#keyset[id]
+item_crate_origins(
+  int id: @item ref,
+  string crate_origin: string ref
+);
+
 let_exprs(
   unique int id: @let_expr
 );

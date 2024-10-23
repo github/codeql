@@ -21,5 +21,33 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Item` class directly.
    * Use the subclass `Item`, where the following predicates are available.
    */
-  class Item extends Synth::TItem, StmtImpl::Stmt { }
+  class Item extends Synth::TItem, StmtImpl::Stmt {
+    /**
+     * Gets the canonical path of this item, if it exists.
+     *
+     * See https://doc.rust-lang.org/reference/paths.html#canonical-paths.
+     */
+    string getCanonicalPath() {
+      result = Synth::convertItemToRaw(this).(Raw::Item).getCanonicalPath()
+    }
+
+    /**
+     * Holds if `getCanonicalPath()` exists.
+     */
+    final predicate hasCanonicalPath() { exists(this.getCanonicalPath()) }
+
+    /**
+     * Gets the crate origin of this item, if it exists.
+     *
+     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
+     * INTERNAL: Do not use.
+     */
+    string getCrateOrigin() { result = Synth::convertItemToRaw(this).(Raw::Item).getCrateOrigin() }
+
+    /**
+     * Holds if `getCrateOrigin()` exists.
+     * INTERNAL: Do not use.
+     */
+    final predicate hasCrateOrigin() { exists(this.getCrateOrigin()) }
+  }
 }

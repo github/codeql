@@ -1,17 +1,20 @@
+use super::mappings::{AddressableAst, AddressableHir};
 use crate::generated::MacroCall;
 use crate::generated::{self};
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use codeql_extractor::trap::{self};
 use log::Level;
+use ra_ap_base_db::CrateOrigin;
 use ra_ap_hir::db::ExpandDatabase;
-use ra_ap_hir::Semantics;
+use ra_ap_hir::{Adt, ItemContainer, Module, Semantics, Type};
+use ra_ap_hir_def::type_ref::Mutability;
 use ra_ap_hir_expand::ExpandTo;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::{EditionedFileId, TextSize};
-use ra_ap_syntax::ast::RangeItem;
+use ra_ap_syntax::ast::HasName;
 use ra_ap_syntax::{
     ast, AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken,
     TextRange,
@@ -20,60 +23,25 @@ use ra_ap_syntax::{
 #[macro_export]
 macro_rules! emit_detached {
     (MacroCall, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_macro_call_expanded(&$node, $label.into());
+        $self.extract_macro_call_expanded(&$node, $label);
     };
+    (Function, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_canonical_origin(&$node, $label.into());
+    };
+    (Trait, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_canonical_origin(&$node, $label.into());
+    };
+    (Struct, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_canonical_origin(&$node, $label.into());
+    };
+    (Enum, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_canonical_origin(&$node, $label.into());
+    };
+    (Union, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_canonical_origin(&$node, $label.into());
+    };
+    // TODO canonical origin of other items
     ($($_:tt)*) => {};
-}
-
-pub trait TextValue {
-    fn try_get_text(&self) -> Option<String>;
-}
-
-impl TextValue for ast::Lifetime {
-    fn try_get_text(&self) -> Option<String> {
-        self.text().to_string().into()
-    }
-}
-impl TextValue for ast::Name {
-    fn try_get_text(&self) -> Option<String> {
-        self.text().to_string().into()
-    }
-}
-impl TextValue for ast::Literal {
-    fn try_get_text(&self) -> Option<String> {
-        self.token().text().to_string().into()
-    }
-}
-impl TextValue for ast::NameRef {
-    fn try_get_text(&self) -> Option<String> {
-        self.text().to_string().into()
-    }
-}
-impl TextValue for ast::Abi {
-    fn try_get_text(&self) -> Option<String> {
-        self.abi_string().map(|x| x.to_string())
-    }
-}
-
-impl TextValue for ast::BinExpr {
-    fn try_get_text(&self) -> Option<String> {
-        self.op_token().map(|x| x.text().to_string())
-    }
-}
-impl TextValue for ast::PrefixExpr {
-    fn try_get_text(&self) -> Option<String> {
-        self.op_token().map(|x| x.text().to_string())
-    }
-}
-impl TextValue for ast::RangeExpr {
-    fn try_get_text(&self) -> Option<String> {
-        self.op_token().map(|x| x.text().to_string())
-    }
-}
-impl TextValue for ast::RangePat {
-    fn try_get_text(&self) -> Option<String> {
-        self.op_token().map(|x| x.text().to_string())
-    }
 }
 
 pub struct Translator<'a> {
@@ -327,5 +295,115 @@ impl<'a> Translator<'a> {
                 ),
             );
         }
+    }
+    fn canonical_path_from_type(&self, ty: Type) -> Option<String> {
+        let sema = self.semantics.as_ref().unwrap();
+        // rust-analyzer doesn't provide a type enum directly
+        if let Some(it) = ty.as_adt() {
+            return match it {
+                Adt::Struct(it) => self.canonical_path_from_hir(it),
+                Adt::Union(it) => self.canonical_path_from_hir(it),
+                Adt::Enum(it) => self.canonical_path_from_hir(it),
+            };
+        };
+        if let Some((it, size)) = ty.as_array(sema.db) {
+            return self
+                .canonical_path_from_type(it)
+                .map(|p| format!("[{p}; {size}]"));
+        }
+        if let Some(it) = ty.as_slice() {
+            return self
+                .canonical_path_from_type(it)
+                .map(|p| format!("[{}]", p));
+        }
+        if let Some(it) = ty.as_builtin() {
+            return Some(it.name().as_str().to_owned());
+        }
+        if let Some(it) = ty.as_dyn_trait() {
+            return self.canonical_path_from_hir(it).map(|p| format!("dyn {p}"));
+        }
+        if let Some((it, mutability)) = ty.as_reference() {
+            let mut_str = match mutability {
+                Mutability::Shared => "",
+                Mutability::Mut => "mut ",
+            };
+            return self
+                .canonical_path_from_type(it)
+                .map(|p| format!("&{mut_str}{p}"));
+        }
+        if let Some(it) = ty.as_impl_traits(sema.db) {
+            let paths = it
+                .map(|t| self.canonical_path_from_hir(t))
+                .collect::<Option<Vec<_>>>()?;
+            return Some(format!("impl {}", paths.join(" + ")));
+        }
+        if let Some(it) = ty.as_type_param(sema.db) {
+            // from the canonical path perspective, we just want a special name
+            // e.g. `crate::<_ as SomeTrait>::func`
+            return Some("_".to_owned());
+        }
+        None
+    }
+
+    fn canonical_path_from_hir_module(&self, item: Module) -> Option<String> {
+        if item.is_crate_root() {
+            return Some("crate".into());
+        }
+        self.canonical_path_from_hir::<ast::Module>(item)
+    }
+
+    fn canonical_path_from_hir<T: AstNode>(&self, item: impl AddressableHir<T>) -> Option<String> {
+        // if we have a Hir entity, it means we have semantics
+        let sema = self.semantics.as_ref().unwrap();
+        let name = item.name(sema)?;
+        let container = item.container(sema.db);
+        let prefix = match container {
+            ItemContainer::Trait(it) => self.canonical_path_from_hir(it),
+            ItemContainer::Impl(it) => {
+                let ty = self.canonical_path_from_type(it.self_ty(sema.db))?;
+                if let Some(trait_) = it.trait_(sema.db) {
+                    let tr = self.canonical_path_from_hir(trait_)?;
+                    Some(format!("<{ty} as {tr}>"))
+                } else {
+                    Some(format!("<{ty}>"))
+                }
+            }
+            ItemContainer::Module(it) => self.canonical_path_from_hir_module(it),
+            ItemContainer::ExternBlock() | ItemContainer::Crate(_) => Some("".to_owned()),
+        }?;
+        Some(format!("{prefix}::{name}"))
+    }
+
+    fn origin_from_hir<T: AstNode>(&self, item: impl AddressableHir<T>) -> String {
+        // if we have a Hir entity, it means we have semantics
+        let sema = self.semantics.as_ref().unwrap();
+        match item.module(sema).krate().origin(sema.db) {
+            CrateOrigin::Rustc { name } => format!("rustc:{}", name),
+            CrateOrigin::Local { repo, name } => format!(
+                "repo:{}:{}",
+                repo.unwrap_or_default(),
+                name.map(|s| s.as_str().to_owned()).unwrap_or_default()
+            ),
+            CrateOrigin::Library { repo, name } => {
+                format!("repo:{}:{}", repo.unwrap_or_default(), name)
+            }
+            CrateOrigin::Lang(it) => format!("lang:{}", it),
+        }
+    }
+
+    pub(crate) fn extract_canonical_origin<T: AddressableAst + HasName>(
+        &mut self,
+        item: &T,
+        label: Label<generated::Item>,
+    ) {
+        (|| {
+            let sema = self.semantics.as_ref()?;
+            let def = T::Hir::try_from_source(item, sema)?;
+            let path = self.canonical_path_from_hir(def)?;
+            let origin = self.origin_from_hir(def);
+            generated::Item::emit_crate_origin(label, origin, &mut self.trap.writer);
+            generated::Item::emit_canonical_path(label, path, &mut self.trap.writer);
+            Some(())
+        })();
     }
 }

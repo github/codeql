@@ -13,10 +13,7 @@ private import codeql.rust.elements.internal.generated.AssocItemList
  */
 module Impl {
   /**
-   * A AssocItemList. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A list of  `AssocItem` elements, as appearing for example in a `Trait`.
    */
   class AssocItemList extends Generated::AssocItemList { }
 }

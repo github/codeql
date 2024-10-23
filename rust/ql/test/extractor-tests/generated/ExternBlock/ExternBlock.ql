@@ -2,13 +2,18 @@
 import codeql.rust.elements
 import TestUtils
 
-from ExternBlock x, string hasAbi, int getNumberOfAttrs, string hasExternItemList, string isUnsafe
+from
+  ExternBlock x, string hasCanonicalPath, string hasCrateOrigin, string hasAbi,
+  int getNumberOfAttrs, string hasExternItemList, string isUnsafe
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasCanonicalPath() then hasCanonicalPath = "yes" else hasCanonicalPath = "no") and
+  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
   (if x.hasAbi() then hasAbi = "yes" else hasAbi = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasExternItemList() then hasExternItemList = "yes" else hasExternItemList = "no") and
   if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
-select x, "hasAbi:", hasAbi, "getNumberOfAttrs:", getNumberOfAttrs, "hasExternItemList:",
-  hasExternItemList, "isUnsafe:", isUnsafe
+select x, "hasCanonicalPath:", hasCanonicalPath, "hasCrateOrigin:", hasCrateOrigin, "hasAbi:",
+  hasAbi, "getNumberOfAttrs:", getNumberOfAttrs, "hasExternItemList:", hasExternItemList,
+  "isUnsafe:", isUnsafe

@@ -33,6 +33,10 @@ fn extract(
     let line_index = LineIndex::new(text.as_ref());
     let display_path = file.to_string_lossy();
     let mut trap = traps.create("source", file);
+    trap.writer.comment(format!(
+        "semantics: {}",
+        if semantics.is_some() { "yes" } else { "no" }
+    ));
     let label = trap.emit_file(file);
     let mut translator = translate::Translator::new(
         trap,
