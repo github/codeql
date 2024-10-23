@@ -83,6 +83,8 @@ module DomBasedXssConfig implements DataFlow::StateConfigSig {
     node = DataFlow::MakeLabeledBarrierGuard<BarrierGuard>::getABarrierNode(lbl)
   }
 
+  predicate isBarrierIn(DataFlow::Node node, DataFlow::FlowLabel label) { isSource(node, label) }
+
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, DataFlow::FlowLabel state1, DataFlow::Node node2,
     DataFlow::FlowLabel state2

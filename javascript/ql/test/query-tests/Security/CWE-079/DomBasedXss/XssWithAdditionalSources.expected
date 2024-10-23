@@ -263,10 +263,6 @@ nodes
 | react-use-router.js:8:21:8:39 | router.query.foobar | semmle.label | router.query.foobar |
 | react-use-router.js:11:24:11:35 | router.query | semmle.label | router.query |
 | react-use-router.js:11:24:11:42 | router.query.foobar | semmle.label | router.query.foobar |
-| react-use-router.js:23:31:23:36 | [post update] router | semmle.label | [post update] router |
-| react-use-router.js:23:31:23:36 | [post update] router [ArrayElement] | semmle.label | [post update] router [ArrayElement] |
-| react-use-router.js:23:43:23:48 | router | semmle.label | router |
-| react-use-router.js:23:43:23:48 | router [ArrayElement] | semmle.label | router [ArrayElement] |
 | react-use-router.js:23:43:23:54 | router.query | semmle.label | router.query |
 | react-use-router.js:23:43:23:61 | router.query.foobar | semmle.label | router.query.foobar |
 | react-use-router.js:33:21:33:32 | router.query | semmle.label | router.query |
@@ -506,8 +502,6 @@ nodes
 | tst.js:371:16:371:39 | documen ... .search | semmle.label | documen ... .search |
 | tst.js:374:18:374:23 | target | semmle.label | target |
 | tst.js:381:7:381:39 | target | semmle.label | target |
-| tst.js:381:7:381:39 | target [taint3] | semmle.label | target [taint3] |
-| tst.js:381:7:381:39 | target [taint8] | semmle.label | target [taint8] |
 | tst.js:381:16:381:39 | documen ... .search | semmle.label | documen ... .search |
 | tst.js:384:18:384:23 | target | semmle.label | target |
 | tst.js:386:18:386:23 | target | semmle.label | target |
@@ -848,13 +842,7 @@ edges
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted | provenance |  |
 | react-use-router.js:8:21:8:32 | router.query | react-use-router.js:8:21:8:39 | router.query.foobar | provenance |  |
 | react-use-router.js:11:24:11:35 | router.query | react-use-router.js:11:24:11:42 | router.query.foobar | provenance |  |
-| react-use-router.js:23:31:23:36 | [post update] router | react-use-router.js:23:43:23:48 | router | provenance |  |
-| react-use-router.js:23:31:23:36 | [post update] router [ArrayElement] | react-use-router.js:23:43:23:48 | router [ArrayElement] | provenance |  |
-| react-use-router.js:23:43:23:48 | router | react-use-router.js:23:43:23:54 | router.query | provenance |  |
-| react-use-router.js:23:43:23:48 | router [ArrayElement] | react-use-router.js:23:43:23:54 | router.query | provenance |  |
 | react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar | provenance |  |
-| react-use-router.js:23:43:23:61 | router.query.foobar | react-use-router.js:23:31:23:36 | [post update] router | provenance |  |
-| react-use-router.js:23:43:23:61 | router.query.foobar | react-use-router.js:23:31:23:36 | [post update] router [ArrayElement] | provenance |  |
 | react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar | provenance |  |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state | provenance |  |
 | react-use-state.js:4:38:4:48 | window.name | react-use-state.js:4:9:4:49 | state | provenance |  |
@@ -1049,17 +1037,15 @@ edges
 | tst.js:381:7:381:39 | target | tst.js:397:18:397:23 | target | provenance |  |
 | tst.js:381:7:381:39 | target | tst.js:406:18:406:23 | target | provenance |  |
 | tst.js:381:7:381:39 | target | tst.js:408:19:408:24 | target | provenance |  |
-| tst.js:381:7:381:39 | target [taint3] | tst.js:392:18:392:23 | target [taint3] | provenance |  |
-| tst.js:381:7:381:39 | target [taint8] | tst.js:408:19:408:24 | target [taint8] | provenance |  |
-| tst.js:381:7:381:39 | target [taint8] | tst.js:409:18:409:23 | target [taint8] | provenance |  |
 | tst.js:381:16:381:39 | documen ... .search | tst.js:381:7:381:39 | target | provenance |  |
 | tst.js:386:18:386:23 | target | tst.js:386:18:386:29 | target.taint | provenance |  |
-| tst.js:391:3:391:8 | [post update] target [taint3] | tst.js:381:7:381:39 | target [taint3] | provenance |  |
+| tst.js:391:3:391:8 | [post update] target [taint3] | tst.js:392:18:392:23 | target [taint3] | provenance |  |
 | tst.js:391:19:391:42 | documen ... .search | tst.js:391:3:391:8 | [post update] target [taint3] | provenance |  |
 | tst.js:392:18:392:23 | target [taint3] | tst.js:392:18:392:30 | target.taint3 | provenance |  |
 | tst.js:397:18:397:23 | target | tst.js:397:18:397:30 | target.taint5 | provenance |  |
 | tst.js:406:18:406:23 | target | tst.js:406:18:406:30 | target.taint7 | provenance |  |
-| tst.js:408:3:408:8 | [post update] target [taint8] | tst.js:381:7:381:39 | target [taint8] | provenance |  |
+| tst.js:408:3:408:8 | [post update] target [taint8] | tst.js:408:19:408:24 | target [taint8] | provenance |  |
+| tst.js:408:3:408:8 | [post update] target [taint8] | tst.js:409:18:409:23 | target [taint8] | provenance |  |
 | tst.js:408:19:408:24 | target | tst.js:408:19:408:31 | target.taint8 | provenance |  |
 | tst.js:408:19:408:24 | target [taint8] | tst.js:408:19:408:31 | target.taint8 | provenance |  |
 | tst.js:408:19:408:31 | target.taint8 | tst.js:408:3:408:8 | [post update] target [taint8] | provenance |  |
