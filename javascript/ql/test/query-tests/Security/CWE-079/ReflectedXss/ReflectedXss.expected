@@ -44,15 +44,13 @@ edges
 | ReflectedXssGood3.js:68:22:68:26 | value | ReflectedXssGood3.js:105:18:105:22 | value | provenance |  |
 | ReflectedXssGood3.js:77:7:77:37 | parts | ReflectedXssGood3.js:108:10:108:14 | parts | provenance |  |
 | ReflectedXssGood3.js:77:7:77:37 | parts [0] | ReflectedXssGood3.js:108:10:108:14 | parts [0] | provenance |  |
-| ReflectedXssGood3.js:77:7:77:37 | parts [ArrayElement] | ReflectedXssGood3.js:108:10:108:14 | parts [ArrayElement] | provenance |  |
 | ReflectedXssGood3.js:77:15:77:37 | [value. ... (0, i)] [0] | ReflectedXssGood3.js:77:7:77:37 | parts [0] | provenance |  |
 | ReflectedXssGood3.js:77:16:77:20 | value | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | provenance |  |
 | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | ReflectedXssGood3.js:77:7:77:37 | parts | provenance |  |
 | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | ReflectedXssGood3.js:77:15:77:37 | [value. ... (0, i)] [0] | provenance |  |
 | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | provenance |  |
-| ReflectedXssGood3.js:105:7:105:11 | [post update] parts | ReflectedXssGood3.js:77:7:77:37 | parts | provenance |  |
-| ReflectedXssGood3.js:105:7:105:11 | [post update] parts | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | provenance |  |
-| ReflectedXssGood3.js:105:7:105:11 | [post update] parts [ArrayElement] | ReflectedXssGood3.js:77:7:77:37 | parts [ArrayElement] | provenance |  |
+| ReflectedXssGood3.js:105:7:105:11 | [post update] parts | ReflectedXssGood3.js:108:10:108:14 | parts | provenance |  |
+| ReflectedXssGood3.js:105:7:105:11 | [post update] parts [ArrayElement] | ReflectedXssGood3.js:108:10:108:14 | parts [ArrayElement] | provenance |  |
 | ReflectedXssGood3.js:105:18:105:22 | value | ReflectedXssGood3.js:105:18:105:38 | value.s ... g(j, i) | provenance |  |
 | ReflectedXssGood3.js:105:18:105:38 | value.s ... g(j, i) | ReflectedXssGood3.js:105:7:105:11 | [post update] parts | provenance |  |
 | ReflectedXssGood3.js:105:18:105:38 | value.s ... g(j, i) | ReflectedXssGood3.js:105:7:105:11 | [post update] parts [ArrayElement] | provenance |  |
@@ -103,8 +101,7 @@ edges
 | tst2.js:30:7:30:24 | p | tst2.js:33:11:33:11 | p | provenance |  |
 | tst2.js:30:7:30:24 | p | tst2.js:36:12:36:12 | p | provenance |  |
 | tst2.js:30:9:30:9 | p | tst2.js:30:7:30:24 | p | provenance |  |
-| tst2.js:32:7:32:14 | obj [p] | tst2.js:34:21:34:23 | obj [p] | provenance |  |
-| tst2.js:33:3:33:5 | [post update] obj [p] | tst2.js:32:7:32:14 | obj [p] | provenance |  |
+| tst2.js:33:3:33:5 | [post update] obj [p] | tst2.js:34:21:34:23 | obj [p] | provenance |  |
 | tst2.js:33:11:33:11 | p | tst2.js:33:3:33:5 | [post update] obj [p] | provenance |  |
 | tst2.js:34:7:34:24 | other [p] | tst2.js:37:12:37:16 | other [p] | provenance |  |
 | tst2.js:34:15:34:24 | clone(obj) [p] | tst2.js:34:7:34:24 | other [p] | provenance |  |
@@ -118,8 +115,7 @@ edges
 | tst2.js:57:7:57:24 | p | tst2.js:60:11:60:11 | p | provenance |  |
 | tst2.js:57:7:57:24 | p | tst2.js:63:12:63:12 | p | provenance |  |
 | tst2.js:57:9:57:9 | p | tst2.js:57:7:57:24 | p | provenance |  |
-| tst2.js:59:7:59:14 | obj [p] | tst2.js:61:22:61:24 | obj [p] | provenance |  |
-| tst2.js:60:3:60:5 | [post update] obj [p] | tst2.js:59:7:59:14 | obj [p] | provenance |  |
+| tst2.js:60:3:60:5 | [post update] obj [p] | tst2.js:61:22:61:24 | obj [p] | provenance |  |
 | tst2.js:60:11:60:11 | p | tst2.js:60:3:60:5 | [post update] obj [p] | provenance |  |
 | tst2.js:61:7:61:25 | other [p] | tst2.js:64:12:64:16 | other [p] | provenance |  |
 | tst2.js:61:15:61:25 | fclone(obj) [p] | tst2.js:61:7:61:25 | other [p] | provenance |  |
@@ -128,8 +124,7 @@ edges
 | tst2.js:69:7:69:24 | p | tst2.js:72:11:72:11 | p | provenance |  |
 | tst2.js:69:7:69:24 | p | tst2.js:75:12:75:12 | p | provenance |  |
 | tst2.js:69:9:69:9 | p | tst2.js:69:7:69:24 | p | provenance |  |
-| tst2.js:71:7:71:14 | obj [p] | tst2.js:73:40:73:42 | obj [p] | provenance |  |
-| tst2.js:72:3:72:5 | [post update] obj [p] | tst2.js:71:7:71:14 | obj [p] | provenance |  |
+| tst2.js:72:3:72:5 | [post update] obj [p] | tst2.js:73:40:73:42 | obj [p] | provenance |  |
 | tst2.js:72:11:72:11 | p | tst2.js:72:3:72:5 | [post update] obj [p] | provenance |  |
 | tst2.js:73:7:73:44 | other [p] | tst2.js:76:12:76:16 | other [p] | provenance |  |
 | tst2.js:73:15:73:44 | jc.retr ... e(obj)) [p] | tst2.js:73:7:73:44 | other [p] | provenance |  |
@@ -139,8 +134,7 @@ edges
 | tst2.js:82:7:82:24 | p | tst2.js:85:11:85:11 | p | provenance |  |
 | tst2.js:82:7:82:24 | p | tst2.js:88:12:88:12 | p | provenance |  |
 | tst2.js:82:9:82:9 | p | tst2.js:82:7:82:24 | p | provenance |  |
-| tst2.js:84:7:84:14 | obj [p] | tst2.js:86:24:86:26 | obj [p] | provenance |  |
-| tst2.js:85:3:85:5 | [post update] obj [p] | tst2.js:84:7:84:14 | obj [p] | provenance |  |
+| tst2.js:85:3:85:5 | [post update] obj [p] | tst2.js:86:24:86:26 | obj [p] | provenance |  |
 | tst2.js:85:11:85:11 | p | tst2.js:85:3:85:5 | [post update] obj [p] | provenance |  |
 | tst2.js:86:7:86:27 | other [p] | tst2.js:89:12:89:16 | other [p] | provenance |  |
 | tst2.js:86:15:86:27 | sortKeys(obj) [p] | tst2.js:86:7:86:27 | other [p] | provenance |  |
@@ -220,7 +214,6 @@ nodes
 | ReflectedXssGood3.js:68:22:68:26 | value | semmle.label | value |
 | ReflectedXssGood3.js:77:7:77:37 | parts | semmle.label | parts |
 | ReflectedXssGood3.js:77:7:77:37 | parts [0] | semmle.label | parts [0] |
-| ReflectedXssGood3.js:77:7:77:37 | parts [ArrayElement] | semmle.label | parts [ArrayElement] |
 | ReflectedXssGood3.js:77:15:77:37 | [value. ... (0, i)] [0] | semmle.label | [value. ... (0, i)] [0] |
 | ReflectedXssGood3.js:77:16:77:20 | value | semmle.label | value |
 | ReflectedXssGood3.js:77:16:77:36 | value.s ... g(0, i) | semmle.label | value.s ... g(0, i) |
@@ -290,7 +283,6 @@ nodes
 | tst2.js:21:14:21:14 | p | semmle.label | p |
 | tst2.js:30:7:30:24 | p | semmle.label | p |
 | tst2.js:30:9:30:9 | p | semmle.label | p |
-| tst2.js:32:7:32:14 | obj [p] | semmle.label | obj [p] |
 | tst2.js:33:3:33:5 | [post update] obj [p] | semmle.label | [post update] obj [p] |
 | tst2.js:33:11:33:11 | p | semmle.label | p |
 | tst2.js:34:7:34:24 | other [p] | semmle.label | other [p] |
@@ -307,7 +299,6 @@ nodes
 | tst2.js:51:12:51:17 | unsafe | semmle.label | unsafe |
 | tst2.js:57:7:57:24 | p | semmle.label | p |
 | tst2.js:57:9:57:9 | p | semmle.label | p |
-| tst2.js:59:7:59:14 | obj [p] | semmle.label | obj [p] |
 | tst2.js:60:3:60:5 | [post update] obj [p] | semmle.label | [post update] obj [p] |
 | tst2.js:60:11:60:11 | p | semmle.label | p |
 | tst2.js:61:7:61:25 | other [p] | semmle.label | other [p] |
@@ -318,7 +309,6 @@ nodes
 | tst2.js:64:12:64:18 | other.p | semmle.label | other.p |
 | tst2.js:69:7:69:24 | p | semmle.label | p |
 | tst2.js:69:9:69:9 | p | semmle.label | p |
-| tst2.js:71:7:71:14 | obj [p] | semmle.label | obj [p] |
 | tst2.js:72:3:72:5 | [post update] obj [p] | semmle.label | [post update] obj [p] |
 | tst2.js:72:11:72:11 | p | semmle.label | p |
 | tst2.js:73:7:73:44 | other [p] | semmle.label | other [p] |
@@ -330,7 +320,6 @@ nodes
 | tst2.js:76:12:76:18 | other.p | semmle.label | other.p |
 | tst2.js:82:7:82:24 | p | semmle.label | p |
 | tst2.js:82:9:82:9 | p | semmle.label | p |
-| tst2.js:84:7:84:14 | obj [p] | semmle.label | obj [p] |
 | tst2.js:85:3:85:5 | [post update] obj [p] | semmle.label | [post update] obj [p] |
 | tst2.js:85:11:85:11 | p | semmle.label | p |
 | tst2.js:86:7:86:27 | other [p] | semmle.label | other [p] |

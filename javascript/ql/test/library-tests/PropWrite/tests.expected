@@ -67,10 +67,10 @@ test_PropWriteRhs
 | tst.js:41:18:41:24 | ...arr3 | tst.js:41:18:41:24 | ...arr3 |
 | tst.js:41:27:41:29 | "d" | tst.js:41:27:41:29 | "d" |
 test_PropWriteBase
-| classes.ts:4:3:4:24 | instanc ...  foo(); | classes.ts:3:21:3:20 | this |
-| classes.ts:8:15:8:35 | public  ... erField | classes.ts:8:3:8:2 | this |
-| classes.ts:12:17:12:37 | public  ... erField | classes.ts:12:5:12:4 | this |
-| classes.ts:16:17:16:37 | public  ... erField | classes.ts:16:5:16:4 | this |
+| classes.ts:4:3:4:24 | instanc ...  foo(); | classes.ts:4:3:4:24 | implicit 'this' |
+| classes.ts:8:15:8:35 | public  ... erField | classes.ts:8:15:8:35 | implicit 'this' |
+| classes.ts:12:17:12:37 | public  ... erField | classes.ts:12:17:12:37 | implicit 'this' |
+| classes.ts:16:17:16:37 | public  ... erField | classes.ts:16:17:16:37 | implicit 'this' |
 | tst.js:2:5:2:8 | x: 4 | tst.js:1:11:9:1 | {\\n    x ...     }\\n} |
 | tst.js:3:5:5:5 | func: f ... ;\\n    } | tst.js:1:11:9:1 | {\\n    x ...     }\\n} |
 | tst.js:6:5:8:5 | f() {\\n  ... ;\\n    } | tst.js:1:11:9:1 | {\\n    x ...     }\\n} |

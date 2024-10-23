@@ -6,6 +6,8 @@
 
 private import javascript
 private import semmle.javascript.dataflow.internal.AccessPaths
+private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.javascript.dataflow.internal.sharedlib.Ssa as Ssa2
 
 private signature class BarrierGuardSig extends DataFlow::Node {
   /**
@@ -282,6 +284,22 @@ module MakeStateBarrierGuard<
     )
   }
 
+  private predicate ssa2GuardChecks(
+    Ssa2::SsaDataflowInput::Guard guard, Ssa2::SsaDataflowInput::Expr test, boolean branch,
+    FlowState state
+  ) {
+    exists(BarrierGuard g |
+      g.asExpr() = guard and
+      g.blocksExpr(branch, test, state)
+    )
+  }
+
+  private module Ssa2Barrier = Ssa2::BarrierGuardWithState<FlowState, ssa2GuardChecks/4>;
+
+  private predicate ssa2BlocksNode(DataFlow::Node node, FlowState state) {
+    node = DataFlowPrivate::getNodeFromSsa2(Ssa2Barrier::getABarrierNode(state))
+  }
+
   /** Holds if a barrier guard blocks uses of `ap` in basic blocks dominated by `cond`. */
   pragma[nomagic]
   private predicate barrierGuardBlocksAccessPathIn(
@@ -323,6 +341,8 @@ module MakeStateBarrierGuard<
       barrierGuardBlocksAccessPathUse(use, state) and
       nd = DataFlow::valueNode(use)
     )
+    or
+    ssa2BlocksNode(nd, state)
   }
 
   /**

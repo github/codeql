@@ -1,8 +1,7 @@
 edges
 | FileAccessToHttp.js:4:5:4:47 | content | FileAccessToHttp.js:9:23:9:29 | content | provenance |  |
 | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | FileAccessToHttp.js:4:5:4:47 | content | provenance |  |
-| FileAccessToHttp.js:5:11:10:1 | [post update] {\\n  hos ... ent }\\n} [headers, Referer] | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | provenance |  |
-| FileAccessToHttp.js:9:12:9:31 | { Referer: content } [Referer] | FileAccessToHttp.js:5:11:10:1 | [post update] {\\n  hos ... ent }\\n} [headers, Referer] | provenance |  |
+| FileAccessToHttp.js:9:12:9:31 | { Referer: content } [Referer] | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | provenance |  |
 | FileAccessToHttp.js:9:23:9:29 | content | FileAccessToHttp.js:9:12:9:31 | { Referer: content } [Referer] | provenance |  |
 | bufferRead.js:12:13:12:43 | buffer | bufferRead.js:13:21:13:26 | buffer | provenance |  |
 | bufferRead.js:12:13:12:43 | buffer | bufferRead.js:13:32:13:37 | buffer | provenance |  |
@@ -20,11 +19,9 @@ edges
 | readStreamRead.js:13:13:13:35 | chunk | readStreamRead.js:30:19:30:23 | chunk | provenance |  |
 | readStreamRead.js:13:21:13:35 | readable.read() | readStreamRead.js:13:13:13:35 | chunk | provenance |  |
 | request.js:6:19:6:26 | jsonData | request.js:8:12:8:19 | jsonData | provenance |  |
-| request.js:8:11:8:20 | [post update] {jsonData} [jsonData] | request.js:8:11:8:20 | {jsonData} | provenance |  |
-| request.js:8:12:8:19 | jsonData | request.js:8:11:8:20 | [post update] {jsonData} [jsonData] | provenance |  |
+| request.js:8:12:8:19 | jsonData | request.js:8:11:8:20 | {jsonData} | provenance |  |
 | request.js:13:18:13:24 | xmlData | request.js:22:11:22:17 | xmlData | provenance |  |
-| request.js:16:11:23:3 | [post update] {\\n    u ... ody\\n  } [body] | request.js:16:11:23:3 | {\\n    u ... ody\\n  } | provenance |  |
-| request.js:22:11:22:17 | xmlData | request.js:16:11:23:3 | [post update] {\\n    u ... ody\\n  } [body] | provenance |  |
+| request.js:22:11:22:17 | xmlData | request.js:16:11:23:3 | {\\n    u ... ody\\n  } | provenance |  |
 | request.js:28:52:28:55 | data | request.js:35:14:35:17 | data | provenance |  |
 | request.js:35:14:35:17 | data | request.js:6:19:6:26 | jsonData | provenance |  |
 | request.js:43:51:43:54 | data | request.js:50:13:50:16 | data | provenance |  |
@@ -38,18 +35,15 @@ edges
 | sentAsHeaders.js:12:19:12:25 | content | sentAsHeaders.js:12:19:12:74 | content ... =", "") | provenance |  |
 | sentAsHeaders.js:12:19:12:74 | content ... =", "") | sentAsHeaders.js:12:19:12:81 | content ... .trim() | provenance |  |
 | sentAsHeaders.js:12:19:12:81 | content ... .trim() | sentAsHeaders.js:12:9:12:81 | content | provenance |  |
-| sentAsHeaders.js:14:20:19:9 | [post update] {\\n      ...       } [headers, Referer] | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | provenance |  |
-| sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } [Referer] | sentAsHeaders.js:14:20:19:9 | [post update] {\\n      ...       } [headers, Referer] | provenance |  |
+| sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } [Referer] | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | provenance |  |
 | sentAsHeaders.js:18:31:18:53 | "http:/ ... content | sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } [Referer] | provenance |  |
 | sentAsHeaders.js:18:47:18:53 | content | sentAsHeaders.js:18:31:18:53 | "http:/ ... content | provenance |  |
-| sentAsHeaders.js:20:20:25:9 | [post update] {\\n      ...       } [headers, Referer] | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | provenance |  |
-| sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } [Referer] | sentAsHeaders.js:20:20:25:9 | [post update] {\\n      ...       } [headers, Referer] | provenance |  |
+| sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } [Referer] | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | provenance |  |
 | sentAsHeaders.js:24:31:24:53 | "http:/ ... content | sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } [Referer] | provenance |  |
 | sentAsHeaders.js:24:47:24:53 | content | sentAsHeaders.js:24:31:24:53 | "http:/ ... content | provenance |  |
 nodes
 | FileAccessToHttp.js:4:5:4:47 | content | semmle.label | content |
 | FileAccessToHttp.js:4:15:4:47 | fs.read ... "utf8") | semmle.label | fs.read ... "utf8") |
-| FileAccessToHttp.js:5:11:10:1 | [post update] {\\n  hos ... ent }\\n} [headers, Referer] | semmle.label | [post update] {\\n  hos ... ent }\\n} [headers, Referer] |
 | FileAccessToHttp.js:5:11:10:1 | {\\n  hos ... ent }\\n} | semmle.label | {\\n  hos ... ent }\\n} |
 | FileAccessToHttp.js:9:12:9:31 | { Referer: content } [Referer] | semmle.label | { Referer: content } [Referer] |
 | FileAccessToHttp.js:9:23:9:29 | content | semmle.label | content |
@@ -71,11 +65,9 @@ nodes
 | readStreamRead.js:13:21:13:35 | readable.read() | semmle.label | readable.read() |
 | readStreamRead.js:30:19:30:23 | chunk | semmle.label | chunk |
 | request.js:6:19:6:26 | jsonData | semmle.label | jsonData |
-| request.js:8:11:8:20 | [post update] {jsonData} [jsonData] | semmle.label | [post update] {jsonData} [jsonData] |
 | request.js:8:11:8:20 | {jsonData} | semmle.label | {jsonData} |
 | request.js:8:12:8:19 | jsonData | semmle.label | jsonData |
 | request.js:13:18:13:24 | xmlData | semmle.label | xmlData |
-| request.js:16:11:23:3 | [post update] {\\n    u ... ody\\n  } [body] | semmle.label | [post update] {\\n    u ... ody\\n  } [body] |
 | request.js:16:11:23:3 | {\\n    u ... ody\\n  } | semmle.label | {\\n    u ... ody\\n  } |
 | request.js:22:11:22:17 | xmlData | semmle.label | xmlData |
 | request.js:28:52:28:55 | data | semmle.label | data |
@@ -90,12 +82,10 @@ nodes
 | sentAsHeaders.js:12:19:12:25 | content | semmle.label | content |
 | sentAsHeaders.js:12:19:12:74 | content ... =", "") | semmle.label | content ... =", "") |
 | sentAsHeaders.js:12:19:12:81 | content ... .trim() | semmle.label | content ... .trim() |
-| sentAsHeaders.js:14:20:19:9 | [post update] {\\n      ...       } [headers, Referer] | semmle.label | [post update] {\\n      ...       } [headers, Referer] |
 | sentAsHeaders.js:14:20:19:9 | {\\n      ...       } | semmle.label | {\\n      ...       } |
 | sentAsHeaders.js:18:20:18:55 | { Refer ... ntent } [Referer] | semmle.label | { Refer ... ntent } [Referer] |
 | sentAsHeaders.js:18:31:18:53 | "http:/ ... content | semmle.label | "http:/ ... content |
 | sentAsHeaders.js:18:47:18:53 | content | semmle.label | content |
-| sentAsHeaders.js:20:20:25:9 | [post update] {\\n      ...       } [headers, Referer] | semmle.label | [post update] {\\n      ...       } [headers, Referer] |
 | sentAsHeaders.js:20:20:25:9 | {\\n      ...       } | semmle.label | {\\n      ...       } |
 | sentAsHeaders.js:24:20:24:55 | { Refer ... ntent } [Referer] | semmle.label | { Refer ... ntent } [Referer] |
 | sentAsHeaders.js:24:31:24:53 | "http:/ ... content | semmle.label | "http:/ ... content |

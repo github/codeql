@@ -1,10 +1,8 @@
 edges
 | bad-code-sanitization.js:2:12:2:90 | /^[_$a- ... key)}]` | bad-code-sanitization.js:7:31:7:43 | safeProp(key) | provenance |  |
 | bad-code-sanitization.js:2:69:2:87 | JSON.stringify(key) | bad-code-sanitization.js:2:12:2:90 | /^[_$a- ... key)}]` | provenance |  |
-| bad-code-sanitization.js:6:11:6:25 | statements | bad-code-sanitization.js:8:27:8:36 | statements | provenance |  |
-| bad-code-sanitization.js:6:11:6:25 | statements [ArrayElement] | bad-code-sanitization.js:8:27:8:36 | statements [ArrayElement] | provenance |  |
-| bad-code-sanitization.js:7:5:7:14 | [post update] statements | bad-code-sanitization.js:6:11:6:25 | statements | provenance |  |
-| bad-code-sanitization.js:7:5:7:14 | [post update] statements [ArrayElement] | bad-code-sanitization.js:6:11:6:25 | statements [ArrayElement] | provenance |  |
+| bad-code-sanitization.js:7:5:7:14 | [post update] statements | bad-code-sanitization.js:8:27:8:36 | statements | provenance |  |
+| bad-code-sanitization.js:7:5:7:14 | [post update] statements [ArrayElement] | bad-code-sanitization.js:8:27:8:36 | statements [ArrayElement] | provenance |  |
 | bad-code-sanitization.js:7:21:7:70 | `${name ... key])}` | bad-code-sanitization.js:7:5:7:14 | [post update] statements | provenance |  |
 | bad-code-sanitization.js:7:21:7:70 | `${name ... key])}` | bad-code-sanitization.js:7:5:7:14 | [post update] statements [ArrayElement] | provenance |  |
 | bad-code-sanitization.js:7:31:7:43 | safeProp(key) | bad-code-sanitization.js:7:21:7:70 | `${name ... key])}` | provenance |  |
@@ -15,8 +13,6 @@ edges
 nodes
 | bad-code-sanitization.js:2:12:2:90 | /^[_$a- ... key)}]` | semmle.label | /^[_$a- ... key)}]` |
 | bad-code-sanitization.js:2:69:2:87 | JSON.stringify(key) | semmle.label | JSON.stringify(key) |
-| bad-code-sanitization.js:6:11:6:25 | statements | semmle.label | statements |
-| bad-code-sanitization.js:6:11:6:25 | statements [ArrayElement] | semmle.label | statements [ArrayElement] |
 | bad-code-sanitization.js:7:5:7:14 | [post update] statements | semmle.label | [post update] statements |
 | bad-code-sanitization.js:7:5:7:14 | [post update] statements [ArrayElement] | semmle.label | [post update] statements [ArrayElement] |
 | bad-code-sanitization.js:7:21:7:70 | `${name ... key])}` | semmle.label | `${name ... key])}` |

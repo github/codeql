@@ -5,13 +5,16 @@
  */
 
 private import javascript
+private import codeql.util.Boolean
 private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
 private import semmle.javascript.dataflow.internal.Contents::Private
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
+private import semmle.javascript.dataflow.internal.sharedlib.Ssa as Ssa2
 private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.javascript.dataflow.internal.sharedlib.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
 private import semmle.javascript.dataflow.internal.VariableCapture as VariableCapture
+private import semmle.javascript.dataflow.internal.VariableOrThis
 
 cached
 private module Cached {
@@ -27,7 +30,14 @@ private module Cached {
   cached
   newtype TNode =
     TValueNode(AST::ValueNode nd) or
+    /** An SSA node from the legacy SSA library */
     TSsaDefNode(SsaDefinition d) or
+    /** Use of a variable or 'this', with flow from a post-update node (from an earlier use) */
+    TSsaUseNode(ControlFlowNode use) { use = any(Ssa2::SsaConfig::SourceVariable v).getAUse() } or
+    /** Phi-read node (new SSA library). Ordinary phi nodes are represented by TSsaDefNode. */
+    TSsaPhiReadNode(Ssa2::PhiReadNode phi) or
+    /** Input to a phi node (new SSA library) */
+    TSsaInputNode(Ssa2::SsaInputNode input) or
     TCapturedVariableNode(LocalVariable v) { v.isCaptured() } or
     TPropNode(@property p) or
     TRestPatternNode(DestructuringPattern dp, Expr rest) { rest = dp.getRest() } or
@@ -80,8 +90,8 @@ private module Cached {
       // The RHS of an assignment can be an argument to a setter-call, so it needs a post-update node
       e = any(Assignment asn | asn.getTarget() instanceof PropAccess).getRhs()
     } or
-    TConstructorThisArgumentNode(InvokeExpr e) { e instanceof NewExpr or e instanceof SuperCall } or
-    TConstructorThisPostUpdate(Constructor ctor) or
+    TNewCallThisArgument(NewExpr e) or
+    TImplicitThisUse(ImplicitThisUse use, Boolean isPost) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TFlowSummaryDynamicParameterArrayNode(FlowSummaryImpl::Public::SummarizedCallable callable) or
     TFlowSummaryIntermediateAwaitStoreNode(FlowSummaryImpl::Private::SummaryNode sn) {
@@ -122,8 +132,9 @@ private class TEarlyStageNode =
       TFunctionSelfReferenceNode or TDestructuredModuleImportNode or THtmlAttributeNode or
       TFunctionReturnNode or TExceptionalFunctionReturnNode or TExceptionalInvocationReturnNode or
       TGlobalAccessPathRoot or TTemplatePlaceholderTag or TReflectiveParametersNode or
-      TExprPostUpdateNode or TConstructorThisArgumentNode or TStaticArgumentArrayNode or
-      TDynamicArgumentArrayNode or TStaticParameterArrayNode or TDynamicParameterArrayNode;
+      TExprPostUpdateNode or TNewCallThisArgument or TStaticArgumentArrayNode or
+      TDynamicArgumentArrayNode or TStaticParameterArrayNode or TDynamicParameterArrayNode or
+      TImplicitThisUse;
 
 /**
  * A data-flow node that is not a flow summary node.

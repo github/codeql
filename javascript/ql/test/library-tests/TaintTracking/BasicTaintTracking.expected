@@ -17,9 +17,6 @@ legacyDataFlowDifference
 | callbacks.js:44:17:44:24 | source() | callbacks.js:38:35:38:35 | x | only flow with NEW data flow library |
 | capture-flow.js:89:13:89:20 | source() | capture-flow.js:89:6:89:21 | test3c(source()) | only flow with NEW data flow library |
 | capture-flow.js:101:12:101:19 | source() | capture-flow.js:102:6:102:20 | test5("safe")() | only flow with OLD data flow library |
-| capture-flow.js:274:33:274:40 | source() | capture-flow.js:272:10:272:17 | this.foo | only flow with OLD data flow library |
-| capture-flow.js:274:33:274:40 | source() | capture-flow.js:274:6:274:45 | new Cap ... ()).foo | only flow with OLD data flow library |
-| capture-flow.js:283:34:283:41 | source() | capture-flow.js:284:6:284:44 | new Cap ... e').foo | only flow with NEW data flow library |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:40:8:40:14 | e.taint | only flow with NEW data flow library |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:44:8:44:19 | f_safe.taint | only flow with NEW data flow library |
 | constructor-calls.js:20:15:20:22 | source() | constructor-calls.js:39:8:39:14 | e.param | only flow with NEW data flow library |
@@ -36,6 +33,7 @@ legacyDataFlowDifference
 | sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
 | spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y | only flow with NEW data flow library |
 | spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y | only flow with NEW data flow library |
+| tst.js:2:13:2:20 | source() | tst.js:17:10:17:10 | a | only flow with OLD data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
 consistencyIssue
 | nested-props.js:20 | expected an alert, but found none | NOT OK - but not found | Consistency |
@@ -125,8 +123,9 @@ flow
 | capture-flow.js:259:23:259:30 | source() | capture-flow.js:252:14:252:36 | objectW ... s.field |
 | capture-flow.js:259:23:259:30 | source() | capture-flow.js:253:14:253:23 | this.field |
 | capture-flow.js:262:16:262:23 | source() | capture-flow.js:264:14:264:21 | this.foo |
+| capture-flow.js:274:33:274:40 | source() | capture-flow.js:272:10:272:17 | this.foo |
+| capture-flow.js:274:33:274:40 | source() | capture-flow.js:274:6:274:45 | new Cap ... ()).foo |
 | capture-flow.js:283:34:283:41 | source() | capture-flow.js:283:6:283:46 | new Cap ... ()).foo |
-| capture-flow.js:283:34:283:41 | source() | capture-flow.js:284:6:284:44 | new Cap ... e').foo |
 | captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
 | case.js:2:16:2:23 | source() | case.js:5:8:5:35 | changeC ... source) |
 | case.js:2:16:2:23 | source() | case.js:8:8:8:24 | camelCase(source) |
@@ -280,7 +279,6 @@ flow
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
 | tst.js:2:13:2:20 | source() | tst.js:5:10:5:22 | "/" + x + "!" |
 | tst.js:2:13:2:20 | source() | tst.js:14:10:14:17 | x.sort() |
-| tst.js:2:13:2:20 | source() | tst.js:17:10:17:10 | a |
 | tst.js:2:13:2:20 | source() | tst.js:19:10:19:10 | a |
 | tst.js:2:13:2:20 | source() | tst.js:23:10:23:10 | b |
 | tst.js:2:13:2:20 | source() | tst.js:25:10:25:16 | x.pop() |
