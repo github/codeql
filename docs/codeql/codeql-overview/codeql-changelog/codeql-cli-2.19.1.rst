@@ -55,7 +55,7 @@ New Queries
 Python
 """"""
 
-*   The :code:`py/cors-misconfiguration-with-credentials` query, which finds insecure CORS middleware configurations.
+*   The experimental :code:`py/cors-misconfiguration-with-credentials` query, which finds insecure CORS middleware configurations.
 
 Query Metadata Changes
 ~~~~~~~~~~~~~~~~~~~~~~
