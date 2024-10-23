@@ -28,9 +28,7 @@ module Impl {
     private int index;
     private int offset;
 
-    Format() {
-      this = Synth::TFormat(parent, index) and text = formatElement(parent, index, offset)
-    }
+    Format() { this = Synth::TFormat(parent, index, text, offset) }
 
     override string toString() { result = text }
 
@@ -58,7 +56,7 @@ module Impl {
      * ```
      */
     FormatArgument getArgumentRef() {
-      result.getParent() = this and result = Synth::TFormatArgument(_, _, 0)
+      result.getParent() = this and result = Synth::TFormatArgument(_, _, 0, _, _, _)
     }
 
     /**
@@ -70,7 +68,7 @@ module Impl {
      * ```
      */
     FormatArgument getWidthArgument() {
-      result.getParent() = this and result = Synth::TFormatArgument(_, _, 1)
+      result.getParent() = this and result = Synth::TFormatArgument(_, _, 1, _, _, _)
     }
 
     /**
@@ -82,7 +80,7 @@ module Impl {
      * ```
      */
     FormatArgument getPrecisionArgument() {
-      result.getParent() = this and result = Synth::TFormatArgument(_, _, 2)
+      result.getParent() = this and result = Synth::TFormatArgument(_, _, 2, _, _, _)
     }
   }
 }

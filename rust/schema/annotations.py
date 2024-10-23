@@ -1763,7 +1763,7 @@ class FormatTemplateVariableAccess(Expr):
 
 
 @qltest.skip
-@synth.on_arguments(parent=FormatArgsExpr, index=int)
+@synth.on_arguments(parent=FormatArgsExpr, index=int, text=string, offset=int)
 class Format(Locatable):
     """
     A format element in a formatting template. For example the `{}` in:
@@ -1776,7 +1776,7 @@ class Format(Locatable):
 
 
 @qltest.skip
-@synth.on_arguments(parent=FormatArgsExpr, index=int, kind=int)
+@synth.on_arguments(parent=FormatArgsExpr, index=int, kind=int, name=string, positional=boolean, offset=int)
 class FormatArgument(Locatable):
     """
     An argument in a format element in a formatting template. For example the `width`, `precision`, and `value` in:

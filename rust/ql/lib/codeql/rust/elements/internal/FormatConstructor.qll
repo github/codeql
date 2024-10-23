@@ -9,9 +9,13 @@ private import codeql.rust.elements.internal.generated.Raw
 /**
  *  The characteristic predicate of `Format` synthesized instances.
  *  INTERNAL: Do not use.
+ *
+ * Match an element of a format string, either text (`Hello`) or a format placeholder (`{}`).
  */
-predicate constructFormat(Raw::FormatArgsExpr parent, int index) {
-  formatElement(parent, index, _).regexpMatch(formatRegex())
+predicate constructFormat(Raw::FormatArgsExpr parent, int index, string text, int offset) {
+  text = formatElement(parent, index, offset) and
+  text.charAt(0) = "{" and
+  text.charAt(1) != "{"
 }
 
 /**
@@ -28,8 +32,10 @@ string formatElement(Raw::FormatArgsExpr parent, int occurrenceIndex, int occurr
 }
 
 /**
- * A regular expression for matching format elements in a formatting template. The
+ * A regular expression for matching format elements in a formatting template. The syntax of
+ * formatting templates is defined at https://doc.rust-lang.org/stable/std/fmt/#syntax . The
  * regular expression is generated from the following python code:
+ *
  *
  * ```python
  * identifier = "([A-Za-z_][A-Za-z0-9_]*)"

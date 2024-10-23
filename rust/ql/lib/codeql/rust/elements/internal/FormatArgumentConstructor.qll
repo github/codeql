@@ -12,11 +12,7 @@ private import codeql.rust.elements.internal.FormatConstructor
  *  The characteristic predicate of `FormatArgument` synthesized instances.
  *  INTERNAL: Do not use.
  */
-predicate constructFormatArgument(Raw::FormatArgsExpr parent, int index, int kind) {
-  formatArgument(parent, index, kind, _, _, _)
-}
-
-predicate formatArgument(
+predicate constructFormatArgument(
   Raw::FormatArgsExpr parent, int index, int kind, string value, boolean positional, int offset
 ) {
   exists(string text, int formatOffset, int group |

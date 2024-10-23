@@ -32,10 +32,7 @@ module Impl {
     string name;
     private int offset;
 
-    FormatArgument() {
-      this = Synth::TFormatArgument(parent, index, kind) and
-      formatArgument(parent, index, kind, name, _, offset)
-    }
+    FormatArgument() { this = Synth::TFormatArgument(parent, index, kind, name, _, offset) }
 
     override string toString() { result = name }
 
@@ -53,7 +50,7 @@ module Impl {
       endcolumn = startcolumn + name.length() - 1
     }
 
-    override Format getParent() { result = Synth::TFormat(parent, index) }
+    override Format getParent() { result = Synth::TFormat(parent, index, _, _) }
   }
 
   /**
@@ -64,7 +61,7 @@ module Impl {
    * ```
    */
   class PositionalFormatArgument extends FormatArgument {
-    PositionalFormatArgument() { formatArgument(parent, index, kind, _, true, _) }
+    PositionalFormatArgument() { this = Synth::TFormatArgument(_, _, _, _, true, _) }
 
     /** Gets the index of this positional argument */
     int getIndex() { result = name.toInt() }
@@ -78,7 +75,7 @@ module Impl {
    * ```
    */
   class NamedFormatArgument extends FormatArgument {
-    NamedFormatArgument() { formatArgument(parent, index, kind, _, false, _) }
+    NamedFormatArgument() { this = Synth::TFormatArgument(_, _, _, _, false, _) }
 
     /** Gets the name of this named argument */
     string getName() { result = name }

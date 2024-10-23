@@ -153,7 +153,9 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TFormat(Raw::FormatArgsExpr parent, int index) { constructFormat(parent, index) } or
+    TFormat(Raw::FormatArgsExpr parent, int index, string text, int offset) {
+      constructFormat(parent, index, text, offset)
+    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -165,8 +167,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TFormatArgument(Raw::FormatArgsExpr parent, int index, int kind) {
-      constructFormatArgument(parent, index, kind)
+    TFormatArgument(
+      Raw::FormatArgsExpr parent, int index, int kind, string name, boolean positional, int offset
+    ) {
+      constructFormatArgument(parent, index, kind, name, positional, offset)
     } or
     /**
      * INTERNAL: Do not use.
