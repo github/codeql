@@ -303,6 +303,13 @@ module SourceSinkInterpretationInput implements
     )
   }
 
+  /**
+   * Gets `underlying`, where `n` if of the form `implicitDeref?(underlying.implicitFieldRead1.implicitFieldRead2...)`
+   *
+   * For Go syntax like `qualifier.method()` or `qualifier.field`, this is the type of `qualifier`, before any
+   * implicit dereference is interposed because `qualifier` is of pointer type, or implicit field accesses
+   * navigate to any embedded struct types that truly host `field`.
+   */
   private DataFlow::Node getSyntacticQualifier(DataFlow::Node n) {
     exists(DataFlow::Node n2 |
       // look through implicit dereference, if there is one
