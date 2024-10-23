@@ -1,6 +1,28 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/uptrace/bun", "AddColumnQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "CreateIndexQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "CreateTableQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "DeleteQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "DropIndexQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "DropTableQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "InsertQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "MergeQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "TruncateQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "UpdateQuery", True, "Model", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "DeleteQuery", True, "Scan", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "InsertQuery", True, "Scan", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "MergeQuery", True, "Scan", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "RawQuery", True, "Scan", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "SelectQuery", True, "Scan", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "TruncateQuery", True, "Scan", "", "", "Argument[0]", "database", "manual"]
+      - ["github.com/uptrace/bun", "UpdateQuery", True, "Scan", "", "", "Argument[0]", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: sinkModel
     data:
       - ["github.com/uptrace/bun", "", False, "NewRawQuery", "", "", "Argument[1]", "sql-injection", "manual"]
