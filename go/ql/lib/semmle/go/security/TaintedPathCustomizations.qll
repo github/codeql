@@ -94,6 +94,23 @@ module TaintedPath {
   }
 
   /**
+   * A call to `mux.Vars(path)`, considered to sanitize `path` against path traversal.
+   * Only enabled when `SkipClean` is not set true.
+   */
+  class MuxVarsSanitizer extends Sanitizer {
+    MuxVarsSanitizer() {
+      exists(Function m |
+        m.hasQualifiedName(package("github.com/gorilla/mux", ""), "Vars") and
+        this = m.getACall().getResult()
+      ) and
+      not exists(CallExpr f |
+        f.getTarget().hasQualifiedName(package("github.com/gorilla/mux", ""), "SkipClean") and
+        f.getArgument(0).getBoolValue() = true
+      )
+    }
+  }
+
+  /**
    * A read from the field `Filename` of the type `mime/multipart.FileHeader`,
    * considered as a sanitizer for path traversal.
    *
