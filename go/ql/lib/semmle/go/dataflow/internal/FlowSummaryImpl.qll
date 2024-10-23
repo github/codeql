@@ -321,7 +321,6 @@ module SourceSinkInterpretationInput implements
     result = skipImplicitFieldReads(lookThroughImplicitFieldRead(n))
   }
 
-  pragma[inline]
   private DataFlow::Node lookThroughImplicitFieldRead(DataFlow::Node n) {
     result.asInstruction() =
       n.(DataFlow::InstructionNode)
