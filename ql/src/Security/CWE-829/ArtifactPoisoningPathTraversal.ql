@@ -18,7 +18,7 @@ import codeql.actions.security.UseOfKnownVulnerableActionQuery
 
 from UsesStep download, KnownVulnerableAction vulnerable_action, Event event
 where
-  event = download.getEnclosingJob().getATriggerEvent() and
+  event = download.getATriggerEvent() and
   vulnerable_action.getVulnerableAction() = download.getCallee() and
   download.getCallee() = "actions/download-artifact" and
   (

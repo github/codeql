@@ -30,7 +30,7 @@ class OutputClobberingFromFileReadSink extends OutputClobberingSink {
           uses.getCallee() = "actions/checkout" and
           exists(uses.getArgument("ref")) and
           not uses.getArgument("ref").matches("%base%") and
-          uses.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers()
+          uses.getATriggerEvent().getName() = checkoutTriggers()
         )
         or
         step instanceof GitMutableRefCheckout

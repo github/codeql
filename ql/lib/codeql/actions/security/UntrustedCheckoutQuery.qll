@@ -13,7 +13,7 @@ string checkoutTriggers() {
  */
 private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr().getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers() and
+    source.asExpr().getATriggerEvent().getName() = checkoutTriggers() and
     (
       // remote flow sources
       source instanceof ArtifactSource
@@ -79,7 +79,7 @@ module ActionsMutableRefCheckoutFlow = TaintTracking::Global<ActionsMutableRefCh
 
 private module ActionsSHACheckoutConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr().getEnclosingJob().getATriggerEvent().getName() =
+    source.asExpr().getATriggerEvent().getName() =
       ["pull_request_target", "workflow_run", "workflow_call", "issue_comment"] and
     (
       // `ref` argument contains the PR head/merge commit sha
@@ -283,7 +283,7 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
 class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GitMutableRefCheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      this.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers() and
+      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -307,7 +307,7 @@ class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 class GitSHACheckout extends SHACheckoutStep instanceof Run {
   GitSHACheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      this.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers() and
+      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         containsHeadSHA(cmd)
@@ -328,7 +328,7 @@ class GitSHACheckout extends SHACheckoutStep instanceof Run {
 class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GhMutableRefCheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      this.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers() and
+      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch(".*(gh|hub)\\s+pr\\s+checkout.*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -351,7 +351,7 @@ class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 class GhSHACheckout extends SHACheckoutStep instanceof Run {
   GhSHACheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      this.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers() and
+      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("gh\\s+pr\\s+checkout.*") and
       (
         containsHeadSHA(cmd)

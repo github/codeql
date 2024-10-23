@@ -112,6 +112,11 @@ abstract class AstNodeImpl extends TAstNode {
   }
 
   /**
+   * Gets and Event triggering this node.
+   */
+  EventImpl getATriggerEvent() { result = this.getEnclosingJob().getATriggerEvent() }
+
+  /**
    * Gets the enclosing Step.
    */
   StepImpl getEnclosingStep() {
@@ -447,7 +452,7 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
     )
   }
 
-  EventImpl getATriggerEvent() { result = this.getACallerJob().getATriggerEvent() }
+  override EventImpl getATriggerEvent() { result = this.getACallerJob().getATriggerEvent() }
 }
 
 class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
@@ -486,7 +491,7 @@ class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
   PermissionsImpl getPermissions() { result.getNode() = n.lookup("permissions") }
 
   /** Gets the trigger event that starts this workflow. */
-  EventImpl getATriggerEvent() { this.getOn().getAnEvent() = result }
+  override EventImpl getATriggerEvent() { this.getOn().getAnEvent() = result }
 
   /** Gets the strategy for this workflow. */
   StrategyImpl getStrategy() { result.getNode() = n.lookup("strategy") }
@@ -918,7 +923,7 @@ class JobImpl extends AstNodeImpl, TJobNode {
   StrategyImpl getStrategy() { result.getNode() = n.lookup("strategy") }
 
   /** Gets the trigger event that starts this workflow. */
-  EventImpl getATriggerEvent() {
+  override EventImpl getATriggerEvent() {
     if this.getEnclosingWorkflow() instanceof ReusableWorkflowImpl
     then
       result = this.getEnclosingWorkflow().(ReusableWorkflowImpl).getACaller().getATriggerEvent()
@@ -1173,6 +1178,8 @@ class StepImpl extends AstNodeImpl, TStepNode {
     result = this.getEnclosingCompositeAction().getACallerJob() or
     result = super.getEnclosingJob()
   }
+
+  override EventImpl getATriggerEvent() { result = this.getEnclosingJob().getATriggerEvent() }
 
   EnvImpl getEnv() { result.getNode() = n.lookup("env") }
 

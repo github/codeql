@@ -17,6 +17,8 @@ class AstNode instanceof AstNodeImpl {
 
   Job getEnclosingJob() { result = super.getEnclosingJob() }
 
+  Event getATriggerEvent() { result = super.getATriggerEvent() }
+
   Workflow getEnclosingWorkflow() { result = super.getEnclosingWorkflow() }
 
   CompositeAction getEnclosingCompositeAction() { result = super.getEnclosingCompositeAction() }
@@ -99,8 +101,6 @@ class Workflow extends AstNode instanceof WorkflowImpl {
   Job getAJob() { result = super.getAJob() }
 
   Job getJob(string jobId) { result = super.getJob(jobId) }
-
-  Event getATriggerEvent() { result = super.getATriggerEvent() }
 
   Permissions getPermissions() { result = super.getPermissions() }
 
@@ -199,8 +199,6 @@ abstract class Job extends AstNode instanceof JobImpl {
   Environment getEnvironment() { result = super.getEnvironment() }
 
   Permissions getPermissions() { result = super.getPermissions() }
-
-  Event getATriggerEvent() { result = super.getATriggerEvent() }
 
   Strategy getStrategy() { result = super.getStrategy() }
 

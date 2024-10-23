@@ -57,7 +57,7 @@ abstract class ControlCheck extends AstNode {
     // The check is effective against the event and category
     this.protectsCategoryAndEvent(category, event.getName()) and
     // The check can be triggered by the event
-    this.getEnclosingJob().getATriggerEvent() = event
+    this.getATriggerEvent() = event
   }
 
   predicate dominates(AstNode node) {
