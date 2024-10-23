@@ -17,10 +17,26 @@ edges
 | unsafe-jquery-plugin.js:11:7:11:29 | target | unsafe-jquery-plugin.js:60:6:60:11 | target | provenance |  |
 | unsafe-jquery-plugin.js:11:16:11:22 | options | unsafe-jquery-plugin.js:11:16:11:29 | options.target | provenance |  |
 | unsafe-jquery-plugin.js:11:16:11:29 | options.target | unsafe-jquery-plugin.js:11:7:11:29 | target | provenance |  |
+| unsafe-jquery-plugin.js:65:47:65:53 | options | unsafe-jquery-plugin.js:67:37:67:43 | options | provenance |  |
+| unsafe-jquery-plugin.js:67:3:67:6 | [post update] this [options] | unsafe-jquery-plugin.js:68:7:68:10 | this [options] | provenance |  |
+| unsafe-jquery-plugin.js:67:24:67:44 | $.exten ... ptions) | unsafe-jquery-plugin.js:67:3:67:6 | [post update] this [options] | provenance |  |
+| unsafe-jquery-plugin.js:67:37:67:43 | options | unsafe-jquery-plugin.js:67:24:67:44 | $.exten ... ptions) | provenance |  |
+| unsafe-jquery-plugin.js:68:7:68:10 | this [options] | unsafe-jquery-plugin.js:68:7:68:18 | this.options | provenance |  |
+| unsafe-jquery-plugin.js:68:7:68:18 | this.options | unsafe-jquery-plugin.js:68:7:68:25 | this.options.parent | provenance |  |
+| unsafe-jquery-plugin.js:68:7:68:25 | this.options.parent | unsafe-jquery-plugin.js:68:45:68:63 | this.options.parent | provenance | Config |
 | unsafe-jquery-plugin.js:71:38:71:44 | options | unsafe-jquery-plugin.js:72:5:72:11 | options | provenance |  |
 | unsafe-jquery-plugin.js:72:5:72:11 | options | unsafe-jquery-plugin.js:72:5:72:23 | options.foo.bar.baz | provenance |  |
 | unsafe-jquery-plugin.js:76:38:76:44 | options | unsafe-jquery-plugin.js:77:17:77:23 | options | provenance |  |
 | unsafe-jquery-plugin.js:77:17:77:23 | options | unsafe-jquery-plugin.js:77:17:77:35 | options.foo.bar.baz | provenance |  |
+| unsafe-jquery-plugin.js:84:38:84:44 | options | unsafe-jquery-plugin.js:92:5:92:11 | options | provenance |  |
+| unsafe-jquery-plugin.js:85:14:85:14 | o | unsafe-jquery-plugin.js:86:26:86:26 | o | provenance |  |
+| unsafe-jquery-plugin.js:86:4:86:7 | [post update] this [o] | unsafe-jquery-plugin.js:87:12:87:15 | this [o] | provenance |  |
+| unsafe-jquery-plugin.js:86:13:86:27 | $.extend({}, o) | unsafe-jquery-plugin.js:86:4:86:7 | [post update] this [o] | provenance |  |
+| unsafe-jquery-plugin.js:86:26:86:26 | o | unsafe-jquery-plugin.js:86:13:86:27 | $.extend({}, o) | provenance |  |
+| unsafe-jquery-plugin.js:87:8:87:24 | t | unsafe-jquery-plugin.js:90:6:90:6 | t | provenance |  |
+| unsafe-jquery-plugin.js:87:12:87:15 | this [o] | unsafe-jquery-plugin.js:87:12:87:17 | this.o | provenance |  |
+| unsafe-jquery-plugin.js:87:12:87:17 | this.o | unsafe-jquery-plugin.js:87:8:87:24 | t | provenance |  |
+| unsafe-jquery-plugin.js:92:5:92:11 | options | unsafe-jquery-plugin.js:85:14:85:14 | o | provenance |  |
 | unsafe-jquery-plugin.js:101:38:101:44 | options | unsafe-jquery-plugin.js:105:6:105:12 | options | provenance |  |
 | unsafe-jquery-plugin.js:102:3:105:13 | options | unsafe-jquery-plugin.js:107:5:107:11 | options | provenance |  |
 | unsafe-jquery-plugin.js:102:13:105:13 | $.exten ... ptions) | unsafe-jquery-plugin.js:102:3:105:13 | options | provenance |  |
@@ -75,12 +91,30 @@ nodes
 | unsafe-jquery-plugin.js:48:6:48:11 | target | semmle.label | target |
 | unsafe-jquery-plugin.js:52:6:52:11 | target | semmle.label | target |
 | unsafe-jquery-plugin.js:60:6:60:11 | target | semmle.label | target |
+| unsafe-jquery-plugin.js:65:47:65:53 | options | semmle.label | options |
+| unsafe-jquery-plugin.js:67:3:67:6 | [post update] this [options] | semmle.label | [post update] this [options] |
+| unsafe-jquery-plugin.js:67:24:67:44 | $.exten ... ptions) | semmle.label | $.exten ... ptions) |
+| unsafe-jquery-plugin.js:67:37:67:43 | options | semmle.label | options |
+| unsafe-jquery-plugin.js:68:7:68:10 | this [options] | semmle.label | this [options] |
+| unsafe-jquery-plugin.js:68:7:68:18 | this.options | semmle.label | this.options |
+| unsafe-jquery-plugin.js:68:7:68:25 | this.options.parent | semmle.label | this.options.parent |
+| unsafe-jquery-plugin.js:68:45:68:63 | this.options.parent | semmle.label | this.options.parent |
 | unsafe-jquery-plugin.js:71:38:71:44 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:72:5:72:11 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:72:5:72:23 | options.foo.bar.baz | semmle.label | options.foo.bar.baz |
 | unsafe-jquery-plugin.js:76:38:76:44 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:77:17:77:23 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:77:17:77:35 | options.foo.bar.baz | semmle.label | options.foo.bar.baz |
+| unsafe-jquery-plugin.js:84:38:84:44 | options | semmle.label | options |
+| unsafe-jquery-plugin.js:85:14:85:14 | o | semmle.label | o |
+| unsafe-jquery-plugin.js:86:4:86:7 | [post update] this [o] | semmle.label | [post update] this [o] |
+| unsafe-jquery-plugin.js:86:13:86:27 | $.extend({}, o) | semmle.label | $.extend({}, o) |
+| unsafe-jquery-plugin.js:86:26:86:26 | o | semmle.label | o |
+| unsafe-jquery-plugin.js:87:8:87:24 | t | semmle.label | t |
+| unsafe-jquery-plugin.js:87:12:87:15 | this [o] | semmle.label | this [o] |
+| unsafe-jquery-plugin.js:87:12:87:17 | this.o | semmle.label | this.o |
+| unsafe-jquery-plugin.js:90:6:90:6 | t | semmle.label | t |
+| unsafe-jquery-plugin.js:92:5:92:11 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:101:38:101:44 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:102:3:105:13 | options | semmle.label | options |
 | unsafe-jquery-plugin.js:102:13:105:13 | $.exten ... ptions) | semmle.label | $.exten ... ptions) |
@@ -135,8 +169,10 @@ subpaths
 | unsafe-jquery-plugin.js:48:6:48:11 | target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:48:6:48:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:52:6:52:11 | target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:52:6:52:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:60:6:60:11 | target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:60:6:60:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:68:45:68:63 | this.options.parent | unsafe-jquery-plugin.js:65:47:65:53 | options | unsafe-jquery-plugin.js:68:45:68:63 | this.options.parent | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:65:19:69:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:72:5:72:23 | options.foo.bar.baz | unsafe-jquery-plugin.js:71:38:71:44 | options | unsafe-jquery-plugin.js:72:5:72:23 | options.foo.bar.baz | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:71:19:74:2 | functio ... / OK\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:77:17:77:35 | options.foo.bar.baz | unsafe-jquery-plugin.js:76:38:76:44 | options | unsafe-jquery-plugin.js:77:17:77:35 | options.foo.bar.baz | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:76:19:78:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
+| unsafe-jquery-plugin.js:90:6:90:6 | t | unsafe-jquery-plugin.js:84:38:84:44 | options | unsafe-jquery-plugin.js:90:6:90:6 | t | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:84:19:93:2 | functio ... ns);\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:107:5:107:18 | options.target | unsafe-jquery-plugin.js:101:38:101:44 | options | unsafe-jquery-plugin.js:107:5:107:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:101:19:108:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:117:5:117:18 | options.target | unsafe-jquery-plugin.js:114:38:114:44 | options | unsafe-jquery-plugin.js:117:5:117:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:114:19:118:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:122:5:122:18 | options.target | unsafe-jquery-plugin.js:121:40:121:46 | options | unsafe-jquery-plugin.js:122:5:122:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:121:21:123:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
