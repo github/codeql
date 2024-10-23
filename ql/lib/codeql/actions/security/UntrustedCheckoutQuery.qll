@@ -283,6 +283,7 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
 class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GitMutableRefCheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
+      this.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -306,6 +307,7 @@ class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 class GitSHACheckout extends SHACheckoutStep instanceof Run {
   GitSHACheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
+      this.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         containsHeadSHA(cmd)
@@ -326,6 +328,7 @@ class GitSHACheckout extends SHACheckoutStep instanceof Run {
 class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GhMutableRefCheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
+      this.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch(".*(gh|hub)\\s+pr\\s+checkout.*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -348,6 +351,7 @@ class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 class GhSHACheckout extends SHACheckoutStep instanceof Run {
   GhSHACheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
+      this.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("gh\\s+pr\\s+checkout.*") and
       (
         containsHeadSHA(cmd)
