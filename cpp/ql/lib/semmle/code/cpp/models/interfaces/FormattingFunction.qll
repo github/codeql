@@ -49,9 +49,12 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
     if this.hasDefinition()
     then firstFormatArgumentIndex = this.getDefinition().getNumberOfParameters()
     else
-      forex(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
-        firstFormatArgumentIndex = fde.getNumberOfParameters()
-      )
+      if this instanceof BuiltInFunction
+      then firstFormatArgumentIndex = this.getNumberOfParameters()
+      else
+        forex(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
+          firstFormatArgumentIndex = fde.getNumberOfParameters()
+        )
   }
 
   /** Gets the position at which the format parameter occurs. */
