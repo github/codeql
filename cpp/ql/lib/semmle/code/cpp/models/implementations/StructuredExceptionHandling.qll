@@ -1,14 +1,14 @@
 import semmle.code.cpp.models.interfaces.Throwing
 
 /**
- * The default behavior for Structured Exception Handling (SEH) is 
+ * The default behavior for Structured Exception Handling (SEH) is
  * any function may (conditionally) raise an exception.
  * NOTE: this can be overriden by for any specific function to make in
  * unconditional or non-throwing. IR generation will enforce
  * the most strict interpretation.
  */
 class DefaultSEHExceptionBehavior extends ThrowingFunction {
-  DefaultSEHExceptionBehavior() { this = any(Function f) }
+  DefaultSEHExceptionBehavior() { any() }
 
   override predicate raisesException(boolean unconditional) { unconditional = false }
 

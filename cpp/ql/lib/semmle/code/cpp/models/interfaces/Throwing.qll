@@ -10,6 +10,10 @@ import semmle.code.cpp.Function
 import semmle.code.cpp.models.Models
 import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 
+/**
+ * Represents a type of exception,
+ * either Structure Exception Handling (SEH) or C++ exceptions.
+ */
 newtype TException =
   TSEHException() or
   TCxxException()
@@ -31,8 +35,14 @@ abstract private class ExceptionAnnotation extends Function {
    */
   abstract TException getExceptionType();
 
+  /**
+   * Holds if the exception type of this annotation is for a Structure Exception Handling (SEH) exception.
+   */
   final predicate isSEH() { this.getExceptionType() = TSEHException() }
 
+  /**
+   * Holds if the exception type of this annotation is for a CPP exception.
+   */
   final predicate isCxx() { this.getExceptionType() = TCxxException() }
 }
 
@@ -45,6 +55,8 @@ abstract class NonThrowingFunction extends ExceptionAnnotation { }
  * Functions that are known to raise an exception.
  */
 abstract class ThrowingFunction extends ExceptionAnnotation {
+  ThrowingFunction() { this instanceof Function }
+
   /**
    * Holds if this function may raise an exception during evaluation.
    * If `conditional` is `false` the function may raise, and if `true` the function
