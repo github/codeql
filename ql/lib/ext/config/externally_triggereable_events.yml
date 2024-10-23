@@ -9,7 +9,6 @@ extensions:
       - ["watch"]
       - ["issue_comment"]
       - ["issues"]
-      - ["pull_request"] # non-privileged
       - ["pull_request_comment"]
       - ["pull_request_review"]
       - ["pull_request_review_comment"]
