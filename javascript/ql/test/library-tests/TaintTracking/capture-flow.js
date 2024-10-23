@@ -269,9 +269,9 @@ function CaptureThisWithoutJump(x) {
     [1].forEach(() => {
         this.foo = x;
     });
-    sink(this.foo); // NOT OK [INCONSISTENCY]
+    sink(this.foo); // NOT OK
 }
-sink(new CaptureThisWithoutJump(source()).foo); // NOT OK [INCONSISTENCY]
+sink(new CaptureThisWithoutJump(source()).foo); // NOT OK
 sink(new CaptureThisWithoutJump('safe').foo); // OK
 
 function CaptureThisWithoutJump2(x) {
@@ -281,4 +281,4 @@ function CaptureThisWithoutJump2(x) {
     return y;
 }
 sink(new CaptureThisWithoutJump2(source()).foo); // NOT OK
-sink(new CaptureThisWithoutJump2('safe').foo); // OK [INCONSISTENCY]
+sink(new CaptureThisWithoutJump2('safe').foo); // OK

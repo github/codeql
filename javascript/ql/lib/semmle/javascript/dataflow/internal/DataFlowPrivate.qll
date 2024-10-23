@@ -1050,6 +1050,28 @@ private predicate isThisNodeTrackedByVariableCapture(DataFlow::ThisNode thisNode
 }
 
 /**
+ * Holds if there should be flow from `postUpdate` to `target` because of a variable/this value
+ * that is captured but not tracked precisely by the variable-capture library.
+ */
+pragma[nomagic]
+private predicate imprecisePostUpdateStep(DataFlow::PostUpdateNode postUpdate, DataFlow::Node target) {
+  exists(LocalVariableOrThis var, DataFlow::Node use |
+    // 'var' is captured but not tracked precisely
+    var.isCaptured() and
+    not var instanceof VariableCaptureConfig::CapturedVariable and
+    (
+      use = TValueNode(var.asLocalVariable().getAnAccess())
+      or
+      use = TValueNode(var.getAThisExpr())
+      or
+      use = TImplicitThisUse(var.getAThisUse(), false)
+    ) and
+    postUpdate.getPreUpdateNode() = use and
+    target = use.getALocalSource()
+  )
+}
+
+/**
  * Holds if there is a value-preserving steps `node1` -> `node2` that might
  * be cross function boundaries.
  */
@@ -1058,6 +1080,8 @@ private predicate valuePreservingStep(Node node1, Node node2) {
   not isBlockedLegacyNode(node1) and
   not isBlockedLegacyNode(node2) and
   not isThisNodeTrackedByVariableCapture(node1)
+  or
+  imprecisePostUpdateStep(node1, node2)
   or
   FlowSteps::propertyFlowStep(node1, node2)
   or
