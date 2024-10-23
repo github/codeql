@@ -21,7 +21,7 @@ private module CfgInput implements InputSig<Location> {
   /** An AST node with an associated control-flow graph. */
   class CfgScope = Scope::CfgScope;
 
-  CfgScope getCfgScope(AstNode n) { result = Scope::scopeOfAst(n) }
+  CfgScope getCfgScope(AstNode n) { result = n.getEnclosingCallable() }
 
   class SuccessorType = Cfg::SuccessorType;
 
