@@ -19,7 +19,7 @@ newtype TException =
   TCxxException()
 
 /**
- * Functions with information about how an exception is throwwn or if one is thrown at all.
+ * Functions with information about how an exception is thrown or if one is thrown at all.
  * If throwing details conflict for the same function, IR is assumed
  * to use the most restricted interpretation, meaning taking options
  * that stipulate no exception is raised, before the exception is always raised,
