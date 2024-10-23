@@ -292,12 +292,12 @@ module SourceSinkInterpretationInput implements
       subtypes = true and
       (
         // `syntacticQualBaseType`'s underlying type might be an interface type and `sse`
-        // might be a method defined on an interface which is a subtype of it.
+        // might refer to a method defined on an interface embedded within it.
         targetType =
           syntacticQualBaseType.getUnderlyingType().(InterfaceType).getAnEmbeddedInterface()
         or
         // `syntacticQualBaseType`'s underlying type might be a struct type and `sse`
-        // might be a promoted method or field.
+        // might refer to an embedded method or field.
         syntacticQualBaseType.getUnderlyingType().(StructType).hasEmbeddedField(targetType, _)
       )
     )
