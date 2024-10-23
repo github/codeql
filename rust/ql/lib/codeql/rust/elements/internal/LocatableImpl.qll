@@ -36,7 +36,8 @@ module Impl {
       this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       or
       not exists(this.getLocation()) and
-      any(EmptyLocation e).hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      pragma[only_bind_out](any(EmptyLocation e))
+          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     /**
