@@ -5,6 +5,7 @@ private import Scope as Scope
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 
 private module CfgInput implements InputSig<Location> {
+  private import codeql.rust.internal.CachedStages
   private import rust as Rust
   private import Completion as C
 
@@ -21,7 +22,10 @@ private module CfgInput implements InputSig<Location> {
   /** An AST node with an associated control-flow graph. */
   class CfgScope = Scope::CfgScope;
 
-  CfgScope getCfgScope(AstNode n) { result = n.getEnclosingCallable() }
+  CfgScope getCfgScope(AstNode n) {
+    result = n.getEnclosingCallable() and
+    Stages::CfgStage::ref()
+  }
 
   class SuccessorType = Cfg::SuccessorType;
 

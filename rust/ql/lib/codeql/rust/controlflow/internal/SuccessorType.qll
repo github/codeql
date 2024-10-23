@@ -1,10 +1,11 @@
 private import rust
 private import codeql.util.Boolean
 private import Completion
+private import codeql.rust.internal.CachedStages
 
 cached
 newtype TSuccessorType =
-  TSuccessorSuccessor() or
+  TNormalSuccessor() { Stages::CfgStage::ref() } or
   TBooleanSuccessor(Boolean b) or
   TMatchSuccessor(Boolean b) or
   TBreakSuccessor() or
@@ -18,7 +19,7 @@ abstract class SuccessorTypeImpl extends TSuccessorType {
 }
 
 /** A normal control flow successor. */
-class NormalSuccessorImpl extends SuccessorTypeImpl, TSuccessorSuccessor {
+class NormalSuccessorImpl extends SuccessorTypeImpl, TNormalSuccessor {
   override string toString() { result = "successor" }
 }
 
