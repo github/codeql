@@ -99,3 +99,33 @@ private module Cached {
 }
 
 import Cached
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import codeql.swift.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+  private import codeql.swift.dataflow.internal.DataFlowPublic as DataFlowPublic
+  private import codeql.swift.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowDispatch::DataFlowCall call, DataFlowDispatch::ArgumentPosition argpos |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::viableCallable(call)) and
+      src.(DataFlowPrivate::ArgumentNode).argumentOf(call, argpos)
+    |
+      not argpos instanceof DataFlowDispatch::ThisArgumentPosition and
+      sink.(DataFlowPublic::PostUpdateNode)
+          .getPreUpdateNode()
+          .(DataFlowPrivate::ArgumentNode)
+          .argumentOf(call,
+            any(DataFlowDispatch::ArgumentPosition qualpos |
+              qualpos instanceof DataFlowDispatch::ThisArgumentPosition
+            ))
+      or
+      sink.(DataFlowPrivate::OutNode).getCall(_) = call
+    )
+  }
+}
