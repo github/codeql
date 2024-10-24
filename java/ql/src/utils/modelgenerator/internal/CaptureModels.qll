@@ -88,6 +88,8 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, JavaDataF
     api.getDeclaringType() instanceof J::Interface and not exists(api.getBody())
   }
 
+  predicate isUninterestingForHeuristicDataFlowModels(Callable api) { none() }
+
   class SourceOrSinkTargetApi extends Callable {
     SourceOrSinkTargetApi() { relevant(this) }
   }
