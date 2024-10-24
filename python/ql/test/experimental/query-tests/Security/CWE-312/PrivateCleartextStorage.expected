@@ -1,0 +1,9 @@
+edges
+| ssn_in_cookie.py:7:22:7:63 | a social security number | ssn_in_cookie.py:9:47:9:60 | a social security number |
+| ssn_in_cookie.py:14:22:14:63 | a social security number | ssn_in_cookie.py:16:47:16:60 | a social security number |
+| test.py:7:19:7:35 | an ID | test.py:8:38:8:48 | an ID |
+| test.py:20:14:20:25 | a salary | test.py:22:20:22:25 | a salary |
+#select
+| ssn_in_cookie.py:9:47:9:60 | socialsecurity | ssn_in_cookie.py:7:22:7:63 | a social security number | ssn_in_cookie.py:9:47:9:60 | a social security number | Private data from $@ is stored here. | ssn_in_cookie.py:7:22:7:63 | Attribute() | a request parameter containing a social security number |
+| ssn_in_cookie.py:16:47:16:60 | socialsecurity | ssn_in_cookie.py:14:22:14:63 | a social security number | ssn_in_cookie.py:16:47:16:60 | a social security number | Private data from $@ is stored here. | ssn_in_cookie.py:14:22:14:63 | Attribute() | a request parameter containing a social security number |
+| test.py:22:20:22:25 | salary | test.py:20:14:20:25 | a salary | test.py:22:20:22:25 | a salary | Private data from $@ is stored here. | test.py:20:14:20:25 | get_salary() | a call returning a salary |
