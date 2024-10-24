@@ -276,7 +276,7 @@ module SourceSinkInterpretationInput implements
    *
    * Note that naively checking `sse.asEntity()`'s qualified name is not correct, because
    * `Method`s and `Field`s may have multiple qualified names due to embedding. We must instead
-   * check that the specific name given be `sse.hasTypeInfo` refers to either `qual`'s type
+   * check that the specific name given by `sse.hasTypeInfo` refers to either `qual`'s type
    * or to a type it embeds.
    */
   private predicate elementAppliesToQualifier(SourceOrSinkElement sse, DataFlow::Node qual) {
@@ -305,7 +305,7 @@ module SourceSinkInterpretationInput implements
           syntacticQualBaseType.getUnderlyingType().(InterfaceType).getAnEmbeddedInterface()
         or
         // `syntacticQualBaseType`'s underlying type might be a struct type and `sse`
-        // might refer to an embedded method or field.
+        // might be a promoted method or field in it.
         exists(StructType st, Field field1, Field field2, int depth1, int depth2, Type t2 |
           st = syntacticQualBaseType.getUnderlyingType() and
           field1 = st.getFieldAtDepth(_, depth1) and
