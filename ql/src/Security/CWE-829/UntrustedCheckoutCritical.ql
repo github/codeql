@@ -20,12 +20,36 @@ import codeql.actions.security.ControlChecks
 
 query predicate edges(Step a, Step b) { a.getNextStep() = b }
 
-from PRHeadCheckoutStep checkout, PoisonableStep step, Event event
+from PRHeadCheckoutStep checkout, PoisonableStep poisonable, Event event
 where
   // the checkout is followed by a known poisonable step
-  checkout.getAFollowingStep() = step and
+  checkout.getAFollowingStep() = poisonable and
+  (
+    poisonable instanceof Run and
+    (
+      // Check if the poisonable step is a local script execution step
+      // and the path of the command or script matches the path of the downloaded artifact
+      isSubpath(poisonable.(LocalScriptExecutionRunStep).getPath(), checkout.getPath())
+      or
+      // Checking the path for non local script execution steps is very difficult
+      not poisonable instanceof LocalScriptExecutionRunStep
+      // Its not easy to extract the path from a non-local script execution step so skipping this check for now
+      // and isSubpath(poisonable.(Run).getWorkingDirectory(), checkout.getPath())
+    )
+    or
+    poisonable instanceof UsesStep and
+    (
+      not poisonable instanceof LocalActionUsesStep and
+      checkout.getPath() = "GITHUB_WORKSPACE/"
+      or
+      isSubpath(poisonable.(LocalActionUsesStep).getPath(), checkout.getPath())
+    )
+  ) and
   // the checkout occurs in a privileged context
-  inPrivilegedContext(step, event) and
-  not exists(ControlCheck check | check.protects(step, event, "untrusted-checkout"))
-select step, checkout, step, "Execution of untrusted code on a privileged workflow. $@", event,
+  inPrivilegedContext(poisonable, event) and
+  inPrivilegedContext(checkout, event) and
+  not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout")) and
+  not exists(ControlCheck check | check.protects(poisonable, event, "untrusted-checkout"))
+select poisonable, checkout, poisonable,
+  "Execution of untrusted code on a privileged workflow ($@)", event,
   event.getLocation().getFile().toString()

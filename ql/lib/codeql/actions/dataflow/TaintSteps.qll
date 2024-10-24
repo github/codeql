@@ -91,11 +91,45 @@ predicate xt0rtedSlashCommandActionTaintStep(DataFlow::Node pred, DataFlow::Node
   )
 }
 
+/**
+ * A read of user-controlled field of the octokit/request-action action.
+ */
+predicate octokitRequestActionTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(StepsExpression o |
+    pred instanceof OctokitRequestActionSource and
+    o.getTarget() = pred.asExpr() and
+    o.getStepId() = pred.asExpr().(UsesStep).getId() and
+    succ.asExpr() = o and
+    (
+      not o instanceof JsonReferenceExpression and
+      o.getFieldName() = "data"
+      or
+      o instanceof JsonReferenceExpression and
+      o.(JsonReferenceExpression).getInnerExpression().matches("%.data") and
+      o.(JsonReferenceExpression)
+          .getAccessPath()
+          .matches([
+              "%.title",
+              "%.user.login",
+              "%.body",
+              "%.head.ref",
+              "%.head.repo.full_name",
+              "%.commit.author.email",
+              "%.commit.commiter.email",
+              "%.commit.message",
+              "%.email",
+              "%.name",
+            ])
+    )
+  )
+}
+
 class TaintSteps extends AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     dornyPathsFilterTaintStep(node1, node2) or
     tjActionsChangedFilesTaintStep(node1, node2) or
     tjActionsVerifyChangedFilesTaintStep(node1, node2) or
-    xt0rtedSlashCommandActionTaintStep(node1, node2)
+    xt0rtedSlashCommandActionTaintStep(node1, node2) or
+    octokitRequestActionTaintStep(node1, node2)
   }
 }

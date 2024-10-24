@@ -57,7 +57,7 @@ abstract class ControlCheck extends AstNode {
     // The check is effective against the event and category
     this.protectsCategoryAndEvent(category, event.getName()) and
     // The check can be triggered by the event
-    this.getEnclosingJob().getATriggerEvent() = event
+    this.getATriggerEvent() = event
   }
 
   predicate dominates(AstNode node) {
@@ -159,14 +159,16 @@ abstract class CommentVsHeadDateCheck extends ControlCheck {
 
 /* Specific implementations of control checks */
 class LabelIfCheck extends LabelCheck instanceof If {
+  string condition;
+
   LabelIfCheck() {
-    // eg: contains(github.event.pull_request.labels.*.name, 'safe to test')
-    // eg: github.event.label.name == 'safe to test'
-    exists(
-      normalizeExpr(this.getCondition())
-          .regexpFind([
-              "\\bgithub\\.event\\.pull_request\\.labels\\b", "\\bgithub\\.event\\.label\\.name\\b"
-            ], _, _)
+    condition = normalizeExpr(this.getCondition()) and
+    (
+      // eg: contains(github.event.pull_request.labels.*.name, 'safe to test')
+      condition.regexpMatch("(^|[^!])contains\\(\\s*github\\.event\\.pull_request\\.labels\\b.*")
+      or
+      // eg: github.event.label.name == 'safe to test'
+      condition.regexpMatch(".*\\bgithub\\.event\\.label\\.name\\s*==.*")
     )
   }
 }
@@ -179,7 +181,8 @@ class ActorIfCheck extends ActorCheck instanceof If {
           .regexpFind([
               "\\bgithub\\.event\\.pull_request\\.user\\.login\\b",
               "\\bgithub\\.event\\.head_commit\\.author\\.name\\b",
-              "\\bgithub\\.event\\.commits.*\\.author\\.name\\b"
+              "\\bgithub\\.event\\.commits.*\\.author\\.name\\b",
+              "\\bgithub\\.event\\.sender\\.login\\b"
             ], _, _)
     )
     or
@@ -256,6 +259,9 @@ class AssociationActionCheck extends AssociationCheck instanceof UsesStep {
     or
     this.getCallee() = "actions/github-script" and
     this.getArgument("script").splitAt("\n").matches("%getMembershipForUserInOrg%")
+    or
+    this.getCallee() = "octokit/request-action" and
+    this.getArgument("route").regexpMatch("GET.*(memberships).*")
   }
 }
 
@@ -279,6 +285,9 @@ class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
     or
     this.getCallee() = "actions/github-script" and
     this.getArgument("script").splitAt("\n").matches("%getCollaboratorPermissionLevel%")
+    or
+    this.getCallee() = "octokit/request-action" and
+    this.getArgument("route").regexpMatch("GET.*(collaborators|permission).*")
   }
 }
 

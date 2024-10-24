@@ -195,6 +195,8 @@
 | .github/workflows/poisonable_steps.yml:40:9:41:6 | Run Step | gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo |
 | .github/workflows/poisonable_steps.yml:41:9:42:6 | Run Step | ./foo/cmd |
 | .github/workflows/poisonable_steps.yml:42:9:46:111 | Run Step | sed -e 's#<branch_to_sync>#TITLE#'     -e 's#<sot_repo>#${{ env.sot_repo }}#'     -e 's#<destination_repo>#${TITLE}#'     .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky |
+| .github/workflows/shell.yml:12:9:14:2 | Run Step | echo "foo" |
+| .github/workflows/shell.yml:17:9:19:2 | Run Step | echo "foo" |
 | .github/workflows/test.yml:26:9:28:6 | Run Step: simplesink1 | echo ${{ steps.source.outputs.all_changed_files }} |
 | .github/workflows/test.yml:28:9:31:2 | Run Step: simplesink2 | ${{ github.event.pull_request.head.ref }} |
 | .github/workflows/test.yml:39:9:40:53 | Run Step: sink | echo ${{needs.job1.outputs.job_output}} |

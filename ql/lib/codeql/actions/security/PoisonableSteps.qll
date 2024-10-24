@@ -17,12 +17,13 @@ class PoisonableCommandStep extends PoisonableStep, Run {
 
 class JavascriptImportUsesStep extends PoisonableStep, UsesStep {
   JavascriptImportUsesStep() {
-    exists(string script, string line, string import_stmt |
+    exists(string script, string line |
       this.getCallee() = "actions/github-script" and
       script = this.getArgument("script") and
       line = script.splitAt("\n").trim() and
-      import_stmt = line.regexpCapture(".*await\\s+import\\((.*)\\).*", 1) and
-      import_stmt.regexpMatch(".*\\bgithub.workspace\\b.*")
+      // const script = require('${{ github.workspace }}/scripts/test.js');
+      // await script({ github, context, core });
+      line.regexpMatch(".*(import|require)\\b.*github.workspace\\b.*")
     )
   }
 }
@@ -49,4 +50,6 @@ class LocalScriptExecutionRunStep extends PoisonableStep, Run {
 
 class LocalActionUsesStep extends PoisonableStep, UsesStep {
   LocalActionUsesStep() { this.getCallee().matches("./%") }
+
+  string getPath() { result = normalizePath(this.getCallee()) }
 }

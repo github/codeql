@@ -136,6 +136,16 @@ predicate immutableActionsDataModel(
  *    - cmd_regex: Regular expression for matching untrusted git commands
  *    - flag: Flag for the command
  */
-predicate untrustedGitCommandsDataModel(string cmd_regex, string flag) {
-  Extensions::untrustedGitCommandsDataModel(cmd_regex, flag)
+predicate untrustedGitCommandDataModel(string cmd_regex, string flag) {
+  Extensions::untrustedGitCommandDataModel(cmd_regex, flag)
+}
+
+/**
+ * MaD models for untrusted gh commands
+ * Fields:
+ *    - cmd_regex: Regular expression for matching untrusted gh commands
+ *    - flag: Flag for the command
+ */
+predicate untrustedGhCommandDataModel(string cmd_regex, string flag) {
+  Extensions::untrustedGhCommandDataModel(cmd_regex, flag)
 }

@@ -24,8 +24,6 @@ extensions:
       - ["github\\.event\\.workflow_run\\.head_commit\\.message", "text"]
       - ["github\\.event\\.pull_request\\.head\\.repo\\.description", "text"]
       - ["github\\.event\\.workflow_run\\.head_repository\\.description", "text"]
-      - ["github\\.event\\.client_payload\\[[0-9]+\\]", "text"]
-      - ["github\\.event\\.client_payload", "text"]
       - ["github\\.event\\.changes\\.body\\.from", "title"]
       # BRANCH
       - ["github\\.event\\.pull_request\\.head\\.repo\\.default_branch", "branch"]
@@ -59,7 +57,6 @@ extensions:
       # JSON
       - ["github", "json"]
       - ["github\\.event", "json"]
-      - ["github\\.event\\.client_payload", "json"]
       - ["github\\.event\\.comment", "json"]
       - ["github\\.event\\.commits", "json"]
       - ["github\\.event\\.discussion", "json"]

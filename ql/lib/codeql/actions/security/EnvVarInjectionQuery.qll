@@ -10,7 +10,7 @@ string sanitizerCommand() {
   result =
     [
       "tr\\s+(-d\\s*)?('|\")?.n('|\")?", // tr -d '\n' ' ', tr '\n' ' '
-      "tr\\s+-cd\\s+.*:alpha:", // tr -cd '[:alpha:_]'
+      "tr\\s+-cd\\s+.*:al(pha|num):", // tr -cd '[:alpha:_]'
       "(head|tail)\\s+-n\\s+1" // head -n 1, tail -n 1
     ]
 }
@@ -55,18 +55,23 @@ class EnvVarInjectionFromFileReadSink extends EnvVarInjectionSink {
  *          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
  */
 class EnvVarInjectionFromCommandSink extends EnvVarInjectionSink {
+  CommandSource inCommand;
+  string injectedVar;
+  string command;
+
   EnvVarInjectionFromCommandSink() {
-    exists(CommandSource source, Run run, string var |
-      this.asExpr() = source.getEnclosingRun().getScript() and
-      run = source.getEnclosingRun() and
-      run.getScript().getACmdReachingGitHubEnvWrite(source.getCommand(), var) and
+    exists(Run run |
+      this.asExpr() = inCommand.getEnclosingRun().getScript() and
+      run = inCommand.getEnclosingRun() and
+      run.getScript().getACmdReachingGitHubEnvWrite(inCommand.getCommand(), injectedVar) and
       (
-        not run.getScript().getACmdReachingGitHubEnvWrite(_, var)
+        // the source flows to the injected variable without any command in between
+        not run.getScript().getACmdReachingGitHubEnvWrite(_, injectedVar) and
+        command = ""
         or
-        exists(string sanitizer |
-          run.getScript().getACmdReachingGitHubEnvWrite(sanitizer, var) and
-          not exists(sanitizer.regexpFind(sanitizerCommand(), _, _))
-        )
+        // the source flows to the injected variable with a command in between
+        run.getScript().getACmdReachingGitHubEnvWrite(command, injectedVar) and
+        not command.regexpMatch(".*" + sanitizerCommand() + ".*")
       )
     )
   }
@@ -81,18 +86,24 @@ class EnvVarInjectionFromCommandSink extends EnvVarInjectionSink {
  *      echo "FOO=$BODY" >> $GITHUB_ENV
  */
 class EnvVarInjectionFromEnvVarSink extends EnvVarInjectionSink {
+  string inVar;
+  string injectedVar;
+  string command;
+
   EnvVarInjectionFromEnvVarSink() {
-    exists(Run run, string var_name, string var |
-      exists(run.getInScopeEnvVarExpr(var_name)) and
+    exists(Run run |
       run.getScript() = this.asExpr() and
-      run.getScript().getAnEnvReachingGitHubEnvWrite(var_name, var) and
+      exists(run.getInScopeEnvVarExpr(inVar)) and
+      run.getScript().getAnEnvReachingGitHubEnvWrite(inVar, injectedVar) and
       (
-        not run.getScript().getACmdReachingGitHubEnvWrite(_, var)
+        // the source flows to the injected variable without any command in between
+        not run.getScript().getACmdReachingGitHubEnvWrite(_, injectedVar) and
+        command = ""
         or
-        exists(string sanitizer |
-          run.getScript().getACmdReachingGitHubEnvWrite(sanitizer, var) and
-          not exists(sanitizer.regexpFind(sanitizerCommand(), _, _))
-        )
+        // the source flows to the injected variable with a command in between
+        run.getScript().getACmdReachingGitHubEnvWrite(_, injectedVar) and
+        run.getScript().getACmdReachingGitHubEnvWrite(command, injectedVar) and
+        not command.regexpMatch(".*" + sanitizerCommand() + ".*")
       )
     )
   }
@@ -122,7 +133,7 @@ class EnvVarInjectionFromMaDSink extends EnvVarInjectionSink {
 private module EnvVarInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
-    not source.(RemoteFlowSource).getSourceType() = "branch"
+    not source.(RemoteFlowSource).getSourceType() = ["branch", "username"]
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof EnvVarInjectionSink }

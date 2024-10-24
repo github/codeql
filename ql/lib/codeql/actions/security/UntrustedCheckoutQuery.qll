@@ -3,49 +3,57 @@ private import codeql.actions.DataFlow
 private import codeql.actions.dataflow.FlowSources
 private import codeql.actions.TaintTracking
 
+string checkoutTriggers() {
+  result = ["pull_request_target", "workflow_run", "workflow_call", "issue_comment"]
+}
+
 /**
  * A taint-tracking configuration for PR HEAD references flowing
  * into actions/checkout's ref argument.
  */
 private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    // remote flow sources
-    source instanceof ArtifactSource
-    or
-    source instanceof GitHubCtxSource
-    or
-    source instanceof GitHubEventCtxSource
-    or
-    source instanceof GitHubEventJsonSource
-    or
-    source instanceof MaDSource
-    or
-    // `ref` argument contains the PR id/number or head ref
-    exists(Expression e |
-      source.asExpr() = e and
-      (
-        containsHeadRef(e.getExpression()) or
-        containsPullRequestNumber(e.getExpression())
+    source.asExpr().getATriggerEvent().getName() = checkoutTriggers() and
+    (
+      // remote flow sources
+      source instanceof ArtifactSource
+      or
+      source instanceof GitHubCtxSource
+      or
+      source instanceof GitHubEventCtxSource
+      or
+      source instanceof GitHubEventJsonSource
+      or
+      source instanceof MaDSource
+      or
+      // `ref` argument contains the PR id/number or head ref
+      exists(Expression e |
+        source.asExpr() = e and
+        (
+          containsHeadRef(e.getExpression()) or
+          containsPullRequestNumber(e.getExpression())
+        )
       )
-    )
-    or
-    // 3rd party actions returning the PR head ref
-    exists(StepsExpression e, UsesStep step |
-      source.asExpr() = e and
-      e.getStepId() = step.getId() and
-      (
-        step.getCallee() = "eficode/resolve-pr-refs" and e.getFieldName() = "head_ref"
-        or
-        step.getCallee() = "xt0rted/pull-request-comment-branch" and e.getFieldName() = "head_ref"
-        or
-        step.getCallee() = "alessbell/pull-request-comment-branch" and e.getFieldName() = "head_ref"
-        or
-        step.getCallee() = "gotson/pull-request-comment-branch" and e.getFieldName() = "head_ref"
-        or
-        step.getCallee() = "potiuk/get-workflow-origin" and
-        e.getFieldName() = ["sourceHeadBranch", "pullRequestNumber"]
-        or
-        step.getCallee() = "github/branch-deploy" and e.getFieldName() = ["ref", "fork_ref"]
+      or
+      // 3rd party actions returning the PR head ref
+      exists(StepsExpression e, UsesStep step |
+        source.asExpr() = e and
+        e.getStepId() = step.getId() and
+        (
+          step.getCallee() = "eficode/resolve-pr-refs" and e.getFieldName() = "head_ref"
+          or
+          step.getCallee() = "xt0rted/pull-request-comment-branch" and e.getFieldName() = "head_ref"
+          or
+          step.getCallee() = "alessbell/pull-request-comment-branch" and
+          e.getFieldName() = "head_ref"
+          or
+          step.getCallee() = "gotson/pull-request-comment-branch" and e.getFieldName() = "head_ref"
+          or
+          step.getCallee() = "potiuk/get-workflow-origin" and
+          e.getFieldName() = ["sourceHeadBranch", "pullRequestNumber"]
+          or
+          step.getCallee() = "github/branch-deploy" and e.getFieldName() = ["ref", "fork_ref"]
+        )
       )
     )
   }
@@ -71,27 +79,32 @@ module ActionsMutableRefCheckoutFlow = TaintTracking::Global<ActionsMutableRefCh
 
 private module ActionsSHACheckoutConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    // `ref` argument contains the PR head/merge commit sha
-    exists(Expression e |
-      source.asExpr() = e and
-      containsHeadSHA(e.getExpression())
-    )
-    or
-    // 3rd party actions returning the PR head sha
-    exists(StepsExpression e, UsesStep step |
-      source.asExpr() = e and
-      e.getStepId() = step.getId() and
-      (
-        step.getCallee() = "eficode/resolve-pr-refs" and e.getFieldName() = "head_sha"
-        or
-        step.getCallee() = "xt0rted/pull-request-comment-branch" and e.getFieldName() = "head_sha"
-        or
-        step.getCallee() = "alessbell/pull-request-comment-branch" and e.getFieldName() = "head_sha"
-        or
-        step.getCallee() = "gotson/pull-request-comment-branch" and e.getFieldName() = "head_sha"
-        or
-        step.getCallee() = "potiuk/get-workflow-origin" and
-        e.getFieldName() = ["sourceHeadSha", "mergeCommitSha"]
+    source.asExpr().getATriggerEvent().getName() =
+      ["pull_request_target", "workflow_run", "workflow_call", "issue_comment"] and
+    (
+      // `ref` argument contains the PR head/merge commit sha
+      exists(Expression e |
+        source.asExpr() = e and
+        containsHeadSHA(e.getExpression())
+      )
+      or
+      // 3rd party actions returning the PR head sha
+      exists(StepsExpression e, UsesStep step |
+        source.asExpr() = e and
+        e.getStepId() = step.getId() and
+        (
+          step.getCallee() = "eficode/resolve-pr-refs" and e.getFieldName() = "head_sha"
+          or
+          step.getCallee() = "xt0rted/pull-request-comment-branch" and e.getFieldName() = "head_sha"
+          or
+          step.getCallee() = "alessbell/pull-request-comment-branch" and
+          e.getFieldName() = "head_sha"
+          or
+          step.getCallee() = "gotson/pull-request-comment-branch" and e.getFieldName() = "head_sha"
+          or
+          step.getCallee() = "potiuk/get-workflow-origin" and
+          e.getFieldName() = ["sourceHeadSha", "mergeCommitSha"]
+        )
       )
     )
   }
@@ -197,34 +210,28 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
   ActionsMutableRefCheckout() {
     this.getCallee() = "actions/checkout" and
     (
-      exists(ActionsMutableRefCheckoutFlow::PathNode sink |
-        ActionsMutableRefCheckoutFlow::flowPath(_, sink) and
+      exists(
+        ActionsMutableRefCheckoutFlow::PathNode source, ActionsMutableRefCheckoutFlow::PathNode sink
+      |
+        ActionsMutableRefCheckoutFlow::flowPath(source, sink) and
         sink.getNode().asExpr() = this.getArgumentExpr(["ref", "repository"])
       )
       or
       // heuristic base on the step id and field name
-      exists(StepsExpression e |
-        this.getArgumentExpr("ref") = e and
-        (
-          e.getStepId().matches("%" + ["head", "branch", "ref"] + "%") or
-          e.getFieldName().matches("%" + ["head", "branch", "ref"] + "%")
-        )
-      )
-      or
-      exists(NeedsExpression e |
-        this.getArgumentExpr("ref") = e and
-        (
-          e.getNeededJobId().matches("%" + ["head", "branch", "ref"] + "%") or
-          e.getFieldName().matches("%" + ["head", "branch", "ref"] + "%")
-        )
-      )
-      or
-      exists(JsonReferenceExpression e |
-        this.getArgumentExpr("ref") = e and
-        (
-          e.getAccessPath().matches("%." + ["head", "branch", "ref"] + "%") or
-          e.getInnerExpression().matches("%." + ["head", "branch", "ref"] + "%")
-        )
+      exists(string value |
+        this.getArgumentExpr("ref")
+            .(SimpleReferenceExpression)
+            .getEnclosingJob()
+            .getATriggerEvent()
+            .getName() = checkoutTriggers() and
+        value.regexpMatch(".*(head|branch|ref).*")
+      |
+        this.getArgumentExpr("ref").(StepsExpression).getStepId() = value or
+        this.getArgumentExpr("ref").(StepsExpression).getFieldName() = value or
+        this.getArgumentExpr("ref").(NeedsExpression).getNeededJobId() = value or
+        this.getArgumentExpr("ref").(NeedsExpression).getFieldName() = value or
+        this.getArgumentExpr("ref").(JsonReferenceExpression).getAccessPath() = value or
+        this.getArgumentExpr("ref").(JsonReferenceExpression).getInnerExpression() = value
       )
     )
   }
@@ -241,34 +248,26 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
   ActionsSHACheckout() {
     this.getCallee() = "actions/checkout" and
     (
-      exists(ActionsSHACheckoutFlow::PathNode sink |
-        ActionsSHACheckoutFlow::flowPath(_, sink) and
+      exists(ActionsSHACheckoutFlow::PathNode source, ActionsSHACheckoutFlow::PathNode sink |
+        ActionsSHACheckoutFlow::flowPath(source, sink) and
         sink.getNode().asExpr() = this.getArgumentExpr(["ref", "repository"])
       )
       or
       // heuristic base on the step id and field name
-      exists(StepsExpression e |
-        this.getArgumentExpr("ref") = e and
-        (
-          e.getStepId().matches("%" + ["head", "sha", "commit"] + "%") or
-          e.getFieldName().matches("%" + ["head", "sha", "commit"] + "%")
-        )
-      )
-      or
-      exists(NeedsExpression e |
-        this.getArgumentExpr("ref") = e and
-        (
-          e.getNeededJobId().matches("%" + ["head", "sha", "commit"] + "%") or
-          e.getFieldName().matches("%" + ["head", "sha", "commit"] + "%")
-        )
-      )
-      or
-      exists(JsonReferenceExpression e |
-        this.getArgumentExpr("ref") = e and
-        (
-          e.getAccessPath().matches("%." + ["head", "sha", "commit"] + "%") or
-          e.getInnerExpression().matches("%." + ["head", "sha", "commit"] + "%")
-        )
+      exists(string value |
+        this.getArgumentExpr("ref")
+            .(SimpleReferenceExpression)
+            .getEnclosingJob()
+            .getATriggerEvent()
+            .getName() = checkoutTriggers() and
+        value.regexpMatch(".*(head|sha|commit).*")
+      |
+        this.getArgumentExpr("ref").(StepsExpression).getStepId() = value or
+        this.getArgumentExpr("ref").(StepsExpression).getFieldName() = value or
+        this.getArgumentExpr("ref").(NeedsExpression).getNeededJobId() = value or
+        this.getArgumentExpr("ref").(NeedsExpression).getFieldName() = value or
+        this.getArgumentExpr("ref").(JsonReferenceExpression).getAccessPath() = value or
+        this.getArgumentExpr("ref").(JsonReferenceExpression).getInnerExpression() = value
       )
     )
   }
@@ -284,6 +283,7 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
 class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GitMutableRefCheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
+      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -307,6 +307,7 @@ class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 class GitSHACheckout extends SHACheckoutStep instanceof Run {
   GitSHACheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
+      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         containsHeadSHA(cmd)
@@ -327,6 +328,7 @@ class GitSHACheckout extends SHACheckoutStep instanceof Run {
 class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GhMutableRefCheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
+      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch(".*(gh|hub)\\s+pr\\s+checkout.*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -349,6 +351,7 @@ class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 class GhSHACheckout extends SHACheckoutStep instanceof Run {
   GhSHACheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
+      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("gh\\s+pr\\s+checkout.*") and
       (
         containsHeadSHA(cmd)

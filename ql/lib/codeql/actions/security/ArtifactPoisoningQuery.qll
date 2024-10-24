@@ -4,9 +4,9 @@ import codeql.actions.DataFlow
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.security.PoisonableSteps
 
-string unzipRegexp() { result = ".*(unzip|tar)\\s+.*" }
+string unzipRegexp() { result = "(unzip|tar)\\s+.*" }
 
-string unzipDirArgRegexp() { result = "-d\\s+([^ ]+).*" }
+string unzipDirArgRegexp() { result = "(-d|-C)\\s+([^ ]+).*" }
 
 abstract class UntrustedArtifactDownloadStep extends Step {
   abstract string getPath();
@@ -166,7 +166,7 @@ class ActionsGitHubScriptDownloadStep extends UntrustedArtifactDownloadStep, Use
                 .(Run)
                 .getScript()
                 .getACommand()
-                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)))
+                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 3)))
     else
       if this.getAFollowingStep().(Run).getScript().getACommand().regexpMatch(unzipRegexp())
       then result = "GITHUB_WORKSPACE/"
@@ -197,13 +197,13 @@ class GHRunArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
       result =
         normalizePath(trimQuotes(this.getScript()
                 .getACommand()
-                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))) or
+                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 3))) or
       result =
         normalizePath(trimQuotes(this.getAFollowingStep()
                 .(Run)
                 .getScript()
                 .getACommand()
-                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)))
+                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 3)))
     else
       if
         this.getAFollowingStep().(Run).getScript().getACommand().regexpMatch(unzipRegexp()) or
@@ -243,13 +243,13 @@ class DirectArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
       result =
         normalizePath(trimQuotes(this.getScript()
                 .getACommand()
-                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2))) or
+                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 3))) or
       result =
         normalizePath(trimQuotes(this.getAFollowingStep()
                 .(Run)
                 .getScript()
                 .getACommand()
-                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 2)))
+                .regexpCapture(unzipRegexp() + unzipDirArgRegexp(), 3)))
     else result = "GITHUB_WORKSPACE/"
   }
 }
@@ -276,7 +276,12 @@ class ArtifactPoisoningSink extends DataFlow::Node {
       )
       or
       poisonable.(UsesStep) = this.asExpr() and
-      download.getPath() = "GITHUB_WORKSPACE/"
+      (
+        not poisonable instanceof LocalActionUsesStep and
+        download.getPath() = "GITHUB_WORKSPACE/"
+        or
+        isSubpath(poisonable.(LocalActionUsesStep).getPath(), download.getPath())
+      )
     )
   }
 

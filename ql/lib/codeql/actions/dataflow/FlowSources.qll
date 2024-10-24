@@ -40,9 +40,10 @@ class GitHubCtxSource extends RemoteFlowSource {
 
 class GitHubEventCtxSource extends RemoteFlowSource {
   string flag;
+  string context;
 
   GitHubEventCtxSource() {
-    exists(Expression e, string context, string regexp |
+    exists(Expression e, string regexp |
       this.asExpr() = e and
       context = e.getExpression() and
       (
@@ -62,6 +63,8 @@ class GitHubEventCtxSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = flag }
+
+  string getContext() { result = context }
 }
 
 abstract class CommandSource extends RemoteFlowSource {
@@ -77,7 +80,7 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
 
   GitCommandSource() {
     exists(Step checkout, string cmd_regex |
-      // This shoould be:
+      // This should be:
       // source instanceof PRHeadCheckoutStep
       // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
       // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
@@ -87,7 +90,8 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
           checkout = uses and
           uses.getCallee() = "actions/checkout" and
           exists(uses.getArgument("ref")) and
-          not uses.getArgument("ref").matches("%base%")
+          not uses.getArgument("ref").matches("%base%") and
+          uses.getATriggerEvent().getName() = checkoutTriggers()
         )
         or
         checkout instanceof GitMutableRefCheckout
@@ -102,8 +106,8 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
       checkout.getAFollowingStep() = run and
       run.getScript().getAStmt() = cmd and
       cmd.indexOf("git") = 0 and
-      untrustedGitCommandsDataModel(cmd_regex, flag) and
-      cmd.regexpMatch(".*" + cmd_regex + ".*")
+      untrustedGitCommandDataModel(cmd_regex, flag) and
+      cmd.regexpMatch(cmd_regex + ".*")
     )
   }
 
@@ -112,6 +116,34 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
   override string getCommand() { result = cmd }
 
   override Run getEnclosingRun() { result = run }
+}
+
+class GhCLICommandSource extends RemoteFlowSource, CommandSource {
+  Run run;
+  string cmd;
+  string flag;
+
+  GhCLICommandSource() {
+    exists(string cmd_regex |
+      this.asExpr() = run.getScript() and
+      run.getScript().getAStmt() = cmd and
+      cmd.indexOf("gh ") = 0 and
+      untrustedGhCommandDataModel(cmd_regex, flag) and
+      cmd.regexpMatch(cmd_regex + ".*") and
+      (
+        cmd.regexpMatch(".*\\b(pr|pulls)\\b.*") and
+        run.getATriggerEvent().getName() = checkoutTriggers()
+        or
+        not cmd.regexpMatch(".*\\b(pr|pulls)\\b.*")
+      )
+    )
+  }
+
+  override string getSourceType() { result = flag }
+
+  override Run getEnclosingRun() { result = run }
+
+  override string getCommand() { result = cmd }
 }
 
 class GitHubEventPathSource extends RemoteFlowSource, CommandSource {
@@ -203,7 +235,7 @@ class ArtifactSource extends RemoteFlowSource, FileSource {
  */
 private class CheckoutSource extends RemoteFlowSource, FileSource {
   CheckoutSource() {
-    // This shoould be:
+    // This should be:
     // source instanceof PRHeadCheckoutStep
     // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
     // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
@@ -212,7 +244,8 @@ private class CheckoutSource extends RemoteFlowSource, FileSource {
       this.asExpr() = uses and
       uses.getCallee() = "actions/checkout" and
       exists(uses.getArgument("ref")) and
-      not uses.getArgument("ref").matches("%base%")
+      not uses.getArgument("ref").matches("%base%") and
+      uses.getATriggerEvent().getName() = checkoutTriggers()
     )
     or
     this.asExpr() instanceof GitMutableRefCheckout
@@ -289,6 +322,27 @@ class Xt0rtedSlashCommandSource extends RemoteFlowSource {
     exists(UsesStep u |
       u.getCallee() = "xt0rted/slash-command-action" and
       u.getArgument("permission-level").toLowerCase() = ["read", "none"] and
+      this.asExpr() = u
+    )
+  }
+
+  override string getSourceType() { result = "text" }
+}
+
+class OctokitRequestActionSource extends RemoteFlowSource {
+  OctokitRequestActionSource() {
+    exists(UsesStep u, string route |
+      u.getCallee() = "octokit/request-action" and
+      route = u.getArgument("route").trim() and
+      route.indexOf("GET") = 0 and
+      (
+        route.matches("%/commits%") or
+        route.matches("%/comments%") or
+        route.matches("%/pulls%") or
+        route.matches("%/issues%") or
+        route.matches("%/users%") or
+        route.matches("%github.event.issue.pull_request.url%")
+      ) and
       this.asExpr() = u
     )
   }
