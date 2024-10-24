@@ -5,6 +5,7 @@
  */
 
 import codeql.Locations
+private import codeql.rust.elements.internal.LocationImpl
 private import codeql.rust.elements.internal.generated.Locatable
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
@@ -14,17 +15,32 @@ private import codeql.rust.elements.internal.generated.Raw
  * be referenced directly.
  */
 module Impl {
+  abstract class SynthLocatable extends Locatable {
+    abstract predicate hasSynthLocationInfo(
+      File file, int startline, int startcolumn, int endline, int endcolumn
+    );
+
+    final override Location getLocation() {
+      not locatable_locations(Synth::convertLocatableToRaw(this), _) and
+      exists(File file, int beginLine, int beginColumn, int endLine, int endColumn |
+        this.hasSynthLocationInfo(file, beginLine, beginColumn, endLine, endColumn)
+      |
+        result = LocationImpl::TLocationSynth(file, beginLine, beginColumn, endLine, endColumn)
+        or
+        exists(@location_default location |
+          result = LocationImpl::TLocationDefault(location) and
+          locations_default(location, file, beginLine, beginColumn, endLine, endColumn)
+        )
+      )
+    }
+  }
+
   class Locatable extends Generated::Locatable {
     pragma[nomagic]
-    final Location getLocation() {
-      exists(Raw::Locatable raw |
-        raw = Synth::convertLocatableToRaw(this) and
-        (
-          locatable_locations(raw, result)
-          or
-          not exists(Location loc | locatable_locations(raw, loc)) and
-          result instanceof EmptyLocation
-        )
+    Location getLocation() {
+      exists(@location_default location |
+        result = LocationImpl::TLocationDefault(location) and
+        locatable_locations(Synth::convertLocatableToRaw(this), location)
       )
     }
 

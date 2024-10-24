@@ -5,8 +5,8 @@
 
 private import internal.PathExprImpl
 import codeql.rust.elements.Attr
-import codeql.rust.elements.Expr
 import codeql.rust.elements.Path
+import codeql.rust.elements.PathExprBase
 
 /**
  * A path expression. For example:

@@ -310,7 +310,7 @@ closure_binder_generic_param_lists(
 | @match_expr
 | @offset_of_expr
 | @paren_expr
-| @path_expr
+| @path_expr_base
 | @prefix_expr
 | @range_expr
 | @record_expr
@@ -2113,22 +2113,9 @@ paren_type_ties(
   int ty: @type_ref ref
 );
 
-path_exprs(
-  unique int id: @path_expr
-);
-
-#keyset[id, index]
-path_expr_attrs(
-  int id: @path_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-path_expr_paths(
-  int id: @path_expr ref,
-  int path: @path ref
-);
+@path_expr_base =
+  @path_expr
+;
 
 path_pats(
   unique int id: @path_pat
@@ -3034,6 +3021,23 @@ module_names(
 module_visibilities(
   int id: @module ref,
   int visibility: @visibility ref
+);
+
+path_exprs(
+  unique int id: @path_expr
+);
+
+#keyset[id, index]
+path_expr_attrs(
+  int id: @path_expr ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+path_expr_paths(
+  int id: @path_expr ref,
+  int path: @path ref
 );
 
 statics(

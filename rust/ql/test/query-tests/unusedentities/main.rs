@@ -193,12 +193,12 @@ fn loops() {
         }
     }
 
-    for x // SPURIOUS: unused variable
+    for x
     in 1..10 {
         println!("x is {x}");
     }
 
-    for x // SPURIOUS: unused variable
+    for x
     in 1..10 {
         _ = format!("x is {x}"); // SPURIOUS: unused value `res`
     }

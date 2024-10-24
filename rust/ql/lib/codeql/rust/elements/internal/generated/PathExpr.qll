@@ -7,8 +7,8 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
-import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.Path
+import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathExpr` and should not
@@ -26,7 +26,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::PathExpr` class directly.
    * Use the subclass `PathExpr`, where the following predicates are available.
    */
-  class PathExpr extends Synth::TPathExpr, ExprImpl::Expr {
+  class PathExpr extends Synth::TPathExpr, PathExprBaseImpl::PathExprBase {
     override string getAPrimaryQlClass() { result = "PathExpr" }
 
     /**
