@@ -148,7 +148,7 @@ abstract class TranslatedCall extends TranslatedExpr {
   abstract predicate alwaysRaiseException(boolean isSeh);
 
   /**
-   * The call target is known to conditionally raise an exception.
+   * Holds when call target is known to conditionally raise an exception.
    * Note that `alwaysRaiseException`, `mayRaiseException`,
    * and `neverRaiseException` may conflict (e.g., all hold for a given target).
    * Conflicting results are resolved during IR generation.
@@ -156,7 +156,7 @@ abstract class TranslatedCall extends TranslatedExpr {
   abstract predicate mayRaiseException(boolean isSeh);
 
   /**
-   * The call target is known to never raise an exception.
+   * Holds when the call target is known to never raise an exception.
    * Note that `alwaysRaiseException`, `mayRaiseException`,
    * and `neverRaiseException` may conflict (e.g., all hold for a given target).
    * Conflicting results are resolved during IR generation.

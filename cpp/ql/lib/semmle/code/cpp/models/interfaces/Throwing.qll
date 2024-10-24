@@ -16,7 +16,7 @@ import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
  */
 newtype TException =
   /** Structured Exception Handling (SEH) exception */
-  TSEHException() or
+  TSehException() or
   /** C++ exception */
   TCxxException()
 
@@ -40,7 +40,7 @@ abstract private class ExceptionAnnotation extends Function {
   /**
    * Holds if the exception type of this annotation is for a Structured Exception Handling (SEH) exception.
    */
-  final predicate isSeh() { this.getExceptionType() = TSEHException() }
+  final predicate isSeh() { this.getExceptionType() = TSehException() }
 
   /**
    * Holds if the exception type of this annotation is for a CPP exception.
@@ -49,19 +49,19 @@ abstract private class ExceptionAnnotation extends Function {
 }
 
 /**
- * Functions that are known to not throw an exception.
+ * A Function that is known to not throw an exception.
  */
 abstract class NonThrowingFunction extends ExceptionAnnotation { }
 
 /**
- * Functions that are known to raise an exception.
+ * A function this is known to raise an exception.
  */
 abstract class ThrowingFunction extends ExceptionAnnotation {
-  ThrowingFunction() { this instanceof Function }
+  ThrowingFunction() { any() }
 
   /**
    * Holds if this function may raise an exception during evaluation.
-   * If `conditional` is `false` the function may raise, and if `true` the function
+   * If `unconditional` is `false` the function may raise, and if `true` the function
    * will always raise an exception.
    * Do not specify `none()` if no exception is raised, instead use the
    * `NonThrowingFunction` class instead.
