@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.language.base", "LanguageSourceSet", True, "generatedBy", "(Task)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.language.base", "LanguageSourceSet", True, "getSource", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

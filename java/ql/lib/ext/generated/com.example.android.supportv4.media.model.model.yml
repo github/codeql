@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.android.supportv4.media.model", "MusicProvider", True, "getGenres", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.android.supportv4.media.model", "MusicProvider", True, "getMusic", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.android.supportv4.media.model", "MusicProvider", True, "getMusicsByGenre", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.android.supportv4.media.model", "MusicProvider", True, "searchMusic", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["com.example.android.supportv4.media.model", "MusicProvider", True, "setFavorite", "(String,boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.android.supportv4.media.model", "MutableMediaMetadata", True, "MutableMediaMetadata", "(String,MediaMetadataCompat)", "", "Argument[0]", "Argument[this].Field[com.example.android.supportv4.media.model.MutableMediaMetadata.trackId]", "value", "dfc-generated"]
+      - ["com.example.android.supportv4.media.model", "MutableMediaMetadata", True, "MutableMediaMetadata", "(String,MediaMetadataCompat)", "", "Argument[1]", "Argument[this].Field[com.example.android.supportv4.media.model.MutableMediaMetadata.metadata]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.android.supportv4.media.model", "MusicProvider", "isFavorite", "(String)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.model", "MusicProvider", "isInitialized", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.model", "MusicProvider", "retrieveMediaAsync", "(MusicProvider$Callback)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media.model", "MusicProvider", "updateMusic", "(String,MediaMetadataCompat)", "summary", "df-generated"]

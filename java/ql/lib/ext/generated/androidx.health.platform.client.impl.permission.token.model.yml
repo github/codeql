@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.health.platform.client.impl.permission.token", "PermissionTokenManager", "getCurrentToken", "(Context)", "summary", "df-generated"]
+      - ["androidx.health.platform.client.impl.permission.token", "PermissionTokenManager", "setCurrentToken", "(Context,String)", "summary", "df-generated"]

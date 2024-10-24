@@ -1,0 +1,56 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.activity", "CarAppViewModel", True, "CarAppViewModel", "(Application,ComponentName,SessionInfo)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", True, "CarAppViewModel", "(Application,ComponentName,SessionInfo)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", True, "CarAppViewModel", "(Application,ComponentName,SessionInfo)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", True, "getError", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", True, "getState", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", True, "updateWindowInsets", "(Insets,DisplayCutoutCompat)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", True, "updateWindowInsets", "(Insets,DisplayCutoutCompat)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "HostUpdateReceiver", True, "HostUpdateReceiver", "(CarAppViewModel)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "ServiceConnectionManager", True, "ServiceConnectionManager", "(Context,ComponentName,SessionInfo,ServiceConnectionManager$ServiceConnectionListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "ServiceConnectionManager", True, "ServiceConnectionManager", "(Context,ComponentName,SessionInfo,ServiceConnectionManager$ServiceConnectionListener)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "ServiceConnectionManager", True, "ServiceConnectionManager", "(Context,ComponentName,SessionInfo,ServiceConnectionManager$ServiceConnectionListener)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "ServiceConnectionManager", True, "ServiceConnectionManager", "(Context,ComponentName,SessionInfo,ServiceConnectionManager$ServiceConnectionListener)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "ServiceConnectionManager", True, "getHandshakeInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "ServiceDispatcher", True, "ServiceDispatcher", "(ErrorHandler,ServiceDispatcher$OnBindingListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "ServiceDispatcher", True, "ServiceDispatcher", "(ErrorHandler,ServiceDispatcher$OnBindingListener)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.car.app.activity", "ServiceDispatcher", True, "fetch", "(String,Object,ServiceDispatcher$ReturnCall)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.activity", "ServiceDispatcher", True, "fetchNoFail", "(String,Object,ServiceDispatcher$ReturnCall)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.activity", "ServiceDispatcher", True, "setOnBindingListener", "(ServiceDispatcher$OnBindingListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.car.app.activity", "CarAppViewModel", True, "setActivityResult", "(int,Intent)", "", "Argument[1]", "pending-intents", "df-generated"]
+      - ["androidx.car.app.activity", "ResultManagerAutomotive", True, "setCarAppResult", "(int,Intent)", "", "Argument[1]", "pending-intents", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.activity", "BaseCarAppActivity", "bindToViewModel", "(SessionInfo)", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "BaseCarAppActivity", "getDecorFitsSystemWindows", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "BaseCarAppActivity", "getServiceComponentName", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "BaseCarAppActivity", "onBackPressed", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "BaseCarAppActivity", "retrieveServiceComponentName", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", "getCallingActivity", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", "onConnect", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", "onError", "(ErrorHandler$ErrorType)", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", "onHostUpdated", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", "retryBinding", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", "setActivityResult", "(int,Intent)", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "CarAppViewModel", "setInsetsListener", "(IInsetsListener)", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "ErrorHandler$ActionType", "getActionResId", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "ErrorHandler$ErrorType", "getActionType", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "ErrorHandler$ErrorType", "getMessageResId", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "HostUpdateReceiver", "onReceive", "(Context,Intent)", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "HostUpdateReceiver", "register", "(Context)", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "HostUpdateReceiver", "unregister", "(Context)", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "ResultManagerAutomotive", "getCallingComponent", "()", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "ResultManagerAutomotive", "setCarAppResult", "(int,Intent)", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "ServiceDispatcher", "dispatch", "(String,ServiceDispatcher$OneWayCall)", "summary", "df-generated"]
+      - ["androidx.car.app.activity", "ServiceDispatcher", "dispatchNoFail", "(String,ServiceDispatcher$OneWayCall)", "summary", "df-generated"]

@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.camera.integration.view", "CameraControllerFragment", True, "onCreateView", "(LayoutInflater,ViewGroup,Bundle)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["androidx.camera.integration.view", "PreviewViewFragment", True, "onViewCreated", "(View,Bundle)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["androidx.camera.integration.view", "TransformFragment", False, "onCreateView", "(LayoutInflater,ViewGroup,Bundle)", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.integration.view", "CameraControllerFragment", "onDestroyView", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "MainActivity", "onCreateOptionsMenu", "(Menu)", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "MainActivity", "onOptionsItemSelected", "(MenuItem)", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "MainActivity", "onRequestPermissionsResult", "(int,String[],int[])", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "OverlayView", "OverlayView", "(Context)", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "OverlayView", "OverlayView", "(Context,AttributeSet)", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "OverlayView", "onDraw", "(Canvas)", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "PreviewViewFragment", "onAttach", "(Context)", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "PreviewViewFragment", "onDestroyView", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "PreviewViewFragment", "onPause", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "PreviewViewFragment", "onResume", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "TransformFragment", "getExifTransform", "(int,int,int)", "summary", "df-generated"]
+      - ["androidx.camera.integration.view", "TransformFragment", "onDestroyView", "()", "summary", "df-generated"]

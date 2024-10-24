@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.slf4j.migrator", "ConversionException", True, "ConversionException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.slf4j.migrator", "ConversionException", True, "ConversionException", "(String,String)", "", "Argument[1]", "Argument[this].SyntheticField[org.slf4j.migrator.ConversionException.detail]", "value", "dfc-generated"]
+      - ["org.slf4j.migrator", "ConversionException", True, "getDetail", "()", "", "Argument[this].SyntheticField[org.slf4j.migrator.ConversionException.detail]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.migrator", "ConversionException", True, "setDetail", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.slf4j.migrator.ConversionException.detail]", "value", "dfc-generated"]
+      - ["org.slf4j.migrator", "FileSelector", True, "selectJavaFilesInFolder", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[org.slf4j.migrator.FileSelector.javaFileList].Element", "value", "dfc-generated"]
+      - ["org.slf4j.migrator", "FileSelector", True, "selectJavaFilesInFolder", "(File)", "", "Argument[0]", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["org.slf4j.migrator", "FileSelector", True, "selectJavaFilesInFolder", "(File)", "", "Argument[this].SyntheticField[org.slf4j.migrator.FileSelector.javaFileList]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.migrator", "ProjectConverter", True, "ProjectConverter", "(int,ProgressListener)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.slf4j.migrator", "ProjectConverter", True, "addException", "(ConversionException)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.slf4j.migrator", "FileSelector", True, "selectJavaFilesInFolder", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.slf4j.migrator", "ProjectConverter", True, "convertProject", "(File)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.slf4j.migrator", "ConversionException", "print", "()", "summary", "df-generated"]
+      - ["org.slf4j.migrator", "ProjectConverter", "convertProject", "(File)", "summary", "df-generated"]
+      - ["org.slf4j.migrator", "ProjectConverter", "printException", "()", "summary", "df-generated"]
+      - ["org.slf4j.migrator", "RuleSetFactory", "getMatcherImpl", "(int)", "summary", "df-generated"]

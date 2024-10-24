@@ -1,0 +1,47 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.cli", "AbstractCommandLineConverter", True, "convert", "(Iterable,Object)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "AbstractPropertiesCommandLineConverter", True, "convert", "(ParsedCommandLine,Map)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineArgumentException", True, "CommandLineArgumentException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.cli", "CommandLineArgumentException", True, "CommandLineArgumentException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.cli", "CommandLineArgumentException", True, "CommandLineArgumentException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.cli", "CommandLineOption", True, "CommandLineOption", "(Iterable)", "", "Argument[0].Element", "Argument[this].SyntheticField[org.gradle.cli.CommandLineOption.options].Element", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineOption", True, "deprecated", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineOption", True, "getDescription", "()", "", "Argument[this].SyntheticField[org.gradle.cli.CommandLineOption.description]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineOption", True, "getOptions", "()", "", "Argument[this].SyntheticField[org.gradle.cli.CommandLineOption.options]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineOption", True, "hasArgument", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineOption", True, "hasArgument", "(Class)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineOption", True, "hasArguments", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineOption", True, "hasDescription", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.cli.CommandLineOption.description]", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineOption", True, "hasDescription", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[org.gradle.cli.CommandLineOption.description]", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineOption", True, "hasDescription", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineOption", True, "incubating", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineParser", True, "allowMixedSubcommandsAndOptions", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineParser", True, "allowOneOf", "(String[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineParser", True, "allowUnknownOptions", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineParser", True, "option", "(String[])", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.gradle.cli.CommandLineOption.options].Element", "value", "dfc-generated"]
+      - ["org.gradle.cli", "CommandLineParser", True, "parse", "(Iterable)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.cli", "CommandLineParser", True, "parse", "(String[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.cli", "ParsedCommandLine", True, "getExtraArguments", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.cli", "ParsedCommandLine", True, "option", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.cli", "ParsedCommandLineOption", True, "addArgument", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.cli.ParsedCommandLineOption.values].Element", "value", "dfc-generated"]
+      - ["org.gradle.cli", "ParsedCommandLineOption", True, "getValue", "()", "", "Argument[this].SyntheticField[org.gradle.cli.ParsedCommandLineOption.values].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.cli", "ParsedCommandLineOption", True, "getValues", "()", "", "Argument[this].SyntheticField[org.gradle.cli.ParsedCommandLineOption.values]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.cli", "AbstractPropertiesCommandLineConverter", "configure", "(CommandLineParser)", "summary", "df-generated"]
+      - ["org.gradle.cli", "CommandLineOption", "getAllowsArguments", "()", "summary", "df-generated"]
+      - ["org.gradle.cli", "CommandLineOption", "getAllowsMultipleArguments", "()", "summary", "df-generated"]
+      - ["org.gradle.cli", "CommandLineOption", "isDeprecated", "()", "summary", "df-generated"]
+      - ["org.gradle.cli", "CommandLineOption", "isIncubating", "()", "summary", "df-generated"]
+      - ["org.gradle.cli", "CommandLineParser", "printUsage", "(Appendable)", "summary", "df-generated"]
+      - ["org.gradle.cli", "ParsedCommandLine", "hadOptionRemoved", "(String)", "summary", "df-generated"]
+      - ["org.gradle.cli", "ParsedCommandLine", "hasAnyOption", "(Collection)", "summary", "df-generated"]
+      - ["org.gradle.cli", "ParsedCommandLine", "hasOption", "(String)", "summary", "df-generated"]
+      - ["org.gradle.cli", "ParsedCommandLineOption", "hasValue", "()", "summary", "df-generated"]

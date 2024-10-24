@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.util.springframework", "ConcurrentReferenceHashMap", "ConcurrentReferenceHashMap", "(int)", "summary", "df-generated"]
+      - ["org.apache.avro.util.springframework", "ConcurrentReferenceHashMap", "ConcurrentReferenceHashMap", "(int,ConcurrentReferenceHashMap$ReferenceType)", "summary", "df-generated"]
+      - ["org.apache.avro.util.springframework", "ConcurrentReferenceHashMap", "ConcurrentReferenceHashMap", "(int,float)", "summary", "df-generated"]
+      - ["org.apache.avro.util.springframework", "ConcurrentReferenceHashMap", "ConcurrentReferenceHashMap", "(int,float,int)", "summary", "df-generated"]
+      - ["org.apache.avro.util.springframework", "ConcurrentReferenceHashMap", "ConcurrentReferenceHashMap", "(int,float,int,ConcurrentReferenceHashMap$ReferenceType)", "summary", "df-generated"]
+      - ["org.apache.avro.util.springframework", "ConcurrentReferenceHashMap", "ConcurrentReferenceHashMap", "(int,int)", "summary", "df-generated"]
+      - ["org.apache.avro.util.springframework", "ConcurrentReferenceHashMap", "purgeUnreferencedEntries", "()", "summary", "df-generated"]
+      - ["org.apache.avro.util.springframework", "ConcurrentReferenceHashMap", "remove", "(Object,Object)", "summary", "df-generated"]

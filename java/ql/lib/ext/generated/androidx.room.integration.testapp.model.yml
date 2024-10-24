@@ -1,0 +1,43 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.room.integration.testapp", "SampleDatabaseService", True, "intentFor", "(Context,String)", "", "Argument[1]", "ReturnValue.SyntheticField[android.content.Intent.extras].MapValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.room.integration.testapp", "FtsTestDatabase", "getMailDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "FtsTestDatabase", "getSongDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "MusicTestDatabase", "getDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "PKeyTestDatabase", "intPKeyDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "PKeyTestDatabase", "integerAutoIncPKeyDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "PKeyTestDatabase", "integerPKeyDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "PKeyTestDatabase", "objectPKeyDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "SampleDatabaseService", "onBind", "(Intent)", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "SampleDatabaseService", "onCreate", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "SampleDatabaseService", "onUnbind", "(Intent)", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase$Converters", "asBytes", "(UUID)", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase$Converters", "asUuid", "(byte[])", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase$Converters", "composeDays", "(Set)", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase$Converters", "dateToTimestamp", "(Date)", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase$Converters", "decomposeDays", "(int)", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase$Converters", "fromTimestamp", "(Long)", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getBlobEntityDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getFunnyNamedDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getLibraryItemDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getPagingSourceOnlyUserDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getPetCoupleDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getPetDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getProductDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getRawDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getRobotsDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getSchoolDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getSpecificDogDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getToyDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getUserDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getUserHouseDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getUserPetDao", "()", "summary", "df-generated"]
+      - ["androidx.room.integration.testapp", "TestDatabase", "getWithClauseDao", "()", "summary", "df-generated"]

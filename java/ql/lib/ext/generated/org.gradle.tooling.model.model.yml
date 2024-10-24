@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.tooling.model", "BuildIdentifier", True, "getRootDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.model", "GradleModuleVersion", True, "getGroup", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.model", "GradleModuleVersion", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.model", "GradleModuleVersion", True, "getVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.model", "ProjectIdentifier", True, "getBuildIdentifier", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.model", "ProjectIdentifier", True, "getProjectPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.tooling.model", "UnsupportedMethodException", True, "UnsupportedMethodException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.tooling.model", "UnsupportedMethodException", True, "UnsupportedMethodException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["org.gradle.tooling.model", "UnsupportedMethodException", True, "UnsupportedMethodException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "dfc-generated"]

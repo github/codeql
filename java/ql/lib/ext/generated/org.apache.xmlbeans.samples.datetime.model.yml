@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.xmlbeans.samples.datetime", "DateTime", True, "validateXml", "(XmlObject)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.xmlbeans.samples.datetime", "DateTime", "createDocument", "(DatetimeDocument,String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.datetime", "DateTime", "parseXml", "(String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.datetime", "DateTime", "printInstance", "(DatetimeDocument)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.datetime", "DateTime", "validateXml", "(XmlObject)", "summary", "df-generated"]

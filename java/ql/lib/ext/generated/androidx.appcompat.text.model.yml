@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.appcompat.text", "AllCapsTransformationMethod", True, "getTransformation", "(CharSequence,View)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.appcompat.text", "AllCapsTransformationMethod", "AllCapsTransformationMethod", "(Context)", "summary", "df-generated"]
+      - ["androidx.appcompat.text", "AllCapsTransformationMethod", "onFocusChanged", "(View,CharSequence,boolean,int,Rect)", "summary", "df-generated"]

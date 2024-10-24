@@ -1,0 +1,49 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.launcher.daemon.context", "DaemonCompatibilitySpec", True, "DaemonCompatibilitySpec", "(DaemonRequestContext)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonCompatibilitySpec", True, "whyUnsatisfied", "(DaemonContext)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonCompatibilitySpec", True, "whyUnsatisfied", "(DaemonContext)", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonConnectDetails", True, "getUid", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonRequestContext", True, "DaemonRequestContext", "(DaemonJvmCriteria,Collection,boolean,NativeServices$NativeServicesMode,DaemonPriority)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DaemonRequestContext.jvmCriteria]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonRequestContext", True, "DaemonRequestContext", "(DaemonJvmCriteria,Collection,boolean,NativeServices$NativeServicesMode,DaemonPriority)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DaemonRequestContext.daemonOpts]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonRequestContext", True, "getDaemonOpts", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DaemonRequestContext.daemonOpts]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonRequestContext", True, "getJvmCriteria", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DaemonRequestContext.jvmCriteria]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "DefaultDaemonContext", "(String,File,JavaLanguageVersion,String,File,Long,Integer,Collection,boolean,NativeServices$NativeServicesMode,DaemonPriority)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.uid]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "DefaultDaemonContext", "(String,File,JavaLanguageVersion,String,File,Long,Integer,Collection,boolean,NativeServices$NativeServicesMode,DaemonPriority)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.javaHome]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "DefaultDaemonContext", "(String,File,JavaLanguageVersion,String,File,Long,Integer,Collection,boolean,NativeServices$NativeServicesMode,DaemonPriority)", "", "Argument[2]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.javaVersion]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "DefaultDaemonContext", "(String,File,JavaLanguageVersion,String,File,Long,Integer,Collection,boolean,NativeServices$NativeServicesMode,DaemonPriority)", "", "Argument[3]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.javaVendor]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "DefaultDaemonContext", "(String,File,JavaLanguageVersion,String,File,Long,Integer,Collection,boolean,NativeServices$NativeServicesMode,DaemonPriority)", "", "Argument[4]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.daemonRegistryDir]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "DefaultDaemonContext", "(String,File,JavaLanguageVersion,String,File,Long,Integer,Collection,boolean,NativeServices$NativeServicesMode,DaemonPriority)", "", "Argument[7]", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.daemonOpts]", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "getDaemonOpts", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.daemonOpts]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "getDaemonRegistryDir", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.daemonRegistryDir]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "getJavaHome", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.javaHome]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "getJavaVendor", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.javaVendor]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "getJavaVersion", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.javaVersion]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "getUid", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.uid]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "toRequest", "()", "", "Argument[this].SyntheticField[org.gradle.launcher.daemon.context.DefaultDaemonContext.daemonOpts]", "ReturnValue.SyntheticField[org.gradle.launcher.daemon.context.DaemonRequestContext.daemonOpts]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.launcher.daemon.context", "DaemonCompatibilitySpec", True, "isSatisfiedBy", "(DaemonContext)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonCompatibilitySpec", True, "isSatisfiedBy", "(DaemonContext)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonCompatibilitySpec", True, "whyUnsatisfied", "(DaemonContext)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonCompatibilitySpec", True, "whyUnsatisfied", "(DaemonContext)", "", "Argument[this]", "path-injection", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", True, "toRequest", "()", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.launcher.daemon.context", "DaemonCompatibilitySpec", "isSatisfiedBy", "(DaemonContext)", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonRequestContext", "getNativeServicesMode", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonRequestContext", "getPriority", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DaemonRequestContext", "shouldApplyInstrumentationAgent", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", "getIdleTimeout", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", "getNativeServicesMode", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", "getPid", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", "getPriority", "()", "summary", "df-generated"]
+      - ["org.gradle.launcher.daemon.context", "DefaultDaemonContext", "shouldApplyInstrumentationAgent", "()", "summary", "df-generated"]

@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.tasks.testing.junit", "JUnitOptions", True, "excludeCategories", "(String[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junit.JUnitOptions.excludeCategories].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junit", "JUnitOptions", True, "excludeCategories", "(String[])", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.gradle.api.tasks.testing.junit.JUnitOptions.excludeCategories].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junit", "JUnitOptions", True, "excludeCategories", "(String[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junit", "JUnitOptions", True, "getExcludeCategories", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junit.JUnitOptions.excludeCategories]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junit", "JUnitOptions", True, "getIncludeCategories", "()", "", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junit.JUnitOptions.includeCategories]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junit", "JUnitOptions", True, "includeCategories", "(String[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junit.JUnitOptions.includeCategories].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junit", "JUnitOptions", True, "includeCategories", "(String[])", "", "Argument[0].ArrayElement", "ReturnValue.SyntheticField[org.gradle.api.tasks.testing.junit.JUnitOptions.includeCategories].Element", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junit", "JUnitOptions", True, "includeCategories", "(String[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junit", "JUnitOptions", True, "setExcludeCategories", "(Set)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junit.JUnitOptions.excludeCategories]", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.junit", "JUnitOptions", True, "setIncludeCategories", "(Set)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.api.tasks.testing.junit.JUnitOptions.includeCategories]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.tasks.testing.junit", "JUnitOptions", "copyFrom", "(JUnitOptions)", "summary", "df-generated"]

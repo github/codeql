@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", True, "PendingIntentActivityWrapper", "(Context,int,Intent,int,Bundle,boolean)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.core.service.quicksettings.PendingIntentActivityWrapper.mContext]", "value", "dfc-generated"]
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", True, "PendingIntentActivityWrapper", "(Context,int,Intent,int,Bundle,boolean)", "", "Argument[2]", "Argument[this].SyntheticField[androidx.core.service.quicksettings.PendingIntentActivityWrapper.mIntent]", "value", "dfc-generated"]
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", True, "PendingIntentActivityWrapper", "(Context,int,Intent,int,Bundle,boolean)", "", "Argument[4]", "Argument[this].SyntheticField[androidx.core.service.quicksettings.PendingIntentActivityWrapper.mOptions]", "value", "dfc-generated"]
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", True, "PendingIntentActivityWrapper", "(Context,int,Intent,int,boolean)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.core.service.quicksettings.PendingIntentActivityWrapper.mContext]", "value", "dfc-generated"]
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", True, "PendingIntentActivityWrapper", "(Context,int,Intent,int,boolean)", "", "Argument[2]", "Argument[this].SyntheticField[androidx.core.service.quicksettings.PendingIntentActivityWrapper.mIntent]", "value", "dfc-generated"]
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", True, "getContext", "()", "", "Argument[this].SyntheticField[androidx.core.service.quicksettings.PendingIntentActivityWrapper.mContext]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", True, "getIntent", "()", "", "Argument[this].SyntheticField[androidx.core.service.quicksettings.PendingIntentActivityWrapper.mIntent]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", True, "getOptions", "()", "", "Argument[this].SyntheticField[androidx.core.service.quicksettings.PendingIntentActivityWrapper.mOptions]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", True, "getPendingIntent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", "getFlags", "()", "summary", "df-generated"]
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", "getRequestCode", "()", "summary", "df-generated"]
+      - ["androidx.core.service.quicksettings", "PendingIntentActivityWrapper", "isMutable", "()", "summary", "df-generated"]
+      - ["androidx.core.service.quicksettings", "TileServiceCompat", "clearTileServiceWrapper", "()", "summary", "df-generated"]
+      - ["androidx.core.service.quicksettings", "TileServiceCompat", "setTileServiceWrapper", "(TileServiceCompat$TileServiceWrapper)", "summary", "df-generated"]
+      - ["androidx.core.service.quicksettings", "TileServiceCompat", "startActivityAndCollapse", "(TileService,PendingIntentActivityWrapper)", "summary", "df-generated"]
+      - ["androidx.core.service.quicksettings", "TileServiceCompatTest", "startActivityAndCollapse_usesIntent", "()", "summary", "df-generated"]
+      - ["androidx.core.service.quicksettings", "TileServiceCompatTest", "startActivityAndCollapse_usesPendingIntent", "()", "summary", "df-generated"]
+      - ["androidx.core.service.quicksettings", "TileServiceCompatTest", "tearDown", "()", "summary", "df-generated"]

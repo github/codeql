@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.window.extensions", "TestActivity", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["androidx.window.extensions", "TestActivity", "onLayoutChange", "(View,int,int,int,int,int,int,int,int)", "summary", "df-generated"]
+      - ["androidx.window.extensions", "WindowExtensions", "getActivityEmbeddingComponent", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions", "WindowExtensions", "getVendorApiLevel", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions", "WindowExtensions", "getWindowAreaComponent", "()", "summary", "df-generated"]
+      - ["androidx.window.extensions", "WindowExtensionsProvider", "getWindowExtensions", "()", "summary", "df-generated"]

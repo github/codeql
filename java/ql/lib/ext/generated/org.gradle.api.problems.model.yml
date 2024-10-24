@@ -1,0 +1,58 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.problems", "ProblemGroup", True, "getDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemGroup", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemGroup", True, "getParent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemId", True, "getDisplayName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemId", True, "getGroup", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemId", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "contextualLabel", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "contextualLabel", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "contextualLabel", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "contextualLabel", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "details", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "details", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "details", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "details", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "documentedAt", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "documentedAt", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "documentedAt", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "fileLocation", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "fileLocation", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "id", "(String,String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "id", "(String,String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "id", "(String,String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "id", "(String,String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "id", "(String,String,ProblemGroup)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "id", "(String,String,ProblemGroup)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "id", "(String,String,ProblemGroup)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "id", "(String,String,ProblemGroup)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "lineInFileLocation", "(String,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "lineInFileLocation", "(String,int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "lineInFileLocation", "(String,int,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "lineInFileLocation", "(String,int,int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "lineInFileLocation", "(String,int,int,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "lineInFileLocation", "(String,int,int,int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "offsetInFileLocation", "(String,int,int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "offsetInFileLocation", "(String,int,int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "severity", "(Severity)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "severity", "(Severity)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "solution", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "solution", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "solution", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "stackLocation", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "stackLocation", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "withException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "withException", "(Throwable)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "withException", "(Throwable)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.problems", "ProblemSpec", True, "withException", "(Throwable)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.problems", "Problems", True, "getReporter", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.api.problems", "SharedProblemGroup", "generic", "()", "summary", "df-generated"]

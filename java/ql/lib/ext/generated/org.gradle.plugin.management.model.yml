@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.plugin.management", "PluginManagementSpec", True, "getPlugins", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.management", "PluginManagementSpec", True, "getResolutionStrategy", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.management", "PluginRequest", True, "getId", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.management", "PluginRequest", True, "getModule", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.management", "PluginRequest", True, "getVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.management", "PluginResolveDetails", True, "getRequested", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.management", "PluginResolveDetails", True, "getTarget", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.plugin.management", "PluginResolveDetails", True, "useModule", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.plugin.management", "PluginResolveDetails", True, "useVersion", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.language.nativeplatform", "ComponentWithExecutable", True, "getExecutableFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithExecutable", True, "getExecutableFileProducer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithExecutable", True, "getLinkTask", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithInstallation", True, "getInstallDirectory", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithInstallation", True, "getInstallTask", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithLinkFile", True, "getLinkFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithLinkFile", True, "getLinkFileProducer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithLinkUsage", True, "getLinkElements", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithNativeRuntime", True, "getBaseName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithNativeRuntime", True, "getTargetMachine", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithNativeRuntime", True, "getToolChain", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithRuntimeFile", True, "getRuntimeFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithRuntimeUsage", True, "getRuntimeElements", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithSharedLibrary", True, "getLinkTask", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "ComponentWithStaticLibrary", True, "getCreateTask", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "DependentSourceSet", True, "getLibs", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "DependentSourceSet", True, "getPreCompiledHeader", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "DependentSourceSet", True, "lib", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "DependentSourceSet", True, "setPreCompiledHeader", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "HeaderExportingSourceSet", True, "getExportedHeaders", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform", "HeaderExportingSourceSet", True, "getImplicitHeaders", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

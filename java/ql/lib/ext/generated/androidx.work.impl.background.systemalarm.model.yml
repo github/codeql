@@ -1,0 +1,53 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcher", True, "add", "(Intent,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.impl.background.systemalarm", "AlarmsTest", "testCancelAlarm", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "AlarmsTest", "testSetAlarm_noPreExistingAlarms", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "AlarmsTest", "testSetAlarm_withPreExistingAlarms", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "CommandHandler", "onExecuted", "(WorkGenerationalId,boolean)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "ConstraintProxyUpdateReceiver", "newConstraintProxyUpdateIntent", "(Context,boolean,boolean,boolean,boolean)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "ConstraintProxyUpdateReceiver", "onReceive", "(Context,Intent)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "DelayMetCommandHandler", "onConstraintsStateChanged", "(WorkSpec,ConstraintsState)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "DelayMetCommandHandler", "onTimeLimitExceeded", "(WorkGenerationalId)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "RescheduleReceiver", "onReceive", "(Context,Intent)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcher", "onExecuted", "(WorkGenerationalId,boolean)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "tearDown", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "tearDownTest", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testConstraintsChangedMarkedNotScheduled_withNoConstraints", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testConstraintsChanged_withConstraint", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testConstraintsChanged_withFutureWork", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testConstraintsChanged_withNoConstraints", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testDelayMet_noWorkSpec", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testDelayMet_success", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testDelayMet_withAlwaysRetryWorker", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testDelayMet_withMetConstraint", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testDelayMet_withPartiallyMetConstraint", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testDelayMet_withStop", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testDelayMet_withStopWhenCancelled", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testDelayMet_withUnMetConstraint", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testDelayMet_withUnMetConstraintShouldNotCrashOnDestroy", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testReschedule", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testSchedule", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testSchedule_whenOriginalWorkDoesNotExist", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmDispatcherTest", "testSchedule_withConstraints", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmScheduler", "SystemAlarmScheduler", "(Context)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmScheduler", "cancel", "(String)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmScheduler", "hasLimitedSchedulingSlots", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmScheduler", "schedule", "(WorkSpec[])", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmService", "onAllCommandsCompleted", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmService", "onCreate", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmService", "onDestroy", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "SystemAlarmService", "onStartCommand", "(Intent,int,int)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "WorkTimerTest$TestTimeLimitExceededListener", "onTimeLimitExceeded", "(WorkGenerationalId)", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "WorkTimerTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "WorkTimerTest", "testStopTimer_withCleanUp", "()", "summary", "df-generated"]
+      - ["androidx.work.impl.background.systemalarm", "WorkTimerTest", "testTimer_withListenerAndCleanUp", "()", "summary", "df-generated"]

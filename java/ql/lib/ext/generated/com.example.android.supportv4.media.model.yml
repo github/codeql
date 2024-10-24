@@ -1,0 +1,58 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.android.supportv4.media", "MediaNotificationManager", True, "MediaNotificationManager", "(MediaBrowserServiceSupport)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", True, "Playback", "(MediaBrowserServiceSupport,MusicProvider)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", True, "Playback", "(MediaBrowserServiceSupport,MusicProvider)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", True, "play", "(MediaSessionCompat$QueueItem)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", True, "setCallback", "(Playback$Callback)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.android.supportv4.media", "AlbumArtCache$FetchListener", "onError", "(String,Exception)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "AlbumArtCache$FetchListener", "onFetched", "(String,Bitmap,Bitmap)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "AlbumArtCache", "fetch", "(String,AlbumArtCache$FetchListener)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "AlbumArtCache", "getBigImage", "(String)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "AlbumArtCache", "getIconImage", "(String)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "AlbumArtCache", "getInstance", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "BrowseFragment", "newInstance", "(String)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "BrowseFragment", "onStart", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "BrowseFragment", "onStop", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaBrowserServiceSupport", "onCompletion", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaBrowserServiceSupport", "onCreate", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaBrowserServiceSupport", "onDestroy", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaBrowserServiceSupport", "onError", "(String)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaBrowserServiceSupport", "onPlaybackStatusChanged", "(int)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaBrowserServiceSupport", "onStartCommand", "(Intent,int,int)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaBrowserSupport", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaBrowserSupport", "onMediaItemSelected", "(MediaBrowserCompat$MediaItem)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaBrowserSupport", "setMediaController", "(MediaControllerCompat)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaNotificationManager", "onReceive", "(Context,Intent)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaNotificationManager", "startNotification", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "MediaNotificationManager", "stopNotification", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "PackageValidator", "PackageValidator", "(Context)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "PackageValidator", "isCallerAllowed", "(Context,String,int)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "getCurrentStreamPosition", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "getState", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "isConnected", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "isPlaying", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "onAudioFocusChange", "(int)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "onCompletion", "(MediaPlayer)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "onError", "(MediaPlayer,int,int)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "onPrepared", "(MediaPlayer)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "onSeekComplete", "(MediaPlayer)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "pause", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "seekTo", "(int)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "setState", "(int)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "start", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "Playback", "stop", "(boolean)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "QueueAdapter", "QueueAdapter", "(Activity)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "QueueAdapter", "getView", "(int,View,ViewGroup)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "QueueAdapter", "setActiveQueueItemId", "(long)", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "QueueFragment", "newInstance", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "QueueFragment", "onPause", "()", "summary", "df-generated"]
+      - ["com.example.android.supportv4.media", "QueueFragment", "onResume", "()", "summary", "df-generated"]

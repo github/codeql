@@ -1,0 +1,49 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity$ItemTouchViewHolder", True, "ItemTouchViewHolder", "(View)", "", "Argument[0]", "Argument[this].Field[androidx.recyclerview.widget.RecyclerView$ViewHolder.itemView]", "value", "dfc-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity$ItemTouchViewHolder", True, "ItemTouchViewHolder", "(View)", "", "Argument[0]", "Argument[this].Field[com.example.androidx.widget.touch.ItemTouchHelperActivity$ItemTouchViewHolder.cardView]", "value", "dfc-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", True, "createItemTouchHelper", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", True, "onCreate", "(Bundle)", "", "Argument[this]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.example.androidx.widget.touch", "DragAndDropActivity", "clearView", "(RecyclerView$ViewHolder)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "DragAndDropActivity", "getMovementFlags", "(RecyclerView,RecyclerView$ViewHolder)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "DragAndDropActivity", "isLongPressDragEnabled", "()", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "DragAndDropActivity", "onBind", "(ItemTouchHelperActivity$ItemTouchViewHolder)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "DragAndDropActivity", "onCreateViewHolder", "(ViewGroup)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "DragAndDropActivity", "onSelectedChanged", "(RecyclerView$ViewHolder,int)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity$ItemTouchAdapter", "delete", "(int)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity$ItemTouchAdapter", "getItemCount", "()", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity$ItemTouchAdapter", "move", "(int,int)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity$ItemTouchAdapter", "onBindViewHolder", "(ItemTouchHelperActivity$ItemTouchViewHolder,int)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity$ItemTouchAdapter", "onCreateViewHolder", "(ViewGroup,int)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "clearView", "(RecyclerView$ViewHolder)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "createAdapter", "()", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "createCallback", "()", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "getMovementFlags", "(RecyclerView,RecyclerView$ViewHolder)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "isLongPressDragEnabled", "()", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "isPointerSwipeEnabled", "()", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "onBind", "(ItemTouchHelperActivity$ItemTouchViewHolder)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "onChildDraw", "(Canvas,RecyclerView,RecyclerView$ViewHolder,float,float,int,boolean)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "onChildDrawOver", "(Canvas,RecyclerView,RecyclerView$ViewHolder,float,float,int,boolean)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "onCreate", "(Bundle)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "onCreateViewHolder", "(ItemTouchHelperActivity$ItemTouchViewHolder)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "onCreateViewHolder", "(ViewGroup)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "ItemTouchHelperActivity", "onSelectedChanged", "(RecyclerView$ViewHolder,int)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "SwipeToDismissActivity", "clearView", "(RecyclerView$ViewHolder)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "SwipeToDismissActivity", "getMovementFlags", "(RecyclerView,RecyclerView$ViewHolder)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "SwipeToDismissActivity", "isPointerSwipeEnabled", "()", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "SwipeToDismissActivity", "onBind", "(ItemTouchHelperActivity$ItemTouchViewHolder)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "SwipeToDismissActivity", "onChildDraw", "(Canvas,RecyclerView,RecyclerView$ViewHolder,float,float,int,boolean)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "SwipeToDismissActivity", "onCreateViewHolder", "(ViewGroup)", "summary", "df-generated"]
+      - ["com.example.androidx.widget.touch", "SwipeToDismissActivity", "onSelectedChanged", "(RecyclerView$ViewHolder,int)", "summary", "df-generated"]

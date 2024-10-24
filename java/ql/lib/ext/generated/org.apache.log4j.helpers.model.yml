@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.log4j.helpers", "LogLog", "debug", "(String)", "summary", "df-generated"]
+      - ["org.apache.log4j.helpers", "LogLog", "debug", "(String,Throwable)", "summary", "df-generated"]
+      - ["org.apache.log4j.helpers", "LogLog", "error", "(String)", "summary", "df-generated"]
+      - ["org.apache.log4j.helpers", "LogLog", "error", "(String,Throwable)", "summary", "df-generated"]
+      - ["org.apache.log4j.helpers", "LogLog", "setInternalDebugging", "(boolean)", "summary", "df-generated"]
+      - ["org.apache.log4j.helpers", "LogLog", "setQuietMode", "(boolean)", "summary", "df-generated"]
+      - ["org.apache.log4j.helpers", "LogLog", "warn", "(String)", "summary", "df-generated"]
+      - ["org.apache.log4j.helpers", "LogLog", "warn", "(String,Throwable)", "summary", "df-generated"]
+      - ["org.apache.log4j.helpers", "NullEnumeration", "getInstance", "()", "summary", "df-generated"]

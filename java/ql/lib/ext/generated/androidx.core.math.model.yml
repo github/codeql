@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.math", "MathUtils", "addExact", "(int,int)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "addExact", "(long,long)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "clamp", "(double,double,double)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "clamp", "(float,float,float)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "clamp", "(int,int,int)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "clamp", "(long,long,long)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "decrementExact", "(int)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "decrementExact", "(long)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "incrementExact", "(int)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "incrementExact", "(long)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "multiplyExact", "(int,int)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "multiplyExact", "(long,long)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "negateExact", "(int)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "negateExact", "(long)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "subtractExact", "(int,int)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "subtractExact", "(long,long)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtils", "toIntExact", "(long)", "summary", "df-generated"]
+      - ["androidx.core.math", "MathUtilsTest", "testClamp", "()", "summary", "df-generated"]

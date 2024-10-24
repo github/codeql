@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.core.view.autofill", "AutofillIdCompat", True, "toAutofillId", "()", "", "Argument[this].SyntheticField[androidx.core.view.autofill.AutofillIdCompat.mWrappedObj]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.view.autofill", "AutofillIdCompat", True, "toAutofillIdCompat", "(AutofillId)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.core.view.autofill.AutofillIdCompat.mWrappedObj]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.view.autofill", "AutofillIdCompatTest", "setUp", "()", "summary", "df-generated"]
+      - ["androidx.core.view.autofill", "AutofillIdCompatTest", "testToAutofillId_returnAutofillId", "()", "summary", "df-generated"]

@@ -1,0 +1,56 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "CursorAdapter", "(Context,Cursor)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "CursorAdapter", "(Context,Cursor,boolean)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "CursorAdapter", "(Context,Cursor,int)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "bindView", "(View,Context,Cursor)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "changeCursor", "(Cursor)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "changeCursor", "(Cursor)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "convertToString", "(Cursor)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "getCursor", "()", "", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "getDropDownView", "(int,View,ViewGroup)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "getFilter", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "getFilterQueryProvider", "()", "", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mFilterQueryProvider]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "getItem", "(int)", "", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "getView", "(int,View,ViewGroup)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "runQueryOnBackgroundThread", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "runQueryOnBackgroundThread", "(CharSequence)", "", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "setFilterQueryProvider", "(FilterQueryProvider)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mFilterQueryProvider]", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "swapCursor", "(Cursor)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", True, "swapCursor", "(Cursor)", "", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "ResourceCursorAdapter", True, "ResourceCursorAdapter", "(Context,int,Cursor)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.cursoradapter.widget", "ResourceCursorAdapter", True, "ResourceCursorAdapter", "(Context,int,Cursor)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.cursoradapter.widget", "ResourceCursorAdapter", True, "ResourceCursorAdapter", "(Context,int,Cursor,boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.cursoradapter.widget", "ResourceCursorAdapter", True, "ResourceCursorAdapter", "(Context,int,Cursor,boolean)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.cursoradapter.widget", "ResourceCursorAdapter", True, "ResourceCursorAdapter", "(Context,int,Cursor,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.cursoradapter.widget", "ResourceCursorAdapter", True, "ResourceCursorAdapter", "(Context,int,Cursor,int)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", True, "SimpleCursorAdapter", "(Context,int,Cursor,String[],int[])", "", "Argument[2]", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", True, "SimpleCursorAdapter", "(Context,int,Cursor,String[],int[],int)", "", "Argument[2]", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", True, "changeCursorAndColumns", "(Cursor,String[],int[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", True, "changeCursorAndColumns", "(Cursor,String[],int[])", "", "Argument[1].ArrayElement", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", True, "getCursorToStringConverter", "()", "", "Argument[this].SyntheticField[androidx.cursoradapter.widget.SimpleCursorAdapter.mCursorToStringConverter]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", True, "getViewBinder", "()", "", "Argument[this].SyntheticField[androidx.cursoradapter.widget.SimpleCursorAdapter.mViewBinder]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", True, "setCursorToStringConverter", "(SimpleCursorAdapter$CursorToStringConverter)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.cursoradapter.widget.SimpleCursorAdapter.mCursorToStringConverter]", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", True, "setViewBinder", "(SimpleCursorAdapter$ViewBinder)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.cursoradapter.widget.SimpleCursorAdapter.mViewBinder]", "value", "dfc-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", True, "swapCursor", "(Cursor)", "", "Argument[this].SyntheticField[androidx.cursoradapter.widget.CursorAdapter.mCursor]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.cursoradapter.widget", "CursorAdapter", "getCount", "()", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", "getItemId", "(int)", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", "hasStableIds", "()", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", "newDropDownView", "(Context,Cursor,ViewGroup)", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "CursorAdapter", "newView", "(Context,Cursor,ViewGroup)", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "ResourceCursorAdapter", "newDropDownView", "(Context,Cursor,ViewGroup)", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "ResourceCursorAdapter", "newView", "(Context,Cursor,ViewGroup)", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "ResourceCursorAdapter", "setDropDownViewResource", "(int)", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "ResourceCursorAdapter", "setViewResource", "(int)", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", "getStringConversionColumn", "()", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", "setStringConversionColumn", "(int)", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", "setViewImage", "(ImageView,String)", "summary", "df-generated"]
+      - ["androidx.cursoradapter.widget", "SimpleCursorAdapter", "setViewText", "(TextView,String)", "summary", "df-generated"]

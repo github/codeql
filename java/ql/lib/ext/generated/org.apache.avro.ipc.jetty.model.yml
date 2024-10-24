@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.ipc.jetty", "StatsServer", True, "StatsServer", "(StatsPlugin,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.avro.ipc.jetty", "StaticServlet", True, "getResource", "(String)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "HttpServer", "(Responder,ConnectionFactory,String,int)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "HttpServer", "(Responder,Connector)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "HttpServer", "(Responder,InetSocketAddress)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "HttpServer", "(Responder,String,int)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "HttpServer", "(Responder,int)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "HttpServer", "(ResponderServlet,ConnectionFactory,String,int)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "HttpServer", "(ResponderServlet,Connector)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "HttpServer", "(ResponderServlet,String,int)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "HttpServer", "(ResponderServlet,int)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "addConnector", "(Connector)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "close", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "getPort", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "join", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "HttpServer", "start", "()", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "StaticServlet", "getResource", "(String)", "summary", "df-generated"]
+      - ["org.apache.avro.ipc.jetty", "StatsServer", "stop", "()", "summary", "df-generated"]

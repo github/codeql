@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.plugins.ide.tooling.r82", "FetchBuildInvocationsTasks", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r82", "FetchBuildInvocationsTasks", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r82", "FetchBuildInvocationsTasks", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r82", "FetchBuildInvocationsTasks", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r82", "FetchRootProjectsTasks", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r82", "FetchRootProjectsTasks", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r82", "FetchRootProjectsTasks", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r82", "FetchRootProjectsTasks", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.plugins.ide.tooling.r82", "FetchBuildInvocationsTasks", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.plugins.ide.tooling.r82", "FetchRootProjectsTasks", "execute", "(BuildController)", "summary", "df-generated"]

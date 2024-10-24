@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.artifacts.ivy", "IvyExtraInfo", True, "asMap", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.ivy", "IvyExtraInfo", True, "get", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.ivy", "IvyExtraInfo", True, "get", "(String,String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.ivy", "IvyModuleDescriptor", True, "getBranch", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.ivy", "IvyModuleDescriptor", True, "getExtraInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.artifacts.ivy", "IvyModuleDescriptor", True, "getIvyStatus", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

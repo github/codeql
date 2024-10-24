@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.slice.remotecallback", "RemoteSliceProvider", True, "toRemoteCallback", "(Class,Context,String,Bundle,String)", "", "Argument[3]", "ReturnValue.SyntheticField[androidx.remotecallback.RemoteCallback.mArguments]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.slice.remotecallback", "RemoteSliceProvider", "call", "(String,String,Bundle)", "summary", "df-generated"]
+      - ["androidx.slice.remotecallback", "RemoteSliceProvider", "createRemoteCallback", "(Context)", "summary", "df-generated"]
+      - ["androidx.slice.remotecallback", "RemoteSliceProviderTest$Provider", "myCallbackMethod", "(Uri,String,int,Integer)", "summary", "df-generated"]
+      - ["androidx.slice.remotecallback", "RemoteSliceProviderTest$Provider", "onCreateSliceProvider", "()", "summary", "df-generated"]
+      - ["androidx.slice.remotecallback", "RemoteSliceProviderTest", "testCreateCallback", "()", "summary", "df-generated"]
+      - ["androidx.slice.remotecallback", "RemoteSliceProviderTest", "testCreateStatic", "()", "summary", "df-generated"]
+      - ["androidx.slice.remotecallback", "RemoteSliceProviderTest", "testOverrideNull", "()", "summary", "df-generated"]
+      - ["androidx.slice.remotecallback", "RemoteSliceProviderTest", "testRemoteCallback", "()", "summary", "df-generated"]

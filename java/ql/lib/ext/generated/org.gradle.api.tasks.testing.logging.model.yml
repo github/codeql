@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.api.tasks.testing.logging", "TestLogging", True, "events", "(Object[])", "", "Argument[0].ArrayElement", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLogging", True, "getEvents", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLogging", True, "getStackTraceFilters", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLogging", True, "setEvents", "(Iterable)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLogging", True, "setShowStandardStreams", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLogging", True, "setStackTraceFilters", "(Iterable)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLogging", True, "stackTraceFilters", "(Object[])", "", "Argument[0].ArrayElement", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "get", "(LogLevel)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "getDebug", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "getError", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "getInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "getLifecycle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "getQuiet", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "getWarn", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "setDebug", "(TestLogging)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "setError", "(TestLogging)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "setInfo", "(TestLogging)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "setLifecycle", "(TestLogging)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "setQuiet", "(TestLogging)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.api.tasks.testing.logging", "TestLoggingContainer", True, "setWarn", "(TestLogging)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

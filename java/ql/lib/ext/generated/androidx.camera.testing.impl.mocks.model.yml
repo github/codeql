@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", True, "accept", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", True, "verifyAcceptCall", "(Class,boolean,CallTimes,ArgumentCaptor)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", True, "verifyAcceptCall", "(Class,boolean,CallTimes,ArgumentCaptor)", "", "Argument[this]", "Argument[3]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", True, "verifyAcceptCall", "(Class,boolean,long,CallTimes)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", True, "verifyAcceptCall", "(Class,boolean,long,CallTimes,ArgumentCaptor)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", True, "verifyAcceptCall", "(Class,boolean,long,CallTimes,ArgumentCaptor)", "", "Argument[this]", "Argument[4]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", True, "verifyAcceptCall", "(Class,boolean,long,CallTimes,ArgumentCaptor,ArgumentMatcher)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", True, "verifyAcceptCall", "(Class,boolean,long,CallTimes,ArgumentCaptor,ArgumentMatcher)", "", "Argument[this]", "Argument[4]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", True, "verifyAcceptCall", "(Class,boolean,long,CallTimes,ArgumentMatcher)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockObserver", True, "onNewData", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockObserver", True, "verifyOnNewDataCall", "(Object,long)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockObserver", True, "verifyOnNewDataCall", "(Object,long,CallTimes)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockObserver", True, "verifyOnNewDataCall", "(Object,long,CallTimes)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockScreenFlash", True, "apply", "(long,ImageCapture$ScreenFlashListener)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.camera.testing.impl.mocks.MockScreenFlash.mLastApplyListener]", "value", "dfc-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockScreenFlash", True, "getLastApplyListener", "()", "", "Argument[this].SyntheticField[androidx.camera.testing.impl.mocks.MockScreenFlash.mLastApplyListener]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockScreenFlash", True, "getLastApplyThreadLooper", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockScreenFlash", True, "getLastClearThreadLooper", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", "clearAcceptCalls", "()", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", "verifyAcceptCall", "(Class,boolean,long)", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockConsumer", "verifyNoMoreAcceptCalls", "(boolean)", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockObserver", "onError", "(Throwable)", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockScreenFlash", "awaitClear", "(long)", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockScreenFlash", "clear", "()", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockScreenFlash", "getLastApplyExpirationTimeMillis", "()", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockScreenFlash", "getScreenFlashEvents", "()", "summary", "df-generated"]
+      - ["androidx.camera.testing.impl.mocks", "MockScreenFlash", "setApplyCompletedInstantly", "(boolean)", "summary", "df-generated"]

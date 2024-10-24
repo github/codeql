@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.integtests.tooling.r56", "DefaultEclipseWorkspace", True, "DefaultEclipseWorkspace", "(File,List)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.DefaultEclipseWorkspace.location]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "DefaultEclipseWorkspace", True, "DefaultEclipseWorkspace", "(File,List)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.DefaultEclipseWorkspace.workspaceProjects]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "DefaultEclipseWorkspace", True, "getLocation", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.DefaultEclipseWorkspace.location]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "DefaultEclipseWorkspace", True, "getProjects", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.DefaultEclipseWorkspace.workspaceProjects]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "DefaultEclipseWorkspaceProject", True, "DefaultEclipseWorkspaceProject", "(String,File)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.DefaultEclipseWorkspaceProject.name]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "DefaultEclipseWorkspaceProject", True, "DefaultEclipseWorkspaceProject", "(String,File)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.DefaultEclipseWorkspaceProject.location]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "DefaultEclipseWorkspaceProject", True, "DefaultEclipseWorkspaceProject", "(String,File,boolean)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.DefaultEclipseWorkspaceProject.name]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "DefaultEclipseWorkspaceProject", True, "DefaultEclipseWorkspaceProject", "(String,File,boolean)", "", "Argument[1]", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.DefaultEclipseWorkspaceProject.location]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "DefaultEclipseWorkspaceProject", True, "getLocation", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.DefaultEclipseWorkspaceProject.location]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "DefaultEclipseWorkspaceProject", True, "getName", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.DefaultEclipseWorkspaceProject.name]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "IntermediateResultHandlerCollector", True, "getResult", "()", "", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.IntermediateResultHandlerCollector.result]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "IntermediateResultHandlerCollector", True, "onComplete", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.integtests.tooling.r56.IntermediateResultHandlerCollector.result]", "value", "dfc-generated"]
+      - ["org.gradle.integtests.tooling.r56", "LoadEclipseModel", True, "LoadEclipseModel", "(EclipseWorkspace)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "TellGradleToRunBuildDependencyTask", True, "TellGradleToRunBuildDependencyTask", "(EclipseWorkspace)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.gradle.integtests.tooling.r56", "LoadEclipseModel", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "LoadEclipseModel", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "LoadEclipseModel", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "LoadEclipseModel", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "ParameterizedLoadCompositeEclipseModels", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "ParameterizedLoadCompositeEclipseModels", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "ParameterizedLoadCompositeEclipseModels", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "ParameterizedLoadCompositeEclipseModels", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "TellGradleToRunBuildDependencyTask", True, "execute", "(BuildController)", "", "Argument[0]", "groovy-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "TellGradleToRunBuildDependencyTask", True, "execute", "(BuildController)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "TellGradleToRunBuildDependencyTask", True, "execute", "(BuildController)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "TellGradleToRunBuildDependencyTask", True, "execute", "(BuildController)", "", "Argument[0]", "xslt-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.integtests.tooling.r56", "DefaultEclipseWorkspaceProject", "isOpen", "()", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "LoadEclipseModel", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "ParameterizedLoadCompositeEclipseModels", "execute", "(BuildController)", "summary", "df-generated"]
+      - ["org.gradle.integtests.tooling.r56", "TellGradleToRunBuildDependencyTask", "execute", "(BuildController)", "summary", "df-generated"]

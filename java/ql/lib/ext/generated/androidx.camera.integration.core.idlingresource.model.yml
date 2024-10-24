@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.camera.integration.core.idlingresource", "ElapsedTimeIdlingResource", "ElapsedTimeIdlingResource", "(long)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core.idlingresource", "ElapsedTimeIdlingResource", "getName", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.core.idlingresource", "ElapsedTimeIdlingResource", "isIdleNow", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.core.idlingresource", "ElapsedTimeIdlingResource", "registerIdleTransitionCallback", "(ResourceCallback)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core.idlingresource", "ViewIdlingResource", "getName", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.core.idlingresource", "ViewIdlingResource", "isIdleNow", "()", "summary", "df-generated"]
+      - ["androidx.camera.integration.core.idlingresource", "ViewIdlingResource", "registerIdleTransitionCallback", "(ResourceCallback)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core.idlingresource", "WaitForViewToHide", "WaitForViewToHide", "(int)", "summary", "df-generated"]
+      - ["androidx.camera.integration.core.idlingresource", "WaitForViewToShow", "WaitForViewToShow", "(int)", "summary", "df-generated"]

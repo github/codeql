@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.xmlbeans.samples.cursor", "MixedContent", True, "validateXml", "(XmlObject)", "", "Argument[0]", "path-injection", "df-generated"]
+      - ["org.apache.xmlbeans.samples.cursor", "XmlSort", False, "sort", "(XmlObject,Comparator)", "", "Argument[0]", "path-injection", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.xmlbeans.samples.cursor", "MixedContent", "linkItems", "(InventoryDocument)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.cursor", "MixedContent", "parseXml", "(String)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.cursor", "MixedContent", "validateXml", "(XmlObject)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.cursor", "OrderMatters", "balanceInOrder", "(StatementDocument)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.cursor", "OrderMatters", "balanceOutOfOrder", "(StatementDocument)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.cursor", "XmlSort$QNameComparator", "QNameComparator", "(int)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.cursor", "XmlSort$QNameComparator", "compare", "(Object,Object)", "summary", "df-generated"]
+      - ["org.apache.xmlbeans.samples.cursor", "XmlSort", "sort", "(XmlObject,Comparator)", "summary", "df-generated"]

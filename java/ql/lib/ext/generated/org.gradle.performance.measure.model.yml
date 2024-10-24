@@ -1,0 +1,52 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.performance.measure", "Amount", True, "abs", "()", "", "Argument[this].SyntheticField[org.gradle.performance.measure.Amount.units]", "ReturnValue.SyntheticField[org.gradle.performance.measure.Amount.units]", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "abs", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "div", "(BigDecimal)", "", "Argument[this].SyntheticField[org.gradle.performance.measure.Amount.units]", "ReturnValue.SyntheticField[org.gradle.performance.measure.Amount.units]", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "div", "(long)", "", "Argument[this].SyntheticField[org.gradle.performance.measure.Amount.units]", "ReturnValue.SyntheticField[org.gradle.performance.measure.Amount.units]", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "format", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "getUnits", "()", "", "Argument[this].SyntheticField[org.gradle.performance.measure.Amount.units]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "minus", "(Amount)", "", "Argument[0].SyntheticField[org.gradle.performance.measure.Amount.units]", "ReturnValue.SyntheticField[org.gradle.performance.measure.Amount.units]", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "minus", "(Amount)", "", "Argument[this].SyntheticField[org.gradle.performance.measure.Amount.units]", "ReturnValue.SyntheticField[org.gradle.performance.measure.Amount.units]", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "minus", "(Amount)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "multiply", "(BigDecimal)", "", "Argument[this].SyntheticField[org.gradle.performance.measure.Amount.units]", "ReturnValue.SyntheticField[org.gradle.performance.measure.Amount.units]", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "plus", "(Amount)", "", "Argument[0].SyntheticField[org.gradle.performance.measure.Amount.units]", "ReturnValue.SyntheticField[org.gradle.performance.measure.Amount.units]", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "plus", "(Amount)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "plus", "(Amount)", "", "Argument[this].SyntheticField[org.gradle.performance.measure.Amount.units]", "ReturnValue.SyntheticField[org.gradle.performance.measure.Amount.units]", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "plus", "(Amount)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "toUnits", "(Units)", "", "Argument[0]", "ReturnValue.SyntheticField[org.gradle.performance.measure.Amount.units]", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "toUnits", "(Units)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "valueOf", "(BigDecimal,Units)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.performance.measure", "Amount", True, "valueOf", "(long,Units)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.performance.measure", "DataSeries", True, "DataSeries", "(Iterable)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.gradle.performance.measure", "DataSeries", True, "getAverage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.performance.measure", "DataSeries", True, "getMax", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.performance.measure", "DataSeries", True, "getMedian", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.performance.measure", "DataSeries", True, "getMin", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.performance.measure", "DataSeries", True, "getStandardError", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.performance.measure", "Units", True, "base", "(Class,String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.performance.measure", "Units", True, "base", "(Class,String,String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.performance.measure", "Units", True, "base", "(Class,String,String)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.performance.measure", "Amount", "div", "(Amount)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "Amount", "getValue", "()", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "DataAmount", "bytes", "(BigDecimal)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "DataAmount", "bytes", "(long)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "DataAmount", "kbytes", "(BigDecimal)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "DataAmount", "mbytes", "(BigDecimal)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "DataSeries", "asDoubleList", "()", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "DataSeries", "confidenceInDifference", "(DataSeries,DataSeries)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "Duration", "hours", "(BigDecimal)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "Duration", "millis", "(BigDecimal)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "Duration", "millis", "(long)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "Duration", "minutes", "(BigDecimal)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "Duration", "seconds", "(BigDecimal)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "Units", "times", "(long,String)", "summary", "df-generated"]
+      - ["org.gradle.performance.measure", "Units", "times", "(long,String,String)", "summary", "df-generated"]

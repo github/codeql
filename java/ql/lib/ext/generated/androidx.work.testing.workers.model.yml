@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.work.testing.workers", "CountingTestWorker", "CountingTestWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.testing.workers", "CountingTestWorker", "doWork", "()", "summary", "df-generated"]
+      - ["androidx.work.testing.workers", "TestListenableWorker", "TestListenableWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.testing.workers", "TestListenableWorker", "startWork", "()", "summary", "df-generated"]
+      - ["androidx.work.testing.workers", "TestWorker", "TestWorker", "(Context,WorkerParameters)", "summary", "df-generated"]
+      - ["androidx.work.testing.workers", "TestWorker", "doWork", "()", "summary", "df-generated"]

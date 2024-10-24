@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.slf4j.spi", "CallerBoundaryAware", True, "setCallerBoundary", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.slf4j.spi", "DefaultLoggingEventBuilder", True, "DefaultLoggingEventBuilder", "(Logger,Level)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "log", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "log", "(String,Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "log", "(String,Object,Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "log", "(String,Object[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "setMessage", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "setMessage", "(Supplier)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.slf4j.spi", "MDCAdapter", True, "get", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j.spi", "MDCAdapter", True, "getCopyOfContextMap", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j.spi", "SLF4JServiceProvider", True, "getLoggerFactory", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j.spi", "SLF4JServiceProvider", True, "getMDCAdapter", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.slf4j.spi", "SLF4JServiceProvider", True, "getMarkerFactory", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.slf4j.spi", "DefaultLoggingEventBuilder", "log", "()", "summary", "df-generated"]
+      - ["org.slf4j.spi", "DefaultLoggingEventBuilder", "log", "(Supplier)", "summary", "df-generated"]
+      - ["org.slf4j.spi", "NOPLoggingEventBuilder", "log", "()", "summary", "df-generated"]
+      - ["org.slf4j.spi", "NOPLoggingEventBuilder", "log", "(Supplier)", "summary", "df-generated"]
+      - ["org.slf4j.spi", "NOPLoggingEventBuilder", "singleton", "()", "summary", "df-generated"]

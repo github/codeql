@@ -1,0 +1,54 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.wear.tiles.material.layouts", "EdgeContentLayout$Builder", False, "Builder", "(DeviceParametersBuilders$DeviceParameters)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "EdgeContentLayout$Builder", False, "setContent", "(LayoutElementBuilders$LayoutElement)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "EdgeContentLayout$Builder", False, "setEdgeContent", "(LayoutElementBuilders$LayoutElement)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "EdgeContentLayout$Builder", False, "setPrimaryLabelTextContent", "(LayoutElementBuilders$LayoutElement)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "EdgeContentLayout$Builder", False, "setSecondaryLabelTextContent", "(LayoutElementBuilders$LayoutElement)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "EdgeContentLayout", True, "fromLayoutElement", "(LayoutElementBuilders$LayoutElement)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "EdgeContentLayout", True, "getEdgeContent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "EdgeContentLayout", True, "getPrimaryLabelTextContent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "EdgeContentLayout", True, "getSecondaryLabelTextContent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiButtonLayout$Builder", False, "addButtonContent", "(LayoutElementBuilders$LayoutElement)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiButtonLayout$Builder", False, "setFiveButtonDistribution", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiButtonLayout", True, "fromLayoutElement", "(LayoutElementBuilders$LayoutElement)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiSlotLayout$Builder", False, "addSlotContent", "(LayoutElementBuilders$LayoutElement)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiSlotLayout$Builder", False, "setHorizontalSpacerWidth", "(float)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiSlotLayout", True, "fromLayoutElement", "(LayoutElementBuilders$LayoutElement)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout$Builder", False, "Builder", "(DeviceParametersBuilders$DeviceParameters)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout$Builder", False, "setContent", "(LayoutElementBuilders$LayoutElement)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout$Builder", False, "setPrimaryChipContent", "(LayoutElementBuilders$LayoutElement)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout$Builder", False, "setPrimaryLabelTextContent", "(LayoutElementBuilders$LayoutElement)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout$Builder", False, "setSecondaryLabelTextContent", "(LayoutElementBuilders$LayoutElement)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout$Builder", False, "setVerticalSpacerHeight", "(float)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout", True, "fromLayoutElement", "(LayoutElementBuilders$LayoutElement)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout", True, "getPrimaryLabelTextContent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout", True, "getSecondaryLabelTextContent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.wear.tiles.material.layouts", "EdgeContentLayout", "getContent", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "EdgeContentLayout", "toLayoutElementProto", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "LayoutsGoldenTest", "LayoutsGoldenTest", "(String,LayoutElementBuilders$LayoutElement)", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "LayoutsGoldenTest", "data", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "LayoutsGoldenTest", "test", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "LayoutsGoldenXLTest", "LayoutsGoldenXLTest", "(String,LayoutElementBuilders$LayoutElement)", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "LayoutsGoldenXLTest", "data", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "LayoutsGoldenXLTest", "restoreAfter", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "LayoutsGoldenXLTest", "restoreBefore", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "LayoutsGoldenXLTest", "test", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiButtonLayout", "getButtonContents", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiButtonLayout", "getFiveButtonDistribution", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiButtonLayout", "toLayoutElementProto", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiSlotLayout", "getHorizontalSpacerWidth", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiSlotLayout", "getSlotContents", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "MultiSlotLayout", "toLayoutElementProto", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout", "getContent", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout", "getPrimaryChipContent", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout", "getVerticalSpacerHeight", "()", "summary", "df-generated"]
+      - ["androidx.wear.tiles.material.layouts", "PrimaryLayout", "toLayoutElementProto", "()", "summary", "df-generated"]

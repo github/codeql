@@ -1,0 +1,41 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction$Builder", False, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", True, "getDestination", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", True, "getDestinationTravelEstimate", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", True, "getJunctionImage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", True, "getNotificationContent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", True, "getNotificationTitle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", True, "getRoad", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", True, "getStep", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", True, "getStepRemainingDistance", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", True, "getStepTravelEstimate", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "PlaceInfo", True, "PlaceInfo", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[androidx.car.app.sample.navigation.common.model.PlaceInfo.mName]", "value", "dfc-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "PlaceInfo", True, "PlaceInfo", "(String,String)", "", "Argument[1]", "Argument[this].SyntheticField[androidx.car.app.sample.navigation.common.model.PlaceInfo.mDisplayAddress]", "value", "dfc-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "PlaceInfo", True, "getDisplayAddress", "()", "", "Argument[this].SyntheticField[androidx.car.app.sample.navigation.common.model.PlaceInfo.mDisplayAddress]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "PlaceInfo", True, "getName", "()", "", "Argument[this].SyntheticField[androidx.car.app.sample.navigation.common.model.PlaceInfo.mName]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Script", True, "execute", "(List,Script$Processor)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Script", True, "execute", "(List,Script$Processor)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["androidx.car.app.sample.navigation.common.model", "Script", True, "execute", "(List,Script$Processor)", "", "Argument[0]", "notification", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.car.app.sample.navigation.common.model", "DemoScripts", "getNavigateHome", "(CarContext)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction$Builder", "Builder", "(Instruction$Type,long)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", "builder", "(Instruction$Type,long)", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", "getDurationMillis", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", "getNotificationIcon", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", "getShouldNotify", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", "getShouldShowLanes", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", "getShouldShowNextStep", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Instruction", "getType", "()", "summary", "df-generated"]
+      - ["androidx.car.app.sample.navigation.common.model", "Script", "stop", "()", "summary", "df-generated"]

@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", True, "getCompilerArgs", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", True, "getIncludes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", True, "getMacros", "()", "", "Argument[this].SyntheticField[org.gradle.language.nativeplatform.tasks.AbstractNativeCompileTask.macros]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", True, "getObjectFileDir", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", True, "getSource", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", True, "getSystemIncludes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", True, "getTargetPlatform", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", True, "getToolChain", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", True, "setMacros", "(Map)", "", "Argument[0].MapKey", "Argument[this].SyntheticField[org.gradle.language.nativeplatform.tasks.AbstractNativeCompileTask.macros].MapKey", "value", "dfc-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", True, "setMacros", "(Map)", "", "Argument[0].MapValue", "Argument[this].SyntheticField[org.gradle.language.nativeplatform.tasks.AbstractNativeCompileTask.macros].MapValue", "value", "dfc-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeSourceCompileTask", True, "getPreCompiledHeader", "()", "", "Argument[this].SyntheticField[org.gradle.language.nativeplatform.tasks.AbstractNativeSourceCompileTask.preCompiledHeader]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeSourceCompileTask", True, "setPreCompiledHeader", "(PreCompiledHeader)", "", "Argument[0]", "Argument[this].SyntheticField[org.gradle.language.nativeplatform.tasks.AbstractNativeSourceCompileTask.preCompiledHeader]", "value", "dfc-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "UnexportMainSymbol", True, "getObjects", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "UnexportMainSymbol", True, "getOutputDirectory", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "UnexportMainSymbol", True, "getRelocatedObjects", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", "includes", "(Object)", "summary", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", "isDebuggable", "()", "summary", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", "isOptimized", "()", "summary", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", "isPositionIndependentCode", "()", "summary", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", "setDebuggable", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", "setOptimized", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", "setPositionIndependentCode", "(boolean)", "summary", "df-generated"]
+      - ["org.gradle.language.nativeplatform.tasks", "AbstractNativeCompileTask", "source", "(Object)", "summary", "df-generated"]

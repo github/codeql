@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["androidx.core.net", "MailTo", False, "getBcc", "()", "", "Argument[this].SyntheticField[androidx.core.net.MailTo.mHeaders].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.net", "MailTo", False, "getBody", "()", "", "Argument[this].SyntheticField[androidx.core.net.MailTo.mHeaders].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.net", "MailTo", False, "getCc", "()", "", "Argument[this].SyntheticField[androidx.core.net.MailTo.mHeaders].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.net", "MailTo", False, "getHeaders", "()", "", "Argument[this].SyntheticField[androidx.core.net.MailTo.mHeaders]", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.net", "MailTo", False, "getSubject", "()", "", "Argument[this].SyntheticField[androidx.core.net.MailTo.mHeaders].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.net", "MailTo", False, "getTo", "()", "", "Argument[this].SyntheticField[androidx.core.net.MailTo.mHeaders].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["androidx.core.net", "MailTo", False, "parse", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.core.net.MailTo.mHeaders].MapValue", "taint", "dfc-generated"]
+      - ["androidx.core.net", "MailTo", False, "parse", "(Uri)", "", "Argument[0]", "ReturnValue.SyntheticField[androidx.core.net.MailTo.mHeaders].MapValue", "taint", "dfc-generated"]
+      - ["androidx.core.net", "UriCompat", False, "toSafeString", "(Uri)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["androidx.core.net", "ConnectivityManagerCompat", "getNetworkInfoFromBroadcast", "(ConnectivityManager,Intent)", "summary", "df-generated"]
+      - ["androidx.core.net", "ConnectivityManagerCompat", "getRestrictBackgroundStatus", "(ConnectivityManager)", "summary", "df-generated"]
+      - ["androidx.core.net", "ConnectivityManagerCompat", "isActiveNetworkMetered", "(ConnectivityManager)", "summary", "df-generated"]
+      - ["androidx.core.net", "MailTo", "isMailTo", "(String)", "summary", "df-generated"]
+      - ["androidx.core.net", "MailTo", "isMailTo", "(Uri)", "summary", "df-generated"]
+      - ["androidx.core.net", "TrafficStatsCompat", "clearThreadStatsTag", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "TrafficStatsCompat", "getThreadStatsTag", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "TrafficStatsCompat", "incrementOperationCount", "(int)", "summary", "df-generated"]
+      - ["androidx.core.net", "TrafficStatsCompat", "incrementOperationCount", "(int,int)", "summary", "df-generated"]
+      - ["androidx.core.net", "TrafficStatsCompat", "setThreadStatsTag", "(int)", "summary", "df-generated"]
+      - ["androidx.core.net", "TrafficStatsCompat", "tagDatagramSocket", "(DatagramSocket)", "summary", "df-generated"]
+      - ["androidx.core.net", "TrafficStatsCompat", "tagSocket", "(Socket)", "summary", "df-generated"]
+      - ["androidx.core.net", "TrafficStatsCompat", "untagDatagramSocket", "(DatagramSocket)", "summary", "df-generated"]
+      - ["androidx.core.net", "TrafficStatsCompat", "untagSocket", "(Socket)", "summary", "df-generated"]
+      - ["androidx.core.net", "UriCompatTest", "testToSafeString_ftp", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "UriCompatTest", "testToSafeString_http", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "UriCompatTest", "testToSafeString_https", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "UriCompatTest", "testToSafeString_mailto", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "UriCompatTest", "testToSafeString_nfc", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "UriCompatTest", "testToSafeString_notSupport", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "UriCompatTest", "testToSafeString_rtsp", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "UriCompatTest", "testToSafeString_sip", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "UriCompatTest", "testToSafeString_sms", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "UriCompatTest", "testToSafeString_smsto", "()", "summary", "df-generated"]
+      - ["androidx.core.net", "UriCompatTest", "testToSafeString_tel", "()", "summary", "df-generated"]
