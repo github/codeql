@@ -3,24 +3,26 @@ private import Completion
 private import ControlFlowGraphImpl
 private import codeql.rust.elements.internal.generated.ParentChild
 
-abstract class CfgScope extends AstNode {
-  /** Holds if `first` is executed first when entering scope. */
-  abstract predicate scopeFirst(AstNode first);
+/**
+ * A control-flow graph (CFG) scope.
+ *
+ * A CFG scope is a callable with a body.
+ */
+class CfgScope extends Callable {
+  CfgScope() {
+    // A function without a body corresponds to a trait method signature and
+    // should not have a CFG scope.
+    this.(Function).hasBody()
+    or
+    this instanceof ClosureExpr
+  }
 
-  /** Holds if scope is exited when `last` finishes with completion `c`. */
-  abstract predicate scopeLast(AstNode last, Completion c);
-}
-
-final class FunctionScope extends CfgScope, Function {
-  override predicate scopeFirst(AstNode node) { first(this.getBody(), node) }
-
-  override predicate scopeLast(AstNode node, Completion c) { last(this.getBody(), node, c) }
-}
-
-final class ClosureScope extends CfgScope, ClosureExpr {
-  override predicate scopeFirst(AstNode node) { first(this.getBody(), node) }
-
-  override predicate scopeLast(AstNode node, Completion c) { last(this.getBody(), node, c) }
+  /** Gets the body of this callable. */
+  AstNode getBody() {
+    result = this.(Function).getBody()
+    or
+    result = this.(ClosureExpr).getBody()
+  }
 }
 
 /**

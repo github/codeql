@@ -87,10 +87,6 @@
 | Module pointsto_test | 69 | ControlFlowNode for X | class X |
 | Module pointsto_test | 70 | ControlFlowNode for Attribute | deco() |
 | Module pointsto_test | 70 | ControlFlowNode for X | class X |
-| Module pointsto_test | 72 | ControlFlowNode for ImportExpr | Module abc |
-| Module pointsto_test | 72 | ControlFlowNode for ImportMember | Function abstractmethod |
-| Module pointsto_test | 72 | ControlFlowNode for abstractmethod | Function abstractmethod |
-| Module pointsto_test | 73 | ControlFlowNode for abstractmethod | Function abstractmethod |
 | Module pointsto_test | 75 | ControlFlowNode for C | class C |
 | Module pointsto_test | 75 | ControlFlowNode for C() | C() |
 | Module pointsto_test | 75 | ControlFlowNode for type | builtin-class type |

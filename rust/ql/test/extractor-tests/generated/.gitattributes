@@ -59,8 +59,10 @@
 /MacroCall/gen_macro_call.rs linguist-generated
 /MacroDef/gen_macro_def.rs linguist-generated
 /MacroExpr/gen_macro_expr.rs linguist-generated
+/MacroItems/gen_macro_items.rs linguist-generated
 /MacroPat/gen_macro_pat.rs linguist-generated
 /MacroRules/gen_macro_rules.rs linguist-generated
+/MacroStmts/gen_macro_stmts.rs linguist-generated
 /MacroType/gen_macro_type.rs linguist-generated
 /MatchArm/gen_match_arm.rs linguist-generated
 /MatchArmList/gen_match_arm_list.rs linguist-generated

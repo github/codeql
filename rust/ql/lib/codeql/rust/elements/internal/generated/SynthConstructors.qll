@@ -62,8 +62,10 @@ import codeql.rust.elements.internal.LoopExprConstructor
 import codeql.rust.elements.internal.MacroCallConstructor
 import codeql.rust.elements.internal.MacroDefConstructor
 import codeql.rust.elements.internal.MacroExprConstructor
+import codeql.rust.elements.internal.MacroItemsConstructor
 import codeql.rust.elements.internal.MacroPatConstructor
 import codeql.rust.elements.internal.MacroRulesConstructor
+import codeql.rust.elements.internal.MacroStmtsConstructor
 import codeql.rust.elements.internal.MacroTypeConstructor
 import codeql.rust.elements.internal.MatchArmConstructor
 import codeql.rust.elements.internal.MatchArmListConstructor

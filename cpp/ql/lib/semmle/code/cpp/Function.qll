@@ -500,6 +500,17 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Gets the nearest enclosing AccessHolder.
    */
   override AccessHolder getEnclosingAccessHolder() { result = this.getDeclaringType() }
+
+  /**
+   * Holds if this function has extraction errors that create an `ErrorExpr`.
+   */
+  predicate hasErrors() {
+    exists(ErrorExpr e |
+      e.getEnclosingFunction() = this and
+      // Exclude the first allocator call argument because it is always extracted as `ErrorExpr`.
+      not exists(NewOrNewArrayExpr new | e = new.getAllocatorCall().getArgument(0))
+    )
+  }
 }
 
 pragma[noinline]

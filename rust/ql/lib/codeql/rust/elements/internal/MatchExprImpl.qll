@@ -31,6 +31,7 @@ module Impl {
     /**
      * Gets the `index`th arm of this match expression.
      */
+    pragma[nomagic]
     MatchArm getArm(int index) { result = this.getMatchArmList().getArm(index) }
 
     /**
@@ -41,6 +42,13 @@ module Impl {
     /**
      * Gets the number of arms of this match expression.
      */
+    pragma[nomagic]
     int getNumberOfArms() { result = this.getMatchArmList().getNumberOfArms() }
+
+    /**
+     * Gets the last arm of this match expression. Due to exhaustiveness checking,
+     * this arm is guaranteed to succeed.
+     */
+    MatchArm getLastArm() { result = this.getArm(this.getNumberOfArms() - 1) }
   }
 }

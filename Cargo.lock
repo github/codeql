@@ -113,6 +113,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7c02d123df017efcdfbd739ef81735b36c5ba83ec3c59c80a9d7ecc718f92e50"
 
 [[package]]
+name = "ast-generator"
+version = "0.1.0"
+dependencies = [
+ "itertools 0.10.5",
+ "proc-macro2",
+ "quote",
+ "ungrammar",
+]
+
+[[package]]
 name = "atomic"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -380,11 +390,13 @@ dependencies = [
  "ra_ap_base_db",
  "ra_ap_hir",
  "ra_ap_hir_def",
+ "ra_ap_hir_expand",
  "ra_ap_ide_db",
  "ra_ap_load-cargo",
  "ra_ap_parser",
  "ra_ap_paths",
  "ra_ap_project_model",
+ "ra_ap_span",
  "ra_ap_syntax",
  "ra_ap_vfs",
  "rust-extractor-macros",
@@ -680,16 +692,6 @@ name = "fst"
 version = "0.4.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ab85b9b05e3978cc9a9cf8fea7f01b494e1a09ed3037e16ba39edc7a29eb61a"
-
-[[package]]
-name = "generate-schema"
-version = "0.1.0"
-dependencies = [
- "itertools 0.10.5",
- "proc-macro2",
- "quote",
- "ungrammar",
-]
 
 [[package]]
 name = "getrandom"
