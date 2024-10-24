@@ -344,6 +344,8 @@ module SourceNode {
       DataFlow::functionReturnNode(this, _)
       or
       this instanceof DataFlow::ReflectiveParametersNode
+      or
+      this = DataFlow::ssaDefinitionNode(any(SsaVariableCapture capture))
     }
   }
 }
