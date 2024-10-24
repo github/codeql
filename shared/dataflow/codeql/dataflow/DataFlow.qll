@@ -265,6 +265,7 @@ signature module InputSig<LocationSig Location> {
    */
   predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call);
 
+  /** Gets the access path limit. A maximum limit of 5 is allowed. */
   default int accessPathLimit() { result = 5 }
 
   /**
@@ -401,7 +402,7 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      */
     default int fieldFlowBranchLimit() { result = 2 }
 
-    /** Gets the access path limit. */
+    /** Gets the access path limit. A maximum limit of 5 is allowed. */
     default int accessPathLimit() { result = Lang::accessPathLimit() }
 
     /**
@@ -528,7 +529,7 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      */
     default int fieldFlowBranchLimit() { result = 2 }
 
-    /** Gets the access path limit. */
+    /** Gets the access path limit. A maximum limit of 5 is allowed. */
     default int accessPathLimit() { result = Lang::accessPathLimit() }
 
     /**
