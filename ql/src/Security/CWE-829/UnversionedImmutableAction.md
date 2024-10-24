@@ -1,27 +1,29 @@
-# Unpinned tag for 3rd party Action in workflow
+# Unversioned Immutable Action
 
 ## Description
 
-Using a tag for a 3rd party Action that is not pinned to a commit can lead to executing an untrusted Action through a supply chain attack.
+Using an immutable action without indicating proper semantic version will result in the version being resolved to a tag that is mutable. This means the action code can between runs and without the user's knowledge. Using an immutable action with proper semantic versioning will resolve to the exact version
+of the action stored in the GitHub package registry. The action code will not change between runs.
 
 ## Recommendations
 
-Pinning an action to a full length commit SHA is currently the only way to use an action as an immutable release. Pinning to a particular SHA helps mitigate the risk of a bad actor adding a backdoor to the action's repository, as they would need to generate a SHA-1 collision for a valid Git object payload. When selecting a SHA, you should verify it is from the action's repository and not a repository fork.
+When using [immutable actions]() use the full semantic version of the action. This will ensure that the action is resolved to the exact version stored in the GitHub package registry. This will prevent the action code from changing between runs.
 
 ## Examples
 
 ### Incorrect Usage
 
 ```yaml
-- uses: tj-actions/changed-files@v44
+- uses: actions/checkout@some-tag
+- uses: actions/checkout@2.x.x
 ```
 
 ### Correct Usage
 
 ```yaml
-- uses: tj-actions/changed-files@c65cd883420fd2eb864698a825fc4162dd94482c # v44
+- uses: actions/checkout@4.0.0
 ```
 
 ## References
 
-- [Using third-party actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions#using-third-party-actions)
+- [Consuming immutable actions]()
