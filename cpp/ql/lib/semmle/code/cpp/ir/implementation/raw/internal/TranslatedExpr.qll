@@ -15,6 +15,7 @@ private import TranslatedInitialization
 private import TranslatedStmt
 private import TranslatedGlobalVar
 private import IRConstruction
+private import EdgeKind
 import TranslatedCall
 
 /**
@@ -391,7 +392,13 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = LoadTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      // All load instructions could throw an SEH exception
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
+      kind.(ExceptionEdge).isSeh()
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -1083,7 +1090,13 @@ class TranslatedStructuredBindingVariableAccess extends TranslatedNonConstantExp
     result = this.getInstruction(LoadTag())
     or
     tag = LoadTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      // All load instructions could throw an SEH exception
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
+      kind.(ExceptionEdge).isSeh()
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) { none() }
@@ -1898,8 +1911,13 @@ class TranslatedBlockAssignExpr extends TranslatedNonConstantExpr {
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = LoadTag() and
-    result = this.getInstruction(AssignmentStoreTag()) and
-    kind instanceof GotoEdge
+    (
+      result = this.getInstruction(AssignmentStoreTag()) and kind instanceof GotoEdge
+      or
+      // All load instructions could throw an SEH exception
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
+      kind.(ExceptionEdge).isSeh()
+    )
     or
     tag = AssignmentStoreTag() and
     result = this.getParent().getChildSuccessor(this, kind)
@@ -2375,14 +2393,16 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
         result = getTranslatedExpr(expr.getAllocatorCall().getArgument(index).getFullyConverted())
   }
 
-  final override predicate mayThrowException() {
+  final override predicate mayRaiseException(boolean isSeh) {
     // We assume that a call to `new` or `new[]` will never throw. This is not
     // sound in general, but this will greatly reduce the number of exceptional
     // edges.
     none()
   }
 
-  final override predicate mustThrowException() { none() }
+  final override predicate alwaysRaiseException(boolean isSeh) { none() }
+
+  final override predicate neverRaiseException(boolean isSeh) { none() }
 }
 
 TranslatedAllocatorCall getTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
@@ -2448,14 +2468,16 @@ class TranslatedDeleteOrDeleteArrayExpr extends TranslatedNonConstantExpr, Trans
     result = getTranslatedExpr(expr.getExprWithReuse().getFullyConverted())
   }
 
-  final override predicate mayThrowException() {
+  final override predicate mayRaiseException(boolean isSeh) {
     // We assume that a call to `delete` or `delete[]` will never throw. This is not
     // sound in general, but this will greatly reduce the number of exceptional
     // edges.
     none()
   }
 
-  final override predicate mustThrowException() { none() }
+  final override predicate alwaysRaiseException(boolean isSeh) { none() }
+
+  final override predicate neverRaiseException(boolean isSeh) { none() }
 }
 
 TranslatedDeleteOrDeleteArrayExpr getTranslatedDeleteOrDeleteArray(DeleteOrDeleteArrayExpr newExpr) {
@@ -3039,8 +3061,8 @@ class TranslatedDestructorsAfterThrow extends TranslatedElement, TTranslatedDest
       or
       // And otherwise, exit this element with an exceptional edge
       not exists(this.getChild(id + 1)) and
-      kind instanceof ExceptionEdge and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+      kind = exceptionEdge(false) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), false)
     )
   }
 
@@ -3079,7 +3101,8 @@ abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
       or
       not exists(this.getDestructors()) and
       kind instanceof ExceptionEdge and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+      kind = exceptionEdge(false) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), false)
     )
   }
 
