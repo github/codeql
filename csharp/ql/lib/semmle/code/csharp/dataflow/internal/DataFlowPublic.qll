@@ -3,6 +3,7 @@ private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.Unification
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -239,6 +240,61 @@ class PropertyContent extends Content, TPropertyContent {
 }
 
 /**
+ * A reference to the index of an argument of a delegate call
+ * (where the delegate is a parameter)
+ */
+class DelegateCallArgumentContent extends Content, TDelegateCallArgumentContent {
+  private Parameter p;
+  private int i;
+
+  DelegateCallArgumentContent() { this = TDelegateCallArgumentContent(p, i) }
+
+  /** Gets the underlying parameter. */
+  Parameter getParameter() { result = p }
+
+  /**
+   * Gets the type of the `i`th parameter of the underlying parameter `p`
+   * (which is of delegate type).
+   */
+  Type getType() {
+    result =
+      p.getType()
+          .(SystemLinqExpressions::DelegateExtType)
+          .getDelegateType()
+          .getParameter(i)
+          .getType()
+  }
+
+  override string toString() { result = "delegate parameter " + p.getName() + " at position " + i }
+
+  override Location getLocation() { result = p.getLocation() }
+}
+
+/**
+ * A reference to the return of a delegate call
+ * (where the delegate is a parameter)
+ */
+class DelegateCallReturnContent extends Content, TDelegateCallReturnContent {
+  private Parameter p;
+
+  DelegateCallReturnContent() { this = TDelegateCallReturnContent(p) }
+
+  /** Gets the underlying parameter. */
+  Parameter getParameter() { result = p }
+
+  /**
+   * Gets the return type of the underlying parameter `p` (which is of delegate type).
+   */
+  Type getType() {
+    result = p.getType().(SystemLinqExpressions::DelegateExtType).getDelegateType().getReturnType()
+  }
+
+  override string toString() { result = "delegate parameter " + p.getName() + " result" }
+
+  override Location getLocation() { result = p.getLocation() }
+}
+
+/**
  * A reference to a synthetic field corresponding to a
  * primary constructor parameter.
  */
@@ -298,6 +354,20 @@ class ContentSet extends TContentSet {
    * (reflexively and transitively) override/implement `p` (or vice versa).
    */
   predicate isProperty(Property p) { this = TPropertyContentSet(p) }
+
+  /**
+   * Holds if this content set represents the `i`th argument of
+   * the parameter `p` of delegate type in a delegate call.
+   */
+  predicate isDelegateCallArgument(Parameter p, int i) {
+    this.isSingleton(TDelegateCallArgumentContent(p, i))
+  }
+
+  /**
+   * Holds if this content set represents the return of a delegate call
+   * of parameter `p` (which is of delegate type).
+   */
+  predicate isDelegateCallReturn(Parameter p) { this.isSingleton(TDelegateCallReturnContent(p)) }
 
   /** Holds if this content set represents the field `f`. */
   predicate isField(Field f) { this.isSingleton(TFieldContent(f)) }

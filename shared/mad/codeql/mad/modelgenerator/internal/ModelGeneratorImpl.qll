@@ -224,6 +224,15 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
   predicate isUninterestingForDataFlowModels(Callable api);
 
   /**
+   * Holds if it is irrelevant to generate models for `api` based on the heuristic
+   * (non-content) flow analysis.
+   *
+   * This serves as an extra filter for the `relevant`
+   * and `isUninterestingForDataFlowModels` predicates.
+   */
+  predicate isUninterestingForHeuristicDataFlowModels(Callable api);
+
+  /**
    * Holds if `namespace`, `type`, `extensible`, `name` and `parameters` are string representations
    * for the corresponding MaD columns for `api`.
    */
@@ -300,7 +309,7 @@ module MakeModelGenerator<
     }
   }
 
-  string getOutput(ReturnNodeExt node) {
+  private string getOutput(ReturnNodeExt node) {
     result = PrintReturnNodeExt<paramReturnNodeAsOutput/2>::getOutput(node)
   }
 
@@ -432,7 +441,11 @@ module MakeModelGenerator<
 
     predicate isSource(DataFlow::Node source, FlowState state) {
       source instanceof DataFlow::ParameterNode and
-      source.(NodeExtended).getEnclosingCallable() instanceof DataFlowSummaryTargetApi and
+      exists(Callable c |
+        c = source.(NodeExtended).getEnclosingCallable() and
+        c instanceof DataFlowSummaryTargetApi and
+        not isUninterestingForHeuristicDataFlowModels(c)
+      ) and
       state.(TaintRead).getStep() = 0
     }
 
