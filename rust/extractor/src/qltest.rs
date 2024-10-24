@@ -3,6 +3,7 @@ use anyhow::Context;
 use glob::glob;
 use itertools::Itertools;
 use log::info;
+use std::ffi::OsStr;
 use std::fs;
 use std::process::Command;
 
@@ -13,8 +14,9 @@ fn dump_lib() -> anyhow::Result<()> {
         .context("fetching test sources")?;
     let lib = paths
         .iter()
-        .filter(|p| !["lib.rs", "main.rs"].contains(&p.file_name().unwrap().to_str().unwrap()))
-        .map(|p| format!("mod {};", p.file_stem().unwrap().to_str().unwrap()))
+        .map(|p| p.file_stem().expect("results of glob must have a name"))
+        .filter(|&p| !["main", "lib"].map(OsStr::new).contains(&p))
+        .map(|p| format!("mod {};", p.to_string_lossy()))
         .join("\n");
     fs::write("lib.rs", lib).context("writing lib.rs")
 }
@@ -49,21 +51,7 @@ fn set_sources(config: &mut Config) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn redirect_output(config: &Config) -> anyhow::Result<()> {
-    let log_path = config.log_dir.join("qltest.log");
-    let log = fs::OpenOptions::new()
-        .append(true)
-        .create(true)
-        .open(&log_path)
-        .context("opening qltest.log")?;
-    Box::leak(Box::new(
-        gag::Redirect::stderr(log).context("redirecting stderr")?,
-    ));
-    Ok(())
-}
-
 pub(crate) fn prepare(config: &mut Config) -> anyhow::Result<()> {
-    redirect_output(config)?;
     dump_lib()?;
     set_sources(config)?;
     dump_cargo_manifest()?;

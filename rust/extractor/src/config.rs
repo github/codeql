@@ -10,6 +10,7 @@ use itertools::Itertools;
 use num_traits::Zero;
 use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
+use std::fmt::Debug;
 use std::ops::Not;
 use std::path::PathBuf;
 
@@ -36,7 +37,6 @@ pub struct Config {
     pub scratch_dir: PathBuf,
     pub trap_dir: PathBuf,
     pub source_archive_dir: PathBuf,
-    pub log_dir: PathBuf,
     pub extract_dependencies: bool,
     pub verbose: u8,
     pub compression: Compression,
@@ -55,7 +55,7 @@ impl Config {
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_OPTION_"))
             .merge(Serialized::defaults(cli_args));
-        if matches!(figment.find_value("qltest"), Ok(Value::Bool(_, true))) {
+        if let Ok(Value::Bool(_, true)) = figment.find_value("qltest") {
             let cwd = std::env::current_dir()?;
             let mut option_files = cwd
                 .ancestors()
