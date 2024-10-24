@@ -3,7 +3,8 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
-      - ["github.com/nonexistent/test", "SEmbedI1", True, "Source", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/nonexistent/test", "SEmbedI1", True, "Source", "", "", "ReturnValue", "qltest", "manual"]
+      - ["github.com/nonexistent/test", "SEmbedI1", True, "SourceField", "", "", "", "qltest", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: summaryModel
@@ -13,4 +14,5 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
-      - ["github.com/nonexistent/test", "SEmbedI1", True, "Sink", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/nonexistent/test", "SEmbedI1", True, "Sink", "", "", "Argument[0]", "qltest", "manual"]
+      - ["github.com/nonexistent/test", "SEmbedI1", True, "SinkField", "", "", "", "qltest", "manual"]
