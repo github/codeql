@@ -160,16 +160,6 @@ module Impl {
     string toString() { result = name_ }
 
     string getName() { result = name_ }
-
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.(PathExpr)
-          .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-      this.(FormatTemplateVariableAccess)
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
   }
 
   private AstNode getAnAncestorInVariableScope(AstNode n) {
@@ -290,7 +280,7 @@ module Impl {
   ) {
     name = cand.getName() and
     scope = [cand.(VariableScope), getEnclosingScope(cand)] and
-    cand.hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
+    cand.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
     nestLevel = 0
     or
     exists(VariableScope inner |
@@ -365,14 +355,8 @@ module Impl {
       result = this.asVariable().toString() or result = this.asVariableAccessCand().toString()
     }
 
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.asVariable()
-          .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-      this.asVariableAccessCand()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    Location getLocation() {
+      result = this.asVariable().getLocation() or result = this.asVariableAccessCand().getLocation()
     }
 
     pragma[nomagic]
@@ -444,8 +428,6 @@ module Impl {
       variableAccessCandInScope(cand, scope, name, nestLevel, _, _, _, _)
     )
   }
-
-  private import codeql.rust.elements.internal.generated.Synth
 
   /** A variable access. */
   class VariableAccess extends PathExprBaseImpl::PathExprBase instanceof VariableAccessCand {
