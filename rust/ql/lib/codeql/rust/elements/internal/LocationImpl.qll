@@ -1,10 +1,17 @@
 private import codeql.files.FileSystem
+private import codeql.rust.elements.Locatable
+private import codeql.rust.elements.Format
+private import codeql.rust.elements.FormatArgument
 
 module LocationImpl {
   newtype TLocation =
     TLocationDefault(@location_default location) or
     TLocationSynth(File file, int beginLine, int beginColumn, int endLine, int endColumn) {
-      not locations_default(_, file, beginLine, beginColumn, endLine, endColumn) and none()
+      not locations_default(_, file, beginLine, beginColumn, endLine, endColumn) and
+      exists(string filePath | file.getAbsolutePath() = filePath |
+        any(Format f).hasLocationInfo(filePath, beginLine, beginColumn, endLine, endColumn) or
+        any(FormatArgument f).hasLocationInfo(filePath, beginLine, beginColumn, endLine, endColumn)
+      )
     }
 
   /**
