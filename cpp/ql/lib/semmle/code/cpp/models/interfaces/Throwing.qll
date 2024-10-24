@@ -12,10 +12,10 @@ import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 
 /**
  * Represents a type of exception,
- * either Structure Exception Handling (SEH) or C++ exceptions.
+ * either Structured Exception Handling (SEH) or C++ exceptions.
  */
 newtype TException =
-  /** Structure Exception Handling (SEH) exception */
+  /** Structured Exception Handling (SEH) exception */
   TSEHException() or
   /** C++ exception */
   TCxxException()
@@ -38,7 +38,7 @@ abstract private class ExceptionAnnotation extends Function {
   abstract TException getExceptionType();
 
   /**
-   * Holds if the exception type of this annotation is for a Structure Exception Handling (SEH) exception.
+   * Holds if the exception type of this annotation is for a Structured Exception Handling (SEH) exception.
    */
   final predicate isSEH() { this.getExceptionType() = TSEHException() }
 
