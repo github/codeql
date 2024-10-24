@@ -1674,14 +1674,26 @@ module DataFlow {
     }
   }
 
+  pragma[nomagic]
+  private DataFlow::SourceNode getAReceiverRef(DataFlow::ClassNode cls) {
+    result = cls.getAReceiverNode()
+    or
+    exists(ExtendCall call |
+      getAReceiverRef(cls).flowsTo(call.getDestinationOperand()) and
+      result = call.getASourceOperand().getALocalSource()
+    )
+  }
+
   /**
    * Holds if there is a step from `pred` to `succ` through a field accessed through `this` in a class.
    */
   predicate localFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ClassNode cls, string prop |
-      pred = AccessPath::getAnAssignmentTo(cls.getADirectSuperClass*().getAReceiverNode(), prop) or
-      pred = cls.getInstanceMethod(prop)
-    |
+      (
+        pred = AccessPath::getAnAssignmentTo(getAReceiverRef(cls.getADirectSuperClass*()), prop)
+        or
+        pred = cls.getInstanceMethod(prop)
+      ) and
       succ = AccessPath::getAReferenceTo(cls.getAReceiverNode(), prop)
     )
   }
