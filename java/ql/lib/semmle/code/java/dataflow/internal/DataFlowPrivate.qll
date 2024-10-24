@@ -581,7 +581,11 @@ predicate forceHighPrecision(Content c) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof FlowSummaryNode
+  or
+  n instanceof SsaNode
+}
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface
 
