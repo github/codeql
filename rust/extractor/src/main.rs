@@ -1,16 +1,19 @@
+use anyhow::Context;
+use archive::Archiver;
+use log::info;
+use ra_ap_ide_db::line_index::{LineCol, LineIndex};
+use ra_ap_project_model::ProjectManifest;
+use rust_analyzer::{ParseResult, RustAnalyzer};
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
-
-use anyhow::Context;
-use archive::Archiver;
-use ra_ap_ide_db::line_index::{LineCol, LineIndex};
-use ra_ap_project_model::ProjectManifest;
-use rust_analyzer::{ParseResult, RustAnalyzer};
 mod archive;
 mod config;
 pub mod generated;
+mod qltest;
 mod rust_analyzer;
 mod translate;
 pub mod trap;
@@ -65,16 +68,20 @@ fn extract(
         )
     });
 }
-fn main() -> anyhow::Result<()> {
-    let cfg = config::Config::extract().context("failed to load configuration")?;
+
+fn run_extractor(mut cfg: config::Config) -> anyhow::Result<()> {
     stderrlog::new()
         .module(module_path!())
-        .verbosity(1 + cfg.verbose as usize)
+        .verbosity(cfg.verbose as usize)
         .init()?;
+    if cfg.qltest {
+        qltest::prepare(&mut cfg)?;
+    }
+    info!("configuration: {cfg:#?}\n");
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
     let archiver = archive::Archiver {
-        root: cfg.source_archive_dir,
+        root: cfg.source_archive_dir.clone(),
     };
     let files: Vec<PathBuf> = cfg
         .inputs
@@ -117,4 +124,20 @@ fn main() -> anyhow::Result<()> {
     }
 
     Ok(())
+}
+
+fn main() -> anyhow::Result<()> {
+    let cfg = config::Config::extract().context("failed to load configuration")?;
+    let qltest = cfg.qltest;
+    let qltest_log = cfg.log_dir.join("qltest.log");
+    let result = std::panic::catch_unwind(|| run_extractor(cfg));
+    if qltest && matches!(result, Err(_) | Ok(Err(_))) {
+        // in case of failure, print out the full log
+        let log = File::open(qltest_log).context("opening qltest.log")?;
+        let reader = BufReader::new(log);
+        for line in reader.lines() {
+            println!("{}", line.context("reading qltest.log")?);
+        }
+    }
+    result.unwrap()
 }
