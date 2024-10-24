@@ -5,6 +5,7 @@
  */
 
 import codeql.Locations
+private import codeql.rust.elements.internal.LocationImpl
 private import codeql.rust.elements.internal.generated.Locatable
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
@@ -17,9 +18,21 @@ module Impl {
   class Locatable extends Generated::Locatable {
     pragma[nomagic]
     final Location getLocation() {
-      exists(Raw::Locatable raw |
-        raw = Synth::convertLocatableToRaw(this) and
-        locatable_locations(raw, result)
+      exists(@location_default location |
+        result = LocationImpl::TLocationDefault(location) and
+        locatable_locations(Synth::convertLocatableToRaw(this), location)
+      )
+      or
+      not locatable_locations(Synth::convertLocatableToRaw(this), _) and
+      exists(File file, int beginLine, int beginColumn, int endLine, int endColumn |
+        this.hasLocationInfo(file.getAbsolutePath(), beginLine, beginColumn, endLine, endColumn)
+      |
+        result = LocationImpl::TLocationSynth(file, beginLine, beginColumn, endLine, endColumn)
+        or
+        exists(@location_default location |
+          result = LocationImpl::TLocationDefault(location) and
+          locations_default(location, file, beginLine, beginColumn, endLine, endColumn)
+        )
       )
     }
 
@@ -34,10 +47,6 @@ module Impl {
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      or
-      not exists(this.getLocation()) and
-      pragma[only_bind_out](any(EmptyLocation e))
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     /**
