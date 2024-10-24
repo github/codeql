@@ -15,9 +15,9 @@ import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
  * either Structure Exception Handling (SEH) or C++ exceptions.
  */
 newtype TException =
-  // Structure Exception Handling (SEH) exception
+  /** Structure Exception Handling (SEH) exception */
   TSEHException() or
-  // C++ exception
+  /** C++ exception */
   TCxxException()
 
 /**
