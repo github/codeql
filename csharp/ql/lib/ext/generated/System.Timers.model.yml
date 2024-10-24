@@ -2,6 +2,12 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Timers", "TimersDescriptionAttribute", True, "get_Description", "()", "", "Argument[this].Property[System.ComponentModel.DescriptionAttribute.Description]", "Argument[this].Property[System.ComponentModel.DescriptionAttribute.DescriptionValue]", "taint", "dfc-generated"]
+      - ["System.Timers", "TimersDescriptionAttribute", True, "get_Description", "()", "", "Argument[this].Property[System.ComponentModel.DescriptionAttribute.Description]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Timers", "ElapsedEventArgs", "ElapsedEventArgs", "(System.DateTime)", "summary", "df-generated"]

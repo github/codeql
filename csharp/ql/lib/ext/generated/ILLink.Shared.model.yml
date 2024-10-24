@@ -4,11 +4,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["ILLink.Shared", "DiagnosticString", False, "GetMessage", "(System.String[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
-      - ["ILLink.Shared", "DiagnosticString", False, "GetMessage", "(System.String[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILLink.Shared", "DiagnosticString", False, "GetMessage", "(System.String[])", "", "Argument[0].Element", "ReturnValue", "taint", "dfc-generated"]
       - ["ILLink.Shared", "DiagnosticString", False, "GetMessageFormat", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["ILLink.Shared", "DiagnosticString", False, "GetTitle", "(System.String[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
-      - ["ILLink.Shared", "DiagnosticString", False, "GetTitle", "(System.String[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILLink.Shared", "DiagnosticString", False, "GetTitle", "(System.String[])", "", "Argument[0].Element", "ReturnValue", "taint", "dfc-generated"]
       - ["ILLink.Shared", "DiagnosticString", False, "GetTitleFormat", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all

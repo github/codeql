@@ -30,7 +30,6 @@ extensions:
       - ["System.Threading.Tasks.Dataflow", "BufferBlock<T>", False, "LinkTo", "(System.Threading.Tasks.Dataflow.ITargetBlock<T>,System.Threading.Tasks.Dataflow.DataflowLinkOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "BufferBlock<T>", False, "LinkTo", "(System.Threading.Tasks.Dataflow.ITargetBlock<T>,System.Threading.Tasks.Dataflow.DataflowLinkOptions)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "BufferBlock<T>", False, "ReserveMessage", "(System.Threading.Tasks.Dataflow.DataflowMessageHeader,System.Threading.Tasks.Dataflow.ITargetBlock<T>)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Threading.Tasks.Dataflow", "DataflowBlock", False, "AsObservable<TOutput>", "(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "DataflowBlock", False, "AsObserver<TInput>", "(System.Threading.Tasks.Dataflow.ITargetBlock<TInput>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "DataflowBlock", False, "Encapsulate<TInput,TOutput>", "(System.Threading.Tasks.Dataflow.ITargetBlock<TInput>,System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "DataflowBlock", False, "Encapsulate<TInput,TOutput>", "(System.Threading.Tasks.Dataflow.ITargetBlock<TInput>,System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
@@ -70,14 +69,14 @@ extensions:
       - ["System.Threading.Tasks.Dataflow", "TransformManyBlock<TInput,TOutput>", False, "LinkTo", "(System.Threading.Tasks.Dataflow.ITargetBlock<TOutput>,System.Threading.Tasks.Dataflow.DataflowLinkOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "TransformManyBlock<TInput,TOutput>", False, "LinkTo", "(System.Threading.Tasks.Dataflow.ITargetBlock<TOutput>,System.Threading.Tasks.Dataflow.DataflowLinkOptions)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "TransformManyBlock<TInput,TOutput>", False, "ReserveMessage", "(System.Threading.Tasks.Dataflow.DataflowMessageHeader,System.Threading.Tasks.Dataflow.ITargetBlock<TOutput>)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Threading.Tasks.Dataflow", "WriteOnceBlock<T>", False, "ConsumeMessage", "(System.Threading.Tasks.Dataflow.DataflowMessageHeader,System.Threading.Tasks.Dataflow.ITargetBlock<T>,System.Boolean)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Threading.Tasks.Dataflow", "WriteOnceBlock<T>", False, "ConsumeMessage", "(System.Threading.Tasks.Dataflow.DataflowMessageHeader,System.Threading.Tasks.Dataflow.ITargetBlock<T>,System.Boolean)", "", "Argument[this].SyntheticField[System.Threading.Tasks.Dataflow.WriteOnceBlock`1._value]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Threading.Tasks.Dataflow", "WriteOnceBlock<T>", False, "LinkTo", "(System.Threading.Tasks.Dataflow.ITargetBlock<T>,System.Threading.Tasks.Dataflow.DataflowLinkOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "WriteOnceBlock<T>", False, "LinkTo", "(System.Threading.Tasks.Dataflow.ITargetBlock<T>,System.Threading.Tasks.Dataflow.DataflowLinkOptions)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "WriteOnceBlock<T>", False, "LinkTo", "(System.Threading.Tasks.Dataflow.ITargetBlock<T>,System.Threading.Tasks.Dataflow.DataflowLinkOptions)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Threading.Tasks.Dataflow", "WriteOnceBlock<T>", False, "OfferMessage", "(System.Threading.Tasks.Dataflow.DataflowMessageHeader,T,System.Threading.Tasks.Dataflow.ISourceBlock<T>,System.Boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Threading.Tasks.Dataflow", "WriteOnceBlock<T>", False, "OfferMessage", "(System.Threading.Tasks.Dataflow.DataflowMessageHeader,T,System.Threading.Tasks.Dataflow.ISourceBlock<T>,System.Boolean)", "", "Argument[1]", "Argument[this].SyntheticField[System.Threading.Tasks.Dataflow.WriteOnceBlock`1._value]", "value", "dfc-generated"]
       - ["System.Threading.Tasks.Dataflow", "WriteOnceBlock<T>", False, "ReleaseReservation", "(System.Threading.Tasks.Dataflow.DataflowMessageHeader,System.Threading.Tasks.Dataflow.ITargetBlock<T>)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "WriteOnceBlock<T>", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Threading.Tasks.Dataflow", "WriteOnceBlock<T>", False, "TryReceiveAll", "(System.Collections.Generic.IList<T>)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Threading.Tasks.Dataflow", "WriteOnceBlock<T>", False, "TryReceiveAll", "(System.Collections.Generic.IList<T>)", "", "Argument[this].SyntheticField[System.Threading.Tasks.Dataflow.WriteOnceBlock`1._value]", "ReturnValue.Element", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -130,6 +129,7 @@ extensions:
       - ["System.Threading.Tasks.Dataflow", "BufferBlock<T>", "ToString", "()", "summary", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "BufferBlock<T>", "TryReceiveAll", "(System.Collections.Generic.IList<T>)", "summary", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "BufferBlock<T>", "get_Count", "()", "summary", "df-generated"]
+      - ["System.Threading.Tasks.Dataflow", "DataflowBlock", "AsObservable<TOutput>", "(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>)", "summary", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "DataflowBlock", "NullTarget<TInput>", "()", "summary", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "DataflowBlock", "OutputAvailableAsync<TOutput>", "(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>)", "summary", "df-generated"]
       - ["System.Threading.Tasks.Dataflow", "DataflowBlock", "OutputAvailableAsync<TOutput>", "(System.Threading.Tasks.Dataflow.ISourceBlock<TOutput>,System.Threading.CancellationToken)", "summary", "df-generated"]

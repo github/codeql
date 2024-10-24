@@ -4,13 +4,19 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Drawing", "Color", False, "FromName", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Drawing", "Color", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Drawing", "Color", False, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Drawing", "ColorTranslator", False, "FromHtml", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Drawing", "ColorTranslator", False, "ToHtml", "(System.Drawing.Color)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Drawing", "Rectangle", False, "Inflate", "(System.Drawing.Rectangle,System.Int32,System.Int32)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Drawing", "RectangleF", False, "Inflate", "(System.Drawing.RectangleF,System.Single,System.Single)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Drawing", "Color", False, "FromName", "(System.String)", "", "Argument[0]", "ReturnValue.SyntheticField[System.Drawing.Color.name]", "value", "dfc-generated"]
+      - ["System.Drawing", "Color", False, "ToString", "()", "", "Argument[this].Property[System.Drawing.Color.Name]", "ReturnValue", "taint", "dfc-generated"]
+      - ["System.Drawing", "Color", False, "ToString", "()", "", "Argument[this].SyntheticField[System.Drawing.Color.name]", "ReturnValue", "taint", "dfc-generated"]
+      - ["System.Drawing", "Color", False, "get_Name", "()", "", "Argument[this].SyntheticField[System.Drawing.Color.name]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Drawing", "ColorConverter", True, "ConvertTo", "(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)", "", "Argument[1].Property[System.Globalization.CultureInfo.TextInfo].Property[System.Globalization.TextInfo.ListSeparator]", "ReturnValue", "taint", "dfc-generated"]
+      - ["System.Drawing", "ColorTranslator", False, "ToHtml", "(System.Drawing.Color)", "", "Argument[0].Property[System.Drawing.Color.Name]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Drawing", "ColorTranslator", False, "ToHtml", "(System.Drawing.Color)", "", "Argument[0].SyntheticField[System.Drawing.Color.name]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Drawing", "PointConverter", True, "ConvertTo", "(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)", "", "Argument[1].Property[System.Globalization.CultureInfo.TextInfo].Property[System.Globalization.TextInfo.ListSeparator]", "ReturnValue", "taint", "dfc-generated"]
+      - ["System.Drawing", "Rectangle", False, "Inflate", "(System.Drawing.Rectangle,System.Int32,System.Int32)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Drawing", "RectangleConverter", True, "ConvertTo", "(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)", "", "Argument[1].Property[System.Globalization.CultureInfo.TextInfo].Property[System.Globalization.TextInfo.ListSeparator]", "ReturnValue", "taint", "dfc-generated"]
+      - ["System.Drawing", "RectangleF", False, "Inflate", "(System.Drawing.RectangleF,System.Single,System.Single)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Drawing", "SizeConverter", True, "ConvertTo", "(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)", "", "Argument[1].Property[System.Globalization.CultureInfo.TextInfo].Property[System.Globalization.TextInfo.ListSeparator]", "ReturnValue", "taint", "dfc-generated"]
+      - ["System.Drawing", "SizeFConverter", True, "ConvertTo", "(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)", "", "Argument[1].Property[System.Globalization.CultureInfo.TextInfo].Property[System.Globalization.TextInfo.ListSeparator]", "ReturnValue", "taint", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -183,6 +189,7 @@ extensions:
       - ["System.Drawing", "ColorConverter", "CanConvertFrom", "(System.ComponentModel.ITypeDescriptorContext,System.Type)", "summary", "df-generated"]
       - ["System.Drawing", "ColorConverter", "CanConvertTo", "(System.ComponentModel.ITypeDescriptorContext,System.Type)", "summary", "df-generated"]
       - ["System.Drawing", "ColorConverter", "GetStandardValuesSupported", "(System.ComponentModel.ITypeDescriptorContext)", "summary", "df-generated"]
+      - ["System.Drawing", "ColorTranslator", "FromHtml", "(System.String)", "summary", "df-generated"]
       - ["System.Drawing", "ColorTranslator", "FromOle", "(System.Int32)", "summary", "df-generated"]
       - ["System.Drawing", "ColorTranslator", "FromWin32", "(System.Int32)", "summary", "df-generated"]
       - ["System.Drawing", "ColorTranslator", "ToOle", "(System.Drawing.Color)", "summary", "df-generated"]
