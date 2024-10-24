@@ -37,10 +37,10 @@ module Pycurl {
     /** Gets a reference to an instance of `pycurl.Curl`. */
     private API::Node instance() { result = classRef().getReturn() }
 
-    /** Gets a reference to an instance of `pycurl.Curl.setopt`. */
+    /** Gets a reference to `pycurl.Curl.setopt`. */
     private API::Node setopt() { result = instance().getMember("setopt") }
 
-    /** Gets a reference to an instance of `pycurl.Curl.SSL_VERIFYPEER`. */
+    /** Gets a reference to the constant `pycurl.Curl.SSL_VERIFYPEER`. */
     private API::Node sslverifypeer() {
       result = API::moduleImport("pycurl").getMember("SSL_VERIFYPEER") or
       result = instance().getMember("SSL_VERIFYPEER")
