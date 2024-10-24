@@ -15,5 +15,5 @@ import codeql.actions.security.UseOfUnversionedImmutableAction
 
 from UnversionedImmutableAction step
 select step,
-  "The workflow is using an immutable action ($@) without versinoning so it doesn't work", step,
+  "The workflow is using an eligible immutable action ($@) without semantic versioning", step,
    step.getCallee()
