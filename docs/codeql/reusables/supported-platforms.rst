@@ -12,9 +12,7 @@
    Windows,"Windows 10 / Windows Server 2019
 
    Windows 11 / Windows Server 2022","x86-64"
-   macOS,"macOS 12 Monterey
-
-   macOS 13 Ventura
+   macOS,"macOS 13 Ventura
 
    macOS 14 Sonoma","x86-64, arm64 (Apple Silicon)
 
