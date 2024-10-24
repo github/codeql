@@ -40,10 +40,12 @@ private module CfgInput implements InputSig<Location> {
   predicate successorTypeIsCondition(SuccessorType t) { t instanceof Cfg::BooleanSuccessor }
 
   /** Holds if `first` is first executed when entering `scope`. */
-  predicate scopeFirst(CfgScope scope, AstNode first) { scope.scopeFirst(first) }
+  predicate scopeFirst(CfgScope scope, AstNode first) {
+    first(scope.(CfgScopeTree).getFirstChildNode(), first)
+  }
 
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */
-  predicate scopeLast(CfgScope scope, AstNode last, Completion c) { scope.scopeLast(last, c) }
+  predicate scopeLast(CfgScope scope, AstNode last, Completion c) { last(scope.getBody(), last, c) }
 }
 
 private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {
@@ -65,7 +67,7 @@ private module CfgImpl =
 
 import CfgImpl
 
-class FunctionTree extends StandardTree, Function {
+class CfgScopeTree extends StandardTree, Scope::CfgScope {
   override predicate first(AstNode first) { first = this }
 
   override predicate last(AstNode last, Completion c) {
@@ -317,24 +319,6 @@ module ExprTrees {
 
   class CastExprTree extends StandardPostOrderTree instanceof CastExpr {
     override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
-  }
-
-  class ClosureExprTree extends StandardTree, ClosureExpr {
-    override predicate first(AstNode first) { first = this }
-
-    override predicate last(AstNode last, Completion c) {
-      last = this and
-      completionIsValidFor(c, this)
-    }
-
-    override predicate propagatesAbnormal(AstNode child) { none() }
-
-    override AstNode getChildNode(int i) {
-      result = this.getParamList().getParam(i)
-      or
-      i = this.getParamList().getNumberOfParams() and
-      result = this.getBody()
-    }
   }
 
   class ContinueExprTree extends LeafTree, ContinueExpr {
