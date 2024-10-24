@@ -85,28 +85,28 @@ abstract class TranslatedCall extends TranslatedExpr {
           this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction()
         )
     else
-      exists(boolean isSEH | kind = exceptionEdge(isSEH) |
+      exists(boolean isSeh | kind = exceptionEdge(isSeh) |
         // Call throw behavior is resolved from most restricted to least restricted in order
         // if there are conflicting throwing specificaitons for a function.
         // Enumerating all scenarios to be explicit.
         (
           // If the call is known to never throw, regardless of other defined throwing behavior,
           // do not generate any exception edges, only an ordinary successor
-          if this.(TranslatedCallExpr).neverRaiseException(isSEH)
+          if this.(TranslatedCallExpr).neverRaiseException(isSeh)
           then result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
           else
             // If the call is known to always throw, regardless of other defined throwing behavior,
             // only generate an exception edge.
-            if this.(TranslatedCallExpr).alwaysRaiseException(isSEH)
+            if this.(TranslatedCallExpr).alwaysRaiseException(isSeh)
             then
-              result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSEH)
+              result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSeh)
             else
-              if this.(TranslatedCallExpr).mayRaiseException(isSEH)
+              if this.(TranslatedCallExpr).mayRaiseException(isSeh)
               then (
                 // if the call is known to conditionally throw, generate both an exception edge and an
                 // ordinary successor
                 result =
-                  this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSEH)
+                  this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), isSeh)
                 or
                 result = this.getParent().getChildSuccessor(this, kind)
               ) else
@@ -145,7 +145,7 @@ abstract class TranslatedCall extends TranslatedExpr {
    * and `neverRaiseException` may conflict (e.g., all hold for a given target).
    * Conflicting results are resolved during IR generation.
    */
-  abstract predicate alwaysRaiseException(boolean isSEH);
+  abstract predicate alwaysRaiseException(boolean isSeh);
 
   /**
    * The call target is known to conditionally raise an exception.
@@ -153,7 +153,7 @@ abstract class TranslatedCall extends TranslatedExpr {
    * and `neverRaiseException` may conflict (e.g., all hold for a given target).
    * Conflicting results are resolved during IR generation.
    */
-  abstract predicate mayRaiseException(boolean isSEH);
+  abstract predicate mayRaiseException(boolean isSeh);
 
   /**
    * The call target is known to never raise an exception.
@@ -161,7 +161,7 @@ abstract class TranslatedCall extends TranslatedExpr {
    * and `neverRaiseException` may conflict (e.g., all hold for a given target).
    * Conflicting results are resolved during IR generation.
    */
-  abstract predicate neverRaiseException(boolean isSEH);
+  abstract predicate neverRaiseException(boolean isSeh);
 
   /**
    * Gets the result type of the call.
@@ -362,27 +362,27 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
     tag = CallTargetTag() and result = expr.getTarget()
   }
 
-  override predicate alwaysRaiseException(boolean isSEH) {
+  override predicate alwaysRaiseException(boolean isSeh) {
     exists(ThrowingFunction f | f = expr.getTarget() |
-      f.alwaysRaisesException() and f.isSEH() and isSEH = true
+      f.alwaysRaisesException() and f.isSeh() and isSeh = true
       or
-      f.alwaysRaisesException() and f.isCxx() and isSEH = false
+      f.alwaysRaisesException() and f.isCxx() and isSeh = false
     )
   }
 
-  override predicate mayRaiseException(boolean isSEH) {
+  override predicate mayRaiseException(boolean isSeh) {
     exists(ThrowingFunction f | f = expr.getTarget() |
-      f.mayRaiseException() and f.isSEH() and isSEH = true
+      f.mayRaiseException() and f.isSeh() and isSeh = true
       or
-      f.mayRaiseException() and f.isCxx() and isSEH = false
+      f.mayRaiseException() and f.isCxx() and isSeh = false
     )
   }
 
-  override predicate neverRaiseException(boolean isSEH) {
+  override predicate neverRaiseException(boolean isSeh) {
     exists(NonThrowingFunction f | f = expr.getTarget() |
-      f.isSEH() and isSEH = true
+      f.isSeh() and isSeh = true
       or
-      f.isCxx() and isSEH = false
+      f.isCxx() and isSeh = false
     )
   }
 }
@@ -397,7 +397,7 @@ class TranslatedExprCall extends TranslatedCallExpr {
     result = getTranslatedExpr(expr.getExpr().getFullyConverted())
   }
 
-  override predicate alwaysRaiseException(boolean isSEH) {
+  override predicate alwaysRaiseException(boolean isSeh) {
     // We assume that a call to a function pointer will not throw a CXX exception.
     // This is not sound in general, but this will greatly reduce the number of
     // exceptional edges.
@@ -405,11 +405,11 @@ class TranslatedExprCall extends TranslatedCallExpr {
     // if no throwing function is found, assume a conditional SEH exception
     // see `mayRaiseException`
     exists(ThrowingFunction f | f = expr.getTarget() |
-      f.alwaysRaisesException() and f.isSEH() and isSEH = true
+      f.alwaysRaisesException() and f.isSeh() and isSeh = true
     )
   }
 
-  override predicate mayRaiseException(boolean isSEH) {
+  override predicate mayRaiseException(boolean isSeh) {
     // We assume that a call to a function pointer will not throw a CXX exception.
     // This is not sound in general, but this will greatly reduce the number of
     // exceptional edges.
@@ -417,21 +417,21 @@ class TranslatedExprCall extends TranslatedCallExpr {
     // ASSUMPTION: if no ThrowingFunction is found for the given call, assume a conditional SEH exception
     // on the call.
     exists(ThrowingFunction f | f = expr.getTarget() |
-      f.mayRaiseException() and f.isSEH() and isSEH = true
+      f.mayRaiseException() and f.isSeh() and isSeh = true
     )
     or
-    not exists(ThrowingFunction f | f = expr.getTarget() and f.isSEH()) and
-    isSEH = true
+    not exists(ThrowingFunction f | f = expr.getTarget() and f.isSeh()) and
+    isSeh = true
   }
 
-  override predicate neverRaiseException(boolean isSEH) {
+  override predicate neverRaiseException(boolean isSeh) {
     // We assume that a call to a function pointer will not throw a CXX exception.
     // This is not sound in general, but this will greatly reduce the number of
     // exceptional edges.
     // For SEH exceptions, use the defined ThrowingFunction behavior and
     // if no throwing function is found, assume a conditional SEH exception
     // see `mayRaiseException`
-    exists(NonThrowingFunction f | f = expr.getTarget() | f.isSEH() and isSEH = true)
+    exists(NonThrowingFunction f | f = expr.getTarget() | f.isSeh() and isSeh = true)
   }
 }
 

@@ -286,7 +286,7 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
       or
       // All store instructions could throw an SEH exception
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
+      kind.(ExceptionEdge).isSeh()
     )
   }
 
@@ -369,7 +369,7 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
       or
       // All store instructions could throw an SEH exception
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
+      kind.(ExceptionEdge).isSeh()
     )
     or
     if this.zeroInitRange(_, _)
@@ -666,7 +666,7 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
       or
       // All store instructions could throw an SEH exception
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
+      kind.(ExceptionEdge).isSeh()
     )
   }
 
@@ -872,7 +872,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
       or
       // All store instructions could throw an SEH exception
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
+      kind.(ExceptionEdge).isSeh()
     )
   }
 

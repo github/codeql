@@ -40,7 +40,7 @@ abstract private class ExceptionAnnotation extends Function {
   /**
    * Holds if the exception type of this annotation is for a Structured Exception Handling (SEH) exception.
    */
-  final predicate isSEH() { this.getExceptionType() = TSEHException() }
+  final predicate isSeh() { this.getExceptionType() = TSEHException() }
 
   /**
    * Holds if the exception type of this annotation is for a CPP exception.

@@ -229,10 +229,10 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
     )
   }
 
-  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind, boolean isSEH) {
+  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind, boolean isSeh) {
     // only unwind for C++ exceptions since SEH exceptions are too verbose
     // and would generate unwind for all functions.
-    isSEH = false and
+    isSeh = false and
     result = this.getInstruction(UnwindTag()) and
     kind instanceof GotoEdge
   }

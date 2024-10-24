@@ -397,7 +397,7 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
       or
       // All load instructions could throw an SEH exception
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
+      kind.(ExceptionEdge).isSeh()
     )
   }
 
@@ -1095,7 +1095,7 @@ class TranslatedStructuredBindingVariableAccess extends TranslatedNonConstantExp
       or
       // All load instructions could throw an SEH exception
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
+      kind.(ExceptionEdge).isSeh()
     )
   }
 
@@ -1916,7 +1916,7 @@ class TranslatedBlockAssignExpr extends TranslatedNonConstantExpr {
       or
       // All load instructions could throw an SEH exception
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), true) and
-      kind.(ExceptionEdge).isSEH()
+      kind.(ExceptionEdge).isSeh()
     )
     or
     tag = AssignmentStoreTag() and
@@ -2393,16 +2393,16 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
         result = getTranslatedExpr(expr.getAllocatorCall().getArgument(index).getFullyConverted())
   }
 
-  final override predicate mayRaiseException(boolean isSEH) {
+  final override predicate mayRaiseException(boolean isSeh) {
     // We assume that a call to `new` or `new[]` will never throw. This is not
     // sound in general, but this will greatly reduce the number of exceptional
     // edges.
     none()
   }
 
-  final override predicate alwaysRaiseException(boolean isSEH) { none() }
+  final override predicate alwaysRaiseException(boolean isSeh) { none() }
 
-  final override predicate neverRaiseException(boolean isSEH) { none() }
+  final override predicate neverRaiseException(boolean isSeh) { none() }
 }
 
 TranslatedAllocatorCall getTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
@@ -2468,16 +2468,16 @@ class TranslatedDeleteOrDeleteArrayExpr extends TranslatedNonConstantExpr, Trans
     result = getTranslatedExpr(expr.getExprWithReuse().getFullyConverted())
   }
 
-  final override predicate mayRaiseException(boolean isSEH) {
+  final override predicate mayRaiseException(boolean isSeh) {
     // We assume that a call to `delete` or `delete[]` will never throw. This is not
     // sound in general, but this will greatly reduce the number of exceptional
     // edges.
     none()
   }
 
-  final override predicate alwaysRaiseException(boolean isSEH) { none() }
+  final override predicate alwaysRaiseException(boolean isSeh) { none() }
 
-  final override predicate neverRaiseException(boolean isSEH) { none() }
+  final override predicate neverRaiseException(boolean isSeh) { none() }
 }
 
 TranslatedDeleteOrDeleteArrayExpr getTranslatedDeleteOrDeleteArray(DeleteOrDeleteArrayExpr newExpr) {
