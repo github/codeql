@@ -440,7 +440,7 @@ def concatenate_stringparts(stringparts, logger):
     try:
         return "".join(decode_str(stringpart.s) for stringpart in stringparts)
     except Exception as ex:
-        logger.error("Unable to concatenate string %s getting error %s", stringparts, ex)
+        logger.error("Unable to concatenate string {} getting error {}".format(stringparts, ex))
         return stringparts[0].s
 
 

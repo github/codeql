@@ -463,6 +463,22 @@ pub mod extra_functions {
             Ok(Value::Integer(left % right))
         }
     }
+
+    pub struct GetLastElement;
+
+    impl Function for GetLastElement {
+        fn call(
+            &self,
+            _graph: &mut Graph,
+            _source: &str,
+            parameters: &mut dyn Parameters,
+        ) -> Result<Value, ExecutionError> {
+            let list = parameters.param()?.into_list()?;
+            parameters.finish()?;
+            let last = list.last().unwrap_or(&Value::Null).clone();
+            Ok(last)
+        }
+    }
 }
 
 fn main() -> Result<()> {
@@ -562,6 +578,12 @@ fn main() -> Result<()> {
     );
 
     functions.add(Identifier::from("mod"), extra_functions::Modulo);
+
+    functions.add(
+        Identifier::from("get-last-element"),
+        extra_functions::GetLastElement,
+    );
+
     let globals = Variables::new();
     let mut config = ExecutionConfig::new(&mut functions, &globals).lazy(false);
     let graph = file

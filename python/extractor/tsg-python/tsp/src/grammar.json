@@ -1169,7 +1169,11 @@
       "members": [
         {
           "type": "STRING",
-          "value": "except*"
+          "value": "except"
+        },
+        {
+          "type": "STRING",
+          "value": "*"
         },
         {
           "type": "SEQ",
@@ -5289,8 +5293,17 @@
       }
     },
     "type": {
-      "type": "SYMBOL",
-      "name": "expression"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "list_splat"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expression"
+        }
+      ]
     },
     "keyword_argument": {
       "type": "SEQ",

@@ -97,8 +97,26 @@ class AstDumper(object):
 
 
 class StdoutLogger(logging.Logger):
+    error_count = 0
     def log(self, level, fmt, *args):
         sys.stdout.write(fmt % args + "\n")
+
+    def info(self, fmt, *args):
+        self.log(logging.INFO, fmt, *args)
+
+    def warn(self, fmt, *args):
+        self.log(logging.WARN, fmt, *args)
+        self.error_count += 1
+
+    def error(self, fmt, *args):
+        self.log(logging.ERROR, fmt, *args)
+        self.error_count += 1
+
+    def had_errors(self):
+        return self.error_count > 0
+
+    def reset_error_count(self):
+        self.error_count = 0
 
 def old_parser(inputfile, logger):
     mod = PythonSourceModule(None, inputfile, logger)
