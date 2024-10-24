@@ -8,6 +8,8 @@ private import codeql.rust.elements.internal.generated.FormatArgument
 private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.FormatArgumentConstructor
+private import codeql.rust.elements.internal.LocatableImpl::Impl as LocatableImpl
+private import codeql.files.FileSystem
 
 /**
  * INTERNAL: This module contains the customizable definition of `FormatArgument` and should not
@@ -30,14 +32,18 @@ module Impl {
     int index;
     int kind;
     string name;
-    private int offset;
+    int offset;
 
     FormatArgument() { this = Synth::TFormatArgument(parent, index, kind, name, _, offset) }
 
     override string toString() { result = name }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    override Format getParent() { result = Synth::TFormat(parent, index, _, _) }
+  }
+
+  private class FormatSynthLocationImpl extends FormatArgument, LocatableImpl::SynthLocatable {
+    override predicate hasSynthLocationInfo(
+      File file, int startline, int startcolumn, int endline, int endcolumn
     ) {
       // TODO: handle locations in multi-line comments
       // TODO: handle the case where the template is from a nested macro call
@@ -45,12 +51,10 @@ module Impl {
           .(FormatArgsExpr)
           .getTemplate()
           .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn - offset, _, _) and
+          .hasLocationInfo(file.getAbsolutePath(), startline, startcolumn - offset, _, _) and
       endline = startline and
       endcolumn = startcolumn + name.length() - 1
     }
-
-    override Format getParent() { result = Synth::TFormat(parent, index, _, _) }
   }
 
   /**

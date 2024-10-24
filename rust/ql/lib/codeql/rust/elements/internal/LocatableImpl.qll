@@ -15,17 +15,15 @@ private import codeql.rust.elements.internal.generated.Raw
  * be referenced directly.
  */
 module Impl {
-  class Locatable extends Generated::Locatable {
-    pragma[nomagic]
-    final Location getLocation() {
-      exists(@location_default location |
-        result = LocationImpl::TLocationDefault(location) and
-        locatable_locations(Synth::convertLocatableToRaw(this), location)
-      )
-      or
+  abstract class SynthLocatable extends Locatable {
+    abstract predicate hasSynthLocationInfo(
+      File file, int startline, int startcolumn, int endline, int endcolumn
+    );
+
+    final override Location getLocation() {
       not locatable_locations(Synth::convertLocatableToRaw(this), _) and
       exists(File file, int beginLine, int beginColumn, int endLine, int endColumn |
-        this.hasLocationInfo(file.getAbsolutePath(), beginLine, beginColumn, endLine, endColumn)
+        this.hasSynthLocationInfo(file, beginLine, beginColumn, endLine, endColumn)
       |
         result = LocationImpl::TLocationSynth(file, beginLine, beginColumn, endLine, endColumn)
         or
@@ -35,18 +33,15 @@ module Impl {
         )
       )
     }
+  }
 
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Providing locations in CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  class Locatable extends Generated::Locatable {
+    pragma[nomagic]
+    Location getLocation() {
+      exists(@location_default location |
+        result = LocationImpl::TLocationDefault(location) and
+        locatable_locations(Synth::convertLocatableToRaw(this), location)
+      )
     }
 
     /**

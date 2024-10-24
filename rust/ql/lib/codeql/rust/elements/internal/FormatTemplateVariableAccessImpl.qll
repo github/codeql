@@ -10,6 +10,7 @@ private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.Format
 private import codeql.rust.elements.NamedFormatArgument
+private import codeql.Locations
 
 /**
  * INTERNAL: This module contains the customizable definition of `FormatTemplateVariableAccess` and should not
@@ -26,11 +27,7 @@ module Impl {
       )
     }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      argument.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = argument.getLocation() }
 
     override string toString() { result = this.getName() }
 

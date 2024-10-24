@@ -8,6 +8,8 @@ private import codeql.rust.elements.internal.generated.Format
 private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.FormatConstructor
+private import codeql.rust.elements.internal.LocatableImpl::Impl as LocatableImpl
+private import codeql.files.FileSystem
 import codeql.rust.elements.FormatArgument
 
 /**
@@ -24,24 +26,13 @@ module Impl {
    */
   class Format extends Generated::Format {
     private Raw::FormatArgsExpr parent;
-    private string text;
+    string text;
     private int index;
-    private int offset;
+    int offset;
 
     Format() { this = Synth::TFormat(parent, index, text, offset) }
 
     override string toString() { result = text }
-
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.getParent()
-          .getTemplate()
-          .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn - offset, _, _) and
-      endline = startline and
-      endcolumn = startcolumn + text.length() - 1
-    }
 
     override FormatArgsExpr getParent() { result = Synth::convertFormatArgsExprFromRaw(parent) }
 
@@ -81,6 +72,19 @@ module Impl {
      */
     FormatArgument getPrecisionArgument() {
       result.getParent() = this and result = Synth::TFormatArgument(_, _, 2, _, _, _)
+    }
+  }
+
+  private class FormatSynthLocationImpl extends Format, LocatableImpl::SynthLocatable {
+    override predicate hasSynthLocationInfo(
+      File file, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      this.getParent()
+          .getTemplate()
+          .getLocation()
+          .hasLocationInfo(file.getAbsolutePath(), startline, startcolumn - offset, _, _) and
+      endline = startline and
+      endcolumn = startcolumn + text.length() - 1
     }
   }
 }
