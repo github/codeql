@@ -229,13 +229,13 @@ module Impl {
     name = v.getName() and
     (
       parameterDeclInScope(_, v, scope) and
-      scope.getLocation().hasLocationInfo(_, line, column, _, _)
+      scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
       or
       exists(Pat pat | pat = getAVariablePatAncestor(v) |
         scope =
           any(MatchArmScope arm |
             arm.getPat() = pat and
-            arm.getLocation().hasLocationInfo(_, line, column, _, _)
+            arm.getLocation().hasLocationFileInfo(_, line, column, _, _)
           )
         or
         exists(LetStmt let |
@@ -243,27 +243,27 @@ module Impl {
           scope = getEnclosingScope(let) and
           // for `let` statements, variables are bound _after_ the statement, i.e.
           // not in the RHS
-          let.getLocation().hasLocationInfo(_, _, _, line, column)
+          let.getLocation().hasLocationFileInfo(_, _, _, line, column)
         )
         or
         exists(IfExpr ie, LetExpr let |
           let.getPat() = pat and
           ie.getCondition() = let and
           scope = ie.getThen() and
-          scope.getLocation().hasLocationInfo(_, line, column, _, _)
+          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
         )
         or
         exists(ForExpr fe |
           fe.getPat() = pat and
           scope = fe.getLoopBody() and
-          scope.getLocation().hasLocationInfo(_, line, column, _, _)
+          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
         )
         or
         exists(WhileExpr we, LetExpr let |
           let.getPat() = pat and
           we.getCondition() = let and
           scope = we.getLoopBody() and
-          scope.getLocation().hasLocationInfo(_, line, column, _, _)
+          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
         )
       )
     )
@@ -283,7 +283,7 @@ module Impl {
   ) {
     name = cand.getName() and
     scope = [cand.(VariableScope), getEnclosingScope(cand)] and
-    cand.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
+    cand.getLocation().hasLocationFileInfo(_, startline, startcolumn, endline, endcolumn) and
     nestLevel = 0
     or
     exists(VariableScope inner |
@@ -292,7 +292,7 @@ module Impl {
       // Use the location of the inner scope as the location of the access, instead of the
       // actual access location. This allows us to collapse multiple accesses in inner
       // scopes to a single entity
-      inner.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn)
+      inner.getLocation().hasLocationFileInfo(_, startline, startcolumn, endline, endcolumn)
     )
   }
 
