@@ -82,7 +82,7 @@ pub struct Translator<'a> {
     label: trap::Label,
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
-    pub semantics: Option<Semantics<'a, RootDatabase>>,
+    pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
 }
 
 impl<'a> Translator<'a> {
@@ -92,7 +92,7 @@ impl<'a> Translator<'a> {
         label: trap::Label,
         line_index: LineIndex,
         file_id: Option<EditionedFileId>,
-        semantics: Option<Semantics<'a, RootDatabase>>,
+        semantics: Option<&'a Semantics<'a, RootDatabase>>,
     ) -> Translator<'a> {
         Translator {
             trap,

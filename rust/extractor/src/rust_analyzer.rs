@@ -20,19 +20,25 @@ use ra_ap_vfs::VfsPath;
 use std::borrow::Cow;
 use std::path::{Path, PathBuf};
 use triomphe::Arc;
-pub enum RustAnalyzer {
-    WithDatabase { db: RootDatabase, vfs: Vfs },
+pub enum RustAnalyzer<'a> {
+    WithDatabase {
+        db: &'a RootDatabase,
+        vfs: &'a Vfs,
+        semantics: Semantics<'a, RootDatabase>,
+    },
     WithoutDatabase(),
 }
-pub struct ParseResult<'a> {
+pub struct ParseResult {
     pub ast: SourceFile,
     pub text: Arc<str>,
     pub errors: Vec<SyntaxError>,
     pub file_id: Option<EditionedFileId>,
-    pub semantics: Option<Semantics<'a, RootDatabase>>,
 }
-impl RustAnalyzer {
-    pub fn new(project: &ProjectManifest, scratch_dir: &Path) -> Self {
+impl<'a> RustAnalyzer<'a> {
+    pub fn load_workspace(
+        project: &ProjectManifest,
+        scratch_dir: &Path,
+    ) -> Option<(RootDatabase, Vfs)> {
         let config = CargoConfig {
             sysroot: Some(RustLibSource::Discover),
             target_dir: ra_ap_paths::Utf8PathBuf::from_path_buf(scratch_dir.to_path_buf())
@@ -49,14 +55,51 @@ impl RustAnalyzer {
         let manifest = project.manifest_path();
 
         match load_workspace_at(manifest.as_ref(), &config, &load_config, &progress) {
-            Ok((db, vfs, _macro_server)) => RustAnalyzer::WithDatabase { db, vfs },
+            Ok((db, vfs, _macro_server)) => Some((db, vfs)),
             Err(err) => {
                 log::error!("failed to load workspace for {}: {}", manifest, err);
-                RustAnalyzer::WithoutDatabase()
+                None
             }
         }
     }
-    pub fn parse(&self, path: &Path) -> ParseResult<'_> {
+    pub fn new(db: &'a RootDatabase, vfs: &'a Vfs, semantics: Semantics<'a, RootDatabase>) -> Self {
+        RustAnalyzer::WithDatabase { db, vfs, semantics }
+    }
+    pub fn semantics(&'a self) -> Option<&'a Semantics<'a, RootDatabase>> {
+        match self {
+            RustAnalyzer::WithDatabase {
+                db: _,
+                vfs: _,
+                semantics,
+            } => Some(semantics),
+            RustAnalyzer::WithoutDatabase() => None,
+        }
+    }
+    pub fn parse(&self, path: &Path) -> ParseResult {
+        if let RustAnalyzer::WithDatabase { vfs, db, semantics } = self {
+            if let Some(file_id) = Utf8PathBuf::from_path_buf(path.to_path_buf())
+                .ok()
+                .and_then(|x| AbsPathBuf::try_from(x).ok())
+                .map(VfsPath::from)
+                .and_then(|x| vfs.file_id(&x))
+            {
+                let input: Arc<str> = db.file_text(file_id);
+                let file_id = EditionedFileId::current_edition(file_id);
+                let source_file = semantics.parse(file_id);
+                let errors = db
+                    .parse_errors(file_id)
+                    .into_iter()
+                    .flat_map(|x| x.to_vec())
+                    .collect();
+
+                return ParseResult {
+                    ast: source_file,
+                    text: input,
+                    errors,
+                    file_id: Some(file_id),
+                };
+            }
+        }
         let mut errors = Vec::new();
         let input = match std::fs::read(path) {
             Ok(data) => data,
@@ -70,31 +113,6 @@ impl RustAnalyzer {
         };
         let (input, err) = from_utf8_lossy(&input);
 
-        if let RustAnalyzer::WithDatabase { vfs, db } = self {
-            if let Some(file_id) = Utf8PathBuf::from_path_buf(path.to_path_buf())
-                .ok()
-                .and_then(|x| AbsPathBuf::try_from(x).ok())
-                .map(VfsPath::from)
-                .and_then(|x| vfs.file_id(&x))
-            {
-                let semantics = Semantics::new(db);
-
-                let file_id = EditionedFileId::current_edition(file_id);
-                let source_file = semantics.parse(file_id);
-                errors.extend(
-                    db.parse_errors(file_id)
-                        .into_iter()
-                        .flat_map(|x| x.to_vec()),
-                );
-                return ParseResult {
-                    ast: source_file,
-                    text: input.as_ref().into(),
-                    errors,
-                    file_id: Some(file_id),
-                    semantics: Some(semantics),
-                };
-            }
-        }
         let parse = ra_ap_syntax::ast::SourceFile::parse(&input, Edition::CURRENT);
         errors.extend(parse.errors());
         errors.extend(err);
@@ -103,7 +121,6 @@ impl RustAnalyzer {
             text: input.as_ref().into(),
             errors,
             file_id: None,
-            semantics: None,
         }
     }
 }
