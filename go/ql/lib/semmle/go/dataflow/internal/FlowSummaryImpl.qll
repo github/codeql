@@ -378,12 +378,12 @@ module SourceSinkInterpretationInput implements
       e = mid.asElement()
     |
       (c = "Parameter" or c = "") and
-      node.asNode().asParameter() = e.asEntity()
+      n.asParameter() = pragma[only_bind_into](e).asEntity()
       or
       exists(DataFlow::FieldReadNode frn | frn = n |
         c = "" and
-        frn.getField() = e.asEntity() and
-        elementAppliesToQualifier(e, frn.getBase())
+        frn.getField() = pragma[only_bind_into](e).asEntity() and
+        elementAppliesToQualifier(pragma[only_bind_into](e), frn.getBase())
       )
     )
   }
@@ -404,7 +404,7 @@ module SourceSinkInterpretationInput implements
     |
       c = "" and
       fw.writesField(base, f, node.asNode()) and
-      elementAppliesToQualifier(e, base)
+      elementAppliesToQualifier(pragma[only_bind_into](e), base)
     )
   }
 }
