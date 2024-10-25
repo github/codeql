@@ -2,6 +2,12 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.NET.Sdk.WebAssembly", "ConvertDllsToWebCil", True, "Execute", "()", "", "Argument[this].Property[Microsoft.NET.Sdk.WebAssembly.ConvertDllsToWebCil.Candidates]", "Argument[this].Property[Microsoft.NET.Sdk.WebAssembly.ConvertDllsToWebCil.WebCilCandidates]", "value", "dfc-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "ConvertDllsToWebCil", True, "Execute", "()", "", "Argument[this].Property[Microsoft.NET.Sdk.WebAssembly.ConvertDllsToWebCil.OutputPath]", "Argument[this].Field[Microsoft.NET.Sdk.WebAssembly.ConvertDllsToWebCil._fileWrites].Element", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.NET.Sdk.WebAssembly", "AssetsComputingHelper", "GetCandidateRelativePath", "(Microsoft.Build.Framework.ITaskItem)", "summary", "df-generated"]
@@ -13,7 +19,6 @@ extensions:
       - ["Microsoft.NET.Sdk.WebAssembly", "BootJsonBuilderHelper", "GetNativeResourceTargetInBootConfig", "(Microsoft.NET.Sdk.WebAssembly.BootJsonData,System.String)", "summary", "df-generated"]
       - ["Microsoft.NET.Sdk.WebAssembly", "ComputeWasmBuildAssets", "Execute", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Sdk.WebAssembly", "ComputeWasmPublishAssets", "Execute", "()", "summary", "df-generated"]
-      - ["Microsoft.NET.Sdk.WebAssembly", "ConvertDllsToWebCil", "Execute", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Sdk.WebAssembly", "ConvertDllsToWebCil", "get_FileWrites", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Sdk.WebAssembly", "FileHasher", "GetFileHash", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.NET.Sdk.WebAssembly", "GenerateWasmBootJson", "Execute", "()", "summary", "df-generated"]

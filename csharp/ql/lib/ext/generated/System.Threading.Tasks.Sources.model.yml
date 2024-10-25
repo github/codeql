@@ -4,9 +4,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", False, "GetResult", "(System.Int16)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", False, "GetResult", "(System.Int16)", "", "Argument[this].SyntheticField[System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1._result]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", False, "SetException", "(System.Exception)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", False, "SetResult", "(TResult)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Threading.Tasks.Sources", "ManualResetValueTaskSourceCore<TResult>", False, "SetResult", "(TResult)", "", "Argument[0]", "Argument[this].SyntheticField[System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1._result]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
