@@ -1,16 +1,17 @@
+use anyhow::Context;
+use archive::Archiver;
+use log::info;
+use ra_ap_ide_db::line_index::{LineCol, LineIndex};
+use ra_ap_project_model::ProjectManifest;
+use rust_analyzer::{ParseResult, RustAnalyzer};
 use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
-
-use anyhow::Context;
-use archive::Archiver;
-use ra_ap_ide_db::line_index::{LineCol, LineIndex};
-use ra_ap_project_model::ProjectManifest;
-use rust_analyzer::{ParseResult, RustAnalyzer};
 mod archive;
 mod config;
 pub mod generated;
+mod qltest;
 mod rust_analyzer;
 mod translate;
 pub mod trap;
@@ -65,16 +66,21 @@ fn extract(
         )
     });
 }
+
 fn main() -> anyhow::Result<()> {
-    let cfg = config::Config::extract().context("failed to load configuration")?;
+    let mut cfg = config::Config::extract().context("failed to load configuration")?;
     stderrlog::new()
         .module(module_path!())
-        .verbosity(1 + cfg.verbose as usize)
+        .verbosity(2 + cfg.verbose as usize)
         .init()?;
+    if cfg.qltest {
+        qltest::prepare(&mut cfg)?;
+    }
+    info!("{cfg:#?}\n");
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
     let archiver = archive::Archiver {
-        root: cfg.source_archive_dir,
+        root: cfg.source_archive_dir.clone(),
     };
     let files: Vec<PathBuf> = cfg
         .inputs
