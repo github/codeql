@@ -120,6 +120,7 @@ definition
 | variables.rs:418:9:418:13 | y | variables.rs:418:13:418:13 | y |
 | variables.rs:420:9:420:20 | closure2 | variables.rs:420:13:420:20 | closure2 |
 | variables.rs:421:9:421:9 | y | variables.rs:418:13:418:13 | y |
+| variables.rs:423:5:423:14 | CallExpr | variables.rs:418:13:418:13 | y |
 | variables.rs:428:9:428:20 | closure3 | variables.rs:428:13:428:20 | closure3 |
 | variables.rs:435:8:435:8 | b | variables.rs:435:8:435:8 | b |
 | variables.rs:436:9:436:13 | x | variables.rs:436:13:436:13 | x |
@@ -233,8 +234,8 @@ read
 | variables.rs:410:9:410:13 | x | variables.rs:410:13:410:13 | x | variables.rs:416:15:416:15 | x |
 | variables.rs:412:9:412:16 | closure1 | variables.rs:412:9:412:16 | closure1 | variables.rs:415:5:415:12 | closure1 |
 | variables.rs:412:20:414:5 | <captured entry> x | variables.rs:410:13:410:13 | x | variables.rs:413:19:413:19 | x |
-| variables.rs:418:9:418:13 | y | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:420:9:420:20 | closure2 | variables.rs:420:13:420:20 | closure2 | variables.rs:423:5:423:12 | closure2 |
+| variables.rs:423:5:423:14 | CallExpr | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:428:9:428:20 | closure3 | variables.rs:428:13:428:20 | closure3 | variables.rs:431:5:431:12 | closure3 |
 | variables.rs:435:8:435:8 | b | variables.rs:435:8:435:8 | b | variables.rs:439:8:439:8 | b |
 | variables.rs:436:9:436:13 | x | variables.rs:436:13:436:13 | x | variables.rs:437:15:437:15 | x |
@@ -335,8 +336,8 @@ firstRead
 | variables.rs:410:9:410:13 | x | variables.rs:410:13:410:13 | x | variables.rs:416:15:416:15 | x |
 | variables.rs:412:9:412:16 | closure1 | variables.rs:412:9:412:16 | closure1 | variables.rs:415:5:415:12 | closure1 |
 | variables.rs:412:20:414:5 | <captured entry> x | variables.rs:410:13:410:13 | x | variables.rs:413:19:413:19 | x |
-| variables.rs:418:9:418:13 | y | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:420:9:420:20 | closure2 | variables.rs:420:13:420:20 | closure2 | variables.rs:423:5:423:12 | closure2 |
+| variables.rs:423:5:423:14 | CallExpr | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:428:9:428:20 | closure3 | variables.rs:428:13:428:20 | closure3 | variables.rs:431:5:431:12 | closure3 |
 | variables.rs:435:8:435:8 | b | variables.rs:435:8:435:8 | b | variables.rs:439:8:439:8 | b |
 | variables.rs:436:9:436:13 | x | variables.rs:436:13:436:13 | x | variables.rs:437:15:437:15 | x |
@@ -433,8 +434,8 @@ lastRead
 | variables.rs:410:9:410:13 | x | variables.rs:410:13:410:13 | x | variables.rs:416:15:416:15 | x |
 | variables.rs:412:9:412:16 | closure1 | variables.rs:412:9:412:16 | closure1 | variables.rs:415:5:415:12 | closure1 |
 | variables.rs:412:20:414:5 | <captured entry> x | variables.rs:410:13:410:13 | x | variables.rs:413:19:413:19 | x |
-| variables.rs:418:9:418:13 | y | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:420:9:420:20 | closure2 | variables.rs:420:13:420:20 | closure2 | variables.rs:423:5:423:12 | closure2 |
+| variables.rs:423:5:423:14 | CallExpr | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:428:9:428:20 | closure3 | variables.rs:428:13:428:20 | closure3 | variables.rs:431:5:431:12 | closure3 |
 | variables.rs:435:8:435:8 | b | variables.rs:435:8:435:8 | b | variables.rs:439:8:439:8 | b |
 | variables.rs:436:9:436:13 | x | variables.rs:436:13:436:13 | x | variables.rs:438:15:438:15 | x |
