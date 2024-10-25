@@ -149,9 +149,9 @@ module SourceSinkInterpretationInput implements
     )
   }
 
-  // Note that due to embedding, which is currently implemented via some Methods
-  // or Fields having multiple qualified names, a given Method or Field is liable
-  // to have more than one SourceOrSinkElement, one for each of the names it claims.
+  // Note that due to embedding, which is currently implemented via some
+  // Methods having multiple qualified names, a given Method is liable to have
+  // more than one SourceOrSinkElement, one for each of the names it claims.
   private newtype TSourceOrSinkElement =
     TMethodEntityElement(Method m, string pkg, string type, boolean subtypes) {
       m.hasQualifiedName(pkg, type, _) and subtypes = [true, false]
