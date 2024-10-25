@@ -120,18 +120,18 @@ pub fn find_project_manifests(
         .collect();
     let ret = ra_ap_project_model::ProjectManifest::discover_all(&abs_files);
     let iter = || ret.iter().map(|m| format!("  {m}"));
-    const log_limit: usize = 10;
-    if ret.len() <= log_limit {
+    const LOG_LIMIT: usize = 10;
+    if ret.len() <= LOG_LIMIT {
         info!("found manifests:\n{}", iter().join("\n"));
     } else {
         info!(
             "found manifests:\n{}\nand {} more",
-            iter().take(log_limit).join("\n"),
-            ret.len() - log_limit
+            iter().take(LOG_LIMIT).join("\n"),
+            ret.len() - LOG_LIMIT
         );
         debug!(
             "rest of the manifests found:\n{}",
-            iter().dropping(log_limit).join("\n")
+            iter().dropping(LOG_LIMIT).join("\n")
         );
     }
     Ok(ret)
