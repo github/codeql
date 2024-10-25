@@ -161,6 +161,22 @@ struct Scanner {
         } else if (lexer->lookahead == '\\') {
           if (delimiter.is_raw()) {
             lexer->advance(lexer, false);
+            // In raw strings, backslashes _can_ escape the same kind of quotes as the outer
+            // string, so we must take care to traverse any such escaped quotes now. If we don't do
+            // this, we will mistakenly consider the string to end at that escaped quote.
+            // Likewise, this also extends to escaped backslashes.
+            if (lexer->lookahead == end_character || lexer->lookahead == '\\') {
+              lexer->advance(lexer, false);
+            }
+            // Newlines after backslashes also cause issues, so we explicitly step over them here.
+            if (lexer->lookahead == '\r') {
+                lexer->advance(lexer, false);
+                if (lexer->lookahead == '\n') {
+                    lexer->advance(lexer, false);
+                }
+            } else if (lexer->lookahead == '\n') {
+                lexer->advance(lexer, false);
+            }
             continue;
           } else if (delimiter.is_bytes()) {
               lexer->mark_end(lexer);
