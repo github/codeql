@@ -176,7 +176,6 @@
 /lib/codeql/rust/elements/internal/AssocItemListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/AssocTypeArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AssocTypeArgImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/AstNodeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/AttrConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AttrImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/AwaitExprConstructor.qll linguist-generated

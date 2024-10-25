@@ -42,6 +42,21 @@ private Type getAFormatterWideTypeOrDefault() {
  * A standard library function that uses a `printf`-like formatting string.
  */
 abstract class FormattingFunction extends ArrayFunction, TaintFunction {
+  int firstFormatArgumentIndex;
+
+  FormattingFunction() {
+    firstFormatArgumentIndex > 0 and
+    if this.hasDefinition()
+    then firstFormatArgumentIndex = this.getDefinition().getNumberOfParameters()
+    else
+      if this instanceof BuiltInFunction
+      then firstFormatArgumentIndex = this.getNumberOfParameters()
+      else
+        forex(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
+          firstFormatArgumentIndex = fde.getNumberOfParameters()
+        )
+  }
+
   /** Gets the position at which the format parameter occurs. */
   abstract int getFormatParameterIndex();
 
@@ -121,33 +136,7 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
    * the first format specifier in the format string. We ignore all
    * implicit function definitions.
    */
-  int getFirstFormatArgumentIndex() {
-    // The formatting function either has a definition in the snapshot, or all
-    // `DeclarationEntry`s agree on the number of parameters (otherwise we don't
-    // really know the correct number)
-    if this.hasDefinition()
-    then result = this.getDefinition().getNumberOfParameters()
-    else result = this.getNumberOfExplicitParameters()
-  }
-
-  /**
-   * Gets a non-implicit function declaration entry.
-   */
-  private FunctionDeclarationEntry getAnExplicitDeclarationEntry() {
-    result = this.getADeclarationEntry() and
-    not result.isImplicit()
-  }
-
-  /**
-   * Gets the number of parameters, excluding any parameters that have been defined
-   * from implicit function declarations. If there is some inconsistency in the number
-   * of parameters, then don't return anything.
-   */
-  private int getNumberOfExplicitParameters() {
-    forex(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
-      result = fde.getNumberOfParameters()
-    )
-  }
+  int getFirstFormatArgumentIndex() { result = firstFormatArgumentIndex }
 
   /**
    * Gets the position of the buffer size argument, if any.

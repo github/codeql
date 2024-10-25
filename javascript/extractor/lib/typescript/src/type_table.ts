@@ -435,6 +435,7 @@ export class TypeTable {
    * Returns `null` if we do not support extraction of this type.
    */
   public getId(type: ts.Type, unfoldAlias: boolean): number | null {
+    if (this.skipExtractingTypes) return null;
     let cached = this.idCache.get(type) ?? [undefined, undefined];
     let cachedValue = cached[unfoldAlias ? 1 : 0];
     if (cachedValue !== undefined) return cachedValue;

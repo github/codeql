@@ -421,8 +421,6 @@ module Impl {
     )
   }
 
-  private import codeql.rust.controlflow.internal.Scope
-
   /** A variable access. */
   class VariableAccess extends PathExprImpl::PathExpr instanceof VariableAccessCand {
     private string name;
@@ -434,7 +432,7 @@ module Impl {
     Variable getVariable() { result = v }
 
     /** Holds if this access is a capture. */
-    predicate isCapture() { scopeOfAst(this) != scopeOfAst(v.getPat()) }
+    predicate isCapture() { this.getEnclosingCallable() != v.getPat().getEnclosingCallable() }
 
     override string toString() { result = name }
 
