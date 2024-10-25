@@ -1,5 +1,4 @@
 {
-  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "python",
   "word": "identifier",
   "rules": {
@@ -3845,10 +3844,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "await"
-        },
-        {
-          "type": "SYMBOL",
           "name": "lambda"
         },
         {
@@ -3868,6 +3863,10 @@
     "primary_expression": {
       "type": "CHOICE",
       "members": [
+        {
+          "type": "SYMBOL",
+          "name": "await"
+        },
         {
           "type": "SYMBOL",
           "name": "binary_operator"
@@ -6586,7 +6585,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "expression"
+            "name": "primary_expression"
           }
         ]
       }
@@ -6696,3 +6695,4 @@
     "parameter"
   ]
 }
+
