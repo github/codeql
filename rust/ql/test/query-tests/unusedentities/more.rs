@@ -1,37 +1,3 @@
-
-
-// --- traits ---
-
-trait Incrementable {
-    fn increment(
-        &mut self,
-        times: i32, // SPURIOUS: unused value
-        unused: i32 // SPURIOUS: unused value
-    );
-}
-
-struct MyValue {
-    value: i32,
-}
-
-impl Incrementable for MyValue {
-    fn increment(
-        &mut self,
-        times: i32,
-        unused: i32 // BAD: unused variable [NOT DETECTED] SPURIOUS: unused value
-    ) {
-        self.value += times;
-    }
-}
-
-fn traits() {
-    let mut i = MyValue { value: 0 };
-    let a = 1;
-    let b = 2;
-
-    i.increment(a, b);
-}
-
 // --- generics ---
 
 trait MySettable<T> {
