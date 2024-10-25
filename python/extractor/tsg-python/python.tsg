@@ -2650,6 +2650,14 @@
     let @with.first = @first.node
 }
 
+; Async status
+; NOTE: We only set the `is_async` field on the _first_ clause of the `with` statement,
+; as this is the behaviour of the old parser.
+(with_statement "async" "with" @with_keyword (with_clause . (with_item) @with))
+{
+    attr (@with.node) is_async = #true
+}
+
 (with_item
     value: (_) @value
 ) @with
@@ -3251,6 +3259,16 @@
         attr (@params.node) kwargannotation = @type.node
         attr (@type.node) ctx = "load"
     }
+}
+
+; Async status
+(function_definition "async" "def" @def_keyword) @funcdef
+{
+    let start = (location-start @def_keyword)
+    attr (@funcdef.function) is_async = #true
+    attr (@funcdef.node) _location_start = start
+    attr (@funcdef.function) _location_start = start
+    attr (@funcdef.funcexpr) _location_start = start
 }
 
 ;;; Decorators
