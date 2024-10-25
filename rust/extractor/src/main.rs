@@ -17,7 +17,7 @@ mod translate;
 pub mod trap;
 
 fn extract(
-    rust_analyzer: &mut rust_analyzer::RustAnalyzer,
+    rust_analyzer: &rust_analyzer::RustAnalyzer,
     archiver: &Archiver,
     traps: &trap::TrapFileProvider,
     file: &std::path::Path,

@@ -1,7 +1,6 @@
 use itertools::Itertools;
 use log::{debug, info};
 use ra_ap_base_db::SourceDatabase;
-use ra_ap_base_db::SourceDatabaseFileInputExt;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
@@ -57,7 +56,7 @@ impl RustAnalyzer {
             }
         }
     }
-    pub fn parse(&mut self, path: &Path) -> ParseResult<'_> {
+    pub fn parse(&self, path: &Path) -> ParseResult<'_> {
         let mut errors = Vec::new();
         let input = match std::fs::read(path) {
             Ok(data) => data,
@@ -78,7 +77,6 @@ impl RustAnalyzer {
                 .map(VfsPath::from)
                 .and_then(|x| vfs.file_id(&x))
             {
-                db.set_file_text(file_id, &input);
                 let semantics = Semantics::new(db);
 
                 let file_id = EditionedFileId::current_edition(file_id);
