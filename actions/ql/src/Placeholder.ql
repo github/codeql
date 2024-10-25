@@ -6,11 +6,11 @@
  * @security-severity 9.3
  * @precision high
  * @id actions/placeholder
- * @tags actions
+ * @tags actions security
  */
 
 import actions
 import javascript
 
 from File f
-select f, "File"
+select f, "Analyzed a file."
