@@ -127,6 +127,8 @@ extensions:
       - ["System.Diagnostics.Eventing.Reader", "EventLogWatcher", "EventLogWatcher", "(System.Diagnostics.Eventing.Reader.EventLogQuery,System.Diagnostics.Eventing.Reader.EventBookmark)", "summary", "df-generated"]
       - ["System.Diagnostics.Eventing.Reader", "EventLogWatcher", "EventLogWatcher", "(System.Diagnostics.Eventing.Reader.EventLogQuery,System.Diagnostics.Eventing.Reader.EventBookmark,System.Boolean)", "summary", "df-generated"]
       - ["System.Diagnostics.Eventing.Reader", "EventLogWatcher", "EventLogWatcher", "(System.String)", "summary", "df-generated"]
+      - ["System.Diagnostics.Eventing.Reader", "EventLogWatcher", "add_EventRecordWritten", "(System.EventHandler<System.Diagnostics.Eventing.Reader.EventRecordWrittenEventArgs>)", "summary", "df-generated"]
+      - ["System.Diagnostics.Eventing.Reader", "EventLogWatcher", "remove_EventRecordWritten", "(System.EventHandler<System.Diagnostics.Eventing.Reader.EventRecordWrittenEventArgs>)", "summary", "df-generated"]
       - ["System.Diagnostics.Eventing.Reader", "EventMetadata", "get_Description", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Eventing.Reader", "EventMetadata", "get_Id", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Eventing.Reader", "EventMetadata", "get_Keywords", "()", "summary", "df-generated"]

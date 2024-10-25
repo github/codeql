@@ -15,4 +15,5 @@ extensions:
       - ["Microsoft.Extensions.Http", "HttpClientFactoryOptions", "get_HttpMessageHandlerBuilderActions", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Http", "HttpMessageHandlerBuilder", "get_AdditionalHandlers", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Http", "HttpMessageHandlerBuilder", "get_Services", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Http", "IHttpMessageHandlerBuilderFilter", "Configure", "(System.Action<Microsoft.Extensions.Http.HttpMessageHandlerBuilder>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Http", "ITypedHttpClientFactory<TClient>", "CreateClient", "(System.Net.Http.HttpClient)", "summary", "df-generated"]
