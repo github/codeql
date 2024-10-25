@@ -240,58 +240,27 @@ class PropertyContent extends Content, TPropertyContent {
 }
 
 /**
- * A reference to the index of an argument of a delegate call
- * (where the delegate is a parameter)
+ * A reference to the index of an argument of a delegate call.
  */
 class DelegateCallArgumentContent extends Content, TDelegateCallArgumentContent {
-  private Parameter p;
   private int i;
 
-  DelegateCallArgumentContent() { this = TDelegateCallArgumentContent(p, i) }
+  DelegateCallArgumentContent() { this = TDelegateCallArgumentContent(i) }
 
-  /** Gets the underlying parameter. */
-  Parameter getParameter() { result = p }
+  override string toString() { result = "delegate argument at position " + i }
 
-  /**
-   * Gets the type of the `i`th parameter of the underlying parameter `p`
-   * (which is of delegate type).
-   */
-  Type getType() {
-    result =
-      p.getType()
-          .(SystemLinqExpressions::DelegateExtType)
-          .getDelegateType()
-          .getParameter(i)
-          .getType()
-  }
-
-  override string toString() { result = "delegate parameter " + p.getName() + " at position " + i }
-
-  override Location getLocation() { result = p.getLocation() }
+  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /**
- * A reference to the return of a delegate call
- * (where the delegate is a parameter)
+ * A reference to the return of a delegate call.
  */
 class DelegateCallReturnContent extends Content, TDelegateCallReturnContent {
-  private Parameter p;
+  DelegateCallReturnContent() { this = TDelegateCallReturnContent() }
 
-  DelegateCallReturnContent() { this = TDelegateCallReturnContent(p) }
+  override string toString() { result = "delegate return" }
 
-  /** Gets the underlying parameter. */
-  Parameter getParameter() { result = p }
-
-  /**
-   * Gets the return type of the underlying parameter `p` (which is of delegate type).
-   */
-  Type getType() {
-    result = p.getType().(SystemLinqExpressions::DelegateExtType).getDelegateType().getReturnType()
-  }
-
-  override string toString() { result = "delegate parameter " + p.getName() + " result" }
-
-  override Location getLocation() { result = p.getLocation() }
+  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /**
@@ -356,18 +325,14 @@ class ContentSet extends TContentSet {
   predicate isProperty(Property p) { this = TPropertyContentSet(p) }
 
   /**
-   * Holds if this content set represents the `i`th argument of
-   * the parameter `p` of delegate type in a delegate call.
+   * Holds if this content set represents the `i`th argument of a delegate call.
    */
-  predicate isDelegateCallArgument(Parameter p, int i) {
-    this.isSingleton(TDelegateCallArgumentContent(p, i))
-  }
+  predicate isDelegateCallArgument(int i) { this.isSingleton(TDelegateCallArgumentContent(i)) }
 
   /**
-   * Holds if this content set represents the return of a delegate call
-   * of parameter `p` (which is of delegate type).
+   * Holds if this content set represents the return of a delegate call.
    */
-  predicate isDelegateCallReturn(Parameter p) { this.isSingleton(TDelegateCallReturnContent(p)) }
+  predicate isDelegateCallReturn() { this.isSingleton(TDelegateCallReturnContent()) }
 
   /** Holds if this content set represents the field `f`. */
   predicate isField(Field f) { this.isSingleton(TFieldContent(f)) }

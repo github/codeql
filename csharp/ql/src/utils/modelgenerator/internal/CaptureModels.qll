@@ -176,10 +176,15 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
    * Gets the underlying type of the content `c`.
    */
   private CS::Type getUnderlyingContType(DataFlow::Content c) {
-    result = c.(DataFlow::FieldContent).getField().getType() or
-    result = c.(DataFlow::SyntheticFieldContent).getField().getType() or
-    result = c.(DataFlow::DelegateCallArgumentContent).getType() or
-    result = c.(DataFlow::DelegateCallReturnContent).getType()
+    result = c.(DataFlow::FieldContent).getField().getType()
+    or
+    result = c.(DataFlow::SyntheticFieldContent).getField().getType()
+    or
+    // Use System.Object as the type of delegate arguments and returns as the content doesn't
+    // contain any type information.
+    c instanceof DataFlow::DelegateCallArgumentContent and result instanceof ObjectType
+    or
+    c instanceof DataFlow::DelegateCallReturnContent and result instanceof ObjectType
   }
 
   Type getUnderlyingContentType(DataFlow::ContentSet c) {
@@ -347,9 +352,9 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     c.isElement() and
     result = "Element"
     or
-    exists(int i | c.isDelegateCallArgument(_, i) and result = "Parameter[" + i + "]")
+    exists(int i | c.isDelegateCallArgument(i) and result = "Parameter[" + i + "]")
     or
-    c.isDelegateCallReturn(_) and result = "ReturnValue"
+    c.isDelegateCallReturn() and result = "ReturnValue"
   }
 
   predicate partialModel = ExternalFlow::partialModel/6;

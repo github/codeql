@@ -1148,17 +1148,10 @@ private module Cached {
       p.getCallable() instanceof PrimaryConstructor
     } or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
-    TDelegateCallArgumentContent(Parameter p, int i) {
-      i =
-        [0 .. p.getType()
-                .getUnboundDeclaration()
-                .(SystemLinqExpressions::DelegateExtType)
-                .getDelegateType()
-                .getNumberOfParameters() - 1]
+    TDelegateCallArgumentContent(int i) {
+      i = [0 .. max(int j | j = any(DelegateCall dc).getNumberOfArguments())]
     } or
-    TDelegateCallReturnContent(Parameter p) {
-      p.getType().getUnboundDeclaration() instanceof SystemLinqExpressions::DelegateExtType
-    }
+    TDelegateCallReturnContent()
 
   cached
   newtype TContentSet =
@@ -1175,12 +1168,8 @@ private module Cached {
       firstChar = approximatePrimaryConstructorParameterContent(_)
     } or
     TCapturedVariableContentApprox(VariableCapture::CapturedVariable v) or
-    TDelegateCallArgumentApproxContent(string firstChar) {
-      firstChar = approximateDelegateCallArgumentContent(_)
-    } or
-    TDelegateCallReturnApproxContent(string firstChar) {
-      firstChar = approximateDelegateCallReturnContent(_)
-    }
+    TDelegateCallArgumentApproxContent() or
+    TDelegateCallReturnApproxContent()
 
   pragma[nomagic]
   private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantGvnType t2) {
@@ -2296,14 +2285,13 @@ private predicate recordProperty(RecordType t, ContentSet c, string name) {
  * the content set `c` of a delegate call.
  *
  * If there is a delegate call f(x), then we store "x" on "f"
- * using a delegate parameter content set.
+ * using a delegate argument content set.
  */
 private predicate storeStepDelegateCall(Node node1, ContentSet c, Node node2) {
-  exists(DelegateCall call, Parameter p, int i |
+  exists(DelegateCall call, int i |
     node1.asExpr() = call.getArgument(i) and
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = call.getExpr() and
-    call.getExpr() = p.getAnAccess() and
-    c.isDelegateCallArgument(p, i)
+    c.isDelegateCallArgument(i)
   )
 }
 
@@ -2465,15 +2453,14 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
  * Holds if data can flow from `node1` to `node2` via an assignment to
  * the content set `c` of a delegate call.
  *
- * If there is a delegate call f(x), then we read the result of the delegate
+ * If there is a delegate call f(x), then we read the return of the delegate
  * call.
  */
 private predicate readStepDelegateCall(Node node1, ContentSet c, Node node2) {
-  exists(DelegateCall call, Parameter p |
+  exists(DelegateCall call |
     node1.asExpr() = call.getExpr() and
     node2.asExpr() = call and
-    call.getExpr() = p.getAnAccess() and
-    c.isDelegateCallReturn(p)
+    c.isDelegateCallReturn()
   )
 }
 
@@ -3092,15 +3079,11 @@ class ContentApprox extends TContentApprox {
       this = TCapturedVariableContentApprox(v) and result = "captured " + v
     )
     or
-    exists(string firstChar |
-      this = TDelegateCallArgumentApproxContent(firstChar) and
-      result = "approximated delegate call argument " + firstChar
-    )
+    this = TDelegateCallArgumentApproxContent() and
+    result = "approximated delegate call argument"
     or
-    exists(string firstChar |
-      this = TDelegateCallReturnApproxContent(firstChar) and
-      result = "approximated delegate call return " + firstChar
-    )
+    this = TDelegateCallReturnApproxContent() and
+    result = "approximated delegate call return"
   }
 }
 
@@ -3122,22 +3105,6 @@ private string approximatePrimaryConstructorParameterContent(PrimaryConstructorP
   result = pc.getParameter().getName().prefix(1)
 }
 
-private string getApproximateParameterName(Parameter p) {
-  exists(string name | name = p.getName() |
-    name = "" and result = ""
-    or
-    result = name.prefix(1)
-  )
-}
-
-private string approximateDelegateCallArgumentContent(DelegateCallArgumentContent dc) {
-  result = getApproximateParameterName(dc.getParameter())
-}
-
-private string approximateDelegateCallReturnContent(DelegateCallReturnContent dc) {
-  result = getApproximateParameterName(dc.getParameter())
-}
-
 /** Gets an approximated value for content `c`. */
 pragma[nomagic]
 ContentApprox getContentApprox(Content c) {
@@ -3154,9 +3121,11 @@ ContentApprox getContentApprox(Content c) {
   or
   result = TCapturedVariableContentApprox(VariableCapture::getCapturedVariableContent(c))
   or
-  result = TDelegateCallArgumentApproxContent(approximateDelegateCallArgumentContent(c))
+  c instanceof DelegateCallArgumentContent and
+  result = TDelegateCallArgumentApproxContent()
   or
-  result = TDelegateCallReturnApproxContent(approximateDelegateCallReturnContent(c))
+  c instanceof DelegateCallReturnContent and
+  result = TDelegateCallReturnApproxContent()
 }
 
 /**
