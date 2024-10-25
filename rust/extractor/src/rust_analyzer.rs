@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use log::info;
+use log::{debug, info};
 use ra_ap_base_db::SourceDatabase;
 use ra_ap_base_db::SourceDatabaseFileInputExt;
 use ra_ap_hir::Semantics;
@@ -119,10 +119,21 @@ pub fn find_project_manifests(
         .map(|path| AbsPathBuf::assert_utf8(current.join(path)))
         .collect();
     let ret = ra_ap_project_model::ProjectManifest::discover_all(&abs_files);
-    info!(
-        "found manifests: {}",
-        ret.iter().map(|m| format!("{m}")).join(", ")
-    );
+    let iter = || ret.iter().map(|m| format!("  {m}"));
+    const log_limit: usize = 10;
+    if ret.len() <= log_limit {
+        info!("found manifests:\n{}", iter().join("\n"));
+    } else {
+        info!(
+            "found manifests:\n{}\nand {} more",
+            iter().take(log_limit).join("\n"),
+            ret.len() - log_limit
+        );
+        debug!(
+            "rest of the manifests found:\n{}",
+            iter().dropping(log_limit).join("\n")
+        );
+    }
     Ok(ret)
 }
 fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
