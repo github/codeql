@@ -165,7 +165,7 @@ class LabelIfCheck extends LabelCheck instanceof If {
     condition = normalizeExpr(this.getCondition()) and
     (
       // eg: contains(github.event.pull_request.labels.*.name, 'safe to test')
-      condition.regexpMatch("(^|[^!])contains\\(\\s*github\\.event\\.pull_request\\.labels\\b.*")
+      condition.regexpMatch(".*(^|[^!])contains\\(\\s*github\\.event\\.pull_request\\.labels\\b.*")
       or
       // eg: github.event.label.name == 'safe to test'
       condition.regexpMatch(".*\\bgithub\\.event\\.label\\.name\\s*==.*")
