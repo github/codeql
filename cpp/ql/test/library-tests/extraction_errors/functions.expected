@@ -1,0 +1,6 @@
+| test.c:3:6:3:6 | g |
+| test.c:4:13:4:13 | no_such_function |
+| test.cpp:5:6:5:25 | function_with_errors |
+| test.cpp:14:10:14:12 | fn2 |
+| test.h:4:5:4:5 | f |
+| test.h:4:5:4:5 | f |

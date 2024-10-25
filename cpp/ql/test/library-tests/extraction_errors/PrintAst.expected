@@ -1,0 +1,79 @@
+#-----| [CopyAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const __va_list_tag &
+#-----| [MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] __va_list_tag &&
+test.c:
+#    3| [TopLevelFunction] void g()
+#    3|   <params>: 
+#    3|   getEntryPoint(): [BlockStmt] { ... }
+#    4|     getStmt(0): [DeclStmt] declaration
+#    4|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#    4|           Type = [IntType] int
+#    4|         getVariable().getInitializer(): [Initializer] initializer for x
+#    4|           getExpr(): [FunctionCall] call to no_such_function
+#    4|               Type = [IntType] int
+#    4|               ValueCategory = prvalue
+#    5|     getStmt(1): [ReturnStmt] return ...
+#    4| [TopLevelFunction] int no_such_function()
+#    4|   <params>: 
+test.cpp:
+#    5| [TopLevelFunction] void function_with_errors()
+#    5|   <params>: 
+#    5|   getEntryPoint(): [BlockStmt] { ... }
+#    6|     getStmt(0): [DeclStmt] declaration
+#    6|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#    6|           Type = [ErroneousType] error
+#    6|         getVariable().getInitializer(): [Initializer] initializer for x
+#    6|           getExpr(): [ErrorExpr] <error expr>
+#    6|               Type = [ErroneousType] error
+#    6|               ValueCategory = prvalue
+#    7|     getStmt(1): [ExprStmt] ExprStmt
+#-----|       getExpr(): [ErrorExpr] <error expr>
+#-----|           Type = [ErroneousType] error
+#-----|           ValueCategory = prvalue
+#    8|     getStmt(2): [ExprStmt] ExprStmt
+#-----|       getExpr(): [ErrorExpr] <error expr>
+#-----|           Type = [ErroneousType] error
+#-----|           ValueCategory = prvalue
+#    9|     getStmt(3): [ExprStmt] ExprStmt
+#-----|       getExpr(): [ErrorExpr] <error expr>
+#-----|           Type = [ErroneousType] error
+#-----|           ValueCategory = prvalue
+#   10|     getStmt(4): [ExprStmt] ExprStmt
+#   10|       getExpr(): [FunctionCall] call to f
+#   10|           Type = [IntType] int
+#   10|           ValueCategory = prvalue
+#   10|         getArgument(0): [Literal] 1
+#   10|             Type = [IntType] int
+#   10|             Value = [Literal] 1
+#   10|             ValueCategory = prvalue
+#   11|     getStmt(5): [ExprStmt] ExprStmt
+#-----|       getExpr(): [ErrorExpr] <error expr>
+#-----|           Type = [ErroneousType] error
+#-----|           ValueCategory = prvalue
+#   12|     getStmt(6): [ReturnStmt] return ...
+#   14| [TopLevelFunction] error fn2()
+#   14|   <params>: 
+#   14|   getEntryPoint(): [BlockStmt] { ... }
+#   15|     getStmt(0): [ExprStmt] ExprStmt
+#-----|       getExpr(): [ErrorExpr] <error expr>
+#-----|           Type = [ErroneousType] error
+#-----|           ValueCategory = prvalue
+#   16|     getStmt(1): [ExprStmt] ExprStmt
+#-----|       getExpr(): [ErrorExpr] <error expr>
+#-----|           Type = [ErroneousType] error
+#-----|           ValueCategory = prvalue
+#   17|     getStmt(2): [ReturnStmt] return ...
+test.h:
+#    4| [TopLevelFunction] int f(int)
+#    4|   <params>: 
+#    4|     getParameter(0): [Parameter] (unnamed parameter 0)
+#    4|         Type = [IntType] int
+#    4| [TopLevelFunction] int f(int)
+#    4|   <params>: 
+#    4|     getParameter(0): [Parameter] (unnamed parameter 0)
+#    4|         Type = [IntType] int

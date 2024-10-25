@@ -1,0 +1,9 @@
+| Percentage of calls with a target | 50.0 |
+| Percentage of compilation units without errors | 50.0 |
+| Percentage of expressions with a known type | 30.0 |
+| Percentage of functions without errors | 75.0 |
+| Percentage of lines of code without errors | 63.1578947368421 |
+| Percentage of non-error expressions | 30.0 |
+| Percentage of source files without errors | 66.66666666666667 |
+| Percentage of successfully resolved #include directives | 100.0 |
+| Percentage of variables with a known type | 90.0 |
