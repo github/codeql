@@ -430,7 +430,8 @@ module Impl {
   }
 
   /** A variable access. */
-  class VariableAccess extends PathExprBaseImpl::PathExprBase instanceof VariableAccessCand {
+  abstract class VariableAccess extends PathExprBaseImpl::PathExprBase instanceof VariableAccessCand
+  {
     private string name;
     private Variable v;
 
@@ -443,6 +444,8 @@ module Impl {
     predicate isCapture() { this.getEnclosingCallable() != v.getPat().getEnclosingCallable() }
 
     override string toString() { result = name }
+
+    override string getAPrimaryQlClass() { result = "VariableAccess" }
   }
 
   /** Holds if `e` occurs in the LHS of an assignment or compound assignment. */
