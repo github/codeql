@@ -279,14 +279,9 @@ module SourceSinkInterpretationInput implements
    * check that the specific name given by `sse.hasTypeInfo` refers to either `qual`'s type
    * or to a type it embeds.
    */
+  bindingset[sse, qual]
+  pragma[inline_late]
   private predicate elementAppliesToQualifier(SourceOrSinkElement sse, DataFlow::Node qual) {
-    (
-      exists(DataFlow::CallNode cn | cn.getReceiver() = qual and cn.getTarget() = sse.asEntity())
-      or
-      exists(DataFlow::FieldReadNode frn | frn.getBase() = qual and frn.getField() = sse.asEntity())
-      or
-      exists(DataFlow::Write fw | fw.writesField(qual, sse.asEntity(), _))
-    ) and
     exists(
       string pkg, string typename, boolean subtypes, Type syntacticQualBaseType, Type targetType
     |
