@@ -1,6 +1,7 @@
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
-private import codeql.rust.elements.internal.PathExprImpl::Impl as PathExprImpl
+private import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
+private import codeql.rust.elements.internal.FormatTemplateVariableAccessImpl::Impl as FormatTemplateVariableAccessImpl
 private import codeql.util.DenseRank
 
 module Impl {
@@ -138,12 +139,12 @@ module Impl {
   }
 
   /** A path expression that may access a local variable. */
-  private class VariableAccessCand extends PathExpr {
+  private class VariableAccessCand extends PathExprBase {
     string name_;
 
     VariableAccessCand() {
       exists(Path p, PathSegment ps |
-        p = this.getPath() and
+        p = this.(PathExpr).getPath() and
         not p.hasQualifier() and
         ps = p.getPart() and
         not ps.hasGenericArgList() and
@@ -152,7 +153,11 @@ module Impl {
         not ps.hasReturnTypeSyntax() and
         name_ = ps.getNameRef().getText()
       )
+      or
+      this.(FormatTemplateVariableAccess).getName() = name_
     }
+
+    string toString() { result = name_ }
 
     string getName() { result = name_ }
   }
@@ -164,7 +169,10 @@ module Impl {
       n instanceof LetStmt or
       n instanceof VariableScope
     ) and
-    exists(AstNode n0 | result = getImmediateParent(n0) |
+    exists(AstNode n0 |
+      result = getImmediateParent(n0) or
+      result = n0.(FormatTemplateVariableAccess).getArgument().getParent().getParent()
+    |
       n0 = n
       or
       n0 = getAnAncestorInVariableScope(n) and
@@ -422,7 +430,7 @@ module Impl {
   }
 
   /** A variable access. */
-  class VariableAccess extends PathExprImpl::PathExpr instanceof VariableAccessCand {
+  class VariableAccess extends PathExprBaseImpl::PathExprBase instanceof VariableAccessCand {
     private string name;
     private Variable v;
 
