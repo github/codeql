@@ -142,7 +142,7 @@ impl<'a> Translator<'a> {
             self.trap.emit_location(self.label, label, start, end)
         } else {
             self.emit_diagnostic(
-                DiagnosticSeverity::Info,
+                DiagnosticSeverity::Debug,
                 "locations".to_owned(),
                 "missing location for AstNode".to_owned(),
                 "missing location for AstNode".to_owned(),
@@ -169,9 +169,9 @@ impl<'a> Translator<'a> {
     pub fn emit_diagnostic(
         &mut self,
         severity: DiagnosticSeverity,
-        error_tag: String,
-        error_message: String,
-        full_error_message: String,
+        tag: String,
+        message: String,
+        full_message: String,
         location: (LineCol, LineCol),
     ) {
         let (start, end) = location;
@@ -187,16 +187,13 @@ impl<'a> Translator<'a> {
             self.path,
             start.line + 1,
             start.col + 1,
-            &error_message
+            &message
         );
-        let location = self.trap.emit_location_label(self.label, start, end);
-        self.trap.emit_diagnostic(
-            severity,
-            error_tag,
-            error_message,
-            full_error_message,
-            location,
-        );
+        if severity > DiagnosticSeverity::Debug {
+            let location = self.trap.emit_location_label(self.label, start, end);
+            self.trap
+                .emit_diagnostic(severity, tag, message, full_message, location);
+        }
     }
     pub fn emit_parse_error(&mut self, owner: &impl ast::AstNode, err: &SyntaxError) {
         let owner_range: TextRange = owner.syntax().text_range();
