@@ -306,24 +306,32 @@ module SourceSinkInterpretationInput implements
         or
         // `syntacticQualBaseType`'s underlying type might be a struct type and `sse`
         // might be a promoted method or field in it.
-        exists(StructType st, Field field1, Field field2, int depth1, int depth2, Type t2 |
-          st = syntacticQualBaseType.getUnderlyingType() and
-          field1 = st.getFieldAtDepth(_, depth1) and
-          field2 = st.getFieldAtDepth(_, depth2) and
-          targetType = lookThroughPointerType(field1.getType()) and
-          t2 = lookThroughPointerType(field2.getType()) and
-          (
-            field1 = field2
-            or
-            field2 =
-              targetType.getUnderlyingType().(StructType).getFieldAtDepth(_, depth2 - depth1 - 1)
-          )
-        |
-          sse.asEntity().(Method).getReceiverBaseType() = t2
-          or
-          sse.asEntity().(Field).getDeclaringType() = t2.getUnderlyingType()
-        )
+        targetType =
+          getIntermediateEmbeddedType(sse.asEntity(), syntacticQualBaseType.getUnderlyingType())
       )
+    )
+  }
+
+  /**
+   * Gets the type of an embedded field of `st` which is on the path to `e`,
+   * which is a promoted method or field of `st`, or its base type if it's a
+   * pointer type.
+   */
+  private Type getIntermediateEmbeddedType(Entity e, StructType st) {
+    exists(Field field1, Field field2, int depth1, int depth2, Type t2 |
+      field1 = st.getFieldAtDepth(_, depth1) and
+      field2 = st.getFieldAtDepth(_, depth2) and
+      result = lookThroughPointerType(field1.getType()) and
+      t2 = lookThroughPointerType(field2.getType()) and
+      (
+        field1 = field2
+        or
+        field2 = result.getUnderlyingType().(StructType).getFieldAtDepth(_, depth2 - depth1 - 1)
+      )
+    |
+      e.(Method).getReceiverBaseType() = t2
+      or
+      e.(Field).getDeclaringType() = t2.getUnderlyingType()
     )
   }
 
