@@ -153,11 +153,12 @@ module SourceSinkInterpretationInput implements
   // Methods having multiple qualified names, a given Method is liable to have
   // more than one SourceOrSinkElement, one for each of the names it claims.
   private newtype TSourceOrSinkElement =
-    TMethodEntityElement(Method m, string pkg, string type, boolean subtypes) {
-      m.hasQualifiedName(pkg, type, _) and subtypes = [true, false]
-    } or
-    TFieldEntityElement(Field f, string pkg, string type, boolean subtypes) {
-      f.hasQualifiedName(pkg, type, _) and subtypes = [true, false]
+    TMethodOrFieldEntityElement(Entity e, string pkg, string type, boolean subtypes) {
+      (
+        e.(Method).hasQualifiedName(pkg, type, _) or
+        e.(Field).hasQualifiedName(pkg, type, _)
+      ) and
+      subtypes = [true, false]
     } or
     TOtherEntityElement(Entity e) {
       not e instanceof Method and
@@ -169,8 +170,7 @@ module SourceSinkInterpretationInput implements
   class SourceOrSinkElement extends TSourceOrSinkElement {
     /** Gets this source or sink element as an entity, if it is one. */
     Entity asEntity() {
-      this = TMethodEntityElement(result, _, _, _) or
-      this = TFieldEntityElement(result, _, _, _) or
+      this = TMethodOrFieldEntityElement(result, _, _, _) or
       this = TOtherEntityElement(result)
     }
 
@@ -182,8 +182,7 @@ module SourceSinkInterpretationInput implements
      * with the given values for `pkg`, `type` and `subtypes`.
      */
     predicate hasTypeInfo(string pkg, string type, boolean subtypes) {
-      this = TMethodEntityElement(_, pkg, type, subtypes) or
-      this = TFieldEntityElement(_, pkg, type, subtypes)
+      this = TMethodOrFieldEntityElement(_, pkg, type, subtypes)
     }
 
     /** Gets a textual representation of this source or sink element. */
