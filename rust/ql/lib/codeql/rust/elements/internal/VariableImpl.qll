@@ -84,7 +84,10 @@ module Impl {
     // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
     // which we don't appear to recognize yet anyway. This also assumes programmers follow the
     // naming guidelines, which they generally do, but they're not enforced.
-    not name.charAt(0).isUppercase()
+    not name.charAt(0).isUppercase() and
+    // exclude parameters from functions without a body as these are trait method declarations
+    // without implementations
+    not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = p)
   }
 
   /** A variable. */

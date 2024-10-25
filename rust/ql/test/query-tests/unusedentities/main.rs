@@ -434,6 +434,38 @@ fn folds_and_closures() {
     _ = a6.fold(0, | acc, val | acc + val + i6);
 }
 
+// --- traits ---
+
+trait Incrementable {
+    fn increment(
+        &mut self,
+        times: i32,
+        unused: &mut i32
+    );
+}
+
+struct MyValue {
+    value: i32,
+}
+
+impl Incrementable for MyValue {
+    fn increment(
+        &mut self,
+        times: i32,
+        unused: i32 // BAD: unused variable
+    ) {
+        self.value += times;
+    }
+}
+
+fn traits() {
+    let mut i = MyValue { value: 0 };
+    let a = 1;
+    let b = 2;
+
+    i.increment(a, b);
+}
+
 // --- main ---
 
 fn main() {

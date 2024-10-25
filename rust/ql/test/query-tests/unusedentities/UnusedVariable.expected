@@ -18,3 +18,4 @@
 | main.rs:379:21:379:21 | y | Variable is not used. |
 | main.rs:427:27:427:29 | val | Variable is not used. |
 | main.rs:430:22:430:24 | acc | Variable is not used. |
+| main.rs:455:9:455:14 | unused | Variable is not used. |
