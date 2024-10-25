@@ -292,7 +292,7 @@ module SourceSinkInterpretationInput implements
     |
       sse.hasTypeInfo(pkg, typename, subtypes) and
       targetType.hasQualifiedName(pkg, typename) and
-      syntacticQualBaseType = lookThroughPointerType(getSyntacticQualifier(qual).getType())
+      syntacticQualBaseType = getSyntacticQualifierBaseType(qual)
     |
       subtypes = [true, false] and
       syntacticQualBaseType = targetType
@@ -336,13 +336,14 @@ module SourceSinkInterpretationInput implements
   }
 
   /**
-   * Gets `underlying`, where `n` if of the form `implicitDeref?(underlying.implicitFieldRead1.implicitFieldRead2...)`
+   * Gets the base type of `underlying`, where `n` is of the form
+   * `implicitDeref?(underlying.implicitFieldRead1.implicitFieldRead2...)`
    *
    * For Go syntax like `qualifier.method()` or `qualifier.field`, this is the type of `qualifier`, before any
    * implicit dereference is interposed because `qualifier` is of pointer type, or implicit field accesses
    * navigate to any embedded struct types that truly host `field`.
    */
-  private DataFlow::Node getSyntacticQualifier(DataFlow::Node n) {
+  private Type getSyntacticQualifierBaseType(DataFlow::Node n) {
     exists(DataFlow::Node n2 |
       // look through implicit dereference, if there is one
       not exists(n.asInstruction().(IR::EvalImplicitDerefInstruction).getOperand()) and
@@ -350,7 +351,7 @@ module SourceSinkInterpretationInput implements
       or
       n2.asExpr() = n.asInstruction().(IR::EvalImplicitDerefInstruction).getOperand()
     |
-      result = skipImplicitFieldReads(n2)
+      result = lookThroughPointerType(skipImplicitFieldReads(n2).getType())
     )
   }
 
