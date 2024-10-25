@@ -430,8 +430,7 @@ module Impl {
   }
 
   /** A variable access. */
-  abstract class VariableAccess extends PathExprBaseImpl::PathExprBase instanceof VariableAccessCand
-  {
+  class VariableAccess extends PathExprBaseImpl::PathExprBase instanceof VariableAccessCand {
     private string name;
     private Variable v;
 
