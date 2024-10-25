@@ -8,8 +8,8 @@ use log::Level;
 use ra_ap_base_db::CrateOrigin;
 use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir::{Adt, ItemContainer, Module, Semantics, Type};
-use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_def::type_ref::Mutability;
+use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_expand::ExpandTo;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
@@ -338,7 +338,7 @@ impl<'a> Translator<'a> {
                 .collect::<Option<Vec<_>>>()?;
             return Some(format!("impl {}", paths.join(" + ")));
         }
-        if let Some(_) = ty.as_type_param(sema.db) {
+        if ty.as_type_param(sema.db).is_some() {
             // from the canonical path perspective, we just want a special name
             // e.g. `crate::<_ as SomeTrait>::func`
             return Some("_".to_owned());
