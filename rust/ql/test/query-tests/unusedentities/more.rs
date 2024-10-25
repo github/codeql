@@ -1,11 +1,11 @@
 // --- generics ---
 
 trait MySettable<T> {
-    fn set(&mut self, val: T); // SPURIOUS: unused value
+    fn set(&mut self, val: T);
 }
 
 trait MyGettable<T> {
-    fn get(&self, val: T) -> &T; // SPURIOUS: unused value
+    fn get(&self, val: T) -> &T;
 }
 
 struct MyContainer<T> {

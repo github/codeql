@@ -439,8 +439,8 @@ fn folds_and_closures() {
 trait Incrementable {
     fn increment(
         &mut self,
-        times: i32, // SPURIOUS: unused variable
-        unused: i32 // SPURIOUS: unused variable
+        times: i32,
+        unused: &mut i32
     );
 }
 
