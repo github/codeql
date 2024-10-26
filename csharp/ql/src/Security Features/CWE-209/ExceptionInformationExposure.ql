@@ -23,16 +23,17 @@ import ExceptionInformationExposure::PathGraph
  */
 module ExceptionInformationExposureConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(Expr exceptionExpr |
+    exists(Expr expr |
       // Writing an exception directly is bad
-      source.asExpr() = exceptionExpr
+      source.asExpr() = expr
+      or
+      // Writing a property of an exception is bad
+      source.asExpr().(PropertyAccess).getQualifier() = expr
     |
       // Expr has type `System.Exception`.
-      exceptionExpr.getType().(RefType).getABaseType*() instanceof SystemExceptionClass and
+      expr.getType().(RefType).getABaseType*() instanceof SystemExceptionClass and
       // And is not within an exception callable.
-      not exists(Callable enclosingCallable |
-        enclosingCallable = exceptionExpr.getEnclosingCallable()
-      |
+      not exists(Callable enclosingCallable | enclosingCallable = expr.getEnclosingCallable() |
         enclosingCallable.getDeclaringType().getABaseType*() instanceof SystemExceptionClass
       )
     )

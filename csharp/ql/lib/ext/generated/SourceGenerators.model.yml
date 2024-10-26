@@ -4,11 +4,11 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["SourceGenerators", "ImmutableEquatableArray<T>+Enumerator", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "ImmutableEquatableArray", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
-      - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "get_Item", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["SourceGenerators", "TypeRef", False, "TypeRef", "(Microsoft.CodeAnalysis.ITypeSymbol)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>+Enumerator", False, "get_Current", "()", "", "Argument[this].SyntheticField[SourceGenerators.ImmutableEquatableArray`1+Enumerator._values].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "GetEnumerator", "()", "", "Argument[this].SyntheticField[SourceGenerators.ImmutableEquatableArray`1._values]", "ReturnValue.SyntheticField[SourceGenerators.ImmutableEquatableArray`1+Enumerator._values]", "value", "dfc-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "ImmutableEquatableArray", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].SyntheticField[SourceGenerators.ImmutableEquatableArray`1._values].Element", "value", "dfc-generated"]
+      - ["SourceGenerators", "ImmutableEquatableArray<T>", False, "get_Item", "(System.Int32)", "", "Argument[this].SyntheticField[SourceGenerators.ImmutableEquatableArray`1._values].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["SourceGenerators", "TypeRef", False, "TypeRef", "(Microsoft.CodeAnalysis.ITypeSymbol)", "", "Argument[0].Property[Microsoft.CodeAnalysis.ISymbol.Name]", "Argument[this].Property[SourceGenerators.TypeRef.Name]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
