@@ -114,18 +114,18 @@ fn main() -> anyhow::Result<()> {
         }
         if let Some((ref db, ref vfs)) = RustAnalyzer::load_workspace(manifest, &cfg.scratch_dir) {
             let semantics = Semantics::new(db);
-            let rust_analyzer = RustAnalyzer::new(db, vfs, semantics);
+            let rust_analyzer = RustAnalyzer::new(vfs, semantics);
             for file in files {
                 extract(&rust_analyzer, &archiver, &traps, file);
             }
         } else {
             for file in files {
-                extract(&RustAnalyzer::WithoutDatabase(), &archiver, &traps, file);
+                extract(&RustAnalyzer::WithoutSemantics, &archiver, &traps, file);
             }
         }
     }
     for file in other_files {
-        extract(&RustAnalyzer::WithoutDatabase(), &archiver, &traps, file);
+        extract(&RustAnalyzer::WithoutSemantics, &archiver, &traps, file);
     }
 
     Ok(())

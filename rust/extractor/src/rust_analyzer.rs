@@ -21,12 +21,11 @@ use std::borrow::Cow;
 use std::path::{Path, PathBuf};
 use triomphe::Arc;
 pub enum RustAnalyzer<'a> {
-    WithDatabase {
-        db: &'a RootDatabase,
+    WithSemantics {
         vfs: &'a Vfs,
         semantics: Semantics<'a, RootDatabase>,
     },
-    WithoutDatabase(),
+    WithoutSemantics,
 }
 pub struct ParseResult {
     pub ast: SourceFile,
@@ -62,31 +61,28 @@ impl<'a> RustAnalyzer<'a> {
             }
         }
     }
-    pub fn new(db: &'a RootDatabase, vfs: &'a Vfs, semantics: Semantics<'a, RootDatabase>) -> Self {
-        RustAnalyzer::WithDatabase { db, vfs, semantics }
+    pub fn new(vfs: &'a Vfs, semantics: Semantics<'a, RootDatabase>) -> Self {
+        RustAnalyzer::WithSemantics { vfs, semantics }
     }
     pub fn semantics(&'a self) -> Option<&'a Semantics<'a, RootDatabase>> {
         match self {
-            RustAnalyzer::WithDatabase {
-                db: _,
-                vfs: _,
-                semantics,
-            } => Some(semantics),
-            RustAnalyzer::WithoutDatabase() => None,
+            RustAnalyzer::WithSemantics { vfs: _, semantics } => Some(semantics),
+            RustAnalyzer::WithoutSemantics => None,
         }
     }
     pub fn parse(&self, path: &Path) -> ParseResult {
-        if let RustAnalyzer::WithDatabase { vfs, db, semantics } = self {
+        if let RustAnalyzer::WithSemantics { vfs, semantics } = self {
             if let Some(file_id) = Utf8PathBuf::from_path_buf(path.to_path_buf())
                 .ok()
                 .and_then(|x| AbsPathBuf::try_from(x).ok())
                 .map(VfsPath::from)
                 .and_then(|x| vfs.file_id(&x))
             {
-                let input: Arc<str> = db.file_text(file_id);
+                let input: Arc<str> = semantics.db.file_text(file_id);
                 let file_id = EditionedFileId::current_edition(file_id);
                 let source_file = semantics.parse(file_id);
-                let errors = db
+                let errors = semantics
+                    .db
                     .parse_errors(file_id)
                     .into_iter()
                     .flat_map(|x| x.to_vec())
