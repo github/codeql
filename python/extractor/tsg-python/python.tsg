@@ -404,7 +404,7 @@
 
 ;;; GeneratorExp
 
-(generator_expression . "(" . (comment)* . (_) @start (_) @end . (comment)* . ")" .) @generatorexp
+(generator_expression . "(" . (comment)* . (expression) @start [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @generatorexp
 {
     attr (@generatorexp.node) _location_start = (location-start @start)
     attr (@generatorexp.node) _location_end = (location-end @end)
@@ -416,13 +416,13 @@
     attr (@if.node) _location_end = (location-end @expr)
 }
 
-(generator_expression . "(" . (comment)* . (_) @start (for_in_clause) @child (_) @end . (comment)* . ")" .) @genexpr
+(generator_expression . "(" . (comment)* . (expression) @start (for_in_clause) @child [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @genexpr
 {
     attr (@child.node) _location_start = (location-start @start)
     attr (@child.node) _location_end = (location-end @end)
 }
 
-(generator_expression . "(" . (comment)* . (_) @start (for_in_clause) @end . (comment)* . ")" .) @genexpr
+(generator_expression . "(" . (comment)* . (expression) @start (for_in_clause) @end . (comment)* . ")" .) @genexpr
 {
     attr (@end.node) _location_start = (location-start @start)
     attr (@end.node) _location_end = (location-end @end)
@@ -863,7 +863,7 @@
 ; information for the entire generator expression (yes, it is a wide parameter!) and so we must recreate the logic for
 ; setting this location information correctly.
 
-(generator_expression . "(" . (comment)* . (_) @start  (_) @end . (comment)* . ")" .) @genexpr
+(generator_expression . "(" . (comment)* . (expression) @start  [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @genexpr
 {
     ; Synthesize the `genexpr` function
     let @genexpr.fun = (ast-node @genexpr "Function")
