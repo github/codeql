@@ -155,7 +155,7 @@ private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
  */
 pragma[noinline]
 private predicate hasCapturedWrite(Variable v, Cfg::CfgScope scope) {
-  any(VariableWriteAccess write | write.getVariable() = v and scope = write.getEnclosingCallable*())
+  any(VariableWriteAccess write | write.getVariable() = v and scope = write.getEnclosingCallable+())
       .isCapture()
 }
 
@@ -262,7 +262,7 @@ private predicate readsCapturedVariable(BasicBlock bb, Variable v) {
  */
 pragma[noinline]
 private predicate hasCapturedRead(Variable v, Cfg::CfgScope scope) {
-  any(VariableReadAccess read | read.getVariable() = v and scope = read.getEnclosingCallable*())
+  any(VariableReadAccess read | read.getVariable() = v and scope = read.getEnclosingCallable+())
       .isCapture()
 }
 
@@ -291,6 +291,19 @@ private predicate capturedCallRead(CallExprBase call, BasicBlock bb, int i, Vari
 }
 
 /**
+ * Holds if the call `call` at index `i` in basic block `bb` may reach a callable
+ * that writes captured variable `v`.
+ */
+predicate capturedCallWrite(CallExprBase call, BasicBlock bb, int i, Variable v) {
+  call = bb.getNode(i).getAstNode() and
+  exists(Cfg::CfgScope scope |
+    hasVariableReadWithCapturedWrite(bb, any(int j | j > i), v, scope)
+    or
+    hasVariableReadWithCapturedWrite(bb.getASuccessor+(), _, v, scope)
+  )
+}
+
+/**
  * Holds if a pseudo read of captured variable `v` should be inserted
  * at index `i` in exit block `bb`.
  */
@@ -310,20 +323,6 @@ private module Cached {
   predicate capturedEntryWrite(EntryBasicBlock bb, int i, Variable v) {
     readsCapturedVariable(bb.getASuccessor*(), v) and
     i = -1
-  }
-
-  /**
-   * Holds if the call `call` at index `i` in basic block `bb` may reach a callable
-   * that writes captured variable `v`.
-   */
-  cached
-  predicate capturedCallWrite(CallExprBase call, BasicBlock bb, int i, Variable v) {
-    call = bb.getNode(i).getAstNode() and
-    exists(Cfg::CfgScope scope |
-      hasVariableReadWithCapturedWrite(bb, any(int j | j > i), v, scope)
-      or
-      hasVariableReadWithCapturedWrite(bb.getASuccessor+(), _, v, scope)
-    )
   }
 
   /**
