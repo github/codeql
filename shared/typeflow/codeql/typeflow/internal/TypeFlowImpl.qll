@@ -7,7 +7,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   private import I
 
   private module UfInput implements UniversalFlowInput<Location> {
-    class TypeFlowNode = I::TypeFlowNode;
+    class FlowNode = TypeFlowNode;
 
     predicate step = I::step/2;
 
