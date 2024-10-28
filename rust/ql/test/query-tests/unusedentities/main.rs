@@ -429,7 +429,7 @@ fn folds_and_closures() {
     let a5 = 1..10;
     _ = a5.fold(0, | acc, val | val); // BAD: unused variable
 
-    let i6 = 1; // SPURIOUS: unused value
+    let i6 = 1;
     let a6 = 1..10;
     _ = a6.fold(0, | acc, val | acc + val + i6);
 }
