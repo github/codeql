@@ -7,7 +7,7 @@ edges
 | .github/actions/action5/action.yml:20:7:26:4 | Run Step: step [result] | .github/actions/action5/action.yml:11:13:11:44 | steps.step.outputs.result | provenance |  |
 | .github/actions/action5/action.yml:23:15:23:33 | inputs.taint | .github/actions/action5/action.yml:20:7:26:4 | Run Step: step [result] | provenance |  |
 | .github/actions/action5/action.yml:26:7:31:4 | Run Step: step2 [result2] | .github/actions/action5/action.yml:14:13:14:46 | steps.step2.outputs.result2 | provenance |  |
-| .github/actions/action5/action.yml:28:16:28:52 | github.event.pull_request.body | .github/actions/action5/action.yml:26:7:31:4 | Run Step: step2 [result2] | provenance |  |
+| .github/actions/action5/action.yml:28:16:28:45 | github.event.issue.body | .github/actions/action5/action.yml:26:7:31:4 | Run Step: step2 [result2] | provenance |  |
 | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:4:3:4:7 | input title | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:22:19:22:37 | inputs.title | provenance |  |
 | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:4:3:4:7 | input title | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:27:19:27:37 | inputs.title | provenance |  |
 | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:16:13:16:45 | steps.out.outputs.replaced | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:14:3:16:45 | output Job outputs node [result] | provenance |  |
@@ -215,18 +215,16 @@ edges
 | .github/workflows/untrusted_checkout1.yml:12:14:13:63 | echo "::set-output name=pr_number::$(<artifact.txt)"\n | .github/workflows/untrusted_checkout1.yml:11:9:14:6 | Run Step: artifact [pr_number] | provenance |  |
 nodes
 | .github/actions/action1/action.yml:7:19:7:55 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
-| .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
-| .github/actions/action4/action.yml:7:19:7:55 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
 | .github/actions/action5/action.yml:4:3:4:7 | input taint | semmle.label | input taint |
 | .github/actions/action5/action.yml:9:3:14:46 | output Job outputs node [result2] | semmle.label | output Job outputs node [result2] |
 | .github/actions/action5/action.yml:9:3:14:46 | output Job outputs node [result] | semmle.label | output Job outputs node [result] |
 | .github/actions/action5/action.yml:11:13:11:44 | steps.step.outputs.result | semmle.label | steps.step.outputs.result |
 | .github/actions/action5/action.yml:14:13:14:46 | steps.step2.outputs.result2 | semmle.label | steps.step2.outputs.result2 |
-| .github/actions/action5/action.yml:19:19:19:55 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
+| .github/actions/action5/action.yml:19:19:19:48 | github.event.issue.body | semmle.label | github.event.issue.body |
 | .github/actions/action5/action.yml:20:7:26:4 | Run Step: step [result] | semmle.label | Run Step: step [result] |
 | .github/actions/action5/action.yml:23:15:23:33 | inputs.taint | semmle.label | inputs.taint |
 | .github/actions/action5/action.yml:26:7:31:4 | Run Step: step2 [result2] | semmle.label | Run Step: step2 [result2] |
-| .github/actions/action5/action.yml:28:16:28:52 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
+| .github/actions/action5/action.yml:28:16:28:45 | github.event.issue.body | semmle.label | github.event.issue.body |
 | .github/actions/action5/action.yml:34:19:34:37 | inputs.taint | semmle.label | inputs.taint |
 | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:4:3:4:7 | input title | semmle.label | input title |
 | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:14:3:16:45 | output Job outputs node [result] | semmle.label | output Job outputs node [result] |
@@ -576,6 +574,9 @@ nodes
 | .github/workflows/test19.yml:104:9:108:6 | Run Step: comments [comments] | semmle.label | Run Step: comments [comments] |
 | .github/workflows/test19.yml:105:14:107:56 | COMMENTS=$(gh api /repos/test/test/pulls/${PR_NUMBER}/comments --jq '.[].body')\necho "comments=$COMMENTS" >> "$GITHUB_OUTPUT"\n | semmle.label | COMMENTS=$(gh api /repos/test/test/pulls/${PR_NUMBER}/comments --jq '.[].body')\necho "comments=$COMMENTS" >> "$GITHUB_OUTPUT"\n |
 | .github/workflows/test19.yml:108:21:108:57 | steps.comments.outputs.comments | semmle.label | steps.comments.outputs.comments |
+| .github/workflows/test21.yml:22:35:22:73 | github.event.head_commit.message | semmle.label | github.event.head_commit.message |
+| .github/workflows/test21.yml:23:36:23:74 | github.event.head_commit.message | semmle.label | github.event.head_commit.message |
+| .github/workflows/test21.yml:24:50:24:88 | github.event.head_commit.message | semmle.label | github.event.head_commit.message |
 | .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
 | .github/workflows/test.yml:11:20:11:50 | steps.step5.outputs.MSG5 | semmle.label | steps.step5.outputs.MSG5 |
 | .github/workflows/test.yml:17:9:23:6 | Uses Step: step0 [value] | semmle.label | Uses Step: step0 [value] |
@@ -612,8 +613,6 @@ subpaths
 | .github/workflows/composite-action-caller-3.yml:12:19:12:50 | github.event.comment.body | .github/actions/action5/action.yml:4:3:4:7 | input taint | .github/actions/action5/action.yml:9:3:14:46 | output Job outputs node [result] | .github/workflows/composite-action-caller-3.yml:9:9:13:6 | Uses Step: foo [result] |
 | .github/workflows/composite-action-caller-4.yml:14:19:14:56 | github.event.pull_request.title | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:4:3:4:7 | input title | .github/reusable_workflows/TestOrg/TestRepo/.github/actions/clone-repo/action.yaml:14:3:16:45 | output Job outputs node [result] | .github/workflows/composite-action-caller-4.yml:10:9:17:6 | Uses Step: clone [result] |
 #select
-| .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | Potential code injection in $@, which may be controlled by an external user. | .github/actions/action3/action.yml:9:19:9:55 | github.event.pull_request.body | ${{ github.event.pull_request.body }} |
-| .github/actions/action4/action.yml:7:19:7:55 | github.event.pull_request.body | .github/actions/action4/action.yml:7:19:7:55 | github.event.pull_request.body | .github/actions/action4/action.yml:7:19:7:55 | github.event.pull_request.body | Potential code injection in $@, which may be controlled by an external user. | .github/actions/action4/action.yml:7:19:7:55 | github.event.pull_request.body | ${{ github.event.pull_request.body }} |
 | .github/workflows/changed-files.yml:20:24:20:76 | steps.changed-files1.outputs.all_changed_files | .github/workflows/changed-files.yml:15:9:18:6 | Uses Step: changed-files1 | .github/workflows/changed-files.yml:20:24:20:76 | steps.changed-files1.outputs.all_changed_files | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/changed-files.yml:20:24:20:76 | steps.changed-files1.outputs.all_changed_files | ${{ steps.changed-files1.outputs.all_changed_files }} |
 | .github/workflows/changed-files.yml:40:24:40:76 | steps.changed-files3.outputs.all_changed_files | .github/workflows/changed-files.yml:33:9:38:6 | Uses Step: changed-files3 | .github/workflows/changed-files.yml:40:24:40:76 | steps.changed-files3.outputs.all_changed_files | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/changed-files.yml:40:24:40:76 | steps.changed-files3.outputs.all_changed_files | ${{ steps.changed-files3.outputs.all_changed_files }} |
 | .github/workflows/changed-files.yml:58:24:58:76 | steps.changed-files5.outputs.all_changed_files | .github/workflows/changed-files.yml:53:9:56:6 | Uses Step: changed-files5 | .github/workflows/changed-files.yml:58:24:58:76 | steps.changed-files5.outputs.all_changed_files | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/changed-files.yml:58:24:58:76 | steps.changed-files5.outputs.all_changed_files | ${{ steps.changed-files5.outputs.all_changed_files }} |

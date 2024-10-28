@@ -16,7 +16,7 @@ runs:
   using: 'composite'
   steps:
     - shell: bash
-      run: echo '${{ github.event.pull_request.body }}'
+      run: echo '${{ github.event.issue.body }}'
     - name: Step
       id: step 
       env:
@@ -25,7 +25,7 @@ runs:
       run: echo "result=$(echo $FOO)" >> $GITHUB_OUTPUT
     - id: step2
       env:
-        FOO2: ${{ github.event.pull_request.body }}
+        FOO2: ${{ github.event.issue.body }}
       shell: bash
       run: echo "result2=$(echo $FOO2)" >> $GITHUB_OUTPUT
     - name: Sink
