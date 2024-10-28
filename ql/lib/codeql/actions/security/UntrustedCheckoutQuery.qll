@@ -13,7 +13,6 @@ string checkoutTriggers() {
  */
 private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    //source.asExpr().getATriggerEvent().getName() = checkoutTriggers() and
     (
       // remote flow sources
       source instanceof ArtifactSource
@@ -209,7 +208,6 @@ abstract class SHACheckoutStep extends PRHeadCheckoutStep { }
 class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesStep {
   ActionsMutableRefCheckout() {
     this.getCallee() = "actions/checkout" and
-    //this.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers() and
     (
       exists(
         ActionsMutableRefCheckoutFlow::PathNode source, ActionsMutableRefCheckoutFlow::PathNode sink
@@ -242,7 +240,6 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
 class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
   ActionsSHACheckout() {
     this.getCallee() = "actions/checkout" and
-    //this.getEnclosingJob().getATriggerEvent().getName() = checkoutTriggers() and
     (
       exists(ActionsSHACheckoutFlow::PathNode source, ActionsSHACheckoutFlow::PathNode sink |
         ActionsSHACheckoutFlow::flowPath(source, sink) and
@@ -273,7 +270,6 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
 class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GitMutableRefCheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      //this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -297,7 +293,6 @@ class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 class GitSHACheckout extends SHACheckoutStep instanceof Run {
   GitSHACheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      //this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         containsHeadSHA(cmd)
@@ -318,7 +313,6 @@ class GitSHACheckout extends SHACheckoutStep instanceof Run {
 class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GhMutableRefCheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      //this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch(".*(gh|hub)\\s+pr\\s+checkout.*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -341,7 +335,6 @@ class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 class GhSHACheckout extends SHACheckoutStep instanceof Run {
   GhSHACheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      //this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("gh\\s+pr\\s+checkout.*") and
       (
         containsHeadSHA(cmd)
