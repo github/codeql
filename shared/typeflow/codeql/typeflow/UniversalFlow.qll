@@ -51,27 +51,23 @@ module UfMake<LocationSig Location, UniversalFlowInput<Location> I> {
   private predicate isNull(FlowNode n) {
     isNullValue(n)
     or
-    exists(FlowNode mid | isNull(mid) and uniqStep(mid, n))
-    or
-    forex(FlowNode mid | joinStep(mid, n) | isNull(mid)) and
-    not isExcludedFromNullAnalysis(n)
+    not isExcludedFromNullAnalysis(n) and
+    (
+      exists(FlowNode mid | isNull(mid) and uniqStep(mid, n))
+      or
+      forex(FlowNode mid | joinStep(mid, n) | isNull(mid))
+    )
   }
 
   /**
    * Holds if data can flow from `n1` to `n2` in one step, `n1` is not necessarily
    * functionally determined by `n2`, and `n1` might take a non-null value.
    */
-  predicate joinStepNotNull(FlowNode n1, FlowNode n2) {
-    joinStep(n1, n2) and not isNull(n1)
-  }
+  predicate joinStepNotNull(FlowNode n1, FlowNode n2) { joinStep(n1, n2) and not isNull(n1) }
 
-  predicate anyStep(FlowNode n1, FlowNode n2) {
-    joinStepNotNull(n1, n2) or uniqStep(n1, n2)
-  }
+  predicate anyStep(FlowNode n1, FlowNode n2) { joinStepNotNull(n1, n2) or uniqStep(n1, n2) }
 
-  private predicate sccEdge(FlowNode n1, FlowNode n2) {
-    anyStep(n1, n2) and anyStep+(n2, n1)
-  }
+  private predicate sccEdge(FlowNode n1, FlowNode n2) { anyStep(n1, n2) and anyStep+(n2, n1) }
 
   private module Scc = QlBuiltins::EquivalenceRelation<FlowNode, sccEdge/2>;
 
