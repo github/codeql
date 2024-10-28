@@ -11,7 +11,7 @@ include:**/action.yaml
 END
 )
 
-if [ -n "${LGTM_INDEX_INCLUDE:-}" ] || [ -n "${LGTM_INDEX_EXCLUDE:-}" ] || [ -n "${LGTM_INDEX_FILTERS:-}" ] ; then
+if [ -n "${LGTM_INDEX_INCLUDE}" ] || [ -n "${LGTM_INDEX_EXCLUDE}" ] || [ -n "${LGTM_INDEX_FILTERS}" ] ; then
     echo "Path filters set. Passing them through to the JavaScript extractor."
 else
     echo "No path filters set. Using the default filters."
