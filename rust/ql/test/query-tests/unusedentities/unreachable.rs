@@ -163,7 +163,7 @@ fn unreachable_loop() {
 		do_something(); // BAD: unreachable code
 	}
 
-	for x in 1..10 { // BAD: unused value `x`
+	for _ in 1..10 {
 		if cond() {
 			continue;
 			do_something(); // BAD: unreachable code
@@ -187,7 +187,7 @@ fn unreachable_paren() {
 }
 
 fn unreachable_let_1() {
-	if let Some(a) = maybe_get_a_number() { // BAD: unused value `a`
+	if let Some(_) = maybe_get_a_number() {
 		do_something();
 		return;
 	} else {
@@ -196,7 +196,7 @@ fn unreachable_let_1() {
 
 	do_something(); // SPURIOUS: unreachable code
 
-	if let a = get_a_number() { // (always succeeds) BAD: unused value `a`
+	if let _ = get_a_number() { // (always succeeds)
 		do_something();
 		return;
 	} else {
@@ -207,14 +207,14 @@ fn unreachable_let_1() {
 }
 
 fn unreachable_let_2() {
-	let Some(a) = maybe_get_a_number() else { // BAD: unused value `a`
+	let Some(_) = maybe_get_a_number() else {
 		do_something();
 		return;
 	};
 
 	do_something();
 
-	let a = maybe_get_a_number() else { // (always succeeds) BAD: unused value `x`
+	let _ = maybe_get_a_number() else { // (always succeeds)
 		do_something(); // BAD: unreachable code
 		return;
 	};
