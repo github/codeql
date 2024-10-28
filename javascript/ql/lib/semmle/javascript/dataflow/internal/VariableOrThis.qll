@@ -88,10 +88,13 @@ abstract class ThisUse instanceof ControlFlowNode {
   /** Gets the container binding the `this` being accessed */
   abstract StmtContainer getBindingContainer();
 
+  /** Get the container in which `this` is being accessed. */
   abstract StmtContainer getUseContainer();
 
+  /** Gets a string representation of this element. */
   string toString() { result = super.toString() }
 
+  /** Gets the location of this use of `this`. */
   DbLocation getLocation() { result = super.getLocation() }
 }
 
