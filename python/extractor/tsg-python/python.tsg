@@ -3485,5 +3485,9 @@
 
 [(tuple element: (_)) (tuple_pattern)] @tup
 {
-    attr (@tup.node) parenthesised = #true
+    ; In order to avoid writing to the `parenthesised` attribute twice, we only set it here
+    ; if the surrounding expression is not a `parenthesized_expression`.
+    if (not (instance-of (get-parent @tup) "parenthesized_expression")) {
+        attr (@tup.node) parenthesised = #true
+    }
 }
