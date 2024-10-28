@@ -1,3 +1,31 @@
+/**
+ * Provides predicates for proving data flow properties that hold for all
+ * paths, that is, reachability is computed using universal quantification over
+ * the step relation.
+ *
+ * Regular data flow search for the existence of a path, that is, reachability
+ * using existential quantification over the step relation. Hence, this library
+ * computes the dual reachability predicate that states that a certain property
+ * always holds for a given node regardless of the path taken.
+ *
+ * As a simple comparison, the computed predicate is essentially equivalent to
+ * the folllowing:
+ * ```ql
+ *   predicate hasProperty(FlowNode n, Prop t) {
+ *     basecase(n, t)
+ *     or
+ *     forex(FlowNode mid | step(mid, n) | hasProperty(mid, t))
+ *   }
+ * ```
+ * More complex property propagation is supported, and strongly connected
+ * components in the flow graph are handled.
+ *
+ * As an initial such property calculation, the library computes the set of
+ * nodes that are always null. These are then subtracted from the graph such
+ * that subsequently calculated properties hold under the assumption that the
+ * value is not null.
+ */
+
 private import codeql.util.Location
 private import codeql.util.Unit
 
@@ -59,13 +87,21 @@ module UfMake<LocationSig Location, UniversalFlowInput<Location> I> {
     )
   }
 
-  /**
-   * Holds if data can flow from `n1` to `n2` in one step, `n1` is not necessarily
-   * functionally determined by `n2`, and `n1` might take a non-null value.
-   */
-  predicate joinStepNotNull(FlowNode n1, FlowNode n2) { joinStep(n1, n2) and not isNull(n1) }
+  private import Internal
 
-  predicate anyStep(FlowNode n1, FlowNode n2) { joinStepNotNull(n1, n2) or uniqStep(n1, n2) }
+  module Internal {
+    /**
+     * Holds if data can flow from `n1` to `n2` in one step, `n1` is not necessarily
+     * functionally determined by `n2`, and `n1` might take a non-null value.
+     */
+    predicate joinStepNotNull(FlowNode n1, FlowNode n2) { joinStep(n1, n2) and not isNull(n1) }
+
+    /**
+     * Holds if data can flow from `n1` to `n2` in one step, excluding join
+     * steps from nodes that are always null.
+     */
+    predicate anyStep(FlowNode n1, FlowNode n2) { joinStepNotNull(n1, n2) or uniqStep(n1, n2) }
+  }
 
   private predicate sccEdge(FlowNode n1, FlowNode n2) { anyStep(n1, n2) and anyStep+(n2, n1) }
 

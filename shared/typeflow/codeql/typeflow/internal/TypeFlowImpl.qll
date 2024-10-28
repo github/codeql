@@ -162,7 +162,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
    */
   private predicate unionTypeFlowBaseCand(TypeFlowNode n, Type t, boolean exact) {
     exists(TypeFlowNode next |
-      UnivFlow::joinStepNotNull(n, next) and
+      UnivFlow::Internal::joinStepNotNull(n, next) and
       bestTypeFlowOrTypeFlowBase(n, t, exact) and
       not bestTypeFlowOrTypeFlowBase(next, t, exact) and
       not exactType(next, _)
@@ -196,7 +196,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   private predicate unionTypeFlow0(TypeFlowNode n, Type t, boolean exact) {
     hasUnionTypeFlow(n) and
     (
-      exists(TypeFlowNode mid | UnivFlow::anyStep(mid, n) | unionTypeFlow(mid, t, exact))
+      exists(TypeFlowNode mid | UnivFlow::Internal::anyStep(mid, n) | unionTypeFlow(mid, t, exact))
       or
       unionTypeFlowBaseCand(n, t, exact)
       or
