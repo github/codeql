@@ -114,7 +114,11 @@ abstract class AstNodeImpl extends TAstNode {
   /**
    * Gets and Event triggering this node.
    */
-  EventImpl getATriggerEvent() { result = this.getEnclosingJob().getATriggerEvent() }
+  EventImpl getATriggerEvent() {
+    result = this.getEnclosingJob().getATriggerEvent()
+    or
+    not exists(this.getEnclosingJob()) and result = this.getEnclosingWorkflow().getATriggerEvent()
+  }
 
   /**
    * Gets the enclosing Step.
