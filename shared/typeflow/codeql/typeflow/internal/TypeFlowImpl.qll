@@ -1,12 +1,12 @@
 private import codeql.typeflow.TypeFlow
-private import codeql.typeflow.UniversalFlow
+private import codeql.typeflow.UniversalFlow as UniversalFlow
 private import codeql.util.Location
 private import codeql.util.Unit
 
 module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   private import I
 
-  private module UfInput implements UniversalFlowInput<Location> {
+  private module UfInput implements UniversalFlow::UniversalFlowInput<Location> {
     class FlowNode = TypeFlowNode;
 
     predicate step = I::step/2;
@@ -16,7 +16,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
     predicate isExcludedFromNullAnalysis = I::isExcludedFromNullAnalysis/1;
   }
 
-  private module UnivFlow = UfMake<Location, UfInput>;
+  private module UnivFlow = UniversalFlow::Make<Location, UfInput>;
 
   private module ExactTypeProperty implements UnivFlow::PropertySig {
     class Prop = Type;

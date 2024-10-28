@@ -60,7 +60,7 @@ signature module UniversalFlowInput<LocationSig Location> {
   default predicate isExcludedFromNullAnalysis(FlowNode n) { none() }
 }
 
-module UfMake<LocationSig Location, UniversalFlowInput<Location> I> {
+module Make<LocationSig Location, UniversalFlowInput<Location> I> {
   private import I
 
   /**
@@ -170,48 +170,48 @@ module UfMake<LocationSig Location, UniversalFlowInput<Location> I> {
     int lastRank(Node n) { result = max(int r | edgeRank(r, _, n)) }
   }
 
-  private signature module TypePropagation {
-    class Typ;
+  private signature module PropPropagation {
+    class Prop;
 
-    predicate candType(FlowNode n, Typ t);
+    predicate candProp(FlowNode n, Prop t);
 
     bindingset[t]
-    predicate supportsType(FlowNode n, Typ t);
+    predicate supportsProp(FlowNode n, Prop t);
   }
 
   /** Implements recursion through `forall` by way of edge ranking. */
-  private module ForAll<NodeSig Node, RankedEdge<Node> E, TypePropagation T> {
+  private module ForAll<NodeSig Node, RankedEdge<Node> E, PropPropagation T> {
     /**
-     * Holds if `t` is a bound that holds on one of the incoming edges to `n` and
-     * thus is a candidate bound for `n`.
+     * Holds if `t` is a property that holds on one of the incoming edges to `n` and
+     * thus is a candidate property for `n`.
      */
     pragma[nomagic]
-    private predicate candJoinType(Node n, T::Typ t) {
+    private predicate candJoinProp(Node n, T::Prop t) {
       exists(FlowNode mid |
-        T::candType(mid, t) and
+        T::candProp(mid, t) and
         E::edgeRank(_, mid, n)
       )
     }
 
     /**
-     * Holds if `t` is a candidate bound for `n` that is also valid for data coming
+     * Holds if `t` is a candidate property for `n` that is also valid for data coming
      * through the edges into `n` ranked from `1` to `r`.
      */
-    private predicate flowJoin(int r, Node n, T::Typ t) {
+    private predicate flowJoin(int r, Node n, T::Prop t) {
       (
-        r = 1 and candJoinType(n, t)
+        r = 1 and candJoinProp(n, t)
         or
         flowJoin(r - 1, n, t) and E::edgeRank(r, _, n)
       ) and
-      forall(FlowNode mid | E::edgeRank(r, mid, n) | T::supportsType(mid, t))
+      forall(FlowNode mid | E::edgeRank(r, mid, n) | T::supportsProp(mid, t))
     }
 
     /**
-     * Holds if `t` is a candidate bound for `n` that is also valid for data
-     * coming through all the incoming edges, and therefore is a valid bound for
+     * Holds if `t` is a candidate property for `n` that is also valid for data
+     * coming through all the incoming edges, and therefore is a valid property for
      * `n`.
      */
-    predicate flowJoin(Node n, T::Typ t) { flowJoin(E::lastRank(n), n, t) }
+    predicate flowJoin(Node n, T::Prop t) { flowJoin(E::lastRank(n), n, t) }
   }
 
   private module JoinStep implements Edge {
@@ -237,12 +237,12 @@ module UfMake<LocationSig Location, UniversalFlowInput<Location> I> {
   }
 
   module FlowNullary<NullaryPropertySig P> {
-    private module Propagation implements TypePropagation {
-      class Typ = Unit;
+    private module Propagation implements PropPropagation {
+      class Prop = Unit;
 
-      predicate candType(FlowNode n, Unit u) { hasProperty(n) and exists(u) }
+      predicate candProp(FlowNode n, Unit u) { hasProperty(n) and exists(u) }
 
-      predicate supportsType = candType/2;
+      predicate supportsProp = candProp/2;
     }
 
     predicate hasProperty(FlowNode n) {
@@ -278,14 +278,14 @@ module UfMake<LocationSig Location, UniversalFlowInput<Location> I> {
   }
 
   module Flow<PropertySig P> {
-    private module Propagation implements TypePropagation {
-      class Typ = P::Prop;
+    private module Propagation implements PropPropagation {
+      class Prop = P::Prop;
 
-      predicate candType = hasProperty/2;
+      predicate candProp = hasProperty/2;
 
       bindingset[t]
-      predicate supportsType(FlowNode n, Typ t) {
-        exists(Typ t0 | hasProperty(n, t0) and P::propImplies(t0, t))
+      predicate supportsProp(FlowNode n, Prop t) {
+        exists(Prop t0 | hasProperty(n, t0) and P::propImplies(t0, t))
       }
     }
 
