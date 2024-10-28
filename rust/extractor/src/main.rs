@@ -41,7 +41,7 @@ fn extract(
         label,
         line_index,
         file_id,
-        rust_analyzer.semantics(),
+        file_id.and(rust_analyzer.semantics()),
     );
 
     for err in errors {

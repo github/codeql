@@ -78,22 +78,29 @@ impl<'a> RustAnalyzer<'a> {
                 .map(VfsPath::from)
                 .and_then(|x| vfs.file_id(&x))
             {
-                let input: Arc<str> = semantics.db.file_text(file_id);
-                let file_id = EditionedFileId::current_edition(file_id);
-                let source_file = semantics.parse(file_id);
-                let errors = semantics
-                    .db
-                    .parse_errors(file_id)
-                    .into_iter()
-                    .flat_map(|x| x.to_vec())
-                    .collect();
+                if let Ok(input) = std::panic::catch_unwind(|| semantics.db.file_text(file_id)) {
+                    let file_id = EditionedFileId::current_edition(file_id);
+                    let source_file = semantics.parse(file_id);
+                    let errors = semantics
+                        .db
+                        .parse_errors(file_id)
+                        .into_iter()
+                        .flat_map(|x| x.to_vec())
+                        .collect();
 
-                return ParseResult {
-                    ast: source_file,
-                    text: input,
-                    errors,
-                    file_id: Some(file_id),
-                };
+                    return ParseResult {
+                        ast: source_file,
+                        text: input,
+                        errors,
+                        file_id: Some(file_id),
+                    };
+                } else {
+                    log::debug!(
+                        "No text available for file_id '{:?}', falling back to loading file '{}' from disk.",
+                        file_id,
+                        path.to_string_lossy()
+                    )
+                }
             }
         }
         let mut errors = Vec::new();
