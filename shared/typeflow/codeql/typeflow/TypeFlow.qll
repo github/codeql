@@ -28,16 +28,11 @@ signature module TypeFlowInput<LocationSig Location> {
   }
 
   /**
-   * Holds if data can flow from `n1` to `n2` in one step, and `n1` is not
-   * necessarily functionally determined by `n2`.
+   * Holds if data can flow from `n1` to `n2` in one step.
+   *
+   * For a given `n2`, this predicate must include all possible `n1` that can flow to `n2`.
    */
-  predicate joinStep(TypeFlowNode n1, TypeFlowNode n2);
-
-  /**
-   * Holds if data can flow from `n1` to `n2` in one step, and `n1` is
-   * functionally determined by `n2`.
-   */
-  predicate uniqStep(TypeFlowNode n1, TypeFlowNode n2);
+  predicate step(TypeFlowNode n1, TypeFlowNode n2);
 
   /** Holds if `n` represents a `null` value. */
   predicate isNullValue(TypeFlowNode n);

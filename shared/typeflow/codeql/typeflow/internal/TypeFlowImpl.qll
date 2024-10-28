@@ -5,8 +5,20 @@ private import codeql.util.Unit
 module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   private import I
 
+  /**
+   * Holds if data can flow from `n1` to `n2` in one step, and `n1` is
+   * functionally determined by `n2`.
+   */
+  private predicate uniqStep(TypeFlowNode n1, TypeFlowNode n2) { n1 = unique(TypeFlowNode n | step(n, n2)) }
+
+  /**
+   * Holds if data can flow from `n1` to `n2` in one step, and `n1` is not
+   * functionally determined by `n2`.
+   */
+  private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) { step(n1, n2) and not uniqStep(n1, n2) }
+
   /** Holds if `null` is the only value that flows to `n`. */
-  predicate isNull(TypeFlowNode n) {
+  private predicate isNull(TypeFlowNode n) {
     isNullValue(n)
     or
     exists(TypeFlowNode mid | isNull(mid) and uniqStep(mid, n))
