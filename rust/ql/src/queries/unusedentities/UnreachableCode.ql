@@ -13,63 +13,62 @@ import codeql.rust.controlflow.ControlFlowGraph
 import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 
 /**
- * Holds if `n` is an AST node that's unreachable.
+ * Successor relation that includes unreachable AST nodes.
  */
-private predicate unreachable(AstNode n) {
-  not n = any(CfgNode cfn).getAstNode() and // reachable nodes
-  exists(ControlFlowGraphImpl::ControlFlowTree cft |
-    // nodes intended to be part of the CFG
-    cft.succ(n, _, _)
-    or
-    cft.succ(_, n, _)
-  )
-}
-
-/**
- * Holds if `n` is an AST node that's unreachable, and is not the successor
- * of an unreachable node (which would be a duplicate result).
- */
-private predicate firstUnreachable(AstNode n) {
-  unreachable(n) and
-  (
-    // no predecessor -> we are the first unreachable node.
-    not ControlFlowGraphImpl::succ(_, n, _)
-    or
-    // reachable predecessor -> we are the first unreachable node.
-    exists(AstNode pred |
-      ControlFlowGraphImpl::succ(pred, n, _) and
-      not unreachable(pred)
-    )
-  )
+predicate succFull(AstNode a, AstNode b) {
+  exists(ControlFlowGraphImpl::ControlFlowTree cft | cft.succ(a, b, _))
 }
 
 /**
  * Gets a node we'd prefer not to report as unreachable.
  */
 predicate skipNode(AstNode n) {
-  n instanceof ControlFlowGraphImpl::PostOrderTree or // location is counter-intuitive
+  // isolated node (not intended to be part of the CFG)
+  not succFull(n, _) and
+  not succFull(_, n)
+  or
+  n instanceof ControlFlowGraphImpl::PostOrderTree // location is counter-intuitive
+  or
   not n instanceof ControlFlowGraphImpl::ControlFlowTree // not expected to be reachable
 }
 
 /**
- * Gets the `ControlFlowTree` successor of a node we'd prefer not to report.
+ * Successor relation for edges out of `skipNode`s.
  */
-AstNode skipSuccessor(AstNode n) {
-  skipNode(n) and
-  ControlFlowGraphImpl::succ(n, result, _)
+predicate succSkip(AstNode a, AstNode b) {
+  skipNode(a) and
+  succFull(a, b)
 }
 
 /**
- * Gets the node `n`, skipping past any nodes we'd prefer not to report.
+ * Successor relation that skips over `skipNode`s.
  */
-AstNode skipSuccessors(AstNode n) {
-  result = skipSuccessor*(n) and
-  not skipNode(result)
+predicate succSkipping(AstNode a, AstNode b) {
+  exists(AstNode mid |
+    not skipNode(a) and
+    succFull(a, mid) and
+    succSkip*(mid, b) and
+    not skipNode(b)
+  )
 }
 
-from AstNode first, AstNode report
+/**
+ * An AST node that is reachable.
+ */
+predicate reachable(AstNode n) { n = any(CfgNode cfn).getAstNode() }
+
+/**
+ * Holds if `n` is an AST node that's unreachable, and any predecessors
+ * of it are reachable (to avoid duplicate results).
+ */
+private predicate firstUnreachable(AstNode n) {
+  not reachable(n) and
+  not skipNode(n) and
+  forall(AstNode pred | succSkipping(pred, n) | reachable(pred))
+}
+
+from AstNode n
 where
-  firstUnreachable(first) and
-  report = skipSuccessors(first) and
-  exists(report.getFile().getRelativePath()) // in source
-select report, "This code is never reached."
+  firstUnreachable(n) and
+  exists(n.getFile().getRelativePath()) // in source
+select n, "This code is never reached."

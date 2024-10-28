@@ -128,7 +128,7 @@ fn unreachable_match() {
 			do_something();
 		}
 	}
-	do_something(); // [unreachable FALSE POSITIVE]
+	do_something();
 
 	match get_a_number() {
 		1=>{
@@ -194,7 +194,7 @@ fn unreachable_let_1() {
 		do_something();
 	}
 
-	do_something(); // SPURIOUS: unreachable code
+	do_something();
 
 	if let _ = get_a_number() { // (always succeeds)
 		do_something();
@@ -203,7 +203,7 @@ fn unreachable_let_1() {
 		do_something(); // BAD: unreachable code
 	}
 
-	do_something(); // BAD: unreachable code
+	do_something();
 }
 
 fn unreachable_let_2() {
@@ -230,7 +230,7 @@ fn unreachable_if_2() {
 		do_something();
 	}
 
-	do_something(); // SPURIOUS: unreachable code
+	do_something();
 }
 
 fn unreachable_if_3() {
@@ -239,5 +239,5 @@ fn unreachable_if_3() {
 		return;
 	}
 
-	do_something(); // SPURIOUS: unreachable code
+	do_something();
 }
