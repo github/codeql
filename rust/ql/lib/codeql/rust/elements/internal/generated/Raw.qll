@@ -2460,27 +2460,9 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A path expression. For example:
-   * ```rust
-   * let x = variable;
-   * let x = foo::bar;
-   * let y = <T>::foo;
-   * let z = <TypeRef as Trait>::foo;
-   * ```
+   * A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.
    */
-  class PathExpr extends @path_expr, Expr {
-    override string toString() { result = "PathExpr" }
-
-    /**
-     * Gets the `index`th attr of this path expression (0-based).
-     */
-    Attr getAttr(int index) { path_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the path of this path expression, if it exists.
-     */
-    Path getPath() { path_expr_paths(this, result) }
-  }
+  class PathExprBase extends @path_expr_base, Expr { }
 
   /**
    * INTERNAL: Do not use.
@@ -3606,6 +3588,30 @@ module Raw {
      * Gets the visibility of this module, if it exists.
      */
     Visibility getVisibility() { module_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A path expression. For example:
+   * ```rust
+   * let x = variable;
+   * let x = foo::bar;
+   * let y = <T>::foo;
+   * let z = <TypeRef as Trait>::foo;
+   * ```
+   */
+  class PathExpr extends @path_expr, PathExprBase {
+    override string toString() { result = "PathExpr" }
+
+    /**
+     * Gets the `index`th attr of this path expression (0-based).
+     */
+    Attr getAttr(int index) { path_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the path of this path expression, if it exists.
+     */
+    Path getPath() { path_expr_paths(this, result) }
   }
 
   /**

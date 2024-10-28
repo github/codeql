@@ -22,8 +22,8 @@ extensions:
       - ["System.Net.NetworkInformation", "NetworkInterface", True, "get_Description", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.NetworkInformation", "NetworkInterface", True, "get_Id", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.NetworkInformation", "NetworkInterface", True, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Net.NetworkInformation", "PhysicalAddress", False, "GetAddressBytes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Net.NetworkInformation", "PhysicalAddress", False, "PhysicalAddress", "(System.Byte[])", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["System.Net.NetworkInformation", "PhysicalAddress", False, "GetAddressBytes", "()", "", "Argument[this].SyntheticField[System.Net.NetworkInformation.PhysicalAddress._address].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["System.Net.NetworkInformation", "PhysicalAddress", False, "PhysicalAddress", "(System.Byte[])", "", "Argument[0]", "Argument[this].SyntheticField[System.Net.NetworkInformation.PhysicalAddress._address]", "value", "dfc-generated"]
       - ["System.Net.NetworkInformation", "UnicastIPAddressInformationCollection", True, "get_Item", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
