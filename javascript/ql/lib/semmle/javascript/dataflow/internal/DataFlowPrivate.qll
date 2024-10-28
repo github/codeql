@@ -1530,7 +1530,9 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode()) and exists(kind)
   or
-  receiver = call.asOrdinaryCall().getCalleeNode() and exists(kind)
+  receiver = call.asOrdinaryCall().getCalleeNode() and
+  exists(kind) and
+  receiver.getALocalSource() instanceof DataFlow::ParameterNode
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
