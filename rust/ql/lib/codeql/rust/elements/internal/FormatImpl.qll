@@ -79,10 +79,8 @@ module Impl {
     override predicate hasSynthLocationInfo(
       File file, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      this.getParent()
-          .getTemplate()
-          .getLocation()
-          .hasLocationInfo(file.getAbsolutePath(), startline, startcolumn - offset, _, _) and
+      LocatableImpl::getLocationDefault(this.getParent().getTemplate())
+          .hasLocationFileInfo(file, startline, startcolumn - offset, _, _) and
       endline = startline and
       endcolumn = startcolumn + text.length() - 1
     }

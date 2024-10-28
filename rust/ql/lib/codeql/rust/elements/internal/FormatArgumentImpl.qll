@@ -47,11 +47,9 @@ module Impl {
     ) {
       // TODO: handle locations in multi-line comments
       // TODO: handle the case where the template is from a nested macro call
-      Synth::convertFormatArgsExprFromRaw(parent)
-          .(FormatArgsExpr)
-          .getTemplate()
-          .getLocation()
-          .hasLocationInfo(file.getAbsolutePath(), startline, startcolumn - offset, _, _) and
+      LocatableImpl::getLocationDefault(Synth::convertFormatArgsExprFromRaw(parent)
+            .(FormatArgsExpr)
+            .getTemplate()).hasLocationFileInfo(file, startline, startcolumn - offset, _, _) and
       endline = startline and
       endcolumn = startcolumn + name.length() - 1
     }

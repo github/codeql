@@ -31,6 +31,39 @@ import rust
  */
 module Stages {
   /**
+   * The abstract syntex tree (AST) stage.
+   */
+  cached
+  module AstStage {
+    private import codeql.rust.controlflow.internal.Splitting
+    private import codeql.rust.controlflow.internal.SuccessorType
+    private import codeql.rust.controlflow.internal.ControlFlowGraphImpl
+
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the AST stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DO NOT USE!
+     *
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      exists(Location l)
+      or
+      exists(any(Locatable l).getLocation())
+      or
+      exists(Format f)
+    }
+  }
+
+  /**
    * The control flow graph (CFG) stage.
    */
   cached
@@ -41,7 +74,7 @@ module Stages {
 
     /**
      * Always holds.
-     * Ensures that a predicate is evaluated as part of the BasicBlocks stage.
+     * Ensures that a predicate is evaluated as part of the CFG stage.
      */
     cached
     predicate ref() { 1 = 1 }

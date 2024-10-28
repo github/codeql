@@ -9,6 +9,7 @@ private import codeql.rust.elements.internal.LocationImpl
 private import codeql.rust.elements.internal.generated.Locatable
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+private import codeql.rust.internal.CachedStages
 
 /**
  * INTERNAL: This module contains the customizable definition of `Locatable` and should not
@@ -16,37 +17,37 @@ private import codeql.rust.elements.internal.generated.Raw
  */
 module Impl {
   abstract class SynthLocatable extends Locatable {
+    pragma[nomagic]
     abstract predicate hasSynthLocationInfo(
       File file, int startline, int startcolumn, int endline, int endcolumn
     );
 
     final override Location getLocation() {
-      not locatable_locations(Synth::convertLocatableToRaw(this), _) and
-      exists(File file, int beginLine, int beginColumn, int endLine, int endColumn |
-        this.hasSynthLocationInfo(file, beginLine, beginColumn, endLine, endColumn)
-      |
-        result = LocationImpl::TLocationSynth(file, beginLine, beginColumn, endLine, endColumn)
-        or
-        exists(@location_default location |
-          result = LocationImpl::TLocationDefault(location) and
-          locations_default(location, file, beginLine, beginColumn, endLine, endColumn)
-        )
+      exists(File file, int startline, int startcolumn, int endline, int endcolumn |
+        this.hasSynthLocationInfo(file, startline, startcolumn, endline, endcolumn) and
+        result.hasLocationFileInfo(file, startline, startcolumn, endline, endcolumn)
       )
     }
   }
 
   class Locatable extends Generated::Locatable {
-    pragma[nomagic]
+    cached
     Location getLocation() {
-      exists(@location_default location |
-        result = LocationImpl::TLocationDefault(location) and
-        locatable_locations(Synth::convertLocatableToRaw(this), location)
-      )
+      Stages::AstStage::ref() and
+      result = getLocationDefault(this)
     }
 
     /**
      * Gets the primary file where this element occurs.
      */
     File getFile() { result = this.getLocation().getFile() }
+  }
+
+  /** Gets the non-synthesized location of `l`, if any. */
+  LocationImpl::LocationDefault getLocationDefault(Locatable l) {
+    exists(@location_default location |
+      result = LocationImpl::TLocationDefault(location) and
+      locatable_locations(Synth::convertLocatableToRaw(l), location)
+    )
   }
 }
