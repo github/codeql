@@ -5129,8 +5129,8 @@ pub struct Item {
 }
 
 impl Item {
-    pub fn emit_canonical_path(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
-        out.add_tuple("item_canonical_paths", vec![id.into(), value.into()]);
+    pub fn emit_extended_canonical_path(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
+        out.add_tuple("item_extended_canonical_paths", vec![id.into(), value.into()]);
     }
     pub fn emit_crate_origin(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
         out.add_tuple("item_crate_origins", vec![id.into(), value.into()]);

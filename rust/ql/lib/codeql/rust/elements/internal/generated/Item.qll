@@ -23,18 +23,22 @@ module Generated {
    */
   class Item extends Synth::TItem, StmtImpl::Stmt {
     /**
-     * Gets the canonical path of this item, if it exists.
+     * Gets the extended canonical path of this item, if it exists.
      *
-     * See https://doc.rust-lang.org/reference/paths.html#canonical-paths.
+     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
+     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
+     * addressable there-in).
+     * INTERNAL: Do not use.
      */
-    string getCanonicalPath() {
-      result = Synth::convertItemToRaw(this).(Raw::Item).getCanonicalPath()
+    string getExtendedCanonicalPath() {
+      result = Synth::convertItemToRaw(this).(Raw::Item).getExtendedCanonicalPath()
     }
 
     /**
-     * Holds if `getCanonicalPath()` exists.
+     * Holds if `getExtendedCanonicalPath()` exists.
+     * INTERNAL: Do not use.
      */
-    final predicate hasCanonicalPath() { exists(this.getCanonicalPath()) }
+    final predicate hasExtendedCanonicalPath() { exists(this.getExtendedCanonicalPath()) }
 
     /**
      * Gets the crate origin of this item, if it exists.

@@ -2060,11 +2060,13 @@ module Raw {
    */
   class Item extends @item, Stmt {
     /**
-     * Gets the canonical path of this item, if it exists.
+     * Gets the extended canonical path of this item, if it exists.
      *
-     * See https://doc.rust-lang.org/reference/paths.html#canonical-paths.
+     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
+     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
+     * addressable there-in).
      */
-    string getCanonicalPath() { item_canonical_paths(this, result) }
+    string getExtendedCanonicalPath() { item_extended_canonical_paths(this, result) }
 
     /**
      * Gets the crate origin of this item, if it exists.

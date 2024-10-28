@@ -1844,9 +1844,9 @@ infer_types(
 ;
 
 #keyset[id]
-item_canonical_paths(
+item_extended_canonical_paths(
   int id: @item ref,
-  string canonical_path: string ref
+  string extended_canonical_path: string ref
 );
 
 #keyset[id]

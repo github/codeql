@@ -5,6 +5,7 @@ use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use codeql_extractor::trap::{self};
 use log::Level;
+use ra_ap_base_db::salsa::InternKey;
 use ra_ap_base_db::CrateOrigin;
 use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir::{Adt, ItemContainer, Module, Semantics, Type};
@@ -347,9 +348,9 @@ impl<'a> Translator<'a> {
     }
 
     fn canonical_path_from_hir_module(&self, item: Module) -> Option<String> {
-        if ModuleId::from(item).is_block_module() {
+        if let Some(block_id) = ModuleId::from(item).containing_block() {
             // this means this is a block module, i.e. a virtual module for a block scope
-            return None;
+            return Some(format!("{{{}}}", block_id.as_intern_id()));
         }
         if item.is_crate_root() {
             return Some("crate".into());
@@ -407,7 +408,7 @@ impl<'a> Translator<'a> {
             let path = self.canonical_path_from_hir(def)?;
             let origin = self.origin_from_hir(def);
             generated::Item::emit_crate_origin(label, origin, &mut self.trap.writer);
-            generated::Item::emit_canonical_path(label, path, &mut self.trap.writer);
+            generated::Item::emit_extended_canonical_path(label, path, &mut self.trap.writer);
             Some(())
         })();
     }

@@ -1803,5 +1803,9 @@ class FormatArgument(Locatable):
 
 @annotate(Item)
 class _:
-    canonical_path: optional[string] | desc("See https://doc.rust-lang.org/reference/paths.html#canonical-paths.") | rust.detach
+    extended_canonical_path: optional[string] | desc("""
+        Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
+        or `{<block id>}::name` for addressable items defined in an anonymous block (and only
+        addressable there-in).
+    """) | rust.detach | ql.internal
     crate_origin: optional[string] | desc("One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.") | rust.detach | ql.internal
