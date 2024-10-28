@@ -8,7 +8,7 @@
  */
 
 import codeql.IDEContextual
-import Definitions
+import codeql.rust.internal.Definitions
 
 external string selectedSourceFile();
 
