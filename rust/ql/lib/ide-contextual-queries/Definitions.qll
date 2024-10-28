@@ -23,13 +23,27 @@ abstract class Use extends Locatable {
   abstract string getUseType();
 }
 
-private newtype TDef =
-  TVariable(Variable v) or
-  TFormatArgsArgName(Name name) { name = any(FormatArgsArg a).getName() } or
-  TFormatArgsArgIndex(Expr e) { e = any(FormatArgsArg a).getExpr() }
+cached
+private module Cached {
+  cached
+  newtype TDef =
+    TVariable(Variable v) or
+    TFormatArgsArgName(Name name) { name = any(FormatArgsArg a).getName() } or
+    TFormatArgsArgIndex(Expr e) { e = any(FormatArgsArg a).getExpr() }
+
+  /**
+   * Gets an element, of kind `kind`, that element `use` uses, if any.
+   */
+  cached
+  Definition definitionOf(Use use, string kind) {
+    result = use.getDefinition() and kind = use.getUseType()
+  }
+}
+
+predicate definitionOf = Cached::definitionOf/2;
 
 /** A definition */
-class Definition extends TDef {
+class Definition extends Cached::TDef {
   /** Gets the location of this variable. */
   Location getLocation() {
     result = this.asVariable().getLocation() or
@@ -38,13 +52,13 @@ class Definition extends TDef {
   }
 
   /** Gets this definition as a `Variable` */
-  Variable asVariable() { this = TVariable(result) }
+  Variable asVariable() { this = Cached::TVariable(result) }
 
   /** Gets this definition as a `Name` */
-  Name asName() { this = TFormatArgsArgName(result) }
+  Name asName() { this = Cached::TFormatArgsArgName(result) }
 
   /** Gets this definition as an `Expr` */
-  Expr asExpr() { this = TFormatArgsArgIndex(result) }
+  Expr asExpr() { this = Cached::TFormatArgsArgIndex(result) }
 
   /** Gets the string representation of this element. */
   string toString() {
@@ -106,12 +120,4 @@ private class PositionalFormatArgumentUse extends Use instanceof PositionalForma
   override Definition getDefinition() { result.asExpr() = def }
 
   override string getUseType() { result = "format argument" }
-}
-
-/**
- * Gets an element, of kind `kind`, that element `use` uses, if any.
- */
-cached
-Definition definitionOf(Use use, string kind) {
-  result = use.getDefinition() and kind = use.getUseType()
 }
