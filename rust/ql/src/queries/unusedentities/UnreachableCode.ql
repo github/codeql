@@ -28,8 +28,6 @@ predicate skipNode(AstNode n) {
   not succFull(_, n)
   or
   n instanceof ControlFlowGraphImpl::PostOrderTree // location is counter-intuitive
-  or
-  not n instanceof ControlFlowGraphImpl::ControlFlowTree // not expected to be reachable
 }
 
 /**
