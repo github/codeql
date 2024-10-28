@@ -59,6 +59,8 @@ jobs:
           disable-default-queries: true
           queries:
             - uses: security-and-quality
+          paths-ignore:
+            - '/rust/ql/tests'
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@main
