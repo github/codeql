@@ -44,7 +44,7 @@ jobs:
   # without waiting for the macOS build
   build-and-test-macos:
     if: github.repository_owner == 'github'
-    runs-on: macos-12-xl
+    runs-on: macos-13-xlarge
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
@@ -64,7 +64,7 @@ jobs:
   qltests-macos:
     if: ${{ github.repository_owner == 'github' && github.event_name == 'pull_request' }}
     needs: build-and-test-macos
-    runs-on: macos-12-xl
+    runs-on: macos-13-xlarge
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/run-ql-tests
