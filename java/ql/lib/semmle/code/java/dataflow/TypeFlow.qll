@@ -118,7 +118,7 @@ private module Input implements TypeFlowInput<Location> {
    * Holds if data can flow from `n1` to `n2` in one step, and `n1` is
    * functionally determined by `n2`.
    */
-  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
+  predicate uniqStep(TypeFlowNode n1, TypeFlowNode n2) {
     n2.asExpr() = n1.asField().getAnAccess()
     or
     n2.asExpr() = n1.asSsa().getAUse()
@@ -169,7 +169,7 @@ private module Input implements TypeFlowInput<Location> {
    */
   pragma[nomagic]
   private predicate upcastCand(TypeFlowNode n, RefType t1, RefType t1e, RefType t2, RefType t2e) {
-    exists(TypeFlowNode next | step(n, next) or joinStep(n, next) |
+    exists(TypeFlowNode next | uniqStep(n, next) or joinStep(n, next) |
       n.getType() = t1 and
       next.getType() = t2 and
       t1.getErasure() = t1e and

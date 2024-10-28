@@ -9,7 +9,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   predicate isNull(TypeFlowNode n) {
     isNullValue(n)
     or
-    exists(TypeFlowNode mid | isNull(mid) and step(mid, n))
+    exists(TypeFlowNode mid | isNull(mid) and uniqStep(mid, n))
     or
     forex(TypeFlowNode mid | joinStep(mid, n) | isNull(mid)) and
     not isExcludedFromNullAnalysis(n)
@@ -24,7 +24,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   }
 
   private predicate anyStep(TypeFlowNode n1, TypeFlowNode n2) {
-    joinStepNotNull(n1, n2) or step(n1, n2)
+    joinStepNotNull(n1, n2) or uniqStep(n1, n2)
   }
 
   private predicate sccEdge(TypeFlowNode n1, TypeFlowNode n2) {
@@ -171,7 +171,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   private predicate exactType(TypeFlowNode n, Type t) {
     exactTypeBase(n, t)
     or
-    exists(TypeFlowNode mid | exactType(mid, t) and step(mid, n))
+    exists(TypeFlowNode mid | exactType(mid, t) and uniqStep(mid, n))
     or
     // The following is an optimized version of
     // `forex(TypeFlowNode mid | joinStepNotNull(mid, n) | exactType(mid, t))`
@@ -234,7 +234,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   private predicate typeFlow(TypeFlowNode n, Type t) {
     typeFlowBase(n, t)
     or
-    exists(TypeFlowNode mid | typeFlow(mid, t) and step(mid, n))
+    exists(TypeFlowNode mid | typeFlow(mid, t) and uniqStep(mid, n))
     or
     ForAll<TypeFlowNode, RankedJoinStep, TypeFlowPropagation>::flowJoin(n, t)
     or
@@ -366,7 +366,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
         ForAll<TypeFlowScc, RankedSccJoinStep, HasUnionTypePropagation>::flowJoin(scc, _)
       )
       or
-      exists(TypeFlowNode mid | step(mid, n) and hasUnionTypeFlow(mid))
+      exists(TypeFlowNode mid | uniqStep(mid, n) and hasUnionTypeFlow(mid))
       or
       instanceofDisjunctionGuarded(n, _)
     )

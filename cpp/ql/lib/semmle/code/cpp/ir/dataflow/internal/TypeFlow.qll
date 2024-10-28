@@ -199,7 +199,7 @@ private module Input implements TypeFlowInput<Location> {
     i2.(PointerArithmeticInstruction).getLeft() = i1
   }
 
-  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
+  predicate uniqStep(TypeFlowNode n1, TypeFlowNode n2) {
     instructionStep(n1.asInstruction(), n2.asInstruction())
   }
 
@@ -246,7 +246,7 @@ private module Input implements TypeFlowInput<Location> {
   pragma[nomagic]
   private predicate upcastCand(TypeFlowNode n, Type t1, Type t2) {
     exists(TypeFlowNode next |
-      step(n, next)
+      uniqStep(n, next)
       or
       joinStep(n, next)
     |
