@@ -107,12 +107,12 @@ module UfMake<LocationSig Location, UniversalFlowInput<Location> I> {
 
   private module Scc = QlBuiltins::EquivalenceRelation<FlowNode, sccEdge/2>;
 
-  private class TypeFlowScc = Scc::EquivalenceClass;
+  private class FlowScc = Scc::EquivalenceClass;
 
   /** Holds if `n` is part of an SCC of size 2 or more represented by `scc`. */
-  private predicate sccRepr(FlowNode n, TypeFlowScc scc) { scc = Scc::getEquivalenceClass(n) }
+  private predicate sccRepr(FlowNode n, FlowScc scc) { scc = Scc::getEquivalenceClass(n) }
 
-  private predicate sccJoinStepNotNull(FlowNode n, TypeFlowScc scc) {
+  private predicate sccJoinStepNotNull(FlowNode n, FlowScc scc) {
     exists(FlowNode mid |
       joinStepNotNull(n, mid) and
       sccRepr(mid, scc) and
@@ -221,7 +221,7 @@ module UfMake<LocationSig Location, UniversalFlowInput<Location> I> {
   }
 
   private module SccJoinStep implements Edge {
-    class Node = TypeFlowScc;
+    class Node = FlowScc;
 
     predicate edge = sccJoinStepNotNull/2;
   }
@@ -256,11 +256,11 @@ module UfMake<LocationSig Location, UniversalFlowInput<Location> I> {
         // `forex(FlowNode mid | joinStepNotNull(mid, n) | hasPropery(mid))`
         ForAll<FlowNode, RankedJoinStep, Propagation>::flowJoin(n, _)
         or
-        exists(TypeFlowScc scc |
+        exists(FlowScc scc |
           sccRepr(n, scc) and
           // Optimized version of
           // `forex(FlowNode mid | sccJoinStepNotNull(mid, scc) | hasPropery(mid))`
-          ForAll<TypeFlowScc, RankedSccJoinStep, Propagation>::flowJoin(scc, _)
+          ForAll<FlowScc, RankedSccJoinStep, Propagation>::flowJoin(scc, _)
         )
       )
     }
@@ -304,11 +304,11 @@ module UfMake<LocationSig Location, UniversalFlowInput<Location> I> {
         // `forex(FlowNode mid | joinStepNotNull(mid, n) | hasPropery(mid, t))`
         ForAll<FlowNode, RankedJoinStep, Propagation>::flowJoin(n, t)
         or
-        exists(TypeFlowScc scc |
+        exists(FlowScc scc |
           sccRepr(n, scc) and
           // Optimized version of
           // `forex(FlowNode mid | sccJoinStepNotNull(mid, scc) | hasPropery(mid, t))`
-          ForAll<TypeFlowScc, RankedSccJoinStep, Propagation>::flowJoin(scc, t)
+          ForAll<FlowScc, RankedSccJoinStep, Propagation>::flowJoin(scc, t)
         )
       )
     }
