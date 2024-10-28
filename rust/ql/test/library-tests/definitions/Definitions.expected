@@ -16,8 +16,4 @@
 | main.rs:10:31:10:31 | 1 | main.rs:10:23:10:23 | 0 | format argument |
 | main.rs:10:34:10:34 | 2 | main.rs:10:16:10:16 | 1 | format argument |
 | main.rs:10:34:10:34 | 2 | main.rs:10:26:10:27 | {} | format argument |
-| main.rs:11:5:11:60 | left_val | main.rs:11:5:11:60 | left_val | local variable |
-| main.rs:11:5:11:60 | left_val | main.rs:11:5:11:60 | left_val | local variable |
-| main.rs:11:5:11:60 | right_val | main.rs:11:5:11:60 | right_val | local variable |
-| main.rs:11:5:11:60 | right_val | main.rs:11:5:11:60 | right_val | local variable |
 | main.rs:11:40:11:42 | "x" | main.rs:11:31:11:35 | {:<5} | format argument |

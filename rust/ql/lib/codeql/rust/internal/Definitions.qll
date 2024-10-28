@@ -8,6 +8,7 @@ private import codeql.rust.elements.Locatable
 private import codeql.rust.elements.FormatArgsExpr
 private import codeql.rust.elements.FormatArgsArg
 private import codeql.rust.elements.Format
+private import codeql.rust.elements.MacroCall
 private import codeql.rust.elements.NamedFormatArgument
 private import codeql.rust.elements.PositionalFormatArgument
 private import codeql.Locations
@@ -36,7 +37,9 @@ private module Cached {
    */
   cached
   Definition definitionOf(Use use, string kind) {
-    result = use.getDefinition() and kind = use.getUseType()
+    result = use.getDefinition() and
+    kind = use.getUseType() and
+    not result.getLocation() = any(MacroCall m).getLocation()
   }
 }
 
