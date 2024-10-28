@@ -58,7 +58,7 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
       this.isMutable()
       implies
       not exists(VariableAccess va | va = this.getAnAccess() |
-        exists(RefExpr re | va = re.getExpr() and re.isMut())
+        va = any(RefExpr re | re.isMut()).getExpr()
         or
         // receivers can be borrowed implicitly, cf.
         // https://doc.rust-lang.org/reference/expressions/method-call-expr.html
@@ -238,7 +238,7 @@ private predicate lastRefSkipUncertainReadsExt(DefinitionExt def, BasicBlock bb,
   )
 }
 
-private VariableAccess getCapturedVariableAccess(BasicBlock bb, Variable v) {
+private VariableAccess getACapturedVariableAccess(BasicBlock bb, Variable v) {
   result = bb.getANode().getAstNode() and
   result.isCapture() and
   result.getVariable() = v
@@ -247,13 +247,13 @@ private VariableAccess getCapturedVariableAccess(BasicBlock bb, Variable v) {
 /** Holds if `bb` contains a captured write to variable `v`. */
 pragma[noinline]
 private predicate writesCapturedVariable(BasicBlock bb, Variable v) {
-  getCapturedVariableAccess(bb, v) instanceof VariableWriteAccess
+  getACapturedVariableAccess(bb, v) instanceof VariableWriteAccess
 }
 
 /** Holds if `bb` contains a captured read to variable `v`. */
 pragma[nomagic]
 private predicate readsCapturedVariable(BasicBlock bb, Variable v) {
-  getCapturedVariableAccess(bb, v) instanceof VariableReadAccess
+  getACapturedVariableAccess(bb, v) instanceof VariableReadAccess
 }
 
 /**
