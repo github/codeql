@@ -55,3 +55,37 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     SINK(results[0]); // $ hasFlow
     SINK(results[0].solution); // $ hasFlow
 });
+
+// ------ reading from file ------
+
+// Accessing file contents using fs
+const fs = require('fs');
+fs.readFile('file.txt', 'utf8', (err, data) => { // $ MISSING: threat-source=file
+  SINK(data); // $ MISSING: hasFlow
+});
+
+// Accessing file contents using fs.readFileSync
+const fileContent = fs.readFileSync('file.txt', 'utf8'); // $ threat-source=file
+SINK(fileContent); // $ hasFlow
+
+// Accessing file contents using fs.promises
+fs.promises.readFile('file.txt', 'utf8').then((data) => { // $ MISSING: threat-source=file
+  SINK(data); // $ MISSING: hasFlow
+});
+
+// Accessing file contents using fs.createReadStream
+const readStream = fs.createReadStream('file.txt');
+readStream.on('data', (chunk) => { // $ threat-source=file
+  SINK(chunk); // $ hasFlow
+});
+const data = readStream.read(); // $ threat-source=file
+SINK(data); // $ hasFlow
+
+// using readline
+const readline = require('readline');
+const rl_file = readline.createInterface({
+    input: fs.createReadStream('file.txt') // $ MISSING: threat-source=file
+});
+rl_file.on("line", (line) => {
+    SINK(line); // $ MISSING: hasFlow
+});

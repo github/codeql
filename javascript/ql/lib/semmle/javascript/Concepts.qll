@@ -123,6 +123,19 @@ abstract class FileSystemReadAccess extends FileSystemAccess {
 }
 
 /**
+ * A FileSystemReadAccess seen as a ThreatModelSource.
+ */
+private class FileSystemReadAccessAsThreatModelSource extends ThreatModelSource::Range {
+  FileSystemReadAccessAsThreatModelSource() {
+    this = any(FileSystemReadAccess access).getADataNode()
+  }
+
+  override string getThreatModel() { result = "file" }
+
+  override string getSourceType() { result = "FileSystemReadAccess" }
+}
+
+/**
  * A data flow node that writes data to the file system.
  */
 abstract class FileSystemWriteAccess extends FileSystemAccess {
