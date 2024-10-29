@@ -318,6 +318,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     c.isField(_) or c.isSyntheticField(_) or c.isProperty(_)
   }
 
+  predicate isCallback(DataFlow::ContentSet c) {
+    c.isDelegateCallArgument(_) or c.isDelegateCallReturn()
+  }
+
   string getSyntheticName(DataFlow::ContentSet c) {
     exists(CS::Field f |
       not f.isEffectivelyPublic() and

@@ -207,6 +207,11 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
   predicate isField(Lang::ContentSet c);
 
   /**
+   * Holds if the content set `c` is callback like.
+   */
+  predicate isCallback(Lang::ContentSet c);
+
+  /**
    * Gets the MaD synthetic name string representation for the content set `c`, if any.
    */
   string getSyntheticName(Lang::ContentSet c);
@@ -618,6 +623,20 @@ module MakeModelGenerator<
       isField(ap.getAtIndex(_))
     }
 
+    /**
+     * Holds if this access path `ap` mentions a callback.
+     */
+    private predicate mentionsCallback(PropagateContentFlow::AccessPath ap) {
+      isCallback(ap.getAtIndex(_))
+    }
+
+    /**
+     * Models as Data currently doesn't support callback logic in fields.
+     */
+    private predicate validateAccessPath(PropagateContentFlow::AccessPath ap) {
+      not (mentionsField(ap) and mentionsCallback(ap))
+    }
+
     private predicate apiFlow(
       DataFlowSummaryTargetApi api, DataFlow::ParameterNode p,
       PropagateContentFlow::AccessPath reads, ReturnNodeExt returnNodeExt,
@@ -859,6 +878,8 @@ module MakeModelGenerator<
         input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
         output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores) and
         input != output and
+        validateAccessPath(reads) and
+        validateAccessPath(stores) and
         (
           if mentionsField(reads) or mentionsField(stores)
           then lift = false and api.isRelevant()

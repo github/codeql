@@ -62,6 +62,15 @@ public class BasicFlow
     {
         return tainted;
     }
+
+    public Func<object, object> MyFunction;
+    // summary=Models;BasicFlow;false;MapMyFunction;(System.Object);;Argument[0];Argument[this];taint;df-generated
+    // summary=Models;BasicFlow;false;MapMyFunction;(System.Object);;Argument[this];ReturnValue;taint;df-generated
+    // No content based flow as MaD doesn't support callback logic in fields and properties.
+    public object MapMyFunction(object o)
+    {
+        return MyFunction(o);
+    }
 }
 
 public class CollectionFlow

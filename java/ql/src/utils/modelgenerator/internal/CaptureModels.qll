@@ -254,6 +254,8 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, JavaDataF
     c instanceof DataFlowUtil::SyntheticFieldContent
   }
 
+  predicate isCallback(DataFlow::ContentSet c) { none() }
+
   string getSyntheticName(DataFlow::ContentSet c) {
     exists(Field f |
       not f.isPublic() and
