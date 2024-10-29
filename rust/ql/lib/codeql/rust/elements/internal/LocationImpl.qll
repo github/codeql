@@ -3,10 +3,12 @@ private import codeql.rust.elements.internal.LocatableImpl::Impl as LocatableImp
 private import codeql.rust.elements.Locatable
 private import codeql.rust.elements.Format
 private import codeql.rust.elements.FormatArgument
+private import codeql.rust.internal.CachedStages
 
 module LocationImpl {
+  cached
   newtype TLocation =
-    TLocationDefault(@location_default location) or
+    TLocationDefault(@location_default location) { Stages::AstStage::ref() } or
     TLocationSynth(File file, int beginLine, int beginColumn, int endLine, int endColumn) {
       not locations_default(_, file, beginLine, beginColumn, endLine, endColumn) and
       any(LocatableImpl::SynthLocatable l)
@@ -55,9 +57,25 @@ module LocationImpl {
      * For more information, see
      * [Providing locations in CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    abstract predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    abstract predicate hasLocationFileInfo(
+      File file, int startline, int startcolumn, int endline, int endcolumn
     );
+
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Providing locations in CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+     */
+    final predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      exists(File file |
+        this.hasLocationFileInfo(file, startline, startcolumn, endline, endcolumn) and
+        filepath = file.getAbsolutePath()
+      )
+    }
 
     /** Holds if this location starts strictly before the specified location. */
     pragma[inline]
@@ -68,18 +86,15 @@ module LocationImpl {
     }
   }
 
-  private class LocationDefault extends Location, TLocationDefault {
+  class LocationDefault extends Location, TLocationDefault {
     @location_default self;
 
     LocationDefault() { this = TLocationDefault(self) }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    override predicate hasLocationFileInfo(
+      File file, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      exists(File f |
-        locations_default(self, f, startline, startcolumn, endline, endcolumn) and
-        filepath = f.getAbsolutePath()
-      )
+      locations_default(self, file, startline, startcolumn, endline, endcolumn)
     }
   }
 
@@ -88,13 +103,11 @@ module LocationImpl {
     EmptyLocation() { empty_location(self) }
   }
 
-  private class LocationSynth extends Location, TLocationSynth {
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
+  class LocationSynth extends Location, TLocationSynth {
+    override predicate hasLocationFileInfo(
+      File file, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      this =
-        TLocationSynth(any(File f | f.getAbsolutePath() = filepath), startline, startcolumn,
-          endline, endcolumn)
+      this = TLocationSynth(file, startline, startcolumn, endline, endcolumn)
     }
   }
 }

@@ -5,6 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.Raw
+private import codeql.rust.internal.CachedStages
 
 /**
  *  The characteristic predicate of `Format` synthesized instances.
@@ -22,6 +23,7 @@ predicate constructFormat(Raw::FormatArgsExpr parent, int index, string text, in
  * Match an element of a format string, either text (`Hello`) or a format placeholder (`{}`).
  */
 string formatElement(Raw::FormatArgsExpr parent, int occurrenceIndex, int occurrenceOffset) {
+  Stages::AstStage::ref() and
   result =
     parent
         .getTemplate()
