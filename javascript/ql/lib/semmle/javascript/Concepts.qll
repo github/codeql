@@ -149,6 +149,17 @@ abstract class DatabaseAccess extends DataFlow::Node {
 }
 
 /**
+ * A DatabaseAccess seen as a ThreatModelSource.
+ */
+private class DatabaseAccessAsThreatModelSource extends ThreatModelSource::Range {
+  DatabaseAccessAsThreatModelSource() { this = any(DatabaseAccess access).getAResult() }
+
+  override string getThreatModel() { result = "database" }
+
+  override string getSourceType() { result = "DatabaseAccess" }
+}
+
+/**
  * A data flow node that reads persistent data.
  */
 abstract class PersistentReadAccess extends DataFlow::Node {

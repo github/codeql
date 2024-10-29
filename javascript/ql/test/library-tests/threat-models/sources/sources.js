@@ -42,3 +42,16 @@ const program = new Command();
 program.parse(process.argv); // $ threat-source=commandargs
 
 SINK(program.opts().foo); // $ hasFlow SPURIOUS: threat-source=commandargs
+
+// ------ reading from database ------
+
+// Accessing database using mysql
+const mysql = require('mysql');
+const connection = mysql.createConnection({host: 'localhost'});
+connection.connect();
+connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) { // $ threat-source=database
+    if (error) throw error;
+    SINK(results); // $ hasFlow
+    SINK(results[0]); // $ hasFlow
+    SINK(results[0].solution); // $ hasFlow
+});
