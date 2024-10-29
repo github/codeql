@@ -26,11 +26,8 @@ module Bottle {
      * Provides models for Bottle applications.
      */
     module App {
-      /** Gets class `bottle.Bottle`) */
-      API::Node cls() { result = API::moduleImport("bottle").getMember("Bottle") }
-
       /** Gets a reference to a Bottle application (an instance of `bottle.Bottle`) */
-      API::Node instance() { result = cls().getReturn() }
+      API::Node instance() { result = bottle().getMember("Bottle").getReturn() }
 
       /** Gets a reference to a Bottle application (an instance of `bottle.app`) */
       API::Node app() { result = bottle().getMember("app").getReturn() }
@@ -45,15 +42,15 @@ module Bottle {
         ViewCallable() { this = any(BottleRouteSetup rs).getARequestHandler() }
       }
 
+      string routeMethods() { result = ["route", "get", "post", "put", "delete", "patch"] }
+
       private class BottleRouteSetup extends Http::Server::RouteSetup::Range, DataFlow::CallCfgNode {
         BottleRouteSetup() {
           this =
             [
-              App::instance()
-                  .getMember(["route", "get", "post", "put", "delete", "patch"])
-                  .getACall(),
-              App::app().getMember(["route", "get", "post", "put", "delete", "patch"]).getACall(),
-              bottle().getMember(["route", "get", "post", "put", "delete", "patch"]).getACall()
+              App::instance().getMember(routeMethods()).getACall(),
+              App::app().getMember(routeMethods()).getACall(),
+              bottle().getMember(routeMethods()).getACall()
             ]
         }
 
