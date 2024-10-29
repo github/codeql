@@ -2,11 +2,13 @@ package com.github.codeql
 
 import com.github.codeql.KotlinFileExtractor.StmtExprParent
 import org.jetbrains.kotlin.analysis.api.KaSession
+import org.jetbrains.kotlin.analysis.api.resolution.symbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.utils.mapToIndex
 
 context(KaSession)
 fun KotlinFileExtractor.extractMethodCall(
@@ -14,12 +16,32 @@ fun KotlinFileExtractor.extractMethodCall(
     enclosingCallable: Label<out DbCallable>,
     stmtExprParent: StmtExprParent
 ) {
-    val target = call.resolveCallTarget()
+    val callTarget = call.resolveCallTarget()
+    val target = callTarget?.symbol
+    val argMapping = callTarget?.argumentMapping
 
-    if (target == null) TODO()
+    if (target == null || argMapping == null) TODO()
 
-    // TODO: we need to make sure that the args are in the correct order. Named arguments can change the order
-    val args = call.valueArguments.map { it.argumentExpression }
+    val parameterIndexMap = target.valueParameters.mapToIndex()
+
+    // TODO: we need to handle
+    // - arguments passed to vararg parameters, in which case there can be multiple (idx, expr) pairs with the same idx.
+    // - missing arguments due to default parameter values, in which case some indices are missing.
+    val args = call.valueArguments
+        .map { arg ->
+            val expr = arg.argumentExpression
+            val p = argMapping[expr]
+            if (p == null) {
+                TODO("This is unexpected, no parameter was found for the argument")
+            }
+            val idx = parameterIndexMap[p.symbol]
+            if (idx == null) {
+                TODO("This is unexpected, we couldn't find the parameter that the argument was mapped to")
+            }
+            Pair(idx, expr)
+        }
+        .sortedBy { p -> p.first }
+        .map { p -> p.second }
 
     // TODO: fix getting te qualifier, we should handle safe qualified expressions too
     val qualifier: KtExpression? = (call.parent as? KtDotQualifiedExpression)?.receiverExpression

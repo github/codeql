@@ -266,10 +266,10 @@ private fun KaFunctionSymbol.isNumericWithName(functionName: String): Boolean {
 }
 
 context(KaSession)
-fun KtExpression.resolveCallTarget(): KaFunctionSymbol? {
+fun KtExpression.resolveCallTarget(): KaSimpleFunctionCall? {
     val callInfo = this.resolveToCall() as? KaSuccessCallInfo
     val functionCall = callInfo?.call as? KaSimpleFunctionCall
-    return functionCall?.symbol
+    return functionCall
 }
 
 /**
@@ -295,7 +295,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
     parent: StmtExprParent
 ) {
     val op = expression.operationToken
-    val target = expression.resolveCallTarget()
+    val target = expression.resolveCallTarget()?.symbol
 
     when (op) {
         KtTokens.PLUS -> {
