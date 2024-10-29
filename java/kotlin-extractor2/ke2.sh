@@ -31,4 +31,4 @@ else
   JAVA=java
 fi
 
-"$JAVA" -Xmx2G -cp "$SCRIPT_DIR/ke2.jar" com.github.codeql.KotlinExtractorKt "$INVOCATION_TRAP" "$@"
+"$JAVA" -Xmx2G $CODEQL_KOTLIN_EXTRACTOR_JVM_ARGS -cp "$SCRIPT_DIR/ke2.jar" com.github.codeql.KotlinExtractorKt "$INVOCATION_TRAP" "$@"
