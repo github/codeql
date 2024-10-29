@@ -619,6 +619,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     // We're only interested in timeouts.
                     var start = allowExceptions ? "Considering" : "Not considering";
                     logger.LogInfo($"Querying Nuget feed '{feed}' failed in a timely manner. {start} the feed for use. The reason for the failure: {exc.Message}");
+                    logger.LogError($"Exception: {exc}");
+
+                    if (exc.InnerException != null)
+                    {
+                        logger.LogError($"Inner exception: {exc.InnerException}");
+                    }
+
                     return allowExceptions;
                 }
             }
