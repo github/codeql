@@ -1,5 +1,4 @@
-load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
-load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pkg_files")
+load("//misc/bazel:pkg.bzl", "codeql_pack")
 
 package(default_visibility = ["//visibility:public"])
 
