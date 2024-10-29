@@ -60,6 +60,20 @@ jobs:
       id: git-commit
       if: steps.search-patch.outputs.result
       run: |
+          set -x
+          # Set initial placeholder name/mail and read it from the patch later
+          git config --global user.email 'foo@bar'
+          git config --global user.name 'Foo Bar'
+          
+          git am version_increments.patch
+          
+          # Read the author's name+mail from the just applied patch and recommit it with both set as committer
+          botMail=$(git log -1 --pretty=format:'%ae')
+          botName=$(git log -1 --pretty=format:'%an')
+          git config --global user.email "${botMail}"
+          git config --global user.name "${botName}"
+          git commit --amend --no-edit
+          
           fileList=$(git diff-tree --no-commit-id --name-only HEAD -r)
           echo "file-list<<EOF" >> $GITHUB_OUTPUT
           echo "$fileList" >> $GITHUB_OUTPUT
