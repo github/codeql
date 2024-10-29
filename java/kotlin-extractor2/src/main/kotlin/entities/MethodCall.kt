@@ -43,7 +43,7 @@ fun KotlinFileExtractor.extractMethodCall(
         .sortedBy { p -> p.first }
         .map { p -> p.second }
 
-    // TODO: fix getting te qualifier, we should handle safe qualified expressions too
+    // TODO: fix getting the qualifier, we should handle safe qualified expressions too
     val qualifier: KtExpression? = (call.parent as? KtDotQualifiedExpression)?.receiverExpression
     val extensionReceiver = if (target.isExtension) qualifier else null
     val dispatchReceiver = if (!target.isExtension) qualifier else null
