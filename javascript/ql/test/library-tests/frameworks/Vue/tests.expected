@@ -175,3 +175,6 @@ attribute
 | single-file-component-3.vue:4:9:4:49 | src=./single-file-component-3-script.js | src |
 | single-file-component-4.vue:2:8:2:21 | v-html=dataA | v-html |
 | single-file-component-5.vue:2:8:2:21 | v-html=dataA | v-html |
+| special-syntax.vue:2:9:2:22 | :colonProp=x | :colonProp |
+| special-syntax.vue:2:24:2:34 | @atProp=x | @atProp |
+| special-syntax.vue:3:9:3:29 | :colonField.field=x | :colonField.field |
