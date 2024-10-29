@@ -11,10 +11,7 @@ int numberOfLines(string text) { result = max(int i | exists(text.splitAt("\n", 
  * Gets the length of each line in the StringValue .
  */
 bindingset[text]
-int lineLength(string text, int i) {
-  i in [0 .. numberOfLines(text)] and
-  result = text.splitAt("\n", i).length() + 1
-}
+int lineLength(string text, int i) { result = text.splitAt("\n", i).length() + 1 }
 
 /**
  * Gets the sum of the length of the lines up to the given index.
