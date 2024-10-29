@@ -8,6 +8,10 @@ fn print_i64(i: i64) { // i
     println!("{}", i); // $ read_access=i
 }
 
+fn print_i64_ref(i: &i64) {
+    print_i64(*i) // $ read_access=i
+}
+
 fn immutable_variable() {
     let x1 = "a"; // x1
     print_str(x1); // $ read_access=x1
@@ -18,6 +22,13 @@ fn mutable_variable() {
     print_i64(x2); // $ read_access=x2
     x2 = 5; // $ write_access=x2
     print_i64(x2); // $ read_access=x2
+}
+
+fn mutable_variable_immutable_borrow() {
+    let mut x = 1;
+    print_i64_ref(&x); // $ access=x
+    x = 2; // $ write_access=x
+    print_i64_ref(&x); // $ access=x
 }
 
 fn variable_shadow1() {
@@ -385,23 +396,40 @@ fn alias() {
     print_i64(x); // $ read_access=x
 }
 
-fn capture_mut() {
-    let mut x = 10; // x
-    let mut cap = || {
+fn capture_immut() {
+    let x = 100; // x
+    // Captures immutable value by immutable reference
+    let cap = || {
         print_i64(x); // $ read_access=x
-        x += 1; // $ access=x
     };
     cap(); // $ read_access=cap
     print_i64(x); // $ read_access=x
 }
 
-fn capture_immut() {
-    let x = 100; // x
-    let mut cap = || {
+fn capture_mut() {
+    let mut x = 1; // x
+    // Captures mutable value by immutable reference
+    let closure1 = || {
         print_i64(x); // $ read_access=x
     };
-    cap(); // $ read_access=cap
+    closure1(); // $ read_access=closure1
     print_i64(x); // $ read_access=x
+
+    let mut y = 2; // y
+    // Captures mutable value by mutable reference
+    let mut closure2 = || {
+        y = 3; // $ write_access=y
+    };
+    closure2(); // $ read_access=closure2
+    print_i64(y); // $ read_access=y
+
+    let mut z = 2; // z
+    // Captures mutable value by mutable reference and calls mutating method
+    let mut closure3 = || {
+        z.add_assign(1); // $ read_access=z
+    };
+    closure3(); // $ read_access=closure3
+    print_i64(z); // $ read_access=z
 }
 
 fn phi(b : bool) {
@@ -455,17 +483,13 @@ fn structs() {
     print_i64(a.my_get()); // $ read_access=a
 }
 
-fn ref_param(x: &i64) {
-    print_i64(*x) // $ read_access=x
-}
-
 fn ref_arg() {
     let x = 16; // x
-    ref_param(&x); // $ access=x
+    print_i64_ref(&x); // $ access=x
     print_i64(x); // $ read_access=x
 
     let z = 17; // z
-    ref_param(&z); // $ access=z
+    print_i64_ref(&z); // $ access=z
 }
 
 trait Bar {
@@ -488,6 +512,7 @@ fn ref_methodcall_receiver() {
 fn main() {
     immutable_variable();
     mutable_variable();
+    mutable_variable_immutable_borrow();
     variable_shadow1();
     variable_shadow2();
     let_pattern1();
