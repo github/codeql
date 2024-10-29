@@ -31,8 +31,7 @@ predicate typeTrackerCallEdge(CallNode call, Function callable) {
 predicate typeTrackerClassCall(CallNode call, Function callable) {
   exists(call.getLocation().getFile().getRelativePath()) and
   exists(callable.getLocation().getFile().getRelativePath()) and
-  TT::resolveCall(call, callable, any(TT::TCallType t | t instanceof TT::CallTypeClass)) and
-  TT::TFunction(callable) instanceof TT::DataFlowFunction
+  TT::resolveCall(call, callable, any(TT::TCallType t | t instanceof TT::CallTypeClass))
 }
 
 module CallGraphTest implements TestSig {
