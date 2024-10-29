@@ -29,7 +29,10 @@ predicate hiddenNode(AstNode n) {
   not succ(n, _) and
   not succ(_, n)
   or
-  n instanceof ControlFlowGraphImpl::PostOrderTree // location is counter-intuitive
+  n instanceof ControlFlowGraphImpl::PostOrderTree and // location is counter-intuitive
+  not n instanceof MacroExpr
+  or
+  n.isInMacroExpansion()
 }
 
 /**

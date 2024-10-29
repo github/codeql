@@ -191,7 +191,7 @@ fn loops() {
     }
 
     for x in 1..10 {
-        _ = format!("x is {x}"); // $ SPURIOUS: Alert[rust/unused-value]
+        _ = format!("x is {x}");
     }
 
     for x in 1..10 {
@@ -203,11 +203,11 @@ fn loops() {
     }
 
     for x in 1..10 {
-        assert_eq!(x, 1); // $ SPURIOUS: Alert[rust/unused-value]
+        assert_eq!(x, 1);
     }
 
     for x in 1..10 {
-        assert_eq!(id(x), id(1)); // $ SPURIOUS: Alert[rust/unused-value]
+        assert_eq!(id(x), id(1));
     }
 }
 
@@ -331,7 +331,7 @@ fn if_lets_matches() {
     }
 
     let duration1 = std::time::Duration::new(10, 0); // ten seconds
-    assert_eq!(duration1.as_secs(), 10); // $ SPURIOUS: Alert[rust/unused-value]
+    assert_eq!(duration1.as_secs(), 10);
 
     let duration2: Result<std::time::Duration, String> = Ok(std::time::Duration::new(10, 0));
     match duration2 {

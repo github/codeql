@@ -20,5 +20,6 @@ where
   not write = any(Ssa::WriteDefinition def).getWriteAccess().getAstNode() and
   // avoid overlap with the unused variable query
   not isUnused(v) and
-  not v instanceof DiscardVariable
+  not v instanceof DiscardVariable and
+  not write.isInMacroExpansion()
 select write, "Variable '" + v + "' is assigned a value that is never used."
