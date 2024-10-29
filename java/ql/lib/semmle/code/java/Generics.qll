@@ -331,13 +331,6 @@ class ParameterizedType extends ClassOrInterface {
   }
 
   /**
-   * The erasure of a parameterized type is its generic counterpart.
-   *
-   * For example, the erasure of both `X<Number>` and `X<Integer>` is `X<T>`.
-   */
-  override RefType getErasure() { erasure(this, result) or this.(GenericType) = result }
-
-  /**
    * Gets the generic type corresponding to this parameterized type.
    *
    * For example, the generic type for both `X<Number>` and `X<Integer>` is `X<T>`.
@@ -405,13 +398,6 @@ class ParameterizedInterface extends Interface, ParameterizedType {
  */
 class RawType extends RefType {
   RawType() { isRaw(this) }
-
-  /**
-   * The erasure of a raw type is its generic counterpart.
-   *
-   * For example, the erasure of `List` is `List<E>`.
-   */
-  override RefType getErasure() { erasure(this, result) }
 
   /** Holds if this type originates from source code. */
   override predicate fromSource() { not any() }
