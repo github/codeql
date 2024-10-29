@@ -183,7 +183,7 @@ fn unreachable_loop() {
 }
 
 fn unreachable_paren() {
-    let _ = (1);
+    let _ = (((1)));
 }
 
 fn unreachable_let_1() {
