@@ -89,3 +89,32 @@ const rl_file = readline.createInterface({
 rl_file.on("line", (line) => {
     SINK(line); // $ MISSING: hasFlow
 });
+
+
+// ------ reading from stdin ------
+
+// Accessing stdin using process.stdin
+process.stdin.on('data', (data) => { // $ MISSING: threat-source=stdin
+    SINK(data); // $ MISSING: hasFlow
+});
+
+const stdin_line = process.stdin.read(); // $ MISSING: threat-source=stdin
+SINK(stdin_line); // $ MISSING: hasFlow
+
+// Accessing stdin using readline
+const readline = require('readline');
+const rl_stdin = readline.createInterface({
+    input: process.stdin // $ MISSING: threat-source=stdin
+});
+rl_stdin.question('<question>', (answer) => {
+    SINK(answer); // $ MISSING: hasFlow
+});
+
+function handler(answer) {
+    SINK(answer); // $ MISSING: hasFlow
+}
+rl_stdin.question('<question>', handler);
+
+rl_stdin.on("line", (line) => {
+    SINK(line); // $ MISSING: hasFlow
+});
