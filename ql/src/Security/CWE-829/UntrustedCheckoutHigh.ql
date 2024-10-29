@@ -42,4 +42,5 @@ where
     not event.getName() = "issue_comment" and
     not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout"))
   )
-select checkout, "Potential execution of untrusted code on a privileged workflow."
+select checkout, "Potential execution of untrusted code on a privileged workflow ($@)", event,
+  event.getName()

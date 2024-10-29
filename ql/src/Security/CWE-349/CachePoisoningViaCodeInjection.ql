@@ -44,5 +44,5 @@ where
     )
   )
 select sink.getNode(), source, sink,
-  "Unprivileged code injection in $@, which may lead to cache poisoning.", sink,
-  sink.getNode().asExpr().(Expression).getRawExpression()
+  "Unprivileged code injection in $@, which may lead to cache poisoning ($@).", sink,
+  sink.getNode().asExpr().(Expression).getRawExpression(), event, event.getName()

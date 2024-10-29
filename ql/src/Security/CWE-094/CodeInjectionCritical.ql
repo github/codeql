@@ -33,5 +33,4 @@ where
   )
 select sink.getNode(), source, sink,
   "Potential code injection in $@, which may be controlled by an external user ($@).", sink,
-  sink.getNode().asExpr().(Expression).getRawExpression(), event,
-  event.getLocation().getFile().toString()
+  sink.getNode().asExpr().(Expression).getRawExpression(), event, event.getName()

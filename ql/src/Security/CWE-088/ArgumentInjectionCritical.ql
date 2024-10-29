@@ -25,5 +25,5 @@ where
     check.protects(sink.getNode().asExpr(), event, "argument-injection")
   )
 select sink.getNode(), source, sink,
-  "Potential argument injection in $@ command, which may be controlled by an external user.", sink,
-  sink.getNode().(ArgumentInjectionSink).getCommand()
+  "Potential argument injection in $@ command, which may be controlled by an external user ($@).",
+  sink, sink.getNode().(ArgumentInjectionSink).getCommand(), event, event.getName()

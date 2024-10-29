@@ -24,5 +24,5 @@ where
     check.protects(sink.getNode().asExpr(), event, "artifact-poisoning")
   )
 select sink.getNode(), source, sink,
-  "Potential artifact poisoning in $@, which may be controlled by an external user.", sink,
-  sink.getNode().toString()
+  "Potential artifact poisoning in $@, which may be controlled by an external user ($@).", sink,
+  sink.getNode().toString(), event, event.getName()
