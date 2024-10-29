@@ -525,6 +525,7 @@ module Public {
      * As `getACalleeIncludingExternals`, except excluding external functions (those for which
      * we lack a definition, such as standard library functions).
      */
+    pragma[nomagic]
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
 
     /**
@@ -726,7 +727,10 @@ module Public {
     override string getNodeKind() { result = "external parameter node" }
 
     override Type getType() {
-      result = this.getSummarizedCallable().getType().getParameterType(this.getPos())
+      result =
+        this.getSummarizedCallable()
+            .getType()
+            .getParameterType(pragma[only_bind_into](this.getPos()))
       or
       this.getPos() = -1 and
       result = this.getSummarizedCallable().asFunction().(Method).getReceiverType()

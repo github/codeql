@@ -28,7 +28,7 @@ edges
 | SecondOrderSqlInjection.cs:20:31:20:44 | access to local variable customerReader : SqlDataReader | SecondOrderSqlInjection.cs:25:119:25:132 | access to local variable customerReader : SqlDataReader | provenance |  |
 | SecondOrderSqlInjection.cs:20:48:20:78 | call to method ExecuteReader : SqlDataReader | SecondOrderSqlInjection.cs:20:31:20:44 | access to local variable customerReader : SqlDataReader | provenance |  |
 | SecondOrderSqlInjection.cs:25:119:25:132 | access to local variable customerReader : SqlDataReader | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | provenance | MaD:20 |
-| SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | provenance |  Sink:MaD:16 |
+| SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | provenance | Sink:MaD:16 |
 | SecondOrderSqlInjection.cs:33:31:33:32 | access to local variable fs : FileStream | SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream | provenance |  |
 | SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | SecondOrderSqlInjection.cs:33:31:33:32 | access to local variable fs : FileStream | provenance | Src:MaD:21  |
 | SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | SecondOrderSqlInjection.cs:33:31:33:32 | access to local variable fs : FileStream | provenance | Src:MaD:22  |
@@ -38,48 +38,48 @@ edges
 | SecondOrderSqlInjection.cs:38:29:38:31 | access to local variable sql : String | SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String | provenance |  |
 | SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader | SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String | provenance | MaD:25 |
 | SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String | SecondOrderSqlInjection.cs:38:29:38:31 | access to local variable sql : String | provenance |  |
-| SecondOrderSqlInjection.cs:40:25:40:27 | access to local variable sql : String | SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql | provenance |  Sink:MaD:10 |
+| SecondOrderSqlInjection.cs:40:25:40:27 | access to local variable sql : String | SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql | provenance | Sink:MaD:10 |
 | SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String | SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String | provenance | MaD:28 |
 | SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String | SecondOrderSqlInjection.cs:40:25:40:27 | access to local variable sql : String | provenance |  |
-| SqlInjection.cs:37:21:37:26 | access to local variable query1 : String | SqlInjection.cs:39:50:39:55 | access to local variable query1 | provenance |  Sink:MaD:18 |
+| SqlInjection.cs:37:21:37:26 | access to local variable query1 : String | SqlInjection.cs:39:50:39:55 | access to local variable query1 | provenance | Sink:MaD:18 |
 | SqlInjection.cs:38:21:38:35 | access to field categoryTextBox : TextBox | SqlInjection.cs:38:21:38:40 | access to property Text : String | provenance | MaD:26 |
 | SqlInjection.cs:38:21:38:40 | access to property Text : String | SqlInjection.cs:37:21:37:26 | access to local variable query1 : String | provenance |  |
-| SqlInjection.cs:72:25:72:30 | access to local variable query1 : String | SqlInjection.cs:74:56:74:61 | access to local variable query1 | provenance |  Sink:MaD:7 |
-| SqlInjection.cs:72:25:72:30 | access to local variable query1 : String | SqlInjection.cs:75:55:75:60 | access to local variable query1 | provenance |  Sink:MaD:8 |
+| SqlInjection.cs:72:25:72:30 | access to local variable query1 : String | SqlInjection.cs:74:56:74:61 | access to local variable query1 | provenance | Sink:MaD:7 |
+| SqlInjection.cs:72:25:72:30 | access to local variable query1 : String | SqlInjection.cs:75:55:75:60 | access to local variable query1 | provenance | Sink:MaD:8 |
 | SqlInjection.cs:73:33:73:47 | access to field categoryTextBox : TextBox | SqlInjection.cs:73:33:73:52 | access to property Text : String | provenance | MaD:26 |
 | SqlInjection.cs:73:33:73:52 | access to property Text : String | SqlInjection.cs:72:25:72:30 | access to local variable query1 : String | provenance |  |
-| SqlInjection.cs:86:21:86:26 | access to local variable query1 : String | SqlInjection.cs:88:50:88:55 | access to local variable query1 | provenance |  Sink:MaD:18 |
+| SqlInjection.cs:86:21:86:26 | access to local variable query1 : String | SqlInjection.cs:88:50:88:55 | access to local variable query1 | provenance | Sink:MaD:18 |
 | SqlInjection.cs:87:21:87:29 | access to property Text : String | SqlInjection.cs:86:21:86:26 | access to local variable query1 : String | provenance |  |
-| SqlInjection.cs:96:21:96:31 | access to local variable queryString : String | SqlInjection.cs:98:42:98:52 | access to local variable queryString | provenance |  Sink:MaD:15 |
+| SqlInjection.cs:96:21:96:31 | access to local variable queryString : String | SqlInjection.cs:98:42:98:52 | access to local variable queryString | provenance | Sink:MaD:15 |
 | SqlInjection.cs:96:21:96:31 | access to local variable queryString : String | SqlInjection.cs:98:42:98:52 | access to local variable queryString : String | provenance |  |
 | SqlInjection.cs:97:21:97:29 | access to property Text : String | SqlInjection.cs:96:21:96:31 | access to local variable queryString : String | provenance |  |
-| SqlInjection.cs:98:21:98:23 | access to local variable cmd : SqlCommand | SqlInjection.cs:99:50:99:52 | access to local variable cmd | provenance |  Sink:MaD:17 |
+| SqlInjection.cs:98:21:98:23 | access to local variable cmd : SqlCommand | SqlInjection.cs:99:50:99:52 | access to local variable cmd | provenance | Sink:MaD:17 |
 | SqlInjection.cs:98:27:98:53 | object creation of type SqlCommand : SqlCommand | SqlInjection.cs:98:21:98:23 | access to local variable cmd : SqlCommand | provenance |  |
 | SqlInjection.cs:98:42:98:52 | access to local variable queryString : String | SqlInjection.cs:98:27:98:53 | object creation of type SqlCommand : SqlCommand | provenance | MaD:19 |
-| SqlInjection.cs:107:21:107:31 | access to local variable queryString : String | SqlInjection.cs:109:42:109:52 | access to local variable queryString | provenance |  Sink:MaD:15 |
+| SqlInjection.cs:107:21:107:31 | access to local variable queryString : String | SqlInjection.cs:109:42:109:52 | access to local variable queryString | provenance | Sink:MaD:15 |
 | SqlInjection.cs:107:21:107:31 | access to local variable queryString : String | SqlInjection.cs:109:42:109:52 | access to local variable queryString : String | provenance |  |
 | SqlInjection.cs:108:21:108:38 | call to method ReadLine : String | SqlInjection.cs:107:21:107:31 | access to local variable queryString : String | provenance | Src:MaD:27  |
-| SqlInjection.cs:109:21:109:23 | access to local variable cmd : SqlCommand | SqlInjection.cs:110:50:110:52 | access to local variable cmd | provenance |  Sink:MaD:17 |
+| SqlInjection.cs:109:21:109:23 | access to local variable cmd : SqlCommand | SqlInjection.cs:110:50:110:52 | access to local variable cmd | provenance | Sink:MaD:17 |
 | SqlInjection.cs:109:27:109:53 | object creation of type SqlCommand : SqlCommand | SqlInjection.cs:109:21:109:23 | access to local variable cmd : SqlCommand | provenance |  |
 | SqlInjection.cs:109:42:109:52 | access to local variable queryString : String | SqlInjection.cs:109:27:109:53 | object creation of type SqlCommand : SqlCommand | provenance | MaD:19 |
 | SqlInjection.cs:122:73:122:78 | userId : String | SqlInjection.cs:125:20:125:24 | access to local variable query : String | provenance |  |
-| SqlInjection.cs:125:20:125:24 | access to local variable query : String | SqlInjection.cs:129:53:129:57 | access to local variable query | provenance |  Sink:MaD:16 |
-| SqlInjectionDapper.cs:20:21:20:25 | access to local variable query : String | SqlInjectionDapper.cs:21:55:21:59 | access to local variable query | provenance |  Sink:MaD:4 |
+| SqlInjection.cs:125:20:125:24 | access to local variable query : String | SqlInjection.cs:129:53:129:57 | access to local variable query | provenance | Sink:MaD:16 |
+| SqlInjectionDapper.cs:20:21:20:25 | access to local variable query : String | SqlInjectionDapper.cs:21:55:21:59 | access to local variable query | provenance | Sink:MaD:4 |
 | SqlInjectionDapper.cs:20:86:20:94 | access to property Text : String | SqlInjectionDapper.cs:20:21:20:25 | access to local variable query : String | provenance |  |
-| SqlInjectionDapper.cs:29:21:29:25 | access to local variable query : String | SqlInjectionDapper.cs:30:66:30:70 | access to local variable query | provenance |  Sink:MaD:5 |
+| SqlInjectionDapper.cs:29:21:29:25 | access to local variable query : String | SqlInjectionDapper.cs:30:66:30:70 | access to local variable query | provenance | Sink:MaD:5 |
 | SqlInjectionDapper.cs:29:86:29:94 | access to property Text : String | SqlInjectionDapper.cs:29:21:29:25 | access to local variable query : String | provenance |  |
-| SqlInjectionDapper.cs:38:21:38:25 | access to local variable query : String | SqlInjectionDapper.cs:39:63:39:67 | access to local variable query | provenance |  Sink:MaD:6 |
+| SqlInjectionDapper.cs:38:21:38:25 | access to local variable query : String | SqlInjectionDapper.cs:39:63:39:67 | access to local variable query | provenance | Sink:MaD:6 |
 | SqlInjectionDapper.cs:38:86:38:94 | access to property Text : String | SqlInjectionDapper.cs:38:21:38:25 | access to local variable query : String | provenance |  |
-| SqlInjectionDapper.cs:47:21:47:25 | access to local variable query : String | SqlInjectionDapper.cs:49:47:49:51 | access to local variable query | provenance |  Sink:MaD:1 |
+| SqlInjectionDapper.cs:47:21:47:25 | access to local variable query : String | SqlInjectionDapper.cs:49:47:49:51 | access to local variable query | provenance | Sink:MaD:1 |
 | SqlInjectionDapper.cs:47:86:47:94 | access to property Text : String | SqlInjectionDapper.cs:47:21:47:25 | access to local variable query : String | provenance |  |
-| SqlInjectionDapper.cs:57:21:57:25 | access to local variable query : String | SqlInjectionDapper.cs:58:42:58:46 | access to local variable query | provenance |  Sink:MaD:3 |
+| SqlInjectionDapper.cs:57:21:57:25 | access to local variable query : String | SqlInjectionDapper.cs:58:42:58:46 | access to local variable query | provenance | Sink:MaD:3 |
 | SqlInjectionDapper.cs:57:86:57:94 | access to property Text : String | SqlInjectionDapper.cs:57:21:57:25 | access to local variable query : String | provenance |  |
-| SqlInjectionDapper.cs:66:21:66:25 | access to local variable query : String | SqlInjectionDapper.cs:67:42:67:46 | access to local variable query | provenance |  Sink:MaD:2 |
+| SqlInjectionDapper.cs:66:21:66:25 | access to local variable query : String | SqlInjectionDapper.cs:67:42:67:46 | access to local variable query | provenance | Sink:MaD:2 |
 | SqlInjectionDapper.cs:66:86:66:94 | access to property Text : String | SqlInjectionDapper.cs:66:21:66:25 | access to local variable query : String | provenance |  |
 | SqlInjectionDapper.cs:75:21:75:25 | access to local variable query : String | SqlInjectionDapper.cs:77:52:77:56 | access to local variable query | provenance |  |
 | SqlInjectionDapper.cs:75:86:75:94 | access to property Text : String | SqlInjectionDapper.cs:75:21:75:25 | access to local variable query : String | provenance |  |
 | SqlInjectionSqlite.cs:19:51:19:63 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:19:51:19:68 | access to property Text | provenance | MaD:26 Sink:MaD:9 |
-| SqlInjectionSqlite.cs:24:17:24:19 | access to local variable cmd : SQLiteCommand | SqlInjectionSqlite.cs:44:45:44:47 | access to local variable cmd | provenance |  Sink:MaD:11 |
+| SqlInjectionSqlite.cs:24:17:24:19 | access to local variable cmd : SQLiteCommand | SqlInjectionSqlite.cs:44:45:44:47 | access to local variable cmd | provenance | Sink:MaD:11 |
 | SqlInjectionSqlite.cs:24:23:24:71 | object creation of type SQLiteCommand : SQLiteCommand | SqlInjectionSqlite.cs:24:17:24:19 | access to local variable cmd : SQLiteCommand | provenance |  |
 | SqlInjectionSqlite.cs:24:41:24:53 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:24:41:24:58 | access to property Text | provenance | MaD:26 Sink:MaD:10 |
 | SqlInjectionSqlite.cs:24:41:24:53 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:24:41:24:58 | access to property Text : String | provenance | MaD:26 |
@@ -97,7 +97,7 @@ edges
 | SqlInjectionSqlite.cs:54:29:54:31 | access to local variable sql : String | SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | provenance |  |
 | SqlInjectionSqlite.cs:54:35:54:36 | access to local variable sr : StreamReader | SqlInjectionSqlite.cs:54:35:54:47 | call to method ReadLine : String | provenance | MaD:25 |
 | SqlInjectionSqlite.cs:54:35:54:47 | call to method ReadLine : String | SqlInjectionSqlite.cs:54:29:54:31 | access to local variable sql : String | provenance |  |
-| SqlInjectionSqlite.cs:56:25:56:27 | access to local variable sql : String | SqlInjectionSqlite.cs:61:53:61:55 | access to local variable sql | provenance |  Sink:MaD:10 |
+| SqlInjectionSqlite.cs:56:25:56:27 | access to local variable sql : String | SqlInjectionSqlite.cs:61:53:61:55 | access to local variable sql | provenance | Sink:MaD:10 |
 | SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | provenance | MaD:28 |
 | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | SqlInjectionSqlite.cs:56:25:56:27 | access to local variable sql : String | provenance |  |
 models

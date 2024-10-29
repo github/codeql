@@ -4,6 +4,7 @@
  */
 
 private import internal.CallExprImpl
+import codeql.rust.elements.CallExprBase
 import codeql.rust.elements.Expr
 
 /**

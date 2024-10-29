@@ -177,7 +177,7 @@ module Make<InlineExpectationsTestSig Impl> {
         (
           exists(FalseNegativeTestExpectation falseNegative |
             falseNegative.matchesActualResult(actualResult) and
-            message = "Fixed missing result:" + falseNegative.getExpectationText()
+            message = "Fixed missing result: " + falseNegative.getExpectationText()
           )
           or
           not exists(ValidTestExpectation expectation |
@@ -202,10 +202,10 @@ module Make<InlineExpectationsTestSig Impl> {
         element = expectation and
         (
           expectation instanceof GoodTestExpectation and
-          message = "Missing result:" + expectation.getExpectationText()
+          message = "Missing result: " + expectation.getExpectationText()
           or
           expectation instanceof FalsePositiveTestExpectation and
-          message = "Fixed spurious result:" + expectation.getExpectationText()
+          message = "Fixed spurious result: " + expectation.getExpectationText()
         )
       )
       or
@@ -242,7 +242,13 @@ module Make<InlineExpectationsTestSig Impl> {
 
       Impl::Location getLocation() { none() }
 
-      final string getExpectationText() { result = this.getTag() + "=" + this.getValue() }
+      final string getExpectationText() {
+        exists(string suffix |
+          if this.getValue() = "" then suffix = "" else suffix = "=" + this.getValue()
+        |
+          result = this.getTag() + suffix
+        )
+      }
 
       string getTag() { none() }
 

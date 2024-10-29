@@ -11,7 +11,7 @@ private import semmle.code.java.security.Sanitizers
  * A taint-tracking configuration for unvalidated user input that is used in XSLT transformation.
  */
 module XsltInjectionFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XsltInjectionSink }
 
@@ -20,6 +20,8 @@ module XsltInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(XsltInjectionAdditionalTaintStep c).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

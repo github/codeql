@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.Pat
@@ -29,17 +30,45 @@ module Generated {
     override string getAPrimaryQlClass() { result = "LetExpr" }
 
     /**
-     * Gets the pat of this let expression.
+     * Gets the `index`th attr of this let expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertLetExprToRaw(this).(Raw::LetExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this let expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this let expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the expression of this let expression, if it exists.
+     */
+    Expr getExpr() {
+      result = Synth::convertExprFromRaw(Synth::convertLetExprToRaw(this).(Raw::LetExpr).getExpr())
+    }
+
+    /**
+     * Holds if `getExpr()` exists.
+     */
+    final predicate hasExpr() { exists(this.getExpr()) }
+
+    /**
+     * Gets the pat of this let expression, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertLetExprToRaw(this).(Raw::LetExpr).getPat())
     }
 
     /**
-     * Gets the expression of this let expression.
+     * Holds if `getPat()` exists.
      */
-    Expr getExpr() {
-      result = Synth::convertExprFromRaw(Synth::convertLetExprToRaw(this).(Raw::LetExpr).getExpr())
-    }
+    final predicate hasPat() { exists(this.getPat()) }
   }
 }

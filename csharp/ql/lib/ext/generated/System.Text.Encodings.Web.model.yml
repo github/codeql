@@ -7,9 +7,9 @@ extensions:
       - ["System.Text.Encodings.Web", "TextEncoder", False, "Encode", "(System.IO.TextWriter,System.String)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
       - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.IO.TextWriter,System.Char[],System.Int32,System.Int32)", "", "Argument[1].Element", "Argument[0]", "taint", "df-generated"]
       - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.IO.TextWriter,System.String,System.Int32,System.Int32)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
-      - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.ReadOnlySpan<System.Char>,System.Span<System.Char>,System.Int32,System.Int32,System.Boolean)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
-      - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Text.Encodings.Web", "TextEncoder", True, "EncodeUtf8", "(System.ReadOnlySpan<System.Byte>,System.Span<System.Byte>,System.Int32,System.Int32,System.Boolean)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.ReadOnlySpan<System.Char>,System.Span<System.Char>,System.Int32,System.Int32,System.Boolean)", "", "Argument[0].Element", "Argument[1].Element", "value", "dfc-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", True, "EncodeUtf8", "(System.ReadOnlySpan<System.Byte>,System.Span<System.Byte>,System.Int32,System.Int32,System.Boolean)", "", "Argument[0].Element", "Argument[1].Element", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

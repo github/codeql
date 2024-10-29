@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -26,6 +27,24 @@ module Generated {
    */
   class YeetExpr extends Synth::TYeetExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "YeetExpr" }
+
+    /**
+     * Gets the `index`th attr of this yeet expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertYeetExprToRaw(this).(Raw::YeetExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this yeet expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this yeet expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the expression of this yeet expression, if it exists.

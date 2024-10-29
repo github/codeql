@@ -1277,18 +1277,29 @@
     attr (@class.inner_scope -> @stmt.node) body = (named-child-index @stmt)
 }
 
-; Class.bases - using `(_ !name)` as a proxy for all non-keyword arguments.
+; Class.bases - using `(_  !value !name)` as a proxy for all non-keyword arguments.
+; In particular, `keyword_argument` nodes have a `name` field, and `dictionary_splat`
+; nodes have a `value` field.
 (class_definition
-    superclasses: (argument_list element: (_ !name) @arg)
+    superclasses: (argument_list element: (_ !value !name) @arg)
 ) @class
 {
     edge @class.class_expr -> @arg.node
     attr (@class.class_expr -> @arg.node) bases = (named-child-index @arg)
 }
 
-; Class.keywords
+; Class.keywords of the form `foo=bar`
 (class_definition
     superclasses: (argument_list element: (keyword_argument) @arg)
+) @class
+{
+    edge @class.class_expr -> @arg.node
+    attr (@class.class_expr -> @arg.node) keywords = (named-child-index @arg)
+}
+
+; Class.keywords of the form `**kwargs`
+(class_definition
+    superclasses: (argument_list element: (dictionary_splat) @arg)
 ) @class
 {
     edge @class.class_expr -> @arg.node
@@ -3388,6 +3399,7 @@
 (typevar_parameter
     name: (_) @name
     bound: (_)? @bound
+    default: (_)? @default
 ) @typevar
 {
     attr (@name.node) ctx = "store"
@@ -3396,22 +3408,36 @@
         attr (@bound.node) ctx = "load"
         attr (@typevar.node) bound = @bound.node
     }
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@typevar.node) default = @default.node
+    }
 }
 
 (typevartuple_parameter
     name: (_) @name
+    default: (_)? @default
 ) @typevartuple
 {
     attr (@name.node) ctx = "store"
     attr (@typevartuple.node) name = @name.node
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@typevartuple.node) default = @default.node
+    }
 }
 
 (paramspec_parameter
     name: (_) @name
+    default: (_)? @default
 ) @paramspec
 {
     attr (@name.node) ctx = "store"
     attr (@paramspec.node) name = @name.node
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@paramspec.node) default = @default.node
+    }
 }
 
 ;;;;;; End of Type parameters (`T: ..., *T, **T`)

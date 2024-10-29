@@ -35,7 +35,7 @@ private class LengthRestrictedMethod extends Method {
 
 /** A configuration for Polynomial ReDoS queries. */
 module PolynomialRedosConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(SuperlinearBackTracking::PolynomialBackTrackingTerm regexp |

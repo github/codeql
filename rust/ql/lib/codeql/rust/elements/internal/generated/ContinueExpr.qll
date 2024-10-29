@@ -6,8 +6,9 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-import codeql.rust.elements.Label
+import codeql.rust.elements.Lifetime
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ContinueExpr` and should not
@@ -37,18 +38,38 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ContinueExpr" }
 
     /**
-     * Gets the label of this continue expression, if it exists.
+     * Gets the `index`th attr of this continue expression (0-based).
      */
-    Label getLabel() {
+    Attr getAttr(int index) {
       result =
-        Synth::convertLabelFromRaw(Synth::convertContinueExprToRaw(this)
+        Synth::convertAttrFromRaw(Synth::convertContinueExprToRaw(this)
               .(Raw::ContinueExpr)
-              .getLabel())
+              .getAttr(index))
     }
 
     /**
-     * Holds if `getLabel()` exists.
+     * Gets any of the attrs of this continue expression.
      */
-    final predicate hasLabel() { exists(this.getLabel()) }
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this continue expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the lifetime of this continue expression, if it exists.
+     */
+    Lifetime getLifetime() {
+      result =
+        Synth::convertLifetimeFromRaw(Synth::convertContinueExprToRaw(this)
+              .(Raw::ContinueExpr)
+              .getLifetime())
+    }
+
+    /**
+     * Holds if `getLifetime()` exists.
+     */
+    final predicate hasLifetime() { exists(this.getLifetime()) }
   }
 }

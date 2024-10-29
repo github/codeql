@@ -42,6 +42,21 @@ private Type getAFormatterWideTypeOrDefault() {
  * A standard library function that uses a `printf`-like formatting string.
  */
 abstract class FormattingFunction extends ArrayFunction, TaintFunction {
+  int firstFormatArgumentIndex;
+
+  FormattingFunction() {
+    firstFormatArgumentIndex > 0 and
+    if this.hasDefinition()
+    then firstFormatArgumentIndex = this.getDefinition().getNumberOfParameters()
+    else
+      if this instanceof BuiltInFunction
+      then firstFormatArgumentIndex = this.getNumberOfParameters()
+      else
+        forex(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
+          firstFormatArgumentIndex = fde.getNumberOfParameters()
+        )
+  }
+
   /** Gets the position at which the format parameter occurs. */
   abstract int getFormatParameterIndex();
 
@@ -118,21 +133,10 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
 
   /**
    * Gets the position of the first format argument, corresponding with
-   * the first format specifier in the format string.
+   * the first format specifier in the format string. We ignore all
+   * implicit function definitions.
    */
-  int getFirstFormatArgumentIndex() {
-    result = this.getNumberOfParameters() and
-    // the formatting function either has a definition in the snapshot, or all
-    // `DeclarationEntry`s agree on the number of parameters (otherwise we don't
-    // really know the correct number)
-    (
-      this.hasDefinition()
-      or
-      forall(FunctionDeclarationEntry fde | fde = this.getADeclarationEntry() |
-        result = fde.getNumberOfParameters()
-      )
-    )
-  }
+  int getFirstFormatArgumentIndex() { result = firstFormatArgumentIndex }
 
   /**
    * Gets the position of the buffer size argument, if any.

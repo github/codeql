@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Expr
+import codeql.rust.elements.LiteralExpr
 import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 
 /**
@@ -29,11 +29,18 @@ module Generated {
     override string getAPrimaryQlClass() { result = "LiteralPat" }
 
     /**
-     * Gets the expression of this literal pat.
+     * Gets the literal of this literal pat, if it exists.
      */
-    Expr getExpr() {
+    LiteralExpr getLiteral() {
       result =
-        Synth::convertExprFromRaw(Synth::convertLiteralPatToRaw(this).(Raw::LiteralPat).getExpr())
+        Synth::convertLiteralExprFromRaw(Synth::convertLiteralPatToRaw(this)
+              .(Raw::LiteralPat)
+              .getLiteral())
     }
+
+    /**
+     * Holds if `getLiteral()` exists.
+     */
+    final predicate hasLiteral() { exists(this.getLiteral()) }
   }
 }

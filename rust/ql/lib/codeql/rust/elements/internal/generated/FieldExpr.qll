@@ -6,8 +6,10 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
+import codeql.rust.elements.NameRef
 
 /**
  * INTERNAL: This module contains the fully generated definition of `FieldExpr` and should not
@@ -26,7 +28,25 @@ module Generated {
     override string getAPrimaryQlClass() { result = "FieldExpr" }
 
     /**
-     * Gets the expression of this field expression.
+     * Gets the `index`th attr of this field expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertFieldExprToRaw(this).(Raw::FieldExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this field expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this field expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the expression of this field expression, if it exists.
      */
     Expr getExpr() {
       result =
@@ -34,8 +54,23 @@ module Generated {
     }
 
     /**
-     * Gets the name of this field expression.
+     * Holds if `getExpr()` exists.
      */
-    string getName() { result = Synth::convertFieldExprToRaw(this).(Raw::FieldExpr).getName() }
+    final predicate hasExpr() { exists(this.getExpr()) }
+
+    /**
+     * Gets the name reference of this field expression, if it exists.
+     */
+    NameRef getNameRef() {
+      result =
+        Synth::convertNameRefFromRaw(Synth::convertFieldExprToRaw(this)
+              .(Raw::FieldExpr)
+              .getNameRef())
+    }
+
+    /**
+     * Holds if `getNameRef()` exists.
+     */
+    final predicate hasNameRef() { exists(this.getNameRef()) }
   }
 }

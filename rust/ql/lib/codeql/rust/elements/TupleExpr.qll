@@ -4,6 +4,7 @@
  */
 
 private import internal.TupleExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
 /**

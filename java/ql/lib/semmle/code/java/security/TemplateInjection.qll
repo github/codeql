@@ -83,7 +83,7 @@ abstract deprecated class TemplateInjectionSanitizerWithState extends DataFlow::
   abstract deprecated predicate hasState(DataFlow::FlowState state);
 }
 
-private class DefaultTemplateInjectionSource extends TemplateInjectionSource instanceof ThreatModelFlowSource
+private class DefaultTemplateInjectionSource extends TemplateInjectionSource instanceof ActiveThreatModelSource
 { }
 
 private class DefaultTemplateInjectionSink extends TemplateInjectionSink {

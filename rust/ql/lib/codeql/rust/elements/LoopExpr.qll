@@ -4,6 +4,8 @@
  */
 
 private import internal.LoopExprImpl
+import codeql.rust.elements.Attr
+import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
 

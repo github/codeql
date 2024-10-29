@@ -6,8 +6,10 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.internal.BlockExprBaseImpl::Impl as BlockExprBaseImpl
+import codeql.rust.elements.Attr
+import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.Label
+import codeql.rust.elements.StmtList
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BlockExpr` and should not
@@ -30,8 +32,56 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::BlockExpr` class directly.
    * Use the subclass `BlockExpr`, where the following predicates are available.
    */
-  class BlockExpr extends Synth::TBlockExpr, BlockExprBaseImpl::BlockExprBase {
+  class BlockExpr extends Synth::TBlockExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "BlockExpr" }
+
+    /**
+     * Gets the `index`th attr of this block expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this block expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this block expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Holds if this block expression is async.
+     */
+    predicate isAsync() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isAsync() }
+
+    /**
+     * Holds if this block expression is const.
+     */
+    predicate isConst() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isConst() }
+
+    /**
+     * Holds if this block expression is gen.
+     */
+    predicate isGen() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isGen() }
+
+    /**
+     * Holds if this block expression is move.
+     */
+    predicate isMove() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isMove() }
+
+    /**
+     * Holds if this block expression is try.
+     */
+    predicate isTry() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isTry() }
+
+    /**
+     * Holds if this block expression is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isUnsafe() }
 
     /**
      * Gets the label of this block expression, if it exists.
@@ -45,5 +95,20 @@ module Generated {
      * Holds if `getLabel()` exists.
      */
     final predicate hasLabel() { exists(this.getLabel()) }
+
+    /**
+     * Gets the statement list of this block expression, if it exists.
+     */
+    StmtList getStmtList() {
+      result =
+        Synth::convertStmtListFromRaw(Synth::convertBlockExprToRaw(this)
+              .(Raw::BlockExpr)
+              .getStmtList())
+    }
+
+    /**
+     * Holds if `getStmtList()` exists.
+     */
+    final predicate hasStmtList() { exists(this.getStmtList()) }
   }
 }

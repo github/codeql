@@ -1,1 +1,1 @@
-| gen_const_block_pat.rs:6:9:6:27 | ConstBlockPat | getExpr: | gen_const_block_pat.rs:6:15:6:27 | BlockExpr |
+| gen_const_block_pat.rs:6:9:6:27 | ConstBlockPat | hasBlockExpr: | yes | isConst: | yes |

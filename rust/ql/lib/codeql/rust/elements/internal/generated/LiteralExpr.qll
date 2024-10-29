@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
 /**
@@ -30,5 +31,37 @@ module Generated {
    */
   class LiteralExpr extends Synth::TLiteralExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "LiteralExpr" }
+
+    /**
+     * Gets the `index`th attr of this literal expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertLiteralExprToRaw(this)
+              .(Raw::LiteralExpr)
+              .getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this literal expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this literal expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the text value of this literal expression, if it exists.
+     */
+    string getTextValue() {
+      result = Synth::convertLiteralExprToRaw(this).(Raw::LiteralExpr).getTextValue()
+    }
+
+    /**
+     * Holds if `getTextValue()` exists.
+     */
+    final predicate hasTextValue() { exists(this.getTextValue()) }
   }
 }

@@ -50,7 +50,7 @@ int val();
 const char *global1 = mysql_get_client_info();
 const char *global2 = "abc";
 
-void test1()
+void test7()
 {
 	int sock = socket(val(), val(), val());
 

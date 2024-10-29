@@ -1,0 +1,4 @@
+| gen_name_ref.rs:5:5:5:8 | NameRef | todo |
+| gen_name_ref.rs:5:5:5:11 | NameRef | $crate |
+| gen_name_ref.rs:5:5:5:11 | NameRef | panic |
+| gen_name_ref.rs:5:5:5:11 | NameRef | panicking |

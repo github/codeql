@@ -1,9 +1,9 @@
 go.mod:
-#    0| [GoModFile] library-tests/semmle/go/PrintAst/go.mod
+#    0| [GoModFile] go.mod
 #    1|   0: [GoModModuleLine] go.mod module line
 #    3|   1: [GoModGoLine] go.mod go line
 input.go:
-#    0| [GoFile] library-tests/semmle/go/PrintAst/input.go
+#    0| [GoFile] input.go
 #    1|   package: [Ident] main
 #    3|   1: [ImportDecl] import declaration
 #    3|     0: [ImportSpec] import specifier
@@ -33,10 +33,10 @@ input.go:
 #   20|         0: [CallExpr] call to Println
 #   20|             Type = (int, error)
 #   20|           0: [FunctionName, SelectorExpr] selection of Println
-#   20|               Type = func([]interface { }) int, error
+#   20|               Type = func(...interface { }) int, error
 #   20|             0: [Ident, PackageName] fmt
 #   20|             1: [FunctionName, Ident] Println
-#   20|                 Type = func([]interface { }) int, error
+#   20|                 Type = func(...interface { }) int, error
 #   20|           1: [StringLit] "Hi"
 #   20|               Type = string
 #   20|               Value = [StringLit] Hi
@@ -183,10 +183,10 @@ input.go:
 #   52|               0: [CallExpr] call to Println
 #   52|                   Type = (int, error)
 #   52|                 0: [FunctionName, SelectorExpr] selection of Println
-#   52|                     Type = func([]interface { }) int, error
+#   52|                     Type = func(...interface { }) int, error
 #   52|                   0: [Ident, PackageName] fmt
 #   52|                   1: [FunctionName, Ident] Println
-#   52|                       Type = func([]interface { }) int, error
+#   52|                       Type = func(...interface { }) int, error
 #   52|                 1: [StringLit] "Heard from ch1"
 #   52|                     Type = string
 #   52|                     Value = [StringLit] Heard from ch1
@@ -209,20 +209,20 @@ input.go:
 #   54|               0: [CallExpr] call to Println
 #   54|                   Type = (int, error)
 #   54|                 0: [FunctionName, SelectorExpr] selection of Println
-#   54|                     Type = func([]interface { }) int, error
+#   54|                     Type = func(...interface { }) int, error
 #   54|                   0: [Ident, PackageName] fmt
 #   54|                   1: [FunctionName, Ident] Println
-#   54|                       Type = func([]interface { }) int, error
+#   54|                       Type = func(...interface { }) int, error
 #   54|                 1: [Ident, VariableName] a
 #   54|                     Type = [1]float32
 #   55|             2: [ExprStmt] expression statement
 #   55|               0: [CallExpr] call to Println
 #   55|                   Type = (int, error)
 #   55|                 0: [FunctionName, SelectorExpr] selection of Println
-#   55|                     Type = func([]interface { }) int, error
+#   55|                     Type = func(...interface { }) int, error
 #   55|                   0: [Ident, PackageName] fmt
 #   55|                   1: [FunctionName, Ident] Println
-#   55|                       Type = func([]interface { }) int, error
+#   55|                       Type = func(...interface { }) int, error
 #   55|                 1: [Ident, VariableName] w
 #   55|                     Type = bool
 #   56|           2: [CommClause] comm clause
@@ -230,10 +230,10 @@ input.go:
 #   57|               0: [CallExpr] call to Println
 #   57|                   Type = (int, error)
 #   57|                 0: [FunctionName, SelectorExpr] selection of Println
-#   57|                     Type = func([]interface { }) int, error
+#   57|                     Type = func(...interface { }) int, error
 #   57|                   0: [Ident, PackageName] fmt
 #   57|                   1: [FunctionName, Ident] Println
-#   57|                       Type = func([]interface { }) int, error
+#   57|                       Type = func(...interface { }) int, error
 #   58|           3: [CommClause] comm clause
 #   58|             0: [SendStmt] send statement
 #   58|               0: [Ident, VariableName] ch1
@@ -277,10 +277,10 @@ input.go:
 #   67|                     0: [CallExpr] call to Println
 #   67|                         Type = (int, error)
 #   67|                       0: [FunctionName, SelectorExpr] selection of Println
-#   67|                           Type = func([]interface { }) int, error
+#   67|                           Type = func(...interface { }) int, error
 #   67|                         0: [Ident, PackageName] fmt
 #   67|                         1: [FunctionName, Ident] Println
-#   67|                             Type = func([]interface { }) int, error
+#   67|                             Type = func(...interface { }) int, error
 #   67|                       1: [Ident, VariableName] x
 #   67|                           Type = int
 #   68|         2: [BlockStmt] block statement
@@ -296,10 +296,10 @@ input.go:
 #   69|                     0: [CallExpr] call to Println
 #   69|                         Type = (int, error)
 #   69|                       0: [FunctionName, SelectorExpr] selection of Println
-#   69|                           Type = func([]interface { }) int, error
+#   69|                           Type = func(...interface { }) int, error
 #   69|                         0: [Ident, PackageName] fmt
 #   69|                         1: [FunctionName, Ident] Println
-#   69|                             Type = func([]interface { }) int, error
+#   69|                             Type = func(...interface { }) int, error
 #   69|                       1: [MinusExpr] -...
 #   69|                           Type = int
 #   69|                         0: [Ident, VariableName] x
@@ -454,10 +454,10 @@ input.go:
 #  115|               0: [CallExpr] call to Println
 #  115|                   Type = (int, error)
 #  115|                 0: [FunctionName, SelectorExpr] selection of Println
-#  115|                     Type = func([]interface { }) int, error
+#  115|                     Type = func(...interface { }) int, error
 #  115|                   0: [Ident, PackageName] fmt
 #  115|                   1: [FunctionName, Ident] Println
-#  115|                       Type = func([]interface { }) int, error
+#  115|                       Type = func(...interface { }) int, error
 #  115|                 1: [Ident, VariableName] y
 #  115|                     Type = interface { }
 #  116|           1: [CaseClause] case clause
@@ -546,10 +546,10 @@ input.go:
 #  138|             0: [CallExpr] call to Print
 #  138|                 Type = (int, error)
 #  138|               0: [FunctionName, SelectorExpr] selection of Print
-#  138|                   Type = func([]interface { }) int, error
+#  138|                   Type = func(...interface { }) int, error
 #  138|                 0: [Ident, PackageName] fmt
 #  138|                 1: [FunctionName, Ident] Print
-#  138|                     Type = func([]interface { }) int, error
+#  138|                     Type = func(...interface { }) int, error
 #  138|               1: [Ident, VariableName] x
 #  138|                   Type = int
 #  141|       1: [RangeStmt] range statement
@@ -564,10 +564,10 @@ input.go:
 #  142|             0: [CallExpr] call to Print
 #  142|                 Type = (int, error)
 #  142|               0: [FunctionName, SelectorExpr] selection of Print
-#  142|                   Type = func([]interface { }) int, error
+#  142|                   Type = func(...interface { }) int, error
 #  142|                 0: [Ident, PackageName] fmt
 #  142|                 1: [FunctionName, Ident] Print
-#  142|                     Type = func([]interface { }) int, error
+#  142|                     Type = func(...interface { }) int, error
 #  142|               1: [Ident, VariableName] i
 #  142|                   Type = int
 #  142|               2: [Ident, VariableName] v
@@ -577,7 +577,7 @@ input.go:
 #  145|             Type = []int
 #  145|         1: [BlockStmt] block statement
 other.go:
-#    0| [GoFile] library-tests/semmle/go/PrintAst/other.go
+#    0| [GoFile] other.go
 #    1|   package: [Ident] main
 #    3|   1: [FuncDecl] function declaration
 #    3|     0: [FunctionName, Ident] main
@@ -619,6 +619,11 @@ other.go:
 #   11|             Type = int
 #   11|           0: [Ident, VariableName] myNested
 #   11|               Type = func() int
+#    8|     3: [TypeParamDecl] type parameter declaration
+#    8|       0: [Ident, TypeName] int
+#    8|           Type = int
+#    8|       1: [Ident, TypeName] U
+#    8|           Type = U
 #   15|   5: [VarDecl] variable declaration
 #   15|     0: [ValueSpec] value declaration specifier
 #   15|       0: [Ident, VariableName] x
@@ -628,3 +633,32 @@ other.go:
 #   15|       2: [IntLit] 0
 #   15|           Type = int
 #   15|           Value = [IntLit] 0
+#   17|   6: [TypeDecl] type declaration
+#   17|     0: [TypeSpec] type declaration specifier
+#   17|       0: [Ident, TypeName] myType
+#   17|           Type = myType
+#   17|       1: [ArrayTypeExpr] array type
+#   17|           Type = []T
+#   17|         0: [Ident, TypeName] T
+#   17|             Type = T
+#   17|       2: [TypeParamDecl] type parameter declaration
+#   17|         0: [TypeSetLiteralExpr] type set literal
+#   17|             Type = ~string
+#   17|           0: [Ident, TypeName] string
+#   17|               Type = string
+#   17|         1: [Ident, TypeName] T
+#   17|             Type = T
+#   19|   7: [MethodDecl] function declaration
+#   19|     0: [FunctionName, Ident] f
+#   19|         Type = func() 
+#   19|     1: [FuncTypeExpr] function type
+#   19|     2: [ReceiverDecl] receiver declaration
+#   19|       0: [GenericTypeInstantiationExpr] generic type instantiation expression
+#   19|           Type = myType
+#   19|         0: [Ident, TypeName] myType
+#   19|             Type = myType
+#   19|         1: [Ident, TypeName] U
+#   19|             Type = U
+#   19|       1: [Ident, VariableName] m
+#   19|           Type = myType
+#   19|     3: [BlockStmt] block statement

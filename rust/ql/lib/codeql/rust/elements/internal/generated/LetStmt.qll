@@ -6,7 +6,9 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
+import codeql.rust.elements.LetElse
 import codeql.rust.elements.Pat
 import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
 import codeql.rust.elements.TypeRef
@@ -35,24 +37,22 @@ module Generated {
     override string getAPrimaryQlClass() { result = "LetStmt" }
 
     /**
-     * Gets the pat of this let statement.
+     * Gets the `index`th attr of this let statement (0-based).
      */
-    Pat getPat() {
-      result = Synth::convertPatFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getPat())
-    }
-
-    /**
-     * Gets the type of this let statement, if it exists.
-     */
-    TypeRef getType() {
+    Attr getAttr(int index) {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getType())
+        Synth::convertAttrFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getAttr(index))
     }
 
     /**
-     * Holds if `getType()` exists.
+     * Gets any of the attrs of this let statement.
      */
-    final predicate hasType() { exists(this.getType()) }
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this let statement.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the initializer of this let statement, if it exists.
@@ -68,15 +68,40 @@ module Generated {
     final predicate hasInitializer() { exists(this.getInitializer()) }
 
     /**
-     * Gets the else of this let statement, if it exists.
+     * Gets the let else of this let statement, if it exists.
      */
-    Expr getElse() {
-      result = Synth::convertExprFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getElse())
+    LetElse getLetElse() {
+      result =
+        Synth::convertLetElseFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getLetElse())
     }
 
     /**
-     * Holds if `getElse()` exists.
+     * Holds if `getLetElse()` exists.
      */
-    final predicate hasElse() { exists(this.getElse()) }
+    final predicate hasLetElse() { exists(this.getLetElse()) }
+
+    /**
+     * Gets the pat of this let statement, if it exists.
+     */
+    Pat getPat() {
+      result = Synth::convertPatFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getPat())
+    }
+
+    /**
+     * Holds if `getPat()` exists.
+     */
+    final predicate hasPat() { exists(this.getPat()) }
+
+    /**
+     * Gets the ty of this let statement, if it exists.
+     */
+    TypeRef getTy() {
+      result = Synth::convertTypeRefFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getTy())
+    }
+
+    /**
+     * Holds if `getTy()` exists.
+     */
+    final predicate hasTy() { exists(this.getTy()) }
   }
 }

@@ -4,8 +4,17 @@
  */
 
 private import internal.FunctionImpl
-import codeql.rust.elements.Declaration
-import codeql.rust.elements.Expr
+import codeql.rust.elements.Abi
+import codeql.rust.elements.AssocItem
+import codeql.rust.elements.BlockExpr
+import codeql.rust.elements.Callable
+import codeql.rust.elements.ExternItem
+import codeql.rust.elements.GenericParamList
+import codeql.rust.elements.Item
+import codeql.rust.elements.Name
+import codeql.rust.elements.RetType
+import codeql.rust.elements.Visibility
+import codeql.rust.elements.WhereClause
 
 /**
  * A function declaration. For example

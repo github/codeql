@@ -1,7 +1,8 @@
 private import java
 private import semmle.code.java.Collections
 private import semmle.code.java.dataflow.internal.ContainerFlow
-private import CaptureModelsSpecific as Specific
+private import CaptureModels as CaptureModels
+private import CaptureModels::ModelGeneratorInput as ModelGeneratorInput
 private import CaptureModelsPrinting
 
 /**
@@ -81,7 +82,7 @@ private predicate localTypeParameter(Callable callable, TypeVariable tv) {
 private string getAccessPath(Type t) {
   if
     t instanceof Array and
-    not Specific::isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
+    not CaptureModels::isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
   then result = ".ArrayElement"
   else
     if t instanceof ContainerType or t instanceof IterableClass
@@ -134,7 +135,7 @@ private string implicit(Callable callable, TypeVariable tv) {
     then access = getAccessPath(decl)
     else access = getSyntheticField(tv)
   |
-    result = Specific::qualifierString() + access
+    result = ModelGeneratorInput::qualifierString() + access
   )
 }
 
@@ -286,7 +287,7 @@ private predicate output(Callable callable, TypeVariable tv, string output) {
 module ModelPrintingInput implements ModelPrintingSig {
   class SummaryApi = TypeBasedFlowTargetApi;
 
-  class SourceOrSinkApi = Specific::SourceOrSinkTargetApi;
+  class SourceOrSinkApi = ModelGeneratorInput::SourceOrSinkTargetApi;
 
   string getProvenance() { result = "tb-generated" }
 }
@@ -297,9 +298,7 @@ private module Printing = ModelPrinting<ModelPrintingInput>;
  * A class of callables that are relevant generating summaries for based
  * on the Theorems for Free approach.
  */
-class TypeBasedFlowTargetApi extends Specific::SummaryTargetApi {
-  TypeBasedFlowTargetApi() { not Specific::isUninterestingForTypeBasedFlowModels(this) }
-
+class TypeBasedFlowTargetApi extends ModelGeneratorInput::SummaryTargetApi {
   /**
    * Gets the string representation of all type based summaries for `this`
    * inspired by the Theorems for Free approach.
@@ -329,7 +328,7 @@ class TypeBasedFlowTargetApi extends Specific::SummaryTargetApi {
       output(this, tv, output) and
       input != output
     |
-      result = Printing::asValueModel(this, input, output)
+      result = Printing::asLiftedValueModel(this, input, output)
     )
   }
 }

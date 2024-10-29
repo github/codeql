@@ -683,8 +683,13 @@ private Overlap getExtentOverlap(MemoryLocation0 def, MemoryLocation0 use) {
     def.getVirtualVariable() = use.getVirtualVariable() and
     def instanceof EntireAllocationMemoryLocation and
     (
-      // EntireAllocationMemoryLocation exactly overlaps itself.
-      use instanceof EntireAllocationMemoryLocation and
+      // EntireAllocationMemoryLocation exactly overlaps any EntireAllocationMemoryLocation for the
+      // same allocation. Checking the allocation, rather than the memory location itself, ensures
+      // that we get the right relationship between the "must" and "may" memory locations for that
+      // allocation.
+      // Note that if one of the locations is a "may" access, the overlap will be downgraded to
+      // `MustTotallyOverlap` or `MayPartialOverlap` in `getOverlap()`.
+      use.(EntireAllocationMemoryLocation).getAnAllocation() = def.getAnAllocation() and
       result instanceof MustExactlyOverlap
       or
       not use instanceof EntireAllocationMemoryLocation and

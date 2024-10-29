@@ -9,6 +9,22 @@ private import BasicBlocks
 
 final class CfgScope = Scope::CfgScope;
 
+final class SuccessorType = SuccessorTypeImpl;
+
+final class NormalSuccessor = NormalSuccessorImpl;
+
+final class ConditionalSuccessor = ConditionalSuccessorImpl;
+
+final class BooleanSuccessor = BooleanSuccessorImpl;
+
+final class MatchSuccessor = MatchSuccessorImpl;
+
+final class BreakSuccessor = BreakSuccessorImpl;
+
+final class ContinueSuccessor = ContinueSuccessorImpl;
+
+final class ReturnSuccessor = ReturnSuccessorImpl;
+
 /**
  * A control flow node.
  *

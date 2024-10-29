@@ -4,7 +4,9 @@
  */
 
 private import internal.OffsetOfExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
+import codeql.rust.elements.NameRef
 import codeql.rust.elements.TypeRef
 
 /**

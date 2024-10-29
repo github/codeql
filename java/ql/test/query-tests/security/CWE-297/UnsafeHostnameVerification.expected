@@ -5,9 +5,9 @@
 | UnsafeHostnameVerification.java:81:55:81:62 | verifier | UnsafeHostnameVerification.java:66:37:80:9 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:81:55:81:62 | verifier | The $@ defined by $@ always accepts any certificate, even if the hostname does not match. | UnsafeHostnameVerification.java:66:37:80:9 | new (...) : new HostnameVerifier(...) { ... } | hostname verifier | UnsafeHostnameVerification.java:66:41:66:56 | new HostnameVerifier(...) { ... } | this type |
 | UnsafeHostnameVerification.java:94:55:94:62 | verifier | UnsafeHostnameVerification.java:88:37:93:9 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:94:55:94:62 | verifier | The $@ defined by $@ always accepts any certificate, even if the hostname does not match. | UnsafeHostnameVerification.java:88:37:93:9 | new (...) : new HostnameVerifier(...) { ... } | hostname verifier | UnsafeHostnameVerification.java:88:41:88:56 | new HostnameVerifier(...) { ... } | this type |
 edges
-| UnsafeHostnameVerification.java:66:37:80:9 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:81:55:81:62 | verifier | provenance |  Sink:MaD:1 |
-| UnsafeHostnameVerification.java:88:37:93:9 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:94:55:94:62 | verifier | provenance |  Sink:MaD:1 |
-| UnsafeHostnameVerification.java:97:42:97:68 | ALLOW_ALL_HOSTNAME_VERIFIER : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:34:59:34:85 | ALLOW_ALL_HOSTNAME_VERIFIER | provenance |  Sink:MaD:1 |
+| UnsafeHostnameVerification.java:66:37:80:9 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:81:55:81:62 | verifier | provenance | Sink:MaD:1 |
+| UnsafeHostnameVerification.java:88:37:93:9 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:94:55:94:62 | verifier | provenance | Sink:MaD:1 |
+| UnsafeHostnameVerification.java:97:42:97:68 | ALLOW_ALL_HOSTNAME_VERIFIER : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:34:59:34:85 | ALLOW_ALL_HOSTNAME_VERIFIER | provenance | Sink:MaD:1 |
 | UnsafeHostnameVerification.java:97:72:102:5 | new (...) : new HostnameVerifier(...) { ... } | UnsafeHostnameVerification.java:97:42:97:68 | ALLOW_ALL_HOSTNAME_VERIFIER : new HostnameVerifier(...) { ... } | provenance |  |
 models
 | 1 | Sink: javax.net.ssl; HttpsURLConnection; true; setDefaultHostnameVerifier; ; ; Argument[0]; hostname-verification; manual |

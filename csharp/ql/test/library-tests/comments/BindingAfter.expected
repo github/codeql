@@ -1,4 +1,5 @@
 | comments1.cs:1:1:2:46 | // ... | comments1.cs:9:7:9:7 | C | Start of comment1.cs |
+| comments1.cs:1:16:1:46 | // ... | comments1.cs:2:9:2:14 | ... ...; | A mapped single-line comment |
 | comments1.cs:4:1:4:25 | // ... | comments1.cs:9:7:9:7 | C | 1) Basic comment types |
 | comments1.cs:6:1:6:24 | // ... | comments1.cs:9:7:9:7 | C | A single-line comment |
 | comments1.cs:8:1:8:18 | /// ... | comments1.cs:9:7:9:7 | C | An XML comment |

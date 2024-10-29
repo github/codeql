@@ -1,8 +1,16 @@
+## 1.2.2
+
+No user-facing changes.
+
+## 1.2.1
+
+No user-facing changes.
+
 ## 1.2.0
 
 ### Major Analysis Improvements
 
-- Added a new query (`js/actions/actions-artifact-leak`) to detect GitHub Actions artifacts that may leak the `GITHUB_TOKEN` token.
+- Added a new query (`js/actions/actions-artifact-leak`) to detect GitHub Actions artifacts that may leak the GITHUB_TOKEN token.
 
 ## 1.1.3
 

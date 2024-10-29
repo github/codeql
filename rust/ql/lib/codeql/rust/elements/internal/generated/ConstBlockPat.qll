@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Expr
+import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 
 /**
@@ -29,13 +29,23 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ConstBlockPat" }
 
     /**
-     * Gets the expression of this const block pat.
+     * Gets the block expression of this const block pat, if it exists.
      */
-    Expr getExpr() {
+    BlockExpr getBlockExpr() {
       result =
-        Synth::convertExprFromRaw(Synth::convertConstBlockPatToRaw(this)
+        Synth::convertBlockExprFromRaw(Synth::convertConstBlockPatToRaw(this)
               .(Raw::ConstBlockPat)
-              .getExpr())
+              .getBlockExpr())
     }
+
+    /**
+     * Holds if `getBlockExpr()` exists.
+     */
+    final predicate hasBlockExpr() { exists(this.getBlockExpr()) }
+
+    /**
+     * Holds if this const block pat is const.
+     */
+    predicate isConst() { Synth::convertConstBlockPatToRaw(this).(Raw::ConstBlockPat).isConst() }
   }
 }

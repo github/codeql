@@ -5,7 +5,9 @@
 
 private import internal.MatchArmImpl
 import codeql.rust.elements.AstNode
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
+import codeql.rust.elements.MatchGuard
 import codeql.rust.elements.Pat
 
 /**

@@ -1,0 +1,2 @@
+| gen_source_file.rs:1:1:6:2 | SourceFile | getNumberOfAttrs: | 0 | getNumberOfItems: | 1 |
+| lib.rs:1:1:1:20 | SourceFile | getNumberOfAttrs: | 0 | getNumberOfItems: | 1 |

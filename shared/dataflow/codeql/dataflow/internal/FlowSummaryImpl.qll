@@ -171,6 +171,7 @@ module Make<
         [
           "ai", // AI (machine learning)
           "df", // Dataflow (model generator)
+          "dfc", // Content dataflow (model generator)
           "tb", // Type based (model generator)
           "hq", // Heuristic query
         ]
@@ -1775,7 +1776,7 @@ module Make<
             exists(ReturnNode ret, ValueReturnKind kind |
               c = "ReturnValue" and
               ret = node.asNode() and
-              valueReturnNode(ret, kind) and
+              kind.getKind() = ret.getKind() and
               kind.getKind() = getStandardReturnValueKind() and
               mid.asCallable() = getNodeEnclosingCallable(ret)
             )

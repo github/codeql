@@ -1,3 +1,21 @@
+## 4.1.1
+
+No user-facing changes.
+
+## 4.1.0
+
+### Deprecated APIs
+
+* The `Field.getSourceDeclaration()` predicate has been deprecated. The result was always the original field, so calls to it can simply be removed.
+* The `Field.isSourceDeclaration()` predicate has been deprecated. It always holds.
+* The `RefType.nestedName()` predicate has been deprecated, and `RefType.getNestedName()` added to replace it.
+* The class `ThreatModelFlowSource` has been renamed to `ActiveThreatModelSource` to more clearly reflect it only contains the currently active threat model sources. `ThreatModelFlowSource` has been marked as deprecated.
+
+### New Features
+
+* The Java extractor and QL libraries now support Java 23.
+* Kotlin versions up to 2.1.0\ *x* are now supported.
+
 ## 4.0.0
 
 ### Breaking Changes
@@ -13,7 +31,7 @@
 
 ### Major Analysis Improvements
 
-* When a method exists as source code, we will no longer use a models-as-data (MaD) model of that method. This primarily affects query results when the analysis includes generated models for the source code being analysed.
+* A generated (Models as Data) summary model is no longer used, if there exists a source code alternative. This primarily affects the analysis, when the analysis includes generated models for the source code being analysed.
 
 ## 3.0.2
 

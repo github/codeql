@@ -5,7 +5,7 @@ import com.github.codeql.utils.versions.*
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.*
-import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
+import org.jetbrains.kotlin.backend.jvm.ir.*
 import org.jetbrains.kotlin.codegen.JvmCodegenUtil
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
@@ -24,6 +24,7 @@ import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescripto
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.NameUtils
 import org.jetbrains.kotlin.name.SpecialNames
+import org.jetbrains.kotlin.resolve.descriptorUtil.propertyIfAccessor
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
 
@@ -84,7 +85,7 @@ open class KotlinUsesExtractor(
     }
 
     private fun extractFileClass(fqName: FqName): Label<out DbClassorinterface> {
-        val pkg = if (fqName.isRoot()) "" else fqName.parent().asString()
+        val pkg = if (fqName.codeQlIsRoot()) "" else fqName.parent().asString()
         val jvmName = fqName.shortName().asString()
         return extractFileClass(pkg, jvmName)
     }
@@ -779,7 +780,7 @@ open class KotlinUsesExtractor(
                 // array.length
                 val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
                 val intTypeIds = useType(pluginContext.irBuiltIns.intType)
-                tw.writeFields(length, "length", intTypeIds.javaResult.id, it, length)
+                tw.writeFields(length, "length", intTypeIds.javaResult.id, it)
                 tw.writeFieldsKotlinType(length, intTypeIds.kotlinResult.id)
                 addModifiers(length, "public", "final")
 
@@ -906,7 +907,7 @@ open class KotlinUsesExtractor(
                 return arrayInfo.componentTypeResults
             }
             owner is IrClass -> {
-                val args = if (s.isRawType()) null else s.arguments
+                val args = if (s.codeQlIsRawType()) null else s.arguments
 
                 return useSimpleTypeClass(owner, args, s.isNullable())
             }
@@ -1232,9 +1233,10 @@ open class KotlinUsesExtractor(
     // false if it has `@JvmSuppressWildcards(false)`,
     // and null if the annotation is not present.
     @Suppress("UNCHECKED_CAST")
-    private fun getWildcardSuppressionDirective(t: IrAnnotationContainer) =
+    private fun getWildcardSuppressionDirective(t: IrAnnotationContainer): Boolean? =
         t.getAnnotation(jvmWildcardSuppressionAnnotation)?.let {
-            (it.getValueArgument(0) as? IrConst<Boolean>)?.value ?: true
+            @Suppress("USELESS_CAST") // `as? Boolean` is not needed for Kotlin < 2.1
+            (it.getValueArgument(0) as? CodeQLIrConst<Boolean>)?.value as? Boolean ?: true
         }
 
     private fun addJavaLoweringArgumentWildcards(

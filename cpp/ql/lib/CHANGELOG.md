@@ -1,3 +1,14 @@
+## 2.0.2
+
+### Minor Analysis Improvements
+
+* Added taint flow model for `fopen` and related functions.
+* The `SimpleRangeAnalysis` library (`semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis`) now generates more precise ranges for calls to `fgetc` and `getc`.
+
+## 2.0.1
+
+No user-facing changes.
+
 ## 2.0.0
 
 ### Breaking Changes

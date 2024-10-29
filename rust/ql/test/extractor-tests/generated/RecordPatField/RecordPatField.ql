@@ -2,10 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from RecordPatField x, string getName, Pat getPat
+from RecordPatField x, int getNumberOfAttrs, string hasNameRef, string hasPat
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getName = x.getName() and
-  getPat = x.getPat()
-select x, "getName:", getName, "getPat:", getPat
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no") and
+  if x.hasPat() then hasPat = "yes" else hasPat = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasNameRef:", hasNameRef, "hasPat:", hasPat

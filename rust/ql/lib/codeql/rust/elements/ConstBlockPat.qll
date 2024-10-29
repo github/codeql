@@ -4,7 +4,7 @@
  */
 
 private import internal.ConstBlockPatImpl
-import codeql.rust.elements.Expr
+import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.Pat
 
 /**

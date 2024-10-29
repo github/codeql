@@ -467,7 +467,7 @@ def test_class_with_doc(generate_classes):
 def test_class_dir(generate_classes):
     dir = "another/rel/path"
     assert generate_classes([
-        schema.Class("A", derived={"B"}, group=dir),
+        schema.Class("A", derived={"B"}, pragmas={"group": dir}),
         schema.Class("B", bases=["A"]),
     ]) == {
         f"{dir}/A.qll": (
@@ -489,7 +489,7 @@ def test_root_element_cannot_have_children(generate_classes):
 def test_class_dir_imports(generate_import_list):
     dir = "another/rel/path"
     assert generate_import_list([
-        schema.Class("A", derived={"B"}, group=dir),
+        schema.Class("A", derived={"B"}, pragmas={"group": dir}),
         schema.Class("B", bases=["A"]),
     ]) == ql.ImportList([
         stub_import_prefix + "B",
@@ -583,7 +583,7 @@ def test_test_source_present(opts, generate_tests):
 def test_test_source_present_with_dir(opts, generate_tests):
     write(opts.ql_test_output / "foo" / "A" / "test.swift")
     assert generate_tests([
-        schema.Class("A", group="foo"),
+        schema.Class("A", pragmas={"group": "foo"}),
     ]) == {
         "foo/A/A.ql": a_ql_class_tester(class_name="A"),
     }
@@ -749,7 +749,7 @@ def test_test_with(opts, generate_tests):
     write(opts.ql_test_output / "B" / "test.swift")
     assert generate_tests([
         schema.Class("Base", derived={"A", "B"}),
-        schema.Class("A", bases=["Base"], test_with="B"),
+        schema.Class("A", bases=["Base"], pragmas={"qltest_test_with": "B"}),
         schema.Class("B", bases=["Base"]),
     ]) == {
         "B/A.ql": a_ql_class_tester(class_name="A"),
@@ -922,7 +922,7 @@ def test_property_on_class_with_default_doc_name(generate_classes):
     assert generate_classes([
         schema.Class("MyObject", properties=[
             schema.SingleProperty("foo", "bar")],
-            default_doc_name="baz"),
+            pragmas={"ql_default_doc_name": "baz"}),
     ]) == {
         "MyObject.qll": (a_ql_class_public(name="MyObject"),
                          a_ql_stub(name="MyObject"),
@@ -937,7 +937,7 @@ def test_property_on_class_with_default_doc_name(generate_classes):
 
 def test_stub_on_class_with_synth_from_class(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", synth=schema.SynthInfo(from_class="A"),
+        schema.Class("MyObject", pragmas={"synth": schema.SynthInfo(from_class="A")},
                      properties=[schema.SingleProperty("foo", "bar")]),
     ]) == {
         "MyObject.qll": (a_ql_class_public(name="MyObject"), a_ql_stub(name="MyObject", synth_accessors=[
@@ -952,7 +952,7 @@ def test_stub_on_class_with_synth_from_class(generate_classes):
 
 def test_stub_on_class_with_synth_on_arguments(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", synth=schema.SynthInfo(on_arguments={"base": "A", "index": "int", "label": "string"}),
+        schema.Class("MyObject", pragmas={"synth": schema.SynthInfo(on_arguments={"base": "A", "index": "int", "label": "string"})},
                      properties=[schema.SingleProperty("foo", "bar")]),
     ]) == {
         "MyObject.qll": (a_ql_class_public(name="MyObject"), a_ql_stub(name="MyObject", synth_accessors=[
@@ -986,7 +986,7 @@ def test_synth_property(generate_classes):
 
 def test_hideable_class(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", hideable=True),
+        schema.Class("MyObject", pragmas=["ql_hideable"]),
     ]) == {
         "MyObject.qll": (a_ql_class_public(name="MyObject"), a_ql_stub(name="MyObject"), a_ql_class(name="MyObject", final=True, hideable=True, imports=[stub_import_prefix + "MyObject"])),
     }
@@ -994,7 +994,7 @@ def test_hideable_class(generate_classes):
 
 def test_hideable_property(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", hideable=True),
+        schema.Class("MyObject", pragmas=["ql_hideable"]),
         schema.Class("Other", properties=[
             schema.SingleProperty("x", "MyObject"),
         ]),

@@ -4,8 +4,9 @@
  */
 
 private import internal.MatchExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
-import codeql.rust.elements.MatchArm
+import codeql.rust.elements.MatchArmList
 
 /**
  * A match expression. For example:

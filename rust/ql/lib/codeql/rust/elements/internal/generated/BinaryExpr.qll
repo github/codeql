@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -30,7 +31,27 @@ module Generated {
     override string getAPrimaryQlClass() { result = "BinaryExpr" }
 
     /**
-     * Gets the lhs of this binary expression.
+     * Gets the `index`th attr of this binary expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertBinaryExprToRaw(this)
+              .(Raw::BinaryExpr)
+              .getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this binary expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this binary expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the lhs of this binary expression, if it exists.
      */
     Expr getLhs() {
       result =
@@ -38,7 +59,24 @@ module Generated {
     }
 
     /**
-     * Gets the rhs of this binary expression.
+     * Holds if `getLhs()` exists.
+     */
+    final predicate hasLhs() { exists(this.getLhs()) }
+
+    /**
+     * Gets the operator name of this binary expression, if it exists.
+     */
+    string getOperatorName() {
+      result = Synth::convertBinaryExprToRaw(this).(Raw::BinaryExpr).getOperatorName()
+    }
+
+    /**
+     * Holds if `getOperatorName()` exists.
+     */
+    final predicate hasOperatorName() { exists(this.getOperatorName()) }
+
+    /**
+     * Gets the rhs of this binary expression, if it exists.
      */
     Expr getRhs() {
       result =
@@ -46,13 +84,8 @@ module Generated {
     }
 
     /**
-     * Gets the op of this binary expression, if it exists.
+     * Holds if `getRhs()` exists.
      */
-    string getOp() { result = Synth::convertBinaryExprToRaw(this).(Raw::BinaryExpr).getOp() }
-
-    /**
-     * Holds if `getOp()` exists.
-     */
-    final predicate hasOp() { exists(this.getOp()) }
+    final predicate hasRhs() { exists(this.getRhs()) }
   }
 }

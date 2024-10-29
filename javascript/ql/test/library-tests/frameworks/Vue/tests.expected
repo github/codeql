@@ -76,6 +76,7 @@ component
 | single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue |
 | single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue |
 | single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue |
+| special-syntax.vue:0:0:0:0 | special-syntax.vue |
 | tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) |
 | tst.js:12:1:16:2 | new Vue ... \\t}),\\n}) |
 | tst.js:18:1:27:2 | Vue.com ... }\\n\\t}\\n}) |
@@ -126,6 +127,10 @@ templateElement
 | single-file-component-5.vue:2:5:18:9 | <p>...</> |
 | single-file-component-5.vue:4:1:16:9 | <script>...</> |
 | single-file-component-5.vue:17:1:18:8 | <style>...</> |
+| special-syntax.vue:1:1:4:11 | <template>...</> |
+| special-syntax.vue:2:3:2:37 | <blah>...</> |
+| special-syntax.vue:3:3:3:32 | <blah>...</> |
+| special-syntax.vue:5:1:5:17 | <script>...</> |
 xssSink
 | compont-with-route.vue:2:8:2:21 | v-html=dataA |
 | single-component-file-1.vue:2:8:2:21 | v-html=dataA |
@@ -161,3 +166,15 @@ remoteFlowSource
 | router.js:30:5:30:14 | from.query |
 | router.js:34:5:34:12 | to.query |
 | router.js:35:5:35:14 | from.query |
+parseErrors
+attribute
+| compont-with-route.vue:2:8:2:21 | v-html=dataA | v-html |
+| single-component-file-1.vue:2:8:2:21 | v-html=dataA | v-html |
+| single-file-component-2.vue:2:8:2:21 | v-html=dataA | v-html |
+| single-file-component-3.vue:2:8:2:21 | v-html=dataA | v-html |
+| single-file-component-3.vue:4:9:4:49 | src=./single-file-component-3-script.js | src |
+| single-file-component-4.vue:2:8:2:21 | v-html=dataA | v-html |
+| single-file-component-5.vue:2:8:2:21 | v-html=dataA | v-html |
+| special-syntax.vue:2:9:2:22 | :colonProp=x | :colonProp |
+| special-syntax.vue:2:24:2:34 | @atProp=x | @atProp |
+| special-syntax.vue:3:9:3:29 | :colonField.field=x | :colonField.field |

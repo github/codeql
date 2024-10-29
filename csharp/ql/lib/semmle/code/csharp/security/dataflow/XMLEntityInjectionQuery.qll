@@ -15,7 +15,7 @@ private import semmle.code.csharp.security.Sanitizers
  */
 abstract class Source extends DataFlow::Node { }
 
-private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * A data flow sink for untrusted user input used in XML processing.
