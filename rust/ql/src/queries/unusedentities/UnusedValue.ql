@@ -21,4 +21,4 @@ where
   // avoid overlap with the unused variable query
   not isUnused(v) and
   not v instanceof DiscardVariable
-select write, "Variable is assigned a value that is never used."
+select write, "Variable '" + v + "' is assigned a value that is never used."
