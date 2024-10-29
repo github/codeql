@@ -587,6 +587,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (feed.DisableTlsCertificateValidation)
             {
+                logger.LogInfo($"Disabling TLS certificate validation for '${feed}'...");
                 handler.ClientCertificateOptions = ClientCertificateOption.Manual;
                 handler.ServerCertificateCustomValidationCallback =
                     (httpRequestMessage, cert, certChain, policyErrors) => { return true; };
