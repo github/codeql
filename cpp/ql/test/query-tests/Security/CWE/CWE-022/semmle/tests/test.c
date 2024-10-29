@@ -73,7 +73,7 @@ int main(int argc, char** argv) { // $ Source=argv
     char buffer[1024];
     read(0, buffer, 1024); // $ Source=read_output1
     read(0, buffer, 1024); // $ Source=read_output2
-    fopen(buffer, "wb+"); // $ Alert=read_output1 $ Alert=read_output2
+    fopen(buffer, "wb+"); // $ SPURIOUS: Alert=read_output1 $ Alert=read_output2 [duplicated with both sources]
   }
 
   {

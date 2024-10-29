@@ -201,17 +201,17 @@ func testSync(_ sink: @escaping (String) -> ()) {
 	let url = URL(string: "http://example.com/")
 
 	sink(localString) // GOOD: the HTML data is local
-	sink(try! String(contentsOf: URL(string: "http://example.com/")!)) // $ Source=source1 $ MISSING: Alert HTML contains remote input, may access local secrets
-	sink(try! String(contentsOf: url!)) // $ Source=source2 $ MISSING: Alert
+	sink(try! String(contentsOf: URL(string: "http://example.com/")!)) // $ Source=source1
+	sink(try! String(contentsOf: url!)) // $ Source=source2
 
 	sink("console.log(" + localStringFragment + ")") // GOOD: the HTML data is local
-	sink("console.log(" + (try! String(contentsOf: url!)) + ")") // $ Source=source3 $ MISSING: Alert
+	sink("console.log(" + (try! String(contentsOf: url!)) + ")") // $ Source=source3
 
 	let localData = Data(localString.utf8)
 	let remoteData = Data((try! String(contentsOf: url!)).utf8) // $ Source=source4
 
 	sink(String(decoding: localData, as: UTF8.self)) // GOOD: the data is local
-	sink(String(decoding: remoteData, as: UTF8.self)) // $ MISSING: Alert the data is remote
+	sink(String(decoding: remoteData, as: UTF8.self))
 
 	sink("console.log(" + String(Int(localStringFragment) ?? 0) + ")") // GOOD: Primitive conversion
 	sink("console.log(" + String(Int(try! String(contentsOf: url!)) ?? 0) + ")") // GOOD: Primitive conversion
