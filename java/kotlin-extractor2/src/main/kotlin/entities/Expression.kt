@@ -3,6 +3,7 @@ package com.github.codeql
 import com.github.codeql.KotlinFileExtractor.StmtExprParent
 import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.analysis.api.KaSession
+import org.jetbrains.kotlin.analysis.api.resolution.KaCompoundAccessCall
 import org.jetbrains.kotlin.analysis.api.resolution.KaSimpleFunctionCall
 import org.jetbrains.kotlin.analysis.api.resolution.KaSuccessCallInfo
 import org.jetbrains.kotlin.analysis.api.resolution.symbol
@@ -10,6 +11,7 @@ import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.analysis.api.types.KaTypeNullability
 import org.jetbrains.kotlin.analysis.api.types.symbol
+import org.jetbrains.kotlin.lexer.KtToken
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.ClassId
@@ -241,13 +243,12 @@ private fun KaFunctionSymbol.hasMatchingNames(
             nullability == null
 }
 
-private fun KaFunctionSymbol.hasName(
+private fun KaFunctionSymbol?.hasName(
     packageName: String,
     className: String?,
     functionName: String
 ): Boolean {
-
-    return this.hasMatchingNames(
+    return this != null && this.hasMatchingNames(
         CallableId(
             FqName(packageName),
             if (className == null) null else FqName(className),
@@ -257,13 +258,51 @@ private fun KaFunctionSymbol.hasName(
 }
 
 private fun KaFunctionSymbol?.isNumericWithName(functionName: String): Boolean {
-    return this != null &&
-            (this.hasName("kotlin", "Int", functionName) ||
-                    this.hasName("kotlin", "Byte", functionName) ||
-                    this.hasName("kotlin", "Short", functionName) ||
-                    this.hasName("kotlin", "Long", functionName) ||
-                    this.hasName("kotlin", "Float", functionName) ||
-                    this.hasName("kotlin", "Double", functionName))
+    return this.hasName("kotlin", "Int", functionName) ||
+            this.hasName("kotlin", "Byte", functionName) ||
+            this.hasName("kotlin", "Short", functionName) ||
+            this.hasName("kotlin", "Long", functionName) ||
+            this.hasName("kotlin", "Float", functionName) ||
+            this.hasName("kotlin", "Double", functionName)
+}
+
+context(KaSession)
+private fun KotlinFileExtractor.extractPrefixUnaryExpression(
+    expression: KtPrefixExpression,
+    callable: Label<out DbCallable>,
+    parent: StmtExprParent
+) {
+    val op = expression.operationToken as? KtToken
+    val target = ((expression.resolveToCall() as? KaSuccessCallInfo)?.call as? KaSimpleFunctionCall)?.symbol
+
+    if (op == KtTokens.PLUS && target.isNumericWithName("unaryPlus")) {
+        extractUnaryExpression(expression, callable, parent, tw::writeExprs_plusexpr)
+    } else if (op == KtTokens.MINUS && target.isNumericWithName("unaryMinus")) {
+        extractUnaryExpression(expression, callable, parent, tw::writeExprs_minusexpr)
+    } else if (op == KtTokens.EXCL && target.hasName("kotlin", "Boolean", "not")) {
+        extractUnaryExpression(expression, callable, parent, tw::writeExprs_lognotexpr)
+    } else {
+        TODO("Extract as method call")
+    }
+}
+
+context(KaSession)
+private fun KotlinFileExtractor.extractPostfixUnaryExpression(
+    expression: KtPostfixExpression,
+    callable: Label<out DbCallable>,
+    parent: StmtExprParent
+) {
+    val op = expression.operationToken as? KtToken
+    val target =
+        ((expression.resolveToCall() as? KaSuccessCallInfo)?.call as? KaCompoundAccessCall)?.compoundAccess?.operationPartiallyAppliedSymbol?.symbol
+
+    if (op == KtTokens.PLUSPLUS && target.isNumericWithName("inc")) {
+        extractUnaryExpression(expression, callable, parent, tw::writeExprs_postincexpr)
+    } else if (op == KtTokens.MINUSMINUS && target.isNumericWithName("dec")) {
+        extractUnaryExpression(expression, callable, parent, tw::writeExprs_postdecexpr)
+    } else {
+        TODO("Extract as method call")
+    }
 }
 
 context(KaSession)
@@ -379,6 +418,29 @@ private fun <T : DbBinaryexpr> KotlinFileExtractor.extractBinaryExpression(
 }
 
 context(KaSession)
+private fun <T : DbUnaryexpr> KotlinFileExtractor.extractUnaryExpression(
+    expression: KtUnaryExpression,
+    callable: Label<out DbCallable>,
+    parent: StmtExprParent,
+    extractExpression: (
+        id: Label<out T>,
+        typeid: Label<out DbType>,
+        parent: Label<out DbExprparent>,
+        idx: Int
+    ) -> Unit
+) {
+    val id = tw.getFreshIdLabel<T>()
+    val type = useType(expression.expressionType)
+    val exprParent = parent.expr(expression, callable)
+    extractExpression(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+
+    extractExprContext(id, tw.getLocation(expression), callable, exprParent.enclosingStmt)
+    extractExpressionExpr(expression.baseExpression!!, callable, id, 0, exprParent.enclosingStmt)
+}
+
+
+context(KaSession)
 private fun KotlinFileExtractor.extractExpression(
     e: KtExpression,
     callable: Label<out DbCallable>,
@@ -397,6 +459,14 @@ private fun KotlinFileExtractor.extractExpression(
                 // child. The selector could be many expression kind, such as KtCallExpression, KtReferenceExpression,
                 // and each of those would need to look for the qualifier
                 extractExpression(e.selectorExpression!!, callable, parent)
+            }
+
+            is KtPrefixExpression -> {
+                extractPrefixUnaryExpression(e, callable, parent)
+            }
+
+            is KtPostfixExpression -> {
+                extractPostfixUnaryExpression(e, callable, parent)
             }
 
             is KtBinaryExpression -> {
