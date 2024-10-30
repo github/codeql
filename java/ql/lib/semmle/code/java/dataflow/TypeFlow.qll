@@ -138,7 +138,7 @@ private module Input implements TypeFlowInput<Location> {
     exists(LocalVariableDeclExpr decl |
       n.asSsa().(BaseSsaUpdate).getDefiningExpr() = decl and
       not decl.hasImplicitInit() and
-      not exists(decl.getInit())
+      not exists(decl.getInitOrPatternSource())
     )
   }
 
