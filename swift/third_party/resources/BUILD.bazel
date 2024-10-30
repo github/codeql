@@ -1,0 +1,21 @@
+_oses = ("linux", "macos")
+
+alias(
+    name = "dir",
+    actual = select({"@platforms//os:" + os: "@swift-resource-dir-%s//file" % os for os in _oses}),
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "prebuilt",
+    actual = select({"@platforms//os:" + os: "@swift-prebuilt-%s//:swift-llvm-support" % os for os in _oses}),
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    visibility = ["//visibility:public"],
+)

@@ -109,3 +109,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/fetch-codeql
       - uses: ./swift/actions/database-upgrade-scripts
+  check-no-override:
+    if : ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - shell: bash
+        run: bazel test //swift/... --test_tag_filters=override --test_output=errors

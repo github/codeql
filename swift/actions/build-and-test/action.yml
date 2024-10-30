@@ -58,7 +58,7 @@ runs:
       if: ${{ github.event_name == 'pull_request' }}
       shell: bash
       run: |
-        bazel test //swift/...
+        bazel test //swift/... --test_tag_filters=-override --test_output=errors
     - name: Evict bazel cache
       if: ${{ github.event_name != 'pull_request' }}
       shell: bash

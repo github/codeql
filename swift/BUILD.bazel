@@ -81,7 +81,7 @@ codeql_pack(
     zips = select({
         "@platforms//os:windows": {},
         "//conditions:default": {
-            "//swift/third_party/resource-dir": "resource-dir/{CODEQL_PLATFORM}",
+            "//swift/third_party/resources:dir": "resource-dir/{CODEQL_PLATFORM}",
         },
     }),
 )
