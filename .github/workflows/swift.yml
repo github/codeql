@@ -113,5 +113,6 @@ jobs:
     if : ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - shell: bash
         run: bazel test //swift/... --test_tag_filters=override --test_output=errors
