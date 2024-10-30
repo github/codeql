@@ -477,8 +477,8 @@ SourceSinkInterpretationInput::SourceOrSinkElement interpretElement(
   exists(string p | p = interpretPackage(pkg) |
     result.hasTypeInfo(p, type, subtypes) and
     (
-      result.asEntity().(Field).hasQualifiedName(p, type, name) or
-      result.asEntity().(Method).hasQualifiedName(p, type, name)
+      result.asFieldEntity().hasQualifiedName(p, type, name) or
+      result.asMethodEntity().hasQualifiedName(p, type, name)
     )
     or
     subtypes = true and
@@ -488,12 +488,12 @@ SourceSinkInterpretationInput::SourceOrSinkElement interpretElement(
       m2.getName() = name and
       m2.getReceiverBaseType().hasQualifiedName(pkg2, type2)
     |
-      result.asEntity() = m2 and
+      result.asMethodEntity() = m2 and
       result.hasTypeInfo(pkg2, type2, subtypes)
     )
     or
     type = "" and
-    exists(Entity e | e.hasQualifiedName(p, name) | result.asEntity() = e)
+    exists(Entity e | e.hasQualifiedName(p, name) | result.asOtherEntity() = e)
   )
 }
 

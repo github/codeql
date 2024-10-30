@@ -153,11 +153,12 @@ module SourceSinkInterpretationInput implements
   // Methods having multiple qualified names, a given Method is liable to have
   // more than one SourceOrSinkElement, one for each of the names it claims.
   private newtype TSourceOrSinkElement =
-    TMethodOrFieldEntityElement(Entity e, string pkg, string type, boolean subtypes) {
-      (
-        e.(Method).hasQualifiedName(pkg, type, _) or
-        e.(Field).hasQualifiedName(pkg, type, _)
-      ) and
+    TMethodEntityElement(Method m, string pkg, string type, boolean subtypes) {
+      m.hasQualifiedName(pkg, type, _) and
+      subtypes = [true, false]
+    } or
+    TFieldEntityElement(Field f, string pkg, string type, boolean subtypes) {
+      f.hasQualifiedName(pkg, type, _) and
       subtypes = [true, false]
     } or
     TOtherEntityElement(Entity e) {
@@ -170,9 +171,14 @@ module SourceSinkInterpretationInput implements
   class SourceOrSinkElement extends TSourceOrSinkElement {
     /** Gets this source or sink element as an entity, if it is one. */
     Entity asEntity() {
-      this = TMethodOrFieldEntityElement(result, _, _, _) or
-      this = TOtherEntityElement(result)
+      result = [this.asMethodEntity(), this.asFieldEntity(), this.asOtherEntity()]
     }
+
+    Method asMethodEntity() { this = TMethodEntityElement(result, _, _, _) }
+
+    Field asFieldEntity() { this = TFieldEntityElement(result, _, _, _) }
+
+    Entity asOtherEntity() { this = TOtherEntityElement(result) }
 
     /** Gets this source or sink element as an AST node, if it is one. */
     AstNode asAstNode() { this = TAstElement(result) }
@@ -182,7 +188,8 @@ module SourceSinkInterpretationInput implements
      * with the given values for `pkg`, `type` and `subtypes`.
      */
     predicate hasTypeInfo(string pkg, string type, boolean subtypes) {
-      this = TMethodOrFieldEntityElement(_, pkg, type, subtypes)
+      this = TMethodEntityElement(_, pkg, type, subtypes) or
+      this = TFieldEntityElement(_, pkg, type, subtypes)
     }
 
     /** Gets a textual representation of this source or sink element. */
@@ -239,11 +246,10 @@ module SourceSinkInterpretationInput implements
         cn = this.asCall().getNode() and
         callTarget = cn.getTarget()
       |
-        result.asEntity() = callTarget and
         (
-          not callTarget instanceof Method
+          result.asOtherEntity() = callTarget
           or
-          callTarget instanceof Method and
+          result.asMethodEntity() = callTarget and
           elementAppliesToQualifier(result, cn.getReceiver())
         )
       )
@@ -302,7 +308,7 @@ module SourceSinkInterpretationInput implements
         // `syntacticQualBaseType`'s underlying type might be a struct type and `sse`
         // might be a promoted method or field in it.
         targetType =
-          getIntermediateEmbeddedType(sse.asEntity(), syntacticQualBaseType.getUnderlyingType())
+          getIntermediateEmbeddedType(sse.asMethodEntity(), syntacticQualBaseType.getUnderlyingType())
       )
     )
   }
@@ -382,7 +388,7 @@ module SourceSinkInterpretationInput implements
       or
       exists(DataFlow::FieldReadNode frn | frn = n |
         c = "" and
-        frn.getField() = pragma[only_bind_into](e).asEntity() and
+        frn.getField() = pragma[only_bind_into](e).asFieldEntity() and
         elementAppliesToQualifier(pragma[only_bind_into](e), frn.getBase())
       )
     )
@@ -400,7 +406,7 @@ module SourceSinkInterpretationInput implements
     or
     exists(SourceOrSinkElement e, DataFlow::Write fw, DataFlow::Node base, Field f |
       e = mid.asElement() and
-      f = e.asEntity()
+      f = e.asFieldEntity()
     |
       c = "" and
       fw.writesField(base, f, node.asNode()) and
