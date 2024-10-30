@@ -691,11 +691,32 @@ module Bash {
       // echo "FIELD=${VAR2:-default}" >> $GITHUB_ENV (field, file_write_value)
       script.getAnAssignment(var2, value2) and
       containsCmdSubstitution(value2, cmd) and
-      containsParameterExpansion(expr, var2, _, _)
+      containsParameterExpansion(expr, var2, _, _) and
+      not varMatchesRegexTest(script, var2, alphaNumericRegex())
     )
     or
     // var reaches the file write directly
     // echo "FIELD=$(cmd)" >> $GITHUB_ENV (field, file_write_value)
     containsCmdSubstitution(expr, cmd)
   }
+
+  /**
+   * Holds if there test command that checks a variable against a regex
+   * eg: `[[ $VAR =~ ^[a-zA-Z0-9_]+$ ]]`
+   */
+  bindingset[var, regex]
+  predicate varMatchesRegexTest(BashShellScript script, string var, string regex) {
+    exists(string lhs, string rhs |
+      lhs = script.getACommand().regexpCapture(".*\\[\\[\\s*(.*?)\\s*=~\\s*(.*?)\\s*\\]\\].*", 1) and
+      containsParameterExpansion(lhs, var, _, _) and
+      rhs = script.getACommand().regexpCapture(".*\\[\\[\\s*(.*?)\\s*=~\\s*(.*?)\\s*\\]\\].*", 2) and
+      trimQuotes(rhs).regexpMatch(regex)
+    )
+  }
+
+  /**
+   * Holds if the given regex is used to match an alphanumeric string
+   * eg: `^[0-9a-zA-Z]{40}$`, `^[0-9]+$` or `^[a-zA-Z0-9_]+$`
+   */
+  string alphaNumericRegex() { result = "^\\^\\[([09azAZ_-]+)\\](\\+|\\{\\d+\\})\\$$" }
 }
