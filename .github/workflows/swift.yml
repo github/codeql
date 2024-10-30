@@ -50,14 +50,14 @@ jobs:
       - uses: ./swift/actions/build-and-test
   build-and-test-linux:
     if: github.repository_owner == 'github'
-    runs-on: ubuntu-latest-xl
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
   qltests-linux:
     if: github.repository_owner == 'github'
     needs: build-and-test-linux
-    runs-on: ubuntu-latest-xl
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/run-ql-tests
