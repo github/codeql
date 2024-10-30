@@ -21,9 +21,11 @@ edges
 | test.c:41:5:41:24 | ... = ... | test.c:44:7:44:10 | len2 | provenance |  |
 | test.c:41:5:41:24 | ... = ... | test.c:44:7:44:12 | ... -- | provenance |  |
 | test.c:44:7:44:12 | ... -- | test.c:44:7:44:10 | len2 | provenance |  |
+| test.c:44:7:44:12 | ... -- | test.c:44:7:44:12 | ... -- | provenance |  |
 | test.c:51:5:51:24 | ... = ... | test.c:54:7:54:10 | len3 | provenance |  |
 | test.c:51:5:51:24 | ... = ... | test.c:54:7:54:12 | ... -- | provenance |  |
 | test.c:54:7:54:12 | ... -- | test.c:54:7:54:10 | len3 | provenance |  |
+| test.c:54:7:54:12 | ... -- | test.c:54:7:54:12 | ... -- | provenance |  |
 nodes
 | main.cpp:7:27:7:30 | **argv | semmle.label | **argv |
 | main.cpp:8:17:8:20 | **argv | semmle.label | **argv |
