@@ -2743,8 +2743,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               localFlowEntry(node1, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
               preservesValue = preservesValue2 and
               label = label2 and
-              t = t2 and
-              node1 != node2
+              t = t2
               or
               exists(boolean preservesValue1, DataFlowType t1, string label1 |
                 localFlowStepPlus(node1, pragma[only_bind_into](state), mid, preservesValue1, t1,
@@ -3563,6 +3562,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               }
             }
           }
+        }
+
+        private int getNumberOfTuples(NodeEx n) {
+          result =
+            count(FlowState state, ReturnCtx returnCtx, ApOption retAp, Ap ap |
+              revFlow(n, state, returnCtx, retAp, ap)
+            )
+        }
+
+        additional predicate maxTuples(NodeEx n, int tuples) {
+          tuples = getNumberOfTuples(n) and
+          tuples = max(getNumberOfTuples(_))
         }
 
         additional predicate stats(
@@ -4761,6 +4772,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         n = 55 and
         Stage5::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
       }
+
+      predicate maxTuplesStage5 = Stage5::maxTuples/2;
 
       predicate stageStats(
         int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
