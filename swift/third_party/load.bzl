@@ -3,14 +3,12 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file"
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//misc/bazel:lfs.bzl", "lfs_archive", "lfs_files")
 
-# these are used to test new artifacts. They must not be merged to main as different from None
-_override_resource_dir = {
-    "macOS": "ad533e614c3565db17186fa93684bd404d1bd66120b563957a44afc997a82b5e",
-    "Linux": "d6f1abbe9c0662ec2418b9a8c0136b1d8399601f556631a7b0910115cef3a38a",
-}
-_override_prebuilt = {
-    "macOS": "8f3c775aa7a62e97046f4dcfbc5b51c317712250396c7a07f7d0f4bd666a59d4",
-    "Linux": "5658fe92fe60b01b897757495d455c9fe435037a0973cb5b642e04be00a77ed3",
+_override = {
+    # these are used to test new artifacts. Must be empty before merging to main
+    "swift-prebuilt-macOS.tar.zst": "a016ed60ee1a534439ed4d55100ecf6b9fc739f629be20942345ac5156cb6296",
+    "swift-prebuilt-Linux.tar.zst": "54240eb2da948207862ea8eb9bcbfe4447016534b9a8e6d8ee1af67db2a3e73f",
+    "resource-dir-macOS.zip": "fc7ed103d79f9dc61e716a58f221757c33ac2a4358de771d4889e1050f2a5b7a",
+    "resource-dir-Linux.zip": "e5323f44e72f446e26e7b1fc4920ca9b924e6b5ef8b22e9cb18a0f2f03732913",
 }
 
 _staging_url = "https://github.com/dsp-testing/codeql-swift-artifacts/releases/download/staging-{file}/{file}"
@@ -18,12 +16,11 @@ _staging_url = "https://github.com/dsp-testing/codeql-swift-artifacts/releases/d
 def _load_resource_dir(plat):
     name = "swift-resource-dir-%s" % plat.lower()
     file = "resource-dir-%s.zip" % plat
-    override = _override_resource_dir[plat]
-    if override:
+    if file in _override:
         http_file(
             name = name,
             url = _staging_url.format(file = file),
-            sha256 = override,
+            sha256 = _override[file],
             downloaded_file_path = file,
         )
     else:
@@ -36,12 +33,11 @@ def _load_prebuilt(plat):
     name = "swift-prebuilt-%s" % plat.lower()
     file = "swift-prebuilt-%s.tar.zst" % plat
     build = _build % "swift-llvm-support"
-    override = _override_prebuilt[plat]
-    if override:
+    if file in _override:
         http_archive(
             name = name,
             url = _staging_url.format(file = file),
-            sha256 = override,
+            sha256 = _override[file],
             build_file = build,
         )
     else:
@@ -93,18 +89,13 @@ def load_dependencies(module_ctx):
 swift_deps = module_extension(load_dependencies)
 
 def test_no_override():
-    test_body = ["#!/bin/bash", "", "RET=0"]
-    for name, definition in (
-        ("_override_prebuilt", _override_prebuilt),
-        ("_override_resource_dir", _override_resource_dir),
-    ):
-        for plat in ("macOS", "Linux"):
-            if definition[plat]:
-                test_body += [
-                    'echo %s[\\"%s\\"] overridden in swift/third/party/load.bzl' % (name, plat),
-                    "RET=1",
-                ]
-    test_body += ["", "exit $RET"]
+    test_body = ["#!/bin/bash", ""]
+    test_body += [
+        'echo \\"%s\\" overridden in swift/third/party/load.bzl' % key
+        for key in _override
+    ]
+    if _override:
+        test_body.append("exit 1")
     write_file(
         name = "test-no-override-gen",
         out = "test-no-override.sh",

@@ -19,3 +19,30 @@ alias(
     }),
     visibility = ["//visibility:public"],
 )
+
+[
+    sh_binary(
+        name = "update-%s-%s" % (what, os),
+        srcs = ["update.sh"],
+        args = [
+            "$(rlocationpath %s)" % what,
+            "$(rlocationpath %s)" % target,
+        ],
+        data = [
+            what,
+            target,
+        ],
+        deps = ["//misc/bazel:sh_runfiles"],
+    )
+    for os in _oses
+    for what, target in (
+        (
+            "prebuilt",
+            "swift-prebuilt-%s.tar.zst" % os,
+        ),
+        (
+            "dir",
+            "resource-dir-%s.zip" % os,
+        ),
+    )
+]
