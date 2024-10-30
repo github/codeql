@@ -19,7 +19,18 @@ module DataFlow {
 
   final class PostUpdateNode = Node::PostUpdateNode;
 
-  predicate localFlowStep = DataFlowImpl::localFlowStep/2;
+  /**
+   * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+   * (intra-procedural) step.
+   */
+  predicate localFlowStep = DataFlowImpl::localFlowStepImpl/2;
+
+  /**
+   * Holds if data flows from `source` to `sink` in zero or more local
+   * (intra-procedural) steps.
+   */
+  pragma[inline]
+  predicate localFlow(Node::Node source, Node::Node sink) { localFlowStep*(source, sink) }
 
   import DataFlowMake<Location, DataFlowImpl::RustDataFlow>
 }

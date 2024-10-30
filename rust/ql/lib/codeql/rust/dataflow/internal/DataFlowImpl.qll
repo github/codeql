@@ -3,6 +3,7 @@
  */
 
 private import codeql.util.Void
+private import codeql.util.Unit
 private import codeql.dataflow.DataFlow
 private import codeql.dataflow.internal.DataFlowImpl
 private import rust
@@ -25,11 +26,6 @@ module Node {
      * Gets the expression that corresponds to this node, if any.
      */
     Expr asExpr() { none() }
-
-    /**
-     * Gets this node's underlying pattern, if any.
-     */
-    Pat asPattern() { none() }
 
     /**
      * Gets the control flow node that corresponds to this data flow node.
@@ -73,7 +69,7 @@ module Node {
   final class ArgumentNode = NaNode;
 
   final class ReturnNode extends NaNode {
-    ReturnKind getKind() { none() }
+    RustDataFlow::ReturnKind getKind() { none() }
   }
 
   final class OutNode = NaNode;
@@ -152,7 +148,7 @@ module RustDataFlow implements InputSig<Location> {
 
   OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { none() }
 
-  final class DataFlowType = Void;
+  final class DataFlowType = Unit;
 
   predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
@@ -281,21 +277,16 @@ module RustDataFlow implements InputSig<Location> {
   class DataFlowSecondLevelScope = Void;
 }
 
-import RustDataFlow
-import MakeImpl<Location, RustDataFlow>
+final class ContentSet = RustDataFlow::ContentSet;
 
-/**
- * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
- * (intra-procedural) step.
- */
-predicate localFlowStep = localFlowStepImpl/2;
+import MakeImpl<Location, RustDataFlow>
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
   cached
   newtype TNode =
-    TExprNode(CfgNode n, Expr e) or
+    TExprNode(CfgNode n, Expr e) { n.getAstNode() = e } or
     TSourceParameterNode(Param param)
 
   cached
@@ -311,14 +302,7 @@ private module Cached {
 
   /** This is the local flow predicate that is exposed. */
   cached
-  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) { none() }
+  predicate localFlowStepImpl(Node::Node nodeFrom, Node::Node nodeTo) { none() }
 }
 
 import Cached
-
-/**
- * Holds if data flows from `source` to `sink` in zero or more local
- * (intra-procedural) steps.
- */
-pragma[inline]
-predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
