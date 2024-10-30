@@ -1,92 +1,125 @@
 use anyhow::Context;
-use ra_ap_ide_db::line_index::LineIndex;
-use ra_ap_parser::Edition;
-use std::borrow::Cow;
+use archive::Archiver;
+use log::info;
+use ra_ap_ide_db::line_index::{LineCol, LineIndex};
+use ra_ap_project_model::ProjectManifest;
+use rust_analyzer::{ParseResult, RustAnalyzer};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+};
 mod archive;
 mod config;
 pub mod generated;
+mod qltest;
+mod rust_analyzer;
 mod translate;
 pub mod trap;
-use ra_ap_syntax::ast::SourceFile;
-use ra_ap_syntax::{AstNode, SyntaxError, TextRange, TextSize};
-
-fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
-    let mut iter = v.utf8_chunks();
-    let (first_valid, first_invalid) = if let Some(chunk) = iter.next() {
-        let valid = chunk.valid();
-        let invalid = chunk.invalid();
-        if invalid.is_empty() {
-            debug_assert_eq!(valid.len(), v.len());
-            return (Cow::Borrowed(valid), None);
-        }
-        (valid, invalid)
-    } else {
-        return (Cow::Borrowed(""), None);
-    };
-
-    const REPLACEMENT: &str = "\u{FFFD}";
-    let error_start = first_valid.len() as u32;
-    let error_end = error_start + first_invalid.len() as u32;
-    let error_range = TextRange::new(TextSize::new(error_start), TextSize::new(error_end));
-    let error = SyntaxError::new("invalid utf-8 sequence".to_owned(), error_range);
-    let mut res = String::with_capacity(v.len());
-    res.push_str(first_valid);
-
-    res.push_str(REPLACEMENT);
-
-    for chunk in iter {
-        res.push_str(chunk.valid());
-        if !chunk.invalid().is_empty() {
-            res.push_str(REPLACEMENT);
-        }
-    }
-
-    (Cow::Owned(res), Some(error))
-}
 
 fn extract(
-    archiver: &archive::Archiver,
+    rust_analyzer: &mut rust_analyzer::RustAnalyzer,
+    archiver: &Archiver,
     traps: &trap::TrapFileProvider,
-    file: std::path::PathBuf,
-) -> anyhow::Result<()> {
-    let file = std::path::absolute(&file).unwrap_or(file);
-    let file = std::fs::canonicalize(&file).unwrap_or(file);
-    archiver.archive(&file);
-    let input = std::fs::read(&file)?;
-    let (input, err) = from_utf8_lossy(&input);
-    let line_index = LineIndex::new(&input);
+    file: &std::path::Path,
+) {
+    archiver.archive(file);
+
+    let ParseResult {
+        ast,
+        text,
+        errors,
+        file_id,
+        semantics,
+    } = rust_analyzer.parse(file);
+    let line_index = LineIndex::new(text.as_ref());
     let display_path = file.to_string_lossy();
-    let mut trap = traps.create("source", &file);
-    let label = trap.emit_file(&file);
-    let mut translator = translate::Translator::new(trap, label, line_index);
-    if let Some(err) = err {
-        translator.emit_parse_error(display_path.as_ref(), err);
+    let mut trap = traps.create("source", file);
+    let label = trap.emit_file(file);
+    let mut translator = translate::Translator::new(
+        trap,
+        display_path.as_ref(),
+        label,
+        line_index,
+        file_id,
+        semantics,
+    );
+
+    for err in errors {
+        translator.emit_parse_error(&ast, &err);
     }
-    let parse = ra_ap_syntax::ast::SourceFile::parse(&input, Edition::CURRENT);
-    for err in parse.errors() {
-        translator.emit_parse_error(display_path.as_ref(), err);
+    let no_location = (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
+    if translator.semantics.is_none() {
+        translator.emit_diagnostic(
+            trap::DiagnosticSeverity::Warning,
+            "semantics".to_owned(),
+            "semantic analyzer unavailable".to_owned(),
+            "semantic analyzer unavailable: macro expansion, call graph, and type inference will be skipped.".to_owned(),
+            no_location,
+        );
     }
-    if let Some(ast) = SourceFile::cast(parse.syntax_node()) {
-        translator.emit_source_file(ast);
-    } else {
-        log::warn!("Skipped {}", display_path);
-    }
-    translator.trap.commit()?;
-    Ok(())
+    translator.emit_source_file(ast);
+    translator.trap.commit().unwrap_or_else(|err| {
+        log::error!(
+            "Failed to write trap file for: {}: {}",
+            display_path,
+            err.to_string()
+        )
+    });
 }
+
 fn main() -> anyhow::Result<()> {
-    let cfg = config::Config::extract().context("failed to load configuration")?;
+    let mut cfg = config::Config::extract().context("failed to load configuration")?;
     stderrlog::new()
         .module(module_path!())
         .verbosity(2 + cfg.verbose as usize)
         .init()?;
-    log::info!("{cfg:?}");
+    if cfg.qltest {
+        qltest::prepare(&mut cfg)?;
+    }
+    info!("{cfg:#?}\n");
+
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
     let archiver = archive::Archiver {
-        root: cfg.source_archive_dir,
+        root: cfg.source_archive_dir.clone(),
     };
-    for file in cfg.inputs {
-        extract(&archiver, &traps, file)?;
+    let files: Vec<PathBuf> = cfg
+        .inputs
+        .iter()
+        .map(|file| {
+            let file = std::path::absolute(file).unwrap_or(file.to_path_buf());
+            std::fs::canonicalize(&file).unwrap_or(file)
+        })
+        .collect();
+    let manifests = rust_analyzer::find_project_manifests(&files)?;
+    let mut map: HashMap<&Path, (&ProjectManifest, Vec<&Path>)> = manifests
+        .iter()
+        .map(|x| (x.manifest_path().parent().as_ref(), (x, Vec::new())))
+        .collect();
+    let mut other_files = Vec::new();
+
+    'outer: for file in &files {
+        let mut p = file.as_path();
+        while let Some(parent) = p.parent() {
+            p = parent;
+            if let Some((_, files)) = map.get_mut(parent) {
+                files.push(file);
+                continue 'outer;
+            }
+        }
+        other_files.push(file);
+    }
+    for (manifest, files) in map.values() {
+        if files.is_empty() {
+            break;
+        }
+        let mut rust_analyzer = RustAnalyzer::new(manifest, &cfg.scratch_dir);
+        for file in files {
+            extract(&mut rust_analyzer, &archiver, &traps, file);
+        }
+    }
+    let mut rust_analyzer = RustAnalyzer::WithoutDatabase();
+    for file in other_files {
+        extract(&mut rust_analyzer, &archiver, &traps, file);
     }
 
     Ok(())

@@ -24,6 +24,10 @@
 | C | o | pkg1/interfaces.go:14:2:14:2 | o |
 | Foo | half | pkg1/tst.go:33:16:33:19 | half |
 | GenericInterface | GetT | generic.go:33:2:33:5 | GetT |
+| MixedExportedAndNot | Exported | pkg1/interfaces.go:36:2:36:9 | Exported |
+| MixedExportedAndNot | Exported | pkg2/tst.go:12:2:12:9 | Exported |
+| MixedExportedAndNot | notExported | pkg1/interfaces.go:37:2:37:12 | notExported |
+| MixedExportedAndNot | notExported | pkg2/tst.go:13:2:13:12 | notExported |
 | MyInterface | clone | generic.go:48:2:48:6 | clone |
 | MyInterface | dummy1 | generic.go:49:2:49:7 | dummy1 |
 | MyInterface | dummy2 | generic.go:50:2:50:7 | dummy2 |

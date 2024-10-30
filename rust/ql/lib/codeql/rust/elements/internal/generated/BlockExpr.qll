@@ -54,6 +54,36 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
+     * Holds if this block expression is async.
+     */
+    predicate isAsync() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isAsync() }
+
+    /**
+     * Holds if this block expression is const.
+     */
+    predicate isConst() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isConst() }
+
+    /**
+     * Holds if this block expression is gen.
+     */
+    predicate isGen() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isGen() }
+
+    /**
+     * Holds if this block expression is move.
+     */
+    predicate isMove() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isMove() }
+
+    /**
+     * Holds if this block expression is try.
+     */
+    predicate isTry() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isTry() }
+
+    /**
+     * Holds if this block expression is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isUnsafe() }
+
+    /**
      * Gets the label of this block expression, if it exists.
      */
     Label getLabel() {

@@ -4,8 +4,7 @@
  */
 
 private import internal.MethodCallExprImpl
-import codeql.rust.elements.ArgList
-import codeql.rust.elements.Attr
+import codeql.rust.elements.CallExprBase
 import codeql.rust.elements.Expr
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef

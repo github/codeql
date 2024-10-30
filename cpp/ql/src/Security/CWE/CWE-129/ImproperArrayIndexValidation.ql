@@ -14,102 +14,56 @@
 
 import cpp
 import semmle.code.cpp.controlflow.IRGuards
-import semmle.code.cpp.security.FlowSources
-import semmle.code.cpp.ir.dataflow.TaintTracking
-import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
+import semmle.code.cpp.security.FlowSources as FS
+import semmle.code.cpp.dataflow.new.TaintTracking
+import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import ImproperArrayIndexValidation::PathGraph
-import semmle.code.cpp.security.Security
 
-predicate hasUpperBound(VariableAccess offsetExpr) {
-  exists(BasicBlock controlled, StackVariable offsetVar, SsaDefinition def |
-    controlled.contains(offsetExpr) and
-    linearBoundControls(controlled, def, offsetVar) and
-    offsetExpr = def.getAUse(offsetVar)
+predicate isFlowSource(FS::FlowSource source, string sourceType) {
+  sourceType = source.getSourceType()
+}
+
+predicate guardChecks(IRGuardCondition g, Expr e, boolean branch) {
+  exists(Operand op | op.getDef().getConvertedResultExpression() = e |
+    // `op < k` is true and `k > 0`
+    g.comparesLt(op, any(int k | k > 0), true, any(BooleanValue bv | bv.getValue() = branch))
+    or
+    // `op < _ + k` is true and `k > 0`.
+    g.comparesLt(op, _, any(int k | k > 0), true, branch)
+    or
+    // op == k
+    g.comparesEq(op, _, true, any(BooleanValue bv | bv.getValue() = branch))
+    or
+    // op == _ + k
+    g.comparesEq(op, _, _, true, branch)
   )
 }
 
-pragma[noinline]
-predicate linearBoundControls(BasicBlock controlled, SsaDefinition def, StackVariable offsetVar) {
-  exists(GuardCondition guard, boolean branch |
-    guard.controls(controlled, branch) and
-    cmpWithLinearBound(guard, def.getAUse(offsetVar), Lesser(), branch)
+/**
+ * Holds if `arrayExpr` accesses an `ArrayType` with a constant size `N`, and
+ * the value of `offsetExpr` is known to be smaller than `N`.
+ */
+predicate offsetIsAlwaysInBounds(ArrayExpr arrayExpr, VariableAccess offsetExpr) {
+  exists(ArrayType arrayType |
+    arrayType = arrayExpr.getArrayBase().getUnspecifiedType() and
+    arrayType.getArraySize() > upperBound(offsetExpr.getFullyConverted())
   )
-}
-
-predicate readsVariable(LoadInstruction load, Variable var) {
-  load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
-}
-
-predicate hasUpperBoundsCheck(Variable var) {
-  exists(RelationalOperation oper, VariableAccess access |
-    oper.getAnOperand() = access and
-    access.getTarget() = var and
-    // Comparing to 0 is not an upper bound check
-    not oper.getAnOperand().getValue() = "0"
-  )
-}
-
-predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Variable checkedVar) {
-  readsVariable(node.asInstruction(), checkedVar) and
-  any(IRGuardCondition guard).ensuresEq(access, _, _, node.asInstruction().getBlock(), true)
-}
-
-predicate isFlowSource(FlowSource source, string sourceType) { sourceType = source.getSourceType() }
-
-predicate predictableInstruction(Instruction instr) {
-  instr instanceof ConstantInstruction
-  or
-  instr instanceof StringConstantInstruction
-  or
-  // This could be a conversion on a string literal
-  predictableInstruction(instr.(UnaryInstruction).getUnary())
 }
 
 module ImproperArrayIndexValidationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isFlowSource(source, _) }
 
   predicate isBarrier(DataFlow::Node node) {
-    hasUpperBound(node.asExpr())
-    or
-    // These barriers are ported from `DefaultTaintTracking` because this query is quite noisy
-    // otherwise.
-    exists(Variable checkedVar |
-      readsVariable(node.asInstruction(), checkedVar) and
-      hasUpperBoundsCheck(checkedVar)
-    )
-    or
-    exists(Variable checkedVar, Operand access |
-      readsVariable(access.getDef(), checkedVar) and
-      nodeIsBarrierEqualityCandidate(node, access, checkedVar)
-    )
-    or
-    // Don't use dataflow into binary instructions if both operands are unpredictable
-    exists(BinaryInstruction iTo |
-      iTo = node.asInstruction() and
-      not predictableInstruction(iTo.getLeft()) and
-      not predictableInstruction(iTo.getRight()) and
-      // propagate taint from either the pointer or the offset, regardless of predictability
-      not iTo instanceof PointerArithmeticInstruction
-    )
-    or
-    // don't use dataflow through calls to pure functions if two or more operands
-    // are unpredictable
-    exists(Instruction iFrom1, Instruction iFrom2, CallInstruction iTo |
-      iTo = node.asInstruction() and
-      isPureFunction(iTo.getStaticCallTarget().getName()) and
-      iFrom1 = iTo.getAnArgument() and
-      iFrom2 = iTo.getAnArgument() and
-      not predictableInstruction(iFrom1) and
-      not predictableInstruction(iFrom2) and
-      iFrom1 != iFrom2
-    )
+    node = DataFlow::BarrierGuard<guardChecks/3>::getABarrierNode()
   }
+
+  predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
 
   predicate isSink(DataFlow::Node sink) {
     exists(ArrayExpr arrayExpr, VariableAccess offsetExpr |
       offsetExpr = arrayExpr.getArrayOffset() and
       sink.asExpr() = offsetExpr and
-      not hasUpperBound(offsetExpr)
+      not offsetIsAlwaysInBounds(arrayExpr, offsetExpr)
     )
   }
 }

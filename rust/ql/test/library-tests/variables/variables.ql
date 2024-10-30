@@ -11,6 +11,10 @@ query predicate variableReadAccess(VariableReadAccess va, Variable v) { v = va.g
 
 query predicate variableInitializer(Variable v, Expr e) { e = v.getInitializer() }
 
+query predicate capturedVariable(Variable v) { v.isCaptured() }
+
+query predicate capturedAccess(VariableAccess va) { va.isCapture() }
+
 module VariableAccessTest implements TestSig {
   string getARelevantTag() { result = ["", "write_", "read_"] + "access" }
 

@@ -169,11 +169,17 @@ open class KotlinFileExtractor(
         }
 
     private fun FunctionDescriptor.tryIsHiddenToOvercomeSignatureClash(d: IrFunction): Boolean {
+        // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash`
+        // throws one exception or other in Kotlin 2, depending on the version.
+        // TODO: We need a replacement for this for Kotlin 2
         try {
             return this.isHiddenToOvercomeSignatureClash
         } catch (e: NotImplementedError) {
-            // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
-            // TODO: We need a replacement for this for Kotlin 2
+            if (!usesK2) {
+                logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
+            }
+            return false
+        } catch (e: IllegalStateException) {
             if (!usesK2) {
                 logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
             }
@@ -478,8 +484,6 @@ open class KotlinFileExtractor(
                 tw.writeIsRaw(id)
             }
 
-            val unbound = useClassSource(c)
-            tw.writeErasure(id, unbound)
             extractClassModifiers(c, id)
             extractClassSupertypes(
                 c,

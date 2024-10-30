@@ -9,6 +9,9 @@ extensions:
       - ["java.util.stream", "BaseStream", True, "sequential", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util.stream", "BaseStream", True, "spliterator", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util.stream", "BaseStream", True, "unordered", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
+      - ["java.util.stream", "DoubleStream", True, "mapToObj", "(IntFunction)", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]
+      - ["java.util.stream", "IntStream", True, "mapToObj", "(IntFunction)", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]
+      - ["java.util.stream", "LongStream", True, "mapToObj", "(IntFunction)", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]
       - ["java.util.stream", "Stream", True, "allMatch", "(Predicate)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["java.util.stream", "Stream", True, "anyMatch", "(Predicate)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["java.util.stream", "Stream", True, "collect", "(Supplier,BiConsumer,BiConsumer)", "", "Argument[this].Element", "Argument[1].Parameter[1]", "value", "manual"]
@@ -101,5 +104,4 @@ extensions:
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.util.stream", "IntStream", "mapToObj", "(IntFunction)", "summary", "manual"] # taint-numeric
       - ["java.util.stream", "IntStream", "range", "(int,int)", "summary", "manual"]        # taint-numeric

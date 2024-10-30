@@ -1,0 +1,12 @@
+name: codeql/actions-all
+version: 0.0.1-dev
+library: true
+warnOnImplicitThis: true
+dependencies:
+  codeql/util: ${workspace}
+  codeql/yaml: ${workspace}
+  codeql/controlflow: ${workspace}
+  codeql/dataflow: ${workspace}
+  codeql/javascript-all: ${workspace}
+extractor: actions
+groups: actions

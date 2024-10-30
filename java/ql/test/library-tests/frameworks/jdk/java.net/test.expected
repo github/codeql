@@ -1,7 +1,7 @@
 models
 | 1 | Summary: java.net; InetAddress; true; getByName; (String); ; Argument[0]; ReturnValue; taint; ai-manual |
-| 2 | Summary: java.net; InetSocketAddress; true; createUnresolved; (String,int); ; Argument[0]; ReturnValue; taint; ai-manual |
-| 3 | Summary: java.net; InetSocketAddress; true; InetSocketAddress; (String,int); ; Argument[0]; Argument[this]; taint; ai-manual |
+| 2 | Summary: java.net; InetSocketAddress; true; InetSocketAddress; (String,int); ; Argument[0]; Argument[this]; taint; ai-manual |
+| 3 | Summary: java.net; InetSocketAddress; true; createUnresolved; (String,int); ; Argument[0]; ReturnValue; taint; ai-manual |
 | 4 | Summary: java.net; URI; false; URI; (String); ; Argument[0]; Argument[this]; taint; manual |
 | 5 | Summary: java.net; URI; false; create; ; ; Argument[0]; ReturnValue; taint; manual |
 | 6 | Summary: java.net; URI; false; resolve; (String); ; Argument[0]; ReturnValue; taint; ai-manual |
@@ -24,11 +24,11 @@ edges
 | Test.java:31:16:31:32 | (...)... : String | Test.java:32:32:32:33 | in : String | provenance |  |
 | Test.java:31:25:31:32 | source(...) : Object | Test.java:31:16:31:32 | (...)... : String | provenance |  |
 | Test.java:32:10:32:37 | new InetSocketAddress(...) : InetSocketAddress | Test.java:33:9:33:11 | out | provenance |  |
-| Test.java:32:32:32:33 | in : String | Test.java:32:10:32:37 | new InetSocketAddress(...) : InetSocketAddress | provenance | MaD:3 |
+| Test.java:32:32:32:33 | in : String | Test.java:32:10:32:37 | new InetSocketAddress(...) : InetSocketAddress | provenance | MaD:2 |
 | Test.java:38:16:38:32 | (...)... : String | Test.java:39:45:39:46 | in : String | provenance |  |
 | Test.java:38:25:38:32 | source(...) : Object | Test.java:38:16:38:32 | (...)... : String | provenance |  |
 | Test.java:39:10:39:50 | createUnresolved(...) : InetSocketAddress | Test.java:40:9:40:11 | out | provenance |  |
-| Test.java:39:45:39:46 | in : String | Test.java:39:10:39:50 | createUnresolved(...) : InetSocketAddress | provenance | MaD:2 |
+| Test.java:39:45:39:46 | in : String | Test.java:39:10:39:50 | createUnresolved(...) : InetSocketAddress | provenance | MaD:3 |
 | Test.java:45:16:45:32 | (...)... : String | Test.java:46:18:46:19 | in : String | provenance |  |
 | Test.java:45:25:45:32 | source(...) : Object | Test.java:45:16:45:32 | (...)... : String | provenance |  |
 | Test.java:46:10:46:20 | new URI(...) : URI | Test.java:47:9:47:11 | out | provenance |  |

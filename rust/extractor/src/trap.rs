@@ -124,11 +124,11 @@ impl<T: TrapClass> From<Label<T>> for trap::Arg {
 
 pub struct TrapFile {
     path: PathBuf,
-    writer: Writer,
+    pub writer: Writer,
     compression: Compression,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub enum DiagnosticSeverity {
     Debug = 10,
     Info = 20,
@@ -244,7 +244,7 @@ impl TrapFileProvider {
     }
 
     pub fn create(&self, category: &str, key: &Path) -> TrapFile {
-        let path = file_paths::path_for(&self.trap_dir.join(category), key, ".trap");
+        let path = file_paths::path_for(&self.trap_dir.join(category), key, "trap");
         debug!("creating trap file {}", path.display());
         let mut writer = trap::Writer::new();
         extractor::populate_empty_location(&mut writer);

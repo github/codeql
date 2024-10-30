@@ -75,6 +75,13 @@ module OpenUrlRedirect {
     }
   }
 
+  bindingset[var, w]
+  pragma[inline_late]
+  private predicate useIsDominated(SsaWithFields var, Write w, DataFlow::ReadNode sanitizedRead) {
+    w.dominatesNode(sanitizedRead.asInstruction()) and
+    sanitizedRead = var.getAUse()
+  }
+
   /**
    * An access to a variable that is preceded by an assignment to its `Path` field.
    *
@@ -83,13 +90,10 @@ module OpenUrlRedirect {
    */
   class PathAssignmentBarrier extends Barrier, Read {
     PathAssignmentBarrier() {
-      exists(Write w, Field f, SsaWithFields var |
-        f.getName() = "Path" and
+      exists(Write w, SsaWithFields var |
         hasHostnameSanitizingSubstring(w.getRhs()) and
-        this = var.getAUse()
-      |
-        w.writesField(var.getAUse(), f, _) and
-        w.dominatesNode(insn)
+        w.writesField(var.getAUse(), any(Field f | f.getName() = "Path"), _) and
+        useIsDominated(var, w, this)
       )
     }
   }
