@@ -243,6 +243,7 @@ module SourceSinkInterpretationInput implements
         (
           not callTarget instanceof Method
           or
+          callTarget instanceof Method and
           elementAppliesToQualifier(result, cn.getReceiver())
         )
       )
