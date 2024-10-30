@@ -21,3 +21,11 @@ testFailures
 | InlineTests.cs:34:18:34:25 | "Source" | Unexpected result: Source |
 | InlineTests.cs:35:16:35:21 | "Sink" | Unexpected result: Sink |
 | InlineTests.cs:36:13:36:23 | InlineTests.cs:34:18:34:25 | Unexpected result: Alert |
+| InlineTests.cs:58:16:58:21 | "Sink" | Unexpected result: Sink=source2 |
+| InlineTests.cs:58:24:58:60 | // ... | Missing result: Sink[path-problem-query]=source1 |
+| InlineTests.cs:64:13:64:23 | InlineTests.cs:62:18:62:25 | Unexpected result: Alert=source3 |
+| InlineTests.cs:64:26:64:63 | // ... | Missing result: Alert[path-problem-query]=source2 |
+| InlineTests.cs:72:13:72:23 | "Alert:1:0" | Unexpected result: Alert=source5 |
+| InlineTests.cs:72:26:72:63 | // ... | Missing result: Alert[path-problem-query]=source4 |
+| InlineTests.cs:79:16:79:21 | "Sink" | Unexpected result: Sink=sink1 |
+| InlineTests.cs:79:24:79:58 | // ... | Missing result: Sink[path-problem-query]=sink2 |

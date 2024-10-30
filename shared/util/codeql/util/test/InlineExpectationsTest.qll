@@ -717,12 +717,43 @@ module TestPostProcessing {
       )
     }
 
+    private string getTagRegex() {
+      exists(string sourceSinkTags |
+        (
+          getQueryKind() = "problem"
+          or
+          not exists(getSourceTag(_)) and
+          not exists(getSinkTag(_))
+        ) and
+        sourceSinkTags = ""
+        or
+        sourceSinkTags = "|" + getSourceTag(_) + "|" + getSinkTag(_)
+      |
+        result = "(Alert" + sourceSinkTags + ")(\\[(.*)\\])?"
+      )
+    }
+
     /**
      * A configuration for matching `// $ Source=foo` comments against actual
      * path-problem sources.
+     *
+     * Whenever a source is tagged with a value, like `foo`, we will use that
+     * to define the expected tags at the sink and the alert.
      */
     private module PathProblemSourceTestInput implements TestSig {
       string getARelevantTag() { result = getSourceTag(_) }
+
+      bindingset[expectedTag, actualTag]
+      predicate tagMatches(string expectedTag, string actualTag) {
+        actualTag = expectedTag.regexpCapture(getTagRegex(), 1) and
+        (
+          // expected tag is annotated with a query ID
+          getQueryId() = expectedTag.regexpCapture(getTagRegex(), 3)
+          or
+          // expected tag is not annotated with a query ID
+          not exists(expectedTag.regexpCapture(getTagRegex(), 3))
+        )
+      }
 
       bindingset[expectedValue, actualValue]
       predicate valueMatches(string expectedValue, string actualValue) {
@@ -754,28 +785,7 @@ module TestPostProcessing {
       bindingset[result]
       string getARelevantTag() { any() }
 
-      private string getTagRegex() {
-        exists(string sourceSinkTags |
-          getQueryKind() = "problem" and
-          sourceSinkTags = ""
-          or
-          sourceSinkTags = "|" + getSourceTag(_) + "|" + getSinkTag(_)
-        |
-          result = "(Alert" + sourceSinkTags + ")(\\[(.*)\\])?"
-        )
-      }
-
-      bindingset[expectedTag, actualTag]
-      predicate tagMatches(string expectedTag, string actualTag) {
-        actualTag = expectedTag.regexpCapture(getTagRegex(), 1) and
-        (
-          // expected tag is annotated with a query ID
-          getQueryId() = expectedTag.regexpCapture(getTagRegex(), 3)
-          or
-          // expected tag is not annotated with a query ID
-          not exists(expectedTag.regexpCapture(getTagRegex(), 3))
-        )
-      }
+      predicate tagMatches = PathProblemSourceTestInput::tagMatches/2;
 
       bindingset[expectedTag]
       predicate tagIsOptional(string expectedTag) {
@@ -789,21 +799,38 @@ module TestPostProcessing {
         )
       }
 
-      bindingset[expectedValue, actualValue]
-      predicate valueMatches(string expectedValue, string actualValue) {
-        expectedValue = actualValue
-        or
-        actualValue = ""
-      }
-
       private predicate hasPathProblemSource = PathProblemSourceTestInput::hasPathProblemSource/5;
 
+      private predicate hasPathProblemSink(
+        int row, Input::Location location, string element, string tag
+      ) {
+        getQueryKind() = "path-problem" and
+        exists(string loc |
+          queryResults("#select", row, 4, loc) and
+          queryResults("#select", row, 5, element) and
+          tag = getSinkTag(row) and
+          Input2::getRelativeUrl(location) = loc
+        )
+      }
+
+      private predicate hasAlert(int row, Input::Location location, string element, string tag) {
+        getQueryKind() = ["problem", "path-problem"] and
+        exists(string loc |
+          queryResults("#select", row, 0, loc) and
+          queryResults("#select", row, 2, element) and
+          tag = "Alert" and
+          Input2::getRelativeUrl(location) = loc and
+          not hasPathProblemSource(row, location, _, _, _) and
+          not hasPathProblemSink(row, location, _, _)
+        )
+      }
+
       /**
-       * Gets the expected sink value for result row `row`. This value must
+       * Gets the expected value for result row `row`, if any. This value must
        * match the value at the corresponding path-problem source (if it is
        * present).
        */
-      private string getSinkValue(int row) {
+      private string getValue(int row) {
         exists(Input::Location location, string element, string tag, string val |
           hasPathProblemSource(row, location, element, tag, val) and
           result =
@@ -812,41 +839,18 @@ module TestPostProcessing {
         )
       }
 
-      private predicate hasPathProblemSink(
-        int row, Input::Location location, string element, string tag, string value
-      ) {
-        getQueryKind() = "path-problem" and
-        exists(string loc |
-          queryResults("#select", row, 4, loc) and
-          queryResults("#select", row, 5, element) and
-          tag = getSinkTag(row) and
-          Input2::getRelativeUrl(location) = loc
-        |
-          not exists(getSinkValue(row)) and value = ""
-          or
-          value = getSinkValue(row)
-        )
-      }
-
-      private predicate hasAlert(Input::Location location, string element, string tag, string value) {
-        getQueryKind() = ["problem", "path-problem"] and
-        exists(int row, string loc |
-          queryResults("#select", row, 0, loc) and
-          queryResults("#select", row, 2, element) and
-          tag = "Alert" and
-          value = "" and
-          Input2::getRelativeUrl(location) = loc and
-          not hasPathProblemSource(row, location, _, _, _) and
-          not hasPathProblemSink(row, location, _, _, _)
-        )
-      }
-
       predicate hasActualResult(Input::Location location, string element, string tag, string value) {
-        hasPathProblemSource(_, location, element, tag, value)
-        or
-        hasPathProblemSink(_, location, element, tag, value)
-        or
-        hasAlert(location, element, tag, value)
+        exists(int row |
+          hasPathProblemSource(row, location, element, tag, _)
+          or
+          hasPathProblemSink(row, location, element, tag)
+          or
+          hasAlert(row, location, element, tag)
+        |
+          not exists(getValue(row)) and value = ""
+          or
+          value = getValue(row)
+        )
       }
     }
 
