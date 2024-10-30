@@ -87,6 +87,10 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
     )
   }
 
+  private predicate uniqStepNotNull(FlowNode n1, FlowNode n2) {
+    uniqStep(n1, n2) and not isNull(n1)
+  }
+
   private import Internal
 
   module Internal {
@@ -100,7 +104,9 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
      * Holds if data can flow from `n1` to `n2` in one step, excluding join
      * steps from nodes that are always null.
      */
-    predicate anyStep(FlowNode n1, FlowNode n2) { joinStepNotNull(n1, n2) or uniqStep(n1, n2) }
+    predicate anyStep(FlowNode n1, FlowNode n2) {
+      joinStepNotNull(n1, n2) or uniqStepNotNull(n1, n2)
+    }
   }
 
   private predicate sccEdge(FlowNode n1, FlowNode n2) { anyStep(n1, n2) and anyStep+(n2, n1) }
@@ -250,7 +256,7 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
       or
       not P::barrier(n) and
       (
-        exists(FlowNode mid | hasProperty(mid) and uniqStep(mid, n))
+        exists(FlowNode mid | hasProperty(mid) and uniqStepNotNull(mid, n))
         or
         // The following is an optimized version of
         // `forex(FlowNode mid | joinStepNotNull(mid, n) | hasPropery(mid))`
@@ -298,7 +304,7 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
       or
       not P::barrier(n) and
       (
-        exists(FlowNode mid | hasProperty(mid, t) and uniqStep(mid, n))
+        exists(FlowNode mid | hasProperty(mid, t) and uniqStepNotNull(mid, n))
         or
         // The following is an optimized version of
         // `forex(FlowNode mid | joinStepNotNull(mid, n) | hasPropery(mid, t))`
