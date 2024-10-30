@@ -5,7 +5,6 @@
 | unreachable.rs:61:2:61:16 | ExprStmt | This code is never reached. |
 | unreachable.rs:107:16:107:23 | ExprStmt | This code is never reached. |
 | unreachable.rs:115:15:115:22 | ExprStmt | This code is never reached. |
-| unreachable.rs:131:2:131:16 | ExprStmt | This code is never reached. |
 | unreachable.rs:141:2:141:16 | ExprStmt | This code is never reached. |
 | unreachable.rs:148:3:148:17 | ExprStmt | This code is never reached. |
 | unreachable.rs:157:4:157:18 | ExprStmt | This code is never reached. |
@@ -13,9 +12,5 @@
 | unreachable.rs:169:4:169:18 | ExprStmt | This code is never reached. |
 | unreachable.rs:177:4:177:18 | ExprStmt | This code is never reached. |
 | unreachable.rs:180:2:180:16 | ExprStmt | This code is never reached. |
-| unreachable.rs:197:2:197:16 | ExprStmt | This code is never reached. |
 | unreachable.rs:203:3:203:17 | ExprStmt | This code is never reached. |
-| unreachable.rs:206:2:206:16 | ExprStmt | This code is never reached. |
 | unreachable.rs:218:3:218:17 | ExprStmt | This code is never reached. |
-| unreachable.rs:233:2:233:16 | ExprStmt | This code is never reached. |
-| unreachable.rs:242:2:242:16 | ExprStmt | This code is never reached. |

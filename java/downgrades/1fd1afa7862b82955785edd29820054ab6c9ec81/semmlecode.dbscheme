@@ -516,6 +516,11 @@ isRaw(
   int memberid: @member ref
 );
 
+erasure(
+  unique int memberid: @member ref,
+  int erasureid: @member ref
+);
+
 #keyset[classid] #keyset[parent]
 isAnonymClass(
   int classid: @classorinterface ref,
