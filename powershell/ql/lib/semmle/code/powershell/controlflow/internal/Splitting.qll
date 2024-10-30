@@ -39,46 +39,46 @@ private module ConditionalCompletionSplitting {
     override string toString() { result = completion.toString() }
   }
 
-  private class ConditionalCompletionSplitKind extends SplitKind, TConditionalCompletionSplitKind {
-    override int getListOrder() { result = 0 }
+  // private class ConditionalCompletionSplitKind extends SplitKind, TConditionalCompletionSplitKind {
+  //   override int getListOrder() { result = 0 }
 
-    override predicate isEnabled(Ast n) { this.appliesTo(n) }
+  //   override predicate isEnabled(Ast n) { this.appliesTo(n) }
 
-    override string toString() { result = "ConditionalCompletion" }
-  }
+  //   override string toString() { result = "ConditionalCompletion" }
+  // }
 
   int getNextListOrder() { result = 1 }
 
-  private class ConditionalCompletionSplitImpl extends SplitImpl instanceof ConditionalCompletionSplit
-  {
-    ConditionalCompletion completion;
+//   private class ConditionalCompletionSplitImpl extends SplitImpl instanceof ConditionalCompletionSplit
+//   {
+//     ConditionalCompletion completion;
 
-    ConditionalCompletionSplitImpl() { this = TConditionalCompletionSplit(completion) }
+//     ConditionalCompletionSplitImpl() { this = TConditionalCompletionSplit(completion) }
 
-    override ConditionalCompletionSplitKind getKind() { any() }
+//     override ConditionalCompletionSplitKind getKind() { any() }
 
-    override predicate hasEntry(Ast pred, Ast succ, Completion c) {
-      succ(pred, succ, c) and
-      last(succ, _, completion) and
-      none() // TODO
-    }
+//     override predicate hasEntry(Ast pred, Ast succ, Completion c) {
+//       succ(pred, succ, c) and
+//       last(succ, _, completion) and
+//       none() // TODO
+//     }
 
-    override predicate hasEntryScope(Cfg::CfgScope scope, Ast succ) { none() }
+//     override predicate hasEntryScope(Cfg::CfgScope scope, Ast succ) { none() }
 
-    override predicate hasExit(Ast pred, Ast succ, Completion c) {
-      this.appliesTo(pred) and
-      succ(pred, succ, c) and
-      if c instanceof ConditionalCompletion then completion = c else any()
-    }
+//     override predicate hasExit(Ast pred, Ast succ, Completion c) {
+//       this.appliesTo(pred) and
+//       succ(pred, succ, c) and
+//       if c instanceof ConditionalCompletion then completion = c else any()
+//     }
 
-    override predicate hasExitScope(Cfg::CfgScope scope, Ast last, Completion c) {
-      this.appliesTo(last) and
-      succExit(scope, last, c) and
-      if c instanceof ConditionalCompletion then completion = c else any()
-    }
+//     override predicate hasExitScope(Cfg::CfgScope scope, Ast last, Completion c) {
+//       this.appliesTo(last) and
+//       succExit(scope, last, c) and
+//       if c instanceof ConditionalCompletion then completion = c else any()
+//     }
 
-    override predicate hasSuccessor(Ast pred, Ast succ, Completion c) { none() }
-  }
+//     override predicate hasSuccessor(Ast pred, Ast succ, Completion c) { none() }
+//   }
 }
 
 class ConditionalCompletionSplit = ConditionalCompletionSplitting::ConditionalCompletionSplit;
