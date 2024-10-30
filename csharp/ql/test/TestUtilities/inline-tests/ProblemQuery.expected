@@ -1,0 +1,9 @@
+#select
+| InlineTests.cs:6:17:6:23 | "Alert" | This is a problem |
+| InlineTests.cs:15:13:15:19 | "Alert" | This is a problem |
+| InlineTests.cs:18:13:18:19 | "Alert" | This is a problem |
+testFailures
+| InlineTests.cs:12:34:12:43 | // ... | Missing result: Alert |
+| InlineTests.cs:15:13:15:19 | This is a problem | Unexpected result: Alert |
+| InlineTests.cs:26:30:26:39 | // ... | Missing result: Alert |
+| InlineTests.cs:31:33:31:42 | // ... | Missing result: Alert |
