@@ -197,19 +197,30 @@ SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType
   auto ret = initMangled(type);
   for (const auto& param : type->getParams()) {
     ret << fetch(param.getPlainType());
-    if (param.isInOut()) {
-      ret << "_inout";
-    }
-    if (param.isOwned()) {
-      ret << "_owned";
-    }
-    if (param.isShared()) {
-      ret << "_shared";
-    }
-    if (param.isIsolated()) {
+    auto flags = param.getParameterFlags();
+    ret << "_" << getNameForParamSpecifier(flags.getOwnershipSpecifier());
+    if (flags.isIsolated()) {
       ret << "_isolated";
     }
-    if (param.isVariadic()) {
+    if (flags.isAutoClosure()) {
+      ret << "_autoclosure";
+    }
+    if (flags.isNonEphemeral()) {
+      ret << "_nonephermeral";
+    }
+    if (flags.isIsolated()) {
+      ret << "_isolated";
+    }
+    if (flags.isSending()) {
+      ret << "_sending";
+    }
+    if (flags.isCompileTimeConst()) {
+      ret << "_compiletimeconst";
+    }
+    if (flags.isNoDerivative()) {
+      ret << "_noderivative";
+    }
+    if (flags.isVariadic()) {
       ret << "...";
     }
   }
@@ -219,6 +230,9 @@ SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType
   }
   if (type->isThrowing()) {
     ret << "_throws";
+    if (type->hasThrownError()) {
+      ret << "(" << fetch(type->getThrownError()) << ")";
+    }
   }
   if (type->isSendable()) {
     ret << "_sendable";
