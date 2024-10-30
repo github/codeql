@@ -1,0 +1,10 @@
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files", "strip_prefix")
+
+codeql_pkg_files(
+    name = "extractor",
+    srcs = [
+        "codeql-extractor.yml",
+    ] + glob(["tools/**"]),
+    strip_prefix = strip_prefix.from_pkg(),
+    visibility = ["//actions:__pkg__"],
+)
