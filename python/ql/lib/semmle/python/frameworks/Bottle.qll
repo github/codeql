@@ -27,10 +27,7 @@ module Bottle {
      */
     module App {
       /** Gets a reference to a Bottle application (an instance of `bottle.Bottle`) */
-      API::Node instance() { result = bottle().getMember("Bottle").getReturn() }
-
-      /** Gets a reference to a Bottle application (an instance of `bottle.app`) */
-      API::Node app() { result = bottle().getMember("app").getReturn() }
+      API::Node app() { result = bottle().getMember(["Bottle", "app"]).getReturn() }
     }
 
     /** Provides models for functions that are possible "views" */
@@ -42,13 +39,13 @@ module Bottle {
         ViewCallable() { this = any(BottleRouteSetup rs).getARequestHandler() }
       }
 
+      /** Get methods that reprsent a route in Bottle */
       string routeMethods() { result = ["route", "get", "post", "put", "delete", "patch"] }
 
       private class BottleRouteSetup extends Http::Server::RouteSetup::Range, DataFlow::CallCfgNode {
         BottleRouteSetup() {
           this =
             [
-              App::instance().getMember(routeMethods()).getACall(),
               App::app().getMember(routeMethods()).getACall(),
               bottle().getMember(routeMethods()).getACall()
             ]
@@ -68,8 +65,10 @@ module Bottle {
 
     /** Provides models for the `bottle.response` module */
     module Response {
-      /** Gets a reference to the `bottle.response` module. */
-      API::Node response() { result = bottle().getMember("response") }
+      /** Gets a reference to the `bottle.response` module or instantiation of Bottle Response class. */
+      API::Node response() {
+        result = [bottle().getMember("response"), bottle().getMember("Response").getReturn()]
+      }
 
       /** A response returned by a view callable. */
       class BottleReturnResponse extends Http::Server::HttpResponse::Range {
