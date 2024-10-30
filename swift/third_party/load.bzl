@@ -7,8 +7,8 @@ _override = {
     # these are used to test new artifacts. Must be empty before merging to main
     "swift-prebuilt-macOS.tar.zst": "a016ed60ee1a534439ed4d55100ecf6b9fc739f629be20942345ac5156cb6296",
     "swift-prebuilt-Linux.tar.zst": "54240eb2da948207862ea8eb9bcbfe4447016534b9a8e6d8ee1af67db2a3e73f",
-    "resource-dir-macOS.zip": "fc7ed103d79f9dc61e716a58f221757c33ac2a4358de771d4889e1050f2a5b7a",
-    "resource-dir-Linux.zip": "e5323f44e72f446e26e7b1fc4920ca9b924e6b5ef8b22e9cb18a0f2f03732913",
+    "resource-dir-macOS.zip": "286e4403aa0a56641c2789e82036481535e336484f2c760bec0f42e3afe5dd87",
+    "resource-dir-Linux.zip": "16a1760f152395377a580a994885e0877338279125834463a6a38f4006ad61ca",
 }
 
 _staging_url = "https://github.com/dsp-testing/codeql-swift-artifacts/releases/download/staging-{file}/{file}"

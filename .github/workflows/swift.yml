@@ -110,7 +110,7 @@ jobs:
       - uses: ./.github/actions/fetch-codeql
       - uses: ./swift/actions/database-upgrade-scripts
   check-no-override:
-    if : ${{ github.event_name == 'pull_request' }}
+    if : github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
