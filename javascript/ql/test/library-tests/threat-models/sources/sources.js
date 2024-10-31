@@ -60,8 +60,8 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
 
 // Accessing file contents using fs
 const fs = require('fs');
-fs.readFile('file.txt', 'utf8', (err, data) => { // $ MISSING: threat-source=file
-  SINK(data); // $ MISSING: hasFlow
+fs.readFile('file.txt', 'utf8', (err, data) => { // $ threat-source=file
+  SINK(data); // $ hasFlow
 });
 
 // Accessing file contents using fs.readFileSync
