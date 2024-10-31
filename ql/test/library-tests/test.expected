@@ -1559,6 +1559,7 @@ sources
 | martinhaintz/ga-file-list | * | output.file_names | filename | manual |
 | martinhaintz/ga-file-list | * | output.files | filename | manual |
 | peter-murray/issue-body-parser-action | * | output.* | text | manual |
+| peter-murray/issue-forms-body-parser | * | output.payload | text | manual |
 | potiuk/get-workflow-origin | * | output.sourceHeadBranch | branch | manual |
 | puppeteer/puppeteer/.github/workflows/changed-packages.yml | * | output.changes | filename | manual |
 | redhat-plumbers-in-action/download-artifact | * | output.* | artifact | manual |
@@ -1703,6 +1704,7 @@ summaries
 | tmelliottjr/extract-regex-action | * | input.input | output.resultArray | taint | manual |
 | tmelliottjr/extract-regex-action | * | input.input | output.resultString | taint | manual |
 | traversals-analytics-and-intelligence/file-reader-action | * | artifact | output.content | taint | manual |
+| zentered/issue-forms-body-parser | * | input.body | output.data | taint | manual |
 | zitadel/zitadel/.github/workflows/container.yml | * | input.build_image_name | output.build_image | taint | manual |
 needs
 | .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output |
