@@ -199,6 +199,13 @@ edges
 | .github/workflows/test19.yml:104:9:108:6 | Run Step: comments [comments] | .github/workflows/test19.yml:108:21:108:57 | steps.comments.outputs.comments | provenance |  |
 | .github/workflows/test19.yml:105:14:107:56 | COMMENTS=$(gh api /repos/test/test/pulls/${PR_NUMBER}/comments --jq '.[].body')\necho "comments=$COMMENTS" >> "$GITHUB_OUTPUT"\n | .github/workflows/test19.yml:104:9:108:6 | Run Step: comments [comments] | provenance |  |
 | .github/workflows/test24.yml:8:9:17:6 | Uses Step: parse | .github/workflows/test24.yml:19:17:19:50 | steps.parse.outputs.payload | provenance |  |
+| .github/workflows/test25.yml:9:9:12:6 | Uses Step: parse | .github/workflows/test25.yml:12:20:12:50 | steps.parse.outputs.data | provenance |  |
+| .github/workflows/test25.yml:9:9:12:6 | Uses Step: parse | .github/workflows/test25.yml:13:20:13:58 | toJSON(steps.parse.outputs.data) | provenance |  |
+| .github/workflows/test26.yml:17:9:22:6 | Run Step: read_issue_body [body] | .github/workflows/test26.yml:26:18:26:58 | steps.read_issue_body.outputs.body | provenance |  |
+| .github/workflows/test26.yml:20:11:20:140 | echo "body=$(gh issue view ${{ inputs.issue_number }} --repo ${{ github.repository }} --json body --jq '.body')" >> $GITHUB_OUTPUT | .github/workflows/test26.yml:17:9:22:6 | Run Step: read_issue_body [body] | provenance |  |
+| .github/workflows/test26.yml:22:9:28:6 | Uses Step: parse [data] | .github/workflows/test26.yml:28:20:28:50 | steps.parse.outputs.data | provenance |  |
+| .github/workflows/test26.yml:22:9:28:6 | Uses Step: parse [data] | .github/workflows/test26.yml:29:20:29:58 | toJSON(steps.parse.outputs.data) | provenance |  |
+| .github/workflows/test26.yml:26:18:26:58 | steps.read_issue_body.outputs.body | .github/workflows/test26.yml:22:9:28:6 | Uses Step: parse [data] | provenance |  |
 | .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | .github/workflows/test.yml:52:20:52:56 | needs.job1.outputs['job_output'] | provenance |  |
 | .github/workflows/test.yml:11:20:11:50 | steps.step5.outputs.MSG5 | .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | provenance |  |
 | .github/workflows/test.yml:17:9:23:6 | Uses Step: step0 [value] | .github/workflows/test.yml:25:18:25:48 | steps.step0.outputs.value | provenance |  |
@@ -586,6 +593,15 @@ nodes
 | .github/workflows/test21.yml:24:50:24:88 | github.event.head_commit.message | semmle.label | github.event.head_commit.message |
 | .github/workflows/test24.yml:8:9:17:6 | Uses Step: parse | semmle.label | Uses Step: parse |
 | .github/workflows/test24.yml:19:17:19:50 | steps.parse.outputs.payload | semmle.label | steps.parse.outputs.payload |
+| .github/workflows/test25.yml:9:9:12:6 | Uses Step: parse | semmle.label | Uses Step: parse |
+| .github/workflows/test25.yml:12:20:12:50 | steps.parse.outputs.data | semmle.label | steps.parse.outputs.data |
+| .github/workflows/test25.yml:13:20:13:58 | toJSON(steps.parse.outputs.data) | semmle.label | toJSON(steps.parse.outputs.data) |
+| .github/workflows/test26.yml:17:9:22:6 | Run Step: read_issue_body [body] | semmle.label | Run Step: read_issue_body [body] |
+| .github/workflows/test26.yml:20:11:20:140 | echo "body=$(gh issue view ${{ inputs.issue_number }} --repo ${{ github.repository }} --json body --jq '.body')" >> $GITHUB_OUTPUT | semmle.label | echo "body=$(gh issue view ${{ inputs.issue_number }} --repo ${{ github.repository }} --json body --jq '.body')" >> $GITHUB_OUTPUT |
+| .github/workflows/test26.yml:22:9:28:6 | Uses Step: parse [data] | semmle.label | Uses Step: parse [data] |
+| .github/workflows/test26.yml:26:18:26:58 | steps.read_issue_body.outputs.body | semmle.label | steps.read_issue_body.outputs.body |
+| .github/workflows/test26.yml:28:20:28:50 | steps.parse.outputs.data | semmle.label | steps.parse.outputs.data |
+| .github/workflows/test26.yml:29:20:29:58 | toJSON(steps.parse.outputs.data) | semmle.label | toJSON(steps.parse.outputs.data) |
 | .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
 | .github/workflows/test.yml:11:20:11:50 | steps.step5.outputs.MSG5 | semmle.label | steps.step5.outputs.MSG5 |
 | .github/workflows/test.yml:17:9:23:6 | Uses Step: step0 [value] | semmle.label | Uses Step: step0 [value] |

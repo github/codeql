@@ -1,0 +1,13 @@
+name: Issue Forms Body Parser
+
+on: issues
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Issue Forms Body Parser
+        id: parse
+        uses: zentered/issue-forms-body-parser@v2.0.0
+      - run: echo ${{ steps.parse.outputs.data }}
+      - run: echo ${{ toJSON(steps.parse.outputs.data) }}

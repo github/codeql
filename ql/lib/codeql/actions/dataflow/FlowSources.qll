@@ -361,6 +361,20 @@ class Xt0rtedSlashCommandSource extends RemoteFlowSource {
   override Event getEvent() { result = this.asExpr().getATriggerEvent() }
 }
 
+class ZenteredIssueFormBodyParserSource extends RemoteFlowSource {
+  ZenteredIssueFormBodyParserSource() {
+    exists(UsesStep u |
+      u.getCallee() = "zentered/issue-forms-body-parser" and
+      not exists(u.getArgument("body")) and
+      this.asExpr() = u
+    )
+  }
+
+  override string getSourceType() { result = "text" }
+
+  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
+}
+
 class OctokitRequestActionSource extends RemoteFlowSource {
   OctokitRequestActionSource() {
     exists(UsesStep u, string route |
