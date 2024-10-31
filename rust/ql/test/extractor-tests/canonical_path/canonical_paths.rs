@@ -1,4 +1,5 @@
 mod a {
+    #[derive(Eq, PartialEq)]
     pub struct Struct;
 
     pub trait Trait {
@@ -20,9 +21,21 @@ mod a {
     impl<T: Eq> TraitWithBlanketImpl for T {
         fn h(&self) {}
     }
+
+    fn free() {}
+
+    fn usage() {
+        let s = Struct {};
+        s.f();
+        s.g();
+        s.h();
+        free();
+    }
 }
 
 mod without {
+    use super::a::Trait;
+
     fn canonicals() {
         struct OtherStruct;
 
@@ -44,6 +57,13 @@ mod without {
 
         fn nested() {
             struct OtherStruct;
+        }
+
+        fn usage() {
+            let s = OtherStruct {};
+            s.f();
+            s.g();
+            nested();
         }
     }
 

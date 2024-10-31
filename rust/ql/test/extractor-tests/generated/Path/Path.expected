@@ -1,2 +1,2 @@
-| gen_path.rs:5:5:5:7 | Path | hasQualifier: | no | hasPart: | yes |
-| gen_path.rs:5:5:5:12 | Path | hasQualifier: | yes | hasPart: | yes |
+| gen_path.rs:5:5:5:7 | Path | hasQualifier: | no | hasPart: | yes | hasResolvedPath: | no | hasResolvedCrateOrigin: | no |
+| gen_path.rs:5:5:5:12 | Path | hasQualifier: | yes | hasPart: | yes | hasResolvedPath: | no | hasResolvedCrateOrigin: | no |

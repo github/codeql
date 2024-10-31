@@ -71,3 +71,11 @@ class Callable(AstNode):
     """
     param_list: optional["ParamList"] | child
     attrs: list["Attr"] | child
+
+
+class Resolvable(AstNode):
+    """
+    Either a `Path`, or a `MethodCallExpr`.
+    """
+    resolved_path: optional[string] | rust.detach | ql.internal
+    resolved_crate_origin: optional[string] | rust.detach | ql.internal

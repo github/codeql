@@ -624,12 +624,12 @@ module Synth {
         TExpr or TExternItem or TExternItemList or TFieldList or TFormatArgsArg or TGenericArg or
         TGenericArgList or TGenericParam or TGenericParamList or TItemList or TLabel or TLetElse or
         TLifetime or TMacroItems or TMacroStmts or TMatchArm or TMatchArmList or TMatchGuard or
-        TMeta or TName or TNameRef or TParam or TParamList or TPat or TPath or TPathSegment or
+        TMeta or TName or TNameRef or TParam or TParamList or TPat or TPathSegment or
         TRecordExprField or TRecordExprFieldList or TRecordField or TRecordPatField or
-        TRecordPatFieldList or TRename or TRetType or TReturnTypeSyntax or TSelfParam or
-        TSourceFile or TStmt or TStmtList or TToken or TTokenTree or TTupleField or TTypeBound or
-        TTypeBoundList or TTypeRef or TUseTree or TUseTreeList or TVariant or TVariantList or
-        TVisibility or TWhereClause or TWherePred;
+        TRecordPatFieldList or TRename or TResolvable or TRetType or TReturnTypeSyntax or
+        TSelfParam or TSourceFile or TStmt or TStmtList or TToken or TTokenTree or TTupleField or
+        TTypeBound or TTypeBoundList or TTypeRef or TUseTree or TUseTreeList or TVariant or
+        TVariantList or TVisibility or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -697,6 +697,11 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TPathExprBase = TFormatTemplateVariableAccess or TPathExpr;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TResolvable = TMethodCallExpr or TPath;
 
   /**
    * INTERNAL: Do not use.
@@ -1690,8 +1695,6 @@ module Synth {
     or
     result = convertPatFromRaw(e)
     or
-    result = convertPathFromRaw(e)
-    or
     result = convertPathSegmentFromRaw(e)
     or
     result = convertRecordExprFieldFromRaw(e)
@@ -1705,6 +1708,8 @@ module Synth {
     result = convertRecordPatFieldListFromRaw(e)
     or
     result = convertRenameFromRaw(e)
+    or
+    result = convertResolvableFromRaw(e)
     or
     result = convertRetTypeFromRaw(e)
     or
@@ -1999,6 +2004,16 @@ module Synth {
     result = convertFormatTemplateVariableAccessFromRaw(e)
     or
     result = convertPathExprFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TResolvable`, if possible.
+   */
+  TResolvable convertResolvableFromRaw(Raw::Element e) {
+    result = convertMethodCallExprFromRaw(e)
+    or
+    result = convertPathFromRaw(e)
   }
 
   /**
@@ -3030,8 +3045,6 @@ module Synth {
     or
     result = convertPatToRaw(e)
     or
-    result = convertPathToRaw(e)
-    or
     result = convertPathSegmentToRaw(e)
     or
     result = convertRecordExprFieldToRaw(e)
@@ -3045,6 +3058,8 @@ module Synth {
     result = convertRecordPatFieldListToRaw(e)
     or
     result = convertRenameToRaw(e)
+    or
+    result = convertResolvableToRaw(e)
     or
     result = convertRetTypeToRaw(e)
     or
@@ -3339,6 +3354,16 @@ module Synth {
     result = convertFormatTemplateVariableAccessToRaw(e)
     or
     result = convertPathExprToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TResolvable` to a raw DB element, if possible.
+   */
+  Raw::Element convertResolvableToRaw(TResolvable e) {
+    result = convertMethodCallExprToRaw(e)
+    or
+    result = convertPathToRaw(e)
   }
 
   /**
