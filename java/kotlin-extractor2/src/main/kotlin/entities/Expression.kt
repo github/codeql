@@ -121,7 +121,7 @@ fun KotlinFileExtractor.extractExpressionExpr(
     extractExpression(e, callable, ExprParent(parent, idx, enclosingStmt))
 }
 
-private fun KotlinFileExtractor.extractExprContext(
+fun KotlinFileExtractor.extractExprContext(
     id: Label<out DbExpr>,
     locId: Label<DbLocation>,
     callable: Label<out DbCallable>?,
@@ -265,6 +265,13 @@ private fun KaFunctionSymbol.isNumericWithName(functionName: String): Boolean {
             this.hasName("kotlin", "Double", functionName)
 }
 
+context(KaSession)
+fun KtExpression.resolveCallTarget(): KaSimpleFunctionCall? {
+    val callInfo = this.resolveToCall() as? KaSuccessCallInfo
+    val functionCall = callInfo?.call as? KaSimpleFunctionCall
+    return functionCall
+}
+
 /**
  * Extracts a binary expression as either a binary expression or a function call.
  *
@@ -288,7 +295,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
     parent: StmtExprParent
 ) {
     val op = expression.operationToken
-    val target = ((expression.resolveToCall() as? KaSuccessCallInfo)?.call as? KaSimpleFunctionCall)?.symbol
+    val target = expression.resolveCallTarget()?.symbol
 
     when (op) {
         KtTokens.PLUS -> {
@@ -337,8 +344,19 @@ private fun KotlinFileExtractor.extractExpression(
                 extractExpression(e.baseExpression!!, callable, parent)
             }
 
+            is KtDotQualifiedExpression -> {
+                // We're propagating the extraction to the child, and then getting the qualifier from the parent of the
+                // child. The selector could be many expression kind, such as KtCallExpression, KtReferenceExpression,
+                // and each of those would need to look for the qualifier
+                extractExpression(e.selectorExpression!!, callable, parent)
+            }
+
             is KtBinaryExpression -> {
                 extractBinaryExpression(e, callable, parent)
+            }
+
+            is KtCallExpression -> {
+                extractMethodCall(e, callable, parent)
             }
 
             is KtIsExpression -> {
