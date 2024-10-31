@@ -1528,3 +1528,10 @@ ktFunctionOriginalNames(
 ktDataClasses(
   unique int id: @classorinterface ref
 )
+
+// not all variables are qualifiable, but adding fieldaccess would be more involved:
+@qualifiableaccess = @varaccess | @methodaccess;
+
+ktSafeAccess(
+    unique int id: @qualifiableaccess ref
+)

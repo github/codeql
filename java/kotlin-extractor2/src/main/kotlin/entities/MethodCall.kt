@@ -6,8 +6,9 @@ import org.jetbrains.kotlin.analysis.api.resolution.symbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.psi.KtCallExpression
-import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.psi.KtQualifiedExpression
+import org.jetbrains.kotlin.psi.KtSafeQualifiedExpression
 import org.jetbrains.kotlin.utils.mapToIndex
 
 context(KaSession)
@@ -43,14 +44,15 @@ fun KotlinFileExtractor.extractMethodCall(
         .sortedBy { p -> p.first }
         .map { p -> p.second }
 
-    // TODO: fix getting the qualifier, we should handle safe qualified expressions too
-    val qualifier: KtExpression? = (call.parent as? KtDotQualifiedExpression)?.receiverExpression
+    val callQualifiedParent = call.parent as? KtQualifiedExpression
+    val qualifier =
+        if (callQualifiedParent?.selectorExpression == call) callQualifiedParent.receiverExpression else null
     val extensionReceiver = if (target.isExtension) qualifier else null
     val dispatchReceiver = if (!target.isExtension) qualifier else null
 
     val exprParent = stmtExprParent.expr(call, enclosingCallable)
 
-    extractRawMethodAccess(
+    val callId = extractRawMethodAccess(
         target,
         tw.getLocation(call),
         call.expressionType!!,
@@ -62,6 +64,10 @@ fun KotlinFileExtractor.extractMethodCall(
         extensionReceiver,
         args
     )
+
+    if (call.parent is KtSafeQualifiedExpression) {
+        tw.writeKtSafeAccess(callId)
+    }
 }
 
 context(KaSession)
@@ -138,7 +144,7 @@ private fun KotlinFileExtractor.extractRawMethodAccess(
     extractClassTypeArguments: Boolean = false,
     superQualifierSymbol: IrClassSymbol? = null
      */
-) {
+): Label<DbMethodaccess> {
     /* OLD KE1:
     val callTarget = getCalleeRealOverrideTarget(syntacticCallTarget)
     val methodId = getCalleeMethodId(callTarget, drType, extractClassTypeArguments)
@@ -229,6 +235,8 @@ private fun KotlinFileExtractor.extractRawMethodAccess(
     }
     val idxOffset = if (extensionReceiver != null) 1 else 0
     extractCallValueArguments(id, valueArguments, enclosingStmt, enclosingCallable, idxOffset)
+
+    return id
 }
 
 context(KaSession)
