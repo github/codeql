@@ -60,7 +60,7 @@ def assert_extractor_executed_with(*flags):
         for actual, expected in itertools.zip_longest(execution, flags):
             if actual:
                 actual = actual.strip()
-                expected_prefix = f"-resource-dir {swift_root}/resource-dir/{platform} -c -primary-file "
+                expected_prefix = f"-resource-dir {swift_root}/resource-dir/{platform} -typecheck -primary-file "
                 assert actual.startswith(expected_prefix), f"correct options not found in\n{actual}"
                 actual = actual[len(expected_prefix):]
             assert actual, f"\nnot encountered: {expected}"
