@@ -1,4 +1,6 @@
-//fn cond() -> bool;
+mod unreachable;
+
+use unreachable::*;
 
 // --- locals ---
 
@@ -204,10 +206,12 @@ fn loops() {
 
     for x in 1..10 {
         assert_eq!(x, 1);
+        break;
     }
 
     for x in 1..10 {
         assert_eq!(id(x), id(1));
+        break;
     }
 }
 
@@ -434,7 +438,7 @@ impl Incrementable for MyValue {
     fn increment(
         &mut self,
         times: i32,
-        unused: i32, // $ Alert[rust/unused-variable]
+        unused: &mut i32, // $ Alert[rust/unused-variable]
     ) {
         self.value += times;
     }
@@ -443,9 +447,22 @@ impl Incrementable for MyValue {
 fn traits() {
     let mut i = MyValue { value: 0 };
     let a = 1;
-    let b = 2;
+    let mut b = 2;
 
-    i.increment(a, b);
+    i.increment(a, &mut b);
+}
+
+// --- macros ---
+
+fn macros() {
+    let x;
+    println!(
+        "The value of x is {}",
+        ({
+            x = 10; // $ MISSING: Alert[rust/unused-value]
+            10
+        })
+    )
 }
 
 // --- main ---
@@ -464,12 +481,14 @@ fn main() {
     folds_and_closures();
 
     unreachable_if_1();
-    unreachable_panic();
+    // unreachable_panic();
     unreachable_match();
-    unreachable_loop();
+    // unreachable_loop();
     unreachable_paren();
     unreachable_let_1();
     unreachable_let_2();
     unreachable_if_2();
     unreachable_if_3();
+
+    macros();
 }
