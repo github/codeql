@@ -728,7 +728,11 @@ open class KotlinUsesExtractor(
                     return getFieldParent(d)
                 }
         */
-        return d.containingSymbol ?: d.containingFile
+        val rootSymbol = when (d) {
+            is KaPropertyAccessorSymbol -> d.containingSymbol
+            else -> d
+        }
+        return rootSymbol?.containingSymbol ?: rootSymbol?.containingFile
     }
 
     context(KaSession)

@@ -1,10 +1,10 @@
 package com.github.codeql
 
+import com.github.codeql.utils.getJvmName
 import org.jetbrains.kotlin.analysis.api.KaSession
-import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
-import org.jetbrains.kotlin.analysis.api.symbols.name
-import org.jetbrains.kotlin.analysis.api.symbols.psiSafe
+import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.analysis.api.types.KaType
+import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.psi.KtDeclarationWithBody
 
 /*
@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.psi.KtDeclarationWithBody
 
 @OptIn(ObsoleteDescriptorBasedAPI::class)
 */
+context(KaSession)
 fun KotlinUsesExtractor.getFunctionLabel(
     f: KaFunctionSymbol,
     parentId: Label<out DbElement>,
@@ -37,7 +38,7 @@ fun KotlinUsesExtractor.getFunctionLabel(
                     f.parent,
         */
         parentId,
-        f.name!!.asString(), // TODO: Remove the !! // OLD KE1: getFunctionShortName(f).nameInDB,
+        getFunctionShortName(f).nameInDB,
         /*
         OLD: KE1
                     (maybeParameterList ?: f.valueParameters).map { it.type },
@@ -61,6 +62,7 @@ OLD: KE1
      * function instead.
      */
 */
+context(KaSession)
 fun KotlinUsesExtractor.getFunctionLabel(
     /*
     OLD: KE1
@@ -191,12 +193,14 @@ fun KotlinUsesExtractor.getFunctionLabel(
     val typeArgSuffix = "" // TODO
     return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}$typeArgSuffix\""
 }
+
+data class FunctionNames(val nameInDB: String, val kotlinName: String)
+
 /*
 OLD: KE1
 private val IrDeclaration.isAnonymousFunction
             get() = this is IrSimpleFunction && name == SpecialNames.NO_NAME_PROVIDED
 
-        data class FunctionNames(val nameInDB: String, val kotlinName: String)
 
         @OptIn(ObsoleteDescriptorBasedAPI::class)
         private fun getJvmModuleName(f: IrFunction) =
@@ -205,74 +209,87 @@ private val IrDeclaration.isAnonymousFunction
                     ?: JvmCodegenUtil.getModuleName(pluginContext.moduleDescriptor)
             )
 
-        fun getFunctionShortName(f: IrFunction): FunctionNames {
-            if (f.origin == IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA || f.isAnonymousFunction)
-                return FunctionNames(
-                    OperatorNameConventions.INVOKE.asString(),
-                    OperatorNameConventions.INVOKE.asString()
+ */
+context(KaSession)
+fun KotlinUsesExtractor.getFunctionShortName(f: KaFunctionSymbol): FunctionNames {
+    /* OLD: KE1
+    if (f.origin == IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA || f.isAnonymousFunction)
+        return FunctionNames(
+            OperatorNameConventions.INVOKE.asString(),
+            OperatorNameConventions.INVOKE.asString()
+        )
+    */
+    fun getSuffixIfInternal() = ""
+        /* OLD: KE1
+        if (
+            f.visibility == DescriptorVisibilities.INTERNAL &&
+                f !is IrConstructor &&
+                !(f.parent is IrFile || isExternalFileClassMember(f))
+        ) {
+            "\$" + getJvmModuleName(f)
+        } else {
+            ""
+        }
+         */
+
+    (f as? KaPropertyAccessorSymbol)?.let {
+        val propSymbol = it.containingSymbol!! as KaPropertySymbol // TODO: Drop or justify !!
+        val propName = propSymbol.name.asString()
+        val getter = propSymbol.getter
+        val setter = propSymbol.setter
+
+        /* OLD: KE1
+        if (it.owner.parentClassOrNull?.kind == ClassKind.ANNOTATION_CLASS) {
+            if (getter == null) {
+                logger.error(
+                    "Expected to find a getter for a property inside an annotation class"
                 )
+                return FunctionNames(propName, propName)
+            } else {
+                val jvmName = getJvmName(getter)
+                return FunctionNames(jvmName ?: propName, propName)
+            }
+        }
+         */
 
-            fun getSuffixIfInternal() =
-                if (
-                    f.visibility == DescriptorVisibilities.INTERNAL &&
-                        f !is IrConstructor &&
-                        !(f.parent is IrFile || isExternalFileClassMember(f))
-                ) {
-                    "\$" + getJvmModuleName(f)
-                } else {
-                    ""
-                }
-
-            (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
-                val propName = it.owner.name.asString()
-                val getter = it.owner.getter
-                val setter = it.owner.setter
-
-                if (it.owner.parentClassOrNull?.kind == ClassKind.ANNOTATION_CLASS) {
-                    if (getter == null) {
-                        logger.error(
-                            "Expected to find a getter for a property inside an annotation class"
-                        )
-                        return FunctionNames(propName, propName)
-                    } else {
-                        val jvmName = getJvmName(getter)
-                        return FunctionNames(jvmName ?: propName, propName)
-                    }
-                }
-
-                val maybeFunctionName =
-                    when (f) {
-                        getter -> JvmAbi.getterName(propName)
-                        setter -> JvmAbi.setterName(propName)
-                        else -> {
-                            logger.error(
-                                "Function has a corresponding property, but is neither the getter nor the setter"
-                            )
-                            null
-                        }
-                    }
-                maybeFunctionName?.let { defaultFunctionName ->
-                    val suffix =
-                        if (
-                            f.visibility == DescriptorVisibilities.PRIVATE &&
-                                f.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR
-                        ) {
-                            "\$private"
-                        } else {
-                            getSuffixIfInternal()
-                        }
-                    return FunctionNames(
-                        getJvmName(f) ?: "$defaultFunctionName$suffix",
-                        defaultFunctionName
+        val maybeFunctionName =
+            when (f) {
+                getter -> JvmAbi.getterName(propName)
+                setter -> JvmAbi.setterName(propName)
+                else -> {
+                    logger.error(
+                        "Function has a corresponding property, but is neither the getter nor the setter"
                     )
+                    null
                 }
             }
+        maybeFunctionName?.let { defaultFunctionName ->
+            val suffix = ""
+            /* OLD: KE1
+                if (
+                    f.visibility == DescriptorVisibilities.PRIVATE &&
+                        f.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR
+                ) {
+                    "\$private"
+                } else {
+                    getSuffixIfInternal()
+                }
+             */
             return FunctionNames(
-                getJvmName(f) ?: "${f.name.asString()}${getSuffixIfInternal()}",
-                f.name.asString()
+                getJvmName(f) ?: "$defaultFunctionName$suffix",
+                defaultFunctionName
             )
         }
+    }
+    return FunctionNames(
+        // TODO: Justify or drop !!
+        getJvmName(f) ?: "${f.name!!.asString()}${getSuffixIfInternal()}",
+        f.name!!.identifier
+    )
+}
 
+/*
+OLD: KE1
         // This excludes class type parameters that show up in (at least) constructors' typeParameters
         // list.
         fun getFunctionTypeParameters(f: IrFunction): List<IrTypeParameter> {
@@ -674,6 +691,7 @@ private fun KotlinFileExtractor.extractMethod(
     */
 }
 
+context(KaSession)
 fun <T : DbCallable> KotlinUsesExtractor.useFunction(
     f: KaFunctionSymbol,
     parentId: Label<out DbElement>,
@@ -694,6 +712,7 @@ fun <T : DbCallable> KotlinUsesExtractor.useFunction(
     return useFunction(f, javaFun, parentId /* TODO , classTypeArgsIncludingOuterClasses */)
 }
 
+context(KaSession)
 private fun <T : DbCallable> KotlinUsesExtractor.useFunction(
     f: KaFunctionSymbol,
     javaFun: KaFunctionSymbol,

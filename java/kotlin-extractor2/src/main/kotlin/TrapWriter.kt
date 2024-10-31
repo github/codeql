@@ -7,6 +7,7 @@ import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
 import com.intellij.psi.PsiElement
 import com.semmle.extractor.java.PopulateFile
 import com.semmle.util.unicode.UTF8Util
+import org.jetbrains.kotlin.analysis.api.symbols.KaVariableSymbol
 import java.io.BufferedWriter
 import java.io.File
 import java.util.concurrent.locks.ReentrantLock
@@ -153,11 +154,11 @@ abstract class TrapWriter(
      * which label is used for a given local variable. This information is stored in this mapping.
      */
     // TODO: This should be in a subclass so that DiagnosticTrapWriter doesn't include it, as it is not threadsafe
-    private val variableLabelMapping: MutableMap<KtProperty, Label<out DbLocalvar>> =
-        mutableMapOf<KtProperty, Label<out DbLocalvar>>()
+    private val variableLabelMapping: MutableMap<KaVariableSymbol, Label<out DbLocalvar>> =
+        mutableMapOf<KaVariableSymbol, Label<out DbLocalvar>>()
 
     /** This returns the label used for a local variable, creating one if none currently exists. */
-    fun <T> getVariableLabelFor(v: KtProperty): Label<out DbLocalvar> {
+    fun <T> getVariableLabelFor(v: KaVariableSymbol): Label<out DbLocalvar> {
         val maybeLabel = variableLabelMapping[v]
         if (maybeLabel == null) {
             val label = getFreshIdLabel<DbLocalvar>()
