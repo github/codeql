@@ -5,7 +5,6 @@
 /ArrayExpr/gen_array_expr.rs linguist-generated
 /ArrayType/gen_array_type.rs linguist-generated
 /AsmExpr/gen_asm_expr.rs linguist-generated
-/AssocItemList/gen_assoc_item_list.rs linguist-generated
 /AssocTypeArg/gen_assoc_type_arg.rs linguist-generated
 /Attr/gen_attr.rs linguist-generated
 /AwaitExpr/gen_await_expr.rs linguist-generated
