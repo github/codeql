@@ -1636,7 +1636,7 @@ class StepsExpressionImpl extends SimpleReferenceExpressionImpl {
     exists(string expr |
       (
         exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
         exists(getASimpleReferenceExpression(expression, _)) and
         expr = normalizeExpr(expression)
@@ -1677,7 +1677,7 @@ class NeedsExpressionImpl extends SimpleReferenceExpressionImpl {
     exists(string expr |
       (
         exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
         exists(getASimpleReferenceExpression(expression, _)) and
         expr = normalizeExpr(expression)
@@ -1721,7 +1721,7 @@ class JobsExpressionImpl extends SimpleReferenceExpressionImpl {
     exists(string expr |
       (
         exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
         exists(getASimpleReferenceExpression(expression, _)) and
         expr = normalizeExpr(expression)
@@ -1780,7 +1780,7 @@ class EnvExpressionImpl extends SimpleReferenceExpressionImpl {
     exists(string expr |
       (
         exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
         exists(getASimpleReferenceExpression(expression, _)) and
         expr = normalizeExpr(expression)
@@ -1815,7 +1815,7 @@ class MatrixExpressionImpl extends SimpleReferenceExpressionImpl {
     exists(string expr |
       (
         exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
         exists(getASimpleReferenceExpression(expression, _)) and
         expr = normalizeExpr(expression)
