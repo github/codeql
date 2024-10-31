@@ -345,7 +345,6 @@ private fun KotlinFileExtractor.extractExpression(
             }
 
             is KtDotQualifiedExpression -> {
-                // TODO: this is not the best.
                 // We're propagating the extraction to the child, and then getting the qualifier from the parent of the
                 // child. The selector could be many expression kind, such as KtCallExpression, KtReferenceExpression,
                 // and each of those would need to look for the qualifier
