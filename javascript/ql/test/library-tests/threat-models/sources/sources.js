@@ -94,12 +94,12 @@ rl_file.on("line", (line) => {
 // ------ reading from stdin ------
 
 // Accessing stdin using process.stdin
-process.stdin.on('data', (data) => { // $ MISSING: threat-source=stdin
-    SINK(data); // $ MISSING: hasFlow
+process.stdin.on('data', (data) => { // $ threat-source=stdin
+    SINK(data); // $ hasFlow
 });
 
-const stdin_line = process.stdin.read(); // $ MISSING: threat-source=stdin
-SINK(stdin_line); // $ MISSING: hasFlow
+const stdin_line = process.stdin.read(); // $ threat-source=stdin
+SINK(stdin_line); // $ hasFlow
 
 // Accessing stdin using readline
 const readline = require('readline');
