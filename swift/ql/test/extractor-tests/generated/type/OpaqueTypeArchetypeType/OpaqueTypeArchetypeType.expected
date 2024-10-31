@@ -1,4 +1,4 @@
 | some Base | getName: | some Base | getCanonicalType: | some Base | getInterfaceType: | \u03c4_1_0 | hasSuperclass: | yes | getNumberOfProtocols: | 0 | getDeclaration: | file://:0:0:0:0 | _ |
 | some P | getName: | some P | getCanonicalType: | some P | getInterfaceType: | \u03c4_1_0 | hasSuperclass: | no | getNumberOfProtocols: | 1 | getDeclaration: | file://:0:0:0:0 | _ |
 | some P | getName: | some P | getCanonicalType: | some P | getInterfaceType: | \u03c4_1_0 | hasSuperclass: | no | getNumberOfProtocols: | 1 | getDeclaration: | file://:0:0:0:0 | _ |
-| some SignedInteger | getName: | some SignedInteger | getCanonicalType: | some SignedInteger | getInterfaceType: | \u03c4_0_0 | hasSuperclass: | no | getNumberOfProtocols: | 11 | getDeclaration: | file://:0:0:0:0 | _ |
+| some SignedInteger | getName: | some SignedInteger | getCanonicalType: | some SignedInteger | getInterfaceType: | \u03c4_0_0 | hasSuperclass: | no | getNumberOfProtocols: | 1 | getDeclaration: | file://:0:0:0:0 | _ |

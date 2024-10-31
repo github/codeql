@@ -1,13 +1,3 @@
 | some P | 0 | opaque_types.swift:3:1:3:13 | P |
 | some P | 0 | opaque_types.swift:3:1:3:13 | P |
 | some SignedInteger | 0 | file://:0:0:0:0 | SignedInteger |
-| some SignedInteger | 1 | file://:0:0:0:0 | BinaryInteger |
-| some SignedInteger | 2 | file://:0:0:0:0 | SignedNumeric |
-| some SignedInteger | 3 | file://:0:0:0:0 | CustomStringConvertible |
-| some SignedInteger | 4 | file://:0:0:0:0 | Hashable |
-| some SignedInteger | 5 | file://:0:0:0:0 | Numeric |
-| some SignedInteger | 6 | file://:0:0:0:0 | Strideable |
-| some SignedInteger | 7 | file://:0:0:0:0 | Equatable |
-| some SignedInteger | 8 | file://:0:0:0:0 | AdditiveArithmetic |
-| some SignedInteger | 9 | file://:0:0:0:0 | ExpressibleByIntegerLiteral |
-| some SignedInteger | 10 | file://:0:0:0:0 | Comparable |

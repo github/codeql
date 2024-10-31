@@ -3291,6 +3291,7 @@ cfg.swift:
 #  529|                           getBase(): [DeclRefExpr] continuation
 #  529|                           getMethodRef(): [DeclRefExpr] finish()
 #  527|                     getCapture(0): [CapturedDecl] continuation
+#  525|                   getExpr().getFullyConverted(): [FunctionConversionExpr] (@isolated(any) () async -> ()) ...
 #  523|       getPattern(0): [NamedPattern] stream
 #  533|     getElement(1): [ForEachStmt] for ... in ... { ... }
 #  533|       getPattern(): [NamedPattern] i
@@ -3306,7 +3307,7 @@ cfg.swift:
 #  533|           getBase(): [DeclRefExpr] $i$generator
 #  533|           getBase().getFullyConverted(): [InOutExpr] &...
 #-----|           getMethodRef(): [DeclRefExpr] next()
-#-----|       getNextCall().getFullyConverted(): [AwaitExpr] await ...
+#  533|       getNextCall().getFullyConverted(): [AwaitExpr] await ...
 #  533|       getBody(): [BraceStmt] { ... }
 #  534|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #  534|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -5137,7 +5138,6 @@ expressions.swift:
 #   60|                 getFunction(): [DeclRefExpr] unsafeFunction(pointer:)
 #   60|                 getArgument(0): [Argument] pointer: $0
 #   60|                   getExpr(): [DeclRefExpr] $0
-#   60|         getExpr().getFullyConverted(): [FunctionConversionExpr] ((UnsafePointer<Int>) throws -> ()) ...
 #   62| [ClassDecl] FailingToInit
 #   63|   getMember(0): [Initializer] FailingToInit.init(x:)
 #   63|       InterfaceType = (FailingToInit.Type) -> (Int) -> FailingToInit?
@@ -5972,12 +5972,12 @@ expressions.swift:
 #  179|   getBody(): [BraceStmt] { ... }
 #  179|     getElement(0): [PatternBindingDecl] var ... = ...
 #  179|       getInit(0): [KeyPathExpr] #keyPath(...)
-#  179|         getRoot(): [TypeRepr] Int?
+#  179|         getRoot(): [TypeRepr] Optional<Int>
 #  179|         getComponent(0): [KeyPathComponent] KeyPathComponent
 #  179|         getComponent(1): [KeyPathComponent] KeyPathComponent
 #  179|       getPattern(0): [NamedPattern] optForce
 #  179| [ConcreteVarDecl] optForce
-#  179|     Type = WritableKeyPath<Int?, Int>
+#  179|     Type = WritableKeyPath<Optional<Int>, Int>
 #  180| [TopLevelCodeDecl] { ... }
 #  180|   getBody(): [BraceStmt] { ... }
 #  180|     getElement(0): [PatternBindingDecl] var ... = ...
