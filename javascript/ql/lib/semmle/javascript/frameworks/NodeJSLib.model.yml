@@ -8,3 +8,5 @@ extensions:
       - ['fs', 'Member[promises].Member[readFile].ReturnValue.Member[then].Argument[0].Parameter[0]', 'file']
       - ['global', 'Member[process].Member[stdin].Member[read].ReturnValue', 'stdin']
       - ['global', 'Member[process].Member[stdin].Member[on,addListener].WithStringArgument[0=data].Argument[1].Parameter[0]', 'stdin']
+      - ['readline', 'Member[createInterface].ReturnValue.Member[question].Argument[1].Parameter[0]', 'stdin']
+      - ['readline', 'Member[createInterface].ReturnValue.Member[on,addListener].WithStringArgument[0=line].Argument[1].Parameter[0]', 'stdin']

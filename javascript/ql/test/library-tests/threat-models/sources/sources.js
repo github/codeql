@@ -84,10 +84,10 @@ SINK(data); // $ hasFlow
 // using readline
 const readline = require('readline');
 const rl_file = readline.createInterface({
-    input: fs.createReadStream('file.txt') // $ MISSING: threat-source=file
+    input: fs.createReadStream('file.txt')
 });
-rl_file.on("line", (line) => {
-    SINK(line); // $ MISSING: hasFlow
+rl_file.on("line", (line) => { // $ SPURIOUS: threat-source=stdin MISSING: threat-source=file
+    SINK(line); // $ hasFlow
 });
 
 
@@ -104,17 +104,17 @@ SINK(stdin_line); // $ hasFlow
 // Accessing stdin using readline
 const readline = require('readline');
 const rl_stdin = readline.createInterface({
-    input: process.stdin // $ MISSING: threat-source=stdin
+    input: process.stdin
 });
-rl_stdin.question('<question>', (answer) => {
-    SINK(answer); // $ MISSING: hasFlow
+rl_stdin.question('<question>', (answer) => { // $ threat-source=stdin
+    SINK(answer); // $ hasFlow
 });
 
-function handler(answer) {
-    SINK(answer); // $ MISSING: hasFlow
+function handler(answer) { // $ threat-source=stdin
+    SINK(answer); // $ hasFlow
 }
 rl_stdin.question('<question>', handler);
 
-rl_stdin.on("line", (line) => {
-    SINK(line); // $ MISSING: hasFlow
+rl_stdin.on("line", (line) => { // $ threat-source=stdin
+    SINK(line); // $ hasFlow
 });
