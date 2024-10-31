@@ -17,4 +17,10 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
    */
   bindingset[node]
   predicate defaultImplicitTaintRead(Node::Node node, ContentSet c) { none() }
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(Node::Node src, Node::Node sink) { none() }
 }
