@@ -5,7 +5,7 @@ load("//misc/bazel:lfs.bzl", "lfs_archive", "lfs_files")
 
 _override = {
     # these are used to test new artifacts. Must be empty before merging to main
-    "swift-prebuilt-macOS.tar.zst": "a016ed60ee1a534439ed4d55100ecf6b9fc739f629be20942345ac5156cb6296",
+    "swift-prebuilt-macOS.tar.zst": "4679ad4086ac6894e2f8a6bd71c5033941c894844809bf988dacb8af0c384416",
     "swift-prebuilt-Linux.tar.zst": "c45976d50670964132cef1dcf98bccd3fff809d33b2207a85cf3cfd07ec84528",
     "resource-dir-macOS.zip": "286e4403aa0a56641c2789e82036481535e336484f2c760bec0f42e3afe5dd87",
     "resource-dir-Linux.zip": "16a1760f152395377a580a994885e0877338279125834463a6a38f4006ad61ca",

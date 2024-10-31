@@ -243,6 +243,9 @@ SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType
   if (type->hasGlobalActor()) {
     ret << "_actor" << fetch(type->getGlobalActor());
   }
+  if (type->getIsolation().isErased()) {
+    ret << "_isolated";
+  }
   // TODO: see if this needs to be used in identifying types, if not it needs to be removed from
   // type printing in the Swift compiler code
   assert(type->hasExtInfo() && "type must have ext info");
