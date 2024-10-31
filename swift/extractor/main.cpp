@@ -76,6 +76,13 @@ static void processFrontendOptions(codeql::SwiftExtractorState& state,
   }
 }
 
+static void turnOffSilVerifications(swift::SILOptions& options) {
+  options.VerifyAll = false;
+  options.VerifyExclusivity = false;
+  options.VerifyNone = true;
+  options.VerifySILOwnership = false;
+}
+
 codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state);
 
 // This is part of the swiftFrontendTool interface, we hook into the
@@ -90,6 +97,7 @@ class Observer : public swift::FrontendObserver {
     options.KeepASTContext = true;
     lockOutputSwiftModuleTraps(state, options);
     processFrontendOptions(state, options);
+    turnOffSilVerifications(invocation.getSILOptions());
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
