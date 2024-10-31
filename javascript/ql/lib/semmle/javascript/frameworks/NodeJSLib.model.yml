@@ -1,0 +1,8 @@
+extensions:
+  # Make sure that the extensible model predicates have at least one definition
+  # to avoid errors about undefined extensionals.
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ['fs', 'Member[promises].Member[readFile].ReturnValue.Member[then].Argument[0].Parameter[0]', 'file']

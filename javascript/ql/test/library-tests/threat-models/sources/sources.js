@@ -69,8 +69,8 @@ const fileContent = fs.readFileSync('file.txt', 'utf8'); // $ threat-source=file
 SINK(fileContent); // $ hasFlow
 
 // Accessing file contents using fs.promises
-fs.promises.readFile('file.txt', 'utf8').then((data) => { // $ MISSING: threat-source=file
-  SINK(data); // $ MISSING: hasFlow
+fs.promises.readFile('file.txt', 'utf8').then((data) => { // $ threat-source=file
+  SINK(data); // $ hasFlow
 });
 
 // Accessing file contents using fs.createReadStream
