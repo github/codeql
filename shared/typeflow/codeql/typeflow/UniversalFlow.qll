@@ -60,6 +60,9 @@ signature module UniversalFlowInput<LocationSig Location> {
   default predicate isExcludedFromNullAnalysis(FlowNode n) { none() }
 }
 
+/**
+ * Provides an implementation of universal flow using input `I`.
+ */
 module Make<LocationSig Location, UniversalFlowInput<Location> I> {
   private import I
 
@@ -93,6 +96,7 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
 
   private import Internal
 
+  /** Provides access to internal step relations. */
   module Internal {
     /**
      * Holds if data can flow from `n1` to `n2` in one step, `n1` is not necessarily
@@ -242,6 +246,10 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
     default predicate barrier(FlowNode n) { none() }
   }
 
+  /**
+   * Calculates a (nullary) property using universal flow given a base case
+   * relation.
+   */
   module FlowNullary<NullaryPropertySig P> {
     private module Propagation implements PropPropagation {
       class Prop = Unit;
@@ -251,6 +259,10 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
       predicate supportsProp = candProp/2;
     }
 
+    /**
+     * Holds if all flow reaching `n` originates from nodes in
+     * `hasPropertyBase`.
+     */
     predicate hasProperty(FlowNode n) {
       P::hasPropertyBase(n)
       or
@@ -283,6 +295,10 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
     default predicate barrier(FlowNode n) { none() }
   }
 
+  /**
+   * Calculates a unary property using universal flow given a base case
+   * relation.
+   */
   module Flow<PropertySig P> {
     private module Propagation implements PropPropagation {
       class Prop = P::Prop;
@@ -296,8 +312,9 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
     }
 
     /**
-     * Holds if the runtime type of `n` is exactly `t` and if this bound is a
-     * non-trivial lower bound, that is, `t` has a subtype.
+     * Holds if all flow reaching `n` originates from nodes in
+     * `hasPropertyBase`. The property `t` is taken from one of those origins
+     * such that all other origins imply `t`.
      */
     predicate hasProperty(FlowNode n, P::Prop t) {
       P::hasPropertyBase(n, t)
@@ -307,13 +324,25 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
         exists(FlowNode mid | hasProperty(mid, t) and uniqStepNotNull(mid, n))
         or
         // The following is an optimized version of
-        // `forex(FlowNode mid | joinStepNotNull(mid, n) | hasPropery(mid, t))`
+        // ```
+        // exists(FlowNode mid | joinStepNotNull(mid, n) | hasPropery(mid, t)) and
+        // forall(FlowNode mid | joinStepNotNull(mid, n) | hasPropery(mid, _)) and
+        // forall(FlowNode mid, P::Prop t0 | joinStepNotNull(mid, n) and hasPropery(mid, t0) |
+        //   P::propImplies(t0, t)
+        // )
+        // ```
         ForAll<FlowNode, RankedJoinStep, Propagation>::flowJoin(n, t)
         or
         exists(FlowScc scc |
           sccRepr(n, scc) and
           // Optimized version of
-          // `forex(FlowNode mid | sccJoinStepNotNull(mid, scc) | hasPropery(mid, t))`
+          // ```
+          // exists(FlowNode mid | sccJoinStepNotNull(mid, n) | hasPropery(mid, t)) and
+          // forall(FlowNode mid | sccJoinStepNotNull(mid, n) | hasPropery(mid, _)) and
+          // forall(FlowNode mid, P::Prop t0 | sccJoinStepNotNull(mid, n) and hasPropery(mid, t0) |
+          //   P::propImplies(t0, t)
+          // )
+          // ```
           ForAll<FlowScc, RankedSccJoinStep, Propagation>::flowJoin(scc, t)
         )
       )
