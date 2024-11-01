@@ -1,0 +1,10 @@
+- description: Secure Future Initiative Suite
+- queries: '.'
+  from: microsoft-sdl/powershell-queries
+- include:
+    tags contain: secure-future-initiative
+- include:
+    tags contain: alert-suppression-report
+- include:
+    kind:
+      - alert-suppression

@@ -1,0 +1,8 @@
+- description: SDL-review suite
+- queries: '.'
+  from: microsoft-sdl/powershell-queries
+- include:
+    tags contain: sdl-review
+- include:
+    kind:
+      - alert-suppression
