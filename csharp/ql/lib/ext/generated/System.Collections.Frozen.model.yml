@@ -5,13 +5,15 @@ extensions:
       extensible: summaryModel
     data:
       - ["System.Collections.Frozen", "FrozenDictionary", False, "ToFrozenDictionary<TKey,TValue>", "(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>,System.Collections.Generic.IEqualityComparer<TKey>)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>+Enumerator", False, "get_Current", "()", "", "Argument[this].Property[System.Collections.Frozen.FrozenDictionary`2+Enumerator.Current]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>+Enumerator", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>", False, "get_Keys", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>", False, "get_Values", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Frozen", "FrozenSet", False, "ToFrozenSet<T>", "(System.Collections.Generic.IEnumerable<T>,System.Collections.Generic.IEqualityComparer<T>)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Collections.Frozen", "FrozenSet<T>+Enumerator", False, "get_Current", "()", "", "Argument[this].Property[System.Collections.Frozen.FrozenSet`1+Enumerator.Current]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Collections.Frozen", "FrozenSet<T>+Enumerator", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Collections.Frozen", "FrozenSet<T>", False, "CopyTo", "(System.Span<T>)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
-      - ["System.Collections.Frozen", "FrozenSet<T>", False, "TryGetValue", "(T,T)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Collections.Frozen", "FrozenSet<T>", False, "CopyTo", "(System.Span<T>)", "", "Argument[this].Property[System.Collections.Frozen.FrozenSet`1.Items].Element", "Argument[0].Element", "value", "dfc-generated"]
+      - ["System.Collections.Frozen", "FrozenSet<T>", False, "TryGetValue", "(T,T)", "", "Argument[this].Property[System.Collections.Frozen.FrozenSet`1.Items].Element", "ReturnValue", "value", "dfc-generated"]
       - ["System.Collections.Frozen", "FrozenSet<T>", False, "get_Items", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all

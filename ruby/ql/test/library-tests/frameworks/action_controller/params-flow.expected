@@ -270,11 +270,11 @@ nodes
 | params_flow.rb:205:10:205:10 | a | semmle.label | a |
 subpaths
 testFailures
-| filter_flow.rb:21:10:21:13 | @foo | Unexpected result: hasTaintFlow= |
-| filter_flow.rb:38:10:38:13 | @foo | Unexpected result: hasTaintFlow= |
-| filter_flow.rb:55:10:55:13 | @foo | Unexpected result: hasTaintFlow= |
-| filter_flow.rb:71:10:71:17 | call to bar | Unexpected result: hasTaintFlow= |
-| filter_flow.rb:87:11:87:14 | @foo | Unexpected result: hasTaintFlow= |
+| filter_flow.rb:21:10:21:13 | @foo | Unexpected result: hasTaintFlow |
+| filter_flow.rb:38:10:38:13 | @foo | Unexpected result: hasTaintFlow |
+| filter_flow.rb:55:10:55:13 | @foo | Unexpected result: hasTaintFlow |
+| filter_flow.rb:71:10:71:17 | call to bar | Unexpected result: hasTaintFlow |
+| filter_flow.rb:87:11:87:14 | @foo | Unexpected result: hasTaintFlow |
 #select
 | filter_flow.rb:21:10:21:13 | @foo | filter_flow.rb:14:12:14:17 | call to params | filter_flow.rb:21:10:21:13 | @foo | $@ | filter_flow.rb:14:12:14:17 | call to params | call to params |
 | filter_flow.rb:38:10:38:13 | @foo | filter_flow.rb:30:12:30:17 | call to params | filter_flow.rb:38:10:38:13 | @foo | $@ | filter_flow.rb:30:12:30:17 | call to params | call to params |

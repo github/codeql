@@ -1,5 +1,5 @@
 /**
- * Inline expectation tests for CSharp.
+ * Inline expectation tests for C#.
  * See `shared/util/codeql/util/test/InlineExpectationsTest.qll`
  */
 

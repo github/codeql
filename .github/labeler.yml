@@ -38,6 +38,10 @@ Swift:
   - swift/**/*
   - change-notes/**/*swift*
 
+Actions:
+  - actions/**/*
+  - change-notes/**/*actions*
+
 documentation:
   - "**/*.qhelp"
   - "**/*.md"

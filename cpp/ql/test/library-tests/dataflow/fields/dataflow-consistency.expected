@@ -197,3 +197,4 @@ identityLocalStep
 missingArgumentCall
 multipleArgumentCall
 lambdaCallEnclosingCallableMismatch
+speculativeStepAlreadyHasModel

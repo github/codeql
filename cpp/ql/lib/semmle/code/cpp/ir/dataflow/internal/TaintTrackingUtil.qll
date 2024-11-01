@@ -212,3 +212,30 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut, string
     nodeOut = callOutput(call, modelOut)
   )
 }
+
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowCall call, ArgumentPosition argpos |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::viableCallable(call)) and
+      src.(DataFlowPrivate::ArgumentNode).argumentOf(call, argpos)
+    |
+      not argpos.(DirectPosition).getIndex() = -1 and
+      sink.(PostUpdateNode)
+          .getPreUpdateNode()
+          .(DataFlowPrivate::ArgumentNode)
+          .argumentOf(call, any(DirectPosition qualpos | qualpos.getIndex() = -1))
+      or
+      sink.(DataFlowPrivate::OutNode).getCall() = call
+    )
+  }
+}

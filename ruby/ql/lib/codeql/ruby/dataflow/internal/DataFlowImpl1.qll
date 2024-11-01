@@ -261,13 +261,17 @@ deprecated private module Config implements FullStateConfigSig {
     model = ""
   }
 
-  predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
+  predicate isAdditionalFlowStep(
+    Node node1, FlowState state1, Node node2, FlowState state2, string model
+  ) {
     getConfig(state1).isAdditionalFlowStep(node1, getState(state1), node2, getState(state2)) and
-    getConfig(state2) = getConfig(state1)
+    getConfig(state2) = getConfig(state1) and
+    model = ""
     or
     not singleConfiguration() and
     getConfig(state1).isAdditionalFlowStep(node1, node2) and
-    state2 = state1
+    state2 = state1 and
+    model = ""
   }
 
   predicate allowImplicitRead(Node node, ContentSet c) {
