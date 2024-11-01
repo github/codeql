@@ -9,4 +9,4 @@
 import Metrics
 
 from QualityMetric m
-select m, m.getValue() order by m
+select m.toString(), m.getValue()

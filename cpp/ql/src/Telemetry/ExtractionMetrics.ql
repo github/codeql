@@ -9,4 +9,4 @@
 import Metrics
 
 from ExtractionMetric m
-select m, m.getValue() order by m
+select m.toString(), m.getValue()

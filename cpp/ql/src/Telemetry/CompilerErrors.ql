@@ -9,4 +9,4 @@
 import Metrics
 
 from CppMetrics::ErrorCount m
-select m, m.getValue() as c order by c desc
+select m.toString(), m.getValue()
