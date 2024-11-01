@@ -14,6 +14,21 @@ fn if_expression(cond: bool) -> i64 {
     c
 }
 
+fn loop_expression() -> i64 {
+    let a = 1;
+    let b = loop {
+        break a;
+    };
+    b
+}
+
+fn match_expression(a: i64, b: i64, c: Option<i64>) -> i64 {
+    match c {
+        Some(_) => a,
+        None => b,
+    }
+}
+
 fn main() {
     variable();
     if_expression(true);
