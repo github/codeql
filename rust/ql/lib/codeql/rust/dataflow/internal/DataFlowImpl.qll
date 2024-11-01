@@ -146,6 +146,31 @@ module SsaFlow {
   }
 }
 
+/**
+ * Holds for expressions `e` that evaluate to the value of any last (in
+ * evaluation order) subexpressions within it. E.g., expressions that propagate
+ * a values from a subexpression.
+ *
+ * For instance, the predicate holds for if expressions as `if b { e1 } else {
+ * e2 }` evalates to the value of one of the subexpressions `e1` or `e2`.
+ */
+predicate propagatesValue(Expr e) {
+  e instanceof IfExpr or
+  e instanceof LoopExpr or
+  e instanceof ReturnExpr or
+  e instanceof BreakExpr or
+  e.(BlockExpr).getStmtList().hasTailExpr() or
+  e instanceof MatchExpr
+}
+
+module LocalFlow {
+  pragma[nomagic]
+  predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
+    propagatesValue(nodeTo.(Node::ExprNode).asExpr()) and
+    nodeFrom.getCfgNode().getASuccessor() = nodeTo.getCfgNode()
+  }
+}
+
 module RustDataFlow implements InputSig<Location> {
   /**
    * An element, viewed as a node in a data flow graph. Either an expression
@@ -359,6 +384,8 @@ private module Cached {
   /** This is the local flow predicate that is exposed. */
   cached
   predicate localFlowStepImpl(Node::Node nodeFrom, Node::Node nodeTo) {
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+    or
     SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
   }
 }
