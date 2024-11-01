@@ -43,9 +43,10 @@ TargetFile::TargetFile(const std::filesystem::path& target,
 
 bool TargetFile::init() {
   errno = 0;
-  // since C++17 "x" mode opens with O_EXCL (fails if file already exists)
-  if (auto f = std::fopen(targetPath.c_str(), "wx")) {
-    std::fclose(f);
+  // open the file with restrictive permissions
+  int fd = open(targetPath.c_str(), O_WRONLY | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR);
+  if (fd != -1) {
+    close(fd);
     out.open(workingPath);
     checkOutput("open");
     return true;
