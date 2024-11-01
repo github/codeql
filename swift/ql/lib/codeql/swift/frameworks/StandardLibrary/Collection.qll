@@ -43,6 +43,8 @@ private class CollectionSummaries extends SummaryModelCsv {
         ";BidirectionalCollection;true;dropLast(_:);;;Argument[-1];ReturnValue;taint",
         ";BidirectionalCollection;true;dropLast(_:);;;Argument[-1].CollectionElement;ReturnValue.CollectionElement;value",
         ";BidirectionalCollection;true;joined(separator:);;;Argument[-1..0];ReturnValue;taint",
+        ";BidirectionalCollection;true;joined(separator:);;;Argument[-1].CollectionElement;ReturnValue;taint",
+        ";BidirectionalCollection;true;joined(separator:);;;Argument[-1].CollectionElement.CollectionElement;ReturnValue.CollectionElement;value",
         ";BidirectionalCollection;true;last(where:);;;Argument[-1];ReturnValue;taint",
         ";BidirectionalCollection;true;popLast();;;Argument[-1];ReturnValue;taint",
         ";BidirectionalCollection;true;reversed();;;Argument[-1];ReturnValue;taint",
