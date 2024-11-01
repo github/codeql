@@ -5748,7 +5748,7 @@ open class KotlinFileExtractor(
             // Match Java by using a special <nulltype> for nulls, rather than Kotlin's view of this which is
             // kotlin.Nothing?, the type that can only contain null.
             val nullTypeName = "<nulltype>"
-            val javaNullType = tw.getLabelFor(
+            val javaNullType = tw.getLabelFor<DbPrimitive>(
                 "@\"type;$nullTypeName\"",
                 { tw.writePrimitives(it, nullTypeName) }
             )
