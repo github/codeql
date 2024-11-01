@@ -69,11 +69,11 @@ test.cpp:
 #-----|           ValueCategory = prvalue
 #   17|     getStmt(2): [ReturnStmt] return ...
 test.h:
-#    4| [TopLevelFunction] int f(int)
-#    4|   <params>: 
-#    4|     getParameter(0): [Parameter] (unnamed parameter 0)
-#    4|         Type = [IntType] int
-#    4| [TopLevelFunction] int f(int)
-#    4|   <params>: 
-#    4|     getParameter(0): [Parameter] (unnamed parameter 0)
-#    4|         Type = [IntType] int
+#    2| [TopLevelFunction] int f(int)
+#    2|   <params>: 
+#    2|     getParameter(0): [Parameter] (unnamed parameter 0)
+#    2|         Type = [IntType] int
+#    2| [TopLevelFunction] int f(int)
+#    2|   <params>: 
+#    2|     getParameter(0): [Parameter] (unnamed parameter 0)
+#    2|         Type = [IntType] int

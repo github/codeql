@@ -215,7 +215,7 @@ module CppMetrics {
     SucceededIncludeCount() {
       exists(Include i |
         i.getIncludeText() = include_text and
-        exists(i.getFile().getRelativePath())  // Only report includes from the repo
+        exists(i.getFile().getRelativePath()) // Only report includes from the repo
       ) and
       this = "Successfully included " + include_text
     }
