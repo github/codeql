@@ -23,33 +23,9 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
     or
     isTopLevelLike(container.(js::ImmediatelyInvokedFunctionExpr).getEnclosingContainer())
     or
-    // Functions declared in a top-level with no parameters and can't generate flow-through, except through 'this'
-    // which we rule out with a few syntactic checks. In this case we treat its captured variables as singletons.
-    // NOTE: This was done to prevent a blow-up in fiddlesalad where a function called 'Runtime' captures 7381 variables but is only called once.
-    exists(js::Function fun |
-      container = fun and
-      fun.getNumParameter() = 0 and
-      isTopLevelLike(fun.getEnclosingContainer()) and
-      not mayHaveFlowThroughThisArgument(fun)
-    )
-    or
-    // Container declaring >100 captured variables tend to be singletons and are too expensive anyway
+    // Containers declaring >100 captured variables tend to be singletons and are too expensive anyway
     strictcount(js::LocalVariable v | v.isCaptured() and v.getDeclaringContainer() = container) >
       100
-  }
-
-  private predicate hasLocalConstructorCall(js::Function fun) {
-    fun = getLambdaFromVariable(any(js::NewExpr e).getCallee().(js::VarAccess).getVariable())
-  }
-
-  private predicate mayHaveFlowThroughThisArgument(js::Function fun) {
-    any(js::ThisExpr e).getBinder() = fun and
-    not hasLocalConstructorCall(fun) and // 'this' argument is assumed to be a fresh object
-    (
-      exists(fun.getAReturnedExpr())
-      or
-      exists(js::YieldExpr e | e.getContainer() = fun)
-    )
   }
 
   class CapturedVariable extends LocalVariableOrThis {
