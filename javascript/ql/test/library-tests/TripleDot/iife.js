@@ -4,8 +4,8 @@ function f1() {
             return p; // argument to return
         })(x);
     }
-    sink(inner(source("f1.1"))); // $ hasValueFlow=f1.1 SPURIOUS: hasValueFlow=f1.2
-    sink(inner(source("f1.2"))); // $ hasValueFlow=f1.2 SPURIOUS: hasValueFlow=f1.1
+    sink(inner(source("f1.1"))); // $ hasValueFlow=f1.1
+    sink(inner(source("f1.2"))); // $ hasValueFlow=f1.2
 }
 
 function f2() {
@@ -16,8 +16,8 @@ function f2() {
         })(x);
         return y;
     }
-    sink(inner(source("f2.1"))); // $ hasValueFlow=f2.1 SPURIOUS: hasValueFlow=f2.2
-    sink(inner(source("f2.2"))); // $ hasValueFlow=f2.2 SPURIOUS: hasValueFlow=f2.1
+    sink(inner(source("f2.1"))); // $ MISSING: hasValueFlow=f2.1
+    sink(inner(source("f2.2"))); // $ MISSING: hasValueFlow=f2.2
 }
 
 function f3() {
@@ -26,8 +26,8 @@ function f3() {
             return x; // captured variable to return
         })();
     }
-    sink(inner(source("f3.1"))); // $ hasValueFlow=f3.1 SPURIOUS: hasValueFlow=f3.2
-    sink(inner(source("f3.2"))); // $ hasValueFlow=f3.2 SPURIOUS: hasValueFlow=f3.1
+    sink(inner(source("f3.1"))); // $ hasValueFlow=f3.1
+    sink(inner(source("f3.2"))); // $ hasValueFlow=f3.2
 }
 
 function f4() {

@@ -1218,13 +1218,28 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
 predicate localMustFlowStep(Node node1, Node node2) { node1 = node2.getImmediatePredecessor() }
 
 /**
+ * Holds if `node1 -> node2` should be removed as a jump step.
+ *
+ * Currently this is done as a workaround for the local steps generated from IIFEs.
+ */
+private predicate excludedJumpStep(Node node1, Node node2) {
+  exists(ImmediatelyInvokedFunctionExpr iife |
+    iife.argumentPassing(node2.asExpr(), node1.asExpr())
+    or
+    node1 = iife.getAReturnedExpr().flow() and
+    node2 = iife.getInvocation().flow()
+  )
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` through a non-local step
  * that does not follow a call edge. For example, a step through a global
  * variable.
  */
 predicate jumpStep(Node node1, Node node2) {
   valuePreservingStep(node1, node2) and
-  node1.getContainer() != node2.getContainer()
+  node1.getContainer() != node2.getContainer() and
+  not excludedJumpStep(node1, node2)
   or
   FlowSummaryPrivate::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode())
