@@ -11,6 +11,7 @@ import javascript
 private import semmle.javascript.security.SensitiveActions
 import InsecureRandomnessCustomizations::InsecureRandomness
 private import InsecureRandomnessCustomizations::InsecureRandomness as InsecureRandomness
+private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
 
 /**
  * A taint tracking configuration for random values that are not cryptographically secure.
@@ -20,7 +21,11 @@ module InsecureRandomnessConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof Sanitizer
+    or
+    ClassifyFiles::isTestFile(node.getFile())
+  }
 
   predicate isBarrierOut(DataFlow::Node node) {
     // stop propagation at the sinks to avoid double reporting
