@@ -121,16 +121,6 @@ module ActiveSupport {
      * Extensions to the `Hash` class.
      */
     module Hash {
-      private class WithIndifferentAccessSummary extends SimpleSummarizedCallable {
-        WithIndifferentAccessSummary() { this = "with_indifferent_access" }
-
-        override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-          input = "Argument[self].Element[any]" and
-          output = "ReturnValue.Element[any]" and
-          preservesValue = true
-        }
-      }
-
       /**
        * Flow summary for `reverse_merge`, and its alias `with_defaults`.
        */
@@ -167,8 +157,9 @@ module ActiveSupport {
         }
 
         override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-          input = "Argument[self].Element[any]" and
-          output = "ReturnValue.Element[?]" and
+          // keys are considered equal modulo string/symbol in our implementation
+          input = "Argument[self].WithElement[any]" and
+          output = "ReturnValue" and
           preservesValue = true
         }
       }
