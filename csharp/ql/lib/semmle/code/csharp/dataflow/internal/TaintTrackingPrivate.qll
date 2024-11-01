@@ -169,3 +169,43 @@ private module Cached {
 }
 
 import Cached
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
+  private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as Impl
+
+  private predicate hasTarget(Call call) {
+    exists(Impl::Public::SummarizedCallable sc | sc.getACall() = call)
+    or
+    exists(Impl::Public::NeutralSummaryCallable nc | nc.getACall() = call)
+    or
+    call.getTarget().getUnboundDeclaration() instanceof ExternalFlow::SinkCallable
+    or
+    exists(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.getACall() = call)
+  }
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowCall call, Call srcCall, ArgumentPosition argpos |
+      not exists(viableCallable(call)) and
+      not hasTarget(srcCall) and
+      call.(NonDelegateDataFlowCall).getDispatchCall().getCall() = srcCall and
+      (srcCall instanceof ConstructorInitializer or srcCall instanceof MethodCall) and
+      src.(ArgumentNode).argumentOf(call, argpos) and
+      not src instanceof PostUpdateNodes::ObjectInitializerNode and
+      not src instanceof MallocNode
+    |
+      not argpos.isQualifier() and
+      sink.(PostUpdateNode)
+          .getPreUpdateNode()
+          .(ArgumentNode)
+          .argumentOf(call, any(ArgumentPosition qualpos | qualpos.isQualifier()))
+      or
+      sink.(OutNode).getCall(_) = call
+    )
+  }
+}

@@ -323,4 +323,18 @@ module MakeConsistency<
     lambdaCall(call, _, receiver) and
     not nodeGetEnclosingCallable(receiver) = call.getEnclosingCallable()
   }
+
+  query predicate speculativeStepAlreadyHasModel(Node n1, Node n2, string model) {
+    speculativeTaintStep(n1, n2) and
+    not defaultAdditionalTaintStep(n1, n2, _) and
+    (
+      simpleLocalFlowStep(n1, n2, _) and model = "SimpleLocalFlowStep"
+      or
+      exists(DataFlowCall call |
+        exists(viableCallable(call)) and
+        isArgumentNode(n1, call, _) and
+        model = "dispatch"
+      )
+    )
+  }
 }
