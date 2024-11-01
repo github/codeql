@@ -54,7 +54,10 @@ class QualityMetric extends Metric {
     base_metric = relative_metric.getBaseline() and this = "Percentage of " + relative_metric
   }
 
-  override float getValue() { result = 100 * relative_metric.getValue() / base_metric.getValue() }
+  override float getValue() {
+    base_metric.getValue() > 0 and
+    result = 100 * relative_metric.getValue() / base_metric.getValue()
+  }
 }
 
 /** Various metrics we want to report. */

@@ -9,4 +9,4 @@
 import Metrics
 
 from CppMetrics::MissingIncludeCount e
-select e.getIncludeText(), e.getValue() as c order by c desc
+select e.getIncludeText(), e.getValue()
