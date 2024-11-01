@@ -1,0 +1,11 @@
+- description: SDL-required suite
+- queries: '.'
+  from: microsoft-sdl/powershell-queries
+- include:
+    tags contain: sdl-required
+- include:
+    tags contain: alert-suppression-report
+- include:
+    kind:
+      - alert-suppression
+- apply: suites/secure-future-initiative.qls

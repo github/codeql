@@ -1,0 +1,17 @@
+- description: SDL-required high precision suite
+- queries: '.'
+  from: microsoft-sdl/powershell-queries
+- include:
+    tags contain: sdl-required
+    precision:
+    - High
+    - high
+    - very-high
+    microsoft.severity:
+    - Important
+    - Critical
+    - important
+    - critical
+- include:
+    kind:
+      - alert-suppression
