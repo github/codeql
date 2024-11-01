@@ -1,13 +1,13 @@
 pub fn cond() -> bool {
-    true
+    get_a_number() == 1
 }
 
 fn get_a_number() -> i32 {
-    42
+    maybe_get_a_number().unwrap_or(0)
 }
 
 fn maybe_get_a_number() -> Option<i32> {
-    None
+    std::env::args().nth(1).map(|s| s.parse::<i32>().unwrap())
 }
 
 // --- unreachable code --
