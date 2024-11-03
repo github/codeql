@@ -1,12 +1,20 @@
-//fn cond() -> bool;
-//fn get_a_number() -> i32;
-//fn maybe_get_a_number() -> Option<i32>;
+pub fn cond() -> bool {
+    get_a_number() == 1
+}
+
+fn get_a_number() -> i32 {
+    maybe_get_a_number().unwrap_or(0)
+}
+
+fn maybe_get_a_number() -> Option<i32> {
+    std::env::args().nth(1).map(|s| s.parse::<i32>().unwrap())
+}
 
 // --- unreachable code --
 
 fn do_something() {}
 
-fn unreachable_if_1() {
+pub fn unreachable_if_1() {
     if false {
         do_something(); // $ Alert[rust/dead-code]
     } else {
@@ -59,7 +67,7 @@ fn unreachable_if_1() {
     do_something(); // $ Alert[rust/dead-code]
 }
 
-fn unreachable_panic() {
+pub fn unreachable_panic() {
     if cond() {
         do_something();
         panic!("Oh no!!!");
@@ -119,7 +127,7 @@ fn unreachable_panic() {
     }
 }
 
-fn unreachable_match() {
+pub fn unreachable_match() {
     match get_a_number() {
         1 => {
             return;
@@ -141,7 +149,7 @@ fn unreachable_match() {
     do_something(); // $ Alert[rust/dead-code]
 }
 
-fn unreachable_loop() {
+pub fn unreachable_loop() {
     loop {
         do_something();
         break;
@@ -182,11 +190,11 @@ fn unreachable_loop() {
     do_something();
 }
 
-fn unreachable_paren() {
+pub fn unreachable_paren() {
     let _ = (((1)));
 }
 
-fn unreachable_let_1() {
+pub fn unreachable_let_1() {
     if let Some(_) = maybe_get_a_number() {
         do_something();
         return;
@@ -207,7 +215,7 @@ fn unreachable_let_1() {
     do_something();
 }
 
-fn unreachable_let_2() {
+pub fn unreachable_let_2() {
     let Some(_) = maybe_get_a_number() else {
         do_something();
         return;
@@ -224,7 +232,7 @@ fn unreachable_let_2() {
     do_something();
 }
 
-fn unreachable_if_2() {
+pub fn unreachable_if_2() {
     if cond() {
         do_something();
         return;
@@ -235,7 +243,7 @@ fn unreachable_if_2() {
     do_something();
 }
 
-fn unreachable_if_3() {
+pub fn unreachable_if_3() {
     if !cond() {
         do_something();
         return;

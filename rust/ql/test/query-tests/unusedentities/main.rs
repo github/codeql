@@ -1,4 +1,6 @@
-//fn cond() -> bool;
+mod unreachable;
+
+use unreachable::*;
 
 // --- locals ---
 
@@ -191,7 +193,7 @@ fn loops() {
     }
 
     for x in 1..10 {
-        _ = format!("x is {x}"); // $ SPURIOUS: Alert[rust/unused-value]
+        _ = format!("x is {x}");
     }
 
     for x in 1..10 {
@@ -203,11 +205,13 @@ fn loops() {
     }
 
     for x in 1..10 {
-        assert_eq!(x, 1); // $ SPURIOUS: Alert[rust/unused-value]
+        assert_eq!(x, 1);
+        break;
     }
 
     for x in 1..10 {
-        assert_eq!(id(x), id(1)); // $ SPURIOUS: Alert[rust/unused-value]
+        assert_eq!(id(x), id(1));
+        break;
     }
 }
 
@@ -331,7 +335,7 @@ fn if_lets_matches() {
     }
 
     let duration1 = std::time::Duration::new(10, 0); // ten seconds
-    assert_eq!(duration1.as_secs(), 10); // $ SPURIOUS: Alert[rust/unused-value]
+    assert_eq!(duration1.as_secs(), 10);
 
     let duration2: Result<std::time::Duration, String> = Ok(std::time::Duration::new(10, 0));
     match duration2 {
@@ -434,7 +438,7 @@ impl Incrementable for MyValue {
     fn increment(
         &mut self,
         times: i32,
-        unused: i32, // $ Alert[rust/unused-variable]
+        unused: &mut i32, // $ Alert[rust/unused-variable]
     ) {
         self.value += times;
     }
@@ -443,9 +447,22 @@ impl Incrementable for MyValue {
 fn traits() {
     let mut i = MyValue { value: 0 };
     let a = 1;
-    let b = 2;
+    let mut b = 2;
 
-    i.increment(a, b);
+    i.increment(a, &mut b);
+}
+
+// --- macros ---
+
+fn macros() {
+    let x;
+    println!(
+        "The value of x is {}",
+        ({
+            x = 10; // $ MISSING: Alert[rust/unused-value]
+            10
+        })
+    )
 }
 
 // --- main ---
@@ -464,12 +481,14 @@ fn main() {
     folds_and_closures();
 
     unreachable_if_1();
-    unreachable_panic();
+    // unreachable_panic();
     unreachable_match();
-    unreachable_loop();
+    // unreachable_loop();
     unreachable_paren();
     unreachable_let_1();
     unreachable_let_2();
     unreachable_if_2();
     unreachable_if_3();
+
+    macros();
 }

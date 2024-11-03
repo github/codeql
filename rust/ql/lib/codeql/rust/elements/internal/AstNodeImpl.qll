@@ -26,21 +26,29 @@ module Impl {
     result = getImmediateParent(e)
   }
 
-  /** Gets the nearest enclosing parent of `ast` that is an `AstNode`. */
-  private AstNode getParentOfAst(AstNode ast) {
-    result = getParentOfAstStep*(getImmediateParent(ast))
-  }
-
   class AstNode extends Generated::AstNode {
+    /**
+     * Gets the nearest enclosing parent of this node, which is also an `AstNode`,
+     * if any.
+     */
+    AstNode getParentNode() { result = getParentOfAstStep*(getImmediateParent(this)) }
+
     /** Gets the immediately enclosing callable of this node, if any. */
     cached
     Callable getEnclosingCallable() {
-      exists(AstNode p | p = getParentOfAst(this) |
+      exists(AstNode p | p = this.getParentNode() |
         result = p
         or
         not p instanceof Callable and
         result = p.getEnclosingCallable()
       )
+    }
+
+    /** Holds if this node is inside a macro expansion. */
+    predicate isInMacroExpansion() {
+      this = any(MacroCall mc).getExpanded()
+      or
+      this.getParentNode().isInMacroExpansion()
     }
   }
 }
