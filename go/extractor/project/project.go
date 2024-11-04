@@ -184,12 +184,12 @@ func RemoveTemporaryExtractorFiles() {
 
 // Find all go.work files in the working directory and its subdirectories
 func findGoWorkFiles() []string {
-	return util.FindAllFilesWithName(".", "go.work", "vendor")
+	return util.FindAllFilesWithName(".", "go.work", util.SkipVendorChecks...)
 }
 
 // Find all go.mod files in the specified directory and its subdirectories
 func findGoModFiles(root string) []string {
-	return util.FindAllFilesWithName(root, "go.mod", "vendor")
+	return util.FindAllFilesWithName(root, "go.mod", util.SkipVendorChecks...)
 }
 
 // A regular expression for the Go toolchain version syntax.
@@ -547,8 +547,8 @@ func startsWithAnyOf(str string, prefixes []string) bool {
 // Finds Go workspaces in the current working directory.
 func GetWorkspaceInfo(emitDiagnostics bool) []GoWorkspace {
 	bazelPaths := slices.Concat(
-		util.FindAllFilesWithName(".", "BUILD", "vendor"),
-		util.FindAllFilesWithName(".", "BUILD.bazel", "vendor"),
+		util.FindAllFilesWithName(".", "BUILD", util.SkipVendorChecks...),
+		util.FindAllFilesWithName(".", "BUILD.bazel", util.SkipVendorChecks...),
 	)
 	if len(bazelPaths) > 0 {
 		// currently not supported
