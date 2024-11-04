@@ -373,7 +373,7 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
                             target_url=job["html_url"],
                             created_at=check_run["completed_at"],
                             nwo=nwo,
-                            job_ids=[job["id"]],
+                            job_ids={job["id"]},
                         ))
                         break
                 else:
