@@ -1,0 +1,2 @@
+uniqueCallEnclosingCallable
+| comments.rs:6:3:6:14 | CallExpr | Call should have one enclosing callable but has 0. |
