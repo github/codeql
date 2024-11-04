@@ -36,6 +36,11 @@ astGuards
 | test.c:165:9:165:18 | ... < ... |
 | test.c:175:13:175:32 | ... == ... |
 | test.c:181:9:181:9 | x |
+| test.c:191:8:191:9 | ! ... |
+| test.c:191:9:191:9 | b |
+| test.c:194:8:194:8 | b |
+| test.c:194:8:194:15 | ... && ... |
+| test.c:194:11:194:15 | ... < ... |
 | test.cpp:18:8:18:10 | call to get |
 | test.cpp:31:7:31:13 | ... == ... |
 | test.cpp:42:13:42:20 | call to getABool |
@@ -211,6 +216,20 @@ astGuardsCompare
 | 175 | call to foo == 0+0 when ... == ... is true |
 | 181 | x != 0 when x is true |
 | 181 | x == 0 when x is false |
+| 191 | ! ... != 0 when ! ... is true |
+| 191 | ! ... == 0 when ! ... is false |
+| 191 | b != 0 when ! ... is false |
+| 191 | b != 0 when b is true |
+| 191 | b == 0 when b is false |
+| 194 | 100 < x+1 when ... < ... is false |
+| 194 | 100 >= x+1 when ... && ... is true |
+| 194 | 100 >= x+1 when ... < ... is true |
+| 194 | b != 0 when ... && ... is true |
+| 194 | b != 0 when b is true |
+| 194 | b == 0 when b is false |
+| 194 | x < 100+0 when ... && ... is true |
+| 194 | x < 100+0 when ... < ... is true |
+| 194 | x >= 100+0 when ... < ... is false |
 astGuardsControl
 | test.c:7:9:7:13 | ... > ... | false | 10 | 11 |
 | test.c:7:9:7:13 | ... > ... | true | 7 | 9 |
@@ -306,6 +325,12 @@ astGuardsControl
 | test.c:181:9:181:9 | x | false | 183 | 184 |
 | test.c:181:9:181:9 | x | true | 181 | 182 |
 | test.c:181:9:181:9 | x | true | 186 | 180 |
+| test.c:191:8:191:9 | ! ... | true | 191 | 192 |
+| test.c:191:9:191:9 | b | false | 191 | 192 |
+| test.c:194:8:194:8 | b | true | 194 | 194 |
+| test.c:194:8:194:8 | b | true | 194 | 196 |
+| test.c:194:8:194:15 | ... && ... | true | 194 | 196 |
+| test.c:194:11:194:15 | ... < ... | true | 194 | 196 |
 | test.cpp:18:8:18:10 | call to get | true | 19 | 19 |
 | test.cpp:31:7:31:13 | ... == ... | false | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | false | 34 | 34 |
@@ -482,6 +507,10 @@ astGuardsEnsure
 | test.c:175:13:175:32 | ... == ... | test.c:175:13:175:15 | call to foo | == | test.c:175:32:175:32 | 0 | 0 | 175 | 175 |
 | test.c:175:13:175:32 | ... == ... | test.c:175:32:175:32 | 0 | != | test.c:175:13:175:15 | call to foo | 0 | 175 | 175 |
 | test.c:175:13:175:32 | ... == ... | test.c:175:32:175:32 | 0 | == | test.c:175:13:175:15 | call to foo | 0 | 175 | 175 |
+| test.c:194:8:194:15 | ... && ... | test.c:194:11:194:11 | x | < | test.c:194:13:194:15 | 100 | 0 | 194 | 196 |
+| test.c:194:8:194:15 | ... && ... | test.c:194:13:194:15 | 100 | >= | test.c:194:11:194:11 | x | 1 | 194 | 196 |
+| test.c:194:11:194:15 | ... < ... | test.c:194:11:194:11 | x | < | test.c:194:13:194:15 | 100 | 0 | 194 | 196 |
+| test.c:194:11:194:15 | ... < ... | test.c:194:13:194:15 | 100 | >= | test.c:194:11:194:11 | x | 1 | 194 | 196 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | != | test.cpp:31:12:31:13 | - ... | 0 | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | != | test.cpp:31:12:31:13 | - ... | 0 | 34 | 34 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | == | test.cpp:31:12:31:13 | - ... | 0 | 30 | 30 |
@@ -534,6 +563,11 @@ astGuardsEnsure_const
 | test.c:181:9:181:9 | x | test.c:181:9:181:9 | x | != | 0 | 181 | 182 |
 | test.c:181:9:181:9 | x | test.c:181:9:181:9 | x | != | 0 | 186 | 180 |
 | test.c:181:9:181:9 | x | test.c:181:9:181:9 | x | == | 0 | 183 | 184 |
+| test.c:191:8:191:9 | ! ... | test.c:191:8:191:9 | ! ... | != | 0 | 191 | 192 |
+| test.c:191:9:191:9 | b | test.c:191:9:191:9 | b | == | 0 | 191 | 192 |
+| test.c:194:8:194:8 | b | test.c:194:8:194:8 | b | != | 0 | 194 | 194 |
+| test.c:194:8:194:8 | b | test.c:194:8:194:8 | b | != | 0 | 194 | 196 |
+| test.c:194:8:194:15 | ... && ... | test.c:194:8:194:8 | b | != | 0 | 194 | 196 |
 | test.cpp:18:8:18:10 | call to get | test.cpp:18:8:18:10 | call to get | != | 0 | 19 | 19 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | != | -1 | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | != | -1 | 34 | 34 |
@@ -573,6 +607,10 @@ irGuards
 | test.c:165:9:165:18 | CompareLT: ... < ... |
 | test.c:175:13:175:32 | CompareEQ: ... == ... |
 | test.c:181:9:181:9 | Load: x |
+| test.c:191:8:191:9 | LogicalNot: ! ... |
+| test.c:191:9:191:9 | Load: b |
+| test.c:194:8:194:8 | Load: b |
+| test.c:194:11:194:15 | CompareLT: ... < ... |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... |
 | test.cpp:42:13:42:20 | Call: call to getABool |
@@ -746,6 +784,19 @@ irGuardsCompare
 | 175 | call to foo == 0+0 when CompareEQ: ... == ... is true |
 | 181 | x != 0 when Load: x is true |
 | 181 | x == 0 when Load: x is false |
+| 191 | ! ... != 0 when LogicalNot: ! ... is true |
+| 191 | ! ... == 0 when LogicalNot: ! ... is false |
+| 191 | b != 0 when Load: b is true |
+| 191 | b != 0 when LogicalNot: ! ... is false |
+| 191 | b == 0 when Load: b is false |
+| 194 | 100 < x+1 when CompareLT: ... < ... is false |
+| 194 | 100 >= x+1 when CompareLT: ... < ... is true |
+| 194 | b != 0 when Load: b is true |
+| 194 | b == 0 when Load: b is false |
+| 194 | x < 100 when CompareLT: ... < ... is true |
+| 194 | x < 100+0 when CompareLT: ... < ... is true |
+| 194 | x >= 100 when CompareLT: ... < ... is false |
+| 194 | x >= 100+0 when CompareLT: ... < ... is false |
 irGuardsControl
 | test.c:7:9:7:13 | CompareGT: ... > ... | false | 11 | 11 |
 | test.c:7:9:7:13 | CompareGT: ... > ... | true | 8 | 8 |
@@ -833,6 +884,11 @@ irGuardsControl
 | test.c:175:13:175:32 | CompareEQ: ... == ... | true | 175 | 175 |
 | test.c:181:9:181:9 | Load: x | false | 184 | 184 |
 | test.c:181:9:181:9 | Load: x | true | 182 | 182 |
+| test.c:191:8:191:9 | LogicalNot: ! ... | true | 191 | 192 |
+| test.c:191:9:191:9 | Load: b | false | 191 | 192 |
+| test.c:194:8:194:8 | Load: b | true | 194 | 194 |
+| test.c:194:8:194:8 | Load: b | true | 194 | 196 |
+| test.c:194:11:194:15 | CompareLT: ... < ... | true | 194 | 196 |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... | true | 19 | 19 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | false | 34 | 34 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | true | 30 | 30 |
@@ -992,6 +1048,8 @@ irGuardsEnsure
 | test.c:175:13:175:32 | CompareEQ: ... == ... | test.c:175:13:175:15 | Call: call to foo | == | test.c:175:32:175:32 | Constant: 0 | 0 | 175 | 175 |
 | test.c:175:13:175:32 | CompareEQ: ... == ... | test.c:175:32:175:32 | Constant: 0 | != | test.c:175:13:175:15 | Call: call to foo | 0 | 175 | 175 |
 | test.c:175:13:175:32 | CompareEQ: ... == ... | test.c:175:32:175:32 | Constant: 0 | == | test.c:175:13:175:15 | Call: call to foo | 0 | 175 | 175 |
+| test.c:194:11:194:15 | CompareLT: ... < ... | test.c:194:11:194:11 | Load: x | < | test.c:194:13:194:15 | Constant: 100 | 0 | 194 | 196 |
+| test.c:194:11:194:15 | CompareLT: ... < ... | test.c:194:13:194:15 | Constant: 100 | >= | test.c:194:11:194:11 | Load: x | 1 | 194 | 196 |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:10 | Call: call to get | != | test.cpp:18:8:18:12 | Constant: (bool)... | 0 | 19 | 19 |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:12 | Constant: (bool)... | != | test.cpp:18:8:18:10 | Call: call to get | 0 | 19 | 19 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | != | test.cpp:31:12:31:13 | Constant: - ... | 0 | 34 | 34 |
@@ -1083,6 +1141,11 @@ irGuardsEnsure_const
 | test.c:175:13:175:32 | CompareEQ: ... == ... | test.c:175:13:175:15 | Call: call to foo | == | 0 | 175 | 175 |
 | test.c:181:9:181:9 | Load: x | test.c:181:9:181:9 | Load: x | != | 0 | 182 | 182 |
 | test.c:181:9:181:9 | Load: x | test.c:181:9:181:9 | Load: x | == | 0 | 184 | 184 |
+| test.c:191:8:191:9 | LogicalNot: ! ... | test.c:191:8:191:9 | LogicalNot: ! ... | != | 0 | 191 | 192 |
+| test.c:191:9:191:9 | Load: b | test.c:191:9:191:9 | Load: b | == | 0 | 191 | 192 |
+| test.c:194:8:194:8 | Load: b | test.c:194:8:194:8 | Load: b | != | 0 | 194 | 194 |
+| test.c:194:8:194:8 | Load: b | test.c:194:8:194:8 | Load: b | != | 0 | 194 | 196 |
+| test.c:194:11:194:15 | CompareLT: ... < ... | test.c:194:11:194:11 | Load: x | < | 100 | 194 | 196 |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:10 | Call: call to get | != | 0 | 19 | 19 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | != | -1 | 34 | 34 |
 | test.cpp:31:7:31:13 | CompareEQ: ... == ... | test.cpp:31:7:31:7 | Load: x | == | -1 | 30 | 30 |

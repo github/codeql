@@ -171,3 +171,14 @@ void test9(short s) {
         
     }
 }
+
+void boolean_flow(int x){
+    int b = x > 5;
+
+    if(!b){
+    }
+
+    if(b&&x<100){
+        
+    }
+}
