@@ -270,7 +270,7 @@ def m32(h, i)
     h[1] = source("d")
     h[i] = source("e")
     
-    sink s32(h) # $ hasValueFlow=b hasValueFlow=e
+    sink s32(h) # $ hasValueFlow=b $ hasValueFlow=e $ SPURIOUS: hasValueFlow=a
 end
 
 def m33(h, i)
@@ -295,7 +295,7 @@ end
 
 def m36(h, i)
     x = s36(source("a"))
-    sink x[:foo]
+    sink x[:foo] # $ SPURIOUS: hasValueFlow=a
     sink x["foo"] # $ hasValueFlow=a
     sink x[:bar]
     sink x[i] # $ hasValueFlow=a

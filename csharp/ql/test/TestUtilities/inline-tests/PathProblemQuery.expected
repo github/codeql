@@ -1,0 +1,31 @@
+#select
+| InlineTests.cs:26:17:26:27 | "Alert:2:1" | InlineTests.cs:24:22:24:29 | "Source" | InlineTests.cs:25:20:25:25 | "Sink" | This is a problem |
+| InlineTests.cs:36:13:36:23 | "Alert:2:1" | InlineTests.cs:34:18:34:25 | "Source" | InlineTests.cs:35:16:35:21 | "Sink" | This is a problem |
+| InlineTests.cs:41:13:41:23 | "Alert:2:1" | InlineTests.cs:39:18:39:25 | "Source" | InlineTests.cs:40:16:40:21 | "Sink" | This is a problem |
+| InlineTests.cs:45:13:45:23 | "Alert:1:0" | InlineTests.cs:44:18:44:25 | "Source" | InlineTests.cs:45:13:45:23 | "Alert:1:0" | This is a problem |
+| InlineTests.cs:49:13:49:23 | "Alert:0:1" | InlineTests.cs:49:13:49:23 | "Alert:0:1" | InlineTests.cs:48:16:48:21 | "Sink" | This is a problem |
+| InlineTests.cs:54:13:54:23 | "Alert:2:1" | InlineTests.cs:52:18:52:25 | "Source" | InlineTests.cs:53:16:53:21 | "Sink" | This is a problem |
+| InlineTests.cs:59:13:59:23 | "Alert:2:1" | InlineTests.cs:57:18:57:25 | "Source" | InlineTests.cs:58:16:58:21 | "Sink" | This is a problem |
+| InlineTests.cs:64:13:64:23 | "Alert:2:1" | InlineTests.cs:62:18:62:25 | "Source" | InlineTests.cs:63:16:63:21 | "Sink" | This is a problem |
+| InlineTests.cs:68:13:68:23 | "Alert:1:0" | InlineTests.cs:67:18:67:25 | "Source" | InlineTests.cs:68:13:68:23 | "Alert:1:0" | This is a problem |
+| InlineTests.cs:72:13:72:23 | "Alert:1:0" | InlineTests.cs:71:18:71:25 | "Source" | InlineTests.cs:72:13:72:23 | "Alert:1:0" | This is a problem |
+| InlineTests.cs:76:13:76:23 | "Alert:0:1" | InlineTests.cs:76:13:76:23 | "Alert:0:1" | InlineTests.cs:75:16:75:21 | "Sink" | This is a problem |
+| InlineTests.cs:80:13:80:23 | "Alert:0:1" | InlineTests.cs:80:13:80:23 | "Alert:0:1" | InlineTests.cs:79:16:79:21 | "Sink" | This is a problem |
+edges
+testFailures
+| InlineTests.cs:6:26:6:35 | // ... | Missing result: Alert |
+| InlineTests.cs:12:34:12:43 | // ... | Missing result: Alert |
+| InlineTests.cs:29:28:29:38 | // ... | Missing result: Source |
+| InlineTests.cs:30:24:30:32 | // ... | Missing result: Sink |
+| InlineTests.cs:31:33:31:42 | // ... | Missing result: Alert |
+| InlineTests.cs:34:18:34:25 | "Source" | Unexpected result: Source |
+| InlineTests.cs:35:16:35:21 | "Sink" | Unexpected result: Sink |
+| InlineTests.cs:36:13:36:23 | InlineTests.cs:34:18:34:25 | Unexpected result: Alert |
+| InlineTests.cs:58:16:58:21 | "Sink" | Unexpected result: Sink=source2 |
+| InlineTests.cs:58:24:58:60 | // ... | Missing result: Sink[path-problem-query]=source1 |
+| InlineTests.cs:64:13:64:23 | InlineTests.cs:62:18:62:25 | Unexpected result: Alert=source3 |
+| InlineTests.cs:64:26:64:63 | // ... | Missing result: Alert[path-problem-query]=source2 |
+| InlineTests.cs:72:13:72:23 | "Alert:1:0" | Unexpected result: Alert=source5 |
+| InlineTests.cs:72:26:72:63 | // ... | Missing result: Alert[path-problem-query]=source4 |
+| InlineTests.cs:79:16:79:21 | "Sink" | Unexpected result: Sink=sink1 |
+| InlineTests.cs:79:24:79:58 | // ... | Missing result: Sink[path-problem-query]=sink2 |
