@@ -3,8 +3,11 @@
  */
 
 import rust
-import codeql.rust.AstConsistency as AstConsistency
+private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.internal.TaintTrackingImpl
+private import codeql.rust.AstConsistency as AstConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
+private import codeql.dataflow.internal.DataFlowImplConsistency as DataFlowImplConsistency
 
 /**
  * Gets a count of the total number of lines of code in the database.
@@ -30,4 +33,17 @@ int getTotalAstInconsistencies() {
  */
 int getTotalCfgInconsistencies() {
   result = sum(string type | | CfgConsistency::getCfgInconsistencyCounts(type))
+}
+
+private module Input implements DataFlowImplConsistency::InputSig<Location, RustDataFlow> { }
+
+/**
+ * Gets a count of the total number of data flow inconsistencies in the database.
+ */
+int getTotalDataFlowInconsistencies() {
+  result =
+    sum(string type |
+      |
+      DataFlowImplConsistency::MakeConsistency<Location, RustDataFlow, RustTaintTracking, Input>::getInconsistencyCounts(type)
+    )
 }
