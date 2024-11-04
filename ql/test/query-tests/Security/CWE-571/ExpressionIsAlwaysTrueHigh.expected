@@ -1,0 +1,11 @@
+| .github/workflows/test1.yml:15:13:19:13 | \| | Expression always evaluates to true |
+| .github/workflows/test1.yml:34:13:34:39 | ${{ 1 = ... == 2 }} | Expression always evaluates to true |
+| .github/workflows/test1.yml:45:13:48:24 | >  | Expression always evaluates to true |
+| .github/workflows/test1.yml:56:15:56:31 | " ${{ 1 == 2  }}" | Expression always evaluates to true |
+| .github/workflows/test1.yml:59:15:59:31 | " ${{ 1 == 2  }}" | Expression always evaluates to true |
+| .github/workflows/test1.yml:79:13:82:14 | \|+ | Expression always evaluates to true |
+| .github/workflows/test1.yml:85:13:88:14 | >+ | Expression always evaluates to true |
+| .github/workflows/test1.yml:91:13:91:45 | ${{ git ... = 'foo' | Expression always evaluates to true |
+| .github/workflows/test1.yml:94:13:94:121 | ${{ con ... = 'foo' | Expression always evaluates to true |
+| .github/workflows/test1.yml:97:13:97:64 | ${{ has ... } != "" | Expression always evaluates to true |
+| .github/workflows/test1.yml:100:13:102:63 | > | Expression always evaluates to true |
