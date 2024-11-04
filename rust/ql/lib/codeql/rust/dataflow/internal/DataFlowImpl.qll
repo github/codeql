@@ -95,6 +95,26 @@ module Node {
 
   final class ArgumentNode = NaNode;
 
+  /** An SSA node. */
+  abstract class SsaNode extends Node, TSsaNode {
+    SsaImpl::DataFlowIntegration::SsaNode node;
+    SsaImpl::DefinitionExt def;
+
+    SsaNode() {
+      this = TSsaNode(node) and
+      def = node.getDefinitionExt()
+    }
+
+    SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+
+    /** Holds if this node should be hidden from path explanations. */
+    abstract predicate isHidden();
+
+    override Location getLocation() { result = node.getLocation() }
+
+    override string toString() { result = node.toString() }
+  }
+
   final class ReturnNode extends NaNode {
     RustDataFlow::ReturnKind getKind() { none() }
   }
@@ -154,7 +174,7 @@ module SsaFlow {
  * For instance, the predicate holds for if expressions as `if b { e1 } else {
  * e2 }` evalates to the value of one of the subexpressions `e1` or `e2`.
  */
-predicate propagatesValue(Expr e) {
+private predicate propagatesValue(Expr e) {
   e instanceof IfExpr or
   e instanceof LoopExpr or
   e instanceof ReturnExpr or

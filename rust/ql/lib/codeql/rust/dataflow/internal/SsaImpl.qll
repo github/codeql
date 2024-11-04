@@ -461,14 +461,18 @@ class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
 }
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
-  class Expr extends CfgNodes::ExprCfgNode {
+  class Expr extends CfgNodes::AstCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
 
   /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) { none() }
+  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
+    exists(CfgNode node, BasicBlock bb, int i |
+      def.definesAt(_, bb, i) and value.getAstNode() = node.getAstNode().(AssignmentExpr).getLhs()
+    )
+  }
 
   class Parameter = Param;
 
