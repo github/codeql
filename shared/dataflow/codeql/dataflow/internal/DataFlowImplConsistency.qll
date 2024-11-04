@@ -337,4 +337,107 @@ module MakeConsistency<
       )
     )
   }
+
+  /**
+   * Gets counts of inconsistencies of each type.
+   */
+  int getInconsistencyCounts(string type) {
+    // total results from all the AST consistency query predicates.
+    type = "Node should have one enclosing callable" and
+    result = count(Node n | uniqueEnclosingCallable(n, _))
+    or
+    type = "Call should have one enclosing callable" and
+    result = count(DataFlowCall c | uniqueCallEnclosingCallable(c, _))
+    or
+    type = "Node should have one type" and
+    result = count(Node n | uniqueType(n, _))
+    or
+    type = "Node should have one location" and
+    result = count(Node n | uniqueNodeLocation(n, _))
+    or
+    type = "Nodes without location" and
+    result = count( | missingLocation(_) | 1)
+    or
+    type = "Node should have one toString" and
+    result = count(Node n | uniqueNodeToString(n, _))
+    or
+    type = "Callable mismatch for parameter" and
+    result = count(ParameterNode p | parameterCallable(p, _))
+    or
+    type = "Local flow step does not preserve enclosing callable" and
+    result = count(Node n1, Node n2 | localFlowIsLocal(n1, n2, _))
+    or
+    type = "Read step does not preserve enclosing callable" and
+    result = count(Node n1, Node n2 | readStepIsLocal(n1, n2, _))
+    or
+    type = "Store step does not preserve enclosing callable" and
+    result = count(Node n1, Node n2 | storeStepIsLocal(n1, n2, _))
+    or
+    type = "Type compatibility predicate is not reflexive" and
+    result = count(DataFlowType t | compatibleTypesReflexive(t, _))
+    or
+    type = "Call context for isUnreachableInCall is inconsistent with call graph" and
+    result = count(Node n, DataFlowCall call | unreachableNodeCCtx(n, call, _))
+    or
+    type = "Node and call does not share enclosing callable" and
+    result = count(DataFlowCall call, Node n | localCallNodes(call, n, _))
+    or
+    type = "PostUpdateNode should not equal its pre-update node" and
+    result = count(PostUpdateNode n | postIsNotPre(n, _))
+    or
+    type = "PostUpdateNode should have one pre-update node" and
+    result = count(PostUpdateNode n | postHasUniquePre(n, _))
+    or
+    type = "Node has multiple PostUpdateNodes" and
+    result = count(Node n | uniquePostUpdate(n, _))
+    or
+    type = "PostUpdateNode does not share callable with its pre-update node" and
+    result = count(PostUpdateNode n | postIsInSameCallable(n, _))
+    or
+    type = "Origin of readStep is missing a PostUpdateNode" and
+    result = count(Node n | reverseRead(n, _))
+    or
+    type = "ArgumentNode is missing PostUpdateNode" and
+    result = count(ArgumentNode n | argHasPostUpdate(n, _))
+    or
+    type = "PostUpdateNode should not be the target of local flow" and
+    result = count(PostUpdateNode n | postWithInFlow(n, _))
+    or
+    type = "Call context too large" and
+    result =
+      count(DataFlowCall call, DataFlowCall ctx, DataFlowCallable callable |
+        viableImplInCallContextTooLarge(call, ctx, callable)
+      )
+    or
+    type = "Parameters with overlapping positions" and
+    result =
+      count(DataFlowCallable c, ParameterPosition pos, Node p |
+        uniqueParameterNodeAtPosition(c, pos, p, _)
+      )
+    or
+    type = "Parameter node with multiple positions" and
+    result =
+      count(DataFlowCallable c, ParameterPosition pos, Node p |
+        uniqueParameterNodePosition(c, pos, p, _)
+      )
+    or
+    type = "Non-unique content approximation" and
+    result = count(Content c | uniqueContentApprox(c, _))
+    or
+    type = "Node steps to itself" and
+    result = count(Node n | identityLocalStep(n, _))
+    or
+    type = "Missing call for argument node" and
+    result = count(ArgumentNode n | missingArgumentCall(n, _))
+    or
+    type = "Multiple calls for argument node" and
+    result = count(ArgumentNode arg, DataFlowCall call | multipleArgumentCall(arg, call, _))
+    or
+    type = "Lambda call enclosing callable mismatch" and
+    result =
+      count(DataFlowCall call, Node receiver | lambdaCallEnclosingCallableMismatch(call, receiver))
+    or
+    type = "Speculative step already hasM Model" and
+    result = count(Node n1, Node n2 | speculativeStepAlreadyHasModel(n1, n2, _))
+  }
 }
