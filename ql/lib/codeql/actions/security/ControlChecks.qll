@@ -267,6 +267,13 @@ class AssociationActionCheck extends AssociationCheck instanceof UsesStep {
 
 class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
   PermissionActionCheck() {
+    this.getCallee() = "actions-cool/check-user-permission" and
+    (
+      // default permission level is write
+      not exists(this.getArgument("permission-level")) or
+      this.getArgument("require") = ["write", "admin"]
+    )
+    or
     this.getCallee() = "sushichop/action-repository-permission" and
     this.getArgument("required-permission") = ["write", "admin"]
     or
