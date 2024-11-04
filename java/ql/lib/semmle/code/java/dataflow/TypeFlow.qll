@@ -13,24 +13,25 @@ private import semmle.code.java.dispatch.VirtualDispatch
 private import semmle.code.java.dataflow.internal.BaseSSA
 private import semmle.code.java.controlflow.Guards
 private import codeql.typeflow.TypeFlow
+private import codeql.typeflow.UniversalFlow as UniversalFlow
 
-private module Input implements TypeFlowInput<Location> {
-  private newtype TTypeFlowNode =
+/** Gets `t` if it is a `RefType` or the boxed type if `t` is a primitive type. */
+private RefType boxIfNeeded(J::Type t) {
+  t.(PrimitiveType).getBoxedType() = result or
+  result = t
+}
+
+module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
+  private newtype TFlowNode =
     TField(Field f) { not f.getType() instanceof PrimitiveType } or
     TSsa(BaseSsaVariable ssa) { not ssa.getSourceVariable().getType() instanceof PrimitiveType } or
     TExpr(Expr e) or
     TMethod(Method m) { not m.getReturnType() instanceof PrimitiveType }
 
-  /** Gets `t` if it is a `RefType` or the boxed type if `t` is a primitive type. */
-  private RefType boxIfNeeded(J::Type t) {
-    t.(PrimitiveType).getBoxedType() = result or
-    result = t
-  }
-
   /**
    * A `Field`, `BaseSsaVariable`, `Expr`, or `Method`.
    */
-  class TypeFlowNode extends TTypeFlowNode {
+  class FlowNode extends TFlowNode {
     string toString() {
       result = this.asField().toString() or
       result = this.asSsa().toString() or
@@ -61,8 +62,6 @@ private module Input implements TypeFlowInput<Location> {
     }
   }
 
-  class Type = RefType;
-
   private SrcCallable viableCallable_v1(Call c) {
     result = viableImpl_v1(c)
     or
@@ -88,7 +87,7 @@ private module Input implements TypeFlowInput<Location> {
    *
    * For a given `n2`, this predicate must include all possible `n1` that can flow to `n2`.
    */
-  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
+  predicate step(FlowNode n1, FlowNode n2) {
     n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
     or
     exists(Field f, Expr e |
@@ -134,7 +133,7 @@ private module Input implements TypeFlowInput<Location> {
   /**
    * Holds if `null` is the only value that flows to `n`.
    */
-  predicate isNullValue(TypeFlowNode n) {
+  predicate isNullValue(FlowNode n) {
     n.asExpr() instanceof NullLiteral
     or
     exists(LocalVariableDeclExpr decl |
@@ -144,11 +143,21 @@ private module Input implements TypeFlowInput<Location> {
     )
   }
 
-  predicate isExcludedFromNullAnalysis(TypeFlowNode n) {
+  predicate isExcludedFromNullAnalysis(FlowNode n) {
     // Fields that are never assigned a non-null value are probably set by
     // reflection and are thus not always null.
     exists(n.asField())
   }
+}
+
+private module Input implements TypeFlowInput<Location> {
+  import FlowStepsInput
+
+  class TypeFlowNode = FlowNode;
+
+  predicate isExcludedFromNullAnalysis = FlowStepsInput::isExcludedFromNullAnalysis/1;
+
+  class Type = RefType;
 
   predicate exactTypeBase(TypeFlowNode n, RefType t) {
     exists(ClassInstanceExpr e |
