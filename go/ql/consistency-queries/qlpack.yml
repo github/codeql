@@ -1,5 +1,5 @@
 name: codeql-go-consistency-queries
-version: 1.0.11-dev
+version: 1.0.12-dev
 groups:
   - go
   - queries

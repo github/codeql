@@ -1,3 +1,9 @@
+## 1.0.11
+
+### Minor Analysis Improvements
+
+* C#: The method `string.ReplaceLineEndings(string)` is now considered a sanitizer for the `cs/log-forging` query. 
+
 ## 1.0.10
 
 No user-facing changes.
