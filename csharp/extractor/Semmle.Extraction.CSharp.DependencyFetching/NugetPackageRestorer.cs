@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -597,6 +598,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Configure the handler for this check. If `DisableTlsCertificateValidation` is `true` for this feed,
             // we disable certificate validation.
             var handler = new HttpClientHandler();
+
+            var proxyHost = Environment.GetEnvironmentVariable("CODEQL_PROXY_HOST");
+            var proxyPort = Environment.GetEnvironmentVariable("CODEQL_PROXY_PORT");
+            if (!string.IsNullOrWhiteSpace(proxyHost) && !string.IsNullOrWhiteSpace(proxyPort))
+            {
+                var proxyAddress = new Uri($"http://{proxyHost}:{proxyPort}");
+                handler.Proxy = new WebProxy(proxyAddress);
+                handler.Proxy.Credentials = new NetworkCredential(Environment.GetEnvironmentVariable("CODEQL_PROXY_USER"), Environment.GetEnvironmentVariable("CODEQL_PROXY_PASSWORD"));
+
+                logger.LogInfo($"Using proxy at {proxyAddress}...");
+            }
 
             if (feed.DisableTlsCertificateValidation)
             {
