@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             internal NugetFeed(string value)
             {
                 this.Value = value;
-                this.DisableTlsCertificateValidation = false;
+                this.DisableTlsCertificateValidation = true;
             }
 
             public override string ToString()
@@ -43,6 +43,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="nugetConfigPath">The path of the file to which the configuration should be written to.</param>
         public void Write(string nugetConfigPath)
         {
+            var config = "";
+
+            var proxyHost = Environment.GetEnvironmentVariable("CODEQL_PROXY_HOST");
+            var proxyPort = Environment.GetEnvironmentVariable("CODEQL_PROXY_PORT");
+            if (!string.IsNullOrWhiteSpace(proxyHost) && !string.IsNullOrWhiteSpace(proxyPort))
+            {
+                var proxyAddress = $"http://{proxyHost}:{proxyPort}";
+                config = $"""<add key="http_proxy" value="{proxyAddress}" />""";
+            }
+
             var sb = new StringBuilder();
             this.Feeds.ForEach((feed, index) => sb.AppendLine($"<add key=\"feed{index}\" value=\"{feed.Value}\" disableTLSCertificateValidation=\"{feed.DisableTlsCertificateValidation}\" />"));
 
@@ -50,9 +60,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 $"""
                 <?xml version="1.0" encoding="utf-8"?>
                 <configuration>
+                    <config>
+                        {config}
+                    </config>
                     <packageSources>
                         <clear />
-                {sb}
+                        {sb}
                     </packageSources>
                 </configuration>
                 """);
