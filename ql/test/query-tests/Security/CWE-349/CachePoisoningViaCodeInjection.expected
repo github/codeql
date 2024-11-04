@@ -7,4 +7,4 @@ nodes
 | .github/workflows/neg_code_injection1.yml:11:17:11:48 | github.event.comment.body | semmle.label | github.event.comment.body |
 subpaths
 #select
-| .github/workflows/code_injection1.yml:11:17:11:48 | github.event.comment.body | .github/workflows/code_injection1.yml:11:17:11:48 | github.event.comment.body | .github/workflows/code_injection1.yml:11:17:11:48 | github.event.comment.body | Unprivileged code injection in $@, which may lead to cache poisoning. | .github/workflows/code_injection1.yml:11:17:11:48 | github.event.comment.body | ${{ github.event.comment.body }} |
+| .github/workflows/code_injection1.yml:11:17:11:48 | github.event.comment.body | .github/workflows/code_injection1.yml:11:17:11:48 | github.event.comment.body | .github/workflows/code_injection1.yml:11:17:11:48 | github.event.comment.body | Unprivileged code injection in $@, which may lead to cache poisoning ($@). | .github/workflows/code_injection1.yml:11:17:11:48 | github.event.comment.body | ${{ github.event.comment.body }} | .github/workflows/code_injection1.yml:2:3:2:15 | issue_comment | issue_comment |

@@ -58,4 +58,5 @@ where
   // excluding privileged workflows since they can be exploited in easier circumstances
   not job.isPrivileged()
 select step, source, step,
-  "Potential cache poisoning in the context of the default branch " + message
+  "Potential cache poisoning in the context of the default branch " + message + " ($@).", event,
+  event.getName()

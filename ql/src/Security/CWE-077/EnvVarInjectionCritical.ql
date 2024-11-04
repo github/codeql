@@ -44,5 +44,5 @@ where
     )
   )
 select sink.getNode(), source, sink,
-  "Potential environment variable injection in $@, which may be controlled by an external user.",
-  sink, sink.getNode().toString()
+  "Potential environment variable injection in $@, which may be controlled by an external user ($@).",
+  sink, sink.getNode().toString(), event, event.getName()

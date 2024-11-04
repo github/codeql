@@ -4,20 +4,21 @@ private import codeql.actions.Helper
 private import codeql.actions.config.Config
 private import codeql.actions.DataFlow
 
+bindingset[text]
+int numberOfLines(string text) { result = max(int i | exists(text.splitAt("\n", i))) }
+
 /**
  * Gets the length of each line in the StringValue .
  */
 bindingset[text]
-int lineLength(string text, int idx) {
-  exists(string line | line = text.splitAt("\n", idx) and result = line.length() + 1)
-}
+int lineLength(string text, int i) { result = text.splitAt("\n", i).length() + 1 }
 
 /**
  * Gets the sum of the length of the lines up to the given index.
  */
 bindingset[text]
 int partialLineLengthSum(string text, int i) {
-  i in [0 .. count(text.splitAt("\n"))] and
+  i in [0 .. numberOfLines(text)] and
   result = sum(int j, int length | j in [0 .. i] and length = lineLength(text, j) | length)
 }
 
@@ -114,7 +115,11 @@ abstract class AstNodeImpl extends TAstNode {
   /**
    * Gets and Event triggering this node.
    */
-  EventImpl getATriggerEvent() { result = this.getEnclosingJob().getATriggerEvent() }
+  EventImpl getATriggerEvent() {
+    result = this.getEnclosingJob().getATriggerEvent()
+    or
+    not exists(this.getEnclosingJob()) and result = this.getEnclosingWorkflow().getATriggerEvent()
+  }
 
   /**
    * Gets the enclosing Step.
@@ -1631,7 +1636,7 @@ class StepsExpressionImpl extends SimpleReferenceExpressionImpl {
     exists(string expr |
       (
         exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
         exists(getASimpleReferenceExpression(expression, _)) and
         expr = normalizeExpr(expression)
@@ -1672,7 +1677,7 @@ class NeedsExpressionImpl extends SimpleReferenceExpressionImpl {
     exists(string expr |
       (
         exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
         exists(getASimpleReferenceExpression(expression, _)) and
         expr = normalizeExpr(expression)
@@ -1716,7 +1721,7 @@ class JobsExpressionImpl extends SimpleReferenceExpressionImpl {
     exists(string expr |
       (
         exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
         exists(getASimpleReferenceExpression(expression, _)) and
         expr = normalizeExpr(expression)
@@ -1775,7 +1780,7 @@ class EnvExpressionImpl extends SimpleReferenceExpressionImpl {
     exists(string expr |
       (
         exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
         exists(getASimpleReferenceExpression(expression, _)) and
         expr = normalizeExpr(expression)
@@ -1810,7 +1815,7 @@ class MatrixExpressionImpl extends SimpleReferenceExpressionImpl {
     exists(string expr |
       (
         exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
         exists(getASimpleReferenceExpression(expression, _)) and
         expr = normalizeExpr(expression)

@@ -56,3 +56,4 @@ jobs:
           echo "$processed" >> $GITHUB_OUTPUT
           echo "BENCHEOF" >> $GITHUB_OUTPUT
         shell: bash
+      - run: python2.7 foo.py

@@ -48,8 +48,8 @@ where
   // the checkout occurs in a privileged context
   inPrivilegedContext(poisonable, event) and
   inPrivilegedContext(checkout, event) and
+  event.getName() = checkoutTriggers() and
   not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout")) and
   not exists(ControlCheck check | check.protects(poisonable, event, "untrusted-checkout"))
 select poisonable, checkout, poisonable,
-  "Execution of untrusted code on a privileged workflow ($@)", event,
-  event.getLocation().getFile().toString()
+  "Potential execution of untrusted code on a privileged workflow ($@)", event, event.getName()

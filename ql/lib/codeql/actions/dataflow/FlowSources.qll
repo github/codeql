@@ -18,39 +18,47 @@ abstract class RemoteFlowSource extends SourceNode {
   /** Gets a string that describes the type of this remote flow source. */
   abstract string getSourceType();
 
+  /** Gets the event that triggered the source. */
+  abstract Event getEvent();
+
   override string getThreatModel() { result = "remote" }
 }
 
 class GitHubCtxSource extends RemoteFlowSource {
   string flag;
+  Event event;
 
   GitHubCtxSource() {
     exists(Expression e, string context, string context_prefix |
       this.asExpr() = e and
       context = e.getExpression() and
+      event = e.getEnclosingWorkflow().getATriggerEvent() and
       normalizeExpr(context) = "github.head_ref" and
-      contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), context_prefix) and
+      contextTriggerDataModel(event.getName(), context_prefix) and
       normalizeExpr(context).matches("%" + context_prefix + "%") and
       flag = "branch"
     )
   }
 
   override string getSourceType() { result = flag }
+
+  override Event getEvent() { result = event }
 }
 
 class GitHubEventCtxSource extends RemoteFlowSource {
   string flag;
   string context;
+  Event event;
 
   GitHubEventCtxSource() {
     exists(Expression e, string regexp |
       this.asExpr() = e and
       context = e.getExpression() and
+      event = e.getATriggerEvent() and
       (
         // the context is available for the job trigger events
         exists(string context_prefix |
-          contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(),
-            context_prefix) and
+          contextTriggerDataModel(event.getName(), context_prefix) and
           normalizeExpr(context).matches("%" + context_prefix + "%")
         )
         or
@@ -65,12 +73,16 @@ class GitHubEventCtxSource extends RemoteFlowSource {
   override string getSourceType() { result = flag }
 
   string getContext() { result = context }
+
+  override Event getEvent() { result = event }
 }
 
 abstract class CommandSource extends RemoteFlowSource {
   abstract string getCommand();
 
   abstract Run getEnclosingRun();
+
+  override Event getEvent() { result = this.getEnclosingRun().getATriggerEvent() }
 }
 
 class GitCommandSource extends RemoteFlowSource, CommandSource {
@@ -181,18 +193,19 @@ class GitHubEventPathSource extends RemoteFlowSource, CommandSource {
 
 class GitHubEventJsonSource extends RemoteFlowSource {
   string flag;
+  Event event;
 
   GitHubEventJsonSource() {
     exists(Expression e, string context, string regexp |
       this.asExpr() = e and
       context = e.getExpression() and
+      event = e.getEnclosingWorkflow().getATriggerEvent() and
       untrustedEventPropertiesDataModel(regexp, _) and
       (
         // only contexts for the triggering events are considered tainted.
         // eg: for `pull_request`, we only consider `github.event.pull_request`
         exists(string context_prefix |
-          contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(),
-            context_prefix) and
+          contextTriggerDataModel(event.getName(), context_prefix) and
           normalizeExpr(context).matches("%" + context_prefix + "%")
         ) and
         normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp(regexp) + ".*")
@@ -206,6 +219,8 @@ class GitHubEventJsonSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = flag }
+
+  override Event getEvent() { result = event }
 }
 
 /**
@@ -217,6 +232,8 @@ class MaDSource extends RemoteFlowSource {
   MaDSource() { madSource(this, sourceType, _) }
 
   override string getSourceType() { result = sourceType }
+
+  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
 }
 
 abstract class FileSource extends RemoteFlowSource { }
@@ -228,12 +245,16 @@ class ArtifactSource extends RemoteFlowSource, FileSource {
   ArtifactSource() { this.asExpr() instanceof UntrustedArtifactDownloadStep }
 
   override string getSourceType() { result = "artifact" }
+
+  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
 }
 
 /**
  * A file from an untrusted checkout.
  */
 private class CheckoutSource extends RemoteFlowSource, FileSource {
+  Event event;
+
   CheckoutSource() {
     // This should be:
     // source instanceof PRHeadCheckoutStep
@@ -245,7 +266,8 @@ private class CheckoutSource extends RemoteFlowSource, FileSource {
       uses.getCallee() = "actions/checkout" and
       exists(uses.getArgument("ref")) and
       not uses.getArgument("ref").matches("%base%") and
-      uses.getATriggerEvent().getName() = checkoutTriggers()
+      event = uses.getATriggerEvent() and
+      event.getName() = checkoutTriggers()
     )
     or
     this.asExpr() instanceof GitMutableRefCheckout
@@ -258,6 +280,8 @@ private class CheckoutSource extends RemoteFlowSource, FileSource {
   }
 
   override string getSourceType() { result = "artifact" }
+
+  override Event getEvent() { result = event }
 }
 
 /**
@@ -273,6 +297,8 @@ class DornyPathsFilterSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "filename" }
+
+  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
 }
 
 /**
@@ -294,6 +320,8 @@ class TJActionsChangedFilesSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "filename" }
+
+  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
 }
 
 /**
@@ -315,6 +343,8 @@ class TJActionsVerifyChangedFilesSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "filename" }
+
+  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
 }
 
 class Xt0rtedSlashCommandSource extends RemoteFlowSource {
@@ -327,6 +357,22 @@ class Xt0rtedSlashCommandSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "text" }
+
+  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
+}
+
+class ZenteredIssueFormBodyParserSource extends RemoteFlowSource {
+  ZenteredIssueFormBodyParserSource() {
+    exists(UsesStep u |
+      u.getCallee() = "zentered/issue-forms-body-parser" and
+      not exists(u.getArgument("body")) and
+      this.asExpr() = u
+    )
+  }
+
+  override string getSourceType() { result = "text" }
+
+  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
 }
 
 class OctokitRequestActionSource extends RemoteFlowSource {
@@ -348,4 +394,6 @@ class OctokitRequestActionSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "text" }
+
+  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
 }

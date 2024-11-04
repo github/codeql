@@ -165,7 +165,7 @@ class LabelIfCheck extends LabelCheck instanceof If {
     condition = normalizeExpr(this.getCondition()) and
     (
       // eg: contains(github.event.pull_request.labels.*.name, 'safe to test')
-      condition.regexpMatch("(^|[^!])contains\\(\\s*github\\.event\\.pull_request\\.labels\\b.*")
+      condition.regexpMatch(".*(^|[^!])contains\\(\\s*github\\.event\\.pull_request\\.labels\\b.*")
       or
       // eg: github.event.label.name == 'safe to test'
       condition.regexpMatch(".*\\bgithub\\.event\\.label\\.name\\s*==.*")
@@ -267,6 +267,13 @@ class AssociationActionCheck extends AssociationCheck instanceof UsesStep {
 
 class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
   PermissionActionCheck() {
+    this.getCallee() = "actions-cool/check-user-permission" and
+    (
+      // default permission level is write
+      not exists(this.getArgument("permission-level")) or
+      this.getArgument("require") = ["write", "admin"]
+    )
+    or
     this.getCallee() = "sushichop/action-repository-permission" and
     this.getArgument("required-permission") = ["write", "admin"]
     or

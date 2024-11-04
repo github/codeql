@@ -26,5 +26,5 @@ where
     check.protects(sink.getNode().asExpr(), event, ["command-injection", "code-injection"])
   )
 select sink.getNode(), source, sink,
-  "Potential command injection in $@, which may be controlled by an external user.", sink,
-  sink.getNode().asExpr().(Expression).getRawExpression()
+  "Potential command injection in $@, which may be controlled by an external user ($@).", sink,
+  sink.getNode().asExpr().(Expression).getRawExpression(), event, event.getName()

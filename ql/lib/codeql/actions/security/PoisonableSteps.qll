@@ -21,9 +21,10 @@ class JavascriptImportUsesStep extends PoisonableStep, UsesStep {
       this.getCallee() = "actions/github-script" and
       script = this.getArgument("script") and
       line = script.splitAt("\n").trim() and
+      // const { default: foo } = await import('${{ github.workspace }}/scripts/foo.mjs')
       // const script = require('${{ github.workspace }}/scripts/test.js');
-      // await script({ github, context, core });
-      line.regexpMatch(".*(import|require)\\b.*github.workspace\\b.*")
+      // const script = require('./scripts');
+      line.regexpMatch(".*(import|require)\\(('|\")(\\./|.*github.workspace).*")
     )
   }
 }

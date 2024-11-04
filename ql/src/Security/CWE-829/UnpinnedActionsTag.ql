@@ -18,7 +18,7 @@ private predicate isPinnedCommit(string version) { version.regexpMatch("^[A-Fa-f
 
 bindingset[repo]
 private predicate isTrustedOrg(string repo) {
-  repo.matches(["actions", "github", "advanced-security"] + "/%"))
+  repo.matches(["actions", "github", "advanced-security"] + "/%")
 }
 
 from UsesStep uses, string repo, string version, Workflow workflow, string name

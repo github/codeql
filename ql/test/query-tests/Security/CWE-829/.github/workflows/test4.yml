@@ -44,3 +44,4 @@ jobs:
       uses: actions/upload-pages-artifact@v1
       with:
         path: './workspaces/www/build'
+    - run: python2.7 foo.py

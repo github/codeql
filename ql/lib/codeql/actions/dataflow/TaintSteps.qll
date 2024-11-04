@@ -92,6 +92,25 @@ predicate xt0rtedSlashCommandActionTaintStep(DataFlow::Node pred, DataFlow::Node
 }
 
 /**
+ * A read of user-controlled field of the zentered/issue-forms-body-parser action.
+ */
+predicate zenteredIssueFormBodyParserSource(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(StepsExpression o |
+    pred instanceof ZenteredIssueFormBodyParserSource and
+    o.getTarget() = pred.asExpr() and
+    o.getStepId() = pred.asExpr().(UsesStep).getId() and
+    (
+      not o instanceof JsonReferenceExpression and
+      o.getFieldName() = "data"
+      or
+      o instanceof JsonReferenceExpression and
+      o.(JsonReferenceExpression).getInnerExpression().matches("%.data")
+    ) and
+    succ.asExpr() = o
+  )
+}
+
+/**
  * A read of user-controlled field of the octokit/request-action action.
  */
 predicate octokitRequestActionTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -130,6 +149,8 @@ class TaintSteps extends AdditionalTaintStep {
     tjActionsChangedFilesTaintStep(node1, node2) or
     tjActionsVerifyChangedFilesTaintStep(node1, node2) or
     xt0rtedSlashCommandActionTaintStep(node1, node2) or
+    xt0rtedSlashCommandActionTaintStep(node1, node2) or
+    zenteredIssueFormBodyParserSource(node1, node2) or
     octokitRequestActionTaintStep(node1, node2)
   }
 }

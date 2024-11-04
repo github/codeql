@@ -256,20 +256,20 @@ class BashShellScript extends ShellScript {
 
   override predicate getAWriteToGitHubEnv(string name, string data) {
     exists(string raw |
-      Bash::extractFileWrite(this.getRawScript(), "GITHUB_ENV", raw) and
+      Bash::extractFileWrite(this, "GITHUB_ENV", raw) and
       Bash::extractVariableAndValue(raw, name, data)
     )
   }
 
   override predicate getAWriteToGitHubOutput(string name, string data) {
     exists(string raw |
-      Bash::extractFileWrite(this.getRawScript(), "GITHUB_OUTPUT", raw) and
+      Bash::extractFileWrite(this, "GITHUB_OUTPUT", raw) and
       Bash::extractVariableAndValue(raw, name, data)
     )
   }
 
   override predicate getAWriteToGitHubPath(string data) {
-    Bash::extractFileWrite(this.getRawScript(), "GITHUB_PATH", data)
+    Bash::extractFileWrite(this, "GITHUB_PATH", data)
   }
 
   override predicate getAnEnvReachingGitHubOutputWrite(string var, string output_field) {
@@ -542,12 +542,12 @@ module Bash {
     blockFileWrite(script, cmd, file, content, filters)
   }
 
-  bindingset[script, file_var]
-  predicate extractFileWrite(string script, string file_var, string content) {
+  bindingset[file_var]
+  predicate extractFileWrite(BashShellScript script, string file_var, string content) {
     // single line assignment
     exists(string file_expr, string raw_content |
       isParameterExpansion(file_expr, file_var, _, _) and
-      singleLineFileWrite(script.splitAt("\n"), _, file_expr, raw_content, _) and
+      singleLineFileWrite(script.getAStmt(), _, file_expr, raw_content, _) and
       content = trimQuotes(raw_content)
     )
     or
@@ -566,12 +566,12 @@ module Bash {
         cmd = "add-path" and
         content = value
       ) and
-      singleLineWorkflowCmd(script.splitAt("\n"), cmd, key, value)
+      singleLineWorkflowCmd(script.getAStmt(), cmd, key, value)
     )
     or
     // multiline assignment
     exists(string file_expr, string raw_content |
-      multiLineFileWrite(script, _, file_expr, raw_content, _) and
+      multiLineFileWrite(script.getRawScript(), _, file_expr, raw_content, _) and
       isParameterExpansion(file_expr, file_var, _, _) and
       content = trimQuotes(raw_content)
     )
@@ -691,11 +691,32 @@ module Bash {
       // echo "FIELD=${VAR2:-default}" >> $GITHUB_ENV (field, file_write_value)
       script.getAnAssignment(var2, value2) and
       containsCmdSubstitution(value2, cmd) and
-      containsParameterExpansion(expr, var2, _, _)
+      containsParameterExpansion(expr, var2, _, _) and
+      not varMatchesRegexTest(script, var2, alphaNumericRegex())
     )
     or
     // var reaches the file write directly
     // echo "FIELD=$(cmd)" >> $GITHUB_ENV (field, file_write_value)
     containsCmdSubstitution(expr, cmd)
   }
+
+  /**
+   * Holds if there test command that checks a variable against a regex
+   * eg: `[[ $VAR =~ ^[a-zA-Z0-9_]+$ ]]`
+   */
+  bindingset[var, regex]
+  predicate varMatchesRegexTest(BashShellScript script, string var, string regex) {
+    exists(string lhs, string rhs |
+      lhs = script.getACommand().regexpCapture(".*\\[\\[\\s*(.*?)\\s*=~\\s*(.*?)\\s*\\]\\].*", 1) and
+      containsParameterExpansion(lhs, var, _, _) and
+      rhs = script.getACommand().regexpCapture(".*\\[\\[\\s*(.*?)\\s*=~\\s*(.*?)\\s*\\]\\].*", 2) and
+      trimQuotes(rhs).regexpMatch(regex)
+    )
+  }
+
+  /**
+   * Holds if the given regex is used to match an alphanumeric string
+   * eg: `^[0-9a-zA-Z]{40}$`, `^[0-9]+$` or `^[a-zA-Z0-9_]+$`
+   */
+  string alphaNumericRegex() { result = "^\\^\\[([09azAZ_-]+)\\](\\+|\\{\\d+\\})\\$$" }
 }

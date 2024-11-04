@@ -12,6 +12,7 @@
 | .github/workflows/poc.yml:43:9:47:2 | Uses Step | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/poc.yml:43:9:47:2 | Uses Step | actions/upload-pages-artifact |
 | .github/workflows/poc.yml:59:9:63:26 | Uses Step: deployment | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/poc.yml:59:9:63:26 | Uses Step: deployment | actions/deploy-pages |
 | .github/workflows/priv_pull_request_checkout.yml:14:9:20:6 | Uses Step | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/priv_pull_request_checkout.yml:14:9:20:6 | Uses Step | actions/checkout |
+| .github/workflows/resolve-args.yml:19:9:20:6 | Uses Step | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/resolve-args.yml:19:9:20:6 | Uses Step | actions/checkout |
 | .github/workflows/test8.yml:20:9:26:6 | Uses Step | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/test8.yml:20:9:26:6 | Uses Step | actions/checkout |
 | .github/workflows/test9.yml:11:9:16:6 | Uses Step | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/test9.yml:11:9:16:6 | Uses Step | actions/checkout |
 | .github/workflows/test11.yml:84:7:90:4 | Uses Step | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/test11.yml:84:7:90:4 | Uses Step | actions/checkout |
@@ -21,3 +22,5 @@
 | .github/workflows/test15.yml:60:7:65:4 | Uses Step | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/test15.yml:60:7:65:4 | Uses Step | actions/checkout |
 | .github/workflows/test15.yml:110:7:115:4 | Uses Step | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/test15.yml:110:7:115:4 | Uses Step | actions/checkout |
 | .github/workflows/test22.yml:57:15:62:12 | Uses Step | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/test22.yml:57:15:62:12 | Uses Step | actions/checkout |
+| .github/workflows/test27.yml:18:9:21:6 | Uses Step | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/test27.yml:18:9:21:6 | Uses Step | actions/checkout |
+| .github/workflows/test28.yml:17:9:20:6 | Uses Step | The workflow is using an eligible immutable action ($@) without semantic versioning | .github/workflows/test28.yml:17:9:20:6 | Uses Step | actions/checkout |

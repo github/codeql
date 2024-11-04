@@ -67,4 +67,5 @@ where
   ) and
   not step instanceof PoisonableStep
 select step, source, step,
-  "Potential cache poisoning in the context of the default branch " + message
+  "Potential cache poisoning in the context of the default branch " + message + " ($@).", event,
+  event.getName()

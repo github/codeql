@@ -178,7 +178,6 @@ class GHRunArtifactDownloadStep extends UntrustedArtifactDownloadStep, Run {
   GHRunArtifactDownloadStep() {
     // eg: - run: gh run download ${{ github.event.workflow_run.id }} --repo "${GITHUB_REPOSITORY}" --name "artifact_name"
     this.getScript().getACommand().regexpMatch(".*gh\\s+run\\s+download.*") and
-    this.getScript().getACommand().matches("%github.event.workflow_run.id%") and
     (
       this.getScript().getACommand().regexpMatch(unzipRegexp()) or
       this.getAFollowingStep().(Run).getScript().getACommand().regexpMatch(unzipRegexp())

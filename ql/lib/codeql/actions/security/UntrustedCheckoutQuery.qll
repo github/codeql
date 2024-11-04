@@ -13,7 +13,6 @@ string checkoutTriggers() {
  */
 private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr().getATriggerEvent().getName() = checkoutTriggers() and
     (
       // remote flow sources
       source instanceof ArtifactSource
@@ -214,24 +213,18 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
         ActionsMutableRefCheckoutFlow::PathNode source, ActionsMutableRefCheckoutFlow::PathNode sink
       |
         ActionsMutableRefCheckoutFlow::flowPath(source, sink) and
-        sink.getNode().asExpr() = this.getArgumentExpr(["ref", "repository"])
+        this.getArgumentExpr(["ref", "repository"]) = sink.getNode().asExpr()
       )
       or
       // heuristic base on the step id and field name
-      exists(string value |
-        this.getArgumentExpr("ref")
-            .(SimpleReferenceExpression)
-            .getEnclosingJob()
-            .getATriggerEvent()
-            .getName() = checkoutTriggers() and
-        value.regexpMatch(".*(head|branch|ref).*")
+      exists(string value, Expression expr |
+        value.regexpMatch(".*(head|branch|ref).*") and expr = this.getArgumentExpr("ref")
       |
-        this.getArgumentExpr("ref").(StepsExpression).getStepId() = value or
-        this.getArgumentExpr("ref").(StepsExpression).getFieldName() = value or
-        this.getArgumentExpr("ref").(NeedsExpression).getNeededJobId() = value or
-        this.getArgumentExpr("ref").(NeedsExpression).getFieldName() = value or
-        this.getArgumentExpr("ref").(JsonReferenceExpression).getAccessPath() = value or
-        this.getArgumentExpr("ref").(JsonReferenceExpression).getInnerExpression() = value
+        expr.(StepsExpression).getStepId() = value or
+        expr.(SimpleReferenceExpression).getFieldName() = value or
+        expr.(NeedsExpression).getNeededJobId() = value or
+        expr.(JsonReferenceExpression).getAccessPath() = value or
+        expr.(JsonReferenceExpression).getInnerExpression() = value
       )
     )
   }
@@ -250,24 +243,18 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
     (
       exists(ActionsSHACheckoutFlow::PathNode source, ActionsSHACheckoutFlow::PathNode sink |
         ActionsSHACheckoutFlow::flowPath(source, sink) and
-        sink.getNode().asExpr() = this.getArgumentExpr(["ref", "repository"])
+        this.getArgumentExpr(["ref", "repository"]) = sink.getNode().asExpr()
       )
       or
       // heuristic base on the step id and field name
-      exists(string value |
-        this.getArgumentExpr("ref")
-            .(SimpleReferenceExpression)
-            .getEnclosingJob()
-            .getATriggerEvent()
-            .getName() = checkoutTriggers() and
-        value.regexpMatch(".*(head|sha|commit).*")
+      exists(string value, Expression expr |
+        value.regexpMatch(".*(head|sha|commit).*") and expr = this.getArgumentExpr("ref")
       |
-        this.getArgumentExpr("ref").(StepsExpression).getStepId() = value or
-        this.getArgumentExpr("ref").(StepsExpression).getFieldName() = value or
-        this.getArgumentExpr("ref").(NeedsExpression).getNeededJobId() = value or
-        this.getArgumentExpr("ref").(NeedsExpression).getFieldName() = value or
-        this.getArgumentExpr("ref").(JsonReferenceExpression).getAccessPath() = value or
-        this.getArgumentExpr("ref").(JsonReferenceExpression).getInnerExpression() = value
+        expr.(StepsExpression).getStepId() = value or
+        expr.(SimpleReferenceExpression).getFieldName() = value or
+        expr.(NeedsExpression).getNeededJobId() = value or
+        expr.(JsonReferenceExpression).getAccessPath() = value or
+        expr.(JsonReferenceExpression).getInnerExpression() = value
       )
     )
   }
@@ -283,7 +270,6 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
 class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GitMutableRefCheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -307,7 +293,6 @@ class GitMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 class GitSHACheckout extends SHACheckoutStep instanceof Run {
   GitSHACheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("git\\s+(fetch|pull).*") and
       (
         containsHeadSHA(cmd)
@@ -328,7 +313,6 @@ class GitSHACheckout extends SHACheckoutStep instanceof Run {
 class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
   GhMutableRefCheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch(".*(gh|hub)\\s+pr\\s+checkout.*") and
       (
         (containsHeadRef(cmd) or containsPullRequestNumber(cmd))
@@ -351,7 +335,6 @@ class GhMutableRefCheckout extends MutableRefCheckoutStep instanceof Run {
 class GhSHACheckout extends SHACheckoutStep instanceof Run {
   GhSHACheckout() {
     exists(string cmd | this.getScript().getACommand() = cmd |
-      this.getATriggerEvent().getName() = checkoutTriggers() and
       cmd.regexpMatch("gh\\s+pr\\s+checkout.*") and
       (
         containsHeadSHA(cmd)

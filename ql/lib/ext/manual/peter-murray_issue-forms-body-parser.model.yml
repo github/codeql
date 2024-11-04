@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: github/actions-all
+      extensible: actionsSourceModel
+    data:
+      - ["peter-murray/issue-forms-body-parser", "*", "output.payload", "text", "manual"]

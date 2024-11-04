@@ -35,5 +35,5 @@ where
     sink.getNode() instanceof EnvPathInjectionFromFileReadSink
   )
 select sink.getNode(), source, sink,
-  "Potential PATH environment variable injection in $@, which may be controlled by an external user.",
-  sink, sink.getNode().toString()
+  "Potential PATH environment variable injection in $@, which may be controlled by an external user ($@).",
+  sink, sink.getNode().toString(), event, event.getName()

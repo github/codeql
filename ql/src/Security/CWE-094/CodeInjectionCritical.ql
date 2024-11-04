@@ -23,6 +23,7 @@ from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, Event
 where
   CodeInjectionFlow::flowPath(source, sink) and
   inPrivilegedContext(sink.getNode().asExpr(), event) and
+  source.getNode().(RemoteFlowSource).getEvent() = event and
   not exists(ControlCheck check | check.protects(sink.getNode().asExpr(), event, "code-injection")) and
   // exclude cases where the sink is a JS script and the expression uses toJson
   not exists(UsesStep script |
@@ -31,5 +32,5 @@ where
     exists(getAToJsonReferenceExpression(sink.getNode().asExpr().(Expression).getExpression(), _))
   )
 select sink.getNode(), source, sink,
-  "Potential code injection in $@, which may be controlled by an external user.", sink,
-  sink.getNode().asExpr().(Expression).getRawExpression()
+  "Potential code injection in $@, which may be controlled by an external user ($@).", sink,
+  sink.getNode().asExpr().(Expression).getRawExpression(), event, event.getName()

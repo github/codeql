@@ -28,4 +28,5 @@ where
   exists(ControlCheck check1 | check1.protects(checkout, event, "untrusted-checkout")) and
   not exists(ControlCheck check2 | check2.protects(checkout, event, "untrusted-checkout-toctou"))
 select step, checkout, step,
-  "Insufficient protection against execution of untrusted code on a privileged workflow."
+  "Insufficient protection against execution of untrusted code on a privileged workflow ($@).",
+  event, event.getName()
