@@ -93,27 +93,8 @@ class ParamTree extends StandardPostOrderTree, Param {
   override AstNode getChildNode(int i) { i = 0 and result = this.getPat() }
 }
 
-class FormatArgsExprTree extends StandardPostOrderTree, FormatArgsExpr {
-  override AstNode getChildNode(int i) {
-    i = -1 and result = this.getTemplate()
-    or
-    result = this.getArg(i).getExpr()
-    or
-    result =
-      any(FormatTemplateVariableAccess v, Format f, int index, int kind |
-        f = this.getFormat(index) and
-        (
-          v.getArgument() = f.getArgumentRef() and kind = 0
-          or
-          v.getArgument() = f.getWidthArgument() and kind = 1
-          or
-          v.getArgument() = f.getPrecisionArgument() and kind = 2
-        ) and
-        i = this.getNumberOfArgs() + index * 3 + kind
-      |
-        v
-      )
-  }
+class ExprStmtTree extends StandardPreOrderTree instanceof ExprStmt {
+  override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
 }
 
 class FormatTemplateVariableAccessTree extends LeafTree, FormatTemplateVariableAccess { }
@@ -218,22 +199,6 @@ class MatchArmTree extends ControlFlowTree, MatchArm {
 class NameTree extends LeafTree, Name { }
 
 class NameRefTree extends LeafTree, NameRef { }
-
-class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
-
-class ParenExprTree extends ControlFlowTree, ParenExpr {
-  private ControlFlowTree expr;
-
-  ParenExprTree() { expr = super.getExpr() }
-
-  override predicate propagatesAbnormal(AstNode child) { expr.propagatesAbnormal(child) }
-
-  override predicate first(AstNode first) { expr.first(first) }
-
-  override predicate last(AstNode last, Completion c) { expr.last(last, c) }
-
-  override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
-}
 
 class TypeRefTree extends LeafTree instanceof TypeRef { }
 
@@ -360,10 +325,6 @@ module ExprTrees {
     }
   }
 
-  class ExprStmtTree extends StandardPreOrderTree instanceof ExprStmt {
-    override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
-  }
-
   class FieldExprTree extends StandardPostOrderTree instanceof FieldExpr {
     override AstNode getChildNode(int i) { i = 0 and result = super.getExpr() }
   }
@@ -409,6 +370,21 @@ module ExprTrees {
       i = -1 and result = this.getTemplate()
       or
       result = this.getArg(i).getExpr()
+      or
+      result =
+        any(FormatTemplateVariableAccess v, Format f, int index, int kind |
+          f = this.getFormat(index) and
+          (
+            v.getArgument() = f.getArgumentRef() and kind = 0
+            or
+            v.getArgument() = f.getWidthArgument() and kind = 1
+            or
+            v.getArgument() = f.getPrecisionArgument() and kind = 2
+          ) and
+          i = this.getNumberOfArgs() + index * 3 + kind
+        |
+          v
+        )
     }
   }
 
@@ -564,6 +540,22 @@ module ExprTrees {
     override AstNode getChildNode(int i) {
       if i = 0 then result = this.getReceiver() else result = this.getArgList().getArg(i - 1)
     }
+  }
+
+  class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
+
+  class ParenExprTree extends ControlFlowTree, ParenExpr {
+    private ControlFlowTree expr;
+
+    ParenExprTree() { expr = super.getExpr() }
+
+    override predicate propagatesAbnormal(AstNode child) { expr.propagatesAbnormal(child) }
+
+    override predicate first(AstNode first) { expr.first(first) }
+
+    override predicate last(AstNode last, Completion c) { expr.last(last, c) }
+
+    override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
   }
 
   class PathExprTree extends LeafTree instanceof PathExpr { }
