@@ -223,20 +223,41 @@
 | 170 | s != 0 when ! ... is false |
 | 170 | s != 0 when s is true |
 | 170 | s == 0 when s is false |
+| 178 | 5 < x+0 when ! ... is false |
+| 178 | 5 < x+0 when b is true |
+| 178 | 5 >= x+0 when ! ... is true |
+| 178 | 5 >= x+0 when b is false |
 | 178 | ! ... != 0 when ! ... is true |
 | 178 | ! ... == 0 when ! ... is false |
 | 178 | b != 0 when ! ... is false |
 | 178 | b != 0 when b is true |
 | 178 | b == 0 when b is false |
+| 178 | x < 5+1 when ! ... is true |
+| 178 | x < 5+1 when b is false |
+| 178 | x < 6 when ! ... is true |
+| 178 | x < 6 when b is false |
+| 178 | x >= 5+1 when ! ... is false |
+| 178 | x >= 5+1 when b is true |
+| 178 | x >= 6 when ! ... is false |
+| 178 | x >= 6 when b is true |
+| 181 | 5 < x+0 when ... && ... is true |
+| 181 | 5 < x+0 when b is true |
+| 181 | 5 >= x+0 when b is false |
 | 181 | 100 < x+1 when ... < ... is false |
 | 181 | 100 >= x+1 when ... && ... is true |
 | 181 | 100 >= x+1 when ... < ... is true |
 | 181 | b != 0 when ... && ... is true |
 | 181 | b != 0 when b is true |
 | 181 | b == 0 when b is false |
+| 181 | x < 5+1 when b is false |
+| 181 | x < 6 when b is false |
 | 181 | x < 100 when ... && ... is true |
 | 181 | x < 100 when ... < ... is true |
 | 181 | x < 100+0 when ... && ... is true |
 | 181 | x < 100+0 when ... < ... is true |
+| 181 | x >= 5+1 when ... && ... is true |
+| 181 | x >= 5+1 when b is true |
+| 181 | x >= 6 when ... && ... is true |
+| 181 | x >= 6 when b is true |
 | 181 | x >= 100 when ... < ... is false |
 | 181 | x >= 100+0 when ... < ... is false |

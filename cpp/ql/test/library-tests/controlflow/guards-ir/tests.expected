@@ -216,19 +216,33 @@ astGuardsCompare
 | 175 | call to foo == 0+0 when ... == ... is true |
 | 181 | x != 0 when x is true |
 | 181 | x == 0 when x is false |
+| 191 | 5 < x+0 when ! ... is false |
+| 191 | 5 < x+0 when b is true |
+| 191 | 5 >= x+0 when ! ... is true |
+| 191 | 5 >= x+0 when b is false |
 | 191 | ! ... != 0 when ! ... is true |
 | 191 | ! ... == 0 when ! ... is false |
 | 191 | b != 0 when ! ... is false |
 | 191 | b != 0 when b is true |
 | 191 | b == 0 when b is false |
+| 191 | x < 5+1 when ! ... is true |
+| 191 | x < 5+1 when b is false |
+| 191 | x >= 5+1 when ! ... is false |
+| 191 | x >= 5+1 when b is true |
+| 194 | 5 < x+0 when ... && ... is true |
+| 194 | 5 < x+0 when b is true |
+| 194 | 5 >= x+0 when b is false |
 | 194 | 100 < x+1 when ... < ... is false |
 | 194 | 100 >= x+1 when ... && ... is true |
 | 194 | 100 >= x+1 when ... < ... is true |
 | 194 | b != 0 when ... && ... is true |
 | 194 | b != 0 when b is true |
 | 194 | b == 0 when b is false |
+| 194 | x < 5+1 when b is false |
 | 194 | x < 100+0 when ... && ... is true |
 | 194 | x < 100+0 when ... < ... is true |
+| 194 | x >= 5+1 when ... && ... is true |
+| 194 | x >= 5+1 when b is true |
 | 194 | x >= 100+0 when ... < ... is false |
 astGuardsControl
 | test.c:7:9:7:13 | ... > ... | false | 10 | 11 |
@@ -507,6 +521,16 @@ astGuardsEnsure
 | test.c:175:13:175:32 | ... == ... | test.c:175:13:175:15 | call to foo | == | test.c:175:32:175:32 | 0 | 0 | 175 | 175 |
 | test.c:175:13:175:32 | ... == ... | test.c:175:32:175:32 | 0 | != | test.c:175:13:175:15 | call to foo | 0 | 175 | 175 |
 | test.c:175:13:175:32 | ... == ... | test.c:175:32:175:32 | 0 | == | test.c:175:13:175:15 | call to foo | 0 | 175 | 175 |
+| test.c:191:8:191:9 | ! ... | test.c:189:13:189:13 | x | < | test.c:189:17:189:17 | 5 | 1 | 191 | 192 |
+| test.c:191:8:191:9 | ! ... | test.c:189:17:189:17 | 5 | >= | test.c:189:13:189:13 | x | 0 | 191 | 192 |
+| test.c:191:9:191:9 | b | test.c:189:13:189:13 | x | < | test.c:189:17:189:17 | 5 | 1 | 191 | 192 |
+| test.c:191:9:191:9 | b | test.c:189:17:189:17 | 5 | >= | test.c:189:13:189:13 | x | 0 | 191 | 192 |
+| test.c:194:8:194:8 | b | test.c:189:13:189:13 | x | >= | test.c:189:17:189:17 | 5 | 1 | 194 | 194 |
+| test.c:194:8:194:8 | b | test.c:189:13:189:13 | x | >= | test.c:189:17:189:17 | 5 | 1 | 194 | 196 |
+| test.c:194:8:194:8 | b | test.c:189:17:189:17 | 5 | < | test.c:189:13:189:13 | x | 0 | 194 | 194 |
+| test.c:194:8:194:8 | b | test.c:189:17:189:17 | 5 | < | test.c:189:13:189:13 | x | 0 | 194 | 196 |
+| test.c:194:8:194:15 | ... && ... | test.c:189:13:189:13 | x | >= | test.c:189:17:189:17 | 5 | 1 | 194 | 196 |
+| test.c:194:8:194:15 | ... && ... | test.c:189:17:189:17 | 5 | < | test.c:189:13:189:13 | x | 0 | 194 | 196 |
 | test.c:194:8:194:15 | ... && ... | test.c:194:11:194:11 | x | < | test.c:194:13:194:15 | 100 | 0 | 194 | 196 |
 | test.c:194:8:194:15 | ... && ... | test.c:194:13:194:15 | 100 | >= | test.c:194:11:194:11 | x | 1 | 194 | 196 |
 | test.c:194:11:194:15 | ... < ... | test.c:194:11:194:11 | x | < | test.c:194:13:194:15 | 100 | 0 | 194 | 196 |
@@ -784,17 +808,35 @@ irGuardsCompare
 | 175 | call to foo == 0+0 when CompareEQ: ... == ... is true |
 | 181 | x != 0 when Load: x is true |
 | 181 | x == 0 when Load: x is false |
+| 191 | 5 < x+0 when Load: b is true |
+| 191 | 5 < x+0 when LogicalNot: ! ... is false |
+| 191 | 5 >= x+0 when Load: b is false |
+| 191 | 5 >= x+0 when LogicalNot: ! ... is true |
 | 191 | ! ... != 0 when LogicalNot: ! ... is true |
 | 191 | ! ... == 0 when LogicalNot: ! ... is false |
 | 191 | b != 0 when Load: b is true |
 | 191 | b != 0 when LogicalNot: ! ... is false |
 | 191 | b == 0 when Load: b is false |
+| 191 | x < 5+1 when Load: b is false |
+| 191 | x < 5+1 when LogicalNot: ! ... is true |
+| 191 | x < 6 when Load: b is false |
+| 191 | x < 6 when LogicalNot: ! ... is true |
+| 191 | x >= 5+1 when Load: b is true |
+| 191 | x >= 5+1 when LogicalNot: ! ... is false |
+| 191 | x >= 6 when Load: b is true |
+| 191 | x >= 6 when LogicalNot: ! ... is false |
+| 194 | 5 < x+0 when Load: b is true |
+| 194 | 5 >= x+0 when Load: b is false |
 | 194 | 100 < x+1 when CompareLT: ... < ... is false |
 | 194 | 100 >= x+1 when CompareLT: ... < ... is true |
 | 194 | b != 0 when Load: b is true |
 | 194 | b == 0 when Load: b is false |
+| 194 | x < 5+1 when Load: b is false |
+| 194 | x < 6 when Load: b is false |
 | 194 | x < 100 when CompareLT: ... < ... is true |
 | 194 | x < 100+0 when CompareLT: ... < ... is true |
+| 194 | x >= 5+1 when Load: b is true |
+| 194 | x >= 6 when Load: b is true |
 | 194 | x >= 100 when CompareLT: ... < ... is false |
 | 194 | x >= 100+0 when CompareLT: ... < ... is false |
 irGuardsControl
@@ -1048,6 +1090,14 @@ irGuardsEnsure
 | test.c:175:13:175:32 | CompareEQ: ... == ... | test.c:175:13:175:15 | Call: call to foo | == | test.c:175:32:175:32 | Constant: 0 | 0 | 175 | 175 |
 | test.c:175:13:175:32 | CompareEQ: ... == ... | test.c:175:32:175:32 | Constant: 0 | != | test.c:175:13:175:15 | Call: call to foo | 0 | 175 | 175 |
 | test.c:175:13:175:32 | CompareEQ: ... == ... | test.c:175:32:175:32 | Constant: 0 | == | test.c:175:13:175:15 | Call: call to foo | 0 | 175 | 175 |
+| test.c:191:8:191:9 | LogicalNot: ! ... | test.c:189:13:189:13 | Load: x | < | test.c:189:17:189:17 | Constant: 5 | 1 | 191 | 192 |
+| test.c:191:8:191:9 | LogicalNot: ! ... | test.c:189:17:189:17 | Constant: 5 | >= | test.c:189:13:189:13 | Load: x | 0 | 191 | 192 |
+| test.c:191:9:191:9 | Load: b | test.c:189:13:189:13 | Load: x | < | test.c:189:17:189:17 | Constant: 5 | 1 | 191 | 192 |
+| test.c:191:9:191:9 | Load: b | test.c:189:17:189:17 | Constant: 5 | >= | test.c:189:13:189:13 | Load: x | 0 | 191 | 192 |
+| test.c:194:8:194:8 | Load: b | test.c:189:13:189:13 | Load: x | >= | test.c:189:17:189:17 | Constant: 5 | 1 | 194 | 194 |
+| test.c:194:8:194:8 | Load: b | test.c:189:13:189:13 | Load: x | >= | test.c:189:17:189:17 | Constant: 5 | 1 | 194 | 196 |
+| test.c:194:8:194:8 | Load: b | test.c:189:17:189:17 | Constant: 5 | < | test.c:189:13:189:13 | Load: x | 0 | 194 | 194 |
+| test.c:194:8:194:8 | Load: b | test.c:189:17:189:17 | Constant: 5 | < | test.c:189:13:189:13 | Load: x | 0 | 194 | 196 |
 | test.c:194:11:194:15 | CompareLT: ... < ... | test.c:194:11:194:11 | Load: x | < | test.c:194:13:194:15 | Constant: 100 | 0 | 194 | 196 |
 | test.c:194:11:194:15 | CompareLT: ... < ... | test.c:194:13:194:15 | Constant: 100 | >= | test.c:194:11:194:11 | Load: x | 1 | 194 | 196 |
 | test.cpp:18:8:18:12 | CompareNE: (bool)... | test.cpp:18:8:18:10 | Call: call to get | != | test.cpp:18:8:18:12 | Constant: (bool)... | 0 | 19 | 19 |
@@ -1141,8 +1191,12 @@ irGuardsEnsure_const
 | test.c:175:13:175:32 | CompareEQ: ... == ... | test.c:175:13:175:15 | Call: call to foo | == | 0 | 175 | 175 |
 | test.c:181:9:181:9 | Load: x | test.c:181:9:181:9 | Load: x | != | 0 | 182 | 182 |
 | test.c:181:9:181:9 | Load: x | test.c:181:9:181:9 | Load: x | == | 0 | 184 | 184 |
+| test.c:191:8:191:9 | LogicalNot: ! ... | test.c:189:13:189:13 | Load: x | < | 6 | 191 | 192 |
 | test.c:191:8:191:9 | LogicalNot: ! ... | test.c:191:8:191:9 | LogicalNot: ! ... | != | 0 | 191 | 192 |
+| test.c:191:9:191:9 | Load: b | test.c:189:13:189:13 | Load: x | < | 6 | 191 | 192 |
 | test.c:191:9:191:9 | Load: b | test.c:191:9:191:9 | Load: b | == | 0 | 191 | 192 |
+| test.c:194:8:194:8 | Load: b | test.c:189:13:189:13 | Load: x | >= | 6 | 194 | 194 |
+| test.c:194:8:194:8 | Load: b | test.c:189:13:189:13 | Load: x | >= | 6 | 194 | 196 |
 | test.c:194:8:194:8 | Load: b | test.c:194:8:194:8 | Load: b | != | 0 | 194 | 194 |
 | test.c:194:8:194:8 | Load: b | test.c:194:8:194:8 | Load: b | != | 0 | 194 | 196 |
 | test.c:194:11:194:15 | CompareLT: ... < ... | test.c:194:11:194:11 | Load: x | < | 100 | 194 | 196 |
