@@ -45,9 +45,11 @@
 | conditionals.ps1:25:5:31:14 | {...} | conditionals.ps1:27:5:30:6 | if (...) {...} |  |
 | conditionals.ps1:27:5:30:6 | if (...) {...} | conditionals.ps1:27:8:27:16 | myBool1 |  |
 | conditionals.ps1:27:8:27:16 | myBool1 | conditionals.ps1:27:22:27:30 | myBool2 | false, true |
-| conditionals.ps1:27:8:27:30 | ... -and ... | conditionals.ps1:27:8:27:30 | ... -and ... | false, true |
 | conditionals.ps1:27:8:27:30 | ... -and ... | conditionals.ps1:28:5:30:6 | {...} | true |
-| conditionals.ps1:27:22:27:30 | myBool2 | conditionals.ps1:27:8:27:30 | ... -and ... | false, true |
+| conditionals.ps1:27:8:27:30 | [false] ... -and ... | conditionals.ps1:27:8:27:30 | ... -and ... | false |
+| conditionals.ps1:27:8:27:30 | [true] ... -and ... | conditionals.ps1:27:8:27:30 | ... -and ... | true |
+| conditionals.ps1:27:22:27:30 | myBool2 | conditionals.ps1:27:8:27:30 | [false] ... -and ... | false |
+| conditionals.ps1:27:22:27:30 | myBool2 | conditionals.ps1:27:8:27:30 | [true] ... -and ... | true |
 | conditionals.ps1:28:5:30:6 | {...} | conditionals.ps1:29:9:29:18 | return ... |  |
 | conditionals.ps1:29:9:29:18 | return ... | conditionals.ps1:29:16:29:18 | 10 |  |
 | conditionals.ps1:29:16:29:18 | 10 | conditionals.ps1:29:16:29:18 | 10 |  |
@@ -63,10 +65,12 @@
 | conditionals.ps1:35:5:44:6 | {...} | conditionals.ps1:37:5:44:6 | if (...) {...} else {...} |  |
 | conditionals.ps1:37:5:44:6 | if (...) {...} else {...} | conditionals.ps1:37:8:37:16 | myBool1 |  |
 | conditionals.ps1:37:8:37:16 | myBool1 | conditionals.ps1:37:22:37:30 | myBool2 | false, true |
-| conditionals.ps1:37:8:37:30 | ... -and ... | conditionals.ps1:37:8:37:30 | ... -and ... | false, true |
 | conditionals.ps1:37:8:37:30 | ... -and ... | conditionals.ps1:38:5:40:6 | {...} | true |
 | conditionals.ps1:37:8:37:30 | ... -and ... | conditionals.ps1:42:5:44:6 | {...} | false |
-| conditionals.ps1:37:22:37:30 | myBool2 | conditionals.ps1:37:8:37:30 | ... -and ... | false, true |
+| conditionals.ps1:37:8:37:30 | [false] ... -and ... | conditionals.ps1:37:8:37:30 | ... -and ... | false |
+| conditionals.ps1:37:8:37:30 | [true] ... -and ... | conditionals.ps1:37:8:37:30 | ... -and ... | true |
+| conditionals.ps1:37:22:37:30 | myBool2 | conditionals.ps1:37:8:37:30 | [false] ... -and ... | false |
+| conditionals.ps1:37:22:37:30 | myBool2 | conditionals.ps1:37:8:37:30 | [true] ... -and ... | true |
 | conditionals.ps1:38:5:40:6 | {...} | conditionals.ps1:39:9:39:18 | return ... |  |
 | conditionals.ps1:39:9:39:18 | return ... | conditionals.ps1:39:16:39:18 | 10 |  |
 | conditionals.ps1:39:16:39:18 | 10 | conditionals.ps1:34:28:45:2 | exit {...} (normal) |  |
@@ -83,9 +87,11 @@
 | conditionals.ps1:48:5:54:14 | {...} | conditionals.ps1:50:5:53:6 | if (...) {...} |  |
 | conditionals.ps1:50:5:53:6 | if (...) {...} | conditionals.ps1:50:8:50:16 | myBool1 |  |
 | conditionals.ps1:50:8:50:16 | myBool1 | conditionals.ps1:50:21:50:29 | myBool2 | false, true |
-| conditionals.ps1:50:8:50:29 | ... -or ... | conditionals.ps1:50:8:50:29 | ... -or ... | false, true |
 | conditionals.ps1:50:8:50:29 | ... -or ... | conditionals.ps1:51:5:53:6 | {...} | true |
-| conditionals.ps1:50:21:50:29 | myBool2 | conditionals.ps1:50:8:50:29 | ... -or ... | false, true |
+| conditionals.ps1:50:8:50:29 | [false] ... -or ... | conditionals.ps1:50:8:50:29 | ... -or ... | false |
+| conditionals.ps1:50:8:50:29 | [true] ... -or ... | conditionals.ps1:50:8:50:29 | ... -or ... | true |
+| conditionals.ps1:50:21:50:29 | myBool2 | conditionals.ps1:50:8:50:29 | [false] ... -or ... | false |
+| conditionals.ps1:50:21:50:29 | myBool2 | conditionals.ps1:50:8:50:29 | [true] ... -or ... | true |
 | conditionals.ps1:51:5:53:6 | {...} | conditionals.ps1:52:9:52:18 | return ... |  |
 | conditionals.ps1:52:9:52:18 | return ... | conditionals.ps1:52:16:52:18 | 10 |  |
 | conditionals.ps1:52:16:52:18 | 10 | conditionals.ps1:52:16:52:18 | 10 |  |
@@ -101,10 +107,12 @@
 | conditionals.ps1:58:5:67:6 | {...} | conditionals.ps1:60:5:67:6 | if (...) {...} else {...} |  |
 | conditionals.ps1:60:5:67:6 | if (...) {...} else {...} | conditionals.ps1:60:8:60:16 | myBool1 |  |
 | conditionals.ps1:60:8:60:16 | myBool1 | conditionals.ps1:60:21:60:29 | myBool2 | false, true |
-| conditionals.ps1:60:8:60:29 | ... -or ... | conditionals.ps1:60:8:60:29 | ... -or ... | false, true |
 | conditionals.ps1:60:8:60:29 | ... -or ... | conditionals.ps1:61:5:63:6 | {...} | true |
 | conditionals.ps1:60:8:60:29 | ... -or ... | conditionals.ps1:65:5:67:6 | {...} | false |
-| conditionals.ps1:60:21:60:29 | myBool2 | conditionals.ps1:60:8:60:29 | ... -or ... | false, true |
+| conditionals.ps1:60:8:60:29 | [false] ... -or ... | conditionals.ps1:60:8:60:29 | ... -or ... | false |
+| conditionals.ps1:60:8:60:29 | [true] ... -or ... | conditionals.ps1:60:8:60:29 | ... -or ... | true |
+| conditionals.ps1:60:21:60:29 | myBool2 | conditionals.ps1:60:8:60:29 | [false] ... -or ... | false |
+| conditionals.ps1:60:21:60:29 | myBool2 | conditionals.ps1:60:8:60:29 | [true] ... -or ... | true |
 | conditionals.ps1:61:5:63:6 | {...} | conditionals.ps1:62:9:62:18 | return ... |  |
 | conditionals.ps1:62:9:62:18 | return ... | conditionals.ps1:62:16:62:18 | 10 |  |
 | conditionals.ps1:62:16:62:18 | 10 | conditionals.ps1:57:28:68:2 | exit {...} (normal) |  |
@@ -122,10 +130,17 @@
 | conditionals.ps1:73:5:80:6 | if (...) {...} | conditionals.ps1:73:8:73:16 | myBool1 |  |
 | conditionals.ps1:73:8:73:16 | myBool1 | conditionals.ps1:73:8:73:16 | myBool1 | false, true |
 | conditionals.ps1:73:8:73:16 | myBool1 | conditionals.ps1:74:5:76:6 | {...} | true |
+| conditionals.ps1:73:8:73:16 | myBool1 | conditionals.ps1:77:12:77:19 | myBoo2 | false |
 | conditionals.ps1:74:5:76:6 | {...} | conditionals.ps1:75:9:75:18 | return ... |  |
 | conditionals.ps1:75:9:75:18 | return ... | conditionals.ps1:75:16:75:18 | 10 |  |
 | conditionals.ps1:75:16:75:18 | 10 | conditionals.ps1:75:16:75:18 | 10 |  |
 | conditionals.ps1:75:16:75:18 | 10 | conditionals.ps1:81:5:81:14 | return ... |  |
+| conditionals.ps1:77:12:77:19 | myBoo2 | conditionals.ps1:77:12:77:19 | myBoo2 | false, true |
+| conditionals.ps1:77:12:77:19 | myBoo2 | conditionals.ps1:78:5:80:6 | {...} | true |
+| conditionals.ps1:78:5:80:6 | {...} | conditionals.ps1:79:9:79:18 | return ... |  |
+| conditionals.ps1:79:9:79:18 | return ... | conditionals.ps1:79:16:79:18 | 11 |  |
+| conditionals.ps1:79:16:79:18 | 11 | conditionals.ps1:79:16:79:18 | 11 |  |
+| conditionals.ps1:79:16:79:18 | 11 | conditionals.ps1:81:5:81:14 | return ... |  |
 | conditionals.ps1:81:5:81:14 | return ... | conditionals.ps1:81:12:81:14 | 12 |  |
 | conditionals.ps1:81:12:81:14 | 12 | conditionals.ps1:70:23:82:2 | exit {...} (normal) |  |
 | conditionals.ps1:81:12:81:14 | 12 | conditionals.ps1:81:12:81:14 | 12 |  |
@@ -138,11 +153,18 @@
 | conditionals.ps1:87:5:98:6 | if (...) {...} else {...} | conditionals.ps1:87:8:87:16 | myBool1 |  |
 | conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:87:8:87:16 | myBool1 | false, true |
 | conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:88:5:90:6 | {...} | true |
-| conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:96:5:98:6 | {...} | false |
+| conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:91:12:91:19 | myBoo2 | false |
 | conditionals.ps1:88:5:90:6 | {...} | conditionals.ps1:89:9:89:18 | return ... |  |
 | conditionals.ps1:89:9:89:18 | return ... | conditionals.ps1:89:16:89:18 | 10 |  |
 | conditionals.ps1:89:16:89:18 | 10 | conditionals.ps1:84:28:99:2 | exit {...} (normal) |  |
 | conditionals.ps1:89:16:89:18 | 10 | conditionals.ps1:89:16:89:18 | 10 |  |
+| conditionals.ps1:91:12:91:19 | myBoo2 | conditionals.ps1:91:12:91:19 | myBoo2 | false, true |
+| conditionals.ps1:91:12:91:19 | myBoo2 | conditionals.ps1:92:5:94:6 | {...} | true |
+| conditionals.ps1:91:12:91:19 | myBoo2 | conditionals.ps1:96:5:98:6 | {...} | false |
+| conditionals.ps1:92:5:94:6 | {...} | conditionals.ps1:93:9:93:18 | return ... |  |
+| conditionals.ps1:93:9:93:18 | return ... | conditionals.ps1:93:16:93:18 | 11 |  |
+| conditionals.ps1:93:16:93:18 | 11 | conditionals.ps1:84:28:99:2 | exit {...} (normal) |  |
+| conditionals.ps1:93:16:93:18 | 11 | conditionals.ps1:93:16:93:18 | 11 |  |
 | conditionals.ps1:96:5:98:6 | {...} | conditionals.ps1:97:9:97:18 | return ... |  |
 | conditionals.ps1:97:9:97:18 | return ... | conditionals.ps1:97:16:97:18 | 12 |  |
 | conditionals.ps1:97:16:97:18 | 12 | conditionals.ps1:84:28:99:2 | exit {...} (normal) |  |
