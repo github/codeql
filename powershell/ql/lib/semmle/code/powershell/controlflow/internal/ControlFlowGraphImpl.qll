@@ -12,7 +12,6 @@ private import Completion
 private module CfgInput implements CfgShared::InputSig<Location> {
   private import ControlFlowGraphImpl as Impl
   private import Completion as Comp
-  private import Splitting as Splitting
   private import semmle.code.powershell.Cfg as Cfg
 
   class Completion = Comp::Completion;
@@ -35,10 +34,6 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     scope.(Impl::CfgScope).exit(last, c)
   }
 
-  class SplitKindBase = Splitting::TSplitKind;
-
-  class Split = Splitting::Split;
-
   class SuccessorType = Cfg::SuccessorType;
 
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
@@ -58,7 +53,22 @@ private module CfgInput implements CfgShared::InputSig<Location> {
 }
 
 private import CfgInput
-import CfgShared::Make<Location, CfgInput>
+
+private module CfgSplittingInput implements CfgShared::SplittingInputSig<Location, CfgInput> {
+  private import Splitting as S
+
+  class SplitKindBase = S::TSplitKind;
+
+  class Split = S::Split;
+}
+
+private module ConditionalCompletionSplittingInput implements
+  CfgShared::ConditionalCompletionSplittingInputSig<Location, CfgInput, CfgSplittingInput>
+{
+  import Splitting::ConditionalCompletionSplitting::ConditionalCompletionSplittingInput
+}
+
+import CfgShared::MakeWithSplitting<Location, CfgInput, CfgSplittingInput, ConditionalCompletionSplittingInput>
 
 class CfgScope extends Scope {
   predicate entry(Ast first) { first(this, first) }
