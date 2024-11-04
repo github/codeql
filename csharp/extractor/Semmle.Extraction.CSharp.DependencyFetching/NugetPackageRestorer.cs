@@ -93,6 +93,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public HashSet<AssemblyLookupLocation> Restore()
         {
+            try
+            {
+                var userConfigPath = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".nuget", "NuGet");
+                Directory.CreateDirectory(userConfigPath);
+
+                var userConfig = new NugetConfig();
+                userConfig.Write(Path.Join(userConfigPath, "NuGet.Config"));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Failed to write user nuget.config: {ex}");
+            }
+
             var assemblyLookupLocations = new HashSet<AssemblyLookupLocation>();
             var checkNugetFeedResponsiveness = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.CheckNugetFeedResponsiveness);
             logger.LogInfo($"Checking NuGet feed responsiveness: {checkNugetFeedResponsiveness}");
