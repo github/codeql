@@ -1,20 +1,20 @@
-| #include directives | 2.0 |
-| calls | 2.0 |
-| calls with a target | 1.0 |
-| compilation units | 2.0 |
-| compilation units without errors | 1.0 |
-| compiler errors | 10.0 |
-| expressions | 10.0 |
-| expressions with a known type | 3.0 |
-| functions | 8.0 |
-| functions without errors | 6.0 |
-| lines of code | 19.0 |
-| lines of code without errors | 12.0 |
-| lines of text | 24.0 |
-| non-error expressions | 3.0 |
-| source files | 3.0 |
-| source files without errors | 2.0 |
-| successfully resolved #include directives | 2.0 |
-| syntax errors | 3.0 |
-| variables | 10.0 |
-| variables with a known type | 9.0 |
+| #include directives | 2 |
+| calls | 2 |
+| calls with a target | 1 |
+| compilation units | 2 |
+| compilation units without errors | 1 |
+| compiler errors | 10 |
+| expressions | 10 |
+| expressions with a known type | 3 |
+| functions | 8 |
+| functions without errors | 6 |
+| lines of code | 19 |
+| lines of code without errors | 12 |
+| lines of text | 24 |
+| non-error expressions | 3 |
+| source files | 3 |
+| source files without errors | 2 |
+| successfully resolved #include directives | 2 |
+| syntax errors | 3 |
+| variables | 10 |
+| variables with a known type | 9 |

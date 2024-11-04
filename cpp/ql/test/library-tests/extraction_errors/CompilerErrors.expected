@@ -1,10 +1,10 @@
-| 'this' may only be used inside a nonstatic member function | 1.0 |
-| There was an error during this compilation | 1.0 |
-| expected a ')' | 1.0 |
-| expected a ';' | 1.0 |
-| expected an expression | 1.0 |
-| identifier 'no_such_function' is undefined | 1.0 |
-| identifier 'nsf2' is undefined | 1.0 |
-| identifier 'so_is_this' is undefined | 1.0 |
-| identifier 'uint32_t' is undefined | 1.0 |
-| too few arguments in function call | 1.0 |
+| 'this' may only be used inside a nonstatic member function | 1 |
+| There was an error during this compilation | 1 |
+| expected a ')' | 1 |
+| expected a ';' | 1 |
+| expected an expression | 1 |
+| identifier 'no_such_function' is undefined | 1 |
+| identifier 'nsf2' is undefined | 1 |
+| identifier 'so_is_this' is undefined | 1 |
+| identifier 'uint32_t' is undefined | 1 |
+| too few arguments in function call | 1 |
