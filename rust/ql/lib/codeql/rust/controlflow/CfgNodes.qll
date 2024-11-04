@@ -5,7 +5,9 @@
 
 private import rust
 private import ControlFlowGraph
-private import internal.ControlFlowGraphImpl
+private import internal.ControlFlowGraphImpl as CfgImpl
+private import internal.CfgNodes
+import Nodes
 
 /** A CFG node that corresponds to an element in the AST. */
 class AstCfgNode extends CfgNode {
@@ -57,4 +59,4 @@ class MethodCallExprCfgNode extends ExprCfgNode {
   MethodCallExpr getMethodCallExpr() { result = node }
 }
 
-final class ExitCfgNode = ExitNode;
+final class ExitCfgNode = CfgImpl::ExitNode;

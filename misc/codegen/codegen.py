@@ -64,6 +64,8 @@ def _parse_args() -> argparse.Namespace:
                        help="registry file containing information about checked-in generated code. A .gitattributes"
                             "file is generated besides it to mark those files with linguist-generated=true. Must"
                             "be in a directory containing all generated code."),
+        p.add_argument("--ql-cfg-output",
+                       help="output directory for QL CFG layer (optional)."),
     ]
     p.add_argument("--script-name",
                    help="script name to put in header comments of generated files. By default, the path of this "

@@ -18,14 +18,14 @@ class _:
     """
 
 
-@annotate(Expr)
+@annotate(Expr, cfg = True)
 class _:
     """
     The base class for expressions.
     """
 
 
-@annotate(Pat)
+@annotate(Pat, cfg = True)
 class _:
     """
     The base class for patterns.
@@ -106,7 +106,7 @@ class PathExprBase(Expr):
     """
 
 
-@annotate(PathExpr, replace_bases={Expr: PathExprBase})
+@annotate(PathExpr, replace_bases={Expr: PathExprBase}, cfg = True)
 class _:
     """
     A path expression. For example:
@@ -119,7 +119,7 @@ class _:
     """
 
 
-@annotate(IfExpr)
+@annotate(IfExpr, cfg = True)
 class _:
     """
     An `if` expression. For example:
@@ -138,7 +138,7 @@ class _:
     """
 
 
-@annotate(LetExpr)
+@annotate(LetExpr, cfg = True)
 @rust.doc_test_signature("(maybe_some: Option<String>) -> ()")
 class _:
     """
@@ -151,7 +151,7 @@ class _:
     """
 
 
-@annotate(BlockExpr)
+@annotate(BlockExpr, cfg = True)
 class _:
     """
     A block expression. For example:
@@ -169,7 +169,7 @@ class _:
     """
 
 
-@annotate(LoopExpr)
+@annotate(LoopExpr, cfg = True)
 class _:
     """
     A loop expression. For example:
@@ -205,7 +205,7 @@ class CallExprBase(Expr):
     attrs: list["Attr"] | child
 
 
-@annotate(CallExpr, replace_bases={Expr: CallExprBase})
+@annotate(CallExpr, replace_bases={Expr: CallExprBase}, cfg = True)
 class _:
     """
     A function call expression. For example:
@@ -220,7 +220,7 @@ class _:
     attrs: drop
 
 
-@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase}, add_bases=(Resolvable,))
+@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase}, add_bases=(Resolvable,), cfg = True)
 class _:
     """
     A method call expression. For example:
@@ -253,7 +253,7 @@ class _:
     """
 
 
-@annotate(MatchExpr)
+@annotate(MatchExpr, cfg = True)
 @rust.doc_test_signature("(x: i32) -> i32")
 class _:
     """
@@ -273,7 +273,7 @@ class _:
     """
 
 
-@annotate(ContinueExpr)
+@annotate(ContinueExpr, cfg = True)
 class _:
     """
     A continue expression. For example:
@@ -294,7 +294,7 @@ class _:
     """
 
 
-@annotate(BreakExpr)
+@annotate(BreakExpr, cfg = True)
 class _:
     """
     A break expression. For example:
@@ -323,7 +323,7 @@ class _:
   """
 
 
-@annotate(ReturnExpr)
+@annotate(ReturnExpr, cfg = True)
 @rust.doc_test_signature(None)
 class _:
     """
@@ -341,7 +341,7 @@ class _:
     """
 
 
-@annotate(BecomeExpr)
+@annotate(BecomeExpr, cfg = True)
 @rust.doc_test_signature(None)
 class _:
     """
@@ -358,7 +358,7 @@ class _:
     """
 
 
-@annotate(YieldExpr)
+@annotate(YieldExpr, cfg = True)
 class _:
     """
     A `yield` expression. For example:
@@ -371,7 +371,7 @@ class _:
     """
 
 
-@annotate(YeetExpr)
+@annotate(YeetExpr, cfg = True)
 class _:
     """
     A `yeet` expression. For example:
@@ -393,7 +393,7 @@ class _:
     """
 
 
-@annotate(RecordExpr)
+@annotate(RecordExpr, cfg = True)
 class _:
     """
     A record expression. For example:
@@ -406,7 +406,7 @@ class _:
     """
 
 
-@annotate(FieldExpr)
+@annotate(FieldExpr, cfg = True)
 class _:
     """
     A field access expression. For example:
@@ -416,7 +416,7 @@ class _:
     """
 
 
-@annotate(AwaitExpr)
+@annotate(AwaitExpr, cfg = True)
 class _:
     """
     An `await` expression. For example:
@@ -439,7 +439,7 @@ class _:
     """
 
 
-@annotate(RefExpr)
+@annotate(RefExpr, cfg = True)
 class _:
     """
     A reference expression. For example:
@@ -452,7 +452,7 @@ class _:
     """
 
 
-@annotate(PrefixExpr)
+@annotate(PrefixExpr, cfg = True)
 class _:
     """
     A unary operation expression. For example:
@@ -464,7 +464,7 @@ class _:
     """
 
 
-@annotate(BinaryExpr)
+@annotate(BinaryExpr, cfg = True)
 class _:
     """
     A binary operation expression. For example:
@@ -478,7 +478,7 @@ class _:
     """
 
 
-@annotate(RangeExpr)
+@annotate(RangeExpr, cfg = True)
 class _:
     """
     A range expression. For example:
@@ -493,7 +493,7 @@ class _:
     """
 
 
-@annotate(IndexExpr)
+@annotate(IndexExpr, cfg = True)
 class _:
     """
     An index expression. For example:
@@ -520,7 +520,7 @@ class _:
     """
 
 
-@annotate(TupleExpr)
+@annotate(TupleExpr, cfg = True)
 class _:
     """
     A tuple expression. For example:
@@ -531,7 +531,7 @@ class _:
     """
 
 
-@annotate(ArrayExpr)
+@annotate(ArrayExpr, cfg = True)
 class _:
     """
     An array expression. For example:
@@ -542,7 +542,7 @@ class _:
     """
 
 
-@annotate(LiteralExpr)
+@annotate(LiteralExpr, cfg = True)
 class _:
     """
     A literal expression. For example:
@@ -559,7 +559,7 @@ class _:
     """
 
 
-@annotate(UnderscoreExpr)
+@annotate(UnderscoreExpr, cfg = True)
 class _:
     """
     An underscore expression. For example:
@@ -569,7 +569,7 @@ class _:
     """
 
 
-@annotate(OffsetOfExpr)
+@annotate(OffsetOfExpr, cfg = True)
 class _:
     """
      An `offset_of` expression. For example:
@@ -579,7 +579,7 @@ class _:
     """
 
 
-@annotate(AsmExpr)
+@annotate(AsmExpr, cfg = True)
 class _:
     """
     An inline assembly expression. For example:
@@ -591,7 +591,7 @@ class _:
     """
 
 
-@annotate(LetStmt)
+@annotate(LetStmt, cfg = True)
 class _:
     """
     A let statement. For example:
@@ -620,7 +620,7 @@ class _:
     """
 
 
-@annotate(WildcardPat)
+@annotate(WildcardPat, cfg = True)
 class _:
     """
     A wildcard pattern. For example:
@@ -630,7 +630,7 @@ class _:
     """
 
 
-@annotate(TuplePat)
+@annotate(TuplePat, cfg = True)
 class _:
     """
     A tuple pattern. For example:
@@ -641,7 +641,7 @@ class _:
     """
 
 
-@annotate(OrPat)
+@annotate(OrPat, cfg = True)
 class _:
     """
     An or pattern. For example:
@@ -663,7 +663,7 @@ class _:
     """
 
 
-@annotate(RecordPat)
+@annotate(RecordPat, cfg = True)
 class _:
     """
     A record pattern. For example:
@@ -676,7 +676,7 @@ class _:
     """
 
 
-@annotate(RangePat)
+@annotate(RangePat, cfg = True)
 class _:
     """
     A range pattern. For example:
@@ -690,7 +690,7 @@ class _:
     """
 
 
-@annotate(SlicePat)
+@annotate(SlicePat, cfg = True)
 class _:
     """
     A slice pattern. For example:
@@ -704,7 +704,7 @@ class _:
     """
 
 
-@annotate(PathPat)
+@annotate(PathPat, cfg = True)
 class _:
     """
     A path pattern. For example:
@@ -717,7 +717,7 @@ class _:
     """
 
 
-@annotate(LiteralPat)
+@annotate(LiteralPat, cfg = True)
 class _:
     """
     A literal pattern. For example:
@@ -730,7 +730,7 @@ class _:
     """
 
 
-@annotate(IdentPat)
+@annotate(IdentPat, cfg = True)
 class _:
     """
     A binding pattern. For example:
@@ -749,7 +749,7 @@ class _:
     """
 
 
-@annotate(TupleStructPat)
+@annotate(TupleStructPat, cfg = True)
 class _:
     """
     A tuple struct pattern. For example:
@@ -763,7 +763,7 @@ class _:
     """
 
 
-@annotate(RefPat)
+@annotate(RefPat, cfg = True)
 class _:
     """
     A reference pattern. For example:
@@ -776,7 +776,7 @@ class _:
     """
 
 
-@annotate(BoxPat)
+@annotate(BoxPat, cfg = True)
 class _:
     """
     A box pattern. For example:
@@ -789,7 +789,7 @@ class _:
     """
 
 
-@annotate(ConstBlockPat)
+@annotate(ConstBlockPat, cfg = True)
 class _:
     """
     A const block pattern. For example:
@@ -990,7 +990,7 @@ class _:
     """
 
 
-@annotate(ForExpr)
+@annotate(ForExpr, cfg = True)
 class _:
     """
     A ForExpr. For example:
@@ -1020,7 +1020,7 @@ class _:
     """
 
 
-@annotate(FormatArgsExpr)
+@annotate(FormatArgsExpr, cfg = True)
 class _:
     """
     A FormatArgsExpr. For example:
@@ -1150,7 +1150,7 @@ class _:
     """
 
 
-@annotate(MacroCall)
+@annotate(MacroCall, cfg = True)
 class _:
     """
     A MacroCall. For example:
@@ -1171,7 +1171,7 @@ class _:
     """
 
 
-@annotate(MacroExpr)
+@annotate(MacroExpr, cfg = True)
 class _:
     """
     A MacroExpr. For example:
@@ -1194,7 +1194,7 @@ class _:
     """
 
 
-@annotate(MacroPat)
+@annotate(MacroPat, cfg = True)
 class _:
     """
     A MacroPat. For example:
@@ -1297,7 +1297,7 @@ class _:
     """
 
 
-@annotate(Param)
+@annotate(Param, cfg = True)
 class _:
     """
     A Param. For example:
@@ -1437,7 +1437,7 @@ class _:
     """
 
 
-@annotate(RestPat)
+@annotate(RestPat, cfg = True)
 class _:
     """
     A RestPat. For example:
@@ -1564,7 +1564,7 @@ class _:
     """
 
 
-@annotate(TryExpr)
+@annotate(TryExpr, cfg = True)
 class _:
     """
     A TryExpr. For example:
@@ -1744,7 +1744,7 @@ class _:
     """
 
 
-@annotate(WhileExpr)
+@annotate(WhileExpr, cfg = True)
 class _:
     """
     A WhileExpr. For example:
