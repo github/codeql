@@ -23,8 +23,8 @@ models
 | 22 | Summary: android.os; Parcel; false; readMap; ; ; Argument[this]; Argument[0]; taint; manual |
 | 23 | Summary: android.os; Parcel; false; readParcelable; ; ; Argument[this]; ReturnValue; taint; manual |
 | 24 | Summary: android.os; Parcel; false; readParcelableArray; ; ; Argument[this]; ReturnValue; taint; manual |
-| 25 | Summary: android.os; Parcel; false; readParcelableList; ; ; Argument[this]; Argument[0]; taint; manual |
-| 26 | Summary: android.os; Parcel; false; readParcelableList; ; ; Argument[0]; ReturnValue; value; manual |
+| 25 | Summary: android.os; Parcel; false; readParcelableList; ; ; Argument[0]; ReturnValue; value; manual |
+| 26 | Summary: android.os; Parcel; false; readParcelableList; ; ; Argument[this]; Argument[0]; taint; manual |
 | 27 | Summary: android.os; Parcel; false; readPersistableBundle; ; ; Argument[this]; ReturnValue; taint; manual |
 | 28 | Summary: android.os; Parcel; false; readSerializable; ; ; Argument[this]; ReturnValue; taint; manual |
 | 29 | Summary: android.os; Parcel; false; readSize; ; ; Argument[this]; ReturnValue; taint; manual |
@@ -142,12 +142,12 @@ edges
 | Test.java:201:10:201:37 | readParcelableArray(...) : Parcelable[] | Test.java:202:9:202:11 | out | provenance |  |
 | Test.java:207:16:207:31 | (...)... : Parcel | Test.java:208:4:208:5 | in : Parcel | provenance |  |
 | Test.java:207:24:207:31 | source(...) : Object | Test.java:207:16:207:31 | (...)... : Parcel | provenance |  |
-| Test.java:208:4:208:5 | in : Parcel | Test.java:208:26:208:28 | out [post update] : List | provenance | MaD:25 |
+| Test.java:208:4:208:5 | in : Parcel | Test.java:208:26:208:28 | out [post update] : List | provenance | MaD:26 |
 | Test.java:208:26:208:28 | out [post update] : List | Test.java:209:9:209:11 | out | provenance |  |
 | Test.java:214:14:214:27 | (...)... : List | Test.java:216:38:216:39 | in : List | provenance |  |
 | Test.java:214:20:214:27 | source(...) : Object | Test.java:214:14:214:27 | (...)... : List | provenance |  |
 | Test.java:216:10:216:46 | readParcelableList(...) : List | Test.java:217:9:217:11 | out | provenance |  |
-| Test.java:216:38:216:39 | in : List | Test.java:216:10:216:46 | readParcelableList(...) : List | provenance | MaD:26 |
+| Test.java:216:38:216:39 | in : List | Test.java:216:10:216:46 | readParcelableList(...) : List | provenance | MaD:25 |
 | Test.java:222:16:222:31 | (...)... : Parcel | Test.java:223:10:223:11 | in : Parcel | provenance |  |
 | Test.java:222:24:222:31 | source(...) : Object | Test.java:222:16:222:31 | (...)... : Parcel | provenance |  |
 | Test.java:223:10:223:11 | in : Parcel | Test.java:223:10:223:39 | readPersistableBundle(...) : PersistableBundle | provenance | MaD:27 |

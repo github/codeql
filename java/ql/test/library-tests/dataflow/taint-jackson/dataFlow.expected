@@ -1,7 +1,7 @@
 models
 | 1 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; convertValue; ; ; Argument[0]; ReturnValue; taint; manual |
-| 2 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0].MapValue; ReturnValue; taint; manual |
-| 3 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0].MapValue.Element; ReturnValue; taint; manual |
+| 2 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0].MapValue.Element; ReturnValue; taint; manual |
+| 3 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0].MapValue; ReturnValue; taint; manual |
 | 4 | Summary: java.io; FileOutputStream; true; FileOutputStream; (File); ; Argument[0]; Argument[this]; taint; df-generated |
 | 5 | Summary: java.lang; String; false; String; ; ; Argument[0]; Argument[this]; taint; manual |
 | 6 | Summary: java.util; Iterator; true; next; ; ; Argument[this].Element; ReturnValue; value; manual |

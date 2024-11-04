@@ -1,12 +1,12 @@
 models
-| 1 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
-| 2 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 3 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 4 | Source: github.com/nonexistent/sources; ; false; ExecuteQuery; ; ; ReturnValue; database; manual |
+| 1 | Source: github.com/nonexistent/sources; ; false; ExecuteQuery; ; ; ReturnValue; database; manual |
+| 2 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
+| 3 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 4 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
 edges
-| test.go:27:11:27:63 | call to ExecuteQuery | test.go:28:7:28:11 | query | provenance | Src:MaD:4  |
-| test.go:32:11:32:15 | selection of URL | test.go:32:11:32:23 | call to Query | provenance | Src:MaD:1 MaD:2 |
-| test.go:32:11:32:23 | call to Query | test.go:32:11:32:36 | call to Get | provenance | MaD:3 |
+| test.go:27:11:27:63 | call to ExecuteQuery | test.go:28:7:28:11 | query | provenance | Src:MaD:1  |
+| test.go:32:11:32:15 | selection of URL | test.go:32:11:32:23 | call to Query | provenance | Src:MaD:2 MaD:3 |
+| test.go:32:11:32:23 | call to Query | test.go:32:11:32:36 | call to Get | provenance | MaD:4 |
 | test.go:32:11:32:36 | call to Get | test.go:34:7:34:30 | ...+... | provenance |  |
 nodes
 | test.go:27:11:27:63 | call to ExecuteQuery | semmle.label | call to ExecuteQuery |
