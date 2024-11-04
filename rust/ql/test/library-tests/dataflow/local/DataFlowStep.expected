@@ -6,6 +6,7 @@
 | main.rs:20:9:20:15 | BreakExpr | main.rs:19:13:21:5 | LoopExpr |
 | main.rs:20:15:20:15 | a | main.rs:20:9:20:15 | BreakExpr |
 | main.rs:22:5:22:5 | b | main.rs:17:29:23:1 | BlockExpr |
-| main.rs:26:5:29:5 | MatchExpr | main.rs:25:60:30:1 | BlockExpr |
-| main.rs:27:20:27:20 | a | main.rs:26:5:29:5 | MatchExpr |
-| main.rs:28:17:28:17 | b | main.rs:26:5:29:5 | MatchExpr |
+| main.rs:28:5:28:5 | i | main.rs:25:24:29:1 | BlockExpr |
+| main.rs:32:5:35:5 | MatchExpr | main.rs:31:60:36:1 | BlockExpr |
+| main.rs:33:20:33:20 | a | main.rs:32:5:35:5 | MatchExpr |
+| main.rs:34:17:34:17 | b | main.rs:32:5:35:5 | MatchExpr |

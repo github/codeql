@@ -22,6 +22,12 @@ fn loop_expression() -> i64 {
     b
 }
 
+fn assignment() -> i64 {
+    let mut i = 1;
+    i = 2;
+    i
+}
+
 fn match_expression(a: i64, b: i64, c: Option<i64>) -> i64 {
     match c {
         Some(_) => a,
