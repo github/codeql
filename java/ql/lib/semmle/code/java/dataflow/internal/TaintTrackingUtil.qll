@@ -161,6 +161,7 @@ private module Cached {
    */
   cached
   predicate defaultTaintSanitizer(DataFlow::Node node) {
+    node instanceof DefaultTaintSanitizer or
     // Ignore paths through test code.
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
     node.asExpr() instanceof ValidatedVariableAccess
