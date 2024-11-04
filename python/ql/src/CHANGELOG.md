@@ -1,3 +1,9 @@
+## 1.3.2
+
+### Minor Analysis Improvements
+
+* Improved modelling for the `pycurl` framework.
+
 ## 1.3.1
 
 No user-facing changes.

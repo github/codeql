@@ -1,5 +1,5 @@
 name: codeql/java-all
-version: 4.1.2-dev
+version: 4.2.0
 groups: java
 dbscheme: config/semmlecode.dbscheme
 extractor: java
