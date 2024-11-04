@@ -67,6 +67,26 @@ pub fn unreachable_if_1() {
     do_something(); // $ Alert[rust/dead-code]
 }
 
+pub fn unreachable_if_2() {
+    if cond() {
+        do_something();
+        return;
+    } else {
+        do_something();
+    }
+
+    do_something();
+}
+
+pub fn unreachable_if_3() {
+    if !cond() {
+        do_something();
+        return;
+    }
+
+    do_something();
+}
+
 pub fn unreachable_panic() {
     if cond() {
         do_something();
@@ -228,26 +248,6 @@ pub fn unreachable_let_2() {
         do_something(); // $ Alert[rust/dead-code]
         return;
     };
-
-    do_something();
-}
-
-pub fn unreachable_if_2() {
-    if cond() {
-        do_something();
-        return;
-    } else {
-        do_something();
-    }
-
-    do_something();
-}
-
-pub fn unreachable_if_3() {
-    if !cond() {
-        do_something();
-        return;
-    }
 
     do_something();
 }
