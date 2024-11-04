@@ -9,7 +9,7 @@ private import ControlFlowGraph
 /** A CFG node that corresponds to an element in the AST. */
 class AstCfgNode extends CfgNode {
   AstNode node;
-  
+
   AstCfgNode() { node = this.getAstNode() }
 }
 

@@ -183,11 +183,18 @@ private predicate propagatesValue(Expr e) {
   e instanceof MatchExpr
 }
 
+/**
+ * Gets a node that may execute last in `n`, and which, when it executes last,
+ * will be the value of `n`.
+ */
+private ExprCfgNode getALastEvalNode(ExprCfgNode n) {
+  propagatesValue(n.getExpr()) and result.getASuccessor() = n
+}
+
 module LocalFlow {
   pragma[nomagic]
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
-    propagatesValue(nodeTo.(Node::ExprNode).asExpr()) and
-    nodeFrom.getCfgNode().getASuccessor() = nodeTo.getCfgNode()
+    nodeFrom.getCfgNode() = getALastEvalNode(nodeTo.getCfgNode())
   }
 }
 

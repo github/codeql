@@ -469,8 +469,9 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
   predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    exists(CfgNode node, BasicBlock bb, int i |
-      def.definesAt(_, bb, i) and value.getAstNode() = node.getAstNode().(AssignmentExpr).getLhs()
+    exists(BasicBlock bb, int i |
+      def.definesAt(_, bb, i) and
+      value.getAstNode() = bb.getNode(i).getAstNode().(AssignmentExpr).getRhs()
     )
   }
 
