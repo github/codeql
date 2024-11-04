@@ -147,26 +147,80 @@ pub fn unreachable_panic() {
     }
 }
 
-pub fn unreachable_match() {
-    match get_a_number() {
-        1 => {
-            return;
-        }
-        _ => {
-            do_something();
-        }
+macro_rules! bail_1 {
+    () => {
+        return Err(String::from("message"))
+    };
+}
+
+macro_rules! bail_2 {
+    ($message:literal) => {
+        return Err(String::from($message))
+    };
+}
+
+pub fn unreachable_bail() -> Result<i32, String> {
+    if cond() {
+        do_something();
+        return Err(String::from("message"));
+        do_something(); // $ Alert[rust/dead-code]
+    }
+
+    if cond() {
+        do_something();
+        bail_1!(); // $ SPURIOUS: Alert[rust/dead-code]
+        do_something(); // $ MISSING: Alert[rust/dead-code]
+    }
+
+    if cond() {
+        do_something();
+        bail_2!("message"); // $ SPURIOUS: Alert[rust/dead-code]
     }
     do_something();
 
-    match get_a_number() {
-        1 => {
-            return;
+    Ok(1)
+}
+
+pub fn unreachable_match() {
+    if cond() {
+        match get_a_number() {
+            1 => {
+                return;
+            }
+            _ => {
+                do_something();
+            }
         }
-        _ => {
-            return;
-        }
+        do_something();
     }
-    do_something(); // $ Alert[rust/dead-code]
+
+    if cond() {
+        match get_a_number() {
+            1 => {
+                return;
+            }
+            _ => {
+                return;
+            }
+        }
+        do_something(); // $ Alert[rust/dead-code]
+    }
+
+    if cond() {
+        _ = match get_a_number() {
+            1 => "One",
+            _ => "Some"
+        };
+        do_something();
+    }
+
+    if cond() {
+        _ = Some(match get_a_number() {
+            1 => "One",
+            _ => "Some"
+        });
+        do_something();
+    }
 }
 
 pub fn unreachable_loop() {
@@ -214,6 +268,46 @@ pub fn unreachable_loop() {
         do_something();
         do_something();
     }
+
+    if cond() {
+        fn do_nothing() { };
+        fn loop_forever() { loop {} };
+        fn take_a_fn(_: fn() -> ()) {
+        };
+        fn call_a_fn(f: fn() -> ()) {
+            f();
+        };
+
+        take_a_fn( do_nothing );
+        call_a_fn( do_nothing );
+        take_a_fn( loop_forever );
+        call_a_fn( loop_forever );
+        do_something(); // $ MISSING: Alert[rust/dead-code]
+    }
+}
+
+async fn do_something_async() {}
+
+pub async fn unreachable_loop_async() {
+    let for_ten = async { // $ SPURIOUS: Alert[rust/unused-value]
+        for _ in 1..10 {
+            do_something_async().await;
+        }
+        do_something();
+    };
+
+    let for_ever = async { // $ SPURIOUS: Alert[rust/unused-value]
+        loop {
+            do_something_async().await;
+        }
+        do_something(); // $ Alert[rust/dead-code]
+    };
+
+    do_something();
+    for_ten.await;
+    do_something();
+    for_ever.await;
+    do_something(); // $ MISSING: Alert[rust/dead-code]
 }
 
 pub fn unreachable_paren() {
@@ -257,3 +351,33 @@ pub fn unreachable_let_2() {
 
     do_something();
 }
+
+#[cfg(not(foo))]
+pub fn unreachable_attributes() {
+    // `#[cfg` and `cfg!` checks can go either way, we should not assume this
+    // function or either branch below is unreachable.
+    if cfg!(bar) {
+        do_something();
+    } else {
+        do_something();
+    }
+
+    #[doc="This is a doc comment declared through an attribute."]
+
+    if (true) {
+        do_something();
+    } else {
+        do_something(); // $ Alert[rust/dead-code]
+    }
+}
+
+const _: () = {
+    _ = 1; // $ SPURIOUS: Alert[rust/dead-code]
+};
+
+const _: () = {
+    const fn foo() {
+        _ = 1;
+    };
+    foo(); // $ SPURIOUS: Alert[rust/dead-code]
+};

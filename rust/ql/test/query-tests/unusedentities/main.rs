@@ -484,11 +484,14 @@ fn main() {
     unreachable_if_2();
     unreachable_if_3();
     unreachable_panic();
+    _ = unreachable_bail();
     unreachable_match();
     unreachable_loop();
+    unreachable_loop_async();
     unreachable_paren();
     unreachable_let_1();
     unreachable_let_2();
+    unreachable_attributes();
 
     macros();
 }
