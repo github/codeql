@@ -13,19 +13,11 @@ private import semmle.code.cpp.ir.implementation.raw.internal.InstructionTag
  * Returns `instr` or any instruction used to define `instr`.
  */
 private Instruction getDerivedInstruction(Instruction instr) {
-  // If there is a defining value, use it, else derived instruction is `instr`
-  // This forces backwards examination of guards if the current instruction is 
-  // derived from a prior instruction. 
-  if
-    exists(Instruction derived |
-      derived = valueNumber(instr).getAnInstruction() and
-      derived.toString() != instr.toString()
-    )
-  then
-    result = valueNumber(instr).getAnInstruction() and
-    result.toString() != instr.toString() and
-    result instanceof CompareInstruction
-  else result = instr
+  result = valueNumber(instr).getAnInstruction() and
+  result.toString() != instr.toString() and
+  result instanceof CompareInstruction
+  or
+  result = instr
 }
 
 /**
