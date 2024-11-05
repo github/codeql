@@ -35,9 +35,7 @@ private module Impl implements
       |
         name = "replace"
         or
-        name = "match" and exists(mcn.getAPropertyRead())
-        or
-        name = "matchAll" and exists(mcn.getAPropertyRead())
+        name = ["match", "matchAll"] and exists(mcn.getAPropertyRead())
       )
     )
   }
