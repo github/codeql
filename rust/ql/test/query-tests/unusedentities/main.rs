@@ -1,5 +1,7 @@
+mod more;
 mod unreachable;
 
+use more::*;
 use unreachable::*;
 
 // --- locals ---
@@ -479,6 +481,10 @@ fn main() {
     shadowing();
     func_ptrs();
     folds_and_closures();
+    macros();
+
+    generics();
+    pointers();
 
     unreachable_if_1();
     // unreachable_panic();
@@ -489,6 +495,4 @@ fn main() {
     unreachable_let_2();
     unreachable_if_2();
     unreachable_if_3();
-
-    macros();
 }
