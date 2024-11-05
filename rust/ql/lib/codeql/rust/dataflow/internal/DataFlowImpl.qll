@@ -96,7 +96,7 @@ module Node {
   final class ArgumentNode = NaNode;
 
   /** An SSA node. */
-  abstract class SsaNode extends Node, TSsaNode {
+  class SsaNode extends Node, TSsaNode {
     SsaImpl::DataFlowIntegration::SsaNode node;
     SsaImpl::DefinitionExt def;
 
