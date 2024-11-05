@@ -45,8 +45,11 @@ import codeql.rust.elements.FieldList
 import codeql.rust.elements.FnPtrType
 import codeql.rust.elements.ForExpr
 import codeql.rust.elements.ForType
+import codeql.rust.elements.Format
 import codeql.rust.elements.FormatArgsArg
 import codeql.rust.elements.FormatArgsExpr
+import codeql.rust.elements.FormatArgument
+import codeql.rust.elements.FormatTemplateVariableAccess
 import codeql.rust.elements.Function
 import codeql.rust.elements.GenericArg
 import codeql.rust.elements.GenericArgList
@@ -100,6 +103,7 @@ import codeql.rust.elements.ParenType
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Path
 import codeql.rust.elements.PathExpr
+import codeql.rust.elements.PathExprBase
 import codeql.rust.elements.PathPat
 import codeql.rust.elements.PathSegment
 import codeql.rust.elements.PathType

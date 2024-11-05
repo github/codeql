@@ -1,0 +1,132 @@
+getFormat
+| main.rs:5:14:5:61 | FormatArgsExpr | main.rs:5:21:5:46 | {value:#width$.precision$} | 0 |
+| main.rs:6:14:6:56 | FormatArgsExpr | main.rs:6:21:6:30 | {0:#1$.2$} | 0 |
+| main.rs:7:14:7:40 | FormatArgsExpr | main.rs:7:21:7:22 | {} | 0 |
+| main.rs:7:14:7:40 | FormatArgsExpr | main.rs:7:24:7:25 | {} | 1 |
+| main.rs:11:14:11:34 | FormatArgsExpr | main.rs:11:22:11:23 | {} | 0 |
+| main.rs:12:14:12:34 | FormatArgsExpr | main.rs:12:29:12:30 | {} | 0 |
+| main.rs:13:14:13:27 | FormatArgsExpr | main.rs:13:15:13:18 | {:?} | 0 |
+| main.rs:14:14:14:33 | FormatArgsExpr | main.rs:14:15:14:21 | {value} | 0 |
+| main.rs:16:14:16:30 | FormatArgsExpr | main.rs:16:21:16:28 | {people} | 0 |
+| main.rs:17:14:17:26 | FormatArgsExpr | main.rs:17:15:17:16 | {} | 0 |
+| main.rs:17:14:17:26 | FormatArgsExpr | main.rs:17:18:17:19 | {} | 1 |
+| main.rs:18:14:18:24 | FormatArgsExpr | main.rs:18:15:18:19 | {:04} | 0 |
+| main.rs:19:14:19:32 | FormatArgsExpr | main.rs:19:15:19:19 | {:#?} | 0 |
+| main.rs:21:14:21:34 | FormatArgsExpr | main.rs:21:15:21:17 | {1} | 0 |
+| main.rs:21:14:21:34 | FormatArgsExpr | main.rs:21:19:21:20 | {} | 1 |
+| main.rs:21:14:21:34 | FormatArgsExpr | main.rs:21:22:21:24 | {0} | 2 |
+| main.rs:21:14:21:34 | FormatArgsExpr | main.rs:21:26:21:27 | {} | 3 |
+| main.rs:22:14:22:31 | FormatArgsExpr | main.rs:22:21:22:24 | {:5} | 0 |
+| main.rs:23:14:23:35 | FormatArgsExpr | main.rs:23:21:23:25 | {:1$} | 0 |
+| main.rs:24:14:24:36 | FormatArgsExpr | main.rs:24:21:24:26 | {1:0$} | 0 |
+| main.rs:25:14:25:47 | FormatArgsExpr | main.rs:25:21:25:29 | {:width$} | 0 |
+| main.rs:27:14:27:36 | FormatArgsExpr | main.rs:27:21:27:29 | {:width$} | 0 |
+| main.rs:28:24:28:42 | FormatArgsExpr | main.rs:28:31:28:35 | {:<5} | 0 |
+| main.rs:29:24:29:43 | FormatArgsExpr | main.rs:29:31:29:36 | {:-<5} | 0 |
+| main.rs:30:24:30:42 | FormatArgsExpr | main.rs:30:31:30:35 | {:^5} | 0 |
+| main.rs:31:24:31:42 | FormatArgsExpr | main.rs:31:31:31:35 | {:>5} | 0 |
+| main.rs:32:14:32:57 | FormatArgsExpr | main.rs:32:21:32:26 | {:^15} | 0 |
+| main.rs:32:39:32:56 | FormatArgsExpr | main.rs:32:40:32:43 | {:?} | 0 |
+| main.rs:33:24:33:39 | FormatArgsExpr | main.rs:33:31:33:34 | {:+} | 0 |
+| main.rs:34:24:34:35 | FormatArgsExpr | main.rs:34:25:34:29 | {:#x} | 0 |
+| main.rs:35:24:35:40 | FormatArgsExpr | main.rs:35:31:35:35 | {:05} | 0 |
+| main.rs:36:24:36:41 | FormatArgsExpr | main.rs:36:31:36:35 | {:05} | 0 |
+| main.rs:37:24:37:38 | FormatArgsExpr | main.rs:37:25:37:32 | {:#010x} | 0 |
+| main.rs:39:14:39:45 | FormatArgsExpr | main.rs:39:21:39:23 | {0} | 0 |
+| main.rs:39:14:39:45 | FormatArgsExpr | main.rs:39:28:39:33 | {1:.5} | 1 |
+| main.rs:41:14:41:49 | FormatArgsExpr | main.rs:41:21:41:23 | {1} | 0 |
+| main.rs:41:14:41:49 | FormatArgsExpr | main.rs:41:28:41:34 | {2:.0$} | 1 |
+| main.rs:43:14:43:49 | FormatArgsExpr | main.rs:43:21:43:23 | {0} | 0 |
+| main.rs:43:14:43:49 | FormatArgsExpr | main.rs:43:28:43:34 | {2:.1$} | 1 |
+| main.rs:45:14:45:46 | FormatArgsExpr | main.rs:45:21:45:22 | {} | 0 |
+| main.rs:45:14:45:46 | FormatArgsExpr | main.rs:45:27:45:31 | {:.*} | 1 |
+| main.rs:47:14:47:48 | FormatArgsExpr | main.rs:47:21:47:23 | {1} | 0 |
+| main.rs:47:14:47:48 | FormatArgsExpr | main.rs:47:28:47:33 | {2:.*} | 1 |
+| main.rs:48:14:48:47 | FormatArgsExpr | main.rs:48:21:48:22 | {} | 0 |
+| main.rs:48:14:48:47 | FormatArgsExpr | main.rs:48:27:48:32 | {2:.*} | 1 |
+| main.rs:49:14:49:72 | FormatArgsExpr | main.rs:49:21:49:22 | {} | 0 |
+| main.rs:49:14:49:72 | FormatArgsExpr | main.rs:49:27:49:41 | {number:.prec$} | 1 |
+| main.rs:52:9:55:22 | FormatArgsExpr | main.rs:52:10:52:11 | {} | 0 |
+| main.rs:52:9:55:22 | FormatArgsExpr | main.rs:52:15:52:23 | {name:.*} | 1 |
+| main.rs:58:9:61:24 | FormatArgsExpr | main.rs:58:10:58:11 | {} | 0 |
+| main.rs:58:9:61:24 | FormatArgsExpr | main.rs:58:15:58:23 | {name:.*} | 1 |
+| main.rs:64:9:67:24 | FormatArgsExpr | main.rs:64:10:64:11 | {} | 0 |
+| main.rs:64:9:67:24 | FormatArgsExpr | main.rs:64:15:64:25 | {name:>8.*} | 1 |
+| main.rs:70:12:70:31 | FormatArgsExpr | main.rs:70:13:70:20 | {0:.1$e} | 0 |
+| main.rs:71:12:71:31 | FormatArgsExpr | main.rs:71:13:71:20 | {0:.1$e} | 0 |
+| main.rs:73:14:73:35 | FormatArgsExpr | main.rs:73:28:73:29 | {} | 0 |
+getArgumentRef
+| main.rs:5:21:5:46 | {value:#width$.precision$} | main.rs:5:22:5:26 | value |
+| main.rs:6:21:6:30 | {0:#1$.2$} | main.rs:6:22:6:22 | 0 |
+| main.rs:14:15:14:21 | {value} | main.rs:14:16:14:20 | value |
+| main.rs:16:21:16:28 | {people} | main.rs:16:22:16:27 | people |
+| main.rs:21:15:21:17 | {1} | main.rs:21:16:21:16 | 1 |
+| main.rs:21:22:21:24 | {0} | main.rs:21:23:21:23 | 0 |
+| main.rs:24:21:24:26 | {1:0$} | main.rs:24:22:24:22 | 1 |
+| main.rs:39:21:39:23 | {0} | main.rs:39:22:39:22 | 0 |
+| main.rs:39:28:39:33 | {1:.5} | main.rs:39:29:39:29 | 1 |
+| main.rs:41:21:41:23 | {1} | main.rs:41:22:41:22 | 1 |
+| main.rs:41:28:41:34 | {2:.0$} | main.rs:41:29:41:29 | 2 |
+| main.rs:43:21:43:23 | {0} | main.rs:43:22:43:22 | 0 |
+| main.rs:43:28:43:34 | {2:.1$} | main.rs:43:29:43:29 | 2 |
+| main.rs:47:21:47:23 | {1} | main.rs:47:22:47:22 | 1 |
+| main.rs:47:28:47:33 | {2:.*} | main.rs:47:29:47:29 | 2 |
+| main.rs:48:27:48:32 | {2:.*} | main.rs:48:28:48:28 | 2 |
+| main.rs:49:27:49:41 | {number:.prec$} | main.rs:49:28:49:33 | number |
+| main.rs:52:15:52:23 | {name:.*} | main.rs:52:16:52:19 | name |
+| main.rs:58:15:58:23 | {name:.*} | main.rs:58:16:58:19 | name |
+| main.rs:64:15:64:25 | {name:>8.*} | main.rs:64:16:64:19 | name |
+| main.rs:70:13:70:20 | {0:.1$e} | main.rs:70:14:70:14 | 0 |
+| main.rs:71:13:71:20 | {0:.1$e} | main.rs:71:14:71:14 | 0 |
+getWidthArgument
+| main.rs:5:21:5:46 | {value:#width$.precision$} | main.rs:5:29:5:33 | width |
+| main.rs:6:21:6:30 | {0:#1$.2$} | main.rs:6:25:6:25 | 1 |
+| main.rs:23:21:23:25 | {:1$} | main.rs:23:23:23:23 | 1 |
+| main.rs:24:21:24:26 | {1:0$} | main.rs:24:24:24:24 | 0 |
+| main.rs:25:21:25:29 | {:width$} | main.rs:25:23:25:27 | width |
+| main.rs:27:21:27:29 | {:width$} | main.rs:27:23:27:27 | width |
+getPrecisionArgument
+| main.rs:5:21:5:46 | {value:#width$.precision$} | main.rs:5:36:5:44 | precision |
+| main.rs:6:21:6:30 | {0:#1$.2$} | main.rs:6:28:6:28 | 2 |
+| main.rs:41:28:41:34 | {2:.0$} | main.rs:41:32:41:32 | 0 |
+| main.rs:43:28:43:34 | {2:.1$} | main.rs:43:32:43:32 | 1 |
+| main.rs:49:27:49:41 | {number:.prec$} | main.rs:49:36:49:39 | prec |
+| main.rs:70:13:70:20 | {0:.1$e} | main.rs:70:17:70:17 | 1 |
+| main.rs:71:13:71:20 | {0:.1$e} | main.rs:71:17:71:17 | 1 |
+getIndex
+| main.rs:6:22:6:22 | 0 | 0 |
+| main.rs:6:25:6:25 | 1 | 1 |
+| main.rs:6:28:6:28 | 2 | 2 |
+| main.rs:21:16:21:16 | 1 | 1 |
+| main.rs:21:23:21:23 | 0 | 0 |
+| main.rs:23:23:23:23 | 1 | 1 |
+| main.rs:24:22:24:22 | 1 | 1 |
+| main.rs:24:24:24:24 | 0 | 0 |
+| main.rs:39:22:39:22 | 0 | 0 |
+| main.rs:39:29:39:29 | 1 | 1 |
+| main.rs:41:22:41:22 | 1 | 1 |
+| main.rs:41:29:41:29 | 2 | 2 |
+| main.rs:41:32:41:32 | 0 | 0 |
+| main.rs:43:22:43:22 | 0 | 0 |
+| main.rs:43:29:43:29 | 2 | 2 |
+| main.rs:43:32:43:32 | 1 | 1 |
+| main.rs:47:22:47:22 | 1 | 1 |
+| main.rs:47:29:47:29 | 2 | 2 |
+| main.rs:48:28:48:28 | 2 | 2 |
+| main.rs:70:14:70:14 | 0 | 0 |
+| main.rs:70:17:70:17 | 1 | 1 |
+| main.rs:71:14:71:14 | 0 | 0 |
+| main.rs:71:17:71:17 | 1 | 1 |
+getName
+| main.rs:5:22:5:26 | value | value |
+| main.rs:5:29:5:33 | width | width |
+| main.rs:5:36:5:44 | precision | precision |
+| main.rs:14:16:14:20 | value | value |
+| main.rs:16:22:16:27 | people | people |
+| main.rs:25:23:25:27 | width | width |
+| main.rs:27:23:27:27 | width | width |
+| main.rs:49:28:49:33 | number | number |
+| main.rs:49:36:49:39 | prec | prec |
+| main.rs:52:16:52:19 | name | name |
+| main.rs:58:16:58:19 | name | name |
+| main.rs:64:16:64:19 | name | name |

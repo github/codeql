@@ -1,5 +1,4 @@
 {
-  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "python",
   "word": "identifier",
   "rules": {
@@ -1169,7 +1168,11 @@
       "members": [
         {
           "type": "STRING",
-          "value": "except*"
+          "value": "except"
+        },
+        {
+          "type": "STRING",
+          "value": "*"
         },
         {
           "type": "SEQ",
@@ -3841,10 +3844,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "await"
-        },
-        {
-          "type": "SYMBOL",
           "name": "lambda"
         },
         {
@@ -3864,6 +3863,10 @@
     "primary_expression": {
       "type": "CHOICE",
       "members": [
+        {
+          "type": "SYMBOL",
+          "name": "await"
+        },
         {
           "type": "SYMBOL",
           "name": "binary_operator"
@@ -5289,8 +5292,17 @@
       }
     },
     "type": {
-      "type": "SYMBOL",
-      "name": "expression"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "list_splat"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expression"
+        }
+      ]
     },
     "keyword_argument": {
       "type": "SEQ",
@@ -6573,7 +6585,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "expression"
+            "name": "primary_expression"
           }
         ]
       }
@@ -6683,3 +6695,4 @@
     "parameter"
   ]
 }
+

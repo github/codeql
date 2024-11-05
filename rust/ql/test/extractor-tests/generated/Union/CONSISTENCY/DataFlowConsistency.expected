@@ -1,0 +1,2 @@
+uniqueCallEnclosingCallable
+| gen_union.rs:5:5:5:11 | CallExpr | Call should have one enclosing callable but has 0. |

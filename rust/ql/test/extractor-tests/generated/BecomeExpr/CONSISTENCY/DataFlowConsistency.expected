@@ -1,0 +1,8 @@
+uniqueEnclosingCallable
+| gen_become_expr.rs:4:11:4:16 | Param | Node should have one enclosing callable but has 0. |
+| gen_become_expr.rs:4:19:4:24 | Param | Node should have one enclosing callable but has 0. |
+uniqueCallEnclosingCallable
+| gen_become_expr.rs:8:17:8:36 | CallExpr | Call should have one enclosing callable but has 0. |
+uniqueType
+| gen_become_expr.rs:4:11:4:16 | Param | Node should have one type but has 0. |
+| gen_become_expr.rs:4:19:4:24 | Param | Node should have one type but has 0. |

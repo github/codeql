@@ -1,0 +1,64 @@
+name: "Code scanning - Rust"
+
+on:
+  push:
+    branches:
+      - main
+      - 'rc/*'
+  pull_request:
+    branches:
+      - main
+      - 'rc/*'
+    paths:
+      - '**/*.rs'
+      - '**/Cargo.toml'
+      - '.github/codeql/codeql-config.yml'
+      - '.github/workflows/rust-analysis.yml'
+  schedule:
+    - cron: '0 9 * * 1'
+
+env:
+  CODEQL_ENABLE_EXPERIMENTAL_FEATURES: "true"
+
+jobs:
+  analyze:
+    strategy:
+      matrix:
+        language: [ 'rust' ]
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Query latest nightly CodeQL bundle
+      shell: bash
+      id: codeql
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+        REPO=dsp-testing/codeql-cli-nightlies
+        TAG=$(
+          gh release list -R $REPO -L1 --exclude-drafts --json tagName -q ".[] | .tagName"
+        )
+        echo "nightly_bundle=https://github.com/$REPO/releases/download/$TAG/codeql-bundle-linux64.tar.zst" \
+          | tee -a "$GITHUB_OUTPUT"
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@main
+      with:
+        tools: ${{ steps.codeql.outputs.nightly_bundle }}
+        languages: ${{ matrix.language }}
+        config-file: ./.github/codeql/codeql-config.yml
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@main
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@main

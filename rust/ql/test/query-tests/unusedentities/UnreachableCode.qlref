@@ -1,1 +1,2 @@
-queries/unusedentities/UnreachableCode.ql
+query: queries/unusedentities/UnreachableCode.ql
+postprocess: utils/InlineExpectationsTestQuery.ql

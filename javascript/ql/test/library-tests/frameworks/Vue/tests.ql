@@ -20,3 +20,7 @@ query predicate templateElement(Vue::Template::Element template) { any() }
 query predicate xssSink(DomBasedXss::Sink s) { any() }
 
 query RemoteFlowSource remoteFlowSource() { any() }
+
+query predicate parseErrors(JSParseError err) { exists(err) }
+
+query predicate attribute(HTML::Attribute attrib, string name) { attrib.getName() = name }

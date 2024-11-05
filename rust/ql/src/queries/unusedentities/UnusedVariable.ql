@@ -13,4 +13,4 @@ import UnusedVariable
 
 from Variable v
 where isUnused(v)
-select v, "Variable is not used."
+select v, "Variable '" + v + "' is not used."

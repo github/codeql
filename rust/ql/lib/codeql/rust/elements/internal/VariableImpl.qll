@@ -1,6 +1,7 @@
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
-private import codeql.rust.elements.internal.PathExprImpl::Impl as PathExprImpl
+private import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
+private import codeql.rust.elements.internal.FormatTemplateVariableAccessImpl::Impl as FormatTemplateVariableAccessImpl
 private import codeql.util.DenseRank
 
 module Impl {
@@ -83,7 +84,10 @@ module Impl {
     // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
     // which we don't appear to recognize yet anyway. This also assumes programmers follow the
     // naming guidelines, which they generally do, but they're not enforced.
-    not name.charAt(0).isUppercase()
+    not name.charAt(0).isUppercase() and
+    // exclude parameters from functions without a body as these are trait method declarations
+    // without implementations
+    not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = p)
   }
 
   /** A variable. */
@@ -138,12 +142,12 @@ module Impl {
   }
 
   /** A path expression that may access a local variable. */
-  private class VariableAccessCand extends PathExpr {
+  private class VariableAccessCand extends PathExprBase {
     string name_;
 
     VariableAccessCand() {
       exists(Path p, PathSegment ps |
-        p = this.getPath() and
+        p = this.(PathExpr).getPath() and
         not p.hasQualifier() and
         ps = p.getPart() and
         not ps.hasGenericArgList() and
@@ -152,7 +156,11 @@ module Impl {
         not ps.hasReturnTypeSyntax() and
         name_ = ps.getNameRef().getText()
       )
+      or
+      this.(FormatTemplateVariableAccess).getName() = name_
     }
+
+    string toString() { result = name_ }
 
     string getName() { result = name_ }
   }
@@ -164,7 +172,10 @@ module Impl {
       n instanceof LetStmt or
       n instanceof VariableScope
     ) and
-    exists(AstNode n0 | result = getImmediateParent(n0) |
+    exists(AstNode n0 |
+      result = getImmediateParent(n0) or
+      result = n0.(FormatTemplateVariableAccess).getArgument().getParent().getParent()
+    |
       n0 = n
       or
       n0 = getAnAncestorInVariableScope(n) and
@@ -218,13 +229,13 @@ module Impl {
     name = v.getName() and
     (
       parameterDeclInScope(_, v, scope) and
-      scope.getLocation().hasLocationInfo(_, line, column, _, _)
+      scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
       or
       exists(Pat pat | pat = getAVariablePatAncestor(v) |
         scope =
           any(MatchArmScope arm |
             arm.getPat() = pat and
-            arm.getLocation().hasLocationInfo(_, line, column, _, _)
+            arm.getLocation().hasLocationFileInfo(_, line, column, _, _)
           )
         or
         exists(LetStmt let |
@@ -232,27 +243,27 @@ module Impl {
           scope = getEnclosingScope(let) and
           // for `let` statements, variables are bound _after_ the statement, i.e.
           // not in the RHS
-          let.getLocation().hasLocationInfo(_, _, _, line, column)
+          let.getLocation().hasLocationFileInfo(_, _, _, line, column)
         )
         or
         exists(IfExpr ie, LetExpr let |
           let.getPat() = pat and
           ie.getCondition() = let and
           scope = ie.getThen() and
-          scope.getLocation().hasLocationInfo(_, line, column, _, _)
+          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
         )
         or
         exists(ForExpr fe |
           fe.getPat() = pat and
           scope = fe.getLoopBody() and
-          scope.getLocation().hasLocationInfo(_, line, column, _, _)
+          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
         )
         or
         exists(WhileExpr we, LetExpr let |
           let.getPat() = pat and
           we.getCondition() = let and
           scope = we.getLoopBody() and
-          scope.getLocation().hasLocationInfo(_, line, column, _, _)
+          scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
         )
       )
     )
@@ -272,7 +283,7 @@ module Impl {
   ) {
     name = cand.getName() and
     scope = [cand.(VariableScope), getEnclosingScope(cand)] and
-    cand.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
+    cand.getLocation().hasLocationFileInfo(_, startline, startcolumn, endline, endcolumn) and
     nestLevel = 0
     or
     exists(VariableScope inner |
@@ -281,7 +292,7 @@ module Impl {
       // Use the location of the inner scope as the location of the access, instead of the
       // actual access location. This allows us to collapse multiple accesses in inner
       // scopes to a single entity
-      inner.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn)
+      inner.getLocation().hasLocationFileInfo(_, startline, startcolumn, endline, endcolumn)
     )
   }
 
@@ -421,10 +432,8 @@ module Impl {
     )
   }
 
-  private import codeql.rust.controlflow.internal.Scope
-
   /** A variable access. */
-  class VariableAccess extends PathExprImpl::PathExpr instanceof VariableAccessCand {
+  class VariableAccess extends PathExprBaseImpl::PathExprBase instanceof VariableAccessCand {
     private string name;
     private Variable v;
 
@@ -434,7 +443,7 @@ module Impl {
     Variable getVariable() { result = v }
 
     /** Holds if this access is a capture. */
-    predicate isCapture() { scopeOfAst(this) != scopeOfAst(v.getPat()) }
+    predicate isCapture() { this.getEnclosingCallable() != v.getPat().getEnclosingCallable() }
 
     override string toString() { result = name }
 

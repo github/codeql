@@ -9,11 +9,7 @@ private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 private import codeql.rust.controlflow.internal.Completion
 
-/**
- * All `Expr` nodes are `PostOrderTree`s
- */
-query predicate nonPostOrderExpr(Expr e, string cls) {
-  cls = e.getPrimaryQlClasses() and
+private predicate nonPostOrderExpr(Expr e) {
   not e instanceof LetExpr and
   not e instanceof ParenExpr and
   exists(AstNode last, Completion c |
@@ -21,6 +17,14 @@ query predicate nonPostOrderExpr(Expr e, string cls) {
     last != e and
     c instanceof NormalCompletion
   )
+}
+
+/**
+ * All `Expr` nodes are `PostOrderTree`s
+ */
+query predicate nonPostOrderExpr(Expr e, string cls) {
+  nonPostOrderExpr(e) and
+  cls = e.getPrimaryQlClasses()
 }
 
 /**
@@ -84,11 +88,11 @@ int getCfgInconsistencyCounts(string type) {
   result = count(CfgImpl::SplitKind sk | nonUniqueListOrder(sk, _) | sk)
   or
   type = "Multiple toStrings" and
-  result = count(CfgNode n | multipleToString(n, _) | n)
+  result = count(CfgNode n | multipleToString(n) | n)
   or
   type = "CFG scope lacks initial AST node" and
   result = count(CfgScope s | scopeNoFirst(s) | s)
   or
   type = "Non-PostOrderTree Expr node" and
-  result = count(Expr e | nonPostOrderExpr(e, _) | e)
+  result = count(Expr e | nonPostOrderExpr(e) | e)
 }
