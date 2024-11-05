@@ -10,6 +10,5 @@ predicate isUnused(Variable v) {
   not exists(v.getAnAccess()) and
   not exists(v.getInitializer()) and
   not v instanceof DiscardVariable and
-  not v.getPat().isInMacroExpansion() and
-  exists(File f | f.getBaseName() = "main.rs" | v.getLocation().getFile() = f) // temporarily severely limit results
+  not v.getPat().isInMacroExpansion()
 }
