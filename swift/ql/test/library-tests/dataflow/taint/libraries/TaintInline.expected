@@ -1,13 +1,6 @@
 testFailures
 | optionset.swift:60:49:61:1 | // $ tainted=60\n | Missing result: tainted=60 |
 | optionset.swift:65:58:66:1 | // $ tainted=65\n | Missing result: tainted=65 |
-| string.swift:237:35:238:1 | // $ tainted=217\n | Missing result: tainted=217 |
-| string.swift:244:33:245:1 | // $ tainted=217\n | Missing result: tainted=217 |
-| string.swift:270:40:271:1 | // $ tainted=217\n | Missing result: tainted=217 |
-| string.swift:271:40:272:1 | // $ tainted=217\n | Missing result: tainted=217 |
-| string.swift:272:42:273:1 | // $ tainted=217\n | Missing result: tainted=217 |
-| string.swift:586:19:587:1 | // $ tainted=565\n | Missing result: tainted=565 |
-| string.swift:587:27:588:1 | // $ tainted=565\n | Missing result: tainted=565 |
 | string.swift:599:35:600:1 | // $ tainted=599\n | Missing result: tainted=599 |
 | string.swift:605:30:606:1 | // $ tainted=605\n | Missing result: tainted=605 |
 failures
