@@ -199,6 +199,14 @@ fn loops() {
     }
 
     for x in 1..10 {
+        _ = format!("x is {x:?}");
+    }
+
+    [1, 2, 3].iter().for_each(|x| {
+        _ = format!("x is {x}");
+    });
+
+    for x in 1..10 {
         println!("x is {val}", val = x);
     }
 
@@ -466,6 +474,33 @@ fn macros() {
         })
     )
 }
+// --- references ---
+
+fn references() {
+    let a = 1;
+    let b = &a;
+    let c = *b; // $ Alert[rust/unused-value]
+    let d = 2;
+    let e = 3;
+    let f = &&e;
+
+    assert!(&d != *f);
+}
+
+// --- declarations in types ---
+
+pub struct my_declaration {
+    field1: fn(i32) -> i32,
+    field2: fn(x: i32) -> i32, // $ SPURIOUS: Alert[rust/unused-variable]
+    field3: fn(y: // $ SPURIOUS: Alert[rust/unused-variable]
+        fn(z: i32) -> i32) -> i32, // $ SPURIOUS: Alert[rust/unused-variable]
+}
+
+type MyType = fn(x: i32) -> i32; // $ SPURIOUS: Alert[rust/unused-variable]
+
+trait MyTrait {
+    fn my_func2(&self, x: i32) -> i32;
+}
 
 // --- main ---
 
@@ -482,6 +517,7 @@ fn main() {
     func_ptrs();
     folds_and_closures();
     macros();
+    references();
 
     generics();
     pointers();
