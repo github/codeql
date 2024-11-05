@@ -491,12 +491,12 @@ fn references() {
 
 pub struct my_declaration {
     field1: fn(i32) -> i32,
-    field2: fn(x: i32) -> i32, // $ SPURIOUS: Alert[rust/unused-value]
-    field3: fn(y: // $ SPURIOUS: Alert[rust/unused-value]
-        fn(z: i32) -> i32) -> i32, // $ SPURIOUS: Alert[rust/unused-value]
+    field2: fn(x: i32) -> i32,
+    field3: fn(y:
+        fn(z: i32) -> i32) -> i32,
 }
 
-type MyType = fn(x: i32) -> i32; // $ SPURIOUS: Alert[rust/unused-value]
+type MyType = fn(x: i32) -> i32;
 
 trait MyTrait {
     fn my_func2(&self, x: i32) -> i32;
