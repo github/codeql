@@ -7,7 +7,9 @@ private import codeql.util.Unit
 private import codeql.dataflow.DataFlow
 private import codeql.dataflow.internal.DataFlowImpl
 private import rust
+private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.ControlFlowGraph
+private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
 
 module Node {
@@ -53,20 +55,65 @@ module Node {
   }
 
   /**
+   * A node in the data flow graph that corresponds to an expression in the
+   * AST.
+   *
+   * Note that because of control-flow splitting, one `Expr` may correspond
+   * to multiple `ExprNode`s, just like it may correspond to multiple
+   * `ControlFlow::Node`s.
+   */
+  final class ExprNode extends Node, TExprNode {
+    ExprCfgNode n;
+
+    ExprNode() { this = TExprNode(n) }
+
+    override Location getLocation() { result = n.getExpr().getLocation() }
+
+    override string toString() { result = n.getExpr().toString() }
+
+    override Expr asExpr() { result = n.getExpr() }
+
+    override CfgNode getCfgNode() { result = n }
+  }
+
+  /**
    * The value of a parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  final class ParameterNode extends Node {
-    Param param;
+  final class ParameterNode extends Node, TParameterNode {
+    Param parameter;
 
-    ParameterNode() { this = TSourceParameterNode(param) }
+    ParameterNode() { this = TParameterNode(parameter) }
 
-    override Location getLocation() { result = param.getLocation() }
+    override Location getLocation() { result = parameter.getLocation() }
 
-    override string toString() { result = param.toString() }
+    override string toString() { result = parameter.toString() }
+
+    /** Gets the parameter in the AST that this node corresponds to. */
+    Param getParameter() { result = parameter }
   }
 
   final class ArgumentNode = NaNode;
+
+  /** An SSA node. */
+  class SsaNode extends Node, TSsaNode {
+    SsaImpl::DataFlowIntegration::SsaNode node;
+    SsaImpl::DefinitionExt def;
+
+    SsaNode() {
+      this = TSsaNode(node) and
+      def = node.getDefinitionExt()
+    }
+
+    SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+
+    /** Holds if this node should be hidden from path explanations. */
+    abstract predicate isHidden();
+
+    override Location getLocation() { result = node.getLocation() }
+
+    override string toString() { result = node.toString() }
+  }
 
   final class ReturnNode extends NaNode {
     RustDataFlow::ReturnKind getKind() { none() }
@@ -91,6 +138,64 @@ module Node {
   }
 
   final class CastNode = NaNode;
+}
+
+final class Node = Node::Node;
+
+/** Provides logic related to SSA. */
+module SsaFlow {
+  private module Impl = SsaImpl::DataFlowIntegration;
+
+  private Node::ParameterNode toParameterNode(Param p) { result = TParameterNode(p) }
+
+  /** Converts a control flow node into an SSA control flow node. */
+  Impl::Node asNode(Node n) {
+    n = TSsaNode(result)
+    or
+    result.(Impl::ExprNode).getExpr() = n.(Node::ExprNode).getCfgNode()
+    or
+    n = toParameterNode(result.(Impl::ParameterNode).getParameter())
+  }
+
+  predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+  }
+
+  predicate localMustFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
+    Impl::localMustFlowStep(def, asNode(nodeFrom), asNode(nodeTo))
+  }
+}
+
+/**
+ * Holds for expressions `e` that evaluate to the value of any last (in
+ * evaluation order) subexpressions within it. E.g., expressions that propagate
+ * a values from a subexpression.
+ *
+ * For instance, the predicate holds for if expressions as `if b { e1 } else {
+ * e2 }` evalates to the value of one of the subexpressions `e1` or `e2`.
+ */
+private predicate propagatesValue(Expr e) {
+  e instanceof IfExpr or
+  e instanceof LoopExpr or
+  e instanceof ReturnExpr or
+  e instanceof BreakExpr or
+  e.(BlockExpr).getStmtList().hasTailExpr() or
+  e instanceof MatchExpr
+}
+
+/**
+ * Gets a node that may execute last in `n`, and which, when it executes last,
+ * will be the value of `n`.
+ */
+private ExprCfgNode getALastEvalNode(ExprCfgNode n) {
+  propagatesValue(n.getExpr()) and result.getASuccessor() = n
+}
+
+module LocalFlow {
+  pragma[nomagic]
+  predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
+    nodeFrom.getCfgNode() = getALastEvalNode(nodeTo.getCfgNode())
+  }
 }
 
 module RustDataFlow implements InputSig<Location> {
@@ -122,10 +227,10 @@ module RustDataFlow implements InputSig<Location> {
 
   predicate nodeIsHidden(Node node) { none() }
 
-  class DataFlowExpr = Void;
+  class DataFlowExpr = ExprCfgNode;
 
   /** Gets the node corresponding to `e`. */
-  Node exprNode(DataFlowExpr e) { none() }
+  Node exprNode(DataFlowExpr e) { result.getCfgNode() = e }
 
   final class DataFlowCall extends TNormalCall {
     private CallExpr c;
@@ -191,7 +296,7 @@ module RustDataFlow implements InputSig<Location> {
    * Holds if there is a simple local flow step from `node1` to `node2`. These
    * are the value-preserving intra-callable flow steps.
    */
-  predicate simpleLocalFlowStep(Node node1, Node node2, string model) { none() }
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) { none() }
 
   /**
    * Holds if data can flow from `node1` to `node2` through a non-local step
@@ -256,7 +361,9 @@ module RustDataFlow implements InputSig<Location> {
    * `node2` must be visited along a flow path, then any type known for `node2`
    * must also apply to `node1`.
    */
-  predicate localMustFlowStep(Node node1, Node node2) { none() }
+  predicate localMustFlowStep(Node node1, Node node2) {
+    SsaFlow::localMustFlowStep(_, node1, node2)
+  }
 
   class LambdaCallKind = Void;
 
@@ -267,7 +374,7 @@ module RustDataFlow implements InputSig<Location> {
   /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
   predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
 
-  /** Extra data-flow steps needed for lambda flow analysis. */
+  /** Extra data flow steps needed for lambda flow analysis. */
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
   predicate knownSourceModel(Node source, string model) { none() }
@@ -286,8 +393,9 @@ cached
 private module Cached {
   cached
   newtype TNode =
-    TExprNode(CfgNode n, Expr e) { n.getAstNode() = e } or
-    TSourceParameterNode(Param param)
+    TExprNode(ExprCfgNode n) or
+    TParameterNode(Param p) or
+    TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node)
 
   cached
   newtype TDataFlowCall = TNormalCall(CallExpr c)
@@ -302,7 +410,11 @@ private module Cached {
 
   /** This is the local flow predicate that is exposed. */
   cached
-  predicate localFlowStepImpl(Node::Node nodeFrom, Node::Node nodeTo) { none() }
+  predicate localFlowStepImpl(Node::Node nodeFrom, Node::Node nodeTo) {
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+    or
+    SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
+  }
 }
 
 import Cached
