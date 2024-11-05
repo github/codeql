@@ -32,5 +32,9 @@ namespace Semmle.Extraction
         {
             trapFile.WriteTuple("locations_default", label, file, startLine, startCol, endLine, endCol);
         }
+
+        public static void is_in_psmodule_path(this System.IO.TextWriter trapFile, Entities.File file) {
+            trapFile.WriteTuple("is_in_psmodule_path", file);
+        }
     }
 }
