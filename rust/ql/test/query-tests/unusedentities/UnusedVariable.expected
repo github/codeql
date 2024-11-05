@@ -19,8 +19,4 @@
 | main.rs:427:26:427:28 | val | Variable 'val' is not used. |
 | main.rs:430:21:430:23 | acc | Variable 'acc' is not used. |
 | main.rs:451:9:451:14 | unused | Variable 'unused' is not used. |
-| main.rs:494:16:494:16 | x | Variable 'x' is not used. |
-| main.rs:495:16:495:16 | y | Variable 'y' is not used. |
-| main.rs:496:12:496:12 | z | Variable 'z' is not used. |
-| main.rs:499:18:499:18 | x | Variable 'x' is not used. |
 | more.rs:24:9:24:11 | val | Variable 'val' is not used. |

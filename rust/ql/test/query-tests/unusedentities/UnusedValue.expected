@@ -15,6 +15,10 @@
 | main.rs:373:9:373:9 | x | Variable $@ is assigned a value that is never used. | main.rs:373:9:373:9 | x | x |
 | main.rs:381:17:381:17 | x | Variable $@ is assigned a value that is never used. | main.rs:381:17:381:17 | x | x |
 | main.rs:482:9:482:9 | c | Variable $@ is assigned a value that is never used. | main.rs:482:9:482:9 | c | c |
+| main.rs:494:16:494:16 | x | Variable $@ is assigned a value that is never used. | main.rs:494:16:494:16 | x | x |
+| main.rs:495:16:495:16 | y | Variable $@ is assigned a value that is never used. | main.rs:495:16:495:16 | y | y |
+| main.rs:496:12:496:12 | z | Variable $@ is assigned a value that is never used. | main.rs:496:12:496:12 | z | z |
+| main.rs:499:18:499:18 | x | Variable $@ is assigned a value that is never used. | main.rs:499:18:499:18 | x | x |
 | more.rs:44:9:44:14 | a_ptr4 | Variable $@ is assigned a value that is never used. | more.rs:44:9:44:14 | a_ptr4 | a_ptr4 |
 | more.rs:59:9:59:13 | d_ptr | Variable $@ is assigned a value that is never used. | more.rs:59:9:59:13 | d_ptr | d_ptr |
 | more.rs:65:9:65:17 | f_ptr | Variable $@ is assigned a value that is never used. | more.rs:65:13:65:17 | f_ptr | f_ptr |

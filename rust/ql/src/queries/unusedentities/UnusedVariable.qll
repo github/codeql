@@ -7,8 +7,12 @@ class DiscardVariable extends Variable {
 
 /** Holds if variable `v` is unused. */
 predicate isUnused(Variable v) {
+  // variable is accessed or initialized
   not exists(v.getAnAccess()) and
   not exists(v.getInitializer()) and
+  // variable is intentionally unused
   not v instanceof DiscardVariable and
-  not v.getPat().isInMacroExpansion()
+  // variable is in a context where is may not have a use
+  not v.getPat().isInMacroExpansion() and
+  not exists(FnPtrType fp | fp.getParamList().getParam(_).getPat() = v.getPat())
 }
