@@ -14,7 +14,6 @@
 | main.rs:270:13:270:17 | total | Variable $@ is assigned a value that is never used. | main.rs:238:13:238:17 | total | total |
 | main.rs:363:9:363:9 | x | Variable $@ is assigned a value that is never used. | main.rs:363:9:363:9 | x | x |
 | main.rs:371:17:371:17 | x | Variable $@ is assigned a value that is never used. | main.rs:371:17:371:17 | x | x |
-| more.rs:24:9:24:11 | val | Variable $@ is assigned a value that is never used. | more.rs:24:9:24:11 | val | val |
 | more.rs:44:9:44:14 | a_ptr4 | Variable $@ is assigned a value that is never used. | more.rs:44:9:44:14 | a_ptr4 | a_ptr4 |
 | more.rs:59:9:59:13 | d_ptr | Variable $@ is assigned a value that is never used. | more.rs:59:9:59:13 | d_ptr | d_ptr |
 | more.rs:65:9:65:17 | f_ptr | Variable $@ is assigned a value that is never used. | more.rs:65:13:65:17 | f_ptr | f_ptr |

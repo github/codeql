@@ -21,7 +21,7 @@ impl<T> MySettable<T> for MyContainer<T> {
 impl<T> MyGettable<T> for MyContainer<T> {
     fn get(
         &self,
-        val: T, // $ SPURIOUS: Alert[rust/unused-value] $ MISSING: Alert[rust/unused-variable]
+        val: T, // $ Alert[rust/unused-variable]
     ) -> &T {
         return &(self.val);
     }
