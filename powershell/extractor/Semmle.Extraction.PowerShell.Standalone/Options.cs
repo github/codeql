@@ -24,6 +24,9 @@ namespace Semmle.Extraction.PowerShell.Standalone
                 case "dry-run":
                     SkipExtraction = value;
                     return true;
+                case "skip-psmodulepath-files":
+                    SkipPSModulePathFiles = value;
+                    return true;
                 default:
                     return base.HandleFlag(key, value);
             }
@@ -128,6 +131,12 @@ namespace Semmle.Extraction.PowerShell.Standalone
         public bool SkipExtraction { get; private set; } = false;
 
         /// <summary>
+        /// Whether to extract files in the paths found in the `PSModulePath`
+        /// environment variable.
+        /// </summary>
+        public bool SkipPSModulePathFiles { get; private set; } = false;
+
+        /// <summary>
         /// Whether errors were encountered parsing the arguments.
         /// </summary>
         public bool Errors { get; private set; } = false;
@@ -158,13 +167,14 @@ namespace Semmle.Extraction.PowerShell.Standalone
                 "PowerShell# standalone extractor\n\nExtracts PowerShell scripts in the current directory.\n"
             );
             output.WriteLine("Additional options:\n");
-            output.WriteLine("    <path>           Use the provided path instead.");
+            output.WriteLine("    <path>                       Use the provided path instead.");
             output.WriteLine(
-                "    --exclude:xxx    Exclude a file or directory (can be specified multiple times)"
+                "    --exclude:xxx                Exclude a file or directory (can be specified multiple times)"
             );
-            output.WriteLine("    --dry-run        Stop before extraction");
-            output.WriteLine("    --threads:nnn    Specify number of threads (default=CPU cores)");
-            output.WriteLine("    --verbose        Produce more output");
+            output.WriteLine("    --dry-run                    Stop before extraction");
+            output.WriteLine("    --threads:nnn                Specify number of threads (default=CPU cores)");
+            output.WriteLine("    --verbose                    Produce more output");
+            output.WriteLine("    --skip-psmodulepath-files    Avoid extracting source files in paths specified by the PSModulePath environment variable.");
         }
 
         private Options() { }

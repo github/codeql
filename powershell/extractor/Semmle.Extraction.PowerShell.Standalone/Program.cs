@@ -45,7 +45,8 @@ namespace Semmle.Extraction.PowerShell.Standalone
 
             output.Log(Severity.Info, "Running PowerShell standalone extractor");
             var sourceFiles = options
-                .Files.Where(d =>
+                .Files.Concat(GetPSModuleFiles(options))
+                .Where(d =>
                     options.Extensions.Contains(
                         d.Extension,
                         StringComparer.InvariantCultureIgnoreCase
@@ -85,6 +86,30 @@ namespace Semmle.Extraction.PowerShell.Standalone
             }
 
             return 0;
+        }
+
+        private static String[] GetPSModulePaths()
+        {
+            return Environment.GetEnvironmentVariable("PSModulePath")?.Split(Path.PathSeparator)
+                ?? Array.Empty<string>();
+        }
+
+        private static IEnumerable<FileInfo> GetPSModuleFiles(Options options)
+        {
+            if(options.SkipPSModulePathFiles)
+            {
+                return Array.Empty<FileInfo>();
+            }
+            
+            return GetPSModulePaths()
+                .Where(d => Directory.Exists(d))
+                .SelectMany(d =>
+                {
+                    var di = new DirectoryInfo(d);
+                    return di.Exists
+                        ? di.GetFiles("*.*", SearchOption.AllDirectories)
+                        : new FileInfo[] { new(d) };
+                });
         }
 
         private class ExtractionProgress : IProgressMonitor
