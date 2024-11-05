@@ -134,7 +134,12 @@ class Jinja2TemplateConstruction extends TemplateConstruction::Range, API::CallN
 /** A call to `jinja2.from_string`. */
 class Jinja2FromStringConstruction extends TemplateConstruction::Range, API::CallNode {
   Jinja2FromStringConstruction() {
-    this = API::moduleImport("jinja2").getMember("from_string").getACall()
+    this =
+      API::moduleImport("jinja2")
+          .getMember("Environment")
+          .getReturn()
+          .getMember("from_string")
+          .getACall()
   }
 
   override DataFlow::Node getSourceArg() { result = this.getArg(0) }

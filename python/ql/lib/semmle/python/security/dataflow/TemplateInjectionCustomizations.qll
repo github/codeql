@@ -6,10 +6,9 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
-private import semmle.python.Concepts as C
+private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
-private import TemplateConstructionConcept
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -33,14 +32,9 @@ module TemplateInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
-   */
-  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
-
-  /**
    * An active threat-model source, considered as a flow source.
    */
-  private class ActiveThreatModelSourceAsSource extends Source, C::ActiveThreatModelSource { }
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A SQL statement of a SQL construction, considered as a flow sink.
@@ -53,7 +47,4 @@ module TemplateInjection {
    * A comparison with a constant, considered as a sanitizer-guard.
    */
   class ConstCompareAsSanitizerGuard extends Sanitizer, ConstCompareBarrier { }
-
-  /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
-  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
 }
