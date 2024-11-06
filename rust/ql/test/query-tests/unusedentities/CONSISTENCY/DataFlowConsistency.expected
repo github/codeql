@@ -212,29 +212,3 @@ uniqueCallEnclosingCallable
 | unreachable.rs:247:9:247:14 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:248:9:248:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:252:5:252:18 | CallExpr | Call should have one enclosing callable but has 0. |
-uniqueType
-| main.rs:140:5:140:10 | Param | Node should have one type but has 0. |
-| main.rs:141:5:141:10 | Param | Node should have one type but has 0. |
-| main.rs:142:5:142:11 | Param | Node should have one type but has 0. |
-| main.rs:149:7:149:12 | Param | Node should have one type but has 0. |
-| main.rs:382:19:382:21 | Param | Node should have one type but has 0. |
-| main.rs:384:14:384:19 | Param | Node should have one type but has 0. |
-| main.rs:411:21:411:28 | Param | Node should have one type but has 0. |
-| main.rs:411:31:411:38 | Param | Node should have one type but has 0. |
-| main.rs:414:21:414:23 | Param | Node should have one type but has 0. |
-| main.rs:414:26:414:28 | Param | Node should have one type but has 0. |
-| main.rs:417:21:417:23 | Param | Node should have one type but has 0. |
-| main.rs:417:26:417:28 | Param | Node should have one type but has 0. |
-| main.rs:420:21:420:23 | Param | Node should have one type but has 0. |
-| main.rs:420:26:420:28 | Param | Node should have one type but has 0. |
-| main.rs:424:21:424:23 | Param | Node should have one type but has 0. |
-| main.rs:424:26:424:28 | Param | Node should have one type but has 0. |
-| main.rs:430:29:430:38 | Param | Node should have one type but has 0. |
-| main.rs:430:41:430:56 | Param | Node should have one type but has 0. |
-| main.rs:440:9:440:18 | Param | Node should have one type but has 0. |
-| main.rs:441:9:441:24 | Param | Node should have one type but has 0. |
-| more.rs:4:23:4:28 | Param | Node should have one type but has 0. |
-| more.rs:8:19:8:24 | Param | Node should have one type but has 0. |
-| more.rs:16:23:16:28 | Param | Node should have one type but has 0. |
-| more.rs:24:9:24:14 | Param | Node should have one type but has 0. |
-| unreachable.rs:10:34:10:34 | Param | Node should have one type but has 0. |
