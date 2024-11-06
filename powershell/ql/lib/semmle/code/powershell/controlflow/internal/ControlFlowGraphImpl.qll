@@ -468,7 +468,7 @@ module Trees {
 
   class MemberExprTree extends StandardPostOrderTree instanceof MemberExpr {
     override AstNode getChildNode(int i) {
-      i = 0 and result = super.getBase()
+      i = 0 and result = super.getQualifier()
       or
       i = 1 and result = super.getMember()
     }

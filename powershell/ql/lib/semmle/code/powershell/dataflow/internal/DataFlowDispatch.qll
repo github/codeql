@@ -3,6 +3,8 @@ private import semmle.code.powershell.Cfg
 private import DataFlowPrivate
 private import DataFlowPublic
 private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
+private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.powershell.dataflow.FlowSummary
 private import codeql.util.Boolean
 private import codeql.util.Unit
 
@@ -38,6 +40,15 @@ abstract class LibraryCallable extends string {
 
   /** Gets a call to this library callable. */
   Call getACall() { none() }
+
+  /** Same as `getACall()` except this does not depend on the call graph or API graph. */
+  Call getACallSimple() { none() }
+}
+
+/** A callable defined in library code, which should be taken into account in type tracking. */
+abstract class LibraryCallableToIncludeInTypeTracking extends LibraryCallable {
+  bindingset[this]
+  LibraryCallableToIncludeInTypeTracking() { exists(this) }
 }
 
 /**
@@ -108,6 +119,24 @@ abstract class DataFlowCall extends TDataFlowCall {
   }
 }
 
+class SummaryCall extends DataFlowCall, TSummaryCall {
+  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private FlowSummaryImpl::Private::SummaryNode receiver;
+
+  SummaryCall() { this = TSummaryCall(c, receiver) }
+
+  /** Gets the data flow node that this call targets. */
+  FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
+
+  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
+
+  override CfgNodes::CallCfgNode asCall() { none() }
+
+  override string toString() { result = "[summary] call to " + receiver + " in " + c }
+
+  override EmptyLocation getLocation() { any() }
+}
+
 class NormalCall extends DataFlowCall, TNormalCall {
   private CfgNodes::CallCfgNode c;
 
@@ -134,6 +163,9 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
     or
     start.asExpr().(CfgNodes::ExprNodes::TypeNameCfgNode).getTypeName() = typename and
     exact = true
+    or
+    start.asParameter().getStaticType() = typename and
+    exact = false
   }
 
   newtype State = additional MkState(string typename, Boolean exact) { start0(_, typename, exact) }
@@ -174,12 +206,20 @@ Node trackInstance(string typename, boolean exact) {
         exact))
 }
 
+private Type getTypeWithName(string s, boolean exact) {
+  result.getName() = s and
+  exact = true
+  or
+  result.getASubtype+().getName() = s and
+  exact = false
+}
+
 private CfgScope getTargetInstance(CfgNodes::CallCfgNode call) {
   // TODO: Also match argument/parameter types
-  exists(Node receiver, string method, string typename, Type t |
+  exists(Node receiver, string method, string typename, Type t, boolean exact |
     qualifiedCall(call, receiver, method) and
-    receiver = trackInstance(typename, _) and
-    t.getName() = typename
+    receiver = trackInstance(typename, exact) and
+    t = getTypeWithName(typename, exact)
   |
     if method = "new"
     then result = t.getAConstructor().getBody()
@@ -199,6 +239,14 @@ class AdditionalCallTarget extends Unit {
   abstract DataFlowCallable viableTarget(CfgNodes::CallCfgNode call);
 }
 
+/** Holds if `call` may resolve to the returned summarized library method. */
+DataFlowCallable viableLibraryCallable(DataFlowCall call) {
+  exists(LibraryCallable callable |
+    result = TLibraryCallable(callable) and
+    call.asCall().getAstNode() = [callable.getACall(), callable.getACallSimple()]
+  )
+}
+
 cached
 private module Cached {
   cached
@@ -207,7 +255,13 @@ private module Cached {
     TLibraryCallable(LibraryCallable callable)
 
   cached
-  newtype TDataFlowCall = TNormalCall(CfgNodes::CallCfgNode c)
+  newtype TDataFlowCall =
+    TNormalCall(CfgNodes::CallCfgNode c) or
+    TSummaryCall(
+      FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
+    ) {
+      FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
+    }
 
   /** Gets a viable run-time target for the call `call`. */
   cached
@@ -223,12 +277,18 @@ private module Cached {
   cached
   newtype TArgumentPosition =
     TThisArgumentPosition() or
-    TKeywordArgumentPosition(string name) { name = any(Argument p).getName() } or
+    TKeywordArgumentPosition(string name) {
+      name = any(Argument p).getName()
+      or
+      FlowSummaryImpl::ParsePositions::isParsedKeywordParameterPosition(_, name)
+    } or
     TPositionalArgumentPosition(int pos, NamedSet ns) {
       exists(CfgNodes::CallCfgNode call |
         call = ns.getABindingCall() and
         exists(call.getArgument(pos))
       )
+      or
+      FlowSummaryImpl::ParsePositions::isParsedParameterPosition(_, pos)
     } or
     TPipelineArgumentPosition()
 

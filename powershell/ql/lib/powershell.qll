@@ -82,3 +82,4 @@ import semmle.code.powershell.SplitExpr
 import semmle.code.powershell.CommentEntity
 import semmle.code.powershell.Variable
 import semmle.code.powershell.internal.Internal::Public
+import semmle.code.powershell.ModuleManifest

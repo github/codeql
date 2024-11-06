@@ -5,20 +5,36 @@ private import semmle.code.powershell.controlflow.Cfg as Cfg
 private import Cfg::CfgNodes
 private import codeql.typetracking.internal.SummaryTypeTracker as SummaryTypeTracker
 private import semmle.code.powershell.dataflow.DataFlow
+private import semmle.code.powershell.dataflow.FlowSummary as FlowSummary
 private import semmle.code.powershell.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.powershell.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import semmle.code.powershell.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.code.powershell.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+private import semmle.code.powershell.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.util.Unit
+
+pragma[noinline]
+private predicate sourceArgumentPositionMatch(
+  CallCfgNode call, DataFlowPrivate::ArgumentNode arg, DataFlowDispatch::ParameterPosition ppos
+) {
+  exists(DataFlowDispatch::ArgumentPosition apos |
+    arg.sourceArgumentOf(call, apos) and
+    DataFlowDispatch::parameterMatch(ppos, apos)
+  )
+}
 
 pragma[noinline]
 private predicate argumentPositionMatch(
   DataFlowDispatch::DataFlowCall call, DataFlowPrivate::ArgumentNode arg,
   DataFlowDispatch::ParameterPosition ppos
 ) {
+  sourceArgumentPositionMatch(call.asCall(), arg, ppos)
+  or
   exists(DataFlowDispatch::ArgumentPosition apos |
+    DataFlowDispatch::parameterMatch(ppos, apos) and
     arg.argumentOf(call, apos) and
-    DataFlowDispatch::parameterMatch(ppos, apos)
+    call.getEnclosingCallable().asLibraryCallable() instanceof
+      DataFlowDispatch::LibraryCallableToIncludeInTypeTracking
   )
 }
 
@@ -29,6 +45,12 @@ private predicate viableParam(
 ) {
   exists(DataFlowDispatch::DataFlowCallable callable |
     DataFlowDispatch::getTarget(call) = callable.asCfgScope()
+    or
+    call.asCall().getAstNode() =
+      callable
+          .asLibraryCallable()
+          .(DataFlowDispatch::LibraryCallableToIncludeInTypeTracking)
+          .getACallSimple()
   |
     p.isParameterOf(callable, ppos)
   )
@@ -71,43 +93,64 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   }
 
   // Summaries and their stacks
-  class SummaryComponent extends Unit {
-    SummaryComponent() { none() }
-  }
+  class SummaryComponent = FlowSummaryImpl::Private::SummaryComponent;
 
-  class SummaryComponentStack extends Unit {
-    SummaryComponent head() { none() }
-  }
+  class SummaryComponentStack = FlowSummaryImpl::Private::SummaryComponentStack;
 
-  SummaryComponentStack singleton(SummaryComponent component) { none() }
+  predicate singleton = FlowSummaryImpl::Private::SummaryComponentStack::singleton/1;
 
-  SummaryComponentStack push(SummaryComponent head, SummaryComponentStack tail) { none() }
+  predicate push = FlowSummaryImpl::Private::SummaryComponentStack::push/2;
 
-  SummaryComponent return() { none() }
+  // Relating content to summaries
+  predicate content = FlowSummaryImpl::Private::SummaryComponent::content/1;
 
-  SummaryComponent content(Content contents) { none() }
+  predicate withoutContent = FlowSummaryImpl::Private::SummaryComponent::withoutContent/1;
 
-  SummaryComponent withoutContent(Content contents) { none() }
+  predicate withContent = FlowSummaryImpl::Private::SummaryComponent::withContent/1;
 
-  SummaryComponent withContent(Content contents) { none() }
+  predicate return = FlowSummaryImpl::Private::SummaryComponent::return/0;
 
-  class SummarizedCallable extends Unit {
-    SummarizedCallable() { none() }
+  // Callables
+  class SummarizedCallable instanceof FlowSummaryImpl::Private::SummarizedCallableImpl {
+    string toString() { result = super.toString() }
 
     predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      none()
+      super.propagatesFlow(input, output, preservesValue, _)
     }
   }
 
-  Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) { none() }
+  // Relating nodes to summaries
+  Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) {
+    exists(DataFlowDispatch::ParameterPosition pos, DataFlowPrivate::ArgumentNode n |
+      arg = FlowSummaryImpl::Private::SummaryComponent::argument(pos) and
+      sourceArgumentPositionMatch(call.asExpr(), n, pos)
+    |
+      isPostUpdate = false and result = n
+      or
+      isPostUpdate = true and result.(DataFlowPublic::PostUpdateNode).getPreUpdateNode() = n
+    )
+  }
 
-  Node parameterOf(Node callable, SummaryComponent param) { none() }
+  Node parameterOf(Node callable, SummaryComponent param) {
+    exists(DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos |
+      param = FlowSummaryImpl::Private::SummaryComponent::parameter(apos) and
+      DataFlowDispatch::parameterMatch(ppos, apos) and
+      result.(DataFlowPrivate::ParameterNodeImpl).isSourceParameterOf(callable.asCallable(), ppos)
+    )
+  }
 
-  Node returnOf(Node callable, SummaryComponent return) { none() }
+  Node returnOf(Node callable, SummaryComponent return) {
+    return = FlowSummaryImpl::Private::SummaryComponent::return() and
+    result.(DataFlowPrivate::ReturnNode).(DataFlowPrivate::NodeImpl).getCfgScope() =
+      callable.asCallable()
+  }
 
-  Node callTo(SummarizedCallable callable) { none() }
+  // Relating callables to nodes
+  Node callTo(SummarizedCallable callable) {
+    result.asExpr().getExpr() = callable.(FlowSummary::SummarizedCallable).getACallSimple()
+  }
 }
 
 private module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryTypeTrackerInput>;
@@ -131,7 +174,8 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
 
     /** Gets the content of a type-tracker that matches this filter. */
     Content getAMatchingContent() {
-      none() // TODO
+      this = MkElementFilter() and
+      result.getAReadContent() instanceof DataFlow::Content::ElementContent
     }
   }
 

@@ -12,4 +12,8 @@ dependencies:
   codeql/dataflow: ${workspace}
   codeql/ssa: ${workspace}
   codeql/util: ${workspace}
+  codeql/mad: ${workspace}
+dataExtensions:
+  - semmle/code/powershell/frameworks/**/model.yml
+  - semmle/code/powershell/frameworks/**/*.model.yml
 warnOnImplicitThis: true

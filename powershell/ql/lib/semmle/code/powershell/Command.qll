@@ -1,11 +1,32 @@
 import powershell
+private predicate parseCommandName(Cmd cmd, string namespace, string name) {
+  exists(string qualified | command(cmd, qualified, _, _, _) |
+    namespace = qualified.regexpCapture("([^\\\\]+)\\\\([^\\\\]+)", 1) and
+    name = qualified.regexpCapture("([^\\\\]+)\\\\([^\\\\]+)", 2)
+    or
+    // Not a qualified name
+    not exists(qualified.indexOf("\\")) and
+    namespace = "" and
+    name = qualified
+  )
+}
 
 class Cmd extends @command, CmdBase {
-  override string toString() { result = this.getCommandName() }
+  override string toString() { result = this.getQualifiedCommandName() }
 
   override SourceLocation getLocation() { command_location(this, result) }
 
-  string getCommandName() { command(this, result, _, _, _) }
+  /** Gets the name of the command without any qualifiers. */
+  string getCommandName() { parseCommandName(this, _, result) }
+
+  /** Holds if the command is qualified. */
+  predicate isQualified() { parseCommandName(this, any(string s | s != ""), _) }
+
+  /** Gets the namespace qualifier of this command, if any. */
+  string getNamespaceQualifier() { parseCommandName(this, result, _) }
+
+  /** Gets the (possibly qualified) name of this command. */
+  string getQualifiedCommandName() { command(this, result, _, _, _) }
 
   int getKind() { command(this, _, result, _, _) }
 
@@ -15,8 +36,10 @@ class Cmd extends @command, CmdBase {
 
   CmdElement getElement(int i) { command_command_element(this, i, result) }
 
+  /** Gets the expression that determines the command to invoke. */
   Expr getCommand() { result = this.getElement(0) }
 
+  /** Gets the name of this command, if this is statically known. */
   StringConstExpr getCmdName() { result = this.getElement(0) }
 
   /** Gets any argument to this command. */

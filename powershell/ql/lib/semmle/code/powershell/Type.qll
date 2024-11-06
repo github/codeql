@@ -22,4 +22,10 @@ class Type extends @type_definition, Stmt {
   }
 
   Method getAMethod() { result = this.getMethod(_) }
+
+  TypeConstraint getBaseType(int i) { type_definition_base_type(this, i, result) }
+
+  TypeConstraint getABaseType() { result = this.getBaseType(_) }
+
+  Type getASubtype() { result.getABaseType().getName() = this.getName() }
 }
