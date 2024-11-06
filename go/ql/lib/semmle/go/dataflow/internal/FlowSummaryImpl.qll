@@ -174,10 +174,13 @@ module SourceSinkInterpretationInput implements
       result = [this.asMethodEntity(), this.asFieldEntity(), this.asOtherEntity()]
     }
 
+    /** Gets this source or sink element as a method, if it is one. */
     Method asMethodEntity() { this = TMethodEntityElement(result, _, _, _) }
 
+    /** Gets this source or sink element as a field, if it is one. */
     Field asFieldEntity() { this = TFieldEntityElement(result, _, _, _) }
 
+    /** Gets this source or sink element as an entity which isn't a field or method, if it is one. */
     Entity asOtherEntity() { this = TOtherEntityElement(result) }
 
     /** Gets this source or sink element as an AST node, if it is one. */
