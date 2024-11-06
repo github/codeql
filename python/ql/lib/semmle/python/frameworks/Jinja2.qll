@@ -9,9 +9,15 @@ private import semmle.python.ApiGraphs
 private import semmle.python.Concepts
 private import semmle.python.frameworks.data.ModelsAsData
 
+/**
+ * INTERNAL: Do not use
+ *
+ * Provides classes modeling security-relevant aspects of the `jinja2` PyPI package.
+ * See https://jinja.palletsprojects.com.
+ */
 module Jinja2 {
   /** A call to `jinja2.Template`. */
-  class Jinja2TemplateConstruction extends TemplateConstruction::Range, API::CallNode {
+  private class Jinja2TemplateConstruction extends TemplateConstruction::Range, API::CallNode {
     Jinja2TemplateConstruction() {
       this = API::moduleImport("jinja2").getMember("Template").getACall()
     }
@@ -39,7 +45,8 @@ module Jinja2 {
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /** A call to `jinja2.Environment.from_string`. */
-    class Jinja2FromStringConstruction extends TemplateConstruction::Range, DataFlow::MethodCallNode
+    private class Jinja2FromStringConstruction extends TemplateConstruction::Range,
+      DataFlow::MethodCallNode
     {
       Jinja2FromStringConstruction() { this.calls(EnvironmentClass::instance(), "from_string") }
 

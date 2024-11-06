@@ -2996,4 +2996,19 @@ module PrivateDjango {
       any()
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // Templates
+  // ---------------------------------------------------------------------------
+  
+  /** A call to `django.template.Template` */
+  private class DjangoTemplateConstruction extends TemplateConstruction::Range, API::CallNode {
+    DjangoTemplateConstruction() {
+      this = API::moduleImport("django").getMember("template").getMember("Template").getACall()
+    }
+
+    override DataFlow::Node getSourceArg() { result = this.getArg(0) }
+  }
+
+  // TODO: Support `from_string` on instances of `django.template.Engine`.
 }
