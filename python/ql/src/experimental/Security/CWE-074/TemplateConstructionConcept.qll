@@ -122,6 +122,7 @@ class GenshiMarkupTemplateConstruction extends TemplateConstruction::Range, API:
   override DataFlow::Node getSourceArg() { result = this.getArg(0) }
 }
 
+//
 /** A call to `jinja2.Template`. */
 class Jinja2TemplateConstruction extends TemplateConstruction::Range, API::CallNode {
   Jinja2TemplateConstruction() {
