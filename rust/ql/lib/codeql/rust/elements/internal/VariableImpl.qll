@@ -88,7 +88,7 @@ module Impl {
     // exclude parameters from functions without a body as these are trait method declarations
     // without implementations
     not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = p) and
-    // exclude parameters from function pointers as well, which also lack a body
+    // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
     not exists(FnPtrType fp | fp.getParamList().getParam(_).getPat() = p)
   }
 
