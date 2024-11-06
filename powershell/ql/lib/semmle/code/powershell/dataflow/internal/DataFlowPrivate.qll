@@ -293,7 +293,15 @@ private module Cached {
     n instanceof ParameterNode
     or
     // Expressions that can't be reached from another entry definition or expression
-    n instanceof ExprNode and
+    (
+      n instanceof ExprNode
+      or
+      exists(CfgNodes::StmtNodes::AssignStmtCfgNode assign | assign.getRightHandSide() = n.asStmt())
+      or
+      n.asStmt() instanceof CfgNodes::StmtNodes::CmdCfgNode
+      or
+      exists(CfgNodes::StmtNodes::PipelineCfgNode pipeline | n.asStmt() = pipeline.getAComponent())
+    ) and
     not reachedFromExprOrEntrySsaDef(n)
     or
     // Ensure all entry SSA definitions are local sources, except those that correspond
