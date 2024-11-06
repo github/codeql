@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -121,6 +122,24 @@ namespace Semmle.Extraction.PowerShell.Standalone
         }
 
         /// <summary>
+        /// Returns true if the extractor should skip files in the PSModulePath because the
+        /// environment variable CODEQL_EXTRACTOR_POWERSHELL_OPTION_SKIP_PSMODULEPATH_FILES
+        /// is set to a truthy value.
+        /// </summary>
+        private static bool GetDefaultSkipPSModulePathFiles()
+        {
+            var skip = System.Environment.GetEnvironmentVariable(
+                "CODEQL_EXTRACTOR_POWERSHELL_OPTION_SKIP_PSMODULEPATH_FILES"
+            );
+            bool b = skip != null && skip.ToLower() != "false";
+            if (b)
+            {
+                System.Console.WriteLine("Skipping files in PSModulePath");
+            }
+            return b;
+        }
+
+        /// <summary>
         /// The directory or file containing the source code;
         /// </summary>
         public FileInfo[] Files { get; set; } = GetDefaultFiles();
@@ -134,7 +153,7 @@ namespace Semmle.Extraction.PowerShell.Standalone
         /// Whether to extract files in the paths found in the `PSModulePath`
         /// environment variable.
         /// </summary>
-        public bool SkipPSModulePathFiles { get; private set; } = false;
+        public bool SkipPSModulePathFiles { get; private set; } = GetDefaultSkipPSModulePathFiles();
 
         /// <summary>
         /// Whether errors were encountered parsing the arguments.
@@ -172,9 +191,13 @@ namespace Semmle.Extraction.PowerShell.Standalone
                 "    --exclude:xxx                Exclude a file or directory (can be specified multiple times)"
             );
             output.WriteLine("    --dry-run                    Stop before extraction");
-            output.WriteLine("    --threads:nnn                Specify number of threads (default=CPU cores)");
+            output.WriteLine(
+                "    --threads:nnn                Specify number of threads (default=CPU cores)"
+            );
             output.WriteLine("    --verbose                    Produce more output");
-            output.WriteLine("    --skip-psmodulepath-files    Avoid extracting source files in paths specified by the PSModulePath environment variable.");
+            output.WriteLine(
+                "    --skip-psmodulepath-files    Avoid extracting source files in paths specified by the PSModulePath environment variable."
+            );
         }
 
         private Options() { }
