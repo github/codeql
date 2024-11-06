@@ -12,6 +12,64 @@ private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
 
+private newtype TReturnKind = TNormalReturnKind()
+
+/**
+ * A return kind. A return kind describes how a value can be returned from a
+ * callable.
+ *
+ * The only return kind is a "normal" return from a `return` statement or an
+ * expression body.
+ */
+final class ReturnKind extends TNormalReturnKind {
+  string toString() { result = "return" }
+}
+
+/**
+ * A callable. This includes callables from source code, as well as callables
+ * defined in library code.
+ */
+final class DataFlowCallable extends TDataFlowCallable {
+  /**
+   * Gets the underlying CFG scope, if any.
+   */
+  CfgScope asCfgScope() { this = TCfgScope(result) }
+
+  /** Gets a textual representation of this callable. */
+  string toString() { result = this.asCfgScope().toString() }
+
+  /** Gets the location of this callable. */
+  Location getLocation() { result = this.asCfgScope().getLocation() }
+}
+
+abstract class DataFlowCall extends TDataFlowCall {
+  /** Gets the enclosing callable. */
+  abstract DataFlowCallable getEnclosingCallable();
+
+  /** Gets the underlying source code call, if any. */
+  abstract CallCfgNode asCall();
+
+  abstract string toString();
+
+  /** Gets the location of this call. */
+  abstract Location getLocation();
+}
+
+final class NormalCall extends DataFlowCall, TNormalCall {
+  private CallCfgNode c;
+
+  NormalCall() { this = TNormalCall(c) }
+
+  /** Gets the underlying call in the CFG, if any. */
+  override CallCfgNode asCall() { result = c }
+
+  override DataFlowCallable getEnclosingCallable() { none() }
+
+  override string toString() { result = c.toString() }
+
+  override Location getLocation() { result = c.getLocation() }
+}
+
 module Node {
   /**
    * An element, viewed as a node in a data flow graph. Either an expression
@@ -28,6 +86,12 @@ module Node {
      * Gets the expression that corresponds to this node, if any.
      */
     Expr asExpr() { none() }
+
+    /** Gets the enclosing callable. */
+    DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.getCfgScope()) }
+
+    /** Do not call: use `getEnclosingCallable()` instead. */
+    abstract CfgScope getCfgScope();
 
     /**
      * Gets the control flow node that corresponds to this data flow node.
@@ -49,6 +113,8 @@ module Node {
   final class NaNode extends Node {
     NaNode() { none() }
 
+    override CfgScope getCfgScope() { none() }
+
     override string toString() { result = "N/A" }
 
     override Location getLocation() { none() }
@@ -62,10 +128,12 @@ module Node {
    * to multiple `ExprNode`s, just like it may correspond to multiple
    * `ControlFlow::Node`s.
    */
-  final class ExprNode extends Node, TExprNode {
+  class ExprNode extends Node, TExprNode {
     ExprCfgNode n;
 
     ExprNode() { this = TExprNode(n) }
+
+    override CfgScope getCfgScope() { result = this.asExpr().getEnclosingCallable() }
 
     override Location getLocation() { result = n.getExpr().getLocation() }
 
@@ -84,6 +152,8 @@ module Node {
     Param parameter;
 
     ParameterNode() { this = TParameterNode(parameter) }
+
+    override CfgScope getCfgScope() { result = parameter.getEnclosingCallable() }
 
     override Location getLocation() { result = parameter.getLocation() }
 
@@ -105,6 +175,8 @@ module Node {
       def = node.getDefinitionExt()
     }
 
+    override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
+
     SsaImpl::DefinitionExt getDefinitionExt() { result = def }
 
     /** Holds if this node should be hidden from path explanations. */
@@ -115,11 +187,25 @@ module Node {
     override string toString() { result = node.toString() }
   }
 
-  final class ReturnNode extends NaNode {
-    RustDataFlow::ReturnKind getKind() { none() }
+  /** A data flow node that represents a value returned by a callable. */
+  final class ReturnNode extends ExprNode {
+    ReturnNode() { this.getCfgNode().getASuccessor() instanceof ExitCfgNode }
+
+    ReturnKind getKind() { any() }
   }
 
-  final class OutNode = NaNode;
+  /** A data-flow node that represents the output of a call. */
+  abstract class OutNode extends Node, ExprNode {
+    /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
+    abstract DataFlowCall getCall();
+  }
+
+  final private class ExprOutNode extends OutNode {
+    ExprOutNode() { this.asExpr() instanceof CallExpr }
+
+    /** Gets the underlying call CFG node that includes this out node. */
+    override DataFlowCall getCall() { result.(NormalCall).asCall() = this.getCfgNode() }
+  }
 
   /**
    * A node associated with an object after an operation that might have
@@ -198,6 +284,12 @@ module LocalFlow {
   }
 }
 
+class DataFlowCallableAlias = DataFlowCallable;
+
+class ReturnKindAlias = ReturnKind;
+
+class DataFlowCallAlias = DataFlowCall;
+
 module RustDataFlow implements InputSig<Location> {
   /**
    * An element, viewed as a node in a data flow graph. Either an expression
@@ -221,7 +313,7 @@ module RustDataFlow implements InputSig<Location> {
 
   predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) { none() }
 
-  DataFlowCallable nodeGetEnclosingCallable(Node node) { none() }
+  DataFlowCallable nodeGetEnclosingCallable(Node node) { result = node.getEnclosingCallable() }
 
   DataFlowType getNodeType(Node node) { any() }
 
@@ -232,26 +324,22 @@ module RustDataFlow implements InputSig<Location> {
   /** Gets the node corresponding to `e`. */
   Node exprNode(DataFlowExpr e) { result.getCfgNode() = e }
 
-  final class DataFlowCall extends TNormalCall {
-    private CallExpr c;
+  final class DataFlowCall = DataFlowCallAlias;
 
-    DataFlowCall() { this = TNormalCall(c) }
+  final class DataFlowCallable = DataFlowCallableAlias;
 
-    DataFlowCallable getEnclosingCallable() { none() }
-
-    string toString() { result = c.toString() }
-
-    Location getLocation() { result = c.getLocation() }
-  }
-
-  final class DataFlowCallable = CfgScope;
-
-  final class ReturnKind = Void;
+  final class ReturnKind = ReturnKindAlias;
 
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall c) { none() }
 
-  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { none() }
+  /**
+   * Gets a node that can read the value returned from `call` with return kind
+   * `kind`.
+   */
+  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
+    call = result.getCall() and exists(kind)
+  }
 
   // NOTE: For now we use the type `Unit` and do not benefit from type
   // information in the data flow analysis.
@@ -400,7 +488,7 @@ private module Cached {
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node)
 
   cached
-  newtype TDataFlowCall = TNormalCall(CallExpr c)
+  newtype TDataFlowCall = TNormalCall(CallCfgNode c)
 
   cached
   newtype TOptionalContentSet =
@@ -409,6 +497,9 @@ private module Cached {
 
   cached
   class TContentSet = TAnyElementContent or TAnyContent;
+
+  cached
+  newtype TDataFlowCallable = TCfgScope(CfgScope scope)
 
   /** This is the local flow predicate that is exposed. */
   cached

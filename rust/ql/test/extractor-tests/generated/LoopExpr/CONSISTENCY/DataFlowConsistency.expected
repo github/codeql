@@ -1,3 +1,2 @@
 uniqueCallEnclosingCallable
 | gen_loop_expr.rs:6:18:6:40 | CallExpr | Call should have one enclosing callable but has 0. |
-| gen_loop_expr.rs:9:18:9:39 | CallExpr | Call should have one enclosing callable but has 0. |
