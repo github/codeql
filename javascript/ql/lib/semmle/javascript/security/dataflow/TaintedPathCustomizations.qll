@@ -572,16 +572,15 @@ module TaintedPath {
   }
 
   /**
-   * A source of remote user input, considered as a flow source for
-   * tainted-path vulnerabilities.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() {
-      exists(RemoteFlowSource src |
-        this = src and
-        not src instanceof ClientSideRemoteFlowSource
-      )
-    }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+    ActiveThreatModelSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
   }
 
   /**

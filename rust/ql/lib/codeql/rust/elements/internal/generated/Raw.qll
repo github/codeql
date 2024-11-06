@@ -88,10 +88,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A AssocItemList. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A list of  `AssocItem` elements, as appearing for example in a `Trait`.
    */
   class AssocItemList extends @assoc_item_list, AstNode {
     override string toString() { result = "AssocItemList" }
@@ -2061,7 +2058,23 @@ module Raw {
    * todo!()
    * ```
    */
-  class Item extends @item, Stmt { }
+  class Item extends @item, Stmt {
+    /**
+     * Gets the extended canonical path of this item, if it exists.
+     *
+     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
+     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
+     * addressable there-in).
+     */
+    string getExtendedCanonicalPath() { item_extended_canonical_paths(this, result) }
+
+    /**
+     * Gets the crate origin of this item, if it exists.
+     *
+     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
+     */
+    string getCrateOrigin() { item_crate_origins(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -3704,8 +3717,14 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A Trait. For example:
-   * ```rust
-   * todo!()
+   * ```
+   * trait Frobinizable {
+   *   type Frobinator;
+   *   type Result: Copy;
+   *   fn frobinize_with(&mut self, frobinator: &Self::Frobinator) -> Result;
+   * }
+   *
+   * pub trait Foo<T: Frobinizable> where T::Frobinator: Eq {}
    * ```
    */
   class Trait extends @trait, Item {

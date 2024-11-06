@@ -31,9 +31,16 @@ module ResourceExhaustion {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a data flow source for resource exhaustion vulnerabilities. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
-    RemoteFlowSourceAsSource() {
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+    ActiveThreatModelSourceAsSource() {
       // exclude source that only happen client-side
       not this instanceof ClientSideRemoteFlowSource and
       not this = DataFlow::parameterNode(any(PostMessageEventHandler pmeh).getEventParameter())

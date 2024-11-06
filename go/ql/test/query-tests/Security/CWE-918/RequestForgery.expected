@@ -30,7 +30,6 @@ edges
 | tst.go:36:2:36:2 | implicit dereference | tst.go:36:2:36:2 | u | provenance |  |
 | tst.go:36:2:36:2 | implicit dereference | tst.go:37:11:37:11 | u | provenance |  |
 | tst.go:36:2:36:2 | u | tst.go:36:2:36:2 | implicit dereference | provenance |  |
-| tst.go:36:2:36:2 | u | tst.go:36:2:36:2 | u | provenance |  |
 | tst.go:36:2:36:2 | u | tst.go:37:11:37:11 | u | provenance |  |
 | tst.go:36:2:36:2 | u [pointer] | tst.go:36:2:36:2 | implicit dereference | provenance |  |
 | tst.go:36:11:36:17 | tainted | tst.go:36:2:36:2 | u | provenance | Config |

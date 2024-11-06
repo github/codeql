@@ -844,12 +844,10 @@ class _:
 
 
 @annotate(AssocItemList)
+@qltest.test_with(Trait)
 class _:
     """
-    A AssocItemList. For example:
-    ```rust
-    todo!()
-    ```
+    A list of  `AssocItem` elements, as appearing for example in a `Trait`.
     """
 
 
@@ -1541,11 +1539,18 @@ class _:
 
 
 @annotate(Trait)
+@rust.doc_test_signature(None)
 class _:
     """
     A Trait. For example:
-    ```rust
-    todo!()
+    ```
+    trait Frobinizable {
+      type Frobinator;
+      type Result: Copy;
+      fn frobinize_with(&mut self, frobinator: &Self::Frobinator) -> Result;
+    }
+
+    pub trait Foo<T: Frobinizable> where T::Frobinator: Eq {}
     ```
     """
 
@@ -1795,3 +1800,12 @@ class FormatArgument(Locatable):
     ```
     """
     parent: Format
+
+@annotate(Item)
+class _:
+    extended_canonical_path: optional[string] | desc("""
+        Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
+        or `{<block id>}::name` for addressable items defined in an anonymous block (and only
+        addressable there-in).
+    """) | rust.detach | ql.internal
+    crate_origin: optional[string] | desc("One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.") | rust.detach | ql.internal

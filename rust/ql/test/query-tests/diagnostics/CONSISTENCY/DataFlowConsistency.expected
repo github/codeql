@@ -1,0 +1,8 @@
+uniqueCallEnclosingCallable
+| comments.rs:55:5:55:20 | CallExpr | Call should have one enclosing callable but has 0. |
+| main.rs:13:14:13:28 | CallExpr | Call should have one enclosing callable but has 0. |
+| main.rs:15:5:15:24 | CallExpr | Call should have one enclosing callable but has 0. |
+| main.rs:16:5:16:23 | CallExpr | Call should have one enclosing callable but has 0. |
+| my_macro.rs:16:9:16:18 | CallExpr | Call should have one enclosing callable but has 0. |
+| my_struct.rs:17:18:17:32 | CallExpr | Call should have one enclosing callable but has 0. |
+| my_struct.rs:25:19:25:37 | CallExpr | Call should have one enclosing callable but has 0. |

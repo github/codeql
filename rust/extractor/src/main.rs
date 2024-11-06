@@ -1,6 +1,7 @@
 use anyhow::Context;
 use archive::Archiver;
 use log::info;
+use ra_ap_hir::Semantics;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_project_model::ProjectManifest;
 use rust_analyzer::{ParseResult, RustAnalyzer};
@@ -17,7 +18,7 @@ mod translate;
 pub mod trap;
 
 fn extract(
-    rust_analyzer: &mut rust_analyzer::RustAnalyzer,
+    rust_analyzer: &rust_analyzer::RustAnalyzer,
     archiver: &Archiver,
     traps: &trap::TrapFileProvider,
     file: &std::path::Path,
@@ -29,7 +30,6 @@ fn extract(
         text,
         errors,
         file_id,
-        semantics,
     } = rust_analyzer.parse(file);
     let line_index = LineIndex::new(text.as_ref());
     let display_path = file.to_string_lossy();
@@ -41,7 +41,7 @@ fn extract(
         label,
         line_index,
         file_id,
-        semantics,
+        file_id.and(rust_analyzer.semantics()),
     );
 
     for err in errors {
@@ -112,14 +112,20 @@ fn main() -> anyhow::Result<()> {
         if files.is_empty() {
             break;
         }
-        let mut rust_analyzer = RustAnalyzer::new(manifest, &cfg.scratch_dir);
-        for file in files {
-            extract(&mut rust_analyzer, &archiver, &traps, file);
+        if let Some((ref db, ref vfs)) = RustAnalyzer::load_workspace(manifest, &cfg.scratch_dir) {
+            let semantics = Semantics::new(db);
+            let rust_analyzer = RustAnalyzer::new(vfs, semantics);
+            for file in files {
+                extract(&rust_analyzer, &archiver, &traps, file);
+            }
+        } else {
+            for file in files {
+                extract(&RustAnalyzer::WithoutSemantics, &archiver, &traps, file);
+            }
         }
     }
-    let mut rust_analyzer = RustAnalyzer::WithoutDatabase();
     for file in other_files {
-        extract(&mut rust_analyzer, &archiver, &traps, file);
+        extract(&RustAnalyzer::WithoutSemantics, &archiver, &traps, file);
     }
 
     Ok(())
