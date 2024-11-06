@@ -5,23 +5,30 @@ load("//misc/bazel:lfs.bzl", "lfs_archive", "lfs_files")
 
 _override = {
     # these are used to test new artifacts. Must be empty before merging to main
-    "swift-prebuilt-macOS.tar.zst": "4679ad4086ac6894e2f8a6bd71c5033941c894844809bf988dacb8af0c384416",
-    "swift-prebuilt-Linux.tar.zst": "c45976d50670964132cef1dcf98bccd3fff809d33b2207a85cf3cfd07ec84528",
-    "resource-dir-macOS.zip": "286e4403aa0a56641c2789e82036481535e336484f2c760bec0f42e3afe5dd87",
-    "resource-dir-Linux.zip": "16a1760f152395377a580a994885e0877338279125834463a6a38f4006ad61ca",
+    "swift-prebuilt-macOS-swift-6.0.2-RELEASE-25.tar.zst": "4c81917da67ff2bb642ef2e34e005466b06f756c958702ec070bcacdb83c2f76",
+    "swift-prebuilt-Linux-swift-6.0.2-RELEASE-25.tar.zst": "af1e3355fb476538449424a74f15ce21a0f877c7f85a568e736f0bd6c0239a8f",
+    "resource-dir-macOS-swift-6.0.2-RELEASE-33.zip": "38f48790fea144b7cf5918b885f32a0f68e21aa5f3c2f0a5722573cc9e950639",
+    "resource-dir-Linux-swift-6.0.2-RELEASE-33.zip": "403374c72e20299951c2c37185404500d15340baaa52bb2d06f8815b03f8071e",
 }
 
-_staging_url = "https://github.com/dsp-testing/codeql-swift-artifacts/releases/download/staging-{file}/{file}"
+_staging_url = "https://github.com/dsp-testing/codeql-swift-artifacts/releases/download/staging-{}/{}"
+
+def _get_override(file):
+    prefix, _, _ = file.partition(".")
+    for key, value in _override.items():
+        if key.startswith(prefix):
+            return {"url": _staging_url.format(prefix, key), "sha256": value}
+    return None
 
 def _load_resource_dir(plat):
     name = "swift-resource-dir-%s" % plat.lower()
     file = "resource-dir-%s.zip" % plat
-    if file in _override:
+    override = _get_override(file)
+    if override:
         http_file(
             name = name,
-            url = _staging_url.format(file = file),
-            sha256 = _override[file],
             downloaded_file_path = file,
+            **override
         )
     else:
         lfs_files(
@@ -32,13 +39,13 @@ def _load_resource_dir(plat):
 def _load_prebuilt(plat):
     name = "swift-prebuilt-%s" % plat.lower()
     file = "swift-prebuilt-%s.tar.zst" % plat
+    override = _get_override(file)
     build = _build % "swift-llvm-support"
-    if file in _override:
+    if override:
         http_archive(
             name = name,
-            url = _staging_url.format(file = file),
-            sha256 = _override[file],
             build_file = build,
+            **override
         )
     else:
         lfs_archive(
@@ -91,7 +98,7 @@ swift_deps = module_extension(load_dependencies)
 def test_no_override():
     test_body = ["#!/bin/bash", ""]
     test_body += [
-        'echo \\"%s\\" overridden in swift/third/party/load.bzl' % key
+        'echo \\"%s\\" override in swift/third/party/load.bzl' % key
         for key in _override
     ]
     if _override:
