@@ -14,24 +14,32 @@ use ra_ap_span::TextRange;
 use ra_ap_span::TextSize;
 use ra_ap_syntax::SourceFile;
 use ra_ap_syntax::SyntaxError;
-use ra_ap_vfs::AbsPathBuf;
 use ra_ap_vfs::Vfs;
 use ra_ap_vfs::VfsPath;
+use ra_ap_vfs::{AbsPathBuf, FileId};
 use std::borrow::Cow;
 use std::path::{Path, PathBuf};
 use triomphe::Arc;
 pub enum RustAnalyzer<'a> {
     WithSemantics {
         vfs: &'a Vfs,
-        semantics: Semantics<'a, RootDatabase>,
+        semantics: &'a Semantics<'a, RootDatabase>,
     },
-    WithoutSemantics,
+    WithoutSemantics {
+        reason: &'a str,
+    },
 }
-pub struct ParseResult {
+
+pub struct FileSemanticInformation<'a> {
+    pub file_id: EditionedFileId,
+    pub semantics: &'a Semantics<'a, RootDatabase>,
+}
+
+pub struct ParseResult<'a> {
     pub ast: SourceFile,
     pub text: Arc<str>,
     pub errors: Vec<SyntaxError>,
-    pub file_id: Option<EditionedFileId>,
+    pub semantics_info: Result<FileSemanticInformation<'a>, &'a str>,
 }
 impl<'a> RustAnalyzer<'a> {
     pub fn load_workspace(
@@ -61,46 +69,43 @@ impl<'a> RustAnalyzer<'a> {
             }
         }
     }
-    pub fn new(vfs: &'a Vfs, semantics: Semantics<'a, RootDatabase>) -> Self {
+    pub fn new(vfs: &'a Vfs, semantics: &'a Semantics<'a, RootDatabase>) -> Self {
         RustAnalyzer::WithSemantics { vfs, semantics }
     }
-    pub fn semantics(&'a self) -> Option<&'a Semantics<'a, RootDatabase>> {
-        match self {
-            RustAnalyzer::WithSemantics { vfs: _, semantics } => Some(semantics),
-            RustAnalyzer::WithoutSemantics => None,
-        }
-    }
     pub fn parse(&self, path: &Path) -> ParseResult {
-        if let RustAnalyzer::WithSemantics { vfs, semantics } = self {
-            if let Some(file_id) = Utf8PathBuf::from_path_buf(path.to_path_buf())
-                .ok()
-                .and_then(|x| AbsPathBuf::try_from(x).ok())
-                .map(VfsPath::from)
-                .and_then(|x| vfs.file_id(&x))
-            {
-                if let Ok(input) = std::panic::catch_unwind(|| semantics.db.file_text(file_id)) {
-                    let file_id = EditionedFileId::current_edition(file_id);
-                    let source_file = semantics.parse(file_id);
-                    let errors = semantics
-                        .db
-                        .parse_errors(file_id)
-                        .into_iter()
-                        .flat_map(|x| x.to_vec())
-                        .collect();
+        let mut no_semantics_reason = "";
+        match self {
+            RustAnalyzer::WithSemantics { vfs, semantics } => {
+                if let Some(file_id) = path_to_file_id(path, vfs) {
+                    if let Ok(input) = std::panic::catch_unwind(|| semantics.db.file_text(file_id))
+                    {
+                        let file_id = EditionedFileId::current_edition(file_id);
+                        let source_file = semantics.parse(file_id);
+                        let errors = semantics
+                            .db
+                            .parse_errors(file_id)
+                            .into_iter()
+                            .flat_map(|x| x.to_vec())
+                            .collect();
 
-                    return ParseResult {
-                        ast: source_file,
-                        text: input,
-                        errors,
-                        file_id: Some(file_id),
-                    };
-                } else {
-                    log::debug!(
-                        "No text available for file_id '{:?}', falling back to loading file '{}' from disk.",
-                        file_id,
-                        path.to_string_lossy()
-                    )
+                        return ParseResult {
+                            ast: source_file,
+                            text: input,
+                            errors,
+                            semantics_info: Ok(FileSemanticInformation { file_id, semantics }),
+                        };
+                    } else {
+                        debug!(
+                            "No text available for file_id '{:?}', falling back to loading file '{}' from disk.",
+                            file_id,
+                            path.to_string_lossy()
+                        );
+                        no_semantics_reason = "file not found in project";
+                    }
                 }
+            }
+            RustAnalyzer::WithoutSemantics { reason } => {
+                no_semantics_reason = reason;
             }
         }
         let mut errors = Vec::new();
@@ -123,7 +128,7 @@ impl<'a> RustAnalyzer<'a> {
             ast: parse.tree(),
             text: input.as_ref().into(),
             errors,
-            file_id: None,
+            semantics_info: Err(no_semantics_reason),
         }
     }
 }
@@ -186,4 +191,12 @@ fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
     }
 
     (Cow::Owned(res), Some(error))
+}
+
+pub(crate) fn path_to_file_id(path: &Path, vfs: &Vfs) -> Option<FileId> {
+    Utf8PathBuf::from_path_buf(path.to_path_buf())
+        .ok()
+        .and_then(|x| AbsPathBuf::try_from(x).ok())
+        .map(VfsPath::from)
+        .and_then(|x| vfs.file_id(&x))
 }
