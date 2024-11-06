@@ -159,6 +159,8 @@ abstract private class AbstractCallCfgNode extends AstCfgNode {
    * Gets the expression that provides the call target of this call, if any.
    */
   abstract ExprCfgNode getCommand();
+
+  int getNumberOfArguments() { result = count(this.getAnArgument()) }
 }
 
 final class CallCfgNode = AbstractCallCfgNode;
@@ -371,7 +373,7 @@ module ExprNodes {
   }
 
   class MemberChildMapping extends ExprChildMapping, MemberExpr {
-    override predicate relevantChild(Ast n) { n = this.getBase() or n = this.getMember() }
+    override predicate relevantChild(Ast n) { n = this.getQualifier() or n = this.getMember() }
   }
 
   /** A control-flow node that wraps a `MemberExpr` expression. */
@@ -382,7 +384,7 @@ module ExprNodes {
 
     final override MemberExpr getExpr() { result = super.getExpr() }
 
-    final ExprCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
+    final ExprCfgNode getQualifier() { e.hasCfgChild(e.getQualifier(), this, result) }
 
     final string getMemberName() { result = e.getMemberName() }
 

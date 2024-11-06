@@ -9,6 +9,8 @@ class InvokeMemberExpr extends @invoke_member_expression, MemberExprBase {
 
   CmdElement getMember() { invoke_member_expression(this, _, result) }
 
+  string getMemberName() { result = this.getMember().(StringConstExpr).getValue().getValue() }
+
   Expr getArgument(int i) { invoke_member_expression_argument(this, i, result) }
 
   Expr getAnArgument() { invoke_member_expression_argument(this, _, result) }

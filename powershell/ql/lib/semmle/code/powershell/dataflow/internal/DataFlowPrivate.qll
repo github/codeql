@@ -186,7 +186,7 @@ private module Cached {
       n instanceof CfgNodes::ExprNodes::QualifierCfgNode
       or
       exists(CfgNodes::ExprNodes::MemberCfgNode member |
-        n = member.getBase() and
+        n = member.getQualifier() and
         not member.isStatic()
       )
       or
@@ -769,7 +769,7 @@ predicate jumpStep(Node pred, Node succ) {
  */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(CfgNodes::ExprNodes::MemberCfgWriteAccessNode var, Content::FieldContent fc |
-    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = var.getBase() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = var.getQualifier() and
     node1.asStmt() = var.getAssignStmt().getRightHandSide() and
     fc.getName() = var.getMemberName() and
     c.isSingleton(fc)
@@ -838,7 +838,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
 predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(CfgNodes::ExprNodes::MemberCfgReadAccessNode var, Content::FieldContent fc |
     node2.asExpr() = var and
-    node1.asExpr() = var.getBase() and
+    node1.asExpr() = var.getQualifier() and
     fc.getName() = var.getMemberName() and
     c.isSingleton(fc)
   )
