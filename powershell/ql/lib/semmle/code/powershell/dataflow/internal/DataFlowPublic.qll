@@ -2,6 +2,7 @@ private import powershell
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
+private import semmle.code.powershell.ApiGraphs
 private import semmle.code.powershell.Cfg
 
 /**
@@ -96,10 +97,80 @@ class ParameterNode extends Node {
 }
 
 /**
+ * A data flow node corresponding to a method, block, or lambda expression.
+ */
+class CallableNode extends Node instanceof ScriptBlockNode {
+  private ParameterPosition getParameterPosition(ParameterNodeImpl node) {
+    exists(DataFlowCallable c |
+      c.asCfgScope() = this.asCallableAstNode() and
+      result = getParameterPosition(node, c)
+    )
+  }
+
+  /** Gets the underlying AST node as a `Callable`. */
+  ScriptBlock asCallableAstNode() { result = super.getScriptBlock() }
+
+  /** Gets the `n`th positional parameter. */
+  ParameterNode getParameter(int n) {
+    this.getParameterPosition(result).isPositional(n, emptyNamedSet())
+  }
+
+  /** Gets the number of positional parameters of this callable. */
+  final int getNumberOfParameters() { result = count(this.getParameter(_)) }
+
+  /** Gets the keyword parameter of the given name. */
+  ParameterNode getKeywordParameter(string name) {
+    this.getParameterPosition(result).isKeyword(name)
+  }
+
+  /**
+   * Gets a data flow node whose value is about to be returned by this callable.
+   */
+  Node getAReturnNode() { result = getAReturnNode(this.asCallableAstNode()) }
+}
+
+/**
  * A data-flow node that is a source of local flow.
  */
 class LocalSourceNode extends Node {
   LocalSourceNode() { isLocalSourceNode(this) }
+
+  /** Starts tracking this node forward using API graphs. */
+  pragma[inline]
+  API::Node track() { result = API::Internal::getNodeForForwardTracking(this) }
+
+  /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
+  pragma[inline]
+  predicate flowsTo(Node nodeTo) { flowsTo(this, nodeTo) }
+
+  /**
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+  /**
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t = t2.step(result, this) }
+
+  /**
+   * Gets a node to which data may flow from this node in zero or
+   * more local data-flow steps.
+   */
+  pragma[inline]
+  Node getALocalUse() { flowsTo(this, result) }
+
+  /** Gets a method call where this node flows to the receiver. */
+  CallNode getAMethodCall() { Cached::hasMethodCall(this, result, _) }
+
+  /** Gets a call to a method named `name`, where this node flows to the receiver. */
+  CallNode getAMethodCall(string name) { Cached::hasMethodCall(this, result, name) }
 }
 
 /**
@@ -361,6 +432,8 @@ class ObjectCreationNode extends Node {
   }
 
   final CfgNodes::ObjectCreationCfgNode getObjectCreationNode() { result = objectCreation }
+
+  string getConstructedTypeName() { result = this.getObjectCreationNode().getConstructedTypeName() }
 }
 
 /** A call, viewed as a node in a data flow graph. */
@@ -370,4 +443,10 @@ class CallNode extends AstNode {
   CallNode() { call = this.getCfgNode() }
 
   CfgNodes::CallCfgNode getCallNode() { result = call }
+
+  string getName() { result = call.getName() }
+
+  Node getQualifier() { result.asExpr() = call.getQualifier() }
+
+  int getNumberOfArguments() { result = call.getNumberOfArguments() }
 }

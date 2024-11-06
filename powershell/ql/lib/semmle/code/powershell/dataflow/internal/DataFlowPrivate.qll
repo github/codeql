@@ -7,6 +7,7 @@ private import DataFlowPublic
 private import DataFlowDispatch
 private import SsaImpl as SsaImpl
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.code.powershell.frameworks.data.ModelsAsData
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.(NodeImpl).getEnclosingCallable() }
@@ -199,6 +200,13 @@ private module Cached {
     TProcessNode(ProcessBlock process) or
     TProcessPropertyByNameNode(PipelineByPropertyNameIteratorVariable iter) {
       isProcessPropertyByNameNode(iter, _)
+    } or
+    TScriptBlockNode(ScriptBlock scriptBlock) or
+    TForbiddenRecursionGuard() {
+      none() and
+      // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+      // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+      (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
     }
 
   cached
@@ -1115,6 +1123,22 @@ private class ProcessPropertyByNameNode extends TProcessPropertyByNameNode, Node
   }
 }
 
+class ScriptBlockNode extends TScriptBlockNode, NodeImpl {
+  private ScriptBlock scriptBlock;
+
+  ScriptBlockNode() { this = TScriptBlockNode(scriptBlock) }
+
+  ScriptBlock getScriptBlock() { result = scriptBlock }
+
+  override CfgScope getCfgScope() { result = scriptBlock }
+
+  override Location getLocationImpl() { result = scriptBlock.getLocation() }
+
+  override string toStringImpl() { result = scriptBlock.toString() }
+
+  override predicate nodeIsHidden() { any() }
+}
+
 /** A node that performs a type cast. */
 class CastNode extends Node {
   CastNode() { none() }
@@ -1167,9 +1191,13 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
-predicate knownSourceModel(Node source, string model) { none() }
+predicate knownSourceModel(Node source, string model) {
+  source = ModelOutput::getASourceNode(_, model).asSource()
+}
 
-predicate knownSinkModel(Node sink, string model) { none() }
+predicate knownSinkModel(Node sink, string model) {
+  sink = ModelOutput::getASinkNode(_, model).asSink()
+}
 
 class DataFlowSecondLevelScope = Unit;
 
