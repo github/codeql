@@ -479,6 +479,13 @@ private module ParameterNodes {
     abstract Parameter getParameter();
 
     abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition pos);
+
+    final predicate isSourceParameterOf(CfgScope c, ParameterPosition pos) {
+      exists(DataFlowCallable callable |
+        this.isParameterOf(callable, pos) and
+        c = callable.asCfgScope()
+      )
+    }
   }
 
   /**
@@ -590,6 +597,8 @@ abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
   abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
+  abstract predicate sourceArgumentOf(CfgNodes::CallCfgNode call, ArgumentPosition pos);
+
   /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { this.argumentOf(result, _) }
 }
@@ -601,13 +610,17 @@ module ArgumentNodes {
     ExplicitArgumentNode() { this.asExpr() = arg }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      arg.getCall() = call.asCall() and
+      this.sourceArgumentOf(call.asCall(), pos)
+    }
+
+    override predicate sourceArgumentOf(CfgNodes::CallCfgNode call, ArgumentPosition pos) {
+      arg.getCall() = call and
       (
         pos.isKeyword(arg.getName())
         or
         exists(NamedSet ns, int i |
           i = arg.getPosition() and
-          ns.getAnExactBindingCall() = call.asCall() and
+          ns.getAnExactBindingCall() = call and
           pos.isPositional(i, ns)
         )
         or
@@ -632,7 +645,11 @@ module ArgumentNodes {
     PipelineArgumentNode() { isPipelineInput(this.getStmtNode(), consumer) }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      call.asCall() = consumer and
+      this.sourceArgumentOf(call.asCall(), pos)
+    }
+
+    override predicate sourceArgumentOf(CfgNodes::CallCfgNode call, ArgumentPosition pos) {
+      call = consumer and
       pos.isPipeline()
     }
   }
@@ -648,6 +665,8 @@ module ArgumentNodes {
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       call.(SummaryCall).getReceiver() = receiver and pos = pos_
     }
+
+    override predicate sourceArgumentOf(CfgNodes::CallCfgNode call, ArgumentPosition pos) { none() }
   }
 }
 

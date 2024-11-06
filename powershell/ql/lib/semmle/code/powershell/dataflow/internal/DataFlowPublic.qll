@@ -1,6 +1,7 @@
 private import powershell
 private import DataFlowDispatch
 private import DataFlowPrivate
+private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
 private import semmle.code.powershell.Cfg
 
 /**
@@ -12,6 +13,8 @@ class Node extends TNode {
   CfgNodes::ExprCfgNode asExpr() { result = this.(ExprNode).getExprNode() }
 
   CfgNodes::StmtCfgNode asStmt() { result = this.(StmtNode).getStmtNode() }
+
+  ScriptBlock asCallable() { result = this.(CallableNode).asCallableAstNode() }
 
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = this.(ParameterNode).getParameter() }
@@ -26,6 +29,12 @@ class Node extends TNode {
    * Gets a data flow node from which data may flow to this node in one local step.
    */
   Node getAPredecessor() { localFlowStep(result, this) }
+
+  /**
+   * Gets a local source node from which data may flow to this node in zero or
+   * more local data-flow steps.
+   */
+  LocalSourceNode getALocalSource() { result.flowsTo(this) }
 
   /**
    * Gets a data flow node to which data may flow from this node in one local step.
@@ -116,7 +125,16 @@ class PostUpdateNode extends Node {
 cached
 private module Cached {
   cached
+  predicate hasMethodCall(LocalSourceNode source, CallNode call, string name) {
+    source.flowsTo(call.getQualifier()) and
+    call.getName() = name
+  }
+
+  cached
   CfgScope getCfgScope(NodeImpl node) { result = node.getCfgScope() }
+
+  cached
+  ReturnNode getAReturnNode(ScriptBlock scriptBlock) { getCfgScope(result) = scriptBlock }
 
   cached
   Parameter getParameter(ParameterNodeImpl param) { result = param.getParameter() }
@@ -124,6 +142,11 @@ private module Cached {
   cached
   ParameterPosition getParameterPosition(ParameterNodeImpl param, DataFlowCallable c) {
     param.isParameterOf(c, result)
+  }
+
+  cached
+  ParameterPosition getSourceParameterPosition(ParameterNodeImpl param, ScriptBlock c) {
+    param.isSourceParameterOf(c, result)
   }
 
   cached

@@ -14,13 +14,27 @@ private import semmle.code.powershell.dataflow.internal.FlowSummaryImpl as FlowS
 private import codeql.util.Unit
 
 pragma[noinline]
+private predicate sourceArgumentPositionMatch(
+  CallCfgNode call, DataFlowPrivate::ArgumentNode arg, DataFlowDispatch::ParameterPosition ppos
+) {
+  exists(DataFlowDispatch::ArgumentPosition apos |
+    arg.sourceArgumentOf(call, apos) and
+    DataFlowDispatch::parameterMatch(ppos, apos)
+  )
+}
+
+pragma[noinline]
 private predicate argumentPositionMatch(
   DataFlowDispatch::DataFlowCall call, DataFlowPrivate::ArgumentNode arg,
   DataFlowDispatch::ParameterPosition ppos
 ) {
+  sourceArgumentPositionMatch(call.asCall(), arg, ppos)
+  or
   exists(DataFlowDispatch::ArgumentPosition apos |
+    DataFlowDispatch::parameterMatch(ppos, apos) and
     arg.argumentOf(call, apos) and
-    DataFlowDispatch::parameterMatch(ppos, apos)
+    call.getEnclosingCallable().asLibraryCallable() instanceof
+      DataFlowDispatch::LibraryCallableToIncludeInTypeTracking
   )
 }
 
@@ -31,6 +45,12 @@ private predicate viableParam(
 ) {
   exists(DataFlowDispatch::DataFlowCallable callable |
     DataFlowDispatch::getTarget(call) = callable.asCfgScope()
+    or
+    call.asCall().getAstNode() =
+      callable
+          .asLibraryCallable()
+          .(DataFlowDispatch::LibraryCallableToIncludeInTypeTracking)
+          .getACallSimple()
   |
     p.isParameterOf(callable, ppos)
   )
@@ -103,45 +123,33 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
 
   // Relating nodes to summaries
   Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) {
-    // exists(
-    //   DataFlowDispatch::ParameterPosition pos, DataFlowPrivate::ArgumentNode n,
-    //   DataFlowDispatch::DataFlowCall dfCall
-    // |
-    //   arg = FlowSummaryImpl::Private::SummaryComponent::argument(pos) and
-    //   // TODO: Make this look more like Ruby when we know why it should be like Ruby
-    //   dfCall.asCall() = call.(DataFlow::AstNode).getCfgNode() and
-    //   argumentPositionMatch(dfCall, n, pos)
-    // |
-    //   isPostUpdate = false and result = n
-    //   or
-    //   isPostUpdate = true and result.(DataFlowPublic::PostUpdateNode).getPreUpdateNode() = n
-    // )
-    none()
+    exists(DataFlowDispatch::ParameterPosition pos, DataFlowPrivate::ArgumentNode n |
+      arg = FlowSummaryImpl::Private::SummaryComponent::argument(pos) and
+      sourceArgumentPositionMatch(call.asExpr(), n, pos)
+    |
+      isPostUpdate = false and result = n
+      or
+      isPostUpdate = true and result.(DataFlowPublic::PostUpdateNode).getPreUpdateNode() = n
+    )
   }
 
   Node parameterOf(Node callable, SummaryComponent param) {
-    // exists(DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos |
-    //   param = FlowSummaryImpl::Private::SummaryComponent::parameter(apos) and
-    //   DataFlowDispatch::parameterMatch(ppos, apos) and
-    //   result
-    //       .(DataFlowPrivate::ParameterNodeImpl)
-    //       .isSourceParameterOf(callable, ppos)
-    // )
-    // TODO
-    none()
+    exists(DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos |
+      param = FlowSummaryImpl::Private::SummaryComponent::parameter(apos) and
+      DataFlowDispatch::parameterMatch(ppos, apos) and
+      result.(DataFlowPrivate::ParameterNodeImpl).isSourceParameterOf(callable.asCallable(), ppos)
+    )
   }
 
   Node returnOf(Node callable, SummaryComponent return) {
-    // return = FlowSummaryImpl::Private::SummaryComponent::return() and
-    // result.(DataFlowPrivate::ReturnNode).(DataFlowPrivate::NodeImpl).getCfgScope() =
-    //   callable.asExpr().getExpr()
-    // TODO
-    none()
+    return = FlowSummaryImpl::Private::SummaryComponent::return() and
+    result.(DataFlowPrivate::ReturnNode).(DataFlowPrivate::NodeImpl).getCfgScope() =
+      callable.asCallable()
   }
 
   // Relating callables to nodes
   Node callTo(SummarizedCallable callable) {
-    result.asExpr().getExpr() = callable.(FlowSummary::SummarizedCallable).getACall()
+    result.asExpr().getExpr() = callable.(FlowSummary::SummarizedCallable).getACallSimple()
   }
 }
 

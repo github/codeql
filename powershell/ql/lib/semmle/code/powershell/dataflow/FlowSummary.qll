@@ -3,7 +3,7 @@
 import powershell
 private import semmle.code.powershell.controlflow.Cfg
 private import semmle.code.powershell.typetracking.TypeTracking
-import semmle.code.powershell.dataflow.DataFlow
+private import semmle.code.powershell.dataflow.DataFlow
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
 private import internal.DataFlowImplCommon as DataFlowImplCommon
@@ -55,5 +55,7 @@ abstract class SimpleSummarizedCallable extends SummarizedCallable {
   bindingset[this]
   SimpleSummarizedCallable() { c.getName() = this }
 
-  final override MethodCall getACall() { result = c }
+  final override Call getACall() { result = c }
+
+  final override Call getACallSimple() { result = c }
 }

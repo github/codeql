@@ -111,6 +111,8 @@ private import Make<Location, DataFlowImplSpecific::PowershellDataFlow, Input> a
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result.asCall().getAstNode() = sc.(LibraryCallable).getACall()
+    or
+    result.asCall().getAstNode() = sc.(LibraryCallable).getACallSimple()
   }
 }
 

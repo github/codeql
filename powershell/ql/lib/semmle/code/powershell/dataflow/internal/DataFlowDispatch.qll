@@ -40,6 +40,15 @@ abstract class LibraryCallable extends string {
 
   /** Gets a call to this library callable. */
   Call getACall() { none() }
+
+  /** Same as `getACall()` except this does not depend on the call graph or API graph. */
+  Call getACallSimple() { none() }
+}
+
+/** A callable defined in library code, which should be taken into account in type tracking. */
+abstract class LibraryCallableToIncludeInTypeTracking extends LibraryCallable {
+  bindingset[this]
+  LibraryCallableToIncludeInTypeTracking() { exists(this) }
 }
 
 /**
@@ -228,6 +237,14 @@ class AdditionalCallTarget extends Unit {
    * Gets a viable target for `call`.
    */
   abstract DataFlowCallable viableTarget(CfgNodes::CallCfgNode call);
+}
+
+/** Holds if `call` may resolve to the returned summarized library method. */
+DataFlowCallable viableLibraryCallable(DataFlowCall call) {
+  exists(LibraryCallable callable |
+    result = TLibraryCallable(callable) and
+    call.asCall().getAstNode() = [callable.getACall(), callable.getACallSimple()]
+  )
 }
 
 cached
