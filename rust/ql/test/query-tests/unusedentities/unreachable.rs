@@ -170,10 +170,12 @@ pub fn unreachable_match() {
 }
 
 pub fn unreachable_loop() {
-    loop {
-        do_something();
-        break;
-        do_something(); // $ Alert[rust/dead-code]
+    if cond() {
+        loop {
+            do_something();
+            break;
+            do_something(); // $ Alert[rust/dead-code]
+        }
     }
 
     if cond() {
@@ -191,23 +193,27 @@ pub fn unreachable_loop() {
         do_something(); // $ Alert[rust/dead-code]
     }
 
-    for _ in 1..10 {
-        if cond() {
-            continue;
-            do_something(); // $ Alert[rust/dead-code]
+    if cond() {
+        for _ in 1..10 {
+            if cond() {
+                continue;
+                do_something(); // $ Alert[rust/dead-code]
+            }
+            do_something();
         }
-        do_something();
     }
 
-    loop {
-        if cond() {
-            return;
-            do_something(); // $ Alert[rust/dead-code]
+    if cond() {
+        loop {
+            if cond() {
+                return;
+                do_something(); // $ Alert[rust/dead-code]
+            }
         }
+        do_something(); // $ Alert[rust/dead-code]
+        do_something();
+        do_something();
     }
-    do_something(); // $ Alert[rust/dead-code]
-    do_something();
-    do_something();
 }
 
 pub fn unreachable_paren() {

@@ -483,9 +483,9 @@ fn main() {
     unreachable_if_1();
     unreachable_if_2();
     unreachable_if_3();
-    // unreachable_panic();
+    unreachable_panic();
     unreachable_match();
-    // unreachable_loop();
+    unreachable_loop();
     unreachable_paren();
     unreachable_let_1();
     unreachable_let_2();
