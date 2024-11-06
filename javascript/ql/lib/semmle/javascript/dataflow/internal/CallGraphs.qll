@@ -55,6 +55,35 @@ module CallGraph {
     or
     imprecision = 0 and
     result = callgraphStep(function, t)
+    or
+    t.start() and
+    imprecision = 0 and
+    function = getTypedCallee(result)
+  }
+
+  /**
+   * Gets a class that implements (or is) the given `type`.
+   */
+  private ClassDefinition getAnImplementationClass(Type type) {
+    exists(InterfaceType inter | inter = type |
+      result.getSuperClassDefinition*().getASuperInterface().getType() = inter
+    )
+    or
+    exists(ClassType classType | classType = type |
+      result.getSuperClassDefinition*() = classType.getClass()
+    )
+  }
+
+  /**
+   * Gets a function that the given `callee` refers to through the TypeScript class hierarchy.
+   */
+  private DataFlow::FunctionNode getTypedCallee(DataFlow::PropRead callee) {
+    exists(Type baseType, ClassDefinition impl, string name |
+      callee.getBase().asExpr().getType() = baseType and
+      impl = getAnImplementationClass(baseType) and
+      callee.getPropertyName() = name and
+      impl.getInstanceMethod(name) = result.getFunction()
+    )
   }
 
   /**
