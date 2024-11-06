@@ -25,6 +25,7 @@ private import StmtContainers
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import semmle.javascript.dataflow.internal.FlowSteps
 private import semmle.javascript.dataflow.internal.AccessPaths
+private import semmle.javascript.dataflow.internal.TaintTrackingPrivate as TaintTrackingPrivate
 
 /**
  * Contains a `cached module` for each stage.
@@ -344,19 +345,7 @@ module Stages {
       or
       any(RegExpTerm t).isUsedAsRegExp()
       or
-      any(TaintTracking::AdditionalSanitizerGuardNode e).blocks(_, _)
-    }
-
-    cached
-    class DummySanitizer extends TaintTracking::AdditionalSanitizerGuardNode {
-      cached
-      DummySanitizer() { none() }
-
-      cached
-      deprecated override predicate appliesTo(TaintTracking::Configuration cfg) { none() }
-
-      cached
-      override predicate sanitizes(boolean outcome, Expr e) { none() }
+      TaintTrackingPrivate::defaultTaintSanitizer(_)
     }
   }
 }
