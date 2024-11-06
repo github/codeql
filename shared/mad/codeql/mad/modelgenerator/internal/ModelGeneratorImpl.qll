@@ -631,7 +631,11 @@ module MakeModelGenerator<
     }
 
     /**
-     * Models as Data currently doesn't support callback logic in fields.
+     * Holds if the access path `ap` is not a parameter or returnvalue of a callback
+     * stored in a field.
+     *
+     * That is, we currently don't include summaries that rely on parameters or return values
+     * of callbacks stored in fields.
      */
     private predicate validateAccessPath(PropagateContentFlow::AccessPath ap) {
       not (mentionsField(ap) and mentionsCallback(ap))

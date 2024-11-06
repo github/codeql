@@ -1149,7 +1149,7 @@ private module Cached {
     } or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     TDelegateCallArgumentContent(int i) {
-      i = [0 .. max(int j | j = any(DelegateCall dc).getNumberOfArguments())]
+      i = [0 .. max(any(DelegateCall dc).getNumberOfArguments())]
     } or
     TDelegateCallReturnContent()
 
@@ -2287,10 +2287,10 @@ private predicate recordProperty(RecordType t, ContentSet c, string name) {
  * If there is a delegate call f(x), then we store "x" on "f"
  * using a delegate argument content set.
  */
-private predicate storeStepDelegateCall(Node node1, ContentSet c, Node node2) {
-  exists(DelegateCall call, int i |
-    node1.asExpr() = call.getArgument(i) and
-    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = call.getExpr() and
+private predicate storeStepDelegateCall(ExplicitArgumentNode node1, ContentSet c, Node node2) {
+  exists(ExplicitDelegateLikeDataFlowCall call, int i |
+    node1.argumentOf(call, TPositionalArgumentPosition(i)) and
+    lambdaCall(call, _, node2.(PostUpdateNode).getPreUpdateNode()) and
     c.isDelegateCallArgument(i)
   )
 }
@@ -2456,10 +2456,10 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
  * If there is a delegate call f(x), then we read the return of the delegate
  * call.
  */
-private predicate readStepDelegateCall(Node node1, ContentSet c, Node node2) {
-  exists(DelegateCall call |
-    node1.asExpr() = call.getExpr() and
-    node2.asExpr() = call and
+private predicate readStepDelegateCall(Node node1, ContentSet c, OutNode node2) {
+  exists(ExplicitDelegateLikeDataFlowCall call |
+    lambdaCall(call, _, node1) and
+    node2.getCall(TNormalReturnKind()) = call and
     c.isDelegateCallReturn()
   )
 }

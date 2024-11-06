@@ -64,10 +64,10 @@ public class BasicFlow
     }
 
     public Func<object, object> MyFunction;
-    // summary=Models;BasicFlow;false;MapMyFunction;(System.Object);;Argument[0];Argument[this];taint;df-generated
-    // summary=Models;BasicFlow;false;MapMyFunction;(System.Object);;Argument[this];ReturnValue;taint;df-generated
+    // summary=Models;BasicFlow;false;ApplyMyFunction;(System.Object);;Argument[0];Argument[this];taint;df-generated
+    // summary=Models;BasicFlow;false;ApplyMyFunction;(System.Object);;Argument[this];ReturnValue;taint;df-generated
     // No content based flow as MaD doesn't support callback logic in fields and properties.
-    public object MapMyFunction(object o)
+    public object ApplyMyFunction(object o)
     {
         return MyFunction(o);
     }
@@ -517,18 +517,18 @@ public class HigherOrderParameters
         return s;
     }
 
-    // neutral=Models;HigherOrderParameters;Map;(System.Func<System.Object,System.Object>,System.Object);summary;df-generated
-    // contentbased-summary=Models;HigherOrderParameters;false;Map;(System.Func<System.Object,System.Object>,System.Object);;Argument[1];Argument[0].Parameter[0];value;dfc-generated
-    // contentbased-summary=Models;HigherOrderParameters;false;Map;(System.Func<System.Object,System.Object>,System.Object);;Argument[0].ReturnValue;ReturnValue;value;dfc-generated
-    public object Map(Func<object, object> f, object o)
+    // neutral=Models;HigherOrderParameters;Apply;(System.Func<System.Object,System.Object>,System.Object);summary;df-generated
+    // contentbased-summary=Models;HigherOrderParameters;false;Apply;(System.Func<System.Object,System.Object>,System.Object);;Argument[1];Argument[0].Parameter[0];value;dfc-generated
+    // contentbased-summary=Models;HigherOrderParameters;false;Apply;(System.Func<System.Object,System.Object>,System.Object);;Argument[0].ReturnValue;ReturnValue;value;dfc-generated
+    public object Apply(Func<object, object> f, object o)
     {
         return f(o);
     }
 
-    // neutral=Models;HigherOrderParameters;Map2;(System.Object,System.Func<System.Object,System.Object,System.Object>);summary;df-generated
-    // contentbased-summary=Models;HigherOrderParameters;false;Map2;(System.Object,System.Func<System.Object,System.Object,System.Object>);;Argument[0];Argument[1].Parameter[1];value;dfc-generated
-    // contentbased-summary=Models;HigherOrderParameters;false;Map2;(System.Object,System.Func<System.Object,System.Object,System.Object>);;Argument[1].ReturnValue;ReturnValue;value;dfc-generated
-    public object Map2(object o, Func<object, object, object> f)
+    // neutral=Models;HigherOrderParameters;Apply2;(System.Object,System.Func<System.Object,System.Object,System.Object>);summary;df-generated
+    // contentbased-summary=Models;HigherOrderParameters;false;Apply2;(System.Object,System.Func<System.Object,System.Object,System.Object>);;Argument[0];Argument[1].Parameter[1];value;dfc-generated
+    // contentbased-summary=Models;HigherOrderParameters;false;Apply2;(System.Object,System.Func<System.Object,System.Object,System.Object>);;Argument[1].ReturnValue;ReturnValue;value;dfc-generated
+    public object Apply2(object o, Func<object, object, object> f)
     {
         var x = f(null, o);
         return x;
