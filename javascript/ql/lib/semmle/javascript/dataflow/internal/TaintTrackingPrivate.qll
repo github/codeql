@@ -39,10 +39,16 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2,
   defaultAdditionalTaintStep(node1, node2) and model = "" // TODO: set model
 }
 
-private class SanitizerGuardAdapter extends DataFlow::Node instanceof TaintTracking::AdditionalSanitizerGuardNode
-{
+abstract private class SanitizerGuardAdapter extends DataFlow::Node {
   // Note: avoid depending on DataFlow::FlowLabel here as it will cause these barriers to be re-evaluated
-  predicate blocksExpr(boolean outcome, Expr e) { super.sanitizes(outcome, e) }
+  abstract predicate blocksExpr(boolean outcome, Expr e);
+}
+
+deprecated private class SanitizerGuardAdapterImpl extends SanitizerGuardAdapter instanceof TaintTracking::AdditionalSanitizerGuardNode
+{
+  // TODO: reverse this relationship, so the sanitizer guards are implemented with the new interface, and the AdditionalSanitizerGuardNode
+  // takes its values from the new implementations
+  override predicate blocksExpr(boolean outcome, Expr e) { super.sanitizes(outcome, e) }
 }
 
 bindingset[node]

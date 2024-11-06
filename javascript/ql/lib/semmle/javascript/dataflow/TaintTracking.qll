@@ -33,7 +33,7 @@ module TaintTracking {
    * If a different set of flow edges is desired, extend this class and override
    * `isAdditionalTaintStep`.
    */
-  abstract class Configuration extends DataFlow::Configuration {
+  abstract deprecated class Configuration extends DataFlow::Configuration {
     bindingset[this]
     Configuration() { any() }
 
@@ -183,6 +183,7 @@ module TaintTracking {
    */
   cached
   abstract class AdditionalSanitizerGuardNode extends DataFlow::Node {
+    // TODO: deprecate this class; currently requires too much refactoring
     // For backwards compatibility, this contains a copy of the SanitizerGuard interface,
     // but is does not inherit from it as that would cause re-evaluation of cached barriers.
     /**
@@ -219,7 +220,7 @@ module TaintTracking {
      * Holds if this guard applies to the flow in `cfg`.
      */
     cached
-    abstract predicate appliesTo(Configuration cfg);
+    abstract deprecated predicate appliesTo(Configuration cfg);
   }
 
   /**
@@ -235,6 +236,7 @@ module TaintTracking {
    * them.
    */
   abstract class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
+    // TODO: deprecate this class; currently requires too much refactoring
     override predicate blocks(boolean outcome, Expr e) { none() }
 
     /**
@@ -259,7 +261,9 @@ module TaintTracking {
   /**
    * A sanitizer guard node that only blocks specific flow labels.
    */
-  abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode, DataFlow::BarrierGuardNode {
+  abstract deprecated class LabeledSanitizerGuardNode extends SanitizerGuardNode,
+    DataFlow::BarrierGuardNode
+  {
     override predicate sanitizes(boolean outcome, Expr e) { none() }
   }
 
@@ -813,7 +817,7 @@ module TaintTracking {
       e = expr
     }
 
-    override predicate appliesTo(Configuration cfg) { any() }
+    deprecated override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
@@ -839,7 +843,7 @@ module TaintTracking {
       )
     }
 
-    override predicate appliesTo(Configuration cfg) { any() }
+    deprecated override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
@@ -877,7 +881,7 @@ module TaintTracking {
       e = astNode.getLeftOperand()
     }
 
-    override predicate appliesTo(Configuration cfg) { any() }
+    deprecated override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /** A check of the form `if(o[x] != undefined)`, which sanitizes `x` in its "then" branch. */
@@ -902,7 +906,7 @@ module TaintTracking {
       e = x
     }
 
-    override predicate appliesTo(Configuration cfg) { any() }
+    deprecated override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /** A check of the form `type x === "undefined"`, which sanitized `x` in its "then" branch. */
@@ -917,7 +921,7 @@ module TaintTracking {
       e = x
     }
 
-    override predicate appliesTo(Configuration cfg) { any() }
+    deprecated override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
@@ -994,7 +998,7 @@ module TaintTracking {
 
     override predicate sanitizes(boolean outcome, Expr e) { polarity = outcome and e = operand }
 
-    override predicate appliesTo(Configuration cfg) { any() }
+    deprecated override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
@@ -1009,7 +1013,7 @@ module TaintTracking {
       candidate = e.flow() and candidate.getTestPolarity() = outcome
     }
 
-    override predicate appliesTo(Configuration cfg) { any() }
+    deprecated override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
@@ -1035,7 +1039,7 @@ module TaintTracking {
       e = indexOf.getArgument(0)
     }
 
-    override predicate appliesTo(Configuration cfg) { any() }
+    deprecated override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
@@ -1064,7 +1068,7 @@ module TaintTracking {
       e = event
     }
 
-    override predicate appliesTo(Configuration cfg) { any() }
+    deprecated override predicate appliesTo(Configuration cfg) { any() }
   }
 
   import internal.sharedlib.TaintTracking

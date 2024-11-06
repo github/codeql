@@ -344,7 +344,7 @@ module Stages {
       or
       any(RegExpTerm t).isUsedAsRegExp()
       or
-      any(TaintTracking::AdditionalSanitizerGuardNode e).appliesTo(_)
+      any(TaintTracking::AdditionalSanitizerGuardNode e).blocks(_, _)
     }
 
     cached
@@ -353,7 +353,7 @@ module Stages {
       DummySanitizer() { none() }
 
       cached
-      override predicate appliesTo(TaintTracking::Configuration cfg) { none() }
+      deprecated override predicate appliesTo(TaintTracking::Configuration cfg) { none() }
 
       cached
       override predicate sanitizes(boolean outcome, Expr e) { none() }
