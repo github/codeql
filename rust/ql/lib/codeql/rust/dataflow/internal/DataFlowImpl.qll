@@ -223,7 +223,7 @@ module RustDataFlow implements InputSig<Location> {
 
   DataFlowCallable nodeGetEnclosingCallable(Node node) { none() }
 
-  DataFlowType getNodeType(Node node) { none() }
+  DataFlowType getNodeType(Node node) { any() }
 
   predicate nodeIsHidden(Node node) { none() }
 
@@ -253,6 +253,8 @@ module RustDataFlow implements InputSig<Location> {
 
   OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { none() }
 
+  // NOTE: For now we use the type `Unit` and do not benefit from type
+  // information in the data flow analysis.
   final class DataFlowType = Unit;
 
   predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
