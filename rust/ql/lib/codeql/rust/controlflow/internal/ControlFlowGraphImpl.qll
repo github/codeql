@@ -611,7 +611,7 @@ module ExprTrees {
  * Provides `ControlFlowTree`s for patterns.
  *
  * Since patterns destruct values, they are modeled in pre-order, except for
- * `OrPat`s and `IdentPat`s.
+ * `LiteralPat`s, `OrPat`s, and `IdentPat`s.
  */
 module PatternTrees {
   abstract class StandardPatTree extends StandardTree {
@@ -665,7 +665,9 @@ module PatternTrees {
 
   class RestPatTree extends LeafTree, RestPat { }
 
-  class LiteralPatTree extends LeafTree, LiteralPat { }
+  class LiteralPatTree extends StandardPostOrderTree, LiteralPat {
+    override AstNode getChildNode(int i) { i = 0 and result = this.getLiteral() }
+  }
 
   class MacroPatTree extends PreOrderPatTree, MacroPat {
     override Pat getPat(int i) { i = 0 and result = this.getMacroCall().getExpanded() }

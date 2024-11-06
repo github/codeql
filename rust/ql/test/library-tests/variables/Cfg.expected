@@ -260,8 +260,9 @@ edges
 | variables.rs:114:5:122:5 | ExprStmt | variables.rs:114:11:114:12 | x6 |  |
 | variables.rs:114:5:122:5 | MatchExpr | variables.rs:124:5:124:18 | ExprStmt |  |
 | variables.rs:114:11:114:12 | x6 | variables.rs:115:9:115:16 | TupleStructPat |  |
-| variables.rs:115:9:115:16 | TupleStructPat | variables.rs:115:14:115:15 | LiteralPat | match |
+| variables.rs:115:9:115:16 | TupleStructPat | variables.rs:115:14:115:15 | 50 | match |
 | variables.rs:115:9:115:16 | TupleStructPat | variables.rs:116:9:116:16 | TupleStructPat | no-match |
+| variables.rs:115:14:115:15 | 50 | variables.rs:115:14:115:15 | LiteralPat |  |
 | variables.rs:115:14:115:15 | LiteralPat | variables.rs:115:21:115:29 | PathExpr | match |
 | variables.rs:115:14:115:15 | LiteralPat | variables.rs:116:9:116:16 | TupleStructPat | no-match |
 | variables.rs:115:21:115:29 | PathExpr | variables.rs:115:31:115:38 | "Got 50" |  |
@@ -358,10 +359,12 @@ edges
 | variables.rs:172:9:174:9 | RecordPat | variables.rs:173:31:173:35 | RangePat | match |
 | variables.rs:172:9:174:9 | RecordPat | variables.rs:175:9:175:38 | RecordPat | no-match |
 | variables.rs:173:17:173:35 | [match(true)] id_variable | variables.rs:174:14:174:22 | PathExpr | match |
-| variables.rs:173:31:173:31 | LiteralPat | variables.rs:173:35:173:35 | LiteralPat | match |
+| variables.rs:173:31:173:31 | 3 | variables.rs:173:31:173:31 | LiteralPat |  |
+| variables.rs:173:31:173:31 | LiteralPat | variables.rs:173:35:173:35 | 7 | match |
 | variables.rs:173:31:173:31 | LiteralPat | variables.rs:175:9:175:38 | RecordPat | no-match |
-| variables.rs:173:31:173:35 | RangePat | variables.rs:173:31:173:31 | LiteralPat | match |
+| variables.rs:173:31:173:35 | RangePat | variables.rs:173:31:173:31 | 3 | match |
 | variables.rs:173:31:173:35 | RangePat | variables.rs:175:9:175:38 | RecordPat | no-match |
+| variables.rs:173:35:173:35 | 7 | variables.rs:173:35:173:35 | LiteralPat |  |
 | variables.rs:173:35:173:35 | LiteralPat | variables.rs:173:17:173:35 | [match(true)] id_variable | match |
 | variables.rs:173:35:173:35 | LiteralPat | variables.rs:175:9:175:38 | RecordPat | no-match |
 | variables.rs:174:14:174:22 | PathExpr | variables.rs:174:24:174:34 | id_variable |  |
@@ -369,10 +372,12 @@ edges
 | variables.rs:174:24:174:34 | id_variable | variables.rs:174:14:174:35 | CallExpr |  |
 | variables.rs:175:9:175:38 | RecordPat | variables.rs:175:30:175:36 | RangePat | match |
 | variables.rs:175:9:175:38 | RecordPat | variables.rs:178:9:178:29 | RecordPat | no-match |
-| variables.rs:175:30:175:31 | LiteralPat | variables.rs:175:35:175:36 | LiteralPat | match |
+| variables.rs:175:30:175:31 | 10 | variables.rs:175:30:175:31 | LiteralPat |  |
+| variables.rs:175:30:175:31 | LiteralPat | variables.rs:175:35:175:36 | 12 | match |
 | variables.rs:175:30:175:31 | LiteralPat | variables.rs:178:9:178:29 | RecordPat | no-match |
-| variables.rs:175:30:175:36 | RangePat | variables.rs:175:30:175:31 | LiteralPat | match |
+| variables.rs:175:30:175:36 | RangePat | variables.rs:175:30:175:31 | 10 | match |
 | variables.rs:175:30:175:36 | RangePat | variables.rs:178:9:178:29 | RecordPat | no-match |
+| variables.rs:175:35:175:36 | 12 | variables.rs:175:35:175:36 | LiteralPat |  |
 | variables.rs:175:35:175:36 | LiteralPat | variables.rs:176:22:176:51 | MacroStmts | match |
 | variables.rs:175:35:175:36 | LiteralPat | variables.rs:178:9:178:29 | RecordPat | no-match |
 | variables.rs:175:43:177:9 | BlockExpr | variables.rs:171:5:180:5 | MatchExpr |  |
