@@ -99,7 +99,8 @@ SwiftMangledName SwiftMangler::visitExtensionDecl(const swift::ExtensionDecl* de
   }
 
   auto parent = getParent(decl);
-  return initMangled(decl) << fetch(parent) << getExtensionIndex(decl, parent);
+  auto target = decl->getExtendedType();
+  return initMangled(decl) << fetch(target) << getExtensionIndex(decl, parent);
 }
 
 unsigned SwiftMangler::getExtensionIndex(const swift::ExtensionDecl* decl,
