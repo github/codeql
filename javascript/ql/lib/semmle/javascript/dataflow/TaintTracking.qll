@@ -853,20 +853,23 @@ module TaintTracking {
    *
    * This sanitizer is not enabled by default.
    */
-  class AdHocWhitelistCheckSanitizer extends SanitizerGuardNode, DataFlow::CallNode {
+  class AdHocWhitelistCheckSanitizer extends DataFlow::CallNode {
     AdHocWhitelistCheckSanitizer() {
       this.getCalleeName()
           .regexpMatch("(?i).*((?<!un)safe|whitelist|(?<!in)valid|allow|(?<!un)auth(?!or\\b)).*") and
       this.getNumArgument() = 1
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
-
     /** Holds if this node blocks flow through `e`, provided it evaluates to `outcome`. */
     predicate blocksExpr(boolean outcome, Expr e) {
       outcome = true and
       e = this.getArgument(0).asExpr()
     }
+  }
+
+  deprecated private class AdHocWhitelistCheckSanitizerAsSanitizerGuardNode extends SanitizerGuardNode instanceof AdHocWhitelistCheckSanitizer
+  {
+    override predicate sanitizes(boolean outcome, Expr e) { super.blocksExpr(outcome, e) }
   }
 
   /** Barrier nodes derived from the `AdHocWhitelistCheckSanitizer` class. */
