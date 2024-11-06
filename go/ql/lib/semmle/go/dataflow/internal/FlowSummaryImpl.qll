@@ -185,23 +185,23 @@ module SourceSinkInterpretationInput implements
 
     /**
      * Holds if this source or sink element is a method or field that was specified
-     * with the given values for `pkg`, `type` and `subtypes`.
+     * with the given values for `e`, `pkg`, `type` and `subtypes`.
      */
-    predicate hasTypeInfo(string pkg, string type, boolean subtypes) {
-      this = TMethodEntityElement(_, pkg, type, subtypes) or
-      this = TFieldEntityElement(_, pkg, type, subtypes)
+    predicate hasFullInfo(Entity e, string pkg, string type, boolean subtypes) {
+      this = TMethodEntityElement(e, pkg, type, subtypes) or
+      this = TFieldEntityElement(e, pkg, type, subtypes)
     }
 
     /** Gets a textual representation of this source or sink element. */
     string toString() {
-      not this.hasTypeInfo(_, _, _) and
+      (this instanceof TOtherEntityElement or this instanceof TAstElement) and
       result = "element representing " + [this.asEntity().toString(), this.asAstNode().toString()]
       or
-      exists(string pkg, string name, boolean subtypes |
-        this.hasTypeInfo(pkg, name, subtypes) and
+      exists(Entity e, string pkg, string name, boolean subtypes |
+        this.hasFullInfo(e, pkg, name, subtypes) and
         result =
-          "element representing " + this.asEntity().toString() + " with receiver type " + pkg + "." +
-            name + " and subtypes=" + subtypes
+          "element representing " + e.toString() + " with receiver type " + pkg + "." + name +
+            " and subtypes=" + subtypes
       )
     }
 
@@ -249,8 +249,8 @@ module SourceSinkInterpretationInput implements
         (
           result.asOtherEntity() = callTarget
           or
-          result.asMethodEntity() = callTarget and
-          elementAppliesToQualifier(result, cn.getReceiver())
+          callTarget instanceof Method and
+          result = getElementWithQualifier(callTarget, cn.getReceiver())
         )
       )
     }
@@ -278,22 +278,20 @@ module SourceSinkInterpretationInput implements
   }
 
   /**
-   * Holds if method or field spec `sse` applies in the context of qualifier `qual`.
+   * Gets a method or field spec for `e` which applies in the context of
+   * qualifier `qual`.
    *
-   * Note that naively checking `sse.asEntity()`'s qualified name is not correct, because
-   * `Method`s and `Field`s may have multiple qualified names due to embedding. We must instead
-   * check that the specific name given by `sse.hasTypeInfo` refers to either `qual`'s type
-   * or to a type it embeds.
+   * Note that naively checking `e`'s qualified name is not correct, because
+   * `Method`s and `Field`s may have multiple qualified names due to embedding.
+   * We must instead check that the package and type name given by
+   * `result.hasFullInfo` refer to either `qual`'s type or to a type it embeds.
    */
-  bindingset[sse, qual]
+  bindingset[e, qual]
   pragma[inline_late]
-  private predicate elementAppliesToQualifier(SourceOrSinkElement sse, DataFlow::Node qual) {
-    exists(
-      string pkg, string typename, boolean subtypes, Type syntacticQualBaseType, Type targetType
-    |
-      sse.hasTypeInfo(pkg, typename, subtypes) and
-      targetType.hasQualifiedName(pkg, typename) and
-      syntacticQualBaseType = getSyntacticQualifierBaseType(qual)
+  private SourceOrSinkElement getElementWithQualifier(Entity e, DataFlow::Node qual) {
+    exists(boolean subtypes, Type syntacticQualBaseType, Type targetType |
+      syntacticQualBaseType = getSyntacticQualifierBaseType(qual) and
+      result = constructElement(e, targetType, subtypes)
     |
       subtypes = [true, false] and
       syntacticQualBaseType = targetType
@@ -307,9 +305,17 @@ module SourceSinkInterpretationInput implements
         or
         // `syntacticQualBaseType`'s underlying type might be a struct type and `sse`
         // might be a promoted method or field in it.
-        targetType =
-          getIntermediateEmbeddedType(sse.asMethodEntity(), syntacticQualBaseType.getUnderlyingType())
+        targetType = getIntermediateEmbeddedType(e, syntacticQualBaseType.getUnderlyingType())
       )
+    )
+  }
+
+  bindingset[e, targetType, subtypes]
+  pragma[inline_late]
+  private SourceOrSinkElement constructElement(Entity e, Type targetType, boolean subtypes) {
+    exists(string pkg, string typename |
+      targetType.hasQualifiedName(pkg, typename) and
+      result.hasFullInfo(e, pkg, typename, subtypes)
     )
   }
 
@@ -388,8 +394,7 @@ module SourceSinkInterpretationInput implements
       or
       exists(DataFlow::FieldReadNode frn | frn = n |
         c = "" and
-        frn.getField() = pragma[only_bind_into](e).asFieldEntity() and
-        elementAppliesToQualifier(pragma[only_bind_into](e), frn.getBase())
+        pragma[only_bind_into](e) = getElementWithQualifier(frn.getField(), frn.getBase())
       )
     )
   }
@@ -410,7 +415,7 @@ module SourceSinkInterpretationInput implements
     |
       c = "" and
       fw.writesField(base, f, node.asNode()) and
-      elementAppliesToQualifier(pragma[only_bind_into](e), base)
+      pragma[only_bind_into](e) = getElementWithQualifier(f, base)
     )
   }
 }
