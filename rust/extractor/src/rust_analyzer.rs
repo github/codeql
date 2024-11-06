@@ -73,7 +73,7 @@ impl<'a> RustAnalyzer<'a> {
         RustAnalyzer::WithSemantics { vfs, semantics }
     }
     pub fn parse(&self, path: &Path) -> ParseResult {
-        let mut no_semantics_reason = "";
+        let no_semantics_reason;
         match self {
             RustAnalyzer::WithSemantics { vfs, semantics } => {
                 if let Some(file_id) = path_to_file_id(path, vfs) {
@@ -94,15 +94,14 @@ impl<'a> RustAnalyzer<'a> {
                             errors,
                             semantics_info: Ok(FileSemanticInformation { file_id, semantics }),
                         };
-                    } else {
-                        debug!(
-                            "No text available for file_id '{:?}', falling back to loading file '{}' from disk.",
-                            file_id,
-                            path.to_string_lossy()
-                        );
-                        no_semantics_reason = "file not found in project";
                     }
+                    debug!(
+                        "No text available for file_id '{:?}', falling back to loading file '{}' from disk.",
+                        file_id,
+                        path.to_string_lossy()
+                    );
                 }
+                no_semantics_reason = "file not found in project";
             }
             RustAnalyzer::WithoutSemantics { reason } => {
                 no_semantics_reason = reason;
