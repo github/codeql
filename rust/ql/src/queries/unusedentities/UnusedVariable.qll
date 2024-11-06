@@ -23,7 +23,4 @@ predicate isUnused(Variable v) {
 predicate isAllowableUnused(Variable v) {
   // in a macro expansion
   v.getPat().isInMacroExpansion()
-  or
-  // function pointer parameters
-  exists(FnPtrType fp | fp.getParamList().getParam(_).getPat() = v.getPat())
 }
