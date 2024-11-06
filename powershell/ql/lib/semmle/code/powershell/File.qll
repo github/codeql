@@ -209,6 +209,10 @@ class File extends Container, @file {
     not this.isStub()
   }
 
+  predicate isInPSModulePath() {
+    is_in_psmodule_path(this)
+  }
+
   /** Holds if this file is a library. */
   predicate fromLibrary() {
     not this.getBaseName() = "" and
