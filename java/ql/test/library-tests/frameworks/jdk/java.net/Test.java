@@ -91,11 +91,27 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
+			// manual test for `URI.toURL().getPath()`; checks that if a `URL` is tainted, then so are its synthetic fields
+			// java.net;URL;False;getPath;();;Argument[this].SyntheticField[java.net.URL.path];ReturnValue;taint;ai-manual
+			URL out = null;
+			URI in = (URI) source();
+			out = in.toURL();
+			sink(out.getPath()); // $ hasTaintFlow
+		}
+		{
 			// "java.net;URL;false;URL;(String);;Argument[0];Argument[this];taint;manual"
 			URL out = null;
 			String in = (String) source();
 			out = new URL(in);
 			sink(out); // $ hasTaintFlow
+		}
+		{
+			// manual test for `URL(String).getPath()`; checks that if a `URL` is tainted, then so are its synthetic fields
+			// java.net;URL;False;getPath;();;Argument[this].SyntheticField[java.net.URL.path];ReturnValue;taint;ai-manual
+			URL out = null;
+			String in = (String) source();
+			out = new URL(in);
+			sink(out.getPath()); // $ hasTaintFlow
 		}
 		{
 			// "java.net;URL;false;URL;(URL,String);;Argument[0];Argument[this];taint;ai-generated"

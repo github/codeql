@@ -24,6 +24,14 @@ module NoSql {
      */
     abstract class Range extends DataFlow::Node { }
 
+    private class DefaultQueryString extends Range {
+      DefaultQueryString() {
+        exists(DataFlow::ArgumentNode arg | sinkNode(arg, "nosql-injection") |
+          this = arg.getACorrespondingSyntacticArgument()
+        )
+      }
+    }
+
     /**
      * Holds if method `name` of struct `Collection` from package
      * [go.mongodb.org/mongo-driver/mongo](https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo)

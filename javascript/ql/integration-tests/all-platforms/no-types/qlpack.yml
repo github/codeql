@@ -1,3 +1,0 @@
-dependencies:
-  codeql/javascript-all: '*'
-warnOnImplicitThis: true

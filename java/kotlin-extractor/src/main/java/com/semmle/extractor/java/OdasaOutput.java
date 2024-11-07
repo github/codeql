@@ -39,7 +39,6 @@ import com.semmle.util.data.Pair;
 import com.semmle.util.exception.CatastrophicError;
 import com.semmle.util.exception.NestedError;
 import com.semmle.util.exception.ResourceError;
-import com.semmle.util.extraction.PopulationSpecFile;
 import com.semmle.util.extraction.SpecFileEntry;
 import com.semmle.util.files.FileUtil;
 import com.semmle.util.io.WholeIO;
@@ -79,13 +78,11 @@ public class OdasaOutput {
 	}
 
 	public OdasaOutput(boolean trackClassOrigins, Compression compression, Logger log) {
-		String trapFolderVar = Env.systemEnv().getFirstNonEmpty("CODEQL_EXTRACTOR_JAVA_TRAP_DIR",
-				Var.TRAP_FOLDER.name());
+		String trapFolderVar = Env.systemEnv().get("CODEQL_EXTRACTOR_JAVA_TRAP_DIR");
 		if (trapFolderVar == null) {
 			throw new ResourceError("CODEQL_EXTRACTOR_JAVA_TRAP_DIR was not set");
 		}
-		String sourceArchiveVar = Env.systemEnv().getFirstNonEmpty("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR",
-				Var.SOURCE_ARCHIVE.name());
+		String sourceArchiveVar = Env.systemEnv().get("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR");
 		if (sourceArchiveVar == null) {
 			throw new ResourceError("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR was not set");
 		}

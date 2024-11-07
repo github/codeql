@@ -216,9 +216,9 @@ namespace Semmle.Extraction.Tests
 
             var expectedRegexMessages = new[]
             {
-                "Filtering in files matching '^c/.*/i\\.[^/]*.*'. Original glob filter: 'include:c/**/i.*'",
-                "Filtering in files matching '^c/d/.*/[^/]*\\.cs.*'. Original glob filter: 'include:c/d/**/*.cs'",
-                "Filtering out files matching '^.*/z/i\\.cs.*'. Original glob filter: 'exclude:**/z/i.cs'"
+                "Filtering in files matching '^c/(.*/|)i\\.[^/]*.*'. Original glob filter: 'include:c/**/i.*'",
+                "Filtering in files matching '^c/d/(.*/|)[^/]*\\.cs.*'. Original glob filter: 'include:c/d/**/*.cs'",
+                "Filtering out files matching '^(.*/|)z/i\\.cs.*'. Original glob filter: 'exclude:**/z/i.cs'"
             };
             Assert.Equivalent(expectedRegexMessages, logger.Messages, strict: false);
         }
@@ -244,9 +244,40 @@ namespace Semmle.Extraction.Tests
 
             var expectedRegexMessages = new[]
             {
-                "Filtering in files matching '^.*/i\\.[^/]*.*'. Original glob filter: 'include:**/i.*'",
-                "Filtering out files matching '^.*/z/i\\.cs.*'. Original glob filter: 'exclude:**/z/i.cs'"
+                "Filtering in files matching '^(.*/|)i\\.[^/]*.*'. Original glob filter: 'include:**/i.*'",
+                "Filtering out files matching '^(.*/|)z/i\\.cs.*'. Original glob filter: 'exclude:**/z/i.cs'"
             };
+            Assert.Equivalent(expectedRegexMessages, logger.Messages, strict: false);
+        }
+
+        [Fact]
+        public void TestFiltersWithIncludeExcludeComplexPatternsRelativeRoot()
+        {
+            (var testSubject, var logger, var files) = TestSetup();
+
+            // 'c' is the start of the relative path so we want to ensure the `**/` glob can match start
+            Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
+                include:**/c/**/i.*
+                exclude:**/c/**/z/i.cs
+                exclude:**/**/c/**/z/i.cs
+                """);
+
+            var filtered = testSubject.Filter(files);
+
+            var expected = GetExpected(
+                [
+                    "/a/b/c/x/y/i.cs",
+                ]);
+
+            AssertFileInfoEquivalence(expected, filtered);
+            var expectedRegexMessages = new[]
+            {
+                "Filtering in files matching '^(.*/|)c/(.*/|)i\\.[^/]*.*'. Original glob filter: 'include:**/c/**/i.*'",
+                "Filtering out files matching '^(.*/|)c/(.*/|)z/i\\.cs.*'. Original glob filter: 'exclude:**/c/**/z/i.cs'",
+                "Filtering out files matching '^(.*/|)(.*/|)c/(.*/|)z/i\\.cs.*'. Original glob filter: 'exclude:**/**/c/**/z/i.cs'"
+            };
+
+
             Assert.Equivalent(expectedRegexMessages, logger.Messages, strict: false);
         }
     }

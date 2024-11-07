@@ -1,4 +1,4 @@
-load("@ruby_deps//:defs.bzl", "aliases", "all_crate_deps")
+load("@tree_sitter_extractors_deps//:defs.bzl", "aliases", "all_crate_deps")
 load("//misc/bazel:rust.bzl", "codeql_rust_binary")
 
 codeql_rust_binary(
@@ -12,6 +12,6 @@ codeql_rust_binary(
     deps = all_crate_deps(
         normal = True,
     ) + [
-        "//shared/tree-sitter-extractor:codeql-extractor",
+        "//shared/tree-sitter-extractor",
     ],
 )

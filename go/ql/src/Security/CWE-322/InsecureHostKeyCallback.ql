@@ -12,17 +12,17 @@
 
 import go
 
+private string cryptoSshPackage() { result = package("golang.org/x/crypto", "ssh") }
+
 /** The `ssh.InsecureIgnoreHostKey` function, which allows connecting to any host regardless of its host key. */
 class InsecureIgnoreHostKey extends Function {
-  InsecureIgnoreHostKey() {
-    this.hasQualifiedName(CryptoSsh::packagePath(), "InsecureIgnoreHostKey")
-  }
+  InsecureIgnoreHostKey() { this.hasQualifiedName(cryptoSshPackage(), "InsecureIgnoreHostKey") }
 }
 
 /** An SSH host-key checking function. */
 class HostKeyCallbackFunc extends DataFlow::Node {
   HostKeyCallbackFunc() {
-    exists(NamedType nt | nt.hasQualifiedName(CryptoSsh::packagePath(), "HostKeyCallback") |
+    exists(NamedType nt | nt.hasQualifiedName(cryptoSshPackage(), "HostKeyCallback") |
       this.getType().getUnderlyingType() = nt.getUnderlyingType()
     ) and
     // Restrict possible sources to either function definitions or
@@ -62,7 +62,7 @@ module Config implements DataFlow::ConfigSig {
    */
   additional predicate writeIsSink(DataFlow::Node sink, Write write) {
     exists(Field f |
-      f.hasQualifiedName(CryptoSsh::packagePath(), "ClientConfig", "HostKeyCallback") and
+      f.hasQualifiedName(cryptoSshPackage(), "ClientConfig", "HostKeyCallback") and
       write.writesField(_, f, sink)
     )
   }

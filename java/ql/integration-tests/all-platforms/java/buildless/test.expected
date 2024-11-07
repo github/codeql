@@ -1,9 +1,0 @@
-#select
-| src/main/java/com/example/App.java:0:0:0:0 | App |
-| src/test/java/com/example/AppTest.java:0:0:0:0 | AppTest |
-xmlFiles
-| src/main/resources/page.xml:0:0:0:0 | src/main/resources/page.xml |
-| src/main/resources/struts.xml:0:0:0:0 | src/main/resources/struts.xml |
-propertiesFiles
-| src/main/resources/my-app.properties:0:0:0:0 | src/main/resources/my-app.properties |
-| test-db/log/ext/javac.properties:0:0:0:0 | test-db/log/ext/javac.properties |

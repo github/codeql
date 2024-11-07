@@ -61,7 +61,7 @@ class File extends Container, Impl::File {
 
   /** Holds if this file contains source code. */
   final predicate fromSource() {
-    this.getExtension() = ["cs", "cshtml"] and
+    this.getExtension() = ["cs", "cshtml", "razor"] and
     not this.isStub()
   }
 

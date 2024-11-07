@@ -4,15 +4,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetAbsoluteExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.DateTimeOffset)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetAbsoluteExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.DateTimeOffset)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetAbsoluteExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.DateTimeOffset)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetAbsoluteExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetAbsoluteExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetAbsoluteExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetSlidingExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetSlidingExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetSlidingExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetAbsoluteExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.DateTimeOffset)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetAbsoluteExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Caching.Distributed", "DistributedCacheEntryExtensions", False, "SetSlidingExpiration", "(Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions,System.TimeSpan)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

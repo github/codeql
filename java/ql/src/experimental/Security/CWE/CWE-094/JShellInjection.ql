@@ -18,7 +18,7 @@ import semmle.code.java.dataflow.TaintTracking
 import JShellInjectionFlow::PathGraph
 
 module JShellInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof JShellInjectionSink }
 

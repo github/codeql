@@ -55,8 +55,8 @@ Python
 Major Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
 
@@ -73,8 +73,8 @@ C#
 
 *   The query library for :code:`cs/hardcoded-credentials` now excludes benign properties such as :code:`UserNameClaimType` and :code:`AllowedUserNameCharacters` from :code:`Microsoft.AspNetCore.Identity` options classes.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Modified the :code:`getSecureAlgorithmName` predicate in :code:`Encryption.qll` to also include :code:`SHA-256` and :code:`SHA-512`. Previously only the versions of the names without dashes were considered secure.
 *   Add support for :code:`WithElement` and :code:`WithoutElement` for MaD access paths.

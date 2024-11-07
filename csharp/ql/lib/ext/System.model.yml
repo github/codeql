@@ -3,9 +3,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: sourceModel
     data:
-      - ["System", "Console", False, "Read", "", "", "ReturnValue", "local", "manual"]
-      - ["System", "Console", False, "ReadKey", "", "", "ReturnValue", "local", "manual"]
-      - ["System", "Console", False, "ReadLine", "", "", "ReturnValue", "local", "manual"]
+      - ["System", "Console", False, "Read", "", "", "ReturnValue", "stdin", "manual"]
+      - ["System", "Console", False, "ReadKey", "", "", "ReturnValue", "stdin", "manual"]
+      - ["System", "Console", False, "ReadLine", "", "", "ReturnValue", "stdin", "manual"]
       - ["System", "Environment", False, "ExpandEnvironmentVariables", "(System.String)", "", "ReturnValue", "environment", "manual"]
       - ["System", "Environment", False, "GetCommandLineArgs", "()", "", "ReturnValue", "commandargs", "manual"]
       - ["System", "Environment", False, "get_CommandLine", "()", "", "ReturnValue", "commandargs", "manual"]
@@ -870,3 +870,8 @@ extensions:
       - ["System", "ValueTuple<T1,T2>", False, "get_Item", "(System.Int32)", "", "Argument[this].Field[System.ValueTuple`2.Item2]", "ReturnValue", "value", "manual"]
       - ["System", "ValueTuple<T1>", False, "ValueTuple", "(T1)", "", "Argument[0]", "Argument[this].Field[System.ValueTuple`1.Item1]", "value", "manual"]
       - ["System", "ValueTuple<T1>", False, "get_Item", "(System.Int32)", "", "Argument[this].Field[System.ValueTuple`1.Item1]", "ReturnValue", "value", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System", "Environment", "get_SystemDirectory", "()", "source", "manual"]

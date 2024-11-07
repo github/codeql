@@ -1,5 +1,5 @@
-WARNING: Module DataFlow has been deprecated and may be removed in future (test-source-sink.ql:3,25-42)
-WARNING: Module DataFlow has been deprecated and may be removed in future (test-source-sink.ql:3,57-74)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (test-source-sink.ql:3,25-42)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (test-source-sink.ql:3,57-74)
 astFlow
 | BarrierGuard.cpp:5:19:5:24 | source | BarrierGuard.cpp:9:10:9:15 | source |
 | BarrierGuard.cpp:13:17:13:22 | source | BarrierGuard.cpp:15:10:15:15 | source |
@@ -127,7 +127,11 @@ astFlow
 | test.cpp:842:11:842:16 | call to source | test.cpp:844:8:844:8 | y |
 | test.cpp:846:13:846:27 | call to indirect_source | test.cpp:848:23:848:25 | rpx |
 | test.cpp:860:54:860:59 | call to source | test.cpp:861:10:861:37 | static_local_pointer_dynamic |
-| test.cpp:1050:12:1050:12 | a | test.cpp:1052:8:1052:9 | & ... |
+| test.cpp:1066:9:1066:14 | call to source | test.cpp:1072:10:1072:10 | i |
+| test.cpp:1066:9:1066:14 | call to source | test.cpp:1080:10:1080:10 | i |
+| test.cpp:1069:9:1069:14 | call to source | test.cpp:1074:10:1074:10 | i |
+| test.cpp:1069:9:1069:14 | call to source | test.cpp:1082:10:1082:10 | i |
+| test.cpp:1086:12:1086:12 | a | test.cpp:1088:8:1088:9 | & ... |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
 | true_upon_entry.cpp:33:11:33:16 | call to source | true_upon_entry.cpp:39:8:39:8 | x |
@@ -313,6 +317,13 @@ irFlow
 | test.cpp:1021:18:1021:32 | *call to indirect_source | test.cpp:1027:19:1027:28 | *translated |
 | test.cpp:1021:18:1021:32 | *call to indirect_source | test.cpp:1031:19:1031:28 | *translated |
 | test.cpp:1045:14:1045:19 | call to source | test.cpp:1046:7:1046:10 | * ... |
+| test.cpp:1052:13:1052:27 | *call to indirect_source | test.cpp:1054:7:1054:11 | * ... |
+| test.cpp:1066:9:1066:14 | call to source | test.cpp:1072:10:1072:10 | i |
+| test.cpp:1066:9:1066:14 | call to source | test.cpp:1079:10:1079:10 | i |
+| test.cpp:1069:9:1069:14 | call to source | test.cpp:1074:10:1074:10 | i |
+| test.cpp:1069:9:1069:14 | call to source | test.cpp:1081:10:1081:10 | i |
+| test.cpp:1117:27:1117:34 | call to source | test.cpp:1117:27:1117:34 | call to source |
+| test.cpp:1132:11:1132:16 | call to source | test.cpp:1121:8:1121:8 | x |
 | true_upon_entry.cpp:9:11:9:16 | call to source | true_upon_entry.cpp:13:8:13:8 | x |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |

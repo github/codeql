@@ -47,79 +47,11 @@ module Beego {
     result = package(v2modulePath(), "core/utils")
   }
 
-  /**
-   * `BeegoInput` sources of untrusted data.
-   */
-  private class BeegoInputSource extends RemoteFlowSource::Range {
-    string methodName;
-
-    BeegoInputSource() {
-      exists(FunctionOutput output |
-        methodName = "Bind" and
-        output.isParameter(0)
-        or
-        methodName in [
-            "Cookie", "Data", "GetData", "Header", "Param", "Params", "Query", "Refer", "Referer",
-            "URI", "URL", "UserAgent"
-          ] and
-        output.isResult(0)
-      |
-        exists(DataFlow::MethodCallNode c | this = output.getExitNode(c) |
-          c.getTarget().hasQualifiedName(contextPackagePath(), "BeegoInput", methodName)
-        )
-      )
-    }
-
-    predicate isSafeUrlSource() { methodName in ["URI", "URL"] }
-  }
-
   /** `BeegoInput` sources that are safe to use for redirection. */
   private class BeegoInputSafeUrlSource extends SafeUrlFlow::Source {
-    BeegoInputSafeUrlSource() { this.(BeegoInputSource).isSafeUrlSource() }
-  }
-
-  /**
-   * `beego.Controller` sources of untrusted data.
-   */
-  private class BeegoControllerSource extends RemoteFlowSource::Range {
-    BeegoControllerSource() {
-      exists(string methodName, FunctionOutput output |
-        methodName = "ParseForm" and
-        output.isParameter(0)
-        or
-        methodName in ["GetFile", "GetFiles", "GetString", "GetStrings", "Input"] and
-        output.isResult(0)
-        or
-        methodName = "GetFile" and
-        output.isResult(1)
-      |
-        exists(DataFlow::MethodCallNode c |
-          c.getTarget().hasQualifiedName(packagePath(), "Controller", methodName)
-        |
-          this = output.getExitNode(c)
-        )
-      )
-    }
-  }
-
-  /**
-   * `BeegoInputRequestBody` sources of untrusted data.
-   */
-  private class BeegoInputRequestBodySource extends RemoteFlowSource::Range {
-    BeegoInputRequestBodySource() {
-      exists(DataFlow::FieldReadNode frn | this = frn |
-        frn.getField().hasQualifiedName(contextPackagePath(), "BeegoInput", "RequestBody")
-      )
-    }
-  }
-
-  /**
-   * `beego/context.Context` sources of untrusted data.
-   */
-  private class BeegoContextSource extends RemoteFlowSource::Range {
-    BeegoContextSource() {
-      exists(Method m | m.hasQualifiedName(contextPackagePath(), "Context", "GetCookie") |
-        this = m.getACall().getResult()
+    BeegoInputSafeUrlSource() {
+      exists(Method m | m.hasQualifiedName(contextPackagePath(), "BeegoInput", ["URI", "URL"]) |
+        this = m.getACall().getResult(0)
       )
     }
   }
@@ -276,56 +208,6 @@ module Beego {
         this = c.getArgument(0)
       )
     }
-  }
-
-  /**
-   * The File system access sinks
-   */
-  private class FsOperations extends FileSystemAccess::Range, DataFlow::CallNode {
-    int pathArg;
-
-    FsOperations() {
-      this.getTarget().hasQualifiedName(packagePath(), "Walk") and pathArg = 1
-      or
-      exists(Method m | this = m.getACall() |
-        m.hasQualifiedName(packagePath(), "FileSystem", "Open") and pathArg = 0
-        or
-        m.hasQualifiedName(packagePath(), "Controller", "SaveToFile") and pathArg = 1
-        or
-        m.hasQualifiedName(contextPackagePath(), "BeegoOutput", "Download") and
-        pathArg = 0
-        or
-        // SaveToFileWithBuffer only available in v2
-        m.hasQualifiedName("github.com/beego/beego/v2/server/web", "Controller",
-          "SaveToFileWithBuffer") and
-        pathArg = 1
-      )
-    }
-
-    override DataFlow::Node getAPathArgument() { result = this.getArgument(pathArg) }
-  }
-
-  private class RedirectMethods extends Http::Redirect::Range, DataFlow::CallNode {
-    string className;
-
-    RedirectMethods() {
-      exists(string package |
-        (
-          package = packagePath() and className = "Controller"
-          or
-          package = contextPackagePath() and className = "Context"
-        ) and
-        this = any(Method m | m.hasQualifiedName(package, className, "Redirect")).getACall()
-      )
-    }
-
-    override DataFlow::Node getUrl() {
-      className = "Controller" and result = this.getArgument(0)
-      or
-      className = "Context" and result = this.getArgument(1)
-    }
-
-    override Http::ResponseWriter getResponseWriter() { none() }
   }
 
   private class UtilsTaintPropagators extends TaintTracking::FunctionModel {

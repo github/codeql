@@ -17,7 +17,13 @@
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
- * 1. The `package` column selects a package.
+ * 1. The `package` column selects a package. Note that if the package does not
+ *    contain a major version suffix (like "/v2") then we will match all major
+ *    versions. This can be disabled by putting `fixed-version:` at the start
+ *    of the package path. Also, instead of a package path, if this column is
+ *    "group:<groupname>" then it indicates that the row applies to all
+ *    packages in the group `<groupname>` according to the `packageGrouping`
+ *    predicate.
  * 2. The `type` column selects a type within that package.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type.
@@ -75,7 +81,7 @@
  */
 
 private import go
-import internal.ExternalFlowExtensions
+import internal.ExternalFlowExtensions as FlowExtensions
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl
@@ -83,6 +89,89 @@ private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
+
+/** Gets the prefix for a group of packages. */
+private string groupPrefix() { result = "group:" }
+
+/**
+ * Gets a package represented by `packageOrGroup`.
+ *
+ * If `packageOrGroup` is of the form `group:<groupname>` then `result` is a
+ * package in the group `<groupname>`, as determined by `packageGrouping`.
+ * Otherwise, `result` is `packageOrGroup`.
+ */
+bindingset[packageOrGroup]
+private string getPackage(string packageOrGroup) {
+  not exists(string group | packageOrGroup = groupPrefix() + group) and result = packageOrGroup
+  or
+  exists(string group |
+    FlowExtensions::packageGrouping(group, result) and
+    packageOrGroup = groupPrefix() + group
+  )
+}
+
+/**
+ * Holds if a source model exists for the given parameters.
+ *
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
+ */
+predicate sourceModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  exists(string packageOrGroup |
+    package = getPackage(packageOrGroup) and
+    FlowExtensions::sourceModel(packageOrGroup, type, subtypes, name, signature, ext, output, kind,
+      provenance, madId)
+  )
+}
+
+/**
+ * Holds if a sink model exists for the given parameters.
+ *
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
+ */
+predicate sinkModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
+    FlowExtensions::sinkModel(packageOrGroup, type, subtypes, name, signature, ext, input, kind,
+      provenance, madId)
+  )
+}
+
+/**
+ * Holds if a summary model exists for the given parameters.
+ *
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
+ */
+predicate summaryModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
+    FlowExtensions::summaryModel(packageOrGroup, type, subtypes, name, signature, ext, input,
+      output, kind, provenance, madId)
+  )
+}
+
+/**
+ * Holds if a neutral model exists for the given parameters.
+ *
+ * Note that `group:` references are expanded into one or more actual packages
+ * by this predicate.
+ */
+predicate neutralModel(
+  string package, string type, string name, string signature, string kind, string provenance
+) {
+  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
+    FlowExtensions::neutralModel(packageOrGroup, type, name, signature, kind, provenance)
+  )
+}
 
 /**
  * Holds if the given extension tuple `madId` should pretty-print as `model`.
@@ -94,7 +183,8 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string output, string kind, string provenance
   |
-    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+    FlowExtensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind,
+      provenance, madId) and
     model =
       "Source: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
         ext + "; " + output + "; " + kind + "; " + provenance
@@ -104,7 +194,8 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string input, string kind, string provenance
   |
-    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+    FlowExtensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind,
+      provenance, madId) and
     model =
       "Sink: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
         ext + "; " + input + "; " + kind + "; " + provenance
@@ -114,24 +205,38 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string input, string output, string kind, string provenance
   |
-    summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance,
-      madId) and
+    FlowExtensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
+      provenance, madId) and
     model =
       "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
         ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
   )
 }
 
+bindingset[p]
+private string cleanPackage(string p) {
+  exists(string noPrefix |
+    p = fixedVersionPrefix() + noPrefix
+    or
+    not p = fixedVersionPrefix() + any(string s) and
+    noPrefix = p
+  |
+    result = noPrefix.regexpReplaceAll(majorVersionSuffixRegex(), "")
+  )
+}
+
 private predicate relevantPackage(string package) {
-  sourceModel(package, _, _, _, _, _, _, _, _, _) or
-  sinkModel(package, _, _, _, _, _, _, _, _, _) or
-  summaryModel(package, _, _, _, _, _, _, _, _, _, _)
+  exists(string p | package = cleanPackage(p) |
+    sourceModel(p, _, _, _, _, _, _, _, _, _) or
+    sinkModel(p, _, _, _, _, _, _, _, _, _) or
+    summaryModel(p, _, _, _, _, _, _, _, _, _, _)
+  )
 }
 
 private predicate packageLink(string shortpkg, string longpkg) {
   relevantPackage(shortpkg) and
   relevantPackage(longpkg) and
-  longpkg.prefix(longpkg.indexOf(".")) = shortpkg
+  longpkg.prefix(longpkg.indexOf("/")) = shortpkg
 }
 
 private predicate canonicalPackage(string package) {
@@ -154,26 +259,28 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
     part = "source" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance |
+        string ext, string output, string provenance, string x |
         canonicalPkgLink(package, subpkg) and
-        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, provenance, _)
+        subpkg = cleanPackage(x) and
+        sourceModel(x, type, subtypes, name, signature, ext, output, kind, provenance, _)
       )
     or
     part = "sink" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance |
+        string ext, string input, string provenance, string x |
         canonicalPkgLink(package, subpkg) and
-        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, provenance, _)
+        subpkg = cleanPackage(x) and
+        sinkModel(x, type, subtypes, name, signature, ext, input, kind, provenance, _)
       )
     or
     part = "summary" and
     n =
       strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, string provenance |
+        string ext, string input, string output, string provenance, string x |
         canonicalPkgLink(package, subpkg) and
-        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance,
-          _)
+        subpkg = cleanPackage(x) and
+        summaryModel(x, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
       )
   )
 }
@@ -263,7 +370,7 @@ module ModelValidation {
       ext = "" and
       pred = "neutral"
     |
-      not package.replaceAll("$ANYVERSION", "").regexpMatch("[a-zA-Z0-9_\\./-]*") and
+      not package.replaceAll(fixedVersionPrefix(), "").regexpMatch("[a-zA-Z0-9_\\./-]*") and
       result = "Dubious package \"" + package + "\" in " + pred + " model."
       or
       not type.regexpMatch("[a-zA-Z0-9_\\$<>]*") and
@@ -283,12 +390,30 @@ module ModelValidation {
     )
   }
 
+  private string getInvalidPackageGroup() {
+    exists(string pred, string group, string package |
+      FlowExtensions::sourceModel(package, _, _, _, _, _, _, _, _, _) and pred = "source"
+      or
+      FlowExtensions::sinkModel(package, _, _, _, _, _, _, _, _, _) and pred = "sink"
+      or
+      FlowExtensions::summaryModel(package, _, _, _, _, _, _, _, _, _, _) and
+      pred = "summary"
+      or
+      FlowExtensions::neutralModel(package, _, _, _, _, _) and
+      pred = "neutral"
+    |
+      package = groupPrefix() + group and
+      not FlowExtensions::packageGrouping(group, _) and
+      result = "Dubious package group \"" + package + "\" in " + pred + " model."
+    )
+  }
+
   /** Holds if some row in a MaD flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        KindVal::getInvalidModelKind()
+        KindVal::getInvalidModelKind(), getInvalidPackageGroup()
       ]
   }
 }
@@ -306,14 +431,34 @@ private predicate elementSpec(
   neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
 }
 
+private string fixedVersionPrefix() { result = "fixed-version:" }
+
+/**
+ * Gets the string for the package path corresponding to `p`, if one exists.
+ *
+ * We attempt to account for major version suffixes as follows: if `p` is
+ * `github.com/a/b/c/d` then we will return any path for a package that was
+ * imported which matches that, possibly with a major version suffix in it,
+ * so if `github.com/a/b/c/d/v2` or `github.com/a/b/v3/c/d` were imported then
+ * they will be in the results. There are two situations where we do not do
+ * this: (1) when `p` already contains a major version suffix; (2) if `p` has
+ * `fixed-version:` at the start (which we remove).
+ */
 bindingset[p]
 private string interpretPackage(string p) {
-  exists(string r | r = "([^$]+)([./]\\$ANYVERSION(/|$)(.*))?" |
-    if exists(p.regexpCapture(r, 4))
-    then result = package(p.regexpCapture(r, 1), p.regexpCapture(r, 4))
-    else result = package(p, "")
+  exists(Package pkg | result = pkg.getPath() |
+    p = fixedVersionPrefix() + result
+    or
+    not p = fixedVersionPrefix() + any(string s) and
+    (
+      if exists(p.regexpFind(majorVersionSuffixRegex(), 0, _))
+      then result = p
+      else p = pkg.getPathWithoutMajorVersionSuffix()
+    )
   )
   or
+  // Special case for built-in functions, which are not in any package, but
+  // satisfy `hasQualifiedName` with the package path "".
   p = "" and result = ""
 }
 
@@ -467,16 +612,4 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   override predicate hasProvenance(Provenance provenance) {
     summaryElement(this, _, _, _, provenance, _)
   }
-}
-
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
-
-  NeutralCallableAdapter() { neutralElement(this, kind, provenance_) }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
 }

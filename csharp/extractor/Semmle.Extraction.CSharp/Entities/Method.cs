@@ -360,7 +360,6 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateParameters();
             PopulateMethodBody(trapFile);
             PopulateGenerics(trapFile);
-            PopulateMetadataHandle(trapFile);
             PopulateNullability(trapFile, Symbol.GetAnnotatedReturnType());
         }
 

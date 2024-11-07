@@ -60,8 +60,8 @@ C#
 
 *   CIL extraction is now disabled by default. It is still possible to turn on CIL extraction by setting the :code:`cil` extractor option to :code:`true` or by setting the environment variable :code:`$CODEQL_EXTRACTOR_CSHARP_OPTION_CIL` to :code:`true`. This is the first step towards sun-setting the CIL extractor entirely.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/unsafe-deserialization` has been improved to detect insecure calls to :code:`ObjectMessage.getObject` in JMS.
 
@@ -193,8 +193,8 @@ Golang
 
 *   Added the `gin-contrib/cors <https://github.com/gin-contrib/cors>`__ library to the experimental query "CORS misconfiguration" (:code:`go/cors-misconfiguration`).
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The types :code:`java.util.SequencedCollection`, :code:`SequencedSet` and :code:`SequencedMap`, as well as the related :code:`Collections.unmodifiableSequenced*` methods are now modelled. This means alerts may be raised relating to data flow through these types and methods.
 
@@ -217,7 +217,7 @@ Swift
 Deprecated APIs
 ~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   In :code:`SensitiveApi.qll`, :code:`javaApiCallablePasswordParam`, :code:`javaApiCallableUsernameParam`, :code:`javaApiCallableCryptoKeyParam`, and :code:`otherApiCallableCredentialParam` predicates have been deprecated. They have been replaced with a new class :code:`CredentialsSinkNode` and its child classes :code:`PasswordSink`, :code:`UsernameSink`, and :code:`CryptoKeySink`. The predicates have been changed to using the new classes, so there may be minor changes in results relying on these predicates.

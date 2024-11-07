@@ -14,8 +14,11 @@ import swift
 import codeql.swift.security.ConstantSaltQuery
 import ConstantSaltFlow::PathGraph
 
-from ConstantSaltFlow::PathNode sourceNode, ConstantSaltFlow::PathNode sinkNode
-where ConstantSaltFlow::flowPath(sourceNode, sinkNode)
-select sinkNode.getNode(), sourceNode, sinkNode,
-  "The value '" + sourceNode.getNode().toString() +
-    "' is used as a constant salt, which is insecure for hashing passwords."
+from
+  ConstantSaltFlow::PathNode sourcePathNode, ConstantSaltFlow::PathNode sinkPathNode,
+  DataFlow::Node sourceNode
+where
+  ConstantSaltFlow::flowPath(sourcePathNode, sinkPathNode) and sourceNode = sourcePathNode.getNode()
+select sinkPathNode.getNode(), sourcePathNode, sinkPathNode,
+  "The value $@ is used as a constant, which is insecure for hashing passwords.", sourceNode,
+  sourceNode.toString()

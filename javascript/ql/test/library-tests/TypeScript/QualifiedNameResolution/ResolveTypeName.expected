@@ -1,27 +1,27 @@
 | ambient.ts:5:16:5:20 | Foo.C | Foo.C in global scope |
-| enums.ts:9:8:9:12 | A.E.x | A.E.x in library-tests/TypeScript/QualifiedNameResolution/enums.ts |
-| enums.ts:10:8:10:10 | A.E | A.E in library-tests/TypeScript/QualifiedNameResolution/enums.ts |
-| export-class-client-renamed.ts:3:8:3:8 | X | Banana in library-tests/TypeScript/QualifiedNameResolution/export-class.ts |
-| export-class-client.ts:3:8:3:13 | Banana | Banana in library-tests/TypeScript/QualifiedNameResolution/export-class.ts |
-| export-qualified-client.ts:3:8:3:11 | AB.C | A.B.C in library-tests/TypeScript/QualifiedNameResolution/export-qualified.ts |
-| export-specifiers-client.ts:4:8:4:10 | N.C | N.C in library-tests/TypeScript/QualifiedNameResolution/export-specifiers.ts |
-| export-specifiers-client.ts:5:8:5:10 | D.C | D.C in library-tests/TypeScript/QualifiedNameResolution/export-specifiers.ts |
-| export-specifiers-client.ts:6:8:6:8 | C | C in library-tests/TypeScript/QualifiedNameResolution/export-specifiers.ts |
+| enums.ts:9:8:9:12 | A.E.x | A.E.x in enums.ts |
+| enums.ts:10:8:10:10 | A.E | A.E in enums.ts |
+| export-class-client-renamed.ts:3:8:3:8 | X | Banana in export-class.ts |
+| export-class-client.ts:3:8:3:13 | Banana | Banana in export-class.ts |
+| export-qualified-client.ts:3:8:3:11 | AB.C | A.B.C in export-qualified.ts |
+| export-specifiers-client.ts:4:8:4:10 | N.C | N.C in export-specifiers.ts |
+| export-specifiers-client.ts:5:8:5:10 | D.C | D.C in export-specifiers.ts |
+| export-specifiers-client.ts:6:8:6:8 | C | C in export-specifiers.ts |
 | global.ts:5:9:5:14 | Glob.C | Glob.C in global scope |
 | import-in-namespace.ts:9:13:9:15 | A.C | X.C in global scope |
 | import-in-namespace.ts:10:13:10:13 | D | X.C in global scope |
-| namespaces-client.ts:4:9:4:14 | ns.G.C | G.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| namespaces-client.ts:5:9:5:11 | G.C | G.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| namespaces-client.ts:6:9:6:13 | G.J.C | G.J.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-all-client.ts:4:9:4:14 | ns.G.C | G.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-all-client.ts:5:9:5:11 | G.C | G.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-all-client.ts:6:9:6:13 | G.J.C | G.J.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| namespaces-client.ts:4:9:4:14 | ns.G.C | G.C in namespaces.ts |
+| namespaces-client.ts:5:9:5:11 | G.C | G.C in namespaces.ts |
+| namespaces-client.ts:6:9:6:13 | G.J.C | G.J.C in namespaces.ts |
+| reexport-all-client.ts:4:9:4:14 | ns.G.C | G.C in namespaces.ts |
+| reexport-all-client.ts:5:9:5:11 | G.C | G.C in namespaces.ts |
+| reexport-all-client.ts:6:9:6:13 | G.J.C | G.J.C in namespaces.ts |
 | reexport-all-client.ts:8:8:8:10 | D.F | D.F in unknown scope |
 | reexport-all-client.ts:9:8:9:13 | ns.D.F | ns.D.F in unknown scope |
-| reexport-all-client.ts:11:8:11:16 | ns.Banana | Banana in library-tests/TypeScript/QualifiedNameResolution/export-class.ts |
-| reexport-named-client.ts:4:9:4:14 | ns.G.C | G.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-named-client.ts:5:9:5:11 | G.C | G.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-named-client.ts:6:9:6:13 | G.J.C | G.J.C in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| reexport-all-client.ts:11:8:11:16 | ns.Banana | Banana in export-class.ts |
+| reexport-named-client.ts:4:9:4:14 | ns.G.C | G.C in namespaces.ts |
+| reexport-named-client.ts:5:9:5:11 | G.C | G.C in namespaces.ts |
+| reexport-named-client.ts:6:9:6:13 | G.J.C | G.J.C in namespaces.ts |
 | reexport-named-client.ts:8:8:8:10 | X.F | X.F in unknown scope |
 | reexport-named-client.ts:9:8:9:13 | ns.X.F | ns.X.F in unknown scope |
-| reexport-named-client.ts:11:9:11:9 | Y | Banana in library-tests/TypeScript/QualifiedNameResolution/export-class.ts |
+| reexport-named-client.ts:11:9:11:9 | Y | Banana in export-class.ts |

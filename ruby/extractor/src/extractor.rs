@@ -78,8 +78,8 @@ pub fn run(options: Options) -> std::io::Result<()> {
 
     let file_list = fs::File::open(file_paths::path_from_string(&options.file_list))?;
 
-    let language = tree_sitter_ruby::language();
-    let erb = tree_sitter_embedded_template::language();
+    let language: Language = tree_sitter_ruby::LANGUAGE.into();
+    let erb: Language = tree_sitter_embedded_template::LANGUAGE.into();
     // Look up tree-sitter kind ids now, to avoid string comparisons when scanning ERB files.
     let erb_directive_id = erb.id_for_node_kind("directive", true);
     let erb_output_directive_id = erb.id_for_node_kind("output_directive", true);

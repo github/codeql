@@ -16,10 +16,6 @@
 |  | forstmt02.cpp:3:6:3:14 | for_loop2 | 0 | 8 | file://:0:0:0:0 | file://:0:0:0:0 | file://:0:0:0:0 | initializer for (__range) | 4: declaration |
 |  | forstmt02.cpp:3:6:3:14 | for_loop2 | 0 | 12 | file://:0:0:0:0 | file://:0:0:0:0 | file://:0:0:0:0 | initializer for (__begin) | 6: (__range) |
 |  | forstmt02.cpp:3:6:3:14 | for_loop2 | 0 | 15 | file://:0:0:0:0 | file://:0:0:0:0 | file://:0:0:0:0 | initializer for (__end) | 6: (__end) |
-| forstmt | forstmt.h:2:8:2:8 | operator= | 2 | 1 | forstmt.h:2:8:2:8 | forstmt.h:2:8:2:8 | forstmt.h:2:8:2:8 | operator= | <none> |
-| forstmt | forstmt.h:2:8:2:8 | operator= | 2 | 1 | forstmt.h:2:8:2:8 | forstmt.h:2:8:2:8 | forstmt.h:2:8:2:8 | operator= | <none> |
-| forstmt | forstmt.h:3:12:3:12 | operator= | 3 | 1 | forstmt.h:3:12:3:12 | forstmt.h:3:12:3:12 | forstmt.h:3:12:3:12 | operator= | <none> |
-| forstmt | forstmt.h:3:12:3:12 | operator= | 3 | 1 | forstmt.h:3:12:3:12 | forstmt.h:3:12:3:12 | forstmt.h:3:12:3:12 | operator= | <none> |
 | forstmt | forstmt.h:4:19:4:28 | operator++ | 4 | 1 | forstmt.h:4:19:4:28 | forstmt.h:4:19:4:28 | forstmt.h:4:19:4:28 | operator++ | <none> |
 | forstmt | forstmt.h:4:19:4:28 | operator++ | 4 | 1 | forstmt.h:4:19:4:28 | forstmt.h:4:19:4:28 | forstmt.h:4:19:4:28 | operator++ | <none> |
 | forstmt | forstmt.h:5:12:5:20 | operator* | 5 | 1 | forstmt.h:5:12:5:20 | forstmt.h:5:12:5:20 | forstmt.h:5:12:5:20 | operator* | <none> |

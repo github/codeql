@@ -49,8 +49,8 @@ Language Libraries
 Breaking Changes
 ~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The Java extractor no longer supports the :code:`ODASA_JAVA_LAYOUT`, :code:`ODASA_TOOLS` and :code:`ODASA_HOME` legacy environment variables.
 *   The Java extractor no longer supports the :code:`ODASA_BUILD_ERROR_DIR` legacy environment variable.

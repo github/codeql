@@ -42,7 +42,9 @@ class BufferAccess extends ArrayExpr {
     not exists(Macro m |
       m.getName() = "strcmp" and
       m.getAnInvocation().getAnExpandedElement() = this
-    )
+    ) and
+    //A buffer access must be reachable (not in dead code)
+    reachable(this)
   }
 
   int bufferSize() { staticBuffer(this.getArrayBase(), _, result) }

@@ -58,13 +58,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return true;
         }
 
-        public bool RunCommand(string args, bool silent) =>
+        public bool RunCommand(string args, bool silent = true) =>
             RunCommandAux(args, null, out _, silent);
 
-        public bool RunCommand(string args, out IList<string> output, bool silent) =>
+        public bool RunCommand(string args, out IList<string> output, bool silent = true) =>
             RunCommandAux(args, null, out output, silent);
 
-        public bool RunCommand(string args, string? workingDirectory, out IList<string> output, bool silent) =>
+        public bool RunCommand(string args, string? workingDirectory, out IList<string> output, bool silent = true) =>
             RunCommandAux(args, workingDirectory, out output, silent);
     }
 }

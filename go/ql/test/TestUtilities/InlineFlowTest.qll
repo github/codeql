@@ -7,6 +7,7 @@ import go
 private import codeql.dataflow.test.InlineFlowTest
 private import semmle.go.dataflow.internal.DataFlowImplSpecific
 private import semmle.go.dataflow.internal.TaintTrackingImplSpecific
+private import semmle.go.dataflow.ExternalFlow as ExternalFlow
 private import internal.InlineExpectationsTestImpl
 
 private module FlowTestImpl implements InputSig<Location, GoDataFlow> {
@@ -24,6 +25,8 @@ private module FlowTestImpl implements InputSig<Location, GoDataFlow> {
     exists(src) and
     result = "\"" + sink.toString() + "\""
   }
+
+  predicate interpretModelForTest = ExternalFlow::interpretModelForTest/2;
 }
 
 import InlineFlowTestMake<Location, GoDataFlow, GoTaintTracking, Impl, FlowTestImpl>

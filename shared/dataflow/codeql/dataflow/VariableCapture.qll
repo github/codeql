@@ -17,10 +17,25 @@ signature module InputSig<LocationSig Location> {
     /** Gets a textual representation of this basic block. */
     string toString();
 
+    /** Gets the `i`th node in this basic block. */
+    ControlFlowNode getNode(int i);
+
+    /** Gets the length of this basic block. */
+    int length();
+
     /** Gets the enclosing callable. */
     Callable getEnclosingCallable();
 
     /** Gets the location of this basic block. */
+    Location getLocation();
+  }
+
+  /** A control flow node. */
+  class ControlFlowNode {
+    /** Gets a textual representation of this control flow node. */
+    string toString();
+
+    /** Gets the location of this control flow node. */
     Location getLocation();
   }
 
@@ -570,11 +585,13 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     2 <= strictcount(CapturedVariable v | captureAccess(v, c))
     or
     // Constructors that capture a variable may assign it to a field, which also
-    // entails a this-to-this summary.
-    captureAccess(_, c) and c.isConstructor()
+    // entails a this-to-this summary. If there are multiple constructors, then
+    // they might call each other, so if one constructor captures a variable we
+    // allow this-to-this summaries for all of them.
+    exists(ClosureExpr ce | ce.hasBody(c) and c.isConstructor() and hasConstructorCapture(ce, _))
   }
 
-  /** Holds if the constructor, if any, for the closure defined by `ce` captures `v`. */
+  /** Holds if a constructor, if any, for the closure defined by `ce` captures `v`. */
   private predicate hasConstructorCapture(ClosureExpr ce, CapturedVariable v) {
     exists(Callable c | ce.hasBody(c) and c.isConstructor() and captureAccess(v, c))
   }
@@ -645,6 +662,8 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
 
     Location getLocation() {
       exists(CapturedVariable v | this = TVariable(v) and result = v.getLocation())
+      or
+      exists(Callable c | this = TThis(c) and result = c.getLocation())
     }
   }
 
@@ -669,6 +688,8 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
 
   private module CaptureSsaInput implements Ssa::InputSig<Location> {
     final class BasicBlock = Input::BasicBlock;
+
+    final class ControlFlowNode = Input::ControlFlowNode;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = Input::getImmediateBasicBlockDominator(bb)
@@ -715,10 +736,10 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     TSynthPhi(CaptureSsa::DefinitionExt phi) {
       phi instanceof CaptureSsa::PhiNode or phi instanceof CaptureSsa::PhiReadNode
     } or
-    TExprNode(Expr expr, boolean isPost) {
-      expr instanceof VariableRead and isPost = [false, true]
+    TExprNode(Expr expr, Boolean isPost) {
+      expr instanceof VariableRead
       or
-      synthRead(_, _, _, _, expr) and isPost = [false, true]
+      synthRead(_, _, _, _, expr)
     } or
     TParamNode(CapturedParameter p) or
     TThisParamNode(Callable c) { captureAccess(_, c) } or
@@ -791,17 +812,17 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
   private class TSynthesizedCaptureNode = TSynthRead or TSynthThisQualifier or TSynthPhi;
 
   class SynthesizedCaptureNode extends ClosureNode, TSynthesizedCaptureNode {
-    Callable getEnclosingCallable() {
-      exists(BasicBlock bb | this = TSynthRead(_, bb, _, _) and result = bb.getEnclosingCallable())
+    BasicBlock getBasicBlock() {
+      this = TSynthRead(_, result, _, _)
       or
-      exists(BasicBlock bb |
-        this = TSynthThisQualifier(bb, _, _) and result = bb.getEnclosingCallable()
-      )
+      this = TSynthThisQualifier(result, _, _)
       or
-      exists(CaptureSsa::DefinitionExt phi, BasicBlock bb |
-        this = TSynthPhi(phi) and phi.definesAt(_, bb, _, _) and result = bb.getEnclosingCallable()
+      exists(CaptureSsa::DefinitionExt phi |
+        this = TSynthPhi(phi) and phi.definesAt(_, result, _, _)
       )
     }
+
+    Callable getEnclosingCallable() { result = this.getBasicBlock().getEnclosingCallable() }
 
     predicate isVariableAccess(CapturedVariable v) {
       this = TSynthRead(v, _, _, _)

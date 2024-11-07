@@ -1,4 +1,0 @@
-# We currently have a bug where gradle tests become flaky when executed in parallel
-# - sometimes, gradle fails to connect to the gradle daemon.
-# Therefore, force this test to run sequentially.
-# Additionally, Android SDK on-demand downloading can fail when multiple tests try to download the same SDK in parallel.

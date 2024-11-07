@@ -83,7 +83,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var targetDir = GetTemporaryWorkingDirectory(FileType.ToLowerInvariant());
 
                 return groupedFiles
-                    .SelectMany(group => sourceGenerator.RunSourceGenerator(group.Value, group.Key, references, targetDir));
+                    .SelectMany(group => sourceGenerator.RunSourceGenerator(group.Value, group.Key, references, targetDir, fileProvider.SourceDir.FullName));
             }
             catch (Exception ex)
             {

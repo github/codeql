@@ -8,7 +8,7 @@ import semmle.code.java.security.LdapInjection
  * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
  */
 module LdapInjectionFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof LdapInjectionSink }
 
@@ -17,6 +17,8 @@ module LdapInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     any(LdapInjectionAdditionalTaintStep a).step(pred, succ)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow from remote sources to LDAP injection vulnerabilities. */

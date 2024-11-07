@@ -14,12 +14,12 @@ track
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:8:9:8:14 | @field |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:14:5:14:13 | call to field= |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:15:10:15:18 | call to field |
-| type_tracker.rb:2:16:2:18 | val | type tracker without call steps with content splat position 0 | type_tracker.rb:3:9:3:23 | synthetic splat argument |
-| type_tracker.rb:2:16:2:18 | val | type tracker without call steps with content splat position 0 | type_tracker.rb:15:5:15:18 | synthetic splat argument |
+| type_tracker.rb:2:16:2:18 | val | type tracker without call steps with content element 0 | type_tracker.rb:3:9:3:23 | synthetic splat argument |
+| type_tracker.rb:2:16:2:18 | val | type tracker without call steps with content element 0 | type_tracker.rb:15:5:15:18 | synthetic splat argument |
 | type_tracker.rb:3:9:3:23 | call to puts | type tracker without call steps | type_tracker.rb:3:9:3:23 | call to puts |
 | type_tracker.rb:3:9:3:23 | synthetic splat argument | type tracker without call steps | type_tracker.rb:3:9:3:23 | synthetic splat argument |
 | type_tracker.rb:3:14:3:23 | call to field | type tracker without call steps | type_tracker.rb:3:14:3:23 | call to field |
-| type_tracker.rb:3:14:3:23 | call to field | type tracker without call steps with content splat position 0 | type_tracker.rb:3:9:3:23 | synthetic splat argument |
+| type_tracker.rb:3:14:3:23 | call to field | type tracker without call steps with content element 0 | type_tracker.rb:3:9:3:23 | synthetic splat argument |
 | type_tracker.rb:4:9:4:14 | @field | type tracker without call steps | type_tracker.rb:4:9:4:14 | @field |
 | type_tracker.rb:7:5:9:7 | &block | type tracker without call steps | type_tracker.rb:7:5:9:7 | &block |
 | type_tracker.rb:7:5:9:7 | field | type tracker without call steps | type_tracker.rb:7:5:9:7 | field |
@@ -27,8 +27,8 @@ track
 | type_tracker.rb:8:9:8:14 | @field | type tracker without call steps | type_tracker.rb:3:14:3:23 | call to field |
 | type_tracker.rb:8:9:8:14 | @field | type tracker without call steps | type_tracker.rb:8:9:8:14 | @field |
 | type_tracker.rb:8:9:8:14 | @field | type tracker without call steps | type_tracker.rb:15:10:15:18 | call to field |
-| type_tracker.rb:8:9:8:14 | @field | type tracker without call steps with content splat position 0 | type_tracker.rb:3:9:3:23 | synthetic splat argument |
-| type_tracker.rb:8:9:8:14 | @field | type tracker without call steps with content splat position 0 | type_tracker.rb:15:5:15:18 | synthetic splat argument |
+| type_tracker.rb:8:9:8:14 | @field | type tracker without call steps with content element 0 | type_tracker.rb:3:9:3:23 | synthetic splat argument |
+| type_tracker.rb:8:9:8:14 | @field | type tracker without call steps with content element 0 | type_tracker.rb:15:5:15:18 | synthetic splat argument |
 | type_tracker.rb:12:1:16:3 | &block | type tracker without call steps | type_tracker.rb:12:1:16:3 | &block |
 | type_tracker.rb:12:1:16:3 | m | type tracker without call steps | type_tracker.rb:12:1:16:3 | m |
 | type_tracker.rb:12:1:16:3 | self in m | type tracker without call steps | type_tracker.rb:12:1:16:3 | self in m |
@@ -40,61 +40,56 @@ track
 | type_tracker.rb:14:5:14:7 | [post] var | type tracker with call steps | type_tracker.rb:7:5:9:7 | self in field |
 | type_tracker.rb:14:5:14:7 | [post] var | type tracker without call steps | type_tracker.rb:14:5:14:7 | [post] var |
 | type_tracker.rb:14:5:14:13 | call to field= | type tracker without call steps | type_tracker.rb:14:5:14:13 | call to field= |
-| type_tracker.rb:14:5:14:13 | synthetic splat argument | type tracker with call steps | type_tracker.rb:2:5:5:7 | synthetic splat parameter |
 | type_tracker.rb:14:5:14:13 | synthetic splat argument | type tracker without call steps | type_tracker.rb:14:5:14:13 | synthetic splat argument |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps | type_tracker.rb:8:9:8:14 | @field |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps with content attribute field | type_tracker.rb:7:5:9:7 | self in field |
-| type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps with content splat position 0 | type_tracker.rb:2:5:5:7 | synthetic splat parameter |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:14:5:14:13 | call to field= |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:14:17:14:23 | "hello" |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:15:10:15:18 | call to field |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps with content attribute field | type_tracker.rb:14:5:14:7 | [post] var |
-| type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps with content splat position 0 | type_tracker.rb:14:5:14:13 | synthetic splat argument |
-| type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps with content splat position 0 | type_tracker.rb:15:5:15:18 | synthetic splat argument |
+| type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps with content element 0 | type_tracker.rb:14:5:14:13 | synthetic splat argument |
+| type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps with content element 0 | type_tracker.rb:15:5:15:18 | synthetic splat argument |
 | type_tracker.rb:14:17:14:23 | __synth__0 | type tracker without call steps | type_tracker.rb:14:17:14:23 | __synth__0 |
 | type_tracker.rb:15:5:15:18 | call to puts | type tracker without call steps | type_tracker.rb:15:5:15:18 | call to puts |
 | type_tracker.rb:15:5:15:18 | synthetic splat argument | type tracker without call steps | type_tracker.rb:15:5:15:18 | synthetic splat argument |
 | type_tracker.rb:15:10:15:18 | call to field | type tracker without call steps | type_tracker.rb:15:10:15:18 | call to field |
-| type_tracker.rb:15:10:15:18 | call to field | type tracker without call steps with content splat position 0 | type_tracker.rb:15:5:15:18 | synthetic splat argument |
+| type_tracker.rb:15:10:15:18 | call to field | type tracker without call steps with content element 0 | type_tracker.rb:15:5:15:18 | synthetic splat argument |
 | type_tracker.rb:18:1:21:3 | &block | type tracker without call steps | type_tracker.rb:18:1:21:3 | &block |
 | type_tracker.rb:18:1:21:3 | positional | type tracker without call steps | type_tracker.rb:18:1:21:3 | positional |
 | type_tracker.rb:18:1:21:3 | self in positional | type tracker without call steps | type_tracker.rb:18:1:21:3 | self in positional |
 | type_tracker.rb:18:1:21:3 | synthetic splat parameter | type tracker without call steps | type_tracker.rb:18:1:21:3 | synthetic splat parameter |
 | type_tracker.rb:18:16:18:17 | p1 | type tracker without call steps | type_tracker.rb:18:16:18:17 | p1 |
 | type_tracker.rb:18:16:18:17 | p1 | type tracker without call steps | type_tracker.rb:18:16:18:17 | p1 |
-| type_tracker.rb:18:16:18:17 | p1 | type tracker without call steps with content splat position 0 | type_tracker.rb:19:5:19:11 | synthetic splat argument |
+| type_tracker.rb:18:16:18:17 | p1 | type tracker without call steps with content element 0 | type_tracker.rb:19:5:19:11 | synthetic splat argument |
 | type_tracker.rb:18:20:18:21 | p2 | type tracker without call steps | type_tracker.rb:18:20:18:21 | p2 |
 | type_tracker.rb:18:20:18:21 | p2 | type tracker without call steps | type_tracker.rb:18:20:18:21 | p2 |
-| type_tracker.rb:18:20:18:21 | p2 | type tracker without call steps with content splat position 0 | type_tracker.rb:20:5:20:11 | synthetic splat argument |
+| type_tracker.rb:18:20:18:21 | p2 | type tracker without call steps with content element 0 | type_tracker.rb:20:5:20:11 | synthetic splat argument |
 | type_tracker.rb:19:5:19:11 | call to puts | type tracker without call steps | type_tracker.rb:19:5:19:11 | call to puts |
 | type_tracker.rb:19:5:19:11 | synthetic splat argument | type tracker without call steps | type_tracker.rb:19:5:19:11 | synthetic splat argument |
 | type_tracker.rb:20:5:20:11 | call to puts | type tracker without call steps | type_tracker.rb:20:5:20:11 | call to puts |
 | type_tracker.rb:20:5:20:11 | call to puts | type tracker without call steps | type_tracker.rb:23:1:23:16 | call to positional |
 | type_tracker.rb:20:5:20:11 | synthetic splat argument | type tracker without call steps | type_tracker.rb:20:5:20:11 | synthetic splat argument |
 | type_tracker.rb:23:1:23:16 | call to positional | type tracker without call steps | type_tracker.rb:23:1:23:16 | call to positional |
-| type_tracker.rb:23:1:23:16 | synthetic splat argument | type tracker with call steps | type_tracker.rb:18:1:21:3 | synthetic splat parameter |
 | type_tracker.rb:23:1:23:16 | synthetic splat argument | type tracker without call steps | type_tracker.rb:23:1:23:16 | synthetic splat argument |
 | type_tracker.rb:23:12:23:12 | 1 | type tracker with call steps | type_tracker.rb:18:16:18:17 | p1 |
-| type_tracker.rb:23:12:23:12 | 1 | type tracker with call steps with content splat position 0 | type_tracker.rb:18:1:21:3 | synthetic splat parameter |
-| type_tracker.rb:23:12:23:12 | 1 | type tracker with call steps with content splat position 0 | type_tracker.rb:19:5:19:11 | synthetic splat argument |
+| type_tracker.rb:23:12:23:12 | 1 | type tracker with call steps with content element 0 | type_tracker.rb:19:5:19:11 | synthetic splat argument |
 | type_tracker.rb:23:12:23:12 | 1 | type tracker without call steps | type_tracker.rb:23:12:23:12 | 1 |
-| type_tracker.rb:23:12:23:12 | 1 | type tracker without call steps with content splat position 0 | type_tracker.rb:23:1:23:16 | synthetic splat argument |
+| type_tracker.rb:23:12:23:12 | 1 | type tracker without call steps with content element 0 | type_tracker.rb:23:1:23:16 | synthetic splat argument |
 | type_tracker.rb:23:15:23:15 | 2 | type tracker with call steps | type_tracker.rb:18:20:18:21 | p2 |
-| type_tracker.rb:23:15:23:15 | 2 | type tracker with call steps with content splat position 0 | type_tracker.rb:20:5:20:11 | synthetic splat argument |
-| type_tracker.rb:23:15:23:15 | 2 | type tracker with call steps with content splat position 1 | type_tracker.rb:18:1:21:3 | synthetic splat parameter |
+| type_tracker.rb:23:15:23:15 | 2 | type tracker with call steps with content element 0 | type_tracker.rb:20:5:20:11 | synthetic splat argument |
 | type_tracker.rb:23:15:23:15 | 2 | type tracker without call steps | type_tracker.rb:23:15:23:15 | 2 |
-| type_tracker.rb:23:15:23:15 | 2 | type tracker without call steps with content splat position 1 | type_tracker.rb:23:1:23:16 | synthetic splat argument |
+| type_tracker.rb:23:15:23:15 | 2 | type tracker without call steps with content element 1 | type_tracker.rb:23:1:23:16 | synthetic splat argument |
 | type_tracker.rb:25:1:28:3 | &block | type tracker without call steps | type_tracker.rb:25:1:28:3 | &block |
 | type_tracker.rb:25:1:28:3 | keyword | type tracker without call steps | type_tracker.rb:25:1:28:3 | keyword |
 | type_tracker.rb:25:1:28:3 | self in keyword | type tracker without call steps | type_tracker.rb:25:1:28:3 | self in keyword |
 | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter | type tracker without call steps | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
 | type_tracker.rb:25:13:25:14 | p1 | type tracker without call steps | type_tracker.rb:25:13:25:14 | p1 |
 | type_tracker.rb:25:13:25:14 | p1 | type tracker without call steps | type_tracker.rb:25:13:25:14 | p1 |
-| type_tracker.rb:25:13:25:14 | p1 | type tracker without call steps with content splat position 0 | type_tracker.rb:26:5:26:11 | synthetic splat argument |
+| type_tracker.rb:25:13:25:14 | p1 | type tracker without call steps with content element 0 | type_tracker.rb:26:5:26:11 | synthetic splat argument |
 | type_tracker.rb:25:18:25:19 | p2 | type tracker without call steps | type_tracker.rb:25:18:25:19 | p2 |
 | type_tracker.rb:25:18:25:19 | p2 | type tracker without call steps | type_tracker.rb:25:18:25:19 | p2 |
-| type_tracker.rb:25:18:25:19 | p2 | type tracker without call steps with content splat position 0 | type_tracker.rb:27:5:27:11 | synthetic splat argument |
+| type_tracker.rb:25:18:25:19 | p2 | type tracker without call steps with content element 0 | type_tracker.rb:27:5:27:11 | synthetic splat argument |
 | type_tracker.rb:26:5:26:11 | call to puts | type tracker without call steps | type_tracker.rb:26:5:26:11 | call to puts |
 | type_tracker.rb:26:5:26:11 | synthetic splat argument | type tracker without call steps | type_tracker.rb:26:5:26:11 | synthetic splat argument |
 | type_tracker.rb:27:5:27:11 | call to puts | type tracker without call steps | type_tracker.rb:27:5:27:11 | call to puts |
@@ -103,56 +98,47 @@ track
 | type_tracker.rb:27:5:27:11 | call to puts | type tracker without call steps | type_tracker.rb:32:1:32:27 | call to keyword |
 | type_tracker.rb:27:5:27:11 | synthetic splat argument | type tracker without call steps | type_tracker.rb:27:5:27:11 | synthetic splat argument |
 | type_tracker.rb:30:1:30:21 | call to keyword | type tracker without call steps | type_tracker.rb:30:1:30:21 | call to keyword |
-| type_tracker.rb:30:1:30:21 | synthetic hash-splat argument | type tracker with call steps | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
 | type_tracker.rb:30:1:30:21 | synthetic hash-splat argument | type tracker without call steps | type_tracker.rb:30:1:30:21 | synthetic hash-splat argument |
 | type_tracker.rb:30:9:30:10 | :p1 | type tracker without call steps | type_tracker.rb:30:9:30:10 | :p1 |
 | type_tracker.rb:30:9:30:13 | Pair | type tracker without call steps | type_tracker.rb:30:9:30:13 | Pair |
 | type_tracker.rb:30:13:30:13 | 3 | type tracker with call steps | type_tracker.rb:25:13:25:14 | p1 |
-| type_tracker.rb:30:13:30:13 | 3 | type tracker with call steps with content hash-splat position :p1 | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
-| type_tracker.rb:30:13:30:13 | 3 | type tracker with call steps with content splat position 0 | type_tracker.rb:26:5:26:11 | synthetic splat argument |
+| type_tracker.rb:30:13:30:13 | 3 | type tracker with call steps with content element 0 | type_tracker.rb:26:5:26:11 | synthetic splat argument |
 | type_tracker.rb:30:13:30:13 | 3 | type tracker without call steps | type_tracker.rb:30:13:30:13 | 3 |
-| type_tracker.rb:30:13:30:13 | 3 | type tracker without call steps with content hash-splat position :p1 | type_tracker.rb:30:1:30:21 | synthetic hash-splat argument |
+| type_tracker.rb:30:13:30:13 | 3 | type tracker without call steps with content element :p1 | type_tracker.rb:30:1:30:21 | synthetic hash-splat argument |
 | type_tracker.rb:30:16:30:17 | :p2 | type tracker without call steps | type_tracker.rb:30:16:30:17 | :p2 |
 | type_tracker.rb:30:16:30:20 | Pair | type tracker without call steps | type_tracker.rb:30:16:30:20 | Pair |
 | type_tracker.rb:30:20:30:20 | 4 | type tracker with call steps | type_tracker.rb:25:18:25:19 | p2 |
-| type_tracker.rb:30:20:30:20 | 4 | type tracker with call steps with content hash-splat position :p2 | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
-| type_tracker.rb:30:20:30:20 | 4 | type tracker with call steps with content splat position 0 | type_tracker.rb:27:5:27:11 | synthetic splat argument |
+| type_tracker.rb:30:20:30:20 | 4 | type tracker with call steps with content element 0 | type_tracker.rb:27:5:27:11 | synthetic splat argument |
 | type_tracker.rb:30:20:30:20 | 4 | type tracker without call steps | type_tracker.rb:30:20:30:20 | 4 |
-| type_tracker.rb:30:20:30:20 | 4 | type tracker without call steps with content hash-splat position :p2 | type_tracker.rb:30:1:30:21 | synthetic hash-splat argument |
+| type_tracker.rb:30:20:30:20 | 4 | type tracker without call steps with content element :p2 | type_tracker.rb:30:1:30:21 | synthetic hash-splat argument |
 | type_tracker.rb:31:1:31:21 | call to keyword | type tracker without call steps | type_tracker.rb:31:1:31:21 | call to keyword |
-| type_tracker.rb:31:1:31:21 | synthetic hash-splat argument | type tracker with call steps | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
 | type_tracker.rb:31:1:31:21 | synthetic hash-splat argument | type tracker without call steps | type_tracker.rb:31:1:31:21 | synthetic hash-splat argument |
 | type_tracker.rb:31:9:31:10 | :p2 | type tracker without call steps | type_tracker.rb:31:9:31:10 | :p2 |
 | type_tracker.rb:31:9:31:13 | Pair | type tracker without call steps | type_tracker.rb:31:9:31:13 | Pair |
 | type_tracker.rb:31:13:31:13 | 5 | type tracker with call steps | type_tracker.rb:25:18:25:19 | p2 |
-| type_tracker.rb:31:13:31:13 | 5 | type tracker with call steps with content hash-splat position :p2 | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
-| type_tracker.rb:31:13:31:13 | 5 | type tracker with call steps with content splat position 0 | type_tracker.rb:27:5:27:11 | synthetic splat argument |
+| type_tracker.rb:31:13:31:13 | 5 | type tracker with call steps with content element 0 | type_tracker.rb:27:5:27:11 | synthetic splat argument |
 | type_tracker.rb:31:13:31:13 | 5 | type tracker without call steps | type_tracker.rb:31:13:31:13 | 5 |
-| type_tracker.rb:31:13:31:13 | 5 | type tracker without call steps with content hash-splat position :p2 | type_tracker.rb:31:1:31:21 | synthetic hash-splat argument |
+| type_tracker.rb:31:13:31:13 | 5 | type tracker without call steps with content element :p2 | type_tracker.rb:31:1:31:21 | synthetic hash-splat argument |
 | type_tracker.rb:31:16:31:17 | :p1 | type tracker without call steps | type_tracker.rb:31:16:31:17 | :p1 |
 | type_tracker.rb:31:16:31:20 | Pair | type tracker without call steps | type_tracker.rb:31:16:31:20 | Pair |
 | type_tracker.rb:31:20:31:20 | 6 | type tracker with call steps | type_tracker.rb:25:13:25:14 | p1 |
-| type_tracker.rb:31:20:31:20 | 6 | type tracker with call steps with content hash-splat position :p1 | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
-| type_tracker.rb:31:20:31:20 | 6 | type tracker with call steps with content splat position 0 | type_tracker.rb:26:5:26:11 | synthetic splat argument |
+| type_tracker.rb:31:20:31:20 | 6 | type tracker with call steps with content element 0 | type_tracker.rb:26:5:26:11 | synthetic splat argument |
 | type_tracker.rb:31:20:31:20 | 6 | type tracker without call steps | type_tracker.rb:31:20:31:20 | 6 |
-| type_tracker.rb:31:20:31:20 | 6 | type tracker without call steps with content hash-splat position :p1 | type_tracker.rb:31:1:31:21 | synthetic hash-splat argument |
+| type_tracker.rb:31:20:31:20 | 6 | type tracker without call steps with content element :p1 | type_tracker.rb:31:1:31:21 | synthetic hash-splat argument |
 | type_tracker.rb:32:1:32:27 | call to keyword | type tracker without call steps | type_tracker.rb:32:1:32:27 | call to keyword |
-| type_tracker.rb:32:1:32:27 | synthetic hash-splat argument | type tracker with call steps | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
 | type_tracker.rb:32:1:32:27 | synthetic hash-splat argument | type tracker without call steps | type_tracker.rb:32:1:32:27 | synthetic hash-splat argument |
 | type_tracker.rb:32:9:32:11 | :p2 | type tracker without call steps | type_tracker.rb:32:9:32:11 | :p2 |
 | type_tracker.rb:32:9:32:16 | Pair | type tracker without call steps | type_tracker.rb:32:9:32:16 | Pair |
 | type_tracker.rb:32:16:32:16 | 7 | type tracker with call steps | type_tracker.rb:25:18:25:19 | p2 |
-| type_tracker.rb:32:16:32:16 | 7 | type tracker with call steps with content hash-splat position :p2 | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
-| type_tracker.rb:32:16:32:16 | 7 | type tracker with call steps with content splat position 0 | type_tracker.rb:27:5:27:11 | synthetic splat argument |
+| type_tracker.rb:32:16:32:16 | 7 | type tracker with call steps with content element 0 | type_tracker.rb:27:5:27:11 | synthetic splat argument |
 | type_tracker.rb:32:16:32:16 | 7 | type tracker without call steps | type_tracker.rb:32:16:32:16 | 7 |
-| type_tracker.rb:32:16:32:16 | 7 | type tracker without call steps with content hash-splat position :p2 | type_tracker.rb:32:1:32:27 | synthetic hash-splat argument |
+| type_tracker.rb:32:16:32:16 | 7 | type tracker without call steps with content element :p2 | type_tracker.rb:32:1:32:27 | synthetic hash-splat argument |
 | type_tracker.rb:32:19:32:21 | :p1 | type tracker without call steps | type_tracker.rb:32:19:32:21 | :p1 |
 | type_tracker.rb:32:19:32:26 | Pair | type tracker without call steps | type_tracker.rb:32:19:32:26 | Pair |
 | type_tracker.rb:32:26:32:26 | 8 | type tracker with call steps | type_tracker.rb:25:13:25:14 | p1 |
-| type_tracker.rb:32:26:32:26 | 8 | type tracker with call steps with content hash-splat position :p1 | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
-| type_tracker.rb:32:26:32:26 | 8 | type tracker with call steps with content splat position 0 | type_tracker.rb:26:5:26:11 | synthetic splat argument |
+| type_tracker.rb:32:26:32:26 | 8 | type tracker with call steps with content element 0 | type_tracker.rb:26:5:26:11 | synthetic splat argument |
 | type_tracker.rb:32:26:32:26 | 8 | type tracker without call steps | type_tracker.rb:32:26:32:26 | 8 |
-| type_tracker.rb:32:26:32:26 | 8 | type tracker without call steps with content hash-splat position :p1 | type_tracker.rb:32:1:32:27 | synthetic hash-splat argument |
+| type_tracker.rb:32:26:32:26 | 8 | type tracker without call steps with content element :p1 | type_tracker.rb:32:1:32:27 | synthetic hash-splat argument |
 | type_tracker.rb:34:1:53:3 | &block | type tracker without call steps | type_tracker.rb:34:1:53:3 | &block |
 | type_tracker.rb:34:1:53:3 | self in throughArray | type tracker without call steps | type_tracker.rb:34:1:53:3 | self in throughArray |
 | type_tracker.rb:34:1:53:3 | synthetic splat parameter | type tracker without call steps | type_tracker.rb:34:1:53:3 | synthetic splat parameter |
@@ -169,18 +155,18 @@ track
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 0 | type_tracker.rb:35:11:35:15 | synthetic splat argument |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 0 or unknown | type_tracker.rb:43:5:43:10 | [post] array2 |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 0 or unknown | type_tracker.rb:47:5:47:10 | [post] array3 |
-| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content splat position 1 | type_tracker.rb:39:5:39:12 | synthetic splat argument |
-| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content splat position 1 | type_tracker.rb:43:5:43:13 | synthetic splat argument |
-| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content splat position 1 | type_tracker.rb:47:5:47:13 | synthetic splat argument |
-| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content splat position 1 | type_tracker.rb:51:5:51:13 | synthetic splat argument |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 1 | type_tracker.rb:39:5:39:12 | synthetic splat argument |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 1 | type_tracker.rb:43:5:43:13 | synthetic splat argument |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 1 | type_tracker.rb:47:5:47:13 | synthetic splat argument |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 1 | type_tracker.rb:51:5:51:13 | synthetic splat argument |
 | type_tracker.rb:34:23:34:23 | y | type tracker without call steps | type_tracker.rb:34:23:34:23 | y |
 | type_tracker.rb:34:23:34:23 | y | type tracker without call steps | type_tracker.rb:34:23:34:23 | y |
-| type_tracker.rb:34:23:34:23 | y | type tracker without call steps with content splat position 0 | type_tracker.rb:39:5:39:12 | synthetic splat argument |
-| type_tracker.rb:34:23:34:23 | y | type tracker without call steps with content splat position 0 | type_tracker.rb:44:5:44:13 | synthetic splat argument |
-| type_tracker.rb:34:23:34:23 | y | type tracker without call steps with content splat position 0 | type_tracker.rb:51:5:51:13 | synthetic splat argument |
+| type_tracker.rb:34:23:34:23 | y | type tracker without call steps with content element 0 | type_tracker.rb:39:5:39:12 | synthetic splat argument |
+| type_tracker.rb:34:23:34:23 | y | type tracker without call steps with content element 0 | type_tracker.rb:44:5:44:13 | synthetic splat argument |
+| type_tracker.rb:34:23:34:23 | y | type tracker without call steps with content element 0 | type_tracker.rb:51:5:51:13 | synthetic splat argument |
 | type_tracker.rb:34:26:34:26 | z | type tracker without call steps | type_tracker.rb:34:26:34:26 | z |
 | type_tracker.rb:34:26:34:26 | z | type tracker without call steps | type_tracker.rb:34:26:34:26 | z |
-| type_tracker.rb:34:26:34:26 | z | type tracker without call steps with content splat position 0 | type_tracker.rb:52:5:52:13 | synthetic splat argument |
+| type_tracker.rb:34:26:34:26 | z | type tracker without call steps with content element 0 | type_tracker.rb:52:5:52:13 | synthetic splat argument |
 | type_tracker.rb:35:5:35:7 | tmp | type tracker without call steps | type_tracker.rb:35:5:35:7 | tmp |
 | type_tracker.rb:35:11:35:15 | Array | type tracker without call steps | type_tracker.rb:35:11:35:15 | Array |
 | type_tracker.rb:35:11:35:15 | call to [] | type tracker without call steps | type_tracker.rb:35:11:35:15 | call to [] |
@@ -189,7 +175,7 @@ track
 | type_tracker.rb:36:5:36:10 | ...[...] | type tracker without call steps | type_tracker.rb:36:5:36:10 | ...[...] |
 | type_tracker.rb:36:5:36:10 | synthetic splat argument | type tracker without call steps | type_tracker.rb:36:5:36:10 | synthetic splat argument |
 | type_tracker.rb:36:9:36:9 | 0 | type tracker without call steps | type_tracker.rb:36:9:36:9 | 0 |
-| type_tracker.rb:36:9:36:9 | 0 | type tracker without call steps with content splat position 0 | type_tracker.rb:36:5:36:10 | synthetic splat argument |
+| type_tracker.rb:36:9:36:9 | 0 | type tracker without call steps with content element 0 | type_tracker.rb:36:5:36:10 | synthetic splat argument |
 | type_tracker.rb:38:5:38:9 | array | type tracker without call steps | type_tracker.rb:38:5:38:9 | array |
 | type_tracker.rb:38:13:38:25 | Array | type tracker without call steps | type_tracker.rb:38:13:38:25 | Array |
 | type_tracker.rb:38:13:38:25 | call to [] | type tracker without call steps | type_tracker.rb:38:13:38:25 | call to [] |
@@ -221,7 +207,7 @@ track
 | type_tracker.rb:40:5:40:12 | ...[...] | type tracker without call steps | type_tracker.rb:40:5:40:12 | ...[...] |
 | type_tracker.rb:40:5:40:12 | synthetic splat argument | type tracker without call steps | type_tracker.rb:40:5:40:12 | synthetic splat argument |
 | type_tracker.rb:40:11:40:11 | 0 | type tracker without call steps | type_tracker.rb:40:11:40:11 | 0 |
-| type_tracker.rb:40:11:40:11 | 0 | type tracker without call steps with content splat position 0 | type_tracker.rb:40:5:40:12 | synthetic splat argument |
+| type_tracker.rb:40:11:40:11 | 0 | type tracker without call steps with content element 0 | type_tracker.rb:40:5:40:12 | synthetic splat argument |
 | type_tracker.rb:42:5:42:10 | array2 | type tracker without call steps | type_tracker.rb:42:5:42:10 | array2 |
 | type_tracker.rb:42:14:42:26 | Array | type tracker without call steps | type_tracker.rb:42:14:42:26 | Array |
 | type_tracker.rb:42:14:42:26 | call to [] | type tracker without call steps | type_tracker.rb:42:14:42:26 | call to [] |
@@ -263,7 +249,7 @@ track
 | type_tracker.rb:43:5:43:13 | call to []= | type tracker without call steps | type_tracker.rb:43:5:43:13 | call to []= |
 | type_tracker.rb:43:5:43:13 | synthetic splat argument | type tracker without call steps | type_tracker.rb:43:5:43:13 | synthetic splat argument |
 | type_tracker.rb:43:12:43:12 | 0 | type tracker without call steps | type_tracker.rb:43:12:43:12 | 0 |
-| type_tracker.rb:43:12:43:12 | 0 | type tracker without call steps with content splat position 0 | type_tracker.rb:43:5:43:13 | synthetic splat argument |
+| type_tracker.rb:43:12:43:12 | 0 | type tracker without call steps with content element 0 | type_tracker.rb:43:5:43:13 | synthetic splat argument |
 | type_tracker.rb:43:17:43:19 | __synth__0 | type tracker without call steps | type_tracker.rb:43:17:43:19 | __synth__0 |
 | type_tracker.rb:44:5:44:13 | ...[...] | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:44:5:44:13 | synthetic splat argument | type tracker without call steps | type_tracker.rb:44:5:44:13 | synthetic splat argument |
@@ -303,12 +289,12 @@ track
 | type_tracker.rb:47:5:47:13 | call to []= | type tracker without call steps | type_tracker.rb:47:5:47:13 | call to []= |
 | type_tracker.rb:47:5:47:13 | synthetic splat argument | type tracker without call steps | type_tracker.rb:47:5:47:13 | synthetic splat argument |
 | type_tracker.rb:47:12:47:12 | 0 | type tracker without call steps | type_tracker.rb:47:12:47:12 | 0 |
-| type_tracker.rb:47:12:47:12 | 0 | type tracker without call steps with content splat position 0 | type_tracker.rb:47:5:47:13 | synthetic splat argument |
+| type_tracker.rb:47:12:47:12 | 0 | type tracker without call steps with content element 0 | type_tracker.rb:47:5:47:13 | synthetic splat argument |
 | type_tracker.rb:47:17:47:19 | __synth__0 | type tracker without call steps | type_tracker.rb:47:17:47:19 | __synth__0 |
 | type_tracker.rb:48:5:48:13 | ...[...] | type tracker without call steps | type_tracker.rb:48:5:48:13 | ...[...] |
 | type_tracker.rb:48:5:48:13 | synthetic splat argument | type tracker without call steps | type_tracker.rb:48:5:48:13 | synthetic splat argument |
 | type_tracker.rb:48:12:48:12 | 1 | type tracker without call steps | type_tracker.rb:48:12:48:12 | 1 |
-| type_tracker.rb:48:12:48:12 | 1 | type tracker without call steps with content splat position 0 | type_tracker.rb:48:5:48:13 | synthetic splat argument |
+| type_tracker.rb:48:12:48:12 | 1 | type tracker without call steps with content element 0 | type_tracker.rb:48:5:48:13 | synthetic splat argument |
 | type_tracker.rb:50:5:50:10 | array4 | type tracker without call steps | type_tracker.rb:50:5:50:10 | array4 |
 | type_tracker.rb:50:14:50:26 | Array | type tracker without call steps | type_tracker.rb:50:14:50:26 | Array |
 | type_tracker.rb:50:14:50:26 | call to [] | type tracker without call steps | type_tracker.rb:50:14:50:26 | call to [] |
@@ -419,7 +405,6 @@ trackEnd
 | type_tracker.rb:14:5:14:7 | [post] var | type_tracker.rb:14:5:14:7 | [post] var |
 | type_tracker.rb:14:5:14:7 | [post] var | type_tracker.rb:15:10:15:12 | var |
 | type_tracker.rb:14:5:14:13 | call to field= | type_tracker.rb:14:5:14:13 | call to field= |
-| type_tracker.rb:14:5:14:13 | synthetic splat argument | type_tracker.rb:2:5:5:7 | synthetic splat parameter |
 | type_tracker.rb:14:5:14:13 | synthetic splat argument | type_tracker.rb:14:5:14:13 | synthetic splat argument |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:2:16:2:18 | val |
@@ -458,7 +443,6 @@ trackEnd
 | type_tracker.rb:20:5:20:11 | call to puts | type_tracker.rb:23:1:23:16 | call to positional |
 | type_tracker.rb:20:5:20:11 | synthetic splat argument | type_tracker.rb:20:5:20:11 | synthetic splat argument |
 | type_tracker.rb:23:1:23:16 | call to positional | type_tracker.rb:23:1:23:16 | call to positional |
-| type_tracker.rb:23:1:23:16 | synthetic splat argument | type_tracker.rb:18:1:21:3 | synthetic splat parameter |
 | type_tracker.rb:23:1:23:16 | synthetic splat argument | type_tracker.rb:23:1:23:16 | synthetic splat argument |
 | type_tracker.rb:23:12:23:12 | 1 | type_tracker.rb:18:16:18:17 | p1 |
 | type_tracker.rb:23:12:23:12 | 1 | type_tracker.rb:18:16:18:17 | p1 |
@@ -491,7 +475,6 @@ trackEnd
 | type_tracker.rb:27:5:27:11 | call to puts | type_tracker.rb:32:1:32:27 | call to keyword |
 | type_tracker.rb:27:5:27:11 | synthetic splat argument | type_tracker.rb:27:5:27:11 | synthetic splat argument |
 | type_tracker.rb:30:1:30:21 | call to keyword | type_tracker.rb:30:1:30:21 | call to keyword |
-| type_tracker.rb:30:1:30:21 | synthetic hash-splat argument | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
 | type_tracker.rb:30:1:30:21 | synthetic hash-splat argument | type_tracker.rb:30:1:30:21 | synthetic hash-splat argument |
 | type_tracker.rb:30:9:30:10 | :p1 | type_tracker.rb:30:9:30:10 | :p1 |
 | type_tracker.rb:30:9:30:13 | Pair | type_tracker.rb:30:9:30:13 | Pair |
@@ -506,7 +489,6 @@ trackEnd
 | type_tracker.rb:30:20:30:20 | 4 | type_tracker.rb:27:10:27:11 | p2 |
 | type_tracker.rb:30:20:30:20 | 4 | type_tracker.rb:30:20:30:20 | 4 |
 | type_tracker.rb:31:1:31:21 | call to keyword | type_tracker.rb:31:1:31:21 | call to keyword |
-| type_tracker.rb:31:1:31:21 | synthetic hash-splat argument | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
 | type_tracker.rb:31:1:31:21 | synthetic hash-splat argument | type_tracker.rb:31:1:31:21 | synthetic hash-splat argument |
 | type_tracker.rb:31:9:31:10 | :p2 | type_tracker.rb:31:9:31:10 | :p2 |
 | type_tracker.rb:31:9:31:13 | Pair | type_tracker.rb:31:9:31:13 | Pair |
@@ -521,7 +503,6 @@ trackEnd
 | type_tracker.rb:31:20:31:20 | 6 | type_tracker.rb:26:10:26:11 | p1 |
 | type_tracker.rb:31:20:31:20 | 6 | type_tracker.rb:31:20:31:20 | 6 |
 | type_tracker.rb:32:1:32:27 | call to keyword | type_tracker.rb:32:1:32:27 | call to keyword |
-| type_tracker.rb:32:1:32:27 | synthetic hash-splat argument | type_tracker.rb:25:1:28:3 | synthetic hash-splat parameter |
 | type_tracker.rb:32:1:32:27 | synthetic hash-splat argument | type_tracker.rb:32:1:32:27 | synthetic hash-splat argument |
 | type_tracker.rb:32:9:32:11 | :p2 | type_tracker.rb:32:9:32:11 | :p2 |
 | type_tracker.rb:32:9:32:16 | Pair | type_tracker.rb:32:9:32:16 | Pair |

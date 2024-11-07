@@ -1,3 +1,61 @@
+## 1.2.3
+
+No user-facing changes.
+
+## 1.2.2
+
+No user-facing changes.
+
+## 1.2.1
+
+No user-facing changes.
+
+## 1.2.0
+
+### Major Analysis Improvements
+
+- Added a new query (`js/actions/actions-artifact-leak`) to detect GitHub Actions artifacts that may leak the GITHUB_TOKEN token.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Message events in the browser are now properly classified as client-side taint sources. Previously they were
+  incorrectly classified as server-side taint sources, which resulted in some alerts being reported by
+  the wrong query, such as server-side URL redirection instead of client-side URL redirection.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### New Queries
+
+* Added a new query, `js/insecure-helmet-configuration`, to detect instances where Helmet middleware is configured with important security features disabled.
+
+### Minor Analysis Improvements
+
+* Added a new query, `js/functionality-from-untrusted-domain`, which detects uses in HTML and JavaScript scripts from untrusted domains, including the `polyfill.io` content delivery network
+  * it can be extended to detect other compromised scripts using user-provided data extensions of the `untrustedDomain` predicate, which takes one string argument with the domain to warn on (and will warn on any subdomains too).
+* Modified existing query, `js/functionality-from-untrusted-source`, to allow adding this new query, but reusing the same logic
+  * Added the ability to use data extensions to require SRI on CDN hostnames using the `isCdnDomainWithCheckingRequired` predicate, which takes one string argument of the full hostname to require SRI for.
+* Created a new library, `semmle.javascript.security.FunctionalityFromUntrustedSource`, to support both queries.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* Added a new experimental query, `js/cors-misconfiguration`, which detects misconfigured CORS HTTP headers in the `cors` and `apollo` libraries. 
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 No user-facing changes.

@@ -91,8 +91,8 @@ Golang
 
 *   The query "Arbitrary file write during zip extraction ("zip slip")" (:code:`go/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query "Arbitrary file write during archive extraction ("Zip Slip")" (:code:`java/zipslip`) has been renamed to "Arbitrary file access during archive extraction ("Zip Slip")."
 
@@ -124,8 +124,8 @@ C/C++
 
 *   The :code:`cpp/comparison-with-wider-type` query now correctly handles relational operations on signed operators. As a result the query may find more results.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   New models have been added for :code:`org.apache.commons.lang`.
 *   The query :code:`java/unsafe-deserialization` has been updated to take into account :code:`SerialKiller`, a library used to prevent deserialization of arbitrary classes.
@@ -162,8 +162,8 @@ C#
 
 *   The data flow library now performs type strengthening. This increases precision for all data flow queries by excluding paths that can be inferred to be impossible due to incompatible types.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The data flow library now performs type strengthening. This increases precision for all data flow queries by excluding paths that can be inferred to be impossible due to incompatible types.
 
@@ -185,8 +185,8 @@ Golang
 
 *   When a result of path query flows through a function modeled using :code:`DataFlow::FunctionModel` or :code:`TaintTracking::FunctionModel`, the path now includes nodes corresponding to the input and output to the function. This brings it in line with functions modeled using Models-as-Data.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added automatically-generated dataflow models for :code:`javax.portlet`.
 *   Added a missing summary model for the method :code:`java.net.URL.toString`.
@@ -240,8 +240,8 @@ Golang
 
 *   The :code:`LogInjection::Configuration` taint flow configuration class has been deprecated. Use the :code:`LogInjection::Flow` module instead.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`ExecCallable` class in :code:`ExternalProcess.qll` has been deprecated.
 

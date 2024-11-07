@@ -27,7 +27,7 @@ namespace Semmle.Extraction
 
         public static Message Create(Context cx, string text, ISymbol symbol, string? stackTrace = null, Severity severity = Severity.Error)
         {
-            return new Message(text, symbol.ToString(), cx.CreateLocation(symbol.Locations.FirstOrDefault()), stackTrace, severity);
+            return new Message(text, symbol.ToString(), cx.CreateLocation(symbol.Locations.BestOrDefault()), stackTrace, severity);
         }
 
         public static Message Create(Context cx, string text, SyntaxNode node, string? stackTrace = null, Severity severity = Severity.Error)

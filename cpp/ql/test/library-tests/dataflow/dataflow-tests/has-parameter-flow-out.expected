@@ -1,3 +1,3 @@
-WARNING: Module DataFlow has been deprecated and may be removed in future (has-parameter-flow-out.ql:5,18-61)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (has-parameter-flow-out.ql:5,18-61)
 testFailures
 failures

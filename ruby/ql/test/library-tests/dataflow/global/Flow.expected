@@ -1,6 +1,10 @@
-testFailures
+models
 edges
 | blocks.rb:14:12:14:20 | call to source | blocks.rb:8:10:8:14 | yield ... | provenance |  |
+| blocks.rb:17:10:17:10 | x | blocks.rb:18:11:18:11 | x | provenance |  |
+| blocks.rb:18:11:18:11 | x | blocks.rb:24:18:24:18 | x | provenance |  |
+| blocks.rb:24:3:24:11 | call to source | blocks.rb:17:10:17:10 | x | provenance |  |
+| blocks.rb:24:18:24:18 | x | blocks.rb:25:8:25:8 | x | provenance |  |
 | captured_variables.rb:9:24:9:24 | x | captured_variables.rb:11:5:11:6 | fn [captured x] | provenance |  |
 | captured_variables.rb:11:5:11:6 | fn [captured x] | captured_variables.rb:10:20:10:20 | x | provenance |  |
 | captured_variables.rb:13:20:13:29 | call to taint | captured_variables.rb:9:24:9:24 | x | provenance |  |
@@ -254,6 +258,11 @@ edges
 nodes
 | blocks.rb:8:10:8:14 | yield ... | semmle.label | yield ... |
 | blocks.rb:14:12:14:20 | call to source | semmle.label | call to source |
+| blocks.rb:17:10:17:10 | x | semmle.label | x |
+| blocks.rb:18:11:18:11 | x | semmle.label | x |
+| blocks.rb:24:3:24:11 | call to source | semmle.label | call to source |
+| blocks.rb:24:18:24:18 | x | semmle.label | x |
+| blocks.rb:25:8:25:8 | x | semmle.label | x |
 | captured_variables.rb:9:24:9:24 | x | semmle.label | x |
 | captured_variables.rb:10:20:10:20 | x | semmle.label | x |
 | captured_variables.rb:11:5:11:6 | fn [captured x] | semmle.label | fn [captured x] |
@@ -552,8 +561,10 @@ subpaths
 | instance_variables.rb:119:28:119:36 | call to taint | instance_variables.rb:27:25:27:29 | field | instance_variables.rb:27:5:29:7 | self in call_initialize [Return] [@field] | instance_variables.rb:119:6:119:10 | [post] foo16 [@field] |
 | instance_variables.rb:120:6:120:10 | foo16 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:120:6:120:20 | call to get_field |
 | instance_variables.rb:120:6:120:10 | foo16 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:120:6:120:20 | call to get_field |
+testFailures
 #select
 | blocks.rb:8:10:8:14 | yield ... | blocks.rb:14:12:14:20 | call to source | blocks.rb:8:10:8:14 | yield ... | $@ | blocks.rb:14:12:14:20 | call to source | call to source |
+| blocks.rb:25:8:25:8 | x | blocks.rb:24:3:24:11 | call to source | blocks.rb:25:8:25:8 | x | $@ | blocks.rb:24:3:24:11 | call to source | call to source |
 | captured_variables.rb:10:20:10:20 | x | captured_variables.rb:13:20:13:29 | call to taint | captured_variables.rb:10:20:10:20 | x | $@ | captured_variables.rb:13:20:13:29 | call to taint | call to taint |
 | captured_variables.rb:17:14:17:14 | x | captured_variables.rb:20:25:20:34 | call to taint | captured_variables.rb:17:14:17:14 | x | $@ | captured_variables.rb:20:25:20:34 | call to taint | call to taint |
 | captured_variables.rb:24:14:24:14 | x | captured_variables.rb:27:48:27:57 | call to taint | captured_variables.rb:24:14:24:14 | x | $@ | captured_variables.rb:27:48:27:57 | call to taint | call to taint |

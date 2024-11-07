@@ -5,6 +5,8 @@
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Iterator
+import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.Alias
 
 /**
  * The `std::map` and `std::unordered_map` template classes.
@@ -16,7 +18,9 @@ private class MapOrUnorderedMap extends Class {
 /**
  * Additional model for map constructors using iterator inputs.
  */
-private class StdMapConstructor extends Constructor, TaintFunction {
+private class StdMapConstructor extends Constructor, TaintFunction, AliasFunction,
+  SideEffectFunction
+{
   StdMapConstructor() { this.getDeclaringType() instanceof MapOrUnorderedMap }
 
   /**
@@ -34,6 +38,23 @@ private class StdMapConstructor extends Constructor, TaintFunction {
       or
       output.isQualifierObject()
     )
+  }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    this.getParameter(i).getUnspecifiedType() instanceof ReferenceType and
+    buffer = false
   }
 }
 
@@ -133,7 +154,7 @@ class StdMapAt extends MemberFunction {
   StdMapAt() { this.getClassAndName(["at", "operator[]"]) instanceof MapOrUnorderedMap }
 }
 
-private class StdMapAtModels extends StdMapAt, TaintFunction {
+private class StdMapAtModels extends StdMapAt, TaintFunction, AliasFunction, SideEffectFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to referenced return value
     input.isQualifierObject() and
@@ -142,6 +163,18 @@ private class StdMapAtModels extends StdMapAt, TaintFunction {
     // reverse flow from returned reference to the qualifier
     input.isReturnValueDeref() and
     output.isQualifierObject()
+  }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
   }
 
   override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
@@ -185,5 +218,65 @@ private class StdMapEqualRange extends TaintFunction {
     // flow from qualifier to return value
     input.isQualifierObject() and
     output.isReturnValue()
+  }
+}
+
+class StdMapDestructor extends Destructor, SideEffectFunction, AliasFunction {
+  StdMapDestructor() { this.getDeclaringType() instanceof MapOrUnorderedMap }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+  }
+}
+
+private class StdMapClear extends MemberFunction, SideEffectFunction, AliasFunction {
+  StdMapClear() { this.getClassAndName("clear") instanceof MapOrUnorderedMap }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and
+    buffer = false and
+    mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and
+    buffer = false
+  }
+}
+
+class StdMapSize extends MemberFunction, SideEffectFunction, AliasFunction {
+  StdMapSize() { this.getClassAndName("size") instanceof MapOrUnorderedMap }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and
+    buffer = false
   }
 }

@@ -52,8 +52,8 @@ C/C++
 
 *   The "XML external entity expansion" (:code:`cpp/external-entity-expansion`) query has been extended to support a broader selection of XML libraries and interfaces.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Query :code:`java/insecure-cookie` now tolerates setting a cookie's secure flag to :code:`request.isSecure()`. This means servlets that intentionally accept unencrypted connections will no longer raise an alert.
 *   The query :code:`java/non-https-urls` has been simplified and no longer requires its sinks to be :code:`MethodAccess`\ es.
@@ -79,8 +79,8 @@ Python
 Query Metadata Changes
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Query :code:`java/predictable-seed` now has a tag for CWE-337.
 
@@ -106,8 +106,8 @@ Python
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added models for the libraries OkHttp and Retrofit.
 *   Add taint models for the following :code:`File` methods:
@@ -150,8 +150,8 @@ JavaScript/TypeScript
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A number of new classes and methods related to the upcoming Kotlin support have been added. These are not yet stable, as Kotlin support is still under development.
 

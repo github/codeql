@@ -279,9 +279,9 @@ void test_string_swap() {
 	s1.swap(s2);
 	s4.swap(s3);
 
-	sink(s1); // $ ast,ir
+	sink(s1); // $ ir
 	sink(s2); // $ SPURIOUS: ast
-	sink(s3); // $ ast,ir
+	sink(s3); // $ ir
 	sink(s4); // $ SPURIOUS: ast
 }
 

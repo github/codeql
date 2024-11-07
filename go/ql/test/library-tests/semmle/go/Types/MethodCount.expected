@@ -14,6 +14,7 @@
 | C | 2 |
 | Foo | 1 |
 | GenericInterface | 1 |
+| MixedExportedAndNot | 2 |
 | MyInterface | 17 |
 | T | 1 |
 | T3 | 1 |

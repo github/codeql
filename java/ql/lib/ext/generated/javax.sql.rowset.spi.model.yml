@@ -4,15 +4,19 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["javax.sql.rowset.spi", "SyncFactory", True, "setLogger", "(Logger,Level)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
+      - ["javax.sql.rowset.spi", "SyncFactory", True, "setLogger", "(Logger,Level)", "", "Argument[1]", "Argument[0].SyntheticField[java.util.logging.Logger.config].SyntheticField[java.util.logging.Logger$ConfigurationData.levelObject]", "value", "dfc-generated"]
       - ["javax.sql.rowset.spi", "SyncFactoryException", True, "SyncFactoryException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["javax.sql.rowset.spi", "SyncProvider", True, "getProviderID", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.sql.rowset.spi", "SyncProvider", True, "getRowSetReader", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.sql.rowset.spi", "SyncProvider", True, "getRowSetWriter", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.sql.rowset.spi", "SyncProvider", True, "getVendor", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.sql.rowset.spi", "SyncProvider", True, "getVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["javax.sql.rowset.spi", "SyncProviderException", True, "SyncProviderException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["javax.sql.rowset.spi", "SyncProviderException", True, "SyncProviderException", "(SyncResolver)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["javax.sql.rowset.spi", "SyncProviderException", True, "getSyncResolver", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["javax.sql.rowset.spi", "SyncProviderException", True, "setSyncResolver", "(SyncResolver)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.sql.rowset.spi", "SyncProviderException", True, "SyncProviderException", "(SyncResolver)", "", "Argument[0]", "Argument[this].SyntheticField[javax.sql.rowset.spi.SyncProviderException.syncResolver]", "value", "dfc-generated"]
+      - ["javax.sql.rowset.spi", "SyncProviderException", True, "getSyncResolver", "()", "", "Argument[this].SyntheticField[javax.sql.rowset.spi.SyncProviderException.syncResolver]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.sql.rowset.spi", "SyncProviderException", True, "setSyncResolver", "(SyncResolver)", "", "Argument[0]", "Argument[this].SyntheticField[javax.sql.rowset.spi.SyncProviderException.syncResolver]", "value", "dfc-generated"]
+      - ["javax.sql.rowset.spi", "XmlWriter", True, "writeXML", "(WebRowSet,Writer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.sql.rowset.spi", "XmlWriter", True, "writeXML", "(WebRowSet,Writer)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
@@ -27,7 +31,5 @@ extensions:
       - ["javax.sql.rowset.spi", "SyncFactory", "unregisterProvider", "(String)", "summary", "df-generated"]
       - ["javax.sql.rowset.spi", "SyncProvider", "getDataSourceLock", "()", "summary", "df-generated"]
       - ["javax.sql.rowset.spi", "SyncProvider", "getProviderGrade", "()", "summary", "df-generated"]
-      - ["javax.sql.rowset.spi", "SyncProvider", "getRowSetReader", "()", "summary", "df-generated"]
-      - ["javax.sql.rowset.spi", "SyncProvider", "getRowSetWriter", "()", "summary", "df-generated"]
       - ["javax.sql.rowset.spi", "SyncProvider", "setDataSourceLock", "(int)", "summary", "df-generated"]
       - ["javax.sql.rowset.spi", "SyncProvider", "supportsUpdatableView", "()", "summary", "df-generated"]

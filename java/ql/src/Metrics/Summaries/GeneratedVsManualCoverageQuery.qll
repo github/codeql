@@ -17,12 +17,12 @@ private int getNumMadModeledApis(string package, string provenance, string apiSu
       (
         // "auto-only"
         not sc.hasManualModel() and
-        sc.hasProvenance("df-generated") and
+        sc.hasGeneratedModel() and
         provenance = "generated"
         or
         sc.hasManualModel() and
         (
-          if sc.hasProvenance("df-generated")
+          if sc.hasGeneratedModel()
           then
             // "both"
             provenance = "both"

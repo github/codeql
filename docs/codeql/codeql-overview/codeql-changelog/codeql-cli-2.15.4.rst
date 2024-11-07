@@ -81,8 +81,8 @@ Golang
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The diagnostic query :code:`java/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Java files, now considers any Java file seen during extraction, even one with some errors, to be extracted / scanned.
 *   Switch cases using binding patterns and :code:`case null[, default]` are now supported. Classes :code:`PatternCase` and :code:`NullDefaultCase` are introduced to represent new kinds of case statement.

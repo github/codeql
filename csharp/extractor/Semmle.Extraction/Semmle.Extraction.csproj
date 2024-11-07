@@ -5,6 +5,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
+
+		<InternalsVisibleTo Include="Semmle.Extraction.CSharp" />
 	</ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

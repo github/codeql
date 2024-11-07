@@ -35,16 +35,22 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
       result = "Field" and
       arg = repeatStars(c.getIndirectionIndex() - 1) + c.getField().getName()
     )
+    or
+    exists(ElementContent ec |
+      cs.isSingleton(ec) and
+      result = "Element" and
+      arg = repeatStars(ec.getIndirectionIndex() - 1)
+    )
   }
 
   string encodeWithoutContent(ContentSet c, string arg) {
     // used for type tracking, not currently used in C/C++.
-    result = "WithoutContent" + c and arg = ""
+    none()
   }
 
   string encodeWithContent(ContentSet c, string arg) {
     // used for type tracking, not currently used in C/C++.
-    result = "WithContent" + c and arg = ""
+    none()
   }
 
   /**
@@ -79,25 +85,6 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
     token.getName() = "Parameter" and
     result = decodePosition(token.getAnArgument())
   }
-
-  bindingset[token]
-  ContentSet decodeUnknownContent(AccessPath::AccessPathTokenBase token) {
-    // field content (no indirection support)
-    exists(FieldContent c |
-      result.isSingleton(c) and
-      token.getName() = c.getField().getName() and
-      not exists(token.getArgumentList()) and
-      c.getIndirectionIndex() = 1
-    )
-    or
-    // field content (with indirection support)
-    exists(FieldContent c |
-      result.isSingleton(c) and
-      token.getName() = c.getField().getName() and
-      // FieldContent indices have 0 for the address, 1 for content, so we need to subtract one.
-      token.getAnArgument() = repeatStars(c.getIndirectionIndex() - 1)
-    )
-  }
 }
 
 private import Make<Location, DataFlowImplSpecific::CppDataFlow, Input> as Impl
@@ -125,9 +112,8 @@ module SourceSinkInterpretationInput implements
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
-      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance) and
-      e = interpretElement(namespace, type, subtypes, name, signature, ext) and
-      model = "" // TODO
+      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model) and
+      e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
 
@@ -141,9 +127,8 @@ module SourceSinkInterpretationInput implements
     exists(
       string package, string type, boolean subtypes, string name, string signature, string ext
     |
-      sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance) and
-      e = interpretElement(package, type, subtypes, name, signature, ext) and
-      model = "" // TODO
+      sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, model) and
+      e = interpretElement(package, type, subtypes, name, signature, ext)
     )
   }
 

@@ -8,32 +8,10 @@ import semmle.code.java.security.JndiInjection
 private import semmle.code.java.security.Sanitizers
 
 /**
- * DEPRECATED: Use `JndiInjectionFlow` instead.
- *
- * A taint-tracking configuration for unvalidated user input that is used in JNDI lookup.
- */
-deprecated class JndiInjectionFlowConfig extends TaintTracking::Configuration {
-  JndiInjectionFlowConfig() { this = "JndiInjectionFlowConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof JndiInjectionSink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof SimpleTypeSanitizer or
-    node instanceof JndiInjectionSanitizer
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(JndiInjectionAdditionalTaintStep c).step(node1, node2)
-  }
-}
-
-/**
  * A taint-tracking configuration for unvalidated user input that is used in JNDI lookup.
  */
 module JndiInjectionFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof JndiInjectionSink }
 
@@ -45,6 +23,8 @@ module JndiInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(JndiInjectionAdditionalTaintStep c).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow of unvalidated user input that is used in JNDI lookup */

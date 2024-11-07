@@ -37,8 +37,8 @@ Query Packs
 Major Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/sensitive-log` has been improved to no longer report results that are effectively duplicates due to one source flowing to another source.
 
@@ -55,16 +55,16 @@ Golang
 
 *   The query :code:`go/path-injection` no longer considers user-controlled numeric or boolean-typed data as potentially dangerous.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/path-injection` now recognises vulnerable APIs defined using the :code:`SinkModelCsv` class with the :code:`create-file` type. Out of the box this includes Apache Commons-IO functions, as well as any user-defined sinks.
 
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A new query "Android :code:`WebView` that accepts all certificates" (:code:`java/improper-webview-certificate-validation`) has been added. This query finds implementations of :code:`WebViewClient`\ s that accept all certificates in the case of an SSL error.
 
@@ -82,8 +82,8 @@ C/C++
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Improved analysis of the Android class :code:`AsyncTask` so that data can properly flow through its methods according to the life-cycle steps described here: https://developer.android.com/reference/android/os/AsyncTask#the-4-steps.
 *   Added a data-flow model for the :code:`setProperty` method of :code:`java.util.Properties`. Additional results may be found where relevant data is stored in and then retrieved from a :code:`Properties` instance.

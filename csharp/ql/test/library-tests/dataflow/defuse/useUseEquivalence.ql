@@ -9,7 +9,9 @@ predicate useReaches(
   or
   exists(ControlFlow::Node mid | useReaches(read, v, mid) |
     not mid =
-      any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain()).getAControlFlowNode() and
+      any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain())
+          .getExpr()
+          .getAControlFlowNode() and
     cfn = mid.getASuccessor()
   )
 }

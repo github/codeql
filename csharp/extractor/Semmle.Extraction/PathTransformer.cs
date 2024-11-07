@@ -92,7 +92,7 @@ namespace Semmle.Extraction
                 {
                     var ret = value;
                     if (ret.Length >= 2 && ret[1] == ':' && Char.IsLower(ret[0]))
-                        ret = Char.ToUpper(ret[0]) + "_" + ret.Substring(2);
+                        ret = $"{char.ToUpper(ret[0])}_{ret[2..]}";
                     return ret.Replace('\\', '/').Replace(":", "_");
                 }
             }

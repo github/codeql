@@ -19,6 +19,17 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
     string toString();
   }
 
+  /**
+   * Holds if a neutral (MaD) model exists for `c` of kind `kind`
+   * with provenance `provenance` and `isExact` is true if the model
+   * signature matches `c` exactly - otherwise false.
+   */
+  default predicate neutralElement(
+    SummarizedCallableBase c, string kind, string provenance, boolean isExact
+  ) {
+    none()
+  }
+
   /** Gets the parameter position representing a callback itself, if any. */
   default Lang::ArgumentPosition callbackSelfParameterPosition() { none() }
 
@@ -160,6 +171,7 @@ module Make<
         [
           "ai", // AI (machine learning)
           "df", // Dataflow (model generator)
+          "dfc", // Content dataflow (model generator)
           "tb", // Type based (model generator)
           "hq", // Heuristic query
         ]
@@ -261,50 +273,106 @@ module Make<
       predicate hasExactModel() { none() }
     }
 
-    final private class NeutralCallableFinal = NeutralCallable;
+    private signature predicate hasKindSig(string kind);
 
-    /**
-     * A callable where there is no flow via the callable.
-     */
-    class NeutralSummaryCallable extends NeutralCallableFinal {
-      NeutralSummaryCallable() { this.getKind() = "summary" }
-    }
-
-    /**
-     * A callable that has a neutral model.
-     */
-    abstract class NeutralCallable extends SummarizedCallableBaseFinal {
-      bindingset[this]
-      NeutralCallable() { exists(this) }
-
-      /**
-       * Holds if the neutral is auto generated.
-       */
-      final predicate hasGeneratedModel() {
-        any(Provenance p | this.hasProvenance(p)).isGenerated()
-      }
-
-      /**
-       * Holds if there exists a manual neutral that applies to this callable.
-       */
-      final predicate hasManualModel() { any(Provenance p | this.hasProvenance(p)).isManual() }
-
+    signature class NeutralCallableSig extends SummarizedCallableBaseFinal {
       /**
        * Holds if the neutral has provenance `p`.
        */
-      abstract predicate hasProvenance(Provenance p);
+      predicate hasProvenance(Provenance p);
 
       /**
        * Gets the kind of the neutral.
        */
-      abstract string getKind();
+      string getKind();
 
       /**
-       * Holds if there exists a model for which this callable is an exact
-       * match, that is, no overriding was used to identify this callable from
-       * the model.
+       * Holds if the neutral is auto generated.
        */
-      predicate hasExactModel() { none() }
+      predicate hasGeneratedModel();
+
+      /**
+       * Holds if there exists a manual neutral that applies to this callable.
+       */
+      predicate hasManualModel();
+    }
+
+    /**
+     * A module for constructing classes of neutral callables.
+     */
+    private module MakeNeutralCallable<hasKindSig/1 hasKind> {
+      class NeutralCallable extends SummarizedCallableBaseFinal {
+        private string kind;
+        private string provenance_;
+        private boolean exact;
+
+        NeutralCallable() {
+          hasKind(kind) and
+          neutralElement(this, kind, provenance_, exact)
+        }
+
+        /**
+         * Gets the kind of the neutral.
+         */
+        string getKind() { result = kind }
+
+        /**
+         * Holds if the neutral has provenance `p`.
+         */
+        predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
+
+        /**
+         * Holds if the neutral is auto generated.
+         */
+        final predicate hasGeneratedModel() {
+          any(Provenance p | this.hasProvenance(p)).isGenerated()
+        }
+
+        /**
+         * Holds if there exists a manual neutral that applies to this callable.
+         */
+        final predicate hasManualModel() { any(Provenance p | this.hasProvenance(p)).isManual() }
+
+        /**
+         * Holds if there exists a model for which this callable is an exact
+         * match, that is, no overriding was used to identify this callable from
+         * the model.
+         */
+        predicate hasExactModel() { exact = true }
+      }
+    }
+
+    private predicate neutralSummaryKind(string kind) { kind = "summary" }
+
+    /**
+     * A callable where there exists a MaD neutral summary model that applies to it.
+     */
+    class NeutralSummaryCallable = MakeNeutralCallable<neutralSummaryKind/1>::NeutralCallable;
+
+    private predicate neutralSourceKind(string kind) { kind = "source" }
+
+    /**
+     * A callable where there exists a MaD neutral source model that applies to it.
+     */
+    class NeutralSourceCallable = MakeNeutralCallable<neutralSourceKind/1>::NeutralCallable;
+
+    private predicate neutralSinkKind(string kind) { kind = "sink" }
+
+    /**
+     * A callable where there exists a MaD neutral sink model that applies to it.
+     */
+    class NeutralSinkCallable = MakeNeutralCallable<neutralSinkKind/1>::NeutralCallable;
+
+    /**
+     * A callable where there exist a MaD neutral (summary, source or sink) model
+     * that applies to it.
+     */
+    class NeutralCallable extends SummarizedCallableBaseFinal {
+      NeutralCallable() {
+        this instanceof NeutralSummaryCallable or
+        this instanceof NeutralSourceCallable or
+        this instanceof NeutralSinkCallable
+      }
     }
   }
 
@@ -1708,7 +1776,7 @@ module Make<
             exists(ReturnNode ret, ValueReturnKind kind |
               c = "ReturnValue" and
               ret = node.asNode() and
-              valueReturnNode(ret, kind) and
+              kind.getKind() = ret.getKind() and
               kind.getKind() = getStandardReturnValueKind() and
               mid.asCallable() = getNodeEnclosingCallable(ret)
             )
@@ -1738,6 +1806,40 @@ module Make<
             interpretInput(input, input.getNumToken(), ref, node)
           )
         }
+
+        final private class SourceOrSinkElementFinal = SourceOrSinkElement;
+
+        signature predicate sourceOrSinkElementSig(
+          Element e, string path, string kind, Provenance provenance, string model
+        );
+
+        private module MakeSourceOrSinkCallable<sourceOrSinkElementSig/5 sourceOrSinkElement> {
+          class SourceSinkCallable extends SourceOrSinkElementFinal {
+            private Provenance provenance;
+
+            SourceSinkCallable() { sourceOrSinkElement(this, _, _, provenance, _) }
+
+            /**
+             * Holds if there exists a manual model that applies to this.
+             */
+            predicate hasManualModel() { any(Provenance p | this.hasProvenance(p)).isManual() }
+
+            /**
+             * Holds if this has provenance `p`.
+             */
+            predicate hasProvenance(Provenance p) { provenance = p }
+          }
+        }
+
+        /**
+         * A callable that has a source model.
+         */
+        class SourceModelCallable = MakeSourceOrSinkCallable<sourceElement/5>::SourceSinkCallable;
+
+        /**
+         * A callable that has a sink model.
+         */
+        class SinkModelCallable = MakeSourceOrSinkCallable<sinkElement/5>::SourceSinkCallable;
 
         /** A source or sink relevant for testing. */
         signature class RelevantSourceOrSinkElementSig extends SourceOrSinkElement {
@@ -1835,13 +1937,20 @@ module Make<
     }
 
     /** A summarized callable relevant for testing. */
-    signature class RelevantNeutralCallableSig extends NeutralCallable {
-      /** Gets the string representation of this callable used by `neutral/1`. */
-      string getCallableCsv();
+    signature module RelevantNeutralCallableSig<NeutralCallableSig NeutralCallableInput> {
+      class RelevantNeutralCallable extends NeutralCallableInput {
+        /** Gets the string representation of this callable used by `neutral/1`. */
+        string getCallableCsv();
+      }
     }
 
-    module TestNeutralOutput<RelevantNeutralCallableSig RelevantNeutralCallable> {
-      private string renderProvenance(NeutralCallable c) {
+    module TestNeutralOutput<
+      NeutralCallableSig NeutralCallableInput,
+      RelevantNeutralCallableSig<NeutralCallableInput> RelevantNeutralCallableInput>
+    {
+      class RelevantNeutralCallable = RelevantNeutralCallableInput::RelevantNeutralCallable;
+
+      private string renderProvenance(NeutralCallableInput c) {
         exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
         or
         not c.hasManualModel() and

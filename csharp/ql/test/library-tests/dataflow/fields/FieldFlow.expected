@@ -1,4 +1,4 @@
-testFailures
+models
 edges
 | A.cs:5:13:5:13 | access to local variable c : C | A.cs:6:24:6:24 | access to local variable c : C | provenance |  |
 | A.cs:5:13:5:13 | access to local variable c : C | A.cs:6:24:6:24 | access to local variable c : C | provenance |  |
@@ -1152,6 +1152,16 @@ edges
 | J.cs:125:14:125:14 | access to local variable a : Int32[] [element] : Int32 | J.cs:125:14:125:17 | access to array element : Int32 | provenance |  |
 | J.cs:125:14:125:17 | access to array element : Int32 | J.cs:125:14:125:17 | (...) ... | provenance |  |
 | J.cs:125:14:125:17 | access to array element : Int32 | J.cs:125:14:125:17 | (...) ... | provenance |  |
+| K.cs:7:13:7:13 | access to local variable o : String | K.cs:8:22:8:22 | access to local variable o : String | provenance |  |
+| K.cs:7:13:7:13 | access to local variable o : String | K.cs:8:22:8:22 | access to local variable o : String | provenance |  |
+| K.cs:7:17:7:33 | call to method Source<String> : String | K.cs:7:13:7:13 | access to local variable o : String | provenance |  |
+| K.cs:7:17:7:33 | call to method Source<String> : String | K.cs:7:13:7:13 | access to local variable o : String | provenance |  |
+| K.cs:8:9:8:15 | [post] access to field Strings : String[] [element] : String | K.cs:13:14:13:20 | access to field Strings : String[] [element] : String | provenance |  |
+| K.cs:8:9:8:15 | [post] access to field Strings : String[] [element] : String | K.cs:13:14:13:20 | access to field Strings : String[] [element] : String | provenance |  |
+| K.cs:8:22:8:22 | access to local variable o : String | K.cs:8:9:8:15 | [post] access to field Strings : String[] [element] : String | provenance |  |
+| K.cs:8:22:8:22 | access to local variable o : String | K.cs:8:9:8:15 | [post] access to field Strings : String[] [element] : String | provenance |  |
+| K.cs:13:14:13:20 | access to field Strings : String[] [element] : String | K.cs:13:14:13:23 | access to array element | provenance |  |
+| K.cs:13:14:13:20 | access to field Strings : String[] [element] : String | K.cs:13:14:13:23 | access to array element | provenance |  |
 nodes
 | A.cs:5:13:5:13 | access to local variable c : C | semmle.label | access to local variable c : C |
 | A.cs:5:13:5:13 | access to local variable c : C | semmle.label | access to local variable c : C |
@@ -2393,6 +2403,18 @@ nodes
 | J.cs:125:14:125:17 | (...) ... | semmle.label | (...) ... |
 | J.cs:125:14:125:17 | access to array element : Int32 | semmle.label | access to array element : Int32 |
 | J.cs:125:14:125:17 | access to array element : Int32 | semmle.label | access to array element : Int32 |
+| K.cs:7:13:7:13 | access to local variable o : String | semmle.label | access to local variable o : String |
+| K.cs:7:13:7:13 | access to local variable o : String | semmle.label | access to local variable o : String |
+| K.cs:7:17:7:33 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| K.cs:7:17:7:33 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| K.cs:8:9:8:15 | [post] access to field Strings : String[] [element] : String | semmle.label | [post] access to field Strings : String[] [element] : String |
+| K.cs:8:9:8:15 | [post] access to field Strings : String[] [element] : String | semmle.label | [post] access to field Strings : String[] [element] : String |
+| K.cs:8:22:8:22 | access to local variable o : String | semmle.label | access to local variable o : String |
+| K.cs:8:22:8:22 | access to local variable o : String | semmle.label | access to local variable o : String |
+| K.cs:13:14:13:20 | access to field Strings : String[] [element] : String | semmle.label | access to field Strings : String[] [element] : String |
+| K.cs:13:14:13:20 | access to field Strings : String[] [element] : String | semmle.label | access to field Strings : String[] [element] : String |
+| K.cs:13:14:13:23 | access to array element | semmle.label | access to array element |
+| K.cs:13:14:13:23 | access to array element | semmle.label | access to array element |
 subpaths
 | A.cs:6:24:6:24 | access to local variable c : C | A.cs:147:32:147:32 | c : C | A.cs:149:20:149:27 | object creation of type B : B [field c] : C | A.cs:6:17:6:25 | call to method Make : B [field c] : C |
 | A.cs:6:24:6:24 | access to local variable c : C | A.cs:147:32:147:32 | c : C | A.cs:149:20:149:27 | object creation of type B : B [field c] : C | A.cs:6:17:6:25 | call to method Make : B [field c] : C |
@@ -2502,6 +2524,7 @@ subpaths
 | J.cs:62:29:62:29 | access to local variable o : Object | J.cs:14:26:14:30 | field : Object | J.cs:14:12:14:17 | this [Return] : Struct [field Field] : Object | J.cs:62:18:62:36 | object creation of type Struct : Struct [field Field] : Object |
 | J.cs:80:35:80:35 | access to local variable o : Object | J.cs:14:40:14:43 | prop : Object | J.cs:14:12:14:17 | this [Return] : Struct [property Prop] : Object | J.cs:80:18:80:36 | object creation of type Struct : Struct [property Prop] : Object |
 | J.cs:80:35:80:35 | access to local variable o : Object | J.cs:14:40:14:43 | prop : Object | J.cs:14:12:14:17 | this [Return] : Struct [property Prop] : Object | J.cs:80:18:80:36 | object creation of type Struct : Struct [property Prop] : Object |
+testFailures
 #select
 | A.cs:7:14:7:16 | access to field c | A.cs:5:17:5:28 | call to method Source<C> : C | A.cs:7:14:7:16 | access to field c | $@ | A.cs:5:17:5:28 | call to method Source<C> : C | call to method Source<C> : C |
 | A.cs:7:14:7:16 | access to field c | A.cs:5:17:5:28 | call to method Source<C> : C | A.cs:7:14:7:16 | access to field c | $@ | A.cs:5:17:5:28 | call to method Source<C> : C | call to method Source<C> : C |
@@ -2647,3 +2670,5 @@ subpaths
 | J.cs:107:14:107:17 | access to property Y | J.cs:105:32:105:48 | call to method Source<Object> : Object | J.cs:107:14:107:17 | access to property Y | $@ | J.cs:105:32:105:48 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | J.cs:125:14:125:17 | (...) ... | J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | J.cs:125:14:125:17 | (...) ... | $@ | J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | call to method Source<Int32> : Int32 |
 | J.cs:125:14:125:17 | (...) ... | J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | J.cs:125:14:125:17 | (...) ... | $@ | J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | call to method Source<Int32> : Int32 |
+| K.cs:13:14:13:23 | access to array element | K.cs:7:17:7:33 | call to method Source<String> : String | K.cs:13:14:13:23 | access to array element | $@ | K.cs:7:17:7:33 | call to method Source<String> : String | call to method Source<String> : String |
+| K.cs:13:14:13:23 | access to array element | K.cs:7:17:7:33 | call to method Source<String> : String | K.cs:13:14:13:23 | access to array element | $@ | K.cs:7:17:7:33 | call to method Source<String> : String | call to method Source<String> : String |

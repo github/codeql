@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            Allowing users to execute arbitrary commands using an SSH connection on a remote server can lead to security issues unless you implement proper authorization.
+        </p>
+        <p>
+            Assume that you connect to a remote system via SSH connection from your main or local server that accepts user-controlled data and has interaction with users that you don't trust, passing these data to SSH API as a part of a command that will be executed on a secondary remote server can lead to security issues. You should consider proper authorization rules very carefully.
+        </p>
+    </overview>
+    <recommendation>
+        <p>
+            This vulnerability can be prevented by implementing proper authorization rules for untrusted user input that can be passed to your secondary servers.
+        </p>
+    </recommendation>
+    <example>
+        <p>In the example below, the exec_command is controlled by the user and hence leads to a vulnerability.</p>
+        <sample src="paramikoBad.py" />
+        <p>In the example below, the exec_command is controlled by the an Authorized user and hence it is safe.</p>
+        <sample src="paramikoGood.py" />
+    </example>
+</qhelp>

@@ -92,6 +92,8 @@
 | GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 |
 | GlobalDataFlowStringBuilder.cs:42:15:42:19 | access to local variable sink2 |
 | GlobalDataFlowStringBuilder.cs:50:15:50:19 | access to local variable sink3 |
+| MultiImplementationA.cs:7:39:7:39 | access to parameter x |
+| MultiImplementationB.cs:5:39:5:39 | access to parameter x |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x |

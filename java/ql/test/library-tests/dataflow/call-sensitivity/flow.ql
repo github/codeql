@@ -4,7 +4,9 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import Flow::PathGraph
+import codeql.dataflow.test.ProvenancePathGraph
+import semmle.code.java.dataflow.ExternalFlow
+import ShowProvenance<interpretModelForTest/2, Flow::PathNode, Flow::PathGraph>
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ClassInstanceExpr }

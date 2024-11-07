@@ -1,0 +1,32 @@
+[package]
+name = "codeql-rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.86"
+clap = { version = "4.5.16", features = ["derive"] }
+figment = { version = "0.10.19", features = ["env", "yaml"] }
+log = "0.4.22"
+num-traits = "0.2.19"
+ra_ap_base_db = "0.0.232"
+ra_ap_hir = "0.0.232"
+ra_ap_hir_def = "0.0.232"
+ra_ap_ide_db = "0.0.232"
+ra_ap_hir_expand = "0.0.232"
+ra_ap_load-cargo = "0.0.232"
+ra_ap_paths = "0.0.232"
+ra_ap_project_model = "0.0.232"
+ra_ap_syntax = "0.0.232"
+ra_ap_vfs = "0.0.232"
+ra_ap_parser = "0.0.232"
+ra_ap_span = "0.0.232"
+serde = "1.0.209"
+serde_with = "3.9.0"
+stderrlog = "0.6.0"
+triomphe = "0.1.13"
+argfile = "0.2.1"
+codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
+rust-extractor-macros = { path = "macros" }
+itertools = "0.13.0"
+glob = "0.3.1"

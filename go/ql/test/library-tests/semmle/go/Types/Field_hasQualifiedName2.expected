@@ -1,3 +1,6 @@
+| aliases.go:6:26:6:26 | x | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S3 | x |
+| aliases.go:8:26:8:26 | x | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S3 | x |
+| aliases.go:19:17:19:17 | x | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S3 | x |
 | cyclic.go:4:3:4:3 | s | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.s | s |
 | cyclic.go:8:3:8:3 | u | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.t | u |
 | cyclic.go:8:3:8:3 | u | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.u | u |
@@ -61,3 +64,7 @@
 | pkg2/tst.go:4:2:4:2 | g | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.T | g |
 | pkg2/tst.go:8:2:8:2 | g | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.G | g |
 | pkg2/tst.go:8:2:8:2 | g | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.T | g |
+| struct_tags.go:4:2:4:7 | field1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S1 | field1 |
+| struct_tags.go:5:2:5:7 | field2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S1 | field2 |
+| struct_tags.go:9:2:9:7 | field1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S2 | field1 |
+| struct_tags.go:10:2:10:7 | field2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S2 | field2 |

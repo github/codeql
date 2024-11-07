@@ -1,11 +1,9 @@
-load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
+load("@gazelle//:def.bzl", "gazelle")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pkg_files")
 
-native_binary(
+gazelle(
     name = "gazelle",
-    src = "@gazelle//cmd/gazelle",
-    out = "gazelle.exe",
     args = ["go/extractor"],
 )
 
@@ -49,6 +47,7 @@ codeql_pkg_files(
         "//go/extractor/cli/go-autobuilder",
         "//go/extractor/cli/go-bootstrap",
         "//go/extractor/cli/go-build-runner",
+        "//go/extractor/cli/go-configure-baseline",
         "//go/extractor/cli/go-extractor",
         "//go/extractor/cli/go-gen-dbscheme",
         "//go/extractor/cli/go-tokenizer",

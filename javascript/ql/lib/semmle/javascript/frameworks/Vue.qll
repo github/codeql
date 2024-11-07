@@ -184,14 +184,6 @@ module Vue {
     }
 
     /**
-     * DEPRECATED. Use `getOwnOptions().getASink()`.
-     *
-     * Gets the options passed to the Vue object, such as the object literal `{...}` in `new Vue{{...})`
-     * or the default export of a single-file component.
-     */
-    deprecated DataFlow::Node getOwnOptionsObject() { result = this.getOwnOptions().asSink() }
-
-    /**
      * Gets the class implementing this Vue component, if any.
      *
      * Specifically, this is a class annotated with `@Component` which flows to the options

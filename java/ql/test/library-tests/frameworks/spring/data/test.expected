@@ -1,0 +1,26 @@
+models
+| 1 | Summary: org.springframework.data.repository; CrudRepository; true; save; ; ; Argument[0]; ReturnValue; value; manual |
+edges
+| Test.java:5:17:5:24 | f : String | Test.java:6:18:6:18 | f : String | provenance |  |
+| Test.java:6:5:6:8 | this [post update] : Struct [field] : String | Test.java:5:10:5:15 | parameter this [Return] : Struct [field] : String | provenance |  |
+| Test.java:6:18:6:18 | f : String | Test.java:6:5:6:8 | this [post update] : Struct [field] : String | provenance |  |
+| Test.java:15:16:15:35 | new Struct(...) : Struct [field] : String | Test.java:16:17:16:17 | s : Struct [field] : String | provenance |  |
+| Test.java:15:27:15:34 | source(...) : String | Test.java:5:17:5:24 | f : String | provenance |  |
+| Test.java:15:27:15:34 | source(...) : String | Test.java:15:16:15:35 | new Struct(...) : Struct [field] : String | provenance |  |
+| Test.java:16:9:16:18 | save(...) : Struct [field] : String | Test.java:17:10:17:10 | s : Struct [field] : String | provenance |  |
+| Test.java:16:17:16:17 | s : Struct [field] : String | Test.java:16:9:16:18 | save(...) : Struct [field] : String | provenance | MaD:1 |
+| Test.java:17:10:17:10 | s : Struct [field] : String | Test.java:17:10:17:16 | s.field | provenance |  |
+nodes
+| Test.java:5:10:5:15 | parameter this [Return] : Struct [field] : String | semmle.label | parameter this [Return] : Struct [field] : String |
+| Test.java:5:17:5:24 | f : String | semmle.label | f : String |
+| Test.java:6:5:6:8 | this [post update] : Struct [field] : String | semmle.label | this [post update] : Struct [field] : String |
+| Test.java:6:18:6:18 | f : String | semmle.label | f : String |
+| Test.java:15:16:15:35 | new Struct(...) : Struct [field] : String | semmle.label | new Struct(...) : Struct [field] : String |
+| Test.java:15:27:15:34 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:16:9:16:18 | save(...) : Struct [field] : String | semmle.label | save(...) : Struct [field] : String |
+| Test.java:16:17:16:17 | s : Struct [field] : String | semmle.label | s : Struct [field] : String |
+| Test.java:17:10:17:10 | s : Struct [field] : String | semmle.label | s : Struct [field] : String |
+| Test.java:17:10:17:16 | s.field | semmle.label | s.field |
+subpaths
+| Test.java:15:27:15:34 | source(...) : String | Test.java:5:17:5:24 | f : String | Test.java:5:10:5:15 | parameter this [Return] : Struct [field] : String | Test.java:15:16:15:35 | new Struct(...) : Struct [field] : String |
+testFailures

@@ -40,9 +40,6 @@ class CfgNode extends CfgImpl::Node {
   /** Gets the file of this control flow node. */
   final File getFile() { result = this.getLocation().getFile() }
 
-  /** DEPRECATED: Use `getAstNode` instead. */
-  deprecated AstNode getNode() { result = this.getAstNode() }
-
   /** Gets a successor node of a given type, if any. */
   final CfgNode getASuccessor(SuccessorType t) { result = super.getASuccessor(t) }
 

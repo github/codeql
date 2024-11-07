@@ -62,7 +62,7 @@ namespace Semmle.Extraction.CSharp
         /// <returns>A Boolean indicating whether the same arguments have been logged previously.</returns>
         private bool LogRoslynArgs(IEnumerable<string> roslynArgs)
         {
-            Logger.Log(Severity.Info, $"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
+            Logger.LogInfo($"  Arguments to Roslyn: {string.Join(' ', roslynArgs)}");
 
             var tempFile = Extractor.GetCSharpArgsLogPath(Path.GetRandomFileName());
 
@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp
             var argsFile = Extractor.GetCSharpArgsLogPath(hash);
 
             if (argsWritten)
-                Logger.Log(Severity.Info, $"  Arguments have been written to {argsFile}");
+                Logger.LogInfo($"  Arguments have been written to {argsFile}");
 
             if (File.Exists(argsFile))
             {
@@ -87,7 +87,7 @@ namespace Semmle.Extraction.CSharp
                 }
                 catch (IOException e)
                 {
-                    Logger.Log(Severity.Warning, $"  Failed to remove {tempFile}: {e.Message}");
+                    Logger.LogWarning($"  Failed to remove {tempFile}: {e.Message}");
                 }
                 return false;
             }
@@ -98,7 +98,7 @@ namespace Semmle.Extraction.CSharp
             }
             catch (IOException e)
             {
-                Logger.Log(Severity.Warning, $"  Failed to move {tempFile} to {argsFile}: {e.Message}");
+                Logger.LogWarning($"  Failed to move {tempFile} to {argsFile}: {e.Message}");
             }
 
             return true;
@@ -107,11 +107,8 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Determine the path of the output dll/exe.
         /// </summary>
-        /// <param name="compilation">Information about the compilation.</param>
-        /// <param name="cancel">Cancellation token required.</param>
-        /// <returns>The filename.</returns>
-        private static string GetOutputName(CSharpCompilation compilation,
-            CSharpCommandLineArguments commandLineArguments)
+        internal static string GetOutputName(CSharpCompilation compilation,
+            CommandLineArguments commandLineArguments)
         {
             // There's no apparent way to access the output filename from the compilation,
             // so we need to re-parse the command line arguments.
@@ -130,7 +127,7 @@ namespace Semmle.Extraction.CSharp
                     return Path.ChangeExtension(entryPointFile, ".exe");
                 }
 
-                var entryPointFilename = entry.Locations.First().SourceTree!.FilePath;
+                var entryPointFilename = entry.Locations.Best().SourceTree!.FilePath;
                 return Path.ChangeExtension(entryPointFilename, ".exe");
             }
 
@@ -146,14 +143,14 @@ namespace Semmle.Extraction.CSharp
 
             foreach (var error in filteredDiagnostics)
             {
-                Logger.Log(Severity.Error, "  Compilation error: {0}", error);
+                Logger.LogError($"  Compilation error: {error}");
             }
 
             if (filteredDiagnostics.Count != 0)
             {
                 foreach (var reference in compilation.References)
                 {
-                    Logger.Log(Severity.Info, "  Resolved reference {0}", reference.Display);
+                    Logger.LogInfo($"  Resolved reference {reference.Display}");
                 }
             }
 

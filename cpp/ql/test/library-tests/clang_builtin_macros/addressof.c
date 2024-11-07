@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --clang
+// semmle-extractor-options: --clang
 
 int x = 0;
 

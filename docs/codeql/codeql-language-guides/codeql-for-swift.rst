@@ -5,8 +5,6 @@ CodeQL for Swift
 
 Experiment and learn how to write effective and efficient queries for CodeQL databases generated from Swift codebases.
 
-.. include:: ../reusables/swift-beta-note.rst
-
 .. toctree::
    :hidden:
 

@@ -38,7 +38,7 @@ class ConditionalBypassTest {
 		}
 
 		// FALSE NEGATIVE: we have no way of telling that the skipped method is sensitive
-		if (adminCookie.getValue() == "false") // $ MISSING: $ hasConditionalBypassTest
+		if (adminCookie.getValue() == "false") // $ MISSING: hasConditionalBypassTest
 			doReallyImportantSecurityWork();
 
 		InetAddress local = InetAddress.getLocalHost();
@@ -47,6 +47,15 @@ class ConditionalBypassTest {
 			login(user, password);
 		}
 		if (Inet4Address.getLocalHost().getCanonicalHostName().equals("localhost")) {
+			login(user, password);
+		}
+
+		InetAddress loopback = InetAddress.getLoopbackAddress();
+		// GOOD: reverse DNS on loopback address is fine
+		if (loopback.getCanonicalHostName().equals("localhost")) {
+			login(user, password);
+		}
+		if (Inet4Address.getLoopbackAddress().getCanonicalHostName().equals("localhost")) {
 			login(user, password);
 		}
 	}

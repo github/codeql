@@ -107,7 +107,7 @@ namespace Semmle.Util
             var result = outPath.ToString(preamble, length - preamble);  // Trim off leading \\?\
 
             return result.StartsWith("UNC")
-                ? @"\" + result.Substring(3)
+                ? @$"\{result[3..]}"
                 : result;
         }
     }

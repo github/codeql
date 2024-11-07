@@ -29,9 +29,6 @@ abstract class TranslatedCondition extends TranslatedElement {
 
   final override Locatable getAst() { result = expr }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final ConditionContext getConditionContext() { result = this.getParent() }
 
   final Expr getExpr() { result = expr }

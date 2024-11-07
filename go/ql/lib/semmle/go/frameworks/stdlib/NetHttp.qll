@@ -8,16 +8,6 @@ private import semmle.go.dataflow.internal.FlowSummaryImpl::Private
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
-  /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends RemoteFlowSource::Range, DataFlow::FieldReadNode {
-    UserControlledRequestField() {
-      exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
-        fieldName =
-          ["Body", "GetBody", "Form", "PostForm", "MultipartForm", "Header", "Trailer", "URL"]
-      )
-    }
-  }
-
   /** The declaration of a variable which either is or has a field that implements the http.ResponseWriter type */
   private class StdlibResponseWriter extends Http::ResponseWriter::Range {
     SsaWithFields v;
@@ -185,14 +175,6 @@ module NetHttp {
     override Http::ResponseWriter getResponseWriter() { result.getANode() = responseWriter }
   }
 
-  private class RedirectCall extends Http::Redirect::Range, DataFlow::CallNode {
-    RedirectCall() { this.getTarget().hasQualifiedName("net/http", "Redirect") }
-
-    override DataFlow::Node getUrl() { result = this.getArgument(2) }
-
-    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getArgument(0) }
-  }
-
   /** A call to a function in the `net/http` package that performs an HTTP request to a URL. */
   private class RequestCall extends Http::ClientRequest::Range, DataFlow::CallNode {
     RequestCall() {
@@ -298,9 +280,11 @@ module NetHttp {
   }
 
   /**
+   * DEPRECATED: Use `FileSystemAccess::Range` instead.
+   *
    * The File system access sinks
    */
-  class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
+  deprecated class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
     HttpServeFile() {
       exists(Function f |
         f.hasQualifiedName("net/http", "ServeFile") and

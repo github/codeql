@@ -113,16 +113,6 @@ class DataFlowCallable extends TDataFlowCallable {
     this instanceof TLibraryCallable and
     result instanceof EmptyLocation
   }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(file, startline, startcolumn, _, _)
-      |
-        c order by file, startline, startcolumn
-      )
-  }
 }
 
 /**
@@ -153,16 +143,6 @@ abstract class DataFlowCall extends TDataFlowCall {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int startline, int startcolumn |
-        c.hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        c order by startline, startcolumn
-      )
   }
 }
 
@@ -583,7 +563,11 @@ private module Cached {
     THashSplatArgumentPosition() or
     TSynthHashSplatArgumentPosition() or
     TSplatArgumentPosition(int pos) { exists(Call c | c.getArgument(pos) instanceof SplatExpr) } or
-    TSynthSplatArgumentPosition() or
+    TSynthSplatArgumentPosition(int actualSplatPos) {
+      actualSplatPos = -1 // represents no actual splat
+      or
+      exists(Call c | c.getArgument(actualSplatPos) instanceof SplatExpr)
+    } or
     TAnyArgumentPosition() or
     TAnyKeywordArgumentPosition()
 
@@ -610,11 +594,15 @@ private module Cached {
     THashSplatParameterPosition() or
     TSynthHashSplatParameterPosition() or
     TSplatParameterPosition(int pos) {
-      pos = 0
+      pos = 0 // needed for flow summaries
       or
       exists(Parameter p | p.getPosition() = pos and p instanceof SplatParameter)
     } or
-    TSynthSplatParameterPosition() or
+    TSynthSplatParameterPosition(int actualSplatPos) {
+      actualSplatPos = -1 // represents no actual splat
+      or
+      exists(Callable c | c.getParameter(actualSplatPos) instanceof SplatParameter)
+    } or
     TAnyParameterPosition() or
     TAnyKeywordParameterPosition()
 }
@@ -1093,8 +1081,7 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
         singletonMethodOnInstance(_, _, nodeFromPreExpr.getExpr())
       )
     |
-      nodeFromPreExpr =
-        LocalFlow::getParameterDefNode(p.getParameter()).getDefinitionExt().getARead()
+      nodeFromPreExpr = getParameterDef(p.getParameter()).getARead()
       or
       nodeFromPreExpr = p.(SelfParameterNodeImpl).getSelfDefinition().getARead()
     )
@@ -1404,8 +1391,14 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a splat parameter at position `n`. */
   predicate isSplat(int n) { this = TSplatParameterPosition(n) }
 
-  /** Holds if this position represents a synthetic splat parameter. */
-  predicate isSynthSplat() { this = TSynthSplatParameterPosition() }
+  /**
+   * Holds if this position represents a synthetic splat parameter.
+   *
+   * `actualSplatPos` indicates the position of the (unique) actual splat
+   * parameter belonging to the same method, with `-1` representing no actual
+   * splat parameter.
+   */
+  predicate isSynthSplat(int actualSplatPos) { this = TSynthSplatParameterPosition(actualSplatPos) }
 
   /**
    * Holds if this position represents any parameter, except `self` parameters. This
@@ -1440,7 +1433,11 @@ class ParameterPosition extends TParameterPosition {
     or
     exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
     or
-    this.isSynthSplat() and result = "synthetic *"
+    exists(int actualSplatPos, string suffix |
+      this.isSynthSplat(actualSplatPos) and
+      result = "synthetic *" + suffix and
+      if actualSplatPos = -1 then suffix = "" else suffix = " (actual at " + actualSplatPos + ")"
+    )
   }
 }
 
@@ -1479,8 +1476,14 @@ class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a splat argument at position `n`. */
   predicate isSplat(int n) { this = TSplatArgumentPosition(n) }
 
-  /** Holds if this position represents a synthetic splat argument. */
-  predicate isSynthSplat() { this = TSynthSplatArgumentPosition() }
+  /**
+   * Holds if this position represents a synthetic splat argument.
+   *
+   * `actualSplatPos` indicates the position of the (unique) actual splat
+   * argument belonging to the same call, with `-1` representing no actual
+   * splat argument.
+   */
+  predicate isSynthSplat(int actualSplatPos) { this = TSynthSplatArgumentPosition(actualSplatPos) }
 
   /** Gets a textual representation of this position. */
   string toString() {
@@ -1504,7 +1507,11 @@ class ArgumentPosition extends TArgumentPosition {
     or
     exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
     or
-    this.isSynthSplat() and result = "synthetic *"
+    exists(int actualSplatPos, string suffix |
+      this.isSynthSplat(actualSplatPos) and
+      result = "synthetic *" + suffix and
+      if actualSplatPos = -1 then suffix = "" else suffix = " (actual at " + actualSplatPos + ")"
+    )
   }
 }
 
@@ -1538,19 +1545,29 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
   or
   (ppos.isHashSplat() or ppos.isSynthHashSplat()) and
-  (apos.isHashSplat() or apos.isSynthHashSplat())
+  (apos.isHashSplat() or apos.isSynthHashSplat()) and
+  // prevent synthetic hash-splat parameters from matching synthetic hash-splat
+  // arguments when direct keyword matching is possible
+  not (ppos.isSynthHashSplat() and apos.isSynthHashSplat())
   or
   exists(int pos |
     (
       ppos.isSplat(pos)
       or
-      ppos.isSynthSplat() and pos = 0
+      ppos.isSynthSplat(_) and
+      pos = 0
     ) and
     (
       apos.isSplat(pos)
       or
-      apos.isSynthSplat() and pos = 0
+      apos.isSynthSplat(_) and pos = 0
     )
+  ) and
+  // prevent synthetic splat parameters from matching synthetic splat arguments
+  // when direct positional matching is possible
+  not exists(int actualSplatPos |
+    ppos.isSynthSplat(actualSplatPos) and
+    apos.isSynthSplat(actualSplatPos)
   )
   or
   ppos.isAny() and argumentPositionIsNotSelf(apos)

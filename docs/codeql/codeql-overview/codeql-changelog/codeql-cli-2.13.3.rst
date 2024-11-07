@@ -61,8 +61,8 @@ JavaScript/TypeScript
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/groovy-injection` now recognizes :code:`groovy.text.TemplateEngine.createTemplate` as a sink.
 *   The queries :code:`java/xxe` and :code:`java/xxe-local` now recognize the second argument of calls to :code:`XPath.evaluate` as a sink.
@@ -107,8 +107,8 @@ Golang
 
 *   Fixed data flow through variadic function parameters. The arguments corresponding to a variadic parameter are no longer returned by :code:`CallNode.getArgument(int i)` and :code:`CallNode.getAnArgument()`, and hence aren't :code:`ArgumentNode`\ s. They now have one result, which is an :code:`ImplicitVarargsSlice` node. For example, a call :code:`f(a, b, c)` to a function :code:`f(T...)` is treated like :code:`f([]T{a, b, c})`. The old behaviour is preserved by :code:`CallNode.getSyntacticArgument(int i)` and :code:`CallNode.getASyntacticArgument()`. :code:`CallExpr.getArgument(int i)` and :code:`CallExpr.getAnArgument()` are unchanged, and will still have three results in the example given.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added SQL injection sinks for Spring JDBC's :code:`NamedParameterJdbcOperations`.
     

@@ -1,3 +1,57 @@
+## 2.0.3
+
+No user-facing changes.
+
+## 2.0.2
+
+No user-facing changes.
+
+## 2.0.1
+
+### Minor Analysis Improvements
+
+* All AST classes in `codeql.swift.elements` are now `final`, which means that it is no longer possible to `override` predicates defined in those classes (it is, however, still possible to `extend` the classes).
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted the deprecated `getDerivedTypeDecl` predicate from the `TypeDecl` class, use `getADerivedTypeDecl` or `getABaseTypeDecl` instead.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+No user-facing changes.
+
+## 1.1.1
+
+### Minor Analysis Improvements
+
+* The model for `FileManager` no longer considers methods that return paths on the file system as taint sources. This is because these sources have been found to produce results of low value.
+* An error in the model for `URL.withUnsafeFileSystemRepresentation(_:)` has been corrected. This may result in new data flow paths being found during analysis.
+
+## 1.1.0
+
+### New Features
+
+* Swift support is now out of beta, and generally available.
+
+### Minor Analysis Improvements
+
+* Additional heuristics for sensitive private information have been added to the `SensitiveExprs.qll` library, improving coverage for credit card and social security numbers. This may result in additional results for queries that use sensitive data such as `swift/cleartext-transmission`.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 No user-facing changes.

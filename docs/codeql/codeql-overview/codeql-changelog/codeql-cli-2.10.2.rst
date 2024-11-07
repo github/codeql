@@ -84,8 +84,8 @@ C/C++
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The JUnit5 version of :code:`AssertNotNull` is now recognized, which removes related false positives in the nullness queries.
 *   Added data flow models for :code:`java.util.Scanner`.
@@ -99,7 +99,7 @@ Ruby
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The QL predicate :code:`Expr::getUnderlyingExpr` has been added. It can be used to look through casts and not-null expressions and obtain the underlying expression to which they apply.

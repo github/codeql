@@ -82,12 +82,12 @@ namespace Semmle.Extraction.CSharp.Entities
         /// The location which is stored in the database and is used when highlighting source code.
         /// It's generally short, e.g. a method name.
         /// </summary>
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Symbol.Locations.FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Symbol.Locations.BestOrDefault();
 
         /// <summary>
         /// The full text span of the entity, e.g. for binding comments.
         /// </summary>
-        public virtual Microsoft.CodeAnalysis.Location? FullLocation => Symbol.Locations.FirstOrDefault();
+        public virtual Microsoft.CodeAnalysis.Location? FullLocation => Symbol.Locations.BestOrDefault();
 
         public virtual IEnumerable<Extraction.Entities.Location> Locations
         {
@@ -144,50 +144,5 @@ namespace Semmle.Extraction.CSharp.Entities
         public override bool NeedsPopulation => Context.Defines(Symbol);
 
         public Extraction.Entities.Location Location => Context.CreateLocation(ReportingLocation);
-
-        protected void PopulateMetadataHandle(TextWriter trapFile)
-        {
-            var handle = MetadataHandle;
-
-            if (handle.HasValue)
-                trapFile.metadata_handle(this, Location, MetadataTokens.GetToken(handle.Value));
-        }
-
-        private static System.Reflection.PropertyInfo? GetPropertyInfo(object o, string name)
-        {
-            return o.GetType().GetProperty(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.GetProperty);
-        }
-
-        public Handle? MetadataHandle
-        {
-            get
-            {
-                var handleProp = GetPropertyInfo(Symbol, "Handle");
-                object handleObj = Symbol;
-
-                if (handleProp is null)
-                {
-                    var underlyingSymbolProp = GetPropertyInfo(Symbol, "UnderlyingSymbol");
-                    if (underlyingSymbolProp?.GetValue(Symbol) is object underlying)
-                    {
-                        handleProp = GetPropertyInfo(underlying, "Handle");
-                        handleObj = underlying;
-                    }
-                }
-
-                if (handleProp is not null)
-                {
-                    switch (handleProp.GetValue(handleObj))
-                    {
-                        case MethodDefinitionHandle md: return md;
-                        case TypeDefinitionHandle td: return td;
-                        case PropertyDefinitionHandle pd: return pd;
-                        case FieldDefinitionHandle fd: return fd;
-                    }
-                }
-
-                return null;
-            }
-        }
     }
 }

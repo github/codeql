@@ -151,7 +151,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                fileLogger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
+                fileLogger.LogError($"  Unhandled exception: {ex}");
             }
 
             logger.Log(Severity.Info, $"Extraction completed in {overallStopwatch.Elapsed}");

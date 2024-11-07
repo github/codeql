@@ -13,6 +13,16 @@ class SimpleTypeSanitizer extends DataFlow::Node {
     this.getType() instanceof BoxedType or
     this.getType() instanceof NumberType or
     this.getType().(RefType).hasQualifiedName("java.util", "UUID") or
-    this.getType().(RefType).hasQualifiedName("java.util", "Date")
+    this.getType().(RefType).getASourceSupertype*().hasQualifiedName("java.util", "Date") or
+    this.getType().(RefType).hasQualifiedName("java.util", "Calendar") or
+    this.getType().(RefType).hasQualifiedName("java.util", "BitSet") or
+    this.getType()
+        .(RefType)
+        .getASourceSupertype*()
+        .hasQualifiedName("java.time.temporal", "TemporalAmount") or
+    this.getType()
+        .(RefType)
+        .getASourceSupertype*()
+        .hasQualifiedName("java.time.temporal", "TemporalAccessor")
   }
 }

@@ -1,0 +1,7 @@
+Log file 1
+{"origin": "CodeQL Kotlin extractor", "kind": "INFO", "message": "Extraction started"}
+{"origin": "CodeQL Kotlin extractor", "kind": "INFO", "message": "Kotlin extractor verbosity is 3"}
+{"origin": "CodeQL Kotlin extractor", "kind": "INFO", "message": "Extraction for invocation TRAP file <FILENAME>"}
+{"origin": "CodeQL Kotlin extractor", "kind": "INFO", "message": "Kotlin version <VERSION>"}
+{"origin": "CodeQL Kotlin extractor", "kind": "INFO", "message": "Extracting file test.kt"}
+{"origin": "CodeQL Kotlin extractor", "kind": "INFO", "message": "Extraction completed"}

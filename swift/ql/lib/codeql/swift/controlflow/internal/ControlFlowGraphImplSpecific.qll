@@ -46,10 +46,6 @@ module CfgInput implements InputSig<Location> {
 
   CfgScope getCfgScope(AstNode n) { result = scopeOfAst(n.asAstNode()) }
 
-  class SplitKindBase = Splitting::TSplitKind;
-
-  class Split = Splitting::Split;
-
   class SuccessorType = Cfg::SuccessorType;
 
   /** Gets a successor type that matches completion `c`. */
@@ -88,4 +84,19 @@ module CfgInput implements InputSig<Location> {
   }
 }
 
-module CfgImpl = Make<Location, CfgInput>;
+private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {
+  private import Splitting as S
+
+  class SplitKindBase = S::TSplitKind;
+
+  class Split = S::Split;
+}
+
+private module ConditionalCompletionSplittingInput implements
+  ConditionalCompletionSplittingInputSig<Location, CfgInput, CfgSplittingInput>
+{
+  import Splitting::ConditionalCompletionSplitting::ConditionalCompletionSplittingInput
+}
+
+module CfgImpl =
+  MakeWithSplitting<Location, CfgInput, CfgSplittingInput, ConditionalCompletionSplittingInput>;

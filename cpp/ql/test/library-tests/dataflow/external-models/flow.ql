@@ -1,6 +1,7 @@
 import TestUtilities.dataflow.FlowTestCommon
 import cpp
 import semmle.code.cpp.security.FlowSources
+import IRTest::IRFlow::PathGraph
 
 module IRTest {
   private import semmle.code.cpp.ir.IR

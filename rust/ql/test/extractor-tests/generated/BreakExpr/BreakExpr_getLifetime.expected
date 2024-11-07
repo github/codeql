@@ -1,0 +1,2 @@
+| gen_break_expr.rs:12:13:12:27 | BreakExpr | gen_break_expr.rs:12:19:12:24 | Lifetime |
+| gen_break_expr.rs:17:13:17:27 | BreakExpr | gen_break_expr.rs:17:19:17:24 | Lifetime |

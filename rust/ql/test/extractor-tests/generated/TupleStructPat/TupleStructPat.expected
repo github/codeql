@@ -1,0 +1,3 @@
+| gen_tuple_struct_pat.rs:6:9:6:27 | TupleStructPat | getNumberOfFields: | 4 | hasPath: | yes |
+| gen_tuple_struct_pat.rs:7:9:7:20 | TupleStructPat | getNumberOfFields: | 2 | hasPath: | yes |
+| gen_tuple_struct_pat.rs:8:9:8:17 | TupleStructPat | getNumberOfFields: | 1 | hasPath: | yes |

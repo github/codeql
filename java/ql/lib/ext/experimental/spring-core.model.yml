@@ -1,0 +1,26 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.springframework.core.io","FileSystemResource",true,"FileSystemResource","(FileSystem,String)","","Argument[1]","path-injection","manual"]
+      - ["org.springframework.core.io","FileSystemResource",true,"FileSystemResource","(File)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.core.io","FileSystemResource",true,"FileSystemResource","(Path)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.core.io","FileSystemResource",true,"FileSystemResource","(String)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.core.io","FileUrlResource",true,"FileUrlResource","(String)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.core.io","FileUrlResource",true,"FileUrlResource","(URL)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.core.io","PathResource",true,"PathResource","(Path)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.core.io","PathResource",true,"PathResource","(String)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.core.io","PathResource",true,"PathResource","(URI)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.core.io","UrlResource",true,"UrlResource","(String,String,String)","","Argument[1]","path-injection","manual"]
+      - ["org.springframework.core.io","UrlResource",true,"UrlResource","(String,String)","","Argument[1]","path-injection","manual"]
+      - ["org.springframework.core.io","UrlResource",true,"UrlResource","(String)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.core.io","UrlResource",true,"UrlResource","(URI)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.core.io","UrlResource",true,"UrlResource","(URL)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.util","FileSystemUtils",true,"copyRecursively","(Path,Path)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.util","FileSystemUtils",true,"copyRecursively","(Path,Path)","","Argument[1]","path-injection","manual"]
+      - ["org.springframework.util","FileSystemUtils",true,"deleteRecursively","(File)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.util","FileSystemUtils",true,"deleteRecursively","(Path)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.util","ResourceUtils",true,"getFile","(String)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.util","FileCopyUtils",true,"copyToByteArray","(File)","","Argument[0]","path-injection","manual"]
+      - ["org.springframework.util","FileSystemUtils",true,"copyRecursively","(File,File)","","Argument[0]","path-injection","manual"]

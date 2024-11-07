@@ -39,8 +39,8 @@ Query Packs
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query, :code:`java/android/sensitive-result-receiver`, to find instances of sensitive data being leaked to an untrusted :code:`ResultReceiver`.
 
@@ -70,8 +70,8 @@ C#
 
 *   C# 11: Added extractor support for :code:`ref` fields in :code:`ref struct` declarations.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added sink models for the :code:`createQuery`, :code:`createNativeQuery`, and :code:`createSQLQuery` methods of the :code:`org.hibernate.query.QueryProducer` interface.
 

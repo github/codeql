@@ -201,6 +201,11 @@ void test_strndupa_dealloc() {
 
 // ---
 
+struct DataPair {
+	char *data1;
+	char *data2;
+};
+
 void test_reassignment() {
 	char *a = (char *)malloc(128);
 	char *b = (char *)malloc(128);
@@ -213,4 +218,21 @@ void test_reassignment() {
 
 	free(a);
 	a[0] = 0; // BAD
+
+	DataPair p;
+	p.data1 = new char[128];
+	p.data2 = new char[128];
+	p.data1[0] = 0; // GOOD
+	p.data2[0] = 0; // GOOD
+
+	delete [] p.data1;
+	p.data1[0] = 0; // BAD
+	p.data2[0] = 0; // GOOD
+
+	p.data1 = new char[128];
+	p.data1[0] = 0; // GOOD
+	p.data2[0] = 0; // GOOD
+
+	delete [] p.data1;
+	delete [] p.data2;
 }

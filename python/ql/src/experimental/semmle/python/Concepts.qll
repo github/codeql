@@ -15,6 +15,39 @@ private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 private import semmle.python.Concepts
 
+/**
+ * A data-flow node that executes an operating system command,
+ * on a remote server likely by SSH connections.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `RemoteCommandExecution::Range` instead.
+ */
+class RemoteCommandExecution extends DataFlow::Node instanceof RemoteCommandExecution::Range {
+  /** Holds if a shell interprets `arg`. */
+  predicate isShellInterpreted(DataFlow::Node arg) { super.isShellInterpreted(arg) }
+
+  /** Gets the argument that specifies the command to be executed. */
+  DataFlow::Node getCommand() { result = super.getCommand() }
+}
+
+/** Provides classes for modeling new remote server command execution APIs. */
+module RemoteCommandExecution {
+  /**
+   * A data-flow node that executes an operating system command,
+   * on a remote server likely by SSH connections.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `RemoteCommandExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the command to be executed. */
+    abstract DataFlow::Node getCommand();
+
+    /** Holds if a shell interprets `arg`. */
+    predicate isShellInterpreted(DataFlow::Node arg) { none() }
+  }
+}
+
 /** Provides classes for modeling copying file related APIs. */
 module CopyFile {
   /**
@@ -155,9 +188,6 @@ module LdapBind {
      * Holds if the binding process use SSL.
      */
     abstract predicate useSsl();
-
-    /** DEPRECATED: Alias for useSsl */
-    deprecated predicate useSSL() { this.useSsl() }
   }
 }
 
@@ -182,9 +212,6 @@ class LdapBind extends DataFlow::Node instanceof LdapBind::Range {
    * Holds if the binding process use SSL.
    */
   predicate useSsl() { super.useSsl() }
-
-  /** DEPRECATED: Alias for useSsl */
-  deprecated predicate useSSL() { this.useSsl() }
 }
 
 /** Provides classes for modeling SQL sanitization libraries. */
@@ -243,55 +270,6 @@ class CsvWriter extends DataFlow::Node instanceof CsvWriter::Range {
    * Get the parameter value of the csv writer function.
    */
   DataFlow::Node getAnInput() { result = super.getAnInput() }
-}
-
-/**
- * A data-flow node that sets a cookie in an HTTP response.
- *
- * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `Cookie::Range` instead.
- */
-class Cookie extends Http::Server::CookieWrite instanceof Cookie::Range {
-  /**
-   * Holds if this cookie is secure.
-   */
-  predicate isSecure() { super.isSecure() }
-
-  /**
-   * Holds if this cookie is HttpOnly.
-   */
-  predicate isHttpOnly() { super.isHttpOnly() }
-
-  /**
-   * Holds if the cookie is SameSite
-   */
-  predicate isSameSite() { super.isSameSite() }
-}
-
-/** Provides a class for modeling new cookie writes on HTTP responses. */
-module Cookie {
-  /**
-   * A data-flow node that sets a cookie in an HTTP response.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `Cookie` instead.
-   */
-  abstract class Range extends Http::Server::CookieWrite::Range {
-    /**
-     * Holds if this cookie is secure.
-     */
-    abstract predicate isSecure();
-
-    /**
-     * Holds if this cookie is HttpOnly.
-     */
-    abstract predicate isHttpOnly();
-
-    /**
-     * Holds if the cookie is SameSite.
-     */
-    abstract predicate isSameSite();
-  }
 }
 
 /** Provides classes for modeling JWT encoding-related APIs. */

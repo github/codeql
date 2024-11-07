@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CSharp
             lambdaParameterCache[syntax] = param;
         }
 
-        private readonly Dictionary<SyntaxNode, IParameterSymbol> lambdaParameterCache = new Dictionary<SyntaxNode, IParameterSymbol>();
+        private readonly Dictionary<SyntaxNode, IParameterSymbol> lambdaParameterCache = [];
 
         /// <summary>
         /// The current compilation unit.

@@ -45,6 +45,7 @@ module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) {
+    node instanceof Sanitizer or
     node instanceof CommandInjection::Sanitizer // using all sanitizers from `py/command-injection`
   }
 

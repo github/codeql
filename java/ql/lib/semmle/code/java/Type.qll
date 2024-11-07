@@ -324,7 +324,7 @@ predicate declaresMember(Type t, @member m) {
   or
   constrs(m, _, _, _, t, _)
   or
-  fields(m, _, _, t, _)
+  fields(m, _, _, t)
   or
   enclInReftype(m, t) and
   // Since the type `@member` in the dbscheme includes all `@reftype`s,
@@ -592,7 +592,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    * to the name of the enclosing type, which might be a nested type as well.
    */
   predicate hasQualifiedName(string package, string type) {
-    this.getPackage().hasName(package) and type = this.nestedName()
+    this.getPackage().hasName(package) and type = this.getNestedName()
   }
 
   /**
@@ -601,7 +601,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   override string getTypeDescriptor() {
     result =
       "L" + this.getPackage().getName().replaceAll(".", "/") + "/" +
-        this.getSourceDeclaration().nestedName() + ";"
+        this.getSourceDeclaration().getNestedName() + ";"
   }
 
   /**
@@ -615,8 +615,8 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   string getQualifiedName() {
     exists(string pkgName | pkgName = this.getPackage().getName() |
       if pkgName = ""
-      then result = this.nestedName()
-      else result = pkgName + "." + this.nestedName()
+      then result = this.getNestedName()
+      else result = pkgName + "." + this.getNestedName()
     )
   }
 
@@ -627,11 +627,14 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    * Otherwise the name of the nested type is prefixed with a `$` and appended to
    * the name of the enclosing type, which might be a nested type as well.
    */
-  string nestedName() {
+  string getNestedName() {
     not this instanceof NestedType and result = this.getName()
     or
-    this.(NestedType).getEnclosingType().nestedName() + "$" + this.getName() = result
+    this.(NestedType).getEnclosingType().getNestedName() + "$" + this.getName() = result
   }
+
+  /** DEPRECATED: Alias for `getNestedName`. */
+  deprecated string nestedName() { result = this.getNestedName() }
 
   /**
    * Gets the source declaration of this type.
@@ -1192,12 +1195,10 @@ class EnumType extends Class {
   EnumType() { isEnumType(this) }
 
   /** Gets the enum constant with the specified name. */
-  EnumConstant getEnumConstant(string name) {
-    fields(result, _, _, this, _) and result.hasName(name)
-  }
+  EnumConstant getEnumConstant(string name) { fields(result, _, _, this) and result.hasName(name) }
 
   /** Gets an enum constant declared in this enum type. */
-  EnumConstant getAnEnumConstant() { fields(result, _, _, this, _) }
+  EnumConstant getAnEnumConstant() { fields(result, _, _, this) }
 
   override predicate isFinal() {
     // JLS 8.9: An enum declaration is implicitly `final` unless it contains

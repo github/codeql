@@ -5,6 +5,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.ruby.dataflow.SSA
+private import SsaImpl as SsaImpl
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -89,7 +90,7 @@ private module Cached {
         clause = case.getBranch(_) and
         def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt() and
         def.getControlFlowNode() = variablesInPattern(clause.getPattern()) and
-        not LocalFlow::ssaDefAssigns(def, value)
+        not def.(Ssa::WriteDefinition).assigns(value)
       )
       or
       // operation involving `nodeFrom`
@@ -148,3 +149,37 @@ private module Cached {
 }
 
 import Cached
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+  private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(
+      DataFlowDispatch::DataFlowCall call, MethodCall srcCall,
+      DataFlowDispatch::ArgumentPosition argpos, MethodCall mc
+    |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::viableCallable(call)) and
+      call.asCall().getExpr() = srcCall and
+      src.(ArgumentNode).argumentOf(call, argpos) and
+      call.asCall().getExpr() = mc and
+      not mc instanceof Operation and
+      not mc instanceof SetterMethodCall and
+      not mc instanceof ElementReference
+    |
+      not argpos.isSelf() and
+      sink.(DataFlowPublic::PostUpdateNode)
+          .getPreUpdateNode()
+          .(ArgumentNode)
+          .argumentOf(call, any(DataFlowDispatch::ArgumentPosition qualpos | qualpos.isSelf()))
+      or
+      sink.(OutNode).getCall(_) = call
+    )
+  }
+}

@@ -104,8 +104,8 @@ C/C++
 
 *   Added a new query, :code:`cpp/open-call-with-mode-argument`, to detect when :code:`open` or :code:`openat` is called with the :code:`O_CREAT` or :code:`O_TMPFILE` flag but when the :code:`mode` argument is omitted.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A new query "Cleartext storage of sensitive information using a local database on Android" (:code:`java/android/cleartext-storage-database`) has been added. This query finds instances of sensitive data being stored in local databases without encryption, which may expose it to attackers or malicious applications.
 

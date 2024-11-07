@@ -1,3 +1,47 @@
+## 1.1.6
+
+No user-facing changes.
+
+## 1.1.5
+
+### Minor Analysis Improvements
+
+* The `rb/diagnostics/extraction-errors` diagnostic query has been split into `rb/diagnostics/extraction-errors` and `rb/diagnostics/extraction-warnings`, counting extraction errors and warnings respectively.
+
+## 1.1.4
+
+No user-facing changes.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+No user-facing changes.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### New Queries
+
+* Added a new query, `rb/weak-sensitive-data-hashing`, to detect cases where sensitive data is hashed using a weak cryptographic hashing algorithm.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 No user-facing changes.

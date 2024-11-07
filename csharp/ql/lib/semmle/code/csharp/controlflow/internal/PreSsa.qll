@@ -80,7 +80,11 @@ module PreSsa {
   }
 
   module SsaInput implements SsaImplCommon::InputSig<Location> {
-    class BasicBlock = PreBasicBlocks::PreBasicBlock;
+    class BasicBlock extends PreBasicBlocks::PreBasicBlock {
+      ControlFlowNode getNode(int i) { result = this.getElement(i) }
+    }
+
+    class ControlFlowNode = ControlFlowElement;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
 
@@ -192,7 +196,7 @@ module PreSsa {
       SsaImpl::ssaDefReachesEndOfBlock(bb, this, _)
     }
 
-    Location getLocation() {
+    override Location getLocation() {
       result = this.getDefinition().getLocation()
       or
       exists(Callable c, SsaInput::BasicBlock bb, SsaInput::SourceVariable v |

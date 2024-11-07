@@ -24,21 +24,6 @@ abstract class Sink extends ApiSinkExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `ExposureOfPrivateInformation` instead.
- *
- * A taint-tracking configuration for private information flowing unencrypted to an external location.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "ExposureOfPrivateInformation" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for private information flowing unencrypted to an external location.
  */
 private module ExposureOfPrivateInformationConfig implements DataFlow::ConfigSig {

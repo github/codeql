@@ -1,6 +1,8 @@
 name: codeql/util
-version: 1.0.2-dev
+version: 1.0.12-dev
 groups: shared
 library: true
 dependencies: null
+dataExtensions:
+  - ext/*.yml
 warnOnImplicitThis: true

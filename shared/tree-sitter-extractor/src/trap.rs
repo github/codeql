@@ -7,6 +7,7 @@ use flate2::write::GzEncoder;
 
 #[derive(Clone, Copy, Eq, PartialEq, PartialOrd, Ord, Hash)]
 pub struct Location {
+    pub file_label: Label,
     pub start_line: usize,
     pub start_column: usize,
     pub end_line: usize,
@@ -136,9 +137,15 @@ impl fmt::Display for Entry {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Copy, Clone, Hash, Eq, PartialEq, Ord, PartialOrd)]
 // Identifiers of the form #0, #1...
 pub struct Label(u32);
+
+impl fmt::Debug for Label {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Label({:#x})", self.0)
+    }
+}
 
 impl fmt::Display for Label {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -167,6 +174,30 @@ impl fmt::Display for Arg {
                 limit_string(x, MAX_STRLEN).replace('"', "\"\"")
             ),
         }
+    }
+}
+
+impl From<String> for Arg {
+    fn from(value: String) -> Self {
+        Arg::String(value)
+    }
+}
+
+impl From<&str> for Arg {
+    fn from(value: &str) -> Self {
+        Arg::String(value.into())
+    }
+}
+
+impl From<Label> for Arg {
+    fn from(value: Label) -> Self {
+        Arg::Label(value)
+    }
+}
+
+impl From<usize> for Arg {
+    fn from(value: usize) -> Self {
+        Arg::Int(value)
     }
 }
 

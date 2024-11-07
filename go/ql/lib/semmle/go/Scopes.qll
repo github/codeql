@@ -113,7 +113,9 @@ class Entity extends @object {
 
   /** Gets the qualified name of this entity, if any. */
   string getQualifiedName() {
-    exists(string pkg, string name | this.hasQualifiedName(pkg, name) | result = pkg + "." + name)
+    exists(string pkg, string name | this.hasQualifiedName(pkg, name) |
+      if pkg = "" then result = name else result = pkg + "." + name
+    )
   }
 
   /**
@@ -195,8 +197,11 @@ class PackageEntity extends Entity, @pkgobject { }
 /** A built-in or declared named type. */
 class TypeEntity extends Entity, @typeobject { }
 
+/** The parent of a type parameter type, either a declared type or a declared function. */
+class TypeParamParentEntity extends Entity, @typeparamparentobject { }
+
 /** A declared named type. */
-class DeclaredType extends TypeEntity, DeclaredEntity, @decltypeobject {
+class DeclaredType extends TypeEntity, DeclaredEntity, TypeParamParentEntity, @decltypeobject {
   /** Gets the declaration specifier declaring this type. */
   TypeSpec getSpec() { result.getNameExpr() = this.getDeclaration() }
 }
@@ -380,6 +385,11 @@ class Field extends Variable {
       this = base.getField(f)
     )
   }
+
+  /**
+   * Gets the tag associated with this field, or the empty string if this field has no tag.
+   */
+  string getTag() { declaringType.hasOwnFieldWithTag(_, this.getName(), this.getType(), _, result) }
 }
 
 /**
@@ -469,6 +479,13 @@ class Function extends ValueEntity, @functionobject {
   ResultVariable getAResult() { result = this.getResult(_) }
 }
 
+bindingset[m]
+pragma[inline_late]
+private Type implementsIncludingInterfaceMethodsCand(Method m, string mname) {
+  result.implements(m.getReceiverType().getUnderlyingType()) and
+  mname = m.getName()
+}
+
 /**
  * A method, that is, a function with a receiver variable, or a function declared in an interface.
  *
@@ -502,13 +519,7 @@ class Method extends Function {
    * Gets the receiver base type of this method, that is, either the base type of the receiver type
    * if it is a pointer type, or the receiver type itself if it is not a pointer type.
    */
-  Type getReceiverBaseType() {
-    exists(Type recv | recv = this.getReceiverType() |
-      if recv instanceof PointerType
-      then result = recv.(PointerType).getBaseType()
-      else result = recv
-    )
-  }
+  Type getReceiverBaseType() { result = lookThroughPointerType(this.getReceiverType()) }
 
   /** Holds if this method has name `m` and belongs to the method set of type `tp` or `*tp`. */
   private predicate isIn(NamedType tp, string m) {
@@ -570,9 +581,9 @@ class Method extends Function {
   predicate implementsIncludingInterfaceMethods(Method m) {
     this = m
     or
-    exists(Type t |
-      this = t.getMethod(m.getName()) and
-      t.implements(m.getReceiverType().getUnderlyingType())
+    exists(Type t, string mname |
+      t = implementsIncludingInterfaceMethodsCand(m, mname) and
+      this = t.getMethod(mname)
     )
   }
 
@@ -596,7 +607,7 @@ class PromotedMethod extends Method {
 }
 
 /** A declared function. */
-class DeclaredFunction extends Function, DeclaredEntity, @declfunctionobject {
+class DeclaredFunction extends Function, DeclaredEntity, TypeParamParentEntity, @declfunctionobject {
   override FuncDecl getFuncDecl() { result.getNameExpr() = this.getDeclaration() }
 
   override predicate mayHaveSideEffects() {

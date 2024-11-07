@@ -450,7 +450,7 @@ void test_qualifiers()
 	b.member = source();
 	sink(b); // $ ir MISSING: ast
 	sink(b.member); // $ ast,ir
-	sink(b.getMember()); // $ ir MISSING: ast
+	sink(b.getMember()); // $  MISSING: ir ast
 
 	c = new MyClass2(0);
 
@@ -732,6 +732,7 @@ void test_strtol(char *source) {
 	sink(*endptr); // $ ast,ir
 }
 
+void *malloc(size_t);
 void *realloc(void *, size_t);
 
 void test_realloc() {
@@ -744,6 +745,14 @@ void test_realloc_2_indirections(int **buffer) {
   **buffer = source();
   buffer = (int**)realloc(buffer, 16);
   sink(**buffer); // $ ir MISSING: ast
+}
+
+void test_realloc_struct_field() {
+	struct A { int x; };
+	A* a = (A*)malloc(sizeof(A));
+	a->x = source();
+	A* a2 = (A*)realloc(a, sizeof(A));
+	sink(a2->x); // $ ir MISSING: ast
 }
 
 int sprintf(char *, const char *, ...);
@@ -768,4 +777,16 @@ TaintInheritingContentObject source(bool);
 void test_TaintInheritingContent() {
 	TaintInheritingContentObject obj = source(true);
 	sink(obj.flowFromObject); // $ ir MISSING: ast
+}
+
+FILE* fopen(const char*, const char*);
+int fopen_s(FILE** pFile, const char *filename, const char *mode);
+
+void fopen_test(char* source) {
+	FILE* f = fopen(source, "r");
+	sink(f); // $ ast,ir
+
+	FILE* f2;
+	fopen_s(&f2, source, "r");
+	sink(f2); // $ ast,ir
 }

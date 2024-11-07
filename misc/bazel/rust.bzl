@@ -8,7 +8,7 @@ def codeql_rust_binary(
         visibility = None,
         symbols_test = True,
         **kwargs):
-    rust_label_name = name + "_single_arch"
+    rust_label_name = "single_arch/" + name
     universal_binary(
         name = name,
         dep = ":" + rust_label_name,

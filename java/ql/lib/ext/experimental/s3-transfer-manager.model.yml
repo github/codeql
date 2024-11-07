@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["software.amazon.awssdk.transfer.s3.model","ResumableFileUpload",true,"serializeToFile","(Path)","","Argument[0]","path-injection","manual"]
+      - ["software.amazon.awssdk.transfer.s3.model","DownloadFileRequest$Builder",true,"destination","(Path)","","Argument[0]","path-injection","manual"]
+      - ["software.amazon.awssdk.transfer.s3.model","UploadFileRequest$Builder",true,"source","(Path)","","Argument[0]","path-injection","manual"]
+      - ["software.amazon.awssdk.transfer.s3.model","DownloadDirectoryRequest$Builder",true,"destination","(Path)","","Argument[0]","path-injection","manual"]
+      - ["software.amazon.awssdk.transfer.s3.model","ResumableFileDownload",true,"fromFile","(Path)","","Argument[0]","path-injection","manual"]
+      - ["software.amazon.awssdk.transfer.s3.model","ResumableFileDownload",true,"serializeToFile","(Path)","","Argument[0]","path-injection","manual"]
+      - ["software.amazon.awssdk.transfer.s3.model","ResumableFileUpload",true,"fromFile","(Path)","","Argument[0]","path-injection","manual"]
+      - ["software.amazon.awssdk.transfer.s3.model","UploadDirectoryRequest$Builder",true,"source","(Path)","","Argument[0]","path-injection","manual"]

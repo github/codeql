@@ -60,11 +60,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 var result = Name;
                 if (Version is not null)
-                    result = string.Format("{0}, Version={1}", result, Version);
+                    result = $"{result}, Version={Version}";
                 if (Culture is not null)
-                    result = string.Format("{0}, Culture={1}", result, Culture);
+                    result = $"{result}, Culture={Culture}";
                 if (PublicKeyToken is not null)
-                    result = string.Format("{0}, PublicKeyToken={1}", result, PublicKeyToken);
+                    result = $"{result}, PublicKeyToken={PublicKeyToken}";
                 return result;
             }
         }
@@ -82,8 +82,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (Version is not null)
                 {
                     if (Culture is not null)
-                        yield return string.Format("{0}, Version={1}, Culture={2}", Name, Version, Culture);
-                    yield return string.Format("{0}, Version={1}", Name, Version);
+                        yield return $"{Name}, Version={Version}, Culture={Culture}";
+                    yield return $"{Name}, Version={Version}";
                 }
                 yield return Name;
                 yield return Name.ToLowerInvariant();
@@ -94,7 +94,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var sections = id.Split(new string[] { ", " }, StringSplitOptions.None);
 
-            Name = sections.First();
+            Name = sections[0];
 
             foreach (var section in sections.Skip(1))
             {

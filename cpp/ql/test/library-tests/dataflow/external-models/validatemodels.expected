@@ -1,0 +1,27 @@
+| Dubious member name "operator*" in summary model. |
+| Dubious member name "operator->" in summary model. |
+| Dubious member name "operator=" in summary model. |
+| Dubious member name "operator[]" in summary model. |
+| Dubious signature "(InputIterator,InputIterator,const Allocator &)" in summary model. |
+| Dubious signature "(const deque &)" in summary model. |
+| Dubious signature "(const deque &,const Allocator &)" in summary model. |
+| Dubious signature "(const forward_list &)" in summary model. |
+| Dubious signature "(const forward_list &,const Allocator &)" in summary model. |
+| Dubious signature "(const list &)" in summary model. |
+| Dubious signature "(const list &,const Allocator &)" in summary model. |
+| Dubious signature "(const vector &)" in summary model. |
+| Dubious signature "(const vector &,const Allocator &)" in summary model. |
+| Dubious signature "(const_iterator,T &&)" in summary model. |
+| Dubious signature "(const_iterator,const T &)" in summary model. |
+| Dubious signature "(const_iterator,size_type,const T &)" in summary model. |
+| Dubious signature "(deque &&)" in summary model. |
+| Dubious signature "(deque &&,const Allocator &)" in summary model. |
+| Dubious signature "(format_string,Args &&)" in summary model. |
+| Dubious signature "(forward_list &&)" in summary model. |
+| Dubious signature "(forward_list &&,const Allocator &)" in summary model. |
+| Dubious signature "(list &&)" in summary model. |
+| Dubious signature "(list &&,const Allocator &)" in summary model. |
+| Dubious signature "(size_type,const T &)" in summary model. |
+| Dubious signature "(size_type,const T &,const Allocator &)" in summary model. |
+| Dubious signature "(vector &&)" in summary model. |
+| Dubious signature "(vector &&,const Allocator &)" in summary model. |

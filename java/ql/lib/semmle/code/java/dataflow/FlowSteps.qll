@@ -22,6 +22,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.IoJsonWebToken
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.InputStream
+  private import semmle.code.java.frameworks.Networking
   private import semmle.code.java.frameworks.Properties
   private import semmle.code.java.frameworks.Protobuf
   private import semmle.code.java.frameworks.ThreadLocal

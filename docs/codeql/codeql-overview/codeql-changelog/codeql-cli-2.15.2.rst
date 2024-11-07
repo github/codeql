@@ -61,8 +61,8 @@ Golang
 
 *   The query :code:`go/incorrect-integer-conversion` now correctly recognizes more guards of the form :code:`if val <= x` to protect a conversion :code:`uintX(val)`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   java/summary/lines-of-code now gives the total number of lines of Java and Kotlin code, and is the only query tagged :code:`lines-of-code`. java/summary/lines-of-code-java and java/summary/lines-of-code-kotlin give the per-language counts.
 *   The query :code:`java/spring-disabled-csrf-protection` has been improved to detect more ways of disabling CSRF in Spring.
@@ -105,8 +105,8 @@ Golang
 
 *   Added `Request.Cookie <https://pkg.go.dev/net/http#Request.Cookie>`__ to reflected XSS sanitizers.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Java classes :code:`MethodAccess`, :code:`LValue` and :code:`RValue` were renamed to :code:`MethodCall`, :code:`VarWrite` and :code:`VarRead` respectively, along with related predicates and class names. The old names remain usable for the time being but are deprecated and should be replaced.
     

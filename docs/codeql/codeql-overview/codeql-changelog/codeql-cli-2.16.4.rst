@@ -59,8 +59,8 @@ C#
 
 *   Most data flow queries that track flow from *remote* flow sources now use the current *threat model* configuration instead. This doesn't lead to any changes in the produced alerts (as the default configuration is *remote* flow sources) unless the threat model configuration is changed. The changed queries are :code:`cs/code-injection`, :code:`cs/command-line-injection`, :code:`cs/user-controlled-bypass`, :code:`cs/count-untrusted-data-external-api`, :code:`cs/untrusted-data-to-external-api`, :code:`cs/ldap-injection`, :code:`cs/log-forging`, :code:`cs/xml/missing-validation`, :code:`cs/redos`, :code:`cs/regex-injection`, :code:`cs/resource-injection`, :code:`cs/sql-injection`, :code:`cs/path-injection`, :code:`cs/unsafe-deserialization-untrusted-input`, :code:`cs/web/unvalidated-url-redirection`, :code:`cs/xml/insecure-dtd-handling`, :code:`cs/xml/xpath-injection`, :code:`cs/web/xss`, and :code:`cs/uncontrolled-format-string`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   To reduce the number of false positives in the query "Insertion of sensitive information into log files" (:code:`java/sensitive-log`), variables with names that contain "null" (case-insensitively) are no longer considered sources of sensitive information.
 
@@ -73,8 +73,8 @@ Ruby
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query :code:`java/android/insecure-local-key-gen` for finding instances of keys generated for biometric authentication in an insecure way.
 
@@ -94,8 +94,8 @@ Golang
 
 *   Fixed dataflow out of a :code:`map` using a :code:`range` statement.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Fixed the Java autobuilder overriding the version of Maven used by a project when the Maven wrapper :code:`mvnw` is in use and the :code:`maven-wrapper.jar` file is not present in the repository.
 *   Some flow steps related to :code:`android.text.Editable.toString` that were accidentally disabled have been re-enabled.
@@ -136,8 +136,8 @@ C#
 *   C#: The table :code:`expr_compiler_generated` has been deleted and its content has been added to :code:`compiler_generated`.
 *   Data flow via get only properties like :code:`public object Obj { get; }` is now captured by the data flow library.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Java expressions with erroneous types (e.g. the result of a call whose callee couldn't be resolved during extraction) are now given a CodeQL :code:`ErrorType` more often.
 

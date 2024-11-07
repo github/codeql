@@ -27,8 +27,8 @@ Query Packs
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Query :code:`java/insecure-cookie` no longer produces a false positive if :code:`cookie.setSecure(...)` is called passing a constant that always equals :code:`true`.
 
@@ -59,8 +59,8 @@ Language Libraries
 Bug Fixes
 ~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The QL class :code:`JumpStmt` has been made the superclass of :code:`BreakStmt`, :code:`ContinueStmt` and :code:`YieldStmt`. This allows directly using its inherited predicates without having to explicitly cast to :code:`JumpStmt` first.
 
@@ -77,8 +77,8 @@ C#
 
 *   The signature of :code:`allowImplicitRead` on :code:`DataFlow::Configuration` and :code:`TaintTracking::Configuration` has changed from :code:`allowImplicitRead(DataFlow::Node node, DataFlow::Content c)` to :code:`allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c)`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The signature of :code:`allowImplicitRead` on :code:`DataFlow::Configuration` and :code:`TaintTracking::Configuration` has changed from :code:`allowImplicitRead(DataFlow::Node node, DataFlow::Content c)` to :code:`allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c)`.
 
@@ -101,8 +101,8 @@ C/C++
 *   More Windows pool allocation functions are now detected as :code:`AllocationFunction`\ s.
 *   The :code:`semmle.code.cpp.commons.Buffer` library has been enhanced to handle array members of classes that do not specify a size.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Improved the data flow support for the Android class :code:`SharedPreferences$Editor`. Specifically, the fluent logic of some of its methods is now taken into account when calculating data flow.
 

@@ -68,8 +68,8 @@ void test_pair()
  	i.swap(j);
 	k.swap(l);
 	sink(i.first);
-	sink(i.second); // $ MISSING: ast,ir
-	sink(i); // $ ast,ir
+	sink(i.second); // $ ir, MISSING: ast
+	sink(i); // $ ir
 	sink(j.first);
 	sink(j.second); // $ SPURIOUS: ast
 	sink(j); // $ SPURIOUS: ast
@@ -77,8 +77,8 @@ void test_pair()
 	sink(k.second); // $ SPURIOUS: ast
 	sink(k); // $ SPURIOUS: ast
 	sink(l.first);
-	sink(l.second); // $ MISSING: ast,ir
-	sink(l); // $ ast,ir
+	sink(l.second); // $ ir, MISSING: ast
+	sink(l); // $ ir
 
 	sink(make_pair("123", "456"));
 	sink(make_pair("123", "456").first);
@@ -197,8 +197,8 @@ void test_map()
 	m15.swap(m16);
 	m17.swap(m18);
 	sink(m15); // $ SPURIOUS: ast
-	sink(m16); // $ ast,ir
-	sink(m17); // $ ast,ir
+	sink(m16); // $ ir
+	sink(m17); // $ ir
 	sink(m18); // $ SPURIOUS: ast
 
 	// merge
@@ -346,8 +346,8 @@ void test_unordered_map()
 	m15.swap(m16);
 	m17.swap(m18);
 	sink(m15); // $ SPURIOUS: ast
-	sink(m16); // $ ast,ir
-	sink(m17); // $ ast,ir
+	sink(m16); // $ ir
+	sink(m17); // $ ir
 	sink(m18); // $ SPURIOUS: ast
 
 	// merge

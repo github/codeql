@@ -72,7 +72,7 @@ namespace Semmle.Extraction.Tests
             var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
 
             // Execute
-            var _ = MakeDotnet(dotnetCliInvoker);
+            _ = MakeDotnet(dotnetCliInvoker);
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
@@ -88,7 +88,7 @@ namespace Semmle.Extraction.Tests
             // Execute
             try
             {
-                var _ = MakeDotnet(dotnetCliInvoker);
+                _ = MakeDotnet(dotnetCliInvoker);
             }
 
             // Verify

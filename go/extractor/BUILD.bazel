@@ -21,8 +21,8 @@ go_library(
         "//go/extractor/toolchain",
         "//go/extractor/trap",
         "//go/extractor/util",
-        "//go/extractor/vendor/golang.org/x/mod/modfile",
-        "//go/extractor/vendor/golang.org/x/tools/go/packages",
+        "@org_golang_x_mod//modfile",
+        "@org_golang_x_tools//go/packages",
     ],
 )
 

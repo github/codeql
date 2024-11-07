@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      # path-injection
+      - ["github.com/gofiber/fiber", "Ctx", False, "SendFile", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/gofiber/fiber", "Ctx", False, "Download", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/gofiber/fiber", "Ctx", False, "SaveFile", "", "", "Argument[1]", "path-injection", "manual"]
+      - ["github.com/gofiber/fiber", "Ctx", False, "SaveFileToStorage", "", "", "Argument[1]", "path-injection", "manual"] # does not exist in v1
+      # url-redirection
+      - ["github.com/gofiber/fiber", "Ctx", True, "Redirect", "", "", "Argument[0]", "url-redirection[receiver]", "manual"]

@@ -151,6 +151,9 @@ module IRTest {
         or
         call.getTarget().getName() = "indirect_sink" and
         sink.asIndirectExpr() = e
+        or
+        call.getTarget().getName() = "indirect_sink_const_ref" and
+        sink.asIndirectExpr() = e
       )
     }
 

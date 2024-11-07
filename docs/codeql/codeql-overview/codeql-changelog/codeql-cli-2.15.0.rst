@@ -121,8 +121,8 @@ Language Libraries
 Bug Fixes
 ~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The regular expressions library no longer incorrectly matches mode flag characters against the input.
 
@@ -169,8 +169,8 @@ Golang
 
 *   Added Numeric and Boolean types to SQL injection sanitzers.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Fixed a control-flow bug where case rule statements would incorrectly include a fall-through edge.
 *   Added support for default cases as proper guards in switch expressions to match switch statements.
@@ -207,8 +207,8 @@ Swift
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Kotlin versions up to 1.9.20 are now supported.
 

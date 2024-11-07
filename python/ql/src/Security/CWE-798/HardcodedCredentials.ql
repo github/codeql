@@ -18,6 +18,7 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.filters.Tests
 private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
 private import semmle.python.dataflow.new.internal.Builtins::Builtins as Builtins
+private import semmle.python.frameworks.data.ModelsAsData
 
 bindingset[char, fraction]
 predicate fewer_characters_than(StringLiteral str, string char, float fraction) {
@@ -80,6 +81,11 @@ class HardcodedValueSource extends DataFlow::Node {
 
 class CredentialSink extends DataFlow::Node {
   CredentialSink() {
+    exists(string s | s.matches("credentials-%") |
+      // Actual sink-type will be things like `credentials-password` or `credentials-username`
+      this = ModelOutput::getASinkNode(s).asSink()
+    )
+    or
     exists(string name |
       name.regexpMatch(getACredentialRegex()) and
       not name.matches("%file")

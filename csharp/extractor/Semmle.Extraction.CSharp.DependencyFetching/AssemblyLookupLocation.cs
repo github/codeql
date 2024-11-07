@@ -80,7 +80,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             else
             {
-                logger.LogDebug("AssemblyLookupLocation: Path not found: " + path);
+                logger.LogDebug($"AssemblyLookupLocation: Path not found: {path}");
             }
             return dllsToIndex;
         }

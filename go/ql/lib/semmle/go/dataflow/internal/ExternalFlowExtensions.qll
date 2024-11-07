@@ -32,3 +32,8 @@ extensible predicate summaryModel(
 extensible predicate neutralModel(
   string package, string type, string name, string signature, string kind, string provenance
 );
+
+/**
+ * Holds if the package `package` is part of the group `group`.
+ */
+extensible predicate packageGrouping(string group, string package);

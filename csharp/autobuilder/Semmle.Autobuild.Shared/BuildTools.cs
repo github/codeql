@@ -18,7 +18,7 @@ namespace Semmle.Autobuild.Shared
             Path = path;
             ToolsVersion = version;
         }
-    };
+    }
 
     /// <summary>
     /// Collection of available Visual Studio build tools.

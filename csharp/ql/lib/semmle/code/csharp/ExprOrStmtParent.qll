@@ -5,6 +5,7 @@
  */
 
 import csharp
+private import internal.Location
 
 /**
  * INTERNAL: Do not use.
@@ -63,14 +64,6 @@ BlockStmt getStatementBody(Callable c) { result = c.getAChildStmt() }
 private ControlFlowElement getBody(Callable c) {
   result = getExpressionBody(c) or
   result = getStatementBody(c)
-}
-
-pragma[nomagic]
-private SourceLocation getASourceLocation(Element e) {
-  result = e.getALocation().(SourceLocation) and
-  not exists(e.getALocation().(SourceLocation).getMappedLocation())
-  or
-  result = e.getALocation().(SourceLocation).getMappedLocation()
 }
 
 pragma[nomagic]

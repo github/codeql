@@ -20,10 +20,12 @@ In the 'GOOD' case, the database (and thus the credentials) are encrypted.</p>
 
 <sample src="CleartextSqliteDatabase.c" />
 
+<p>Note that for the 'GOOD' example to work we need to provide a secret key. Secure key generation and storage is required.</p>
+
 </example>
 <references>
 
-<li>M. Dowd, J. McDonald and J. Schuhm, <i>The Art of Software Security Assessment</i>, 1st Edition, Chapter 2 - 'Common Vulnerabilities of Encryption', p. 43. Addison Wesley, 2006.</li> 
+<li>M. Dowd, J. McDonald and J. Schuhm, <i>The Art of Software Security Assessment</i>, 1st Edition, Chapter 2 - 'Common Vulnerabilities of Encryption', p. 43. Addison Wesley, 2006.</li>
 <li>M. Howard and D. LeBlanc, <i>Writing Secure Code</i>, 2nd Edition, Chapter 9 - 'Protecting Secret Data', p. 299. Microsoft, 2002.</li>
 
 

@@ -1,6 +1,14 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      # path-injection
+      - ["net/http", "", False, "ServeFile", "", "", "Argument[2]", "path-injection", "manual"]
+      # url-redirection
+      - ["net/http", "", True, "Redirect", "", "", "Argument[2]", "url-redirection[0]", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["net/http", "", False, "CanonicalHeaderKey", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
@@ -37,3 +45,11 @@ extensions:
       - ["net/http", "Request", True, "PostFormValue", "", "", "ReturnValue", "remote", "manual"]
       - ["net/http", "Request", True, "Referer", "", "", "ReturnValue", "remote", "manual"]
       - ["net/http", "Request", True, "UserAgent", "", "", "ReturnValue", "remote", "manual"]
+      - ["net/http", "Request", True, "Body", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "GetBody", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "Form", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "PostForm", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "MultipartForm", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "Header", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "Trailer", "", "", "", "remote", "manual"]
+      - ["net/http", "Request", True, "URL", "", "", "", "remote", "manual"]

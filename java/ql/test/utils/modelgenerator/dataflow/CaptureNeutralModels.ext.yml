@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - [ "p", "Sinks", "nosink", "(Object)", "sink", "manual"]
+      - [ "p", "Sinks", "nosink", "(Object)", "summary", "df-generated"]

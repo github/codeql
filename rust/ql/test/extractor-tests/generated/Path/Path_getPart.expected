@@ -1,0 +1,2 @@
+| gen_path.rs:5:5:5:7 | Path | gen_path.rs:5:5:5:7 | PathSegment |
+| gen_path.rs:5:5:5:12 | Path | gen_path.rs:5:10:5:12 | PathSegment |

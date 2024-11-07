@@ -44,9 +44,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
 
-            PackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "packages"), "package", logger);
-            legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "legacypackages"), "legacy package", logger);
-            missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "missingpackages"), "missing package", logger);
+            PackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("packages"), "package", logger);
+            legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("legacypackages"), "legacy package", logger);
+            missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("missingpackages"), "missing package", logger);
         }
 
         public string? TryRestore(string package)
@@ -225,10 +225,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var successCount = 0;
             var nugetSourceFailures = 0;
             var assets = new Assets(logger);
+
+            var isWindows = fileContent.UseWindowsForms || fileContent.UseWpf;
+
             var projects = fileProvider.Solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
-                    var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
+                    var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, TargetWindows: isWindows));
                     if (res.Success)
                     {
                         successCount++;
@@ -258,6 +261,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var successCount = 0;
             var nugetSourceFailures = 0;
             ConcurrentBag<DependencyContainer> collectedDependencies = [];
+
+            var isWindows = fileContent.UseWindowsForms || fileContent.UseWpf;
+
             var sync = new object();
             var projectGroups = projects.GroupBy(Path.GetDirectoryName);
             Parallel.ForEach(projectGroups, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, projectGroup =>
@@ -266,7 +272,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 foreach (var project in projectGroup)
                 {
                     logger.LogInfo($"Restoring project {project}...");
-                    var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
+                    var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, TargetWindows: isWindows));
                     assets.AddDependenciesRange(res.AssetsFilePaths);
                     lock (sync)
                     {
@@ -332,7 +338,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");
-            using var tempDir = new TemporaryDirectory(ComputeTempDirectoryPath(fileProvider.SourceDir.FullName, "nugetconfig"), "generated nuget config", logger);
+            using var tempDir = new TemporaryDirectory(ComputeTempDirectoryPath("nugetconfig"), "generated nuget config", logger);
             var nugetConfig = fallbackNugetFeeds is null
                 ? GetNugetConfig()
                 : CreateFallbackNugetConfig(fallbackNugetFeeds, tempDir.DirInfo.FullName);
@@ -538,7 +544,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             TryChangeProjectFile(tempDir, PackageReferenceVersion(), $"Version=\"{newVersion}\"", "package reference version");
         }
 
-        private bool TryChangeProjectFile(DirectoryInfo projectDir, Regex pattern, string replacement, string patternName)
+        private void TryChangeProjectFile(DirectoryInfo projectDir, Regex pattern, string replacement, string patternName)
         {
             try
             {
@@ -548,7 +554,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (csprojs.Length != 1)
                 {
                     logger.LogError($"Could not find the .csproj file in {projectDir.FullName}, count = {csprojs.Length}");
-                    return false;
+                    return;
                 }
 
                 var csproj = csprojs[0];
@@ -557,18 +563,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (matches.Count == 0)
                 {
                     logger.LogError($"Could not find the {patternName} in {csproj.FullName}");
-                    return false;
+                    return;
                 }
 
                 content = pattern.Replace(content, replacement, 1);
                 File.WriteAllText(csproj.FullName, content);
-                return true;
             }
             catch (Exception exc)
             {
                 logger.LogError($"Failed to change the {patternName} in {projectDir.FullName}: {exc}");
             }
-            return false;
         }
 
         private static async Task ExecuteGetRequest(string address, HttpClient httpClient, CancellationToken cancellationToken)
@@ -644,7 +648,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             (explicitFeeds, var allFeeds) = GetAllFeeds();
 
             var excludedFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.ExcludedNugetFeedsFromResponsivenessCheck)
-                .ToHashSet() ?? [];
+                .ToHashSet();
 
             if (excludedFeeds.Count > 0)
             {
@@ -663,7 +667,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     "Found unreachable Nuget feed in C# analysis with build-mode 'none'",
                     visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
                     markdownMessage: "Found unreachable Nuget feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.",
-                    severity: DiagnosticMessage.TspSeverity.Warning
+                    severity: DiagnosticMessage.TspSeverity.Note
                 ));
             }
             compilationInfoContainer.CompilationInfos.Add(("All Nuget feeds reachable", allFeedsReachable ? "1" : "0"));
@@ -767,19 +771,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         /// <summary>
-        /// Computes a unique temp directory for the packages associated
-        /// with this source tree. Use a SHA1 of the directory name.
+        /// Returns the full path to a temporary directory with the given subfolder name.
         /// </summary>
-        /// <returns>The full path of the temp directory.</returns>
+        private static string ComputeTempDirectoryPath(string subfolderName)
+        {
+            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), subfolderName);
+        }
+
+        /// <summary>
+        /// Computes a unique temporary directory path based on the source directory and the subfolder name.
+        /// </summary>
         private static string ComputeTempDirectoryPath(string srcDir, string subfolderName)
         {
-            var bytes = Encoding.Unicode.GetBytes(srcDir);
-            var sha = SHA1.HashData(bytes);
-            var sb = new StringBuilder();
-            foreach (var b in sha.Take(8))
-                sb.AppendFormat("{0:x2}", b);
-
-            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out var _), sb.ToString(), subfolderName);
+            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), FileUtils.ComputeHash(srcDir), subfolderName);
         }
     }
 }

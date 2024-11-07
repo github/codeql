@@ -59,8 +59,8 @@ C/C++
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query, :code:`java/android/arbitrary-apk-installation`, to detect installation of APKs from untrusted sources.
 
@@ -110,8 +110,8 @@ Golang
 
 *   The main data flow and taint tracking APIs have been changed. The old APIs remain in place for now and translate to the new through a backwards-compatible wrapper. If multiple configurations are in scope simultaneously, then this may affect results slightly. The new API is quite similar to the old, but makes use of a configuration module instead of a configuration class.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Removed low-confidence call edges to known neutral call targets from the call graph used in data flow analysis. This includes, for example, custom :code:`List.contains` implementations when the best inferrable type at the call site is simply :code:`List`.
 *   Added more sink and summary dataflow models for the following packages:
@@ -160,8 +160,8 @@ C#
 *   Deleted the deprecated :code:`OverridableMethod` and :code:`OverridableAccessor` classes.
 *   The :code:`unsafe` predicate for :code:`Modifiable` has been extended to cover delegate return types and identify pointer-like types at any nest level. This is relevant for :code:`unsafe` declarations extracted from assemblies.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Deleted the deprecated :code:`getPath` and :code:`getFolder` predicates from the :code:`XmlFile` class.
 *   Deleted the deprecated :code:`getRepresentedString` predicate from the :code:`StringLiteral` class.
@@ -222,8 +222,8 @@ Golang
 
 *   Added support for merging two :code:`PathGraph`\ s via disjoint union to allow results from multiple data flow computations in a single :code:`path-problem` query.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added support for merging two :code:`PathGraph`\ s via disjoint union to allow results from multiple data flow computations in a single :code:`path-problem` query.
 

@@ -448,6 +448,8 @@
 | simple.swift:146:7:146:7 | self | simple.swift:146:7:146:7 | SSA def(self) |
 | simple.swift:148:13:148:13 | [post] self | simple.swift:146:2:150:3 | self[return] |
 | simple.swift:148:13:148:13 | self | simple.swift:146:2:150:3 | self[return] |
+| simple.swift:158:12:158:24 | OpaqueValueExpr | simple.swift:158:12:158:24 | OpenExistentialExpr |
+| simple.swift:159:12:159:24 | OpaqueValueExpr | simple.swift:159:12:159:24 | OpenExistentialExpr |
 | stringinterpolation.swift:5:7:5:7 | SSA def(self) | stringinterpolation.swift:5:7:5:7 | self[return] |
 | stringinterpolation.swift:5:7:5:7 | SSA def(self) | stringinterpolation.swift:5:7:5:7 | self[return] |
 | stringinterpolation.swift:5:7:5:7 | self | stringinterpolation.swift:5:7:5:7 | SSA def(self) |

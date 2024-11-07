@@ -4,7 +4,7 @@
 
 import csharp
 import Common
-import Flow::PathGraph
+import TestUtilities.ProvenancePathGraph::ShowProvenance<Flow::PathNode, Flow::PathGraph>
 
 from Flow::PathNode source, Flow::PathNode sink, string s
 where

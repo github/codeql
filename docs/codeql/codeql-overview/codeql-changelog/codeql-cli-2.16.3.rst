@@ -62,8 +62,8 @@ Golang
 
 *   The query "Use of a hardcoded key for signing JWT" (:code:`go/hardcoded-key`) has been promoted from experimental to the main query pack. Its results will now appear by default as part of :code:`go/hardcoded-credentials`. This query was originally `submitted as an experimental query by @porcupineyhairs <https://github.com/github/codeql/pull/9378>`__.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The sinks of the queries :code:`java/path-injection` and :code:`java/path-injection-local` have been reworked. Path creation sinks have been converted to summaries instead, while sinks now are actual file read/write operations only. This has reduced the false positive ratio of both queries.
 
@@ -81,8 +81,8 @@ C#
 
 *   Added sanitizers for relative URLs, :code:`List.Contains()`, and checking the :code:`.Host` property on an URI to the :code:`cs/web/unvalidated-url-redirection` query.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The sanitizer for the path injection queries has been improved to handle more cases where :code:`equals` is used to check an exact path match.
 *   The query :code:`java/unvalidated-url-redirection` now sanitizes results following the same logic as the query :code:`java/ssrf`. URLs where the destination cannot be controlled externally are no longer reported.
@@ -95,8 +95,8 @@ Golang
 
 *   The query "Missing JWT signature check" (:code:`go/missing-jwt-signature-check`) has been promoted from experimental to the main query pack. Its results will now appear by default. This query was originally `submitted as an experimental query by @am0o0 <https://github.com/github/codeql/pull/14075>`__.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query :code:`java/android/insecure-local-authentication` for finding uses of biometric authentication APIs that do not make use of a :code:`KeyStore`\ -backed key and thus may be bypassed.
 
@@ -108,8 +108,8 @@ Swift
 Query Metadata Changes
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`security-severity` score of the query :code:`java/relative-path-command` has been reduced to better adjust it to the specific conditions needed for exploitation.
 
@@ -125,8 +125,8 @@ C#
 *   C# 12: The QL and data flow library now support primary constructors.
 *   Added a new database relation to store key-value pairs corresponding to compilations. The new relation is used in buildless mode to surface information related to dependency fetching.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   An extension point for sanitizers of the query :code:`java/unvalidated-url-redirection` has been added.
     
@@ -170,8 +170,8 @@ Swift
 Deprecated APIs
 ~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`PathCreation` class in :code:`PathCreation.qll` has been deprecated.
 

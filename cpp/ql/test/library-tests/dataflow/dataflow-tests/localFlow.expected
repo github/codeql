@@ -1,6 +1,6 @@
-WARNING: Module DataFlow has been deprecated and may be removed in future (localFlow.ql:4,6-14)
-WARNING: Module DataFlow has been deprecated and may be removed in future (localFlow.ql:4,31-39)
-WARNING: Module DataFlow has been deprecated and may be removed in future (localFlow.ql:6,3-11)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localFlow.ql:4,6-14)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localFlow.ql:4,31-39)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localFlow.ql:6,3-11)
 | example.c:15:37:15:37 | b | example.c:15:37:15:37 | b |
 | example.c:15:37:15:37 | b | example.c:19:6:19:6 | b |
 | example.c:15:44:15:46 | pos | example.c:24:24:24:26 | pos |
@@ -81,10 +81,10 @@ WARNING: Module DataFlow has been deprecated and may be removed in future (local
 | test.cpp:488:21:488:21 | s [post update] | test.cpp:489:20:489:20 | s |
 | test.cpp:488:24:488:30 | ref arg content | test.cpp:489:23:489:29 | content |
 | test.cpp:489:23:489:29 | content | test.cpp:490:9:490:17 | p_content |
-| test.cpp:1050:12:1050:12 | a | test.cpp:1051:3:1051:3 | a |
-| test.cpp:1050:12:1050:12 | a | test.cpp:1052:9:1052:9 | a |
-| test.cpp:1051:3:1051:3 | a [post update] | test.cpp:1052:9:1052:9 | a |
-| test.cpp:1051:3:1051:21 | ... = ... | test.cpp:1051:5:1051:11 | content [post update] |
-| test.cpp:1051:15:1051:21 | 0 | test.cpp:1051:3:1051:21 | ... = ... |
-| test.cpp:1052:8:1052:9 | ref arg & ... | test.cpp:1052:9:1052:9 | a [inner post update] |
-| test.cpp:1052:9:1052:9 | a | test.cpp:1052:8:1052:9 | & ... |
+| test.cpp:1086:12:1086:12 | a | test.cpp:1087:3:1087:3 | a |
+| test.cpp:1086:12:1086:12 | a | test.cpp:1088:9:1088:9 | a |
+| test.cpp:1087:3:1087:3 | a [post update] | test.cpp:1088:9:1088:9 | a |
+| test.cpp:1087:3:1087:21 | ... = ... | test.cpp:1087:5:1087:11 | content [post update] |
+| test.cpp:1087:15:1087:21 | 0 | test.cpp:1087:3:1087:21 | ... = ... |
+| test.cpp:1088:8:1088:9 | ref arg & ... | test.cpp:1088:9:1088:9 | a [inner post update] |
+| test.cpp:1088:9:1088:9 | a | test.cpp:1088:8:1088:9 | & ... |

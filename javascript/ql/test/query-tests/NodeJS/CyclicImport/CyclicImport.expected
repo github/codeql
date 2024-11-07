@@ -1,7 +1,7 @@
 | a.js:4:9:4:25 | require('./b.js') | Module a imports module b, which in turn $@ it. | b.js:4:9:4:25 | require('./a.js') | imports |
 | b.js:4:9:4:25 | require('./a.js') | Module b imports module a, which in turn $@ it. | a.js:4:9:4:25 | require('./b.js') | imports |
 | selfimport.js:1:1:1:23 | require ... mport') | Module selfimport directly imports itself. | selfimport.js:1:1:1:24 | <toplevel> |  |
-| test1/a.js:1:1:1:27 | require ... ner/a') | Module .../test1/a.js imports module .../inner/a.js, which in turn $@ it. | test2/inner/a.js:1:1:1:24 | require ... st1/a') | imports |
+| test1/a.js:1:1:1:27 | require ... ner/a') | Module /test1/a.js imports module .../inner/a.js, which in turn $@ it. | test2/inner/a.js:1:1:1:24 | require ... st1/a') | imports |
 | test1/a.js:2:1:2:14 | require('./b') | Module a imports module b, which in turn $@ it. | test1/b.js:1:1:1:27 | require ... ner/a') | indirectly imports |
 | test1/b.js:1:1:1:27 | require ... ner/a') | Module b imports module a, which in turn $@ it. | test2/inner/a.js:1:1:1:24 | require ... st1/a') | indirectly imports |
-| test2/inner/a.js:1:1:1:24 | require ... st1/a') | Module .../inner/a.js imports module .../test1/a.js, which in turn $@ it. | test1/a.js:1:1:1:27 | require ... ner/a') | imports |
+| test2/inner/a.js:1:1:1:24 | require ... st1/a') | Module .../inner/a.js imports module /test1/a.js, which in turn $@ it. | test1/a.js:1:1:1:27 | require ... ner/a') | imports |

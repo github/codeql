@@ -105,6 +105,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
 }
 
 /**
+ * A node in the data flow graph which corresponds to an SSA variable definition.
  */
 class SsaDefinitionNode extends Node, TSsaDefinitionNode {
   Ssa::Definition def;

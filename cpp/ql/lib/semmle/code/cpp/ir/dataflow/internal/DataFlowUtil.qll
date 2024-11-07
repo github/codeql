@@ -17,6 +17,7 @@ private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
 private import Node0ToString
+private import DataFlowDispatch as DataFlowDispatch
 import ExprNodes
 
 /**
@@ -2083,6 +2084,9 @@ private newtype TContent =
       indirectionIndex =
         [1 .. max(Ssa::getMaxIndirectionsForType(getAFieldWithSize(u, bytes).getUnspecifiedType()))]
     )
+  } or
+  TElementContent(int indirectionIndex) {
+    indirectionIndex = [1 .. getMaxElementContentIndirectionIndex()]
   }
 
 /**
@@ -2191,6 +2195,25 @@ class UnionContent extends Content, TUnionContent {
       uc.getIndirectionIndex() >= indirectionIndex
     )
   }
+}
+
+/**
+ * A `Content` that represents one of the elements of a
+ * container (e.g., `std::vector`).
+ */
+class ElementContent extends Content, TElementContent {
+  int indirectionIndex;
+
+  ElementContent() { this = TElementContent(indirectionIndex) }
+
+  pragma[inline]
+  override int getIndirectionIndex() {
+    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
+  }
+
+  override predicate impliesClearOf(Content c) { none() }
+
+  override string toString() { result = contentStars(this) + "element" }
 }
 
 /**
@@ -2474,4 +2497,17 @@ class AdditionalCallTarget extends Unit {
    * Gets a viable target for `call`.
    */
   abstract Declaration viableTarget(Call call);
+}
+
+/**
+ * Gets a function that may be called by `call`.
+ *
+ * Note that `call` may be a call to a function pointer expression.
+ */
+Function getARuntimeTarget(Call call) {
+  exists(DataFlowCall dfCall | dfCall.asCallInstruction().getUnconvertedResultExpression() = call |
+    result = DataFlowDispatch::viableCallable(dfCall).asSourceCallable()
+    or
+    result = DataFlowImplCommon::viableCallableLambda(dfCall, _).asSourceCallable()
+  )
 }

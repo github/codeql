@@ -12,9 +12,9 @@ namespace Semmle.Extraction
             trapFile.WriteTuple("containerparent", parent, child);
         }
 
-        internal static void extractor_messages(this System.IO.TextWriter trapFile, ExtractionMessage error, Semmle.Util.Logging.Severity severity, string origin, string errorMessage, string entityText, Location location, string stackTrace)
+        internal static void extractor_messages(this System.IO.TextWriter trapFile, ExtractionMessage error, Semmle.Util.Logging.Severity severity, string errorMessage, string entityText, Location location, string stackTrace)
         {
-            trapFile.WriteTuple("extractor_messages", error, (int)severity, origin, errorMessage, entityText, location, stackTrace);
+            trapFile.WriteTuple("extractor_messages", error, (int)severity, "C# extractor", errorMessage, entityText, location, stackTrace);
         }
 
         public static void files(this System.IO.TextWriter trapFile, File file, string fullName)

@@ -18,7 +18,7 @@ runs:
         path: |
           ~/.cargo/registry
           ~/.cargo/git
-          ruby/target
+          target
         key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-qltest-cargo-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/scripts/create-extractor-pack.sh', 'ruby/extractor/**/Cargo.lock') }}
     - name: Build Extractor
       if: steps.cache-extractor.outputs.cache-hit != 'true'

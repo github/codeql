@@ -1,37 +1,37 @@
-| format.h:16:59:16:61 | str | This argument should be of type 'int' but is of type 'char *'. |
-| format.h:16:64:16:64 | i | This argument should be of type 'double' but is of type 'int'. |
-| format.h:16:67:16:67 | d | This argument should be of type 'char *' but is of type 'double'. |
-| pri_macros.h:15:35:15:40 | my_u64 | This argument should be of type 'unsigned int' but is of type 'unsigned long long'. |
-| printf1.h:12:27:12:27 | i | This argument should be of type 'double' but is of type 'int'. |
-| printf1.h:18:18:18:18 | i | This argument should be of type 'void *' but is of type 'int'. |
-| printf1.h:25:22:25:22 | i | This argument should be of type 'char *' but is of type 'int'. |
-| printf1.h:27:19:27:20 | cs | This argument should be of type 'int' but is of type 'char *'. |
-| printf1.h:38:18:38:30 | MYONETHOUSAND | This argument should be of type 'char *' but is of type 'int'. |
-| printf1.h:44:18:44:20 | ull | This argument should be of type 'int' but is of type 'unsigned long long'. |
-| printf1.h:45:18:45:20 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long'. |
-| printf1.h:46:18:46:20 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long'. |
-| printf1.h:71:19:71:20 | st | This argument should be of type 'ssize_t' but is of type 'unsigned long long'. |
-| printf1.h:72:19:72:20 | ST | This argument should be of type 'ssize_t' but is of type 'unsigned long long'. |
-| printf1.h:73:19:73:22 | c_st | This argument should be of type 'ssize_t' but is of type 'unsigned long long'. |
-| printf1.h:74:19:74:22 | C_ST | This argument should be of type 'ssize_t' but is of type 'unsigned long long'. |
-| printf1.h:75:19:75:28 | sizeof(<expr>) | This argument should be of type 'ssize_t' but is of type 'unsigned long long'. |
-| printf1.h:84:23:84:35 | ... - ... | This argument should be of type 'ssize_t' but is of type 'long long'. |
-| printf1.h:116:16:116:24 | myString3 | This argument should be of type '__wchar_t *' but is of type 'int *'. |
-| printf1.h:117:16:117:24 | myString4 | This argument should be of type '__wchar_t *' but is of type 'int *'. |
-| printf1.h:130:18:130:18 | 0 | This argument should be of type 'void *' but is of type 'int'. |
-| printf1.h:181:21:181:22 | ll | This argument should be of type 'int' but is of type 'long long'. |
-| printf1.h:182:21:182:23 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long'. |
-| printf1.h:185:21:185:23 | i64 | This argument should be of type 'int' but is of type 'long long'. |
-| printf1.h:186:21:186:23 | u64 | This argument should be of type 'unsigned int' but is of type 'unsigned long long'. |
-| printf1.h:188:21:188:21 | i | This argument should be of type 'long long' but is of type 'int'. |
-| printf1.h:189:21:189:22 | ui | This argument should be of type 'unsigned long long' but is of type 'unsigned int'. |
-| printf1.h:190:21:190:21 | l | This argument should be of type 'long long' but is of type 'long'. |
-| printf1.h:191:21:191:22 | ul | This argument should be of type 'unsigned long long' but is of type 'unsigned long'. |
-| printf1.h:194:21:194:23 | i32 | This argument should be of type 'long long' but is of type 'int'. |
-| printf1.h:195:21:195:23 | u32 | This argument should be of type 'unsigned long long' but is of type 'unsigned int'. |
-| real_world.h:61:21:61:22 | & ... | This argument should be of type 'int *' but is of type 'short *'. |
-| real_world.h:62:22:62:23 | & ... | This argument should be of type 'short *' but is of type 'int *'. |
-| real_world.h:63:22:63:24 | & ... | This argument should be of type 'short *' but is of type 'unsigned int *'. |
-| real_world.h:64:22:64:24 | & ... | This argument should be of type 'short *' but is of type 'signed int *'. |
-| wide_string.h:25:18:25:20 | c | This argument should be of type 'char' but is of type 'char *'. |
-| wide_string.h:29:19:29:22 | c | This argument should be of type 'wchar_t' but is of type '__wchar_t *'. |
+| format.h:16:59:16:61 | str | This format specifier for type 'int' does not match the argument type 'char *'. |
+| format.h:16:64:16:64 | i | This format specifier for type 'double' does not match the argument type 'int'. |
+| format.h:16:67:16:67 | d | This format specifier for type 'char *' does not match the argument type 'double'. |
+| pri_macros.h:15:35:15:40 | my_u64 | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. |
+| printf1.h:12:27:12:27 | i | This format specifier for type 'double' does not match the argument type 'int'. |
+| printf1.h:18:18:18:18 | i | This format specifier for type 'void *' does not match the argument type 'int'. |
+| printf1.h:25:22:25:22 | i | This format specifier for type 'char *' does not match the argument type 'int'. |
+| printf1.h:27:19:27:20 | cs | This format specifier for type 'int' does not match the argument type 'char *'. |
+| printf1.h:38:18:38:30 | MYONETHOUSAND | This format specifier for type 'char *' does not match the argument type 'int'. |
+| printf1.h:44:18:44:20 | ull | This format specifier for type 'int' does not match the argument type 'unsigned long long'. |
+| printf1.h:45:18:45:20 | ull | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. |
+| printf1.h:46:18:46:20 | ull | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. |
+| printf1.h:71:19:71:20 | st | This format specifier for type 'ssize_t' does not match the argument type 'unsigned long long'. |
+| printf1.h:72:19:72:20 | ST | This format specifier for type 'ssize_t' does not match the argument type 'unsigned long long'. |
+| printf1.h:73:19:73:22 | c_st | This format specifier for type 'ssize_t' does not match the argument type 'unsigned long long'. |
+| printf1.h:74:19:74:22 | C_ST | This format specifier for type 'ssize_t' does not match the argument type 'unsigned long long'. |
+| printf1.h:75:19:75:28 | sizeof(<expr>) | This format specifier for type 'ssize_t' does not match the argument type 'unsigned long long'. |
+| printf1.h:84:23:84:35 | ... - ... | This format specifier for type 'ssize_t' does not match the argument type 'long long'. |
+| printf1.h:116:16:116:24 | myString3 | This format specifier for type '__wchar_t *' does not match the argument type 'int *'. |
+| printf1.h:117:16:117:24 | myString4 | This format specifier for type '__wchar_t *' does not match the argument type 'int *'. |
+| printf1.h:130:18:130:18 | 0 | This format specifier for type 'void *' does not match the argument type 'int'. |
+| printf1.h:181:21:181:22 | ll | This format specifier for type 'int' does not match the argument type 'long long'. |
+| printf1.h:182:21:182:23 | ull | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. |
+| printf1.h:185:21:185:23 | i64 | This format specifier for type 'int' does not match the argument type 'long long'. |
+| printf1.h:186:21:186:23 | u64 | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. |
+| printf1.h:188:21:188:21 | i | This format specifier for type 'long long' does not match the argument type 'int'. |
+| printf1.h:189:21:189:22 | ui | This format specifier for type 'unsigned long long' does not match the argument type 'unsigned int'. |
+| printf1.h:190:21:190:21 | l | This format specifier for type 'long long' does not match the argument type 'long'. |
+| printf1.h:191:21:191:22 | ul | This format specifier for type 'unsigned long long' does not match the argument type 'unsigned long'. |
+| printf1.h:194:21:194:23 | i32 | This format specifier for type 'long long' does not match the argument type 'int'. |
+| printf1.h:195:21:195:23 | u32 | This format specifier for type 'unsigned long long' does not match the argument type 'unsigned int'. |
+| real_world.h:61:21:61:22 | & ... | This format specifier for type 'int *' does not match the argument type 'short *'. |
+| real_world.h:62:22:62:23 | & ... | This format specifier for type 'short *' does not match the argument type 'int *'. |
+| real_world.h:63:22:63:24 | & ... | This format specifier for type 'short *' does not match the argument type 'unsigned int *'. |
+| real_world.h:64:22:64:24 | & ... | This format specifier for type 'short *' does not match the argument type 'signed int *'. |
+| wide_string.h:25:18:25:20 | c | This format specifier for type 'char' does not match the argument type 'char *'. |
+| wide_string.h:29:19:29:22 | c | This format specifier for type 'wchar_t' does not match the argument type '__wchar_t *'. |

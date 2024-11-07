@@ -42,7 +42,7 @@ class PortletRenderRequestMethod extends Method {
  */
 module SpringViewManipulationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof ThreatModelFlowSource or
+    source instanceof ActiveThreatModelSource or
     source instanceof WebRequestSource or
     source.asExpr().(MethodCall).getMethod() instanceof PortletRenderRequestMethod
   }

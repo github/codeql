@@ -75,8 +75,8 @@ C#
 *   The syntax of the (source|sink|summary)model CSV format has been changed slightly for Java and C#. A new column called :code:`provenance` has been introduced, where the allowed values are :code:`manual` and :code:`generated`. The value used to indicate whether a model as been written by hand (:code:`manual`) or create by the CSV model generator (:code:`generated`).
 *   All auto implemented public properties with public getters and setters on ASP.NET Core remote flow sources are now also considered to be tainted.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/log-injection` now reports problems at the source (user-controlled data) instead of at the ultimate logging call. This was changed because user functions that wrap the ultimate logging call could result in most alerts being reported in an uninformative location.
 
@@ -134,8 +134,8 @@ JavaScript/TypeScript
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a flow step for :code:`String.valueOf` calls on tainted :code:`android.text.Editable` objects.
 
@@ -162,8 +162,8 @@ Golang
 
 *   The :code:`BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new :code:`BarrierGuard` parameterized module.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new :code:`BarrierGuard` parameterized module.
 

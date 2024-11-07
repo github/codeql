@@ -46,8 +46,6 @@ private module Cached {
       or
       containerStep(nodeFrom, nodeTo)
       or
-      copyStep(nodeFrom, nodeTo)
-      or
       DataFlowPrivate::forReadStep(nodeFrom, _, nodeTo)
       or
       DataFlowPrivate::iterableUnpackingReadStep(nodeFrom, _, nodeTo)
@@ -188,19 +186,7 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // TODO: once we have proper flow-summary modeling, we might not need this step any
   // longer -- but there needs to be a matching read-step for the store-step, and we
   // don't provide that right now.
-  DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
-}
-
-/**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to copying.
- */
-predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
-  exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall() and
-    call.getArg(0) = nodeFrom
-  )
-  or
-  nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, "copy")
+  DataFlowPrivate::yieldStoreStep(nodeFrom, _, nodeTo)
 }
 
 /**
@@ -232,4 +218,37 @@ predicate asyncWithStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     with.isAsync() and
     contextManager.strictlyDominates(var)
   )
+}
+
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
+  private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowDispatch::DataFlowCall call, DataFlowDispatch::ArgumentPosition argpos |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::DataFlowCall call0 |
+        // Workaround for the fact that python currently associates several
+        // DataFlowCalls with a single call.
+        src.(DataFlowPublic::ArgumentNode).argumentOf(call0, _) and
+        exists(DataFlowDispatch::viableCallable(call0))
+      ) and
+      call instanceof DataFlowDispatch::PotentialLibraryCall and
+      src.(DataFlowPublic::ArgumentNode).argumentOf(call, argpos)
+    |
+      not argpos.isSelf() and
+      sink.(DataFlowPublic::PostUpdateNode)
+          .getPreUpdateNode()
+          .(DataFlowPublic::ArgumentNode)
+          .argumentOf(call, any(DataFlowDispatch::ArgumentPosition qualpos | qualpos.isSelf()))
+      or
+      sink.(DataFlowDispatch::OutNode).getCall(_) = call
+    )
+  }
 }

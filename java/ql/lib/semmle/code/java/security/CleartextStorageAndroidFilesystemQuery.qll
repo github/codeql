@@ -6,16 +6,15 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.CleartextStorageQuery
-import semmle.code.xml.AndroidManifest
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.frameworks.android.Android
 
 private class AndroidFilesystemCleartextStorageSink extends CleartextStorageSink {
   AndroidFilesystemCleartextStorageSink() {
     filesystemInput(_, this.asExpr()) and
-    // Make sure we are in an Android application.
-    exists(AndroidManifestXmlFile manifest)
+    inAndroidApplication(this.getLocation().getFile())
   }
 }
 

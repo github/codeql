@@ -60,8 +60,8 @@ JavaScript/TypeScript
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`java/constant-comparison` query no longer raises false alerts regarding comparisons with Unicode surrogate character literals.
 
@@ -103,8 +103,8 @@ Language Libraries
 Bug Fixes
 ~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   :code:`CharacterLiteral`\ 's :code:`getCodePointValue` predicate now returns the correct value for UTF-16 surrogates.
 *   The :code:`RangeAnalysis` module now properly handles comparisons with Unicode surrogate character literals.
@@ -112,8 +112,8 @@ Java
 Major Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Data flow now propagates taint from remote source :code:`Parameter` types to read steps of their fields (e.g. :code:`tainted.publicField` or :code:`tainted.getField()`). This also applies to their subtypes and the types of their fields, recursively.
 

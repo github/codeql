@@ -1,3 +1,64 @@
+## 2.1.0
+
+### New Features
+
+* Added support for custom threat-models, which can be used in most of our taint-tracking queries, see our [documentation](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models) for more details.
+
+## 2.0.2
+
+No user-facing changes.
+
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `isHTMLElement` and `getDOMName` predicates from the JSX library, use `isHtmlElement` and `getDomName` respectively instead.
+* Deleted the deprecated `getPackageJSON` predicate from the `SourceMappingComment` class, use `SourceMappingComment` instead.
+* Deleted many deprecated directives from the `Stmt.qll` file, use the `Directive::` module instead.
+* Deleted the deprecated `YAMLNode`, `YAMLValue`, and `YAMLScalar` classes from the YAML libraries, use `YamlNode`, `YamlValue`, and `YamlScalar` respectively instead.
+* Deleted the deprecated `getARouteHandlerExpr` predicate from `Connect.qll`, use `getARouteHandlerNode` instead.
+* Deleted the deprecated `getGWTVersion` predicate from `GWT.qll`, use `getGwtVersion` instead.
+* Deleted the deprecated `getOwnOptionsObject` predicate from  `Vue.qll`, use `getOwnOptions().getASink()` instead.
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.6.
+
+## 1.1.4
+
+No user-facing changes.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+No user-facing changes.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.5.
+
+### Minor Analysis Improvements
+
+* Enabled type-tracking to follow content through array methods
+* Improved modeling of `Array.prototype.splice` for when it is called with more than two arguments
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 No user-facing changes.

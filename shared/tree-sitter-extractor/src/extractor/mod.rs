@@ -76,8 +76,8 @@ pub fn populate_empty_location(writer: &mut trap::Writer) {
     let file_label = populate_empty_file(writer);
     let loc_label = global_location(
         writer,
-        file_label,
         trap::Location {
+            file_label,
             start_line: 0,
             start_column: 0,
             end_line: 0,
@@ -127,14 +127,10 @@ pub fn populate_parent_folders(
 }
 
 /** Get the label for the given location, defining it a global ID if it doesn't exist yet. */
-fn global_location(
-    writer: &mut trap::Writer,
-    file_label: trap::Label,
-    location: trap::Location,
-) -> trap::Label {
+fn global_location(writer: &mut trap::Writer, location: trap::Location) -> trap::Label {
     let (loc_label, fresh) = writer.global_id(&format!(
         "loc,{{{}}},{},{},{},{}",
-        file_label,
+        location.file_label,
         location.start_line,
         location.start_column,
         location.end_line,
@@ -145,7 +141,7 @@ fn global_location(
             "locations_default",
             vec![
                 trap::Arg::Label(loc_label),
-                trap::Arg::Label(file_label),
+                trap::Arg::Label(location.file_label),
                 trap::Arg::Int(location.start_line),
                 trap::Arg::Int(location.start_column),
                 trap::Arg::Int(location.end_line),
@@ -158,18 +154,14 @@ fn global_location(
 
 /** Get the label for the given location, creating it as a fresh ID if we haven't seen the location
  * yet for this file. */
-fn location_label(
-    writer: &mut trap::Writer,
-    file_label: trap::Label,
-    location: trap::Location,
-) -> trap::Label {
+pub fn location_label(writer: &mut trap::Writer, location: trap::Location) -> trap::Label {
     let (loc_label, fresh) = writer.location_label(location);
     if fresh {
         writer.add_tuple(
             "locations_default",
             vec![
                 trap::Arg::Label(loc_label),
-                trap::Arg::Label(file_label),
+                trap::Arg::Label(location.file_label),
                 trap::Arg::Int(location.start_line),
                 trap::Arg::Int(location.start_column),
                 trap::Arg::Int(location.end_line),
@@ -312,8 +304,8 @@ impl<'a> Visitor<'a> {
         node: Node,
         status_page: bool,
     ) {
-        let loc = location_for(self, node);
-        let loc_label = location_label(self.trap_writer, self.file_label, loc);
+        let loc = location_for(self, self.file_label, node);
+        let loc_label = location_label(self.trap_writer, loc);
         let mut mesg = self.diagnostics_writer.new_entry(
             "parse-error",
             "Could not process some files due to syntax errors",
@@ -364,8 +356,8 @@ impl<'a> Visitor<'a> {
             return;
         }
         let (id, _, child_nodes) = self.stack.pop().expect("Vistor: empty stack");
-        let loc = location_for(self, node);
-        let loc_label = location_label(self.trap_writer, self.file_label, loc);
+        let loc = location_for(self, self.file_label, node);
+        let loc_label = location_label(self.trap_writer, loc);
         let table = self
             .schema
             .get(&TypeName {
@@ -627,7 +619,7 @@ fn sliced_source_arg(source: &[u8], n: Node) -> trap::Arg {
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
 // The first is the location and label definition, and the second is the
 // 'Located' entry.
-fn location_for(visitor: &mut Visitor, n: Node) -> trap::Location {
+fn location_for(visitor: &mut Visitor, file_label: trap::Label, n: Node) -> trap::Location {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -685,6 +677,7 @@ fn location_for(visitor: &mut Visitor, n: Node) -> trap::Location {
         }
     }
     trap::Location {
+        file_label,
         start_line,
         start_column,
         end_line,

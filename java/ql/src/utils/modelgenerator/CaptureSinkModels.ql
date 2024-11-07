@@ -8,6 +8,6 @@
 
 import internal.CaptureModels
 
-from DataFlowTargetApi api, string sink
+from DataFlowSinkTargetApi api, string sink
 where sink = captureSink(api)
 select sink order by sink

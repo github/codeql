@@ -1,0 +1,2 @@
+uniqueCallEnclosingCallable
+| gen_let_stmt.rs:10:19:10:38 | CallExpr | Call should have one enclosing callable but has 0. |

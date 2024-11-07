@@ -94,12 +94,12 @@ requireImport
 | a.js:3:6:3:23 | require('./sub/c') | ./sub/c | sub/c.js:1:1:4:0 | <toplevel> |
 | a.js:4:6:4:29 | require ... /d.js') | ./sub/../d.js | d.js:1:1:7:15 | <toplevel> |
 | a.js:7:1:7:18 | require('./sub/c') | ./sub/c | sub/c.js:1:1:4:0 | <toplevel> |
-| a.js:10:1:10:18 | require(__dirname) | /library-tests/NodeJS | index.js:1:1:3:0 | <toplevel> |
-| a.js:11:1:11:25 | require ... + '/e') | /library-tests/NodeJS/e | e.js:1:1:6:0 | <toplevel> |
+| a.js:10:1:10:18 | require(__dirname) |  | index.js:1:1:3:0 | <toplevel> |
+| a.js:11:1:11:25 | require ... + '/e') | /e | e.js:1:1:6:0 | <toplevel> |
 | a.js:12:1:12:28 | require ...  + 'c') | ./sub/c | sub/c.js:1:1:4:0 | <toplevel> |
 | b.js:1:1:1:18 | require('./sub/c') | ./sub/c | sub/c.js:1:1:4:0 | <toplevel> |
 | d.js:7:1:7:14 | require('foo') | foo | sub/f.js:1:1:4:17 | <toplevel> |
-| index.js:2:1:2:41 | require ... b.js")) | /library-tests/NodeJS/index.js/../b.js | b.js:1:1:8:0 | <toplevel> |
+| index.js:2:1:2:41 | require ... b.js")) | /index.js/../b.js | b.js:1:1:8:0 | <toplevel> |
 | mjs-files/require-from-js.js:1:12:1:36 | require ... on-me') | ./depend-on-me | mjs-files/depend-on-me.mjs:1:1:7:1 | <toplevel> |
 | mjs-files/require-from-js.js:2:12:2:39 | require ... me.js') | ./depend-on-me.js | mjs-files/depend-on-me.js:1:1:8:0 | <toplevel> |
 | mjs-files/require-from-js.js:3:12:3:40 | require ... e.mjs') | ./depend-on-me.mjs | mjs-files/depend-on-me.mjs:1:1:7:1 | <toplevel> |

@@ -6,7 +6,6 @@ extensions:
     data:
       - ["System.Diagnostics.Metrics", "Measurement<T>", False, "Measurement", "(T,System.Collections.Generic.KeyValuePair<System.String,System.Object>[])", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Diagnostics.Metrics", "Measurement<T>", False, "Measurement", "(T,System.ReadOnlySpan<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Diagnostics.Metrics", "Measurement<T>", False, "get_Tags", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Diagnostics.Metrics", "MeterOptions", False, "MeterOptions", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -47,6 +46,7 @@ extensions:
       - ["System.Diagnostics.Metrics", "Instrument<T>", "RecordMeasurement", "(T,System.ReadOnlySpan<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Measurement<T>", "Measurement", "(T)", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Measurement<T>", "Measurement", "(T,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "summary", "df-generated"]
+      - ["System.Diagnostics.Metrics", "Measurement<T>", "get_Tags", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Measurement<T>", "get_Value", "()", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Meter", "CreateCounter<T>", "(System.String,System.String,System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.Metrics", "Meter", "CreateCounter<T>", "(System.String,System.String,System.String,System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "summary", "df-generated"]

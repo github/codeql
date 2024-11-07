@@ -48,6 +48,10 @@
 | pkg1/interfaces.go:26:6:26:14 | AExtended | m | func()  |
 | pkg1/interfaces.go:26:6:26:14 | AExtended | n | func()  |
 | pkg1/interfaces.go:31:6:31:7 | A2 | m | func()  |
+| pkg1/interfaces.go:35:6:35:24 | MixedExportedAndNot | Exported | func()  |
+| pkg1/interfaces.go:35:6:35:24 | MixedExportedAndNot | notExported | func()  |
 | pkg1/tst.go:3:6:3:6 | T | half | func() Foo |
 | pkg1/tst.go:14:6:14:7 | T3 | half | func() Foo |
 | pkg1/tst.go:19:6:19:7 | T4 | half | func() Foo |
+| pkg2/tst.go:11:6:11:24 | MixedExportedAndNot | Exported | func()  |
+| pkg2/tst.go:11:6:11:24 | MixedExportedAndNot | notExported | func()  |

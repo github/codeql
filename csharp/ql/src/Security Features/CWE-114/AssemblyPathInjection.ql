@@ -21,7 +21,7 @@ import AssemblyPathInjection::PathGraph
  * A taint-tracking configuration for untrusted user input used to load a DLL.
  */
 module AssemblyPathInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc, string name, int arg |

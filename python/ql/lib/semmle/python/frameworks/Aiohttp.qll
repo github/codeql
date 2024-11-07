@@ -653,8 +653,7 @@ module AiohttpWebModel {
   /**
    * A call to `set_cookie` on a HTTP Response.
    */
-  class AiohttpResponseSetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode
-  {
+  class AiohttpResponseSetCookieCall extends Http::Server::SetCookieCall {
     AiohttpResponseSetCookieCall() {
       this = aiohttpResponseInstance().getMember("set_cookie").getACall()
     }
@@ -705,6 +704,33 @@ module AiohttpWebModel {
     override DataFlow::Node getNameArg() { result = index }
 
     override DataFlow::Node getValueArg() { result = value }
+  }
+
+  /**
+   * A dict-like write to an item of the `headers` attribute on a HTTP response, such as
+   * `response.headers[name] = value`.
+   */
+  class AiohttpResponseHeaderSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+    DataFlow::Node index;
+    DataFlow::Node value;
+
+    AiohttpResponseHeaderSubscriptWrite() {
+      exists(API::Node i |
+        value = aiohttpResponseInstance().getMember("headers").getSubscriptAt(i).asSink() and
+        index = i.asSink() and
+        // To give `this` a value, we need to choose between either LHS or RHS,
+        // and just go with the RHS as it is readily available
+        this = value
+      )
+    }
+
+    override DataFlow::Node getNameArg() { result = index }
+
+    override DataFlow::Node getValueArg() { result = value }
+
+    override predicate nameAllowsNewline() { none() }
+
+    override predicate valueAllowsNewline() { none() }
   }
 }
 

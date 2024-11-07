@@ -1,3 +1,74 @@
+## 1.2.6
+
+### Minor Analysis Improvements
+
+* Remove results from the `cpp/wrong-type-format-argument` ("Wrong type of arguments to formatting function") query if the argument is the return value of an implicitly declared function.
+
+## 1.2.5
+
+### Minor Analysis Improvements
+
+* The `cpp/unclear-array-index-validation` ("Unclear validation of array index") query has been improved to reduce false positives and increase true positives.
+* Fixed false positives in the `cpp/uninitialized-local` ("Potentially uninitialized local variable") query if there are extraction errors in the function.
+* The `cpp/incorrect-string-type-conversion` query now produces fewer false positives caused by failure to detect byte arrays.
+* The `cpp/incorrect-string-type-conversion` query now produces fewer false positives caused by failure to recognize dynamic checks prior to possible dangerous widening.
+
+## 1.2.4
+
+### Minor Analysis Improvements
+
+* Fixed false positives in the `cpp/wrong-number-format-arguments` ("Too few arguments to formatting function") query when the formatting function has been declared implicitly.
+
+## 1.2.3
+
+### Minor Analysis Improvements
+
+* Removed false positives caused by buffer accesses in unreachable code
+* Removed false positives caused by inconsistent type checking
+* Add modeling of C functions that don't throw, thereby increasing the precision of the `cpp/incorrect-allocation-error-handling` ("Incorrect allocation-error handling") query. The query now produces additional true positives.
+
+## 1.2.2
+
+No user-facing changes.
+
+## 1.2.1
+
+### Minor Analysis Improvements
+
+* The `cpp/uncontrolled-allocation-size` ("Uncontrolled allocation size") query now considers arithmetic operations that might reduce the size of user input as a barrier. The query therefore produces fewer false positive results.
+
+## 1.2.0
+
+### Query Metadata Changes
+
+* The precision of `cpp/unsigned-difference-expression-compared-zero` ("Unsigned difference expression compared to zero") has been increased to `high`. As a result, it will be run by default as part of the Code Scanning suite.
+
+### Minor Analysis Improvements
+
+* Fixed false positives in the `cpp/memory-may-not-be-freed` ("Memory may not be freed") query involving class methods that returned an allocated field of that class being misidentified as allocators.
+* The `cpp/incorrectly-checked-scanf` ("Incorrect return-value check for a 'scanf'-like function") query now produces fewer false positive results.
+* The `cpp/incorrect-allocation-error-handling` ("Incorrect allocation-error handling") query no longer produces occasional false positive results inside template instantiations.
+* The `cpp/suspicious-allocation-size` ("Not enough memory allocated for array of pointer type") query no longer produces false positives on "variable size" `struct`s.
+
+## 1.1.0
+
+### Query Metadata Changes
+
+* The precision of `cpp/iterator-to-expired-container` ("Iterator to expired container") has been increased to `high`. As a result, it will be run by default as part of the Code Scanning suite.
+* The precision of `cpp/unsafe-strncat` ("Potentially unsafe call to strncat") has been increased to `high`. As a result, it will be run by default as part of the Code Scanning suite.
+
+### Minor Analysis Improvements
+
+* The `cpp/unsigned-difference-expression-compared-zero` ("Unsigned difference expression compared to zero") query now produces fewer false positives.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 ### Minor Analysis Improvements

@@ -35,8 +35,8 @@ Query Packs
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`java/index-out-of-bounds` query has improved its handling of arrays of constant length, and may report additional results in those cases.
 
@@ -53,8 +53,8 @@ Golang
 
 *   Added a new query, :code:`go/unhandled-writable-file-close`, to detect instances where writable file handles are closed without appropriate checks for errors.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query, :code:`java/xxe-local`, which is a version of the XXE query that uses local sources (for example, reads from a local file).
 
@@ -96,8 +96,8 @@ Golang
 
 *   Support for the Twirp framework has been added.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Removed the first argument of :code:`java.nio.file.Files#createTempDirectory(String,FileAttribute[])` as a "create-file" sink.
 *   Added the first argument of :code:`java.nio.file.Files#copy` as a "read-file" sink for the :code:`java/path-injection` query.
@@ -126,7 +126,7 @@ Golang
 
 *   Go 1.20 is now supported. The extractor now functions as expected when Go 1.20 is installed; the definition of :code:`implementsComparable` has been updated according to Go 1.20's new, more-liberal rules; and taint flow models have been added for relevant, new standard-library functions.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Kotlin versions up to 1.8.20 are now supported.

@@ -1,2 +1,0 @@
-# go get has been observed to sometimes fail when multiple tests try to simultaneously fetch the same package.
-goget

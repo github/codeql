@@ -31,7 +31,7 @@ def log_password():
 
 
 def log_cert():
-    logging.debug("Cert=%s", get_cert()) # NOT OK
+    logging.debug("Cert=%s", get_cert()) # OK
 
 def print_password():
     print(get_password()) # NOT OK
@@ -52,8 +52,8 @@ def log_private():
         print(passportNo) # NOT OK
 
     def log2(post_code, zipCode, home_address):
-        print(post_code) # NOT OK, but NOT FOUND - "code" is treated as enxrypted and thus not sensitive
-        print(zipCode) # NOT OK, but NOT FOUND - "code" is treated as enxrypted and thus not sensitive
+        print(post_code) # NOT OK, but NOT FOUND - "code" is treated as encrypted and thus not sensitive
+        print(zipCode) # NOT OK, but NOT FOUND - "code" is treated as encrypted and thus not sensitive
         print(home_address) # NOT OK
 
     def log3(user_latitude, user_longitude):

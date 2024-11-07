@@ -124,9 +124,9 @@ abstract class ActiveExperimentalModels extends string {
    */
   predicate sinkModel(
     string package, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+    string input, string kind, string provenance, QlBuiltins::ExtensionId madId
   ) {
-    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, output, kind,
+    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
       provenance, this, madId)
   }
 
@@ -195,7 +195,10 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string output, string kind, string provenance
   |
-    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) or
+    Extensions::experimentalSourceModel(package, type, subtypes, name, signature, ext, output, kind,
+      provenance, _, madId)
+  |
     model =
       "Source: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
         ext + "; " + output + "; " + kind + "; " + provenance
@@ -205,7 +208,10 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string input, string kind, string provenance
   |
-    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) or
+    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
+      provenance, _, madId)
+  |
     model =
       "Sink: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
         ext + "; " + input + "; " + kind + "; " + provenance
@@ -216,7 +222,10 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     string input, string output, string kind, string provenance
   |
     summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance,
-      madId) and
+      madId) or
+    Extensions::experimentalSummaryModel(package, type, subtypes, name, signature, ext, input,
+      output, kind, provenance, _, madId)
+  |
     model =
       "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
         ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
@@ -407,16 +416,16 @@ private predicate elementSpec(
   or
   summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
-  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
+  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = true
 }
 
 private string getNestedName(Type t) {
   not t instanceof RefType and result = t.toString()
   or
-  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).nestedName()
+  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).getNestedName()
   or
   result =
-    t.(Array).getElementType().(NestedType).getEnclosingType().nestedName() + "$" + t.getName()
+    t.(Array).getElementType().(NestedType).getEnclosingType().getNestedName() + "$" + t.getName()
 }
 
 private string getQualifiedName(Type t) {
@@ -627,17 +636,6 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   override predicate hasExactModel() { summaryElement(this, _, _, _, _, _, true) }
 }
 
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
-  boolean exact;
+final class SinkCallable = SinkModelCallable;
 
-  NeutralCallableAdapter() { neutralElement(this, kind, provenance_, exact) }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
-
-  override predicate hasExactModel() { exact = true }
-}
+final class SourceCallable = SourceModelCallable;

@@ -1,3 +1,50 @@
+## 1.0.11
+
+### Minor Analysis Improvements
+
+* C#: The method `string.ReplaceLineEndings(string)` is now considered a sanitizer for the `cs/log-forging` query. 
+
+## 1.0.10
+
+No user-facing changes.
+
+## 1.0.9
+
+### Minor Analysis Improvements
+
+* C#: The indexer and `Add` method on `System.Web.UI.AttributeCollection` is no longer considered an HTML sink.
+
+## 1.0.8
+
+No user-facing changes.
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+### Minor Analysis Improvements
+
+* Attributes in the `System.Runtime.CompilerServices` namespace are ignored when checking if a declaration requires documentation comments.
+* C# build-mode `none` analyses now report a warning on the CodeQL status page when there are significant analysis problems -- defined as 5% of expressions lacking a type, or 5% of call targets being unknown. Other messages reported on the status page are downgraded from warnings to notes and so are less prominent, but are still available for review.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 ### Minor Analysis Improvements

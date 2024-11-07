@@ -39,8 +39,8 @@ class Type extends Locatable, @type {
 
   /**
    * Gets a specifier of this type, recursively looking through `typedef` and
-   * `decltype`. For example, in the context of `typedef const int *restrict
-   * t`, the type `volatile t` has specifiers `volatile` and `restrict` but not
+   * `decltype`. For example, in the context of `typedef const int *restrict t`,
+   * the type `volatile t` has specifiers `volatile` and `restrict` but not
    * `const` since the `const` is attached to the type being pointed to rather
    * than the pointer itself.
    */

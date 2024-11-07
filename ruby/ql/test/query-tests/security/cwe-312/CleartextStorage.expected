@@ -23,6 +23,29 @@ edges
 | app/controllers/users_controller.rb:58:5:58:16 | new_password | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | provenance | AdditionalTaintStep |
 | app/controllers/users_controller.rb:58:5:58:16 | new_password | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | provenance | AdditionalTaintStep |
 | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | app/controllers/users_controller.rb:58:5:58:16 | new_password | provenance |  |
+| app/controllers/users_controller.rb:76:5:76:8 | info [element 0, element :SSN] | app/controllers/users_controller.rb:85:5:85:8 | info [element 0, element :SSN] | provenance |  |
+| app/controllers/users_controller.rb:76:5:76:8 | info [element 0, element :credit_card_number] | app/controllers/users_controller.rb:85:5:85:8 | info [element 0, element :credit_card_number] | provenance |  |
+| app/controllers/users_controller.rb:76:5:76:8 | info [element 0, element :password] | app/controllers/users_controller.rb:85:5:85:8 | info [element 0, element :password] | provenance |  |
+| app/controllers/users_controller.rb:76:5:76:8 | info [element 1, element :password] | app/controllers/users_controller.rb:85:5:85:8 | info [element 1, element :password] | provenance |  |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 0, element :SSN] | app/controllers/users_controller.rb:76:5:76:8 | info [element 0, element :SSN] | provenance |  |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 0, element :credit_card_number] | app/controllers/users_controller.rb:76:5:76:8 | info [element 0, element :credit_card_number] | provenance |  |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 0, element :password] | app/controllers/users_controller.rb:76:5:76:8 | info [element 0, element :password] | provenance |  |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 1, element :password] | app/controllers/users_controller.rb:76:5:76:8 | info [element 1, element :password] | provenance |  |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] [element :SSN] | app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 0, element :SSN] | provenance |  |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] [element :credit_card_number] | app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 0, element :credit_card_number] | provenance |  |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] [element :password] | app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 0, element :password] | provenance |  |
+| app/controllers/users_controller.rb:79:19:79:30 | "aaaaaaaaaa" | app/controllers/users_controller.rb:77:7:82:7 | call to [] [element :password] | provenance |  |
+| app/controllers/users_controller.rb:80:29:80:49 | "0000-0000-0000-0000" | app/controllers/users_controller.rb:77:7:82:7 | call to [] [element :credit_card_number] | provenance |  |
+| app/controllers/users_controller.rb:81:14:81:27 | "000-00-00000" | app/controllers/users_controller.rb:77:7:82:7 | call to [] [element :SSN] | provenance |  |
+| app/controllers/users_controller.rb:83:7:83:39 | call to [] [element :password] | app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 1, element :password] | provenance |  |
+| app/controllers/users_controller.rb:83:30:83:38 | "bbbbbbb" | app/controllers/users_controller.rb:83:7:83:39 | call to [] [element :password] | provenance |  |
+| app/controllers/users_controller.rb:85:5:85:8 | info [element 0, element :SSN] | app/controllers/users_controller.rb:85:19:85:21 | inf [element :SSN] | provenance |  |
+| app/controllers/users_controller.rb:85:5:85:8 | info [element 0, element :credit_card_number] | app/controllers/users_controller.rb:85:19:85:21 | inf [element :credit_card_number] | provenance |  |
+| app/controllers/users_controller.rb:85:5:85:8 | info [element 0, element :password] | app/controllers/users_controller.rb:85:19:85:21 | inf [element :password] | provenance |  |
+| app/controllers/users_controller.rb:85:5:85:8 | info [element 1, element :password] | app/controllers/users_controller.rb:85:19:85:21 | inf [element :password] | provenance |  |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :SSN] | app/controllers/users_controller.rb:87:20:87:22 | inf | provenance |  |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :credit_card_number] | app/controllers/users_controller.rb:87:20:87:22 | inf | provenance |  |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :password] | app/controllers/users_controller.rb:87:20:87:22 | inf | provenance |  |
 | app/models/user.rb:3:5:3:16 | new_password | app/models/user.rb:5:27:5:38 | new_password | provenance |  |
 | app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | app/models/user.rb:3:5:3:16 | new_password | provenance |  |
 | app/models/user.rb:9:5:9:16 | new_password | app/models/user.rb:11:22:11:33 | new_password | provenance |  |
@@ -59,6 +82,30 @@ nodes
 | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | semmle.label | "0157af7c38cbdd24f1616de4e5321861" |
 | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | semmle.label | "password: #{...}\\n" |
 | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | semmle.label | "password: #{...}" |
+| app/controllers/users_controller.rb:76:5:76:8 | info [element 0, element :SSN] | semmle.label | info [element 0, element :SSN] |
+| app/controllers/users_controller.rb:76:5:76:8 | info [element 0, element :credit_card_number] | semmle.label | info [element 0, element :credit_card_number] |
+| app/controllers/users_controller.rb:76:5:76:8 | info [element 0, element :password] | semmle.label | info [element 0, element :password] |
+| app/controllers/users_controller.rb:76:5:76:8 | info [element 1, element :password] | semmle.label | info [element 1, element :password] |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 0, element :SSN] | semmle.label | call to [] [element 0, element :SSN] |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 0, element :credit_card_number] | semmle.label | call to [] [element 0, element :credit_card_number] |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 0, element :password] | semmle.label | call to [] [element 0, element :password] |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] [element 1, element :password] | semmle.label | call to [] [element 1, element :password] |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] [element :SSN] | semmle.label | call to [] [element :SSN] |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] [element :credit_card_number] | semmle.label | call to [] [element :credit_card_number] |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] [element :password] | semmle.label | call to [] [element :password] |
+| app/controllers/users_controller.rb:79:19:79:30 | "aaaaaaaaaa" | semmle.label | "aaaaaaaaaa" |
+| app/controllers/users_controller.rb:80:29:80:49 | "0000-0000-0000-0000" | semmle.label | "0000-0000-0000-0000" |
+| app/controllers/users_controller.rb:81:14:81:27 | "000-00-00000" | semmle.label | "000-00-00000" |
+| app/controllers/users_controller.rb:83:7:83:39 | call to [] [element :password] | semmle.label | call to [] [element :password] |
+| app/controllers/users_controller.rb:83:30:83:38 | "bbbbbbb" | semmle.label | "bbbbbbb" |
+| app/controllers/users_controller.rb:85:5:85:8 | info [element 0, element :SSN] | semmle.label | info [element 0, element :SSN] |
+| app/controllers/users_controller.rb:85:5:85:8 | info [element 0, element :credit_card_number] | semmle.label | info [element 0, element :credit_card_number] |
+| app/controllers/users_controller.rb:85:5:85:8 | info [element 0, element :password] | semmle.label | info [element 0, element :password] |
+| app/controllers/users_controller.rb:85:5:85:8 | info [element 1, element :password] | semmle.label | info [element 1, element :password] |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :SSN] | semmle.label | inf [element :SSN] |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :credit_card_number] | semmle.label | inf [element :credit_card_number] |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :password] | semmle.label | inf [element :password] |
+| app/controllers/users_controller.rb:87:20:87:22 | inf | semmle.label | inf |
 | app/models/user.rb:3:5:3:16 | new_password | semmle.label | new_password |
 | app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | semmle.label | "06c38c6a8a9c11a9d3b209a3193047b4" |
 | app/models/user.rb:5:27:5:38 | new_password | semmle.label | new_password |
@@ -91,6 +138,10 @@ subpaths
 | app/controllers/users_controller.rb:44:21:44:32 | new_password | app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" | app/controllers/users_controller.rb:44:21:44:32 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" | an assignment to new_password |
 | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | an assignment to new_password |
 | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | an assignment to new_password |
+| app/controllers/users_controller.rb:87:20:87:22 | inf | app/controllers/users_controller.rb:79:19:79:30 | "aaaaaaaaaa" | app/controllers/users_controller.rb:87:20:87:22 | inf | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:79:19:79:30 | "aaaaaaaaaa" | a write to password |
+| app/controllers/users_controller.rb:87:20:87:22 | inf | app/controllers/users_controller.rb:80:29:80:49 | "0000-0000-0000-0000" | app/controllers/users_controller.rb:87:20:87:22 | inf | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:80:29:80:49 | "0000-0000-0000-0000" | a write to credit_card_number |
+| app/controllers/users_controller.rb:87:20:87:22 | inf | app/controllers/users_controller.rb:81:14:81:27 | "000-00-00000" | app/controllers/users_controller.rb:87:20:87:22 | inf | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:81:14:81:27 | "000-00-00000" | a write to SSN |
+| app/controllers/users_controller.rb:87:20:87:22 | inf | app/controllers/users_controller.rb:83:30:83:38 | "bbbbbbb" | app/controllers/users_controller.rb:87:20:87:22 | inf | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:83:30:83:38 | "bbbbbbb" | a write to password |
 | app/models/user.rb:5:27:5:38 | new_password | app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | app/models/user.rb:5:27:5:38 | new_password | This stores sensitive data returned by $@ as clear text. | app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | an assignment to new_password |
 | app/models/user.rb:11:22:11:33 | new_password | app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" | app/models/user.rb:11:22:11:33 | new_password | This stores sensitive data returned by $@ as clear text. | app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" | an assignment to new_password |
 | app/models/user.rb:17:21:17:32 | new_password | app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" | app/models/user.rb:17:21:17:32 | new_password | This stores sensitive data returned by $@ as clear text. | app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" | an assignment to new_password |

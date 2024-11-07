@@ -1,3 +1,54 @@
+## 2.0.3
+
+No user-facing changes.
+
+## 2.0.2
+
+### Minor Analysis Improvements
+
+* The `ExtractionError` class has been split into `ExtractionError` and `ExtractionWarning`, reporting extraction errors and warnings respectively.
+
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getURL` predicate the `Http::Request` class, use `getAUrlPart` instead.
+* Deleted the deprecated `getNode` predicate from the `CfgNode` class, use `getAstNode` instead. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+No user-facing changes.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* Element references with blocks, such as `foo[:bar] { |x| puts x}`, are now parsed correctly.
+* The `CleartextSources.qll` library, used by `rb/clear-text-logging-sensitive-data` and `rb/clear-text-logging-sensitive-data`, has been updated to consider heuristics for additional categories of sensitive data. 
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 No user-facing changes.

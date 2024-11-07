@@ -193,7 +193,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public bool IsBoolLiteral()
         {
-            return TryGetBoolValueFromLiteral(out var _);
+            return TryGetBoolValueFromLiteral(out _);
         }
     }
 }

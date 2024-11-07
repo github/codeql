@@ -1,0 +1,19 @@
+{
+  "helpLinks": [
+    "https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive"
+  ],
+  "location": {
+    "file": "<test-root-directory>/encoding.rb"
+  },
+  "markdownMessage": "Unknown character encoding `silly` in `#encoding:` [directive](https://docs.ruby-lang.org/en/master/syntax/comments_rdoc.html#label-encoding+Directive).",
+  "plaintextMessage": "Unknown character encoding silly in #encoding: directive.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "ruby",
+    "id": "ruby/unknown-character-encoding",
+    "name": "Could not process some files due to an unknown character encoding"
+  },
+  "visibility": {
+    "statusPage": true
+  }
+}

@@ -19,7 +19,7 @@ private import codeql.swift.elements.decl.EnumElementDecl
  *   ...
  * ```
  */
-class EnumElementExpr extends Expr {
+final class EnumElementExpr extends Expr {
   EnumElementDecl decl;
 
   EnumElementExpr() {

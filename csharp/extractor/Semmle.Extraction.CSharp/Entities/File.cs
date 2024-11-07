@@ -34,7 +34,14 @@ namespace Semmle.Extraction.CSharp.Entities
                         lineCounts.Total++;
 
                     trapFile.numlines(this, lineCounts);
-                    Context.TrapWriter.Archive(originalPath, TransformedPath, text.Encoding ?? System.Text.Encoding.Default);
+                    if (BinaryLogExtractionContext.GetAdjustedPath(Context.ExtractionContext, originalPath) is not null)
+                    {
+                        Context.TrapWriter.ArchiveContent(rawText, TransformedPath);
+                    }
+                    else
+                    {
+                        Context.TrapWriter.Archive(originalPath, TransformedPath, text.Encoding ?? System.Text.Encoding.Default);
+                    }
                 }
             }
             else if (IsPossiblyTextFile())
@@ -57,7 +64,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
                 catch (Exception exc)
                 {
-                    Context.ExtractionError($"Couldn't read file: {originalPath}. {exc.Message}", null, null, exc.StackTrace);
+                    Context.ExtractionError($"Couldn't read file: {originalPath}. {exc.Message}", null, null, exc.StackTrace, Semmle.Util.Logging.Severity.Warning);
                 }
             }
 

@@ -12,5 +12,6 @@ namespace Semmle.Extraction
         Standalone = 1,
         Pdb = 2,
         QlTest = 4,
+        BinaryLog = 8,
     }
 }

@@ -69,10 +69,10 @@ splatstuff(*args)
 def splatmid(x, y, *z, w, r)
     sink x # $ hasValueFlow=27 $ hasValueFlow=32 $ hasValueFlow=45
     sink y # $ hasValueFlow=28 $ hasValueFlow=46 $ hasValueFlow=33
-    sink z[0] # MISSING: $ hasValueFlow=47 $ hasValueFlow=29 $ hasValueFlow=34
+    sink z[0] # $ MISSING: hasValueFlow=47 $ hasValueFlow=29 $ hasValueFlow=34
     sink z[1] # $ MISSING: hasValueFlow=48 $ hasValueFlow=35
-    sink w # $ hasValueFlow=30 $ hasValueFlow=50 $ MISSING: hasValueFlow=36
-    sink r # $ hasValueFlow=31 $ hasValueFlow=51 $ MISSING: hasValueFlow=37
+    sink w # $ MISSING: hasValueFlow=30 $ hasValueFlow=50 $ hasValueFlow=36
+    sink r # $ MISSING: hasValueFlow=31 $ hasValueFlow=51 $ hasValueFlow=37
 end
 
 splatmid(taint(27), taint(28), taint(29), taint(30), taint(31))
@@ -82,9 +82,9 @@ splatmid(taint(32), *args, taint(37))
 
 def pos_many(t, u, v, w, x, y, z)
     sink t # $ hasValueFlow=38 $ hasValueFlow=66
-    sink u # $ hasValueFlow=39 $ hasValueFlow=67 $ SPURIOUS: hasValueFlow=68
+    sink u # $ hasValueFlow=39 $ hasValueFlow=67
     sink v # $ hasValueFlow=40
-    sink w # $ hasValueFlow=41 $ SPURIOUS: hasValueFlow=44
+    sink w # $ hasValueFlow=41
     sink x # $ hasValueFlow=42
     sink y # $ hasValueFlow=43
     sink z # $ MISSING: hasValueFlow=44
@@ -99,7 +99,7 @@ def splatmidsmall(a, *splats, b)
     sink a # $ hasValueFlow=52 $ hasValueFlow=55
     sink splats[0] # $ MISSING: hasValueFlow=53
     sink splats[1]
-    sink b # $ hasValueFlow=57 $ MISSING: hasValueFlow=54
+    sink b # $ MISSING: hasValueFlow=57 $ hasValueFlow=54
 end
 
 splatmidsmall(taint(52), *[taint(53), taint(54)])

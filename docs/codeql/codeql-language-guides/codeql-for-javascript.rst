@@ -25,6 +25,8 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`CodeQL library for TypeScript <codeql-library-for-typescript>`: When you're analyzing a TypeScript program, you can make use of the large collection of classes in the CodeQL library for TypeScript.
 
+- `CodeQL CTF: XSS-unsafe jQuery plugins <https://securitylab.github.com/ctf/jquery/>`__: Follow the steps that members of GitHub Security Lab went through to find cross-site scripting vulnerabilities in Bootstrap's jQuery plugins.
+
 -  :doc:`Analyzing data flow in JavaScript and TypeScript <analyzing-data-flow-in-javascript-and-typescript>`: This topic describes how data flow analysis is implemented in the CodeQL libraries for JavaScript/TypeScript and includes examples to help you write your own data flow queries.
 
 -  :doc:`Using flow labels for precise data flow analysis <using-flow-labels-for-precise-data-flow-analysis>`: You can associate flow labels with each value tracked by the flow analysis to determine whether the flow contains potential vulnerabilities.

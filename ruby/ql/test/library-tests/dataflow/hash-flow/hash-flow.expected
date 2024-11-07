@@ -1,4 +1,4 @@
-testFailures
+models
 edges
 | hash_flow.rb:10:5:10:8 | hash [element 0] | hash_flow.rb:30:10:30:13 | hash [element 0] | provenance |  |
 | hash_flow.rb:10:5:10:8 | hash [element :a] | hash_flow.rb:22:10:22:13 | hash [element :a] | provenance |  |
@@ -40,12 +40,16 @@ edges
 | hash_flow.rb:42:17:42:26 | call to taint | hash_flow.rb:42:5:42:8 | [post] hash [element a] | provenance |  |
 | hash_flow.rb:43:5:43:8 | [post] hash [element 0] | hash_flow.rb:44:10:44:13 | hash [element 0] | provenance |  |
 | hash_flow.rb:43:5:43:8 | [post] hash [element :a] | hash_flow.rb:46:10:46:13 | hash [element :a] | provenance |  |
+| hash_flow.rb:43:5:43:8 | [post] hash [element :a] | hash_flow.rb:48:10:48:13 | hash [element :a] | provenance |  |
+| hash_flow.rb:43:5:43:8 | [post] hash [element a] | hash_flow.rb:46:10:46:13 | hash [element a] | provenance |  |
 | hash_flow.rb:43:5:43:8 | [post] hash [element a] | hash_flow.rb:48:10:48:13 | hash [element a] | provenance |  |
 | hash_flow.rb:43:5:43:8 | hash [element 0] | hash_flow.rb:43:5:43:8 | [post] hash [element 0] | provenance |  |
 | hash_flow.rb:43:5:43:8 | hash [element :a] | hash_flow.rb:43:5:43:8 | [post] hash [element :a] | provenance |  |
 | hash_flow.rb:43:5:43:8 | hash [element a] | hash_flow.rb:43:5:43:8 | [post] hash [element a] | provenance |  |
 | hash_flow.rb:44:10:44:13 | hash [element 0] | hash_flow.rb:44:10:44:16 | ...[...] | provenance |  |
 | hash_flow.rb:46:10:46:13 | hash [element :a] | hash_flow.rb:46:10:46:17 | ...[...] | provenance |  |
+| hash_flow.rb:46:10:46:13 | hash [element a] | hash_flow.rb:46:10:46:17 | ...[...] | provenance |  |
+| hash_flow.rb:48:10:48:13 | hash [element :a] | hash_flow.rb:48:10:48:18 | ...[...] | provenance |  |
 | hash_flow.rb:48:10:48:13 | hash [element a] | hash_flow.rb:48:10:48:18 | ...[...] | provenance |  |
 | hash_flow.rb:55:5:55:9 | hash1 [element :a] | hash_flow.rb:56:10:56:14 | hash1 [element :a] | provenance |  |
 | hash_flow.rb:55:13:55:37 | ...[...] [element :a] | hash_flow.rb:55:5:55:9 | hash1 [element :a] | provenance |  |
@@ -583,7 +587,9 @@ edges
 | hash_flow.rb:626:11:626:11 | a [element] | hash_flow.rb:626:11:626:16 | ...[...] | provenance |  |
 | hash_flow.rb:626:11:626:16 | ...[...] | hash_flow.rb:626:10:626:17 | ( ... ) | provenance |  |
 | hash_flow.rb:632:5:632:8 | hash [element :a] | hash_flow.rb:639:5:639:8 | hash [element :a] | provenance |  |
+| hash_flow.rb:632:5:632:8 | hash [element :a] | hash_flow.rb:640:11:640:14 | hash [element :a] | provenance |  |
 | hash_flow.rb:632:5:632:8 | hash [element :c] | hash_flow.rb:639:5:639:8 | hash [element :c] | provenance |  |
+| hash_flow.rb:632:5:632:8 | hash [element :c] | hash_flow.rb:642:11:642:14 | hash [element :c] | provenance |  |
 | hash_flow.rb:632:12:636:5 | call to [] [element :a] | hash_flow.rb:632:5:632:8 | hash [element :a] | provenance |  |
 | hash_flow.rb:632:12:636:5 | call to [] [element :c] | hash_flow.rb:632:5:632:8 | hash [element :c] | provenance |  |
 | hash_flow.rb:633:15:633:25 | call to taint | hash_flow.rb:632:12:636:5 | call to [] [element :a] | provenance |  |
@@ -599,10 +605,12 @@ edges
 | hash_flow.rb:639:5:639:8 | hash [element :a] | hash_flow.rb:639:5:639:8 | [post] hash [element] | provenance |  |
 | hash_flow.rb:639:5:639:8 | hash [element :c] | hash_flow.rb:639:5:639:8 | [post] hash [element] | provenance |  |
 | hash_flow.rb:639:5:639:8 | hash [element] | hash_flow.rb:639:5:639:8 | [post] hash [element] | provenance |  |
+| hash_flow.rb:640:11:640:14 | hash [element :a] | hash_flow.rb:640:11:640:19 | ...[...] | provenance |  |
 | hash_flow.rb:640:11:640:14 | hash [element] | hash_flow.rb:640:11:640:19 | ...[...] | provenance |  |
 | hash_flow.rb:640:11:640:19 | ...[...] | hash_flow.rb:640:10:640:20 | ( ... ) | provenance |  |
 | hash_flow.rb:641:11:641:14 | hash [element] | hash_flow.rb:641:11:641:19 | ...[...] | provenance |  |
 | hash_flow.rb:641:11:641:19 | ...[...] | hash_flow.rb:641:10:641:20 | ( ... ) | provenance |  |
+| hash_flow.rb:642:11:642:14 | hash [element :c] | hash_flow.rb:642:11:642:19 | ...[...] | provenance |  |
 | hash_flow.rb:642:11:642:14 | hash [element] | hash_flow.rb:642:11:642:19 | ...[...] | provenance |  |
 | hash_flow.rb:642:11:642:19 | ...[...] | hash_flow.rb:642:10:642:20 | ( ... ) | provenance |  |
 | hash_flow.rb:648:5:648:8 | hash [element :a] | hash_flow.rb:653:9:653:12 | hash [element :a] | provenance |  |
@@ -1149,7 +1157,9 @@ nodes
 | hash_flow.rb:44:10:44:13 | hash [element 0] | semmle.label | hash [element 0] |
 | hash_flow.rb:44:10:44:16 | ...[...] | semmle.label | ...[...] |
 | hash_flow.rb:46:10:46:13 | hash [element :a] | semmle.label | hash [element :a] |
+| hash_flow.rb:46:10:46:13 | hash [element a] | semmle.label | hash [element a] |
 | hash_flow.rb:46:10:46:17 | ...[...] | semmle.label | ...[...] |
+| hash_flow.rb:48:10:48:13 | hash [element :a] | semmle.label | hash [element :a] |
 | hash_flow.rb:48:10:48:13 | hash [element a] | semmle.label | hash [element a] |
 | hash_flow.rb:48:10:48:18 | ...[...] | semmle.label | ...[...] |
 | hash_flow.rb:55:5:55:9 | hash1 [element :a] | semmle.label | hash1 [element :a] |
@@ -1740,12 +1750,14 @@ nodes
 | hash_flow.rb:639:5:639:8 | hash [element :c] | semmle.label | hash [element :c] |
 | hash_flow.rb:639:5:639:8 | hash [element] | semmle.label | hash [element] |
 | hash_flow.rb:640:10:640:20 | ( ... ) | semmle.label | ( ... ) |
+| hash_flow.rb:640:11:640:14 | hash [element :a] | semmle.label | hash [element :a] |
 | hash_flow.rb:640:11:640:14 | hash [element] | semmle.label | hash [element] |
 | hash_flow.rb:640:11:640:19 | ...[...] | semmle.label | ...[...] |
 | hash_flow.rb:641:10:641:20 | ( ... ) | semmle.label | ( ... ) |
 | hash_flow.rb:641:11:641:14 | hash [element] | semmle.label | hash [element] |
 | hash_flow.rb:641:11:641:19 | ...[...] | semmle.label | ...[...] |
 | hash_flow.rb:642:10:642:20 | ( ... ) | semmle.label | ( ... ) |
+| hash_flow.rb:642:11:642:14 | hash [element :c] | semmle.label | hash [element :c] |
 | hash_flow.rb:642:11:642:14 | hash [element] | semmle.label | hash [element] |
 | hash_flow.rb:642:11:642:19 | ...[...] | semmle.label | ...[...] |
 | hash_flow.rb:648:5:648:8 | hash [element :a] | semmle.label | hash [element :a] |
@@ -2267,6 +2279,7 @@ nodes
 | hash_flow.rb:1013:14:1013:14 | v | semmle.label | v |
 | hash_flow.rb:1014:14:1014:14 | k | semmle.label | k |
 subpaths
+testFailures
 hashLiteral
 | hash_flow.rb:10:12:21:5 | call to [] |
 | hash_flow.rb:55:13:55:37 | ...[...] |
@@ -2348,6 +2361,8 @@ hashLiteral
 | hash_flow.rb:30:10:30:16 | ...[...] | hash_flow.rb:19:14:19:23 | call to taint | hash_flow.rb:30:10:30:16 | ...[...] | $@ | hash_flow.rb:19:14:19:23 | call to taint | call to taint |
 | hash_flow.rb:44:10:44:16 | ...[...] | hash_flow.rb:38:15:38:24 | call to taint | hash_flow.rb:44:10:44:16 | ...[...] | $@ | hash_flow.rb:38:15:38:24 | call to taint | call to taint |
 | hash_flow.rb:46:10:46:17 | ...[...] | hash_flow.rb:40:16:40:25 | call to taint | hash_flow.rb:46:10:46:17 | ...[...] | $@ | hash_flow.rb:40:16:40:25 | call to taint | call to taint |
+| hash_flow.rb:46:10:46:17 | ...[...] | hash_flow.rb:42:17:42:26 | call to taint | hash_flow.rb:46:10:46:17 | ...[...] | $@ | hash_flow.rb:42:17:42:26 | call to taint | call to taint |
+| hash_flow.rb:48:10:48:18 | ...[...] | hash_flow.rb:40:16:40:25 | call to taint | hash_flow.rb:48:10:48:18 | ...[...] | $@ | hash_flow.rb:40:16:40:25 | call to taint | call to taint |
 | hash_flow.rb:48:10:48:18 | ...[...] | hash_flow.rb:42:17:42:26 | call to taint | hash_flow.rb:48:10:48:18 | ...[...] | $@ | hash_flow.rb:42:17:42:26 | call to taint | call to taint |
 | hash_flow.rb:56:10:56:18 | ...[...] | hash_flow.rb:55:21:55:30 | call to taint | hash_flow.rb:56:10:56:18 | ...[...] | $@ | hash_flow.rb:55:21:55:30 | call to taint | call to taint |
 | hash_flow.rb:61:10:61:18 | ...[...] | hash_flow.rb:59:13:59:22 | call to taint | hash_flow.rb:61:10:61:18 | ...[...] | $@ | hash_flow.rb:59:13:59:22 | call to taint | call to taint |

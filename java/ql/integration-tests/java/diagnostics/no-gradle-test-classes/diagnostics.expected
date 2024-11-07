@@ -1,0 +1,28 @@
+{
+  "markdownMessage": "Built a Gradle project without the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). This may use an incompatible version of Gradle.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/guessed-gradle-version",
+    "name": "Required Gradle version not specified"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Gradle project does not define a `testClasses` goal. [Supply a manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language) that builds the code that should be analyzed.\n\nRelevant output line: `org.gradle.execution.TaskSelectionException: Task 'testClasses' not found in root project 'test'.`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/test-classes-gradle-target",
+    "name": "Gradle target 'testClasses' not found"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

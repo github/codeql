@@ -1,0 +1,20 @@
+entities
+| aliases.go | aliases.go:3:6:3:13 | aliasesX | 1 | file://:0:0:0:0 | int |
+| aliases.go | aliases.go:4:6:4:13 | aliasesY | 1 | file://:0:0:0:0 | int |
+| aliases.go | aliases.go:6:6:6:14 | aliasesS1 | 1 | file://:0:0:0:0 | struct type |
+| aliases.go | aliases.go:6:26:6:26 | x | 3 | file://:0:0:0:0 | int |
+| aliases.go | aliases.go:8:6:8:14 | aliasesS2 | 1 | file://:0:0:0:0 | struct type |
+| aliases.go | aliases.go:8:26:8:26 | x | 3 | file://:0:0:0:0 | int |
+| aliases.go | aliases.go:10:6:10:6 | F | 1 | file://:0:0:0:0 | signature type |
+| aliases.go | aliases.go:10:8:10:11 | Afs1 | 1 | file://:0:0:0:0 | struct type |
+| aliases.go | aliases.go:14:6:14:6 | G | 1 | file://:0:0:0:0 | signature type |
+| aliases.go | aliases.go:14:8:14:11 | Afs2 | 1 | file://:0:0:0:0 | struct type |
+| aliases.go | aliases.go:19:6:19:7 | S3 | 1 | aliases.go:19:6:19:7 | S3 |
+| aliases.go | aliases.go:19:17:19:17 | x | 3 | file://:0:0:0:0 | int |
+| aliases.go | aliases.go:22:6:22:6 | T | 1 | aliases.go:19:6:19:7 | S3 |
+| aliases.go | aliases.go:25:6:25:6 | H | 1 | file://:0:0:0:0 | signature type |
+| aliases.go | aliases.go:25:8:25:11 | Afs3 | 1 | aliases.go:19:6:19:7 | S3 |
+#select
+| F | func(struct { x int }) int |
+| G | func(struct { x int }) int |
+| H | func(S3) int |

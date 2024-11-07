@@ -59,8 +59,7 @@ class MatchValue extends AbstractValue, TMatchValue {
 }
 
 /**
- * A Boolean condition in the AST that guards one or more basic blocks. This includes
- * operands of logical operators but not switch statements.
+ * A Boolean condition in the AST that guards one or more basic blocks.
  */
 cached
 class GuardCondition extends Expr {
@@ -366,10 +365,10 @@ private predicate nonExcludedIRAndBasicBlock(IRBlock irb, BasicBlock controlled)
 }
 
 /**
- * A Boolean condition in the IR that guards one or more basic blocks. This includes
- * operands of logical operators but not switch statements. Note that `&&` and `||`
- * don't have an explicit representation in the IR, and therefore will not appear as
- * IRGuardConditions.
+ * A Boolean condition in the IR that guards one or more basic blocks.
+ *
+ * Note that `&&` and `||` don't have an explicit representation in the IR,
+ * and therefore will not appear as IRGuardConditions.
  */
 cached
 class IRGuardCondition extends Instruction {

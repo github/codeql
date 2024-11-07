@@ -211,39 +211,6 @@ class TypeFile extends Class {
 
 // --- Standard methods ---
 /**
- * DEPRECATED: Any constructor of class `java.lang.ProcessBuilder`.
- */
-deprecated class ProcessBuilderConstructor extends Constructor, ExecCallable {
-  ProcessBuilderConstructor() { this.getDeclaringType() instanceof TypeProcessBuilder }
-
-  override int getAnExecutedArgument() { result = 0 }
-}
-
-/**
- * DEPRECATED: Any of the methods named `command` on class `java.lang.ProcessBuilder`.
- */
-deprecated class MethodProcessBuilderCommand extends Method, ExecCallable {
-  MethodProcessBuilderCommand() {
-    this.hasName("command") and
-    this.getDeclaringType() instanceof TypeProcessBuilder
-  }
-
-  override int getAnExecutedArgument() { result = 0 }
-}
-
-/**
- * DEPRECATED: Any method named `exec` on class `java.lang.Runtime`.
- */
-deprecated class MethodRuntimeExec extends Method, ExecCallable {
-  MethodRuntimeExec() {
-    this.hasName("exec") and
-    this.getDeclaringType() instanceof TypeRuntime
-  }
-
-  override int getAnExecutedArgument() { result = 0 }
-}
-
-/**
  * Any method named `getenv` on class `java.lang.System`.
  */
 class MethodSystemGetenv extends Method {

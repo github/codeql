@@ -64,7 +64,7 @@ predicate numDepends(RefType t, RefType dep, int value) {
         elem = fa and
         fa.getEnclosingCallable().getDeclaringType() = t
       |
-        usesType(fa.getField().getSourceDeclaration().getDeclaringType(), dep)
+        usesType(fa.getField().getDeclaringType(), dep)
       )
       or
       // the type of a local variable declared in `t`,

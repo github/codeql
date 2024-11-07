@@ -212,10 +212,7 @@ class MethodDecl extends FuncDecl {
    *
    * is `Rectangle`.
    */
-  NamedType getReceiverBaseType() {
-    result = this.getReceiverType() or
-    result = this.getReceiverType().(PointerType).getBaseType()
-  }
+  NamedType getReceiverBaseType() { result = lookThroughPointerType(this.getReceiverType()) }
 
   /**
    * Gets the receiver variable of this method.
@@ -649,18 +646,28 @@ class ReceiverDecl extends FieldBase, Documentable, ExprParent {
  * Examples:
  *
  * ```go
+ * int
+ * string
  * error
  * r io.Reader
+ * output string
+ * err error
  * x, y int
  * ```
  *
  * as in the following code:
  *
  * ```go
- * func f(error) { return nil }
- * func g(r io.Reader) { return nil }
- * func h(x, y int) { return }
+ * func f1() int { return 0 }
+ * func f2(input string) (string, error) { return "", nil }
+ * func f3(a int) (r io.Reader) { return nil }
+ * func f4(input string) (output string, err error) { return}
+ * func f5(e error) (x, y int) { return }
  * ```
+ *
+ * Note: `x, y int` is a single `ResultVariableDecl` even though it declares
+ * two different result variables. Use the member predicate `getTypeExpr()` to
+ * get `int`, `getNameExpr(0)` to get `x` and `getNameExpr(1)` to get `y`.
  */
 class ResultVariableDecl extends ParameterOrResultDecl {
   ResultVariableDecl() { rawIndex < 0 }

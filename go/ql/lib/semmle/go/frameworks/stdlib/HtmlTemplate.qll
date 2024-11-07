@@ -11,11 +11,11 @@ module HtmlTemplate {
 
     TemplateEscape() {
       exists(string fn |
-        fn.matches("HTMLEscape%") and kind = "html"
+        fn = ["HTMLEscape", "HTMLEscapeString", "HTMLEscaper"] and kind = "html"
         or
-        fn.matches("JSEscape%") and kind = "js"
+        fn = ["JSEscape", "JSEscapeString", "JSEscaper"] and kind = "js"
         or
-        fn.matches("URLQueryEscape%") and kind = "url"
+        fn = "URLQueryEscaper" and kind = "url"
       |
         this.hasQualifiedName("html/template", fn)
       )

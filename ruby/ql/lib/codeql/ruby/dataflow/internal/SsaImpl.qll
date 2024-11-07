@@ -6,16 +6,19 @@ private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.Variable
 private import Cfg::CfgNodes::ExprNodes
 
-private module SsaInput implements SsaImplCommon::InputSig<Location> {
+module SsaInput implements SsaImplCommon::InputSig<Location> {
+  private import codeql.ruby.controlflow.ControlFlowGraph as Cfg
   private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
 
   class BasicBlock = BasicBlocks::BasicBlock;
+
+  class ControlFlowNode = Cfg::CfgNode;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
+  class ExitBasicBlock extends BasicBlock, BasicBlocks::ExitBasicBlock { }
 
   class SourceVariable = LocalVariable;
 
@@ -62,7 +65,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
   }
 }
 
-private import SsaImplCommon::Make<Location, SsaInput> as Impl
+import SsaImplCommon::Make<Location, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -280,15 +283,6 @@ private predicate adjacentDefSkipUncertainReads(
   SsaInput::variableRead(bb2, i2, _, true)
 }
 
-/** Same as `adjacentDefReadExt`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate adjacentDefSkipUncertainReadsExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, true)
-}
-
 private predicate adjacentDefReachesUncertainReadExt(
   DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
@@ -391,19 +385,6 @@ private module Cached {
   }
 
   /**
-   * Holds if the value defined at SSA definition `def` can reach a read at `read`,
-   * without passing through any other non-pseudo read.
-   */
-  cached
-  predicate firstReadExt(DefinitionExt def, VariableReadAccessCfgNode read) {
-    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1, _) and
-      adjacentDefSkipUncertainReadsExt(def, bb1, i1, bb2, i2) and
-      read = bb2.getNode(i2)
-    )
-  }
-
-  /**
    * Holds if the read at `read2` is a read of the same SSA definition `def`
    * as the read at `read1`, and `read2` can be reached from `read1` without
    * passing through another non-pseudo read.
@@ -416,23 +397,6 @@ private module Cached {
       read1 = bb1.getNode(i1) and
       variableReadActual(bb1, i1, _) and
       adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
-      read2 = bb2.getNode(i2)
-    )
-  }
-
-  /**
-   * Holds if the read at `read2` is a read of the same SSA definition `def`
-   * as the read at `read1`, and `read2` can be reached from `read1` without
-   * passing through another non-pseudo read.
-   */
-  cached
-  predicate adjacentReadPairExt(
-    DefinitionExt def, VariableReadAccessCfgNode read1, VariableReadAccessCfgNode read2
-  ) {
-    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
-      read1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, _) and
-      adjacentDefSkipUncertainReadsExt(def, bb1, i1, bb2, i2) and
       read2 = bb2.getNode(i2)
     )
   }
@@ -451,31 +415,41 @@ private module Cached {
     )
   }
 
-  /**
-   * Holds if the reference to `def` at index `i` in basic block `bb` can reach
-   * another definition `next` of the same underlying source variable, without
-   * passing through another write or non-pseudo read.
-   *
-   * The reference is either a read of `def` or `def` itself.
-   */
-  cached
-  predicate lastRefBeforeRedefExt(
-    DefinitionExt def, Cfg::BasicBlock bb, int i, Cfg::BasicBlock input, DefinitionExt next
-  ) {
-    exists(LocalVariable v |
-      Impl::lastRefRedefExt(def, v, bb, i, input, next) and
-      not SsaInput::variableRead(bb, i, v, false)
-    )
-    or
-    exists(SsaInput::BasicBlock bb0, int i0 |
-      Impl::lastRefRedefExt(def, _, bb0, i0, input, next) and
-      adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
-    )
-  }
-
   cached
   Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
     Impl::uncertainWriteDefinitionInput(def, result)
+  }
+
+  cached
+  module DataFlowIntegration {
+    import DataFlowIntegrationImpl
+
+    cached
+    predicate localFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+      DataFlowIntegrationImpl::localFlowStep(def, nodeFrom, nodeTo, isUseStep)
+    }
+
+    cached
+    predicate localMustFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo) {
+      DataFlowIntegrationImpl::localMustFlowStep(def, nodeFrom, nodeTo)
+    }
+
+    signature predicate guardChecksSig(Cfg::CfgNodes::AstCfgNode g, Cfg::CfgNode e, boolean branch);
+
+    cached // nothing is actually cached
+    module BarrierGuard<guardChecksSig/3 guardChecks> {
+      private predicate guardChecksAdjTypes(
+        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, boolean branch
+      ) {
+        guardChecks(g, e, branch)
+      }
+
+      private Node getABarrierNodeImpl() {
+        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
+      }
+
+      predicate getABarrierNode = getABarrierNodeImpl/0;
+    }
   }
 }
 
@@ -494,8 +468,7 @@ class DefinitionExt extends Impl::DefinitionExt {
 
   override string toString() { result = this.(Ssa::Definition).toString() }
 
-  /** Gets the location of this definition. */
-  Location getLocation() { result = this.(Ssa::Definition).getLocation() }
+  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
 }
 
 /**
@@ -506,5 +479,99 @@ class DefinitionExt extends Impl::DefinitionExt {
 class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
   override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
 
-  override Location getLocation() { result = this.getBasicBlock().getLocation() }
+  override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
 }
+
+class NormalParameter extends Parameter {
+  NormalParameter() {
+    this instanceof SimpleParameter or
+    this instanceof OptionalParameter or
+    this instanceof KeywordParameter or
+    this instanceof HashSplatParameter or
+    this instanceof SplatParameter or
+    this instanceof BlockParameter
+  }
+}
+
+/** Gets the SSA definition node corresponding to parameter `p`. */
+pragma[nomagic]
+DefinitionExt getParameterDef(NamedParameter p) {
+  exists(Cfg::BasicBlock bb, int i |
+    bb.getNode(i).getAstNode() = p.getDefiningAccess() and
+    result.definesAt(_, bb, i, _)
+  )
+}
+
+private newtype TParameterExt =
+  TNormalParameter(NormalParameter p) or
+  TSelfMethodParameter(MethodBase m) or
+  TSelfToplevelParameter(Toplevel t)
+
+/** A normal parameter or an implicit `self` parameter. */
+class ParameterExt extends TParameterExt {
+  NormalParameter asParameter() { this = TNormalParameter(result) }
+
+  MethodBase asMethodSelf() { this = TSelfMethodParameter(result) }
+
+  Toplevel asToplevelSelf() { this = TSelfToplevelParameter(result) }
+
+  predicate isInitializedBy(WriteDefinition def) {
+    def = getParameterDef(this.asParameter())
+    or
+    def.(Ssa::SelfDefinition).getSourceVariable().getDeclaringScope() =
+      [this.asMethodSelf().(Scope), this.asToplevelSelf()]
+  }
+
+  string toString() {
+    result =
+      [
+        this.asParameter().toString(), this.asMethodSelf().toString(),
+        this.asToplevelSelf().toString()
+      ]
+  }
+
+  Location getLocation() {
+    result =
+      [
+        this.asParameter().getLocation(), this.asMethodSelf().getLocation(),
+        this.asToplevelSelf().getLocation()
+      ]
+  }
+}
+
+private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
+  private import codeql.ruby.controlflow.internal.Guards as Guards
+
+  class Parameter = ParameterExt;
+
+  class Expr extends Cfg::CfgNodes::ExprCfgNode {
+    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+  }
+
+  Expr getARead(Definition def) { result = Cached::getARead(def) }
+
+  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
+    def.(Ssa::WriteDefinition).assigns(value)
+  }
+
+  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { p.isInitializedBy(def) }
+
+  class Guard extends Cfg::CfgNodes::AstCfgNode {
+    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+  }
+
+  /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
+  predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+    Guards::guardControlsBlock(guard, bb, branch)
+  }
+
+  /** Gets an immediate conditional successor of basic block `bb`, if any. */
+  SsaInput::BasicBlock getAConditionalBasicBlockSuccessor(SsaInput::BasicBlock bb, boolean branch) {
+    exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
+      result = bb.getASuccessor(s) and
+      s.getValue() = branch
+    )
+  }
+}
+
+private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;

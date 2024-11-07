@@ -8,10 +8,12 @@ module Ssa {
 
   private module SsaInput implements SsaImplCommon::InputSig<Location> {
     private import internal.DataFlowPrivate
-    private import codeql.swift.controlflow.ControlFlowGraph
+    private import codeql.swift.controlflow.ControlFlowGraph as Cfg
     private import codeql.swift.controlflow.CfgNodes
 
     class BasicBlock = BasicBlocks::BasicBlock;
+
+    class ControlFlowNode = Cfg::ControlFlowNode;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = bb.getImmediateDominator()
@@ -19,7 +21,7 @@ module Ssa {
 
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-    class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
+    class ExitBasicBlock extends BasicBlock, BasicBlocks::ExitBasicBlock { }
 
     private newtype TSourceVariable =
       TNormalSourceVariable(VarDecl v) or
@@ -138,7 +140,7 @@ module Ssa {
   cached
   class Definition extends SsaImpl::Definition {
     cached
-    Location getLocation() { none() }
+    override Location getLocation() { none() }
 
     cached
     ControlFlowNode getARead() {

@@ -1,3 +1,59 @@
+## 1.1.8
+
+No user-facing changes.
+
+## 1.1.7
+
+No user-facing changes.
+
+## 1.1.6
+
+### Minor Analysis Improvements
+
+* Added taint summary model for `org.springframework.core.io.InputStreamSource#getInputStream()`.
+
+## 1.1.5
+
+No user-facing changes.
+
+## 1.1.4
+
+No user-facing changes.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Variables names containing the string "tokenizer" (case-insensitively) are no longer sources for the `java/sensitive-log` query. They normally relate to things like `java.util.StringTokenizer`, which are not sensitive information. This should fix some false positive alerts.
+* The query "Unused classes and interfaces" (`java/unused-reference-type`) now recognizes that if a method of a class has an annotation then it may be accessed reflectively. This should remove false positive alerts, especially for JUnit 4-style tests annotated with `@test`.
+* Alerts about exposing `exception.getMessage()` in servlet responses are now split out of `java/stack-trace-exposure` into its own query `java/error-message-exposure`.
+* Added the extensible abstract class `SensitiveLoggerSource`. Now this class can be extended to add more sources to the `java/sensitive-log` query or for customizations overrides.
+
+## 1.1.1
+
+### Minor Analysis Improvements
+
+* The heuristic to enable certain Android queries has been improved. Now it ignores Android Manifests which don't define an activity, content provider or service. We also only consider files which are under a folder containing such an Android Manifest for these queries. This should remove some false positive alerts.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* The query `java/weak-cryptographic-algorithm` no longer alerts about `RSA/ECB` algorithm strings.
+
+### Minor Analysis Improvements
+
+* The query `java/tainted-permissions-check` now uses threat models. This means that `local` sources are no longer included by default for this query, but can be added by enabling the `local` threat model.
+* Added more `org.apache.commons.io.FileUtils`-related sinks to the path injection query.
+
+## 1.0.2
+
+No user-facing changes.
+
 ## 1.0.1
 
 ### Minor Analysis Improvements

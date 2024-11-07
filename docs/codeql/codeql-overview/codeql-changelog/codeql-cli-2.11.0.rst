@@ -60,8 +60,8 @@ Golang
 
 *   The alert message of many queries have been changed to make the message consistent with other languages.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The Java extractor now populates the :code:`Method` relating to a :code:`MethodAccess` consistently for calls using an explicit and implicit :code:`this` qualifier. Previously if the method :code:`foo` was inherited from a specialised generic type :code:`ParentType<String>`, then an explicit call :code:`this.foo()` would yield a :code:`MethodAccess` whose :code:`getMethod()` accessor returned the bound method :code:`ParentType<String>.foo`, whereas an implicitly-qualified :code:`foo()` :code:`MethodAccess`\ 's :code:`getMethod()` would return the unbound method :code:`ParentType.foo`. Now both scenarios produce a bound method. This means that all data-flow queries may return more results where a relevant path transits a call to such an implicitly-qualified call to a member method with a bound generic type, while queries that inspect the result of :code:`MethodAccess.getMethod()` may need to tolerate bound generic methods in more circumstances. The queries :code:`java/iterator-remove-failure`, :code:`java/non-static-nested-class`, :code:`java/internal-representation-exposure`, :code:`java/subtle-inherited-call` and :code:`java/deprecated-call` have been amended to properly handle calls to bound generic methods, and in some instances may now produce more results in the explicit-\ :code:`this` case as well.
 *   Added taint model for arguments of :code:`java.net.URI` constructors to the queries :code:`java/path-injection` and :code:`java/path-injection-local`.
@@ -94,8 +94,8 @@ C/C++
 
 *   Added a new medium-precision query, :code:`cpp/missing-check-scanf`, which detects :code:`scanf` output variables that are used without a proper return-value check to see that they were actually written. A variation of this query was originally contributed as an `experimental query by @ihsinme <https://github.com/github/codeql/pull/8246>`__.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query "Server-side template injection" (:code:`java/server-side-template-injection`) has been promoted from experimental to the main query pack. This query was originally `submitted as an experimental query by @porcupineyhairs <https://github.com/github/codeql/pull/5935>`__.
 *   Added a new query, :code:`java/android/backup-enabled`, to detect if Android applications allow backups.
@@ -113,8 +113,8 @@ Golang
 
 *   Added the :code:`security-severity` tag and CWE tag to the :code:`go/insecure-hostkeycallback` query.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Removed the :code:`@security-severity` tag from several queries not in the :code:`Security/` folder that also had missing :code:`security` tags.
 
@@ -139,8 +139,8 @@ C#
 
 *   Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.
 
@@ -157,8 +157,8 @@ Ruby
 Breaking Changes
 ~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`Member.getQualifiedName()` predicate result now includes the qualified name of the declaring type.
 
@@ -229,8 +229,8 @@ Ruby
 Major Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The virtual dispatch relation used in data flow now favors summary models over source code for dispatch to interface methods from :code:`java.util` unless there is evidence that a specific source implementation is reachable. This should provide increased precision for any projects that include, for example, custom :code:`List` or :code:`Map` implementations.
 
@@ -242,8 +242,8 @@ JavaScript/TypeScript
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added new sinks to the query :code:`java/android/implicit-pendingintents` to take into account the classes :code:`androidx.core.app.NotificationManagerCompat` and :code:`androidx.core.app.AlarmManagerCompat`.
 *   Added new flow steps for :code:`androidx.core.app.NotificationCompat` and its inner classes.
@@ -300,8 +300,8 @@ Golang
 *   Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
     The old name still exists as a deprecated alias.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The predicate :code:`Annotation.getAValue()` has been deprecated because it might lead to obtaining the value of the wrong annotation element by accident. :code:`getValue(string)` (or one of the value type specific predicates) should be used to explicitly specify the name of the annotation element.
 *   The predicate :code:`Annotation.getAValue(string)` has been renamed to :code:`getAnArrayValue(string)`.
@@ -335,8 +335,8 @@ C/C++
 
 *   Added subclasses of :code:`BuiltInOperations` for :code:`__is_same`, :code:`__is_function`, :code:`__is_layout_compatible`, :code:`__is_pointer_interconvertible_base_of`, :code:`__is_array`, :code:`__array_rank`, :code:`__array_extent`, :code:`__is_arithmetic`, :code:`__is_complete_type`, :code:`__is_compound`, :code:`__is_const`, :code:`__is_floating_point`, :code:`__is_fundamental`, :code:`__is_integral`, :code:`__is_lvalue_reference`, :code:`__is_member_function_pointer`, :code:`__is_member_object_pointer`, :code:`__is_member_pointer`, :code:`__is_object`, :code:`__is_pointer`, :code:`__is_reference`, :code:`__is_rvalue_reference`, :code:`__is_scalar`, :code:`__is_signed`, :code:`__is_unsigned`, :code:`__is_void`, and :code:`__is_volatile`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new predicate, :code:`allowsBackup`, in the :code:`AndroidApplicationXmlElement` class. This predicate detects if the application element does not disable the :code:`android:allowBackup` attribute.
 *   The predicates of the CodeQL class :code:`Annotation` have been improved:

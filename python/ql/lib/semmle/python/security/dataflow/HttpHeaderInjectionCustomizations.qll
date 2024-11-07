@@ -32,9 +32,14 @@ module HttpHeaderInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A HTTP header write, considered as a flow sink.
@@ -48,56 +53,6 @@ module HttpHeaderInjection {
         headerWrite.valueAllowsNewline() and
         this = headerWrite.getValueArg()
       )
-    }
-  }
-
-  /** A key-value pair in a literal for a bulk header update, considered as a single header update. */
-  // TODO: We could instead consider bulk writes as sinks with an implicit read step of DictionaryKey/DictionaryValue content as needed.
-  private class HeaderBulkWriteDictLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
-  {
-    KeyValuePair item;
-
-    HeaderBulkWriteDictLiteral() {
-      exists(Dict dict | DataFlow::localFlow(DataFlow::exprNode(dict), super.getBulkArg()) |
-        item = dict.getAnItem()
-      )
-    }
-
-    override DataFlow::Node getNameArg() { result.asExpr() = item.getKey() }
-
-    override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
-
-    override predicate nameAllowsNewline() {
-      Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
-    }
-
-    override predicate valueAllowsNewline() {
-      Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
-    }
-  }
-
-  /** A tuple in a list for a bulk header update, considered as a single header update. */
-  // TODO: We could instead consider bulk writes as sinks with implicit read steps as needed.
-  private class HeaderBulkWriteListLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
-  {
-    Tuple item;
-
-    HeaderBulkWriteListLiteral() {
-      exists(List list | DataFlow::localFlow(DataFlow::exprNode(list), super.getBulkArg()) |
-        item = list.getAnElt()
-      )
-    }
-
-    override DataFlow::Node getNameArg() { result.asExpr() = item.getElt(0) }
-
-    override DataFlow::Node getValueArg() { result.asExpr() = item.getElt(1) }
-
-    override predicate nameAllowsNewline() {
-      Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
-    }
-
-    override predicate valueAllowsNewline() {
-      Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
     }
   }
 

@@ -255,7 +255,7 @@ module Pyramid {
     }
 
     /** A call to `response.set_cookie`. */
-    private class SetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::MethodCallNode {
+    private class SetCookieCall extends Http::Server::SetCookieCall, DataFlow::MethodCallNode {
       SetCookieCall() { this.calls(instance(), "set_cookie") }
 
       override DataFlow::Node getHeaderArg() { none() }

@@ -1,5 +1,5 @@
 import csharp
-import Taint::PathGraph
+import TestUtilities.ProvenancePathGraph::ShowProvenance<Taint::PathNode, Taint::PathGraph>
 
 class MySink extends DataFlow::ExprNode {
   MySink() {

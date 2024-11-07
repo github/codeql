@@ -17,6 +17,7 @@ import semmle.code.cpp.File
 import semmle.code.cpp.Linkage
 import semmle.code.cpp.Location
 import semmle.code.cpp.Compilation
+import semmle.code.cpp.Concept
 import semmle.code.cpp.Element
 import semmle.code.cpp.Namespace
 import semmle.code.cpp.Specifier

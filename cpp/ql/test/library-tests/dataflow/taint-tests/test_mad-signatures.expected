@@ -1,0 +1,740 @@
+signatureMatches
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 0 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 1 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 2 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 0 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 1 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 2 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 0 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 1 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 2 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:232:84:232:90 | getline | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 2 |
+| stl.h:232:84:232:90 | getline | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 2 |
+| stl.h:232:84:232:90 | getline | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 2 |
+| stl.h:232:84:232:90 | getline | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:294:12:294:17 | vector | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 0 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 1 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 0 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 1 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 0 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 1 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:296:101:296:106 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 |
+| stl.h:296:101:296:106 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:296:101:296:106 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 |
+| stl.h:296:101:296:106 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:301:11:301:19 | operator= | (const vector &) | vector | vector | 0 |
+| stl.h:302:11:302:19 | operator= | (vector &&) | vector | vector | 0 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | deque<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | deque<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | deque<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | forward_list<T> | insert_after | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | forward_list<T> | insert_after | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | forward_list<T> | insert_after | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | list<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | list<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | list<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | vector<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | vector<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | vector<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | deque<T> | insert | 0 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | deque<T> | insert | 1 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | forward_list<T> | insert_after | 0 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | forward_list<T> | insert_after | 1 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | list<T> | insert | 0 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | list<T> | insert | 1 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | vector<T> | insert | 0 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | vector<T> | insert | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:335:37:335:43 | emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:440:36:440:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:440:36:440:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:448:48:448:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:448:48:448:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:452:42:452:57 | insert_or_assign | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:508:36:508:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:508:36:508:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:520:42:520:57 | insert_or_assign | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:569:36:569:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:569:36:569:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:623:36:623:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:623:36:623:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 1 |
+getSignatureParameterName
+| (InputIt,InputIt) | deque | assign<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | deque | assign<InputIt> | 1 | func:0 |
+| (InputIt,InputIt) | forward_list | assign<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | forward_list | assign<InputIt> | 1 | func:0 |
+| (InputIt,InputIt) | list | assign<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | list | assign<InputIt> | 1 | func:0 |
+| (InputIt,InputIt) | vector | assign<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | vector | assign<InputIt> | 1 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 0 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 1 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 | const class:1 & |
+| (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 | InputIterator |
+| (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 | InputIterator |
+| (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 | const class:1 & |
+| (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 0 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 1 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 | const class:1 & |
+| (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 0 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 1 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 | const class:1 & |
+| (const deque &) | deque | deque | 0 | const deque & |
+| (const deque &,const Allocator &) | deque<T,Allocator> | deque | 0 | const deque & |
+| (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 | const class:1 & |
+| (const forward_list &) | forward_list | forward_list | 0 | const forward_list & |
+| (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 | const forward_list & |
+| (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 | const class:1 & |
+| (const list &) | list | list | 0 | const list & |
+| (const list &,const Allocator &) | list<T,Allocator> | list | 0 | const list & |
+| (const list &,const Allocator &) | list<T,Allocator> | list | 1 | const class:1 & |
+| (const vector &) | vector | vector | 0 | const vector & |
+| (const vector &,const Allocator &) | vector<T,Allocator> | vector | 0 | const vector & |
+| (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:1 & |
+| (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 0 | const_iterator |
+| (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 1 | func:0 |
+| (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 2 | func:0 |
+| (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 0 | const_iterator |
+| (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 1 | func:0 |
+| (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 2 | func:0 |
+| (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 0 | const_iterator |
+| (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 1 | func:0 |
+| (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 2 | func:0 |
+| (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 | const_iterator |
+| (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 | func:0 |
+| (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 | func:0 |
+| (const_iterator,T &&) | deque<T> | insert | 0 | const_iterator |
+| (const_iterator,T &&) | deque<T> | insert | 1 | class:0 && |
+| (const_iterator,T &&) | forward_list<T> | insert_after | 0 | const_iterator |
+| (const_iterator,T &&) | forward_list<T> | insert_after | 1 | class:0 && |
+| (const_iterator,T &&) | list<T> | insert | 0 | const_iterator |
+| (const_iterator,T &&) | list<T> | insert | 1 | class:0 && |
+| (const_iterator,T &&) | vector<T> | insert | 0 | const_iterator |
+| (const_iterator,T &&) | vector<T> | insert | 1 | class:0 && |
+| (const_iterator,const T &) | deque<T> | insert | 0 | const_iterator |
+| (const_iterator,const T &) | deque<T> | insert | 1 | const class:0 & |
+| (const_iterator,const T &) | forward_list<T> | insert_after | 0 | const_iterator |
+| (const_iterator,const T &) | forward_list<T> | insert_after | 1 | const class:0 & |
+| (const_iterator,const T &) | list<T> | insert | 0 | const_iterator |
+| (const_iterator,const T &) | list<T> | insert | 1 | const class:0 & |
+| (const_iterator,const T &) | vector<T> | insert | 0 | const_iterator |
+| (const_iterator,const T &) | vector<T> | insert | 1 | const class:0 & |
+| (const_iterator,size_type,const T &) | deque<T> | insert | 0 | const_iterator |
+| (const_iterator,size_type,const T &) | deque<T> | insert | 1 | size_type |
+| (const_iterator,size_type,const T &) | deque<T> | insert | 2 | const class:0 & |
+| (const_iterator,size_type,const T &) | forward_list<T> | insert_after | 0 | const_iterator |
+| (const_iterator,size_type,const T &) | forward_list<T> | insert_after | 1 | size_type |
+| (const_iterator,size_type,const T &) | forward_list<T> | insert_after | 2 | const class:0 & |
+| (const_iterator,size_type,const T &) | list<T> | insert | 0 | const_iterator |
+| (const_iterator,size_type,const T &) | list<T> | insert | 1 | size_type |
+| (const_iterator,size_type,const T &) | list<T> | insert | 2 | const class:0 & |
+| (const_iterator,size_type,const T &) | vector<T> | insert | 0 | const_iterator |
+| (const_iterator,size_type,const T &) | vector<T> | insert | 1 | size_type |
+| (const_iterator,size_type,const T &) | vector<T> | insert | 2 | const class:0 & |
+| (deque &&) | deque | deque | 0 | deque && |
+| (deque &&,const Allocator &) | deque<T,Allocator> | deque | 0 | deque && |
+| (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 | const class:1 & |
+| (format_string,Args &&) |  | format<Args> | 0 | format_string |
+| (format_string,Args &&) |  | format<Args> | 1 | func:0 && |
+| (forward_list &&) | forward_list | forward_list | 0 | forward_list && |
+| (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 | forward_list && |
+| (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 | const class:1 & |
+| (list &&) | list | list | 0 | list && |
+| (list &&,const Allocator &) | list<T,Allocator> | list | 0 | list && |
+| (list &&,const Allocator &) | list<T,Allocator> | list | 1 | const class:1 & |
+| (size_type,const T &) | deque<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | deque<T,Allocator> | assign | 1 | const class:0 & |
+| (size_type,const T &) | forward_list<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | forward_list<T,Allocator> | assign | 1 | const class:0 & |
+| (size_type,const T &) | list<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | list<T,Allocator> | assign | 1 | const class:0 & |
+| (size_type,const T &) | vector<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | vector<T,Allocator> | assign | 1 | const class:0 & |
+| (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 0 | size_type |
+| (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 1 | const class:0 & |
+| (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 | const class:1 & |
+| (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 | size_type |
+| (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 | const class:0 & |
+| (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 | const class:1 & |
+| (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 0 | size_type |
+| (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 1 | const class:0 & |
+| (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 | const class:1 & |
+| (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 | size_type |
+| (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:0 & |
+| (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 | const class:1 & |
+| (vector &&) | vector | vector | 0 | vector && |
+| (vector &&,const Allocator &) | vector<T,Allocator> | vector | 0 | vector && |
+| (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:1 & |
+getParameterTypeName
+| smart_pointer.cpp:7:27:7:30 | sink | 0 | shared_ptr & |
+| smart_pointer.cpp:7:27:7:30 | sink | 0 | shared_ptr & |
+| smart_pointer.cpp:8:27:8:30 | sink | 0 | unique_ptr & |
+| smart_pointer.cpp:8:27:8:30 | sink | 0 | unique_ptr & |
+| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
+| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
+| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
+| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:52:12:52:21 | operator++ | 0 | int |
+| stl.h:52:12:52:21 | operator++ | 0 | int |
+| stl.h:52:12:52:21 | operator++ | 0 | int |
+| stl.h:52:12:52:21 | operator++ | 0 | int |
+| stl.h:52:12:52:21 | operator++ | 0 | int |
+| stl.h:54:12:54:21 | operator-- | 0 | int |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:59:12:59:20 | operator+ | 0 | int |
+| stl.h:60:12:60:20 | operator- | 0 | int |
+| stl.h:61:13:61:22 | operator+= | 0 | int |
+| stl.h:61:13:61:22 | operator+= | 0 | int |
+| stl.h:62:13:62:22 | operator-= | 0 | int |
+| stl.h:64:18:64:27 | operator[] | 0 | int |
+| stl.h:86:22:86:41 | back_insert_iterator | 0 | class:0 & |
+| stl.h:86:22:86:41 | back_insert_iterator | 0 | class:0 & |
+| stl.h:88:25:88:33 | operator= | 0 | value_type && |
+| stl.h:88:25:88:33 | operator= | 0 | value_type && |
+| stl.h:91:24:91:33 | operator++ | 0 | int |
+| stl.h:91:24:91:33 | operator++ | 0 | int |
+| stl.h:95:44:95:44 | back_inserter | 0 | func:0 & |
+| stl.h:95:44:95:44 | back_inserter | 0 | func:0 & |
+| stl.h:148:3:148:14 | basic_string | 0 | const class:2 & |
+| stl.h:149:33:149:44 | basic_string | 0 | const class:0 * |
+| stl.h:149:33:149:44 | basic_string | 1 | const class:2 & |
+| stl.h:151:16:151:20 | c_str | 0 | func:0 |
+| stl.h:151:16:151:20 | c_str | 1 | func:0 |
+| stl.h:151:16:151:20 | c_str | 2 | const class:2 & |
+| stl.h:173:13:173:22 | operator[] | 0 | size_type |
+| stl.h:175:13:175:14 | at | 0 | size_type |
+| stl.h:176:35:176:44 | operator+= | 0 | size_type |
+| stl.h:176:35:176:44 | operator+= | 0 | size_type |
+| stl.h:177:17:177:26 | operator+= | 0 | const func:0 & |
+| stl.h:178:17:178:22 | append | 0 | const class:0 * |
+| stl.h:179:17:179:22 | append | 0 | const basic_string & |
+| stl.h:180:17:180:22 | append | 0 | const class:0 * |
+| stl.h:181:47:181:52 | append | 0 | size_type |
+| stl.h:181:47:181:52 | append | 1 | class:0 |
+| stl.h:182:17:182:22 | assign | 0 | func:0 |
+| stl.h:182:17:182:22 | assign | 1 | func:0 |
+| stl.h:183:17:183:22 | assign | 0 | const basic_string & |
+| stl.h:184:47:184:52 | assign | 0 | size_type |
+| stl.h:184:47:184:52 | assign | 1 | class:0 |
+| stl.h:185:17:185:22 | insert | 0 | func:0 |
+| stl.h:185:17:185:22 | insert | 1 | func:0 |
+| stl.h:186:17:186:22 | insert | 0 | size_type |
+| stl.h:186:17:186:22 | insert | 1 | const basic_string & |
+| stl.h:187:17:187:22 | insert | 0 | size_type |
+| stl.h:187:17:187:22 | insert | 1 | size_type |
+| stl.h:187:17:187:22 | insert | 2 | class:0 |
+| stl.h:188:12:188:17 | insert | 0 | size_type |
+| stl.h:188:12:188:17 | insert | 1 | const class:0 * |
+| stl.h:189:42:189:47 | insert | 0 | const_iterator |
+| stl.h:189:42:189:47 | insert | 1 | size_type |
+| stl.h:189:42:189:47 | insert | 2 | class:0 |
+| stl.h:190:17:190:23 | replace | 0 | const_iterator |
+| stl.h:190:17:190:23 | replace | 1 | func:0 |
+| stl.h:190:17:190:23 | replace | 2 | func:0 |
+| stl.h:191:17:191:23 | replace | 0 | size_type |
+| stl.h:191:17:191:23 | replace | 1 | size_type |
+| stl.h:191:17:191:23 | replace | 2 | const basic_string & |
+| stl.h:192:13:192:16 | copy | 0 | size_type |
+| stl.h:192:13:192:16 | copy | 1 | size_type |
+| stl.h:192:13:192:16 | copy | 2 | size_type |
+| stl.h:192:13:192:16 | copy | 3 | class:0 |
+| stl.h:193:8:193:12 | clear | 0 | class:0 * |
+| stl.h:193:8:193:12 | clear | 1 | size_type |
+| stl.h:193:8:193:12 | clear | 2 | size_type |
+| stl.h:195:8:195:11 | swap | 0 | size_type |
+| stl.h:195:8:195:11 | swap | 1 | size_type |
+| stl.h:198:94:198:102 | operator+ | 0 | const basic_string & |
+| stl.h:198:94:198:102 | operator+ | 1 | const basic_string & |
+| stl.h:199:94:199:102 | operator+ | 0 | const basic_string & |
+| stl.h:199:94:199:102 | operator+ | 1 | const func:0 * |
+| stl.h:214:33:214:42 | operator>> | 0 | int & |
+| stl.h:217:33:217:35 | get | 0 | char_type & |
+| stl.h:218:33:218:35 | get | 0 | char_type * |
+| stl.h:218:33:218:35 | get | 1 | streamsize |
+| stl.h:220:33:220:36 | read | 0 | char_type * |
+| stl.h:220:33:220:36 | read | 1 | streamsize |
+| stl.h:221:14:221:21 | readsome | 0 | char_type * |
+| stl.h:221:14:221:21 | readsome | 1 | streamsize |
+| stl.h:222:33:222:39 | putback | 0 | char_type |
+| stl.h:225:32:225:38 | getline | 0 | char_type * |
+| stl.h:225:32:225:38 | getline | 1 | streamsize |
+| stl.h:226:32:226:38 | getline | 0 | char_type * |
+| stl.h:226:32:226:38 | getline | 1 | streamsize |
+| stl.h:226:32:226:38 | getline | 2 | char_type |
+| stl.h:229:68:229:77 | operator>> | 0 | basic_istream & |
+| stl.h:229:68:229:77 | operator>> | 1 | func:0 * |
+| stl.h:230:85:230:94 | operator>> | 0 | basic_istream & |
+| stl.h:230:85:230:94 | operator>> | 1 | basic_string & |
+| stl.h:232:84:232:90 | getline | 0 | basic_istream & |
+| stl.h:232:84:232:90 | getline | 1 | basic_string & |
+| stl.h:232:84:232:90 | getline | 2 | func:0 |
+| stl.h:233:84:233:90 | getline | 0 | basic_istream & |
+| stl.h:233:84:233:90 | getline | 1 | basic_string & |
+| stl.h:240:33:240:42 | operator<< | 0 | int |
+| stl.h:242:33:242:35 | put | 0 | char_type |
+| stl.h:243:33:243:37 | write | 0 | const char_type * |
+| stl.h:243:33:243:37 | write | 1 | streamsize |
+| stl.h:247:67:247:76 | operator<< | 0 | basic_ostream & |
+| stl.h:247:67:247:76 | operator<< | 1 | const func:0 * |
+| stl.h:248:85:248:94 | operator<< | 0 | basic_ostream & |
+| stl.h:248:85:248:94 | operator<< | 1 | const basic_string & |
+| stl.h:259:12:259:29 | basic_stringstream | 0 | const basic_string & |
+| stl.h:263:23:263:31 | operator= | 0 | basic_stringstream && |
+| stl.h:265:8:265:11 | swap | 0 | basic_stringstream & |
+| stl.h:268:8:268:10 | str | 0 | const basic_string & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:294:12:294:17 | vector | 0 | size_type |
+| stl.h:294:12:294:17 | vector | 0 | size_type |
+| stl.h:294:12:294:17 | vector | 0 | size_type |
+| stl.h:294:12:294:17 | vector | 1 | const class:1 & |
+| stl.h:294:12:294:17 | vector | 1 | const class:1 & |
+| stl.h:294:12:294:17 | vector | 1 | const class:1 & |
+| stl.h:295:3:295:8 | vector | 0 | size_type |
+| stl.h:295:3:295:8 | vector | 0 | size_type |
+| stl.h:295:3:295:8 | vector | 1 | const class:0 & |
+| stl.h:295:3:295:8 | vector | 1 | const class:0 & |
+| stl.h:295:3:295:8 | vector | 2 | const class:1 & |
+| stl.h:295:3:295:8 | vector | 2 | const class:1 & |
+| stl.h:296:101:296:106 | vector | 0 | func:0 |
+| stl.h:296:101:296:106 | vector | 1 | func:0 |
+| stl.h:296:101:296:106 | vector | 2 | const class:1 & |
+| stl.h:301:11:301:19 | operator= | 0 | const vector & |
+| stl.h:302:11:302:19 | operator= | 0 | vector && |
+| stl.h:303:106:303:111 | assign | 0 | func:0 |
+| stl.h:303:106:303:111 | assign | 1 | func:0 |
+| stl.h:306:8:306:13 | assign | 0 | size_type |
+| stl.h:306:8:306:13 | assign | 0 | size_type |
+| stl.h:306:8:306:13 | assign | 0 | size_type |
+| stl.h:306:8:306:13 | assign | 1 | const class:0 & |
+| stl.h:306:8:306:13 | assign | 1 | const class:0 & |
+| stl.h:306:8:306:13 | assign | 1 | const class:0 & |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:318:13:318:14 | at | 0 | size_type |
+| stl.h:327:8:327:16 | push_back | 0 | const class:0 & |
+| stl.h:327:8:327:16 | push_back | 0 | const class:0 & |
+| stl.h:328:8:328:16 | push_back | 0 | class:0 && |
+| stl.h:331:12:331:17 | insert | 0 | const_iterator |
+| stl.h:331:12:331:17 | insert | 1 | class:0 && |
+| stl.h:333:42:333:47 | insert | 0 | const_iterator |
+| stl.h:333:42:333:47 | insert | 0 | const_iterator |
+| stl.h:333:42:333:47 | insert | 1 | func:0 |
+| stl.h:333:42:333:47 | insert | 1 | func:0 |
+| stl.h:333:42:333:47 | insert | 2 | func:0 |
+| stl.h:333:42:333:47 | insert | 2 | func:0 |
+| stl.h:335:37:335:43 | emplace | 0 | const_iterator |
+| stl.h:335:37:335:43 | emplace | 1 | func:0 && |
+| stl.h:336:33:336:44 | emplace_back | 0 | func:0 && |
+| stl.h:338:8:338:11 | swap | 0 | vector & |
+| stl.h:351:12:351:21 | shared_ptr | 0 | class:0 * |
+| stl.h:352:3:352:12 | shared_ptr | 0 | const shared_ptr & |
+| stl.h:352:3:352:12 | shared_ptr | 0 | const shared_ptr & |
+| stl.h:369:12:369:21 | unique_ptr | 0 | class:0 * |
+| stl.h:380:52:380:62 | make_unique | 0 | func:1 && |
+| stl.h:380:52:380:62 | make_unique | 0 | func:1 && |
+| stl.h:380:52:380:62 | make_unique | 0 | func:1 && |
+| stl.h:382:52:382:62 | make_shared | 0 | func:1 && |
+| stl.h:382:52:382:62 | make_shared | 0 | func:1 && |
+| stl.h:382:52:382:62 | make_shared | 0 | func:1 && |
+| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
+| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
+| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
+| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
+| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
+| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
+| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
+| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
+| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
+| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:399:8:399:11 | swap | 0 | pair & |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:422:3:422:5 | map | 0 | const map & |
+| stl.h:426:8:426:16 | operator= | 0 | const map & |
+| stl.h:435:6:435:15 | operator[] | 0 | key_type && |
+| stl.h:435:6:435:15 | operator[] | 0 | key_type && |
+| stl.h:436:6:436:7 | at | 0 | const key_type & |
+| stl.h:439:48:439:54 | emplace | 0 | func:0 && |
+| stl.h:439:48:439:54 | emplace | 0 | func:0 && |
+| stl.h:440:36:440:47 | emplace_hint | 0 | const_iterator |
+| stl.h:440:36:440:47 | emplace_hint | 0 | const_iterator |
+| stl.h:440:36:440:47 | emplace_hint | 1 | func:0 && |
+| stl.h:440:36:440:47 | emplace_hint | 1 | func:0 && |
+| stl.h:443:24:443:29 | insert | 0 | value_type && |
+| stl.h:445:12:445:17 | insert | 0 | const_iterator |
+| stl.h:445:12:445:17 | insert | 1 | value_type && |
+| stl.h:448:48:448:58 | try_emplace | 0 | key_type && |
+| stl.h:448:48:448:58 | try_emplace | 0 | key_type && |
+| stl.h:448:48:448:58 | try_emplace | 1 | func:0 && |
+| stl.h:448:48:448:58 | try_emplace | 1 | func:0 && |
+| stl.h:450:36:450:46 | try_emplace | 0 | const_iterator |
+| stl.h:450:36:450:46 | try_emplace | 0 | const_iterator |
+| stl.h:450:36:450:46 | try_emplace | 1 | key_type && |
+| stl.h:450:36:450:46 | try_emplace | 1 | key_type && |
+| stl.h:450:36:450:46 | try_emplace | 2 | func:0 && |
+| stl.h:450:36:450:46 | try_emplace | 2 | func:0 && |
+| stl.h:452:42:452:57 | insert_or_assign | 0 | key_type && |
+| stl.h:452:42:452:57 | insert_or_assign | 1 | func:0 && |
+| stl.h:454:30:454:45 | insert_or_assign | 0 | const_iterator |
+| stl.h:454:30:454:45 | insert_or_assign | 1 | key_type && |
+| stl.h:454:30:454:45 | insert_or_assign | 2 | func:0 && |
+| stl.h:456:12:456:16 | erase | 0 | iterator |
+| stl.h:459:8:459:11 | swap | 0 | map & |
+| stl.h:462:27:462:31 | merge | 0 | map & |
+| stl.h:465:12:465:15 | find | 0 | const key_type & |
+| stl.h:468:12:468:22 | lower_bound | 0 | const key_type & |
+| stl.h:470:12:470:22 | upper_bound | 0 | const key_type & |
+| stl.h:473:28:473:38 | equal_range | 0 | const key_type & |
+| stl.h:490:3:490:15 | unordered_map | 0 | const unordered_map & |
+| stl.h:490:3:490:15 | unordered_map | 0 | const unordered_map & |
+| stl.h:494:18:494:26 | operator= | 0 | const unordered_map & |
+| stl.h:503:16:503:25 | operator[] | 0 | key_type && |
+| stl.h:503:16:503:25 | operator[] | 0 | key_type && |
+| stl.h:504:16:504:17 | at | 0 | const key_type & |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:508:36:508:47 | emplace_hint | 0 | const_iterator |
+| stl.h:508:36:508:47 | emplace_hint | 0 | const_iterator |
+| stl.h:508:36:508:47 | emplace_hint | 1 | func:0 && |
+| stl.h:508:36:508:47 | emplace_hint | 1 | func:0 && |
+| stl.h:511:24:511:29 | insert | 0 | value_type && |
+| stl.h:513:12:513:17 | insert | 0 | const_iterator |
+| stl.h:513:12:513:17 | insert | 1 | value_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:518:36:518:46 | try_emplace | 0 | const_iterator |
+| stl.h:518:36:518:46 | try_emplace | 0 | const_iterator |
+| stl.h:518:36:518:46 | try_emplace | 1 | key_type && |
+| stl.h:518:36:518:46 | try_emplace | 1 | key_type && |
+| stl.h:518:36:518:46 | try_emplace | 2 | func:0 && |
+| stl.h:518:36:518:46 | try_emplace | 2 | func:0 && |
+| stl.h:520:42:520:57 | insert_or_assign | 0 | key_type && |
+| stl.h:520:42:520:57 | insert_or_assign | 1 | func:0 && |
+| stl.h:522:30:522:45 | insert_or_assign | 0 | const_iterator |
+| stl.h:522:30:522:45 | insert_or_assign | 1 | key_type && |
+| stl.h:522:30:522:45 | insert_or_assign | 2 | func:0 && |
+| stl.h:524:12:524:16 | erase | 0 | iterator |
+| stl.h:527:8:527:11 | swap | 0 | unordered_map & |
+| stl.h:530:37:530:41 | merge | 0 | unordered_map & |
+| stl.h:533:12:533:15 | find | 0 | const key_type & |
+| stl.h:536:28:536:38 | equal_range | 0 | const key_type & |
+| stl.h:555:3:555:5 | set | 0 | const set & |
+| stl.h:557:33:557:35 | set | 0 | func:0 |
+| stl.h:557:33:557:35 | set | 1 | func:0 |
+| stl.h:560:8:560:16 | operator= | 0 | const set & |
+| stl.h:568:48:568:54 | emplace | 0 | func:0 && |
+| stl.h:568:48:568:54 | emplace | 0 | func:0 && |
+| stl.h:569:36:569:47 | emplace_hint | 0 | const_iterator |
+| stl.h:569:36:569:47 | emplace_hint | 0 | const_iterator |
+| stl.h:569:36:569:47 | emplace_hint | 1 | func:0 && |
+| stl.h:569:36:569:47 | emplace_hint | 1 | func:0 && |
+| stl.h:571:23:571:28 | insert | 0 | value_type && |
+| stl.h:573:12:573:17 | insert | 0 | const_iterator |
+| stl.h:573:12:573:17 | insert | 1 | value_type && |
+| stl.h:574:38:574:43 | insert | 0 | func:0 |
+| stl.h:574:38:574:43 | insert | 1 | func:0 |
+| stl.h:576:12:576:16 | erase | 0 | iterator |
+| stl.h:579:8:579:11 | swap | 0 | set & |
+| stl.h:582:27:582:31 | merge | 0 | set & |
+| stl.h:585:12:585:15 | find | 0 | const key_type & |
+| stl.h:588:12:588:22 | lower_bound | 0 | const key_type & |
+| stl.h:590:12:590:22 | upper_bound | 0 | const key_type & |
+| stl.h:592:28:592:38 | equal_range | 0 | const key_type & |
+| stl.h:609:3:609:15 | unordered_set | 0 | const unordered_set & |
+| stl.h:611:33:611:45 | unordered_set | 0 | func:0 |
+| stl.h:611:33:611:45 | unordered_set | 1 | func:0 |
+| stl.h:611:33:611:45 | unordered_set | 2 | size_type |
+| stl.h:614:18:614:26 | operator= | 0 | const unordered_set & |
+| stl.h:622:48:622:54 | emplace | 0 | func:0 && |
+| stl.h:622:48:622:54 | emplace | 0 | func:0 && |
+| stl.h:623:36:623:47 | emplace_hint | 0 | const_iterator |
+| stl.h:623:36:623:47 | emplace_hint | 0 | const_iterator |
+| stl.h:623:36:623:47 | emplace_hint | 1 | func:0 && |
+| stl.h:623:36:623:47 | emplace_hint | 1 | func:0 && |
+| stl.h:625:24:625:29 | insert | 0 | value_type && |
+| stl.h:627:12:627:17 | insert | 0 | const_iterator |
+| stl.h:627:12:627:17 | insert | 1 | value_type && |
+| stl.h:628:38:628:43 | insert | 0 | func:0 |
+| stl.h:628:38:628:43 | insert | 1 | func:0 |
+| stl.h:630:12:630:16 | erase | 0 | iterator |
+| stl.h:633:8:633:11 | swap | 0 | unordered_set & |
+| stl.h:636:37:636:41 | merge | 0 | unordered_set & |
+| stl.h:639:12:639:15 | find | 0 | const key_type & |
+| stl.h:641:28:641:38 | equal_range | 0 | const key_type & |
+| stl.h:671:21:671:39 | basic_format_string | 0 | const func:0 & |
+| stl.h:671:21:671:39 | basic_format_string | 0 | const func:0 & |
+| stl.h:678:33:678:38 | format | 0 | format_string |
+| stl.h:678:33:678:38 | format | 0 | format_string |
+| stl.h:678:33:678:38 | format | 1 | func:0 && |
+| stl.h:678:33:678:38 | format | 1 | func:0 && |
+| stringstream.cpp:18:6:18:9 | sink | 0 | const basic_ostream> & |
+| stringstream.cpp:21:6:21:9 | sink | 0 | const basic_istream> & |
+| stringstream.cpp:24:6:24:9 | sink | 0 | const basic_iostream> & |
+| swap1.cpp:14:9:14:9 | move | 0 | func:0 & |
+| swap2.cpp:14:9:14:9 | move | 0 | func:0 & |
+| swap.h:4:20:4:23 | swap | 0 | func:0 & |
+| swap.h:4:20:4:23 | swap | 1 | func:0 & |
+| vector.cpp:14:27:14:30 | sink | 0 | vector> & |
+| vector.cpp:14:27:14:30 | sink | 0 | vector> & |

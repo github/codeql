@@ -12,6 +12,27 @@ public class NewSinks
     public string TaintedProp { get; set; }
     public string PrivateSetTaintedProp { get; private set; }
 
+    // Sink defined in the extensible file next to the test.
+    // neutral=Sinks;NewSinks;Sink;(System.Object);summary;df-generated
+    public static void Sink(object o) => throw null;
+
+    // Sink defined in the extensible file next to the test.
+    // neutral=Sinks;NewSinks;Sink2;(System.Object);summary;df-generated
+    public static void Sink2(object o) => throw null;
+
+    // Defined as sink neutral in the file next to the neutral summary test.
+    // neutral=Sinks;NewSinks;NoSink;(System.Object);summary;df-generated
+    public static void NoSink(object o) => throw null;
+
+    // Sink and Source defined in the extensible file next to the sink test.
+    // sink=Sinks;NewSinks;false;SaveAndGet;(System.Object);;Argument[0];test-sink;df-generated
+    // neutral=Sinks;NewSinks;SaveAndGet;(System.Object);summary;df-generated
+    public static object SaveAndGet(object o)
+    {
+        Sink(o);
+        return null;
+    }
+
     // New sink
     // sink=Sinks;NewSinks;false;WrapResponseWrite;(System.Object);;Argument[0];html-injection;df-generated
     // neutral=Sinks;NewSinks;WrapResponseWrite;(System.Object);summary;df-generated
@@ -77,5 +98,71 @@ public class NewSinks
     {
         var response = new HttpResponse();
         response.WriteFile(PrivateSetTaintedProp);
+    }
+
+    // Not a new sink because a simple type is used in an intermediate step
+    // neutral=Sinks;NewSinks;WrapResponseWriteFileSimpleType;(System.String);summary;df-generated
+    public void WrapResponseWriteFileSimpleType(string s)
+    {
+        var r = s == "hello";
+        Sink(r);
+    }
+
+    // Not a new sink as this callable has been manually modelled
+    // as sink neutral.
+    // neutral=Sinks;NewSinks;ManualSinkNeutral;(System.Object);summary;df-generated
+    public void ManualSinkNeutral(object o)
+    {
+        Sink(o);
+    }
+
+    // Not a new sink as this callable already has a manual sink.
+    // neutral=Sinks;NewSinks;ManualSinkAlreadyDefined;(System.Object);summary;df-generated
+    public void ManualSinkAlreadyDefined(object o)
+    {
+        Sink(o);
+    }
+
+    public abstract class DataWriter
+    {
+        // neutral=Sinks;NewSinks+DataWriter;Write;(System.Object);summary;df-generated
+        public abstract void Write(object o);
+    }
+
+    public class DataWriterKind1 : DataWriter
+    {
+        // sink=Sinks;NewSinks+DataWriterKind1;true;Write;(System.Object);;Argument[0];test-sink;df-generated
+        // neutral=Sinks;NewSinks+DataWriterKind1;Write;(System.Object);summary;df-generated
+        public override void Write(object o)
+        {
+            Sink(o);
+        }
+    }
+
+    public class DataWriterKind2 : DataWriter
+    {
+        // sink=Sinks;NewSinks+DataWriterKind2;true;Write;(System.Object);;Argument[0];test-sink2;df-generated
+        // neutral=Sinks;NewSinks+DataWriterKind2;Write;(System.Object);summary;df-generated
+        public override void Write(object o)
+        {
+            Sink2(o);
+        }
+    }
+}
+
+public class CompoundSinks
+{
+    // neutral=Sinks;CompoundSinks;WrapNewSinkProp;(Sinks.NewSinks);summary;df-generated
+    // sink=Sinks;CompoundSinks;false;WrapNewSinkProp;(Sinks.NewSinks);;Argument[0];html-injection;df-generated
+    public void WrapNewSinkProp(NewSinks ns)
+    {
+        ns.WrapPropResponseWriteFile();
+    }
+
+    // neutral=Sinks;CompoundSinks;WrapNewSinkField;(Sinks.NewSinks);summary;df-generated
+    // sink=Sinks;CompoundSinks;false;WrapNewSinkField;(Sinks.NewSinks);;Argument[0];html-injection;df-generated
+    public void WrapNewSinkField(NewSinks ns)
+    {
+        ns.WrapFieldResponseWriteFile();
     }
 }

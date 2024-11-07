@@ -201,12 +201,12 @@ internal sealed class StubVisitor : SymbolVisitor
         }
     }
 
-    private static readonly HashSet<string> attributeAllowList = new() {
+    private static readonly HashSet<string> attributeAllowList = [
         "System.FlagsAttribute",
         "System.AttributeUsageAttribute",
         "System.Runtime.CompilerServices.InterpolatedStringHandlerAttribute",
         "System.Runtime.CompilerServices.InterpolatedStringHandlerArgumentAttribute",
-    };
+    ];
 
     private void StubAttribute(AttributeData a, string prefix, bool addNewLine)
     {
@@ -298,7 +298,7 @@ internal sealed class StubVisitor : SymbolVisitor
         (symbol is INamedTypeSymbol named && named.TypeArguments.Any(IsUnsafe)) ||
         (symbol is IArrayTypeSymbol at && IsUnsafe(at.ElementType));
 
-    private static readonly HashSet<string> keywords = new() {
+    private static readonly HashSet<string> keywords = [
         "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked",
         "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else",
         "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach",
@@ -308,10 +308,10 @@ internal sealed class StubVisitor : SymbolVisitor
         "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try",
         "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void",
         "volatile", "while"
-    };
+    ];
 
     private static string EscapeIdentifier(string identifier) =>
-        keywords.Contains(identifier) ? "@" + identifier : identifier;
+        keywords.Contains(identifier) ? $"@{identifier}" : identifier;
 
     private static bool TryGetConstantValue(IFieldSymbol symbol, out string value)
     {

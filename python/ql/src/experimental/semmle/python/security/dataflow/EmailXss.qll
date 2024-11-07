@@ -19,7 +19,7 @@ private module EmailXssConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer = any(HtmlEscaping esc).getOutput()
     or
-    sanitizer instanceof StringConstCompareBarrier
+    sanitizer instanceof ConstCompareBarrier
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {

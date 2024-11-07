@@ -1,0 +1,4 @@
+| gen_path_expr.rs:5:13:5:20 | PathExpr | gen_path_expr.rs:5:13:5:20 | Path |
+| gen_path_expr.rs:6:13:6:20 | PathExpr | gen_path_expr.rs:6:13:6:20 | Path |
+| gen_path_expr.rs:7:13:7:20 | PathExpr | gen_path_expr.rs:7:13:7:20 | Path |
+| gen_path_expr.rs:8:13:8:35 | PathExpr | gen_path_expr.rs:8:13:8:35 | Path |

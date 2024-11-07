@@ -125,7 +125,7 @@ namespace Semmle.Extraction
             if (!Valid)
                 throw new InvalidOperationException("Attempt to use an invalid label");
 
-            return "#" + Value;
+            return $"#{Value}";
         }
 
         public static bool operator ==(Label l1, Label l2) => l1.Value == l2.Value;

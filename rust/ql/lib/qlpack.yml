@@ -1,0 +1,15 @@
+name: codeql/rust-all
+version: 0.1.0-dev
+groups: rust
+extractor: rust
+dbscheme: rust.dbscheme
+library: true
+dependencies:
+  codeql/controlflow: ${workspace}
+  codeql/dataflow: ${workspace}
+  codeql/regex: ${workspace}
+  codeql/mad: ${workspace}
+  codeql/ssa: ${workspace}
+  codeql/tutorial: ${workspace}
+  codeql/util: ${workspace}
+warnOnImplicitThis: true

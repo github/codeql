@@ -126,8 +126,8 @@ C/C++
 
 *   The query :code:`cpp/redundant-null-check-simple` has been promoted to Code Scanning. The query finds cases where a pointer is compared to null after it has already been dereferenced. Such comparisons likely indicate a bug at the place where the pointer is dereferenced, or where the pointer is compared to null.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/insecure-ldap-auth` has been promoted from experimental to the main query pack. This query detects transmission of cleartext credentials in LDAP authentication. Insecure LDAP authentication causes sensitive information to be vulnerable to remote attackers. This query was originally `submitted as an experimental query by @luchua-bc <https://github.com/github/codeql/pull/4854>`__
 
@@ -157,8 +157,8 @@ Golang
 
 *   Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular :code:`DataFlow::hasFlowPath`, :code:`DataFlow::hasFlow`, :code:`DataFlow::hasFlowTo`, and :code:`DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular :code:`DataFlow::hasFlowPath`, :code:`DataFlow::hasFlow`, :code:`DataFlow::hasFlowTo`, and :code:`DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
 
@@ -196,8 +196,8 @@ C/C++
 
 *   The :code:`BufferAccess` library (:code:`semmle.code.cpp.security.BufferAccess`) no longer matches buffer accesses inside unevaluated contexts (such as inside :code:`sizeof` or :code:`decltype` expressions). As a result, queries using this library may see fewer false positives.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Fixed a bug in the regular expression used to identify sensitive information in :code:`SensitiveActions::getCommonSensitiveInfoRegex`. This may affect the results of the queries :code:`java/android/sensitive-communication`, :code:`java/android/sensitive-keyboard-cache`, and :code:`java/sensitive-log`.
 *   Added a summary model for the :code:`java.lang.UnsupportedOperationException(String)` constructor.
@@ -291,8 +291,8 @@ Golang
 
 *   The recently introduced new data flow and taint tracking APIs have had a number of module and predicate renamings. The old APIs remain in place for now.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`execTainted` predicate in :code:`CommandLineQuery.qll` has been deprecated and replaced with the predicate :code:`execIsTainted`.
 *   The recently introduced new data flow and taint tracking APIs have had a number of module and predicate renamings. The old APIs remain in place for now.
@@ -316,7 +316,7 @@ C/C++
 
 *   Added overridable predicates :code:`getSizeExpr` and :code:`getSizeMult` to the :code:`BufferAccess` class (:code:`semmle.code.cpp.security.BufferAccess.qll`). This makes it possible to model a larger class of buffer reads and writes using the library.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Predicates :code:`Compilation.getExpandedArgument` and :code:`Compilation.getAnExpandedArgument` has been added.

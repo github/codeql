@@ -338,136 +338,144 @@ attributes.cs:
 #  109|       1: [Parameter] b
 #  109|         -1: [TypeMention] MyAttributeUsage
 #  109|     4: [IntLiteral] 0
-#  111|   6: [Indexer] Item
-#  111|     -1: [TypeMention] int
+#  112|   6: [Indexer] Item
+#  112|     -1: [TypeMention] int
+#-----|     0: (Attributes)
+#  111|       1: [DefaultAttribute] [My3(...)]
+#  111|         -1: [TypeMention] My3Attribute
+#  111|         0: [IntLiteral] 15
 #-----|     1: (Parameters)
-#  111|       0: [Parameter] x
-#  111|         -1: [TypeMention] int
-#  115|     3: [Getter] get_Item
+#  112|       0: [Parameter] x
+#  112|         -1: [TypeMention] int
+#  116|     3: [Getter] get_Item
 #-----|       0: (Attributes)
-#  113|         1: [DefaultAttribute] [My3(...)]
-#  113|           -1: [TypeMention] My3Attribute
-#  113|           0: [IntLiteral] 7
-#  114|         2: [ReturnAttribute] [return: My3(...)]
+#  114|         1: [DefaultAttribute] [My3(...)]
 #  114|           -1: [TypeMention] My3Attribute
-#  114|           0: [IntLiteral] 8
+#  114|           0: [IntLiteral] 7
+#  115|         2: [ReturnAttribute] [return: My3(...)]
+#  115|           -1: [TypeMention] My3Attribute
+#  115|           0: [IntLiteral] 8
 #-----|       2: (Parameters)
-#  111|         0: [Parameter] x
-#  115|       4: [BlockStmt] {...}
-#  115|         0: [ReturnStmt] return ...;
-#  115|           0: [AddExpr] ... + ...
-#  115|             0: [ParameterAccess] access to parameter x
-#  115|             1: [IntLiteral] 1
-#  119|     4: [Setter] set_Item
+#  112|         0: [Parameter] x
+#  116|       4: [BlockStmt] {...}
+#  116|         0: [ReturnStmt] return ...;
+#  116|           0: [AddExpr] ... + ...
+#  116|             0: [ParameterAccess] access to parameter x
+#  116|             1: [IntLiteral] 1
+#  120|     4: [Setter] set_Item
 #-----|       0: (Attributes)
-#  117|         1: [DefaultAttribute] [My3(...)]
-#  117|           -1: [TypeMention] My3Attribute
-#  117|           0: [IntLiteral] 9
+#  118|         1: [DefaultAttribute] [My3(...)]
+#  118|           -1: [TypeMention] My3Attribute
+#  118|           0: [IntLiteral] 9
 #-----|       2: (Parameters)
-#  111|         0: [Parameter] x
-#  119|         1: [Parameter] value
+#  112|         0: [Parameter] x
+#  120|         1: [Parameter] value
 #-----|           0: (Attributes)
-#  118|             1: [DefaultAttribute] [My3(...)]
-#  118|               -1: [TypeMention] My3Attribute
-#  118|               0: [IntLiteral] 10
-#  119|       4: [BlockStmt] {...}
-#  119|         0: [ReturnStmt] return ...;
-#  122|   7: [Field] p
-#  122|     -1: [TypeMention] int
-#  123|   8: [Property] Prop1
+#  119|             1: [DefaultAttribute] [My3(...)]
+#  119|               -1: [TypeMention] My3Attribute
+#  119|               0: [IntLiteral] 10
+#  120|       4: [BlockStmt] {...}
+#  120|         0: [ReturnStmt] return ...;
+#  123|   7: [Field] p
 #  123|     -1: [TypeMention] int
-#  127|     3: [Getter] get_Prop1
+#  125|   8: [Property] Prop1
+#  125|     -1: [TypeMention] int
+#-----|     0: (Attributes)
+#  124|       1: [DefaultAttribute] [My3(...)]
+#  124|         -1: [TypeMention] My3Attribute
+#  124|         0: [IntLiteral] 16
+#  129|     3: [Getter] get_Prop1
 #-----|       0: (Attributes)
-#  125|         1: [DefaultAttribute] [My3(...)]
-#  125|           -1: [TypeMention] My3Attribute
-#  125|           0: [IntLiteral] 11
-#  126|         2: [ReturnAttribute] [return: My3(...)]
-#  126|           -1: [TypeMention] My3Attribute
-#  126|           0: [IntLiteral] 12
-#  127|       4: [BlockStmt] {...}
-#  127|         0: [ReturnStmt] return ...;
-#  127|           0: [FieldAccess] access to field p
-#  131|     4: [Setter] set_Prop1
+#  127|         1: [DefaultAttribute] [My3(...)]
+#  127|           -1: [TypeMention] My3Attribute
+#  127|           0: [IntLiteral] 11
+#  128|         2: [ReturnAttribute] [return: My3(...)]
+#  128|           -1: [TypeMention] My3Attribute
+#  128|           0: [IntLiteral] 12
+#  129|       4: [BlockStmt] {...}
+#  129|         0: [ReturnStmt] return ...;
+#  129|           0: [FieldAccess] access to field p
+#  133|     4: [Setter] set_Prop1
 #-----|       0: (Attributes)
-#  129|         1: [DefaultAttribute] [My3(...)]
-#  129|           -1: [TypeMention] My3Attribute
-#  129|           0: [IntLiteral] 13
+#  131|         1: [DefaultAttribute] [My3(...)]
+#  131|           -1: [TypeMention] My3Attribute
+#  131|           0: [IntLiteral] 13
 #-----|       2: (Parameters)
-#  131|         0: [Parameter] value
+#  133|         0: [Parameter] value
 #-----|           0: (Attributes)
-#  130|             1: [DefaultAttribute] [My3(...)]
-#  130|               -1: [TypeMention] My3Attribute
-#  130|               0: [IntLiteral] 14
-#  131|       4: [BlockStmt] {...}
-#  131|         0: [ExprStmt] ...;
-#  131|           0: [AssignExpr] ... = ...
-#  131|             0: [FieldAccess] access to field p
-#  131|             1: [ParameterAccess] access to parameter value
-#  135| [Class] Class1
-#  137|   5: [Class] ParamsAttribute
+#  132|             1: [DefaultAttribute] [My3(...)]
+#  132|               -1: [TypeMention] My3Attribute
+#  132|               0: [IntLiteral] 14
+#  133|       4: [BlockStmt] {...}
+#  133|         0: [ExprStmt] ...;
+#  133|           0: [AssignExpr] ... = ...
+#  133|             0: [FieldAccess] access to field p
+#  133|             1: [ParameterAccess] access to parameter value
+#  137| [Class] Class1
+#  139|   5: [Class] ParamsAttribute
 #-----|     3: (Base types)
-#  137|       0: [TypeMention] Attribute
-#  139|     4: [InstanceConstructor] ParamsAttribute
+#  139|       0: [TypeMention] Attribute
+#  141|     4: [InstanceConstructor] ParamsAttribute
 #-----|       2: (Parameters)
-#  139|         0: [Parameter] s1
-#  139|           -1: [TypeMention] string
-#  139|         1: [Parameter] s2
-#  139|           -1: [TypeMention] string
-#  139|         2: [Parameter] args
-#  139|           -1: [TypeMention] Int32[]
-#  139|             1: [TypeMention] int
-#  139|       4: [BlockStmt] {...}
-#  143|   6: [Method] M1
-#  143|     -1: [TypeMention] Void
+#  141|         0: [Parameter] s1
+#  141|           -1: [TypeMention] string
+#  141|         1: [Parameter] s2
+#  141|           -1: [TypeMention] string
+#  141|         2: [Parameter] args
+#  141|           -1: [TypeMention] Int32[]
+#  141|             1: [TypeMention] int
+#  141|       4: [BlockStmt] {...}
+#  145|   6: [Method] M1
+#  145|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
-#  142|       1: [DefaultAttribute] [Params(...)]
-#  142|         -1: [TypeMention] ParamsAttribute
-#  142|         0: [StringLiteralUtf16] "a"
-#  142|         1: [StringLiteralUtf16] "b"
-#  142|         2: [IntLiteral] 1
-#  142|         3: [IntLiteral] 2
-#  142|         4: [IntLiteral] 3
-#  143|     4: [BlockStmt] {...}
-#  146|   7: [Method] M2
-#  146|     -1: [TypeMention] Void
+#  144|       1: [DefaultAttribute] [Params(...)]
+#  144|         -1: [TypeMention] ParamsAttribute
+#  144|         0: [StringLiteralUtf16] "a"
+#  144|         1: [StringLiteralUtf16] "b"
+#  144|         2: [IntLiteral] 1
+#  144|         3: [IntLiteral] 2
+#  144|         4: [IntLiteral] 3
+#  145|     4: [BlockStmt] {...}
+#  148|   7: [Method] M2
+#  148|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
-#  145|       1: [DefaultAttribute] [Params(...)]
-#  145|         -1: [TypeMention] ParamsAttribute
-#  145|         0: [StringLiteralUtf16] "a"
-#  145|         1: [StringLiteralUtf16] "b"
-#  145|         2: [IntLiteral] 1
-#  145|         3: [IntLiteral] 2
-#  145|         4: [IntLiteral] 3
-#  146|     4: [BlockStmt] {...}
-#  149|   8: [Method] M3
-#  149|     -1: [TypeMention] Void
+#  147|       1: [DefaultAttribute] [Params(...)]
+#  147|         -1: [TypeMention] ParamsAttribute
+#  147|         0: [StringLiteralUtf16] "a"
+#  147|         1: [StringLiteralUtf16] "b"
+#  147|         2: [IntLiteral] 1
+#  147|         3: [IntLiteral] 2
+#  147|         4: [IntLiteral] 3
+#  148|     4: [BlockStmt] {...}
+#  151|   8: [Method] M3
+#  151|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
-#  148|       1: [DefaultAttribute] [Params(...)]
-#  148|         -1: [TypeMention] ParamsAttribute
-#  148|         0: [StringLiteralUtf16] "a"
-#  148|         1: [StringLiteralUtf16] "b"
-#  148|         2: [IntLiteral] 1
-#  149|     4: [BlockStmt] {...}
-#  152|   9: [Method] M4
-#  152|     -1: [TypeMention] Void
+#  150|       1: [DefaultAttribute] [Params(...)]
+#  150|         -1: [TypeMention] ParamsAttribute
+#  150|         0: [StringLiteralUtf16] "a"
+#  150|         1: [StringLiteralUtf16] "b"
+#  150|         2: [IntLiteral] 1
+#  151|     4: [BlockStmt] {...}
+#  154|   9: [Method] M4
+#  154|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
-#  151|       1: [DefaultAttribute] [Params(...)]
-#  151|         -1: [TypeMention] ParamsAttribute
-#  151|         0: [StringLiteralUtf16] "a"
-#  151|         1: [StringLiteralUtf16] "b"
-#  151|         2: [ArrayCreation] array creation of type Int32[]
-#  151|           -1: [ArrayInitializer] { ..., ... }
-#  151|             0: [IntLiteral] 1
-#  152|     4: [BlockStmt] {...}
-#  156| [Class] MyExperimentalClass
+#  153|       1: [DefaultAttribute] [Params(...)]
+#  153|         -1: [TypeMention] ParamsAttribute
+#  153|         0: [StringLiteralUtf16] "a"
+#  153|         1: [StringLiteralUtf16] "b"
+#  153|         2: [ArrayCreation] array creation of type Int32[]
+#  153|           -1: [ArrayInitializer] { ..., ... }
+#  153|             0: [IntLiteral] 1
+#  154|     4: [BlockStmt] {...}
+#  158| [Class] MyExperimentalClass
 #-----|   0: (Attributes)
-#  155|     1: [DefaultAttribute] [Experimental(...)]
-#  155|       -1: [TypeMention] ExperimentalAttribute
-#  155|       0: [StringLiteralUtf16] "MyExperimentalClassId"
-#  159|   5: [Method] MyExperimentalMethod
-#  159|     -1: [TypeMention] Void
+#  157|     1: [DefaultAttribute] [Experimental(...)]
+#  157|       -1: [TypeMention] ExperimentalAttribute
+#  157|       0: [StringLiteralUtf16] "MyExperimentalClassId"
+#  161|   5: [Method] MyExperimentalMethod
+#  161|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
-#  158|       1: [DefaultAttribute] [Experimental(...)]
-#  158|         -1: [TypeMention] ExperimentalAttribute
-#  158|         0: [StringLiteralUtf16] "MyExperimentalMethodId"
-#  159|     4: [BlockStmt] {...}
+#  160|       1: [DefaultAttribute] [Experimental(...)]
+#  160|         -1: [TypeMention] ExperimentalAttribute
+#  160|         0: [StringLiteralUtf16] "MyExperimentalMethodId"
+#  161|     4: [BlockStmt] {...}

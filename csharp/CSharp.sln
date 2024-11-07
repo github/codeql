@@ -30,7 +30,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Semmle.Autobuild.CSharp.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Semmle.Extraction.CSharp.DependencyStubGenerator", "extractor\Semmle.Extraction.CSharp.DependencyStubGenerator\Semmle.Extraction.CSharp.DependencyStubGenerator.csproj", "{0EDA21A3-ADD8-4C10-B494-58B12B526B76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Semmle.Autobuild.Cpp", "\autobuilder\Semmle.Autobuild.Cpp\Semmle.Autobuild.Cpp.csproj", "{125C4FB7-34DA-442A-9095-3EA1514270CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Semmle.Autobuild.Cpp", "autobuilder\Semmle.Autobuild.Cpp\Semmle.Autobuild.Cpp.csproj", "{125C4FB7-34DA-442A-9095-3EA1514270CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Semmle.Autobuild.Cpp.Tests", "autobuilder\Semmle.Autobuild.Cpp.Tests\Semmle.Autobuild.Cpp.Tests.csproj", "{72F369B7-0707-401A-802F-D526F272F9EE}"
 EndProject
