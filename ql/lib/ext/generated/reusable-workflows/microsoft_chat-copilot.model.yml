@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["microsoft/chat-copilot/.github/workflows/copilot-run-integration-tests.yml", "*", "input.BACKEND_HOST", "code-injection", "generated"]

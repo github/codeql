@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["urbit/urbit/.github/workflows/shared.yml", "*", "input.pace", "code-injection", "generated"]

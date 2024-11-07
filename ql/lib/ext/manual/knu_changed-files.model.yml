@@ -1,7 +1,7 @@
 
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSourceModel
     data:
       # https://github.com/knu/changed-files

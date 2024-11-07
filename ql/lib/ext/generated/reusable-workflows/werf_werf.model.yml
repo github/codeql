@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["werf/werf/.github/workflows/_test_unit.yml", "*", "input.excludePackages", "code-injection", "generated"]

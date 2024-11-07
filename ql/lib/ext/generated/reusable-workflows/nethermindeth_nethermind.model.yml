@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["nethermindeth/nethermind/.github/workflows/run-a-single-node-from-branch.yml", "*", "input.custom_run_id", "code-injection", "generated"]

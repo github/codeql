@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["adap/flower/.github/workflows/_docker-build.yml", "*", "input.namespace-repository", "code-injection", "generated"]

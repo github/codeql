@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["armbian/build", "*", "input.armbian_pgp_password", "code-injection", "generated"]

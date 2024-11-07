@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["devorbitus/yq-action-output", "*", "input.cmd", "code-injection", "manual"]

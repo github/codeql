@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["angular/dev-infra", "*", "input.firebase-public-dir", "code-injection", "generated"]

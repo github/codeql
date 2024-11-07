@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["vesoft-inc/nebula", "*", "input.target-path", "code-injection", "generated"]

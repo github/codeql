@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["iterative/setup-cml", "*", "input.version", "command-injection", "manual"]

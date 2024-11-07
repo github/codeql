@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["liquibase/liquibase/.github/workflows/build-azure-uber-jar.yml", "*", "input.liquibase-version", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["eventstore/eventstore/.github/workflows/build-reusable.yml", "*", "input.arch", "code-injection", "generated"]

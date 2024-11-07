@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSourceModel
     data:
       - ["lots0logs/gh-action-get-changed-files", "*", "output.all", "PR changed files", "manual"]

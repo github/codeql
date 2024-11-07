@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["huggingface/transformers/.github/workflows/slack-report.yml", "*", "input.folder_slices", "code-injection", "generated"]

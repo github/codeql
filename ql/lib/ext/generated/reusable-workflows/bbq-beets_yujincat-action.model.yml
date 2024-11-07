@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["bbq-beets/yujincat-action/.github/workflows/test-referInputs.yml", "*", "input.shell", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSourceModel
     data:
       - ["marocchino/on_artifact", "*", "output.*", "artifact", "manual"]

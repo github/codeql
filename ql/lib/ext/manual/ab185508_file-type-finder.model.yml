@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSourceModel
     data:
       # https://github.com/ab185508/file-type-finder

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["bytecodealliance/wasm-micro-runtime/.github/workflows/reuse_latest_release_binaries.yml", "*", "input.the_path", "code-injection", "generated"]

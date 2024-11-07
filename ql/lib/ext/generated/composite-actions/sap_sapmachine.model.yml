@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["sap/sapmachine", "*", "input.debug-suffix", "code-injection", "generated"]

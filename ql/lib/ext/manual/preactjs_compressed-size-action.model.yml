@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["preactjs/compressed-size-action", "*", "input.build-script", "command-injection", "manual"]

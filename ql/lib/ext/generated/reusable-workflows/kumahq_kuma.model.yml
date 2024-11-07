@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["kumahq/kuma/.github/workflows/_build_publish.yaml", "*", "input.VERSION_NAME", "code-injection", "generated"]

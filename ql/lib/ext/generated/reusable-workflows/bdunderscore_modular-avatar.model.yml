@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["bdunderscore/modular-avatar/.github/workflows/build-test-docs.yml", "*", "input.path", "code-injection", "generated"]

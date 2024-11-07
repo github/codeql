@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["cesiumgs/cesium-unreal/.github/workflows/testWindows.yml", "*", "input.unreal-program-name", "code-injection", "generated"]

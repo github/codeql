@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSummaryModel
     data:
       - ["neondatabase/neon/.github/workflows/build-build-tools-image.yml", "*", "input.image-tag", "output.image-tag", "taint", "manual"]

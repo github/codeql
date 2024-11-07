@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["spring-cloud/spring-cloud-dataflow/.github/workflows/build-images.yml", "*", "input.version", "code-injection", "generated"]

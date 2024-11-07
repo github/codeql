@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["hashicorp/terraform/.github/workflows/build-terraform-cli.yml", "*", "input.product-version", "code-injection", "generated"]

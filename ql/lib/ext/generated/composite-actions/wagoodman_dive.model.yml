@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["wagoodman/dive", "*", "input.bootstrap-apt-packages", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["zenml-io/zenml/.github/workflows/publish_docker_image.yml", "*", "input.config_file", "code-injection", "generated"]

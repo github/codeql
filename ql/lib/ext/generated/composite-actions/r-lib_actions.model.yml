@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["r-lib/actions", "*", "input.lockfile-create-lib", "code-injection", "generated"]

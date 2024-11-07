@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["actions/reusable-workflows/.github/workflows/update-config-files.yml", "*", "input.base-pr-branch", "code-injection", "generated"]

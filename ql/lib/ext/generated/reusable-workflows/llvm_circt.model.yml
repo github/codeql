@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["llvm/circt/.github/workflows/unifiedBuildTestAndInstall.yml", "*", "input.package_name_prefix", "code-injection", "generated"]

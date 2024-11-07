@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["saadeghi/daisyui/.github/workflows/write-release-notes.yml", "*", "input.daisyuiversion", "code-injection", "generated"]

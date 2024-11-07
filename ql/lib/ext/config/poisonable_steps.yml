@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: poisonableActionsDataModel
     # source: https://boostsecurityio.github.io/lotp/
     data:
@@ -13,7 +13,7 @@ extensions:
       - ["qcastel/github-actions-maven/actions/maven"]
       - ["sonarsource/sonarcloud-github-action"]
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: poisonableCommandsDataModel
     # source: https://boostsecurityio.github.io/lotp/
     data:
@@ -61,7 +61,7 @@ extensions:
       - ["yarn"]
       - ["webpack"]
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: poisonableLocalScriptsDataModel
     data:
       # TODO: It could also be in the form of `dir/cmd`

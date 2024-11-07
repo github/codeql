@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["celo-org/celo-blockchain/.github/workflows/add-docker-tag.yaml", "*", "input.destination-tag", "code-injection", "generated"]

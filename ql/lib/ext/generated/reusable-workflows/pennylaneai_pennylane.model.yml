@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["pennylaneai/pennylane/.github/workflows/unit-test.yml", "*", "input.pytest_test_directory", "code-injection", "generated"]

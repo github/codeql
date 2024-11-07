@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["zitadel/zitadel/.github/workflows/release.yml", "*", "input.image_name", "code-injection", "generated"]
@@ -8,7 +8,7 @@ extensions:
      - ["zitadel/zitadel/.github/workflows/container.yml", "*", "input.build_image_name", "code-injection", "generated"]
      - ["zitadel/zitadel/.github/workflows/compile.yml", "*", "input.version", "code-injection", "generated"]
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSummaryModel
     data:
       - ["zitadel/zitadel/.github/workflows/container.yml", "*", "input.build_image_name", "output.build_image", "taint", "manual"]

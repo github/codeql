@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["devexpress/testcafe/.github/workflows/test-server.yml", "*", "input.test-script", "code-injection", "generated"]

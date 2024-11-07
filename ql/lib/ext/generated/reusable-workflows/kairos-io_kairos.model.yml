@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["kairos-io/kairos/.github/workflows/reusable-zfs-test.yaml", "*", "input.flavor", "code-injection", "generated"]

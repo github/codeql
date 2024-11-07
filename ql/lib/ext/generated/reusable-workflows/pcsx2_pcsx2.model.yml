@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["pcsx2/pcsx2/.github/workflows/windows_build_qt.yml", "*", "input.configuration", "code-injection", "generated"]

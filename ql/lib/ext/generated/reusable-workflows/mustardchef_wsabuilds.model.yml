@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["mustardchef/wsabuilds/.github/workflows/buildarm64.yml", "*", "input.amazonflag", "code-injection", "generated"]

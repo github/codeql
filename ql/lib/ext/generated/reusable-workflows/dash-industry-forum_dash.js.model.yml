@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["dash-industry-forum/dash.js/.github/workflows/deploy.yml", "*", "input.deploy_path", "code-injection", "generated"]

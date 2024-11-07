@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["cosmos/ibc-go/.github/workflows/e2e-test-workflow-call.yml", "*", "input.upgrade-plan-name", "code-injection", "generated"]

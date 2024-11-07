@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["hyperledger/fabric-samples", "*", "input.ca-version", "code-injection", "generated"]

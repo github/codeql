@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["codeigniter4/codeigniter4/.github/workflows/reusable-serviceless-phpunit-test.yml", "*", "input.extra-composer-options", "code-injection", "generated"]

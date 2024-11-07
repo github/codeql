@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["open-goal/jak-project/.github/workflows/windows-build-msvc.yaml", "*", "input.cmakePreset", "code-injection", "generated"]

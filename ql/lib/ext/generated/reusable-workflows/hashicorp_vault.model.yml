@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["hashicorp/vault/.github/workflows/test-run-enos-scenario-matrix.yml", "*", "input.sample-max", "code-injection", "generated"]
@@ -15,7 +15,7 @@ extensions:
      - ["hashicorp/vault/.github/workflows/test-go.yml", "*", "input.total-runners", "code-injection", "generated"]
      - ["hashicorp/vault/.github/workflows/test-enos-scenario-ui.yml", "*", "input.storage_backend", "code-injection", "generated"]
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSummaryModel
     data:
       - ["hashicorp/vault/.github/workflows/build-artifacts-ce.yml", "*", "input.vault-version-package", "output.testable-packages", "taint", "manual"]

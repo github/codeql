@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.context", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSummaryModel
     data:
       - ["crazy-max/ghaction-import-gpg", "*", "input.fingerprint", "output.fingerprint", "taint", "manual"]

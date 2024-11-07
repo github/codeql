@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["litestar-org/litestar/.github/workflows/test.yml", "*", "input.python-version", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["unstructured-io/unstructured", "*", "input.python-version", "code-injection", "generated"]

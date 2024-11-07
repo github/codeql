@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["nektos/act/pkg/runner/testdata/workflow_call_inputs/workflow_call_inputs.yml", "*", "input.with_default", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["mattermost/mattermost/.github/workflows/server-test-template.yml", "*", "input.name", "code-injection", "generated"]

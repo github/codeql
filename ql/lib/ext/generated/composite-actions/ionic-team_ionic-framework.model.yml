@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["ionic-team/ionic-framework", "*", "input.totalShards", "code-injection", "generated"]

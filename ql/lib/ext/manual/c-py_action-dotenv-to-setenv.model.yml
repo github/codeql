@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["c-py/action-dotenv-to-setenv", "*", "artifact", "envvar-injection", "manual"]

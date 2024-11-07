@@ -1,9 +1,9 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: repositoryDataModel
     data: []
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: workflowDataModel
     data: []

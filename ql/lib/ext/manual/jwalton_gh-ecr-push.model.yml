@@ -1,11 +1,11 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSummaryModel
     data:
       - ["jwalton/gh-ecr-push", "*", "input.image", "output.imageUrl", "taint", "manual"]
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["jwalton/gh-ecr-push", "*", "input.image", "command-injection", "manual"]

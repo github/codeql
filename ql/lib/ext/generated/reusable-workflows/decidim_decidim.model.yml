@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["decidim/decidim/.github/workflows/test_app.yml", "*", "input.test_command", "code-injection", "generated"]

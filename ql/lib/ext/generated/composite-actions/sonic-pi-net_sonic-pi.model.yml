@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["sonic-pi-net/sonic-pi", "*", "input.command", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["labring/sealos/.github/workflows/services.yml", "*", "input.push_image_tag", "code-injection", "generated"]

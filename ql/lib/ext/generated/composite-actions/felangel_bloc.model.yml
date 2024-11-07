@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["felangel/bloc", "*", "input.coverage_excludes", "code-injection", "generated"]

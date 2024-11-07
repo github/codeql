@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["jhipster/generator-jhipster", "*", "input.generator-path", "code-injection", "generated"]
@@ -21,7 +21,7 @@ extensions:
      - ["jhipster/generator-jhipster", "*", "input.application-path", "code-injection", "generated"]
      - ["jhipster/generator-jhipster", "*", "input.extra-args", "code-injection", "generated"]
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSummaryModel
     data:
       - ["jhipster/generator-jhipster", "*", "input.skip-workflow", "output.skip-workflow", "taint", "manual"]

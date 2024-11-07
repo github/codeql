@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["linkerd/linkerd2", "*", "input.component", "code-injection", "generated"]
@@ -8,7 +8,7 @@ extensions:
      - ["linkerd/linkerd2", "*", "input.docker-ghcr-username", "code-injection", "generated"]
      - ["linkerd/linkerd2", "*", "input.docker-ghcr-pat", "code-injection", "generated"]
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSummaryModel
     data:
       - ["linkerd/linkerd2", "*", "input.component", "output.image", "taint", "manual"]

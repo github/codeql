@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["stdlib-js/stdlib/.github/workflows/update_pr_copyright_years.yml", "*", "input.pull_request_number", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["openvinotoolkit/openvino", "*", "input.skip_when_only_listed_files_changed", "code-injection", "generated"]

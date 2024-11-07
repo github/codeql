@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSummaryModel
     data:
       - ["shallwefootball/upload-s3-action", "*", "input.destination_dir", "output.object_key", "taint", "manual"]

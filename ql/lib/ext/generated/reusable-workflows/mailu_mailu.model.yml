@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["mailu/mailu/.github/workflows/build_test_deploy.yml", "*", "input.pinned_mailu_version", "code-injection", "generated"]

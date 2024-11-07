@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["manticoresoftware/manticoresearch/.github/workflows/win_test_template.yml", "*", "input.CTEST_END", "code-injection", "generated"]

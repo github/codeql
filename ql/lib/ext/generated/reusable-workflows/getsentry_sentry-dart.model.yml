@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["getsentry/sentry-dart/.github/workflows/analyze.yml", "*", "input.panaThreshold", "code-injection", "generated"]

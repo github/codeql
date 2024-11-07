@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["kubescape/kubescape/.github/workflows/d-publish-image.yaml", "*", "input.image_tag", "code-injection", "generated"]

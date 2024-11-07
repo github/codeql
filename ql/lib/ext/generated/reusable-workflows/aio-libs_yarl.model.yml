@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["aio-libs/yarl/.github/workflows/reusable-build-wheel.yml", "*", "input.wheel-tags-to-skip", "code-injection", "generated"]

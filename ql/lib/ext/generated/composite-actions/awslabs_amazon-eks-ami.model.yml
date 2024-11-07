@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["awslabs/amazon-eks-ami", "*", "input.max_resource_age_duration", "code-injection", "generated"]

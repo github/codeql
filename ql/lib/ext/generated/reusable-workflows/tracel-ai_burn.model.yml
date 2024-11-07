@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["tracel-ai/burn/.github/workflows/publish-template.yml", "*", "input.crate", "code-injection", "generated"]

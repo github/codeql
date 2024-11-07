@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["earthly/earthly/.github/workflows/reusable-wait-block-target.yml", "*", "input.BINARY", "code-injection", "generated"]

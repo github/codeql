@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["opentofu/opentofu/.github/workflows/build-opentofu-oss.yml", "*", "input.package-name", "code-injection", "generated"]

@@ -1,12 +1,12 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSummaryModel
     data:
       - ["mattdavis0351/actions", "*", "input.image-name", "output.imageUrl", "taint", "manual"]
       - ["mattdavis0351/actions", "*", "input.tag", "output.imageUrl", "taint", "manual"]
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["mattdavis0351/actions", "*", "input.repo-token", "command-injection", "manual"]

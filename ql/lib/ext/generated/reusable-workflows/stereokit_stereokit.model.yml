@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["stereokit/stereokit/.github/workflows/build.yml", "*", "input.patch", "code-injection", "generated"]

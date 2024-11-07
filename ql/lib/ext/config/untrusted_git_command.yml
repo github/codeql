@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: untrustedGitCommandDataModel 
     data:
       # FILES=$(git diff-tree --no-commit-id --name-only HEAD -r)

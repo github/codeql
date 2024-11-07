@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["neo4j-contrib/neo4j-apoc-procedures", "*", "input.project-name", "code-injection", "generated"]

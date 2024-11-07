@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["googlecloudplatform/nodejs-docs-samples/.github/workflows/test.yaml", "*", "input.path", "code-injection", "generated"]

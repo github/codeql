@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSourceModel
     data:
       - ["amannn/action-semantic-pull-request", "*", "output.error_message", "text", "manual"]

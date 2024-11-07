@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["awslabs/aws-lambda-rust-runtime", "*", "input.package", "code-injection", "generated"]

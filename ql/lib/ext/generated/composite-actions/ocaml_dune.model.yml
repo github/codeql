@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["ocaml/dune", "*", "input.OCAML_COMPILER", "code-injection", "generated"]

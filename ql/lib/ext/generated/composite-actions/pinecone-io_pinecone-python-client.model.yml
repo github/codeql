@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["pinecone-io/pinecone-python-client", "*", "input.googleapis_common_protos_version", "code-injection", "generated"]

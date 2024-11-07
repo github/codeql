@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSourceModel
     data:
       - ["gotson/pull-request-comment-branch", "*", "output.head_ref", "branch", "manual"]

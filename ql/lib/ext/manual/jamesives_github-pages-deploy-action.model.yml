@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["jamesives/github-pages-deploy-action", "*", "input.branch", "command-injection", "manual"]

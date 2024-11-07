@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["checkstyle/checkstyle/.github/workflows/release-upload-all-jar.yml", "*", "input.version", "code-injection", "generated"]

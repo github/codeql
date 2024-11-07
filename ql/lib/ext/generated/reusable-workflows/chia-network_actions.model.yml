@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["chia-network/actions/.github/workflows/docker-build.yaml", "*", "input.docker-context", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["home-assistant/operating-system/.github/workflows/test.yaml", "*", "input.version", "code-injection", "generated"]

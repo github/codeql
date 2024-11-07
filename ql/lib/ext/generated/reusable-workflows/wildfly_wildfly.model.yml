@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["wildfly/wildfly/.github/workflows/shared-wildfly-build-and-test.yml", "*", "input.build-arguments", "code-injection", "generated"]

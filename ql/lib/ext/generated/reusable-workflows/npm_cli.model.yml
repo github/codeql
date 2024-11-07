@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["npm/cli/.github/workflows/node-integration.yml", "*", "input.npmVersion", "code-injection", "generated"]

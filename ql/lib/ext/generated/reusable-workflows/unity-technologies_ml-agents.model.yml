@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["unity-technologies/ml-agents/.github/workflows/pytest.yml", "*", "input.pytest_markers", "code-injection", "generated"]

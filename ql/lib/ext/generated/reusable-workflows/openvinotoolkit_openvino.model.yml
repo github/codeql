@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["openvinotoolkit/openvino/.github/workflows/job_tensorflow_models_tests.yml", "*", "input.model_scope", "code-injection", "generated"]

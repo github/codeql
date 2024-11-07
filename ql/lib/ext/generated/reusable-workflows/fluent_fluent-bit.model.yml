@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["fluent/fluent-bit/.github/workflows/call-windows-unit-tests.yaml", "*", "input.unstable", "code-injection", "generated"]

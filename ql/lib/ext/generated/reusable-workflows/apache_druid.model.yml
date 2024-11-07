@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "input.module", "code-injection", "generated"]

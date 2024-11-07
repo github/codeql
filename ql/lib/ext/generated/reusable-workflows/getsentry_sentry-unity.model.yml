@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["getsentry/sentry-unity/.github/workflows/sdk.yml", "*", "input.target", "code-injection", "generated"]

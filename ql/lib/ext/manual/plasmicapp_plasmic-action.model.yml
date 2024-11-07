@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["plasmicapp/plasmic-action", "*", "input.project_id", "command-injection", "manual"]

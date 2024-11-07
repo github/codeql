@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["microsoft/react-native-windows-samples/.github/workflows/template-upgradesample.yml", "*", "input.extraRunWindowsArgs", "code-injection", "generated"]

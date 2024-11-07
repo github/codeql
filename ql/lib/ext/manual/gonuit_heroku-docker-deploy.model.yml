@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["gonuit/heroku-docker-deploy", "*", "input.email", "command-injection", "manual"]

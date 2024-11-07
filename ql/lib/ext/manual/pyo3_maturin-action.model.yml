@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["pyo3/maturin-action", "*", "input.before-script-linux", "command-injection", "manual"]

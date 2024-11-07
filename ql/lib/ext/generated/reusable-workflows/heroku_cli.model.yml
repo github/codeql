@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["heroku/cli/.github/workflows/publish-npm.yml", "*", "input.isStableRelease", "code-injection", "generated"]

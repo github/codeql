@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["clickhouse/clickhouse/.github/workflows/reusable_test.yml", "*", "input.test_name", "code-injection", "generated"]

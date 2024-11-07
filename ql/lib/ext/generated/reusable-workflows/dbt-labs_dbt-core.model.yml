@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["dbt-labs/dbt-core/.github/workflows/release.yml", "*", "input.nightly_release", "code-injection", "generated"]

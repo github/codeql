@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["apache/spark/.github/workflows/build_and_test.yml", "*", "input.branch", "code-injection", "generated"]

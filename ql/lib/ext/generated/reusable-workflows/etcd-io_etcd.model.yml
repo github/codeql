@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["etcd-io/etcd/.github/workflows/tests-template.yaml", "*", "input.arch", "code-injection", "generated"]

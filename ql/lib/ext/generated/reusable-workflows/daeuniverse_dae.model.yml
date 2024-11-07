@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["daeuniverse/dae/.github/workflows/seed-build.yml", "*", "input.pr-number", "code-injection", "generated"]

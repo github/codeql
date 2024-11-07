@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["firebase/firebase-ios-sdk", "*", "input.min-ios-version", "code-injection", "generated"]

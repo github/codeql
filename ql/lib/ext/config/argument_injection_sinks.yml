@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: argumentInjectionSinksDataModel
     # https://gtfobins.github.io/
     # https://0xn3va.gitbook.io/cheat-sheets/web-application/command-injection/argument-injection

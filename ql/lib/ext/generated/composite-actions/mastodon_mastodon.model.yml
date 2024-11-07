@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["mastodon/mastodon", "*", "input.additional-system-dependencies", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["cocotb/cocotb/.github/workflows/regression-tests.yml", "*", "input.nox_session_test_sim", "code-injection", "generated"]

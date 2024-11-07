@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["kata-containers/kata-containers/.github/workflows/release-s390x.yaml", "*", "input.target-arch", "code-injection", "generated"]

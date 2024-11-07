@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["meshtastic/firmware/.github/workflows/build_rpi2040.yml", "*", "input.board", "code-injection", "generated"]

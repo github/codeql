@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["pulumi/pulumi/.github/workflows/ci-run-test.yml", "*", "input.test-command", "code-injection", "generated"]

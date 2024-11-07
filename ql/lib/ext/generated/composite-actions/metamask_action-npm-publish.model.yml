@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["metamask/action-npm-publish", "*", "input.subteam", "code-injection", "generated"]

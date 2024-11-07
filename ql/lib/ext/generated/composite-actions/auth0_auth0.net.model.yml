@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["auth0/auth0.net", "*", "input.nuget-token", "code-injection", "generated"]

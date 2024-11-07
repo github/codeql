@@ -1,7 +1,7 @@
 
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSourceModel
     data:
       # https://github.com/karpikpl/list-changed-files-action

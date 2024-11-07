@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.adapter_version", "code-injection", "generated"]

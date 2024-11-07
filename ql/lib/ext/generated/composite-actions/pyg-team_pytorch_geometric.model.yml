@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["pyg-team/pytorch/geometric", "*", "input.torchvision-version", "code-injection", "generated"]

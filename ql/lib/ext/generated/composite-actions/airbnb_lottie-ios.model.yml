@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["airbnb/lottie-ios", "*", "input.xcode", "code-injection", "generated"]

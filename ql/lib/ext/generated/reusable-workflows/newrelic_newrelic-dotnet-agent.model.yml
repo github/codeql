@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["newrelic/newrelic-dotnet-agent/.github/workflows/publish_release_notes.yml", "*", "input.agent_version", "code-injection", "generated"]

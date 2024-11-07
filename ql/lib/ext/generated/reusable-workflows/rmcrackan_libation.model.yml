@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["rmcrackan/libation/.github/workflows/build-windows.yml", "*", "input.version_override", "code-injection", "generated"]

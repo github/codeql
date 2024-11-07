@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["rustdesk/rustdesk/.github/workflows/third-party-RustDeskTempTopMostWindow.yml", "*", "input.target_version", "code-injection", "generated"]

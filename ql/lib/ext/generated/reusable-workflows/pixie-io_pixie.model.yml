@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["pixie-io/pixie/.github/workflows/perf_common.yaml", "*", "input.tags", "code-injection", "generated"]

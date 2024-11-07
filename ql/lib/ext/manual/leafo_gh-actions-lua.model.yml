@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["leafo/gh-actions-lua", "*", "input.luaVersion", "command-injection", "manual"]

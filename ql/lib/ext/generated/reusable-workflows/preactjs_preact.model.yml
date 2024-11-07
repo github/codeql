@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["preactjs/preact/.github/workflows/run-bench.yml", "*", "input.benchmark", "code-injection", "generated"]

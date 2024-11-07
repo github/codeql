@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["vert-x3/vertx-hazelcast/.github/workflows/it.yml", "*", "input.hz", "code-injection", "generated"]

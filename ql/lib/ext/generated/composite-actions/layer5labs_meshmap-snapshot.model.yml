@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["layer5labs/meshmap-snapshot", "*", "input.assetLocation", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["dependencytrack/dependency-track/.github/workflows/_meta-build.yaml", "*", "input.app-version", "code-injection", "generated"]

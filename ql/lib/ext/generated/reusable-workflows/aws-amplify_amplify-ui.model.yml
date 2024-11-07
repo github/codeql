@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["aws-amplify/amplify-ui/.github/workflows/reusable-tagged-publish.yml", "*", "input.dist-tag", "code-injection", "generated"]

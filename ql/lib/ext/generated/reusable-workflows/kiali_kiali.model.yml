@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["kiali/kiali/.github/workflows/test-images-creator.yml", "*", "input.build_mode", "code-injection", "generated"]

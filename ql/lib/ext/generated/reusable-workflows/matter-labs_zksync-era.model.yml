@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["matter-labs/zksync-era/.github/workflows/ci-core-reusable.yml", "*", "input.compilers", "code-injection", "generated"]

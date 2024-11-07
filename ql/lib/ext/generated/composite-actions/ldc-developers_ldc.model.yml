@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["ldc-developers/ldc", "*", "input.cmake_flags", "code-injection", "generated"]

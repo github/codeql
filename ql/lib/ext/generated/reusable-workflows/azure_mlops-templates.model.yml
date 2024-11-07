@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["azure/mlops-templates/.github/workflows/tf-gha-install-terraform.yml", "*", "input.terraform_workingdir", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["sagemath/sage/.github/workflows/macos.yml", "*", "input.stage", "code-injection", "generated"]

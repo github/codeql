@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["metamask/action-create-release-pr", "*", "input.artifacts-path", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSourceModel
     data:
       - ["peter-murray/issue-body-parser-action", "*", "output.*", "text", "manual"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["dfhack/dfhack/.github/workflows/build-windows.yml", "*", "input.artifact-name", "code-injection", "generated"]

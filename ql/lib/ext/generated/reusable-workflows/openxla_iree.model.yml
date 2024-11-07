@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["openxla/iree/.github/workflows/pkgci_regression_test_nvidiagpu_vulkan.yml", "*", "input.artifact_run_id", "code-injection", "generated"]

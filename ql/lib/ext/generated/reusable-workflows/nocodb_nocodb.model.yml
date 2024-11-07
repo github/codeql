@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["nocodb/nocodb/.github/workflows/playwright-test-workflow.yml", "*", "input.shard", "code-injection", "generated"]

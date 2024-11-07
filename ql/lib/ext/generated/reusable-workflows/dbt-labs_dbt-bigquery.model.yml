@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["dbt-labs/dbt-bigquery/.github/workflows/release.yml", "*", "input.s3_bucket_name", "code-injection", "generated"]

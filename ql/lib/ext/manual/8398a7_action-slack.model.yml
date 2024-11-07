@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["8398a7/action-slack", "*", "input.custom_payload", "code-injection", "manual"]

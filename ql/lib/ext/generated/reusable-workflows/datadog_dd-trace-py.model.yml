@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["datadog/dd-trace-py/.github/workflows/lib-inject-publish.yml", "*", "input.ddtrace-version", "code-injection", "generated"]

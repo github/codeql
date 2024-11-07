@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["facebookresearch/xformers/.github/workflows/wheels_upload_s3.yml", "*", "input.aws_s3_cp_extra_args", "code-injection", "generated"]

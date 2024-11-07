@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSummaryModel
     data:
       - ["github/codeql-action", "*", "input.output", "output.sarif-output", "taint", "manual"]

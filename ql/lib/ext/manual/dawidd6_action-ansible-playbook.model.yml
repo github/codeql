@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
       - ["dawidd6/action-ansible-playbook", "*", "input.playbook", "command-injection", "manual"]

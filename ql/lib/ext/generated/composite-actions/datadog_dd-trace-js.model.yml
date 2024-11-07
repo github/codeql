@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["datadog/dd-trace-js", "*", "input.container-id", "code-injection", "generated"]

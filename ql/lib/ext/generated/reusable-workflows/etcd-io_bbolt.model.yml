@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["etcd-io/bbolt/.github/workflows/robustness_template.yaml", "*", "input.testTimeout", "code-injection", "generated"]

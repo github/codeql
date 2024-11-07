@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["huggingface/doc-builder/.github/workflows/upload_pr_documentation.yml", "*", "input.package_name", "code-injection", "generated"]

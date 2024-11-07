@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["mamba-org/mamba/.github/workflows/windows_impl.yml", "*", "input.build_type", "code-injection", "generated"]

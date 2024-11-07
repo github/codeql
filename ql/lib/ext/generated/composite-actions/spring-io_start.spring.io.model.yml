@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["spring-io/start.spring.io", "*", "input.run-name", "code-injection", "generated"]

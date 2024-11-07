@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["bbq-beets/mobile-ci-cd/.github/workflows/mobile-ci-cd.yml", "*", "input.git-user-email", "code-injection", "generated"]

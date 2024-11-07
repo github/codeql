@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["firebase/firebase-unity-sdk/.github/workflows/update_versions.yml", "*", "input.triggered_by_callable", "code-injection", "generated"]

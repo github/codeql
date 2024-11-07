@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSinkModel
     data:
      - ["getpelican/pelican/.github/workflows/github_pages.yml", "*", "input.output-path", "code-injection", "generated"]

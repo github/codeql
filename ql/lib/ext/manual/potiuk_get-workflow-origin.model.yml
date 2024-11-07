@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: github/actions-all
+      pack: codeql/actions-all
       extensible: actionsSourceModel
     data:
       - ["potiuk/get-workflow-origin", "*", "output.sourceHeadBranch", "branch", "manual"]
