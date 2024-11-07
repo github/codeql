@@ -120,6 +120,6 @@ const server4 = http.createServer((req, res) => {
 
 const serverMatchAll = http.createServer((req, res) => {
     let username = url.parse(req.url, true).query.username;
-    let otherStr = username.matchAll(/.*/g)[0]; // BAD - this is suppose to be cought by Taint Tracking, works for match but not matchAll
+    let otherStr = username.matchAll(/.*/g)[0]; // BAD
     console.log(otherStr);
 });

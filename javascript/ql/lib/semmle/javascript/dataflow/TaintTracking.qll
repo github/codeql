@@ -716,7 +716,7 @@ module TaintTracking {
 
   pragma[nomagic]
   private DataFlow::MethodCallNode matchMethodCall() {
-    result.getMethodName() = "match" and
+    result.getMethodName() = ["match", "matchAll"] and
     exists(DataFlow::AnalyzedNode analyzed |
       pragma[only_bind_into](analyzed) = result.getArgument(0).analyze() and
       analyzed.getAType() = TTRegExp()
