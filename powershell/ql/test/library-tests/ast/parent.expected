@@ -24,11 +24,11 @@
 | Arrays/Arrays.ps1:3:14:3:17 | b | Arrays/Arrays.ps1:3:14:3:17 | b |
 | Arrays/Arrays.ps1:5:1:5:8 | array2 | Arrays/Arrays.ps1:5:1:5:37 | ...=... |
 | Arrays/Arrays.ps1:5:1:5:37 | ...=... | Arrays/Arrays.ps1:1:1:15:15 | {...} |
-| Arrays/Arrays.ps1:5:11:5:21 | New-Object | Arrays/Arrays.ps1:5:11:5:37 | New-Object |
-| Arrays/Arrays.ps1:5:11:5:37 | New-Object | Arrays/Arrays.ps1:5:1:5:37 | ...=... |
-| Arrays/Arrays.ps1:5:22:5:33 | object[,] | Arrays/Arrays.ps1:5:11:5:37 | New-Object |
+| Arrays/Arrays.ps1:5:11:5:21 | New-Object | Arrays/Arrays.ps1:5:11:5:37 | call to New-Object |
+| Arrays/Arrays.ps1:5:11:5:37 | call to New-Object | Arrays/Arrays.ps1:5:1:5:37 | ...=... |
+| Arrays/Arrays.ps1:5:22:5:33 | object[,] | Arrays/Arrays.ps1:5:11:5:37 | call to New-Object |
 | Arrays/Arrays.ps1:5:34:5:35 | 2 | Arrays/Arrays.ps1:5:34:5:37 | ...,... |
-| Arrays/Arrays.ps1:5:34:5:37 | ...,... | Arrays/Arrays.ps1:5:11:5:37 | New-Object |
+| Arrays/Arrays.ps1:5:34:5:37 | ...,... | Arrays/Arrays.ps1:5:11:5:37 | call to New-Object |
 | Arrays/Arrays.ps1:5:36:5:37 | 2 | Arrays/Arrays.ps1:5:34:5:37 | ...,... |
 | Arrays/Arrays.ps1:6:1:6:8 | array2 | Arrays/Arrays.ps1:6:1:6:13 | ...[...] |
 | Arrays/Arrays.ps1:6:1:6:13 | ...[...] | Arrays/Arrays.ps1:6:1:6:22 | ...=... |
@@ -98,23 +98,23 @@
 | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} | Dynamic/DynamicExecution.ps1:1:1:5:8 | DynamicExecution.ps1 |
 | Dynamic/DynamicExecution.ps1:1:8:1:17 | cmd.exe | Dynamic/DynamicExecution.ps1:1:1:1:17 | ...=... |
 | Dynamic/DynamicExecution.ps1:1:8:1:17 | cmd.exe | Dynamic/DynamicExecution.ps1:1:8:1:17 | cmd.exe |
-| Dynamic/DynamicExecution.ps1:2:1:2:18 | Invoke-Expression | Dynamic/DynamicExecution.ps1:2:1:2:23 | Invoke-Expression |
-| Dynamic/DynamicExecution.ps1:2:1:2:23 | Invoke-Expression | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} |
-| Dynamic/DynamicExecution.ps1:2:19:2:23 | foo | Dynamic/DynamicExecution.ps1:2:1:2:23 | Invoke-Expression |
+| Dynamic/DynamicExecution.ps1:2:1:2:18 | Invoke-Expression | Dynamic/DynamicExecution.ps1:2:1:2:23 | call to Invoke-Expression |
+| Dynamic/DynamicExecution.ps1:2:1:2:23 | call to Invoke-Expression | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} |
+| Dynamic/DynamicExecution.ps1:2:19:2:23 | foo | Dynamic/DynamicExecution.ps1:2:1:2:23 | call to Invoke-Expression |
 | Dynamic/DynamicExecution.ps1:3:1:3:14 | scriptblock | Dynamic/DynamicExecution.ps1:3:1:3:28 | call to Create |
 | Dynamic/DynamicExecution.ps1:3:1:3:28 | call to Create | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} |
 | Dynamic/DynamicExecution.ps1:3:1:3:28 | call to Create | Dynamic/DynamicExecution.ps1:3:1:3:28 | call to Create |
 | Dynamic/DynamicExecution.ps1:3:16:3:22 | Create | Dynamic/DynamicExecution.ps1:3:1:3:28 | call to Create |
 | Dynamic/DynamicExecution.ps1:3:23:3:27 | foo | Dynamic/DynamicExecution.ps1:3:1:3:28 | call to Create |
-| Dynamic/DynamicExecution.ps1:4:1:4:32 |  | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} |
-| Dynamic/DynamicExecution.ps1:4:3:4:32 | (...) | Dynamic/DynamicExecution.ps1:4:1:4:32 |  |
+| Dynamic/DynamicExecution.ps1:4:1:4:32 | call to  | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} |
+| Dynamic/DynamicExecution.ps1:4:3:4:32 | (...) | Dynamic/DynamicExecution.ps1:4:1:4:32 | call to  |
 | Dynamic/DynamicExecution.ps1:4:4:4:17 | scriptblock | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create |
 | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create | Dynamic/DynamicExecution.ps1:4:3:4:32 | (...) |
 | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create |
 | Dynamic/DynamicExecution.ps1:4:19:4:25 | Create | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create |
 | Dynamic/DynamicExecution.ps1:4:26:4:30 | foo | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create |
-| Dynamic/DynamicExecution.ps1:5:1:5:8 |  | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} |
-| Dynamic/DynamicExecution.ps1:5:2:5:8 | $foo | Dynamic/DynamicExecution.ps1:5:1:5:8 |  |
+| Dynamic/DynamicExecution.ps1:5:1:5:8 | call to  | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} |
+| Dynamic/DynamicExecution.ps1:5:2:5:8 | $foo | Dynamic/DynamicExecution.ps1:5:1:5:8 | call to  |
 | Dynamic/DynamicExecution.ps1:5:3:5:7 | foo | Dynamic/DynamicExecution.ps1:5:2:5:8 | $foo |
 | Dynamic/DynamicExecutionWithFunc.ps1:1:1:11:2 | ExecuteAThing | Dynamic/DynamicExecutionWithFunc.ps1:1:1:11:2 | {...} |
 | Dynamic/DynamicExecutionWithFunc.ps1:1:1:11:2 | {...} | Dynamic/DynamicExecutionWithFunc.ps1:1:1:11:2 | DynamicExecutionWithFunc.ps1 |
@@ -128,27 +128,27 @@
 | Dynamic/DynamicExecutionWithFunc.ps1:5:12:5:34 | ...+... | Dynamic/DynamicExecutionWithFunc.ps1:5:5:5:34 | ...=... |
 | Dynamic/DynamicExecutionWithFunc.ps1:5:12:5:34 | ...+... | Dynamic/DynamicExecutionWithFunc.ps1:5:12:5:34 | ...+... |
 | Dynamic/DynamicExecutionWithFunc.ps1:5:24:5:34 | userInput | Dynamic/DynamicExecutionWithFunc.ps1:5:12:5:34 | ...+... |
-| Dynamic/DynamicExecutionWithFunc.ps1:6:5:6:22 | Invoke-Expression | Dynamic/DynamicExecutionWithFunc.ps1:6:5:6:27 | Invoke-Expression |
-| Dynamic/DynamicExecutionWithFunc.ps1:6:5:6:27 | Invoke-Expression | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
-| Dynamic/DynamicExecutionWithFunc.ps1:6:23:6:27 | foo | Dynamic/DynamicExecutionWithFunc.ps1:6:5:6:27 | Invoke-Expression |
+| Dynamic/DynamicExecutionWithFunc.ps1:6:5:6:22 | Invoke-Expression | Dynamic/DynamicExecutionWithFunc.ps1:6:5:6:27 | call to Invoke-Expression |
+| Dynamic/DynamicExecutionWithFunc.ps1:6:5:6:27 | call to Invoke-Expression | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
+| Dynamic/DynamicExecutionWithFunc.ps1:6:23:6:27 | foo | Dynamic/DynamicExecutionWithFunc.ps1:6:5:6:27 | call to Invoke-Expression |
 | Dynamic/DynamicExecutionWithFunc.ps1:7:5:7:18 | scriptblock | Dynamic/DynamicExecutionWithFunc.ps1:7:5:7:32 | call to Create |
 | Dynamic/DynamicExecutionWithFunc.ps1:7:5:7:32 | call to Create | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
 | Dynamic/DynamicExecutionWithFunc.ps1:7:5:7:32 | call to Create | Dynamic/DynamicExecutionWithFunc.ps1:7:5:7:32 | call to Create |
 | Dynamic/DynamicExecutionWithFunc.ps1:7:20:7:26 | Create | Dynamic/DynamicExecutionWithFunc.ps1:7:5:7:32 | call to Create |
 | Dynamic/DynamicExecutionWithFunc.ps1:7:27:7:31 | foo | Dynamic/DynamicExecutionWithFunc.ps1:7:5:7:32 | call to Create |
-| Dynamic/DynamicExecutionWithFunc.ps1:8:5:8:36 |  | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
-| Dynamic/DynamicExecutionWithFunc.ps1:8:7:8:36 | (...) | Dynamic/DynamicExecutionWithFunc.ps1:8:5:8:36 |  |
+| Dynamic/DynamicExecutionWithFunc.ps1:8:5:8:36 | call to  | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
+| Dynamic/DynamicExecutionWithFunc.ps1:8:7:8:36 | (...) | Dynamic/DynamicExecutionWithFunc.ps1:8:5:8:36 | call to  |
 | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:21 | scriptblock | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create |
 | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create | Dynamic/DynamicExecutionWithFunc.ps1:8:7:8:36 | (...) |
 | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create |
 | Dynamic/DynamicExecutionWithFunc.ps1:8:23:8:29 | Create | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create |
 | Dynamic/DynamicExecutionWithFunc.ps1:8:30:8:34 | foo | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create |
-| Dynamic/DynamicExecutionWithFunc.ps1:9:5:9:12 |  | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
-| Dynamic/DynamicExecutionWithFunc.ps1:9:6:9:12 | $foo | Dynamic/DynamicExecutionWithFunc.ps1:9:5:9:12 |  |
+| Dynamic/DynamicExecutionWithFunc.ps1:9:5:9:12 | call to  | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
+| Dynamic/DynamicExecutionWithFunc.ps1:9:6:9:12 | $foo | Dynamic/DynamicExecutionWithFunc.ps1:9:5:9:12 | call to  |
 | Dynamic/DynamicExecutionWithFunc.ps1:9:7:9:11 | foo | Dynamic/DynamicExecutionWithFunc.ps1:9:6:9:12 | $foo |
-| Dynamic/DynamicExecutionWithFunc.ps1:10:5:10:30 | cmd.exe | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
-| Dynamic/DynamicExecutionWithFunc.ps1:10:7:10:16 | cmd.exe | Dynamic/DynamicExecutionWithFunc.ps1:10:5:10:30 | cmd.exe |
-| Dynamic/DynamicExecutionWithFunc.ps1:10:17:10:30 | @(...) | Dynamic/DynamicExecutionWithFunc.ps1:10:5:10:30 | cmd.exe |
+| Dynamic/DynamicExecutionWithFunc.ps1:10:5:10:30 | call to cmd.exe | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
+| Dynamic/DynamicExecutionWithFunc.ps1:10:7:10:16 | cmd.exe | Dynamic/DynamicExecutionWithFunc.ps1:10:5:10:30 | call to cmd.exe |
+| Dynamic/DynamicExecutionWithFunc.ps1:10:17:10:30 | @(...) | Dynamic/DynamicExecutionWithFunc.ps1:10:5:10:30 | call to cmd.exe |
 | Dynamic/DynamicExecutionWithFunc.ps1:10:19:10:29 | userInput | Dynamic/DynamicExecutionWithFunc.ps1:10:19:10:29 | userInput |
 | Dynamic/DynamicExecutionWithFunc.ps1:10:19:10:29 | userInput | Dynamic/DynamicExecutionWithFunc.ps1:10:19:10:29 | {...} |
 | Dynamic/DynamicExecutionWithFunc.ps1:10:19:10:29 | {...} | Dynamic/DynamicExecutionWithFunc.ps1:10:17:10:30 | @(...) |
@@ -172,17 +172,17 @@
 | Expressions/ConvertWithSecureString.ps1:1:1:1:11 | UserInput | Expressions/ConvertWithSecureString.ps1:1:1:1:55 | ...=... |
 | Expressions/ConvertWithSecureString.ps1:1:1:1:55 | ...=... | Expressions/ConvertWithSecureString.ps1:1:1:2:80 | {...} |
 | Expressions/ConvertWithSecureString.ps1:1:1:2:80 | {...} | Expressions/ConvertWithSecureString.ps1:1:1:2:80 | ConvertWithSecureString.ps1 |
-| Expressions/ConvertWithSecureString.ps1:1:14:1:23 | Read-Host | Expressions/ConvertWithSecureString.ps1:1:14:1:55 | Read-Host |
-| Expressions/ConvertWithSecureString.ps1:1:14:1:55 | Read-Host | Expressions/ConvertWithSecureString.ps1:1:1:1:55 | ...=... |
-| Expressions/ConvertWithSecureString.ps1:1:24:1:55 | Please enter your secure code | Expressions/ConvertWithSecureString.ps1:1:14:1:55 | Read-Host |
+| Expressions/ConvertWithSecureString.ps1:1:14:1:23 | Read-Host | Expressions/ConvertWithSecureString.ps1:1:14:1:55 | call to Read-Host |
+| Expressions/ConvertWithSecureString.ps1:1:14:1:55 | call to Read-Host | Expressions/ConvertWithSecureString.ps1:1:1:1:55 | ...=... |
+| Expressions/ConvertWithSecureString.ps1:1:24:1:55 | Please enter your secure code | Expressions/ConvertWithSecureString.ps1:1:14:1:55 | call to Read-Host |
 | Expressions/ConvertWithSecureString.ps1:2:1:2:16 | EncryptedInput | Expressions/ConvertWithSecureString.ps1:2:1:2:80 | ...=... |
 | Expressions/ConvertWithSecureString.ps1:2:1:2:80 | ...=... | Expressions/ConvertWithSecureString.ps1:1:1:2:80 | {...} |
-| Expressions/ConvertWithSecureString.ps1:2:19:2:41 | ConvertTo-SecureString | Expressions/ConvertWithSecureString.ps1:2:19:2:80 | ConvertTo-SecureString |
-| Expressions/ConvertWithSecureString.ps1:2:19:2:80 | ConvertTo-SecureString | Expressions/ConvertWithSecureString.ps1:2:1:2:80 | ...=... |
-| Expressions/ConvertWithSecureString.ps1:2:42:2:49 | String | Expressions/ConvertWithSecureString.ps1:2:19:2:80 | ConvertTo-SecureString |
-| Expressions/ConvertWithSecureString.ps1:2:50:2:60 | UserInput | Expressions/ConvertWithSecureString.ps1:2:19:2:80 | ConvertTo-SecureString |
-| Expressions/ConvertWithSecureString.ps1:2:61:2:73 | AsPlainText | Expressions/ConvertWithSecureString.ps1:2:19:2:80 | ConvertTo-SecureString |
-| Expressions/ConvertWithSecureString.ps1:2:74:2:80 | Force | Expressions/ConvertWithSecureString.ps1:2:19:2:80 | ConvertTo-SecureString |
+| Expressions/ConvertWithSecureString.ps1:2:19:2:41 | ConvertTo-SecureString | Expressions/ConvertWithSecureString.ps1:2:19:2:80 | call to ConvertTo-SecureString |
+| Expressions/ConvertWithSecureString.ps1:2:19:2:80 | call to ConvertTo-SecureString | Expressions/ConvertWithSecureString.ps1:2:1:2:80 | ...=... |
+| Expressions/ConvertWithSecureString.ps1:2:42:2:49 | String | Expressions/ConvertWithSecureString.ps1:2:19:2:80 | call to ConvertTo-SecureString |
+| Expressions/ConvertWithSecureString.ps1:2:50:2:60 | UserInput | Expressions/ConvertWithSecureString.ps1:2:19:2:80 | call to ConvertTo-SecureString |
+| Expressions/ConvertWithSecureString.ps1:2:61:2:73 | AsPlainText | Expressions/ConvertWithSecureString.ps1:2:19:2:80 | call to ConvertTo-SecureString |
+| Expressions/ConvertWithSecureString.ps1:2:74:2:80 | Force | Expressions/ConvertWithSecureString.ps1:2:19:2:80 | call to ConvertTo-SecureString |
 | Expressions/ExpandableString.ps1:1:1:1:40 | Date: $([DateTime]::Now)\nName: $name | Expressions/ExpandableString.ps1:1:1:1:40 | Date: $([DateTime]::Now)\nName: $name |
 | Expressions/ExpandableString.ps1:1:1:1:40 | Date: $([DateTime]::Now)\nName: $name | Expressions/ExpandableString.ps1:1:1:1:40 | {...} |
 | Expressions/ExpandableString.ps1:1:1:1:40 | {...} | Expressions/ExpandableString.ps1:1:1:1:40 | ExpandableString.ps1 |
@@ -197,16 +197,16 @@
 | Expressions/SubExpression.ps1:1:1:1:24 | call to AddDays | Expressions/SubExpression.ps1:1:1:1:24 | call to AddDays |
 | Expressions/SubExpression.ps1:1:1:1:24 | call to AddDays | Expressions/SubExpression.ps1:1:1:2:22 | {...} |
 | Expressions/SubExpression.ps1:1:1:2:22 | {...} | Expressions/SubExpression.ps1:1:1:2:22 | SubExpression.ps1 |
-| Expressions/SubExpression.ps1:1:3:1:11 | Get-Date | Expressions/SubExpression.ps1:1:3:1:11 | Get-Date |
-| Expressions/SubExpression.ps1:1:3:1:11 | Get-Date | Expressions/SubExpression.ps1:1:3:1:11 | {...} |
+| Expressions/SubExpression.ps1:1:3:1:11 | Get-Date | Expressions/SubExpression.ps1:1:3:1:11 | call to Get-Date |
+| Expressions/SubExpression.ps1:1:3:1:11 | call to Get-Date | Expressions/SubExpression.ps1:1:3:1:11 | {...} |
 | Expressions/SubExpression.ps1:1:3:1:11 | {...} | Expressions/SubExpression.ps1:1:1:1:12 | $(...) |
 | Expressions/SubExpression.ps1:1:13:1:20 | AddDays | Expressions/SubExpression.ps1:1:1:1:24 | call to AddDays |
 | Expressions/SubExpression.ps1:1:21:1:23 | 10 | Expressions/SubExpression.ps1:1:1:1:24 | call to AddDays |
 | Expressions/SubExpression.ps1:2:1:2:12 | $(...) | Expressions/SubExpression.ps1:2:1:2:22 | call to AddDays |
 | Expressions/SubExpression.ps1:2:1:2:22 | call to AddDays | Expressions/SubExpression.ps1:1:1:2:22 | {...} |
 | Expressions/SubExpression.ps1:2:1:2:22 | call to AddDays | Expressions/SubExpression.ps1:2:1:2:22 | call to AddDays |
-| Expressions/SubExpression.ps1:2:3:2:11 | Get-Date | Expressions/SubExpression.ps1:2:3:2:11 | Get-Date |
-| Expressions/SubExpression.ps1:2:3:2:11 | Get-Date | Expressions/SubExpression.ps1:2:3:2:11 | {...} |
+| Expressions/SubExpression.ps1:2:3:2:11 | Get-Date | Expressions/SubExpression.ps1:2:3:2:11 | call to Get-Date |
+| Expressions/SubExpression.ps1:2:3:2:11 | call to Get-Date | Expressions/SubExpression.ps1:2:3:2:11 | {...} |
 | Expressions/SubExpression.ps1:2:3:2:11 | {...} | Expressions/SubExpression.ps1:2:1:2:12 | $(...) |
 | Expressions/SubExpression.ps1:2:13:2:20 | AddDays | Expressions/SubExpression.ps1:2:1:2:22 | call to AddDays |
 | Expressions/TernaryExpression.ps1:1:1:1:5 | var | Expressions/TernaryExpression.ps1:1:1:1:23 | ...=... |
@@ -268,14 +268,14 @@
 | Loops/While.ps1:2:8:2:18 | ... -le ... | Loops/While.ps1:2:8:2:18 | ... -le ... |
 | Loops/While.ps1:2:17:2:18 | 5 | Loops/While.ps1:2:8:2:18 | ... -le ... |
 | Loops/While.ps1:3:1:13:2 | {...} | Loops/While.ps1:2:1:13:2 | while(...) {...} |
-| Loops/While.ps1:4:5:4:15 | Write-Host | Loops/While.ps1:4:5:4:41 | Write-Host |
-| Loops/While.ps1:4:5:4:41 | Write-Host | Loops/While.ps1:3:1:13:2 | {...} |
-| Loops/While.ps1:4:16:4:19 | The | Loops/While.ps1:4:5:4:41 | Write-Host |
-| Loops/While.ps1:4:20:4:25 | value | Loops/While.ps1:4:5:4:41 | Write-Host |
-| Loops/While.ps1:4:26:4:28 | of | Loops/While.ps1:4:5:4:41 | Write-Host |
-| Loops/While.ps1:4:29:4:32 | Var | Loops/While.ps1:4:5:4:41 | Write-Host |
-| Loops/While.ps1:4:33:4:36 | is: | Loops/While.ps1:4:5:4:41 | Write-Host |
-| Loops/While.ps1:4:37:4:41 | var | Loops/While.ps1:4:5:4:41 | Write-Host |
+| Loops/While.ps1:4:5:4:15 | Write-Host | Loops/While.ps1:4:5:4:41 | call to Write-Host |
+| Loops/While.ps1:4:5:4:41 | call to Write-Host | Loops/While.ps1:3:1:13:2 | {...} |
+| Loops/While.ps1:4:16:4:19 | The | Loops/While.ps1:4:5:4:41 | call to Write-Host |
+| Loops/While.ps1:4:20:4:25 | value | Loops/While.ps1:4:5:4:41 | call to Write-Host |
+| Loops/While.ps1:4:26:4:28 | of | Loops/While.ps1:4:5:4:41 | call to Write-Host |
+| Loops/While.ps1:4:29:4:32 | Var | Loops/While.ps1:4:5:4:41 | call to Write-Host |
+| Loops/While.ps1:4:33:4:36 | is: | Loops/While.ps1:4:5:4:41 | call to Write-Host |
+| Loops/While.ps1:4:37:4:41 | var | Loops/While.ps1:4:5:4:41 | call to Write-Host |
 | Loops/While.ps1:5:5:5:9 | var | Loops/While.ps1:5:5:5:11 | ...++ |
 | Loops/While.ps1:5:5:5:11 | ...++ | Loops/While.ps1:3:1:13:2 | {...} |
 | Loops/While.ps1:5:5:5:11 | ...++ | Loops/While.ps1:5:5:5:11 | ...++ |
@@ -291,13 +291,13 @@
 | Redirections/FileRedirection.ps1:1:1:3:2 | $(...) | Redirections/FileRedirection.ps1:1:1:3:20 | $(...) |
 | Redirections/FileRedirection.ps1:1:1:3:20 | $(...) | Redirections/FileRedirection.ps1:1:1:3:20 | {...} |
 | Redirections/FileRedirection.ps1:1:1:3:20 | {...} | Redirections/FileRedirection.ps1:1:1:3:20 | FileRedirection.ps1 |
-| Redirections/FileRedirection.ps1:2:5:2:9 | Here | Redirections/FileRedirection.ps1:2:5:2:32 | Here |
-| Redirections/FileRedirection.ps1:2:5:2:32 | Here | Redirections/FileRedirection.ps1:2:5:2:32 | {...} |
+| Redirections/FileRedirection.ps1:2:5:2:9 | Here | Redirections/FileRedirection.ps1:2:5:2:32 | call to Here |
+| Redirections/FileRedirection.ps1:2:5:2:32 | call to Here | Redirections/FileRedirection.ps1:2:5:2:32 | {...} |
 | Redirections/FileRedirection.ps1:2:5:2:32 | {...} | Redirections/FileRedirection.ps1:1:1:3:2 | $(...) |
-| Redirections/FileRedirection.ps1:2:10:2:12 | is | Redirections/FileRedirection.ps1:2:5:2:32 | Here |
-| Redirections/FileRedirection.ps1:2:13:2:17 | your | Redirections/FileRedirection.ps1:2:5:2:32 | Here |
-| Redirections/FileRedirection.ps1:2:18:2:25 | current | Redirections/FileRedirection.ps1:2:5:2:32 | Here |
-| Redirections/FileRedirection.ps1:2:26:2:32 | script | Redirections/FileRedirection.ps1:2:5:2:32 | Here |
+| Redirections/FileRedirection.ps1:2:10:2:12 | is | Redirections/FileRedirection.ps1:2:5:2:32 | call to Here |
+| Redirections/FileRedirection.ps1:2:13:2:17 | your | Redirections/FileRedirection.ps1:2:5:2:32 | call to Here |
+| Redirections/FileRedirection.ps1:2:18:2:25 | current | Redirections/FileRedirection.ps1:2:5:2:32 | call to Here |
+| Redirections/FileRedirection.ps1:2:26:2:32 | script | Redirections/FileRedirection.ps1:2:5:2:32 | call to Here |
 | Redirections/FileRedirection.ps1:3:3:3:7 | MergingRedirection | Redirections/FileRedirection.ps1:1:1:3:20 | $(...) |
 | Redirections/FileRedirection.ps1:3:8:3:20 | FileRedirection | Redirections/FileRedirection.ps1:1:1:3:20 | $(...) |
 | Redirections/FileRedirection.ps1:3:10:3:20 | output.txt | Redirections/FileRedirection.ps1:3:8:3:20 | FileRedirection |
@@ -331,20 +331,20 @@
 | Statements/TrapStatement.ps1:2:10:2:26 | {...} | Statements/TrapStatement.ps1:2:5:2:26 | TrapStatement at: Statements/TrapStatement.ps1:2:5:2:26 |
 | Statements/TrapStatement.ps1:2:11:2:25 | Error found. | Statements/TrapStatement.ps1:2:10:2:26 | {...} |
 | Statements/TrapStatement.ps1:2:11:2:25 | Error found. | Statements/TrapStatement.ps1:2:11:2:25 | Error found. |
-| Statements/TrapStatement.ps1:3:5:3:19 | nonsenseString | Statements/TrapStatement.ps1:2:5:3:19 | {...} |
-| Statements/TrapStatement.ps1:3:5:3:19 | nonsenseString | Statements/TrapStatement.ps1:3:5:3:19 | nonsenseString |
-| Statements/TrapStatement.ps1:6:1:6:9 | TrapTest | Statements/TrapStatement.ps1:1:1:6:9 | {...} |
-| Statements/TrapStatement.ps1:6:1:6:9 | TrapTest | Statements/TrapStatement.ps1:6:1:6:9 | TrapTest |
+| Statements/TrapStatement.ps1:3:5:3:19 | call to nonsenseString | Statements/TrapStatement.ps1:2:5:3:19 | {...} |
+| Statements/TrapStatement.ps1:3:5:3:19 | nonsenseString | Statements/TrapStatement.ps1:3:5:3:19 | call to nonsenseString |
+| Statements/TrapStatement.ps1:6:1:6:9 | TrapTest | Statements/TrapStatement.ps1:6:1:6:9 | call to TrapTest |
+| Statements/TrapStatement.ps1:6:1:6:9 | call to TrapTest | Statements/TrapStatement.ps1:1:1:6:9 | {...} |
 | Statements/Try.ps1:1:1:13:2 | try {...} | Statements/Try.ps1:1:1:13:2 | {...} |
 | Statements/Try.ps1:1:1:13:2 | {...} | Statements/Try.ps1:1:1:13:2 | Try.ps1 |
 | Statements/Try.ps1:1:5:4:2 | {...} | Statements/Try.ps1:1:1:13:2 | try {...} |
 | Statements/Try.ps1:2:4:2:14 | Exception | Statements/Try.ps1:2:4:2:95 | ...=... |
 | Statements/Try.ps1:2:4:2:95 | ...=... | Statements/Try.ps1:1:5:4:2 | {...} |
-| Statements/Try.ps1:2:17:2:27 | New-Object | Statements/Try.ps1:2:17:2:95 | New-Object |
-| Statements/Try.ps1:2:17:2:95 | New-Object | Statements/Try.ps1:2:4:2:95 | ...=... |
-| Statements/Try.ps1:2:28:2:53 | System.Xaml.XamlException | Statements/Try.ps1:2:17:2:95 | New-Object |
-| Statements/Try.ps1:2:54:2:67 | ArgumentList | Statements/Try.ps1:2:17:2:95 | New-Object |
-| Statements/Try.ps1:2:68:2:95 | (...) | Statements/Try.ps1:2:17:2:95 | New-Object |
+| Statements/Try.ps1:2:17:2:27 | New-Object | Statements/Try.ps1:2:17:2:95 | call to New-Object |
+| Statements/Try.ps1:2:17:2:95 | call to New-Object | Statements/Try.ps1:2:4:2:95 | ...=... |
+| Statements/Try.ps1:2:28:2:53 | System.Xaml.XamlException | Statements/Try.ps1:2:17:2:95 | call to New-Object |
+| Statements/Try.ps1:2:54:2:67 | ArgumentList | Statements/Try.ps1:2:17:2:95 | call to New-Object |
+| Statements/Try.ps1:2:68:2:95 | (...) | Statements/Try.ps1:2:17:2:95 | call to New-Object |
 | Statements/Try.ps1:2:69:2:80 | Bad XAML! | Statements/Try.ps1:2:69:2:94 | ...,... |
 | Statements/Try.ps1:2:69:2:94 | ...,... | Statements/Try.ps1:2:68:2:95 | (...) |
 | Statements/Try.ps1:2:69:2:94 | ...,... | Statements/Try.ps1:2:69:2:94 | ...,... |

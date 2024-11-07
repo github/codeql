@@ -475,7 +475,9 @@ module API {
       MkModule(string qualifiedModule) {
         any(UsingStmt using).getName() = qualifiedModule
         or
-        any(Cmd cmd).getQualifiedCommandName() = qualifiedModule
+        any(Cmd cmd).getNamespaceQualifier() = qualifiedModule
+        or
+        any(TypeNameExpr tn).getName() = qualifiedModule
         or
         any(ModuleManifest manifest).getModuleName() = qualifiedModule
       } or
@@ -645,6 +647,7 @@ module API {
 
     cached
     predicate instanceEdge(Node pred, Node succ) {
+      // An instance of a type
       exists(string qualifiedType | pred = MkType(qualifiedType) |
         exists(DataFlow::ObjectCreationNode objCreation |
           objCreation.getConstructedTypeName() = qualifiedType and
@@ -655,6 +658,15 @@ module API {
           p.getParameter().getStaticType() = qualifiedType and
           succ = getForwardStartNode(p)
         )
+      )
+      or
+      // A use of a module (or static type?)
+      // TODO: Consider implicit module qualiifers and use instance on all of them
+      exists(string qualifiedType, DataFlow::TypeNameNode typeName |
+        pred = MkModule(qualifiedType) and
+        typeName.getTypeName() = qualifiedType
+      |
+        succ = getForwardStartNode(typeName)
       )
     }
 

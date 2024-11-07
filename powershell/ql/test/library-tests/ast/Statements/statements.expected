@@ -9,11 +9,11 @@
 | TrapStatement.ps1:1:1:4:2 | TrapTest |
 | TrapStatement.ps1:2:5:2:26 | TrapStatement at: TrapStatement.ps1:2:5:2:26 |
 | TrapStatement.ps1:2:11:2:25 | Error found. |
-| TrapStatement.ps1:3:5:3:19 | nonsenseString |
-| TrapStatement.ps1:6:1:6:9 | TrapTest |
+| TrapStatement.ps1:3:5:3:19 | call to nonsenseString |
+| TrapStatement.ps1:6:1:6:9 | call to TrapTest |
 | Try.ps1:1:1:13:2 | try {...} |
 | Try.ps1:2:4:2:95 | ...=... |
-| Try.ps1:2:17:2:95 | New-Object |
+| Try.ps1:2:17:2:95 | call to New-Object |
 | Try.ps1:2:69:2:94 | ...,... |
 | Try.ps1:3:5:3:21 | throw ... |
 | Try.ps1:3:11:3:21 | Exception |

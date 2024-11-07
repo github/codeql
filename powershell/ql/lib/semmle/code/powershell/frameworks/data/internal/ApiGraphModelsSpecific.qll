@@ -70,9 +70,11 @@ API::Node getExtraNodeFromType(string qualifiedType) {
   qualifiedType = "" and
   result = API::root()
   or
-  // TODO: How to distinguish between these two cases? And do we need to?
+  // TODO: How to distinguish between these cases? And do we need to?
   exists(string mod, string type | parseRelevantType(qualifiedType, mod, type) |
     result = API::mod(qualifiedType)
+    or
+    result = API::mod(qualifiedType).getInstance()
     or
     result = API::mod(mod).getType(type)
   )
