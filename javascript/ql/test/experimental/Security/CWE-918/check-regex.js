@@ -51,3 +51,17 @@ app.get('/check-with-axios', req => {
 const isValidPath = path =>  path.match(/^[0-9a-z]+$/);
 
 const isInBlackList = path =>  path.match(/^[/\.%]+$/);
+
+app.get('/check-with-axios', req => {
+  const baseURL = "test.com/"
+  if (isValidPathMatchAll(req.params.tainted) ) {
+    axios.get(baseURL + req.params.tainted); // OK
+  }
+  if (!isValidPathMatchAll(req.params.tainted) ) {
+    axios.get(baseURL + req.params.tainted); // SSRF
+  } else {
+    axios.get(baseURL + req.params.tainted); // OK
+  }
+});
+
+const isValidPathMatchAll = path =>  path.matchAll(/^[0-9a-z]+$/g);
