@@ -1,10 +1,10 @@
 ---
-name: github/actions-tests
-groups: [javascript, test]
+name: codeql/actions-tests
+groups: [codeql, test]
 dependencies:
-  github/actions-all: ${workspace}
-  github/actions-queries: ${workspace}
-extractor: javascript
+  codeql/actions-all: ${workspace}
+  codeql/actions-queries: ${workspace}
+extractor: actions
 tests: .
 warnOnImplicitThis: true
 

@@ -1,11 +1,11 @@
 ---
 library: false
-name: github/actions-queries
+name: codeql/actions-queries
 version: 0.1.85
 groups: [actions, queries]
 suites: codeql-suites
-extractor: javascript
+extractor: actions
 defaultSuiteFile: codeql-suites/actions-code-scanning.qls
 dependencies:
-  github/actions-all: ${workspace}
+  codeql/actions-all: ${workspace}
 warnOnImplicitThis: true

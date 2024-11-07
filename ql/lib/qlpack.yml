@@ -1,16 +1,16 @@
 ---
 library: true
 warnOnImplicitThis: true
-name: github/actions-all
+name: codeql/actions-all
 version: 0.1.85
 dependencies:
   codeql/util: ^1.0.1
   codeql/yaml: ^1.0.1
   codeql/controlflow: ^1.0.1
   codeql/dataflow: ^1.0.1
-extractor: javascript
-dbscheme: semmlecode.javascript.dbscheme
-groups: javascript
+  codeql/javascript-all: ^2.0.2
+extractor: actions
+groups: actions
 dataExtensions:
   - ext/manual/*.model.yml
   - ext/generated/**/*.model.yml
