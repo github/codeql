@@ -17,13 +17,19 @@ signature class PathNodeSig {
 private signature predicate provenanceSig(string model);
 
 private module TranslateModels<
-  interpretModelForTestSig/2 interpretModelForTest, provenanceSig/1 provenance>
+  interpretModelForTestSig/2 interpretModelForTest0, provenanceSig/1 provenance>
 {
   private predicate madIds(string madId) {
     exists(string model |
       provenance(model) and
       model.regexpFind("(?<=MaD:)[0-9]*", _, _) = madId
     )
+  }
+
+  // Be robust against MaD IDs with multiple textual representations; simply
+  // concatenate them all
+  private predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+    model = strictconcat(string mod | interpretModelForTest0(madId, mod) | mod, ", ")
   }
 
   private QlBuiltins::ExtensionId getModelId(string model) {
