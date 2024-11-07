@@ -914,6 +914,36 @@ def test_annotate_replace_bases():
     }
 
 
+def test_annotate_add_bases():
+    @load
+    class data:
+        class Root:
+            pass
+
+        class A(Root):
+            pass
+
+        class B(Root):
+            pass
+
+        class C(Root):
+            pass
+
+        class Derived(A):
+            pass
+
+        @defs.annotate(Derived, add_bases=(B, C))
+        class _:
+            pass
+    assert data.classes == {
+        "Root": schema.Class("Root", derived={"A", "B", "C"}),
+        "A": schema.Class("A", bases=["Root"], derived={"Derived"}),
+        "B": schema.Class("B", bases=["Root"], derived={"Derived"}),
+        "C": schema.Class("C", bases=["Root"], derived={"Derived"}),
+        "Derived": schema.Class("Derived", bases=["A", "B", "C"]),
+    }
+
+
 def test_annotate_drop_field():
     @load
     class data:

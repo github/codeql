@@ -3,12 +3,12 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  ClosureExpr x, int getNumberOfAttrs, string hasBody, string hasClosureBinder, string isAsync,
-  string isConst, string isGen, string isMove, string isStatic, string hasParamList,
-  string hasRetType
+  ClosureExpr x, string hasParamList, int getNumberOfAttrs, string hasBody, string hasClosureBinder,
+  string isAsync, string isConst, string isGen, string isMove, string isStatic, string hasRetType
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasParamList() then hasParamList = "yes" else hasParamList = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
   (if x.hasClosureBinder() then hasClosureBinder = "yes" else hasClosureBinder = "no") and
@@ -17,8 +17,7 @@ where
   (if x.isGen() then isGen = "yes" else isGen = "no") and
   (if x.isMove() then isMove = "yes" else isMove = "no") and
   (if x.isStatic() then isStatic = "yes" else isStatic = "no") and
-  (if x.hasParamList() then hasParamList = "yes" else hasParamList = "no") and
   if x.hasRetType() then hasRetType = "yes" else hasRetType = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasBody:", hasBody, "hasClosureBinder:",
-  hasClosureBinder, "isAsync:", isAsync, "isConst:", isConst, "isGen:", isGen, "isMove:", isMove,
-  "isStatic:", isStatic, "hasParamList:", hasParamList, "hasRetType:", hasRetType
+select x, "hasParamList:", hasParamList, "getNumberOfAttrs:", getNumberOfAttrs, "hasBody:", hasBody,
+  "hasClosureBinder:", hasClosureBinder, "isAsync:", isAsync, "isConst:", isConst, "isGen:", isGen,
+  "isMove:", isMove, "isStatic:", isStatic, "hasRetType:", hasRetType

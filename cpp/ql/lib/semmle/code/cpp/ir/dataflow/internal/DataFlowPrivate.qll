@@ -1364,7 +1364,10 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
-  call.(SummaryCall).getReceiver() = receiver.(FlowSummaryNode).getSummaryNode() and
+  (
+    call.(SummaryCall).getReceiver() = receiver.(FlowSummaryNode).getSummaryNode() or
+    call.asCallInstruction().getCallTargetOperand() = receiver.asOperand()
+  ) and
   exists(kind)
 }
 

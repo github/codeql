@@ -230,6 +230,14 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       )
   }
 
+  /**
+   * Gets a non-implicit function declaration entry.
+   */
+  FunctionDeclarationEntry getAnExplicitDeclarationEntry() {
+    result = this.getADeclarationEntry() and
+    not result.isImplicit()
+  }
+
   private predicate declEntry(FunctionDeclarationEntry fde) {
     fun_decls(unresolveElement(fde), underlyingElement(this), _, _, _) and
     // If one .cpp file specializes a function, and another calls the

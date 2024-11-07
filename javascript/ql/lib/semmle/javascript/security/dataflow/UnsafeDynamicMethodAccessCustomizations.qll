@@ -52,9 +52,14 @@ module UnsafeDynamicMethodAccess {
   }
 
   /**
-   * A source of remote user input, considered as a source for unsafe dynamic method access.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A function invocation of an unsafe function, as a sink for remote unsafe dynamic method access.

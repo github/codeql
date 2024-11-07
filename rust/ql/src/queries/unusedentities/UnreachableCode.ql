@@ -13,63 +13,65 @@ import codeql.rust.controlflow.ControlFlowGraph
 import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 
 /**
- * Holds if `n` is an AST node that's unreachable.
+ * Successor relation that includes unreachable AST nodes.
  */
-private predicate unreachable(AstNode n) {
-  not n = any(CfgNode cfn).getAstNode() and // reachable nodes
-  exists(ControlFlowGraphImpl::ControlFlowTree cft |
-    // nodes intended to be part of the CFG
-    cft.succ(n, _, _)
-    or
-    cft.succ(_, n, _)
+private predicate succ(AstNode a, AstNode b) {
+  exists(ControlFlowGraphImpl::ControlFlowTree cft | cft.succ(a, b, _))
+}
+
+/**
+ * Gets a node we'd prefer not to report as unreachable. These will be removed
+ * from the AST for the purposes of this query, with successor links being
+ * made across them where appropriate.
+ */
+predicate hiddenNode(AstNode n) {
+  // isolated node (not intended to be part of the CFG)
+  not succ(n, _) and
+  not succ(_, n)
+  or
+  n instanceof ControlFlowGraphImpl::PostOrderTree and // location is counter-intuitive
+  not n instanceof MacroExpr
+  or
+  n.isInMacroExpansion()
+}
+
+/**
+ * Successor relation for edges out of `hiddenNode`s.
+ */
+private predicate succHidden(AstNode a, AstNode b) {
+  hiddenNode(a) and
+  succ(a, b)
+}
+
+/**
+ * Successor relation that removes / links over `hiddenNode`s.
+ */
+private predicate succWithHiding(AstNode a, AstNode b) {
+  exists(AstNode mid |
+    not hiddenNode(a) and
+    succ(a, mid) and
+    succHidden*(mid, b) and
+    not hiddenNode(b)
   )
 }
 
 /**
- * Holds if `n` is an AST node that's unreachable, and is not the successor
- * of an unreachable node (which would be a duplicate result).
+ * An AST node that is reachable.
+ */
+predicate reachable(AstNode n) { n = any(CfgNode cfn).getAstNode() }
+
+/**
+ * Holds if `n` is an AST node that's unreachable, and any predecessors
+ * of it are reachable (to avoid duplicate results).
  */
 private predicate firstUnreachable(AstNode n) {
-  unreachable(n) and
-  (
-    // no predecessor -> we are the first unreachable node.
-    not ControlFlowGraphImpl::succ(_, n, _)
-    or
-    // reachable predecessor -> we are the first unreachable node.
-    exists(AstNode pred |
-      ControlFlowGraphImpl::succ(pred, n, _) and
-      not unreachable(pred)
-    )
-  )
+  not reachable(n) and
+  not hiddenNode(n) and
+  forall(AstNode pred | succWithHiding(pred, n) | reachable(pred))
 }
 
-/**
- * Gets a node we'd prefer not to report as unreachable.
- */
-predicate skipNode(AstNode n) {
-  n instanceof ControlFlowGraphImpl::PostOrderTree or // location is counter-intuitive
-  not n instanceof ControlFlowGraphImpl::ControlFlowTree // not expected to be reachable
-}
-
-/**
- * Gets the `ControlFlowTree` successor of a node we'd prefer not to report.
- */
-AstNode skipSuccessor(AstNode n) {
-  skipNode(n) and
-  ControlFlowGraphImpl::succ(n, result, _)
-}
-
-/**
- * Gets the node `n`, skipping past any nodes we'd prefer not to report.
- */
-AstNode skipSuccessors(AstNode n) {
-  result = skipSuccessor*(n) and
-  not skipNode(result)
-}
-
-from AstNode first, AstNode report
+from AstNode n
 where
-  firstUnreachable(first) and
-  report = skipSuccessors(first) and
-  exists(report.getFile().getRelativePath()) // in source
-select report, "This code is never reached."
+  firstUnreachable(n) and
+  exists(n.getFile().getRelativePath()) // in source
+select n, "This code is never reached."

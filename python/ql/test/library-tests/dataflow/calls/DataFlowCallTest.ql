@@ -21,8 +21,11 @@ module DataFlowCallTest implements TestSig {
       value = prettyExpr(call.getNode().getNode()) and
       tag = "call"
       or
-      value = call.(DataFlowDispatch::NormalCall).getCallType().toString() and
-      tag = "callType"
+      exists(DataFlowDispatch::CallType callType |
+        DataFlowDispatch::resolveCall(call.getNode(), _, callType) and
+        value = callType.toString() and
+        tag = "callType"
+      )
       or
       exists(DataFlowDispatch::ArgumentPosition pos, DataFlow::Node arg |
         arg = call.getArgument(pos)

@@ -25,8 +25,8 @@
 | declarationEntry.cpp:39:7:39:7 | declaration of operator= | declarationEntry.cpp:39:7:39:7 | operator= | yes |
 | declarationEntry.cpp:39:7:39:13 | definition of myClass | declarationEntry.cpp:39:7:39:13 | myClass | yes |
 | declarationEntry.cpp:42:6:42:21 | definition of myMemberVariable | declarationEntry.cpp:42:6:42:21 | myMemberVariable | yes |
-| file://:0:0:0:0 | declaration of 1st parameter | file://:0:0:0:0 | (unnamed parameter 0) | yes |
-| file://:0:0:0:0 | declaration of 1st parameter | file://:0:0:0:0 | (unnamed parameter 0) | yes |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) | yes |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) | yes |
 | file://:0:0:0:0 | definition of fp_offset | file://:0:0:0:0 | fp_offset | yes |
 | file://:0:0:0:0 | definition of gp_offset | file://:0:0:0:0 | gp_offset | yes |
 | file://:0:0:0:0 | definition of overflow_arg_area | file://:0:0:0:0 | overflow_arg_area | yes |

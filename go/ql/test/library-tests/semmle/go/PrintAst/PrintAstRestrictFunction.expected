@@ -1,3 +1,9 @@
+other.go:
+#    8| [TypeParamDecl] type parameter declaration
+#    8|   0: [Ident, TypeName] int
+#    8|       Type = int
+#    8|   1: [Ident, TypeName] U
+#    8|       Type = U
 go.mod:
 #    0| [GoModFile] go.mod
 #    1|   0: [GoModModuleLine] go.mod module line
@@ -45,3 +51,18 @@ other.go:
 #   15|       2: [IntLit] 0
 #   15|           Type = int
 #   15|           Value = [IntLit] 0
+#   17|   3: [TypeDecl] type declaration
+#   17|     0: [TypeSpec] type declaration specifier
+#   17|       0: [Ident, TypeName] myType
+#   17|           Type = myType
+#   17|       1: [ArrayTypeExpr] array type
+#   17|           Type = []T
+#   17|         0: [Ident, TypeName] T
+#   17|             Type = T
+#   17|       2: [TypeParamDecl] type parameter declaration
+#   17|         0: [TypeSetLiteralExpr] type set literal
+#   17|             Type = ~string
+#   17|           0: [Ident, TypeName] string
+#   17|               Type = string
+#   17|         1: [Ident, TypeName] T
+#   17|             Type = T

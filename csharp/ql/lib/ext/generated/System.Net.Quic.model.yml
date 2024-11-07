@@ -4,18 +4,17 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Net.Quic", "QuicConnection", False, "CloseAsync", "(System.Int64,System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", False, "get_LocalEndPoint", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", False, "get_NegotiatedApplicationProtocol", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", False, "get_RemoteCertificate", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", False, "get_RemoteEndPoint", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", False, "get_TargetHostName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Net.Quic", "QuicListener", False, "ListenAsync", "(System.Net.Quic.QuicListenerOptions,System.Threading.CancellationToken)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Net.Quic", "QuicConnection", "AcceptInboundStreamAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicConnection", "CloseAsync", "(System.Int64,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", "ConnectAsync", "(System.Net.Quic.QuicClientConnectionOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", "OpenOutboundStreamAsync", "(System.Net.Quic.QuicStreamType,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicConnection", "ToString", "()", "summary", "df-generated"]
@@ -25,6 +24,7 @@ extensions:
       - ["System.Net.Quic", "QuicException", "get_QuicError", "()", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicException", "get_TransportErrorCode", "()", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicListener", "AcceptConnectionAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["System.Net.Quic", "QuicListener", "ListenAsync", "(System.Net.Quic.QuicListenerOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicListener", "ToString", "()", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicListener", "get_IsSupported", "()", "summary", "df-generated"]
       - ["System.Net.Quic", "QuicListener", "get_LocalEndPoint", "()", "summary", "df-generated"]

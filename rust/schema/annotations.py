@@ -101,7 +101,13 @@ class _:
     """
 
 
-@annotate(PathExpr)
+class PathExprBase(Expr):
+    """
+    A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.
+    """
+
+
+@annotate(PathExpr, replace_bases={Expr: PathExprBase})
 class _:
     """
     A path expression. For example:
@@ -191,6 +197,7 @@ class _:
     ```
     """
 
+
 class CallExprBase(Expr):
     """
     A function or method call expression. See `CallExpr` and `MethodCallExpr` for further details.
@@ -212,6 +219,7 @@ class _:
     """
     arg_list: drop
     attrs: drop
+
 
 @annotate(MethodCallExpr, replace_bases={Expr: CallExprBase})
 class _:
@@ -836,12 +844,10 @@ class _:
 
 
 @annotate(AssocItemList)
+@qltest.test_with(Trait)
 class _:
     """
-    A AssocItemList. For example:
-    ```rust
-    todo!()
-    ```
+    A list of  `AssocItem` elements, as appearing for example in a `Trait`.
     """
 
 
@@ -1533,11 +1539,18 @@ class _:
 
 
 @annotate(Trait)
+@rust.doc_test_signature(None)
 class _:
     """
     A Trait. For example:
-    ```rust
-    todo!()
+    ```
+    trait Frobinizable {
+      type Frobinator;
+      type Result: Copy;
+      fn frobinize_with(&mut self, frobinator: &Self::Frobinator) -> Result;
+    }
+
+    pub trait Foo<T: Frobinizable> where T::Frobinator: Eq {}
     ```
     """
 
@@ -1740,3 +1753,59 @@ class _:
     todo!()
     ```
     """
+
+
+@annotate(Function, add_bases=[Callable])
+class _:
+    param_list: drop
+    attrs: drop
+
+
+@annotate(ClosureExpr, add_bases=[Callable])
+class _:
+    param_list: drop
+    attrs: drop
+
+
+@qltest.skip
+@synth.on_arguments(parent="FormatArgsExpr", index=int, kind=int)
+class FormatTemplateVariableAccess(PathExprBase):
+    pass
+
+
+@qltest.skip
+@synth.on_arguments(parent=FormatArgsExpr, index=int, text=string, offset=int)
+class Format(Locatable):
+    """
+    A format element in a formatting template. For example the `{}` in:
+    ```rust
+    println!("Hello {}", "world");
+    ```
+    """
+    parent: FormatArgsExpr
+    index: int
+
+
+@qltest.skip
+@synth.on_arguments(parent=FormatArgsExpr, index=int, kind=int, name=string, positional=boolean, offset=int)
+class FormatArgument(Locatable):
+    """
+    An argument in a format element in a formatting template. For example the `width`, `precision`, and `value` in:
+    ```rust
+    println!("Value {value:#width$.precision$}");
+    ```
+    or the `0`, `1` and `2` in:
+    ```rust
+    println!("Value {0:#1$.2$}", value, width, precision);
+    ```
+    """
+    parent: Format
+
+@annotate(Item)
+class _:
+    extended_canonical_path: optional[string] | desc("""
+        Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
+        or `{<block id>}::name` for addressable items defined in an anonymous block (and only
+        addressable there-in).
+    """) | rust.detach | ql.internal
+    crate_origin: optional[string] | desc("One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.") | rust.detach | ql.internal

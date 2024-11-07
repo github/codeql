@@ -9,9 +9,6 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.Attr
 
 /**
- * A AssocItemList. For example:
- * ```rust
- * todo!()
- * ```
+ * A list of  `AssocItem` elements, as appearing for example in a `Trait`.
  */
 final class AssocItemList = Impl::AssocItemList;
