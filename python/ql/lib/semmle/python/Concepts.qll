@@ -872,7 +872,7 @@ class TemplateConstruction extends DataFlow::Node instanceof TemplateConstructio
   DataFlow::Node getSourceArg() { result = super.getSourceArg() }
 }
 
-/** Provides classes for modelling template construction APIs. */
+/** Provides classes for modeling template construction APIs. */
 module TemplateConstruction {
   /**
    * A data-flow node that constructs a template in a templating engine.
@@ -885,7 +885,6 @@ module TemplateConstruction {
     abstract DataFlow::Node getSourceArg();
   }
 }
-
 
 /** Provides classes for modeling HTTP-related APIs. */
 module Http {

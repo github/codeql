@@ -11,7 +11,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import TemplateInjectionCustomizations::TemplateInjection
 
-module TemplateInjectionConfig implements DataFlow::ConfigSig {
+private module TemplateInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof Source }
 
   predicate isSink(DataFlow::Node node) { node instanceof Sink }
@@ -19,4 +19,5 @@ module TemplateInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrierIn(DataFlow::Node node) { node instanceof Sanitizer }
 }
 
+/** Global taint-tracking for detecting "template injection" vulnerabilities. */
 module TemplateInjectionFlow = TaintTracking::Global<TemplateInjectionConfig>;

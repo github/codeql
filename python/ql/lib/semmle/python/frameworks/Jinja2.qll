@@ -4,7 +4,6 @@
  */
 
 private import python
-private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
 private import semmle.python.Concepts
 private import semmle.python.frameworks.data.ModelsAsData

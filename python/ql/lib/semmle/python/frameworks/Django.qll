@@ -3000,7 +3000,6 @@ module PrivateDjango {
   // ---------------------------------------------------------------------------
   // Templates
   // ---------------------------------------------------------------------------
-  
   /** A call to `django.template.Template` */
   private class DjangoTemplateConstruction extends TemplateConstruction::Range, API::CallNode {
     DjangoTemplateConstruction() {
@@ -3009,6 +3008,5 @@ module PrivateDjango {
 
     override DataFlow::Node getSourceArg() { result = this.getArg(0) }
   }
-
   // TODO: Support `from_string` on instances of `django.template.Engine`.
 }
