@@ -998,7 +998,7 @@ module TaintTracking {
         or
         // u.match(/re/) or u.match("re")
         base = expr and
-        m = "match" and
+        m = ["match", "matchAll"] and
         RegExp::isGenericRegExpSanitizer(RegExp::getRegExpFromNode(firstArg.flow()),
           sanitizedOutcome)
       )
