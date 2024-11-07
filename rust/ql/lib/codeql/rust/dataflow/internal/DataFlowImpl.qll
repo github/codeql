@@ -190,7 +190,7 @@ module Node {
 
   /** A data flow node that represents a value returned by a callable. */
   final class ReturnNode extends ExprNode {
-    ReturnNode() { this.asExpr() instanceof ReturnExpr }
+    ReturnNode() { this.getCfgNode().getASuccessor() instanceof ExitCfgNode }
 
     ReturnKind getKind() { any() }
   }
