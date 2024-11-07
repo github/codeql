@@ -1371,10 +1371,5 @@ private class IntegerOrPointerConstantInstruction extends ConstantInstruction {
 
 /** The int value of integer constant expression. */
 private int int_value(Instruction i) {
-  // if i is an integer, just grab that value
-  // if not, then find a derived instruction that is an integer
-  // recursing through all the GVN assignments
-  if i instanceof IntegerOrPointerConstantInstruction
-  then result = i.(IntegerOrPointerConstantInstruction).getValue().toInt()
-  else result = int_value(getDerivedInstruction(i))
+  result = valueNumber(i).getAnInstruction().(IntegerOrPointerConstantInstruction).getValue().toInt()
 }
