@@ -450,3 +450,12 @@ class CallNode extends AstNode {
 
   int getNumberOfArguments() { result = call.getNumberOfArguments() }
 }
+
+/** A use of a type name, viewed as a node in a data flow graph. */
+class TypeNameNode extends ExprNode {
+  override CfgNodes::ExprNodes::TypeNameCfgNode n;
+
+  final override CfgNodes::ExprNodes::TypeNameCfgNode getExprNode() { result = n }
+
+  string getTypeName() { result = n.getTypeName() }
+}
