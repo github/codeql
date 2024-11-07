@@ -7,7 +7,7 @@ of the action stored in the GitHub package registry. The action code will not ch
 
 ## Recommendations
 
-When using [immutable actions]() use the full semantic version of the action. This will ensure that the action is resolved to the exact version stored in the GitHub package registry. This will prevent the action code from changing between runs.
+When using [immutable actions](https://github.com/github/package-registry-team/blob/main/docs/immutable-actions/immutable-actions-howto.md) use the full semantic version of the action. This will ensure that the action is resolved to the exact version stored in the GitHub package registry. This will prevent the action code from changing between runs.
 
 ## Examples
 
