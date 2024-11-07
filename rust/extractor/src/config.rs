@@ -37,6 +37,7 @@ pub struct Config {
     pub scratch_dir: PathBuf,
     pub trap_dir: PathBuf,
     pub source_archive_dir: PathBuf,
+    pub target_dir: Option<PathBuf>,
     pub extract_dependencies: bool,
     pub verbose: u8,
     pub compression: Compression,

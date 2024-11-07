@@ -45,13 +45,11 @@ pub struct ParseResult<'a> {
 impl<'a> RustAnalyzer<'a> {
     pub fn load_workspace(
         project: &ProjectManifest,
-        scratch_dir: &Path,
+        target_dir: &Path,
     ) -> Option<(RootDatabase, Vfs)> {
         let config = CargoConfig {
             sysroot: Some(RustLibSource::Discover),
-            target_dir: ra_ap_paths::Utf8PathBuf::from_path_buf(scratch_dir.to_path_buf())
-                .map(|x| x.join("target"))
-                .ok(),
+            target_dir: ra_ap_paths::Utf8PathBuf::from_path_buf(target_dir.to_path_buf()).ok(),
             ..Default::default()
         };
         let progress = |t| (log::trace!("progress: {}", t));
