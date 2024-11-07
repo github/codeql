@@ -13,9 +13,7 @@ private import semmle.code.cpp.ir.implementation.raw.internal.InstructionTag
  * Returns `instr` or any instruction used to define `instr`.
  */
 private Instruction getDerivedInstruction(Instruction instr) {
-  result = valueNumber(instr).getAnInstruction() and
-  result.toString() != instr.toString() and
-  result instanceof CompareInstruction
+  result = valueNumber(instr).getAnInstruction().(StoreInstruction).getSourceValue()
   or
   result = instr
 }
