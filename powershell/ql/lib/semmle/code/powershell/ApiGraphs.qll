@@ -475,7 +475,9 @@ module API {
       MkModule(string qualifiedModule) {
         any(UsingStmt using).getName() = qualifiedModule
         or
-        any(Cmd cmd).getQualifiedCommandName() = qualifiedModule
+        any(Cmd cmd).getNamespaceQualifier() = qualifiedModule
+        or
+        any(TypeNameExpr tn).getName() = qualifiedModule
         or
         any(ModuleManifest manifest).getModuleName() = qualifiedModule
       } or
