@@ -1,10 +1,10 @@
 models
 | 1 | Summary: com.fasterxml.jackson.core; JsonFactory; false; createParser; ; ; Argument[0]; ReturnValue; taint; manual |
-| 2 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; convertValue; ; ; Argument[0]; ReturnValue; taint; manual |
-| 3 | Summary: com.fasterxml.jackson.databind; ObjectMapper; false; createParser; ; ; Argument[0]; ReturnValue; taint; manual |
-| 4 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0]; ReturnValue; taint; manual |
+| 2 | Summary: com.fasterxml.jackson.databind; ObjectMapper; false; createParser; ; ; Argument[0]; ReturnValue; taint; manual |
+| 3 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; convertValue; ; ; Argument[0]; ReturnValue; taint; manual |
+| 4 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0].MapValue.Element; ReturnValue; taint; manual |
 | 5 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0].MapValue; ReturnValue; taint; manual |
-| 6 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0].MapValue.Element; ReturnValue; taint; manual |
+| 6 | Summary: com.fasterxml.jackson.databind; ObjectMapper; true; valueToTree; ; ; Argument[0]; ReturnValue; taint; manual |
 | 7 | Summary: com.fasterxml.jackson.databind; ObjectReader; false; createParser; ; ; Argument[0]; ReturnValue; taint; manual |
 | 8 | Summary: java.util; Map; false; of; ; ; Argument[1]; ReturnValue.MapValue; value; manual |
 edges
@@ -53,55 +53,55 @@ edges
 | Test.java:115:16:115:32 | (...)... : char[] | Test.java:117:32:117:33 | in : char[] | provenance |  |
 | Test.java:115:25:115:32 | source(...) : Object | Test.java:115:16:115:32 | (...)... : char[] | provenance |  |
 | Test.java:117:10:117:40 | createParser(...) : JsonParser | Test.java:118:9:118:11 | out | provenance |  |
-| Test.java:117:32:117:33 | in : char[] | Test.java:117:10:117:40 | createParser(...) : JsonParser | provenance | MaD:3 |
+| Test.java:117:32:117:33 | in : char[] | Test.java:117:10:117:40 | createParser(...) : JsonParser | provenance | MaD:2 |
 | Test.java:123:16:123:32 | (...)... : char[] | Test.java:125:32:125:33 | in : char[] | provenance |  |
 | Test.java:123:25:123:32 | source(...) : Object | Test.java:123:16:123:32 | (...)... : char[] | provenance |  |
 | Test.java:125:10:125:34 | createParser(...) : JsonParser | Test.java:126:9:126:11 | out | provenance |  |
-| Test.java:125:32:125:33 | in : char[] | Test.java:125:10:125:34 | createParser(...) : JsonParser | provenance | MaD:3 |
+| Test.java:125:32:125:33 | in : char[] | Test.java:125:10:125:34 | createParser(...) : JsonParser | provenance | MaD:2 |
 | Test.java:131:16:131:32 | (...)... : byte[] | Test.java:133:32:133:33 | in : byte[] | provenance |  |
 | Test.java:131:25:131:32 | source(...) : Object | Test.java:131:16:131:32 | (...)... : byte[] | provenance |  |
 | Test.java:133:10:133:40 | createParser(...) : JsonParser | Test.java:134:9:134:11 | out | provenance |  |
-| Test.java:133:32:133:33 | in : byte[] | Test.java:133:10:133:40 | createParser(...) : JsonParser | provenance | MaD:3 |
+| Test.java:133:32:133:33 | in : byte[] | Test.java:133:10:133:40 | createParser(...) : JsonParser | provenance | MaD:2 |
 | Test.java:139:16:139:32 | (...)... : byte[] | Test.java:141:32:141:33 | in : byte[] | provenance |  |
 | Test.java:139:25:139:32 | source(...) : Object | Test.java:139:16:139:32 | (...)... : byte[] | provenance |  |
 | Test.java:141:10:141:34 | createParser(...) : JsonParser | Test.java:142:9:142:11 | out | provenance |  |
-| Test.java:141:32:141:33 | in : byte[] | Test.java:141:10:141:34 | createParser(...) : JsonParser | provenance | MaD:3 |
+| Test.java:141:32:141:33 | in : byte[] | Test.java:141:10:141:34 | createParser(...) : JsonParser | provenance | MaD:2 |
 | Test.java:147:13:147:26 | (...)... : URL | Test.java:149:32:149:33 | in : URL | provenance |  |
 | Test.java:147:19:147:26 | source(...) : Object | Test.java:147:13:147:26 | (...)... : URL | provenance |  |
 | Test.java:149:10:149:34 | createParser(...) : JsonParser | Test.java:150:9:150:11 | out | provenance |  |
-| Test.java:149:32:149:33 | in : URL | Test.java:149:10:149:34 | createParser(...) : JsonParser | provenance | MaD:3 |
+| Test.java:149:32:149:33 | in : URL | Test.java:149:10:149:34 | createParser(...) : JsonParser | provenance | MaD:2 |
 | Test.java:155:16:155:32 | (...)... : String | Test.java:157:32:157:33 | in : String | provenance |  |
 | Test.java:155:25:155:32 | source(...) : Object | Test.java:155:16:155:32 | (...)... : String | provenance |  |
 | Test.java:157:10:157:34 | createParser(...) : JsonParser | Test.java:158:9:158:11 | out | provenance |  |
-| Test.java:157:32:157:33 | in : String | Test.java:157:10:157:34 | createParser(...) : JsonParser | provenance | MaD:3 |
+| Test.java:157:32:157:33 | in : String | Test.java:157:10:157:34 | createParser(...) : JsonParser | provenance | MaD:2 |
 | Test.java:163:16:163:32 | (...)... : Reader | Test.java:165:32:165:33 | in : Reader | provenance |  |
 | Test.java:163:25:163:32 | source(...) : Object | Test.java:163:16:163:32 | (...)... : Reader | provenance |  |
 | Test.java:165:10:165:34 | createParser(...) : JsonParser | Test.java:166:9:166:11 | out | provenance |  |
-| Test.java:165:32:165:33 | in : Reader | Test.java:165:10:165:34 | createParser(...) : JsonParser | provenance | MaD:3 |
+| Test.java:165:32:165:33 | in : Reader | Test.java:165:10:165:34 | createParser(...) : JsonParser | provenance | MaD:2 |
 | Test.java:171:21:171:42 | (...)... : InputStream | Test.java:173:32:173:33 | in : InputStream | provenance |  |
 | Test.java:171:35:171:42 | source(...) : Object | Test.java:171:21:171:42 | (...)... : InputStream | provenance |  |
 | Test.java:173:10:173:34 | createParser(...) : JsonParser | Test.java:174:9:174:11 | out | provenance |  |
-| Test.java:173:32:173:33 | in : InputStream | Test.java:173:10:173:34 | createParser(...) : JsonParser | provenance | MaD:3 |
+| Test.java:173:32:173:33 | in : InputStream | Test.java:173:10:173:34 | createParser(...) : JsonParser | provenance | MaD:2 |
 | Test.java:179:14:179:28 | (...)... : File | Test.java:181:32:181:33 | in : File | provenance |  |
 | Test.java:179:21:179:28 | source(...) : Object | Test.java:179:14:179:28 | (...)... : File | provenance |  |
 | Test.java:181:10:181:34 | createParser(...) : JsonParser | Test.java:182:9:182:11 | out | provenance |  |
-| Test.java:181:32:181:33 | in : File | Test.java:181:10:181:34 | createParser(...) : JsonParser | provenance | MaD:3 |
+| Test.java:181:32:181:33 | in : File | Test.java:181:10:181:34 | createParser(...) : JsonParser | provenance | MaD:2 |
 | Test.java:187:19:187:38 | (...)... : DataInput | Test.java:189:32:189:33 | in : DataInput | provenance |  |
 | Test.java:187:31:187:38 | source(...) : Object | Test.java:187:19:187:38 | (...)... : DataInput | provenance |  |
 | Test.java:189:10:189:34 | createParser(...) : JsonParser | Test.java:190:9:190:11 | out | provenance |  |
-| Test.java:189:32:189:33 | in : DataInput | Test.java:189:10:189:34 | createParser(...) : JsonParser | provenance | MaD:3 |
+| Test.java:189:32:189:33 | in : DataInput | Test.java:189:10:189:34 | createParser(...) : JsonParser | provenance | MaD:2 |
 | Test.java:195:16:195:32 | (...)... : Object | Test.java:197:32:197:33 | in : Object | provenance |  |
 | Test.java:195:25:195:32 | source(...) : Object | Test.java:195:16:195:32 | (...)... : Object | provenance |  |
 | Test.java:197:10:197:56 | convertValue(...) : Object | Test.java:198:9:198:11 | out | provenance |  |
-| Test.java:197:32:197:33 | in : Object | Test.java:197:10:197:56 | convertValue(...) : Object | provenance | MaD:2 |
+| Test.java:197:32:197:33 | in : Object | Test.java:197:10:197:56 | convertValue(...) : Object | provenance | MaD:3 |
 | Test.java:203:16:203:32 | (...)... : Object | Test.java:205:32:205:33 | in : Object | provenance |  |
 | Test.java:203:25:203:32 | source(...) : Object | Test.java:203:16:203:32 | (...)... : Object | provenance |  |
 | Test.java:205:10:205:51 | convertValue(...) : Object | Test.java:206:9:206:11 | out | provenance |  |
-| Test.java:205:32:205:33 | in : Object | Test.java:205:10:205:51 | convertValue(...) : Object | provenance | MaD:2 |
+| Test.java:205:32:205:33 | in : Object | Test.java:205:10:205:51 | convertValue(...) : Object | provenance | MaD:3 |
 | Test.java:211:16:211:32 | (...)... : Object | Test.java:213:32:213:33 | in : Object | provenance |  |
 | Test.java:211:25:211:32 | source(...) : Object | Test.java:211:16:211:32 | (...)... : Object | provenance |  |
 | Test.java:213:10:213:48 | convertValue(...) : Object | Test.java:214:9:214:11 | out | provenance |  |
-| Test.java:213:32:213:33 | in : Object | Test.java:213:10:213:48 | convertValue(...) : Object | provenance | MaD:2 |
+| Test.java:213:32:213:33 | in : Object | Test.java:213:10:213:48 | convertValue(...) : Object | provenance | MaD:3 |
 | Test.java:219:16:219:32 | (...)... : Object | Test.java:221:31:221:32 | in : Object | provenance |  |
 | Test.java:219:25:219:32 | source(...) : Object | Test.java:219:16:219:32 | (...)... : Object | provenance |  |
 | Test.java:221:10:221:33 | valueToTree(...) : JsonNode | Test.java:222:9:222:11 | out | provenance |  |
@@ -113,8 +113,8 @@ edges
 | Test.java:228:41:228:48 | source(...) : Object | Test.java:20:25:20:38 | element : Object | provenance |  |
 | Test.java:228:41:228:48 | source(...) : Object | Test.java:228:25:228:49 | newWithMapValue(...) : Map [<map.value>] : Object | provenance | MaD:8 |
 | Test.java:230:10:230:33 | valueToTree(...) : JsonNode | Test.java:231:9:231:11 | out | provenance |  |
+| Test.java:230:31:230:32 | in : Map [<map.value>] : Object | Test.java:230:10:230:33 | valueToTree(...) : JsonNode | provenance | MaD:4 |
 | Test.java:230:31:230:32 | in : Map [<map.value>] : Object | Test.java:230:10:230:33 | valueToTree(...) : JsonNode | provenance | MaD:5 |
-| Test.java:230:31:230:32 | in : Map [<map.value>] : Object | Test.java:230:10:230:33 | valueToTree(...) : JsonNode | provenance | MaD:6 |
 | Test.java:236:16:236:32 | (...)... : char[] | Test.java:238:32:238:33 | in : char[] | provenance |  |
 | Test.java:236:25:236:32 | source(...) : Object | Test.java:236:16:236:32 | (...)... : char[] | provenance |  |
 | Test.java:238:10:238:40 | createParser(...) : JsonParser | Test.java:239:9:239:11 | out | provenance |  |
