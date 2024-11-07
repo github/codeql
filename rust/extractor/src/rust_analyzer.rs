@@ -41,6 +41,7 @@ pub struct ParseResult<'a> {
     pub errors: Vec<SyntaxError>,
     pub semantics_info: Result<FileSemanticInformation<'a>, &'a str>,
 }
+
 impl<'a> RustAnalyzer<'a> {
     pub fn load_workspace(
         project: &ProjectManifest,
@@ -100,8 +101,10 @@ impl<'a> RustAnalyzer<'a> {
                         file_id,
                         path.to_string_lossy()
                     );
+                    no_semantics_reason = "no text available for the file in the project";
+                } else {
+                    no_semantics_reason = "file not found in project";
                 }
-                no_semantics_reason = "file not found in project";
             }
             RustAnalyzer::WithoutSemantics { reason } => {
                 no_semantics_reason = reason;
