@@ -1371,5 +1371,10 @@ private class IntegerOrPointerConstantInstruction extends ConstantInstruction {
 
 /** The int value of integer constant expression. */
 private int int_value(Instruction i) {
-  result = i.(IntegerOrPointerConstantInstruction).getValue().toInt()
+  // if i is an integer, just grab that value
+  // if not, then find a derived instruction that is an integer
+  // TODO: this will need to work recursively if the integer is defined through a series of def uses. 
+  if i instanceof IntegerOrPointerConstantInstruction
+  then result = i.(IntegerOrPointerConstantInstruction).getValue().toInt()
+  else result = getDerivedInstruction(i).(IntegerOrPointerConstantInstruction).getValue().toInt()
 }
