@@ -1149,7 +1149,7 @@ private module Cached {
     } or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     TDelegateCallArgumentContent(int i) {
-      i = [0 .. max(any(DelegateCall dc).getNumberOfArguments())]
+      i = [0 .. max(any(DelegateLikeCall dc).getNumberOfArguments()) - 1]
     } or
     TDelegateCallReturnContent()
 
