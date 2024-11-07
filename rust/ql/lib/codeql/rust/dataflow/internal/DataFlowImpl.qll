@@ -49,6 +49,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   /** Gets the underlying source code call, if any. */
   abstract CallCfgNode asCall();
 
+  /** Gets a textual representation of this call. */
   abstract string toString();
 
   /** Gets the location of this call. */
@@ -189,14 +190,14 @@ module Node {
 
   /** A data flow node that represents a value returned by a callable. */
   final class ReturnNode extends ExprNode {
-    ReturnNode() { this.getCfgNode().getASuccessor() instanceof ExitCfgNode }
+    ReturnNode() { this.asExpr() instanceof ReturnExpr }
 
     ReturnKind getKind() { any() }
   }
 
   /** A data-flow node that represents the output of a call. */
   abstract class OutNode extends Node, ExprNode {
-    /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
+    /** Gets the underlying call for this node. */
     abstract DataFlowCall getCall();
   }
 
@@ -284,11 +285,11 @@ module LocalFlow {
   }
 }
 
-class DataFlowCallableAlias = DataFlowCallable;
+private class DataFlowCallableAlias = DataFlowCallable;
 
-class ReturnKindAlias = ReturnKind;
+private class ReturnKindAlias = ReturnKind;
 
-class DataFlowCallAlias = DataFlowCall;
+private class DataFlowCallAlias = DataFlowCall;
 
 module RustDataFlow implements InputSig<Location> {
   /**
