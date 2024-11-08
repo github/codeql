@@ -372,6 +372,18 @@ Array.prototype.slice = function(opt_begin, opt_end) {};
 Array.prototype.sort = function(opt_compareFunction) {};
 
 /**
+ * Returns a new array with the elements sorted.
+ *
+ * @param {function(T,T):number=} opt_compareFunction Specifies a function that
+ *     defines the sort order. If omitted, the array elements are converted to strings,
+ *     then sorted according to each character's Unicode code point value.
+ * @this {{length: number}|Array.}
+ * @template T
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted
+ */
+Array.prototype.toSorted = function(opt_compareFunction) {};
+
+/**
  * Changes the content of an array, adding new elements while removing old
  * elements.
  *
