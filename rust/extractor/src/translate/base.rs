@@ -1,6 +1,7 @@
 use super::mappings::{AddressableAst, AddressableHir};
 use crate::generated::MacroCall;
 use crate::generated::{self};
+use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use codeql_extractor::trap::{self};
@@ -64,16 +65,15 @@ impl<'a> Translator<'a> {
         path: &'a str,
         label: trap::Label,
         line_index: LineIndex,
-        file_id: Option<EditionedFileId>,
-        semantics: Option<&'a Semantics<'a, RootDatabase>>,
+        semantic_info: Option<&FileSemanticInformation<'a>>,
     ) -> Translator<'a> {
         Translator {
             trap,
             path,
             label,
             line_index,
-            file_id,
-            semantics,
+            file_id: semantic_info.map(|i| i.file_id),
+            semantics: semantic_info.map(|i| i.semantics),
         }
     }
     fn location(&self, range: TextRange) -> (LineCol, LineCol) {
@@ -160,7 +160,7 @@ impl<'a> Translator<'a> {
             self.path,
             start.line + 1,
             start.col + 1,
-            &message
+            &full_message
         );
         if severity > DiagnosticSeverity::Debug {
             let location = self.trap.emit_location_label(self.label, start, end);
@@ -284,7 +284,8 @@ impl<'a> Translator<'a> {
                         range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
                     ));
             }
-        } else {
+        } else if self.semantics.is_some() {
+            // let's not spam warnings if we don't have semantics, we already emitted one
             let range = self.text_range_for_node(mcall);
             self.emit_parse_error(
                 mcall,

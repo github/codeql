@@ -3,6 +3,7 @@ private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.Unification
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -239,6 +240,30 @@ class PropertyContent extends Content, TPropertyContent {
 }
 
 /**
+ * A reference to the index of an argument of a delegate call.
+ */
+class DelegateCallArgumentContent extends Content, TDelegateCallArgumentContent {
+  private int i;
+
+  DelegateCallArgumentContent() { this = TDelegateCallArgumentContent(i) }
+
+  override string toString() { result = "delegate argument at position " + i }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
+ * A reference to the return of a delegate call.
+ */
+class DelegateCallReturnContent extends Content, TDelegateCallReturnContent {
+  DelegateCallReturnContent() { this = TDelegateCallReturnContent() }
+
+  override string toString() { result = "delegate return" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
  * A reference to a synthetic field corresponding to a
  * primary constructor parameter.
  */
@@ -298,6 +323,16 @@ class ContentSet extends TContentSet {
    * (reflexively and transitively) override/implement `p` (or vice versa).
    */
   predicate isProperty(Property p) { this = TPropertyContentSet(p) }
+
+  /**
+   * Holds if this content set represents the `i`th argument of a delegate call.
+   */
+  predicate isDelegateCallArgument(int i) { this.isSingleton(TDelegateCallArgumentContent(i)) }
+
+  /**
+   * Holds if this content set represents the return of a delegate call.
+   */
+  predicate isDelegateCallReturn() { this.isSingleton(TDelegateCallReturnContent()) }
 
   /** Holds if this content set represents the field `f`. */
   predicate isField(Field f) { this.isSingleton(TFieldContent(f)) }

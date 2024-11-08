@@ -26,11 +26,11 @@ uniqueEnclosingCallable
 | main.rs:496:12:496:17 | Param | Node should have one enclosing callable but has 0. |
 | main.rs:499:18:499:23 | Param | Node should have one enclosing callable but has 0. |
 | main.rs:502:24:502:29 | Param | Node should have one enclosing callable but has 0. |
+| main.rs:382:19:382:21 | Param | Node should have one enclosing callable but has 0. |
+| main.rs:430:29:430:38 | Param | Node should have one enclosing callable but has 0. |
+| main.rs:430:41:430:56 | Param | Node should have one enclosing callable but has 0. |
 | more.rs:4:23:4:28 | Param | Node should have one enclosing callable but has 0. |
 | more.rs:8:19:8:24 | Param | Node should have one enclosing callable but has 0. |
-| more.rs:16:23:16:28 | Param | Node should have one enclosing callable but has 0. |
-| more.rs:24:9:24:14 | Param | Node should have one enclosing callable but has 0. |
-| unreachable.rs:10:34:10:34 | Param | Node should have one enclosing callable but has 0. |
 uniqueCallEnclosingCallable
 | main.rs:13:13:13:29 | CallExpr | Call should have one enclosing callable but has 0. |
 | main.rs:14:13:14:29 | CallExpr | Call should have one enclosing callable but has 0. |
@@ -128,17 +128,13 @@ uniqueCallEnclosingCallable
 | unreachable.rs:2:5:2:18 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:6:5:6:24 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:10:5:10:20 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:19:9:19:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:21:9:21:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:25:9:25:22 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:27:9:27:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:30:13:30:26 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:33:13:33:26 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:37:8:37:13 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:39:9:39:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:42:8:42:13 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:43:9:43:22 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:46:9:46:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:48:5:48:18 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:50:8:50:13 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:51:17:51:22 | CallExpr | Call should have one enclosing callable but has 0. |
@@ -146,7 +142,6 @@ uniqueCallEnclosingCallable
 | unreachable.rs:56:17:56:30 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:58:13:58:26 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:62:8:62:13 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:67:5:67:18 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:71:8:71:13 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:72:9:72:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:73:16:73:25 | CallExpr | Call should have one enclosing callable but has 0. |
@@ -173,14 +168,12 @@ uniqueCallEnclosingCallable
 | unreachable.rs:111:8:111:13 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:112:9:112:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:114:13:114:20 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:114:13:114:20 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:115:9:115:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:116:22:116:29 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:116:22:116:29 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:117:9:117:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:120:8:120:13 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:121:9:121:22 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:123:13:123:20 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:123:13:123:20 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:124:9:124:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:125:21:125:28 | CallExpr | Call should have one enclosing callable but has 0. |
@@ -190,36 +183,24 @@ uniqueCallEnclosingCallable
 | unreachable.rs:136:13:136:26 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:139:5:139:18 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:141:11:141:24 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:149:5:149:18 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:154:9:154:22 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:156:9:156:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:159:8:159:13 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:160:15:160:20 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:161:13:161:26 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:165:13:165:26 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:169:13:169:26 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:171:9:171:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:175:12:175:17 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:177:13:177:26 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:179:9:179:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:183:12:183:17 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:185:13:185:26 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:188:5:188:18 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:189:5:189:18 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:190:5:190:18 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:198:22:198:41 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:199:9:199:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:202:9:202:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:205:5:205:18 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:207:16:207:29 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:209:9:209:22 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:212:9:212:22 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:215:5:215:18 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:219:19:219:38 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:220:9:220:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:224:5:224:18 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:226:13:226:32 | CallExpr | Call should have one enclosing callable but has 0. |
-| unreachable.rs:228:9:228:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:232:5:232:18 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:236:8:236:13 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:237:9:237:22 | CallExpr | Call should have one enclosing callable but has 0. |
@@ -228,6 +209,7 @@ uniqueCallEnclosingCallable
 | unreachable.rs:247:9:247:14 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:248:9:248:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:252:5:252:18 | CallExpr | Call should have one enclosing callable but has 0. |
+<<<<<<< HEAD
 uniqueType
 | main.rs:142:5:142:10 | Param | Node should have one type but has 0. |
 | main.rs:143:5:143:10 | Param | Node should have one type but has 0. |
@@ -261,3 +243,5 @@ uniqueType
 | more.rs:16:23:16:28 | Param | Node should have one type but has 0. |
 | more.rs:24:9:24:14 | Param | Node should have one type but has 0. |
 | unreachable.rs:10:34:10:34 | Param | Node should have one type but has 0. |
+=======
+>>>>>>> main
