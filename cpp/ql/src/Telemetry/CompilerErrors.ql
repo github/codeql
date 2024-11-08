@@ -9,4 +9,5 @@
 import Metrics
 
 from CppMetrics::ErrorCount m
+where RankMetric<CppMetrics::ErrorCount>::getRank(m) <= 500
 select m.toString(), m.getValue()

@@ -9,4 +9,5 @@
 import Metrics
 
 from CppMetrics::SucceededIncludeCount m
+where RankMetric<CppMetrics::SucceededIncludeCount>::getRank(m) <= 500
 select m.getIncludeText(), m.getValue()

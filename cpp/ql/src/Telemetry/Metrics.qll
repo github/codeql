@@ -60,6 +60,14 @@ class QualityMetric extends Metric {
   }
 }
 
+signature class RankedMetric extends Metric {
+  int getValue();
+}
+
+module RankMetric<RankedMetric M> {
+  int getRank(M s) { s = rank[result](M m | | m order by m.getValue() desc) }
+}
+
 /** Various metrics we want to report. */
 module CppMetrics {
   class CompilationUnits extends BaseMetric {
