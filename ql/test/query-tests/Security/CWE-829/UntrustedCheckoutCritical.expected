@@ -94,6 +94,12 @@ edges
 | .github/workflows/issue_comment_heuristic.yml:11:9:24:6 | Uses Step: get-pr-info | .github/workflows/issue_comment_heuristic.yml:24:9:28:6 | Run Step: get-sha |
 | .github/workflows/issue_comment_heuristic.yml:24:9:28:6 | Run Step: get-sha | .github/workflows/issue_comment_heuristic.yml:28:9:33:2 | Uses Step |
 | .github/workflows/issue_comment_heuristic.yml:37:7:48:4 | Run Step: vars | .github/workflows/issue_comment_heuristic.yml:48:7:50:46 | Uses Step |
+| .github/workflows/issue_comment_octokit2.yml:12:9:19:6 | Uses Step: fetch_issue | .github/workflows/issue_comment_octokit2.yml:19:9:26:6 | Uses Step: fetch_pr |
+| .github/workflows/issue_comment_octokit2.yml:19:9:26:6 | Uses Step: fetch_pr | .github/workflows/issue_comment_octokit2.yml:26:9:27:6 | name: C ... ildcard |
+| .github/workflows/issue_comment_octokit2.yml:26:9:27:6 | name: C ... ildcard | .github/workflows/issue_comment_octokit2.yml:27:9:31:6 | Uses Step |
+| .github/workflows/issue_comment_octokit2.yml:27:9:31:6 | Uses Step | .github/workflows/issue_comment_octokit2.yml:31:9:33:6 | Uses Step |
+| .github/workflows/issue_comment_octokit2.yml:31:9:33:6 | Uses Step | .github/workflows/issue_comment_octokit2.yml:33:9:37:6 | Uses Step |
+| .github/workflows/issue_comment_octokit2.yml:33:9:37:6 | Uses Step | .github/workflows/issue_comment_octokit2.yml:37:9:38:37 | Uses Step |
 | .github/workflows/issue_comment_octokit.yml:12:9:19:6 | Uses Step: fetch_issue | .github/workflows/issue_comment_octokit.yml:19:9:26:6 | Uses Step: fetch_pr |
 | .github/workflows/issue_comment_octokit.yml:19:9:26:6 | Uses Step: fetch_pr | .github/workflows/issue_comment_octokit.yml:26:9:30:6 | Uses Step |
 | .github/workflows/issue_comment_octokit.yml:26:9:30:6 | Uses Step | .github/workflows/issue_comment_octokit.yml:30:9:35:2 | Uses Step |
