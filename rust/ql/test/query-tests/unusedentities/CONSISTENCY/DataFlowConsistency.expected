@@ -1,34 +1,13 @@
 uniqueEnclosingCallable
-| main.rs:142:5:142:10 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:143:5:143:10 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:144:5:144:11 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:151:7:151:12 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:205:32:205:32 | Param | Node should have one enclosing callable but has 0. |
 | main.rs:392:19:392:21 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:394:14:394:19 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:421:21:421:28 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:421:31:421:38 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:424:21:424:23 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:424:26:424:28 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:427:21:427:23 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:427:26:427:28 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:430:21:430:23 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:430:26:430:28 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:434:21:434:23 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:434:26:434:28 | Param | Node should have one enclosing callable but has 0. |
 | main.rs:440:29:440:38 | Param | Node should have one enclosing callable but has 0. |
 | main.rs:440:41:440:56 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:450:9:450:18 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:451:9:451:24 | Param | Node should have one enclosing callable but has 0. |
 | main.rs:493:16:493:18 | Param | Node should have one enclosing callable but has 0. |
 | main.rs:494:16:494:21 | Param | Node should have one enclosing callable but has 0. |
 | main.rs:495:16:496:25 | Param | Node should have one enclosing callable but has 0. |
 | main.rs:496:12:496:17 | Param | Node should have one enclosing callable but has 0. |
 | main.rs:499:18:499:23 | Param | Node should have one enclosing callable but has 0. |
 | main.rs:502:24:502:29 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:382:19:382:21 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:430:29:430:38 | Param | Node should have one enclosing callable but has 0. |
-| main.rs:430:41:430:56 | Param | Node should have one enclosing callable but has 0. |
 | more.rs:4:23:4:28 | Param | Node should have one enclosing callable but has 0. |
 | more.rs:8:19:8:24 | Param | Node should have one enclosing callable but has 0. |
 uniqueCallEnclosingCallable
@@ -209,39 +188,3 @@ uniqueCallEnclosingCallable
 | unreachable.rs:247:9:247:14 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:248:9:248:22 | CallExpr | Call should have one enclosing callable but has 0. |
 | unreachable.rs:252:5:252:18 | CallExpr | Call should have one enclosing callable but has 0. |
-<<<<<<< HEAD
-uniqueType
-| main.rs:142:5:142:10 | Param | Node should have one type but has 0. |
-| main.rs:143:5:143:10 | Param | Node should have one type but has 0. |
-| main.rs:144:5:144:11 | Param | Node should have one type but has 0. |
-| main.rs:151:7:151:12 | Param | Node should have one type but has 0. |
-| main.rs:205:32:205:32 | Param | Node should have one type but has 0. |
-| main.rs:392:19:392:21 | Param | Node should have one type but has 0. |
-| main.rs:394:14:394:19 | Param | Node should have one type but has 0. |
-| main.rs:421:21:421:28 | Param | Node should have one type but has 0. |
-| main.rs:421:31:421:38 | Param | Node should have one type but has 0. |
-| main.rs:424:21:424:23 | Param | Node should have one type but has 0. |
-| main.rs:424:26:424:28 | Param | Node should have one type but has 0. |
-| main.rs:427:21:427:23 | Param | Node should have one type but has 0. |
-| main.rs:427:26:427:28 | Param | Node should have one type but has 0. |
-| main.rs:430:21:430:23 | Param | Node should have one type but has 0. |
-| main.rs:430:26:430:28 | Param | Node should have one type but has 0. |
-| main.rs:434:21:434:23 | Param | Node should have one type but has 0. |
-| main.rs:434:26:434:28 | Param | Node should have one type but has 0. |
-| main.rs:440:29:440:38 | Param | Node should have one type but has 0. |
-| main.rs:440:41:440:56 | Param | Node should have one type but has 0. |
-| main.rs:450:9:450:18 | Param | Node should have one type but has 0. |
-| main.rs:451:9:451:24 | Param | Node should have one type but has 0. |
-| main.rs:493:16:493:18 | Param | Node should have one type but has 0. |
-| main.rs:494:16:494:21 | Param | Node should have one type but has 0. |
-| main.rs:495:16:496:25 | Param | Node should have one type but has 0. |
-| main.rs:496:12:496:17 | Param | Node should have one type but has 0. |
-| main.rs:499:18:499:23 | Param | Node should have one type but has 0. |
-| main.rs:502:24:502:29 | Param | Node should have one type but has 0. |
-| more.rs:4:23:4:28 | Param | Node should have one type but has 0. |
-| more.rs:8:19:8:24 | Param | Node should have one type but has 0. |
-| more.rs:16:23:16:28 | Param | Node should have one type but has 0. |
-| more.rs:24:9:24:14 | Param | Node should have one type but has 0. |
-| unreachable.rs:10:34:10:34 | Param | Node should have one type but has 0. |
-=======
->>>>>>> main
