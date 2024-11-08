@@ -458,4 +458,18 @@ private module ArrayLibraries {
       )
     }
   }
+
+  /**
+   * A taint propagating data flow edge arising from array transformation operations
+   * that return a new array instead of modifying the original array in place.
+   */
+  private class ImmutableArrayTransformStep extends TaintTracking::SharedTaintStep {
+    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "toSorted" and
+        pred = call.getReceiver() and
+        succ = call
+      )
+    }
+  }
 }
