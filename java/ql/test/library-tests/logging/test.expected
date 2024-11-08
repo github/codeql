@@ -11,8 +11,8 @@ models
 | 10 | Summary: org.apache.logging.log4j; Logger; true; traceExit; (Object); ; Argument[0]; ReturnValue; value; manual |
 | 11 | Summary: org.apache.logging.log4j; Logger; true; traceExit; (String,Object); ; Argument[1]; ReturnValue; value; manual |
 | 12 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addArgument; ; ; Argument[this]; ReturnValue; value; manual |
-| 13 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addKeyValue; ; ; Argument[this]; ReturnValue; value; manual |
-| 14 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addKeyValue; ; ; Argument[1]; Argument[this]; taint; manual |
+| 13 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addKeyValue; ; ; Argument[1]; Argument[this]; taint; manual |
+| 14 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addKeyValue; ; ; Argument[this]; ReturnValue; value; manual |
 | 15 | Summary: org.slf4j.spi; LoggingEventBuilder; true; addMarker; ; ; Argument[this]; ReturnValue; value; manual |
 | 16 | Summary: org.slf4j.spi; LoggingEventBuilder; true; setCause; ; ; Argument[this]; ReturnValue; value; manual |
 edges
@@ -70,20 +70,20 @@ edges
 | Test.java:121:13:121:62 | addArgument(...) : LoggingEventBuilder | Test.java:122:12:122:14 | out | provenance |  |
 | Test.java:127:32:127:61 | (...)... : LoggingEventBuilder | Test.java:128:13:128:14 | in : LoggingEventBuilder | provenance |  |
 | Test.java:127:54:127:61 | source(...) : Object | Test.java:127:32:127:61 | (...)... : LoggingEventBuilder | provenance |  |
-| Test.java:128:13:128:14 | in : LoggingEventBuilder | Test.java:128:13:128:56 | addKeyValue(...) : LoggingEventBuilder | provenance | MaD:13 |
+| Test.java:128:13:128:14 | in : LoggingEventBuilder | Test.java:128:13:128:56 | addKeyValue(...) : LoggingEventBuilder | provenance | MaD:14 |
 | Test.java:128:13:128:56 | addKeyValue(...) : LoggingEventBuilder | Test.java:129:12:129:14 | out | provenance |  |
 | Test.java:134:32:134:61 | (...)... : LoggingEventBuilder | Test.java:135:13:135:14 | in : LoggingEventBuilder | provenance |  |
 | Test.java:134:54:134:61 | source(...) : Object | Test.java:134:32:134:61 | (...)... : LoggingEventBuilder | provenance |  |
-| Test.java:135:13:135:14 | in : LoggingEventBuilder | Test.java:135:13:135:77 | addKeyValue(...) : LoggingEventBuilder | provenance | MaD:13 |
+| Test.java:135:13:135:14 | in : LoggingEventBuilder | Test.java:135:13:135:77 | addKeyValue(...) : LoggingEventBuilder | provenance | MaD:14 |
 | Test.java:135:13:135:77 | addKeyValue(...) : LoggingEventBuilder | Test.java:136:12:136:14 | out | provenance |  |
 | Test.java:141:19:141:35 | (...)... : Object | Test.java:142:38:142:39 | in : Object | provenance |  |
 | Test.java:141:28:141:35 | source(...) : Object | Test.java:141:19:141:35 | (...)... : Object | provenance |  |
 | Test.java:142:7:142:9 | out [post update] : LoggingEventBuilder | Test.java:143:12:143:14 | out | provenance |  |
-| Test.java:142:38:142:39 | in : Object | Test.java:142:7:142:9 | out [post update] : LoggingEventBuilder | provenance | MaD:14 |
+| Test.java:142:38:142:39 | in : Object | Test.java:142:7:142:9 | out [post update] : LoggingEventBuilder | provenance | MaD:13 |
 | Test.java:148:40:148:77 | (...)... : Supplier | Test.java:149:38:149:39 | in : Supplier | provenance |  |
 | Test.java:148:70:148:77 | source(...) : Object | Test.java:148:40:148:77 | (...)... : Supplier | provenance |  |
 | Test.java:149:7:149:9 | out [post update] : LoggingEventBuilder | Test.java:150:12:150:14 | out | provenance |  |
-| Test.java:149:38:149:39 | in : Supplier | Test.java:149:7:149:9 | out [post update] : LoggingEventBuilder | provenance | MaD:14 |
+| Test.java:149:38:149:39 | in : Supplier | Test.java:149:7:149:9 | out [post update] : LoggingEventBuilder | provenance | MaD:13 |
 | Test.java:155:32:155:61 | (...)... : LoggingEventBuilder | Test.java:156:13:156:14 | in : LoggingEventBuilder | provenance |  |
 | Test.java:155:54:155:61 | source(...) : Object | Test.java:155:32:155:61 | (...)... : LoggingEventBuilder | provenance |  |
 | Test.java:156:13:156:14 | in : LoggingEventBuilder | Test.java:156:13:156:30 | addMarker(...) : LoggingEventBuilder | provenance | MaD:15 |

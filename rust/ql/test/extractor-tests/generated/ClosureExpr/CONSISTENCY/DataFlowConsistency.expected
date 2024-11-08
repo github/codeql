@@ -1,7 +1,0 @@
-uniqueEnclosingCallable
-| gen_closure_expr.rs:5:6:5:6 | Param | Node should have one enclosing callable but has 0. |
-| gen_closure_expr.rs:6:11:6:16 | Param | Node should have one enclosing callable but has 0. |
-| gen_closure_expr.rs:7:12:7:17 | Param | Node should have one enclosing callable but has 0. |
-| gen_closure_expr.rs:7:20:7:20 | Param | Node should have one enclosing callable but has 0. |
-| gen_closure_expr.rs:9:6:9:6 | Param | Node should have one enclosing callable but has 0. |
-| gen_closure_expr.rs:11:14:11:14 | Param | Node should have one enclosing callable but has 0. |
