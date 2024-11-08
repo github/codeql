@@ -334,6 +334,15 @@ Array.prototype.push = function(var_args) {};
 Array.prototype.reverse = function() {};
 
 /**
+ * Returns a new array with the elements in reversed order.
+ *
+ * @this {{length: number}}
+ * @template T
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toReversed
+ */
+Array.prototype.toReversed = function() {};
+
+/**
  * Removes the first element from an array and returns that element. This
  * method changes the length of the array.
  *

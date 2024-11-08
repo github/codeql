@@ -465,7 +465,7 @@ private module ArrayLibraries {
   private class ImmutableArrayTransformStep extends TaintTracking::SharedTaintStep {
     override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = "toSorted" and
+        call.getMethodName() in ["toSorted", "toReversed"] and
         pred = call.getReceiver() and
         succ = call
       )
