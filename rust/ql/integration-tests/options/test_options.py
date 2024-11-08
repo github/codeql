@@ -30,7 +30,8 @@ def test_cfg_override(codeql, rust):
 @pytest.mark.parametrize("features",
                          [
                              pytest.param(p,
-                                          marks=pytest.mark.ql_test("feature_functions.ql", expected=f".{e}.expected"))
+                                          marks=pytest.mark.ql_test("feature_functions.ql", expected=f".{e}.expected"),
+                                          id="all" if p == "*" else p)  # CI does not like tests with *...
                              for p, e in (("foo", "foo"), ("bar", "bar"), ("*", "all"), ("foo,bar", "all"))
                          ])
 def test_features(codeql, rust, features):
