@@ -3,7 +3,7 @@
 | test.ps1:1:7:1:13 | call to Source | test.ps1:1:1:1:13 | ...=... |
 | test.ps1:2:1:2:9 | call to Sink | test.ps1:2:1:2:9 | pre-return value for call to Sink |
 | test.ps1:2:1:2:9 | call to Sink | test.ps1:2:1:2:9 | pre-return value for call to Sink |
-| test.ps1:2:1:2:9 | implicit unwrapping of call to Sink | test.ps1:1:1:17:8 | return value for test.ps1 |
+| test.ps1:2:1:2:9 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
 | test.ps1:2:1:2:9 | pre-return value for call to Sink | test.ps1:2:1:2:9 | implicit unwrapping of call to Sink |
 | test.ps1:4:1:4:3 | b | test.ps1:5:4:5:6 | b |
 | test.ps1:4:6:4:13 | call to GetBool | test.ps1:4:1:4:3 | b |
@@ -14,7 +14,7 @@
 | test.ps1:6:11:6:17 | call to Source | test.ps1:6:5:6:17 | ...=... |
 | test.ps1:8:1:8:9 | call to Sink | test.ps1:8:1:8:9 | pre-return value for call to Sink |
 | test.ps1:8:1:8:9 | call to Sink | test.ps1:8:1:8:9 | pre-return value for call to Sink |
-| test.ps1:8:1:8:9 | implicit unwrapping of call to Sink | test.ps1:1:1:17:8 | return value for test.ps1 |
+| test.ps1:8:1:8:9 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
 | test.ps1:8:1:8:9 | pre-return value for call to Sink | test.ps1:8:1:8:9 | implicit unwrapping of call to Sink |
 | test.ps1:10:1:10:3 | c | test.ps1:11:6:11:8 | c |
 | test.ps1:10:6:10:16 | [...]... | test.ps1:10:1:10:3 | c |
@@ -23,7 +23,7 @@
 | test.ps1:10:14:10:16 | b | test.ps1:10:6:10:16 | [...]... |
 | test.ps1:11:1:11:8 | call to Sink | test.ps1:11:1:11:8 | pre-return value for call to Sink |
 | test.ps1:11:1:11:8 | call to Sink | test.ps1:11:1:11:8 | pre-return value for call to Sink |
-| test.ps1:11:1:11:8 | implicit unwrapping of call to Sink | test.ps1:1:1:17:8 | return value for test.ps1 |
+| test.ps1:11:1:11:8 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
 | test.ps1:11:1:11:8 | pre-return value for call to Sink | test.ps1:11:1:11:8 | implicit unwrapping of call to Sink |
 | test.ps1:11:6:11:8 | [post] c | test.ps1:13:7:13:9 | c |
 | test.ps1:11:6:11:8 | c | test.ps1:13:7:13:9 | c |
@@ -35,7 +35,7 @@
 | test.ps1:13:7:13:9 | c | test.ps1:13:7:13:9 | c |
 | test.ps1:14:1:14:8 | call to Sink | test.ps1:14:1:14:8 | pre-return value for call to Sink |
 | test.ps1:14:1:14:8 | call to Sink | test.ps1:14:1:14:8 | pre-return value for call to Sink |
-| test.ps1:14:1:14:8 | implicit unwrapping of call to Sink | test.ps1:1:1:17:8 | return value for test.ps1 |
+| test.ps1:14:1:14:8 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
 | test.ps1:14:1:14:8 | pre-return value for call to Sink | test.ps1:14:1:14:8 | implicit unwrapping of call to Sink |
 | test.ps1:14:6:14:8 | [post] d | test.ps1:16:6:16:8 | d |
 | test.ps1:14:6:14:8 | d | test.ps1:16:6:16:8 | d |
@@ -45,5 +45,12 @@
 | test.ps1:16:6:16:12 | ...+... | test.ps1:16:6:16:12 | ...+... |
 | test.ps1:17:1:17:8 | call to Sink | test.ps1:17:1:17:8 | pre-return value for call to Sink |
 | test.ps1:17:1:17:8 | call to Sink | test.ps1:17:1:17:8 | pre-return value for call to Sink |
-| test.ps1:17:1:17:8 | implicit unwrapping of call to Sink | test.ps1:1:1:17:8 | return value for test.ps1 |
+| test.ps1:17:1:17:8 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
 | test.ps1:17:1:17:8 | pre-return value for call to Sink | test.ps1:17:1:17:8 | implicit unwrapping of call to Sink |
+| test.ps1:19:1:19:3 | f | test.ps1:21:25:21:27 | f |
+| test.ps1:19:6:19:12 | call to Source | test.ps1:19:1:19:3 | f |
+| test.ps1:19:6:19:12 | call to Source | test.ps1:19:1:19:12 | ...=... |
+| test.ps1:21:1:21:28 | call to Sink | test.ps1:21:1:21:28 | pre-return value for call to Sink |
+| test.ps1:21:1:21:28 | call to Sink | test.ps1:21:1:21:28 | pre-return value for call to Sink |
+| test.ps1:21:1:21:28 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
+| test.ps1:21:1:21:28 | pre-return value for call to Sink | test.ps1:21:1:21:28 | implicit unwrapping of call to Sink |
