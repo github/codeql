@@ -127,6 +127,8 @@ private module Input implements TypeFlowInput<Location> {
     n2.asSsa().(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
     or
     n2.asSsa().(BaseSsaImplicitInit).captures(n1.asSsa())
+    or
+    n2.asExpr().(NotNullExpr).getExpr() = n1.asExpr()
   }
 
   /**
