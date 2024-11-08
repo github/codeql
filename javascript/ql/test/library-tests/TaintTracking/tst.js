@@ -59,4 +59,8 @@ function test() {
     tagged`foo ${"safe"} bar ${x} baz`;
 
     sink(x.reverse()); // NOT OK
+
+    sink(x.toSorted()) // NOT OK
+    const xSorted = x.toSorted();
+    sink(xSorted) // NOT OK
 }
