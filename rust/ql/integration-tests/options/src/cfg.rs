@@ -10,5 +10,8 @@ fn cfg_no_flag() {}
 #[cfg(not(cfg_key = "value"))]
 fn cfg_no_key() {}
 
-#[cfg(not(test))]
-fn no_test() {}
+#[cfg(test)]
+fn test() {}
+
+#[cfg(target_pointer_width = "32")]
+fn pointer_width_32() {}

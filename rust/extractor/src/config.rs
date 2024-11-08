@@ -137,12 +137,19 @@ fn to_cfg_override(spec: &str) -> CfgAtom {
 fn to_cfg_overrides(specs: &Vec<String>) -> CfgOverrides {
     let mut enabled_cfgs = Vec::new();
     let mut disabled_cfgs = Vec::new();
+    let mut has_test_explicitly_enabled = false;
     for spec in specs {
         if spec.starts_with("-") {
             disabled_cfgs.push(to_cfg_override(&spec[1..]));
         } else {
             enabled_cfgs.push(to_cfg_override(spec));
+            if spec == "test" {
+                has_test_explicitly_enabled = true;
+            }
         }
+    }
+    if !has_test_explicitly_enabled {
+        disabled_cfgs.push(to_cfg_override("test"));
     }
     if let Some(global) = CfgDiff::new(enabled_cfgs, disabled_cfgs) {
         CfgOverrides {
@@ -151,6 +158,10 @@ fn to_cfg_overrides(specs: &Vec<String>) -> CfgOverrides {
         }
     } else {
         warn!("non-disjoint cfg overrides, ignoring: {}", specs.join(", "));
-        CfgOverrides::default()
+        CfgOverrides {
+            global: CfgDiff::new(Vec::new(), vec![to_cfg_override("test")])
+                .expect("disabling one cfg should always succeed"),
+            ..Default::default()
+        }
     }
 }

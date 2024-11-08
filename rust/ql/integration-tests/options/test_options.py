@@ -23,7 +23,7 @@ def test_target_linux(codeql, rust):
 @pytest.mark.ql_test("arch_functions.ql", expected=f".{platform.system()}.expected")
 def test_cfg_override(codeql, rust):
     # currently codeql CLI has a limitation not allow to pass `=` in values via `--extractor-option`
-    os.environ["CODEQL_EXTRACTOR_RUST_OPTION_CARGO_CFG_OVERRIDES"] = "cfg_flag,cfg_key=value,-test"
+    os.environ["CODEQL_EXTRACTOR_RUST_OPTION_CARGO_CFG_OVERRIDES"] = "cfg_flag,cfg_key=value,-target_pointer_width=64,target_pointer_width=32,test"
     codeql.database.create()
 
 @pytest.mark.ql_test("arch_functions.ql", expected=f".{platform.system()}.expected")
