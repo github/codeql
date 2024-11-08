@@ -41,4 +41,4 @@ where
   key = "Macro calls - total" and value = count(MacroCall mc)
   or
   key = "Macro calls - resolved" and value = count(MacroCall mc | mc.hasExpanded())
-select key, value
+select key, value order by key
