@@ -2360,6 +2360,9 @@ private module Qualifier {
       result = this.(FieldAccess).getQualifier() or
       result = this.(MethodCall).getQualifier()
     }
+
+    /** Holds if this member access is a `?.` safe qualified expression in Kotlin. */
+    predicate safeAccess() { ktSafeAccess(this) }
   }
 
   /**
