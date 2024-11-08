@@ -48,3 +48,12 @@ class VarWriteAccess extends VarAccess {
 
   predicate isImplicit() { isImplicitVariableWriteAccess(this) }
 }
+
+/** An access to an environment variable such as `$Env:PATH` */
+class EnvVarAccess extends VarAccess {
+  EnvVarAccess() { super.getVariable() instanceof EnvVariable }
+
+  override EnvVariable getVariable() { result = super.getVariable() }
+
+  string getEnvironmentVariable() { result = this.getVariable().getEnvironmentVariable() }
+}

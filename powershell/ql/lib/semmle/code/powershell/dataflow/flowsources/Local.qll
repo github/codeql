@@ -30,6 +30,12 @@ abstract class EnvironmentVariableSource extends LocalFlowSource {
   override string getSourceType() { result = "environment variable" }
 }
 
+private class EnvironmentVariableEnv extends EnvironmentVariableSource {
+  EnvironmentVariableEnv() {
+    this.asExpr().getExpr().(VarReadAccess).getVariable() instanceof EnvVariable
+  }
+}
+
 private class ExternalEnvironmentVariableSource extends EnvironmentVariableSource {
   ExternalEnvironmentVariableSource() {
     this = ModelOutput::getASourceNode("environment", _).asSource()

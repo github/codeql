@@ -273,6 +273,21 @@ class LocalVariable extends AbstractLocalScopeVariable, TLocalVariable {
   final override Scope getDeclaringScope() { result = scope }
 }
 
+/**
+ * A variable of the form `$Env:HOME`.
+ */
+class EnvVariable extends Variable {
+  string var;
+
+  EnvVariable() { this.getName() = ["env:", "Env:"] + var }
+
+  /**
+   * Gets the part of the variable name that represens which environment
+   * variable.
+   */
+  string getEnvironmentVariable() { result = var }
+}
+
 class Parameter extends AbstractLocalScopeVariable, TParameter {
   ParameterImpl p;
 

@@ -597,6 +597,11 @@ module StmtNodes {
     final override string getName() { result = s.getCmdName().getValue().getValue() }
   }
 
+  /** A control-flow node that wraps a call to operator `&` */
+  class CallOperatorCfgNode extends CmdCfgNode {
+    CallOperatorCfgNode() { this.getStmt() instanceof CallOperator }
+  }
+
   private class AssignStmtChildMapping extends PipelineBaseChildMapping, AssignStmt {
     override predicate relevantChild(Ast n) {
       n = this.getLeftHandSide() or n = this.getRightHandSide()

@@ -1,4 +1,5 @@
 import powershell
+
 private predicate parseCommandName(Cmd cmd, string namespace, string name) {
   exists(string qualified | command(cmd, qualified, _, _, _) |
     namespace = qualified.regexpCapture("([^\\\\]+)\\\\([^\\\\]+)", 1) and
@@ -11,6 +12,7 @@ private predicate parseCommandName(Cmd cmd, string namespace, string name) {
   )
 }
 
+/** A call to a command. */
 class Cmd extends @command, CmdBase {
   override string toString() { result = "call to " + this.getQualifiedCommandName() }
 
@@ -87,4 +89,9 @@ class Cmd extends @command, CmdBase {
   Redirection getRedirection(int i) { command_redirection(this, i, result) }
 
   Redirection getARedirection() { result = this.getRedirection(_) }
+}
+
+/** A call to operator `&`. */
+class CallOperator extends Cmd {
+  CallOperator() { this.getKind() = 28 }
 }
