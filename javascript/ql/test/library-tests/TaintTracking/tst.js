@@ -57,4 +57,6 @@ function test() {
     }
 
     tagged`foo ${"safe"} bar ${x} baz`;
+
+    sink(x.reverse()); // NOT OK -- Should be caught but isn't
 }
