@@ -19,7 +19,9 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
         .fields
         .iter()
         .map(|f| {
-            if get_type_tip(&f.ty).is_some_and(|i| i == "Vec") {
+            if f.ident.as_ref().is_some_and(|i| i != "inputs")
+                && get_type_tip(&f.ty).is_some_and(|i| i == "Vec")
+            {
                 quote! {
                     #[serde(deserialize_with="deserialize_newline_or_comma_separated")]
                     #f
@@ -38,19 +40,17 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
             let ty = &f.ty;
             let type_tip = get_type_tip(ty);
             if type_tip.is_some_and(|i| i == "bool") {
-                return quote! {
+                quote! {
                     #[arg(long)]
                     #[serde(skip_serializing_if="<&bool>::not")]
                     #id: bool
-                };
-            }
-            if type_tip.is_some_and(|i| i == "Option") {
-                return quote! {
+                }
+            } else if type_tip.is_some_and(|i| i == "Option") {
+                quote! {
                     #[arg(long)]
                     #f
-                };
-            }
-            if id == &format_ident!("verbose") {
+                }
+            } else if id == &format_ident!("verbose") {
                 quote! {
                     #[arg(long, short, action=clap::ArgAction::Count)]
                     #[serde(skip_serializing_if="u8::is_zero")]
@@ -59,6 +59,11 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
             } else if id == &format_ident!("inputs") {
                 quote! {
                     #f
+                }
+            } else if type_tip.is_some_and(|i| i == "Vec") {
+                quote! {
+                    #[arg(long)]
+                    #id: Option<String>
                 }
             } else {
                 quote! {
