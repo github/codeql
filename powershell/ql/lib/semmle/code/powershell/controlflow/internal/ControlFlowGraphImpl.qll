@@ -198,7 +198,7 @@ module Trees {
       exists(Parameter p |
         p =
           rank[i + 1](Parameter cand, int j |
-            cand.hasDefaultValue() and j = cand.getFunctionIndex()
+            cand.hasDefaultValue() and func.getFunctionParameter(j) = cand
           |
             cand order by j
           ) and
