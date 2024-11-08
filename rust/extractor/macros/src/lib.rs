@@ -21,6 +21,12 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
                         #id: bool,
                     };
                 }
+                if p.path.segments.len() == 1 && p.path.segments[0].ident == "Option" {
+                    return quote! {
+                        #[arg(long)]
+                        #id: #ty,
+                    };
+                }
             }
             if id == &format_ident!("verbose") {
                 quote! {

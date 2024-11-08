@@ -63,8 +63,7 @@ class _:
     ```
     """
 
-
-@annotate(Path)
+@annotate(Path, replace_bases={AstNode: Resolvable})
 class _:
     """
     A path. For example:
@@ -221,7 +220,7 @@ class _:
     attrs: drop
 
 
-@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase})
+@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase}, add_bases=(Resolvable,))
 class _:
     """
     A method call expression. For example:
