@@ -565,6 +565,22 @@ module ExprNodes {
 
     final ExprCfgNode getAnOperand() { e.hasCfgChild(this.getExpr().getAnOperand(), this, result) }
   }
+
+  class ExpandableStringChildMappinig extends ExprChildMapping, ExpandableStringExpr {
+    override predicate relevantChild(Ast n) { n = this.getAnExpr() }
+  }
+
+  class ExpandableStringCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ExpandableStringCfgNode" }
+
+    override ExpandableStringChildMappinig e;
+
+    override ExpandableStringExpr getExpr() { result = e }
+
+    ExprCfgNode getExpr(int i) { e.hasCfgChild(e.getExpr(i), this, result) }
+
+    ExprCfgNode getAnExpr() { result = this.getExpr(_) }
+  }
 }
 
 module StmtNodes {

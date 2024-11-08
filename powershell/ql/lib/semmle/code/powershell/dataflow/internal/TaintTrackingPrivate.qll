@@ -34,9 +34,16 @@ private module Cached {
   cached
   predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
     (
+      // Flow from an operand to an operation
       exists(CfgNodes::ExprNodes::OperationCfgNode op |
         op = nodeTo.asExpr() and
         op.getAnOperand() = nodeFrom.asExpr()
+      )
+      or
+      // Flow through string interpolation
+      exists(CfgNodes::ExprNodes::ExpandableStringCfgNode es |
+        nodeFrom.asExpr() = es.getAnExpr() and
+        nodeTo.asExpr() = es
       )
       or
       // Although flow through collections is modeled precisely using stores/reads, we still

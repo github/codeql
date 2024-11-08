@@ -469,7 +469,9 @@ class CallNode extends AstNode {
 
 /** A call to operator `&`, viwed as a node in a data flow graph. */
 class CallOperatorNode extends CallNode {
-  CallOperatorNode() { this.getCallNode() instanceof CfgNodes::StmtNodes::CallOperatorCfgNode }
+  override CfgNodes::StmtNodes::CallOperatorCfgNode call;
+
+  Node getCommand() { result.asExpr() = call.getCommand() }
 }
 
 /** A use of a type name, viewed as a node in a data flow graph. */
