@@ -373,7 +373,50 @@ private fun KotlinFileExtractor.extractBinaryExpression(
                 else -> TODO("error")
             }
         } else {
-            TODO("Extract lowered equivalent call, such as `a.compareTo(b) < 0`")
+            if (target == null) {
+                TODO()
+            }
+
+            // Extract lowered equivalent call, such as `a.compareTo(b) < 0`
+            val exprParent = parent.expr(expression, callable)
+
+            val id: Label<out DbBinaryexpr> = when (op) {
+                KtTokens.LT -> extractRawBinaryExpression(builtinTypes.boolean, exprParent, tw::writeExprs_ltexpr)
+                KtTokens.GT -> extractRawBinaryExpression(builtinTypes.boolean, exprParent, tw::writeExprs_gtexpr)
+                KtTokens.LTEQ -> extractRawBinaryExpression(builtinTypes.boolean, exprParent, tw::writeExprs_leexpr)
+                KtTokens.GTEQ -> extractRawBinaryExpression(builtinTypes.boolean, exprParent, tw::writeExprs_geexpr)
+                else -> TODO("error")
+            }
+
+            extractExprContext(id, tw.getLocation(expression), callable, exprParent.enclosingStmt)
+
+            extractRawMethodAccess(
+                target,
+                tw.getLocation(expression),
+                target.returnType,
+                callable,
+                id,
+                0,
+                exprParent.enclosingStmt,
+                if (target.isExtension) null else expression.left!!,
+                if (target.isExtension) expression.left!! else null,
+                listOf(expression.right!!)
+            )
+
+            extractConstantInteger(
+                "0",
+                builtinTypes.int,
+                0,
+                tw.getLocation(expression),
+                id,
+                1,
+                callable,
+                exprParent.enclosingStmt,
+                /*
+                OLD: KE1
+                                            overrideId = overrideId
+                */
+            )
         }
 
     } else {
@@ -395,6 +438,24 @@ private fun KaFunctionSymbol?.isBinaryPlus(): Boolean {
 }
 
 context(KaSession)
+private fun <T : DbBinaryexpr> KotlinFileExtractor.extractRawBinaryExpression(
+    expressionType: KaType,
+    exprParent: KotlinFileExtractor.ExprParent,
+    extractExpression: (
+        id: Label<out T>,
+        typeid: Label<out DbType>,
+        parent: Label<out DbExprparent>,
+        idx: Int
+    ) -> Unit
+): Label<T> {
+    val id = tw.getFreshIdLabel<T>()
+    val type = useType(expressionType)
+    extractExpression(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+    return id
+}
+
+context(KaSession)
 private fun <T : DbBinaryexpr> KotlinFileExtractor.extractBinaryExpression(
     expression: KtBinaryExpression,
     callable: Label<out DbCallable>,
@@ -406,11 +467,8 @@ private fun <T : DbBinaryexpr> KotlinFileExtractor.extractBinaryExpression(
         idx: Int
     ) -> Unit
 ) {
-    val id = tw.getFreshIdLabel<T>()
-    val type = useType(expression.expressionType)
     val exprParent = parent.expr(expression, callable)
-    extractExpression(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+    val id = extractRawBinaryExpression(expression.expressionType!!, exprParent, extractExpression)
 
     extractExprContext(id, tw.getLocation(expression), callable, exprParent.enclosingStmt)
     extractExpressionExpr(expression.left!!, callable, id, 0, exprParent.enclosingStmt)
