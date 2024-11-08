@@ -7,7 +7,6 @@ use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice
 use ra_ap_paths::Utf8PathBuf;
 use ra_ap_project_model::CargoConfig;
 use ra_ap_project_model::ProjectManifest;
-use ra_ap_project_model::RustLibSource;
 use ra_ap_span::Edition;
 use ra_ap_span::EditionedFileId;
 use ra_ap_span::TextRange;
@@ -20,6 +19,7 @@ use ra_ap_vfs::{AbsPathBuf, FileId};
 use std::borrow::Cow;
 use std::path::{Path, PathBuf};
 use triomphe::Arc;
+
 pub enum RustAnalyzer<'a> {
     WithSemantics {
         vfs: &'a Vfs,
@@ -45,13 +45,8 @@ pub struct ParseResult<'a> {
 impl<'a> RustAnalyzer<'a> {
     pub fn load_workspace(
         project: &ProjectManifest,
-        target_dir: &Path,
+        config: &CargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
-        let config = CargoConfig {
-            sysroot: Some(RustLibSource::Discover),
-            target_dir: ra_ap_paths::Utf8PathBuf::from_path_buf(target_dir.to_path_buf()).ok(),
-            ..Default::default()
-        };
         let progress = |t| (log::trace!("progress: {}", t));
         let load_config = LoadCargoConfig {
             load_out_dirs_from_check: true,
@@ -60,7 +55,7 @@ impl<'a> RustAnalyzer<'a> {
         };
         let manifest = project.manifest_path();
 
-        match load_workspace_at(manifest.as_ref(), &config, &load_config, &progress) {
+        match load_workspace_at(manifest.as_ref(), config, &load_config, &progress) {
             Ok((db, vfs, _macro_server)) => Some((db, vfs)),
             Err(err) => {
                 log::error!("failed to load workspace for {}: {}", manifest, err);

@@ -35,3 +35,22 @@ options:
       reduce execution time of consecutive extractor runs. By default, a new scratch
       directory is used for each run.
     type: string
+  cargo_target:
+    title: Target architecture
+    description: >
+      Target architecture to use for analysis, analogous to `cargo --target`. By
+      default the host architecture is used.
+    type: string
+  cargo_features:
+    title: Cargo features to turn on
+    description: >
+      Comma-separated list of features to turn on. If any value is `*` all features
+      are turned on. By default only default cargo features are enabled. Can be
+      repeated.
+    type: array
+  cargo_cfg_overrides:
+    title: Cargo cfg overrides
+    description: >
+      Comma-separated list of cfg settings to enable, or disable if prefixed with `-`.
+      Can be repeated.
+    type: array
