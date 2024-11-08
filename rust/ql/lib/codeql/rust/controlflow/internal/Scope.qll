@@ -5,11 +5,32 @@ private import codeql.rust.elements.internal.generated.ParentChild
 
 /**
  * A control-flow graph (CFG) scope.
- *
- * A CFG scope is a callable with a body.
  */
-class CfgScope extends Callable {
-  CfgScope() {
+abstract private class CfgScopeImpl extends AstNode {
+  abstract predicate scopeFirst(AstNode first);
+
+  abstract predicate scopeLast(AstNode last, Completion c);
+}
+
+final class CfgScope = CfgScopeImpl;
+
+class AsyncBlockScope extends CfgScopeImpl, BlockExpr {
+  AsyncBlockScope() { this.isAsync() }
+
+  override predicate scopeFirst(AstNode first) {
+    first(this.(ExprTrees::AsyncBlockExprTree).getFirstChildNode(), first)
+  }
+
+  override predicate scopeLast(AstNode last, Completion c) {
+    last(this.(ExprTrees::AsyncBlockExprTree).getLastChildElement(), last, c)
+  }
+}
+
+/**
+ * A CFG scope for a callable (a function or a closure) with a body.
+ */
+class CallableScope extends CfgScopeImpl, Callable {
+  CallableScope() {
     // A function without a body corresponds to a trait method signature and
     // should not have a CFG scope.
     this.(Function).hasBody()
@@ -23,4 +44,11 @@ class CfgScope extends Callable {
     or
     result = this.(ClosureExpr).getBody()
   }
+
+  override predicate scopeFirst(AstNode first) {
+    first(this.(CallableScopeTree).getFirstChildNode(), first)
+  }
+
+  /** Holds if `scope` is exited when `last` finishes with completion `c`. */
+  override predicate scopeLast(AstNode last, Completion c) { last(this.getBody(), last, c) }
 }

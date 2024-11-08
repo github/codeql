@@ -781,10 +781,12 @@ edges
 | test.rs:372:5:384:5 | enter async_block | test.rs:373:9:375:10 | LetStmt |  |
 | test.rs:372:5:384:5 | exit async_block (normal) | test.rs:372:5:384:5 | exit async_block |  |
 | test.rs:372:28:384:5 | BlockExpr | test.rs:372:5:384:5 | exit async_block (normal) |  |
-| test.rs:373:9:375:10 | LetStmt | test.rs:374:13:374:42 | ExprStmt |  |
+| test.rs:373:9:375:10 | LetStmt | test.rs:373:26:375:9 | BlockExpr |  |
 | test.rs:373:13:373:22 | say_godbye | test.rs:376:9:378:10 | LetStmt | match |
 | test.rs:373:26:375:9 | BlockExpr | test.rs:373:13:373:22 | say_godbye |  |
-| test.rs:374:13:374:41 | MacroExpr | test.rs:373:26:375:9 | BlockExpr |  |
+| test.rs:373:26:375:9 | enter BlockExpr | test.rs:374:13:374:42 | ExprStmt |  |
+| test.rs:373:26:375:9 | exit BlockExpr (normal) | test.rs:373:26:375:9 | exit BlockExpr |  |
+| test.rs:374:13:374:41 | MacroExpr | test.rs:373:26:375:9 | exit BlockExpr (normal) |  |
 | test.rs:374:13:374:41 | PathExpr | test.rs:374:22:374:40 | "godbye, everyone!\\n" |  |
 | test.rs:374:13:374:42 | ExprStmt | test.rs:374:22:374:40 | MacroStmts |  |
 | test.rs:374:22:374:40 | "godbye, everyone!\\n" | test.rs:374:22:374:40 | FormatArgsExpr |  |
@@ -794,10 +796,12 @@ edges
 | test.rs:374:22:374:40 | FormatArgsExpr | test.rs:374:22:374:40 | MacroExpr |  |
 | test.rs:374:22:374:40 | MacroExpr | test.rs:374:22:374:40 | CallExpr |  |
 | test.rs:374:22:374:40 | MacroStmts | test.rs:374:22:374:40 | ExprStmt |  |
-| test.rs:376:9:378:10 | LetStmt | test.rs:377:13:377:37 | ExprStmt |  |
+| test.rs:376:9:378:10 | LetStmt | test.rs:376:31:378:9 | BlockExpr |  |
 | test.rs:376:13:376:27 | say_how_are_you | test.rs:379:9:379:28 | LetStmt | match |
 | test.rs:376:31:378:9 | BlockExpr | test.rs:376:13:376:27 | say_how_are_you |  |
-| test.rs:377:13:377:36 | MacroExpr | test.rs:376:31:378:9 | BlockExpr |  |
+| test.rs:376:31:378:9 | enter BlockExpr | test.rs:377:13:377:37 | ExprStmt |  |
+| test.rs:376:31:378:9 | exit BlockExpr (normal) | test.rs:376:31:378:9 | exit BlockExpr |  |
+| test.rs:377:13:377:36 | MacroExpr | test.rs:376:31:378:9 | exit BlockExpr (normal) |  |
 | test.rs:377:13:377:36 | PathExpr | test.rs:377:22:377:35 | "how are you?\\n" |  |
 | test.rs:377:13:377:37 | ExprStmt | test.rs:377:22:377:35 | MacroStmts |  |
 | test.rs:377:22:377:35 | "how are you?\\n" | test.rs:377:22:377:35 | FormatArgsExpr |  |

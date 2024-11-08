@@ -44,12 +44,10 @@ private module CfgInput implements InputSig<Location> {
   predicate successorTypeIsCondition(SuccessorType t) { t instanceof Cfg::BooleanSuccessor }
 
   /** Holds if `first` is first executed when entering `scope`. */
-  predicate scopeFirst(CfgScope scope, AstNode first) {
-    first(scope.(CfgScopeTree).getFirstChildNode(), first)
-  }
+  predicate scopeFirst(CfgScope scope, AstNode first) { scope.scopeFirst(first) }
 
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */
-  predicate scopeLast(CfgScope scope, AstNode last, Completion c) { last(scope.getBody(), last, c) }
+  predicate scopeLast(CfgScope scope, AstNode last, Completion c) { scope.scopeLast(last, c) }
 }
 
 private module CfgSplittingInput implements SplittingInputSig<Location, CfgInput> {
@@ -71,14 +69,7 @@ private module CfgImpl =
 
 import CfgImpl
 
-class CfgScopeTree extends StandardTree, Scope::CfgScope {
-  override predicate first(AstNode first) { first = this }
-
-  override predicate last(AstNode last, Completion c) {
-    last = this and
-    completionIsValidFor(c, this)
-  }
-
+class CallableScopeTree extends StandardTree, PreOrderTree, PostOrderTree, Scope::CallableScope {
   override predicate propagatesAbnormal(AstNode child) { none() }
 
   override AstNode getChildNode(int i) {
@@ -280,13 +271,23 @@ module ExprTrees {
     }
   }
 
+  private AstNode getBlockChildNode(BlockExpr b, int i) {
+    result = b.getStmtList().getStatement(i)
+    or
+    i = b.getStmtList().getNumberOfStatements() and
+    result = b.getStmtList().getTailExpr()
+  }
+
+  class AsyncBlockExprTree extends StandardTree, PreOrderTree, PostOrderTree, AsyncBlockExpr {
+    override AstNode getChildNode(int i) { result = getBlockChildNode(this, i) }
+
+    override predicate propagatesAbnormal(AstNode child) { none() }
+  }
+
   class BlockExprTree extends StandardPostOrderTree, BlockExpr {
-    override AstNode getChildNode(int i) {
-      result = this.getStmtList().getStatement(i)
-      or
-      i = this.getStmtList().getNumberOfStatements() and
-      result = this.getStmtList().getTailExpr()
-    }
+    BlockExprTree() { not this.isAsync() }
+
+    override AstNode getChildNode(int i) { result = getBlockChildNode(this, i) }
 
     override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
   }
