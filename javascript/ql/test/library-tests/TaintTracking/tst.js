@@ -63,4 +63,8 @@ function test() {
     sink(x.toSorted()) // NOT OK
     const xSorted = x.toSorted();
     sink(xSorted) // NOT OK
+
+    sink(x.toReversed()) // NOT OK
+    const xReversed = x.toReversed();
+    sink(xReversed) // NOT OK
 }
