@@ -165,7 +165,6 @@ locatable_locations(
 | @param
 | @param_list
 | @pat
-| @path
 | @path_segment
 | @record_expr_field
 | @record_expr_field_list
@@ -173,6 +172,7 @@ locatable_locations(
 | @record_pat_field
 | @record_pat_field_list
 | @rename
+| @resolvable
 | @ret_type
 | @return_type_syntax
 | @self_param
@@ -644,22 +644,6 @@ param_list_self_params(
 | @wildcard_pat
 ;
 
-paths(
-  unique int id: @path
-);
-
-#keyset[id]
-path_qualifiers(
-  int id: @path ref,
-  int qualifier: @path ref
-);
-
-#keyset[id]
-path_parts(
-  int id: @path ref,
-  int part: @path_segment ref
-);
-
 path_segments(
   unique int id: @path_segment
 );
@@ -830,6 +814,23 @@ renames(
 rename_names(
   int id: @rename ref,
   int name: @name ref
+);
+
+@resolvable =
+  @method_call_expr
+| @path
+;
+
+#keyset[id]
+resolvable_resolved_paths(
+  int id: @resolvable ref,
+  string resolved_path: string ref
+);
+
+#keyset[id]
+resolvable_resolved_crate_origins(
+  int id: @resolvable ref,
+  string resolved_crate_origin: string ref
 );
 
 ret_types(
@@ -2123,6 +2124,22 @@ paren_types(
 paren_type_ties(
   int id: @paren_type ref,
   int ty: @type_ref ref
+);
+
+paths(
+  unique int id: @path
+);
+
+#keyset[id]
+path_qualifiers(
+  int id: @path ref,
+  int qualifier: @path ref
+);
+
+#keyset[id]
+path_parts(
+  int id: @path ref,
+  int part: @path_segment ref
 );
 
 @path_expr_base =
