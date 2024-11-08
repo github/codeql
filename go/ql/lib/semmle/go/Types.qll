@@ -545,15 +545,7 @@ class StructType extends @structtype, CompositeType {
   predicate hasField(string name, Type tp) {
     exists(int mindepth |
       mindepth = min(int depth | this.hasFieldCand(name, _, depth, _)) and
-      tp = unique(Field f | f = this.getFieldCand(name, mindepth, _)).getType()
-    )
-  }
-
-  private Field getFieldCand(string name, int depth, boolean isEmbedded) {
-    result = this.getOwnField(name, isEmbedded) and depth = 0
-    or
-    exists(Type embedded | this.hasEmbeddedField(embedded, depth - 1) |
-      result = embedded.getUnderlyingType().(StructType).getOwnField(name, isEmbedded)
+      tp = unique(Field f | this.hasFieldCand(name, f, mindepth, _)).getType()
     )
   }
 
@@ -568,9 +560,9 @@ class StructType extends @structtype, CompositeType {
    * The depth of a field `f` declared in this type is zero.
    */
   Field getFieldAtDepth(string name, int depth) {
-    depth = min(int depthCand | exists(this.getFieldCand(name, depthCand, _))) and
-    result = this.getFieldCand(name, depth, _) and
-    strictcount(this.getFieldCand(name, depth, _)) = 1
+    depth = min(int depthCand | exists(Field f | this.hasFieldCand(name, f, depthCand, _))) and
+    this.hasFieldCand(name, result, depth, _) and
+    strictcount(Field f | this.hasFieldCand(name, f, depth, _)) = 1
   }
 
   Method getMethodAtDepth(string name, int depth) {
