@@ -4,8 +4,7 @@ class UnversionedImmutableAction extends UsesStep {
   string immutable_action;
 
   UnversionedImmutableAction() {
-    immutableActionsDataModel(immutable_action) and
-    this.getCallee() = immutable_action and
+    isImmutableAction(this, immutable_action) and
     not isSemVer(this.getVersion())
   }
 }
@@ -22,4 +21,9 @@ predicate isSemVer(string version) {
 
   // or latest which will work
   or version = "latest"
+}
+
+predicate isImmutableAction(UsesStep actionStep, string actionName) {
+  immutableActionsDataModel(actionName) and
+  actionStep.getCallee() = actionName
 }
