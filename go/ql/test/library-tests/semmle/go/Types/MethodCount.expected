@@ -1,4 +1,5 @@
 | * Foo | 1 |
+| * P | 1 |
 | * base | 2 |
 | * embedder | 2 |
 | * embedder2 | 2 |
@@ -16,6 +17,8 @@
 | GenericInterface | 1 |
 | MixedExportedAndNot | 2 |
 | MyInterface | 17 |
+| S | 1 |
+| SEmbedS | 1 |
 | T | 1 |
 | T3 | 1 |
 | T4 | 1 |
