@@ -131,7 +131,7 @@ fn main() -> anyhow::Result<()> {
         extractor.extract_without_semantics(file, "no manifest found");
     }
     let target_dir = &cfg
-        .target_dir
+        .cargo_target_dir
         .unwrap_or_else(|| cfg.scratch_dir.join("target"));
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
         if let Some((ref db, ref vfs)) = RustAnalyzer::load_workspace(manifest, target_dir) {
