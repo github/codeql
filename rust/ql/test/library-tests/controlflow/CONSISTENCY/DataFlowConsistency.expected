@@ -45,8 +45,9 @@ uniqueEnclosingCallable
 | test.rs:324:29:324:42 | Param | Node should have one enclosing callable but has 0. |
 | test.rs:335:28:335:35 | Param | Node should have one enclosing callable but has 0. |
 | test.rs:342:29:342:40 | Param | Node should have one enclosing callable but has 0. |
-| test.rs:401:15:401:25 | Param | Node should have one enclosing callable but has 0. |
-| test.rs:408:16:408:19 | Param | Node should have one enclosing callable but has 0. |
+| test.rs:390:22:390:27 | Param | Node should have one enclosing callable but has 0. |
+| test.rs:452:15:452:25 | Param | Node should have one enclosing callable but has 0. |
+| test.rs:459:16:459:19 | Param | Node should have one enclosing callable but has 0. |
 uniqueCallEnclosingCallable
 | test.rs:6:9:6:44 | CallExpr | Call should have one enclosing callable but has 0. |
 | test.rs:7:9:7:27 | CallExpr | Call should have one enclosing callable but has 0. |
@@ -57,9 +58,19 @@ uniqueCallEnclosingCallable
 | test.rs:275:21:275:31 | CallExpr | Call should have one enclosing callable but has 0. |
 | test.rs:276:22:276:31 | CallExpr | Call should have one enclosing callable but has 0. |
 | test.rs:292:34:292:40 | CallExpr | Call should have one enclosing callable but has 0. |
-| test.rs:376:9:376:18 | CallExpr | Call should have one enclosing callable but has 0. |
-| test.rs:377:12:377:30 | CallExpr | Call should have one enclosing callable but has 0. |
-| test.rs:380:9:380:23 | CallExpr | Call should have one enclosing callable but has 0. |
-| test.rs:381:12:381:30 | CallExpr | Call should have one enclosing callable but has 0. |
-| test.rs:384:9:384:23 | CallExpr | Call should have one enclosing callable but has 0. |
-| test.rs:404:5:404:18 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:369:18:369:32 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:374:22:374:40 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:377:22:377:35 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:380:9:380:19 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:394:30:394:39 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:400:13:400:49 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:400:13:400:49 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:400:21:400:44 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:411:17:411:24 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:411:17:411:24 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:427:9:427:18 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:428:12:428:30 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:431:9:431:23 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:432:12:432:30 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:435:9:435:23 | CallExpr | Call should have one enclosing callable but has 0. |
+| test.rs:455:5:455:18 | CallExpr | Call should have one enclosing callable but has 0. |

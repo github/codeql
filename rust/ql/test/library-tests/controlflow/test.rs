@@ -364,6 +364,57 @@ mod divergence {
     }
 }
 
+mod async_await {
+    async fn say_hello() {
+        println!("hello, world!");
+    }
+
+    async fn async_block() {
+        let say_godbye = async {
+            println!("godbye, everyone!");
+        };
+        let say_how_are_you = async {
+            println!("how are you?");
+        };
+        let noop = async {};
+        say_hello().await;
+        say_how_are_you.await;
+        say_godbye.await;
+        noop.await;
+    }
+}
+
+mod const_evaluation {
+    const PI: i64 = 3.14159;
+
+    const fn add_two(n: i64) -> i64 {
+        n + 2
+    }
+
+    const A_NUMBER: i64 = if add_two(2) + 2 == 4 { PI } else { 0 };
+
+    fn const_block_assert<T>() -> usize {
+        // If this code ever gets executed, then the assertion has definitely
+        // been evaluated at compile-time.
+        const {
+            assert!(std::mem::size_of::<T>() > 0);
+        }
+        // Here we can have unsafe code relying on the type being non-zero-sized.
+        42
+    }
+
+    fn const_block_panic() -> i64 {
+        const N: i64 = 12 + 7;
+        if false {
+            // The panic may or may not occur when the program is built.
+            const {
+                panic!();
+            }
+        }
+        N
+    }
+}
+
 fn dead_code() -> i64 {
     if (true) {
         return 0;
