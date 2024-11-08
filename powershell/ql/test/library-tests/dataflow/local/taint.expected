@@ -62,3 +62,4 @@
 | test.ps1:21:1:21:28 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
 | test.ps1:21:1:21:28 | pre-return value for call to Sink | test.ps1:21:1:21:28 | implicit unwrapping of call to Sink |
 | test.ps1:21:1:21:28 | pre-return value for call to Sink | test.ps1:21:1:21:28 | implicit unwrapping of call to Sink |
+| test.ps1:21:25:21:27 | f | test.ps1:21:6:21:28 | here is a string: $f |
