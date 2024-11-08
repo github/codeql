@@ -4,6 +4,7 @@ groups:
   - test
 dependencies:
   microsoft-sdl/powershell-all: ${workspace}
+  microsoft-sdl/powershell-queries: ${workspace}
 extractor: powershell
 tests: .
 warnOnImplicitThis: true
