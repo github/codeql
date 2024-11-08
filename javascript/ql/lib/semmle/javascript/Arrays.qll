@@ -444,4 +444,17 @@ private module ArrayLibraries {
       )
     }
   }
+
+  /**
+   * A taint propagating data flow edge arising from sorting.
+   */
+  private class SortTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = "sort" and
+        pred = call.getReceiver() and
+        succ = call
+      )
+    }
+  }
 }

@@ -870,19 +870,6 @@ module TaintTracking {
   }
 
   /**
-   * A taint propagating data flow edge arising from sorting.
-   */
-  private class SortTaintStep extends SharedTaintStep {
-    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = "sort" and
-        pred = call.getReceiver() and
-        succ = call
-      )
-    }
-  }
-
-  /**
    * A taint step through an exception constructor, such as `x` to `new Error(x)`.
    */
   class ErrorConstructorTaintStep extends SharedTaintStep {
