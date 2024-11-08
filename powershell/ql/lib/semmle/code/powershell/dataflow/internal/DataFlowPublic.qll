@@ -448,7 +448,28 @@ class CallNode extends AstNode {
 
   Node getQualifier() { result.asExpr() = call.getQualifier() }
 
+  /** Gets the i'th argument to this call. */
+  Node getArgument(int i) { result.asExpr() = call.getArgument(i) }
+
+  /** Gets the i'th positional argument to this call. */
+  Node getPositionalArgument(int i) { result.asExpr() = call.getPositionalArgument(i) }
+
+  /** Gets the argument with the name `name`, if any. */
+  Node getNamedArgument(string name) { result.asExpr() = call.getNamedArgument(name) }
+
+  /**
+   * Gets any argument of this call.
+   *
+   * Note that this predicate doesn't get the pipeline argument, if any.
+   */
+  Node getAnArgument() { result.asExpr() = call.getAnArgument() }
+
   int getNumberOfArguments() { result = call.getNumberOfArguments() }
+}
+
+/** A call to operator `&`, viwed as a node in a data flow graph. */
+class CallOperatorNode extends CallNode {
+  CallOperatorNode() { this.getCallNode() instanceof CfgNodes::StmtNodes::CallOperatorCfgNode }
 }
 
 /** A use of a type name, viewed as a node in a data flow graph. */
