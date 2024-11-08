@@ -15,3 +15,7 @@ Sink $d
 
 $e = $d + 1
 Sink $e
+
+$f = Source
+
+Sink "here is a string: $f"
