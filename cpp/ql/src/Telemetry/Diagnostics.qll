@@ -27,15 +27,3 @@ class CannotOpenFile extends CompilerError {
     result = this.getMessage().regexpCapture("cannot open source file '([^']+)'", 1)
   }
 }
-
-/**
- * An undefined identifier error.
- * Currently unused.
- */
-class UndefinedIdentifier extends CompilerError {
-  UndefinedIdentifier() { this.hasTag("undefined_identifier") }
-
-  string getIdentifier() {
-    result = this.getMessage().regexpCapture("identifier '([^']+)' is undefined", 1)
-  }
-}
