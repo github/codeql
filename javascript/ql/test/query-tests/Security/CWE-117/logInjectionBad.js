@@ -125,6 +125,6 @@ const serverMatchAll = http.createServer((req, res) => {
 });
 
 const serverMatchAl2l = http.createServer((req, res) => {
-    const result = url.parse(req.url, true).query.username.matchAll(/(\d+)/g); // BAD - match is marked as vulnerable, while matchAll is not.
+    const result = url.parse(req.url, true).query.username.matchAll(/(\d+)/g); // BAD
     console.log("First captured group:", RegExp.$1);
 });

@@ -917,7 +917,7 @@ module TaintTracking {
      */
     private ControlFlowNode getACaptureSetter(DataFlow::Node input) {
       exists(DataFlow::MethodCallNode call | result = call.asExpr() |
-        call.getMethodName() = ["search", "replace", "replaceAll", "match"] and
+        call.getMethodName() = ["search", "replace", "replaceAll", "match", "matchAll"] and
         input = call.getReceiver()
         or
         call.getMethodName() = ["test", "exec"] and input = call.getArgument(0)
