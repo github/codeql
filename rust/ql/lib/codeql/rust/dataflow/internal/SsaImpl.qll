@@ -2,6 +2,7 @@ private import rust
 private import codeql.rust.controlflow.BasicBlocks as BasicBlocks
 private import BasicBlocks
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
+private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import Cfg
 private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import codeql.ssa.Ssa as SsaImplCommon
@@ -395,6 +396,38 @@ private module Cached {
   Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
     Impl::uncertainWriteDefinitionInput(def, result)
   }
+
+  cached
+  module DataFlowIntegration {
+    import DataFlowIntegrationImpl
+
+    cached
+    predicate localFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+      DataFlowIntegrationImpl::localFlowStep(def, nodeFrom, nodeTo, isUseStep)
+    }
+
+    cached
+    predicate localMustFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo) {
+      DataFlowIntegrationImpl::localMustFlowStep(def, nodeFrom, nodeTo)
+    }
+
+    signature predicate guardChecksSig(CfgNodes::AstCfgNode g, Cfg::CfgNode e, boolean branch);
+
+    cached // nothing is actually cached
+    module BarrierGuard<guardChecksSig/3 guardChecks> {
+      private predicate guardChecksAdjTypes(
+        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, boolean branch
+      ) {
+        guardChecks(g, e, branch)
+      }
+
+      private Node getABarrierNodeImpl() {
+        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
+      }
+
+      predicate getABarrierNode = getABarrierNodeImpl/0;
+    }
+  }
 }
 
 import Cached
@@ -426,3 +459,46 @@ class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
 
   override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
 }
+
+private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
+  class Expr extends CfgNodes::AstCfgNode {
+    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+  }
+
+  Expr getARead(Definition def) { result = Cached::getARead(def) }
+
+  /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
+  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
+    exists(BasicBlock bb, int i | def.definesAt(_, bb, i) and value = bb.getNode(i))
+  }
+
+  class Parameter = Param;
+
+  /** Holds if SSA definition `def` initializes parameter `p` at function entry. */
+  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) {
+    exists(BasicBlock bb, int i | bb.getNode(i).getAstNode() = p and def.definesAt(_, bb, i))
+  }
+
+  class Guard extends CfgNodes::AstCfgNode {
+    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+  }
+
+  /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
+  predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+    exists(ConditionBlock conditionBlock, ConditionalSuccessor s |
+      guard = conditionBlock.getLastNode() and
+      s.getValue() = branch and
+      conditionBlock.controls(bb, s)
+    )
+  }
+
+  /** Gets an immediate conditional successor of basic block `bb`, if any. */
+  SsaInput::BasicBlock getAConditionalBasicBlockSuccessor(SsaInput::BasicBlock bb, boolean branch) {
+    exists(Cfg::ConditionalSuccessor s |
+      result = bb.getASuccessor(s) and
+      s.getValue() = branch
+    )
+  }
+}
+
+private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;

@@ -35,4 +35,6 @@ where
   key = "Inconsistencies - AST" and value = getTotalAstInconsistencies()
   or
   key = "Inconsistencies - CFG" and value = getTotalCfgInconsistencies()
+  or
+  key = "Inconsistencies - data flow" and value = getTotalDataFlowInconsistencies()
 select key, value

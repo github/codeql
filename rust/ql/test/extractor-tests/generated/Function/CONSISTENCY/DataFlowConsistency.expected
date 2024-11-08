@@ -1,4 +1,0 @@
-uniqueEnclosingCallable
-| gen_function.rs:4:8:4:13 | Param | Node should have one enclosing callable but has 0. |
-uniqueType
-| gen_function.rs:4:8:4:13 | Param | Node should have one type but has 0. |

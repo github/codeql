@@ -313,7 +313,8 @@ edges
 | test.rs:153:9:160:9 | IfExpr | test.rs:152:44:161:5 | BlockExpr |  |
 | test.rs:153:13:156:9 | [boolean(false)] MatchExpr | test.rs:159:13:159:13 | 0 | false |
 | test.rs:153:13:156:9 | [boolean(true)] MatchExpr | test.rs:157:13:157:13 | 1 | true |
-| test.rs:153:19:153:19 | a | test.rs:154:13:154:13 | LiteralPat |  |
+| test.rs:153:19:153:19 | a | test.rs:154:13:154:13 | 0 |  |
+| test.rs:154:13:154:13 | 0 | test.rs:154:13:154:13 | LiteralPat |  |
 | test.rs:154:13:154:13 | LiteralPat | test.rs:154:18:154:21 | true | match |
 | test.rs:154:13:154:13 | LiteralPat | test.rs:155:13:155:13 | WildcardPat | no-match |
 | test.rs:154:18:154:21 | true | test.rs:153:13:156:9 | [boolean(true)] MatchExpr | true |
@@ -590,13 +591,15 @@ edges
 | test.rs:274:9:277:9 | MatchExpr | test.rs:273:71:278:5 | BlockExpr |  |
 | test.rs:274:15:274:15 | b | test.rs:274:15:274:16 | TryExpr |  |
 | test.rs:274:15:274:16 | TryExpr | test.rs:273:5:278:5 | exit test_question_mark_operator_2 (normal) | return |
-| test.rs:274:15:274:16 | TryExpr | test.rs:275:13:275:16 | LiteralPat | match |
+| test.rs:274:15:274:16 | TryExpr | test.rs:275:13:275:16 | true | match |
 | test.rs:275:13:275:16 | LiteralPat | test.rs:275:21:275:24 | PathExpr | match |
-| test.rs:275:13:275:16 | LiteralPat | test.rs:276:13:276:17 | LiteralPat | no-match |
+| test.rs:275:13:275:16 | LiteralPat | test.rs:276:13:276:17 | false | no-match |
+| test.rs:275:13:275:16 | true | test.rs:275:13:275:16 | LiteralPat |  |
 | test.rs:275:21:275:24 | PathExpr | test.rs:275:26:275:30 | false |  |
 | test.rs:275:21:275:31 | CallExpr | test.rs:274:9:277:9 | MatchExpr |  |
 | test.rs:275:26:275:30 | false | test.rs:275:21:275:31 | CallExpr |  |
 | test.rs:276:13:276:17 | LiteralPat | test.rs:276:22:276:25 | PathExpr | match |
+| test.rs:276:13:276:17 | false | test.rs:276:13:276:17 | LiteralPat |  |
 | test.rs:276:22:276:25 | PathExpr | test.rs:276:27:276:30 | true |  |
 | test.rs:276:22:276:31 | CallExpr | test.rs:274:9:277:9 | MatchExpr |  |
 | test.rs:276:27:276:30 | true | test.rs:276:22:276:31 | CallExpr |  |
@@ -735,21 +738,25 @@ edges
 | test.rs:348:31:355:5 | BlockExpr | test.rs:348:5:355:5 | exit range_pattern (normal) |  |
 | test.rs:349:9:354:9 | MatchExpr | test.rs:348:31:355:5 | BlockExpr |  |
 | test.rs:349:15:349:16 | 42 | test.rs:350:13:350:15 | RangePat |  |
-| test.rs:350:13:350:15 | RangePat | test.rs:350:15:350:15 | LiteralPat | match |
+| test.rs:350:13:350:15 | RangePat | test.rs:350:15:350:15 | 0 | match |
 | test.rs:350:13:350:15 | RangePat | test.rs:351:13:351:16 | RangePat | no-match |
+| test.rs:350:15:350:15 | 0 | test.rs:350:15:350:15 | LiteralPat |  |
 | test.rs:350:15:350:15 | LiteralPat | test.rs:350:20:350:20 | 1 | match |
 | test.rs:350:15:350:15 | LiteralPat | test.rs:351:13:351:16 | RangePat | no-match |
 | test.rs:350:20:350:20 | 1 | test.rs:349:9:354:9 | MatchExpr |  |
-| test.rs:351:13:351:13 | LiteralPat | test.rs:351:16:351:16 | LiteralPat | match |
+| test.rs:351:13:351:13 | 1 | test.rs:351:13:351:13 | LiteralPat |  |
+| test.rs:351:13:351:13 | LiteralPat | test.rs:351:16:351:16 | 2 | match |
 | test.rs:351:13:351:13 | LiteralPat | test.rs:352:13:352:15 | RangePat | no-match |
-| test.rs:351:13:351:16 | RangePat | test.rs:351:13:351:13 | LiteralPat | match |
+| test.rs:351:13:351:16 | RangePat | test.rs:351:13:351:13 | 1 | match |
 | test.rs:351:13:351:16 | RangePat | test.rs:352:13:352:15 | RangePat | no-match |
+| test.rs:351:16:351:16 | 2 | test.rs:351:16:351:16 | LiteralPat |  |
 | test.rs:351:16:351:16 | LiteralPat | test.rs:351:21:351:21 | 2 | match |
 | test.rs:351:16:351:16 | LiteralPat | test.rs:352:13:352:15 | RangePat | no-match |
 | test.rs:351:21:351:21 | 2 | test.rs:349:9:354:9 | MatchExpr |  |
+| test.rs:352:13:352:13 | 5 | test.rs:352:13:352:13 | LiteralPat |  |
 | test.rs:352:13:352:13 | LiteralPat | test.rs:352:20:352:20 | 3 | match |
 | test.rs:352:13:352:13 | LiteralPat | test.rs:353:13:353:14 | RestPat | no-match |
-| test.rs:352:13:352:15 | RangePat | test.rs:352:13:352:13 | LiteralPat | match |
+| test.rs:352:13:352:15 | RangePat | test.rs:352:13:352:13 | 5 | match |
 | test.rs:352:13:352:15 | RangePat | test.rs:353:13:353:14 | RestPat | no-match |
 | test.rs:352:20:352:20 | 3 | test.rs:349:9:354:9 | MatchExpr |  |
 | test.rs:353:13:353:14 | RestPat | test.rs:353:19:353:19 | 4 | match |

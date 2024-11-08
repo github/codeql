@@ -1,18 +1,3 @@
-uniqueEnclosingCallable
-| variables.rs:3:14:3:20 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:7:14:7:19 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:11:18:11:24 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:261:5:261:12 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:262:5:265:19 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:272:5:272:50 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:316:10:316:15 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:324:10:324:15 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:356:17:356:28 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:363:22:363:36 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:363:39:363:57 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:435:8:435:15 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:451:13:451:21 | Param | Node should have one enclosing callable but has 0. |
-| variables.rs:451:24:451:32 | Param | Node should have one enclosing callable but has 0. |
 uniqueCallEnclosingCallable
 | variables.rs:4:14:4:20 | CallExpr | Call should have one enclosing callable but has 0. |
 | variables.rs:8:14:8:20 | CallExpr | Call should have one enclosing callable but has 0. |
@@ -158,18 +143,3 @@ uniqueCallEnclosingCallable
 | variables.rs:542:5:542:13 | CallExpr | Call should have one enclosing callable but has 0. |
 | variables.rs:543:5:543:13 | CallExpr | Call should have one enclosing callable but has 0. |
 | variables.rs:544:5:544:29 | CallExpr | Call should have one enclosing callable but has 0. |
-uniqueType
-| variables.rs:3:14:3:20 | Param | Node should have one type but has 0. |
-| variables.rs:7:14:7:19 | Param | Node should have one type but has 0. |
-| variables.rs:11:18:11:24 | Param | Node should have one type but has 0. |
-| variables.rs:261:5:261:12 | Param | Node should have one type but has 0. |
-| variables.rs:262:5:265:19 | Param | Node should have one type but has 0. |
-| variables.rs:272:5:272:50 | Param | Node should have one type but has 0. |
-| variables.rs:316:10:316:15 | Param | Node should have one type but has 0. |
-| variables.rs:324:10:324:15 | Param | Node should have one type but has 0. |
-| variables.rs:356:17:356:28 | Param | Node should have one type but has 0. |
-| variables.rs:363:22:363:36 | Param | Node should have one type but has 0. |
-| variables.rs:363:39:363:57 | Param | Node should have one type but has 0. |
-| variables.rs:435:8:435:15 | Param | Node should have one type but has 0. |
-| variables.rs:451:13:451:21 | Param | Node should have one type but has 0. |
-| variables.rs:451:24:451:32 | Param | Node should have one type but has 0. |
