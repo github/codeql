@@ -19,13 +19,13 @@ func TestI2(t test.I2) {
 func TestS1(t test.S1) {
 	x := t.Source()
 	y := t.Step(x)
-	t.Sink(y) // $ I1[t] S1[f] S1[t] ql_S1 SPURIOUS: IEmbedI1[t] SEmbedI1[t]
+	t.Sink(y) // $ I1[t] S1[f] S1[t] ql_S1 SPURIOUS: IEmbedI1[t] SEmbedI1[t] SEmbedS1[t]
 }
 
 func TestS2(t test.S2) {
 	x := t.Source()
 	y := t.Step(x)
-	t.Sink(y) // $ I1[t] I2[t] SPURIOUS: IEmbedI1[t] IEmbedI2[t] SEmbedI1[t] SEmbedI2[t]
+	t.Sink(y) // $ I1[t] I2[t] SPURIOUS: IEmbedI1[t] IEmbedI2[t] SEmbedI1[t] SEmbedI2[t] SEmbedS2[t]
 }
 
 func TestSEmbedI1(t test.SEmbedI1) {
@@ -67,13 +67,13 @@ func TestSImplEmbedI2(t test.SImplEmbedI2) {
 func TestSEmbedS1(t test.SEmbedS1) {
 	x := t.Source()
 	y := t.Step(x)
-	t.Sink(y) // $ I1[t] S1[t] ql_S1 SPURIOUS: IEmbedI1[t] S1[f] SEmbedI1[t]
+	t.Sink(y) // $ I1[t] S1[t] SEmbedS1[t] ql_S1 SPURIOUS: IEmbedI1[t] S1[f] SEmbedI1[t]
 }
 
 func TestSEmbedS2(t test.SEmbedS2) {
 	x := t.Source()
 	y := t.Step(x)
-	t.Sink(y) // $ I1[t] I2[t] SPURIOUS: IEmbedI1[t] IEmbedI2[t] SEmbedI1[t] SEmbedI2[t]
+	t.Sink(y) // $ I1[t] I2[t] SEmbedS2[t] SPURIOUS: IEmbedI1[t] IEmbedI2[t] SEmbedI1[t] SEmbedI2[t]
 }
 
 func TestSImplEmbedS1(t test.SImplEmbedS1) {
