@@ -20,10 +20,10 @@ edges
 | test.rs:11:23:11:34 | PathExpr | test.rs:11:23:11:36 | CallExpr |  |
 | test.rs:11:23:11:36 | CallExpr | test.rs:11:13:11:19 | map |  |
 | test.rs:12:9:12:11 | map | test.rs:12:20:12:21 | 37 |  |
-| test.rs:12:9:12:27 | MethodCallExpr | test.rs:10:22:13:5 | BlockExpr |  |
+| test.rs:12:9:12:27 | ... .insert(...) | test.rs:10:22:13:5 | BlockExpr |  |
 | test.rs:12:9:12:28 | ExprStmt | test.rs:12:9:12:11 | map |  |
 | test.rs:12:20:12:21 | 37 | test.rs:12:24:12:26 | "a" |  |
-| test.rs:12:24:12:26 | "a" | test.rs:12:9:12:27 | MethodCallExpr |  |
+| test.rs:12:24:12:26 | "a" | test.rs:12:9:12:27 | ... .insert(...) |  |
 | test.rs:18:5:34:5 | enter test_break_and_continue | test.rs:18:32:18:32 | n |  |
 | test.rs:18:5:34:5 | exit test_break_and_continue (normal) | test.rs:18:5:34:5 | exit test_break_and_continue |  |
 | test.rs:18:32:18:32 | n | test.rs:18:32:18:37 | Param | match |
@@ -173,8 +173,8 @@ edges
 | test.rs:91:19:91:25 | TupleStructPat | test.rs:91:9:95:9 | WhileExpr | no-match |
 | test.rs:91:19:91:25 | TupleStructPat | test.rs:91:24:91:24 | x | match |
 | test.rs:91:24:91:24 | x | test.rs:92:17:92:17 | PathExpr | match |
-| test.rs:91:29:91:32 | iter | test.rs:91:29:91:39 | MethodCallExpr |  |
-| test.rs:91:29:91:39 | MethodCallExpr | test.rs:91:19:91:25 | TupleStructPat |  |
+| test.rs:91:29:91:32 | iter | test.rs:91:29:91:39 | ... .next(...) |  |
+| test.rs:91:29:91:39 | ... .next(...) | test.rs:91:19:91:25 | TupleStructPat |  |
 | test.rs:91:41:95:9 | BlockExpr | test.rs:91:15:91:39 | LetExpr |  |
 | test.rs:92:13:94:13 | IfExpr | test.rs:91:41:95:9 | BlockExpr |  |
 | test.rs:92:17:92:17 | PathExpr | test.rs:92:21:92:21 | 5 |  |
@@ -577,8 +577,8 @@ edges
 | test.rs:269:38:269:38 | s | test.rs:269:38:269:44 | Param | match |
 | test.rs:269:38:269:44 | Param | test.rs:270:9:270:11 | PathExpr |  |
 | test.rs:269:62:271:5 | BlockExpr | test.rs:269:5:271:5 | exit test_question_mark_operator_1 (normal) |  |
-| test.rs:270:9:270:11 | PathExpr | test.rs:270:9:270:26 | MethodCallExpr |  |
-| test.rs:270:9:270:26 | MethodCallExpr | test.rs:270:9:270:27 | TryExpr |  |
+| test.rs:270:9:270:11 | PathExpr | test.rs:270:9:270:26 | ... .parse(...) |  |
+| test.rs:270:9:270:26 | ... .parse(...) | test.rs:270:9:270:27 | TryExpr |  |
 | test.rs:270:9:270:27 | TryExpr | test.rs:269:5:271:5 | exit test_question_mark_operator_1 (normal) | return |
 | test.rs:270:9:270:27 | TryExpr | test.rs:270:31:270:31 | 4 | match |
 | test.rs:270:9:270:31 | ... + ... | test.rs:269:62:271:5 | BlockExpr |  |
