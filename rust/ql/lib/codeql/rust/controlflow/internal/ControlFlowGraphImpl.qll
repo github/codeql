@@ -23,7 +23,7 @@ private module CfgInput implements InputSig<Location> {
   class CfgScope = Scope::CfgScope;
 
   CfgScope getCfgScope(AstNode n) {
-    result = n.getEnclosingCallable() and
+    result = Scope::getEnclosingCfgScope(n) and
     Stages::CfgStage::ref()
   }
 

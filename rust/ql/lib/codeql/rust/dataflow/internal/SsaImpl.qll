@@ -156,19 +156,19 @@ private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
  */
 pragma[noinline]
 private predicate hasCapturedWrite(Variable v, Cfg::CfgScope scope) {
-  any(VariableWriteAccess write | write.getVariable() = v and scope = write.getEnclosingCallable+())
+  any(VariableWriteAccess write | write.getVariable() = v and scope = getEnclosingCfgScope+(write))
       .isCapture()
 }
 
 /**
  * Holds if `v` is read inside basic block `bb` at index `i`, which is in the
- * immediate outer scope of `scope`.
+ * immediate outer CFG scope of `scope`.
  */
 pragma[noinline]
 private predicate variableReadActualInOuterScope(
   BasicBlock bb, int i, Variable v, Cfg::CfgScope scope
 ) {
-  variableReadActual(bb, i, v) and bb.getScope() = scope.getEnclosingCallable()
+  variableReadActual(bb, i, v) and bb.getScope() = getEnclosingCfgScope(scope)
 }
 
 pragma[noinline]
@@ -263,7 +263,7 @@ private predicate readsCapturedVariable(BasicBlock bb, Variable v) {
  */
 pragma[noinline]
 private predicate hasCapturedRead(Variable v, Cfg::CfgScope scope) {
-  any(VariableReadAccess read | read.getVariable() = v and scope = read.getEnclosingCallable+())
+  any(VariableReadAccess read | read.getVariable() = v and scope = getEnclosingCfgScope+(read))
       .isCapture()
 }
 
@@ -273,14 +273,15 @@ private predicate hasCapturedRead(Variable v, Cfg::CfgScope scope) {
  */
 pragma[noinline]
 private predicate variableWriteInOuterScope(BasicBlock bb, int i, Variable v, Cfg::CfgScope scope) {
-  SsaInput::variableWrite(bb, i, v, _) and scope.getEnclosingCallable() = bb.getScope()
+  SsaInput::variableWrite(bb, i, v, _) and getEnclosingCfgScope(scope) = bb.getScope()
 }
 
 /**
  * Holds if the call `call` at index `i` in basic block `bb` may reach
  * a callable that reads captured variable `v`.
  */
-private predicate capturedCallRead(CallExprBase call, BasicBlock bb, int i, Variable v) {
+private predicate capturedCallRead(Expr call, BasicBlock bb, int i, Variable v) {
+  Cfg::isControlFlowJump(call) and
   exists(Cfg::CfgScope scope |
     hasCapturedRead(v, scope) and
     (
@@ -295,7 +296,8 @@ private predicate capturedCallRead(CallExprBase call, BasicBlock bb, int i, Vari
  * Holds if the call `call` at index `i` in basic block `bb` may reach a callable
  * that writes captured variable `v`.
  */
-predicate capturedCallWrite(CallExprBase call, BasicBlock bb, int i, Variable v) {
+predicate capturedCallWrite(Expr call, BasicBlock bb, int i, Variable v) {
+  Cfg::isControlFlowJump(call) and
   call = bb.getNode(i).getAstNode() and
   exists(Cfg::CfgScope scope |
     hasVariableReadWithCapturedWrite(bb, any(int j | j > i), v, scope)

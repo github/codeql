@@ -14,9 +14,7 @@ abstract private class CfgScopeImpl extends AstNode {
 
 final class CfgScope = CfgScopeImpl;
 
-class AsyncBlockScope extends CfgScopeImpl, BlockExpr {
-  AsyncBlockScope() { this.isAsync() }
-
+final class AsyncBlockScope extends CfgScopeImpl, AsyncBlockExpr {
   override predicate scopeFirst(AstNode first) {
     first(this.(ExprTrees::AsyncBlockExprTree).getFirstChildNode(), first)
   }
@@ -29,7 +27,7 @@ class AsyncBlockScope extends CfgScopeImpl, BlockExpr {
 /**
  * A CFG scope for a callable (a function or a closure) with a body.
  */
-class CallableScope extends CfgScopeImpl, Callable {
+final class CallableScope extends CfgScopeImpl, Callable {
   CallableScope() {
     // A function without a body corresponds to a trait method signature and
     // should not have a CFG scope.
@@ -51,4 +49,14 @@ class CallableScope extends CfgScopeImpl, Callable {
 
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */
   override predicate scopeLast(AstNode last, Completion c) { last(this.getBody(), last, c) }
+}
+
+/** Gets the CFG scope that encloses `node`, if any. */
+CfgScope getEnclosingCfgScope(AstNode node) {
+  exists(AstNode p | p = node.getParentNode() |
+    result = p
+    or
+    not p instanceof CfgScope and
+    result = getEnclosingCfgScope(p)
+  )
 }

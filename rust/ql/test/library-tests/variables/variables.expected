@@ -461,8 +461,10 @@ capturedVariable
 | variables.rs:410:13:410:13 | x |
 | variables.rs:418:13:418:13 | y |
 | variables.rs:426:13:426:13 | z |
+| variables.rs:436:13:436:13 | i |
 capturedAccess
 | variables.rs:403:19:403:19 | x |
 | variables.rs:413:19:413:19 | x |
 | variables.rs:421:9:421:9 | y |
 | variables.rs:429:9:429:9 | z |
+| variables.rs:438:9:438:9 | i |
