@@ -27,32 +27,32 @@ use ra_ap_syntax::{
 #[macro_export]
 macro_rules! emit_detached {
     (MacroCall, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_macro_call_expanded(&$node, $label);
+        $self.extract_macro_call_expanded($node, $label);
     };
     (Function, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Trait, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Struct, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Enum, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Union, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Module, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     // TODO canonical origin of other items
     (Path, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_destination(&$node, $label);
+        $self.extract_canonical_destination($node, $label);
     };
     (MethodCallExpr, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_method_canonical_destination(&$node, $label);
+        $self.extract_method_canonical_destination($node, $label);
     };
     ($($_:tt)*) => {};
 }
@@ -252,20 +252,20 @@ impl<'a> Translator<'a> {
     ) -> Option<Label<generated::AstNode>> {
         match expand_to {
             ra_ap_hir_expand::ExpandTo::Statements => {
-                ast::MacroStmts::cast(expanded).map(|x| self.emit_macro_stmts(x).into())
+                ast::MacroStmts::cast(expanded).map(|x| self.emit_macro_stmts(&x).into())
             }
             ra_ap_hir_expand::ExpandTo::Items => {
-                ast::MacroItems::cast(expanded).map(|x| self.emit_macro_items(x).into())
+                ast::MacroItems::cast(expanded).map(|x| self.emit_macro_items(&x).into())
             }
 
             ra_ap_hir_expand::ExpandTo::Pattern => {
-                ast::Pat::cast(expanded).map(|x| self.emit_pat(x).into())
+                ast::Pat::cast(expanded).map(|x| self.emit_pat(&x).into())
             }
             ra_ap_hir_expand::ExpandTo::Type => {
-                ast::Type::cast(expanded).map(|x| self.emit_type(x).into())
+                ast::Type::cast(expanded).map(|x| self.emit_type(&x).into())
             }
             ra_ap_hir_expand::ExpandTo::Expr => {
-                ast::Expr::cast(expanded).map(|x| self.emit_expr(x).into())
+                ast::Expr::cast(expanded).map(|x| self.emit_expr(&x).into())
             }
         }
     }
