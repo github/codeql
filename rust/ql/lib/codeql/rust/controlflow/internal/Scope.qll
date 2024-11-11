@@ -7,8 +7,10 @@ private import codeql.rust.elements.internal.generated.ParentChild
  * A control-flow graph (CFG) scope.
  */
 abstract private class CfgScopeImpl extends AstNode {
+  /** Holds if `first` is executed first when entering `scope`. */
   abstract predicate scopeFirst(AstNode first);
 
+  /** Holds if `scope` is exited when `last` finishes with completion `c`. */
   abstract predicate scopeLast(AstNode last, Completion c);
 }
 
