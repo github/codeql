@@ -842,6 +842,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isAnyElement()
   )
   or
+  c.isAnyElement() and
   exists(
     CfgNodes::ExprNodes::ArrayExprCfgNode arrayExpr, EscapeContainer::EscapeContainer container
   |
@@ -857,9 +858,9 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
   )
   or
+  c.isAnyElement() and
   exists(CfgNode cfgNode |
     node1 = TImplicitWrapNode(cfgNode, true) and
-    c.isAnyElement() and
     node2.(ReturnNodeImpl).getCfgScope() = cfgNode.getScope()
   )
   or

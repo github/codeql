@@ -106,15 +106,15 @@
 | Dynamic/DynamicExecution.ps1:3:1:3:28 | call to Create | Dynamic/DynamicExecution.ps1:3:1:3:28 | call to Create |
 | Dynamic/DynamicExecution.ps1:3:16:3:22 | Create | Dynamic/DynamicExecution.ps1:3:1:3:28 | call to Create |
 | Dynamic/DynamicExecution.ps1:3:23:3:27 | foo | Dynamic/DynamicExecution.ps1:3:1:3:28 | call to Create |
-| Dynamic/DynamicExecution.ps1:4:1:4:32 | call to  | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} |
-| Dynamic/DynamicExecution.ps1:4:3:4:32 | (...) | Dynamic/DynamicExecution.ps1:4:1:4:32 | call to  |
+| Dynamic/DynamicExecution.ps1:4:1:4:32 | call | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} |
+| Dynamic/DynamicExecution.ps1:4:3:4:32 | (...) | Dynamic/DynamicExecution.ps1:4:1:4:32 | call |
 | Dynamic/DynamicExecution.ps1:4:4:4:17 | scriptblock | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create |
 | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create | Dynamic/DynamicExecution.ps1:4:3:4:32 | (...) |
 | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create |
 | Dynamic/DynamicExecution.ps1:4:19:4:25 | Create | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create |
 | Dynamic/DynamicExecution.ps1:4:26:4:30 | foo | Dynamic/DynamicExecution.ps1:4:4:4:31 | call to Create |
-| Dynamic/DynamicExecution.ps1:5:1:5:8 | call to  | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} |
-| Dynamic/DynamicExecution.ps1:5:2:5:8 | $foo | Dynamic/DynamicExecution.ps1:5:1:5:8 | call to  |
+| Dynamic/DynamicExecution.ps1:5:1:5:8 | call | Dynamic/DynamicExecution.ps1:1:1:5:8 | {...} |
+| Dynamic/DynamicExecution.ps1:5:2:5:8 | $foo | Dynamic/DynamicExecution.ps1:5:1:5:8 | call |
 | Dynamic/DynamicExecution.ps1:5:3:5:7 | foo | Dynamic/DynamicExecution.ps1:5:2:5:8 | $foo |
 | Dynamic/DynamicExecutionWithFunc.ps1:1:1:11:2 | ExecuteAThing | Dynamic/DynamicExecutionWithFunc.ps1:1:1:11:2 | {...} |
 | Dynamic/DynamicExecutionWithFunc.ps1:1:1:11:2 | {...} | Dynamic/DynamicExecutionWithFunc.ps1:1:1:11:2 | DynamicExecutionWithFunc.ps1 |
@@ -136,15 +136,15 @@
 | Dynamic/DynamicExecutionWithFunc.ps1:7:5:7:32 | call to Create | Dynamic/DynamicExecutionWithFunc.ps1:7:5:7:32 | call to Create |
 | Dynamic/DynamicExecutionWithFunc.ps1:7:20:7:26 | Create | Dynamic/DynamicExecutionWithFunc.ps1:7:5:7:32 | call to Create |
 | Dynamic/DynamicExecutionWithFunc.ps1:7:27:7:31 | foo | Dynamic/DynamicExecutionWithFunc.ps1:7:5:7:32 | call to Create |
-| Dynamic/DynamicExecutionWithFunc.ps1:8:5:8:36 | call to  | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
-| Dynamic/DynamicExecutionWithFunc.ps1:8:7:8:36 | (...) | Dynamic/DynamicExecutionWithFunc.ps1:8:5:8:36 | call to  |
+| Dynamic/DynamicExecutionWithFunc.ps1:8:5:8:36 | call | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
+| Dynamic/DynamicExecutionWithFunc.ps1:8:7:8:36 | (...) | Dynamic/DynamicExecutionWithFunc.ps1:8:5:8:36 | call |
 | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:21 | scriptblock | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create |
 | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create | Dynamic/DynamicExecutionWithFunc.ps1:8:7:8:36 | (...) |
 | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create |
 | Dynamic/DynamicExecutionWithFunc.ps1:8:23:8:29 | Create | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create |
 | Dynamic/DynamicExecutionWithFunc.ps1:8:30:8:34 | foo | Dynamic/DynamicExecutionWithFunc.ps1:8:8:8:35 | call to Create |
-| Dynamic/DynamicExecutionWithFunc.ps1:9:5:9:12 | call to  | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
-| Dynamic/DynamicExecutionWithFunc.ps1:9:6:9:12 | $foo | Dynamic/DynamicExecutionWithFunc.ps1:9:5:9:12 | call to  |
+| Dynamic/DynamicExecutionWithFunc.ps1:9:5:9:12 | call | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
+| Dynamic/DynamicExecutionWithFunc.ps1:9:6:9:12 | $foo | Dynamic/DynamicExecutionWithFunc.ps1:9:5:9:12 | call |
 | Dynamic/DynamicExecutionWithFunc.ps1:9:7:9:11 | foo | Dynamic/DynamicExecutionWithFunc.ps1:9:6:9:12 | $foo |
 | Dynamic/DynamicExecutionWithFunc.ps1:10:5:10:30 | call to cmd.exe | Dynamic/DynamicExecutionWithFunc.ps1:2:5:10:30 | {...} |
 | Dynamic/DynamicExecutionWithFunc.ps1:10:7:10:16 | cmd.exe | Dynamic/DynamicExecutionWithFunc.ps1:10:5:10:30 | call to cmd.exe |
