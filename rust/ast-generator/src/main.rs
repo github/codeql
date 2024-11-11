@@ -465,7 +465,7 @@ impl Translator<'_> {{
 
         writeln!(
             buf,
-            "    pub(crate) fn emit_{}(&mut self, node: &ast::{}) -> Label<generated::{}> {{",
+            "    #[allow(clippy::let_and_return)] pub(crate) fn emit_{}(&mut self, node: &ast::{}) -> Label<generated::{}> {{",
             to_lower_snake_case(type_name),
             type_name,
             class_name

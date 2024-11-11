@@ -21,7 +21,7 @@ impl Translator<'_> {
         }
     }
 
-    pub(crate) fn emit_assoc_item(&mut self, node: &ast::AssocItem) -> Label<generated::AssocItem> {
+    #[allow(clippy::let_and_return)] pub(crate) fn emit_assoc_item(&mut self, node: &ast::AssocItem) -> Label<generated::AssocItem> {
         let label = match node {
             ast::AssocItem::Const(ref inner) => self.emit_const(inner).into(),
             ast::AssocItem::Fn(ref inner) => self.emit_fn(inner).into(),
@@ -32,7 +32,7 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_expr(&mut self, node: &ast::Expr) -> Label<generated::Expr> {
+    #[allow(clippy::let_and_return)] pub(crate) fn emit_expr(&mut self, node: &ast::Expr) -> Label<generated::Expr> {
         let label = match node {
             ast::Expr::ArrayExpr(ref inner) => self.emit_array_expr(inner).into(),
             ast::Expr::AsmExpr(ref inner) => self.emit_asm_expr(inner).into(),
@@ -75,7 +75,7 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_extern_item(&mut self, node: &ast::ExternItem) -> Label<generated::ExternItem> {
+    #[allow(clippy::let_and_return)] pub(crate) fn emit_extern_item(&mut self, node: &ast::ExternItem) -> Label<generated::ExternItem> {
         let label = match node {
             ast::ExternItem::Fn(ref inner) => self.emit_fn(inner).into(),
             ast::ExternItem::MacroCall(ref inner) => self.emit_macro_call(inner).into(),
@@ -86,7 +86,7 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_field_list(&mut self, node: &ast::FieldList) -> Label<generated::FieldList> {
+    #[allow(clippy::let_and_return)] pub(crate) fn emit_field_list(&mut self, node: &ast::FieldList) -> Label<generated::FieldList> {
         let label = match node {
             ast::FieldList::RecordFieldList(ref inner) => self.emit_record_field_list(inner).into(),
             ast::FieldList::TupleFieldList(ref inner) => self.emit_tuple_field_list(inner).into(),
@@ -95,7 +95,7 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_generic_arg(&mut self, node: &ast::GenericArg) -> Label<generated::GenericArg> {
+    #[allow(clippy::let_and_return)] pub(crate) fn emit_generic_arg(&mut self, node: &ast::GenericArg) -> Label<generated::GenericArg> {
         let label = match node {
             ast::GenericArg::AssocTypeArg(ref inner) => self.emit_assoc_type_arg(inner).into(),
             ast::GenericArg::ConstArg(ref inner) => self.emit_const_arg(inner).into(),
@@ -106,7 +106,7 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_generic_param(&mut self, node: &ast::GenericParam) -> Label<generated::GenericParam> {
+    #[allow(clippy::let_and_return)] pub(crate) fn emit_generic_param(&mut self, node: &ast::GenericParam) -> Label<generated::GenericParam> {
         let label = match node {
             ast::GenericParam::ConstParam(ref inner) => self.emit_const_param(inner).into(),
             ast::GenericParam::LifetimeParam(ref inner) => self.emit_lifetime_param(inner).into(),
@@ -116,7 +116,7 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_pat(&mut self, node: &ast::Pat) -> Label<generated::Pat> {
+    #[allow(clippy::let_and_return)] pub(crate) fn emit_pat(&mut self, node: &ast::Pat) -> Label<generated::Pat> {
         let label = match node {
             ast::Pat::BoxPat(ref inner) => self.emit_box_pat(inner).into(),
             ast::Pat::ConstBlockPat(ref inner) => self.emit_const_block_pat(inner).into(),
@@ -139,7 +139,7 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_stmt(&mut self, node: &ast::Stmt) -> Label<generated::Stmt> {
+    #[allow(clippy::let_and_return)] pub(crate) fn emit_stmt(&mut self, node: &ast::Stmt) -> Label<generated::Stmt> {
         let label = match node {
             ast::Stmt::ExprStmt(ref inner) => self.emit_expr_stmt(inner).into(),
             ast::Stmt::Item(ref inner) => self.emit_item(inner).into(),
@@ -149,7 +149,7 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_type(&mut self, node: &ast::Type) -> Label<generated::TypeRef> {
+    #[allow(clippy::let_and_return)] pub(crate) fn emit_type(&mut self, node: &ast::Type) -> Label<generated::TypeRef> {
         let label = match node {
             ast::Type::ArrayType(ref inner) => self.emit_array_type(inner).into(),
             ast::Type::DynTraitType(ref inner) => self.emit_dyn_trait_type(inner).into(),
@@ -170,7 +170,7 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_item(&mut self, node: &ast::Item) -> Label<generated::Item> {
+    #[allow(clippy::let_and_return)] pub(crate) fn emit_item(&mut self, node: &ast::Item) -> Label<generated::Item> {
         let label = match node {
             ast::Item::Const(ref inner) => self.emit_const(inner).into(),
             ast::Item::Enum(ref inner) => self.emit_enum(inner).into(),
