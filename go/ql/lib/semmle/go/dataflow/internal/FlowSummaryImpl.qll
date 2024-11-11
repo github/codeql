@@ -308,7 +308,7 @@ module SourceSinkInterpretationInput implements
         or
         // `syntacticQualBaseType`'s underlying type might be a struct type and `sse`
         // might be a promoted method or field in it.
-        targetType = getIntermediateEmbeddedType(e, syntacticQualBaseType.getUnderlyingType())
+        targetType = getAnIntermediateEmbeddedType(e, syntacticQualBaseType.getUnderlyingType())
       )
     )
   }
@@ -327,7 +327,7 @@ module SourceSinkInterpretationInput implements
    * which is a promoted method or field of `st`, or its base type if it's a
    * pointer type.
    */
-  private Type getIntermediateEmbeddedType(Entity e, StructType st) {
+  private Type getAnIntermediateEmbeddedType(Entity e, StructType st) {
     exists(Field field1, Field field2, int depth1, int depth2, Type t2 |
       field1 = st.getFieldAtDepth(_, depth1) and
       field2 = st.getFieldAtDepth(_, depth2) and
