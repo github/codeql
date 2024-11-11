@@ -27,14 +27,11 @@ def test_construction():
         tainted_dict, # $ tainted
     )
 
-    # There are no implicit reads for list content as it is imprecise
-    # Therefore, list content stemming from precise content does not end up on the list itself. 
     ensure_tainted(
         list(tainted_list), # $ tainted
-        list(tainted_tuple)[0], # $ tainted
+        list(tainted_tuple), # $ tainted
         list(tainted_set), # $ tainted
-        list(tainted_dict.values())[0], # $ tainted
-        list(tainted_dict.items())[0], # $ tainted
+        list(tainted_dict.values()), # $ tainted
 
         tuple(tainted_list), # $ tainted
         set(tainted_list), # $ tainted
@@ -46,7 +43,8 @@ def test_construction():
     )
 
     ensure_not_tainted(
-        dict(k = tainted_string)["k1"]
+        dict(k = tainted_string)["k1"],
+        list(tainted_dict.items()),
     )
 
 
