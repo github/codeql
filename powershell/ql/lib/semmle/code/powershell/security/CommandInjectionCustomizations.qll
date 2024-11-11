@@ -39,10 +39,7 @@ module CommandInjection {
     SystemCommandExecutionSink() {
       // An argument to a call
       exists(DataFlow::CallNode call |
-        call.getName() = "Invoke-Expression"
-        or
-        call instanceof DataFlow::CallOperatorNode
-      |
+        call.getName() = "Invoke-Expression" and
         call.getAnArgument() = this
       )
       or
