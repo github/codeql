@@ -134,7 +134,7 @@ namespace Semmle.Extraction.CSharp
                 {
                     case ExitCode.Ok:
                     case ExitCode.Errors:
-                        allFailed &= false;
+                        allFailed = false;
                         break;
                     case ExitCode.Failed:
                         break;
@@ -209,11 +209,11 @@ namespace Semmle.Extraction.CSharp
                     switch (exit)
                     {
                         case ExitCode.Ok:
-                            allFailed &= false;
+                            allFailed = false;
                             logger.LogInfo($"  Compilation {diagnosticName} succeeded");
                             break;
                         case ExitCode.Errors:
-                            allFailed &= false;
+                            allFailed = false;
                             logger.LogWarning($"  Compilation {diagnosticName} had errors");
                             break;
                         case ExitCode.Failed:
