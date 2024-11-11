@@ -76,20 +76,20 @@ module CppMetrics {
     override int getValue() { result = count(Compilation c) }
   }
 
-  class SourceFiles extends BaseMetric {
-    SourceFiles() { this = "source files" }
+  class SourceAndHeaderFiles extends BaseMetric {
+    SourceAndHeaderFiles() { this = "source/header files" }
 
     override int getValue() { result = count(File f | f.fromSource()) }
   }
 
-  class SourceFilesWithoutErrors extends SuccessMetric {
-    SourceFilesWithoutErrors() { this = "source files without errors" }
+  class SourceAndHeaderFilesWithoutErrors extends SuccessMetric {
+    SourceAndHeaderFilesWithoutErrors() { this = "source/header files without errors" }
 
     override int getValue() {
       result = count(File f | f.fromSource() and not exists(CompilerError e | f = e.getFile()))
     }
 
-    override SourceFiles getBaseline() { any() }
+    override SourceAndHeaderFiles getBaseline() { any() }
   }
 
   class CompilationsWithoutErrors extends SuccessMetric {

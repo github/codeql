@@ -12,8 +12,8 @@
 | lines of code without errors | 12 |
 | lines of text | 24 |
 | non-error expressions | 3 |
-| source files | 3 |
-| source files without errors | 2 |
+| source/header files | 3 |
+| source/header files without errors | 2 |
 | successfully resolved #include directives | 2 |
 | syntax errors | 3 |
 | variables | 10 |
