@@ -47,16 +47,16 @@ abstract class SuccessMetric extends ExtractionMetric {
  * A metric used to report database quality.
  */
 class QualityMetric extends Metric {
-  BaseMetric base_metric;
-  SuccessMetric relative_metric;
+  BaseMetric baseMetric;
+  SuccessMetric relativeMetric;
 
   QualityMetric() {
-    base_metric = relative_metric.getBaseline() and this = "Percentage of " + relative_metric
+    baseMetric = relativeMetric.getBaseline() and this = "Percentage of " + relativeMetric
   }
 
   float getValue() {
-    base_metric.getValue() > 0 and
-    result = 100.0 * relative_metric.getValue() / base_metric.getValue()
+    baseMetric.getValue() > 0 and
+    result = 100.0 * relativeMetric.getValue() / baseMetric.getValue()
   }
 }
 
@@ -70,8 +70,8 @@ module RankMetric<RankedMetric M> {
 
 /** Various metrics we want to report. */
 module CppMetrics {
-  class CompilationUnits extends BaseMetric {
-    CompilationUnits() { this = "compilation units" }
+  class Compilations extends BaseMetric {
+    Compilations() { this = "compilations" }
 
     override int getValue() { result = count(Compilation c) }
   }
@@ -92,14 +92,14 @@ module CppMetrics {
     override SourceFiles getBaseline() { any() }
   }
 
-  class CompilationUnitsWithoutErrors extends SuccessMetric {
-    CompilationUnitsWithoutErrors() { this = "compilation units without errors" }
+  class CompilationsWithoutErrors extends SuccessMetric {
+    CompilationsWithoutErrors() { this = "compilations without errors" }
 
     override int getValue() {
       result = count(Compilation c | not exists(Diagnostic d | d.getFile() = c.getAFileCompiled()))
     }
 
-    override CompilationUnits getBaseline() { any() }
+    override Compilations getBaseline() { any() }
   }
 
   class Expressions extends BaseMetric {
@@ -186,7 +186,7 @@ module CppMetrics {
     override int getValue() {
       result =
         sum(File f | | f.getMetrics().getNumberOfLinesOfCode()) -
-          count(File file, int line | errorLine(file, line))
+          count(File f, int line | errorLine(f, line))
     }
 
     override LinesOfCode getBaseline() { any() }
@@ -209,7 +209,7 @@ module CppMetrics {
   class Includes extends BaseMetric {
     Includes() { this = "#include directives" }
 
-    override int getValue() { result = count(Include i) + count(CannotOpenFile e) }
+    override int getValue() { result = count(Include i) + count(CannotOpenFileError e) }
   }
 
   class SucceededIncludes extends SuccessMetric {
@@ -240,11 +240,11 @@ module CppMetrics {
     string include_text;
 
     MissingIncludeCount() {
-      exists(CannotOpenFile e | e.getIncludedFile() = include_text) and
+      exists(CannotOpenFileError e | e.getIncludedFile() = include_text) and
       this = "Failed to include '" + include_text + "'"
     }
 
-    int getValue() { result = count(CannotOpenFile e | e.getIncludedFile() = include_text) }
+    int getValue() { result = count(CannotOpenFileError e | e.getIncludedFile() = include_text) }
 
     string getIncludeText() { result = include_text }
   }

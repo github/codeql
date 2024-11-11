@@ -20,8 +20,8 @@ class SyntaxError extends CompilerError {
  * A cannot open file error.
  * Typically this is due to a missing include.
  */
-class CannotOpenFile extends CompilerError {
-  CannotOpenFile() { this.hasTag(["cannot_open_file", "cannot_open_file_reason"]) }
+class CannotOpenFileError extends CompilerError {
+  CannotOpenFileError() { this.hasTag(["cannot_open_file", "cannot_open_file_reason"]) }
 
   string getIncludedFile() {
     result = this.getMessage().regexpCapture("cannot open source file '([^']+)'", 1)
