@@ -1,2 +1,0 @@
-uniqueEnclosingCallable
-| test.rs:408:16:408:19 | Param | Node should have one enclosing callable but has 0. |

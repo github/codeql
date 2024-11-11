@@ -14,6 +14,14 @@ class AstCfgNode extends CfgNode {
   AstCfgNode() { node = this.getAstNode() }
 }
 
+/** A CFG node that corresponds to a parameter in the AST. */
+class ParamCfgNode extends AstCfgNode {
+  override Param node;
+
+  /** Gets the underlying parameter. */
+  Param getParam() { result = node }
+}
+
 /** A CFG node that corresponds to an expression in the AST. */
 class ExprCfgNode extends AstCfgNode {
   override Expr node;
