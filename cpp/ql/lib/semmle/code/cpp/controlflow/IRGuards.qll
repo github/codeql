@@ -13,9 +13,18 @@ private import semmle.code.cpp.ir.implementation.raw.internal.InstructionTag
  * Returns `instr` or any instruction used to define `instr`.
  */
 private Instruction getDerivedInstruction(Instruction instr) {
+  // The instruction itself
+  result = instr
+  or
+  // or the GVN definition for the current instruction
   result = valueNumber(instr).getAnInstruction().(StoreInstruction).getSourceValue()
   or
-  result = instr
+  // Special handling for conversions
+  result =
+    getDerivedInstruction(valueNumber(instr).getAnInstruction().(CompareNEInstruction).getLeft())
+  or
+  result =
+    getDerivedInstruction(valueNumber(instr).getAnInstruction().(ConvertInstruction).getUnary())
 }
 
 /**
@@ -527,7 +536,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate comparesLt(Operand left, Operand right, int k, boolean isLessThan, boolean testIsTrue) {
     exists(BooleanValue value |
-      compares_lt(getDerivedInstruction(this), left, right, k, isLessThan, value) and
+      compares_lt(this, left, right, k, isLessThan, value) and
       value.getValue() = testIsTrue
     )
   }
@@ -538,7 +547,7 @@ class IRGuardCondition extends Instruction {
    */
   cached
   predicate comparesLt(Operand op, int k, boolean isLessThan, AbstractValue value) {
-    compares_lt(getDerivedInstruction(this), op, k, isLessThan, value)
+    compares_lt(this, op, k, isLessThan, value)
   }
 
   /**
@@ -548,7 +557,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresLt(Operand left, Operand right, int k, IRBlock block, boolean isLessThan) {
     exists(AbstractValue value |
-      compares_lt(getDerivedInstruction(this), left, right, k, isLessThan, value) and
+      compares_lt(this, left, right, k, isLessThan, value) and
       this.valueControls(block, value)
     )
   }
@@ -560,7 +569,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresLt(Operand op, int k, IRBlock block, boolean isLessThan) {
     exists(AbstractValue value |
-      compares_lt(getDerivedInstruction(this), op, k, isLessThan, value) and
+      compares_lt(this, op, k, isLessThan, value) and
       this.valueControls(block, value)
     )
   }
@@ -574,7 +583,7 @@ class IRGuardCondition extends Instruction {
     Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean isLessThan
   ) {
     exists(AbstractValue value |
-      compares_lt(getDerivedInstruction(this), left, right, k, isLessThan, value) and
+      compares_lt(this, left, right, k, isLessThan, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -586,7 +595,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresLtEdge(Operand left, int k, IRBlock pred, IRBlock succ, boolean isLessThan) {
     exists(AbstractValue value |
-      compares_lt(getDerivedInstruction(this), left, k, isLessThan, value) and
+      compares_lt(this, left, k, isLessThan, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -595,7 +604,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate comparesEq(Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
     exists(BooleanValue value |
-      compares_eq(getDerivedInstruction(this), left, right, k, areEqual, value) and
+      compares_eq(this, left, right, k, areEqual, value) and
       value.getValue() = testIsTrue
     )
   }
@@ -603,7 +612,7 @@ class IRGuardCondition extends Instruction {
   /** Holds if (determined by this guard) `op == k` evaluates to `areEqual` if this expression evaluates to `value`. */
   cached
   predicate comparesEq(Operand op, int k, boolean areEqual, AbstractValue value) {
-    unary_compares_eq(getDerivedInstruction(this), op, k, areEqual, false, value)
+    unary_compares_eq(this, op, k, areEqual, false, value)
   }
 
   /**
@@ -613,7 +622,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresEq(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
     exists(AbstractValue value |
-      compares_eq(getDerivedInstruction(this), left, right, k, areEqual, value) and
+      compares_eq(this, left, right, k, areEqual, value) and
       this.valueControls(block, value)
     )
   }
@@ -625,7 +634,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresEq(Operand op, int k, IRBlock block, boolean areEqual) {
     exists(AbstractValue value |
-      unary_compares_eq(getDerivedInstruction(this), op, k, areEqual, false, value) and
+      unary_compares_eq(this, op, k, areEqual, false, value) and
       this.valueControls(block, value)
     )
   }
@@ -639,7 +648,7 @@ class IRGuardCondition extends Instruction {
     Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean areEqual
   ) {
     exists(AbstractValue value |
-      compares_eq(getDerivedInstruction(this), left, right, k, areEqual, value) and
+      compares_eq(this, left, right, k, areEqual, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -651,7 +660,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresEqEdge(Operand op, int k, IRBlock pred, IRBlock succ, boolean areEqual) {
     exists(AbstractValue value |
-      unary_compares_eq(getDerivedInstruction(this), op, k, areEqual, false, value) and
+      unary_compares_eq(this, op, k, areEqual, false, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -756,29 +765,30 @@ private Instruction getBranchForCondition(Instruction guard) {
 private predicate compares_eq(
   Instruction test, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
-  /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
-  exists(AbstractValue v | simple_comparison_eq(test, left, right, k, v) |
-    areEqual = true and value = v
+  exists(Instruction derived | derived = getDerivedInstruction(test) |
+    /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
+    exists(AbstractValue v | simple_comparison_eq(derived, left, right, k, v) |
+      areEqual = true and value = v
+      or
+      areEqual = false and value = v.getDualValue()
+    )
     or
-    areEqual = false and value = v.getDualValue()
+    // I think this is handled by forwarding in controlsBlock.
+    //or
+    //logical_comparison_eq(test, left, right, k, areEqual, testIsTrue)
+    /* a == b + k => b == a - k */
+    exists(int mk | k = -mk | compares_eq(derived, right, left, mk, areEqual, value))
+    or
+    complex_eq(derived, left, right, k, areEqual, value)
+    or
+    /* (x is true => (left == right + k)) => (!x is false => (left == right + k)) */
+    exists(AbstractValue dual | value = dual.getDualValue() |
+      compares_eq(derived.(LogicalNotInstruction).getUnary(), left, right, k, areEqual, dual)
+    )
+    or
+    compares_eq(derived.(BuiltinExpectCallInstruction).getCondition(), left, right, k, areEqual,
+      value)
   )
-  or
-  // I think this is handled by forwarding in controlsBlock.
-  //or
-  //logical_comparison_eq(test, left, right, k, areEqual, testIsTrue)
-  /* a == b + k => b == a - k */
-  exists(int mk | k = -mk | compares_eq(test, right, left, mk, areEqual, value))
-  or
-  complex_eq(test, left, right, k, areEqual, value)
-  or
-  /* (x is true => (left == right + k)) => (!x is false => (left == right + k)) */
-  exists(AbstractValue dual | value = dual.getDualValue() |
-    compares_eq(getDerivedInstruction(test.(LogicalNotInstruction).getUnary()), left, right, k,
-      areEqual, dual)
-  )
-  or
-  compares_eq(getDerivedInstruction(test.(BuiltinExpectCallInstruction).getCondition()), left,
-    right, k, areEqual, value)
 }
 
 /**
@@ -819,39 +829,41 @@ private predicate compares_eq(
 private predicate unary_compares_eq(
   Instruction test, Operand op, int k, boolean areEqual, boolean inNonZeroCase, AbstractValue value
 ) {
-  /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
-  exists(AbstractValue v |
-    unary_simple_comparison_eq(test, k, inNonZeroCase, v) and op.getDef() = test
-  |
-    areEqual = true and value = v
+  exists(Instruction derived | derived = getDerivedInstruction(test) |
+    /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
+    exists(AbstractValue v |
+      unary_simple_comparison_eq(derived, k, inNonZeroCase, v) and op.getDef() = test
+    |
+      areEqual = true and value = v
+      or
+      areEqual = false and value = v.getDualValue()
+    )
     or
-    areEqual = false and value = v.getDualValue()
-  )
-  or
-  unary_complex_eq(test, op, k, areEqual, inNonZeroCase, value)
-  or
-  /* (x is true => (op == k)) => (!x is false => (op == k)) */
-  exists(AbstractValue dual, boolean inNonZeroCase0 |
-    value = dual.getDualValue() and
-    unary_compares_eq(getDerivedInstruction(test.(LogicalNotInstruction).getUnary()), op, k,
-      inNonZeroCase0, areEqual, dual)
-  |
-    k = 0 and inNonZeroCase = inNonZeroCase0
+    unary_complex_eq(derived, op, k, areEqual, inNonZeroCase, value)
     or
-    k != 0 and inNonZeroCase = true
+    /* (x is true => (op == k)) => (!x is false => (op == k)) */
+    exists(AbstractValue dual, boolean inNonZeroCase0 |
+      value = dual.getDualValue() and
+      unary_compares_eq(derived.(LogicalNotInstruction).getUnary(), op, k, inNonZeroCase0, areEqual,
+        dual)
+    |
+      k = 0 and inNonZeroCase = inNonZeroCase0
+      or
+      k != 0 and inNonZeroCase = true
+    )
+    or
+    // ((test is `areEqual` => op == const + k2) and const == `k1`) =>
+    // test is `areEqual` => op == k1 + k2
+    inNonZeroCase = false and
+    exists(int k1, int k2, ConstantInstruction const |
+      compares_eq(derived, op, const.getAUse(), k2, areEqual, value) and
+      int_value(const) = k1 and
+      k = k1 + k2
+    )
+    or
+    unary_compares_eq(derived.(BuiltinExpectCallInstruction).getCondition(), op, k, areEqual,
+      inNonZeroCase, value)
   )
-  or
-  // ((test is `areEqual` => op == const + k2) and const == `k1`) =>
-  // test is `areEqual` => op == k1 + k2
-  inNonZeroCase = false and
-  exists(int k1, int k2, ConstantInstruction const |
-    compares_eq(test, op, const.getAUse(), k2, areEqual, value) and
-    int_value(const) = k1 and
-    k = k1 + k2
-  )
-  or
-  unary_compares_eq(test.(BuiltinExpectCallInstruction).getCondition(), op, k, areEqual,
-    inNonZeroCase, value)
 }
 
 /** Rearrange various simple comparisons into `left == right + k` form. */
@@ -954,7 +966,7 @@ private predicate builtin_expect_eq(
   exists(BuiltinExpectCallInstruction call, Instruction const, AbstractValue innerValue |
     int_value(const) = 0 and
     cmp.hasOperands(call.getAUse(), const.getAUse()) and
-    compares_eq(getDerivedInstruction(call.getCondition()), left, right, k, areEqual, innerValue)
+    compares_eq(call.getCondition(), left, right, k, areEqual, innerValue)
   |
     cmp instanceof CompareNEInstruction and
     value = innerValue
@@ -985,8 +997,7 @@ private predicate unary_builtin_expect_eq(
   exists(BuiltinExpectCallInstruction call, Instruction const, AbstractValue innerValue |
     int_value(const) = 0 and
     cmp.hasOperands(call.getAUse(), const.getAUse()) and
-    unary_compares_eq(getDerivedInstruction(call.getCondition()), op, k, areEqual, inNonZeroCase,
-      innerValue)
+    unary_compares_eq(call.getCondition(), op, k, areEqual, inNonZeroCase, innerValue)
   |
     cmp instanceof CompareNEInstruction and
     value = innerValue
@@ -1015,38 +1026,44 @@ private predicate unary_complex_eq(
 private predicate compares_lt(
   Instruction test, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
-  /* In the simple case, the test is the comparison, so isLt = testIsTrue */
-  simple_comparison_lt(test, left, right, k) and
-  value.(BooleanValue).getValue() = isLt
-  or
-  complex_lt(test, left, right, k, isLt, value)
-  or
-  /* (not (left < right + k)) => (left >= right + k) */
-  exists(boolean isGe | isLt = isGe.booleanNot() | compares_ge(test, left, right, k, isGe, value))
-  or
-  /* (x is true => (left < right + k)) => (!x is false => (left < right + k)) */
-  exists(AbstractValue dual | value = dual.getDualValue() |
-    compares_lt(getDerivedInstruction(test.(LogicalNotInstruction).getUnary()), left, right, k,
-      isLt, dual)
+  exists(Instruction derived | derived = getDerivedInstruction(test) |
+    // exists(thing | thing = derived ... )
+    /* In the simple case, the test is the comparison, so isLt = testIsTrue */
+    simple_comparison_lt(derived, left, right, k) and
+    value.(BooleanValue).getValue() = isLt
+    or
+    complex_lt(derived, left, right, k, isLt, value)
+    or
+    /* (not (left < right + k)) => (left >= right + k) */
+    exists(boolean isGe | isLt = isGe.booleanNot() |
+      compares_ge(derived, left, right, k, isGe, value)
+    )
+    or
+    /* (x is true => (left < right + k)) => (!x is false => (left < right + k)) */
+    exists(AbstractValue dual | value = dual.getDualValue() |
+      compares_lt(derived.(LogicalNotInstruction).getUnary(), left, right, k, isLt, dual)
+    )
   )
 }
 
 /** Holds if `op < k` evaluates to `isLt` given that `test` evaluates to `value`. */
 private predicate compares_lt(Instruction test, Operand op, int k, boolean isLt, AbstractValue value) {
-  unary_simple_comparison_lt(test, k, isLt, value) and
-  op.getDef() = test
-  or
-  complex_lt(test, op, k, isLt, value)
-  or
-  /* (x is true => (op < k)) => (!x is false => (op < k)) */
-  exists(AbstractValue dual | value = dual.getDualValue() |
-    compares_lt(getDerivedInstruction(test.(LogicalNotInstruction).getUnary()), op, k, isLt, dual)
-  )
-  or
-  exists(int k1, int k2, ConstantInstruction const |
-    compares_lt(test, op, const.getAUse(), k2, isLt, value) and
-    int_value(const) = k1 and
-    k = k1 + k2
+  exists(Instruction derived | derived = getDerivedInstruction(test) |
+    unary_simple_comparison_lt(derived, k, isLt, value) and
+    op.getDef() = derived
+    or
+    complex_lt(derived, op, k, isLt, value)
+    or
+    /* (x is true => (op < k)) => (!x is false => (op < k)) */
+    exists(AbstractValue dual | value = dual.getDualValue() |
+      compares_lt(derived.(LogicalNotInstruction).getUnary(), op, k, isLt, dual)
+    )
+    or
+    exists(int k1, int k2, ConstantInstruction const |
+      compares_lt(derived, op, const.getAUse(), k2, isLt, value) and
+      int_value(const) = k1 and
+      k = k1 + k2
+    )
   )
 }
 
