@@ -180,12 +180,9 @@ module Node {
 
     SsaImpl::DefinitionExt getDefinitionExt() { result = def }
 
-    /** Holds if this node should be hidden from path explanations. */
-    abstract predicate isHidden();
-
     override Location getLocation() { result = node.getLocation() }
 
-    override string toString() { result = node.toString() }
+    override string toString() { result = "[SSA] " + node.toString() }
   }
 
   /** A data flow node that represents a value returned by a callable. */
@@ -318,7 +315,7 @@ module RustDataFlow implements InputSig<Location> {
 
   DataFlowType getNodeType(Node node) { any() }
 
-  predicate nodeIsHidden(Node node) { none() }
+  predicate nodeIsHidden(Node node) { node instanceof Node::SsaNode }
 
   class DataFlowExpr = ExprCfgNode;
 
