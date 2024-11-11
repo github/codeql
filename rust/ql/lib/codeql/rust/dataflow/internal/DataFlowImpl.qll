@@ -64,7 +64,9 @@ final class NormalCall extends DataFlowCall, TNormalCall {
   /** Gets the underlying call in the CFG, if any. */
   override CallCfgNode asCall() { result = c }
 
-  override DataFlowCallable getEnclosingCallable() { none() }
+  override DataFlowCallable getEnclosingCallable() {
+    result = TCfgScope(c.getExpr().getEnclosingCallable())
+  }
 
   override string toString() { result = c.toString() }
 
@@ -150,18 +152,18 @@ module Node {
    * flow graph.
    */
   final class ParameterNode extends Node, TParameterNode {
-    Param parameter;
+    ParamCfgNode parameter;
 
     ParameterNode() { this = TParameterNode(parameter) }
 
-    override CfgScope getCfgScope() { result = parameter.getEnclosingCallable() }
+    override CfgScope getCfgScope() { result = parameter.getParam().getEnclosingCallable() }
 
     override Location getLocation() { result = parameter.getLocation() }
 
     override string toString() { result = parameter.toString() }
 
     /** Gets the parameter in the AST that this node corresponds to. */
-    Param getParameter() { result = parameter }
+    Param getParameter() { result = parameter.getParam() }
   }
 
   final class ArgumentNode = NaNode;
@@ -198,7 +200,7 @@ module Node {
     abstract DataFlowCall getCall();
   }
 
-  final private class ExprOutNode extends OutNode {
+  final private class ExprOutNode extends ExprNode, OutNode {
     ExprOutNode() { this.asExpr() instanceof CallExpr }
 
     /** Gets the underlying call CFG node that includes this out node. */
@@ -230,7 +232,7 @@ final class Node = Node::Node;
 module SsaFlow {
   private module Impl = SsaImpl::DataFlowIntegration;
 
-  private Node::ParameterNode toParameterNode(Param p) { result = TParameterNode(p) }
+  private Node::ParameterNode toParameterNode(Param p) { result.getParameter() = p }
 
   /** Converts a control flow node into an SSA control flow node. */
   Impl::Node asNode(Node n) {
@@ -482,7 +484,7 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(ExprCfgNode n) or
-    TParameterNode(Param p) or
+    TParameterNode(ParamCfgNode p) or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node)
 
   cached
