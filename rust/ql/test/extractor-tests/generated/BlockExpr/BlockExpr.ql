@@ -3,11 +3,12 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  BlockExpr x, string hasLabel, int getNumberOfAttrs, string isAsync, string isConst, string isGen,
-  string isMove, string isTry, string isUnsafe, string hasStmtList
+  BlockExpr x, string hasType, string hasLabel, int getNumberOfAttrs, string isAsync,
+  string isConst, string isGen, string isMove, string isTry, string isUnsafe, string hasStmtList
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.isAsync() then isAsync = "yes" else isAsync = "no") and
@@ -17,6 +18,6 @@ where
   (if x.isTry() then isTry = "yes" else isTry = "no") and
   (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
   if x.hasStmtList() then hasStmtList = "yes" else hasStmtList = "no"
-select x, "hasLabel:", hasLabel, "getNumberOfAttrs:", getNumberOfAttrs, "isAsync:", isAsync,
-  "isConst:", isConst, "isGen:", isGen, "isMove:", isMove, "isTry:", isTry, "isUnsafe:", isUnsafe,
-  "hasStmtList:", hasStmtList
+select x, "hasType:", hasType, "hasLabel:", hasLabel, "getNumberOfAttrs:", getNumberOfAttrs,
+  "isAsync:", isAsync, "isConst:", isConst, "isGen:", isGen, "isMove:", isMove, "isTry:", isTry,
+  "isUnsafe:", isUnsafe, "hasStmtList:", hasStmtList

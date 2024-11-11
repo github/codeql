@@ -321,6 +321,12 @@ closure_binder_generic_param_lists(
 | @yield_expr
 ;
 
+#keyset[id]
+expr_types(
+  int id: @expr ref,
+  string type_: string ref
+);
+
 @extern_item =
   @function
 | @macro_call

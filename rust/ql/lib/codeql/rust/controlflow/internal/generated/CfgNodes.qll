@@ -757,6 +757,16 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
 
       /** Gets the underlying `Expr`. */
       Expr getExpr() { result = node }
+
+      /**
+       * Gets the type of this expression, if it exists.
+       */
+      string getType() { result = node.getType() }
+
+      /**
+       * Holds if `getType()` exists.
+       */
+      predicate hasType() { exists(this.getType()) }
     }
 
     final private class ParentFieldExpr extends ParentAstNode, FieldExpr {

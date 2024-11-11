@@ -2,10 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from LiteralExpr x, int getNumberOfAttrs, string hasTextValue
+from LiteralExpr x, string hasType, int getNumberOfAttrs, string hasTextValue
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   if x.hasTextValue() then hasTextValue = "yes" else hasTextValue = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasTextValue:", hasTextValue
+select x, "hasType:", hasType, "getNumberOfAttrs:", getNumberOfAttrs, "hasTextValue:", hasTextValue

@@ -156,7 +156,12 @@ module Raw {
    * INTERNAL: Do not use.
    * The base class for expressions.
    */
-  class Expr extends @expr, AstNode { }
+  class Expr extends @expr, AstNode {
+    /**
+     * Gets the type of this expression, if it exists.
+     */
+    string getType() { expr_types(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.

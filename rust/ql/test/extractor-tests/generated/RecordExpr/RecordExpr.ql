@@ -2,12 +2,14 @@
 import codeql.rust.elements
 import TestUtils
 
-from RecordExpr x, string hasPath, string hasRecordExprFieldList
+from RecordExpr x, string hasType, string hasPath, string hasRecordExprFieldList
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
   if x.hasRecordExprFieldList()
   then hasRecordExprFieldList = "yes"
   else hasRecordExprFieldList = "no"
-select x, "hasPath:", hasPath, "hasRecordExprFieldList:", hasRecordExprFieldList
+select x, "hasType:", hasType, "hasPath:", hasPath, "hasRecordExprFieldList:",
+  hasRecordExprFieldList

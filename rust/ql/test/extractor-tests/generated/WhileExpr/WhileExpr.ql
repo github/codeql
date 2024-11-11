@@ -2,13 +2,16 @@
 import codeql.rust.elements
 import TestUtils
 
-from WhileExpr x, string hasLabel, string hasLoopBody, int getNumberOfAttrs, string hasCondition
+from
+  WhileExpr x, string hasType, string hasLabel, string hasLoopBody, int getNumberOfAttrs,
+  string hasCondition
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
   (if x.hasLoopBody() then hasLoopBody = "yes" else hasLoopBody = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   if x.hasCondition() then hasCondition = "yes" else hasCondition = "no"
-select x, "hasLabel:", hasLabel, "hasLoopBody:", hasLoopBody, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasCondition:", hasCondition
+select x, "hasType:", hasType, "hasLabel:", hasLabel, "hasLoopBody:", hasLoopBody,
+  "getNumberOfAttrs:", getNumberOfAttrs, "hasCondition:", hasCondition

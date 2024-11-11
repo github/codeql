@@ -2,12 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from PrefixExpr x, int getNumberOfAttrs, string hasExpr, string hasOperatorName
+from PrefixExpr x, string hasType, int getNumberOfAttrs, string hasExpr, string hasOperatorName
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
   if x.hasOperatorName() then hasOperatorName = "yes" else hasOperatorName = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasOperatorName:",
-  hasOperatorName
+select x, "hasType:", hasType, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr,
+  "hasOperatorName:", hasOperatorName

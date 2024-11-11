@@ -36,6 +36,7 @@ class _:
     """
     The base class for expressions.
     """
+    type: optional[string] | rust.detach
 
 
 @annotate(Pat, cfg = True)
@@ -75,6 +76,7 @@ class _:
     let z: Option<i32>;
     ```
     """
+
 
 @annotate(Path, replace_bases={AstNode: Resolvable})
 class _:
@@ -1832,6 +1834,7 @@ class FormatArgument(Locatable):
     parent: Format
     variable: optional[FormatTemplateVariableAccess] | child
 
+
 @annotate(Item)
 class _:
     extended_canonical_path: optional[string] | desc("""
@@ -1839,4 +1842,5 @@ class _:
         or `{<block id>}::name` for addressable items defined in an anonymous block (and only
         addressable there-in).
     """) | rust.detach | ql.internal
-    crate_origin: optional[string] | desc("One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.") | rust.detach | ql.internal
+    crate_origin: optional[string] | desc(
+        "One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.") | rust.detach | ql.internal

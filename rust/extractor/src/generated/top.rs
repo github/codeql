@@ -481,6 +481,12 @@ pub struct Expr {
     _unused: ()
 }
 
+impl Expr {
+    pub fn emit_type(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
+        out.add_tuple("expr_types", vec![id.into(), value.into()]);
+    }
+}
+
 impl trap::TrapClass for Expr {
     fn class_name() -> &'static str { "Expr" }
 }
