@@ -1,4 +1,0 @@
-uniqueCallEnclosingCallable
-| gen_break_expr.rs:6:12:6:22 | CallExpr | Call should have one enclosing callable but has 0. |
-| gen_break_expr.rs:11:12:11:17 | CallExpr | Call should have one enclosing callable but has 0. |
-| gen_break_expr.rs:16:12:16:17 | CallExpr | Call should have one enclosing callable but has 0. |

@@ -1,7 +1,7 @@
 | ArgumentNode is missing PostUpdateNode | 0 |
 | Call context for isUnreachableInCall is inconsistent with call graph | 0 |
 | Call context too large | 0 |
-| Call should have one enclosing callable | 7 |
+| Call should have one enclosing callable | 0 |
 | Callable mismatch for parameter | 0 |
 | Lambda call enclosing callable mismatch | 0 |
 | Local flow step does not preserve enclosing callable | 0 |

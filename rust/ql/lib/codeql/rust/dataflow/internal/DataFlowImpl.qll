@@ -64,7 +64,9 @@ final class NormalCall extends DataFlowCall, TNormalCall {
   /** Gets the underlying call in the CFG, if any. */
   override CallCfgNode asCall() { result = c }
 
-  override DataFlowCallable getEnclosingCallable() { none() }
+  override DataFlowCallable getEnclosingCallable() {
+    result = TCfgScope(c.getExpr().getEnclosingCallable())
+  }
 
   override string toString() { result = c.toString() }
 
@@ -198,7 +200,7 @@ module Node {
     abstract DataFlowCall getCall();
   }
 
-  final private class ExprOutNode extends OutNode {
+  final private class ExprOutNode extends ExprNode, OutNode {
     ExprOutNode() { this.asExpr() instanceof CallExpr }
 
     /** Gets the underlying call CFG node that includes this out node. */
