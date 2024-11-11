@@ -74,5 +74,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Specifies the location of the diagnostic directory.
         /// </summary>
         public const string DiagnosticDir = "CODEQL_EXTRACTOR_CSHARP_DIAGNOSTIC_DIR";
+
+        /// <summary>
+        /// Specifies the hostname of the Dependabot proxy.
+        /// </summary>
+        public const string ProxyHost = "CODEQL_PROXY_HOST";
+
+        /// <summary>
+        /// Specifies the hostname of the Dependabot proxy.
+        /// </summary>
+        public const string ProxyPort = "CODEQL_PROXY_PORT";
+
+        /// <summary>
+        /// Contains the certificate used by the Dependabot proxy.
+        /// </summary>
+        public const string ProxyCertificate = "CODEQL_PROXY_CA_CERTIFICATE";
     }
 }
