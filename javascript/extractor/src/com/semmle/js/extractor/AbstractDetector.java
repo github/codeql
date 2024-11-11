@@ -38,27 +38,10 @@ public abstract class AbstractDetector {
 
   protected boolean visitStatement(Statement stmt) {
     if (stmt instanceof ExpressionStatement) {
-      Expression e = stripParens(((ExpressionStatement) stmt).getExpression());
-
-      // check whether `e` is an iife; if so, recursively check its body
-
-      // strip off unary operators to handle `!function(){...}()`
-      if (e instanceof UnaryExpression) e = ((UnaryExpression) e).getArgument();
-
-      if (e instanceof CallExpression && ((CallExpression) e).getArguments().isEmpty()) {
-        Expression callee = stripParens(((CallExpression) e).getCallee());
-        if (callee instanceof IFunction) {
-          Node body = ((IFunction) callee).getBody();
-          if (body instanceof BlockStatement)
-            return visitStatements(((BlockStatement) body).getBody());
-        }
-      }
-
-      if (visitExpression(e)) return true;
-
+      return visitExpression(((ExpressionStatement) stmt).getExpression());
     } else if (stmt instanceof VariableDeclaration) {
       for (VariableDeclarator decl : ((VariableDeclaration) stmt).getDeclarations()) {
-        Expression init = stripParens(decl.getInit());
+        Expression init = decl.getInit();
         if (visitExpression(init)) return true;
       }
 
@@ -77,17 +60,13 @@ public abstract class AbstractDetector {
     return false;
   }
 
-  private static Expression stripParens(Expression e) {
-    if (e instanceof ParenthesizedExpression)
-      return stripParens(((ParenthesizedExpression) e).getExpression());
-    return e;
-  }
-
   /**
    * Recursively check {@code e} if it's a call or an assignment.
    */
   protected boolean visitExpression(Expression e) {
-    if (e instanceof CallExpression) {
+    if (e instanceof ParenthesizedExpression) {
+      return visitExpression(((ParenthesizedExpression) e).getExpression());
+    } else if (e instanceof CallExpression) {
       CallExpression call = (CallExpression) e;
       Expression callee = call.getCallee();
       // recurse, to handle things like `foo()()`
@@ -102,6 +81,13 @@ public abstract class AbstractDetector {
       if (!"=".equals(assgn.getOperator())) return false;
 
       return visitExpression(assgn.getRight());
+    } else if (e instanceof UnaryExpression) {
+      return visitExpression(((UnaryExpression) e).getArgument());
+    } else if (e instanceof IFunction) {
+      Node body = ((IFunction) e).getBody();
+      if (body instanceof BlockStatement) {
+      return visitStatement((BlockStatement) body);
+      }
     }
     return false;
   }
