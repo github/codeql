@@ -58,7 +58,7 @@ app.get('/check-with-axios', req => {
     axios.get(baseURL + req.params.tainted); // OK
   }
   if (!isValidPathMatchAll(req.params.tainted) ) {
-    axios.get(baseURL + req.params.tainted); // SSRF
+    axios.get(baseURL + req.params.tainted); // NOT OK - SSRF
   } else {
     axios.get(baseURL + req.params.tainted); // OK
   }
