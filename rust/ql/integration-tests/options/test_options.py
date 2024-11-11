@@ -22,17 +22,28 @@ def test_target_linux(codeql, rust):
 @pytest.mark.ql_test("cfg_functions.ql", expected=".override.expected")
 @pytest.mark.ql_test("arch_functions.ql", expected=f".{platform.system()}.expected")
 def test_cfg_override(codeql, rust):
-    # currently codeql CLI has a limitation not allow to pass `=` in values via `--extractor-option`
-    os.environ["CODEQL_EXTRACTOR_RUST_OPTION_CARGO_CFG_OVERRIDES"] = "cfg_flag,cfg_key=value,-target_pointer_width=64,target_pointer_width=32,test"
-    codeql.database.create()
+    overrides = ",".join((
+        "cfg_flag",
+        "cfg_key=value",
+        "-target_pointer_width=64",
+        "target_pointer_width=32",
+        "test",
+    ))
+    codeql.database.create(extractor_option=f"cargo_cfg_overrides={overrides}")
 
 @pytest.mark.ql_test("arch_functions.ql", expected=f".{platform.system()}.expected")
 @pytest.mark.parametrize("features",
                          [
                              pytest.param(p,
                                           marks=pytest.mark.ql_test("feature_functions.ql", expected=f".{e}.expected"),
-                                          id="all" if p == "*" else p)  # CI does not like tests with *...
-                             for p, e in (("foo", "foo"), ("bar", "bar"), ("*", "all"), ("foo,bar", "all"))
+                                          id=id)
+                             for p, e, id in (
+                                 ("foo", "foo", "foo"),
+                                 ("bar", "bar", "bar"),
+                                 # as long as the integration test runner does not sanitize filenames we must
+                                 # replace `*` and `,` in the parameter id
+                                 ("*", "all", "all"),
+                                 ("foo,bar", "all", "foo+bar"))
                          ])
 def test_features(codeql, rust, features):
     codeql.database.create(extractor_option=f"cargo_features={features}")
