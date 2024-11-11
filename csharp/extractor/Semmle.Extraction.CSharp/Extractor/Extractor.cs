@@ -106,10 +106,10 @@ namespace Semmle.Extraction.CSharp
                 var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
                 var pathTransformer = new PathTransformer(canonicalPathCache);
 
-                if (options.BinaryLogPath is string binlogPath)
+                if (options.BinaryLogPaths is string[] binlogPaths)
                 {
                     logger.LogInfo(" Running binary log analysis.");
-                    return RunBinaryLogAnalysis(analyzerStopwatch, options, binlogPath, logger, canonicalPathCache, pathTransformer);
+                    return RunBinaryLogAnalysis(analyzerStopwatch, options, binlogPaths, logger, canonicalPathCache, pathTransformer);
                 }
                 else
                 {
@@ -122,6 +122,25 @@ namespace Semmle.Extraction.CSharp
                 logger.LogError($"  Unhandled exception: {ex}");
                 return ExitCode.Errors;
             }
+        }
+
+        private static ExitCode RunBinaryLogAnalysis(Stopwatch stopwatch, Options options, string[] binlogPaths, ILogger logger, CanonicalPathCache canonicalPathCache, PathTransformer pathTransformer)
+        {
+            var allFailed = true;
+            foreach (var binlogPath in binlogPaths)
+            {
+                var exit = RunBinaryLogAnalysis(stopwatch, options, binlogPath, logger, canonicalPathCache, pathTransformer);
+                switch (exit)
+                {
+                    case ExitCode.Ok:
+                    case ExitCode.Errors:
+                        allFailed &= false;
+                        break;
+                    case ExitCode.Failed:
+                        break;
+                }
+            }
+            return allFailed ? ExitCode.Failed : ExitCode.Ok;
         }
 
         private static ExitCode RunBinaryLogAnalysis(Stopwatch stopwatch, Options options, string binlogPath, ILogger logger, CanonicalPathCache canonicalPathCache, PathTransformer pathTransformer)
