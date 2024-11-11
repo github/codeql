@@ -1025,6 +1025,12 @@ module Conversions {
       fmt.getRight() = nodeFrom.asCfgNode()
     ) and
     c instanceof TupleElementContent
+    or
+    // format_map
+    // see https://docs.python.org/3/library/stdtypes.html#str.format_map
+    nodeTo.(MethodCallNode).calls(_, "format_map") and
+    nodeTo.(MethodCallNode).getArg(0) = nodeFrom and
+    c instanceof DictionaryElementContent
   }
 
   predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
