@@ -8,3 +8,4 @@
 | modulePackage/tst.js:1:1:1:75 | <toplevel> | es2015 |
 | require.js:1:1:7:1 | <toplevel> | node |
 | script.js:1:1:1:35 | <toplevel> | non-module |
+| toplevel-comma.js:1:1:5:0 | <toplevel> | non-module |
