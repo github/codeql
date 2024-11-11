@@ -38,3 +38,8 @@ func TestFieldsSEmbedSEmbedS1(t test.SEmbedSEmbedS1) {
 	a := t.SourceField
 	t.SinkField = a // $ S1[t] ql_S1 SEmbedS1[t]
 }
+
+func TestFieldsSEmbedS1AndSEmbedS1(t test.SEmbedS1AndSEmbedS1) {
+	a := t.SourceField
+	t.SinkField = a // $ S1[t] ql_S1
+}

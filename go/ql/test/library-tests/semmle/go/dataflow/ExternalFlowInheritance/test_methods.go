@@ -99,3 +99,9 @@ func TestMethodsSEmbedSEmbedS1(t test.SEmbedSEmbedS1) {
 	y := t.Step(x)
 	t.Sink(y) // $ I1[t] S1[t] SEmbedS1[t] ql_S1
 }
+
+func TestMethodsSEmbedS1AndSEmbedS1(t test.SEmbedS1AndSEmbedS1) {
+	x := t.Source()
+	y := t.Step(x)
+	t.Sink(y) // $ I1[t] S1[t] ql_S1
+}

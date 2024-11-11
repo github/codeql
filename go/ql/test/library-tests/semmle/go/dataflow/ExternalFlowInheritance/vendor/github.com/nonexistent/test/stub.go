@@ -153,3 +153,9 @@ type SEmbedSEmbedI1 struct {
 
 // A struct type embedding SEmbedS1
 type SEmbedSEmbedS1 struct{ SEmbedS1 }
+
+// A struct type embedding S1 and SEmbedS1
+type SEmbedS1AndSEmbedS1 struct {
+	S1
+	SEmbedS1
+}
