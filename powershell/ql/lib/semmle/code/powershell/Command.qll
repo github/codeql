@@ -14,7 +14,14 @@ private predicate parseCommandName(Cmd cmd, string namespace, string name) {
 
 /** A call to a command. */
 class Cmd extends @command, CmdBase {
-  override string toString() { result = "call to " + this.getQualifiedCommandName() }
+  override string toString() {
+    exists(string name | name = this.getQualifiedCommandName() |
+      if name = "" then result = "call" else result = "call to " + name
+    )
+    or
+    not exists(this.getQualifiedCommandName()) and
+    result = "call"
+  }
 
   override SourceLocation getLocation() { command_location(this, result) }
 
