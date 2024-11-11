@@ -1,4 +1,0 @@
-| src/cfg.rs:1:1:2:16 | cfg_flag |
-| src/cfg.rs:4:1:5:15 | cfg_key |
-| src/cfg.rs:13:1:14:12 | test |
-| src/cfg.rs:16:1:17:24 | pointer_width_32 |
