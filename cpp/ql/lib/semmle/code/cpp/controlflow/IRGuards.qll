@@ -855,7 +855,7 @@ private predicate unary_compares_eq(
     // ((test is `areEqual` => op == const + k2) and const == `k1`) =>
     // test is `areEqual` => op == k1 + k2
     inNonZeroCase = false and
-    exists(int k1, int k2, ConstantInstruction const |
+    exists(int k1, int k2, Instruction const |
       compares_eq(derived, op, const.getAUse(), k2, areEqual, value) and
       int_value(const) = k1 and
       k = k1 + k2
@@ -1059,7 +1059,7 @@ private predicate compares_lt(Instruction test, Operand op, int k, boolean isLt,
       compares_lt(derived.(LogicalNotInstruction).getUnary(), op, k, isLt, dual)
     )
     or
-    exists(int k1, int k2, ConstantInstruction const |
+    exists(int k1, int k2, Instruction const |
       compares_lt(derived, op, const.getAUse(), k2, isLt, value) and
       int_value(const) = k1 and
       k = k1 + k2
@@ -1388,5 +1388,9 @@ private class IntegerOrPointerConstantInstruction extends ConstantInstruction {
 
 /** The int value of integer constant expression. */
 private int int_value(Instruction i) {
-  result = valueNumber(i).getAnInstruction().(IntegerOrPointerConstantInstruction).getValue().toInt()
+  result =
+    valueNumber(i).getAnInstruction().(IntegerOrPointerConstantInstruction).getValue().toInt()
+  or
+  // handle conversions
+  result = int_value(valueNumber(i).getAnInstruction().(ConvertInstruction).getUnary())
 }
