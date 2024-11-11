@@ -22,16 +22,18 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_assoc_item(&mut self, node: ast::AssocItem) -> Label<generated::AssocItem> {
-        match node {
+        let label = match node {
             ast::AssocItem::Const(inner) => self.emit_const(inner).into(),
             ast::AssocItem::Fn(inner) => self.emit_fn(inner).into(),
             ast::AssocItem::MacroCall(inner) => self.emit_macro_call(inner).into(),
             ast::AssocItem::TypeAlias(inner) => self.emit_type_alias(inner).into(),
-        }
+        };
+        emit_detached!(AssocItem, self, node, label);
+        label
     }
 
     pub(crate) fn emit_expr(&mut self, node: ast::Expr) -> Label<generated::Expr> {
-        match node {
+        let label = match node {
             ast::Expr::ArrayExpr(inner) => self.emit_array_expr(inner).into(),
             ast::Expr::AsmExpr(inner) => self.emit_asm_expr(inner).into(),
             ast::Expr::AwaitExpr(inner) => self.emit_await_expr(inner).into(),
@@ -68,44 +70,54 @@ impl Translator<'_> {
             ast::Expr::WhileExpr(inner) => self.emit_while_expr(inner).into(),
             ast::Expr::YeetExpr(inner) => self.emit_yeet_expr(inner).into(),
             ast::Expr::YieldExpr(inner) => self.emit_yield_expr(inner).into(),
-        }
+        };
+        emit_detached!(Expr, self, node, label);
+        label
     }
 
     pub(crate) fn emit_extern_item(&mut self, node: ast::ExternItem) -> Label<generated::ExternItem> {
-        match node {
+        let label = match node {
             ast::ExternItem::Fn(inner) => self.emit_fn(inner).into(),
             ast::ExternItem::MacroCall(inner) => self.emit_macro_call(inner).into(),
             ast::ExternItem::Static(inner) => self.emit_static(inner).into(),
             ast::ExternItem::TypeAlias(inner) => self.emit_type_alias(inner).into(),
-        }
+        };
+        emit_detached!(ExternItem, self, node, label);
+        label
     }
 
     pub(crate) fn emit_field_list(&mut self, node: ast::FieldList) -> Label<generated::FieldList> {
-        match node {
+        let label = match node {
             ast::FieldList::RecordFieldList(inner) => self.emit_record_field_list(inner).into(),
             ast::FieldList::TupleFieldList(inner) => self.emit_tuple_field_list(inner).into(),
-        }
+        };
+        emit_detached!(FieldList, self, node, label);
+        label
     }
 
     pub(crate) fn emit_generic_arg(&mut self, node: ast::GenericArg) -> Label<generated::GenericArg> {
-        match node {
+        let label = match node {
             ast::GenericArg::AssocTypeArg(inner) => self.emit_assoc_type_arg(inner).into(),
             ast::GenericArg::ConstArg(inner) => self.emit_const_arg(inner).into(),
             ast::GenericArg::LifetimeArg(inner) => self.emit_lifetime_arg(inner).into(),
             ast::GenericArg::TypeArg(inner) => self.emit_type_arg(inner).into(),
-        }
+        };
+        emit_detached!(GenericArg, self, node, label);
+        label
     }
 
     pub(crate) fn emit_generic_param(&mut self, node: ast::GenericParam) -> Label<generated::GenericParam> {
-        match node {
+        let label = match node {
             ast::GenericParam::ConstParam(inner) => self.emit_const_param(inner).into(),
             ast::GenericParam::LifetimeParam(inner) => self.emit_lifetime_param(inner).into(),
             ast::GenericParam::TypeParam(inner) => self.emit_type_param(inner).into(),
-        }
+        };
+        emit_detached!(GenericParam, self, node, label);
+        label
     }
 
     pub(crate) fn emit_pat(&mut self, node: ast::Pat) -> Label<generated::Pat> {
-        match node {
+        let label = match node {
             ast::Pat::BoxPat(inner) => self.emit_box_pat(inner).into(),
             ast::Pat::ConstBlockPat(inner) => self.emit_const_block_pat(inner).into(),
             ast::Pat::IdentPat(inner) => self.emit_ident_pat(inner).into(),
@@ -122,19 +134,23 @@ impl Translator<'_> {
             ast::Pat::TuplePat(inner) => self.emit_tuple_pat(inner).into(),
             ast::Pat::TupleStructPat(inner) => self.emit_tuple_struct_pat(inner).into(),
             ast::Pat::WildcardPat(inner) => self.emit_wildcard_pat(inner).into(),
-        }
+        };
+        emit_detached!(Pat, self, node, label);
+        label
     }
 
     pub(crate) fn emit_stmt(&mut self, node: ast::Stmt) -> Label<generated::Stmt> {
-        match node {
+        let label = match node {
             ast::Stmt::ExprStmt(inner) => self.emit_expr_stmt(inner).into(),
             ast::Stmt::Item(inner) => self.emit_item(inner).into(),
             ast::Stmt::LetStmt(inner) => self.emit_let_stmt(inner).into(),
-        }
+        };
+        emit_detached!(Stmt, self, node, label);
+        label
     }
 
     pub(crate) fn emit_type(&mut self, node: ast::Type) -> Label<generated::TypeRef> {
-        match node {
+        let label = match node {
             ast::Type::ArrayType(inner) => self.emit_array_type(inner).into(),
             ast::Type::DynTraitType(inner) => self.emit_dyn_trait_type(inner).into(),
             ast::Type::FnPtrType(inner) => self.emit_fn_ptr_type(inner).into(),
@@ -149,11 +165,13 @@ impl Translator<'_> {
             ast::Type::RefType(inner) => self.emit_ref_type(inner).into(),
             ast::Type::SliceType(inner) => self.emit_slice_type(inner).into(),
             ast::Type::TupleType(inner) => self.emit_tuple_type(inner).into(),
-        }
+        };
+        emit_detached!(TypeRef, self, node, label);
+        label
     }
 
     pub(crate) fn emit_item(&mut self, node: ast::Item) -> Label<generated::Item> {
-        match node {
+        let label = match node {
             ast::Item::Const(inner) => self.emit_const(inner).into(),
             ast::Item::Enum(inner) => self.emit_enum(inner).into(),
             ast::Item::ExternBlock(inner) => self.emit_extern_block(inner).into(),
@@ -171,7 +189,9 @@ impl Translator<'_> {
             ast::Item::TypeAlias(inner) => self.emit_type_alias(inner).into(),
             ast::Item::Union(inner) => self.emit_union(inner).into(),
             ast::Item::Use(inner) => self.emit_use(inner).into(),
-        }
+        };
+        emit_detached!(Item, self, node, label);
+        label
     }
 
     pub(crate) fn emit_abi(&mut self, node: ast::Abi) -> Label<generated::Abi> {

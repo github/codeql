@@ -470,7 +470,7 @@ impl Translator<'_> {{
             type_name,
             class_name
         )?;
-        writeln!(buf, "        match node {{")?;
+        writeln!(buf, "        let label = match node {{")?;
         for variant in &node.variants {
             writeln!(
                 buf,
@@ -480,7 +480,13 @@ impl Translator<'_> {{
                 to_lower_snake_case(variant)
             )?;
         }
-        writeln!(buf, "        }}")?;
+        writeln!(buf, "        }};")?;
+        writeln!(
+            buf,
+            "        emit_detached!({}, self, node, label);",
+            class_name
+        )?;
+        writeln!(buf, "        label")?;
         writeln!(buf, "    }}\n")?;
     }
 
