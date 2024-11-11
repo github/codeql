@@ -12,6 +12,7 @@ import com.semmle.js.ast.MemberExpression;
 import com.semmle.js.ast.Node;
 import com.semmle.js.ast.ParenthesizedExpression;
 import com.semmle.js.ast.Program;
+import com.semmle.js.ast.SequenceExpression;
 import com.semmle.js.ast.Statement;
 import com.semmle.js.ast.TryStatement;
 import com.semmle.js.ast.UnaryExpression;
@@ -87,6 +88,11 @@ public abstract class AbstractDetector {
       Node body = ((IFunction) e).getBody();
       if (body instanceof BlockStatement) {
       return visitStatement((BlockStatement) body);
+      }
+    } else if (e instanceof SequenceExpression) {
+      SequenceExpression seq = (SequenceExpression) e;
+      for (Expression child : seq.getExpressions()) {
+        if (visitExpression(child)) return true;
       }
     }
     return false;
