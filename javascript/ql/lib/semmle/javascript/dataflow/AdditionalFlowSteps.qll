@@ -29,8 +29,7 @@ private import semmle.javascript.internal.CachedStages
  * This class is a singleton, and thus subclasses do not need to specify a characteristic predicate.
  *
  * Note: For performance reasons, all subclasses of this class should be part
- * of the standard library. Override `Configuration::isAdditionalFlowStep`
- * for analysis-specific flow steps.
+ * of the standard library. Use `isAdditionalFlowStep` for query-specific flow steps.
  */
 class AdditionalFlowStep extends Unit {
   /**
