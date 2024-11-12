@@ -2977,93 +2977,6 @@ OLD: KE1
 
                 val dr = c.dispatchReceiver
                 when {
-                    isNumericFunction(
-                        target,
-                        "plus",
-                        "minus",
-                        "times",
-                        "div",
-                        "rem",
-                        "and",
-                        "or",
-                        "xor",
-                        "shl",
-                        "shr",
-                        "ushr"
-                    ) -> {
-                        val type = useType(c.type)
-                        val id: Label<out DbExpr> =
-                            when (val targetName = target.name.asString()) {
-                                "minus" -> {
-                                    val id = tw.getFreshIdLabel<DbSubexpr>()
-                                    tw.writeExprs_subexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "times" -> {
-                                    val id = tw.getFreshIdLabel<DbMulexpr>()
-                                    tw.writeExprs_mulexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "div" -> {
-                                    val id = tw.getFreshIdLabel<DbDivexpr>()
-                                    tw.writeExprs_divexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "rem" -> {
-                                    val id = tw.getFreshIdLabel<DbRemexpr>()
-                                    tw.writeExprs_remexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "and" -> {
-                                    val id = tw.getFreshIdLabel<DbAndbitexpr>()
-                                    tw.writeExprs_andbitexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "or" -> {
-                                    val id = tw.getFreshIdLabel<DbOrbitexpr>()
-                                    tw.writeExprs_orbitexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "xor" -> {
-                                    val id = tw.getFreshIdLabel<DbXorbitexpr>()
-                                    tw.writeExprs_xorbitexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "shl" -> {
-                                    val id = tw.getFreshIdLabel<DbLshiftexpr>()
-                                    tw.writeExprs_lshiftexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "shr" -> {
-                                    val id = tw.getFreshIdLabel<DbRshiftexpr>()
-                                    tw.writeExprs_rshiftexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "ushr" -> {
-                                    val id = tw.getFreshIdLabel<DbUrshiftexpr>()
-                                    tw.writeExprs_urshiftexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                else -> {
-                                    logger.errorElement("Unhandled binary target name: $targetName", c)
-                                    return
-                                }
-                            }
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        if (
-                            isFunction(
-                                target,
-                                "kotlin",
-                                "Byte or Short",
-                                { it == "Byte" || it == "Short" },
-                                "and",
-                                "or",
-                                "xor"
-                            )
-                        )
-                            binopExt(id)
-                        else binopDisp(id)
-                    }
                     // != gets desugared into not and ==. Here we resugar it.
                     c.origin == IrStatementOrigin.EXCLEQ &&
                         isFunction(target, "kotlin", "Boolean", "not") &&
@@ -3074,18 +2987,6 @@ OLD: KE1
                         val id = tw.getFreshIdLabel<DbValueneexpr>()
                         val type = useType(c.type)
                         tw.writeExprs_valueneexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, dr, callable, enclosingStmt)
-                    }
-                    c.origin == IrStatementOrigin.EXCLEQEQ &&
-                        isFunction(target, "kotlin", "Boolean", "not") &&
-                        c.valueArgumentsCount == 0 &&
-                        dr != null &&
-                        dr is IrCall &&
-                        isBuiltinCallInternal(dr, "EQEQEQ") -> {
-                        val id = tw.getFreshIdLabel<DbNeexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_neexpr(id, type.javaResult.id, parent, idx)
                         tw.writeExprsKotlinType(id, type.kotlinResult.id)
                         binOp(id, dr, callable, enclosingStmt)
                     }
@@ -3148,46 +3049,6 @@ OLD: KE1
                     // We need to handle all the builtin operators defines in BuiltInOperatorNames in
                     //     compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
                     // as they can't be extracted as external dependencies.
-                    isBuiltinCallInternal(c, "less") -> {
-                        if (c.origin != IrStatementOrigin.LT) {
-                            logger.warnElement("Unexpected origin for LT: ${c.origin}", c)
-                        }
-                        val id = tw.getFreshIdLabel<DbLtexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_ltexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, c, callable, enclosingStmt)
-                    }
-                    isBuiltinCallInternal(c, "lessOrEqual") -> {
-                        if (c.origin != IrStatementOrigin.LTEQ) {
-                            logger.warnElement("Unexpected origin for LTEQ: ${c.origin}", c)
-                        }
-                        val id = tw.getFreshIdLabel<DbLeexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_leexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, c, callable, enclosingStmt)
-                    }
-                    isBuiltinCallInternal(c, "greater") -> {
-                        if (c.origin != IrStatementOrigin.GT) {
-                            logger.warnElement("Unexpected origin for GT: ${c.origin}", c)
-                        }
-                        val id = tw.getFreshIdLabel<DbGtexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_gtexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, c, callable, enclosingStmt)
-                    }
-                    isBuiltinCallInternal(c, "greaterOrEqual") -> {
-                        if (c.origin != IrStatementOrigin.GTEQ) {
-                            logger.warnElement("Unexpected origin for GTEQ: ${c.origin}", c)
-                        }
-                        val id = tw.getFreshIdLabel<DbGeexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_geexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, c, callable, enclosingStmt)
-                    }
                     isBuiltinCallInternal(c, "EQEQ") -> {
                         if (c.origin != IrStatementOrigin.EQEQ) {
                             logger.warnElement("Unexpected origin for EQEQ: ${c.origin}", c)
@@ -3195,16 +3056,6 @@ OLD: KE1
                         val id = tw.getFreshIdLabel<DbValueeqexpr>()
                         val type = useType(c.type)
                         tw.writeExprs_valueeqexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        binOp(id, c, callable, enclosingStmt)
-                    }
-                    isBuiltinCallInternal(c, "EQEQEQ") -> {
-                        if (c.origin != IrStatementOrigin.EQEQEQ) {
-                            logger.warnElement("Unexpected origin for EQEQEQ: ${c.origin}", c)
-                        }
-                        val id = tw.getFreshIdLabel<DbEqexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_eqexpr(id, type.javaResult.id, parent, idx)
                         tw.writeExprsKotlinType(id, type.kotlinResult.id)
                         binOp(id, c, callable, enclosingStmt)
                     }
