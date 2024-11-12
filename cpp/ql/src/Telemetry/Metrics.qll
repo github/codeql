@@ -130,8 +130,8 @@ module CppMetrics {
     override int getValue() { result = count(Call c) }
   }
 
-  class SucceededCalls extends SuccessMetric {
-    SucceededCalls() { this = "calls with a target" }
+  class CallsWithExplicitTarget extends SuccessMetric {
+    CallsWithExplicitTarget() { this = "calls with an explicit target" }
 
     override int getValue() {
       result = count(Call c | not c.getTarget().getADeclarationEntry().isImplicit())
@@ -221,32 +221,32 @@ module CppMetrics {
   }
 
   class SucceededIncludeCount extends Metric {
-    string include_text;
+    string includeText;
 
     SucceededIncludeCount() {
       exists(Include i |
-        i.getIncludeText() = include_text and
+        i.getIncludeText() = includeText and
         exists(i.getFile().getRelativePath()) // Only report includes from the repo
       ) and
-      this = "Successfully included " + include_text
+      this = "Successfully included " + includeText
     }
 
-    int getValue() { result = count(Include i | i.getIncludeText() = include_text) }
+    int getValue() { result = count(Include i | i.getIncludeText() = includeText) }
 
-    string getIncludeText() { result = include_text }
+    string getIncludeText() { result = includeText }
   }
 
   class MissingIncludeCount extends Metric {
-    string include_text;
+    string includeText;
 
     MissingIncludeCount() {
-      exists(CannotOpenFileError e | e.getIncludedFile() = include_text) and
-      this = "Failed to include '" + include_text + "'"
+      exists(CannotOpenFileError e | e.getIncludedFile() = includeText) and
+      this = "Failed to include '" + includeText + "'"
     }
 
-    int getValue() { result = count(CannotOpenFileError e | e.getIncludedFile() = include_text) }
+    int getValue() { result = count(CannotOpenFileError e | e.getIncludedFile() = includeText) }
 
-    string getIncludeText() { result = include_text }
+    string getIncludeText() { result = includeText }
   }
 
   class CompilerErrors extends ExtractionMetric {

@@ -1,6 +1,6 @@
 | #include directives | 2 |
 | calls | 2 |
-| calls with a target | 1 |
+| calls with an explicit target | 1 |
 | compilations | 2 |
 | compilations without errors | 1 |
 | compiler errors | 10 |
