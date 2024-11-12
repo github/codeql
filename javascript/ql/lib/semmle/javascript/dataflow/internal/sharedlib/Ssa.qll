@@ -60,11 +60,17 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
     predicate hasCfgNode(js::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) { none() } // Not handled here
+  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
+    // This library only handles use-use flow after a post-update, there are no definitions, only uses.
+    none()
+  }
 
   class Parameter = js::Parameter;
 
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { none() } // Not handled here
+  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) {
+    // This library only handles use-use flow after a post-update, there are no definitions, only uses.
+    none()
+  }
 
   cached
   Expr getARead(Definition def) {
