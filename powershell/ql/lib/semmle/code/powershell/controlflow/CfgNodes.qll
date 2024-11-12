@@ -610,7 +610,13 @@ module StmtNodes {
 
     final override ExprCfgNode getCommand() { s.hasCfgChild(s.getCommand(), this, result) }
 
-    final override string getName() { result = s.getCmdName().getValue().getValue() }
+    final override string getName() { result = s.getCommandName() }
+
+    /** Holds if the command is qualified. */
+    predicate isQualified() { s.isQualified() }
+
+    /** Gets the namespace qualifier of this command, if any. */
+    string getNamespaceQualifier() { result = s.getNamespaceQualifier() }
   }
 
   /** A control-flow node that wraps a call to operator `&` */

@@ -32,11 +32,11 @@ bindingset[rawType]
 predicate isTypeUsed(string rawType) { any() }
 
 bindingset[rawType]
-private predicate parseType(string rawType, string mod, string type) {
+private predicate parseType(string rawType, string consts, string suffix) {
   exists(string regexp |
-    regexp = "(.+)\\.([^\\.]+)" and
-    mod = rawType.regexpCapture(regexp, 1) and
-    type = rawType.regexpCapture(regexp, 2)
+    regexp = "([^!]+)(!|)" and
+    consts = rawType.regexpCapture(regexp, 1) and
+    suffix = rawType.regexpCapture(regexp, 2)
   )
 }
 
@@ -50,7 +50,31 @@ private predicate parseRelevantType(string rawType, string consts, string suffix
  * language semantics modeled by `getExtraNodeFromType`.
  */
 bindingset[otherType]
-predicate hasImplicitTypeModel(string type, string otherType) { none() }
+predicate hasImplicitTypeModel(string type, string otherType) {
+  // A::B! can be used to obtain A::B
+  parseType(otherType, type, _)
+}
+
+pragma[nomagic]
+string getConstComponent(string consts, int n) {
+  parseRelevantType(_, consts, _) and
+  result = consts.splitAt(".", n)
+}
+
+private int getNumConstComponents(string consts) {
+  result = strictcount(int n | exists(getConstComponent(consts, n)))
+}
+
+private DataFlow::TypePathNode getConstantFromConstPath(string consts, int n) {
+  n = 1 and
+  result.getComponent() = getConstComponent(consts, 0)
+  or
+  result = getConstantFromConstPath(consts, n - 1).getConstant(getConstComponent(consts, n - 1))
+}
+
+private DataFlow::TypePathNode getConstantFromConstPath(string consts) {
+  result = getConstantFromConstPath(consts, getNumConstComponents(consts))
+}
 
 /** Gets a Powershell-specific interpretation of the `(type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[type, path]
@@ -66,18 +90,20 @@ API::Node getExtraNodeFromPath(string type, AccessPath path, int n) {
 }
 
 /** Gets a Powershell-specific interpretation of the given `type`. */
-API::Node getExtraNodeFromType(string qualifiedType) {
-  qualifiedType = "" and
-  result = API::root()
-  or
-  // TODO: How to distinguish between these cases? And do we need to?
-  exists(string mod, string type | parseRelevantType(qualifiedType, mod, type) |
-    result = API::mod(qualifiedType)
+API::Node getExtraNodeFromType(string type) {
+  exists(string consts, string suffix, DataFlow::TypePathNode constRef |
+    parseRelevantType(type, consts, suffix) and
+    constRef = getConstantFromConstPath(consts)
+  |
+    suffix = "!" and
+    result = constRef.track()
     or
-    result = API::mod(qualifiedType).getInstance()
-    or
-    result = API::mod(mod).getType(type)
+    suffix = "" and
+    result = constRef.track().getInstance()
   )
+  or
+  type = "" and
+  result = API::root()
 }
 
 /**

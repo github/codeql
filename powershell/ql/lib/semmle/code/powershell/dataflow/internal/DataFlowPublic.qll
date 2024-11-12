@@ -193,6 +193,21 @@ class PostUpdateNode extends Node {
   Node getPreUpdateNode() { result = pre }
 }
 
+/**
+ * A dataflow node that represents a component of a type or module path.
+ *
+ * For example, `System`, `System.Management`, `System.Management.Automation`,
+ * and `System.Management.Automation.PowerShell` in the type
+ * name `[System.Management.Automation.PowerShell]`.
+ */
+class TypePathNode extends Node instanceof TypePathNodeImpl {
+  string getComponent() { result = super.getComponent() }
+
+  TypePathNode getConstant(string s) { result = super.getConstant(s) }
+
+  API::Node track() { result = API::mod(super.getType(), super.getIndex()) }
+}
+
 cached
 private module Cached {
   cached
