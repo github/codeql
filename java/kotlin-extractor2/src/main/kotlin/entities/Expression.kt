@@ -347,6 +347,7 @@ private fun KaFunctionSymbol?.isBinaryPlus(): Boolean {
     return this != null && (
             this.isNumericWithName("plus") ||
                     this.hasName("kotlin", "String", "plus") ||
+                    /* The target for `(null as String?) + null` is `public operator fun String?.plus(other: Any?): String` */
                     this.hasMatchingNames(
                         CallableId(FqName("kotlin"), null, Name.identifier("plus")),
                         ClassId(FqName("kotlin"), Name.identifier("String")),
