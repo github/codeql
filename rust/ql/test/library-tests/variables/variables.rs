@@ -435,7 +435,7 @@ fn capture_mut() {
 async fn async_block_capture() {
     let mut i: i64 = 0; // i
     let block = async {
-        i = 1; // $ read_access=i
+        i = 1; // $ write_access=i
     };
     // The await below causes write to `i`
     block.await; // $ read_access=block

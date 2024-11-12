@@ -1,6 +1,4 @@
 testFailures
-| variables.rs:438:9:438:9 | i | Unexpected result: write_access=i |
-| variables.rs:438:16:438:33 | Comment | Missing result: read_access=i |
 failures
 variable
 | variables.rs:3:14:3:14 | s |

@@ -5,6 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.AstNode
+private import codeql.rust.controlflow.ControlFlowGraph
 
 /**
  * INTERNAL: This module contains the customizable definition of `AstNode` and should not
@@ -41,6 +42,16 @@ module Impl {
         or
         not p instanceof Callable and
         result = p.getEnclosingCallable()
+      )
+    }
+
+    /** Gets the CFG scope that encloses this node, if any. */
+    CfgScope getEnclosingCfgScope() {
+      exists(AstNode p | p = this.getParentNode() |
+        result = p
+        or
+        not p instanceof CfgScope and
+        result = p.getEnclosingCfgScope()
       )
     }
 

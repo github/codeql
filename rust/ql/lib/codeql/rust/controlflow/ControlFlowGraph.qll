@@ -9,8 +9,6 @@ private import BasicBlocks
 
 final class CfgScope = Scope::CfgScope;
 
-predicate getEnclosingCfgScope = Scope::getEnclosingCfgScope/1;
-
 final class SuccessorType = SuccessorTypeImpl;
 
 final class NormalSuccessor = NormalSuccessorImpl;
@@ -54,6 +52,3 @@ final class CfgNode extends Node {
   /** Gets the basic block that this control flow node belongs to. */
   BasicBlock getBasicBlock() { result.getANode() = this }
 }
-
-/** Holds if evaluating `e` jumps to the evaluation of a different CFG scope. */
-predicate isControlFlowJump(Expr e) { e instanceof CallExprBase or e instanceof AwaitExpr }

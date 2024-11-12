@@ -446,7 +446,7 @@ module Impl {
     Variable getVariable() { result = v }
 
     /** Holds if this access is a capture. */
-    predicate isCapture() { getEnclosingCfgScope(this) != getEnclosingCfgScope(v.getPat()) }
+    predicate isCapture() { this.getEnclosingCfgScope() != v.getPat().getEnclosingCfgScope() }
 
     override string toString() { result = name }
 

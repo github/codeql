@@ -134,7 +134,7 @@ module Node {
 
     ExprNode() { this = TExprNode(n) }
 
-    override CfgScope getCfgScope() { result = getEnclosingCfgScope(this.asExpr()) }
+    override CfgScope getCfgScope() { result = this.asExpr().getEnclosingCfgScope() }
 
     override Location getLocation() { result = n.getExpr().getLocation() }
 
@@ -154,7 +154,7 @@ module Node {
 
     ParameterNode() { this = TParameterNode(parameter) }
 
-    override CfgScope getCfgScope() { result = getEnclosingCfgScope(parameter) }
+    override CfgScope getCfgScope() { result = parameter.getEnclosingCfgScope() }
 
     override Location getLocation() { result = parameter.getLocation() }
 
