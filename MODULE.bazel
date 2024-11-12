@@ -166,6 +166,21 @@ go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//go/extractor:go.mod")
 use_repo(go_deps, "org_golang_x_mod", "org_golang_x_tools")
 
+git_lfs_binary = use_repo_rule("//misc/bazel:lfs.bzl", "git_lfs_binary")
+
+# to update, check out dsp-testing/codeql-git-lfs, do changes there, and push a tag with
+# `git tag $(git describe)-ls-urls && git push --tags`
+# then wait for https://github.com/dsp-testing/codeql-git-lfs/actions/runs/11800398535 to end,
+# then copy here information from https://github.com/dsp-testing/codeql-git-lfs/releases/latest
+git_lfs_binary(
+    name = "git-lfs",
+    sha256_linux = "08b75033a98f77f7e60b0928e160a6f0a5c5cd9d91b8605537969eec6980219a",
+    sha256_macos_arm64 = "8a17c488c975dbd050610a0b2692567064dbfef33b6c58ee89ea02f649cc0114",
+    sha256_macos_x86 = "9fc7265c5345901ca5cb83707ed5374fc6dfbf7ed45d2c047d5929bfe0b5f64a",
+    sha256_windows = "ef2f5794667584b155786291d4f839c59bfe10fcc5f870902c64f3063ffd9923",
+    version = "v3.5.0-179-gfd031ea1",
+)
+
 lfs_files = use_repo_rule("//misc/bazel:lfs.bzl", "lfs_files")
 
 lfs_files(

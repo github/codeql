@@ -2,13 +2,16 @@ def lfs_smudge(repository_ctx, srcs, *, extract = False, stripPrefix = None, exe
     python = repository_ctx.which("python3") or repository_ctx.which("python")
     if not python:
         fail("Neither python3 nor python executables found")
-    script = Label("//misc/bazel/internal:git_lfs_probe.py")
+    script = repository_ctx.path(Label("//misc/bazel/internal:git_lfs_probe.py"))
+    git_lfs_binary = repository_ctx.path(Label("@git-lfs"))
 
     def probe(srcs, hash_only = False):
         repository_ctx.report_progress("querying LFS url(s) for: %s" % ", ".join([src.basename for src in srcs]))
         cmd = [python, script]
         if hash_only:
             cmd.append("--hash-only")
+        else:
+            cmd += ["--git-lfs", git_lfs_binary]
         cmd.extend(srcs)
         res = repository_ctx.execute(cmd, quiet = True)
         if res.return_code != 0:
@@ -100,5 +103,50 @@ lfs_files = repository_rule(
         "dir": attr.label(doc = "Local path to a directory containing LFS files to export. Only the direct contents " +
                                 "of the directory are exported"),
         "executable": attr.bool(doc = "Whether files should be marked as executable"),
+    },
+)
+
+def _lfs_binary_impl(repository_ctx):
+    suffix = ""
+    if repository_ctx.os.name.startswith("windows"):
+        arch = "windows-amd64"
+        sha256 = repository_ctx.attr.sha256_windows
+        suffix = ".exe"
+    elif repository_ctx.os.name.startswith("mac"):
+        if repository_ctx.os.arch == "x86":
+            arch = "darwin-amd64"
+            sha256 = repository_ctx.attr.sha256_macos_x86
+        else:
+            arch = "darwin-arm64"
+            sha256 = repository_ctx.attr.sha256_macos_arm64
+    else:
+        arch = "linux-amd64"
+        sha256 = repository_ctx.attr.sha256_linux
+    url = "https://github.com/dsp-testing/codeql-git-lfs/releases/download/%s/git-lfs-%s%s" % (
+        repository_ctx.attr.version,
+        arch,
+        suffix,
+    )
+    exe = "git-lfs" + suffix
+    repository_ctx.download(
+        url = url,
+        output = exe,
+        sha256 = sha256,
+        executable = True,
+    )
+    name = repository_ctx.name.split("+")[-1]
+    if suffix:
+        repository_ctx.file("BUILD.bazel", "filegroup(name = %r, srcs = [%r], visibility = ['//visibility:public'])" % (name, exe))
+    else:
+        repository_ctx.file("BUILD.bazel", "exports_files([%r])" % exe)
+
+git_lfs_binary = repository_rule(
+    implementation = _lfs_binary_impl,
+    attrs = {
+        "version": attr.string(mandatory = True),
+        "sha256_linux": attr.string(mandatory = True),
+        "sha256_macos_x86": attr.string(mandatory = True),
+        "sha256_macos_arm64": attr.string(mandatory = True),
+        "sha256_windows": attr.string(mandatory = True),
     },
 )
