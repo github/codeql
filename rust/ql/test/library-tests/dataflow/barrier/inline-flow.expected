@@ -1,0 +1,9 @@
+models
+edges
+nodes
+subpaths
+testFailures
+| main.rs:17:22:17:40 | Comment | Missing result: hasValueFlow=1 |
+| main.rs:22:14:22:32 | Comment | Missing result: hasValueFlow=1 |
+| main.rs:33:14:33:32 | Comment | Missing result: hasValueFlow=1 |
+#select
