@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.CleartextStorageSharedPrefsQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module CleartextStorageSharedPrefsTest implements TestSig {
   string getARelevantTag() { result = "hasCleartextStorageSharedPrefs" }
