@@ -112,7 +112,7 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
 
     Location getLocation() { result = super.getLocation() }
 
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i) }
+    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i).asExpr() }
   }
 
   class VariableWrite extends Expr instanceof VariableUpdate {

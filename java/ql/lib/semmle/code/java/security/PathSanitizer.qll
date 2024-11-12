@@ -29,15 +29,19 @@ private module ValidationMethod<DataFlow::guardChecksSig/3 validationGuard> {
    */
   private predicate validationMethod(Method m, int arg) {
     exists(
-      Guard g, SsaImplicitInit var, ControlFlowNode exit, ControlFlowNode normexit, boolean branch
+      Guard g, SsaImplicitInit var, ControlFlow::ExitNode exit, ControlFlowNode normexit,
+      boolean branch
     |
       validationGuard(g, var.getAUse(), branch) and
       var.isParameterDefinition(m.getParameter(arg)) and
-      exit = m and
+      exit.getEnclosingCallable() = m and
       normexit.getANormalSuccessor() = exit and
       1 = strictcount(ControlFlowNode n | n.getANormalSuccessor() = exit)
     |
-      g.(ConditionNode).getABranchSuccessor(branch) = exit or
+      exists(ConditionNode conditionNode |
+        g = conditionNode.getCondition() and conditionNode.getABranchSuccessor(branch) = exit
+      )
+      or
       g.controls(normexit.getBasicBlock(), branch)
     )
   }
