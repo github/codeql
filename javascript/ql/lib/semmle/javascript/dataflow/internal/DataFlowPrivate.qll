@@ -1127,8 +1127,8 @@ Node getNodeFromSsa2(Ssa2::Node node) {
 }
 
 private predicate useUseFlow(Node node1, Node node2) {
-  exists(Ssa2::DefinitionExt def, Ssa2::Node ssa1, Ssa2::Node ssa2, boolean isUseStep |
-    Ssa2::localFlowStep(def, ssa1, ssa2, isUseStep) and
+  exists(Ssa2::DefinitionExt def, Ssa2::Node ssa1, Ssa2::Node ssa2 |
+    Ssa2::localFlowStep(def, ssa1, ssa2, _) and
     node1 = getNodeFromSsa2(ssa1) and
     node2 = getNodeFromSsa2(ssa2) and
     not node1.getTopLevel().isExterns()
