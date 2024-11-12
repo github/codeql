@@ -25,3 +25,4 @@ extensions:
       extensible: sinkModel
     data:
       - ["java.util.zip", "ZipOutputStream", True, "putNextEntry", "(ZipEntry)", "", "Argument[0]", "file-content-store", "ai-manual"]
+      - ["java.util.zip", "ZipFile", True, "ZipFile", "(String)", "", "Argument[0]", "path-injection", "manual"]

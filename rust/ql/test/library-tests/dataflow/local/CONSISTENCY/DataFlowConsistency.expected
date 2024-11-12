@@ -1,4 +1,0 @@
-uniqueCallEnclosingCallable
-| main.rs:3:14:3:33 | CallExpr | Call should have one enclosing callable but has 0. |
-| main.rs:39:5:39:14 | CallExpr | Call should have one enclosing callable but has 0. |
-| main.rs:40:5:40:23 | CallExpr | Call should have one enclosing callable but has 0. |

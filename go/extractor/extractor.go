@@ -1713,12 +1713,23 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				extractMethod(tw, meth)
 			}
 
+			underlyingInterface, underlyingIsInterface := underlying.(*types.Interface)
+			_, underlyingIsPointer := underlying.(*types.Pointer)
+
 			// associate all methods of underlying interface with this type
-			if underlyingInterface, ok := underlying.(*types.Interface); ok {
+			if underlyingIsInterface {
 				for i := 0; i < underlyingInterface.NumMethods(); i++ {
 					methlbl := extractMethod(tw, underlyingInterface.Method(i).Origin())
 					dbscheme.MethodHostsTable.Emit(tw, methlbl, lbl)
 				}
+			}
+
+			// If `underlying` is not a pointer or interface then methods can
+			// be defined on `origintp`. In this case we must ensure that
+			// `*origintp` is in the database, so that Method.hasQualifiedName
+			// correctly includes methods with receiver type `*origintp`.
+			if !underlyingIsInterface && !underlyingIsPointer {
+				extractType(tw, types.NewPointer(origintp))
 			}
 		case *types.TypeParam:
 			kind = dbscheme.TypeParamType.Index()

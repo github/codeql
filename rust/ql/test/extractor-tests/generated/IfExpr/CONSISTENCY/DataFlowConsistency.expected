@@ -1,2 +1,0 @@
-uniqueCallEnclosingCallable
-| gen_if_expr.rs:6:18:6:36 | CallExpr | Call should have one enclosing callable but has 0. |
