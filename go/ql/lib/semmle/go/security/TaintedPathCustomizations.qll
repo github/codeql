@@ -104,7 +104,9 @@ module TaintedPath {
         this = m.getACall().getResult()
       ) and
       not exists(CallExpr f |
-        f.getTarget().hasQualifiedName(package("github.com/gorilla/mux", ""), "SkipClean") and
+        f.getTarget()
+            .(Method)
+            .hasQualifiedName(package("github.com/gorilla/mux", ""), "Router", "SkipClean") and
         f.getArgument(0).getBoolValue() = true
       )
     }

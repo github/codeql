@@ -8,8 +8,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-
-	"github.com/gorilla/mux"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -95,11 +93,4 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data, _ = ioutil.ReadFile(part.FileName())
-}
-
-// GOOD: Sanitized by Gorilla's cleaner
-func GorillaHandler(w http.ResponseWriter, r *http.Request) {
-	not_tainted_path := mux.Vars(r)["id"]
-	data, _ := ioutil.ReadFile(filepath.Join("/home/user/", not_tainted_path))
-	w.Write(data)
 }
