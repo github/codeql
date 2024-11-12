@@ -93,12 +93,12 @@ jobs:
             name="diff_${basename/.model.yml/""}"
             (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
           done
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: models
           path: tmp-models/**/**/*.model.yml
           retention-days: 20
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: diffs
           path: tmp-models/*.html
