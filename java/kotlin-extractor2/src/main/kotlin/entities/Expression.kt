@@ -377,17 +377,28 @@ private fun KotlinFileExtractor.extractBinaryExpression(
                 TODO()
             }
 
-            // Extract lowered equivalent call, such as `a.compareTo(b) < 0`
+            // Extract lowered equivalent call, such as `a.compareTo(b) < 0` instead of `a < b` in the below:
+            //  ```
+            //   fun test(a: Data, b: Data) {
+            //     a < b
+            //    }
+            //
+            //    class Data(val v: Int) : Comparable<Data> {
+            //      override fun compareTo(other: Data) = v.compareTo(other.v)
+            //    }
+            //  ```
+
             val exprParent = parent.expr(expression, callable)
 
-            val id: Label<out DbBinaryexpr> = when (op) {
-                KtTokens.LT -> extractRawBinaryExpression(builtinTypes.boolean, exprParent, tw::writeExprs_ltexpr)
-                KtTokens.GT -> extractRawBinaryExpression(builtinTypes.boolean, exprParent, tw::writeExprs_gtexpr)
-                KtTokens.LTEQ -> extractRawBinaryExpression(builtinTypes.boolean, exprParent, tw::writeExprs_leexpr)
-                KtTokens.GTEQ -> extractRawBinaryExpression(builtinTypes.boolean, exprParent, tw::writeExprs_geexpr)
+            val trapWriterWriteExpr = when (op) {
+                KtTokens.LT -> tw::writeExprs_ltexpr
+                KtTokens.GT -> tw::writeExprs_gtexpr
+                KtTokens.LTEQ -> tw::writeExprs_leexpr
+                KtTokens.GTEQ -> tw::writeExprs_geexpr
                 else -> TODO("error")
             }
 
+            val id = extractRawBinaryExpression(builtinTypes.boolean, exprParent, trapWriterWriteExpr)
             extractExprContext(id, tw.getLocation(expression), callable, exprParent.enclosingStmt)
 
             extractRawMethodAccess(
