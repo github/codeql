@@ -3002,30 +3002,13 @@ OLD: KE1
                         tw.writeExprsKotlinType(id, type.kotlinResult.id)
                         binOp(id, dr, callable, enclosingStmt)
                     }
-                    isFunction(target, "kotlin", "Boolean", "not") -> {
-                        val id = tw.getFreshIdLabel<DbLognotexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_lognotexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        unaryopDisp(id)
-                    }
-                    isNumericFunction(target, "inv", "unaryMinus", "unaryPlus") -> {
+                    isNumericFunction(target, "inv") -> {
                         val type = useType(c.type)
                         val id: Label<out DbExpr> =
                             when (val targetName = target.name.asString()) {
                                 "inv" -> {
                                     val id = tw.getFreshIdLabel<DbBitnotexpr>()
                                     tw.writeExprs_bitnotexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "unaryMinus" -> {
-                                    val id = tw.getFreshIdLabel<DbMinusexpr>()
-                                    tw.writeExprs_minusexpr(id, type.javaResult.id, parent, idx)
-                                    id
-                                }
-                                "unaryPlus" -> {
-                                    val id = tw.getFreshIdLabel<DbPlusexpr>()
-                                    tw.writeExprs_plusexpr(id, type.javaResult.id, parent, idx)
                                     id
                                 }
                                 else -> {
