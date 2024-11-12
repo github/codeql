@@ -46,6 +46,7 @@ module Impl {
     }
 
     /** Gets the CFG scope that encloses this node, if any. */
+    cached
     CfgScope getEnclosingCfgScope() {
       exists(AstNode p | p = this.getParentNode() |
         result = p
