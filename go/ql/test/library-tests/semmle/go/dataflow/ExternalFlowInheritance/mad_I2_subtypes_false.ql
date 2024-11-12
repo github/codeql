@@ -12,10 +12,10 @@ module Config implements DataFlow::ConfigSig {
 module Flow = TaintTracking::Global<Config>;
 
 module FlowTest implements TestSig {
-  string getARelevantTag() { result = "SEmbedI2[t]" }
+  string getARelevantTag() { result = "I2[f]" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "SEmbedI2[t]" and
+    tag = "I2[f]" and
     exists(DataFlow::Node sink | Flow::flowTo(sink) |
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and

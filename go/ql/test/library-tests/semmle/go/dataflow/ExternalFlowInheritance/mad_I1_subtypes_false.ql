@@ -1,23 +1,21 @@
 import go
-import semmle.go.dataflow.ExternalFlow
 import ModelValidation
-import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import TestUtilities.InlineExpectationsTest
 import MakeTest<FlowTest>
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { sourceNode(source, "qltest") }
 
-  predicate isSink(DataFlow::Node sink) { sink = any(FileSystemAccess fsa).getAPathArgument() }
+  predicate isSink(DataFlow::Node sink) { sinkNode(sink, "qltest") }
 }
 
 module Flow = TaintTracking::Global<Config>;
 
 module FlowTest implements TestSig {
-  string getARelevantTag() { result = "I1[t]" }
+  string getARelevantTag() { result = "I1[f]" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "I1[t]" and
+    tag = "I1[f]" and
     exists(DataFlow::Node sink | Flow::flowTo(sink) |
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
