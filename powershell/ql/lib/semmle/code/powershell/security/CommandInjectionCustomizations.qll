@@ -48,6 +48,15 @@ module CommandInjection {
     }
   }
 
+  class AddTypeSink extends Sink {
+    AddTypeSink() {
+      exists(DataFlow::CallNode call |
+        call.getName() = "Add-Type" and
+        call.getAnArgument() = this
+      )
+    }
+  }
+
   private class ExternalCommandInjectionSink extends Sink {
     ExternalCommandInjectionSink() {
       this = ModelOutput::getASinkNode("command-injection").asSink()

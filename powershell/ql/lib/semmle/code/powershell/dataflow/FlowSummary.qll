@@ -13,6 +13,9 @@ private import internal.DataFlowPrivate
 private module Summaries {
   private import semmle.code.powershell.Frameworks
   private import semmle.code.powershell.frameworks.data.ModelsAsData
+  import RunspaceFactory
+  import PowerShell
+  import EngineIntrinsics
 }
 
 /** A callable with a flow summary, identified by a unique string. */
