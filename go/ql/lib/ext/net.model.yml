@@ -3,10 +3,10 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["net", "", False, "FileConn", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["net", "", False, "FilePacketConn", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["net", "", False, "JoinHostPort", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
-      - ["net", "", False, "SplitHostPort", "", "", "Argument[0]", "ReturnValue[0..1]", "taint", "manual"]
+      - ["net", "", True, "FileConn", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["net", "", True, "FilePacketConn", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["net", "", True, "JoinHostPort", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["net", "", True, "SplitHostPort", "", "", "Argument[0]", "ReturnValue[0..1]", "taint", "manual"]
       - ["net", "IPConn", True, "ReadFromIP", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
       - ["net", "IPConn", True, "ReadMsgIP", "", "", "Argument[receiver]", "Argument[0..1]", "taint", "manual"]
       - ["net", "IPConn", True, "WriteMsgIP", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]

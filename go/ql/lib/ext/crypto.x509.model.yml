@@ -3,4 +3,4 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["crypto/x509", "", False, "DecryptPEMBlock", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["crypto/x509", "", True, "DecryptPEMBlock", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]

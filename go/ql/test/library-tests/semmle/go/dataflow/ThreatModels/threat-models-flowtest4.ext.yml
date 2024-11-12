@@ -10,8 +10,7 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
-      - ["github.com/nonexistent/sources", "", False, "ExecuteQuery", "", "", "ReturnValue", "database", "manual"]
-      - ["github.com/nonexistent/sources", "", False, "ReadEnvironment", "", "", "ReturnValue", "environment", "manual"]
-      - ["github.com/nonexistent/sources", "", False, "GetCustom", "", "", "ReturnValue", "custom", "manual"]
-      - ["github.com/nonexistent/sources", "", False, "GetCliArg", "", "", "ReturnValue", "commandargs", "manual"]
-
+      - ["github.com/nonexistent/sources", "", True, "ExecuteQuery", "", "", "ReturnValue", "database", "manual"]
+      - ["github.com/nonexistent/sources", "", True, "ReadEnvironment", "", "", "ReturnValue", "environment", "manual"]
+      - ["github.com/nonexistent/sources", "", True, "GetCustom", "", "", "ReturnValue", "custom", "manual"]
+      - ["github.com/nonexistent/sources", "", True, "GetCliArg", "", "", "ReturnValue", "commandargs", "manual"]

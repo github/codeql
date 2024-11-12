@@ -3,10 +3,10 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
-      - ["github.com/gobuffalo/envy", "", False, "Environ", "", "", "ReturnValue", "environment", "manual"]
-      - ["github.com/gobuffalo/envy", "", False, "Get", "", "", "ReturnValue", "environment", "manual"]
-      - ["github.com/gobuffalo/envy", "", False, "GoBin", "", "", "ReturnValue", "environment", "manual"]
-      - ["github.com/gobuffalo/envy", "", False, "GoPath", "", "", "ReturnValue", "environment", "manual"]
-      - ["github.com/gobuffalo/envy", "", False, "GoPaths", "", "", "ReturnValue", "environment", "manual"]
-      - ["github.com/gobuffalo/envy", "", False, "Map", "", "", "ReturnValue", "environment", "manual"]
-      - ["github.com/gobuffalo/envy", "", False, "MustGet", "", "", "ReturnValue[0]", "environment", "manual"]
+      - ["github.com/gobuffalo/envy", "", True, "Environ", "", "", "ReturnValue", "environment", "manual"]
+      - ["github.com/gobuffalo/envy", "", True, "Get", "", "", "ReturnValue", "environment", "manual"]
+      - ["github.com/gobuffalo/envy", "", True, "GoBin", "", "", "ReturnValue", "environment", "manual"]
+      - ["github.com/gobuffalo/envy", "", True, "GoPath", "", "", "ReturnValue", "environment", "manual"]
+      - ["github.com/gobuffalo/envy", "", True, "GoPaths", "", "", "ReturnValue", "environment", "manual"]
+      - ["github.com/gobuffalo/envy", "", True, "Map", "", "", "ReturnValue", "environment", "manual"]
+      - ["github.com/gobuffalo/envy", "", True, "MustGet", "", "", "ReturnValue[0]", "environment", "manual"]

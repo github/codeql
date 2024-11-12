@@ -3,14 +3,14 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["encoding/xml", "", False, "CopyToken", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["encoding/xml", "", False, "Escape", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
-      - ["encoding/xml", "", False, "EscapeText", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
-      - ["encoding/xml", "", False, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["encoding/xml", "", False, "MarshalIndent", "", "", "Argument[0..2]", "ReturnValue[0]", "taint", "manual"]
-      - ["encoding/xml", "", False, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["encoding/xml", "", False, "NewTokenDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["encoding/xml", "", False, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["encoding/xml", "", True, "CopyToken", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["encoding/xml", "", True, "Escape", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["encoding/xml", "", True, "EscapeText", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["encoding/xml", "", True, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/xml", "", True, "MarshalIndent", "", "", "Argument[0..2]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/xml", "", True, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["encoding/xml", "", True, "NewTokenDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["encoding/xml", "", True, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
       - ["encoding/xml", "CharData", True, "Copy", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["encoding/xml", "Comment", True, "Copy", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["encoding/xml", "Decoder", True, "Decode", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]

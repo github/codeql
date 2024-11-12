@@ -3,4 +3,4 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["sort", "", False, "Reverse", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["sort", "", True, "Reverse", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

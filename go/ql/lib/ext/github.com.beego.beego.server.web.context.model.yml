@@ -11,14 +11,14 @@ extensions:
       extensible: sinkModel
     data:
       # path-injection
-      - ["group:beego-context", "BeegoOutput", False, "Download", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["group:beego-context", "BeegoOutput", True, "Download", "", "", "Argument[0]", "path-injection", "manual"]
       # url-redirection
       - ["group:beego-context", "Context", True, "Redirect", "", "", "Argument[1]", "url-redirection", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["group:beego-context", "", False, "WriteBody", "", "", "Argument[2]", "Argument[1]", "taint", "manual"]
+      - ["group:beego-context", "", True, "WriteBody", "", "", "Argument[2]", "Argument[1]", "taint", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: sourceModel

@@ -3,6 +3,6 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["crypto/tls", "", False, "Client", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["crypto/tls", "", False, "NewListener", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["crypto/tls", "", False, "Server", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["crypto/tls", "", True, "Client", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["crypto/tls", "", True, "NewListener", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["crypto/tls", "", True, "Server", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

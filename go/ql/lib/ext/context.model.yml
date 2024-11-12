@@ -3,8 +3,8 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["context", "", False, "WithCancel", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["context", "", False, "WithDeadline", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["context", "", False, "WithTimeout", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["context", "", False, "WithValue", "", "", "Argument[0..2]", "ReturnValue", "taint", "manual"]
+      - ["context", "", True, "WithCancel", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["context", "", True, "WithDeadline", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["context", "", True, "WithTimeout", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["context", "", True, "WithValue", "", "", "Argument[0..2]", "ReturnValue", "taint", "manual"]
       - ["context", "Context", True, "Value", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

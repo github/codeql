@@ -17,7 +17,7 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["regexp", "", False, "QuoteMeta", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["regexp", "", True, "QuoteMeta", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["regexp", "Regexp", True, "Expand", "", "", "Argument[1..2]", "Argument[0]", "taint", "manual"]
       - ["regexp", "Regexp", True, "Expand", "", "", "Argument[1..2]", "ReturnValue", "taint", "manual"]
       - ["regexp", "Regexp", True, "ExpandString", "", "", "Argument[1..2]", "Argument[0]", "taint", "manual"]

@@ -3,11 +3,11 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["encoding/asn1", "", False, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["encoding/asn1", "", False, "MarshalWithParams", "", "", "Argument[0..1]", "ReturnValue[0]", "taint", "manual"]
-      - ["encoding/asn1", "", False, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
-      - ["encoding/asn1", "", False, "Unmarshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["encoding/asn1", "", False, "UnmarshalWithParams", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
-      - ["encoding/asn1", "", False, "UnmarshalWithParams", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["encoding/asn1", "", False, "UnmarshalWithParams", "", "", "Argument[2]", "Argument[1]", "taint", "manual"]
-      - ["encoding/asn1", "", False, "UnmarshalWithParams", "", "", "Argument[2]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/asn1", "", True, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/asn1", "", True, "MarshalWithParams", "", "", "Argument[0..1]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/asn1", "", True, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["encoding/asn1", "", True, "Unmarshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/asn1", "", True, "UnmarshalWithParams", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["encoding/asn1", "", True, "UnmarshalWithParams", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/asn1", "", True, "UnmarshalWithParams", "", "", "Argument[2]", "Argument[1]", "taint", "manual"]
+      - ["encoding/asn1", "", True, "UnmarshalWithParams", "", "", "Argument[2]", "ReturnValue[0]", "taint", "manual"]

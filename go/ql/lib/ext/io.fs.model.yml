@@ -3,11 +3,11 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["io/fs", "", False, "FileInfoToDirEntry", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["io/fs", "", False, "Glob", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["io/fs", "", False, "ReadDir", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["io/fs", "", False, "ReadFile", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["io/fs", "", False, "Sub", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["io/fs", "", True, "FileInfoToDirEntry", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io/fs", "", True, "Glob", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["io/fs", "", True, "ReadDir", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["io/fs", "", True, "ReadFile", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["io/fs", "", True, "Sub", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["io/fs", "DirEntry", True, "Info", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
       - ["io/fs", "DirEntry", True, "Name", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["io/fs", "File", True, "Read", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
@@ -20,6 +20,6 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
-      - ["io/fs", "", False, "ReadFile", "", "", "ReturnValue[0]", "file", "manual"]
+      - ["io/fs", "", True, "ReadFile", "", "", "ReturnValue[0]", "file", "manual"]
       - ["io/fs", "ReadFileFS", True, "ReadFile", "", "", "ReturnValue[0]", "file", "manual"]
       - ["io/fs", "FS", True, "Open", "", "", "ReturnValue[0]", "file", "manual"]

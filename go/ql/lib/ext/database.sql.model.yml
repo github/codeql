@@ -3,7 +3,7 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["database/sql", "", False, "Named", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["database/sql", "", True, "Named", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
       - ["database/sql", "Conn", True, "PrepareContext", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
       - ["database/sql", "DB", True, "Prepare", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["database/sql", "DB", True, "PrepareContext", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]

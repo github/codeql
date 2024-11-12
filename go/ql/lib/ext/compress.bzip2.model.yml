@@ -3,4 +3,4 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["compress/bzip2", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["compress/bzip2", "", True, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

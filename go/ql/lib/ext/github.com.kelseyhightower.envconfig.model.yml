@@ -3,9 +3,9 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
-      - ["github.com/kelseyhightower/envconfig", "", False, "CheckDisallowed", "", "", "Argument[1]", "environment", "manual"]
-      - ["github.com/kelseyhightower/envconfig", "", False, "MustProcess", "", "", "Argument[1]", "environment", "manual"]
-      - ["github.com/kelseyhightower/envconfig", "", False, "Process", "", "", "Argument[1]", "environment", "manual"]
-      - ["github.com/kelseyhightower/envconfig", "", False, "Usage", "", "", "Argument[1]", "environment", "manual"]
-      - ["github.com/kelseyhightower/envconfig", "", False, "Usagef", "", "", "Argument[1]", "environment", "manual"]
-      - ["github.com/kelseyhightower/envconfig", "", False, "Usaget", "", "", "Argument[1]", "environment", "manual"]
+      - ["github.com/kelseyhightower/envconfig", "", True, "CheckDisallowed", "", "", "Argument[1]", "environment", "manual"]
+      - ["github.com/kelseyhightower/envconfig", "", True, "MustProcess", "", "", "Argument[1]", "environment", "manual"]
+      - ["github.com/kelseyhightower/envconfig", "", True, "Process", "", "", "Argument[1]", "environment", "manual"]
+      - ["github.com/kelseyhightower/envconfig", "", True, "Usage", "", "", "Argument[1]", "environment", "manual"]
+      - ["github.com/kelseyhightower/envconfig", "", True, "Usagef", "", "", "Argument[1]", "environment", "manual"]
+      - ["github.com/kelseyhightower/envconfig", "", True, "Usaget", "", "", "Argument[1]", "environment", "manual"]
