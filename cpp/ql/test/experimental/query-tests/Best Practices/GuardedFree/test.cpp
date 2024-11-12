@@ -95,7 +95,7 @@ void test11(char *x) {
 }
 
 bool test12(char *x) {
-  if(!x) // GOOD [FALSE POSITIVE]: return value depends on x
+  if (!x) // GOOD [FALSE POSITIVE]: return value depends on x
     return false;
 
   free(x);
@@ -103,13 +103,13 @@ bool test12(char *x) {
 }
 
 void test13(char *x) {
-  if(x != nullptr) // BAD
+  if (x != nullptr) // BAD
     free(x);
 }
 
 void inspect(char *x);
 
 void test14(char *x) {
-  if(x != nullptr) // GOOD [FALSE POSITIVE]: x might be accessed
+  if (x != nullptr) // GOOD [FALSE POSITIVE]: x might be accessed
     inspect(x), free(x);
 }
