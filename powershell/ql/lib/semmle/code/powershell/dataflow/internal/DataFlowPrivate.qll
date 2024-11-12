@@ -202,6 +202,7 @@ private module Cached {
       isProcessPropertyByNameNode(iter, _)
     } or
     TScriptBlockNode(ScriptBlock scriptBlock) or
+    TTypePathNode(int n, CfgNode cfg) { isTypePathNode(_, n, cfg) } or
     TForbiddenRecursionGuard() {
       none() and
       // We want to prune irrelevant models before materialising data flow nodes, so types contributed
@@ -288,9 +289,23 @@ private module Cached {
     TypeTrackingInput::withoutContentStepImpl(_, n, _)
   }
 
+  private predicate isAutomaticVariable(Node n) {
+    n.asExpr().(CfgNodes::ExprNodes::VarReadAccessCfgNode).getVariable().getName() =
+      [
+        "args", "ConsoleFileName", "EnabledExperimentalFeatures", "Error", "Event", "EventArgs",
+        "EventSubscriber", "ExecutionContext", "HOME", "Host", "input", "IsCoreCLR", "IsLinux",
+        "IsMacOS", "IsWindows", "LASTEXITCODE", "MyInvocation", "NestedPromptLevel", "PID",
+        "PROFILE", "PSBoundParameters", "PSCmdlet", "PSCommandPath", "PSCulture", "PSDebugContext",
+        "PSEdition", "PSHOME", "PSItem", "PSScriptRoot", "PSSenderInfo", "PSUICulture",
+        "PSVersionTable", "PWD", "Sender", "ShellId", "StackTrace"
+      ]
+  }
+
   cached
   predicate isLocalSourceNode(Node n) {
     n instanceof ParameterNode
+    or
+    isAutomaticVariable(n)
     or
     // Expressions that can't be reached from another entry definition or expression
     (
@@ -1146,6 +1161,64 @@ class ScriptBlockNode extends TScriptBlockNode, NodeImpl {
   override string toStringImpl() { result = scriptBlock.toString() }
 
   override predicate nodeIsHidden() { any() }
+}
+
+private predicate isTypePathNode(string type, int n, CfgNode cfg) {
+  exists(CfgNodes::ExprNodes::TypeNameCfgNode typeName, string s |
+    cfg = typeName and
+    type = typeName.getTypeName() and
+    s = type.splitAt(".", n)
+  )
+  or
+  exists(CfgNodes::StmtNodes::CmdCfgNode cmd, string s |
+    cfg = cmd.getCommand() and
+    type = cmd.getNamespaceQualifier() and
+    s = type.splitAt(".", n)
+  )
+}
+
+/**
+ * A dataflow node that represents a component of a type or module path.
+ *
+ * For example, `System`, `System.Management`, `System.Management.Automation`,
+ * and `System.Management.Automation.PowerShell` in the type
+ * name `[System.Management.Automation.PowerShell]`.
+ */
+class TypePathNodeImpl extends TTypePathNode, NodeImpl {
+  int n;
+  CfgNode cfg;
+
+  TypePathNodeImpl() { this = TTypePathNode(n, cfg) }
+
+  string getType() { isTypePathNode(result, n, cfg) }
+
+  predicate isComplete() { not exists(this.getNext()) }
+
+  int getIndex() { result = n }
+
+  string getComponent() { result = this.getType().splitAt(".", n) }
+
+  override CfgScope getCfgScope() { result = cfg.getScope() }
+
+  override Location getLocationImpl() { result = cfg.getLocation() }
+
+  override string toStringImpl() {
+    not exists(this.getPrev()) and
+    result = this.getComponent()
+    or
+    result = this.getPrev() + "." + this.getComponent()
+  }
+
+  override predicate nodeIsHidden() { any() }
+
+  TypePathNodeImpl getNext() { result = TTypePathNode(n + 1, cfg) }
+
+  TypePathNodeImpl getPrev() { result.getNext() = this }
+
+  TypePathNodeImpl getConstant(string s) {
+    s = result.getComponent() and
+    result = this.getNext()
+  }
 }
 
 /** A node that performs a type cast. */

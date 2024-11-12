@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: sourceModel
     data:
-      - ["System.Net.Sockets.TcpClient", "Instance.Method[GetStream].ReturnValue", "remote"]
-      - ["System.Net.Sockets.UpdClient", "Instance.Method[EndReceive].ReturnValue", "remote"]
-      - ["System.Net.Sockets.UpdClient", "Instance.Method[Receive].ReturnValue", "remote"]
-      - ["System.Net.Sockets.UpdClient", "Instance.Method[ReceiveAsync].ReturnValue", "remote"]
+      - ["System.Net.Sockets.TcpClient", "Method[GetStream].ReturnValue", "remote"]
+      - ["System.Net.Sockets.UpdClient", "Method[EndReceive].ReturnValue", "remote"]
+      - ["System.Net.Sockets.UpdClient", "Method[Receive].ReturnValue", "remote"]
+      - ["System.Net.Sockets.UpdClient", "Method[ReceiveAsync].ReturnValue", "remote"]

@@ -39,15 +39,21 @@ module CommandInjection {
     SystemCommandExecutionSink() {
       // An argument to a call
       exists(DataFlow::CallNode call |
-        call.getName() = "Invoke-Expression"
-        or
-        call instanceof DataFlow::CallOperatorNode
-      |
+        call.getName() = "Invoke-Expression" and
         call.getAnArgument() = this
       )
       or
       // Or the call command itself in case it's a use of operator &.
       any(DataFlow::CallOperatorNode call).getCommand() = this
+    }
+  }
+
+  class AddTypeSink extends Sink {
+    AddTypeSink() {
+      exists(DataFlow::CallNode call |
+        call.getName() = "Add-Type" and
+        call.getAnArgument() = this
+      )
     }
   }
 

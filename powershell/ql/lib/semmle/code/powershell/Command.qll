@@ -32,7 +32,17 @@ class Cmd extends @command, CmdBase {
   predicate isQualified() { parseCommandName(this, any(string s | s != ""), _) }
 
   /** Gets the namespace qualifier of this command, if any. */
-  string getNamespaceQualifier() { parseCommandName(this, result, _) }
+  string getNamespaceQualifier() {
+    result != "" and
+    parseCommandName(this, result, _)
+    or
+    // Implicit import because it's in a module manifest
+    parseCommandName(this, "", _) and
+    exists(ModuleManifest manifest |
+      manifest.getACmdLetToExport() = this.getCommandName() and
+      result = manifest.getModuleName()
+    )
+  }
 
   /** Gets the (possibly qualified) name of this command. */
   string getQualifiedCommandName() { command(this, result, _, _, _) }

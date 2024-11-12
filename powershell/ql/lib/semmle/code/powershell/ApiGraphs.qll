@@ -326,19 +326,25 @@ module API {
 
   /** A node representing a module/class object with epsilon edges to its descendents. */
   private class ModuleNode extends Node, Impl::MkModule {
-    /** Gets the module represented by this API node. */
-    string getModule() { this = Impl::MkModule(result) }
+    string qualifiedModule;
+    int n;
+
+    ModuleNode() { this = Impl::MkModule(qualifiedModule, n) }
+
+    ModuleNode getNext() { result = Impl::MkModule(qualifiedModule, n + 1) }
+
+    ModuleNode getPred() { result.getNext() = this }
+
+    string getComponent() { result = qualifiedModule.splitAt(".", n) }
+
+    string getModule() {
+      not exists(this.getPred()) and
+      result = this.getComponent()
+      or
+      result = this.getPred().getModule() + "." + this.getComponent()
+    }
 
     override string toString() { result = "Module(" + this.getModule() + ")" }
-
-    TypeNode getType(string name) { result.getType() = this.getModule() + "." + name } // TODO: Check that name exists in module
-  }
-
-  private class TypeNode extends Node, Impl::MkType {
-    /** Gets the type represented by this API node. */
-    string getType() { this = Impl::MkType(result) }
-
-    override string toString() { result = "Type(" + this.getType() + ")" }
   }
 
   /** A node representing instances of a module/class with epsilon edges to its ancestors. */
@@ -413,13 +419,7 @@ module API {
    * Gets the node that represents the module with qualified
    * name `qualifiedModule`.
    */
-  ModuleNode mod(string qualifiedModule) { result = Impl::MkModule(qualifiedModule) }
-
-  /**
-   * Gets the node that represents the type with qualified
-   * name `qualifiedType`.
-   */
-  TypeNode type(string qualifiedType) { result = Impl::MkType(qualifiedType) }
+  ModuleNode mod(string qualifiedModule, int n) { result = Impl::MkModule(qualifiedModule, n) }
 
   /**
    * Gets an unqualified call at the top-level with the given method name.
@@ -466,26 +466,43 @@ module API {
 
   cached
   private module Impl {
+    private predicate isGacModule(string s) {
+      s =
+        [
+          "System.Management.Automation",
+          "Microsoft.Management.Infrastructure",
+          "Microsoft.PowerShell.Security",
+          "Microsoft.PowerShell.Commands.Management",
+          "Microsoft.PowerShell.Commands.Utility"
+        ]
+    }
+
+    private predicate isModule(string s, int n) {
+      (
+        any(UsingStmt using).getName() = s
+        or
+        any(Cmd cmd).getNamespaceQualifier() = s
+        or
+        any(TypeNameExpr tn).getName() = s
+        or
+        any(ModuleManifest manifest).getModuleName() = s
+        or
+        isGacModule(s)
+      ) and
+      exists(s.splitAt(".", n))
+    }
+
     cached
     newtype TApiNode =
       /** The root of the API graph. */
       MkRoot() or
       /** The method accessed at `call`, synthetically treated as a separate object. */
       MkMethodAccessNode(DataFlow::CallNode call) or
-      MkModule(string qualifiedModule) {
-        any(UsingStmt using).getName() = qualifiedModule
-        or
-        any(Cmd cmd).getNamespaceQualifier() = qualifiedModule
-        or
-        any(TypeNameExpr tn).getName() = qualifiedModule
-        or
-        any(ModuleManifest manifest).getModuleName() = qualifiedModule
-      } or
-      MkType(string qualifiedType) { any(ConstantValue cv).asString() = qualifiedType } or // TODO
+      MkModule(string qualifiedModule, int n) { isModule(qualifiedModule, n) } or
       /** Instances of `mod` with epsilon edges to its ancestors. */
-      MkInstanceUp(string qualifiedType) { exists(MkType(qualifiedType)) } or
+      MkInstanceUp(string qualifiedType) { exists(MkModule(qualifiedType, _)) } or
       /** Instances of `mod` with epsilon edges to its descendents, and to its upward node. */
-      MkInstanceDown(string qualifiedType) { exists(MkType(qualifiedType)) } or
+      MkInstanceDown(string qualifiedType) { exists(MkModule(qualifiedType, _)) } or
       /** Intermediate node for following forward data flow. */
       MkForwardNode(DataFlow::LocalSourceNode node, TypeTracker t) { isReachable(node, t) } or
       /** Intermediate node for following backward data flow. */
@@ -526,14 +543,6 @@ module API {
     }
 
     cached
-    predicate typeEdge(Node pred, string name, Node succ) {
-      exists(ModuleNode mod |
-        pred = mod and
-        succ = mod.getType(name)
-      )
-    }
-
-    cached
     predicate memberEdge(Node pred, string name, Node succ) {
       exists(MemberExpr member | succ = getForwardStartNode(getNodeFromExpr(member)) |
         pred = getForwardEndNode(getALocalSourceStrict(getNodeFromExpr(member.getQualifier()))) and
@@ -546,8 +555,9 @@ module API {
       exists(DataFlow::CallNode call | succ = MkMethodAccessNode(call) and name = call.getName() |
         pred = getForwardEndNode(getALocalSourceStrict(call.getQualifier()))
         or
-        exists(string qualifiedModule, ModuleManifest manifest |
-          pred = mod(qualifiedModule) and
+        exists(string qualifiedModule, ModuleManifest manifest, int n |
+          pred = mod(qualifiedModule, n) and
+          not exists(mod(qualifiedModule, n + 1)) and
           manifest.getModuleName() = qualifiedModule
         |
           manifest.getACmdLetToExport() = name
@@ -647,8 +657,15 @@ module API {
 
     cached
     predicate instanceEdge(Node pred, Node succ) {
-      // An instance of a type
-      exists(string qualifiedType | pred = MkType(qualifiedType) |
+      exists(string qualifiedType, int n |
+        pred = MkModule(qualifiedType, n) and
+        not exists(MkModule(qualifiedType, n + 1))
+      |
+        exists(DataFlow::TypeNameNode typeName |
+          typeName.getTypeName() = qualifiedType and
+          succ = getForwardStartNode(typeName)
+        )
+        or
         exists(DataFlow::ObjectCreationNode objCreation |
           objCreation.getConstructedTypeName() = qualifiedType and
           succ = getForwardStartNode(objCreation)
@@ -658,15 +675,6 @@ module API {
           p.getParameter().getStaticType() = qualifiedType and
           succ = getForwardStartNode(p)
         )
-      )
-      or
-      // A use of a module (or static type?)
-      // TODO: Consider implicit module qualiifers and use instance on all of them
-      exists(string qualifiedType, DataFlow::TypeNameNode typeName |
-        pred = MkModule(qualifiedType) and
-        typeName.getTypeName() = qualifiedType
-      |
-        succ = getForwardStartNode(typeName)
       )
     }
 
