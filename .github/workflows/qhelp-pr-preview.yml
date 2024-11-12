@@ -38,7 +38,7 @@ jobs:
           PR_NUMBER: ${{ github.event.number }}
       - uses: actions/upload-artifact@v4
         with:
-          name: comment
+          name: comment-pr-number
           path: pr_number.txt
           if-no-files-found: error
           retention-days: 1
@@ -80,7 +80,7 @@ jobs:
       - if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: comment
+          name: comment-body
           path: comment_body.txt
           if-no-files-found: error
           retention-days: 1
@@ -96,7 +96,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: comment
+          name: comment-id
           path: comment_id.txt
           if-no-files-found: error
           retention-days: 1
