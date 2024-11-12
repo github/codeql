@@ -25,8 +25,8 @@ edges
 | server/main.go:19:56:19:61 | definition of params [Return] | rpc/notes/service.twirp.go:574:2:574:2 | capture variable reqContent | provenance |  |
 models
 | 1 | Source: net/http; Request; true; Body; ; ; ; remote; manual |
-| 2 | Summary: google.golang.org/protobuf/proto; ; false; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
-| 3 | Summary: io; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 2 | Summary: google.golang.org/protobuf/proto; ; true; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
+| 3 | Summary: io; ; true; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 nodes
 | client/main.go:16:35:16:78 | &... | semmle.label | &... |
 | rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq | semmle.label | definition of typedReq |

@@ -71,13 +71,13 @@ edges
 models
 | 1 | Source: net/http; Request; true; Body; ; ; ; remote; manual |
 | 2 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
-| 3 | Summary: golang.org/x/net/html; ; false; NewTokenizer; ; ; Argument[0]; ReturnValue; taint; manual |
-| 4 | Summary: golang.org/x/net/html; ; false; NewTokenizerFragment; ; ; Argument[0]; ReturnValue; taint; manual |
-| 5 | Summary: golang.org/x/net/html; ; false; Parse; ; ; Argument[0]; ReturnValue[0]; taint; manual |
-| 6 | Summary: golang.org/x/net/html; ; false; ParseFragment; ; ; Argument[0]; ReturnValue[0]; taint; manual |
-| 7 | Summary: golang.org/x/net/html; ; false; ParseFragmentWithOptions; ; ; Argument[0]; ReturnValue[0]; taint; manual |
-| 8 | Summary: golang.org/x/net/html; ; false; ParseWithOptions; ; ; Argument[0]; ReturnValue[0]; taint; manual |
-| 9 | Summary: golang.org/x/net/html; ; false; UnescapeString; ; ; Argument[0]; ReturnValue; taint; manual |
+| 3 | Summary: golang.org/x/net/html; ; true; NewTokenizer; ; ; Argument[0]; ReturnValue; taint; manual |
+| 4 | Summary: golang.org/x/net/html; ; true; NewTokenizerFragment; ; ; Argument[0]; ReturnValue; taint; manual |
+| 5 | Summary: golang.org/x/net/html; ; true; Parse; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 6 | Summary: golang.org/x/net/html; ; true; ParseFragment; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 7 | Summary: golang.org/x/net/html; ; true; ParseFragmentWithOptions; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 8 | Summary: golang.org/x/net/html; ; true; ParseWithOptions; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 9 | Summary: golang.org/x/net/html; ; true; UnescapeString; ; ; Argument[0]; ReturnValue; taint; manual |
 | 10 | Summary: golang.org/x/net/html; Node; true; AppendChild; ; ; Argument[0]; Argument[receiver]; taint; manual |
 | 11 | Summary: golang.org/x/net/html; Node; true; InsertBefore; ; ; Argument[0]; Argument[receiver]; taint; manual |
 | 12 | Summary: golang.org/x/net/html; Tokenizer; true; Buffered; ; ; Argument[receiver]; ReturnValue; taint; manual |

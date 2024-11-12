@@ -30,7 +30,7 @@ edges
 | main.go:87:9:87:14 | selection of Path | main.go:91:25:91:39 | call to getTarget2 | provenance | Sink:MaD:1 |
 models
 | 1 | Sink: net/http; ; true; Redirect; ; ; Argument[2]; url-redirection[0]; manual |
-| 2 | Summary: path; ; false; Clean; ; ; Argument[0]; ReturnValue; taint; manual |
+| 2 | Summary: path; ; true; Clean; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | BadRedirectCheck.go:3:18:3:22 | argument corresponding to redir | semmle.label | argument corresponding to redir |
 | BadRedirectCheck.go:3:18:3:22 | definition of redir | semmle.label | definition of redir |

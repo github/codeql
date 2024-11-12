@@ -74,7 +74,7 @@ models
 | 16 | Summary: io; Reader; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
 | 17 | Summary: mime/multipart; FileHeader; true; Open; ; ; Argument[receiver]; ReturnValue[0]; taint; manual |
 | 18 | Summary: os; File; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
-| 19 | Summary: strings; ; false; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
+| 19 | Summary: strings; ; true; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | test.go:15:11:15:32 | call to Param | semmle.label | call to Param |
 | test.go:16:16:16:20 | param | semmle.label | param |

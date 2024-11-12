@@ -87,9 +87,9 @@ edges
 | UnsafeTLS.go:450:6:450:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:449:19:451:5 | slice literal | provenance |  |
 | UnsafeTLS.go:457:6:457:48 | selection of TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256 | UnsafeTLS.go:456:19:458:5 | slice literal | provenance |  |
 models
-| 1 | Summary: ; ; false; append; ; ; Argument[0].ArrayElement; ReturnValue.ArrayElement; value; manual |
-| 2 | Summary: ; ; false; append; ; ; Argument[0]; ReturnValue; taint; manual |
-| 3 | Summary: ; ; false; append; ; ; Argument[1].ArrayElement; ReturnValue.ArrayElement; value; manual |
+| 1 | Summary: ; ; true; append; ; ; Argument[0].ArrayElement; ReturnValue.ArrayElement; value; manual |
+| 2 | Summary: ; ; true; append; ; ; Argument[0]; ReturnValue; taint; manual |
+| 3 | Summary: ; ; true; append; ; ; Argument[1].ArrayElement; ReturnValue.ArrayElement; value; manual |
 nodes
 | UnsafeTLS.go:21:23:21:23 | 0 | semmle.label | 0 |
 | UnsafeTLS.go:25:23:25:23 | 0 | semmle.label | 0 |

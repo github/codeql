@@ -81,13 +81,13 @@ models
 | 10 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
 | 11 | Source: nhooyr.io/websocket; Conn; true; Read; ; ; ReturnValue[1]; remote; manual |
 | 12 | Summary: fmt; ; true; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
-| 13 | Summary: io/ioutil; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 13 | Summary: io/ioutil; ; true; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 | 14 | Summary: io; Reader; true; Read; ; ; Argument[receiver]; Argument[0]; taint; manual |
 | 15 | Summary: mime/multipart; Part; true; FileName; ; ; Argument[receiver]; ReturnValue; taint; manual |
 | 16 | Summary: mime/multipart; Reader; true; NextPart; ; ; Argument[receiver]; ReturnValue[0]; taint; manual |
 | 17 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
 | 18 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 19 | Summary: strings; ; false; Join; ; ; Argument[0..1]; ReturnValue; taint; manual |
+| 19 | Summary: strings; ; true; Join; ; ; Argument[0..1]; ReturnValue; taint; manual |
 nodes
 | ReflectedXss.go:11:15:11:20 | selection of Form | semmle.label | selection of Form |
 | ReflectedXss.go:11:15:11:36 | call to Get | semmle.label | call to Get |

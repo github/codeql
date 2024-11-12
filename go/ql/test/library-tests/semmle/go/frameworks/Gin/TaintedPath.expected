@@ -9,10 +9,10 @@ edges
 | Gin.go:24:15:24:33 | call to Query | Gin.go:27:20:27:27 | filepath | provenance | Src:MaD:5 Sink:MaD:2 |
 | Gin.go:24:15:24:33 | call to Query | Gin.go:29:32:29:39 | filepath | provenance | Src:MaD:5 Sink:MaD:3 |
 models
-| 1 | Sink: github.com/gin-gonic/gin; Context; false; File; ; ; Argument[0]; path-injection; manual |
-| 2 | Sink: github.com/gin-gonic/gin; Context; false; FileAttachment; ; ; Argument[0]; path-injection; manual |
-| 3 | Sink: github.com/gin-gonic/gin; Context; false; SaveUploadedFile; ; ; Argument[1]; path-injection; manual |
-| 4 | Sink: net/http; ; false; ServeFile; ; ; Argument[2]; path-injection; manual |
+| 1 | Sink: github.com/gin-gonic/gin; Context; true; File; ; ; Argument[0]; path-injection; manual |
+| 2 | Sink: github.com/gin-gonic/gin; Context; true; FileAttachment; ; ; Argument[0]; path-injection; manual |
+| 3 | Sink: github.com/gin-gonic/gin; Context; true; SaveUploadedFile; ; ; Argument[1]; path-injection; manual |
+| 4 | Sink: net/http; ; true; ServeFile; ; ; Argument[2]; path-injection; manual |
 | 5 | Source: github.com/gin-gonic/gin; Context; true; Query; ; ; ReturnValue; remote; manual |
 nodes
 | Gin.go:24:15:24:33 | call to Query | semmle.label | call to Query |

@@ -24,7 +24,7 @@ edges
 | tests.go:108:5:108:78 | ... := ...[0] | tests.go:110:9:110:9 | f | provenance | Src:MaD:1  |
 | tests.go:125:5:125:78 | ... := ...[0] | tests.go:129:3:129:3 | f | provenance | Src:MaD:1  |
 models
-| 1 | Source: os; ; false; OpenFile; ; ; ReturnValue[0]; file; manual |
+| 1 | Source: os; ; true; OpenFile; ; ; ReturnValue[0]; file; manual |
 nodes
 | tests.go:8:24:8:24 | definition of f | semmle.label | definition of f |
 | tests.go:9:8:9:8 | f | semmle.label | f |

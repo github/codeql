@@ -35,7 +35,7 @@ edges
 | HTMLTemplateEscapingPassthrough.go:91:64:91:66 | src | HTMLTemplateEscapingPassthrough.go:91:38:91:67 | call to HTMLEscapeString | provenance | MaD:2 |
 models
 | 1 | Source: net/http; Request; true; UserAgent; ; ; ReturnValue; remote; manual |
-| 2 | Summary: html/template; ; false; HTMLEscapeString; ; ; Argument[0]; ReturnValue; taint; manual |
+| 2 | Summary: html/template; ; true; HTMLEscapeString; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | semmle.label | call to UserAgent |

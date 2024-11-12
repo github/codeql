@@ -138,7 +138,7 @@ models
 | 35 | Sink: group:xmlpath; ; true; MustCompile; ; ; Argument[0]; xpath-injection; manual |
 | 36 | Source: net/http; Request; true; Form; ; ; ; remote; manual |
 | 37 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 38 | Summary: strings; ; false; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
+| 38 | Summary: strings; ; true; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | XPathInjection.go:13:14:13:19 | selection of Form | semmle.label | selection of Form |
 | XPathInjection.go:13:14:13:35 | call to Get | semmle.label | call to Get |

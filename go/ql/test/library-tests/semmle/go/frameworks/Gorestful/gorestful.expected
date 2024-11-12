@@ -1,5 +1,5 @@
 models
-| 1 | Sink: os/exec; ; false; Command; ; ; Argument[0]; command-injection; manual |
+| 1 | Sink: os/exec; ; true; Command; ; ; Argument[0]; command-injection; manual |
 | 2 | Source: github.com/emicklei/go-restful; Request; true; BodyParameter; ; ; ReturnValue[0]; remote; manual |
 | 3 | Source: github.com/emicklei/go-restful; Request; true; PathParameters; ; ; ReturnValue; remote; manual |
 | 4 | Source: github.com/emicklei/go-restful; Request; true; QueryParameters; ; ; ReturnValue; remote; manual |
