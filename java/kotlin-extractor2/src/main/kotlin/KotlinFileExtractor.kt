@@ -611,8 +611,6 @@ OLD: KE1
                     tw.writeIsRaw(id)
                 }
 
-                val unbound = useClassSource(c)
-                tw.writeErasure(id, unbound)
                 extractClassModifiers(c, id)
                 extractClassSupertypes(
                     c,
