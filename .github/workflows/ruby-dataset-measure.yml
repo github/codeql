@@ -54,7 +54,7 @@ jobs:
           codeql dataset measure --threads 4 --output "stats/${{ matrix.repo }}/stats.xml" "${{ runner.temp }}/database/db-ruby"
       - uses: actions/upload-artifact@v3
         with:
-          name: measurements
+          name: measurements-${{ hashFiles('stats/**') }}
           path: stats
           retention-days: 1
 
@@ -65,7 +65,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
-          name: measurements
           path: stats
       - run: |
           python -m pip install --user lxml
