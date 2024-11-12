@@ -289,9 +289,23 @@ private module Cached {
     TypeTrackingInput::withoutContentStepImpl(_, n, _)
   }
 
+  private predicate isAutomaticVariable(Node n) {
+    n.asExpr().(CfgNodes::ExprNodes::VarReadAccessCfgNode).getVariable().getName() =
+      [
+        "args", "ConsoleFileName", "EnabledExperimentalFeatures", "Error", "Event", "EventArgs",
+        "EventSubscriber", "ExecutionContext", "HOME", "Host", "input", "IsCoreCLR", "IsLinux",
+        "IsMacOS", "IsWindows", "LASTEXITCODE", "MyInvocation", "NestedPromptLevel", "PID",
+        "PROFILE", "PSBoundParameters", "PSCmdlet", "PSCommandPath", "PSCulture", "PSDebugContext",
+        "PSEdition", "PSHOME", "PSItem", "PSScriptRoot", "PSSenderInfo", "PSUICulture",
+        "PSVersionTable", "PWD", "Sender", "ShellId", "StackTrace"
+      ]
+  }
+
   cached
   predicate isLocalSourceNode(Node n) {
     n instanceof ParameterNode
+    or
+    isAutomaticVariable(n)
     or
     // Expressions that can't be reached from another entry definition or expression
     (

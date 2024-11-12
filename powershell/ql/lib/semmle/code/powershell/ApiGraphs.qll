@@ -466,6 +466,16 @@ module API {
 
   cached
   private module Impl {
+    private predicate isGacModule(string s) {
+      s =
+        [
+          "System.Management.Automation",
+          "Microsoft.Management.Infrastructure",
+          "Microsoft.PowerShell.Security",
+          "Microsoft.PowerShell.Commands.Management",
+          "Microsoft.PowerShell.Commands.Utility"
+        ]
+    }
 
     private predicate isModule(string s, int n) {
       (
@@ -476,6 +486,8 @@ module API {
         any(TypeNameExpr tn).getName() = s
         or
         any(ModuleManifest manifest).getModuleName() = s
+        or
+        isGacModule(s)
       ) and
       exists(s.splitAt(".", n))
     }
