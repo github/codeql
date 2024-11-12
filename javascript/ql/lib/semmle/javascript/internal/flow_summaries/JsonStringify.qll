@@ -12,7 +12,7 @@ private class JsonStringifySummary extends SummarizedCallable {
 
   override DataFlow::InvokeNode getACall() { result instanceof JsonStringifyCall }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = false and
     input = ["Argument[0]", "Argument[0].AnyMemberDeep"] and
     output = "ReturnValue"

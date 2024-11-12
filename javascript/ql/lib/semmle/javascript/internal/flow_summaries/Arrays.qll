@@ -99,7 +99,7 @@ class ArrayConstructorSummary extends SummarizedCallable {
     result = arrayConstructorRef().getAnInvocation()
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[0..]" and
     output = "ReturnValue.ArrayElement"
@@ -123,7 +123,7 @@ class Join extends SummarizedCallable {
     result.getNumArgument() = [0, 1]
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = false and
     input = "Argument[this].ArrayElement" and
     output = "ReturnValue"
@@ -135,7 +135,7 @@ class CopyWithin extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "copyWithin" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[this].WithArrayElement" and
     output = "ReturnValue"
@@ -154,7 +154,7 @@ class FlowIntoCallback extends SummarizedCallable {
     result.getMethodName() = ["every", "findIndex", "findLastIndex", "some"]
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[this].ArrayElement" and
@@ -171,7 +171,7 @@ class Filter extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "filter" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[this].ArrayElement" and
@@ -198,7 +198,7 @@ class Fill extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "fill" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[0..]" and
     output = ["ReturnValue.ArrayElement", "Argument[this].ArrayElement"]
@@ -210,7 +210,7 @@ class FindLike extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = ["find", "findLast"] }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[this].ArrayElement" and
@@ -229,7 +229,7 @@ class FindLibrary extends SummarizedCallable {
     result = DataFlow::moduleImport(["array.prototype.find", "array-find"]).getACall()
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[0].ArrayElement" and
@@ -257,7 +257,7 @@ class Flat extends SummarizedCallable {
     )
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[this]" + concat(int n | n in [0 .. depth] | ".ArrayElement")
@@ -277,7 +277,7 @@ class FlatMap extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "flatMap" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[this].ArrayElement" and
@@ -309,7 +309,7 @@ class From1Arg extends SummarizedCallable {
     result = arrayFromCall() and result.getNumArgument() = 1
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[0].WithArrayElement" and
@@ -346,7 +346,7 @@ class FromManyArg extends SummarizedCallable {
     result.getNumArgument() > 1
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[0]." + ["ArrayElement", "SetElement", "IteratorElement"] and
@@ -380,7 +380,7 @@ class Map extends SummarizedCallable {
     result.getMethodName() = "map"
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[this].ArrayElement" and
@@ -405,7 +405,7 @@ class Of extends SummarizedCallable {
     result = arrayConstructorRef().getAMemberCall("of")
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[0..]" and
     output = "ReturnValue.ArrayElement"
@@ -417,7 +417,7 @@ class Pop extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "pop" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[this].ArrayElement" and
     output = "ReturnValue"
@@ -429,7 +429,7 @@ class PushLike extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = ["push", "unshift"] }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[0..]" and
     output = "Argument[this].ArrayElement"
@@ -441,7 +441,7 @@ class ReduceLike extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = ["reduce", "reduceRight"] }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     /*
      * Signatures:
@@ -470,7 +470,7 @@ class Reverse extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = ["reverse", "toReversed"] }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[this].ArrayElement" and
     output = "ReturnValue.ArrayElement"
@@ -482,7 +482,7 @@ class Shift extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "shift" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[this].ArrayElement[0]" and
     output = "ReturnValue"
@@ -500,7 +500,7 @@ class Sort extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = ["sort", "toSorted"] }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[this].ArrayElement" and
@@ -517,7 +517,7 @@ class Splice extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "splice" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[this].ArrayElement" and
@@ -534,7 +534,7 @@ class ToSpliced extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "toSpliced" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[this].ArrayElement" and
@@ -551,7 +551,7 @@ class ArrayCoercionPackage extends FunctionalPackageSummary {
 
   override string getAPackageName() { result = ["arrify", "array-ify"] }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[0].WithArrayElement" and
@@ -573,7 +573,7 @@ class ArrayCopyingPackage extends FunctionalPackageSummary {
 
   override string getAPackageName() { result = ["array-union", "array-uniq", "uniq"] }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[0..].ArrayElement" and
     output = "ReturnValue.ArrayElement"
@@ -587,7 +587,7 @@ class ArrayFlatteningPackage extends FunctionalPackageSummary {
     result = ["array-flatten", "arr-flatten", "flatten", "array.prototype.flat"]
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     // TODO: properly support these. For the moment we're just adding parity with the old model
     preservesValue = false and
     input = "Argument[0..]" and

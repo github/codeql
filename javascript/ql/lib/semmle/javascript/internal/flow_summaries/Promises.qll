@@ -29,7 +29,7 @@ private class PromiseConstructor extends SummarizedCallable {
     none()
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       // TODO: when FlowSummaryImpl.qll supports these summaries, remove the workaround in PromiseConstructorWorkaround
@@ -58,7 +58,7 @@ module PromiseConstructorWorkaround {
         promiseConstructorRef().getAnInstantiation().getCallback(0).getParameter(0).getACall()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       preservesValue = true and
       input = "Argument[0]" and
       output = "Argument[function].Member[resolve-value]"
@@ -73,7 +73,7 @@ module PromiseConstructorWorkaround {
         promiseConstructorRef().getAnInstantiation().getCallback(0).getParameter(1).getACall()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       preservesValue = true and
       input = "Argument[0]" and
       output = "Argument[function].Member[reject-value]"
@@ -87,7 +87,7 @@ module PromiseConstructorWorkaround {
       result = promiseConstructorRef().getAnInstantiation()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       preservesValue = true and
       (
         input = "Argument[0].Parameter[0].Member[resolve-value]" and
@@ -111,7 +111,7 @@ private class PromiseThen2Arguments extends SummarizedCallable {
     result.getNumArgument() = 2
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[0,1].ReturnValue" and output = "ReturnValue.Awaited"
@@ -133,7 +133,7 @@ private class PromiseThen1Argument extends SummarizedCallable {
     result.getNumArgument() = 1
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[0].ReturnValue" and output = "ReturnValue.Awaited"
@@ -152,7 +152,7 @@ private class PromiseCatch extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "catch" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[0].ReturnValue" and output = "ReturnValue.Awaited"
@@ -171,7 +171,7 @@ private class PromiseFinally extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "finally" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[0].ReturnValue.Awaited[error]" and output = "ReturnValue.Awaited[error]"
@@ -190,7 +190,7 @@ private class PromiseResolve extends SummarizedCallable {
     result = promiseConstructorRef().getAMemberCall("resolve")
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[0]" and
     output = "ReturnValue.Awaited"
@@ -204,7 +204,7 @@ private class PromiseReject extends SummarizedCallable {
     result = promiseConstructorRef().getAMemberCall("reject")
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[0]" and
     output = "ReturnValue.Awaited[error]"
@@ -218,7 +218,7 @@ private class PromiseAll extends SummarizedCallable {
     result = promiseConstructorRef().getAMemberCall("all")
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     exists(string content | content = getAnArrayContent() |
       input = "Argument[0]." + content + ".Awaited" and
@@ -242,7 +242,7 @@ private class PromiseAnyLike extends SummarizedCallable {
     result = promiseConstructorRef().getAMemberCall(["any", "race", "firstFulfilled"])
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[0].ArrayElement" and
     output = "ReturnValue.Awaited"
@@ -258,7 +258,7 @@ private class PromiseAllSettled extends SummarizedCallable {
     result = DataFlow::moduleImport("promise.allsettled").getACall()
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     exists(string content | content = getAnArrayContent() |
       input = "Argument[0]." + content + ".Awaited" and
@@ -277,7 +277,7 @@ private class BluebirdMapSeries extends SummarizedCallable {
     result = promiseConstructorRef().getAMemberCall("mapSeries")
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[0].Awaited.ArrayElement.Awaited" and
@@ -310,7 +310,7 @@ private class PromiseWithResolversLike extends SummarizedCallable {
     result = promiseConstructorRef().getAMemberCall(["withResolver", "withResolvers", "defer"])
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       // TODO: not currently supported by FlowSummaryImpl.qll

@@ -31,7 +31,7 @@ class At extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "at" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[this].ArrayElement" and
     output = "ReturnValue"
@@ -45,7 +45,7 @@ class Concat extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "concat" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[this,0..].ArrayElement" and
     output = "ReturnValue.ArrayElement"
@@ -61,7 +61,7 @@ class Slice extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "slice" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[this].ArrayElement" and
     output = "ReturnValue.ArrayElement"
@@ -80,7 +80,7 @@ class Entries extends SummarizedCallable {
     result.getNumArgument() = 0
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[this]." + ["MapKey", "SetElement"] and
@@ -97,7 +97,7 @@ class ForEach extends SummarizedCallable {
 
   override InstanceCall getACallSimple() { result.getMethodName() = "forEach" }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     /*
      * array.forEach(callbackfn, thisArg)
@@ -128,7 +128,7 @@ class Keys extends SummarizedCallable {
     result.getNumArgument() = 0
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[this]." + ["MapKey", "SetElement"] and
     output = "ReturnValue.IteratorElement"
@@ -143,7 +143,7 @@ class Values extends SummarizedCallable {
     result.getNumArgument() = 0
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[this]." + ["ArrayElement", "SetElement", "MapValue"] and
     output = "ReturnValue.IteratorElement"
