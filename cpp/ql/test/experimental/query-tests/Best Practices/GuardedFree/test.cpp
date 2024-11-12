@@ -110,6 +110,6 @@ void test13(char *x) {
 void inspect(char *x);
 
 void test14(char *x) {
-  if (x != nullptr) // GOOD [FALSE POSITIVE]: x might be accessed
+  if (x != nullptr) // GOOD [FALSE POSITIVE]: x might be accessed in the first operand of the comma operator
     inspect(x), free(x);
 }
