@@ -107,7 +107,7 @@ namespace Semmle.Extraction
             using (StackGuard)
             {
                 var label = GetNewLabel();
-                var entity = factory.Create(this, init);
+                var entity = factory.Create((CSharp.Context)this, init);
                 entity.Label = label;
 
                 dictionary[cacheKey] = entity;
@@ -493,7 +493,7 @@ namespace Semmle.Extraction
         }
 
         public virtual CSharp.Entities.Location CreateLocation() =>
-            CSharp.Entities.GeneratedLocation.Create(this);
+            CSharp.Entities.GeneratedLocation.Create((CSharp.Context)this);
 
         public virtual CSharp.Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location) =>
             CreateLocation();

@@ -2,9 +2,9 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public sealed class Folder : Extraction.CachedEntity<PathTransformer.ITransformedPath>
+    public sealed class Folder : CachedEntity<PathTransformer.ITransformedPath>
     {
-        private Folder(Extraction.Context cx, PathTransformer.ITransformedPath init) : base(cx, init) { }
+        private Folder(Context cx, PathTransformer.ITransformedPath init) : base(cx, init) { }
 
         public override void Populate(TextWriter trapFile)
         {
@@ -21,16 +21,16 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";folder");
         }
 
-        public static Folder Create(Extraction.Context cx, PathTransformer.ITransformedPath folder) =>
+        public static Folder Create(Context cx, PathTransformer.ITransformedPath folder) =>
             FolderFactory.Instance.CreateEntity(cx, folder, folder);
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
-        private class FolderFactory : Extraction.CachedEntityFactory<PathTransformer.ITransformedPath, Folder>
+        private class FolderFactory : CachedEntityFactory<PathTransformer.ITransformedPath, Folder>
         {
             public static FolderFactory Instance { get; } = new FolderFactory();
 
-            public override Folder Create(Extraction.Context cx, PathTransformer.ITransformedPath init) => new Folder(cx, init);
+            public override Folder Create(Context cx, PathTransformer.ITransformedPath init) => new Folder(cx, init);
         }
 
         public override int GetHashCode() => Symbol.GetHashCode();

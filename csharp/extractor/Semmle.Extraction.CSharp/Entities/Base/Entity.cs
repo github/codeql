@@ -1,15 +1,14 @@
 using System;
 using System.IO;
 using Microsoft.CodeAnalysis;
-using Semmle.Extraction.CSharp;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     public abstract class Entity : IEntity
     {
-        public virtual Context Context { get; }
+        public virtual Semmle.Extraction.Context Context { get; }
 
-        protected Entity(Context context)
+        protected Entity(Semmle.Extraction.Context context)
         {
             this.Context = context;
         }
