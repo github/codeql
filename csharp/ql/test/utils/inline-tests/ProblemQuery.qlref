@@ -1,2 +1,2 @@
 query: utils/inline-tests/queries/ProblemQuery.ql
-postprocess: TestUtilities/InlineExpectationsTestQuery.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
