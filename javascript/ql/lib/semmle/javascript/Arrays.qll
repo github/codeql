@@ -444,4 +444,18 @@ private module ArrayLibraries {
       )
     }
   }
+
+  /**
+   * A taint propagating data flow edge arising from in-place array manipulation operations.
+   * The methods return the pointer to `this` array as well.
+   */
+  private class ArrayInPlaceManipulationTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() in ["sort", "reverse"] and
+        pred = call.getReceiver() and
+        succ = call
+      )
+    }
+  }
 }

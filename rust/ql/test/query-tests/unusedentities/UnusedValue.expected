@@ -18,5 +18,3 @@
 | more.rs:44:9:44:14 | a_ptr4 | Variable $@ is assigned a value that is never used. | more.rs:44:9:44:14 | a_ptr4 | a_ptr4 |
 | more.rs:59:9:59:13 | d_ptr | Variable $@ is assigned a value that is never used. | more.rs:59:9:59:13 | d_ptr | d_ptr |
 | more.rs:65:9:65:17 | f_ptr | Variable $@ is assigned a value that is never used. | more.rs:65:13:65:17 | f_ptr | f_ptr |
-| unreachable.rs:292:9:292:15 | for_ten | Variable $@ is assigned a value that is never used. | unreachable.rs:292:9:292:15 | for_ten | for_ten |
-| unreachable.rs:299:9:299:16 | for_ever | Variable $@ is assigned a value that is never used. | unreachable.rs:299:9:299:16 | for_ever | for_ever |

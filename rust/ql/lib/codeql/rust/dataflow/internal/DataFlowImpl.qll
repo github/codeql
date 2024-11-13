@@ -65,7 +65,7 @@ final class NormalCall extends DataFlowCall, TNormalCall {
   override CallCfgNode asCall() { result = c }
 
   override DataFlowCallable getEnclosingCallable() {
-    result = TCfgScope(c.getExpr().getEnclosingCallable())
+    result = TCfgScope(c.getExpr().getEnclosingCfgScope())
   }
 
   override string toString() { result = c.toString() }
