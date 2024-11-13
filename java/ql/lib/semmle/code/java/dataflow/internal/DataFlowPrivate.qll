@@ -786,8 +786,8 @@ predicate containerContent(ContentSet c) {
   c instanceof MapValueContent
 }
 
-Content getLambdaReturnContent(LambdaCallKind kind) {
-  result = TLambdaReturn(kind)
+Content getLambdaReturnContent(LambdaCallKind kind, ReturnKind k) {
+  result = TLambdaReturn(kind) and exists(k)
 }
 
 Content getLambdaArgumentContent(LambdaCallKind kind, ArgumentPosition pos) {
