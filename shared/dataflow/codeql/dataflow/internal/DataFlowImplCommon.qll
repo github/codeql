@@ -1,7 +1,7 @@
 private import codeql.dataflow.DataFlow
 private import codeql.typetracking.TypeTracking as Tt
 private import codeql.util.Location
-private import codeql.util.Option
+private import codeql.util.Boolean
 private import codeql.util.Unit
 private import codeql.util.Option
 
@@ -118,10 +118,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     // TODO: support setters
+    // TODO extend
     predicate storeStep(Node n1, Node n2, Content f) { storeSet(n1, f, n2, _, _) }
 
     private predicate loadStep0(Node n1, Node n2, Content f) {
-      readSet(n1, f, n2)
+      // TODO extend
+      readStep(n1, f, n2)
       or
       argumentValueFlowsThrough(n1, TReadStepTypesSome(_, f, _), n2, _)
     }
@@ -139,7 +141,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate callStep(Node n1, LocalSourceNode n2) { viableParamArg(_, n2, n1) }
 
     predicate returnStep(Node n1, LocalSourceNode n2) {
-      viableReturnPosOut(_, [getValueReturnPosition(n1), getParamReturnPosition(n1, _)], n2)
+      // TODO: extend to NodeEx
+      viableReturnPosOut(_,
+        [getValueReturnPosition(n1), getParamReturnPosition(any(NodeEx n | n.asNode() = n1), _)], n2)
     }
 
     predicate hasFeatureBacktrackStoreTarget() { none() }
@@ -183,6 +187,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     )
   }
 
+  pragma[nomagic]
+  private predicate hasSimpleReturnKindIn(ReturnNode ret, ReturnKind kind, DataFlowCallable c) {
+    c = getNodeEnclosingCallable(ret) and
+    kind = ret.getKind()
+  }
+
   /**
    * Provides a simple data-flow analysis for resolving lambda calls. The analysis
    * currently excludes read-steps, store-steps, and flow-through.
@@ -192,6 +202,21 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
    * calls. For this reason, we cannot reuse the code from `DataFlowImpl.qll` directly.
    */
   private module LambdaFlow {
+    private predicate lambdaLocalFlow(Node lambda, Node node) {
+      lambdaCreation(lambda, _, _, _) and
+      node = lambda
+      or
+      exists(Node mid |
+        lambdaLocalFlow(lambda, mid) and
+        simpleLocalFlowStep(mid, node, _) and
+        validParameterAliasStep(mid, node)
+      )
+    }
+
+    predicate lambdaFlowsToPostUpdate(Node lambda, PostUpdateNode post) {
+      lambdaLocalFlow(lambda, post.getPreUpdateNode())
+    }
+
     pragma[noinline]
     private predicate viableParamNonLambda(DataFlowCall call, ParameterPosition ppos, ParamNode p) {
       p.isParameterOf(viableCallable(call), ppos)
@@ -223,12 +248,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           kind = ret.getKind()
         )
       }
-
-    pragma[nomagic]
-    private predicate hasSimpleReturnKindIn(ReturnNode ret, ReturnKind kind, DataFlowCallable c) {
-      c = getNodeEnclosingCallable(ret) and
-      kind = ret.getKind()
-    }
 
     pragma[nomagic]
     private TReturnPositionSimple getReturnPositionSimple(ReturnNode ret) {
@@ -857,6 +876,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       exists(Node n | this.isImplicitReadNode(n) | result = n.toString() + " [Ext]")
       or
       result = this.asParamReturnNode().toString() + " [Return]"
+      //TODO
     }
 
     Node asNode() { this = TNodeNormal(result) }
@@ -868,10 +888,29 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     ParameterNode asParamReturnNode() { this = TParamReturnNode(result, _) }
 
+    ParameterNode asLambdaInstancePostUpdateNode() { this = TNodeLambdaInstancePostUpdate(result) }
+
+    Node asLambdaMallocNode() { this = TNodeLambdaMalloc(result) }
+
+    predicate isLambdaArgNode(DataFlowCall synthcall, ArgumentPosition apos, boolean isPost) {
+      this = TNodeLambdaArg(synthcall, apos, isPost)
+    }
+
     Node projectToNode() {
-      this = TNodeNormal(result) or
-      this = TNodeImplicitRead(result) or
+      this = TNodeNormal(result)
+      or
+      this = TNodeImplicitRead(result)
+      or
       this = TParamReturnNode(result, _)
+      or
+      this = TNodeLambdaInstancePostUpdate(result)
+      or
+      this = TNodeLambdaMalloc(result)
+      or
+      exists(DataFlowCall synthcall |
+        this = TNodeLambdaArg(synthcall, _, _) and
+        lambdaCreation(result, _, _, synthcall)
+      )
     }
 
     pragma[nomagic]
@@ -889,6 +928,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       nodeDataFlowType(this.asNode(), result)
       or
       nodeDataFlowType(this.asParamReturnNode(), result)
+      //TODO
     }
 
     pragma[inline]
@@ -927,6 +967,25 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     ReturnPosition getReturnPosition() { result = pos }
 
     ReturnKindExt getKind() { result = pos.getKind() }
+  }
+
+  class PostUpdateNodeEx extends NodeEx {
+    private NodeEx pre;
+
+    PostUpdateNodeEx() {
+      pre.asNode() = this.asNode().(PostUpdateNode).getPreUpdateNode()
+      or
+      pre.asNode() = this.asLambdaInstancePostUpdateNode()
+      or
+      exists(DataFlowCall synthcall, ArgumentPosition apos |
+        this.isLambdaArgNode(synthcall, apos, true) and
+        pre.isLambdaArgNode(synthcall, apos, false)
+      )
+      or
+      pre.asLambdaMallocNode() = this.asNode()
+    }
+
+    NodeEx getPreUpdateNode() { result = pre }
   }
 
   cached
@@ -1008,15 +1067,36 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private predicate paramReturnNode(
-      PostUpdateNode n, ParamNode p, SndLevelScopeOption scope, ReturnKindExt k
+      PostUpdateNodeEx n, ParamNode p, SndLevelScopeOption scope, ReturnKindExt k
     ) {
       exists(ParameterPosition pos |
-        parameterValueFlowsToPreUpdate(p, n) and
+        parameterValueFlowsToPreUpdate(p, n.asNode()) and
         p.isParameterOf(_, pos) and
         k = TParamUpdate(pos) and
-        scope = getSecondLevelScopeCached(n)
+        scope = getSecondLevelScopeCached(n.asNode())
+      )
+      or
+      exists(ParameterPosition pos |
+        n.asLambdaInstancePostUpdateNode() = p and
+        p.isParameterOf(_, pos) and
+        scope = getSecondLevelScopeCached(p) and
+        k = TParamUpdate(pos)
       )
     }
+
+    /*
+     * lambda = (x) = x.addTaint();
+     * synthcall(lambda, lambda.arg0); // arg0[post] --store(Argument0)--> lambda (post-update) [Argument0]
+     *
+     *
+     * foo(lambda)
+     *
+     * foo(l1) {
+     *    l1(x); // x --store(Argument0)--> l1 (post-update) [Argument0]
+     *    // l1 [Argument0] --read(Argument0)--> x (post-update)
+     *    // l1 [ReturnValue] --read(ReturnValue)--> l1(x)
+     * }
+     */
 
     cached
     predicate castNode(Node n) { n instanceof CastNode }
@@ -1029,7 +1109,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       // For reads, `x.f`, we want to check that the tracked type after the read (which
       // is obtained by popping the head of the access path stack) is compatible with
       // the type of `x.f`.
-      readSet(_, _, n)
+      readStep(_, _, n)
     }
 
     cached
@@ -1133,7 +1213,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       none() and
       exists(Node creation, LambdaCallKind kind |
         LambdaFlow::revLambdaFlow(call, kind, creation, _, _, _, lastCall) and
-        lambdaCreation(creation, kind, result)
+        lambdaCreation(creation, kind, result, _)
       )
     }
 
@@ -1302,6 +1382,29 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
+    cached
+    predicate viableReturnPosOutEx(DataFlowCall call, ReturnPosition pos, NodeEx out) {
+      viableReturnPosOut(call, pos, out.asNode())
+    }
+
+    cached
+    predicate viableParamArgEx(DataFlowCall call, ParamNodeEx p, ArgNodeEx arg) {
+      viableParamArg(call, p.asNode(), arg.asNode())
+      or
+      exists(ArgumentPosition apos, DataFlowCallable c, ParameterPosition ppos |
+        arg.isLambdaArgNode(call, apos, false) and
+        lambdaCreation(_, _, c, call) and
+        p.isParameterOf(c, ppos) and
+        parameterMatch(ppos, apos)
+      )
+      or
+      exists(DataFlowCallable c |
+        isLambdaInstanceParameter(p.asNode()) and
+        lambdaCreation(arg.asLambdaMallocNode(), _, c, call) and
+        p.isParameterOf(c, _)
+      )
+    }
+
     /** Provides predicates for calculating flow-through summaries. */
     private module FlowThrough {
       /**
@@ -1333,7 +1436,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
             // read
             exists(Node mid |
               parameterValueFlowCand(p, mid, false) and
-              readSet(mid, _, node) and
+              readStep(mid, _, node) and
               read = true
             )
             or
@@ -1580,7 +1683,30 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    predicate readSet(Node node1, ContentSet c, Node node2) { readStep(node1, c, node2) }
+    predicate readSet(NodeEx node1, ContentSet c, NodeEx node2) {
+      readStep(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode()))
+      or
+      exists(DataFlowCall call, LambdaCallKind k, Node receiver, ReturnKind kind |
+        lambdaCall(call, k, receiver) and
+        node1.asNode() = receiver
+      |
+        c.getAReadContent() = getLambdaReturnContent(k, kind) and
+        getAnOutNode(call, kind) = node2.asNode()
+        or
+        exists(ArgumentPosition apos |
+          c.getAReadContent() = getLambdaArgumentContent(k, apos) and
+          node2.asNode().(PostUpdateNode).getPreUpdateNode().(ArgNode).argumentOf(call, apos)
+        )
+      )
+      or
+      //read step from malloc to args
+      //lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c, DataFlowCall synthCall)
+      exists(DataFlowCall synthcall, LambdaCallKind k, ArgumentPosition apos |
+        lambdaCreation(node1.asLambdaMallocNode(), k, _, synthcall) and
+        node2.isLambdaArgNode(synthcall, apos, false) and
+        c.getAReadContent() = getLambdaArgumentContent(k, apos)
+      )
+    }
 
     cached
     predicate storeSet(
@@ -1596,7 +1722,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       |
         argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, c, contentType), n1, _) // TODO
         or
-        readSet(n2, c, n1) and
+        readStep(n2, c, n1) and
         contentType = getNodeDataFlowType(n1) and
         containerType = getNodeDataFlowType(n2)
       )
@@ -1611,10 +1737,34 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      */
     cached
     predicate store(
-      Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
+      NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     ) {
       exists(ContentSet cs |
-        c = cs.getAStoreContent() and storeSet(node1, cs, node2, contentType, containerType)
+        c = cs.getAStoreContent() and
+        storeSet(pragma[only_bind_into](node1.asNode()), cs, pragma[only_bind_into](node2.asNode()),
+          contentType, containerType)
+      )
+      or
+      exists(
+        DataFlowCall call, LambdaCallKind k, Node receiver, ReturnKind kind, ArgumentPosition apos
+      |
+        lambdaCall(call, k, receiver) and
+        node2.asNode().(PostUpdateNode).getPreUpdateNode() = receiver and
+        c = getLambdaArgumentContent(k, apos) and
+        node1.asNode().(ArgNode).argumentOf(call, apos)
+      )
+      or
+      exists(DataFlowCallable lambda, LambdaCallKind k, ReturnKind kind |
+        lambdaCreation(_, k, lambda, _) and
+        hasSimpleReturnKindIn(node1.asNode(), kind, lambda) and
+        nodeGetEnclosingCallable(node2.asLambdaInstancePostUpdateNode()) = lambda and
+        c = getLambdaReturnContent(k, kind)
+      )
+      or
+      exists(DataFlowCall synthcall, LambdaCallKind k, ArgumentPosition apos |
+        lambdaCreation(node2.asNode(), k, _, synthcall) and
+        node1.isLambdaArgNode(synthcall, apos, true) and
+        c = getLambdaArgumentContent(k, apos)
       )
     }
 
@@ -1703,9 +1853,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private predicate hasParamReturnKindIn(
-      PostUpdateNode n, ParamNode p, ReturnKindExt kind, DataFlowCallable c
+      PostUpdateNodeEx n, ParamNode p, ReturnKindExt kind, DataFlowCallable c
     ) {
-      c = getNodeEnclosingCallable(n) and
+      // c = getNodeEnclosingCallable(n) and
+      c = n.getEnclosingCallable() and
       paramReturnNode(n, p, _, kind)
     }
 
@@ -1726,7 +1877,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    ReturnPosition getParamReturnPosition(PostUpdateNode n, ParamNode p) {
+    ReturnPosition getParamReturnPosition(PostUpdateNodeEx n, ParamNode p) {
       exists(ReturnKindExt kind, DataFlowCallable c |
         hasParamReturnKindIn(n, p, kind, c) and
         result = TReturnPosition0(c, kind)
@@ -1785,7 +1936,37 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       TNodeImplicitRead(Node n) or // will be restricted to nodes with actual implicit reads in `DataFlowImpl.qll`
       TParamReturnNode(ParameterNode p, SndLevelScopeOption scope) {
         paramReturnNode(_, p, scope, _)
+      } or
+      TNodeLambdaInstancePostUpdate(ParameterNode pre) { isLambdaInstanceParameter(pre) } or
+      TNodeLambdaMalloc(Node lambda) { lambdaCreation(lambda, _, _, _) } or
+      TNodeLambdaArg(DataFlowCall synthcall, ArgumentPosition apos, Boolean ispost) {
+        exists(DataFlowCallable c, ParameterNode p, ParameterPosition ppos |
+          lambdaCreation(_, _, c, synthcall) and
+          isParameterNode(p, c, ppos) and
+          parameterMatch(ppos, apos) and
+          exists(ispost)
+        )
       }
+
+    /*
+     * foo(() => "taint"); // taint --store(ReturnValue)--> this (post-update) [ReturnValue]
+     * // this (post-update) [ReturnValue] --> lambda (post-update) [ReturnValue]
+     * //
+     */
+
+    /*
+     * lambda = (x) = x.addTaint();
+     * synthcall(lambda, lambda.arg0); // arg0[post] --store(Argument0)--> lambda (post-update) [Argument0]
+     *
+     *
+     * foo(lambda)
+     *
+     * foo(l1) {
+     *    l1(x); // x --store(Argument0)--> l1 (post-update) [Argument0]
+     *    // l1 [Argument0] --read(Argument0)--> x (post-update)
+     *    // l1 [ReturnValue] --read(ReturnValue)--> l1(x)
+     * }
+     */
 
     /**
      * Holds if data can flow in one local step from `node1` to `node2`.
@@ -1798,13 +1979,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         simpleLocalFlowStepExt(pragma[only_bind_into](n1), pragma[only_bind_into](n2), model)
       )
       or
-      exists(Node n1, Node n2, SndLevelScopeOption scope |
-        node1.asNode() = n1 and
+      exists(Node n2, SndLevelScopeOption scope |
         node2 = TParamReturnNode(n2, scope) and
-        paramReturnNode(pragma[only_bind_into](n1), pragma[only_bind_into](n2),
-          pragma[only_bind_into](scope), _) and
+        paramReturnNode(node1, pragma[only_bind_into](n2), pragma[only_bind_into](scope), _) and
         model = ""
       )
+      or
+      LambdaFlow::lambdaFlowsToPostUpdate(node2.asLambdaMallocNode(), node1.asNode()) and
+      model = ""
     }
 
     cached
@@ -2238,7 +2420,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   private predicate readStepWithTypes(
     Node n1, DataFlowType container, ContentSet c, Node n2, DataFlowType content
   ) {
-    readSet(n1, c, n2) and
+    readStep(n1, c, n2) and
     container = getNodeDataFlowType(n1) and
     content = getNodeDataFlowType(n2)
   }

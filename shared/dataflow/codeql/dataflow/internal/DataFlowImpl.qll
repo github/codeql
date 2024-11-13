@@ -423,7 +423,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private predicate readSetEx(NodeEx node1, ContentSet c, NodeEx node2) {
-      readSet(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode())) and
+      readSet(node1, c, node2) and
       stepFilter(node1, node2)
       or
       exists(Node n |
@@ -462,8 +462,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private predicate storeExUnrestricted(
       NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     ) {
-      store(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode()),
-        contentType, containerType) and
+      store(node1, c, node2, contentType, containerType) and
       stepFilter(node1, node2)
     }
 
@@ -478,16 +477,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       hasReadStep(c)
     }
 
-    pragma[nomagic]
-    private predicate viableReturnPosOutEx(DataFlowCall call, ReturnPosition pos, NodeEx out) {
-      viableReturnPosOut(call, pos, out.asNode())
-    }
-
-    pragma[nomagic]
-    private predicate viableParamArgEx(DataFlowCall call, ParamNodeEx p, ArgNodeEx arg) {
-      viableParamArg(call, p.asNode(), arg.asNode())
-    }
-
+    // pragma[nomagic]
+    // private predicate viableReturnPosOutEx(DataFlowCall call, ReturnPosition pos, NodeEx out) {
+    //   viableReturnPosOut(call, pos, out.asNode())
+    // }
+    // pragma[nomagic]
+    // private predicate viableParamArgEx(DataFlowCall call, ParamNodeEx p, ArgNodeEx arg) {
+    //   viableParamArg(call, p.asNode(), arg.asNode())
+    // }
     /**
      * Holds if field flow should be used for the given configuration.
      */

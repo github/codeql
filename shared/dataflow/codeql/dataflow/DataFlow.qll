@@ -347,7 +347,7 @@ signature module InputSig<LocationSig Location> {
   /** Holds if `fieldFlowBranchLimit` should be ignored for flow going into/out of `c`. */
   default predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { none() }
 
-  Content getLambdaReturnContent(LambdaCallKind kind);
+  Content getLambdaReturnContent(LambdaCallKind kind, ReturnKind retKind);
 
   Content getLambdaArgumentContent(LambdaCallKind kind, ArgumentPosition pos);
 
