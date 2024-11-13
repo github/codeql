@@ -42,11 +42,11 @@ function test(x, y) {
   let k = [];
   let kSpliced = k.toSpliced(x, y, source());
   sink(k); // OK
-  sink(kSpliced); // NOT OK -- This should be caught, but it is not
+  sink(kSpliced); // NOT OK
 
   let l = [];
   l = l.toSpliced(x, y, source());
-  sink(l); // NOT OK -- This should be caught, but it is not
+  sink(l); // NOT OK
 
   let m = [];
   m = m.toSpliced(q, source(), y);
