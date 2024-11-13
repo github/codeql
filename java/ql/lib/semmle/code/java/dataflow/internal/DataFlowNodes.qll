@@ -6,6 +6,7 @@ private import semmle.code.java.dataflow.TypeFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import DataFlowPrivate
 private import DataFlowUtil
+private import DataFlowDispatch
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.java.controlflow.Guards
@@ -68,7 +69,9 @@ private module Cached {
     TMapKeyContent() or
     TMapValueContent() or
     TCapturedVariableContent(CapturedVariable v) or
-    TSyntheticFieldContent(SyntheticField s)
+    TSyntheticFieldContent(SyntheticField s) or
+    TLambdaReturn(Method m) or
+    TLambdaArgument(Method m, ArgumentPosition pos)
 
   cached
   newtype TContentApprox =
