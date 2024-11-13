@@ -4,6 +4,7 @@
 
 private import java
 private import DataFlowPrivate
+private import DataFlowDispatch
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
@@ -359,6 +360,31 @@ class SyntheticFieldContent extends Content, TSyntheticFieldContent {
   override string toString() { result = s.toString() }
 }
 
+class LambdaReturnContent extends Content, TLambdaReturn {
+  Method m;
+
+  LambdaReturnContent() { this = TLambdaReturn(m) }
+
+  override DataFlowType getType() {
+    result = getErasedRepr(m.getReturnType())
+  }
+
+  override string toString() { result = "<lambda-return>" }
+}
+
+class LambdaArgumentContent extends Content, TLambdaArgument {
+  Method m;
+  ArgumentPosition pos;
+
+  LambdaArgumentContent() {
+    this = TLambdaArgument(m, pos)
+  }
+
+  override DataFlowType getType() {
+    result = getErasedRepr(m.getParameter(pos).getType())
+  }
+  override string toString() { result = "<lambda-argument>" + pos.toString() }
+}
 /**
  * An entity that represents a set of `Content`s.
  *
