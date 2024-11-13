@@ -767,6 +767,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
     VariableCapture::valueStep(nodeFrom, nodeTo)
     or
     nodeTo = nodeFrom.(LocalFunctionCreationNode).getAnAccess(true)
+    or
+    delegateCreationStep(nodeFrom, nodeTo)
   ) and
   model = ""
   or
@@ -1150,6 +1152,8 @@ private module Cached {
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     TDelegateCallArgumentContent(int i) {
       i = [0 .. max(any(DelegateLikeCall dc).getNumberOfArguments()) - 1]
+      or
+      i = -1
     } or
     TDelegateCallReturnContent()
 
@@ -2926,6 +2930,38 @@ class LambdaCallKind = Unit;
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
   lambdaCreationExpr(creation.asExpr(), c.asCallable(_)) and
   exists(kind)
+}
+
+/** Holds if `creation` is an expression that creates a delegate for `c`. */
+predicate lambdaCreation(
+  Node creation, LambdaCallKind kind, DataFlowCallable c, DataFlowCall synthCall
+) {
+  lambdaCreation(creation, kind, c) and
+  synthCall = TLambdaSynthCall(creation)
+}
+
+Content getLambdaReturnContent(LambdaCallKind kind, ReturnKind rk) {
+  result = TDelegateCallReturnContent() and
+  exists(kind) and
+  rk = TNormalReturnKind()
+}
+
+Content getLambdaArgumentContent(LambdaCallKind kind, ArgumentPosition pos) {
+  (
+    result = TDelegateCallArgumentContent(pos.getPosition())
+    or
+    result = TDelegateCallArgumentContent(-1) and
+    pos.isDelegateSelf()
+  ) and
+  exists(kind)
+}
+
+predicate isLambdaInstanceParameter(ParameterNode p) {
+  exists(DataFlowCallable c, ParameterPosition ppos |
+    lambdaCreation(_, _, c) and
+    isParameterNode(p, c, ppos) and
+    ppos.isDelegateSelf()
+  )
 }
 
 private predicate isLocalFunctionCallReceiver(

@@ -76,7 +76,8 @@ private module Cached {
     } or
     TSummaryCall(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
-    }
+    } or
+    TLambdaSynthCall(Node creation) { lambdaCreation(creation, _, _) }
 
   /** Gets a viable run-time target for the call `call`. */
   cached
@@ -495,6 +496,24 @@ class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
   override Location getLocation() { result = c.getLocation() }
+}
+
+class LambdaSynthCall extends DataFlowCall, TLambdaSynthCall {
+  private NodeImpl creation;
+
+  LambdaSynthCall() { this = TLambdaSynthCall(creation) }
+
+  override DataFlowCallable getARuntimeTarget() { none() }
+
+  override ControlFlow::Nodes::ElementNode getControlFlowNode() { none() }
+
+  override DataFlow::Node getNode() { none() }
+
+  override DataFlowCallable getEnclosingCallable() { result = creation.getEnclosingCallableImpl() }
+
+  override string toString() { result = "[lambda] call to " + creation }
+
+  override Location getLocation() { result = creation.getLocation() }
 }
 
 /** A parameter position. */
