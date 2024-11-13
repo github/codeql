@@ -90,6 +90,11 @@ module ArrayTaintTracking {
     pred = call.getASpreadArgument() and
     succ.(DataFlow::SourceNode).getAMethodCall("splice") = call
     or
+    // `array.toSpliced(i, del, ...e)`: if `e` is tainted, then so is the result of `toSpliced`, but not the original array.
+    pred = call.getASpreadArgument() and
+    call.(DataFlow::MethodCallNode).getMethodName() = "toSpliced" and
+    succ = call
+    or
     // `e = array.pop()`, `e = array.shift()`, or similar: if `array` is tainted, then so is `e`.
     call.(DataFlow::MethodCallNode)
         .calls(pred, ["pop", "shift", "slice", "splice", "at", "toSpliced"]) and

@@ -70,8 +70,8 @@ function test(x, y) {
 
   let r = [];
   let rSpliced = r.toSpliced(x, y, ...source());
-  sink(rSpliced); // NOT OK -- This should flagged but it is not
+  sink(rSpliced); // NOT OK
   sink(r); // OK
   r = r.toSpliced(x, y, ...source());
-  sink(r); // NOT OK -- This should flagged but it is not
+  sink(r); // NOT OK
 }
