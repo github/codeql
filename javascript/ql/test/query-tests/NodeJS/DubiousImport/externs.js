@@ -334,15 +334,6 @@ Array.prototype.push = function(var_args) {};
 Array.prototype.reverse = function() {};
 
 /**
- * Returns a new array with the elements in reversed order.
- *
- * @this {{length: number}}
- * @template T
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toReversed
- */
-Array.prototype.toReversed = function() {};
-
-/**
  * Removes the first element from an array and returns that element. This
  * method changes the length of the array.
  *
@@ -379,18 +370,6 @@ Array.prototype.slice = function(opt_begin, opt_end) {};
  * @see http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/sort
  */
 Array.prototype.sort = function(opt_compareFunction) {};
-
-/**
- * Returns a new array with the elements sorted.
- *
- * @param {function(T,T):number=} opt_compareFunction Specifies a function that
- *     defines the sort order. If omitted, the array elements are converted to strings,
- *     then sorted according to each character's Unicode code point value.
- * @this {{length: number}|Array.}
- * @template T
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted
- */
-Array.prototype.toSorted = function(opt_compareFunction) {};
 
 /**
  * Changes the content of an array, adding new elements while removing old
