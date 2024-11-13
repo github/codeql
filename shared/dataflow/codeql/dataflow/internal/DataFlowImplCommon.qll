@@ -928,7 +928,21 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       nodeDataFlowType(this.asNode(), result)
       or
       nodeDataFlowType(this.asParamReturnNode(), result)
-      //TODO
+      or
+      nodeDataFlowType(this.asLambdaInstancePostUpdateNode(), result)
+      or
+      nodeDataFlowType(this.asLambdaMallocNode(), result)
+      or
+      exists(
+        DataFlowCall synthcall, ArgumentPosition apos, DataFlowCallable c, ParameterNode p,
+        ParameterPosition ppos
+      |
+        this.isLambdaArgNode(synthcall, apos, _) and
+        lambdaCreation(_, _, c, synthcall) and
+        isParameterNode(p, c, ppos) and
+        parameterMatch(ppos, apos) and
+        nodeDataFlowType(p, result)
+      )
     }
 
     pragma[inline]
@@ -1745,26 +1759,28 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           contentType, containerType)
       )
       or
-      exists(
-        DataFlowCall call, LambdaCallKind k, Node receiver, ReturnKind kind, ArgumentPosition apos
-      |
-        lambdaCall(call, k, receiver) and
-        node2.asNode().(PostUpdateNode).getPreUpdateNode() = receiver and
-        c = getLambdaArgumentContent(k, apos) and
-        node1.asNode().(ArgNode).argumentOf(call, apos)
-      )
-      or
-      exists(DataFlowCallable lambda, LambdaCallKind k, ReturnKind kind |
-        lambdaCreation(_, k, lambda, _) and
-        hasSimpleReturnKindIn(node1.asNode(), kind, lambda) and
-        nodeGetEnclosingCallable(node2.asLambdaInstancePostUpdateNode()) = lambda and
-        c = getLambdaReturnContent(k, kind)
-      )
-      or
-      exists(DataFlowCall synthcall, LambdaCallKind k, ArgumentPosition apos |
-        lambdaCreation(node2.asNode(), k, _, synthcall) and
-        node1.isLambdaArgNode(synthcall, apos, true) and
-        c = getLambdaArgumentContent(k, apos)
+      contentType = node1.getDataFlowType() and
+      containerType = node2.getDataFlowType() and
+      (
+        exists(DataFlowCall call, LambdaCallKind k, Node receiver, ArgumentPosition apos |
+          lambdaCall(call, k, receiver) and
+          node2.asNode().(PostUpdateNode).getPreUpdateNode() = receiver and
+          c = getLambdaArgumentContent(k, apos) and
+          node1.asNode().(ArgNode).argumentOf(call, apos)
+        )
+        or
+        exists(DataFlowCallable lambda, LambdaCallKind k, ReturnKind kind |
+          lambdaCreation(_, k, lambda, _) and
+          hasSimpleReturnKindIn(node1.asNode(), kind, lambda) and
+          nodeGetEnclosingCallable(node2.asLambdaInstancePostUpdateNode()) = lambda and
+          c = getLambdaReturnContent(k, kind)
+        )
+        or
+        exists(DataFlowCall synthcall, LambdaCallKind k, ArgumentPosition apos |
+          lambdaCreation(node2.asNode(), k, _, synthcall) and
+          node1.isLambdaArgNode(synthcall, apos, true) and
+          c = getLambdaArgumentContent(k, apos)
+        )
       )
     }
 
@@ -1800,7 +1816,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    predicate allowParameterReturnInSelfCached(ParamNode p) { allowParameterReturnInSelf(p) }
+    predicate allowParameterReturnInSelfCached(ParamNode p) {
+      allowParameterReturnInSelf(p) or isLambdaInstanceParameter(p)
+    }
 
     cached
     predicate paramMustFlow(ParamNode p, ArgNode arg) { localMustFlowStep+(p, arg) }
