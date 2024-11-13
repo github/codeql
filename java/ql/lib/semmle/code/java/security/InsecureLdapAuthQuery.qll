@@ -26,7 +26,8 @@ module InsecureLdapUrlConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-module InsecureLdapUrlFlow = TaintTracking::Global<InsecureLdapUrlConfig>;
+module InsecureLdapUrlFlow =
+  TaintTracking::SpeculativeGlobal<InsecureLdapUrlConfig, speculativity/0>;
 
 /**
  * A taint-tracking configuration for `simple` basic-authentication in LDAP configuration.

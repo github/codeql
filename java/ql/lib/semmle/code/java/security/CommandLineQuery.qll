@@ -68,7 +68,8 @@ deprecated module RemoteUserInputToArgumentToExecFlowConfig = InputToArgumentToE
 /**
  * Taint-tracking flow for unvalidated input that is used to run an external process.
  */
-module InputToArgumentToExecFlow = TaintTracking::Global<InputToArgumentToExecFlowConfig>;
+module InputToArgumentToExecFlow =
+  TaintTracking::SpeculativeGlobal<InputToArgumentToExecFlowConfig, speculativity/0>;
 
 /**
  * DEPRECATED: Use `InputToArgumentToExecFlow` instead.

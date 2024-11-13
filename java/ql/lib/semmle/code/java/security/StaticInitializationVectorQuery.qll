@@ -131,4 +131,5 @@ module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks the flow from a static initialization vector to the initialization of a cipher */
-module StaticInitializationVectorFlow = TaintTracking::Global<StaticInitializationVectorConfig>;
+module StaticInitializationVectorFlow =
+  TaintTracking::SpeculativeGlobal<StaticInitializationVectorConfig, speculativity/0>;

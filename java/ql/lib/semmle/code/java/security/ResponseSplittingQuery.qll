@@ -38,4 +38,5 @@ module ResponseSplittingConfig implements DataFlow::ConfigSig {
 /**
  * Tracks flow from remote sources to response splitting vulnerabilities.
  */
-module ResponseSplittingFlow = TaintTracking::Global<ResponseSplittingConfig>;
+module ResponseSplittingFlow =
+  TaintTracking::SpeculativeGlobal<ResponseSplittingConfig, speculativity/0>;

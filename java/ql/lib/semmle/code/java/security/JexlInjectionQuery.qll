@@ -59,7 +59,7 @@ module JexlInjectionConfig implements DataFlow::ConfigSig {
  * Tracks unsafe user input that is used to construct and evaluate a JEXL expression.
  * It supports both JEXL 2 and 3.
  */
-module JexlInjectionFlow = TaintTracking::Global<JexlInjectionConfig>;
+module JexlInjectionFlow = TaintTracking::SpeculativeGlobal<JexlInjectionConfig, speculativity/0>;
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that creates a JEXL script using an unsafe engine

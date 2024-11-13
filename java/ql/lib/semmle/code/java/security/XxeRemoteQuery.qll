@@ -25,4 +25,4 @@ module XxeConfig implements DataFlow::ConfigSig {
 /**
  * Detect taint flow of unvalidated remote user input that is used in XML external entity expansion.
  */
-module XxeFlow = TaintTracking::Global<XxeConfig>;
+module XxeFlow = TaintTracking::SpeculativeGlobal<XxeConfig, speculativity/0>;

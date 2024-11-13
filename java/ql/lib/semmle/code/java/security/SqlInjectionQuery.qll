@@ -27,7 +27,7 @@ module QueryInjectionFlowConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow of unvalidated user input that is used in SQL queries. */
-module QueryInjectionFlow = TaintTracking::Global<QueryInjectionFlowConfig>;
+module QueryInjectionFlow = TaintTracking::SpeculativeGlobal<QueryInjectionFlowConfig, speculativity/0>;
 
 /**
  * Implementation of `SqlTainted.ql`. This is extracted to a QLL so that it

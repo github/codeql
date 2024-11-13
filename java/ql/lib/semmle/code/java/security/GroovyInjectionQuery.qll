@@ -25,4 +25,5 @@ module GroovyInjectionConfig implements DataFlow::ConfigSig {
  * Detect taint flow of unsafe user input
  * that is used to evaluate a Groovy expression.
  */
-module GroovyInjectionFlow = TaintTracking::Global<GroovyInjectionConfig>;
+module GroovyInjectionFlow =
+  TaintTracking::SpeculativeGlobal<GroovyInjectionConfig, speculativity/0>;

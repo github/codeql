@@ -103,4 +103,5 @@ module InsecureRandomnessConfig implements DataFlow::ConfigSig {
 /**
  * Taint-tracking flow of a Insecurely random value into a sensitive sink.
  */
-module InsecureRandomnessFlow = TaintTracking::Global<InsecureRandomnessConfig>;
+module InsecureRandomnessFlow =
+  TaintTracking::SpeculativeGlobal<InsecureRandomnessConfig, speculativity/0>;

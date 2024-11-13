@@ -53,4 +53,4 @@ module ImplicitPendingIntentStartConfig implements DataFlow::StateConfigSig {
 }
 
 module ImplicitPendingIntentStartFlow =
-  TaintTracking::GlobalWithState<ImplicitPendingIntentStartConfig>;
+  TaintTracking::SpeculativeGlobalWithState<ImplicitPendingIntentStartConfig, speculativity/0>;

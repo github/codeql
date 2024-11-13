@@ -24,4 +24,5 @@ module MvelInjectionFlowConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate a MVEL expression. */
-module MvelInjectionFlow = TaintTracking::Global<MvelInjectionFlowConfig>;
+module MvelInjectionFlow =
+  TaintTracking::SpeculativeGlobal<MvelInjectionFlowConfig, speculativity/0>;

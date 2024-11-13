@@ -36,4 +36,4 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
 /**
  * Taint-tracking flow for use of broken or risky cryptographic algorithms.
  */
-module InsecureCryptoFlow = TaintTracking::Global<InsecureCryptoConfig>;
+module InsecureCryptoFlow = TaintTracking::SpeculativeGlobal<InsecureCryptoConfig, speculativity/0>;

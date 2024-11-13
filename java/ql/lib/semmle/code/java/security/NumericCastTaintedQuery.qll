@@ -109,7 +109,7 @@ module NumericCastFlowConfig implements DataFlow::ConfigSig {
 /**
  * Taint-tracking flow for user input that is used in a numeric cast.
  */
-module NumericCastFlow = TaintTracking::Global<NumericCastFlowConfig>;
+module NumericCastFlow = TaintTracking::SpeculativeGlobal<NumericCastFlowConfig, speculativity/0>;
 
 /**
  * A taint-tracking configuration for reasoning about local user input that is

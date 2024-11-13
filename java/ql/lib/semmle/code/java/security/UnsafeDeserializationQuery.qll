@@ -329,7 +329,10 @@ private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-module UnsafeDeserializationFlow = TaintTracking::Global<UnsafeDeserializationConfig>;
+int speculationLimit() { result = 10 }
+
+module UnsafeDeserializationFlow =
+  TaintTracking::SpeculativeGlobal<UnsafeDeserializationConfig, speculationLimit/0>;
 
 /**
  * Gets a safe usage of the `use` method of Flexjson, which could be:

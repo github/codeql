@@ -20,4 +20,4 @@ module UrlRedirectConfig implements DataFlow::ConfigSig {
 /**
  * Taint-tracking flow for URL redirections.
  */
-module UrlRedirectFlow = TaintTracking::Global<UrlRedirectConfig>;
+module UrlRedirectFlow = TaintTracking::SpeculativeGlobal<UrlRedirectConfig, speculativity/0>;

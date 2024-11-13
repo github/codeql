@@ -23,4 +23,5 @@ module OgnlInjectionFlowConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow of unvalidated user input that is used in OGNL EL evaluation. */
-module OgnlInjectionFlow = TaintTracking::Global<OgnlInjectionFlowConfig>;
+module OgnlInjectionFlow =
+  TaintTracking::SpeculativeGlobal<OgnlInjectionFlowConfig, speculativity/0>;

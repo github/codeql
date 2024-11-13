@@ -25,4 +25,4 @@ module XssConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow from remote sources to cross site scripting vulnerabilities. */
-module XssFlow = TaintTracking::Global<XssConfig>;
+module XssFlow = TaintTracking::SpeculativeGlobal<XssConfig, speculativity/0>;

@@ -31,4 +31,4 @@ module ExternallyControlledFormatStringConfig implements DataFlow::ConfigSig {
  * Taint-tracking flow for externally controlled format string vulnerabilities.
  */
 module ExternallyControlledFormatStringFlow =
-  TaintTracking::Global<ExternallyControlledFormatStringConfig>;
+  TaintTracking::SpeculativeGlobal<ExternallyControlledFormatStringConfig, speculativity/0>;

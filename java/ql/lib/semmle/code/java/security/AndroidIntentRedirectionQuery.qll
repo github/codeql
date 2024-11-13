@@ -23,7 +23,8 @@ module IntentRedirectionConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks the flow of tainted Intents being used to start Android components. */
-module IntentRedirectionFlow = TaintTracking::Global<IntentRedirectionConfig>;
+module IntentRedirectionFlow =
+  TaintTracking::SpeculativeGlobal<IntentRedirectionConfig, speculativity/0>;
 
 /**
  * A sanitizer for sinks that receive the original incoming Intent,

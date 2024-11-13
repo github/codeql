@@ -32,4 +32,4 @@ module RequestForgeryConfig implements DataFlow::ConfigSig {
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-module RequestForgeryFlow = TaintTracking::Global<RequestForgeryConfig>;
+module RequestForgeryFlow = TaintTracking::SpeculativeGlobal<RequestForgeryConfig, speculativity/0>;

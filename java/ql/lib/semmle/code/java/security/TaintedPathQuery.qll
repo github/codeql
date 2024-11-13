@@ -77,7 +77,7 @@ module TaintedPathConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow from remote sources to the creation of a path. */
-module TaintedPathFlow = TaintTracking::Global<TaintedPathConfig>;
+module TaintedPathFlow = TaintTracking::SpeculativeGlobal<TaintedPathConfig, speculativity/0>;
 
 /**
  * A taint-tracking configuration for tracking flow from local user input to the creation of a path.

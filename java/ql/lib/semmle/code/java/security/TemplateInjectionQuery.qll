@@ -21,4 +21,4 @@ module TemplateInjectionFlowConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks server-side template injection (SST) vulnerabilities */
-module TemplateInjectionFlow = TaintTracking::Global<TemplateInjectionFlowConfig>;
+module TemplateInjectionFlow = TaintTracking::SpeculativeGlobal<TemplateInjectionFlowConfig, speculativity/0>;

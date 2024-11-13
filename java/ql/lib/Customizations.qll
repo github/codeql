@@ -10,3 +10,6 @@
  */
 
 import java
+
+// For the hackathon, make speculative data flow tunable from a central location
+int speculativity() { result = 5 }
