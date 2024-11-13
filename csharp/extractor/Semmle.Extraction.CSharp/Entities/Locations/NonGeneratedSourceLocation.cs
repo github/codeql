@@ -1,22 +1,20 @@
-using System;
 using System.IO;
 using Microsoft.CodeAnalysis;
-using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class NonGeneratedSourceLocation : Extraction.Entities.SourceLocation
+    internal class NonGeneratedSourceLocation : SourceLocation
     {
         public override Context Context => (Context)base.Context;
 
-        protected NonGeneratedSourceLocation(Context cx, Location init)
+        protected NonGeneratedSourceLocation(Context cx, Microsoft.CodeAnalysis.Location init)
             : base(cx, init)
         {
             Position = init.GetLineSpan();
             FileEntity = File.Create(Context, Position.Path);
         }
 
-        public static NonGeneratedSourceLocation Create(Context cx, Location loc) => SourceLocationFactory.Instance.CreateEntity(cx, loc, loc);
+        public static NonGeneratedSourceLocation Create(Context cx, Microsoft.CodeAnalysis.Location loc) => SourceLocationFactory.Instance.CreateEntity(cx, loc, loc);
 
         public override void Populate(TextWriter trapFile)
         {
@@ -28,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (mapped.HasMappedPath && mapped.IsValid)
             {
                 var path = Context.TryAdjustRelativeMappedFilePath(mapped.Path, Position.Path);
-                var mappedLoc = Create(Context, Location.Create(path, default, mapped.Span));
+                var mappedLoc = Create(Context, Microsoft.CodeAnalysis.Location.Create(path, default, mapped.Span));
 
                 trapFile.locations_mapped(this, mappedLoc);
             }
@@ -58,11 +56,11 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(Position.Span.End.Character);
         }
 
-        private class SourceLocationFactory : CachedEntityFactory<Location, NonGeneratedSourceLocation>
+        private class SourceLocationFactory : CachedEntityFactory<Microsoft.CodeAnalysis.Location, NonGeneratedSourceLocation>
         {
             public static SourceLocationFactory Instance { get; } = new SourceLocationFactory();
 
-            public override NonGeneratedSourceLocation Create(Context cx, Location init) => new NonGeneratedSourceLocation(cx, init);
+            public override NonGeneratedSourceLocation Create(Context cx, Microsoft.CodeAnalysis.Location init) => new NonGeneratedSourceLocation(cx, init);
         }
     }
 }

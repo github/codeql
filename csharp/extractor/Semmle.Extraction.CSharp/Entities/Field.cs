@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Extraction.Entities.Location loc,
+        private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Location loc,
             string? constValue, ref int child)
         {
             var type = Symbol.GetAnnotatedType();

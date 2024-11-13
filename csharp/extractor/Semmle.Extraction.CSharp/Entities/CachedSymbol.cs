@@ -89,7 +89,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         public virtual Microsoft.CodeAnalysis.Location? FullLocation => Symbol.Locations.BestOrDefault();
 
-        public virtual IEnumerable<Extraction.Entities.Location> Locations
+        public virtual IEnumerable<Location> Locations
         {
             get
             {
@@ -143,6 +143,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => Context.Defines(Symbol);
 
-        public Extraction.Entities.Location Location => Context.CreateLocation(ReportingLocation);
+        public Location Location => Context.CreateLocation(ReportingLocation);
     }
 }

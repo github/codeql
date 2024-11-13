@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp
     /// </remarks>
     internal static class Tuples
     {
-        internal static void assemblies(this System.IO.TextWriter trapFile, Assembly assembly, Extraction.Entities.File file, string identifier, string name, string version) =>
+        internal static void assemblies(this System.IO.TextWriter trapFile, Assembly assembly, Entities.File file, string identifier, string name, string version) =>
             trapFile.WriteTuple("assemblies", assembly, file, identifier, name, version);
 
         internal static void accessor_location(this TextWriter trapFile, Accessor accessorKey, Location location) =>
@@ -74,10 +74,10 @@ namespace Semmle.Extraction.CSharp
         internal static void compilation_info(this TextWriter trapFile, Compilation compilation, string infoKey, string infoValue) =>
             trapFile.WriteTuple("compilation_info", compilation, infoKey, infoValue);
 
-        internal static void compilation_compiling_files(this TextWriter trapFile, Compilation compilation, int index, Extraction.Entities.File file) =>
+        internal static void compilation_compiling_files(this TextWriter trapFile, Compilation compilation, int index, Entities.File file) =>
             trapFile.WriteTuple("compilation_compiling_files", compilation, index, file);
 
-        internal static void compilation_referencing_files(this TextWriter trapFile, Compilation compilation, int index, Extraction.Entities.File file) =>
+        internal static void compilation_referencing_files(this TextWriter trapFile, Compilation compilation, int index, Entities.File file) =>
             trapFile.WriteTuple("compilation_referencing_files", compilation, index, file);
 
         internal static void compilation_finished(this TextWriter trapFile, Compilation compilation, float cpuSeconds, float elapsedSeconds) =>
@@ -398,7 +398,7 @@ namespace Semmle.Extraction.CSharp
         internal static void pragma_warning_error_codes(this TextWriter trapFile, PragmaWarningDirective pragma, string errorCode, int child) =>
             trapFile.WriteTuple("pragma_warning_error_codes", pragma, errorCode, child);
 
-        internal static void pragma_checksums(this TextWriter trapFile, PragmaChecksumDirective pragma, Extraction.Entities.File file, string guid, string bytes) =>
+        internal static void pragma_checksums(this TextWriter trapFile, PragmaChecksumDirective pragma, Entities.File file, string guid, string bytes) =>
             trapFile.WriteTuple("pragma_checksums", pragma, file, guid, bytes);
 
         internal static void directive_defines(this TextWriter trapFile, DefineDirective directive, string name) =>
@@ -422,7 +422,7 @@ namespace Semmle.Extraction.CSharp
         internal static void directive_line_value(this TextWriter trapFile, LineDirective directive, int line) =>
             trapFile.WriteTuple("directive_line_value", directive, line);
 
-        internal static void directive_line_file<T>(this TextWriter trapFile, LineOrSpanDirective<T> directive, Extraction.Entities.File file) where T : LineOrSpanDirectiveTriviaSyntax =>
+        internal static void directive_line_file<T>(this TextWriter trapFile, LineOrSpanDirective<T> directive, Entities.File file) where T : LineOrSpanDirectiveTriviaSyntax =>
             trapFile.WriteTuple("directive_line_file", directive, file);
 
         internal static void directive_line_offset(this TextWriter trapFile, LineSpanDirective directive, int offset) =>

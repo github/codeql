@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override Location? ReportingLocation => null;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
         public static TypeParameterConstraints Create(Context cx, TypeParameter p) =>
             TypeParameterConstraintsFactory.Instance.CreateEntity(cx, (typeof(TypeParameterConstraints), p), p);
@@ -62,4 +62,3 @@ namespace Semmle.Extraction.CSharp.Entities
         }
     }
 }
-

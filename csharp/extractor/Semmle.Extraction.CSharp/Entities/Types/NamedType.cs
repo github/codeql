@@ -101,7 +101,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override IEnumerable<Type> TypeMentions => TypeArguments;
 
-        public override IEnumerable<Extraction.Entities.Location> Locations
+        public override IEnumerable<Location> Locations
         {
             get
             {

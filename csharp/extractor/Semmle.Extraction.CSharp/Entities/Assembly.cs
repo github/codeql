@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class Assembly : Extraction.Entities.Location
+    internal class Assembly : Location
     {
         public override Context Context => (Context)base.Context;
 
@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return false;
         }
 
-        public static Extraction.Entities.Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
+        public static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
 
         private class AssemblyConstructorFactory : CachedEntityFactory<Microsoft.CodeAnalysis.Location?, Assembly>
         {

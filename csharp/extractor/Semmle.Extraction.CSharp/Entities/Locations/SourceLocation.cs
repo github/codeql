@@ -1,4 +1,4 @@
-namespace Semmle.Extraction.Entities
+namespace Semmle.Extraction.CSharp.Entities
 {
     public abstract class SourceLocation : Location
     {

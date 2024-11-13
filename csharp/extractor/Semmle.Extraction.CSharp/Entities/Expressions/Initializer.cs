@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int index, Extraction.Entities.Location location)
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int index, Location location)
         {
             var info = new ExpressionInfo(
                 cx,

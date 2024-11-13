@@ -1,7 +1,7 @@
-namespace Semmle.Extraction.Entities
+namespace Semmle.Extraction.CSharp.Entities
 {
 #nullable disable warnings
-    public abstract class Location : CachedEntity<Microsoft.CodeAnalysis.Location?>
+    public abstract class Location : Extraction.CachedEntity<Microsoft.CodeAnalysis.Location?>
     {
 #nullable restore warnings
         protected Location(Context cx, Microsoft.CodeAnalysis.Location? init)

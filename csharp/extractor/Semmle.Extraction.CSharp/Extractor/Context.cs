@@ -11,7 +11,7 @@ namespace Semmle.Extraction.CSharp
     /// State that needs to be available throughout the extraction process.
     /// There is one Context object per trap output file.
     /// </summary>
-    internal class Context : Extraction.Context
+    public class Context : Extraction.Context
     {
         /// <summary>
         /// The program database provided by Roslyn.
@@ -117,17 +117,17 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        public override Extraction.Entities.Location CreateLocation()
+        public override Entities.Location CreateLocation()
         {
             return SourceTree is null
-                ? GeneratedLocation.Create(this)
+                ? Entities.GeneratedLocation.Create(this)
                 : CreateLocation(Microsoft.CodeAnalysis.Location.Create(SourceTree, Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(0, 0)));
         }
 
-        public override Extraction.Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location)
+        public override Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location)
         {
             return (location is null || location.Kind == LocationKind.None)
-                ? GeneratedLocation.Create(this)
+                ? Entities.GeneratedLocation.Create(this)
                 : location.IsInSource
                     ? Entities.NonGeneratedSourceLocation.Create(this, location)
                     : Entities.Assembly.Create(this, location);
@@ -145,7 +145,7 @@ namespace Semmle.Extraction.CSharp
             CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);
         }
 
-        protected override bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(true)] out Extraction.Entities.Location? loc)
+        protected override bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(true)] out Entities.Location? loc)
         {
             if (CreateLocation(entity.ReportingLocation) is Entities.NonGeneratedSourceLocation l)
             {

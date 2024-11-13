@@ -326,7 +326,7 @@ namespace Semmle.Extraction
                 a();
         }
 
-        protected virtual bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(returnValue: true)] out Entities.Location? loc)
+        protected virtual bool IsEntityDuplicationGuarded(IEntity entity, [NotNullWhen(returnValue: true)] out CSharp.Entities.Location? loc)
         {
             loc = null;
             return false;
@@ -363,7 +363,7 @@ namespace Semmle.Extraction
         /// <param name="location">The location of the error.</param>
         /// <param name="stackTrace">An optional stack trace of the error, or null.</param>
         /// <param name="severity">The severity of the error.</param>
-        public void ExtractionError(string message, string? entityText, Entities.Location? location, string? stackTrace = null, Severity severity = Severity.Error)
+        public void ExtractionError(string message, string? entityText, CSharp.Entities.Location? location, string? stackTrace = null, Severity severity = Severity.Error)
         {
             var msg = new Message(message, entityText, location, stackTrace, severity);
             ExtractionError(msg);
@@ -439,7 +439,7 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="loc">The location of the error.</param>
         /// <param name="msg">The error message.</param>
-        public void ModelError(Entities.Location loc, string msg)
+        public void ModelError(CSharp.Entities.Location loc, string msg)
         {
             ReportError(new InternalError(loc.ReportingLocation, msg));
         }
@@ -491,10 +491,10 @@ namespace Semmle.Extraction
             }
         }
 
-        public virtual Entities.Location CreateLocation() =>
-            GeneratedLocation.Create(this);
+        public virtual CSharp.Entities.Location CreateLocation() =>
+            CSharp.Entities.GeneratedLocation.Create(this);
 
-        public virtual Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location) =>
+        public virtual CSharp.Entities.Location CreateLocation(Microsoft.CodeAnalysis.Location? location) =>
             CreateLocation();
     }
 }

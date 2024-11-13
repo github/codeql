@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Semmle.Extraction.Entities
+namespace Semmle.Extraction.CSharp.Entities
 {
     internal class GeneratedFile : File
     {

@@ -14,9 +14,9 @@ namespace Semmle.Extraction
         public string Text { get; }
         public string? StackTrace { get; }
         public string? EntityText { get; }
-        public Entities.Location? Location { get; }
+        public CSharp.Entities.Location? Location { get; }
 
-        public Message(string text, string? entityText, Entities.Location? location, string? stackTrace = null, Severity severity = Severity.Error)
+        public Message(string text, string? entityText, CSharp.Entities.Location? location, string? stackTrace = null, Severity severity = Severity.Error)
         {
             Severity = severity;
             Text = text;
