@@ -876,7 +876,15 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       exists(Node n | this.isImplicitReadNode(n) | result = n.toString() + " [Ext]")
       or
       result = this.asParamReturnNode().toString() + " [Return]"
-      //TODO
+      or
+      result = this.asLambdaMallocNode().toString() + " [LambdaMalloc]"
+      or
+      result = this.asLambdaInstancePostUpdateNode().toString() + " [LambdaPostUpdate]"
+      or
+      exists (DataFlowCall synthcall, ArgumentPosition apos, boolean isPost |
+        this.isLambdaArgNode(synthcall, apos, isPost) |
+        result = synthcall.toString() + "-" + apos.toString() + "-" + isPost.toString() + " [LambdaArg]"
+      )
     }
 
     Node asNode() { this = TNodeNormal(result) }
