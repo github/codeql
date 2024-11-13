@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// Represents a .csproj file and reads information from it.

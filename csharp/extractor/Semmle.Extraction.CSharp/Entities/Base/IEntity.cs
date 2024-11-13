@@ -1,7 +1,7 @@
 using System.IO;
 using Microsoft.CodeAnalysis;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// Any program entity which has a corresponding label in the trap file.

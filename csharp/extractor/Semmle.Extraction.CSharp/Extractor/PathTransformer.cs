@@ -5,7 +5,7 @@ using System.IO;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// A class for interpreting path transformers specified using the environment

@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Microsoft.CodeAnalysis;
 using Semmle.Util.Logging;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// Encapsulates information for a log message.
@@ -25,12 +24,12 @@ namespace Semmle.Extraction
             Location = location;
         }
 
-        public static Message Create(Context cx, string text, ISymbol symbol, string? stackTrace = null, Severity severity = Severity.Error)
+        public static Message Create(Extraction.Context cx, string text, ISymbol symbol, string? stackTrace = null, Severity severity = Severity.Error)
         {
             return new Message(text, symbol.ToString(), cx.CreateLocation(symbol.Locations.BestOrDefault()), stackTrace, severity);
         }
 
-        public static Message Create(Context cx, string text, SyntaxNode node, string? stackTrace = null, Severity severity = Severity.Error)
+        public static Message Create(Extraction.Context cx, string text, SyntaxNode node, string? stackTrace = null, Severity severity = Severity.Error)
         {
             return new Message(text, node.ToString(), cx.CreateLocation(node.GetLocation()), stackTrace, severity);
         }

@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// A `TextWriter` object that wraps another `TextWriter` object, and which

@@ -1,52 +1,13 @@
 using System;
 using System.IO;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
-    /// <summary>
-    /// An ID. Either a fresh ID (`*`), a key, or a label (https://semmle.com/wiki/display/IN/TRAP+Files):
-    ///
-    /// ```
-    /// id ::= '*' | key | label
-    /// ```
-    /// </summary>
-    public interface IId
-    {
-        /// <summary>
-        /// Appends this ID to the supplied trap builder.
-        /// </summary>
-        void AppendTo(TextWriter trapFile);
-    }
-
-    /// <summary>
-    /// A fresh ID (`*`).
-    /// </summary>
-    public class FreshId : IId
-    {
-        private FreshId() { }
-
-        /// <summary>
-        /// Gets the singleton <see cref="FreshId"/> instance.
-        /// </summary>
-        public static IId Instance { get; } = new FreshId();
-
-        public override string ToString() => "*";
-
-        public override bool Equals(object? obj) => obj?.GetType() == GetType();
-
-        public override int GetHashCode() => 0;
-
-        public void AppendTo(TextWriter trapFile)
-        {
-            trapFile.Write('*');
-        }
-    }
-
     /// <summary>
     /// A key. Either a simple key, e.g. `@"bool A.M();method"`, or a compound key, e.g.
     /// `@"{0} {1}.M();method"` where `0` and `1` are both labels.
     /// </summary>
-    public class Key : IId
+    public class Key
     {
         private readonly StringWriter trapBuilder = new StringWriter();
 

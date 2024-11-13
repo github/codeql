@@ -9,7 +9,7 @@ namespace Semmle.Extraction
     ///
     /// The <see cref="Entity.Id"/> property is used as label in caching.
     /// </summary>
-    public abstract class CachedEntity : LabelledEntity
+    public abstract class CachedEntity : CSharp.LabelledEntity
     {
         protected CachedEntity(Context context) : base(context)
         {
@@ -62,7 +62,7 @@ namespace Semmle.Extraction
             return other?.GetType() == GetType() && Equals(other.Symbol, Symbol);
         }
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+        public override CSharp.TrapStackBehaviour TrapStackBehaviour => CSharp.TrapStackBehaviour.NoLabel;
     }
 
     /// <summary>

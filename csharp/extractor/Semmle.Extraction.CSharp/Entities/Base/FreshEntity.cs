@@ -5,7 +5,7 @@ namespace Semmle.Extraction
     /// <summary>
     /// An entity which has a default "*" ID assigned to it.
     /// </summary>
-    public abstract class FreshEntity : UnlabelledEntity
+    public abstract class FreshEntity : CSharp.UnlabelledEntity
     {
         protected FreshEntity(Context cx) : base(cx)
         {
@@ -33,6 +33,6 @@ namespace Semmle.Extraction
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
-        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+        public override CSharp.TrapStackBehaviour TrapStackBehaviour => CSharp.TrapStackBehaviour.NoLabel;
     }
 }

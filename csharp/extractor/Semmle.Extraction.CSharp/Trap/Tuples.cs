@@ -17,7 +17,22 @@ namespace Semmle.Extraction.CSharp
     /// </remarks>
     internal static class Tuples
     {
-        internal static void assemblies(this System.IO.TextWriter trapFile, Assembly assembly, Entities.File file, string identifier, string name, string version) =>
+        public static void containerparent(this TextWriter trapFile, Folder parent, IEntity child) =>
+            trapFile.WriteTuple("containerparent", parent, child);
+
+        internal static void extractor_messages(this TextWriter trapFile, ExtractionMessage error, Semmle.Util.Logging.Severity severity, string errorMessage, string entityText, Location location, string stackTrace) =>
+            trapFile.WriteTuple("extractor_messages", error, (int)severity, "C# extractor", errorMessage, entityText, location, stackTrace);
+
+        public static void files(this TextWriter trapFile, Entities.File file, string fullName) =>
+            trapFile.WriteTuple("files", file, fullName);
+
+        internal static void folders(this TextWriter trapFile, Folder folder, string path) =>
+            trapFile.WriteTuple("folders", folder, path);
+
+        public static void locations_default(this TextWriter trapFile, SourceLocation label, Entities.File file, int startLine, int startCol, int endLine, int endCol) =>
+            trapFile.WriteTuple("locations_default", label, file, startLine, startCol, endLine, endCol);
+
+        internal static void assemblies(this TextWriter trapFile, Assembly assembly, Entities.File file, string identifier, string name, string version) =>
             trapFile.WriteTuple("assemblies", assembly, file, identifier, name, version);
 
         internal static void accessor_location(this TextWriter trapFile, Accessor accessorKey, Location location) =>

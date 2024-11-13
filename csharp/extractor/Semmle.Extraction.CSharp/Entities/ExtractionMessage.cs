@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using Semmle.Util;
+using Semmle.Extraction.CSharp;
 
 namespace Semmle.Extraction.Entities
 {

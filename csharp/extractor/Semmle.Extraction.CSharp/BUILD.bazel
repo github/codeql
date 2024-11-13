@@ -7,11 +7,13 @@ codeql_csharp_library(
     name = "Semmle.Extraction.CSharp",
     srcs = glob([
         "_Base/**/*.cs",
+        "CodeAnalysisExtensions/**/*.cs",
         "Comments/**/*.cs",
         "Entities/**/*.cs",
         "Extractor/**/*.cs",
         "Kinds/**/*.cs",
         "Populators/**/*.cs",
+        "Trap/**/*.cs",
         "*.cs",
     ]),
     allow_unsafe_blocks = True,

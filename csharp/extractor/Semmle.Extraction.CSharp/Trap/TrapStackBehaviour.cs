@@ -1,4 +1,4 @@
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// How an entity behaves with respect to .push and .pop

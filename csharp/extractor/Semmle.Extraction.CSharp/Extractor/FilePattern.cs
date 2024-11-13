@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Semmle.Util;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     public sealed class InvalidFilePatternException : Exception
     {

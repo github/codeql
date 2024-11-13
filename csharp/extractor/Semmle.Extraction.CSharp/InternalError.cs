@@ -1,8 +1,7 @@
 using System;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// Exception thrown whenever extraction encounters something unexpected.

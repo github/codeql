@@ -1,8 +1,8 @@
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
-    public abstract class LabelledEntity : Entity
+    public abstract class LabelledEntity : Semmle.Extraction.Entity
     {
-        protected LabelledEntity(Context cx) : base(cx)
+        protected LabelledEntity(Semmle.Extraction.Context cx) : base(cx)
         {
         }
     }

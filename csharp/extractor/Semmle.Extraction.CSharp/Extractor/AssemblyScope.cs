@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// The scope of symbols in an assembly.

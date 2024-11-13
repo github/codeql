@@ -2,7 +2,7 @@ using System;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// Represents the parsed state of the command line arguments.

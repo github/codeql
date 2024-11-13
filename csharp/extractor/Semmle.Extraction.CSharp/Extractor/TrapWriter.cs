@@ -5,7 +5,7 @@ using System.Text;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     public interface ITrapEmitter
     {

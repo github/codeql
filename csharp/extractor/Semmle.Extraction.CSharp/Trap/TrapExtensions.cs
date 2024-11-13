@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     public static class TrapExtensions
     {

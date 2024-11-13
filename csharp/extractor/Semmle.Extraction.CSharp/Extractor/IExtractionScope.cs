@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// Defines which entities belong in the trap file

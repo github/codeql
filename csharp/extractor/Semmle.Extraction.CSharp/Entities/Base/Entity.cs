@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Microsoft.CodeAnalysis;
+using Semmle.Extraction.CSharp;
 
 namespace Semmle.Extraction
 {
