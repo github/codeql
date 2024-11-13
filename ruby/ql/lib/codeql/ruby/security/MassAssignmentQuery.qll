@@ -9,24 +9,20 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import MassAssignmentCustomizations
 
 private module FlowState {
-  private newtype TState =
-    TUnpermitted() or
-    TPermitted()
-
   /** A flow state used to distinguish whether arbitrary user parameters have been permitted to be used for mass assignment. */
-  class State extends TState {
-    string toString() {
-      this = TUnpermitted() and result = "unpermitted"
-      or
-      this = TPermitted() and result = "permitted"
-    }
+  abstract new class State {
+    abstract string toString();
   }
 
   /** A flow state used for user parameters for which arbitrary parameters have not been permitted to use for mass assignment. */
-  class Unpermitted extends State, TUnpermitted { }
+  final new class Unpermitted extends State {
+    override string toString() { result = "unpermitted" }
+  }
 
   /** A flow state used for user parameters for which arbitrary parameters have been permitted to use for mass assignment. */
-  class Permitted extends State, TPermitted { }
+  final new class Permitted extends State {
+    override string toString() { result = "permitted" }
+  }
 }
 
 /** A flow configuration for reasoning about insecure mass assignment. */

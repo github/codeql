@@ -26,12 +26,8 @@ module CodeInjection {
      */
     deprecated DataFlow::FlowState full() { result = "full" }
 
-    private newtype TState =
-      TFull() or
-      TSubString()
-
     /** A flow state used to distinguish whether an attacker controls the entire string. */
-    class State extends TState {
+    abstract new class State {
       /**
        * Gets a string representation of this state.
        */
@@ -40,22 +36,22 @@ module CodeInjection {
       /**
        * Gets a canonical string representation of this state.
        */
-      string getStringRepresentation() {
-        this = TSubString() and result = "substring"
-        or
-        this = TFull() and result = "full"
-      }
+      abstract string getStringRepresentation();
     }
 
     /**
      * A flow state used for normal tainted data, where an attacker might only control a substring.
      */
-    class SubString extends State, TSubString { }
+    final new class SubString extends State {
+      override string getStringRepresentation() { result = "substring" }
+    }
 
     /**
      * A flow state used for data that is entirely controlled by the attacker.
      */
-    class Full extends State, TFull { }
+    final new class Full extends State {
+      override string getStringRepresentation() { result = "full" }
+    }
   }
 
   /**

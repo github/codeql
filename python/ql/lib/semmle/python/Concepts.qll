@@ -1419,29 +1419,24 @@ module Http {
         }
       }
 
-      private newtype TSameSiteValue =
-        TSameSiteStrict() or
-        TSameSiteLax() or
-        TSameSiteNone()
-
       /** A possible value for the SameSite attribute of a cookie. */
-      class SameSiteValue extends TSameSiteValue {
+      abstract new class SameSiteValue {
         /** Gets a string representation of this value. */
-        string toString() { none() }
+        abstract string toString();
       }
 
       /** A `Strict` value of the `SameSite` attribute. */
-      class SameSiteStrict extends SameSiteValue, TSameSiteStrict {
+      final new class SameSiteStrict extends SameSiteValue {
         override string toString() { result = "Strict" }
       }
 
       /** A `Lax` value of the `SameSite` attribute. */
-      class SameSiteLax extends SameSiteValue, TSameSiteLax {
+      final new class SameSiteLax extends SameSiteValue {
         override string toString() { result = "Lax" }
       }
 
       /** A `None` value of the `SameSite` attribute. */
-      class SameSiteNone extends SameSiteValue, TSameSiteNone {
+      final new class SameSiteNone extends SameSiteValue {
         override string toString() { result = "None" }
       }
     }
