@@ -67,4 +67,11 @@ function test(x, y) {
   let q = [];
   q.splice(x, y, ...source());
   sink(q); // NOT OK
+
+  let r = [];
+  let rSpliced = r.toSpliced(x, y, ...source());
+  sink(rSpliced); // NOT OK -- This should flagged but it is not
+  sink(r); // OK
+  r = r.toSpliced(x, y, ...source());
+  sink(r); // NOT OK -- This should flagged but it is not
 }
