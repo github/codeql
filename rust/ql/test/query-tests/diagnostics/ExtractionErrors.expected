@@ -1,6 +1,0 @@
-| does_not_compile.rs:2:6:2:5 | expected SEMICOLON | Extraction failed in does_not_compile.rs with error expected SEMICOLON | 2 |
-| does_not_compile.rs:2:9:2:8 | expected SEMICOLON | Extraction failed in does_not_compile.rs with error expected SEMICOLON | 2 |
-| does_not_compile.rs:2:13:2:12 | expected SEMICOLON | Extraction failed in does_not_compile.rs with error expected SEMICOLON | 2 |
-| does_not_compile.rs:2:21:2:20 | expected SEMICOLON | Extraction failed in does_not_compile.rs with error expected SEMICOLON | 2 |
-| does_not_compile.rs:2:26:2:25 | expected SEMICOLON | Extraction failed in does_not_compile.rs with error expected SEMICOLON | 2 |
-| does_not_compile.rs:2:32:2:31 | expected field name or number | Extraction failed in does_not_compile.rs with error expected field name or number | 2 |

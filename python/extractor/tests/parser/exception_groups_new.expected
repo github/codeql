@@ -1,4 +1,4 @@
-Module: [1, 0] - [22, 0]
+Module: [1, 0] - [27, 0]
   body: [
     Try: [1, 0] - [1, 4]
       body: [
@@ -133,4 +133,24 @@ Module: [1, 0] - [22, 0]
               variable: Variable('v', None)
               ctx: Load
       ]
+    Try: [23, 0] - [23, 4]
+      body: [
+        Pass: [24, 4] - [24, 8]
+      ]
+      orelse: []
+      handlers: [
+        ExceptGroupStmt: [25, 0] - [26, 8]
+          type:
+            Name: [25, 8] - [25, 11]
+              variable: Variable('foo', None)
+              ctx: Load
+          name:
+            Name: [25, 15] - [25, 16]
+              variable: Variable('e', None)
+              ctx: Store
+          body: [
+            Pass: [26, 4] - [26, 8]
+          ]
+      ]
+      finalbody: []
   ]

@@ -16,35 +16,73 @@ type I2 interface {
 }
 
 // A struct type implementing I1
-type S1 struct{}
+type S1 struct {
+	SourceField string
+	SinkField   string
+}
 
-func (t *S1) Source() interface{} {
+func (t S1) Source() interface{} {
 	return nil
 }
 
-func (t *S1) Sink(interface{}) {}
+func (t S1) Sink(interface{}) {}
 
-func (t *S1) Step(val interface{}) interface{} {
+func (t S1) Step(val interface{}) interface{} {
+	return val
+}
+
+// A struct type whose pointer type implements I1
+type P1 struct {
+	SourceField string
+	SinkField   string
+}
+
+func (t *P1) Source() interface{} {
+	return nil
+}
+
+func (t *P1) Sink(interface{}) {}
+
+func (t *P1) Step(val interface{}) interface{} {
 	return val
 }
 
 // A struct type implementing I2
 type S2 struct{}
 
-func (t *S2) Source() interface{} {
+func (t S2) Source() interface{} {
 	return nil
 }
 
-func (t *S2) Sink(interface{}) {}
+func (t S2) Sink(interface{}) {}
 
-func (t *S2) Step(val interface{}) interface{} {
+func (t S2) Step(val interface{}) interface{} {
 	return val
 }
 
-func (t *S2) ExtraMethodI2() {}
+func (t S2) ExtraMethodI2() {}
+
+// A struct type whose pointer type implements I2
+type P2 struct{}
+
+func (t *P2) Source() interface{} {
+	return nil
+}
+
+func (t *P2) Sink(interface{}) {}
+
+func (t *P2) Step(val interface{}) interface{} {
+	return val
+}
+
+func (t *P2) ExtraMethodI2() {}
 
 // A struct type embedding I1
-type SEmbedI1 struct{ I1 }
+type SEmbedI1 struct {
+	I1
+	SourceField string
+	SinkField   string
+}
 
 // A struct type embedding I2
 type SEmbedI2 struct{ I2 }
@@ -63,15 +101,19 @@ type IEmbedI2 interface {
 
 // A struct type embedding I1 and separately implementing its methods, so the
 // methods of the embedded field are not promoted.
-type SImplEmbedI1 struct{ I1 }
+type SImplEmbedI1 struct {
+	I1
+	SourceField string
+	SinkField   string
+}
 
-func (t *SImplEmbedI1) Source() interface{} {
+func (t SImplEmbedI1) Source() interface{} {
 	return nil
 }
 
-func (t *SImplEmbedI1) Sink(interface{}) {}
+func (t SImplEmbedI1) Sink(interface{}) {}
 
-func (t *SImplEmbedI1) Step(val interface{}) interface{} {
+func (t SImplEmbedI1) Step(val interface{}) interface{} {
 	return val
 }
 
@@ -79,17 +121,51 @@ func (t *SImplEmbedI1) Step(val interface{}) interface{} {
 // methods of the embedded field are not promoted.
 type SImplEmbedI2 struct{ I2 }
 
-func (t *SImplEmbedI2) Source() interface{} {
+func (t SImplEmbedI2) Source() interface{} {
 	return nil
 }
 
-func (t *SImplEmbedI2) Sink(interface{}) {}
+func (t SImplEmbedI2) Sink(interface{}) {}
 
-func (t *SImplEmbedI2) Step(val interface{}) interface{} {
+func (t SImplEmbedI2) Step(val interface{}) interface{} {
 	return val
 }
 
-func (t *SImplEmbedI2) ExtraMethodI2() {}
+func (t SImplEmbedI2) ExtraMethodI2() {}
+
+// A struct type embedding I1 and separately implementing its methods on its
+// pointer type, so the methods of the embedded field are not promoted.
+type PImplEmbedI1 struct {
+	I1
+	SourceField string
+	SinkField   string
+}
+
+func (t *PImplEmbedI1) Source() interface{} {
+	return nil
+}
+
+func (t *PImplEmbedI1) Sink(interface{}) {}
+
+func (t *PImplEmbedI1) Step(val interface{}) interface{} {
+	return val
+}
+
+// A struct type embedding I2 and separately implementing its methods, so the
+// methods of the embedded field are not promoted.
+type PImplEmbedI2 struct{ I2 }
+
+func (t *PImplEmbedI2) Source() interface{} {
+	return nil
+}
+
+func (t *PImplEmbedI2) Sink(interface{}) {}
+
+func (t *PImplEmbedI2) Step(val interface{}) interface{} {
+	return val
+}
+
+func (t *PImplEmbedI2) ExtraMethodI2() {}
 
 // A struct type embedding S1
 type SEmbedS1 struct{ S1 }
@@ -97,9 +173,31 @@ type SEmbedS1 struct{ S1 }
 // A struct type embedding S2
 type SEmbedS2 struct{ S2 }
 
-// A struct type embedding S1 and separately implementing I1's methods, so the
-// methods of the embedded field are not promoted.
-type SImplEmbedS1 struct{ S1 }
+// A struct type embedding P1
+type SEmbedP1 struct{ P1 }
+
+// A struct type embedding P2
+type SEmbedP2 struct{ P2 }
+
+// A struct type embedding *S1
+type SEmbedPtrS1 struct{ *S1 }
+
+// A struct type embedding *S2
+type SEmbedPtrS2 struct{ *S2 }
+
+// A struct type embedding *P1
+type SEmbedPtrP1 struct{ *P1 }
+
+// A struct type embedding *P2
+type SEmbedPtrP2 struct{ *P2 }
+
+// A struct type embedding S1 and separately implementing I1's methods and
+// fields, so the methods and fields of the embedded field are not promoted.
+type SImplEmbedS1 struct {
+	S1
+	SourceField string
+	SinkField   string
+}
 
 func (t *SImplEmbedS1) Source() interface{} {
 	return nil
@@ -126,3 +224,28 @@ func (t *SImplEmbedS2) Step(val interface{}) interface{} {
 }
 
 func (t *SImplEmbedS2) ExtraMethodI2() {}
+
+// A struct type embedding SEmbedI1
+type SEmbedSEmbedI1 struct {
+	SEmbedI1
+	SourceField string
+	SinkField   string
+}
+
+// A struct type embedding SEmbedS1
+type SEmbedSEmbedS1 struct{ SEmbedS1 }
+
+// A struct type embedding SEmbedPtrS1
+type SEmbedSEmbedPtrS1 struct{ SEmbedPtrS1 }
+
+// A struct type embedding SEmbedS1
+type SEmbedPtrSEmbedS1 struct{ *SEmbedS1 }
+
+// A struct type embedding SEmbedPtrS1
+type SEmbedPtrSEmbedPtrS1 struct{ *SEmbedPtrS1 }
+
+// A struct type embedding S1 and SEmbedS1
+type SEmbedS1AndSEmbedS1 struct {
+	S1
+	SEmbedS1
+}

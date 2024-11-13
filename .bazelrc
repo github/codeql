@@ -1,5 +1,4 @@
 common --enable_platform_specific_config
-common --enable_bzlmod
 # because we use --override_module with `%workspace%`, the lock file is not stable
 common --lockfile_mode=off
 

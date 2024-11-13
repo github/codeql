@@ -12,18 +12,19 @@ models
 | 11 | Summary: System.Collections.Generic; IList<T>; true; get_Item; (System.Int32); ; Argument[this].Element; ReturnValue; value; manual |
 | 12 | Summary: System.Collections.Generic; IList<T>; true; set_Item; (System.Int32,T); ; Argument[1]; Argument[this].Element; value; manual |
 | 13 | Summary: System.Collections.Generic; KeyValuePair<TKey,TValue>; false; KeyValuePair; (TKey,TValue); ; Argument[0]; Argument[this].Property[System.Collections.Generic.KeyValuePair`2.Key]; value; manual |
-| 14 | Summary: System.Collections.Generic; List<T>; false; GetEnumerator; (); ; Argument[this].Element; ReturnValue.Property[System.Collections.Generic.List`1+Enumerator.Current]; value; manual |
-| 15 | Summary: System.Collections; IEnumerable; true; GetEnumerator; (); ; Argument[this].Element; ReturnValue.Property[System.Collections.IEnumerator.Current]; value; manual |
-| 16 | Summary: System.Linq; Enumerable; false; First<TSource>; (System.Collections.Generic.IEnumerable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
-| 17 | Summary: System.Linq; Enumerable; false; Select<TSource,TResult>; (System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>); ; Argument[0].Element; Argument[1].Parameter[0]; value; manual |
-| 18 | Summary: System; ReadOnlySpan<T>; false; get_Item; (System.Int32); ; Argument[this].Element; ReturnValue; value; manual |
+| 14 | Summary: System.Collections.Generic; List<T>+Enumerator; false; get_Current; (); ; Argument[this].Property[System.Collections.Generic.List`1+Enumerator.Current]; ReturnValue; value; dfc-generated |
+| 15 | Summary: System.Collections.Generic; List<T>; false; GetEnumerator; (); ; Argument[this].Element; ReturnValue.Property[System.Collections.Generic.List`1+Enumerator.Current]; value; manual |
+| 16 | Summary: System.Collections; IEnumerable; true; GetEnumerator; (); ; Argument[this].Element; ReturnValue.Property[System.Collections.IEnumerator.Current]; value; manual |
+| 17 | Summary: System.Linq; Enumerable; false; First<TSource>; (System.Collections.Generic.IEnumerable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
+| 18 | Summary: System.Linq; Enumerable; false; Select<TSource,TResult>; (System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>); ; Argument[0].Element; Argument[1].Parameter[0]; value; manual |
 | 19 | Summary: System; ReadOnlySpan<T>; false; ReadOnlySpan; (T[]); ; Argument[0].Element; Argument[this].Element; value; manual |
-| 20 | Summary: System; Span<T>; false; CopyTo; (System.Span<T>); ; Argument[this].Element; Argument[0].Element; value; manual |
-| 21 | Summary: System; Span<T>; false; Fill; (T); ; Argument[0]; Argument[this].Element; value; manual |
-| 22 | Summary: System; Span<T>; false; get_Item; (System.Int32); ; Argument[this].Element; ReturnValue; value; manual |
+| 20 | Summary: System; ReadOnlySpan<T>; false; get_Item; (System.Int32); ; Argument[this].Element; ReturnValue; value; manual |
+| 21 | Summary: System; Span<T>; false; CopyTo; (System.Span<T>); ; Argument[this].Element; Argument[0].Element; value; manual |
+| 22 | Summary: System; Span<T>; false; Fill; (T); ; Argument[0]; Argument[this].Element; value; manual |
 | 23 | Summary: System; Span<T>; false; Span; (T); ; Argument[0]; Argument[this].Element; value; manual |
 | 24 | Summary: System; Span<T>; false; Span; (T[]); ; Argument[0].Element; Argument[this].Element; value; manual |
 | 25 | Summary: System; Span<T>; false; ToArray; (); ; Argument[this].Element; ReturnValue.Element; value; manual |
+| 26 | Summary: System; Span<T>; false; get_Item; (System.Int32); ; Argument[this].Element; ReturnValue; value; manual |
 edges
 | CollectionFlow.cs:14:40:14:41 | ts : A[] [element] : A | CollectionFlow.cs:14:52:14:53 | access to parameter ts : A[] [element] : A | provenance |  |
 | CollectionFlow.cs:14:40:14:41 | ts : null [element] : A | CollectionFlow.cs:14:52:14:53 | access to parameter ts : null [element] : A | provenance |  |
@@ -36,7 +37,7 @@ edges
 | CollectionFlow.cs:20:59:20:62 | dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:20:73:20:76 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
 | CollectionFlow.cs:20:73:20:76 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:20:73:20:81 | access to property Keys : ICollection<T> [element] : A | provenance | MaD:1 |
 | CollectionFlow.cs:20:73:20:76 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:20:73:20:81 | access to property Keys : ICollection<T> [element] : A | provenance | MaD:7 |
-| CollectionFlow.cs:20:73:20:81 | access to property Keys : ICollection<T> [element] : A | CollectionFlow.cs:20:73:20:89 | call to method First<T> | provenance | MaD:16 |
+| CollectionFlow.cs:20:73:20:81 | access to property Keys : ICollection<T> [element] : A | CollectionFlow.cs:20:73:20:89 | call to method First<T> | provenance | MaD:17 |
 | CollectionFlow.cs:22:34:22:35 | ts : A[] [element] : A | CollectionFlow.cs:22:41:22:42 | access to parameter ts : A[] [element] : A | provenance |  |
 | CollectionFlow.cs:22:34:22:35 | ts : null [element] : A | CollectionFlow.cs:22:41:22:42 | access to parameter ts : null [element] : A | provenance |  |
 | CollectionFlow.cs:22:41:22:42 | access to parameter ts : A[] [element] : A | CollectionFlow.cs:22:41:22:45 | access to array element : A | provenance |  |
@@ -46,18 +47,18 @@ edges
 | CollectionFlow.cs:26:58:26:61 | dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:26:67:26:70 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
 | CollectionFlow.cs:26:67:26:70 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:26:67:26:73 | access to indexer : A | provenance | MaD:6 |
 | CollectionFlow.cs:28:59:28:62 | dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:28:68:28:71 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
-| CollectionFlow.cs:28:68:28:71 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:28:68:28:79 | call to method First<KeyValuePair<Int32,T>> : KeyValuePair<Int32,T> [property Value] : A | provenance | MaD:16 |
+| CollectionFlow.cs:28:68:28:71 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:28:68:28:79 | call to method First<KeyValuePair<Int32,T>> : KeyValuePair<Int32,T> [property Value] : A | provenance | MaD:17 |
 | CollectionFlow.cs:28:68:28:79 | call to method First<KeyValuePair<Int32,T>> : KeyValuePair<Int32,T> [property Value] : A | CollectionFlow.cs:28:68:28:85 | access to property Value : A | provenance |  |
 | CollectionFlow.cs:30:60:30:63 | dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:30:69:30:72 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
 | CollectionFlow.cs:30:69:30:72 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:30:69:30:79 | access to property Values : ICollection<T> [element] : A | provenance | MaD:2 |
 | CollectionFlow.cs:30:69:30:72 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:30:69:30:79 | access to property Values : ICollection<T> [element] : A | provenance | MaD:8 |
-| CollectionFlow.cs:30:69:30:79 | access to property Values : ICollection<T> [element] : A | CollectionFlow.cs:30:69:30:87 | call to method First<T> : A | provenance | MaD:16 |
+| CollectionFlow.cs:30:69:30:79 | access to property Values : ICollection<T> [element] : A | CollectionFlow.cs:30:69:30:87 | call to method First<T> : A | provenance | MaD:17 |
 | CollectionFlow.cs:32:58:32:61 | dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:32:67:32:70 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
 | CollectionFlow.cs:32:67:32:70 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:32:67:32:75 | access to property Keys : ICollection<T> [element] : A | provenance | MaD:1 |
 | CollectionFlow.cs:32:67:32:70 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:32:67:32:75 | access to property Keys : ICollection<T> [element] : A | provenance | MaD:7 |
-| CollectionFlow.cs:32:67:32:75 | access to property Keys : ICollection<T> [element] : A | CollectionFlow.cs:32:67:32:83 | call to method First<T> : A | provenance | MaD:16 |
+| CollectionFlow.cs:32:67:32:75 | access to property Keys : ICollection<T> [element] : A | CollectionFlow.cs:32:67:32:83 | call to method First<T> : A | provenance | MaD:17 |
 | CollectionFlow.cs:34:57:34:60 | dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:34:66:34:69 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
-| CollectionFlow.cs:34:66:34:69 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:34:66:34:77 | call to method First<KeyValuePair<T,Int32>> : KeyValuePair<T,Int32> [property Key] : A | provenance | MaD:16 |
+| CollectionFlow.cs:34:66:34:69 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:34:66:34:77 | call to method First<KeyValuePair<T,Int32>> : KeyValuePair<T,Int32> [property Key] : A | provenance | MaD:17 |
 | CollectionFlow.cs:34:66:34:77 | call to method First<KeyValuePair<T,Int32>> : KeyValuePair<T,Int32> [property Key] : A | CollectionFlow.cs:34:66:34:81 | access to property Key : A | provenance |  |
 | CollectionFlow.cs:36:49:36:52 | args : A[] [element] : A | CollectionFlow.cs:36:63:36:66 | access to parameter args : A[] [element] : A | provenance |  |
 | CollectionFlow.cs:36:49:36:52 | args : null [element] : A | CollectionFlow.cs:36:63:36:66 | access to parameter args : null [element] : A | provenance |  |
@@ -143,7 +144,7 @@ edges
 | CollectionFlow.cs:156:28:156:31 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:26:58:26:61 | dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
 | CollectionFlow.cs:156:28:156:31 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:156:14:156:32 | call to method DictIndexZero<A> | provenance | MaD:6 |
 | CollectionFlow.cs:157:29:157:32 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:28:59:28:62 | dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
-| CollectionFlow.cs:157:29:157:32 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:157:14:157:33 | call to method DictFirstValue<A> | provenance | MaD:16 |
+| CollectionFlow.cs:157:29:157:32 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:157:14:157:33 | call to method DictFirstValue<A> | provenance | MaD:17 |
 | CollectionFlow.cs:158:30:158:33 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:30:60:30:63 | dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
 | CollectionFlow.cs:158:30:158:33 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:158:14:158:34 | call to method DictValuesFirst<A> | provenance | MaD:2 |
 | CollectionFlow.cs:158:30:158:33 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:158:14:158:34 | call to method DictValuesFirst<A> | provenance | MaD:8 |
@@ -161,7 +162,7 @@ edges
 | CollectionFlow.cs:178:28:178:31 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:26:58:26:61 | dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
 | CollectionFlow.cs:178:28:178:31 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:178:14:178:32 | call to method DictIndexZero<A> | provenance | MaD:6 |
 | CollectionFlow.cs:179:29:179:32 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:28:59:28:62 | dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
-| CollectionFlow.cs:179:29:179:32 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:179:14:179:33 | call to method DictFirstValue<A> | provenance | MaD:16 |
+| CollectionFlow.cs:179:29:179:32 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:179:14:179:33 | call to method DictFirstValue<A> | provenance | MaD:17 |
 | CollectionFlow.cs:180:30:180:33 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:30:60:30:63 | dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
 | CollectionFlow.cs:180:30:180:33 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:180:14:180:34 | call to method DictValuesFirst<A> | provenance | MaD:2 |
 | CollectionFlow.cs:180:30:180:33 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:180:14:180:34 | call to method DictValuesFirst<A> | provenance | MaD:8 |
@@ -179,7 +180,7 @@ edges
 | CollectionFlow.cs:199:28:199:31 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:26:58:26:61 | dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
 | CollectionFlow.cs:199:28:199:31 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:199:14:199:32 | call to method DictIndexZero<A> | provenance | MaD:6 |
 | CollectionFlow.cs:200:29:200:32 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:28:59:28:62 | dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
-| CollectionFlow.cs:200:29:200:32 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:200:14:200:33 | call to method DictFirstValue<A> | provenance | MaD:16 |
+| CollectionFlow.cs:200:29:200:32 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:200:14:200:33 | call to method DictFirstValue<A> | provenance | MaD:17 |
 | CollectionFlow.cs:201:30:201:33 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:30:60:30:63 | dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
 | CollectionFlow.cs:201:30:201:33 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:201:14:201:34 | call to method DictValuesFirst<A> | provenance | MaD:2 |
 | CollectionFlow.cs:201:30:201:33 | access to local variable dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:201:14:201:34 | call to method DictValuesFirst<A> | provenance | MaD:8 |
@@ -192,13 +193,13 @@ edges
 | CollectionFlow.cs:218:20:218:56 | object creation of type Dictionary<A,Int32> : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:218:13:218:16 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
 | CollectionFlow.cs:218:49:218:49 | access to local variable a : A | CollectionFlow.cs:218:20:218:56 | object creation of type Dictionary<A,Int32> : Dictionary<T,T> [element, property Key] : A | provenance | MaD:4 |
 | CollectionFlow.cs:219:14:219:17 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:219:14:219:22 | access to property Keys : Dictionary<T,T>.KeyCollection [element] : A | provenance | MaD:1 |
-| CollectionFlow.cs:219:14:219:22 | access to property Keys : Dictionary<T,T>.KeyCollection [element] : A | CollectionFlow.cs:219:14:219:30 | call to method First<A> | provenance | MaD:16 |
+| CollectionFlow.cs:219:14:219:22 | access to property Keys : Dictionary<T,T>.KeyCollection [element] : A | CollectionFlow.cs:219:14:219:30 | call to method First<A> | provenance | MaD:17 |
 | CollectionFlow.cs:220:21:220:24 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:20:59:20:62 | dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
 | CollectionFlow.cs:221:28:221:31 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:32:58:32:61 | dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
 | CollectionFlow.cs:221:28:221:31 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:221:14:221:32 | call to method DictKeysFirst<A> | provenance | MaD:1 |
 | CollectionFlow.cs:221:28:221:31 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:221:14:221:32 | call to method DictKeysFirst<A> | provenance | MaD:7 |
 | CollectionFlow.cs:222:27:222:30 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:34:57:34:60 | dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
-| CollectionFlow.cs:222:27:222:30 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:222:14:222:31 | call to method DictFirstKey<A> | provenance | MaD:16 |
+| CollectionFlow.cs:222:27:222:30 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:222:14:222:31 | call to method DictFirstKey<A> | provenance | MaD:17 |
 | CollectionFlow.cs:236:13:236:13 | access to local variable a : A | CollectionFlow.cs:237:48:237:48 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:236:17:236:23 | object creation of type A : A | CollectionFlow.cs:236:13:236:13 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:237:13:237:16 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:238:14:238:17 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
@@ -208,13 +209,13 @@ edges
 | CollectionFlow.cs:237:20:237:55 | object creation of type Dictionary<A,Int32> : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:237:13:237:16 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
 | CollectionFlow.cs:237:48:237:48 | access to local variable a : A | CollectionFlow.cs:237:20:237:55 | object creation of type Dictionary<A,Int32> : Dictionary<T,T> [element, property Key] : A | provenance | MaD:9 |
 | CollectionFlow.cs:238:14:238:17 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:238:14:238:22 | access to property Keys : Dictionary<T,T>.KeyCollection [element] : A | provenance | MaD:1 |
-| CollectionFlow.cs:238:14:238:22 | access to property Keys : Dictionary<T,T>.KeyCollection [element] : A | CollectionFlow.cs:238:14:238:30 | call to method First<A> | provenance | MaD:16 |
+| CollectionFlow.cs:238:14:238:22 | access to property Keys : Dictionary<T,T>.KeyCollection [element] : A | CollectionFlow.cs:238:14:238:30 | call to method First<A> | provenance | MaD:17 |
 | CollectionFlow.cs:239:21:239:24 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:20:59:20:62 | dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
 | CollectionFlow.cs:240:28:240:31 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:32:58:32:61 | dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
 | CollectionFlow.cs:240:28:240:31 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:240:14:240:32 | call to method DictKeysFirst<A> | provenance | MaD:1 |
 | CollectionFlow.cs:240:28:240:31 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:240:14:240:32 | call to method DictKeysFirst<A> | provenance | MaD:7 |
 | CollectionFlow.cs:241:27:241:30 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:34:57:34:60 | dict : Dictionary<T,T> [element, property Key] : A | provenance |  |
-| CollectionFlow.cs:241:27:241:30 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:241:14:241:31 | call to method DictFirstKey<A> | provenance | MaD:16 |
+| CollectionFlow.cs:241:27:241:30 | access to local variable dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:241:14:241:31 | call to method DictFirstKey<A> | provenance | MaD:17 |
 | CollectionFlow.cs:255:13:255:13 | access to local variable a : A | CollectionFlow.cs:256:27:256:27 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:255:17:255:23 | object creation of type A : A | CollectionFlow.cs:255:13:255:13 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:256:13:256:15 | access to local variable as : null [element] : A | CollectionFlow.cs:257:27:257:29 | access to local variable as : null [element] : A | provenance |  |
@@ -227,7 +228,7 @@ edges
 | CollectionFlow.cs:271:25:271:29 | { ..., ... } : null [element] : A | CollectionFlow.cs:271:13:271:15 | access to local variable as : null [element] : A | provenance |  |
 | CollectionFlow.cs:271:27:271:27 | access to local variable a : A | CollectionFlow.cs:271:25:271:29 | { ..., ... } : null [element] : A | provenance |  |
 | CollectionFlow.cs:272:13:272:22 | access to local variable enumerator : IEnumerator [property Current] : A | CollectionFlow.cs:274:18:274:27 | access to local variable enumerator : IEnumerator [property Current] : A | provenance |  |
-| CollectionFlow.cs:272:26:272:28 | access to local variable as : null [element] : A | CollectionFlow.cs:272:26:272:44 | call to method GetEnumerator : IEnumerator [property Current] : A | provenance | MaD:15 |
+| CollectionFlow.cs:272:26:272:28 | access to local variable as : null [element] : A | CollectionFlow.cs:272:26:272:44 | call to method GetEnumerator : IEnumerator [property Current] : A | provenance | MaD:16 |
 | CollectionFlow.cs:272:26:272:44 | call to method GetEnumerator : IEnumerator [property Current] : A | CollectionFlow.cs:272:13:272:22 | access to local variable enumerator : IEnumerator [property Current] : A | provenance |  |
 | CollectionFlow.cs:274:18:274:27 | access to local variable enumerator : IEnumerator [property Current] : A | CollectionFlow.cs:274:18:274:35 | access to property Current | provenance |  |
 | CollectionFlow.cs:287:13:287:13 | access to local variable a : A | CollectionFlow.cs:289:18:289:18 | access to local variable a : A | provenance |  |
@@ -235,15 +236,20 @@ edges
 | CollectionFlow.cs:289:9:289:12 | [post] access to local variable list : List<T> [element] : A | CollectionFlow.cs:290:26:290:29 | access to local variable list : List<T> [element] : A | provenance |  |
 | CollectionFlow.cs:289:18:289:18 | access to local variable a : A | CollectionFlow.cs:289:9:289:12 | [post] access to local variable list : List<T> [element] : A | provenance | MaD:3 |
 | CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | provenance |  |
-| CollectionFlow.cs:290:26:290:29 | access to local variable list : List<T> [element] : A | CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | provenance | MaD:14 |
+| CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | provenance |  |
+| CollectionFlow.cs:290:26:290:29 | access to local variable list : List<T> [element] : A | CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | provenance | MaD:15 |
+| CollectionFlow.cs:290:26:290:29 | access to local variable list : List<T> [element] : A | CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | provenance | MaD:15 |
+| CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | provenance |  |
 | CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | provenance |  |
 | CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:292:18:292:35 | access to property Current | provenance |  |
+| CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:292:18:292:35 | access to property Current | provenance | MaD:14 |
+| CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | CollectionFlow.cs:292:18:292:35 | access to property Current | provenance | MaD:14 |
 | CollectionFlow.cs:306:13:306:13 | access to local variable a : A | CollectionFlow.cs:308:43:308:43 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:306:17:306:23 | object creation of type A : A | CollectionFlow.cs:306:13:306:13 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:308:9:308:12 | [post] access to local variable list : List<T> [element, property Key] : A | CollectionFlow.cs:309:9:309:12 | access to local variable list : List<T> [element, property Key] : A | provenance |  |
 | CollectionFlow.cs:308:18:308:47 | object creation of type KeyValuePair<A,Int32> : KeyValuePair<T,T> [property Key] : A | CollectionFlow.cs:308:9:308:12 | [post] access to local variable list : List<T> [element, property Key] : A | provenance | MaD:3 |
 | CollectionFlow.cs:308:43:308:43 | access to local variable a : A | CollectionFlow.cs:308:18:308:47 | object creation of type KeyValuePair<A,Int32> : KeyValuePair<T,T> [property Key] : A | provenance | MaD:13 |
-| CollectionFlow.cs:309:9:309:12 | access to local variable list : List<T> [element, property Key] : A | CollectionFlow.cs:309:21:309:23 | kvp : KeyValuePair<T,T> [property Key] : A | provenance | MaD:17 |
+| CollectionFlow.cs:309:9:309:12 | access to local variable list : List<T> [element, property Key] : A | CollectionFlow.cs:309:21:309:23 | kvp : KeyValuePair<T,T> [property Key] : A | provenance | MaD:18 |
 | CollectionFlow.cs:309:21:309:23 | kvp : KeyValuePair<T,T> [property Key] : A | CollectionFlow.cs:311:18:311:20 | access to parameter kvp : KeyValuePair<T,T> [property Key] : A | provenance |  |
 | CollectionFlow.cs:311:18:311:20 | access to parameter kvp : KeyValuePair<T,T> [property Key] : A | CollectionFlow.cs:311:18:311:24 | access to property Key | provenance |  |
 | CollectionFlow.cs:328:32:328:38 | element : A | CollectionFlow.cs:328:55:328:61 | access to parameter element : A | provenance |  |
@@ -310,7 +316,7 @@ edges
 | CollectionFlow.cs:488:17:488:20 | access to local variable span : Span<T> [element] : A | CollectionFlow.cs:489:14:489:17 | access to local variable span : Span<T> [element] : A | provenance |  |
 | CollectionFlow.cs:488:24:488:41 | object creation of type Span<A> : Span<T> [element] : A | CollectionFlow.cs:488:17:488:20 | access to local variable span : Span<T> [element] : A | provenance |  |
 | CollectionFlow.cs:488:40:488:40 | access to local variable a : A | CollectionFlow.cs:488:24:488:41 | object creation of type Span<A> : Span<T> [element] : A | provenance | MaD:23 |
-| CollectionFlow.cs:489:14:489:17 | access to local variable span : Span<T> [element] : A | CollectionFlow.cs:489:14:489:20 | access to indexer | provenance | MaD:22 |
+| CollectionFlow.cs:489:14:489:17 | access to local variable span : Span<T> [element] : A | CollectionFlow.cs:489:14:489:20 | access to indexer | provenance | MaD:26 |
 | CollectionFlow.cs:494:13:494:13 | access to local variable a : A | CollectionFlow.cs:495:40:495:40 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:494:17:494:23 | object creation of type A : A | CollectionFlow.cs:494:13:494:13 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:495:17:495:20 | access to local variable span : Span<T> [element] : A | CollectionFlow.cs:496:19:496:22 | access to local variable span : Span<T> [element] : A | provenance |  |
@@ -323,16 +329,16 @@ edges
 | CollectionFlow.cs:502:13:502:13 | access to local variable a : A | CollectionFlow.cs:503:21:503:21 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:502:17:502:23 | object creation of type A : A | CollectionFlow.cs:502:13:502:13 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:503:9:503:14 | [post] access to parameter target : Span<T> [element] : A | CollectionFlow.cs:504:14:504:19 | access to parameter target : Span<T> [element] : A | provenance |  |
-| CollectionFlow.cs:503:21:503:21 | access to local variable a : A | CollectionFlow.cs:503:9:503:14 | [post] access to parameter target : Span<T> [element] : A | provenance | MaD:21 |
-| CollectionFlow.cs:504:14:504:19 | access to parameter target : Span<T> [element] : A | CollectionFlow.cs:504:14:504:22 | access to indexer | provenance | MaD:22 |
+| CollectionFlow.cs:503:21:503:21 | access to local variable a : A | CollectionFlow.cs:503:9:503:14 | [post] access to parameter target : Span<T> [element] : A | provenance | MaD:22 |
+| CollectionFlow.cs:504:14:504:19 | access to parameter target : Span<T> [element] : A | CollectionFlow.cs:504:14:504:22 | access to indexer | provenance | MaD:26 |
 | CollectionFlow.cs:509:13:509:18 | access to local variable source : Span<T> [element] : A | CollectionFlow.cs:510:9:510:14 | access to local variable source : Span<T> [element] : A | provenance |  |
 | CollectionFlow.cs:509:22:509:51 | object creation of type Span<A> : Span<T> [element] : A | CollectionFlow.cs:509:13:509:18 | access to local variable source : Span<T> [element] : A | provenance |  |
 | CollectionFlow.cs:509:34:509:50 | array creation of type A[] : null [element] : A | CollectionFlow.cs:509:22:509:51 | object creation of type Span<A> : Span<T> [element] : A | provenance | MaD:24 |
 | CollectionFlow.cs:509:40:509:50 | { ..., ... } : null [element] : A | CollectionFlow.cs:509:34:509:50 | array creation of type A[] : null [element] : A | provenance |  |
 | CollectionFlow.cs:509:42:509:48 | object creation of type A : A | CollectionFlow.cs:509:40:509:50 | { ..., ... } : null [element] : A | provenance |  |
-| CollectionFlow.cs:510:9:510:14 | access to local variable source : Span<T> [element] : A | CollectionFlow.cs:510:23:510:28 | [post] access to parameter target : Span<T> [element] : A | provenance | MaD:20 |
+| CollectionFlow.cs:510:9:510:14 | access to local variable source : Span<T> [element] : A | CollectionFlow.cs:510:23:510:28 | [post] access to parameter target : Span<T> [element] : A | provenance | MaD:21 |
 | CollectionFlow.cs:510:23:510:28 | [post] access to parameter target : Span<T> [element] : A | CollectionFlow.cs:511:14:511:19 | access to parameter target : Span<T> [element] : A | provenance |  |
-| CollectionFlow.cs:511:14:511:19 | access to parameter target : Span<T> [element] : A | CollectionFlow.cs:511:14:511:22 | access to indexer | provenance | MaD:22 |
+| CollectionFlow.cs:511:14:511:19 | access to parameter target : Span<T> [element] : A | CollectionFlow.cs:511:14:511:22 | access to indexer | provenance | MaD:26 |
 | CollectionFlow.cs:516:13:516:13 | access to local variable a : A | CollectionFlow.cs:517:60:517:60 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:516:17:516:23 | object creation of type A : A | CollectionFlow.cs:516:13:516:13 | access to local variable a : A | provenance |  |
 | CollectionFlow.cs:517:25:517:28 | access to local variable span : ReadOnlySpan<T> [element] : A | CollectionFlow.cs:518:14:518:17 | access to local variable span : ReadOnlySpan<T> [element] : A | provenance |  |
@@ -340,7 +346,7 @@ edges
 | CollectionFlow.cs:517:52:517:62 | array creation of type A[] : null [element] : A | CollectionFlow.cs:517:32:517:63 | object creation of type ReadOnlySpan<A> : ReadOnlySpan<T> [element] : A | provenance | MaD:19 |
 | CollectionFlow.cs:517:58:517:62 | { ..., ... } : null [element] : A | CollectionFlow.cs:517:52:517:62 | array creation of type A[] : null [element] : A | provenance |  |
 | CollectionFlow.cs:517:60:517:60 | access to local variable a : A | CollectionFlow.cs:517:58:517:62 | { ..., ... } : null [element] : A | provenance |  |
-| CollectionFlow.cs:518:14:518:17 | access to local variable span : ReadOnlySpan<T> [element] : A | CollectionFlow.cs:518:14:518:20 | access to indexer | provenance | MaD:18 |
+| CollectionFlow.cs:518:14:518:17 | access to local variable span : ReadOnlySpan<T> [element] : A | CollectionFlow.cs:518:14:518:20 | access to indexer | provenance | MaD:20 |
 nodes
 | CollectionFlow.cs:14:40:14:41 | ts : A[] [element] : A | semmle.label | ts : A[] [element] : A |
 | CollectionFlow.cs:14:40:14:41 | ts : null [element] : A | semmle.label | ts : null [element] : A |
@@ -540,8 +546,11 @@ nodes
 | CollectionFlow.cs:289:9:289:12 | [post] access to local variable list : List<T> [element] : A | semmle.label | [post] access to local variable list : List<T> [element] : A |
 | CollectionFlow.cs:289:18:289:18 | access to local variable a : A | semmle.label | access to local variable a : A |
 | CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | semmle.label | access to local variable enumerator : List<T>.Enumerator [property Current] : A |
+| CollectionFlow.cs:290:13:290:22 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | semmle.label | access to local variable enumerator : List<T>.Enumerator [property Current] : A |
 | CollectionFlow.cs:290:26:290:29 | access to local variable list : List<T> [element] : A | semmle.label | access to local variable list : List<T> [element] : A |
 | CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | semmle.label | call to method GetEnumerator : List<T>.Enumerator [property Current] : A |
+| CollectionFlow.cs:290:26:290:45 | call to method GetEnumerator : List<T>.Enumerator [property Current] : A | semmle.label | call to method GetEnumerator : List<T>.Enumerator [property Current] : A |
+| CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | semmle.label | access to local variable enumerator : List<T>.Enumerator [property Current] : A |
 | CollectionFlow.cs:292:18:292:27 | access to local variable enumerator : List<T>.Enumerator [property Current] : A | semmle.label | access to local variable enumerator : List<T>.Enumerator [property Current] : A |
 | CollectionFlow.cs:292:18:292:35 | access to property Current | semmle.label | access to property Current |
 | CollectionFlow.cs:306:13:306:13 | access to local variable a : A | semmle.label | access to local variable a : A |

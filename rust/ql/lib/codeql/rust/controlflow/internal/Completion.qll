@@ -62,7 +62,7 @@ abstract class ConditionalCompletion extends NormalCompletion {
   abstract ConditionalCompletion getDual();
 }
 
-/** Holds if node `le` has the Boolean constant value `value`. */
+/** Holds if node `le` has the constant Boolean value `value`. */
 private predicate isBooleanConstant(LiteralExpr le, Boolean value) {
   le.getTextValue() = value.toString()
 }
@@ -117,13 +117,63 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override string toString() { result = "boolean(" + value + ")" }
 }
 
+/** Holds if `pat` is guaranteed to match at the point in the AST where it occurs. */
+pragma[nomagic]
+private predicate isExhaustiveMatch(Pat pat) {
+  (
+    pat instanceof WildcardPat
+    or
+    pat = any(IdentPat ip | not ip.hasPat() and ip = any(Variable v).getPat())
+    or
+    pat instanceof RestPat
+    or
+    // `let` statements without an `else` branch must be exhaustive
+    pat = any(LetStmt let | not let.hasLetElse()).getPat()
+    or
+    // `match` expressions must be exhaustive, so last arm cannot fail
+    pat = any(MatchExpr me).getLastArm().getPat()
+    or
+    // macro invocations are exhaustive if their expansion is
+    pat = any(MacroPat mp | isExhaustiveMatch(mp.getMacroCall().getExpanded()))
+    or
+    // parameter patterns must be exhaustive
+    pat = any(Param p).getPat()
+  ) and
+  not pat = any(ForExpr for).getPat() // workaround until `for` loops are desugared
+  or
+  exists(Pat parent | isExhaustiveMatch(parent) |
+    pat = parent.(BoxPat).getPat()
+    or
+    pat = parent.(IdentPat).getPat()
+    or
+    pat = parent.(MacroPat).getMacroCall().getExpanded()
+    or
+    pat = parent.(ParenPat).getPat()
+    or
+    pat = parent.(RecordPat).getRecordPatFieldList().getField(_).getPat()
+    or
+    pat = parent.(RefPat).getPat()
+    or
+    pat = parent.(TuplePat).getAField()
+    or
+    pat = parent.(TupleStructPat).getAField()
+    or
+    pat = parent.(OrPat).getLastPat()
+  )
+}
+
 /**
  * A completion that represents the result of a pattern match.
  */
 class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
   MatchCompletion() { this = TMatchCompletion(value) }
 
-  override predicate isValidForSpecific(AstNode e) { e instanceof Pat }
+  override predicate isValidForSpecific(AstNode e) {
+    e instanceof Pat and
+    if isExhaustiveMatch(e) then value = true else any()
+    or
+    e instanceof TryExpr and value = true
+  }
 
   override MatchSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
@@ -161,7 +211,9 @@ class ContinueCompletion extends TContinueCompletion, Completion {
 class ReturnCompletion extends TReturnCompletion, Completion {
   override ReturnSuccessor getAMatchingSuccessorType() { any() }
 
-  override predicate isValidForSpecific(AstNode e) { e instanceof ReturnExpr }
+  override predicate isValidForSpecific(AstNode e) {
+    e instanceof ReturnExpr or e instanceof TryExpr
+  }
 
   override string toString() { result = "return" }
 }

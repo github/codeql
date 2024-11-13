@@ -5,7 +5,6 @@
 /ArrayExpr/gen_array_expr.rs linguist-generated
 /ArrayType/gen_array_type.rs linguist-generated
 /AsmExpr/gen_asm_expr.rs linguist-generated
-/AssocItemList/gen_assoc_item_list.rs linguist-generated
 /AssocTypeArg/gen_assoc_type_arg.rs linguist-generated
 /Attr/gen_attr.rs linguist-generated
 /AwaitExpr/gen_await_expr.rs linguist-generated
@@ -59,8 +58,10 @@
 /MacroCall/gen_macro_call.rs linguist-generated
 /MacroDef/gen_macro_def.rs linguist-generated
 /MacroExpr/gen_macro_expr.rs linguist-generated
+/MacroItems/gen_macro_items.rs linguist-generated
 /MacroPat/gen_macro_pat.rs linguist-generated
 /MacroRules/gen_macro_rules.rs linguist-generated
+/MacroStmts/gen_macro_stmts.rs linguist-generated
 /MacroType/gen_macro_type.rs linguist-generated
 /MatchArm/gen_match_arm.rs linguist-generated
 /MatchArmList/gen_match_arm_list.rs linguist-generated

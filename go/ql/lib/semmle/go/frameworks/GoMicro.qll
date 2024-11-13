@@ -98,6 +98,12 @@ module GoMicro {
     }
   }
 
+  bindingset[m]
+  pragma[inline_late]
+  private predicate implementsServiceType(Method m) {
+    m.implements(any(ServiceInterfaceType i).getNamedType().getMethod(_))
+  }
+
   /**
    * A service handler.
    */
@@ -106,7 +112,7 @@ module GoMicro {
       exists(DataFlow::CallNode call |
         call.getTarget() instanceof ServiceRegisterHandler and
         this = call.getArgument(1).getType().getMethod(_) and
-        this.implements(any(ServiceInterfaceType i).getNamedType().getMethod(_))
+        implementsServiceType(this)
       )
     }
   }

@@ -4,12 +4,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.Android.Build", "AndroidProject", False, "AndroidProject", "(System.String,System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["Microsoft.Android.Build", "AndroidProject", False, "AndroidProject", "(System.String,System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["Microsoft.Android.Build", "AndroidProject", False, "AndroidProject", "(System.String,System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
-      - ["Microsoft.Android.Build", "AndroidProject", False, "AndroidProject", "(System.String,System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
-      - ["Microsoft.Android.Build", "AndroidProject", False, "BuildCMake", "(System.String,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Android.Build", "AndroidProject", False, "BuildCMake", "(System.String,System.Boolean)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Android.Build", "AndroidProject", False, "AndroidProject", "(System.String,System.String,System.String,Microsoft.Build.Utilities.TaskLoggingHelper)", "", "Argument[0]", "Argument[this].SyntheticField[Microsoft.Android.Build.AndroidProject.projectName]", "value", "dfc-generated"]
+      - ["Microsoft.Android.Build", "AndroidProject", False, "BuildCMake", "(System.String,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["Microsoft.Android.Build", "AndroidProject", False, "BuildCMake", "(System.String,System.Boolean)", "", "Argument[this].SyntheticField[Microsoft.Android.Build.AndroidProject.projectName]", "ReturnValue", "taint", "dfc-generated"]
       - ["Microsoft.Android.Build", "AndroidProject", False, "get_Abi", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all

@@ -6,8 +6,8 @@ use quote::{format_ident, quote};
 pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let ast = syn::parse_macro_input!(item as syn::ItemStruct);
     let name = &ast.ident;
-    let new_name = format_ident!("Cli{}", name);
-    let fields: Vec<_> = ast
+    let cli_name = format_ident!("Cli{}", name);
+    let cli_fields = ast
         .fields
         .iter()
         .map(|f| {
@@ -19,6 +19,12 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
                         #[arg(long)]
                         #[serde(skip_serializing_if="<&bool>::not")]
                         #id: bool,
+                    };
+                }
+                if p.path.segments.len() == 1 && p.path.segments[0].ident == "Option" {
+                    return quote! {
+                        #[arg(long)]
+                        #id: #ty,
                     };
                 }
             }
@@ -39,17 +45,42 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
                 }
             }
         })
-        .collect();
+        .collect::<Vec<_>>();
+    let debug_fields = ast
+        .fields
+        .iter()
+        .map(|f| {
+            let id = f.ident.as_ref().unwrap();
+            if id == &format_ident!("inputs") {
+                quote! {
+                    .field("number of inputs", &self.#id.len())
+                }
+            } else {
+                quote! {
+                    .field(stringify!(#id), &self.#id)
+                }
+            }
+        })
+        .collect::<Vec<_>>();
+
     let gen = quote! {
         #[serde_with::apply(_ => #[serde(default)])]
-        #[derive(Debug, Deserialize, Default)]
+        #[derive(Deserialize, Default)]
         #ast
+
+        impl Debug for #name {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                f.debug_struct("configuration:")
+                    #(#debug_fields)*
+                    .finish()
+            }
+        }
 
         #[serde_with::skip_serializing_none]
         #[derive(clap::Parser, Serialize)]
         #[command(about, long_about = None)]
-        struct #new_name {
-            #(#fields)*
+        struct #cli_name {
+            #(#cli_fields)*
         }
     };
     gen.into()

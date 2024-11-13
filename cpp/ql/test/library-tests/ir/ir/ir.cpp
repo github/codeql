@@ -2686,4 +2686,13 @@ void test(bool b)
   twice_call_use(b ? "" : "");
 }
 
+namespace concepts {
+
+int requires_use() {
+  int y = requires { sizeof(int) > 0; };
+  return y;
+}
+
+}
+
 // semmle-extractor-options: -std=c++20 --clang

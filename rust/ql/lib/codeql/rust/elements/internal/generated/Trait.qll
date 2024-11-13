@@ -22,8 +22,14 @@ import codeql.rust.elements.WhereClause
 module Generated {
   /**
    * A Trait. For example:
-   * ```rust
-   * todo!()
+   * ```
+   * trait Frobinizable {
+   *   type Frobinator;
+   *   type Result: Copy;
+   *   fn frobinize_with(&mut self, frobinator: &Self::Frobinator) -> Result;
+   * }
+   *
+   * pub trait Foo<T: Frobinizable> where T::Frobinator: Eq {}
    * ```
    * INTERNAL: Do not reference the `Generated::Trait` class directly.
    * Use the subclass `Trait`, where the following predicates are available.
@@ -77,6 +83,16 @@ module Generated {
      * Holds if `getGenericParamList()` exists.
      */
     final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
+
+    /**
+     * Holds if this trait is auto.
+     */
+    predicate isAuto() { Synth::convertTraitToRaw(this).(Raw::Trait).isAuto() }
+
+    /**
+     * Holds if this trait is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertTraitToRaw(this).(Raw::Trait).isUnsafe() }
 
     /**
      * Gets the name of this trait, if it exists.

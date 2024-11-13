@@ -1,0 +1,17 @@
+nodes
+| test.js:4:5:4:29 | temp |
+| test.js:4:12:4:22 | process.env |
+| test.js:4:12:4:22 | process.env |
+| test.js:4:12:4:29 | process.env['foo'] |
+| test.js:7:14:7:61 | 'SELECT ...  + temp |
+| test.js:7:14:7:61 | 'SELECT ...  + temp |
+| test.js:7:58:7:61 | temp |
+edges
+| test.js:4:5:4:29 | temp | test.js:7:58:7:61 | temp |
+| test.js:4:12:4:22 | process.env | test.js:4:12:4:29 | process.env['foo'] |
+| test.js:4:12:4:22 | process.env | test.js:4:12:4:29 | process.env['foo'] |
+| test.js:4:12:4:29 | process.env['foo'] | test.js:4:5:4:29 | temp |
+| test.js:7:58:7:61 | temp | test.js:7:14:7:61 | 'SELECT ...  + temp |
+| test.js:7:58:7:61 | temp | test.js:7:14:7:61 | 'SELECT ...  + temp |
+#select
+| test.js:7:14:7:61 | 'SELECT ...  + temp | test.js:4:12:4:22 | process.env | test.js:7:14:7:61 | 'SELECT ...  + temp | This query string depends on a $@. | test.js:4:12:4:22 | process.env | user-provided value |

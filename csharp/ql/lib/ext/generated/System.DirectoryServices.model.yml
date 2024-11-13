@@ -207,6 +207,7 @@ extensions:
       - ["System.DirectoryServices", "SchemaNameCollection", "IndexOf", "(System.Object)", "summary", "df-generated"]
       - ["System.DirectoryServices", "SchemaNameCollection", "IndexOf", "(System.String)", "summary", "df-generated"]
       - ["System.DirectoryServices", "SchemaNameCollection", "Insert", "(System.Int32,System.String)", "summary", "df-generated"]
+      - ["System.DirectoryServices", "SchemaNameCollection", "Remove", "(System.Object)", "summary", "df-generated"]
       - ["System.DirectoryServices", "SchemaNameCollection", "Remove", "(System.String)", "summary", "df-generated"]
       - ["System.DirectoryServices", "SchemaNameCollection", "RemoveAt", "(System.Int32)", "summary", "df-generated"]
       - ["System.DirectoryServices", "SchemaNameCollection", "get_Count", "()", "summary", "df-generated"]

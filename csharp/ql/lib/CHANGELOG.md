@@ -1,3 +1,13 @@
+## 3.1.0
+
+### Major Analysis Improvements
+
+* The generated .NET 8 runtime models have been updated.
+
+## 3.0.1
+
+No user-facing changes.
+
 ## 3.0.0
 
 ### Breaking Changes

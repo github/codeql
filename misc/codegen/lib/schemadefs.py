@@ -1,4 +1,9 @@
-from typing import Callable as _Callable, Dict as _Dict, ClassVar as _ClassVar
+from typing import (
+    Callable as _Callable,
+    Dict as _Dict,
+    Iterable as _Iterable,
+    ClassVar as _ClassVar,
+)
 from misc.codegen.lib import schema as _schema
 import inspect as _inspect
 from dataclasses import dataclass as _dataclass
@@ -271,14 +276,16 @@ class _PropertyAnnotation:
 
 _ = _PropertyAnnotation()
 
+drop = object()
 
-def annotate(annotated_cls: type) -> _Callable[[type], _PropertyAnnotation]:
+
+def annotate(annotated_cls: type, add_bases: _Iterable[type] | None = None, replace_bases: _Dict[type, type] | None = None) -> _Callable[[type], _PropertyAnnotation]:
     """
-    Add or modify schema annotations after a class has been defined
-    For the moment, only docstring annotation is supported. In the future, any kind of
-    modification will be allowed.
+    Add or modify schema annotations after a class has been defined previously.
 
-    The name of the class used for annotation must be `_`
+    The name of the class used for annotation must be `_`.
+
+    `replace_bases` can be used to replace bases on the annotated class.
     """
     def decorator(cls: type) -> _PropertyAnnotation:
         if cls.__name__ != "_":
@@ -287,11 +294,17 @@ def annotate(annotated_cls: type) -> _Callable[[type], _PropertyAnnotation]:
             annotated_cls.__doc__ = cls.__doc__
         for p, v in cls.__dict__.get("_pragmas", {}).items():
             _ClassPragma(p, value=v)(annotated_cls)
+        if replace_bases:
+            annotated_cls.__bases__ = tuple(replace_bases.get(b, b) for b in annotated_cls.__bases__)
+        if add_bases:
+            annotated_cls.__bases__ += tuple(add_bases)
         for a in dir(cls):
             if a.startswith(_schema.inheritable_pragma_prefix):
                 setattr(annotated_cls, a, getattr(cls, a))
         for p, a in cls.__annotations__.items():
-            if p in annotated_cls.__annotations__:
+            if a is drop:
+                del annotated_cls.__annotations__[p]
+            elif p in annotated_cls.__annotations__:
                 annotated_cls.__annotations__[p] |= a
             elif isinstance(a, (_PropertyAnnotation, _PropertyModifierList)):
                 raise _schema.Error(f"annotated property {p} not present in annotated class "

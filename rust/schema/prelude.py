@@ -63,3 +63,19 @@ class Unimplemented(Unextracted):
     The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
     """
     pass
+
+
+class Callable(AstNode):
+    """
+    A callable. Either a `Function` or a `ClosureExpr`.
+    """
+    param_list: optional["ParamList"] | child
+    attrs: list["Attr"] | child
+
+
+class Resolvable(AstNode):
+    """
+    Either a `Path`, or a `MethodCallExpr`.
+    """
+    resolved_path: optional[string] | rust.detach | ql.internal
+    resolved_crate_origin: optional[string] | rust.detach | ql.internal

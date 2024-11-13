@@ -2,11 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from Meta x, string hasExpr, string hasPath, string hasTokenTree
+from Meta x, string hasExpr, string isUnsafe, string hasPath, string hasTokenTree
 where
   toBeTested(x) and
   not x.isUnknown() and
   (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
+  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
   (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
   if x.hasTokenTree() then hasTokenTree = "yes" else hasTokenTree = "no"
-select x, "hasExpr:", hasExpr, "hasPath:", hasPath, "hasTokenTree:", hasTokenTree
+select x, "hasExpr:", hasExpr, "isUnsafe:", isUnsafe, "hasPath:", hasPath, "hasTokenTree:",
+  hasTokenTree

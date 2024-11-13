@@ -884,6 +884,86 @@ def test_annotate_not_underscore():
                 """
 
 
+def test_annotate_replace_bases():
+    @load
+    class data:
+        class Root:
+            pass
+
+        class A(Root):
+            pass
+
+        class B(Root):
+            pass
+
+        class C(B):
+            pass
+
+        class Derived(A, B):
+            pass
+
+        @defs.annotate(Derived, replace_bases={B: C})
+        class _:
+            pass
+    assert data.classes == {
+        "Root": schema.Class("Root", derived={"A", "B"}),
+        "A": schema.Class("A", bases=["Root"], derived={"Derived"}),
+        "B": schema.Class("B", bases=["Root"], derived={"C"}),
+        "C": schema.Class("C", bases=["B"], derived={"Derived"}),
+        "Derived": schema.Class("Derived", bases=["A", "C"]),
+    }
+
+
+def test_annotate_add_bases():
+    @load
+    class data:
+        class Root:
+            pass
+
+        class A(Root):
+            pass
+
+        class B(Root):
+            pass
+
+        class C(Root):
+            pass
+
+        class Derived(A):
+            pass
+
+        @defs.annotate(Derived, add_bases=(B, C))
+        class _:
+            pass
+    assert data.classes == {
+        "Root": schema.Class("Root", derived={"A", "B", "C"}),
+        "A": schema.Class("A", bases=["Root"], derived={"Derived"}),
+        "B": schema.Class("B", bases=["Root"], derived={"Derived"}),
+        "C": schema.Class("C", bases=["Root"], derived={"Derived"}),
+        "Derived": schema.Class("Derived", bases=["A", "B", "C"]),
+    }
+
+
+def test_annotate_drop_field():
+    @load
+    class data:
+        class Root:
+            x: defs.int
+            y: defs.string
+            z: defs.boolean
+
+        @defs.annotate(Root)
+        class _:
+            y: defs.drop
+
+    assert data.classes == {
+        "Root": schema.Class("Root", properties=[
+            schema.SingleProperty("x", "int"),
+            schema.SingleProperty("z", "boolean"),
+        ]),
+    }
+
+
 def test_test_with_unknown_string():
     with pytest.raises(schema.Error):
         @load

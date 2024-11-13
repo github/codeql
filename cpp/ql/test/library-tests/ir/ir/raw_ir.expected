@@ -17422,6 +17422,23 @@ ir.cpp:
 # 2684|     v2684_7(void) = AliasedUse   : ~m?
 # 2684|     v2684_8(void) = ExitFunction : 
 
+# 2691| int concepts::requires_use()
+# 2691|   Block 0
+# 2691|     v2691_1(void)       = EnterFunction            : 
+# 2691|     mu2691_2(unknown)   = AliasedDefinition        : 
+# 2691|     mu2691_3(unknown)   = InitializeNonLocal       : 
+# 2692|     r2692_1(glval<int>) = VariableAddress[y]       : 
+#-----|     r0_1(int)           = Constant[1]              : 
+#-----|     mu0_2(int)          = Store[y]                 : &:r2692_1, r0_1
+# 2693|     r2693_1(glval<int>) = VariableAddress[#return] : 
+# 2693|     r2693_2(glval<int>) = VariableAddress[y]       : 
+# 2693|     r2693_3(int)        = Load[y]                  : &:r2693_2, ~m?
+# 2693|     mu2693_4(int)       = Store[#return]           : &:r2693_1, r2693_3
+# 2691|     r2691_4(glval<int>) = VariableAddress[#return] : 
+# 2691|     v2691_5(void)       = ReturnValue              : &:r2691_4, ~m?
+# 2691|     v2691_6(void)       = AliasedUse               : ~m?
+# 2691|     v2691_7(void)       = ExitFunction             : 
+
 many-defs-per-use.cpp:
 #   34| void many_defs_per_use()
 #   34|   Block 0

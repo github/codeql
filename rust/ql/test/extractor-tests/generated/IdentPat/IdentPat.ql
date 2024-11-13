@@ -2,11 +2,14 @@
 import codeql.rust.elements
 import TestUtils
 
-from IdentPat x, int getNumberOfAttrs, string hasName, string hasPat
+from IdentPat x, int getNumberOfAttrs, string isMut, string isRef, string hasName, string hasPat
 where
   toBeTested(x) and
   not x.isUnknown() and
   getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.isMut() then isMut = "yes" else isMut = "no") and
+  (if x.isRef() then isRef = "yes" else isRef = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
   if x.hasPat() then hasPat = "yes" else hasPat = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasName:", hasName, "hasPat:", hasPat
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "isMut:", isMut, "isRef:", isRef, "hasName:",
+  hasName, "hasPat:", hasPat

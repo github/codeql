@@ -15,8 +15,14 @@ import codeql.rust.elements.WhereClause
 
 /**
  * A Trait. For example:
- * ```rust
- * todo!()
+ * ```
+ * trait Frobinizable {
+ *   type Frobinator;
+ *   type Result: Copy;
+ *   fn frobinize_with(&mut self, frobinator: &Self::Frobinator) -> Result;
+ * }
+ *
+ * pub trait Foo<T: Frobinizable> where T::Frobinator: Eq {}
  * ```
  */
 final class Trait = Impl::Trait;

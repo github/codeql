@@ -3285,6 +3285,18 @@ module StdlibPrivate {
   }
 
   /**
+   * A base API node for regular expression functions.
+   * Either the `re` module or a compiled regular expression.
+   */
+  private API::Node re(boolean compiled) {
+    result = API::moduleImport("re") and
+    compiled = false
+    or
+    result = any(RePatternSummary c).getACall().(API::CallNode).getReturn() and
+    compiled = true
+  }
+
+  /**
    * A flow summary for methods returning a `re.Match` object
    *
    * See https://docs.python.org/3/library/re.html#re.Match
@@ -3293,17 +3305,18 @@ module StdlibPrivate {
     ReMatchSummary() { this = ["re.Match", "compiled re.Match"] }
 
     override DataFlow::CallCfgNode getACall() {
-      this = "re.Match" and
-      result = API::moduleImport("re").getMember(["match", "search", "fullmatch"]).getACall()
-      or
-      this = "compiled re.Match" and
-      result =
-        any(RePatternSummary c)
-            .getACall()
-            .(API::CallNode)
-            .getReturn()
-            .getMember(["match", "search", "fullmatch"])
-            .getACall()
+      exists(API::Node re, boolean compiled |
+        re = re(compiled) and
+        (
+          compiled = false and
+          this = "re.Match"
+          or
+          compiled = true and
+          this = "compiled re.Match"
+        )
+      |
+        result = re.getMember(["match", "search", "fullmatch"]).getACall()
+      )
     }
 
     override DataFlow::ArgumentNode getACallback() { none() }
@@ -3340,6 +3353,13 @@ module StdlibPrivate {
     }
   }
 
+  /** An API node for a `re.Match` object */
+  private API::Node match() {
+    result = any(ReMatchSummary c).getACall().(API::CallNode).getReturn()
+    or
+    result = re(_).getMember("finditer").getReturn().getASubscript()
+  }
+
   /**
    * A flow summary for methods on a `re.Match` object
    *
@@ -3353,15 +3373,7 @@ module StdlibPrivate {
       methodName in ["expand", "group", "groups", "groupdict"]
     }
 
-    override DataFlow::CallCfgNode getACall() {
-      result =
-        any(ReMatchSummary c)
-            .getACall()
-            .(API::CallNode)
-            .getReturn()
-            .getMember(methodName)
-            .getACall()
-    }
+    override DataFlow::CallCfgNode getACall() { result = match().getMember(methodName).getACall() }
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
@@ -3462,6 +3474,14 @@ module StdlibPrivate {
             methodName = "subn" and output = "ReturnValue.TupleElement[0]"
           ) and
           preservesValue = false
+        )
+        or
+        // flow from input string to attribute on match object
+        exists(int arg | arg = methodName.(RegexExecutionMethod).getStringArgIndex() - offset |
+          input in ["Argument[" + arg + "]", "Argument[string:]"] and
+          methodName = "finditer" and
+          output = "ReturnValue.ListElement.Attribute[string]" and
+          preservesValue = true
         )
       )
     }
@@ -4517,27 +4537,41 @@ module StdlibPrivate {
     override DataFlow::ArgumentNode getACallback() { none() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      exists(string content |
-        content = "ListElement"
-        or
-        content = "SetElement"
-        or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          content = "TupleElement[" + i.toString() + "]"
-        )
-        or
-        exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
-          content = "DictionaryElement[" + key + "]"
-        )
-      |
-        input = "Argument[self]." + content and
-        output = "ReturnValue." + content and
+      exists(DataFlow::Content c |
+        input = "Argument[self]." + c.getMaDRepresentation() and
+        output = "ReturnValue." + c.getMaDRepresentation() and
         preservesValue = true
       )
       or
       input = "Argument[self]" and
       output = "ReturnValue" and
       preservesValue = true
+    }
+  }
+
+  /** A flow summary for `copy.replace`. */
+  class ReplaceSummary extends SummarizedCallable {
+    ReplaceSummary() { this = "copy.replace" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("copy").getMember("replace").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::moduleImport("copy").getMember("replace").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      exists(CallNode c, string name, ControlFlowNode n, DataFlow::AttributeContent ac |
+        c.getFunction().(NameNode).getId() = "replace" or
+        c.getFunction().(AttrNode).getName() = "replace"
+      |
+        n = c.getArgByName(name) and
+        ac.getAttribute() = name and
+        input = "Argument[" + name + ":]" and
+        output = "ReturnValue." + ac.getMaDRepresentation() and
+        preservesValue = true
+      )
     }
   }
 

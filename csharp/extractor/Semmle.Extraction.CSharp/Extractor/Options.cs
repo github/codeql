@@ -33,9 +33,9 @@ namespace Semmle.Extraction.CSharp
         public bool AssemblySensitiveTrap { get; private set; } = false;
 
         /// <summary>
-        /// The path to the binary log file, or null if unspecified.
+        /// The paths to the binary log files, or null if unspecified.
         /// </summary>
-        public string? BinaryLogPath { get; set; }
+        public string[]? BinaryLogPaths { get; set; }
 
         public static Options CreateWithEnvironment(string[] arguments)
         {
@@ -71,7 +71,7 @@ namespace Semmle.Extraction.CSharp
                     ProjectsToLoad.Add(value);
                     return true;
                 case "binlog":
-                    BinaryLogPath = value;
+                    BinaryLogPaths = value.Split(FileUtils.NewLineCharacters, StringSplitOptions.RemoveEmptyEntries);
                     return true;
                 default:
                     return base.HandleOption(key, value);

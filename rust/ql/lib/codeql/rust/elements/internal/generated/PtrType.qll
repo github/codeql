@@ -26,6 +26,16 @@ module Generated {
     override string getAPrimaryQlClass() { result = "PtrType" }
 
     /**
+     * Holds if this ptr type is const.
+     */
+    predicate isConst() { Synth::convertPtrTypeToRaw(this).(Raw::PtrType).isConst() }
+
+    /**
+     * Holds if this ptr type is mut.
+     */
+    predicate isMut() { Synth::convertPtrTypeToRaw(this).(Raw::PtrType).isMut() }
+
+    /**
      * Gets the ty of this ptr type, if it exists.
      */
     TypeRef getTy() {

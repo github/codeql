@@ -20,6 +20,8 @@ import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.BoxPat
 import codeql.rust.elements.BreakExpr
 import codeql.rust.elements.CallExpr
+import codeql.rust.elements.CallExprBase
+import codeql.rust.elements.Callable
 import codeql.rust.elements.CastExpr
 import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.ClosureExpr
@@ -43,8 +45,11 @@ import codeql.rust.elements.FieldList
 import codeql.rust.elements.FnPtrType
 import codeql.rust.elements.ForExpr
 import codeql.rust.elements.ForType
+import codeql.rust.elements.Format
 import codeql.rust.elements.FormatArgsArg
 import codeql.rust.elements.FormatArgsExpr
+import codeql.rust.elements.FormatArgument
+import codeql.rust.elements.FormatTemplateVariableAccess
 import codeql.rust.elements.Function
 import codeql.rust.elements.GenericArg
 import codeql.rust.elements.GenericArgList
@@ -72,8 +77,10 @@ import codeql.rust.elements.LoopExpr
 import codeql.rust.elements.MacroCall
 import codeql.rust.elements.MacroDef
 import codeql.rust.elements.MacroExpr
+import codeql.rust.elements.MacroItems
 import codeql.rust.elements.MacroPat
 import codeql.rust.elements.MacroRules
+import codeql.rust.elements.MacroStmts
 import codeql.rust.elements.MacroType
 import codeql.rust.elements.MatchArm
 import codeql.rust.elements.MatchArmList
@@ -96,6 +103,7 @@ import codeql.rust.elements.ParenType
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Path
 import codeql.rust.elements.PathExpr
+import codeql.rust.elements.PathExprBase
 import codeql.rust.elements.PathPat
 import codeql.rust.elements.PathSegment
 import codeql.rust.elements.PathType
@@ -115,6 +123,7 @@ import codeql.rust.elements.RefExpr
 import codeql.rust.elements.RefPat
 import codeql.rust.elements.RefType
 import codeql.rust.elements.Rename
+import codeql.rust.elements.Resolvable
 import codeql.rust.elements.RestPat
 import codeql.rust.elements.RetType
 import codeql.rust.elements.ReturnExpr

@@ -1,0 +1,10 @@
+| a/A.cs:0:0:0:0 | a/A.cs |
+| a/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs:0:0:0:0 | a/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs |
+| a/obj/Debug/net8.0/test.AssemblyInfo.cs:0:0:0:0 | a/obj/Debug/net8.0/test.AssemblyInfo.cs |
+| a/obj/Debug/net8.0/test.GlobalUsings.g.cs:0:0:0:0 | a/obj/Debug/net8.0/test.GlobalUsings.g.cs |
+| b/B.cs:0:0:0:0 | b/B.cs |
+| b/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs:0:0:0:0 | b/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs |
+| b/obj/Debug/net8.0/test.AssemblyInfo.cs:0:0:0:0 | b/obj/Debug/net8.0/test.AssemblyInfo.cs |
+| b/obj/Debug/net8.0/test.GlobalUsings.g.cs:0:0:0:0 | b/obj/Debug/net8.0/test.GlobalUsings.g.cs |
+| generated/a/test.csproj (net8.0)/System.Text.RegularExpressions.Generator/System.Text.RegularExpressions.Generator.RegexGenerator/RegexGenerator.g.cs:0:0:0:0 | generated/a/test.csproj (net8.0)/System.Text.RegularExpressions.Generator/System.Text.RegularExpressions.Generator.RegexGenerator/RegexGenerator.g.cs |
+| generated/b/test.csproj (net8.0)/System.Text.RegularExpressions.Generator/System.Text.RegularExpressions.Generator.RegexGenerator/RegexGenerator.g.cs:0:0:0:0 | generated/b/test.csproj (net8.0)/System.Text.RegularExpressions.Generator/System.Text.RegularExpressions.Generator.RegexGenerator/RegexGenerator.g.cs |

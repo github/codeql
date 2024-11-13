@@ -1,4 +1,0 @@
-| lib.rs:3:9:3:8 | expected `;` or `{` |
-| lib.rs:3:9:3:8 | expected an item |
-| lib.rs:3:21:3:20 | expected BANG |
-| lib.rs:3:21:3:20 | expected `{`, `[`, `(` |

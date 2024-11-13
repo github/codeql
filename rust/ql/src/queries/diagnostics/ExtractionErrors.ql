@@ -8,7 +8,7 @@
 import codeql.rust.Diagnostics
 import codeql.files.FileSystem
 
-/** Gets the SARIF severity to associate an error. */
+/** Gets the SARIF severity to associate with an error. */
 int getSeverity() { result = 2 }
 
 from ExtractionError error, File f

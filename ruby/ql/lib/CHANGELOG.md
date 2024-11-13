@@ -1,3 +1,13 @@
+## 2.0.3
+
+No user-facing changes.
+
+## 2.0.2
+
+### Minor Analysis Improvements
+
+* The `ExtractionError` class has been split into `ExtractionError` and `ExtractionWarning`, reporting extraction errors and warnings respectively.
+
 ## 2.0.1
 
 No user-facing changes.

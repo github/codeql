@@ -62,6 +62,15 @@ public class BasicFlow
     {
         return tainted;
     }
+
+    public Func<object, object> MyFunction;
+    // summary=Models;BasicFlow;false;ApplyMyFunction;(System.Object);;Argument[0];Argument[this];taint;df-generated
+    // summary=Models;BasicFlow;false;ApplyMyFunction;(System.Object);;Argument[this];ReturnValue;taint;df-generated
+    // No content based flow as MaD doesn't support callback logic in fields and properties.
+    public object ApplyMyFunction(object o)
+    {
+        return MyFunction(o);
+    }
 }
 
 public class CollectionFlow
@@ -497,18 +506,55 @@ public class SimpleTypes
     }
 }
 
-// No models as higher order methods are excluded
-// from model generation.
+// Methods in this class are "neutral" with respect to the heuristic model generation, but
+// the content based model generation is able to produce flow summaries for them.
 public class HigherOrderParameters
 {
+    // neutral=Models;HigherOrderParameters;M1;(System.String,System.Func<System.String,System.String>);summary;df-generated
+    // contentbased-summary=Models;HigherOrderParameters;false;M1;(System.String,System.Func<System.String,System.String>);;Argument[0];ReturnValue;value;dfc-generated
     public string M1(string s, Func<string, string> map)
     {
         return s;
     }
 
-    public object M2(Func<object, object> map, object o)
+    // neutral=Models;HigherOrderParameters;Apply;(System.Func<System.Object,System.Object>,System.Object);summary;df-generated
+    // contentbased-summary=Models;HigherOrderParameters;false;Apply;(System.Func<System.Object,System.Object>,System.Object);;Argument[1];Argument[0].Parameter[0];value;dfc-generated
+    // contentbased-summary=Models;HigherOrderParameters;false;Apply;(System.Func<System.Object,System.Object>,System.Object);;Argument[0].ReturnValue;ReturnValue;value;dfc-generated
+    public object Apply(Func<object, object> f, object o)
     {
-        return map(o);
+        return f(o);
+    }
+
+    // neutral=Models;HigherOrderParameters;Apply2;(System.Object,System.Func<System.Object,System.Object,System.Object>);summary;df-generated
+    // contentbased-summary=Models;HigherOrderParameters;false;Apply2;(System.Object,System.Func<System.Object,System.Object,System.Object>);;Argument[0];Argument[1].Parameter[1];value;dfc-generated
+    // contentbased-summary=Models;HigherOrderParameters;false;Apply2;(System.Object,System.Func<System.Object,System.Object,System.Object>);;Argument[1].ReturnValue;ReturnValue;value;dfc-generated
+    public object Apply2(object o, Func<object, object, object> f)
+    {
+        var x = f(null, o);
+        return x;
+    }
+
+    // neutral=Models;HigherOrderParameters;Apply;(System.Action<System.Object>,System.Object);summary;df-generated
+    // contentbased-summary=Models;HigherOrderParameters;false;Apply;(System.Action<System.Object>,System.Object);;Argument[1];Argument[0].Parameter[0];value;dfc-generated
+    public void Apply(Action<object> a, object o)
+    {
+        a(o);
+    }
+}
+
+public static class HigherOrderExtensionMethods
+{
+    // neutral=Models;HigherOrderExtensionMethods;Select<TSource,TResult>;(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>);summary;df-generated
+    // contentbased-summary=Models;HigherOrderExtensionMethods;false;Select<TSource,TResult>;(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>);;Argument[0].Element;Argument[1].Parameter[0];value;dfc-generated
+    // contentbased-summary=Models;HigherOrderExtensionMethods;false;Select<TSource,TResult>;(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>);;Argument[1].ReturnValue;ReturnValue.Element;value;dfc-generated
+    public static IEnumerable<TResult> Select<TSource, TResult>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TResult> selector)
+    {
+        foreach (var item in source)
+        {
+            yield return selector(item);
+        }
     }
 }
 
@@ -639,7 +685,7 @@ public class Inheritance
         public override string Prop { get { return tainted; } }
     }
 
-    public abstract class BaseContent 
+    public abstract class BaseContent
     {
         public abstract object GetValue();
 
@@ -959,5 +1005,32 @@ public class Fanout
     public string ConcatValueOnBase2(string other, Base2 b2)
     {
         return other + b2.GetValue();
+    }
+}
+
+public class AvoidDuplicateLifted
+{
+    public class A
+    {
+        public object Prop { get; set; }
+
+        // contentbased-summary=Models;AvoidDuplicateLifted+A;true;GetValue;();;Argument[this].Property[Models.AvoidDuplicateLifted+A.Prop];ReturnValue;value;dfc-generated
+        // summary=Models;AvoidDuplicateLifted+A;true;GetValue;();;Argument[this];ReturnValue;taint;df-generated
+        public virtual object GetValue()
+        {
+            return Prop;
+        }
+    }
+
+    public class B : A
+    {
+        private object field;
+
+        // No content based summary as field is a dead synthetic field.
+        // summary=Models;AvoidDuplicateLifted+A;true;GetValue;();;Argument[this];ReturnValue;taint;df-generated
+        public override object GetValue()
+        {
+            return field;
+        }
     }
 }

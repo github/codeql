@@ -1,3 +1,17 @@
+## 4.2.0
+
+### Major Analysis Improvements
+
+* Java: The generated JDK 17 models have been updated.
+
+### Minor Analysis Improvements
+
+* Java `build-mode=none` extraction now packages the Maven plugin used to examine project dependencies. This means that dependency identification is more likely to succeed, and therefore analysis quality may rise, in scenarios where Maven Central is not reachable.
+
+## 4.1.1
+
+No user-facing changes.
+
 ## 4.1.0
 
 ### Deprecated APIs

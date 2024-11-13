@@ -1,6 +1,7 @@
 /** Provides classes relating to extraction diagnostics. */
 
 private import codeql.Locations
+private import codeql.rust.elements.internal.LocationImpl
 
 /** A diagnostic emitted during extraction, such as a parse error */
 class Diagnostic extends @diagnostic {
@@ -10,7 +11,12 @@ class Diagnostic extends @diagnostic {
   string fullMessage;
   Location location;
 
-  Diagnostic() { diagnostics(this, severity, tag, message, fullMessage, location) }
+  Diagnostic() {
+    exists(@location_default loc |
+      diagnostics(this, severity, tag, message, fullMessage, loc) and
+      location = LocationImpl::TLocationDefault(loc)
+    )
+  }
 
   /**
    * Gets the numerical severity level associated with this diagnostic.
@@ -48,7 +54,8 @@ class Diagnostic extends @diagnostic {
   string toString() { result = this.getMessage() }
 }
 
-/** A diagnostic relating to a particular error in extracting a file. */
-class ExtractionError extends Diagnostic {
-  ExtractionError() { this.getTag() = "parse_error" }
-}
+/** A diagnostic that is error severity. */
+class ExtractionError extends Diagnostic, @diagnostic_error { }
+
+/** A diagnostic that is warning severity. */
+class ExtractionWarning extends Diagnostic, @diagnostic_warning { }

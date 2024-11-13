@@ -518,6 +518,7 @@ func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 // For more information on objects, see:
 // https://github.com/golang/example/blob/master/gotypes/README.md#objects
 func extractObject(tw *trap.Writer, obj types.Object, lbl trap.Label) {
+	checkObjectNotSpecialized(obj)
 	name := obj.Name()
 	isBuiltin := obj.Parent() == types.Universe
 	var kind int
@@ -1607,7 +1608,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 		case *types.Struct:
 			kind = dbscheme.StructType.Index()
 			for i := 0; i < tp.NumFields(); i++ {
-				field := tp.Field(i)
+				field := tp.Field(i).Origin()
 
 				// ensure the field is associated with a label - note that
 				// struct fields do not have a parent scope, so they are not
@@ -1624,6 +1625,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 					name = ""
 				}
 				extractComponentType(tw, lbl, i, name, field.Type())
+				if tp.Tag(i) != "" {
+					dbscheme.StructTagsTable.Emit(tw, lbl, i, tp.Tag(i))
+				}
 			}
 		case *types.Pointer:
 			kind = dbscheme.PointerType.Index()
@@ -1634,13 +1638,17 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 				// Note that methods coming from embedded interfaces can be
 				// accessed through `Method(i)`, so there is no need to
 				// deal with them separately.
-				meth := tp.Method(i)
+				meth := tp.Method(i).Origin()
 
 				// Note that methods do not have a parent scope, so they are
 				// not dealt with by `extractScopes`
 				extractMethod(tw, meth)
 
 				extractComponentType(tw, lbl, i, meth.Name(), meth.Type())
+
+				if !meth.Exported() {
+					dbscheme.InterfacePrivateMethodIdsTable.Emit(tw, lbl, i, meth.Id())
+				}
 			}
 			for i := 0; i < tp.NumEmbeddeds(); i++ {
 				component := tp.EmbeddedType(i)
@@ -1700,17 +1708,28 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			// ensure all methods have labels - note that methods do not have a
 			// parent scope, so they are not dealt with by `extractScopes`
 			for i := 0; i < origintp.NumMethods(); i++ {
-				meth := origintp.Method(i)
+				meth := origintp.Method(i).Origin()
 
 				extractMethod(tw, meth)
 			}
 
+			underlyingInterface, underlyingIsInterface := underlying.(*types.Interface)
+			_, underlyingIsPointer := underlying.(*types.Pointer)
+
 			// associate all methods of underlying interface with this type
-			if underlyingInterface, ok := underlying.(*types.Interface); ok {
+			if underlyingIsInterface {
 				for i := 0; i < underlyingInterface.NumMethods(); i++ {
-					methlbl := extractMethod(tw, underlyingInterface.Method(i))
+					methlbl := extractMethod(tw, underlyingInterface.Method(i).Origin())
 					dbscheme.MethodHostsTable.Emit(tw, methlbl, lbl)
 				}
+			}
+
+			// If `underlying` is not a pointer or interface then methods can
+			// be defined on `origintp`. In this case we must ensure that
+			// `*origintp` is in the database, so that Method.hasQualifiedName
+			// correctly includes methods with receiver type `*origintp`.
+			if !underlyingIsInterface && !underlyingIsPointer {
+				extractType(tw, types.NewPointer(origintp))
 			}
 		case *types.TypeParam:
 			kind = dbscheme.TypeParamType.Index()
@@ -1780,7 +1799,7 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 		case *types.Interface:
 			var b strings.Builder
 			for i := 0; i < tp.NumMethods(); i++ {
-				meth := tp.Method(i)
+				meth := tp.Method(i).Origin()
 				methLbl := extractType(tw, meth.Type())
 				if i > 0 {
 					b.WriteString(",")
@@ -2135,4 +2154,21 @@ func skipExtractingValueForLeftOperand(tw *trap.Writer, be *ast.BinaryExpr) bool
 		return false
 	}
 	return true
+}
+
+// checkObjectNotSpecialized exits the program if `obj` is specialized. Note
+// that specialization is only possible for function objects and variable
+// objects.
+func checkObjectNotSpecialized(obj types.Object) {
+	if funcObj, ok := obj.(*types.Func); ok && funcObj != funcObj.Origin() {
+		log.Fatalf("Encountered unexpected specialization %s of generic function object %s", funcObj.FullName(), funcObj.Origin().FullName())
+	}
+	if varObj, ok := obj.(*types.Var); ok && varObj != varObj.Origin() {
+		log.Fatalf("Encountered unexpected specialization %s of generic variable object %s", varObj.String(), varObj.Origin().String())
+	}
+	if typeNameObj, ok := obj.(*types.TypeName); ok {
+		if namedType, ok := typeNameObj.Type().(*types.Named); ok && namedType != namedType.Origin() {
+			log.Fatalf("Encountered type object for specialization %s of named type %s", namedType.String(), namedType.Origin().String())
+		}
+	}
 }

@@ -47,6 +47,11 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
+     * Holds if this self parameter is mut.
+     */
+    predicate isMut() { Synth::convertSelfParamToRaw(this).(Raw::SelfParam).isMut() }
+
+    /**
      * Gets the lifetime of this self parameter, if it exists.
      */
     Lifetime getLifetime() {

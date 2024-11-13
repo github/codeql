@@ -61,6 +61,16 @@ module Generated {
     final predicate hasBody() { exists(this.getBody()) }
 
     /**
+     * Holds if this static is mut.
+     */
+    predicate isMut() { Synth::convertStaticToRaw(this).(Raw::Static).isMut() }
+
+    /**
+     * Holds if this static is static.
+     */
+    predicate isStatic() { Synth::convertStaticToRaw(this).(Raw::Static).isStatic() }
+
+    /**
      * Gets the name of this static, if it exists.
      */
     Name getName() {

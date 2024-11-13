@@ -19,3 +19,8 @@ else:
 finally:
     u
     v
+
+try:
+    pass
+except *foo as e:
+    pass

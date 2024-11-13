@@ -506,7 +506,7 @@ Kinds
 Source kinds
 ~~~~~~~~~~~~
 
-- **remote**: A generic source of remote flow. Most taint-tracking queries will use such a source. Currently this is the only supported source kind.
+See documentation below for :ref:`Threat models <threat-models-javascript>`.
 
 Sink kinds
 ~~~~~~~~~~
@@ -529,3 +529,10 @@ Summary kinds
 
 - **taint**: A summary that propagates taint. This means the output is not necessarily equal to the input, but it was derived from the input in an unrestrictive way. An attacker who controls the input will have significant control over the output as well.
 - **value**: A summary that preserves the value of the input or creates a copy of the input such that all of its object properties are preserved.
+
+.. _threat-models-javascript:
+
+Threat models
+-------------
+
+.. include:: ../reusables/threat-model-description.rst

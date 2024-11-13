@@ -4,7 +4,7 @@
 <qhelp>
 
 <overview>
-<p>Cookies without the <code>Secure</code> flag set may be transmittd using HTTP instead of HTTPS, which leaves it vulnerable to being read by a third party.</p>
+<p>Cookies without the <code>Secure</code> flag set may be transmitted using HTTP instead of HTTPS, which leaves them vulnerable to reading by a third party.</p>
 <p>Cookies without the <code>HttpOnly</code> flag set are accessible to JavaScript running in the same origin. In case of a Cross-Site Scripting (XSS) vulnerability, the cookie can be stolen by a malicious script.</p>
 <p>Cookies with the <code>SameSite</code> attribute set to <code>'None'</code> will be sent with cross-origin requests, which can be controlled by third-party JavaScript code and allow for Cross-Site Request Forgery (CSRF) attacks.</p>
 </overview>

@@ -1,0 +1,8 @@
+uniqueNodeLocation
+| file://:0:0:0:0 | ... .parent(...) | Node should have one location but has 0. |
+| file://:0:0:0:0 | ... .unwrap(...) | Node should have one location but has 0. |
+| file://:0:0:0:0 | BlockExpr | Node should have one location but has 0. |
+| file://:0:0:0:0 | Param | Node should have one location but has 0. |
+| file://:0:0:0:0 | PathExpr | Node should have one location but has 0. |
+missingLocation
+| Nodes without location: 5 |

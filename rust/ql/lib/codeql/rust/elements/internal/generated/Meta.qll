@@ -40,6 +40,11 @@ module Generated {
     final predicate hasExpr() { exists(this.getExpr()) }
 
     /**
+     * Holds if this meta is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertMetaToRaw(this).(Raw::Meta).isUnsafe() }
+
+    /**
      * Gets the path of this meta, if it exists.
      */
     Path getPath() {

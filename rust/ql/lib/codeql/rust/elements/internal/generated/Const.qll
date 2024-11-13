@@ -60,6 +60,16 @@ module Generated {
     final predicate hasBody() { exists(this.getBody()) }
 
     /**
+     * Holds if this const is const.
+     */
+    predicate isConst() { Synth::convertConstToRaw(this).(Raw::Const).isConst() }
+
+    /**
+     * Holds if this const is default.
+     */
+    predicate isDefault() { Synth::convertConstToRaw(this).(Raw::Const).isDefault() }
+
+    /**
      * Gets the name of this const, if it exists.
      */
     Name getName() {

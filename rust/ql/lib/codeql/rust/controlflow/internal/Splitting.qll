@@ -4,8 +4,10 @@ private import Scope
 
 cached
 private module Cached {
+  private import codeql.rust.internal.CachedStages
+
   cached
-  newtype TSplitKind = TConditionalCompletionSplitKind()
+  newtype TSplitKind = TConditionalCompletionSplitKind() { Stages::CfgStage::ref() }
 
   cached
   newtype TSplit = TConditionalCompletionSplit(ConditionalCompletion c)
@@ -21,7 +23,7 @@ abstract private class Split_ extends TSplit {
 
 final class Split = Split_;
 
-private module ConditionalCompletionSplitting {
+module ConditionalCompletionSplitting {
   /**
    * A split for conditional completions. For example, in
    *
@@ -39,10 +41,12 @@ private module ConditionalCompletionSplitting {
 
     ConditionalCompletionSplit() { this = TConditionalCompletionSplit(completion) }
 
+    ConditionalCompletion getCompletion() { result = completion }
+
     override string toString() { result = completion.toString() }
   }
 
-  private class ConditionalCompletionSplitKind extends SplitKind, TConditionalCompletionSplitKind {
+  private class ConditionalCompletionSplitKind_ extends SplitKind, TConditionalCompletionSplitKind {
     override int getListOrder() { result = 0 }
 
     override predicate isEnabled(AstNode cfe) { this.appliesTo(cfe) }
@@ -50,66 +54,69 @@ private module ConditionalCompletionSplitting {
     override string toString() { result = "ConditionalCompletion" }
   }
 
-  private class ConditionalCompletionSplitImpl extends SplitImpl instanceof ConditionalCompletionSplit
+  module ConditionalCompletionSplittingInput {
+    private import Completion as Comp
+
+    class ConditionalCompletion = Comp::ConditionalCompletion;
+
+    class ConditionalCompletionSplitKind extends ConditionalCompletionSplitKind_, TSplitKind { }
+
+    class ConditionalCompletionSplit = ConditionalCompletionSplitting::ConditionalCompletionSplit;
+
+    bindingset[parent, parentCompletion]
+    predicate condPropagateExpr(
+      AstNode parent, ConditionalCompletion parentCompletion, AstNode child,
+      ConditionalCompletion childCompletion
+    ) {
+      child = parent.(LogicalNotExpr).getExpr() and
+      childCompletion.getDual() = parentCompletion
+      or
+      childCompletion = parentCompletion and
+      (
+        child = parent.(BinaryLogicalOperation).getAnOperand()
+        or
+        parent = any(IfExpr ie | child = [ie.getThen(), ie.getElse()])
+        or
+        child = parent.(MatchExpr).getAnArm().getExpr()
+        or
+        child = parent.(BlockExpr).getStmtList().getTailExpr()
+        or
+        child = parent.(PatternTrees::PreOrderPatTree).getPat(_) and
+        childCompletion.(MatchCompletion).failed()
+        or
+        child = parent.(PatternTrees::PostOrderPatTree).getPat(_)
+      )
+    }
+  }
+
+  private class ConditionalCompletionSplitImpl extends SplitImplementations::ConditionalCompletionSplitting::ConditionalCompletionSplitImpl
   {
-    ConditionalCompletion completion;
-
-    ConditionalCompletionSplitImpl() { this = TConditionalCompletionSplit(completion) }
-
-    override ConditionalCompletionSplitKind getKind() { any() }
+    /**
+     * Gets a `break` expression whose target can have a Boolean completion that
+     * matches this split.
+     */
+    private BreakExpr getABreakExpr(Expr target) {
+      target = result.getTarget() and
+      last(target, _, this.getCompletion())
+    }
 
     override predicate hasEntry(AstNode pred, AstNode succ, Completion c) {
-      succ(pred, succ, c) and
-      last(succ, _, completion) and
-      (
-        last(succ.(LogicalNotExpr).getExpr(), pred, c) and
-        completion.(BooleanCompletion).getDual() = c
-        or
-        last(succ.(BinaryLogicalOperation).getAnOperand(), pred, c) and
-        completion = c
-        or
-        succ =
-          any(IfExpr ie |
-            last([ie.getThen(), ie.getElse()], pred, c) and
-            completion = c
-          )
-        or
-        last(succ.(MatchExpr).getAnArm().getExpr(), pred, c) and
-        completion = c
-        or
-        last(succ.(BlockExpr).getStmtList().getTailExpr(), pred, c) and
-        completion = c
-      )
+      super.hasEntry(pred, succ, c)
       or
       succ(pred, succ, c) and
       last(succ.(BreakExpr).getExpr(), pred, c) and
-      exists(AstNode target |
-        succ(succ, target, _) and
-        last(target, _, completion)
-      ) and
-      completion = c
-    }
-
-    override predicate hasEntryScope(CfgScope scope, AstNode first) { none() }
-
-    override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
-      this.appliesTo(pred) and
-      succ(pred, succ, c) and
-      if c instanceof ConditionalCompletion
-      then completion = c
-      else not this.hasSuccessor(pred, succ, c)
-    }
-
-    override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
-      this.appliesTo(last) and
-      scope.scopeLast(last, c) and
-      if c instanceof ConditionalCompletion then completion = c else any()
+      succ = this.getABreakExpr(_) and
+      c = this.getCompletion()
     }
 
     override predicate hasSuccessor(AstNode pred, AstNode succ, Completion c) {
+      super.hasSuccessor(pred, succ, c)
+      or
       this.appliesTo(pred) and
       succ(pred, succ, c) and
-      not c instanceof ConditionalCompletion
+      pred = this.getABreakExpr(succ)
     }
   }
+
+  int getNextListOrder() { result = 1 }
 }
