@@ -10,21 +10,47 @@ private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.cpp.ir.implementation.raw.internal.InstructionTag
 
 /**
+ * Variant of valueNumber that accounts for conversions.
+ * Note: this predicate is defined in IRGuards to take advantage of
+ * IRGuards definition of int_value.
+ */
+ValueNumber valueNumberWithConversions(Instruction instr) {
+  exists(ValueNumber vn | vn = valueNumber(instr) |
+    // GVN using valueNumber directly
+    result = vn
+    or
+    // GVN for the ConvertInstruction conversion
+    result = valueNumberWithConversions(vn.getAnInstruction().(ConvertInstruction).getUnary())
+    or
+    // GVN for the CompareNEInstruction conversion for a comparison with 0 (conversion of value to boolean in c)
+    exists(CompareNEInstruction cmp | cmp = vn.getAnInstruction() |
+      result = valueNumberWithConversions(cmp.getLeft()) and
+      int_value(cmp.getRight()) = 0
+    )
+  )
+}
+
+/**
  * Returns `instr` or any instruction used to define `instr`.
  */
+pragma[inline]
 private Instruction getDerivedInstruction(Instruction instr) {
-  // The instruction itself
   result = instr
   or
-  // or the GVN definition for the current instruction
   result = valueNumber(instr).getAnInstruction().(StoreInstruction).getSourceValue()
   or
-  // Special handling for conversions
-  result =
-    getDerivedInstruction(valueNumber(instr).getAnInstruction().(CompareNEInstruction).getLeft())
+  result = derivedThroughConversion(valueNumber(instr))
+}
+
+private Instruction derivedThroughConversion(ValueNumber vn) {
+  // GVN for the ConvertInstruction conversion
+  result = getDerivedInstruction(vn.getAnInstruction().(ConvertInstruction).getUnary())
   or
-  result =
-    getDerivedInstruction(valueNumber(instr).getAnInstruction().(ConvertInstruction).getUnary())
+  // GVN for the CompareNEInstruction conversion for a comparison with 0 (conversion of value to boolean in c)
+  exists(CompareNEInstruction comp | comp = vn.getAnInstruction() |
+    result = getDerivedInstruction(comp.getLeft()) and
+    int_value(comp.getRight()) = 0
+  )
 }
 
 /**
@@ -832,7 +858,7 @@ private predicate unary_compares_eq(
   exists(Instruction derived | derived = getDerivedInstruction(test) |
     /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
     exists(AbstractValue v |
-      unary_simple_comparison_eq(derived, k, inNonZeroCase, v) and op.getDef() = test
+      unary_simple_comparison_eq(derived, k, inNonZeroCase, v) and op.getDef() = derived
     |
       areEqual = true and value = v
       or
@@ -897,6 +923,18 @@ private predicate unary_simple_comparison_eq(
     inNonZeroCase = false
   )
   or
+  (
+    exists(BinaryLogicalOperation e | e.getAnOperand() = test.getUnconvertedResultExpression())
+    or
+    exists(UnaryLogicalOperation e | e.getAnOperand() = test.getUnconvertedResultExpression())
+    or
+    exists(IfStmt i | i.getCondition() = test.getUnconvertedResultExpression())
+    or
+    exists(Loop i | i.getCondition() = test.getUnconvertedResultExpression())
+    or
+    exists(ConditionalExpr c | c.getCondition() = test.getUnconvertedResultExpression())
+    // Todo recursive conditionalExpr in guard
+  ) and
   // Any instruction with an integral type could potentially be part of a
   // check for nullness when used in a guard. So we include all integral
   // typed instructions here. However, since some of these instructions are
@@ -941,6 +979,8 @@ private predicate unary_simple_comparison_eq(
     value.(BooleanValue).getValue() = false and
     inNonZeroCase = false
   )
+  // Has to be in a boolean operator (operanad of OR or AND)
+  // has to be a 'guard' (loop, if, switch, ternary)
 }
 
 /** A call to the builtin operation `__builtin_expect`. */
