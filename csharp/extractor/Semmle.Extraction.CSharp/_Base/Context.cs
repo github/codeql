@@ -18,7 +18,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Access various extraction functions, e.g. logger, trap writer.
         /// </summary>
-        public ExtractionContext ExtractionContext { get; }
+        public CSharp.ExtractionContext ExtractionContext { get; }
 
         /// <summary>
         /// Access to the trap file.
@@ -190,7 +190,7 @@ namespace Semmle.Extraction
             }
         }
 
-        protected Context(ExtractionContext extractionContext, TrapWriter trapWriter, bool shouldAddAssemblyTrapPrefix = false)
+        protected Context(CSharp.ExtractionContext extractionContext, TrapWriter trapWriter, bool shouldAddAssemblyTrapPrefix = false)
         {
             ExtractionContext = extractionContext;
             TrapWriter = trapWriter;
@@ -274,7 +274,7 @@ namespace Semmle.Extraction
 
             bool duplicationGuard, deferred;
 
-            if (ExtractionContext.Mode is ExtractorMode.Standalone)
+            if (ExtractionContext.Mode is CSharp.ExtractorMode.Standalone)
             {
                 duplicationGuard = false;
                 deferred = false;
@@ -408,7 +408,7 @@ namespace Semmle.Extraction
 
         private void ReportError(InternalError error)
         {
-            if (!ExtractionContext.Mode.HasFlag(ExtractorMode.Standalone))
+            if (!ExtractionContext.Mode.HasFlag(CSharp.ExtractorMode.Standalone))
                 throw error;
 
             ExtractionError(error);

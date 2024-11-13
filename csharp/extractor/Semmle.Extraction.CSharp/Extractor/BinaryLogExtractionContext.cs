@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Semmle.Util.Logging;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     public class BinaryLogExtractionContext : ExtractionContext
     {

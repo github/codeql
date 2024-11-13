@@ -1,6 +1,6 @@
 using System;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// The mode in which a file is extracted.

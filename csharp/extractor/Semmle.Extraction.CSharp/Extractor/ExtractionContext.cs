@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Semmle.Util.Logging;
 using CompilationInfo = (string key, string value);
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp
 {
     /// <summary>
     /// Implementation of the main extractor state.
