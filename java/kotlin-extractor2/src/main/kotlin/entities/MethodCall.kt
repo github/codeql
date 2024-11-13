@@ -116,7 +116,7 @@ private fun KotlinFileExtractor.getCalleeMethodId(callTarget: KaFunctionSymbol):
 }
 
 context(KaSession)
-private fun KotlinFileExtractor.extractRawMethodAccess(
+fun KotlinFileExtractor.extractRawMethodAccess(
     callTarget: KaFunctionSymbol,
     locId: Label<DbLocation>,
     returnType: KaType,
