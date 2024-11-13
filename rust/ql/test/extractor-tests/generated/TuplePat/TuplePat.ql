@@ -2,9 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from TuplePat x, int getNumberOfFields
+from TuplePat x, string hasType, int getNumberOfFields
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getNumberOfFields = x.getNumberOfFields()
-select x, "getNumberOfFields:", getNumberOfFields
+select x, "hasType:", hasType, "getNumberOfFields:", getNumberOfFields

@@ -2,6 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-from WildcardPat x
-where toBeTested(x) and not x.isUnknown()
-select x
+from WildcardPat x, string hasType
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  if x.hasType() then hasType = "yes" else hasType = "no"
+select x, "hasType:", hasType

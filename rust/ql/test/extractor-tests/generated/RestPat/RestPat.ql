@@ -2,9 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from RestPat x, int getNumberOfAttrs
+from RestPat x, string hasType, int getNumberOfAttrs
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs()
-select x, "getNumberOfAttrs:", getNumberOfAttrs
+select x, "hasType:", hasType, "getNumberOfAttrs:", getNumberOfAttrs

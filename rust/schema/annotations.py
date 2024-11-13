@@ -44,6 +44,7 @@ class _:
     """
     The base class for patterns.
     """
+    type: optional[string] | rust.detach
 
 
 @annotate(Label)

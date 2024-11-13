@@ -1623,6 +1623,12 @@ pub struct Pat {
     _unused: ()
 }
 
+impl Pat {
+    pub fn emit_type(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
+        out.add_tuple("pat_types", vec![id.into(), value.into()]);
+    }
+}
+
 impl trap::TrapClass for Pat {
     fn class_name() -> &'static str { "Pat" }
 }

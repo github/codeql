@@ -2,10 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from RefPat x, string isMut, string hasPat
+from RefPat x, string hasType, string isMut, string hasPat
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
   if x.hasPat() then hasPat = "yes" else hasPat = "no"
-select x, "isMut:", isMut, "hasPat:", hasPat
+select x, "hasType:", hasType, "isMut:", isMut, "hasPat:", hasPat

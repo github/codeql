@@ -647,6 +647,12 @@ param_list_self_params(
 | @wildcard_pat
 ;
 
+#keyset[id]
+pat_types(
+  int id: @pat ref,
+  string type_: string ref
+);
+
 path_segments(
   unique int id: @path_segment
 );

@@ -2015,6 +2015,16 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
 
       /** Gets the underlying `Pat`. */
       Pat getPat() { result = node }
+
+      /**
+       * Gets the type of this pat, if it exists.
+       */
+      string getType() { result = node.getType() }
+
+      /**
+       * Holds if `getType()` exists.
+       */
+      predicate hasType() { exists(this.getType()) }
     }
 
     final private class ParentPathExpr extends ParentAstNode, PathExpr {

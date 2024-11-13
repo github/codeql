@@ -2,9 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from LiteralPat x, string hasLiteral
+from LiteralPat x, string hasType, string hasLiteral
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   if x.hasLiteral() then hasLiteral = "yes" else hasLiteral = "no"
-select x, "hasLiteral:", hasLiteral
+select x, "hasType:", hasType, "hasLiteral:", hasLiteral

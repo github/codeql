@@ -2,9 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from PathPat x, string hasPath
+from PathPat x, string hasType, string hasPath
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   if x.hasPath() then hasPath = "yes" else hasPath = "no"
-select x, "hasPath:", hasPath
+select x, "hasType:", hasType, "hasPath:", hasPath
