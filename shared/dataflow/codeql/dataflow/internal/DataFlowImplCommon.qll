@@ -187,6 +187,18 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     )
   }
 
+  /**
+   * Holds if `arg` is an argument of `call` with an argument position that matches
+   * parameter position `ppos`.
+   */
+  pragma[noinline]
+  private predicate argumentPositionMatchEx(DataFlowCall call, ArgNodeEx arg, ParameterPosition ppos) {
+    exists(ArgumentPosition apos |
+      arg.argumentOf(call, apos) and
+      parameterMatch(ppos, apos)
+    )
+  }
+
   pragma[nomagic]
   private predicate hasSimpleReturnKindIn(ReturnNode ret, ReturnKind kind, DataFlowCallable c) {
     c = getNodeEnclosingCallable(ret) and
@@ -219,7 +231,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[noinline]
     private predicate viableParamNonLambda(DataFlowCall call, ParameterPosition ppos, ParamNode p) {
-      p.isParameterOf(viableCallable(call), ppos)
+      p.isParameterOf(viableCallableCached(call), ppos)
     }
 
     pragma[noinline]
@@ -259,7 +271,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private TReturnPositionSimple viableReturnPosNonLambda(DataFlowCall call, ReturnKind kind) {
-      result = TReturnPositionSimple0(viableCallable(call), kind)
+      result = TReturnPositionSimple0(viableCallableCached(call), kind)
     }
 
     pragma[nomagic]
@@ -881,9 +893,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       or
       result = this.asLambdaInstancePostUpdateNode().toString() + " [LambdaPostUpdate]"
       or
-      exists (DataFlowCall synthcall, ArgumentPosition apos, boolean isPost |
-        this.isLambdaArgNode(synthcall, apos, isPost) |
-        result = synthcall.toString() + "-" + apos.toString() + "-" + isPost.toString() + " [LambdaArg]"
+      exists(DataFlowCall synthcall, ArgumentPosition apos, boolean isPost |
+        this.isLambdaArgNode(synthcall, apos, isPost)
+      |
+        result =
+          synthcall.toString() + "-" + apos.toString() + "-" + isPost.toString() + " [LambdaArg]"
       )
     }
 
@@ -962,9 +976,29 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   }
 
   final class ArgNodeEx extends NodeEx {
-    ArgNodeEx() { this.asNode() instanceof ArgNode }
+    private DataFlowCall call_;
+    private ArgumentPosition pos_;
 
-    DataFlowCall getCall() { this.asNode().(ArgNode).argumentOf(result, _) }
+    ArgNodeEx() {
+      this.asNode().(ArgNode).argumentOf(call_, pos_)
+      or
+      this.isLambdaArgNode(call_, pos_, false)
+      or
+      exists(Node lambda, DataFlowCallable c, ParameterNode p, ParameterPosition ppos |
+        lambda = this.asLambdaMallocNode() and
+        lambdaCreation(lambda, _, c, call_) and
+        isParameterNode(p, c, ppos) and
+        isLambdaInstanceParameter(p) and
+        parameterMatch(ppos, pos_)
+      )
+    }
+
+    final DataFlowCall getCall() { this.argumentOf(result, _) }
+
+    final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call = call_ and
+      pos = pos_
+    }
   }
 
   final class ParamNodeEx extends NodeEx {
@@ -989,6 +1023,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     ReturnPosition getReturnPosition() { result = pos }
 
     ReturnKindExt getKind() { result = pos.getKind() }
+  }
+
+  final class OutNodeEx extends NodeEx {
+    OutNodeEx() {
+      this.asNode() instanceof OutNodeExt
+      or
+      this.(PostUpdateNodeEx).getPreUpdateNode() instanceof ArgNodeEx
+    }
   }
 
   class PostUpdateNodeEx extends NodeEx {
@@ -1075,7 +1117,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    predicate hiddenNode(Node n) { nodeIsHidden(n) }
+    predicate hiddenNode(Node n) {
+      // todo: add all lambda nodes here after end debugging
+      nodeIsHidden(n)
+    }
 
     cached
     OutNodeExt getAnOutNodeExt(DataFlowCall call, ReturnKindExt k) {
@@ -1083,6 +1128,16 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       or
       exists(ArgNode arg |
         result.(PostUpdateNode).getPreUpdateNode() = arg and
+        arg.argumentOf(call, k.(ParamUpdateReturnKind).getAMatchingArgumentPosition())
+      )
+    }
+
+    cached
+    OutNodeEx getAnOutNodeEx(DataFlowCall call, ReturnKindExt k) {
+      result.asNode() = getAnOutNodeExt(call, k)
+      or
+      exists(ArgNodeEx arg |
+        result.(PostUpdateNodeEx).getPreUpdateNode() = arg and
         arg.argumentOf(call, k.(ParamUpdateReturnKind).getAMatchingArgumentPosition())
       )
     }
@@ -1145,7 +1200,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    DataFlowCallable viableCallableCached(DataFlowCall call) { result = viableCallable(call) }
+    DataFlowCallable viableCallableCached(DataFlowCall call) {
+      result = viableCallable(call)
+      or
+      lambdaCreation(_, _, result, call)
+    }
 
     /*
      *    foo(x => sink(x), notaint)
@@ -1260,7 +1319,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     cached
     DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
       result = viableImplInCallContext(call, ctx) and
-      result = viableCallable(call)
+      result = viableCallableCached(call)
       or
       result = viableCallableLambda(call, TDataFlowCallSome(ctx))
       or
@@ -1407,23 +1466,29 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     cached
     predicate viableReturnPosOutEx(DataFlowCall call, ReturnPosition pos, NodeEx out) {
       viableReturnPosOut(call, pos, out.asNode())
+      or
+      exists(ReturnKindExt kind |
+        pos = viableReturnPos(call, kind) and
+        out = kind.getAnOutNodeEx(call)
+      )
+    }
+
+    bindingset[call, p, arg]
+    private predicate golangSpecificParamArgFilterEx(DataFlowCall call, ParamNodeEx p, ArgNodeEx arg) {
+      golangSpecificParamArgFilter(call, p.asNode(), arg.asNode())
+      or
+      not p.asNode() instanceof ParamNode
+      or
+      not arg.asNode() instanceof ArgNode
     }
 
     cached
     predicate viableParamArgEx(DataFlowCall call, ParamNodeEx p, ArgNodeEx arg) {
-      viableParamArg(call, p.asNode(), arg.asNode())
-      or
-      exists(ArgumentPosition apos, DataFlowCallable c, ParameterPosition ppos |
-        arg.isLambdaArgNode(call, apos, false) and
-        lambdaCreation(_, _, c, call) and
-        p.isParameterOf(c, ppos) and
-        parameterMatch(ppos, apos)
-      )
-      or
-      exists(DataFlowCallable c |
-        isLambdaInstanceParameter(p.asNode()) and
-        lambdaCreation(arg.asLambdaMallocNode(), _, c, call) and
-        p.isParameterOf(c, _)
+      exists(ParameterPosition ppos |
+        viableParam(call, ppos, p.asNode()) and
+        argumentPositionMatchEx(call, arg, ppos) and
+        compatibleTypesFilter(arg.getDataFlowType(), p.getDataFlowType()) and
+        golangSpecificParamArgFilterEx(call, p, arg)
       )
     }
 
@@ -1969,6 +2034,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         exists(DataFlowCallable c, ParameterNode p, ParameterPosition ppos |
           lambdaCreation(_, _, c, synthcall) and
           isParameterNode(p, c, ppos) and
+          not isLambdaInstanceParameter(p) and
           parameterMatch(ppos, apos) and
           exists(ispost)
         )
@@ -2549,6 +2615,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     /** Gets a node corresponding to data flow out of `call`. */
     final OutNodeExt getAnOutNode(DataFlowCall call) { result = getAnOutNodeExt(call, this) }
+
+    /** Gets a node corresponding to data flow out of `call`. */
+    final OutNodeEx getAnOutNodeEx(DataFlowCall call) { result = getAnOutNodeEx(call, this) }
   }
 
   class ValueReturnKind extends ReturnKindExt, TValueReturn {

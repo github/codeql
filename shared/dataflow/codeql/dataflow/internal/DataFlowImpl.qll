@@ -2662,7 +2662,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               or
               node instanceof ParamNodeEx
               or
-              node.asNode() instanceof OutNodeExt
+              node instanceof OutNodeEx
               or
               storeStepCand(_, _, _, node, _, _)
               or
@@ -5441,7 +5441,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         exists(ReturnKindExt kind, DataFlowCall call |
           partialPathOutOfCallable1(mid, call, kind, state, cc, t, ap)
         |
-          out.asNode() = kind.getAnOutNode(call)
+          out = kind.getAnOutNodeEx(call)
         )
       }
 
@@ -5526,7 +5526,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ) {
         exists(DataFlowCall call, ReturnKindExt kind |
           partialPathThroughCallable0(call, mid, kind, state, cc, t, ap) and
-          out.asNode() = kind.getAnOutNode(call)
+          out = kind.getAnOutNodeEx(call)
         )
       }
 
