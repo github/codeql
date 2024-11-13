@@ -464,7 +464,8 @@ private newtype TDataFlowCall =
   TCall(Call c) or
   TSummaryCall(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
-  }
+  } or
+  TLambdaSynthCall(Node node) { lambdaCreationHelper(node, _, _) }
 
 /** A call relevant for data flow. Includes both source calls and synthesized calls. */
 class DataFlowCall extends TDataFlowCall {
@@ -526,6 +527,19 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   override Location getLocation() { result = c.getLocation() }
 }
 
+/** A synthesized call inside a `SummarizedCallable`. */
+class LambdaSynthCall extends DataFlowCall, TLambdaSynthCall {
+  private Node node;
+
+  LambdaSynthCall() { this = TLambdaSynthCall(node) }
+
+  override DataFlowCallable getEnclosingCallable() { result.asCallable() = node.getEnclosingCallable() }
+
+  override string toString() { result = "[synthetic] call to " + node }
+
+  override Location getLocation() { result = node.getLocation() }
+}
+
 class NodeRegion instanceof BasicBlock {
   string toString() { result = "NodeRegion" }
 
@@ -585,8 +599,7 @@ predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface
 
-/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+predicate lambdaCreationHelper(Node creation, LambdaCallKind kind, DataFlowCallable c) {
   exists(ClassInstanceExpr func, Interface t, FunctionalInterface interface |
     creation.asExpr() = func and
     func.getAnonymousClass().getAMethod() = c.asCallable() and
@@ -595,6 +608,12 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
     c.asCallable().(Method).overridesOrInstantiates+(pragma[only_bind_into](kind)) and
     pragma[only_bind_into](kind) = interface.getRunMethod().getSourceDeclaration()
   )
+}
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c, DataFlowCall synthCall) {
+  synthCall = TLambdaSynthCall(creation) and
+  lambdaCreationHelper(creation, kind, c)
 }
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
@@ -765,4 +784,16 @@ predicate containerContent(ContentSet c) {
   c instanceof CollectionContent or
   c instanceof MapKeyContent or
   c instanceof MapValueContent
+}
+
+Content getLambdaReturnContent(LambdaCallKind kind) {
+  result = TLambdaReturn(kind)
+}
+
+Content getLambdaArgumentContent(LambdaCallKind kind, ArgumentPosition pos) {
+  result = TLambdaArgument(kind, pos)
+}
+
+predicate isLambdaInstanceParameter(ParameterNode p) {
+  exists(DataFlowCallable c | lambdaCreationHelper(_, _, c) and p.isParameterOf(c, -1))
 }
