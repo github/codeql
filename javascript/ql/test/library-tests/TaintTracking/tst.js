@@ -59,5 +59,5 @@ function test() {
     tagged`foo ${"safe"} bar ${x} baz`;
 
     sink(x.reverse()); // NOT OK
-    sink(x.toSpliced()); // NOT OK -- Should be caught, but it is not
+    sink(x.toSpliced()); // NOT OK
 }

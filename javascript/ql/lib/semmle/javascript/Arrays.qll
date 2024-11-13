@@ -86,7 +86,7 @@ module ArrayTaintTracking {
     succ.(DataFlow::SourceNode).getAMethodCall("splice") = call
     or
     // `e = array.pop()`, `e = array.shift()`, or similar: if `array` is tainted, then so is `e`.
-    call.(DataFlow::MethodCallNode).calls(pred, ["pop", "shift", "slice", "splice", "at"]) and
+    call.(DataFlow::MethodCallNode).calls(pred, ["pop", "shift", "slice", "splice", "at", "toSpliced"]) and
     succ = call
     or
     // `e = Array.from(x)`: if `x` is tainted, then so is `e`.
