@@ -1,2 +1,2 @@
-query: TestUtilities/inline-tests/queries/PathProblemQuery.ql
+query: utils/inline-tests/queries/PathProblemQuery.ql
 postprocess: TestUtilities/InlineExpectationsTestQuery.ql
