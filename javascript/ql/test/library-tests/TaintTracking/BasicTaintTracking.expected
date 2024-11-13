@@ -25,6 +25,7 @@ typeInferenceMismatch
 | array-mutation.js:39:17:39:24 | source() | array-mutation.js:40:8:40:8 | j |
 | array-mutation.js:43:36:43:43 | source() | array-mutation.js:45:8:45:15 | kSpliced |
 | array-mutation.js:48:25:48:32 | source() | array-mutation.js:49:8:49:8 | l |
+| array-mutation.js:68:21:68:28 | source() | array-mutation.js:69:8:69:8 | q |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:17:8:17:13 | arr[1] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:22:8:22:13 | arr[6] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:27:8:27:13 | arr[0] |
