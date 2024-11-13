@@ -432,6 +432,16 @@ fn capture_mut() {
     print_i64(z); // $ read_access=z
 }
 
+async fn async_block_capture() {
+    let mut i: i64 = 0; // i
+    let block = async {
+        i = 1; // $ write_access=i
+    };
+    // The await below causes write to `i`
+    block.await; // $ read_access=block
+    print_i64(i); // $ read_access=i
+}
+
 fn phi(b : bool) {
     let mut x = 1; // x
     print_i64(x); // $ read_access=x
@@ -539,6 +549,7 @@ fn main() {
     alias();
     capture_mut();
     capture_immut();
+    async_block_capture();
     structs();
     ref_arg();
     ref_methodcall_receiver();
