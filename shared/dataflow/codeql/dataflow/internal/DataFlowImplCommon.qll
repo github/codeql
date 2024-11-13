@@ -1045,6 +1045,83 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     cached
     DataFlowCallable viableCallableCached(DataFlowCall call) { result = viableCallable(call) }
 
+    /*
+     *    foo(x => sink(x), notaint)
+     *    foo(x => safe(x), taint)
+     *
+     *    foo(lambda, x) {
+     *      lambda(x);
+     *    }
+     *
+     *    x.Field = taint;
+     *    taint --store(Field) --> x [Field]
+     *
+     *    y = x; // x [Field] --> y [Field]
+     *
+     *    sink(y.Field) // y [Field] --read(Field)--> y.Field
+     *
+     *
+     *
+     *
+     *    lambda = () => "taint";
+     *
+     *    "taint" --store(ReturnValue)--> this (post-update) [ReturnValue]
+     *
+     *    lambda.synth_call();
+     *
+     *    this (post-update) [ReturnValue] --> lambda (post-update) [ReturnValue]
+     *
+     *    sink(lambda_1());
+     *
+     *    "taint" --store(ReturnValue)--> () => "taint" [ReturnValue]
+     *    () => "taint" [ReturnValue] --> lambda [ReturnValue]
+     *    lambda [ReturnValue] --> lambda_1 [ReturnValue]
+     *    lambda_1 [ReturnValue] --read(ReturnValue)--> lambda_1()
+     *
+     *
+     *    setField(p, value) {
+     *      sink(p.Field);
+     *      p.Field = value; // value --store(Field)--> p (post-update) [Field]
+     *    }
+     *
+     *    // p (post-update) [Field] --> x (post-update) [Field]
+     *
+     *    setField(x, "taint");
+     *    sink(x.Field);
+     *
+     *
+     *    lambda = (x) => sink(x);
+     *    lambda.synth_call_lambda(lambda_arg0, lambda_arg1)
+     *
+     *
+     *
+     *    foo(lambda);
+     *
+     *    foo(l1) {
+     *      bar(l1)
+     *    }
+     *
+     *    bar(l2) {
+     *      l2("taint"); // taint --store(Argument0)--> l2 (post-update) [Argument0]
+     *    }
+     *
+     *    l2 (post-update) [Argument0] --> l1 (post-update) [Argument0]
+     *
+     *    l1 (post-update) [Argument0] --> lambda (post-update) [Argument0]
+     *
+     *
+     *    id = (x) => x;
+     *    id.synth_call(arg0)
+     *    foo(id);
+     *
+     *    foo(l) {
+     *      x = l("taint");
+     *      y = l("safe");
+     *      sink(x);
+     *      sink(y);
+     *    }
+     */
+
     /**
      * Gets a viable target for the lambda call `call`.
      *
@@ -1053,6 +1130,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      */
     cached
     DataFlowCallable viableCallableLambda(DataFlowCall call, DataFlowCallOption lastCall) {
+      none() and
       exists(Node creation, LambdaCallKind kind |
         LambdaFlow::revLambdaFlow(call, kind, creation, _, _, _, lastCall) and
         lambdaCreation(creation, kind, result)

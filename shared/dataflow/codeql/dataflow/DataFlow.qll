@@ -290,7 +290,9 @@ signature module InputSig<LocationSig Location> {
   class LambdaCallKind;
 
   /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-  predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c);
+  predicate lambdaCreation(
+    Node creation, LambdaCallKind kind, DataFlowCallable c, DataFlowCall synthCall
+  );
 
   /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
   predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver);
@@ -344,6 +346,12 @@ signature module InputSig<LocationSig Location> {
 
   /** Holds if `fieldFlowBranchLimit` should be ignored for flow going into/out of `c`. */
   default predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { none() }
+
+  Content getLambdaReturnContent(LambdaCallKind kind);
+
+  Content getLambdaArgumentContent(LambdaCallKind kind, ArgumentPosition pos);
+
+  predicate isLambdaInstanceParameter(ParameterNode p);
 }
 
 module Configs<LocationSig Location, InputSig<Location> Lang> {
