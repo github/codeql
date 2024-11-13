@@ -27,11 +27,11 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           gh repo clone github/codeql
-          codeql pack install "ql/lib"
-          codeql pack install "ql/src"
-          codeql pack install "ql/test"
+          codeql pack ci "ql/lib"
+          codeql pack ci "ql/src"
+          codeql pack ci "ql/test"
       - name: Run Tests
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          codeql test run ql/test
+          codeql test run --search-path "${{ github.workspace }}/extractor"  ql/test
