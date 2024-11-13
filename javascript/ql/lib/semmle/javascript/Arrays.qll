@@ -86,7 +86,8 @@ module ArrayTaintTracking {
     succ.(DataFlow::SourceNode).getAMethodCall("splice") = call
     or
     // `e = array.pop()`, `e = array.shift()`, or similar: if `array` is tainted, then so is `e`.
-    call.(DataFlow::MethodCallNode).calls(pred, ["pop", "shift", "slice", "splice", "at", "toSpliced"]) and
+    call.(DataFlow::MethodCallNode)
+        .calls(pred, ["pop", "shift", "slice", "splice", "at", "toSpliced"]) and
     succ = call
     or
     // `e = Array.from(x)`: if `x` is tainted, then so is `e`.
@@ -283,7 +284,7 @@ private module ArrayDataFlow {
   private class ArraySpliceStep extends PreCallGraphStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = "splice" and
+        call.getMethodName() = ["splice", "toSpliced"] and
         prop = arrayElement() and
         element = call.getArgument(any(int i | i >= 2)) and
         call = obj.getAMethodCall()
@@ -297,7 +298,7 @@ private module ArrayDataFlow {
       toProp = arrayElement() and
       // `array.splice(i, del, ...arr)` variant
       exists(DataFlow::MethodCallNode mcn |
-        mcn.getMethodName() = "splice" and
+        mcn.getMethodName() = ["splice", "toSpliced"] and
         pred = mcn.getASpreadArgument() and
         succ = mcn.getReceiver().getALocalSource()
       )
@@ -320,12 +321,12 @@ private module ArrayDataFlow {
   }
 
   /**
-   * A step for modeling that elements from an array `arr` also appear in the result from calling `slice`/`splice`/`filter`.
+   * A step for modeling that elements from an array `arr` also appear in the result from calling `slice`/`splice`/`filter`/`toSpliced`.
    */
   private class ArraySliceStep extends PreCallGraphStep {
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = ["slice", "splice", "filter"] and
+        call.getMethodName() = ["slice", "splice", "filter", "toSpliced"] and
         prop = arrayElement() and
         pred = call.getReceiver() and
         succ = call
