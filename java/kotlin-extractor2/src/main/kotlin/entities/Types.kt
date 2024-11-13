@@ -2,6 +2,7 @@ package com.github.codeql
 
 import org.jetbrains.kotlin.analysis.api.symbols.KaClassSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaClassType
+import org.jetbrains.kotlin.analysis.api.types.KaFlexibleType
 import org.jetbrains.kotlin.analysis.api.types.KaType
 
 private fun KotlinUsesExtractor.useClassType(
@@ -20,6 +21,7 @@ fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.O
             return extractErrorType()
         }
         is KaClassType -> return useClassType(t)
+        is KaFlexibleType -> return useType(t.lowerBound) // TODO: take a more reasoned choice here
         else -> TODO()
     }
     /*

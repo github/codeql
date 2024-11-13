@@ -3,11 +3,10 @@ package com.github.codeql
 import com.github.codeql.KotlinFileExtractor.StmtExprParent
 import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.analysis.api.KaSession
-import org.jetbrains.kotlin.analysis.api.resolution.KaCompoundAccessCall
-import org.jetbrains.kotlin.analysis.api.resolution.KaSimpleFunctionCall
-import org.jetbrains.kotlin.analysis.api.resolution.KaSuccessCallInfo
-import org.jetbrains.kotlin.analysis.api.resolution.symbol
+import org.jetbrains.kotlin.analysis.api.resolution.*
 import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
+import org.jetbrains.kotlin.analysis.api.symbols.KaPropertySymbol
+import org.jetbrains.kotlin.analysis.api.symbols.KaVariableSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.analysis.api.types.KaTypeNullability
 import org.jetbrains.kotlin.analysis.api.types.symbol
@@ -19,6 +18,7 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.parsing.parseNumericLiteral
 import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.utils.mapToIndex
 
 context(KaSession)
 private fun KotlinFileExtractor.extractExpressionBody(e: KtExpression, callable: Label<out DbCallable>) {
@@ -306,9 +306,9 @@ private fun KotlinFileExtractor.extractPostfixUnaryExpression(
 }
 
 context(KaSession)
-fun KtExpression.resolveCallTarget(): KaSimpleFunctionCall? {
+fun KtExpression.resolveCallTarget(): KaCallableMemberCall<*, *>? {
     val callInfo = this.resolveToCall() as? KaSuccessCallInfo
-    val functionCall = callInfo?.call as? KaSimpleFunctionCall
+    val functionCall = callInfo?.call as? KaCallableMemberCall<*, *>
     return functionCall
 }
 
@@ -335,7 +335,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
     parent: StmtExprParent
 ) {
     val op = expression.operationToken
-    val target = expression.resolveCallTarget()?.symbol
+    val target = expression.resolveCallTarget()?.symbol as? KaFunctionSymbol?
 
     if (op == KtTokens.PLUS && target.isBinaryPlus()) {
         extractBinaryExpression(expression, callable, parent, tw::writeExprs_addexpr)
@@ -544,6 +544,10 @@ private fun KotlinFileExtractor.extractExpression(
 
             is KtCallExpression -> {
                 extractMethodCall(e, callable, parent)
+            }
+
+            is KtReferenceExpression -> {
+                extractReferenceExpression(e, callable, parent)
             }
 
             is KtIsExpression -> {
@@ -1602,45 +1606,46 @@ OLD: KE1
             }
         }
     }
+    */
 
-    private fun extractVariableAccess(
-        variable: Label<out DbVariable>?,
-        type: TypeResults,
-        locId: Label<DbLocation>,
-        parent: Label<out DbExprparent>,
-        idx: Int,
-        callable: Label<out DbCallable>,
-        enclosingStmt: Label<out DbStmt>
-    ) =
-        tw.getFreshIdLabel<DbVaraccess>().also {
-            tw.writeExprs_varaccess(it, type.javaResult.id, parent, idx)
-            tw.writeExprsKotlinType(it, type.kotlinResult.id)
-            extractExprContext(it, locId, callable, enclosingStmt)
+private fun KotlinFileExtractor.extractVariableAccess(
+    variable: Label<out DbVariable>?,
+    type: TypeResults,
+    locId: Label<DbLocation>,
+    parent: Label<out DbExprparent>,
+    idx: Int,
+    callable: Label<out DbCallable>,
+    enclosingStmt: Label<out DbStmt>
+) =
+    tw.getFreshIdLabel<DbVaraccess>().also {
+        tw.writeExprs_varaccess(it, type.javaResult.id, parent, idx)
+        tw.writeExprsKotlinType(it, type.kotlinResult.id)
+        extractExprContext(it, locId, callable, enclosingStmt)
 
-            if (variable != null) {
-                tw.writeVariableBinding(it, variable)
-            }
+        if (variable != null) {
+            tw.writeVariableBinding(it, variable)
         }
+    }
 
-    private fun extractVariableAccess(
-        variable: Label<out DbVariable>?,
-        irType: IrType,
-        locId: Label<DbLocation>,
-        parent: Label<out DbExprparent>,
-        idx: Int,
-        callable: Label<out DbCallable>,
-        enclosingStmt: Label<out DbStmt>
-    ) =
-        extractVariableAccess(
-            variable,
-            useType(irType),
-            locId,
-            parent,
-            idx,
-            callable,
-            enclosingStmt
-        )
-*/
+private fun KotlinFileExtractor.extractVariableAccess(
+    variable: Label<out DbVariable>?,
+    type: KaType,
+    locId: Label<DbLocation>,
+    parent: Label<out DbExprparent>,
+    idx: Int,
+    callable: Label<out DbCallable>,
+    enclosingStmt: Label<out DbStmt>
+) =
+    extractVariableAccess(
+        variable,
+        useType(type),
+        locId,
+        parent,
+        idx,
+        callable,
+        enclosingStmt
+    )
+
 context(KaSession)
 private fun KotlinFileExtractor.extractLoop(
     loop: KtLoopExpression,
@@ -2707,7 +2712,7 @@ private fun KotlinFileExtractor.extractVariableExpr(
     //extractInitializer: Boolean = true  // OLD KE1
 ) {
     with("variable expr", v) {
-        val varId = useVariable(v)
+        val varId = useVariable(v.symbol)
         val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
         val locId = tw.getLocation(v) // OLD KE1: getVariableLocationProvider(v))
         val type = useType(v.returnType)
@@ -2734,6 +2739,65 @@ private fun KotlinFileExtractor.extractVariableExpr(
     }
 }
 
-private fun KotlinFileExtractor.useVariable(v: KtProperty): Label<out DbLocalvar> {
+private fun KotlinFileExtractor.useVariable(v: KaVariableSymbol): Label<out DbLocalvar> {
     return tw.getVariableLabelFor<DbLocalvar>(v)
+}
+
+context(KaSession)
+fun KotlinFileExtractor.extractReferenceExpression(
+    ref: KtReferenceExpression,
+    enclosingCallable: Label<out DbCallable>,
+    stmtExprParent: StmtExprParent
+) {
+    val exprParent = stmtExprParent.expr(ref, enclosingCallable)
+
+    when (val resolvedCall = ref.resolveCallTarget()) {
+        is KaSimpleVariableAccessCall -> {
+            when (val varSymbol = resolvedCall.symbol) {
+                is KaPropertySymbol -> {
+                    // Note this could be a native Kotlin property, or a synthetic one for a Java object inferred
+                    // from getters/setters.
+                    val (target, args) = when (val access = resolvedCall.simpleAccess) {
+                        is KaSimpleVariableAccess.Read -> Pair(varSymbol.getter, listOf())
+                        is KaSimpleVariableAccess.Write -> Pair(varSymbol.setter, listOf(access.value))
+                    }
+
+                    val qualifier: KtExpression? = (ref.parent as? KtQualifiedExpression)?.receiverExpression
+
+                    if (target == null) {
+                        TODO()
+                    }
+
+                    extractRawMethodAccess(
+                        target,
+                        tw.getLocation(ref),
+                        ref.expressionType!!,
+                        enclosingCallable,
+                        exprParent.parent,
+                        exprParent.idx,
+                        exprParent.enclosingStmt,
+                        qualifier,
+                        null,
+                        args
+                    )
+                }
+                else -> {
+                    // TODO: field access, enum entries, others?
+                    // but aren't property accesses?
+                    extractVariableAccess(
+                        useVariable(varSymbol),
+                        varSymbol.returnType,
+                        tw.getLocation(ref),
+                        exprParent.parent,
+                        exprParent.idx,
+                        enclosingCallable,
+                        exprParent.enclosingStmt
+                    )
+                }
+            }
+        }
+        else -> {
+            TODO()
+        }
+    }
 }

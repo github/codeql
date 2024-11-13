@@ -1,5 +1,9 @@
 package com.github.codeql.utils
 
+import org.jetbrains.kotlin.analysis.api.annotations.KaAnnotated
+import org.jetbrains.kotlin.analysis.api.symbols.markers.KaAnnotatedSymbol
+import org.jetbrains.kotlin.analysis.api.symbols.name
+
 /*
 OLD: KE1
 import com.github.codeql.utils.versions.allOverriddenIncludingSelf
@@ -74,8 +78,10 @@ private fun getSpecialJvmName(f: IrFunction): String? {
     }
     return null
 }
+*/
 
-fun getJvmName(container: IrAnnotationContainer): String? {
+fun getJvmName(container: KaAnnotatedSymbol): String? {
+    /* OLD: KE1
     for (a: IrConstructorCall in container.annotations) {
         val t = a.type
         if (t is IrSimpleType && a.valueArgumentsCount == 1) {
@@ -94,5 +100,6 @@ fun getJvmName(container: IrAnnotationContainer): String? {
         }
     }
     return (container as? IrFunction)?.let { getSpecialJvmName(container) }
+    */
+    return container.name?.identifier
 }
-*/

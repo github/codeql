@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.KotlinFileExtractor.StmtExprParent
 import org.jetbrains.kotlin.analysis.api.KaSession
+import org.jetbrains.kotlin.analysis.api.resolution.KaSimpleFunctionCall
 import org.jetbrains.kotlin.analysis.api.resolution.symbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaType
@@ -17,7 +18,7 @@ fun KotlinFileExtractor.extractMethodCall(
     enclosingCallable: Label<out DbCallable>,
     stmtExprParent: StmtExprParent
 ) {
-    val callTarget = call.resolveCallTarget()
+    val callTarget = call.resolveCallTarget() as? KaSimpleFunctionCall?
     val target = callTarget?.symbol
     val argMapping = callTarget?.argumentMapping
 
@@ -30,7 +31,7 @@ fun KotlinFileExtractor.extractMethodCall(
     // - missing arguments due to default parameter values, in which case some indices are missing.
     val args = call.valueArguments
         .map { arg ->
-            val expr = arg.argumentExpression
+            val expr = arg.getArgumentExpression()
             val p = argMapping[expr]
             if (p == null) {
                 TODO("This is unexpected, no parameter was found for the argument")
