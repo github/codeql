@@ -38,4 +38,29 @@ function test(x, y) {
   let j = [];
   j[j.length] = source();
   sink(j); // NOT OK
+
+  let k = [];
+  let kSpliced = k.toSpliced(x, y, source());
+  sink(k); // OK
+  sink(kSpliced); // NOT OK -- This should be caught, but it is not
+
+  let l = [];
+  l = l.toSpliced(x, y, source());
+  sink(l); // NOT OK -- This should be caught, but it is not
+
+  let m = [];
+  m = m.toSpliced(q, source(), y);
+  sink(m); // OK
+
+  let n = [];
+  n = n.toSpliced(source(), x);
+  sink(n); // OK
+
+  let o = [];
+  o = o.toSpliced(x, source());
+  sink(o); // OK
+
+  let p = [];
+  p = p.toSpliced(source(), x, y);
+  sink(p); // OK
 }
