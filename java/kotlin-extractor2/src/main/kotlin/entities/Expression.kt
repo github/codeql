@@ -2755,12 +2755,14 @@ fun KotlinFileExtractor.extractReferenceExpression(
         is KaSimpleVariableAccessCall -> {
             when (val varSymbol = resolvedCall.symbol) {
                 is KaPropertySymbol -> {
+                    // Note this could be a native Kotlin property, or a synthetic one for a Java object inferred
+                    // from getters/setters.
                     val (target, args) = when (val access = resolvedCall.simpleAccess) {
                         is KaSimpleVariableAccess.Read -> Pair(varSymbol.getter, listOf())
                         is KaSimpleVariableAccess.Write -> Pair(varSymbol.setter, listOf(access.value))
                     }
 
-                    val qualifier: KtExpression? = (ref.parent as? KtDotQualifiedExpression)?.receiverExpression
+                    val qualifier: KtExpression? = (ref.parent as? KtQualifiedExpression)?.receiverExpression
 
                     if (target == null) {
                         TODO()
@@ -2780,6 +2782,8 @@ fun KotlinFileExtractor.extractReferenceExpression(
                     )
                 }
                 else -> {
+                    // TODO: field access, enum entries, others?
+                    // but aren't property accesses?
                     extractVariableAccess(
                         useVariable(varSymbol),
                         varSymbol.returnType,
