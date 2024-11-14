@@ -217,13 +217,15 @@ class UnreachableBasicBlock extends BasicBlock {
     not this instanceof CatchClause
     or
     // Switch statements with a constant comparison expression may have unreachable cases.
-    exists(ConstSwitchStmt constSwitchStmt, BasicBlock failingCaseBlock |
-      failingCaseBlock = constSwitchStmt.getAFailingCase().getBasicBlock()
-    |
+    exists(ConstSwitchStmt constSwitchStmt, BasicBlock unreachableCaseBlock |
+      // Not accessible from the switch expression
+      unreachableCaseBlock = constSwitchStmt.getAFailingCase().getBasicBlock() and
       // Not accessible from the successful case
-      not constSwitchStmt.getMatchingCase().getBasicBlock().getABBSuccessor*() = failingCaseBlock and
-      // Blocks dominated by the failing case block are unreachable
-      failingCaseBlock.bbDominates(this)
+      not constSwitchStmt.getMatchingCase().getBasicBlock().getABBSuccessor*() =
+        unreachableCaseBlock
+    |
+      // Blocks dominated by an unreachable case block are unreachable
+      unreachableCaseBlock.bbDominates(this)
     )
   }
 }
