@@ -249,8 +249,9 @@ edges
 | CollectionFlow.cs:308:9:308:12 | [post] access to local variable list : List<T> [element, property Key] : A | CollectionFlow.cs:309:9:309:12 | access to local variable list : List<T> [element, property Key] : A | provenance |  |
 | CollectionFlow.cs:308:18:308:47 | object creation of type KeyValuePair<A,Int32> : KeyValuePair<T,T> [property Key] : A | CollectionFlow.cs:308:9:308:12 | [post] access to local variable list : List<T> [element, property Key] : A | provenance | MaD:3 |
 | CollectionFlow.cs:308:43:308:43 | access to local variable a : A | CollectionFlow.cs:308:18:308:47 | object creation of type KeyValuePair<A,Int32> : KeyValuePair<T,T> [property Key] : A | provenance | MaD:13 |
-| CollectionFlow.cs:309:9:309:12 | access to local variable list : List<T> [element, property Key] : A | CollectionFlow.cs:309:21:309:23 | kvp : KeyValuePair<T,T> [property Key] : A | provenance | MaD:18 |
+| CollectionFlow.cs:309:9:309:12 | access to local variable list : List<T> [element, property Key] : A | CollectionFlow.cs:309:21:313:9 | [post] (...) => ... : Func<T,T> [delegate argument at position 0, property Key] : A | provenance | MaD:18 |
 | CollectionFlow.cs:309:21:309:23 | kvp : KeyValuePair<T,T> [property Key] : A | CollectionFlow.cs:311:18:311:20 | access to parameter kvp : KeyValuePair<T,T> [property Key] : A | provenance |  |
+| CollectionFlow.cs:309:21:313:9 | [post] (...) => ... : Func<T,T> [delegate argument at position 0, property Key] : A | CollectionFlow.cs:309:21:309:23 | kvp : KeyValuePair<T,T> [property Key] : A | provenance |  |
 | CollectionFlow.cs:311:18:311:20 | access to parameter kvp : KeyValuePair<T,T> [property Key] : A | CollectionFlow.cs:311:18:311:24 | access to property Key | provenance |  |
 | CollectionFlow.cs:328:32:328:38 | element : A | CollectionFlow.cs:328:55:328:61 | access to parameter element : A | provenance |  |
 | CollectionFlow.cs:328:44:328:48 | [post] access to parameter array : A[] [element] : A | CollectionFlow.cs:328:23:328:27 | array [Return] : A[] [element] : A | provenance |  |
@@ -560,6 +561,7 @@ nodes
 | CollectionFlow.cs:308:43:308:43 | access to local variable a : A | semmle.label | access to local variable a : A |
 | CollectionFlow.cs:309:9:309:12 | access to local variable list : List<T> [element, property Key] : A | semmle.label | access to local variable list : List<T> [element, property Key] : A |
 | CollectionFlow.cs:309:21:309:23 | kvp : KeyValuePair<T,T> [property Key] : A | semmle.label | kvp : KeyValuePair<T,T> [property Key] : A |
+| CollectionFlow.cs:309:21:313:9 | [post] (...) => ... : Func<T,T> [delegate argument at position 0, property Key] : A | semmle.label | [post] (...) => ... : Func<T,T> [delegate argument at position 0, property Key] : A |
 | CollectionFlow.cs:311:18:311:20 | access to parameter kvp : KeyValuePair<T,T> [property Key] : A | semmle.label | access to parameter kvp : KeyValuePair<T,T> [property Key] : A |
 | CollectionFlow.cs:311:18:311:24 | access to property Key | semmle.label | access to property Key |
 | CollectionFlow.cs:328:23:328:27 | array [Return] : A[] [element] : A | semmle.label | array [Return] : A[] [element] : A |

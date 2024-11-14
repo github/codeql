@@ -66,27 +66,33 @@ edges
 | ExternalFlow.cs:54:36:54:47 | object creation of type Object : Object | ExternalFlow.cs:54:13:54:16 | [post] this access : D [element] : Object | provenance | MaD:12 |
 | ExternalFlow.cs:55:18:55:21 | this access : D [element] : Object | ExternalFlow.cs:55:18:55:41 | call to method StepElementGetter | provenance | MaD:11 |
 | ExternalFlow.cs:60:35:60:35 | o : Object | ExternalFlow.cs:60:47:60:47 | access to parameter o | provenance |  |
-| ExternalFlow.cs:60:64:60:75 | object creation of type Object : Object | ExternalFlow.cs:60:35:60:35 | o : Object | provenance | MaD:3 |
+| ExternalFlow.cs:60:35:60:61 | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object | ExternalFlow.cs:60:35:60:35 | o : Object | provenance |  |
+| ExternalFlow.cs:60:64:60:75 | object creation of type Object : Object | ExternalFlow.cs:60:35:60:61 | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object | provenance | MaD:3 |
 | ExternalFlow.cs:65:17:65:17 | access to local variable o : Object | ExternalFlow.cs:66:18:66:18 | access to local variable o | provenance |  |
 | ExternalFlow.cs:65:21:65:60 | call to method Apply<Int32,Object> : Object | ExternalFlow.cs:65:17:65:17 | access to local variable o : Object | provenance |  |
-| ExternalFlow.cs:65:45:65:56 | object creation of type Object : Object | ExternalFlow.cs:65:21:65:60 | call to method Apply<Int32,Object> : Object | provenance | MaD:2 |
+| ExternalFlow.cs:65:40:65:56 | (...) => ... : (...) => ... [delegate return] : Object | ExternalFlow.cs:65:21:65:60 | call to method Apply<Int32,Object> : Object | provenance | MaD:2 |
+| ExternalFlow.cs:65:45:65:56 | object creation of type Object : Object | ExternalFlow.cs:65:40:65:56 | (...) => ... : (...) => ... [delegate return] : Object | provenance |  |
 | ExternalFlow.cs:71:17:71:20 | access to local variable objs : null [element] : Object | ExternalFlow.cs:72:17:72:20 | access to local variable objs : null [element] : Object | provenance |  |
 | ExternalFlow.cs:71:30:71:45 | { ..., ... } : null [element] : Object | ExternalFlow.cs:71:17:71:20 | access to local variable objs : null [element] : Object | provenance |  |
 | ExternalFlow.cs:71:32:71:43 | object creation of type Object : Object | ExternalFlow.cs:71:30:71:45 | { ..., ... } : null [element] : Object | provenance |  |
-| ExternalFlow.cs:72:17:72:20 | access to local variable objs : null [element] : Object | ExternalFlow.cs:72:23:72:23 | o : Object | provenance | MaD:4 |
+| ExternalFlow.cs:72:17:72:20 | access to local variable objs : null [element] : Object | ExternalFlow.cs:72:23:72:49 | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object | provenance | MaD:4 |
 | ExternalFlow.cs:72:23:72:23 | o : Object | ExternalFlow.cs:72:35:72:35 | access to parameter o | provenance |  |
+| ExternalFlow.cs:72:23:72:49 | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object | ExternalFlow.cs:72:23:72:23 | o : Object | provenance |  |
 | ExternalFlow.cs:77:17:77:20 | access to local variable objs : T[] [element] : Object | ExternalFlow.cs:78:18:78:21 | access to local variable objs : T[] [element] : Object | provenance |  |
 | ExternalFlow.cs:77:24:77:58 | call to method Map<Int32,Object> : T[] [element] : Object | ExternalFlow.cs:77:17:77:20 | access to local variable objs : T[] [element] : Object | provenance |  |
-| ExternalFlow.cs:77:46:77:57 | object creation of type Object : Object | ExternalFlow.cs:77:24:77:58 | call to method Map<Int32,Object> : T[] [element] : Object | provenance | MaD:5 |
+| ExternalFlow.cs:77:41:77:57 | (...) => ... : (...) => ... [delegate return] : Object | ExternalFlow.cs:77:24:77:58 | call to method Map<Int32,Object> : T[] [element] : Object | provenance | MaD:5 |
+| ExternalFlow.cs:77:46:77:57 | object creation of type Object : Object | ExternalFlow.cs:77:41:77:57 | (...) => ... : (...) => ... [delegate return] : Object | provenance |  |
 | ExternalFlow.cs:78:18:78:21 | access to local variable objs : T[] [element] : Object | ExternalFlow.cs:78:18:78:24 | access to array element | provenance |  |
 | ExternalFlow.cs:83:17:83:20 | access to local variable objs : null [element] : Object | ExternalFlow.cs:84:29:84:32 | access to local variable objs : null [element] : Object | provenance |  |
 | ExternalFlow.cs:83:30:83:45 | { ..., ... } : null [element] : Object | ExternalFlow.cs:83:17:83:20 | access to local variable objs : null [element] : Object | provenance |  |
 | ExternalFlow.cs:83:32:83:43 | object creation of type Object : Object | ExternalFlow.cs:83:30:83:45 | { ..., ... } : null [element] : Object | provenance |  |
 | ExternalFlow.cs:84:17:84:21 | access to local variable objs2 : T[] [element] : Object | ExternalFlow.cs:85:18:85:22 | access to local variable objs2 : T[] [element] : Object | provenance |  |
 | ExternalFlow.cs:84:25:84:41 | call to method Map<Object,Object> : T[] [element] : Object | ExternalFlow.cs:84:17:84:21 | access to local variable objs2 : T[] [element] : Object | provenance |  |
-| ExternalFlow.cs:84:29:84:32 | access to local variable objs : null [element] : Object | ExternalFlow.cs:84:25:84:41 | call to method Map<Object,Object> : T[] [element] : Object | provenance | MaD:4 |
-| ExternalFlow.cs:84:29:84:32 | access to local variable objs : null [element] : Object | ExternalFlow.cs:84:35:84:35 | o : Object | provenance | MaD:4 |
+| ExternalFlow.cs:84:29:84:32 | access to local variable objs : null [element] : Object | ExternalFlow.cs:84:35:84:40 | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object | provenance | MaD:4 |
 | ExternalFlow.cs:84:35:84:35 | o : Object | ExternalFlow.cs:84:40:84:40 | access to parameter o : Object | provenance |  |
+| ExternalFlow.cs:84:35:84:40 | (...) => ... : (...) => ... [delegate return] : Object | ExternalFlow.cs:84:25:84:41 | call to method Map<Object,Object> : T[] [element] : Object | provenance | MaD:5 |
+| ExternalFlow.cs:84:35:84:40 | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object | ExternalFlow.cs:84:35:84:35 | o : Object | provenance |  |
+| ExternalFlow.cs:84:35:84:40 | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object | ExternalFlow.cs:84:35:84:40 | (...) => ... : (...) => ... [delegate return] : Object | provenance |  |
 | ExternalFlow.cs:85:18:85:22 | access to local variable objs2 : T[] [element] : Object | ExternalFlow.cs:85:18:85:25 | access to array element | provenance |  |
 | ExternalFlow.cs:90:17:90:17 | access to local variable s : String | ExternalFlow.cs:91:19:91:19 | access to local variable s : String | provenance |  |
 | ExternalFlow.cs:90:21:90:34 | object creation of type String : String | ExternalFlow.cs:90:17:90:17 | access to local variable s : String | provenance |  |
@@ -96,7 +102,8 @@ edges
 | ExternalFlow.cs:98:13:98:14 | [post] access to local variable d1 : D [field Field] : Object | ExternalFlow.cs:104:18:104:19 | access to local variable d1 : D [field Field] : Object | provenance |  |
 | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | ExternalFlow.cs:98:13:98:14 | [post] access to local variable d1 : D [field Field] : Object | provenance |  |
 | ExternalFlow.cs:100:20:100:20 | d : Object | ExternalFlow.cs:102:22:102:22 | access to parameter d | provenance |  |
-| ExternalFlow.cs:103:16:103:17 | access to local variable d1 : D [field Field] : Object | ExternalFlow.cs:100:20:100:20 | d : Object | provenance | MaD:1 |
+| ExternalFlow.cs:100:20:103:13 | [post] (...) => ... : Action<Object> [delegate argument at position 0] : Object | ExternalFlow.cs:100:20:100:20 | d : Object | provenance |  |
+| ExternalFlow.cs:103:16:103:17 | access to local variable d1 : D [field Field] : Object | ExternalFlow.cs:100:20:103:13 | [post] (...) => ... : Action<Object> [delegate argument at position 0] : Object | provenance | MaD:1 |
 | ExternalFlow.cs:104:18:104:19 | access to local variable d1 : D [field Field] : Object | ExternalFlow.cs:104:18:104:25 | access to field Field | provenance |  |
 | ExternalFlow.cs:111:13:111:13 | [post] access to local variable f : F [field MyField] : Object | ExternalFlow.cs:112:18:112:18 | access to local variable f : F [field MyField] : Object | provenance |  |
 | ExternalFlow.cs:111:24:111:35 | object creation of type Object : Object | ExternalFlow.cs:111:13:111:13 | [post] access to local variable f : F [field MyField] : Object | provenance | MaD:19 |
@@ -191,10 +198,12 @@ nodes
 | ExternalFlow.cs:55:18:55:21 | this access : D [element] : Object | semmle.label | this access : D [element] : Object |
 | ExternalFlow.cs:55:18:55:41 | call to method StepElementGetter | semmle.label | call to method StepElementGetter |
 | ExternalFlow.cs:60:35:60:35 | o : Object | semmle.label | o : Object |
+| ExternalFlow.cs:60:35:60:61 | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object | semmle.label | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object |
 | ExternalFlow.cs:60:47:60:47 | access to parameter o | semmle.label | access to parameter o |
 | ExternalFlow.cs:60:64:60:75 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:65:17:65:17 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | ExternalFlow.cs:65:21:65:60 | call to method Apply<Int32,Object> : Object | semmle.label | call to method Apply<Int32,Object> : Object |
+| ExternalFlow.cs:65:40:65:56 | (...) => ... : (...) => ... [delegate return] : Object | semmle.label | (...) => ... : (...) => ... [delegate return] : Object |
 | ExternalFlow.cs:65:45:65:56 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:66:18:66:18 | access to local variable o | semmle.label | access to local variable o |
 | ExternalFlow.cs:71:17:71:20 | access to local variable objs : null [element] : Object | semmle.label | access to local variable objs : null [element] : Object |
@@ -202,9 +211,11 @@ nodes
 | ExternalFlow.cs:71:32:71:43 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:72:17:72:20 | access to local variable objs : null [element] : Object | semmle.label | access to local variable objs : null [element] : Object |
 | ExternalFlow.cs:72:23:72:23 | o : Object | semmle.label | o : Object |
+| ExternalFlow.cs:72:23:72:49 | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object | semmle.label | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object |
 | ExternalFlow.cs:72:35:72:35 | access to parameter o | semmle.label | access to parameter o |
 | ExternalFlow.cs:77:17:77:20 | access to local variable objs : T[] [element] : Object | semmle.label | access to local variable objs : T[] [element] : Object |
 | ExternalFlow.cs:77:24:77:58 | call to method Map<Int32,Object> : T[] [element] : Object | semmle.label | call to method Map<Int32,Object> : T[] [element] : Object |
+| ExternalFlow.cs:77:41:77:57 | (...) => ... : (...) => ... [delegate return] : Object | semmle.label | (...) => ... : (...) => ... [delegate return] : Object |
 | ExternalFlow.cs:77:46:77:57 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:78:18:78:21 | access to local variable objs : T[] [element] : Object | semmle.label | access to local variable objs : T[] [element] : Object |
 | ExternalFlow.cs:78:18:78:24 | access to array element | semmle.label | access to array element |
@@ -215,6 +226,8 @@ nodes
 | ExternalFlow.cs:84:25:84:41 | call to method Map<Object,Object> : T[] [element] : Object | semmle.label | call to method Map<Object,Object> : T[] [element] : Object |
 | ExternalFlow.cs:84:29:84:32 | access to local variable objs : null [element] : Object | semmle.label | access to local variable objs : null [element] : Object |
 | ExternalFlow.cs:84:35:84:35 | o : Object | semmle.label | o : Object |
+| ExternalFlow.cs:84:35:84:40 | (...) => ... : (...) => ... [delegate return] : Object | semmle.label | (...) => ... : (...) => ... [delegate return] : Object |
+| ExternalFlow.cs:84:35:84:40 | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object | semmle.label | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object |
 | ExternalFlow.cs:84:40:84:40 | access to parameter o : Object | semmle.label | access to parameter o : Object |
 | ExternalFlow.cs:85:18:85:22 | access to local variable objs2 : T[] [element] : Object | semmle.label | access to local variable objs2 : T[] [element] : Object |
 | ExternalFlow.cs:85:18:85:25 | access to array element | semmle.label | access to array element |
@@ -226,6 +239,7 @@ nodes
 | ExternalFlow.cs:98:13:98:14 | [post] access to local variable d1 : D [field Field] : Object | semmle.label | [post] access to local variable d1 : D [field Field] : Object |
 | ExternalFlow.cs:98:24:98:35 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:100:20:100:20 | d : Object | semmle.label | d : Object |
+| ExternalFlow.cs:100:20:103:13 | [post] (...) => ... : Action<Object> [delegate argument at position 0] : Object | semmle.label | [post] (...) => ... : Action<Object> [delegate argument at position 0] : Object |
 | ExternalFlow.cs:102:22:102:22 | access to parameter d | semmle.label | access to parameter d |
 | ExternalFlow.cs:103:16:103:17 | access to local variable d1 : D [field Field] : Object | semmle.label | access to local variable d1 : D [field Field] : Object |
 | ExternalFlow.cs:104:18:104:19 | access to local variable d1 : D [field Field] : Object | semmle.label | access to local variable d1 : D [field Field] : Object |
@@ -293,7 +307,7 @@ nodes
 | ExternalFlow.cs:345:18:345:18 | access to local variable l : Library [synthetic X] : Object | semmle.label | access to local variable l : Library [synthetic X] : Object |
 | ExternalFlow.cs:345:18:345:29 | call to method GetValue | semmle.label | call to method GetValue |
 subpaths
-| ExternalFlow.cs:84:29:84:32 | access to local variable objs : null [element] : Object | ExternalFlow.cs:84:35:84:35 | o : Object | ExternalFlow.cs:84:40:84:40 | access to parameter o : Object | ExternalFlow.cs:84:25:84:41 | call to method Map<Object,Object> : T[] [element] : Object |
+| ExternalFlow.cs:84:35:84:40 | [post] (...) => ... : Func<T,T> [delegate argument at position 0] : Object | ExternalFlow.cs:84:35:84:35 | o : Object | ExternalFlow.cs:84:40:84:40 | access to parameter o : Object | ExternalFlow.cs:84:35:84:40 | (...) => ... : (...) => ... [delegate return] : Object |
 invalidModelRow
 #select
 | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | $@ | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | object creation of type Object : Object |

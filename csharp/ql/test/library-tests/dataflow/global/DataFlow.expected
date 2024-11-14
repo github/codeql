@@ -12,8 +12,8 @@
 | Capture.cs:163:15:163:20 | access to local variable sink36 |
 | Capture.cs:171:15:171:20 | access to local variable sink37 |
 | Capture.cs:197:15:197:20 | access to local variable sink38 |
+| Capture.cs:199:15:199:22 | access to local variable nonSink0 |
 | Capture.cs:206:19:206:19 | access to parameter s |
-| Capture.cs:217:19:217:19 | access to parameter s |
 | Capture.cs:231:19:231:19 | access to local variable x |
 | Capture.cs:234:15:234:15 | access to local variable x |
 | Capture.cs:246:19:246:25 | access to field Field |
@@ -40,6 +40,7 @@
 | GlobalDataFlow.cs:86:15:86:20 | access to local variable sink15 |
 | GlobalDataFlow.cs:88:15:88:20 | access to local variable sink16 |
 | GlobalDataFlow.cs:140:15:140:19 | access to local variable sink4 |
+| GlobalDataFlow.cs:144:15:144:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:148:15:148:19 | access to local variable sink5 |
 | GlobalDataFlow.cs:158:15:158:19 | access to local variable sink6 |
 | GlobalDataFlow.cs:161:15:161:19 | access to local variable sink7 |
@@ -53,6 +54,12 @@
 | GlobalDataFlow.cs:217:15:217:20 | access to local variable sink24 |
 | GlobalDataFlow.cs:219:15:219:20 | access to local variable sink25 |
 | GlobalDataFlow.cs:221:15:221:20 | access to local variable sink26 |
+| GlobalDataFlow.cs:224:59:224:70 | access to parameter nonSinkParam |
+| GlobalDataFlow.cs:227:15:227:21 | access to local variable nonSink |
+| GlobalDataFlow.cs:229:15:229:21 | access to local variable nonSink |
+| GlobalDataFlow.cs:231:15:231:21 | access to local variable nonSink |
+| GlobalDataFlow.cs:233:15:233:21 | access to local variable nonSink |
+| GlobalDataFlow.cs:235:15:235:21 | access to local variable nonSink |
 | GlobalDataFlow.cs:243:15:243:20 | access to local variable sink41 |
 | GlobalDataFlow.cs:245:15:245:20 | access to local variable sink42 |
 | GlobalDataFlow.cs:260:15:260:24 | access to parameter sinkParam0 |
@@ -65,6 +72,7 @@
 | GlobalDataFlow.cs:317:15:317:24 | access to parameter sinkParam8 |
 | GlobalDataFlow.cs:323:15:323:24 | access to parameter sinkParam9 |
 | GlobalDataFlow.cs:329:15:329:25 | access to parameter sinkParam11 |
+| GlobalDataFlow.cs:335:15:335:26 | access to parameter nonSinkParam |
 | GlobalDataFlow.cs:404:15:404:20 | access to local variable sink11 |
 | GlobalDataFlow.cs:427:41:427:46 | access to local variable sink20 |
 | GlobalDataFlow.cs:461:15:461:20 | access to local variable sink45 |
