@@ -5,8 +5,6 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class NonGeneratedSourceLocation : SourceLocation
     {
-        public override Context Context => (Context)base.Context;
-
         protected NonGeneratedSourceLocation(Context cx, Microsoft.CodeAnalysis.Location init)
             : base(cx, init)
         {

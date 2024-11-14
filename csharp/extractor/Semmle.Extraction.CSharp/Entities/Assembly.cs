@@ -5,8 +5,6 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Assembly : Location
     {
-        public override Context Context => (Context)base.Context;
-
         private readonly string assemblyPath;
         private readonly IAssemblySymbol assembly;
         private readonly bool isOutputAssembly;

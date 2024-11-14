@@ -11,7 +11,6 @@ namespace Semmle.Extraction.CSharp.Entities
         protected readonly string originalPath;
         private readonly Lazy<PathTransformer.ITransformedPath> transformedPathLazy;
         protected PathTransformer.ITransformedPath TransformedPath => transformedPathLazy.Value;
-        public override Context Context => (Context)base.Context;
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
         public override bool NeedsPopulation => true;
