@@ -17,46 +17,46 @@
 | conversions.swift:25:33:25:33 | self | conversions.swift:25:33:25:33 | SSA def(self) |
 | conversions.swift:26:22:26:22 | SSA def(self) | conversions.swift:26:22:26:38 | self[return] |
 | conversions.swift:26:22:26:22 | self | conversions.swift:26:22:26:22 | SSA def(self) |
-| conversions.swift:35:18:35:28 | call to sourceInt() | conversions.swift:35:12:35:29 | call to Float.init(_:) |
-| conversions.swift:36:19:36:29 | call to sourceInt() | conversions.swift:36:12:36:30 | call to String.init(_:) |
-| conversions.swift:37:12:37:30 | call to String.init(_:) | conversions.swift:37:12:37:32 | .utf8 |
-| conversions.swift:37:19:37:29 | call to sourceInt() | conversions.swift:37:12:37:30 | call to String.init(_:) |
+| conversions.swift:35:18:35:37 | call to sourceInt(_:) | conversions.swift:35:12:35:38 | call to Float.init(_:) |
+| conversions.swift:36:19:36:38 | call to sourceInt(_:) | conversions.swift:36:12:36:39 | call to String.init(_:) |
+| conversions.swift:37:12:37:39 | call to String.init(_:) | conversions.swift:37:12:37:41 | .utf8 |
+| conversions.swift:37:19:37:38 | call to sourceInt(_:) | conversions.swift:37:12:37:39 | call to String.init(_:) |
 | conversions.swift:39:6:39:6 | SSA def(arr) | conversions.swift:40:12:40:12 | arr |
 | conversions.swift:39:6:39:6 | arr | conversions.swift:39:6:39:6 | SSA def(arr) |
-| conversions.swift:39:12:39:30 | [...] | conversions.swift:39:6:39:6 | arr |
+| conversions.swift:39:12:39:39 | [...] | conversions.swift:39:6:39:6 | arr |
 | conversions.swift:40:12:40:12 | arr | conversions.swift:41:12:41:12 | arr |
 | conversions.swift:41:12:41:12 | [post] arr | conversions.swift:42:20:42:20 | arr |
 | conversions.swift:41:12:41:12 | arr | conversions.swift:41:12:41:17 | ...[...] |
 | conversions.swift:41:12:41:12 | arr | conversions.swift:42:20:42:20 | arr |
 | conversions.swift:42:20:42:20 | arr | conversions.swift:43:20:43:20 | arr |
 | conversions.swift:43:12:43:23 | call to Array<Element>.init(_:) | conversions.swift:43:12:43:26 | ...[...] |
-| conversions.swift:44:20:44:33 | call to sourceString() | conversions.swift:44:20:44:35 | .utf8 |
-| conversions.swift:45:12:45:39 | call to Array<Element>.init(_:) | conversions.swift:45:12:45:42 | ...[...] |
-| conversions.swift:45:20:45:33 | call to sourceString() | conversions.swift:45:20:45:35 | .utf8 |
+| conversions.swift:44:20:44:42 | call to sourceString(_:) | conversions.swift:44:20:44:44 | .utf8 |
+| conversions.swift:45:12:45:48 | call to Array<Element>.init(_:) | conversions.swift:45:12:45:51 | ...[...] |
+| conversions.swift:45:20:45:42 | call to sourceString(_:) | conversions.swift:45:20:45:44 | .utf8 |
 | conversions.swift:47:5:47:9 | let ...? | conversions.swift:47:9:47:9 | v |
 | conversions.swift:47:9:47:9 | SSA def(v) | conversions.swift:48:13:48:13 | v |
 | conversions.swift:47:9:47:9 | v | conversions.swift:47:9:47:9 | SSA def(v) |
-| conversions.swift:47:13:47:23 | call to sourceInt() | conversions.swift:47:5:47:9 | let ...? |
+| conversions.swift:47:13:47:32 | call to sourceInt(_:) | conversions.swift:47:5:47:9 | let ...? |
 | conversions.swift:51:6:51:6 | SSA def(v2) | conversions.swift:52:12:52:12 | v2 |
 | conversions.swift:51:6:51:6 | v2 | conversions.swift:51:6:51:6 | SSA def(v2) |
 | conversions.swift:51:6:51:10 | ... as ... | conversions.swift:51:6:51:6 | v2 |
-| conversions.swift:51:18:51:41 | call to numericCast(_:) | conversions.swift:51:6:51:10 | ... as ... |
-| conversions.swift:51:30:51:40 | call to sourceInt() | conversions.swift:51:18:51:41 | call to numericCast(_:) |
+| conversions.swift:51:18:51:50 | call to numericCast(_:) | conversions.swift:51:6:51:10 | ... as ... |
+| conversions.swift:51:30:51:49 | call to sourceInt(_:) | conversions.swift:51:18:51:50 | call to numericCast(_:) |
 | conversions.swift:54:6:54:6 | SSA def(v4) | conversions.swift:55:12:55:12 | v4 |
 | conversions.swift:54:6:54:6 | v4 | conversions.swift:54:6:54:6 | SSA def(v4) |
 | conversions.swift:54:6:54:10 | ... as ... | conversions.swift:54:6:54:6 | v4 |
-| conversions.swift:54:17:54:57 | call to unsafeBitCast(_:to:) | conversions.swift:54:6:54:10 | ... as ... |
-| conversions.swift:54:31:54:41 | call to sourceInt() | conversions.swift:54:17:54:57 | call to unsafeBitCast(_:to:) |
+| conversions.swift:54:17:54:66 | call to unsafeBitCast(_:to:) | conversions.swift:54:6:54:10 | ... as ... |
+| conversions.swift:54:31:54:50 | call to sourceInt(_:) | conversions.swift:54:17:54:66 | call to unsafeBitCast(_:to:) |
 | conversions.swift:57:6:57:6 | SSA def(v5) | conversions.swift:58:12:58:12 | v5 |
 | conversions.swift:57:6:57:6 | v5 | conversions.swift:57:6:57:6 | SSA def(v5) |
-| conversions.swift:57:11:57:47 | call to Self.init(truncatingIfNeeded:) | conversions.swift:57:6:57:6 | v5 |
+| conversions.swift:57:11:57:56 | call to Self.init(truncatingIfNeeded:) | conversions.swift:57:6:57:6 | v5 |
 | conversions.swift:60:6:60:6 | SSA def(v6) | conversions.swift:61:12:61:12 | v6 |
 | conversions.swift:60:6:60:6 | v6 | conversions.swift:60:6:60:6 | SSA def(v6) |
-| conversions.swift:60:11:60:39 | call to UInt.init(bitPattern:) | conversions.swift:60:6:60:6 | v6 |
+| conversions.swift:60:11:60:48 | call to UInt.init(bitPattern:) | conversions.swift:60:6:60:6 | v6 |
 | conversions.swift:63:6:63:6 | SSA def(v7) | conversions.swift:64:12:64:12 | v7 |
 | conversions.swift:63:6:63:6 | v7 | conversions.swift:63:6:63:6 | SSA def(v7) |
-| conversions.swift:63:11:63:26 | call to abs(_:) | conversions.swift:63:6:63:6 | v7 |
-| conversions.swift:63:15:63:25 | call to sourceInt() | conversions.swift:63:11:63:26 | call to abs(_:) |
+| conversions.swift:63:11:63:35 | call to abs(_:) | conversions.swift:63:6:63:6 | v7 |
+| conversions.swift:63:15:63:34 | call to sourceInt(_:) | conversions.swift:63:11:63:35 | call to abs(_:) |
 | conversions.swift:66:6:66:6 | SSA def(v8) | conversions.swift:67:12:67:12 | v8 |
 | conversions.swift:66:6:66:6 | v8 | conversions.swift:66:6:66:6 | SSA def(v8) |
 | conversions.swift:66:18:66:18 | 0 | conversions.swift:66:6:66:6 | v8 |
@@ -64,13 +64,13 @@
 | conversions.swift:67:12:67:12 | v8 | conversions.swift:68:12:68:12 | v8 |
 | conversions.swift:68:12:68:12 | [post] v8 | conversions.swift:69:12:69:12 | v8 |
 | conversions.swift:68:12:68:12 | v8 | conversions.swift:69:12:69:12 | v8 |
-| conversions.swift:71:12:71:36 | call to Self.init(exactly:) | conversions.swift:71:12:71:37 | ...! |
-| conversions.swift:72:12:72:39 | call to Self.init(exactly:) | conversions.swift:72:12:72:40 | ...! |
-| conversions.swift:75:12:75:41 | call to Self.init(_:radix:) | conversions.swift:75:12:75:42 | ...! |
-| conversions.swift:77:30:77:40 | call to sourceInt() | conversions.swift:77:12:77:41 | call to Self.init(littleEndian:) |
-| conversions.swift:78:27:78:37 | call to sourceInt() | conversions.swift:78:12:78:38 | call to Self.init(bigEndian:) |
-| conversions.swift:79:12:79:22 | call to sourceInt() | conversions.swift:79:12:79:24 | .littleEndian |
-| conversions.swift:80:12:80:22 | call to sourceInt() | conversions.swift:80:12:80:24 | .bigEndian |
+| conversions.swift:71:12:71:45 | call to Self.init(exactly:) | conversions.swift:71:12:71:46 | ...! |
+| conversions.swift:72:12:72:48 | call to Self.init(exactly:) | conversions.swift:72:12:72:49 | ...! |
+| conversions.swift:75:12:75:50 | call to Self.init(_:radix:) | conversions.swift:75:12:75:51 | ...! |
+| conversions.swift:77:30:77:49 | call to sourceInt(_:) | conversions.swift:77:12:77:50 | call to Self.init(littleEndian:) |
+| conversions.swift:78:27:78:46 | call to sourceInt(_:) | conversions.swift:78:12:78:47 | call to Self.init(bigEndian:) |
+| conversions.swift:79:12:79:31 | call to sourceInt(_:) | conversions.swift:79:12:79:33 | .littleEndian |
+| conversions.swift:80:12:80:31 | call to sourceInt(_:) | conversions.swift:80:12:80:33 | .bigEndian |
 | conversions.swift:82:7:82:7 | SSA def(q1) | conversions.swift:83:12:83:12 | q1 |
 | conversions.swift:82:7:82:7 | q1 | conversions.swift:82:7:82:7 | SSA def(q1) |
 | conversions.swift:82:11:82:11 | SSA def(r1) | conversions.swift:84:12:84:12 | r1 |
@@ -80,12 +80,12 @@
 | conversions.swift:86:7:86:7 | q2 | conversions.swift:86:7:86:7 | SSA def(q2) |
 | conversions.swift:86:11:86:11 | SSA def(r2) | conversions.swift:88:12:88:12 | r2 |
 | conversions.swift:86:11:86:11 | r2 | conversions.swift:86:11:86:11 | SSA def(r2) |
-| conversions.swift:86:17:86:63 | call to quotientAndRemainder(dividingBy:) | conversions.swift:86:6:86:13 | (...) |
+| conversions.swift:86:17:86:72 | call to quotientAndRemainder(dividingBy:) | conversions.swift:86:6:86:13 | (...) |
 | conversions.swift:90:7:90:7 | SSA def(q3) | conversions.swift:91:12:91:12 | q3 |
 | conversions.swift:90:7:90:7 | q3 | conversions.swift:90:7:90:7 | SSA def(q3) |
 | conversions.swift:90:11:90:11 | SSA def(r3) | conversions.swift:92:12:92:12 | r3 |
 | conversions.swift:90:11:90:11 | r3 | conversions.swift:90:11:90:11 | SSA def(r3) |
-| conversions.swift:90:17:90:66 | call to quotientAndRemainder(dividingBy:) | conversions.swift:90:6:90:13 | (...) |
+| conversions.swift:90:17:90:75 | call to quotientAndRemainder(dividingBy:) | conversions.swift:90:6:90:13 | (...) |
 | conversions.swift:94:6:94:6 | SSA def(pair1) | conversions.swift:95:12:95:12 | pair1 |
 | conversions.swift:94:6:94:6 | pair1 | conversions.swift:94:6:94:6 | SSA def(pair1) |
 | conversions.swift:94:14:94:44 | call to addingReportingOverflow(_:) | conversions.swift:94:6:94:6 | pair1 |
@@ -93,38 +93,38 @@
 | conversions.swift:95:12:95:12 | pair1 | conversions.swift:96:12:96:12 | pair1 |
 | conversions.swift:98:6:98:6 | SSA def(pair2) | conversions.swift:99:12:99:12 | pair2 |
 | conversions.swift:98:6:98:6 | pair2 | conversions.swift:98:6:98:6 | SSA def(pair2) |
-| conversions.swift:98:14:98:51 | call to addingReportingOverflow(_:) | conversions.swift:98:6:98:6 | pair2 |
+| conversions.swift:98:14:98:60 | call to addingReportingOverflow(_:) | conversions.swift:98:6:98:6 | pair2 |
 | conversions.swift:99:12:99:12 | [post] pair2 | conversions.swift:100:12:100:12 | pair2 |
 | conversions.swift:99:12:99:12 | pair2 | conversions.swift:100:12:100:12 | pair2 |
 | conversions.swift:102:6:102:6 | SSA def(pair3) | conversions.swift:103:12:103:12 | pair3 |
 | conversions.swift:102:6:102:6 | pair3 | conversions.swift:102:6:102:6 | SSA def(pair3) |
-| conversions.swift:102:14:102:54 | call to addingReportingOverflow(_:) | conversions.swift:102:6:102:6 | pair3 |
+| conversions.swift:102:14:102:63 | call to addingReportingOverflow(_:) | conversions.swift:102:6:102:6 | pair3 |
 | conversions.swift:103:12:103:12 | [post] pair3 | conversions.swift:104:12:104:12 | pair3 |
 | conversions.swift:103:12:103:12 | pair3 | conversions.swift:104:12:104:12 | pair3 |
-| conversions.swift:109:18:109:30 | call to sourceFloat() | conversions.swift:109:12:109:31 | call to Float.init(_:) |
-| conversions.swift:111:19:111:31 | call to sourceFloat() | conversions.swift:111:12:111:32 | call to String.init(_:) |
-| conversions.swift:112:12:112:32 | call to String.init(_:) | conversions.swift:112:12:112:34 | .utf8 |
-| conversions.swift:112:19:112:31 | call to sourceFloat() | conversions.swift:112:12:112:32 | call to String.init(_:) |
-| conversions.swift:113:19:113:33 | call to sourceFloat80() | conversions.swift:113:12:113:34 | call to String.init(_:) |
-| conversions.swift:114:12:114:34 | call to String.init(_:) | conversions.swift:114:12:114:36 | .utf8 |
-| conversions.swift:114:19:114:33 | call to sourceFloat80() | conversions.swift:114:12:114:34 | call to String.init(_:) |
-| conversions.swift:115:19:115:32 | call to sourceDouble() | conversions.swift:115:12:115:33 | call to String.init(_:) |
-| conversions.swift:116:12:116:33 | call to String.init(_:) | conversions.swift:116:12:116:35 | .utf8 |
-| conversions.swift:116:19:116:32 | call to sourceDouble() | conversions.swift:116:12:116:33 | call to String.init(_:) |
-| conversions.swift:118:18:118:30 | call to sourceFloat() | conversions.swift:118:12:118:31 | call to Float.init(_:) |
-| conversions.swift:119:41:119:51 | call to sourceInt() | conversions.swift:119:12:119:70 | call to Float.init(sign:exponent:significand:) |
-| conversions.swift:119:67:119:67 | 0.0 | conversions.swift:119:12:119:70 | call to Float.init(sign:exponent:significand:) |
-| conversions.swift:120:41:120:41 | 0 | conversions.swift:120:12:120:70 | call to Float.init(sign:exponent:significand:) |
-| conversions.swift:120:57:120:69 | call to sourceFloat() | conversions.swift:120:12:120:70 | call to Float.init(sign:exponent:significand:) |
-| conversions.swift:121:54:121:54 | 0.0 | conversions.swift:121:12:121:57 | call to Float.init(signOf:magnitudeOf:) |
-| conversions.swift:122:44:122:56 | call to sourceFloat() | conversions.swift:122:12:122:57 | call to Float.init(signOf:magnitudeOf:) |
-| conversions.swift:124:12:124:24 | call to sourceFloat() | conversions.swift:124:12:124:26 | .exponent |
-| conversions.swift:125:12:125:24 | call to sourceFloat() | conversions.swift:125:12:125:26 | .significand |
-| conversions.swift:126:12:126:26 | call to sourceFloat80() | conversions.swift:126:12:126:28 | .exponent |
-| conversions.swift:127:12:127:26 | call to sourceFloat80() | conversions.swift:127:12:127:28 | .significand |
-| conversions.swift:128:12:128:25 | call to sourceDouble() | conversions.swift:128:12:128:27 | .exponent |
-| conversions.swift:129:12:129:25 | call to sourceDouble() | conversions.swift:129:12:129:27 | .significand |
-| conversions.swift:136:19:136:32 | call to sourceString() | conversions.swift:136:12:136:33 | call to String.init(_:) |
+| conversions.swift:109:18:109:39 | call to sourceFloat(_:) | conversions.swift:109:12:109:40 | call to Float.init(_:) |
+| conversions.swift:111:19:111:40 | call to sourceFloat(_:) | conversions.swift:111:12:111:41 | call to String.init(_:) |
+| conversions.swift:112:12:112:41 | call to String.init(_:) | conversions.swift:112:12:112:43 | .utf8 |
+| conversions.swift:112:19:112:40 | call to sourceFloat(_:) | conversions.swift:112:12:112:41 | call to String.init(_:) |
+| conversions.swift:113:19:113:42 | call to sourceFloat80(_:) | conversions.swift:113:12:113:43 | call to String.init(_:) |
+| conversions.swift:114:12:114:43 | call to String.init(_:) | conversions.swift:114:12:114:45 | .utf8 |
+| conversions.swift:114:19:114:42 | call to sourceFloat80(_:) | conversions.swift:114:12:114:43 | call to String.init(_:) |
+| conversions.swift:115:19:115:41 | call to sourceDouble(_:) | conversions.swift:115:12:115:42 | call to String.init(_:) |
+| conversions.swift:116:12:116:42 | call to String.init(_:) | conversions.swift:116:12:116:44 | .utf8 |
+| conversions.swift:116:19:116:41 | call to sourceDouble(_:) | conversions.swift:116:12:116:42 | call to String.init(_:) |
+| conversions.swift:118:18:118:39 | call to sourceFloat(_:) | conversions.swift:118:12:118:40 | call to Float.init(_:) |
+| conversions.swift:119:41:119:60 | call to sourceInt(_:) | conversions.swift:119:12:119:79 | call to Float.init(sign:exponent:significand:) |
+| conversions.swift:119:76:119:76 | 0.0 | conversions.swift:119:12:119:79 | call to Float.init(sign:exponent:significand:) |
+| conversions.swift:120:41:120:41 | 0 | conversions.swift:120:12:120:79 | call to Float.init(sign:exponent:significand:) |
+| conversions.swift:120:57:120:78 | call to sourceFloat(_:) | conversions.swift:120:12:120:79 | call to Float.init(sign:exponent:significand:) |
+| conversions.swift:121:63:121:63 | 0.0 | conversions.swift:121:12:121:66 | call to Float.init(signOf:magnitudeOf:) |
+| conversions.swift:122:44:122:65 | call to sourceFloat(_:) | conversions.swift:122:12:122:66 | call to Float.init(signOf:magnitudeOf:) |
+| conversions.swift:124:12:124:33 | call to sourceFloat(_:) | conversions.swift:124:12:124:35 | .exponent |
+| conversions.swift:125:12:125:33 | call to sourceFloat(_:) | conversions.swift:125:12:125:35 | .significand |
+| conversions.swift:126:12:126:35 | call to sourceFloat80(_:) | conversions.swift:126:12:126:37 | .exponent |
+| conversions.swift:127:12:127:35 | call to sourceFloat80(_:) | conversions.swift:127:12:127:37 | .significand |
+| conversions.swift:128:12:128:34 | call to sourceDouble(_:) | conversions.swift:128:12:128:36 | .exponent |
+| conversions.swift:129:12:129:34 | call to sourceDouble(_:) | conversions.swift:129:12:129:36 | .significand |
+| conversions.swift:136:19:136:42 | call to sourceString(_:) | conversions.swift:136:12:136:43 | call to String.init(_:) |
 | conversions.swift:138:6:138:6 | SSA def(ms1) | conversions.swift:139:12:139:12 | ms1 |
 | conversions.swift:138:6:138:6 | ms1 | conversions.swift:138:6:138:6 | SSA def(ms1) |
 | conversions.swift:138:12:138:26 | call to MyString.init(_:) | conversions.swift:138:12:138:27 | ...! |
@@ -140,9 +140,9 @@
 | conversions.swift:141:12:141:12 | ms1 | conversions.swift:142:12:142:12 | ms1 |
 | conversions.swift:144:6:144:6 | SSA def(ms2) | conversions.swift:145:12:145:12 | ms2 |
 | conversions.swift:144:6:144:6 | ms2 | conversions.swift:144:6:144:6 | SSA def(ms2) |
-| conversions.swift:144:12:144:35 | call to MyString.init(_:) | conversions.swift:144:12:144:36 | ...! |
-| conversions.swift:144:12:144:36 | ...! | conversions.swift:144:6:144:6 | ms2 |
-| conversions.swift:144:21:144:34 | call to sourceString() | conversions.swift:144:12:144:35 | call to MyString.init(_:) |
+| conversions.swift:144:12:144:45 | call to MyString.init(_:) | conversions.swift:144:12:144:46 | ...! |
+| conversions.swift:144:12:144:46 | ...! | conversions.swift:144:6:144:6 | ms2 |
+| conversions.swift:144:21:144:44 | call to sourceString(_:) | conversions.swift:144:12:144:45 | call to MyString.init(_:) |
 | conversions.swift:145:12:145:12 | [post] ms2 | conversions.swift:146:12:146:12 | ms2 |
 | conversions.swift:145:12:145:12 | ms2 | conversions.swift:146:12:146:12 | ms2 |
 | conversions.swift:146:12:146:12 | [post] ms2 | conversions.swift:147:12:147:12 | ms2 |
@@ -154,7 +154,7 @@
 | conversions.swift:152:6:152:6 | SSA def(parent) | conversions.swift:153:12:153:12 | parent |
 | conversions.swift:152:6:152:6 | parent | conversions.swift:152:6:152:6 | SSA def(parent) |
 | conversions.swift:152:6:152:15 | ... as ... | conversions.swift:152:6:152:6 | parent |
-| conversions.swift:152:31:152:44 | call to sourceString() | conversions.swift:152:6:152:15 | ... as ... |
+| conversions.swift:152:31:152:54 | call to sourceString(_:) | conversions.swift:152:6:152:15 | ... as ... |
 | conversions.swift:153:12:153:12 | [post] parent | conversions.swift:154:12:154:12 | parent |
 | conversions.swift:153:12:153:12 | parent | conversions.swift:154:12:154:12 | parent |
 | conversions.swift:154:12:154:12 | [post] parent | conversions.swift:156:40:156:40 | parent |
@@ -175,7 +175,7 @@
 | conversions.swift:171:14:171:33 | call to sourceArray(_:) | conversions.swift:171:7:171:7 | arr1 |
 | conversions.swift:172:7:172:7 | SSA def(arr2) | conversions.swift:174:13:174:13 | arr2 |
 | conversions.swift:172:7:172:7 | arr2 | conversions.swift:172:7:172:7 | SSA def(arr2) |
-| conversions.swift:172:14:172:26 | [...] | conversions.swift:172:7:172:7 | arr2 |
+| conversions.swift:172:14:172:33 | [...] | conversions.swift:172:7:172:7 | arr2 |
 | conversions.swift:173:13:173:13 | arr1 | conversions.swift:175:13:175:13 | arr1 |
 | conversions.swift:174:13:174:13 | arr2 | conversions.swift:176:13:176:13 | arr2 |
 | conversions.swift:175:13:175:13 | [post] arr1 | conversions.swift:178:25:178:25 | arr1 |
