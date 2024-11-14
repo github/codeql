@@ -223,7 +223,7 @@ class UnreachableBasicBlock extends BasicBlock {
       // Not accessible from the successful case
       not constSwitchStmt.getMatchingCase().getBasicBlock().getABBSuccessor*() = failingCaseBlock and
       // Blocks dominated by the failing case block are unreachable
-      constSwitchStmt.getAFailingCase().getBasicBlock().bbDominates(this)
+      failingCaseBlock.bbDominates(this)
     )
   }
 }
