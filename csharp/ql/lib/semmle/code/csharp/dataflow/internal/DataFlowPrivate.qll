@@ -1158,7 +1158,8 @@ private module Cached {
   cached
   newtype TContentSet =
     TSingletonContent(Content c) { not c instanceof PropertyContent } or
-    TPropertyContentSet(Property p) { p.isUnboundDeclaration() }
+    TPropertyContentSet(Property p) { p.isUnboundDeclaration() } or
+    TVariableCaptureContentSet()
 
   cached
   newtype TContentApprox =
@@ -2952,13 +2953,9 @@ Content getLambdaArgumentContent(LambdaCallKind kind, ArgumentPosition pos) {
   exists(kind)
 }
 
-predicate isLambdaInstanceParameter(ParameterNode p) {
-  exists(DataFlowCallable c, ParameterPosition ppos |
-    lambdaCreation(_, _, c) and
-    isParameterNode(p, c, ppos) and
-    ppos.isDelegateSelf()
-  )
-}
+predicate isLambdaInstanceParameter(ParameterNode p) { p instanceof DelegateSelfReferenceNode }
+
+predicate isVariableCaptureContentSet(ContentSet c) { c.isCapturedVariable() }
 
 private predicate isLocalFunctionCallReceiver(
   LocalFunctionCall call, LocalFunctionAccess receiver, LocalFunction f

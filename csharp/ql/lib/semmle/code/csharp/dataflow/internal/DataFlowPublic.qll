@@ -323,6 +323,8 @@ class ContentSet extends TContentSet {
    */
   predicate isProperty(Property p) { this = TPropertyContentSet(p) }
 
+  predicate isCapturedVariable() { this = TVariableCaptureContentSet() }
+
   /**
    * Holds if this content set represents the `i`th argument of a delegate call.
    */
@@ -361,6 +363,9 @@ class ContentSet extends TContentSet {
       or
       overridesOrImplementsSourceDecl(p1, p2)
     )
+    or
+    this.isCapturedVariable() and
+    result instanceof CapturedVariableContent
   }
 
   /** Gets a textual representation of this content set. */
