@@ -81,7 +81,9 @@ private module Cached {
     TMapKeyContentApprox() or
     TMapValueContentApprox() or
     TCapturedVariableContentApprox(CapturedVariable v) or
-    TSyntheticFieldApproxContent()
+    TSyntheticFieldApproxContent() or
+    TLambdaReturnApprox(Method m) or
+    TLambdaArgumentApprox(Method m, ArgumentPosition pos)
 }
 
 import Cached

@@ -774,6 +774,13 @@ ContentApprox getContentApprox(Content c) {
   )
   or
   c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
+  or
+  exists(Method m |
+    c = TLambdaReturn(m) and result = TLambdaReturnApprox(m))
+  or
+  exists(Method m, ArgumentPosition pos |
+    c = TLambdaArgument(m, pos) and result = TLambdaArgumentApprox(m, pos))
+
 }
 
 /**
