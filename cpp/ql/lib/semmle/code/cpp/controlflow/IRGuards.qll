@@ -73,7 +73,7 @@ private class CompareValueNumber extends ValueNumber {
 
   /**
    * Gets the left and right operands of a `CompareInstruction` that
-   * belongs to this value number.
+   * belong to this value number.
    */
   predicate hasOperands(Operand left, Operand right) {
     left = cmp.getLeftOperand() and
