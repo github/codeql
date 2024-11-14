@@ -28,7 +28,7 @@ void test3(int *x, bool b) {
 }
 
 bool test4(char *x, char *y) {
-  if (!x || strcmp(x, y)) { // GOOD [FALSE POSITIVE]: x is being accessed in the guard and return value depends on x
+  if (!x || strcmp(x, y)) { // GOOD: x is being accessed in the guard and return value depends on x
     free(x);
     return true;
   }
@@ -110,6 +110,6 @@ void test13(char *x) {
 void inspect(char *x);
 
 void test14(char *x) {
-  if (x != nullptr) // GOOD [FALSE POSITIVE]: x might be accessed in the first operand of the comma operator
+  if (x != nullptr) // GOOD: x might be accessed in the first operand of the comma operator
     inspect(x), free(x);
 }
