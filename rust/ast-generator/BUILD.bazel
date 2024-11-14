@@ -1,5 +1,5 @@
-load("@tree_sitter_extractors_deps//:defs.bzl", "aliases", "all_crate_deps")
 load("//misc/bazel:rust.bzl", "codeql_rust_binary")
+load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps")
 
 codeql_rust_binary(
     name = "ast-generator",
@@ -14,8 +14,4 @@ codeql_rust_binary(
     ),
 )
 
-filegroup(
-    name = "manifest",
-    srcs = ["Cargo.toml"],
-    visibility = ["//rust:__subpackages__"],
-)
+exports_files(["Cargo.toml"])

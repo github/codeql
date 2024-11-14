@@ -716,7 +716,7 @@ module TaintTracking {
 
   pragma[nomagic]
   private DataFlow::MethodCallNode matchMethodCall() {
-    result.getMethodName() = "match" and
+    result.getMethodName() = ["match", "matchAll"] and
     exists(DataFlow::AnalyzedNode analyzed |
       pragma[only_bind_into](analyzed) = result.getArgument(0).analyze() and
       analyzed.getAType() = TTRegExp()
@@ -904,7 +904,7 @@ module TaintTracking {
      */
     private ControlFlowNode getACaptureSetter(DataFlow::Node input) {
       exists(DataFlow::MethodCallNode call | result = call.asExpr() |
-        call.getMethodName() = ["search", "replace", "replaceAll", "match"] and
+        call.getMethodName() = ["search", "replace", "replaceAll", "match", "matchAll"] and
         input = call.getReceiver()
         or
         call.getMethodName() = ["test", "exec"] and input = call.getArgument(0)
@@ -985,7 +985,7 @@ module TaintTracking {
         or
         // u.match(/re/) or u.match("re")
         base = expr and
-        m = "match" and
+        m = ["match", "matchAll"] and
         RegExp::isGenericRegExpSanitizer(RegExp::getRegExpFromNode(firstArg.flow()),
           sanitizedOutcome)
       )
