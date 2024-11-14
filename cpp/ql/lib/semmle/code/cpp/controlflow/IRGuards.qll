@@ -118,11 +118,7 @@ private class ScrutineeValueNumber extends ValueNumber {
   /** Gets an expression that belongs to this value number. */
   Operand getExpressionOperand() { result = switch.getExpressionOperand() }
 
-  IRType getResultIRType() { result = switch.getExpression().getResultIRType() }
-
   Instruction getSuccessor(CaseEdge kind) { result = switch.getSuccessor(kind) }
-
-  predicate isGLValue() { switch.getExpression().isGLValue() } // Is this ever true?
 }
 
 /**
