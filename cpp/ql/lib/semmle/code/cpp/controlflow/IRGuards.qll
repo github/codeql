@@ -923,6 +923,55 @@ private predicate simple_comparison_eq(
   value.(BooleanValue).getValue() = false
 }
 
+/**
+ * Holds if `op` is an operand that is eventually used in a unary comparison
+ * with a constant.
+ */
+private predicate isRelevantUnaryComparisonOperand(Operand op) {
+  // Base case: `op` is an operand of a `CompareEQInstruction` or `CompareNEInstruction`,
+  // and the other operand is a constant.
+  exists(CompareInstruction eq, Instruction instr |
+    eq.hasOperands(op, instr.getAUse()) and
+    exists(int_value(instr))
+  |
+    eq instanceof CompareEQInstruction
+    or
+    eq instanceof CompareNEInstruction
+  )
+  or
+  // C doesn't have int-to-bool conversions, so `if(x)` will just generate:
+  // r2_1(glval<int>) = VariableAddress[x]
+  // r2_2(int)        = Load[x]                : &:r2_1, m1_6
+  // v2_3(void)       = ConditionalBranch      : r2_2
+  exists(ConditionalBranchInstruction branch | branch.getConditionOperand() = op)
+  or
+  // If `!x` is a relevant unary comparison then so is `x`.
+  exists(LogicalNotInstruction logicalNot |
+    isRelevantUnaryComparisonOperand(unique( | | logicalNot.getAUse())) and
+    logicalNot.getUnaryOperand() = op
+  )
+  or
+  // If `y` is a relevant unary comparison and `y = x` then so is `x`.
+  not op.isDefinitionInexact() and
+  exists(CopyInstruction copy |
+    isRelevantUnaryComparisonOperand(unique( | | copy.getAUse())) and
+    op = copy.getSourceValueOperand()
+  )
+  or
+  // If phi(x1, x2) is a relevant unary comparison then so is `x1` and `x2`.
+  not op.isDefinitionInexact() and
+  exists(PhiInstruction phi |
+    isRelevantUnaryComparisonOperand(unique( | | phi.getAUse())) and
+    op = phi.getAnInputOperand()
+  )
+  or
+  // If `__builtin_expect(x)` is a relevant unary comparison then so is `x`.
+  exists(BuiltinExpectCallInstruction call |
+    isRelevantUnaryComparisonOperand(unique( | | call.getAUse())) and
+    op = call.getConditionOperand()
+  )
+}
+
 /** Rearrange various simple comparisons into `op == k` form. */
 private predicate unary_simple_comparison_eq(
   ValueNumber test, Operand op, int k, boolean inNonZeroCase, AbstractValue value
@@ -936,41 +985,8 @@ private predicate unary_simple_comparison_eq(
     inNonZeroCase = false
   )
   or
-  // Any instruction with an integral type could potentially be part of a
-  // check for nullness when used in a guard. So we include all integral
-  // typed instructions here. However, since some of these instructions are
-  // already included as guards in other cases, we exclude those here.
-  // These are instructions that compute a binary equality or inequality
-  // relation. For example, the following:
-  // ```cpp
-  // if(a == b + 42) { ... }
-  // ```
-  // generates the following IR:
-  // ```
-  // r1(glval<int>) = VariableAddress[a]     :
-  // r2(int)        = Load[a]                : &:r1, m1
-  // r3(glval<int>) = VariableAddress[b]     :
-  // r4(int)        = Load[b]                : &:r3, m2
-  // r5(int)        = Constant[42]           :
-  // r6(int)        = Add                    : r4, r5
-  // r7(bool)       = CompareEQ              : r2, r6
-  // v1(void)       = ConditionalBranch      : r7
-  // ```
-  // and since `r7` is an integral typed instruction this predicate could
-  // include a case for when `r7` evaluates to true (in which case we would
-  // infer that `r6` was non-zero, and a case for when `r7` evaluates to false
-  // (in which case we would infer that `r6` was zero).
-  // However, since `a == b + 42` is already supported when reasoning about
-  // binary equalities we exclude those cases here.
-  not test.isGLValue() and
-  not simple_comparison_eq(test, _, _, _, _) and
-  not simple_comparison_lt(test, _, _, _) and
-  op = test.getExpressionOperand() and
-  (
-    test.getResultIRType() instanceof IRAddressType or
-    test.getResultIRType() instanceof IRIntegerType or
-    test.getResultIRType() instanceof IRBooleanType
-  ) and
+  isRelevantUnaryComparisonOperand(op) and
+  op.getDef() = test.getAnInstruction() and
   (
     k = 1 and
     value.(BooleanValue).getValue() = true and
@@ -987,10 +1003,12 @@ private class BuiltinExpectCallInstruction extends CallInstruction {
   BuiltinExpectCallInstruction() { this.getStaticCallTarget().hasName("__builtin_expect") }
 
   /** Gets the condition of this call. */
-  Instruction getCondition() {
+  Instruction getCondition() { result = this.getConditionOperand().getDef() }
+
+  Operand getConditionOperand() {
     // The first parameter of `__builtin_expect` has type `long`. So we skip
     // the conversion when inferring guards.
-    result = this.getArgument(0).(ConvertInstruction).getUnary()
+    result = this.getArgument(0).(ConvertInstruction).getUnaryOperand()
   }
 }
 
