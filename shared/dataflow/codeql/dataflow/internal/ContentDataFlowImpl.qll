@@ -216,7 +216,7 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
 
     private predicate readStep(Node node1, State state1, ContentSet c, Node node2, ReadState state2) {
       exists(int size |
-        readSet(node1, c, node2) and
+        readSet(any(NodeEx n1 | n1.asNode() = node1), c, any(NodeEx n2 | n2.asNode() = node2)) and // todo
         ContentConfig::isRelevantContent(c) and
         state2.decode(size + 1, true)
       |

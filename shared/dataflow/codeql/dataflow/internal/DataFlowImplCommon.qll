@@ -891,6 +891,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       or
       result = this.asLambdaMallocNode().toString() + " [LambdaMalloc]"
       or
+      result = this.asLambdaArgsNode().toString() + " [LambdaArgs]"
+      or
       result = this.asLambdaInstancePostUpdateNode().toString() + " [LambdaPostUpdate]"
       or
       exists(DataFlowCall synthcall, ArgumentPosition apos, boolean isPost |
@@ -914,6 +916,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     Node asLambdaMallocNode() { this = TNodeLambdaMalloc(result) }
 
+    Node asLambdaArgsNode() { this = TNodeLambdaArgs(result) }
+
     predicate isLambdaArgNode(DataFlowCall synthcall, ArgumentPosition apos, boolean isPost) {
       this = TNodeLambdaArg(synthcall, apos, isPost)
     }
@@ -928,6 +932,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       this = TNodeLambdaInstancePostUpdate(result)
       or
       this = TNodeLambdaMalloc(result)
+      or
+      this = TNodeLambdaArgs(result)
       or
       exists(DataFlowCall synthcall |
         this = TNodeLambdaArg(synthcall, _, _) and
@@ -954,6 +960,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       nodeDataFlowType(this.asLambdaInstancePostUpdateNode(), result)
       or
       nodeDataFlowType(this.asLambdaMallocNode(), result)
+      or
+      nodeDataFlowType(this.asLambdaArgsNode(), result)
       or
       exists(
         DataFlowCall synthcall, ArgumentPosition apos, DataFlowCallable c, ParameterNode p,
@@ -1117,9 +1125,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    predicate hiddenNode(Node n) {
-      // todo: add all lambda nodes here after end debugging
-      nodeIsHidden(n)
+    predicate hiddenNode(NodeEx n) {
+      nodeIsHidden(n.asNode()) or
+      n.isImplicitReadNode(_) or
+      exists(n.asLambdaInstancePostUpdateNode()) or
+      exists(n.asLambdaMallocNode()) or
+      exists(n.asLambdaArgsNode()) or
+      n.isLambdaArgNode(_, _, _) or
+      hiddenNode(any(NodeEx p | n.asParamReturnNode() = p.asNode()))
     }
 
     cached
@@ -1788,10 +1801,15 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       or
       //read step from malloc to args
       //lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c, DataFlowCall synthCall)
-      exists(DataFlowCall synthcall, LambdaCallKind k, ArgumentPosition apos |
-        lambdaCreation(node1.asLambdaMallocNode(), k, _, synthcall) and
-        node2.isLambdaArgNode(synthcall, apos, false) and
+      exists(Node lambda, DataFlowCall synthcall, LambdaCallKind k, ArgumentPosition apos |
+        lambdaCreation(lambda, k, _, synthcall) and
+        lambda = node1.asLambdaArgsNode() and
         c.getAReadContent() = getLambdaArgumentContent(k, apos)
+      |
+        node2.isLambdaArgNode(synthcall, apos, false)
+        or
+        node2.asLambdaMallocNode() = lambda and
+        node2.(ArgNodeEx).argumentOf(_, apos)
       )
     }
 
@@ -2030,12 +2048,13 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       } or
       TNodeLambdaInstancePostUpdate(ParameterNode pre) { isLambdaInstanceParameter(pre) } or
       TNodeLambdaMalloc(Node lambda) { lambdaCreation(lambda, _, _, _) } or
+      TNodeLambdaArgs(Node lambda) { lambdaCreation(lambda, _, _, _) } or
       TNodeLambdaArg(DataFlowCall synthcall, ArgumentPosition apos, Boolean ispost) {
         exists(DataFlowCallable c, ParameterNode p, ParameterPosition ppos |
           lambdaCreation(_, _, c, synthcall) and
           isParameterNode(p, c, ppos) and
-          not isLambdaInstanceParameter(p) and
           parameterMatch(ppos, apos) and
+          not isLambdaInstanceParameter(p) and
           exists(ispost)
         )
       }
@@ -2077,7 +2096,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         model = ""
       )
       or
-      LambdaFlow::lambdaFlowsToPostUpdate(node2.asLambdaMallocNode(), node1.asNode()) and
+      LambdaFlow::lambdaFlowsToPostUpdate(node2.asLambdaArgsNode(), node1.asNode()) and
       model = ""
     }
 

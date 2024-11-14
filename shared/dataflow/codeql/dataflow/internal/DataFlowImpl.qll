@@ -477,14 +477,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       hasReadStep(c)
     }
 
-    // pragma[nomagic]
-    // private predicate viableReturnPosOutEx(DataFlowCall call, ReturnPosition pos, NodeEx out) {
-    //   viableReturnPosOut(call, pos, out.asNode())
-    // }
-    // pragma[nomagic]
-    // private predicate viableParamArgEx(DataFlowCall call, ParamNodeEx p, ArgNodeEx arg) {
-    //   viableParamArg(call, p.asNode(), arg.asNode())
-    // }
     /**
      * Holds if field flow should be used for the given configuration.
      */
@@ -2896,15 +2888,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             predicate isHidden() {
               not Config::includeHiddenNodes() and
-              (
-                hiddenNode(this.getNodeEx().asNode()) and
-                not this.isSource() and
-                not this instanceof PathNodeSink
-                or
-                this.getNodeEx() instanceof TNodeImplicitRead
-                or
-                hiddenNode(this.getNodeEx().asParamReturnNode())
-              )
+              hiddenNode(this.getNodeEx()) and
+              not this.isSource() and
+              not this instanceof PathNodeSink
             }
 
             /** Gets a textual representation of this element. */
