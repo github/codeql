@@ -20,7 +20,7 @@ void test2(int *x) {
 }
 
 void test3(int *x, bool b) {
-  if (x) { // GOOD [FALSE POSITIVE]: x is being accessed in the body of the if
+  if (x) { // GOOD: x is being accessed in the body of the if
     if (b)
       *x = 42;
     free(x);
@@ -95,7 +95,7 @@ void test11(char *x) {
 }
 
 bool test12(char *x) {
-  if (!x) // GOOD [FALSE POSITIVE]: return value depends on x
+  if (!x) // GOOD: return value depends on x
     return false;
 
   free(x);
