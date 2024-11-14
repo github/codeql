@@ -450,13 +450,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     bindingset[c]
     private predicate expectsContentEx(NodeEx n, Content c) {
       exists(ContentSet cs |
-        expectsContentCached(n.asNode(), cs) and
+        expectsContentCached(n, cs) and
         pragma[only_bind_out](c) = pragma[only_bind_into](cs).getAReadContent()
       )
     }
 
     pragma[nomagic]
-    private predicate notExpectsContent(NodeEx n) { not expectsContentCached(n.asNode(), _) }
+    private predicate notExpectsContent(NodeEx n) { not expectsContentCached(n, _) }
 
     pragma[nomagic]
     private predicate storeExUnrestricted(
@@ -2618,7 +2618,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               (
                 castNode(this.asNode()) or
                 clearsContentCached(this.asNode(), _) or
-                expectsContentCached(this.asNode(), _) or
+                expectsContentCached(this, _) or
                 neverSkipInPathGraph(this.asNode()) or
                 Config::neverSkip(this.asNode())
               )

@@ -893,6 +893,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       or
       result = this.asLambdaArgsNode().toString() + " [LambdaArgs]"
       or
+      result = this.asLambdaCaptureNode().toString() + " [LambdaCapture]"
+      or
       result = this.asLambdaInstancePostUpdateNode().toString() + " [LambdaPostUpdate]"
       or
       exists(DataFlowCall synthCall, ArgumentPosition apos, boolean isPost |
@@ -918,6 +920,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     Node asLambdaArgsNode() { this = TNodeLambdaArgs(result) }
 
+    Node asLambdaCaptureNode() { this = TNodeLambdaCapture(result) }
+
     predicate isLambdaArgNode(DataFlowCall synthCall, ArgumentPosition apos, boolean isPost) {
       this = TNodeLambdaArg(synthCall, apos, isPost)
     }
@@ -934,6 +938,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       this = TNodeLambdaMalloc(result)
       or
       this = TNodeLambdaArgs(result)
+      or
+      this = TNodeLambdaCapture(result)
+      or
+      this = TNodeLambdaCapture(result)
       or
       exists(DataFlowCall synthCall |
         this = TNodeLambdaArg(synthCall, _, _) and
@@ -962,6 +970,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       nodeDataFlowType(this.asLambdaMallocNode(), result)
       or
       nodeDataFlowType(this.asLambdaArgsNode(), result)
+      or
+      nodeDataFlowType(this.asLambdaCaptureNode(), result)
       or
       exists(
         DataFlowCall synthCall, ArgumentPosition apos, DataFlowCallable c, ParameterNode p,
@@ -1112,7 +1122,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate clearsContentCached(Node n, ContentSet c) { clearsContent(n, c) }
 
     cached
-    predicate expectsContentCached(Node n, ContentSet c) { expectsContent(n, c) }
+    predicate expectsContentCached(NodeEx n, ContentSet c) {
+      expectsContent(n.asNode(), c)
+      or
+      exists(n.asLambdaCaptureNode()) and
+      isVariableCaptureContentSet(c)
+    }
 
     cached
     predicate isUnreachableInCallCached(NodeRegion nr, DataFlowCall call) {
@@ -1133,6 +1148,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       exists(n.asLambdaInstancePostUpdateNode()) or
       exists(n.asLambdaMallocNode()) or
       exists(n.asLambdaArgsNode()) or
+      exists(n.asLambdaCaptureNode()) or
       n.isLambdaArgNode(_, _, _) or
       hiddenNode(any(NodeEx p | n.asParamReturnNode() = p.asNode()))
     }
@@ -1554,7 +1570,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
               argumentValueFlowsThroughCand(arg, node, false)
             )
           ) and
-          not expectsContentCached(node, _)
+          not expectsContent(node, _)
         }
 
         pragma[nomagic]
@@ -2064,10 +2080,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           lambdaCreation(_, _, c, synthCall) and
           isParameterNode(p, c, ppos) and
           parameterMatch(ppos, apos) and
-          not isLambdaInstanceParameter(p) and
+          // not isLambdaInstanceParameter(p) and
           exists(ispost)
         )
-      }
+      } or
+      TNodeLambdaCapture(Node receiver) { lambdaCall(_, _, receiver) }
 
     /*
      * foo(() => "taint"); // taint --store(ReturnValue)--> this (post-update) [ReturnValue]
@@ -2107,6 +2124,17 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       )
       or
       LambdaFlow::lambdaFlowsToPostUpdate(node2.asLambdaArgsNode(), node1.asNode()) and
+      model = ""
+      or
+      // When data is stored in a captured variable content and reaches a lambda call,
+      // we need it to propagate back out to the lambda. We do this by adding flow
+      // from the lambda receiver to the post-update of the lambda receiver, but _only_
+      // for captured variable content. The latter restriction is enforced by going via
+      // an intermediate `expectsContent` node.
+      node1.asNode() = node2.asLambdaCaptureNode() and
+      model = ""
+      or
+      node2.asNode().(PostUpdateNode).getPreUpdateNode() = node1.asLambdaCaptureNode() and
       model = ""
     }
 

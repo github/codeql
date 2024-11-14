@@ -1051,8 +1051,8 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
      * since normal use-use flow for `fn` does not take the overwrite at (2) into account.
      */
 
-    storeStepClosure(_, v, node, true)
-    or
+    // storeStepClosure(_, v, node, true)
+    // or
     exists(BasicBlock bb, int i |
       captureWrite(v, bb, i, false, _) and
       node = TSynthThisQualifier(bb, i, false)

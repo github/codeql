@@ -352,6 +352,8 @@ signature module InputSig<LocationSig Location> {
   Content getLambdaArgumentContent(LambdaCallKind kind, ArgumentPosition pos);
 
   predicate isLambdaInstanceParameter(ParameterNode p);
+
+  predicate isVariableCaptureContentSet(ContentSet c);
 }
 
 module Configs<LocationSig Location, InputSig<Location> Lang> {
