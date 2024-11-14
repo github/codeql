@@ -558,7 +558,7 @@ void test_scanf_compared_right_away() {
   int i;
   bool success = scanf("%d", &i) == 1;
   if(success) {
-    use(i); // GOOD [FALSE POSITIVE]
+    use(i); // GOOD
   }
 }
 
