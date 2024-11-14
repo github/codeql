@@ -2362,7 +2362,7 @@ private module Qualifier {
     }
 
     /** Holds if this member access is a `?.` safe qualified expression in Kotlin. */
-    predicate safeAccess() { ktSafeAccess(this) }
+    predicate isSafeAccess() { ktSafeAccess(this) }
   }
 
   /**
