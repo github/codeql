@@ -1797,7 +1797,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         or
         exists(ArgumentPosition apos |
           c.getAReadContent() = getLambdaArgumentContent(k, apos) and
-          node2.asNode().(PostUpdateNode).getPreUpdateNode().(ArgNode).argumentOf(call, apos)
+          node2.asNode().(PostUpdateNode).getPreUpdateNode().(ArgNode).argumentOf(call, apos) and
+          // we should never read from the lambda itself
+          not any(ArgNodeEx arg | exists(arg.asLambdaMallocNode())).argumentOf(_, apos)
         )
       )
       or
