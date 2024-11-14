@@ -757,6 +757,12 @@ class ContentApprox extends TContentApprox {
     or
     this = TSyntheticFieldApproxContent() and
     result = "approximated synthetic field"
+    or
+    this = TLambdaReturnContentApprox(_) and
+    result = "<lambda-return>"
+    or
+    this = TLambdaArgumentApprox(_, _) and
+    result = "<lambda-argument>"
   }
 }
 

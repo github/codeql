@@ -378,7 +378,7 @@ class LambdaArgumentContent extends Content, TLambdaArgumentContent {
 
   override DataFlowType getType() { result = getErasedRepr(m.getParameter(pos).getType()) }
 
-  override string toString() { result = "<lambda-argument>" + pos.toString() }
+  override string toString() { result = "<lambda-argument> " + pos.toString() }
 }
 
 /**
