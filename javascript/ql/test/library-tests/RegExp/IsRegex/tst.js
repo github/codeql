@@ -6,6 +6,6 @@ function detectRegexViaSplice(string) {
 };
 
 function detectRegexViaToSpliced(string) {
-    let found = getMyThing().search('regex'); // NOT OK -- Should be marked as regular expression but it is not.
+    let found = getMyThing().search('regex'); // NOT OK
     arr.toSpliced(found, 1);
 };

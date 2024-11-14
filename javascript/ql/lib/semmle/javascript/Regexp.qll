@@ -972,7 +972,7 @@ private predicate isUsedAsNumber(DataFlow::LocalSourceNode value) {
   or
   exists(DataFlow::CallNode call |
     call.getCalleeName() =
-      ["substring", "substr", "slice", "splice", "charAt", "charCodeAt", "codePointAt"] and
+      ["substring", "substr", "slice", "splice", "charAt", "charCodeAt", "codePointAt", "toSpliced"] and
     value.flowsTo(call.getAnArgument())
   )
 }
