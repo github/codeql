@@ -68,7 +68,7 @@ private class CompareValueNumber extends ValueNumber {
 
   CompareValueNumber() { cmp = this.getAnInstruction() }
 
-  /** Gets an `CompareInstruction` belonging to this value number. */
+  /** Gets a `CompareInstruction` belonging to this value number. */
   CompareInstruction getCompareInstruction() { result = cmp }
 
   /**
