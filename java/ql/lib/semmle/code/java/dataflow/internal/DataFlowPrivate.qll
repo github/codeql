@@ -533,7 +533,9 @@ class LambdaSynthCall extends DataFlowCall, TLambdaSynthCall {
 
   LambdaSynthCall() { this = TLambdaSynthCall(node) }
 
-  override DataFlowCallable getEnclosingCallable() { result.asCallable() = node.getEnclosingCallable() }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asCallable() = node.getEnclosingCallable()
+  }
 
   override string toString() { result = "[synthetic] call to " + node }
 
@@ -611,7 +613,9 @@ predicate lambdaCreationHelper(Node creation, LambdaCallKind kind, DataFlowCalla
 }
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c, DataFlowCall synthCall) {
+predicate lambdaCreation(
+  Node creation, LambdaCallKind kind, DataFlowCallable c, DataFlowCall synthCall
+) {
   synthCall = TLambdaSynthCall(creation) and
   lambdaCreationHelper(creation, kind, c)
 }
@@ -775,12 +779,11 @@ ContentApprox getContentApprox(Content c) {
   or
   c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
   or
-  exists(Method m |
-    c = TLambdaReturn(m) and result = TLambdaReturnApprox(m))
+  exists(Method m | c = TLambdaReturnContent(m) and result = TLambdaReturnContentApprox(m))
   or
   exists(Method m, ArgumentPosition pos |
-    c = TLambdaArgument(m, pos) and result = TLambdaArgumentApprox(m, pos))
-
+    c = TLambdaArgumentContent(m, pos) and result = TLambdaArgumentApprox(m, pos)
+  )
 }
 
 /**
@@ -794,11 +797,11 @@ predicate containerContent(ContentSet c) {
 }
 
 Content getLambdaReturnContent(LambdaCallKind kind, ReturnKind k) {
-  result = TLambdaReturn(kind) and exists(k)
+  result = TLambdaReturnContent(kind) and exists(k)
 }
 
 Content getLambdaArgumentContent(LambdaCallKind kind, ArgumentPosition pos) {
-  result = TLambdaArgument(kind, pos)
+  result = TLambdaArgumentContent(kind, pos)
 }
 
 predicate isLambdaInstanceParameter(ParameterNode p) {

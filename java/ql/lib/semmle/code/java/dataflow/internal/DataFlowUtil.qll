@@ -360,31 +360,27 @@ class SyntheticFieldContent extends Content, TSyntheticFieldContent {
   override string toString() { result = s.toString() }
 }
 
-class LambdaReturnContent extends Content, TLambdaReturn {
+class LambdaReturnContent extends Content, TLambdaReturnContent {
   Method m;
 
-  LambdaReturnContent() { this = TLambdaReturn(m) }
+  LambdaReturnContent() { this = TLambdaReturnContent(m) }
 
-  override DataFlowType getType() {
-    result = getErasedRepr(m.getReturnType())
-  }
+  override DataFlowType getType() { result = getErasedRepr(m.getReturnType()) }
 
   override string toString() { result = "<lambda-return>" }
 }
 
-class LambdaArgumentContent extends Content, TLambdaArgument {
+class LambdaArgumentContent extends Content, TLambdaArgumentContent {
   Method m;
   ArgumentPosition pos;
 
-  LambdaArgumentContent() {
-    this = TLambdaArgument(m, pos)
-  }
+  LambdaArgumentContent() { this = TLambdaArgumentContent(m, pos) }
 
-  override DataFlowType getType() {
-    result = getErasedRepr(m.getParameter(pos).getType())
-  }
+  override DataFlowType getType() { result = getErasedRepr(m.getParameter(pos).getType()) }
+
   override string toString() { result = "<lambda-argument>" + pos.toString() }
 }
+
 /**
  * An entity that represents a set of `Content`s.
  *

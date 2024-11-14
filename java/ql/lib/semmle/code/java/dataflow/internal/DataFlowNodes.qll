@@ -70,8 +70,10 @@ private module Cached {
     TMapValueContent() or
     TCapturedVariableContent(CapturedVariable v) or
     TSyntheticFieldContent(SyntheticField s) or
-    TLambdaReturn(Method m) or
-    TLambdaArgument(Method m, ArgumentPosition pos)
+    TLambdaReturnContent(Method m) or
+    TLambdaArgumentContent(Method m, ArgumentPosition pos) {
+      exists(m.getParameter(pos)) or pos = -1
+    }
 
   cached
   newtype TContentApprox =
@@ -82,8 +84,10 @@ private module Cached {
     TMapValueContentApprox() or
     TCapturedVariableContentApprox(CapturedVariable v) or
     TSyntheticFieldApproxContent() or
-    TLambdaReturnApprox(Method m) or
-    TLambdaArgumentApprox(Method m, ArgumentPosition pos)
+    TLambdaReturnContentApprox(Method m) or
+    TLambdaArgumentApprox(Method m, ArgumentPosition pos) {
+      exists(m.getParameter(pos)) or pos = -1
+    }
 }
 
 import Cached
