@@ -106,8 +106,8 @@ private class CompareGEValueNumber extends CompareValueNumber {
 }
 
 /**
- * A value number such that at least one of the instructions is an
- * insruction that is used in a `SwitchInstruction`'s expression.
+ * A value number such that at least one of the instructions provides
+ * the integer value controlling a  `SwitchInstruction`.
  */
 private class ScrutineeValueNumber extends ValueNumber {
   SwitchInstruction switch;
