@@ -1,4 +1,28 @@
 edges
+| rncryptor.swift:47:9:47:69 | call to String.init(_:) | rncryptor.swift:57:27:57:44 | call to getARandomString() | provenance |  |
+| rncryptor.swift:47:9:47:69 | call to String.init(_:) | rncryptor.swift:58:27:58:44 | call to getARandomString() | provenance |  |
+| rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:47:16:47:68 | call to map(_:) | provenance |  |
+| rncryptor.swift:47:16:47:68 | call to map(_:) | rncryptor.swift:47:9:47:69 | call to String.init(_:) | provenance |  |
+| rncryptor.swift:57:22:57:45 | call to Data.init(_:) | rncryptor.swift:62:57:62:57 | myRandomSalt1 | provenance |  |
+| rncryptor.swift:57:22:57:45 | call to Data.init(_:) | rncryptor.swift:67:106:67:106 | myRandomSalt1 | provenance |  |
+| rncryptor.swift:57:22:57:45 | call to Data.init(_:) | rncryptor.swift:69:106:69:106 | myRandomSalt1 | provenance |  |
+| rncryptor.swift:57:22:57:45 | call to Data.init(_:) | rncryptor.swift:70:106:70:106 | myRandomSalt1 | provenance |  |
+| rncryptor.swift:57:22:57:45 | call to Data.init(_:) | rncryptor.swift:72:106:72:106 | myRandomSalt1 | provenance |  |
+| rncryptor.swift:57:22:57:45 | call to Data.init(_:) | rncryptor.swift:74:127:74:127 | myRandomSalt1 | provenance |  |
+| rncryptor.swift:57:22:57:45 | call to Data.init(_:) | rncryptor.swift:76:127:76:127 | myRandomSalt1 | provenance |  |
+| rncryptor.swift:57:22:57:45 | call to Data.init(_:) | rncryptor.swift:77:135:77:135 | myRandomSalt1 | provenance |  |
+| rncryptor.swift:57:22:57:45 | call to Data.init(_:) | rncryptor.swift:79:135:79:135 | myRandomSalt1 | provenance |  |
+| rncryptor.swift:57:27:57:44 | call to getARandomString() | rncryptor.swift:57:22:57:45 | call to Data.init(_:) | provenance |  |
+| rncryptor.swift:58:22:58:45 | call to Data.init(_:) | rncryptor.swift:64:55:64:55 | myRandomSalt2 | provenance |  |
+| rncryptor.swift:58:22:58:45 | call to Data.init(_:) | rncryptor.swift:67:131:67:131 | myRandomSalt2 | provenance |  |
+| rncryptor.swift:58:22:58:45 | call to Data.init(_:) | rncryptor.swift:68:133:68:133 | myRandomSalt2 | provenance |  |
+| rncryptor.swift:58:22:58:45 | call to Data.init(_:) | rncryptor.swift:70:131:70:131 | myRandomSalt2 | provenance |  |
+| rncryptor.swift:58:22:58:45 | call to Data.init(_:) | rncryptor.swift:71:133:71:133 | myRandomSalt2 | provenance |  |
+| rncryptor.swift:58:22:58:45 | call to Data.init(_:) | rncryptor.swift:74:152:74:152 | myRandomSalt2 | provenance |  |
+| rncryptor.swift:58:22:58:45 | call to Data.init(_:) | rncryptor.swift:75:154:75:154 | myRandomSalt2 | provenance |  |
+| rncryptor.swift:58:22:58:45 | call to Data.init(_:) | rncryptor.swift:77:160:77:160 | myRandomSalt2 | provenance |  |
+| rncryptor.swift:58:22:58:45 | call to Data.init(_:) | rncryptor.swift:78:162:78:162 | myRandomSalt2 | provenance |  |
+| rncryptor.swift:58:27:58:44 | call to getARandomString() | rncryptor.swift:58:22:58:45 | call to Data.init(_:) | provenance |  |
 | rncryptor.swift:59:24:59:43 | call to Data.init(_:) | rncryptor.swift:63:57:63:57 | myConstantSalt1 | provenance |  |
 | rncryptor.swift:59:24:59:43 | call to Data.init(_:) | rncryptor.swift:68:106:68:106 | myConstantSalt1 | provenance |  |
 | rncryptor.swift:59:24:59:43 | call to Data.init(_:) | rncryptor.swift:71:106:71:106 | myConstantSalt1 | provenance |  |
@@ -24,19 +48,44 @@ edges
 | test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | test.swift:63:59:63:59 | constantStringSalt | provenance |  |
 | test.swift:44:27:44:44 | call to getConstantArray() [Collection element] | test.swift:68:53:68:53 | constantStringSalt | provenance |  |
 nodes
+| rncryptor.swift:47:9:47:69 | call to String.init(_:) | semmle.label | call to String.init(_:) |
+| rncryptor.swift:47:16:47:16 | ................ | semmle.label | ................ |
+| rncryptor.swift:47:16:47:68 | call to map(_:) | semmle.label | call to map(_:) |
+| rncryptor.swift:57:22:57:45 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| rncryptor.swift:57:27:57:44 | call to getARandomString() | semmle.label | call to getARandomString() |
+| rncryptor.swift:58:22:58:45 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
+| rncryptor.swift:58:27:58:44 | call to getARandomString() | semmle.label | call to getARandomString() |
 | rncryptor.swift:59:24:59:43 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
 | rncryptor.swift:59:29:59:29 | abcdef123456 | semmle.label | abcdef123456 |
 | rncryptor.swift:60:24:60:30 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
 | rncryptor.swift:60:29:60:29 | 0 | semmle.label | 0 |
+| rncryptor.swift:62:57:62:57 | myRandomSalt1 | semmle.label | myRandomSalt1 |
 | rncryptor.swift:63:57:63:57 | myConstantSalt1 | semmle.label | myConstantSalt1 |
+| rncryptor.swift:64:55:64:55 | myRandomSalt2 | semmle.label | myRandomSalt2 |
 | rncryptor.swift:65:55:65:55 | myConstantSalt2 | semmle.label | myConstantSalt2 |
+| rncryptor.swift:67:106:67:106 | myRandomSalt1 | semmle.label | myRandomSalt1 |
+| rncryptor.swift:67:131:67:131 | myRandomSalt2 | semmle.label | myRandomSalt2 |
 | rncryptor.swift:68:106:68:106 | myConstantSalt1 | semmle.label | myConstantSalt1 |
+| rncryptor.swift:68:133:68:133 | myRandomSalt2 | semmle.label | myRandomSalt2 |
+| rncryptor.swift:69:106:69:106 | myRandomSalt1 | semmle.label | myRandomSalt1 |
 | rncryptor.swift:69:131:69:131 | myConstantSalt2 | semmle.label | myConstantSalt2 |
+| rncryptor.swift:70:106:70:106 | myRandomSalt1 | semmle.label | myRandomSalt1 |
+| rncryptor.swift:70:131:70:131 | myRandomSalt2 | semmle.label | myRandomSalt2 |
 | rncryptor.swift:71:106:71:106 | myConstantSalt1 | semmle.label | myConstantSalt1 |
+| rncryptor.swift:71:133:71:133 | myRandomSalt2 | semmle.label | myRandomSalt2 |
+| rncryptor.swift:72:106:72:106 | myRandomSalt1 | semmle.label | myRandomSalt1 |
 | rncryptor.swift:72:131:72:131 | myConstantSalt2 | semmle.label | myConstantSalt2 |
+| rncryptor.swift:74:127:74:127 | myRandomSalt1 | semmle.label | myRandomSalt1 |
+| rncryptor.swift:74:152:74:152 | myRandomSalt2 | semmle.label | myRandomSalt2 |
 | rncryptor.swift:75:127:75:127 | myConstantSalt1 | semmle.label | myConstantSalt1 |
+| rncryptor.swift:75:154:75:154 | myRandomSalt2 | semmle.label | myRandomSalt2 |
+| rncryptor.swift:76:127:76:127 | myRandomSalt1 | semmle.label | myRandomSalt1 |
 | rncryptor.swift:76:152:76:152 | myConstantSalt2 | semmle.label | myConstantSalt2 |
+| rncryptor.swift:77:135:77:135 | myRandomSalt1 | semmle.label | myRandomSalt1 |
+| rncryptor.swift:77:160:77:160 | myRandomSalt2 | semmle.label | myRandomSalt2 |
 | rncryptor.swift:78:135:78:135 | myConstantSalt1 | semmle.label | myConstantSalt1 |
+| rncryptor.swift:78:162:78:162 | myRandomSalt2 | semmle.label | myRandomSalt2 |
+| rncryptor.swift:79:135:79:135 | myRandomSalt1 | semmle.label | myRandomSalt1 |
 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | semmle.label | myConstantSalt2 |
 | test.swift:29:3:29:3 | this string is constant | semmle.label | this string is constant |
 | test.swift:33:2:33:34 | call to Array<Element>.init(_:) [Collection element] | semmle.label | call to Array<Element>.init(_:) [Collection element] |
@@ -54,15 +103,33 @@ nodes
 | test.swift:68:53:68:53 | constantStringSalt | semmle.label | constantStringSalt |
 subpaths
 #select
+| rncryptor.swift:62:57:62:57 | myRandomSalt1 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:62:57:62:57 | myRandomSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
 | rncryptor.swift:63:57:63:57 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:63:57:63:57 | myConstantSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:59:29:59:29 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:64:55:64:55 | myRandomSalt2 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:64:55:64:55 | myRandomSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
 | rncryptor.swift:65:55:65:55 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:65:55:65:55 | myConstantSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
+| rncryptor.swift:67:106:67:106 | myRandomSalt1 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:67:106:67:106 | myRandomSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
+| rncryptor.swift:67:131:67:131 | myRandomSalt2 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:67:131:67:131 | myRandomSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
 | rncryptor.swift:68:106:68:106 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:68:106:68:106 | myConstantSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:59:29:59:29 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:68:133:68:133 | myRandomSalt2 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:68:133:68:133 | myRandomSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
+| rncryptor.swift:69:106:69:106 | myRandomSalt1 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:69:106:69:106 | myRandomSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
 | rncryptor.swift:69:131:69:131 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:69:131:69:131 | myConstantSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
+| rncryptor.swift:70:106:70:106 | myRandomSalt1 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:70:106:70:106 | myRandomSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
+| rncryptor.swift:70:131:70:131 | myRandomSalt2 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:70:131:70:131 | myRandomSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
 | rncryptor.swift:71:106:71:106 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:71:106:71:106 | myConstantSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:59:29:59:29 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:71:133:71:133 | myRandomSalt2 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:71:133:71:133 | myRandomSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
+| rncryptor.swift:72:106:72:106 | myRandomSalt1 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:72:106:72:106 | myRandomSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
 | rncryptor.swift:72:131:72:131 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:72:131:72:131 | myConstantSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
+| rncryptor.swift:74:127:74:127 | myRandomSalt1 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:74:127:74:127 | myRandomSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
+| rncryptor.swift:74:152:74:152 | myRandomSalt2 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:74:152:74:152 | myRandomSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
 | rncryptor.swift:75:127:75:127 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:75:127:75:127 | myConstantSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:59:29:59:29 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:75:154:75:154 | myRandomSalt2 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:75:154:75:154 | myRandomSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
+| rncryptor.swift:76:127:76:127 | myRandomSalt1 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:76:127:76:127 | myRandomSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
 | rncryptor.swift:76:152:76:152 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:76:152:76:152 | myConstantSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
+| rncryptor.swift:77:135:77:135 | myRandomSalt1 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:77:135:77:135 | myRandomSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
+| rncryptor.swift:77:160:77:160 | myRandomSalt2 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:77:160:77:160 | myRandomSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
 | rncryptor.swift:78:135:78:135 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:78:135:78:135 | myConstantSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:59:29:59:29 | abcdef123456 | abcdef123456 |
+| rncryptor.swift:78:162:78:162 | myRandomSalt2 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:78:162:78:162 | myRandomSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
+| rncryptor.swift:79:135:79:135 | myRandomSalt1 | rncryptor.swift:47:16:47:16 | ................ | rncryptor.swift:79:135:79:135 | myRandomSalt1 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:47:16:47:16 | ................ | ................ |
 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | The value $@ is used as a constant, which is insecure for hashing passwords. | rncryptor.swift:60:29:60:29 | 0 | 0 |
 | test.swift:51:49:51:49 | constantSalt | test.swift:43:35:43:130 | [...] | test.swift:51:49:51:49 | constantSalt | The value $@ is used as a constant, which is insecure for hashing passwords. | test.swift:43:35:43:130 | [...] | [...] |
 | test.swift:52:49:52:49 | constantStringSalt | test.swift:29:3:29:3 | this string is constant | test.swift:52:49:52:49 | constantStringSalt | The value $@ is used as a constant, which is insecure for hashing passwords. | test.swift:29:3:29:3 | this string is constant | this string is constant |
