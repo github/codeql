@@ -3,7 +3,6 @@ private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.Unification
-private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression

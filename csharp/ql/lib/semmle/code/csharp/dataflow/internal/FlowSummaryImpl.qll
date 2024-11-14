@@ -4,7 +4,6 @@
 
 private import csharp
 private import semmle.code.csharp.commons.QualifiedName
-private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
 private import DataFlowImplSpecific as DataFlowImplSpecific

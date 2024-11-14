@@ -126,13 +126,12 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
  * Needed for flow through captured variables, where we treat local functions
  * as if they were lambdas.
  */
-abstract private class LocalFunctionCreationNode extends NodeImpl, TLocalFunctionCreationNode {
+private class LocalFunctionCreationNode extends NodeImpl, TLocalFunctionCreationNode {
   ControlFlow::Nodes::ElementNode cfn;
   LocalFunction function;
-  boolean isPostUpdate;
 
   LocalFunctionCreationNode() {
-    this = TLocalFunctionCreationNode(cfn, isPostUpdate) and
+    this = TLocalFunctionCreationNode(cfn) and
     function = cfn.getAstNode().(LocalFunctionStmt).getLocalFunction()
   }
 
@@ -156,10 +155,6 @@ abstract private class LocalFunctionCreationNode extends NodeImpl, TLocalFunctio
   ControlFlow::Nodes::ElementNode getUnderlyingControlFlowNode() { result = cfn }
 
   override Location getLocationImpl() { result = cfn.getLocation() }
-}
-
-private class LocalFunctionCreationPreNode extends LocalFunctionCreationNode {
-  LocalFunctionCreationPreNode() { isPostUpdate = false }
 
   override string toStringImpl() { result = cfn.toString() }
 }
@@ -419,17 +414,14 @@ module VariableCapture {
     result.(Flow::ExprNode).getExpr() =
       [
         n.(ExprNode).getControlFlowNode(),
-        n.(LocalFunctionCreationPreNode).getUnderlyingControlFlowNode()
+        n.(LocalFunctionCreationNode).getUnderlyingControlFlowNode()
       ]
     or
     result.(Flow::VariableWriteSourceNode).getVariableWrite().getRhs() =
       n.(ExprNode).getControlFlowNode()
     or
     result.(Flow::ExprPostUpdateNode).getExpr() =
-      [
-        n.(PostUpdateNode).getPreUpdateNode().(ExprNode).getControlFlowNode(),
-        n.(LocalFunctionCreationPostUpdateNode).getUnderlyingControlFlowNode()
-      ]
+      [n.(PostUpdateNode).getPreUpdateNode().(ExprNode).getControlFlowNode(),]
     or
     result.(Flow::ParameterNode).getParameter().getParameterNode() = n
     or
@@ -1075,7 +1067,7 @@ private module Cached {
       l = c.getARelevantLocation()
     } or
     TDelegateSelfReferenceNode(Callable c) { lambdaCreationExpr(_, c) } or
-    TLocalFunctionCreationNode(ControlFlow::Nodes::ElementNode cfn, Boolean isPostUpdate) {
+    TLocalFunctionCreationNode(ControlFlow::Nodes::ElementNode cfn) {
       cfn.getAstNode() instanceof LocalFunctionStmt
     } or
     TYieldReturnNode(ControlFlow::Nodes::ElementNode cfn) {
@@ -1153,6 +1145,12 @@ private module Cached {
     TDelegateCallArgumentContent(int i) {
       i = [0 .. max(any(DelegateLikeCall dc).getNumberOfArguments()) - 1]
       or
+      i in [0 .. 1000] // todo
+      or
+      // exists(ArgumentPosition apos |
+      //   FlowSummaryImpl::Private::summaryArgumentNode(_, _, apos) and
+      //   i = apos.getPosition()
+      // )
       i = -1
     } or
     TDelegateCallReturnContent()
@@ -2604,7 +2602,7 @@ DataFlowType getNodeType(Node n) {
   or
   [
     n.asExpr().(ControlFlowElement),
-    n.(LocalFunctionCreationPreNode).getUnderlyingControlFlowNode().getAstNode()
+    n.(LocalFunctionCreationNode).getUnderlyingControlFlowNode().getAstNode()
   ] = result.getADelegateCreation()
 }
 
@@ -2839,16 +2837,6 @@ module PostUpdateNodes {
     override string toStringImpl() { result = "[post] this" }
   }
 
-  class LocalFunctionCreationPostUpdateNode extends LocalFunctionCreationNode, PostUpdateNode {
-    LocalFunctionCreationPostUpdateNode() { isPostUpdate = true }
-
-    override LocalFunctionCreationPreNode getPreUpdateNode() {
-      result = TLocalFunctionCreationNode(cfn, false)
-    }
-
-    override string toStringImpl() { result = "[post] " + cfn }
-  }
-
   private class CapturePostUpdateNode extends PostUpdateNode, CaptureNode {
     private CaptureNode pre;
 
@@ -2912,7 +2900,11 @@ int accessPathLimit() { result = 5 }
  * Holds if access paths with `c` at their head always should be tracked at high
  * precision. This disables adaptive access path precision for such access paths.
  */
-predicate forceHighPrecision(Content c) { c instanceof ElementContent }
+predicate forceHighPrecision(Content c) {
+  c instanceof ElementContent or
+  c instanceof DelegateCallArgumentContent or
+  c instanceof DelegateCallReturnContent
+}
 
 private predicate lambdaCreationExpr(ControlFlowElement creation, Callable c) {
   c =
@@ -2928,7 +2920,11 @@ class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a delegate for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  lambdaCreationExpr(creation.asExpr(), c.asCallable(_)) and
+  (
+    lambdaCreationExpr(creation.asExpr(), c.asCallable(_))
+    or
+    creation.(LocalFunctionCreationNode).getFunction() = c.asCallable(_)
+  ) and
   exists(kind)
 }
 
@@ -3009,9 +3005,7 @@ private predicate lambdaCallExpr(DataFlowCall call, ControlFlow::Node receiver) 
 /** Holds if `call` is a lambda call where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   (
-    lambdaCallExpr(call, receiver.(ExprNode).getControlFlowNode()) and
-    // local function calls can be resolved directly without a flow analysis
-    not call.getControlFlowNode().getAstNode() instanceof LocalFunctionCall
+    lambdaCallExpr(call, receiver.(ExprNode).getControlFlowNode()) //and
     or
     receiver.(FlowSummaryNode).getSummaryNode() = call.(SummaryCall).getReceiver()
   ) and
@@ -3088,6 +3082,8 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   or
   VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(DelegateSelfReferenceNode)
         .getCallable())
+  or
+  p.getType() instanceof SystemLinqExpressions::DelegateExtType
 }
 
 /** An approximated `Content`. */
