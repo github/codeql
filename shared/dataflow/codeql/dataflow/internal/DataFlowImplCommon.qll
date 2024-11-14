@@ -895,11 +895,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       or
       result = this.asLambdaInstancePostUpdateNode().toString() + " [LambdaPostUpdate]"
       or
-      exists(DataFlowCall synthcall, ArgumentPosition apos, boolean isPost |
-        this.isLambdaArgNode(synthcall, apos, isPost)
+      exists(DataFlowCall synthCall, ArgumentPosition apos, boolean isPost |
+        this.isLambdaArgNode(synthCall, apos, isPost)
       |
         result =
-          synthcall.toString() + "-" + apos.toString() + "-" + isPost.toString() + " [LambdaArg]"
+          synthCall.toString() + "-" + apos.toString() + "-" + isPost.toString() + " [LambdaArg]"
       )
     }
 
@@ -918,8 +918,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     Node asLambdaArgsNode() { this = TNodeLambdaArgs(result) }
 
-    predicate isLambdaArgNode(DataFlowCall synthcall, ArgumentPosition apos, boolean isPost) {
-      this = TNodeLambdaArg(synthcall, apos, isPost)
+    predicate isLambdaArgNode(DataFlowCall synthCall, ArgumentPosition apos, boolean isPost) {
+      this = TNodeLambdaArg(synthCall, apos, isPost)
     }
 
     Node projectToNode() {
@@ -935,9 +935,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       or
       this = TNodeLambdaArgs(result)
       or
-      exists(DataFlowCall synthcall |
-        this = TNodeLambdaArg(synthcall, _, _) and
-        lambdaCreation(result, _, _, synthcall)
+      exists(DataFlowCall synthCall |
+        this = TNodeLambdaArg(synthCall, _, _) and
+        lambdaCreation(result, _, _, synthCall)
       )
     }
 
@@ -964,11 +964,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       nodeDataFlowType(this.asLambdaArgsNode(), result)
       or
       exists(
-        DataFlowCall synthcall, ArgumentPosition apos, DataFlowCallable c, ParameterNode p,
+        DataFlowCall synthCall, ArgumentPosition apos, DataFlowCallable c, ParameterNode p,
         ParameterPosition ppos
       |
-        this.isLambdaArgNode(synthcall, apos, _) and
-        lambdaCreation(_, _, c, synthcall) and
+        this.isLambdaArgNode(synthCall, apos, _) and
+        lambdaCreation(_, _, c, synthCall) and
         isParameterNode(p, c, ppos) and
         parameterMatch(ppos, apos) and
         nodeDataFlowType(p, result)
@@ -1049,9 +1049,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       or
       pre.asNode() = this.asLambdaInstancePostUpdateNode()
       or
-      exists(DataFlowCall synthcall, ArgumentPosition apos |
-        this.isLambdaArgNode(synthcall, apos, true) and
-        pre.isLambdaArgNode(synthcall, apos, false)
+      // Every argument in the synthetic call has a post update node
+      // corresponding to the argument node.
+      exists(DataFlowCall synthCall, ArgumentPosition apos |
+        this.isLambdaArgNode(synthCall, apos, true) and
+        pre.isLambdaArgNode(synthCall, apos, false)
       )
       or
       pre.asLambdaMallocNode() = this.asNode()
@@ -1801,12 +1803,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       or
       //read step from malloc to args
       //lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c, DataFlowCall synthCall)
-      exists(Node lambda, DataFlowCall synthcall, LambdaCallKind k, ArgumentPosition apos |
-        lambdaCreation(lambda, k, _, synthcall) and
+      exists(Node lambda, DataFlowCall synthCall, LambdaCallKind k, ArgumentPosition apos |
+        lambdaCreation(lambda, k, _, synthCall) and
         lambda = node1.asLambdaArgsNode() and
         c.getAReadContent() = getLambdaArgumentContent(k, apos)
       |
-        node2.isLambdaArgNode(synthcall, apos, false)
+        node2.isLambdaArgNode(synthCall, apos, false)
         or
         node2.asLambdaMallocNode() = lambda and
         node2.(ArgNodeEx).argumentOf(_, apos)
@@ -1853,13 +1855,17 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       contentType = node1.getDataFlowType() and
       containerType = node2.getDataFlowType() and
       (
-        exists(DataFlowCall call, LambdaCallKind k, Node receiver, ArgumentPosition apos |
+        // Arguments in a call to a lambda write to the receiving node at the
+        // `Content` corresponding to the argument position.
+        exists(DataFlowCall call, LambdaCallKind k, Node receiver, ArgumentPosition pos |
           lambdaCall(call, k, receiver) and
-          node2.asNode().(PostUpdateNode).getPreUpdateNode() = receiver and
-          c = getLambdaArgumentContent(k, apos) and
-          node1.asNode().(ArgNode).argumentOf(call, apos)
+          node1.asNode().(ArgNode).argumentOf(call, pos) and
+          c = getLambdaArgumentContent(k, pos) and
+          node2.asNode().(PostUpdateNode).getPreUpdateNode() = receiver
         )
         or
+        // Simple returns in a lambda write to the post node for the
+        // lambda instance argument.
         exists(DataFlowCallable lambda, LambdaCallKind k, ReturnKind kind |
           lambdaCreation(_, k, lambda, _) and
           hasSimpleReturnKindIn(node1.asNode(), kind, lambda) and
@@ -1867,10 +1873,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           c = getLambdaReturnContent(k, kind)
         )
         or
-        exists(DataFlowCall synthcall, LambdaCallKind k, ArgumentPosition apos |
-          lambdaCreation(node2.asNode(), k, _, synthcall) and
-          node1.isLambdaArgNode(synthcall, apos, true) and
-          c = getLambdaArgumentContent(k, apos)
+        // Argument nodes to a synthetic call node for a lamda write to the
+        // lambda at the `Content` corresponding to the argument position.
+        exists(DataFlowCall synthCall, LambdaCallKind k, ArgumentPosition pos |
+          lambdaCreation(node2.asNode(), k, _, synthCall) and
+          node1.isLambdaArgNode(synthCall, pos, true) and
+          c = getLambdaArgumentContent(k, pos)
         )
       )
     }
@@ -2049,9 +2057,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       TNodeLambdaInstancePostUpdate(ParameterNode pre) { isLambdaInstanceParameter(pre) } or
       TNodeLambdaMalloc(Node lambda) { lambdaCreation(lambda, _, _, _) } or
       TNodeLambdaArgs(Node lambda) { lambdaCreation(lambda, _, _, _) } or
-      TNodeLambdaArg(DataFlowCall synthcall, ArgumentPosition apos, Boolean ispost) {
+      TNodeLambdaArg(DataFlowCall synthCall, ArgumentPosition apos, Boolean ispost) {
         exists(DataFlowCallable c, ParameterNode p, ParameterPosition ppos |
-          lambdaCreation(_, _, c, synthcall) and
+          lambdaCreation(_, _, c, synthCall) and
           isParameterNode(p, c, ppos) and
           parameterMatch(ppos, apos) and
           not isLambdaInstanceParameter(p) and
