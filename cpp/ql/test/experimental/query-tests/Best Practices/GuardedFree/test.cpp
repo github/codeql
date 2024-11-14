@@ -72,13 +72,13 @@ bool test8(char *x) {
 #endif
 
 void test9(char *x) {
-  if (x) { // GOOD [FALSE POSITIVE]: macro may make free behave unexpectedly when compiled differently
+  if (x) { // GOOD: macro may make free behave unexpectedly when compiled differently
     my_free(x);
   }
 }
 
 void test10(char *x) {
-  if (x) { // GOOD [FALSE POSITIVE]: #ifdef may make free behave unexpectedly when compiled differently
+  if (x) { // GOOD: #ifdef may make free behave unexpectedly when compiled differently
 #ifdef FOO
     free(x - 1);
 #else
@@ -91,7 +91,7 @@ void test10(char *x) {
   if (x) free(x);
 
 void test11(char *x) {
-  TRY_FREE(x) // BAD
+  TRY_FREE(x) // BAD [NOT DETECTED]
 }
 
 bool test12(char *x) {
