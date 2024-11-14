@@ -18,8 +18,6 @@ edges
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:116:11:116:11 | tainted | provenance |  |
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:116:11:116:11 | tainted | provenance |  |
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:118:61:118:61 | tainted | provenance |  |
-| UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:120:26:120:26 | tainted | provenance |  |
-| UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:124:27:124:27 | tainted | provenance |  |
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:130:39:130:39 | tainted | provenance |  |
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:135:37:135:37 | tainted | provenance |  |
 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:139:5:139:5 | tainted | provenance |  |
@@ -30,14 +28,6 @@ edges
 | UncontrolledFormatString.swift:111:50:111:50 | tainted | UncontrolledFormatString.swift:111:33:111:57 | call to NSString.init(string:) | provenance |  |
 | UncontrolledFormatString.swift:112:64:112:64 | tainted | UncontrolledFormatString.swift:112:47:112:71 | call to NSString.init(string:) | provenance |  |
 | UncontrolledFormatString.swift:116:11:116:11 | tainted | UncontrolledFormatString.swift:77:12:77:22 | format | provenance |  |
-| UncontrolledFormatString.swift:120:22:120:33 | call to Self.init(_:) | UncontrolledFormatString.swift:122:24:122:24 | taintedSan | provenance |  |
-| UncontrolledFormatString.swift:120:26:120:26 | tainted | UncontrolledFormatString.swift:120:22:120:33 | call to Self.init(_:) | provenance |  |
-| UncontrolledFormatString.swift:124:23:124:34 | call to Self.init(_:) | UncontrolledFormatString.swift:125:30:125:30 | taintedVal2 | provenance |  |
-| UncontrolledFormatString.swift:124:27:124:27 | tainted | UncontrolledFormatString.swift:124:23:124:34 | call to Self.init(_:) | provenance |  |
-| UncontrolledFormatString.swift:125:23:125:41 | call to String.init(_:) | UncontrolledFormatString.swift:126:24:126:24 | taintedSan2 | provenance |  |
-| UncontrolledFormatString.swift:125:23:125:41 | call to String.init(_:) [Collection element] | UncontrolledFormatString.swift:126:24:126:24 | taintedSan2 | provenance |  |
-| UncontrolledFormatString.swift:125:30:125:30 | taintedVal2 | UncontrolledFormatString.swift:125:23:125:41 | call to String.init(_:) | provenance |  |
-| UncontrolledFormatString.swift:125:30:125:30 | taintedVal2 | UncontrolledFormatString.swift:125:23:125:41 | call to String.init(_:) [Collection element] | provenance |  |
 | UncontrolledFormatString.swift:135:37:135:37 | tainted | UncontrolledFormatString.swift:135:20:135:44 | call to NSString.init(string:) | provenance |  |
 | UncontrolledFormatString.swift:139:5:139:5 | tainted | UncontrolledFormatString.swift:140:9:140:9 | cstr [Collection element] | provenance |  |
 | UncontrolledFormatString.swift:140:9:140:9 | cstr [Collection element] | UncontrolledFormatString.swift:141:24:141:24 | cstr | provenance |  |
@@ -70,15 +60,6 @@ nodes
 | UncontrolledFormatString.swift:116:11:116:11 | tainted | semmle.label | tainted |
 | UncontrolledFormatString.swift:116:11:116:11 | tainted | semmle.label | tainted |
 | UncontrolledFormatString.swift:118:61:118:61 | tainted | semmle.label | tainted |
-| UncontrolledFormatString.swift:120:22:120:33 | call to Self.init(_:) | semmle.label | call to Self.init(_:) |
-| UncontrolledFormatString.swift:120:26:120:26 | tainted | semmle.label | tainted |
-| UncontrolledFormatString.swift:122:24:122:24 | taintedSan | semmle.label | taintedSan |
-| UncontrolledFormatString.swift:124:23:124:34 | call to Self.init(_:) | semmle.label | call to Self.init(_:) |
-| UncontrolledFormatString.swift:124:27:124:27 | tainted | semmle.label | tainted |
-| UncontrolledFormatString.swift:125:23:125:41 | call to String.init(_:) | semmle.label | call to String.init(_:) |
-| UncontrolledFormatString.swift:125:23:125:41 | call to String.init(_:) [Collection element] | semmle.label | call to String.init(_:) [Collection element] |
-| UncontrolledFormatString.swift:125:30:125:30 | taintedVal2 | semmle.label | taintedVal2 |
-| UncontrolledFormatString.swift:126:24:126:24 | taintedSan2 | semmle.label | taintedSan2 |
 | UncontrolledFormatString.swift:130:39:130:39 | tainted | semmle.label | tainted |
 | UncontrolledFormatString.swift:135:20:135:44 | call to NSString.init(string:) | semmle.label | call to NSString.init(string:) |
 | UncontrolledFormatString.swift:135:37:135:37 | tainted | semmle.label | tainted |
@@ -107,8 +88,6 @@ subpaths
 | UncontrolledFormatString.swift:115:11:115:11 | tainted | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:115:11:115:11 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
 | UncontrolledFormatString.swift:116:11:116:11 | tainted | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:116:11:116:11 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
 | UncontrolledFormatString.swift:118:61:118:61 | tainted | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:118:61:118:61 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
-| UncontrolledFormatString.swift:122:24:122:24 | taintedSan | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:122:24:122:24 | taintedSan | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
-| UncontrolledFormatString.swift:126:24:126:24 | taintedSan2 | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:126:24:126:24 | taintedSan2 | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
 | UncontrolledFormatString.swift:130:39:130:39 | tainted | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:130:39:130:39 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
 | UncontrolledFormatString.swift:135:20:135:44 | call to NSString.init(string:) | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:135:20:135:44 | call to NSString.init(string:) | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |
 | UncontrolledFormatString.swift:141:24:141:24 | cstr | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | UncontrolledFormatString.swift:141:24:141:24 | cstr | This format string depends on $@. | UncontrolledFormatString.swift:91:24:91:77 | call to String.init(contentsOf:) | this user-provided value |

@@ -190,6 +190,6 @@ private class DefaultSqlInjectionSink extends SqlInjectionSink {
 private class SqlInjectionDefaultBarrier extends SqlInjectionBarrier {
   SqlInjectionDefaultBarrier() {
     // any numeric type
-    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = ["Numeric", "SignedInteger", "UnsignedInteger"]
   }
 }

@@ -82,7 +82,6 @@ edges
 | GRDB.swift:342:26:342:80 | call to String.init(contentsOf:) | GRDB.swift:349:84:349:84 | remoteString | provenance |  |
 | GRDB.swift:342:26:342:80 | call to String.init(contentsOf:) | GRDB.swift:350:69:350:69 | remoteString | provenance |  |
 | GRDB.swift:342:26:342:80 | call to String.init(contentsOf:) | GRDB.swift:351:84:351:84 | remoteString | provenance |  |
-| SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:63:25:63:25 | remoteString | provenance |  |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:73:17:73:17 | unsafeQuery1 | provenance |  |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:74:17:74:17 | unsafeQuery2 | provenance |  |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:75:17:75:17 | unsafeQuery3 | provenance |  |
@@ -98,8 +97,6 @@ edges
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:117:16:117:16 | unsafeQuery1 | provenance |  |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:119:16:119:16 | unsafeQuery1 | provenance |  |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:132:20:132:20 | remoteString | provenance |  |
-| SQLite.swift:63:21:63:37 | call to Self.init(_:) | SQLite.swift:77:17:77:17 | safeQuery2 | provenance |  |
-| SQLite.swift:63:25:63:25 | remoteString | SQLite.swift:63:21:63:37 | call to Self.init(_:) | provenance |  |
 | other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:50:22:50:22 | remoteString | provenance |  |
 | other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:52:14:52:14 | remoteString | provenance |  |
 | other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:53:14:53:14 | remoteString | provenance |  |
@@ -107,7 +104,6 @@ edges
 | other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:55:14:55:14 | remoteString | provenance |  |
 | other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:57:16:57:16 | remoteString | provenance |  |
 | other.swift:54:31:54:31 | remoteString | other.swift:54:14:54:43 | call to NSString.init(string:) | provenance |  |
-| sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:123:25:123:25 | remoteString | provenance |  |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:133:33:133:33 | unsafeQuery1 | provenance |  |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:134:33:134:33 | unsafeQuery2 | provenance |  |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 | provenance |  |
@@ -115,8 +111,6 @@ edges
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 | provenance |  |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 | provenance |  |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:189:13:189:13 | unsafeQuery3 | provenance |  |
-| sqlite3_c_api.swift:123:21:123:37 | call to Self.init(_:) | sqlite3_c_api.swift:137:33:137:33 | safeQuery2 | provenance |  |
-| sqlite3_c_api.swift:123:25:123:25 | remoteString | sqlite3_c_api.swift:123:21:123:37 | call to Self.init(_:) | provenance |  |
 | sqlite3_c_api.swift:189:13:189:13 | unsafeQuery3 | sqlite3_c_api.swift:189:13:189:58 | call to data(using:allowLossyConversion:) | provenance |  |
 | sqlite3_c_api.swift:189:13:189:58 | call to data(using:allowLossyConversion:) | sqlite3_c_api.swift:190:2:190:2 | data | provenance |  |
 | sqlite3_c_api.swift:190:2:190:2 | data | sqlite3_c_api.swift:190:21:190:21 | [post] buffer | provenance |  |
@@ -220,12 +214,9 @@ nodes
 | GRDB.swift:350:69:350:69 | remoteString | semmle.label | remoteString |
 | GRDB.swift:351:84:351:84 | remoteString | semmle.label | remoteString |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
-| SQLite.swift:63:21:63:37 | call to Self.init(_:) | semmle.label | call to Self.init(_:) |
-| SQLite.swift:63:25:63:25 | remoteString | semmle.label | remoteString |
 | SQLite.swift:73:17:73:17 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:74:17:74:17 | unsafeQuery2 | semmle.label | unsafeQuery2 |
 | SQLite.swift:75:17:75:17 | unsafeQuery3 | semmle.label | unsafeQuery3 |
-| SQLite.swift:77:17:77:17 | safeQuery2 | semmle.label | safeQuery2 |
 | SQLite.swift:83:29:83:29 | unsafeQuery3 | semmle.label | unsafeQuery3 |
 | SQLite.swift:95:32:95:32 | remoteString | semmle.label | remoteString |
 | SQLite.swift:100:29:100:29 | unsafeQuery1 | semmle.label | unsafeQuery1 |
@@ -247,12 +238,9 @@ nodes
 | other.swift:55:14:55:14 | remoteString | semmle.label | remoteString |
 | other.swift:57:16:57:16 | remoteString | semmle.label | remoteString |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
-| sqlite3_c_api.swift:123:21:123:37 | call to Self.init(_:) | semmle.label | call to Self.init(_:) |
-| sqlite3_c_api.swift:123:25:123:25 | remoteString | semmle.label | remoteString |
 | sqlite3_c_api.swift:133:33:133:33 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | sqlite3_c_api.swift:134:33:134:33 | unsafeQuery2 | semmle.label | unsafeQuery2 |
 | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 | semmle.label | unsafeQuery3 |
-| sqlite3_c_api.swift:137:33:137:33 | safeQuery2 | semmle.label | safeQuery2 |
 | sqlite3_c_api.swift:145:26:145:26 | unsafeQuery3 | semmle.label | unsafeQuery3 |
 | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 | semmle.label | unsafeQuery3 |
 | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 | semmle.label | unsafeQuery3 |
@@ -351,7 +339,6 @@ subpaths
 | SQLite.swift:73:17:73:17 | unsafeQuery1 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:73:17:73:17 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
 | SQLite.swift:74:17:74:17 | unsafeQuery2 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:74:17:74:17 | unsafeQuery2 | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
 | SQLite.swift:75:17:75:17 | unsafeQuery3 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:75:17:75:17 | unsafeQuery3 | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
-| SQLite.swift:77:17:77:17 | safeQuery2 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:77:17:77:17 | safeQuery2 | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
 | SQLite.swift:83:29:83:29 | unsafeQuery3 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:83:29:83:29 | unsafeQuery3 | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
 | SQLite.swift:95:32:95:32 | remoteString | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:95:32:95:32 | remoteString | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
 | SQLite.swift:100:29:100:29 | unsafeQuery1 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:100:29:100:29 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
@@ -373,7 +360,6 @@ subpaths
 | sqlite3_c_api.swift:133:33:133:33 | unsafeQuery1 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:133:33:133:33 | unsafeQuery1 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:134:33:134:33 | unsafeQuery2 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:134:33:134:33 | unsafeQuery2 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
-| sqlite3_c_api.swift:137:33:137:33 | safeQuery2 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:137:33:137:33 | safeQuery2 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:145:26:145:26 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:145:26:145:26 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
