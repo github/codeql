@@ -18,9 +18,7 @@ class FreeCall extends FunctionCall {
   FreeCall() { this.getTarget().hasGlobalName("free") }
 }
 
-predicate isAffectedByMacro(FreeCall fc, BasicBlock bb) {
-  fc.isInMacroExpansion()
-  or
+predicate blockContainsPreprocessorBranches(BasicBlock bb) {
   exists(PreprocessorBranch ppb, Location bbLoc, Location ppbLoc |
     bbLoc = bb.(Stmt).getLocation() and ppbLoc = ppb.getLocation()
   |
@@ -40,7 +38,8 @@ where
     strictcount(bb.(BlockStmt).getAStmt()) = 1
   ) and
   strictcount(BasicBlock bb2 | gc.ensuresEq(_, 0, bb2, _) | bb2) = 1 and
-  not isAffectedByMacro(fc, bb) and
+  not fc.isInMacroExpansion() and
+  not blockContainsPreprocessorBranches(bb) and
   not (gc instanceof BinaryOperation and not gc instanceof ComparisonOperation) and
   not exists(CommaExpr c | c.getAChild*() = fc)
 select gc, "unnecessary NULL check before call to $@", fc, "free"
