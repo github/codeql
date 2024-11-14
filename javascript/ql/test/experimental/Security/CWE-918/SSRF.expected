@@ -51,6 +51,10 @@ nodes
 | check-regex.js:41:13:41:43 | "test.c ... tainted |
 | check-regex.js:41:27:41:43 | req.query.tainted |
 | check-regex.js:41:27:41:43 | req.query.tainted |
+| check-regex.js:61:15:61:42 | baseURL ... tainted |
+| check-regex.js:61:15:61:42 | baseURL ... tainted |
+| check-regex.js:61:25:61:42 | req.params.tainted |
+| check-regex.js:61:25:61:42 | req.params.tainted |
 | check-validator.js:15:15:15:45 | "test.c ... tainted |
 | check-validator.js:15:15:15:45 | "test.c ... tainted |
 | check-validator.js:15:29:15:45 | req.query.tainted |
@@ -127,6 +131,10 @@ edges
 | check-regex.js:41:27:41:43 | req.query.tainted | check-regex.js:41:13:41:43 | "test.c ... tainted |
 | check-regex.js:41:27:41:43 | req.query.tainted | check-regex.js:41:13:41:43 | "test.c ... tainted |
 | check-regex.js:41:27:41:43 | req.query.tainted | check-regex.js:41:13:41:43 | "test.c ... tainted |
+| check-regex.js:61:25:61:42 | req.params.tainted | check-regex.js:61:15:61:42 | baseURL ... tainted |
+| check-regex.js:61:25:61:42 | req.params.tainted | check-regex.js:61:15:61:42 | baseURL ... tainted |
+| check-regex.js:61:25:61:42 | req.params.tainted | check-regex.js:61:15:61:42 | baseURL ... tainted |
+| check-regex.js:61:25:61:42 | req.params.tainted | check-regex.js:61:15:61:42 | baseURL ... tainted |
 | check-validator.js:15:29:15:45 | req.query.tainted | check-validator.js:15:15:15:45 | "test.c ... tainted |
 | check-validator.js:15:29:15:45 | req.query.tainted | check-validator.js:15:15:15:45 | "test.c ... tainted |
 | check-validator.js:15:29:15:45 | req.query.tainted | check-validator.js:15:15:15:45 | "test.c ... tainted |
@@ -166,6 +174,7 @@ edges
 | check-regex.js:31:15:31:45 | "test.c ... tainted | check-regex.js:31:29:31:45 | req.query.tainted | check-regex.js:31:15:31:45 | "test.c ... tainted | The URL of this request depends on a user-provided value. |
 | check-regex.js:34:15:34:42 | baseURL ... tainted | check-regex.js:34:25:34:42 | req.params.tainted | check-regex.js:34:15:34:42 | baseURL ... tainted | The URL of this request depends on a user-provided value. |
 | check-regex.js:41:13:41:43 | "test.c ... tainted | check-regex.js:41:27:41:43 | req.query.tainted | check-regex.js:41:13:41:43 | "test.c ... tainted | The URL of this request depends on a user-provided value. |
+| check-regex.js:61:15:61:42 | baseURL ... tainted | check-regex.js:61:25:61:42 | req.params.tainted | check-regex.js:61:15:61:42 | baseURL ... tainted | The URL of this request depends on a user-provided value. |
 | check-validator.js:15:15:15:45 | "test.c ... tainted | check-validator.js:15:29:15:45 | req.query.tainted | check-validator.js:15:15:15:45 | "test.c ... tainted | The URL of this request depends on a user-provided value. |
 | check-validator.js:27:15:27:45 | "test.c ... tainted | check-validator.js:27:29:27:45 | req.query.tainted | check-validator.js:27:15:27:45 | "test.c ... tainted | The URL of this request depends on a user-provided value. |
 | check-validator.js:50:15:50:45 | "test.c ... tainted | check-validator.js:50:29:50:45 | req.query.tainted | check-validator.js:50:15:50:45 | "test.c ... tainted | The URL of this request depends on a user-provided value. |
