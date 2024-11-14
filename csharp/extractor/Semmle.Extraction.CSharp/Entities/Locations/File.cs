@@ -6,7 +6,7 @@ using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    public class File : Extraction.CachedEntity<string>
+    public class File : CachedEntity<string>
     {
         protected readonly string originalPath;
         private readonly Lazy<PathTransformer.ITransformedPath> transformedPathLazy;

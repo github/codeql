@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Util;
 using Semmle.Extraction.CSharp.Entities;
 using Semmle.Extraction.CSharp.Entities.Expressions;
-using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp

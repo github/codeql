@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
-using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities
 {

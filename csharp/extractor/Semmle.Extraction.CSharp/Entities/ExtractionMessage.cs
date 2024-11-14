@@ -2,9 +2,8 @@
 using System.IO;
 using System.Threading;
 using Semmle.Util;
-using Semmle.Extraction.CSharp;
 
-namespace Semmle.Extraction.Entities
+namespace Semmle.Extraction.CSharp.Entities
 {
     internal class ExtractionMessage : FreshEntity
     {
@@ -41,7 +40,7 @@ namespace Semmle.Extraction.Entities
                     if (val == limit + 1)
                     {
                         Context.ExtractionContext.Logger.LogWarning($"Stopped logging extractor messages after reaching {limit}");
-                        _ = new ExtractionMessage(Context, new Message($"Stopped logging extractor messages after reaching {limit}", null, null, null, Util.Logging.Severity.Warning), bypassLimit: true);
+                        _ = new ExtractionMessage(Context, new Message($"Stopped logging extractor messages after reaching {limit}", null, null, null, Semmle.Util.Logging.Severity.Warning), bypassLimit: true);
                     }
                     return;
                 }

@@ -13,9 +13,9 @@ namespace Semmle.Extraction.CSharp
         public string Text { get; }
         public string? StackTrace { get; }
         public string? EntityText { get; }
-        public CSharp.Entities.Location? Location { get; }
+        public Entities.Location? Location { get; }
 
-        public Message(string text, string? entityText, CSharp.Entities.Location? location, string? stackTrace = null, Severity severity = Severity.Error)
+        public Message(string text, string? entityText, Entities.Location? location, string? stackTrace = null, Severity severity = Severity.Error)
         {
             Severity = severity;
             Text = text;
@@ -24,12 +24,12 @@ namespace Semmle.Extraction.CSharp
             Location = location;
         }
 
-        public static Message Create(Extraction.Context cx, string text, ISymbol symbol, string? stackTrace = null, Severity severity = Severity.Error)
+        public static Message Create(Context cx, string text, ISymbol symbol, string? stackTrace = null, Severity severity = Severity.Error)
         {
             return new Message(text, symbol.ToString(), cx.CreateLocation(symbol.Locations.BestOrDefault()), stackTrace, severity);
         }
 
-        public static Message Create(Extraction.Context cx, string text, SyntaxNode node, string? stackTrace = null, Severity severity = Severity.Error)
+        public static Message Create(Context cx, string text, SyntaxNode node, string? stackTrace = null, Severity severity = Severity.Error)
         {
             return new Message(text, node.ToString(), cx.CreateLocation(node.GetLocation()), stackTrace, severity);
         }

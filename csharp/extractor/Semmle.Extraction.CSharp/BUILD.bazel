@@ -6,7 +6,6 @@ load(
 codeql_csharp_library(
     name = "Semmle.Extraction.CSharp",
     srcs = glob([
-        "_Base/**/*.cs",
         "CodeAnalysisExtensions/**/*.cs",
         "Comments/**/*.cs",
         "Entities/**/*.cs",

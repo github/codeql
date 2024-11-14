@@ -6,9 +6,9 @@ namespace Semmle.Extraction.CSharp
 {
     public abstract class Entity : IEntity
     {
-        public virtual Semmle.Extraction.Context Context { get; }
+        public virtual Context Context { get; }
 
-        protected Entity(Semmle.Extraction.Context context)
+        protected Entity(Context context)
         {
             this.Context = context;
         }

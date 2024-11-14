@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class Modifier : Extraction.CachedEntity<string>
+    internal class Modifier : CachedEntity<string>
     {
         private Modifier(Context cx, string init)
             : base(cx, init) { }

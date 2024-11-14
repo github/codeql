@@ -1,11 +1,11 @@
 using System.IO;
 
-namespace Semmle.Extraction
+namespace Semmle.Extraction.CSharp.Entities
 {
     /// <summary>
     /// An entity which has a default "*" ID assigned to it.
     /// </summary>
-    public abstract class FreshEntity : CSharp.UnlabelledEntity
+    public abstract class FreshEntity : UnlabelledEntity
     {
         protected FreshEntity(Context cx) : base(cx)
         {
@@ -33,6 +33,6 @@ namespace Semmle.Extraction
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
-        public override CSharp.TrapStackBehaviour TrapStackBehaviour => CSharp.TrapStackBehaviour.NoLabel;
+        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
 }

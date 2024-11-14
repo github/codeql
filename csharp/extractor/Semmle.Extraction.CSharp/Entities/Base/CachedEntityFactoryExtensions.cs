@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CSharp
         /// <param name="init">The initializer for the entity.</param>
         /// <returns>The entity.</returns>
         public static TEntity CreateEntity<TInit, TEntity>(this CachedEntityFactory<TInit, TEntity> factory, Context cx, object cacheKey, TInit init)
-            where TEntity : CachedEntity => cx.CreateEntity(factory, cacheKey, init);
+            where TEntity : Entities.CachedEntity => cx.CreateEntity(factory, cacheKey, init);
 
         /// <summary>
         /// Creates and populates a new entity from an `ISymbol`, or returns the existing one
@@ -30,6 +30,6 @@ namespace Semmle.Extraction.CSharp
         /// <returns>The entity.</returns>
         public static TEntity CreateEntityFromSymbol<TSymbol, TEntity>(this CachedEntityFactory<TSymbol, TEntity> factory, Context cx, TSymbol init)
             where TSymbol : ISymbol
-            where TEntity : CachedEntity => cx.CreateEntityFromSymbol(factory, init);
+            where TEntity : Entities.CachedEntity => cx.CreateEntityFromSymbol(factory, init);
     }
 }
