@@ -431,10 +431,7 @@ The above query therefore evalutes to:
 BigInt
 ======
 
-The built-in ``QlBuiltins`` module provides an **experimental** type ``BigInt`` of arbitrary-range integers.
-
-This type is not available in the CodeQL CLI by default, but you can enable it by passing the ``--allow-experimental=bigint``
-option to the CodeQL CLI. Consequently, BigInts are currently disallowed in query results and dbscheme columns.
+The built-in ``QlBuiltins`` module provides a type ``BigInt`` of arbitrary-range integers.
 
 Unlike ``int`` and ``float``, there is no automatic conversion between ``BigInt`` and other numeric types.
 Instead, big integers can be constructed using the ``.toBigInt()`` methods of ``int`` and ``string``.
@@ -451,3 +448,5 @@ The other built-in operations are:
     ``rank``, ``unique``, ``any``.
 *   other: ``.pow(int)``, ``.abs()``, ``.gcd(BigInt)``, ``.minimum(BigInt)``,
     ``.maximum(BigInt)``.
+
+Note: big integers are currently disallowed in query results and dbscheme columns.
