@@ -699,7 +699,8 @@ module Make<
       c.propagatesFlow(input, output, preservesValue, model)
       or
       // observe side effects of callbacks on input arguments
-      c.propagatesFlow(output, input, preservesValue, model) and
+      summary(c, output, input, preservesValue, model) and
+      // c.propagatesFlow(output, input, preservesValue, model) and
       preservesValue = true and
       isCallbackParameter(input) and
       isContentOfArgument(output, _)
