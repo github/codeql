@@ -189,7 +189,6 @@
 /lib/codeql/rust/elements/internal/BecomeExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BinaryExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BlockExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/BlockExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/BoxPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BreakExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprBaseImpl.qll linguist-generated
@@ -265,7 +264,6 @@
 /lib/codeql/rust/elements/internal/MacroDefConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroDefImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/MacroExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroItemsConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroItemsImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroPatConstructor.qll linguist-generated

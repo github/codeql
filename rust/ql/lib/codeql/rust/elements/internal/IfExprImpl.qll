@@ -39,5 +39,13 @@ module Impl {
       or
       index = 3 and this.hasElse() and result = "else {...}"
     }
+
+    override string getType() {
+      result = super.getType()
+      or
+      // For some reason rust-analyzer does not return a type for a chained `if`, so we use the parent's type instead.
+      not exists(super.getType()) and
+      result = any(IfExpr parent | parent.getElse() = this).getType()
+    }
   }
 }
