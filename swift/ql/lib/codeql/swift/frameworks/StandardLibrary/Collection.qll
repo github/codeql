@@ -32,8 +32,8 @@ private class CollectionSummaries extends SummaryModelCsv {
         ";Collection;true;dropLast(_:);;;Argument[-1].CollectionElement;ReturnValue.CollectionElement;value",
         ";Collection;true;flatMap(_:);;;Argument[-1];ReturnValue;taint",
         ";Collection;true;flatMap(_:);;;Argument[-1].CollectionElement;ReturnValue.CollectionElement;value",
-        ";Collection;true;map(_:);;;Argument[-1];ReturnValue;taint",
-        ";Collection;true;map(_:);;;Argument[-1].CollectionElement;ReturnValue.CollectionElement;value",
+        //";Collection;true;map(_:);;;Argument[-1];ReturnValue;taint", --- disabled due to dubious results in practice
+        //";Collection;true;map(_:);;;Argument[-1].CollectionElement;ReturnValue.CollectionElement;value", --- disabled due to dubious results in practice
         ";Collection;true;split(maxSplits:omittingEmptySubsequences:whereSeparator:);;;Argument[-1];ReturnValue;taint",
         ";Collection;true;split(separator:maxSplits:omittingEmptySubsequences:);;;Argument[-1];ReturnValue;taint",
         ";Collection;true;removeFirst();;;Argument[-1];ReturnValue;taint",
