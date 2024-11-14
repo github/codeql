@@ -22,6 +22,11 @@ from GuardCondition gc, FreeCall fc, Variable v, BasicBlock bb
 where
   gc.ensuresEq(v.getAnAccess(), 0, bb, false) and
   fc.getArgument(0) = v.getAnAccess() and
-  bb = fc.getEnclosingStmt() and
+  bb = fc.getBasicBlock() and
+  (
+    bb = fc.getEnclosingStmt()
+    or
+    strictcount(bb.(BlockStmt).getAStmt()) = 1
+  ) and
   strictcount(BasicBlock bb2 | gc.ensuresEq(_, 0, bb2, _) | bb2) = 1
 select gc, "unnecessary NULL check before call to $@", fc, "free"
