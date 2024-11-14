@@ -431,7 +431,7 @@ The above query therefore evalutes to:
 BigInt
 ======
 
-The built-in ``QlBuiltins`` module provides an **experimental** type ``BigInt`` of arbitrary-precision integers.
+The built-in ``QlBuiltins`` module provides an **experimental** type ``BigInt`` of arbitrary-range integers.
 
 This type is not available in the CodeQL CLI by default, but you can enable it by passing the ``--allow-experimental=bigint``
 option to the CodeQL CLI. Consequently, BigInts are currently disallowed in query results and dbscheme columns.
