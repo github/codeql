@@ -208,8 +208,7 @@ class QueryDoc extends QLDoc {
     this = any(TopLevel t).getQLDoc()
   }
 
-  override string getAPrimaryQlClass() { result = "QueryDoc" }
-
+  // override string getAPrimaryQlClass() { result = "QueryDoc" } // WORKAROUND: can't override this
   /** Gets the @kind for the query */
   string getQueryKind() {
     result = this.getContents().regexpCapture("(?s).*@kind ([\\w-]+)\\s.*", 1)
@@ -1138,7 +1137,7 @@ final new class NewTypeBranch extends QlNode, Predicate, TypeDeclaration {
  * or a member call `foo.bar()`,
  * or a special call to `none()` or `any()`.
  */
-abstract new class Call extends TCall, Expr, Formula {
+abstract new class Call extends Expr, Formula {
   /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) {
     none() // overridden in subclasses.
@@ -1756,18 +1755,19 @@ final new class HigherOrderFormula extends QlNode, Formula {
   }
 }
 
-abstract new class Aggregate extends Expr {
+abstract new class Aggregate extends QlNode, Expr {
+  override QL::Aggregate qlNode;
+
   string getKind() { none() }
 
-  QL::Aggregate getAggregate() { none() }
+  QL::Aggregate getAggregate() { result = qlNode }
 }
 
 /**
  * An aggregate containing an expression.
  * E.g. `min(getAPredicate().getArity())`.
  */
-class ExprAggregate extends QlNode, Aggregate {
-  override QL::Aggregate qlNode;
+final new class ExprAggregate extends Aggregate {
   QL::ExprAggregateBody body;
   string kind;
 
@@ -1781,8 +1781,6 @@ class ExprAggregate extends QlNode, Aggregate {
    * E.g. for `min(foo())` the result is "min".
    */
   override string getKind() { result = kind }
-
-  override QL::Aggregate getAggregate() { result = qlNode }
 
   /**
    * Gets the ith "as" expression of this aggregate, if any.
@@ -1828,10 +1826,9 @@ class ExprAggregate extends QlNode, Aggregate {
 }
 
 /** An aggregate expression, such as `count` or `sum`. */
-final new class FullAggregate extends QlNode, Aggregate {
-  override QL::Aggregate qlNode;
-  string kind;
+final new class FullAggregate extends Aggregate {
   QL::FullAggregateBody body;
+  string kind;
 
   FullAggregate() {
     kind = qlNode.getChild(0).(QL::AggId).getValue() and
@@ -1914,14 +1911,13 @@ final new class FullAggregate extends QlNode, Aggregate {
 // TODO: hm these don't very neatly fit into the IPA heirarchy
 class Any extends FullAggregate {
   Any() { this.getKind() = "any" }
-
-  override string getAPrimaryQlClass() { result = "Any" }
+  // override string getAPrimaryQlClass() { result = "Any" } // WORKAROUND: can't overrride this
 }
 
 /**
  * A "rank" expression, such as `rank[4](int i | i = [5 .. 15] | i)`.
  */
-// this doesn't even give an error since it's extending an abstract class? hm
+// TODO: needs rewrite? extends abstract class!
 class Rank extends Aggregate {
   Rank() { this.getKind() = "rank" }
 
@@ -1935,7 +1931,7 @@ class Rank extends Aggregate {
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
-    pred = directMember("getRankExpr") and result = this.getRankExpr()
+    pred = directMember("getRankExpr") and result = this.getRankExpr() // WORKAROUND: move this to other thingys
   }
 }
 
@@ -1975,7 +1971,7 @@ final new class AsExpr extends QlNode, VarDef, Expr {
 /**
  * An identifier, such as `foo`.
  */
-final new class Identifier extends QlNode, Expr {
+abstract new class Identifier extends QlNode, Expr {
   override QL::Variable qlNode;
 
   string getName() { none() }
@@ -1985,41 +1981,46 @@ final new class Identifier extends QlNode, Expr {
   override string getAPrimaryQlClass() { result = "Identifier" }
 }
 
+final new class FieldOrVarAccess extends Identifier {
+  QL::VarName varName;
+
+  FieldOrVarAccess() { varName = qlNode.getChild() }
+
+  override string getName() { result = qlNode.getChild().(QL::VarName).getChild().getValue() }
+
+  override Type getType() {
+    result = this.(VarAccess).getDeclaration().getType()
+    or
+    result = this.(FieldAccess).getDeclaration().getVarDecl().getType() // WORKAROUND: push these definitions to here to not have charpreds for the IPA heirarchy depend on type resolution
+  }
+
+  override string getAPrimaryQlClass() { result = "FieldOrVarAccess" }
+}
+
 /** An access to a variable. */
-// TODO: can't handle this? breaks monotonicity to make this final and Identifier abstract!
-class VarAccess extends Identifier {
+class VarAccess extends FieldOrVarAccess {
   private VarDef decl;
 
   VarAccess() { resolveVariable(this, decl) }
 
   /** Gets the accessed variable. */
   VarDef getDeclaration() { result = decl }
-
-  override string getName() { result = qlNode.getChild().(QL::VarName).getChild().getValue() }
-
-  override Type getType() { result = this.getDeclaration().getType() }
-
-  override string getAPrimaryQlClass() { result = "VarAccess" }
+  //override string getAPrimaryQlClass() { result = "VarAccess" }
 }
 
 /** An access to a field. */
-class FieldAccess extends Identifier {
+class FieldAccess extends FieldOrVarAccess {
   private VarDecl decl;
 
   FieldAccess() { resolveField(this, decl) }
 
   /** Gets the accessed field. */
   FieldDecl getDeclaration() { result.getVarDecl() = decl }
-
-  override string getName() { result = id.getChild().(QL::VarName).getChild().getValue() }
-
-  override Type getType() { result = decl.getType() }
-
-  override string getAPrimaryQlClass() { result = "FieldAccess" }
+  //override string getAPrimaryQlClass() { result = "FieldAccess" }
 }
 
 /** An access to `this`. */
-class ThisAccess extends Identifier {
+final new class ThisAccess extends Identifier {
   ThisAccess() { any(QL::This t).getParent() = qlNode }
 
   override Type getType() { result = this.getParent+().(Class).getType() }
@@ -2041,7 +2042,7 @@ final new class Super extends QlNode, Expr {
 }
 
 /** An access to `result`. */
-class ResultAccess extends Identifier {
+final new class ResultAccess extends Identifier {
   ResultAccess() { any(QL::Result r).getParent() = qlNode }
 
   override Type getType() { result = this.getParent+().(Predicate).getReturnType() }
@@ -2515,7 +2516,12 @@ private class MonotonicAggregatesArg extends AnnotationArg {
 final new class Annotation extends QlNode, AstNode {
   override QL::Annotation qlNode;
 
-  override string toString() { result = "annotation" }
+  override string toString() {
+    // WORKAROUND: can't oerride toString on subclasses
+    if exists(this.getArgs(0).getValue())
+    then result = this.getArgs(0).getValue()
+    else result = "annotation"
+  }
 
   override string getAPrimaryQlClass() { result = "Annotation" }
 
@@ -2540,36 +2546,31 @@ final new class Annotation extends QlNode, AstNode {
 // TODO: does this need to be `new`
 class NoInline extends Annotation {
   NoInline() { this.getArgs(0) instanceof NoInlineArg }
-
-  override string toString() { result = "noinline" }
+  // override string toString() { result = "noinline" }
 }
 
 /** A `pragma[inline]` annotation. */
 class Inline extends Annotation {
   Inline() { this.getArgs(0) instanceof InlineArg }
-
-  override string toString() { result = "inline" }
+  // override string toString() { result = "inline" }
 }
 
 /** A `pragma[nomagic]` annotation. */
 class NoMagic extends Annotation {
   NoMagic() { this.getArgs(0) instanceof NoMagicArg }
-
-  override string toString() { result = "nomagic" }
+  // override string toString() { result = "nomagic" }
 }
 
 /** A `pragma[noopt]` annotation. */
 class NoOpt extends Annotation {
   NoOpt() { this.getArgs(0) instanceof NoOptArg }
-
-  override string toString() { result = "noopt" }
+  // override string toString() { result = "noopt" }
 }
 
 /** A `language[monotonicAggregates]` annotation. */
 class MonotonicAggregates extends Annotation {
   MonotonicAggregates() { this.getArgs(0) instanceof MonotonicAggregatesArg }
-
-  override string toString() { result = "monotonicaggregates" }
+  // override string toString() { result = "monotonicaggregates" }
 }
 
 /** A `bindingset` annotation. */
