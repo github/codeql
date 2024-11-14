@@ -86,45 +86,14 @@ class TSignatureExpr = TPredicateExpr or TType or TModuleExpr;
 
 class TComment = TQLDoc or TBlockComment or TLineComment;
 
-private QL::AstNode toQLFormula(AST::AstNode n) {
-  n = TConjunction(result) or
-  n = TDisjunction(result) or
-  n = TComparisonFormula(result) or
-  n = TQuantifier(result) or
-  n = TFullAggregate(result) or
-  n = TIdentifier(result) or
-  n = TNegation(result) or
-  n = TIfFormula(result) or
-  n = TImplication(result) or
-  n = TInstanceOf(result) or
-  n = THigherOrderFormula(result) or
-  n = TInFormula(result)
-}
-
-private QL::AstNode toQLExpr(AST::AstNode n) {
-  n = TAddSubExpr(result) or
-  n = TMulDivModExpr(result) or
-  n = TRange(result) or
-  n = TSet(result) or
-  n = TExprAnnotation(result) or
-  n = TLiteral(result) or
-  n = TFullAggregate(result) or
-  n = TExprAggregate(result) or
-  n = TIdentifier(result) or
-  n = TUnaryExpr(result) or
-  n = TDontCare(result)
-}
-
-Dbscheme::AstNode toDbscheme(AST::AstNode n) { n = TDBRelation(result) }
+Dbscheme::AstNode toDbscheme(AST::AstNode n) { result = n.asDbschemeNode() }
 
 /**
  * Gets the underlying TreeSitter entity for a given AST node.
  */
 cached
 QL::AstNode toQL(AST::AstNode n) {
-  result = toQLExpr(n)
-  or
-  result = toQLFormula(n)
+  result = n.asQlNode()
   or
   result.(QL::ParExpr).getChild() = toQL(n)
   or
@@ -133,73 +102,9 @@ QL::AstNode toQL(AST::AstNode n) {
       not ae.getChild(1) instanceof QL::VarName and
       toQL(n) = ae.getChild(0)
     )
-  or
-  n = TTopLevel(result)
-  or
-  n = TQLDoc(result)
-  or
-  n = TBlockComment(result)
-  or
-  n = TLineComment(result)
-  or
-  n = TClasslessPredicate(any(Mocks::ClasslessPredicateOrMock m | m.asLeft() = result))
-  or
-  n = TVarDecl(any(Mocks::VarDeclOrMock m | m.asLeft() = result))
-  or
-  n = TFieldDecl(result)
-  or
-  n = TClass(any(Mocks::ClassOrMock m | m.asLeft() = result))
-  or
-  n = TCharPred(result)
-  or
-  n = TClassPredicate(result)
-  or
-  n = TSelect(result)
-  or
-  n = TModule(any(Mocks::ModuleOrMock m | m.asLeft() = result))
-  or
-  n = TNewType(result)
-  or
-  n = TNewTypeBranch(result)
-  or
-  n = TImport(result)
-  or
-  n = TType(any(Mocks::TypeExprOrMock m | m.asLeft() = result))
-  or
-  n = TAsExpr(result)
-  or
-  n = TModuleExpr(result)
-  or
-  n = TPredicateExpr(result)
-  or
-  n = TPredicateCall(result)
-  or
-  n = TMemberCall(result)
-  or
-  n = TInlineCast(result)
-  or
-  n = TNoneCall(result)
-  or
-  n = TAnyCall(result)
-  or
-  n = TSuper(result)
-  or
-  n = TAnnotation(result)
-  or
-  n = TAnnotationArg(result)
 }
 
-Mocks::MockAst toMock(AST::AstNode n) {
-  n = TModule(any(Mocks::ModuleOrMock m | m.asRight() = result))
-  or
-  n = TClass(any(Mocks::ClassOrMock m | m.asRight() = result))
-  or
-  n = TType(any(Mocks::TypeExprOrMock m | m.asRight() = result))
-  or
-  n = TClasslessPredicate(any(Mocks::ClasslessPredicateOrMock m | m.asRight() = result))
-  or
-  n = TVarDecl(any(Mocks::VarDeclOrMock m | m.asRight() = result))
-}
+Mocks::MockAst toMock(AST::AstNode n) { result = n.asMockNode() }
 
 class TPredicate =
   TCharPred or TClasslessPredicate or TClassPredicate or TDBRelation or TNewTypeBranch;

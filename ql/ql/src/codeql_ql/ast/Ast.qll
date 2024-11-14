@@ -19,8 +19,14 @@ private string stringIndexedMember(string name, string index) {
 }
 
 /** An AST node of a QL program */
-class AstNode extends TAstNode {
+abstract new class AstNode {
   string toString() { result = this.getAPrimaryQlClass() }
+
+  QL::AstNode asQlNode() { none() }
+
+  Dbscheme::AstNode asDbschemeNode() { none() }
+
+  Mocks::MockAst asMockNode() { none() }
 
   /** Gets the location of the AST node. */
   cached
@@ -107,11 +113,15 @@ private AstNode getANodeInPredicate(Predicate pred) {
   result = getANodeInPredicate(pred).getAChild(_)
 }
 
-/** A toplevel QL program, i.e. a file. */
-class TopLevel extends TTopLevel, AstNode {
-  QL::Ql file;
+abstract new private class QlNode extends AstNode {
+  QL::AstNode qlNode;
 
-  TopLevel() { this = TTopLevel(file) }
+  override QL::AstNode asQlNode() { result = qlNode }
+}
+
+/** A toplevel QL program, i.e. a file. */
+final new class TopLevel extends AstNode, QlNode {
+  override QL::Ql qlNode;
 
   /**
    * Gets a member from contained in this top-level module.
@@ -120,7 +130,7 @@ class TopLevel extends TTopLevel, AstNode {
   ModuleMember getAMember() { result = this.getMember(_) }
 
   /** Gets the `i`'th member of this top-level module. */
-  ModuleMember getMember(int i) { toQL(result) = file.getChild(i).getChild(_) }
+  ModuleMember getMember(int i) { toQL(result) = qlNode.getChild(i).getChild(_) }
 
   /** Gets a top-level import in this module. */
   Import getAnImport() { result = this.getAMember() }
@@ -177,16 +187,14 @@ class TopLevel extends TTopLevel, AstNode {
   }
 }
 
-abstract class Comment extends AstNode, TComment {
+abstract new class Comment extends AstNode {
   abstract string getContents();
 }
 
-class QLDoc extends TQLDoc, Comment {
-  QL::Qldoc qldoc;
+final new class QLDoc extends QlNode, Comment {
+  override QL::Qldoc qlNode;
 
-  QLDoc() { this = TQLDoc(qldoc) }
-
-  override string getContents() { result = qldoc.getValue() }
+  override string getContents() { result = qlNode.getValue() }
 
   override string getAPrimaryQlClass() { result = "QLDoc" }
 
@@ -223,22 +231,18 @@ class QueryDoc extends QLDoc {
   }
 }
 
-class BlockComment extends TBlockComment, Comment {
-  QL::BlockComment comment;
+final new class BlockComment extends QlNode, Comment {
+  override QL::BlockComment qlNode;
 
-  BlockComment() { this = TBlockComment(comment) }
-
-  override string getContents() { result = comment.getValue() }
+  override string getContents() { result = qlNode.getValue() }
 
   override string getAPrimaryQlClass() { result = "BlockComment" }
 }
 
-class LineComment extends TLineComment, Comment {
-  QL::LineComment comment;
+final new class LineComment extends QlNode, Comment {
+  override QL::LineComment qlNode;
 
-  LineComment() { this = TLineComment(comment) }
-
-  override string getContents() { result = comment.getValue() }
+  override string getContents() { result = qlNode.getValue() }
 
   override string getAPrimaryQlClass() { result = "LineComment" }
 }
@@ -246,25 +250,23 @@ class LineComment extends TLineComment, Comment {
 /**
  * The `from, where, select` part of a QL query.
  */
-class Select extends TSelect, AstNode {
-  QL::Select sel;
-
-  Select() { this = TSelect(sel) }
+final new class Select extends QlNode, AstNode {
+  override QL::Select qlNode;
 
   /**
    * Gets the `i`th variable in the `from` clause.
    */
-  VarDecl getVarDecl(int i) { toQL(result) = sel.getChild(i) }
+  VarDecl getVarDecl(int i) { toQL(result) = qlNode.getChild(i) }
 
   /**
    * Gets the formula in the `where`.
    */
-  Formula getWhere() { toQL(result) = sel.getChild(_) }
+  Formula getWhere() { toQL(result) = qlNode.getChild(_) }
 
   /**
    * Gets the `i`th expression in the `select` clause.
    */
-  Expr getExpr(int i) { toQL(result) = sel.getChild(_).(QL::AsExprs).getChild(i) }
+  Expr getExpr(int i) { toQL(result) = qlNode.getChild(_).(QL::AsExprs).getChild(i) }
 
   Expr getMessage() {
     if this.getQueryDoc().getQueryKind() = "path-problem"
@@ -273,7 +275,9 @@ class Select extends TSelect, AstNode {
   }
 
   // TODO: This gets the `i`th order-by, but some expressions might not have an order-by.
-  Expr getOrderBy(int i) { toQL(result) = sel.getChild(_).(QL::OrderBys).getChild(i).getChild(0) }
+  Expr getOrderBy(int i) {
+    toQL(result) = qlNode.getChild(_).(QL::OrderBys).getChild(i).getChild(0)
+  }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -294,7 +298,7 @@ class Select extends TSelect, AstNode {
   QueryDoc getQueryDoc() { result.getLocation().getFile() = this.getLocation().getFile() }
 }
 
-class PredicateOrBuiltin extends TPredOrBuiltin, AstNode {
+abstract new class PredicateOrBuiltin extends AstNode {
   string getName() { none() }
 
   Type getDeclaringType() { none() }
@@ -308,18 +312,18 @@ class PredicateOrBuiltin extends TPredOrBuiltin, AstNode {
   predicate isPrivate() { none() }
 }
 
-class BuiltinPredicate extends PredicateOrBuiltin, TBuiltin {
+abstract new class BuiltinPredicate extends PredicateOrBuiltin {
   override string toString() { result = this.getName() }
 
   override string getAPrimaryQlClass() { result = "BuiltinPredicate" }
 }
 
-class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
+final new class BuiltinClassless extends BuiltinPredicate {
   string name;
   string ret;
   string args;
 
-  BuiltinClassless() { this = TBuiltinClassless(ret, name, args) }
+  BuiltinClassless() { isBuiltinClassless(ret, name, args) }
 
   override string getName() { result = name }
 
@@ -328,13 +332,13 @@ class BuiltinClassless extends BuiltinPredicate, TBuiltinClassless {
   override PrimitiveType getParameterType(int i) { result.getName() = getArgType(args, i) }
 }
 
-class BuiltinMember extends BuiltinPredicate, TBuiltinMember {
+final new class BuiltinMember extends BuiltinPredicate {
   string name;
   string qual;
   string ret;
   string args;
 
-  BuiltinMember() { this = TBuiltinMember(qual, ret, name, args) }
+  BuiltinMember() { isBuiltinMember(qual, ret, name, args) }
 
   override string getName() { result = name }
 
@@ -349,7 +353,7 @@ class BuiltinMember extends BuiltinPredicate, TBuiltinMember {
  * A QL predicate.
  * Either a classless predicate, a class predicate, or a characteristic predicate.
  */
-class Predicate extends TPredicate, AstNode, PredicateOrBuiltin, Declaration {
+abstract new class Predicate extends AstNode, PredicateOrBuiltin, Declaration {
   /**
    * Gets the body of the predicate.
    */
@@ -404,23 +408,29 @@ class Predicate extends TPredicate, AstNode, PredicateOrBuiltin, Declaration {
   override string getAPrimaryQlClass() { result = "Predicate" }
 }
 
+abstract new private class DbNode extends AstNode {
+  Dbscheme::AstNode dbNode;
+
+  override Dbscheme::AstNode asDbschemeNode() { result = dbNode }
+}
+
 /**
  * A relation in the database.
  */
-class Relation extends TDBRelation, AstNode, Declaration {
-  Dbscheme::Table table;
-
-  Relation() { this = TDBRelation(table) }
+// TODO: should this extend Predicate? the original didn't, but did extend TPredicate which includes TDBRelation.
+// so in the original heirarchy, all instances of this would be Predicates but not inherit members?
+final new class Relation extends AstNode, DbNode, Declaration {
+  override Dbscheme::Table dbNode;
 
   /**
    * Gets the name of the relation.
    */
-  override string getName() { result = table.getTableName().getChild().getValue() }
+  override string getName() { result = dbNode.getTableName().getChild().getValue() }
 
   private Dbscheme::Column getColumn(int i) {
     result =
       rank[i + 1](Dbscheme::Column column, int child |
-        table.getChild(child) = column
+        dbNode.getChild(child) = column
       |
         column order by child
       )
@@ -446,10 +456,8 @@ class Relation extends TDBRelation, AstNode, Declaration {
 /**
  * An expression that refers to a predicate, e.g. `BasicBlock::succ/2`.
  */
-class PredicateExpr extends TPredicateExpr, AstNode {
-  QL::PredicateExpr pe;
-
-  PredicateExpr() { this = TPredicateExpr(pe) }
+final new class PredicateExpr extends QlNode {
+  override QL::PredicateExpr qlNode;
 
   override string toString() { result = "predicate" }
 
@@ -459,7 +467,7 @@ class PredicateExpr extends TPredicateExpr, AstNode {
    */
   string getName() {
     exists(QL::AritylessPredicateExpr ape, QL::LiteralId id |
-      ape.getParent() = pe and
+      ape.getParent() = qlNode and
       id.getParent() = ape and
       result = id.getValue()
     )
@@ -471,7 +479,7 @@ class PredicateExpr extends TPredicateExpr, AstNode {
    */
   int getArity() {
     exists(QL::Integer i |
-      i.getParent() = pe and
+      i.getParent() = qlNode and
       result = i.getValue().toInt()
     )
   }
@@ -482,7 +490,7 @@ class PredicateExpr extends TPredicateExpr, AstNode {
    */
   ModuleExpr getQualifier() {
     exists(QL::AritylessPredicateExpr ape |
-      ape.getParent() = pe and
+      ape.getParent() = qlNode and
       toQL(result).getParent() = ape
     )
   }
@@ -504,10 +512,12 @@ class PredicateExpr extends TPredicateExpr, AstNode {
 /**
  * A classless predicate.
  */
-class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclaration {
+final new class ClasslessPredicate extends Predicate, ModuleDeclaration {
   Mocks::ClasslessPredicateOrMock pred;
 
-  ClasslessPredicate() { this = TClasslessPredicate(pred) }
+  override QL::AstNode asQlNode() { result = pred.asLeft() }
+
+  override Mocks::MockAst asMockNode() { result = pred.asRight() }
 
   override Location getLocation() { result = pred.asLeft().getName().getLocation() }
 
@@ -579,16 +589,14 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
 /**
  * A predicate in a class.
  */
-class ClassPredicate extends TClassPredicate, Predicate {
-  QL::MemberPredicate pred;
+final new class ClassPredicate extends QlNode, Predicate {
+  override QL::MemberPredicate qlNode;
 
-  ClassPredicate() { this = TClassPredicate(pred) }
+  override Location getLocation() { result = qlNode.getName().getLocation() }
 
-  override Location getLocation() { result = pred.getName().getLocation() }
+  override string getName() { result = qlNode.getName().getValue() }
 
-  override string getName() { result = pred.getName().getValue() }
-
-  override Formula getBody() { toQL(result) = pred.getChild(_).(QL::Body).getChild() }
+  override Formula getBody() { toQL(result) = qlNode.getChild(_).(QL::Body).getChild() }
 
   override string getAPrimaryQlClass() { result = "ClassPredicate" }
 
@@ -601,7 +609,7 @@ class ClassPredicate extends TClassPredicate, Predicate {
 
   override VarDecl getParameter(int i) {
     toQL(result) =
-      rank[i + 1](QL::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
+      rank[i + 1](QL::VarDecl decl, int index | decl = qlNode.getChild(index) | decl order by index)
   }
 
   /**
@@ -613,7 +621,7 @@ class ClassPredicate extends TClassPredicate, Predicate {
 
   predicate shadows(ClassPredicate other) { predShadows(this, other) }
 
-  override TypeExpr getReturnTypeExpr() { toQL(result) = pred.getReturnType() }
+  override TypeExpr getReturnTypeExpr() { toQL(result) = qlNode.getReturnType() }
 
   override AstNode getAChild(string pred_name) {
     result = super.getAChild(pred_name)
@@ -629,14 +637,12 @@ class ClassPredicate extends TClassPredicate, Predicate {
 /**
  * A characteristic predicate of a class.
  */
-class CharPred extends TCharPred, Predicate {
-  QL::Charpred pred;
-
-  CharPred() { this = TCharPred(pred) }
+final new class CharPred extends QlNode, Predicate {
+  override QL::Charpred qlNode;
 
   override string getAPrimaryQlClass() { result = "CharPred" }
 
-  override Formula getBody() { toQL(result) = pred.getBody() }
+  override Formula getBody() { toQL(result) = qlNode.getBody() }
 
   override string getName() { result = this.getParent().(Class).getName() }
 
@@ -653,7 +659,7 @@ class CharPred extends TCharPred, Predicate {
  * A variable definition. This is either a variable declaration or
  * an `as` expression.
  */
-class VarDef extends TVarDef, AstNode {
+abstract new class VarDef extends AstNode {
   /** Gets the name of the declared variable. */
   string getName() { none() }
 
@@ -670,10 +676,12 @@ class VarDef extends TVarDef, AstNode {
 /**
  * A variable declaration, with a type and a name.
  */
-class VarDecl extends TVarDecl, VarDef, Declaration {
+final new class VarDecl extends VarDef, Declaration {
   Mocks::VarDeclOrMock var;
 
-  VarDecl() { this = TVarDecl(var) }
+  override QL::AstNode asQlNode() { result = var.asLeft() }
+
+  override Mocks::MockAst asMockNode() { result = var.asRight() }
 
   override string getName() {
     result = var.asLeft().getChild(1).(QL::VarName).getChild().getValue()
@@ -726,12 +734,10 @@ class VarDecl extends TVarDecl, VarDef, Declaration {
 /**
  * A field declaration;
  */
-class FieldDecl extends TFieldDecl, AstNode {
-  QL::Field f;
+final new class FieldDecl extends QlNode, AstNode {
+  override QL::Field qlNode;
 
-  FieldDecl() { this = TFieldDecl(f) }
-
-  VarDecl getVarDecl() { toQL(result) = f.getChild() }
+  VarDecl getVarDecl() { toQL(result) = qlNode.getChild() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -752,10 +758,12 @@ class FieldDecl extends TFieldDecl, AstNode {
 /**
  * A type reference, such as `DataFlow::Node`.
  */
-class TypeExpr extends TType, TypeRef {
+final new class TypeExpr extends TypeRef {
   Mocks::TypeExprOrMock type;
 
-  TypeExpr() { this = TType(type) }
+  override QL::AstNode asQlNode() { result = type.asLeft() }
+
+  override Mocks::MockAst asMockNode() { result = type.asRight() }
 
   override string getAPrimaryQlClass() { result = "TypeExpr" }
 
@@ -810,10 +818,13 @@ class TypeExpr extends TType, TypeRef {
 /**
  * A QL module.
  */
-class Module extends TModule, ModuleDeclaration {
+// TODO: Each of these 'mock' classes could be split into 2
+final new class Module extends ModuleDeclaration {
   Mocks::ModuleOrMock mod;
 
-  Module() { this = TModule(mod) }
+  override QL::AstNode asQlNode() { result = mod.asLeft() }
+
+  override Mocks::MockAst asMockNode() { result = mod.asRight() }
 
   override Location getLocation() { result = mod.asLeft().getName().getLocation() }
 
@@ -883,7 +894,7 @@ class Module extends TModule, ModuleDeclaration {
 /**
  * A member of a module.
  */
-class ModuleMember extends TModuleMember, AstNode {
+abstract new class ModuleMember extends AstNode {
   /** Holds if this member is declared as `private`. */
   predicate isPrivate() { this.hasAnnotation("private") }
 
@@ -922,7 +933,7 @@ private Declaration getDeclaration(Module m, string name, TDeclarationKind kind)
 }
 
 /** A declaration. E.g. a class, type, predicate, newtype... */
-class Declaration extends TDeclaration, AstNode {
+abstract new class Declaration extends AstNode {
   /** Gets the name of this declaration. */
   string getName() { none() }
 
@@ -948,18 +959,20 @@ class Declaration extends TDeclaration, AstNode {
 }
 
 /** An entity that can be declared in a module. */
-class ModuleDeclaration extends TModuleDeclaration, Declaration, ModuleMember { }
+abstract new class ModuleDeclaration extends Declaration, ModuleMember { }
 
 /** An type declaration. Either a `class` or a `newtype`. */
-class TypeDeclaration extends TTypeDeclaration, Declaration { }
+abstract new class TypeDeclaration extends Declaration { }
 
 /**
  * A QL class.
  */
-class Class extends TClass, TypeDeclaration, ModuleDeclaration {
+final new class Class extends TypeDeclaration, ModuleDeclaration {
   Mocks::ClassOrMock cls;
 
-  Class() { this = TClass(cls) }
+  override QL::AstNode asQlNode() { result = cls.asLeft() }
+
+  override Mocks::MockAst asMockNode() { result = cls.asRight() }
 
   override Location getLocation() { result = cls.asLeft().getName().getLocation() }
 
@@ -1051,21 +1064,19 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
 /**
  * A `newtype Foo` declaration.
  */
-class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
-  QL::Datatype type;
+final new class NewType extends QlNode, TypeDeclaration, ModuleDeclaration {
+  override QL::Datatype qlNode;
 
-  NewType() { this = TNewType(type) }
+  override Location getLocation() { result = qlNode.getName().getLocation() }
 
-  override Location getLocation() { result = type.getName().getLocation() }
-
-  override string getName() { result = type.getName().getValue() }
+  override string getName() { result = qlNode.getName().getValue() }
 
   override string getAPrimaryQlClass() { result = "NewType" }
 
   /**
    * Gets a branch in this `newtype`.
    */
-  NewTypeBranch getABranch() { toQL(result) = type.getChild().getChild(_) }
+  NewTypeBranch getABranch() { toQL(result) = qlNode.getChild().getChild(_) }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1078,25 +1089,23 @@ class NewType extends TNewType, TypeDeclaration, ModuleDeclaration {
  * A branch in a `newtype`.
  * E.g. `Bar()` or `Baz()` in `newtype Foo = Bar() or Baz()`.
  */
-class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
-  QL::DatatypeBranch branch;
+final new class NewTypeBranch extends QlNode, Predicate, TypeDeclaration {
+  override QL::DatatypeBranch qlNode;
 
-  NewTypeBranch() { this = TNewTypeBranch(branch) }
-
-  override Location getLocation() { result = branch.getName().getLocation() }
+  override Location getLocation() { result = qlNode.getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "NewTypeBranch" }
 
-  override string getName() { result = branch.getName().getValue() }
+  override string getName() { result = qlNode.getName().getValue() }
 
   /** Gets a field in this branch. */
   VarDecl getField(int i) {
     toQL(result) =
-      rank[i + 1](QL::VarDecl var, int index | var = branch.getChild(index) | var order by index)
+      rank[i + 1](QL::VarDecl var, int index | var = qlNode.getChild(index) | var order by index)
   }
 
   /** Gets the body of this branch. */
-  override Formula getBody() { toQL(result) = branch.getChild(_).(QL::Body).getChild() }
+  override Formula getBody() { toQL(result) = qlNode.getChild(_).(QL::Body).getChild() }
 
   override NewTypeBranchType getReturnType() { result.getDeclaration() = this }
 
@@ -1110,7 +1119,7 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
 
   override predicate isPrivate() { this.getNewType().isPrivate() }
 
-  override QLDoc getQLDoc() { toQL(result) = branch.getChild(_) }
+  override QLDoc getQLDoc() { toQL(result) = qlNode.getChild(_) }
 
   NewType getNewType() { result.getABranch() = this }
 
@@ -1129,7 +1138,7 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
  * or a member call `foo.bar()`,
  * or a special call to `none()` or `any()`.
  */
-class Call extends TCall, Expr, Formula {
+abstract new class Call extends TCall, Expr, Formula {
   /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) {
     none() // overridden in subclasses.
@@ -1158,32 +1167,30 @@ class Call extends TCall, Expr, Formula {
  * A call to a non-member predicate.
  * E.g. `foo()` or `Foo::bar()`.
  */
-class PredicateCall extends TPredicateCall, Call {
-  QL::CallOrUnqualAggExpr expr;
-
-  PredicateCall() { this = TPredicateCall(expr) }
+final new class PredicateCall extends QlNode, Call {
+  override QL::CallOrUnqualAggExpr qlNode;
 
   override Expr getArgument(int i) {
-    exists(QL::CallBody body | body.getParent() = expr | toQL(result) = body.getChild(i))
+    exists(QL::CallBody body | body.getParent() = qlNode | toQL(result) = body.getChild(i))
   }
 
   final override ModuleExpr getQualifier() {
     exists(QL::AritylessPredicateExpr ape |
-      ape.getParent() = expr and
+      ape.getParent() = qlNode and
       toQL(result).getParent() = ape
     )
   }
 
   override string getAPrimaryQlClass() { result = "PredicateCall" }
 
-  override predicate isClosure(string kind) { kind = expr.getChild(_).(QL::Closure).getValue() }
+  override predicate isClosure(string kind) { kind = qlNode.getChild(_).(QL::Closure).getValue() }
 
   /**
    * Gets the name of the predicate called.
    * E.g. for `foo()` the result is "foo".
    */
   string getPredicateName() {
-    result = expr.getChild(0).(QL::AritylessPredicateExpr).getName().getValue()
+    result = qlNode.getChild(0).(QL::AritylessPredicateExpr).getName().getValue()
   }
 
   override AstNode getAChild(string pred) {
@@ -1199,10 +1206,10 @@ class PredicateCall extends TPredicateCall, Call {
  * A member call to a predicate.
  * E.g. `foo.bar()`.
  */
-class MemberCall extends TMemberCall, Call {
-  QL::QualifiedExpr expr;
+final new class MemberCall extends QlNode, Call {
+  override QL::QualifiedExpr qlNode;
 
-  MemberCall() { this = TMemberCall(expr) }
+  MemberCall() { not qlNode.getChild(_).(QL::QualifiedRhs).getChild(_) instanceof QL::TypeExpr }
 
   override string getAPrimaryQlClass() { result = "MemberCall" }
 
@@ -1210,10 +1217,10 @@ class MemberCall extends TMemberCall, Call {
    * Gets the name of the member called.
    * E.g. for `foo.bar()` the result is "bar".
    */
-  string getMemberName() { result = expr.getChild(_).(QL::QualifiedRhs).getName().getValue() }
+  string getMemberName() { result = qlNode.getChild(_).(QL::QualifiedRhs).getName().getValue() }
 
   override predicate isClosure(string kind) {
-    kind = expr.getChild(_).(QL::QualifiedRhs).getChild(_).(QL::Closure).getValue()
+    kind = qlNode.getChild(_).(QL::QualifiedRhs).getChild(_).(QL::Closure).getValue()
   }
 
   /**
@@ -1221,12 +1228,12 @@ class MemberCall extends TMemberCall, Call {
    *
    * Only yields a result if this is actually a `super` call.
    */
-  TypeExpr getSuperType() { toQL(result) = expr.getChild(_).(QL::SuperRef).getChild(0) }
+  TypeExpr getSuperType() { toQL(result) = qlNode.getChild(_).(QL::SuperRef).getChild(0) }
 
   override Expr getArgument(int i) {
     result =
       rank[i + 1](Expr e, int index |
-        toQL(e) = expr.getChild(_).(QL::QualifiedRhs).getChild(index)
+        toQL(e) = qlNode.getChild(_).(QL::QualifiedRhs).getChild(index)
       |
         e order by index
       )
@@ -1236,7 +1243,7 @@ class MemberCall extends TMemberCall, Call {
    * Gets the base of the member call.
    * E.g. for `foo.(Bar).baz()` the result is `foo.(Bar)`.
    */
-  Expr getBase() { toQL(result) = expr.getChild(0) }
+  Expr getBase() { toQL(result) = qlNode.getChild(0) }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1252,10 +1259,8 @@ class MemberCall extends TMemberCall, Call {
 /**
  * A call to the special `none()` predicate.
  */
-class NoneCall extends TNoneCall, Call, Formula {
-  QL::SpecialCall call;
-
-  NoneCall() { this = TNoneCall(call) }
+final new class NoneCall extends QlNode, Call, Formula {
+  override QL::SpecialCall qlNode;
 
   override string getAPrimaryQlClass() { result = "NoneCall" }
 }
@@ -1263,10 +1268,13 @@ class NoneCall extends TNoneCall, Call, Formula {
 /**
  * A call to the special `any()` predicate.
  */
-class AnyCall extends TAnyCall, Call {
-  QL::Aggregate agg;
+final new class AnyCall extends QlNode, Call {
+  override QL::Aggregate qlNode;
 
-  AnyCall() { this = TAnyCall(agg) }
+  AnyCall() {
+    "any" = qlNode.getChild(0).(QL::AggId).getValue() and
+    not qlNode.getChild(_) instanceof QL::FullAggregateBody
+  }
 
   override string getAPrimaryQlClass() { result = "AnyCall" }
 }
@@ -1274,10 +1282,8 @@ class AnyCall extends TAnyCall, Call {
 /**
  * An inline cast, e.g. `foo.(Bar)`.
  */
-class InlineCast extends TInlineCast, Expr {
-  QL::QualifiedExpr expr;
-
-  InlineCast() { this = TInlineCast(expr) }
+final new class InlineCast extends QlNode, Expr {
+  override QL::QualifiedExpr qlNode;
 
   override string getAPrimaryQlClass() { result = "InlineCast" }
 
@@ -1285,7 +1291,7 @@ class InlineCast extends TInlineCast, Expr {
    * Gets the type being cast to.
    * E.g. for `foo.(Bar)` the result is `Bar`.
    */
-  TypeExpr getTypeExpr() { toQL(result) = expr.getChild(_).(QL::QualifiedRhs).getChild(_) }
+  TypeExpr getTypeExpr() { toQL(result) = qlNode.getChild(_).(QL::QualifiedRhs).getChild(_) }
 
   override Type getType() { result = this.getTypeExpr().getResolvedType() }
 
@@ -1293,7 +1299,7 @@ class InlineCast extends TInlineCast, Expr {
    * Gets the expression being cast.
    * E.g. for `foo.(Bar)` the result is `foo`.
    */
-  Expr getBase() { toQL(result) = expr.getChild(0) }
+  Expr getBase() { toQL(result) = qlNode.getChild(0) }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1305,7 +1311,7 @@ class InlineCast extends TInlineCast, Expr {
 }
 
 /** An entity that resolves to a type. */
-class TypeRef extends AstNode, TTypeRef {
+abstract new class TypeRef extends AstNode {
   abstract Type getResolvedType();
 
   /** Gets the module that this entity resolves to, if this reference resolves to a module */
@@ -1315,10 +1321,8 @@ class TypeRef extends AstNode, TTypeRef {
 /**
  * An import statement.
  */
-class Import extends TImport, ModuleMember, TypeRef {
-  QL::ImportDirective imp;
-
-  Import() { this = TImport(imp) }
+final new class Import extends QlNode, ModuleMember, TypeRef {
+  override QL::ImportDirective qlNode;
 
   override string getAPrimaryQlClass() { result = "Import" }
 
@@ -1329,7 +1333,7 @@ class Import extends TImport, ModuleMember, TypeRef {
    * import semmle.javascript.dataflow.Configuration as Flow
    * ```
    */
-  string importedAs() { result = imp.getChild(1).(QL::ModuleName).getChild().getValue() }
+  string importedAs() { result = qlNode.getChild(1).(QL::ModuleName).getChild().getValue() }
 
   /**
    * Gets the qualified name of the module selected in the import statement.
@@ -1347,7 +1351,7 @@ class Import extends TImport, ModuleMember, TypeRef {
    * `import foo.Bar::Baz::Qux`
    * The module expression is the `Bar::Baz::Qux` part.
    */
-  ModuleExpr getModuleExpr() { toQL(result) = imp.getChild(0).(QL::ImportModuleExpr).getChild() }
+  ModuleExpr getModuleExpr() { toQL(result) = qlNode.getChild(0).(QL::ImportModuleExpr).getChild() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1362,7 +1366,7 @@ class Import extends TImport, ModuleMember, TypeRef {
    * It is true that `getQualifiedName(0) = "foo"` and `getQualifiedName(1) = "bar"`.
    */
   string getQualifiedName(int i) {
-    result = imp.getChild(0).(QL::ImportModuleExpr).getQualName(i).getValue()
+    result = qlNode.getChild(0).(QL::ImportModuleExpr).getQualName(i).getValue()
   }
 
   /**
@@ -1384,24 +1388,22 @@ class Import extends TImport, ModuleMember, TypeRef {
 }
 
 /** A formula, such as `x = 6 and y < 5`. */
-class Formula extends TFormula, AstNode { }
+abstract new class Formula extends AstNode { }
 
 /** An `and` formula, with 2 or more operands. */
-class Conjunction extends TConjunction, AstNode, Formula {
-  QL::Conjunction conj;
-
-  Conjunction() { this = TConjunction(conj) }
+final new class Conjunction extends QlNode, Formula {
+  override QL::Conjunction qlNode;
 
   override string getAPrimaryQlClass() { result = "Conjunction" }
 
   /** Gets an operand to this conjunction. */
-  Formula getAnOperand() { toQL(result) in [conj.getLeft(), conj.getRight()] }
+  Formula getAnOperand() { toQL(result) in [qlNode.getLeft(), qlNode.getRight()] }
 
   /** Gets the left operand to this conjunction. */
-  Formula getLeft() { toQL(result) = conj.getLeft() }
+  Formula getLeft() { toQL(result) = qlNode.getLeft() }
 
   /** Gets the right operand to this conjunction. */
-  Formula getRight() { toQL(result) = conj.getRight() }
+  Formula getRight() { toQL(result) = qlNode.getRight() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1411,21 +1413,19 @@ class Conjunction extends TConjunction, AstNode, Formula {
 }
 
 /** An `or` formula, with 2 or more operands. */
-class Disjunction extends TDisjunction, AstNode, Formula {
-  QL::Disjunction disj;
-
-  Disjunction() { this = TDisjunction(disj) }
+final new class Disjunction extends QlNode, Formula {
+  override QL::Disjunction qlNode;
 
   override string getAPrimaryQlClass() { result = "Disjunction" }
 
   /** Gets an operand to this disjunction. */
-  Formula getAnOperand() { toQL(result) in [disj.getLeft(), disj.getRight()] }
+  Formula getAnOperand() { toQL(result) in [qlNode.getLeft(), qlNode.getRight()] }
 
   /** Gets the left operand to this disjunction */
-  Formula getLeft() { toQL(result) = disj.getLeft() }
+  Formula getLeft() { toQL(result) = qlNode.getLeft() }
 
   /** Gets the right operand to this disjunction */
-  Formula getRight() { toQL(result) = disj.getRight() }
+  Formula getRight() { toQL(result) = qlNode.getRight() }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1437,17 +1437,15 @@ class Disjunction extends TDisjunction, AstNode, Formula {
 /**
  * A literal expression, such as `6` or `true` or `"foo"`.
  */
-class Literal extends TLiteral, Expr {
-  QL::Literal lit;
-
-  Literal() { this = TLiteral(lit) }
+abstract new class Literal extends QlNode, Expr {
+  override QL::Literal qlNode;
 
   override string getAPrimaryQlClass() { result = "??Literal??" }
 }
 
 /** A string literal. */
-class String extends Literal {
-  String() { lit.getChild() instanceof QL::String }
+final new class String extends Literal {
+  String() { qlNode.getChild() instanceof QL::String }
 
   override string getAPrimaryQlClass() { result = "String" }
 
@@ -1455,41 +1453,42 @@ class String extends Literal {
 
   /** Gets the string value of this literal. */
   string getValue() {
-    exists(string raw | raw = lit.getChild().(QL::String).getValue() |
+    exists(string raw | raw = qlNode.getChild().(QL::String).getValue() |
       result = raw.substring(1, raw.length() - 1)
     )
   }
 }
 
 /** An integer literal. */
-class Integer extends Literal {
-  Integer() { lit.getChild() instanceof QL::Integer }
+final new class Integer extends Literal {
+  Integer() { qlNode.getChild() instanceof QL::Integer }
 
   override string getAPrimaryQlClass() { result = "Integer" }
 
   override PrimitiveType getType() { result.getName() = "int" }
 
   /** Gets the integer value of this literal. */
-  int getValue() { result = lit.getChild().(QL::Integer).getValue().toInt() }
+  int getValue() { result = qlNode.getChild().(QL::Integer).getValue().toInt() }
 }
 
 /** A float literal. */
-class Float extends Literal {
-  Float() { lit.getChild() instanceof QL::Float }
+final new class Float extends Literal {
+  Float() { qlNode.getChild() instanceof QL::Float }
 
   override string getAPrimaryQlClass() { result = "Float" }
 
   override PrimitiveType getType() { result.getName() = "float" }
 
   /** Gets the float value of this literal. */
-  float getValue() { result = lit.getChild().(QL::Float).getValue().toFloat() }
+  float getValue() { result = qlNode.getChild().(QL::Float).getValue().toFloat() }
 }
 
 /** A boolean literal */
-class Boolean extends Literal {
+// TODO: these weren't direct ipa types before. we could have had Literal be `final` if not for the overrides on getAPrimaryQlClass.
+final new class Boolean extends Literal {
   QL::Bool bool;
 
-  Boolean() { lit.getChild() = bool }
+  Boolean() { qlNode.getChild() = bool }
 
   /** Holds if the value is `true` */
   predicate isTrue() { bool.getChild() instanceof QL::True }
@@ -1508,22 +1507,20 @@ class ComparisonSymbol extends string {
 }
 
 /** A comparison formula, such as `x < 3` or `y = true`. */
-class ComparisonFormula extends TComparisonFormula, Formula {
-  QL::CompTerm comp;
-
-  ComparisonFormula() { this = TComparisonFormula(comp) }
+final new class ComparisonFormula extends QlNode, Formula {
+  override QL::CompTerm qlNode;
 
   /** Gets the left operand of this comparison. */
-  Expr getLeftOperand() { toQL(result) = comp.getLeft() }
+  Expr getLeftOperand() { toQL(result) = qlNode.getLeft() }
 
   /** Gets the right operand of this comparison. */
-  Expr getRightOperand() { toQL(result) = comp.getRight() }
+  Expr getRightOperand() { toQL(result) = qlNode.getRight() }
 
   /** Gets an operand of this comparison. */
   Expr getAnOperand() { result in [this.getLeftOperand(), this.getRightOperand()] }
 
   /** Gets the operator of this comparison. */
-  ComparisonSymbol getOperator() { result = comp.getChild().getValue() }
+  ComparisonSymbol getOperator() { result = qlNode.getChild().getValue() }
 
   override string getAPrimaryQlClass() { result = "ComparisonFormula" }
 
@@ -1545,34 +1542,32 @@ class ComparisonFormula extends TComparisonFormula, Formula {
 }
 
 /** A quantifier formula, such as `exists` or `forall`. */
-class Quantifier extends TQuantifier, Formula {
-  QL::Quantified quant;
+abstract new class Quantifier extends QlNode, Formula {
+  override QL::Quantified qlNode;
   string kind;
 
-  Quantifier() {
-    this = TQuantifier(quant) and kind = quant.getChild(0).(QL::Quantifier).getValue()
-  }
+  Quantifier() { kind = qlNode.getChild(0).(QL::Quantifier).getValue() }
 
   /** Gets the ith variable declaration of this quantifier. */
-  VarDecl getArgument(int i) { toQL(result) = quant.getChild(i + 1) }
+  VarDecl getArgument(int i) { toQL(result) = qlNode.getChild(i + 1) }
 
   /** Gets an argument of this quantifier. */
   VarDecl getAnArgument() { result = this.getArgument(_) }
 
   /** Gets the formula restricting the range of this quantifier, if any. */
-  Formula getRange() { toQL(result) = quant.getRange() }
+  Formula getRange() { toQL(result) = qlNode.getRange() }
 
   /** Holds if this quantifier has a range formula. */
   predicate hasRange() { exists(this.getRange()) }
 
   /** Gets the main body of the quantifier. */
-  Formula getFormula() { toQL(result) = quant.getFormula() }
+  Formula getFormula() { toQL(result) = qlNode.getFormula() }
 
   /**
    * Gets the expression of this quantifier, if the quantifier is
    * of the form `exists( expr )`.
    */
-  Expr getExpr() { toQL(result) = quant.getExpr() }
+  Expr getExpr() { toQL(result) = qlNode.getExpr() }
 
   /**
    * Holds if this is the "expression only" form of an exists quantifier.
@@ -1596,40 +1591,38 @@ class Quantifier extends TQuantifier, Formula {
 }
 
 /** An `exists` quantifier. */
-class Exists extends Quantifier {
+final new class Exists extends Quantifier {
   Exists() { kind = "exists" }
 
   override string getAPrimaryQlClass() { result = "Exists" }
 }
 
 /** A `forall` quantifier. */
-class Forall extends Quantifier {
+final new class Forall extends Quantifier {
   Forall() { kind = "forall" }
 
   override string getAPrimaryQlClass() { result = "Forall" }
 }
 
 /** A `forex` quantifier. */
-class Forex extends Quantifier {
+final new class Forex extends Quantifier {
   Forex() { kind = "forex" }
 
   override string getAPrimaryQlClass() { result = "Forex" }
 }
 
 /** A conditional formula, of the form  `if a then b else c`. */
-class IfFormula extends TIfFormula, Formula {
-  QL::IfTerm ifterm;
-
-  IfFormula() { this = TIfFormula(ifterm) }
+final new class IfFormula extends QlNode, Formula {
+  override QL::IfTerm qlNode;
 
   /** Gets the condition (the `if` part) of this formula. */
-  Formula getCondition() { toQL(result) = ifterm.getCond() }
+  Formula getCondition() { toQL(result) = qlNode.getCond() }
 
   /** Gets the `then` part of this formula. */
-  Formula getThenPart() { toQL(result) = ifterm.getFirst() }
+  Formula getThenPart() { toQL(result) = qlNode.getFirst() }
 
   /** Gets the `else` part of this formula. */
-  Formula getElsePart() { toQL(result) = ifterm.getSecond() }
+  Formula getElsePart() { toQL(result) = qlNode.getSecond() }
 
   override string getAPrimaryQlClass() { result = "IfFormula" }
 
@@ -1647,16 +1640,14 @@ class IfFormula extends TIfFormula, Formula {
 /**
  * An implication formula, of the form `foo implies bar`.
  */
-class Implication extends TImplication, Formula {
-  QL::Implication imp;
-
-  Implication() { this = TImplication(imp) }
+final new class Implication extends QlNode, Formula {
+  override QL::Implication qlNode;
 
   /** Gets the left operand of this implication. */
-  Formula getLeftOperand() { toQL(result) = imp.getLeft() }
+  Formula getLeftOperand() { toQL(result) = qlNode.getLeft() }
 
   /** Gets the right operand of this implication. */
-  Formula getRightOperand() { toQL(result) = imp.getRight() }
+  Formula getRightOperand() { toQL(result) = qlNode.getRight() }
 
   override string getAPrimaryQlClass() { result = "Implication" }
 
@@ -1672,16 +1663,14 @@ class Implication extends TImplication, Formula {
 /**
  * A type check formula, of the form `foo instanceof bar`.
  */
-class InstanceOf extends TInstanceOf, Formula {
-  QL::InstanceOf inst;
-
-  InstanceOf() { this = TInstanceOf(inst) }
+final new class InstanceOf extends QlNode, Formula {
+  override QL::InstanceOf qlNode;
 
   /** Gets the expression being checked. */
-  Expr getExpr() { toQL(result) = inst.getChild(0) }
+  Expr getExpr() { toQL(result) = qlNode.getChild(0) }
 
   /** Gets the reference to the type being checked. */
-  TypeExpr getType() { toQL(result) = inst.getChild(1) }
+  TypeExpr getType() { toQL(result) = qlNode.getChild(1) }
 
   override string getAPrimaryQlClass() { result = "InstanceOf" }
 
@@ -1698,22 +1687,20 @@ class InstanceOf extends TInstanceOf, Formula {
  * A in formula, such as `foo in [2, 3]`.
  * The formula holds if the lhs is in the rhs.
  */
-class InFormula extends TInFormula, Formula {
-  QL::InExpr inexpr;
-
-  InFormula() { this = TInFormula(inexpr) }
+final new class InFormula extends QlNode, Formula {
+  override QL::InExpr qlNode;
 
   /**
    * Gets the expression that is checked for membership.
    * E.g. for `foo in [2, 3]` the result is `foo`.
    */
-  Expr getExpr() { toQL(result) = inexpr.getLeft() }
+  Expr getExpr() { toQL(result) = qlNode.getLeft() }
 
   /**
    * Gets the range for this in formula.
    * E.g. for `foo in [2, 3]` the result is `[2, 3]`.
    */
-  Expr getRange() { toQL(result) = inexpr.getRight() }
+  Expr getRange() { toQL(result) = qlNode.getRight() }
 
   override string getAPrimaryQlClass() { result = "InFormula" }
 
@@ -1730,16 +1717,14 @@ class InFormula extends TInFormula, Formula {
  * A "call" to a high-order formula.
  * E.g. `fastTC(pathSucc/2)(n1, n2)`.
  */
-class HigherOrderFormula extends THigherOrderFormula, Formula {
-  QL::HigherOrderTerm hop;
-
-  HigherOrderFormula() { this = THigherOrderFormula(hop) }
+final new class HigherOrderFormula extends QlNode, Formula {
+  override QL::HigherOrderTerm qlNode;
 
   /**
    * Gets the `i`th input to this higher-order formula.
    * E.g. for `fastTC(pathSucc/2)(n1, n2)` the result is `pathSucc/2`.
    */
-  PredicateExpr getInput(int i) { toQL(result) = hop.getChild(i).(QL::PredicateExpr) }
+  PredicateExpr getInput(int i) { toQL(result) = qlNode.getChild(i).(QL::PredicateExpr) }
 
   /**
    * Gets the number of inputs.
@@ -1750,13 +1735,13 @@ class HigherOrderFormula extends THigherOrderFormula, Formula {
    * Gets the `i`th argument to this higher-order formula.
    * E.g. for `fastTC(pathSucc/2)(n1, n2)` the result is `n1` and `n2`.
    */
-  Expr getArgument(int i) { toQL(result) = hop.getChild(i + this.getNumInputs()) }
+  Expr getArgument(int i) { toQL(result) = qlNode.getChild(i + this.getNumInputs()) }
 
   /**
    * Gets the name of this higher-order predicate.
    * E.g. for `fastTC(pathSucc/2)(n1, n2)` the result is "fastTC".
    */
-  string getName() { result = hop.getName().getValue() }
+  string getName() { result = qlNode.getName().getValue() }
 
   override string getAPrimaryQlClass() { result = "HigherOrderFormula" }
 
@@ -1771,7 +1756,7 @@ class HigherOrderFormula extends THigherOrderFormula, Formula {
   }
 }
 
-class Aggregate extends TAggregate, Expr {
+abstract new class Aggregate extends Expr {
   string getKind() { none() }
 
   QL::Aggregate getAggregate() { none() }
@@ -1781,15 +1766,14 @@ class Aggregate extends TAggregate, Expr {
  * An aggregate containing an expression.
  * E.g. `min(getAPredicate().getArity())`.
  */
-class ExprAggregate extends TExprAggregate, Aggregate {
-  QL::Aggregate agg;
+class ExprAggregate extends QlNode, Aggregate {
+  override QL::Aggregate qlNode;
   QL::ExprAggregateBody body;
   string kind;
 
   ExprAggregate() {
-    this = TExprAggregate(agg) and
-    kind = agg.getChild(0).(QL::AggId).getValue() and
-    body = agg.getChild(_)
+    kind = qlNode.getChild(0).(QL::AggId).getValue() and
+    body = qlNode.getChild(_)
   }
 
   /**
@@ -1798,7 +1782,7 @@ class ExprAggregate extends TExprAggregate, Aggregate {
    */
   override string getKind() { result = kind }
 
-  override QL::Aggregate getAggregate() { result = agg }
+  override QL::Aggregate getAggregate() { result = qlNode }
 
   /**
    * Gets the ith "as" expression of this aggregate, if any.
@@ -1844,15 +1828,14 @@ class ExprAggregate extends TExprAggregate, Aggregate {
 }
 
 /** An aggregate expression, such as `count` or `sum`. */
-class FullAggregate extends TFullAggregate, Aggregate {
-  QL::Aggregate agg;
+final new class FullAggregate extends QlNode, Aggregate {
+  override QL::Aggregate qlNode;
   string kind;
   QL::FullAggregateBody body;
 
   FullAggregate() {
-    this = TFullAggregate(agg) and
-    kind = agg.getChild(0).(QL::AggId).getValue() and
-    body = agg.getChild(_)
+    kind = qlNode.getChild(0).(QL::AggId).getValue() and
+    body = qlNode.getChild(_)
   }
 
   /**
@@ -1861,7 +1844,7 @@ class FullAggregate extends TFullAggregate, Aggregate {
    */
   override string getKind() { result = kind }
 
-  override QL::Aggregate getAggregate() { result = agg }
+  override QL::Aggregate getAggregate() { result = qlNode }
 
   /** Gets the ith declared argument of this quantifier. */
   VarDecl getArgument(int i) { toQL(result) = body.getChild(i) }
@@ -1928,6 +1911,7 @@ class FullAggregate extends TFullAggregate, Aggregate {
 /**
  * A "any" expression, such as `any(int i | i > 0).toString()`.
  */
+// TODO: hm these don't very neatly fit into the IPA heirarchy
 class Any extends FullAggregate {
   Any() { this.getKind() = "any" }
 
@@ -1937,6 +1921,7 @@ class Any extends FullAggregate {
 /**
  * A "rank" expression, such as `rank[4](int i | i = [5 .. 15] | i)`.
  */
+// this doesn't even give an error since it's extending an abstract class? hm
 class Rank extends Aggregate {
   Rank() { this.getKind() = "rank" }
 
@@ -1957,10 +1942,10 @@ class Rank extends Aggregate {
 /**
  * An "as" expression, such as `foo as bar`.
  */
-class AsExpr extends TAsExpr, VarDef, Expr {
-  QL::AsExpr asExpr;
+final new class AsExpr extends QlNode, VarDef, Expr {
+  override QL::AsExpr qlNode;
 
-  AsExpr() { this = TAsExpr(asExpr) }
+  AsExpr() { qlNode.getChild(1) instanceof QL::VarName }
 
   override string getAPrimaryQlClass() { result = "AsExpr" }
 
@@ -1972,13 +1957,13 @@ class AsExpr extends TAsExpr, VarDef, Expr {
    * Gets the name the inner expression gets "saved" under.
    * For example this is `bar` in the expression `foo as bar`.
    */
-  string getAsName() { result = asExpr.getChild(1).(QL::VarName).getChild().getValue() }
+  string getAsName() { result = qlNode.getChild(1).(QL::VarName).getChild().getValue() }
 
   /**
    * Gets the inner expression of the "as" expression. For example, this is `foo` in
    * the expression `foo as bar`.
    */
-  Expr getInnerExpr() { toQL(result) = asExpr.getChild(0) }
+  Expr getInnerExpr() { toQL(result) = qlNode.getChild(0) }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -1990,10 +1975,8 @@ class AsExpr extends TAsExpr, VarDef, Expr {
 /**
  * An identifier, such as `foo`.
  */
-class Identifier extends TIdentifier, Expr {
-  QL::Variable id;
-
-  Identifier() { this = TIdentifier(id) }
+final new class Identifier extends QlNode, Expr {
+  override QL::Variable qlNode;
 
   string getName() { none() }
 
@@ -2003,6 +1986,7 @@ class Identifier extends TIdentifier, Expr {
 }
 
 /** An access to a variable. */
+// TODO: can't handle this? breaks monotonicity to make this final and Identifier abstract!
 class VarAccess extends Identifier {
   private VarDef decl;
 
@@ -2011,7 +1995,7 @@ class VarAccess extends Identifier {
   /** Gets the accessed variable. */
   VarDef getDeclaration() { result = decl }
 
-  override string getName() { result = id.getChild().(QL::VarName).getChild().getValue() }
+  override string getName() { result = qlNode.getChild().(QL::VarName).getChild().getValue() }
 
   override Type getType() { result = this.getDeclaration().getType() }
 
@@ -2036,7 +2020,7 @@ class FieldAccess extends Identifier {
 
 /** An access to `this`. */
 class ThisAccess extends Identifier {
-  ThisAccess() { any(QL::This t).getParent() = id }
+  ThisAccess() { any(QL::This t).getParent() = qlNode }
 
   override Type getType() { result = this.getParent+().(Class).getType() }
 
@@ -2046,8 +2030,8 @@ class ThisAccess extends Identifier {
 }
 
 /** A use of `super`. */
-class Super extends TSuper, Expr {
-  Super() { this = TSuper(_) }
+final new class Super extends QlNode, Expr {
+  override QL::Super qlNode;
 
   override string getAPrimaryQlClass() { result = "Super" }
 
@@ -2058,7 +2042,7 @@ class Super extends TSuper, Expr {
 
 /** An access to `result`. */
 class ResultAccess extends Identifier {
-  ResultAccess() { any(QL::Result r).getParent() = id }
+  ResultAccess() { any(QL::Result r).getParent() = qlNode }
 
   override Type getType() { result = this.getParent+().(Predicate).getReturnType() }
 
@@ -2068,13 +2052,11 @@ class ResultAccess extends Identifier {
 }
 
 /** A `not` formula. */
-class Negation extends TNegation, Formula {
-  QL::Negation neg;
-
-  Negation() { this = TNegation(neg) }
+final new class Negation extends QlNode, Formula {
+  override QL::Negation qlNode;
 
   /** Gets the formula being negated. */
-  Formula getFormula() { toQL(result) = neg.getChild() }
+  Formula getFormula() { toQL(result) = qlNode.getChild() }
 
   override string getAPrimaryQlClass() { result = "Negation" }
 
@@ -2086,34 +2068,32 @@ class Negation extends TNegation, Formula {
 }
 
 /** An expression, such as `x+4`. */
-class Expr extends TExpr, AstNode {
+abstract new class Expr extends AstNode {
   cached
   Type getType() { none() }
 }
 
 /** An expression annotation, such as `pragma[only_bind_into](config)`. */
-class ExprAnnotation extends TExprAnnotation, Expr {
-  QL::ExprAnnotation expr_anno;
-
-  ExprAnnotation() { this = TExprAnnotation(expr_anno) }
+final new class ExprAnnotation extends QlNode, Expr {
+  override QL::ExprAnnotation qlNode;
 
   /**
    * Gets the name of the annotation.
    * E.g. for `pragma[only_bind_into](config)` the result is "pragma".
    */
-  string getName() { result = expr_anno.getName().getValue() }
+  string getName() { result = qlNode.getName().getValue() }
 
   /**
    * Gets the argument to this annotation.
    * E.g. for `pragma[only_bind_into](config)` the result is "only_bind_into".
    */
-  string getAnnotationArgument() { result = expr_anno.getAnnotArg().getValue() }
+  string getAnnotationArgument() { result = qlNode.getAnnotArg().getValue() }
 
   /**
    * Gets the inner expression.
    * E.g. for `pragma[only_bind_into](config)` the result is `config`.
    */
-  Expr getExpression() { toQL(result) = expr_anno.getChild() }
+  Expr getExpression() { toQL(result) = qlNode.getChild() }
 
   override Type getType() { result = this.getExpression().getType() }
 
@@ -2134,7 +2114,7 @@ class FunctionSymbol extends string {
 /**
  * A binary operation expression, such as `x + 3` or `y / 2`.
  */
-class BinOpExpr extends TBinOpExpr, Expr {
+abstract new class BinOpExpr extends Expr {
   /** Gets the left operand of the binary expression. */
   Expr getLeftOperand() { none() } // overridden in subclasses
 
@@ -2151,15 +2131,15 @@ class BinOpExpr extends TBinOpExpr, Expr {
 /**
  * An addition or subtraction expression.
  */
-class AddSubExpr extends TAddSubExpr, BinOpExpr {
-  QL::AddExpr expr;
+abstract new class AddSubExpr extends QlNode, BinOpExpr {
+  override QL::AddExpr qlNode;
   FunctionSymbol operator;
 
-  AddSubExpr() { this = TAddSubExpr(expr) and operator = expr.getChild().getValue() }
+  AddSubExpr() { operator = qlNode.getChild().getValue() }
 
-  override Expr getLeftOperand() { toQL(result) = expr.getLeft() }
+  override Expr getLeftOperand() { toQL(result) = qlNode.getLeft() }
 
-  override Expr getRightOperand() { toQL(result) = expr.getRight() }
+  override Expr getRightOperand() { toQL(result) = qlNode.getRight() }
 
   override FunctionSymbol getOperator() { result = operator }
 
@@ -2214,7 +2194,7 @@ private Type getASubTypeOfAddPrimitive(PrimitiveType prim) {
 /**
  * An addition expression, such as `x + y`.
  */
-class AddExpr extends AddSubExpr {
+final new class AddExpr extends AddSubExpr {
   AddExpr() { operator = "+" }
 
   override string getAPrimaryQlClass() { result = "AddExpr" }
@@ -2223,7 +2203,7 @@ class AddExpr extends AddSubExpr {
 /**
  * A subtraction expression, such as `x - y`.
  */
-class SubExpr extends AddSubExpr {
+final new class SubExpr extends AddSubExpr {
   SubExpr() { operator = "-" }
 
   override string getAPrimaryQlClass() { result = "SubExpr" }
@@ -2232,17 +2212,17 @@ class SubExpr extends AddSubExpr {
 /**
  * A multiplication, division, or modulo expression.
  */
-class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
-  QL::MulExpr expr;
+abstract new class MulDivModExpr extends QlNode, BinOpExpr {
+  override QL::MulExpr qlNode;
   FunctionSymbol operator;
 
-  MulDivModExpr() { this = TMulDivModExpr(expr) and operator = expr.getChild().getValue() }
+  MulDivModExpr() { operator = qlNode.getChild().getValue() }
 
   /** Gets the left operand of the binary expression. */
-  override Expr getLeftOperand() { toQL(result) = expr.getLeft() }
+  override Expr getLeftOperand() { toQL(result) = qlNode.getLeft() }
 
   /** Gets the right operand of the binary expression. */
-  override Expr getRightOperand() { toQL(result) = expr.getRight() }
+  override Expr getRightOperand() { toQL(result) = qlNode.getRight() }
 
   override FunctionSymbol getOperator() { result = operator }
 
@@ -2278,7 +2258,7 @@ class MulDivModExpr extends TMulDivModExpr, BinOpExpr {
 /**
  * A division expression, such as `x / y`.
  */
-class DivExpr extends MulDivModExpr {
+final new class DivExpr extends MulDivModExpr {
   DivExpr() { operator = "/" }
 
   override string getAPrimaryQlClass() { result = "DivExpr" }
@@ -2287,7 +2267,7 @@ class DivExpr extends MulDivModExpr {
 /**
  * A multiplication expression, such as `x * y`.
  */
-class MulExpr extends MulDivModExpr {
+final new class MulExpr extends MulDivModExpr {
   MulExpr() { operator = "*" }
 
   override string getAPrimaryQlClass() { result = "MulExpr" }
@@ -2296,7 +2276,7 @@ class MulExpr extends MulDivModExpr {
 /**
  * A modulo expression, such as `x % y`.
  */
-class ModExpr extends MulDivModExpr {
+final new class ModExpr extends MulDivModExpr {
   ModExpr() { operator = "%" }
 
   override string getAPrimaryQlClass() { result = "ModExpr" }
@@ -2305,20 +2285,18 @@ class ModExpr extends MulDivModExpr {
 /**
  * A range expression, such as `[1 .. 10]`.
  */
-class Range extends TRange, Expr {
-  QL::Range range;
-
-  Range() { this = TRange(range) }
+final new class Range extends QlNode, Expr {
+  override QL::Range qlNode;
 
   /**
    * Gets the lower bound of the range.
    */
-  Expr getLowEndpoint() { toQL(result) = range.getLower() }
+  Expr getLowEndpoint() { toQL(result) = qlNode.getLower() }
 
   /**
    * Gets the upper bound of the range.
    */
-  Expr getHighEndpoint() { toQL(result) = range.getUpper() }
+  Expr getHighEndpoint() { toQL(result) = qlNode.getUpper() }
 
   /**
    * Gets the lower and upper bounds of the range.
@@ -2341,15 +2319,13 @@ class Range extends TRange, Expr {
 /**
  * A set literal expression, such as `[1,3,5,7]`.
  */
-class Set extends TSet, Expr {
-  QL::SetLiteral set;
-
-  Set() { this = TSet(set) }
+final new class Set extends QlNode, Expr {
+  override QL::SetLiteral qlNode;
 
   /**
    * Gets the `i`th element in this set literal expression.
    */
-  Expr getElement(int i) { toQL(result) = set.getChild(i) }
+  Expr getElement(int i) { toQL(result) = qlNode.getChild(i) }
 
   /**
    * Gets an element in this set literal expression, if any.
@@ -2373,16 +2349,14 @@ class Set extends TSet, Expr {
 }
 
 /** A unary operation expression, such as `-(x*y)` */
-class UnaryExpr extends TUnaryExpr, Expr {
-  QL::UnaryExpr unaryexpr;
-
-  UnaryExpr() { this = TUnaryExpr(unaryexpr) }
+final new class UnaryExpr extends QlNode, Expr {
+  override QL::UnaryExpr qlNode;
 
   /** Gets the operand of the unary expression. */
-  Expr getOperand() { toQL(result) = unaryexpr.getChild(1) }
+  Expr getOperand() { toQL(result) = qlNode.getChild(1) }
 
   /** Gets the operator of the unary expression as a string. */
-  FunctionSymbol getOperator() { result = unaryexpr.getChild(0).toString() }
+  FunctionSymbol getOperator() { result = qlNode.getChild(0).toString() }
 
   override Type getType() { result = this.getOperand().getType() }
 
@@ -2396,10 +2370,8 @@ class UnaryExpr extends TUnaryExpr, Expr {
 }
 
 /** A "don't care" expression, denoted by `_`. */
-class DontCare extends TDontCare, Expr {
-  QL::Underscore dontcare;
-
-  DontCare() { this = TDontCare(dontcare) }
+final new class DontCare extends QlNode, Expr {
+  override QL::Underscore qlNode;
 
   override DontCareType getType() { any() }
 
@@ -2407,10 +2379,8 @@ class DontCare extends TDontCare, Expr {
 }
 
 /** A module expression. Such as `DataFlow` in `DataFlow::Node` */
-class ModuleExpr extends TModuleExpr, TypeRef {
-  QL::ModuleExpr me;
-
-  ModuleExpr() { this = TModuleExpr(me) }
+final new class ModuleExpr extends QlNode, TypeRef {
+  override QL::ModuleExpr qlNode;
 
   /**
    * Gets the name of this module expression. For example, the name of
@@ -2422,11 +2392,11 @@ class ModuleExpr extends TModuleExpr, TypeRef {
    * is `Bar`.
    */
   string getName() {
-    result = me.getName().(QL::SimpleId).getValue()
+    result = qlNode.getName().(QL::SimpleId).getValue()
     or
-    not exists(me.getName()) and result = me.getChild().(QL::SimpleId).getValue()
+    not exists(qlNode.getName()) and result = qlNode.getChild().(QL::SimpleId).getValue()
     or
-    result = me.getAFieldOrChild().(QL::ModuleInstantiation).getName().getChild().getValue()
+    result = qlNode.getAFieldOrChild().(QL::ModuleInstantiation).getName().getChild().getValue()
   }
 
   /**
@@ -2438,7 +2408,7 @@ class ModuleExpr extends TModuleExpr, TypeRef {
    *
    * is `Foo::Bar`.
    */
-  ModuleExpr getQualifier() { result = TModuleExpr(me.getChild()) }
+  ModuleExpr getQualifier() { toQl(result) = qlNode.getChild() }
 
   override Type getResolvedType() {
     exists(FileOrModule mod | resolveModuleRef(this, mod) | result = mod.toType())
@@ -2461,7 +2431,7 @@ class ModuleExpr extends TModuleExpr, TypeRef {
    * The result is either a `PredicateExpr`, `TypeExpr`, or `ModuleExpr`.
    */
   SignatureExpr getArgument(int i) {
-    result.toQL() = me.getAFieldOrChild().(QL::ModuleInstantiation).getChild(i)
+    result.toQL() = qlNode.getAFieldOrChild().(QL::ModuleInstantiation).getChild(i)
   }
 
   /**
@@ -2479,7 +2449,8 @@ class ModuleExpr extends TModuleExpr, TypeRef {
 }
 
 /** A signature expression, either a `PredicateExpr`, a `TypeExpr`, or a `ModuleExpr`. */
-class SignatureExpr extends TSignatureExpr, AstNode {
+// TODO: Should this be an abstract class that the other expr types extend? And how does this class extending the abstract class AstNode affect things?
+class SignatureExpr extends AstNode {
   Mocks::SignatureExprOrMock sig;
 
   SignatureExpr() {
@@ -2503,17 +2474,15 @@ class SignatureExpr extends TSignatureExpr, AstNode {
 }
 
 /** An argument to an annotation. */
-private class AnnotationArg extends TAnnotationArg, AstNode {
-  QL::AnnotArg arg;
-
-  AnnotationArg() { this = TAnnotationArg(arg) }
+final new private class AnnotationArg extends QlNode, AstNode {
+  override QL::AnnotArg qlNode;
 
   /** Gets the name of this argument. */
   string getValue() {
     result =
       [
-        arg.getChild().(QL::SimpleId).getValue(), arg.getChild().(QL::Result).getValue(),
-        arg.getChild().(QL::This).getValue()
+        qlNode.getChild().(QL::SimpleId).getValue(), qlNode.getChild().(QL::Result).getValue(),
+        qlNode.getChild().(QL::This).getValue()
       ]
   }
 
@@ -2543,22 +2512,20 @@ private class MonotonicAggregatesArg extends AnnotationArg {
 }
 
 /** An annotation on an element. */
-class Annotation extends TAnnotation, AstNode {
-  QL::Annotation annot;
-
-  Annotation() { this = TAnnotation(annot) }
+final new class Annotation extends QlNode, AstNode {
+  override QL::Annotation qlNode;
 
   override string toString() { result = "annotation" }
 
   override string getAPrimaryQlClass() { result = "Annotation" }
 
-  override Location getLocation() { result = annot.getLocation() }
+  override Location getLocation() { result = qlNode.getLocation() }
 
   /** Gets the node corresponding to the field `args`. */
-  AnnotationArg getArgs(int i) { toQL(result) = annot.getArgs(i) }
+  AnnotationArg getArgs(int i) { toQL(result) = qlNode.getArgs(i) }
 
   /** Gets the node corresponding to the field `name`. */
-  string getName() { result = annot.getName().getValue() }
+  string getName() { result = qlNode.getName().getValue() }
 
   override AstNode getParent() { result.getAnAnnotation() = this }
 
@@ -2570,6 +2537,7 @@ class Annotation extends TAnnotation, AstNode {
 }
 
 /** A `pragma[noinline]` annotation. */
+// TODO: does this need to be `new`
 class NoInline extends Annotation {
   NoInline() { this.getArgs(0) instanceof NoInlineArg }
 
