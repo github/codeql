@@ -86,8 +86,9 @@ class Call extends Expr, @call {
     )
   }
 
+  /** INTERNAL: Do not use. */
   pragma[nomagic]
-  private Expr getExplicitArgument(string name) {
+  Expr getExplicitArgument(string name) {
     result = this.getAnArgument() and
     result.getExplicitArgumentName() = name
   }
@@ -251,6 +252,14 @@ class Call extends Expr, @call {
   override string toString() { result = "call" }
 }
 
+pragma[nomagic]
+private predicate methodDeclaredIn(Method m, string name, Type decl) {
+  m.getDeclaringType() = decl and
+  m.getName() = name and
+  // todo: enable the same logic for extension methods too.
+  not m.isExtensionMethod()
+}
+
 /**
  * A method call, for example `a.M()` on line 5 in
  *
@@ -265,7 +274,101 @@ class Call extends Expr, @call {
  * ```
  */
 class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invocation_expr {
-  override Method getTarget() { expr_call(this, result) }
+  override Method getTarget() {
+    expr_call(this, result)
+    or
+    result = this.getACandidateTarget()
+  }
+
+  private string getCallName() {
+    invocation_member_name(this, result) or
+    dynamic_member_name(this, result)
+  }
+
+  cached
+  private Method getACandidateTarget() {
+    result = this.getViableCandidateCallTarget() and
+    (
+      result.isStatic() and
+      this.getQualifier() instanceof TypeAccess
+      or
+      not result.isStatic() and
+      not this.getQualifier() instanceof TypeAccess
+    ) and
+    // Make sure all parameters have a corresponding argument.
+    forall(Parameter p | result.getAParameter() = p |
+      exists(Expr arg | arg = this.getAnArgument() |
+        this.isParameterArgumentAssignable(result, p, arg)
+      )
+      or
+      p.hasDefaultValue() // call to `M(int p = 1)` might not have any arguments
+      or
+      p.isParams() // call to `M(params int[] p)` might not have any arguments
+    ) and
+    // Make sure all arguments have a corresponding parameter.
+    forall(Expr arg | this.getAnArgument() = arg |
+      exists(Parameter p | result.getAParameter() = p |
+        this.isParameterArgumentAssignable(result, p, arg)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private ValueOrRefType getAlternativeQualifierType(string name) {
+    exists(ValueOrRefType qualifierType |
+      qualifierType = this.getQualifier().getType() and
+      result =
+        [
+          qualifierType.getABaseType*(),
+          qualifierType.getABaseType*().getAnAmbiguousAlternativeType()
+        ]
+    ) and
+    name = this.getCallName() and
+    not exists(Method m | expr_call(this, m))
+  }
+
+  pragma[nomagic]
+  private Method getViableCandidateCallTarget() {
+    exists(string name, Type decl |
+      this.getAlternativeQualifierType(name) = decl and
+      methodDeclaredIn(result, name, decl)
+    )
+  }
+
+  private Expr getImplicitArgument(Callable c, DotNet::Parameter p) {
+    c = this.getViableCandidateCallTarget() and
+    c.getAParameter() = p and
+    not exists(result.getExplicitArgumentName()) and
+    (
+      p.(Parameter).isParams() and
+      result = this.getArgument(any(int i | i >= p.getPosition()))
+      or
+      not p.(Parameter).isParams() and
+      result = this.getArgument(p.getPosition())
+    )
+  }
+
+  private Expr getArgumentForParameterInternal(Callable c, DotNet::Parameter p) {
+    result = this.getImplicitArgument(c, p)
+    or
+    c = this.getViableCandidateCallTarget() and
+    c.getAParameter() = p and
+    result = this.getExplicitArgument(p.getName())
+  }
+
+  private predicate isParameterArgumentAssignable(Callable c, Parameter p, Expr arg) {
+    arg = this.getArgumentForParameterInternal(c, p) and
+    (
+      not p.isParams() and
+      arg.getType().isImplicitlyConvertibleTo(p.getType())
+      or
+      p.isParams() and
+      (
+        arg.getType().isImplicitlyConvertibleTo(p.getType().(ArrayType).getElementType()) or
+        arg.getType().isImplicitlyConvertibleTo(p.getType())
+      )
+    )
+  }
 
   override Method getQualifiedDeclaration() { result = this.getTarget() }
 
@@ -302,7 +405,7 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
  * 6), in order to be properly matched with the parameter `i` on line 2.
  */
 class ExtensionMethodCall extends MethodCall {
-  ExtensionMethodCall() { this.getTarget() instanceof ExtensionMethod }
+  ExtensionMethodCall() { exists(ExtensionMethod em | expr_call(this, em)) }
 
   override TypeAccess getQualifier() { result = this.getChildExpr(-1) }
 

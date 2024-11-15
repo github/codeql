@@ -307,7 +307,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Type Create(Context cx, ITypeSymbol? type)
         {
-            type = type.DisambiguateType();
+            type = type.DisambiguateType(cx);
             return type is null
                 ? NullType.Create(cx)
                 : (Type)cx.CreateEntity(type);

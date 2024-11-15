@@ -3,12 +3,18 @@ using B;
 
 namespace A
 {
-    public interface ILogger { }
+    public interface ILogger
+    {
+        void Log(string s);
+    }
 }
 
 namespace B
 {
-    public interface ILogger { }
+    public interface ILogger
+    {
+        void Log(string s);
+    }
 }
 
 public class C
