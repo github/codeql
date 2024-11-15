@@ -1,0 +1,120 @@
+models
+edges
+| LambdaFlow.cs:10:24:10:24 | s : String | LambdaFlow.cs:12:18:12:18 | access to parameter s | provenance |  |
+| LambdaFlow.cs:17:17:17:22 | access to local variable source : String | LambdaFlow.cs:18:16:18:21 | access to local variable source : String | provenance |  |
+| LambdaFlow.cs:17:26:17:34 | call to method Source : String | LambdaFlow.cs:17:17:17:22 | access to local variable source : String | provenance |  |
+| LambdaFlow.cs:18:16:18:21 | access to local variable source : String | LambdaFlow.cs:10:24:10:24 | s : String | provenance |  |
+| LambdaFlow.cs:33:32:33:37 | lambda [Return] : Action<String> [delegate argument at position 0] : String | LambdaFlow.cs:42:16:42:21 | [post] access to local variable lambda : Action<String> [delegate argument at position 0] : String | provenance |  |
+| LambdaFlow.cs:35:17:35:22 | access to local variable source : String | LambdaFlow.cs:36:20:36:25 | access to local variable source : String | provenance |  |
+| LambdaFlow.cs:35:26:35:34 | call to method Source : String | LambdaFlow.cs:35:17:35:22 | access to local variable source : String | provenance |  |
+| LambdaFlow.cs:36:13:36:18 | [post] access to parameter lambda : Action<String> [delegate argument at position 0] : String | LambdaFlow.cs:33:32:33:37 | lambda [Return] : Action<String> [delegate argument at position 0] : String | provenance |  |
+| LambdaFlow.cs:36:20:36:25 | access to local variable source : String | LambdaFlow.cs:36:13:36:18 | [post] access to parameter lambda : Action<String> [delegate argument at position 0] : String | provenance |  |
+| LambdaFlow.cs:41:37:41:37 | x : String | LambdaFlow.cs:41:47:41:47 | access to parameter x | provenance |  |
+| LambdaFlow.cs:42:16:42:21 | [post] access to local variable lambda : Action<String> [delegate argument at position 0] : String | LambdaFlow.cs:41:37:41:37 | x : String | provenance |  |
+| LambdaFlow.cs:59:20:59:34 | (...) => ... : (...) => ... [delegate return] : String | LambdaFlow.cs:64:26:64:29 | call to method M1 : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:59:26:59:34 | call to method Source : String | LambdaFlow.cs:59:20:59:34 | (...) => ... : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:64:17:64:22 | access to local variable lambda : (...) => ... [delegate return] : String | LambdaFlow.cs:65:18:65:23 | access to local variable lambda : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:64:26:64:29 | call to method M1 : (...) => ... [delegate return] : String | LambdaFlow.cs:64:17:64:22 | access to local variable lambda : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:65:18:65:23 | access to local variable lambda : (...) => ... [delegate return] : String | LambdaFlow.cs:65:18:65:25 | delegate call | provenance |  |
+| LambdaFlow.cs:80:40:80:45 | lambda : (...) => ... [delegate return] : String | LambdaFlow.cs:82:20:82:25 | access to parameter lambda : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:80:55:80:59 | input : String | LambdaFlow.cs:82:27:82:31 | access to parameter input : String | provenance |  |
+| LambdaFlow.cs:82:20:82:25 | [post] access to parameter lambda : Func<String,String> [delegate argument at position 0] : String | LambdaFlow.cs:80:40:80:45 | lambda [Return] : Func<String,String> [delegate argument at position 0] : String | provenance |  |
+| LambdaFlow.cs:82:20:82:25 | access to parameter lambda : (...) => ... [delegate return] : String | LambdaFlow.cs:82:20:82:32 | delegate call : String | provenance |  |
+| LambdaFlow.cs:82:27:82:31 | access to parameter input : String | LambdaFlow.cs:82:20:82:25 | [post] access to parameter lambda : Func<String,String> [delegate argument at position 0] : String | provenance |  |
+| LambdaFlow.cs:87:34:87:35 | access to local variable id : (...) => ... [delegate return] : String | LambdaFlow.cs:89:29:89:30 | access to local variable id : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:87:39:87:39 | x : String | LambdaFlow.cs:87:44:87:44 | access to parameter x : String | provenance |  |
+| LambdaFlow.cs:87:39:87:44 | (...) => ... : (...) => ... [delegate return] : String | LambdaFlow.cs:87:34:87:35 | access to local variable id : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:88:17:88:22 | access to local variable source : String | LambdaFlow.cs:89:33:89:38 | access to local variable source : String | provenance |  |
+| LambdaFlow.cs:88:26:88:34 | call to method Source : String | LambdaFlow.cs:88:17:88:22 | access to local variable source : String | provenance |  |
+| LambdaFlow.cs:89:17:89:22 | access to local variable output : String | LambdaFlow.cs:90:18:90:23 | access to local variable output | provenance |  |
+| LambdaFlow.cs:89:26:89:39 | call to method M1 : String | LambdaFlow.cs:89:17:89:22 | access to local variable output : String | provenance |  |
+| LambdaFlow.cs:89:29:89:30 | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String | LambdaFlow.cs:87:39:87:39 | x : String | provenance |  |
+| LambdaFlow.cs:89:29:89:30 | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String | LambdaFlow.cs:87:39:87:44 | (...) => ... : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:89:29:89:30 | access to local variable id : (...) => ... [delegate return] : String | LambdaFlow.cs:80:40:80:45 | lambda : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:89:29:89:30 | access to local variable id : (...) => ... [delegate return] : String | LambdaFlow.cs:89:26:89:39 | call to method M1 : String | provenance |  |
+| LambdaFlow.cs:89:33:89:38 | access to local variable source : String | LambdaFlow.cs:80:55:80:59 | input : String | provenance |  |
+| LambdaFlow.cs:89:33:89:38 | access to local variable source : String | LambdaFlow.cs:89:29:89:30 | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String | provenance |  |
+| LambdaFlow.cs:166:38:166:43 | lambda [Return] : Func<String,String> [delegate argument at position 0] : String | LambdaFlow.cs:182:16:182:17 | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String | provenance |  |
+| LambdaFlow.cs:168:17:168:22 | access to local variable source : String | LambdaFlow.cs:169:20:169:25 | access to local variable source : String | provenance |  |
+| LambdaFlow.cs:168:26:168:34 | call to method Source : String | LambdaFlow.cs:168:17:168:22 | access to local variable source : String | provenance |  |
+| LambdaFlow.cs:169:13:169:18 | [post] access to parameter lambda : Func<String,String> [delegate argument at position 0] : String | LambdaFlow.cs:166:38:166:43 | lambda [Return] : Func<String,String> [delegate argument at position 0] : String | provenance |  |
+| LambdaFlow.cs:169:20:169:25 | access to local variable source : String | LambdaFlow.cs:169:13:169:18 | [post] access to parameter lambda : Func<String,String> [delegate argument at position 0] : String | provenance |  |
+| LambdaFlow.cs:172:38:172:43 | lambda : (...) => ... [delegate return] : String | LambdaFlow.cs:175:26:175:31 | access to parameter lambda : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:175:17:175:22 | access to local variable output : String | LambdaFlow.cs:176:18:176:23 | access to local variable output | provenance |  |
+| LambdaFlow.cs:175:26:175:31 | access to parameter lambda : (...) => ... [delegate return] : String | LambdaFlow.cs:175:26:175:42 | delegate call : String | provenance |  |
+| LambdaFlow.cs:175:26:175:42 | delegate call : String | LambdaFlow.cs:175:17:175:22 | access to local variable output : String | provenance |  |
+| LambdaFlow.cs:181:34:181:35 | access to local variable id : (...) => ... [delegate return] : String | LambdaFlow.cs:183:16:183:17 | access to local variable id : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:181:39:181:39 | x : String | LambdaFlow.cs:181:44:181:44 | access to parameter x : String | provenance |  |
+| LambdaFlow.cs:181:39:181:44 | (...) => ... : (...) => ... [delegate return] : String | LambdaFlow.cs:181:34:181:35 | access to local variable id : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:182:16:182:17 | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String | LambdaFlow.cs:181:39:181:39 | x : String | provenance |  |
+| LambdaFlow.cs:182:16:182:17 | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String | LambdaFlow.cs:181:39:181:44 | (...) => ... : (...) => ... [delegate return] : String | provenance |  |
+| LambdaFlow.cs:183:16:183:17 | access to local variable id : (...) => ... [delegate return] : String | LambdaFlow.cs:172:38:172:43 | lambda : (...) => ... [delegate return] : String | provenance |  |
+nodes
+| LambdaFlow.cs:10:24:10:24 | s : String | semmle.label | s : String |
+| LambdaFlow.cs:12:18:12:18 | access to parameter s | semmle.label | access to parameter s |
+| LambdaFlow.cs:17:17:17:22 | access to local variable source : String | semmle.label | access to local variable source : String |
+| LambdaFlow.cs:17:26:17:34 | call to method Source : String | semmle.label | call to method Source : String |
+| LambdaFlow.cs:18:16:18:21 | access to local variable source : String | semmle.label | access to local variable source : String |
+| LambdaFlow.cs:33:32:33:37 | lambda [Return] : Action<String> [delegate argument at position 0] : String | semmle.label | lambda [Return] : Action<String> [delegate argument at position 0] : String |
+| LambdaFlow.cs:35:17:35:22 | access to local variable source : String | semmle.label | access to local variable source : String |
+| LambdaFlow.cs:35:26:35:34 | call to method Source : String | semmle.label | call to method Source : String |
+| LambdaFlow.cs:36:13:36:18 | [post] access to parameter lambda : Action<String> [delegate argument at position 0] : String | semmle.label | [post] access to parameter lambda : Action<String> [delegate argument at position 0] : String |
+| LambdaFlow.cs:36:20:36:25 | access to local variable source : String | semmle.label | access to local variable source : String |
+| LambdaFlow.cs:41:37:41:37 | x : String | semmle.label | x : String |
+| LambdaFlow.cs:41:47:41:47 | access to parameter x | semmle.label | access to parameter x |
+| LambdaFlow.cs:42:16:42:21 | [post] access to local variable lambda : Action<String> [delegate argument at position 0] : String | semmle.label | [post] access to local variable lambda : Action<String> [delegate argument at position 0] : String |
+| LambdaFlow.cs:59:20:59:34 | (...) => ... : (...) => ... [delegate return] : String | semmle.label | (...) => ... : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:59:26:59:34 | call to method Source : String | semmle.label | call to method Source : String |
+| LambdaFlow.cs:64:17:64:22 | access to local variable lambda : (...) => ... [delegate return] : String | semmle.label | access to local variable lambda : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:64:26:64:29 | call to method M1 : (...) => ... [delegate return] : String | semmle.label | call to method M1 : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:65:18:65:23 | access to local variable lambda : (...) => ... [delegate return] : String | semmle.label | access to local variable lambda : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:65:18:65:25 | delegate call | semmle.label | delegate call |
+| LambdaFlow.cs:80:40:80:45 | lambda : (...) => ... [delegate return] : String | semmle.label | lambda : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:80:40:80:45 | lambda [Return] : Func<String,String> [delegate argument at position 0] : String | semmle.label | lambda [Return] : Func<String,String> [delegate argument at position 0] : String |
+| LambdaFlow.cs:80:55:80:59 | input : String | semmle.label | input : String |
+| LambdaFlow.cs:82:20:82:25 | [post] access to parameter lambda : Func<String,String> [delegate argument at position 0] : String | semmle.label | [post] access to parameter lambda : Func<String,String> [delegate argument at position 0] : String |
+| LambdaFlow.cs:82:20:82:25 | access to parameter lambda : (...) => ... [delegate return] : String | semmle.label | access to parameter lambda : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:82:20:82:32 | delegate call : String | semmle.label | delegate call : String |
+| LambdaFlow.cs:82:27:82:31 | access to parameter input : String | semmle.label | access to parameter input : String |
+| LambdaFlow.cs:87:34:87:35 | access to local variable id : (...) => ... [delegate return] : String | semmle.label | access to local variable id : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:87:39:87:39 | x : String | semmle.label | x : String |
+| LambdaFlow.cs:87:39:87:44 | (...) => ... : (...) => ... [delegate return] : String | semmle.label | (...) => ... : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:87:44:87:44 | access to parameter x : String | semmle.label | access to parameter x : String |
+| LambdaFlow.cs:88:17:88:22 | access to local variable source : String | semmle.label | access to local variable source : String |
+| LambdaFlow.cs:88:26:88:34 | call to method Source : String | semmle.label | call to method Source : String |
+| LambdaFlow.cs:89:17:89:22 | access to local variable output : String | semmle.label | access to local variable output : String |
+| LambdaFlow.cs:89:26:89:39 | call to method M1 : String | semmle.label | call to method M1 : String |
+| LambdaFlow.cs:89:29:89:30 | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String | semmle.label | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String |
+| LambdaFlow.cs:89:29:89:30 | access to local variable id : (...) => ... [delegate return] : String | semmle.label | access to local variable id : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:89:33:89:38 | access to local variable source : String | semmle.label | access to local variable source : String |
+| LambdaFlow.cs:90:18:90:23 | access to local variable output | semmle.label | access to local variable output |
+| LambdaFlow.cs:166:38:166:43 | lambda [Return] : Func<String,String> [delegate argument at position 0] : String | semmle.label | lambda [Return] : Func<String,String> [delegate argument at position 0] : String |
+| LambdaFlow.cs:168:17:168:22 | access to local variable source : String | semmle.label | access to local variable source : String |
+| LambdaFlow.cs:168:26:168:34 | call to method Source : String | semmle.label | call to method Source : String |
+| LambdaFlow.cs:169:13:169:18 | [post] access to parameter lambda : Func<String,String> [delegate argument at position 0] : String | semmle.label | [post] access to parameter lambda : Func<String,String> [delegate argument at position 0] : String |
+| LambdaFlow.cs:169:20:169:25 | access to local variable source : String | semmle.label | access to local variable source : String |
+| LambdaFlow.cs:172:38:172:43 | lambda : (...) => ... [delegate return] : String | semmle.label | lambda : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:175:17:175:22 | access to local variable output : String | semmle.label | access to local variable output : String |
+| LambdaFlow.cs:175:26:175:31 | access to parameter lambda : (...) => ... [delegate return] : String | semmle.label | access to parameter lambda : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:175:26:175:42 | delegate call : String | semmle.label | delegate call : String |
+| LambdaFlow.cs:176:18:176:23 | access to local variable output | semmle.label | access to local variable output |
+| LambdaFlow.cs:181:34:181:35 | access to local variable id : (...) => ... [delegate return] : String | semmle.label | access to local variable id : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:181:39:181:39 | x : String | semmle.label | x : String |
+| LambdaFlow.cs:181:39:181:44 | (...) => ... : (...) => ... [delegate return] : String | semmle.label | (...) => ... : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:181:44:181:44 | access to parameter x : String | semmle.label | access to parameter x : String |
+| LambdaFlow.cs:182:16:182:17 | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String | semmle.label | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String |
+| LambdaFlow.cs:183:16:183:17 | access to local variable id : (...) => ... [delegate return] : String | semmle.label | access to local variable id : (...) => ... [delegate return] : String |
+subpaths
+| LambdaFlow.cs:89:29:89:30 | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String | LambdaFlow.cs:87:39:87:39 | x : String | LambdaFlow.cs:87:44:87:44 | access to parameter x : String | LambdaFlow.cs:87:39:87:44 | (...) => ... : (...) => ... [delegate return] : String |
+| LambdaFlow.cs:89:29:89:30 | access to local variable id : (...) => ... [delegate return] : String | LambdaFlow.cs:80:40:80:45 | lambda : (...) => ... [delegate return] : String | LambdaFlow.cs:82:20:82:32 | delegate call : String | LambdaFlow.cs:89:26:89:39 | call to method M1 : String |
+| LambdaFlow.cs:89:33:89:38 | access to local variable source : String | LambdaFlow.cs:80:55:80:59 | input : String | LambdaFlow.cs:80:40:80:45 | lambda [Return] : Func<String,String> [delegate argument at position 0] : String | LambdaFlow.cs:89:29:89:30 | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String |
+| LambdaFlow.cs:182:16:182:17 | [post] access to local variable id : Func<String,String> [delegate argument at position 0] : String | LambdaFlow.cs:181:39:181:39 | x : String | LambdaFlow.cs:181:44:181:44 | access to parameter x : String | LambdaFlow.cs:181:39:181:44 | (...) => ... : (...) => ... [delegate return] : String |
+testFailures
+| LambdaFlow.cs:144:34:144:52 | // ... | Missing result: hasValueFlow=6 |
+| LambdaFlow.cs:176:18:176:23 | access to local variable output | Unexpected result: hasValueFlow=7 |
+#select
+| LambdaFlow.cs:12:18:12:18 | access to parameter s | LambdaFlow.cs:17:26:17:34 | call to method Source : String | LambdaFlow.cs:12:18:12:18 | access to parameter s | $@ | LambdaFlow.cs:17:26:17:34 | call to method Source : String | call to method Source : String |
+| LambdaFlow.cs:41:47:41:47 | access to parameter x | LambdaFlow.cs:35:26:35:34 | call to method Source : String | LambdaFlow.cs:41:47:41:47 | access to parameter x | $@ | LambdaFlow.cs:35:26:35:34 | call to method Source : String | call to method Source : String |
+| LambdaFlow.cs:65:18:65:25 | delegate call | LambdaFlow.cs:59:26:59:34 | call to method Source : String | LambdaFlow.cs:65:18:65:25 | delegate call | $@ | LambdaFlow.cs:59:26:59:34 | call to method Source : String | call to method Source : String |
+| LambdaFlow.cs:90:18:90:23 | access to local variable output | LambdaFlow.cs:88:26:88:34 | call to method Source : String | LambdaFlow.cs:90:18:90:23 | access to local variable output | $@ | LambdaFlow.cs:88:26:88:34 | call to method Source : String | call to method Source : String |
+| LambdaFlow.cs:176:18:176:23 | access to local variable output | LambdaFlow.cs:168:26:168:34 | call to method Source : String | LambdaFlow.cs:176:18:176:23 | access to local variable output | $@ | LambdaFlow.cs:168:26:168:34 | call to method Source : String | call to method Source : String |
