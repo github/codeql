@@ -121,6 +121,24 @@ private class ScrutineeValueNumber extends ValueNumber {
   Instruction getSuccessor(CaseEdge kind) { result = switch.getSuccessor(kind) }
 }
 
+private class BuiltinExpectCallValueNumber extends ValueNumber {
+  BuiltinExpectCallInstruction instr;
+
+  BuiltinExpectCallValueNumber() { this.getAnInstruction() = instr }
+
+  ValueNumber getCondition() { result.getAnInstruction() = instr.getCondition() }
+
+  Operand getAUse() { result = instr.getAUse() }
+}
+
+private class LogicalNotValueNumber extends ValueNumber {
+  LogicalNotInstruction instr;
+
+  LogicalNotValueNumber() { this.getAnInstruction() = instr }
+
+  ValueNumber getUnary() { result.getAnInstruction() = instr.getUnary() }
+}
+
 /**
  * A Boolean condition in the AST that guards one or more basic blocks. This includes
  * operands of logical operators but not switch statements.
@@ -1006,24 +1024,6 @@ private class BuiltinExpectCallInstruction extends CallInstruction {
     // the conversion when inferring guards.
     result = this.getArgument(0).(ConvertInstruction).getUnaryOperand()
   }
-}
-
-private class BuiltinExpectCallValueNumber extends ValueNumber {
-  BuiltinExpectCallInstruction instr;
-
-  BuiltinExpectCallValueNumber() { this.getAnInstruction() = instr }
-
-  ValueNumber getCondition() { result.getAnInstruction() = instr.getCondition() }
-
-  Operand getAUse() { result = instr.getAUse() }
-}
-
-private class LogicalNotValueNumber extends ValueNumber {
-  LogicalNotInstruction instr;
-
-  LogicalNotValueNumber() { this.getAnInstruction() = instr }
-
-  ValueNumber getUnary() { result.getAnInstruction() = instr.getUnary() }
 }
 
 /**
