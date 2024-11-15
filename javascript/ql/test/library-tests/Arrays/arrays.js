@@ -107,4 +107,6 @@
   var arr8_spread = [];
   arr8_spread = arr8_spread.toSpliced(0, 0, ...arr);
   sink(arr8_spread.pop()); // NOT OK
+
+  sink(arr.findLast(someCallback)); // NOT OK -- Should be flagged by the taint tracking rule, but it is not.
 });
