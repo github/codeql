@@ -244,6 +244,8 @@ typeInferenceMismatch
 | tst.js:2:13:2:20 | source() | tst.js:66:10:66:16 | xSorted |
 | tst.js:2:13:2:20 | source() | tst.js:68:10:68:23 | x.toReversed() |
 | tst.js:2:13:2:20 | source() | tst.js:70:10:70:18 | xReversed |
+| tst.js:2:13:2:20 | source() | tst.js:72:10:72:17 | x.with() |
+| tst.js:2:13:2:20 | source() | tst.js:74:10:74:14 | xWith |
 | xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |
 | xml.js:12:17:12:24 | source() | xml.js:13:14:13:19 | result |
 | xml.js:23:18:23:25 | source() | xml.js:20:14:20:17 | attr |

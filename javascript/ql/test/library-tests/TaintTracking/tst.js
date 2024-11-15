@@ -69,7 +69,7 @@ function test() {
     const xReversed = x.toReversed();
     sink(xReversed) // NOT OK
 
-    sink(x.with()) // NOT OK -- Should be flagged as a taint sink, but it is not
+    sink(x.with()) // NOT OK
     const xWith = x.with();
-    sink(xWith) // NOT OK -- Should be flagged as a taint sink, but it is not
+    sink(xWith) // NOT OK
 }
