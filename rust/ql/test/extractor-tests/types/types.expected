@@ -1,55 +1,82 @@
 exprTypes
+| main.rs:1:11:4:1 | { ... } | () |
 | main.rs:2:15:2:21 | "world" | &str |
 | main.rs:3:5:3:28 | ...::_print | fn _print(Arguments<'_>) |
 | main.rs:3:5:3:28 | MacroExpr | () |
+| main.rs:3:14:3:27 | "Hello {who}!\\n" | &str |
 | main.rs:3:14:3:27 | ...::_print(...) | () |
 | main.rs:3:14:3:27 | FormatArgsExpr | Arguments<'_> |
 | main.rs:3:14:3:27 | MacroExpr | Arguments<'_> |
 | main.rs:3:14:3:27 | { ... } | () |
+| main.rs:3:22:3:24 | who | &str |
+| main.rs:6:18:6:19 | { ... } | () |
+| main.rs:8:25:10:1 | { ... } | () |
 | main.rs:9:5:9:6 | { ... } | () |
+| main.rs:22:18:26:1 | { ... } | () |
+| main.rs:23:5:23:17 | MacroExpr | () |
+| main.rs:24:5:24:16 | MacroExpr | () |
 | main.rs:24:5:24:16 | main | fn main() |
 | main.rs:24:5:24:16 | main(...) | () |
+| main.rs:25:5:25:18 | MacroExpr | () |
+| main.rs:25:5:25:18 | MacroExpr | () |
 | main.rs:25:5:25:18 | main | fn main() |
 | main.rs:25:5:25:18 | main(...) | () |
+| main.rs:27:32:32:1 | { ... } | () |
 | main.rs:28:17:28:17 | 4 | usize |
 | main.rs:29:21:29:21 | 2 | usize |
 | main.rs:30:17:30:18 | 10 | i32 |
 | main.rs:31:5:31:48 | ...::_print | fn _print(Arguments<'_>) |
 | main.rs:31:5:31:48 | MacroExpr | () |
+| main.rs:31:14:31:47 | "Value {value:#width$.precisio... | &str |
 | main.rs:31:14:31:47 | ...::_print(...) | () |
 | main.rs:31:14:31:47 | FormatArgsExpr | Arguments<'_> |
 | main.rs:31:14:31:47 | MacroExpr | Arguments<'_> |
 | main.rs:31:14:31:47 | { ... } | () |
+| main.rs:31:22:31:26 | value | i32 |
+| main.rs:31:29:31:33 | width | usize |
+| main.rs:31:36:31:44 | precision | usize |
+| main.rs:34:23:42:1 | { ... } | () |
 | main.rs:35:5:41:5 | if ... {...} else {...} | () |
 | main.rs:35:8:35:8 | x | i32 |
 | main.rs:35:8:35:12 | ... < ... | bool |
 | main.rs:35:12:35:12 | 5 | i32 |
+| main.rs:35:14:37:5 | { ... } | () |
 | main.rs:36:9:36:25 | ...::_print | fn _print(Arguments<'_>) |
 | main.rs:36:9:36:25 | MacroExpr | () |
+| main.rs:36:18:36:24 | "small\\n" | &str |
 | main.rs:36:18:36:24 | ...::_print(...) | () |
 | main.rs:36:18:36:24 | FormatArgsExpr | Arguments<'_> |
 | main.rs:36:18:36:24 | MacroExpr | Arguments<'_> |
 | main.rs:36:18:36:24 | { ... } | () |
+| main.rs:37:12:41:5 | if ... {...} else {...} | () |
 | main.rs:37:15:37:15 | x | i32 |
 | main.rs:37:15:37:20 | ... > ... | bool |
 | main.rs:37:19:37:20 | 10 | i32 |
+| main.rs:37:22:39:5 | { ... } | () |
 | main.rs:38:9:38:25 | ...::_print | fn _print(Arguments<'_>) |
 | main.rs:38:9:38:25 | MacroExpr | () |
+| main.rs:38:18:38:24 | "large\\n" | &str |
 | main.rs:38:18:38:24 | ...::_print(...) | () |
 | main.rs:38:18:38:24 | FormatArgsExpr | Arguments<'_> |
 | main.rs:38:18:38:24 | MacroExpr | Arguments<'_> |
 | main.rs:38:18:38:24 | { ... } | () |
+| main.rs:39:12:41:5 | { ... } | () |
 | main.rs:40:9:40:26 | ...::_print | fn _print(Arguments<'_>) |
 | main.rs:40:9:40:26 | MacroExpr | () |
+| main.rs:40:18:40:25 | "medium\\n" | &str |
 | main.rs:40:18:40:25 | ...::_print(...) | () |
 | main.rs:40:18:40:25 | FormatArgsExpr | Arguments<'_> |
 | main.rs:40:18:40:25 | MacroExpr | Arguments<'_> |
 | main.rs:40:18:40:25 | { ... } | () |
+| main.rs:44:47:49:1 | { ... } | bool |
 | main.rs:45:5:48:5 | match pair { ... } | bool |
 | main.rs:45:11:45:14 | pair | (bool, bool) |
+| main.rs:46:13:46:16 | true | bool |
 | main.rs:46:22:46:22 | x | bool |
 | main.rs:47:14:47:18 | false | bool |
+| main.rs:51:14:53:1 | { ... } | () |
 | main.rs:52:5:52:11 | ...::into_vec | fn into_vec<i32, Global>(Box<[i32], Global>) -> Vec<i32, Global> |
+| main.rs:52:5:52:11 | ...::new | fn new<[i32; 1]>([i32; 1]) -> Box<[i32; 1], Global> |
 | main.rs:52:5:52:11 | MacroExpr | Vec<i32, Global> |
 | main.rs:52:10:52:10 | 1 | i32 |
 | main.rs:52:10:52:10 | ...::into_vec(...) | Vec<i32, Global> |
@@ -67,31 +94,4 @@ patTypes
 | main.rs:46:13:46:16 | true | bool |
 | main.rs:47:9:47:9 | _ | (bool, bool) |
 missingExprType
-| main.rs:1:11:4:1 | { ... } |
-| main.rs:3:14:3:27 | "Hello {who}!\\n" |
-| main.rs:3:22:3:24 | who |
-| main.rs:6:18:6:19 | { ... } |
-| main.rs:8:25:10:1 | { ... } |
-| main.rs:22:18:26:1 | { ... } |
-| main.rs:23:5:23:17 | MacroExpr |
-| main.rs:24:5:24:16 | MacroExpr |
-| main.rs:25:5:25:18 | MacroExpr |
-| main.rs:25:5:25:18 | MacroExpr |
-| main.rs:27:32:32:1 | { ... } |
-| main.rs:31:14:31:47 | "Value {value:#width$.precisio... |
-| main.rs:31:22:31:26 | value |
-| main.rs:31:29:31:33 | width |
-| main.rs:31:36:31:44 | precision |
-| main.rs:34:23:42:1 | { ... } |
-| main.rs:35:14:37:5 | { ... } |
-| main.rs:36:18:36:24 | "small\\n" |
-| main.rs:37:12:41:5 | if ... {...} else {...} |
-| main.rs:37:22:39:5 | { ... } |
-| main.rs:38:18:38:24 | "large\\n" |
-| main.rs:39:12:41:5 | { ... } |
-| main.rs:40:18:40:25 | "medium\\n" |
-| main.rs:44:47:49:1 | { ... } |
-| main.rs:46:13:46:16 | true |
-| main.rs:51:14:53:1 | { ... } |
-| main.rs:52:5:52:11 | ...::new |
 missingPatType
