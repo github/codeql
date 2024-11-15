@@ -129,7 +129,7 @@ module Node {
 
     override CfgNode getCfgNode() { result = n }
 
-    override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCallable() }
+    override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
 
     override Location getLocation() { result = n.getAstNode().getLocation() }
 
