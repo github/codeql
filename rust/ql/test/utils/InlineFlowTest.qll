@@ -12,7 +12,7 @@ private import internal.InlineExpectationsTestImpl as InlineExpectationsTestImpl
 
 // Holds if the target expression of `call` is a path and the string representation of the path is `name`.
 private predicate callTargetName(CallExpr call, string name) {
-  call.getExpr().(PathExpr).getPath().toString() = name
+  call.getExpr().(PathExpr).toString() = name
 }
 
 private module FlowTestImpl implements InputSig<Location, RustDataFlow> {

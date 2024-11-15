@@ -330,7 +330,6 @@
 /lib/codeql/rust/elements/internal/PathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathExprBaseImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/PathExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathSegmentConstructor.qll linguist-generated
