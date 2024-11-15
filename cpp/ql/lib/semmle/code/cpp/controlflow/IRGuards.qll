@@ -142,6 +142,9 @@ private class LogicalNotValueNumber extends ValueNumber {
 /**
  * A Boolean condition in the AST that guards one or more basic blocks. This includes
  * operands of logical operators but not switch statements.
+ *
+ * For performance reasons conditions inside static local initializers or
+ * global initializers are not considered `GuardCondition`s.
  */
 cached
 class GuardCondition extends Expr {
@@ -451,6 +454,9 @@ private predicate nonExcludedIRAndBasicBlock(IRBlock irb, BasicBlock controlled)
  *
  * Note that `&&` and `||` don't have an explicit representation in the IR,
  * and therefore will not appear as IRGuardConditions.
+ *
+ * For performance reasons conditions inside static local initializers or
+ * global initializers are not considered `IRGuardCondition`s.
  */
 cached
 class IRGuardCondition extends Instruction {
@@ -811,13 +817,20 @@ class IRGuardCondition extends Instruction {
 }
 
 private Instruction getBranchForCondition(Instruction guard) {
-  result.(ConditionalBranchInstruction).getCondition() = guard
+  // There are a lot of guards inside global or static local initializers,
+  // and on certain databases this can make the `ensures*` predicates
+  // blow up.
+  // These guards are likely not super important anyway.
+  guard.getEnclosingFunction() instanceof Function and
+  (
+    result.(ConditionalBranchInstruction).getCondition() = guard
+    or
+    result.(SwitchInstruction).getExpression() = guard
+  )
   or
   exists(LogicalNotInstruction cond |
     result = getBranchForCondition(cond) and cond.getUnary() = guard
   )
-  or
-  result.(SwitchInstruction).getExpression() = guard
 }
 
 /**
