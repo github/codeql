@@ -10,11 +10,12 @@ private import codeql.rangeanalysis.RangeAnalysis
 private import RangeAnalysisImpl
 private import SignAnalysisSpecific as Specific
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticLocation
 private import ConstantAnalysis
 private import Sign
 
 module SignAnalysis<DeltaSig D> {
-  private import codeql.rangeanalysis.internal.RangeUtils::MakeUtils<Sem, D>
+  private import codeql.rangeanalysis.internal.RangeUtils::MakeUtils<SemLocation, Sem, D>
 
   /**
    * An SSA definition for which the analysis can compute the sign.
