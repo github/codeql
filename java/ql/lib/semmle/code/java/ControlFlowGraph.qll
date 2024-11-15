@@ -104,21 +104,6 @@ module ControlFlow {
 
   /** A node in the expression-level control-flow graph. */
   class Node extends TNode {
-    /** Gets the statement containing this node, if any. */
-    Stmt getEnclosingStmt() { none() }
-
-    /** Gets the immediately enclosing callable whose body contains this node. */
-    Callable getEnclosingCallable() { none() }
-
-    /** Gets the statement this `Node` corresponds to, if any. */
-    Stmt asStmt() { none() }
-
-    /** Gets the expression this `Node` corresponds to, if any. */
-    Expr asExpr() { none() }
-
-    /** Gets the call this `Node` corresponds to, if any. */
-    Call asCall() { none() }
-
     /** Gets an immediate successor of this node. */
     Node getASuccessor() { result = succ(this) }
 
@@ -136,6 +121,21 @@ module ControlFlow {
 
     /** Gets the basic block that contains this node. */
     BasicBlock getBasicBlock() { result.getANode() = this }
+
+    /** Gets the statement containing this node, if any. */
+    Stmt getEnclosingStmt() { none() }
+
+    /** Gets the immediately enclosing callable whose body contains this node. */
+    Callable getEnclosingCallable() { none() }
+
+    /** Gets the statement this `Node` corresponds to, if any. */
+    Stmt asStmt() { none() }
+
+    /** Gets the expression this `Node` corresponds to, if any. */
+    Expr asExpr() { none() }
+
+    /** Gets the call this `Node` corresponds to, if any. */
+    Call asCall() { none() }
 
     /** Gets a textual representation of this element. */
     string toString() { none() }
