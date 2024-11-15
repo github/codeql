@@ -844,8 +844,7 @@ private predicate compares_eq(
   complex_eq(test, left, right, k, areEqual, value)
   or
   /* (x is true => (left == right + k)) => (!x is false => (left == right + k)) */
-  exists(AbstractValue dual |
-    value = dual.getDualValue() and
+  exists(AbstractValue dual | value = dual.getDualValue() |
     compares_eq(test.(LogicalNotValueNumber).getUnary(), left, right, k, areEqual, dual)
   )
   or
