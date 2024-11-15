@@ -972,7 +972,7 @@ private predicate isRelevantUnaryComparisonOperand(Operand op) {
     op = copy.getSourceValueOperand()
   )
   or
-  // If phi(x1, x2) is a relevant unary comparison then so is `x1` and `x2`.
+  // If phi(x1, x2) is a relevant unary comparison then so are `x1` and `x2`.
   not op.isDefinitionInexact() and
   exists(PhiInstruction phi |
     isRelevantUnaryComparisonOperand(unique( | | phi.getAUse())) and
