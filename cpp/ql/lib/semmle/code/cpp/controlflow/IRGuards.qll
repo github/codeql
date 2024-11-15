@@ -1107,8 +1107,7 @@ private predicate compares_lt(
   exists(boolean isGe | isLt = isGe.booleanNot() | compares_ge(test, left, right, k, isGe, value))
   or
   /* (x is true => (left < right + k)) => (!x is false => (left < right + k)) */
-  exists(AbstractValue dual |
-    value = dual.getDualValue() and
+  exists(AbstractValue dual | value = dual.getDualValue() |
     compares_lt(test.(LogicalNotValueNumber).getUnary(), left, right, k, isLt, dual)
   )
 }
@@ -1120,8 +1119,7 @@ private predicate compares_lt(ValueNumber test, Operand op, int k, boolean isLt,
   complex_lt(test, op, k, isLt, value)
   or
   /* (x is true => (op < k)) => (!x is false => (op < k)) */
-  exists(AbstractValue dual |
-    value = dual.getDualValue() and
+  exists(AbstractValue dual | value = dual.getDualValue() |
     compares_lt(test.(LogicalNotValueNumber).getUnary(), op, k, isLt, dual)
   )
   or
