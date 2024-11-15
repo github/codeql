@@ -109,11 +109,11 @@ private class CompareGEValueNumber extends CompareValueNumber {
  * A value number such that at least one of the instructions provides
  * the integer value controlling a  `SwitchInstruction`.
  */
-private class ScrutineeValueNumber extends ValueNumber {
+private class SwitchConditionValueNumber extends ValueNumber {
   SwitchInstruction switch;
 
   pragma[nomagic]
-  ScrutineeValueNumber() { this.getAnInstruction() = switch.getExpression() }
+  SwitchConditionValueNumber() { this.getAnInstruction() = switch.getExpression() }
 
   /** Gets an expression that belongs to this value number. */
   Operand getExpressionOperand() { result = switch.getExpressionOperand() }
@@ -990,11 +990,11 @@ private predicate isRelevantUnaryComparisonOperand(Operand op) {
 private predicate unary_simple_comparison_eq(
   ValueNumber test, Operand op, int k, boolean inNonZeroCase, AbstractValue value
 ) {
-  exists(CaseEdge case, ScrutineeValueNumber scrutinee |
-    scrutinee = test and
-    op = scrutinee.getExpressionOperand() and
+  exists(CaseEdge case, SwitchConditionValueNumber condition |
+    condition = test and
+    op = condition.getExpressionOperand() and
     case = value.(MatchValue).getCase() and
-    exists(scrutinee.getSuccessor(case)) and
+    exists(condition.getSuccessor(case)) and
     case.getValue().toInt() = k and
     inNonZeroCase = false
   )
@@ -1158,7 +1158,7 @@ private predicate simple_comparison_lt(CompareValueNumber cmp, Operand left, Ope
 
 /** Rearrange various simple comparisons into `op < k` form. */
 private predicate unary_simple_comparison_lt(
-  ScrutineeValueNumber test, Operand op, int k, boolean isLt, AbstractValue value
+  SwitchConditionValueNumber test, Operand op, int k, boolean isLt, AbstractValue value
 ) {
   exists(CaseEdge case |
     test.getExpressionOperand() = op and
