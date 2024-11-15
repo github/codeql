@@ -384,13 +384,16 @@ private module ArrayLibraries {
   }
 
   /**
-   * Gets a call to `Array.prototype.find` or a polyfill implementing the same functionality.
+   * Gets a call to `Array.prototype.find` or `Array.prototype.findLast` or a polyfill implementing the same functionality.
    */
   DataFlow::CallNode arrayFindCall(DataFlow::Node array) {
-    result.(DataFlow::MethodCallNode).getMethodName() = "find" and
+    result.(DataFlow::MethodCallNode).getMethodName() in ["find", "findLast"] and
     array = result.getReceiver()
     or
-    result = DataFlow::moduleImport(["array.prototype.find", "array-find"]).getACall() and
+    result =
+      DataFlow::moduleImport([
+          "array.prototype.find", "array-find", "array.prototype.findLast", "array-find-last"
+        ]).getACall() and
     array = result.getArgument(0)
   }
 
