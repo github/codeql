@@ -11,7 +11,7 @@ edges
 | StringBreakMismatched.go:25:13:25:61 | call to Replace | StringBreakMismatched.go:29:27:29:33 | escaped | provenance |  |
 | StringBreakMismatched.go:25:29:25:47 | type conversion | StringBreakMismatched.go:25:13:25:61 | call to Replace | provenance | MaD:1 |
 models
-| 1 | Summary: strings; ; true; Replace; ; ; Argument[0]; ReturnValue; taint; manual |
+| 1 | Summary: strings; ; false; Replace; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | StringBreak.go:10:2:10:40 | ... := ...[0] | semmle.label | ... := ...[0] |
 | StringBreak.go:14:47:14:57 | versionJSON | semmle.label | versionJSON |

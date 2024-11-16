@@ -12,7 +12,7 @@ models
 | 1 | Sink: github.com/gin-gonic/gin; Context; true; File; ; ; Argument[0]; path-injection; manual |
 | 2 | Sink: github.com/gin-gonic/gin; Context; true; FileAttachment; ; ; Argument[0]; path-injection; manual |
 | 3 | Sink: github.com/gin-gonic/gin; Context; true; SaveUploadedFile; ; ; Argument[1]; path-injection; manual |
-| 4 | Sink: net/http; ; true; ServeFile; ; ; Argument[2]; path-injection; manual |
+| 4 | Sink: net/http; ; false; ServeFile; ; ; Argument[2]; path-injection; manual |
 | 5 | Source: github.com/gin-gonic/gin; Context; true; Query; ; ; ReturnValue; remote; manual |
 nodes
 | Gin.go:24:15:24:33 | call to Query | semmle.label | call to Query |

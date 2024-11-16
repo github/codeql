@@ -146,12 +146,12 @@ edges
 | SanitizingDoubleDash.go:143:21:143:28 | arrayLit [array] | SanitizingDoubleDash.go:143:14:143:35 | call to append | provenance | MaD:3 |
 | SanitizingDoubleDash.go:143:21:143:28 | arrayLit [array] | SanitizingDoubleDash.go:143:14:143:35 | call to append [array] | provenance | MaD:3 |
 models
-| 1 | Sink: os/exec; ; true; Command; ; ; Argument[0]; command-injection; manual |
+| 1 | Sink: os/exec; ; false; Command; ; ; Argument[0]; command-injection; manual |
 | 2 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
-| 3 | Summary: ; ; true; append; ; ; Argument[0].ArrayElement; ReturnValue.ArrayElement; value; manual |
-| 4 | Summary: ; ; true; append; ; ; Argument[0]; ReturnValue; taint; manual |
-| 5 | Summary: ; ; true; append; ; ; Argument[1].ArrayElement; ReturnValue.ArrayElement; value; manual |
-| 6 | Summary: fmt; ; true; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 3 | Summary: ; ; false; append; ; ; Argument[0].ArrayElement; ReturnValue.ArrayElement; value; manual |
+| 4 | Summary: ; ; false; append; ; ; Argument[0]; ReturnValue; taint; manual |
+| 5 | Summary: ; ; false; append; ; ; Argument[1].ArrayElement; ReturnValue.ArrayElement; value; manual |
+| 6 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
 | 7 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
 nodes
 | ArgumentInjection.go:9:10:9:16 | selection of URL | semmle.label | selection of URL |

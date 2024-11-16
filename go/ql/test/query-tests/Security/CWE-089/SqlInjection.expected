@@ -139,9 +139,9 @@ models
 | 3 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
 | 4 | Source: net/http; Request; true; Referer; ; ; ReturnValue; remote; manual |
 | 5 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
-| 6 | Summary: encoding/json; ; true; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
-| 7 | Summary: fmt; ; true; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
-| 8 | Summary: io/ioutil; ; true; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 6 | Summary: encoding/json; ; false; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
+| 7 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 8 | Summary: io/ioutil; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 | 9 | Summary: net/http; Header; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
 | 10 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
 nodes

@@ -18,7 +18,7 @@ models
 | 1 | Sink: github.com/golang-jwt/jwt; Parser; true; ParseUnverified; ; ; Argument[0]; jwt; manual |
 | 2 | Sink: group:go-jose/jwt; JSONWebToken; true; UnsafeClaimsWithoutVerification; ; ; Argument[receiver]; jwt; manual |
 | 3 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
-| 4 | Summary: group:go-jose/jwt; ; true; ParseSigned; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 4 | Summary: group:go-jose/jwt; ; false; ParseSigned; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 | 5 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
 | 6 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
 nodes

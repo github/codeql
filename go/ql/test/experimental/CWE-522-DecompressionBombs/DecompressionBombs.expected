@@ -233,10 +233,10 @@ edges
 models
 | 1 | Source: net/http; Request; true; Body; ; ; ; remote; manual |
 | 2 | Source: net/http; Request; true; FormValue; ; ; ReturnValue; remote; manual |
-| 3 | Summary: archive/tar; ; true; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
+| 3 | Summary: archive/tar; ; false; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
 | 4 | Summary: archive/zip; File; true; Open; ; ; Argument[receiver]; ReturnValue[0]; taint; manual |
-| 5 | Summary: bytes; ; true; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
-| 6 | Summary: io; ; true; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 5 | Summary: bytes; ; false; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
+| 6 | Summary: io; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 nodes
 | test.go:59:16:59:44 | call to FormValue | semmle.label | call to FormValue |
 | test.go:60:15:60:26 | selection of Body | semmle.label | selection of Body |

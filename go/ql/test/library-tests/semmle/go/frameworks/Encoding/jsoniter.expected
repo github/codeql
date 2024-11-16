@@ -1,7 +1,7 @@
 models
-| 1 | Sink: os/exec; ; true; Command; ; ; Argument[0]; command-injection; manual |
-| 2 | Summary: github.com/json-iterator/go; ; true; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
-| 3 | Summary: github.com/json-iterator/go; ; true; UnmarshalFromString; ; ; Argument[0]; Argument[1]; taint; manual |
+| 1 | Sink: os/exec; ; false; Command; ; ; Argument[0]; command-injection; manual |
+| 2 | Summary: github.com/json-iterator/go; ; false; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
+| 3 | Summary: github.com/json-iterator/go; ; false; UnmarshalFromString; ; ; Argument[0]; Argument[1]; taint; manual |
 | 4 | Summary: github.com/json-iterator/go; API; true; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
 | 5 | Summary: github.com/json-iterator/go; API; true; UnmarshalFromString; ; ; Argument[0]; Argument[1]; taint; manual |
 edges

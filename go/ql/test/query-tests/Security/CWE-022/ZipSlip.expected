@@ -17,11 +17,11 @@ edges
 | tarslip.go:16:23:16:33 | selection of Name | tarslip.go:16:14:16:34 | call to Dir | provenance | MaD:5 Sink:MaD:2 |
 | tst.go:23:2:43:2 | range statement[1] | tst.go:29:20:29:23 | path | provenance | Sink:MaD:1 |
 models
-| 1 | Sink: io/ioutil; ; true; WriteFile; ; ; Argument[0]; path-injection; manual |
-| 2 | Sink: os; ; true; MkdirAll; ; ; Argument[0]; path-injection; manual |
-| 3 | Sink: os; ; true; Readlink; ; ; Argument[0]; path-injection; manual |
-| 4 | Summary: path/filepath; ; true; Abs; ; ; Argument[0]; ReturnValue[0]; taint; manual |
-| 5 | Summary: path; ; true; Dir; ; ; Argument[0]; ReturnValue; taint; manual |
+| 1 | Sink: io/ioutil; ; false; WriteFile; ; ; Argument[0]; path-injection; manual |
+| 2 | Sink: os; ; false; MkdirAll; ; ; Argument[0]; path-injection; manual |
+| 3 | Sink: os; ; false; Readlink; ; ; Argument[0]; path-injection; manual |
+| 4 | Summary: path/filepath; ; false; Abs; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 5 | Summary: path; ; false; Dir; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | semmle.label | definition of candidate |
 | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | semmle.label | call to Join |

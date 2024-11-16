@@ -33,8 +33,8 @@ edges
 models
 | 1 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
 | 2 | Source: net/http; Request; true; Referer; ; ; ReturnValue; remote; manual |
-| 3 | Summary: github.com/sendgrid/sendgrid-go/helpers/mail; ; true; NewContent; ; ; Argument[1]; ReturnValue; taint; manual |
-| 4 | Summary: io; ; true; WriteString; ; ; Argument[1]; Argument[0]; taint; manual |
+| 3 | Summary: github.com/sendgrid/sendgrid-go/helpers/mail; ; false; NewContent; ; ; Argument[1]; ReturnValue; taint; manual |
+| 4 | Summary: io; ; false; WriteString; ; ; Argument[1]; Argument[0]; taint; manual |
 | 5 | Summary: net/http; Header; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
 nodes
 | EmailBad.go:9:10:9:17 | selection of Header | semmle.label | selection of Header |

@@ -1,6 +1,6 @@
 models
-| 1 | Source: github.com/nonexistent/sources; ; true; ExecuteQuery; ; ; ReturnValue; database; manual |
-| 2 | Source: github.com/nonexistent/sources; ; true; GetCliArg; ; ; ReturnValue; commandargs; manual |
+| 1 | Source: github.com/nonexistent/sources; ; false; ExecuteQuery; ; ; ReturnValue; database; manual |
+| 2 | Source: github.com/nonexistent/sources; ; false; GetCliArg; ; ; ReturnValue; commandargs; manual |
 | 3 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
 | 4 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
 | 5 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |

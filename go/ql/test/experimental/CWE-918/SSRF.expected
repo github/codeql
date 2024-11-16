@@ -63,18 +63,18 @@ models
 | 1 | Source: github.com/gin-gonic/gin; Context; true; Param; ; ; ReturnValue; remote; manual |
 | 2 | Source: github.com/gin-gonic/gin; Context; true; Query; ; ; ReturnValue; remote; manual |
 | 3 | Source: github.com/gin-gonic/gin; Context; true; ShouldBindJSON; ; ; Argument[0]; remote; manual |
-| 4 | Source: github.com/go-chi/chi; ; true; URLParam; ; ; ReturnValue; remote; manual |
-| 5 | Source: github.com/gorilla/mux; ; true; Vars; ; ; ReturnValue; remote; manual |
+| 4 | Source: github.com/go-chi/chi; ; false; URLParam; ; ; ReturnValue; remote; manual |
+| 5 | Source: github.com/gorilla/mux; ; false; Vars; ; ; ReturnValue; remote; manual |
 | 6 | Source: net/http; Request; true; Body; ; ; ; remote; manual |
 | 7 | Source: net/http; Request; true; FormValue; ; ; ReturnValue; remote; manual |
 | 8 | Source: net/http; Request; true; Referer; ; ; ReturnValue; remote; manual |
 | 9 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
-| 10 | Summary: encoding/json; ; true; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
-| 11 | Summary: fmt; ; true; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
-| 12 | Summary: io/ioutil; ; true; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 10 | Summary: encoding/json; ; false; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
+| 11 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 12 | Summary: io/ioutil; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 | 13 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
 | 14 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 15 | Summary: strings; ; true; TrimPrefix; ; ; Argument[0]; ReturnValue; taint; manual |
+| 15 | Summary: strings; ; false; TrimPrefix; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | builtin.go:19:12:19:34 | call to FormValue | semmle.label | call to FormValue |
 | builtin.go:22:21:22:62 | ...+... | semmle.label | ...+... |

@@ -101,44 +101,44 @@ edges
 | tst.go:139:14:139:35 | call to Get | tst.go:146:23:146:85 | ...+... | provenance | Sink:MaD:26 |
 | tst.go:145:41:145:103 | ...+... | tst.go:145:23:145:104 | call to NewReader | provenance | MaD:38 Sink:MaD:25 |
 models
-| 1 | Sink: github.com/ChrisTrenkamp/goxpath; ; true; MustParse; ; ; Argument[0]; xpath-injection; manual |
-| 2 | Sink: github.com/ChrisTrenkamp/goxpath; ; true; Parse; ; ; Argument[0]; xpath-injection; manual |
-| 3 | Sink: github.com/ChrisTrenkamp/goxpath; ; true; ParseExec; ; ; Argument[0]; xpath-injection; manual |
-| 4 | Sink: github.com/antchfx/htmlquery; ; true; Find; ; ; Argument[1]; xpath-injection; manual |
-| 5 | Sink: github.com/antchfx/htmlquery; ; true; FindOne; ; ; Argument[1]; xpath-injection; manual |
-| 6 | Sink: github.com/antchfx/htmlquery; ; true; Query; ; ; Argument[1]; xpath-injection; manual |
-| 7 | Sink: github.com/antchfx/htmlquery; ; true; QueryAll; ; ; Argument[1]; xpath-injection; manual |
-| 8 | Sink: github.com/antchfx/jsonquery; ; true; Find; ; ; Argument[1]; xpath-injection; manual |
-| 9 | Sink: github.com/antchfx/jsonquery; ; true; FindOne; ; ; Argument[1]; xpath-injection; manual |
-| 10 | Sink: github.com/antchfx/jsonquery; ; true; Query; ; ; Argument[1]; xpath-injection; manual |
-| 11 | Sink: github.com/antchfx/jsonquery; ; true; QueryAll; ; ; Argument[1]; xpath-injection; manual |
-| 12 | Sink: github.com/antchfx/xmlquery; ; true; Find; ; ; Argument[1]; xpath-injection; manual |
-| 13 | Sink: github.com/antchfx/xmlquery; ; true; FindEach; ; ; Argument[1]; xpath-injection; manual |
-| 14 | Sink: github.com/antchfx/xmlquery; ; true; FindEachWithBreak; ; ; Argument[1]; xpath-injection; manual |
-| 15 | Sink: github.com/antchfx/xmlquery; ; true; FindOne; ; ; Argument[1]; xpath-injection; manual |
-| 16 | Sink: github.com/antchfx/xmlquery; ; true; Query; ; ; Argument[1]; xpath-injection; manual |
-| 17 | Sink: github.com/antchfx/xmlquery; ; true; QueryAll; ; ; Argument[1]; xpath-injection; manual |
+| 1 | Sink: github.com/ChrisTrenkamp/goxpath; ; false; MustParse; ; ; Argument[0]; xpath-injection; manual |
+| 2 | Sink: github.com/ChrisTrenkamp/goxpath; ; false; Parse; ; ; Argument[0]; xpath-injection; manual |
+| 3 | Sink: github.com/ChrisTrenkamp/goxpath; ; false; ParseExec; ; ; Argument[0]; xpath-injection; manual |
+| 4 | Sink: github.com/antchfx/htmlquery; ; false; Find; ; ; Argument[1]; xpath-injection; manual |
+| 5 | Sink: github.com/antchfx/htmlquery; ; false; FindOne; ; ; Argument[1]; xpath-injection; manual |
+| 6 | Sink: github.com/antchfx/htmlquery; ; false; Query; ; ; Argument[1]; xpath-injection; manual |
+| 7 | Sink: github.com/antchfx/htmlquery; ; false; QueryAll; ; ; Argument[1]; xpath-injection; manual |
+| 8 | Sink: github.com/antchfx/jsonquery; ; false; Find; ; ; Argument[1]; xpath-injection; manual |
+| 9 | Sink: github.com/antchfx/jsonquery; ; false; FindOne; ; ; Argument[1]; xpath-injection; manual |
+| 10 | Sink: github.com/antchfx/jsonquery; ; false; Query; ; ; Argument[1]; xpath-injection; manual |
+| 11 | Sink: github.com/antchfx/jsonquery; ; false; QueryAll; ; ; Argument[1]; xpath-injection; manual |
+| 12 | Sink: github.com/antchfx/xmlquery; ; false; Find; ; ; Argument[1]; xpath-injection; manual |
+| 13 | Sink: github.com/antchfx/xmlquery; ; false; FindEach; ; ; Argument[1]; xpath-injection; manual |
+| 14 | Sink: github.com/antchfx/xmlquery; ; false; FindEachWithBreak; ; ; Argument[1]; xpath-injection; manual |
+| 15 | Sink: github.com/antchfx/xmlquery; ; false; FindOne; ; ; Argument[1]; xpath-injection; manual |
+| 16 | Sink: github.com/antchfx/xmlquery; ; false; Query; ; ; Argument[1]; xpath-injection; manual |
+| 17 | Sink: github.com/antchfx/xmlquery; ; false; QueryAll; ; ; Argument[1]; xpath-injection; manual |
 | 18 | Sink: github.com/antchfx/xmlquery; Node; true; SelectElement; ; ; Argument[0]; xpath-injection; manual |
 | 19 | Sink: github.com/antchfx/xmlquery; Node; true; SelectElements; ; ; Argument[0]; xpath-injection; manual |
-| 20 | Sink: github.com/antchfx/xpath; ; true; Compile; ; ; Argument[0]; xpath-injection; manual |
-| 21 | Sink: github.com/antchfx/xpath; ; true; CompileWithNS; ; ; Argument[0]; xpath-injection; manual |
-| 22 | Sink: github.com/antchfx/xpath; ; true; MustCompile; ; ; Argument[0]; xpath-injection; manual |
-| 23 | Sink: github.com/antchfx/xpath; ; true; Select; ; ; Argument[1]; xpath-injection; manual |
+| 20 | Sink: github.com/antchfx/xpath; ; false; Compile; ; ; Argument[0]; xpath-injection; manual |
+| 21 | Sink: github.com/antchfx/xpath; ; false; CompileWithNS; ; ; Argument[0]; xpath-injection; manual |
+| 22 | Sink: github.com/antchfx/xpath; ; false; MustCompile; ; ; Argument[0]; xpath-injection; manual |
+| 23 | Sink: github.com/antchfx/xpath; ; false; Select; ; ; Argument[1]; xpath-injection; manual |
 | 24 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; Parse; ; ; Argument[0]; xpath-injection; manual |
 | 25 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; ParseReader; ; ; Argument[0]; xpath-injection; manual |
 | 26 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; ParseString; ; ; Argument[0]; xpath-injection; manual |
-| 27 | Sink: github.com/santhosh-tekuri/xpathparser; ; true; MustParse; ; ; Argument[0]; xpath-injection; manual |
-| 28 | Sink: github.com/santhosh-tekuri/xpathparser; ; true; Parse; ; ; Argument[0]; xpath-injection; manual |
+| 27 | Sink: github.com/santhosh-tekuri/xpathparser; ; false; MustParse; ; ; Argument[0]; xpath-injection; manual |
+| 28 | Sink: github.com/santhosh-tekuri/xpathparser; ; false; Parse; ; ; Argument[0]; xpath-injection; manual |
 | 29 | Sink: group:gokogiri/xml; Node; true; EvalXPath; ; ; Argument[0]; xpath-injection; manual |
 | 30 | Sink: group:gokogiri/xml; Node; true; EvalXPathAsBoolean; ; ; Argument[0]; xpath-injection; manual |
 | 31 | Sink: group:gokogiri/xml; Node; true; Search; ; ; Argument[0]; xpath-injection; manual |
 | 32 | Sink: group:gokogiri/xml; Node; true; SearchWithVariables; ; ; Argument[0]; xpath-injection; manual |
-| 33 | Sink: group:gokogiri/xpath; ; true; Compile; ; ; Argument[0]; xpath-injection; manual |
-| 34 | Sink: group:xmlpath; ; true; Compile; ; ; Argument[0]; xpath-injection; manual |
-| 35 | Sink: group:xmlpath; ; true; MustCompile; ; ; Argument[0]; xpath-injection; manual |
+| 33 | Sink: group:gokogiri/xpath; ; false; Compile; ; ; Argument[0]; xpath-injection; manual |
+| 34 | Sink: group:xmlpath; ; false; Compile; ; ; Argument[0]; xpath-injection; manual |
+| 35 | Sink: group:xmlpath; ; false; MustCompile; ; ; Argument[0]; xpath-injection; manual |
 | 36 | Source: net/http; Request; true; Form; ; ; ; remote; manual |
 | 37 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
-| 38 | Summary: strings; ; true; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
+| 38 | Summary: strings; ; false; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | XPathInjection.go:13:14:13:19 | selection of Form | semmle.label | selection of Form |
 | XPathInjection.go:13:14:13:35 | call to Get | semmle.label | call to Get |
