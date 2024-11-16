@@ -3,4 +3,4 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["mime/quotedprintable", "", True, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["mime/quotedprintable", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

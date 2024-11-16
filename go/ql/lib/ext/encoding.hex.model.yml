@@ -3,6 +3,6 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["encoding/hex", "", True, "Decode", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
-      - ["encoding/hex", "", True, "DecodeString", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["encoding/hex", "", True, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["encoding/hex", "", False, "Decode", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["encoding/hex", "", False, "DecodeString", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["encoding/hex", "", False, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -3,7 +3,7 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["mime/multipart", "", True, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["mime/multipart", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["mime/multipart", "FileHeader", True, "Open", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
       - ["mime/multipart", "Part", True, "FileName", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["mime/multipart", "Part", True, "FormName", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

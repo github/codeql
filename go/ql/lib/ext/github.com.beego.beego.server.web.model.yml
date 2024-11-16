@@ -11,7 +11,7 @@ extensions:
       extensible: sinkModel
     data:
       # path-injection
-      - ["group:beego", "", True, "Walk", "", "", "Argument[1]", "path-injection", "manual"]
+      - ["group:beego", "", False, "Walk", "", "", "Argument[1]", "path-injection", "manual"]
       - ["group:beego", "Controller", True, "SaveToFile", "", "", "Argument[1]", "path-injection", "manual"]
       - ["group:beego", "Controller", True, "SaveToFileWithBuffer", "", "", "Argument[1]", "path-injection", "manual"] # only exists in v2
       - ["group:beego", "FileSystem", True, "Open", "", "", "Argument[0]", "path-injection", "manual"]
@@ -21,13 +21,13 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["group:beego", "", True, "HTML2str", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["group:beego", "", True, "Htmlquote", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["group:beego", "", True, "Htmlunquote", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["group:beego", "", True, "MapGet", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["group:beego", "", True, "ParseForm", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
-      - ["group:beego", "", True, "Str2html", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["group:beego", "", True, "Substr", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:beego", "", False, "HTML2str", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:beego", "", False, "Htmlquote", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:beego", "", False, "Htmlunquote", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:beego", "", False, "MapGet", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:beego", "", False, "ParseForm", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["group:beego", "", False, "Str2html", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:beego", "", False, "Substr", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: sourceModel

@@ -3,14 +3,14 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["bufio", "", True, "NewReadWriter", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["bufio", "", True, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["bufio", "", True, "NewReaderSize", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["bufio", "", True, "NewScanner", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["bufio", "", True, "ScanBytes", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
-      - ["bufio", "", True, "ScanLines", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
-      - ["bufio", "", True, "ScanRunes", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
-      - ["bufio", "", True, "ScanWords", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
+      - ["bufio", "", False, "NewReadWriter", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["bufio", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["bufio", "", False, "NewReaderSize", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["bufio", "", False, "NewScanner", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["bufio", "", False, "ScanBytes", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
+      - ["bufio", "", False, "ScanLines", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
+      - ["bufio", "", False, "ScanRunes", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
+      - ["bufio", "", False, "ScanWords", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
       - ["bufio", "Reader", True, "Peek", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
       - ["bufio", "Reader", True, "ReadBytes", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
       - ["bufio", "Reader", True, "ReadLine", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]

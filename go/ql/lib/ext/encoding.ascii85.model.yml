@@ -3,5 +3,5 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["encoding/ascii85", "", True, "Decode", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
-      - ["encoding/ascii85", "", True, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["encoding/ascii85", "", False, "Decode", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["encoding/ascii85", "", False, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

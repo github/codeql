@@ -3,5 +3,5 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["crypto/rsa", "", True, "DecryptOAEP", "", "", "Argument[3]", "ReturnValue[0]", "taint", "manual"]
-      - ["crypto/rsa", "", True, "DecryptPKCS1v15", "", "", "Argument[2]", "ReturnValue[0]", "taint", "manual"]
+      - ["crypto/rsa", "", False, "DecryptOAEP", "", "", "Argument[3]", "ReturnValue[0]", "taint", "manual"]
+      - ["crypto/rsa", "", False, "DecryptPKCS1v15", "", "", "Argument[2]", "ReturnValue[0]", "taint", "manual"]

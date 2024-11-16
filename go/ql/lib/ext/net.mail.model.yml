@@ -3,9 +3,9 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["net/mail", "", True, "ParseAddress", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["net/mail", "", True, "ParseAddressList", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["net/mail", "", True, "ReadMessage", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/mail", "", False, "ParseAddress", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/mail", "", False, "ParseAddressList", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/mail", "", False, "ReadMessage", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["net/mail", "AddressParser", True, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["net/mail", "AddressParser", True, "ParseList", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["net/mail", "Header", True, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

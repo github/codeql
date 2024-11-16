@@ -3,5 +3,5 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
-      - ["os/exec", "", True, "Command", "", "", "Argument[0]", "command-injection", "manual"]
-      - ["os/exec", "", True, "CommandContext", "", "", "Argument[1]", "command-injection", "manual"]
+      - ["os/exec", "", False, "Command", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["os/exec", "", False, "CommandContext", "", "", "Argument[1]", "command-injection", "manual"]

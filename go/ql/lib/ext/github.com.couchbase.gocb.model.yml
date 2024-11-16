@@ -10,8 +10,8 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["group:gocb", "", True, "NewAnalyticsQuery", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["group:gocb", "", True, "NewN1qlQuery", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb", "", False, "NewAnalyticsQuery", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb", "", False, "NewN1qlQuery", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["group:gocb", "AnalyticsQuery", True, "ContextId", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["group:gocb", "AnalyticsQuery", True, "Deferred", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["group:gocb", "AnalyticsQuery", True, "Pretty", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
