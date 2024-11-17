@@ -523,8 +523,12 @@ class StructType extends @structtype, CompositeType {
   private predicate hasFieldCand(string name, Field f, int depth, boolean isEmbedded) {
     f = this.getOwnField(name, isEmbedded) and depth = 0
     or
-    not this.hasOwnField(_, name, _, _) and
-    f = this.getFieldOfEmbedded(_, name, depth, isEmbedded)
+    f = this.getFieldOfEmbedded(_, name, depth, isEmbedded) and
+    // If this is a cyclic field and this is not the first time we see this embedded field
+    // then don't include it as a field candidate to avoid non-termination.
+    not exists(Type t | lookThroughPointerType(t) = lookThroughPointerType(f.getType()) |
+      this.hasOwnField(_, name, t, _)
+    )
   }
 
   private predicate hasMethodCand(string name, Method m, int depth) {

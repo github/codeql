@@ -18,10 +18,11 @@
 | depth.go:19:2:19:2 | f | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.c | f |
 | depth.go:19:2:19:2 | f | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.d | f |
 | embedded.go:4:2:4:2 | A | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.Baz | A |
+| embedded.go:4:2:4:2 | A | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsBaz | A |
 | embedded.go:4:2:4:2 | A | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.Qux | A |
 | embedded.go:8:3:8:5 | Baz | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.Qux | Baz |
-| embedded.go:13:2:13:4 | Qux | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsBaz | Qux |
-| embedded.go:14:2:14:4 | Baz | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsBaz | Baz |
+| embedded.go:12:2:12:4 | Qux | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsBaz | Qux |
+| embedded.go:13:2:13:4 | Baz | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsBaz | Baz |
 | generic.go:4:2:4:11 | valueField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct1 | valueField |
 | generic.go:5:2:5:13 | pointerField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct1 | pointerField |
 | generic.go:6:2:6:11 | arrayField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.GenericStruct1 | arrayField |
@@ -72,6 +73,7 @@
 | pkg2/tst.go:4:2:4:2 | g | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.T | g |
 | pkg2/tst.go:8:2:8:2 | g | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.G | g |
 | pkg2/tst.go:8:2:8:2 | g | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.T | g |
+| pkg2/tst.go:17:2:17:8 | NCField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsNameClash | NCField |
 | pkg2/tst.go:17:2:17:8 | NCField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.NameClash | NCField |
 | pkg2/tst.go:17:2:17:8 | NCField | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.NameClash | NCField |
 | struct_tags.go:4:2:4:7 | field1 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.S1 | field1 |
