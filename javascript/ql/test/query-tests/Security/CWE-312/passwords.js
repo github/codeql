@@ -26,7 +26,7 @@
     console.log(obj2); // NOT OK
 
     var obj3 = {};
-    console.log(obj3); // OK - but still flagged due to flow-insensitive field-analysis. [INCONSISTENCY]
+    console.log(obj3); // OK
     obj3.x = password;
 
     var fixed_password = "123";

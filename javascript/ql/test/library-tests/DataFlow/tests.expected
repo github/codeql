@@ -999,7 +999,7 @@ flowStep
 | tst2.ts:13:26:13:29 | List | tst2.ts:13:26:13:37 | List<string> |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
-| tst2.ts:13:39:13:38 | this | tst2.ts:13:39:13:38 | implicit 'this' argument of super(...args) |
+| tst2.ts:13:39:13:38 | this | tst2.ts:13:39:13:38 | implicit 'this' |
 | tst2.ts:15:11:15:13 | A.x | tst2.ts:15:11:15:30 | A.x satisfies number |
 | tst.js:1:1:1:1 | x | tst.js:3:5:3:5 | x |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
@@ -1080,7 +1080,7 @@ flowStep
 | tst.js:46:10:46:11 | "" | tst.js:46:1:46:11 | global = "" |
 | tst.js:49:1:54:1 | A | tst.js:55:1:55:1 | A |
 | tst.js:49:1:54:1 | class A ... `\\n  }\\n} | tst.js:49:1:54:1 | A |
-| tst.js:50:14:50:13 | this | tst.js:51:5:51:13 | implicit 'this' argument of super(42) |
+| tst.js:50:14:50:13 | this | tst.js:51:5:51:9 | implicit 'this' |
 | tst.js:64:1:67:1 | functio ... lysed\\n} | tst.js:64:11:64:11 | h |
 | tst.js:64:11:64:11 | h | tst.js:68:12:68:12 | h |
 | tst.js:68:5:68:14 | iter | tst.js:69:1:69:4 | iter |
@@ -1187,6 +1187,7 @@ getImmediatePredecessor
 | tst2.ts:13:26:13:29 | List | tst2.ts:13:26:13:37 | List<string> |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
+| tst2.ts:13:39:13:38 | this | tst2.ts:13:39:13:38 | implicit 'this' |
 | tst2.ts:15:11:15:13 | A.x | tst2.ts:15:11:15:30 | A.x satisfies number |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:7:1:7:2 | fs |
@@ -1249,6 +1250,7 @@ getImmediatePredecessor
 | tst.js:46:10:46:11 | "" | tst.js:46:1:46:11 | global = "" |
 | tst.js:49:1:54:1 | A | tst.js:55:1:55:1 | A |
 | tst.js:49:1:54:1 | class A ... `\\n  }\\n} | tst.js:49:1:54:1 | A |
+| tst.js:50:14:50:13 | this | tst.js:51:5:51:9 | implicit 'this' |
 | tst.js:64:1:67:1 | functio ... lysed\\n} | tst.js:64:11:64:11 | h |
 | tst.js:64:11:64:11 | h | tst.js:68:12:68:12 | h |
 | tst.js:68:5:68:14 | iter | tst.js:69:1:69:4 | iter |

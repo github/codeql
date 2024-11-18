@@ -5,7 +5,9 @@ private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
 private import semmle.javascript.dataflow.internal.Contents::Private
 private import semmle.javascript.dataflow.internal.VariableCapture
+private import semmle.javascript.dataflow.internal.VariableOrThis
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
+private import semmle.javascript.dataflow.internal.sharedlib.Ssa as Ssa2
 private import semmle.javascript.internal.flow_summaries.AllFlowSummaries
 private import sharedlib.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
@@ -17,6 +19,56 @@ class DataFlowSecondLevelScope = Unit;
 private class Node = DataFlow::Node;
 
 class PostUpdateNode = DataFlow::PostUpdateNode;
+
+// TODO: this bypasses refinement nodes, and therefore some sanitisers
+class SsaUseNode extends DataFlow::Node, TSsaUseNode {
+  private ControlFlowNode expr;
+
+  SsaUseNode() { this = TSsaUseNode(expr) }
+
+  cached
+  override string toString() { result = "[ssa-use] " + expr.toString() }
+
+  cached
+  override StmtContainer getContainer() { result = expr.getContainer() }
+
+  cached
+  override Location getLocation() { result = expr.getLocation() }
+}
+
+class SsaPhiReadNode extends DataFlow::Node, TSsaPhiReadNode {
+  private Ssa2::PhiReadNode phi;
+
+  SsaPhiReadNode() { this = TSsaPhiReadNode(phi) }
+
+  cached
+  override string toString() { result = "[ssa-phi-read] " + phi.getSourceVariable().getName() }
+
+  cached
+  override StmtContainer getContainer() { result = phi.getSourceVariable().getDeclaringContainer() }
+
+  cached
+  override Location getLocation() { result = phi.getLocation() }
+}
+
+class SsaInputNode extends DataFlow::Node, TSsaInputNode {
+  private Ssa2::SsaInputNode input;
+
+  SsaInputNode() { this = TSsaInputNode(input) }
+
+  cached
+  override string toString() {
+    result = "[ssa-input] " + input.getDefinitionExt().getSourceVariable().getName()
+  }
+
+  cached
+  override StmtContainer getContainer() {
+    result = input.getDefinitionExt().getSourceVariable().getDeclaringContainer()
+  }
+
+  cached
+  override Location getLocation() { result = input.getLocation() }
+}
 
 class FlowSummaryNode extends DataFlow::Node, TFlowSummaryNode {
   FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
@@ -282,18 +334,13 @@ predicate postUpdatePair(Node pre, Node post) {
   )
   or
   exists(NewExpr expr |
-    pre = TConstructorThisArgumentNode(expr) and
+    pre = TNewCallThisArgument(expr) and
     post = TValueNode(expr)
   )
   or
-  exists(SuperCall expr |
-    pre = TConstructorThisArgumentNode(expr) and
-    post = TConstructorThisPostUpdate(expr.getBinder())
-  )
-  or
-  exists(Function constructor |
-    pre = TThisNode(constructor) and
-    post = TConstructorThisPostUpdate(constructor)
+  exists(ImplicitThisUse use |
+    pre = TImplicitThisUse(use, false) and
+    post = TImplicitThisUse(use, true)
   )
   or
   FlowSummaryImpl::Private::summaryPostUpdateNode(post.(FlowSummaryNode).getSummaryNode(),
@@ -422,7 +469,10 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
     pos.isThis()
   )
   or
-  pos.isThis() and n = TConstructorThisArgumentNode(call.asOrdinaryCall().asExpr())
+  pos.isThis() and n = TNewCallThisArgument(call.asOrdinaryCall().asExpr())
+  or
+  pos.isThis() and
+  n = TImplicitThisUse(call.asOrdinaryCall().asExpr().(SuperCall).getCallee(), false)
   or
   // receiver of accessor call
   pos.isThis() and n = call.asAccessorCall().getBase()
@@ -535,6 +585,12 @@ predicate nodeIsHidden(Node node) {
   node instanceof DynamicParameterArrayNode
   or
   node instanceof RestParameterStoreNode
+  or
+  node instanceof SsaUseNode
+  or
+  node instanceof SsaPhiReadNode
+  or
+  node instanceof SsaInputNode
 }
 
 predicate neverSkipInPathGraph(Node node) {
@@ -938,12 +994,6 @@ predicate mayBenefitFromCallContext(DataFlowCall call) { none() }
  */
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
-bindingset[node1, node2]
-pragma[inline_late]
-private predicate sameContainer(Node node1, Node node2) {
-  node1.getContainer() = node2.getContainer()
-}
-
 bindingset[node, fun]
 pragma[inline_late]
 private predicate sameContainerAsEnclosingContainer(Node node, Function fun) {
@@ -976,10 +1026,49 @@ private predicate isBlockedLegacyNode(Node node) {
   // Note that some variables, such as top-level variables, are still modelled with these nodes (which will result in jump steps).
   exists(LocalVariable variable |
     node = TCapturedVariableNode(variable) and
-    variable instanceof VariableCaptureConfig::CapturedVariable
+    variable = any(VariableCaptureConfig::CapturedVariable v).asLocalVariable()
   )
   or
   legacyBarrier(node)
+}
+
+/**
+ * Holds if `thisNode` represents a value of `this` that is being tracked by the
+ * variable capture library.
+ *
+ * In this case we need to suppress the default flow steps between `thisNode` and
+ * the `ThisExpr` nodes; especially those that would become jump steps.
+ *
+ * Note that local uses of `this` are sometimes tracked by the local SSA library, but we should
+ * not block local def-use flow, since we only switch to use-use flow after a post-update.
+ */
+pragma[nomagic]
+private predicate isThisNodeTrackedByVariableCapture(DataFlow::ThisNode thisNode) {
+  exists(StmtContainer container | thisNode = TThisNode(container) |
+    any(VariableCaptureConfig::CapturedVariable v).asThisContainer() = container
+  )
+}
+
+/**
+ * Holds if there should be flow from `postUpdate` to `target` because of a variable/this value
+ * that is captured but not tracked precisely by the variable-capture library.
+ */
+pragma[nomagic]
+private predicate imprecisePostUpdateStep(DataFlow::PostUpdateNode postUpdate, DataFlow::Node target) {
+  exists(LocalVariableOrThis var, DataFlow::Node use |
+    // 'var' is captured but not tracked precisely
+    var.isCaptured() and
+    not var instanceof VariableCaptureConfig::CapturedVariable and
+    (
+      use = TValueNode(var.asLocalVariable().getAnAccess())
+      or
+      use = TValueNode(var.getAThisExpr())
+      or
+      use = TImplicitThisUse(var.getAThisUse(), false)
+    ) and
+    postUpdate.getPreUpdateNode() = use and
+    target = use.getALocalSource()
+  )
 }
 
 /**
@@ -989,7 +1078,10 @@ private predicate isBlockedLegacyNode(Node node) {
 private predicate valuePreservingStep(Node node1, Node node2) {
   node1.getASuccessor() = node2 and
   not isBlockedLegacyNode(node1) and
-  not isBlockedLegacyNode(node2)
+  not isBlockedLegacyNode(node2) and
+  not isThisNodeTrackedByVariableCapture(node1)
+  or
+  imprecisePostUpdateStep(node1, node2)
   or
   FlowSteps::propertyFlowStep(node1, node2)
   or
@@ -999,19 +1091,59 @@ private predicate valuePreservingStep(Node node1, Node node2) {
   or
   FlowSummaryPrivate::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode(), true, _) // TODO: preserve 'model'
-  or
-  // Step from post-update nodes to local sources of the pre-update node. This emulates how JS usually tracks side effects.
-  exists(PostUpdateNode postUpdate |
-    node1 = postUpdate and
-    node2 = postUpdate.getPreUpdateNode().getALocalSource() and
-    node1 != node2 and // exclude trivial edges
-    sameContainer(node1, node2)
-  )
 }
 
 predicate knownSourceModel(Node sink, string model) { none() }
 
 predicate knownSinkModel(Node sink, string model) { none() }
+
+private predicate samePhi(SsaPhiNode legacyPhi, Ssa2::PhiNode newPhi) {
+  exists(BasicBlock bb, LocalVariableOrThis v |
+    newPhi.definesAt(v, bb, _) and
+    legacyPhi.definesAt(bb, _, v.asLocalVariable())
+  )
+}
+
+cached
+Node getNodeFromSsa2(Ssa2::Node node) {
+  result = TSsaUseNode(node.(Ssa2::ExprNode).getExpr())
+  or
+  result = TExprPostUpdateNode(node.(Ssa2::ExprPostUpdateNode).getExpr())
+  or
+  exists(ImplicitThisUse use |
+    node.(Ssa2::ExprPostUpdateNode).getExpr() = use and
+    result = TImplicitThisUse(use, true)
+  )
+  or
+  result = TSsaPhiReadNode(node.(Ssa2::SsaDefinitionExtNode).getDefinitionExt())
+  or
+  result = TSsaInputNode(node.(Ssa2::SsaInputNode))
+  or
+  exists(SsaPhiNode legacyPhi, Ssa2::PhiNode ssaPhi |
+    node.(Ssa2::SsaDefinitionExtNode).getDefinitionExt() = ssaPhi and
+    samePhi(legacyPhi, ssaPhi) and
+    result = TSsaDefNode(legacyPhi)
+  )
+}
+
+private predicate useUseFlow(Node node1, Node node2) {
+  exists(Ssa2::DefinitionExt def, Ssa2::Node ssa1, Ssa2::Node ssa2 |
+    Ssa2::localFlowStep(def, ssa1, ssa2, _) and
+    node1 = getNodeFromSsa2(ssa1) and
+    node2 = getNodeFromSsa2(ssa2) and
+    not node1.getTopLevel().isExterns()
+  )
+  or
+  exists(Expr use |
+    node1 = TSsaUseNode(use) and
+    node2 = TValueNode(use)
+  )
+  or
+  exists(ImplicitThisUse use |
+    node1 = TSsaUseNode(use) and
+    node2 = TImplicitThisUse(use, false)
+  )
+}
 
 predicate simpleLocalFlowStep(Node node1, Node node2, string model) {
   simpleLocalFlowStep(node1, node2) and model = ""
@@ -1021,6 +1153,8 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
   valuePreservingStep(node1, node2) and
   nodeGetEnclosingCallable(pragma[only_bind_out](node1)) =
     nodeGetEnclosingCallable(pragma[only_bind_out](node2))
+  or
+  useUseFlow(node1, node2)
   or
   exists(FlowSummaryImpl::Private::SummaryNode input, FlowSummaryImpl::Private::SummaryNode output |
     FlowSummaryPrivate::Steps::summaryStoreStep(input, MkAwaited(), output) and
@@ -1143,7 +1277,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c = ContentSet::arrayElement()
   )
   or
-  exists(LocalVariable variable |
+  exists(LocalVariableOrThis variable |
     VariableCaptureOutput::readStep(getClosureNode(node1), variable, getClosureNode(node2)) and
     c.asSingleton() = MkCapturedContent(variable)
   )
@@ -1203,15 +1337,34 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
 }
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */
-private Node getPostUpdate(Node node) { result.(PostUpdateNode).getPreUpdateNode() = node }
-
-/** Gets the post-update node for which node is the pre-update node, if one exists, otherwise gets `node` itself. */
-pragma[inline]
-private Node tryGetPostUpdate(Node node) {
-  result = getPostUpdate(node)
+private Node getPostUpdateForStore(Node base) {
+  exists(Expr expr |
+    base = TValueNode(expr) and
+    result = TExprPostUpdateNode(expr)
+  |
+    // When object/array literal appears as an argument to a call, we would generally need two post-update nodes:
+    // - one for the stores coming from the properties or array elements (which happen before the call and must flow into the call)
+    // - one for the argument position, to propagate the updates that happened during the call
+    //
+    // However, the first post-update is not actually needed since we are storing into a brand new object, so in the first case
+    // we just target the expression directly. In the second case we use the ExprPostUpdateNode.
+    not expr instanceof ObjectExpr and
+    not expr instanceof ArrayExpr
+  )
   or
-  not exists(getPostUpdate(node)) and
-  result = node
+  exists(ImplicitThisUse use |
+    base = TImplicitThisUse(use, false) and
+    result = TImplicitThisUse(use, true)
+  )
+}
+
+/** Gets node to target with a store to the given `base` object.. */
+pragma[inline]
+private Node getStoreTarget(DataFlow::Node base) {
+  result = getPostUpdateForStore(base)
+  or
+  not exists(getPostUpdateForStore(base)) and
+  result = base
 }
 
 pragma[nomagic]
@@ -1229,7 +1382,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1 = write.getRhs() and
     c.asPropertyName() = write.getPropertyName() and
     // Target the post-update node if one exists (for object literals we do not generate post-update nodes)
-    node2 = tryGetPostUpdate(write.getBase())
+    node2 = getStoreTarget(write.getBase())
   )
   or
   FlowSummaryPrivate::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
@@ -1244,7 +1397,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c = ContentSet::promiseValue()
   )
   or
-  exists(LocalVariable variable |
+  exists(LocalVariableOrThis variable |
     VariableCaptureOutput::storeStep(getClosureNode(node1), variable, getClosureNode(node2)) and
     c.asSingleton() = MkCapturedContent(variable)
   )
@@ -1377,7 +1530,9 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode()) and exists(kind)
   or
-  receiver = call.asOrdinaryCall().getCalleeNode() and exists(kind)
+  receiver = call.asOrdinaryCall().getCalleeNode() and
+  exists(kind) and
+  receiver.getALocalSource() instanceof DataFlow::ParameterNode
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */

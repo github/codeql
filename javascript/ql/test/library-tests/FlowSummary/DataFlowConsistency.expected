@@ -33,14 +33,6 @@ postWithInFlow
 | file://:0:0:0:0 | [summary] to write: Argument[this] in Array#forEach / Map#forEach / Set#forEach | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | [summary] to write: Argument[this] in Array#map | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | [summary] to write: Argument[this] in Array#reduce / Array#reduceRight | PostUpdateNode should not be the target of local flow. |
-| tst.js:97:24:97:74 | new Pro ... rce())) | PostUpdateNode should not be the target of local flow. |
-| tst.js:100:3:100:53 | new Pro ... rce())) | PostUpdateNode should not be the target of local flow. |
-| tst.js:101:3:101:53 | new Pro ... rce())) | PostUpdateNode should not be the target of local flow. |
-| tst.js:102:3:102:52 | new Pro ... rce())) | PostUpdateNode should not be the target of local flow. |
-| tst.js:103:3:103:52 | new Pro ... rce())) | PostUpdateNode should not be the target of local flow. |
-| tst.js:250:15:250:23 | new Map() | PostUpdateNode should not be the target of local flow. |
-| tst.js:258:16:258:24 | new Map() | PostUpdateNode should not be the target of local flow. |
-| tst.js:264:16:264:24 | new Map() | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition

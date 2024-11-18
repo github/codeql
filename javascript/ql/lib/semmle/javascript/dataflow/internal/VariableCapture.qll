@@ -1,5 +1,6 @@
 private import javascript as js
 private import semmle.javascript.dataflow.internal.DataFlowNode
+private import semmle.javascript.dataflow.internal.VariableOrThis
 private import codeql.dataflow.VariableCapture
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 
@@ -51,7 +52,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
     )
   }
 
-  class CapturedVariable extends js::LocalVariable {
+  class CapturedVariable extends LocalVariableOrThis {
     CapturedVariable() {
       DataFlowImplCommon::forceCachingInSameStage() and
       this.isCaptured() and
@@ -63,7 +64,9 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
 
   additional predicate captures(js::Function fun, CapturedVariable variable) {
     (
-      variable.getAnAccess().getContainer().getFunctionBoundary() = fun
+      variable.asLocalVariable().getAnAccess().getContainer().getFunctionBoundary() = fun
+      or
+      variable.getAThisUse().getUseContainer() = fun
       or
       exists(js::Function inner |
         captures(inner, variable) and
@@ -122,7 +125,8 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
   private predicate isCapturedByOwnInitializer(js::VariableDeclarator decl) {
     exists(js::Function function |
       function = getACapturingFunctionInTree(decl.getInit()) and
-      captures(function, decl.getBindingPattern().(js::VarDecl).getVariable())
+      captures(function,
+        LocalVariableOrThis::variable(decl.getBindingPattern().(js::VarDecl).getVariable()))
     )
   }
 
@@ -141,7 +145,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
   }
 
   class CapturedParameter extends CapturedVariable {
-    CapturedParameter() { this.isParameter() }
+    CapturedParameter() { this.asLocalVariable().isParameter() or exists(this.asThisContainer()) }
   }
 
   class Expr extends js::AST::ValueNode {
@@ -152,10 +156,10 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
     }
   }
 
-  class VariableRead extends Expr instanceof js::VarAccess, js::RValue {
+  class VariableRead extends Expr instanceof js::ControlFlowNode {
     private CapturedVariable variable;
 
-    VariableRead() { this = variable.getAnAccess() }
+    VariableRead() { this = variable.getAUse() }
 
     CapturedVariable getVariable() { result = variable }
   }
@@ -178,7 +182,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
   private newtype TVariableWrite =
     MkExplicitVariableWrite(js::VarRef pattern) {
       exists(js::DataFlow::lvalueNodeInternal(pattern)) and
-      pattern.getVariable() instanceof CapturedVariable
+      any(CapturedVariable v).asLocalVariable() = pattern.getVariable()
     } or
     MkImplicitVariableInit(CapturedVariable v) { not v instanceof CapturedParameter }
 
@@ -200,7 +204,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
 
     ExplicitVariableWrite() { this = MkExplicitVariableWrite(pattern) }
 
-    override CapturedVariable getVariable() { result = pattern.getVariable() }
+    override CapturedVariable getVariable() { result.asLocalVariable() = pattern.getVariable() }
 
     override string toString() { result = pattern.toString() }
 
@@ -248,7 +252,9 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
     override predicate hasCfgNode(BasicBlock bb, int i) {
       // 'i' would normally be bound to 0, but we lower it to -1 so FunctionDeclStmts can be evaluated
       // at index 0.
-      any(js::SsaImplicitInit def).definesAt(bb, _, variable) and i = -1
+      any(js::SsaImplicitInit def).definesAt(bb, _, variable.asLocalVariable()) and i = -1
+      or
+      bb.(js::EntryBasicBlock).getContainer() = variable.asThisContainer() and i = -1
     }
   }
 
@@ -266,7 +272,13 @@ module VariableCaptureOutput = Flow<js::DbLocation, VariableCaptureConfig>;
 js::DataFlow::Node getNodeFromClosureNode(VariableCaptureOutput::ClosureNode node) {
   result = TValueNode(node.(VariableCaptureOutput::ExprNode).getExpr())
   or
-  result = TValueNode(node.(VariableCaptureOutput::ParameterNode).getParameter().getADeclaration()) // TODO: is this subsumed by the ExprNode case?
+  result =
+    TValueNode(node.(VariableCaptureOutput::ParameterNode)
+          .getParameter()
+          .asLocalVariable()
+          .getADeclaration()) // TODO: is this subsumed by the ExprNode case?
+  or
+  result = TThisNode(node.(VariableCaptureOutput::ParameterNode).getParameter().asThisContainer())
   or
   result = TExprPostUpdateNode(node.(VariableCaptureOutput::ExprPostUpdateNode).getExpr())
   or

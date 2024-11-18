@@ -14,7 +14,7 @@ function test() {
     sink(x.sort()); // NOT OK
 
     var a = [];
-    sink(a); // NOT OK (flow-insensitive treatment of `a`)
+    sink(a); // OK
     a.push(x);
     sink(a); // NOT OK
 
