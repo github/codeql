@@ -1,18 +1,2 @@
 testFailures
-| testLibxmlXXE.swift:101:78:102:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
-| testLibxmlXXE.swift:102:80:103:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
-| testLibxmlXXE.swift:103:107:104:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
-| testLibxmlXXE.swift:104:82:105:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
-| testLibxmlXXE.swift:106:78:107:1 | // $ hasXXE=95\n | Missing result: hasXXE=95 |
-| testLibxmlXXE.swift:107:80:108:1 | // $ hasXXE=95\n | Missing result: hasXXE=95 |
-| testLibxmlXXE.swift:109:87:110:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
-| testLibxmlXXE.swift:110:89:111:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
-| testLibxmlXXE.swift:112:99:113:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
-| testLibxmlXXE.swift:113:97:114:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
-| testLibxmlXXE.swift:115:87:116:1 | // $ hasXXE=95\n | Missing result: hasXXE=95 |
-| testLibxmlXXE.swift:116:89:117:1 | // $ hasXXE=95\n | Missing result: hasXXE=95 |
-| testLibxmlXXE.swift:118:89:119:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
-| testLibxmlXXE.swift:119:91:120:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
-| testLibxmlXXE.swift:121:98:122:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
-| testLibxmlXXE.swift:122:100:123:1 | // $ hasXXE=96\n | Missing result: hasXXE=96 |
 failures

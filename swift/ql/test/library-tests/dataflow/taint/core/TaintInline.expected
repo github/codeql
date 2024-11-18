@@ -1,17 +1,2 @@
 testFailures
-| conversions.swift:33:30:34:1 | // $ tainted=33\n | Missing result: tainted=33 |
-| conversions.swift:34:32:35:1 | // $ tainted=34\n | Missing result: tainted=34 |
-| conversions.swift:58:16:59:1 | // $ tainted=57\n | Missing result: tainted=57 |
-| conversions.swift:61:16:62:1 | // $ tainted=60\n | Missing result: tainted=60 |
-| conversions.swift:69:42:70:1 | // $ tainted=69\n | Missing result: tainted=69 |
-| conversions.swift:71:40:72:1 | // $ tainted=71\n | Missing result: tainted=71 |
-| conversions.swift:72:43:73:1 | // $ tainted=72\n | Missing result: tainted=72 |
-| conversions.swift:73:40:74:1 | // $ tainted=73\n | Missing result: tainted=73 |
-| conversions.swift:74:50:75:1 | // $ tainted=74\n | Missing result: tainted=74 |
-| conversions.swift:110:34:111:1 | // $ tainted=110\n | Missing result: tainted=110 |
-| conversions.swift:130:38:131:1 | // $ tainted=130\n | Missing result: tainted=130 |
-| conversions.swift:131:40:132:1 | // $ tainted=131\n | Missing result: tainted=131 |
-| conversions.swift:166:38:167:1 | // $ tainted=166\n | Missing result: tainted=166 |
-| conversions.swift:208:18:209:1 | // $ tainted=232\n | Missing result: tainted=232 |
-| conversions.swift:232:41:233:1 | // $ tainted=232\n | Missing result: tainted=232 |
 failures
