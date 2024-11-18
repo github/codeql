@@ -938,7 +938,7 @@ private predicate isMatchObjectProperty(string name) {
 
 /** Holds if `call` is a call to `match` whose result is used in a way that is incompatible with Match objects. */
 private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
-  call.getMethodName() = "match" and
+  call.getMethodName() = ["match", "matchAll"] and
   call.getNumArgument() = 1 and
   (
     // Accessing a property that is absent on Match objects
@@ -972,7 +972,7 @@ private predicate isUsedAsNumber(DataFlow::LocalSourceNode value) {
   or
   exists(DataFlow::CallNode call |
     call.getCalleeName() =
-      ["substring", "substr", "slice", "splice", "charAt", "charCodeAt", "codePointAt"] and
+      ["substring", "substr", "slice", "splice", "charAt", "charCodeAt", "codePointAt", "toSpliced"] and
     value.flowsTo(call.getAnArgument())
   )
 }
@@ -996,7 +996,7 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
         not isNativeStringMethod(func, methodName)
       )
     |
-      methodName = "match" and
+      methodName = ["match", "matchAll"] and
       source = mce.getArgument(0) and
       mce.getNumArgument() = 1 and
       not isUsedAsNonMatchObject(mce)

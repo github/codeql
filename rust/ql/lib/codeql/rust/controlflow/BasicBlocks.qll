@@ -12,7 +12,7 @@ final class BasicBlock = BasicBlockImpl;
  * without branches or joins.
  */
 private class BasicBlockImpl extends TBasicBlockStart {
-  /** Gets the scope of this basic block. */
+  /** Gets the CFG scope of this basic block. */
   CfgScope getScope() { result = this.getAPredecessor().getScope() }
 
   /** Gets an immediate successor of this basic block, if any. */

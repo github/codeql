@@ -43,6 +43,7 @@ pub struct Config {
     pub inputs: Vec<PathBuf>,
     pub qltest: bool,
     pub qltest_cargo_check: bool,
+    pub qltest_dependencies: Vec<String>,
 }
 
 impl Config {
@@ -61,7 +62,13 @@ impl Config {
                 .ancestors()
                 // only travel up while we're within the test pack
                 .take_while_inclusive(|p| !p.join("qlpack.yml").exists())
-                .map(|p| p.join("options"))
+                .flat_map(|p| {
+                    [
+                        p.join("options"),
+                        p.join("options.yml"),
+                        p.join("options.yaml"),
+                    ]
+                })
                 .filter(|p| p.exists())
                 .collect_vec();
             option_files.reverse();

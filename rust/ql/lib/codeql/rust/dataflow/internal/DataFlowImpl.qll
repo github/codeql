@@ -65,7 +65,7 @@ final class NormalCall extends DataFlowCall, TNormalCall {
   override CallCfgNode asCall() { result = c }
 
   override DataFlowCallable getEnclosingCallable() {
-    result = TCfgScope(c.getExpr().getEnclosingCallable())
+    result = TCfgScope(c.getExpr().getEnclosingCfgScope())
   }
 
   override string toString() { result = c.toString() }
@@ -136,7 +136,7 @@ module Node {
 
     ExprNode() { this = TExprNode(n) }
 
-    override CfgScope getCfgScope() { result = this.asExpr().getEnclosingCallable() }
+    override CfgScope getCfgScope() { result = this.asExpr().getEnclosingCfgScope() }
 
     override Location getLocation() { result = n.getExpr().getLocation() }
 
@@ -156,7 +156,7 @@ module Node {
 
     ParameterNode() { this = TParameterNode(parameter) }
 
-    override CfgScope getCfgScope() { result = parameter.getParam().getEnclosingCallable() }
+    override CfgScope getCfgScope() { result = parameter.getParam().getEnclosingCfgScope() }
 
     override Location getLocation() { result = parameter.getLocation() }
 

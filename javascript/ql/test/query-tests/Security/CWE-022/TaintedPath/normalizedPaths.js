@@ -407,3 +407,25 @@ app.get('/join-spread', (req, res) => {
   fs.readFileSync(pathModule.join('foo', ...req.query.x.split('/'))); // NOT OK
   fs.readFileSync(pathModule.join(...req.query.x.split('/'))); // NOT OK
 });
+
+app.get('/dotdot-matchAll-regexp', (req, res) => {
+  let path = pathModule.normalize(req.query.x);
+  if (pathModule.isAbsolute(path))
+    return;
+  fs.readFileSync(path); // NOT OK
+  if (!path.matchAll(/\./)) {
+    fs.readFileSync(path); // OK
+  }
+  if (!path.matchAll(/\.\./)) {
+    fs.readFileSync(path); // OK
+  }
+  if (!path.matchAll(/\.\.\//)) {
+    fs.readFileSync(path); // OK
+  }
+  if (!path.matchAll(/\.\.\/foo/)) {
+    fs.readFileSync(path); // NOT OK
+  }
+  if (!path.matchAll(/(\.\.\/|\.\.\\)/)) {
+    fs.readFileSync(path); // OK
+  }
+});

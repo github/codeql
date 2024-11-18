@@ -289,14 +289,14 @@ pub fn unreachable_loop() {
 async fn do_something_async() {}
 
 pub async fn unreachable_loop_async() {
-    let for_ten = async { // $ SPURIOUS: Alert[rust/unused-value]
+    let for_ten = async {
         for _ in 1..10 {
             do_something_async().await;
         }
         do_something();
     };
 
-    let for_ever = async { // $ SPURIOUS: Alert[rust/unused-value]
+    let for_ever = async {
         loop {
             do_something_async().await;
         }

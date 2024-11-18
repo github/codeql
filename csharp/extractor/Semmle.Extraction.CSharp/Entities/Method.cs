@@ -290,7 +290,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public Method OriginalDefinition => Create(Context, Symbol.OriginalDefinition);
 
-        public override Location? FullLocation => ReportingLocation;
+        public override Microsoft.CodeAnalysis.Location? FullLocation => ReportingLocation;
 
         public override bool IsSourceDeclaration => Symbol.IsSourceDeclaration();
 

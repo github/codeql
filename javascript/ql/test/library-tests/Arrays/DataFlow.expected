@@ -13,6 +13,7 @@
 | arrays.js:2:16:2:23 | "source" | arrays.js:86:8:86:35 | arrayFi ... llback) |
 | arrays.js:2:16:2:23 | "source" | arrays.js:90:10:90:10 | x |
 | arrays.js:2:16:2:23 | "source" | arrays.js:93:8:93:17 | arr.at(-1) |
+| arrays.js:2:16:2:23 | "source" | arrays.js:109:8:109:24 | arr8_spread.pop() |
 | arrays.js:18:22:18:29 | "source" | arrays.js:18:50:18:50 | e |
 | arrays.js:22:15:22:22 | "source" | arrays.js:23:8:23:17 | arr2.pop() |
 | arrays.js:25:15:25:22 | "source" | arrays.js:26:8:26:17 | arr3.pop() |
@@ -22,3 +23,5 @@
 | arrays.js:29:21:29:28 | "source" | arrays.js:50:8:50:17 | arr6.pop() |
 | arrays.js:33:37:33:44 | "source" | arrays.js:35:8:35:25 | arr4_variant.pop() |
 | arrays.js:53:4:53:11 | "source" | arrays.js:54:10:54:18 | ary.pop() |
+| arrays.js:99:31:99:38 | "source" | arrays.js:100:8:100:17 | arr8.pop() |
+| arrays.js:103:55:103:62 | "source" | arrays.js:105:8:105:25 | arr8_variant.pop() |

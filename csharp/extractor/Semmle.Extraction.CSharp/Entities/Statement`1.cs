@@ -1,7 +1,6 @@
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.CSharp.Populators;
-using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
