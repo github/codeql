@@ -38,4 +38,6 @@ fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 | ir.cpp:2546:34:2546:34 | Call: call to operator bool | Call instruction 'Call: call to operator bool' has a `this` argument operand that is not an address, in function '$@'. | ir.cpp:2545:6:2545:23 | void this_inconsistency(bool) | void this_inconsistency(bool) |
 nonUniqueIRVariable
+nonBooleanOperand
+| try_except.c:35:13:35:13 | ConditionalBranch: b | Conditional branch instruction ConditionalBranch: b with non-Boolean condition, in function '$@'. | try_except.c:32:6:32:6 | void h(int) | void h(int) |
 missingCppType
