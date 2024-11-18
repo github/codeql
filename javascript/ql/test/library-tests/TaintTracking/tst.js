@@ -68,4 +68,7 @@ function test() {
     sink(x.toReversed()) // NOT OK
     const xReversed = x.toReversed();
     sink(xReversed) // NOT OK
+
+    sink(Map.groupBy(x, z => z)); // NOT OK -- This should be marked via taint step, but it is not.
+    sink(Custom.groupBy(x, z => z)); // OK
 }
