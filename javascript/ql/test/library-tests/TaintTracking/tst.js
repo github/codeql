@@ -71,4 +71,5 @@ function test() {
 
     sink(Map.groupBy(x, z => z)); // NOT OK
     sink(Custom.groupBy(x, z => z)); // OK
+    sink(Object.groupBy(x, z => z)); // NOT OK -- This should be marked via taint step, but it is not.
 }
