@@ -1,6 +1,9 @@
+mod deserialize_vec;
+
 use anyhow::Context;
 use clap::Parser;
 use codeql_extractor::trap;
+use deserialize_vec::deserialize_newline_or_comma_separated;
 use figment::{
     providers::{Env, Format, Serialized, Yaml},
     value::Value,
@@ -14,7 +17,7 @@ use ra_ap_intern::Symbol;
 use ra_ap_paths::Utf8PathBuf;
 use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource};
 use rust_extractor_macros::extractor_cli_config;
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 use std::ops::Not;
 use std::path::PathBuf;
@@ -35,14 +38,6 @@ impl From<Compression> for trap::Compression {
             Compression::Gzip => Self::Gzip,
         }
     }
-}
-
-// required by the extractor_cli_config macro.
-fn deserialize_newline_or_comma_separated<'a, D: Deserializer<'a>, T: for<'b> From<&'b str>>(
-    deserializer: D,
-) -> Result<Vec<T>, D::Error> {
-    let value = String::deserialize(deserializer)?;
-    Ok(value.split(['\n', ',']).map(T::from).collect())
 }
 
 #[extractor_cli_config]
