@@ -94,6 +94,25 @@ nodes
 | logInjectionBad.js:99:26:99:33 | username |
 | logInjectionBad.js:113:37:113:44 | username |
 | logInjectionBad.js:113:37:113:44 | username |
+| logInjectionBad.js:122:9:122:58 | username |
+| logInjectionBad.js:122:20:122:43 | url.par ... , true) |
+| logInjectionBad.js:122:20:122:49 | url.par ... ).query |
+| logInjectionBad.js:122:20:122:58 | url.par ... sername |
+| logInjectionBad.js:122:30:122:36 | req.url |
+| logInjectionBad.js:122:30:122:36 | req.url |
+| logInjectionBad.js:123:9:123:46 | otherStr |
+| logInjectionBad.js:123:20:123:27 | username |
+| logInjectionBad.js:123:20:123:43 | usernam ... (/.*/g) |
+| logInjectionBad.js:123:20:123:46 | usernam ... */g)[0] |
+| logInjectionBad.js:124:17:124:24 | otherStr |
+| logInjectionBad.js:124:17:124:24 | otherStr |
+| logInjectionBad.js:128:20:128:43 | url.par ... , true) |
+| logInjectionBad.js:128:20:128:49 | url.par ... ).query |
+| logInjectionBad.js:128:20:128:58 | url.par ... sername |
+| logInjectionBad.js:128:30:128:36 | req.url |
+| logInjectionBad.js:128:30:128:36 | req.url |
+| logInjectionBad.js:129:42:129:50 | RegExp.$1 |
+| logInjectionBad.js:129:42:129:50 | RegExp.$1 |
 edges
 | logInjectionBad.js:19:9:19:36 | q | logInjectionBad.js:20:20:20:20 | q |
 | logInjectionBad.js:19:13:19:36 | url.par ... , true) | logInjectionBad.js:19:9:19:36 | q |
@@ -186,6 +205,23 @@ edges
 | logInjectionBad.js:73:20:73:20 | q | logInjectionBad.js:73:20:73:26 | q.query |
 | logInjectionBad.js:73:20:73:26 | q.query | logInjectionBad.js:73:20:73:35 | q.query.username |
 | logInjectionBad.js:73:20:73:35 | q.query.username | logInjectionBad.js:73:9:73:35 | username |
+| logInjectionBad.js:122:9:122:58 | username | logInjectionBad.js:123:20:123:27 | username |
+| logInjectionBad.js:122:20:122:43 | url.par ... , true) | logInjectionBad.js:122:20:122:49 | url.par ... ).query |
+| logInjectionBad.js:122:20:122:49 | url.par ... ).query | logInjectionBad.js:122:20:122:58 | url.par ... sername |
+| logInjectionBad.js:122:20:122:58 | url.par ... sername | logInjectionBad.js:122:9:122:58 | username |
+| logInjectionBad.js:122:30:122:36 | req.url | logInjectionBad.js:122:20:122:43 | url.par ... , true) |
+| logInjectionBad.js:122:30:122:36 | req.url | logInjectionBad.js:122:20:122:43 | url.par ... , true) |
+| logInjectionBad.js:123:9:123:46 | otherStr | logInjectionBad.js:124:17:124:24 | otherStr |
+| logInjectionBad.js:123:9:123:46 | otherStr | logInjectionBad.js:124:17:124:24 | otherStr |
+| logInjectionBad.js:123:20:123:27 | username | logInjectionBad.js:123:20:123:43 | usernam ... (/.*/g) |
+| logInjectionBad.js:123:20:123:43 | usernam ... (/.*/g) | logInjectionBad.js:123:20:123:46 | usernam ... */g)[0] |
+| logInjectionBad.js:123:20:123:46 | usernam ... */g)[0] | logInjectionBad.js:123:9:123:46 | otherStr |
+| logInjectionBad.js:128:20:128:43 | url.par ... , true) | logInjectionBad.js:128:20:128:49 | url.par ... ).query |
+| logInjectionBad.js:128:20:128:49 | url.par ... ).query | logInjectionBad.js:128:20:128:58 | url.par ... sername |
+| logInjectionBad.js:128:20:128:58 | url.par ... sername | logInjectionBad.js:129:42:129:50 | RegExp.$1 |
+| logInjectionBad.js:128:20:128:58 | url.par ... sername | logInjectionBad.js:129:42:129:50 | RegExp.$1 |
+| logInjectionBad.js:128:30:128:36 | req.url | logInjectionBad.js:128:20:128:43 | url.par ... , true) |
+| logInjectionBad.js:128:30:128:36 | req.url | logInjectionBad.js:128:20:128:43 | url.par ... , true) |
 #select
 | logInjectionBad.js:22:18:22:43 | `[INFO] ... rname}` | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:22:18:22:43 | `[INFO] ... rname}` | Log entry depends on a $@. | logInjectionBad.js:19:23:19:29 | req.url | user-provided value |
 | logInjectionBad.js:23:37:23:44 | username | logInjectionBad.js:19:23:19:29 | req.url | logInjectionBad.js:23:37:23:44 | username | Log entry depends on a $@. | logInjectionBad.js:19:23:19:29 | req.url | user-provided value |
@@ -208,3 +244,5 @@ edges
 | logInjectionBad.js:91:26:91:33 | username | logInjectionBad.js:72:23:72:29 | req.url | logInjectionBad.js:91:26:91:33 | username | Log entry depends on a $@. | logInjectionBad.js:72:23:72:29 | req.url | user-provided value |
 | logInjectionBad.js:99:26:99:33 | username | logInjectionBad.js:72:23:72:29 | req.url | logInjectionBad.js:99:26:99:33 | username | Log entry depends on a $@. | logInjectionBad.js:72:23:72:29 | req.url | user-provided value |
 | logInjectionBad.js:113:37:113:44 | username | logInjectionBad.js:72:23:72:29 | req.url | logInjectionBad.js:113:37:113:44 | username | Log entry depends on a $@. | logInjectionBad.js:72:23:72:29 | req.url | user-provided value |
+| logInjectionBad.js:124:17:124:24 | otherStr | logInjectionBad.js:122:30:122:36 | req.url | logInjectionBad.js:124:17:124:24 | otherStr | Log entry depends on a $@. | logInjectionBad.js:122:30:122:36 | req.url | user-provided value |
+| logInjectionBad.js:129:42:129:50 | RegExp.$1 | logInjectionBad.js:128:30:128:36 | req.url | logInjectionBad.js:129:42:129:50 | RegExp.$1 | Log entry depends on a $@. | logInjectionBad.js:128:30:128:36 | req.url | user-provided value |

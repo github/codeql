@@ -105,4 +105,27 @@
 
 	/\.com|\.org/; // OK, has no domain name
 	/example\.com|whatever/; // OK, the other disjunction doesn't match a hostname
+
+	// MatchAll test cases:
+	// Vulnerable patterns
+	if ("http://evil.com/?http://good.com".matchAll("https?://good.com")) {} // NOT OK
+	if ("http://evil.com/?http://good.com".matchAll(new RegExp("https?://good.com"))) {} // NOT OK
+	if ("http://evil.com/?http://good.com".matchAll("^https?://good.com")) {} // NOT OK - missing post-anchor
+	if ("http://evil.com/?http://good.com".matchAll(/^https?:\/\/good.com/g)) {} // NOT OK - missing post-anchor
+	if ("http://evil.com/?http://good.com".matchAll("(^https?://good1.com)|(^https?://good2.com)")) {} // NOT OK - missing post-anchor
+	if ("http://evil.com/?http://good.com".matchAll("(https?://good.com)|(^https?://goodie.com)")) {} // NOT OK - missing post-anchor
+	if ("http://evil.com/?http://good.com".matchAll("good.com")) {} // NOT OK - missing protocol
+	if ("http://evil.com/?http://good.com".matchAll("https?://good.com")) {} // NOT OK
+	if ("http://evil.com/?http://good.com".matchAll("https?://good.com:8080")) {} // NOT OK
+
+	// Non-vulnerable patterns
+	if ("something".matchAll("other")) {} // OK
+	if ("something".matchAll("x.commissary")) {} // OK
+	if ("http://evil.com/?http://good.com".matchAll("^https?://good.com$")) {} // OK
+	if ("http://evil.com/?http://good.com".matchAll(new RegExp("^https?://good.com$"))) {} // OK
+	if ("http://evil.com/?http://good.com".matchAll("^https?://good.com/$")) {} // OK
+	if ("http://evil.com/?http://good.com".matchAll(/^https?:\/\/good.com\/$/)) {} // OK
+	if ("http://evil.com/?http://good.com".matchAll("(^https?://good1.com$)|(^https?://good2.com$)")) {} // OK
+	if ("http://evil.com/?http://good.com".matchAll("(https?://good.com$)|(^https?://goodie.com$)")) {} // OK
+
 });

@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Semmle.Util;
 using Semmle.Util.Logging;
+using Semmle.Extraction.CSharp;
 
 namespace Semmle.Extraction.Tests
 {

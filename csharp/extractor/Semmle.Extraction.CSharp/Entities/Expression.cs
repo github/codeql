@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         private readonly IExpressionInfo info;
         public AnnotatedTypeSymbol? Type { get; private set; }
-        public Extraction.Entities.Location Location { get; }
+        public Location Location { get; }
         public ExprKind Kind { get; }
 
         internal Expression(IExpressionInfo info, bool shouldPopulate = true)
@@ -62,7 +62,7 @@ namespace Semmle.Extraction.CSharp.Entities
             type.PopulateGenerics();
         }
 
-        public override Location? ReportingLocation => Location.Symbol;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Location.Symbol;
 
         internal void SetType(ITypeSymbol? type)
         {
@@ -138,7 +138,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// Creates a generated expression from a typed constant.
         /// </summary>
         public static Expression? CreateGenerated(Context cx, TypedConstant constant, IExpressionParentEntity parent,
-            int childIndex, Extraction.Entities.Location location)
+            int childIndex, Location location)
         {
             if (constant.IsNull ||
                 constant.Type is null)
@@ -176,7 +176,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// Creates a generated expression for a default argument value.
         /// </summary>
         public static Expression? CreateGenerated(Context cx, IParameterSymbol parameter, IExpressionParentEntity parent,
-            int childIndex, Extraction.Entities.Location location)
+            int childIndex, Location location)
         {
             if (!parameter.HasExplicitDefaultValue ||
                 parameter.Type is IErrorTypeSymbol)
@@ -315,7 +315,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         /// <summary>
         /// Given `b` in `a?.b.c`, return `(a?.b, a?.b)`.
-        /// 
+        ///
         /// Given `c` in `a?.b?.c.d`, return `(b?.c, a?.b?.c)`.
         /// </summary>
         /// <param name="node">A MemberBindingExpression.</param>
