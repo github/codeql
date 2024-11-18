@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities.Expressions;
-using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -105,7 +104,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Extraction.Entities.Location loc,
+        private Expression AddInitializerAssignment(TextWriter trapFile, ExpressionSyntax initializer, Location loc,
             string? constValue, ref int child)
         {
             var type = Symbol.GetAnnotatedType();
