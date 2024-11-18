@@ -22,8 +22,9 @@ use sqlx::Executor;
  * sqlx migrate run
  * ```
  *
- * Build and run:
+ * Build and run with the provided `cargo.toml.manual`:
  * ```
+ * cp cargo.toml.manual cargo.toml
  * cargo run
  * ```
  *
