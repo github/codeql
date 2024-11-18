@@ -42,35 +42,23 @@ final class DataFlowCallable extends TDataFlowCallable {
   Location getLocation() { result = this.asCfgScope().getLocation() }
 }
 
-abstract class DataFlowCall extends TDataFlowCall {
-  /** Gets the enclosing callable. */
-  abstract DataFlowCallable getEnclosingCallable();
-
-  /** Gets the underlying source code call, if any. */
-  abstract CallCfgNode asCall();
-
-  /** Gets a textual representation of this call. */
-  abstract string toString();
-
-  /** Gets the location of this call. */
-  abstract Location getLocation();
-}
-
-final class NormalCall extends DataFlowCall, TNormalCall {
-  private CallCfgNode c;
-
-  NormalCall() { this = TNormalCall(c) }
-
+final class DataFlowCall extends TDataFlowCall {
   /** Gets the underlying call in the CFG, if any. */
-  override CallCfgNode asCall() { result = c }
+  CallExprCfgNode asCallExprCfgNode() { this = TNormalCall(result) }
 
-  override DataFlowCallable getEnclosingCallable() {
-    result = TCfgScope(c.getExpr().getEnclosingCfgScope())
+  MethodCallExprCfgNode asMethodCallExprCfgNode() { this = TMethodCall(result) }
+
+  ExprCfgNode asExprCfgNode() {
+    result = this.asCallExprCfgNode() or result = this.asMethodCallExprCfgNode()
   }
 
-  override string toString() { result = c.toString() }
+  DataFlowCallable getEnclosingCallable() {
+    result = TCfgScope(this.asExprCfgNode().getExpr().getEnclosingCfgScope())
+  }
 
-  override Location getLocation() { result = c.getLocation() }
+  string toString() { result = this.asExprCfgNode().toString() }
+
+  Location getLocation() { result = this.asExprCfgNode().getLocation() }
 }
 
 module Node {
@@ -204,7 +192,7 @@ module Node {
     ExprOutNode() { this.asExpr() instanceof CallExpr }
 
     /** Gets the underlying call CFG node that includes this out node. */
-    override DataFlowCall getCall() { result.(NormalCall).asCall() = this.getCfgNode() }
+    override DataFlowCall getCall() { result.asExprCfgNode() = this.getCfgNode() }
   }
 
   /**
@@ -331,7 +319,15 @@ module RustDataFlow implements InputSig<Location> {
   final class ReturnKind = ReturnKindAlias;
 
   /** Gets a viable implementation of the target of the given `Call`. */
-  DataFlowCallable viableCallable(DataFlowCall c) { none() }
+  DataFlowCallable viableCallable(DataFlowCall c) {
+    exists(Function f, string name | result.asCfgScope() = f and name = f.getName().toString() |
+      if f.getParamList().hasSelfParam()
+      then name = c.asMethodCallExprCfgNode().getMethodCallExpr().getNameRef().getText()
+      else
+        name =
+          c.asCallExprCfgNode().getCallExpr().getExpr().(PathExpr).getPath().getPart().toString()
+    )
+  }
 
   /**
    * Gets a node that can read the value returned from `call` with return kind
@@ -488,7 +484,9 @@ private module Cached {
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node)
 
   cached
-  newtype TDataFlowCall = TNormalCall(CallCfgNode c)
+  newtype TDataFlowCall =
+    TNormalCall(CallExprCfgNode c) or
+    TMethodCall(MethodCallExprCfgNode c)
 
   cached
   newtype TOptionalContentSet =
