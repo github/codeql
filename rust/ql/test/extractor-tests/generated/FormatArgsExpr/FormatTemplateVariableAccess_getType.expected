@@ -1,0 +1,2 @@
+| gen_format_args_expr.rs:9:20:9:20 | x | i32 |
+| gen_format_args_expr.rs:9:25:9:25 | y | i32 |

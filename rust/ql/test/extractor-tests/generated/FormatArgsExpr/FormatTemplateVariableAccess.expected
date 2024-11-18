@@ -1,5 +1,5 @@
-| gen_format_args_expr.rs:9:20:9:20 | x |
-| gen_format_args_expr.rs:9:25:9:25 | y |
-| gen_format_argument.rs:5:22:5:26 | value |
-| gen_format_argument.rs:5:29:5:33 | width |
-| gen_format_argument.rs:5:36:5:44 | precision |
+| gen_format_args_expr.rs:9:20:9:20 | x | hasType: | yes |
+| gen_format_args_expr.rs:9:25:9:25 | y | hasType: | yes |
+| gen_format_argument.rs:5:22:5:26 | value | hasType: | no |
+| gen_format_argument.rs:5:29:5:33 | width | hasType: | no |
+| gen_format_argument.rs:5:36:5:44 | precision | hasType: | no |

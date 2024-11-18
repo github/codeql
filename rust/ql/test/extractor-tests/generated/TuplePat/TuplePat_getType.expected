@@ -1,0 +1,2 @@
+| gen_tuple_pat.rs:5:9:5:14 | TuplePat | (i32, i32) |
+| gen_tuple_pat.rs:6:9:6:22 | TuplePat | (i32, i32, i32, i32, i32) |
