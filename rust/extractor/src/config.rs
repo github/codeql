@@ -62,13 +62,7 @@ impl Config {
                 .ancestors()
                 // only travel up while we're within the test pack
                 .take_while_inclusive(|p| !p.join("qlpack.yml").exists())
-                .flat_map(|p| {
-                    [
-                        p.join("options"),
-                        p.join("options.yml"),
-                        p.join("options.yaml"),
-                    ]
-                })
+                .map(|p| p.join("options.yml"))
                 .filter(|p| p.exists())
                 .collect_vec();
             option_files.reverse();
