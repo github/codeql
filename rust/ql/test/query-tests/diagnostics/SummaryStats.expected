@@ -2,9 +2,9 @@
 | Elements unextracted | 0 |
 | Extraction errors | 0 |
 | Extraction warnings | 7 |
-| Files extracted - total | 7 |
+| Files extracted - total | 8 |
 | Files extracted - with errors | 2 |
-| Files extracted - without errors | 5 |
+| Files extracted - without errors | 6 |
 | Inconsistencies - AST | 0 |
 | Inconsistencies - CFG | 0 |
 | Inconsistencies - data flow | 0 |
