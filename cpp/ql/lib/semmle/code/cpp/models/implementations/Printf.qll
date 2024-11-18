@@ -8,7 +8,7 @@
 import semmle.code.cpp.models.interfaces.FormattingFunction
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
-import semmle.code.cpp.models.interfaces.NonThrowing
+import semmle.code.cpp.models.interfaces.Throwing
 
 /**
  * The standard functions `printf`, `wprintf` and their glib variants.
@@ -32,6 +32,8 @@ private class Printf extends FormattingFunction, AliasFunction, NonThrowingFunct
   override predicate parameterEscapesOnlyViaReturn(int n) { none() }
 
   override predicate parameterIsAlwaysReturned(int n) { none() }
+
+  override TCxxException getExceptionType() { any() }
 }
 
 /**
@@ -50,6 +52,8 @@ private class Fprintf extends FormattingFunction, NonThrowingFunction {
   override int getFormatParameterIndex() { result = 1 }
 
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = true }
+
+  override TCxxException getExceptionType() { any() }
 }
 
 /**
@@ -93,6 +97,8 @@ private class Sprintf extends FormattingFunction, NonThrowingFunction {
     then result = 4
     else result = super.getFirstFormatArgumentIndex()
   }
+
+  override TCxxException getExceptionType() { any() }
 }
 
 /**
@@ -165,6 +171,8 @@ private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction, 
     // We don't know how many parameters are passed to the function since it's varargs, but they also have read side effects.
     i = this.getFormatParameterIndex() and buffer = true
   }
+
+  override TCxxException getExceptionType() { any() }
 }
 
 /**
@@ -215,4 +223,6 @@ private class Syslog extends FormattingFunction, NonThrowingFunction {
   override int getFormatParameterIndex() { result = 1 }
 
   override predicate isOutputGlobal() { any() }
+
+  override TCxxException getExceptionType() { any() }
 }

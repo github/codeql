@@ -7,7 +7,7 @@ import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.SideEffect
-import semmle.code.cpp.models.interfaces.NonThrowing
+import semmle.code.cpp.models.interfaces.Throwing
 
 /**
  * The standard function `strcat` and its wide, sized, and Microsoft variants.
@@ -94,6 +94,8 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
     (i = 0 or i = 1) and
     buffer = true
   }
+
+  override TCxxException getExceptionType() { any() }
 }
 
 /**

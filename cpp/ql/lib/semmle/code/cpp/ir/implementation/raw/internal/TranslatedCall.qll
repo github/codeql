@@ -363,11 +363,11 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   }
 
   final override predicate mayThrowException() {
-    expr.getTarget().(ThrowingFunction).mayThrowException(_)
+    expr.getTarget().(ThrowingFunction).mayRaiseException()
   }
 
   final override predicate mustThrowException() {
-    expr.getTarget().(ThrowingFunction).mayThrowException(true)
+    expr.getTarget().(ThrowingFunction).alwaysRaisesException()
   }
 }
 
