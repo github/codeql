@@ -238,6 +238,7 @@ fun doAnalysis(
                     var fileNumber = 0
                     val dump_psi = System.getenv("CODEQL_EXTRACTOR_JAVA_KOTLIN_DUMP") == "true"
                     for (psiFile in psiFiles) {
+                        val thisFileNumber = fileNumber++
                         launch {
                             extractorThreads.withPermit {
                                 if (psiFile is KtFile) {
@@ -251,11 +252,11 @@ fun doAnalysis(
                                         val fileDiagnosticTrapWriter = dtw.makeSourceFileTrapWriter(psiFile, true)
                                         fileDiagnosticTrapWriter.writeCompilation_compiling_files(
                                             compilation,
-                                            fileNumber,
+                                            thisFileNumber,
                                             fileDiagnosticTrapWriter.fileId
                                         )
                                         doFile(
-                                            fileNumber,
+                                            thisFileNumber,
                                             compression,
                                             /*
                                             OLD: KE1
@@ -277,7 +278,7 @@ fun doAnalysis(
                                         )
                                         fileDiagnosticTrapWriter.writeCompilation_compiling_files_completed(
                                             compilation,
-                                            fileNumber,
+                                            thisFileNumber,
                                             fileExtractionProblems.extractionResult()
                                         )
                                         // We catch Throwable rather than Exception, as we want to
@@ -295,7 +296,6 @@ fun doAnalysis(
                                 }
                             }
                         }
-                        fileNumber += 1
                     }
                 }
             }
