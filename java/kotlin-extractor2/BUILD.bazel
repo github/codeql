@@ -17,6 +17,7 @@ py_binary(
     name = "generate_dbscheme",
     srcs = ["generate_dbscheme.py"],
 )
+
 genrule(
     name = "generated-dbscheme",
     srcs = ["@codeql//java:dbscheme"],

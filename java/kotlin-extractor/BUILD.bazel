@@ -38,9 +38,9 @@ load(
     "get_language_version",
     "version_less",
 )
+load("@codeql//misc/bazel:pkg.bzl", "codeql_pkg_files")
 load("@rules_kotlin//kotlin:core.bzl", "kt_javac_options", "kt_kotlinc_options")
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
-load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
 
 package(default_visibility = ["//java/kotlin-extractor:__subpackages__"])
 
