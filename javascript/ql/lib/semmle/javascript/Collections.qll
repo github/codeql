@@ -158,7 +158,7 @@ private module CollectionDataFlow {
   private class GroupByTaintStep extends TaintTracking::SharedTaintStep {
     override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::MethodCallNode call |
-        call = DataFlow::globalVarRef("Map").getAMemberCall("groupBy") and
+        call = DataFlow::globalVarRef(["Map", "Object"]).getAMemberCall("groupBy") and
         pred = call.getArgument(0) and
         succ = call
       )
