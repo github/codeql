@@ -288,13 +288,12 @@ edges
 | test.rs:145:9:149:9 | IfExpr | test.rs:144:67:150:5 | BlockExpr |  |
 | test.rs:145:12:145:12 | a | test.rs:145:12:145:31 | [boolean(false)] ... && ... | false |
 | test.rs:145:12:145:12 | a | test.rs:145:17:145:31 | LetExpr | true |
-| test.rs:145:12:145:31 | ... && ... | test.rs:146:13:146:13 | d | true |
-| test.rs:145:12:145:31 | ... && ... | test.rs:148:13:148:17 | false | false |
 | test.rs:145:12:145:31 | [boolean(false)] ... && ... | test.rs:148:13:148:17 | false | false |
+| test.rs:145:12:145:31 | [boolean(true)] ... && ... | test.rs:146:13:146:13 | d | true |
 | test.rs:145:17:145:31 | LetExpr | test.rs:145:31:145:31 | b |  |
-| test.rs:145:21:145:27 | TupleStructPat | test.rs:145:12:145:31 | ... && ... | no-match |
+| test.rs:145:21:145:27 | TupleStructPat | test.rs:145:12:145:31 | [boolean(false)] ... && ... | no-match |
 | test.rs:145:21:145:27 | TupleStructPat | test.rs:145:26:145:26 | d | match |
-| test.rs:145:26:145:26 | d | test.rs:145:12:145:31 | ... && ... | match |
+| test.rs:145:26:145:26 | d | test.rs:145:12:145:31 | [boolean(true)] ... && ... | match |
 | test.rs:145:31:145:31 | b | test.rs:145:21:145:27 | TupleStructPat |  |
 | test.rs:145:33:147:9 | BlockExpr | test.rs:145:9:149:9 | IfExpr |  |
 | test.rs:146:13:146:13 | d | test.rs:145:33:147:9 | BlockExpr |  |
@@ -312,13 +311,12 @@ edges
 | test.rs:153:9:157:9 | IfExpr | test.rs:152:59:158:5 | BlockExpr |  |
 | test.rs:153:12:153:12 | a | test.rs:153:12:153:25 | [boolean(false)] ... && ... | false |
 | test.rs:153:12:153:12 | a | test.rs:153:17:153:25 | LetExpr | true |
-| test.rs:153:12:153:25 | ... && ... | test.rs:153:12:153:30 | [boolean(false)] ... && ... | false |
-| test.rs:153:12:153:25 | ... && ... | test.rs:153:30:153:30 | c | true |
 | test.rs:153:12:153:25 | [boolean(false)] ... && ... | test.rs:153:12:153:30 | [boolean(false)] ... && ... | false |
+| test.rs:153:12:153:25 | [boolean(true)] ... && ... | test.rs:153:30:153:30 | c | true |
 | test.rs:153:12:153:30 | [boolean(false)] ... && ... | test.rs:156:13:156:17 | false | false |
 | test.rs:153:12:153:30 | [boolean(true)] ... && ... | test.rs:154:13:154:13 | d | true |
 | test.rs:153:17:153:25 | LetExpr | test.rs:153:25:153:25 | b |  |
-| test.rs:153:21:153:21 | d | test.rs:153:12:153:25 | ... && ... | match |
+| test.rs:153:21:153:21 | d | test.rs:153:12:153:25 | [boolean(true)] ... && ... | match |
 | test.rs:153:25:153:25 | b | test.rs:153:21:153:21 | d |  |
 | test.rs:153:30:153:30 | c | test.rs:153:12:153:30 | [boolean(false)] ... && ... | false |
 | test.rs:153:30:153:30 | c | test.rs:153:12:153:30 | [boolean(true)] ... && ... | true |
