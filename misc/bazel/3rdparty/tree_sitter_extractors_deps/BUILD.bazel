@@ -164,6 +164,12 @@ alias(
 )
 
 alias(
+    name = "ra_ap_hir_ty",
+    actual = "@vendor__ra_ap_hir_ty-0.0.232//:ra_ap_hir_ty",
+    tags = ["manual"],
+)
+
+alias(
     name = "ra_ap_ide_db",
     actual = "@vendor__ra_ap_ide_db-0.0.232//:ra_ap_ide_db",
     tags = ["manual"],
