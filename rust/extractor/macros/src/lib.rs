@@ -1,11 +1,36 @@
 use proc_macro::TokenStream;
 use quote::{format_ident, quote};
+use syn::{Ident, Type};
+
+fn get_type_tip(t: &Type) -> Option<&Ident> {
+    let syn::Type::Path(path) = t else {
+        return None;
+    };
+    let segment = path.path.segments.last()?;
+    Some(&segment.ident)
+}
 
 /// Allow all fields in the extractor config to be also overrideable by extractor CLI flags
 #[proc_macro_attribute]
 pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let ast = syn::parse_macro_input!(item as syn::ItemStruct);
     let name = &ast.ident;
+    let fields = ast
+        .fields
+        .iter()
+        .map(|f| {
+            if f.ident.as_ref().is_some_and(|i| i != "inputs")
+                && get_type_tip(&f.ty).is_some_and(|i| i == "Vec")
+            {
+                quote! {
+                    #[serde(deserialize_with="deserialize_newline_or_comma_separated")]
+                    #f
+                }
+            } else {
+                quote! { #f }
+            }
+        })
+        .collect::<Vec<_>>();
     let cli_name = format_ident!("Cli{}", name);
     let cli_fields = ast
         .fields
@@ -13,35 +38,37 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
         .map(|f| {
             let id = f.ident.as_ref().unwrap();
             let ty = &f.ty;
-            if let syn::Type::Path(p) = ty {
-                if p.path.is_ident(&format_ident!("bool")) {
-                    return quote! {
-                        #[arg(long)]
-                        #[serde(skip_serializing_if="<&bool>::not")]
-                        #id: bool,
-                    };
+            let type_tip = get_type_tip(ty);
+            if type_tip.is_some_and(|i| i == "bool") {
+                quote! {
+                    #[arg(long)]
+                    #[serde(skip_serializing_if="<&bool>::not")]
+                    #id: bool
                 }
-                if p.path.segments.len() == 1 && p.path.segments[0].ident == "Option" {
-                    return quote! {
-                        #[arg(long)]
-                        #id: #ty,
-                    };
+            } else if type_tip.is_some_and(|i| i == "Option") {
+                quote! {
+                    #[arg(long)]
+                    #f
                 }
-            }
-            if id == &format_ident!("verbose") {
+            } else if id == &format_ident!("verbose") {
                 quote! {
                     #[arg(long, short, action=clap::ArgAction::Count)]
                     #[serde(skip_serializing_if="u8::is_zero")]
-                    #id: u8,
+                    #id: u8
                 }
             } else if id == &format_ident!("inputs") {
                 quote! {
-                    #id: #ty,
+                    #f
+                }
+            } else if type_tip.is_some_and(|i| i == "Vec") {
+                quote! {
+                    #[arg(long)]
+                    #id: Option<String>
                 }
             } else {
                 quote! {
                     #[arg(long)]
-                    #id: Option<#ty>,
+                    #id: Option<#ty>
                 }
             }
         })
@@ -66,7 +93,9 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
     let gen = quote! {
         #[serde_with::apply(_ => #[serde(default)])]
         #[derive(Deserialize, Default)]
-        #ast
+        pub struct #name {
+            #(#fields),*
+        }
 
         impl Debug for #name {
             fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -80,7 +109,7 @@ pub fn extractor_cli_config(_attr: TokenStream, item: TokenStream) -> TokenStrea
         #[derive(clap::Parser, Serialize)]
         #[command(about, long_about = None)]
         struct #cli_name {
-            #(#cli_fields)*
+            #(#cli_fields),*
         }
     };
     gen.into()
