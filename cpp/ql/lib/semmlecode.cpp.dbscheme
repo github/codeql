@@ -47,6 +47,20 @@ compilation_args(
 );
 
 /**
+ * Optionally, record the build mode for each compilation.
+ * The build mode should be the same for all compilations.
+ * Build mode:
+ *   0 = none
+ *   1 = manual
+ *   2 = auto
+ */
+#keyset[id, mode]
+compilation_build_mode(
+    int id : @compilation ref,
+    int mode : int ref
+);
+
+/**
  * The source files that are compiled by a compiler invocation.
  * If `id` is for the compiler invocation
  *
