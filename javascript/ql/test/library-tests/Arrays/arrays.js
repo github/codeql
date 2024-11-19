@@ -112,19 +112,19 @@
 
   {  // Test for findLast function
     const list = ["source"];
-    const element = list.findLast((item) => sink(item)); // NOT OK -- Not caught, currently missing dataflow tracking.
+    const element = list.findLast((item) => sink(item)); // NOT OK
     sink(element); // NOT OK
   }
 
   {  // Test for find function
     const list = ["source"];
-    const element = list.find((item) => sink(item)); // NOT OK -- Not caught, currently missing dataflow tracking.
+    const element = list.find((item) => sink(item)); // NOT OK
     sink(element); // NOT OK
   }
 
   {  // Test for findLastIndex function
     const list = ["source"];
-    const element = list.findLastIndex((item) => sink(item)); // NOT OK -- Not caught, currently missing dataflow tracking.
+    const element = list.findLastIndex((item) => sink(item)); // NOT OK
     sink(element); // OK
   }
 });

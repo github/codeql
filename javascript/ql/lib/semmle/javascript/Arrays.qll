@@ -483,4 +483,18 @@ private module ArrayLibraries {
       )
     }
   }
+
+  /**
+   * Defines a data flow step that tracks the flow of data through callback functions in arrays.
+   */
+  private class ArrayCallBackDataFlowStep extends PreCallGraphStep {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["findLast", "find", "findLastIndex"] and
+        prop = arrayLikeElement() and
+        obj = call.getReceiver() and
+        element = call.getCallback(0).getParameter(0)
+      )
+    }
+  }
 }
