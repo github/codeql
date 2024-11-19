@@ -6,11 +6,12 @@ import pytest
 # (which skips `qltest.{sh,cmd}`)
 
 @pytest.fixture(autouse=True)
-def default_options(codeql):
+def default_options(codeql, pytestconfig):
     codeql.flags.update(
         threads = 1,
         show_extractor_output = True,
         check_databases = False,
+        learn = pytestconfig.getoption("learn"),
     )
 
 @pytest.mark.parametrize("dir", ["lib", "main", "dependencies"])
