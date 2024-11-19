@@ -12,12 +12,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal sealed class DotNetCliInvoker : IDotNetCliInvoker
     {
         private readonly ILogger logger;
+        private readonly DependabotProxy proxy;
 
         public string Exec { get; }
 
-        public DotNetCliInvoker(ILogger logger, string exec)
+        public DotNetCliInvoker(ILogger logger, string exec, TemporaryDirectory tempWorkingDirectory)
         {
             this.logger = logger;
+            this.proxy = new DependabotProxy(tempWorkingDirectory);
             this.Exec = exec;
             logger.LogInfo($"Using .NET CLI executable: '{Exec}'");
         }
@@ -38,6 +40,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             startInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en";
             startInfo.EnvironmentVariables["MSBUILDDISABLENODEREUSE"] = "1";
             startInfo.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"] = "true";
+
+            // Configure the proxy settings, if applicable.
+            this.proxy.ApplyProxy(this.logger, startInfo);
+
+            this.logger.LogInfo(startInfo.EnvironmentVariables["HTTP_PROXY"] ?? "");
+            this.logger.LogInfo(startInfo.EnvironmentVariables["HTTPS_PROXY"] ?? "");
+            this.logger.LogInfo(startInfo.EnvironmentVariables["SSL_CERT_FILE"] ?? "");
+
             return startInfo;
         }
 
