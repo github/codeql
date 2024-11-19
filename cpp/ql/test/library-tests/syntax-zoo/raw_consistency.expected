@@ -43,7 +43,6 @@ thisArgumentIsNonPointer
 | pointer_to_member.cpp:24:5:24:49 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
 nonUniqueIRVariable
 nonBooleanOperand
-| misc.c:87:9:87:10 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | misc.c:16:6:16:10 | void misc1(int, int) | void misc1(int, int) |
 | misc.c:93:9:93:15 | ConditionalBranch: ... ? ... : ... | Conditional branch instruction ConditionalBranch: ... ? ... : ... with non-Boolean condition, in function '$@'. | misc.c:91:6:91:33 | void gnuConditionalOmittedOperand(someStruct*) | void gnuConditionalOmittedOperand(someStruct*) |
 | misc.c:94:9:94:19 | ConditionalBranch: ... ? ... : ... | Conditional branch instruction ConditionalBranch: ... ? ... : ... with non-Boolean condition, in function '$@'. | misc.c:91:6:91:33 | void gnuConditionalOmittedOperand(someStruct*) | void gnuConditionalOmittedOperand(someStruct*) |
 | range_analysis.c:366:10:366:15 | ConditionalBranch: ... ? ... : ... | Conditional branch instruction ConditionalBranch: ... ? ... : ... with non-Boolean condition, in function '$@'. | range_analysis.c:355:14:355:27 | unsigned int test_ternary01(unsigned int) | unsigned int test_ternary01(unsigned int) |
@@ -55,8 +54,4 @@ nonBooleanOperand
 | range_analysis.c:385:10:385:21 | ConditionalBranch: ... ? ... : ... | Conditional branch instruction ConditionalBranch: ... ? ... : ... with non-Boolean condition, in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
 | range_analysis.c:386:10:386:21 | ConditionalBranch: ... ? ... : ... | Conditional branch instruction ConditionalBranch: ... ? ... : ... with non-Boolean condition, in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
 | range_analysis.c:387:10:387:38 | ConditionalBranch: ... ? ... : ... | Conditional branch instruction ConditionalBranch: ... ? ... : ... with non-Boolean condition, in function '$@'. | range_analysis.c:377:14:377:27 | unsigned int test_ternary02(unsigned int) | unsigned int test_ternary02(unsigned int) |
-| test.c:219:12:219:13 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | test.c:218:5:218:11 | int f_and_1(int, int) | int f_and_1(int, int) |
-| test.c:226:7:226:15 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | test.c:225:5:225:11 | int f_and_2(int, int) | int f_and_2(int, int) |
-| unaryopexpr.c:8:5:8:6 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | unaryopexpr.c:1:13:1:13 | void f() | void f() |
-| whilestmt.c:10:9:10:13 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | whilestmt.c:8:13:8:26 | void always_false_2() | void always_false_2() |
 missingCppType

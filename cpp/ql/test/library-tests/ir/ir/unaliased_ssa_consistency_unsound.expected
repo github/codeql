@@ -30,16 +30,4 @@ thisArgumentIsNonPointer
 | ir.cpp:2546:34:2546:34 | Call: call to operator bool | Call instruction 'Call: call to operator bool' has a `this` argument operand that is not an address, in function '$@'. | ir.cpp:2545:6:2545:23 | void this_inconsistency(bool) | void this_inconsistency(bool) |
 nonUniqueIRVariable
 nonBooleanOperand
-| ir.c:86:6:86:8 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
-| ir.c:88:11:88:13 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
-| ir.c:90:6:90:7 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
-| ir.c:93:6:93:8 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
-| ir.c:94:12:94:14 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
-| ir.c:95:6:95:8 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
-| ir.c:95:13:95:15 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
-| ir.c:97:6:97:8 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
-| ir.c:98:12:98:14 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
-| ir.c:99:6:99:8 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
-| ir.c:99:13:99:15 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
-| ir.c:103:6:103:15 | LogicalNot: ! ... | Logical Not instruction LogicalNot: ! ... with non-Boolean operand, in function '$@'. | ir.c:84:6:84:28 | void branch_on_integral_in_c(int, int) | void branch_on_integral_in_c(int, int) |
 missingCppType
