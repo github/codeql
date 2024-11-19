@@ -53,9 +53,7 @@ module ThreatModelSource {
  * A data flow source that is enabled in the current threat model configuration.
  */
 class ActiveThreatModelSource extends ThreatModelSource {
-  ActiveThreatModelSource() {
-    currentThreatModel(this.getThreatModel())
-  }
+  ActiveThreatModelSource() { currentThreatModel(this.getThreatModel()) }
 }
 
 /**
