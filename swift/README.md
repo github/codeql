@@ -13,7 +13,7 @@ brew install bazelisk
 then from the `ql` directory run
 
 ```bash
-bazel run //swift:create-extractor-pack
+bazel run //swift:installer
 ```
 
 If you are running on macOS and you encounter errors mentioning `XXX is unavailable: introduced in macOS YY.ZZ`,

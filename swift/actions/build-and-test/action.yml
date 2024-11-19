@@ -48,7 +48,7 @@ runs:
     - name: Build Swift extractor
       shell: bash
       run: |
-        bazel run //swift:create-extractor-pack
+        bazel run //swift:installer
     - name: Run codegen tests
       if : ${{ github.event_name == 'pull_request' }}
       shell: bash
