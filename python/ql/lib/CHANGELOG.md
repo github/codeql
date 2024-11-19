@@ -1,3 +1,9 @@
+## 2.2.0
+
+### Major Analysis Improvements
+
+* Added modeling of the `bottle` framework, leading to new remote flow sources and header writes
+
 ## 2.1.2
 
 ### Minor Analysis Improvements
