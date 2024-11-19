@@ -16,8 +16,8 @@ function f2() {
         })(x);
         return y;
     }
-    sink(inner(source("f2.1"))); // $ MISSING: hasValueFlow=f2.1
-    sink(inner(source("f2.2"))); // $ MISSING: hasValueFlow=f2.2
+    sink(inner(source("f2.1"))); // $ hasValueFlow=f2.1
+    sink(inner(source("f2.2"))); // $ hasValueFlow=f2.2
 }
 
 function f3() {
@@ -64,8 +64,8 @@ function f6() {
         (nested)(x); // same as f5, except the callee is parenthesised here
         return y;
     }
-    sink(inner(source("f6.1"))); // $ MISSING: hasValueFlow=f6.1
-    sink(inner(source("f6.2"))); // $ MISSING: hasValueFlow=f6.2
+    sink(inner(source("f6.1"))); // $ hasValueFlow=f6.1
+    sink(inner(source("f6.2"))); // $ hasValueFlow=f6.2
 }
 
 function f7() {
@@ -77,6 +77,6 @@ function f7() {
         nested(x); // same as f5, except the function definition is parenthesised
         return y;
     }
-    sink(inner(source("f7.1"))); // $ MISSING: hasValueFlow=f7.1
-    sink(inner(source("f7.2"))); // $ MISSING: hasValueFlow=f7.2
+    sink(inner(source("f7.1"))); // $ hasValueFlow=f7.1
+    sink(inner(source("f7.2"))); // $ hasValueFlow=f7.2
 }

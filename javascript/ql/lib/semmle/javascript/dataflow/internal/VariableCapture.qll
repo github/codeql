@@ -8,7 +8,7 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
   private js::Function getLambdaFromVariable(js::LocalVariable variable) {
     result.getVariable() = variable
     or
-    result = variable.getAnAssignedExpr()
+    result = variable.getAnAssignedExpr().getUnderlyingValue()
     or
     exists(js::ClassDeclStmt cls |
       result = cls.getConstructor().getBody() and
@@ -148,9 +148,11 @@ module VariableCaptureConfig implements InputSig<js::DbLocation> {
     predicate hasAliasedAccess(Expr e) {
       e = this
       or
+      e.(js::Expr).getUnderlyingValue() = this
+      or
       exists(js::LocalVariable variable |
         this = getLambdaFromVariable(variable) and
-        e = variable.getAnAccess()
+        e.(js::Expr).getUnderlyingValue() = variable.getAnAccess()
       )
     }
   }
