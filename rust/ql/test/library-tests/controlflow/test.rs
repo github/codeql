@@ -62,15 +62,15 @@ mod loop_expression {
     }
 
     fn test_loop_label_shadowing(b: bool) -> ! {
-        'loop: loop {
+        'label: loop {
             1;
-            'loop: loop {
+            'label: loop {
                 if b {
                     continue;
                 } else if b {
-                    continue 'loop;
+                    continue 'label;
                 }
-                continue 'loop;
+                continue 'label;
             }
         }
     }
@@ -139,6 +139,24 @@ mod if_expression {
             n
         }
         0
+    }
+
+    fn test_and_if_let(a: bool, b: Option<bool>, c: bool) -> bool {
+        if a && let Some(d) = b {
+            d
+        } else {
+            false
+        }
+    }
+
+    fn test_and_if_let2(a: bool, b: i64, c: bool) -> bool {
+        if a && let d = b
+            && c
+        {
+            d > 0
+        } else {
+            false
+        }
     }
 
     fn test_nested_if(a: i64) -> i64 {
@@ -261,6 +279,10 @@ mod logical_operators {
         } else {
             false
         }
+    }
+
+    fn test_and_return(a: bool) {
+        a && return;
     }
 }
 
