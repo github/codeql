@@ -1262,9 +1262,10 @@ abstract class TranslatedSingleInstructionExpr extends TranslatedNonConstantExpr
 
 class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
   TranslatedUnaryExpr() {
-    expr instanceof NotExpr or
-    expr instanceof ComplementExpr or
-    expr instanceof UnaryPlusExpr or
+    expr instanceof ComplementExpr
+    or
+    expr instanceof UnaryPlusExpr
+    or
     expr instanceof UnaryMinusExpr
   }
 
@@ -1298,8 +1299,6 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
   }
 
   final override Opcode getOpcode() {
-    expr instanceof NotExpr and result instanceof Opcode::LogicalNot
-    or
     expr instanceof ComplementExpr and result instanceof Opcode::BitComplement
     or
     expr instanceof UnaryPlusExpr and result instanceof Opcode::CopyValue
@@ -1310,6 +1309,51 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
   private TranslatedExpr getOperand() {
     result = getTranslatedExpr(expr.(UnaryOperation).getOperand().getFullyConverted())
   }
+}
+
+class TranslatedNotExpr extends TranslatedNonConstantExpr {
+  override NotExpr expr;
+
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getOperand().getFirstInstruction(kind)
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(OnlyInstructionTag())
+  }
+
+  final override TranslatedElement getChildInternal(int id) {
+    id = 0 and result = this.getOperand()
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = OnlyInstructionTag() and
+    opcode instanceof Opcode::LogicalNot and
+    resultType = getBoolType()
+  }
+
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getOperand() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(OnlyInstructionTag())
+  }
+
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag instanceof UnaryOperandTag and
+    result = this.getOperand().getResult()
+  }
+
+  private TranslatedExpr getOperand() {
+    result = getTranslatedExpr(expr.getOperand().getFullyConverted())
+  }
+
+  final override Instruction getResult() { result = this.getInstruction(OnlyInstructionTag()) }
 }
 
 /**
