@@ -59,9 +59,18 @@ abstract class TranslatedExpr extends TranslatedElement {
 
   final CppType getResultType() {
     if this.isResultGLValue()
-    then result = getTypeForGLValue(expr.getType())
-    else result = getTypeForPRValue(expr.getType())
+    then result = getTypeForGLValue(this.getExprType())
+    else result = getTypeForPRValue(this.getExprType())
   }
+
+  /**
+   * Gets the type of `expr`.
+   *
+   * This predicate can be overwritten in subclasses to modify the result
+   * of `getResultType` which determines the type of the instruction that
+   * generates the result of `expr`.
+   */
+  Type getExprType() { result = expr.getType() }
 
   /**
    * Holds if the result of this `TranslatedExpr` is a glvalue.
