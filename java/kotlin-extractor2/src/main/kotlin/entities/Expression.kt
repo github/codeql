@@ -1741,9 +1741,7 @@ private fun KotlinFileExtractor.extractIf(
     stmtExprParent: StmtExprParent,
     callable: Label<out DbCallable>
 ): Label<out DbExpr>? {
-    val expressionType = ifStmt.expressionType
-
-    if (expressionType?.isNothingType == true) {
+    if (!ifStmt.isUsedAsExpression) {
         // We're extracting this `if` as a statement
         val stmtParent = stmtExprParent.stmt(ifStmt, callable)
         val id = tw.getFreshIdLabel<DbIfstmt>()
@@ -1764,7 +1762,7 @@ private fun KotlinFileExtractor.extractIf(
     // We're extracting this `if` as a conditional expression
     val exprParent = stmtExprParent.expr(ifStmt, callable)
     val id = tw.getFreshIdLabel<DbConditionalexpr>()
-    val type = useType(expressionType)
+    val type = useType(ifStmt.expressionType)
     tw.writeExprs_conditionalexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
     tw.writeExprsKotlinType(id, type.kotlinResult.id)
 
