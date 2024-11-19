@@ -3106,12 +3106,14 @@ ir.c:
 #   84|     mu84_7(int)       = InitializeParameter[x2] : &:r84_6
 #   85|     r85_1(glval<int>) = VariableAddress[x1]     : 
 #   85|     r85_2(int)        = Load[x1]                : &:r85_1, ~m?
-#   85|     v85_3(void)       = ConditionalBranch       : r85_2
+#   85|     r85_3(int)        = Constant[0]             : 
+#   85|     r85_4(bool)       = CompareNE               : r85_2, r85_3
+#   85|     v85_5(void)       = ConditionalBranch       : r85_4
 #-----|   False -> Block 2
 #-----|   True -> Block 1
 
 #   85|   Block 1
-#   85|     v85_4(void) = NoOp : 
+#   85|     v85_6(void) = NoOp : 
 #-----|   Goto -> Block 2
 
 #   86|   Block 2
@@ -3134,12 +3136,14 @@ ir.c:
 #   88|     mu88_5(int)       = Store[y]            : &:r88_1, r88_4
 #   89|     r89_1(glval<int>) = VariableAddress[y]  : 
 #   89|     r89_2(int)        = Load[y]             : &:r89_1, ~m?
-#   89|     v89_3(void)       = ConditionalBranch   : r89_2
+#   89|     r89_3(int)        = Constant[0]         : 
+#   89|     r89_4(bool)       = CompareNE           : r89_2, r89_3
+#   89|     v89_5(void)       = ConditionalBranch   : r89_4
 #-----|   False -> Block 6
 #-----|   True -> Block 5
 
 #   89|   Block 5
-#   89|     v89_4(void) = NoOp : 
+#   89|     v89_6(void) = NoOp : 
 #-----|   Goto -> Block 6
 
 #   90|   Block 6
@@ -3157,19 +3161,23 @@ ir.c:
 #   92|   Block 8
 #   92|     r92_1(glval<int>) = VariableAddress[x1] : 
 #   92|     r92_2(int)        = Load[x1]            : &:r92_1, ~m?
-#   92|     v92_3(void)       = ConditionalBranch   : r92_2
+#   92|     r92_3(int)        = Constant[0]         : 
+#   92|     r92_4(bool)       = CompareNE           : r92_2, r92_3
+#   92|     v92_5(void)       = ConditionalBranch   : r92_4
 #-----|   False -> Block 11
 #-----|   True -> Block 9
 
 #   92|   Block 9
-#   92|     r92_4(glval<int>) = VariableAddress[x2] : 
-#   92|     r92_5(int)        = Load[x2]            : &:r92_4, ~m?
-#   92|     v92_6(void)       = ConditionalBranch   : r92_5
+#   92|     r92_6(glval<int>) = VariableAddress[x2] : 
+#   92|     r92_7(int)        = Load[x2]            : &:r92_6, ~m?
+#   92|     r92_8(int)        = Constant[0]         : 
+#   92|     r92_9(bool)       = CompareNE           : r92_7, r92_8
+#   92|     v92_10(void)      = ConditionalBranch   : r92_9
 #-----|   False -> Block 11
 #-----|   True -> Block 10
 
 #   92|   Block 10
-#   92|     v92_7(void) = NoOp : 
+#   92|     v92_11(void) = NoOp : 
 #-----|   Goto -> Block 11
 
 #   93|   Block 11
@@ -3183,31 +3191,35 @@ ir.c:
 #   93|   Block 12
 #   93|     r93_5(glval<int>) = VariableAddress[x2] : 
 #   93|     r93_6(int)        = Load[x2]            : &:r93_5, ~m?
-#   93|     v93_7(void)       = ConditionalBranch   : r93_6
+#   93|     r93_7(int)        = Constant[0]         : 
+#   93|     r93_8(bool)       = CompareNE           : r93_6, r93_7
+#   93|     v93_9(void)       = ConditionalBranch   : r93_8
 #-----|   False -> Block 14
 #-----|   True -> Block 13
 
 #   93|   Block 13
-#   93|     v93_8(void) = NoOp : 
+#   93|     v93_10(void) = NoOp : 
 #-----|   Goto -> Block 14
 
 #   94|   Block 14
 #   94|     r94_1(glval<int>) = VariableAddress[x1] : 
 #   94|     r94_2(int)        = Load[x1]            : &:r94_1, ~m?
-#   94|     v94_3(void)       = ConditionalBranch   : r94_2
+#   94|     r94_3(int)        = Constant[0]         : 
+#   94|     r94_4(bool)       = CompareNE           : r94_2, r94_3
+#   94|     v94_5(void)       = ConditionalBranch   : r94_4
 #-----|   False -> Block 17
 #-----|   True -> Block 15
 
 #   94|   Block 15
-#   94|     r94_4(glval<int>) = VariableAddress[x2] : 
-#   94|     r94_5(int)        = Load[x2]            : &:r94_4, ~m?
-#   94|     r94_6(bool)       = LogicalNot          : r94_5
-#   94|     v94_7(void)       = ConditionalBranch   : r94_6
+#   94|     r94_6(glval<int>) = VariableAddress[x2] : 
+#   94|     r94_7(int)        = Load[x2]            : &:r94_6, ~m?
+#   94|     r94_8(bool)       = LogicalNot          : r94_7
+#   94|     v94_9(void)       = ConditionalBranch   : r94_8
 #-----|   False -> Block 17
 #-----|   True -> Block 16
 
 #   94|   Block 16
-#   94|     v94_8(void) = NoOp : 
+#   94|     v94_10(void) = NoOp : 
 #-----|   Goto -> Block 17
 
 #   95|   Block 17
@@ -3233,19 +3245,23 @@ ir.c:
 #   96|   Block 20
 #   96|     r96_1(glval<int>) = VariableAddress[x1] : 
 #   96|     r96_2(int)        = Load[x1]            : &:r96_1, ~m?
-#   96|     v96_3(void)       = ConditionalBranch   : r96_2
+#   96|     r96_3(int)        = Constant[0]         : 
+#   96|     r96_4(bool)       = CompareNE           : r96_2, r96_3
+#   96|     v96_5(void)       = ConditionalBranch   : r96_4
 #-----|   False -> Block 21
 #-----|   True -> Block 22
 
 #   96|   Block 21
-#   96|     r96_4(glval<int>) = VariableAddress[x2] : 
-#   96|     r96_5(int)        = Load[x2]            : &:r96_4, ~m?
-#   96|     v96_6(void)       = ConditionalBranch   : r96_5
+#   96|     r96_6(glval<int>) = VariableAddress[x2] : 
+#   96|     r96_7(int)        = Load[x2]            : &:r96_6, ~m?
+#   96|     r96_8(int)        = Constant[0]         : 
+#   96|     r96_9(bool)       = CompareNE           : r96_7, r96_8
+#   96|     v96_10(void)      = ConditionalBranch   : r96_9
 #-----|   False -> Block 23
 #-----|   True -> Block 22
 
 #   96|   Block 22
-#   96|     v96_7(void) = NoOp : 
+#   96|     v96_11(void) = NoOp : 
 #-----|   Goto -> Block 23
 
 #   97|   Block 23
@@ -3259,31 +3275,35 @@ ir.c:
 #   97|   Block 24
 #   97|     r97_5(glval<int>) = VariableAddress[x2] : 
 #   97|     r97_6(int)        = Load[x2]            : &:r97_5, ~m?
-#   97|     v97_7(void)       = ConditionalBranch   : r97_6
+#   97|     r97_7(int)        = Constant[0]         : 
+#   97|     r97_8(bool)       = CompareNE           : r97_6, r97_7
+#   97|     v97_9(void)       = ConditionalBranch   : r97_8
 #-----|   False -> Block 26
 #-----|   True -> Block 25
 
 #   97|   Block 25
-#   97|     v97_8(void) = NoOp : 
+#   97|     v97_10(void) = NoOp : 
 #-----|   Goto -> Block 26
 
 #   98|   Block 26
 #   98|     r98_1(glval<int>) = VariableAddress[x1] : 
 #   98|     r98_2(int)        = Load[x1]            : &:r98_1, ~m?
-#   98|     v98_3(void)       = ConditionalBranch   : r98_2
+#   98|     r98_3(int)        = Constant[0]         : 
+#   98|     r98_4(bool)       = CompareNE           : r98_2, r98_3
+#   98|     v98_5(void)       = ConditionalBranch   : r98_4
 #-----|   False -> Block 27
 #-----|   True -> Block 28
 
 #   98|   Block 27
-#   98|     r98_4(glval<int>) = VariableAddress[x2] : 
-#   98|     r98_5(int)        = Load[x2]            : &:r98_4, ~m?
-#   98|     r98_6(bool)       = LogicalNot          : r98_5
-#   98|     v98_7(void)       = ConditionalBranch   : r98_6
+#   98|     r98_6(glval<int>) = VariableAddress[x2] : 
+#   98|     r98_7(int)        = Load[x2]            : &:r98_6, ~m?
+#   98|     r98_8(bool)       = LogicalNot          : r98_7
+#   98|     v98_9(void)       = ConditionalBranch   : r98_8
 #-----|   False -> Block 29
 #-----|   True -> Block 28
 
 #   98|   Block 28
-#   98|     v98_8(void) = NoOp : 
+#   98|     v98_10(void) = NoOp : 
 #-----|   Goto -> Block 29
 
 #   99|   Block 29
@@ -3310,41 +3330,47 @@ ir.c:
 #  101|     r101_1(glval<int>) = VariableAddress[x_1_and_2] : 
 #  101|     r101_2(glval<int>) = VariableAddress[x1]        : 
 #  101|     r101_3(int)        = Load[x1]                   : &:r101_2, ~m?
-#  101|     v101_4(void)       = ConditionalBranch          : r101_3
+#  101|     r101_4(int)        = Constant[0]                : 
+#  101|     r101_5(bool)       = CompareNE                  : r101_3, r101_4
+#  101|     v101_6(void)       = ConditionalBranch          : r101_5
 #-----|   False -> Block 33
 #-----|   True -> Block 36
 
 #  101|   Block 33
-#  101|     r101_5(glval<int>) = VariableAddress[#temp101:19] : 
-#  101|     r101_6(int)        = Constant[0]                  : 
-#  101|     mu101_7(int)       = Store[#temp101:19]           : &:r101_5, r101_6
+#  101|     r101_7(glval<int>) = VariableAddress[#temp101:19] : 
+#  101|     r101_8(int)        = Constant[0]                  : 
+#  101|     mu101_9(int)       = Store[#temp101:19]           : &:r101_7, r101_8
 #-----|   Goto -> Block 34
 
 #  101|   Block 34
-#  101|     r101_8(glval<int>) = VariableAddress[#temp101:19] : 
-#  101|     r101_9(int)        = Load[#temp101:19]            : &:r101_8, ~m?
-#  101|     mu101_10(int)      = Store[x_1_and_2]             : &:r101_1, r101_9
-#  102|     r102_1(glval<int>) = VariableAddress[x_1_and_2]   : 
-#  102|     r102_2(int)        = Load[x_1_and_2]              : &:r102_1, ~m?
-#  102|     v102_3(void)       = ConditionalBranch            : r102_2
+#  101|     r101_10(glval<int>) = VariableAddress[#temp101:19] : 
+#  101|     r101_11(int)        = Load[#temp101:19]            : &:r101_10, ~m?
+#  101|     mu101_12(int)       = Store[x_1_and_2]             : &:r101_1, r101_11
+#  102|     r102_1(glval<int>)  = VariableAddress[x_1_and_2]   : 
+#  102|     r102_2(int)         = Load[x_1_and_2]              : &:r102_1, ~m?
+#  102|     r102_3(int)         = Constant[0]                  : 
+#  102|     r102_4(bool)        = CompareNE                    : r102_2, r102_3
+#  102|     v102_5(void)        = ConditionalBranch            : r102_4
 #-----|   False -> Block 38
 #-----|   True -> Block 37
 
 #  101|   Block 35
-#  101|     r101_11(glval<int>) = VariableAddress[#temp101:19] : 
-#  101|     r101_12(int)        = Constant[1]                  : 
-#  101|     mu101_13(int)       = Store[#temp101:19]           : &:r101_11, r101_12
+#  101|     r101_13(glval<int>) = VariableAddress[#temp101:19] : 
+#  101|     r101_14(int)        = Constant[1]                  : 
+#  101|     mu101_15(int)       = Store[#temp101:19]           : &:r101_13, r101_14
 #-----|   Goto -> Block 34
 
 #  101|   Block 36
-#  101|     r101_14(glval<int>) = VariableAddress[x2] : 
-#  101|     r101_15(int)        = Load[x2]            : &:r101_14, ~m?
-#  101|     v101_16(void)       = ConditionalBranch   : r101_15
+#  101|     r101_16(glval<int>) = VariableAddress[x2] : 
+#  101|     r101_17(int)        = Load[x2]            : &:r101_16, ~m?
+#  101|     r101_18(int)        = Constant[0]         : 
+#  101|     r101_19(bool)       = CompareNE           : r101_17, r101_18
+#  101|     v101_20(void)       = ConditionalBranch   : r101_19
 #-----|   False -> Block 33
 #-----|   True -> Block 35
 
 #  102|   Block 37
-#  102|     v102_4(void) = NoOp : 
+#  102|     v102_6(void) = NoOp : 
 #-----|   Goto -> Block 38
 
 #  103|   Block 38
@@ -37112,7 +37138,9 @@ try_except.c:
 #   33|     mu33_3(int)       = Store[x]               : &:r33_1, r33_2
 #   35|     r35_1(glval<int>) = VariableAddress[b]     : 
 #   35|     r35_2(int)        = Load[b]                : &:r35_1, ~m?
-#   35|     v35_3(void)       = ConditionalBranch      : r35_2
+#   35|     r35_3(int)        = Constant[0]            : 
+#   35|     r35_4(bool)       = CompareNE              : r35_2, r35_3
+#   35|     v35_5(void)       = ConditionalBranch      : r35_4
 #-----|   False -> Block 8
 #-----|   True -> Block 3
 
