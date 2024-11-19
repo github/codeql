@@ -7569,11 +7569,11 @@ open class KotlinFileExtractor(
             val locId = tw.getLocation(propertyReferenceExpr)
 
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", "")
-            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
-            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
+            TODO() // TODO:KotType val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
+            TODO() // TODO:KotType tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
             val ids =
                 GeneratedClassLabels(
-                    TypeResults(javaResult, kotlinResult),
+                    TODO(), // TODO:KotType TypeResults(javaResult, kotlinResult),
                     constructor = tw.getFreshIdLabel(),
                     constructorBlock = tw.getFreshIdLabel()
                 )
@@ -7669,6 +7669,8 @@ open class KotlinFileExtractor(
                         classId,
                         locId
                     )
+                TODO() // TODO:KotType
+                /*
                 val fieldId = useField(backingField.owner)
 
                 helper.extractFieldReturnOfReflectionTarget(getLabels, backingField)
@@ -7680,6 +7682,7 @@ open class KotlinFileExtractor(
                     getterParameterTypes,
                     getterReturnType
                 )
+                */
             }
 
             if (setter != null) {
@@ -7890,11 +7893,11 @@ open class KotlinFileExtractor(
             val locId = tw.getLocation(functionReferenceExpr)
 
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", "")
-            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
-            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
+            TODO() // TODO:KotType val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
+            TODO() // TODO:KotType tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
             val ids =
                 LocallyVisibleFunctionLabels(
-                    TypeResults(javaResult, kotlinResult),
+                    TODO(), // TODO:KotType TypeResults(javaResult, kotlinResult),
                     constructor = tw.getFreshIdLabel(),
                     function = tw.getFreshIdLabel(),
                     constructorBlock = tw.getFreshIdLabel()
@@ -8782,11 +8785,11 @@ open class KotlinFileExtractor(
                     }
 
                     val javaResult = TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", "")
-                    val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
-                    tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
+                    TODO() // TODO:KotType val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
+                    TODO() // TODO:KotType tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
                     val ids =
                         LocallyVisibleFunctionLabels(
-                            TypeResults(javaResult, kotlinResult),
+                            TODO(), // TODO:KotType TypeResults(javaResult, kotlinResult),
                             constructor = tw.getFreshIdLabel(),
                             constructorBlock = tw.getFreshIdLabel(),
                             function = tw.getFreshIdLabel()

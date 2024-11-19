@@ -126,13 +126,13 @@ open class KotlinUsesExtractor(
 
     private fun extractErrorType(): TypeResults {
         val javaResult = extractJavaErrorType()
-        val kotlinTypeId =
-            tw.getLabelFor<DbKt_nullable_type>("@\"errorKotlinType\"") {
-                tw.writeKt_nullable_types(it, javaResult.id)
-            }
+        TODO() // TODO:KotType val kotlinTypeId =
+        TODO() // TODO:KotType     tw.getLabelFor<DbKt_nullable_type>("@\"errorKotlinType\"") {
+        TODO() // TODO:KotType         tw.writeKt_nullable_types(it, javaResult.id)
+        TODO() // TODO:KotType     }
         return TypeResults(
             javaResult,
-            TypeResult(kotlinTypeId, "<CodeQL error type>", "<CodeQL error type>")
+            TODO() // TODO:KotType TypeResult(kotlinTypeId, "<CodeQL error type>", "<CodeQL error type>")
         )
     }
 
@@ -635,12 +635,12 @@ open class KotlinUsesExtractor(
                 "@\"FakeKotlinClass\"",
                 { tw.writeClasses_or_interfaces(it, "FakeKotlinClass", fakeKotlinPackageId, it) }
             )
-        val fakeKotlinTypeId: Label<DbKt_nullable_type> =
-            tw.getLabelFor(
-                "@\"FakeKotlinType\"",
-                { tw.writeKt_nullable_types(it, fakeKotlinClassId) }
-            )
-        return fakeKotlinTypeId
+        TODO() // TODO:KotType val fakeKotlinTypeId: Label<DbKt_nullable_type> =
+        TODO() // TODO:KotType     tw.getLabelFor(
+        TODO() // TODO:KotType         "@\"FakeKotlinType\"",
+        TODO() // TODO:KotType         { tw.writeKt_nullable_types(it, fakeKotlinClassId) }
+        TODO() // TODO:KotType     )
+        TODO() // TODO:KotType return fakeKotlinTypeId
     }
 
     // `args` can be null to describe a raw generic type.
@@ -659,15 +659,15 @@ open class KotlinUsesExtractor(
             else if (hasQuestionMark) {
                 val kotlinSignature = "$kotlinQualClassName?" // TODO: Is this right?
                 val kotlinLabel = "@\"kt_type;nullable;$kotlinQualClassName\""
-                val kotlinId: Label<DbKt_nullable_type> =
-                    tw.getLabelFor(kotlinLabel, { tw.writeKt_nullable_types(it, javaClassId) })
-                TypeResult(kotlinId, kotlinSignature, "TODO")
+                TODO() // TODO:KotType val kotlinId: Label<DbKt_nullable_type> =
+                TODO() // TODO:KotType     tw.getLabelFor(kotlinLabel, { tw.writeKt_nullable_types(it, javaClassId) })
+                TODO() // TODO:KotType TypeResult(kotlinId, kotlinSignature, "TODO")
             } else {
                 val kotlinSignature = kotlinQualClassName // TODO: Is this right?
                 val kotlinLabel = "@\"kt_type;notnull;$kotlinQualClassName\""
-                val kotlinId: Label<DbKt_notnull_type> =
-                    tw.getLabelFor(kotlinLabel, { tw.writeKt_notnull_types(it, javaClassId) })
-                TypeResult(kotlinId, kotlinSignature, "TODO")
+                TODO() // TODO:KotType val kotlinId: Label<DbKt_notnull_type> =
+                TODO() // TODO:KotType     tw.getLabelFor(kotlinLabel, { tw.writeKt_notnull_types(it, javaClassId) })
+                TODO() // TODO:KotType TypeResult(kotlinId, kotlinSignature, "TODO")
             }
         return TypeResults(javaResult, kotlinResult)
     }
@@ -864,19 +864,19 @@ open class KotlinUsesExtractor(
                     val kotlinSignature =
                         "$kotlinPackageName.$kotlinClassName?" // TODO: Is this right?
                     val kotlinLabel = "@\"kt_type;nullable;$kotlinPackageName.$kotlinClassName\""
-                    val kotlinId: Label<DbKt_nullable_type> =
-                        tw.getLabelFor(
-                            kotlinLabel,
-                            { tw.writeKt_nullable_types(it, kotlinClassId) }
-                        )
-                    TypeResult(kotlinId, kotlinSignature, "TODO")
+                    TODO() // TODO:KotType val kotlinId: Label<DbKt_nullable_type> =
+                    TODO() // TODO:KotType     tw.getLabelFor(
+                    TODO() // TODO:KotType         kotlinLabel,
+                    TODO() // TODO:KotType         { tw.writeKt_nullable_types(it, kotlinClassId) }
+                    TODO() // TODO:KotType     )
+                    TODO() // TODO:KotType TypeResult(kotlinId, kotlinSignature, "TODO")
                 } else {
                     val kotlinSignature =
                         "$kotlinPackageName.$kotlinClassName" // TODO: Is this right?
                     val kotlinLabel = "@\"kt_type;notnull;$kotlinPackageName.$kotlinClassName\""
-                    val kotlinId: Label<DbKt_notnull_type> =
-                        tw.getLabelFor(kotlinLabel, { tw.writeKt_notnull_types(it, kotlinClassId) })
-                    TypeResult(kotlinId, kotlinSignature, "TODO")
+                    TODO() // TODO:KotType val kotlinId: Label<DbKt_notnull_type> =
+                    TODO() // TODO:KotType     tw.getLabelFor(kotlinLabel, { tw.writeKt_notnull_types(it, kotlinClassId) })
+                    TODO() // TODO:KotType TypeResult(kotlinId, kotlinSignature, "TODO")
                 }
             return TypeResults(javaResult, kotlinResult)
         }
@@ -919,15 +919,15 @@ open class KotlinUsesExtractor(
                     else if (s.isNullable()) {
                         val kotlinSignature = "${javaResult.signature}?" // TODO: Wrong
                         val kotlinLabel = "@\"kt_type;nullable;type_param\"" // TODO: Wrong
-                        val kotlinId: Label<DbKt_nullable_type> =
-                            tw.getLabelFor(kotlinLabel, { tw.writeKt_nullable_types(it, aClassId) })
-                        TypeResult(kotlinId, kotlinSignature, "TODO")
+                        TODO() // TODO:KotType val kotlinId: Label<DbKt_nullable_type> =
+                        TODO() // TODO:KotType     tw.getLabelFor(kotlinLabel, { tw.writeKt_nullable_types(it, aClassId) })
+                        TODO() // TODO:KotType TypeResult(kotlinId, kotlinSignature, "TODO")
                     } else {
                         val kotlinSignature = javaResult.signature // TODO: Wrong
                         val kotlinLabel = "@\"kt_type;notnull;type_param\"" // TODO: Wrong
-                        val kotlinId: Label<DbKt_notnull_type> =
-                            tw.getLabelFor(kotlinLabel, { tw.writeKt_notnull_types(it, aClassId) })
-                        TypeResult(kotlinId, kotlinSignature, "TODO")
+                        TODO() // TODO:KotType val kotlinId: Label<DbKt_notnull_type> =
+                        TODO() // TODO:KotType     tw.getLabelFor(kotlinLabel, { tw.writeKt_notnull_types(it, aClassId) })
+                        TODO() // TODO:KotType TypeResult(kotlinId, kotlinSignature, "TODO")
                     }
                 return TypeResults(javaResult, kotlinResult)
             }
@@ -1621,8 +1621,8 @@ open class KotlinUsesExtractor(
         var res = tw.lm.locallyVisibleFunctionLabelMapping[f]
         if (res == null) {
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", "")
-            val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
-            tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
+            val kotlinResult = TODO() // TODO:KotType TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
+            TODO() // TODO:KotType tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
             res =
                 LocallyVisibleFunctionLabels(
                     TypeResults(javaResult, kotlinResult),
