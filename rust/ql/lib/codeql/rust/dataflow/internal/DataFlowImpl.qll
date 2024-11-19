@@ -145,7 +145,7 @@ module Node {
 
     PatNode() { this = TPatNode(n) }
 
-    /** Gets the Pat in the AST that this node corresponds to. */
+    /** Gets the `Pat` in the AST that this node corresponds to. */
     Pat getPat() { result = n.getPat() }
   }
 
@@ -282,6 +282,10 @@ module LocalFlow {
       nodeFrom.getCfgNode().getAstNode() = s.getInitializer() and
       nodeTo.getCfgNode().getAstNode() = s.getPat()
     )
+    or
+    // An edge from a pattern to its corresponding SSA definition.
+    nodeFrom.(Node::PatNode).getPat() =
+      nodeTo.(Node::SsaNode).getDefinitionExt().getSourceVariable().getPat()
   }
 }
 
@@ -395,7 +399,14 @@ module RustDataFlow implements InputSig<Location> {
    * Holds if there is a simple local flow step from `node1` to `node2`. These
    * are the value-preserving intra-callable flow steps.
    */
-  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) { none() }
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+    (
+      LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
+      or
+      SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
+    ) and
+    model = ""
+  }
 
   /**
    * Holds if data can flow from `node1` to `node2` through a non-local step

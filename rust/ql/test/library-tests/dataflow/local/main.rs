@@ -17,14 +17,14 @@ fn direct() {
 
 fn variable_usage() {
     let s = source(1);
-    sink(s); // $ MISSING: hasValueFlow=1
+    sink(s); // $ hasValueFlow=1
 }
 
 fn if_expression(cond: bool) {
     let a = source(1);
     let b = 2;
     let c = if cond { a } else { b };
-    sink(c); // $ MISSING: hasValueFlow=1
+    sink(c); // $ hasValueFlow=1
 }
 
 fn match_expression(m: Option<i64>) {
@@ -33,7 +33,7 @@ fn match_expression(m: Option<i64>) {
         Some(_) => a,
         None => 0,
     };
-    sink(b); // $ MISSING: hasValueFlow=1
+    sink(b); // $ hasValueFlow=1
 }
 
 fn loop_with_break() {
@@ -44,7 +44,7 @@ fn loop_with_break() {
     let b = loop {
         break source(1);
     };
-    sink(b); // $ MISSING: hasValueFlow=1
+    sink(b); // $ hasValueFlow=1
 }
 
 fn assignment() {
