@@ -10,13 +10,29 @@
  *       external/cwe/cwe-089
  */
 
+import rust
 import codeql.rust.dataflow.DataFlow
-/*import codeql.rust.security.SqlInjectionQuery
+import codeql.rust.dataflow.TaintTracking
+import codeql.rust.security.SqlInjectionExtensions
 import SqlInjectionFlow::PathGraph
+
+/**
+ * A taint configuration for tainted data that reaches a SQL sink.
+ */
+module SqlInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof SqlInjection::Source }
+
+  predicate isSink(DataFlow::Node node) { node instanceof SqlInjection::Sink }
+
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof SqlInjection::Barrier }
+}
+
+/**
+ * Detect taint flow of tainted data that reaches a SQL sink.
+ */
+module SqlInjectionFlow = TaintTracking::Global<SqlInjectionConfig>;
 
 from SqlInjectionFlow::PathNode sourceNode, SqlInjectionFlow::PathNode sinkNode
 where SqlInjectionFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode, "This query depends on a $@.",
   sourceNode.getNode(), "user-provided value"
-*/
-select 0
