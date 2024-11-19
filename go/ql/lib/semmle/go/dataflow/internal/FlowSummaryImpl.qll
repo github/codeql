@@ -399,6 +399,13 @@ module SourceSinkInterpretationInput implements
         c = "" and
         pragma[only_bind_into](e) = getElementWithQualifier(frn.getField(), frn.getBase())
       )
+      or
+      // A package-scope (or universe-scope) variable
+      exists(Variable v | not v instanceof Field |
+        c = "" and
+        n.(DataFlow::ReadNode).reads(v) and
+        pragma[only_bind_into](e).asEntity() = v
+      )
     )
   }
 
@@ -419,6 +426,17 @@ module SourceSinkInterpretationInput implements
       c = "" and
       fw.writesField(base, f, node.asNode()) and
       pragma[only_bind_into](e) = getElementWithQualifier(f, base)
+    )
+    or
+    // A package-scope (or universe-scope) variable
+    exists(Node n, SourceOrSinkElement e, DataFlow::Write w, Variable v |
+      n = node.asNode() and
+      e = mid.asElement() and
+      not v instanceof Field
+    |
+      c = "" and
+      w.writes(v, n) and
+      pragma[only_bind_into](e).asEntity() = v
     )
   }
 }
