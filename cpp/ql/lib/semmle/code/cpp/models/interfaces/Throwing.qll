@@ -66,23 +66,10 @@ abstract class ThrowingFunction extends ExceptionAnnotation {
    * Do not specify `none()` if no exception is raised, instead use the
    * `NonThrowingFunction` class instead.
    */
-  abstract predicate raisesException(boolean unconditional);
-
-  /**
-   * DEPRECATES: use/extend `raisesException` instead.
-   */
-  deprecated predicate mayThrowException(boolean unconditional){
-    this.raisesException(unconditional)
-  }
+  abstract predicate mayThrowException(boolean unconditional);
 
   /**
    * Holds if this function will always raise an exception if called
    */
-  final predicate alwaysRaisesException() { this.raisesException(true) }
-
-  /**
-   * Holds if this function may raise an exception if called but
-   * it is not guaranteed to do so. I.e., the function does not always raise an exception.
-   */
-  final predicate mayRaiseException() { this.raisesException(false) }
+  final predicate alwaysRaisesException() { this.mayThrowException(true) }
 }
