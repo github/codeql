@@ -1,0 +1,5 @@
+localFlowIsLocal
+| variables.rs:400:9:400:9 | x | variables.rs:402:15:404:5 | [SSA] <captured entry> x | Local flow step does not preserve enclosing callable. |
+| variables.rs:410:9:410:13 | x | variables.rs:412:20:414:5 | [SSA] <captured entry> x | Local flow step does not preserve enclosing callable. |
+| variables.rs:418:9:418:13 | y | variables.rs:421:9:421:9 | [SSA] y | Local flow step does not preserve enclosing callable. |
+| variables.rs:436:9:436:13 | i | variables.rs:438:9:438:9 | [SSA] i | Local flow step does not preserve enclosing callable. |
