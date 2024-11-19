@@ -892,6 +892,7 @@ edges
 | test.rs:403:13:405:14 | ExprStmt | test.rs:403:16:403:16 | b |  |
 | test.rs:403:16:403:16 | b | test.rs:403:13:405:13 | IfExpr | false |
 | test.rs:403:16:403:16 | b | test.rs:404:17:404:41 | ExprStmt | true |
+| test.rs:404:17:404:40 | ReturnExpr | test.rs:402:28:407:9 | exit BlockExpr (normal) | return |
 | test.rs:404:17:404:41 | ExprStmt | test.rs:404:24:404:34 | async_block |  |
 | test.rs:404:24:404:34 | async_block | test.rs:404:36:404:39 | true |  |
 | test.rs:404:24:404:40 | CallExpr | test.rs:404:17:404:40 | ReturnExpr |  |

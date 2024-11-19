@@ -22,6 +22,9 @@ final class AsyncBlockScope extends CfgScopeImpl, AsyncBlockExpr instanceof Expr
 
   override predicate scopeLast(AstNode last, Completion c) {
     last(super.getLastChildElement(), last, c)
+    or
+    last(super.getChildNode(_), last, c) and
+    not c instanceof NormalCompletion
   }
 }
 
