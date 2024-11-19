@@ -9,8 +9,13 @@ private fun KotlinUsesExtractor.useClassType(
     c: KaClassType
 ): TypeResults {
     // TODO: this cast is unsafe; .symbol is actually a KaClassLikeSymbol
-    val javaResult = TypeResult(addClassLabel(c.symbol as KaClassSymbol) /* , TODO, TODO */)
-    val kotlinResult = TypeResult(fakeKotlinType() /* , "TODO", "TODO" */)
+    val classId = addClassLabel(c.symbol as KaClassSymbol)
+    val javaResult = TypeResult(classId /* , TODO, TODO */)
+    val kotlinTypeId =
+        tw.getLabelFor<DbKt_class_type>("@\"kt_class{$classId}\"") {
+            tw.writeKt_class_types(it, classId)
+        }
+    val kotlinResult = TypeResult(kotlinTypeId /* , "TODO", "TODO" */)
     return TypeResults(javaResult, kotlinResult)
 }
 
@@ -44,30 +49,13 @@ private fun KotlinUsesExtractor.extractJavaErrorType(): TypeResult<DbErrortype> 
 private fun KotlinUsesExtractor.extractErrorType(): TypeResults {
     val javaResult = extractJavaErrorType()
     val kotlinTypeId =
-        tw.getLabelFor<DbKt_nullable_type>("@\"errorKotlinType\"") {
-            tw.writeKt_nullable_types(it, javaResult.id)
+        tw.getLabelFor<DbKt_error_type>("@\"errorKotlinType\"") {
+            tw.writeKt_error_types(it)
         }
     return TypeResults(
         javaResult,
         TypeResult(kotlinTypeId /* TODO , "<CodeQL error type>", "<CodeQL error type>" */)
     )
-}
-
-// TODO
-fun KotlinUsesExtractor.fakeKotlinType(): Label<out DbKt_type> {
-    val fakeKotlinPackageId: Label<DbPackage> =
-        tw.getLabelFor("@\"FakeKotlinPackage\"", { tw.writePackages(it, "fake.kotlin") })
-    val fakeKotlinClassId: Label<DbClassorinterface> =
-        tw.getLabelFor(
-            "@\"FakeKotlinClass\"",
-            { tw.writeClasses_or_interfaces(it, "FakeKotlinClass", fakeKotlinPackageId, it) }
-        )
-    val fakeKotlinTypeId: Label<DbKt_nullable_type> =
-        tw.getLabelFor(
-            "@\"FakeKotlinType\"",
-            { tw.writeKt_nullable_types(it, fakeKotlinClassId) }
-        )
-    return fakeKotlinTypeId
 }
 
 /*

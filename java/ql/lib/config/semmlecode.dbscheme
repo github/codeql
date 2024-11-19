@@ -461,23 +461,41 @@ type_companion_object(
   unique int companion_object: @classorinterface ref
 );
 
+/**
+ * `id` is the Kotlin type for the non-nullable class type `classid`.
+ */
+kt_class_types(
+  unique int id: @kt_class_type,
+  int classid: @reftype ref
+)
+
+/**
+ * `id` is the Kotlin type that is the same as `kttypeid`, but is nullable.
+ */
 kt_nullable_types(
   unique int id: @kt_nullable_type,
-  int classid: @reftype ref
+  int kttypeid: @kt_type ref
 )
 
-kt_notnull_types(
-  unique int id: @kt_notnull_type,
-  int classid: @reftype ref
-)
-
+/**
+ * `id` is the Kotlin type that is the alias called `name` of `kttypeid`.
+ * That is, it has been defined by `typealias name = kttypeid`.
+ */
 kt_type_alias(
   unique int id: @kt_type_alias,
   string name: string ref,
   int kttypeid: @kt_type ref
 )
 
-@kt_type = @kt_nullable_type | @kt_notnull_type
+/**
+ * A `kt_error_type` is used when the extractor is unable to extract a type
+ * correctly for some reason.
+ */
+kt_error_types(
+  unique int id: @kt_error_type
+)
+
+@kt_type = @kt_class_type | @kt_nullable_type | @kt_type_alias | @kt_error_type
 
 /**
  * This holds if `id` is an `interface`, rather than a `class`.

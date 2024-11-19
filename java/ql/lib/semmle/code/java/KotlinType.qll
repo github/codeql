@@ -8,28 +8,31 @@ class KotlinType extends Element, @kt_type { }
 
 class KotlinNullableType extends KotlinType, @kt_nullable_type {
   override string toString() {
-    exists(RefType javaType |
-      kt_nullable_types(this, javaType) and
-      result = "Kotlin nullable " + javaType.toString()
+    exists(KotlinType ktType |
+      kt_nullable_types(this, ktType) and
+      result = ktType.toString() + "?"
     )
   }
 
   override string getAPrimaryQlClass() { result = "KotlinNullableType" }
 }
 
-class KotlinNotnullType extends KotlinType, @kt_notnull_type {
-  override string toString() {
-    exists(RefType javaType |
-      kt_notnull_types(this, javaType) and
-      result = "Kotlin not-null " + javaType.toString()
-    )
-  }
+class KotlinClassType extends KotlinType, @kt_class_type {
+  override string toString() { result = this.getClass().toString() }
 
   override string getAPrimaryQlClass() { result = "KotlinNotnullType" }
+
+  RefType getClass() { kt_class_types(this, result) }
 }
 
-class KotlinTypeAlias extends Element, @kt_type_alias {
+class KotlinTypeAlias extends KotlinType, @kt_type_alias {
   override string getAPrimaryQlClass() { result = "KotlinTypeAlias" }
+
+  override string toString() {
+    result = "{" + this.getKotlinType().toString() + "}" + this.getName()
+  }
+
+  override string getName() { kt_type_alias(this, result, _) }
 
   KotlinType getKotlinType() { kt_type_alias(this, _, result) }
 }
