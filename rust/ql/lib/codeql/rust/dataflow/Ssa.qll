@@ -9,6 +9,7 @@ module Ssa {
   private import rust
   private import codeql.rust.controlflow.BasicBlocks
   private import codeql.rust.controlflow.ControlFlowGraph
+  private import codeql.rust.controlflow.CfgNodes
   private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as CfgImpl
   private import internal.SsaImpl as SsaImpl
 
@@ -221,11 +222,11 @@ module Ssa {
      * end
      * ```
      */
-    predicate assigns(CfgNode value) {
-      exists(AssignmentExpr ae, BasicBlock bb, int i |
+    predicate assigns(ExprCfgNode value) {
+      exists(AssignmentExprCfgNode ae, BasicBlock bb, int i |
         this.definesAt(_, bb, i) and
-        ae.getLhs() = bb.getNode(i).getAstNode() and
-        value.getAstNode() = ae.getRhs()
+        ae.getLhs() = bb.getNode(i) and
+        value = ae.getRhs()
       )
     }
 

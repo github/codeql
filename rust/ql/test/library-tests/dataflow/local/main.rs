@@ -51,7 +51,7 @@ fn assignment() {
     let mut i = 1;
     sink(i);
     i = source(2);
-    sink(i); // $ MISSING: hasValueFlow=2
+    sink(i); // $ hasValueFlow=2
 }
 
 // -----------------------------------------------------------------------------
