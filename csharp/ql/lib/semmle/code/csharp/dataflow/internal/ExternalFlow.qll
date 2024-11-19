@@ -318,7 +318,7 @@ private predicate elementSpec(
   or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
-  neutralModel(namespace, type, name, signature, _, _) and ext = "" and subtypes = false
+  neutralModel(namespace, type, name, signature, _, _) and ext = "" and subtypes = true
 }
 
 private predicate elementSpec(
@@ -602,7 +602,7 @@ private predicate interpretSummary(
 predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
     neutralModel(namespace, type, name, signature, kind, provenance) and
-    c = interpretElement(namespace, type, false, name, signature, "")
+    c = interpretElement(namespace, type, true, name, signature, "")
   )
 }
 

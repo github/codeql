@@ -1,2 +1,2 @@
-| gen_record_expr_field.rs:5:14:5:14 | RecordExprField | getName: | a | getExpr: | gen_record_expr_field.rs:5:14:5:14 | LiteralExpr |
-| gen_record_expr_field.rs:5:20:5:20 | RecordExprField | getName: | b | getExpr: | gen_record_expr_field.rs:5:20:5:20 | LiteralExpr |
+| gen_record_expr_field.rs:5:11:5:14 | RecordExprField | getNumberOfAttrs: | 0 | hasExpr: | yes | hasNameRef: | yes |
+| gen_record_expr_field.rs:5:17:5:20 | RecordExprField | getNumberOfAttrs: | 0 | hasExpr: | yes | hasNameRef: | yes |

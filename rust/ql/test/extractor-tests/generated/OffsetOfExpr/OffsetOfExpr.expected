@@ -1,1 +1,1 @@
-| gen_offset_of_expr.rs:5:5:5:38 | OffsetOfExpr | getContainer: | file://:0:0:0:0 | TypeRef | getNumberOfFields: | 1 |
+| gen_offset_of_expr.rs:5:5:5:38 | OffsetOfExpr | getNumberOfAttrs: | 0 | getNumberOfFields: | 1 | hasTy: | yes |

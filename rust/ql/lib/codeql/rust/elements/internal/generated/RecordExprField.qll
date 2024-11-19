@@ -7,7 +7,9 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
+import codeql.rust.elements.NameRef
 
 /**
  * INTERNAL: This module contains the fully generated definition of `RecordExprField` and should not
@@ -26,14 +28,27 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RecordExprField" }
 
     /**
-     * Gets the name of this record expression field.
+     * Gets the `index`th attr of this record expression field (0-based).
      */
-    string getName() {
-      result = Synth::convertRecordExprFieldToRaw(this).(Raw::RecordExprField).getName()
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertRecordExprFieldToRaw(this)
+              .(Raw::RecordExprField)
+              .getAttr(index))
     }
 
     /**
-     * Gets the expression of this record expression field.
+     * Gets any of the attrs of this record expression field.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this record expression field.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the expression of this record expression field, if it exists.
      */
     Expr getExpr() {
       result =
@@ -41,5 +56,25 @@ module Generated {
               .(Raw::RecordExprField)
               .getExpr())
     }
+
+    /**
+     * Holds if `getExpr()` exists.
+     */
+    final predicate hasExpr() { exists(this.getExpr()) }
+
+    /**
+     * Gets the name reference of this record expression field, if it exists.
+     */
+    NameRef getNameRef() {
+      result =
+        Synth::convertNameRefFromRaw(Synth::convertRecordExprFieldToRaw(this)
+              .(Raw::RecordExprField)
+              .getNameRef())
+    }
+
+    /**
+     * Holds if `getNameRef()` exists.
+     */
+    final predicate hasNameRef() { exists(this.getNameRef()) }
   }
 }

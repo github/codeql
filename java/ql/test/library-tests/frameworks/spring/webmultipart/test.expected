@@ -2,8 +2,8 @@ models
 | 1 | Summary: java.lang; Iterable; true; iterator; (); ; Argument[this].Element; ReturnValue.Element; value; manual |
 | 2 | Summary: java.util; Iterator; true; next; ; ; Argument[this].Element; ReturnValue; value; manual |
 | 3 | Summary: java.util; Map; true; get; ; ; Argument[this].MapValue; ReturnValue; value; manual |
-| 4 | Summary: org.springframework.web.multipart; MultipartFile; true; getBytes; ; ; Argument[this]; ReturnValue; taint; manual |
-| 5 | Summary: org.springframework.web.multipart; MultipartFile; true; getInputStream; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: org.springframework.core.io; InputStreamSource; true; getInputStream; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: org.springframework.web.multipart; MultipartFile; true; getBytes; ; ; Argument[this]; ReturnValue; taint; manual |
 | 6 | Summary: org.springframework.web.multipart; MultipartFile; true; getName; ; ; Argument[this]; ReturnValue; taint; manual |
 | 7 | Summary: org.springframework.web.multipart; MultipartFile; true; getOriginalFilename; ; ; Argument[this]; ReturnValue; taint; manual |
 | 8 | Summary: org.springframework.web.multipart; MultipartFile; true; getResource; ; ; Argument[this]; ReturnValue; taint; manual |
@@ -27,11 +27,11 @@ edges
 | Test.java:22:45:22:53 | container : MultiValueMap [<map.value>] : Object | Test.java:22:45:22:63 | get(...) : Object | provenance | MaD:3 |
 | Test.java:31:23:31:45 | (...)... : MultipartFile | Test.java:32:10:32:11 | in : MultipartFile | provenance |  |
 | Test.java:31:38:31:45 | source(...) : Object | Test.java:31:23:31:45 | (...)... : MultipartFile | provenance |  |
-| Test.java:32:10:32:11 | in : MultipartFile | Test.java:32:10:32:22 | getBytes(...) : byte[] | provenance | MaD:4 |
+| Test.java:32:10:32:11 | in : MultipartFile | Test.java:32:10:32:22 | getBytes(...) : byte[] | provenance | MaD:5 |
 | Test.java:32:10:32:22 | getBytes(...) : byte[] | Test.java:33:9:33:11 | out | provenance |  |
 | Test.java:38:23:38:45 | (...)... : MultipartFile | Test.java:39:10:39:11 | in : MultipartFile | provenance |  |
 | Test.java:38:38:38:45 | source(...) : Object | Test.java:38:23:38:45 | (...)... : MultipartFile | provenance |  |
-| Test.java:39:10:39:11 | in : MultipartFile | Test.java:39:10:39:28 | getInputStream(...) : InputStream | provenance | MaD:5 |
+| Test.java:39:10:39:11 | in : MultipartFile | Test.java:39:10:39:28 | getInputStream(...) : InputStream | provenance | MaD:4 |
 | Test.java:39:10:39:28 | getInputStream(...) : InputStream | Test.java:40:9:40:11 | out | provenance |  |
 | Test.java:45:23:45:45 | (...)... : MultipartFile | Test.java:46:10:46:11 | in : MultipartFile | provenance |  |
 | Test.java:45:38:45:45 | source(...) : Object | Test.java:45:23:45:45 | (...)... : MultipartFile | provenance |  |

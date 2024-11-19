@@ -1,0 +1,4 @@
+| gen_path_segment.rs:5:5:5:8 | todo | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_segment.rs:5:5:5:11 | $crate | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_segment.rs:5:5:5:11 | panic | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_segment.rs:5:5:5:11 | panicking | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |

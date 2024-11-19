@@ -4,8 +4,8 @@
  */
 
 private import internal.PathImpl
-import codeql.rust.elements.AstNode
-import codeql.rust.elements.Unimplemented
+import codeql.rust.elements.PathSegment
+import codeql.rust.elements.Resolvable
 
 /**
  * A path. For example:

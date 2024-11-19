@@ -29,10 +29,15 @@ module Generated {
     override string getAPrimaryQlClass() { result = "PathPat" }
 
     /**
-     * Gets the path of this path pat.
+     * Gets the path of this path pat, if it exists.
      */
     Path getPath() {
       result = Synth::convertPathFromRaw(Synth::convertPathPatToRaw(this).(Raw::PathPat).getPath())
     }
+
+    /**
+     * Holds if `getPath()` exists.
+     */
+    final predicate hasPath() { exists(this.getPath()) }
   }
 }

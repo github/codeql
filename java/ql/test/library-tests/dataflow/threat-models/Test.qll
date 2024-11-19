@@ -5,7 +5,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.TaintTracking
 
 private module ThreatModelConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sinkNode(sink, _) }
 }

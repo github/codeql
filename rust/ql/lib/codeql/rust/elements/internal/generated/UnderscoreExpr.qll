@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
 /**
@@ -23,5 +24,25 @@ module Generated {
    */
   class UnderscoreExpr extends Synth::TUnderscoreExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "UnderscoreExpr" }
+
+    /**
+     * Gets the `index`th attr of this underscore expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertUnderscoreExprToRaw(this)
+              .(Raw::UnderscoreExpr)
+              .getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this underscore expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this underscore expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
   }
 }

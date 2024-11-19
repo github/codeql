@@ -14,5 +14,5 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
-      - ["group:xmlpath", "", True, "Compile", "", "", "Argument[0]", "xpath-injection", "manual"]
-      - ["group:xmlpath", "", True, "MustCompile", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["group:xmlpath", "", False, "Compile", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["group:xmlpath", "", False, "MustCompile", "", "", "Argument[0]", "xpath-injection", "manual"]

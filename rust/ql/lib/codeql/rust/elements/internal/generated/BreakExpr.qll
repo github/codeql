@@ -6,9 +6,10 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-import codeql.rust.elements.Label
+import codeql.rust.elements.Lifetime
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BreakExpr` and should not
@@ -31,11 +32,37 @@ module Generated {
    *     }
    * };
    * ```
+   * ```rust
+   * let x = 'label: {
+   *     if exit() {
+   *         break 'label 42;
+   *     }
+   *     0;
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::BreakExpr` class directly.
    * Use the subclass `BreakExpr`, where the following predicates are available.
    */
   class BreakExpr extends Synth::TBreakExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "BreakExpr" }
+
+    /**
+     * Gets the `index`th attr of this break expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertBreakExprToRaw(this).(Raw::BreakExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this break expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this break expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the expression of this break expression, if it exists.
@@ -51,16 +78,18 @@ module Generated {
     final predicate hasExpr() { exists(this.getExpr()) }
 
     /**
-     * Gets the label of this break expression, if it exists.
+     * Gets the lifetime of this break expression, if it exists.
      */
-    Label getLabel() {
+    Lifetime getLifetime() {
       result =
-        Synth::convertLabelFromRaw(Synth::convertBreakExprToRaw(this).(Raw::BreakExpr).getLabel())
+        Synth::convertLifetimeFromRaw(Synth::convertBreakExprToRaw(this)
+              .(Raw::BreakExpr)
+              .getLifetime())
     }
 
     /**
-     * Holds if `getLabel()` exists.
+     * Holds if `getLifetime()` exists.
      */
-    final predicate hasLabel() { exists(this.getLabel()) }
+    final predicate hasLifetime() { exists(this.getLifetime()) }
   }
 }

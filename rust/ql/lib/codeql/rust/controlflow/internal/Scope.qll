@@ -1,32 +1,56 @@
 private import rust
 private import Completion
+private import ControlFlowGraphImpl
 private import codeql.rust.elements.internal.generated.ParentChild
 
-abstract class CfgScope extends AstNode { }
+/**
+ * A control-flow graph (CFG) scope.
+ */
+abstract private class CfgScopeImpl extends AstNode {
+  /** Holds if `first` is executed first when entering `scope`. */
+  abstract predicate scopeFirst(AstNode first);
 
-class FunctionScope extends CfgScope, Function { }
+  /** Holds if `scope` is exited when `last` finishes with completion `c`. */
+  abstract predicate scopeLast(AstNode last, Completion c);
+}
+
+final class CfgScope = CfgScopeImpl;
+
+final class AsyncBlockScope extends CfgScopeImpl, AsyncBlockExpr instanceof ExprTrees::AsyncBlockExprTree
+{
+  override predicate scopeFirst(AstNode first) { first(super.getFirstChildNode(), first) }
+
+  override predicate scopeLast(AstNode last, Completion c) {
+    last(super.getLastChildElement(), last, c)
+    or
+    last(super.getChildNode(_), last, c) and
+    not c instanceof NormalCompletion
+  }
+}
 
 /**
- * Gets the immediate parent of a non-`AstNode` element `e`.
- *
- * We restrict `e` to be a non-`AstNode` to skip past non-`AstNode` in
- * the transitive closure computation in `getParentOfAst`. This is
- * necessary because the parent of an `AstNode` is not necessarily an `AstNode`.
+ * A CFG scope for a callable (a function or a closure) with a body.
  */
-private Element getParentOfAstStep(Element e) {
-  not e instanceof AstNode and
-  result = getImmediateParent(e)
-}
+final class CallableScope extends CfgScopeImpl, Callable {
+  CallableScope() {
+    // A function without a body corresponds to a trait method signature and
+    // should not have a CFG scope.
+    this.(Function).hasBody()
+    or
+    this instanceof ClosureExpr
+  }
 
-/** Gets the nearest enclosing parent of `ast` that is an `AstNode`. */
-private AstNode getParentOfAst(AstNode ast) {
-  result = getParentOfAstStep*(getImmediateParent(ast))
-}
+  /** Gets the body of this callable. */
+  AstNode getBody() {
+    result = this.(Function).getBody()
+    or
+    result = this.(ClosureExpr).getBody()
+  }
 
-/** Gets the enclosing scope of a node */
-cached
-AstNode scopeOfAst(AstNode n) {
-  exists(AstNode p | p = getParentOfAst(n) |
-    if p instanceof CfgScope then p = result else result = scopeOfAst(p)
-  )
+  override predicate scopeFirst(AstNode first) {
+    first(this.(CallableScopeTree).getFirstChildNode(), first)
+  }
+
+  /** Holds if `scope` is exited when `last` finishes with completion `c`. */
+  override predicate scopeLast(AstNode last, Completion c) { last(this.getBody(), last, c) }
 }

@@ -778,3 +778,15 @@ void test_TaintInheritingContent() {
 	TaintInheritingContentObject obj = source(true);
 	sink(obj.flowFromObject); // $ ir MISSING: ast
 }
+
+FILE* fopen(const char*, const char*);
+int fopen_s(FILE** pFile, const char *filename, const char *mode);
+
+void fopen_test(char* source) {
+	FILE* f = fopen(source, "r");
+	sink(f); // $ ast,ir
+
+	FILE* f2;
+	fopen_s(&f2, source, "r");
+	sink(f2); // $ ast,ir
+}

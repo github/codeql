@@ -5,9 +5,6 @@ extensions:
       extensible: summaryModel
     data:
       - ["System.Formats.Cbor", "CborReader", False, "CborReader", "(System.ReadOnlyMemory<System.Byte>,System.Formats.Cbor.CborConformanceMode,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Formats.Cbor", "CborReader", False, "ReadDefiniteLengthByteString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Formats.Cbor", "CborReader", False, "ReadDefiniteLengthTextStringBytes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Formats.Cbor", "CborReader", False, "ReadEncodedValue", "(System.Boolean)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", False, "ReadTextString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", False, "Reset", "(System.ReadOnlyMemory<System.Byte>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", False, "TryReadByteString", "(System.Span<System.Byte>,System.Int32)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
@@ -29,7 +26,10 @@ extensions:
       - ["System.Formats.Cbor", "CborReader", "ReadCborNegativeIntegerRepresentation", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "ReadDateTimeOffset", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "ReadDecimal", "()", "summary", "df-generated"]
+      - ["System.Formats.Cbor", "CborReader", "ReadDefiniteLengthByteString", "()", "summary", "df-generated"]
+      - ["System.Formats.Cbor", "CborReader", "ReadDefiniteLengthTextStringBytes", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "ReadDouble", "()", "summary", "df-generated"]
+      - ["System.Formats.Cbor", "CborReader", "ReadEncodedValue", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "ReadEndArray", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "ReadEndIndefiniteLengthByteString", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "ReadEndIndefiniteLengthTextString", "()", "summary", "df-generated"]

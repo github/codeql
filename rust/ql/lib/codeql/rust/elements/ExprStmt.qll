@@ -11,7 +11,7 @@ import codeql.rust.elements.Stmt
  * An expression statement. For example:
  * ```rust
  * start();
- * finish()
+ * finish();
  * use std::env;
  * ```
  */

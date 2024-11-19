@@ -61,7 +61,7 @@ module TaintedWebClient = TaintTracking::Global<TaintedWebClientConfig>;
 deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * A path argument to a `WebClient` method call that has an address argument.

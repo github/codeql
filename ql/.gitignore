@@ -3,5 +3,4 @@ target
 .cache
 ql/test/**/*.testproj
 ql/test/**/*.actual
-ql/test/**/CONSISTENCY
 work

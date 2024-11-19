@@ -4,8 +4,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", True, "AddExclude", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", True, "AddInclude", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", True, "GetFile", "(System.String)", "", "Argument[this]", "ReturnValue.SyntheticField[Microsoft.Extensions.FileSystemGlobbing.Internal.InMemoryFileInfo._parent]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", True, "AddExclude", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", True, "AddInclude", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

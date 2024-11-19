@@ -57,10 +57,6 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll"
   ],
-  "Model as Data Generation Java/C# - CaptureModels": [
-    "java/ql/src/utils/modelgenerator/internal/CaptureModels.qll",
-    "csharp/ql/src/utils/modelgenerator/internal/CaptureModels.qll"
-  ],
   "Sign Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/Sign.qll"

@@ -5,6 +5,8 @@
 
 private import internal.RecordPatFieldImpl
 import codeql.rust.elements.AstNode
+import codeql.rust.elements.Attr
+import codeql.rust.elements.NameRef
 import codeql.rust.elements.Pat
 
 /**

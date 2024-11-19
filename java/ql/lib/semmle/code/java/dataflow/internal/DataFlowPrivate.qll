@@ -760,7 +760,7 @@ ContentApprox getContentApprox(Content c) {
 /**
  * Holds if the the content `c` is a container.
  */
-predicate containerContent(Content c) {
+predicate containerContent(ContentSet c) {
   c instanceof ArrayContent or
   c instanceof CollectionContent or
   c instanceof MapKeyContent or

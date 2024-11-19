@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -27,28 +28,41 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TupleExpr" }
 
     /**
-     * Gets the `index`th expression of this tuple expression (0-based).
+     * Gets the `index`th attr of this tuple expression (0-based).
      */
-    Expr getExpr(int index) {
+    Attr getAttr(int index) {
       result =
-        Synth::convertExprFromRaw(Synth::convertTupleExprToRaw(this).(Raw::TupleExpr).getExpr(index))
+        Synth::convertAttrFromRaw(Synth::convertTupleExprToRaw(this).(Raw::TupleExpr).getAttr(index))
     }
 
     /**
-     * Gets any of the expressions of this tuple expression.
+     * Gets any of the attrs of this tuple expression.
      */
-    final Expr getAnExpr() { result = this.getExpr(_) }
+    final Attr getAnAttr() { result = this.getAttr(_) }
 
     /**
-     * Gets the number of expressions of this tuple expression.
+     * Gets the number of attrs of this tuple expression.
      */
-    final int getNumberOfExprs() { result = count(int i | exists(this.getExpr(i))) }
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Holds if this tuple expression is assignee expression.
+     * Gets the `index`th field of this tuple expression (0-based).
      */
-    predicate isAssigneeExpr() {
-      Synth::convertTupleExprToRaw(this).(Raw::TupleExpr).isAssigneeExpr()
+    Expr getField(int index) {
+      result =
+        Synth::convertExprFromRaw(Synth::convertTupleExprToRaw(this)
+              .(Raw::TupleExpr)
+              .getField(index))
     }
+
+    /**
+     * Gets any of the fields of this tuple expression.
+     */
+    final Expr getAField() { result = this.getField(_) }
+
+    /**
+     * Gets the number of fields of this tuple expression.
+     */
+    final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
   }
 }

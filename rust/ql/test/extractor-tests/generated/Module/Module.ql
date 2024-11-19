@@ -2,9 +2,22 @@
 import codeql.rust.elements
 import TestUtils
 
-from Module x, int getNumberOfDeclarations
+from
+  Module x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
+  string hasItemList, string hasName, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getNumberOfDeclarations = x.getNumberOfDeclarations()
-select x, "getNumberOfDeclarations:", getNumberOfDeclarations
+  (
+    if x.hasExtendedCanonicalPath()
+    then hasExtendedCanonicalPath = "yes"
+    else hasExtendedCanonicalPath = "no"
+  ) and
+  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasItemList() then hasItemList = "yes" else hasItemList = "no") and
+  (if x.hasName() then hasName = "yes" else hasName = "no") and
+  if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
+select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
+  "getNumberOfAttrs:", getNumberOfAttrs, "hasItemList:", hasItemList, "hasName:", hasName,
+  "hasVisibility:", hasVisibility

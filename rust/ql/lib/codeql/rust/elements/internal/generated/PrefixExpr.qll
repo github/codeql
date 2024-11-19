@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -17,9 +18,9 @@ module Generated {
   /**
    * A unary operation expression. For example:
    * ```rust
-   * let x = -42
-   * let y = !true
-   * let z = *ptr
+   * let x = -42;
+   * let y = !true;
+   * let z = *ptr;
    * ```
    * INTERNAL: Do not reference the `Generated::PrefixExpr` class directly.
    * Use the subclass `PrefixExpr`, where the following predicates are available.
@@ -28,7 +29,27 @@ module Generated {
     override string getAPrimaryQlClass() { result = "PrefixExpr" }
 
     /**
-     * Gets the expression of this prefix expression.
+     * Gets the `index`th attr of this prefix expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertPrefixExprToRaw(this)
+              .(Raw::PrefixExpr)
+              .getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this prefix expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this prefix expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the expression of this prefix expression, if it exists.
      */
     Expr getExpr() {
       result =
@@ -36,8 +57,20 @@ module Generated {
     }
 
     /**
-     * Gets the op of this prefix expression.
+     * Holds if `getExpr()` exists.
      */
-    string getOp() { result = Synth::convertPrefixExprToRaw(this).(Raw::PrefixExpr).getOp() }
+    final predicate hasExpr() { exists(this.getExpr()) }
+
+    /**
+     * Gets the operator name of this prefix expression, if it exists.
+     */
+    string getOperatorName() {
+      result = Synth::convertPrefixExprToRaw(this).(Raw::PrefixExpr).getOperatorName()
+    }
+
+    /**
+     * Holds if `getOperatorName()` exists.
+     */
+    final predicate hasOperatorName() { exists(this.getOperatorName()) }
   }
 }

@@ -21,7 +21,7 @@ private import semmle.code.java.security.Sanitizers
 import MyBatisAnnotationSqlInjectionFlow::PathGraph
 
 private module MyBatisAnnotationSqlInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof MyBatisAnnotatedMethodCallArgument }
 

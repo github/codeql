@@ -4,6 +4,7 @@
  */
 
 private import codeql.util.Location
+private import codeql.util.Unit
 
 /** Provides the input specification of the SSA implementation. */
 signature module InputSig<LocationSig Location> {
@@ -1631,6 +1632,23 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
+    bindingset[this]
+    signature class StateSig;
+
+    private module WithState<StateSig State> {
+      /**
+       * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`, blocking
+       * flow in the given `state`.
+       *
+       * The expression `e` is expected to be a syntactic part of the guard `g`.
+       * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+       * the argument `x`.
+       */
+      signature predicate guardChecksSig(
+        DfInput::Guard g, DfInput::Expr e, boolean branch, State state
+      );
+    }
+
     /**
      * Provides a set of barrier nodes for a guard that validates an expression.
      *
@@ -1638,16 +1656,38 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * in data flow and taint tracking.
      */
     module BarrierGuard<guardChecksSig/3 guardChecks> {
+      private predicate guardChecksWithState(
+        DfInput::Guard g, DfInput::Expr e, boolean branch, Unit state
+      ) {
+        guardChecks(g, e, branch) and exists(state)
+      }
+
+      private module StatefulBarrier = BarrierGuardWithState<Unit, guardChecksWithState/4>;
+
+      /** Gets a node that is safely guarded by the given guard check. */
       pragma[nomagic]
-      private predicate guardChecksSsaDef(DfInput::Guard g, Definition def, boolean branch) {
-        guardChecks(g, DfInput::getARead(def), branch)
+      Node getABarrierNode() { result = StatefulBarrier::getABarrierNode(_) }
+    }
+
+    /**
+     * Provides a set of barrier nodes for a guard that validates an expression.
+     *
+     * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+     * in data flow and taint tracking.
+     */
+    module BarrierGuardWithState<StateSig State, WithState<State>::guardChecksSig/4 guardChecks> {
+      pragma[nomagic]
+      private predicate guardChecksSsaDef(
+        DfInput::Guard g, Definition def, boolean branch, State state
+      ) {
+        guardChecks(g, DfInput::getARead(def), branch, state)
       }
 
       /** Gets a node that is safely guarded by the given guard check. */
       pragma[nomagic]
-      Node getABarrierNode() {
+      Node getABarrierNode(State state) {
         exists(DfInput::Guard g, boolean branch, Definition def, BasicBlock bb |
-          guardChecksSsaDef(g, def, branch)
+          guardChecksSsaDef(g, def, branch, state)
         |
           // guard controls a read
           exists(DfInput::Expr e |

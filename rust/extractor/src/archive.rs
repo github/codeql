@@ -1,4 +1,4 @@
-use crate::path;
+use codeql_extractor::file_paths;
 use log::{debug, warn};
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -15,12 +15,11 @@ impl Archiver {
     }
 
     fn try_archive(&self, source: &Path) -> std::io::Result<()> {
-        let mut dest = self.root.clone();
-        dest.push(path::key(source));
-        let parent = dest.parent().unwrap();
+        let dest = file_paths::path_for(&self.root, source, "");
         if fs::metadata(&dest).is_ok() {
             return Ok(());
         }
+        let parent = dest.parent().unwrap();
         fs::create_dir_all(parent)?;
         fs::copy(source, dest)?;
         debug!("archived {}", source.display());

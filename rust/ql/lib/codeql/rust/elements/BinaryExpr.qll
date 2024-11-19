@@ -4,6 +4,7 @@
  */
 
 private import internal.BinaryExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
 /**

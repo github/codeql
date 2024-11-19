@@ -52,7 +52,7 @@ module UrlRedirect = TaintTracking::Global<UrlRedirectConfig>;
 deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** URL Redirection sinks defined through Models as Data. */
 private class ExternalUrlRedirectExprSink extends Sink {

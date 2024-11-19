@@ -115,9 +115,9 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private Extraction.Entities.Location? cachedLocation;
+        private Location? cachedLocation;
 
-        public Extraction.Entities.Location Location
+        public Location Location
         {
             get
             {

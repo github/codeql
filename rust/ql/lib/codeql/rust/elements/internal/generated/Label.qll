@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.Lifetime
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Label` and should not
@@ -28,8 +29,16 @@ module Generated {
     override string getAPrimaryQlClass() { result = "Label" }
 
     /**
-     * Gets the name of this label.
+     * Gets the lifetime of this label, if it exists.
      */
-    string getName() { result = Synth::convertLabelToRaw(this).(Raw::Label).getName() }
+    Lifetime getLifetime() {
+      result =
+        Synth::convertLifetimeFromRaw(Synth::convertLabelToRaw(this).(Raw::Label).getLifetime())
+    }
+
+    /**
+     * Holds if `getLifetime()` exists.
+     */
+    final predicate hasLifetime() { exists(this.getLifetime()) }
   }
 }

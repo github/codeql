@@ -84,10 +84,11 @@ private module Input implements TypeFlowInput<Location> {
   }
 
   /**
-   * Holds if data can flow from `n1` to `n2` in one step, and `n1` is not
-   * necessarily functionally determined by `n2`.
+   * Holds if data can flow from `n1` to `n2` in one step.
+   *
+   * For a given `n2`, this predicate must include all possible `n1` that can flow to `n2`.
    */
-  predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
+  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
     n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
     or
     exists(Field f, Expr e |
@@ -112,13 +113,7 @@ private module Input implements TypeFlowInput<Location> {
       // skip trivial recursion
       not arg = n2.asSsa().getAUse()
     )
-  }
-
-  /**
-   * Holds if data can flow from `n1` to `n2` in one step, and `n1` is
-   * functionally determined by `n2`.
-   */
-  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
+    or
     n2.asExpr() = n1.asField().getAnAccess()
     or
     n2.asExpr() = n1.asSsa().getAUse()
@@ -132,6 +127,8 @@ private module Input implements TypeFlowInput<Location> {
     n2.asSsa().(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
     or
     n2.asSsa().(BaseSsaImplicitInit).captures(n1.asSsa())
+    or
+    n2.asExpr().(NotNullExpr).getExpr() = n1.asExpr()
   }
 
   /**
@@ -143,7 +140,7 @@ private module Input implements TypeFlowInput<Location> {
     exists(LocalVariableDeclExpr decl |
       n.asSsa().(BaseSsaUpdate).getDefiningExpr() = decl and
       not decl.hasImplicitInit() and
-      not exists(decl.getInit())
+      not exists(decl.getInitOrPatternSource())
     )
   }
 
@@ -169,7 +166,7 @@ private module Input implements TypeFlowInput<Location> {
    */
   pragma[nomagic]
   private predicate upcastCand(TypeFlowNode n, RefType t1, RefType t1e, RefType t2, RefType t2e) {
-    exists(TypeFlowNode next | step(n, next) or joinStep(n, next) |
+    exists(TypeFlowNode next | step(n, next) |
       n.getType() = t1 and
       next.getType() = t2 and
       t1.getErasure() = t1e and

@@ -10,7 +10,7 @@
  * @tags security
  *       external/cwe/cwe-190
  *       external/cwe/cwe-681
- * @precision very-high
+ * @precision high
  */
 
 import go

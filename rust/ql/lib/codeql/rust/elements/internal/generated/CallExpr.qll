@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 import codeql.rust.elements.Expr
-import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `CallExpr` and should not
@@ -25,40 +25,20 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::CallExpr` class directly.
    * Use the subclass `CallExpr`, where the following predicates are available.
    */
-  class CallExpr extends Synth::TCallExpr, ExprImpl::Expr {
+  class CallExpr extends Synth::TCallExpr, CallExprBaseImpl::CallExprBase {
     override string getAPrimaryQlClass() { result = "CallExpr" }
 
     /**
-     * Gets the callee of this call expression.
+     * Gets the expression of this call expression, if it exists.
      */
-    Expr getCallee() {
+    Expr getExpr() {
       result =
-        Synth::convertExprFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getCallee())
+        Synth::convertExprFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getExpr())
     }
 
     /**
-     * Gets the `index`th argument of this call expression (0-based).
+     * Holds if `getExpr()` exists.
      */
-    Expr getArg(int index) {
-      result =
-        Synth::convertExprFromRaw(Synth::convertCallExprToRaw(this).(Raw::CallExpr).getArg(index))
-    }
-
-    /**
-     * Gets any of the arguments of this call expression.
-     */
-    final Expr getAnArg() { result = this.getArg(_) }
-
-    /**
-     * Gets the number of arguments of this call expression.
-     */
-    final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
-
-    /**
-     * Holds if this call expression is assignee expression.
-     */
-    predicate isAssigneeExpr() {
-      Synth::convertCallExprToRaw(this).(Raw::CallExpr).isAssigneeExpr()
-    }
+    final predicate hasExpr() { exists(this.getExpr()) }
   }
 }

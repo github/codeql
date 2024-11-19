@@ -1,0 +1,4 @@
+uniqueEnclosingCallable
+| main.rs:5:29:5:33 | width | Node should have one enclosing callable but has 0. |
+| main.rs:5:36:5:44 | precision | Node should have one enclosing callable but has 0. |
+| main.rs:9:22:9:27 | people | Node should have one enclosing callable but has 0. |

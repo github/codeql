@@ -1,0 +1,14 @@
+{
+  "crates": [
+    {
+      "root_module": "exe/src/main.rs",
+      "edition": "2021",
+      "deps": [{"crate": 1, "name": "lib"}]
+    },
+    {
+      "root_module": "lib/src/lib.rs",
+      "edition": "2021",
+      "deps": []
+    }
+  ]
+}

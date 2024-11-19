@@ -2,12 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from CallExpr x, Expr getCallee, int getNumberOfArgs, string isAssigneeExpr
+from CallExpr x, string hasArgList, int getNumberOfAttrs, string hasExpr
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getCallee = x.getCallee() and
-  getNumberOfArgs = x.getNumberOfArgs() and
-  if x.isAssigneeExpr() then isAssigneeExpr = "yes" else isAssigneeExpr = "no"
-select x, "getCallee:", getCallee, "getNumberOfArgs:", getNumberOfArgs, "isAssigneeExpr:",
-  isAssigneeExpr
+  (if x.hasArgList() then hasArgList = "yes" else hasArgList = "no") and
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  if x.hasExpr() then hasExpr = "yes" else hasExpr = "no"
+select x, "hasArgList:", hasArgList, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr

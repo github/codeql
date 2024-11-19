@@ -2,11 +2,14 @@
 import codeql.rust.elements
 import TestUtils
 
-from RefExpr x, Expr getExpr, string isRaw, string isMut
+from RefExpr x, int getNumberOfAttrs, string hasExpr, string isConst, string isMut, string isRaw
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getExpr = x.getExpr() and
-  (if x.isRaw() then isRaw = "yes" else isRaw = "no") and
-  if x.isMut() then isMut = "yes" else isMut = "no"
-select x, "getExpr:", getExpr, "isRaw:", isRaw, "isMut:", isMut
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
+  (if x.isConst() then isConst = "yes" else isConst = "no") and
+  (if x.isMut() then isMut = "yes" else isMut = "no") and
+  if x.isRaw() then isRaw = "yes" else isRaw = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "isConst:", isConst, "isMut:",
+  isMut, "isRaw:", isRaw

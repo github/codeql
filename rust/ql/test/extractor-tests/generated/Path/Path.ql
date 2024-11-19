@@ -2,6 +2,18 @@
 import codeql.rust.elements
 import TestUtils
 
-from Path x
-where toBeTested(x) and not x.isUnknown()
-select x
+from
+  Path x, string hasResolvedPath, string hasResolvedCrateOrigin, string hasQualifier, string hasPart
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  (if x.hasResolvedPath() then hasResolvedPath = "yes" else hasResolvedPath = "no") and
+  (
+    if x.hasResolvedCrateOrigin()
+    then hasResolvedCrateOrigin = "yes"
+    else hasResolvedCrateOrigin = "no"
+  ) and
+  (if x.hasQualifier() then hasQualifier = "yes" else hasQualifier = "no") and
+  if x.hasPart() then hasPart = "yes" else hasPart = "no"
+select x, "hasResolvedPath:", hasResolvedPath, "hasResolvedCrateOrigin:", hasResolvedCrateOrigin,
+  "hasQualifier:", hasQualifier, "hasPart:", hasPart

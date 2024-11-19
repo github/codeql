@@ -10,3 +10,4 @@
 | test.c:15:2:15:7 | call to printf | Format for printf expects 3 arguments but given 2 |
 | test.c:19:2:19:7 | call to printf | Format for printf expects 2 arguments but given 1 |
 | test.c:29:3:29:8 | call to printf | Format for printf expects 2 arguments but given 1 |
+| test.c:53:2:53:10 | call to my_logger | Format for my_logger expects 3 arguments but given 2 |

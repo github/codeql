@@ -16,6 +16,8 @@ module MissingJwtSignatureCheckConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(JwtParserWithInsecureParseAdditionalFlowStep c).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module MissingJwtSignatureCheckFlow = DataFlow::Global<MissingJwtSignatureCheckConfig>;

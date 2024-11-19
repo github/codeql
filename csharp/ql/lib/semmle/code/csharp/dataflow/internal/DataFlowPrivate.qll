@@ -13,6 +13,7 @@ private import semmle.code.csharp.Unification
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.frameworks.system.Collections
@@ -995,6 +996,52 @@ private class InstanceCallable extends Callable {
   Location getARelevantLocation() { result = l }
 }
 
+/**
+ * A callable which is either itself defined in source or which is the target
+ * of some call in source, and therefore ought to have dataflow nodes created.
+ *
+ * Note that for library methods these are always unbound declarations, since
+ * generic instantiations never have dataflow nodes constructed.
+ */
+private class CallableUsedInSource extends Callable {
+  CallableUsedInSource() {
+    // Should generate nodes even for abstract methods declared in source
+    this.fromSource()
+    or
+    // Should generate nodes even for synthetic methods derived from source
+    this.hasBody()
+    or
+    exists(Callable target |
+      exists(Call c |
+        // Note that getADynamicTarget does not always include getTarget.
+        target = c.getTarget()
+        or
+        // Note that getARuntimeTarget cannot be used here, because the
+        // DelegateLikeCall case depends on lambda-flow, which in turn
+        // uses the dataflow library; hence this would introduce recursion
+        // into the definition of data-flow nodes.
+        exists(DispatchCall dc | c = dc.getCall() | target = dc.getADynamicTarget())
+      )
+      or
+      target = any(CallableAccess ca).getTarget()
+    |
+      this = target.getUnboundDeclaration()
+    )
+  }
+}
+
+/**
+ * A field or property which is either itself defined in source or which is the target
+ * of some access in source, and therefore ought to have dataflow nodes created.
+ */
+private class FieldOrPropertyUsedInSource extends FieldOrProperty {
+  FieldOrPropertyUsedInSource() {
+    this.fromSource()
+    or
+    this.getAnAccess().fromSource()
+  }
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -1018,8 +1065,13 @@ private module Cached {
     TAssignableDefinitionNode(AssignableDefinition def, ControlFlow::Node cfn) {
       cfn = def.getExpr().getAControlFlowNode()
     } or
-    TExplicitParameterNode(Parameter p, DataFlowCallable c) { p = c.asCallable(_).getAParameter() } or
-    TInstanceParameterNode(InstanceCallable c, Location l) { l = c.getARelevantLocation() } or
+    TExplicitParameterNode(Parameter p, DataFlowCallable c) {
+      p = c.asCallable(_).(CallableUsedInSource).getAParameter()
+    } or
+    TInstanceParameterNode(InstanceCallable c, Location l) {
+      c instanceof CallableUsedInSource and
+      l = c.getARelevantLocation()
+    } or
     TDelegateSelfReferenceNode(Callable c) { lambdaCreationExpr(_, c) } or
     TLocalFunctionCreationNode(ControlFlow::Nodes::ElementNode cfn, Boolean isPostUpdate) {
       cfn.getAstNode() instanceof LocalFunctionStmt
@@ -1055,11 +1107,13 @@ private module Cached {
       or
       lambdaCallExpr(_, cfn)
     } or
-    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) {
+      sn.getSummarizedCallable() instanceof CallableUsedInSource
+    } or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
       callCfn = any(Call c | isParamsArg(c, _, _)).getAControlFlowNode()
     } or
-    TFlowInsensitiveFieldNode(FieldOrProperty f) { f.isFieldLike() } or
+    TFlowInsensitiveFieldNode(FieldOrPropertyUsedInSource f) { f.isFieldLike() } or
     TFlowInsensitiveCapturedVariableNode(LocalScopeVariable v) { v.isCaptured() } or
     TInstanceParameterAccessNode(ControlFlow::Node cfn, Boolean isPostUpdate) {
       cfn = getAPrimaryConstructorParameterCfn(_)
@@ -1093,7 +1147,11 @@ private module Cached {
     TPrimaryConstructorParameterContent(Parameter p) {
       p.getCallable() instanceof PrimaryConstructor
     } or
-    TCapturedVariableContent(VariableCapture::CapturedVariable v)
+    TCapturedVariableContent(VariableCapture::CapturedVariable v) or
+    TDelegateCallArgumentContent(int i) {
+      i = [0 .. max(any(DelegateLikeCall dc).getNumberOfArguments()) - 1]
+    } or
+    TDelegateCallReturnContent()
 
   cached
   newtype TContentSet =
@@ -1109,7 +1167,9 @@ private module Cached {
     TPrimaryConstructorParameterApproxContent(string firstChar) {
       firstChar = approximatePrimaryConstructorParameterContent(_)
     } or
-    TCapturedVariableContentApprox(VariableCapture::CapturedVariable v)
+    TCapturedVariableContentApprox(VariableCapture::CapturedVariable v) or
+    TDelegateCallArgumentApproxContent() or
+    TDelegateCallReturnApproxContent()
 
   pragma[nomagic]
   private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantGvnType t2) {
@@ -2222,6 +2282,21 @@ private predicate recordProperty(RecordType t, ContentSet c, string name) {
 
 /**
  * Holds if data can flow from `node1` to `node2` via an assignment to
+ * the content set `c` of a delegate call.
+ *
+ * If there is a delegate call f(x), then we store "x" on "f"
+ * using a delegate argument content set.
+ */
+private predicate storeStepDelegateCall(ExplicitArgumentNode node1, ContentSet c, Node node2) {
+  exists(ExplicitDelegateLikeDataFlowCall call, int i |
+    node1.argumentOf(call, TPositionalArgumentPosition(i)) and
+    lambdaCall(call, _, node2.(PostUpdateNode).getPreUpdateNode()) and
+    c.isDelegateCallArgument(i)
+  )
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` via an assignment to
  * content `c`.
  */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
@@ -2252,6 +2327,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  storeStepDelegateCall(node1, c, node2)
 }
 
 private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -2373,6 +2450,21 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
 }
 
 /**
+ * Holds if data can flow from `node1` to `node2` via an assignment to
+ * the content set `c` of a delegate call.
+ *
+ * If there is a delegate call f(x), then we read the return of the delegate
+ * call.
+ */
+private predicate readStepDelegateCall(Node node1, ContentSet c, OutNode node2) {
+  exists(ExplicitDelegateLikeDataFlowCall call |
+    lambdaCall(call, _, node1) and
+    node2.getCall(TNormalReturnKind()) = call and
+    c.isDelegateCallReturn()
+  )
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` via a read of content `c`.
  */
 predicate readStep(Node node1, ContentSet c, Node node2) {
@@ -2390,6 +2482,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
+  or
+  readStepDelegateCall(node1, c, node2)
 }
 
 private predicate clearsCont(Node n, Content c) {
@@ -2984,6 +3078,12 @@ class ContentApprox extends TContentApprox {
     exists(VariableCapture::CapturedVariable v |
       this = TCapturedVariableContentApprox(v) and result = "captured " + v
     )
+    or
+    this = TDelegateCallArgumentApproxContent() and
+    result = "approximated delegate call argument"
+    or
+    this = TDelegateCallReturnApproxContent() and
+    result = "approximated delegate call return"
   }
 }
 
@@ -3020,6 +3120,12 @@ ContentApprox getContentApprox(Content c) {
     TPrimaryConstructorParameterApproxContent(approximatePrimaryConstructorParameterContent(c))
   or
   result = TCapturedVariableContentApprox(VariableCapture::getCapturedVariableContent(c))
+  or
+  c instanceof DelegateCallArgumentContent and
+  result = TDelegateCallArgumentApproxContent()
+  or
+  c instanceof DelegateCallReturnContent and
+  result = TDelegateCallReturnApproxContent()
 }
 
 /**

@@ -2,11 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from RangeExpr x, string hasLhs, string hasRhs, string isInclusive
+from RangeExpr x, int getNumberOfAttrs, string hasEnd, string hasOperatorName, string hasStart
 where
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasLhs() then hasLhs = "yes" else hasLhs = "no") and
-  (if x.hasRhs() then hasRhs = "yes" else hasRhs = "no") and
-  if x.isInclusive() then isInclusive = "yes" else isInclusive = "no"
-select x, "hasLhs:", hasLhs, "hasRhs:", hasRhs, "isInclusive:", isInclusive
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasEnd() then hasEnd = "yes" else hasEnd = "no") and
+  (if x.hasOperatorName() then hasOperatorName = "yes" else hasOperatorName = "no") and
+  if x.hasStart() then hasStart = "yes" else hasStart = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasEnd:", hasEnd, "hasOperatorName:",
+  hasOperatorName, "hasStart:", hasStart

@@ -10,3 +10,4 @@ extensions:
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.Configuration.Memory", "MemoryConfigurationProvider", "Add", "(System.String,System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Memory", "MemoryConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]

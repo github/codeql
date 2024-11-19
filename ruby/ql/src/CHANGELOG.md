@@ -1,3 +1,17 @@
+## 1.1.6
+
+No user-facing changes.
+
+## 1.1.5
+
+### Minor Analysis Improvements
+
+* The `rb/diagnostics/extraction-errors` diagnostic query has been split into `rb/diagnostics/extraction-errors` and `rb/diagnostics/extraction-warnings`, counting extraction errors and warnings respectively.
+
+## 1.1.4
+
+No user-facing changes.
+
 ## 1.1.3
 
 No user-facing changes.

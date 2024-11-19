@@ -4,8 +4,9 @@
  */
 
 private import internal.BreakExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
-import codeql.rust.elements.Label
+import codeql.rust.elements.Lifetime
 
 /**
  * A break expression. For example:
@@ -21,6 +22,14 @@ import codeql.rust.elements.Label
  *     if done() {
  *         break 'label 42;
  *     }
+ * };
+ * ```
+ * ```rust
+ * let x = 'label: {
+ *     if exit() {
+ *         break 'label 42;
+ *     }
+ *     0;
  * };
  * ```
  */

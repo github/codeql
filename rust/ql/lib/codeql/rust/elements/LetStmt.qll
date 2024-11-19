@@ -4,7 +4,9 @@
  */
 
 private import internal.LetStmtImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
+import codeql.rust.elements.LetElse
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Stmt
 import codeql.rust.elements.TypeRef

@@ -4,8 +4,11 @@
  */
 
 private import internal.MethodCallExprImpl
+import codeql.rust.elements.CallExprBase
 import codeql.rust.elements.Expr
 import codeql.rust.elements.GenericArgList
+import codeql.rust.elements.NameRef
+import codeql.rust.elements.Resolvable
 
 /**
  * A method call expression. For example:

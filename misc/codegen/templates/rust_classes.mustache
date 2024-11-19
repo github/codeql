@@ -59,6 +59,16 @@ pub struct {{name}} {
     _unused: ()
 }
 {{/is_entry}}
+{{#has_detached_fields}}
+
+impl {{name}} {
+{{#detached_fields}}
+    pub fn emit_{{singular_field_name}}(id: trap::Label<Self>, {{#is_repeated}}{{^is_unordered}}i: usize, {{/is_unordered}}{{/is_repeated}}value: {{base_type}}, out: &mut trap::Writer) {
+        out.add_tuple("{{table_name}}", vec![id.into(), {{#is_repeated}}{{^is_unordered}}i.into(), {{/is_unordered}}{{/is_repeated}}value.into()]);
+    }
+{{/detached_fields}}
+}
+{{/has_detached_fields}}
 
 impl trap::TrapClass for {{name}} {
     fn class_name() -> &'static str { "{{name}}" }

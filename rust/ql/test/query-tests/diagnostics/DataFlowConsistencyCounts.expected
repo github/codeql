@@ -1,0 +1,29 @@
+| ArgumentNode is missing PostUpdateNode | 0 |
+| Call context for isUnreachableInCall is inconsistent with call graph | 0 |
+| Call context too large | 0 |
+| Call should have one enclosing callable | 0 |
+| Callable mismatch for parameter | 0 |
+| Lambda call enclosing callable mismatch | 0 |
+| Local flow step does not preserve enclosing callable | 0 |
+| Missing call for argument node | 0 |
+| Multiple calls for argument node | 0 |
+| Node and call does not share enclosing callable | 0 |
+| Node has multiple PostUpdateNodes | 0 |
+| Node should have one enclosing callable | 0 |
+| Node should have one location | 0 |
+| Node should have one toString | 0 |
+| Node should have one type | 0 |
+| Node steps to itself | 0 |
+| Nodes without location | 0 |
+| Non-unique content approximation | 0 |
+| Origin of readStep is missing a PostUpdateNode | 0 |
+| Parameter node with multiple positions | 0 |
+| Parameters with overlapping positions | 0 |
+| PostUpdateNode does not share callable with its pre-update node | 0 |
+| PostUpdateNode should have one pre-update node | 0 |
+| PostUpdateNode should not be the target of local flow | 0 |
+| PostUpdateNode should not equal its pre-update node | 0 |
+| Read step does not preserve enclosing callable | 0 |
+| Speculative step already hasM Model | 0 |
+| Store step does not preserve enclosing callable | 0 |
+| Type compatibility predicate is not reflexive | 0 |

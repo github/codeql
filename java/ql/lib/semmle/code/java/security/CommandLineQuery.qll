@@ -49,7 +49,7 @@ private class DefaultCommandInjectionSanitizer extends CommandInjectionSanitizer
  * A taint-tracking configuration for unvalidated user input that is used to run an external process.
  */
 module InputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjectionSink }
 

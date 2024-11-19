@@ -165,7 +165,7 @@ module XssTrackingConfig implements DataFlow::ConfigSig {
 module XssTracking = TaintTracking::Global<XssTrackingConfig>;
 
 /** A source supported by the current threat model. */
-private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 

@@ -6,10 +6,9 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.Path
-import codeql.rust.elements.RecordExprField
+import codeql.rust.elements.RecordExprFieldList
 
 /**
  * INTERNAL: This module contains the fully generated definition of `RecordExpr` and should not
@@ -44,48 +43,18 @@ module Generated {
     final predicate hasPath() { exists(this.getPath()) }
 
     /**
-     * Gets the `index`th fld of this record expression (0-based).
+     * Gets the record expression field list of this record expression, if it exists.
      */
-    RecordExprField getFld(int index) {
+    RecordExprFieldList getRecordExprFieldList() {
       result =
-        Synth::convertRecordExprFieldFromRaw(Synth::convertRecordExprToRaw(this)
+        Synth::convertRecordExprFieldListFromRaw(Synth::convertRecordExprToRaw(this)
               .(Raw::RecordExpr)
-              .getFld(index))
+              .getRecordExprFieldList())
     }
 
     /**
-     * Gets any of the flds of this record expression.
+     * Holds if `getRecordExprFieldList()` exists.
      */
-    final RecordExprField getAFld() { result = this.getFld(_) }
-
-    /**
-     * Gets the number of flds of this record expression.
-     */
-    final int getNumberOfFlds() { result = count(int i | exists(this.getFld(i))) }
-
-    /**
-     * Gets the spread of this record expression, if it exists.
-     */
-    Expr getSpread() {
-      result =
-        Synth::convertExprFromRaw(Synth::convertRecordExprToRaw(this).(Raw::RecordExpr).getSpread())
-    }
-
-    /**
-     * Holds if `getSpread()` exists.
-     */
-    final predicate hasSpread() { exists(this.getSpread()) }
-
-    /**
-     * Holds if this record expression has ellipsis.
-     */
-    predicate hasEllipsis() { Synth::convertRecordExprToRaw(this).(Raw::RecordExpr).hasEllipsis() }
-
-    /**
-     * Holds if this record expression is assignee expression.
-     */
-    predicate isAssigneeExpr() {
-      Synth::convertRecordExprToRaw(this).(Raw::RecordExpr).isAssigneeExpr()
-    }
+    final predicate hasRecordExprFieldList() { exists(this.getRecordExprFieldList()) }
   }
 }

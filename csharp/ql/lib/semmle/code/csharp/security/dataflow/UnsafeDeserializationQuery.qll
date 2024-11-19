@@ -49,7 +49,7 @@ abstract private class ConstructorOrStaticMethodSink extends Sink { }
  */
 abstract class Sanitizer extends DataFlow::Node { }
 
-private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * User input to object method call deserialization flow tracking configuration.

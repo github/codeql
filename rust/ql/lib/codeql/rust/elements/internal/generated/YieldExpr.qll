@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -27,6 +28,24 @@ module Generated {
    */
   class YieldExpr extends Synth::TYieldExpr, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "YieldExpr" }
+
+    /**
+     * Gets the `index`th attr of this yield expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertYieldExprToRaw(this).(Raw::YieldExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this yield expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this yield expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the expression of this yield expression, if it exists.

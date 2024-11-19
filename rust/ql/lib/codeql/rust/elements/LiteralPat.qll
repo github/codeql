@@ -4,7 +4,7 @@
  */
 
 private import internal.LiteralPatImpl
-import codeql.rust.elements.Expr
+import codeql.rust.elements.LiteralExpr
 import codeql.rust.elements.Pat
 
 /**

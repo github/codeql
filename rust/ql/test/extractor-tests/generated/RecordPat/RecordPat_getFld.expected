@@ -1,2 +1,0 @@
-| gen_record_pat.rs:6:9:6:26 | RecordPat | 0 | gen_record_pat.rs:6:18:6:18 | RecordPatField |
-| gen_record_pat.rs:6:9:6:26 | RecordPat | 1 | gen_record_pat.rs:6:24:6:24 | RecordPatField |

@@ -1,2 +1,2 @@
-| gen_method_call_expr.rs:5:5:5:13 | MethodCallExpr | getReceiver: | gen_method_call_expr.rs:5:5:5:5 | PathExpr | getMethodName: | foo | getNumberOfArgs: | 1 | hasGenericArgs: | no |
-| gen_method_call_expr.rs:6:5:6:25 | MethodCallExpr | getReceiver: | gen_method_call_expr.rs:6:5:6:5 | PathExpr | getMethodName: | foo | getNumberOfArgs: | 1 | hasGenericArgs: | yes |
+| gen_method_call_expr.rs:5:5:5:13 | ... .foo(...) | hasArgList: | yes | getNumberOfAttrs: | 0 | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasGenericArgList: | no | hasNameRef: | yes | hasReceiver: | yes |
+| gen_method_call_expr.rs:6:5:6:25 | ... .foo(...) | hasArgList: | yes | getNumberOfAttrs: | 0 | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasGenericArgList: | yes | hasNameRef: | yes | hasReceiver: | yes |

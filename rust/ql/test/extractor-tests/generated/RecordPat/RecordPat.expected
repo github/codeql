@@ -1,2 +1,2 @@
-| gen_record_pat.rs:6:9:6:26 | RecordPat | hasPath: | yes | getNumberOfFlds: | 2 | hasEllipsis: | no |
-| gen_record_pat.rs:7:9:7:18 | RecordPat | hasPath: | yes | getNumberOfFlds: | 0 | hasEllipsis: | yes |
+| gen_record_pat.rs:6:9:6:26 | RecordPat | hasPath: | yes | hasRecordPatFieldList: | yes |
+| gen_record_pat.rs:7:9:7:18 | RecordPat | hasPath: | yes | hasRecordPatFieldList: | yes |

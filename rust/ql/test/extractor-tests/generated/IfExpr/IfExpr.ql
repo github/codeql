@@ -2,11 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from IfExpr x, Expr getCondition, Expr getThen, string hasElse
+from IfExpr x, int getNumberOfAttrs, string hasCondition, string hasElse, string hasThen
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getCondition = x.getCondition() and
-  getThen = x.getThen() and
-  if x.hasElse() then hasElse = "yes" else hasElse = "no"
-select x, "getCondition:", getCondition, "getThen:", getThen, "hasElse:", hasElse
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasCondition() then hasCondition = "yes" else hasCondition = "no") and
+  (if x.hasElse() then hasElse = "yes" else hasElse = "no") and
+  if x.hasThen() then hasThen = "yes" else hasThen = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasCondition:", hasCondition, "hasElse:", hasElse,
+  "hasThen:", hasThen

@@ -2,10 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from LetExpr x, Pat getPat, Expr getExpr
+from LetExpr x, int getNumberOfAttrs, string hasExpr, string hasPat
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getPat = x.getPat() and
-  getExpr = x.getExpr()
-select x, "getPat:", getPat, "getExpr:", getExpr
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
+  if x.hasPat() then hasPat = "yes" else hasPat = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasPat:", hasPat

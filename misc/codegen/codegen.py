@@ -43,8 +43,8 @@ def _parse_args() -> argparse.Namespace:
                         "compute QL imports and in some comments and as root for relative paths provided as options. "
                         "If not provided it defaults to the directory of the configuration file, if any")
     path_arguments = [
-        p.add_argument("--schema", default="schema.py",
-                       help="input schema file (default %(default)s)"),
+        p.add_argument("--schema",
+                       help="input schema file (default schema.py)"),
         p.add_argument("--dbscheme",
                        help="output file for dbscheme generation, input file for trap generation"),
         p.add_argument("--ql-output",
@@ -87,6 +87,8 @@ def _parse_args() -> argparse.Namespace:
                     setattr(opts, flag, getattr(defaults, flag))
         if opts.root_dir is None:
             opts.root_dir = opts.configuration_file.parent
+    if opts.schema is None:
+        opts.schema = "schema.py"
     if not opts.generate:
         p.error("Nothing to do, specify --generate")
     # absolutize all paths

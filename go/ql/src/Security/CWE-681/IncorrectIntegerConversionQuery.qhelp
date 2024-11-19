@@ -27,6 +27,11 @@ the bit size you specified when parsing the number.
 If this is not possible, then add upper (and lower) bound checks specific to each type and
 bit size (you can find the minimum and maximum value for each type in the <code>math</code> package).
 </p>
+<p>
+Note that CodeQL is only able to identify bounds checks that compare against a constant value. When a variable
+is used in the comparison, CodeQL is unable to determine the value of the variable at runtime and will not
+recognize the bounds check.
+</p>
 </recommendation>
 
 <example>

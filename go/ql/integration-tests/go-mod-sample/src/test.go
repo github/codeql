@@ -10,3 +10,7 @@ func test() {
 	header.Version = 4
 
 }
+
+func PublicFunction() int {
+	return 1
+}

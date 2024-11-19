@@ -102,7 +102,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
         }
 
-        public override Location ReportingLocation => throw new System.NotImplementedException();
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => throw new System.NotImplementedException();
 
         public override bool NeedsPopulation => true;
 

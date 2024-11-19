@@ -40,7 +40,7 @@ private predicate endsWithStep(DataFlow::Node node1, DataFlow::Node node2) {
  * A taint tracking configuration for untrusted data flowing to sensitive conditions.
  */
 module ConditionalBypassFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
 

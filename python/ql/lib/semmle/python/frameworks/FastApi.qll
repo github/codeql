@@ -31,6 +31,51 @@ module FastApi {
   }
 
   /**
+   * A call to `app.add_middleware` adding a generic middleware.
+   */
+  private class AddMiddlewareCall extends DataFlow::CallCfgNode {
+    AddMiddlewareCall() { this = App::instance().getMember("add_middleware").getACall() }
+
+    /**
+     * Gets the string corresponding to the middleware
+     */
+    string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
+  }
+
+  /**
+   * A call to `app.add_middleware` adding CORSMiddleware.
+   */
+  class AddCorsMiddlewareCall extends Http::Server::CorsMiddleware::Range, AddMiddlewareCall {
+    /**
+     * Gets the string corresponding to the middleware
+     */
+    override string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS origins
+     */
+    override DataFlow::Node getOrigins() { result = this.getArgByName("allow_origins") }
+
+    /**
+     * Gets the boolean value corresponding to if CORS credentials is enabled
+     * (`true`) or disabled (`false`) by this node.
+     */
+    override DataFlow::Node getCredentialsAllowed() {
+      result = this.getArgByName("allow_credentials")
+    }
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS methods
+     */
+    DataFlow::Node getMethods() { result = this.getArgByName("allow_methods") }
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS headers
+     */
+    DataFlow::Node getHeaders() { result = this.getArgByName("allow_headers") }
+  }
+
+  /**
    * Provides models for the `fastapi.APIRouter` class
    *
    * See https://fastapi.tiangolo.com/tutorial/bigger-applications/.

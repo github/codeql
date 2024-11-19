@@ -115,16 +115,16 @@ test_ReExportDeclarations
 | m/c.js:5:1:5:30 | export  ... '../b'; | m/c.js:5:24:5:29 | '../b' |
 | reExportNamespace.js:1:1:1:26 | export  ...  "./a"; | reExportNamespace.js:1:21:1:25 | "./a" |
 test_getAnImportedModule
-| library-tests/Modules/b.js | library-tests/Modules/a.js |
-| library-tests/Modules/d.js | library-tests/Modules/a.js |
-| library-tests/Modules/d.js | library-tests/Modules/b.js |
-| library-tests/Modules/es2015_require.js | library-tests/Modules/d.js |
-| library-tests/Modules/f.ts | library-tests/Modules/e.js |
-| library-tests/Modules/g.ts | library-tests/Modules/f.ts |
-| library-tests/Modules/import-indirect-path.js | library-tests/Modules/a.js |
-| library-tests/Modules/import-ts-with-js-extension.ts | library-tests/Modules/f.ts |
-| library-tests/Modules/m/c.js | library-tests/Modules/b.js |
-| library-tests/Modules/reExportNamespaceClient.js | library-tests/Modules/reExportNamespace.js |
+| b.js | a.js |
+| d.js | a.js |
+| d.js | b.js |
+| es2015_require.js | d.js |
+| f.ts | e.js |
+| g.ts | f.ts |
+| import-indirect-path.js | a.js |
+| import-ts-with-js-extension.ts | f.ts |
+| m/c.js | b.js |
+| reExportNamespaceClient.js | reExportNamespace.js |
 test_getExportedName
 | arbitrarySpecifier.ts:5:10:5:30 | Foo_new ... o::new" | Foo::new |
 | arbitrarySpecifier.ts:6:13:6:28 | * as "Foo_types" | Foo_types |

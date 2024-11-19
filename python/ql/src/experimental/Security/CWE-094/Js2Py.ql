@@ -18,7 +18,7 @@ import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.Concepts
 
 module Js2PyFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node node) { node instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node node) {
     API::moduleImport("js2py").getMember(["eval_js", "eval_js6", "EvalJs"]).getACall().getArg(_) =

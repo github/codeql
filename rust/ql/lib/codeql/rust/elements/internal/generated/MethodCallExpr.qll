@@ -6,9 +6,11 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 import codeql.rust.elements.Expr
-import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.GenericArgList
+import codeql.rust.elements.NameRef
+import codeql.rust.elements.internal.ResolvableImpl::Impl as ResolvableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `MethodCallExpr` and should not
@@ -24,11 +26,43 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::MethodCallExpr` class directly.
    * Use the subclass `MethodCallExpr`, where the following predicates are available.
    */
-  class MethodCallExpr extends Synth::TMethodCallExpr, ExprImpl::Expr {
+  class MethodCallExpr extends Synth::TMethodCallExpr, CallExprBaseImpl::CallExprBase,
+    ResolvableImpl::Resolvable
+  {
     override string getAPrimaryQlClass() { result = "MethodCallExpr" }
 
     /**
-     * Gets the receiver of this method call expression.
+     * Gets the generic argument list of this method call expression, if it exists.
+     */
+    GenericArgList getGenericArgList() {
+      result =
+        Synth::convertGenericArgListFromRaw(Synth::convertMethodCallExprToRaw(this)
+              .(Raw::MethodCallExpr)
+              .getGenericArgList())
+    }
+
+    /**
+     * Holds if `getGenericArgList()` exists.
+     */
+    final predicate hasGenericArgList() { exists(this.getGenericArgList()) }
+
+    /**
+     * Gets the name reference of this method call expression, if it exists.
+     */
+    NameRef getNameRef() {
+      result =
+        Synth::convertNameRefFromRaw(Synth::convertMethodCallExprToRaw(this)
+              .(Raw::MethodCallExpr)
+              .getNameRef())
+    }
+
+    /**
+     * Holds if `getNameRef()` exists.
+     */
+    final predicate hasNameRef() { exists(this.getNameRef()) }
+
+    /**
+     * Gets the receiver of this method call expression, if it exists.
      */
     Expr getReceiver() {
       result =
@@ -38,45 +72,8 @@ module Generated {
     }
 
     /**
-     * Gets the method name of this method call expression.
+     * Holds if `getReceiver()` exists.
      */
-    string getMethodName() {
-      result = Synth::convertMethodCallExprToRaw(this).(Raw::MethodCallExpr).getMethodName()
-    }
-
-    /**
-     * Gets the `index`th argument of this method call expression (0-based).
-     */
-    Expr getArg(int index) {
-      result =
-        Synth::convertExprFromRaw(Synth::convertMethodCallExprToRaw(this)
-              .(Raw::MethodCallExpr)
-              .getArg(index))
-    }
-
-    /**
-     * Gets any of the arguments of this method call expression.
-     */
-    final Expr getAnArg() { result = this.getArg(_) }
-
-    /**
-     * Gets the number of arguments of this method call expression.
-     */
-    final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
-
-    /**
-     * Gets the generic arguments of this method call expression, if it exists.
-     */
-    GenericArgList getGenericArgs() {
-      result =
-        Synth::convertGenericArgListFromRaw(Synth::convertMethodCallExprToRaw(this)
-              .(Raw::MethodCallExpr)
-              .getGenericArgs())
-    }
-
-    /**
-     * Holds if `getGenericArgs()` exists.
-     */
-    final predicate hasGenericArgs() { exists(this.getGenericArgs()) }
+    final predicate hasReceiver() { exists(this.getReceiver()) }
   }
 }

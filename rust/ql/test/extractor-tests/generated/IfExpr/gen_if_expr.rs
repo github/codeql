@@ -9,5 +9,5 @@ fn test_if_expr() -> () {
         1
     } else {
         0
-    }
+    };
 }

@@ -4,8 +4,10 @@
  */
 
 private import internal.BlockExprImpl
-import codeql.rust.elements.BlockExprBase
+import codeql.rust.elements.Attr
+import codeql.rust.elements.Expr
 import codeql.rust.elements.Label
+import codeql.rust.elements.StmtList
 
 /**
  * A block expression. For example:

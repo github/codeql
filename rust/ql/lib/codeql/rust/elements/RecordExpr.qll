@@ -6,7 +6,7 @@
 private import internal.RecordExprImpl
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Path
-import codeql.rust.elements.RecordExprField
+import codeql.rust.elements.RecordExprFieldList
 
 /**
  * A record expression. For example:

@@ -9,7 +9,7 @@ edges
 | ThreadResourceAbuse.java:67:4:67:7 | this [post update] : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:66:10:66:28 | parameter this [Return] : UncheckedSyncAction [waitTime] : Number | provenance |  |
 | ThreadResourceAbuse.java:67:20:67:27 | waitTime : Number | ThreadResourceAbuse.java:67:4:67:7 | this [post update] : UncheckedSyncAction [waitTime] : Number | provenance |  |
 | ThreadResourceAbuse.java:71:15:71:17 | parameter this : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | this <.field> : UncheckedSyncAction [waitTime] : Number | provenance |  |
-| ThreadResourceAbuse.java:74:18:74:25 | this <.field> : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | waitTime | provenance |  Sink:MaD:1 |
+| ThreadResourceAbuse.java:74:18:74:25 | this <.field> : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | waitTime | provenance | Sink:MaD:1 |
 models
 | 1 | Sink: java.lang; Thread; true; sleep; ; ; Argument[0]; thread-pause; manual |
 nodes

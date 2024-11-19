@@ -1,2 +1,2 @@
-| gen_record_pat_field.rs:5:18:5:18 | RecordPatField | getName: | a | getPat: | gen_record_pat_field.rs:5:18:5:18 | LiteralPat |
-| gen_record_pat_field.rs:5:24:5:24 | RecordPatField | getName: | b | getPat: | gen_record_pat_field.rs:5:24:5:24 | LiteralPat |
+| gen_record_pat_field.rs:5:15:5:18 | RecordPatField | getNumberOfAttrs: | 0 | hasNameRef: | yes | hasPat: | yes |
+| gen_record_pat_field.rs:5:21:5:24 | RecordPatField | getNumberOfAttrs: | 0 | hasNameRef: | yes | hasPat: | yes |

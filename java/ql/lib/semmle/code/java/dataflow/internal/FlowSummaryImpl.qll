@@ -34,7 +34,7 @@ module Input implements InputSig<Location, DataFlowImplSpecific::JavaDataFlow> {
   ) {
     exists(string namespace, string type, string name, string signature |
       neutralModel(namespace, type, name, signature, kind, provenance) and
-      c.asCallable() = interpretElement(namespace, type, false, name, signature, "", isExact)
+      c.asCallable() = interpretElement(namespace, type, true, name, signature, "", isExact)
     )
   }
 

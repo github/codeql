@@ -49,7 +49,7 @@ module ReDoS = TaintTracking::Global<ReDoSConfig>;
 deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * An expression that represents a regular expression with potential exponential behavior.

@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -28,10 +29,33 @@ module Generated {
     override string getAPrimaryQlClass() { result = "AsmExpr" }
 
     /**
-     * Gets the expression of this asm expression.
+     * Gets the `index`th attr of this asm expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertAsmExprToRaw(this).(Raw::AsmExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this asm expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this asm expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the expression of this asm expression, if it exists.
      */
     Expr getExpr() {
       result = Synth::convertExprFromRaw(Synth::convertAsmExprToRaw(this).(Raw::AsmExpr).getExpr())
     }
+
+    /**
+     * Holds if `getExpr()` exists.
+     */
+    final predicate hasExpr() { exists(this.getExpr()) }
   }
 }

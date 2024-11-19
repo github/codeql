@@ -30,6 +30,30 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RangePat" }
 
     /**
+     * Gets the end of this range pat, if it exists.
+     */
+    Pat getEnd() {
+      result = Synth::convertPatFromRaw(Synth::convertRangePatToRaw(this).(Raw::RangePat).getEnd())
+    }
+
+    /**
+     * Holds if `getEnd()` exists.
+     */
+    final predicate hasEnd() { exists(this.getEnd()) }
+
+    /**
+     * Gets the operator name of this range pat, if it exists.
+     */
+    string getOperatorName() {
+      result = Synth::convertRangePatToRaw(this).(Raw::RangePat).getOperatorName()
+    }
+
+    /**
+     * Holds if `getOperatorName()` exists.
+     */
+    final predicate hasOperatorName() { exists(this.getOperatorName()) }
+
+    /**
      * Gets the start of this range pat, if it exists.
      */
     Pat getStart() {
@@ -41,17 +65,5 @@ module Generated {
      * Holds if `getStart()` exists.
      */
     final predicate hasStart() { exists(this.getStart()) }
-
-    /**
-     * Gets the end of this range pat, if it exists.
-     */
-    Pat getEnd() {
-      result = Synth::convertPatFromRaw(Synth::convertRangePatToRaw(this).(Raw::RangePat).getEnd())
-    }
-
-    /**
-     * Holds if `getEnd()` exists.
-     */
-    final predicate hasEnd() { exists(this.getEnd()) }
   }
 }

@@ -1,0 +1,5 @@
+| gen_array_expr.rs:5:5:5:13 | ArrayExpr | 0 | gen_array_expr.rs:5:6:5:6 | 1 |
+| gen_array_expr.rs:5:5:5:13 | ArrayExpr | 1 | gen_array_expr.rs:5:9:5:9 | 2 |
+| gen_array_expr.rs:5:5:5:13 | ArrayExpr | 2 | gen_array_expr.rs:5:12:5:12 | 3 |
+| gen_array_expr.rs:6:5:6:11 | ArrayExpr | 0 | gen_array_expr.rs:6:6:6:6 | 1 |
+| gen_array_expr.rs:6:5:6:11 | ArrayExpr | 1 | gen_array_expr.rs:6:9:6:10 | 10 |

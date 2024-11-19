@@ -1,3 +1,30 @@
+## 2.1.2
+
+### Minor Analysis Improvements
+
+- Added partial support for the `copy.replace` method, [added](https://docs.python.org/3.13/library/copy.html#copy.replace) in Python 3.13.
+- Added support for type parameter defaults, as specified in [PEP-696](https://peps.python.org/pep-0696/).
+
+## 2.1.1
+
+### Minor Analysis Improvements
+
+* Modelled that `re.finditer` returns an iterable of `re.Match` objects. This is now understood by the API graph in many cases.
+* Type tracking, and hence the API graph, is now able to correctly trace through comprehensions.
+* More precise modelling of the dataflow through comprehensions. In particular, captured variables are now handled correctly.
+* Dataflow out of yield is added, allowing proper tracing through generators.
+* Added several models of standard library functions and classes, in anticipation of no longer extracting the standard library in a future release.
+
+## 2.1.0
+
+### New Features
+
+* Added support for custom threat-models, which can be used in most of our taint-tracking queries, see our [documentation](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models) for more details.
+
+### Minor Analysis Improvements
+
+* The common sanitizer guard `StringConstCompareBarrier` has been renamed to `ConstCompareBarrier` and expanded to cover comparisons with other constant values such as `None`. This may result in fewer false positive results for several queries. 
+
 ## 2.0.0
 
 ### Breaking Changes

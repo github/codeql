@@ -2,11 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from IndexExpr x, Expr getBase, Expr getIndex, string isAssigneeExpr
+from IndexExpr x, int getNumberOfAttrs, string hasBase, string hasIndex
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getBase = x.getBase() and
-  getIndex = x.getIndex() and
-  if x.isAssigneeExpr() then isAssigneeExpr = "yes" else isAssigneeExpr = "no"
-select x, "getBase:", getBase, "getIndex:", getIndex, "isAssigneeExpr:", isAssigneeExpr
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasBase() then hasBase = "yes" else hasBase = "no") and
+  if x.hasIndex() then hasIndex = "yes" else hasIndex = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasBase:", hasBase, "hasIndex:", hasIndex

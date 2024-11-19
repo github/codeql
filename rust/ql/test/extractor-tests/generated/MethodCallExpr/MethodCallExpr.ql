@@ -3,14 +3,22 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  MethodCallExpr x, Expr getReceiver, string getMethodName, int getNumberOfArgs,
-  string hasGenericArgs
+  MethodCallExpr x, string hasArgList, int getNumberOfAttrs, string hasResolvedPath,
+  string hasResolvedCrateOrigin, string hasGenericArgList, string hasNameRef, string hasReceiver
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getReceiver = x.getReceiver() and
-  getMethodName = x.getMethodName() and
-  getNumberOfArgs = x.getNumberOfArgs() and
-  if x.hasGenericArgs() then hasGenericArgs = "yes" else hasGenericArgs = "no"
-select x, "getReceiver:", getReceiver, "getMethodName:", getMethodName, "getNumberOfArgs:",
-  getNumberOfArgs, "hasGenericArgs:", hasGenericArgs
+  (if x.hasArgList() then hasArgList = "yes" else hasArgList = "no") and
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasResolvedPath() then hasResolvedPath = "yes" else hasResolvedPath = "no") and
+  (
+    if x.hasResolvedCrateOrigin()
+    then hasResolvedCrateOrigin = "yes"
+    else hasResolvedCrateOrigin = "no"
+  ) and
+  (if x.hasGenericArgList() then hasGenericArgList = "yes" else hasGenericArgList = "no") and
+  (if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no") and
+  if x.hasReceiver() then hasReceiver = "yes" else hasReceiver = "no"
+select x, "hasArgList:", hasArgList, "getNumberOfAttrs:", getNumberOfAttrs, "hasResolvedPath:",
+  hasResolvedPath, "hasResolvedCrateOrigin:", hasResolvedCrateOrigin, "hasGenericArgList:",
+  hasGenericArgList, "hasNameRef:", hasNameRef, "hasReceiver:", hasReceiver

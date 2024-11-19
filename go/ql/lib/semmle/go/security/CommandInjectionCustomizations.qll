@@ -31,12 +31,12 @@ module CommandInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `ThreatModelFlowSource` or `Source` instead.
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
    */
   deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
 
   /** A source of untrusted data, considered as a taint source for command injection. */
-  private class ThreatModelFlowAsSource extends Source instanceof ThreatModelFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
   /** A command name, considered as a taint sink for command injection. */
   class CommandNameAsSink extends Sink {

@@ -7,7 +7,7 @@
 
 macro_rules! myMacro {
     () => {
-        //println!("Hello, world!"); // currently causes consistency issues
+        println!("Hello, world!");
     };
 }
 

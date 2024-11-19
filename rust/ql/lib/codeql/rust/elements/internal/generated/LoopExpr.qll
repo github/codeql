@@ -6,7 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Expr
+import codeql.rust.elements.Attr
+import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.Label
 
@@ -45,12 +46,22 @@ module Generated {
     override string getAPrimaryQlClass() { result = "LoopExpr" }
 
     /**
-     * Gets the body of this loop expression.
+     * Gets the `index`th attr of this loop expression (0-based).
      */
-    Expr getBody() {
+    Attr getAttr(int index) {
       result =
-        Synth::convertExprFromRaw(Synth::convertLoopExprToRaw(this).(Raw::LoopExpr).getBody())
+        Synth::convertAttrFromRaw(Synth::convertLoopExprToRaw(this).(Raw::LoopExpr).getAttr(index))
     }
+
+    /**
+     * Gets any of the attrs of this loop expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this loop expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the label of this loop expression, if it exists.
@@ -64,5 +75,20 @@ module Generated {
      * Holds if `getLabel()` exists.
      */
     final predicate hasLabel() { exists(this.getLabel()) }
+
+    /**
+     * Gets the loop body of this loop expression, if it exists.
+     */
+    BlockExpr getLoopBody() {
+      result =
+        Synth::convertBlockExprFromRaw(Synth::convertLoopExprToRaw(this)
+              .(Raw::LoopExpr)
+              .getLoopBody())
+    }
+
+    /**
+     * Holds if `getLoopBody()` exists.
+     */
+    final predicate hasLoopBody() { exists(this.getLoopBody()) }
   }
 }

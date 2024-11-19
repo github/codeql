@@ -1,0 +1,4 @@
+| gen_match_arm.rs:6:9:6:29 | MatchArm | gen_match_arm.rs:6:9:6:23 | TupleStructPat |
+| gen_match_arm.rs:7:9:7:26 | MatchArm | gen_match_arm.rs:7:9:7:20 | PathPat |
+| gen_match_arm.rs:10:9:10:35 | MatchArm | gen_match_arm.rs:10:9:10:15 | TupleStructPat |
+| gen_match_arm.rs:11:9:11:15 | MatchArm | gen_match_arm.rs:11:9:11:9 | WildcardPat |

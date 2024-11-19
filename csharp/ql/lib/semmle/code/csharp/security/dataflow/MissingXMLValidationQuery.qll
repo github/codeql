@@ -48,7 +48,7 @@ private module MissingXmlValidationConfig implements DataFlow::ConfigSig {
 module MissingXmlValidation = TaintTracking::Global<MissingXmlValidationConfig>;
 
 /**
- * DEPRECATED: Use `ThreatModelFlowSource` instead.
+ * DEPRECATED: Use `ActiveThreatModelSource` instead.
  *
  * A source of remote user input.
  */
@@ -57,7 +57,7 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
 /**
  * A source supported by the current threat model.
  */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * The input argument to a call to `XmlReader.Create` where the input will not be validated against

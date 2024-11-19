@@ -12,4 +12,10 @@ fn test_break_expr() -> () {
             break 'label 42;
         }
     };
+    let x = 'label: {
+        if exit() {
+            break 'label 42;
+        }
+        0;
+    };
 }

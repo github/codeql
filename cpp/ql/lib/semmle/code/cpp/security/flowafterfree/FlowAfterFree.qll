@@ -72,7 +72,6 @@ module FlowFromFree<FlowFromFreeParamSig P> {
 
     predicate isSource(DataFlow::Node node, FlowState state) { isFree(node, _, state, _) }
 
-    pragma[inline]
     predicate isSink(DataFlow::Node sink, FlowState state) {
       exists(Expr e, DataFlow::Node source, DeallocationExpr dealloc |
         P::isSink(sink, e) and

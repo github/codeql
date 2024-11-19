@@ -1,11 +1,11 @@
 private import java as J
-private import codeql.mad.modelgenerator.ModelPrinting
-private import CaptureModelsSpecific as Specific
+private import codeql.mad.modelgenerator.internal.ModelPrinting
+private import CaptureModels::ModelGeneratorInput as ModelGeneratorInput
 
 private module ModelPrintingLang implements ModelPrintingLangSig {
   class Callable = J::Callable;
 
-  predicate partialModel = Specific::partialModel/6;
+  predicate partialModel = ModelGeneratorInput::partialModel/6;
 }
 
 import ModelPrintingImpl<ModelPrintingLang>

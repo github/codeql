@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -29,20 +30,48 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RefExpr" }
 
     /**
-     * Gets the expression of this reference expression.
+     * Gets the `index`th attr of this reference expression (0-based).
+     */
+    Attr getAttr(int index) {
+      result =
+        Synth::convertAttrFromRaw(Synth::convertRefExprToRaw(this).(Raw::RefExpr).getAttr(index))
+    }
+
+    /**
+     * Gets any of the attrs of this reference expression.
+     */
+    final Attr getAnAttr() { result = this.getAttr(_) }
+
+    /**
+     * Gets the number of attrs of this reference expression.
+     */
+    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the expression of this reference expression, if it exists.
      */
     Expr getExpr() {
       result = Synth::convertExprFromRaw(Synth::convertRefExprToRaw(this).(Raw::RefExpr).getExpr())
     }
 
     /**
-     * Holds if this reference expression is raw.
+     * Holds if `getExpr()` exists.
      */
-    predicate isRaw() { Synth::convertRefExprToRaw(this).(Raw::RefExpr).isRaw() }
+    final predicate hasExpr() { exists(this.getExpr()) }
+
+    /**
+     * Holds if this reference expression is const.
+     */
+    predicate isConst() { Synth::convertRefExprToRaw(this).(Raw::RefExpr).isConst() }
 
     /**
      * Holds if this reference expression is mut.
      */
     predicate isMut() { Synth::convertRefExprToRaw(this).(Raw::RefExpr).isMut() }
+
+    /**
+     * Holds if this reference expression is raw.
+     */
+    predicate isRaw() { Synth::convertRefExprToRaw(this).(Raw::RefExpr).isRaw() }
   }
 }

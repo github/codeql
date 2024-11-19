@@ -1,3 +1,27 @@
+## 2.1.2
+
+### Minor Analysis Improvements
+
+* The AST viewer now shows type parameter declarations in the correct place in the AST.
+
+## 2.1.1
+
+### Minor Analysis Improvements
+
+* Added member predicates `StructTag.hasOwnFieldWithTag` and `Field.getTag`, which enable CodeQL queries to examine struct field tags.
+* Added member predicate `InterfaceType.hasPrivateMethodWithQualifiedName`, which enables CodeQL queries to distinguish interfaces with matching non-exported method names that are declared in different packages, and are therefore incompatible.
+* Local source models with the `stdin` source kind have been added for the variable `os.Stdin` and the functions `fmt.Scan`, `fmt.Scanf` and `fmt.Scanln`. You can optionally include threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see [Analyzing your code with CodeQL queries](https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data>) and [Customizing your advanced setup for code scanning](https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models).
+
+## 2.1.0
+
+### Deprecated APIs
+
+* The class `ThreatModelFlowSource` has been renamed to `ActiveThreatModelSource` to more clearly reflect it only contains the currently active threat model sources. `ThreatModelFlowSource` has been marked as deprecated.
+
+### Minor Analysis Improvements
+
+* A method in the method set of an embedded field of a struct should not be promoted to the method set of the struct if the struct has a method with the same name. This was not being enforced, which meant that there were two methods with the same qualified name, and models were sometimes being applied when they shouldn't have been. This has now been fixed.
+
 ## 2.0.0
 
 ### Breaking Changes
@@ -9,13 +33,13 @@
 
 * When a function or type has more than one anonymous type parameters, they were mistakenly being treated as the same type parameter. This has now been fixed.
 * Local source models for reading and parsing environment variables have been added for the following libraries:
-  * `os`
-  * `syscall`
-  * `github.com/caarlos0/env`
-  * `github.com/gobuffalo/envy`
-  * `github.com/hashicorp/go-envparse`
-  * `github.com/joho/godotenv`
-  * `github.com/kelseyhightower/envconfig`
+  * os
+  * syscall
+  * github.com/caarlos0/env
+  * github.com/gobuffalo/envy
+  * github.com/hashicorp/go-envparse
+  * github.com/joho/godotenv
+  * github.com/kelseyhightower/envconfig
 * Local source models have been added for the APIs which open files in the `io/fs`, `io/ioutil` and `os` packages in the Go standard library. You can optionally include threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see [Analyzing your code with CodeQL queries](https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data>) and [Customizing your advanced setup for code scanning](https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models).
 
 ### Bug Fixes

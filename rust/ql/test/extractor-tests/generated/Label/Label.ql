@@ -2,9 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-from Label x, string getName
+from Label x, string hasLifetime
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getName = x.getName()
-select x, "getName:", getName
+  if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no"
+select x, "hasLifetime:", hasLifetime

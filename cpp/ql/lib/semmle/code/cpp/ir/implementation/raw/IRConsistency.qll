@@ -546,4 +546,26 @@ module InstructionConsistency {
         "' has no associated variable, in function '$@'." and
     irFunc = getInstructionIRFunction(instr, irFuncText)
   }
+
+  query predicate nonBooleanOperand(
+    Instruction instr, string message, OptionalIRFunction irFunc, string irFuncText
+  ) {
+    exists(Instruction unary |
+      unary = instr.(LogicalNotInstruction).getUnary() and
+      not unary.getResultIRType() instanceof IRBooleanType and
+      irFunc = getInstructionIRFunction(instr, irFuncText) and
+      message =
+        "Logical Not instruction " + instr.toString() +
+          " with non-Boolean operand, in function '$@'."
+    )
+    or
+    exists(Instruction cond |
+      cond = instr.(ConditionalBranchInstruction).getCondition() and
+      not cond.getResultIRType() instanceof IRBooleanType and
+      irFunc = getInstructionIRFunction(instr, irFuncText) and
+      message =
+        "Conditional branch instruction " + instr.toString() +
+          " with non-Boolean condition, in function '$@'."
+    )
+  }
 }

@@ -14,6 +14,7 @@ extensions:
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPathSegment", "get_CanProduceStem", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPattern", "CreatePatternContextForExclude", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPattern", "CreatePatternContextForInclude", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPatternContext", "Declare", "(System.Action<Microsoft.Extensions.FileSystemGlobbing.Internal.IPathSegment,System.Boolean>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPatternContext", "PopDirectory", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPatternContext", "PushDirectory", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPatternContext", "Test", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]

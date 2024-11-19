@@ -32,6 +32,10 @@
 | pkg1/embedding.go:28:24:28:31 | embedder | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/embedding.go:36:2:36:5 | base | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/embedding.go:37:2:37:2 | f | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/promotedStructs.go:5:2:5:7 | SField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/promotedStructs.go:14:2:14:7 | PField | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/promotedStructs.go:22:22:22:22 | S | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
+| pkg1/promotedStructs.go:25:22:25:22 | P | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/tst.go:4:2:4:2 | f | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/tst.go:5:2:5:4 | Foo | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg1/tst.go:6:2:6:4 | Bar | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
@@ -46,3 +50,7 @@
 | pkg1/tst.go:30:2:30:5 | flag | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1 |
 | pkg2/tst.go:4:2:4:2 | g | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2 |
 | pkg2/tst.go:8:2:8:2 | g | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2 |
+| struct_tags.go:4:2:4:7 | field1 | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| struct_tags.go:5:2:5:7 | field2 | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| struct_tags.go:9:2:9:7 | field1 | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |
+| struct_tags.go:10:2:10:7 | field2 | package github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types |

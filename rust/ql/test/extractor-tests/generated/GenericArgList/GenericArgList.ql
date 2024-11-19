@@ -2,6 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-from GenericArgList x
-where toBeTested(x) and not x.isUnknown()
-select x
+from GenericArgList x, int getNumberOfGenericArgs
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  getNumberOfGenericArgs = x.getNumberOfGenericArgs()
+select x, "getNumberOfGenericArgs:", getNumberOfGenericArgs

@@ -168,7 +168,7 @@ def read_tsg_python_output(path, logger):
     p.stdout.close()
     p.terminate()
     p.wait()
-    logger.info("Read {} nodes and {} edges from TSG output".format(len(node_attr), len(edge_attr)))
+    logger.debug("Read {} nodes and {} edges from TSG output".format(len(node_attr), len(edge_attr)))
     return node_attr, edge_attr
 
 def evaluate_string(s):
@@ -440,7 +440,7 @@ def concatenate_stringparts(stringparts, logger):
     try:
         return "".join(decode_str(stringpart.s) for stringpart in stringparts)
     except Exception as ex:
-        logger.error("Unable to concatenate string %s getting error %s", stringparts, ex)
+        logger.error("Unable to concatenate string {} getting error {}".format(stringparts, ex))
         return stringparts[0].s
 
 

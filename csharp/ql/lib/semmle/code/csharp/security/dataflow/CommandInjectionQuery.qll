@@ -57,7 +57,7 @@ module CommandInjection = TaintTracking::Global<CommandInjectionConfig>;
 deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** Command Injection sinks defined through Models as Data. */
 private class ExternalCommandInjectionExprSink extends Sink {

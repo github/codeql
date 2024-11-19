@@ -78,14 +78,10 @@ edges
 | semantics.rb:60:5:60:5 | a | semantics.rb:66:14:66:15 | &... | provenance |  |
 | semantics.rb:60:9:60:18 | call to source | semantics.rb:60:5:60:5 | a | provenance |  |
 | semantics.rb:60:9:60:18 | call to source | semantics.rb:60:5:60:5 | a | provenance |  |
-| semantics.rb:61:10:61:15 | call to s10 [element 0] | semantics.rb:61:10:61:15 | call to s10 | provenance |  |
 | semantics.rb:61:14:61:14 | a | semantics.rb:61:10:61:15 | call to s10 | provenance |  |
 | semantics.rb:61:14:61:14 | a | semantics.rb:61:10:61:15 | call to s10 | provenance |  |
-| semantics.rb:61:14:61:14 | a | semantics.rb:61:10:61:15 | call to s10 [element 0] | provenance |  |
-| semantics.rb:62:10:62:18 | call to s10 [element 1] | semantics.rb:62:10:62:18 | call to s10 | provenance |  |
 | semantics.rb:62:17:62:17 | a | semantics.rb:62:10:62:18 | call to s10 | provenance |  |
 | semantics.rb:62:17:62:17 | a | semantics.rb:62:10:62:18 | call to s10 | provenance |  |
-| semantics.rb:62:17:62:17 | a | semantics.rb:62:10:62:18 | call to s10 [element 1] | provenance |  |
 | semantics.rb:63:19:63:19 | a | semantics.rb:63:10:63:20 | call to s10 | provenance |  |
 | semantics.rb:63:19:63:19 | a | semantics.rb:63:10:63:20 | call to s10 | provenance |  |
 | semantics.rb:64:27:64:27 | a | semantics.rb:64:10:64:28 | call to s10 | provenance |  |
@@ -192,10 +188,8 @@ edges
 | semantics.rb:126:5:126:5 | b | semantics.rb:129:17:129:17 | b | provenance |  |
 | semantics.rb:126:9:126:18 | call to source | semantics.rb:126:5:126:5 | b | provenance |  |
 | semantics.rb:126:9:126:18 | call to source | semantics.rb:126:5:126:5 | b | provenance |  |
-| semantics.rb:127:10:127:18 | call to s17 [element 0] | semantics.rb:127:10:127:18 | call to s17 | provenance |  |
-| semantics.rb:127:10:127:18 | call to s17 [element 1] | semantics.rb:127:10:127:18 | call to s17 | provenance |  |
-| semantics.rb:127:14:127:14 | a | semantics.rb:127:10:127:18 | call to s17 [element 0] | provenance |  |
-| semantics.rb:127:17:127:17 | b | semantics.rb:127:10:127:18 | call to s17 [element 1] | provenance |  |
+| semantics.rb:127:14:127:14 | a | semantics.rb:127:10:127:18 | call to s17 | provenance |  |
+| semantics.rb:127:17:127:17 | b | semantics.rb:127:10:127:18 | call to s17 | provenance |  |
 | semantics.rb:128:10:128:18 | call to s17 [element 0] | semantics.rb:128:10:128:21 | ...[...] | provenance |  |
 | semantics.rb:128:10:128:18 | call to s17 [element 0] | semantics.rb:128:10:128:21 | ...[...] | provenance |  |
 | semantics.rb:128:14:128:14 | a | semantics.rb:128:10:128:18 | call to s17 [element 0] | provenance |  |
@@ -464,22 +458,40 @@ edges
 | semantics.rb:263:14:263:14 | h [element :foo] | semantics.rb:263:10:263:15 | call to s31 | provenance |  |
 | semantics.rb:263:14:263:14 | h [element] | semantics.rb:263:10:263:15 | call to s31 | provenance |  |
 | semantics.rb:263:14:263:14 | h [element] | semantics.rb:263:10:263:15 | call to s31 | provenance |  |
+| semantics.rb:267:5:267:5 | [post] h [element :foo] | semantics.rb:268:5:268:5 | h [element :foo] | provenance |  |
+| semantics.rb:267:5:267:5 | [post] h [element :foo] | semantics.rb:268:5:268:5 | h [element :foo] | provenance |  |
+| semantics.rb:267:15:267:25 | call to source | semantics.rb:267:5:267:5 | [post] h [element :foo] | provenance |  |
+| semantics.rb:267:15:267:25 | call to source | semantics.rb:267:5:267:5 | [post] h [element :foo] | provenance |  |
+| semantics.rb:268:5:268:5 | [post] h [element :foo] | semantics.rb:269:5:269:5 | h [element :foo] | provenance |  |
+| semantics.rb:268:5:268:5 | [post] h [element :foo] | semantics.rb:269:5:269:5 | h [element :foo] | provenance |  |
 | semantics.rb:268:5:268:5 | [post] h [element foo] | semantics.rb:269:5:269:5 | h [element foo] | provenance |  |
 | semantics.rb:268:5:268:5 | [post] h [element foo] | semantics.rb:269:5:269:5 | h [element foo] | provenance |  |
+| semantics.rb:268:5:268:5 | h [element :foo] | semantics.rb:268:5:268:5 | [post] h [element :foo] | provenance |  |
+| semantics.rb:268:5:268:5 | h [element :foo] | semantics.rb:268:5:268:5 | [post] h [element :foo] | provenance |  |
 | semantics.rb:268:16:268:26 | call to source | semantics.rb:268:5:268:5 | [post] h [element foo] | provenance |  |
 | semantics.rb:268:16:268:26 | call to source | semantics.rb:268:5:268:5 | [post] h [element foo] | provenance |  |
+| semantics.rb:269:5:269:5 | [post] h [element :foo] | semantics.rb:270:5:270:5 | h [element :foo] | provenance |  |
+| semantics.rb:269:5:269:5 | [post] h [element :foo] | semantics.rb:270:5:270:5 | h [element :foo] | provenance |  |
 | semantics.rb:269:5:269:5 | [post] h [element foo] | semantics.rb:270:5:270:5 | h [element foo] | provenance |  |
 | semantics.rb:269:5:269:5 | [post] h [element foo] | semantics.rb:270:5:270:5 | h [element foo] | provenance |  |
+| semantics.rb:269:5:269:5 | h [element :foo] | semantics.rb:269:5:269:5 | [post] h [element :foo] | provenance |  |
+| semantics.rb:269:5:269:5 | h [element :foo] | semantics.rb:269:5:269:5 | [post] h [element :foo] | provenance |  |
 | semantics.rb:269:5:269:5 | h [element foo] | semantics.rb:269:5:269:5 | [post] h [element foo] | provenance |  |
 | semantics.rb:269:5:269:5 | h [element foo] | semantics.rb:269:5:269:5 | [post] h [element foo] | provenance |  |
+| semantics.rb:270:5:270:5 | [post] h [element :foo] | semantics.rb:273:14:273:14 | h [element :foo] | provenance |  |
+| semantics.rb:270:5:270:5 | [post] h [element :foo] | semantics.rb:273:14:273:14 | h [element :foo] | provenance |  |
 | semantics.rb:270:5:270:5 | [post] h [element foo] | semantics.rb:273:14:273:14 | h [element foo] | provenance |  |
 | semantics.rb:270:5:270:5 | [post] h [element foo] | semantics.rb:273:14:273:14 | h [element foo] | provenance |  |
+| semantics.rb:270:5:270:5 | h [element :foo] | semantics.rb:270:5:270:5 | [post] h [element :foo] | provenance |  |
+| semantics.rb:270:5:270:5 | h [element :foo] | semantics.rb:270:5:270:5 | [post] h [element :foo] | provenance |  |
 | semantics.rb:270:5:270:5 | h [element foo] | semantics.rb:270:5:270:5 | [post] h [element foo] | provenance |  |
 | semantics.rb:270:5:270:5 | h [element foo] | semantics.rb:270:5:270:5 | [post] h [element foo] | provenance |  |
 | semantics.rb:271:5:271:5 | [post] h [element] | semantics.rb:273:14:273:14 | h [element] | provenance |  |
 | semantics.rb:271:5:271:5 | [post] h [element] | semantics.rb:273:14:273:14 | h [element] | provenance |  |
 | semantics.rb:271:12:271:22 | call to source | semantics.rb:271:5:271:5 | [post] h [element] | provenance |  |
 | semantics.rb:271:12:271:22 | call to source | semantics.rb:271:5:271:5 | [post] h [element] | provenance |  |
+| semantics.rb:273:14:273:14 | h [element :foo] | semantics.rb:273:10:273:15 | call to s32 | provenance |  |
+| semantics.rb:273:14:273:14 | h [element :foo] | semantics.rb:273:10:273:15 | call to s32 | provenance |  |
 | semantics.rb:273:14:273:14 | h [element foo] | semantics.rb:273:10:273:15 | call to s32 | provenance |  |
 | semantics.rb:273:14:273:14 | h [element foo] | semantics.rb:273:10:273:15 | call to s32 | provenance |  |
 | semantics.rb:273:14:273:14 | h [element] | semantics.rb:273:10:273:15 | call to s32 | provenance |  |
@@ -544,6 +556,8 @@ edges
 | semantics.rb:291:10:291:10 | x [element :foo] | semantics.rb:291:10:291:16 | ...[...] | provenance |  |
 | semantics.rb:293:10:293:10 | x [element :foo] | semantics.rb:293:10:293:13 | ...[...] | provenance |  |
 | semantics.rb:293:10:293:10 | x [element :foo] | semantics.rb:293:10:293:13 | ...[...] | provenance |  |
+| semantics.rb:297:5:297:5 | x [element foo] | semantics.rb:298:10:298:10 | x [element foo] | provenance |  |
+| semantics.rb:297:5:297:5 | x [element foo] | semantics.rb:298:10:298:10 | x [element foo] | provenance |  |
 | semantics.rb:297:5:297:5 | x [element foo] | semantics.rb:299:10:299:10 | x [element foo] | provenance |  |
 | semantics.rb:297:5:297:5 | x [element foo] | semantics.rb:299:10:299:10 | x [element foo] | provenance |  |
 | semantics.rb:297:5:297:5 | x [element foo] | semantics.rb:301:10:301:10 | x [element foo] | provenance |  |
@@ -552,6 +566,8 @@ edges
 | semantics.rb:297:9:297:24 | call to s36 [element foo] | semantics.rb:297:5:297:5 | x [element foo] | provenance |  |
 | semantics.rb:297:13:297:23 | call to source | semantics.rb:297:9:297:24 | call to s36 [element foo] | provenance |  |
 | semantics.rb:297:13:297:23 | call to source | semantics.rb:297:9:297:24 | call to s36 [element foo] | provenance |  |
+| semantics.rb:298:10:298:10 | x [element foo] | semantics.rb:298:10:298:16 | ...[...] | provenance |  |
+| semantics.rb:298:10:298:10 | x [element foo] | semantics.rb:298:10:298:16 | ...[...] | provenance |  |
 | semantics.rb:299:10:299:10 | x [element foo] | semantics.rb:299:10:299:17 | ...[...] | provenance |  |
 | semantics.rb:299:10:299:10 | x [element foo] | semantics.rb:299:10:299:17 | ...[...] | provenance |  |
 | semantics.rb:301:10:301:10 | x [element foo] | semantics.rb:301:10:301:13 | ...[...] | provenance |  |
@@ -1191,12 +1207,10 @@ nodes
 | semantics.rb:60:9:60:18 | call to source | semmle.label | call to source |
 | semantics.rb:61:10:61:15 | call to s10 | semmle.label | call to s10 |
 | semantics.rb:61:10:61:15 | call to s10 | semmle.label | call to s10 |
-| semantics.rb:61:10:61:15 | call to s10 [element 0] | semmle.label | call to s10 [element 0] |
 | semantics.rb:61:14:61:14 | a | semmle.label | a |
 | semantics.rb:61:14:61:14 | a | semmle.label | a |
 | semantics.rb:62:10:62:18 | call to s10 | semmle.label | call to s10 |
 | semantics.rb:62:10:62:18 | call to s10 | semmle.label | call to s10 |
-| semantics.rb:62:10:62:18 | call to s10 [element 1] | semmle.label | call to s10 [element 1] |
 | semantics.rb:62:17:62:17 | a | semmle.label | a |
 | semantics.rb:62:17:62:17 | a | semmle.label | a |
 | semantics.rb:63:10:63:20 | call to s10 | semmle.label | call to s10 |
@@ -1322,8 +1336,6 @@ nodes
 | semantics.rb:126:9:126:18 | call to source | semmle.label | call to source |
 | semantics.rb:126:9:126:18 | call to source | semmle.label | call to source |
 | semantics.rb:127:10:127:18 | call to s17 | semmle.label | call to s17 |
-| semantics.rb:127:10:127:18 | call to s17 [element 0] | semmle.label | call to s17 [element 0] |
-| semantics.rb:127:10:127:18 | call to s17 [element 1] | semmle.label | call to s17 [element 1] |
 | semantics.rb:127:14:127:14 | a | semmle.label | a |
 | semantics.rb:127:17:127:17 | b | semmle.label | b |
 | semantics.rb:128:10:128:18 | call to s17 [element 0] | semmle.label | call to s17 [element 0] |
@@ -1626,16 +1638,32 @@ nodes
 | semantics.rb:263:14:263:14 | h [element :foo] | semmle.label | h [element :foo] |
 | semantics.rb:263:14:263:14 | h [element] | semmle.label | h [element] |
 | semantics.rb:263:14:263:14 | h [element] | semmle.label | h [element] |
+| semantics.rb:267:5:267:5 | [post] h [element :foo] | semmle.label | [post] h [element :foo] |
+| semantics.rb:267:5:267:5 | [post] h [element :foo] | semmle.label | [post] h [element :foo] |
+| semantics.rb:267:15:267:25 | call to source | semmle.label | call to source |
+| semantics.rb:267:15:267:25 | call to source | semmle.label | call to source |
+| semantics.rb:268:5:268:5 | [post] h [element :foo] | semmle.label | [post] h [element :foo] |
+| semantics.rb:268:5:268:5 | [post] h [element :foo] | semmle.label | [post] h [element :foo] |
 | semantics.rb:268:5:268:5 | [post] h [element foo] | semmle.label | [post] h [element foo] |
 | semantics.rb:268:5:268:5 | [post] h [element foo] | semmle.label | [post] h [element foo] |
+| semantics.rb:268:5:268:5 | h [element :foo] | semmle.label | h [element :foo] |
+| semantics.rb:268:5:268:5 | h [element :foo] | semmle.label | h [element :foo] |
 | semantics.rb:268:16:268:26 | call to source | semmle.label | call to source |
 | semantics.rb:268:16:268:26 | call to source | semmle.label | call to source |
+| semantics.rb:269:5:269:5 | [post] h [element :foo] | semmle.label | [post] h [element :foo] |
+| semantics.rb:269:5:269:5 | [post] h [element :foo] | semmle.label | [post] h [element :foo] |
 | semantics.rb:269:5:269:5 | [post] h [element foo] | semmle.label | [post] h [element foo] |
 | semantics.rb:269:5:269:5 | [post] h [element foo] | semmle.label | [post] h [element foo] |
+| semantics.rb:269:5:269:5 | h [element :foo] | semmle.label | h [element :foo] |
+| semantics.rb:269:5:269:5 | h [element :foo] | semmle.label | h [element :foo] |
 | semantics.rb:269:5:269:5 | h [element foo] | semmle.label | h [element foo] |
 | semantics.rb:269:5:269:5 | h [element foo] | semmle.label | h [element foo] |
+| semantics.rb:270:5:270:5 | [post] h [element :foo] | semmle.label | [post] h [element :foo] |
+| semantics.rb:270:5:270:5 | [post] h [element :foo] | semmle.label | [post] h [element :foo] |
 | semantics.rb:270:5:270:5 | [post] h [element foo] | semmle.label | [post] h [element foo] |
 | semantics.rb:270:5:270:5 | [post] h [element foo] | semmle.label | [post] h [element foo] |
+| semantics.rb:270:5:270:5 | h [element :foo] | semmle.label | h [element :foo] |
+| semantics.rb:270:5:270:5 | h [element :foo] | semmle.label | h [element :foo] |
 | semantics.rb:270:5:270:5 | h [element foo] | semmle.label | h [element foo] |
 | semantics.rb:270:5:270:5 | h [element foo] | semmle.label | h [element foo] |
 | semantics.rb:271:5:271:5 | [post] h [element] | semmle.label | [post] h [element] |
@@ -1644,6 +1672,8 @@ nodes
 | semantics.rb:271:12:271:22 | call to source | semmle.label | call to source |
 | semantics.rb:273:10:273:15 | call to s32 | semmle.label | call to s32 |
 | semantics.rb:273:10:273:15 | call to s32 | semmle.label | call to s32 |
+| semantics.rb:273:14:273:14 | h [element :foo] | semmle.label | h [element :foo] |
+| semantics.rb:273:14:273:14 | h [element :foo] | semmle.label | h [element :foo] |
 | semantics.rb:273:14:273:14 | h [element foo] | semmle.label | h [element foo] |
 | semantics.rb:273:14:273:14 | h [element foo] | semmle.label | h [element foo] |
 | semantics.rb:273:14:273:14 | h [element] | semmle.label | h [element] |
@@ -1718,6 +1748,10 @@ nodes
 | semantics.rb:297:9:297:24 | call to s36 [element foo] | semmle.label | call to s36 [element foo] |
 | semantics.rb:297:13:297:23 | call to source | semmle.label | call to source |
 | semantics.rb:297:13:297:23 | call to source | semmle.label | call to source |
+| semantics.rb:298:10:298:10 | x [element foo] | semmle.label | x [element foo] |
+| semantics.rb:298:10:298:10 | x [element foo] | semmle.label | x [element foo] |
+| semantics.rb:298:10:298:16 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:298:10:298:16 | ...[...] | semmle.label | ...[...] |
 | semantics.rb:299:10:299:10 | x [element foo] | semmle.label | x [element foo] |
 | semantics.rb:299:10:299:10 | x [element foo] | semmle.label | x [element foo] |
 | semantics.rb:299:10:299:17 | ...[...] | semmle.label | ...[...] |

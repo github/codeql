@@ -178,7 +178,7 @@ private class FullyDecodesUrlBarrier extends DataFlow::Node {
  */
 module UrlForwardFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof ThreatModelFlowSource and
+    source instanceof ActiveThreatModelSource and
     // excluded due to FPs
     not exists(MethodCall mc, Method m |
       m instanceof HttpServletRequestGetRequestUriMethod or
@@ -195,6 +195,8 @@ module UrlForwardFlowConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof UrlForwardBarrier }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>This rule finds code that is never reached. Unused code should be removed to increase readability and avoid confusion.</p>
+</overview>
+
+<recommendation>
+<p>Remove any unreachable code.</p>
+</recommendation>
+
+<example>
+<p>In the following example, the final <code>return</code> statement can never be reached:</p>
+<sample src="UnreachableCodeBad.rs" />
+<p>The problem can be fixed simply by removing the unreachable code:</p>
+<sample src="UnreachableCodeGood.rs" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Unreachable_code">Unreachable code</a></li>
+</references>
+</qhelp>

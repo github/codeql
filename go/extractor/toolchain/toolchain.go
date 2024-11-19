@@ -223,12 +223,17 @@ type PkgInfo struct {
 // GetPkgsInfo gets the absolute module and package root directories for the packages matched by the
 // patterns `patterns`. It passes to `go list` the flags specified by `flags`.  If `includingDeps`
 // is true, all dependencies will also be included.
-func GetPkgsInfo(patterns []string, includingDeps bool, flags ...string) (map[string]PkgInfo, error) {
+func GetPkgsInfo(patterns []string, includingDeps bool, extractTests bool, flags ...string) (map[string]PkgInfo, error) {
 	// enable module mode so that we can find a module root if it exists, even if go module support is
 	// disabled by a build
 	if includingDeps {
 		// the flag `-deps` causes all dependencies to be retrieved
 		flags = append(flags, "-deps")
+	}
+
+	if extractTests {
+		// Without the `-test` flag, test packages would be omitted from the `go list` output.
+		flags = append(flags, "-test")
 	}
 
 	// using -json overrides -f format
@@ -271,6 +276,12 @@ func GetPkgsInfo(patterns []string, includingDeps bool, flags ...string) (map[st
 		pkgInfoMapping[pkgInfo.ImportPath] = PkgInfo{
 			PkgDir: pkgAbsDir,
 			ModDir: modAbsDir,
+		}
+
+		if extractTests && strings.Contains(pkgInfo.ImportPath, " [") {
+			// Assume " [" is the start of a qualifier, and index the package by its base name
+			baseImportPath := strings.Split(pkgInfo.ImportPath, " [")[0]
+			pkgInfoMapping[baseImportPath] = pkgInfoMapping[pkgInfo.ImportPath]
 		}
 	}
 	return pkgInfoMapping, nil

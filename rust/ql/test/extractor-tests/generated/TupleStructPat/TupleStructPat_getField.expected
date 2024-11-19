@@ -1,0 +1,7 @@
+| gen_tuple_struct_pat.rs:6:9:6:27 | TupleStructPat | 0 | gen_tuple_struct_pat.rs:6:15:6:17 | LiteralPat |
+| gen_tuple_struct_pat.rs:6:9:6:27 | TupleStructPat | 1 | gen_tuple_struct_pat.rs:6:20:6:20 | LiteralPat |
+| gen_tuple_struct_pat.rs:6:9:6:27 | TupleStructPat | 2 | gen_tuple_struct_pat.rs:6:23:6:23 | LiteralPat |
+| gen_tuple_struct_pat.rs:6:9:6:27 | TupleStructPat | 3 | gen_tuple_struct_pat.rs:6:26:6:26 | LiteralPat |
+| gen_tuple_struct_pat.rs:7:9:7:20 | TupleStructPat | 0 | gen_tuple_struct_pat.rs:7:15:7:16 | RestPat |
+| gen_tuple_struct_pat.rs:7:9:7:20 | TupleStructPat | 1 | gen_tuple_struct_pat.rs:7:19:7:19 | LiteralPat |
+| gen_tuple_struct_pat.rs:8:9:8:17 | TupleStructPat | 0 | gen_tuple_struct_pat.rs:8:15:8:16 | RestPat |

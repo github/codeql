@@ -2,10 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-from ExprStmt x, Expr getExpr, string hasSemicolon
+from ExprStmt x, string hasExpr
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getExpr = x.getExpr() and
-  if x.hasSemicolon() then hasSemicolon = "yes" else hasSemicolon = "no"
-select x, "getExpr:", getExpr, "hasSemicolon:", hasSemicolon
+  if x.hasExpr() then hasExpr = "yes" else hasExpr = "no"
+select x, "hasExpr:", hasExpr

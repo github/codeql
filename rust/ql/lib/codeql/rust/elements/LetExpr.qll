@@ -4,6 +4,7 @@
  */
 
 private import internal.LetExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Pat
 

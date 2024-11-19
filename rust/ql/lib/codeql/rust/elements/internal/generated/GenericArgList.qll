@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.internal.UnimplementedImpl::Impl as UnimplementedImpl
+import codeql.rust.elements.GenericArg
 
 /**
  * INTERNAL: This module contains the fully generated definition of `GenericArgList` and should not
@@ -22,9 +22,27 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::GenericArgList` class directly.
    * Use the subclass `GenericArgList`, where the following predicates are available.
    */
-  class GenericArgList extends Synth::TGenericArgList, AstNodeImpl::AstNode,
-    UnimplementedImpl::Unimplemented
-  {
+  class GenericArgList extends Synth::TGenericArgList, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "GenericArgList" }
+
+    /**
+     * Gets the `index`th generic argument of this generic argument list (0-based).
+     */
+    GenericArg getGenericArg(int index) {
+      result =
+        Synth::convertGenericArgFromRaw(Synth::convertGenericArgListToRaw(this)
+              .(Raw::GenericArgList)
+              .getGenericArg(index))
+    }
+
+    /**
+     * Gets any of the generic arguments of this generic argument list.
+     */
+    final GenericArg getAGenericArg() { result = this.getGenericArg(_) }
+
+    /**
+     * Gets the number of generic arguments of this generic argument list.
+     */
+    final int getNumberOfGenericArgs() { result = count(int i | exists(this.getGenericArg(i))) }
   }
 }

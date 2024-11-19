@@ -10,6 +10,62 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Frameworks
 private import semmle.python.security.internal.EncryptionKeySizes
+private import codeql.threatmodels.ThreatModels
+
+/**
+ * A data flow source, for a specific threat-model.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `ThreatModelSource::Range` instead.
+ */
+class ThreatModelSource extends DataFlow::Node instanceof ThreatModelSource::Range {
+  /**
+   * Gets a string that represents the source kind with respect to threat modeling.
+   *
+   * See
+   * - https://github.com/github/codeql/blob/main/docs/codeql/reusables/threat-model-description.rst
+   * - https://github.com/github/codeql/blob/main/shared/threat-models/ext/threat-model-grouping.model.yml
+   */
+  string getThreatModel() { result = super.getThreatModel() }
+
+  /** Gets a string that describes the type of this threat-model source. */
+  string getSourceType() { result = super.getSourceType() }
+}
+
+/** Provides a class for modeling new sources for specific threat-models. */
+module ThreatModelSource {
+  /**
+   * A data flow source, for a specific threat-model.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `ThreatModelSource` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets a string that represents the source kind with respect to threat modeling.
+     *
+     * See
+     * - https://github.com/github/codeql/blob/main/docs/codeql/reusables/threat-model-description.rst
+     * - https://github.com/github/codeql/blob/main/shared/threat-models/ext/threat-model-grouping.model.yml
+     */
+    abstract string getThreatModel();
+
+    /** Gets a string that describes the type of this threat-model source. */
+    abstract string getSourceType();
+  }
+}
+
+/**
+ * A data flow source that is enabled in the current threat model configuration.
+ */
+class ActiveThreatModelSource extends ThreatModelSource {
+  ActiveThreatModelSource() {
+    exists(string kind |
+      currentThreatModel(kind) and
+      this.getThreatModel() = kind
+    )
+  }
+}
 
 /**
  * A data-flow node that executes an operating system command,
@@ -1409,6 +1465,59 @@ module Http {
       }
 
       override DataFlow::Node getValueArg() { none() }
+    }
+
+    /**
+     * A data-flow node that enables or disables CORS
+     * in a global manner.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `CorsMiddleware::Range` instead.
+     */
+    class CorsMiddleware extends DataFlow::Node instanceof CorsMiddleware::Range {
+      /**
+       * Gets the string corresponding to the middleware
+       */
+      string getMiddlewareName() { result = super.getMiddlewareName() }
+
+      /**
+       * Gets the dataflow node corresponding to the allowed CORS origins
+       */
+      DataFlow::Node getOrigins() { result = super.getOrigins() }
+
+      /**
+       * Gets the boolean value corresponding to if CORS credentials is enabled
+       * (`true`) or disabled (`false`) by this node.
+       */
+      DataFlow::Node getCredentialsAllowed() { result = super.getCredentialsAllowed() }
+    }
+
+    /** Provides a class for modeling new CORS middleware APIs. */
+    module CorsMiddleware {
+      /**
+       * A data-flow node that enables or disables Cross-site request forgery protection
+       * in a global manner.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `CorsMiddleware` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the name corresponding to the middleware
+         */
+        abstract string getMiddlewareName();
+
+        /**
+         * Gets the strings corresponding to the origins allowed by the cors policy
+         */
+        abstract DataFlow::Node getOrigins();
+
+        /**
+         * Gets the boolean value corresponding to if CORS credentials is enabled
+         * (`true`) or disabled (`false`) by this node.
+         */
+        abstract DataFlow::Node getCredentialsAllowed();
+      }
     }
 
     /**

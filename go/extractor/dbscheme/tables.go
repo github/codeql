@@ -1150,6 +1150,20 @@ var ComponentTypesTable = NewTable("component_types",
 	EntityColumn(TypeType, "tp"),
 ).KeySet("parent", "index")
 
+// StructTagsTable is the table associating struct types with their component types' tags
+var StructTagsTable = NewTable("struct_tags",
+	EntityColumn(StructType, "parent"),
+	IntColumn("index"),
+	StringColumn("tag"),
+).KeySet("parent", "index")
+
+// InterfacePrivateMethodIdsTable is the table associating interface types with the indices and ids of their private methods.
+var InterfacePrivateMethodIdsTable = NewTable("interface_private_method_ids",
+	EntityColumn(InterfaceType, "interface"),
+	IntColumn("index"),
+	StringColumn("id"),
+).KeySet("interface", "index")
+
 // ArrayLengthTable is the table associating array types with their length (represented as a string
 // since Go array lengths are 64-bit and hence do not always fit into a QL integer)
 var ArrayLengthTable = NewTable("array_length",

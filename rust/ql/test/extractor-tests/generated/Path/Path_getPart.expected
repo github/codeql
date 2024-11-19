@@ -1,0 +1,2 @@
+| gen_path.rs:5:5:5:7 | foo | gen_path.rs:5:5:5:7 | foo |
+| gen_path.rs:5:5:5:12 | foo::bar | gen_path.rs:5:10:5:12 | bar |

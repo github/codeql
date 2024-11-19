@@ -4,6 +4,8 @@
  */
 
 private import internal.IfExprImpl
+import codeql.rust.elements.Attr
+import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.Expr
 
 /**
@@ -18,7 +20,7 @@ import codeql.rust.elements.Expr
  *     1
  * } else {
  *     0
- * }
+ * };
  * ```
  */
 final class IfExpr = Impl::IfExpr;

@@ -1,2 +1,2 @@
-| gen_continue_expr.rs:7:13:7:20 | ContinueExpr | hasLabel: | no |
-| gen_continue_expr.rs:12:13:12:27 | ContinueExpr | hasLabel: | yes |
+| gen_continue_expr.rs:7:13:7:20 | ContinueExpr | getNumberOfAttrs: | 0 | hasLifetime: | no |
+| gen_continue_expr.rs:12:13:12:27 | ContinueExpr | getNumberOfAttrs: | 0 | hasLifetime: | yes |

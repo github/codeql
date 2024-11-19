@@ -52,7 +52,7 @@ deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "Condtional Expression Check Bypass" }
 
   override predicate isSource(DataFlow::Node source) {
-    source instanceof ThreatModelFlowSource
+    source instanceof ActiveThreatModelSource
     or
     exists(DataFlow::FieldReadNode f |
       f.getField().hasQualifiedName("net/http", "Request", "Host")
@@ -71,7 +71,7 @@ deprecated class Configuration extends TaintTracking::Configuration {
 
 private module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof ThreatModelFlowSource
+    source instanceof ActiveThreatModelSource
     or
     exists(DataFlow::FieldReadNode f |
       f.getField().hasQualifiedName("net/http", "Request", "Host")

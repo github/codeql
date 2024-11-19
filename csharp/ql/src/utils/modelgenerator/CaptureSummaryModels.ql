@@ -6,9 +6,7 @@
  * @tags modelgenerator
  */
 
-import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import internal.CaptureModels
-import internal.CaptureSummaryFlowQuery
 
 from DataFlowSummaryTargetApi api, string flow
 where flow = captureFlow(api)

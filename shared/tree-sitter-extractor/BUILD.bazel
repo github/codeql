@@ -1,5 +1,7 @@
 load("@rules_rust//rust:defs.bzl", "rust_library")
-load("@tree_sitter_extractors_deps//:defs.bzl", "aliases", "all_crate_deps")
+load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps")
+
+exports_files(["Cargo.toml"])
 
 rust_library(
     name = "codeql-extractor",

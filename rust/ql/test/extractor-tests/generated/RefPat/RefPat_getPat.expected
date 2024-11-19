@@ -1,0 +1,2 @@
+| gen_ref_pat.rs:6:9:6:28 | RefPat | gen_ref_pat.rs:6:14:6:28 | TupleStructPat |
+| gen_ref_pat.rs:7:9:7:21 | RefPat | gen_ref_pat.rs:7:10:7:21 | PathPat |

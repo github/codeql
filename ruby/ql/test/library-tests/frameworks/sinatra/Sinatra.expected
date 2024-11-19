@@ -32,7 +32,7 @@ params
 erbCalls
 | app.rb:76:5:76:36 | call to erb | views/index.erb:0:0:0:0 | views/index.erb |
 erbSyntheticGlobals
-| SinatraErbLocalsHash(library-tests/frameworks/sinatra/views/index.erb,library-tests/frameworks/sinatra/app.rb@76:5:76:36) | views/index.erb:0:0:0:0 | views/index.erb |
+| SinatraErbLocalsHash(views/index.erb,app.rb@76:5:76:36) | views/index.erb:0:0:0:0 | views/index.erb |
 filters
 | app.rb:84:3:87:5 | call to before | before |
 | app.rb:98:3:100:5 | call to after | after |

@@ -1,31 +1,31 @@
 | ambient.ts:5:16:5:18 | Foo | Foo in global scope |
-| enums.ts:9:8:9:8 | A | A in library-tests/TypeScript/QualifiedNameResolution/enums.ts |
-| enums.ts:9:8:9:10 | A.E | A.E in library-tests/TypeScript/QualifiedNameResolution/enums.ts |
-| enums.ts:10:8:10:8 | A | A in library-tests/TypeScript/QualifiedNameResolution/enums.ts |
-| export-qualified-client.ts:3:8:3:9 | AB | A.B in library-tests/TypeScript/QualifiedNameResolution/export-qualified.ts |
-| export-specifiers-client.ts:4:8:4:8 | N | N in library-tests/TypeScript/QualifiedNameResolution/export-specifiers.ts |
-| export-specifiers-client.ts:5:8:5:8 | D | D in library-tests/TypeScript/QualifiedNameResolution/export-specifiers.ts |
+| enums.ts:9:8:9:8 | A | A in enums.ts |
+| enums.ts:9:8:9:10 | A.E | A.E in enums.ts |
+| enums.ts:10:8:10:8 | A | A in enums.ts |
+| export-qualified-client.ts:3:8:3:9 | AB | A.B in export-qualified.ts |
+| export-specifiers-client.ts:4:8:4:8 | N | N in export-specifiers.ts |
+| export-specifiers-client.ts:5:8:5:8 | D | D in export-specifiers.ts |
 | global.ts:5:9:5:12 | Glob | Glob in global scope |
 | import-in-namespace.ts:9:13:9:13 | A | X in global scope |
-| namespaces-client.ts:4:9:4:10 | ns | library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| namespaces-client.ts:4:9:4:12 | ns.G | G in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| namespaces-client.ts:5:9:5:9 | G | G in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| namespaces-client.ts:6:9:6:9 | G | G in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| namespaces-client.ts:6:9:6:11 | G.J | G.J in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-all-client.ts:4:9:4:10 | ns | library-tests/TypeScript/QualifiedNameResolution/reexport-all.ts |
-| reexport-all-client.ts:4:9:4:12 | ns.G | G in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-all-client.ts:5:9:5:9 | G | G in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-all-client.ts:6:9:6:9 | G | G in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-all-client.ts:6:9:6:11 | G.J | G.J in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-all-client.ts:8:8:8:8 | D | D in library-tests/TypeScript/QualifiedNameResolution/otherlib.ts |
-| reexport-all-client.ts:9:8:9:9 | ns | library-tests/TypeScript/QualifiedNameResolution/reexport-all.ts |
-| reexport-all-client.ts:9:8:9:11 | ns.D | D in library-tests/TypeScript/QualifiedNameResolution/otherlib.ts |
-| reexport-all-client.ts:11:8:11:9 | ns | library-tests/TypeScript/QualifiedNameResolution/reexport-all.ts |
-| reexport-named-client.ts:4:9:4:10 | ns | library-tests/TypeScript/QualifiedNameResolution/reexport-named.ts |
-| reexport-named-client.ts:4:9:4:12 | ns.G | G in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-named-client.ts:5:9:5:9 | G | G in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-named-client.ts:6:9:6:9 | G | G in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-named-client.ts:6:9:6:11 | G.J | G.J in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-named-client.ts:8:8:8:8 | X | D in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
-| reexport-named-client.ts:9:8:9:9 | ns | library-tests/TypeScript/QualifiedNameResolution/reexport-named.ts |
-| reexport-named-client.ts:9:8:9:11 | ns.X | D in library-tests/TypeScript/QualifiedNameResolution/namespaces.ts |
+| namespaces-client.ts:4:9:4:10 | ns | namespaces.ts |
+| namespaces-client.ts:4:9:4:12 | ns.G | G in namespaces.ts |
+| namespaces-client.ts:5:9:5:9 | G | G in namespaces.ts |
+| namespaces-client.ts:6:9:6:9 | G | G in namespaces.ts |
+| namespaces-client.ts:6:9:6:11 | G.J | G.J in namespaces.ts |
+| reexport-all-client.ts:4:9:4:10 | ns | reexport-all.ts |
+| reexport-all-client.ts:4:9:4:12 | ns.G | G in namespaces.ts |
+| reexport-all-client.ts:5:9:5:9 | G | G in namespaces.ts |
+| reexport-all-client.ts:6:9:6:9 | G | G in namespaces.ts |
+| reexport-all-client.ts:6:9:6:11 | G.J | G.J in namespaces.ts |
+| reexport-all-client.ts:8:8:8:8 | D | D in otherlib.ts |
+| reexport-all-client.ts:9:8:9:9 | ns | reexport-all.ts |
+| reexport-all-client.ts:9:8:9:11 | ns.D | D in otherlib.ts |
+| reexport-all-client.ts:11:8:11:9 | ns | reexport-all.ts |
+| reexport-named-client.ts:4:9:4:10 | ns | reexport-named.ts |
+| reexport-named-client.ts:4:9:4:12 | ns.G | G in namespaces.ts |
+| reexport-named-client.ts:5:9:5:9 | G | G in namespaces.ts |
+| reexport-named-client.ts:6:9:6:9 | G | G in namespaces.ts |
+| reexport-named-client.ts:6:9:6:11 | G.J | G.J in namespaces.ts |
+| reexport-named-client.ts:8:8:8:8 | X | D in namespaces.ts |
+| reexport-named-client.ts:9:8:9:9 | ns | reexport-named.ts |
+| reexport-named-client.ts:9:8:9:11 | ns.X | D in namespaces.ts |

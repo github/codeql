@@ -29,10 +29,15 @@ module Generated {
     override string getAPrimaryQlClass() { result = "BoxPat" }
 
     /**
-     * Gets the inner of this box pat.
+     * Gets the pat of this box pat, if it exists.
      */
-    Pat getInner() {
-      result = Synth::convertPatFromRaw(Synth::convertBoxPatToRaw(this).(Raw::BoxPat).getInner())
+    Pat getPat() {
+      result = Synth::convertPatFromRaw(Synth::convertBoxPatToRaw(this).(Raw::BoxPat).getPat())
     }
+
+    /**
+     * Holds if `getPat()` exists.
+     */
+    final predicate hasPat() { exists(this.getPat()) }
   }
 }

@@ -4,6 +4,8 @@
  */
 
 private import internal.IdentPatImpl
+import codeql.rust.elements.Attr
+import codeql.rust.elements.Name
 import codeql.rust.elements.Pat
 
 /**

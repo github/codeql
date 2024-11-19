@@ -2,6 +2,6 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: neutralModel
+      extensible: summaryModel
     data:
-      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "Execute", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", True, "Execute", "()", "", "Argument[this].Property[Microsoft.Android.Build.Tasks.NdkToolFinderTask.MinApiLevel]", "Argument[this].Property[Microsoft.Android.Build.Tasks.NdkToolFinderTask.ClangPath]", "taint", "dfc-generated"]

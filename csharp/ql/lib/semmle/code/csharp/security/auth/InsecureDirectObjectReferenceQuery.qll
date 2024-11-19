@@ -18,7 +18,7 @@ private predicate needsChecks(ActionMethod m) { m.isEdit() and not m.isAdmin() }
  * that may indicate that it's used as the ID for some resource
  */
 private predicate hasIdParameter(ActionMethod m) {
-  exists(ThreatModelFlowSource src | src.getEnclosingCallable() = m |
+  exists(ActiveThreatModelSource src | src.getEnclosingCallable() = m |
     src.asParameter().getName().toLowerCase().matches(["%id", "%idx"])
     or
     // handle cases like `Request.QueryString["Id"]`

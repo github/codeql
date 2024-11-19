@@ -61,7 +61,7 @@ def test_access(x, y, z):
         iter(tainted_list), # $ tainted
         next(iter(tainted_list)), # $ MISSING: tainted
         [i for i in tainted_list], # $ tainted
-        [tainted_list for _i in [1,2,3]], # $ MISSING: tainted
+        [tainted_list for _i in [1,2,3]], # $ tainted
     )
 
     a, b, c = tainted_list[0:3]
@@ -85,7 +85,7 @@ def test_access_explicit(x, y, z):
         iter(tainted_list), # $ tainted
         next(iter(tainted_list)), # $ tainted
         [i for i in tainted_list], # $ tainted
-        [tainted_list for i in [1,2,3]], # $ MISSING: tainted
+        [tainted_list for i in [1,2,3]], # $ tainted
         [TAINTED_STRING for i in [1,2,3]], # $ tainted
         [tainted_list], # $ tainted
     )
@@ -165,6 +165,34 @@ def test_copy_2():
         copy.copy(TAINTED_LIST), # $ tainted
         copy.deepcopy(TAINTED_LIST), # $ tainted
     )
+
+def test_replace():
+    from copy import replace
+
+    class C:
+        def __init__(self, always_tainted, tainted_to_safe, safe_to_tainted, always_safe):
+            self.always_tainted = always_tainted
+            self.tainted_to_safe = tainted_to_safe
+            self.safe_to_tainted = safe_to_tainted
+            self.always_safe = always_safe
+
+    c = C(always_tainted=TAINTED_STRING,
+          tainted_to_safe=TAINTED_STRING,
+          safe_to_tainted=NOT_TAINTED,
+          always_safe=NOT_TAINTED)
+
+    d = replace(c, tainted_to_safe=NOT_TAINTED, safe_to_tainted=TAINTED_STRING)
+
+    ensure_tainted(d.always_tainted) # $ tainted
+    ensure_tainted(d.safe_to_tainted) # $ tainted
+    ensure_not_tainted(d.always_safe)
+
+    # Currently, we have no way of stopping the value in the tainted_to_safe field (which gets
+    # overwritten) from flowing through the replace call, which means we get a spurious result.
+
+    ensure_not_tainted(d.tainted_to_safe) # $ SPURIOUS: tainted
+
+
 
 
 def list_index_assign():
@@ -274,6 +302,7 @@ test_named_tuple()
 test_defaultdict("key", "key")
 test_copy_1()
 test_copy_2()
+test_replace()
 
 list_index_assign()
 list_index_aug_assign()

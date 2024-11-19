@@ -42,8 +42,8 @@ private module LogForgingConfig implements DataFlow::ConfigSig {
  */
 module LogForging = TaintTracking::Global<LogForgingConfig>;
 
-/** A source of remote user input. */
-private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+/** A source supported by the current threat model. */
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 private class HtmlSanitizer extends Sanitizer {
   HtmlSanitizer() { this.asExpr() instanceof HtmlSanitizedExpr }
@@ -70,7 +70,9 @@ private class ExternalLoggingExprSink extends Sink {
 private class StringReplaceSanitizer extends Sanitizer {
   StringReplaceSanitizer() {
     exists(Method m |
-      exists(SystemStringClass s | m = s.getReplaceMethod() or m = s.getRemoveMethod())
+      exists(SystemStringClass s |
+        m = s.getReplaceMethod() or m = s.getRemoveMethod() or m = s.getReplaceLineEndingsMethod()
+      )
       or
       m = any(SystemTextRegularExpressionsRegexClass r).getAReplaceMethod()
     |

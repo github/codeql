@@ -5,8 +5,8 @@
 | UnsafeUnzipSymlink.go:126:17:126:31 | selection of Linkname | UnsafeUnzipSymlink.go:126:17:126:31 | selection of Linkname | UnsafeUnzipSymlink.go:112:13:112:20 | linkName | Unresolved path from an archive header, which may point outside the archive root, is used in $@. | UnsafeUnzipSymlink.go:112:13:112:20 | linkName | symlink creation |
 | UnsafeUnzipSymlink.go:126:34:126:44 | selection of Name | UnsafeUnzipSymlink.go:126:34:126:44 | selection of Name | UnsafeUnzipSymlink.go:112:23:112:30 | fileName | Unresolved path from an archive header, which may point outside the archive root, is used in $@. | UnsafeUnzipSymlink.go:112:23:112:30 | fileName | symlink creation |
 edges
-| UnsafeUnzipSymlink.go:111:19:111:26 | definition of linkName | UnsafeUnzipSymlink.go:112:13:112:20 | linkName | provenance |  Sink:MaD:1 |
-| UnsafeUnzipSymlink.go:111:29:111:36 | definition of fileName | UnsafeUnzipSymlink.go:112:23:112:30 | fileName | provenance |  Sink:MaD:1 |
+| UnsafeUnzipSymlink.go:111:19:111:26 | definition of linkName | UnsafeUnzipSymlink.go:112:13:112:20 | linkName | provenance | Sink:MaD:1 |
+| UnsafeUnzipSymlink.go:111:29:111:36 | definition of fileName | UnsafeUnzipSymlink.go:112:23:112:30 | fileName | provenance | Sink:MaD:1 |
 | UnsafeUnzipSymlink.go:126:17:126:31 | selection of Linkname | UnsafeUnzipSymlink.go:111:19:111:26 | definition of linkName | provenance |  |
 | UnsafeUnzipSymlink.go:126:34:126:44 | selection of Name | UnsafeUnzipSymlink.go:111:29:111:36 | definition of fileName | provenance |  |
 models

@@ -1,0 +1,2 @@
+| gen_name.rs:3:4:3:12 | test_name | hasText: | yes |
+| lib.rs:1:5:1:12 | gen_name | hasText: | yes |

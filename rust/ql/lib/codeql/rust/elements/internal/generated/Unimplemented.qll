@@ -18,5 +18,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Unimplemented` class directly.
    * Use the subclass `Unimplemented`, where the following predicates are available.
    */
-  class Unimplemented extends Synth::TUnimplemented, UnextractedImpl::Unextracted { }
+  class Unimplemented extends Synth::TUnimplemented, UnextractedImpl::Unextracted {
+    override string getAPrimaryQlClass() { result = "Unimplemented" }
+  }
 }

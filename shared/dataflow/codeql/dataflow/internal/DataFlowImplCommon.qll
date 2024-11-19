@@ -850,6 +850,85 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
   class SndLevelScopeOption = SndLevelScopeOption::Option;
 
+  final class NodeEx extends TNodeEx {
+    string toString() {
+      result = this.asNode().toString()
+      or
+      exists(Node n | this.isImplicitReadNode(n) | result = n.toString() + " [Ext]")
+      or
+      result = this.asParamReturnNode().toString() + " [Return]"
+    }
+
+    Node asNode() { this = TNodeNormal(result) }
+
+    /** Gets the corresponding Node if this is a normal node or its post-implicit read node. */
+    Node asNodeOrImplicitRead() { this = TNodeNormal(result) or this = TNodeImplicitRead(result) }
+
+    predicate isImplicitReadNode(Node n) { this = TNodeImplicitRead(n) }
+
+    ParameterNode asParamReturnNode() { this = TParamReturnNode(result, _) }
+
+    Node projectToNode() {
+      this = TNodeNormal(result) or
+      this = TNodeImplicitRead(result) or
+      this = TParamReturnNode(result, _)
+    }
+
+    pragma[nomagic]
+    private DataFlowCallable getEnclosingCallable0() {
+      nodeEnclosingCallable(this.projectToNode(), result)
+    }
+
+    pragma[inline]
+    DataFlowCallable getEnclosingCallable() {
+      pragma[only_bind_out](this).getEnclosingCallable0() = pragma[only_bind_into](result)
+    }
+
+    pragma[nomagic]
+    private DataFlowType getDataFlowType0() {
+      nodeDataFlowType(this.asNode(), result)
+      or
+      nodeDataFlowType(this.asParamReturnNode(), result)
+    }
+
+    pragma[inline]
+    DataFlowType getDataFlowType() {
+      pragma[only_bind_out](this).getDataFlowType0() = pragma[only_bind_into](result)
+    }
+
+    Location getLocation() { result = this.projectToNode().getLocation() }
+  }
+
+  final class ArgNodeEx extends NodeEx {
+    ArgNodeEx() { this.asNode() instanceof ArgNode }
+
+    DataFlowCall getCall() { this.asNode().(ArgNode).argumentOf(result, _) }
+  }
+
+  final class ParamNodeEx extends NodeEx {
+    ParamNodeEx() { this.asNode() instanceof ParamNode }
+
+    predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      this.asNode().(ParamNode).isParameterOf(c, pos)
+    }
+
+    ParameterPosition getPosition() { this.isParameterOf(_, result) }
+  }
+
+  /**
+   * A node from which flow can return to the caller. This is either a regular
+   * `ReturnNode` or a synthesized node for flow out via a parameter.
+   */
+  final class RetNodeEx extends NodeEx {
+    private ReturnPosition pos;
+
+    RetNodeEx() { pos = getReturnPositionEx(this) }
+
+    ReturnPosition getReturnPosition() { result = pos }
+
+    ReturnKindExt getKind() { result = pos.getKind() }
+  }
+
   cached
   private module Cached {
     /**
@@ -927,11 +1006,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    cached
-    predicate valueReturnNode(ReturnNode n, ReturnKindExt k) { k = TValueReturn(n.getKind()) }
-
-    cached
-    predicate paramReturnNode(
+    pragma[nomagic]
+    private predicate paramReturnNode(
       PostUpdateNode n, ParamNode p, SndLevelScopeOption scope, ReturnKindExt k
     ) {
       exists(ParameterPosition pos |
@@ -1541,6 +1617,20 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     class UnreachableSetOption = UnreachableSetOption::Option;
 
+    pragma[nomagic]
+    private predicate hasValueReturnKindIn(ReturnNode ret, ReturnKindExt kind, DataFlowCallable c) {
+      c = getNodeEnclosingCallable(ret) and
+      kind = TValueReturn(ret.getKind())
+    }
+
+    pragma[nomagic]
+    private predicate hasParamReturnKindIn(
+      PostUpdateNode n, ParamNode p, ReturnKindExt kind, DataFlowCallable c
+    ) {
+      c = getNodeEnclosingCallable(n) and
+      paramReturnNode(n, p, _, kind)
+    }
+
     cached
     newtype TReturnPosition =
       TReturnPosition0(DataFlowCallable c, ReturnKindExt kind) {
@@ -1548,6 +1638,22 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         or
         hasParamReturnKindIn(_, _, kind, c)
       }
+
+    cached
+    ReturnPosition getValueReturnPosition(ReturnNode ret) {
+      exists(ReturnKindExt kind, DataFlowCallable c |
+        hasValueReturnKindIn(ret, kind, c) and
+        result = TReturnPosition0(c, kind)
+      )
+    }
+
+    cached
+    ReturnPosition getParamReturnPosition(PostUpdateNode n, ParamNode p) {
+      exists(ReturnKindExt kind, DataFlowCallable c |
+        hasParamReturnKindIn(n, p, kind, c) and
+        result = TReturnPosition0(c, kind)
+      )
+    }
 
     cached
     newtype TLocalFlowCallContext =
@@ -1594,6 +1700,44 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     newtype TApproxAccessPathFrontOption =
       TApproxAccessPathFrontNone() or
       TApproxAccessPathFrontSome(ApproxAccessPathFront apf)
+
+    cached
+    newtype TNodeEx =
+      TNodeNormal(Node n) or
+      TNodeImplicitRead(Node n) or // will be restricted to nodes with actual implicit reads in `DataFlowImpl.qll`
+      TParamReturnNode(ParameterNode p, SndLevelScopeOption scope) {
+        paramReturnNode(_, p, scope, _)
+      }
+
+    /**
+     * Holds if data can flow in one local step from `node1` to `node2`.
+     */
+    cached
+    predicate localFlowStepExImpl(NodeEx node1, NodeEx node2, string model) {
+      exists(Node n1, Node n2 |
+        node1.asNode() = n1 and
+        node2.asNode() = n2 and
+        simpleLocalFlowStepExt(pragma[only_bind_into](n1), pragma[only_bind_into](n2), model)
+      )
+      or
+      exists(Node n1, Node n2, SndLevelScopeOption scope |
+        node1.asNode() = n1 and
+        node2 = TParamReturnNode(n2, scope) and
+        paramReturnNode(pragma[only_bind_into](n1), pragma[only_bind_into](n2),
+          pragma[only_bind_into](scope), _) and
+        model = ""
+      )
+    }
+
+    cached
+    ReturnPosition getReturnPositionEx(NodeEx ret) {
+      result = getValueReturnPosition(ret.asNode())
+      or
+      exists(ParamNode p |
+        ret = TParamReturnNode(p, _) and
+        result = getParamReturnPosition(_, p)
+      )
+    }
   }
 
   bindingset[call, tgt]
@@ -2175,36 +2319,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   pragma[inline]
   DataFlowType getNodeDataFlowType(Node n) {
     nodeDataFlowType(pragma[only_bind_out](n), pragma[only_bind_into](result))
-  }
-
-  pragma[nomagic]
-  private predicate hasValueReturnKindIn(ReturnNode ret, ReturnKindExt kind, DataFlowCallable c) {
-    c = getNodeEnclosingCallable(ret) and
-    valueReturnNode(ret, kind)
-  }
-
-  pragma[nomagic]
-  private predicate hasParamReturnKindIn(
-    PostUpdateNode n, ParamNode p, ReturnKindExt kind, DataFlowCallable c
-  ) {
-    c = getNodeEnclosingCallable(n) and
-    paramReturnNode(n, p, _, kind)
-  }
-
-  pragma[nomagic]
-  ReturnPosition getValueReturnPosition(ReturnNode ret) {
-    exists(ReturnKindExt kind, DataFlowCallable c |
-      hasValueReturnKindIn(ret, kind, c) and
-      result = TReturnPosition0(c, kind)
-    )
-  }
-
-  pragma[nomagic]
-  ReturnPosition getParamReturnPosition(PostUpdateNode n, ParamNode p) {
-    exists(ReturnKindExt kind, DataFlowCallable c |
-      hasParamReturnKindIn(n, p, kind, c) and
-      result = TReturnPosition0(c, kind)
-    )
   }
 
   /** An optional Boolean value. */

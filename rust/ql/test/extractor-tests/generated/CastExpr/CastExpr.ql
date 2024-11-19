@@ -2,10 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from CastExpr x, Expr getExpr, TypeRef getType
+from CastExpr x, int getNumberOfAttrs, string hasExpr, string hasTy
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getExpr = x.getExpr() and
-  getType = x.getType()
-select x, "getExpr:", getExpr, "getType:", getType
+  getNumberOfAttrs = x.getNumberOfAttrs() and
+  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
+  if x.hasTy() then hasTy = "yes" else hasTy = "no"
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasTy:", hasTy

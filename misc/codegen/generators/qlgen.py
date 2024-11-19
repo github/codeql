@@ -96,7 +96,7 @@ def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
         return format.format(**{noun: transform(noun) for noun in nouns})
 
     prop_name = _humanize(prop.name)
-    class_name = cls.default_doc_name or _humanize(inflection.underscore(cls.name))
+    class_name = cls.pragmas.get("ql_default_doc_name", _humanize(inflection.underscore(cls.name)))
     if prop.is_predicate:
         return f"this {class_name} {prop_name}"
     if plural is not None:
@@ -115,7 +115,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
         is_unordered=prop.is_unordered,
         description=prop.description,
         synth=bool(cls.synth) or prop.synth,
-        type_is_hideable=lookup[prop.type].hideable if prop.type in lookup else False,
+        type_is_hideable="ql_hideable" in lookup[prop.type].pragmas if prop.type in lookup else False,
         internal="ql_internal" in prop.pragmas,
     )
     if prop.is_single:
@@ -154,7 +154,6 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
 
 
 def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> ql.Class:
-    pragmas = {k: True for k in cls.pragmas if k.startswith("qltest")}
     prev_child = ""
     properties = []
     for p in cls.properties:
@@ -170,9 +169,8 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> q
         properties=properties,
         dir=pathlib.Path(cls.group or ""),
         doc=cls.doc,
-        hideable=cls.hideable,
+        hideable="ql_hideable" in cls.pragmas,
         internal="ql_internal" in cls.pragmas,
-        **pragmas,
     )
 
 
@@ -448,7 +446,8 @@ def generate(opts, renderer):
             for c in data.classes.values():
                 if should_skip_qltest(c, data.classes):
                     continue
-                test_with = data.classes[c.test_with] if c.test_with else c
+                test_with_name = c.pragmas.get("qltest_test_with")
+                test_with = data.classes[test_with_name] if test_with_name else c
                 test_dir = test_out / test_with.group / test_with.name
                 test_dir.mkdir(parents=True, exist_ok=True)
                 if all(f.suffix in (".txt", ".ql", ".actual", ".expected") for f in test_dir.glob("*.*")):

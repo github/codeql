@@ -316,7 +316,7 @@ private predicate isUnsafeDeserializationTaintStep(DataFlow::Node pred, DataFlow
 
 /** Tracks flows from remote user input to a deserialization sink. */
 private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserializationSink }
 
@@ -325,6 +325,8 @@ private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { isUnsafeDeserializationSanitizer(node) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module UnsafeDeserializationFlow = TaintTracking::Global<UnsafeDeserializationConfig>;
@@ -416,7 +418,7 @@ private predicate isUnsafeTypeAdditionalTaintStep(DataFlow::Node fromNode, DataF
  * If this is user-controlled, arbitrary code could be executed while instantiating the user-specified type.
  */
 module UnsafeTypeConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeTypeSink }
 
