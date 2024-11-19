@@ -69,6 +69,13 @@ abstract class ThrowingFunction extends ExceptionAnnotation {
   abstract predicate raisesException(boolean unconditional);
 
   /**
+   * DEPRECATES: use/extend `raisesException` instead.
+   */
+  deprecated predicate mayThrowException(boolean unconditional){
+    this.raisesException(unconditional)
+  }
+
+  /**
    * Holds if this function will always raise an exception if called
    */
   final predicate alwaysRaisesException() { this.raisesException(true) }
