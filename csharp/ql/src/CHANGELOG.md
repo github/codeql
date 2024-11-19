@@ -1,3 +1,7 @@
+## 1.0.12
+
+No user-facing changes.
+
 ## 1.0.11
 
 ### Minor Analysis Improvements
