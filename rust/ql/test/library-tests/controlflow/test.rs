@@ -62,15 +62,15 @@ mod loop_expression {
     }
 
     fn test_loop_label_shadowing(b: bool) -> ! {
-        'loop: loop {
+        'label: loop {
             1;
-            'loop: loop {
+            'label: loop {
                 if b {
                     continue;
                 } else if b {
-                    continue 'loop;
+                    continue 'label;
                 }
-                continue 'loop;
+                continue 'label;
             }
         }
     }
@@ -150,7 +150,9 @@ mod if_expression {
     }
 
     fn test_and_if_let2(a: bool, b: i64, c: bool) -> bool {
-        if a && let d = b && c{
+        if a && let d = b
+            && c
+        {
             d > 0
         } else {
             false
@@ -279,7 +281,7 @@ mod logical_operators {
         }
     }
 
-    fn test_and_return(a : bool) {
+    fn test_and_return(a: bool) {
         a && return;
     }
 }
