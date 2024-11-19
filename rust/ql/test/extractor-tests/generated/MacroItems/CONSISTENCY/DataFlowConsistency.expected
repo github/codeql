@@ -4,5 +4,6 @@ uniqueNodeLocation
 | file://:0:0:0:0 | BlockExpr | Node should have one location but has 0. |
 | file://:0:0:0:0 | Param | Node should have one location but has 0. |
 | file://:0:0:0:0 | path | Node should have one location but has 0. |
+| file://:0:0:0:0 | path | Node should have one location but has 0. |
 missingLocation
-| Nodes without location: 5 |
+| Nodes without location: 6 |

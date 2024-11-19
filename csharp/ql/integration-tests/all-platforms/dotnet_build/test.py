@@ -1,8 +1,11 @@
-def check_build_out(msg, s):
-    assert (
-        "[build-stdout] " + msg in s
-    ), f"The C# tracer did not interpret the dotnet path-to-application command correctly."
+import os
 
+def check_build_out(msg, s):
+    lines = s.splitlines()
+    lines = s.splitlines()
+    assert (
+        any (("[build-stdout]" in line) and (msg in line) for line in lines)
+    ), f"The C# tracer did not interpret the dotnet path-to-application command correctly."
 
 def test1(codeql, csharp):
     codeql.database.create(command="dotnet build")

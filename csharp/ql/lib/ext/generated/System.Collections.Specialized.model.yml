@@ -91,6 +91,8 @@ extensions:
       - ["System.Collections.Specialized", "HybridDictionary", "get_IsFixedSize", "()", "summary", "df-generated"]
       - ["System.Collections.Specialized", "HybridDictionary", "get_IsReadOnly", "()", "summary", "df-generated"]
       - ["System.Collections.Specialized", "HybridDictionary", "get_IsSynchronized", "()", "summary", "df-generated"]
+      - ["System.Collections.Specialized", "INotifyCollectionChanged", "add_CollectionChanged", "(System.Collections.Specialized.NotifyCollectionChangedEventHandler)", "summary", "df-generated"]
+      - ["System.Collections.Specialized", "INotifyCollectionChanged", "remove_CollectionChanged", "(System.Collections.Specialized.NotifyCollectionChangedEventHandler)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "IOrderedDictionary", "GetEnumerator", "()", "summary", "df-generated"]
       - ["System.Collections.Specialized", "IOrderedDictionary", "Insert", "(System.Int32,System.Object,System.Object)", "summary", "df-generated"]
       - ["System.Collections.Specialized", "IOrderedDictionary", "RemoveAt", "(System.Int32)", "summary", "df-generated"]
