@@ -5,9 +5,7 @@
 
 import java
 import semmle.code.java.dataflow.RangeAnalysis
-private import codeql.util.test.InlineExpectationsTest
-private import TestUtilities.internal.InlineExpectationsTestImpl
-private import Make<Impl> as IET
+private import TestUtilities.InlineExpectationsTest as IET
 
 module RangeTest implements IET::TestSig {
   string getARelevantTag() { result = "bound" }
@@ -29,8 +27,8 @@ module RangeTest implements IET::TestSig {
   }
 
   private predicate constrained(Expr e, int lower, int upper) {
-    lower = min(int delta | bounded(e, any(ZeroBound z), delta, false, _)) and
-    upper = min(int delta | bounded(e, any(ZeroBound z), delta, true, _))
+    bounded(e, any(ZeroBound z), lower, false, _) and
+    bounded(e, any(ZeroBound z), upper, true, _)
   }
 }
 

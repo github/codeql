@@ -1,7 +1,9 @@
 public class B {
     public int forloop() {
         int result = 0;
-        for (int i = 0; i < 10; i++) {// $ bound="i in [0..10]" bound="i in [0..9]"
+        for (int i = 0;
+            i < 10; // $ bound="i in [0..10]"
+            i++) { // $ bound="i in [0..9]"
             result = i; // $ bound="i in [0..9]"
         }
         return result; // $ bound="result in [0..9]"
