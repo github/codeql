@@ -332,6 +332,7 @@ extensions:
       - ["Internal.TypeSystem", "CustomAttributeTypeNameFormatter", "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.SignatureMethodVariable,System.Boolean)", "summary", "df-generated"]
       - ["Internal.TypeSystem", "CustomAttributeTypeNameFormatter", "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.SignatureTypeVariable,System.Boolean)", "summary", "df-generated"]
       - ["Internal.TypeSystem", "CustomAttributeTypeNameFormatter", "AppendNameForInstantiatedType", "(System.Text.StringBuilder,Internal.TypeSystem.DefType,System.Boolean)", "summary", "df-generated"]
+      - ["Internal.TypeSystem", "CustomAttributeTypeNameParser", "GetTypeByCustomAttributeTypeName", "(Internal.TypeSystem.ModuleDesc,System.String,System.Boolean,System.Func<Internal.TypeSystem.ModuleDesc,System.String,Internal.TypeSystem.MetadataType>)", "summary", "df-generated"]
       - ["Internal.TypeSystem", "DebugNameFormatter+Void", "get_Value", "()", "summary", "df-generated"]
       - ["Internal.TypeSystem", "DebugNameFormatter", "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.SignatureMethodVariable,Internal.TypeSystem.DebugNameFormatter+FormatOptions)", "summary", "df-generated"]
       - ["Internal.TypeSystem", "DebugNameFormatter", "AppendName", "(System.Text.StringBuilder,Internal.TypeSystem.SignatureTypeVariable,Internal.TypeSystem.DebugNameFormatter+FormatOptions)", "summary", "df-generated"]

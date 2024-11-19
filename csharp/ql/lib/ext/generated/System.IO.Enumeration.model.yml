@@ -24,6 +24,7 @@ extensions:
       - ["System.IO.Enumeration", "FileSystemEntry", "get_LastAccessTimeUtc", "()", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEntry", "get_LastWriteTimeUtc", "()", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEntry", "get_Length", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerable<TResult>", "FileSystemEnumerable", "(System.String,System.IO.Enumeration.FileSystemEnumerable<TResult>+FindTransform,System.IO.EnumerationOptions)", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "ContinueOnError", "(System.Int32)", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "Dispose", "()", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "Dispose", "(System.Boolean)", "summary", "df-generated"]

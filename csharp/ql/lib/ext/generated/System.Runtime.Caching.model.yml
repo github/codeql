@@ -41,6 +41,7 @@ extensions:
       - ["System.Runtime.Caching", "ChangeMonitor", "Dispose", "()", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ChangeMonitor", "Dispose", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ChangeMonitor", "InitializationComplete", "()", "summary", "df-generated"]
+      - ["System.Runtime.Caching", "ChangeMonitor", "NotifyOnChanged", "(System.Runtime.Caching.OnChangedCallback)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ChangeMonitor", "OnChanged", "(System.Object)", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ChangeMonitor", "get_HasChanged", "()", "summary", "df-generated"]
       - ["System.Runtime.Caching", "ChangeMonitor", "get_IsDisposed", "()", "summary", "df-generated"]
