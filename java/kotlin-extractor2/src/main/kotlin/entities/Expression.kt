@@ -802,6 +802,10 @@ private fun KotlinFileExtractor.extractExpression(
                 extractBlock(e, e.statements, parent, callable)
             }
 
+            is KtIfExpression -> {
+                return extractIf(e, parent, callable)
+            }
+
             is KtWhileExpression -> {
                 extractLoopWithCondition(e, parent, callable)
             }
@@ -1410,6 +1414,7 @@ private fun KotlinFileExtractor.extractBlock(
     statements.forEachIndexed { i, s -> extractStatement(s, callable, id, i) }
 }
 
+// TODO: Can this function be inlined?
 context(KaSession)
 private fun KotlinFileExtractor.extractStatement(
     s: KtExpression,
@@ -1419,9 +1424,6 @@ private fun KotlinFileExtractor.extractStatement(
 ) {
     with("statement", s) {
         when (s) {
-            is KtStatementExpression -> {
-                extractExpressionStmt(s, callable, parent, idx)
-            }
             /*
             OLD: KE1
             is IrVariable -> {
@@ -1478,7 +1480,7 @@ private fun KotlinFileExtractor.extractStatement(
 
              */
             else -> {
-                logger.errorElement("Unhandled statement: " + s.javaClass, s)
+                extractExpressionStmt(s, callable, parent, idx)
             }
         }
     }
@@ -1729,6 +1731,46 @@ private fun KotlinFileExtractor.extractLoop(
     if (body != null && bodyIdx != null) {
         extractExpressionStmt(body, callable, id, bodyIdx)
     }
+
+    return id
+}
+
+context(KaSession)
+private fun KotlinFileExtractor.extractIf(
+    ifStmt: KtIfExpression,
+    stmtExprParent: StmtExprParent,
+    callable: Label<out DbCallable>
+): Label<out DbExpr>? {
+    if (!ifStmt.isUsedAsExpression) {
+        // We're extracting this `if` as a statement
+        val stmtParent = stmtExprParent.stmt(ifStmt, callable)
+        val id = tw.getFreshIdLabel<DbIfstmt>()
+        val locId = tw.getLocation(ifStmt)
+        tw.writeStmts_ifstmt(id, stmtParent.parent, stmtParent.idx, callable)
+        tw.writeHasLocation(id, locId)
+
+        extractExpressionExpr(ifStmt.condition!!, callable, id, 0, id)
+        extractExpressionStmt(ifStmt.then!!, callable, id, 1)
+        val elseBranch = ifStmt.`else`
+        if (elseBranch != null) {
+            extractExpressionStmt(elseBranch, callable, id, 2)
+        }
+
+        return null
+    }
+
+    // We're extracting this `if` as a conditional expression
+    val exprParent = stmtExprParent.expr(ifStmt, callable)
+    val id = tw.getFreshIdLabel<DbConditionalexpr>()
+    val type = useType(ifStmt.expressionType)
+    tw.writeExprs_conditionalexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
+    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+
+    extractExprContext(id, tw.getLocation(ifStmt), callable, exprParent.enclosingStmt)
+
+    extractExpressionExpr(ifStmt.condition!!, callable, id, 0, exprParent.enclosingStmt)
+    extractExpressionExpr(ifStmt.then!!, callable, id, 1, exprParent.enclosingStmt)
+    extractExpressionExpr(ifStmt.`else`!!, callable, id, 2, exprParent.enclosingStmt)
 
     return id
 }
