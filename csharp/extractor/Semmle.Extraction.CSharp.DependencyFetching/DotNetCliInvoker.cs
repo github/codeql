@@ -44,10 +44,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Configure the proxy settings, if applicable.
             this.proxy.ApplyProxy(this.logger, startInfo);
 
-            this.logger.LogInfo(startInfo.EnvironmentVariables["HTTP_PROXY"] ?? "");
-            this.logger.LogInfo(startInfo.EnvironmentVariables["HTTPS_PROXY"] ?? "");
-            this.logger.LogInfo(startInfo.EnvironmentVariables["SSL_CERT_FILE"] ?? "");
-
             return startInfo;
         }
 

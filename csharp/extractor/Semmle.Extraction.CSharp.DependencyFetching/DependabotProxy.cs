@@ -1,6 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -48,6 +50,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             using var writer = this.certFile.CreateText();
             writer.Write(cert);
+        }
+
+        internal void ApplyProxy(ILogger logger, ProcessStartInfo startInfo)
+        {
+            // If the proxy isn't configured, we have nothing to do.
+            if (!this.IsConfigured) return;
+
+            logger.LogInfo($"Setting up Dependabot proxy at {this.Address}");
+
+            startInfo.EnvironmentVariables["HTTP_PROXY"] = this.Address;
+            startInfo.EnvironmentVariables["HTTPS_PROXY"] = this.Address;
+            startInfo.EnvironmentVariables["SSL_CERT_FILE"] = this.certFile?.FullName;
         }
     }
 }
