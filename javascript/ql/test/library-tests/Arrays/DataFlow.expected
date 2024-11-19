@@ -26,3 +26,5 @@
 | arrays.js:53:4:53:11 | "source" | arrays.js:54:10:54:18 | ary.pop() |
 | arrays.js:99:31:99:38 | "source" | arrays.js:100:8:100:17 | arr8.pop() |
 | arrays.js:103:55:103:62 | "source" | arrays.js:105:8:105:25 | arr8_variant.pop() |
+| arrays.js:114:19:114:26 | "source" | arrays.js:116:10:116:16 | element |
+| arrays.js:120:19:120:26 | "source" | arrays.js:122:10:122:16 | element |
