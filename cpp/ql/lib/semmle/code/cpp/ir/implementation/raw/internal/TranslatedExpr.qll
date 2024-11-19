@@ -1323,6 +1323,8 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
 class TranslatedNotExpr extends TranslatedNonConstantExpr {
   override NotExpr expr;
 
+  override Type getExprType() { result instanceof BoolType }
+
   final override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getOperand().getFirstInstruction(kind)
   }
@@ -1805,6 +1807,12 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
     result = binaryArithmeticOpcode(expr) or
     result = binaryBitwiseOpcode(expr) or
     result = comparisonOpcode(expr)
+  }
+
+  override Type getExprType() {
+    if exists(comparisonOpcode(expr))
+    then result instanceof BoolType
+    else result = super.getExprType()
   }
 
   override int getInstructionElementSize(InstructionTag tag) {
