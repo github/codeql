@@ -6,7 +6,7 @@ function m0() {
 function m1() {
   const fn = mkSummary("Argument[0]", "ReturnValue");
   const obj = source("m1.1");
-  sink(fn(obj)); // $ MISSING: track=m1.1
+  sink(fn(obj)); // $ track=m1.1
   sink(fn(obj.p));
   sink(fn(obj).p);
   sink(fn({ p: obj }));
@@ -19,7 +19,7 @@ function m2() {
   sink(fn(obj));
   sink(fn(obj.p));
   sink(fn(obj).p);
-  sink(fn({ p: obj })); // $ MISSING: track=m2.1
+  sink(fn({ p: obj })); // $ track=m2.1
   sink(fn({ p: obj }).q);
 }
 
@@ -28,7 +28,7 @@ function m3() {
   const obj = source("m3.1");
   sink(fn(obj));
   sink(fn(obj.p));
-  sink(fn(obj).p); // $ MISSING: track=m3.1
+  sink(fn(obj).p); // $ track=m3.1
   sink(fn({ p: obj }));
   sink(fn({ p: obj }).q);
 }
@@ -41,5 +41,5 @@ function m4() {
   sink(fn(obj.p));
   sink(fn(obj).p);
   sink(fn({ p: obj }));
-  sink(fn({ p: obj }).q); // $ MISSING: track=m4.1
+  sink(fn({ p: obj }).q); // $ track=m4.1
 }
