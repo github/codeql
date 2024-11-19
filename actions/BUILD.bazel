@@ -11,10 +11,10 @@ package(default_visibility = ["//visibility:public"])
         pack_prefix = "/".join(parts),
     )
     for parts in (
+        ["actions"],
         [
             "experimental",
             "actions",
         ],
-        ["actions"],
     )
 ]

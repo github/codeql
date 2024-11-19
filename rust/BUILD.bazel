@@ -56,10 +56,10 @@ codeql_pkg_files(
         pack_prefix = "/".join(parts),
     )
     for parts in (
+        ["rust"],
         [
             "experimental",
             "rust",
         ],
-        ["rust"],
     )
 ]

@@ -448,9 +448,10 @@ def codeql_pack(
     contain the `{CODEQL_PLATFORM}` marker.
     All files in the pack will be prefixed with `name`, unless `pack_prefix` is set, then is used instead.
 
-    This rule also provides a convenient installer target, with a path governed by `install_dest`.
+    This rule also provides a convenient installer target named `<name>-installer`, with a path governed by `install_dest`.
     This installer is used for installing this pack into the source-tree, relative to the directory where the rule is used.
-    See `codeql_pack_install` for more details.
+    See `codeql_pack_install` for more details. The first `codeql_pack` defined in a bazel package also aliases this
+    installer target with the `installer` name as a shortcut.
 
     This function does not accept `visibility`, as packs are always public to make it easy to define pack groups.
     """
@@ -474,6 +475,8 @@ def codeql_pack(
         visibility = ["//visibility:public"],
     )
     _codeql_pack_install(internal("installer"), [name], install_dest = install_dest, apply_pack_prefix = False)
+    if not native.existing_rule("installer"):
+        native.alias(name = "installer", actual = internal("installer"))
 
 strip_prefix = _strip_prefix
 
