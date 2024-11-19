@@ -5,7 +5,7 @@ class WindowsDriverExceptionAnnotation extends ThrowingFunction {
     this.hasGlobalName(["RaiseException", "ExRaiseAccessViolation", "ExRaiseDatatypeMisalignment"])
   }
 
-  override predicate raisesException(boolean unconditional) { unconditional = true }
+  override predicate mayThrowException(boolean unconditional) { unconditional = true }
 
   override TSehException getExceptionType() { any() }
 }
