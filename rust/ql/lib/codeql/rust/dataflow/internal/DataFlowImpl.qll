@@ -112,7 +112,7 @@ module Node {
   }
 
   /** A data flow node that corresponds to a CFG node for an AST node. */
-  abstract private class AstCfgFlowNode extends Node {
+  abstract class AstCfgFlowNode extends Node {
     AstCfgNode n;
 
     override CfgNode getCfgNode() { result = n }
@@ -145,7 +145,7 @@ module Node {
 
     PatNode() { this = TPatNode(n) }
 
-    /** Gets the Pat in the AST that this node corresponds to. */
+    /** Gets the `Pat` in the AST that this node corresponds to. */
     Pat getPat() { result = n.getPat() }
   }
 
@@ -282,6 +282,12 @@ module LocalFlow {
       nodeFrom.getCfgNode().getAstNode() = s.getInitializer() and
       nodeTo.getCfgNode().getAstNode() = s.getPat()
     )
+    or
+    // An edge from a pattern/expression to its corresponding SSA definition.
+    nodeFrom.(Node::AstCfgFlowNode).getCfgNode() =
+      nodeTo.(Node::SsaNode).getDefinitionExt().(Ssa::WriteDefinition).getControlFlowNode()
+    or
+    SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
   }
 }
 
@@ -395,7 +401,10 @@ module RustDataFlow implements InputSig<Location> {
    * Holds if there is a simple local flow step from `node1` to `node2`. These
    * are the value-preserving intra-callable flow steps.
    */
-  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) { none() }
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo) and
+    model = ""
+  }
 
   /**
    * Holds if data can flow from `node1` to `node2` through a non-local step
@@ -517,8 +526,6 @@ private module Cached {
   cached
   predicate localFlowStepImpl(Node::Node nodeFrom, Node::Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
-    or
-    SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
   }
 }
 

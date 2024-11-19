@@ -1,10 +1,16 @@
 models
 edges
+| main.rs:21:13:21:21 | CallExpr : unit | main.rs:22:10:22:10 | s | provenance |  |
+| main.rs:32:13:32:21 | CallExpr : unit | main.rs:33:10:33:10 | s | provenance |  |
 nodes
 | main.rs:17:10:17:18 | CallExpr | semmle.label | CallExpr |
+| main.rs:21:13:21:21 | CallExpr : unit | semmle.label | CallExpr : unit |
+| main.rs:22:10:22:10 | s | semmle.label | s |
+| main.rs:32:13:32:21 | CallExpr : unit | semmle.label | CallExpr : unit |
+| main.rs:33:10:33:10 | s | semmle.label | s |
 subpaths
 testFailures
-| main.rs:22:14:22:32 | Comment | Missing result: hasValueFlow=1 |
-| main.rs:33:14:33:32 | Comment | Missing result: hasValueFlow=1 |
 #select
 | main.rs:17:10:17:18 | CallExpr | main.rs:17:10:17:18 | CallExpr | main.rs:17:10:17:18 | CallExpr | $@ | main.rs:17:10:17:18 | CallExpr | CallExpr |
+| main.rs:22:10:22:10 | s | main.rs:21:13:21:21 | CallExpr : unit | main.rs:22:10:22:10 | s | $@ | main.rs:21:13:21:21 | CallExpr : unit | CallExpr : unit |
+| main.rs:33:10:33:10 | s | main.rs:32:13:32:21 | CallExpr : unit | main.rs:33:10:33:10 | s | $@ | main.rs:32:13:32:21 | CallExpr : unit | CallExpr : unit |
