@@ -492,7 +492,20 @@ private module ArrayLibraries {
       exists(DataFlow::MethodCallNode call |
         call.getMethodName() = ["findLast", "find", "findLastIndex"] and
         prop = arrayLikeElement() and
-        obj = call.getReceiver() and
+        obj = call.getReceiver().getALocalSource() and
+        element = call.getCallback(0).getParameter(0)
+      )
+    }
+  }
+
+  /**
+   * This step models the propagation of data from the array to the callback function's parameter.
+   */
+  private class ArrayCallBackDataTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node obj, DataFlow::Node element) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["findLast", "find", "findLastIndex"] and
+        obj = call.getReceiver().getALocalSource() and
         element = call.getCallback(0).getParameter(0)
       )
     }

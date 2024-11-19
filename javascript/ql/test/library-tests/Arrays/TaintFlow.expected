@@ -35,5 +35,8 @@
 | arrays.js:120:19:120:26 | "source" | arrays.js:121:46:121:49 | item |
 | arrays.js:120:19:120:26 | "source" | arrays.js:122:10:122:16 | element |
 | arrays.js:126:19:126:26 | "source" | arrays.js:127:55:127:58 | item |
+| arrays.js:131:17:131:24 | source() | arrays.js:132:46:132:49 | item |
 | arrays.js:131:17:131:24 | source() | arrays.js:133:10:133:17 | element1 |
+| arrays.js:137:17:137:24 | source() | arrays.js:138:50:138:53 | item |
 | arrays.js:137:17:137:24 | source() | arrays.js:139:10:139:17 | element1 |
+| arrays.js:143:17:143:24 | source() | arrays.js:144:55:144:58 | item |
