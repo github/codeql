@@ -35,6 +35,7 @@ fun KotlinFileExtractor.extractMethodCall(
             val expr = arg.getArgumentExpression()
 
             // `argMapping` seems to drill into parenthesized expressions
+            // TODO: improve this based on https://youtrack.jetbrains.com/issue/KT-73184
             val (childExpr, _) = drillIntoParenthesizedExpression(expr!!)
 
             val p = argMapping[childExpr]
