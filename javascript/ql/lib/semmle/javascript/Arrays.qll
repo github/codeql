@@ -390,10 +390,7 @@ private module ArrayLibraries {
     result.(DataFlow::MethodCallNode).getMethodName() in ["find", "findLast"] and
     array = result.getReceiver()
     or
-    result =
-      DataFlow::moduleImport([
-          "array.prototype.find", "array-find", "array.prototype.findLast", "array-find-last"
-        ]).getACall() and
+    result = DataFlow::moduleImport(["array.prototype.find", "array-find"]).getACall() and
     array = result.getArgument(0)
   }
 

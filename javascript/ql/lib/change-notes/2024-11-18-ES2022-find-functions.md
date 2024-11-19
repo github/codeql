@@ -1,4 +1,5 @@
 ---
 category: minorAnalysis
 ---
-* Added pre call graph step for `Array.prototype.findLast`  
+* Added taint-steps for `Array.prototype.findLast`  
+* Added taint-steps for `Array.prototype.findLastIndex`
