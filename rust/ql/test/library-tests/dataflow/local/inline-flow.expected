@@ -1,0 +1,8 @@
+models
+edges
+nodes
+| main.rs:15:10:15:18 | CallExpr | semmle.label | CallExpr |
+subpaths
+testFailures
+#select
+| main.rs:15:10:15:18 | CallExpr | main.rs:15:10:15:18 | CallExpr | main.rs:15:10:15:18 | CallExpr | $@ | main.rs:15:10:15:18 | CallExpr | CallExpr |
