@@ -429,6 +429,8 @@ def codeql_pack(
         arch_overrides = None,
         pack_prefix = None,
         install_dest = "extractor-pack",
+        installer_alias = "install",
+        experimental = False,
         **kwargs):
     """
     Define a codeql pack.
@@ -448,22 +450,64 @@ def codeql_pack(
     contain the `{CODEQL_PLATFORM}` marker.
     All files in the pack will be prefixed with `name`, unless `pack_prefix` is set, then is used instead.
 
-    This rule also provides a convenient installer target named `<name>-installer`, with a path governed by `install_dest`.
-    This installer is used for installing this pack into the source-tree, relative to the directory where the rule is used.
-    See `codeql_pack_install` for more details. The first `codeql_pack` defined in a bazel package also aliases this
-    installer target with the `install` name as a shortcut.
+    This rule also provides a convenient installer target named `<name>-installer`, with a path governed by `install_dest`,
+    unless `install_dest == None`. This installer is used for installing this pack into the source-tree, relative to the
+    directory where the rule is used. See `codeql_pack_install` for more details. If present, `installer_alias` is used
+    to define a shorthand alias for `<name>-installer`. Be sure to change `installer_alias` or set it to `None` if a
+    bazel package defines multiple `codeql_pack`s.
+
+    If `experimental = True`, a second `codeql_pack` named `<name>-experimental` is defined alongside the primary one with
+    an `experimental` pack prefix and no installer, intended to be used when packaging the full distribution.
 
     This function does not accept `visibility`, as packs are always public to make it easy to define pack groups.
     """
-    internal = _make_internal(name)
-    zips = zips or {}
     if pack_prefix == None:
         pack_prefix = name
+    _codeql_pack_impl(
+        name,
+        srcs,
+        zips,
+        arch_overrides,
+        pack_prefix,
+        install_dest,
+        installer_alias,
+        pkg_filegroup_kwargs = kwargs,
+    )
+    if experimental:
+        _codeql_pack_impl(
+            "%s-experimental" % name,
+            srcs,
+            zips,
+            arch_overrides,
+            pack_prefix = "experimental/%s" % pack_prefix,
+            install_dest = None,
+            installer_alias = None,
+            pkg_filegroup_kwargs = kwargs,
+        )
+
+        # TODO: remove this after internal repo update
+        native.alias(
+            name = "experimental-%s" % name,
+            actual = "%s-experimental" % name,
+            visibility = ["//visibility:public"],
+        )
+
+def _codeql_pack_impl(
+        name,
+        srcs,
+        zips,
+        arch_overrides,
+        pack_prefix,
+        install_dest,
+        installer_alias,
+        pkg_filegroup_kwargs):
+    internal = _make_internal(name)
+    zips = zips or {}
     pkg_filegroup(
         name = internal("all"),
         srcs = srcs,
         visibility = ["//visibility:private"],
-        **kwargs
+        **pkg_filegroup_kwargs
     )
     _codeql_pack_info(
         name = name,
@@ -474,9 +518,12 @@ def codeql_pack(
         # packs are always public, so that we can easily bundle them into groups
         visibility = ["//visibility:public"],
     )
-    _codeql_pack_install(internal("installer"), [name], install_dest = install_dest, apply_pack_prefix = False)
-    if not native.existing_rule("install"):
-        native.alias(name = "install", actual = internal("installer"))
+    if install_dest:
+        _codeql_pack_install(internal("installer"), [name], install_dest = install_dest, apply_pack_prefix = False)
+
+        # TODO: remove deprecated `native.existing_rule(installer_alias)` after internal repo update
+        if installer_alias and not native.existing_rule(installer_alias):
+            native.alias(name = installer_alias, actual = internal("installer"))
 
 strip_prefix = _strip_prefix
 
