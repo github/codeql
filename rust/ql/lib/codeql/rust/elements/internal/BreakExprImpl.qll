@@ -102,5 +102,17 @@ module Impl {
         isLabelled(result, label)
       )
     }
+
+    override string toString() {
+      exists(string label, string expr |
+        (
+          result = " " + this.getLifetime().toString()
+          or
+          not this.hasLifetime() and result = ""
+        ) and
+        (if this.hasExpr() then expr = " ..." else expr = "") and
+        result = "break" + label + expr
+      )
+    }
   }
 }

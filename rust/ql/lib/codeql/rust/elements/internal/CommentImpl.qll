@@ -20,11 +20,20 @@ module Impl {
    * ```
    */
   class Comment extends Generated::Comment {
+    override string getText() { result = this.getCommentMarker() + " ..." }
+
     /**
      * Gets the text of this comment, excluding the comment marker.
      */
     string getCommentText() {
       exists(string s | s = this.getText() | result = s.regexpCapture("///?\\s*(.*)", 1))
+    }
+
+    /**
+     * Gets the marker of this comment, that is `//` or `///`.
+     */
+    string getCommentMarker() {
+      exists(string s | s = this.getText() | result = s.regexpCapture("(///?).*", 1))
     }
   }
 }

@@ -49,6 +49,17 @@ module Impl {
    * ```
    */
   class ContinueExpr extends Generated::ContinueExpr {
+    override string toString() {
+      exists(string label |
+        (
+          label = " " + this.getLifetime().getText()
+          or
+          not this.hasLifetime() and label = ""
+        ) and
+        result = "continue" + label
+      )
+    }
+
     /**
      * Gets the target of this `continue` expression.
      *

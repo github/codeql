@@ -21,6 +21,8 @@ module Impl {
    * ```
    */
   class OrPat extends Generated::OrPat {
+    override string toString() { result = "... | ..." }
+
     /** Gets the last pattern in this or pattern. */
     pragma[nomagic]
     Pat getLastPat() { result = this.getPat(this.getNumberOfPats() - 1) }

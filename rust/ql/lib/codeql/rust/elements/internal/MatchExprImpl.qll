@@ -28,6 +28,8 @@ module Impl {
    * ```
    */
   class MatchExpr extends Generated::MatchExpr {
+    override string toString() { result = "match ... { ... }" }
+
     /**
      * Gets the `index`th arm of this match expression.
      */
