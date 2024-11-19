@@ -13,7 +13,7 @@ If you don't have the `semmle-code` repo you may need to install Bazel manually,
 
 This approach uses a released `codeql` version and is simpler to use for QL development. From your `semmle-code` directory run:
 ```bash
-bazel run @codeql//rust:installer
+bazel run @codeql//rust:install
 ```
 You now need to create a [per-user CodeQL configuration file](https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/specifying-command-options-in-a-codeql-configuration-file#using-a-codeql-configuration-file) and specify the option:
 ```
