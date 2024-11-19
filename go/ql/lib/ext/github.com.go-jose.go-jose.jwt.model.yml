@@ -16,7 +16,7 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["group:go-jose/jwt", "", True, "ParseEncrypted", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["group:go-jose/jwt", "", True, "ParseSigned", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:go-jose/jwt", "", False, "ParseEncrypted", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:go-jose/jwt", "", False, "ParseSigned", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["group:go-jose/jwt", "NestedJSONWebToken", True, "ParseSignedAndEncrypted", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["group:go-jose/jwt", "NestedJSONWebToken", True, "Decrypt", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]

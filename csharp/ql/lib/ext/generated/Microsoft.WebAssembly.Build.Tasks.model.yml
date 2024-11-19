@@ -29,6 +29,7 @@ extensions:
       - ["Microsoft.WebAssembly.Build.Tasks", "WasmAppBuilderBaseTask", "AddToRuntimeConfig", "(System.Text.Json.Nodes.JsonObject,System.Text.Json.Nodes.JsonArray,System.Text.Json.Nodes.JsonArray)", "summary", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "WasmAppBuilderBaseTask", "Execute", "()", "summary", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "WasmAppBuilderBaseTask", "ExecuteInternal", "()", "summary", "df-generated"]
+      - ["Microsoft.WebAssembly.Build.Tasks", "WasmAppBuilderBaseTask", "ProcessSatelliteAssemblies", "(System.Action<System.ValueTuple<System.String,System.String>>)", "summary", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "WasmAppBuilderBaseTask", "ValidateArguments", "()", "summary", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "WasmAppBuilderBaseTask", "get_FileWrites", "()", "summary", "df-generated"]
       - ["Microsoft.WebAssembly.Build.Tasks", "WasmCalculateInitialHeapSize", "Execute", "()", "summary", "df-generated"]

@@ -4,6 +4,9 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Transactions", "CommittableTransaction", False, "BeginCommit", "(System.AsyncCallback,System.Object)", "", "Argument[1]", "ReturnValue.SyntheticField[System.Transactions.Transaction._internalTransaction].SyntheticField[System.Transactions.InternalTransaction._asyncState]", "value", "dfc-generated"]
+      - ["System.Transactions", "CommittableTransaction", False, "BeginCommit", "(System.AsyncCallback,System.Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Transactions", "CommittableTransaction", False, "get_AsyncState", "()", "", "Argument[this].SyntheticField[System.Transactions.Transaction._internalTransaction].SyntheticField[System.Transactions.InternalTransaction._asyncState]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Transactions", "Transaction", False, "Clone", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Transactions", "Transaction", False, "EnlistDurable", "(System.Guid,System.Transactions.ISinglePhaseNotification,System.Transactions.EnlistmentOptions)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Transactions", "Transaction", False, "EnlistPromotableSinglePhase", "(System.Transactions.IPromotableSinglePhaseNotification)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
@@ -71,9 +74,11 @@ extensions:
       - ["System.Transactions", "Transaction", "GetHashCode", "()", "summary", "df-generated"]
       - ["System.Transactions", "Transaction", "GetPromotedToken", "()", "summary", "df-generated"]
       - ["System.Transactions", "Transaction", "Rollback", "()", "summary", "df-generated"]
+      - ["System.Transactions", "Transaction", "add_TransactionCompleted", "(System.Transactions.TransactionCompletedEventHandler)", "summary", "df-generated"]
       - ["System.Transactions", "Transaction", "get_IsolationLevel", "()", "summary", "df-generated"]
       - ["System.Transactions", "Transaction", "op_Equality", "(System.Transactions.Transaction,System.Transactions.Transaction)", "summary", "df-generated"]
       - ["System.Transactions", "Transaction", "op_Inequality", "(System.Transactions.Transaction,System.Transactions.Transaction)", "summary", "df-generated"]
+      - ["System.Transactions", "Transaction", "remove_TransactionCompleted", "(System.Transactions.TransactionCompletedEventHandler)", "summary", "df-generated"]
       - ["System.Transactions", "TransactionAbortedException", "TransactionAbortedException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Transactions", "TransactionAbortedException", "TransactionAbortedException", "(System.String)", "summary", "df-generated"]
       - ["System.Transactions", "TransactionAbortedException", "TransactionAbortedException", "(System.String,System.Exception)", "summary", "df-generated"]
@@ -95,6 +100,8 @@ extensions:
       - ["System.Transactions", "TransactionInterop", "GetWhereabouts", "()", "summary", "df-generated"]
       - ["System.Transactions", "TransactionManager", "RecoveryComplete", "(System.Guid)", "summary", "df-generated"]
       - ["System.Transactions", "TransactionManager", "Reenlist", "(System.Guid,System.Byte[],System.Transactions.IEnlistmentNotification)", "summary", "df-generated"]
+      - ["System.Transactions", "TransactionManager", "add_DistributedTransactionStarted", "(System.Transactions.TransactionStartedEventHandler)", "summary", "df-generated"]
+      - ["System.Transactions", "TransactionManager", "remove_DistributedTransactionStarted", "(System.Transactions.TransactionStartedEventHandler)", "summary", "df-generated"]
       - ["System.Transactions", "TransactionManagerCommunicationException", "TransactionManagerCommunicationException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Transactions", "TransactionManagerCommunicationException", "TransactionManagerCommunicationException", "(System.String)", "summary", "df-generated"]
       - ["System.Transactions", "TransactionManagerCommunicationException", "TransactionManagerCommunicationException", "(System.String,System.Exception)", "summary", "df-generated"]
