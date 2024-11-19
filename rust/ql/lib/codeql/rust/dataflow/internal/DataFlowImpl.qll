@@ -111,6 +111,19 @@ module Node {
     override Location getLocation() { none() }
   }
 
+  /** A data flow node that corresponds to a CFG node for an AST node. */
+  abstract private class AstCfgFlowNode extends Node {
+    AstCfgNode n;
+
+    override CfgNode getCfgNode() { result = n }
+
+    override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
+
+    override Location getLocation() { result = n.getAstNode().getLocation() }
+
+    override string toString() { result = n.getAstNode().toString() }
+  }
+
   /**
    * A node in the data flow graph that corresponds to an expression in the
    * AST.
@@ -119,39 +132,34 @@ module Node {
    * to multiple `ExprNode`s, just like it may correspond to multiple
    * `ControlFlow::Node`s.
    */
-  class ExprNode extends Node, TExprNode {
-    ExprCfgNode n;
+  class ExprNode extends AstCfgFlowNode, TExprNode {
+    override ExprCfgNode n;
 
     ExprNode() { this = TExprNode(n) }
 
-    override CfgScope getCfgScope() { result = this.asExpr().getEnclosingCfgScope() }
-
-    override Location getLocation() { result = n.getExpr().getLocation() }
-
-    override string toString() { result = n.getExpr().toString() }
-
     override Expr asExpr() { result = n.getExpr() }
+  }
 
-    override CfgNode getCfgNode() { result = n }
+  final class PatNode extends AstCfgFlowNode, TPatNode {
+    override PatCfgNode n;
+
+    PatNode() { this = TPatNode(n) }
+
+    /** Gets the Pat in the AST that this node corresponds to. */
+    Pat getPat() { result = n.getPat() }
   }
 
   /**
    * The value of a parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  final class ParameterNode extends Node, TParameterNode {
-    ParamCfgNode parameter;
+  final class ParameterNode extends AstCfgFlowNode, TParameterNode {
+    override ParamCfgNode n;
 
-    ParameterNode() { this = TParameterNode(parameter) }
-
-    override CfgScope getCfgScope() { result = parameter.getParam().getEnclosingCfgScope() }
-
-    override Location getLocation() { result = parameter.getLocation() }
-
-    override string toString() { result = parameter.toString() }
+    ParameterNode() { this = TParameterNode(n) }
 
     /** Gets the parameter in the AST that this node corresponds to. */
-    Param getParameter() { result = parameter.getParam() }
+    Param getParameter() { result = n.getParam() }
   }
 
   final class ArgumentNode = NaNode;
@@ -269,6 +277,11 @@ module LocalFlow {
   pragma[nomagic]
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     nodeFrom.getCfgNode() = getALastEvalNode(nodeTo.getCfgNode())
+    or
+    exists(LetStmt s |
+      nodeFrom.getCfgNode().getAstNode() = s.getInitializer() and
+      nodeTo.getCfgNode().getAstNode() = s.getPat()
+    )
   }
 }
 
@@ -481,6 +494,7 @@ private module Cached {
   newtype TNode =
     TExprNode(ExprCfgNode n) or
     TParameterNode(ParamCfgNode p) or
+    TPatNode(PatCfgNode p) or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node)
 
   cached
