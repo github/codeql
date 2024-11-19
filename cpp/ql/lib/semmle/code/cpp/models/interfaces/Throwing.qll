@@ -71,5 +71,5 @@ abstract class ThrowingFunction extends ExceptionAnnotation {
   /**
    * Holds if this function will always raise an exception if called
    */
-  final predicate alwaysRaisesException() { this.mayThrowException(true) }
+  final predicate alwaysThrowsException() { this.mayThrowException(true) }
 }
