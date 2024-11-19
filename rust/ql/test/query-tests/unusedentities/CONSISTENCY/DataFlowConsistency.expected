@@ -3,5 +3,3 @@ uniqueEnclosingCallable
 | main.rs:198:28:198:28 | x | Node should have one enclosing callable but has 0. |
 | main.rs:202:28:202:28 | x | Node should have one enclosing callable but has 0. |
 | main.rs:206:28:206:28 | x | Node should have one enclosing callable but has 0. |
-localFlowIsLocal
-| main.rs:432:9:432:10 | i6 | main.rs:434:20:434:44 | [SSA] <captured entry> i6 | Local flow step does not preserve enclosing callable. |

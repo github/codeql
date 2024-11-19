@@ -43,7 +43,6 @@
 | main.rs:45:15:45:23 | CallExpr | main.rs:45:9:45:23 | BreakExpr |
 | main.rs:51:9:51:13 | [SSA] i | main.rs:52:10:52:10 | i |
 | main.rs:51:9:51:13 | i | main.rs:51:9:51:13 | [SSA] i |
-| main.rs:51:9:51:13 | i | main.rs:53:5:53:5 | [SSA] i |
 | main.rs:51:17:51:17 | 1 | main.rs:51:9:51:13 | i |
 | main.rs:53:5:53:5 | [SSA] i | main.rs:54:10:54:10 | i |
 | main.rs:53:5:53:5 | i | main.rs:53:5:53:5 | [SSA] i |
