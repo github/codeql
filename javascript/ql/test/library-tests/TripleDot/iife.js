@@ -41,3 +41,42 @@ function f4() {
     sink(inner(source("f4.1"))); // $ hasValueFlow=f4.1
     sink(inner(source("f4.2"))); // $ hasValueFlow=f4.2
 }
+
+function f5() {
+    function inner(x) {
+        let y;
+        function nested(p) {
+            y = p;
+        }
+        nested(x);
+        return y;
+    }
+    sink(inner(source("f5.1"))); // $ hasValueFlow=f5.1
+    sink(inner(source("f5.2"))); // $ hasValueFlow=f5.2
+}
+
+function f6() {
+    function inner(x) {
+        let y;
+        function nested(p) {
+            y = p;
+        }
+        (nested)(x); // same as f5, except the callee is parenthesised here
+        return y;
+    }
+    sink(inner(source("f6.1"))); // $ MISSING: hasValueFlow=f6.1
+    sink(inner(source("f6.2"))); // $ MISSING: hasValueFlow=f6.2
+}
+
+function f7() {
+    function inner(x) {
+        let y;
+        let nested = (function (p) {
+            y = p;
+        });
+        nested(x); // same as f5, except the function definition is parenthesised
+        return y;
+    }
+    sink(inner(source("f7.1"))); // $ MISSING: hasValueFlow=f7.1
+    sink(inner(source("f7.2"))); // $ MISSING: hasValueFlow=f7.2
+}
