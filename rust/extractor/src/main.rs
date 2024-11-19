@@ -130,11 +130,9 @@ fn main() -> anyhow::Result<()> {
         }
         extractor.extract_without_semantics(file, "no manifest found");
     }
-    let target_dir = &cfg
-        .cargo_target_dir
-        .unwrap_or_else(|| cfg.scratch_dir.join("target"));
+    let cargo_config = cfg.to_cargo_config();
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
-        if let Some((ref db, ref vfs)) = RustAnalyzer::load_workspace(manifest, target_dir) {
+        if let Some((ref db, ref vfs)) = RustAnalyzer::load_workspace(manifest, &cargo_config) {
             let semantics = Semantics::new(db);
             for file in files {
                 let Some(id) = path_to_file_id(file, vfs) else {
