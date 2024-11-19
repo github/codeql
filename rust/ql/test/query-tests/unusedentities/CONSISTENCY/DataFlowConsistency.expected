@@ -3,3 +3,17 @@ uniqueEnclosingCallable
 | main.rs:198:28:198:28 | x | Node should have one enclosing callable but has 0. |
 | main.rs:202:28:202:28 | x | Node should have one enclosing callable but has 0. |
 | main.rs:206:28:206:28 | x | Node should have one enclosing callable but has 0. |
+uniqueNodeToString
+| main.rs:205:32:205:32 | (no string representation) | Node should have one toString but has 0. |
+| main.rs:219:9:219:13 | (no string representation) | Node should have one toString but has 0. |
+| main.rs:224:9:224:13 | (no string representation) | Node should have one toString but has 0. |
+| main.rs:424:21:424:23 | (no string representation) | Node should have one toString but has 0. |
+| main.rs:424:26:424:28 | (no string representation) | Node should have one toString but has 0. |
+| main.rs:427:21:427:23 | (no string representation) | Node should have one toString but has 0. |
+| main.rs:427:26:427:28 | (no string representation) | Node should have one toString but has 0. |
+| main.rs:430:21:430:23 | (no string representation) | Node should have one toString but has 0. |
+| main.rs:430:26:430:28 | (no string representation) | Node should have one toString but has 0. |
+| main.rs:434:21:434:23 | (no string representation) | Node should have one toString but has 0. |
+| main.rs:434:26:434:28 | (no string representation) | Node should have one toString but has 0. |
+| unreachable.rs:10:34:10:34 | (no string representation) | Node should have one toString but has 0. |
+| unreachable.rs:230:13:230:17 | (no string representation) | Node should have one toString but has 0. |
