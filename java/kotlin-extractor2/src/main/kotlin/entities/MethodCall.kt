@@ -8,6 +8,7 @@ import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.psi.KtParenthesizedExpression
 import org.jetbrains.kotlin.psi.KtQualifiedExpression
 import org.jetbrains.kotlin.psi.KtSafeQualifiedExpression
 import org.jetbrains.kotlin.utils.mapToIndex
@@ -17,7 +18,7 @@ fun KotlinFileExtractor.extractMethodCall(
     call: KtCallExpression,
     enclosingCallable: Label<out DbCallable>,
     stmtExprParent: StmtExprParent
-) {
+): Label<out DbExpr> {
     val callTarget = call.resolveCallTarget() as? KaSimpleFunctionCall?
     val target = callTarget?.symbol
     val argMapping = callTarget?.argumentMapping
@@ -32,7 +33,12 @@ fun KotlinFileExtractor.extractMethodCall(
     val args = call.valueArguments
         .map { arg ->
             val expr = arg.getArgumentExpression()
-            val p = argMapping[expr]
+
+            // `argMapping` seems to drill into parenthesized expressions
+            // TODO: improve this based on https://youtrack.jetbrains.com/issue/KT-73184
+            val (childExpr, _) = drillIntoParenthesizedExpression(expr!!)
+
+            val p = argMapping[childExpr]
             if (p == null) {
                 TODO("This is unexpected, no parameter was found for the argument")
             }
@@ -69,6 +75,8 @@ fun KotlinFileExtractor.extractMethodCall(
     if (call.parent is KtSafeQualifiedExpression) {
         tw.writeKtSafeAccess(callId)
     }
+
+    return callId
 }
 
 context(KaSession)
