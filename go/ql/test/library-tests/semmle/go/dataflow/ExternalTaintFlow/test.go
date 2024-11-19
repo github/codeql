@@ -197,6 +197,9 @@ func simpleflow() {
 	arg3 := src
 	arg4 := src
 	b.SinkManyArgs(arg1, arg2, arg3, arg4) // $ hasTaintFlow="arg1" hasTaintFlow="arg2" hasTaintFlow="arg3"
+
+	temp := test.SourceVariable
+	test.SinkVariable = temp // $ hasTaintFlow="temp"
 }
 
 type mapstringstringtype map[string]string
