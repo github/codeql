@@ -3,6 +3,7 @@ private import codeql.actions.TaintTracking
 import codeql.actions.DataFlow
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.security.PoisonableSteps
+import codeql.actions.security.UntrustedCheckoutQuery
 
 string unzipRegexp() { result = "(unzip|tar)\\s+.*" }
 
@@ -22,11 +23,10 @@ class GitHubDownloadArtifactActionStep extends UntrustedArtifactDownloadStep, Us
       exists(this.getArgument("github-token"))
       or
       // There is an artifact upload step in the same workflow which can be influenced by an attacker on a checkout step
-      exists(LocalJob job, UsesStep checkout, UsesStep upload |
+      exists(LocalJob job, SimplePRHeadCheckoutStep checkout, UsesStep upload |
         this.getEnclosingWorkflow().getAJob() = job and
         job.getAStep() = checkout and
-        job.getATriggerEvent().getName() = "pull_request_target" and
-        checkout.getCallee() = "actions/checkout" and
+        checkout.getATriggerEvent().getName() = "pull_request_target" and
         checkout.getAFollowingStep() = upload and
         upload.getCallee() = "actions/upload-artifact"
       )
@@ -55,8 +55,10 @@ class DownloadArtifactActionStep extends UntrustedArtifactDownloadStep, UsesStep
         "ma-ve/action-download-artifact-with-retry"
       ] and
     (
-      not exists(this.getArgument(["branch", "branch_name"])) or
-      not this.getArgument(["branch", "branch_name"]) = ["main", "master"]
+      not exists(this.getArgument(["branch", "branch_name"]))
+      or
+      exists(this.getArgument(["branch", "branch_name"])) and
+      this.getArgument("allow_forks") = "true"
     ) and
     (
       not exists(this.getArgument(["commit", "commitHash", "commit_sha"])) or
@@ -74,7 +76,8 @@ class DownloadArtifactActionStep extends UntrustedArtifactDownloadStep, UsesStep
     ) and
     (
       not exists(this.getArgument("pr")) or
-      not this.getArgument("pr").matches("%github.event.pull_request.number%")
+      not this.getArgument("pr")
+          .matches(["%github.event.pull_request.number%", "%github.event.number%"])
     )
   }
 

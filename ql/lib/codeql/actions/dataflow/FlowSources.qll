@@ -92,28 +92,7 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
 
   GitCommandSource() {
     exists(Step checkout, string cmd_regex |
-      // This should be:
-      // source instanceof PRHeadCheckoutStep
-      // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
-      // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
-      // instead of using  ActionsMutableRefCheckout and ActionsSHACheckout
-      (
-        exists(Uses uses |
-          checkout = uses and
-          uses.getCallee() = "actions/checkout" and
-          exists(uses.getArgument("ref")) and
-          not uses.getArgument("ref").matches("%base%") and
-          uses.getATriggerEvent().getName() = checkoutTriggers()
-        )
-        or
-        checkout instanceof GitMutableRefCheckout
-        or
-        checkout instanceof GitSHACheckout
-        or
-        checkout instanceof GhMutableRefCheckout
-        or
-        checkout instanceof GhSHACheckout
-      ) and
+      checkout instanceof SimplePRHeadCheckoutStep and
       this.asExpr() = run.getScript() and
       checkout.getAFollowingStep() = run and
       run.getScript().getAStmt() = cmd and
@@ -255,29 +234,7 @@ class ArtifactSource extends RemoteFlowSource, FileSource {
 private class CheckoutSource extends RemoteFlowSource, FileSource {
   Event event;
 
-  CheckoutSource() {
-    // This should be:
-    // source instanceof PRHeadCheckoutStep
-    // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
-    // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
-    // instead of using  ActionsMutableRefCheckout and ActionsSHACheckout
-    exists(Uses uses |
-      this.asExpr() = uses and
-      uses.getCallee() = "actions/checkout" and
-      exists(uses.getArgument("ref")) and
-      not uses.getArgument("ref").matches("%base%") and
-      event = uses.getATriggerEvent() and
-      event.getName() = checkoutTriggers()
-    )
-    or
-    this.asExpr() instanceof GitMutableRefCheckout
-    or
-    this.asExpr() instanceof GitSHACheckout
-    or
-    this.asExpr() instanceof GhMutableRefCheckout
-    or
-    this.asExpr() instanceof GhSHACheckout
-  }
+  CheckoutSource() { this.asExpr() instanceof SimplePRHeadCheckoutStep }
 
   override string getSourceType() { result = "artifact" }
 

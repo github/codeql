@@ -193,6 +193,31 @@ predicate containsHeadRef(string s) {
   )
 }
 
+class SimplePRHeadCheckoutStep extends Step {
+  SimplePRHeadCheckoutStep() {
+    // This should be:
+    // artifact instanceof PRHeadCheckoutStep
+    // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
+    // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
+    // instead of using ActionsMutableRefCheckout and ActionsSHACheckout
+    exists(Uses uses |
+      this = uses and
+      uses.getCallee() = "actions/checkout" and
+      exists(uses.getArgument("ref")) and
+      not uses.getArgument("ref").matches("%base%") and
+      uses.getATriggerEvent().getName() = checkoutTriggers()
+    )
+    or
+    this instanceof GitMutableRefCheckout
+    or
+    this instanceof GitSHACheckout
+    or
+    this instanceof GhMutableRefCheckout
+    or
+    this instanceof GhSHACheckout
+  }
+}
+
 /** Checkout of a Pull Request HEAD */
 abstract class PRHeadCheckoutStep extends Step {
   abstract string getPath();
