@@ -127,4 +127,21 @@
     const element = list.findLastIndex((item) => sink(item)); // NOT OK
     sink(element); // OK
   }
+  {
+    const arr = source();
+    const element1 = arr.find((item) => sink(item)); // NOT OK - only found with taint-tracking.
+    sink(element1); // NOT OK
+  }
+
+  {
+    const arr = source();
+    const element1 = arr.findLast((item) => sink(item)); // NOT OK - only found with taint-tracking.
+    sink(element1); // NOT OK
+  }
+  
+  {
+    const arr = source();
+    const element1 = arr.findLastIndex((item) => sink(item)); // NOT OK - only found with taint-tracking.
+    sink(element1); // OK
+  }
 });
