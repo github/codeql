@@ -113,6 +113,31 @@ fn option_pattern_match() {
     }
 }
 
+fn block_expression1() -> i64 {
+    let a = { 0 };
+    a
+}
+
+fn block_expression2(b: bool) -> i64 {
+    let a = 'block: {
+        if b {
+            break 'block 1;
+        };
+        2
+    };
+    a
+}
+
+fn block_expression3(b: bool) -> i64 {
+    let a = 'block: {
+        if b {
+            break 'block 1;
+        }
+        break 'block 2;
+    };
+    a
+}
+
 fn main() {
     direct();
     variable_usage();
@@ -125,4 +150,7 @@ fn main() {
     struct_field();
     struct_pattern_match();
     option_pattern_match();
+    block_expression1();
+    block_expression2(true);
+    block_expression3(true);
 }
