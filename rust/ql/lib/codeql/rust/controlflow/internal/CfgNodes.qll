@@ -40,6 +40,38 @@ private module CfgNodesInput implements InputSig<Location> {
 
 import MakeCfgNodes<Location, CfgNodesInput>
 
+class MatchExprChildMapping extends ParentAstNode, MatchExpr {
+  override predicate relevantChild(AstNode child) {
+    child = this.getAnArm().getPat()
+    or
+    child = this.getAnArm().getGuard().getCondition()
+    or
+    child = this.getAnArm().getExpr()
+  }
+}
+
+class BlockExprChildMapping extends ParentAstNode, BlockExpr {
+  override predicate relevantChild(AstNode child) { child = this.getStmtList().getTailExpr() }
+}
+
+class BreakExprTargetChildMapping extends ParentAstNode, Expr {
+  override predicate relevantChild(AstNode child) { child.(BreakExpr).getTarget() = this }
+}
+
+class CallExprBaseChildMapping extends ParentAstNode, CallExprBase {
+  override predicate relevantChild(AstNode child) { child = this.getArgList().getAnArg() }
+}
+
+class RecordExprChildMapping extends ParentAstNode, RecordExpr {
+  override predicate relevantChild(AstNode child) {
+    child = this.getRecordExprFieldList().getAField().getExpr()
+  }
+}
+
+class FormatArgsExprChildMapping extends ParentAstNode, CfgImpl::ExprTrees::FormatArgsExprTree {
+  override predicate relevantChild(AstNode child) { child = this.getChildNode(_) }
+}
+
 private class ChildMappingImpl extends ChildMapping {
   /** Gets a CFG node for `child`, where `child` is a relevant child node of `parent`. */
   private CfgNode getRelevantChildCfgNode(AstNode parent, AstNode child) {
