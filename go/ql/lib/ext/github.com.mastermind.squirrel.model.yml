@@ -1,0 +1,51 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["squirrel", "github.com/Masterminds/squirrel"]
+      - ["squirrel", "gopkg.in/Masterminds/squirrel"]
+      - ["squirrel", "github.com/lann/squirrel"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:squirrel", "", False, "Delete", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "", False, "Expr", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "", False, "Insert", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "", False, "Select", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["group:squirrel", "", False, "Update", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+
+      - ["group:squirrel", "DeleteBuilder", True, "From", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "DeleteBuilder", True, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["group:squirrel", "DeleteBuilder", True, "Prefix", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "DeleteBuilder", True, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"]
+      # DeleteBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
+
+      - ["group:squirrel", "InsertBuilder", True, "Columns", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["group:squirrel", "InsertBuilder", True, "Into", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "InsertBuilder", True, "Options", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["group:squirrel", "InsertBuilder", True, "Prefix", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "InsertBuilder", True, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"]
+
+      - ["group:squirrel", "SelectBuilder", True, "CrossJoin", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "Column", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "Columns", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["group:squirrel", "SelectBuilder", True, "From", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "GroupBy", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "InnerJoin", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "LeftJoin", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "Options", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["group:squirrel", "SelectBuilder", True, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["group:squirrel", "SelectBuilder", True, "Prefix", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "RightJoin", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "SelectBuilder", True, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"]
+      # SelectBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
+
+      - ["group:squirrel", "UpdateBuilder", True, "From", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "UpdateBuilder", True, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["group:squirrel", "UpdateBuilder", True, "Prefix", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "UpdateBuilder", True, "Set", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "UpdateBuilder", True, "Suffix", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:squirrel", "UpdateBuilder", True, "Table", "", "", "Argument[0]", "sql-injection", "manual"]
+      # UpdateBuilder.Where has to be modeled in QL to avoid FPs when a non-string argument is used
