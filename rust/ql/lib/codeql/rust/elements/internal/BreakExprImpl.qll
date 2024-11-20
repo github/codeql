@@ -106,9 +106,9 @@ module Impl {
     override string toString() {
       exists(string label, string expr |
         (
-          result = " " + this.getLifetime().toString()
+          label = " " + this.getLifetime().toString()
           or
-          not this.hasLifetime() and result = ""
+          not this.hasLifetime() and label = ""
         ) and
         (if this.hasExpr() then expr = " ..." else expr = "") and
         result = "break" + label + expr

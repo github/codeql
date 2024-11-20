@@ -34,13 +34,13 @@
 | main.rs:40:9:40:9 | [SSA] a | main.rs:43:10:43:10 | a |
 | main.rs:40:9:40:9 | a | main.rs:40:9:40:9 | [SSA] a |
 | main.rs:40:13:42:5 | loop {...} | main.rs:40:9:40:9 | a |
-| main.rs:41:9:41:15 | (no string representation) | main.rs:40:13:42:5 | loop {...} |
-| main.rs:41:15:41:15 | 1 | main.rs:41:9:41:15 | (no string representation) |
+| main.rs:41:9:41:15 | break ... | main.rs:40:13:42:5 | loop {...} |
+| main.rs:41:15:41:15 | 1 | main.rs:41:9:41:15 | break ... |
 | main.rs:44:9:44:9 | [SSA] b | main.rs:47:10:47:10 | b |
 | main.rs:44:9:44:9 | b | main.rs:44:9:44:9 | [SSA] b |
 | main.rs:44:13:46:5 | loop {...} | main.rs:44:9:44:9 | b |
-| main.rs:45:9:45:23 | (no string representation) | main.rs:44:13:46:5 | loop {...} |
-| main.rs:45:15:45:23 | source(...) | main.rs:45:9:45:23 | (no string representation) |
+| main.rs:45:9:45:23 | break ... | main.rs:44:13:46:5 | loop {...} |
+| main.rs:45:15:45:23 | source(...) | main.rs:45:9:45:23 | break ... |
 | main.rs:51:9:51:13 | [SSA] i | main.rs:52:10:52:10 | i |
 | main.rs:51:9:51:13 | i | main.rs:51:9:51:13 | [SSA] i |
 | main.rs:51:17:51:17 | 1 | main.rs:51:9:51:13 | i |

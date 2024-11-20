@@ -223,7 +223,6 @@
 /lib/codeql/rust/elements/internal/FnPtrTypeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FnPtrTypeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ForExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ForExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ForTypeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ForTypeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsArgConstructor.qll linguist-generated
@@ -388,7 +387,6 @@
 /lib/codeql/rust/elements/internal/UnimplementedConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/UnimplementedImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UnionConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/UnionImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseTreeConstructor.qll linguist-generated

@@ -20,7 +20,14 @@ module Impl {
    */
   class Param extends Generated::Param {
     override string toString() {
-      result = this.getPat().toString() + ": " + this.getTy().toString()
+      exists(string ty |
+        (
+          ty = ": " + this.getTy().toString()
+          or
+          not this.hasTy() and ty = ""
+        ) and
+        result = this.getPat().toString() + ty
+      )
     }
   }
 }

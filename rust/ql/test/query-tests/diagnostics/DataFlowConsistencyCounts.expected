@@ -11,7 +11,7 @@
 | Node has multiple PostUpdateNodes | 0 |
 | Node should have one enclosing callable | 0 |
 | Node should have one location | 0 |
-| Node should have one toString | 1 |
+| Node should have one toString | 0 |
 | Node should have one type | 0 |
 | Node steps to itself | 0 |
 | Nodes without location | 0 |
