@@ -6,6 +6,7 @@
 
 private import codeql.rust.dataflow.DataFlow
 private import codeql.threatmodels.ThreatModels
+private import codeql.rust.Frameworks
 
 /**
  * A data flow source for a specific threat-model.
