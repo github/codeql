@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - "powershell/**"
-      - "shared/**"
   workflow_dispatch:
 
 jobs:
