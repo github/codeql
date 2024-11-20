@@ -1051,14 +1051,18 @@ edges
 | test.rs:502:28:504:5 | BlockExpr | test.rs:502:5:504:5 | exit new (normal) |  |
 | test.rs:503:9:503:25 | RecordExpr | test.rs:502:28:504:5 | BlockExpr |  |
 | test.rs:503:23:503:23 | a | test.rs:503:9:503:25 | RecordExpr |  |
-| test.rs:506:5:508:5 | enter negated | test.rs:507:23:507:26 | self |  |
+| test.rs:506:5:508:5 | enter negated | test.rs:506:16:506:19 | self |  |
 | test.rs:506:5:508:5 | exit negated (normal) | test.rs:506:5:508:5 | exit negated |  |
+| test.rs:506:16:506:19 | SelfParam | test.rs:507:23:507:26 | self |  |
+| test.rs:506:16:506:19 | self | test.rs:506:16:506:19 | SelfParam |  |
 | test.rs:506:30:508:5 | BlockExpr | test.rs:506:5:508:5 | exit negated (normal) |  |
 | test.rs:507:9:507:30 | RecordExpr | test.rs:506:30:508:5 | BlockExpr |  |
 | test.rs:507:23:507:26 | self | test.rs:507:23:507:28 | FieldExpr |  |
 | test.rs:507:23:507:28 | FieldExpr | test.rs:507:9:507:30 | RecordExpr |  |
-| test.rs:510:5:512:5 | enter multifly_add | test.rs:510:32:510:32 | a |  |
+| test.rs:510:5:512:5 | enter multifly_add | test.rs:510:26:510:29 | self |  |
 | test.rs:510:5:512:5 | exit multifly_add (normal) | test.rs:510:5:512:5 | exit multifly_add |  |
+| test.rs:510:21:510:29 | SelfParam | test.rs:510:32:510:32 | a |  |
+| test.rs:510:26:510:29 | self | test.rs:510:21:510:29 | SelfParam |  |
 | test.rs:510:32:510:32 | a | test.rs:510:32:510:37 | Param | match |
 | test.rs:510:32:510:37 | Param | test.rs:510:40:510:40 | b |  |
 | test.rs:510:40:510:40 | b | test.rs:510:40:510:45 | Param | match |

@@ -72,10 +72,17 @@ import CfgImpl
 class CallableScopeTree extends StandardTree, PreOrderTree, PostOrderTree, Scope::CallableScope {
   override predicate propagatesAbnormal(AstNode child) { none() }
 
+  private int getNumberOfSelfParams() {
+    if this.getParamList().hasSelfParam() then result = 1 else result = 0
+  }
+
   override AstNode getChildNode(int i) {
-    result = this.getParamList().getParam(i)
+    i = 0 and
+    result = this.getParamList().getSelfParam()
     or
-    i = this.getParamList().getNumberOfParams() and
+    result = this.getParamList().getParam(i - this.getNumberOfSelfParams())
+    or
+    i = this.getParamList().getNumberOfParams() + this.getNumberOfSelfParams() and
     result = this.getBody()
   }
 }
@@ -190,6 +197,10 @@ class MatchArmTree extends ControlFlowTree, MatchArm {
 class NameTree extends LeafTree, Name { }
 
 class NameRefTree extends LeafTree, NameRef { }
+
+class SelfParamTree extends StandardPostOrderTree, SelfParam {
+  override AstNode getChildNode(int i) { i = 0 and result = this.getName() }
+}
 
 class TypeRefTree extends LeafTree instanceof TypeRef { }
 
