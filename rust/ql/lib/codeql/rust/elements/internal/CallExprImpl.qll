@@ -5,6 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.CallExpr
+private import codeql.rust.elements.PathExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `CallExpr` and should not
@@ -22,6 +23,15 @@ module Impl {
    * ```
    */
   class CallExpr extends Generated::CallExpr {
-    override string toString() { result = "... (...)" }
+    override string toString() {
+      exists(string callee |
+        (
+          callee = this.getExpr().(PathExpr).toString()
+          or
+          not this.getExpr() instanceof PathExpr and callee = "..."
+        ) and
+        result = callee + "(...)"
+      )
+    }
   }
 }
