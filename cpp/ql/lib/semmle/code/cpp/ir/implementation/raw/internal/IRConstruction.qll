@@ -171,6 +171,20 @@ module Raw {
       // forwarded the result of another translated expression.
       instruction = translatedExpr.getInstruction(_)
     )
+    or
+    // Consider the snippet `if(x) { ... }` where `x` is an integer.
+    // In C++ there is a `BoolConversion` conversion on `x` which generates a
+    // `CompareNEInstruction` whose `getInstructionUnconvertedResultExpression`
+    // is the `BoolConversion`. Thus, calling `getInstructionConvertedResultExpression` on
+    // the `CompareNEInstruction` gives `x` in C++ code.
+    // However, in C there is no such conversion to return. So instead we have
+    // to map the result of `getInstructionConvertedResultExpression` on
+    // the `CompareNEInstruction` to `x` manually.
+    exists(TranslatedValueCondition translatedValueCondition |
+      translatedValueCondition = getTranslatedCondition(result) and
+      translatedValueCondition.shouldGenerateCompareNE() and
+      instruction = translatedValueCondition.getInstruction(ValueConditionCompareTag())
+    )
   }
 
   cached
