@@ -86,3 +86,33 @@ def baz7(loc_foo):
 threading.Thread(target=bar7).start()
 
 baz7(foo7)
+
+# Test 8
+# FN - Flow is also *not* found in the above case through a direct call 
+
+foo8 = []
+
+def bar8():
+    time.sleep(1)
+    ensure_tainted(foo8[0]) # $MISSING: tainted
+
+def baz8(loc_foo):
+    loc_foo.append(TAINTED_STRING)
+
+baz8(foo8)
+bar8()
+
+# Test 9
+# TP - Flow is found in the above case when the variable is captured rather than global
+
+def test9():
+    foo9 = []
+    def bar9():
+        time.sleep(1)
+        ensure_tainted(foo9[0]) # $tainted
+
+    def baz9(loc_foo):
+        loc_foo.append(TAINTED_STRING)
+
+    baz9(foo9)
+    bar9()
