@@ -21,6 +21,8 @@ jobs:
           token: ${{ secrets.WORKFLOW_TOKEN }}
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
+        with:
+          channel: stable
       - name: Compile PowerShell Queries
         run: |
           codeql query compile --check-only --keep-going powershell/ql/src
