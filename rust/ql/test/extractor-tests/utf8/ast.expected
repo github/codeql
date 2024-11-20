@@ -27,7 +27,7 @@
 | utf8_identifiers.rs:10:12:10:13 | ParamList |
 | utf8_identifiers.rs:10:15:12:1 | StmtList |
 | utf8_identifiers.rs:10:15:12:1 | { ... } |
-| utf8_identifiers.rs:11:5:11:24 | let \u03b1 = ... |
+| utf8_identifiers.rs:11:5:11:24 | let ... = 0.00001f64 |
 | utf8_identifiers.rs:11:9:11:9 | \u03b1 |
 | utf8_identifiers.rs:11:9:11:9 | \u03b1 |
 | utf8_identifiers.rs:11:14:11:23 | 0.00001f64 |

@@ -125,7 +125,7 @@ definition
 | variables.rs:436:9:436:13 | i | variables.rs:436:13:436:13 | i |
 | variables.rs:437:9:437:13 | block | variables.rs:437:9:437:13 | block |
 | variables.rs:438:9:438:9 | i | variables.rs:436:13:436:13 | i |
-| variables.rs:441:5:441:15 | await ... | variables.rs:436:13:436:13 | i |
+| variables.rs:441:5:441:15 | await block | variables.rs:436:13:436:13 | i |
 | variables.rs:445:8:445:8 | b | variables.rs:445:8:445:8 | b |
 | variables.rs:446:9:446:13 | x | variables.rs:446:13:446:13 | x |
 | variables.rs:449:5:457:5 | phi | variables.rs:446:13:446:13 | x |
@@ -242,7 +242,7 @@ read
 | variables.rs:423:5:423:14 | closure2(...) | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:428:9:428:20 | closure3 | variables.rs:428:13:428:20 | closure3 | variables.rs:431:5:431:12 | closure3 |
 | variables.rs:437:9:437:13 | block | variables.rs:437:9:437:13 | block | variables.rs:441:5:441:9 | block |
-| variables.rs:441:5:441:15 | await ... | variables.rs:436:13:436:13 | i | variables.rs:442:15:442:15 | i |
+| variables.rs:441:5:441:15 | await block | variables.rs:436:13:436:13 | i | variables.rs:442:15:442:15 | i |
 | variables.rs:445:8:445:8 | b | variables.rs:445:8:445:8 | b | variables.rs:449:8:449:8 | b |
 | variables.rs:446:9:446:13 | x | variables.rs:446:13:446:13 | x | variables.rs:447:15:447:15 | x |
 | variables.rs:446:9:446:13 | x | variables.rs:446:13:446:13 | x | variables.rs:448:15:448:15 | x |
@@ -346,7 +346,7 @@ firstRead
 | variables.rs:423:5:423:14 | closure2(...) | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:428:9:428:20 | closure3 | variables.rs:428:13:428:20 | closure3 | variables.rs:431:5:431:12 | closure3 |
 | variables.rs:437:9:437:13 | block | variables.rs:437:9:437:13 | block | variables.rs:441:5:441:9 | block |
-| variables.rs:441:5:441:15 | await ... | variables.rs:436:13:436:13 | i | variables.rs:442:15:442:15 | i |
+| variables.rs:441:5:441:15 | await block | variables.rs:436:13:436:13 | i | variables.rs:442:15:442:15 | i |
 | variables.rs:445:8:445:8 | b | variables.rs:445:8:445:8 | b | variables.rs:449:8:449:8 | b |
 | variables.rs:446:9:446:13 | x | variables.rs:446:13:446:13 | x | variables.rs:447:15:447:15 | x |
 | variables.rs:449:5:457:5 | phi | variables.rs:446:13:446:13 | x | variables.rs:458:15:458:15 | x |
@@ -446,7 +446,7 @@ lastRead
 | variables.rs:423:5:423:14 | closure2(...) | variables.rs:418:13:418:13 | y | variables.rs:424:15:424:15 | y |
 | variables.rs:428:9:428:20 | closure3 | variables.rs:428:13:428:20 | closure3 | variables.rs:431:5:431:12 | closure3 |
 | variables.rs:437:9:437:13 | block | variables.rs:437:9:437:13 | block | variables.rs:441:5:441:9 | block |
-| variables.rs:441:5:441:15 | await ... | variables.rs:436:13:436:13 | i | variables.rs:442:15:442:15 | i |
+| variables.rs:441:5:441:15 | await block | variables.rs:436:13:436:13 | i | variables.rs:442:15:442:15 | i |
 | variables.rs:445:8:445:8 | b | variables.rs:445:8:445:8 | b | variables.rs:449:8:449:8 | b |
 | variables.rs:446:9:446:13 | x | variables.rs:446:13:446:13 | x | variables.rs:448:15:448:15 | x |
 | variables.rs:449:5:457:5 | phi | variables.rs:446:13:446:13 | x | variables.rs:458:15:458:15 | x |

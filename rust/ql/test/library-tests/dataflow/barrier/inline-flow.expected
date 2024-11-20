@@ -1,16 +1,16 @@
 models
 edges
-| main.rs:21:13:21:21 | (...) ... : unit | main.rs:22:10:22:10 | s | provenance |  |
-| main.rs:32:13:32:21 | (...) ... : unit | main.rs:33:10:33:10 | s | provenance |  |
+| main.rs:21:13:21:21 | source(...) : unit | main.rs:22:10:22:10 | s | provenance |  |
+| main.rs:32:13:32:21 | source(...) : unit | main.rs:33:10:33:10 | s | provenance |  |
 nodes
-| main.rs:17:10:17:18 | (...) ... | semmle.label | (...) ... |
-| main.rs:21:13:21:21 | (...) ... : unit | semmle.label | (...) ... : unit |
+| main.rs:17:10:17:18 | source(...) | semmle.label | source(...) |
+| main.rs:21:13:21:21 | source(...) : unit | semmle.label | source(...) : unit |
 | main.rs:22:10:22:10 | s | semmle.label | s |
-| main.rs:32:13:32:21 | (...) ... : unit | semmle.label | (...) ... : unit |
+| main.rs:32:13:32:21 | source(...) : unit | semmle.label | source(...) : unit |
 | main.rs:33:10:33:10 | s | semmle.label | s |
 subpaths
 testFailures
 #select
-| main.rs:17:10:17:18 | (...) ... | main.rs:17:10:17:18 | (...) ... | main.rs:17:10:17:18 | (...) ... | $@ | main.rs:17:10:17:18 | (...) ... | (...) ... |
-| main.rs:22:10:22:10 | s | main.rs:21:13:21:21 | (...) ... : unit | main.rs:22:10:22:10 | s | $@ | main.rs:21:13:21:21 | (...) ... : unit | (...) ... : unit |
-| main.rs:33:10:33:10 | s | main.rs:32:13:32:21 | (...) ... : unit | main.rs:33:10:33:10 | s | $@ | main.rs:32:13:32:21 | (...) ... : unit | (...) ... : unit |
+| main.rs:17:10:17:18 | source(...) | main.rs:17:10:17:18 | source(...) | main.rs:17:10:17:18 | source(...) | $@ | main.rs:17:10:17:18 | source(...) | source(...) |
+| main.rs:22:10:22:10 | s | main.rs:21:13:21:21 | source(...) : unit | main.rs:22:10:22:10 | s | $@ | main.rs:21:13:21:21 | source(...) : unit | source(...) : unit |
+| main.rs:33:10:33:10 | s | main.rs:32:13:32:21 | source(...) : unit | main.rs:33:10:33:10 | s | $@ | main.rs:32:13:32:21 | source(...) : unit | source(...) : unit |
