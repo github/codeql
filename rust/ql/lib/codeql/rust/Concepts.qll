@@ -48,6 +48,32 @@ class ActiveThreatModelSource extends ThreatModelSource {
 }
 
 /**
+ * A data flow source corresponding to the program's command line arguments or path.
+ */
+class CommandLineArgsSource extends ThreatModelSource instanceof CommandLineArgsSource::Range { }
+
+module CommandLineArgsSource {
+  abstract class Range extends ThreatModelSource::Range {
+    override string getThreatModel() { result = "commandargs" }
+
+    override string getSourceType() { result = "CommandLineArgs" }
+  }
+}
+
+/**
+ * A data flow source corresponding to the program's environment.
+ */
+class EnvironmentSource extends ThreatModelSource instanceof EnvironmentSource::Range { }
+
+module EnvironmentSource {
+  abstract class Range extends ThreatModelSource::Range {
+    override string getThreatModel() { result = "environment" }
+
+    override string getSourceType() { result = "EnvironmentSource" }
+  }
+}
+
+/**
  * A data-flow node that constructs a SQL statement.
  *
  * Often, it is worthy of an alert if a SQL statement is constructed such that
