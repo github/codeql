@@ -64,7 +64,7 @@ def test6():
 
     def bar6():
         time.sleep(1)
-        ensure_tainted(foo[0]) # $tainted
+        ensure_tainted(foo6[0]) # $tainted
 
     foo6.append(TAINTED_STRING)
     bar6()
