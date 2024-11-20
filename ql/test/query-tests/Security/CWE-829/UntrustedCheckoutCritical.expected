@@ -210,7 +210,8 @@ edges
 | .github/workflows/test7.yml:33:9:36:6 | Run Step | .github/workflows/test7.yml:36:9:39:6 | Run Step |
 | .github/workflows/test7.yml:36:9:39:6 | Run Step | .github/workflows/test7.yml:39:9:49:6 | Run Step: bench-command |
 | .github/workflows/test7.yml:39:9:49:6 | Run Step: bench-command | .github/workflows/test7.yml:49:9:59:6 | Run Step: benchmark-pr |
-| .github/workflows/test7.yml:49:9:59:6 | Run Step: benchmark-pr | .github/workflows/test7.yml:59:9:59:30 | Run Step |
+| .github/workflows/test7.yml:49:9:59:6 | Run Step: benchmark-pr | .github/workflows/test7.yml:59:9:60:6 | Run Step |
+| .github/workflows/test7.yml:59:9:60:6 | Run Step | .github/workflows/test7.yml:60:9:60:37 | Run Step |
 | .github/workflows/test8.yml:20:9:26:6 | Uses Step | .github/workflows/test8.yml:26:9:29:2 | Run Step |
 | .github/workflows/test9.yml:11:9:16:6 | Uses Step | .github/workflows/test9.yml:16:9:17:48 | Run Step |
 | .github/workflows/test10.yml:20:9:25:6 | Uses Step | .github/workflows/test10.yml:25:9:30:2 | Run Step |
@@ -351,7 +352,8 @@ edges
 | .github/workflows/test7.yml:33:9:36:6 | Run Step | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:33:9:36:6 | Run Step | Potential execution of untrusted code on a privileged workflow ($@) | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
 | .github/workflows/test7.yml:36:9:39:6 | Run Step | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:36:9:39:6 | Run Step | Potential execution of untrusted code on a privileged workflow ($@) | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
 | .github/workflows/test7.yml:49:9:59:6 | Run Step: benchmark-pr | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:49:9:59:6 | Run Step: benchmark-pr | Potential execution of untrusted code on a privileged workflow ($@) | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
-| .github/workflows/test7.yml:59:9:59:30 | Run Step | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:59:9:59:30 | Run Step | Potential execution of untrusted code on a privileged workflow ($@) | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
+| .github/workflows/test7.yml:59:9:60:6 | Run Step | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:59:9:60:6 | Run Step | Potential execution of untrusted code on a privileged workflow ($@) | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
+| .github/workflows/test7.yml:60:9:60:37 | Run Step | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:60:9:60:37 | Run Step | Potential execution of untrusted code on a privileged workflow ($@) | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
 | .github/workflows/test10.yml:25:9:30:2 | Run Step | .github/workflows/test10.yml:20:9:25:6 | Uses Step | .github/workflows/test10.yml:25:9:30:2 | Run Step | Potential execution of untrusted code on a privileged workflow ($@) | .github/workflows/test10.yml:8:3:8:21 | pull_request_target | pull_request_target |
 | .github/workflows/test11.yml:90:7:93:54 | Uses Step | .github/workflows/test11.yml:84:7:90:4 | Uses Step | .github/workflows/test11.yml:90:7:93:54 | Uses Step | Potential execution of untrusted code on a privileged workflow ($@) | .github/workflows/test11.yml:5:3:5:15 | issue_comment | issue_comment |
 | .github/workflows/test17.yml:19:15:23:58 | Uses Step | .github/workflows/test17.yml:12:15:19:12 | Uses Step | .github/workflows/test17.yml:19:15:23:58 | Uses Step | Potential execution of untrusted code on a privileged workflow ($@) | .github/workflows/test17.yml:3:5:3:16 | workflow_run | workflow_run |

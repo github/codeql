@@ -206,6 +206,11 @@ edges
 | .github/workflows/test26.yml:22:9:28:6 | Uses Step: parse [data] | .github/workflows/test26.yml:28:20:28:50 | steps.parse.outputs.data | provenance |  |
 | .github/workflows/test26.yml:22:9:28:6 | Uses Step: parse [data] | .github/workflows/test26.yml:29:20:29:58 | toJSON(steps.parse.outputs.data) | provenance |  |
 | .github/workflows/test26.yml:26:18:26:58 | steps.read_issue_body.outputs.body | .github/workflows/test26.yml:22:9:28:6 | Uses Step: parse [data] | provenance |  |
+| .github/workflows/test27.yml:19:7:21:4 | Job outputs node [chart-version] | .github/workflows/test27.yml:52:17:52:56 | needs.setup.outputs.chart-version | provenance |  |
+| .github/workflows/test27.yml:20:23:20:68 | steps.get-version.outputs.chart_version | .github/workflows/test27.yml:19:7:21:4 | Job outputs node [chart-version] | provenance |  |
+| .github/workflows/test27.yml:35:9:41:6 | Uses Step | .github/workflows/test27.yml:43:14:44:66 | echo "chart_version=$(<ERSION)" \| tee -a $GITHUB_OUTPUT\n | provenance | Config |
+| .github/workflows/test27.yml:41:9:46:2 | Run Step: get-version [chart_version] | .github/workflows/test27.yml:20:23:20:68 | steps.get-version.outputs.chart_version | provenance |  |
+| .github/workflows/test27.yml:43:14:44:66 | echo "chart_version=$(<ERSION)" \| tee -a $GITHUB_OUTPUT\n | .github/workflows/test27.yml:41:9:46:2 | Run Step: get-version [chart_version] | provenance |  |
 | .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | .github/workflows/test.yml:52:20:52:56 | needs.job1.outputs['job_output'] | provenance |  |
 | .github/workflows/test.yml:11:20:11:50 | steps.step5.outputs.MSG5 | .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | provenance |  |
 | .github/workflows/test.yml:17:9:23:6 | Uses Step: step0 [value] | .github/workflows/test.yml:25:18:25:48 | steps.step0.outputs.value | provenance |  |
@@ -602,6 +607,12 @@ nodes
 | .github/workflows/test26.yml:26:18:26:58 | steps.read_issue_body.outputs.body | semmle.label | steps.read_issue_body.outputs.body |
 | .github/workflows/test26.yml:28:20:28:50 | steps.parse.outputs.data | semmle.label | steps.parse.outputs.data |
 | .github/workflows/test26.yml:29:20:29:58 | toJSON(steps.parse.outputs.data) | semmle.label | toJSON(steps.parse.outputs.data) |
+| .github/workflows/test27.yml:19:7:21:4 | Job outputs node [chart-version] | semmle.label | Job outputs node [chart-version] |
+| .github/workflows/test27.yml:20:23:20:68 | steps.get-version.outputs.chart_version | semmle.label | steps.get-version.outputs.chart_version |
+| .github/workflows/test27.yml:35:9:41:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/test27.yml:41:9:46:2 | Run Step: get-version [chart_version] | semmle.label | Run Step: get-version [chart_version] |
+| .github/workflows/test27.yml:43:14:44:66 | echo "chart_version=$(<ERSION)" \| tee -a $GITHUB_OUTPUT\n | semmle.label | echo "chart_version=$(<ERSION)" \| tee -a $GITHUB_OUTPUT\n |
+| .github/workflows/test27.yml:52:17:52:56 | needs.setup.outputs.chart-version | semmle.label | needs.setup.outputs.chart-version |
 | .github/workflows/test.yml:11:7:13:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
 | .github/workflows/test.yml:11:20:11:50 | steps.step5.outputs.MSG5 | semmle.label | steps.step5.outputs.MSG5 |
 | .github/workflows/test.yml:17:9:23:6 | Uses Step: step0 [value] | semmle.label | Uses Step: step0 [value] |
