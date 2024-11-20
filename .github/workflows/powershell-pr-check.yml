@@ -1,0 +1,28 @@
+name: PowerShell PR Check
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "powershell/**"
+  workflow_dispatch:
+
+jobs:
+  powershell-pr-check:
+    name: powershell-pr-check
+    runs-on: ubuntu-latest
+    if: github.repository == 'microsoft/codeql'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+      - name: Setup CodeQL
+        uses: ./.github/actions/fetch-codeql
+      - name: Compile PowerShell Queries
+        run: |
+          codeql query compile --check-only --keep-going powershell/ql/src
