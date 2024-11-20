@@ -27,9 +27,6 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof SqlInjection::Barrier }
 }
 
-/**
- * Detect taint flow of tainted data that reaches a SQL sink.
- */
 module SqlInjectionFlow = TaintTracking::Global<SqlInjectionConfig>;
 
 from SqlInjectionFlow::PathNode sourceNode, SqlInjectionFlow::PathNode sinkNode
