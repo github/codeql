@@ -1044,6 +1044,36 @@ edges
 | test.rs:490:5:490:19 | ExprStmt | test.rs:490:5:490:10 | nested |  |
 | test.rs:490:12:490:17 | RefExpr | test.rs:490:5:490:18 | CallExpr |  |
 | test.rs:490:17:490:17 | x | test.rs:490:12:490:17 | RefExpr |  |
+| test.rs:502:5:504:5 | enter new | test.rs:502:12:502:12 | a |  |
+| test.rs:502:5:504:5 | exit new (normal) | test.rs:502:5:504:5 | exit new |  |
+| test.rs:502:12:502:12 | a | test.rs:502:12:502:17 | Param | match |
+| test.rs:502:12:502:17 | Param | test.rs:503:23:503:23 | a |  |
+| test.rs:502:28:504:5 | BlockExpr | test.rs:502:5:504:5 | exit new (normal) |  |
+| test.rs:503:9:503:25 | RecordExpr | test.rs:502:28:504:5 | BlockExpr |  |
+| test.rs:503:23:503:23 | a | test.rs:503:9:503:25 | RecordExpr |  |
+| test.rs:506:5:508:5 | enter negated | test.rs:507:23:507:26 | self |  |
+| test.rs:506:5:508:5 | exit negated (normal) | test.rs:506:5:508:5 | exit negated |  |
+| test.rs:506:30:508:5 | BlockExpr | test.rs:506:5:508:5 | exit negated (normal) |  |
+| test.rs:507:9:507:30 | RecordExpr | test.rs:506:30:508:5 | BlockExpr |  |
+| test.rs:507:23:507:26 | self | test.rs:507:23:507:28 | FieldExpr |  |
+| test.rs:507:23:507:28 | FieldExpr | test.rs:507:9:507:30 | RecordExpr |  |
+| test.rs:510:5:512:5 | enter multifly_add | test.rs:510:32:510:32 | a |  |
+| test.rs:510:5:512:5 | exit multifly_add (normal) | test.rs:510:5:512:5 | exit multifly_add |  |
+| test.rs:510:32:510:32 | a | test.rs:510:32:510:37 | Param | match |
+| test.rs:510:32:510:37 | Param | test.rs:510:40:510:40 | b |  |
+| test.rs:510:40:510:40 | b | test.rs:510:40:510:45 | Param | match |
+| test.rs:510:40:510:45 | Param | test.rs:511:9:511:34 | ExprStmt |  |
+| test.rs:510:48:512:5 | BlockExpr | test.rs:510:5:512:5 | exit multifly_add (normal) |  |
+| test.rs:511:9:511:12 | self | test.rs:511:9:511:14 | FieldExpr |  |
+| test.rs:511:9:511:14 | FieldExpr | test.rs:511:19:511:22 | self |  |
+| test.rs:511:9:511:33 | ... = ... | test.rs:510:48:512:5 | BlockExpr |  |
+| test.rs:511:9:511:34 | ExprStmt | test.rs:511:9:511:12 | self |  |
+| test.rs:511:18:511:33 | ... + ... | test.rs:511:9:511:33 | ... = ... |  |
+| test.rs:511:19:511:22 | self | test.rs:511:19:511:24 | FieldExpr |  |
+| test.rs:511:19:511:24 | FieldExpr | test.rs:511:28:511:28 | a |  |
+| test.rs:511:19:511:28 | ... * ... | test.rs:511:33:511:33 | b |  |
+| test.rs:511:28:511:28 | a | test.rs:511:19:511:28 | ... * ... |  |
+| test.rs:511:33:511:33 | b | test.rs:511:18:511:33 | ... + ... |  |
 breakTarget
 | test.rs:34:17:34:21 | BreakExpr | test.rs:28:9:40:9 | LoopExpr |
 | test.rs:48:21:48:25 | BreakExpr | test.rs:46:13:53:13 | LoopExpr |
