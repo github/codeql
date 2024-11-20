@@ -72,17 +72,13 @@ import CfgImpl
 class CallableScopeTree extends StandardTree, PreOrderTree, PostOrderTree, Scope::CallableScope {
   override predicate propagatesAbnormal(AstNode child) { none() }
 
-  private int getNumberOfSelfParams() {
-    if this.getParamList().hasSelfParam() then result = 1 else result = 0
-  }
-
   override AstNode getChildNode(int i) {
     i = 0 and
     result = this.getParamList().getSelfParam()
     or
-    result = this.getParamList().getParam(i - this.getNumberOfSelfParams())
+    result = this.getParamList().getParam(i - 1)
     or
-    i = this.getParamList().getNumberOfParams() + this.getNumberOfSelfParams() and
+    i = this.getParamList().getNumberOfParams() + 1 and
     result = this.getBody()
   }
 }
