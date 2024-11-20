@@ -38,6 +38,8 @@ newtype TInstructionTag =
   AllocationSizeTag() or
   AllocationElementSizeTag() or
   AllocationExtentConvertTag() or
+  ValueConditionCompareTag() or
+  ValueConditionConstantTag() or
   ValueConditionConditionalBranchTag() or
   ConditionValueTrueTempAddressTag() or
   ConditionValueTrueConstantTag() or
@@ -166,6 +168,10 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = AllocationExtentConvertTag() and result = "AllocExtConv"
   or
   tag = ValueConditionConditionalBranchTag() and result = "ValCondCondBranch"
+  or
+  tag = ValueConditionCompareTag() and result = "ValCondCondCompare"
+  or
+  tag = ValueConditionConstantTag() and result = "ValCondConstant"
   or
   tag = ConditionValueTrueTempAddressTag() and result = "CondValTrueTempAddr"
   or
