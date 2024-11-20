@@ -628,8 +628,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       override string toString() {
         exists(DataFlowCall call | this = TReturn(_, call) | result = "CcReturn(" + call + ")")
       }
-
-      predicate isReturn(DataFlowCallable c, DataFlowCall call) { this = TReturn(c, call) }
     }
 
     pragma[nomagic]
@@ -1435,27 +1433,19 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
           string model, CachedCallContextSensitivity::CcNoCall ctx
         ) {
           exists(
-            DataFlowCall call, DataFlowCallable callable, ArgNode arg, string model1, string model2,
-            CachedCallContextSensitivity::CcNoCall ctx1, CachedCallContextSensitivity::CcNoCall ctx2
+            ArgNode arg, string model1, string model2, CachedCallContextSensitivity::CcNoCall ctx1,
+            CachedCallContextSensitivity::CcNoCall ctx2
           |
             model = mergeModels(model1, model2) and
-            (
-              // call may restrict the set of call sites that can be returned to
-              ctx2.(CachedCallContextSensitivity::CcReturn).isReturn(callable, call)
-              or
-              // call does not restrict the set of call sites that can be returned to
-              not exists(CachedCallContextSensitivity::CcReturn ret | ret.isReturn(callable, call)) and
-              CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(ctx2)
-            ) and
             ctx = mergeContexts(ctx1, ctx2)
           |
             // flow through: no prior read
             parameterValueFlowArg(p, arg, mustBeNone, model1, ctx1) and
-            argumentValueFlowsThrough(call, callable, arg, read, node, model2)
+            argumentValueFlowsThrough(arg, read, node, model2, ctx2)
             or
             // flow through: no read inside method
             parameterValueFlowArg(p, arg, read, model1, ctx1) and
-            argumentValueFlowsThrough(call, callable, arg, mustBeNone, node, model2)
+            argumentValueFlowsThrough(arg, mustBeNone, node, model2, ctx2)
           )
         }
 
@@ -1470,27 +1460,32 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate argumentValueFlowsThrough0(
-          DataFlowCall call, DataFlowCallable callable, ArgNode arg, ReturnKind kind,
-          ReadStepTypesOption read, string model
+          DataFlowCall call, ArgNode arg, ReturnKind kind, ReadStepTypesOption read, string model,
+          CachedCallContextSensitivity::CcNoCall outerCtx
         ) {
-          exists(ParamNode param, CachedCallContextSensitivity::CcNoCall ctx |
-            viableParamArg(call, param, arg) and
-            parameterValueFlowReturn(param, kind, read, model, ctx) and
-            callable = nodeGetEnclosingCallable(param)
+          exists(
+            ParamNode param, DataFlowCallable callable,
+            CachedCallContextSensitivity::CcNoCall innerCtx
           |
-            CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(ctx)
+            viableParamArg(call, param, arg) and
+            parameterValueFlowReturn(param, kind, read, model, innerCtx) and
+            callable = nodeGetEnclosingCallable(param) and
+            outerCtx = CachedCallContextSensitivity::getCallContextReturn(callable, call)
+          |
+            CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(innerCtx)
             or
-            call = CachedCallContextSensitivity::viableImplCallContextReducedReverse(callable, ctx)
+            call =
+              CachedCallContextSensitivity::viableImplCallContextReducedReverse(callable, innerCtx)
           )
         }
 
         pragma[nomagic]
         private predicate argumentValueFlowsThrough(
-          DataFlowCall call, DataFlowCallable callable, ArgNode arg, ReadStepTypesOption read,
-          Node out, string model
+          ArgNode arg, ReadStepTypesOption read, Node out, string model,
+          CachedCallContextSensitivity::CcNoCall ctx
         ) {
-          exists(ReturnKind kind |
-            argumentValueFlowsThrough0(call, callable, arg, kind, read, model) and
+          exists(DataFlowCall call, ReturnKind kind |
+            argumentValueFlowsThrough0(call, arg, kind, read, model, ctx) and
             out = getAnOutNode(call, kind)
           |
             // normal flow through
@@ -1515,7 +1510,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         predicate argumentValueFlowsThrough(
           ArgNode arg, ReadStepTypesOption read, Node out, string model
         ) {
-          argumentValueFlowsThrough(_, _, arg, read, out, model)
+          argumentValueFlowsThrough(arg, read, out, model, _)
         }
 
         /**
