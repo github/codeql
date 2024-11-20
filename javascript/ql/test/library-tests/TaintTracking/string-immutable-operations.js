@@ -1,12 +1,12 @@
 function test() {
     let x = source();
-    sink(x.toWellFormed()); // NOT OK -- Currently not tainted, but should be
+    sink(x.toWellFormed()); // NOT OK
 
     const wellFormedX = x.toWellFormed();
-    sink(wellFormedX); // NOT OK -- Currently not tainted, but should be
+    sink(wellFormedX); // NOT OK
 
     const concatWellFormedX = "/" + wellFormedX + "!";
-    sink(concatWellFormedX); // NOT OK -- Currently not tainted, but should be
+    sink(concatWellFormedX); // NOT OK
 
-    sink(source().toWellFormed()); // NOT OK -- Currently not tainted, but should be
+    sink(source().toWellFormed()); // NOT OK
 }
