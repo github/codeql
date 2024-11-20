@@ -397,15 +397,18 @@ private class DefaultLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
  */
 private class HeuristicLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
   HeuristicLoggerCall() {
-    exists(Method m, string tp, string logLevel, string name |
+    exists(Method m, string tp, string logFunctionPrefix, string name |
       m = this.getTarget() and
       m.hasQualifiedName(_, tp, name) and
       m.getReceiverBaseType().getUnderlyingType() instanceof InterfaceType
     |
       tp.regexpMatch(".*[lL]ogger") and
-      logLevel =
-        ["Debug", "Error", "Fatal", "Info", "Log", "Output", "Panic", "Print", "Trace", "Warn"] and
-      name.matches(logLevel + "%")
+      logFunctionPrefix =
+        [
+          "Debug", "Error", "Fatal", "Info", "Log", "Output", "Panic", "Print", "Trace", "Warn",
+          "With"
+        ] and
+      name.matches(logFunctionPrefix + "%")
     )
   }
 
