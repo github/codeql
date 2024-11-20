@@ -378,7 +378,7 @@ module Impl {
     }
   }
 
-  private module DenseRankInput implements DenseRankInputSig3 {
+  private module DenseRankInput implements DenseRankInputSig2 {
     class C1 = VariableScope;
 
     class C2 = string;
@@ -401,7 +401,7 @@ module Impl {
    * to a variable named `name` in the variable scope `scope`.
    */
   private int rankVariableOrAccess(VariableScope scope, string name, VariableOrAccessCand v) {
-    result = DenseRank3<DenseRankInput>::denseRank(scope, name, v) - 1
+    v = DenseRank2<DenseRankInput>::denseRank(scope, name, result + 1)
   }
 
   /**
