@@ -1,4 +1,4 @@
 ---
-category: minorAnalysis
+category: deprecated
 ---
-* Removed NonThrowing.qll. Throwing meta-data now part of Throwing.qll. Updated models and IR to use the new Throwing library and predicates.
+* The `NonThrowing` class (`semmle.code.cpp.models.interfaces.NonThrowing`) has been deprecated. Please use the `NonThrowing` class from `semmle.code.cpp.models.interfaces.Throwing` instead.
