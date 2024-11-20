@@ -1,6 +1,9 @@
 name: PowerShell PR Check
 
 on:
+  push:
+    branches:
+      - dilan/powershell-pr-check
   pull_request:
     branches:
       - main
