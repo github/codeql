@@ -407,10 +407,10 @@ edges
 | variables.rs:190:11:190:16 | either | variables.rs:191:9:191:24 | TupleStructPat |  |
 | variables.rs:191:9:191:24 | TupleStructPat | variables.rs:191:22:191:23 | a3 | match |
 | variables.rs:191:9:191:24 | TupleStructPat | variables.rs:191:28:191:44 | TupleStructPat | no-match |
-| variables.rs:191:9:191:44 | [match(true)] ...... | variables.rs:192:16:192:24 | print_i64 | match |
-| variables.rs:191:22:191:23 | a3 | variables.rs:191:9:191:44 | [match(true)] ...... | match |
+| variables.rs:191:9:191:44 | [match(true)] ... \| ... | variables.rs:192:16:192:24 | print_i64 | match |
+| variables.rs:191:22:191:23 | a3 | variables.rs:191:9:191:44 | [match(true)] ... \| ... | match |
 | variables.rs:191:28:191:44 | TupleStructPat | variables.rs:191:42:191:43 | a3 | match |
-| variables.rs:191:42:191:43 | a3 | variables.rs:191:9:191:44 | [match(true)] ...... | match |
+| variables.rs:191:42:191:43 | a3 | variables.rs:191:9:191:44 | [match(true)] ... \| ... | match |
 | variables.rs:192:16:192:24 | print_i64 | variables.rs:192:26:192:27 | a3 |  |
 | variables.rs:192:16:192:28 | print_i64(...) | variables.rs:190:5:193:5 | match either { ... } |  |
 | variables.rs:192:26:192:27 | a3 | variables.rs:192:16:192:28 | print_i64(...) |  |
@@ -427,30 +427,30 @@ edges
 | variables.rs:204:11:204:12 | tv | variables.rs:205:9:205:30 | TupleStructPat |  |
 | variables.rs:205:9:205:30 | TupleStructPat | variables.rs:205:28:205:29 | a4 | match |
 | variables.rs:205:9:205:30 | TupleStructPat | variables.rs:205:34:205:56 | TupleStructPat | no-match |
-| variables.rs:205:9:205:81 | [match(true)] ......... | variables.rs:206:16:206:24 | print_i64 | match |
-| variables.rs:205:28:205:29 | a4 | variables.rs:205:9:205:81 | [match(true)] ......... | match |
+| variables.rs:205:9:205:81 | [match(true)] ... \| ... \| ... | variables.rs:206:16:206:24 | print_i64 | match |
+| variables.rs:205:28:205:29 | a4 | variables.rs:205:9:205:81 | [match(true)] ... \| ... \| ... | match |
 | variables.rs:205:34:205:56 | TupleStructPat | variables.rs:205:54:205:55 | a4 | match |
 | variables.rs:205:34:205:56 | TupleStructPat | variables.rs:205:60:205:81 | TupleStructPat | no-match |
-| variables.rs:205:54:205:55 | a4 | variables.rs:205:9:205:81 | [match(true)] ......... | match |
+| variables.rs:205:54:205:55 | a4 | variables.rs:205:9:205:81 | [match(true)] ... \| ... \| ... | match |
 | variables.rs:205:60:205:81 | TupleStructPat | variables.rs:205:79:205:80 | a4 | match |
-| variables.rs:205:79:205:80 | a4 | variables.rs:205:9:205:81 | [match(true)] ......... | match |
+| variables.rs:205:79:205:80 | a4 | variables.rs:205:9:205:81 | [match(true)] ... \| ... \| ... | match |
 | variables.rs:206:16:206:24 | print_i64 | variables.rs:206:26:206:27 | a4 |  |
 | variables.rs:206:16:206:28 | print_i64(...) | variables.rs:204:5:207:5 | match tv { ... } |  |
 | variables.rs:206:26:206:27 | a4 | variables.rs:206:16:206:28 | print_i64(...) |  |
 | variables.rs:208:5:211:5 | ExprStmt | variables.rs:208:11:208:12 | tv |  |
 | variables.rs:208:5:211:5 | match tv { ... } | variables.rs:212:11:212:12 | tv |  |
 | variables.rs:208:11:208:12 | tv | variables.rs:209:10:209:31 | TupleStructPat |  |
-| variables.rs:209:9:209:83 | [match(true)] ...... | variables.rs:210:16:210:24 | print_i64 | match |
+| variables.rs:209:9:209:83 | [match(true)] ... \| ... | variables.rs:210:16:210:24 | print_i64 | match |
 | variables.rs:209:10:209:31 | TupleStructPat | variables.rs:209:29:209:30 | a5 | match |
 | variables.rs:209:10:209:31 | TupleStructPat | variables.rs:209:35:209:57 | TupleStructPat | no-match |
-| variables.rs:209:10:209:57 | [match(false)] ...... | variables.rs:209:62:209:83 | TupleStructPat | no-match |
-| variables.rs:209:10:209:57 | [match(true)] ...... | variables.rs:209:9:209:83 | [match(true)] ...... | match |
-| variables.rs:209:29:209:30 | a5 | variables.rs:209:10:209:57 | [match(true)] ...... | match |
-| variables.rs:209:35:209:57 | TupleStructPat | variables.rs:209:10:209:57 | [match(false)] ...... | no-match |
+| variables.rs:209:10:209:57 | [match(false)] ... \| ... | variables.rs:209:62:209:83 | TupleStructPat | no-match |
+| variables.rs:209:10:209:57 | [match(true)] ... \| ... | variables.rs:209:9:209:83 | [match(true)] ... \| ... | match |
+| variables.rs:209:29:209:30 | a5 | variables.rs:209:10:209:57 | [match(true)] ... \| ... | match |
+| variables.rs:209:35:209:57 | TupleStructPat | variables.rs:209:10:209:57 | [match(false)] ... \| ... | no-match |
 | variables.rs:209:35:209:57 | TupleStructPat | variables.rs:209:55:209:56 | a5 | match |
-| variables.rs:209:55:209:56 | a5 | variables.rs:209:10:209:57 | [match(true)] ...... | match |
+| variables.rs:209:55:209:56 | a5 | variables.rs:209:10:209:57 | [match(true)] ... \| ... | match |
 | variables.rs:209:62:209:83 | TupleStructPat | variables.rs:209:81:209:82 | a5 | match |
-| variables.rs:209:81:209:82 | a5 | variables.rs:209:9:209:83 | [match(true)] ...... | match |
+| variables.rs:209:81:209:82 | a5 | variables.rs:209:9:209:83 | [match(true)] ... \| ... | match |
 | variables.rs:210:16:210:24 | print_i64 | variables.rs:210:26:210:27 | a5 |  |
 | variables.rs:210:16:210:28 | print_i64(...) | variables.rs:208:5:211:5 | match tv { ... } |  |
 | variables.rs:210:26:210:27 | a5 | variables.rs:210:16:210:28 | print_i64(...) |  |
@@ -458,14 +458,14 @@ edges
 | variables.rs:212:11:212:12 | tv | variables.rs:213:9:213:30 | TupleStructPat |  |
 | variables.rs:213:9:213:30 | TupleStructPat | variables.rs:213:28:213:29 | a6 | match |
 | variables.rs:213:9:213:30 | TupleStructPat | variables.rs:213:35:213:57 | TupleStructPat | no-match |
-| variables.rs:213:9:213:83 | [match(true)] ...... | variables.rs:214:16:214:24 | print_i64 | match |
-| variables.rs:213:28:213:29 | a6 | variables.rs:213:9:213:83 | [match(true)] ...... | match |
+| variables.rs:213:9:213:83 | [match(true)] ... \| ... | variables.rs:214:16:214:24 | print_i64 | match |
+| variables.rs:213:28:213:29 | a6 | variables.rs:213:9:213:83 | [match(true)] ... \| ... | match |
 | variables.rs:213:35:213:57 | TupleStructPat | variables.rs:213:55:213:56 | a6 | match |
 | variables.rs:213:35:213:57 | TupleStructPat | variables.rs:213:61:213:82 | TupleStructPat | no-match |
-| variables.rs:213:35:213:82 | [match(true)] ...... | variables.rs:213:9:213:83 | [match(true)] ...... | match |
-| variables.rs:213:55:213:56 | a6 | variables.rs:213:35:213:82 | [match(true)] ...... | match |
+| variables.rs:213:35:213:82 | [match(true)] ... \| ... | variables.rs:213:9:213:83 | [match(true)] ... \| ... | match |
+| variables.rs:213:55:213:56 | a6 | variables.rs:213:35:213:82 | [match(true)] ... \| ... | match |
 | variables.rs:213:61:213:82 | TupleStructPat | variables.rs:213:80:213:81 | a6 | match |
-| variables.rs:213:80:213:81 | a6 | variables.rs:213:35:213:82 | [match(true)] ...... | match |
+| variables.rs:213:80:213:81 | a6 | variables.rs:213:35:213:82 | [match(true)] ... \| ... | match |
 | variables.rs:214:16:214:24 | print_i64 | variables.rs:214:26:214:27 | a6 |  |
 | variables.rs:214:16:214:28 | print_i64(...) | variables.rs:212:5:215:5 | match tv { ... } |  |
 | variables.rs:214:26:214:27 | a6 | variables.rs:214:16:214:28 | print_i64(...) |  |
@@ -481,12 +481,12 @@ edges
 | variables.rs:220:11:220:16 | either | variables.rs:221:9:221:24 | TupleStructPat |  |
 | variables.rs:221:9:221:24 | TupleStructPat | variables.rs:221:22:221:23 | a7 | match |
 | variables.rs:221:9:221:24 | TupleStructPat | variables.rs:221:28:221:44 | TupleStructPat | no-match |
-| variables.rs:221:9:221:44 | [match(false)] ...... | variables.rs:224:9:224:9 | _ | no-match |
-| variables.rs:221:9:221:44 | [match(true)] ...... | variables.rs:222:16:222:17 | a7 | match |
-| variables.rs:221:22:221:23 | a7 | variables.rs:221:9:221:44 | [match(true)] ...... | match |
-| variables.rs:221:28:221:44 | TupleStructPat | variables.rs:221:9:221:44 | [match(false)] ...... | no-match |
+| variables.rs:221:9:221:44 | [match(false)] ... \| ... | variables.rs:224:9:224:9 | _ | no-match |
+| variables.rs:221:9:221:44 | [match(true)] ... \| ... | variables.rs:222:16:222:17 | a7 | match |
+| variables.rs:221:22:221:23 | a7 | variables.rs:221:9:221:44 | [match(true)] ... \| ... | match |
+| variables.rs:221:28:221:44 | TupleStructPat | variables.rs:221:9:221:44 | [match(false)] ... \| ... | no-match |
 | variables.rs:221:28:221:44 | TupleStructPat | variables.rs:221:42:221:43 | a7 | match |
-| variables.rs:221:42:221:43 | a7 | variables.rs:221:9:221:44 | [match(true)] ...... | match |
+| variables.rs:221:42:221:43 | a7 | variables.rs:221:9:221:44 | [match(true)] ... \| ... | match |
 | variables.rs:222:16:222:17 | a7 | variables.rs:222:21:222:21 | 0 |  |
 | variables.rs:222:16:222:21 | ... > ... | variables.rs:223:16:223:24 | print_i64 | true |
 | variables.rs:222:16:222:21 | ... > ... | variables.rs:224:9:224:9 | _ | false |
@@ -509,12 +509,12 @@ edges
 | variables.rs:232:9:233:52 | [match(true)] e | variables.rs:235:13:235:27 | ExprStmt | match |
 | variables.rs:233:14:233:30 | TupleStructPat | variables.rs:233:27:233:29 | a11 | match |
 | variables.rs:233:14:233:30 | TupleStructPat | variables.rs:233:34:233:51 | TupleStructPat | no-match |
-| variables.rs:233:14:233:51 | [match(false)] ...... | variables.rs:241:9:241:9 | _ | no-match |
-| variables.rs:233:14:233:51 | [match(true)] ...... | variables.rs:232:9:233:52 | [match(true)] e | match |
-| variables.rs:233:27:233:29 | a11 | variables.rs:233:14:233:51 | [match(true)] ...... | match |
-| variables.rs:233:34:233:51 | TupleStructPat | variables.rs:233:14:233:51 | [match(false)] ...... | no-match |
+| variables.rs:233:14:233:51 | [match(false)] ... \| ... | variables.rs:241:9:241:9 | _ | no-match |
+| variables.rs:233:14:233:51 | [match(true)] ... \| ... | variables.rs:232:9:233:52 | [match(true)] e | match |
+| variables.rs:233:27:233:29 | a11 | variables.rs:233:14:233:51 | [match(true)] ... \| ... | match |
+| variables.rs:233:34:233:51 | TupleStructPat | variables.rs:233:14:233:51 | [match(false)] ... \| ... | no-match |
 | variables.rs:233:34:233:51 | TupleStructPat | variables.rs:233:48:233:50 | a11 | match |
-| variables.rs:233:48:233:50 | a11 | variables.rs:233:14:233:51 | [match(true)] ...... | match |
+| variables.rs:233:48:233:50 | a11 | variables.rs:233:14:233:51 | [match(true)] ... \| ... | match |
 | variables.rs:234:12:240:9 | { ... } | variables.rs:231:5:242:5 | match either { ... } |  |
 | variables.rs:235:13:235:21 | print_i64 | variables.rs:235:23:235:25 | a11 |  |
 | variables.rs:235:13:235:26 | print_i64(...) | variables.rs:236:16:237:15 | let ... = e |  |
@@ -546,18 +546,18 @@ edges
 | variables.rs:254:11:254:12 | fv | variables.rs:255:9:255:30 | TupleStructPat |  |
 | variables.rs:255:9:255:30 | TupleStructPat | variables.rs:255:27:255:29 | a13 | match |
 | variables.rs:255:9:255:30 | TupleStructPat | variables.rs:255:35:255:57 | TupleStructPat | no-match |
-| variables.rs:255:9:255:109 | [match(true)] ......... | variables.rs:256:16:256:24 | print_i64 | match |
-| variables.rs:255:27:255:29 | a13 | variables.rs:255:9:255:109 | [match(true)] ......... | match |
+| variables.rs:255:9:255:109 | [match(true)] ... \| ... \| ... | variables.rs:256:16:256:24 | print_i64 | match |
+| variables.rs:255:27:255:29 | a13 | variables.rs:255:9:255:109 | [match(true)] ... \| ... \| ... | match |
 | variables.rs:255:35:255:57 | TupleStructPat | variables.rs:255:54:255:56 | a13 | match |
 | variables.rs:255:35:255:57 | TupleStructPat | variables.rs:255:61:255:82 | TupleStructPat | no-match |
-| variables.rs:255:35:255:82 | [match(false)] ...... | variables.rs:255:87:255:109 | TupleStructPat | no-match |
-| variables.rs:255:35:255:82 | [match(true)] ...... | variables.rs:255:9:255:109 | [match(true)] ......... | match |
-| variables.rs:255:54:255:56 | a13 | variables.rs:255:35:255:82 | [match(true)] ...... | match |
-| variables.rs:255:61:255:82 | TupleStructPat | variables.rs:255:35:255:82 | [match(false)] ...... | no-match |
+| variables.rs:255:35:255:82 | [match(false)] ... \| ... | variables.rs:255:87:255:109 | TupleStructPat | no-match |
+| variables.rs:255:35:255:82 | [match(true)] ... \| ... | variables.rs:255:9:255:109 | [match(true)] ... \| ... \| ... | match |
+| variables.rs:255:54:255:56 | a13 | variables.rs:255:35:255:82 | [match(true)] ... \| ... | match |
+| variables.rs:255:61:255:82 | TupleStructPat | variables.rs:255:35:255:82 | [match(false)] ... \| ... | no-match |
 | variables.rs:255:61:255:82 | TupleStructPat | variables.rs:255:79:255:81 | a13 | match |
-| variables.rs:255:79:255:81 | a13 | variables.rs:255:35:255:82 | [match(true)] ...... | match |
+| variables.rs:255:79:255:81 | a13 | variables.rs:255:35:255:82 | [match(true)] ... \| ... | match |
 | variables.rs:255:87:255:109 | TupleStructPat | variables.rs:255:106:255:108 | a13 | match |
-| variables.rs:255:106:255:108 | a13 | variables.rs:255:9:255:109 | [match(true)] ......... | match |
+| variables.rs:255:106:255:108 | a13 | variables.rs:255:9:255:109 | [match(true)] ... \| ... \| ... | match |
 | variables.rs:256:16:256:24 | print_i64 | variables.rs:256:26:256:28 | a13 |  |
 | variables.rs:256:16:256:29 | print_i64(...) | variables.rs:254:5:257:5 | match fv { ... } |  |
 | variables.rs:256:26:256:28 | a13 | variables.rs:256:16:256:29 | print_i64(...) |  |
@@ -587,10 +587,10 @@ edges
 | variables.rs:272:5:272:50 | ...: Either | variables.rs:274:5:274:18 | ExprStmt |  |
 | variables.rs:272:6:272:21 | TupleStructPat | variables.rs:272:19:272:20 | a9 | match |
 | variables.rs:272:6:272:21 | TupleStructPat | variables.rs:272:25:272:41 | TupleStructPat | no-match |
-| variables.rs:272:6:272:41 | [match(true)] ...... | variables.rs:272:5:272:50 | ...: Either | match |
-| variables.rs:272:19:272:20 | a9 | variables.rs:272:6:272:41 | [match(true)] ...... | match |
+| variables.rs:272:6:272:41 | [match(true)] ... \| ... | variables.rs:272:5:272:50 | ...: Either | match |
+| variables.rs:272:19:272:20 | a9 | variables.rs:272:6:272:41 | [match(true)] ... \| ... | match |
 | variables.rs:272:25:272:41 | TupleStructPat | variables.rs:272:39:272:40 | a9 | match |
-| variables.rs:272:39:272:40 | a9 | variables.rs:272:6:272:41 | [match(true)] ...... | match |
+| variables.rs:272:39:272:40 | a9 | variables.rs:272:6:272:41 | [match(true)] ... \| ... | match |
 | variables.rs:273:9:275:1 | { ... } | variables.rs:271:1:275:1 | exit fn param_pattern2 (normal) |  |
 | variables.rs:274:5:274:13 | print_i64 | variables.rs:274:15:274:16 | a9 |  |
 | variables.rs:274:5:274:17 | print_i64(...) | variables.rs:273:9:275:1 | { ... } |  |
