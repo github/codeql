@@ -151,7 +151,7 @@ models
 | 3 | Summary: ; ; false; append; ; ; Argument[0].ArrayElement; ReturnValue.ArrayElement; value; manual |
 | 4 | Summary: ; ; false; append; ; ; Argument[0]; ReturnValue; taint; manual |
 | 5 | Summary: ; ; false; append; ; ; Argument[1].ArrayElement; ReturnValue.ArrayElement; value; manual |
-| 6 | Summary: fmt; ; true; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 6 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
 | 7 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
 nodes
 | ArgumentInjection.go:9:10:9:16 | selection of URL | semmle.label | selection of URL |

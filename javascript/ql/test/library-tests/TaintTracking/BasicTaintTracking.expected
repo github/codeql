@@ -248,6 +248,8 @@ typeInferenceMismatch
 | tst.js:2:13:2:20 | source() | tst.js:74:10:74:34 | Object. ... z => z) |
 | tst.js:2:13:2:20 | source() | tst.js:78:55:78:58 | item |
 | tst.js:2:13:2:20 | source() | tst.js:79:14:79:20 | grouped |
+| tst.js:2:13:2:20 | source() | tst.js:100:10:100:17 | x.with() |
+| tst.js:2:13:2:20 | source() | tst.js:102:10:102:14 | xWith |
 | tst.js:75:22:75:29 | source() | tst.js:75:10:75:52 | Map.gro ... (item)) |
 | tst.js:75:22:75:29 | source() | tst.js:75:47:75:50 | item |
 | tst.js:82:23:82:30 | source() | tst.js:83:58:83:61 | item |

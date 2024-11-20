@@ -66,7 +66,7 @@ edges
 | stdlib.go:192:23:192:28 | target | stdlib.go:192:23:192:33 | selection of Path | provenance | Config Sink:MaD:1 |
 | stdlib.go:194:23:194:28 | target | stdlib.go:194:23:194:42 | call to EscapedPath | provenance | Config Sink:MaD:1 |
 models
-| 1 | Sink: net/http; ; true; Redirect; ; ; Argument[2]; url-redirection[0]; manual |
+| 1 | Sink: net/http; ; false; Redirect; ; ; Argument[2]; url-redirection[0]; manual |
 | 2 | Source: net/http; Request; true; Form; ; ; ; remote; manual |
 | 3 | Source: net/http; Request; true; FormValue; ; ; ReturnValue; remote; manual |
 | 4 | Source: net/http; Request; true; URL; ; ; ; remote; manual |

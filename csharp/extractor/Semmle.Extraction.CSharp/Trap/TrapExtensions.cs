@@ -226,7 +226,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Builds a trap builder using a separator and an action for each item in the list.
         /// </summary>
-        /// <typeparam name="T">The type of the items.</typeparam>
+        /// <typeparam name="T2">The type of the items.</typeparam>
         /// <param name="trapFile">The trap builder to append to.</param>
         /// <param name="separator">The separator string (e.g. ",")</param>
         /// <param name="items">The list of items.</param>
@@ -251,7 +251,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Builds a trap builder using a separator and an action for each item in the list.
         /// </summary>
-        /// <typeparam name="T">The type of the items.</typeparam>
+        /// <typeparam name="T2">The type of the items.</typeparam>
         /// <param name="trapFile">The trap builder to append to.</param>
         /// <param name="separator">The separator string (e.g. ",")</param>
         /// <param name="items">The list of items.</param>

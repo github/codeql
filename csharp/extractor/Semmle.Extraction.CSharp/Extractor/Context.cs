@@ -152,7 +152,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Enqueue the given action to be performed later.
         /// </summary>
-        /// <param name="toRun">The action to run.</param>
+        /// <param name="a">The action to run.</param>
         public void PopulateLater(Action a, bool preserveDuplicationKey = true)
         {
             var key = preserveDuplicationKey ? GetCurrentTagStackKey() : null;
@@ -598,7 +598,6 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Register a program entity which can be bound to comments.
         /// </summary>
-        /// <param name="cx">Extractor context.</param>
         /// <param name="entity">Program entity.</param>
         /// <param name="l">Location of the entity.</param>
         public void BindComments(Entity entity, Microsoft.CodeAnalysis.Location? l)

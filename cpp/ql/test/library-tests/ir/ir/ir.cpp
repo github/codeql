@@ -2695,4 +2695,26 @@ int requires_use() {
 
 }
 
+void branch_on_integral_in_cpp(int x1, int x2) {
+  if (x1) {}
+  if(!x1) {}
+
+  int y = !x1;
+  if(y) {}
+  if(!y) {}
+
+  if(x1 && x2) {}
+  if(!x1 && x2) {}
+  if(x1 && !x2) {}
+  if(!x1 && !x2) {}
+  if(x1 || x2) {}
+  if(!x1 || x2) {}
+  if(x1 || !x2) {}
+  if(!x1 || !x2) {}
+
+  int x_1_and_2 = x1 && x2;
+  if(x_1_and_2) {}
+  if(!x_1_and_2) {}
+}
+
 // semmle-extractor-options: -std=c++20 --clang

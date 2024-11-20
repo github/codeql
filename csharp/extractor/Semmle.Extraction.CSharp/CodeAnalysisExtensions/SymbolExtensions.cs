@@ -133,9 +133,6 @@ namespace Semmle.Extraction.CSharp
 
         /// <summary>
         /// Constructs a unique string for this type symbol.
-        ///
-        /// The supplied action <paramref name="subTermAction"/> is applied to the
-        /// syntactic sub terms of this type (if any).
         /// </summary>
         /// <param name="cx">The extraction context.</param>
         /// <param name="trapFile">The trap builder used to store the result.</param>
@@ -495,31 +492,31 @@ namespace Semmle.Extraction.CSharp
 
         /// <summary>
         /// Holds if this type is of the form <code>int?</code> or
-        /// <code>System.Nullable<int></code>.
+        /// <code>System.Nullable&lt;int&gt;</code>.
         /// </summary>
         public static bool IsBoundNullable(this ITypeSymbol type) =>
             type.SpecialType == SpecialType.None && type.OriginalDefinition.IsUnboundNullable();
 
         /// <summary>
-        /// Holds if this type is <code>System.Nullable<T></code>.
+        /// Holds if this type is <code>System.Nullable&lt;T&gt;</code>.
         /// </summary>
         public static bool IsUnboundNullable(this ITypeSymbol type) =>
             type.SpecialType == SpecialType.System_Nullable_T;
 
         /// <summary>
-        /// Holds if this type is <code>System.Span<T></code>.
+        /// Holds if this type is <code>System.Span&lt;T&gt;</code>.
         /// </summary>
         public static bool IsUnboundSpan(this ITypeSymbol type) =>
             type.ToString() == "System.Span<T>";
 
         /// <summary>
-        /// Holds if this type is of the form <code>System.Span<byte></code>.
+        /// Holds if this type is of the form <code>System.Span&lt;byte&gt;</code>.
         /// </summary>
         public static bool IsBoundSpan(this ITypeSymbol type) =>
             type.SpecialType == SpecialType.None && type.OriginalDefinition.IsUnboundSpan();
 
         /// <summary>
-        /// Holds if this type is <code>System.ReadOnlySpan<T></code>.
+        /// Holds if this type is <code>System.ReadOnlySpan&lt;T&gt;</code>.
         /// </summary>
         public static bool IsUnboundReadOnlySpan(this ITypeSymbol type) =>
             type.ToString() == "System.ReadOnlySpan<T>";
@@ -536,7 +533,7 @@ namespace Semmle.Extraction.CSharp
         }
 
         /// <summary>
-        /// Holds if this type is of the form <code>System.ReadOnlySpan<byte></code>.
+        /// Holds if this type is of the form <code>System.ReadOnlySpan&lt;byte&gt;</code>.
         /// </summary>
         public static bool IsBoundReadOnlySpan(this ITypeSymbol type) =>
             type.SpecialType == SpecialType.None && type.OriginalDefinition.IsUnboundReadOnlySpan();

@@ -20,4 +20,6 @@ extensions:
       - ["System.Timers", "Timer", "Stop", "()", "summary", "df-generated"]
       - ["System.Timers", "Timer", "Timer", "(System.Double)", "summary", "df-generated"]
       - ["System.Timers", "Timer", "Timer", "(System.TimeSpan)", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "add_Elapsed", "(System.Timers.ElapsedEventHandler)", "summary", "df-generated"]
+      - ["System.Timers", "Timer", "remove_Elapsed", "(System.Timers.ElapsedEventHandler)", "summary", "df-generated"]
       - ["System.Timers", "TimersDescriptionAttribute", "TimersDescriptionAttribute", "(System.String)", "summary", "df-generated"]

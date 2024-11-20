@@ -96,4 +96,8 @@ function test() {
         sink(taintedValue); // NOT OK
         sink(map.get(true)); // NOT OK
     }
+
+    sink(x.with()) // NOT OK
+    const xWith = x.with();
+    sink(xWith) // NOT OK
 }

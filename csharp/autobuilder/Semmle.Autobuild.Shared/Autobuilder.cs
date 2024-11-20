@@ -195,7 +195,7 @@ namespace Semmle.Autobuild.Shared
         }
 
         /// <summary>
-        /// Retrieves the value of an environment variable named <paramref name="name"> or throws
+        /// Retrieves the value of an environment variable named <paramref name="name"/> or throws
         /// an exception if no such environment variable has been set.
         /// </summary>
         /// <param name="name">The name of the environment variable.</param>
@@ -228,7 +228,7 @@ namespace Semmle.Autobuild.Shared
         private readonly IDiagnosticsWriter diagnostics;
 
         /// <summary>
-        /// Makes <see cref="path" /> relative to the root source directory.
+        /// Makes <paramref name="path"/> relative to the root source directory.
         /// </summary>
         /// <param name="path">The path which to make relative.</param>
         /// <returns>The relative path.</returns>
