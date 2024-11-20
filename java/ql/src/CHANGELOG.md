@@ -1,3 +1,17 @@
+## 1.1.8
+
+No user-facing changes.
+
+## 1.1.7
+
+No user-facing changes.
+
+## 1.1.6
+
+### Minor Analysis Improvements
+
+* Added taint summary model for `org.springframework.core.io.InputStreamSource#getInputStream()`.
+
 ## 1.1.5
 
 No user-facing changes.

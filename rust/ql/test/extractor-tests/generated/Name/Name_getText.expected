@@ -1,3 +1,2 @@
-| gen_name.rs:3:4:3:12 | Name | test_name |
-| lib.rs:2:5:2:12 | Name | gen_name |
-| lib.rs:3:5:3:7 | Name | lib |
+| gen_name.rs:3:4:3:12 | test_name | test_name |
+| lib.rs:1:5:1:12 | gen_name | gen_name |

@@ -159,7 +159,7 @@ private module Input implements TypeFlowInput<Location> {
     )
   }
 
-  predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
+  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
     // instruction -> phi
     getAnUltimateLocalDefinition(n2.asInstruction()) = n1.asInstruction()
     or
@@ -179,6 +179,8 @@ private module Input implements TypeFlowInput<Location> {
       n1.asInstruction() = arg and
       n2.asInstruction() = p
     )
+    or
+    instructionStep(n1.asInstruction(), n2.asInstruction())
   }
 
   /**
@@ -197,10 +199,6 @@ private module Input implements TypeFlowInput<Location> {
     i2.(InheritanceConversionInstruction).getUnary() = i1
     or
     i2.(PointerArithmeticInstruction).getLeft() = i1
-  }
-
-  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
-    instructionStep(n1.asInstruction(), n2.asInstruction())
   }
 
   predicate isNullValue(TypeFlowNode n) { n.isNullValue() }
@@ -245,11 +243,7 @@ private module Input implements TypeFlowInput<Location> {
 
   pragma[nomagic]
   private predicate upcastCand(TypeFlowNode n, Type t1, Type t2) {
-    exists(TypeFlowNode next |
-      step(n, next)
-      or
-      joinStep(n, next)
-    |
+    exists(TypeFlowNode next | step(n, next) |
       n.getType() = t1 and
       next.getType() = t2 and
       t1 != t2

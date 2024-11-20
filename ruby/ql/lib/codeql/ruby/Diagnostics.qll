@@ -48,7 +48,8 @@ class Diagnostic extends @diagnostic {
   string toString() { result = this.getMessage() }
 }
 
-/** A diagnostic relating to a particular error in extracting a file. */
-class ExtractionError extends Diagnostic {
-  ExtractionError() { this.getTag() = "parse_error" }
-}
+/** A diagnostic that is error severity. */
+class ExtractionError extends Diagnostic, @diagnostic_error { }
+
+/** A diagnostic that is warning severity. */
+class ExtractionWarning extends Diagnostic, @diagnostic_warning { }

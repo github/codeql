@@ -1,5 +1,5 @@
 name: codeql/yaml
-version: 1.0.9-dev
+version: 1.0.12-dev
 groups: shared
 library: true
 warnOnImplicitThis: true

@@ -43,6 +43,16 @@ module Generated {
     final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
 
     /**
+     * Holds if this type bound is async.
+     */
+    predicate isAsync() { Synth::convertTypeBoundToRaw(this).(Raw::TypeBound).isAsync() }
+
+    /**
+     * Holds if this type bound is const.
+     */
+    predicate isConst() { Synth::convertTypeBoundToRaw(this).(Raw::TypeBound).isConst() }
+
+    /**
      * Gets the lifetime of this type bound, if it exists.
      */
     Lifetime getLifetime() {

@@ -7,8 +7,8 @@ import semmle.code.cpp.Declaration
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * A C/C++ function parameter or catch block parameter. For example the
- * function parameter `p` and the catch block parameter `e` in the following
+ * A C/C++ function parameter, catch block parameter, or requires expression parameter.
+ * For example the function parameter `p` and the catch block parameter `e` in the following
  * code:
  * ```
  * void myFunction(int p) {
@@ -20,8 +20,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * }
  * ```
  *
- * For catch block parameters, there is a one-to-one correspondence between
- * the `Parameter` and its `ParameterDeclarationEntry`.
+ * For catch block parameters and expression , there is a one-to-one
+ * correspondence between the `Parameter` and its `VariableDeclarationEntry`.
  *
  * For function parameters, there is a one-to-many relationship between
  * `Parameter` and `ParameterDeclarationEntry`, because one function can
@@ -73,7 +73,8 @@ class Parameter extends LocalScopeVariable, @parameter {
   }
 
   private VariableDeclarationEntry getANamedDeclarationEntry() {
-    result = this.getAnEffectiveDeclarationEntry() and result.getName() != ""
+    result = this.getAnEffectiveDeclarationEntry() and
+    exists(string name | var_decls(unresolveElement(result), _, _, name, _) | name != "")
   }
 
   /**
@@ -117,6 +118,12 @@ class Parameter extends LocalScopeVariable, @parameter {
    * block parameter.
    */
   BlockStmt getCatchBlock() { params(underlyingElement(this), unresolveElement(result), _, _) }
+
+  /**
+   * Gets the requires expression to which the parameter belongs, if it is a
+   * requires expression parameter.
+   */
+  RequiresExpr getRequiresExpr() { params(underlyingElement(this), unresolveElement(result), _, _) }
 
   /**
    * Gets the zero-based index of this parameter.

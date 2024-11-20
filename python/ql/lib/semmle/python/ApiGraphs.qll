@@ -843,6 +843,13 @@ module API {
         ref = pred.getSubscript(_) and
         ref.asCfgNode().isLoad()
         or
+        // Subscript via comprehension
+        lbl = Label::subscript() and
+        exists(PY::Comp comp |
+          pred.asExpr() = comp.getIterable() and
+          ref.asExpr() = comp.getNthInnerLoop(0).getTarget()
+        )
+        or
         // Subclassing a node
         lbl = Label::subclass() and
         exists(PY::ClassExpr clsExpr, DataFlow::Node superclass | pred.flowsTo(superclass) |

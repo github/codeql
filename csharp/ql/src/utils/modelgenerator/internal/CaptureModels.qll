@@ -101,7 +101,9 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel())
   }
 
-  predicate isUninterestingForDataFlowModels(Callable api) { isHigherOrder(api) }
+  predicate isUninterestingForDataFlowModels(Callable api) { none() }
+
+  predicate isUninterestingForHeuristicDataFlowModels(Callable api) { isHigherOrder(api) }
 
   class SourceOrSinkTargetApi extends Callable {
     SourceOrSinkTargetApi() { relevant(this) }
@@ -131,7 +133,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
 
     Callable lift() { result = lift }
 
-    predicate isRelevant() { relevant(this) }
+    predicate isRelevant() {
+      relevant(this) and
+      not hasManualSummaryModel(this)
+    }
   }
 
   /**
@@ -171,8 +176,15 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
    * Gets the underlying type of the content `c`.
    */
   private CS::Type getUnderlyingContType(DataFlow::Content c) {
-    result = c.(DataFlow::FieldContent).getField().getType() or
+    result = c.(DataFlow::FieldContent).getField().getType()
+    or
     result = c.(DataFlow::SyntheticFieldContent).getField().getType()
+    or
+    // Use System.Object as the type of delegate arguments and returns as the content doesn't
+    // contain any type information.
+    c instanceof DataFlow::DelegateCallArgumentContent and result instanceof ObjectType
+    or
+    c instanceof DataFlow::DelegateCallReturnContent and result instanceof ObjectType
   }
 
   Type getUnderlyingContentType(DataFlow::ContentSet c) {
@@ -306,6 +318,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     c.isField(_) or c.isSyntheticField(_) or c.isProperty(_)
   }
 
+  predicate isCallback(DataFlow::ContentSet c) {
+    c.isDelegateCallArgument(_) or c.isDelegateCallReturn()
+  }
+
   string getSyntheticName(DataFlow::ContentSet c) {
     exists(CS::Field f |
       not f.isEffectivelyPublic() and
@@ -339,6 +355,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     or
     c.isElement() and
     result = "Element"
+    or
+    exists(int i | c.isDelegateCallArgument(i) and result = "Parameter[" + i + "]")
+    or
+    c.isDelegateCallReturn() and result = "ReturnValue"
   }
 
   predicate partialModel = ExternalFlow::partialModel/6;

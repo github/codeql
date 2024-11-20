@@ -7,13 +7,8 @@ newtype TCompletion =
   TSimpleCompletion() or
   TBooleanCompletion(Boolean b) or
   TMatchCompletion(Boolean isMatch) or
-  TLoopCompletion(TLoopJumpType kind, TLabelType label) {
-    label = TNoLabel()
-    or
-    kind = TBreakJump() and label = TLabel(any(BreakExpr b).getLifetime().getText())
-    or
-    kind = TContinueJump() and label = TLabel(any(ContinueExpr b).getLifetime().getText())
-  } or
+  TBreakCompletion() or
+  TContinueCompletion() or
   TReturnCompletion()
 
 /** A completion of a statement or an expression. */
@@ -67,6 +62,11 @@ abstract class ConditionalCompletion extends NormalCompletion {
   abstract ConditionalCompletion getDual();
 }
 
+/** Holds if node `le` has the constant Boolean value `value`. */
+private predicate isBooleanConstant(LiteralExpr le, Boolean value) {
+  le.getTextValue() = value.toString()
+}
+
 /**
  * A completion that represents evaluation of an expression
  * with a Boolean value.
@@ -74,32 +74,38 @@ abstract class ConditionalCompletion extends NormalCompletion {
 class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
-  override predicate isValidForSpecific(AstNode e) {
+  private predicate isValidForSpecific0(AstNode e) {
     e = any(IfExpr c).getCondition()
     or
-    any(MatchArm arm).getGuard() = e
+    e = any(WhileExpr c).getCondition()
     or
-    exists(BinaryExpr expr |
-      expr.getOperatorName() = ["&&", "||"] and
-      e = expr.getLhs()
-    )
+    any(MatchGuard guard).getCondition() = e
     or
-    exists(Expr parent | this.isValidForSpecific(parent) |
-      parent =
-        any(PrefixExpr expr |
-          expr.getOperatorName() = "!" and
-          e = expr.getExpr()
-        )
+    e = any(BinaryLogicalOperation blo).getLhs()
+    or
+    exists(Expr parent | this.isValidForSpecific0(parent) |
+      e = parent.(ParenExpr).getExpr()
       or
-      parent =
-        any(BinaryExpr expr |
-          expr.getOperatorName() = ["&&", "||"] and
-          e = expr.getRhs()
-        )
+      e = parent.(LogicalNotExpr).getExpr()
+      or
+      e = parent.(BinaryLogicalOperation).getRhs()
       or
       parent = any(IfExpr ie | e = [ie.getThen(), ie.getElse()])
       or
-      parent = any(BlockExpr be | e = be.getStmtList().getTailExpr())
+      e = parent.(MatchExpr).getAnArm().getExpr()
+      or
+      e = parent.(BlockExpr).getStmtList().getTailExpr()
+      or
+      e = any(BreakExpr be | be.getTarget() = parent).getExpr()
+    )
+  }
+
+  override predicate isValidForSpecific(AstNode e) {
+    this.isValidForSpecific0(e) and
+    (
+      isBooleanConstant(e, value)
+      or
+      not isBooleanConstant(e, _)
     )
   }
 
@@ -111,13 +117,63 @@ class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
   override string toString() { result = "boolean(" + value + ")" }
 }
 
+/** Holds if `pat` is guaranteed to match at the point in the AST where it occurs. */
+pragma[nomagic]
+private predicate isExhaustiveMatch(Pat pat) {
+  (
+    pat instanceof WildcardPat
+    or
+    pat = any(IdentPat ip | not ip.hasPat() and ip = any(Variable v).getPat())
+    or
+    pat instanceof RestPat
+    or
+    // `let` statements without an `else` branch must be exhaustive
+    pat = any(LetStmt let | not let.hasLetElse()).getPat()
+    or
+    // `match` expressions must be exhaustive, so last arm cannot fail
+    pat = any(MatchExpr me).getLastArm().getPat()
+    or
+    // macro invocations are exhaustive if their expansion is
+    pat = any(MacroPat mp | isExhaustiveMatch(mp.getMacroCall().getExpanded()))
+    or
+    // parameter patterns must be exhaustive
+    pat = any(Param p).getPat()
+  ) and
+  not pat = any(ForExpr for).getPat() // workaround until `for` loops are desugared
+  or
+  exists(Pat parent | isExhaustiveMatch(parent) |
+    pat = parent.(BoxPat).getPat()
+    or
+    pat = parent.(IdentPat).getPat()
+    or
+    pat = parent.(MacroPat).getMacroCall().getExpanded()
+    or
+    pat = parent.(ParenPat).getPat()
+    or
+    pat = parent.(RecordPat).getRecordPatFieldList().getField(_).getPat()
+    or
+    pat = parent.(RefPat).getPat()
+    or
+    pat = parent.(TuplePat).getAField()
+    or
+    pat = parent.(TupleStructPat).getAField()
+    or
+    pat = parent.(OrPat).getLastPat()
+  )
+}
+
 /**
  * A completion that represents the result of a pattern match.
  */
 class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
   MatchCompletion() { this = TMatchCompletion(value) }
 
-  override predicate isValidForSpecific(AstNode e) { e instanceof Pat }
+  override predicate isValidForSpecific(AstNode e) {
+    e instanceof Pat and
+    if isExhaustiveMatch(e) then value = true else any()
+    or
+    e instanceof TryExpr and value = true
+  }
 
   override MatchSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
@@ -128,42 +184,23 @@ class MatchCompletion extends TMatchCompletion, ConditionalCompletion {
 }
 
 /**
- * A completion that represents a break or a continue.
+ * A completion that represents a `break`.
  */
-class LoopJumpCompletion extends TLoopCompletion, Completion {
-  override LoopJumpSuccessor getAMatchingSuccessorType() {
-    result = TLoopSuccessor(this.getKind(), this.getLabelType())
-  }
+class BreakCompletion extends TBreakCompletion, Completion {
+  override BreakSuccessor getAMatchingSuccessorType() { any() }
 
-  final TLoopJumpType getKind() { this = TLoopCompletion(result, _) }
+  override predicate isValidForSpecific(AstNode e) { e instanceof BreakExpr }
 
-  final TLabelType getLabelType() { this = TLoopCompletion(_, result) }
+  override string toString() { result = this.getAMatchingSuccessorType().toString() }
+}
 
-  final predicate hasLabel() { this.getLabelType() = TLabel(_) }
+/**
+ * A completion that represents a `continue`.
+ */
+class ContinueCompletion extends TContinueCompletion, Completion {
+  override ContinueSuccessor getAMatchingSuccessorType() { any() }
 
-  final string getLabelName() { TLabel(result) = this.getLabelType() }
-
-  final predicate isContinue() { this.getKind() = TContinueJump() }
-
-  final predicate isBreak() { this.getKind() = TBreakJump() }
-
-  override predicate isValidForSpecific(AstNode e) {
-    this.isBreak() and
-    e instanceof BreakExpr and
-    (
-      not e.(BreakExpr).hasLifetime() and not this.hasLabel()
-      or
-      e.(BreakExpr).getLifetime().getText() = this.getLabelName()
-    )
-    or
-    this.isContinue() and
-    e instanceof ContinueExpr and
-    (
-      not e.(ContinueExpr).hasLifetime() and not this.hasLabel()
-      or
-      e.(ContinueExpr).getLifetime().getText() = this.getLabelName()
-    )
-  }
+  override predicate isValidForSpecific(AstNode e) { e instanceof ContinueExpr }
 
   override string toString() { result = this.getAMatchingSuccessorType().toString() }
 }
@@ -174,7 +211,9 @@ class LoopJumpCompletion extends TLoopCompletion, Completion {
 class ReturnCompletion extends TReturnCompletion, Completion {
   override ReturnSuccessor getAMatchingSuccessorType() { any() }
 
-  override predicate isValidForSpecific(AstNode e) { e instanceof ReturnExpr }
+  override predicate isValidForSpecific(AstNode e) {
+    e instanceof ReturnExpr or e instanceof TryExpr
+  }
 
   override string toString() { result = "return" }
 }

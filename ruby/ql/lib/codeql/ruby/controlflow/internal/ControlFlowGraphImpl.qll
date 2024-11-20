@@ -22,7 +22,6 @@ class AstNode extends Ast::AstNode {
 private module CfgInput implements CfgShared::InputSig<Location> {
   private import ControlFlowGraphImpl as Impl
   private import Completion as Comp
-  private import Splitting as Splitting
   private import codeql.ruby.CFG as Cfg
 
   class AstNode = Impl::AstNode;
@@ -45,10 +44,6 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     scope.(Impl::CfgScopeImpl).exit(last, c)
   }
 
-  class SplitKindBase = Splitting::TSplitKind;
-
-  class Split = Splitting::Split;
-
   class SuccessorType = Cfg::SuccessorType;
 
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
@@ -67,7 +62,21 @@ private module CfgInput implements CfgShared::InputSig<Location> {
   }
 }
 
-import CfgShared::Make<Location, CfgInput>
+private module CfgSplittingInput implements CfgShared::SplittingInputSig<Location, CfgInput> {
+  private import Splitting as S
+
+  class SplitKindBase = S::TSplitKind;
+
+  class Split = S::Split;
+}
+
+private module ConditionalCompletionSplittingInput implements
+  CfgShared::ConditionalCompletionSplittingInputSig<Location, CfgInput, CfgSplittingInput>
+{
+  import Splitting::ConditionalCompletionSplitting::ConditionalCompletionSplittingInput
+}
+
+import CfgShared::MakeWithSplitting<Location, CfgInput, CfgSplittingInput, ConditionalCompletionSplittingInput>
 
 abstract class CfgScopeImpl extends AstNode {
   abstract predicate entry(AstNode first);

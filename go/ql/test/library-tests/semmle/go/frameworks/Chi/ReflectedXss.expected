@@ -11,8 +11,8 @@ edges
 | test.go:23:18:23:60 | call to URLParamFromCtx | test.go:23:11:23:61 | type conversion | provenance | Src:MaD:2  |
 | test.go:24:18:24:71 | call to URLParam | test.go:24:11:24:72 | type conversion | provenance | Src:MaD:3  |
 models
-| 1 | Source: github.com/go-chi/chi; ; true; URLParam; ; ; ReturnValue; remote; manual |
-| 2 | Source: github.com/go-chi/chi; ; true; URLParamFromCtx; ; ; ReturnValue; remote; manual |
+| 1 | Source: github.com/go-chi/chi; ; false; URLParam; ; ; ReturnValue; remote; manual |
+| 2 | Source: github.com/go-chi/chi; ; false; URLParamFromCtx; ; ; ReturnValue; remote; manual |
 | 3 | Source: github.com/go-chi/chi; Context; true; URLParam; ; ; ReturnValue; remote; manual |
 | 4 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
 nodes

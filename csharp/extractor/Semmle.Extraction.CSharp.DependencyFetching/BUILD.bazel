@@ -14,7 +14,7 @@ codeql_csharp_library(
     nowarn = ["CA1822"],
     visibility = ["//csharp:__subpackages__"],
     deps = [
-        "//csharp/extractor/Semmle.Extraction",
+        "//csharp/extractor/Semmle.Extraction.CSharp",
         "//csharp/extractor/Semmle.Util",
     ],
 )

@@ -19,7 +19,9 @@ final class BooleanSuccessor = BooleanSuccessorImpl;
 
 final class MatchSuccessor = MatchSuccessorImpl;
 
-final class LoopJumpSuccessor = LoopJumpSuccessorImpl;
+final class BreakSuccessor = BreakSuccessorImpl;
+
+final class ContinueSuccessor = ContinueSuccessorImpl;
 
 final class ReturnSuccessor = ReturnSuccessorImpl;
 

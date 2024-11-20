@@ -41,6 +41,21 @@ module Generated {
     final predicate hasAbi() { exists(this.getAbi()) }
 
     /**
+     * Holds if this fn ptr type is async.
+     */
+    predicate isAsync() { Synth::convertFnPtrTypeToRaw(this).(Raw::FnPtrType).isAsync() }
+
+    /**
+     * Holds if this fn ptr type is const.
+     */
+    predicate isConst() { Synth::convertFnPtrTypeToRaw(this).(Raw::FnPtrType).isConst() }
+
+    /**
+     * Holds if this fn ptr type is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertFnPtrTypeToRaw(this).(Raw::FnPtrType).isUnsafe() }
+
+    /**
      * Gets the parameter list of this fn ptr type, if it exists.
      */
     ParamList getParamList() {

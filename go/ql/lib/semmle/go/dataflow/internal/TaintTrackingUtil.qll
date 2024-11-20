@@ -190,6 +190,7 @@ predicate sliceStep(DataFlow::Node pred, DataFlow::Node succ) {
  */
 abstract class FunctionModel extends Function {
   /** Holds if taint propagates through this function from `input` to `output`. */
+  pragma[nomagic]
   abstract predicate hasTaintFlow(FunctionInput input, FunctionOutput output);
 
   /** Gets an input node for this model for the call `c`. */
@@ -202,8 +203,8 @@ abstract class FunctionModel extends Function {
   predicate taintStepForCall(DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode c) {
     c = this.getACall() and
     exists(FunctionInput inp, FunctionOutput outp | this.hasTaintFlow(inp, outp) |
-      pred = inp.getNode(c) and
-      succ = outp.getNode(c)
+      pred = pragma[only_bind_out](inp).getNode(c) and
+      succ = pragma[only_bind_out](outp).getNode(c)
     )
   }
 
@@ -382,9 +383,9 @@ predicate inputIsConstantIfOutputHasProperty(
 ) {
   exists(Function f, FunctionInput inp, FunctionOutput outp, DataFlow::CallNode call |
     functionEnsuresInputIsConstant(f, inp, outp, p) and
-    call = f.getACall() and
-    inputNode = inp.getNode(call) and
-    DataFlow::localFlow(outp.getNode(call), outputNode)
+    call = pragma[only_bind_out](f).getACall() and
+    inputNode = pragma[only_bind_out](inp).getNode(call) and
+    DataFlow::localFlow(pragma[only_bind_out](outp).getNode(call), outputNode)
   )
 }
 
@@ -424,6 +425,32 @@ private class ClearSanitizer extends DefaultTaintSanitizer {
       arg = var.getAUse() and
       arg != this and
       arg.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
+    )
+  }
+}
+
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.go.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowPrivate::DataFlowCall call, DataFlowDispatch::ArgumentPosition argpos |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::viableCallable(call)) and
+      src.(DataFlow::ArgumentNode).argumentOf(call, argpos)
+    |
+      argpos != -1 and
+      sink.(DataFlow::PostUpdateNode)
+          .getPreUpdateNode()
+          .(DataFlow::ArgumentNode)
+          .argumentOf(call, -1)
+      or
+      sink.(DataFlowPrivate::OutNode).getCall() = call
     )
   }
 }

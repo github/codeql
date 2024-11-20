@@ -1,3 +1,17 @@
+## 2.0.3
+
+No user-facing changes.
+
+## 2.0.2
+
+No user-facing changes.
+
+## 2.0.1
+
+### Minor Analysis Improvements
+
+* All AST classes in `codeql.swift.elements` are now `final`, which means that it is no longer possible to `override` predicates defined in those classes (it is, however, still possible to `extend` the classes).
+
 ## 2.0.0
 
 ### Breaking Changes

@@ -1,0 +1,10 @@
+models
+edges
+nodes
+| main.rs:17:10:17:18 | CallExpr | semmle.label | CallExpr |
+subpaths
+testFailures
+| main.rs:22:14:22:32 | Comment | Missing result: hasValueFlow=1 |
+| main.rs:33:14:33:32 | Comment | Missing result: hasValueFlow=1 |
+#select
+| main.rs:17:10:17:18 | CallExpr | main.rs:17:10:17:18 | CallExpr | main.rs:17:10:17:18 | CallExpr | $@ | main.rs:17:10:17:18 | CallExpr | CallExpr |

@@ -1,6 +1,16 @@
-fn test_call() -> bool {
-    test_and_operator(true, false, true);
-    foo::<u32, u64>(42);
+use std::collections::HashMap;
+use std::convert::Infallible;
+
+mod calls {
+    fn function_call() {
+        test_and_operator(true, false, true);
+        foo::<u32, u64>(42);
+    }
+
+    fn method_call() {
+        let mut map = HashMap::new();
+        map.insert(37, "a");
+    }
 }
 
 mod loop_expression {
@@ -23,12 +33,12 @@ mod loop_expression {
         return true;
     }
 
-    fn test_break_with_labels() -> bool {
+    fn test_break_with_labels(b: bool) -> bool {
         'outer: loop {
             'inner: loop {
-                if false {
+                if b {
                     break;
-                } else if true {
+                } else if b {
                     break 'outer;
                 }
                 break 'inner;
@@ -37,17 +47,66 @@ mod loop_expression {
         true
     }
 
-    fn test_continue_with_labels() -> ! {
+    fn test_continue_with_labels(b: bool) -> ! {
         'outer: loop {
             1;
             'inner: loop {
-                if false {
+                if b {
                     continue;
-                } else if true {
+                } else if b {
                     continue 'outer;
                 }
                 continue 'inner;
             }
+        }
+    }
+
+    fn test_loop_label_shadowing(b: bool) -> ! {
+        'loop: loop {
+            1;
+            'loop: loop {
+                if b {
+                    continue;
+                } else if b {
+                    continue 'loop;
+                }
+                continue 'loop;
+            }
+        }
+    }
+
+    fn test_while(i: i64) {
+        let mut b = true;
+        while b {
+            1;
+            if (i > 0) {
+                break;
+            }
+            b = false;
+        }
+    }
+
+    fn test_while_let() {
+        let mut iter = 1..10;
+        while let Some(x) = iter.next() {
+            if (i = 5) {
+                break;
+            }
+        }
+    }
+
+    fn test_for(j: i64) {
+        for i in 0..10 {
+            if (i == j) {
+                break;
+            }
+            1;
+        }
+    }
+
+    fn break_with_return() -> i64 {
+        loop {
+            break return 1;
         }
     }
 }
@@ -83,7 +142,7 @@ mod if_expression {
     }
 
     fn test_nested_if(a: i64) -> i64 {
-        if (if a < 0 { a < -10 } else { a > 10}) {
+        if (if a < 0 { a < -10 } else { a > 10 }) {
             1
         } else {
             0
@@ -91,13 +150,71 @@ mod if_expression {
     }
 
     fn test_nested_if_match(a: i64) -> i64 {
-        if (match a { 0 => true, _ => false }) {
+        if (match a {
+            0 => true,
+            _ => false,
+        }) {
             1
         } else {
             0
         }
     }
 
+    fn test_nested_if_block(a: i64) -> i64 {
+        if {
+            ();
+            a > 0
+        } {
+            1
+        } else {
+            0
+        }
+    }
+
+    fn test_if_assignment(a: i64) -> i64 {
+        let mut x = false;
+        if x = true {
+            1
+        } else {
+            0
+        }
+    }
+
+    fn test_if_loop1(a: i64) -> i64 {
+        if (loop {
+            if a > 0 {
+                break a > 10;
+            };
+            a < 10;
+        }) {
+            1
+        } else {
+            0
+        }
+    }
+
+    fn test_if_loop2(a: i64) -> i64 {
+        if ('label: loop {
+            if a > 0 {
+                break 'label a > 10;
+            };
+            a < 10;
+        }) {
+            1
+        } else {
+            0
+        }
+    }
+
+    fn test_labelled_block(a: i64) -> i64 {
+        if ('block: {
+            break 'block a > 0;
+        }) {
+            1
+        } else {
+            0
+        }
+    }
 }
 
 mod logical_operators {
@@ -117,13 +234,124 @@ mod logical_operators {
         d
     }
 
+    fn test_not_operator(a: bool) -> bool {
+        let d = !a;
+        d
+    }
+
+    fn test_if_and_operator(a: bool, b: i64, c: bool) -> bool {
+        if a && b && c {
+            true
+        } else {
+            false
+        }
+    }
+
+    fn test_if_or_operator(a: bool, b: i64, c: bool) -> bool {
+        if a || b || c {
+            true
+        } else {
+            false
+        }
+    }
+
+    fn test_if_not_operator(a: bool) -> bool {
+        if !a {
+            true
+        } else {
+            false
+        }
+    }
 }
 
-fn test_match(maybe_digit: Option<i64>) -> {
-    match maybe_digit {
-        Option::Some(x) if x < 10 => x + 5,
-        Option::Some(x) => x,
-        Option::None => 5,
+mod question_mark_operator {
+
+    fn test_question_mark_operator_1(s: &str) -> Option<i32> {
+        str.parse::<u32>()? + 4
+    }
+
+    fn test_question_mark_operator_2(b: Option<bool>) -> Option<bool> {
+        match b? {
+            true => Some(false),
+            false => Some(true),
+        }
+    }
+}
+
+mod match_expression {
+
+    fn test_match(maybe_digit: Option<i64>) -> i64 {
+        match maybe_digit {
+            Option::Some(x) if x < 10 => x + 5,
+            Option::Some(x) => x,
+            Option::None => 5,
+        }
+    }
+
+    fn test_match_with_return_in_scrutinee(maybe_digit: Option<i64>) -> i64 {
+        match (if maybe_digit == Some(3) {
+            return 3;
+        } else {
+            maybe_digit
+        }) {
+            Option::Some(x) => x + 5,
+            Option::None => 5,
+        }
+    }
+
+    fn test_match_and(cond: bool, r: Opton<bool>) -> bool {
+        (match r {
+            Some(a) => a,
+            _ => false,
+        }) && cond
+    }
+
+    fn test_match_with_no_arms<T>(r: Result<T, Infallible>) -> T {
+        match r {
+            Ok(value) => value,
+            Err(never) => match never {},
+        }
+    }
+}
+
+mod let_statement {
+
+    fn test_let_match(a: Option<i64>) {
+        let Some(n) = a else { "Expected some" };
+        n
+    }
+
+    fn test_let_with_return(m: Option<i64>) {
+        let ret = match m {
+            Some(ret) => ret,
+            None => return false,
+        };
+        true
+    }
+}
+
+mod patterns {
+
+    fn empty_tuple_pattern(unit: ()) -> void {
+        let () = unit;
+        return;
+    }
+
+    struct MyStruct {}
+
+    fn empty_struct_pattern(st: MyStruct) -> i64 {
+        match st {
+            MyStruct {} => 1,
+        }
+    }
+
+    fn range_pattern() -> i64 {
+        match 42 {
+            ..0 => 1,
+            1..2 => 2,
+            5.. => 3,
+            .. => 4,
+        }
     }
 }
 
@@ -134,11 +362,99 @@ mod divergence {
         }
         "never reached"
     }
+}
 
-    fn test_let_match(a: Option<i64>) {
-        let Some(n) = a else {
-            "Expected some"
-        };
-        n
+mod async_await {
+    async fn say_hello() {
+        println!("hello, world!");
     }
+
+    async fn async_block() {
+        let say_godbye = async {
+            println!("godbye, everyone!");
+        };
+        let say_how_are_you = async {
+            println!("how are you?");
+        };
+        let noop = async {};
+        say_hello().await;
+        say_how_are_you.await;
+        say_godbye.await;
+        noop.await;
+    }
+}
+
+mod const_evaluation {
+    const PI: i64 = 3.14159;
+
+    const fn add_two(n: i64) -> i64 {
+        n + 2
+    }
+
+    const A_NUMBER: i64 = if add_two(2) + 2 == 4 { PI } else { 0 };
+
+    fn const_block_assert<T>() -> usize {
+        // If this code ever gets executed, then the assertion has definitely
+        // been evaluated at compile-time.
+        const {
+            assert!(std::mem::size_of::<T>() > 0);
+        }
+        // Here we can have unsafe code relying on the type being non-zero-sized.
+        42
+    }
+
+    fn const_block_panic() -> i64 {
+        const N: i64 = 12 + 7;
+        if false {
+            // The panic may or may not occur when the program is built.
+            const {
+                panic!();
+            }
+        }
+        N
+    }
+}
+
+fn dead_code() -> i64 {
+    if (true) {
+        return 0;
+    }
+    return 1;
+}
+
+fn labelled_block1() -> i64 {
+    let result = 'block: {
+        do_thing();
+        if condition_not_met() {
+            break 'block 1;
+        }
+        do_next_thing();
+        if condition_not_met() {
+            break 'block 2;
+        }
+        do_last_thing();
+        3
+    };
+}
+
+fn labelled_block2() -> i64 {
+    let result = 'block: {
+        let x: Option<i64> = None;
+        let Some(y) = x else {
+            break 'block 1;
+        };
+        x
+    };
+}
+
+fn test_nested_function() {
+    let mut x = 0;
+    fn nested(x: &mut i64) {
+        *x += 1;
+    }
+    nested(&mut x);
+}
+
+trait MyFrom<T> {
+    fn my_from(x: T) -> Self;
 }

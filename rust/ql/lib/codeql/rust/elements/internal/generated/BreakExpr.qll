@@ -32,6 +32,14 @@ module Generated {
    *     }
    * };
    * ```
+   * ```rust
+   * let x = 'label: {
+   *     if exit() {
+   *         break 'label 42;
+   *     }
+   *     0;
+   * };
+   * ```
    * INTERNAL: Do not reference the `Generated::BreakExpr` class directly.
    * Use the subclass `BreakExpr`, where the following predicates are available.
    */

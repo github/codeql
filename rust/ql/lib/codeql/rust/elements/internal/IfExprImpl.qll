@@ -24,7 +24,7 @@ module Impl {
    *     1
    * } else {
    *     0
-   * }
+   * };
    * ```
    */
   class IfExpr extends Generated::IfExpr { }

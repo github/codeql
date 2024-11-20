@@ -55,6 +55,16 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
+     * Holds if this ident pat is mut.
+     */
+    predicate isMut() { Synth::convertIdentPatToRaw(this).(Raw::IdentPat).isMut() }
+
+    /**
+     * Holds if this ident pat is reference.
+     */
+    predicate isRef() { Synth::convertIdentPatToRaw(this).(Raw::IdentPat).isRef() }
+
+    /**
      * Gets the name of this ident pat, if it exists.
      */
     Name getName() {

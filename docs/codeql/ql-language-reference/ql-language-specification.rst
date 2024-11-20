@@ -359,7 +359,7 @@ Kinds of types
 
 Types in QL are either *primitive* types, *database* types, *class* types, *character* types, *class domain* types, type *parameters*, or *instantiation-nested* types.
 
-The primitive types are ``boolean``, ``date``, ``float``, ``int``, and ``string``.
+The primitive types are ``boolean``, ``date``, ``float``, ``int``, ``string``, and ``QlBuiltins::BigInt``.
 
 Database types are supplied as part of the database. Each database type has a *name*, which is an identifier starting with an at sign (``@``, U+0040) followed by lower-case letter. Database types have some number of *base types*, which are other database types. In a valid database, the base types relation is non-cyclic.
 
@@ -433,7 +433,7 @@ Values are the fundamental data that QL programs compute over. This section spec
 Kinds of values
 ~~~~~~~~~~~~~~~
 
-There are six kinds of values in QL: one kind for each of the five primitive types, and *entities*. Each value has a type.
+There are seven kinds of values in QL: one kind for each of the six primitive types, and *entities*. Each value has a type.
 
 A boolean value is of type ``boolean``, and may have one of two distinct values: ``true`` or ``false``.
 
@@ -444,6 +444,8 @@ A float value is of type ``float``. Each float value is a binary 64-bit floating
 An integer value is of type ``int``. Each value is a 32-bit two's complement integer.
 
 A string is a finite sequence of 16-bit characters. The characters are interpreted as Unicode code points.
+
+A :ref:`big integer <bigint>` value is of type ``QlBuiltins::BigInt``. Each value is a signed arbitrary-precision integer.
 
 The database includes a number of opaque entity values. Each such value has a type that is one of the database types, and an identifying integer. An entity value is written as the name of its database type followed by its identifying integer in parentheses. For example, ``@tree(12)``, ``@person(16)``, and ``@location(38132)`` are entity values. The identifying integers are left opaque to programmers in this specification, so an implementation of QL is free to use some other set of countable labels to identify its entities.
 
@@ -458,7 +460,7 @@ For dates, the ordering is chronological.
 
 For floats, the ordering is as specified in IEEE 754 when one exists, except that NaN is considered equal to itself and is ordered after all other floats, and negative zero is considered to be strictly less than positive zero.
 
-For integers, the ordering is as for two's complement integers.
+For integers (and :ref:`big integers <bigint>`), the ordering is numerical.
 
 For strings, the ordering is lexicographic.
 

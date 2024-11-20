@@ -3,13 +3,17 @@
  * @description Unused variables may be an indication that the code is incomplete or has a typo.
  * @kind problem
  * @problem.severity recommendation
- * @precision medium
+ * @precision high
  * @id rust/unused-variable
  * @tags maintainability
  */
 
 import rust
+import UnusedVariable
 
-from Locatable e
-where none() // TODO: implement query
-select e, "Variable is not used."
+from Variable v
+where
+  isUnused(v) and
+  not isAllowableUnused(v) and
+  not v instanceof DiscardVariable
+select v, "Variable '" + v + "' is not used."

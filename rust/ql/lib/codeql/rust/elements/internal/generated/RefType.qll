@@ -27,6 +27,11 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RefType" }
 
     /**
+     * Holds if this reference type is mut.
+     */
+    predicate isMut() { Synth::convertRefTypeToRaw(this).(Raw::RefType).isMut() }
+
+    /**
      * Gets the lifetime of this reference type, if it exists.
      */
     Lifetime getLifetime() {

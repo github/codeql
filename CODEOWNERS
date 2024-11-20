@@ -24,7 +24,6 @@
 /ql/ @github/codeql-ql-for-ql-reviewers
 
 # Bazel (excluding BUILD.bazel files)
-WORKSPACE.bazel @github/codeql-ci-reviewers
 MODULE.bazel @github/codeql-ci-reviewers
 .bazelversion @github/codeql-ci-reviewers
 .bazelrc @github/codeql-ci-reviewers

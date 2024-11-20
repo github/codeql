@@ -127,6 +127,11 @@ module Flow = Shared::Flow<Location, CaptureInput>;
 private Flow::ClosureNode asClosureNode(Node n) {
   result = n.(SynthCaptureNode).getSynthesizedCaptureNode()
   or
+  exists(Comp comp | n = TSynthCompCapturedVariablesArgumentNode(comp) |
+    result.(Flow::ExprNode).getExpr().getNode() = comp
+  )
+  or
+  // TODO: Should the `Comp`s above be excluded here?
   result.(Flow::ExprNode).getExpr() = n.(CfgNode).getNode()
   or
   result.(Flow::VariableWriteSourceNode).getVariableWrite() = n.(CfgNode).getNode()

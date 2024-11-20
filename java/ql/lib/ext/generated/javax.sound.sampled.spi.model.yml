@@ -2,22 +2,26 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.sound.sampled.spi", "AudioFileReader", True, "getAudioInputStream", "(InputStream)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["javax.sound.sampled.spi", "AudioFileWriter", True, "getAudioFileTypes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.sound.sampled.spi", "AudioFileWriter", True, "getAudioFileTypes", "(AudioInputStream)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.sound.sampled.spi", "AudioFileWriter", True, "write", "(AudioInputStream,AudioFileFormat$Type,OutputStream)", "", "Argument[0]", "Argument[2]", "taint", "df-generated"]
+      - ["javax.sound.sampled.spi", "FormatConversionProvider", True, "getAudioInputStream", "(AudioFormat$Encoding,AudioInputStream)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.sound.sampled.spi", "FormatConversionProvider", True, "getAudioInputStream", "(AudioFormat,AudioInputStream)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
       extensible: neutralModel
     data:
       - ["javax.sound.sampled.spi", "AudioFileReader", "getAudioFileFormat", "(File)", "summary", "df-generated"]
       - ["javax.sound.sampled.spi", "AudioFileReader", "getAudioFileFormat", "(InputStream)", "summary", "df-generated"]
       - ["javax.sound.sampled.spi", "AudioFileReader", "getAudioFileFormat", "(URL)", "summary", "df-generated"]
       - ["javax.sound.sampled.spi", "AudioFileReader", "getAudioInputStream", "(File)", "summary", "df-generated"]
-      - ["javax.sound.sampled.spi", "AudioFileReader", "getAudioInputStream", "(InputStream)", "summary", "df-generated"]
       - ["javax.sound.sampled.spi", "AudioFileReader", "getAudioInputStream", "(URL)", "summary", "df-generated"]
-      - ["javax.sound.sampled.spi", "AudioFileWriter", "getAudioFileTypes", "()", "summary", "df-generated"]
-      - ["javax.sound.sampled.spi", "AudioFileWriter", "getAudioFileTypes", "(AudioInputStream)", "summary", "df-generated"]
       - ["javax.sound.sampled.spi", "AudioFileWriter", "isFileTypeSupported", "(AudioFileFormat$Type)", "summary", "df-generated"]
       - ["javax.sound.sampled.spi", "AudioFileWriter", "isFileTypeSupported", "(AudioFileFormat$Type,AudioInputStream)", "summary", "df-generated"]
       - ["javax.sound.sampled.spi", "AudioFileWriter", "write", "(AudioInputStream,AudioFileFormat$Type,File)", "summary", "df-generated"]
-      - ["javax.sound.sampled.spi", "AudioFileWriter", "write", "(AudioInputStream,AudioFileFormat$Type,OutputStream)", "summary", "df-generated"]
-      - ["javax.sound.sampled.spi", "FormatConversionProvider", "getAudioInputStream", "(AudioFormat$Encoding,AudioInputStream)", "summary", "df-generated"]
-      - ["javax.sound.sampled.spi", "FormatConversionProvider", "getAudioInputStream", "(AudioFormat,AudioInputStream)", "summary", "df-generated"]
       - ["javax.sound.sampled.spi", "FormatConversionProvider", "getSourceEncodings", "()", "summary", "df-generated"]
       - ["javax.sound.sampled.spi", "FormatConversionProvider", "getTargetEncodings", "()", "summary", "df-generated"]
       - ["javax.sound.sampled.spi", "FormatConversionProvider", "getTargetEncodings", "(AudioFormat)", "summary", "df-generated"]

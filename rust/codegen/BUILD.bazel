@@ -1,7 +1,25 @@
 load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
 
-native_binary(
+_args = [
+    "//rust/ast-generator",
+    "//rust/ast-generator:Cargo.toml",
+    "//misc/codegen",
+    "//rust:codegen-conf",
+]
+
+sh_binary(
     name = "codegen",
+    srcs = ["codegen.sh"],
+    args = ["$(rlocationpath %s)" % a for a in _args],
+    data = _args,
+    visibility = ["//rust:__subpackages__"],
+    deps = [
+        "//misc/bazel:sh_runfiles",
+    ],
+)
+
+native_binary(
+    name = "py",
     src = "//misc/codegen",
     out = "codegen",
     args = [
@@ -9,7 +27,6 @@ native_binary(
     ],
     data = [
         "//rust:codegen-conf",
-        "//rust:schema",
     ],
     visibility = ["//rust:__subpackages__"],
 )

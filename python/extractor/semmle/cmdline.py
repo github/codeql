@@ -102,8 +102,10 @@ def make_parser():
     config_options.add_option("--colorize", dest="colorize", default=False, action="store_true",
                       help = """Colorize the logging output.""")
 
-    config_options.add_option("--dont-extract-stdlib", dest="extract_stdlib", default=True, action="store_false",
-        help="Do not extract the standard library.")
+    config_options.add_option("--dont-extract-stdlib", dest="extract_stdlib", action="store_false",
+        help="This flag is deprecated; not extracting the standard library is now the default.")
+    config_options.add_option("--extract-stdlib", dest="extract_stdlib", default=False, action="store_true",
+        help="Extract the standard library.")
 
     parser.add_option_group(config_options)
 
@@ -226,8 +228,18 @@ def parse(command_line):
 
     if 'CODEQL_EXTRACTOR_PYTHON_DONT_EXTRACT_STDLIB' in os.environ:
         options.extract_stdlib = False
+        print ("WARNING: CODEQL_EXTRACTOR_PYTHON_DONT_EXTRACT_STDLIB is deprecated; the default is now to not extract the standard library.")
+
+    if 'CODEQL_EXTRACTOR_PYTHON_EXTRACT_STDLIB' in os.environ:
+        options.extract_stdlib = True
 
     options.prune = True
+
+    if options.extract_stdlib:
+        print ("WARNING: The analysis will extract the standard library. This behavior is deprecated and will be removed in a future release. We expect it to be gone in CLI version 2.20.0.")
+    else:
+        print ("INFO: The Python extractor has recently stopped extracting the standard library by default. If you encounter problems, please let us know by submitting an issue to https://github.com/github/codeql. It is possible to re-enable extraction of the standard library by setting the environment variable CODEQL_EXTRACTOR_PYTHON_EXTRACT_STDLIB.")
+
     return options, args
 
 def split_and_flatten(options_list, div):

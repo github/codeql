@@ -28,7 +28,8 @@ type BaselineConfig struct {
 func GetConfigBaselineAsJSON(rootDir string) ([]byte, error) {
 	vendorDirs := make([]string, 0)
 
-	if util.IsVendorDirExtractionEnabled() {
+	extractVendorDirs, _ := util.IsVendorDirExtractionEnabled()
+	if extractVendorDirs {
 		// The user wants vendor directories scanned; emit an empty report.
 	} else {
 		filepath.WalkDir(rootDir, func(dirPath string, d fs.DirEntry, err error) error {

@@ -8,4 +8,4 @@ from InterfaceType i, Type impl
 where
   i.hasMethod("ImplementMe", _) and
   impl.implements(i)
-select i, impl
+select i, impl.pp()

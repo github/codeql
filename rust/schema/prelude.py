@@ -3,6 +3,7 @@ from misc.codegen.lib.schemadefs import *
 include("../shared/tree-sitter-extractor/src/generator/prefix.dbscheme")
 include("prefix.dbscheme")
 
+
 @qltest.skip
 class Element:
     pass
@@ -16,6 +17,26 @@ class Locatable(Element):
 @qltest.skip
 class AstNode(Locatable):
     pass
+
+
+@qltest.skip
+class Token(AstNode):
+    """
+    The base class for all tokens.
+    """
+    pass
+
+
+class Comment(Token):
+    """
+    A comment. For example:
+    ```rust
+    // this is a comment
+    /// This is a doc comment
+    ```
+    """
+    parent: AstNode
+    text: string
 
 
 @qltest.skip
@@ -42,3 +63,19 @@ class Unimplemented(Unextracted):
     The base class for unimplemented nodes. This is used to mark nodes that are not yet extracted.
     """
     pass
+
+
+class Callable(AstNode):
+    """
+    A callable. Either a `Function` or a `ClosureExpr`.
+    """
+    param_list: optional["ParamList"] | child
+    attrs: list["Attr"] | child
+
+
+class Resolvable(AstNode):
+    """
+    Either a `Path`, or a `MethodCallExpr`.
+    """
+    resolved_path: optional[string] | rust.detach | ql.internal
+    resolved_crate_origin: optional[string] | rust.detach | ql.internal

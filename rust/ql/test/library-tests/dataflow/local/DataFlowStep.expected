@@ -1,0 +1,24 @@
+| main.rs:2:9:2:9 | [SSA] s | main.rs:3:33:3:33 | s |
+| main.rs:6:18:6:21 | [SSA] cond | main.rs:9:16:9:19 | cond |
+| main.rs:7:9:7:9 | [SSA] a | main.rs:10:9:10:9 | a |
+| main.rs:8:9:8:9 | [SSA] b | main.rs:12:9:12:9 | b |
+| main.rs:9:9:9:9 | [SSA] c | main.rs:14:5:14:5 | c |
+| main.rs:9:21:11:5 | BlockExpr | main.rs:9:13:13:5 | IfExpr |
+| main.rs:10:9:10:9 | a | main.rs:9:21:11:5 | BlockExpr |
+| main.rs:11:12:13:5 | BlockExpr | main.rs:9:13:13:5 | IfExpr |
+| main.rs:12:9:12:9 | b | main.rs:11:12:13:5 | BlockExpr |
+| main.rs:14:5:14:5 | c | main.rs:6:37:15:1 | BlockExpr |
+| main.rs:18:9:18:9 | [SSA] a | main.rs:20:15:20:15 | a |
+| main.rs:19:9:19:9 | [SSA] b | main.rs:22:5:22:5 | b |
+| main.rs:20:9:20:15 | BreakExpr | main.rs:19:13:21:5 | LoopExpr |
+| main.rs:20:15:20:15 | a | main.rs:20:9:20:15 | BreakExpr |
+| main.rs:22:5:22:5 | b | main.rs:17:29:23:1 | BlockExpr |
+| main.rs:27:5:27:5 | [SSA] i | main.rs:28:5:28:5 | i |
+| main.rs:27:5:27:5 | i | main.rs:27:5:27:5 | [SSA] i |
+| main.rs:28:5:28:5 | i | main.rs:25:24:29:1 | BlockExpr |
+| main.rs:31:21:31:21 | [SSA] a | main.rs:33:20:33:20 | a |
+| main.rs:31:29:31:29 | [SSA] b | main.rs:34:17:34:17 | b |
+| main.rs:31:37:31:37 | [SSA] c | main.rs:32:11:32:11 | c |
+| main.rs:32:5:35:5 | MatchExpr | main.rs:31:60:36:1 | BlockExpr |
+| main.rs:33:20:33:20 | a | main.rs:32:5:35:5 | MatchExpr |
+| main.rs:34:17:34:17 | b | main.rs:32:5:35:5 | MatchExpr |

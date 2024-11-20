@@ -230,6 +230,14 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       )
   }
 
+  /**
+   * Gets a non-implicit function declaration entry.
+   */
+  FunctionDeclarationEntry getAnExplicitDeclarationEntry() {
+    result = this.getADeclarationEntry() and
+    not result.isImplicit()
+  }
+
   private predicate declEntry(FunctionDeclarationEntry fde) {
     fun_decls(unresolveElement(fde), underlyingElement(this), _, _, _) and
     // If one .cpp file specializes a function, and another calls the
@@ -500,6 +508,17 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Gets the nearest enclosing AccessHolder.
    */
   override AccessHolder getEnclosingAccessHolder() { result = this.getDeclaringType() }
+
+  /**
+   * Holds if this function has extraction errors that create an `ErrorExpr`.
+   */
+  predicate hasErrors() {
+    exists(ErrorExpr e |
+      e.getEnclosingFunction() = this and
+      // Exclude the first allocator call argument because it is always extracted as `ErrorExpr`.
+      not exists(NewOrNewArrayExpr new | e = new.getAllocatorCall().getArgument(0))
+    )
+  }
 }
 
 pragma[noinline]
@@ -651,7 +670,8 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
 
   /**
    * Holds if this declaration is an implicit function declaration, that is,
-   * where a function is used before it is declared (under older C standards).
+   * where a function is used before it is declared (under older C standards,
+   * or when there were parse errors).
    */
   predicate isImplicit() { fun_implicit(underlyingElement(this)) }
 

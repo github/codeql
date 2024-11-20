@@ -20,7 +20,7 @@ import codeql.rust.elements.Expr
  *     1
  * } else {
  *     0
- * }
+ * };
  * ```
  */
 final class IfExpr = Impl::IfExpr;

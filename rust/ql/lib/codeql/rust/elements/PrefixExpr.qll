@@ -10,9 +10,9 @@ import codeql.rust.elements.Expr
 /**
  * A unary operation expression. For example:
  * ```rust
- * let x = -42
- * let y = !true
- * let z = *ptr
+ * let x = -42;
+ * let y = !true;
+ * let z = *ptr;
  * ```
  */
 final class PrefixExpr = Impl::PrefixExpr;

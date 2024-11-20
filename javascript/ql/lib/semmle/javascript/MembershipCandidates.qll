@@ -193,7 +193,7 @@ module MembershipCandidate {
         or
         // u.match(/re/) or u.match("re")
         base = this and
-        m = "match" and
+        m = ["match", "matchAll"] and
         enumeration = RegExp::getRegExpFromNode(firstArg)
       )
     }

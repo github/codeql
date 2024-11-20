@@ -1,21 +1,15 @@
 private import rust
 private import codeql.util.Boolean
 private import Completion
-
-newtype TLoopJumpType =
-  TContinueJump() or
-  TBreakJump()
-
-newtype TLabelType =
-  TLabel(string s) { any(Label l).getLifetime().getText() = s } or
-  TNoLabel()
+private import codeql.rust.internal.CachedStages
 
 cached
 newtype TSuccessorType =
-  TSuccessorSuccessor() or
+  TNormalSuccessor() { Stages::CfgStage::ref() } or
   TBooleanSuccessor(Boolean b) or
   TMatchSuccessor(Boolean b) or
-  TLoopSuccessor(TLoopJumpType kind, TLabelType label) { exists(TLoopCompletion(kind, label)) } or
+  TBreakSuccessor() or
+  TContinueSuccessor() or
   TReturnSuccessor()
 
 /** The type of a control flow successor. */
@@ -25,7 +19,7 @@ abstract class SuccessorTypeImpl extends TSuccessorType {
 }
 
 /** A normal control flow successor. */
-class NormalSuccessorImpl extends SuccessorTypeImpl, TSuccessorSuccessor {
+class NormalSuccessorImpl extends SuccessorTypeImpl, TNormalSuccessor {
   override string toString() { result = "successor" }
 }
 
@@ -59,28 +53,17 @@ class MatchSuccessorImpl extends ConditionalSuccessorImpl, TMatchSuccessor {
 }
 
 /**
- * A control flow successor of a loop control flow expression, `continue` or `break`.
+ * A control flow successor of a `break` expression.
  */
-class LoopJumpSuccessorImpl extends SuccessorTypeImpl, TLoopSuccessor {
-  private TLoopJumpType getKind() { this = TLoopSuccessor(result, _) }
+class BreakSuccessorImpl extends SuccessorTypeImpl, TBreakSuccessor {
+  override string toString() { result = "break" }
+}
 
-  private TLabelType getLabelType() { this = TLoopSuccessor(_, result) }
-
-  predicate hasLabel() { this.getLabelType() = TLabel(_) }
-
-  string getLabelName() { this = TLoopSuccessor(_, TLabel(result)) }
-
-  predicate isContinue() { this.getKind() = TContinueJump() }
-
-  predicate isBreak() { this.getKind() = TBreakJump() }
-
-  override string toString() {
-    exists(string kind, string label |
-      (if this.isContinue() then kind = "continue" else kind = "break") and
-      (if this.hasLabel() then label = "(" + this.getLabelName() + ")" else label = "") and
-      result = kind + label
-    )
-  }
+/**
+ * A control flow successor of a `continue` expression.
+ */
+class ContinueSuccessorImpl extends SuccessorTypeImpl, TContinueSuccessor {
+  override string toString() { result = "continue" }
 }
 
 /**

@@ -132,8 +132,8 @@ def test_dict_from_keyword():
 @expects(2)
 def test_dict_from_list():
     d = dict([("k", SOURCE), ("k1", NONSOURCE)])
-    SINK(d["k"]) #$ MISSING: flow="SOURCE, l:-1 -> d[k]"
-    SINK_F(d["k1"])
+    SINK(d["k"]) #$ flow="SOURCE, l:-1 -> d['k']"
+    SINK_F(d["k1"]) #$ SPURIOUS: flow="SOURCE, l:-2 -> d['k1']"  // due to imprecise list content
 
 @expects(2)
 def test_dict_from_dict():
@@ -141,6 +141,14 @@ def test_dict_from_dict():
     d2 = dict(d1)
     SINK(d2["k"]) #$ flow="SOURCE, l:-2 -> d2['k']"
     SINK_F(d2["k1"])
+
+@expects(4)
+def test_dict_from_multiple_args():
+    d = dict([("k", SOURCE), ("k1", NONSOURCE)], k2 = SOURCE, k3 = NONSOURCE)
+    SINK(d["k"]) #$ flow="SOURCE, l:-1 -> d['k']"
+    SINK_F(d["k1"]) #$ SPURIOUS: flow="SOURCE, l:-2 -> d['k1']" // due to imprecise list content
+    SINK(d["k2"]) #$ flow="SOURCE, l:-3 -> d['k2']"
+    SINK_F(d["k3"]) #$ SPURIOUS: flow="SOURCE, l:-4 -> d['k3']" // due to imprecise list content
 
 ## Container methods
 

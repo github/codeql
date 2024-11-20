@@ -17,6 +17,7 @@ private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
 private import Node0ToString
+private import DataFlowDispatch as DataFlowDispatch
 import ExprNodes
 
 /**
@@ -2496,4 +2497,17 @@ class AdditionalCallTarget extends Unit {
    * Gets a viable target for `call`.
    */
   abstract Declaration viableTarget(Call call);
+}
+
+/**
+ * Gets a function that may be called by `call`.
+ *
+ * Note that `call` may be a call to a function pointer expression.
+ */
+Function getARuntimeTarget(Call call) {
+  exists(DataFlowCall dfCall | dfCall.asCallInstruction().getUnconvertedResultExpression() = call |
+    result = DataFlowDispatch::viableCallable(dfCall).asSourceCallable()
+    or
+    result = DataFlowImplCommon::viableCallableLambda(dfCall, _).asSourceCallable()
+  )
 }

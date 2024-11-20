@@ -71,7 +71,7 @@ public class Testrunner
             testrunner.OnTestSkipped = OnTestSkipped;
 
             Console.WriteLine("Discovering tests...");
-            testrunner.Start(parallelAlgorithm: null);
+            testrunner.Start();
 
             Finished.WaitOne();
             Finished.Dispose();

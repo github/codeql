@@ -1,0 +1,20 @@
+load("//misc/bazel:pkg.bzl", "codeql_pack")
+
+package(default_visibility = ["//visibility:public"])
+
+[
+    codeql_pack(
+        name = "-".join(parts),
+        srcs = [
+            "//actions/extractor",
+        ],
+        pack_prefix = "/".join(parts),
+    )
+    for parts in (
+        [
+            "experimental",
+            "actions",
+        ],
+        ["actions"],
+    )
+]

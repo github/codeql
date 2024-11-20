@@ -42,5 +42,10 @@ module Generated {
      * Holds if `getBlockExpr()` exists.
      */
     final predicate hasBlockExpr() { exists(this.getBlockExpr()) }
+
+    /**
+     * Holds if this const block pat is const.
+     */
+    predicate isConst() { Synth::convertConstBlockPatToRaw(this).(Raw::ConstBlockPat).isConst() }
   }
 }

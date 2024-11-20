@@ -88,6 +88,8 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, JavaDataF
     api.getDeclaringType() instanceof J::Interface and not exists(api.getBody())
   }
 
+  predicate isUninterestingForHeuristicDataFlowModels(Callable api) { none() }
+
   class SourceOrSinkTargetApi extends Callable {
     SourceOrSinkTargetApi() { relevant(this) }
   }
@@ -110,7 +112,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, JavaDataF
 
     Callable lift() { result = lift }
 
-    predicate isRelevant() { relevant(this) }
+    predicate isRelevant() {
+      relevant(this) and
+      not hasManualSummaryModel(this)
+    }
   }
 
   private string isExtensible(Callable c) {
@@ -248,6 +253,8 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, JavaDataF
     c instanceof DataFlowUtil::FieldContent or
     c instanceof DataFlowUtil::SyntheticFieldContent
   }
+
+  predicate isCallback(DataFlow::ContentSet c) { none() }
 
   string getSyntheticName(DataFlow::ContentSet c) {
     exists(Field f |

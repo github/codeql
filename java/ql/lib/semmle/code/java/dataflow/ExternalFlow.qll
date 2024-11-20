@@ -416,7 +416,7 @@ private predicate elementSpec(
   or
   summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
-  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
+  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = true
 }
 
 private string getNestedName(Type t) {

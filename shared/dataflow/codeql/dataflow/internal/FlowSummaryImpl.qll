@@ -171,6 +171,7 @@ module Make<
         [
           "ai", // AI (machine learning)
           "df", // Dataflow (model generator)
+          "dfc", // Content dataflow (model generator)
           "tb", // Type based (model generator)
           "hq", // Heuristic query
         ]

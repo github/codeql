@@ -69,6 +69,7 @@ class Type extends @type {
    * is contained in the method set of this type and any type restrictions are
    * satisfied.
    */
+  pragma[nomagic]
   predicate implements(InterfaceType i) {
     if i = any(ComparableType comparable).getUnderlyingType()
     then this.implementsComparable()
@@ -445,15 +446,26 @@ class StructType extends @structtype, CompositeType {
       if n = ""
       then (
         isEmbedded = true and
-        (
-          name = tp.(NamedType).getName()
-          or
-          name = tp.(PointerType).getBaseType().(NamedType).getName()
-        )
+        name = lookThroughPointerType(tp).(NamedType).getName()
       ) else (
         isEmbedded = false and
         name = n
       )
+    )
+  }
+
+  /**
+   * Holds if this struct contains a field `name` with type `tp` and tag `tag`;
+   * `isEmbedded` is true if the field is embedded.
+   *
+   * Note that this predicate does not take promoted fields into account.
+   */
+  predicate hasOwnFieldWithTag(int i, string name, Type tp, boolean isEmbedded, string tag) {
+    this.hasOwnField(i, name, tp, isEmbedded) and
+    (
+      struct_tags(this, i, tag)
+      or
+      not struct_tags(this, i, _) and tag = ""
     )
   }
 
@@ -502,9 +514,7 @@ class StructType extends @structtype, CompositeType {
     this.hasFieldCand(_, embeddedParent, depth - 1, true) and
     result.getName() = name and
     (
-      result.getReceiverBaseType() = embeddedParent.getType()
-      or
-      result.getReceiverBaseType() = embeddedParent.getType().(PointerType).getBaseType()
+      result.getReceiverBaseType() = lookThroughPointerType(embeddedParent.getType())
       or
       methodhosts(result, embeddedParent.getType())
     )
@@ -575,10 +585,15 @@ class StructType extends @structtype, CompositeType {
   override string pp() {
     result =
       "struct { " +
-        concat(int i, string name, Type tp |
-          component_types(this, i, name, tp)
+        concat(int i, string name, Type tp, string tagToPrint |
+          component_types(this, i, name, tp) and
+          (
+            tagToPrint = " `" + any(string tag | struct_tags(this, i, tag)) + "`"
+            or
+            tagToPrint = "" and not struct_tags(this, i, _)
+          )
         |
-          name + " " + tp.pp(), "; " order by i
+          name + " " + tp.pp() + tagToPrint, "; " order by i
         ) + " }"
   }
 
@@ -621,6 +636,16 @@ class PointerType extends @pointertype, CompositeType {
   override string pp() { result = "* " + this.getBaseType().pp() }
 
   override string toString() { result = "pointer type" }
+}
+
+/**
+ * Gets the base type if `t` is a pointer type, otherwise `t` itself.
+ */
+Type lookThroughPointerType(Type t) {
+  not t instanceof PointerType and
+  result = t
+  or
+  result = t.(PointerType).getBaseType()
 }
 
 private newtype TTypeSetTerm =
@@ -742,8 +767,20 @@ class InterfaceType extends @interfacetype, CompositeType {
   /** Gets the type of method `name` of this interface type. */
   Type getMethodType(string name) {
     // Note that negative indices correspond to embedded interfaces and type
-    // set literals.
+    // set literals. Note also that methods coming from embedded interfaces
+    // have already been included in `component_types`.
     exists(int i | i >= 0 | component_types(this, i, name, result))
+  }
+
+  /**
+   * Holds if this interface type has a private method `name`,
+   * with qualified name `qname` and type `type`.
+   */
+  predicate hasPrivateMethodWithQualifiedName(string name, string qname, Type type) {
+    exists(int i | i >= 0 |
+      component_types(this, i, name, type) and
+      interface_private_method_ids(this, i, qname)
+    )
   }
 
   override predicate hasMethod(string m, SignatureType t) { t = this.getMethodType(m) }
@@ -1011,7 +1048,7 @@ class NamedType extends @namedtype, CompositeType {
       s.hasOwnField(_, _, embedded, true) and
       // ensure `m` can be promoted
       not s.hasOwnField(_, m, _, _) and
-      not exists(Method m2 | m2.getReceiverType() = this and m2.getName() = m)
+      not exists(Method m2 | m2.getReceiverBaseType() = this and m2.getName() = m)
     |
       // If S contains an embedded field T, the method set of S includes promoted methods with receiver T
       result = embedded.getMethod(m)
@@ -1032,9 +1069,18 @@ class ErrorType extends Type {
 }
 
 /**
+ * Gets the number of types with method `name`.
+ */
+bindingset[name]
+int numberOfTypesWithMethodName(string name) { result = count(Type t | t.hasMethod(name, _)) }
+
+/**
  * Gets the name of a method in the method set of `i`.
  *
  * This is used to restrict the set of interfaces to consider in the definition of `implements`,
- * so it does not matter which method name is chosen (we use the lexicographically least).
+ * so it does not matter which method name is chosen (we use the most unusual name the interface
+ * requires; this is the most discriminating and so shrinks the search space the most).
  */
-private string getExampleMethodName(InterfaceType i) { result = min(string m | i.hasMethod(m, _)) }
+private string getExampleMethodName(InterfaceType i) {
+  result = min(string m | i.hasMethod(m, _) | m order by numberOfTypesWithMethodName(m))
+}

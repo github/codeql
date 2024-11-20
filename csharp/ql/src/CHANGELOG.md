@@ -1,3 +1,19 @@
+## 1.0.11
+
+### Minor Analysis Improvements
+
+* C#: The method `string.ReplaceLineEndings(string)` is now considered a sanitizer for the `cs/log-forging` query. 
+
+## 1.0.10
+
+No user-facing changes.
+
+## 1.0.9
+
+### Minor Analysis Improvements
+
+* C#: The indexer and `Add` method on `System.Web.UI.AttributeCollection` is no longer considered an HTML sink.
+
 ## 1.0.8
 
 No user-facing changes.

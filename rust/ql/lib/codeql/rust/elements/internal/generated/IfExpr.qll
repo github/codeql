@@ -28,7 +28,7 @@ module Generated {
    *     1
    * } else {
    *     0
-   * }
+   * };
    * ```
    * INTERNAL: Do not reference the `Generated::IfExpr` class directly.
    * Use the subclass `IfExpr`, where the following predicates are available.

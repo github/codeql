@@ -1,7 +1,7 @@
 | options.all | False |
 | options.colorize | True |
 | options.context_cost | 11 |
-| options.extract_stdlib | True |
+| options.extract_stdlib | False |
 | options.guess | False |
 | options.help | False |
 | options.ignore_missing_modules | False |
