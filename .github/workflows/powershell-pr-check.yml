@@ -22,7 +22,7 @@ jobs:
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
         with:
-          channel: stable
+          channel: release
       - name: Compile PowerShell Queries
         run: |
           codeql query compile --check-only --keep-going powershell/ql/src
