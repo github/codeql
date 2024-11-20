@@ -58,12 +58,12 @@ module DenseRank<DenseRankInputSig Input> {
     rnk = rank[result](int rnk0 | rnk0 = getRank(_) | rnk0)
   }
 
-  /** Gets the dense rank of `r`. */
-  int denseRank(Ranked r) { result = rankRank(r, getRank(r)) }
+  /** Gets the `Ranked` value for which the dense rank is `rnk`. */
+  Ranked denseRank(int rnk) { rnk = rankRank(result, getRank(result)) }
 }
 
-/** Provides the input to `DenseRank2`. */
-signature module DenseRankInputSig2 {
+/** Provides the input to `DenseRank1`. */
+signature module DenseRankInputSig1 {
   /** A ranking context. */
   bindingset[this]
   class C;
@@ -77,7 +77,7 @@ signature module DenseRankInputSig2 {
 }
 
 /** Same as `DenseRank`, but allows for a context consisting of one element. */
-module DenseRank2<DenseRankInputSig2 Input> {
+module DenseRank1<DenseRankInputSig1 Input> {
   private import Input
 
   private int rankRank(C c, Ranked r, int rnk) {
@@ -85,17 +85,15 @@ module DenseRank2<DenseRankInputSig2 Input> {
     rnk = rank[result](int rnk0 | rnk0 = getRank(c, _) | rnk0)
   }
 
-  /** Gets the dense rank of `r` in the context provided by `c`. */
-  int denseRank(C c, Ranked r) {
-    exists(int rnk |
-      result = rankRank(c, r, rnk) and
-      rnk = getRank(c, r)
-    )
-  }
+  /**
+   * Gets the `Ranked` value for which the dense rank in the context provided by
+   * `c` is `rnk`.
+   */
+  Ranked denseRank(C c, int rnk) { rnk = rankRank(c, result, getRank(c, result)) }
 }
 
-/** Provides the input to `DenseRank3`. */
-signature module DenseRankInputSig3 {
+/** Provides the input to `DenseRank2`. */
+signature module DenseRankInputSig2 {
   /** A ranking context. */
   bindingset[this]
   class C1;
@@ -113,7 +111,7 @@ signature module DenseRankInputSig3 {
 }
 
 /** Same as `DenseRank`, but allows for a context consisting of two elements. */
-module DenseRank3<DenseRankInputSig3 Input> {
+module DenseRank2<DenseRankInputSig2 Input> {
   private import Input
 
   private int rankRank(C1 c1, C2 c2, Ranked r, int rnk) {
@@ -121,11 +119,11 @@ module DenseRank3<DenseRankInputSig3 Input> {
     rnk = rank[result](int rnk0 | rnk0 = getRank(c1, c2, _) | rnk0)
   }
 
-  /** Gets the dense rank of `r` in the context provided by `c1` and `c2`. */
-  int denseRank(C1 c1, C2 c2, Ranked r) {
-    exists(int rnk |
-      result = rankRank(c1, c2, r, rnk) and
-      rnk = getRank(c1, c2, r)
-    )
+  /**
+   * Gets the `Ranked` value for which the dense rank in the context provided by
+   * `c1` and `c2` is `rnk`.
+   */
+  Ranked denseRank(C1 c1, C2 c2, int rnk) {
+    rnk = rankRank(c1, c2, result, getRank(c1, c2, result))
   }
 }

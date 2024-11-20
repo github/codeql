@@ -38,7 +38,8 @@
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. An `input` can be either "",
  *    "Argument[n]", or "Argument[n1..n2]":
- *    - "": Selects a write to the selected element in case this is a field.
+ *    - "": Selects a write to the selected element in case this is a field or
+ *      package-level variable.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
  *      The arguments are zero-indexed, and `receiver` specifies the receiver.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but selects any argument
@@ -47,7 +48,7 @@
  *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
  *    "Parameter[n]", "Parameter[n1..n2]", , "ReturnValue", "ReturnValue[n]", or
  *    "ReturnValue[n1..n2]":
- *    - "": Selects a read of a selected field.
+ *    - "": Selects a read of a selected field or package-level variable.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
  *      The arguments are zero-indexed, and `receiver` specifies the receiver.

@@ -20,7 +20,7 @@ void test2(int *x) {
 }
 
 void test3(int *x, bool b) {
-  if (x) { // GOOD [FALSE POSITIVE]: x is being accessed in the body of the if
+  if (x) { // GOOD: x is being accessed in the body of the if
     if (b)
       *x = 42;
     free(x);
@@ -28,7 +28,7 @@ void test3(int *x, bool b) {
 }
 
 bool test4(char *x, char *y) {
-  if (!x || strcmp(x, y)) { // GOOD [FALSE POSITIVE]: x is being accessed in the guard and return value depends on x
+  if (!x || strcmp(x, y)) { // GOOD: x is being accessed in the guard and return value depends on x
     free(x);
     return true;
   }
@@ -91,11 +91,11 @@ void test10(char *x) {
   if (x) free(x);
 
 void test11(char *x) {
-  TRY_FREE(x) // BAD
+  TRY_FREE(x) // BAD [NOT DETECTED]
 }
 
 bool test12(char *x) {
-  if (!x) // GOOD [FALSE POSITIVE]: return value depends on x
+  if (!x) // GOOD: return value depends on x
     return false;
 
   free(x);
@@ -110,6 +110,6 @@ void test13(char *x) {
 void inspect(char *x);
 
 void test14(char *x) {
-  if (x != nullptr) // GOOD [FALSE POSITIVE]: x might be accessed in the first operand of the comma operator
+  if (x != nullptr) // GOOD: x might be accessed in the first operand of the comma operator
     inspect(x), free(x);
 }
