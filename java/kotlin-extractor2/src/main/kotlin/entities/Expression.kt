@@ -747,6 +747,8 @@ private fun KotlinFileExtractor.extractExpression(
                 val returned = e.getReturnedExpression()
                 if (returned != null) {
                     extractExpression(returned, callable, ExprParent(id, 0, id))
+                } else {
+                    TODO()
                 }
                 // TODO: e.getLabeledExpression()
             }
