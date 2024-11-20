@@ -28,6 +28,7 @@ bazel_dep(name = "gazelle", version = "0.38.0")
 bazel_dep(name = "rules_dotnet", version = "0.17.4")
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
 bazel_dep(name = "rules_rust", version = "0.52.2")
+bazel_dep(name = "rules_jvm_external", version = "6.2")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
 
