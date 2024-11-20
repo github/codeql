@@ -20,12 +20,21 @@ astGuards
 | test.c:109:9:109:14 | ... == ... |
 | test.c:109:9:109:23 | ... \|\| ... |
 | test.c:109:19:109:23 | ... < ... |
+| test.c:126:7:126:7 | 1 |
+| test.c:126:7:126:28 | ... && ... |
+| test.c:126:12:126:26 | call to test3_condition |
+| test.c:131:7:131:7 | b |
+| test.c:137:7:137:7 | 0 |
 | test.c:146:7:146:8 | ! ... |
+| test.c:152:10:152:10 | x |
+| test.c:152:10:152:15 | ... && ... |
+| test.c:152:15:152:15 | y |
 | test.c:156:9:156:19 | ... == ... |
 | test.c:159:9:159:19 | ... == ... |
 | test.c:162:9:162:18 | ... < ... |
 | test.c:165:9:165:18 | ... < ... |
 | test.c:175:13:175:32 | ... == ... |
+| test.c:181:9:181:9 | x |
 | test.cpp:18:8:18:10 | call to get |
 | test.cpp:31:7:31:13 | ... == ... |
 | test.cpp:42:13:42:20 | call to getABool |
@@ -232,12 +241,44 @@ astGuardsCompare
 | 109 | y < 0+0 when ... < ... is true |
 | 109 | y >= 0+0 when ... < ... is false |
 | 109 | y >= 0+0 when ... \|\| ... is false |
+| 126 | 1 != 0 when 1 is true |
+| 126 | 1 != 0 when ... && ... is true |
+| 126 | 1 != 1 when 1 is false |
+| 126 | 1 == 0 when 1 is false |
+| 126 | 1 == 1 when 1 is true |
+| 126 | 1 == 1 when ... && ... is true |
+| 126 | call to test3_condition != 0 when ... && ... is true |
+| 126 | call to test3_condition != 0 when call to test3_condition is true |
+| 126 | call to test3_condition != 1 when call to test3_condition is false |
+| 126 | call to test3_condition == 0 when call to test3_condition is false |
+| 126 | call to test3_condition == 1 when ... && ... is true |
+| 126 | call to test3_condition == 1 when call to test3_condition is true |
+| 131 | b != 0 when b is true |
+| 131 | b != 1 when b is false |
+| 131 | b == 0 when b is false |
+| 131 | b == 1 when b is true |
+| 137 | 0 != 0 when 0 is true |
+| 137 | 0 != 1 when 0 is false |
+| 137 | 0 == 0 when 0 is false |
+| 137 | 0 == 1 when 0 is true |
 | 146 | ! ... != 0 when ! ... is true |
 | 146 | ! ... != 1 when ! ... is false |
 | 146 | ! ... == 0 when ! ... is false |
 | 146 | ! ... == 1 when ! ... is true |
 | 146 | x != 0 when ! ... is false |
 | 146 | x == 0 when ! ... is true |
+| 152 | x != 0 when ... && ... is true |
+| 152 | x != 0 when x is true |
+| 152 | x != 1 when x is false |
+| 152 | x == 0 when x is false |
+| 152 | x == 1 when ... && ... is true |
+| 152 | x == 1 when x is true |
+| 152 | y != 0 when ... && ... is true |
+| 152 | y != 0 when y is true |
+| 152 | y != 1 when y is false |
+| 152 | y == 0 when y is false |
+| 152 | y == 1 when ... && ... is true |
+| 152 | y == 1 when y is true |
 | 156 | ... + ... != x+0 when ... == ... is false |
 | 156 | ... + ... == x+0 when ... == ... is true |
 | 156 | ... == ... != 0 when ... == ... is true |
@@ -296,6 +337,10 @@ astGuardsCompare
 | 175 | call to foo != 0+0 when ... == ... is false |
 | 175 | call to foo == 0 when ... == ... is true |
 | 175 | call to foo == 0+0 when ... == ... is true |
+| 181 | x != 0 when x is true |
+| 181 | x != 1 when x is false |
+| 181 | x == 0 when x is false |
+| 181 | x == 1 when x is true |
 astGuardsControl
 | test.c:7:9:7:13 | ... > ... | false | 10 | 11 |
 | test.c:7:9:7:13 | ... > ... | true | 7 | 9 |
@@ -367,13 +412,29 @@ astGuardsControl
 | test.c:109:9:109:14 | ... == ... | false | 113 | 113 |
 | test.c:109:9:109:23 | ... \|\| ... | false | 113 | 113 |
 | test.c:109:19:109:23 | ... < ... | false | 113 | 113 |
+| test.c:126:7:126:7 | 1 | true | 126 | 126 |
+| test.c:126:7:126:7 | 1 | true | 126 | 128 |
+| test.c:126:7:126:7 | 1 | true | 131 | 131 |
+| test.c:126:7:126:7 | 1 | true | 131 | 132 |
+| test.c:126:7:126:7 | 1 | true | 134 | 123 |
+| test.c:126:7:126:28 | ... && ... | true | 126 | 128 |
+| test.c:126:12:126:26 | call to test3_condition | true | 126 | 128 |
+| test.c:131:7:131:7 | b | true | 131 | 132 |
+| test.c:137:7:137:7 | 0 | false | 142 | 136 |
 | test.c:146:7:146:8 | ! ... | true | 146 | 147 |
+| test.c:152:10:152:10 | x | true | 151 | 152 |
+| test.c:152:10:152:10 | x | true | 152 | 152 |
+| test.c:152:10:152:15 | ... && ... | true | 151 | 152 |
+| test.c:152:15:152:15 | y | true | 151 | 152 |
 | test.c:156:9:156:19 | ... == ... | true | 156 | 157 |
 | test.c:159:9:159:19 | ... == ... | true | 159 | 160 |
 | test.c:162:9:162:18 | ... < ... | true | 162 | 163 |
 | test.c:165:9:165:18 | ... < ... | true | 165 | 166 |
 | test.c:175:13:175:32 | ... == ... | false | 175 | 175 |
 | test.c:175:13:175:32 | ... == ... | true | 175 | 175 |
+| test.c:181:9:181:9 | x | false | 183 | 184 |
+| test.c:181:9:181:9 | x | true | 181 | 182 |
+| test.c:181:9:181:9 | x | true | 186 | 180 |
 | test.cpp:18:8:18:10 | call to get | true | 19 | 19 |
 | test.cpp:31:7:31:13 | ... == ... | false | 30 | 30 |
 | test.cpp:31:7:31:13 | ... == ... | false | 34 | 34 |
@@ -753,9 +814,39 @@ astGuardsEnsure_const
 | test.c:109:9:109:23 | ... \|\| ... | test.c:109:19:109:23 | ... < ... | == | 0 | 113 | 113 |
 | test.c:109:19:109:23 | ... < ... | test.c:109:19:109:23 | ... < ... | != | 1 | 113 | 113 |
 | test.c:109:19:109:23 | ... < ... | test.c:109:19:109:23 | ... < ... | == | 0 | 113 | 113 |
+| test.c:126:7:126:7 | 1 | test.c:126:7:126:7 | 1 | != | 0 | 126 | 126 |
+| test.c:126:7:126:7 | 1 | test.c:126:7:126:7 | 1 | != | 0 | 126 | 128 |
+| test.c:126:7:126:7 | 1 | test.c:126:7:126:7 | 1 | != | 0 | 131 | 131 |
+| test.c:126:7:126:7 | 1 | test.c:126:7:126:7 | 1 | != | 0 | 131 | 132 |
+| test.c:126:7:126:7 | 1 | test.c:126:7:126:7 | 1 | != | 0 | 134 | 123 |
+| test.c:126:7:126:7 | 1 | test.c:126:7:126:7 | 1 | == | 1 | 126 | 126 |
+| test.c:126:7:126:7 | 1 | test.c:126:7:126:7 | 1 | == | 1 | 126 | 128 |
+| test.c:126:7:126:7 | 1 | test.c:126:7:126:7 | 1 | == | 1 | 131 | 131 |
+| test.c:126:7:126:7 | 1 | test.c:126:7:126:7 | 1 | == | 1 | 131 | 132 |
+| test.c:126:7:126:7 | 1 | test.c:126:7:126:7 | 1 | == | 1 | 134 | 123 |
+| test.c:126:7:126:28 | ... && ... | test.c:126:7:126:7 | 1 | != | 0 | 126 | 128 |
+| test.c:126:7:126:28 | ... && ... | test.c:126:7:126:7 | 1 | == | 1 | 126 | 128 |
+| test.c:126:7:126:28 | ... && ... | test.c:126:12:126:26 | call to test3_condition | != | 0 | 126 | 128 |
+| test.c:126:7:126:28 | ... && ... | test.c:126:12:126:26 | call to test3_condition | == | 1 | 126 | 128 |
+| test.c:126:12:126:26 | call to test3_condition | test.c:126:12:126:26 | call to test3_condition | != | 0 | 126 | 128 |
+| test.c:126:12:126:26 | call to test3_condition | test.c:126:12:126:26 | call to test3_condition | == | 1 | 126 | 128 |
+| test.c:131:7:131:7 | b | test.c:131:7:131:7 | b | != | 0 | 131 | 132 |
+| test.c:131:7:131:7 | b | test.c:131:7:131:7 | b | == | 1 | 131 | 132 |
+| test.c:137:7:137:7 | 0 | test.c:137:7:137:7 | 0 | != | 1 | 142 | 136 |
+| test.c:137:7:137:7 | 0 | test.c:137:7:137:7 | 0 | == | 0 | 142 | 136 |
 | test.c:146:7:146:8 | ! ... | test.c:146:7:146:8 | ! ... | != | 0 | 146 | 147 |
 | test.c:146:7:146:8 | ! ... | test.c:146:7:146:8 | ! ... | == | 1 | 146 | 147 |
 | test.c:146:7:146:8 | ! ... | test.c:146:8:146:8 | x | == | 0 | 146 | 147 |
+| test.c:152:10:152:10 | x | test.c:152:10:152:10 | x | != | 0 | 151 | 152 |
+| test.c:152:10:152:10 | x | test.c:152:10:152:10 | x | != | 0 | 152 | 152 |
+| test.c:152:10:152:10 | x | test.c:152:10:152:10 | x | == | 1 | 151 | 152 |
+| test.c:152:10:152:10 | x | test.c:152:10:152:10 | x | == | 1 | 152 | 152 |
+| test.c:152:10:152:15 | ... && ... | test.c:152:10:152:10 | x | != | 0 | 151 | 152 |
+| test.c:152:10:152:15 | ... && ... | test.c:152:10:152:10 | x | == | 1 | 151 | 152 |
+| test.c:152:10:152:15 | ... && ... | test.c:152:15:152:15 | y | != | 0 | 151 | 152 |
+| test.c:152:10:152:15 | ... && ... | test.c:152:15:152:15 | y | == | 1 | 151 | 152 |
+| test.c:152:15:152:15 | y | test.c:152:15:152:15 | y | != | 0 | 151 | 152 |
+| test.c:152:15:152:15 | y | test.c:152:15:152:15 | y | == | 1 | 151 | 152 |
 | test.c:156:9:156:19 | ... == ... | test.c:156:9:156:19 | ... == ... | != | 0 | 156 | 157 |
 | test.c:156:9:156:19 | ... == ... | test.c:156:9:156:19 | ... == ... | == | 1 | 156 | 157 |
 | test.c:159:9:159:19 | ... == ... | test.c:159:9:159:19 | ... == ... | != | 0 | 159 | 160 |
@@ -770,6 +861,12 @@ astGuardsEnsure_const
 | test.c:175:13:175:32 | ... == ... | test.c:175:13:175:32 | ... == ... | != | 1 | 175 | 175 |
 | test.c:175:13:175:32 | ... == ... | test.c:175:13:175:32 | ... == ... | == | 0 | 175 | 175 |
 | test.c:175:13:175:32 | ... == ... | test.c:175:13:175:32 | ... == ... | == | 1 | 175 | 175 |
+| test.c:181:9:181:9 | x | test.c:181:9:181:9 | x | != | 0 | 181 | 182 |
+| test.c:181:9:181:9 | x | test.c:181:9:181:9 | x | != | 0 | 186 | 180 |
+| test.c:181:9:181:9 | x | test.c:181:9:181:9 | x | != | 1 | 183 | 184 |
+| test.c:181:9:181:9 | x | test.c:181:9:181:9 | x | == | 0 | 183 | 184 |
+| test.c:181:9:181:9 | x | test.c:181:9:181:9 | x | == | 1 | 181 | 182 |
+| test.c:181:9:181:9 | x | test.c:181:9:181:9 | x | == | 1 | 186 | 180 |
 | test.cpp:18:8:18:10 | call to get | test.cpp:18:8:18:10 | call to get | != | 0 | 19 | 19 |
 | test.cpp:18:8:18:10 | call to get | test.cpp:18:8:18:10 | call to get | == | 1 | 19 | 19 |
 | test.cpp:31:7:31:13 | ... == ... | test.cpp:31:7:31:7 | x | != | -1 | 30 | 30 |
@@ -1012,13 +1109,21 @@ irGuardsCompare
 | 109 | y >= 0 when CompareLT: ... < ... is false |
 | 109 | y >= 0+0 when CompareLT: ... < ... is false |
 | 126 | 1 != 0 when CompareNE: 1 is true |
+| 126 | 1 != 1 when CompareNE: 1 is false |
 | 126 | 1 == 0 when CompareNE: 1 is false |
+| 126 | 1 == 1 when CompareNE: 1 is true |
 | 126 | call to test3_condition != 0 when CompareNE: call to test3_condition is true |
+| 126 | call to test3_condition != 1 when CompareNE: call to test3_condition is false |
 | 126 | call to test3_condition == 0 when CompareNE: call to test3_condition is false |
+| 126 | call to test3_condition == 1 when CompareNE: call to test3_condition is true |
 | 131 | b != 0 when CompareNE: b is true |
+| 131 | b != 1 when CompareNE: b is false |
 | 131 | b == 0 when CompareNE: b is false |
+| 131 | b == 1 when CompareNE: b is true |
 | 137 | 0 != 0 when CompareNE: 0 is true |
+| 137 | 0 != 1 when CompareNE: 0 is false |
 | 137 | 0 == 0 when CompareNE: 0 is false |
+| 137 | 0 == 1 when CompareNE: 0 is true |
 | 146 | ! ... != 0 when CompareEQ: ! ... is true |
 | 146 | ! ... != 1 when CompareEQ: ! ... is false |
 | 146 | ! ... == 0 when CompareEQ: ! ... is false |
@@ -1026,9 +1131,13 @@ irGuardsCompare
 | 146 | x != 0 when CompareEQ: ! ... is false |
 | 146 | x == 0 when CompareEQ: ! ... is true |
 | 152 | x != 0 when CompareNE: x is true |
+| 152 | x != 1 when CompareNE: x is false |
 | 152 | x == 0 when CompareNE: x is false |
+| 152 | x == 1 when CompareNE: x is true |
 | 152 | y != 0 when CompareNE: y is true |
+| 152 | y != 1 when CompareNE: y is false |
 | 152 | y == 0 when CompareNE: y is false |
+| 152 | y == 1 when CompareNE: y is true |
 | 156 | ... + ... != x+0 when CompareEQ: ... == ... is false |
 | 156 | ... + ... == x+0 when CompareEQ: ... == ... is true |
 | 156 | ... == ... != 0 when CompareEQ: ... == ... is true |
@@ -1088,7 +1197,9 @@ irGuardsCompare
 | 175 | call to foo == 0 when CompareEQ: ... == ... is true |
 | 175 | call to foo == 0+0 when CompareEQ: ... == ... is true |
 | 181 | x != 0 when CompareNE: x is true |
+| 181 | x != 1 when CompareNE: x is false |
 | 181 | x == 0 when CompareNE: x is false |
+| 181 | x == 1 when CompareNE: x is true |
 irGuardsControl
 | test.c:7:9:7:13 | CompareGT: ... > ... | false | 11 | 11 |
 | test.c:7:9:7:13 | CompareGT: ... > ... | true | 8 | 8 |
