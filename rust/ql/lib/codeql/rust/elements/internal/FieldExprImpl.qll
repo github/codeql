@@ -19,6 +19,12 @@ module Impl {
    * ```
    */
   class FieldExpr extends Generated::FieldExpr {
-    override string toString() { result = "... ." + this.getNameRef().toString() }
+    override string toString() {
+      exists(string abbr, string name |
+        abbr = this.getExpr().toAbbreviatedString() and
+        name = this.getNameRef().toString() and
+        if abbr = "..." then result = "... ." + name else result = abbr + "." + name
+      )
+    }
   }
 }

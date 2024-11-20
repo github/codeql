@@ -25,6 +25,6 @@ module Impl {
    * ```
    */
   class BecomeExpr extends Generated::BecomeExpr {
-    override string toString() { result = "become ..." }
+    override string toString() { result = "become " + this.getExpr().toAbbreviatedString() }
   }
 }

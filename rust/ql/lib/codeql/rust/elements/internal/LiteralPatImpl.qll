@@ -22,6 +22,8 @@ module Impl {
    * ```
    */
   class LiteralPat extends Generated::LiteralPat {
-    override string toString() { result = this.getLiteral().toString() }
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() { result = this.getLiteral().toString() }
   }
 }

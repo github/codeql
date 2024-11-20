@@ -49,15 +49,12 @@ module Impl {
    * ```
    */
   class ContinueExpr extends Generated::ContinueExpr {
-    override string toString() {
-      exists(string label |
-        (
-          label = " " + this.getLifetime().getText()
-          or
-          not this.hasLifetime() and label = ""
-        ) and
-        result = "continue" + label
-      )
+    override string toString() { result = concat(int i | | this.toStringPart(i), " " order by i) }
+
+    private string toStringPart(int index) {
+      index = 0 and result = "continue"
+      or
+      index = 1 and result = this.getLifetime().toString()
     }
 
     /**
@@ -66,7 +63,7 @@ module Impl {
      * The target is either a `LoopExpr`, a `ForExpr`, or a `WhileExpr`.
      */
     pragma[nomagic]
-    Expr getTarget() {
+    LoopingExpr getTarget() {
       exists(string label |
         result = getAContinueAncestor(this, label) and
         BreakExprImpl::isLabelledLoop(result, label)

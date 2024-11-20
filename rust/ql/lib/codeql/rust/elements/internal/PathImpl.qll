@@ -19,10 +19,14 @@ module Impl {
    * ```
    */
   class Path extends Generated::Path {
-    override string toString() {
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() {
       if this.hasQualifier()
-      then result = this.getQualifier().toString() + "::" + this.getPart().toString()
-      else result = this.getPart().toString()
+      then
+        result =
+          this.getQualifier().toAbbreviatedString() + "::" + this.getPart().toAbbreviatedString()
+      else result = this.getPart().toAbbreviatedString()
     }
   }
 }

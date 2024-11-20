@@ -19,15 +19,12 @@ module Impl {
    * ```
    */
   class Param extends Generated::Param {
-    override string toString() {
-      exists(string ty |
-        (
-          ty = ": " + this.getTy().toString()
-          or
-          not this.hasTy() and ty = ""
-        ) and
-        result = this.getPat().toString() + ty
-      )
+    override string toString() { result = concat(int i | | this.toStringPart(i) order by i) }
+
+    private string toStringPart(int index) {
+      index = 0 and result = this.getPat().toAbbreviatedString()
+      or
+      index = 1 and result = ": " + this.getTy().toAbbreviatedString()
     }
   }
 }

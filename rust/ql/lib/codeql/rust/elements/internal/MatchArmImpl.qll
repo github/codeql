@@ -28,11 +28,16 @@ module Impl {
    * ```
    */
   class MatchArm extends Generated::MatchArm {
-    override string toString() {
-      exists(string guard |
-        (if this.hasGuard() then guard = "if ... " else guard = "") and
-        result = this.getPat().toString() + guard + " => ..."
-      )
+    override string toString() { result = concat(int i | | this.toStringPart(i), " " order by i) }
+
+    private string toStringPart(int index) {
+      index = 0 and result = this.getPat().toAbbreviatedString()
+      or
+      index = 1 and result = "if " + this.getGuard().toAbbreviatedString()
+      or
+      index = 2 and result = "=>"
+      or
+      index = 3 and result = this.getExpr().toAbbreviatedString()
     }
   }
 }

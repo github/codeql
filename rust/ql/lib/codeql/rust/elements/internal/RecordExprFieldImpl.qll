@@ -19,11 +19,12 @@ module Impl {
    * ```
    */
   class RecordExprField extends Generated::RecordExprField {
-    override string toString() {
-      exists(string init |
-        (if this.hasExpr() then init = ": ..." else init = "") and
-        result = this.getNameRef().toString() + init
-      )
+    override string toString() { result = concat(int i | | this.toStringPart(i) order by i) }
+
+    private string toStringPart(int index) {
+      index = 0 and result = this.getNameRef().toString()
+      or
+      index = 1 and result = ": " + this.getExpr().toAbbreviatedString()
     }
   }
 }

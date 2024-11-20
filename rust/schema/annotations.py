@@ -1,6 +1,19 @@
 from misc.codegen.lib.schemadefs import *
 from .ast import *
 
+class LabelableExpr(Expr):
+    """
+    The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
+    """
+    label: optional[Label] | child
+
+class LoopingExpr(LabelableExpr):
+    """
+    The base class for expressions that loop (`LoopExpr`, `ForExpr` or `WhileExpr`).
+    """
+    loop_body: optional["BlockExpr"] | child
+
+
 
 @annotate(Module)
 @rust.doc_test_signature(None)
@@ -151,7 +164,7 @@ class _:
     """
 
 
-@annotate(BlockExpr)
+@annotate(BlockExpr, replace_bases={Expr: LabelableExpr})
 class _:
     """
     A block expression. For example:
@@ -167,9 +180,10 @@ class _:
     }
     ```
     """
+    label: drop
 
 
-@annotate(LoopExpr)
+@annotate(LoopExpr, replace_bases={Expr: LoopingExpr})
 class _:
     """
     A loop expression. For example:
@@ -195,6 +209,8 @@ class _:
     };
     ```
     """
+    label: drop
+    loop_body: drop
 
 
 class CallExprBase(Expr):
@@ -990,7 +1006,7 @@ class _:
     """
 
 
-@annotate(ForExpr)
+@annotate(ForExpr, replace_bases={Expr: LoopingExpr})
 class _:
     """
     A ForExpr. For example:
@@ -998,6 +1014,8 @@ class _:
     todo!()
     ```
     """
+    label: drop
+    loop_body: drop
 
 
 @annotate(ForType)
@@ -1744,7 +1762,7 @@ class _:
     """
 
 
-@annotate(WhileExpr)
+@annotate(WhileExpr, replace_bases={Expr: LoopingExpr})
 class _:
     """
     A WhileExpr. For example:
@@ -1752,6 +1770,8 @@ class _:
     todo!()
     ```
     """
+    label: drop
+    loop_body: drop
 
 
 @annotate(Function, add_bases=[Callable])

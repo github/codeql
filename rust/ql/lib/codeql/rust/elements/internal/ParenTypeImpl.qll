@@ -19,6 +19,6 @@ module Impl {
    * ```
    */
   class ParenType extends Generated::ParenType {
-    override string toString() { result = "(...)" }
+    override string toString() { result = "(" + this.getTy().toAbbreviatedString() + ")" }
   }
 }

@@ -23,10 +23,13 @@ module Impl {
    */
   class RefPat extends Generated::RefPat {
     override string toString() {
-      exists(string mut |
-        (if this.isMut() then mut = "mut " else mut = "") and
-        result = "&" + mut + "..."
-      )
+      result = "&" + concat(int i | | this.getSpecPart(i), " " order by i)
+    }
+
+    private string getSpecPart(int index) {
+      index = 0 and this.isMut() and result = "mut"
+      or
+      index = 1 and result = this.getPat().toAbbreviatedString()
     }
   }
 }

@@ -21,11 +21,14 @@ module Impl {
    * ```
    */
   class LetExpr extends Generated::LetExpr {
-    override string toString() {
-      exists(string expr |
-        (if this.hasExpr() then expr = " = ..." else expr = "") and
-        result = "let " + this.getPat().toString() + expr
-      )
+    override string toString() { result = concat(int i | | this.toStringPart(i), " " order by i) }
+
+    private string toStringPart(int index) {
+      index = 0 and result = "let"
+      or
+      index = 1 and result = this.getPat().toAbbreviatedString()
+      or
+      index = 2 and result = "= " + this.getExpr().toAbbreviatedString()
     }
   }
 }

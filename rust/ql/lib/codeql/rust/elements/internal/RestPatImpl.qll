@@ -19,6 +19,8 @@ module Impl {
    * ```
    */
   class RestPat extends Generated::RestPat {
-    override string toString() { result = ".." }
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() { result = ".." }
   }
 }

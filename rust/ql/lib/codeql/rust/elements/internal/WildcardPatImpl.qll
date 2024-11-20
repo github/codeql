@@ -19,6 +19,8 @@ module Impl {
    * ```
    */
   class WildcardPat extends Generated::WildcardPat {
-    override string toString() { result = "_" }
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() { result = "_" }
   }
 }

@@ -19,7 +19,9 @@ module Impl {
    * ```
    */
   class PathSegment extends Generated::PathSegment {
-    override string toString() {
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() {
       // TODO: this does not cover everything
       if this.hasGenericArgList()
       then result = this.getNameRef().toString() + "::<...>"

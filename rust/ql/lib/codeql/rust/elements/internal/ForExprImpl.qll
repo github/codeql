@@ -19,6 +19,8 @@ module Impl {
    * ```
    */
   class ForExpr extends Generated::ForExpr {
-    override string toString() { result = "for " + this.getPat().toString() + " in ... { ... }" }
+    override string toStringPrefix() {
+      result = "for " + this.getPat().toAbbreviatedString() + " in ..."
+    }
   }
 }

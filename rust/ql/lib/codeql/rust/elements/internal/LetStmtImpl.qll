@@ -26,12 +26,16 @@ module Impl {
    * ```
    */
   class LetStmt extends Generated::LetStmt {
-    override string toString() {
-      exists(string expr, string elseStr |
-        (if this.hasInitializer() then expr = " = ..." else expr = "") and
-        (if this.hasLetElse() then elseStr = " else { ... }" else elseStr = "") and
-        result = "let " + this.getPat().toString() + expr + elseStr
-      )
+    override string toString() { result = concat(int i | | this.toStringPart(i), " " order by i) }
+
+    private string toStringPart(int index) {
+      index = 0 and result = "let"
+      or
+      index = 1 and result = this.getPat().toAbbreviatedString()
+      or
+      index = 2 and result = "= " + this.getInitializer().toAbbreviatedString()
+      or
+      index = 3 and result = this.getLetElse().toString()
     }
   }
 }

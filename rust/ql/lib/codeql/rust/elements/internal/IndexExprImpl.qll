@@ -20,6 +20,9 @@ module Impl {
    * ```
    */
   class IndexExpr extends Generated::IndexExpr {
-    override string toString() { result = "...[...]" }
+    override string toString() {
+      result =
+        this.getBase().toAbbreviatedString() + "[" + this.getIndex().toAbbreviatedString() + "]"
+    }
   }
 }

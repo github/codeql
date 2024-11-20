@@ -3569,97 +3569,6 @@ impl From<trap::Label<BinaryExpr>> for trap::Label<Locatable> {
 }
 
 #[derive(Debug)]
-pub struct BlockExpr {
-    pub id: trap::TrapId<BlockExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
-    pub is_async: bool,
-    pub is_const: bool,
-    pub is_gen: bool,
-    pub is_move: bool,
-    pub is_try: bool,
-    pub is_unsafe: bool,
-    pub label: Option<trap::Label<Label>>,
-    pub stmt_list: Option<trap::Label<StmtList>>,
-}
-
-impl trap::TrapEntry for BlockExpr {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("block_exprs", vec![id.into()]);
-        for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("block_expr_attrs", vec![id.into(), i.into(), v.into()]);
-        }
-        if self.is_async {
-            out.add_tuple("block_expr_is_async", vec![id.into()]);
-        }
-        if self.is_const {
-            out.add_tuple("block_expr_is_const", vec![id.into()]);
-        }
-        if self.is_gen {
-            out.add_tuple("block_expr_is_gen", vec![id.into()]);
-        }
-        if self.is_move {
-            out.add_tuple("block_expr_is_move", vec![id.into()]);
-        }
-        if self.is_try {
-            out.add_tuple("block_expr_is_try", vec![id.into()]);
-        }
-        if self.is_unsafe {
-            out.add_tuple("block_expr_is_unsafe", vec![id.into()]);
-        }
-        if let Some(v) = self.label {
-            out.add_tuple("block_expr_labels", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.stmt_list {
-            out.add_tuple("block_expr_stmt_lists", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for BlockExpr {
-    fn class_name() -> &'static str { "BlockExpr" }
-}
-
-impl From<trap::Label<BlockExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<BlockExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<BlockExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<BlockExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<BlockExpr>> for trap::Label<Expr> {
-    fn from(value: trap::Label<BlockExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of Expr
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<BlockExpr>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<BlockExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct BoxPat {
     pub id: trap::TrapId<BoxPat>,
     pub pat: Option<trap::Label<Pat>>,
@@ -4583,81 +4492,6 @@ impl From<trap::Label<FnPtrType>> for trap::Label<TypeRef> {
 }
 
 #[derive(Debug)]
-pub struct ForExpr {
-    pub id: trap::TrapId<ForExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
-    pub iterable: Option<trap::Label<Expr>>,
-    pub label: Option<trap::Label<Label>>,
-    pub loop_body: Option<trap::Label<BlockExpr>>,
-    pub pat: Option<trap::Label<Pat>>,
-}
-
-impl trap::TrapEntry for ForExpr {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("for_exprs", vec![id.into()]);
-        for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("for_expr_attrs", vec![id.into(), i.into(), v.into()]);
-        }
-        if let Some(v) = self.iterable {
-            out.add_tuple("for_expr_iterables", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.label {
-            out.add_tuple("for_expr_labels", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.loop_body {
-            out.add_tuple("for_expr_loop_bodies", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.pat {
-            out.add_tuple("for_expr_pats", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for ForExpr {
-    fn class_name() -> &'static str { "ForExpr" }
-}
-
-impl From<trap::Label<ForExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<ForExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ForExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<ForExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ForExpr>> for trap::Label<Expr> {
-    fn from(value: trap::Label<ForExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of Expr
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ForExpr>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<ForExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct ForType {
     pub id: trap::TrapId<ForType>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
@@ -5169,6 +5003,51 @@ impl From<trap::Label<Item>> for trap::Label<Stmt> {
 }
 
 #[derive(Debug)]
+pub struct LabelableExpr {
+    _unused: ()
+}
+
+impl trap::TrapClass for LabelableExpr {
+    fn class_name() -> &'static str { "LabelableExpr" }
+}
+
+impl From<trap::Label<LabelableExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<LabelableExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LabelableExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LabelableExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<LabelableExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LabelableExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LabelableExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<LabelableExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LabelableExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LabelableExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<LabelableExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LabelableExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct LetExpr {
     pub id: trap::TrapId<LetExpr>,
     pub attrs: Vec<trap::Label<Attr>>,
@@ -5552,73 +5431,6 @@ impl From<trap::Label<LiteralPat>> for trap::Label<Locatable> {
 impl From<trap::Label<LiteralPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<LiteralPat>) -> Self {
         // SAFETY: this is safe because in the dbscheme LiteralPat is a subclass of Pat
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct LoopExpr {
-    pub id: trap::TrapId<LoopExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
-    pub label: Option<trap::Label<Label>>,
-    pub loop_body: Option<trap::Label<BlockExpr>>,
-}
-
-impl trap::TrapEntry for LoopExpr {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("loop_exprs", vec![id.into()]);
-        for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("loop_expr_attrs", vec![id.into(), i.into(), v.into()]);
-        }
-        if let Some(v) = self.label {
-            out.add_tuple("loop_expr_labels", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.loop_body {
-            out.add_tuple("loop_expr_loop_bodies", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for LoopExpr {
-    fn class_name() -> &'static str { "LoopExpr" }
-}
-
-impl From<trap::Label<LoopExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<LoopExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<LoopExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<LoopExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<LoopExpr>> for trap::Label<Expr> {
-    fn from(value: trap::Label<LoopExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of Expr
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<LoopExpr>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<LoopExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7915,77 +7727,6 @@ impl From<trap::Label<UnderscoreExpr>> for trap::Label<Locatable> {
 }
 
 #[derive(Debug)]
-pub struct WhileExpr {
-    pub id: trap::TrapId<WhileExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
-    pub condition: Option<trap::Label<Expr>>,
-    pub label: Option<trap::Label<Label>>,
-    pub loop_body: Option<trap::Label<BlockExpr>>,
-}
-
-impl trap::TrapEntry for WhileExpr {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("while_exprs", vec![id.into()]);
-        for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("while_expr_attrs", vec![id.into(), i.into(), v.into()]);
-        }
-        if let Some(v) = self.condition {
-            out.add_tuple("while_expr_conditions", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.label {
-            out.add_tuple("while_expr_labels", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.loop_body {
-            out.add_tuple("while_expr_loop_bodies", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for WhileExpr {
-    fn class_name() -> &'static str { "WhileExpr" }
-}
-
-impl From<trap::Label<WhileExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<WhileExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<WhileExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<WhileExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<WhileExpr>> for trap::Label<Expr> {
-    fn from(value: trap::Label<WhileExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of Expr
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<WhileExpr>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<WhileExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct WildcardPat {
     pub id: trap::TrapId<WildcardPat>,
 }
@@ -8160,6 +7901,106 @@ impl From<trap::Label<YieldExpr>> for trap::Label<Expr> {
 impl From<trap::Label<YieldExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<YieldExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme YieldExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct BlockExpr {
+    pub id: trap::TrapId<BlockExpr>,
+    pub label: Option<trap::Label<Label>>,
+    pub attrs: Vec<trap::Label<Attr>>,
+    pub is_async: bool,
+    pub is_const: bool,
+    pub is_gen: bool,
+    pub is_move: bool,
+    pub is_try: bool,
+    pub is_unsafe: bool,
+    pub stmt_list: Option<trap::Label<StmtList>>,
+}
+
+impl trap::TrapEntry for BlockExpr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("block_exprs", vec![id.into()]);
+        if let Some(v) = self.label {
+            out.add_tuple("labelable_expr_labels", vec![id.into(), v.into()]);
+        }
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("block_expr_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if self.is_async {
+            out.add_tuple("block_expr_is_async", vec![id.into()]);
+        }
+        if self.is_const {
+            out.add_tuple("block_expr_is_const", vec![id.into()]);
+        }
+        if self.is_gen {
+            out.add_tuple("block_expr_is_gen", vec![id.into()]);
+        }
+        if self.is_move {
+            out.add_tuple("block_expr_is_move", vec![id.into()]);
+        }
+        if self.is_try {
+            out.add_tuple("block_expr_is_try", vec![id.into()]);
+        }
+        if self.is_unsafe {
+            out.add_tuple("block_expr_is_unsafe", vec![id.into()]);
+        }
+        if let Some(v) = self.stmt_list {
+            out.add_tuple("block_expr_stmt_lists", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for BlockExpr {
+    fn class_name() -> &'static str { "BlockExpr" }
+}
+
+impl From<trap::Label<BlockExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<BlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<BlockExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<BlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<BlockExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<BlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<BlockExpr>> for trap::Label<LabelableExpr> {
+    fn from(value: trap::Label<BlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of LabelableExpr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<BlockExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<BlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8836,6 +8677,60 @@ impl From<trap::Label<Impl>> for trap::Label<Locatable> {
 impl From<trap::Label<Impl>> for trap::Label<Stmt> {
     fn from(value: trap::Label<Impl>) -> Self {
         // SAFETY: this is safe because in the dbscheme Impl is a subclass of Stmt
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct LoopingExpr {
+    _unused: ()
+}
+
+impl trap::TrapClass for LoopingExpr {
+    fn class_name() -> &'static str { "LoopingExpr" }
+}
+
+impl From<trap::Label<LoopingExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<LoopingExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LoopingExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<LoopingExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LoopingExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<LoopingExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LoopingExpr>> for trap::Label<LabelableExpr> {
+    fn from(value: trap::Label<LoopingExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of LabelableExpr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LoopingExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<LoopingExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10000,6 +9895,273 @@ impl From<trap::Label<Use>> for trap::Label<Locatable> {
 impl From<trap::Label<Use>> for trap::Label<Stmt> {
     fn from(value: trap::Label<Use>) -> Self {
         // SAFETY: this is safe because in the dbscheme Use is a subclass of Stmt
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct ForExpr {
+    pub id: trap::TrapId<ForExpr>,
+    pub label: Option<trap::Label<Label>>,
+    pub loop_body: Option<trap::Label<BlockExpr>>,
+    pub attrs: Vec<trap::Label<Attr>>,
+    pub iterable: Option<trap::Label<Expr>>,
+    pub pat: Option<trap::Label<Pat>>,
+}
+
+impl trap::TrapEntry for ForExpr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("for_exprs", vec![id.into()]);
+        if let Some(v) = self.label {
+            out.add_tuple("labelable_expr_labels", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.loop_body {
+            out.add_tuple("looping_expr_loop_bodies", vec![id.into(), v.into()]);
+        }
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("for_expr_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.iterable {
+            out.add_tuple("for_expr_iterables", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.pat {
+            out.add_tuple("for_expr_pats", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for ForExpr {
+    fn class_name() -> &'static str { "ForExpr" }
+}
+
+impl From<trap::Label<ForExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ForExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ForExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<ForExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ForExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<ForExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ForExpr>> for trap::Label<LabelableExpr> {
+    fn from(value: trap::Label<ForExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of LabelableExpr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ForExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<ForExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ForExpr>> for trap::Label<LoopingExpr> {
+    fn from(value: trap::Label<ForExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of LoopingExpr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct LoopExpr {
+    pub id: trap::TrapId<LoopExpr>,
+    pub label: Option<trap::Label<Label>>,
+    pub loop_body: Option<trap::Label<BlockExpr>>,
+    pub attrs: Vec<trap::Label<Attr>>,
+}
+
+impl trap::TrapEntry for LoopExpr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("loop_exprs", vec![id.into()]);
+        if let Some(v) = self.label {
+            out.add_tuple("labelable_expr_labels", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.loop_body {
+            out.add_tuple("looping_expr_loop_bodies", vec![id.into(), v.into()]);
+        }
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("loop_expr_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for LoopExpr {
+    fn class_name() -> &'static str { "LoopExpr" }
+}
+
+impl From<trap::Label<LoopExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<LoopExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LoopExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<LoopExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LoopExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<LoopExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LoopExpr>> for trap::Label<LabelableExpr> {
+    fn from(value: trap::Label<LoopExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of LabelableExpr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LoopExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<LoopExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LoopExpr>> for trap::Label<LoopingExpr> {
+    fn from(value: trap::Label<LoopExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of LoopingExpr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct WhileExpr {
+    pub id: trap::TrapId<WhileExpr>,
+    pub label: Option<trap::Label<Label>>,
+    pub loop_body: Option<trap::Label<BlockExpr>>,
+    pub attrs: Vec<trap::Label<Attr>>,
+    pub condition: Option<trap::Label<Expr>>,
+}
+
+impl trap::TrapEntry for WhileExpr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("while_exprs", vec![id.into()]);
+        if let Some(v) = self.label {
+            out.add_tuple("labelable_expr_labels", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.loop_body {
+            out.add_tuple("looping_expr_loop_bodies", vec![id.into(), v.into()]);
+        }
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("while_expr_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.condition {
+            out.add_tuple("while_expr_conditions", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for WhileExpr {
+    fn class_name() -> &'static str { "WhileExpr" }
+}
+
+impl From<trap::Label<WhileExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<WhileExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<WhileExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<WhileExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<WhileExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<WhileExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<WhileExpr>> for trap::Label<LabelableExpr> {
+    fn from(value: trap::Label<WhileExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of LabelableExpr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<WhileExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<WhileExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<WhileExpr>> for trap::Label<LoopingExpr> {
+    fn from(value: trap::Label<WhileExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of LoopingExpr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

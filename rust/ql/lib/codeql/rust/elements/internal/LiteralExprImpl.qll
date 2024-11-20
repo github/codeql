@@ -27,5 +27,7 @@ module Impl {
    */
   class LiteralExpr extends Generated::LiteralExpr {
     override string toString() { result = this.getTextValue() }
+
+    override string toAbbreviatedString() { result = this.getTextValue() }
   }
 }

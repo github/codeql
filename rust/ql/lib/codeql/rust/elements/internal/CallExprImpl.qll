@@ -23,15 +23,6 @@ module Impl {
    * ```
    */
   class CallExpr extends Generated::CallExpr {
-    override string toString() {
-      exists(string callee |
-        (
-          callee = this.getExpr().(PathExpr).toString()
-          or
-          not this.getExpr() instanceof PathExpr and callee = "..."
-        ) and
-        result = callee + "(...)"
-      )
-    }
+    override string toString() { result = this.getExpr().toAbbreviatedString() + "(...)" }
   }
 }

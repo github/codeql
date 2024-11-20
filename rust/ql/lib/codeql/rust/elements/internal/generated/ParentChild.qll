@@ -1397,29 +1397,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfBlockExpr(BlockExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nAttr, int nLabel, int nStmtList |
-      b = 0 and
-      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nLabel = nAttr + 1 and
-      nStmtList = nLabel + 1 and
-      (
-        none()
-        or
-        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
-        or
-        result = e.getAttr(index - n) and
-        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
-        or
-        index = nAttr and result = e.getLabel() and partialPredicateCall = "Label()"
-        or
-        index = nLabel and result = e.getStmtList() and partialPredicateCall = "StmtList()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfBoxPat(BoxPat e, int index, string partialPredicateCall) {
     exists(int b, int bPat, int n, int nPat |
       b = 0 and
@@ -1708,35 +1685,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfForExpr(ForExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nAttr, int nIterable, int nLabel, int nLoopBody, int nPat |
-      b = 0 and
-      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nIterable = nAttr + 1 and
-      nLabel = nIterable + 1 and
-      nLoopBody = nLabel + 1 and
-      nPat = nLoopBody + 1 and
-      (
-        none()
-        or
-        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
-        or
-        result = e.getAttr(index - n) and
-        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
-        or
-        index = nAttr and result = e.getIterable() and partialPredicateCall = "Iterable()"
-        or
-        index = nIterable and result = e.getLabel() and partialPredicateCall = "Label()"
-        or
-        index = nLabel and result = e.getLoopBody() and partialPredicateCall = "LoopBody()"
-        or
-        index = nLoopBody and result = e.getPat() and partialPredicateCall = "Pat()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfForType(ForType e, int index, string partialPredicateCall) {
     exists(int b, int bTypeRef, int n, int nGenericParamList, int nTy |
       b = 0 and
@@ -1900,6 +1848,24 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfLabelableExpr(
+    LabelableExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nLabel |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nLabel = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getLabel() and partialPredicateCall = "Label()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfLetExpr(LetExpr e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n, int nAttr, int nExpr, int nPat |
       b = 0 and
@@ -2030,29 +1996,6 @@ private module Impl {
         result = getImmediateChildOfPat(e, index - b, partialPredicateCall)
         or
         index = n and result = e.getLiteral() and partialPredicateCall = "Literal()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfLoopExpr(LoopExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nAttr, int nLabel, int nLoopBody |
-      b = 0 and
-      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nLabel = nAttr + 1 and
-      nLoopBody = nLabel + 1 and
-      (
-        none()
-        or
-        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
-        or
-        result = e.getAttr(index - n) and
-        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
-        or
-        index = nAttr and result = e.getLabel() and partialPredicateCall = "Label()"
-        or
-        index = nLabel and result = e.getLoopBody() and partialPredicateCall = "LoopBody()"
       )
     )
   }
@@ -2748,32 +2691,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfWhileExpr(WhileExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nAttr, int nCondition, int nLabel, int nLoopBody |
-      b = 0 and
-      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nCondition = nAttr + 1 and
-      nLabel = nCondition + 1 and
-      nLoopBody = nLabel + 1 and
-      (
-        none()
-        or
-        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
-        or
-        result = e.getAttr(index - n) and
-        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
-        or
-        index = nAttr and result = e.getCondition() and partialPredicateCall = "Condition()"
-        or
-        index = nCondition and result = e.getLabel() and partialPredicateCall = "Label()"
-        or
-        index = nLabel and result = e.getLoopBody() and partialPredicateCall = "LoopBody()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfWildcardPat(
     WildcardPat e, int index, string partialPredicateCall
   ) {
@@ -2825,6 +2742,27 @@ private module Impl {
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
         index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfBlockExpr(BlockExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bLabelableExpr, int n, int nAttr, int nStmtList |
+      b = 0 and
+      bLabelableExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabelableExpr(e, i, _)) | i) and
+      n = bLabelableExpr and
+      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nStmtList = nAttr + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfLabelableExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getAttr(index - n) and
+        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
+        or
+        index = nAttr and result = e.getStmtList() and partialPredicateCall = "StmtList()"
       )
     )
   }
@@ -3083,6 +3021,25 @@ private module Impl {
         index = nVisibility and
         result = e.getWhereClause() and
         partialPredicateCall = "WhereClause()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfLoopingExpr(
+    LoopingExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLabelableExpr, int n, int nLoopBody |
+      b = 0 and
+      bLabelableExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabelableExpr(e, i, _)) | i) and
+      n = bLabelableExpr and
+      nLoopBody = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfLabelableExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getLoopBody() and partialPredicateCall = "LoopBody()"
       )
     )
   }
@@ -3535,6 +3492,69 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfForExpr(ForExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bLoopingExpr, int n, int nAttr, int nIterable, int nPat |
+      b = 0 and
+      bLoopingExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLoopingExpr(e, i, _)) | i) and
+      n = bLoopingExpr and
+      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nIterable = nAttr + 1 and
+      nPat = nIterable + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfLoopingExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getAttr(index - n) and
+        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
+        or
+        index = nAttr and result = e.getIterable() and partialPredicateCall = "Iterable()"
+        or
+        index = nIterable and result = e.getPat() and partialPredicateCall = "Pat()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfLoopExpr(LoopExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bLoopingExpr, int n, int nAttr |
+      b = 0 and
+      bLoopingExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLoopingExpr(e, i, _)) | i) and
+      n = bLoopingExpr and
+      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfLoopingExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getAttr(index - n) and
+        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfWhileExpr(WhileExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bLoopingExpr, int n, int nAttr, int nCondition |
+      b = 0 and
+      bLoopingExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLoopingExpr(e, i, _)) | i) and
+      n = bLoopingExpr and
+      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nCondition = nAttr + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfLoopingExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getAttr(index - n) and
+        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
+        or
+        index = nAttr and result = e.getCondition() and partialPredicateCall = "Condition()"
+      )
+    )
+  }
+
   cached
   Element getImmediateChild(Element e, int index, string partialAccessor) {
     // why does this look more complicated than it should?
@@ -3655,8 +3675,6 @@ private module Impl {
     or
     result = getImmediateChildOfBinaryExpr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfBlockExpr(e, index, partialAccessor)
-    or
     result = getImmediateChildOfBoxPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfBreakExpr(e, index, partialAccessor)
@@ -3683,8 +3701,6 @@ private module Impl {
     or
     result = getImmediateChildOfFnPtrType(e, index, partialAccessor)
     or
-    result = getImmediateChildOfForExpr(e, index, partialAccessor)
-    or
     result = getImmediateChildOfForType(e, index, partialAccessor)
     or
     result = getImmediateChildOfFormatArgsExpr(e, index, partialAccessor)
@@ -3710,8 +3726,6 @@ private module Impl {
     result = getImmediateChildOfLiteralExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfLiteralPat(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfLoopExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroExpr(e, index, partialAccessor)
     or
@@ -3785,13 +3799,13 @@ private module Impl {
     or
     result = getImmediateChildOfUnderscoreExpr(e, index, partialAccessor)
     or
-    result = getImmediateChildOfWhileExpr(e, index, partialAccessor)
-    or
     result = getImmediateChildOfWildcardPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfYeetExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfYieldExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBlockExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfCallExpr(e, index, partialAccessor)
     or
@@ -3834,6 +3848,12 @@ private module Impl {
     result = getImmediateChildOfUnion(e, index, partialAccessor)
     or
     result = getImmediateChildOfUse(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfForExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfLoopExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfWhileExpr(e, index, partialAccessor)
   }
 }
 

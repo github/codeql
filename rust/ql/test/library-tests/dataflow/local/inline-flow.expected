@@ -1,24 +1,24 @@
 models
 edges
-| main.rs:19:13:19:21 | source(...) : unit | main.rs:20:10:20:10 | s | provenance |  |
-| main.rs:24:13:24:21 | source(...) : unit | main.rs:27:10:27:10 | c | provenance |  |
-| main.rs:31:13:31:21 | source(...) : unit | main.rs:36:10:36:10 | b | provenance |  |
-| main.rs:45:15:45:23 | source(...) : unit | main.rs:47:10:47:10 | b | provenance |  |
+| main.rs:19:13:19:21 | (...) ... : unit | main.rs:20:10:20:10 | s | provenance |  |
+| main.rs:24:13:24:21 | (...) ... : unit | main.rs:27:10:27:10 | c | provenance |  |
+| main.rs:31:13:31:21 | (...) ... : unit | main.rs:36:10:36:10 | b | provenance |  |
+| main.rs:45:15:45:23 | (...) ... : unit | main.rs:47:10:47:10 | b | provenance |  |
 nodes
-| main.rs:15:10:15:18 | source(...) | semmle.label | source(...) |
-| main.rs:19:13:19:21 | source(...) : unit | semmle.label | source(...) : unit |
+| main.rs:15:10:15:18 | (...) ... | semmle.label | (...) ... |
+| main.rs:19:13:19:21 | (...) ... : unit | semmle.label | (...) ... : unit |
 | main.rs:20:10:20:10 | s | semmle.label | s |
-| main.rs:24:13:24:21 | source(...) : unit | semmle.label | source(...) : unit |
+| main.rs:24:13:24:21 | (...) ... : unit | semmle.label | (...) ... : unit |
 | main.rs:27:10:27:10 | c | semmle.label | c |
-| main.rs:31:13:31:21 | source(...) : unit | semmle.label | source(...) : unit |
+| main.rs:31:13:31:21 | (...) ... : unit | semmle.label | (...) ... : unit |
 | main.rs:36:10:36:10 | b | semmle.label | b |
-| main.rs:45:15:45:23 | source(...) : unit | semmle.label | source(...) : unit |
+| main.rs:45:15:45:23 | (...) ... : unit | semmle.label | (...) ... : unit |
 | main.rs:47:10:47:10 | b | semmle.label | b |
 subpaths
 testFailures
 #select
-| main.rs:15:10:15:18 | source(...) | main.rs:15:10:15:18 | source(...) | main.rs:15:10:15:18 | source(...) | $@ | main.rs:15:10:15:18 | source(...) | source(...) |
-| main.rs:20:10:20:10 | s | main.rs:19:13:19:21 | source(...) : unit | main.rs:20:10:20:10 | s | $@ | main.rs:19:13:19:21 | source(...) : unit | source(...) : unit |
-| main.rs:27:10:27:10 | c | main.rs:24:13:24:21 | source(...) : unit | main.rs:27:10:27:10 | c | $@ | main.rs:24:13:24:21 | source(...) : unit | source(...) : unit |
-| main.rs:36:10:36:10 | b | main.rs:31:13:31:21 | source(...) : unit | main.rs:36:10:36:10 | b | $@ | main.rs:31:13:31:21 | source(...) : unit | source(...) : unit |
-| main.rs:47:10:47:10 | b | main.rs:45:15:45:23 | source(...) : unit | main.rs:47:10:47:10 | b | $@ | main.rs:45:15:45:23 | source(...) : unit | source(...) : unit |
+| main.rs:15:10:15:18 | (...) ... | main.rs:15:10:15:18 | (...) ... | main.rs:15:10:15:18 | (...) ... | $@ | main.rs:15:10:15:18 | (...) ... | (...) ... |
+| main.rs:20:10:20:10 | s | main.rs:19:13:19:21 | (...) ... : unit | main.rs:20:10:20:10 | s | $@ | main.rs:19:13:19:21 | (...) ... : unit | (...) ... : unit |
+| main.rs:27:10:27:10 | c | main.rs:24:13:24:21 | (...) ... : unit | main.rs:27:10:27:10 | c | $@ | main.rs:24:13:24:21 | (...) ... : unit | (...) ... : unit |
+| main.rs:36:10:36:10 | b | main.rs:31:13:31:21 | (...) ... : unit | main.rs:36:10:36:10 | b | $@ | main.rs:31:13:31:21 | (...) ... : unit | (...) ... : unit |
+| main.rs:47:10:47:10 | b | main.rs:45:15:45:23 | (...) ... : unit | main.rs:47:10:47:10 | b | $@ | main.rs:45:15:45:23 | (...) ... : unit | (...) ... : unit |

@@ -5,6 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.BreakExpr
+import codeql.rust.elements.LabelableExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `BreakExpr` and should not
@@ -103,16 +104,14 @@ module Impl {
       )
     }
 
-    override string toString() {
-      exists(string label, string expr |
-        (
-          label = " " + this.getLifetime().toString()
-          or
-          not this.hasLifetime() and label = ""
-        ) and
-        (if this.hasExpr() then expr = " ..." else expr = "") and
-        result = "break" + label + expr
-      )
+    override string toString() { result = concat(int i | | this.toStringPart(i), " " order by i) }
+
+    private string toStringPart(int index) {
+      index = 0 and result = "break"
+      or
+      index = 1 and result = this.getLifetime().toString()
+      or
+      index = 2 and result = this.getExpr().toAbbreviatedString()
     }
   }
 }

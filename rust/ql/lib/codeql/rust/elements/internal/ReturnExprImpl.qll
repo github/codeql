@@ -26,8 +26,12 @@ module Impl {
    * ```
    */
   class ReturnExpr extends Generated::ReturnExpr {
-    override string toString() {
-      if this.hasExpr() then result = "return ..." else result = "return"
+    override string toString() { result = concat(int i | | this.toStringPart(i), " " order by i) }
+
+    private string toStringPart(int index) {
+      index = 0 and result = "return"
+      or
+      index = 1 and result = this.getExpr().toAbbreviatedString()
     }
   }
 }

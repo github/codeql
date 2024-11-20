@@ -19,6 +19,8 @@ module Impl {
    * ```
    */
   class UnderscoreExpr extends Generated::UnderscoreExpr {
-    override string toString() { result = "_" }
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() { result = "_" }
   }
 }

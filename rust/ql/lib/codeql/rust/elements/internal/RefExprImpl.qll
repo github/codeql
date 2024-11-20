@@ -23,12 +23,17 @@ module Impl {
    */
   class RefExpr extends Generated::RefExpr {
     override string toString() {
-      exists(string raw, string const, string mut |
-        (if this.isRaw() then raw = "raw " else raw = "") and
-        (if this.isConst() then const = "const " else const = "") and
-        (if this.isMut() then mut = "mut " else mut = "") and
-        result = "&" + raw + const + mut + "..."
-      )
+      result = "&" + concat(int i | | this.getSpecPart(i), " " order by i)
+    }
+
+    private string getSpecPart(int index) {
+      index = 0 and this.isRaw() and result = "raw"
+      or
+      index = 1 and this.isConst() and result = "const"
+      or
+      index = 2 and this.isMut() and result = "mut"
+      or
+      index = 3 and result = this.getExpr().toAbbreviatedString()
     }
   }
 }

@@ -28,11 +28,16 @@ module Impl {
    * ```
    */
   class IfExpr extends Generated::IfExpr {
-    override string toString() {
-      exists(string elseString |
-        (if this.hasElse() then elseString = " else { ... }" else elseString = "") and
-        result = "if ... { ... }" + elseString
-      )
+    override string toString() { result = concat(int i | | this.toStringPart(i), " " order by i) }
+
+    private string toStringPart(int index) {
+      index = 0 and result = "if"
+      or
+      index = 1 and result = this.getCondition().toAbbreviatedString()
+      or
+      index = 2 and result = "{...}"
+      or
+      index = 3 and this.hasElse() and result = "else {...}"
     }
   }
 }

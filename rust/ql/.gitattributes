@@ -61,6 +61,7 @@
 /lib/codeql/rust/elements/Item.qll linguist-generated
 /lib/codeql/rust/elements/ItemList.qll linguist-generated
 /lib/codeql/rust/elements/Label.qll linguist-generated
+/lib/codeql/rust/elements/LabelableExpr.qll linguist-generated
 /lib/codeql/rust/elements/LetElse.qll linguist-generated
 /lib/codeql/rust/elements/LetExpr.qll linguist-generated
 /lib/codeql/rust/elements/LetStmt.qll linguist-generated
@@ -71,6 +72,7 @@
 /lib/codeql/rust/elements/LiteralPat.qll linguist-generated
 /lib/codeql/rust/elements/Locatable.qll linguist-generated
 /lib/codeql/rust/elements/LoopExpr.qll linguist-generated
+/lib/codeql/rust/elements/LoopingExpr.qll linguist-generated
 /lib/codeql/rust/elements/MacroCall.qll linguist-generated
 /lib/codeql/rust/elements/MacroDef.qll linguist-generated
 /lib/codeql/rust/elements/MacroExpr.qll linguist-generated
@@ -186,6 +188,7 @@
 /lib/codeql/rust/elements/internal/BecomeExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BinaryExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BlockExprConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/BlockExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/BoxPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BreakExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprBaseImpl.qll linguist-generated
@@ -258,6 +261,7 @@
 /lib/codeql/rust/elements/internal/LiteralExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/LiteralPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/LoopExprConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/LoopingExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroCallConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroDefConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MacroDefImpl.qll linguist-generated
@@ -470,6 +474,7 @@
 /lib/codeql/rust/elements/internal/generated/Item.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ItemList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Label.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/LabelableExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/LetElse.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/LetExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/LetStmt.qll linguist-generated
@@ -480,6 +485,7 @@
 /lib/codeql/rust/elements/internal/generated/LiteralPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Locatable.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/LoopExpr.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/LoopingExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MacroCall.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MacroDef.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/MacroExpr.qll linguist-generated

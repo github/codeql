@@ -19,6 +19,8 @@ module Impl {
    * ```
    */
   class WhileExpr extends Generated::WhileExpr {
-    override string toString() { result = "while ... { ... }" }
+    override string toStringPrefix() {
+      result = "while " + this.getCondition().toAbbreviatedString()
+    }
   }
 }

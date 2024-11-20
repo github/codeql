@@ -22,6 +22,6 @@ module Impl {
    * ```
    */
   class BoxPat extends Generated::BoxPat {
-    override string toString() { result = "box ..." }
+    override string toString() { result = "box " + this.getPat().toAbbreviatedString() }
   }
 }

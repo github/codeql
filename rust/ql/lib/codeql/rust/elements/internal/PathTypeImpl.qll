@@ -19,6 +19,8 @@ module Impl {
    * ```
    */
   class PathType extends Generated::PathType {
-    override string toString() { result = this.getPath().toString() }
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() { result = this.getPath().toString() }
   }
 }

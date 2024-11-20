@@ -37,6 +37,6 @@ module Impl {
    * ```
    */
   class LoopExpr extends Generated::LoopExpr {
-    override string toString() { result = "loop {...}" }
+    override string toStringPrefix() { result = "loop" }
   }
 }

@@ -19,6 +19,8 @@ module Impl {
    * ```
    */
   class NeverType extends Generated::NeverType {
-    override string toString() { result = "!" }
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() { result = "!" }
   }
 }
