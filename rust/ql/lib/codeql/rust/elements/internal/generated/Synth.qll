@@ -153,11 +153,31 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TFormat(Raw::FormatArgsExpr parent, int index, string text, int offset) {
+      constructFormat(parent, index, text, offset)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TFormatArgsArg(Raw::FormatArgsArg id) { constructFormatArgsArg(id) } or
     /**
      * INTERNAL: Do not use.
      */
     TFormatArgsExpr(Raw::FormatArgsExpr id) { constructFormatArgsExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TFormatArgument(
+      Raw::FormatArgsExpr parent, int index, int kind, string name, boolean positional, int offset
+    ) {
+      constructFormatArgument(parent, index, kind, name, positional, offset)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TFormatTemplateVariableAccess(Raw::FormatArgsExpr parent, int index, int kind) {
+      constructFormatTemplateVariableAccess(parent, index, kind)
+    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -604,12 +624,12 @@ module Synth {
         TExpr or TExternItem or TExternItemList or TFieldList or TFormatArgsArg or TGenericArg or
         TGenericArgList or TGenericParam or TGenericParamList or TItemList or TLabel or TLetElse or
         TLifetime or TMacroItems or TMacroStmts or TMatchArm or TMatchArmList or TMatchGuard or
-        TMeta or TName or TNameRef or TParam or TParamList or TPat or TPath or TPathSegment or
+        TMeta or TName or TNameRef or TParam or TParamList or TPat or TPathSegment or
         TRecordExprField or TRecordExprFieldList or TRecordField or TRecordPatField or
-        TRecordPatFieldList or TRename or TRetType or TReturnTypeSyntax or TSelfParam or
-        TSourceFile or TStmt or TStmtList or TToken or TTokenTree or TTupleField or TTypeBound or
-        TTypeBoundList or TTypeRef or TUseTree or TUseTreeList or TVariant or TVariantList or
-        TVisibility or TWhereClause or TWherePred;
+        TRecordPatFieldList or TRename or TResolvable or TRetType or TReturnTypeSyntax or
+        TSelfParam or TSourceFile or TStmt or TStmtList or TToken or TTokenTree or TTupleField or
+        TTypeBound or TTypeBoundList or TTypeRef or TUseTree or TUseTreeList or TVariant or
+        TVariantList or TVisibility or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -628,7 +648,7 @@ module Synth {
     TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBlockExpr or
         TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
         TForExpr or TFormatArgsExpr or TIfExpr or TIndexExpr or TLetExpr or TLiteralExpr or
-        TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExpr or
+        TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExprBase or
         TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTryExpr or
         TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or TYieldExpr;
 
@@ -663,7 +683,7 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TLocatable = TAstNode;
+  class TLocatable = TAstNode or TFormat or TFormatArgument;
 
   /**
    * INTERNAL: Do not use.
@@ -672,6 +692,16 @@ module Synth {
     TBoxPat or TConstBlockPat or TIdentPat or TLiteralPat or TMacroPat or TOrPat or TParenPat or
         TPathPat or TRangePat or TRecordPat or TRefPat or TRestPat or TSlicePat or TTuplePat or
         TTupleStructPat or TWildcardPat;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TPathExprBase = TFormatTemplateVariableAccess or TPathExpr;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TResolvable = TMethodCallExpr or TPath;
 
   /**
    * INTERNAL: Do not use.
@@ -902,6 +932,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TFormat`, if possible.
+   */
+  TFormat convertFormatFromRaw(Raw::Element e) { none() }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TFormatArgsArg`, if possible.
    */
   TFormatArgsArg convertFormatArgsArgFromRaw(Raw::Element e) { result = TFormatArgsArg(e) }
@@ -911,6 +947,20 @@ module Synth {
    * Converts a raw element to a synthesized `TFormatArgsExpr`, if possible.
    */
   TFormatArgsExpr convertFormatArgsExprFromRaw(Raw::Element e) { result = TFormatArgsExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TFormatArgument`, if possible.
+   */
+  TFormatArgument convertFormatArgumentFromRaw(Raw::Element e) { none() }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TFormatTemplateVariableAccess`, if possible.
+   */
+  TFormatTemplateVariableAccess convertFormatTemplateVariableAccessFromRaw(Raw::Element e) {
+    none()
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -1645,8 +1695,6 @@ module Synth {
     or
     result = convertPatFromRaw(e)
     or
-    result = convertPathFromRaw(e)
-    or
     result = convertPathSegmentFromRaw(e)
     or
     result = convertRecordExprFieldFromRaw(e)
@@ -1660,6 +1708,8 @@ module Synth {
     result = convertRecordPatFieldListFromRaw(e)
     or
     result = convertRenameFromRaw(e)
+    or
+    result = convertResolvableFromRaw(e)
     or
     result = convertRetTypeFromRaw(e)
     or
@@ -1781,7 +1831,7 @@ module Synth {
     or
     result = convertParenExprFromRaw(e)
     or
-    result = convertPathExprFromRaw(e)
+    result = convertPathExprBaseFromRaw(e)
     or
     result = convertPrefixExprFromRaw(e)
     or
@@ -1900,7 +1950,13 @@ module Synth {
    * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TLocatable`, if possible.
    */
-  TLocatable convertLocatableFromRaw(Raw::Element e) { result = convertAstNodeFromRaw(e) }
+  TLocatable convertLocatableFromRaw(Raw::Element e) {
+    result = convertAstNodeFromRaw(e)
+    or
+    result = convertFormatFromRaw(e)
+    or
+    result = convertFormatArgumentFromRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -1938,6 +1994,26 @@ module Synth {
     result = convertTupleStructPatFromRaw(e)
     or
     result = convertWildcardPatFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TPathExprBase`, if possible.
+   */
+  TPathExprBase convertPathExprBaseFromRaw(Raw::Element e) {
+    result = convertFormatTemplateVariableAccessFromRaw(e)
+    or
+    result = convertPathExprFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TResolvable`, if possible.
+   */
+  TResolvable convertResolvableFromRaw(Raw::Element e) {
+    result = convertMethodCallExprFromRaw(e)
+    or
+    result = convertPathFromRaw(e)
   }
 
   /**
@@ -2208,6 +2284,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TFormat` to a raw DB element, if possible.
+   */
+  Raw::Element convertFormatToRaw(TFormat e) { none() }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TFormatArgsArg` to a raw DB element, if possible.
    */
   Raw::Element convertFormatArgsArgToRaw(TFormatArgsArg e) { e = TFormatArgsArg(result) }
@@ -2217,6 +2299,18 @@ module Synth {
    * Converts a synthesized `TFormatArgsExpr` to a raw DB element, if possible.
    */
   Raw::Element convertFormatArgsExprToRaw(TFormatArgsExpr e) { e = TFormatArgsExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TFormatArgument` to a raw DB element, if possible.
+   */
+  Raw::Element convertFormatArgumentToRaw(TFormatArgument e) { none() }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TFormatTemplateVariableAccess` to a raw DB element, if possible.
+   */
+  Raw::Element convertFormatTemplateVariableAccessToRaw(TFormatTemplateVariableAccess e) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -2951,8 +3045,6 @@ module Synth {
     or
     result = convertPatToRaw(e)
     or
-    result = convertPathToRaw(e)
-    or
     result = convertPathSegmentToRaw(e)
     or
     result = convertRecordExprFieldToRaw(e)
@@ -2966,6 +3058,8 @@ module Synth {
     result = convertRecordPatFieldListToRaw(e)
     or
     result = convertRenameToRaw(e)
+    or
+    result = convertResolvableToRaw(e)
     or
     result = convertRetTypeToRaw(e)
     or
@@ -3087,7 +3181,7 @@ module Synth {
     or
     result = convertParenExprToRaw(e)
     or
-    result = convertPathExprToRaw(e)
+    result = convertPathExprBaseToRaw(e)
     or
     result = convertPrefixExprToRaw(e)
     or
@@ -3206,7 +3300,13 @@ module Synth {
    * INTERNAL: Do not use.
    * Converts a synthesized `TLocatable` to a raw DB element, if possible.
    */
-  Raw::Element convertLocatableToRaw(TLocatable e) { result = convertAstNodeToRaw(e) }
+  Raw::Element convertLocatableToRaw(TLocatable e) {
+    result = convertAstNodeToRaw(e)
+    or
+    result = convertFormatToRaw(e)
+    or
+    result = convertFormatArgumentToRaw(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -3244,6 +3344,26 @@ module Synth {
     result = convertTupleStructPatToRaw(e)
     or
     result = convertWildcardPatToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPathExprBase` to a raw DB element, if possible.
+   */
+  Raw::Element convertPathExprBaseToRaw(TPathExprBase e) {
+    result = convertFormatTemplateVariableAccessToRaw(e)
+    or
+    result = convertPathExprToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TResolvable` to a raw DB element, if possible.
+   */
+  Raw::Element convertResolvableToRaw(TResolvable e) {
+    result = convertMethodCallExprToRaw(e)
+    or
+    result = convertPathToRaw(e)
   }
 
   /**

@@ -11,10 +11,9 @@ cached
 private module Cached {
   /** A data flow source of remote user input. */
   cached
-  abstract class RemoteFlowSource extends DataFlow::Node {
-    /** Gets a human-readable string that describes the type of this remote flow source. */
+  abstract class RemoteFlowSource extends ThreatModelSource::Range {
     cached
-    abstract string getSourceType();
+    override string getThreatModel() { result = "remote" }
 
     /**
      * Holds if this can be a user-controlled object, such as a JSON object parsed from user-controlled data.

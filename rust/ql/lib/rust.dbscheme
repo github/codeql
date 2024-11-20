@@ -165,7 +165,6 @@ locatable_locations(
 | @param
 | @param_list
 | @pat
-| @path
 | @path_segment
 | @record_expr_field
 | @record_expr_field_list
@@ -173,6 +172,7 @@ locatable_locations(
 | @record_pat_field
 | @record_pat_field_list
 | @rename
+| @resolvable
 | @ret_type
 | @return_type_syntax
 | @self_param
@@ -310,7 +310,7 @@ closure_binder_generic_param_lists(
 | @match_expr
 | @offset_of_expr
 | @paren_expr
-| @path_expr
+| @path_expr_base
 | @prefix_expr
 | @range_expr
 | @record_expr
@@ -644,22 +644,6 @@ param_list_self_params(
 | @wildcard_pat
 ;
 
-paths(
-  unique int id: @path
-);
-
-#keyset[id]
-path_qualifiers(
-  int id: @path ref,
-  int qualifier: @path ref
-);
-
-#keyset[id]
-path_parts(
-  int id: @path ref,
-  int part: @path_segment ref
-);
-
 path_segments(
   unique int id: @path_segment
 );
@@ -830,6 +814,23 @@ renames(
 rename_names(
   int id: @rename ref,
   int name: @name ref
+);
+
+@resolvable =
+  @method_call_expr
+| @path
+;
+
+#keyset[id]
+resolvable_resolved_paths(
+  int id: @resolvable ref,
+  string resolved_path: string ref
+);
+
+#keyset[id]
+resolvable_resolved_crate_origins(
+  int id: @resolvable ref,
+  string resolved_crate_origin: string ref
 );
 
 ret_types(
@@ -1843,6 +1844,18 @@ infer_types(
 | @use
 ;
 
+#keyset[id]
+item_extended_canonical_paths(
+  int id: @item ref,
+  string extended_canonical_path: string ref
+);
+
+#keyset[id]
+item_crate_origins(
+  int id: @item ref,
+  string crate_origin: string ref
+);
+
 let_exprs(
   unique int id: @let_expr
 );
@@ -2113,22 +2126,25 @@ paren_type_ties(
   int ty: @type_ref ref
 );
 
-path_exprs(
-  unique int id: @path_expr
-);
-
-#keyset[id, index]
-path_expr_attrs(
-  int id: @path_expr ref,
-  int index: int ref,
-  int attr: @attr ref
+paths(
+  unique int id: @path
 );
 
 #keyset[id]
-path_expr_paths(
-  int id: @path_expr ref,
-  int path: @path ref
+path_qualifiers(
+  int id: @path ref,
+  int qualifier: @path ref
 );
+
+#keyset[id]
+path_parts(
+  int id: @path ref,
+  int part: @path_segment ref
+);
+
+@path_expr_base =
+  @path_expr
+;
 
 path_pats(
   unique int id: @path_pat
@@ -3034,6 +3050,23 @@ module_names(
 module_visibilities(
   int id: @module ref,
   int visibility: @visibility ref
+);
+
+path_exprs(
+  unique int id: @path_expr
+);
+
+#keyset[id, index]
+path_expr_attrs(
+  int id: @path_expr ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+path_expr_paths(
+  int id: @path_expr ref,
+  int path: @path ref
 );
 
 statics(

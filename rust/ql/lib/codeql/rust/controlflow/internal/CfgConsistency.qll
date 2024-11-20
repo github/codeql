@@ -32,8 +32,12 @@ query predicate nonPostOrderExpr(Expr e, string cls) {
  */
 query predicate scopeNoFirst(CfgScope scope) {
   Consistency::scopeNoFirst(scope) and
-  not scope = any(Function f | not exists(f.getBody())) and
-  not scope = any(ClosureExpr c | not exists(c.getBody()))
+  not scope =
+    [
+      any(AstNode f | not f.(Function).hasBody()),
+      any(ClosureExpr c | not c.hasBody()),
+      any(AsyncBlockExpr b | not b.hasStmtList())
+    ]
 }
 
 /** Holds if  `be` is the `else` branch of a `let` statement that results in a panic. */

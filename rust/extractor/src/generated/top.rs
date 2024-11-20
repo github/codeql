@@ -1649,60 +1649,6 @@ impl From<trap::Label<Pat>> for trap::Label<Locatable> {
 }
 
 #[derive(Debug)]
-pub struct Path {
-    pub id: trap::TrapId<Path>,
-    pub qualifier: Option<trap::Label<Path>>,
-    pub part: Option<trap::Label<PathSegment>>,
-}
-
-impl trap::TrapEntry for Path {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("paths", vec![id.into()]);
-        if let Some(v) = self.qualifier {
-            out.add_tuple("path_qualifiers", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.part {
-            out.add_tuple("path_parts", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for Path {
-    fn class_name() -> &'static str { "Path" }
-}
-
-impl From<trap::Label<Path>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<Path>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Path is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Path>> for trap::Label<Element> {
-    fn from(value: trap::Label<Path>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Path is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Path>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<Path>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Path is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct PathSegment {
     pub id: trap::TrapId<PathSegment>,
     pub generic_arg_list: Option<trap::Label<GenericArgList>>,
@@ -2110,6 +2056,51 @@ impl From<trap::Label<Rename>> for trap::Label<Element> {
 impl From<trap::Label<Rename>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Rename>) -> Self {
         // SAFETY: this is safe because in the dbscheme Rename is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct Resolvable {
+    _unused: ()
+}
+
+impl Resolvable {
+    pub fn emit_resolved_path(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
+        out.add_tuple("resolvable_resolved_paths", vec![id.into(), value.into()]);
+    }
+    pub fn emit_resolved_crate_origin(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
+        out.add_tuple("resolvable_resolved_crate_origins", vec![id.into(), value.into()]);
+    }
+}
+
+impl trap::TrapClass for Resolvable {
+    fn class_name() -> &'static str { "Resolvable" }
+}
+
+impl From<trap::Label<Resolvable>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<Resolvable>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Resolvable is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Resolvable>> for trap::Label<Element> {
+    fn from(value: trap::Label<Resolvable>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Resolvable is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Resolvable>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<Resolvable>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Resolvable is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5128,6 +5119,15 @@ pub struct Item {
     _unused: ()
 }
 
+impl Item {
+    pub fn emit_extended_canonical_path(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
+        out.add_tuple("item_extended_canonical_paths", vec![id.into(), value.into()]);
+    }
+    pub fn emit_crate_origin(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
+        out.add_tuple("item_crate_origins", vec![id.into(), value.into()]);
+    }
+}
+
 impl trap::TrapClass for Item {
     fn class_name() -> &'static str { "Item" }
 }
@@ -6232,62 +6232,107 @@ impl From<trap::Label<ParenType>> for trap::Label<TypeRef> {
 }
 
 #[derive(Debug)]
-pub struct PathExpr {
-    pub id: trap::TrapId<PathExpr>,
-    pub attrs: Vec<trap::Label<Attr>>,
-    pub path: Option<trap::Label<Path>>,
+pub struct Path {
+    pub id: trap::TrapId<Path>,
+    pub qualifier: Option<trap::Label<Path>>,
+    pub part: Option<trap::Label<PathSegment>>,
 }
 
-impl trap::TrapEntry for PathExpr {
+impl trap::TrapEntry for Path {
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("path_exprs", vec![id.into()]);
-        for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("path_expr_attrs", vec![id.into(), i.into(), v.into()]);
+        out.add_tuple("paths", vec![id.into()]);
+        if let Some(v) = self.qualifier {
+            out.add_tuple("path_qualifiers", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.path {
-            out.add_tuple("path_expr_paths", vec![id.into(), v.into()]);
+        if let Some(v) = self.part {
+            out.add_tuple("path_parts", vec![id.into(), v.into()]);
         }
     }
 }
 
-impl trap::TrapClass for PathExpr {
-    fn class_name() -> &'static str { "PathExpr" }
+impl trap::TrapClass for Path {
+    fn class_name() -> &'static str { "Path" }
 }
 
-impl From<trap::Label<PathExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<PathExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of AstNode
+impl From<trap::Label<Path>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<Path>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Path is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<PathExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<PathExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of Element
+impl From<trap::Label<Path>> for trap::Label<Element> {
+    fn from(value: trap::Label<Path>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Path is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<PathExpr>> for trap::Label<Expr> {
-    fn from(value: trap::Label<PathExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of Expr
+impl From<trap::Label<Path>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<Path>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Path is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<PathExpr>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<PathExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of Locatable
+impl From<trap::Label<Path>> for trap::Label<Resolvable> {
+    fn from(value: trap::Label<Path>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Path is a subclass of Resolvable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct PathExprBase {
+    _unused: ()
+}
+
+impl trap::TrapClass for PathExprBase {
+    fn class_name() -> &'static str { "PathExprBase" }
+}
+
+impl From<trap::Label<PathExprBase>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<PathExprBase>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExprBase is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PathExprBase>> for trap::Label<Element> {
+    fn from(value: trap::Label<PathExprBase>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExprBase is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PathExprBase>> for trap::Label<Expr> {
+    fn from(value: trap::Label<PathExprBase>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExprBase is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PathExprBase>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<PathExprBase>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExprBase is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9145,6 +9190,15 @@ impl From<trap::Label<MethodCallExpr>> for trap::Label<Locatable> {
     }
 }
 
+impl From<trap::Label<MethodCallExpr>> for trap::Label<Resolvable> {
+    fn from(value: trap::Label<MethodCallExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MethodCallExpr is a subclass of Resolvable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct Module {
     pub id: trap::TrapId<Module>,
@@ -9219,6 +9273,78 @@ impl From<trap::Label<Module>> for trap::Label<Locatable> {
 impl From<trap::Label<Module>> for trap::Label<Stmt> {
     fn from(value: trap::Label<Module>) -> Self {
         // SAFETY: this is safe because in the dbscheme Module is a subclass of Stmt
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct PathExpr {
+    pub id: trap::TrapId<PathExpr>,
+    pub attrs: Vec<trap::Label<Attr>>,
+    pub path: Option<trap::Label<Path>>,
+}
+
+impl trap::TrapEntry for PathExpr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("path_exprs", vec![id.into()]);
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("path_expr_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.path {
+            out.add_tuple("path_expr_paths", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for PathExpr {
+    fn class_name() -> &'static str { "PathExpr" }
+}
+
+impl From<trap::Label<PathExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<PathExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PathExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<PathExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PathExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<PathExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PathExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<PathExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PathExpr>> for trap::Label<PathExprBase> {
+    fn from(value: trap::Label<PathExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of PathExprBase
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

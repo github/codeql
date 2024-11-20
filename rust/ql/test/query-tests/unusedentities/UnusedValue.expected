@@ -1,35 +1,20 @@
-| main.rs:6:9:6:9 | a | Variable is assigned a value that is never used. |
-| main.rs:9:9:9:9 | d | Variable is assigned a value that is never used. |
-| main.rs:35:5:35:5 | b | Variable is assigned a value that is never used. |
-| main.rs:37:5:37:5 | c | Variable is assigned a value that is never used. |
-| main.rs:40:5:40:5 | c | Variable is assigned a value that is never used. |
-| main.rs:44:9:44:9 | d | Variable is assigned a value that is never used. |
-| main.rs:50:5:50:5 | e | Variable is assigned a value that is never used. |
-| main.rs:61:5:61:5 | f | Variable is assigned a value that is never used. |
-| main.rs:63:5:63:5 | f | Variable is assigned a value that is never used. |
-| main.rs:65:5:65:5 | g | Variable is assigned a value that is never used. |
-| main.rs:87:9:87:9 | a | Variable is assigned a value that is never used. |
-| main.rs:108:9:108:10 | is | Variable is assigned a value that is never used. |
-| main.rs:133:13:133:17 | total | Variable is assigned a value that is never used. |
-| main.rs:203:13:203:31 | res | Variable is assigned a value that is never used. |
-| main.rs:218:9:218:24 | kind | Variable is assigned a value that is never used. |
-| main.rs:223:9:223:32 | kind | Variable is assigned a value that is never used. |
-| main.rs:280:13:280:17 | total | Variable is assigned a value that is never used. |
-| main.rs:348:5:348:39 | kind | Variable is assigned a value that is never used. |
-| main.rs:370:9:370:9 | x | Variable is assigned a value that is never used. |
-| main.rs:378:17:378:17 | x | Variable is assigned a value that is never used. |
-| main.rs:432:9:432:10 | i6 | Variable is assigned a value that is never used. |
-| more.rs:8:9:8:13 | times | Variable is assigned a value that is never used. |
-| more.rs:9:9:9:14 | unused | Variable is assigned a value that is never used. |
-| more.rs:21:9:21:14 | unused | Variable is assigned a value that is never used. |
-| more.rs:38:23:38:25 | val | Variable is assigned a value that is never used. |
-| more.rs:42:19:42:21 | val | Variable is assigned a value that is never used. |
-| more.rs:58:9:58:11 | val | Variable is assigned a value that is never used. |
-| more.rs:80:9:80:14 | a_ptr4 | Variable is assigned a value that is never used. |
-| more.rs:95:9:95:13 | d_ptr | Variable is assigned a value that is never used. |
-| more.rs:101:9:101:17 | f_ptr | Variable is assigned a value that is never used. |
-| unreachable.rs:166:6:166:6 | x | Variable is assigned a value that is never used. |
-| unreachable.rs:190:14:190:14 | a | Variable is assigned a value that is never used. |
-| unreachable.rs:199:9:199:9 | a | Variable is assigned a value that is never used. |
-| unreachable.rs:210:11:210:11 | a | Variable is assigned a value that is never used. |
-| unreachable.rs:217:6:217:6 | a | Variable is assigned a value that is never used. |
+| main.rs:10:9:10:9 | a | Variable $@ is assigned a value that is never used. | main.rs:10:9:10:9 | a | a |
+| main.rs:13:9:13:9 | d | Variable $@ is assigned a value that is never used. | main.rs:13:9:13:9 | d | d |
+| main.rs:39:5:39:5 | b | Variable $@ is assigned a value that is never used. | main.rs:30:9:30:9 | b | b |
+| main.rs:41:5:41:5 | c | Variable $@ is assigned a value that is never used. | main.rs:31:13:31:13 | c | c |
+| main.rs:44:5:44:5 | c | Variable $@ is assigned a value that is never used. | main.rs:31:13:31:13 | c | c |
+| main.rs:48:9:48:9 | d | Variable $@ is assigned a value that is never used. | main.rs:32:13:32:13 | d | d |
+| main.rs:54:5:54:5 | e | Variable $@ is assigned a value that is never used. | main.rs:33:13:33:13 | e | e |
+| main.rs:65:5:65:5 | f | Variable $@ is assigned a value that is never used. | main.rs:34:13:34:13 | f | f |
+| main.rs:67:5:67:5 | f | Variable $@ is assigned a value that is never used. | main.rs:34:13:34:13 | f | f |
+| main.rs:69:5:69:5 | g | Variable $@ is assigned a value that is never used. | main.rs:35:9:35:9 | g | g |
+| main.rs:91:9:91:9 | a | Variable $@ is assigned a value that is never used. | main.rs:91:9:91:9 | a | a |
+| main.rs:112:9:112:10 | is | Variable $@ is assigned a value that is never used. | main.rs:112:9:112:10 | is | is |
+| main.rs:135:13:135:17 | total | Variable $@ is assigned a value that is never used. | main.rs:135:13:135:17 | total | total |
+| main.rs:280:13:280:17 | total | Variable $@ is assigned a value that is never used. | main.rs:248:13:248:17 | total | total |
+| main.rs:373:9:373:9 | x | Variable $@ is assigned a value that is never used. | main.rs:373:9:373:9 | x | x |
+| main.rs:381:17:381:17 | x | Variable $@ is assigned a value that is never used. | main.rs:381:17:381:17 | x | x |
+| main.rs:482:9:482:9 | c | Variable $@ is assigned a value that is never used. | main.rs:482:9:482:9 | c | c |
+| more.rs:44:9:44:14 | a_ptr4 | Variable $@ is assigned a value that is never used. | more.rs:44:9:44:14 | a_ptr4 | a_ptr4 |
+| more.rs:59:9:59:13 | d_ptr | Variable $@ is assigned a value that is never used. | more.rs:59:9:59:13 | d_ptr | d_ptr |
+| more.rs:65:9:65:17 | f_ptr | Variable $@ is assigned a value that is never used. | more.rs:65:13:65:17 | f_ptr | f_ptr |

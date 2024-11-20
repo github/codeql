@@ -88,10 +88,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A AssocItemList. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A list of  `AssocItem` elements, as appearing for example in a `Trait`.
    */
   class AssocItemList extends @assoc_item_list, AstNode {
     override string toString() { result = "AssocItemList" }
@@ -581,27 +578,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A path. For example:
-   * ```rust
-   * foo::bar;
-   * ```
-   */
-  class Path extends @path, AstNode {
-    override string toString() { result = "Path" }
-
-    /**
-     * Gets the qualifier of this path, if it exists.
-     */
-    Path getQualifier() { path_qualifiers(this, result) }
-
-    /**
-     * Gets the part of this path, if it exists.
-     */
-    PathSegment getPart() { path_parts(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A PathSegment. For example:
    * ```rust
    * todo!()
@@ -790,6 +766,22 @@ module Raw {
      * Gets the name of this rename, if it exists.
      */
     Name getName() { rename_names(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Either a `Path`, or a `MethodCallExpr`.
+   */
+  class Resolvable extends @resolvable, AstNode {
+    /**
+     * Gets the resolved path of this resolvable, if it exists.
+     */
+    string getResolvedPath() { resolvable_resolved_paths(this, result) }
+
+    /**
+     * Gets the resolved crate origin of this resolvable, if it exists.
+     */
+    string getResolvedCrateOrigin() { resolvable_resolved_crate_origins(this, result) }
   }
 
   /**
@@ -2061,7 +2053,23 @@ module Raw {
    * todo!()
    * ```
    */
-  class Item extends @item, Stmt { }
+  class Item extends @item, Stmt {
+    /**
+     * Gets the extended canonical path of this item, if it exists.
+     *
+     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
+     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
+     * addressable there-in).
+     */
+    string getExtendedCanonicalPath() { item_extended_canonical_paths(this, result) }
+
+    /**
+     * Gets the crate origin of this item, if it exists.
+     *
+     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
+     */
+    string getCrateOrigin() { item_crate_origins(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -2460,27 +2468,30 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A path expression. For example:
+   * A path. For example:
    * ```rust
-   * let x = variable;
-   * let x = foo::bar;
-   * let y = <T>::foo;
-   * let z = <TypeRef as Trait>::foo;
+   * foo::bar;
    * ```
    */
-  class PathExpr extends @path_expr, Expr {
-    override string toString() { result = "PathExpr" }
+  class Path extends @path, Resolvable {
+    override string toString() { result = "Path" }
 
     /**
-     * Gets the `index`th attr of this path expression (0-based).
+     * Gets the qualifier of this path, if it exists.
      */
-    Attr getAttr(int index) { path_expr_attrs(this, index, result) }
+    Path getQualifier() { path_qualifiers(this, result) }
 
     /**
-     * Gets the path of this path expression, if it exists.
+     * Gets the part of this path, if it exists.
      */
-    Path getPath() { path_expr_paths(this, result) }
+    PathSegment getPart() { path_parts(this, result) }
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.
+   */
+  class PathExprBase extends @path_expr_base, Expr { }
 
   /**
    * INTERNAL: Do not use.
@@ -3553,7 +3564,7 @@ module Raw {
    * x.foo::<u32, u64>(42);
    * ```
    */
-  class MethodCallExpr extends @method_call_expr, CallExprBase {
+  class MethodCallExpr extends @method_call_expr, CallExprBase, Resolvable {
     override string toString() { result = "MethodCallExpr" }
 
     /**
@@ -3606,6 +3617,30 @@ module Raw {
      * Gets the visibility of this module, if it exists.
      */
     Visibility getVisibility() { module_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A path expression. For example:
+   * ```rust
+   * let x = variable;
+   * let x = foo::bar;
+   * let y = <T>::foo;
+   * let z = <TypeRef as Trait>::foo;
+   * ```
+   */
+  class PathExpr extends @path_expr, PathExprBase {
+    override string toString() { result = "PathExpr" }
+
+    /**
+     * Gets the `index`th attr of this path expression (0-based).
+     */
+    Attr getAttr(int index) { path_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the path of this path expression, if it exists.
+     */
+    Path getPath() { path_expr_paths(this, result) }
   }
 
   /**
@@ -3698,8 +3733,14 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    * A Trait. For example:
-   * ```rust
-   * todo!()
+   * ```
+   * trait Frobinizable {
+   *   type Frobinator;
+   *   type Result: Copy;
+   *   fn frobinize_with(&mut self, frobinator: &Self::Frobinator) -> Result;
+   * }
+   *
+   * pub trait Foo<T: Frobinizable> where T::Frobinator: Eq {}
    * ```
    */
   class Trait extends @trait, Item {

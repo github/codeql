@@ -1,4 +1,4 @@
-framework: net8.0
+framework: net9.0
 storage: none
 source https://api.nuget.org/v3/index.json
 # behave like nuget in choosing transitive dependency versions

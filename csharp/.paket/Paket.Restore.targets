@@ -235,14 +235,15 @@
 				<Splits>$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',').Length)</Splits>
 				<PackageName>$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[0])</PackageName>
 				<PackageVersion>$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[1])</PackageVersion>
+				<Reference>$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[2])</Reference>
 				<AllPrivateAssets>$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[4])</AllPrivateAssets>
 				<CopyLocal Condition="%(PaketReferencesFileLinesInfo.Splits) &gt;= 6">$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[5])</CopyLocal>
 				<OmitContent Condition="%(PaketReferencesFileLinesInfo.Splits) &gt;= 7">$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[6])</OmitContent>
 				<ImportTargets Condition="%(PaketReferencesFileLinesInfo.Splits) &gt;= 8">$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[7])</ImportTargets>
 				<Aliases Condition="%(PaketReferencesFileLinesInfo.Splits) &gt;= 9">$([System.String]::Copy('%(PaketReferencesFileLines.Identity)').Split(',')[8])</Aliases>
 			</PaketReferencesFileLinesInfo>
-			<PackageReference Include="%(PaketReferencesFileLinesInfo.PackageName)">
-				<Version>%(PaketReferencesFileLinesInfo.PackageVersion)</Version>
+			<PackageReference Condition=" '$(ManagePackageVersionsCentrally)' != 'true' Or '%(PaketReferencesFileLinesInfo.Reference)' == 'Direct' " Include="%(PaketReferencesFileLinesInfo.PackageName)">
+				<Version Condition=" '$(ManagePackageVersionsCentrally)' != 'true' ">%(PaketReferencesFileLinesInfo.PackageVersion)</Version>
 				<PrivateAssets Condition=" ('%(PaketReferencesFileLinesInfo.AllPrivateAssets)' == 'true') Or ('$(PackAsTool)' == 'true') ">All</PrivateAssets>
 				<ExcludeAssets Condition=" %(PaketReferencesFileLinesInfo.CopyLocal) == 'false' or %(PaketReferencesFileLinesInfo.AllPrivateAssets) == 'exclude'">runtime</ExcludeAssets>
 				<ExcludeAssets Condition=" %(PaketReferencesFileLinesInfo.OmitContent) == 'true'">$(ExcludeAssets);contentFiles</ExcludeAssets>
@@ -252,6 +253,10 @@
 				<AllowExplicitVersion>true</AllowExplicitVersion>
 
 			</PackageReference>
+
+			<PackageVersion Include="%(PaketReferencesFileLinesInfo.PackageName)">
+				<Version>%(PaketReferencesFileLinesInfo.PackageVersion)</Version>
+			</PackageVersion>
 		</ItemGroup>
 
 		<PropertyGroup>

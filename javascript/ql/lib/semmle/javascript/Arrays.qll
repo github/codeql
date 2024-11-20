@@ -81,12 +81,23 @@ module ArrayTaintTracking {
     pred = call.getArgument(any(int i | i >= 2)) and
     succ.(DataFlow::SourceNode).getAMethodCall("splice") = call
     or
+    // `array.toSpliced(x, y, source())`: if `source()` is tainted, then so is the result of `toSpliced`, but not the original array.
+    call.(DataFlow::MethodCallNode).getMethodName() = "toSpliced" and
+    pred = call.getArgument(any(int i | i >= 2)) and
+    succ = call
+    or
     // `array.splice(i, del, ...e)`: if `e` is tainted, then so is `array`.
     pred = call.getASpreadArgument() and
     succ.(DataFlow::SourceNode).getAMethodCall("splice") = call
     or
+    // `array.toSpliced(i, del, ...e)`: if `e` is tainted, then so is the result of `toSpliced`, but not the original array.
+    pred = call.getASpreadArgument() and
+    call.(DataFlow::MethodCallNode).getMethodName() = "toSpliced" and
+    succ = call
+    or
     // `e = array.pop()`, `e = array.shift()`, or similar: if `array` is tainted, then so is `e`.
-    call.(DataFlow::MethodCallNode).calls(pred, ["pop", "shift", "slice", "splice", "at"]) and
+    call.(DataFlow::MethodCallNode)
+        .calls(pred, ["pop", "shift", "slice", "splice", "at", "toSpliced"]) and
     succ = call
     or
     // `e = Array.from(x)`: if `x` is tainted, then so is `e`.
@@ -283,7 +294,7 @@ private module ArrayDataFlow {
   private class ArraySpliceStep extends LegacyPreCallGraphStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = "splice" and
+        call.getMethodName() = ["splice", "toSpliced"] and
         prop = arrayElement() and
         element = call.getArgument(any(int i | i >= 2)) and
         call = obj.getAMethodCall()
@@ -297,7 +308,7 @@ private module ArrayDataFlow {
       toProp = arrayElement() and
       // `array.splice(i, del, ...arr)` variant
       exists(DataFlow::MethodCallNode mcn |
-        mcn.getMethodName() = "splice" and
+        mcn.getMethodName() = ["splice", "toSpliced"] and
         pred = mcn.getASpreadArgument() and
         succ = mcn.getReceiver().getALocalSource()
       )
@@ -320,12 +331,12 @@ private module ArrayDataFlow {
   }
 
   /**
-   * A step for modeling that elements from an array `arr` also appear in the result from calling `slice`/`splice`/`filter`.
+   * A step for modeling that elements from an array `arr` also appear in the result from calling `slice`/`splice`/`filter`/`toSpliced`.
    */
   private class ArraySliceStep extends LegacyPreCallGraphStep {
     override predicate loadStoreStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = ["slice", "splice", "filter"] and
+        call.getMethodName() = ["slice", "splice", "filter", "toSpliced"] and
         prop = arrayElement() and
         pred = call.getReceiver() and
         succ = call
@@ -441,6 +452,34 @@ private module ArrayLibraries {
           API::moduleImport(["array-flatten", "arr-flatten", "flatten", "array.prototype.flat"])
               .getACall() and
         pred = call.getAnArgument()
+      )
+    }
+  }
+
+  /**
+   * A taint propagating data flow edge arising from in-place array manipulation operations.
+   * The methods return the pointer to `this` array as well.
+   */
+  private class ArrayInPlaceManipulationTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() in ["sort", "reverse"] and
+        pred = call.getReceiver() and
+        succ = call
+      )
+    }
+  }
+
+  /**
+   * A taint propagating data flow edge arising from array transformation operations
+   * that return a new array instead of modifying the original array in place.
+   */
+  private class ImmutableArrayTransformStep extends TaintTracking::SharedTaintStep {
+    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() in ["toSorted", "toReversed", "with"] and
+        pred = call.getReceiver() and
+        succ = call
       )
     }
   }

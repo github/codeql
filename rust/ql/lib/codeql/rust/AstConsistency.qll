@@ -20,7 +20,9 @@ query predicate multipleToStrings(Element e, string s) {
  */
 query predicate multipleLocations(Locatable e) { strictcount(e.getLocation()) > 1 }
 
-private predicate multiplePrimaryQlClasses(Element e) { strictcount(e.getAPrimaryQlClass()) > 1 }
+private predicate multiplePrimaryQlClasses(Element e) {
+  strictcount(string cls | cls = e.getAPrimaryQlClass() and cls != "VariableAccess") > 1
+}
 
 /**
  * Holds if `e` has more than one `getPrimaryQlClasses()` result.

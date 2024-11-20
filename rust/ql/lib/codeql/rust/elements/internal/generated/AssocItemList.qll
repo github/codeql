@@ -16,10 +16,7 @@ import codeql.rust.elements.Attr
  */
 module Generated {
   /**
-   * A AssocItemList. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A list of  `AssocItem` elements, as appearing for example in a `Trait`.
    * INTERNAL: Do not reference the `Generated::AssocItemList` class directly.
    * Use the subclass `AssocItemList`, where the following predicates are available.
    */

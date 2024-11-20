@@ -1,49 +1,15 @@
-
-
-// --- traits ---
-
-trait Incrementable {
-    fn increment(
-        &mut self,
-        times: i32, // SPURIOUS: unused value
-        unused: i32 // SPURIOUS: unused value
-    );
-}
-
-struct MyValue {
-    value: i32,
-}
-
-impl Incrementable for MyValue {
-    fn increment(
-        &mut self,
-        times: i32,
-        unused: i32 // BAD: unused variable [NOT DETECTED] SPURIOUS: unused value
-    ) {
-        self.value += times;
-    }
-}
-
-fn traits() {
-    let mut i = MyValue { value: 0 };
-    let a = 1;
-    let b = 2;
-
-    i.increment(a, b);
-}
-
 // --- generics ---
 
 trait MySettable<T> {
-    fn set(&mut self, val: T); // SPURIOUS: unused value
+    fn set(&mut self, val: T);
 }
 
 trait MyGettable<T> {
-    fn get(&self, val: T) -> &T; // SPURIOUS: unused value
+    fn get(&self, val: T) -> &T;
 }
 
 struct MyContainer<T> {
-    val: T
+    val: T,
 }
 
 impl<T> MySettable<T> for MyContainer<T> {
@@ -55,34 +21,32 @@ impl<T> MySettable<T> for MyContainer<T> {
 impl<T> MyGettable<T> for MyContainer<T> {
     fn get(
         &self,
-        val: T // BAD: unused variable [NOT DETECTED] SPURIOUS: unused value
+        val: T, // $ Alert[rust/unused-variable]
     ) -> &T {
         return &(self.val);
     }
 }
 
-fn generics() {
-    let mut a = MyContainer { val: 1 }; // BAD: unused value [NOT DETECTED]
+pub fn generics() {
+    let mut a = MyContainer { val: 1 }; // $ MISSING: Alert[rust/unused-value]
     let b = MyContainer { val: 2 };
 
-    a.set(
-        *b.get(3)
-    );
+    a.set(*b.get(3));
 }
 
 // --- pointers ---
 
-fn pointers() {
+pub fn pointers() {
     let a = 1;
     let a_ptr1 = &a;
     let a_ptr2 = &a;
-    let a_ptr3 = &a; // BAD: unused value [NOT DETECTED]
-    let a_ptr4 = &a; // BAD: unused value
+    let a_ptr3 = &a; // $ MISSING: Alert[rust/unused-value]
+    let a_ptr4 = &a; // $ Alert[rust/unused-value]
     println!("{}", *a_ptr1);
     println!("{}", a_ptr2);
     println!("{}", &a_ptr3);
 
-    let b = 2; // BAD: unused value [NOT DETECTED]
+    let b = 2; // $ MISSING: Alert[rust/unused-value]
     let b_ptr = &b;
     println!("{}", b_ptr);
 
@@ -92,26 +56,26 @@ fn pointers() {
     println!("{}", **c_ptr_ptr);
 
     let d = 4;
-    let d_ptr = &d; // BAD: unused value
+    let d_ptr = &d; // $ Alert[rust/unused-value]
     let d_ptr_ptr = &&d;
     println!("{}", **d_ptr_ptr);
 
-    let e = 5; // BAD: unused value [NOT DETECTED]
+    let e = 5; // $ MISSING: Alert[rust/unused-value]
     let f = 6;
-    let mut f_ptr = &e; // BAD: unused value
+    let mut f_ptr = &e; // $ Alert[rust/unused-value]
     f_ptr = &f;
     println!("{}", *f_ptr);
 
-    let mut g = 7; // BAD: unused value [NOT DETECTED]
+    let mut g = 7; // $ MISSING: Alert[rust/unused-value]
     let g_ptr = &mut g;
-    *g_ptr = 77; // BAD: unused value [NOT DETECTED]
+    *g_ptr = 77; // $ MISSING: Alert[rust/unused-value]
 
-    let mut h = 8; // BAD: unused value [NOT DETECTED]
+    let mut h = 8; // $ MISSING: Alert[rust/unused-value]
     let h_ptr = &mut h;
     *h_ptr = 88;
     println!("{}", h);
 
-    let mut i = 9; // BAD: unused value [NOT DETECTED]
+    let mut i = 9; // $ MISSING: Alert[rust/unused-value]
     let i_ptr = &mut i;
     *i_ptr = 99;
     let i_ptr2 = &mut i;

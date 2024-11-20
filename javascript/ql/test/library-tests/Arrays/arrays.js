@@ -96,4 +96,16 @@
   sink(["source"].filter((x) => x).pop()); // NOT OK
   sink(["source"].filter((x) => !!x).pop()); // NOT OK
 
+  var arr8 = [];
+  arr8 = arr8.toSpliced(0, 0, "source");
+  sink(arr8.pop()); // NOT OK
+
+  var arr8_variant = [];
+  arr8_variant = arr8_variant.toSpliced(0, 0, "safe", "source");
+  arr8_variant.pop();
+  sink(arr8_variant.pop()); // NOT OK
+
+  var arr8_spread = [];
+  arr8_spread = arr8_spread.toSpliced(0, 0, ...arr);
+  sink(arr8_spread.pop()); // NOT OK
 });

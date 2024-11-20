@@ -13,10 +13,16 @@ callTargets
 | test.go:57:2:57:29 | call to ImplementMe | test.go:46:1:46:87 | function declaration | ImplementMe |
 | test.go:57:2:57:29 | call to ImplementMe | test.go:53:1:53:85 | function declaration | ImplementMe |
 #select
-| file://:0:0:0:0 | basic interface type | file://:0:0:0:0 | basic interface type |
-| file://:0:0:0:0 | basic interface type | test.go:18:6:18:10 | Impl1 |
-| file://:0:0:0:0 | basic interface type | test.go:23:6:23:10 | Impl2 |
-| file://:0:0:0:0 | basic interface type | test.go:28:6:28:10 | Impl3 |
-| file://:0:0:0:0 | basic interface type | test.go:35:6:35:10 | Impl4 |
-| file://:0:0:0:0 | basic interface type | test.go:42:6:42:10 | Impl5 |
-| file://:0:0:0:0 | basic interface type | test.go:49:6:49:10 | Impl6 |
+| file://:0:0:0:0 | basic interface type | * Impl1 |
+| file://:0:0:0:0 | basic interface type | * Impl2 |
+| file://:0:0:0:0 | basic interface type | * Impl3 |
+| file://:0:0:0:0 | basic interface type | * Impl4 |
+| file://:0:0:0:0 | basic interface type | * Impl5 |
+| file://:0:0:0:0 | basic interface type | * Impl6 |
+| file://:0:0:0:0 | basic interface type | Impl1 |
+| file://:0:0:0:0 | basic interface type | Impl2 |
+| file://:0:0:0:0 | basic interface type | Impl3 |
+| file://:0:0:0:0 | basic interface type | Impl4 |
+| file://:0:0:0:0 | basic interface type | Impl5 |
+| file://:0:0:0:0 | basic interface type | Impl6 |
+| file://:0:0:0:0 | basic interface type | interface { ImplementMe func(func(struct { x int }) )  } |

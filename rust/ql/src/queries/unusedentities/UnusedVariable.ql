@@ -12,5 +12,8 @@ import rust
 import UnusedVariable
 
 from Variable v
-where isUnused(v)
-select v, "Variable is not used."
+where
+  isUnused(v) and
+  not isAllowableUnused(v) and
+  not v instanceof DiscardVariable
+select v, "Variable '" + v + "' is not used."

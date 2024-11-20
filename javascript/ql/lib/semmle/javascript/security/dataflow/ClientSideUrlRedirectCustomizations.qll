@@ -38,9 +38,16 @@ module ClientSideUrlRedirect {
     DocumentUrl() { this = "document.url" } // TODO: replace with TaintedUrlSuffix
   }
 
-  /** A source of remote user input, considered as a flow source for unvalidated URL redirects. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
-    RemoteFlowSourceAsSource() { not this.(ClientSideRemoteFlowSource).getKind().isPath() }
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+    ActiveThreatModelSourceAsSource() { not this.(ClientSideRemoteFlowSource).getKind().isPath() }
 
     override DataFlow::FlowLabel getAFlowLabel() {
       if this.(ClientSideRemoteFlowSource).getKind().isUrl()

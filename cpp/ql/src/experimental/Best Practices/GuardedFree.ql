@@ -18,9 +18,31 @@ class FreeCall extends FunctionCall {
   FreeCall() { this.getTarget().hasGlobalName("free") }
 }
 
+predicate blockContainsPreprocessorBranches(BasicBlock bb) {
+  exists(PreprocessorBranch ppb, Location bbLoc, Location ppbLoc |
+    bbLoc = bb.(Stmt).getLocation() and ppbLoc = ppb.getLocation()
+  |
+    bbLoc.getFile() = ppb.getFile() and
+    bbLoc.getStartLine() < ppbLoc.getStartLine() and
+    ppbLoc.getEndLine() < bbLoc.getEndLine()
+  )
+}
+
 from GuardCondition gc, FreeCall fc, Variable v, BasicBlock bb
 where
   gc.ensuresEq(v.getAnAccess(), 0, bb, false) and
   fc.getArgument(0) = v.getAnAccess() and
-  bb = fc.getEnclosingStmt()
+  bb = fc.getBasicBlock() and
+  (
+    // No block statement: if (x) free(x);
+    bb = fc.getEnclosingStmt()
+    or
+    // Block statement with a single nested statement: if (x) { free(x); }
+    strictcount(bb.(BlockStmt).getAStmt()) = 1
+  ) and
+  strictcount(BasicBlock bb2 | gc.ensuresEq(_, 0, bb2, _) | bb2) = 1 and
+  not fc.isInMacroExpansion() and
+  not blockContainsPreprocessorBranches(bb) and
+  not (gc instanceof BinaryOperation and not gc instanceof ComparisonOperation) and
+  not exists(CommaExpr c | c.getAChild*() = fc)
 select gc, "unnecessary NULL check before call to $@", fc, "free"

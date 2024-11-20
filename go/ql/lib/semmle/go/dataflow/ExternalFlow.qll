@@ -25,8 +25,12 @@
  *    packages in the group `<groupname>` according to the `packageGrouping`
  *    predicate.
  * 2. The `type` column selects a type within that package.
- * 3. The `subtypes` is a boolean that indicates whether to jump to an
- *    arbitrary subtype of that type.
+ * 3. The `subtypes` column is a boolean that controls what restrictions we
+ *    place on the type `t` of the selector base when accessing a field or
+ *    calling a method. When it is false, `t` must be the exact type specified
+ *    by this row. When it is true, `t` may be a type which embeds the specified
+ *    type, and for interface methods `t` may be a type which implements the
+ *    interface.
  * 4. The `name` column optionally selects a specific named member of the type.
  * 5. The `signature` column is always empty.
  * 6. The `ext` column is always empty.
@@ -34,7 +38,8 @@
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. An `input` can be either "",
  *    "Argument[n]", or "Argument[n1..n2]":
- *    - "": Selects a write to the selected element in case this is a field.
+ *    - "": Selects a write to the selected element in case this is a field or
+ *      package-level variable.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
  *      The arguments are zero-indexed, and `receiver` specifies the receiver.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but selects any argument
@@ -43,7 +48,7 @@
  *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
  *    "Parameter[n]", "Parameter[n1..n2]", , "ReturnValue", "ReturnValue[n]", or
  *    "ReturnValue[n1..n2]":
- *    - "": Selects a read of a selected field.
+ *    - "": Selects a read of a selected field or package-level variable.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
  *      The arguments are zero-indexed, and `receiver` specifies the receiver.
@@ -470,17 +475,24 @@ SourceSinkInterpretationInput::SourceOrSinkElement interpretElement(
   elementSpec(pkg, type, subtypes, name, signature, ext) and
   // Go does not need to distinguish functions with signature
   signature = "" and
-  (
-    exists(Field f | f.hasQualifiedName(interpretPackage(pkg), type, name) | result.asEntity() = f)
+  exists(string p | p = interpretPackage(pkg) |
+    exists(Entity e | result.hasFullInfo(e, p, type, subtypes) |
+      e.(Field).hasQualifiedName(p, type, name) or
+      e.(Method).hasQualifiedName(p, type, name)
+    )
     or
-    exists(Method m | m.hasQualifiedName(interpretPackage(pkg), type, name) |
-      result.asEntity() = m
-      or
-      subtypes = true and result.asEntity().(Method).implementsIncludingInterfaceMethods(m)
+    subtypes = true and
+    // p.type is an interface and we include types which implement it
+    exists(Method m2, string pkg2, string type2 |
+      m2.getReceiverType().implements(p, type) and
+      m2.getName() = name and
+      m2.getReceiverBaseType().hasQualifiedName(pkg2, type2)
+    |
+      result.hasFullInfo(m2, pkg2, type2, subtypes)
     )
     or
     type = "" and
-    exists(Entity e | e.hasQualifiedName(interpretPackage(pkg), name) | result.asEntity() = e)
+    exists(Entity e | e.hasQualifiedName(p, name) | result.asOtherEntity() = e)
   )
 }
 

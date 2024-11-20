@@ -351,9 +351,5 @@
   "Python model summaries test extension": [
     "python/ql/test/library-tests/dataflow/model-summaries/InlineTaintTest.ext.yml",
     "python/ql/test/library-tests/dataflow/model-summaries/NormalDataflowTest.ext.yml"
-  ],
-  "Diagnostics.qll": [
-    "ruby/ql/lib/codeql/ruby/Diagnostics.qll",
-    "rust/ql/lib/codeql/rust/Diagnostics.qll"
   ]
 }
