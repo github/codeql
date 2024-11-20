@@ -57,13 +57,13 @@ fn test_env_dirs() {
 }
 
 async fn test_reqwest() -> Result<(), reqwest::Error> {
-    let remote_string1 = reqwest::blocking::get("http://example.com/")?.text()?; // $ MISSING: Alert[rust/summary/taint-sources]
+    let remote_string1 = reqwest::blocking::get("http://example.com/")?.text()?; // $ Alert[rust/summary/taint-sources]
     sink(remote_string1); // $ MISSING: hasTaintFlow
 
-    let remote_string2 = reqwest::blocking::get("http://example.com/").unwrap().text().unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
+    let remote_string2 = reqwest::blocking::get("http://example.com/").unwrap().text().unwrap(); // $ Alert[rust/summary/taint-sources]
     sink(remote_string2); // $ MISSING: hasTaintFlow
 
-    let remote_string3 = reqwest::get("http://example.com/").await?.text().await?; // $ MISSING: Alert[rust/summary/taint-sources]
+    let remote_string3 = reqwest::get("http://example.com/").await?.text().await?; // $ Alert[rust/summary/taint-sources]
     sink(remote_string3); // $ MISSING: hasTaintFlow
 
     Ok(())

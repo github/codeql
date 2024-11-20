@@ -74,6 +74,19 @@ module EnvironmentSource {
 }
 
 /**
+ * A data flow source for remote (network) data.
+ */
+class RemoteSource extends ThreatModelSource instanceof RemoteSource::Range { }
+
+module RemoteSource {
+  abstract class Range extends ThreatModelSource::Range {
+    override string getThreatModel() { result = "remote" }
+
+    override string getSourceType() { result = "RemoteSource" }
+  }
+}
+
+/**
  * A data-flow node that constructs a SQL statement.
  *
  * Often, it is worthy of an alert if a SQL statement is constructed such that

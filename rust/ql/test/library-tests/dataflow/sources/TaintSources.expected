@@ -12,3 +12,6 @@
 | test.rs:50:15:50:37 | CallExpr | CommandLineArgs (commandargs) |
 | test.rs:51:15:51:37 | CallExpr | CommandLineArgs (commandargs) |
 | test.rs:52:16:52:35 | CallExpr | CommandLineArgs (commandargs) |
+| test.rs:60:26:60:70 | CallExpr | RemoteSource (remote, DEFAULT) |
+| test.rs:63:26:63:70 | CallExpr | RemoteSource (remote, DEFAULT) |
+| test.rs:66:26:66:60 | CallExpr | RemoteSource (remote, DEFAULT) |
