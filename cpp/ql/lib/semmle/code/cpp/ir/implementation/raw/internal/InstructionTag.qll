@@ -41,6 +41,8 @@ newtype TInstructionTag =
   ValueConditionCompareTag() or
   ValueConditionConstantTag() or
   ValueConditionConditionalBranchTag() or
+  ValueConditionConditionalConstantTag() or
+  ValueConditionConditionalCompareTag() or
   ConditionValueTrueTempAddressTag() or
   ConditionValueTrueConstantTag() or
   ConditionValueTrueStoreTag() or
@@ -170,6 +172,10 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = AllocationExtentConvertTag() and result = "AllocExtConv"
   or
   tag = ValueConditionConditionalBranchTag() and result = "ValCondCondBranch"
+  or
+  tag = ValueConditionConditionalConstantTag() and result = "ValueConditionConditionalConstant"
+  or
+  tag = ValueConditionConditionalCompareTag() and result = "ValueConditionConditionalCompare"
   or
   tag = ValueConditionCompareTag() and result = "ValCondCondCompare"
   or

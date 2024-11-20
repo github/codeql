@@ -2965,6 +2965,10 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
     result = this.getCondition().getFirstInstruction(kind)
   }
 
+  private Type getConditionType() {
+    result = this.getCondition().getExprType().getUnspecifiedType()
+  }
+
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     super.hasInstruction(opcode, tag, resultType)
     or
@@ -2972,10 +2976,34 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
     tag = ValueConditionConditionalBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
     resultType = getVoidType()
+    or
+    exists(Type t |
+      t = this.getConditionType() and
+      not t instanceof BoolType
+    |
+      tag = ValueConditionConditionalConstantTag() and
+      opcode instanceof Opcode::Constant and
+      resultType = getTypeForPRValue(t)
+      or
+      tag = ValueConditionConditionalCompareTag() and
+      opcode instanceof Opcode::CompareNE and
+      resultType = getBoolType()
+    )
   }
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     result = super.getInstructionSuccessorInternal(tag, kind)
+    or
+    not this.getConditionType() instanceof BoolType and
+    (
+      tag = ValueConditionConditionalConstantTag() and
+      kind instanceof GotoEdge and
+      result = this.getInstruction(ValueConditionConditionalCompareTag())
+      or
+      tag = ValueConditionConditionalCompareTag() and
+      kind instanceof GotoEdge and
+      result = this.getInstruction(ValueConditionConditionalBranchTag())
+    )
     or
     tag = ValueConditionConditionalBranchTag() and
     (
@@ -2992,7 +3020,19 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
     or
     tag = ValueConditionConditionalBranchTag() and
     operandTag instanceof ConditionOperandTag and
-    result = this.getCondition().getResult()
+    if this.getConditionType() instanceof BoolType
+    then result = this.getCondition().getResult()
+    else result = this.getInstruction(ValueConditionConditionalCompareTag())
+    or
+    not this.getConditionType() instanceof BoolType and
+    tag = ValueConditionConditionalCompareTag() and
+    (
+      operandTag instanceof LeftOperandTag and
+      result = this.getCondition().getResult()
+      or
+      operandTag instanceof RightOperandTag and
+      result = this.getInstruction(ValueConditionConditionalConstantTag())
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -3000,7 +3040,9 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
     or
     kind instanceof GotoEdge and
     child = this.getCondition() and
-    result = this.getInstruction(ValueConditionConditionalBranchTag())
+    if this.getConditionType() instanceof BoolType
+    then result = this.getInstruction(ValueConditionConditionalBranchTag())
+    else result = this.getInstruction(ValueConditionConditionalConstantTag())
   }
 
   private TranslatedExpr getCondition() {
@@ -3016,6 +3058,11 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
     // so we'll still sometimes wind up with one operand as the wrong type. This is better than
     // always converting the "then" operand to `bool`, which is almost always the wrong type.
     result = getTranslatedExpr(expr.getThen().getExplicitlyConverted())
+  }
+
+  override string getInstructionConstantValue(InstructionTag tag) {
+    tag = ValueConditionConditionalConstantTag() and
+    result = "0"
   }
 }
 
