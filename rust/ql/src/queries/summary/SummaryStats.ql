@@ -7,6 +7,7 @@
  */
 
 import rust
+import codeql.rust.Concepts
 import codeql.rust.Diagnostics
 import Stats
 
@@ -37,4 +38,8 @@ where
   key = "Inconsistencies - CFG" and value = getTotalCfgInconsistencies()
   or
   key = "Inconsistencies - data flow" and value = getTotalDataFlowInconsistencies()
+  or
+  key = "Taint sources - total" and value = count(ThreatModelSource s)
+  or
+  key = "Taint sources - active" and value = count(ActiveThreatModelSource s)
 select key, value
