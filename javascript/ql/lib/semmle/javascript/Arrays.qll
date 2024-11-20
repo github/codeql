@@ -505,7 +505,7 @@ private module ArrayLibraries {
     override predicate step(DataFlow::Node obj, DataFlow::Node element) {
       exists(DataFlow::MethodCallNode call |
         call.getMethodName() = ["findLast", "find", "findLastIndex"] and
-        obj = call.getReceiver().getALocalSource() and
+        obj = call.getReceiver() and
         element = call.getCallback(0).getParameter(0)
       )
     }
