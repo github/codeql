@@ -1320,17 +1320,36 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
   }
 }
 
+/**
+ * The IR translation of a `NotExpr`.
+ *
+ * In C++ an operation such as `!x` where `x` is an `int` will generate
+ * ```
+ * r1(glval<int>) = VariableAddress[x] :
+ * r2(int)        = Load               : &r1
+ * r3(int)        = Constant[0]        :
+ * r4(bool)       = CompareNE          : r2, r3
+ * r5(bool)       = LogicalNot         : r4
+ * ```
+ * since C does not do implicit int-to-bool casts we need to generate the
+ * `Constant[0]`, `CompareNE`, and `LogicalNot` instructions manually, but
+ * we simplify this and generate `Constant[0]`, `CompareEQ` instead.
+ */
 class TranslatedNotExpr extends TranslatedNonConstantExpr {
   override NotExpr expr;
 
   override Type getExprType() { result instanceof BoolType }
+
+  private Type getOperandType() { result = this.getOperand().getExprType().getUnspecifiedType() }
+
+  predicate shouldGenerateEq() { not this.getOperandType() instanceof BoolType }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getOperand().getFirstInstruction(kind)
   }
 
   override Instruction getALastInstructionInternal() {
-    result = this.getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(NotExprOperationTag())
   }
 
   final override TranslatedElement getChildInternal(int id) {
@@ -1338,33 +1357,61 @@ class TranslatedNotExpr extends TranslatedNonConstantExpr {
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
-    tag = OnlyInstructionTag() and
-    opcode instanceof Opcode::LogicalNot and
-    resultType = getBoolType()
+    this.shouldGenerateEq() and
+    tag = NotExprConstantTag() and
+    opcode instanceof Opcode::Constant and
+    resultType = getTypeForPRValue(this.getOperandType())
+    or
+    resultType = getBoolType() and
+    tag = NotExprOperationTag() and
+    if this.shouldGenerateEq()
+    then opcode instanceof Opcode::CompareEQ
+    else opcode instanceof Opcode::LogicalNot
   }
 
   final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
-    tag = OnlyInstructionTag() and
+    tag = NotExprOperationTag() and
     result = this.getParent().getChildSuccessor(this, kind)
+    or
+    tag = NotExprConstantTag() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(NotExprOperationTag())
   }
 
   final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getOperand() and
     kind instanceof GotoEdge and
-    result = this.getInstruction(OnlyInstructionTag())
+    if this.shouldGenerateEq()
+    then result = this.getInstruction(NotExprConstantTag())
+    else result = this.getInstruction(NotExprOperationTag())
   }
 
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = OnlyInstructionTag() and
-    operandTag instanceof UnaryOperandTag and
-    result = this.getOperand().getResult()
+    tag = NotExprOperationTag() and
+    if this.shouldGenerateEq()
+    then (
+      result = this.getOperand().getResult() and
+      operandTag instanceof LeftOperandTag
+      or
+      result = this.getInstruction(NotExprConstantTag()) and
+      operandTag instanceof RightOperandTag
+    ) else (
+      operandTag instanceof UnaryOperandTag and
+      result = this.getOperand().getResult()
+    )
   }
 
   private TranslatedExpr getOperand() {
     result = getTranslatedExpr(expr.getOperand().getFullyConverted())
   }
 
-  final override Instruction getResult() { result = this.getInstruction(OnlyInstructionTag()) }
+  final override Instruction getResult() { result = this.getInstruction(NotExprOperationTag()) }
+
+  override string getInstructionConstantValue(InstructionTag tag) {
+    this.shouldGenerateEq() and
+    tag = NotExprConstantTag() and
+    result = "0"
+  }
 }
 
 /**

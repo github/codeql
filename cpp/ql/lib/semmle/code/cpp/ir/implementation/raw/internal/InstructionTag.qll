@@ -51,6 +51,8 @@ newtype TInstructionTag =
   ConditionValueResultLoadTag() or
   BoolConversionConstantTag() or
   BoolConversionCompareTag() or
+  NotExprOperationTag() or
+  NotExprConstantTag() or
   ResultCopyTag() or
   LoadTag() or // Implicit load due to lvalue-to-rvalue conversion
   CatchTag() or
@@ -192,6 +194,10 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = BoolConversionConstantTag() and result = "BoolConvConst"
   or
   tag = BoolConversionCompareTag() and result = "BoolConvComp"
+  or
+  tag = NotExprOperationTag() and result = "NotExprOperation"
+  or
+  tag = NotExprConstantTag() and result = "NotExprWithBoolConversionConstant"
   or
   tag = ResultCopyTag() and result = "ResultCopy"
   or
