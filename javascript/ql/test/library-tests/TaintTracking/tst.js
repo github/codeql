@@ -72,4 +72,28 @@ function test() {
     sink(Map.groupBy(x, z => z)); // NOT OK
     sink(Custom.groupBy(x, z => z)); // OK
     sink(Object.groupBy(x, z => z)); // NOT OK
+    sink(Map.groupBy(source(), (item) => sink(item))); // NOT OK
+
+    { 
+        const grouped = Map.groupBy(x, (item) => sink(item)); // NOT OK -- Should be tainted, but it is not
+        sink(grouped); // NOT OK
+    }
+    {
+        const list = [source()];
+        const grouped = Map.groupBy(list, (item) => sink(item)); // NOT OK -- Should be tainted, but it is not
+        sink(grouped); // NOT OK
+    }
+    {
+        const data = source();
+        const result = Object.groupBy(data, item => item);
+        const taintedValue = result[notDefined()];
+        sink(taintedValue); // NOT OK
+    }
+    {
+        const data = source();
+        const map = Map.groupBy(data, item => item);
+        const taintedValue = map.get(true); 
+        sink(taintedValue); // NOT OK -- Should be tainted, but it is not
+        sink(map.get(true)); // NOT OK -- Should be tainted, but it is not
+    }
 }
