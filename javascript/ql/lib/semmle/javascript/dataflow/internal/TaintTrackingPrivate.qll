@@ -104,3 +104,12 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, ContentSet c) {
   // Optional steps are added through isAdditionalFlowStep but we don't want the implicit reads
   not optionalStep(node, _, _)
 }
+
+predicate speculativeTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(DataFlow::CallNode call, DataFlowCall c |
+    not exists(viableCallable(c)) and
+    c.asOrdinaryCall() = call and
+    node1 = call.getAnArgument() and
+    node2 = call
+  )
+}
