@@ -10,8 +10,9 @@ private predicate multipleToStrings(Element e) { strictcount(e.toString()) > 1 }
 /**
  * Holds if `e` has more than one `toString()` result.
  */
-query predicate multipleToStrings(Element e, string s) {
+query predicate multipleToStrings(Element e, string cls, string s) {
   multipleToStrings(e) and
+  cls = e.getPrimaryQlClasses() and
   s = strictconcat(e.toString(), ", ")
 }
 
@@ -39,9 +40,11 @@ private predicate multipleParents(Element child) { strictcount(getParent(child))
 /**
  * Holds if `child` has more than one AST parent.
  */
-query predicate multipleParents(Element child, Element parent) {
+query predicate multipleParents(Element child, string childClass, Element parent, string parentClass) {
   multipleParents(child) and
-  parent = getParent(child)
+  childClass = child.getPrimaryQlClasses() and
+  parent = getParent(child) and
+  parentClass = parent.getPrimaryQlClasses()
 }
 
 /**
