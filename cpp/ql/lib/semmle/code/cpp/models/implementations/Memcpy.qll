@@ -9,14 +9,14 @@ import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.Taint
-import semmle.code.cpp.models.interfaces.Throwing
+import semmle.code.cpp.models.interfaces.NonThrowing
 
 /**
  * The standard functions `memcpy`, `memmove` and `bcopy`; and the gcc variant
  * `__builtin___memcpy_chk`.
  */
 private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction,
-  AliasFunction, NonThrowingFunction
+  AliasFunction, NonCppThrowingFunction
 {
   MemcpyFunction() {
     // memcpy(dest, src, num)
@@ -106,8 +106,6 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
     not this.hasGlobalName(["bcopy", mempcpy(), "memccpy"]) and
     index = this.getParamDest()
   }
-
-  override TCxxException getExceptionType() { any() }
 }
 
 private string mempcpy() { result = ["mempcpy", "wmempcpy"] }

@@ -7,13 +7,13 @@ import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.SideEffect
-import semmle.code.cpp.models.interfaces.Throwing
+import semmle.code.cpp.models.interfaces.NonThrowing
 
 /**
  * The standard function `strcpy` and its wide, sized, and Microsoft variants.
  */
 class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, SideEffectFunction,
-  NonThrowingFunction
+  NonCppThrowingFunction
 {
   StrcpyFunction() {
     this.hasGlobalOrStdOrBslName([
@@ -145,6 +145,4 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
     i = this.getParamDest() and
     result = this.getParamSize()
   }
-
-  override TCxxException getExceptionType() { any() }
 }

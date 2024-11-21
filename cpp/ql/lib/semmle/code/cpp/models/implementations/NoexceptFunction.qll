@@ -1,4 +1,4 @@
-import semmle.code.cpp.models.interfaces.Throwing
+import semmle.code.cpp.models.interfaces.NonThrowing
 
 /**
  * A function that is annotated with a `noexcept` specifier (or the equivalent
@@ -6,8 +6,6 @@ import semmle.code.cpp.models.interfaces.Throwing
  *
  * Note: The `throw` specifier was deprecated in C++11 and removed in C++17.
  */
-class NoexceptFunction extends NonThrowingFunction {
+class NoexceptFunction extends NonCppThrowingFunction {
   NoexceptFunction() { this.isNoExcept() or this.isNoThrow() }
-
-  override TCxxException getExceptionType() { any() }
 }
