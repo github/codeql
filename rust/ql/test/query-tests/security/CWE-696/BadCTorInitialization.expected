@@ -1,1 +1,10 @@
-| 0 |
+| test.rs:30:4:30:9 | bad1_1 | This function has the $@ attribute but calls $@ in the standard library. | test.rs:29:1:29:13 | Attr | Attr | test.rs:31:9:31:25 | ...::stdout(...) | ...::stdout(...) |
+| test.rs:35:4:35:9 | bad1_2 | This function has the $@ attribute but calls $@ in the standard library. | test.rs:34:1:34:13 | Attr | Attr | test.rs:36:9:36:25 | ...::stdout(...) | ...::stdout(...) |
+| test.rs:42:4:42:9 | bad1_3 | This function has the $@ attribute but calls $@ in the standard library. | test.rs:40:1:40:13 | Attr | Attr | test.rs:43:9:43:25 | ...::stdout(...) | ...::stdout(...) |
+| test.rs:52:4:52:9 | bad2_1 | This function has the $@ attribute but calls $@ in the standard library. | test.rs:51:1:51:7 | Attr | Attr | test.rs:53:9:53:16 | stdout(...) | stdout(...) |
+| test.rs:57:4:57:9 | bad2_2 | This function has the $@ attribute but calls $@ in the standard library. | test.rs:56:1:56:7 | Attr | Attr | test.rs:58:9:58:16 | stderr(...) | stderr(...) |
+| test.rs:62:4:62:9 | bad2_3 | This function has the $@ attribute but calls $@ in the standard library. | test.rs:61:1:61:7 | Attr | Attr | test.rs:63:14:63:28 | ...::_print(...) | ...::_print(...) |
+| test.rs:67:4:67:9 | bad2_4 | This function has the $@ attribute but calls $@ in the standard library. | test.rs:66:1:66:7 | Attr | Attr | test.rs:69:9:69:24 | ...::stdin(...) | ...::stdin(...) |
+| test.rs:89:4:89:9 | bad2_7 | This function has the $@ attribute but calls $@ in the standard library. | test.rs:88:1:88:7 | Attr | Attr | test.rs:90:5:90:35 | ...::sleep(...) | ...::sleep(...) |
+| test.rs:96:4:96:9 | bad2_8 | This function has the $@ attribute but calls $@ in the standard library. | test.rs:95:1:95:7 | Attr | Attr | test.rs:97:5:97:23 | ...::exit(...) | ...::exit(...) |
+| test.rs:142:4:142:9 | bad4_1 | This function has the $@ attribute but calls $@ in the standard library. | test.rs:141:1:141:7 | Attr | Attr | test.rs:143:5:143:15 | ...::stdout(...) | ...::stdout(...) |

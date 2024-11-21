@@ -27,19 +27,19 @@ fn harmless1_5() {
 }
 
 #[ctor::ctor]
-fn bad1_1() { // $ MISSING: Alert[rust/ctor-initialization]
+fn bad1_1() { // $ Alert[rust/ctor-initialization]
     _ = std::io::stdout().write(b"Hello, world!");
 }
 
 #[ctor::dtor]
-fn bad1_2() { // $ MISSING: Alert[rust/ctor-initialization]
+fn bad1_2() { // $ Alert[rust/ctor-initialization]
     _ = std::io::stdout().write(b"Hello, world!");
 }
 
 #[rustfmt::skip]
 #[ctor::dtor]
 #[rustfmt::skip]
-fn bad1_3() { // $ MISSING: Alert[rust/ctor-initialization]
+fn bad1_3() { // $ Alert[rust/ctor-initialization]
     _ = std::io::stdout().write(b"Hello, world!");
 }
 
@@ -49,22 +49,22 @@ use ctor::ctor;
 use std::io::*;
 
 #[ctor]
-fn bad2_1() { // $ MISSING: Alert[rust/ctor-initialization]
+fn bad2_1() { // $ Alert[rust/ctor-initialization]
     _ = stdout().write(b"Hello, world!");
 }
 
 #[ctor]
-fn bad2_2() { // $ MISSING: Alert[rust/ctor-initialization]
+fn bad2_2() { // $ Alert[rust/ctor-initialization]
     _ = stderr().write_all(b"Hello, world!");
 }
 
 #[ctor]
-fn bad2_3() { // $ MISSING: Alert[rust/ctor-initialization]
+fn bad2_3() { // $ Alert[rust/ctor-initialization]
     println!("Hello, world!");
 }
 
 #[ctor]
-fn bad2_4() { // $ MISSING: Alert[rust/ctor-initialization]
+fn bad2_4() { // $ Alert[rust/ctor-initialization]
     let mut buff = String::new();
     _ = std::io::stdin().read_line(&mut buff);
 }
@@ -86,14 +86,14 @@ use std::time::Duration;
 const DURATION2_7: Duration = Duration::new(1, 0);
 
 #[ctor]
-fn bad2_7() { // $ MISSING: Alert[rust/ctor-initialization]
+fn bad2_7() { // $ Alert[rust/ctor-initialization]
     std::thread::sleep(DURATION2_7);
 }
 
 use std::process;
 
 #[ctor]
-fn bad2_8() { // $ MISSING: Alert[rust/ctor-initialization]
+fn bad2_8() { // $ Alert[rust/ctor-initialization]
     process::exit(1234);
 }
 
@@ -139,6 +139,6 @@ macro_rules! macro4_1 {
 }
 
 #[ctor]
-fn bad4_1() { // $ MISSING: Alert[rust/ctor-initialization]
+fn bad4_1() { // $ Alert[rust/ctor-initialization]
     macro4_1!();
 }
