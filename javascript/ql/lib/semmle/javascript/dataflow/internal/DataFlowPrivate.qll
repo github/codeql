@@ -438,6 +438,19 @@ abstract class LibraryCallable extends string {
   DataFlow::InvokeNode getACallSimple() { none() }
 }
 
+/** Internal subclass of `LibraryCallable`, whose member predicates should not be visible on `SummarizedCallable`. */
+abstract class LibraryCallableInternal extends LibraryCallable {
+  bindingset[this]
+  LibraryCallableInternal() { any() }
+
+  /**
+   * Gets a call to this library callable.
+   *
+   * Same as `getACall()` but is evaluated later and may depend negatively on `getACall()`.
+   */
+  DataFlow::InvokeNode getACallStage2() { none() }
+}
+
 private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosition pos) {
   exists(Parameter parameter |
     parameter = c.asSourceCallable().(Function).getParameter(pos.asPositional()) and
@@ -1014,7 +1027,11 @@ DataFlowCallable viableCallable(DataFlowCall node) {
   or
   exists(LibraryCallable callable |
     result = MkLibraryCallable(callable) and
-    node.asOrdinaryCall() = [callable.getACall(), callable.getACallSimple()]
+    node.asOrdinaryCall() =
+      [
+        callable.getACall(), callable.getACallSimple(),
+        callable.(LibraryCallableInternal).getACallStage2()
+      ]
   )
   or
   result.asSourceCallableNotExterns() = node.asImpliedLambdaCall()
