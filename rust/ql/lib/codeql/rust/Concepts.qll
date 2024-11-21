@@ -13,21 +13,7 @@ private import codeql.threatmodels.ThreatModels
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `ThreatModelSource::Range` instead.
  */
-class ThreatModelSource extends DataFlow::Node instanceof ThreatModelSource::Range {
-  /**
-   * Gets a string that represents the source kind with respect to threat modeling.
-   *
-   * See
-   * - https://github.com/github/codeql/blob/main/docs/codeql/reusables/threat-model-description.rst
-   * - https://github.com/github/codeql/blob/main/shared/threat-models/ext/threat-model-grouping.model.yml
-   */
-  string getThreatModel() { result = super.getThreatModel() }
-
-  /**
-   * Gets a string that describes the type of this threat-model source.
-   */
-  string getSourceType() { result = super.getSourceType() }
-}
+final class ThreatModelSource = ThreatModelSource::Range;
 
 /**
  * Provides a class for modeling new sources for specific threat-models.
@@ -67,12 +53,7 @@ class ActiveThreatModelSource extends ThreatModelSource {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SqlConstruction::Range` instead.
  */
-class SqlConstruction extends DataFlow::Node instanceof SqlConstruction::Range {
-  /**
-   * Gets the argument that specifies the SQL statements to be constructed.
-   */
-  DataFlow::Node getSql() { result = super.getSql() }
-}
+final class SqlConstruction = SqlConstruction::Range;
 
 /**
  * Provides a class for modeling new SQL execution APIs.
@@ -98,12 +79,7 @@ module SqlConstruction {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SqlExecution::Range` instead.
  */
-class SqlExecution extends DataFlow::Node instanceof SqlExecution::Range {
-  /**
-   * Gets the argument that specifies the SQL statements to be executed.
-   */
-  DataFlow::Node getSql() { result = super.getSql() }
-}
+final class SqlExecution = SqlExecution::Range;
 
 /**
  * Provides a class for modeling new SQL execution APIs.
@@ -123,7 +99,7 @@ module SqlExecution {
 /**
  * A data-flow node that performs SQL sanitization.
  */
-class SqlSanitization extends DataFlow::Node instanceof SqlSanitization::Range { }
+final class SqlSanitization = SqlSanitization::Range;
 
 /**
  * Provides a class for modeling new SQL sanitization APIs.
