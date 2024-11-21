@@ -9,8 +9,11 @@ function e1() {
         array.forEach(x => {
             throw source('e1.2');
         });
+        array.forEach(() => {
+            throw source('e1.3'); // Same as e1.2 but without callback parameters
+        });
     } catch (err) {
-        sink(err); // $ hasValueFlow=e1.2 MISSING: hasValueFlow=e1.1
+        sink(err); // $ hasValueFlow=e1.2 MISSING: hasValueFlow=e1.1 hasValueFlow=e1.3
     }
 }
 
