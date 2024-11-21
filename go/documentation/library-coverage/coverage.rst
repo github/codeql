@@ -26,7 +26,7 @@ Go framework & library support
    `Macaron <https://gopkg.in/macaron.v1>`_,``gopkg.in/macaron*``,12,1,1
    `Revel <http://revel.github.io/>`_,"``github.com/revel/revel*``, ``github.com/robfig/revel*``",46,20,4
    `SendGrid <https://github.com/sendgrid/sendgrid-go>`_,``github.com/sendgrid/sendgrid-go*``,,1,
-   `Standard library <https://pkg.go.dev/std>`_,"````, ``archive/*``, ``bufio``, ``bytes``, ``cmp``, ``compress/*``, ``container/*``, ``context``, ``crypto``, ``crypto/*``, ``database/*``, ``debug/*``, ``embed``, ``encoding``, ``encoding/*``, ``errors``, ``expvar``, ``flag``, ``fmt``, ``go/*``, ``hash``, ``hash/*``, ``html``, ``html/*``, ``image``, ``image/*``, ``index/*``, ``io``, ``io/*``, ``log``, ``log/*``, ``maps``, ``math``, ``math/*``, ``mime``, ``mime/*``, ``net``, ``net/*``, ``os``, ``os/*``, ``path``, ``path/*``, ``plugin``, ``reflect``, ``reflect/*``, ``regexp``, ``regexp/*``, ``slices``, ``sort``, ``strconv``, ``strings``, ``sync``, ``sync/*``, ``syscall``, ``syscall/*``, ``testing``, ``testing/*``, ``text/*``, ``time``, ``time/*``, ``unicode``, ``unicode/*``, ``unsafe``",32,587,51
+   `Standard library <https://pkg.go.dev/std>`_,"````, ``archive/*``, ``bufio``, ``bytes``, ``cmp``, ``compress/*``, ``container/*``, ``context``, ``crypto``, ``crypto/*``, ``database/*``, ``debug/*``, ``embed``, ``encoding``, ``encoding/*``, ``errors``, ``expvar``, ``flag``, ``fmt``, ``go/*``, ``hash``, ``hash/*``, ``html``, ``html/*``, ``image``, ``image/*``, ``index/*``, ``io``, ``io/*``, ``log``, ``log/*``, ``maps``, ``math``, ``math/*``, ``mime``, ``mime/*``, ``net``, ``net/*``, ``os``, ``os/*``, ``path``, ``path/*``, ``plugin``, ``reflect``, ``reflect/*``, ``regexp``, ``regexp/*``, ``slices``, ``sort``, ``strconv``, ``strings``, ``sync``, ``sync/*``, ``syscall``, ``syscall/*``, ``testing``, ``testing/*``, ``text/*``, ``time``, ``time/*``, ``unicode``, ``unicode/*``, ``unsafe``",33,587,51
    `XPath <https://github.com/antchfx/xpath>`_,``github.com/antchfx/xpath*``,,,4
    `appleboy/gin-jwt <https://github.com/appleboy/gin-jwt>`_,``github.com/appleboy/gin-jwt*``,,,1
    `beego <https://beego.me/>`_,"``github.com/astaxie/beego*``, ``github.com/beego/beego*``",63,63,21
@@ -61,5 +61,5 @@ Go framework & library support
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,
    Others,"``github.com/caarlos0/env``, ``github.com/gobuffalo/envy``, ``github.com/hashicorp/go-envparse``, ``github.com/joho/godotenv``, ``github.com/kelseyhightower/envconfig``",23,2,
-   Totals,,306,911,268
+   Totals,,307,911,268
 

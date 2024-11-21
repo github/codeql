@@ -9,6 +9,7 @@ module Ssa {
   private import rust
   private import codeql.rust.controlflow.BasicBlocks
   private import codeql.rust.controlflow.ControlFlowGraph
+  private import codeql.rust.controlflow.CfgNodes
   private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as CfgImpl
   private import internal.SsaImpl as SsaImpl
 
@@ -26,7 +27,7 @@ module Ssa {
     }
 
     /**
-     * Gets a control-flow node that reads the value of this SSA definition.
+     * Gets a control flow node that reads the value of this SSA definition.
      *
      * Example:
      *
@@ -53,7 +54,7 @@ module Ssa {
     final CfgNode getARead() { result = SsaImpl::getARead(this) }
 
     /**
-     * Gets a first control-flow node that reads the value of this SSA definition.
+     * Gets a first control flow node that reads the value of this SSA definition.
      * That is, a read that can be reached from this definition without passing
      * through other reads.
      *
@@ -82,7 +83,7 @@ module Ssa {
     final CfgNode getAFirstRead() { SsaImpl::firstRead(this, result) }
 
     /**
-     * Gets a last control-flow node that reads the value of this SSA definition.
+     * Gets a last control flow node that reads the value of this SSA definition.
      * That is, a read that can reach the end of the enclosing CFG scope, or another
      * SSA definition for the source variable, without passing through any other read.
      *
@@ -221,11 +222,11 @@ module Ssa {
      * end
      * ```
      */
-    predicate assigns(CfgNode value) {
-      exists(AssignmentExpr ae, BasicBlock bb, int i |
+    predicate assigns(ExprCfgNode value) {
+      exists(AssignmentExprCfgNode ae, BasicBlock bb, int i |
         this.definesAt(_, bb, i) and
-        ae.getLhs() = bb.getNode(i).getAstNode() and
-        value.getAstNode() = ae.getRhs()
+        ae.getLhs() = bb.getNode(i) and
+        value = ae.getRhs()
       )
     }
 

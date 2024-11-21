@@ -418,12 +418,12 @@ variableInitializer
 | variables.rs:112:9:112:10 | y1 | variables.rs:112:14:112:15 | 10 |
 | variables.rs:128:9:128:15 | numbers | variables.rs:128:19:128:35 | TupleExpr |
 | variables.rs:155:9:155:10 | p2 | variables.rs:155:14:155:37 | Point {...} |
-| variables.rs:169:9:169:11 | msg | variables.rs:169:15:169:38 | Message::Hello {...} |
-| variables.rs:189:9:189:14 | either | variables.rs:189:18:189:33 | Either::Left(...) |
-| variables.rs:203:9:203:10 | tv | variables.rs:203:14:203:36 | ThreeValued::Second(...) |
-| variables.rs:219:9:219:14 | either | variables.rs:219:18:219:33 | Either::Left(...) |
-| variables.rs:229:9:229:14 | either | variables.rs:229:18:229:33 | Either::Left(...) |
-| variables.rs:253:9:253:10 | fv | variables.rs:253:14:253:35 | FourValued::Second(...) |
+| variables.rs:169:9:169:11 | msg | variables.rs:169:15:169:38 | ...::Hello {...} |
+| variables.rs:189:9:189:14 | either | variables.rs:189:18:189:33 | ...::Left(...) |
+| variables.rs:203:9:203:10 | tv | variables.rs:203:14:203:36 | ...::Second(...) |
+| variables.rs:219:9:219:14 | either | variables.rs:219:18:219:33 | ...::Left(...) |
+| variables.rs:229:9:229:14 | either | variables.rs:229:18:229:33 | ...::Left(...) |
+| variables.rs:253:9:253:10 | fv | variables.rs:253:14:253:35 | ...::Second(...) |
 | variables.rs:315:9:315:23 | example_closure | variables.rs:316:9:317:9 | \|...\| x |
 | variables.rs:318:9:318:10 | n1 | variables.rs:319:9:319:26 | example_closure(...) |
 | variables.rs:323:9:323:26 | immutable_variable | variables.rs:324:9:325:9 | \|...\| x |

@@ -445,7 +445,7 @@ An integer value is of type ``int``. Each value is a 32-bit two's complement int
 
 A string is a finite sequence of 16-bit characters. The characters are interpreted as Unicode code points.
 
-A :ref:`big integer <bigint>` value is of type ``QlBuiltins::BigInt``. Each value is a signed arbitrary-precision integer.
+A :ref:`big integer <bigint>` value is of type ``QlBuiltins::BigInt``. Each value is a signed arbitrary-range integer.
 
 The database includes a number of opaque entity values. Each such value has a type that is one of the database types, and an identifying integer. An entity value is written as the name of its database type followed by its identifying integer in parentheses. For example, ``@tree(12)``, ``@person(16)``, and ``@location(38132)`` are entity values. The identifying integers are left opaque to programmers in this specification, so an implementation of QL is free to use some other set of countable labels to identify its entities.
 

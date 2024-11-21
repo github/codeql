@@ -4,30 +4,30 @@ edges
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:20 | ...: ... | match |
 | variables.rs:3:14:3:20 | ...: ... | variables.rs:4:5:4:22 | ExprStmt |  |
 | variables.rs:3:23:5:1 | { ... } | variables.rs:3:1:5:1 | exit fn print_str (normal) |  |
-| variables.rs:4:5:4:21 | $crate::io::_print | variables.rs:4:14:4:17 | "{}\\n" |  |
+| variables.rs:4:5:4:21 | ...::_print | variables.rs:4:14:4:17 | "{}\\n" |  |
 | variables.rs:4:5:4:21 | MacroExpr | variables.rs:3:23:5:1 | { ... } |  |
 | variables.rs:4:5:4:22 | ExprStmt | variables.rs:4:14:4:20 | MacroStmts |  |
 | variables.rs:4:14:4:17 | "{}\\n" | variables.rs:4:20:4:20 | s |  |
-| variables.rs:4:14:4:20 | $crate::io::_print(...) | variables.rs:4:14:4:20 | { ... } |  |
-| variables.rs:4:14:4:20 | ExprStmt | variables.rs:4:5:4:21 | $crate::io::_print |  |
+| variables.rs:4:14:4:20 | ...::_print(...) | variables.rs:4:14:4:20 | { ... } |  |
+| variables.rs:4:14:4:20 | ExprStmt | variables.rs:4:5:4:21 | ...::_print |  |
 | variables.rs:4:14:4:20 | FormatArgsExpr | variables.rs:4:14:4:20 | MacroExpr |  |
-| variables.rs:4:14:4:20 | MacroExpr | variables.rs:4:14:4:20 | $crate::io::_print(...) |  |
+| variables.rs:4:14:4:20 | MacroExpr | variables.rs:4:14:4:20 | ...::_print(...) |  |
 | variables.rs:4:14:4:20 | MacroStmts | variables.rs:4:14:4:20 | ExprStmt |  |
 | variables.rs:4:14:4:20 | { ... } | variables.rs:4:5:4:21 | MacroExpr |  |
 | variables.rs:4:20:4:20 | s | variables.rs:4:14:4:20 | FormatArgsExpr |  |
 | variables.rs:7:1:9:1 | enter fn print_i64 | variables.rs:7:14:7:14 | i |  |
 | variables.rs:7:1:9:1 | exit fn print_i64 (normal) | variables.rs:7:1:9:1 | exit fn print_i64 |  |
-| variables.rs:7:14:7:14 | i | variables.rs:7:14:7:19 | ...: i64 | match |
-| variables.rs:7:14:7:19 | ...: i64 | variables.rs:8:5:8:22 | ExprStmt |  |
+| variables.rs:7:14:7:14 | i | variables.rs:7:14:7:19 | ...: <i64> | match |
+| variables.rs:7:14:7:19 | ...: <i64> | variables.rs:8:5:8:22 | ExprStmt |  |
 | variables.rs:7:22:9:1 | { ... } | variables.rs:7:1:9:1 | exit fn print_i64 (normal) |  |
-| variables.rs:8:5:8:21 | $crate::io::_print | variables.rs:8:14:8:17 | "{}\\n" |  |
+| variables.rs:8:5:8:21 | ...::_print | variables.rs:8:14:8:17 | "{}\\n" |  |
 | variables.rs:8:5:8:21 | MacroExpr | variables.rs:7:22:9:1 | { ... } |  |
 | variables.rs:8:5:8:22 | ExprStmt | variables.rs:8:14:8:20 | MacroStmts |  |
 | variables.rs:8:14:8:17 | "{}\\n" | variables.rs:8:20:8:20 | i |  |
-| variables.rs:8:14:8:20 | $crate::io::_print(...) | variables.rs:8:14:8:20 | { ... } |  |
-| variables.rs:8:14:8:20 | ExprStmt | variables.rs:8:5:8:21 | $crate::io::_print |  |
+| variables.rs:8:14:8:20 | ...::_print(...) | variables.rs:8:14:8:20 | { ... } |  |
+| variables.rs:8:14:8:20 | ExprStmt | variables.rs:8:5:8:21 | ...::_print |  |
 | variables.rs:8:14:8:20 | FormatArgsExpr | variables.rs:8:14:8:20 | MacroExpr |  |
-| variables.rs:8:14:8:20 | MacroExpr | variables.rs:8:14:8:20 | $crate::io::_print(...) |  |
+| variables.rs:8:14:8:20 | MacroExpr | variables.rs:8:14:8:20 | ...::_print(...) |  |
 | variables.rs:8:14:8:20 | MacroStmts | variables.rs:8:14:8:20 | ExprStmt |  |
 | variables.rs:8:14:8:20 | { ... } | variables.rs:8:5:8:21 | MacroExpr |  |
 | variables.rs:8:20:8:20 | i | variables.rs:8:14:8:20 | FormatArgsExpr |  |
@@ -190,11 +190,11 @@ edges
 | variables.rs:84:19:91:1 | { ... } | variables.rs:84:1:91:1 | exit fn let_pattern3 (normal) |  |
 | variables.rs:85:5:85:42 | let ... = ... | variables.rs:85:14:85:17 | Some |  |
 | variables.rs:85:9:85:10 | s1 | variables.rs:87:8:88:12 | let ... = s1 | match |
-| variables.rs:85:14:85:17 | Some | variables.rs:85:19:85:30 | String::from |  |
+| variables.rs:85:14:85:17 | Some | variables.rs:85:19:85:30 | ...::from |  |
 | variables.rs:85:14:85:41 | Some(...) | variables.rs:85:9:85:10 | s1 |  |
-| variables.rs:85:19:85:30 | String::from | variables.rs:85:32:85:39 | "Hello!" |  |
-| variables.rs:85:19:85:40 | String::from(...) | variables.rs:85:14:85:41 | Some(...) |  |
-| variables.rs:85:32:85:39 | "Hello!" | variables.rs:85:19:85:40 | String::from(...) |  |
+| variables.rs:85:19:85:30 | ...::from | variables.rs:85:32:85:39 | "Hello!" |  |
+| variables.rs:85:19:85:40 | ...::from(...) | variables.rs:85:14:85:41 | Some(...) |  |
+| variables.rs:85:32:85:39 | "Hello!" | variables.rs:85:19:85:40 | ...::from(...) |  |
 | variables.rs:87:5:90:5 | if ... {...} | variables.rs:84:19:91:1 | { ... } |  |
 | variables.rs:87:8:88:12 | let ... = s1 | variables.rs:88:11:88:12 | s1 |  |
 | variables.rs:87:12:87:23 | TupleStructPat | variables.rs:87:5:90:5 | if ... {...} | no-match |
@@ -206,21 +206,21 @@ edges
 | variables.rs:89:9:89:21 | print_str(...) | variables.rs:88:14:90:5 | { ... } |  |
 | variables.rs:89:9:89:22 | ExprStmt | variables.rs:89:9:89:17 | print_str |  |
 | variables.rs:89:19:89:20 | s2 | variables.rs:89:9:89:21 | print_str(...) |  |
-| variables.rs:93:1:99:1 | enter fn let_pattern4 | variables.rs:94:5:97:10 | let ... = ... else { ... } |  |
+| variables.rs:93:1:99:1 | enter fn let_pattern4 | variables.rs:94:5:97:10 | let ... = ... else {...} |  |
 | variables.rs:93:1:99:1 | exit fn let_pattern4 (normal) | variables.rs:93:1:99:1 | exit fn let_pattern4 |  |
 | variables.rs:93:19:99:1 | { ... } | variables.rs:93:1:99:1 | exit fn let_pattern4 (normal) |  |
-| variables.rs:94:5:97:10 | let ... = ... else { ... } | variables.rs:94:34:94:37 | Some |  |
+| variables.rs:94:5:97:10 | let ... = ... else {...} | variables.rs:94:34:94:37 | Some |  |
 | variables.rs:94:9:94:16 | TupleStructPat | variables.rs:94:14:94:15 | x5 | match |
 | variables.rs:94:9:94:16 | TupleStructPat | variables.rs:96:13:96:19 | MacroStmts | no-match |
 | variables.rs:94:14:94:15 | x5 | variables.rs:98:5:98:18 | ExprStmt | match |
 | variables.rs:94:34:94:37 | Some | variables.rs:94:39:94:42 | "x5" |  |
 | variables.rs:94:34:94:43 | Some(...) | variables.rs:94:9:94:16 | TupleStructPat |  |
 | variables.rs:94:39:94:42 | "x5" | variables.rs:94:34:94:43 | Some(...) |  |
-| variables.rs:96:13:96:19 | "not yet implemented" | variables.rs:96:13:96:19 | $crate::panicking::panic(...) |  |
-| variables.rs:96:13:96:19 | $crate::panicking::panic | variables.rs:96:13:96:19 | "not yet implemented" |  |
-| variables.rs:96:13:96:19 | $crate::panicking::panic(...) | variables.rs:96:13:96:19 | MacroExpr |  |
+| variables.rs:96:13:96:19 | "not yet implemented" | variables.rs:96:13:96:19 | ...::panic(...) |  |
+| variables.rs:96:13:96:19 | ...::panic | variables.rs:96:13:96:19 | "not yet implemented" |  |
+| variables.rs:96:13:96:19 | ...::panic(...) | variables.rs:96:13:96:19 | MacroExpr |  |
 | variables.rs:96:13:96:19 | MacroExpr | variables.rs:95:14:97:9 | { ... } |  |
-| variables.rs:96:13:96:19 | MacroStmts | variables.rs:96:13:96:19 | $crate::panicking::panic |  |
+| variables.rs:96:13:96:19 | MacroStmts | variables.rs:96:13:96:19 | ...::panic |  |
 | variables.rs:98:5:98:13 | print_str | variables.rs:98:15:98:16 | x5 |  |
 | variables.rs:98:5:98:17 | print_str(...) | variables.rs:93:19:99:1 | { ... } |  |
 | variables.rs:98:5:98:18 | ExprStmt | variables.rs:98:5:98:13 | print_str |  |
@@ -230,11 +230,11 @@ edges
 | variables.rs:101:19:108:1 | { ... } | variables.rs:101:1:108:1 | exit fn let_pattern5 (normal) |  |
 | variables.rs:102:5:102:42 | let ... = ... | variables.rs:102:14:102:17 | Some |  |
 | variables.rs:102:9:102:10 | s1 | variables.rs:104:11:105:12 | let ... = s1 | match |
-| variables.rs:102:14:102:17 | Some | variables.rs:102:19:102:30 | String::from |  |
+| variables.rs:102:14:102:17 | Some | variables.rs:102:19:102:30 | ...::from |  |
 | variables.rs:102:14:102:41 | Some(...) | variables.rs:102:9:102:10 | s1 |  |
-| variables.rs:102:19:102:30 | String::from | variables.rs:102:32:102:39 | "Hello!" |  |
-| variables.rs:102:19:102:40 | String::from(...) | variables.rs:102:14:102:41 | Some(...) |  |
-| variables.rs:102:32:102:39 | "Hello!" | variables.rs:102:19:102:40 | String::from(...) |  |
+| variables.rs:102:19:102:30 | ...::from | variables.rs:102:32:102:39 | "Hello!" |  |
+| variables.rs:102:19:102:40 | ...::from(...) | variables.rs:102:14:102:41 | Some(...) |  |
+| variables.rs:102:32:102:39 | "Hello!" | variables.rs:102:19:102:40 | ...::from(...) |  |
 | variables.rs:104:5:107:5 | while ... { ... } | variables.rs:101:19:108:1 | { ... } |  |
 | variables.rs:104:11:105:12 | let ... = s1 | variables.rs:105:11:105:12 | s1 |  |
 | variables.rs:104:15:104:26 | TupleStructPat | variables.rs:104:5:107:5 | while ... { ... } | no-match |
@@ -352,45 +352,45 @@ edges
 | variables.rs:168:21:181:1 | { ... } | variables.rs:168:1:181:1 | exit fn match_pattern4 (normal) |  |
 | variables.rs:169:5:169:39 | let ... = ... | variables.rs:169:36:169:36 | 0 |  |
 | variables.rs:169:9:169:11 | msg | variables.rs:171:11:171:13 | msg | match |
-| variables.rs:169:15:169:38 | Message::Hello {...} | variables.rs:169:9:169:11 | msg |  |
-| variables.rs:169:36:169:36 | 0 | variables.rs:169:15:169:38 | Message::Hello {...} |  |
+| variables.rs:169:15:169:38 | ...::Hello {...} | variables.rs:169:9:169:11 | msg |  |
+| variables.rs:169:36:169:36 | 0 | variables.rs:169:15:169:38 | ...::Hello {...} |  |
 | variables.rs:171:5:180:5 | match msg { ... } | variables.rs:168:21:181:1 | { ... } |  |
-| variables.rs:171:11:171:13 | msg | variables.rs:172:9:174:9 | Message::Hello {...} |  |
-| variables.rs:172:9:174:9 | Message::Hello {...} | variables.rs:173:31:173:35 | RangePat | match |
-| variables.rs:172:9:174:9 | Message::Hello {...} | variables.rs:175:9:175:38 | Message::Hello {...} | no-match |
+| variables.rs:171:11:171:13 | msg | variables.rs:172:9:174:9 | ...::Hello {...} |  |
+| variables.rs:172:9:174:9 | ...::Hello {...} | variables.rs:173:31:173:35 | RangePat | match |
+| variables.rs:172:9:174:9 | ...::Hello {...} | variables.rs:175:9:175:38 | ...::Hello {...} | no-match |
 | variables.rs:173:17:173:35 | [match(true)] id_variable | variables.rs:174:14:174:22 | print_i64 | match |
 | variables.rs:173:31:173:31 | 3 | variables.rs:173:31:173:31 | 3 |  |
 | variables.rs:173:31:173:31 | 3 | variables.rs:173:35:173:35 | 7 | match |
-| variables.rs:173:31:173:31 | 3 | variables.rs:175:9:175:38 | Message::Hello {...} | no-match |
+| variables.rs:173:31:173:31 | 3 | variables.rs:175:9:175:38 | ...::Hello {...} | no-match |
 | variables.rs:173:31:173:35 | RangePat | variables.rs:173:31:173:31 | 3 | match |
-| variables.rs:173:31:173:35 | RangePat | variables.rs:175:9:175:38 | Message::Hello {...} | no-match |
+| variables.rs:173:31:173:35 | RangePat | variables.rs:175:9:175:38 | ...::Hello {...} | no-match |
 | variables.rs:173:35:173:35 | 7 | variables.rs:173:17:173:35 | [match(true)] id_variable | match |
 | variables.rs:173:35:173:35 | 7 | variables.rs:173:35:173:35 | 7 |  |
-| variables.rs:173:35:173:35 | 7 | variables.rs:175:9:175:38 | Message::Hello {...} | no-match |
+| variables.rs:173:35:173:35 | 7 | variables.rs:175:9:175:38 | ...::Hello {...} | no-match |
 | variables.rs:174:14:174:22 | print_i64 | variables.rs:174:24:174:34 | id_variable |  |
 | variables.rs:174:14:174:35 | print_i64(...) | variables.rs:171:5:180:5 | match msg { ... } |  |
 | variables.rs:174:24:174:34 | id_variable | variables.rs:174:14:174:35 | print_i64(...) |  |
-| variables.rs:175:9:175:38 | Message::Hello {...} | variables.rs:175:30:175:36 | RangePat | match |
-| variables.rs:175:9:175:38 | Message::Hello {...} | variables.rs:178:9:178:29 | Message::Hello {...} | no-match |
+| variables.rs:175:9:175:38 | ...::Hello {...} | variables.rs:175:30:175:36 | RangePat | match |
+| variables.rs:175:9:175:38 | ...::Hello {...} | variables.rs:178:9:178:29 | ...::Hello {...} | no-match |
 | variables.rs:175:30:175:31 | 10 | variables.rs:175:30:175:31 | 10 |  |
 | variables.rs:175:30:175:31 | 10 | variables.rs:175:35:175:36 | 12 | match |
-| variables.rs:175:30:175:31 | 10 | variables.rs:178:9:178:29 | Message::Hello {...} | no-match |
+| variables.rs:175:30:175:31 | 10 | variables.rs:178:9:178:29 | ...::Hello {...} | no-match |
 | variables.rs:175:30:175:36 | RangePat | variables.rs:175:30:175:31 | 10 | match |
-| variables.rs:175:30:175:36 | RangePat | variables.rs:178:9:178:29 | Message::Hello {...} | no-match |
+| variables.rs:175:30:175:36 | RangePat | variables.rs:178:9:178:29 | ...::Hello {...} | no-match |
 | variables.rs:175:35:175:36 | 12 | variables.rs:175:35:175:36 | 12 |  |
 | variables.rs:175:35:175:36 | 12 | variables.rs:176:22:176:51 | MacroStmts | match |
-| variables.rs:175:35:175:36 | 12 | variables.rs:178:9:178:29 | Message::Hello {...} | no-match |
+| variables.rs:175:35:175:36 | 12 | variables.rs:178:9:178:29 | ...::Hello {...} | no-match |
 | variables.rs:175:43:177:9 | { ... } | variables.rs:171:5:180:5 | match msg { ... } |  |
-| variables.rs:176:13:176:52 | $crate::io::_print | variables.rs:176:22:176:51 | "Found an id in another range\\n" |  |
+| variables.rs:176:13:176:52 | ...::_print | variables.rs:176:22:176:51 | "Found an id in another range\\... |  |
 | variables.rs:176:13:176:52 | MacroExpr | variables.rs:175:43:177:9 | { ... } |  |
-| variables.rs:176:22:176:51 | "Found an id in another range\\n" | variables.rs:176:22:176:51 | FormatArgsExpr |  |
-| variables.rs:176:22:176:51 | $crate::io::_print(...) | variables.rs:176:22:176:51 | { ... } |  |
-| variables.rs:176:22:176:51 | ExprStmt | variables.rs:176:13:176:52 | $crate::io::_print |  |
+| variables.rs:176:22:176:51 | "Found an id in another range\\... | variables.rs:176:22:176:51 | FormatArgsExpr |  |
+| variables.rs:176:22:176:51 | ...::_print(...) | variables.rs:176:22:176:51 | { ... } |  |
+| variables.rs:176:22:176:51 | ExprStmt | variables.rs:176:13:176:52 | ...::_print |  |
 | variables.rs:176:22:176:51 | FormatArgsExpr | variables.rs:176:22:176:51 | MacroExpr |  |
-| variables.rs:176:22:176:51 | MacroExpr | variables.rs:176:22:176:51 | $crate::io::_print(...) |  |
+| variables.rs:176:22:176:51 | MacroExpr | variables.rs:176:22:176:51 | ...::_print(...) |  |
 | variables.rs:176:22:176:51 | MacroStmts | variables.rs:176:22:176:51 | ExprStmt |  |
 | variables.rs:176:22:176:51 | { ... } | variables.rs:176:13:176:52 | MacroExpr |  |
-| variables.rs:178:9:178:29 | Message::Hello {...} | variables.rs:178:26:178:27 | id | match |
+| variables.rs:178:9:178:29 | ...::Hello {...} | variables.rs:178:26:178:27 | id | match |
 | variables.rs:178:26:178:27 | id | variables.rs:179:13:179:21 | print_i64 | match |
 | variables.rs:179:13:179:21 | print_i64 | variables.rs:179:23:179:24 | id |  |
 | variables.rs:179:13:179:25 | print_i64(...) | variables.rs:171:5:180:5 | match msg { ... } |  |
@@ -398,11 +398,11 @@ edges
 | variables.rs:188:1:194:1 | enter fn match_pattern5 | variables.rs:189:5:189:34 | let ... = ... |  |
 | variables.rs:188:1:194:1 | exit fn match_pattern5 (normal) | variables.rs:188:1:194:1 | exit fn match_pattern5 |  |
 | variables.rs:188:21:194:1 | { ... } | variables.rs:188:1:194:1 | exit fn match_pattern5 (normal) |  |
-| variables.rs:189:5:189:34 | let ... = ... | variables.rs:189:18:189:29 | Either::Left |  |
+| variables.rs:189:5:189:34 | let ... = ... | variables.rs:189:18:189:29 | ...::Left |  |
 | variables.rs:189:9:189:14 | either | variables.rs:190:11:190:16 | either | match |
-| variables.rs:189:18:189:29 | Either::Left | variables.rs:189:31:189:32 | 32 |  |
-| variables.rs:189:18:189:33 | Either::Left(...) | variables.rs:189:9:189:14 | either |  |
-| variables.rs:189:31:189:32 | 32 | variables.rs:189:18:189:33 | Either::Left(...) |  |
+| variables.rs:189:18:189:29 | ...::Left | variables.rs:189:31:189:32 | 32 |  |
+| variables.rs:189:18:189:33 | ...::Left(...) | variables.rs:189:9:189:14 | either |  |
+| variables.rs:189:31:189:32 | 32 | variables.rs:189:18:189:33 | ...::Left(...) |  |
 | variables.rs:190:5:193:5 | match either { ... } | variables.rs:188:21:194:1 | { ... } |  |
 | variables.rs:190:11:190:16 | either | variables.rs:191:9:191:24 | TupleStructPat |  |
 | variables.rs:191:9:191:24 | TupleStructPat | variables.rs:191:22:191:23 | a3 | match |
@@ -417,11 +417,11 @@ edges
 | variables.rs:202:1:216:1 | enter fn match_pattern6 | variables.rs:203:5:203:37 | let ... = ... |  |
 | variables.rs:202:1:216:1 | exit fn match_pattern6 (normal) | variables.rs:202:1:216:1 | exit fn match_pattern6 |  |
 | variables.rs:202:21:216:1 | { ... } | variables.rs:202:1:216:1 | exit fn match_pattern6 (normal) |  |
-| variables.rs:203:5:203:37 | let ... = ... | variables.rs:203:14:203:32 | ThreeValued::Second |  |
+| variables.rs:203:5:203:37 | let ... = ... | variables.rs:203:14:203:32 | ...::Second |  |
 | variables.rs:203:9:203:10 | tv | variables.rs:204:5:207:5 | ExprStmt | match |
-| variables.rs:203:14:203:32 | ThreeValued::Second | variables.rs:203:34:203:35 | 62 |  |
-| variables.rs:203:14:203:36 | ThreeValued::Second(...) | variables.rs:203:9:203:10 | tv |  |
-| variables.rs:203:34:203:35 | 62 | variables.rs:203:14:203:36 | ThreeValued::Second(...) |  |
+| variables.rs:203:14:203:32 | ...::Second | variables.rs:203:34:203:35 | 62 |  |
+| variables.rs:203:14:203:36 | ...::Second(...) | variables.rs:203:9:203:10 | tv |  |
+| variables.rs:203:34:203:35 | 62 | variables.rs:203:14:203:36 | ...::Second(...) |  |
 | variables.rs:204:5:207:5 | ExprStmt | variables.rs:204:11:204:12 | tv |  |
 | variables.rs:204:5:207:5 | match tv { ... } | variables.rs:208:5:211:5 | ExprStmt |  |
 | variables.rs:204:11:204:12 | tv | variables.rs:205:9:205:30 | TupleStructPat |  |
@@ -472,11 +472,11 @@ edges
 | variables.rs:218:1:226:1 | enter fn match_pattern7 | variables.rs:219:5:219:34 | let ... = ... |  |
 | variables.rs:218:1:226:1 | exit fn match_pattern7 (normal) | variables.rs:218:1:226:1 | exit fn match_pattern7 |  |
 | variables.rs:218:21:226:1 | { ... } | variables.rs:218:1:226:1 | exit fn match_pattern7 (normal) |  |
-| variables.rs:219:5:219:34 | let ... = ... | variables.rs:219:18:219:29 | Either::Left |  |
+| variables.rs:219:5:219:34 | let ... = ... | variables.rs:219:18:219:29 | ...::Left |  |
 | variables.rs:219:9:219:14 | either | variables.rs:220:11:220:16 | either | match |
-| variables.rs:219:18:219:29 | Either::Left | variables.rs:219:31:219:32 | 32 |  |
-| variables.rs:219:18:219:33 | Either::Left(...) | variables.rs:219:9:219:14 | either |  |
-| variables.rs:219:31:219:32 | 32 | variables.rs:219:18:219:33 | Either::Left(...) |  |
+| variables.rs:219:18:219:29 | ...::Left | variables.rs:219:31:219:32 | 32 |  |
+| variables.rs:219:18:219:33 | ...::Left(...) | variables.rs:219:9:219:14 | either |  |
+| variables.rs:219:31:219:32 | 32 | variables.rs:219:18:219:33 | ...::Left(...) |  |
 | variables.rs:220:5:225:5 | match either { ... } | variables.rs:218:21:226:1 | { ... } |  |
 | variables.rs:220:11:220:16 | either | variables.rs:221:9:221:24 | TupleStructPat |  |
 | variables.rs:221:9:221:24 | TupleStructPat | variables.rs:221:22:221:23 | a7 | match |
@@ -499,11 +499,11 @@ edges
 | variables.rs:228:1:243:1 | enter fn match_pattern8 | variables.rs:229:5:229:34 | let ... = ... |  |
 | variables.rs:228:1:243:1 | exit fn match_pattern8 (normal) | variables.rs:228:1:243:1 | exit fn match_pattern8 |  |
 | variables.rs:228:21:243:1 | { ... } | variables.rs:228:1:243:1 | exit fn match_pattern8 (normal) |  |
-| variables.rs:229:5:229:34 | let ... = ... | variables.rs:229:18:229:29 | Either::Left |  |
+| variables.rs:229:5:229:34 | let ... = ... | variables.rs:229:18:229:29 | ...::Left |  |
 | variables.rs:229:9:229:14 | either | variables.rs:231:11:231:16 | either | match |
-| variables.rs:229:18:229:29 | Either::Left | variables.rs:229:31:229:32 | 32 |  |
-| variables.rs:229:18:229:33 | Either::Left(...) | variables.rs:229:9:229:14 | either |  |
-| variables.rs:229:31:229:32 | 32 | variables.rs:229:18:229:33 | Either::Left(...) |  |
+| variables.rs:229:18:229:29 | ...::Left | variables.rs:229:31:229:32 | 32 |  |
+| variables.rs:229:18:229:33 | ...::Left(...) | variables.rs:229:9:229:14 | either |  |
+| variables.rs:229:31:229:32 | 32 | variables.rs:229:18:229:33 | ...::Left(...) |  |
 | variables.rs:231:5:242:5 | match either { ... } | variables.rs:228:21:243:1 | { ... } |  |
 | variables.rs:231:11:231:16 | either | variables.rs:233:14:233:30 | TupleStructPat |  |
 | variables.rs:232:9:233:52 | [match(true)] e | variables.rs:235:13:235:27 | ExprStmt | match |
@@ -537,11 +537,11 @@ edges
 | variables.rs:252:1:258:1 | enter fn match_pattern9 | variables.rs:253:5:253:36 | let ... = ... |  |
 | variables.rs:252:1:258:1 | exit fn match_pattern9 (normal) | variables.rs:252:1:258:1 | exit fn match_pattern9 |  |
 | variables.rs:252:21:258:1 | { ... } | variables.rs:252:1:258:1 | exit fn match_pattern9 (normal) |  |
-| variables.rs:253:5:253:36 | let ... = ... | variables.rs:253:14:253:31 | FourValued::Second |  |
+| variables.rs:253:5:253:36 | let ... = ... | variables.rs:253:14:253:31 | ...::Second |  |
 | variables.rs:253:9:253:10 | fv | variables.rs:254:11:254:12 | fv | match |
-| variables.rs:253:14:253:31 | FourValued::Second | variables.rs:253:33:253:34 | 62 |  |
-| variables.rs:253:14:253:35 | FourValued::Second(...) | variables.rs:253:9:253:10 | fv |  |
-| variables.rs:253:33:253:34 | 62 | variables.rs:253:14:253:35 | FourValued::Second(...) |  |
+| variables.rs:253:14:253:31 | ...::Second | variables.rs:253:33:253:34 | 62 |  |
+| variables.rs:253:14:253:35 | ...::Second(...) | variables.rs:253:9:253:10 | fv |  |
+| variables.rs:253:33:253:34 | 62 | variables.rs:253:14:253:35 | ...::Second(...) |  |
 | variables.rs:254:5:257:5 | match fv { ... } | variables.rs:252:21:258:1 | { ... } |  |
 | variables.rs:254:11:254:12 | fv | variables.rs:255:9:255:30 | TupleStructPat |  |
 | variables.rs:255:9:255:30 | TupleStructPat | variables.rs:255:27:255:29 | a13 | match |
@@ -584,10 +584,10 @@ edges
 | variables.rs:268:15:268:16 | c1 | variables.rs:268:5:268:17 | print_str(...) |  |
 | variables.rs:271:1:275:1 | enter fn param_pattern2 | variables.rs:272:6:272:21 | TupleStructPat |  |
 | variables.rs:271:1:275:1 | exit fn param_pattern2 (normal) | variables.rs:271:1:275:1 | exit fn param_pattern2 |  |
-| variables.rs:272:5:272:50 | ...: Either | variables.rs:274:5:274:18 | ExprStmt |  |
+| variables.rs:272:5:272:50 | ...: <Either> | variables.rs:274:5:274:18 | ExprStmt |  |
 | variables.rs:272:6:272:21 | TupleStructPat | variables.rs:272:19:272:20 | a9 | match |
 | variables.rs:272:6:272:21 | TupleStructPat | variables.rs:272:25:272:41 | TupleStructPat | no-match |
-| variables.rs:272:6:272:41 | [match(true)] ... \| ... | variables.rs:272:5:272:50 | ...: Either | match |
+| variables.rs:272:6:272:41 | [match(true)] ... \| ... | variables.rs:272:5:272:50 | ...: <Either> | match |
 | variables.rs:272:19:272:20 | a9 | variables.rs:272:6:272:41 | [match(true)] ... \| ... | match |
 | variables.rs:272:25:272:41 | TupleStructPat | variables.rs:272:39:272:40 | a9 | match |
 | variables.rs:272:39:272:40 | a9 | variables.rs:272:6:272:41 | [match(true)] ... \| ... | match |
@@ -675,8 +675,8 @@ edges
 | variables.rs:316:9:317:9 | \|...\| x | variables.rs:315:9:315:23 | example_closure |  |
 | variables.rs:316:9:317:9 | enter \|...\| x | variables.rs:316:10:316:10 | x |  |
 | variables.rs:316:9:317:9 | exit \|...\| x (normal) | variables.rs:316:9:317:9 | exit \|...\| x |  |
-| variables.rs:316:10:316:10 | x | variables.rs:316:10:316:15 | ...: i64 | match |
-| variables.rs:316:10:316:15 | ...: i64 | variables.rs:317:9:317:9 | x |  |
+| variables.rs:316:10:316:10 | x | variables.rs:316:10:316:15 | ...: <i64> | match |
+| variables.rs:316:10:316:15 | ...: <i64> | variables.rs:317:9:317:9 | x |  |
 | variables.rs:317:9:317:9 | x | variables.rs:316:9:317:9 | exit \|...\| x (normal) |  |
 | variables.rs:318:5:319:27 | let ... = ... | variables.rs:319:9:319:23 | example_closure |  |
 | variables.rs:318:9:318:10 | n1 | variables.rs:320:5:320:18 | ExprStmt | match |
@@ -695,8 +695,8 @@ edges
 | variables.rs:324:9:325:9 | \|...\| x | variables.rs:323:9:323:26 | immutable_variable |  |
 | variables.rs:324:9:325:9 | enter \|...\| x | variables.rs:324:10:324:10 | x |  |
 | variables.rs:324:9:325:9 | exit \|...\| x (normal) | variables.rs:324:9:325:9 | exit \|...\| x |  |
-| variables.rs:324:10:324:10 | x | variables.rs:324:10:324:15 | ...: i64 | match |
-| variables.rs:324:10:324:15 | ...: i64 | variables.rs:325:9:325:9 | x |  |
+| variables.rs:324:10:324:10 | x | variables.rs:324:10:324:15 | ...: <i64> | match |
+| variables.rs:324:10:324:15 | ...: <i64> | variables.rs:325:9:325:9 | x |  |
 | variables.rs:325:9:325:9 | x | variables.rs:324:9:325:9 | exit \|...\| x (normal) |  |
 | variables.rs:326:5:327:30 | let ... = ... | variables.rs:327:9:327:26 | immutable_variable |  |
 | variables.rs:326:9:326:10 | n2 | variables.rs:328:5:328:18 | ExprStmt | match |
@@ -979,8 +979,8 @@ edges
 | variables.rs:442:15:442:15 | i | variables.rs:442:5:442:16 | print_i64(...) |  |
 | variables.rs:445:1:459:1 | enter fn phi | variables.rs:445:8:445:8 | b |  |
 | variables.rs:445:1:459:1 | exit fn phi (normal) | variables.rs:445:1:459:1 | exit fn phi |  |
-| variables.rs:445:8:445:8 | b | variables.rs:445:8:445:15 | ...: bool | match |
-| variables.rs:445:8:445:15 | ...: bool | variables.rs:446:5:446:18 | let ... = 1 |  |
+| variables.rs:445:8:445:8 | b | variables.rs:445:8:445:15 | ...: <bool> | match |
+| variables.rs:445:8:445:15 | ...: <bool> | variables.rs:446:5:446:18 | let ... = 1 |  |
 | variables.rs:445:18:459:1 | { ... } | variables.rs:445:1:459:1 | exit fn phi (normal) |  |
 | variables.rs:446:5:446:18 | let ... = 1 | variables.rs:446:17:446:17 | 1 |  |
 | variables.rs:446:9:446:13 | x | variables.rs:447:5:447:17 | ExprStmt | match |
@@ -1035,10 +1035,10 @@ edges
 | variables.rs:458:15:458:15 | x | variables.rs:458:5:458:16 | print_i64(...) |  |
 | variables.rs:461:1:474:1 | enter fn phi_read | variables.rs:461:13:461:14 | b1 |  |
 | variables.rs:461:1:474:1 | exit fn phi_read (normal) | variables.rs:461:1:474:1 | exit fn phi_read |  |
-| variables.rs:461:13:461:14 | b1 | variables.rs:461:13:461:21 | ...: bool | match |
-| variables.rs:461:13:461:21 | ...: bool | variables.rs:461:24:461:25 | b2 |  |
-| variables.rs:461:24:461:25 | b2 | variables.rs:461:24:461:32 | ...: bool | match |
-| variables.rs:461:24:461:32 | ...: bool | variables.rs:462:5:462:14 | let ... = 1 |  |
+| variables.rs:461:13:461:14 | b1 | variables.rs:461:13:461:21 | ...: <bool> | match |
+| variables.rs:461:13:461:21 | ...: <bool> | variables.rs:461:24:461:25 | b2 |  |
+| variables.rs:461:24:461:25 | b2 | variables.rs:461:24:461:32 | ...: <bool> | match |
+| variables.rs:461:24:461:32 | ...: <bool> | variables.rs:462:5:462:14 | let ... = 1 |  |
 | variables.rs:461:35:474:1 | { ... } | variables.rs:461:1:474:1 | exit fn phi_read (normal) |  |
 | variables.rs:462:5:462:14 | let ... = 1 | variables.rs:462:13:462:13 | 1 |  |
 | variables.rs:462:9:462:9 | x | variables.rs:463:5:467:5 | ExprStmt | match |
@@ -1070,8 +1070,10 @@ edges
 | variables.rs:472:9:472:20 | print_i64(...) | variables.rs:471:12:473:5 | { ... } |  |
 | variables.rs:472:9:472:21 | ExprStmt | variables.rs:472:9:472:17 | print_i64 |  |
 | variables.rs:472:19:472:19 | x | variables.rs:472:9:472:20 | print_i64(...) |  |
-| variables.rs:482:5:484:5 | enter fn my_get | variables.rs:483:9:483:24 | ExprStmt |  |
+| variables.rs:482:5:484:5 | enter fn my_get | variables.rs:482:20:482:23 | self |  |
 | variables.rs:482:5:484:5 | exit fn my_get (normal) | variables.rs:482:5:484:5 | exit fn my_get |  |
+| variables.rs:482:15:482:23 | SelfParam | variables.rs:483:9:483:24 | ExprStmt |  |
+| variables.rs:482:20:482:23 | self | variables.rs:482:15:482:23 | SelfParam |  |
 | variables.rs:483:9:483:23 | return ... | variables.rs:482:5:484:5 | exit fn my_get (normal) | return |
 | variables.rs:483:9:483:24 | ExprStmt | variables.rs:483:16:483:19 | self |  |
 | variables.rs:483:16:483:19 | self | variables.rs:483:16:483:23 | self.val |  |
@@ -1131,8 +1133,10 @@ edges
 | variables.rs:502:5:502:22 | ExprStmt | variables.rs:502:5:502:17 | print_i64_ref |  |
 | variables.rs:502:19:502:20 | &z | variables.rs:502:5:502:21 | print_i64_ref(...) |  |
 | variables.rs:502:20:502:20 | z | variables.rs:502:19:502:20 | &z |  |
-| variables.rs:510:3:512:3 | enter fn bar | variables.rs:511:5:511:32 | ExprStmt |  |
+| variables.rs:510:3:512:3 | enter fn bar | variables.rs:510:15:510:18 | self |  |
 | variables.rs:510:3:512:3 | exit fn bar (normal) | variables.rs:510:3:512:3 | exit fn bar |  |
+| variables.rs:510:10:510:18 | SelfParam | variables.rs:511:5:511:32 | ExprStmt |  |
+| variables.rs:510:15:510:18 | self | variables.rs:510:10:510:18 | SelfParam |  |
 | variables.rs:510:21:512:3 | { ... } | variables.rs:510:3:512:3 | exit fn bar (normal) |  |
 | variables.rs:511:5:511:9 | * ... | variables.rs:511:29:511:29 | 3 |  |
 | variables.rs:511:5:511:31 | ... = ... | variables.rs:510:21:512:3 | { ... } |  |
@@ -1219,12 +1223,12 @@ edges
 | variables.rs:541:25:541:34 | TupleExpr | variables.rs:541:5:541:35 | param_pattern1(...) |  |
 | variables.rs:541:26:541:28 | "b" | variables.rs:541:31:541:33 | "c" |  |
 | variables.rs:541:31:541:33 | "c" | variables.rs:541:25:541:34 | TupleExpr |  |
-| variables.rs:542:5:542:18 | param_pattern2 | variables.rs:542:20:542:31 | Either::Left |  |
+| variables.rs:542:5:542:18 | param_pattern2 | variables.rs:542:20:542:31 | ...::Left |  |
 | variables.rs:542:5:542:36 | param_pattern2(...) | variables.rs:543:5:543:26 | ExprStmt |  |
 | variables.rs:542:5:542:37 | ExprStmt | variables.rs:542:5:542:18 | param_pattern2 |  |
-| variables.rs:542:20:542:31 | Either::Left | variables.rs:542:33:542:34 | 45 |  |
-| variables.rs:542:20:542:35 | Either::Left(...) | variables.rs:542:5:542:36 | param_pattern2(...) |  |
-| variables.rs:542:33:542:34 | 45 | variables.rs:542:20:542:35 | Either::Left(...) |  |
+| variables.rs:542:20:542:31 | ...::Left | variables.rs:542:33:542:34 | 45 |  |
+| variables.rs:542:20:542:35 | ...::Left(...) | variables.rs:542:5:542:36 | param_pattern2(...) |  |
+| variables.rs:542:33:542:34 | 45 | variables.rs:542:20:542:35 | ...::Left(...) |  |
 | variables.rs:543:5:543:23 | destruct_assignment | variables.rs:543:5:543:25 | destruct_assignment(...) |  |
 | variables.rs:543:5:543:25 | destruct_assignment(...) | variables.rs:544:5:544:23 | ExprStmt |  |
 | variables.rs:543:5:543:26 | ExprStmt | variables.rs:543:5:543:23 | destruct_assignment |  |

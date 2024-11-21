@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CSharp.Entities
     /// <summary>
     /// A cached entity.
     ///
-    /// The <see cref="Entity.Id"/> property is used as label in caching.
+    /// The <see cref="Entity.Label"/> property is used as label in caching.
     /// </summary>
     public abstract class CachedEntity : LabelledEntity
     {

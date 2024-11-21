@@ -46,9 +46,10 @@
 | main.rs:51:17:51:17 | 1 | main.rs:51:9:51:13 | i |
 | main.rs:53:5:53:5 | [SSA] i | main.rs:54:10:54:10 | i |
 | main.rs:53:5:53:5 | i | main.rs:53:5:53:5 | [SSA] i |
+| main.rs:53:9:53:17 | source(...) | main.rs:53:5:53:5 | i |
 | main.rs:61:9:61:9 | [SSA] i | main.rs:62:11:62:11 | i |
 | main.rs:61:9:61:9 | i | main.rs:61:9:61:9 | [SSA] i |
-| main.rs:61:13:61:31 | Box::new(...) | main.rs:61:9:61:9 | i |
+| main.rs:61:13:61:31 | ...::new(...) | main.rs:61:9:61:9 | i |
 | main.rs:66:9:66:9 | [SSA] a | main.rs:67:10:67:10 | a |
 | main.rs:66:9:66:9 | a | main.rs:66:9:66:9 | [SSA] a |
 | main.rs:66:13:66:26 | TupleExpr | main.rs:66:9:66:9 | a |
@@ -83,3 +84,27 @@
 | main.rs:111:14:111:14 | n | main.rs:111:14:111:14 | [SSA] n |
 | main.rs:111:20:111:26 | sink(...) | main.rs:110:5:113:5 | match s2 { ... } |
 | main.rs:112:17:112:23 | sink(...) | main.rs:110:5:113:5 | match s2 { ... } |
+| main.rs:117:9:117:9 | [SSA] a | main.rs:118:5:118:5 | a |
+| main.rs:117:9:117:9 | a | main.rs:117:9:117:9 | [SSA] a |
+| main.rs:117:13:117:17 | { ... } | main.rs:117:9:117:9 | a |
+| main.rs:117:15:117:15 | 0 | main.rs:117:13:117:17 | { ... } |
+| main.rs:118:5:118:5 | a | main.rs:116:31:119:1 | { ... } |
+| main.rs:121:22:121:22 | [SSA] b | main.rs:123:12:123:12 | b |
+| main.rs:121:22:121:22 | b | main.rs:121:22:121:22 | [SSA] b |
+| main.rs:122:9:122:9 | [SSA] a | main.rs:128:5:128:5 | a |
+| main.rs:122:9:122:9 | a | main.rs:122:9:122:9 | [SSA] a |
+| main.rs:122:13:127:5 | 'block: { ... } | main.rs:122:9:122:9 | a |
+| main.rs:124:13:124:26 | break ''block 1 | main.rs:122:13:127:5 | 'block: { ... } |
+| main.rs:124:26:124:26 | 1 | main.rs:124:13:124:26 | break ''block 1 |
+| main.rs:126:9:126:9 | 2 | main.rs:122:13:127:5 | 'block: { ... } |
+| main.rs:128:5:128:5 | a | main.rs:121:38:129:1 | { ... } |
+| main.rs:131:22:131:22 | [SSA] b | main.rs:133:12:133:12 | b |
+| main.rs:131:22:131:22 | b | main.rs:131:22:131:22 | [SSA] b |
+| main.rs:132:9:132:9 | [SSA] a | main.rs:138:5:138:5 | a |
+| main.rs:132:9:132:9 | a | main.rs:132:9:132:9 | [SSA] a |
+| main.rs:132:13:137:5 | 'block: { ... } | main.rs:132:9:132:9 | a |
+| main.rs:134:13:134:26 | break ''block 1 | main.rs:132:13:137:5 | 'block: { ... } |
+| main.rs:134:26:134:26 | 1 | main.rs:134:13:134:26 | break ''block 1 |
+| main.rs:136:9:136:22 | break ''block 2 | main.rs:132:13:137:5 | 'block: { ... } |
+| main.rs:136:22:136:22 | 2 | main.rs:136:9:136:22 | break ''block 2 |
+| main.rs:138:5:138:5 | a | main.rs:131:38:139:1 | { ... } |
