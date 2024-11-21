@@ -128,7 +128,7 @@ module Node {
    * A node in the data flow graph that corresponds to an expression in the
    * AST.
    *
-   * Note that because of control-flow splitting, one `Expr` may correspond
+   * Note that because of control flow splitting, one `Expr` may correspond
    * to multiple `ExprNode`s, just like it may correspond to multiple
    * `ControlFlow::Node`s.
    */

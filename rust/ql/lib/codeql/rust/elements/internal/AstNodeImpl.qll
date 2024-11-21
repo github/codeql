@@ -65,9 +65,9 @@ module Impl {
     }
 
     /**
-     * Gets a control-flow node for this AST node, if any.
+     * Gets a control flow node for this AST node, if any.
      *
-     * Note that because of _control-flow splitting_, one `AstNode` node may correspond
+     * Note that because of _control flow splitting_, one `AstNode` node may correspond
      * to multiple `CfgNode`s. Example:
      *
      * ```rust

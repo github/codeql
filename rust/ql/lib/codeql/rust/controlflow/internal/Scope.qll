@@ -4,7 +4,7 @@ private import ControlFlowGraphImpl
 private import codeql.rust.elements.internal.generated.ParentChild
 
 /**
- * A control-flow graph (CFG) scope.
+ * A control flow graph (CFG) scope.
  */
 abstract private class CfgScopeImpl extends AstNode {
   /** Holds if `first` is executed first when entering `scope`. */

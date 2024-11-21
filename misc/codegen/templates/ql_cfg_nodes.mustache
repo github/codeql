@@ -57,8 +57,8 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * Holds if there is a control-flow path from `cfn` to `cfnChild`, where `cfn`
-     * is a control-flow node for this AST node, and `cfnChild` is a control-flow
+     * Holds if there is a control flow path from `cfn` to `cfnChild`, where `cfn`
+     * is a control flow node for this AST node, and `cfnChild` is a control flow
      * node for `child`.
      *
      * This predicate should be implemented at the place where `MakeCfgNodes` is

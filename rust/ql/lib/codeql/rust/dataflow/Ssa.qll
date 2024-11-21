@@ -27,7 +27,7 @@ module Ssa {
     }
 
     /**
-     * Gets a control-flow node that reads the value of this SSA definition.
+     * Gets a control flow node that reads the value of this SSA definition.
      *
      * Example:
      *
@@ -54,7 +54,7 @@ module Ssa {
     final CfgNode getARead() { result = SsaImpl::getARead(this) }
 
     /**
-     * Gets a first control-flow node that reads the value of this SSA definition.
+     * Gets a first control flow node that reads the value of this SSA definition.
      * That is, a read that can be reached from this definition without passing
      * through other reads.
      *
@@ -83,7 +83,7 @@ module Ssa {
     final CfgNode getAFirstRead() { SsaImpl::firstRead(this, result) }
 
     /**
-     * Gets a last control-flow node that reads the value of this SSA definition.
+     * Gets a last control flow node that reads the value of this SSA definition.
      * That is, a read that can reach the end of the enclosing CFG scope, or another
      * SSA definition for the source variable, without passing through any other read.
      *
