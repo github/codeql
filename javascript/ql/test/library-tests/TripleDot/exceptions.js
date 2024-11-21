@@ -66,3 +66,16 @@ function e4() {
         sink(e);
     }
 }
+
+async function e5() {
+    try {
+        Promise.resolve(0).finally(() => {
+            throw source("e5.1");
+        });
+        await Promise.resolve(0).finally(() => {
+            throw source("e5.2");
+        });
+    } catch (e) {
+        sink(e); // $ hasValueFlow=e5.2
+    }
+}
