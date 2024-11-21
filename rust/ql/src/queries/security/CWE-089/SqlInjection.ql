@@ -1,6 +1,6 @@
 /**
  * @name Database query built from user-controlled sources
- * @description Building a database query from user-controlled sources is vulnerable to insertion of malicious code by the user.
+ * @description Building a database query from user-controlled sources is vulnerable to insertion of malicious code by attackers.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.8
