@@ -25,6 +25,6 @@
         <sample src="examples/JinjaGoodSandbox.py" />
     </example>
     <references>
-        <li>Portswigger : [Server Side Template Injection](https://portswigger.net/web-security/server-side-template-injection)</li>
+        <li>Portswigger: <a href="https://portswigger.net/web-security/server-side-template-injection">Server-Side Template Injection</a>.</li>
     </references>
 </qhelp>
