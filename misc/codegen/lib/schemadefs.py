@@ -279,7 +279,7 @@ _ = _PropertyAnnotation()
 drop = object()
 
 
-def annotate(annotated_cls: type, add_bases: _Iterable[type] | None = None, replace_bases: _Dict[type, type] | None = None) -> _Callable[[type], _PropertyAnnotation]:
+def annotate(annotated_cls: type, add_bases: _Iterable[type] | None = None, replace_bases: _Dict[type, type] | None = None, cfg: bool = False) -> _Callable[[type], _PropertyAnnotation]:
     """
     Add or modify schema annotations after a class has been defined previously.
 
@@ -298,6 +298,7 @@ def annotate(annotated_cls: type, add_bases: _Iterable[type] | None = None, repl
             annotated_cls.__bases__ = tuple(replace_bases.get(b, b) for b in annotated_cls.__bases__)
         if add_bases:
             annotated_cls.__bases__ += tuple(add_bases)
+        annotated_cls.__cfg__ = cfg
         for a in dir(cls):
             if a.startswith(_schema.inheritable_pragma_prefix):
                 setattr(annotated_cls, a, getattr(cls, a))

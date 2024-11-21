@@ -54,6 +54,7 @@ extensions:
       - ["Internal.IL", "ILOpcodeHelper", "IsValid", "(Internal.IL.ILOpcode)", "summary", "df-generated"]
       - ["Internal.IL", "ILStackHelper", "CheckStackBalance", "(Internal.IL.MethodIL)", "summary", "df-generated"]
       - ["Internal.IL", "ILStackHelper", "ComputeMaxStack", "(Internal.IL.MethodIL)", "summary", "df-generated"]
+      - ["Internal.IL", "ILTokenReplacer", "Replace", "(System.Byte[],System.Func<System.Int32,System.Int32>)", "summary", "df-generated"]
       - ["Internal.IL", "InstantiatedMethodIL", "get_IsInitLocals", "()", "summary", "df-generated"]
       - ["Internal.IL", "InstantiatedMethodIL", "get_MaxStack", "()", "summary", "df-generated"]
       - ["Internal.IL", "MethodDebugInformation", "GetLocalVariables", "()", "summary", "df-generated"]

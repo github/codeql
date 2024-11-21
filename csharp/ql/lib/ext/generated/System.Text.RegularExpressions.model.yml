@@ -52,6 +52,12 @@ extensions:
       - ["System.Text.RegularExpressions", "Regex", False, "Replace", "(System.String,System.String,System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text.RegularExpressions", "Regex", False, "Replace", "(System.String,System.String,System.String,System.Text.RegularExpressions.RegexOptions)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text.RegularExpressions", "Regex", False, "Replace", "(System.String,System.String,System.String,System.Text.RegularExpressions.RegexOptions,System.TimeSpan)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Text.RegularExpressions", "Regex", False, "Replace", "(System.String,System.String,System.Text.RegularExpressions.MatchEvaluator)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Text.RegularExpressions", "Regex", False, "Replace", "(System.String,System.String,System.Text.RegularExpressions.MatchEvaluator,System.Text.RegularExpressions.RegexOptions)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Text.RegularExpressions", "Regex", False, "Replace", "(System.String,System.String,System.Text.RegularExpressions.MatchEvaluator,System.Text.RegularExpressions.RegexOptions,System.TimeSpan)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Text.RegularExpressions", "Regex", False, "Replace", "(System.String,System.Text.RegularExpressions.MatchEvaluator)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Text.RegularExpressions", "Regex", False, "Replace", "(System.String,System.Text.RegularExpressions.MatchEvaluator,System.Int32)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Text.RegularExpressions", "Regex", False, "Replace", "(System.String,System.Text.RegularExpressions.MatchEvaluator,System.Int32,System.Int32)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text.RegularExpressions", "Regex", False, "Split", "(System.String)", "", "Argument[0]", "ReturnValue.Element", "value", "dfc-generated"]
       - ["System.Text.RegularExpressions", "Regex", False, "Split", "(System.String,System.Int32)", "", "Argument[0]", "ReturnValue.Element", "value", "dfc-generated"]
       - ["System.Text.RegularExpressions", "Regex", False, "Split", "(System.String,System.Int32,System.Int32)", "", "Argument[0]", "ReturnValue.Element", "value", "dfc-generated"]
@@ -69,6 +75,7 @@ extensions:
       - ["System.Text.RegularExpressions", "RegexRunner", False, "Scan", "(System.Text.RegularExpressions.Regex,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)", "", "Argument[this].Field[System.Text.RegularExpressions.RegexRunner.runmatch]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text.RegularExpressions", "RegexRunner", False, "Scan", "(System.Text.RegularExpressions.Regex,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.TimeSpan)", "", "Argument[1]", "Argument[this].Field[System.Text.RegularExpressions.RegexRunner.runtext]", "value", "dfc-generated"]
       - ["System.Text.RegularExpressions", "RegexRunner", False, "Scan", "(System.Text.RegularExpressions.Regex,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.TimeSpan)", "", "Argument[this].Field[System.Text.RegularExpressions.RegexRunner.runmatch]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Text.RegularExpressions", "RegexRunner", True, "Scan", "(System.ReadOnlySpan<System.Char>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Text.RegularExpressions", "RegexRunnerFactory", True, "CreateInstance", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -188,7 +195,6 @@ extensions:
       - ["System.Text.RegularExpressions", "RegexRunner", "MatchIndex", "(System.Int32)", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "RegexRunner", "MatchLength", "(System.Int32)", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "RegexRunner", "Popcrawl", "()", "summary", "df-generated"]
-      - ["System.Text.RegularExpressions", "RegexRunner", "Scan", "(System.ReadOnlySpan<System.Char>)", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "RegexRunner", "TransferCapture", "(System.Int32,System.Int32,System.Int32,System.Int32)", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "RegexRunner", "Uncapture", "()", "summary", "df-generated"]
       - ["System.Text.RegularExpressions", "ValueMatch", "get_Index", "()", "summary", "df-generated"]
