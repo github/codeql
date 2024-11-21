@@ -45,6 +45,8 @@ private module ReflectedXssConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof RX::Sanitizer }
 
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     RX::isAdditionalXssTaintStep(node1, node2)
   }

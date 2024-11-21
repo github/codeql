@@ -44,6 +44,8 @@ private module UnsafeCodeConstructionConfig implements DataFlow::ConfigSig {
     node instanceof StringConstArrayInclusionCallBarrier
   }
 
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 }

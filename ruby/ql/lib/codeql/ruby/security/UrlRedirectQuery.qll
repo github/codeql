@@ -37,6 +37,8 @@ private module UrlRedirectConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     UrlRedirect::isAdditionalTaintStep(node1, node2)
   }

@@ -41,6 +41,8 @@ private module Config implements DataFlow::ConfigSig {
     node instanceof StringConstCompareBarrier or
     node instanceof StringConstArrayInclusionCallBarrier
   }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 /**

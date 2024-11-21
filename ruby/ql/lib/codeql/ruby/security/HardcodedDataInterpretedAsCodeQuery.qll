@@ -54,6 +54,8 @@ private module Config implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
+  predicate isBarrierIn(DataFlow::Node node, FlowState label) { isSource(node, label) }
+
   predicate isAdditionalFlowStep(
     DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
   ) {

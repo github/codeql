@@ -29,6 +29,8 @@ private module StoredXssConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     isAdditionalXssTaintStep(node1, node2)
   }

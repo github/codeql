@@ -47,6 +47,8 @@ private module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigS
     node instanceof StringConstArrayInclusionCallBarrier
   }
 
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 }

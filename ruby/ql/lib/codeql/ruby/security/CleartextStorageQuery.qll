@@ -40,6 +40,8 @@ private module Config implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof CS::Sanitizer }
 
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     CS::isAdditionalTaintStep(nodeFrom, nodeTo)
   }
