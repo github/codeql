@@ -1,0 +1,4 @@
+| gen_path_expr.rs:7:14:7:14 | <T> | hasPath: | yes |
+| gen_path_expr.rs:7:14:7:14 | <T> | hasPath: | yes |
+| gen_path_expr.rs:8:14:8:20 | <TypeRef> | hasPath: | yes |
+| gen_path_expr.rs:8:14:8:20 | <TypeRef> | hasPath: | yes |

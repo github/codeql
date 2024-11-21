@@ -22,11 +22,11 @@ module Impl {
     override string toString() {
       exists(string trait |
         (
-          trait = this.getTrait().toString() + " for "
+          trait = this.getTrait().toAbbreviatedString() + " for "
           or
           not this.hasTrait() and trait = ""
         ) and
-        result = "impl " + trait + this.getSelfTy().toString() + " { ... }"
+        result = "impl " + trait + this.getSelfTy().toAbbreviatedString() + " { ... }"
       )
     }
   }

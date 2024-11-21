@@ -22,6 +22,6 @@ module Impl {
    * ```
    */
   class RecordPat extends Generated::RecordPat {
-    override string toString() { result = this.getPath().toString() + " {...}" }
+    override string toString() { result = this.getPath().toAbbreviatedString() + " {...}" }
   }
 }

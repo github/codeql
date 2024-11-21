@@ -26,8 +26,20 @@ module Impl {
    * ```
    */
   class LiteralExpr extends Generated::LiteralExpr {
-    override string toString() { result = this.getTextValue() }
+    override string toString() { result = this.getTrimmedText() }
 
-    override string toAbbreviatedString() { result = this.getTextValue() }
+    override string toAbbreviatedString() { result = this.getTrimmedText() }
+
+    /**
+     * Get the text of this literal, trimmed with `...` if it is too long.
+     *
+     * INTERNAL: Do not use.
+     */
+    string getTrimmedText() {
+      exists(string v |
+        v = this.getTextValue() and
+        if v.length() > 30 then result = v.substring(0, 30) + "..." else result = v
+      )
+    }
   }
 }

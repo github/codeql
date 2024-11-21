@@ -104,7 +104,9 @@ module Impl {
       )
     }
 
-    override string toString() { result = concat(int i | | this.toStringPart(i), " " order by i) }
+    override string toString() {
+      result = strictconcat(int i | | this.toStringPart(i), " " order by i)
+    }
 
     private string toStringPart(int index) {
       index = 0 and result = "break"

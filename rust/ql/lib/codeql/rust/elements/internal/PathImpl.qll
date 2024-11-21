@@ -15,6 +15,7 @@ module Impl {
   /**
    * A path. For example:
    * ```rust
+   * use some_crate::some_module::some_item;
    * foo::bar;
    * ```
    */
@@ -23,9 +24,7 @@ module Impl {
 
     override string toAbbreviatedString() {
       if this.hasQualifier()
-      then
-        result =
-          this.getQualifier().toAbbreviatedString() + "::" + this.getPart().toAbbreviatedString()
+      then result = "...::" + this.getPart().toAbbreviatedString()
       else result = this.getPart().toAbbreviatedString()
     }
   }

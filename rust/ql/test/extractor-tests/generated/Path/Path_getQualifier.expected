@@ -1,1 +1,9 @@
-| gen_path.rs:5:5:5:12 | foo::bar | gen_path.rs:5:5:5:7 | foo |
+| gen_path.rs:5:9:5:31 | ...::some_module | gen_path.rs:5:9:5:18 | some_crate |
+| gen_path.rs:5:9:5:42 | ...::some_item | gen_path.rs:5:9:5:31 | ...::some_module |
+| gen_path.rs:6:5:6:12 | ...::bar | gen_path.rs:6:5:6:7 | foo |
+| gen_path_expr.rs:6:13:6:20 | ...::bar | gen_path_expr.rs:6:13:6:15 | foo |
+| gen_path_expr.rs:7:13:7:20 | ...::foo | gen_path_expr.rs:7:13:7:15 | <...> |
+| gen_path_expr.rs:8:13:8:35 | ...::foo | gen_path_expr.rs:8:13:8:30 | <...> |
+| gen_path_pat.rs:6:9:6:16 | ...::Bar | gen_path_pat.rs:6:9:6:11 | Foo |
+| gen_path_type.rs:5:5:5:11 | ...::panic | gen_path_type.rs:5:5:5:11 | ...::panicking |
+| gen_path_type.rs:5:5:5:11 | ...::panicking | gen_path_type.rs:5:5:5:11 | $crate |

@@ -81,6 +81,7 @@ class _:
     """
     A path. For example:
     ```rust
+    use some_crate::some_module::some_item;
     foo::bar;
     ```
     """
@@ -120,6 +121,7 @@ class PathExprBase(Expr):
 
 
 @annotate(PathExpr, replace_bases={Expr: PathExprBase})
+@qltest.test_with(Path)
 class _:
     """
     A path expression. For example:
@@ -721,6 +723,7 @@ class _:
 
 
 @annotate(PathPat)
+@qltest.test_with(Path)
 class _:
     """
     A path pattern. For example:
@@ -1366,16 +1369,15 @@ class _:
 
 
 @annotate(PathSegment)
+@qltest.test_with(Path)
 class _:
     """
-    A PathSegment. For example:
-    ```rust
-    todo!()
-    ```
+    A path segment, which is one part of a whole path.
     """
 
 
 @annotate(PathType)
+@qltest.test_with(Path)
 class _:
     """
     A PathType. For example:

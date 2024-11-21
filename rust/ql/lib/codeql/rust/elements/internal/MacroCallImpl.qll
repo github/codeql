@@ -19,6 +19,6 @@ module Impl {
    * ```
    */
   class MacroCall extends Generated::MacroCall {
-    override string toString() { result = this.getPath().toString() + "!..." }
+    override string toString() { result = this.getPath().toAbbreviatedString() + "!..." }
   }
 }

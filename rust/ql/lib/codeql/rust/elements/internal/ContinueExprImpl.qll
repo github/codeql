@@ -49,12 +49,14 @@ module Impl {
    * ```
    */
   class ContinueExpr extends Generated::ContinueExpr {
-    override string toString() { result = concat(int i | | this.toStringPart(i), " " order by i) }
+    override string toString() {
+      result = strictconcat(int i | | this.toStringPart(i), " " order by i)
+    }
 
     private string toStringPart(int index) {
       index = 0 and result = "continue"
       or
-      index = 1 and result = this.getLifetime().toString()
+      index = 1 and result = this.getLifetime().getText()
     }
 
     /**

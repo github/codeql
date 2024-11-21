@@ -81,10 +81,9 @@
 /ParenPat/gen_paren_pat.rs linguist-generated
 /ParenType/gen_paren_type.rs linguist-generated
 /Path/gen_path.rs linguist-generated
-/PathExpr/gen_path_expr.rs linguist-generated
-/PathPat/gen_path_pat.rs linguist-generated
-/PathSegment/gen_path_segment.rs linguist-generated
-/PathType/gen_path_type.rs linguist-generated
+/Path/gen_path_expr.rs linguist-generated
+/Path/gen_path_pat.rs linguist-generated
+/Path/gen_path_type.rs linguist-generated
 /PrefixExpr/gen_prefix_expr.rs linguist-generated
 /PtrType/gen_ptr_type.rs linguist-generated
 /RangeExpr/gen_range_expr.rs linguist-generated

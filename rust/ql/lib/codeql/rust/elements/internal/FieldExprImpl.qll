@@ -22,7 +22,7 @@ module Impl {
     override string toString() {
       exists(string abbr, string name |
         abbr = this.getExpr().toAbbreviatedString() and
-        name = this.getNameRef().toString() and
+        name = this.getNameRef().getText() and
         if abbr = "..." then result = "... ." + name else result = abbr + "." + name
       )
     }

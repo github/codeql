@@ -22,6 +22,13 @@ module Impl {
    * ```
    */
   class Label extends Generated::Label {
-    override string toString() { result = this.getLifetime().toString() }
+    override string toString() { result = this.getText() }
+
+    override string toAbbreviatedString() { result = this.getText() }
+
+    /**
+     * Gets the name of the label, together with the leading `'`.
+     */
+    string getText() { result = this.getLifetime().getText() }
   }
 }

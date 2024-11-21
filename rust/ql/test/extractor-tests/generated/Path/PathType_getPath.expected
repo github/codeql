@@ -1,0 +1,4 @@
+| gen_path_expr.rs:7:14:7:14 | <T> | gen_path_expr.rs:7:14:7:14 | T |
+| gen_path_expr.rs:7:14:7:14 | <T> | gen_path_expr.rs:7:14:7:14 | T |
+| gen_path_expr.rs:8:14:8:20 | <TypeRef> | gen_path_expr.rs:8:14:8:20 | TypeRef |
+| gen_path_expr.rs:8:14:8:20 | <TypeRef> | gen_path_expr.rs:8:14:8:20 | TypeRef |

@@ -22,7 +22,7 @@ module Impl {
     override string toString() { result = concat(int i | | this.toStringPart(i) order by i) }
 
     private string toStringPart(int index) {
-      index = 0 and result = this.getNameRef().toString()
+      index = 0 and result = this.getNameRef().getText()
       or
       index = 1 and result = ": " + this.getExpr().toAbbreviatedString()
     }

@@ -26,7 +26,9 @@ module Impl {
    * ```
    */
   class LetStmt extends Generated::LetStmt {
-    override string toString() { result = concat(int i | | this.toStringPart(i), " " order by i) }
+    override string toString() {
+      result = strictconcat(int i | | this.toStringPart(i), " " order by i)
+    }
 
     private string toStringPart(int index) {
       index = 0 and result = "let"
@@ -35,7 +37,7 @@ module Impl {
       or
       index = 2 and result = "= " + this.getInitializer().toAbbreviatedString()
       or
-      index = 3 and result = this.getLetElse().toString()
+      index = 3 and result = this.getLetElse().toAbbreviatedString()
     }
   }
 }

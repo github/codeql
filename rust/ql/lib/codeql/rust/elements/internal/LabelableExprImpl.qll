@@ -16,8 +16,16 @@ module Impl {
    * The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
    */
   class LabelableExpr extends Generated::LabelableExpr {
-    override string toString() {
-      result = concat([this.getLabel().toString() + ":", this.toStringPrefix(), "{ ... }"], " ")
+    final override string toString() {
+      result = strictconcat(int i | | this.toStringPart(i), " " order by i)
+    }
+
+    private string toStringPart(int index) {
+      index = 0 and result = this.getLabel().getText() + ":"
+      or
+      index = 1 and result = this.toStringPrefix()
+      or
+      index = 2 and result = "{ ... }"
     }
 
     /**

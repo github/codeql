@@ -578,10 +578,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A PathSegment. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A path segment, which is one part of a whole path.
    */
   class PathSegment extends @path_segment, AstNode {
     override string toString() { result = "PathSegment" }
@@ -2337,6 +2334,7 @@ module Raw {
    * INTERNAL: Do not use.
    * A path. For example:
    * ```rust
+   * use some_crate::some_module::some_item;
    * foo::bar;
    * ```
    */
