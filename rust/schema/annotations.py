@@ -1380,9 +1380,10 @@ class _:
 @qltest.test_with(Path)
 class _:
     """
-    A PathType. For example:
+    A type referring to a path. For example:
     ```rust
-    todo!()
+    type X = std::collections::HashMap<i32, i32>;
+    type Y = X::Item;
     ```
     """
 

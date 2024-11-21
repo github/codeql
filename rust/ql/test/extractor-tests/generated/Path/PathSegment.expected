@@ -17,7 +17,10 @@
 | gen_path_pat.rs:5:11:5:11 | x | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
 | gen_path_pat.rs:6:9:6:11 | Foo | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
 | gen_path_pat.rs:6:14:6:16 | Bar | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
-| gen_path_type.rs:5:5:5:8 | todo | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
-| gen_path_type.rs:5:5:5:11 | $crate | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
-| gen_path_type.rs:5:5:5:11 | panic | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
-| gen_path_type.rs:5:5:5:11 | panicking | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_type.rs:5:14:5:16 | std | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_type.rs:5:19:5:29 | collections | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_type.rs:5:32:5:48 | HashMap::<...> | hasGenericArgList: | yes | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_type.rs:5:40:5:42 | i32 | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_type.rs:5:45:5:47 | i32 | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_type.rs:6:14:6:14 | X | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_type.rs:6:17:6:20 | Item | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |

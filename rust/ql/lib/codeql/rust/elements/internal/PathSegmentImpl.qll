@@ -19,17 +19,16 @@ module Impl {
     override string toString() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() {
-      result = this.getAbbreviatedPrefix() + this.getAbbreviatedGenericArgList()
+      result = strictconcat(int i | | this.toAbbreviatedStringPart(i), "::" order by i)
     }
 
-    private string getAbbreviatedGenericArgList() {
-      if this.hasGenericArgList() then result = "::<...>" else result = ""
-    }
-
-    private string getAbbreviatedPrefix() {
+    private string toAbbreviatedStringPart(int index) {
+      index = 0 and
       if this.hasPathType() or this.hasTy()
       then result = "<...>"
       else result = this.getNameRef().getText()
+      or
+      index = 1 and result = this.getGenericArgList().toAbbreviatedString()
     }
   }
 }

@@ -235,7 +235,6 @@
 /lib/codeql/rust/elements/internal/FunctionConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericArgListConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/GenericArgListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericParamImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericParamListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericParamListImpl.qll linguist-generated
@@ -246,7 +245,6 @@
 /lib/codeql/rust/elements/internal/ImplTraitTypeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/IndexExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/InferTypeConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/InferTypeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ItemImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ItemListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ItemListImpl.qll linguist-generated
