@@ -43,22 +43,59 @@ final class DataFlowCallable extends TDataFlowCallable {
 }
 
 final class DataFlowCall extends TDataFlowCall {
+  private CallExprBaseCfgNode call;
+
+  DataFlowCall() { this = TCall(call) }
+
   /** Gets the underlying call in the CFG, if any. */
-  CallExprCfgNode asCallExprCfgNode() { this = TNormalCall(result) }
+  CallExprCfgNode asCallExprCfgNode() { result = call }
 
-  MethodCallExprCfgNode asMethodCallExprCfgNode() { this = TMethodCall(result) }
+  MethodCallExprCfgNode asMethodCallExprCfgNode() { result = call }
 
-  CallExprBaseCfgNode asExprCfgNode() {
-    result = this.asCallExprCfgNode() or result = this.asMethodCallExprCfgNode()
-  }
+  CallExprBaseCfgNode asCallBaseExprCfgNode() { result = call }
 
   DataFlowCallable getEnclosingCallable() {
-    result = TCfgScope(this.asExprCfgNode().getExpr().getEnclosingCfgScope())
+    result = TCfgScope(call.getExpr().getEnclosingCfgScope())
   }
 
-  string toString() { result = this.asExprCfgNode().toString() }
+  string toString() { result = this.asCallBaseExprCfgNode().toString() }
 
-  Location getLocation() { result = this.asExprCfgNode().getLocation() }
+  Location getLocation() { result = this.asCallBaseExprCfgNode().getLocation() }
+}
+
+/**
+ * The position of a parameter or an argument in a function or call.
+ *
+ * As there is a 1-to-1 correspondence between parameter positions and
+ * arguments positions in Rust we use the same type for both.
+ */
+final class ParameterPosition extends TParameterPosition {
+  /** Gets the underlying integer position, if any. */
+  int getPosition() { this = TPositionalParameterPosition(result) }
+
+  /** Holds if this position represents the `self` position. */
+  predicate isSelf() { this = TSelfParameterPosition() }
+
+  /** Gets a textual representation of this position. */
+  string toString() {
+    result = this.getPosition().toString()
+    or
+    result = "self" and this.isSelf()
+  }
+
+  AstNode getParameterIn(ParamList ps) {
+    result = ps.getParam(this.getPosition())
+    or
+    result = ps.getSelfParam() and this.isSelf()
+  }
+}
+
+/** Holds if `arg` is an argument of `call` at the position `pos`. */
+private predicate isArgumentForCall(ExprCfgNode arg, CallExprBaseCfgNode call, ParameterPosition pos) {
+  arg = call.getArgument(pos.getPosition())
+  or
+  // The self argument in a method call.
+  arg = call.(MethodCallExprCfgNode).getReceiver() and pos.isSelf()
 }
 
 module Node {
@@ -93,11 +130,6 @@ module Node {
      * Gets this node's underlying SSA definition, if any.
      */
     Ssa::Definition asDefinition() { none() }
-
-    /**
-     * Gets the parameter that corresponds to this node, if any.
-     */
-    Param asParameter() { none() }
   }
 
   /** A node type that is not implemented. */
@@ -111,7 +143,7 @@ module Node {
     override Location getLocation() { none() }
   }
 
-  /** A data flow node that corresponds to a CFG node for an AST node. */
+  /** A data flow node that corresponds directly to a CFG node for an AST node. */
   abstract class AstCfgFlowNode extends Node {
     AstCfgNode n;
 
@@ -145,24 +177,37 @@ module Node {
 
     PatNode() { this = TPatNode(n) }
 
-    /** Gets the `Pat` in the AST that this node corresponds to. */
-    Pat getPat() { result = n.getPat() }
+    /** Gets the `PatCfgNode` in the CFG that this node corresponds to. */
+    PatCfgNode getPat() { result = n }
   }
+
+  abstract class ParameterNode extends AstCfgFlowNode { }
 
   /**
    * The value of a parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  final class ParameterNode extends AstCfgFlowNode, TParameterNode {
+  final class NormalParameterNode extends ParameterNode, TParameterNode {
     override ParamCfgNode n;
 
-    ParameterNode() { this = TParameterNode(n) }
+    NormalParameterNode() { this = TParameterNode(n) }
 
     /** Gets the parameter in the CFG that this node corresponds to. */
     ParamCfgNode getParameter() { result = n }
   }
 
-  final class ArgumentNode = NaNode;
+  final class SelfParameterNode extends ParameterNode, TSelfParameterNode {
+    override SelfParamCfgNode n;
+
+    SelfParameterNode() { this = TSelfParameterNode(n) }
+
+    /** Gets the self parameter in the AST that this node corresponds to. */
+    SelfParamCfgNode getSelfParameter() { result = n }
+  }
+
+  final class ArgumentNode extends ExprNode {
+    ArgumentNode() { isArgumentForCall(n, _, _) }
+  }
 
   /** An SSA node. */
   class SsaNode extends Node, TSsaNode {
@@ -185,7 +230,10 @@ module Node {
 
   /** A data flow node that represents a value returned by a callable. */
   final class ReturnNode extends ExprNode {
-    ReturnNode() { this.getCfgNode().getASuccessor() instanceof ExitCfgNode }
+    ReturnNode() {
+      this.getCfgNode().getASuccessor() instanceof ExitCfgNode or
+      this.getCfgNode().getASuccessor() instanceof AnnotatedExitCfgNode
+    }
 
     ReturnKind getKind() { any() }
   }
@@ -197,10 +245,10 @@ module Node {
   }
 
   final private class ExprOutNode extends ExprNode, OutNode {
-    ExprOutNode() { this.asExpr() instanceof CallExprCfgNode }
+    ExprOutNode() { this.asExpr() instanceof CallExprBaseCfgNode }
 
     /** Gets the underlying call CFG node that includes this out node. */
-    override DataFlowCall getCall() { result.asExprCfgNode() = this.getCfgNode() }
+    override DataFlowCall getCall() { result.asCallBaseExprCfgNode() = this.getCfgNode() }
   }
 
   /**
@@ -214,9 +262,19 @@ module Node {
    * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
    * to the value before the update.
    */
-  final class PostUpdateNode extends Node::NaNode {
+  final class PostUpdateNode extends Node, TArgumentPostUpdateNode {
+    private ExprCfgNode n;
+
+    PostUpdateNode() { this = TArgumentPostUpdateNode(n) }
+
     /** Gets the node before the state update. */
-    Node getPreUpdateNode() { none() }
+    Node getPreUpdateNode() { result = TExprNode(n) }
+
+    final override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
+
+    final override Location getLocation() { result = n.getAstNode().getLocation() }
+
+    final override string toString() { result = n.getAstNode().toString() }
   }
 
   final class CastNode = NaNode;
@@ -226,25 +284,27 @@ final class Node = Node::Node;
 
 /** Provides logic related to SSA. */
 module SsaFlow {
-  private module Impl = SsaImpl::DataFlowIntegration;
+  private module SsaFlow = SsaImpl::DataFlowIntegration;
 
-  private Node::ParameterNode toParameterNode(ParamCfgNode p) { result.getParameter() = p }
+  private Node::ParameterNode toParameterNode(ParamCfgNode p) {
+    result.(Node::NormalParameterNode).getParameter() = p
+  }
 
   /** Converts a control flow node into an SSA control flow node. */
-  Impl::Node asNode(Node n) {
+  SsaFlow::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(Impl::ExprNode).getExpr() = n.asExpr()
+    result.(SsaFlow::ExprNode).getExpr() = n.asExpr()
     or
-    n = toParameterNode(result.(Impl::ParameterNode).getParameter())
+    n = toParameterNode(result.(SsaFlow::ParameterNode).getParameter())
   }
 
   predicate localFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-    Impl::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
+    SsaFlow::localFlowStep(def, asNode(nodeFrom), asNode(nodeTo), isUseStep)
   }
 
   predicate localMustFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
-    Impl::localMustFlowStep(def, asNode(nodeFrom), asNode(nodeTo))
+    SsaFlow::localMustFlowStep(def, asNode(nodeFrom), asNode(nodeTo))
   }
 }
 
@@ -276,6 +336,8 @@ module LocalFlow {
     nodeFrom.(Node::AstCfgFlowNode).getCfgNode() =
       nodeTo.(Node::SsaNode).getDefinitionExt().(Ssa::WriteDefinition).getControlFlowNode()
     or
+    nodeFrom.(Node::NormalParameterNode).getParameter().getPat() = nodeTo.(Node::PatNode).getPat()
+    or
     SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
     or
     exists(AssignmentExprCfgNode a |
@@ -290,6 +352,8 @@ private class DataFlowCallableAlias = DataFlowCallable;
 private class ReturnKindAlias = ReturnKind;
 
 private class DataFlowCallAlias = DataFlowCall;
+
+private class ParameterPositionAlias = ParameterPosition;
 
 module RustDataFlow implements InputSig<Location> {
   /**
@@ -310,9 +374,15 @@ module RustDataFlow implements InputSig<Location> {
 
   final class CastNode = Node::NaNode;
 
-  predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) { none() }
+  /** Holds if `p` is a parameter of `c` at the position `pos`. */
+  predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+    p.getCfgNode().getAstNode() = pos.getParameterIn(c.asCfgScope().(Function).getParamList())
+  }
 
-  predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) { none() }
+  /** Holds if `n` is an argument of `c` at the position `pos`. */
+  predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
+    isArgumentForCall(n.getCfgNode(), call.asCallBaseExprCfgNode(), pos)
+  }
 
   DataFlowCallable nodeGetEnclosingCallable(Node node) { result = node.getEnclosingCallable() }
 
@@ -335,10 +405,9 @@ module RustDataFlow implements InputSig<Location> {
   DataFlowCallable viableCallable(DataFlowCall c) {
     exists(Function f, string name | result.asCfgScope() = f and name = f.getName().toString() |
       if f.getParamList().hasSelfParam()
-      then name = c.asMethodCallExprCfgNode().getMethodCallExpr().getNameRef().getText()
+      then name = c.asMethodCallExprCfgNode().getNameRef().getText()
       else
-        name =
-          c.asCallExprCfgNode().getCallExpr().getExpr().(PathExpr).getPath().getPart().toString()
+        name = c.asCallExprCfgNode().getExpr().getExpr().(PathExpr).getPath().getPart().toString()
     )
   }
 
@@ -377,19 +446,15 @@ module RustDataFlow implements InputSig<Location> {
 
   ContentApprox getContentApprox(Content c) { any() }
 
-  class ParameterPosition extends string {
-    ParameterPosition() { this = "pos" }
-  }
+  class ParameterPosition = ParameterPositionAlias;
 
-  class ArgumentPosition extends string {
-    ArgumentPosition() { this = "pos" }
-  }
+  class ArgumentPosition = ParameterPosition;
 
   /**
    * Holds if the parameter position `ppos` matches the argument position
    * `apos`.
    */
-  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { none() }
+  predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 
   /**
    * Holds if there is a simple local flow step from `node1` to `node2`. These
@@ -497,13 +562,13 @@ private module Cached {
   newtype TNode =
     TExprNode(ExprCfgNode n) or
     TParameterNode(ParamCfgNode p) or
+    TSelfParameterNode(SelfParamCfgNode p) or
     TPatNode(PatCfgNode p) or
+    TArgumentPostUpdateNode(ExprCfgNode e) { isArgumentForCall(e, _, _) } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node)
 
   cached
-  newtype TDataFlowCall =
-    TNormalCall(CallExprCfgNode c) or
-    TMethodCall(MethodCallExprCfgNode c)
+  newtype TDataFlowCall = TCall(CallExprBaseCfgNode c)
 
   cached
   newtype TOptionalContentSet =
@@ -521,6 +586,13 @@ private module Cached {
   predicate localFlowStepImpl(Node::Node nodeFrom, Node::Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
   }
+
+  cached
+  newtype TParameterPosition =
+    TPositionalParameterPosition(int i) {
+      exists(any(ParamList l).getParam(i)) or exists(any(ArgList l).getArg(i))
+    } or
+    TSelfParameterPosition()
 }
 
 import Cached
