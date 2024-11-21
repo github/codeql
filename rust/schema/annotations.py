@@ -1467,7 +1467,7 @@ class _:
     """
 
 
-@annotate(SelfParam)
+@annotate(SelfParam, cfg = True)
 class _:
     """
     A SelfParam. For example:

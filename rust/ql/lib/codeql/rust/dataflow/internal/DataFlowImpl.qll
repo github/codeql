@@ -158,7 +158,7 @@ module Node {
 
     ParameterNode() { this = TParameterNode(n) }
 
-    /** Gets the parameter in the AST that this node corresponds to. */
+    /** Gets the parameter in the CFG that this node corresponds to. */
     ParamCfgNode getParameter() { result = n }
   }
 

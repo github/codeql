@@ -54,6 +54,8 @@ def _parse_args() -> argparse.Namespace:
                             "generated qll file importing every class file"),
         p.add_argument("--ql-test-output",
                        help="output directory for QL generated extractor test files"),
+        p.add_argument("--ql-cfg-output",
+                       help="output directory for QL CFG layer (optional)."),
         p.add_argument("--cpp-output",
                        help="output directory for generated C++ files, required if trap or cpp is provided to "
                             "--generate"),
@@ -64,8 +66,6 @@ def _parse_args() -> argparse.Namespace:
                        help="registry file containing information about checked-in generated code. A .gitattributes"
                             "file is generated besides it to mark those files with linguist-generated=true. Must"
                             "be in a directory containing all generated code."),
-        p.add_argument("--ql-cfg-output",
-                       help="output directory for QL CFG layer (optional)."),
     ]
     p.add_argument("--script-name",
                    help="script name to put in header comments of generated files. By default, the path of this "

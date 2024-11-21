@@ -65,11 +65,12 @@ query predicate missingCfgChild(CfgNode parent, string pred, int i, AstNode chil
   CfgNodes::missingCfgChild(parent, pred, i, child) and
   successfullyExtractedFile(child.getLocation().getFile()) and
   not exists(AstNode last, CfgImpl::Completion c | CfgImpl::last(child, last, c) |
-    // In for example `if (a && true) ...` there is no RHS CFG node going into the
-    // `[false] a && true` operation
+    // In for example `if (a && true) ...`, there is no edge from the CFG node
+    // for `true` into the `[false] a && true` node.
     strictcount(ConditionalSuccessor cs | exists(last.getACfgNode().getASuccessor(cs)) | cs) = 1
     or
-    // In for example `x && return`, there is no RHS CFG node going into the `&&` operation
+    // In for example `x && return`, there is no edge from the node for
+    // `return` into the `&&` node.
     not c instanceof CfgImpl::NormalCompletion
   )
 }

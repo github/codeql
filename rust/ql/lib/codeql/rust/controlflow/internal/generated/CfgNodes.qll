@@ -2575,6 +2575,75 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasExpr() { exists(this.getExpr()) }
     }
 
+    final private class ParentSelfParam extends ParentAstNode, SelfParam {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     * A SelfParam. For example:
+     * ```rust
+     * todo!()
+     * ```
+     */
+    final class SelfParamCfgNode extends CfgNodeFinal {
+      private SelfParam node;
+
+      SelfParamCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `SelfParam`. */
+      SelfParam getSelfParam() { result = node }
+
+      /**
+       * Gets the `index`th attr of this self parameter (0-based).
+       */
+      Attr getAttr(int index) { result = node.getAttr(index) }
+
+      /**
+       * Gets any of the attrs of this self parameter.
+       */
+      Attr getAnAttr() { result = this.getAttr(_) }
+
+      /**
+       * Gets the number of attrs of this self parameter.
+       */
+      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+      /**
+       * Holds if this self parameter is mut.
+       */
+      predicate isMut() { node.isMut() }
+
+      /**
+       * Gets the lifetime of this self parameter, if it exists.
+       */
+      Lifetime getLifetime() { result = node.getLifetime() }
+
+      /**
+       * Holds if `getLifetime()` exists.
+       */
+      predicate hasLifetime() { exists(this.getLifetime()) }
+
+      /**
+       * Gets the name of this self parameter, if it exists.
+       */
+      Name getName() { result = node.getName() }
+
+      /**
+       * Holds if `getName()` exists.
+       */
+      predicate hasName() { exists(this.getName()) }
+
+      /**
+       * Gets the ty of this self parameter, if it exists.
+       */
+      TypeRef getTy() { result = node.getTy() }
+
+      /**
+       * Holds if `getTy()` exists.
+       */
+      predicate hasTy() { exists(this.getTy()) }
+    }
+
     final private class ParentSlicePat extends ParentAstNode, SlicePat {
       override predicate relevantChild(AstNode child) {
         none()
