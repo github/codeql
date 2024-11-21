@@ -773,7 +773,7 @@ private module ControlFlowGraphImpl {
     or
     result.asExpr() = n and n instanceof StmtExpr
     or
-    result = n.getCFGNode() and n.(PostOrderNode).isLeafNode()
+    result = n.getCfgNode() and n.(PostOrderNode).isLeafNode()
     or
     result = first(n.(PostOrderNode).firstChild())
     or
@@ -932,7 +932,7 @@ private module ControlFlowGraphImpl {
     or
     // The last node of a node executed in post-order is the node itself.
     exists(PostOrderNode p | p = n |
-      p.mayCompleteNormally() and last = p.getCFGNode() and completion = NormalCompletion()
+      p.mayCompleteNormally() and last = p.getCfgNode() and completion = NormalCompletion()
     )
     or
     last.asExpr() = n and completion = basicBooleanCompletion(n.(BooleanLiteral).getBooleanValue())
@@ -1088,7 +1088,7 @@ private module ControlFlowGraphImpl {
     or
     // `throw` statements or throwing calls give rise to ` Throw` completion
     exists(ThrowableType tt | mayThrow(n, tt) |
-      last = n.getCFGNode() and completion = ThrowCompletion(tt)
+      last = n.getCfgNode() and completion = ThrowCompletion(tt)
     )
     or
     // `break` statements give rise to a `Break` completion
@@ -1244,7 +1244,7 @@ private module ControlFlowGraphImpl {
     |
       result = first(p.getChildNode(i + 1))
       or
-      not exists(p.getChildNode(i + 1)) and result = p.getCFGNode()
+      not exists(p.getChildNode(i + 1)) and result = p.getCfgNode()
     )
     or
     // Statements within a block execute sequentially.
