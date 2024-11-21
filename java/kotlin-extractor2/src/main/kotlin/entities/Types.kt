@@ -12,7 +12,7 @@ private fun KotlinUsesExtractor.useClassType(
     val classId = addClassLabel(c.symbol as KaClassSymbol)
     val javaResult = TypeResult(classId /* , TODO, TODO */)
     val kotlinTypeId =
-        tw.getLabelFor<DbKt_class_type>("@\"kt_class{$classId}\"") {
+        tw.getLabelFor<DbKt_class_type>("@\"kt_class;{$classId}\"") {
             tw.writeKt_class_types(it, classId)
         }
     val kotlinResult = TypeResult(kotlinTypeId /* , "TODO", "TODO" */)
