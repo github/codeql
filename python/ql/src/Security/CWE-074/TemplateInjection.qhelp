@@ -12,7 +12,7 @@
         </p>
     </recommendation>
     <example>
-        <p>In the following case <code>template<code> is used to generate a Jinja2 template string. This can lead to remote code execution. </p>
+        <p>In the following case, <code>template</code> is used to generate a Jinja2 template string. This can lead to remote code execution. </p>
         <sample src="examples/JinjaBad.py" />
 
         <p>The following is an example of a string that could be used to cause remote code execution when interpreted as a template:</p>

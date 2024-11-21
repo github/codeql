@@ -4,6 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
+ * @security-severity 9.3
  * @id py/template-injection
  * @tags security
  *       external/cwe/cwe-074
