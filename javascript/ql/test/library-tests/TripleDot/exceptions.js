@@ -13,7 +13,7 @@ function e1() {
             throw source('e1.3'); // Same as e1.2 but without callback parameters
         });
     } catch (err) {
-        sink(err); // $ hasValueFlow=e1.2 MISSING: hasValueFlow=e1.1 hasValueFlow=e1.3
+        sink(err); // $ hasValueFlow=e1.2 hasValueFlow=e1.3 MISSING: hasValueFlow=e1.1
     }
 }
 
@@ -47,7 +47,7 @@ function e3() {
             throw source('e3.4');
         });
     } catch (err) {
-        sink(err); // $ MISSING: hasValueFlow=e3.4
+        sink(err); // $ hasValueFlow=e3.4
     }
 }
 

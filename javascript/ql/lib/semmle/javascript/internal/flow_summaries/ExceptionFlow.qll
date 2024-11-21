@@ -8,6 +8,17 @@ private import semmle.javascript.dataflow.internal.AdditionalFlowInternal
 private import semmle.javascript.dataflow.FlowSummary
 private import semmle.javascript.internal.flow_summaries.Promises
 
+private predicate isCallback(DataFlow::SourceNode node) {
+  node instanceof DataFlow::FunctionNode
+  or
+  node instanceof DataFlow::PartialInvokeNode
+  or
+  exists(DataFlow::SourceNode prev |
+    isCallback(prev) and
+    DataFlow::argumentPassingStep(_, prev.getALocalUse(), _, node)
+  )
+}
+
 /**
  * Summary that propagates exceptions out of callbacks back to the caller.
  */
@@ -21,7 +32,7 @@ private class ExceptionFlowSummary extends SummarizedCallable {
       ["then", "catch", "finally", "addEventListener", EventEmitter::on()] and
     not result = promiseConstructorRef().getAnInvocation() and
     // Restrict to cases where a callback is known to flow in, as lambda flow in DataFlowImplCommon blows up otherwise
-    exists(result.getABoundCallbackParameter(_, _))
+    isCallback(result.getAnArgument().getALocalSource())
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
