@@ -3,13 +3,13 @@ canonicalPaths
 | canonical_paths.rs:2:5:3:22 | Struct | repo::test | crate::canonical_paths::a::Struct |
 | canonical_paths.rs:5:5:7:5 | trait Trait | repo::test | crate::canonical_paths::a::Trait |
 | canonical_paths.rs:6:9:6:20 | fn f | repo::test | crate::canonical_paths::a::Trait::f |
-| canonical_paths.rs:9:5:11:5 | impl <Trait> for <Struct> { ... } | None | None |
+| canonical_paths.rs:9:5:11:5 | impl Trait for Struct { ... } | None | None |
 | canonical_paths.rs:10:9:10:22 | fn f | repo::test | <crate::canonical_paths::a::Struct as crate::canonical_paths::a::Trait>::f |
-| canonical_paths.rs:13:5:15:5 | impl <Struct> { ... } | None | None |
+| canonical_paths.rs:13:5:15:5 | impl Struct { ... } | None | None |
 | canonical_paths.rs:14:9:14:22 | fn g | repo::test | <crate::canonical_paths::a::Struct>::g |
 | canonical_paths.rs:17:5:19:5 | trait TraitWithBlanketImpl | repo::test | crate::canonical_paths::a::TraitWithBlanketImpl |
 | canonical_paths.rs:18:9:18:20 | fn h | repo::test | crate::canonical_paths::a::TraitWithBlanketImpl::h |
-| canonical_paths.rs:21:5:23:5 | impl <TraitWithBlanketImpl> for <T> { ... } | None | None |
+| canonical_paths.rs:21:5:23:5 | impl TraitWithBlanketImpl for T { ... } | None | None |
 | canonical_paths.rs:22:9:22:22 | fn h | repo::test | <_ as crate::canonical_paths::a::TraitWithBlanketImpl>::h |
 | canonical_paths.rs:25:5:25:16 | fn free | repo::test | crate::canonical_paths::a::free |
 | canonical_paths.rs:27:5:33:5 | fn usage | repo::test | crate::canonical_paths::a::usage |
@@ -19,11 +19,11 @@ canonicalPaths
 | canonical_paths.rs:40:9:40:27 | Struct | repo::test | {34}::OtherStruct |
 | canonical_paths.rs:42:9:44:9 | trait OtherTrait | repo::test | {34}::OtherTrait |
 | canonical_paths.rs:43:13:43:24 | fn g | repo::test | {34}::OtherTrait::g |
-| canonical_paths.rs:46:9:48:9 | impl <OtherTrait> for <OtherStruct> { ... } | None | None |
+| canonical_paths.rs:46:9:48:9 | impl OtherTrait for OtherStruct { ... } | None | None |
 | canonical_paths.rs:47:13:47:26 | fn g | repo::test | <{34}::OtherStruct as {34}::OtherTrait>::g |
-| canonical_paths.rs:50:9:52:9 | impl <OtherTrait> for <...::Struct> { ... } | None | None |
+| canonical_paths.rs:50:9:52:9 | impl OtherTrait for ...::Struct { ... } | None | None |
 | canonical_paths.rs:51:13:51:26 | fn g | repo::test | <crate::canonical_paths::a::Struct as {34}::OtherTrait>::g |
-| canonical_paths.rs:54:9:56:9 | impl <...::Trait> for <OtherStruct> { ... } | None | None |
+| canonical_paths.rs:54:9:56:9 | impl ...::Trait for OtherStruct { ... } | None | None |
 | canonical_paths.rs:55:13:55:26 | fn f | repo::test | <{34}::OtherStruct as crate::canonical_paths::a::Trait>::f |
 | canonical_paths.rs:58:9:60:9 | fn nested | repo::test | {34}::nested |
 | canonical_paths.rs:59:13:59:31 | Struct | repo::test | {35}::OtherStruct |

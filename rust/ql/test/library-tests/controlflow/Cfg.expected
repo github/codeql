@@ -25,8 +25,8 @@ edges
 | test.rs:12:24:12:26 | "a" | test.rs:12:9:12:27 | ... .insert(...) |  |
 | test.rs:18:5:24:5 | enter fn next | test.rs:18:13:18:13 | n |  |
 | test.rs:18:5:24:5 | exit fn next (normal) | test.rs:18:5:24:5 | exit fn next |  |
-| test.rs:18:13:18:13 | n | test.rs:18:13:18:18 | ...: <i64> | match |
-| test.rs:18:13:18:18 | ...: <i64> | test.rs:19:12:19:12 | n |  |
+| test.rs:18:13:18:13 | n | test.rs:18:13:18:18 | ...: i64 | match |
+| test.rs:18:13:18:18 | ...: i64 | test.rs:19:12:19:12 | n |  |
 | test.rs:18:28:24:5 | { ... } | test.rs:18:5:24:5 | exit fn next (normal) |  |
 | test.rs:19:9:23:9 | if ... {...} else {...} | test.rs:18:28:24:5 | { ... } |  |
 | test.rs:19:12:19:12 | n | test.rs:19:16:19:16 | 2 |  |
@@ -47,8 +47,8 @@ edges
 | test.rs:22:21:22:21 | 1 | test.rs:22:13:22:21 | ... + ... |  |
 | test.rs:26:5:42:5 | enter fn test_break_and_continue | test.rs:26:32:26:32 | n |  |
 | test.rs:26:5:42:5 | exit fn test_break_and_continue (normal) | test.rs:26:5:42:5 | exit fn test_break_and_continue |  |
-| test.rs:26:32:26:32 | n | test.rs:26:32:26:37 | ...: <i64> | match |
-| test.rs:26:32:26:37 | ...: <i64> | test.rs:27:9:27:22 | let ... = n |  |
+| test.rs:26:32:26:32 | n | test.rs:26:32:26:37 | ...: i64 | match |
+| test.rs:26:32:26:37 | ...: i64 | test.rs:27:9:27:22 | let ... = n |  |
 | test.rs:27:9:27:22 | let ... = n | test.rs:27:21:27:21 | n |  |
 | test.rs:27:13:27:17 | i | test.rs:28:9:40:9 | ExprStmt | match |
 | test.rs:27:21:27:21 | n | test.rs:27:13:27:17 | i |  |
@@ -98,8 +98,8 @@ edges
 | test.rs:41:16:41:19 | true | test.rs:41:9:41:19 | return true |  |
 | test.rs:44:5:56:5 | enter fn test_break_with_labels | test.rs:44:31:44:31 | b |  |
 | test.rs:44:5:56:5 | exit fn test_break_with_labels (normal) | test.rs:44:5:56:5 | exit fn test_break_with_labels |  |
-| test.rs:44:31:44:31 | b | test.rs:44:31:44:37 | ...: <bool> | match |
-| test.rs:44:31:44:37 | ...: <bool> | test.rs:45:9:54:9 | ExprStmt |  |
+| test.rs:44:31:44:31 | b | test.rs:44:31:44:37 | ...: bool | match |
+| test.rs:44:31:44:37 | ...: bool | test.rs:45:9:54:9 | ExprStmt |  |
 | test.rs:44:48:56:5 | { ... } | test.rs:44:5:56:5 | exit fn test_break_with_labels (normal) |  |
 | test.rs:45:9:54:9 | 'outer: loop { ... } | test.rs:55:9:55:12 | true |  |
 | test.rs:45:9:54:9 | ExprStmt | test.rs:47:17:51:17 | ExprStmt |  |
@@ -120,8 +120,8 @@ edges
 | test.rs:52:17:52:29 | ExprStmt | test.rs:52:17:52:28 | break ''inner |  |
 | test.rs:55:9:55:12 | true | test.rs:44:48:56:5 | { ... } |  |
 | test.rs:58:5:70:5 | enter fn test_continue_with_labels | test.rs:58:34:58:34 | b |  |
-| test.rs:58:34:58:34 | b | test.rs:58:34:58:40 | ...: <bool> | match |
-| test.rs:58:34:58:40 | ...: <bool> | test.rs:60:13:60:14 | ExprStmt |  |
+| test.rs:58:34:58:34 | b | test.rs:58:34:58:40 | ...: bool | match |
+| test.rs:58:34:58:40 | ...: bool | test.rs:60:13:60:14 | ExprStmt |  |
 | test.rs:60:13:60:13 | 1 | test.rs:62:17:66:17 | ExprStmt |  |
 | test.rs:60:13:60:14 | ExprStmt | test.rs:60:13:60:13 | 1 |  |
 | test.rs:62:17:66:17 | ExprStmt | test.rs:62:20:62:20 | b |  |
@@ -138,8 +138,8 @@ edges
 | test.rs:67:17:67:31 | continue 'inner | test.rs:62:17:66:17 | ExprStmt | continue |
 | test.rs:67:17:67:32 | ExprStmt | test.rs:67:17:67:31 | continue 'inner |  |
 | test.rs:72:5:84:5 | enter fn test_loop_label_shadowing | test.rs:72:34:72:34 | b |  |
-| test.rs:72:34:72:34 | b | test.rs:72:34:72:40 | ...: <bool> | match |
-| test.rs:72:34:72:40 | ...: <bool> | test.rs:74:13:74:14 | ExprStmt |  |
+| test.rs:72:34:72:34 | b | test.rs:72:34:72:40 | ...: bool | match |
+| test.rs:72:34:72:40 | ...: bool | test.rs:74:13:74:14 | ExprStmt |  |
 | test.rs:74:13:74:13 | 1 | test.rs:76:17:80:17 | ExprStmt |  |
 | test.rs:74:13:74:14 | ExprStmt | test.rs:74:13:74:13 | 1 |  |
 | test.rs:76:17:80:17 | ExprStmt | test.rs:76:20:76:20 | b |  |
@@ -157,8 +157,8 @@ edges
 | test.rs:81:17:81:32 | ExprStmt | test.rs:81:17:81:31 | continue 'label |  |
 | test.rs:86:5:95:5 | enter fn test_while | test.rs:86:19:86:19 | i |  |
 | test.rs:86:5:95:5 | exit fn test_while (normal) | test.rs:86:5:95:5 | exit fn test_while |  |
-| test.rs:86:19:86:19 | i | test.rs:86:19:86:24 | ...: <i64> | match |
-| test.rs:86:19:86:24 | ...: <i64> | test.rs:87:9:87:25 | let ... = true |  |
+| test.rs:86:19:86:19 | i | test.rs:86:19:86:24 | ...: i64 | match |
+| test.rs:86:19:86:24 | ...: i64 | test.rs:87:9:87:25 | let ... = true |  |
 | test.rs:86:27:95:5 | { ... } | test.rs:86:5:95:5 | exit fn test_while (normal) |  |
 | test.rs:87:9:87:25 | let ... = true | test.rs:87:21:87:24 | true |  |
 | test.rs:87:13:87:17 | b | test.rs:88:15:88:15 | b | match |
@@ -206,8 +206,8 @@ edges
 | test.rs:101:17:101:22 | ExprStmt | test.rs:101:17:101:21 | break |  |
 | test.rs:106:5:113:5 | enter fn test_for | test.rs:106:17:106:17 | j |  |
 | test.rs:106:5:113:5 | exit fn test_for (normal) | test.rs:106:5:113:5 | exit fn test_for |  |
-| test.rs:106:17:106:17 | j | test.rs:106:17:106:22 | ...: <i64> | match |
-| test.rs:106:17:106:22 | ...: <i64> | test.rs:107:18:107:18 | 0 |  |
+| test.rs:106:17:106:17 | j | test.rs:106:17:106:22 | ...: i64 | match |
+| test.rs:106:17:106:22 | ...: i64 | test.rs:107:18:107:18 | 0 |  |
 | test.rs:106:25:113:5 | { ... } | test.rs:106:5:113:5 | exit fn test_for (normal) |  |
 | test.rs:107:9:112:9 | for ... in ... { ... } | test.rs:106:25:113:5 | { ... } |  |
 | test.rs:107:13:107:13 | i | test.rs:107:9:112:9 | for ... in ... { ... } | no-match |
@@ -233,8 +233,8 @@ edges
 | test.rs:117:26:117:26 | 1 | test.rs:117:19:117:26 | return 1 |  |
 | test.rs:122:1:125:1 | enter fn test_nested_function | test.rs:122:25:122:25 | n |  |
 | test.rs:122:1:125:1 | exit fn test_nested_function (normal) | test.rs:122:1:125:1 | exit fn test_nested_function |  |
-| test.rs:122:25:122:25 | n | test.rs:122:25:122:30 | ...: <i64> | match |
-| test.rs:122:25:122:30 | ...: <i64> | test.rs:123:5:123:28 | let ... = ... |  |
+| test.rs:122:25:122:25 | n | test.rs:122:25:122:30 | ...: i64 | match |
+| test.rs:122:25:122:30 | ...: i64 | test.rs:123:5:123:28 | let ... = ... |  |
 | test.rs:122:40:125:1 | { ... } | test.rs:122:1:125:1 | exit fn test_nested_function (normal) |  |
 | test.rs:123:5:123:28 | let ... = ... | test.rs:123:19:123:27 | \|...\| ... |  |
 | test.rs:123:9:123:15 | add_one | test.rs:124:5:124:11 | add_one | match |
@@ -253,8 +253,8 @@ edges
 | test.rs:124:21:124:21 | n | test.rs:124:13:124:22 | add_one(...) |  |
 | test.rs:129:5:135:5 | enter fn test_if_else | test.rs:129:21:129:21 | n |  |
 | test.rs:129:5:135:5 | exit fn test_if_else (normal) | test.rs:129:5:135:5 | exit fn test_if_else |  |
-| test.rs:129:21:129:21 | n | test.rs:129:21:129:26 | ...: <i64> | match |
-| test.rs:129:21:129:26 | ...: <i64> | test.rs:130:12:130:12 | n |  |
+| test.rs:129:21:129:21 | n | test.rs:129:21:129:26 | ...: i64 | match |
+| test.rs:129:21:129:26 | ...: i64 | test.rs:130:12:130:12 | n |  |
 | test.rs:129:36:135:5 | { ... } | test.rs:129:5:135:5 | exit fn test_if_else (normal) |  |
 | test.rs:130:9:134:9 | if ... {...} else {...} | test.rs:129:36:135:5 | { ... } |  |
 | test.rs:130:12:130:12 | n | test.rs:130:17:130:17 | 0 |  |
@@ -269,8 +269,8 @@ edges
 | test.rs:133:17:133:17 | 1 | test.rs:133:13:133:17 | ... - ... |  |
 | test.rs:137:5:143:5 | enter fn test_if_let_else | test.rs:137:25:137:25 | a |  |
 | test.rs:137:5:143:5 | exit fn test_if_let_else (normal) | test.rs:137:5:143:5 | exit fn test_if_let_else |  |
-| test.rs:137:25:137:25 | a | test.rs:137:25:137:38 | ...: <Option::<...>> | match |
-| test.rs:137:25:137:38 | ...: <Option::<...>> | test.rs:138:12:138:26 | let ... = a |  |
+| test.rs:137:25:137:25 | a | test.rs:137:25:137:38 | ...: Option::<...> | match |
+| test.rs:137:25:137:38 | ...: Option::<...> | test.rs:138:12:138:26 | let ... = a |  |
 | test.rs:137:48:143:5 | { ... } | test.rs:137:5:143:5 | exit fn test_if_let_else (normal) |  |
 | test.rs:138:9:142:9 | if ... {...} else {...} | test.rs:137:48:143:5 | { ... } |  |
 | test.rs:138:12:138:26 | let ... = a | test.rs:138:26:138:26 | a |  |
@@ -284,8 +284,8 @@ edges
 | test.rs:141:13:141:13 | 0 | test.rs:140:16:142:9 | { ... } |  |
 | test.rs:145:5:150:5 | enter fn test_if_let | test.rs:145:20:145:20 | a |  |
 | test.rs:145:5:150:5 | exit fn test_if_let (normal) | test.rs:145:5:150:5 | exit fn test_if_let |  |
-| test.rs:145:20:145:20 | a | test.rs:145:20:145:33 | ...: <Option::<...>> | match |
-| test.rs:145:20:145:33 | ...: <Option::<...>> | test.rs:146:9:148:9 | ExprStmt |  |
+| test.rs:145:20:145:20 | a | test.rs:145:20:145:33 | ...: Option::<...> | match |
+| test.rs:145:20:145:33 | ...: Option::<...> | test.rs:146:9:148:9 | ExprStmt |  |
 | test.rs:145:43:150:5 | { ... } | test.rs:145:5:150:5 | exit fn test_if_let (normal) |  |
 | test.rs:146:9:148:9 | ExprStmt | test.rs:146:12:146:26 | let ... = a |  |
 | test.rs:146:9:148:9 | if ... {...} | test.rs:149:9:149:9 | 0 |  |
@@ -300,8 +300,8 @@ edges
 | test.rs:149:9:149:9 | 0 | test.rs:145:43:150:5 | { ... } |  |
 | test.rs:152:5:158:5 | enter fn test_nested_if | test.rs:152:23:152:23 | a |  |
 | test.rs:152:5:158:5 | exit fn test_nested_if (normal) | test.rs:152:5:158:5 | exit fn test_nested_if |  |
-| test.rs:152:23:152:23 | a | test.rs:152:23:152:28 | ...: <i64> | match |
-| test.rs:152:23:152:28 | ...: <i64> | test.rs:153:16:153:16 | a |  |
+| test.rs:152:23:152:23 | a | test.rs:152:23:152:28 | ...: i64 | match |
+| test.rs:152:23:152:28 | ...: i64 | test.rs:153:16:153:16 | a |  |
 | test.rs:152:38:158:5 | { ... } | test.rs:152:5:158:5 | exit fn test_nested_if (normal) |  |
 | test.rs:153:9:157:9 | if ... {...} else {...} | test.rs:152:38:158:5 | { ... } |  |
 | test.rs:153:13:153:48 | [boolean(false)] if ... {...} else {...} | test.rs:156:13:156:13 | 0 | false |
@@ -329,8 +329,8 @@ edges
 | test.rs:156:13:156:13 | 0 | test.rs:155:16:157:9 | { ... } |  |
 | test.rs:160:5:169:5 | enter fn test_nested_if_match | test.rs:160:29:160:29 | a |  |
 | test.rs:160:5:169:5 | exit fn test_nested_if_match (normal) | test.rs:160:5:169:5 | exit fn test_nested_if_match |  |
-| test.rs:160:29:160:29 | a | test.rs:160:29:160:34 | ...: <i64> | match |
-| test.rs:160:29:160:34 | ...: <i64> | test.rs:161:19:161:19 | a |  |
+| test.rs:160:29:160:29 | a | test.rs:160:29:160:34 | ...: i64 | match |
+| test.rs:160:29:160:34 | ...: i64 | test.rs:161:19:161:19 | a |  |
 | test.rs:160:44:169:5 | { ... } | test.rs:160:5:169:5 | exit fn test_nested_if_match (normal) |  |
 | test.rs:161:9:168:9 | if ... {...} else {...} | test.rs:160:44:169:5 | { ... } |  |
 | test.rs:161:13:164:9 | [boolean(false)] match a { ... } | test.rs:167:13:167:13 | 0 | false |
@@ -348,8 +348,8 @@ edges
 | test.rs:167:13:167:13 | 0 | test.rs:166:16:168:9 | { ... } |  |
 | test.rs:171:5:180:5 | enter fn test_nested_if_block | test.rs:171:29:171:29 | a |  |
 | test.rs:171:5:180:5 | exit fn test_nested_if_block (normal) | test.rs:171:5:180:5 | exit fn test_nested_if_block |  |
-| test.rs:171:29:171:29 | a | test.rs:171:29:171:34 | ...: <i64> | match |
-| test.rs:171:29:171:34 | ...: <i64> | test.rs:173:13:173:15 | ExprStmt |  |
+| test.rs:171:29:171:29 | a | test.rs:171:29:171:34 | ...: i64 | match |
+| test.rs:171:29:171:34 | ...: i64 | test.rs:173:13:173:15 | ExprStmt |  |
 | test.rs:171:44:180:5 | { ... } | test.rs:171:5:180:5 | exit fn test_nested_if_block (normal) |  |
 | test.rs:172:9:179:9 | if ... {...} else {...} | test.rs:171:44:180:5 | { ... } |  |
 | test.rs:172:12:175:9 | [boolean(false)] { ... } | test.rs:178:13:178:13 | 0 | false |
@@ -366,8 +366,8 @@ edges
 | test.rs:178:13:178:13 | 0 | test.rs:177:16:179:9 | { ... } |  |
 | test.rs:182:5:192:5 | enter fn test_if_assignment | test.rs:182:27:182:27 | a |  |
 | test.rs:182:5:192:5 | exit fn test_if_assignment (normal) | test.rs:182:5:192:5 | exit fn test_if_assignment |  |
-| test.rs:182:27:182:27 | a | test.rs:182:27:182:32 | ...: <i64> | match |
-| test.rs:182:27:182:32 | ...: <i64> | test.rs:183:9:183:26 | let ... = false |  |
+| test.rs:182:27:182:27 | a | test.rs:182:27:182:32 | ...: i64 | match |
+| test.rs:182:27:182:32 | ...: i64 | test.rs:183:9:183:26 | let ... = false |  |
 | test.rs:182:42:192:5 | { ... } | test.rs:182:5:192:5 | exit fn test_if_assignment (normal) |  |
 | test.rs:183:9:183:26 | let ... = false | test.rs:183:21:183:25 | false |  |
 | test.rs:183:13:183:17 | x | test.rs:185:13:185:21 | ExprStmt | match |
@@ -387,8 +387,8 @@ edges
 | test.rs:190:13:190:13 | 0 | test.rs:189:16:191:9 | { ... } |  |
 | test.rs:194:5:205:5 | enter fn test_if_loop1 | test.rs:194:22:194:22 | a |  |
 | test.rs:194:5:205:5 | exit fn test_if_loop1 (normal) | test.rs:194:5:205:5 | exit fn test_if_loop1 |  |
-| test.rs:194:22:194:22 | a | test.rs:194:22:194:27 | ...: <i64> | match |
-| test.rs:194:22:194:27 | ...: <i64> | test.rs:196:13:198:14 | ExprStmt |  |
+| test.rs:194:22:194:22 | a | test.rs:194:22:194:27 | ...: i64 | match |
+| test.rs:194:22:194:27 | ...: i64 | test.rs:196:13:198:14 | ExprStmt |  |
 | test.rs:194:37:205:5 | { ... } | test.rs:194:5:205:5 | exit fn test_if_loop1 (normal) |  |
 | test.rs:195:9:204:9 | if ... {...} else {...} | test.rs:194:37:205:5 | { ... } |  |
 | test.rs:195:13:200:9 | [boolean(false)] loop { ... } | test.rs:203:13:203:13 | 0 | false |
@@ -417,8 +417,8 @@ edges
 | test.rs:203:13:203:13 | 0 | test.rs:202:16:204:9 | { ... } |  |
 | test.rs:207:5:218:5 | enter fn test_if_loop2 | test.rs:207:22:207:22 | a |  |
 | test.rs:207:5:218:5 | exit fn test_if_loop2 (normal) | test.rs:207:5:218:5 | exit fn test_if_loop2 |  |
-| test.rs:207:22:207:22 | a | test.rs:207:22:207:27 | ...: <i64> | match |
-| test.rs:207:22:207:27 | ...: <i64> | test.rs:209:13:211:14 | ExprStmt |  |
+| test.rs:207:22:207:22 | a | test.rs:207:22:207:27 | ...: i64 | match |
+| test.rs:207:22:207:27 | ...: i64 | test.rs:209:13:211:14 | ExprStmt |  |
 | test.rs:207:37:218:5 | { ... } | test.rs:207:5:218:5 | exit fn test_if_loop2 (normal) |  |
 | test.rs:208:9:217:9 | if ... {...} else {...} | test.rs:207:37:218:5 | { ... } |  |
 | test.rs:208:13:213:9 | [boolean(false)] 'label: loop { ... } | test.rs:216:13:216:13 | 0 | false |
@@ -447,8 +447,8 @@ edges
 | test.rs:216:13:216:13 | 0 | test.rs:215:16:217:9 | { ... } |  |
 | test.rs:220:5:228:5 | enter fn test_labelled_block | test.rs:220:28:220:28 | a |  |
 | test.rs:220:5:228:5 | exit fn test_labelled_block (normal) | test.rs:220:5:228:5 | exit fn test_labelled_block |  |
-| test.rs:220:28:220:28 | a | test.rs:220:28:220:33 | ...: <i64> | match |
-| test.rs:220:28:220:33 | ...: <i64> | test.rs:222:13:222:31 | ExprStmt |  |
+| test.rs:220:28:220:28 | a | test.rs:220:28:220:33 | ...: i64 | match |
+| test.rs:220:28:220:33 | ...: i64 | test.rs:222:13:222:31 | ExprStmt |  |
 | test.rs:220:43:228:5 | { ... } | test.rs:220:5:228:5 | exit fn test_labelled_block (normal) |  |
 | test.rs:221:9:227:9 | if ... {...} else {...} | test.rs:220:43:228:5 | { ... } |  |
 | test.rs:221:13:223:9 | [boolean(false)] 'block: { ... } | test.rs:226:13:226:13 | 0 | false |
@@ -466,12 +466,12 @@ edges
 | test.rs:226:13:226:13 | 0 | test.rs:225:16:227:9 | { ... } |  |
 | test.rs:233:5:236:5 | enter fn test_and_operator | test.rs:233:30:233:30 | a |  |
 | test.rs:233:5:236:5 | exit fn test_and_operator (normal) | test.rs:233:5:236:5 | exit fn test_and_operator |  |
-| test.rs:233:30:233:30 | a | test.rs:233:30:233:36 | ...: <bool> | match |
-| test.rs:233:30:233:36 | ...: <bool> | test.rs:233:39:233:39 | b |  |
-| test.rs:233:39:233:39 | b | test.rs:233:39:233:45 | ...: <bool> | match |
-| test.rs:233:39:233:45 | ...: <bool> | test.rs:233:48:233:48 | c |  |
-| test.rs:233:48:233:48 | c | test.rs:233:48:233:54 | ...: <bool> | match |
-| test.rs:233:48:233:54 | ...: <bool> | test.rs:234:9:234:28 | let ... = ... |  |
+| test.rs:233:30:233:30 | a | test.rs:233:30:233:36 | ...: bool | match |
+| test.rs:233:30:233:36 | ...: bool | test.rs:233:39:233:39 | b |  |
+| test.rs:233:39:233:39 | b | test.rs:233:39:233:45 | ...: bool | match |
+| test.rs:233:39:233:45 | ...: bool | test.rs:233:48:233:48 | c |  |
+| test.rs:233:48:233:48 | c | test.rs:233:48:233:54 | ...: bool | match |
+| test.rs:233:48:233:54 | ...: bool | test.rs:234:9:234:28 | let ... = ... |  |
 | test.rs:233:65:236:5 | { ... } | test.rs:233:5:236:5 | exit fn test_and_operator (normal) |  |
 | test.rs:234:9:234:28 | let ... = ... | test.rs:234:17:234:17 | a |  |
 | test.rs:234:13:234:13 | d | test.rs:235:9:235:9 | d | match |
@@ -486,12 +486,12 @@ edges
 | test.rs:235:9:235:9 | d | test.rs:233:65:236:5 | { ... } |  |
 | test.rs:238:5:241:5 | enter fn test_or_operator | test.rs:238:25:238:25 | a |  |
 | test.rs:238:5:241:5 | exit fn test_or_operator (normal) | test.rs:238:5:241:5 | exit fn test_or_operator |  |
-| test.rs:238:25:238:25 | a | test.rs:238:25:238:31 | ...: <bool> | match |
-| test.rs:238:25:238:31 | ...: <bool> | test.rs:238:34:238:34 | b |  |
-| test.rs:238:34:238:34 | b | test.rs:238:34:238:40 | ...: <bool> | match |
-| test.rs:238:34:238:40 | ...: <bool> | test.rs:238:43:238:43 | c |  |
-| test.rs:238:43:238:43 | c | test.rs:238:43:238:49 | ...: <bool> | match |
-| test.rs:238:43:238:49 | ...: <bool> | test.rs:239:9:239:28 | let ... = ... |  |
+| test.rs:238:25:238:25 | a | test.rs:238:25:238:31 | ...: bool | match |
+| test.rs:238:25:238:31 | ...: bool | test.rs:238:34:238:34 | b |  |
+| test.rs:238:34:238:34 | b | test.rs:238:34:238:40 | ...: bool | match |
+| test.rs:238:34:238:40 | ...: bool | test.rs:238:43:238:43 | c |  |
+| test.rs:238:43:238:43 | c | test.rs:238:43:238:49 | ...: bool | match |
+| test.rs:238:43:238:49 | ...: bool | test.rs:239:9:239:28 | let ... = ... |  |
 | test.rs:238:60:241:5 | { ... } | test.rs:238:5:241:5 | exit fn test_or_operator (normal) |  |
 | test.rs:239:9:239:28 | let ... = ... | test.rs:239:17:239:17 | a |  |
 | test.rs:239:13:239:13 | d | test.rs:240:9:240:9 | d | match |
@@ -506,12 +506,12 @@ edges
 | test.rs:240:9:240:9 | d | test.rs:238:60:241:5 | { ... } |  |
 | test.rs:243:5:246:5 | enter fn test_or_operator_2 | test.rs:243:27:243:27 | a |  |
 | test.rs:243:5:246:5 | exit fn test_or_operator_2 (normal) | test.rs:243:5:246:5 | exit fn test_or_operator_2 |  |
-| test.rs:243:27:243:27 | a | test.rs:243:27:243:33 | ...: <bool> | match |
-| test.rs:243:27:243:33 | ...: <bool> | test.rs:243:36:243:36 | b |  |
-| test.rs:243:36:243:36 | b | test.rs:243:36:243:41 | ...: <i64> | match |
-| test.rs:243:36:243:41 | ...: <i64> | test.rs:243:44:243:44 | c |  |
-| test.rs:243:44:243:44 | c | test.rs:243:44:243:50 | ...: <bool> | match |
-| test.rs:243:44:243:50 | ...: <bool> | test.rs:244:9:244:36 | let ... = ... |  |
+| test.rs:243:27:243:27 | a | test.rs:243:27:243:33 | ...: bool | match |
+| test.rs:243:27:243:33 | ...: bool | test.rs:243:36:243:36 | b |  |
+| test.rs:243:36:243:36 | b | test.rs:243:36:243:41 | ...: i64 | match |
+| test.rs:243:36:243:41 | ...: i64 | test.rs:243:44:243:44 | c |  |
+| test.rs:243:44:243:44 | c | test.rs:243:44:243:50 | ...: bool | match |
+| test.rs:243:44:243:50 | ...: bool | test.rs:244:9:244:36 | let ... = ... |  |
 | test.rs:243:61:246:5 | { ... } | test.rs:243:5:246:5 | exit fn test_or_operator_2 (normal) |  |
 | test.rs:244:9:244:36 | let ... = ... | test.rs:244:17:244:17 | a |  |
 | test.rs:244:13:244:13 | d | test.rs:245:9:245:9 | d | match |
@@ -528,8 +528,8 @@ edges
 | test.rs:245:9:245:9 | d | test.rs:243:61:246:5 | { ... } |  |
 | test.rs:248:5:251:5 | enter fn test_not_operator | test.rs:248:26:248:26 | a |  |
 | test.rs:248:5:251:5 | exit fn test_not_operator (normal) | test.rs:248:5:251:5 | exit fn test_not_operator |  |
-| test.rs:248:26:248:26 | a | test.rs:248:26:248:32 | ...: <bool> | match |
-| test.rs:248:26:248:32 | ...: <bool> | test.rs:249:9:249:19 | let ... = ... |  |
+| test.rs:248:26:248:26 | a | test.rs:248:26:248:32 | ...: bool | match |
+| test.rs:248:26:248:32 | ...: bool | test.rs:249:9:249:19 | let ... = ... |  |
 | test.rs:248:43:251:5 | { ... } | test.rs:248:5:251:5 | exit fn test_not_operator (normal) |  |
 | test.rs:249:9:249:19 | let ... = ... | test.rs:249:18:249:18 | a |  |
 | test.rs:249:13:249:13 | d | test.rs:250:9:250:9 | d | match |
@@ -538,12 +538,12 @@ edges
 | test.rs:250:9:250:9 | d | test.rs:248:43:251:5 | { ... } |  |
 | test.rs:253:5:259:5 | enter fn test_if_and_operator | test.rs:253:29:253:29 | a |  |
 | test.rs:253:5:259:5 | exit fn test_if_and_operator (normal) | test.rs:253:5:259:5 | exit fn test_if_and_operator |  |
-| test.rs:253:29:253:29 | a | test.rs:253:29:253:35 | ...: <bool> | match |
-| test.rs:253:29:253:35 | ...: <bool> | test.rs:253:38:253:38 | b |  |
-| test.rs:253:38:253:38 | b | test.rs:253:38:253:44 | ...: <bool> | match |
-| test.rs:253:38:253:44 | ...: <bool> | test.rs:253:47:253:47 | c |  |
-| test.rs:253:47:253:47 | c | test.rs:253:47:253:53 | ...: <bool> | match |
-| test.rs:253:47:253:53 | ...: <bool> | test.rs:254:12:254:12 | a |  |
+| test.rs:253:29:253:29 | a | test.rs:253:29:253:35 | ...: bool | match |
+| test.rs:253:29:253:35 | ...: bool | test.rs:253:38:253:38 | b |  |
+| test.rs:253:38:253:38 | b | test.rs:253:38:253:44 | ...: bool | match |
+| test.rs:253:38:253:44 | ...: bool | test.rs:253:47:253:47 | c |  |
+| test.rs:253:47:253:47 | c | test.rs:253:47:253:53 | ...: bool | match |
+| test.rs:253:47:253:53 | ...: bool | test.rs:254:12:254:12 | a |  |
 | test.rs:253:64:259:5 | { ... } | test.rs:253:5:259:5 | exit fn test_if_and_operator (normal) |  |
 | test.rs:254:9:258:9 | if ... {...} else {...} | test.rs:253:64:259:5 | { ... } |  |
 | test.rs:254:12:254:12 | a | test.rs:254:12:254:17 | [boolean(false)] ... && ... | false |
@@ -562,12 +562,12 @@ edges
 | test.rs:257:13:257:17 | false | test.rs:256:16:258:9 | { ... } |  |
 | test.rs:261:5:267:5 | enter fn test_if_or_operator | test.rs:261:28:261:28 | a |  |
 | test.rs:261:5:267:5 | exit fn test_if_or_operator (normal) | test.rs:261:5:267:5 | exit fn test_if_or_operator |  |
-| test.rs:261:28:261:28 | a | test.rs:261:28:261:34 | ...: <bool> | match |
-| test.rs:261:28:261:34 | ...: <bool> | test.rs:261:37:261:37 | b |  |
-| test.rs:261:37:261:37 | b | test.rs:261:37:261:43 | ...: <bool> | match |
-| test.rs:261:37:261:43 | ...: <bool> | test.rs:261:46:261:46 | c |  |
-| test.rs:261:46:261:46 | c | test.rs:261:46:261:52 | ...: <bool> | match |
-| test.rs:261:46:261:52 | ...: <bool> | test.rs:262:12:262:12 | a |  |
+| test.rs:261:28:261:28 | a | test.rs:261:28:261:34 | ...: bool | match |
+| test.rs:261:28:261:34 | ...: bool | test.rs:261:37:261:37 | b |  |
+| test.rs:261:37:261:37 | b | test.rs:261:37:261:43 | ...: bool | match |
+| test.rs:261:37:261:43 | ...: bool | test.rs:261:46:261:46 | c |  |
+| test.rs:261:46:261:46 | c | test.rs:261:46:261:52 | ...: bool | match |
+| test.rs:261:46:261:52 | ...: bool | test.rs:262:12:262:12 | a |  |
 | test.rs:261:63:267:5 | { ... } | test.rs:261:5:267:5 | exit fn test_if_or_operator (normal) |  |
 | test.rs:262:9:266:9 | if ... {...} else {...} | test.rs:261:63:267:5 | { ... } |  |
 | test.rs:262:12:262:12 | a | test.rs:262:12:262:17 | [boolean(true)] ... \|\| ... | true |
@@ -586,8 +586,8 @@ edges
 | test.rs:265:13:265:17 | false | test.rs:264:16:266:9 | { ... } |  |
 | test.rs:269:5:275:5 | enter fn test_if_not_operator | test.rs:269:29:269:29 | a |  |
 | test.rs:269:5:275:5 | exit fn test_if_not_operator (normal) | test.rs:269:5:275:5 | exit fn test_if_not_operator |  |
-| test.rs:269:29:269:29 | a | test.rs:269:29:269:35 | ...: <bool> | match |
-| test.rs:269:29:269:35 | ...: <bool> | test.rs:270:13:270:13 | a |  |
+| test.rs:269:29:269:29 | a | test.rs:269:29:269:35 | ...: bool | match |
+| test.rs:269:29:269:35 | ...: bool | test.rs:270:13:270:13 | a |  |
 | test.rs:269:46:275:5 | { ... } | test.rs:269:5:275:5 | exit fn test_if_not_operator (normal) |  |
 | test.rs:270:9:274:9 | if ... {...} else {...} | test.rs:269:46:275:5 | { ... } |  |
 | test.rs:270:12:270:13 | [boolean(false)] ! ... | test.rs:273:13:273:17 | false | false |
@@ -600,8 +600,8 @@ edges
 | test.rs:273:13:273:17 | false | test.rs:272:16:274:9 | { ... } |  |
 | test.rs:277:5:279:5 | enter fn test_and_return | test.rs:277:24:277:24 | a |  |
 | test.rs:277:5:279:5 | exit fn test_and_return (normal) | test.rs:277:5:279:5 | exit fn test_and_return |  |
-| test.rs:277:24:277:24 | a | test.rs:277:24:277:30 | ...: <bool> | match |
-| test.rs:277:24:277:30 | ...: <bool> | test.rs:278:9:278:20 | ExprStmt |  |
+| test.rs:277:24:277:24 | a | test.rs:277:24:277:30 | ...: bool | match |
+| test.rs:277:24:277:30 | ...: bool | test.rs:278:9:278:20 | ExprStmt |  |
 | test.rs:277:33:279:5 | { ... } | test.rs:277:5:279:5 | exit fn test_and_return (normal) |  |
 | test.rs:278:9:278:9 | a | test.rs:278:9:278:19 | ... && ... | false |
 | test.rs:278:9:278:9 | a | test.rs:278:14:278:19 | return | true |
@@ -610,8 +610,8 @@ edges
 | test.rs:278:14:278:19 | return | test.rs:277:5:279:5 | exit fn test_and_return (normal) | return |
 | test.rs:281:5:286:5 | enter fn test_and_true | test.rs:281:22:281:22 | a |  |
 | test.rs:281:5:286:5 | exit fn test_and_true (normal) | test.rs:281:5:286:5 | exit fn test_and_true |  |
-| test.rs:281:22:281:22 | a | test.rs:281:22:281:28 | ...: <bool> | match |
-| test.rs:281:22:281:28 | ...: <bool> | test.rs:282:9:284:9 | ExprStmt |  |
+| test.rs:281:22:281:22 | a | test.rs:281:22:281:28 | ...: bool | match |
+| test.rs:281:22:281:28 | ...: bool | test.rs:282:9:284:9 | ExprStmt |  |
 | test.rs:281:38:286:5 | { ... } | test.rs:281:5:286:5 | exit fn test_and_true (normal) |  |
 | test.rs:282:9:284:9 | ExprStmt | test.rs:282:13:282:13 | a |  |
 | test.rs:282:9:284:9 | if ... {...} | test.rs:285:9:285:9 | 0 |  |
@@ -639,8 +639,8 @@ edges
 | test.rs:293:32:293:32 | 4 | test.rs:293:12:293:32 | ... + ... |  |
 | test.rs:296:5:301:5 | enter fn test_question_mark_operator_2 | test.rs:296:38:296:38 | b |  |
 | test.rs:296:5:301:5 | exit fn test_question_mark_operator_2 (normal) | test.rs:296:5:301:5 | exit fn test_question_mark_operator_2 |  |
-| test.rs:296:38:296:38 | b | test.rs:296:38:296:52 | ...: <Option::<...>> | match |
-| test.rs:296:38:296:52 | ...: <Option::<...>> | test.rs:297:15:297:15 | b |  |
+| test.rs:296:38:296:38 | b | test.rs:296:38:296:52 | ...: Option::<...> | match |
+| test.rs:296:38:296:52 | ...: Option::<...> | test.rs:297:15:297:15 | b |  |
 | test.rs:296:71:301:5 | { ... } | test.rs:296:5:301:5 | exit fn test_question_mark_operator_2 (normal) |  |
 | test.rs:297:9:300:9 | match ... { ... } | test.rs:296:71:301:5 | { ... } |  |
 | test.rs:297:15:297:15 | b | test.rs:297:15:297:16 | TryExpr |  |
@@ -659,8 +659,8 @@ edges
 | test.rs:299:27:299:30 | true | test.rs:299:22:299:31 | Some(...) |  |
 | test.rs:307:5:313:5 | enter fn test_match | test.rs:307:19:307:29 | maybe_digit |  |
 | test.rs:307:5:313:5 | exit fn test_match (normal) | test.rs:307:5:313:5 | exit fn test_match |  |
-| test.rs:307:19:307:29 | maybe_digit | test.rs:307:19:307:42 | ...: <Option::<...>> | match |
-| test.rs:307:19:307:42 | ...: <Option::<...>> | test.rs:308:15:308:25 | maybe_digit |  |
+| test.rs:307:19:307:29 | maybe_digit | test.rs:307:19:307:42 | ...: Option::<...> | match |
+| test.rs:307:19:307:42 | ...: Option::<...> | test.rs:308:15:308:25 | maybe_digit |  |
 | test.rs:307:52:313:5 | { ... } | test.rs:307:5:313:5 | exit fn test_match (normal) |  |
 | test.rs:308:9:312:9 | match maybe_digit { ... } | test.rs:307:52:313:5 | { ... } |  |
 | test.rs:308:15:308:25 | maybe_digit | test.rs:309:13:309:27 | TupleStructPat |  |
@@ -682,8 +682,8 @@ edges
 | test.rs:311:29:311:29 | 5 | test.rs:308:9:312:9 | match maybe_digit { ... } |  |
 | test.rs:315:5:324:5 | enter fn test_match_with_return_in_scrutinee | test.rs:315:44:315:54 | maybe_digit |  |
 | test.rs:315:5:324:5 | exit fn test_match_with_return_in_scrutinee (normal) | test.rs:315:5:324:5 | exit fn test_match_with_return_in_scrutinee |  |
-| test.rs:315:44:315:54 | maybe_digit | test.rs:315:44:315:67 | ...: <Option::<...>> | match |
-| test.rs:315:44:315:67 | ...: <Option::<...>> | test.rs:316:19:316:29 | maybe_digit |  |
+| test.rs:315:44:315:54 | maybe_digit | test.rs:315:44:315:67 | ...: Option::<...> | match |
+| test.rs:315:44:315:67 | ...: Option::<...> | test.rs:316:19:316:29 | maybe_digit |  |
 | test.rs:315:77:324:5 | { ... } | test.rs:315:5:324:5 | exit fn test_match_with_return_in_scrutinee (normal) |  |
 | test.rs:316:9:323:9 | match ... { ... } | test.rs:315:77:324:5 | { ... } |  |
 | test.rs:316:16:320:9 | if ... {...} else {...} | test.rs:321:13:321:27 | TupleStructPat |  |
@@ -708,10 +708,10 @@ edges
 | test.rs:322:29:322:29 | 5 | test.rs:316:9:323:9 | match ... { ... } |  |
 | test.rs:326:5:331:5 | enter fn test_match_and | test.rs:326:23:326:26 | cond |  |
 | test.rs:326:5:331:5 | exit fn test_match_and (normal) | test.rs:326:5:331:5 | exit fn test_match_and |  |
-| test.rs:326:23:326:26 | cond | test.rs:326:23:326:32 | ...: <bool> | match |
-| test.rs:326:23:326:32 | ...: <bool> | test.rs:326:35:326:35 | r |  |
-| test.rs:326:35:326:35 | r | test.rs:326:35:326:49 | ...: <Option::<...>> | match |
-| test.rs:326:35:326:49 | ...: <Option::<...>> | test.rs:327:16:327:16 | r |  |
+| test.rs:326:23:326:26 | cond | test.rs:326:23:326:32 | ...: bool | match |
+| test.rs:326:23:326:32 | ...: bool | test.rs:326:35:326:35 | r |  |
+| test.rs:326:35:326:35 | r | test.rs:326:35:326:49 | ...: Option::<...> | match |
+| test.rs:326:35:326:49 | ...: Option::<...> | test.rs:327:16:327:16 | r |  |
 | test.rs:326:60:331:5 | { ... } | test.rs:326:5:331:5 | exit fn test_match_and (normal) |  |
 | test.rs:327:9:330:18 | ... && ... | test.rs:326:60:331:5 | { ... } |  |
 | test.rs:327:10:330:9 | [boolean(false)] match r { ... } | test.rs:327:9:330:18 | ... && ... | false |
@@ -727,8 +727,8 @@ edges
 | test.rs:330:15:330:18 | cond | test.rs:327:9:330:18 | ... && ... |  |
 | test.rs:333:5:338:5 | enter fn test_match_with_no_arms | test.rs:333:35:333:35 | r |  |
 | test.rs:333:5:338:5 | exit fn test_match_with_no_arms (normal) | test.rs:333:5:338:5 | exit fn test_match_with_no_arms |  |
-| test.rs:333:35:333:35 | r | test.rs:333:35:333:58 | ...: <Result::<...>> | match |
-| test.rs:333:35:333:58 | ...: <Result::<...>> | test.rs:334:15:334:15 | r |  |
+| test.rs:333:35:333:35 | r | test.rs:333:35:333:58 | ...: Result::<...> | match |
+| test.rs:333:35:333:58 | ...: Result::<...> | test.rs:334:15:334:15 | r |  |
 | test.rs:333:66:338:5 | { ... } | test.rs:333:5:338:5 | exit fn test_match_with_no_arms (normal) |  |
 | test.rs:334:9:337:9 | match r { ... } | test.rs:333:66:338:5 | { ... } |  |
 | test.rs:334:15:334:15 | r | test.rs:335:13:335:21 | TupleStructPat |  |
@@ -742,8 +742,8 @@ edges
 | test.rs:336:33:336:37 | never | test.rs:336:27:336:40 | match never { ... } |  |
 | test.rs:343:5:346:5 | enter fn test_let_match | test.rs:343:23:343:23 | a |  |
 | test.rs:343:5:346:5 | exit fn test_let_match (normal) | test.rs:343:5:346:5 | exit fn test_let_match |  |
-| test.rs:343:23:343:23 | a | test.rs:343:23:343:36 | ...: <Option::<...>> | match |
-| test.rs:343:23:343:36 | ...: <Option::<...>> | test.rs:344:9:344:57 | let ... = a else {...} |  |
+| test.rs:343:23:343:23 | a | test.rs:343:23:343:36 | ...: Option::<...> | match |
+| test.rs:343:23:343:36 | ...: Option::<...> | test.rs:344:9:344:57 | let ... = a else {...} |  |
 | test.rs:343:46:346:5 | { ... } | test.rs:343:5:346:5 | exit fn test_let_match (normal) |  |
 | test.rs:344:9:344:57 | let ... = a else {...} | test.rs:344:23:344:23 | a |  |
 | test.rs:344:13:344:19 | TupleStructPat | test.rs:344:18:344:18 | n | match |
@@ -764,8 +764,8 @@ edges
 | test.rs:345:9:345:9 | n | test.rs:343:46:346:5 | { ... } |  |
 | test.rs:348:5:354:5 | enter fn test_let_with_return | test.rs:348:29:348:29 | m |  |
 | test.rs:348:5:354:5 | exit fn test_let_with_return (normal) | test.rs:348:5:354:5 | exit fn test_let_with_return |  |
-| test.rs:348:29:348:29 | m | test.rs:348:29:348:42 | ...: <Option::<...>> | match |
-| test.rs:348:29:348:42 | ...: <Option::<...>> | test.rs:349:9:352:10 | let ... = ... |  |
+| test.rs:348:29:348:29 | m | test.rs:348:29:348:42 | ...: Option::<...> | match |
+| test.rs:348:29:348:42 | ...: Option::<...> | test.rs:349:9:352:10 | let ... = ... |  |
 | test.rs:348:53:354:5 | { ... } | test.rs:348:5:354:5 | exit fn test_let_with_return (normal) |  |
 | test.rs:349:9:352:10 | let ... = ... | test.rs:349:25:349:25 | m |  |
 | test.rs:349:13:349:15 | ret | test.rs:353:9:353:12 | true | match |
@@ -790,8 +790,8 @@ edges
 | test.rs:361:9:361:15 | ExprStmt | test.rs:361:9:361:14 | return |  |
 | test.rs:366:5:370:5 | enter fn empty_struct_pattern | test.rs:366:29:366:30 | st |  |
 | test.rs:366:5:370:5 | exit fn empty_struct_pattern (normal) | test.rs:366:5:370:5 | exit fn empty_struct_pattern |  |
-| test.rs:366:29:366:30 | st | test.rs:366:29:366:40 | ...: <MyStruct> | match |
-| test.rs:366:29:366:40 | ...: <MyStruct> | test.rs:367:15:367:16 | st |  |
+| test.rs:366:29:366:30 | st | test.rs:366:29:366:40 | ...: MyStruct | match |
+| test.rs:366:29:366:40 | ...: MyStruct | test.rs:367:15:367:16 | st |  |
 | test.rs:366:50:370:5 | { ... } | test.rs:366:5:370:5 | exit fn empty_struct_pattern (normal) |  |
 | test.rs:367:9:369:9 | match st { ... } | test.rs:366:50:370:5 | { ... } |  |
 | test.rs:367:15:367:16 | st | test.rs:368:13:368:27 | MyStruct {...} |  |
@@ -845,8 +845,8 @@ edges
 | test.rs:393:18:393:32 | { ... } | test.rs:393:9:393:33 | MacroExpr |  |
 | test.rs:396:5:415:5 | enter fn async_block | test.rs:396:26:396:26 | b |  |
 | test.rs:396:5:415:5 | exit fn async_block (normal) | test.rs:396:5:415:5 | exit fn async_block |  |
-| test.rs:396:26:396:26 | b | test.rs:396:26:396:32 | ...: <bool> | match |
-| test.rs:396:26:396:32 | ...: <bool> | test.rs:397:9:399:10 | let ... = ... |  |
+| test.rs:396:26:396:26 | b | test.rs:396:26:396:32 | ...: bool | match |
+| test.rs:396:26:396:32 | ...: bool | test.rs:397:9:399:10 | let ... = ... |  |
 | test.rs:396:35:415:5 | { ... } | test.rs:396:5:415:5 | exit fn async_block (normal) |  |
 | test.rs:397:9:399:10 | let ... = ... | test.rs:397:26:399:9 | { ... } |  |
 | test.rs:397:13:397:22 | say_godbye | test.rs:400:9:402:10 | let ... = ... | match |
@@ -916,8 +916,8 @@ edges
 | test.rs:413:13:413:15 | foo | test.rs:409:28:414:9 | exit { ... } (normal) |  |
 | test.rs:421:5:423:5 | enter fn add_two | test.rs:421:22:421:22 | n |  |
 | test.rs:421:5:423:5 | exit fn add_two (normal) | test.rs:421:5:423:5 | exit fn add_two |  |
-| test.rs:421:22:421:22 | n | test.rs:421:22:421:27 | ...: <i64> | match |
-| test.rs:421:22:421:27 | ...: <i64> | test.rs:422:9:422:9 | n |  |
+| test.rs:421:22:421:22 | n | test.rs:421:22:421:27 | ...: i64 | match |
+| test.rs:421:22:421:27 | ...: i64 | test.rs:422:9:422:9 | n |  |
 | test.rs:421:37:423:5 | { ... } | test.rs:421:5:423:5 | exit fn add_two (normal) |  |
 | test.rs:422:9:422:9 | n | test.rs:422:13:422:13 | 2 |  |
 | test.rs:422:9:422:13 | ... + ... | test.rs:421:37:423:5 | { ... } |  |
@@ -1062,8 +1062,8 @@ edges
 | test.rs:497:17:497:17 | x | test.rs:497:12:497:17 | &mut x |  |
 | test.rs:509:5:511:5 | enter fn new | test.rs:509:12:509:12 | a |  |
 | test.rs:509:5:511:5 | exit fn new (normal) | test.rs:509:5:511:5 | exit fn new |  |
-| test.rs:509:12:509:12 | a | test.rs:509:12:509:17 | ...: <i64> | match |
-| test.rs:509:12:509:17 | ...: <i64> | test.rs:510:23:510:23 | a |  |
+| test.rs:509:12:509:12 | a | test.rs:509:12:509:17 | ...: i64 | match |
+| test.rs:509:12:509:17 | ...: i64 | test.rs:510:23:510:23 | a |  |
 | test.rs:509:28:511:5 | { ... } | test.rs:509:5:511:5 | exit fn new (normal) |  |
 | test.rs:510:9:510:25 | MyNumber {...} | test.rs:509:28:511:5 | { ... } |  |
 | test.rs:510:23:510:23 | a | test.rs:510:9:510:25 | MyNumber {...} |  |
@@ -1079,10 +1079,10 @@ edges
 | test.rs:517:5:519:5 | exit fn multifly_add (normal) | test.rs:517:5:519:5 | exit fn multifly_add |  |
 | test.rs:517:21:517:29 | SelfParam | test.rs:517:32:517:32 | a |  |
 | test.rs:517:26:517:29 | self | test.rs:517:21:517:29 | SelfParam |  |
-| test.rs:517:32:517:32 | a | test.rs:517:32:517:37 | ...: <i64> | match |
-| test.rs:517:32:517:37 | ...: <i64> | test.rs:517:40:517:40 | b |  |
-| test.rs:517:40:517:40 | b | test.rs:517:40:517:45 | ...: <i64> | match |
-| test.rs:517:40:517:45 | ...: <i64> | test.rs:518:9:518:34 | ExprStmt |  |
+| test.rs:517:32:517:32 | a | test.rs:517:32:517:37 | ...: i64 | match |
+| test.rs:517:32:517:37 | ...: i64 | test.rs:517:40:517:40 | b |  |
+| test.rs:517:40:517:40 | b | test.rs:517:40:517:45 | ...: i64 | match |
+| test.rs:517:40:517:45 | ...: i64 | test.rs:518:9:518:34 | ExprStmt |  |
 | test.rs:517:48:519:5 | { ... } | test.rs:517:5:519:5 | exit fn multifly_add (normal) |  |
 | test.rs:518:9:518:12 | self | test.rs:518:9:518:14 | self.n |  |
 | test.rs:518:9:518:14 | self.n | test.rs:518:19:518:22 | self |  |

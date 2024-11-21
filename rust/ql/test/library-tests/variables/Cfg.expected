@@ -17,8 +17,8 @@ edges
 | variables.rs:4:20:4:20 | s | variables.rs:4:14:4:20 | FormatArgsExpr |  |
 | variables.rs:7:1:9:1 | enter fn print_i64 | variables.rs:7:14:7:14 | i |  |
 | variables.rs:7:1:9:1 | exit fn print_i64 (normal) | variables.rs:7:1:9:1 | exit fn print_i64 |  |
-| variables.rs:7:14:7:14 | i | variables.rs:7:14:7:19 | ...: <i64> | match |
-| variables.rs:7:14:7:19 | ...: <i64> | variables.rs:8:5:8:22 | ExprStmt |  |
+| variables.rs:7:14:7:14 | i | variables.rs:7:14:7:19 | ...: i64 | match |
+| variables.rs:7:14:7:19 | ...: i64 | variables.rs:8:5:8:22 | ExprStmt |  |
 | variables.rs:7:22:9:1 | { ... } | variables.rs:7:1:9:1 | exit fn print_i64 (normal) |  |
 | variables.rs:8:5:8:21 | ...::_print | variables.rs:8:14:8:17 | "{}\\n" |  |
 | variables.rs:8:5:8:21 | MacroExpr | variables.rs:7:22:9:1 | { ... } |  |
@@ -584,10 +584,10 @@ edges
 | variables.rs:268:15:268:16 | c1 | variables.rs:268:5:268:17 | print_str(...) |  |
 | variables.rs:271:1:275:1 | enter fn param_pattern2 | variables.rs:272:6:272:21 | TupleStructPat |  |
 | variables.rs:271:1:275:1 | exit fn param_pattern2 (normal) | variables.rs:271:1:275:1 | exit fn param_pattern2 |  |
-| variables.rs:272:5:272:50 | ...: <Either> | variables.rs:274:5:274:18 | ExprStmt |  |
+| variables.rs:272:5:272:50 | ...: Either | variables.rs:274:5:274:18 | ExprStmt |  |
 | variables.rs:272:6:272:21 | TupleStructPat | variables.rs:272:19:272:20 | a9 | match |
 | variables.rs:272:6:272:21 | TupleStructPat | variables.rs:272:25:272:41 | TupleStructPat | no-match |
-| variables.rs:272:6:272:41 | [match(true)] ... \| ... | variables.rs:272:5:272:50 | ...: <Either> | match |
+| variables.rs:272:6:272:41 | [match(true)] ... \| ... | variables.rs:272:5:272:50 | ...: Either | match |
 | variables.rs:272:19:272:20 | a9 | variables.rs:272:6:272:41 | [match(true)] ... \| ... | match |
 | variables.rs:272:25:272:41 | TupleStructPat | variables.rs:272:39:272:40 | a9 | match |
 | variables.rs:272:39:272:40 | a9 | variables.rs:272:6:272:41 | [match(true)] ... \| ... | match |
@@ -675,8 +675,8 @@ edges
 | variables.rs:316:9:317:9 | \|...\| x | variables.rs:315:9:315:23 | example_closure |  |
 | variables.rs:316:9:317:9 | enter \|...\| x | variables.rs:316:10:316:10 | x |  |
 | variables.rs:316:9:317:9 | exit \|...\| x (normal) | variables.rs:316:9:317:9 | exit \|...\| x |  |
-| variables.rs:316:10:316:10 | x | variables.rs:316:10:316:15 | ...: <i64> | match |
-| variables.rs:316:10:316:15 | ...: <i64> | variables.rs:317:9:317:9 | x |  |
+| variables.rs:316:10:316:10 | x | variables.rs:316:10:316:15 | ...: i64 | match |
+| variables.rs:316:10:316:15 | ...: i64 | variables.rs:317:9:317:9 | x |  |
 | variables.rs:317:9:317:9 | x | variables.rs:316:9:317:9 | exit \|...\| x (normal) |  |
 | variables.rs:318:5:319:27 | let ... = ... | variables.rs:319:9:319:23 | example_closure |  |
 | variables.rs:318:9:318:10 | n1 | variables.rs:320:5:320:18 | ExprStmt | match |
@@ -695,8 +695,8 @@ edges
 | variables.rs:324:9:325:9 | \|...\| x | variables.rs:323:9:323:26 | immutable_variable |  |
 | variables.rs:324:9:325:9 | enter \|...\| x | variables.rs:324:10:324:10 | x |  |
 | variables.rs:324:9:325:9 | exit \|...\| x (normal) | variables.rs:324:9:325:9 | exit \|...\| x |  |
-| variables.rs:324:10:324:10 | x | variables.rs:324:10:324:15 | ...: <i64> | match |
-| variables.rs:324:10:324:15 | ...: <i64> | variables.rs:325:9:325:9 | x |  |
+| variables.rs:324:10:324:10 | x | variables.rs:324:10:324:15 | ...: i64 | match |
+| variables.rs:324:10:324:15 | ...: i64 | variables.rs:325:9:325:9 | x |  |
 | variables.rs:325:9:325:9 | x | variables.rs:324:9:325:9 | exit \|...\| x (normal) |  |
 | variables.rs:326:5:327:30 | let ... = ... | variables.rs:327:9:327:26 | immutable_variable |  |
 | variables.rs:326:9:326:10 | n2 | variables.rs:328:5:328:18 | ExprStmt | match |
@@ -979,8 +979,8 @@ edges
 | variables.rs:442:15:442:15 | i | variables.rs:442:5:442:16 | print_i64(...) |  |
 | variables.rs:445:1:459:1 | enter fn phi | variables.rs:445:8:445:8 | b |  |
 | variables.rs:445:1:459:1 | exit fn phi (normal) | variables.rs:445:1:459:1 | exit fn phi |  |
-| variables.rs:445:8:445:8 | b | variables.rs:445:8:445:15 | ...: <bool> | match |
-| variables.rs:445:8:445:15 | ...: <bool> | variables.rs:446:5:446:18 | let ... = 1 |  |
+| variables.rs:445:8:445:8 | b | variables.rs:445:8:445:15 | ...: bool | match |
+| variables.rs:445:8:445:15 | ...: bool | variables.rs:446:5:446:18 | let ... = 1 |  |
 | variables.rs:445:18:459:1 | { ... } | variables.rs:445:1:459:1 | exit fn phi (normal) |  |
 | variables.rs:446:5:446:18 | let ... = 1 | variables.rs:446:17:446:17 | 1 |  |
 | variables.rs:446:9:446:13 | x | variables.rs:447:5:447:17 | ExprStmt | match |
@@ -1035,10 +1035,10 @@ edges
 | variables.rs:458:15:458:15 | x | variables.rs:458:5:458:16 | print_i64(...) |  |
 | variables.rs:461:1:474:1 | enter fn phi_read | variables.rs:461:13:461:14 | b1 |  |
 | variables.rs:461:1:474:1 | exit fn phi_read (normal) | variables.rs:461:1:474:1 | exit fn phi_read |  |
-| variables.rs:461:13:461:14 | b1 | variables.rs:461:13:461:21 | ...: <bool> | match |
-| variables.rs:461:13:461:21 | ...: <bool> | variables.rs:461:24:461:25 | b2 |  |
-| variables.rs:461:24:461:25 | b2 | variables.rs:461:24:461:32 | ...: <bool> | match |
-| variables.rs:461:24:461:32 | ...: <bool> | variables.rs:462:5:462:14 | let ... = 1 |  |
+| variables.rs:461:13:461:14 | b1 | variables.rs:461:13:461:21 | ...: bool | match |
+| variables.rs:461:13:461:21 | ...: bool | variables.rs:461:24:461:25 | b2 |  |
+| variables.rs:461:24:461:25 | b2 | variables.rs:461:24:461:32 | ...: bool | match |
+| variables.rs:461:24:461:32 | ...: bool | variables.rs:462:5:462:14 | let ... = 1 |  |
 | variables.rs:461:35:474:1 | { ... } | variables.rs:461:1:474:1 | exit fn phi_read (normal) |  |
 | variables.rs:462:5:462:14 | let ... = 1 | variables.rs:462:13:462:13 | 1 |  |
 | variables.rs:462:9:462:9 | x | variables.rs:463:5:467:5 | ExprStmt | match |
