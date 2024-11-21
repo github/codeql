@@ -22,6 +22,10 @@ private predicate isCallback(DataFlow::SourceNode node) {
 
 /**
  * Summary that propagates exceptions out of callbacks back to the caller.
+ *
+ * This summary only applies to calls that have no other call targets.
+ * See also `FlowSummaryDefaultExceptionalReturn`, which handles calls that have a summary target,
+ * but where the summary does not mention `ReturnValue[exception]`.
  */
 private class ExceptionFlowSummary extends SummarizedCallable, LibraryCallableInternal {
   ExceptionFlowSummary() { this = "Exception propagator" }
