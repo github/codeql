@@ -15,11 +15,11 @@ fn get_data(n: i64) -> i64 {
 
 fn data_out_of_call() {
     let a = get_data(7);
-    sink(a); // $ hasValueFlow=n
+    sink(a); // $ MISSING: hasValueFlow=n
 }
 
 fn data_in(n: i64) {
-    sink(n + 7); // $ hasValueFlow
+    sink(n); // $ MISSING: hasValueFlow=3
 }
 
 fn data_in_to_call() {
@@ -34,7 +34,15 @@ fn pass_through(i: i64) -> i64 {
 fn data_through_call() {
     let a = source(1);
     let b = pass_through(a);
-    sink(b); // $ hasValueFlow=1
+    sink(b); // $ MISSING: hasValueFlow=1
+}
+
+fn block_expression_as_argument() {
+    let a = pass_through({
+        println!("Hello");
+        source(14)
+    });
+    sink(a); // $ MISSING: hasValueFlow=14
 }
 
 // -----------------------------------------------------------------------------
@@ -46,7 +54,7 @@ struct MyFlag {
 
 impl MyFlag {
     fn data_in(&self, n: i64) {
-        sink(n); // $ hasValueFlow=1
+        sink(n); // $ MISSING: hasValueFlow=1
     }
     fn get_data(&self) -> i64 {
         if self.flag {
@@ -67,7 +75,7 @@ impl MyFlag {
 fn data_out_of_method() {
     let mn = MyFlag { flag: true };
     let a = mn.get_data();
-    sink(a);
+    sink(a); // $ MISSING: hasValueFlow=2
 }
 
 fn data_in_to_method_call() {
@@ -79,8 +87,8 @@ fn data_in_to_method_call() {
 fn data_through_method() {
     let mn = MyFlag { flag: true };
     let a = source(4);
-    mn.data_through(a);
-    sink(a); // $ hasValueFlow=4
+    let b = mn.data_through(a);
+    sink(b); // $ MISSING: hasValueFlow=4
 }
 
 fn main() {
