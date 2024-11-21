@@ -1,0 +1,3 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - ctor = { version = "0.2.9" }
