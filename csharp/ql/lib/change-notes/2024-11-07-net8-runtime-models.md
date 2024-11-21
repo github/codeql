@@ -1,6 +1,4 @@
-## 3.1.1
-
-### Minor Analysis Improvements
-
-* .NET 9 is now required to build the C# extractor.
+---
+category: minorAnalysis
+---
 * The Models as Data models for .NET 8 Runtime now include generated models for higher order methods.
