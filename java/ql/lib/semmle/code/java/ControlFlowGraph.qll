@@ -1,7 +1,7 @@
 /**
  * Provides classes and predicates for computing expression-level intra-procedural control flow graphs.
  *
- * The only API exported by this library are the toplevel classes `ControlFlowNode`
+ * The only API exported by this library are the toplevel classes `ControlFlow::Node`
  * and its subclass `ConditionNode`, which wrap the successor relation and the
  * concept of true- and false-successors of conditions. A cfg node may either be a
  * statement, an expression, or an exit node for a callable, indicating that
@@ -164,7 +164,7 @@ module ControlFlow {
     }
 
     /**
-     * Get the most appropriate AST node for this control flow node, if any.
+     * Gets the most appropriate AST node for this control flow node, if any.
      *
      * This is needed for the equivalence relation on basic blocks in range
      * analysis.
@@ -176,7 +176,7 @@ module ControlFlow {
     }
   }
 
-  /** A synthetic node for the exit of a callable. */
+  /** A control flow node indicating the termination of a callable. */
   class ExitNode extends Node, TExitNode { }
 }
 
@@ -197,7 +197,7 @@ private module ControlFlowGraphImpl {
       result = this.(Expr).getEnclosingStmt()
     }
 
-    Node getCFGNode() { result.asExpr() = this or result.asStmt() = this }
+    Node getCfgNode() { result.asExpr() = this or result.asStmt() = this }
   }
 
   /**
@@ -931,7 +931,6 @@ private module ControlFlowGraphImpl {
     )
     or
     // The last node of a node executed in post-order is the node itself.
-    // n.(PostOrderNode).mayCompleteNormally() and last = n and completion = NormalCompletion()
     exists(PostOrderNode p | p = n |
       p.mayCompleteNormally() and last = p.getCFGNode() and completion = NormalCompletion()
     )
@@ -1195,7 +1194,7 @@ private module ControlFlowGraphImpl {
    */
   cached
   Node succ(Node n, Completion completion) {
-    // The successor of a callable is its exit node.
+    // After executing the callable body, the final node is the exit node.
     exists(Callable c | last(c.getBody(), n, completion) |
       result.(ExitNode).getEnclosingCallable() = c
     )
@@ -1404,7 +1403,7 @@ private module ControlFlowGraphImpl {
         switchExpr = switch.(SwitchStmt).getExpr() or switchExpr = switch.(SwitchExpr).getExpr()
       |
         // From the entry point control is transferred first to the expression...
-        (n.asStmt() = switch or n.asExpr() = switch) and
+        n.getAstNode() = switch and
         result = first(switchExpr) and
         completion = NormalCompletion()
         or
@@ -1601,6 +1600,6 @@ class ConditionNode extends ControlFlow::Node {
   /** Gets a false-successor of the `ConditionNode`. */
   ControlFlow::Node getAFalseSuccessor() { result = this.getABranchSuccessor(false) }
 
-  /** Gets the condition of this `ConditionNode`. This is equal to the node itself. */
+  /** Gets the condition of this `ConditionNode`. */
   ExprParent getCondition() { result = this.asExpr() or result = this.asStmt() }
 }
