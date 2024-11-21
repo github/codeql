@@ -160,7 +160,7 @@ private module CollectionDataFlow {
       exists(DataFlow::MethodCallNode call |
         call = DataFlow::globalVarRef(["Map", "Object"]).getAMemberCall("groupBy") and
         pred = call.getArgument(0) and
-        (succ = call.getCallback(1).getParameter(0) or succ = call.getALocalUse())
+        (succ = call.getCallback(1).getParameter(0) or succ = call)
       )
     }
   }
