@@ -12,22 +12,15 @@ import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 
 /**
  * A function that is known to raise an exception.
- *
- * DEPRECATED: use `AlwaysSehThrowingFunction` instead if a function unconditionally throws.
- * These are assumed the only case where functions throw/raise exceptions unconditionally.
- * For functions that may throw, this will be the default behavior in the IR.
  */
-abstract deprecated class ThrowingFunction extends Function {
+abstract class ThrowingFunction extends Function {
   ThrowingFunction() { any() }
 
   /**
    * Holds if this function may throw an exception during evaluation.
    * If `unconditional` is `true` the function always throws an exception.
-   *
-   * DPERECATED: for always throwing functions use `AlwaysSehThrowingFunction` instead.
-   * For functions that may throw, this will be the default behavior in the IR.
    */
-  abstract deprecated predicate mayThrowException(boolean unconditional);
+  abstract predicate mayThrowException(boolean unconditional);
 }
 
 /**
