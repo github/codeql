@@ -2776,7 +2776,7 @@ open class KotlinFileExtractor(
             val locId = tw.getLocation(ta)
             // TODO: We don't really want to generate any Java types here; we only want the KT type:
             val type = useType(ta.expandedType)
-            tw.writeKt_type_alias(id, ta.name.asString(), type.kotlinResult.id)
+            TODO() // TODO: KotType tw.writeKt_type_alias(id, ta.name.asString(), type.kotlinResult.id)
             tw.writeHasLocation(id, locId)
 
             // TODO: extract annotations

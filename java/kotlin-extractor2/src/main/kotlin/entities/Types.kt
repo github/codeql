@@ -20,25 +20,37 @@ private fun KotlinUsesExtractor.useClassType(
 }
 
 fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.OTHER): TypeResults {
-    when (t) {
+    val tr = when (t) {
         null -> {
             logger.error("Unexpected null type")
             return extractErrorType()
         }
-        is KaClassType -> return useClassType(t)
-        is KaFlexibleType -> return useType(t.lowerBound) // TODO: take a more reasoned choice here
+        is KaClassType -> useClassType(t)
+        is KaFlexibleType -> useType(t.lowerBound) // TODO: take a more reasoned choice here
         else -> TODO()
     }
-    /*
-    OLD: KE1
-            when (t) {
-                is IrSimpleType -> return useSimpleType(t, context)
-                else -> {
-                    logger.error("Unrecognised IrType: " + t.javaClass)
-                    return extractErrorType()
-                }
-            }
-    */
+    val javaResult = tr.javaResult
+    val kotlinResultBase = tr.kotlinResult
+    val abbreviation = t.abbreviatedType
+    val kotlinResultAlias = if (abbreviation == null) kotlinResultBase else {
+                                // TODO: this cast is unsafe; .symbol is actually a KaClassLikeSymbol
+                                val classId = addClassLabel(abbreviation.symbol as KaClassSymbol)
+                                val kotlinBaseTypeId = kotlinResultBase.id
+                                val kotlinAliasTypeId =
+                                    tw.getLabelFor<DbKt_type_alias>("@\"kt_type_alias;{$classId};{$kotlinBaseTypeId}\"") {
+                                        tw.writeKt_type_aliases(it, classId, kotlinBaseTypeId)
+                                    }
+                                TypeResult(kotlinAliasTypeId /* , "TODO", "TODO" */)
+                            }
+    val kotlinResultNullability = if (t.nullability.isNullable) {
+                                      val kotlinAliasTypeId = kotlinResultAlias.id
+                                      val kotlinNullableTypeId =
+                                          tw.getLabelFor<DbKt_nullable_type>("@\"kt_nullable_type;{$kotlinAliasTypeId}\"") {
+                                              tw.writeKt_nullable_types(it, kotlinAliasTypeId)
+                                          }
+                                      TypeResult(kotlinNullableTypeId /* , "TODO", "TODO" */)
+                                  } else kotlinResultAlias
+    return TypeResults(javaResult, kotlinResultNullability)
 }
 
 private fun KotlinUsesExtractor.extractJavaErrorType(): TypeResult<DbErrortype> {

@@ -478,12 +478,12 @@ kt_nullable_types(
 )
 
 /**
- * `id` is the Kotlin type that is the alias called `name` of `kttypeid`.
- * That is, it has been defined by `typealias name = kttypeid`.
+ * `id` is the Kotlin type that is the alias called `classid` of `kttypeid`.
+ * That is, it has been defined by `typealias classid = kttypeid`.
  */
-kt_type_alias(
+kt_type_aliases(
   unique int id: @kt_type_alias,
-  string name: string ref,
+  int classid: @reftype ref,
   int kttypeid: @kt_type ref
 )
 

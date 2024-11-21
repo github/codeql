@@ -32,7 +32,9 @@ class KotlinTypeAlias extends KotlinType, @kt_type_alias {
     result = "{" + this.getKotlinType().toString() + "}" + this.getName()
   }
 
-  override string getName() { kt_type_alias(this, result, _) }
+  override string getName() { result = this.getAliasClass().getName() }
 
-  KotlinType getKotlinType() { kt_type_alias(this, _, result) }
+  Class getAliasClass() { kt_type_aliases(this, result, _) }
+
+  KotlinType getKotlinType() { kt_type_aliases(this, _, result) }
 }
