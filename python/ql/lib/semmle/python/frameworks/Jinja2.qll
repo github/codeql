@@ -24,6 +24,7 @@ module Jinja2 {
     override DataFlow::Node getSourceArg() { result = this.getArg(0) }
   }
 
+  /** Definitions for modeling jinja `Environment`s. */
   module EnvironmentClass {
     /** Gets a reference to the `jinja2.Environment` class. */
     API::Node classRef() {

@@ -722,10 +722,13 @@ module Flask {
     }
   }
 
-  /** A call to `flask.render_template_string` as a template construction sink. */
+  /** A call to `flask.render_template_string` or `flask.stream_template_string` as a template construction sink. */
   private class FlaskTemplateConstruction extends TemplateConstruction::Range, API::CallNode {
     FlaskTemplateConstruction() {
-      this = API::moduleImport("flask").getMember("render_template_string").getACall()
+      this =
+        API::moduleImport("flask")
+            .getMember(["render_template_string", "stream_template_string"])
+            .getACall()
     }
 
     override DataFlow::Node getSourceArg() { result = this.getArg(0) }

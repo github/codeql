@@ -21,7 +21,7 @@ module Genshi {
         API::moduleImport("genshi")
             .getMember("template")
             .getMember("text")
-            .getMember(["NewTextTemplate", "OldTextTemplate"])
+            .getMember(["NewTextTemplate", "OldTextTemplate", "TextTemplate"])
             .getACall()
     }
 
