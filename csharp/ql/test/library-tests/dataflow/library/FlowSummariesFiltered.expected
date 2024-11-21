@@ -1988,6 +1988,7 @@
 | Microsoft.Extensions.Primitives;StringValues;set_Item;(System.Int32,System.String);Argument[1];ReturnValue;taint;manual |
 | Microsoft.Extensions.Primitives;StringValues;set_Item;(System.Int32,System.String);Argument[this];ReturnValue;taint;manual |
 | Microsoft.VisualBasic.CompilerServices;StringType;MidStmtStr;(System.String,System.Int32,System.Int32,System.String);Argument[0];ReturnValue;value;dfc-generated |
+| Microsoft.VisualBasic.FileIO;MalformedLineException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | Microsoft.VisualBasic;Collection;Clear;();Argument[this].WithoutElement;Argument[this];value;manual |
 | Microsoft.VisualBasic;Collection;GetEnumerator;();Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual |
 | Microsoft.VisualBasic;Collection;get_Item;(System.Int32);Argument[this].Element;ReturnValue;value;manual |
@@ -2064,6 +2065,7 @@
 | Newtonsoft.Json.Linq;JToken;SelectToken;(System.String,System.Boolean);Argument[this];ReturnValue;taint;manual |
 | Newtonsoft.Json.Linq;JToken;ToString;();Argument[this];ReturnValue;taint;manual |
 | Newtonsoft.Json.Linq;JToken;ToString;(Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonConverter[]);Argument[this];ReturnValue;taint;manual |
+| Newtonsoft.Json.Linq;JValue;ToString;();Argument[this];ReturnValue;taint;manual |
 | Newtonsoft.Json.Schema;Extensions;Validate;(Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Schema.JsonSchema,Newtonsoft.Json.Schema.ValidationEventHandler);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | Newtonsoft.Json.Schema;ValidationEventHandler;BeginInvoke;(System.Object,Newtonsoft.Json.Schema.ValidationEventArgs,System.AsyncCallback,System.Object);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | Newtonsoft.Json.Serialization;ExtensionDataGetter;BeginInvoke;(System.Object,System.AsyncCallback,System.Object);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
@@ -3370,6 +3372,7 @@
 | ServiceStack.Script;Lisp+Interpreter;Def;(System.String,System.Int32,ServiceStack.Script.Lisp+BuiltInFuncBody);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | ServiceStack.Script;Lisp+Interpreter;Def;(System.String,System.Int32,System.Func<System.Object[],System.Object>);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | ServiceStack.Script;Lisp+Sym;New;(System.String,System.Func<System.String,ServiceStack.Script.Lisp+Sym>);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
+| ServiceStack.Script;LispEvalException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | ServiceStack.Script;PageFormat;set_EncodeValue;(System.Func<System.Object,System.String>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | ServiceStack.Script;PageFormat;set_OnExpressionException;(System.Func<ServiceStack.Script.PageResult,System.Exception,System.Object>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | ServiceStack.Script;PageFormat;set_OnViewException;(System.Func<ServiceStack.Script.PageResult,ServiceStack.Web.IRequest,System.Exception,System.Threading.Tasks.Task>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
@@ -3466,6 +3469,7 @@
 | ServiceStack.Text;MemoryProvider;Deserialize;(System.IO.Stream,System.Type,ServiceStack.Text.Common.DeserializeStringSpanDelegate);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | ServiceStack.Text;MemoryProvider;DeserializeAsync;(System.IO.Stream,System.Type,ServiceStack.Text.Common.DeserializeStringSpanDelegate);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | ServiceStack.Text;RecyclableMemoryStream;GetBuffer;();Argument[this];ReturnValue;taint;df-generated |
+| ServiceStack.Text;RecyclableMemoryStream;ToArray;();Argument[this];ReturnValue;taint;manual |
 | ServiceStack.Text;RecyclableMemoryStream;TryGetBuffer;(System.ArraySegment<System.Byte>);Argument[this];ReturnValue;taint;df-generated |
 | ServiceStack.Text;RecyclableMemoryStream;WriteTo;(System.IO.Stream);Argument[this];Argument[0];taint;df-generated |
 | ServiceStack.Text;RecyclableMemoryStreamManager+EventHandler;BeginInvoke;(System.AsyncCallback,System.Object);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
@@ -3901,6 +3905,7 @@
 | ServiceStack;IEventSubscription;set_OnUnsubscribe;(System.Action<ServiceStack.IEventSubscription>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | ServiceStack;IEventSubscription;set_OnUnsubscribeAsync;(System.Func<ServiceStack.IEventSubscription,System.Threading.Tasks.Task>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | ServiceStack;IServerEvents;QueueAsyncTask;(System.Func<System.Threading.Tasks.Task>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
+| ServiceStack;InfoException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | ServiceStack;Inspect+Config;set_DumpTableFilter;(System.Func<System.Object,System.String>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | ServiceStack;Inspect+Config;set_VarsFilter;(System.Action<System.Object>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | ServiceStack;InstanceMapper;BeginInvoke;(System.Object,System.AsyncCallback,System.Object);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
@@ -4100,6 +4105,7 @@
 | ServiceStack;UploadLocation;set_ValidateUpload;(System.Action<ServiceStack.Web.IRequest,ServiceStack.Web.IHttpFile>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | ServiceStack;UrlExtensions;ToUrl;(System.Object,System.String,System.Func<System.Type,System.String>);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | ServiceStack;UrlResolverDelegate;BeginInvoke;(ServiceStack.IServiceClientMeta,System.String,System.String,System.AsyncCallback,System.Object);Argument[3];Argument[3].Parameter[delegate-self];value;hq-generated |
+| ServiceStack;WebServiceException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | ServiceStack;WebServiceException;get_Message;();Argument[this].SyntheticField[System.Exception._message];ReturnValue;value;dfc-generated |
 | ServiceStack;WriteComplexTypeDelegate;BeginInvoke;(System.IO.TextWriter,System.String,System.Object,System.AsyncCallback,System.Object);Argument[3];Argument[3].Parameter[delegate-self];value;hq-generated |
 | ServiceStack;X;Apply<T>;(T,System.Action<T>);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
@@ -6230,6 +6236,7 @@
 | System.ComponentModel;VersionConverter;ConvertFrom;(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object);Argument[2];ReturnValue;value;dfc-generated |
 | System.ComponentModel;VersionConverter;ConvertTo;(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type);Argument[2].Element;ReturnValue;taint;dfc-generated |
 | System.ComponentModel;VersionConverter;ConvertTo;(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type);Argument[2];ReturnValue;taint;dfc-generated |
+| System.ComponentModel;Win32Exception;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Configuration.Internal;IConfigErrorInfo;get_Filename;();Argument[this];ReturnValue;taint;df-generated |
 | System.Configuration.Internal;IConfigSystem;Init;(System.Type,System.Object[]);Argument[1].Element;Argument[this];taint;df-generated |
 | System.Configuration.Internal;IConfigSystem;get_Host;();Argument[this];ReturnValue;taint;df-generated |
@@ -6347,6 +6354,7 @@
 | System.Configuration;ConfigXmlDocument;CreateWhitespace;(System.String);Argument[this].SyntheticField[System.Configuration.ConfigXmlDocument._filename];ReturnValue.SyntheticField[System.Configuration.ConfigXmlWhitespace._filename];value;dfc-generated |
 | System.Configuration;ConfigXmlDocument;CreateWhitespace;(System.String);Argument[this];ReturnValue;taint;df-generated |
 | System.Configuration;ConfigXmlDocument;CreateWhitespace;(System.String);Argument[this];ReturnValue;taint;dfc-generated |
+| System.Configuration;ConfigXmlDocument;Load;(System.String);Argument[0];Argument[this];taint;manual |
 | System.Configuration;ConfigXmlDocument;LoadSingleElement;(System.String,System.Xml.XmlTextReader);Argument[0];Argument[this].SyntheticField[System.Configuration.ConfigXmlDocument._filename];value;dfc-generated |
 | System.Configuration;ConfigXmlDocument;get_Filename;();Argument[this].SyntheticField[System.Configuration.ConfigXmlDocument._filename];ReturnValue;value;df-generated |
 | System.Configuration;ConfigXmlDocument;get_Filename;();Argument[this].SyntheticField[System.Configuration.ConfigXmlDocument._filename];ReturnValue;value;dfc-generated |
@@ -6778,6 +6786,9 @@
 | System.Data.Entity.Core.Common;DbCommandDefinition;DbCommandDefinition;(System.Data.Common.DbCommand,System.Func<System.Data.Common.DbCommand,System.Data.Common.DbCommand>);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | System.Data.Entity.Core.Common;DbProviderServices;RegisterInfoMessageHandler;(System.Data.Common.DbConnection,System.Action<System.String>);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | System.Data.Entity.Core.EntityClient;EntityConnectionStringBuilder;TryGetValue;(System.String,System.Object);Argument[this];ReturnValue;taint;df-generated |
+| System.Data.Entity.Core.EntityClient;EntityConnectionStringBuilder;get_Item;(System.String);Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value];ReturnValue;value;manual |
+| System.Data.Entity.Core.EntityClient;EntityConnectionStringBuilder;set_Item;(System.String,System.Object);Argument[0];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key];value;manual |
+| System.Data.Entity.Core.EntityClient;EntityConnectionStringBuilder;set_Item;(System.String,System.Object);Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value];value;manual |
 | System.Data.Entity.Core.Metadata.Edm;CsdlSerializer;add_OnError;(System.EventHandler<System.Data.Entity.Core.Metadata.Edm.DataModelErrorEventArgs>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Data.Entity.Core.Metadata.Edm;CsdlSerializer;remove_OnError;(System.EventHandler<System.Data.Entity.Core.Metadata.Edm.DataModelErrorEventArgs>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Data.Entity.Core.Metadata.Edm;MetadataWorkspace;LoadFromAssembly;(System.Reflection.Assembly,System.Action<System.String>);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
@@ -7147,12 +7158,16 @@
 | System.Data.SqlClient;SqlConnection;add_InfoMessage;(System.Data.SqlClient.SqlInfoMessageEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Data.SqlClient;SqlConnection;remove_InfoMessage;(System.Data.SqlClient.SqlInfoMessageEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Data.SqlClient;SqlConnectionStringBuilder;TryGetValue;(System.String,System.Object);Argument[this];ReturnValue;taint;df-generated |
+| System.Data.SqlClient;SqlConnectionStringBuilder;get_Item;(System.String);Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value];ReturnValue;value;manual |
+| System.Data.SqlClient;SqlConnectionStringBuilder;set_Item;(System.String,System.Object);Argument[0];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key];value;manual |
+| System.Data.SqlClient;SqlConnectionStringBuilder;set_Item;(System.String,System.Object);Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value];value;manual |
 | System.Data.SqlClient;SqlDataAdapter;add_RowUpdated;(System.Data.SqlClient.SqlRowUpdatedEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Data.SqlClient;SqlDataAdapter;add_RowUpdating;(System.Data.SqlClient.SqlRowUpdatingEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Data.SqlClient;SqlDataAdapter;remove_RowUpdated;(System.Data.SqlClient.SqlRowUpdatedEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Data.SqlClient;SqlDataAdapter;remove_RowUpdating;(System.Data.SqlClient.SqlRowUpdatingEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Data.SqlClient;SqlDependency;add_OnChange;(System.Data.SqlClient.OnChangeEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Data.SqlClient;SqlDependency;remove_OnChange;(System.Data.SqlClient.OnChangeEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
+| System.Data.SqlClient;SqlException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Data.SqlClient;SqlInfoMessageEventHandler;BeginInvoke;(System.Object,System.Data.SqlClient.SqlInfoMessageEventArgs,System.AsyncCallback,System.Object);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | System.Data.SqlClient;SqlRowUpdatedEventHandler;BeginInvoke;(System.Object,System.Data.SqlClient.SqlRowUpdatedEventArgs,System.AsyncCallback,System.Object);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | System.Data.SqlClient;SqlRowUpdatingEventHandler;BeginInvoke;(System.Object,System.Data.SqlClient.SqlRowUpdatingEventArgs,System.AsyncCallback,System.Object);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
@@ -7211,6 +7226,7 @@
 | System.Data;DBConcurrencyException;DBConcurrencyException;(System.String,System.Exception,System.Data.DataRow[]);Argument[2];Argument[this].SyntheticField[System.Data.DBConcurrencyException._dataRows];value;dfc-generated |
 | System.Data;DataColumn;DataColumn;(System.String,System.Type,System.String,System.Data.MappingType);Argument[0];Argument[this];taint;df-generated |
 | System.Data;DataColumn;DataColumn;(System.String,System.Type,System.String,System.Data.MappingType);Argument[2];Argument[this];taint;df-generated |
+| System.Data;DataColumn;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Data;DataColumn;get_Table;();Argument[this];ReturnValue;taint;df-generated |
 | System.Data;DataColumnChangeEventArgs;DataColumnChangeEventArgs;(System.Data.DataRow,System.Data.DataColumn,System.Object);Argument[1];Argument[this].SyntheticField[System.Data.DataColumnChangeEventArgs._column];value;dfc-generated |
 | System.Data;DataColumnChangeEventArgs;get_Column;();Argument[this].SyntheticField[System.Data.DataColumnChangeEventArgs._column];ReturnValue;value;dfc-generated |
@@ -7353,6 +7369,7 @@
 | System.Data;DataTable;Select;(System.String);Argument[this];ReturnValue;taint;df-generated |
 | System.Data;DataTable;Select;(System.String,System.String);Argument[this];ReturnValue;taint;df-generated |
 | System.Data;DataTable;Select;(System.String,System.String,System.Data.DataViewRowState);Argument[this];ReturnValue;taint;df-generated |
+| System.Data;DataTable;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Data;DataTable;add_ColumnChanged;(System.Data.DataColumnChangeEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Data;DataTable;add_ColumnChanging;(System.Data.DataColumnChangeEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Data;DataTable;add_RowChanged;(System.Data.DataRowChangeEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
@@ -7758,6 +7775,7 @@
 | System.Diagnostics;Process;GetProcessById;(System.Int32,System.String);Argument[1];ReturnValue.SyntheticField[System.Diagnostics.Process._machineName];value;dfc-generated |
 | System.Diagnostics;Process;GetProcesses;(System.String);Argument[0];ReturnValue;taint;df-generated |
 | System.Diagnostics;Process;Start;(System.Diagnostics.ProcessStartInfo);Argument[0];ReturnValue;taint;df-generated |
+| System.Diagnostics;Process;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Diagnostics;Process;add_ErrorDataReceived;(System.Diagnostics.DataReceivedEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Diagnostics;Process;add_Exited;(System.EventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Diagnostics;Process;add_OutputDataReceived;(System.Diagnostics.DataReceivedEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
@@ -7773,7 +7791,10 @@
 | System.Diagnostics;Process;remove_ErrorDataReceived;(System.Diagnostics.DataReceivedEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Diagnostics;Process;remove_Exited;(System.EventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Diagnostics;Process;remove_OutputDataReceived;(System.Diagnostics.DataReceivedEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
+| System.Diagnostics;ProcessModule;ToString;();Argument[this].Property[System.Diagnostics.ProcessModule.ModuleName];ReturnValue;taint;df-generated |
 | System.Diagnostics;ProcessModule;ToString;();Argument[this].Property[System.Diagnostics.ProcessModule.ModuleName];ReturnValue;taint;dfc-generated |
+| System.Diagnostics;ProcessModule;ToString;();Argument[this];ReturnValue;taint;df-generated |
+| System.Diagnostics;ProcessModule;ToString;();Argument[this];ReturnValue;taint;dfc-generated |
 | System.Diagnostics;ProcessModule;get_FileName;();Argument[this];ReturnValue;taint;df-generated |
 | System.Diagnostics;ProcessModule;get_ModuleName;();Argument[this];ReturnValue;taint;df-generated |
 | System.Diagnostics;ProcessModuleCollection;CopyTo;(System.Diagnostics.ProcessModule[],System.Int32);Argument[this].Element;Argument[0].Element;value;manual |
@@ -7850,6 +7871,7 @@
 | System.Drawing.Printing;MarginsConverter;ConvertFrom;(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object);Argument[2];ReturnValue;value;dfc-generated |
 | System.Drawing.Printing;MarginsConverter;ConvertTo;(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type);Argument[2].Element;ReturnValue;taint;dfc-generated |
 | System.Drawing.Printing;MarginsConverter;ConvertTo;(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type);Argument[2];ReturnValue;taint;dfc-generated |
+| System.Drawing.Printing;PrintDocument;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Drawing.Printing;PrintDocument;add_BeginPrint;(System.Drawing.Printing.PrintEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Drawing.Printing;PrintDocument;add_EndPrint;(System.Drawing.Printing.PrintEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Drawing.Printing;PrintDocument;add_PrintPage;(System.Drawing.Printing.PrintPageEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
@@ -8263,6 +8285,7 @@
 | System.IO;DirectoryInfo;EnumerateFiles;(System.String,System.IO.SearchOption);Argument[this];ReturnValue;taint;df-generated |
 | System.IO;DirectoryInfo;MoveTo;(System.String);Argument[0];Argument[this].Field[System.IO.FileSystemInfo.FullPath];value;dfc-generated |
 | System.IO;DirectoryInfo;MoveTo;(System.String);Argument[0];Argument[this].Field[System.IO.FileSystemInfo.OriginalPath];value;dfc-generated |
+| System.IO;DirectoryInfo;ToString;();Argument[this].Field[System.IO.FileSystemInfo.OriginalPath];ReturnValue;value;dfc-generated |
 | System.IO;DirectoryInfo;get_Parent;();Argument[this].Field[System.IO.FileSystemInfo.FullPath];ReturnValue.Field[System.IO.FileSystemInfo.FullPath];value;dfc-generated |
 | System.IO;DirectoryInfo;get_Parent;();Argument[this].Field[System.IO.FileSystemInfo.FullPath];ReturnValue.Field[System.IO.FileSystemInfo.OriginalPath];value;dfc-generated |
 | System.IO;DriveInfo;DriveInfo;(System.String);Argument[0];Argument[this].SyntheticField[System.IO.DriveInfo._name];value;dfc-generated |
@@ -8315,7 +8338,9 @@
 | System.IO;FileInfo;OpenWrite;();Argument[this].Field[System.IO.FileSystemInfo.FullPath];ReturnValue;taint;dfc-generated |
 | System.IO;FileInfo;get_Directory;();Argument[this];ReturnValue;taint;df-generated |
 | System.IO;FileInfo;get_DirectoryName;();Argument[this].Field[System.IO.FileSystemInfo.FullPath];ReturnValue;value;dfc-generated |
+| System.IO;FileLoadException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.IO;FileLoadException;get_Message;();Argument[this].SyntheticField[System.Exception._message];ReturnValue;value;dfc-generated |
+| System.IO;FileNotFoundException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.IO;FileNotFoundException;get_Message;();Argument[this].SyntheticField[System.Exception._message];ReturnValue;value;dfc-generated |
 | System.IO;FileStream;FileStream;(Microsoft.Win32.SafeHandles.SafeFileHandle,System.IO.FileAccess,System.Int32);Argument[this];Argument[this].SyntheticField[System.IO.FileStream._strategy].SyntheticField[System.IO.Strategies.DerivedFileStreamStrategy._fileStream];value;dfc-generated |
 | System.IO;FileStream;FileStream;(Microsoft.Win32.SafeHandles.SafeFileHandle,System.IO.FileAccess,System.Int32,System.Boolean);Argument[this];Argument[this].SyntheticField[System.IO.FileStream._strategy].SyntheticField[System.IO.Strategies.DerivedFileStreamStrategy._fileStream];value;dfc-generated |
@@ -10217,6 +10242,8 @@
 | System.Net.Http.Headers;NameValueHeaderValue;ToString;();Argument[this].SyntheticField[System.Net.Http.Headers.NameValueHeaderValue._name];ReturnValue;value;dfc-generated |
 | System.Net.Http.Headers;NameValueHeaderValue;ToString;();Argument[this].SyntheticField[System.Net.Http.Headers.NameValueHeaderValue._value];ReturnValue;taint;dfc-generated |
 | System.Net.Http.Headers;NameValueHeaderValue;get_Name;();Argument[this].SyntheticField[System.Net.Http.Headers.NameValueHeaderValue._name];ReturnValue;value;dfc-generated |
+| System.Net.Http.Headers;NameValueWithParametersHeaderValue;ToString;();Argument[this].SyntheticField[System.Net.Http.Headers.NameValueHeaderValue._name];ReturnValue;value;dfc-generated |
+| System.Net.Http.Headers;NameValueWithParametersHeaderValue;ToString;();Argument[this].SyntheticField[System.Net.Http.Headers.NameValueHeaderValue._value];ReturnValue;taint;dfc-generated |
 | System.Net.Http.Headers;ProductHeaderValue;Clone;();Argument[this].SyntheticField[System.Net.Http.Headers.ProductHeaderValue._name];ReturnValue.SyntheticField[System.Net.Http.Headers.ProductHeaderValue._name];value;dfc-generated |
 | System.Net.Http.Headers;ProductHeaderValue;Clone;();Argument[this].SyntheticField[System.Net.Http.Headers.ProductHeaderValue._version];ReturnValue.SyntheticField[System.Net.Http.Headers.ProductHeaderValue._version];value;dfc-generated |
 | System.Net.Http.Headers;ProductHeaderValue;ProductHeaderValue;(System.String,System.String);Argument[0];Argument[this].SyntheticField[System.Net.Http.Headers.ProductHeaderValue._name];value;dfc-generated |
@@ -10992,6 +11019,7 @@
 | System.Reflection.Emit;FieldBuilder;SetConstantCore;(System.Object);Argument[0];Argument[this];taint;df-generated |
 | System.Reflection.Emit;FieldBuilder;SetCustomAttributeCore;(System.Reflection.ConstructorInfo,System.ReadOnlySpan<System.Byte>);Argument[1];Argument[this];taint;df-generated |
 | System.Reflection.Emit;GenericTypeParameterBuilder;SetInterfaceConstraintsCore;(System.Type[]);Argument[0].Element;Argument[this];taint;df-generated |
+| System.Reflection.Emit;GenericTypeParameterBuilder;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Reflection.Emit;ILGenerator;DeclareLocal;(System.Type);Argument[this];ReturnValue;taint;df-generated |
 | System.Reflection.Emit;ILGenerator;DeclareLocal;(System.Type,System.Boolean);Argument[this];ReturnValue;taint;df-generated |
 | System.Reflection.Emit;LocalBuilder;get_LocalType;();Argument[this];ReturnValue;taint;df-generated |
@@ -11079,6 +11107,7 @@
 | System.Reflection.Emit;TypeBuilder;GetConstructor;(System.Type,System.Reflection.ConstructorInfo);Argument[1];ReturnValue;taint;df-generated |
 | System.Reflection.Emit;TypeBuilder;GetField;(System.Type,System.Reflection.FieldInfo);Argument[1];ReturnValue;taint;df-generated |
 | System.Reflection.Emit;TypeBuilder;GetMethod;(System.Type,System.Reflection.MethodInfo);Argument[1];ReturnValue;taint;df-generated |
+| System.Reflection.Emit;TypeBuilder;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Reflection.Metadata.Ecma335;BlobEncoder;CustomAttributeSignature;(System.Action<System.Reflection.Metadata.Ecma335.FixedArgumentsEncoder>,System.Action<System.Reflection.Metadata.Ecma335.CustomAttributeNamedArgumentsEncoder>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System.Reflection.Metadata.Ecma335;BlobEncoder;CustomAttributeSignature;(System.Action<System.Reflection.Metadata.Ecma335.FixedArgumentsEncoder>,System.Action<System.Reflection.Metadata.Ecma335.CustomAttributeNamedArgumentsEncoder>);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | System.Reflection.Metadata.Ecma335;CustomModifiersEncoder;AddModifier;(System.Reflection.Metadata.EntityHandle,System.Boolean);Argument[this];ReturnValue;value;dfc-generated |
@@ -11568,6 +11597,7 @@
 | System.Reflection;PropertyInfoExtensions;GetSetMethod;(System.Reflection.PropertyInfo,System.Boolean);Argument[0];ReturnValue;taint;df-generated |
 | System.Reflection;ReflectionContext;MapAssembly;(System.Reflection.Assembly);Argument[0];ReturnValue;value;dfc-generated |
 | System.Reflection;ReflectionContext;MapType;(System.Reflection.TypeInfo);Argument[0];ReturnValue;value;dfc-generated |
+| System.Reflection;ReflectionTypeLoadException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Reflection;ReflectionTypeLoadException;get_Message;();Argument[this].Property[System.Exception.Message];ReturnValue;value;dfc-generated |
 | System.Reflection;ReflectionTypeLoadException;get_Message;();Argument[this].SyntheticField[System.Exception._message];ReturnValue;value;dfc-generated |
 | System.Reflection;RuntimeReflectionExtensions;GetMethodInfo;(System.Delegate);Argument[0].Property[System.Delegate.Method];ReturnValue;value;dfc-generated |
@@ -11803,12 +11833,14 @@
 | System.Runtime.InteropServices;ArrayWithOffset;GetArray;();Argument[this].SyntheticField[System.Runtime.InteropServices.ArrayWithOffset.m_array];ReturnValue;value;dfc-generated |
 | System.Runtime.InteropServices;CLong;CLong;(System.IntPtr);Argument[0];Argument[this].SyntheticField[System.Runtime.InteropServices.CLong._value];value;dfc-generated |
 | System.Runtime.InteropServices;CLong;get_Value;();Argument[this].SyntheticField[System.Runtime.InteropServices.CLong._value];ReturnValue;value;dfc-generated |
+| System.Runtime.InteropServices;COMException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Runtime.InteropServices;CULong;CULong;(System.UIntPtr);Argument[0];Argument[this].SyntheticField[System.Runtime.InteropServices.CULong._value];value;dfc-generated |
 | System.Runtime.InteropServices;CULong;get_Value;();Argument[this].SyntheticField[System.Runtime.InteropServices.CULong._value];ReturnValue;value;dfc-generated |
 | System.Runtime.InteropServices;CollectionsMarshal;AsSpan<T>;(System.Collections.Generic.List<T>);Argument[0].Element;ReturnValue;taint;df-generated |
 | System.Runtime.InteropServices;CriticalHandle;CriticalHandle;(System.IntPtr);Argument[0];Argument[this].Field[System.Runtime.InteropServices.CriticalHandle.handle];value;dfc-generated |
 | System.Runtime.InteropServices;CriticalHandle;SetHandle;(System.IntPtr);Argument[0];Argument[this].Field[System.Runtime.InteropServices.CriticalHandle.handle];value;dfc-generated |
 | System.Runtime.InteropServices;DllImportResolver;BeginInvoke;(System.String,System.Reflection.Assembly,System.Nullable<System.Runtime.InteropServices.DllImportSearchPath>,System.AsyncCallback,System.Object);Argument[3];Argument[3].Parameter[delegate-self];value;hq-generated |
+| System.Runtime.InteropServices;ExternalException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Runtime.InteropServices;GCHandle;FromIntPtr;(System.IntPtr);Argument[0];ReturnValue.SyntheticField[System.Runtime.InteropServices.GCHandle._handle];value;dfc-generated |
 | System.Runtime.InteropServices;GCHandle;ToIntPtr;(System.Runtime.InteropServices.GCHandle);Argument[0].SyntheticField[System.Runtime.InteropServices.GCHandle._handle];ReturnValue;value;dfc-generated |
 | System.Runtime.InteropServices;HandleRef;HandleRef;(System.Object,System.IntPtr);Argument[0];Argument[this].SyntheticField[System.Runtime.InteropServices.HandleRef._wrapper];value;dfc-generated |
@@ -12084,8 +12116,12 @@
 | System.Security.Cryptography.X509Certificates;X509AuthorityKeyIdentifierExtension;get_SerialNumber;();Argument[this];ReturnValue;taint;df-generated |
 | System.Security.Cryptography.X509Certificates;X509BasicConstraintsExtension;CopyFrom;(System.Security.Cryptography.AsnEncodedData);Argument[0].SyntheticField[System.Security.Cryptography.AsnEncodedData._rawData].Element;Argument[this].SyntheticField[System.Security.Cryptography.AsnEncodedData._rawData].Element;value;dfc-generated |
 | System.Security.Cryptography.X509Certificates;X509BasicConstraintsExtension;CopyFrom;(System.Security.Cryptography.AsnEncodedData);Argument[0].SyntheticField[System.Security.Cryptography.AsnEncodedData._rawData];Argument[this].SyntheticField[System.Security.Cryptography.AsnEncodedData._rawData];value;dfc-generated |
+| System.Security.Cryptography.X509Certificates;X509Certificate2;ToString;();Argument[this].Property[System.Security.Cryptography.X509Certificates.X509Certificate.Issuer];ReturnValue;taint;df-generated |
 | System.Security.Cryptography.X509Certificates;X509Certificate2;ToString;();Argument[this].Property[System.Security.Cryptography.X509Certificates.X509Certificate.Issuer];ReturnValue;taint;dfc-generated |
+| System.Security.Cryptography.X509Certificates;X509Certificate2;ToString;();Argument[this].Property[System.Security.Cryptography.X509Certificates.X509Certificate.Subject];ReturnValue;taint;df-generated |
 | System.Security.Cryptography.X509Certificates;X509Certificate2;ToString;();Argument[this].Property[System.Security.Cryptography.X509Certificates.X509Certificate.Subject];ReturnValue;taint;dfc-generated |
+| System.Security.Cryptography.X509Certificates;X509Certificate2;ToString;();Argument[this];ReturnValue;taint;df-generated |
+| System.Security.Cryptography.X509Certificates;X509Certificate2;ToString;();Argument[this];ReturnValue;taint;dfc-generated |
 | System.Security.Cryptography.X509Certificates;X509Certificate2;ToString;(System.Boolean);Argument[this].Property[System.Security.Cryptography.X509Certificates.X509Certificate.Issuer];ReturnValue;taint;dfc-generated |
 | System.Security.Cryptography.X509Certificates;X509Certificate2;ToString;(System.Boolean);Argument[this].Property[System.Security.Cryptography.X509Certificates.X509Certificate.Subject];ReturnValue;taint;dfc-generated |
 | System.Security.Cryptography.X509Certificates;X509Certificate2;get_Extensions;();Argument[this];ReturnValue;taint;df-generated |
@@ -12436,6 +12472,7 @@
 | System.Security.Principal;WindowsIdentity;get_Claims;();Argument[this].SyntheticField[System.Security.Claims.ClaimsIdentity._instanceClaims].Element;ReturnValue.Element;value;dfc-generated |
 | System.Security.Principal;WindowsIdentity;get_Claims;();Argument[this].SyntheticField[System.Security.Claims.ClaimsIdentity._instanceClaims];ReturnValue;value;dfc-generated |
 | System.Security.Principal;WindowsPrincipal;get_Identity;();Argument[this].SyntheticField[System.Security.Claims.ClaimsPrincipal._identities].Element;ReturnValue;value;dfc-generated |
+| System.Security;HostProtectionException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Security;IPermission;Copy;();Argument[this];ReturnValue;value;dfc-generated |
 | System.Security;IPermission;Intersect;(System.Security.IPermission);Argument[0];ReturnValue;value;dfc-generated |
 | System.Security;IPermission;Union;(System.Security.IPermission);Argument[this];ReturnValue;taint;df-generated |
@@ -12455,6 +12492,7 @@
 | System.Security;SecurityElement;ToString;();Argument[this].SyntheticField[System.Security.SecurityElement._attributes].Element;ReturnValue;taint;dfc-generated |
 | System.Security;SecurityElement;ToString;();Argument[this].SyntheticField[System.Security.SecurityElement._tag];ReturnValue;taint;dfc-generated |
 | System.Security;SecurityElement;ToString;();Argument[this].SyntheticField[System.Security.SecurityElement._text];ReturnValue;taint;dfc-generated |
+| System.Security;SecurityException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System.Text.Encodings.Web;TextEncoder;Encode;(System.IO.TextWriter,System.Char[],System.Int32,System.Int32);Argument[1].Element;Argument[0];taint;df-generated |
 | System.Text.Encodings.Web;TextEncoder;Encode;(System.IO.TextWriter,System.String);Argument[1];Argument[0];taint;df-generated |
 | System.Text.Encodings.Web;TextEncoder;Encode;(System.IO.TextWriter,System.String,System.Int32,System.Int32);Argument[1];Argument[0];taint;df-generated |
@@ -14799,6 +14837,10 @@
 | System.Xml;XmlDataDocument;GetElementFromRow;(System.Data.DataRow);Argument[0];ReturnValue;taint;df-generated |
 | System.Xml;XmlDataDocument;GetElementsByTagName;(System.String);Argument[0];ReturnValue;taint;df-generated |
 | System.Xml;XmlDataDocument;GetRowFromElement;(System.Xml.XmlElement);Argument[0].Element;ReturnValue;taint;df-generated |
+| System.Xml;XmlDataDocument;Load;(System.IO.Stream);Argument[0];Argument[this];taint;manual |
+| System.Xml;XmlDataDocument;Load;(System.IO.TextReader);Argument[0];Argument[this];taint;manual |
+| System.Xml;XmlDataDocument;Load;(System.String);Argument[0];Argument[this];taint;manual |
+| System.Xml;XmlDataDocument;Load;(System.Xml.XmlReader);Argument[0];Argument[this];taint;manual |
 | System.Xml;XmlDataDocument;XmlDataDocument;(System.Data.DataSet);Argument[0];Argument[this].SyntheticField[System.Xml.XmlDataDocument._dataSet];value;dfc-generated |
 | System.Xml;XmlDataDocument;get_DataSet;();Argument[this].SyntheticField[System.Xml.XmlDataDocument._dataSet];ReturnValue;value;dfc-generated |
 | System.Xml;XmlDeclaration;XmlDeclaration;(System.String,System.String,System.String,System.Xml.XmlDocument);Argument[0];Argument[this];taint;df-generated |
@@ -15375,6 +15417,7 @@
 | System;AggregateException;Handle;(System.Func<System.Exception,System.Boolean>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | System;AggregateException;Handle;(System.Func<System.Exception,System.Boolean>);Argument[this].SyntheticField[System.AggregateException._innerExceptions].Element;Argument[0].Parameter[0];value;dfc-generated |
 | System;AggregateException;Handle;(System.Func<System.Exception,System.Boolean>);Argument[this].SyntheticField[System.AggregateException._innerExceptions].Element;Argument[0].Parameter[0];value;hq-generated |
+| System;AggregateException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System;AggregateException;get_Message;();Argument[this].Property[System.Exception.Message];ReturnValue;value;dfc-generated |
 | System;AggregateException;get_Message;();Argument[this].SyntheticField[System.Exception._message];ReturnValue;value;dfc-generated |
 | System;AppDomain;ApplyPolicy;(System.String);Argument[0];ReturnValue;value;dfc-generated |
@@ -15496,6 +15539,7 @@
 | System;BadImageFormatException;BadImageFormatException;(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext);Argument[0].SyntheticField[System.Runtime.Serialization.SerializationInfo._values].Element;Argument[this].SyntheticField[System.BadImageFormatException._fusionLog];value;dfc-generated |
 | System;BadImageFormatException;BadImageFormatException;(System.String,System.String);Argument[1];Argument[this].SyntheticField[System.BadImageFormatException._fileName];value;dfc-generated |
 | System;BadImageFormatException;BadImageFormatException;(System.String,System.String,System.Exception);Argument[1];Argument[this].SyntheticField[System.BadImageFormatException._fileName];value;dfc-generated |
+| System;BadImageFormatException;ToString;();Argument[this];ReturnValue;taint;df-generated |
 | System;BadImageFormatException;get_FileName;();Argument[this].SyntheticField[System.BadImageFormatException._fileName];ReturnValue;value;dfc-generated |
 | System;BadImageFormatException;get_FusionLog;();Argument[this].SyntheticField[System.BadImageFormatException._fusionLog];ReturnValue;value;dfc-generated |
 | System;BadImageFormatException;get_Message;();Argument[this].SyntheticField[System.Exception._message];ReturnValue;value;dfc-generated |
