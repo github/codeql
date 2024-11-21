@@ -26,6 +26,8 @@ private module ConsistencyConfig implements InputSig<Location, JSDataFlow> {
     or
     n instanceof FlowSummaryDynamicParameterArrayNode
     or
+    n instanceof FlowSummaryDefaultExceptionalReturn
+    or
     n instanceof GenericSynthesizedNode
     or
     n = DataFlow::globalAccessPathRootPseudoNode()
