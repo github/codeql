@@ -808,6 +808,10 @@ private fun KotlinFileExtractor.extractExpression(
                 return extractIf(e, parent, callable)
             }
 
+            is KtWhenExpression -> {
+                return extractWhen(e, parent, callable)
+            }
+
             is KtWhileExpression -> {
                 extractLoopWithCondition(e, parent, callable)
             }
@@ -1160,32 +1164,6 @@ private fun KotlinFileExtractor.extractExpression(
                                     return
                                 }
 
-                                val exprParent = parent.expr(e, callable)
-                                val id = tw.getFreshIdLabel<DbWhenexpr>()
-                                val type = useType(e.type)
-                                val locId = tw.getLocation(e)
-                                tw.writeExprs_whenexpr(
-                                    id,
-                                    type.javaResult.id,
-                                    exprParent.parent,
-                                    exprParent.idx
-                                )
-                                tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                                if (e.origin == IrStatementOrigin.IF) {
-                                    tw.writeWhen_if(id)
-                                }
-                                e.branches.forEachIndexed { i, b ->
-                                    val bId = tw.getFreshIdLabel<DbWhenbranch>()
-                                    val bLocId = tw.getLocation(b)
-                                    tw.writeStmts_whenbranch(bId, id, i, callable)
-                                    tw.writeHasLocation(bId, bLocId)
-                                    extractExpressionExpr(b.condition, callable, bId, 0, bId)
-                                    extractExpressionStmt(b.result, callable, bId, 1)
-                                    if (b is IrElseBranch) {
-                                        tw.writeWhen_branch_else(bId)
-                                    }
-                                }
                             }
                             is IrGetClass -> {
                                 val exprParent = parent.expr(e, callable)
@@ -1732,6 +1710,99 @@ private fun KotlinFileExtractor.extractLoop(
     val body = loop.body
     if (body != null && bodyIdx != null) {
         extractExpressionStmt(body, callable, id, bodyIdx)
+    }
+
+    return id
+}
+
+context(KaSession)
+private fun KotlinFileExtractor.extractWhen(
+    e: KtWhenExpression,
+    parent: StmtExprParent,
+    callable: Label<out DbCallable>
+): Label<out DbExpr>? {
+    val exprParent = parent.expr(e, callable)
+    val id = tw.getFreshIdLabel<DbWhenexpr>()
+    val type = useType(e.expressionType)
+    val locId = tw.getLocation(e)
+    tw.writeExprs_whenexpr(
+        id,
+        type.javaResult.id,
+        exprParent.parent,
+        exprParent.idx
+    )
+    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+    extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+
+    /* OLD: KE1, Should we remove this `when_if` DB construct?
+    if (e.origin == IrStatementOrigin.IF) {
+        tw.writeWhen_if(id)
+    }
+     */
+
+    if (e.subjectVariable != null) {
+        extractVariableExpr(e.subjectVariable!!, callable, id, -1, exprParent.enclosingStmt)
+    } else if (e.subjectExpression != null) {
+        extractExpressionExpr(e.subjectExpression!!, callable, id, -1, exprParent.enclosingStmt)
+    }
+
+    e.entries.forEachIndexed { i, b ->
+        val bId = tw.getFreshIdLabel<DbWhenbranch>()
+        val bLocId = tw.getLocation(b)
+        tw.writeStmts_whenbranch(bId, id, i, callable)
+        tw.writeHasLocation(bId, bLocId)
+        for ((idx, cond) in b.conditions.withIndex()) {
+            val condId = tw.getFreshIdLabel<DbWhenbranchcondition>()
+            val locId = tw.getLocation(cond)
+            tw.writeStmts_whenbranchcondition(condId, bId, -1 * idx, callable)
+            tw.writeHasLocation(id, locId)
+
+            when (cond) {
+                is KtWhenConditionWithExpression -> {
+                    tw.writeWhen_branch_condition_with_expr(condId)
+                    extractExpressionExpr(
+                        cond.expression!!,
+                        callable,
+                        condId,
+                        0,
+                        condId
+                    )
+                }
+
+                is KtWhenConditionInRange -> {
+                    // [!]in 1..10
+                    tw.writeWhen_branch_condition_with_range(condId, cond.isNegated)
+                    extractExpressionExpr(
+                        cond.rangeExpression!!,
+                        callable,
+                        condId,
+                        0,
+                        condId
+                    )
+                }
+
+                is KtWhenConditionIsPattern -> {
+                    // [!]is Type
+                    val type = useType(cond.typeReference?.type)
+                    tw.writeWhen_branch_condition_with_pattern(
+                        condId,
+                        cond.isNegated,
+                        type.javaResult.id,
+                        type.kotlinResult.id
+                    )
+                }
+            }
+        }
+
+        extractExpressionStmt(b.expression!!, callable, bId, 1)
+        val guardExpr = b.guard?.getExpression()
+        if (guardExpr != null) {
+            extractExpressionStmt(guardExpr, callable, bId, 2)
+        }
+
+        if (b.isElse) {
+            tw.writeWhen_branch_else(bId)
+        }
     }
 
     return id

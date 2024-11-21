@@ -918,6 +918,7 @@ case @stmt.kind of
 | 23 = @yieldstmt
 | 24 = @errorstmt
 | 25 = @whenbranch
+| 26 = @whenbranchcondition
 ;
 
 #keyset[parent,idx]
@@ -1046,6 +1047,25 @@ when_if(unique int id: @whenexpr ref);
 
 /** Holds if this `when` branch was written as an `else` branch. */
 when_branch_else(unique int id: @whenbranch ref);
+
+/** Holds if this `when` branch condition has an expression. */
+when_branch_condition_with_expr(
+    unique int id: @whenbranchcondition ref
+    );
+
+/** Holds if this `when` branch condition has a range. */
+when_branch_condition_with_range(
+    unique int id: @whenbranchcondition ref,
+    boolean isNegated: boolean ref
+    );
+
+/** Holds if this `when` branch condition has a type pattern. */
+when_branch_condition_with_pattern(
+    unique int id: @whenbranchcondition ref,
+    boolean isNegated: boolean ref,
+    int typeid: @type ref,
+    int kttypeid: @kt_type ref
+    );
 
 @classinstancexpr = @newexpr | @lambdaexpr | @memberref | @propertyref
 
