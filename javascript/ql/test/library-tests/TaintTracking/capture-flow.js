@@ -120,7 +120,7 @@ global.doEscape(testEscapeViaReturn(source()));
 function ordering() {
     var orderingTaint;
     global.addEventListener('click', () => {
-        sink(orderingTaint); // NOT OK
+        sink(orderingTaint); // NOT OK [INCONSISTENCY]
     });
     global.addEventListener('load', () => {
         orderingTaint = source();
