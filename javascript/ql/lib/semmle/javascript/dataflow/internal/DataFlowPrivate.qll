@@ -112,6 +112,33 @@ class FlowSummaryIntermediateAwaitStoreNode extends DataFlow::Node,
   }
 }
 
+predicate mentionsExceptionalReturn(FlowSummaryImpl::Public::SummarizedCallable callable) {
+  exists(FlowSummaryImpl::Private::SummaryNode node | node.getSummarizedCallable() = callable |
+    FlowSummaryImpl::Private::summaryReturnNode(node, MkExceptionalReturnKind())
+    or
+    FlowSummaryImpl::Private::summaryOutNode(_, node, MkExceptionalReturnKind())
+  )
+}
+
+/**
+ * Exceptional return node in a summarized callable whose summary does not mention `ReturnValue[exception]`.
+ *
+ * By default, every call inside such a callable will forward their exceptional return to the caller's
+ * exceptional return, i.e. exceptions are not caught.
+ */
+class FlowSummaryDefaultExceptionalReturn extends DataFlow::Node,
+  TFlowSummaryDefaultExceptionalReturn
+{
+  private FlowSummaryImpl::Public::SummarizedCallable callable;
+
+  FlowSummaryDefaultExceptionalReturn() { this = TFlowSummaryDefaultExceptionalReturn(callable) }
+
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() { result = callable }
+
+  cached
+  override string toString() { result = "[default exceptional return] " + callable }
+}
+
 class CaptureNode extends DataFlow::Node, TSynthCaptureNode {
   /** Gets the underlying node from the variable-capture library. */
   VariableCaptureOutput::SynthesizedCaptureNode getNode() {
@@ -296,6 +323,9 @@ private predicate returnNodeImpl(DataFlow::Node node, ReturnKind kind) {
   )
   or
   FlowSummaryImpl::Private::summaryReturnNode(node.(FlowSummaryNode).getSummaryNode(), kind)
+  or
+  node instanceof FlowSummaryDefaultExceptionalReturn and
+  kind = MkExceptionalReturnKind()
 }
 
 private DataFlow::Node getAnOutNodeImpl(DataFlowCall call, ReturnKind kind) {
@@ -311,6 +341,10 @@ private DataFlow::Node getAnOutNodeImpl(DataFlowCall call, ReturnKind kind) {
   or
   FlowSummaryImpl::Private::summaryOutNode(call.(SummaryCall).getReceiver(),
     result.(FlowSummaryNode).getSummaryNode(), kind)
+  or
+  kind = MkExceptionalReturnKind() and
+  result.(FlowSummaryDefaultExceptionalReturn).getSummarizedCallable() =
+    call.(SummaryCall).getSummarizedCallable()
 }
 
 class ReturnNode extends DataFlow::Node {
@@ -504,6 +538,8 @@ DataFlowCallable nodeGetEnclosingCallable(Node node) {
   result.asLibraryCallable() = node.(FlowSummaryDynamicParameterArrayNode).getSummarizedCallable()
   or
   result.asLibraryCallable() = node.(FlowSummaryIntermediateAwaitStoreNode).getSummarizedCallable()
+  or
+  result.asLibraryCallable() = node.(FlowSummaryDefaultExceptionalReturn).getSummarizedCallable()
   or
   node = TGenericSynthesizedNode(_, _, result)
 }
@@ -865,6 +901,8 @@ class SummaryCall extends DataFlowCall, MkSummaryCall {
 
   /** Gets the receiver node. */
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
+
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() { result = enclosingCallable }
 }
 
 /**
