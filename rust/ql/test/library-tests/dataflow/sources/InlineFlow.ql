@@ -12,7 +12,7 @@ module MyFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     any(CallExpr call | call.getExpr().(PathExpr).getPath().toString() = "sink")
         .getArgList()
-        .getAnArg() = sink.asExpr()
+        .getAnArg() = sink.asExpr().getExpr()
   }
 }
 

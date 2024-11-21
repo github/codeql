@@ -10,7 +10,7 @@ private import codeql.rust.Concepts
  */
 private class ReqwestGet extends RemoteSource::Range {
   ReqwestGet() {
-    this.asExpr().(CallExpr).getExpr().(PathExpr).getPath().getResolvedPath() =
+    this.asExpr().getExpr().(CallExpr).getExpr().(PathExpr).getPath().getResolvedPath() =
       ["crate::get", "crate::blocking::get"]
   }
 }
