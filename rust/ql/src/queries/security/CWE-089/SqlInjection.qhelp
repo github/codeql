@@ -5,7 +5,7 @@
 <overview>
 
 <p>
-If a database query (such as a SQL query) is built from user-provided data without sufficient sanitization, a user may be able to run malicious database queries. An attacker can craft the part of the query they control to change the overall meaning of the query.
+If a database query (such as an SQL query) is built from user-provided data without sufficient sanitization, a user may be able to run malicious database queries. An attacker can craft the part of the query they control to change the overall meaning of the query.
 </p>
 
 </overview>
