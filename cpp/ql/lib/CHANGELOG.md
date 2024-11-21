@@ -1,8 +1,10 @@
+## 2.1.2
+
+No user-facing changes.
+
 ## 2.1.1
 
-### Minor Analysis Improvements
-
-* The `Guards` library (`semmle.code.cpp.controlflow.Guards`) has been improved to recognize more guard conditions. Additionally, the guards library no longer considers guards in static local initializers or global initializers as `GuardCondition`s.
+No user-facing changes.
 
 ## 2.1.0
 

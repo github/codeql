@@ -1,3 +1,7 @@
+## 4.2.2
+
+No user-facing changes.
+
 ## 4.2.1
 
 ### Minor Analysis Improvements
