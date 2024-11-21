@@ -19,7 +19,7 @@ private module CfgInput implements InputSig<Location> {
 
   predicate completionIsValidFor = C::completionIsValidFor/2;
 
-  /** An AST node with an associated control-flow graph. */
+  /** An AST node with an associated control flow graph. */
   class CfgScope = Scope::CfgScope;
 
   CfgScope getCfgScope(AstNode n) {

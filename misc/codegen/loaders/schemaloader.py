@@ -53,6 +53,7 @@ def _get_class(cls: type) -> schema.Class:
                         bases=[b.__name__ for b in cls.__bases__ if b is not object],
                         derived=derived,
                         pragmas=pragmas,
+                        cfg=cls.__cfg__ if hasattr(cls, "__cfg__") else False,
                         # in the following we don't use `getattr` to avoid inheriting
                         properties=[
                             a | _PropertyNamer(n)

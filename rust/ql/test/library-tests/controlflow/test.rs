@@ -277,6 +277,13 @@ mod logical_operators {
     fn test_and_return(a: bool) {
         a && return;
     }
+
+    fn test_and_true(a: bool) -> i64 {
+        if (a && true) {
+            return 1;
+        }
+        0
+    }
 }
 
 mod question_mark_operator {

@@ -4,6 +4,7 @@ edges
 | main.rs:24:13:24:21 | CallExpr : unit | main.rs:27:10:27:10 | c | provenance |  |
 | main.rs:31:13:31:21 | CallExpr : unit | main.rs:36:10:36:10 | b | provenance |  |
 | main.rs:45:15:45:23 | CallExpr : unit | main.rs:47:10:47:10 | b | provenance |  |
+| main.rs:53:9:53:17 | CallExpr : unit | main.rs:54:10:54:10 | i | provenance |  |
 nodes
 | main.rs:15:10:15:18 | CallExpr | semmle.label | CallExpr |
 | main.rs:19:13:19:21 | CallExpr : unit | semmle.label | CallExpr : unit |
@@ -14,6 +15,8 @@ nodes
 | main.rs:36:10:36:10 | b | semmle.label | b |
 | main.rs:45:15:45:23 | CallExpr : unit | semmle.label | CallExpr : unit |
 | main.rs:47:10:47:10 | b | semmle.label | b |
+| main.rs:53:9:53:17 | CallExpr : unit | semmle.label | CallExpr : unit |
+| main.rs:54:10:54:10 | i | semmle.label | i |
 subpaths
 testFailures
 #select
@@ -22,3 +25,4 @@ testFailures
 | main.rs:27:10:27:10 | c | main.rs:24:13:24:21 | CallExpr : unit | main.rs:27:10:27:10 | c | $@ | main.rs:24:13:24:21 | CallExpr : unit | CallExpr : unit |
 | main.rs:36:10:36:10 | b | main.rs:31:13:31:21 | CallExpr : unit | main.rs:36:10:36:10 | b | $@ | main.rs:31:13:31:21 | CallExpr : unit | CallExpr : unit |
 | main.rs:47:10:47:10 | b | main.rs:45:15:45:23 | CallExpr : unit | main.rs:47:10:47:10 | b | $@ | main.rs:45:15:45:23 | CallExpr : unit | CallExpr : unit |
+| main.rs:54:10:54:10 | i | main.rs:53:9:53:17 | CallExpr : unit | main.rs:54:10:54:10 | i | $@ | main.rs:53:9:53:17 | CallExpr : unit | CallExpr : unit |
