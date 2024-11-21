@@ -1070,8 +1070,10 @@ edges
 | variables.rs:472:9:472:20 | CallExpr | variables.rs:471:12:473:5 | BlockExpr |  |
 | variables.rs:472:9:472:21 | ExprStmt | variables.rs:472:9:472:17 | print_i64 |  |
 | variables.rs:472:19:472:19 | x | variables.rs:472:9:472:20 | CallExpr |  |
-| variables.rs:482:5:484:5 | enter my_get | variables.rs:483:9:483:24 | ExprStmt |  |
+| variables.rs:482:5:484:5 | enter my_get | variables.rs:482:20:482:23 | self |  |
 | variables.rs:482:5:484:5 | exit my_get (normal) | variables.rs:482:5:484:5 | exit my_get |  |
+| variables.rs:482:15:482:23 | SelfParam | variables.rs:483:9:483:24 | ExprStmt |  |
+| variables.rs:482:20:482:23 | self | variables.rs:482:15:482:23 | SelfParam |  |
 | variables.rs:483:9:483:23 | ReturnExpr | variables.rs:482:5:484:5 | exit my_get (normal) | return |
 | variables.rs:483:9:483:24 | ExprStmt | variables.rs:483:16:483:19 | self |  |
 | variables.rs:483:16:483:19 | self | variables.rs:483:16:483:23 | FieldExpr |  |
@@ -1131,8 +1133,10 @@ edges
 | variables.rs:502:5:502:22 | ExprStmt | variables.rs:502:5:502:17 | print_i64_ref |  |
 | variables.rs:502:19:502:20 | RefExpr | variables.rs:502:5:502:21 | CallExpr |  |
 | variables.rs:502:20:502:20 | z | variables.rs:502:19:502:20 | RefExpr |  |
-| variables.rs:510:3:512:3 | enter bar | variables.rs:511:5:511:32 | ExprStmt |  |
+| variables.rs:510:3:512:3 | enter bar | variables.rs:510:15:510:18 | self |  |
 | variables.rs:510:3:512:3 | exit bar (normal) | variables.rs:510:3:512:3 | exit bar |  |
+| variables.rs:510:10:510:18 | SelfParam | variables.rs:511:5:511:32 | ExprStmt |  |
+| variables.rs:510:15:510:18 | self | variables.rs:510:10:510:18 | SelfParam |  |
 | variables.rs:510:21:512:3 | BlockExpr | variables.rs:510:3:512:3 | exit bar (normal) |  |
 | variables.rs:511:5:511:9 | * ... | variables.rs:511:29:511:29 | 3 |  |
 | variables.rs:511:5:511:31 | ... = ... | variables.rs:510:21:512:3 | BlockExpr |  |
