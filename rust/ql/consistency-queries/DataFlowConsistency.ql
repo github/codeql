@@ -14,3 +14,11 @@ private import codeql.dataflow.internal.DataFlowImplConsistency
 private module Input implements InputSig<Location, RustDataFlow> { }
 
 import MakeConsistency<Location, RustDataFlow, RustTaintTracking, Input>
+
+/**
+ * This adds `AstNode` class names to the results of `uniqueNodeToString`, if any.
+ */
+query predicate uniqueNodeToStringClasses(Node n, string cls) {
+  uniqueNodeToString(n, _) and
+  cls = n.getCfgNode().getAstNode().getPrimaryQlClasses()
+}
