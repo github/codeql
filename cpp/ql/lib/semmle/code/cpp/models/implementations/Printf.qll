@@ -98,7 +98,9 @@ private class Sprintf extends FormattingFunction, NonCppThrowingFunction {
 /**
  * Implements `Snprintf`.
  */
-private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction, NonCppThrowingFunction {
+private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction,
+  NonCppThrowingFunction
+{
   SnprintfImpl() {
     this instanceof TopLevelFunction and
     (
