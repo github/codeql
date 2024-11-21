@@ -1,5 +1,5 @@
 name: codeql/swift-queries
-version: 1.0.12
+version: 1.0.13-dev
 groups:
   - swift
   - queries
