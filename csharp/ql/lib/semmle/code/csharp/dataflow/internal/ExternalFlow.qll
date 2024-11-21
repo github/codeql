@@ -88,7 +88,7 @@
  */
 
 import csharp
-import ExternalFlowExtensions
+private import ExternalFlowExtensions as ExternalFlowExtensions
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import DataFlowPublic
@@ -101,6 +101,35 @@ private import semmle.code.csharp.dispatch.OverridableCallable
 private import semmle.code.csharp.frameworks.System
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 private import codeql.mad.ModelValidation as SharedModelVal
+
+private predicate sourceModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  subtypes = true and
+  ExternalFlowExtensions::sourceModel(namespace, type, _, name, signature, ext, output, kind,
+    provenance, madId)
+}
+
+private predicate sinkModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  subtypes = true and
+  ExternalFlowExtensions::sinkModel(namespace, type, _, name, signature, ext, input, kind,
+    provenance, madId)
+}
+
+private predicate summaryModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+) {
+  subtypes = true and
+  ExternalFlowExtensions::summaryModel(namespace, type, _, name, signature, ext, input, output,
+    kind, provenance, madId)
+}
+
+private predicate neutralModel = ExternalFlowExtensions::neutralModel/6;
 
 /**
  * Holds if the given extension tuple `madId` should pretty-print as `model`.
