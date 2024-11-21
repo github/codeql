@@ -165,9 +165,6 @@ module ControlFlow {
 
     /**
      * Gets the most appropriate AST node for this control flow node, if any.
-     *
-     * This is needed for the equivalence relation on basic blocks in range
-     * analysis.
      */
     ExprParent getAstNode() {
       result = this.asExpr() or
