@@ -22,8 +22,6 @@ class Location = Cpp::Location;
 
 class UnknownLocation = Cpp::UnknownLocation;
 
-class UnknownDefaultLocation = Cpp::UnknownDefaultLocation;
-
 class File = Cpp::File;
 
 class AST = Cpp::Locatable;

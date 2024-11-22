@@ -259,7 +259,8 @@ predicate inMacroExpansion(Locatable element) {
   inmacroexpansion(unresolveElement(element), _)
   or
   macroLocation(element.getLocation()) and
-  not topLevelMacroAccess(element)
+  not topLevelMacroAccess(element) and
+  not element.getLocation() instanceof UnknownLocation
 }
 
 /**

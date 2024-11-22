@@ -37,7 +37,7 @@ abstract class MaybePreprocessorDirective extends TMaybePreprocessorDirective {
 class NoPreprocessorDirective extends TNoPreprocessorDirective, MaybePreprocessorDirective {
   override string toString() { result = "" }
 
-  override Location getLocation() { result instanceof UnknownDefaultLocation }
+  override Location getLocation() { result instanceof UnknownLocation }
 }
 
 class SomePreprocessorDirective extends TSomePreprocessorDirective, MaybePreprocessorDirective {
