@@ -117,7 +117,7 @@ fn option_pattern_match_unqualified() {
     let s1 = Some(source(14));
     let s2 = Some(2);
     match s1 {
-        Some(n) => sink(n), // $ MISSING: hasValueFlow=14
+        Some(n) => sink(n), // $ hasValueFlow=14
         None => sink(0),
     }
     match s2 {
@@ -135,11 +135,11 @@ fn custom_tuple_enum_pattern_match_qualified() {
     let s1 = MyTupleEnum::A(source(15));
     let s2 = MyTupleEnum::B(2);
     match s1 {
-        MyTupleEnum::A(n) => sink(n), // $ MISSING: hasValueFlow=15
+        MyTupleEnum::A(n) => sink(n), // $ hasValueFlow=15
         MyTupleEnum::B(n) => sink(n),
     }
     match s1 {
-        (MyTupleEnum::A(n) | MyTupleEnum::B(n)) => sink(n), // $ MISSING: hasValueFlow=15
+        (MyTupleEnum::A(n) | MyTupleEnum::B(n)) => sink(n), // $ hasValueFlow=15
     }
     match s2 {
         MyTupleEnum::A(n) => sink(n),
@@ -176,11 +176,11 @@ fn custom_record_enum_pattern_match_qualified() {
     };
     let s2 = MyRecordEnum::D { field_d: 2 };
     match s1 {
-        MyRecordEnum::C { field_c: n } => sink(n), // $ MISSING: hasValueFlow=17
+        MyRecordEnum::C { field_c: n } => sink(n), // $ hasValueFlow=17
         MyRecordEnum::D { field_d: n } => sink(n),
     }
     match s1 {
-        (MyRecordEnum::C { field_c: n } | MyRecordEnum::D { field_d: n }) => sink(n), // $ MISSING: hasValueFlow=17
+        (MyRecordEnum::C { field_c: n } | MyRecordEnum::D { field_d: n }) => sink(n), // $ hasValueFlow=17
     }
     match s2 {
         MyRecordEnum::C { field_c: n } => sink(n),

@@ -115,6 +115,11 @@ module Node {
      */
     ExprCfgNode asExpr() { none() }
 
+    /**
+     * Gets the pattern that corresponds to this node, if any.
+     */
+    PatCfgNode asPat() { none() }
+
     /** Gets the enclosing callable. */
     DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.getCfgScope()) }
 
@@ -177,8 +182,7 @@ module Node {
 
     PatNode() { this = TPatNode(n) }
 
-    /** Gets the `PatCfgNode` in the CFG that this node corresponds to. */
-    PatCfgNode getPat() { result = n }
+    override PatCfgNode asPat() { result = n }
   }
 
   /**
@@ -322,8 +326,7 @@ module LocalFlow {
     nodeFrom.(Node::AstCfgFlowNode).getCfgNode() =
       nodeTo.(Node::SsaNode).getDefinitionExt().(Ssa::WriteDefinition).getControlFlowNode()
     or
-    nodeFrom.(Node::ParameterNode).getParameter().(ParamCfgNode).getPat() =
-      nodeTo.(Node::PatNode).getPat()
+    nodeFrom.(Node::ParameterNode).getParameter().(ParamCfgNode).getPat() = nodeTo.asPat()
     or
     SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
     or
@@ -331,18 +334,165 @@ module LocalFlow {
       a.getRhs() = nodeFrom.getCfgNode() and
       a.getLhs() = nodeTo.getCfgNode()
     )
+    or
+    exists(MatchExprCfgNode match |
+      nodeFrom.asExpr() = match.getScrutinee() and
+      nodeTo.asPat() = match.getArmPat(_)
+    )
+    or
+    nodeFrom.asPat().(OrPatCfgNode).getAPat() = nodeTo.asPat()
   }
 }
 
-private class DataFlowCallableAlias = DataFlowCallable;
+private import codeql.util.Option
 
-private class ReturnKindAlias = ReturnKind;
+private class CrateOrigin extends string {
+  CrateOrigin() {
+    this = [any(Item i).getCrateOrigin(), any(Resolvable r).getResolvedCrateOrigin()]
+  }
+}
 
-private class DataFlowCallAlias = DataFlowCall;
+private class CrateOriginOption = Option<CrateOrigin>::Option;
 
-private class ParameterPositionAlias = ParameterPosition;
+pragma[nomagic]
+private predicate hasExtendedCanonicalPath(Item i, CrateOriginOption crate, string path) {
+  path = i.getExtendedCanonicalPath() and
+  (
+    crate.asSome() = i.getCrateOrigin()
+    or
+    crate.isNone() and
+    not i.hasCrateOrigin()
+  )
+}
+
+pragma[nomagic]
+private predicate variantHasExtendedCanonicalPath(
+  Enum e, Variant v, CrateOriginOption crate, string path, string name
+) {
+  hasExtendedCanonicalPath(e, crate, path) and
+  v = e.getVariantList().getAVariant() and
+  name = v.getName().getText()
+}
+
+pragma[nomagic]
+private predicate resolveExtendedCanonicalPath(Resolvable r, CrateOriginOption crate, string path) {
+  path = r.getResolvedPath() and
+  (
+    crate.asSome() = r.getResolvedCrateOrigin()
+    or
+    crate.isNone() and
+    not r.hasResolvedCrateOrigin()
+  )
+}
+
+/**
+ * A reference contained in an object. For example a field in a struct.
+ */
+abstract class Content extends TContent {
+  /** Gets a textual representation of this content. */
+  abstract string toString();
+}
+
+/** A canonical path pointing to an enum variant. */
+private class VariantCanonicalPath extends MkVariantCanonicalPath {
+  CrateOriginOption crate;
+  string path;
+  string name;
+
+  VariantCanonicalPath() { this = MkVariantCanonicalPath(crate, path, name) }
+
+  /** Gets the underlying variant. */
+  Variant getVariant() { variantHasExtendedCanonicalPath(_, result, crate, path, name) }
+
+  string toString() { result = name }
+
+  Location getLocation() { result = this.getVariant().getLocation() }
+}
+
+/**
+ * A variant of an `enum`. In addition to the variant itself, this also includes the
+ * position (for tuple variants) or the field name (for record variants).
+ */
+abstract class VariantContent extends Content { }
+
+/** A tuple variant. */
+private class TupleVariantContent extends VariantContent, TTupleVariantContent {
+  private VariantCanonicalPath v;
+  private int pos_;
+
+  TupleVariantContent() { this = TTupleVariantContent(v, pos_) }
+
+  VariantCanonicalPath getVariantCanonicalPath(int pos) { result = v and pos = pos_ }
+
+  final override string toString() {
+    // only print indices when the arity is > 1
+    if exists(TTupleVariantContent(v, 1))
+    then result = v.toString() + "(" + pos_ + ")"
+    else result = v.toString()
+  }
+}
+
+/** A record variant. */
+private class RecordVariantContent extends VariantContent, TRecordVariantContent {
+  private VariantCanonicalPath v;
+  private string field_;
+
+  RecordVariantContent() { this = TRecordVariantContent(v, field_) }
+
+  VariantCanonicalPath getVariantCanonicalPath(string field) { result = v and field = field_ }
+
+  final override string toString() {
+    // only print field when the arity is > 1
+    if strictcount(string f | exists(TRecordVariantContent(v, f))) > 1
+    then result = v.toString() + "{" + field_ + "}"
+    else result = v.toString()
+  }
+}
+
+/** A value that represents a set of `Content`s. */
+abstract class ContentSet extends TContentSet {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  /** Gets a content that may be stored into when storing into this set. */
+  abstract Content getAStoreContent();
+
+  /** Gets a content that may be read from when reading from this set. */
+  abstract Content getAReadContent();
+}
+
+private class SingletonContentSet extends ContentSet, TSingletonContentSet {
+  private Content c;
+
+  SingletonContentSet() { this = TSingletonContentSet(c) }
+
+  Content getContent() { result = c }
+
+  override string toString() { result = c.toString() }
+
+  override Content getAStoreContent() { result = c }
+
+  override Content getAReadContent() { result = c }
+}
+
+// Defines a set of aliases needed for the `RustDataFlow` module
+private module Aliases {
+  class DataFlowCallableAlias = DataFlowCallable;
+
+  class ReturnKindAlias = ReturnKind;
+
+  class DataFlowCallAlias = DataFlowCall;
+
+  class ParameterPositionAlias = ParameterPosition;
+
+  class ContentAlias = Content;
+
+  class ContentSetAlias = ContentSet;
+}
 
 module RustDataFlow implements InputSig<Location> {
+  private import Aliases
+
   /**
    * An element, viewed as a node in a data flow graph. Either an expression
    * (`ExprNode`) or a parameter (`ParameterNode`).
@@ -388,55 +538,22 @@ module RustDataFlow implements InputSig<Location> {
 
   final class ReturnKind = ReturnKindAlias;
 
-  private import codeql.util.Option
-
-  private class CrateOrigin extends string {
-    CrateOrigin() {
-      this = [any(Item i).getCrateOrigin(), any(Resolvable r).getResolvedCrateOrigin()]
-    }
-  }
-
-  private class CrateOriginOption = Option<CrateOrigin>::Option;
-
   pragma[nomagic]
-  private predicate hasExtendedCanonicalPath(
-    DataFlowCallable c, CrateOriginOption crate, string path
+  private predicate callResolveExtendedCanonicalPath(
+    CallExprBase call, CrateOriginOption crate, string path
   ) {
-    exists(Item i |
-      i = c.asCfgScope() and
-      path = i.getExtendedCanonicalPath()
-    |
-      crate.asSome() = i.getCrateOrigin()
+    exists(Resolvable r | resolveExtendedCanonicalPath(r, crate, path) |
+      r = call.(MethodCallExpr)
       or
-      crate.isNone() and
-      not i.hasCrateOrigin()
-    )
-  }
-
-  pragma[nomagic]
-  private predicate resolvesExtendedCanonicalPath(
-    DataFlowCall c, CrateOriginOption crate, string path
-  ) {
-    exists(Resolvable r |
-      path = r.getResolvedPath() and
-      (
-        r = c.asMethodCallExprCfgNode().getExpr()
-        or
-        r = c.asCallExprCfgNode().getExpr().(PathExprCfgNode).getPath()
-      )
-    |
-      crate.asSome() = r.getResolvedCrateOrigin()
-      or
-      crate.isNone() and
-      not r.hasResolvedCrateOrigin()
+      r = call.(CallExpr).getExpr().(PathExpr).getPath()
     )
   }
 
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
     exists(string path, CrateOriginOption crate |
-      hasExtendedCanonicalPath(result, crate, path) and
-      resolvesExtendedCanonicalPath(call, crate, path)
+      hasExtendedCanonicalPath(result.asCfgScope(), crate, path) and
+      callResolveExtendedCanonicalPath(call.asCallBaseExprCfgNode().getExpr(), crate, path)
     )
   }
 
@@ -458,24 +575,15 @@ module RustDataFlow implements InputSig<Location> {
 
   predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
-  final class Content = Void;
+  class Content = ContentAlias;
+
+  class ContentSet = ContentSetAlias;
 
   predicate forceHighPrecision(Content c) { none() }
 
-  class ContentSet extends TContentSet {
-    /** Gets a textual representation of this element. */
-    string toString() { result = "ContentSet" }
+  final class ContentApprox = Content; // todo
 
-    /** Gets a content that may be stored into when storing into this set. */
-    Content getAStoreContent() { none() }
-
-    /** Gets a content that may be read from when reading from this set. */
-    Content getAReadContent() { none() }
-  }
-
-  final class ContentApprox = Void;
-
-  ContentApprox getContentApprox(Content c) { any() }
+  ContentApprox getContentApprox(Content c) { result = c }
 
   class ParameterPosition = ParameterPositionAlias;
 
@@ -503,19 +611,94 @@ module RustDataFlow implements InputSig<Location> {
    */
   predicate jumpStep(Node node1, Node node2) { none() }
 
+  /** Holds if path `p` resolves to variant `v`. */
+  private predicate pathResolveToVariantCanonicalPath(Path p, VariantCanonicalPath v) {
+    exists(CrateOriginOption crate, string path |
+      resolveExtendedCanonicalPath(p.getQualifier(), crate, path) and
+      v = MkVariantCanonicalPath(crate, path, p.getPart().getNameRef().getText())
+    )
+    or
+    // TODO: Remove once library types are extracted
+    not p.hasQualifier() and
+    v = MkVariantCanonicalPath(_, "crate::std::option::Option", p.getPart().getNameRef().getText())
+  }
+
+  /** Holds if `p` destructs an enum variant `v`. */
+  pragma[nomagic]
+  private predicate tupleVariantDestruction(TupleStructPat p, VariantCanonicalPath v) {
+    pathResolveToVariantCanonicalPath(p.getPath(), v)
+  }
+
+  /** Holds if `p` destructs an enum variant `v`. */
+  pragma[nomagic]
+  private predicate recordVariantDestruction(RecordPat p, VariantCanonicalPath v) {
+    pathResolveToVariantCanonicalPath(p.getPath(), v)
+  }
+
   /**
    * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,
    * `node1` references an object with a content `c.getAReadContent()` whose
    * value ends up in `node2`.
    */
-  predicate readStep(Node node1, ContentSet c, Node node2) { none() }
+  predicate readStep(Node node1, ContentSet cs, Node node2) {
+    exists(Content c | c = cs.(SingletonContentSet).getContent() |
+      node1.asPat() =
+        any(TupleStructPatCfgNode pat, int pos |
+          tupleVariantDestruction(pat.getPat(), c.(TupleVariantContent).getVariantCanonicalPath(pos)) and
+          node2.asPat() = pat.getField(pos)
+        |
+          pat
+        )
+      or
+      node1.asPat() =
+        any(RecordPatCfgNode pat, string field |
+          recordVariantDestruction(pat.getPat(),
+            c.(RecordVariantContent).getVariantCanonicalPath(field)) and
+          node2.asPat() = pat.getFieldPat(field)
+        |
+          pat
+        )
+    )
+  }
+
+  /** Holds if `ce` constructs an enum value of type `v`. */
+  pragma[nomagic]
+  private predicate tupleVariantConstruction(CallExpr ce, VariantCanonicalPath v) {
+    pathResolveToVariantCanonicalPath(ce.getExpr().(PathExpr).getPath(), v)
+  }
+
+  /** Holds if `re` constructs an enum value of type `v`. */
+  pragma[nomagic]
+  private predicate recordVariantConstruction(RecordExpr re, VariantCanonicalPath v) {
+    pathResolveToVariantCanonicalPath(re.getPath(), v)
+  }
 
   /**
    * Holds if data can flow from `node1` to `node2` via a store into `c`.  Thus,
    * `node2` references an object with a content `c.getAStoreContent()` that
    * contains the value of `node1`.
    */
-  predicate storeStep(Node node1, ContentSet c, Node node2) { none() }
+  predicate storeStep(Node node1, ContentSet cs, Node node2) {
+    exists(Content c | c = cs.(SingletonContentSet).getContent() |
+      node2.asExpr() =
+        any(CallExprCfgNode call, int pos |
+          tupleVariantConstruction(call.getCallExpr(),
+            c.(TupleVariantContent).getVariantCanonicalPath(pos)) and
+          node1.asExpr() = call.getArgument(pos)
+        |
+          call
+        )
+      or
+      node2.asExpr() =
+        any(RecordExprCfgNode re, string field |
+          recordVariantConstruction(re.getRecordExpr(),
+            c.(RecordVariantContent).getVariantCanonicalPath(field)) and
+          node1.asExpr() = re.getFieldExpr(field)
+        |
+          re
+        )
+    )
+  }
 
   /**
    * Holds if values stored inside content `c` are cleared at node `n`. For example,
@@ -582,8 +765,6 @@ module RustDataFlow implements InputSig<Location> {
   class DataFlowSecondLevelScope = Void;
 }
 
-final class ContentSet = RustDataFlow::ContentSet;
-
 import MakeImpl<Location, RustDataFlow>
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -601,14 +782,6 @@ private module Cached {
   newtype TDataFlowCall = TCall(CallExprBaseCfgNode c)
 
   cached
-  newtype TOptionalContentSet =
-    TAnyElementContent() or
-    TAnyContent()
-
-  cached
-  class TContentSet = TAnyElementContent or TAnyContent;
-
-  cached
   newtype TDataFlowCallable = TCfgScope(CfgScope scope)
 
   /** This is the local flow predicate that is exposed. */
@@ -623,6 +796,33 @@ private module Cached {
       i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()]) - 1]
     } or
     TSelfParameterPosition()
+
+  cached
+  newtype TVariantCanonicalPath =
+    MkVariantCanonicalPath(CrateOriginOption crate, string path, string name) {
+      variantHasExtendedCanonicalPath(_, _, crate, path, name)
+      or
+      // TODO: Remove once library types are extracted
+      crate.isNone() and
+      path = "crate::std::option::Option" and
+      name = "Some"
+    }
+
+  cached
+  newtype TContent =
+    TTupleVariantContent(VariantCanonicalPath v, int pos) {
+      pos in [0 .. v.getVariant().getFieldList().(TupleFieldList).getNumberOfFields() - 1]
+      or
+      // TODO: Remove once library types are extracted
+      v = MkVariantCanonicalPath(_, "crate::std::option::Option", "Some") and
+      pos = 0
+    } or
+    TRecordVariantContent(VariantCanonicalPath v, string field) {
+      field = v.getVariant().getFieldList().(RecordFieldList).getAField().getName().getText()
+    }
+
+  cached
+  newtype TContentSet = TSingletonContentSet(Content c)
 }
 
 import Cached

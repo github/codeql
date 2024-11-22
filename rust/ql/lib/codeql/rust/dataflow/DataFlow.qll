@@ -19,6 +19,12 @@ module DataFlow {
 
   final class PostUpdateNode = Node::PostUpdateNode;
 
+  final class Content = DataFlowImpl::Content;
+
+  final class VariantContent = DataFlowImpl::VariantContent;
+
+  final class ContentSet = DataFlowImpl::ContentSet;
+
   /**
    * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step.

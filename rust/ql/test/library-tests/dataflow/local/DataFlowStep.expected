@@ -34,6 +34,8 @@ localStep
 | main.rs:32:9:32:9 | [SSA] b | main.rs:36:10:36:10 | b |
 | main.rs:32:9:32:9 | b | main.rs:32:9:32:9 | [SSA] b |
 | main.rs:32:13:35:5 | match m { ... } | main.rs:32:9:32:9 | b |
+| main.rs:32:19:32:19 | m | main.rs:33:9:33:15 | TupleStructPat |
+| main.rs:32:19:32:19 | m | main.rs:34:9:34:12 | None |
 | main.rs:33:20:33:20 | a | main.rs:32:13:35:5 | match m { ... } |
 | main.rs:34:17:34:17 | 0 | main.rs:32:13:35:5 | match m { ... } |
 | main.rs:40:9:40:9 | [SSA] a | main.rs:43:10:43:10 | a |
@@ -80,11 +82,15 @@ localStep
 | main.rs:105:9:105:10 | [SSA] s2 | main.rs:110:11:110:12 | s2 |
 | main.rs:105:9:105:10 | s2 | main.rs:105:9:105:10 | [SSA] s2 |
 | main.rs:105:14:105:28 | ...::Some(...) | main.rs:105:9:105:10 | s2 |
+| main.rs:106:11:106:12 | s1 | main.rs:107:9:107:23 | TupleStructPat |
+| main.rs:106:11:106:12 | s1 | main.rs:108:9:108:20 | ...::None |
 | main.rs:107:22:107:22 | [SSA] n | main.rs:107:33:107:33 | n |
 | main.rs:107:22:107:22 | n | main.rs:107:22:107:22 | [SSA] n |
 | main.rs:107:28:107:34 | sink(...) | main.rs:106:5:109:5 | match s1 { ... } |
 | main.rs:108:25:108:31 | sink(...) | main.rs:106:5:109:5 | match s1 { ... } |
 | main.rs:110:5:113:5 | match s2 { ... } | main.rs:103:37:114:1 | { ... } |
+| main.rs:110:11:110:12 | s2 | main.rs:111:9:111:23 | TupleStructPat |
+| main.rs:110:11:110:12 | s2 | main.rs:112:9:112:20 | ...::None |
 | main.rs:111:22:111:22 | [SSA] n | main.rs:111:33:111:33 | n |
 | main.rs:111:22:111:22 | n | main.rs:111:22:111:22 | [SSA] n |
 | main.rs:111:28:111:34 | sink(...) | main.rs:110:5:113:5 | match s2 { ... } |
@@ -95,11 +101,15 @@ localStep
 | main.rs:118:9:118:10 | [SSA] s2 | main.rs:123:11:123:12 | s2 |
 | main.rs:118:9:118:10 | s2 | main.rs:118:9:118:10 | [SSA] s2 |
 | main.rs:118:14:118:20 | Some(...) | main.rs:118:9:118:10 | s2 |
+| main.rs:119:11:119:12 | s1 | main.rs:120:9:120:15 | TupleStructPat |
+| main.rs:119:11:119:12 | s1 | main.rs:121:9:121:12 | None |
 | main.rs:120:14:120:14 | [SSA] n | main.rs:120:25:120:25 | n |
 | main.rs:120:14:120:14 | n | main.rs:120:14:120:14 | [SSA] n |
 | main.rs:120:20:120:26 | sink(...) | main.rs:119:5:122:5 | match s1 { ... } |
 | main.rs:121:17:121:23 | sink(...) | main.rs:119:5:122:5 | match s1 { ... } |
 | main.rs:123:5:126:5 | match s2 { ... } | main.rs:116:39:127:1 | { ... } |
+| main.rs:123:11:123:12 | s2 | main.rs:124:9:124:15 | TupleStructPat |
+| main.rs:123:11:123:12 | s2 | main.rs:125:9:125:12 | None |
 | main.rs:124:14:124:14 | [SSA] n | main.rs:124:25:124:25 | n |
 | main.rs:124:14:124:14 | n | main.rs:124:14:124:14 | [SSA] n |
 | main.rs:124:20:124:26 | sink(...) | main.rs:123:5:126:5 | match s2 { ... } |
@@ -110,6 +120,8 @@ localStep
 | main.rs:136:9:136:10 | [SSA] s2 | main.rs:144:11:144:12 | s2 |
 | main.rs:136:9:136:10 | s2 | main.rs:136:9:136:10 | [SSA] s2 |
 | main.rs:136:14:136:30 | ...::B(...) | main.rs:136:9:136:10 | s2 |
+| main.rs:137:11:137:12 | s1 | main.rs:138:9:138:25 | TupleStructPat |
+| main.rs:137:11:137:12 | s1 | main.rs:139:9:139:25 | TupleStructPat |
 | main.rs:137:11:137:12 | s1 | main.rs:141:11:141:12 | s1 |
 | main.rs:138:24:138:24 | [SSA] n | main.rs:138:35:138:35 | n |
 | main.rs:138:24:138:24 | n | main.rs:138:24:138:24 | [SSA] n |
@@ -117,6 +129,9 @@ localStep
 | main.rs:139:24:139:24 | [SSA] n | main.rs:139:35:139:35 | n |
 | main.rs:139:24:139:24 | n | main.rs:139:24:139:24 | [SSA] n |
 | main.rs:139:30:139:36 | sink(...) | main.rs:137:5:140:5 | match s1 { ... } |
+| main.rs:141:11:141:12 | s1 | main.rs:142:10:142:46 | ... \| ... |
+| main.rs:142:10:142:46 | ... \| ... | main.rs:142:10:142:26 | TupleStructPat |
+| main.rs:142:10:142:46 | ... \| ... | main.rs:142:30:142:46 | TupleStructPat |
 | main.rs:142:10:142:46 | [SSA] [match(true)] phi | main.rs:142:57:142:57 | n |
 | main.rs:142:25:142:25 | [SSA] [input] [match(true)] phi | main.rs:142:10:142:46 | [SSA] [match(true)] phi |
 | main.rs:142:25:142:25 | [SSA] n | main.rs:142:25:142:25 | [SSA] [input] [match(true)] phi |
@@ -126,6 +141,8 @@ localStep
 | main.rs:142:45:142:45 | n | main.rs:142:45:142:45 | [SSA] n |
 | main.rs:142:52:142:58 | sink(...) | main.rs:141:5:143:5 | match s1 { ... } |
 | main.rs:144:5:147:5 | match s2 { ... } | main.rs:134:48:148:1 | { ... } |
+| main.rs:144:11:144:12 | s2 | main.rs:145:9:145:25 | TupleStructPat |
+| main.rs:144:11:144:12 | s2 | main.rs:146:9:146:25 | TupleStructPat |
 | main.rs:145:24:145:24 | [SSA] n | main.rs:145:35:145:35 | n |
 | main.rs:145:24:145:24 | n | main.rs:145:24:145:24 | [SSA] n |
 | main.rs:145:30:145:36 | sink(...) | main.rs:144:5:147:5 | match s2 { ... } |
@@ -138,6 +155,8 @@ localStep
 | main.rs:154:9:154:10 | [SSA] s2 | main.rs:162:11:162:12 | s2 |
 | main.rs:154:9:154:10 | s2 | main.rs:154:9:154:10 | [SSA] s2 |
 | main.rs:154:14:154:17 | B(...) | main.rs:154:9:154:10 | s2 |
+| main.rs:155:11:155:12 | s1 | main.rs:156:9:156:12 | TupleStructPat |
+| main.rs:155:11:155:12 | s1 | main.rs:157:9:157:12 | TupleStructPat |
 | main.rs:155:11:155:12 | s1 | main.rs:159:11:159:12 | s1 |
 | main.rs:156:11:156:11 | [SSA] n | main.rs:156:22:156:22 | n |
 | main.rs:156:11:156:11 | n | main.rs:156:11:156:11 | [SSA] n |
@@ -145,6 +164,9 @@ localStep
 | main.rs:157:11:157:11 | [SSA] n | main.rs:157:22:157:22 | n |
 | main.rs:157:11:157:11 | n | main.rs:157:11:157:11 | [SSA] n |
 | main.rs:157:17:157:23 | sink(...) | main.rs:155:5:158:5 | match s1 { ... } |
+| main.rs:159:11:159:12 | s1 | main.rs:160:10:160:20 | ... \| ... |
+| main.rs:160:10:160:20 | ... \| ... | main.rs:160:10:160:13 | TupleStructPat |
+| main.rs:160:10:160:20 | ... \| ... | main.rs:160:17:160:20 | TupleStructPat |
 | main.rs:160:10:160:20 | [SSA] [match(true)] phi | main.rs:160:31:160:31 | n |
 | main.rs:160:12:160:12 | [SSA] [input] [match(true)] phi | main.rs:160:10:160:20 | [SSA] [match(true)] phi |
 | main.rs:160:12:160:12 | [SSA] n | main.rs:160:12:160:12 | [SSA] [input] [match(true)] phi |
@@ -154,6 +176,8 @@ localStep
 | main.rs:160:19:160:19 | n | main.rs:160:19:160:19 | [SSA] n |
 | main.rs:160:26:160:32 | sink(...) | main.rs:159:5:161:5 | match s1 { ... } |
 | main.rs:162:5:165:5 | match s2 { ... } | main.rs:152:50:166:1 | { ... } |
+| main.rs:162:11:162:12 | s2 | main.rs:163:9:163:12 | TupleStructPat |
+| main.rs:162:11:162:12 | s2 | main.rs:164:9:164:12 | TupleStructPat |
 | main.rs:163:11:163:11 | [SSA] n | main.rs:163:22:163:22 | n |
 | main.rs:163:11:163:11 | n | main.rs:163:11:163:11 | [SSA] n |
 | main.rs:163:17:163:23 | sink(...) | main.rs:162:5:165:5 | match s2 { ... } |
@@ -166,6 +190,8 @@ localStep
 | main.rs:177:9:177:10 | [SSA] s2 | main.rs:185:11:185:12 | s2 |
 | main.rs:177:9:177:10 | s2 | main.rs:177:9:177:10 | [SSA] s2 |
 | main.rs:177:14:177:43 | ...::D {...} | main.rs:177:9:177:10 | s2 |
+| main.rs:178:11:178:12 | s1 | main.rs:179:9:179:38 | ...::C {...} |
+| main.rs:178:11:178:12 | s1 | main.rs:180:9:180:38 | ...::D {...} |
 | main.rs:178:11:178:12 | s1 | main.rs:182:11:182:12 | s1 |
 | main.rs:179:36:179:36 | [SSA] n | main.rs:179:48:179:48 | n |
 | main.rs:179:36:179:36 | n | main.rs:179:36:179:36 | [SSA] n |
@@ -173,6 +199,9 @@ localStep
 | main.rs:180:36:180:36 | [SSA] n | main.rs:180:48:180:48 | n |
 | main.rs:180:36:180:36 | n | main.rs:180:36:180:36 | [SSA] n |
 | main.rs:180:43:180:49 | sink(...) | main.rs:178:5:181:5 | match s1 { ... } |
+| main.rs:182:11:182:12 | s1 | main.rs:183:10:183:72 | ... \| ... |
+| main.rs:183:10:183:72 | ... \| ... | main.rs:183:10:183:39 | ...::C {...} |
+| main.rs:183:10:183:72 | ... \| ... | main.rs:183:43:183:72 | ...::D {...} |
 | main.rs:183:10:183:72 | [SSA] [match(true)] phi | main.rs:183:83:183:83 | n |
 | main.rs:183:37:183:37 | [SSA] [input] [match(true)] phi | main.rs:183:10:183:72 | [SSA] [match(true)] phi |
 | main.rs:183:37:183:37 | [SSA] n | main.rs:183:37:183:37 | [SSA] [input] [match(true)] phi |
@@ -182,6 +211,8 @@ localStep
 | main.rs:183:70:183:70 | n | main.rs:183:70:183:70 | [SSA] n |
 | main.rs:183:78:183:84 | sink(...) | main.rs:182:5:184:5 | match s1 { ... } |
 | main.rs:185:5:188:5 | match s2 { ... } | main.rs:173:49:189:1 | { ... } |
+| main.rs:185:11:185:12 | s2 | main.rs:186:9:186:38 | ...::C {...} |
+| main.rs:185:11:185:12 | s2 | main.rs:187:9:187:38 | ...::D {...} |
 | main.rs:186:36:186:36 | [SSA] n | main.rs:186:48:186:48 | n |
 | main.rs:186:36:186:36 | n | main.rs:186:36:186:36 | [SSA] n |
 | main.rs:186:43:186:49 | sink(...) | main.rs:185:5:188:5 | match s2 { ... } |
@@ -194,6 +225,8 @@ localStep
 | main.rs:197:9:197:10 | [SSA] s2 | main.rs:205:11:205:12 | s2 |
 | main.rs:197:9:197:10 | s2 | main.rs:197:9:197:10 | [SSA] s2 |
 | main.rs:197:14:197:29 | D {...} | main.rs:197:9:197:10 | s2 |
+| main.rs:198:11:198:12 | s1 | main.rs:199:9:199:24 | C {...} |
+| main.rs:198:11:198:12 | s1 | main.rs:200:9:200:24 | D {...} |
 | main.rs:198:11:198:12 | s1 | main.rs:202:11:202:12 | s1 |
 | main.rs:199:22:199:22 | [SSA] n | main.rs:199:34:199:34 | n |
 | main.rs:199:22:199:22 | n | main.rs:199:22:199:22 | [SSA] n |
@@ -201,6 +234,9 @@ localStep
 | main.rs:200:22:200:22 | [SSA] n | main.rs:200:34:200:34 | n |
 | main.rs:200:22:200:22 | n | main.rs:200:22:200:22 | [SSA] n |
 | main.rs:200:29:200:35 | sink(...) | main.rs:198:5:201:5 | match s1 { ... } |
+| main.rs:202:11:202:12 | s1 | main.rs:203:10:203:44 | ... \| ... |
+| main.rs:203:10:203:44 | ... \| ... | main.rs:203:10:203:25 | C {...} |
+| main.rs:203:10:203:44 | ... \| ... | main.rs:203:29:203:44 | D {...} |
 | main.rs:203:10:203:44 | [SSA] [match(true)] phi | main.rs:203:55:203:55 | n |
 | main.rs:203:23:203:23 | [SSA] [input] [match(true)] phi | main.rs:203:10:203:44 | [SSA] [match(true)] phi |
 | main.rs:203:23:203:23 | [SSA] n | main.rs:203:23:203:23 | [SSA] [input] [match(true)] phi |
@@ -210,6 +246,8 @@ localStep
 | main.rs:203:42:203:42 | n | main.rs:203:42:203:42 | [SSA] n |
 | main.rs:203:50:203:56 | sink(...) | main.rs:202:5:204:5 | match s1 { ... } |
 | main.rs:205:5:208:5 | match s2 { ... } | main.rs:193:51:209:1 | { ... } |
+| main.rs:205:11:205:12 | s2 | main.rs:206:9:206:24 | C {...} |
+| main.rs:205:11:205:12 | s2 | main.rs:207:9:207:24 | D {...} |
 | main.rs:206:22:206:22 | [SSA] n | main.rs:206:34:206:34 | n |
 | main.rs:206:22:206:22 | n | main.rs:206:22:206:22 | [SSA] n |
 | main.rs:206:29:206:35 | sink(...) | main.rs:205:5:208:5 | match s2 { ... } |
@@ -243,4 +281,26 @@ localStep
 | main.rs:231:22:231:22 | 2 | main.rs:231:9:231:22 | break ''block 2 |
 | main.rs:233:5:233:5 | a | main.rs:226:38:234:1 | { ... } |
 storeStep
+| main.rs:117:19:117:28 | source(...) | Some | main.rs:117:14:117:29 | Some(...) |
+| main.rs:118:19:118:19 | 2 | Some | main.rs:118:14:118:20 | Some(...) |
+| main.rs:135:29:135:38 | source(...) | A | main.rs:135:14:135:39 | ...::A(...) |
+| main.rs:136:29:136:29 | 2 | B | main.rs:136:14:136:30 | ...::B(...) |
+| main.rs:175:18:175:27 | source(...) | C | main.rs:174:14:176:5 | ...::C {...} |
+| main.rs:177:41:177:41 | 2 | D | main.rs:177:14:177:43 | ...::D {...} |
+| main.rs:240:27:240:27 | 0 | Some | main.rs:240:22:240:28 | Some(...) |
 readStep
+| main.rs:33:9:33:15 | TupleStructPat | Some | main.rs:33:14:33:14 | _ |
+| main.rs:120:9:120:15 | TupleStructPat | Some | main.rs:120:14:120:14 | n |
+| main.rs:124:9:124:15 | TupleStructPat | Some | main.rs:124:14:124:14 | n |
+| main.rs:138:9:138:25 | TupleStructPat | A | main.rs:138:24:138:24 | n |
+| main.rs:139:9:139:25 | TupleStructPat | B | main.rs:139:24:139:24 | n |
+| main.rs:142:10:142:26 | TupleStructPat | A | main.rs:142:25:142:25 | n |
+| main.rs:142:30:142:46 | TupleStructPat | B | main.rs:142:45:142:45 | n |
+| main.rs:145:9:145:25 | TupleStructPat | A | main.rs:145:24:145:24 | n |
+| main.rs:146:9:146:25 | TupleStructPat | B | main.rs:146:24:146:24 | n |
+| main.rs:179:9:179:38 | ...::C {...} | C | main.rs:179:36:179:36 | n |
+| main.rs:180:9:180:38 | ...::D {...} | D | main.rs:180:36:180:36 | n |
+| main.rs:183:10:183:39 | ...::C {...} | C | main.rs:183:37:183:37 | n |
+| main.rs:183:43:183:72 | ...::D {...} | D | main.rs:183:70:183:70 | n |
+| main.rs:186:9:186:38 | ...::C {...} | C | main.rs:186:36:186:36 | n |
+| main.rs:187:9:187:38 | ...::D {...} | D | main.rs:187:36:187:36 | n |
