@@ -17,3 +17,4 @@ void *malloc(size_t size);
 double strtod(const char *ptr, char **endptr);
 char *getenv(const char *name);
 ssize_t read(int fd, void *buffer, size_t count);
+int snprintf(char *s, size_t n, const char *format, ...);

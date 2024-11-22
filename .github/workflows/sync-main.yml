@@ -21,17 +21,22 @@ jobs:
         run: |
           git config user.name Dilan Bhalla
           git config user.email dilanbhalla@microsoft.com
-      - name: Fetch
+      - name: Sync Main
         shell: bash
         run: |
           set -x
           git fetch
           git remote add upstream https://github.com/github/codeql.git
           git fetch upstream --tags --force
-      - name: Sync Main
+          git merge codeql-cli/latest
+      - name: Setup CodeQL
+        uses: ./.github/actions/fetch-codeql
+      - name: Compile PowerShell Queries
+        run: |
+          codeql query compile --check-only --keep-going powershell/ql/src
+      - name: Complete Sync
         shell: bash
         run: |
-          git merge codeql-cli/latest
           git push origin main
           git push origin --tags --force
 

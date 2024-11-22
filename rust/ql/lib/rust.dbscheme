@@ -139,6 +139,7 @@ locatable_locations(
 | @assoc_item
 | @assoc_item_list
 | @attr
+| @callable
 | @closure_binder
 | @expr
 | @extern_item
@@ -257,6 +258,24 @@ attr_meta(
   int meta: @meta ref
 );
 
+@callable =
+  @closure_expr
+| @function
+;
+
+#keyset[id]
+callable_param_lists(
+  int id: @callable ref,
+  int param_list: @param_list ref
+);
+
+#keyset[id, index]
+callable_attrs(
+  int id: @callable ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
 closure_binders(
   unique int id: @closure_binder
 );
@@ -291,7 +310,7 @@ closure_binder_generic_param_lists(
 | @match_expr
 | @offset_of_expr
 | @paren_expr
-| @path_expr
+| @path_expr_base
 | @prefix_expr
 | @range_expr
 | @record_expr
@@ -1425,13 +1444,6 @@ closure_exprs(
   unique int id: @closure_expr
 );
 
-#keyset[id, index]
-closure_expr_attrs(
-  int id: @closure_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
 #keyset[id]
 closure_expr_bodies(
   int id: @closure_expr ref,
@@ -1467,12 +1479,6 @@ closure_expr_is_move(
 #keyset[id]
 closure_expr_is_static(
   int id: @closure_expr ref
-);
-
-#keyset[id]
-closure_expr_param_lists(
-  int id: @closure_expr ref,
-  int param_list: @param_list ref
 );
 
 #keyset[id]
@@ -1837,6 +1843,18 @@ infer_types(
 | @use
 ;
 
+#keyset[id]
+item_extended_canonical_paths(
+  int id: @item ref,
+  string extended_canonical_path: string ref
+);
+
+#keyset[id]
+item_crate_origins(
+  int id: @item ref,
+  string crate_origin: string ref
+);
+
 let_exprs(
   unique int id: @let_expr
 );
@@ -2107,22 +2125,9 @@ paren_type_ties(
   int ty: @type_ref ref
 );
 
-path_exprs(
-  unique int id: @path_expr
-);
-
-#keyset[id, index]
-path_expr_attrs(
-  int id: @path_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-path_expr_paths(
-  int id: @path_expr ref,
-  int path: @path ref
-);
+@path_expr_base =
+  @path_expr
+;
 
 path_pats(
   unique int id: @path_pat
@@ -2763,13 +2768,6 @@ function_abis(
   int abi: @abi ref
 );
 
-#keyset[id, index]
-function_attrs(
-  int id: @function ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
 #keyset[id]
 function_bodies(
   int id: @function ref,
@@ -2811,12 +2809,6 @@ function_is_unsafe(
 function_names(
   int id: @function ref,
   int name: @name ref
-);
-
-#keyset[id]
-function_param_lists(
-  int id: @function ref,
-  int param_list: @param_list ref
 );
 
 #keyset[id]
@@ -3041,6 +3033,23 @@ module_names(
 module_visibilities(
   int id: @module ref,
   int visibility: @visibility ref
+);
+
+path_exprs(
+  unique int id: @path_expr
+);
+
+#keyset[id, index]
+path_expr_attrs(
+  int id: @path_expr ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+path_expr_paths(
+  int id: @path_expr ref,
+  int path: @path ref
 );
 
 statics(

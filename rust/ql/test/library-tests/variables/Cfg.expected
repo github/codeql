@@ -31,1149 +31,1208 @@ edges
 | variables.rs:8:14:8:20 | MacroExpr | variables.rs:8:14:8:20 | CallExpr |  |
 | variables.rs:8:14:8:20 | MacroStmts | variables.rs:8:14:8:20 | ExprStmt |  |
 | variables.rs:8:20:8:20 | i | variables.rs:8:14:8:20 | FormatArgsExpr |  |
-| variables.rs:11:1:14:1 | enter immutable_variable | variables.rs:12:5:12:17 | LetStmt |  |
-| variables.rs:11:1:14:1 | exit immutable_variable (normal) | variables.rs:11:1:14:1 | exit immutable_variable |  |
-| variables.rs:11:25:14:1 | BlockExpr | variables.rs:11:1:14:1 | exit immutable_variable (normal) |  |
-| variables.rs:12:5:12:17 | LetStmt | variables.rs:12:14:12:16 | "a" |  |
-| variables.rs:12:9:12:10 | x1 | variables.rs:13:5:13:18 | ExprStmt | match |
-| variables.rs:12:14:12:16 | "a" | variables.rs:12:9:12:10 | x1 |  |
-| variables.rs:13:5:13:13 | PathExpr | variables.rs:13:15:13:16 | x1 |  |
-| variables.rs:13:5:13:17 | CallExpr | variables.rs:11:25:14:1 | BlockExpr |  |
-| variables.rs:13:5:13:18 | ExprStmt | variables.rs:13:5:13:13 | PathExpr |  |
-| variables.rs:13:15:13:16 | x1 | variables.rs:13:5:13:17 | CallExpr |  |
-| variables.rs:16:1:21:1 | enter mutable_variable | variables.rs:17:5:17:19 | LetStmt |  |
-| variables.rs:16:1:21:1 | exit mutable_variable (normal) | variables.rs:16:1:21:1 | exit mutable_variable |  |
-| variables.rs:16:23:21:1 | BlockExpr | variables.rs:16:1:21:1 | exit mutable_variable (normal) |  |
-| variables.rs:17:5:17:19 | LetStmt | variables.rs:17:18:17:18 | 4 |  |
-| variables.rs:17:9:17:14 | x2 | variables.rs:18:5:18:18 | ExprStmt | match |
-| variables.rs:17:18:17:18 | 4 | variables.rs:17:9:17:14 | x2 |  |
-| variables.rs:18:5:18:13 | PathExpr | variables.rs:18:15:18:16 | x2 |  |
-| variables.rs:18:5:18:17 | CallExpr | variables.rs:19:5:19:11 | ExprStmt |  |
-| variables.rs:18:5:18:18 | ExprStmt | variables.rs:18:5:18:13 | PathExpr |  |
-| variables.rs:18:15:18:16 | x2 | variables.rs:18:5:18:17 | CallExpr |  |
-| variables.rs:19:5:19:6 | x2 | variables.rs:19:10:19:10 | 5 |  |
-| variables.rs:19:5:19:10 | ... = ... | variables.rs:20:5:20:18 | ExprStmt |  |
-| variables.rs:19:5:19:11 | ExprStmt | variables.rs:19:5:19:6 | x2 |  |
-| variables.rs:19:10:19:10 | 5 | variables.rs:19:5:19:10 | ... = ... |  |
-| variables.rs:20:5:20:13 | PathExpr | variables.rs:20:15:20:16 | x2 |  |
-| variables.rs:20:5:20:17 | CallExpr | variables.rs:16:23:21:1 | BlockExpr |  |
-| variables.rs:20:5:20:18 | ExprStmt | variables.rs:20:5:20:13 | PathExpr |  |
-| variables.rs:20:15:20:16 | x2 | variables.rs:20:5:20:17 | CallExpr |  |
-| variables.rs:23:1:29:1 | enter variable_shadow1 | variables.rs:24:5:24:15 | LetStmt |  |
-| variables.rs:23:1:29:1 | exit variable_shadow1 (normal) | variables.rs:23:1:29:1 | exit variable_shadow1 |  |
-| variables.rs:23:23:29:1 | BlockExpr | variables.rs:23:1:29:1 | exit variable_shadow1 (normal) |  |
-| variables.rs:24:5:24:15 | LetStmt | variables.rs:24:14:24:14 | 1 |  |
-| variables.rs:24:9:24:10 | x3 | variables.rs:25:5:25:18 | ExprStmt | match |
-| variables.rs:24:14:24:14 | 1 | variables.rs:24:9:24:10 | x3 |  |
-| variables.rs:25:5:25:13 | PathExpr | variables.rs:25:15:25:16 | x3 |  |
-| variables.rs:25:5:25:17 | CallExpr | variables.rs:26:5:27:15 | LetStmt |  |
-| variables.rs:25:5:25:18 | ExprStmt | variables.rs:25:5:25:13 | PathExpr |  |
-| variables.rs:25:15:25:16 | x3 | variables.rs:25:5:25:17 | CallExpr |  |
-| variables.rs:26:5:27:15 | LetStmt | variables.rs:27:9:27:10 | x3 |  |
-| variables.rs:26:9:26:10 | x3 | variables.rs:28:5:28:18 | ExprStmt | match |
-| variables.rs:27:9:27:10 | x3 | variables.rs:27:14:27:14 | 1 |  |
-| variables.rs:27:9:27:14 | ... + ... | variables.rs:26:9:26:10 | x3 |  |
-| variables.rs:27:14:27:14 | 1 | variables.rs:27:9:27:14 | ... + ... |  |
-| variables.rs:28:5:28:13 | PathExpr | variables.rs:28:15:28:16 | x3 |  |
-| variables.rs:28:5:28:17 | CallExpr | variables.rs:23:23:29:1 | BlockExpr |  |
-| variables.rs:28:5:28:18 | ExprStmt | variables.rs:28:5:28:13 | PathExpr |  |
-| variables.rs:28:15:28:16 | x3 | variables.rs:28:5:28:17 | CallExpr |  |
-| variables.rs:31:1:39:1 | enter variable_shadow2 | variables.rs:32:5:32:17 | LetStmt |  |
-| variables.rs:31:1:39:1 | exit variable_shadow2 (normal) | variables.rs:31:1:39:1 | exit variable_shadow2 |  |
-| variables.rs:31:23:39:1 | BlockExpr | variables.rs:31:1:39:1 | exit variable_shadow2 (normal) |  |
-| variables.rs:32:5:32:17 | LetStmt | variables.rs:32:14:32:16 | "a" |  |
-| variables.rs:32:9:32:10 | x4 | variables.rs:33:5:33:18 | ExprStmt | match |
-| variables.rs:32:14:32:16 | "a" | variables.rs:32:9:32:10 | x4 |  |
-| variables.rs:33:5:33:13 | PathExpr | variables.rs:33:15:33:16 | x4 |  |
-| variables.rs:33:5:33:17 | CallExpr | variables.rs:34:5:37:5 | ExprStmt |  |
-| variables.rs:33:5:33:18 | ExprStmt | variables.rs:33:5:33:13 | PathExpr |  |
-| variables.rs:33:15:33:16 | x4 | variables.rs:33:5:33:17 | CallExpr |  |
-| variables.rs:34:5:37:5 | BlockExpr | variables.rs:38:5:38:18 | ExprStmt |  |
-| variables.rs:34:5:37:5 | ExprStmt | variables.rs:35:9:35:21 | LetStmt |  |
-| variables.rs:35:9:35:21 | LetStmt | variables.rs:35:18:35:20 | "b" |  |
-| variables.rs:35:13:35:14 | x4 | variables.rs:36:9:36:22 | ExprStmt | match |
-| variables.rs:35:18:35:20 | "b" | variables.rs:35:13:35:14 | x4 |  |
-| variables.rs:36:9:36:17 | PathExpr | variables.rs:36:19:36:20 | x4 |  |
-| variables.rs:36:9:36:21 | CallExpr | variables.rs:34:5:37:5 | BlockExpr |  |
-| variables.rs:36:9:36:22 | ExprStmt | variables.rs:36:9:36:17 | PathExpr |  |
-| variables.rs:36:19:36:20 | x4 | variables.rs:36:9:36:21 | CallExpr |  |
-| variables.rs:38:5:38:13 | PathExpr | variables.rs:38:15:38:16 | x4 |  |
-| variables.rs:38:5:38:17 | CallExpr | variables.rs:31:23:39:1 | BlockExpr |  |
-| variables.rs:38:5:38:18 | ExprStmt | variables.rs:38:5:38:13 | PathExpr |  |
-| variables.rs:38:15:38:16 | x4 | variables.rs:38:5:38:17 | CallExpr |  |
-| variables.rs:46:1:61:1 | enter let_pattern1 | variables.rs:47:5:56:47 | LetStmt |  |
-| variables.rs:46:1:61:1 | exit let_pattern1 (normal) | variables.rs:46:1:61:1 | exit let_pattern1 |  |
-| variables.rs:46:19:61:1 | BlockExpr | variables.rs:46:1:61:1 | exit let_pattern1 (normal) |  |
-| variables.rs:47:5:56:47 | LetStmt | variables.rs:56:11:56:13 | "a" |  |
-| variables.rs:47:9:56:5 | TuplePat | variables.rs:48:9:51:9 | TuplePat | match |
-| variables.rs:48:9:51:9 | TuplePat | variables.rs:49:13:49:14 | a1 | match |
-| variables.rs:49:13:49:14 | a1 | variables.rs:50:13:50:14 | b1 | match |
-| variables.rs:50:13:50:14 | b1 | variables.rs:52:9:55:9 | RecordPat | match |
-| variables.rs:52:9:55:9 | RecordPat | variables.rs:53:13:53:13 | x | match |
-| variables.rs:53:13:53:13 | x | variables.rs:54:13:54:13 | y | match |
-| variables.rs:54:13:54:13 | y | variables.rs:57:5:57:18 | ExprStmt | match |
-| variables.rs:56:9:56:46 | TupleExpr | variables.rs:47:9:56:5 | TuplePat |  |
-| variables.rs:56:10:56:19 | TupleExpr | variables.rs:56:33:56:35 | "x" |  |
-| variables.rs:56:11:56:13 | "a" | variables.rs:56:16:56:18 | "b" |  |
-| variables.rs:56:16:56:18 | "b" | variables.rs:56:10:56:19 | TupleExpr |  |
-| variables.rs:56:22:56:45 | RecordExpr | variables.rs:56:9:56:46 | TupleExpr |  |
-| variables.rs:56:33:56:35 | "x" | variables.rs:56:41:56:43 | "y" |  |
-| variables.rs:56:41:56:43 | "y" | variables.rs:56:22:56:45 | RecordExpr |  |
-| variables.rs:57:5:57:13 | PathExpr | variables.rs:57:15:57:16 | a1 |  |
-| variables.rs:57:5:57:17 | CallExpr | variables.rs:58:5:58:18 | ExprStmt |  |
-| variables.rs:57:5:57:18 | ExprStmt | variables.rs:57:5:57:13 | PathExpr |  |
-| variables.rs:57:15:57:16 | a1 | variables.rs:57:5:57:17 | CallExpr |  |
-| variables.rs:58:5:58:13 | PathExpr | variables.rs:58:15:58:16 | b1 |  |
-| variables.rs:58:5:58:17 | CallExpr | variables.rs:59:5:59:17 | ExprStmt |  |
-| variables.rs:58:5:58:18 | ExprStmt | variables.rs:58:5:58:13 | PathExpr |  |
-| variables.rs:58:15:58:16 | b1 | variables.rs:58:5:58:17 | CallExpr |  |
-| variables.rs:59:5:59:13 | PathExpr | variables.rs:59:15:59:15 | x |  |
-| variables.rs:59:5:59:16 | CallExpr | variables.rs:60:5:60:17 | ExprStmt |  |
-| variables.rs:59:5:59:17 | ExprStmt | variables.rs:59:5:59:13 | PathExpr |  |
-| variables.rs:59:15:59:15 | x | variables.rs:59:5:59:16 | CallExpr |  |
-| variables.rs:60:5:60:13 | PathExpr | variables.rs:60:15:60:15 | y |  |
-| variables.rs:60:5:60:16 | CallExpr | variables.rs:46:19:61:1 | BlockExpr |  |
-| variables.rs:60:5:60:17 | ExprStmt | variables.rs:60:5:60:13 | PathExpr |  |
-| variables.rs:60:15:60:15 | y | variables.rs:60:5:60:16 | CallExpr |  |
-| variables.rs:63:1:71:1 | enter let_pattern2 | variables.rs:64:5:64:38 | LetStmt |  |
-| variables.rs:63:1:71:1 | exit let_pattern2 (normal) | variables.rs:63:1:71:1 | exit let_pattern2 |  |
-| variables.rs:63:19:71:1 | BlockExpr | variables.rs:63:1:71:1 | exit let_pattern2 (normal) |  |
-| variables.rs:64:5:64:38 | LetStmt | variables.rs:64:25:64:27 | "a" |  |
-| variables.rs:64:9:64:10 | p1 | variables.rs:65:5:68:11 | LetStmt | match |
-| variables.rs:64:14:64:37 | RecordExpr | variables.rs:64:9:64:10 | p1 |  |
-| variables.rs:64:25:64:27 | "a" | variables.rs:64:33:64:35 | "b" |  |
-| variables.rs:64:33:64:35 | "b" | variables.rs:64:14:64:37 | RecordExpr |  |
-| variables.rs:65:5:68:11 | LetStmt | variables.rs:68:9:68:10 | p1 |  |
-| variables.rs:65:9:68:5 | RecordPat | variables.rs:66:12:66:13 | a2 | match |
-| variables.rs:66:12:66:13 | a2 | variables.rs:67:12:67:13 | b2 | match |
-| variables.rs:67:12:67:13 | b2 | variables.rs:69:5:69:18 | ExprStmt | match |
-| variables.rs:68:9:68:10 | p1 | variables.rs:65:9:68:5 | RecordPat |  |
-| variables.rs:69:5:69:13 | PathExpr | variables.rs:69:15:69:16 | a2 |  |
-| variables.rs:69:5:69:17 | CallExpr | variables.rs:70:5:70:18 | ExprStmt |  |
+| variables.rs:11:1:13:1 | enter print_i64_ref | variables.rs:11:18:11:18 | i |  |
+| variables.rs:11:1:13:1 | exit print_i64_ref (normal) | variables.rs:11:1:13:1 | exit print_i64_ref |  |
+| variables.rs:11:18:11:18 | i | variables.rs:11:18:11:24 | Param | match |
+| variables.rs:11:18:11:24 | Param | variables.rs:12:5:12:13 | PathExpr |  |
+| variables.rs:11:27:13:1 | BlockExpr | variables.rs:11:1:13:1 | exit print_i64_ref (normal) |  |
+| variables.rs:12:5:12:13 | PathExpr | variables.rs:12:16:12:16 | i |  |
+| variables.rs:12:5:12:17 | CallExpr | variables.rs:11:27:13:1 | BlockExpr |  |
+| variables.rs:12:15:12:16 | * ... | variables.rs:12:5:12:17 | CallExpr |  |
+| variables.rs:12:16:12:16 | i | variables.rs:12:15:12:16 | * ... |  |
+| variables.rs:15:1:18:1 | enter immutable_variable | variables.rs:16:5:16:17 | LetStmt |  |
+| variables.rs:15:1:18:1 | exit immutable_variable (normal) | variables.rs:15:1:18:1 | exit immutable_variable |  |
+| variables.rs:15:25:18:1 | BlockExpr | variables.rs:15:1:18:1 | exit immutable_variable (normal) |  |
+| variables.rs:16:5:16:17 | LetStmt | variables.rs:16:14:16:16 | "a" |  |
+| variables.rs:16:9:16:10 | x1 | variables.rs:17:5:17:18 | ExprStmt | match |
+| variables.rs:16:14:16:16 | "a" | variables.rs:16:9:16:10 | x1 |  |
+| variables.rs:17:5:17:13 | PathExpr | variables.rs:17:15:17:16 | x1 |  |
+| variables.rs:17:5:17:17 | CallExpr | variables.rs:15:25:18:1 | BlockExpr |  |
+| variables.rs:17:5:17:18 | ExprStmt | variables.rs:17:5:17:13 | PathExpr |  |
+| variables.rs:17:15:17:16 | x1 | variables.rs:17:5:17:17 | CallExpr |  |
+| variables.rs:20:1:25:1 | enter mutable_variable | variables.rs:21:5:21:19 | LetStmt |  |
+| variables.rs:20:1:25:1 | exit mutable_variable (normal) | variables.rs:20:1:25:1 | exit mutable_variable |  |
+| variables.rs:20:23:25:1 | BlockExpr | variables.rs:20:1:25:1 | exit mutable_variable (normal) |  |
+| variables.rs:21:5:21:19 | LetStmt | variables.rs:21:18:21:18 | 4 |  |
+| variables.rs:21:9:21:14 | x2 | variables.rs:22:5:22:18 | ExprStmt | match |
+| variables.rs:21:18:21:18 | 4 | variables.rs:21:9:21:14 | x2 |  |
+| variables.rs:22:5:22:13 | PathExpr | variables.rs:22:15:22:16 | x2 |  |
+| variables.rs:22:5:22:17 | CallExpr | variables.rs:23:5:23:11 | ExprStmt |  |
+| variables.rs:22:5:22:18 | ExprStmt | variables.rs:22:5:22:13 | PathExpr |  |
+| variables.rs:22:15:22:16 | x2 | variables.rs:22:5:22:17 | CallExpr |  |
+| variables.rs:23:5:23:6 | x2 | variables.rs:23:10:23:10 | 5 |  |
+| variables.rs:23:5:23:10 | ... = ... | variables.rs:24:5:24:18 | ExprStmt |  |
+| variables.rs:23:5:23:11 | ExprStmt | variables.rs:23:5:23:6 | x2 |  |
+| variables.rs:23:10:23:10 | 5 | variables.rs:23:5:23:10 | ... = ... |  |
+| variables.rs:24:5:24:13 | PathExpr | variables.rs:24:15:24:16 | x2 |  |
+| variables.rs:24:5:24:17 | CallExpr | variables.rs:20:23:25:1 | BlockExpr |  |
+| variables.rs:24:5:24:18 | ExprStmt | variables.rs:24:5:24:13 | PathExpr |  |
+| variables.rs:24:15:24:16 | x2 | variables.rs:24:5:24:17 | CallExpr |  |
+| variables.rs:27:1:32:1 | enter mutable_variable_immutable_borrow | variables.rs:28:5:28:18 | LetStmt |  |
+| variables.rs:27:1:32:1 | exit mutable_variable_immutable_borrow (normal) | variables.rs:27:1:32:1 | exit mutable_variable_immutable_borrow |  |
+| variables.rs:27:40:32:1 | BlockExpr | variables.rs:27:1:32:1 | exit mutable_variable_immutable_borrow (normal) |  |
+| variables.rs:28:5:28:18 | LetStmt | variables.rs:28:17:28:17 | 1 |  |
+| variables.rs:28:9:28:13 | x | variables.rs:29:5:29:22 | ExprStmt | match |
+| variables.rs:28:17:28:17 | 1 | variables.rs:28:9:28:13 | x |  |
+| variables.rs:29:5:29:17 | PathExpr | variables.rs:29:20:29:20 | x |  |
+| variables.rs:29:5:29:21 | CallExpr | variables.rs:30:5:30:10 | ExprStmt |  |
+| variables.rs:29:5:29:22 | ExprStmt | variables.rs:29:5:29:17 | PathExpr |  |
+| variables.rs:29:19:29:20 | RefExpr | variables.rs:29:5:29:21 | CallExpr |  |
+| variables.rs:29:20:29:20 | x | variables.rs:29:19:29:20 | RefExpr |  |
+| variables.rs:30:5:30:5 | x | variables.rs:30:9:30:9 | 2 |  |
+| variables.rs:30:5:30:9 | ... = ... | variables.rs:31:5:31:22 | ExprStmt |  |
+| variables.rs:30:5:30:10 | ExprStmt | variables.rs:30:5:30:5 | x |  |
+| variables.rs:30:9:30:9 | 2 | variables.rs:30:5:30:9 | ... = ... |  |
+| variables.rs:31:5:31:17 | PathExpr | variables.rs:31:20:31:20 | x |  |
+| variables.rs:31:5:31:21 | CallExpr | variables.rs:27:40:32:1 | BlockExpr |  |
+| variables.rs:31:5:31:22 | ExprStmt | variables.rs:31:5:31:17 | PathExpr |  |
+| variables.rs:31:19:31:20 | RefExpr | variables.rs:31:5:31:21 | CallExpr |  |
+| variables.rs:31:20:31:20 | x | variables.rs:31:19:31:20 | RefExpr |  |
+| variables.rs:34:1:40:1 | enter variable_shadow1 | variables.rs:35:5:35:15 | LetStmt |  |
+| variables.rs:34:1:40:1 | exit variable_shadow1 (normal) | variables.rs:34:1:40:1 | exit variable_shadow1 |  |
+| variables.rs:34:23:40:1 | BlockExpr | variables.rs:34:1:40:1 | exit variable_shadow1 (normal) |  |
+| variables.rs:35:5:35:15 | LetStmt | variables.rs:35:14:35:14 | 1 |  |
+| variables.rs:35:9:35:10 | x3 | variables.rs:36:5:36:18 | ExprStmt | match |
+| variables.rs:35:14:35:14 | 1 | variables.rs:35:9:35:10 | x3 |  |
+| variables.rs:36:5:36:13 | PathExpr | variables.rs:36:15:36:16 | x3 |  |
+| variables.rs:36:5:36:17 | CallExpr | variables.rs:37:5:38:15 | LetStmt |  |
+| variables.rs:36:5:36:18 | ExprStmt | variables.rs:36:5:36:13 | PathExpr |  |
+| variables.rs:36:15:36:16 | x3 | variables.rs:36:5:36:17 | CallExpr |  |
+| variables.rs:37:5:38:15 | LetStmt | variables.rs:38:9:38:10 | x3 |  |
+| variables.rs:37:9:37:10 | x3 | variables.rs:39:5:39:18 | ExprStmt | match |
+| variables.rs:38:9:38:10 | x3 | variables.rs:38:14:38:14 | 1 |  |
+| variables.rs:38:9:38:14 | ... + ... | variables.rs:37:9:37:10 | x3 |  |
+| variables.rs:38:14:38:14 | 1 | variables.rs:38:9:38:14 | ... + ... |  |
+| variables.rs:39:5:39:13 | PathExpr | variables.rs:39:15:39:16 | x3 |  |
+| variables.rs:39:5:39:17 | CallExpr | variables.rs:34:23:40:1 | BlockExpr |  |
+| variables.rs:39:5:39:18 | ExprStmt | variables.rs:39:5:39:13 | PathExpr |  |
+| variables.rs:39:15:39:16 | x3 | variables.rs:39:5:39:17 | CallExpr |  |
+| variables.rs:42:1:50:1 | enter variable_shadow2 | variables.rs:43:5:43:17 | LetStmt |  |
+| variables.rs:42:1:50:1 | exit variable_shadow2 (normal) | variables.rs:42:1:50:1 | exit variable_shadow2 |  |
+| variables.rs:42:23:50:1 | BlockExpr | variables.rs:42:1:50:1 | exit variable_shadow2 (normal) |  |
+| variables.rs:43:5:43:17 | LetStmt | variables.rs:43:14:43:16 | "a" |  |
+| variables.rs:43:9:43:10 | x4 | variables.rs:44:5:44:18 | ExprStmt | match |
+| variables.rs:43:14:43:16 | "a" | variables.rs:43:9:43:10 | x4 |  |
+| variables.rs:44:5:44:13 | PathExpr | variables.rs:44:15:44:16 | x4 |  |
+| variables.rs:44:5:44:17 | CallExpr | variables.rs:45:5:48:5 | ExprStmt |  |
+| variables.rs:44:5:44:18 | ExprStmt | variables.rs:44:5:44:13 | PathExpr |  |
+| variables.rs:44:15:44:16 | x4 | variables.rs:44:5:44:17 | CallExpr |  |
+| variables.rs:45:5:48:5 | BlockExpr | variables.rs:49:5:49:18 | ExprStmt |  |
+| variables.rs:45:5:48:5 | ExprStmt | variables.rs:46:9:46:21 | LetStmt |  |
+| variables.rs:46:9:46:21 | LetStmt | variables.rs:46:18:46:20 | "b" |  |
+| variables.rs:46:13:46:14 | x4 | variables.rs:47:9:47:22 | ExprStmt | match |
+| variables.rs:46:18:46:20 | "b" | variables.rs:46:13:46:14 | x4 |  |
+| variables.rs:47:9:47:17 | PathExpr | variables.rs:47:19:47:20 | x4 |  |
+| variables.rs:47:9:47:21 | CallExpr | variables.rs:45:5:48:5 | BlockExpr |  |
+| variables.rs:47:9:47:22 | ExprStmt | variables.rs:47:9:47:17 | PathExpr |  |
+| variables.rs:47:19:47:20 | x4 | variables.rs:47:9:47:21 | CallExpr |  |
+| variables.rs:49:5:49:13 | PathExpr | variables.rs:49:15:49:16 | x4 |  |
+| variables.rs:49:5:49:17 | CallExpr | variables.rs:42:23:50:1 | BlockExpr |  |
+| variables.rs:49:5:49:18 | ExprStmt | variables.rs:49:5:49:13 | PathExpr |  |
+| variables.rs:49:15:49:16 | x4 | variables.rs:49:5:49:17 | CallExpr |  |
+| variables.rs:57:1:72:1 | enter let_pattern1 | variables.rs:58:5:67:47 | LetStmt |  |
+| variables.rs:57:1:72:1 | exit let_pattern1 (normal) | variables.rs:57:1:72:1 | exit let_pattern1 |  |
+| variables.rs:57:19:72:1 | BlockExpr | variables.rs:57:1:72:1 | exit let_pattern1 (normal) |  |
+| variables.rs:58:5:67:47 | LetStmt | variables.rs:67:11:67:13 | "a" |  |
+| variables.rs:58:9:67:5 | TuplePat | variables.rs:59:9:62:9 | TuplePat | match |
+| variables.rs:59:9:62:9 | TuplePat | variables.rs:60:13:60:14 | a1 | match |
+| variables.rs:60:13:60:14 | a1 | variables.rs:61:13:61:14 | b1 | match |
+| variables.rs:61:13:61:14 | b1 | variables.rs:63:9:66:9 | RecordPat | match |
+| variables.rs:63:9:66:9 | RecordPat | variables.rs:64:13:64:13 | x | match |
+| variables.rs:64:13:64:13 | x | variables.rs:65:13:65:13 | y | match |
+| variables.rs:65:13:65:13 | y | variables.rs:68:5:68:18 | ExprStmt | match |
+| variables.rs:67:9:67:46 | TupleExpr | variables.rs:58:9:67:5 | TuplePat |  |
+| variables.rs:67:10:67:19 | TupleExpr | variables.rs:67:33:67:35 | "x" |  |
+| variables.rs:67:11:67:13 | "a" | variables.rs:67:16:67:18 | "b" |  |
+| variables.rs:67:16:67:18 | "b" | variables.rs:67:10:67:19 | TupleExpr |  |
+| variables.rs:67:22:67:45 | RecordExpr | variables.rs:67:9:67:46 | TupleExpr |  |
+| variables.rs:67:33:67:35 | "x" | variables.rs:67:41:67:43 | "y" |  |
+| variables.rs:67:41:67:43 | "y" | variables.rs:67:22:67:45 | RecordExpr |  |
+| variables.rs:68:5:68:13 | PathExpr | variables.rs:68:15:68:16 | a1 |  |
+| variables.rs:68:5:68:17 | CallExpr | variables.rs:69:5:69:18 | ExprStmt |  |
+| variables.rs:68:5:68:18 | ExprStmt | variables.rs:68:5:68:13 | PathExpr |  |
+| variables.rs:68:15:68:16 | a1 | variables.rs:68:5:68:17 | CallExpr |  |
+| variables.rs:69:5:69:13 | PathExpr | variables.rs:69:15:69:16 | b1 |  |
+| variables.rs:69:5:69:17 | CallExpr | variables.rs:70:5:70:17 | ExprStmt |  |
 | variables.rs:69:5:69:18 | ExprStmt | variables.rs:69:5:69:13 | PathExpr |  |
-| variables.rs:69:15:69:16 | a2 | variables.rs:69:5:69:17 | CallExpr |  |
-| variables.rs:70:5:70:13 | PathExpr | variables.rs:70:15:70:16 | b2 |  |
-| variables.rs:70:5:70:17 | CallExpr | variables.rs:63:19:71:1 | BlockExpr |  |
-| variables.rs:70:5:70:18 | ExprStmt | variables.rs:70:5:70:13 | PathExpr |  |
-| variables.rs:70:15:70:16 | b2 | variables.rs:70:5:70:17 | CallExpr |  |
-| variables.rs:73:1:80:1 | enter let_pattern3 | variables.rs:74:5:74:42 | LetStmt |  |
-| variables.rs:73:1:80:1 | exit let_pattern3 (normal) | variables.rs:73:1:80:1 | exit let_pattern3 |  |
-| variables.rs:73:19:80:1 | BlockExpr | variables.rs:73:1:80:1 | exit let_pattern3 (normal) |  |
-| variables.rs:74:5:74:42 | LetStmt | variables.rs:74:14:74:17 | PathExpr |  |
-| variables.rs:74:9:74:10 | s1 | variables.rs:76:8:77:12 | LetExpr | match |
-| variables.rs:74:14:74:17 | PathExpr | variables.rs:74:19:74:30 | PathExpr |  |
-| variables.rs:74:14:74:41 | CallExpr | variables.rs:74:9:74:10 | s1 |  |
-| variables.rs:74:19:74:30 | PathExpr | variables.rs:74:32:74:39 | "Hello!" |  |
-| variables.rs:74:19:74:40 | CallExpr | variables.rs:74:14:74:41 | CallExpr |  |
-| variables.rs:74:32:74:39 | "Hello!" | variables.rs:74:19:74:40 | CallExpr |  |
-| variables.rs:76:5:79:5 | IfExpr | variables.rs:73:19:80:1 | BlockExpr |  |
-| variables.rs:76:8:77:12 | LetExpr | variables.rs:77:11:77:12 | s1 |  |
-| variables.rs:76:12:76:23 | TupleStructPat | variables.rs:76:5:79:5 | IfExpr | no-match |
-| variables.rs:76:12:76:23 | TupleStructPat | variables.rs:76:17:76:22 | s2 | match |
-| variables.rs:76:17:76:22 | s2 | variables.rs:78:9:78:22 | ExprStmt | match |
-| variables.rs:77:11:77:12 | s1 | variables.rs:76:12:76:23 | TupleStructPat |  |
-| variables.rs:77:14:79:5 | BlockExpr | variables.rs:76:5:79:5 | IfExpr |  |
-| variables.rs:78:9:78:17 | PathExpr | variables.rs:78:19:78:20 | s2 |  |
-| variables.rs:78:9:78:21 | CallExpr | variables.rs:77:14:79:5 | BlockExpr |  |
-| variables.rs:78:9:78:22 | ExprStmt | variables.rs:78:9:78:17 | PathExpr |  |
-| variables.rs:78:19:78:20 | s2 | variables.rs:78:9:78:21 | CallExpr |  |
-| variables.rs:82:1:88:1 | enter let_pattern4 | variables.rs:83:5:86:10 | LetStmt |  |
-| variables.rs:82:1:88:1 | exit let_pattern4 (normal) | variables.rs:82:1:88:1 | exit let_pattern4 |  |
-| variables.rs:82:19:88:1 | BlockExpr | variables.rs:82:1:88:1 | exit let_pattern4 (normal) |  |
-| variables.rs:83:5:86:10 | LetStmt | variables.rs:83:34:83:37 | PathExpr |  |
-| variables.rs:83:9:83:16 | TupleStructPat | variables.rs:83:14:83:15 | x5 | match |
-| variables.rs:83:9:83:16 | TupleStructPat | variables.rs:85:13:85:19 | MacroStmts | no-match |
-| variables.rs:83:14:83:15 | x5 | variables.rs:87:5:87:18 | ExprStmt | match |
-| variables.rs:83:34:83:37 | PathExpr | variables.rs:83:39:83:42 | "x5" |  |
-| variables.rs:83:34:83:43 | CallExpr | variables.rs:83:9:83:16 | TupleStructPat |  |
-| variables.rs:83:39:83:42 | "x5" | variables.rs:83:34:83:43 | CallExpr |  |
-| variables.rs:85:13:85:19 | "not yet implemented" | variables.rs:85:13:85:19 | CallExpr |  |
-| variables.rs:85:13:85:19 | CallExpr | variables.rs:85:13:85:19 | MacroExpr |  |
-| variables.rs:85:13:85:19 | MacroExpr | variables.rs:84:14:86:9 | BlockExpr |  |
-| variables.rs:85:13:85:19 | MacroStmts | variables.rs:85:13:85:19 | PathExpr |  |
-| variables.rs:85:13:85:19 | PathExpr | variables.rs:85:13:85:19 | "not yet implemented" |  |
-| variables.rs:87:5:87:13 | PathExpr | variables.rs:87:15:87:16 | x5 |  |
-| variables.rs:87:5:87:17 | CallExpr | variables.rs:82:19:88:1 | BlockExpr |  |
-| variables.rs:87:5:87:18 | ExprStmt | variables.rs:87:5:87:13 | PathExpr |  |
-| variables.rs:87:15:87:16 | x5 | variables.rs:87:5:87:17 | CallExpr |  |
-| variables.rs:90:1:97:1 | enter let_pattern5 | variables.rs:91:5:91:42 | LetStmt |  |
-| variables.rs:90:1:97:1 | exit let_pattern5 (normal) | variables.rs:90:1:97:1 | exit let_pattern5 |  |
-| variables.rs:90:19:97:1 | BlockExpr | variables.rs:90:1:97:1 | exit let_pattern5 (normal) |  |
-| variables.rs:91:5:91:42 | LetStmt | variables.rs:91:14:91:17 | PathExpr |  |
-| variables.rs:91:9:91:10 | s1 | variables.rs:93:11:94:12 | LetExpr | match |
-| variables.rs:91:14:91:17 | PathExpr | variables.rs:91:19:91:30 | PathExpr |  |
-| variables.rs:91:14:91:41 | CallExpr | variables.rs:91:9:91:10 | s1 |  |
-| variables.rs:91:19:91:30 | PathExpr | variables.rs:91:32:91:39 | "Hello!" |  |
-| variables.rs:91:19:91:40 | CallExpr | variables.rs:91:14:91:41 | CallExpr |  |
-| variables.rs:91:32:91:39 | "Hello!" | variables.rs:91:19:91:40 | CallExpr |  |
-| variables.rs:93:5:96:5 | WhileExpr | variables.rs:90:19:97:1 | BlockExpr |  |
-| variables.rs:93:11:94:12 | LetExpr | variables.rs:94:11:94:12 | s1 |  |
-| variables.rs:93:15:93:26 | TupleStructPat | variables.rs:93:5:96:5 | WhileExpr | no-match |
-| variables.rs:93:15:93:26 | TupleStructPat | variables.rs:93:20:93:25 | s2 | match |
-| variables.rs:93:20:93:25 | s2 | variables.rs:95:9:95:22 | ExprStmt | match |
-| variables.rs:94:11:94:12 | s1 | variables.rs:93:15:93:26 | TupleStructPat |  |
-| variables.rs:94:14:96:5 | BlockExpr | variables.rs:93:11:94:12 | LetExpr |  |
-| variables.rs:95:9:95:17 | PathExpr | variables.rs:95:19:95:20 | s2 |  |
-| variables.rs:95:9:95:21 | CallExpr | variables.rs:94:14:96:5 | BlockExpr |  |
-| variables.rs:95:9:95:22 | ExprStmt | variables.rs:95:9:95:17 | PathExpr |  |
-| variables.rs:95:19:95:20 | s2 | variables.rs:95:9:95:21 | CallExpr |  |
-| variables.rs:99:1:114:1 | enter match_pattern1 | variables.rs:100:5:100:21 | LetStmt |  |
-| variables.rs:99:1:114:1 | exit match_pattern1 (normal) | variables.rs:99:1:114:1 | exit match_pattern1 |  |
-| variables.rs:99:21:114:1 | BlockExpr | variables.rs:99:1:114:1 | exit match_pattern1 (normal) |  |
-| variables.rs:100:5:100:21 | LetStmt | variables.rs:100:14:100:17 | PathExpr |  |
-| variables.rs:100:9:100:10 | x6 | variables.rs:101:5:101:16 | LetStmt | match |
-| variables.rs:100:14:100:17 | PathExpr | variables.rs:100:19:100:19 | 5 |  |
-| variables.rs:100:14:100:20 | CallExpr | variables.rs:100:9:100:10 | x6 |  |
-| variables.rs:100:19:100:19 | 5 | variables.rs:100:14:100:20 | CallExpr |  |
-| variables.rs:101:5:101:16 | LetStmt | variables.rs:101:14:101:15 | 10 |  |
-| variables.rs:101:9:101:10 | y1 | variables.rs:103:5:111:5 | ExprStmt | match |
-| variables.rs:101:14:101:15 | 10 | variables.rs:101:9:101:10 | y1 |  |
-| variables.rs:103:5:111:5 | ExprStmt | variables.rs:103:11:103:12 | x6 |  |
-| variables.rs:103:5:111:5 | MatchExpr | variables.rs:113:5:113:18 | ExprStmt |  |
-| variables.rs:103:11:103:12 | x6 | variables.rs:104:9:104:16 | TupleStructPat |  |
-| variables.rs:104:9:104:16 | TupleStructPat | variables.rs:104:14:104:15 | LiteralPat | match |
-| variables.rs:104:9:104:16 | TupleStructPat | variables.rs:105:9:105:16 | TupleStructPat | no-match |
-| variables.rs:104:14:104:15 | LiteralPat | variables.rs:104:21:104:29 | PathExpr | match |
-| variables.rs:104:14:104:15 | LiteralPat | variables.rs:105:9:105:16 | TupleStructPat | no-match |
-| variables.rs:104:21:104:29 | PathExpr | variables.rs:104:31:104:38 | "Got 50" |  |
-| variables.rs:104:21:104:39 | CallExpr | variables.rs:103:5:111:5 | MatchExpr |  |
-| variables.rs:104:31:104:38 | "Got 50" | variables.rs:104:21:104:39 | CallExpr |  |
-| variables.rs:105:9:105:16 | TupleStructPat | variables.rs:105:14:105:15 | y1 | match |
-| variables.rs:105:9:105:16 | TupleStructPat | variables.rs:110:9:110:12 | None | no-match |
-| variables.rs:105:14:105:15 | y1 | variables.rs:108:13:108:21 | PathExpr | match |
-| variables.rs:107:9:109:9 | BlockExpr | variables.rs:103:5:111:5 | MatchExpr |  |
-| variables.rs:108:13:108:21 | PathExpr | variables.rs:108:23:108:24 | y1 |  |
-| variables.rs:108:13:108:25 | CallExpr | variables.rs:107:9:109:9 | BlockExpr |  |
-| variables.rs:108:23:108:24 | y1 | variables.rs:108:13:108:25 | CallExpr |  |
-| variables.rs:110:9:110:12 | None | variables.rs:110:17:110:25 | PathExpr | match |
-| variables.rs:110:17:110:25 | PathExpr | variables.rs:110:27:110:32 | "NONE" |  |
-| variables.rs:110:17:110:33 | CallExpr | variables.rs:103:5:111:5 | MatchExpr |  |
-| variables.rs:110:27:110:32 | "NONE" | variables.rs:110:17:110:33 | CallExpr |  |
-| variables.rs:113:5:113:13 | PathExpr | variables.rs:113:15:113:16 | y1 |  |
-| variables.rs:113:5:113:17 | CallExpr | variables.rs:99:21:114:1 | BlockExpr |  |
-| variables.rs:113:5:113:18 | ExprStmt | variables.rs:113:5:113:13 | PathExpr |  |
-| variables.rs:113:15:113:16 | y1 | variables.rs:113:5:113:17 | CallExpr |  |
-| variables.rs:116:1:141:1 | enter match_pattern2 | variables.rs:117:5:117:36 | LetStmt |  |
-| variables.rs:116:1:141:1 | exit match_pattern2 (normal) | variables.rs:116:1:141:1 | exit match_pattern2 |  |
-| variables.rs:116:21:141:1 | BlockExpr | variables.rs:116:1:141:1 | exit match_pattern2 (normal) |  |
-| variables.rs:117:5:117:36 | LetStmt | variables.rs:117:20:117:20 | 2 |  |
-| variables.rs:117:9:117:15 | numbers | variables.rs:119:5:129:5 | ExprStmt | match |
-| variables.rs:117:19:117:35 | TupleExpr | variables.rs:117:9:117:15 | numbers |  |
-| variables.rs:117:20:117:20 | 2 | variables.rs:117:23:117:23 | 4 |  |
-| variables.rs:117:23:117:23 | 4 | variables.rs:117:26:117:26 | 8 |  |
-| variables.rs:117:26:117:26 | 8 | variables.rs:117:29:117:30 | 16 |  |
-| variables.rs:117:29:117:30 | 16 | variables.rs:117:33:117:34 | 32 |  |
-| variables.rs:117:33:117:34 | 32 | variables.rs:117:19:117:35 | TupleExpr |  |
-| variables.rs:119:5:129:5 | ExprStmt | variables.rs:119:11:119:17 | numbers |  |
-| variables.rs:119:5:129:5 | MatchExpr | variables.rs:131:11:131:17 | numbers |  |
-| variables.rs:119:11:119:17 | numbers | variables.rs:120:9:124:9 | TuplePat |  |
-| variables.rs:120:9:124:9 | TuplePat | variables.rs:121:13:121:17 | first | match |
-| variables.rs:121:13:121:17 | first | variables.rs:121:20:121:20 | WildcardPat | match |
-| variables.rs:121:20:121:20 | WildcardPat | variables.rs:122:13:122:17 | third | match |
-| variables.rs:122:13:122:17 | third | variables.rs:122:20:122:20 | WildcardPat | match |
-| variables.rs:122:20:122:20 | WildcardPat | variables.rs:123:13:123:17 | fifth | match |
-| variables.rs:123:13:123:17 | fifth | variables.rs:125:13:125:29 | ExprStmt | match |
-| variables.rs:124:14:128:9 | BlockExpr | variables.rs:119:5:129:5 | MatchExpr |  |
-| variables.rs:125:13:125:21 | PathExpr | variables.rs:125:23:125:27 | first |  |
-| variables.rs:125:13:125:28 | CallExpr | variables.rs:126:13:126:29 | ExprStmt |  |
-| variables.rs:125:13:125:29 | ExprStmt | variables.rs:125:13:125:21 | PathExpr |  |
-| variables.rs:125:23:125:27 | first | variables.rs:125:13:125:28 | CallExpr |  |
-| variables.rs:126:13:126:21 | PathExpr | variables.rs:126:23:126:27 | third |  |
-| variables.rs:126:13:126:28 | CallExpr | variables.rs:127:13:127:29 | ExprStmt |  |
-| variables.rs:126:13:126:29 | ExprStmt | variables.rs:126:13:126:21 | PathExpr |  |
-| variables.rs:126:23:126:27 | third | variables.rs:126:13:126:28 | CallExpr |  |
-| variables.rs:127:13:127:21 | PathExpr | variables.rs:127:23:127:27 | fifth |  |
-| variables.rs:127:13:127:28 | CallExpr | variables.rs:124:14:128:9 | BlockExpr |  |
-| variables.rs:127:13:127:29 | ExprStmt | variables.rs:127:13:127:21 | PathExpr |  |
-| variables.rs:127:23:127:27 | fifth | variables.rs:127:13:127:28 | CallExpr |  |
-| variables.rs:131:5:140:5 | MatchExpr | variables.rs:116:21:141:1 | BlockExpr |  |
-| variables.rs:131:11:131:17 | numbers | variables.rs:132:9:136:9 | TuplePat |  |
-| variables.rs:132:9:136:9 | TuplePat | variables.rs:133:13:133:17 | first | match |
-| variables.rs:133:13:133:17 | first | variables.rs:134:13:134:14 | RestPat | match |
-| variables.rs:134:13:134:14 | RestPat | variables.rs:135:13:135:16 | last | match |
-| variables.rs:135:13:135:16 | last | variables.rs:137:13:137:29 | ExprStmt | match |
-| variables.rs:136:14:139:9 | BlockExpr | variables.rs:131:5:140:5 | MatchExpr |  |
-| variables.rs:137:13:137:21 | PathExpr | variables.rs:137:23:137:27 | first |  |
-| variables.rs:137:13:137:28 | CallExpr | variables.rs:138:13:138:28 | ExprStmt |  |
+| variables.rs:69:15:69:16 | b1 | variables.rs:69:5:69:17 | CallExpr |  |
+| variables.rs:70:5:70:13 | PathExpr | variables.rs:70:15:70:15 | x |  |
+| variables.rs:70:5:70:16 | CallExpr | variables.rs:71:5:71:17 | ExprStmt |  |
+| variables.rs:70:5:70:17 | ExprStmt | variables.rs:70:5:70:13 | PathExpr |  |
+| variables.rs:70:15:70:15 | x | variables.rs:70:5:70:16 | CallExpr |  |
+| variables.rs:71:5:71:13 | PathExpr | variables.rs:71:15:71:15 | y |  |
+| variables.rs:71:5:71:16 | CallExpr | variables.rs:57:19:72:1 | BlockExpr |  |
+| variables.rs:71:5:71:17 | ExprStmt | variables.rs:71:5:71:13 | PathExpr |  |
+| variables.rs:71:15:71:15 | y | variables.rs:71:5:71:16 | CallExpr |  |
+| variables.rs:74:1:82:1 | enter let_pattern2 | variables.rs:75:5:75:38 | LetStmt |  |
+| variables.rs:74:1:82:1 | exit let_pattern2 (normal) | variables.rs:74:1:82:1 | exit let_pattern2 |  |
+| variables.rs:74:19:82:1 | BlockExpr | variables.rs:74:1:82:1 | exit let_pattern2 (normal) |  |
+| variables.rs:75:5:75:38 | LetStmt | variables.rs:75:25:75:27 | "a" |  |
+| variables.rs:75:9:75:10 | p1 | variables.rs:76:5:79:11 | LetStmt | match |
+| variables.rs:75:14:75:37 | RecordExpr | variables.rs:75:9:75:10 | p1 |  |
+| variables.rs:75:25:75:27 | "a" | variables.rs:75:33:75:35 | "b" |  |
+| variables.rs:75:33:75:35 | "b" | variables.rs:75:14:75:37 | RecordExpr |  |
+| variables.rs:76:5:79:11 | LetStmt | variables.rs:79:9:79:10 | p1 |  |
+| variables.rs:76:9:79:5 | RecordPat | variables.rs:77:12:77:13 | a2 | match |
+| variables.rs:77:12:77:13 | a2 | variables.rs:78:12:78:13 | b2 | match |
+| variables.rs:78:12:78:13 | b2 | variables.rs:80:5:80:18 | ExprStmt | match |
+| variables.rs:79:9:79:10 | p1 | variables.rs:76:9:79:5 | RecordPat |  |
+| variables.rs:80:5:80:13 | PathExpr | variables.rs:80:15:80:16 | a2 |  |
+| variables.rs:80:5:80:17 | CallExpr | variables.rs:81:5:81:18 | ExprStmt |  |
+| variables.rs:80:5:80:18 | ExprStmt | variables.rs:80:5:80:13 | PathExpr |  |
+| variables.rs:80:15:80:16 | a2 | variables.rs:80:5:80:17 | CallExpr |  |
+| variables.rs:81:5:81:13 | PathExpr | variables.rs:81:15:81:16 | b2 |  |
+| variables.rs:81:5:81:17 | CallExpr | variables.rs:74:19:82:1 | BlockExpr |  |
+| variables.rs:81:5:81:18 | ExprStmt | variables.rs:81:5:81:13 | PathExpr |  |
+| variables.rs:81:15:81:16 | b2 | variables.rs:81:5:81:17 | CallExpr |  |
+| variables.rs:84:1:91:1 | enter let_pattern3 | variables.rs:85:5:85:42 | LetStmt |  |
+| variables.rs:84:1:91:1 | exit let_pattern3 (normal) | variables.rs:84:1:91:1 | exit let_pattern3 |  |
+| variables.rs:84:19:91:1 | BlockExpr | variables.rs:84:1:91:1 | exit let_pattern3 (normal) |  |
+| variables.rs:85:5:85:42 | LetStmt | variables.rs:85:14:85:17 | PathExpr |  |
+| variables.rs:85:9:85:10 | s1 | variables.rs:87:8:88:12 | LetExpr | match |
+| variables.rs:85:14:85:17 | PathExpr | variables.rs:85:19:85:30 | PathExpr |  |
+| variables.rs:85:14:85:41 | CallExpr | variables.rs:85:9:85:10 | s1 |  |
+| variables.rs:85:19:85:30 | PathExpr | variables.rs:85:32:85:39 | "Hello!" |  |
+| variables.rs:85:19:85:40 | CallExpr | variables.rs:85:14:85:41 | CallExpr |  |
+| variables.rs:85:32:85:39 | "Hello!" | variables.rs:85:19:85:40 | CallExpr |  |
+| variables.rs:87:5:90:5 | IfExpr | variables.rs:84:19:91:1 | BlockExpr |  |
+| variables.rs:87:8:88:12 | LetExpr | variables.rs:88:11:88:12 | s1 |  |
+| variables.rs:87:12:87:23 | TupleStructPat | variables.rs:87:5:90:5 | IfExpr | no-match |
+| variables.rs:87:12:87:23 | TupleStructPat | variables.rs:87:17:87:22 | s2 | match |
+| variables.rs:87:17:87:22 | s2 | variables.rs:89:9:89:22 | ExprStmt | match |
+| variables.rs:88:11:88:12 | s1 | variables.rs:87:12:87:23 | TupleStructPat |  |
+| variables.rs:88:14:90:5 | BlockExpr | variables.rs:87:5:90:5 | IfExpr |  |
+| variables.rs:89:9:89:17 | PathExpr | variables.rs:89:19:89:20 | s2 |  |
+| variables.rs:89:9:89:21 | CallExpr | variables.rs:88:14:90:5 | BlockExpr |  |
+| variables.rs:89:9:89:22 | ExprStmt | variables.rs:89:9:89:17 | PathExpr |  |
+| variables.rs:89:19:89:20 | s2 | variables.rs:89:9:89:21 | CallExpr |  |
+| variables.rs:93:1:99:1 | enter let_pattern4 | variables.rs:94:5:97:10 | LetStmt |  |
+| variables.rs:93:1:99:1 | exit let_pattern4 (normal) | variables.rs:93:1:99:1 | exit let_pattern4 |  |
+| variables.rs:93:19:99:1 | BlockExpr | variables.rs:93:1:99:1 | exit let_pattern4 (normal) |  |
+| variables.rs:94:5:97:10 | LetStmt | variables.rs:94:34:94:37 | PathExpr |  |
+| variables.rs:94:9:94:16 | TupleStructPat | variables.rs:94:14:94:15 | x5 | match |
+| variables.rs:94:9:94:16 | TupleStructPat | variables.rs:96:13:96:19 | MacroStmts | no-match |
+| variables.rs:94:14:94:15 | x5 | variables.rs:98:5:98:18 | ExprStmt | match |
+| variables.rs:94:34:94:37 | PathExpr | variables.rs:94:39:94:42 | "x5" |  |
+| variables.rs:94:34:94:43 | CallExpr | variables.rs:94:9:94:16 | TupleStructPat |  |
+| variables.rs:94:39:94:42 | "x5" | variables.rs:94:34:94:43 | CallExpr |  |
+| variables.rs:96:13:96:19 | "not yet implemented" | variables.rs:96:13:96:19 | CallExpr |  |
+| variables.rs:96:13:96:19 | CallExpr | variables.rs:96:13:96:19 | MacroExpr |  |
+| variables.rs:96:13:96:19 | MacroExpr | variables.rs:95:14:97:9 | BlockExpr |  |
+| variables.rs:96:13:96:19 | MacroStmts | variables.rs:96:13:96:19 | PathExpr |  |
+| variables.rs:96:13:96:19 | PathExpr | variables.rs:96:13:96:19 | "not yet implemented" |  |
+| variables.rs:98:5:98:13 | PathExpr | variables.rs:98:15:98:16 | x5 |  |
+| variables.rs:98:5:98:17 | CallExpr | variables.rs:93:19:99:1 | BlockExpr |  |
+| variables.rs:98:5:98:18 | ExprStmt | variables.rs:98:5:98:13 | PathExpr |  |
+| variables.rs:98:15:98:16 | x5 | variables.rs:98:5:98:17 | CallExpr |  |
+| variables.rs:101:1:108:1 | enter let_pattern5 | variables.rs:102:5:102:42 | LetStmt |  |
+| variables.rs:101:1:108:1 | exit let_pattern5 (normal) | variables.rs:101:1:108:1 | exit let_pattern5 |  |
+| variables.rs:101:19:108:1 | BlockExpr | variables.rs:101:1:108:1 | exit let_pattern5 (normal) |  |
+| variables.rs:102:5:102:42 | LetStmt | variables.rs:102:14:102:17 | PathExpr |  |
+| variables.rs:102:9:102:10 | s1 | variables.rs:104:11:105:12 | LetExpr | match |
+| variables.rs:102:14:102:17 | PathExpr | variables.rs:102:19:102:30 | PathExpr |  |
+| variables.rs:102:14:102:41 | CallExpr | variables.rs:102:9:102:10 | s1 |  |
+| variables.rs:102:19:102:30 | PathExpr | variables.rs:102:32:102:39 | "Hello!" |  |
+| variables.rs:102:19:102:40 | CallExpr | variables.rs:102:14:102:41 | CallExpr |  |
+| variables.rs:102:32:102:39 | "Hello!" | variables.rs:102:19:102:40 | CallExpr |  |
+| variables.rs:104:5:107:5 | WhileExpr | variables.rs:101:19:108:1 | BlockExpr |  |
+| variables.rs:104:11:105:12 | LetExpr | variables.rs:105:11:105:12 | s1 |  |
+| variables.rs:104:15:104:26 | TupleStructPat | variables.rs:104:5:107:5 | WhileExpr | no-match |
+| variables.rs:104:15:104:26 | TupleStructPat | variables.rs:104:20:104:25 | s2 | match |
+| variables.rs:104:20:104:25 | s2 | variables.rs:106:9:106:22 | ExprStmt | match |
+| variables.rs:105:11:105:12 | s1 | variables.rs:104:15:104:26 | TupleStructPat |  |
+| variables.rs:105:14:107:5 | BlockExpr | variables.rs:104:11:105:12 | LetExpr |  |
+| variables.rs:106:9:106:17 | PathExpr | variables.rs:106:19:106:20 | s2 |  |
+| variables.rs:106:9:106:21 | CallExpr | variables.rs:105:14:107:5 | BlockExpr |  |
+| variables.rs:106:9:106:22 | ExprStmt | variables.rs:106:9:106:17 | PathExpr |  |
+| variables.rs:106:19:106:20 | s2 | variables.rs:106:9:106:21 | CallExpr |  |
+| variables.rs:110:1:125:1 | enter match_pattern1 | variables.rs:111:5:111:21 | LetStmt |  |
+| variables.rs:110:1:125:1 | exit match_pattern1 (normal) | variables.rs:110:1:125:1 | exit match_pattern1 |  |
+| variables.rs:110:21:125:1 | BlockExpr | variables.rs:110:1:125:1 | exit match_pattern1 (normal) |  |
+| variables.rs:111:5:111:21 | LetStmt | variables.rs:111:14:111:17 | PathExpr |  |
+| variables.rs:111:9:111:10 | x6 | variables.rs:112:5:112:16 | LetStmt | match |
+| variables.rs:111:14:111:17 | PathExpr | variables.rs:111:19:111:19 | 5 |  |
+| variables.rs:111:14:111:20 | CallExpr | variables.rs:111:9:111:10 | x6 |  |
+| variables.rs:111:19:111:19 | 5 | variables.rs:111:14:111:20 | CallExpr |  |
+| variables.rs:112:5:112:16 | LetStmt | variables.rs:112:14:112:15 | 10 |  |
+| variables.rs:112:9:112:10 | y1 | variables.rs:114:5:122:5 | ExprStmt | match |
+| variables.rs:112:14:112:15 | 10 | variables.rs:112:9:112:10 | y1 |  |
+| variables.rs:114:5:122:5 | ExprStmt | variables.rs:114:11:114:12 | x6 |  |
+| variables.rs:114:5:122:5 | MatchExpr | variables.rs:124:5:124:18 | ExprStmt |  |
+| variables.rs:114:11:114:12 | x6 | variables.rs:115:9:115:16 | TupleStructPat |  |
+| variables.rs:115:9:115:16 | TupleStructPat | variables.rs:115:14:115:15 | LiteralPat | match |
+| variables.rs:115:9:115:16 | TupleStructPat | variables.rs:116:9:116:16 | TupleStructPat | no-match |
+| variables.rs:115:14:115:15 | LiteralPat | variables.rs:115:21:115:29 | PathExpr | match |
+| variables.rs:115:14:115:15 | LiteralPat | variables.rs:116:9:116:16 | TupleStructPat | no-match |
+| variables.rs:115:21:115:29 | PathExpr | variables.rs:115:31:115:38 | "Got 50" |  |
+| variables.rs:115:21:115:39 | CallExpr | variables.rs:114:5:122:5 | MatchExpr |  |
+| variables.rs:115:31:115:38 | "Got 50" | variables.rs:115:21:115:39 | CallExpr |  |
+| variables.rs:116:9:116:16 | TupleStructPat | variables.rs:116:14:116:15 | y1 | match |
+| variables.rs:116:9:116:16 | TupleStructPat | variables.rs:121:9:121:12 | None | no-match |
+| variables.rs:116:14:116:15 | y1 | variables.rs:119:13:119:21 | PathExpr | match |
+| variables.rs:118:9:120:9 | BlockExpr | variables.rs:114:5:122:5 | MatchExpr |  |
+| variables.rs:119:13:119:21 | PathExpr | variables.rs:119:23:119:24 | y1 |  |
+| variables.rs:119:13:119:25 | CallExpr | variables.rs:118:9:120:9 | BlockExpr |  |
+| variables.rs:119:23:119:24 | y1 | variables.rs:119:13:119:25 | CallExpr |  |
+| variables.rs:121:9:121:12 | None | variables.rs:121:17:121:25 | PathExpr | match |
+| variables.rs:121:17:121:25 | PathExpr | variables.rs:121:27:121:32 | "NONE" |  |
+| variables.rs:121:17:121:33 | CallExpr | variables.rs:114:5:122:5 | MatchExpr |  |
+| variables.rs:121:27:121:32 | "NONE" | variables.rs:121:17:121:33 | CallExpr |  |
+| variables.rs:124:5:124:13 | PathExpr | variables.rs:124:15:124:16 | y1 |  |
+| variables.rs:124:5:124:17 | CallExpr | variables.rs:110:21:125:1 | BlockExpr |  |
+| variables.rs:124:5:124:18 | ExprStmt | variables.rs:124:5:124:13 | PathExpr |  |
+| variables.rs:124:15:124:16 | y1 | variables.rs:124:5:124:17 | CallExpr |  |
+| variables.rs:127:1:152:1 | enter match_pattern2 | variables.rs:128:5:128:36 | LetStmt |  |
+| variables.rs:127:1:152:1 | exit match_pattern2 (normal) | variables.rs:127:1:152:1 | exit match_pattern2 |  |
+| variables.rs:127:21:152:1 | BlockExpr | variables.rs:127:1:152:1 | exit match_pattern2 (normal) |  |
+| variables.rs:128:5:128:36 | LetStmt | variables.rs:128:20:128:20 | 2 |  |
+| variables.rs:128:9:128:15 | numbers | variables.rs:130:5:140:5 | ExprStmt | match |
+| variables.rs:128:19:128:35 | TupleExpr | variables.rs:128:9:128:15 | numbers |  |
+| variables.rs:128:20:128:20 | 2 | variables.rs:128:23:128:23 | 4 |  |
+| variables.rs:128:23:128:23 | 4 | variables.rs:128:26:128:26 | 8 |  |
+| variables.rs:128:26:128:26 | 8 | variables.rs:128:29:128:30 | 16 |  |
+| variables.rs:128:29:128:30 | 16 | variables.rs:128:33:128:34 | 32 |  |
+| variables.rs:128:33:128:34 | 32 | variables.rs:128:19:128:35 | TupleExpr |  |
+| variables.rs:130:5:140:5 | ExprStmt | variables.rs:130:11:130:17 | numbers |  |
+| variables.rs:130:5:140:5 | MatchExpr | variables.rs:142:11:142:17 | numbers |  |
+| variables.rs:130:11:130:17 | numbers | variables.rs:131:9:135:9 | TuplePat |  |
+| variables.rs:131:9:135:9 | TuplePat | variables.rs:132:13:132:17 | first | match |
+| variables.rs:132:13:132:17 | first | variables.rs:132:20:132:20 | WildcardPat | match |
+| variables.rs:132:20:132:20 | WildcardPat | variables.rs:133:13:133:17 | third | match |
+| variables.rs:133:13:133:17 | third | variables.rs:133:20:133:20 | WildcardPat | match |
+| variables.rs:133:20:133:20 | WildcardPat | variables.rs:134:13:134:17 | fifth | match |
+| variables.rs:134:13:134:17 | fifth | variables.rs:136:13:136:29 | ExprStmt | match |
+| variables.rs:135:14:139:9 | BlockExpr | variables.rs:130:5:140:5 | MatchExpr |  |
+| variables.rs:136:13:136:21 | PathExpr | variables.rs:136:23:136:27 | first |  |
+| variables.rs:136:13:136:28 | CallExpr | variables.rs:137:13:137:29 | ExprStmt |  |
+| variables.rs:136:13:136:29 | ExprStmt | variables.rs:136:13:136:21 | PathExpr |  |
+| variables.rs:136:23:136:27 | first | variables.rs:136:13:136:28 | CallExpr |  |
+| variables.rs:137:13:137:21 | PathExpr | variables.rs:137:23:137:27 | third |  |
+| variables.rs:137:13:137:28 | CallExpr | variables.rs:138:13:138:29 | ExprStmt |  |
 | variables.rs:137:13:137:29 | ExprStmt | variables.rs:137:13:137:21 | PathExpr |  |
-| variables.rs:137:23:137:27 | first | variables.rs:137:13:137:28 | CallExpr |  |
-| variables.rs:138:13:138:21 | PathExpr | variables.rs:138:23:138:26 | last |  |
-| variables.rs:138:13:138:27 | CallExpr | variables.rs:136:14:139:9 | BlockExpr |  |
-| variables.rs:138:13:138:28 | ExprStmt | variables.rs:138:13:138:21 | PathExpr |  |
-| variables.rs:138:23:138:26 | last | variables.rs:138:13:138:27 | CallExpr |  |
-| variables.rs:143:1:151:1 | enter match_pattern3 | variables.rs:144:5:144:38 | LetStmt |  |
-| variables.rs:143:1:151:1 | exit match_pattern3 (normal) | variables.rs:143:1:151:1 | exit match_pattern3 |  |
-| variables.rs:143:21:151:1 | BlockExpr | variables.rs:143:1:151:1 | exit match_pattern3 (normal) |  |
-| variables.rs:144:5:144:38 | LetStmt | variables.rs:144:25:144:27 | "x" |  |
-| variables.rs:144:9:144:10 | p2 | variables.rs:146:11:146:12 | p2 | match |
-| variables.rs:144:14:144:37 | RecordExpr | variables.rs:144:9:144:10 | p2 |  |
-| variables.rs:144:25:144:27 | "x" | variables.rs:144:33:144:35 | "y" |  |
-| variables.rs:144:33:144:35 | "y" | variables.rs:144:14:144:37 | RecordExpr |  |
-| variables.rs:146:5:150:5 | MatchExpr | variables.rs:143:21:151:1 | BlockExpr |  |
-| variables.rs:146:11:146:12 | p2 | variables.rs:147:9:149:9 | RecordPat |  |
-| variables.rs:147:9:149:9 | RecordPat | variables.rs:148:16:148:17 | x7 | match |
-| variables.rs:148:16:148:17 | x7 | variables.rs:148:20:148:21 | RestPat | match |
-| variables.rs:148:20:148:21 | RestPat | variables.rs:149:14:149:22 | PathExpr | match |
-| variables.rs:149:14:149:22 | PathExpr | variables.rs:149:24:149:25 | x7 |  |
-| variables.rs:149:14:149:26 | CallExpr | variables.rs:146:5:150:5 | MatchExpr |  |
-| variables.rs:149:24:149:25 | x7 | variables.rs:149:14:149:26 | CallExpr |  |
-| variables.rs:157:1:170:1 | enter match_pattern4 | variables.rs:158:5:158:39 | LetStmt |  |
-| variables.rs:157:1:170:1 | exit match_pattern4 (normal) | variables.rs:157:1:170:1 | exit match_pattern4 |  |
-| variables.rs:157:21:170:1 | BlockExpr | variables.rs:157:1:170:1 | exit match_pattern4 (normal) |  |
-| variables.rs:158:5:158:39 | LetStmt | variables.rs:158:36:158:36 | 0 |  |
-| variables.rs:158:9:158:11 | msg | variables.rs:160:11:160:13 | msg | match |
-| variables.rs:158:15:158:38 | RecordExpr | variables.rs:158:9:158:11 | msg |  |
-| variables.rs:158:36:158:36 | 0 | variables.rs:158:15:158:38 | RecordExpr |  |
-| variables.rs:160:5:169:5 | MatchExpr | variables.rs:157:21:170:1 | BlockExpr |  |
-| variables.rs:160:11:160:13 | msg | variables.rs:161:9:163:9 | RecordPat |  |
-| variables.rs:161:9:163:9 | RecordPat | variables.rs:162:31:162:35 | RangePat | match |
-| variables.rs:161:9:163:9 | RecordPat | variables.rs:164:9:164:38 | RecordPat | no-match |
-| variables.rs:162:17:162:35 | [match(true)] id_variable | variables.rs:163:14:163:22 | PathExpr | match |
-| variables.rs:162:31:162:31 | LiteralPat | variables.rs:162:35:162:35 | LiteralPat | match |
-| variables.rs:162:31:162:31 | LiteralPat | variables.rs:164:9:164:38 | RecordPat | no-match |
-| variables.rs:162:31:162:35 | RangePat | variables.rs:162:31:162:31 | LiteralPat | match |
-| variables.rs:162:31:162:35 | RangePat | variables.rs:164:9:164:38 | RecordPat | no-match |
-| variables.rs:162:35:162:35 | LiteralPat | variables.rs:162:17:162:35 | [match(true)] id_variable | match |
-| variables.rs:162:35:162:35 | LiteralPat | variables.rs:164:9:164:38 | RecordPat | no-match |
-| variables.rs:163:14:163:22 | PathExpr | variables.rs:163:24:163:34 | id_variable |  |
-| variables.rs:163:14:163:35 | CallExpr | variables.rs:160:5:169:5 | MatchExpr |  |
-| variables.rs:163:24:163:34 | id_variable | variables.rs:163:14:163:35 | CallExpr |  |
-| variables.rs:164:9:164:38 | RecordPat | variables.rs:164:30:164:36 | RangePat | match |
-| variables.rs:164:9:164:38 | RecordPat | variables.rs:167:9:167:29 | RecordPat | no-match |
-| variables.rs:164:30:164:31 | LiteralPat | variables.rs:164:35:164:36 | LiteralPat | match |
-| variables.rs:164:30:164:31 | LiteralPat | variables.rs:167:9:167:29 | RecordPat | no-match |
-| variables.rs:164:30:164:36 | RangePat | variables.rs:164:30:164:31 | LiteralPat | match |
-| variables.rs:164:30:164:36 | RangePat | variables.rs:167:9:167:29 | RecordPat | no-match |
-| variables.rs:164:35:164:36 | LiteralPat | variables.rs:165:22:165:51 | MacroStmts | match |
-| variables.rs:164:35:164:36 | LiteralPat | variables.rs:167:9:167:29 | RecordPat | no-match |
-| variables.rs:164:43:166:9 | BlockExpr | variables.rs:160:5:169:5 | MatchExpr |  |
-| variables.rs:165:13:165:52 | MacroExpr | variables.rs:164:43:166:9 | BlockExpr |  |
-| variables.rs:165:13:165:52 | PathExpr | variables.rs:165:22:165:51 | "Found an id in another range\\n" |  |
-| variables.rs:165:22:165:51 | "Found an id in another range\\n" | variables.rs:165:22:165:51 | FormatArgsExpr |  |
-| variables.rs:165:22:165:51 | BlockExpr | variables.rs:165:13:165:52 | MacroExpr |  |
-| variables.rs:165:22:165:51 | CallExpr | variables.rs:165:22:165:51 | BlockExpr |  |
-| variables.rs:165:22:165:51 | ExprStmt | variables.rs:165:13:165:52 | PathExpr |  |
-| variables.rs:165:22:165:51 | FormatArgsExpr | variables.rs:165:22:165:51 | MacroExpr |  |
-| variables.rs:165:22:165:51 | MacroExpr | variables.rs:165:22:165:51 | CallExpr |  |
-| variables.rs:165:22:165:51 | MacroStmts | variables.rs:165:22:165:51 | ExprStmt |  |
-| variables.rs:167:9:167:29 | RecordPat | variables.rs:167:26:167:27 | id | match |
-| variables.rs:167:26:167:27 | id | variables.rs:168:13:168:21 | PathExpr | match |
-| variables.rs:168:13:168:21 | PathExpr | variables.rs:168:23:168:24 | id |  |
-| variables.rs:168:13:168:25 | CallExpr | variables.rs:160:5:169:5 | MatchExpr |  |
-| variables.rs:168:23:168:24 | id | variables.rs:168:13:168:25 | CallExpr |  |
-| variables.rs:177:1:183:1 | enter match_pattern5 | variables.rs:178:5:178:34 | LetStmt |  |
-| variables.rs:177:1:183:1 | exit match_pattern5 (normal) | variables.rs:177:1:183:1 | exit match_pattern5 |  |
-| variables.rs:177:21:183:1 | BlockExpr | variables.rs:177:1:183:1 | exit match_pattern5 (normal) |  |
-| variables.rs:178:5:178:34 | LetStmt | variables.rs:178:18:178:29 | PathExpr |  |
-| variables.rs:178:9:178:14 | either | variables.rs:179:11:179:16 | either | match |
-| variables.rs:178:18:178:29 | PathExpr | variables.rs:178:31:178:32 | 32 |  |
-| variables.rs:178:18:178:33 | CallExpr | variables.rs:178:9:178:14 | either |  |
-| variables.rs:178:31:178:32 | 32 | variables.rs:178:18:178:33 | CallExpr |  |
-| variables.rs:179:5:182:5 | MatchExpr | variables.rs:177:21:183:1 | BlockExpr |  |
-| variables.rs:179:11:179:16 | either | variables.rs:180:9:180:24 | TupleStructPat |  |
-| variables.rs:180:9:180:24 | TupleStructPat | variables.rs:180:22:180:23 | a3 | match |
-| variables.rs:180:9:180:24 | TupleStructPat | variables.rs:180:28:180:44 | TupleStructPat | no-match |
-| variables.rs:180:9:180:44 | [match(true)] OrPat | variables.rs:181:16:181:24 | PathExpr | match |
-| variables.rs:180:22:180:23 | a3 | variables.rs:180:9:180:44 | [match(true)] OrPat | match |
-| variables.rs:180:28:180:44 | TupleStructPat | variables.rs:180:42:180:43 | a3 | match |
-| variables.rs:180:42:180:43 | a3 | variables.rs:180:9:180:44 | [match(true)] OrPat | match |
-| variables.rs:181:16:181:24 | PathExpr | variables.rs:181:26:181:27 | a3 |  |
-| variables.rs:181:16:181:28 | CallExpr | variables.rs:179:5:182:5 | MatchExpr |  |
-| variables.rs:181:26:181:27 | a3 | variables.rs:181:16:181:28 | CallExpr |  |
-| variables.rs:191:1:205:1 | enter match_pattern6 | variables.rs:192:5:192:37 | LetStmt |  |
-| variables.rs:191:1:205:1 | exit match_pattern6 (normal) | variables.rs:191:1:205:1 | exit match_pattern6 |  |
-| variables.rs:191:21:205:1 | BlockExpr | variables.rs:191:1:205:1 | exit match_pattern6 (normal) |  |
-| variables.rs:192:5:192:37 | LetStmt | variables.rs:192:14:192:32 | PathExpr |  |
-| variables.rs:192:9:192:10 | tv | variables.rs:193:5:196:5 | ExprStmt | match |
-| variables.rs:192:14:192:32 | PathExpr | variables.rs:192:34:192:35 | 62 |  |
-| variables.rs:192:14:192:36 | CallExpr | variables.rs:192:9:192:10 | tv |  |
-| variables.rs:192:34:192:35 | 62 | variables.rs:192:14:192:36 | CallExpr |  |
-| variables.rs:193:5:196:5 | ExprStmt | variables.rs:193:11:193:12 | tv |  |
-| variables.rs:193:5:196:5 | MatchExpr | variables.rs:197:5:200:5 | ExprStmt |  |
-| variables.rs:193:11:193:12 | tv | variables.rs:194:9:194:30 | TupleStructPat |  |
-| variables.rs:194:9:194:30 | TupleStructPat | variables.rs:194:28:194:29 | a4 | match |
-| variables.rs:194:9:194:30 | TupleStructPat | variables.rs:194:34:194:56 | TupleStructPat | no-match |
-| variables.rs:194:9:194:81 | [match(true)] OrPat | variables.rs:195:16:195:24 | PathExpr | match |
-| variables.rs:194:28:194:29 | a4 | variables.rs:194:9:194:81 | [match(true)] OrPat | match |
-| variables.rs:194:34:194:56 | TupleStructPat | variables.rs:194:54:194:55 | a4 | match |
-| variables.rs:194:34:194:56 | TupleStructPat | variables.rs:194:60:194:81 | TupleStructPat | no-match |
-| variables.rs:194:54:194:55 | a4 | variables.rs:194:9:194:81 | [match(true)] OrPat | match |
-| variables.rs:194:60:194:81 | TupleStructPat | variables.rs:194:79:194:80 | a4 | match |
-| variables.rs:194:79:194:80 | a4 | variables.rs:194:9:194:81 | [match(true)] OrPat | match |
-| variables.rs:195:16:195:24 | PathExpr | variables.rs:195:26:195:27 | a4 |  |
-| variables.rs:195:16:195:28 | CallExpr | variables.rs:193:5:196:5 | MatchExpr |  |
-| variables.rs:195:26:195:27 | a4 | variables.rs:195:16:195:28 | CallExpr |  |
-| variables.rs:197:5:200:5 | ExprStmt | variables.rs:197:11:197:12 | tv |  |
-| variables.rs:197:5:200:5 | MatchExpr | variables.rs:201:11:201:12 | tv |  |
-| variables.rs:197:11:197:12 | tv | variables.rs:198:10:198:31 | TupleStructPat |  |
-| variables.rs:198:9:198:83 | [match(true)] OrPat | variables.rs:199:16:199:24 | PathExpr | match |
-| variables.rs:198:10:198:31 | TupleStructPat | variables.rs:198:29:198:30 | a5 | match |
-| variables.rs:198:10:198:31 | TupleStructPat | variables.rs:198:35:198:57 | TupleStructPat | no-match |
-| variables.rs:198:10:198:57 | [match(false)] OrPat | variables.rs:198:62:198:83 | TupleStructPat | no-match |
-| variables.rs:198:10:198:57 | [match(true)] OrPat | variables.rs:198:9:198:83 | [match(true)] OrPat | match |
-| variables.rs:198:29:198:30 | a5 | variables.rs:198:10:198:57 | [match(true)] OrPat | match |
-| variables.rs:198:35:198:57 | TupleStructPat | variables.rs:198:10:198:57 | [match(false)] OrPat | no-match |
-| variables.rs:198:35:198:57 | TupleStructPat | variables.rs:198:55:198:56 | a5 | match |
-| variables.rs:198:55:198:56 | a5 | variables.rs:198:10:198:57 | [match(true)] OrPat | match |
-| variables.rs:198:62:198:83 | TupleStructPat | variables.rs:198:81:198:82 | a5 | match |
-| variables.rs:198:81:198:82 | a5 | variables.rs:198:9:198:83 | [match(true)] OrPat | match |
-| variables.rs:199:16:199:24 | PathExpr | variables.rs:199:26:199:27 | a5 |  |
-| variables.rs:199:16:199:28 | CallExpr | variables.rs:197:5:200:5 | MatchExpr |  |
-| variables.rs:199:26:199:27 | a5 | variables.rs:199:16:199:28 | CallExpr |  |
-| variables.rs:201:5:204:5 | MatchExpr | variables.rs:191:21:205:1 | BlockExpr |  |
-| variables.rs:201:11:201:12 | tv | variables.rs:202:9:202:30 | TupleStructPat |  |
-| variables.rs:202:9:202:30 | TupleStructPat | variables.rs:202:28:202:29 | a6 | match |
-| variables.rs:202:9:202:30 | TupleStructPat | variables.rs:202:35:202:57 | TupleStructPat | no-match |
-| variables.rs:202:9:202:83 | [match(true)] OrPat | variables.rs:203:16:203:24 | PathExpr | match |
-| variables.rs:202:28:202:29 | a6 | variables.rs:202:9:202:83 | [match(true)] OrPat | match |
-| variables.rs:202:35:202:57 | TupleStructPat | variables.rs:202:55:202:56 | a6 | match |
-| variables.rs:202:35:202:57 | TupleStructPat | variables.rs:202:61:202:82 | TupleStructPat | no-match |
-| variables.rs:202:35:202:82 | [match(true)] OrPat | variables.rs:202:9:202:83 | [match(true)] OrPat | match |
-| variables.rs:202:55:202:56 | a6 | variables.rs:202:35:202:82 | [match(true)] OrPat | match |
-| variables.rs:202:61:202:82 | TupleStructPat | variables.rs:202:80:202:81 | a6 | match |
-| variables.rs:202:80:202:81 | a6 | variables.rs:202:35:202:82 | [match(true)] OrPat | match |
-| variables.rs:203:16:203:24 | PathExpr | variables.rs:203:26:203:27 | a6 |  |
-| variables.rs:203:16:203:28 | CallExpr | variables.rs:201:5:204:5 | MatchExpr |  |
-| variables.rs:203:26:203:27 | a6 | variables.rs:203:16:203:28 | CallExpr |  |
-| variables.rs:207:1:215:1 | enter match_pattern7 | variables.rs:208:5:208:34 | LetStmt |  |
-| variables.rs:207:1:215:1 | exit match_pattern7 (normal) | variables.rs:207:1:215:1 | exit match_pattern7 |  |
-| variables.rs:207:21:215:1 | BlockExpr | variables.rs:207:1:215:1 | exit match_pattern7 (normal) |  |
-| variables.rs:208:5:208:34 | LetStmt | variables.rs:208:18:208:29 | PathExpr |  |
-| variables.rs:208:9:208:14 | either | variables.rs:209:11:209:16 | either | match |
-| variables.rs:208:18:208:29 | PathExpr | variables.rs:208:31:208:32 | 32 |  |
-| variables.rs:208:18:208:33 | CallExpr | variables.rs:208:9:208:14 | either |  |
-| variables.rs:208:31:208:32 | 32 | variables.rs:208:18:208:33 | CallExpr |  |
-| variables.rs:209:5:214:5 | MatchExpr | variables.rs:207:21:215:1 | BlockExpr |  |
-| variables.rs:209:11:209:16 | either | variables.rs:210:9:210:24 | TupleStructPat |  |
-| variables.rs:210:9:210:24 | TupleStructPat | variables.rs:210:22:210:23 | a7 | match |
-| variables.rs:210:9:210:24 | TupleStructPat | variables.rs:210:28:210:44 | TupleStructPat | no-match |
-| variables.rs:210:9:210:44 | [match(false)] OrPat | variables.rs:213:9:213:9 | WildcardPat | no-match |
-| variables.rs:210:9:210:44 | [match(true)] OrPat | variables.rs:211:16:211:17 | a7 | match |
-| variables.rs:210:22:210:23 | a7 | variables.rs:210:9:210:44 | [match(true)] OrPat | match |
-| variables.rs:210:28:210:44 | TupleStructPat | variables.rs:210:9:210:44 | [match(false)] OrPat | no-match |
-| variables.rs:210:28:210:44 | TupleStructPat | variables.rs:210:42:210:43 | a7 | match |
-| variables.rs:210:42:210:43 | a7 | variables.rs:210:9:210:44 | [match(true)] OrPat | match |
-| variables.rs:211:16:211:17 | a7 | variables.rs:211:21:211:21 | 0 |  |
-| variables.rs:211:16:211:21 | ... > ... | variables.rs:212:16:212:24 | PathExpr | true |
-| variables.rs:211:16:211:21 | ... > ... | variables.rs:213:9:213:9 | WildcardPat | false |
-| variables.rs:211:21:211:21 | 0 | variables.rs:211:16:211:21 | ... > ... |  |
-| variables.rs:212:16:212:24 | PathExpr | variables.rs:212:26:212:27 | a7 |  |
-| variables.rs:212:16:212:28 | CallExpr | variables.rs:209:5:214:5 | MatchExpr |  |
-| variables.rs:212:26:212:27 | a7 | variables.rs:212:16:212:28 | CallExpr |  |
-| variables.rs:213:9:213:9 | WildcardPat | variables.rs:213:14:213:15 | TupleExpr | match |
-| variables.rs:213:14:213:15 | TupleExpr | variables.rs:209:5:214:5 | MatchExpr |  |
-| variables.rs:217:1:232:1 | enter match_pattern8 | variables.rs:218:5:218:34 | LetStmt |  |
-| variables.rs:217:1:232:1 | exit match_pattern8 (normal) | variables.rs:217:1:232:1 | exit match_pattern8 |  |
-| variables.rs:217:21:232:1 | BlockExpr | variables.rs:217:1:232:1 | exit match_pattern8 (normal) |  |
-| variables.rs:218:5:218:34 | LetStmt | variables.rs:218:18:218:29 | PathExpr |  |
-| variables.rs:218:9:218:14 | either | variables.rs:220:11:220:16 | either | match |
-| variables.rs:218:18:218:29 | PathExpr | variables.rs:218:31:218:32 | 32 |  |
-| variables.rs:218:18:218:33 | CallExpr | variables.rs:218:9:218:14 | either |  |
-| variables.rs:218:31:218:32 | 32 | variables.rs:218:18:218:33 | CallExpr |  |
-| variables.rs:220:5:231:5 | MatchExpr | variables.rs:217:21:232:1 | BlockExpr |  |
-| variables.rs:220:11:220:16 | either | variables.rs:222:14:222:30 | TupleStructPat |  |
-| variables.rs:221:9:222:52 | [match(true)] e | variables.rs:224:13:224:27 | ExprStmt | match |
-| variables.rs:222:14:222:30 | TupleStructPat | variables.rs:222:27:222:29 | a11 | match |
-| variables.rs:222:14:222:30 | TupleStructPat | variables.rs:222:34:222:51 | TupleStructPat | no-match |
-| variables.rs:222:14:222:51 | [match(false)] OrPat | variables.rs:230:9:230:9 | WildcardPat | no-match |
-| variables.rs:222:14:222:51 | [match(true)] OrPat | variables.rs:221:9:222:52 | [match(true)] e | match |
-| variables.rs:222:27:222:29 | a11 | variables.rs:222:14:222:51 | [match(true)] OrPat | match |
-| variables.rs:222:34:222:51 | TupleStructPat | variables.rs:222:14:222:51 | [match(false)] OrPat | no-match |
-| variables.rs:222:34:222:51 | TupleStructPat | variables.rs:222:48:222:50 | a11 | match |
-| variables.rs:222:48:222:50 | a11 | variables.rs:222:14:222:51 | [match(true)] OrPat | match |
-| variables.rs:223:12:229:9 | BlockExpr | variables.rs:220:5:231:5 | MatchExpr |  |
-| variables.rs:224:13:224:21 | PathExpr | variables.rs:224:23:224:25 | a11 |  |
-| variables.rs:224:13:224:26 | CallExpr | variables.rs:225:16:226:15 | LetExpr |  |
-| variables.rs:224:13:224:27 | ExprStmt | variables.rs:224:13:224:21 | PathExpr |  |
-| variables.rs:224:23:224:25 | a11 | variables.rs:224:13:224:26 | CallExpr |  |
-| variables.rs:225:13:228:13 | IfExpr | variables.rs:223:12:229:9 | BlockExpr |  |
-| variables.rs:225:16:226:15 | LetExpr | variables.rs:226:15:226:15 | e |  |
-| variables.rs:225:20:225:36 | TupleStructPat | variables.rs:225:13:228:13 | IfExpr | no-match |
-| variables.rs:225:20:225:36 | TupleStructPat | variables.rs:225:33:225:35 | a12 | match |
-| variables.rs:225:33:225:35 | a12 | variables.rs:227:17:227:32 | ExprStmt | match |
-| variables.rs:226:15:226:15 | e | variables.rs:225:20:225:36 | TupleStructPat |  |
-| variables.rs:226:17:228:13 | BlockExpr | variables.rs:225:13:228:13 | IfExpr |  |
-| variables.rs:227:17:227:25 | PathExpr | variables.rs:227:28:227:30 | a12 |  |
-| variables.rs:227:17:227:31 | CallExpr | variables.rs:226:17:228:13 | BlockExpr |  |
-| variables.rs:227:17:227:32 | ExprStmt | variables.rs:227:17:227:25 | PathExpr |  |
-| variables.rs:227:27:227:30 | * ... | variables.rs:227:17:227:31 | CallExpr |  |
-| variables.rs:227:28:227:30 | a12 | variables.rs:227:27:227:30 | * ... |  |
-| variables.rs:230:9:230:9 | WildcardPat | variables.rs:230:14:230:15 | TupleExpr | match |
-| variables.rs:230:14:230:15 | TupleExpr | variables.rs:220:5:231:5 | MatchExpr |  |
-| variables.rs:241:1:247:1 | enter match_pattern9 | variables.rs:242:5:242:36 | LetStmt |  |
-| variables.rs:241:1:247:1 | exit match_pattern9 (normal) | variables.rs:241:1:247:1 | exit match_pattern9 |  |
-| variables.rs:241:21:247:1 | BlockExpr | variables.rs:241:1:247:1 | exit match_pattern9 (normal) |  |
-| variables.rs:242:5:242:36 | LetStmt | variables.rs:242:14:242:31 | PathExpr |  |
-| variables.rs:242:9:242:10 | fv | variables.rs:243:11:243:12 | fv | match |
-| variables.rs:242:14:242:31 | PathExpr | variables.rs:242:33:242:34 | 62 |  |
-| variables.rs:242:14:242:35 | CallExpr | variables.rs:242:9:242:10 | fv |  |
-| variables.rs:242:33:242:34 | 62 | variables.rs:242:14:242:35 | CallExpr |  |
-| variables.rs:243:5:246:5 | MatchExpr | variables.rs:241:21:247:1 | BlockExpr |  |
-| variables.rs:243:11:243:12 | fv | variables.rs:244:9:244:30 | TupleStructPat |  |
-| variables.rs:244:9:244:30 | TupleStructPat | variables.rs:244:27:244:29 | a13 | match |
-| variables.rs:244:9:244:30 | TupleStructPat | variables.rs:244:35:244:57 | TupleStructPat | no-match |
-| variables.rs:244:9:244:109 | [match(true)] OrPat | variables.rs:245:16:245:24 | PathExpr | match |
-| variables.rs:244:27:244:29 | a13 | variables.rs:244:9:244:109 | [match(true)] OrPat | match |
-| variables.rs:244:35:244:57 | TupleStructPat | variables.rs:244:54:244:56 | a13 | match |
-| variables.rs:244:35:244:57 | TupleStructPat | variables.rs:244:61:244:82 | TupleStructPat | no-match |
-| variables.rs:244:35:244:82 | [match(false)] OrPat | variables.rs:244:87:244:109 | TupleStructPat | no-match |
-| variables.rs:244:35:244:82 | [match(true)] OrPat | variables.rs:244:9:244:109 | [match(true)] OrPat | match |
-| variables.rs:244:54:244:56 | a13 | variables.rs:244:35:244:82 | [match(true)] OrPat | match |
-| variables.rs:244:61:244:82 | TupleStructPat | variables.rs:244:35:244:82 | [match(false)] OrPat | no-match |
-| variables.rs:244:61:244:82 | TupleStructPat | variables.rs:244:79:244:81 | a13 | match |
-| variables.rs:244:79:244:81 | a13 | variables.rs:244:35:244:82 | [match(true)] OrPat | match |
-| variables.rs:244:87:244:109 | TupleStructPat | variables.rs:244:106:244:108 | a13 | match |
-| variables.rs:244:106:244:108 | a13 | variables.rs:244:9:244:109 | [match(true)] OrPat | match |
-| variables.rs:245:16:245:24 | PathExpr | variables.rs:245:26:245:28 | a13 |  |
-| variables.rs:245:16:245:29 | CallExpr | variables.rs:243:5:246:5 | MatchExpr |  |
-| variables.rs:245:26:245:28 | a13 | variables.rs:245:16:245:29 | CallExpr |  |
-| variables.rs:249:1:258:1 | enter param_pattern1 | variables.rs:250:5:250:6 | a8 |  |
-| variables.rs:249:1:258:1 | exit param_pattern1 (normal) | variables.rs:249:1:258:1 | exit param_pattern1 |  |
-| variables.rs:250:5:250:6 | a8 | variables.rs:250:5:250:12 | Param | match |
-| variables.rs:250:5:250:12 | Param | variables.rs:251:5:254:5 | TuplePat |  |
-| variables.rs:251:5:254:5 | TuplePat | variables.rs:252:9:252:10 | b3 | match |
-| variables.rs:251:5:254:19 | Param | variables.rs:255:5:255:18 | ExprStmt |  |
-| variables.rs:252:9:252:10 | b3 | variables.rs:253:9:253:10 | c1 | match |
-| variables.rs:253:9:253:10 | c1 | variables.rs:251:5:254:19 | Param | match |
-| variables.rs:254:28:258:1 | BlockExpr | variables.rs:249:1:258:1 | exit param_pattern1 (normal) |  |
-| variables.rs:255:5:255:13 | PathExpr | variables.rs:255:15:255:16 | a8 |  |
-| variables.rs:255:5:255:17 | CallExpr | variables.rs:256:5:256:18 | ExprStmt |  |
-| variables.rs:255:5:255:18 | ExprStmt | variables.rs:255:5:255:13 | PathExpr |  |
-| variables.rs:255:15:255:16 | a8 | variables.rs:255:5:255:17 | CallExpr |  |
-| variables.rs:256:5:256:13 | PathExpr | variables.rs:256:15:256:16 | b3 |  |
-| variables.rs:256:5:256:17 | CallExpr | variables.rs:257:5:257:18 | ExprStmt |  |
-| variables.rs:256:5:256:18 | ExprStmt | variables.rs:256:5:256:13 | PathExpr |  |
-| variables.rs:256:15:256:16 | b3 | variables.rs:256:5:256:17 | CallExpr |  |
-| variables.rs:257:5:257:13 | PathExpr | variables.rs:257:15:257:16 | c1 |  |
-| variables.rs:257:5:257:17 | CallExpr | variables.rs:254:28:258:1 | BlockExpr |  |
-| variables.rs:257:5:257:18 | ExprStmt | variables.rs:257:5:257:13 | PathExpr |  |
-| variables.rs:257:15:257:16 | c1 | variables.rs:257:5:257:17 | CallExpr |  |
-| variables.rs:260:1:264:1 | enter param_pattern2 | variables.rs:261:6:261:21 | TupleStructPat |  |
-| variables.rs:260:1:264:1 | exit param_pattern2 (normal) | variables.rs:260:1:264:1 | exit param_pattern2 |  |
-| variables.rs:261:5:261:50 | Param | variables.rs:263:5:263:18 | ExprStmt |  |
-| variables.rs:261:6:261:21 | TupleStructPat | variables.rs:261:19:261:20 | a9 | match |
-| variables.rs:261:6:261:21 | TupleStructPat | variables.rs:261:25:261:41 | TupleStructPat | no-match |
-| variables.rs:261:6:261:41 | [match(true)] OrPat | variables.rs:261:5:261:50 | Param | match |
-| variables.rs:261:19:261:20 | a9 | variables.rs:261:6:261:41 | [match(true)] OrPat | match |
-| variables.rs:261:25:261:41 | TupleStructPat | variables.rs:261:39:261:40 | a9 | match |
-| variables.rs:261:39:261:40 | a9 | variables.rs:261:6:261:41 | [match(true)] OrPat | match |
-| variables.rs:262:9:264:1 | BlockExpr | variables.rs:260:1:264:1 | exit param_pattern2 (normal) |  |
-| variables.rs:263:5:263:13 | PathExpr | variables.rs:263:15:263:16 | a9 |  |
-| variables.rs:263:5:263:17 | CallExpr | variables.rs:262:9:264:1 | BlockExpr |  |
-| variables.rs:263:5:263:18 | ExprStmt | variables.rs:263:5:263:13 | PathExpr |  |
-| variables.rs:263:15:263:16 | a9 | variables.rs:263:5:263:17 | CallExpr |  |
-| variables.rs:266:1:301:1 | enter destruct_assignment | variables.rs:267:5:271:18 | LetStmt |  |
-| variables.rs:266:1:301:1 | exit destruct_assignment (normal) | variables.rs:266:1:301:1 | exit destruct_assignment |  |
-| variables.rs:266:26:301:1 | BlockExpr | variables.rs:266:1:301:1 | exit destruct_assignment (normal) |  |
-| variables.rs:267:5:271:18 | LetStmt | variables.rs:271:10:271:10 | 1 |  |
-| variables.rs:267:9:271:5 | TuplePat | variables.rs:268:9:268:15 | a10 | match |
-| variables.rs:268:9:268:15 | a10 | variables.rs:269:9:269:14 | b4 | match |
-| variables.rs:269:9:269:14 | b4 | variables.rs:270:9:270:14 | c2 | match |
-| variables.rs:270:9:270:14 | c2 | variables.rs:272:5:272:19 | ExprStmt | match |
-| variables.rs:271:9:271:17 | TupleExpr | variables.rs:267:9:271:5 | TuplePat |  |
-| variables.rs:271:10:271:10 | 1 | variables.rs:271:13:271:13 | 2 |  |
-| variables.rs:271:13:271:13 | 2 | variables.rs:271:16:271:16 | 3 |  |
-| variables.rs:271:16:271:16 | 3 | variables.rs:271:9:271:17 | TupleExpr |  |
-| variables.rs:272:5:272:13 | PathExpr | variables.rs:272:15:272:17 | a10 |  |
-| variables.rs:272:5:272:18 | CallExpr | variables.rs:273:5:273:18 | ExprStmt |  |
-| variables.rs:272:5:272:19 | ExprStmt | variables.rs:272:5:272:13 | PathExpr |  |
-| variables.rs:272:15:272:17 | a10 | variables.rs:272:5:272:18 | CallExpr |  |
-| variables.rs:273:5:273:13 | PathExpr | variables.rs:273:15:273:16 | b4 |  |
-| variables.rs:273:5:273:17 | CallExpr | variables.rs:274:5:274:18 | ExprStmt |  |
-| variables.rs:273:5:273:18 | ExprStmt | variables.rs:273:5:273:13 | PathExpr |  |
-| variables.rs:273:15:273:16 | b4 | variables.rs:273:5:273:17 | CallExpr |  |
-| variables.rs:274:5:274:13 | PathExpr | variables.rs:274:15:274:16 | c2 |  |
-| variables.rs:274:5:274:17 | CallExpr | variables.rs:276:5:284:6 | ExprStmt |  |
+| variables.rs:137:23:137:27 | third | variables.rs:137:13:137:28 | CallExpr |  |
+| variables.rs:138:13:138:21 | PathExpr | variables.rs:138:23:138:27 | fifth |  |
+| variables.rs:138:13:138:28 | CallExpr | variables.rs:135:14:139:9 | BlockExpr |  |
+| variables.rs:138:13:138:29 | ExprStmt | variables.rs:138:13:138:21 | PathExpr |  |
+| variables.rs:138:23:138:27 | fifth | variables.rs:138:13:138:28 | CallExpr |  |
+| variables.rs:142:5:151:5 | MatchExpr | variables.rs:127:21:152:1 | BlockExpr |  |
+| variables.rs:142:11:142:17 | numbers | variables.rs:143:9:147:9 | TuplePat |  |
+| variables.rs:143:9:147:9 | TuplePat | variables.rs:144:13:144:17 | first | match |
+| variables.rs:144:13:144:17 | first | variables.rs:145:13:145:14 | RestPat | match |
+| variables.rs:145:13:145:14 | RestPat | variables.rs:146:13:146:16 | last | match |
+| variables.rs:146:13:146:16 | last | variables.rs:148:13:148:29 | ExprStmt | match |
+| variables.rs:147:14:150:9 | BlockExpr | variables.rs:142:5:151:5 | MatchExpr |  |
+| variables.rs:148:13:148:21 | PathExpr | variables.rs:148:23:148:27 | first |  |
+| variables.rs:148:13:148:28 | CallExpr | variables.rs:149:13:149:28 | ExprStmt |  |
+| variables.rs:148:13:148:29 | ExprStmt | variables.rs:148:13:148:21 | PathExpr |  |
+| variables.rs:148:23:148:27 | first | variables.rs:148:13:148:28 | CallExpr |  |
+| variables.rs:149:13:149:21 | PathExpr | variables.rs:149:23:149:26 | last |  |
+| variables.rs:149:13:149:27 | CallExpr | variables.rs:147:14:150:9 | BlockExpr |  |
+| variables.rs:149:13:149:28 | ExprStmt | variables.rs:149:13:149:21 | PathExpr |  |
+| variables.rs:149:23:149:26 | last | variables.rs:149:13:149:27 | CallExpr |  |
+| variables.rs:154:1:162:1 | enter match_pattern3 | variables.rs:155:5:155:38 | LetStmt |  |
+| variables.rs:154:1:162:1 | exit match_pattern3 (normal) | variables.rs:154:1:162:1 | exit match_pattern3 |  |
+| variables.rs:154:21:162:1 | BlockExpr | variables.rs:154:1:162:1 | exit match_pattern3 (normal) |  |
+| variables.rs:155:5:155:38 | LetStmt | variables.rs:155:25:155:27 | "x" |  |
+| variables.rs:155:9:155:10 | p2 | variables.rs:157:11:157:12 | p2 | match |
+| variables.rs:155:14:155:37 | RecordExpr | variables.rs:155:9:155:10 | p2 |  |
+| variables.rs:155:25:155:27 | "x" | variables.rs:155:33:155:35 | "y" |  |
+| variables.rs:155:33:155:35 | "y" | variables.rs:155:14:155:37 | RecordExpr |  |
+| variables.rs:157:5:161:5 | MatchExpr | variables.rs:154:21:162:1 | BlockExpr |  |
+| variables.rs:157:11:157:12 | p2 | variables.rs:158:9:160:9 | RecordPat |  |
+| variables.rs:158:9:160:9 | RecordPat | variables.rs:159:16:159:17 | x7 | match |
+| variables.rs:159:16:159:17 | x7 | variables.rs:159:20:159:21 | RestPat | match |
+| variables.rs:159:20:159:21 | RestPat | variables.rs:160:14:160:22 | PathExpr | match |
+| variables.rs:160:14:160:22 | PathExpr | variables.rs:160:24:160:25 | x7 |  |
+| variables.rs:160:14:160:26 | CallExpr | variables.rs:157:5:161:5 | MatchExpr |  |
+| variables.rs:160:24:160:25 | x7 | variables.rs:160:14:160:26 | CallExpr |  |
+| variables.rs:168:1:181:1 | enter match_pattern4 | variables.rs:169:5:169:39 | LetStmt |  |
+| variables.rs:168:1:181:1 | exit match_pattern4 (normal) | variables.rs:168:1:181:1 | exit match_pattern4 |  |
+| variables.rs:168:21:181:1 | BlockExpr | variables.rs:168:1:181:1 | exit match_pattern4 (normal) |  |
+| variables.rs:169:5:169:39 | LetStmt | variables.rs:169:36:169:36 | 0 |  |
+| variables.rs:169:9:169:11 | msg | variables.rs:171:11:171:13 | msg | match |
+| variables.rs:169:15:169:38 | RecordExpr | variables.rs:169:9:169:11 | msg |  |
+| variables.rs:169:36:169:36 | 0 | variables.rs:169:15:169:38 | RecordExpr |  |
+| variables.rs:171:5:180:5 | MatchExpr | variables.rs:168:21:181:1 | BlockExpr |  |
+| variables.rs:171:11:171:13 | msg | variables.rs:172:9:174:9 | RecordPat |  |
+| variables.rs:172:9:174:9 | RecordPat | variables.rs:173:31:173:35 | RangePat | match |
+| variables.rs:172:9:174:9 | RecordPat | variables.rs:175:9:175:38 | RecordPat | no-match |
+| variables.rs:173:17:173:35 | [match(true)] id_variable | variables.rs:174:14:174:22 | PathExpr | match |
+| variables.rs:173:31:173:31 | LiteralPat | variables.rs:173:35:173:35 | LiteralPat | match |
+| variables.rs:173:31:173:31 | LiteralPat | variables.rs:175:9:175:38 | RecordPat | no-match |
+| variables.rs:173:31:173:35 | RangePat | variables.rs:173:31:173:31 | LiteralPat | match |
+| variables.rs:173:31:173:35 | RangePat | variables.rs:175:9:175:38 | RecordPat | no-match |
+| variables.rs:173:35:173:35 | LiteralPat | variables.rs:173:17:173:35 | [match(true)] id_variable | match |
+| variables.rs:173:35:173:35 | LiteralPat | variables.rs:175:9:175:38 | RecordPat | no-match |
+| variables.rs:174:14:174:22 | PathExpr | variables.rs:174:24:174:34 | id_variable |  |
+| variables.rs:174:14:174:35 | CallExpr | variables.rs:171:5:180:5 | MatchExpr |  |
+| variables.rs:174:24:174:34 | id_variable | variables.rs:174:14:174:35 | CallExpr |  |
+| variables.rs:175:9:175:38 | RecordPat | variables.rs:175:30:175:36 | RangePat | match |
+| variables.rs:175:9:175:38 | RecordPat | variables.rs:178:9:178:29 | RecordPat | no-match |
+| variables.rs:175:30:175:31 | LiteralPat | variables.rs:175:35:175:36 | LiteralPat | match |
+| variables.rs:175:30:175:31 | LiteralPat | variables.rs:178:9:178:29 | RecordPat | no-match |
+| variables.rs:175:30:175:36 | RangePat | variables.rs:175:30:175:31 | LiteralPat | match |
+| variables.rs:175:30:175:36 | RangePat | variables.rs:178:9:178:29 | RecordPat | no-match |
+| variables.rs:175:35:175:36 | LiteralPat | variables.rs:176:22:176:51 | MacroStmts | match |
+| variables.rs:175:35:175:36 | LiteralPat | variables.rs:178:9:178:29 | RecordPat | no-match |
+| variables.rs:175:43:177:9 | BlockExpr | variables.rs:171:5:180:5 | MatchExpr |  |
+| variables.rs:176:13:176:52 | MacroExpr | variables.rs:175:43:177:9 | BlockExpr |  |
+| variables.rs:176:13:176:52 | PathExpr | variables.rs:176:22:176:51 | "Found an id in another range\\n" |  |
+| variables.rs:176:22:176:51 | "Found an id in another range\\n" | variables.rs:176:22:176:51 | FormatArgsExpr |  |
+| variables.rs:176:22:176:51 | BlockExpr | variables.rs:176:13:176:52 | MacroExpr |  |
+| variables.rs:176:22:176:51 | CallExpr | variables.rs:176:22:176:51 | BlockExpr |  |
+| variables.rs:176:22:176:51 | ExprStmt | variables.rs:176:13:176:52 | PathExpr |  |
+| variables.rs:176:22:176:51 | FormatArgsExpr | variables.rs:176:22:176:51 | MacroExpr |  |
+| variables.rs:176:22:176:51 | MacroExpr | variables.rs:176:22:176:51 | CallExpr |  |
+| variables.rs:176:22:176:51 | MacroStmts | variables.rs:176:22:176:51 | ExprStmt |  |
+| variables.rs:178:9:178:29 | RecordPat | variables.rs:178:26:178:27 | id | match |
+| variables.rs:178:26:178:27 | id | variables.rs:179:13:179:21 | PathExpr | match |
+| variables.rs:179:13:179:21 | PathExpr | variables.rs:179:23:179:24 | id |  |
+| variables.rs:179:13:179:25 | CallExpr | variables.rs:171:5:180:5 | MatchExpr |  |
+| variables.rs:179:23:179:24 | id | variables.rs:179:13:179:25 | CallExpr |  |
+| variables.rs:188:1:194:1 | enter match_pattern5 | variables.rs:189:5:189:34 | LetStmt |  |
+| variables.rs:188:1:194:1 | exit match_pattern5 (normal) | variables.rs:188:1:194:1 | exit match_pattern5 |  |
+| variables.rs:188:21:194:1 | BlockExpr | variables.rs:188:1:194:1 | exit match_pattern5 (normal) |  |
+| variables.rs:189:5:189:34 | LetStmt | variables.rs:189:18:189:29 | PathExpr |  |
+| variables.rs:189:9:189:14 | either | variables.rs:190:11:190:16 | either | match |
+| variables.rs:189:18:189:29 | PathExpr | variables.rs:189:31:189:32 | 32 |  |
+| variables.rs:189:18:189:33 | CallExpr | variables.rs:189:9:189:14 | either |  |
+| variables.rs:189:31:189:32 | 32 | variables.rs:189:18:189:33 | CallExpr |  |
+| variables.rs:190:5:193:5 | MatchExpr | variables.rs:188:21:194:1 | BlockExpr |  |
+| variables.rs:190:11:190:16 | either | variables.rs:191:9:191:24 | TupleStructPat |  |
+| variables.rs:191:9:191:24 | TupleStructPat | variables.rs:191:22:191:23 | a3 | match |
+| variables.rs:191:9:191:24 | TupleStructPat | variables.rs:191:28:191:44 | TupleStructPat | no-match |
+| variables.rs:191:9:191:44 | [match(true)] OrPat | variables.rs:192:16:192:24 | PathExpr | match |
+| variables.rs:191:22:191:23 | a3 | variables.rs:191:9:191:44 | [match(true)] OrPat | match |
+| variables.rs:191:28:191:44 | TupleStructPat | variables.rs:191:42:191:43 | a3 | match |
+| variables.rs:191:42:191:43 | a3 | variables.rs:191:9:191:44 | [match(true)] OrPat | match |
+| variables.rs:192:16:192:24 | PathExpr | variables.rs:192:26:192:27 | a3 |  |
+| variables.rs:192:16:192:28 | CallExpr | variables.rs:190:5:193:5 | MatchExpr |  |
+| variables.rs:192:26:192:27 | a3 | variables.rs:192:16:192:28 | CallExpr |  |
+| variables.rs:202:1:216:1 | enter match_pattern6 | variables.rs:203:5:203:37 | LetStmt |  |
+| variables.rs:202:1:216:1 | exit match_pattern6 (normal) | variables.rs:202:1:216:1 | exit match_pattern6 |  |
+| variables.rs:202:21:216:1 | BlockExpr | variables.rs:202:1:216:1 | exit match_pattern6 (normal) |  |
+| variables.rs:203:5:203:37 | LetStmt | variables.rs:203:14:203:32 | PathExpr |  |
+| variables.rs:203:9:203:10 | tv | variables.rs:204:5:207:5 | ExprStmt | match |
+| variables.rs:203:14:203:32 | PathExpr | variables.rs:203:34:203:35 | 62 |  |
+| variables.rs:203:14:203:36 | CallExpr | variables.rs:203:9:203:10 | tv |  |
+| variables.rs:203:34:203:35 | 62 | variables.rs:203:14:203:36 | CallExpr |  |
+| variables.rs:204:5:207:5 | ExprStmt | variables.rs:204:11:204:12 | tv |  |
+| variables.rs:204:5:207:5 | MatchExpr | variables.rs:208:5:211:5 | ExprStmt |  |
+| variables.rs:204:11:204:12 | tv | variables.rs:205:9:205:30 | TupleStructPat |  |
+| variables.rs:205:9:205:30 | TupleStructPat | variables.rs:205:28:205:29 | a4 | match |
+| variables.rs:205:9:205:30 | TupleStructPat | variables.rs:205:34:205:56 | TupleStructPat | no-match |
+| variables.rs:205:9:205:81 | [match(true)] OrPat | variables.rs:206:16:206:24 | PathExpr | match |
+| variables.rs:205:28:205:29 | a4 | variables.rs:205:9:205:81 | [match(true)] OrPat | match |
+| variables.rs:205:34:205:56 | TupleStructPat | variables.rs:205:54:205:55 | a4 | match |
+| variables.rs:205:34:205:56 | TupleStructPat | variables.rs:205:60:205:81 | TupleStructPat | no-match |
+| variables.rs:205:54:205:55 | a4 | variables.rs:205:9:205:81 | [match(true)] OrPat | match |
+| variables.rs:205:60:205:81 | TupleStructPat | variables.rs:205:79:205:80 | a4 | match |
+| variables.rs:205:79:205:80 | a4 | variables.rs:205:9:205:81 | [match(true)] OrPat | match |
+| variables.rs:206:16:206:24 | PathExpr | variables.rs:206:26:206:27 | a4 |  |
+| variables.rs:206:16:206:28 | CallExpr | variables.rs:204:5:207:5 | MatchExpr |  |
+| variables.rs:206:26:206:27 | a4 | variables.rs:206:16:206:28 | CallExpr |  |
+| variables.rs:208:5:211:5 | ExprStmt | variables.rs:208:11:208:12 | tv |  |
+| variables.rs:208:5:211:5 | MatchExpr | variables.rs:212:11:212:12 | tv |  |
+| variables.rs:208:11:208:12 | tv | variables.rs:209:10:209:31 | TupleStructPat |  |
+| variables.rs:209:9:209:83 | [match(true)] OrPat | variables.rs:210:16:210:24 | PathExpr | match |
+| variables.rs:209:10:209:31 | TupleStructPat | variables.rs:209:29:209:30 | a5 | match |
+| variables.rs:209:10:209:31 | TupleStructPat | variables.rs:209:35:209:57 | TupleStructPat | no-match |
+| variables.rs:209:10:209:57 | [match(false)] OrPat | variables.rs:209:62:209:83 | TupleStructPat | no-match |
+| variables.rs:209:10:209:57 | [match(true)] OrPat | variables.rs:209:9:209:83 | [match(true)] OrPat | match |
+| variables.rs:209:29:209:30 | a5 | variables.rs:209:10:209:57 | [match(true)] OrPat | match |
+| variables.rs:209:35:209:57 | TupleStructPat | variables.rs:209:10:209:57 | [match(false)] OrPat | no-match |
+| variables.rs:209:35:209:57 | TupleStructPat | variables.rs:209:55:209:56 | a5 | match |
+| variables.rs:209:55:209:56 | a5 | variables.rs:209:10:209:57 | [match(true)] OrPat | match |
+| variables.rs:209:62:209:83 | TupleStructPat | variables.rs:209:81:209:82 | a5 | match |
+| variables.rs:209:81:209:82 | a5 | variables.rs:209:9:209:83 | [match(true)] OrPat | match |
+| variables.rs:210:16:210:24 | PathExpr | variables.rs:210:26:210:27 | a5 |  |
+| variables.rs:210:16:210:28 | CallExpr | variables.rs:208:5:211:5 | MatchExpr |  |
+| variables.rs:210:26:210:27 | a5 | variables.rs:210:16:210:28 | CallExpr |  |
+| variables.rs:212:5:215:5 | MatchExpr | variables.rs:202:21:216:1 | BlockExpr |  |
+| variables.rs:212:11:212:12 | tv | variables.rs:213:9:213:30 | TupleStructPat |  |
+| variables.rs:213:9:213:30 | TupleStructPat | variables.rs:213:28:213:29 | a6 | match |
+| variables.rs:213:9:213:30 | TupleStructPat | variables.rs:213:35:213:57 | TupleStructPat | no-match |
+| variables.rs:213:9:213:83 | [match(true)] OrPat | variables.rs:214:16:214:24 | PathExpr | match |
+| variables.rs:213:28:213:29 | a6 | variables.rs:213:9:213:83 | [match(true)] OrPat | match |
+| variables.rs:213:35:213:57 | TupleStructPat | variables.rs:213:55:213:56 | a6 | match |
+| variables.rs:213:35:213:57 | TupleStructPat | variables.rs:213:61:213:82 | TupleStructPat | no-match |
+| variables.rs:213:35:213:82 | [match(true)] OrPat | variables.rs:213:9:213:83 | [match(true)] OrPat | match |
+| variables.rs:213:55:213:56 | a6 | variables.rs:213:35:213:82 | [match(true)] OrPat | match |
+| variables.rs:213:61:213:82 | TupleStructPat | variables.rs:213:80:213:81 | a6 | match |
+| variables.rs:213:80:213:81 | a6 | variables.rs:213:35:213:82 | [match(true)] OrPat | match |
+| variables.rs:214:16:214:24 | PathExpr | variables.rs:214:26:214:27 | a6 |  |
+| variables.rs:214:16:214:28 | CallExpr | variables.rs:212:5:215:5 | MatchExpr |  |
+| variables.rs:214:26:214:27 | a6 | variables.rs:214:16:214:28 | CallExpr |  |
+| variables.rs:218:1:226:1 | enter match_pattern7 | variables.rs:219:5:219:34 | LetStmt |  |
+| variables.rs:218:1:226:1 | exit match_pattern7 (normal) | variables.rs:218:1:226:1 | exit match_pattern7 |  |
+| variables.rs:218:21:226:1 | BlockExpr | variables.rs:218:1:226:1 | exit match_pattern7 (normal) |  |
+| variables.rs:219:5:219:34 | LetStmt | variables.rs:219:18:219:29 | PathExpr |  |
+| variables.rs:219:9:219:14 | either | variables.rs:220:11:220:16 | either | match |
+| variables.rs:219:18:219:29 | PathExpr | variables.rs:219:31:219:32 | 32 |  |
+| variables.rs:219:18:219:33 | CallExpr | variables.rs:219:9:219:14 | either |  |
+| variables.rs:219:31:219:32 | 32 | variables.rs:219:18:219:33 | CallExpr |  |
+| variables.rs:220:5:225:5 | MatchExpr | variables.rs:218:21:226:1 | BlockExpr |  |
+| variables.rs:220:11:220:16 | either | variables.rs:221:9:221:24 | TupleStructPat |  |
+| variables.rs:221:9:221:24 | TupleStructPat | variables.rs:221:22:221:23 | a7 | match |
+| variables.rs:221:9:221:24 | TupleStructPat | variables.rs:221:28:221:44 | TupleStructPat | no-match |
+| variables.rs:221:9:221:44 | [match(false)] OrPat | variables.rs:224:9:224:9 | WildcardPat | no-match |
+| variables.rs:221:9:221:44 | [match(true)] OrPat | variables.rs:222:16:222:17 | a7 | match |
+| variables.rs:221:22:221:23 | a7 | variables.rs:221:9:221:44 | [match(true)] OrPat | match |
+| variables.rs:221:28:221:44 | TupleStructPat | variables.rs:221:9:221:44 | [match(false)] OrPat | no-match |
+| variables.rs:221:28:221:44 | TupleStructPat | variables.rs:221:42:221:43 | a7 | match |
+| variables.rs:221:42:221:43 | a7 | variables.rs:221:9:221:44 | [match(true)] OrPat | match |
+| variables.rs:222:16:222:17 | a7 | variables.rs:222:21:222:21 | 0 |  |
+| variables.rs:222:16:222:21 | ... > ... | variables.rs:223:16:223:24 | PathExpr | true |
+| variables.rs:222:16:222:21 | ... > ... | variables.rs:224:9:224:9 | WildcardPat | false |
+| variables.rs:222:21:222:21 | 0 | variables.rs:222:16:222:21 | ... > ... |  |
+| variables.rs:223:16:223:24 | PathExpr | variables.rs:223:26:223:27 | a7 |  |
+| variables.rs:223:16:223:28 | CallExpr | variables.rs:220:5:225:5 | MatchExpr |  |
+| variables.rs:223:26:223:27 | a7 | variables.rs:223:16:223:28 | CallExpr |  |
+| variables.rs:224:9:224:9 | WildcardPat | variables.rs:224:14:224:15 | TupleExpr | match |
+| variables.rs:224:14:224:15 | TupleExpr | variables.rs:220:5:225:5 | MatchExpr |  |
+| variables.rs:228:1:243:1 | enter match_pattern8 | variables.rs:229:5:229:34 | LetStmt |  |
+| variables.rs:228:1:243:1 | exit match_pattern8 (normal) | variables.rs:228:1:243:1 | exit match_pattern8 |  |
+| variables.rs:228:21:243:1 | BlockExpr | variables.rs:228:1:243:1 | exit match_pattern8 (normal) |  |
+| variables.rs:229:5:229:34 | LetStmt | variables.rs:229:18:229:29 | PathExpr |  |
+| variables.rs:229:9:229:14 | either | variables.rs:231:11:231:16 | either | match |
+| variables.rs:229:18:229:29 | PathExpr | variables.rs:229:31:229:32 | 32 |  |
+| variables.rs:229:18:229:33 | CallExpr | variables.rs:229:9:229:14 | either |  |
+| variables.rs:229:31:229:32 | 32 | variables.rs:229:18:229:33 | CallExpr |  |
+| variables.rs:231:5:242:5 | MatchExpr | variables.rs:228:21:243:1 | BlockExpr |  |
+| variables.rs:231:11:231:16 | either | variables.rs:233:14:233:30 | TupleStructPat |  |
+| variables.rs:232:9:233:52 | [match(true)] e | variables.rs:235:13:235:27 | ExprStmt | match |
+| variables.rs:233:14:233:30 | TupleStructPat | variables.rs:233:27:233:29 | a11 | match |
+| variables.rs:233:14:233:30 | TupleStructPat | variables.rs:233:34:233:51 | TupleStructPat | no-match |
+| variables.rs:233:14:233:51 | [match(false)] OrPat | variables.rs:241:9:241:9 | WildcardPat | no-match |
+| variables.rs:233:14:233:51 | [match(true)] OrPat | variables.rs:232:9:233:52 | [match(true)] e | match |
+| variables.rs:233:27:233:29 | a11 | variables.rs:233:14:233:51 | [match(true)] OrPat | match |
+| variables.rs:233:34:233:51 | TupleStructPat | variables.rs:233:14:233:51 | [match(false)] OrPat | no-match |
+| variables.rs:233:34:233:51 | TupleStructPat | variables.rs:233:48:233:50 | a11 | match |
+| variables.rs:233:48:233:50 | a11 | variables.rs:233:14:233:51 | [match(true)] OrPat | match |
+| variables.rs:234:12:240:9 | BlockExpr | variables.rs:231:5:242:5 | MatchExpr |  |
+| variables.rs:235:13:235:21 | PathExpr | variables.rs:235:23:235:25 | a11 |  |
+| variables.rs:235:13:235:26 | CallExpr | variables.rs:236:16:237:15 | LetExpr |  |
+| variables.rs:235:13:235:27 | ExprStmt | variables.rs:235:13:235:21 | PathExpr |  |
+| variables.rs:235:23:235:25 | a11 | variables.rs:235:13:235:26 | CallExpr |  |
+| variables.rs:236:13:239:13 | IfExpr | variables.rs:234:12:240:9 | BlockExpr |  |
+| variables.rs:236:16:237:15 | LetExpr | variables.rs:237:15:237:15 | e |  |
+| variables.rs:236:20:236:36 | TupleStructPat | variables.rs:236:13:239:13 | IfExpr | no-match |
+| variables.rs:236:20:236:36 | TupleStructPat | variables.rs:236:33:236:35 | a12 | match |
+| variables.rs:236:33:236:35 | a12 | variables.rs:238:17:238:32 | ExprStmt | match |
+| variables.rs:237:15:237:15 | e | variables.rs:236:20:236:36 | TupleStructPat |  |
+| variables.rs:237:17:239:13 | BlockExpr | variables.rs:236:13:239:13 | IfExpr |  |
+| variables.rs:238:17:238:25 | PathExpr | variables.rs:238:28:238:30 | a12 |  |
+| variables.rs:238:17:238:31 | CallExpr | variables.rs:237:17:239:13 | BlockExpr |  |
+| variables.rs:238:17:238:32 | ExprStmt | variables.rs:238:17:238:25 | PathExpr |  |
+| variables.rs:238:27:238:30 | * ... | variables.rs:238:17:238:31 | CallExpr |  |
+| variables.rs:238:28:238:30 | a12 | variables.rs:238:27:238:30 | * ... |  |
+| variables.rs:241:9:241:9 | WildcardPat | variables.rs:241:14:241:15 | TupleExpr | match |
+| variables.rs:241:14:241:15 | TupleExpr | variables.rs:231:5:242:5 | MatchExpr |  |
+| variables.rs:252:1:258:1 | enter match_pattern9 | variables.rs:253:5:253:36 | LetStmt |  |
+| variables.rs:252:1:258:1 | exit match_pattern9 (normal) | variables.rs:252:1:258:1 | exit match_pattern9 |  |
+| variables.rs:252:21:258:1 | BlockExpr | variables.rs:252:1:258:1 | exit match_pattern9 (normal) |  |
+| variables.rs:253:5:253:36 | LetStmt | variables.rs:253:14:253:31 | PathExpr |  |
+| variables.rs:253:9:253:10 | fv | variables.rs:254:11:254:12 | fv | match |
+| variables.rs:253:14:253:31 | PathExpr | variables.rs:253:33:253:34 | 62 |  |
+| variables.rs:253:14:253:35 | CallExpr | variables.rs:253:9:253:10 | fv |  |
+| variables.rs:253:33:253:34 | 62 | variables.rs:253:14:253:35 | CallExpr |  |
+| variables.rs:254:5:257:5 | MatchExpr | variables.rs:252:21:258:1 | BlockExpr |  |
+| variables.rs:254:11:254:12 | fv | variables.rs:255:9:255:30 | TupleStructPat |  |
+| variables.rs:255:9:255:30 | TupleStructPat | variables.rs:255:27:255:29 | a13 | match |
+| variables.rs:255:9:255:30 | TupleStructPat | variables.rs:255:35:255:57 | TupleStructPat | no-match |
+| variables.rs:255:9:255:109 | [match(true)] OrPat | variables.rs:256:16:256:24 | PathExpr | match |
+| variables.rs:255:27:255:29 | a13 | variables.rs:255:9:255:109 | [match(true)] OrPat | match |
+| variables.rs:255:35:255:57 | TupleStructPat | variables.rs:255:54:255:56 | a13 | match |
+| variables.rs:255:35:255:57 | TupleStructPat | variables.rs:255:61:255:82 | TupleStructPat | no-match |
+| variables.rs:255:35:255:82 | [match(false)] OrPat | variables.rs:255:87:255:109 | TupleStructPat | no-match |
+| variables.rs:255:35:255:82 | [match(true)] OrPat | variables.rs:255:9:255:109 | [match(true)] OrPat | match |
+| variables.rs:255:54:255:56 | a13 | variables.rs:255:35:255:82 | [match(true)] OrPat | match |
+| variables.rs:255:61:255:82 | TupleStructPat | variables.rs:255:35:255:82 | [match(false)] OrPat | no-match |
+| variables.rs:255:61:255:82 | TupleStructPat | variables.rs:255:79:255:81 | a13 | match |
+| variables.rs:255:79:255:81 | a13 | variables.rs:255:35:255:82 | [match(true)] OrPat | match |
+| variables.rs:255:87:255:109 | TupleStructPat | variables.rs:255:106:255:108 | a13 | match |
+| variables.rs:255:106:255:108 | a13 | variables.rs:255:9:255:109 | [match(true)] OrPat | match |
+| variables.rs:256:16:256:24 | PathExpr | variables.rs:256:26:256:28 | a13 |  |
+| variables.rs:256:16:256:29 | CallExpr | variables.rs:254:5:257:5 | MatchExpr |  |
+| variables.rs:256:26:256:28 | a13 | variables.rs:256:16:256:29 | CallExpr |  |
+| variables.rs:260:1:269:1 | enter param_pattern1 | variables.rs:261:5:261:6 | a8 |  |
+| variables.rs:260:1:269:1 | exit param_pattern1 (normal) | variables.rs:260:1:269:1 | exit param_pattern1 |  |
+| variables.rs:261:5:261:6 | a8 | variables.rs:261:5:261:12 | Param | match |
+| variables.rs:261:5:261:12 | Param | variables.rs:262:5:265:5 | TuplePat |  |
+| variables.rs:262:5:265:5 | TuplePat | variables.rs:263:9:263:10 | b3 | match |
+| variables.rs:262:5:265:19 | Param | variables.rs:266:5:266:18 | ExprStmt |  |
+| variables.rs:263:9:263:10 | b3 | variables.rs:264:9:264:10 | c1 | match |
+| variables.rs:264:9:264:10 | c1 | variables.rs:262:5:265:19 | Param | match |
+| variables.rs:265:28:269:1 | BlockExpr | variables.rs:260:1:269:1 | exit param_pattern1 (normal) |  |
+| variables.rs:266:5:266:13 | PathExpr | variables.rs:266:15:266:16 | a8 |  |
+| variables.rs:266:5:266:17 | CallExpr | variables.rs:267:5:267:18 | ExprStmt |  |
+| variables.rs:266:5:266:18 | ExprStmt | variables.rs:266:5:266:13 | PathExpr |  |
+| variables.rs:266:15:266:16 | a8 | variables.rs:266:5:266:17 | CallExpr |  |
+| variables.rs:267:5:267:13 | PathExpr | variables.rs:267:15:267:16 | b3 |  |
+| variables.rs:267:5:267:17 | CallExpr | variables.rs:268:5:268:18 | ExprStmt |  |
+| variables.rs:267:5:267:18 | ExprStmt | variables.rs:267:5:267:13 | PathExpr |  |
+| variables.rs:267:15:267:16 | b3 | variables.rs:267:5:267:17 | CallExpr |  |
+| variables.rs:268:5:268:13 | PathExpr | variables.rs:268:15:268:16 | c1 |  |
+| variables.rs:268:5:268:17 | CallExpr | variables.rs:265:28:269:1 | BlockExpr |  |
+| variables.rs:268:5:268:18 | ExprStmt | variables.rs:268:5:268:13 | PathExpr |  |
+| variables.rs:268:15:268:16 | c1 | variables.rs:268:5:268:17 | CallExpr |  |
+| variables.rs:271:1:275:1 | enter param_pattern2 | variables.rs:272:6:272:21 | TupleStructPat |  |
+| variables.rs:271:1:275:1 | exit param_pattern2 (normal) | variables.rs:271:1:275:1 | exit param_pattern2 |  |
+| variables.rs:272:5:272:50 | Param | variables.rs:274:5:274:18 | ExprStmt |  |
+| variables.rs:272:6:272:21 | TupleStructPat | variables.rs:272:19:272:20 | a9 | match |
+| variables.rs:272:6:272:21 | TupleStructPat | variables.rs:272:25:272:41 | TupleStructPat | no-match |
+| variables.rs:272:6:272:41 | [match(true)] OrPat | variables.rs:272:5:272:50 | Param | match |
+| variables.rs:272:19:272:20 | a9 | variables.rs:272:6:272:41 | [match(true)] OrPat | match |
+| variables.rs:272:25:272:41 | TupleStructPat | variables.rs:272:39:272:40 | a9 | match |
+| variables.rs:272:39:272:40 | a9 | variables.rs:272:6:272:41 | [match(true)] OrPat | match |
+| variables.rs:273:9:275:1 | BlockExpr | variables.rs:271:1:275:1 | exit param_pattern2 (normal) |  |
+| variables.rs:274:5:274:13 | PathExpr | variables.rs:274:15:274:16 | a9 |  |
+| variables.rs:274:5:274:17 | CallExpr | variables.rs:273:9:275:1 | BlockExpr |  |
 | variables.rs:274:5:274:18 | ExprStmt | variables.rs:274:5:274:13 | PathExpr |  |
-| variables.rs:274:15:274:16 | c2 | variables.rs:274:5:274:17 | CallExpr |  |
-| variables.rs:276:5:280:5 | TupleExpr | variables.rs:281:9:281:11 | a10 |  |
-| variables.rs:276:5:284:5 | ... = ... | variables.rs:285:5:285:19 | ExprStmt |  |
-| variables.rs:276:5:284:6 | ExprStmt | variables.rs:277:9:277:10 | c2 |  |
-| variables.rs:277:9:277:10 | c2 | variables.rs:278:9:278:10 | b4 |  |
-| variables.rs:278:9:278:10 | b4 | variables.rs:279:9:279:11 | a10 |  |
-| variables.rs:279:9:279:11 | a10 | variables.rs:276:5:280:5 | TupleExpr |  |
-| variables.rs:280:9:284:5 | TupleExpr | variables.rs:276:5:284:5 | ... = ... |  |
-| variables.rs:281:9:281:11 | a10 | variables.rs:282:9:282:10 | b4 |  |
-| variables.rs:282:9:282:10 | b4 | variables.rs:283:9:283:10 | c2 |  |
-| variables.rs:283:9:283:10 | c2 | variables.rs:280:9:284:5 | TupleExpr |  |
-| variables.rs:285:5:285:13 | PathExpr | variables.rs:285:15:285:17 | a10 |  |
-| variables.rs:285:5:285:18 | CallExpr | variables.rs:286:5:286:18 | ExprStmt |  |
-| variables.rs:285:5:285:19 | ExprStmt | variables.rs:285:5:285:13 | PathExpr |  |
-| variables.rs:285:15:285:17 | a10 | variables.rs:285:5:285:18 | CallExpr |  |
-| variables.rs:286:5:286:13 | PathExpr | variables.rs:286:15:286:16 | b4 |  |
-| variables.rs:286:5:286:17 | CallExpr | variables.rs:287:5:287:18 | ExprStmt |  |
-| variables.rs:286:5:286:18 | ExprStmt | variables.rs:286:5:286:13 | PathExpr |  |
-| variables.rs:286:15:286:16 | b4 | variables.rs:286:5:286:17 | CallExpr |  |
-| variables.rs:287:5:287:13 | PathExpr | variables.rs:287:15:287:16 | c2 |  |
-| variables.rs:287:5:287:17 | CallExpr | variables.rs:289:5:297:5 | ExprStmt |  |
-| variables.rs:287:5:287:18 | ExprStmt | variables.rs:287:5:287:13 | PathExpr |  |
-| variables.rs:287:15:287:16 | c2 | variables.rs:287:5:287:17 | CallExpr |  |
-| variables.rs:289:5:297:5 | ExprStmt | variables.rs:289:12:289:12 | 4 |  |
-| variables.rs:289:5:297:5 | MatchExpr | variables.rs:299:5:299:19 | ExprStmt |  |
-| variables.rs:289:11:289:16 | TupleExpr | variables.rs:290:9:293:9 | TuplePat |  |
-| variables.rs:289:12:289:12 | 4 | variables.rs:289:15:289:15 | 5 |  |
-| variables.rs:289:15:289:15 | 5 | variables.rs:289:11:289:16 | TupleExpr |  |
-| variables.rs:290:9:293:9 | TuplePat | variables.rs:291:13:291:15 | a10 | match |
-| variables.rs:291:13:291:15 | a10 | variables.rs:292:13:292:14 | b4 | match |
-| variables.rs:292:13:292:14 | b4 | variables.rs:294:13:294:27 | ExprStmt | match |
-| variables.rs:293:14:296:9 | BlockExpr | variables.rs:289:5:297:5 | MatchExpr |  |
-| variables.rs:294:13:294:21 | PathExpr | variables.rs:294:23:294:25 | a10 |  |
-| variables.rs:294:13:294:26 | CallExpr | variables.rs:295:13:295:26 | ExprStmt |  |
-| variables.rs:294:13:294:27 | ExprStmt | variables.rs:294:13:294:21 | PathExpr |  |
-| variables.rs:294:23:294:25 | a10 | variables.rs:294:13:294:26 | CallExpr |  |
-| variables.rs:295:13:295:21 | PathExpr | variables.rs:295:23:295:24 | b4 |  |
-| variables.rs:295:13:295:25 | CallExpr | variables.rs:293:14:296:9 | BlockExpr |  |
-| variables.rs:295:13:295:26 | ExprStmt | variables.rs:295:13:295:21 | PathExpr |  |
-| variables.rs:295:23:295:24 | b4 | variables.rs:295:13:295:25 | CallExpr |  |
-| variables.rs:299:5:299:13 | PathExpr | variables.rs:299:15:299:17 | a10 |  |
-| variables.rs:299:5:299:18 | CallExpr | variables.rs:300:5:300:18 | ExprStmt |  |
-| variables.rs:299:5:299:19 | ExprStmt | variables.rs:299:5:299:13 | PathExpr |  |
-| variables.rs:299:15:299:17 | a10 | variables.rs:299:5:299:18 | CallExpr |  |
-| variables.rs:300:5:300:13 | PathExpr | variables.rs:300:15:300:16 | b4 |  |
-| variables.rs:300:5:300:17 | CallExpr | variables.rs:266:26:301:1 | BlockExpr |  |
-| variables.rs:300:5:300:18 | ExprStmt | variables.rs:300:5:300:13 | PathExpr |  |
-| variables.rs:300:15:300:16 | b4 | variables.rs:300:5:300:17 | CallExpr |  |
-| variables.rs:303:1:318:1 | enter closure_variable | variables.rs:304:5:306:10 | LetStmt |  |
-| variables.rs:303:1:318:1 | exit closure_variable (normal) | variables.rs:303:1:318:1 | exit closure_variable |  |
-| variables.rs:303:23:318:1 | BlockExpr | variables.rs:303:1:318:1 | exit closure_variable (normal) |  |
-| variables.rs:304:5:306:10 | LetStmt | variables.rs:305:9:306:9 | ClosureExpr |  |
-| variables.rs:304:9:304:23 | example_closure | variables.rs:307:5:308:27 | LetStmt | match |
-| variables.rs:305:9:306:9 | ClosureExpr | variables.rs:304:9:304:23 | example_closure |  |
-| variables.rs:305:9:306:9 | enter ClosureExpr | variables.rs:305:10:305:10 | x |  |
-| variables.rs:305:9:306:9 | exit ClosureExpr (normal) | variables.rs:305:9:306:9 | exit ClosureExpr |  |
-| variables.rs:305:10:305:10 | x | variables.rs:305:10:305:15 | Param | match |
-| variables.rs:305:10:305:15 | Param | variables.rs:306:9:306:9 | x |  |
-| variables.rs:306:9:306:9 | x | variables.rs:305:9:306:9 | exit ClosureExpr (normal) |  |
-| variables.rs:307:5:308:27 | LetStmt | variables.rs:308:9:308:23 | example_closure |  |
-| variables.rs:307:9:307:10 | n1 | variables.rs:309:5:309:18 | ExprStmt | match |
-| variables.rs:308:9:308:23 | example_closure | variables.rs:308:25:308:25 | 5 |  |
-| variables.rs:308:9:308:26 | CallExpr | variables.rs:307:9:307:10 | n1 |  |
-| variables.rs:308:25:308:25 | 5 | variables.rs:308:9:308:26 | CallExpr |  |
-| variables.rs:309:5:309:13 | PathExpr | variables.rs:309:15:309:16 | n1 |  |
-| variables.rs:309:5:309:17 | CallExpr | variables.rs:311:5:311:25 | ExprStmt |  |
-| variables.rs:309:5:309:18 | ExprStmt | variables.rs:309:5:309:13 | PathExpr |  |
-| variables.rs:309:15:309:16 | n1 | variables.rs:309:5:309:17 | CallExpr |  |
-| variables.rs:311:5:311:22 | PathExpr | variables.rs:311:5:311:24 | CallExpr |  |
-| variables.rs:311:5:311:24 | CallExpr | variables.rs:312:5:314:10 | LetStmt |  |
-| variables.rs:311:5:311:25 | ExprStmt | variables.rs:311:5:311:22 | PathExpr |  |
-| variables.rs:312:5:314:10 | LetStmt | variables.rs:313:9:314:9 | ClosureExpr |  |
-| variables.rs:312:9:312:26 | immutable_variable | variables.rs:315:5:316:30 | LetStmt | match |
-| variables.rs:313:9:314:9 | ClosureExpr | variables.rs:312:9:312:26 | immutable_variable |  |
-| variables.rs:313:9:314:9 | enter ClosureExpr | variables.rs:313:10:313:10 | x |  |
-| variables.rs:313:9:314:9 | exit ClosureExpr (normal) | variables.rs:313:9:314:9 | exit ClosureExpr |  |
-| variables.rs:313:10:313:10 | x | variables.rs:313:10:313:15 | Param | match |
-| variables.rs:313:10:313:15 | Param | variables.rs:314:9:314:9 | x |  |
-| variables.rs:314:9:314:9 | x | variables.rs:313:9:314:9 | exit ClosureExpr (normal) |  |
-| variables.rs:315:5:316:30 | LetStmt | variables.rs:316:9:316:26 | immutable_variable |  |
-| variables.rs:315:9:315:10 | n2 | variables.rs:317:5:317:18 | ExprStmt | match |
-| variables.rs:316:9:316:26 | immutable_variable | variables.rs:316:28:316:28 | 6 |  |
-| variables.rs:316:9:316:29 | CallExpr | variables.rs:315:9:315:10 | n2 |  |
-| variables.rs:316:28:316:28 | 6 | variables.rs:316:9:316:29 | CallExpr |  |
-| variables.rs:317:5:317:13 | PathExpr | variables.rs:317:15:317:16 | n2 |  |
-| variables.rs:317:5:317:17 | CallExpr | variables.rs:303:23:318:1 | BlockExpr |  |
-| variables.rs:317:5:317:18 | ExprStmt | variables.rs:317:5:317:13 | PathExpr |  |
-| variables.rs:317:15:317:16 | n2 | variables.rs:317:5:317:17 | CallExpr |  |
-| variables.rs:320:1:327:1 | enter for_variable | variables.rs:321:5:321:42 | LetStmt |  |
-| variables.rs:320:1:327:1 | exit for_variable (normal) | variables.rs:320:1:327:1 | exit for_variable |  |
-| variables.rs:320:19:327:1 | BlockExpr | variables.rs:320:1:327:1 | exit for_variable (normal) |  |
-| variables.rs:321:5:321:42 | LetStmt | variables.rs:321:15:321:22 | "apples" |  |
-| variables.rs:321:9:321:9 | v | variables.rs:324:12:324:12 | v | match |
-| variables.rs:321:13:321:41 | RefExpr | variables.rs:321:9:321:9 | v |  |
-| variables.rs:321:14:321:41 | ArrayExpr | variables.rs:321:13:321:41 | RefExpr |  |
-| variables.rs:321:15:321:22 | "apples" | variables.rs:321:25:321:30 | "cake" |  |
-| variables.rs:321:25:321:30 | "cake" | variables.rs:321:33:321:40 | "coffee" |  |
-| variables.rs:321:33:321:40 | "coffee" | variables.rs:321:14:321:41 | ArrayExpr |  |
-| variables.rs:323:5:326:5 | ForExpr | variables.rs:320:19:327:1 | BlockExpr |  |
-| variables.rs:323:9:323:12 | text | variables.rs:323:5:326:5 | ForExpr | no-match |
-| variables.rs:323:9:323:12 | text | variables.rs:325:9:325:24 | ExprStmt | match |
-| variables.rs:324:12:324:12 | v | variables.rs:323:9:323:12 | text |  |
-| variables.rs:324:14:326:5 | BlockExpr | variables.rs:323:9:323:12 | text |  |
-| variables.rs:325:9:325:17 | PathExpr | variables.rs:325:19:325:22 | text |  |
-| variables.rs:325:9:325:23 | CallExpr | variables.rs:324:14:326:5 | BlockExpr |  |
-| variables.rs:325:9:325:24 | ExprStmt | variables.rs:325:9:325:17 | PathExpr |  |
-| variables.rs:325:19:325:22 | text | variables.rs:325:9:325:23 | CallExpr |  |
-| variables.rs:329:1:335:1 | enter add_assign | variables.rs:330:5:330:18 | LetStmt |  |
-| variables.rs:329:1:335:1 | exit add_assign (normal) | variables.rs:329:1:335:1 | exit add_assign |  |
-| variables.rs:329:17:335:1 | BlockExpr | variables.rs:329:1:335:1 | exit add_assign (normal) |  |
-| variables.rs:330:5:330:18 | LetStmt | variables.rs:330:17:330:17 | 0 |  |
-| variables.rs:330:9:330:13 | a | variables.rs:331:5:331:11 | ExprStmt | match |
-| variables.rs:330:17:330:17 | 0 | variables.rs:330:9:330:13 | a |  |
-| variables.rs:331:5:331:5 | a | variables.rs:331:10:331:10 | 1 |  |
-| variables.rs:331:5:331:10 | ... += ... | variables.rs:332:5:332:17 | ExprStmt |  |
-| variables.rs:331:5:331:11 | ExprStmt | variables.rs:331:5:331:5 | a |  |
-| variables.rs:331:10:331:10 | 1 | variables.rs:331:5:331:10 | ... += ... |  |
-| variables.rs:332:5:332:13 | PathExpr | variables.rs:332:15:332:15 | a |  |
-| variables.rs:332:5:332:16 | CallExpr | variables.rs:333:5:333:28 | ExprStmt |  |
-| variables.rs:332:5:332:17 | ExprStmt | variables.rs:332:5:332:13 | PathExpr |  |
-| variables.rs:332:15:332:15 | a | variables.rs:332:5:332:16 | CallExpr |  |
-| variables.rs:333:5:333:27 | MethodCallExpr | variables.rs:334:5:334:17 | ExprStmt |  |
-| variables.rs:333:5:333:28 | ExprStmt | variables.rs:333:25:333:26 | 10 |  |
-| variables.rs:333:6:333:11 | RefExpr | variables.rs:333:5:333:27 | MethodCallExpr |  |
-| variables.rs:333:11:333:11 | a | variables.rs:333:6:333:11 | RefExpr |  |
-| variables.rs:333:25:333:26 | 10 | variables.rs:333:11:333:11 | a |  |
-| variables.rs:334:5:334:13 | PathExpr | variables.rs:334:15:334:15 | a |  |
-| variables.rs:334:5:334:16 | CallExpr | variables.rs:329:17:335:1 | BlockExpr |  |
-| variables.rs:334:5:334:17 | ExprStmt | variables.rs:334:5:334:13 | PathExpr |  |
-| variables.rs:334:15:334:15 | a | variables.rs:334:5:334:16 | CallExpr |  |
-| variables.rs:337:1:343:1 | enter mutate | variables.rs:338:5:338:18 | LetStmt |  |
-| variables.rs:337:1:343:1 | exit mutate (normal) | variables.rs:337:1:343:1 | exit mutate |  |
-| variables.rs:337:13:343:1 | BlockExpr | variables.rs:337:1:343:1 | exit mutate (normal) |  |
-| variables.rs:338:5:338:18 | LetStmt | variables.rs:338:17:338:17 | 1 |  |
-| variables.rs:338:9:338:13 | i | variables.rs:339:5:340:15 | LetStmt | match |
-| variables.rs:338:17:338:17 | 1 | variables.rs:338:9:338:13 | i |  |
-| variables.rs:339:5:340:15 | LetStmt | variables.rs:340:14:340:14 | i |  |
-| variables.rs:339:9:339:13 | ref_i | variables.rs:341:5:341:15 | ExprStmt | match |
-| variables.rs:340:9:340:14 | RefExpr | variables.rs:339:9:339:13 | ref_i |  |
-| variables.rs:340:14:340:14 | i | variables.rs:340:9:340:14 | RefExpr |  |
-| variables.rs:341:5:341:10 | * ... | variables.rs:341:14:341:14 | 2 |  |
-| variables.rs:341:5:341:14 | ... = ... | variables.rs:342:5:342:17 | ExprStmt |  |
-| variables.rs:341:5:341:15 | ExprStmt | variables.rs:341:6:341:10 | ref_i |  |
-| variables.rs:341:6:341:10 | ref_i | variables.rs:341:5:341:10 | * ... |  |
-| variables.rs:341:14:341:14 | 2 | variables.rs:341:5:341:14 | ... = ... |  |
-| variables.rs:342:5:342:13 | PathExpr | variables.rs:342:15:342:15 | i |  |
-| variables.rs:342:5:342:16 | CallExpr | variables.rs:337:13:343:1 | BlockExpr |  |
-| variables.rs:342:5:342:17 | ExprStmt | variables.rs:342:5:342:13 | PathExpr |  |
-| variables.rs:342:15:342:15 | i | variables.rs:342:5:342:16 | CallExpr |  |
-| variables.rs:345:1:350:1 | enter mutate_param | variables.rs:345:17:345:17 | x |  |
-| variables.rs:345:1:350:1 | exit mutate_param (normal) | variables.rs:345:1:350:1 | exit mutate_param |  |
-| variables.rs:345:17:345:17 | x | variables.rs:345:17:345:28 | Param | match |
-| variables.rs:345:17:345:28 | Param | variables.rs:346:5:348:11 | ExprStmt |  |
-| variables.rs:346:5:346:6 | * ... | variables.rs:347:10:347:10 | x |  |
-| variables.rs:346:5:348:10 | ... = ... | variables.rs:349:5:349:13 | ExprStmt |  |
-| variables.rs:346:5:348:11 | ExprStmt | variables.rs:346:6:346:6 | x |  |
-| variables.rs:346:6:346:6 | x | variables.rs:346:5:346:6 | * ... |  |
-| variables.rs:347:9:347:10 | * ... | variables.rs:348:10:348:10 | x |  |
-| variables.rs:347:9:348:10 | ... + ... | variables.rs:346:5:348:10 | ... = ... |  |
-| variables.rs:347:10:347:10 | x | variables.rs:347:9:347:10 | * ... |  |
-| variables.rs:348:9:348:10 | * ... | variables.rs:347:9:348:10 | ... + ... |  |
-| variables.rs:348:10:348:10 | x | variables.rs:348:9:348:10 | * ... |  |
-| variables.rs:349:5:349:12 | ReturnExpr | variables.rs:345:1:350:1 | exit mutate_param (normal) | return |
-| variables.rs:349:5:349:13 | ExprStmt | variables.rs:349:12:349:12 | x |  |
-| variables.rs:349:12:349:12 | x | variables.rs:349:5:349:12 | ReturnExpr |  |
-| variables.rs:352:1:358:1 | enter mutate_param2 | variables.rs:352:22:352:22 | x |  |
-| variables.rs:352:1:358:1 | exit mutate_param2 (normal) | variables.rs:352:1:358:1 | exit mutate_param2 |  |
-| variables.rs:352:22:352:22 | x | variables.rs:352:22:352:36 | Param | match |
-| variables.rs:352:22:352:36 | Param | variables.rs:352:39:352:39 | y |  |
-| variables.rs:352:39:352:39 | y | variables.rs:352:39:352:57 | Param | match |
-| variables.rs:352:39:352:57 | Param | variables.rs:353:5:355:11 | ExprStmt |  |
-| variables.rs:352:60:358:1 | BlockExpr | variables.rs:352:1:358:1 | exit mutate_param2 (normal) |  |
-| variables.rs:353:5:353:6 | * ... | variables.rs:354:10:354:10 | x |  |
-| variables.rs:353:5:355:10 | ... = ... | variables.rs:356:5:357:10 | ExprStmt |  |
-| variables.rs:353:5:355:11 | ExprStmt | variables.rs:353:6:353:6 | x |  |
-| variables.rs:353:6:353:6 | x | variables.rs:353:5:353:6 | * ... |  |
-| variables.rs:354:9:354:10 | * ... | variables.rs:355:10:355:10 | x |  |
-| variables.rs:354:9:355:10 | ... + ... | variables.rs:353:5:355:10 | ... = ... |  |
-| variables.rs:354:10:354:10 | x | variables.rs:354:9:354:10 | * ... |  |
-| variables.rs:355:9:355:10 | * ... | variables.rs:354:9:355:10 | ... + ... |  |
-| variables.rs:355:10:355:10 | x | variables.rs:355:9:355:10 | * ... |  |
-| variables.rs:356:5:356:6 | * ... | variables.rs:357:9:357:9 | x |  |
-| variables.rs:356:5:357:9 | ... = ... | variables.rs:352:60:358:1 | BlockExpr |  |
-| variables.rs:356:5:357:10 | ExprStmt | variables.rs:356:6:356:6 | y |  |
-| variables.rs:356:6:356:6 | y | variables.rs:356:5:356:6 | * ... |  |
-| variables.rs:357:9:357:9 | x | variables.rs:356:5:357:9 | ... = ... |  |
-| variables.rs:360:1:378:1 | enter mutate_arg | variables.rs:361:5:361:18 | LetStmt |  |
-| variables.rs:360:1:378:1 | exit mutate_arg (normal) | variables.rs:360:1:378:1 | exit mutate_arg |  |
-| variables.rs:360:17:378:1 | BlockExpr | variables.rs:360:1:378:1 | exit mutate_arg (normal) |  |
-| variables.rs:361:5:361:18 | LetStmt | variables.rs:361:17:361:17 | 2 |  |
-| variables.rs:361:9:361:13 | x | variables.rs:362:5:363:29 | LetStmt | match |
-| variables.rs:361:17:361:17 | 2 | variables.rs:361:9:361:13 | x |  |
-| variables.rs:362:5:363:29 | LetStmt | variables.rs:363:9:363:20 | PathExpr |  |
-| variables.rs:362:9:362:9 | y | variables.rs:364:5:364:12 | ExprStmt | match |
-| variables.rs:363:9:363:20 | PathExpr | variables.rs:363:27:363:27 | x |  |
-| variables.rs:363:9:363:28 | CallExpr | variables.rs:362:9:362:9 | y |  |
-| variables.rs:363:22:363:27 | RefExpr | variables.rs:363:9:363:28 | CallExpr |  |
-| variables.rs:363:27:363:27 | x | variables.rs:363:22:363:27 | RefExpr |  |
-| variables.rs:364:5:364:6 | * ... | variables.rs:364:10:364:11 | 10 |  |
-| variables.rs:364:5:364:11 | ... = ... | variables.rs:366:5:366:17 | ExprStmt |  |
-| variables.rs:364:5:364:12 | ExprStmt | variables.rs:364:6:364:6 | y |  |
-| variables.rs:364:6:364:6 | y | variables.rs:364:5:364:6 | * ... |  |
-| variables.rs:364:10:364:11 | 10 | variables.rs:364:5:364:11 | ... = ... |  |
-| variables.rs:366:5:366:13 | PathExpr | variables.rs:366:15:366:15 | x |  |
-| variables.rs:366:5:366:16 | CallExpr | variables.rs:368:5:368:18 | LetStmt |  |
-| variables.rs:366:5:366:17 | ExprStmt | variables.rs:366:5:366:13 | PathExpr |  |
-| variables.rs:366:15:366:15 | x | variables.rs:366:5:366:16 | CallExpr |  |
-| variables.rs:368:5:368:18 | LetStmt | variables.rs:368:17:368:17 | 4 |  |
-| variables.rs:368:9:368:13 | z | variables.rs:369:5:370:20 | LetStmt | match |
-| variables.rs:368:17:368:17 | 4 | variables.rs:368:9:368:13 | z |  |
-| variables.rs:369:5:370:20 | LetStmt | variables.rs:370:19:370:19 | x |  |
-| variables.rs:369:9:369:9 | w | variables.rs:371:5:374:6 | ExprStmt | match |
-| variables.rs:370:9:370:19 | RefExpr | variables.rs:369:9:369:9 | w |  |
-| variables.rs:370:14:370:19 | RefExpr | variables.rs:370:9:370:19 | RefExpr |  |
-| variables.rs:370:19:370:19 | x | variables.rs:370:14:370:19 | RefExpr |  |
-| variables.rs:371:5:371:17 | PathExpr | variables.rs:372:14:372:14 | z |  |
-| variables.rs:371:5:374:5 | CallExpr | variables.rs:375:5:375:13 | ExprStmt |  |
-| variables.rs:371:5:374:6 | ExprStmt | variables.rs:371:5:371:17 | PathExpr |  |
-| variables.rs:372:9:372:14 | RefExpr | variables.rs:373:9:373:9 | w |  |
-| variables.rs:372:14:372:14 | z | variables.rs:372:9:372:14 | RefExpr |  |
-| variables.rs:373:9:373:9 | w | variables.rs:371:5:374:5 | CallExpr |  |
-| variables.rs:375:5:375:7 | * ... | variables.rs:375:11:375:12 | 11 |  |
-| variables.rs:375:5:375:12 | ... = ... | variables.rs:377:5:377:17 | ExprStmt |  |
-| variables.rs:375:5:375:13 | ExprStmt | variables.rs:375:7:375:7 | w |  |
-| variables.rs:375:6:375:7 | * ... | variables.rs:375:5:375:7 | * ... |  |
-| variables.rs:375:7:375:7 | w | variables.rs:375:6:375:7 | * ... |  |
-| variables.rs:375:11:375:12 | 11 | variables.rs:375:5:375:12 | ... = ... |  |
-| variables.rs:377:5:377:13 | PathExpr | variables.rs:377:15:377:15 | z |  |
-| variables.rs:377:5:377:16 | CallExpr | variables.rs:360:17:378:1 | BlockExpr |  |
+| variables.rs:274:15:274:16 | a9 | variables.rs:274:5:274:17 | CallExpr |  |
+| variables.rs:277:1:312:1 | enter destruct_assignment | variables.rs:278:5:282:18 | LetStmt |  |
+| variables.rs:277:1:312:1 | exit destruct_assignment (normal) | variables.rs:277:1:312:1 | exit destruct_assignment |  |
+| variables.rs:277:26:312:1 | BlockExpr | variables.rs:277:1:312:1 | exit destruct_assignment (normal) |  |
+| variables.rs:278:5:282:18 | LetStmt | variables.rs:282:10:282:10 | 1 |  |
+| variables.rs:278:9:282:5 | TuplePat | variables.rs:279:9:279:15 | a10 | match |
+| variables.rs:279:9:279:15 | a10 | variables.rs:280:9:280:14 | b4 | match |
+| variables.rs:280:9:280:14 | b4 | variables.rs:281:9:281:14 | c2 | match |
+| variables.rs:281:9:281:14 | c2 | variables.rs:283:5:283:19 | ExprStmt | match |
+| variables.rs:282:9:282:17 | TupleExpr | variables.rs:278:9:282:5 | TuplePat |  |
+| variables.rs:282:10:282:10 | 1 | variables.rs:282:13:282:13 | 2 |  |
+| variables.rs:282:13:282:13 | 2 | variables.rs:282:16:282:16 | 3 |  |
+| variables.rs:282:16:282:16 | 3 | variables.rs:282:9:282:17 | TupleExpr |  |
+| variables.rs:283:5:283:13 | PathExpr | variables.rs:283:15:283:17 | a10 |  |
+| variables.rs:283:5:283:18 | CallExpr | variables.rs:284:5:284:18 | ExprStmt |  |
+| variables.rs:283:5:283:19 | ExprStmt | variables.rs:283:5:283:13 | PathExpr |  |
+| variables.rs:283:15:283:17 | a10 | variables.rs:283:5:283:18 | CallExpr |  |
+| variables.rs:284:5:284:13 | PathExpr | variables.rs:284:15:284:16 | b4 |  |
+| variables.rs:284:5:284:17 | CallExpr | variables.rs:285:5:285:18 | ExprStmt |  |
+| variables.rs:284:5:284:18 | ExprStmt | variables.rs:284:5:284:13 | PathExpr |  |
+| variables.rs:284:15:284:16 | b4 | variables.rs:284:5:284:17 | CallExpr |  |
+| variables.rs:285:5:285:13 | PathExpr | variables.rs:285:15:285:16 | c2 |  |
+| variables.rs:285:5:285:17 | CallExpr | variables.rs:287:5:295:6 | ExprStmt |  |
+| variables.rs:285:5:285:18 | ExprStmt | variables.rs:285:5:285:13 | PathExpr |  |
+| variables.rs:285:15:285:16 | c2 | variables.rs:285:5:285:17 | CallExpr |  |
+| variables.rs:287:5:291:5 | TupleExpr | variables.rs:292:9:292:11 | a10 |  |
+| variables.rs:287:5:295:5 | ... = ... | variables.rs:296:5:296:19 | ExprStmt |  |
+| variables.rs:287:5:295:6 | ExprStmt | variables.rs:288:9:288:10 | c2 |  |
+| variables.rs:288:9:288:10 | c2 | variables.rs:289:9:289:10 | b4 |  |
+| variables.rs:289:9:289:10 | b4 | variables.rs:290:9:290:11 | a10 |  |
+| variables.rs:290:9:290:11 | a10 | variables.rs:287:5:291:5 | TupleExpr |  |
+| variables.rs:291:9:295:5 | TupleExpr | variables.rs:287:5:295:5 | ... = ... |  |
+| variables.rs:292:9:292:11 | a10 | variables.rs:293:9:293:10 | b4 |  |
+| variables.rs:293:9:293:10 | b4 | variables.rs:294:9:294:10 | c2 |  |
+| variables.rs:294:9:294:10 | c2 | variables.rs:291:9:295:5 | TupleExpr |  |
+| variables.rs:296:5:296:13 | PathExpr | variables.rs:296:15:296:17 | a10 |  |
+| variables.rs:296:5:296:18 | CallExpr | variables.rs:297:5:297:18 | ExprStmt |  |
+| variables.rs:296:5:296:19 | ExprStmt | variables.rs:296:5:296:13 | PathExpr |  |
+| variables.rs:296:15:296:17 | a10 | variables.rs:296:5:296:18 | CallExpr |  |
+| variables.rs:297:5:297:13 | PathExpr | variables.rs:297:15:297:16 | b4 |  |
+| variables.rs:297:5:297:17 | CallExpr | variables.rs:298:5:298:18 | ExprStmt |  |
+| variables.rs:297:5:297:18 | ExprStmt | variables.rs:297:5:297:13 | PathExpr |  |
+| variables.rs:297:15:297:16 | b4 | variables.rs:297:5:297:17 | CallExpr |  |
+| variables.rs:298:5:298:13 | PathExpr | variables.rs:298:15:298:16 | c2 |  |
+| variables.rs:298:5:298:17 | CallExpr | variables.rs:300:5:308:5 | ExprStmt |  |
+| variables.rs:298:5:298:18 | ExprStmt | variables.rs:298:5:298:13 | PathExpr |  |
+| variables.rs:298:15:298:16 | c2 | variables.rs:298:5:298:17 | CallExpr |  |
+| variables.rs:300:5:308:5 | ExprStmt | variables.rs:300:12:300:12 | 4 |  |
+| variables.rs:300:5:308:5 | MatchExpr | variables.rs:310:5:310:19 | ExprStmt |  |
+| variables.rs:300:11:300:16 | TupleExpr | variables.rs:301:9:304:9 | TuplePat |  |
+| variables.rs:300:12:300:12 | 4 | variables.rs:300:15:300:15 | 5 |  |
+| variables.rs:300:15:300:15 | 5 | variables.rs:300:11:300:16 | TupleExpr |  |
+| variables.rs:301:9:304:9 | TuplePat | variables.rs:302:13:302:15 | a10 | match |
+| variables.rs:302:13:302:15 | a10 | variables.rs:303:13:303:14 | b4 | match |
+| variables.rs:303:13:303:14 | b4 | variables.rs:305:13:305:27 | ExprStmt | match |
+| variables.rs:304:14:307:9 | BlockExpr | variables.rs:300:5:308:5 | MatchExpr |  |
+| variables.rs:305:13:305:21 | PathExpr | variables.rs:305:23:305:25 | a10 |  |
+| variables.rs:305:13:305:26 | CallExpr | variables.rs:306:13:306:26 | ExprStmt |  |
+| variables.rs:305:13:305:27 | ExprStmt | variables.rs:305:13:305:21 | PathExpr |  |
+| variables.rs:305:23:305:25 | a10 | variables.rs:305:13:305:26 | CallExpr |  |
+| variables.rs:306:13:306:21 | PathExpr | variables.rs:306:23:306:24 | b4 |  |
+| variables.rs:306:13:306:25 | CallExpr | variables.rs:304:14:307:9 | BlockExpr |  |
+| variables.rs:306:13:306:26 | ExprStmt | variables.rs:306:13:306:21 | PathExpr |  |
+| variables.rs:306:23:306:24 | b4 | variables.rs:306:13:306:25 | CallExpr |  |
+| variables.rs:310:5:310:13 | PathExpr | variables.rs:310:15:310:17 | a10 |  |
+| variables.rs:310:5:310:18 | CallExpr | variables.rs:311:5:311:18 | ExprStmt |  |
+| variables.rs:310:5:310:19 | ExprStmt | variables.rs:310:5:310:13 | PathExpr |  |
+| variables.rs:310:15:310:17 | a10 | variables.rs:310:5:310:18 | CallExpr |  |
+| variables.rs:311:5:311:13 | PathExpr | variables.rs:311:15:311:16 | b4 |  |
+| variables.rs:311:5:311:17 | CallExpr | variables.rs:277:26:312:1 | BlockExpr |  |
+| variables.rs:311:5:311:18 | ExprStmt | variables.rs:311:5:311:13 | PathExpr |  |
+| variables.rs:311:15:311:16 | b4 | variables.rs:311:5:311:17 | CallExpr |  |
+| variables.rs:314:1:329:1 | enter closure_variable | variables.rs:315:5:317:10 | LetStmt |  |
+| variables.rs:314:1:329:1 | exit closure_variable (normal) | variables.rs:314:1:329:1 | exit closure_variable |  |
+| variables.rs:314:23:329:1 | BlockExpr | variables.rs:314:1:329:1 | exit closure_variable (normal) |  |
+| variables.rs:315:5:317:10 | LetStmt | variables.rs:316:9:317:9 | ClosureExpr |  |
+| variables.rs:315:9:315:23 | example_closure | variables.rs:318:5:319:27 | LetStmt | match |
+| variables.rs:316:9:317:9 | ClosureExpr | variables.rs:315:9:315:23 | example_closure |  |
+| variables.rs:316:9:317:9 | enter ClosureExpr | variables.rs:316:10:316:10 | x |  |
+| variables.rs:316:9:317:9 | exit ClosureExpr (normal) | variables.rs:316:9:317:9 | exit ClosureExpr |  |
+| variables.rs:316:10:316:10 | x | variables.rs:316:10:316:15 | Param | match |
+| variables.rs:316:10:316:15 | Param | variables.rs:317:9:317:9 | x |  |
+| variables.rs:317:9:317:9 | x | variables.rs:316:9:317:9 | exit ClosureExpr (normal) |  |
+| variables.rs:318:5:319:27 | LetStmt | variables.rs:319:9:319:23 | example_closure |  |
+| variables.rs:318:9:318:10 | n1 | variables.rs:320:5:320:18 | ExprStmt | match |
+| variables.rs:319:9:319:23 | example_closure | variables.rs:319:25:319:25 | 5 |  |
+| variables.rs:319:9:319:26 | CallExpr | variables.rs:318:9:318:10 | n1 |  |
+| variables.rs:319:25:319:25 | 5 | variables.rs:319:9:319:26 | CallExpr |  |
+| variables.rs:320:5:320:13 | PathExpr | variables.rs:320:15:320:16 | n1 |  |
+| variables.rs:320:5:320:17 | CallExpr | variables.rs:322:5:322:25 | ExprStmt |  |
+| variables.rs:320:5:320:18 | ExprStmt | variables.rs:320:5:320:13 | PathExpr |  |
+| variables.rs:320:15:320:16 | n1 | variables.rs:320:5:320:17 | CallExpr |  |
+| variables.rs:322:5:322:22 | PathExpr | variables.rs:322:5:322:24 | CallExpr |  |
+| variables.rs:322:5:322:24 | CallExpr | variables.rs:323:5:325:10 | LetStmt |  |
+| variables.rs:322:5:322:25 | ExprStmt | variables.rs:322:5:322:22 | PathExpr |  |
+| variables.rs:323:5:325:10 | LetStmt | variables.rs:324:9:325:9 | ClosureExpr |  |
+| variables.rs:323:9:323:26 | immutable_variable | variables.rs:326:5:327:30 | LetStmt | match |
+| variables.rs:324:9:325:9 | ClosureExpr | variables.rs:323:9:323:26 | immutable_variable |  |
+| variables.rs:324:9:325:9 | enter ClosureExpr | variables.rs:324:10:324:10 | x |  |
+| variables.rs:324:9:325:9 | exit ClosureExpr (normal) | variables.rs:324:9:325:9 | exit ClosureExpr |  |
+| variables.rs:324:10:324:10 | x | variables.rs:324:10:324:15 | Param | match |
+| variables.rs:324:10:324:15 | Param | variables.rs:325:9:325:9 | x |  |
+| variables.rs:325:9:325:9 | x | variables.rs:324:9:325:9 | exit ClosureExpr (normal) |  |
+| variables.rs:326:5:327:30 | LetStmt | variables.rs:327:9:327:26 | immutable_variable |  |
+| variables.rs:326:9:326:10 | n2 | variables.rs:328:5:328:18 | ExprStmt | match |
+| variables.rs:327:9:327:26 | immutable_variable | variables.rs:327:28:327:28 | 6 |  |
+| variables.rs:327:9:327:29 | CallExpr | variables.rs:326:9:326:10 | n2 |  |
+| variables.rs:327:28:327:28 | 6 | variables.rs:327:9:327:29 | CallExpr |  |
+| variables.rs:328:5:328:13 | PathExpr | variables.rs:328:15:328:16 | n2 |  |
+| variables.rs:328:5:328:17 | CallExpr | variables.rs:314:23:329:1 | BlockExpr |  |
+| variables.rs:328:5:328:18 | ExprStmt | variables.rs:328:5:328:13 | PathExpr |  |
+| variables.rs:328:15:328:16 | n2 | variables.rs:328:5:328:17 | CallExpr |  |
+| variables.rs:331:1:338:1 | enter for_variable | variables.rs:332:5:332:42 | LetStmt |  |
+| variables.rs:331:1:338:1 | exit for_variable (normal) | variables.rs:331:1:338:1 | exit for_variable |  |
+| variables.rs:331:19:338:1 | BlockExpr | variables.rs:331:1:338:1 | exit for_variable (normal) |  |
+| variables.rs:332:5:332:42 | LetStmt | variables.rs:332:15:332:22 | "apples" |  |
+| variables.rs:332:9:332:9 | v | variables.rs:335:12:335:12 | v | match |
+| variables.rs:332:13:332:41 | RefExpr | variables.rs:332:9:332:9 | v |  |
+| variables.rs:332:14:332:41 | ArrayExpr | variables.rs:332:13:332:41 | RefExpr |  |
+| variables.rs:332:15:332:22 | "apples" | variables.rs:332:25:332:30 | "cake" |  |
+| variables.rs:332:25:332:30 | "cake" | variables.rs:332:33:332:40 | "coffee" |  |
+| variables.rs:332:33:332:40 | "coffee" | variables.rs:332:14:332:41 | ArrayExpr |  |
+| variables.rs:334:5:337:5 | ForExpr | variables.rs:331:19:338:1 | BlockExpr |  |
+| variables.rs:334:9:334:12 | text | variables.rs:334:5:337:5 | ForExpr | no-match |
+| variables.rs:334:9:334:12 | text | variables.rs:336:9:336:24 | ExprStmt | match |
+| variables.rs:335:12:335:12 | v | variables.rs:334:9:334:12 | text |  |
+| variables.rs:335:14:337:5 | BlockExpr | variables.rs:334:9:334:12 | text |  |
+| variables.rs:336:9:336:17 | PathExpr | variables.rs:336:19:336:22 | text |  |
+| variables.rs:336:9:336:23 | CallExpr | variables.rs:335:14:337:5 | BlockExpr |  |
+| variables.rs:336:9:336:24 | ExprStmt | variables.rs:336:9:336:17 | PathExpr |  |
+| variables.rs:336:19:336:22 | text | variables.rs:336:9:336:23 | CallExpr |  |
+| variables.rs:340:1:346:1 | enter add_assign | variables.rs:341:5:341:18 | LetStmt |  |
+| variables.rs:340:1:346:1 | exit add_assign (normal) | variables.rs:340:1:346:1 | exit add_assign |  |
+| variables.rs:340:17:346:1 | BlockExpr | variables.rs:340:1:346:1 | exit add_assign (normal) |  |
+| variables.rs:341:5:341:18 | LetStmt | variables.rs:341:17:341:17 | 0 |  |
+| variables.rs:341:9:341:13 | a | variables.rs:342:5:342:11 | ExprStmt | match |
+| variables.rs:341:17:341:17 | 0 | variables.rs:341:9:341:13 | a |  |
+| variables.rs:342:5:342:5 | a | variables.rs:342:10:342:10 | 1 |  |
+| variables.rs:342:5:342:10 | ... += ... | variables.rs:343:5:343:17 | ExprStmt |  |
+| variables.rs:342:5:342:11 | ExprStmt | variables.rs:342:5:342:5 | a |  |
+| variables.rs:342:10:342:10 | 1 | variables.rs:342:5:342:10 | ... += ... |  |
+| variables.rs:343:5:343:13 | PathExpr | variables.rs:343:15:343:15 | a |  |
+| variables.rs:343:5:343:16 | CallExpr | variables.rs:344:5:344:28 | ExprStmt |  |
+| variables.rs:343:5:343:17 | ExprStmt | variables.rs:343:5:343:13 | PathExpr |  |
+| variables.rs:343:15:343:15 | a | variables.rs:343:5:343:16 | CallExpr |  |
+| variables.rs:344:5:344:27 | MethodCallExpr | variables.rs:345:5:345:17 | ExprStmt |  |
+| variables.rs:344:5:344:28 | ExprStmt | variables.rs:344:11:344:11 | a |  |
+| variables.rs:344:6:344:11 | RefExpr | variables.rs:344:25:344:26 | 10 |  |
+| variables.rs:344:11:344:11 | a | variables.rs:344:6:344:11 | RefExpr |  |
+| variables.rs:344:25:344:26 | 10 | variables.rs:344:5:344:27 | MethodCallExpr |  |
+| variables.rs:345:5:345:13 | PathExpr | variables.rs:345:15:345:15 | a |  |
+| variables.rs:345:5:345:16 | CallExpr | variables.rs:340:17:346:1 | BlockExpr |  |
+| variables.rs:345:5:345:17 | ExprStmt | variables.rs:345:5:345:13 | PathExpr |  |
+| variables.rs:345:15:345:15 | a | variables.rs:345:5:345:16 | CallExpr |  |
+| variables.rs:348:1:354:1 | enter mutate | variables.rs:349:5:349:18 | LetStmt |  |
+| variables.rs:348:1:354:1 | exit mutate (normal) | variables.rs:348:1:354:1 | exit mutate |  |
+| variables.rs:348:13:354:1 | BlockExpr | variables.rs:348:1:354:1 | exit mutate (normal) |  |
+| variables.rs:349:5:349:18 | LetStmt | variables.rs:349:17:349:17 | 1 |  |
+| variables.rs:349:9:349:13 | i | variables.rs:350:5:351:15 | LetStmt | match |
+| variables.rs:349:17:349:17 | 1 | variables.rs:349:9:349:13 | i |  |
+| variables.rs:350:5:351:15 | LetStmt | variables.rs:351:14:351:14 | i |  |
+| variables.rs:350:9:350:13 | ref_i | variables.rs:352:5:352:15 | ExprStmt | match |
+| variables.rs:351:9:351:14 | RefExpr | variables.rs:350:9:350:13 | ref_i |  |
+| variables.rs:351:14:351:14 | i | variables.rs:351:9:351:14 | RefExpr |  |
+| variables.rs:352:5:352:10 | * ... | variables.rs:352:14:352:14 | 2 |  |
+| variables.rs:352:5:352:14 | ... = ... | variables.rs:353:5:353:17 | ExprStmt |  |
+| variables.rs:352:5:352:15 | ExprStmt | variables.rs:352:6:352:10 | ref_i |  |
+| variables.rs:352:6:352:10 | ref_i | variables.rs:352:5:352:10 | * ... |  |
+| variables.rs:352:14:352:14 | 2 | variables.rs:352:5:352:14 | ... = ... |  |
+| variables.rs:353:5:353:13 | PathExpr | variables.rs:353:15:353:15 | i |  |
+| variables.rs:353:5:353:16 | CallExpr | variables.rs:348:13:354:1 | BlockExpr |  |
+| variables.rs:353:5:353:17 | ExprStmt | variables.rs:353:5:353:13 | PathExpr |  |
+| variables.rs:353:15:353:15 | i | variables.rs:353:5:353:16 | CallExpr |  |
+| variables.rs:356:1:361:1 | enter mutate_param | variables.rs:356:17:356:17 | x |  |
+| variables.rs:356:1:361:1 | exit mutate_param (normal) | variables.rs:356:1:361:1 | exit mutate_param |  |
+| variables.rs:356:17:356:17 | x | variables.rs:356:17:356:28 | Param | match |
+| variables.rs:356:17:356:28 | Param | variables.rs:357:5:359:11 | ExprStmt |  |
+| variables.rs:357:5:357:6 | * ... | variables.rs:358:10:358:10 | x |  |
+| variables.rs:357:5:359:10 | ... = ... | variables.rs:360:5:360:13 | ExprStmt |  |
+| variables.rs:357:5:359:11 | ExprStmt | variables.rs:357:6:357:6 | x |  |
+| variables.rs:357:6:357:6 | x | variables.rs:357:5:357:6 | * ... |  |
+| variables.rs:358:9:358:10 | * ... | variables.rs:359:10:359:10 | x |  |
+| variables.rs:358:9:359:10 | ... + ... | variables.rs:357:5:359:10 | ... = ... |  |
+| variables.rs:358:10:358:10 | x | variables.rs:358:9:358:10 | * ... |  |
+| variables.rs:359:9:359:10 | * ... | variables.rs:358:9:359:10 | ... + ... |  |
+| variables.rs:359:10:359:10 | x | variables.rs:359:9:359:10 | * ... |  |
+| variables.rs:360:5:360:12 | ReturnExpr | variables.rs:356:1:361:1 | exit mutate_param (normal) | return |
+| variables.rs:360:5:360:13 | ExprStmt | variables.rs:360:12:360:12 | x |  |
+| variables.rs:360:12:360:12 | x | variables.rs:360:5:360:12 | ReturnExpr |  |
+| variables.rs:363:1:369:1 | enter mutate_param2 | variables.rs:363:22:363:22 | x |  |
+| variables.rs:363:1:369:1 | exit mutate_param2 (normal) | variables.rs:363:1:369:1 | exit mutate_param2 |  |
+| variables.rs:363:22:363:22 | x | variables.rs:363:22:363:36 | Param | match |
+| variables.rs:363:22:363:36 | Param | variables.rs:363:39:363:39 | y |  |
+| variables.rs:363:39:363:39 | y | variables.rs:363:39:363:57 | Param | match |
+| variables.rs:363:39:363:57 | Param | variables.rs:364:5:366:11 | ExprStmt |  |
+| variables.rs:363:60:369:1 | BlockExpr | variables.rs:363:1:369:1 | exit mutate_param2 (normal) |  |
+| variables.rs:364:5:364:6 | * ... | variables.rs:365:10:365:10 | x |  |
+| variables.rs:364:5:366:10 | ... = ... | variables.rs:367:5:368:10 | ExprStmt |  |
+| variables.rs:364:5:366:11 | ExprStmt | variables.rs:364:6:364:6 | x |  |
+| variables.rs:364:6:364:6 | x | variables.rs:364:5:364:6 | * ... |  |
+| variables.rs:365:9:365:10 | * ... | variables.rs:366:10:366:10 | x |  |
+| variables.rs:365:9:366:10 | ... + ... | variables.rs:364:5:366:10 | ... = ... |  |
+| variables.rs:365:10:365:10 | x | variables.rs:365:9:365:10 | * ... |  |
+| variables.rs:366:9:366:10 | * ... | variables.rs:365:9:366:10 | ... + ... |  |
+| variables.rs:366:10:366:10 | x | variables.rs:366:9:366:10 | * ... |  |
+| variables.rs:367:5:367:6 | * ... | variables.rs:368:9:368:9 | x |  |
+| variables.rs:367:5:368:9 | ... = ... | variables.rs:363:60:369:1 | BlockExpr |  |
+| variables.rs:367:5:368:10 | ExprStmt | variables.rs:367:6:367:6 | y |  |
+| variables.rs:367:6:367:6 | y | variables.rs:367:5:367:6 | * ... |  |
+| variables.rs:368:9:368:9 | x | variables.rs:367:5:368:9 | ... = ... |  |
+| variables.rs:371:1:389:1 | enter mutate_arg | variables.rs:372:5:372:18 | LetStmt |  |
+| variables.rs:371:1:389:1 | exit mutate_arg (normal) | variables.rs:371:1:389:1 | exit mutate_arg |  |
+| variables.rs:371:17:389:1 | BlockExpr | variables.rs:371:1:389:1 | exit mutate_arg (normal) |  |
+| variables.rs:372:5:372:18 | LetStmt | variables.rs:372:17:372:17 | 2 |  |
+| variables.rs:372:9:372:13 | x | variables.rs:373:5:374:29 | LetStmt | match |
+| variables.rs:372:17:372:17 | 2 | variables.rs:372:9:372:13 | x |  |
+| variables.rs:373:5:374:29 | LetStmt | variables.rs:374:9:374:20 | PathExpr |  |
+| variables.rs:373:9:373:9 | y | variables.rs:375:5:375:12 | ExprStmt | match |
+| variables.rs:374:9:374:20 | PathExpr | variables.rs:374:27:374:27 | x |  |
+| variables.rs:374:9:374:28 | CallExpr | variables.rs:373:9:373:9 | y |  |
+| variables.rs:374:22:374:27 | RefExpr | variables.rs:374:9:374:28 | CallExpr |  |
+| variables.rs:374:27:374:27 | x | variables.rs:374:22:374:27 | RefExpr |  |
+| variables.rs:375:5:375:6 | * ... | variables.rs:375:10:375:11 | 10 |  |
+| variables.rs:375:5:375:11 | ... = ... | variables.rs:377:5:377:17 | ExprStmt |  |
+| variables.rs:375:5:375:12 | ExprStmt | variables.rs:375:6:375:6 | y |  |
+| variables.rs:375:6:375:6 | y | variables.rs:375:5:375:6 | * ... |  |
+| variables.rs:375:10:375:11 | 10 | variables.rs:375:5:375:11 | ... = ... |  |
+| variables.rs:377:5:377:13 | PathExpr | variables.rs:377:15:377:15 | x |  |
+| variables.rs:377:5:377:16 | CallExpr | variables.rs:379:5:379:18 | LetStmt |  |
 | variables.rs:377:5:377:17 | ExprStmt | variables.rs:377:5:377:13 | PathExpr |  |
-| variables.rs:377:15:377:15 | z | variables.rs:377:5:377:16 | CallExpr |  |
-| variables.rs:380:1:386:1 | enter alias | variables.rs:381:5:381:18 | LetStmt |  |
-| variables.rs:380:1:386:1 | exit alias (normal) | variables.rs:380:1:386:1 | exit alias |  |
-| variables.rs:380:12:386:1 | BlockExpr | variables.rs:380:1:386:1 | exit alias (normal) |  |
-| variables.rs:381:5:381:18 | LetStmt | variables.rs:381:17:381:17 | 1 |  |
-| variables.rs:381:9:381:13 | x | variables.rs:382:5:383:15 | LetStmt | match |
-| variables.rs:381:17:381:17 | 1 | variables.rs:381:9:381:13 | x |  |
-| variables.rs:382:5:383:15 | LetStmt | variables.rs:383:14:383:14 | x |  |
-| variables.rs:382:9:382:9 | y | variables.rs:384:5:384:11 | ExprStmt | match |
-| variables.rs:383:9:383:14 | RefExpr | variables.rs:382:9:382:9 | y |  |
-| variables.rs:383:14:383:14 | x | variables.rs:383:9:383:14 | RefExpr |  |
-| variables.rs:384:5:384:6 | * ... | variables.rs:384:10:384:10 | 2 |  |
-| variables.rs:384:5:384:10 | ... = ... | variables.rs:385:5:385:17 | ExprStmt |  |
-| variables.rs:384:5:384:11 | ExprStmt | variables.rs:384:6:384:6 | y |  |
-| variables.rs:384:6:384:6 | y | variables.rs:384:5:384:6 | * ... |  |
-| variables.rs:384:10:384:10 | 2 | variables.rs:384:5:384:10 | ... = ... |  |
-| variables.rs:385:5:385:13 | PathExpr | variables.rs:385:15:385:15 | x |  |
-| variables.rs:385:5:385:16 | CallExpr | variables.rs:380:12:386:1 | BlockExpr |  |
-| variables.rs:385:5:385:17 | ExprStmt | variables.rs:385:5:385:13 | PathExpr |  |
-| variables.rs:385:15:385:15 | x | variables.rs:385:5:385:16 | CallExpr |  |
-| variables.rs:388:1:396:1 | enter capture_mut | variables.rs:389:5:389:19 | LetStmt |  |
-| variables.rs:388:1:396:1 | exit capture_mut (normal) | variables.rs:388:1:396:1 | exit capture_mut |  |
-| variables.rs:388:18:396:1 | BlockExpr | variables.rs:388:1:396:1 | exit capture_mut (normal) |  |
-| variables.rs:389:5:389:19 | LetStmt | variables.rs:389:17:389:18 | 10 |  |
-| variables.rs:389:9:389:13 | x | variables.rs:390:5:393:6 | LetStmt | match |
-| variables.rs:389:17:389:18 | 10 | variables.rs:389:9:389:13 | x |  |
-| variables.rs:390:5:393:6 | LetStmt | variables.rs:390:19:393:5 | ClosureExpr |  |
-| variables.rs:390:9:390:15 | cap | variables.rs:394:5:394:10 | ExprStmt | match |
-| variables.rs:390:19:393:5 | ClosureExpr | variables.rs:390:9:390:15 | cap |  |
-| variables.rs:390:19:393:5 | enter ClosureExpr | variables.rs:391:9:391:21 | ExprStmt |  |
-| variables.rs:390:19:393:5 | exit ClosureExpr (normal) | variables.rs:390:19:393:5 | exit ClosureExpr |  |
-| variables.rs:390:22:393:5 | BlockExpr | variables.rs:390:19:393:5 | exit ClosureExpr (normal) |  |
-| variables.rs:391:9:391:17 | PathExpr | variables.rs:391:19:391:19 | x |  |
-| variables.rs:391:9:391:20 | CallExpr | variables.rs:392:9:392:15 | ExprStmt |  |
-| variables.rs:391:9:391:21 | ExprStmt | variables.rs:391:9:391:17 | PathExpr |  |
-| variables.rs:391:19:391:19 | x | variables.rs:391:9:391:20 | CallExpr |  |
-| variables.rs:392:9:392:9 | x | variables.rs:392:14:392:14 | 1 |  |
-| variables.rs:392:9:392:14 | ... += ... | variables.rs:390:22:393:5 | BlockExpr |  |
-| variables.rs:392:9:392:15 | ExprStmt | variables.rs:392:9:392:9 | x |  |
-| variables.rs:392:14:392:14 | 1 | variables.rs:392:9:392:14 | ... += ... |  |
-| variables.rs:394:5:394:7 | cap | variables.rs:394:5:394:9 | CallExpr |  |
-| variables.rs:394:5:394:9 | CallExpr | variables.rs:395:5:395:17 | ExprStmt |  |
-| variables.rs:394:5:394:10 | ExprStmt | variables.rs:394:5:394:7 | cap |  |
-| variables.rs:395:5:395:13 | PathExpr | variables.rs:395:15:395:15 | x |  |
-| variables.rs:395:5:395:16 | CallExpr | variables.rs:388:18:396:1 | BlockExpr |  |
-| variables.rs:395:5:395:17 | ExprStmt | variables.rs:395:5:395:13 | PathExpr |  |
-| variables.rs:395:15:395:15 | x | variables.rs:395:5:395:16 | CallExpr |  |
-| variables.rs:398:1:405:1 | enter capture_immut | variables.rs:399:5:399:16 | LetStmt |  |
-| variables.rs:398:1:405:1 | exit capture_immut (normal) | variables.rs:398:1:405:1 | exit capture_immut |  |
-| variables.rs:398:20:405:1 | BlockExpr | variables.rs:398:1:405:1 | exit capture_immut (normal) |  |
-| variables.rs:399:5:399:16 | LetStmt | variables.rs:399:13:399:15 | 100 |  |
-| variables.rs:399:9:399:9 | x | variables.rs:400:5:402:6 | LetStmt | match |
-| variables.rs:399:13:399:15 | 100 | variables.rs:399:9:399:9 | x |  |
-| variables.rs:400:5:402:6 | LetStmt | variables.rs:400:19:402:5 | ClosureExpr |  |
-| variables.rs:400:9:400:15 | cap | variables.rs:403:5:403:10 | ExprStmt | match |
-| variables.rs:400:19:402:5 | ClosureExpr | variables.rs:400:9:400:15 | cap |  |
-| variables.rs:400:19:402:5 | enter ClosureExpr | variables.rs:401:9:401:21 | ExprStmt |  |
-| variables.rs:400:19:402:5 | exit ClosureExpr (normal) | variables.rs:400:19:402:5 | exit ClosureExpr |  |
-| variables.rs:400:22:402:5 | BlockExpr | variables.rs:400:19:402:5 | exit ClosureExpr (normal) |  |
-| variables.rs:401:9:401:17 | PathExpr | variables.rs:401:19:401:19 | x |  |
-| variables.rs:401:9:401:20 | CallExpr | variables.rs:400:22:402:5 | BlockExpr |  |
-| variables.rs:401:9:401:21 | ExprStmt | variables.rs:401:9:401:17 | PathExpr |  |
-| variables.rs:401:19:401:19 | x | variables.rs:401:9:401:20 | CallExpr |  |
-| variables.rs:403:5:403:7 | cap | variables.rs:403:5:403:9 | CallExpr |  |
-| variables.rs:403:5:403:9 | CallExpr | variables.rs:404:5:404:17 | ExprStmt |  |
-| variables.rs:403:5:403:10 | ExprStmt | variables.rs:403:5:403:7 | cap |  |
-| variables.rs:404:5:404:13 | PathExpr | variables.rs:404:15:404:15 | x |  |
-| variables.rs:404:5:404:16 | CallExpr | variables.rs:398:20:405:1 | BlockExpr |  |
-| variables.rs:404:5:404:17 | ExprStmt | variables.rs:404:5:404:13 | PathExpr |  |
-| variables.rs:404:15:404:15 | x | variables.rs:404:5:404:16 | CallExpr |  |
-| variables.rs:407:1:421:1 | enter phi | variables.rs:407:8:407:8 | b |  |
-| variables.rs:407:1:421:1 | exit phi (normal) | variables.rs:407:1:421:1 | exit phi |  |
-| variables.rs:407:8:407:8 | b | variables.rs:407:8:407:15 | Param | match |
-| variables.rs:407:8:407:15 | Param | variables.rs:408:5:408:18 | LetStmt |  |
-| variables.rs:407:18:421:1 | BlockExpr | variables.rs:407:1:421:1 | exit phi (normal) |  |
-| variables.rs:408:5:408:18 | LetStmt | variables.rs:408:17:408:17 | 1 |  |
-| variables.rs:408:9:408:13 | x | variables.rs:409:5:409:17 | ExprStmt | match |
-| variables.rs:408:17:408:17 | 1 | variables.rs:408:9:408:13 | x |  |
-| variables.rs:409:5:409:13 | PathExpr | variables.rs:409:15:409:15 | x |  |
-| variables.rs:409:5:409:16 | CallExpr | variables.rs:410:5:410:21 | ExprStmt |  |
-| variables.rs:409:5:409:17 | ExprStmt | variables.rs:409:5:409:13 | PathExpr |  |
-| variables.rs:409:15:409:15 | x | variables.rs:409:5:409:16 | CallExpr |  |
-| variables.rs:410:5:410:13 | PathExpr | variables.rs:410:15:410:15 | x |  |
-| variables.rs:410:5:410:20 | CallExpr | variables.rs:411:5:419:5 | ExprStmt |  |
-| variables.rs:410:5:410:21 | ExprStmt | variables.rs:410:5:410:13 | PathExpr |  |
-| variables.rs:410:15:410:15 | x | variables.rs:410:19:410:19 | 1 |  |
-| variables.rs:410:15:410:19 | ... + ... | variables.rs:410:5:410:20 | CallExpr |  |
-| variables.rs:410:19:410:19 | 1 | variables.rs:410:15:410:19 | ... + ... |  |
-| variables.rs:411:5:419:5 | ExprStmt | variables.rs:411:8:411:8 | b |  |
-| variables.rs:411:5:419:5 | IfExpr | variables.rs:420:5:420:17 | ExprStmt |  |
-| variables.rs:411:8:411:8 | b | variables.rs:412:9:412:14 | ExprStmt | true |
-| variables.rs:411:8:411:8 | b | variables.rs:416:9:416:14 | ExprStmt | false |
-| variables.rs:411:10:415:5 | BlockExpr | variables.rs:411:5:419:5 | IfExpr |  |
-| variables.rs:412:9:412:9 | x | variables.rs:412:13:412:13 | 2 |  |
-| variables.rs:412:9:412:13 | ... = ... | variables.rs:413:9:413:21 | ExprStmt |  |
-| variables.rs:412:9:412:14 | ExprStmt | variables.rs:412:9:412:9 | x |  |
-| variables.rs:412:13:412:13 | 2 | variables.rs:412:9:412:13 | ... = ... |  |
+| variables.rs:377:15:377:15 | x | variables.rs:377:5:377:16 | CallExpr |  |
+| variables.rs:379:5:379:18 | LetStmt | variables.rs:379:17:379:17 | 4 |  |
+| variables.rs:379:9:379:13 | z | variables.rs:380:5:381:20 | LetStmt | match |
+| variables.rs:379:17:379:17 | 4 | variables.rs:379:9:379:13 | z |  |
+| variables.rs:380:5:381:20 | LetStmt | variables.rs:381:19:381:19 | x |  |
+| variables.rs:380:9:380:9 | w | variables.rs:382:5:385:6 | ExprStmt | match |
+| variables.rs:381:9:381:19 | RefExpr | variables.rs:380:9:380:9 | w |  |
+| variables.rs:381:14:381:19 | RefExpr | variables.rs:381:9:381:19 | RefExpr |  |
+| variables.rs:381:19:381:19 | x | variables.rs:381:14:381:19 | RefExpr |  |
+| variables.rs:382:5:382:17 | PathExpr | variables.rs:383:14:383:14 | z |  |
+| variables.rs:382:5:385:5 | CallExpr | variables.rs:386:5:386:13 | ExprStmt |  |
+| variables.rs:382:5:385:6 | ExprStmt | variables.rs:382:5:382:17 | PathExpr |  |
+| variables.rs:383:9:383:14 | RefExpr | variables.rs:384:9:384:9 | w |  |
+| variables.rs:383:14:383:14 | z | variables.rs:383:9:383:14 | RefExpr |  |
+| variables.rs:384:9:384:9 | w | variables.rs:382:5:385:5 | CallExpr |  |
+| variables.rs:386:5:386:7 | * ... | variables.rs:386:11:386:12 | 11 |  |
+| variables.rs:386:5:386:12 | ... = ... | variables.rs:388:5:388:17 | ExprStmt |  |
+| variables.rs:386:5:386:13 | ExprStmt | variables.rs:386:7:386:7 | w |  |
+| variables.rs:386:6:386:7 | * ... | variables.rs:386:5:386:7 | * ... |  |
+| variables.rs:386:7:386:7 | w | variables.rs:386:6:386:7 | * ... |  |
+| variables.rs:386:11:386:12 | 11 | variables.rs:386:5:386:12 | ... = ... |  |
+| variables.rs:388:5:388:13 | PathExpr | variables.rs:388:15:388:15 | z |  |
+| variables.rs:388:5:388:16 | CallExpr | variables.rs:371:17:389:1 | BlockExpr |  |
+| variables.rs:388:5:388:17 | ExprStmt | variables.rs:388:5:388:13 | PathExpr |  |
+| variables.rs:388:15:388:15 | z | variables.rs:388:5:388:16 | CallExpr |  |
+| variables.rs:391:1:397:1 | enter alias | variables.rs:392:5:392:18 | LetStmt |  |
+| variables.rs:391:1:397:1 | exit alias (normal) | variables.rs:391:1:397:1 | exit alias |  |
+| variables.rs:391:12:397:1 | BlockExpr | variables.rs:391:1:397:1 | exit alias (normal) |  |
+| variables.rs:392:5:392:18 | LetStmt | variables.rs:392:17:392:17 | 1 |  |
+| variables.rs:392:9:392:13 | x | variables.rs:393:5:394:15 | LetStmt | match |
+| variables.rs:392:17:392:17 | 1 | variables.rs:392:9:392:13 | x |  |
+| variables.rs:393:5:394:15 | LetStmt | variables.rs:394:14:394:14 | x |  |
+| variables.rs:393:9:393:9 | y | variables.rs:395:5:395:11 | ExprStmt | match |
+| variables.rs:394:9:394:14 | RefExpr | variables.rs:393:9:393:9 | y |  |
+| variables.rs:394:14:394:14 | x | variables.rs:394:9:394:14 | RefExpr |  |
+| variables.rs:395:5:395:6 | * ... | variables.rs:395:10:395:10 | 2 |  |
+| variables.rs:395:5:395:10 | ... = ... | variables.rs:396:5:396:17 | ExprStmt |  |
+| variables.rs:395:5:395:11 | ExprStmt | variables.rs:395:6:395:6 | y |  |
+| variables.rs:395:6:395:6 | y | variables.rs:395:5:395:6 | * ... |  |
+| variables.rs:395:10:395:10 | 2 | variables.rs:395:5:395:10 | ... = ... |  |
+| variables.rs:396:5:396:13 | PathExpr | variables.rs:396:15:396:15 | x |  |
+| variables.rs:396:5:396:16 | CallExpr | variables.rs:391:12:397:1 | BlockExpr |  |
+| variables.rs:396:5:396:17 | ExprStmt | variables.rs:396:5:396:13 | PathExpr |  |
+| variables.rs:396:15:396:15 | x | variables.rs:396:5:396:16 | CallExpr |  |
+| variables.rs:399:1:407:1 | enter capture_immut | variables.rs:400:5:400:16 | LetStmt |  |
+| variables.rs:399:1:407:1 | exit capture_immut (normal) | variables.rs:399:1:407:1 | exit capture_immut |  |
+| variables.rs:399:20:407:1 | BlockExpr | variables.rs:399:1:407:1 | exit capture_immut (normal) |  |
+| variables.rs:400:5:400:16 | LetStmt | variables.rs:400:13:400:15 | 100 |  |
+| variables.rs:400:9:400:9 | x | variables.rs:402:5:404:6 | LetStmt | match |
+| variables.rs:400:13:400:15 | 100 | variables.rs:400:9:400:9 | x |  |
+| variables.rs:402:5:404:6 | LetStmt | variables.rs:402:15:404:5 | ClosureExpr |  |
+| variables.rs:402:9:402:11 | cap | variables.rs:405:5:405:10 | ExprStmt | match |
+| variables.rs:402:15:404:5 | ClosureExpr | variables.rs:402:9:402:11 | cap |  |
+| variables.rs:402:15:404:5 | enter ClosureExpr | variables.rs:403:9:403:21 | ExprStmt |  |
+| variables.rs:402:15:404:5 | exit ClosureExpr (normal) | variables.rs:402:15:404:5 | exit ClosureExpr |  |
+| variables.rs:402:18:404:5 | BlockExpr | variables.rs:402:15:404:5 | exit ClosureExpr (normal) |  |
+| variables.rs:403:9:403:17 | PathExpr | variables.rs:403:19:403:19 | x |  |
+| variables.rs:403:9:403:20 | CallExpr | variables.rs:402:18:404:5 | BlockExpr |  |
+| variables.rs:403:9:403:21 | ExprStmt | variables.rs:403:9:403:17 | PathExpr |  |
+| variables.rs:403:19:403:19 | x | variables.rs:403:9:403:20 | CallExpr |  |
+| variables.rs:405:5:405:7 | cap | variables.rs:405:5:405:9 | CallExpr |  |
+| variables.rs:405:5:405:9 | CallExpr | variables.rs:406:5:406:17 | ExprStmt |  |
+| variables.rs:405:5:405:10 | ExprStmt | variables.rs:405:5:405:7 | cap |  |
+| variables.rs:406:5:406:13 | PathExpr | variables.rs:406:15:406:15 | x |  |
+| variables.rs:406:5:406:16 | CallExpr | variables.rs:399:20:407:1 | BlockExpr |  |
+| variables.rs:406:5:406:17 | ExprStmt | variables.rs:406:5:406:13 | PathExpr |  |
+| variables.rs:406:15:406:15 | x | variables.rs:406:5:406:16 | CallExpr |  |
+| variables.rs:409:1:433:1 | enter capture_mut | variables.rs:410:5:410:18 | LetStmt |  |
+| variables.rs:409:1:433:1 | exit capture_mut (normal) | variables.rs:409:1:433:1 | exit capture_mut |  |
+| variables.rs:409:18:433:1 | BlockExpr | variables.rs:409:1:433:1 | exit capture_mut (normal) |  |
+| variables.rs:410:5:410:18 | LetStmt | variables.rs:410:17:410:17 | 1 |  |
+| variables.rs:410:9:410:13 | x | variables.rs:412:5:414:6 | LetStmt | match |
+| variables.rs:410:17:410:17 | 1 | variables.rs:410:9:410:13 | x |  |
+| variables.rs:412:5:414:6 | LetStmt | variables.rs:412:20:414:5 | ClosureExpr |  |
+| variables.rs:412:9:412:16 | closure1 | variables.rs:415:5:415:15 | ExprStmt | match |
+| variables.rs:412:20:414:5 | ClosureExpr | variables.rs:412:9:412:16 | closure1 |  |
+| variables.rs:412:20:414:5 | enter ClosureExpr | variables.rs:413:9:413:21 | ExprStmt |  |
+| variables.rs:412:20:414:5 | exit ClosureExpr (normal) | variables.rs:412:20:414:5 | exit ClosureExpr |  |
+| variables.rs:412:23:414:5 | BlockExpr | variables.rs:412:20:414:5 | exit ClosureExpr (normal) |  |
 | variables.rs:413:9:413:17 | PathExpr | variables.rs:413:19:413:19 | x |  |
-| variables.rs:413:9:413:20 | CallExpr | variables.rs:414:9:414:25 | ExprStmt |  |
+| variables.rs:413:9:413:20 | CallExpr | variables.rs:412:23:414:5 | BlockExpr |  |
 | variables.rs:413:9:413:21 | ExprStmt | variables.rs:413:9:413:17 | PathExpr |  |
 | variables.rs:413:19:413:19 | x | variables.rs:413:9:413:20 | CallExpr |  |
-| variables.rs:414:9:414:17 | PathExpr | variables.rs:414:19:414:19 | x |  |
-| variables.rs:414:9:414:24 | CallExpr | variables.rs:411:10:415:5 | BlockExpr |  |
-| variables.rs:414:9:414:25 | ExprStmt | variables.rs:414:9:414:17 | PathExpr |  |
-| variables.rs:414:19:414:19 | x | variables.rs:414:23:414:23 | 1 |  |
-| variables.rs:414:19:414:23 | ... + ... | variables.rs:414:9:414:24 | CallExpr |  |
-| variables.rs:414:23:414:23 | 1 | variables.rs:414:19:414:23 | ... + ... |  |
-| variables.rs:415:12:419:5 | BlockExpr | variables.rs:411:5:419:5 | IfExpr |  |
-| variables.rs:416:9:416:9 | x | variables.rs:416:13:416:13 | 3 |  |
-| variables.rs:416:9:416:13 | ... = ... | variables.rs:417:9:417:21 | ExprStmt |  |
-| variables.rs:416:9:416:14 | ExprStmt | variables.rs:416:9:416:9 | x |  |
-| variables.rs:416:13:416:13 | 3 | variables.rs:416:9:416:13 | ... = ... |  |
-| variables.rs:417:9:417:17 | PathExpr | variables.rs:417:19:417:19 | x |  |
-| variables.rs:417:9:417:20 | CallExpr | variables.rs:418:9:418:25 | ExprStmt |  |
-| variables.rs:417:9:417:21 | ExprStmt | variables.rs:417:9:417:17 | PathExpr |  |
-| variables.rs:417:19:417:19 | x | variables.rs:417:9:417:20 | CallExpr |  |
-| variables.rs:418:9:418:17 | PathExpr | variables.rs:418:19:418:19 | x |  |
-| variables.rs:418:9:418:24 | CallExpr | variables.rs:415:12:419:5 | BlockExpr |  |
-| variables.rs:418:9:418:25 | ExprStmt | variables.rs:418:9:418:17 | PathExpr |  |
-| variables.rs:418:19:418:19 | x | variables.rs:418:23:418:23 | 1 |  |
-| variables.rs:418:19:418:23 | ... + ... | variables.rs:418:9:418:24 | CallExpr |  |
-| variables.rs:418:23:418:23 | 1 | variables.rs:418:19:418:23 | ... + ... |  |
-| variables.rs:420:5:420:13 | PathExpr | variables.rs:420:15:420:15 | x |  |
-| variables.rs:420:5:420:16 | CallExpr | variables.rs:407:18:421:1 | BlockExpr |  |
-| variables.rs:420:5:420:17 | ExprStmt | variables.rs:420:5:420:13 | PathExpr |  |
-| variables.rs:420:15:420:15 | x | variables.rs:420:5:420:16 | CallExpr |  |
-| variables.rs:423:1:436:1 | enter phi_read | variables.rs:423:13:423:14 | b1 |  |
-| variables.rs:423:1:436:1 | exit phi_read (normal) | variables.rs:423:1:436:1 | exit phi_read |  |
-| variables.rs:423:13:423:14 | b1 | variables.rs:423:13:423:21 | Param | match |
-| variables.rs:423:13:423:21 | Param | variables.rs:423:24:423:25 | b2 |  |
-| variables.rs:423:24:423:25 | b2 | variables.rs:423:24:423:32 | Param | match |
-| variables.rs:423:24:423:32 | Param | variables.rs:424:5:424:14 | LetStmt |  |
-| variables.rs:423:35:436:1 | BlockExpr | variables.rs:423:1:436:1 | exit phi_read (normal) |  |
-| variables.rs:424:5:424:14 | LetStmt | variables.rs:424:13:424:13 | 1 |  |
-| variables.rs:424:9:424:9 | x | variables.rs:425:5:429:5 | ExprStmt | match |
-| variables.rs:424:13:424:13 | 1 | variables.rs:424:9:424:9 | x |  |
-| variables.rs:425:5:429:5 | ExprStmt | variables.rs:425:8:425:9 | b1 |  |
-| variables.rs:425:5:429:5 | IfExpr | variables.rs:431:8:431:9 | b2 |  |
-| variables.rs:425:8:425:9 | b1 | variables.rs:426:9:426:21 | ExprStmt | true |
-| variables.rs:425:8:425:9 | b1 | variables.rs:428:9:428:21 | ExprStmt | false |
-| variables.rs:425:11:427:5 | BlockExpr | variables.rs:425:5:429:5 | IfExpr |  |
-| variables.rs:426:9:426:17 | PathExpr | variables.rs:426:19:426:19 | x |  |
-| variables.rs:426:9:426:20 | CallExpr | variables.rs:425:11:427:5 | BlockExpr |  |
-| variables.rs:426:9:426:21 | ExprStmt | variables.rs:426:9:426:17 | PathExpr |  |
-| variables.rs:426:19:426:19 | x | variables.rs:426:9:426:20 | CallExpr |  |
-| variables.rs:427:12:429:5 | BlockExpr | variables.rs:425:5:429:5 | IfExpr |  |
-| variables.rs:428:9:428:17 | PathExpr | variables.rs:428:19:428:19 | x |  |
-| variables.rs:428:9:428:20 | CallExpr | variables.rs:427:12:429:5 | BlockExpr |  |
-| variables.rs:428:9:428:21 | ExprStmt | variables.rs:428:9:428:17 | PathExpr |  |
-| variables.rs:428:19:428:19 | x | variables.rs:428:9:428:20 | CallExpr |  |
-| variables.rs:431:5:435:5 | IfExpr | variables.rs:423:35:436:1 | BlockExpr |  |
-| variables.rs:431:8:431:9 | b2 | variables.rs:432:9:432:21 | ExprStmt | true |
-| variables.rs:431:8:431:9 | b2 | variables.rs:434:9:434:21 | ExprStmt | false |
-| variables.rs:431:11:433:5 | BlockExpr | variables.rs:431:5:435:5 | IfExpr |  |
-| variables.rs:432:9:432:17 | PathExpr | variables.rs:432:19:432:19 | x |  |
-| variables.rs:432:9:432:20 | CallExpr | variables.rs:431:11:433:5 | BlockExpr |  |
-| variables.rs:432:9:432:21 | ExprStmt | variables.rs:432:9:432:17 | PathExpr |  |
-| variables.rs:432:19:432:19 | x | variables.rs:432:9:432:20 | CallExpr |  |
-| variables.rs:433:12:435:5 | BlockExpr | variables.rs:431:5:435:5 | IfExpr |  |
-| variables.rs:434:9:434:17 | PathExpr | variables.rs:434:19:434:19 | x |  |
-| variables.rs:434:9:434:20 | CallExpr | variables.rs:433:12:435:5 | BlockExpr |  |
-| variables.rs:434:9:434:21 | ExprStmt | variables.rs:434:9:434:17 | PathExpr |  |
-| variables.rs:434:19:434:19 | x | variables.rs:434:9:434:20 | CallExpr |  |
-| variables.rs:444:5:446:5 | enter my_get | variables.rs:445:9:445:24 | ExprStmt |  |
-| variables.rs:444:5:446:5 | exit my_get (normal) | variables.rs:444:5:446:5 | exit my_get |  |
-| variables.rs:445:9:445:23 | ReturnExpr | variables.rs:444:5:446:5 | exit my_get (normal) | return |
-| variables.rs:445:9:445:24 | ExprStmt | variables.rs:445:16:445:19 | PathExpr |  |
-| variables.rs:445:16:445:19 | PathExpr | variables.rs:445:16:445:23 | FieldExpr |  |
-| variables.rs:445:16:445:23 | FieldExpr | variables.rs:445:9:445:23 | ReturnExpr |  |
-| variables.rs:449:1:456:1 | enter structs | variables.rs:450:5:450:36 | LetStmt |  |
-| variables.rs:449:1:456:1 | exit structs (normal) | variables.rs:449:1:456:1 | exit structs |  |
-| variables.rs:449:14:456:1 | BlockExpr | variables.rs:449:1:456:1 | exit structs (normal) |  |
-| variables.rs:450:5:450:36 | LetStmt | variables.rs:450:33:450:33 | 1 |  |
-| variables.rs:450:9:450:13 | a | variables.rs:451:5:451:26 | ExprStmt | match |
-| variables.rs:450:17:450:35 | RecordExpr | variables.rs:450:9:450:13 | a |  |
-| variables.rs:450:33:450:33 | 1 | variables.rs:450:17:450:35 | RecordExpr |  |
-| variables.rs:451:5:451:13 | PathExpr | variables.rs:451:15:451:15 | a |  |
-| variables.rs:451:5:451:25 | CallExpr | variables.rs:452:5:452:14 | ExprStmt |  |
-| variables.rs:451:5:451:26 | ExprStmt | variables.rs:451:5:451:13 | PathExpr |  |
-| variables.rs:451:15:451:15 | a | variables.rs:451:15:451:24 | MethodCallExpr |  |
-| variables.rs:451:15:451:24 | MethodCallExpr | variables.rs:451:5:451:25 | CallExpr |  |
-| variables.rs:452:5:452:5 | a | variables.rs:452:5:452:9 | FieldExpr |  |
-| variables.rs:452:5:452:9 | FieldExpr | variables.rs:452:13:452:13 | 5 |  |
-| variables.rs:452:5:452:13 | ... = ... | variables.rs:453:5:453:26 | ExprStmt |  |
-| variables.rs:452:5:452:14 | ExprStmt | variables.rs:452:5:452:5 | a |  |
-| variables.rs:452:13:452:13 | 5 | variables.rs:452:5:452:13 | ... = ... |  |
-| variables.rs:453:5:453:13 | PathExpr | variables.rs:453:15:453:15 | a |  |
-| variables.rs:453:5:453:25 | CallExpr | variables.rs:454:5:454:28 | ExprStmt |  |
-| variables.rs:453:5:453:26 | ExprStmt | variables.rs:453:5:453:13 | PathExpr |  |
-| variables.rs:453:15:453:15 | a | variables.rs:453:15:453:24 | MethodCallExpr |  |
-| variables.rs:453:15:453:24 | MethodCallExpr | variables.rs:453:5:453:25 | CallExpr |  |
-| variables.rs:454:5:454:5 | a | variables.rs:454:25:454:25 | 2 |  |
-| variables.rs:454:5:454:27 | ... = ... | variables.rs:455:5:455:26 | ExprStmt |  |
-| variables.rs:454:5:454:28 | ExprStmt | variables.rs:454:5:454:5 | a |  |
-| variables.rs:454:9:454:27 | RecordExpr | variables.rs:454:5:454:27 | ... = ... |  |
-| variables.rs:454:25:454:25 | 2 | variables.rs:454:9:454:27 | RecordExpr |  |
-| variables.rs:455:5:455:13 | PathExpr | variables.rs:455:15:455:15 | a |  |
-| variables.rs:455:5:455:25 | CallExpr | variables.rs:449:14:456:1 | BlockExpr |  |
-| variables.rs:455:5:455:26 | ExprStmt | variables.rs:455:5:455:13 | PathExpr |  |
-| variables.rs:455:15:455:15 | a | variables.rs:455:15:455:24 | MethodCallExpr |  |
-| variables.rs:455:15:455:24 | MethodCallExpr | variables.rs:455:5:455:25 | CallExpr |  |
-| variables.rs:458:1:460:1 | enter ref_param | variables.rs:458:14:458:14 | x |  |
-| variables.rs:458:1:460:1 | exit ref_param (normal) | variables.rs:458:1:460:1 | exit ref_param |  |
-| variables.rs:458:14:458:14 | x | variables.rs:458:14:458:20 | Param | match |
-| variables.rs:458:14:458:20 | Param | variables.rs:459:5:459:13 | PathExpr |  |
-| variables.rs:458:23:460:1 | BlockExpr | variables.rs:458:1:460:1 | exit ref_param (normal) |  |
-| variables.rs:459:5:459:13 | PathExpr | variables.rs:459:16:459:16 | x |  |
-| variables.rs:459:5:459:17 | CallExpr | variables.rs:458:23:460:1 | BlockExpr |  |
-| variables.rs:459:15:459:16 | * ... | variables.rs:459:5:459:17 | CallExpr |  |
-| variables.rs:459:16:459:16 | x | variables.rs:459:15:459:16 | * ... |  |
-| variables.rs:462:1:469:1 | enter ref_arg | variables.rs:463:5:463:15 | LetStmt |  |
-| variables.rs:462:1:469:1 | exit ref_arg (normal) | variables.rs:462:1:469:1 | exit ref_arg |  |
-| variables.rs:462:14:469:1 | BlockExpr | variables.rs:462:1:469:1 | exit ref_arg (normal) |  |
-| variables.rs:463:5:463:15 | LetStmt | variables.rs:463:13:463:14 | 16 |  |
-| variables.rs:463:9:463:9 | x | variables.rs:464:5:464:18 | ExprStmt | match |
-| variables.rs:463:13:463:14 | 16 | variables.rs:463:9:463:9 | x |  |
-| variables.rs:464:5:464:13 | PathExpr | variables.rs:464:16:464:16 | x |  |
-| variables.rs:464:5:464:17 | CallExpr | variables.rs:465:5:465:17 | ExprStmt |  |
-| variables.rs:464:5:464:18 | ExprStmt | variables.rs:464:5:464:13 | PathExpr |  |
-| variables.rs:464:15:464:16 | RefExpr | variables.rs:464:5:464:17 | CallExpr |  |
-| variables.rs:464:16:464:16 | x | variables.rs:464:15:464:16 | RefExpr |  |
-| variables.rs:465:5:465:13 | PathExpr | variables.rs:465:15:465:15 | x |  |
-| variables.rs:465:5:465:16 | CallExpr | variables.rs:467:5:467:15 | LetStmt |  |
-| variables.rs:465:5:465:17 | ExprStmt | variables.rs:465:5:465:13 | PathExpr |  |
-| variables.rs:465:15:465:15 | x | variables.rs:465:5:465:16 | CallExpr |  |
-| variables.rs:467:5:467:15 | LetStmt | variables.rs:467:13:467:14 | 17 |  |
-| variables.rs:467:9:467:9 | z | variables.rs:468:5:468:18 | ExprStmt | match |
-| variables.rs:467:13:467:14 | 17 | variables.rs:467:9:467:9 | z |  |
-| variables.rs:468:5:468:13 | PathExpr | variables.rs:468:16:468:16 | z |  |
-| variables.rs:468:5:468:17 | CallExpr | variables.rs:462:14:469:1 | BlockExpr |  |
-| variables.rs:468:5:468:18 | ExprStmt | variables.rs:468:5:468:13 | PathExpr |  |
-| variables.rs:468:15:468:16 | RefExpr | variables.rs:468:5:468:17 | CallExpr |  |
-| variables.rs:468:16:468:16 | z | variables.rs:468:15:468:16 | RefExpr |  |
-| variables.rs:476:3:478:3 | enter bar | variables.rs:477:5:477:32 | ExprStmt |  |
-| variables.rs:476:3:478:3 | exit bar (normal) | variables.rs:476:3:478:3 | exit bar |  |
-| variables.rs:476:21:478:3 | BlockExpr | variables.rs:476:3:478:3 | exit bar (normal) |  |
-| variables.rs:477:5:477:9 | * ... | variables.rs:477:29:477:29 | 3 |  |
-| variables.rs:477:5:477:31 | ... = ... | variables.rs:476:21:478:3 | BlockExpr |  |
-| variables.rs:477:5:477:32 | ExprStmt | variables.rs:477:6:477:9 | PathExpr |  |
-| variables.rs:477:6:477:9 | PathExpr | variables.rs:477:5:477:9 | * ... |  |
-| variables.rs:477:13:477:31 | RecordExpr | variables.rs:477:5:477:31 | ... = ... |  |
-| variables.rs:477:29:477:29 | 3 | variables.rs:477:13:477:31 | RecordExpr |  |
-| variables.rs:481:1:486:1 | enter ref_methodcall_receiver | variables.rs:482:3:482:34 | LetStmt |  |
-| variables.rs:481:1:486:1 | exit ref_methodcall_receiver (normal) | variables.rs:481:1:486:1 | exit ref_methodcall_receiver |  |
-| variables.rs:481:30:486:1 | BlockExpr | variables.rs:481:1:486:1 | exit ref_methodcall_receiver (normal) |  |
-| variables.rs:482:3:482:34 | LetStmt | variables.rs:482:31:482:31 | 1 |  |
-| variables.rs:482:7:482:11 | a | variables.rs:483:3:483:10 | ExprStmt | match |
-| variables.rs:482:15:482:33 | RecordExpr | variables.rs:482:7:482:11 | a |  |
-| variables.rs:482:31:482:31 | 1 | variables.rs:482:15:482:33 | RecordExpr |  |
-| variables.rs:483:3:483:3 | a | variables.rs:483:3:483:9 | MethodCallExpr |  |
-| variables.rs:483:3:483:9 | MethodCallExpr | variables.rs:485:3:485:19 | ExprStmt |  |
-| variables.rs:483:3:483:10 | ExprStmt | variables.rs:483:3:483:3 | a |  |
-| variables.rs:485:3:485:11 | PathExpr | variables.rs:485:13:485:13 | a |  |
-| variables.rs:485:3:485:18 | CallExpr | variables.rs:481:30:486:1 | BlockExpr |  |
-| variables.rs:485:3:485:19 | ExprStmt | variables.rs:485:3:485:11 | PathExpr |  |
-| variables.rs:485:13:485:13 | a | variables.rs:485:13:485:17 | FieldExpr |  |
-| variables.rs:485:13:485:17 | FieldExpr | variables.rs:485:3:485:18 | CallExpr |  |
-| variables.rs:488:1:520:1 | enter main | variables.rs:489:5:489:25 | ExprStmt |  |
-| variables.rs:488:1:520:1 | exit main (normal) | variables.rs:488:1:520:1 | exit main |  |
-| variables.rs:488:11:520:1 | BlockExpr | variables.rs:488:1:520:1 | exit main (normal) |  |
-| variables.rs:489:5:489:22 | PathExpr | variables.rs:489:5:489:24 | CallExpr |  |
-| variables.rs:489:5:489:24 | CallExpr | variables.rs:490:5:490:23 | ExprStmt |  |
-| variables.rs:489:5:489:25 | ExprStmt | variables.rs:489:5:489:22 | PathExpr |  |
-| variables.rs:490:5:490:20 | PathExpr | variables.rs:490:5:490:22 | CallExpr |  |
-| variables.rs:490:5:490:22 | CallExpr | variables.rs:491:5:491:23 | ExprStmt |  |
-| variables.rs:490:5:490:23 | ExprStmt | variables.rs:490:5:490:20 | PathExpr |  |
-| variables.rs:491:5:491:20 | PathExpr | variables.rs:491:5:491:22 | CallExpr |  |
-| variables.rs:491:5:491:22 | CallExpr | variables.rs:492:5:492:23 | ExprStmt |  |
-| variables.rs:491:5:491:23 | ExprStmt | variables.rs:491:5:491:20 | PathExpr |  |
-| variables.rs:492:5:492:20 | PathExpr | variables.rs:492:5:492:22 | CallExpr |  |
-| variables.rs:492:5:492:22 | CallExpr | variables.rs:493:5:493:19 | ExprStmt |  |
-| variables.rs:492:5:492:23 | ExprStmt | variables.rs:492:5:492:20 | PathExpr |  |
-| variables.rs:493:5:493:16 | PathExpr | variables.rs:493:5:493:18 | CallExpr |  |
-| variables.rs:493:5:493:18 | CallExpr | variables.rs:494:5:494:19 | ExprStmt |  |
-| variables.rs:493:5:493:19 | ExprStmt | variables.rs:493:5:493:16 | PathExpr |  |
-| variables.rs:494:5:494:16 | PathExpr | variables.rs:494:5:494:18 | CallExpr |  |
-| variables.rs:494:5:494:18 | CallExpr | variables.rs:495:5:495:19 | ExprStmt |  |
-| variables.rs:494:5:494:19 | ExprStmt | variables.rs:494:5:494:16 | PathExpr |  |
-| variables.rs:495:5:495:16 | PathExpr | variables.rs:495:5:495:18 | CallExpr |  |
-| variables.rs:495:5:495:18 | CallExpr | variables.rs:496:5:496:19 | ExprStmt |  |
-| variables.rs:495:5:495:19 | ExprStmt | variables.rs:495:5:495:16 | PathExpr |  |
-| variables.rs:496:5:496:16 | PathExpr | variables.rs:496:5:496:18 | CallExpr |  |
-| variables.rs:496:5:496:18 | CallExpr | variables.rs:497:5:497:21 | ExprStmt |  |
-| variables.rs:496:5:496:19 | ExprStmt | variables.rs:496:5:496:16 | PathExpr |  |
-| variables.rs:497:5:497:18 | PathExpr | variables.rs:497:5:497:20 | CallExpr |  |
-| variables.rs:497:5:497:20 | CallExpr | variables.rs:498:5:498:21 | ExprStmt |  |
-| variables.rs:497:5:497:21 | ExprStmt | variables.rs:497:5:497:18 | PathExpr |  |
-| variables.rs:498:5:498:18 | PathExpr | variables.rs:498:5:498:20 | CallExpr |  |
-| variables.rs:498:5:498:20 | CallExpr | variables.rs:499:5:499:21 | ExprStmt |  |
-| variables.rs:498:5:498:21 | ExprStmt | variables.rs:498:5:498:18 | PathExpr |  |
-| variables.rs:499:5:499:18 | PathExpr | variables.rs:499:5:499:20 | CallExpr |  |
-| variables.rs:499:5:499:20 | CallExpr | variables.rs:500:5:500:21 | ExprStmt |  |
-| variables.rs:499:5:499:21 | ExprStmt | variables.rs:499:5:499:18 | PathExpr |  |
-| variables.rs:500:5:500:18 | PathExpr | variables.rs:500:5:500:20 | CallExpr |  |
-| variables.rs:500:5:500:20 | CallExpr | variables.rs:501:5:501:21 | ExprStmt |  |
-| variables.rs:500:5:500:21 | ExprStmt | variables.rs:500:5:500:18 | PathExpr |  |
-| variables.rs:501:5:501:18 | PathExpr | variables.rs:501:5:501:20 | CallExpr |  |
-| variables.rs:501:5:501:20 | CallExpr | variables.rs:502:5:502:21 | ExprStmt |  |
-| variables.rs:501:5:501:21 | ExprStmt | variables.rs:501:5:501:18 | PathExpr |  |
-| variables.rs:502:5:502:18 | PathExpr | variables.rs:502:5:502:20 | CallExpr |  |
-| variables.rs:502:5:502:20 | CallExpr | variables.rs:503:5:503:21 | ExprStmt |  |
-| variables.rs:502:5:502:21 | ExprStmt | variables.rs:502:5:502:18 | PathExpr |  |
-| variables.rs:503:5:503:18 | PathExpr | variables.rs:503:5:503:20 | CallExpr |  |
-| variables.rs:503:5:503:20 | CallExpr | variables.rs:504:5:504:21 | ExprStmt |  |
-| variables.rs:503:5:503:21 | ExprStmt | variables.rs:503:5:503:18 | PathExpr |  |
-| variables.rs:504:5:504:18 | PathExpr | variables.rs:504:5:504:20 | CallExpr |  |
-| variables.rs:504:5:504:20 | CallExpr | variables.rs:505:5:505:21 | ExprStmt |  |
-| variables.rs:504:5:504:21 | ExprStmt | variables.rs:504:5:504:18 | PathExpr |  |
-| variables.rs:505:5:505:18 | PathExpr | variables.rs:505:5:505:20 | CallExpr |  |
-| variables.rs:505:5:505:20 | CallExpr | variables.rs:506:5:506:36 | ExprStmt |  |
-| variables.rs:505:5:505:21 | ExprStmt | variables.rs:505:5:505:18 | PathExpr |  |
-| variables.rs:506:5:506:18 | PathExpr | variables.rs:506:20:506:22 | "a" |  |
-| variables.rs:506:5:506:35 | CallExpr | variables.rs:507:5:507:37 | ExprStmt |  |
-| variables.rs:506:5:506:36 | ExprStmt | variables.rs:506:5:506:18 | PathExpr |  |
-| variables.rs:506:20:506:22 | "a" | variables.rs:506:26:506:28 | "b" |  |
-| variables.rs:506:25:506:34 | TupleExpr | variables.rs:506:5:506:35 | CallExpr |  |
-| variables.rs:506:26:506:28 | "b" | variables.rs:506:31:506:33 | "c" |  |
-| variables.rs:506:31:506:33 | "c" | variables.rs:506:25:506:34 | TupleExpr |  |
-| variables.rs:507:5:507:18 | PathExpr | variables.rs:507:20:507:31 | PathExpr |  |
-| variables.rs:507:5:507:36 | CallExpr | variables.rs:508:5:508:26 | ExprStmt |  |
-| variables.rs:507:5:507:37 | ExprStmt | variables.rs:507:5:507:18 | PathExpr |  |
-| variables.rs:507:20:507:31 | PathExpr | variables.rs:507:33:507:34 | 45 |  |
-| variables.rs:507:20:507:35 | CallExpr | variables.rs:507:5:507:36 | CallExpr |  |
-| variables.rs:507:33:507:34 | 45 | variables.rs:507:20:507:35 | CallExpr |  |
-| variables.rs:508:5:508:23 | PathExpr | variables.rs:508:5:508:25 | CallExpr |  |
-| variables.rs:508:5:508:25 | CallExpr | variables.rs:509:5:509:23 | ExprStmt |  |
-| variables.rs:508:5:508:26 | ExprStmt | variables.rs:508:5:508:23 | PathExpr |  |
-| variables.rs:509:5:509:20 | PathExpr | variables.rs:509:5:509:22 | CallExpr |  |
-| variables.rs:509:5:509:22 | CallExpr | variables.rs:510:5:510:19 | ExprStmt |  |
-| variables.rs:509:5:509:23 | ExprStmt | variables.rs:509:5:509:20 | PathExpr |  |
-| variables.rs:510:5:510:16 | PathExpr | variables.rs:510:5:510:18 | CallExpr |  |
-| variables.rs:510:5:510:18 | CallExpr | variables.rs:511:5:511:17 | ExprStmt |  |
-| variables.rs:510:5:510:19 | ExprStmt | variables.rs:510:5:510:16 | PathExpr |  |
-| variables.rs:511:5:511:14 | PathExpr | variables.rs:511:5:511:16 | CallExpr |  |
-| variables.rs:511:5:511:16 | CallExpr | variables.rs:512:5:512:13 | ExprStmt |  |
-| variables.rs:511:5:511:17 | ExprStmt | variables.rs:511:5:511:14 | PathExpr |  |
-| variables.rs:512:5:512:10 | PathExpr | variables.rs:512:5:512:12 | CallExpr |  |
-| variables.rs:512:5:512:12 | CallExpr | variables.rs:513:5:513:17 | ExprStmt |  |
-| variables.rs:512:5:512:13 | ExprStmt | variables.rs:512:5:512:10 | PathExpr |  |
-| variables.rs:513:5:513:14 | PathExpr | variables.rs:513:5:513:16 | CallExpr |  |
-| variables.rs:513:5:513:16 | CallExpr | variables.rs:514:5:514:12 | ExprStmt |  |
-| variables.rs:513:5:513:17 | ExprStmt | variables.rs:513:5:513:14 | PathExpr |  |
-| variables.rs:514:5:514:9 | PathExpr | variables.rs:514:5:514:11 | CallExpr |  |
-| variables.rs:514:5:514:11 | CallExpr | variables.rs:515:5:515:18 | ExprStmt |  |
-| variables.rs:514:5:514:12 | ExprStmt | variables.rs:514:5:514:9 | PathExpr |  |
-| variables.rs:515:5:515:15 | PathExpr | variables.rs:515:5:515:17 | CallExpr |  |
-| variables.rs:515:5:515:17 | CallExpr | variables.rs:516:5:516:20 | ExprStmt |  |
-| variables.rs:515:5:515:18 | ExprStmt | variables.rs:515:5:515:15 | PathExpr |  |
-| variables.rs:516:5:516:17 | PathExpr | variables.rs:516:5:516:19 | CallExpr |  |
-| variables.rs:516:5:516:19 | CallExpr | variables.rs:517:5:517:14 | ExprStmt |  |
-| variables.rs:516:5:516:20 | ExprStmt | variables.rs:516:5:516:17 | PathExpr |  |
-| variables.rs:517:5:517:11 | PathExpr | variables.rs:517:5:517:13 | CallExpr |  |
-| variables.rs:517:5:517:13 | CallExpr | variables.rs:518:5:518:14 | ExprStmt |  |
-| variables.rs:517:5:517:14 | ExprStmt | variables.rs:517:5:517:11 | PathExpr |  |
-| variables.rs:518:5:518:11 | PathExpr | variables.rs:518:5:518:13 | CallExpr |  |
-| variables.rs:518:5:518:13 | CallExpr | variables.rs:519:5:519:30 | ExprStmt |  |
-| variables.rs:518:5:518:14 | ExprStmt | variables.rs:518:5:518:11 | PathExpr |  |
-| variables.rs:519:5:519:27 | PathExpr | variables.rs:519:5:519:29 | CallExpr |  |
-| variables.rs:519:5:519:29 | CallExpr | variables.rs:488:11:520:1 | BlockExpr |  |
-| variables.rs:519:5:519:30 | ExprStmt | variables.rs:519:5:519:27 | PathExpr |  |
+| variables.rs:415:5:415:12 | closure1 | variables.rs:415:5:415:14 | CallExpr |  |
+| variables.rs:415:5:415:14 | CallExpr | variables.rs:416:5:416:17 | ExprStmt |  |
+| variables.rs:415:5:415:15 | ExprStmt | variables.rs:415:5:415:12 | closure1 |  |
+| variables.rs:416:5:416:13 | PathExpr | variables.rs:416:15:416:15 | x |  |
+| variables.rs:416:5:416:16 | CallExpr | variables.rs:418:5:418:18 | LetStmt |  |
+| variables.rs:416:5:416:17 | ExprStmt | variables.rs:416:5:416:13 | PathExpr |  |
+| variables.rs:416:15:416:15 | x | variables.rs:416:5:416:16 | CallExpr |  |
+| variables.rs:418:5:418:18 | LetStmt | variables.rs:418:17:418:17 | 2 |  |
+| variables.rs:418:9:418:13 | y | variables.rs:420:5:422:6 | LetStmt | match |
+| variables.rs:418:17:418:17 | 2 | variables.rs:418:9:418:13 | y |  |
+| variables.rs:420:5:422:6 | LetStmt | variables.rs:420:24:422:5 | ClosureExpr |  |
+| variables.rs:420:9:420:20 | closure2 | variables.rs:423:5:423:15 | ExprStmt | match |
+| variables.rs:420:24:422:5 | ClosureExpr | variables.rs:420:9:420:20 | closure2 |  |
+| variables.rs:420:24:422:5 | enter ClosureExpr | variables.rs:421:9:421:14 | ExprStmt |  |
+| variables.rs:420:24:422:5 | exit ClosureExpr (normal) | variables.rs:420:24:422:5 | exit ClosureExpr |  |
+| variables.rs:420:27:422:5 | BlockExpr | variables.rs:420:24:422:5 | exit ClosureExpr (normal) |  |
+| variables.rs:421:9:421:9 | y | variables.rs:421:13:421:13 | 3 |  |
+| variables.rs:421:9:421:13 | ... = ... | variables.rs:420:27:422:5 | BlockExpr |  |
+| variables.rs:421:9:421:14 | ExprStmt | variables.rs:421:9:421:9 | y |  |
+| variables.rs:421:13:421:13 | 3 | variables.rs:421:9:421:13 | ... = ... |  |
+| variables.rs:423:5:423:12 | closure2 | variables.rs:423:5:423:14 | CallExpr |  |
+| variables.rs:423:5:423:14 | CallExpr | variables.rs:424:5:424:17 | ExprStmt |  |
+| variables.rs:423:5:423:15 | ExprStmt | variables.rs:423:5:423:12 | closure2 |  |
+| variables.rs:424:5:424:13 | PathExpr | variables.rs:424:15:424:15 | y |  |
+| variables.rs:424:5:424:16 | CallExpr | variables.rs:426:5:426:18 | LetStmt |  |
+| variables.rs:424:5:424:17 | ExprStmt | variables.rs:424:5:424:13 | PathExpr |  |
+| variables.rs:424:15:424:15 | y | variables.rs:424:5:424:16 | CallExpr |  |
+| variables.rs:426:5:426:18 | LetStmt | variables.rs:426:17:426:17 | 2 |  |
+| variables.rs:426:9:426:13 | z | variables.rs:428:5:430:6 | LetStmt | match |
+| variables.rs:426:17:426:17 | 2 | variables.rs:426:9:426:13 | z |  |
+| variables.rs:428:5:430:6 | LetStmt | variables.rs:428:24:430:5 | ClosureExpr |  |
+| variables.rs:428:9:428:20 | closure3 | variables.rs:431:5:431:15 | ExprStmt | match |
+| variables.rs:428:24:430:5 | ClosureExpr | variables.rs:428:9:428:20 | closure3 |  |
+| variables.rs:428:24:430:5 | enter ClosureExpr | variables.rs:429:9:429:24 | ExprStmt |  |
+| variables.rs:428:24:430:5 | exit ClosureExpr (normal) | variables.rs:428:24:430:5 | exit ClosureExpr |  |
+| variables.rs:428:27:430:5 | BlockExpr | variables.rs:428:24:430:5 | exit ClosureExpr (normal) |  |
+| variables.rs:429:9:429:9 | z | variables.rs:429:22:429:22 | 1 |  |
+| variables.rs:429:9:429:23 | MethodCallExpr | variables.rs:428:27:430:5 | BlockExpr |  |
+| variables.rs:429:9:429:24 | ExprStmt | variables.rs:429:9:429:9 | z |  |
+| variables.rs:429:22:429:22 | 1 | variables.rs:429:9:429:23 | MethodCallExpr |  |
+| variables.rs:431:5:431:12 | closure3 | variables.rs:431:5:431:14 | CallExpr |  |
+| variables.rs:431:5:431:14 | CallExpr | variables.rs:432:5:432:17 | ExprStmt |  |
+| variables.rs:431:5:431:15 | ExprStmt | variables.rs:431:5:431:12 | closure3 |  |
+| variables.rs:432:5:432:13 | PathExpr | variables.rs:432:15:432:15 | z |  |
+| variables.rs:432:5:432:16 | CallExpr | variables.rs:409:18:433:1 | BlockExpr |  |
+| variables.rs:432:5:432:17 | ExprStmt | variables.rs:432:5:432:13 | PathExpr |  |
+| variables.rs:432:15:432:15 | z | variables.rs:432:5:432:16 | CallExpr |  |
+| variables.rs:435:1:449:1 | enter phi | variables.rs:435:8:435:8 | b |  |
+| variables.rs:435:1:449:1 | exit phi (normal) | variables.rs:435:1:449:1 | exit phi |  |
+| variables.rs:435:8:435:8 | b | variables.rs:435:8:435:15 | Param | match |
+| variables.rs:435:8:435:15 | Param | variables.rs:436:5:436:18 | LetStmt |  |
+| variables.rs:435:18:449:1 | BlockExpr | variables.rs:435:1:449:1 | exit phi (normal) |  |
+| variables.rs:436:5:436:18 | LetStmt | variables.rs:436:17:436:17 | 1 |  |
+| variables.rs:436:9:436:13 | x | variables.rs:437:5:437:17 | ExprStmt | match |
+| variables.rs:436:17:436:17 | 1 | variables.rs:436:9:436:13 | x |  |
+| variables.rs:437:5:437:13 | PathExpr | variables.rs:437:15:437:15 | x |  |
+| variables.rs:437:5:437:16 | CallExpr | variables.rs:438:5:438:21 | ExprStmt |  |
+| variables.rs:437:5:437:17 | ExprStmt | variables.rs:437:5:437:13 | PathExpr |  |
+| variables.rs:437:15:437:15 | x | variables.rs:437:5:437:16 | CallExpr |  |
+| variables.rs:438:5:438:13 | PathExpr | variables.rs:438:15:438:15 | x |  |
+| variables.rs:438:5:438:20 | CallExpr | variables.rs:439:5:447:5 | ExprStmt |  |
+| variables.rs:438:5:438:21 | ExprStmt | variables.rs:438:5:438:13 | PathExpr |  |
+| variables.rs:438:15:438:15 | x | variables.rs:438:19:438:19 | 1 |  |
+| variables.rs:438:15:438:19 | ... + ... | variables.rs:438:5:438:20 | CallExpr |  |
+| variables.rs:438:19:438:19 | 1 | variables.rs:438:15:438:19 | ... + ... |  |
+| variables.rs:439:5:447:5 | ExprStmt | variables.rs:439:8:439:8 | b |  |
+| variables.rs:439:5:447:5 | IfExpr | variables.rs:448:5:448:17 | ExprStmt |  |
+| variables.rs:439:8:439:8 | b | variables.rs:440:9:440:14 | ExprStmt | true |
+| variables.rs:439:8:439:8 | b | variables.rs:444:9:444:14 | ExprStmt | false |
+| variables.rs:439:10:443:5 | BlockExpr | variables.rs:439:5:447:5 | IfExpr |  |
+| variables.rs:440:9:440:9 | x | variables.rs:440:13:440:13 | 2 |  |
+| variables.rs:440:9:440:13 | ... = ... | variables.rs:441:9:441:21 | ExprStmt |  |
+| variables.rs:440:9:440:14 | ExprStmt | variables.rs:440:9:440:9 | x |  |
+| variables.rs:440:13:440:13 | 2 | variables.rs:440:9:440:13 | ... = ... |  |
+| variables.rs:441:9:441:17 | PathExpr | variables.rs:441:19:441:19 | x |  |
+| variables.rs:441:9:441:20 | CallExpr | variables.rs:442:9:442:25 | ExprStmt |  |
+| variables.rs:441:9:441:21 | ExprStmt | variables.rs:441:9:441:17 | PathExpr |  |
+| variables.rs:441:19:441:19 | x | variables.rs:441:9:441:20 | CallExpr |  |
+| variables.rs:442:9:442:17 | PathExpr | variables.rs:442:19:442:19 | x |  |
+| variables.rs:442:9:442:24 | CallExpr | variables.rs:439:10:443:5 | BlockExpr |  |
+| variables.rs:442:9:442:25 | ExprStmt | variables.rs:442:9:442:17 | PathExpr |  |
+| variables.rs:442:19:442:19 | x | variables.rs:442:23:442:23 | 1 |  |
+| variables.rs:442:19:442:23 | ... + ... | variables.rs:442:9:442:24 | CallExpr |  |
+| variables.rs:442:23:442:23 | 1 | variables.rs:442:19:442:23 | ... + ... |  |
+| variables.rs:443:12:447:5 | BlockExpr | variables.rs:439:5:447:5 | IfExpr |  |
+| variables.rs:444:9:444:9 | x | variables.rs:444:13:444:13 | 3 |  |
+| variables.rs:444:9:444:13 | ... = ... | variables.rs:445:9:445:21 | ExprStmt |  |
+| variables.rs:444:9:444:14 | ExprStmt | variables.rs:444:9:444:9 | x |  |
+| variables.rs:444:13:444:13 | 3 | variables.rs:444:9:444:13 | ... = ... |  |
+| variables.rs:445:9:445:17 | PathExpr | variables.rs:445:19:445:19 | x |  |
+| variables.rs:445:9:445:20 | CallExpr | variables.rs:446:9:446:25 | ExprStmt |  |
+| variables.rs:445:9:445:21 | ExprStmt | variables.rs:445:9:445:17 | PathExpr |  |
+| variables.rs:445:19:445:19 | x | variables.rs:445:9:445:20 | CallExpr |  |
+| variables.rs:446:9:446:17 | PathExpr | variables.rs:446:19:446:19 | x |  |
+| variables.rs:446:9:446:24 | CallExpr | variables.rs:443:12:447:5 | BlockExpr |  |
+| variables.rs:446:9:446:25 | ExprStmt | variables.rs:446:9:446:17 | PathExpr |  |
+| variables.rs:446:19:446:19 | x | variables.rs:446:23:446:23 | 1 |  |
+| variables.rs:446:19:446:23 | ... + ... | variables.rs:446:9:446:24 | CallExpr |  |
+| variables.rs:446:23:446:23 | 1 | variables.rs:446:19:446:23 | ... + ... |  |
+| variables.rs:448:5:448:13 | PathExpr | variables.rs:448:15:448:15 | x |  |
+| variables.rs:448:5:448:16 | CallExpr | variables.rs:435:18:449:1 | BlockExpr |  |
+| variables.rs:448:5:448:17 | ExprStmt | variables.rs:448:5:448:13 | PathExpr |  |
+| variables.rs:448:15:448:15 | x | variables.rs:448:5:448:16 | CallExpr |  |
+| variables.rs:451:1:464:1 | enter phi_read | variables.rs:451:13:451:14 | b1 |  |
+| variables.rs:451:1:464:1 | exit phi_read (normal) | variables.rs:451:1:464:1 | exit phi_read |  |
+| variables.rs:451:13:451:14 | b1 | variables.rs:451:13:451:21 | Param | match |
+| variables.rs:451:13:451:21 | Param | variables.rs:451:24:451:25 | b2 |  |
+| variables.rs:451:24:451:25 | b2 | variables.rs:451:24:451:32 | Param | match |
+| variables.rs:451:24:451:32 | Param | variables.rs:452:5:452:14 | LetStmt |  |
+| variables.rs:451:35:464:1 | BlockExpr | variables.rs:451:1:464:1 | exit phi_read (normal) |  |
+| variables.rs:452:5:452:14 | LetStmt | variables.rs:452:13:452:13 | 1 |  |
+| variables.rs:452:9:452:9 | x | variables.rs:453:5:457:5 | ExprStmt | match |
+| variables.rs:452:13:452:13 | 1 | variables.rs:452:9:452:9 | x |  |
+| variables.rs:453:5:457:5 | ExprStmt | variables.rs:453:8:453:9 | b1 |  |
+| variables.rs:453:5:457:5 | IfExpr | variables.rs:459:8:459:9 | b2 |  |
+| variables.rs:453:8:453:9 | b1 | variables.rs:454:9:454:21 | ExprStmt | true |
+| variables.rs:453:8:453:9 | b1 | variables.rs:456:9:456:21 | ExprStmt | false |
+| variables.rs:453:11:455:5 | BlockExpr | variables.rs:453:5:457:5 | IfExpr |  |
+| variables.rs:454:9:454:17 | PathExpr | variables.rs:454:19:454:19 | x |  |
+| variables.rs:454:9:454:20 | CallExpr | variables.rs:453:11:455:5 | BlockExpr |  |
+| variables.rs:454:9:454:21 | ExprStmt | variables.rs:454:9:454:17 | PathExpr |  |
+| variables.rs:454:19:454:19 | x | variables.rs:454:9:454:20 | CallExpr |  |
+| variables.rs:455:12:457:5 | BlockExpr | variables.rs:453:5:457:5 | IfExpr |  |
+| variables.rs:456:9:456:17 | PathExpr | variables.rs:456:19:456:19 | x |  |
+| variables.rs:456:9:456:20 | CallExpr | variables.rs:455:12:457:5 | BlockExpr |  |
+| variables.rs:456:9:456:21 | ExprStmt | variables.rs:456:9:456:17 | PathExpr |  |
+| variables.rs:456:19:456:19 | x | variables.rs:456:9:456:20 | CallExpr |  |
+| variables.rs:459:5:463:5 | IfExpr | variables.rs:451:35:464:1 | BlockExpr |  |
+| variables.rs:459:8:459:9 | b2 | variables.rs:460:9:460:21 | ExprStmt | true |
+| variables.rs:459:8:459:9 | b2 | variables.rs:462:9:462:21 | ExprStmt | false |
+| variables.rs:459:11:461:5 | BlockExpr | variables.rs:459:5:463:5 | IfExpr |  |
+| variables.rs:460:9:460:17 | PathExpr | variables.rs:460:19:460:19 | x |  |
+| variables.rs:460:9:460:20 | CallExpr | variables.rs:459:11:461:5 | BlockExpr |  |
+| variables.rs:460:9:460:21 | ExprStmt | variables.rs:460:9:460:17 | PathExpr |  |
+| variables.rs:460:19:460:19 | x | variables.rs:460:9:460:20 | CallExpr |  |
+| variables.rs:461:12:463:5 | BlockExpr | variables.rs:459:5:463:5 | IfExpr |  |
+| variables.rs:462:9:462:17 | PathExpr | variables.rs:462:19:462:19 | x |  |
+| variables.rs:462:9:462:20 | CallExpr | variables.rs:461:12:463:5 | BlockExpr |  |
+| variables.rs:462:9:462:21 | ExprStmt | variables.rs:462:9:462:17 | PathExpr |  |
+| variables.rs:462:19:462:19 | x | variables.rs:462:9:462:20 | CallExpr |  |
+| variables.rs:472:5:474:5 | enter my_get | variables.rs:473:9:473:24 | ExprStmt |  |
+| variables.rs:472:5:474:5 | exit my_get (normal) | variables.rs:472:5:474:5 | exit my_get |  |
+| variables.rs:473:9:473:23 | ReturnExpr | variables.rs:472:5:474:5 | exit my_get (normal) | return |
+| variables.rs:473:9:473:24 | ExprStmt | variables.rs:473:16:473:19 | PathExpr |  |
+| variables.rs:473:16:473:19 | PathExpr | variables.rs:473:16:473:23 | FieldExpr |  |
+| variables.rs:473:16:473:23 | FieldExpr | variables.rs:473:9:473:23 | ReturnExpr |  |
+| variables.rs:477:1:484:1 | enter structs | variables.rs:478:5:478:36 | LetStmt |  |
+| variables.rs:477:1:484:1 | exit structs (normal) | variables.rs:477:1:484:1 | exit structs |  |
+| variables.rs:477:14:484:1 | BlockExpr | variables.rs:477:1:484:1 | exit structs (normal) |  |
+| variables.rs:478:5:478:36 | LetStmt | variables.rs:478:33:478:33 | 1 |  |
+| variables.rs:478:9:478:13 | a | variables.rs:479:5:479:26 | ExprStmt | match |
+| variables.rs:478:17:478:35 | RecordExpr | variables.rs:478:9:478:13 | a |  |
+| variables.rs:478:33:478:33 | 1 | variables.rs:478:17:478:35 | RecordExpr |  |
+| variables.rs:479:5:479:13 | PathExpr | variables.rs:479:15:479:15 | a |  |
+| variables.rs:479:5:479:25 | CallExpr | variables.rs:480:5:480:14 | ExprStmt |  |
+| variables.rs:479:5:479:26 | ExprStmt | variables.rs:479:5:479:13 | PathExpr |  |
+| variables.rs:479:15:479:15 | a | variables.rs:479:15:479:24 | MethodCallExpr |  |
+| variables.rs:479:15:479:24 | MethodCallExpr | variables.rs:479:5:479:25 | CallExpr |  |
+| variables.rs:480:5:480:5 | a | variables.rs:480:5:480:9 | FieldExpr |  |
+| variables.rs:480:5:480:9 | FieldExpr | variables.rs:480:13:480:13 | 5 |  |
+| variables.rs:480:5:480:13 | ... = ... | variables.rs:481:5:481:26 | ExprStmt |  |
+| variables.rs:480:5:480:14 | ExprStmt | variables.rs:480:5:480:5 | a |  |
+| variables.rs:480:13:480:13 | 5 | variables.rs:480:5:480:13 | ... = ... |  |
+| variables.rs:481:5:481:13 | PathExpr | variables.rs:481:15:481:15 | a |  |
+| variables.rs:481:5:481:25 | CallExpr | variables.rs:482:5:482:28 | ExprStmt |  |
+| variables.rs:481:5:481:26 | ExprStmt | variables.rs:481:5:481:13 | PathExpr |  |
+| variables.rs:481:15:481:15 | a | variables.rs:481:15:481:24 | MethodCallExpr |  |
+| variables.rs:481:15:481:24 | MethodCallExpr | variables.rs:481:5:481:25 | CallExpr |  |
+| variables.rs:482:5:482:5 | a | variables.rs:482:25:482:25 | 2 |  |
+| variables.rs:482:5:482:27 | ... = ... | variables.rs:483:5:483:26 | ExprStmt |  |
+| variables.rs:482:5:482:28 | ExprStmt | variables.rs:482:5:482:5 | a |  |
+| variables.rs:482:9:482:27 | RecordExpr | variables.rs:482:5:482:27 | ... = ... |  |
+| variables.rs:482:25:482:25 | 2 | variables.rs:482:9:482:27 | RecordExpr |  |
+| variables.rs:483:5:483:13 | PathExpr | variables.rs:483:15:483:15 | a |  |
+| variables.rs:483:5:483:25 | CallExpr | variables.rs:477:14:484:1 | BlockExpr |  |
+| variables.rs:483:5:483:26 | ExprStmt | variables.rs:483:5:483:13 | PathExpr |  |
+| variables.rs:483:15:483:15 | a | variables.rs:483:15:483:24 | MethodCallExpr |  |
+| variables.rs:483:15:483:24 | MethodCallExpr | variables.rs:483:5:483:25 | CallExpr |  |
+| variables.rs:486:1:493:1 | enter ref_arg | variables.rs:487:5:487:15 | LetStmt |  |
+| variables.rs:486:1:493:1 | exit ref_arg (normal) | variables.rs:486:1:493:1 | exit ref_arg |  |
+| variables.rs:486:14:493:1 | BlockExpr | variables.rs:486:1:493:1 | exit ref_arg (normal) |  |
+| variables.rs:487:5:487:15 | LetStmt | variables.rs:487:13:487:14 | 16 |  |
+| variables.rs:487:9:487:9 | x | variables.rs:488:5:488:22 | ExprStmt | match |
+| variables.rs:487:13:487:14 | 16 | variables.rs:487:9:487:9 | x |  |
+| variables.rs:488:5:488:17 | PathExpr | variables.rs:488:20:488:20 | x |  |
+| variables.rs:488:5:488:21 | CallExpr | variables.rs:489:5:489:17 | ExprStmt |  |
+| variables.rs:488:5:488:22 | ExprStmt | variables.rs:488:5:488:17 | PathExpr |  |
+| variables.rs:488:19:488:20 | RefExpr | variables.rs:488:5:488:21 | CallExpr |  |
+| variables.rs:488:20:488:20 | x | variables.rs:488:19:488:20 | RefExpr |  |
+| variables.rs:489:5:489:13 | PathExpr | variables.rs:489:15:489:15 | x |  |
+| variables.rs:489:5:489:16 | CallExpr | variables.rs:491:5:491:15 | LetStmt |  |
+| variables.rs:489:5:489:17 | ExprStmt | variables.rs:489:5:489:13 | PathExpr |  |
+| variables.rs:489:15:489:15 | x | variables.rs:489:5:489:16 | CallExpr |  |
+| variables.rs:491:5:491:15 | LetStmt | variables.rs:491:13:491:14 | 17 |  |
+| variables.rs:491:9:491:9 | z | variables.rs:492:5:492:22 | ExprStmt | match |
+| variables.rs:491:13:491:14 | 17 | variables.rs:491:9:491:9 | z |  |
+| variables.rs:492:5:492:17 | PathExpr | variables.rs:492:20:492:20 | z |  |
+| variables.rs:492:5:492:21 | CallExpr | variables.rs:486:14:493:1 | BlockExpr |  |
+| variables.rs:492:5:492:22 | ExprStmt | variables.rs:492:5:492:17 | PathExpr |  |
+| variables.rs:492:19:492:20 | RefExpr | variables.rs:492:5:492:21 | CallExpr |  |
+| variables.rs:492:20:492:20 | z | variables.rs:492:19:492:20 | RefExpr |  |
+| variables.rs:500:3:502:3 | enter bar | variables.rs:501:5:501:32 | ExprStmt |  |
+| variables.rs:500:3:502:3 | exit bar (normal) | variables.rs:500:3:502:3 | exit bar |  |
+| variables.rs:500:21:502:3 | BlockExpr | variables.rs:500:3:502:3 | exit bar (normal) |  |
+| variables.rs:501:5:501:9 | * ... | variables.rs:501:29:501:29 | 3 |  |
+| variables.rs:501:5:501:31 | ... = ... | variables.rs:500:21:502:3 | BlockExpr |  |
+| variables.rs:501:5:501:32 | ExprStmt | variables.rs:501:6:501:9 | PathExpr |  |
+| variables.rs:501:6:501:9 | PathExpr | variables.rs:501:5:501:9 | * ... |  |
+| variables.rs:501:13:501:31 | RecordExpr | variables.rs:501:5:501:31 | ... = ... |  |
+| variables.rs:501:29:501:29 | 3 | variables.rs:501:13:501:31 | RecordExpr |  |
+| variables.rs:505:1:510:1 | enter ref_methodcall_receiver | variables.rs:506:3:506:34 | LetStmt |  |
+| variables.rs:505:1:510:1 | exit ref_methodcall_receiver (normal) | variables.rs:505:1:510:1 | exit ref_methodcall_receiver |  |
+| variables.rs:505:30:510:1 | BlockExpr | variables.rs:505:1:510:1 | exit ref_methodcall_receiver (normal) |  |
+| variables.rs:506:3:506:34 | LetStmt | variables.rs:506:31:506:31 | 1 |  |
+| variables.rs:506:7:506:11 | a | variables.rs:507:3:507:10 | ExprStmt | match |
+| variables.rs:506:15:506:33 | RecordExpr | variables.rs:506:7:506:11 | a |  |
+| variables.rs:506:31:506:31 | 1 | variables.rs:506:15:506:33 | RecordExpr |  |
+| variables.rs:507:3:507:3 | a | variables.rs:507:3:507:9 | MethodCallExpr |  |
+| variables.rs:507:3:507:9 | MethodCallExpr | variables.rs:509:3:509:19 | ExprStmt |  |
+| variables.rs:507:3:507:10 | ExprStmt | variables.rs:507:3:507:3 | a |  |
+| variables.rs:509:3:509:11 | PathExpr | variables.rs:509:13:509:13 | a |  |
+| variables.rs:509:3:509:18 | CallExpr | variables.rs:505:30:510:1 | BlockExpr |  |
+| variables.rs:509:3:509:19 | ExprStmt | variables.rs:509:3:509:11 | PathExpr |  |
+| variables.rs:509:13:509:13 | a | variables.rs:509:13:509:17 | FieldExpr |  |
+| variables.rs:509:13:509:17 | FieldExpr | variables.rs:509:3:509:18 | CallExpr |  |
+| variables.rs:512:1:545:1 | enter main | variables.rs:513:5:513:25 | ExprStmt |  |
+| variables.rs:512:1:545:1 | exit main (normal) | variables.rs:512:1:545:1 | exit main |  |
+| variables.rs:512:11:545:1 | BlockExpr | variables.rs:512:1:545:1 | exit main (normal) |  |
+| variables.rs:513:5:513:22 | PathExpr | variables.rs:513:5:513:24 | CallExpr |  |
+| variables.rs:513:5:513:24 | CallExpr | variables.rs:514:5:514:23 | ExprStmt |  |
+| variables.rs:513:5:513:25 | ExprStmt | variables.rs:513:5:513:22 | PathExpr |  |
+| variables.rs:514:5:514:20 | PathExpr | variables.rs:514:5:514:22 | CallExpr |  |
+| variables.rs:514:5:514:22 | CallExpr | variables.rs:515:5:515:40 | ExprStmt |  |
+| variables.rs:514:5:514:23 | ExprStmt | variables.rs:514:5:514:20 | PathExpr |  |
+| variables.rs:515:5:515:37 | PathExpr | variables.rs:515:5:515:39 | CallExpr |  |
+| variables.rs:515:5:515:39 | CallExpr | variables.rs:516:5:516:23 | ExprStmt |  |
+| variables.rs:515:5:515:40 | ExprStmt | variables.rs:515:5:515:37 | PathExpr |  |
+| variables.rs:516:5:516:20 | PathExpr | variables.rs:516:5:516:22 | CallExpr |  |
+| variables.rs:516:5:516:22 | CallExpr | variables.rs:517:5:517:23 | ExprStmt |  |
+| variables.rs:516:5:516:23 | ExprStmt | variables.rs:516:5:516:20 | PathExpr |  |
+| variables.rs:517:5:517:20 | PathExpr | variables.rs:517:5:517:22 | CallExpr |  |
+| variables.rs:517:5:517:22 | CallExpr | variables.rs:518:5:518:19 | ExprStmt |  |
+| variables.rs:517:5:517:23 | ExprStmt | variables.rs:517:5:517:20 | PathExpr |  |
+| variables.rs:518:5:518:16 | PathExpr | variables.rs:518:5:518:18 | CallExpr |  |
+| variables.rs:518:5:518:18 | CallExpr | variables.rs:519:5:519:19 | ExprStmt |  |
+| variables.rs:518:5:518:19 | ExprStmt | variables.rs:518:5:518:16 | PathExpr |  |
+| variables.rs:519:5:519:16 | PathExpr | variables.rs:519:5:519:18 | CallExpr |  |
+| variables.rs:519:5:519:18 | CallExpr | variables.rs:520:5:520:19 | ExprStmt |  |
+| variables.rs:519:5:519:19 | ExprStmt | variables.rs:519:5:519:16 | PathExpr |  |
+| variables.rs:520:5:520:16 | PathExpr | variables.rs:520:5:520:18 | CallExpr |  |
+| variables.rs:520:5:520:18 | CallExpr | variables.rs:521:5:521:19 | ExprStmt |  |
+| variables.rs:520:5:520:19 | ExprStmt | variables.rs:520:5:520:16 | PathExpr |  |
+| variables.rs:521:5:521:16 | PathExpr | variables.rs:521:5:521:18 | CallExpr |  |
+| variables.rs:521:5:521:18 | CallExpr | variables.rs:522:5:522:21 | ExprStmt |  |
+| variables.rs:521:5:521:19 | ExprStmt | variables.rs:521:5:521:16 | PathExpr |  |
+| variables.rs:522:5:522:18 | PathExpr | variables.rs:522:5:522:20 | CallExpr |  |
+| variables.rs:522:5:522:20 | CallExpr | variables.rs:523:5:523:21 | ExprStmt |  |
+| variables.rs:522:5:522:21 | ExprStmt | variables.rs:522:5:522:18 | PathExpr |  |
+| variables.rs:523:5:523:18 | PathExpr | variables.rs:523:5:523:20 | CallExpr |  |
+| variables.rs:523:5:523:20 | CallExpr | variables.rs:524:5:524:21 | ExprStmt |  |
+| variables.rs:523:5:523:21 | ExprStmt | variables.rs:523:5:523:18 | PathExpr |  |
+| variables.rs:524:5:524:18 | PathExpr | variables.rs:524:5:524:20 | CallExpr |  |
+| variables.rs:524:5:524:20 | CallExpr | variables.rs:525:5:525:21 | ExprStmt |  |
+| variables.rs:524:5:524:21 | ExprStmt | variables.rs:524:5:524:18 | PathExpr |  |
+| variables.rs:525:5:525:18 | PathExpr | variables.rs:525:5:525:20 | CallExpr |  |
+| variables.rs:525:5:525:20 | CallExpr | variables.rs:526:5:526:21 | ExprStmt |  |
+| variables.rs:525:5:525:21 | ExprStmt | variables.rs:525:5:525:18 | PathExpr |  |
+| variables.rs:526:5:526:18 | PathExpr | variables.rs:526:5:526:20 | CallExpr |  |
+| variables.rs:526:5:526:20 | CallExpr | variables.rs:527:5:527:21 | ExprStmt |  |
+| variables.rs:526:5:526:21 | ExprStmt | variables.rs:526:5:526:18 | PathExpr |  |
+| variables.rs:527:5:527:18 | PathExpr | variables.rs:527:5:527:20 | CallExpr |  |
+| variables.rs:527:5:527:20 | CallExpr | variables.rs:528:5:528:21 | ExprStmt |  |
+| variables.rs:527:5:527:21 | ExprStmt | variables.rs:527:5:527:18 | PathExpr |  |
+| variables.rs:528:5:528:18 | PathExpr | variables.rs:528:5:528:20 | CallExpr |  |
+| variables.rs:528:5:528:20 | CallExpr | variables.rs:529:5:529:21 | ExprStmt |  |
+| variables.rs:528:5:528:21 | ExprStmt | variables.rs:528:5:528:18 | PathExpr |  |
+| variables.rs:529:5:529:18 | PathExpr | variables.rs:529:5:529:20 | CallExpr |  |
+| variables.rs:529:5:529:20 | CallExpr | variables.rs:530:5:530:21 | ExprStmt |  |
+| variables.rs:529:5:529:21 | ExprStmt | variables.rs:529:5:529:18 | PathExpr |  |
+| variables.rs:530:5:530:18 | PathExpr | variables.rs:530:5:530:20 | CallExpr |  |
+| variables.rs:530:5:530:20 | CallExpr | variables.rs:531:5:531:36 | ExprStmt |  |
+| variables.rs:530:5:530:21 | ExprStmt | variables.rs:530:5:530:18 | PathExpr |  |
+| variables.rs:531:5:531:18 | PathExpr | variables.rs:531:20:531:22 | "a" |  |
+| variables.rs:531:5:531:35 | CallExpr | variables.rs:532:5:532:37 | ExprStmt |  |
+| variables.rs:531:5:531:36 | ExprStmt | variables.rs:531:5:531:18 | PathExpr |  |
+| variables.rs:531:20:531:22 | "a" | variables.rs:531:26:531:28 | "b" |  |
+| variables.rs:531:25:531:34 | TupleExpr | variables.rs:531:5:531:35 | CallExpr |  |
+| variables.rs:531:26:531:28 | "b" | variables.rs:531:31:531:33 | "c" |  |
+| variables.rs:531:31:531:33 | "c" | variables.rs:531:25:531:34 | TupleExpr |  |
+| variables.rs:532:5:532:18 | PathExpr | variables.rs:532:20:532:31 | PathExpr |  |
+| variables.rs:532:5:532:36 | CallExpr | variables.rs:533:5:533:26 | ExprStmt |  |
+| variables.rs:532:5:532:37 | ExprStmt | variables.rs:532:5:532:18 | PathExpr |  |
+| variables.rs:532:20:532:31 | PathExpr | variables.rs:532:33:532:34 | 45 |  |
+| variables.rs:532:20:532:35 | CallExpr | variables.rs:532:5:532:36 | CallExpr |  |
+| variables.rs:532:33:532:34 | 45 | variables.rs:532:20:532:35 | CallExpr |  |
+| variables.rs:533:5:533:23 | PathExpr | variables.rs:533:5:533:25 | CallExpr |  |
+| variables.rs:533:5:533:25 | CallExpr | variables.rs:534:5:534:23 | ExprStmt |  |
+| variables.rs:533:5:533:26 | ExprStmt | variables.rs:533:5:533:23 | PathExpr |  |
+| variables.rs:534:5:534:20 | PathExpr | variables.rs:534:5:534:22 | CallExpr |  |
+| variables.rs:534:5:534:22 | CallExpr | variables.rs:535:5:535:19 | ExprStmt |  |
+| variables.rs:534:5:534:23 | ExprStmt | variables.rs:534:5:534:20 | PathExpr |  |
+| variables.rs:535:5:535:16 | PathExpr | variables.rs:535:5:535:18 | CallExpr |  |
+| variables.rs:535:5:535:18 | CallExpr | variables.rs:536:5:536:17 | ExprStmt |  |
+| variables.rs:535:5:535:19 | ExprStmt | variables.rs:535:5:535:16 | PathExpr |  |
+| variables.rs:536:5:536:14 | PathExpr | variables.rs:536:5:536:16 | CallExpr |  |
+| variables.rs:536:5:536:16 | CallExpr | variables.rs:537:5:537:13 | ExprStmt |  |
+| variables.rs:536:5:536:17 | ExprStmt | variables.rs:536:5:536:14 | PathExpr |  |
+| variables.rs:537:5:537:10 | PathExpr | variables.rs:537:5:537:12 | CallExpr |  |
+| variables.rs:537:5:537:12 | CallExpr | variables.rs:538:5:538:17 | ExprStmt |  |
+| variables.rs:537:5:537:13 | ExprStmt | variables.rs:537:5:537:10 | PathExpr |  |
+| variables.rs:538:5:538:14 | PathExpr | variables.rs:538:5:538:16 | CallExpr |  |
+| variables.rs:538:5:538:16 | CallExpr | variables.rs:539:5:539:12 | ExprStmt |  |
+| variables.rs:538:5:538:17 | ExprStmt | variables.rs:538:5:538:14 | PathExpr |  |
+| variables.rs:539:5:539:9 | PathExpr | variables.rs:539:5:539:11 | CallExpr |  |
+| variables.rs:539:5:539:11 | CallExpr | variables.rs:540:5:540:18 | ExprStmt |  |
+| variables.rs:539:5:539:12 | ExprStmt | variables.rs:539:5:539:9 | PathExpr |  |
+| variables.rs:540:5:540:15 | PathExpr | variables.rs:540:5:540:17 | CallExpr |  |
+| variables.rs:540:5:540:17 | CallExpr | variables.rs:541:5:541:20 | ExprStmt |  |
+| variables.rs:540:5:540:18 | ExprStmt | variables.rs:540:5:540:15 | PathExpr |  |
+| variables.rs:541:5:541:17 | PathExpr | variables.rs:541:5:541:19 | CallExpr |  |
+| variables.rs:541:5:541:19 | CallExpr | variables.rs:542:5:542:14 | ExprStmt |  |
+| variables.rs:541:5:541:20 | ExprStmt | variables.rs:541:5:541:17 | PathExpr |  |
+| variables.rs:542:5:542:11 | PathExpr | variables.rs:542:5:542:13 | CallExpr |  |
+| variables.rs:542:5:542:13 | CallExpr | variables.rs:543:5:543:14 | ExprStmt |  |
+| variables.rs:542:5:542:14 | ExprStmt | variables.rs:542:5:542:11 | PathExpr |  |
+| variables.rs:543:5:543:11 | PathExpr | variables.rs:543:5:543:13 | CallExpr |  |
+| variables.rs:543:5:543:13 | CallExpr | variables.rs:544:5:544:30 | ExprStmt |  |
+| variables.rs:543:5:543:14 | ExprStmt | variables.rs:543:5:543:11 | PathExpr |  |
+| variables.rs:544:5:544:27 | PathExpr | variables.rs:544:5:544:29 | CallExpr |  |
+| variables.rs:544:5:544:29 | CallExpr | variables.rs:512:11:545:1 | BlockExpr |  |
+| variables.rs:544:5:544:30 | ExprStmt | variables.rs:544:5:544:27 | PathExpr |  |
 breakTarget
 continueTarget

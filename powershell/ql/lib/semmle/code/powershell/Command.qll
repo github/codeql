@@ -1,11 +1,51 @@
 import powershell
 
+private predicate parseCommandName(Cmd cmd, string namespace, string name) {
+  exists(string qualified | command(cmd, qualified, _, _, _) |
+    namespace = qualified.regexpCapture("([^\\\\]+)\\\\([^\\\\]+)", 1) and
+    name = qualified.regexpCapture("([^\\\\]+)\\\\([^\\\\]+)", 2)
+    or
+    // Not a qualified name
+    not exists(qualified.indexOf("\\")) and
+    namespace = "" and
+    name = qualified
+  )
+}
+
+/** A call to a command. */
 class Cmd extends @command, CmdBase {
-  override string toString() { result = this.getCommandName() }
+  override string toString() {
+    exists(string name | name = this.getQualifiedCommandName() |
+      if name = "" then result = "call" else result = "call to " + name
+    )
+    or
+    not exists(this.getQualifiedCommandName()) and
+    result = "call"
+  }
 
   override SourceLocation getLocation() { command_location(this, result) }
 
-  string getCommandName() { command(this, result, _, _, _) }
+  /** Gets the name of the command without any qualifiers. */
+  string getCommandName() { parseCommandName(this, _, result) }
+
+  /** Holds if the command is qualified. */
+  predicate isQualified() { parseCommandName(this, any(string s | s != ""), _) }
+
+  /** Gets the namespace qualifier of this command, if any. */
+  string getNamespaceQualifier() {
+    result != "" and
+    parseCommandName(this, result, _)
+    or
+    // Implicit import because it's in a module manifest
+    parseCommandName(this, "", _) and
+    exists(ModuleManifest manifest |
+      manifest.getACmdLetToExport() = this.getCommandName() and
+      result = manifest.getModuleName()
+    )
+  }
+
+  /** Gets the (possibly qualified) name of this command. */
+  string getQualifiedCommandName() { command(this, result, _, _, _) }
 
   int getKind() { command(this, _, result, _, _) }
 
@@ -15,8 +55,10 @@ class Cmd extends @command, CmdBase {
 
   CmdElement getElement(int i) { command_command_element(this, i, result) }
 
+  /** Gets the expression that determines the command to invoke. */
   Expr getCommand() { result = this.getElement(0) }
 
+  /** Gets the name of this command, if this is statically known. */
   StringConstExpr getCmdName() { result = this.getElement(0) }
 
   /** Gets any argument to this command. */
@@ -64,4 +106,9 @@ class Cmd extends @command, CmdBase {
   Redirection getRedirection(int i) { command_redirection(this, i, result) }
 
   Redirection getARedirection() { result = this.getRedirection(_) }
+}
+
+/** A call to operator `&`. */
+class CallOperator extends Cmd {
+  CallOperator() { this.getKind() = 28 }
 }

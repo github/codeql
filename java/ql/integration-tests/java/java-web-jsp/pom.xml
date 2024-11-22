@@ -54,30 +54,6 @@
             <type>pom</type>
         </dependency>
 
-
-        <!-- Spring Web MVC (Include Tag Lib) -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
-            <type>jar</type>
-        </dependency>
-
-
-        <!-- OWASP Java Encoder -->
-
-        <dependency>
-            <groupId>org.owasp.encoder</groupId>
-            <artifactId>encoder</artifactId>
-            <version>1.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.owasp.encoder</groupId>
-            <artifactId>encoder-jsp</artifactId>
-            <version>1.2</version>
-        </dependency>
-
     </dependencies>
 
     <profiles>

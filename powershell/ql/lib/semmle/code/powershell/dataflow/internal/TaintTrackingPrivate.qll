@@ -34,9 +34,16 @@ private module Cached {
   cached
   predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
     (
+      // Flow from an operand to an operation
       exists(CfgNodes::ExprNodes::OperationCfgNode op |
         op = nodeTo.asExpr() and
         op.getAnOperand() = nodeFrom.asExpr()
+      )
+      or
+      // Flow through string interpolation
+      exists(CfgNodes::ExprNodes::ExpandableStringCfgNode es |
+        nodeFrom.asExpr() = es.getAnExpr() and
+        nodeTo.asExpr() = es
       )
       or
       // Although flow through collections is modeled precisely using stores/reads, we still
@@ -65,3 +72,15 @@ private module Cached {
 }
 
 import Cached
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.code.powershell.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+  private import semmle.code.powershell.dataflow.internal.DataFlowPublic as DataFlowPublic
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) { none() }
+}

@@ -73,7 +73,7 @@ predicate isRegexpMethodCall(DataFlow::MethodCallNode c) {
   exists(NamedType regexp, Type recvtp |
     regexp.getName() = "Regexp" and recvtp = c.getReceiver().getType()
   |
-    recvtp = regexp or recvtp.(PointerType).getBaseType() = regexp
+    lookThroughPointerType(recvtp) = regexp
   )
 }
 

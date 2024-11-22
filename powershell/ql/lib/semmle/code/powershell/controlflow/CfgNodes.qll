@@ -159,6 +159,8 @@ abstract private class AbstractCallCfgNode extends AstCfgNode {
    * Gets the expression that provides the call target of this call, if any.
    */
   abstract ExprCfgNode getCommand();
+
+  int getNumberOfArguments() { result = count(this.getAnArgument()) }
 }
 
 final class CallCfgNode = AbstractCallCfgNode;
@@ -371,7 +373,7 @@ module ExprNodes {
   }
 
   class MemberChildMapping extends ExprChildMapping, MemberExpr {
-    override predicate relevantChild(Ast n) { n = this.getBase() or n = this.getMember() }
+    override predicate relevantChild(Ast n) { n = this.getQualifier() or n = this.getMember() }
   }
 
   /** A control-flow node that wraps a `MemberExpr` expression. */
@@ -382,7 +384,7 @@ module ExprNodes {
 
     final override MemberExpr getExpr() { result = super.getExpr() }
 
-    final ExprCfgNode getBase() { e.hasCfgChild(e.getBase(), this, result) }
+    final ExprCfgNode getQualifier() { e.hasCfgChild(e.getQualifier(), this, result) }
 
     final string getMemberName() { result = e.getMemberName() }
 
@@ -563,6 +565,22 @@ module ExprNodes {
 
     final ExprCfgNode getAnOperand() { e.hasCfgChild(this.getExpr().getAnOperand(), this, result) }
   }
+
+  class ExpandableStringChildMappinig extends ExprChildMapping, ExpandableStringExpr {
+    override predicate relevantChild(Ast n) { n = this.getAnExpr() }
+  }
+
+  class ExpandableStringCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ExpandableStringCfgNode" }
+
+    override ExpandableStringChildMappinig e;
+
+    override ExpandableStringExpr getExpr() { result = e }
+
+    ExprCfgNode getExpr(int i) { e.hasCfgChild(e.getExpr(i), this, result) }
+
+    ExprCfgNode getAnExpr() { result = this.getExpr(_) }
+  }
 }
 
 module StmtNodes {
@@ -592,7 +610,18 @@ module StmtNodes {
 
     final override ExprCfgNode getCommand() { s.hasCfgChild(s.getCommand(), this, result) }
 
-    final override string getName() { result = s.getCmdName().getValue().getValue() }
+    final override string getName() { result = s.getCommandName() }
+
+    /** Holds if the command is qualified. */
+    predicate isQualified() { s.isQualified() }
+
+    /** Gets the namespace qualifier of this command, if any. */
+    string getNamespaceQualifier() { result = s.getNamespaceQualifier() }
+  }
+
+  /** A control-flow node that wraps a call to operator `&` */
+  class CallOperatorCfgNode extends CmdCfgNode {
+    CallOperatorCfgNode() { this.getStmt() instanceof CallOperator }
   }
 
   private class AssignStmtChildMapping extends PipelineBaseChildMapping, AssignStmt {

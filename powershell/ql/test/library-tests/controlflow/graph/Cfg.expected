@@ -45,9 +45,11 @@
 | conditionals.ps1:25:5:31:14 | {...} | conditionals.ps1:27:5:30:6 | if (...) {...} |  |
 | conditionals.ps1:27:5:30:6 | if (...) {...} | conditionals.ps1:27:8:27:16 | myBool1 |  |
 | conditionals.ps1:27:8:27:16 | myBool1 | conditionals.ps1:27:22:27:30 | myBool2 | false, true |
-| conditionals.ps1:27:8:27:30 | ... -and ... | conditionals.ps1:27:8:27:30 | ... -and ... | false, true |
 | conditionals.ps1:27:8:27:30 | ... -and ... | conditionals.ps1:28:5:30:6 | {...} | true |
-| conditionals.ps1:27:22:27:30 | myBool2 | conditionals.ps1:27:8:27:30 | ... -and ... | false, true |
+| conditionals.ps1:27:8:27:30 | [false] ... -and ... | conditionals.ps1:27:8:27:30 | ... -and ... | false |
+| conditionals.ps1:27:8:27:30 | [true] ... -and ... | conditionals.ps1:27:8:27:30 | ... -and ... | true |
+| conditionals.ps1:27:22:27:30 | myBool2 | conditionals.ps1:27:8:27:30 | [false] ... -and ... | false |
+| conditionals.ps1:27:22:27:30 | myBool2 | conditionals.ps1:27:8:27:30 | [true] ... -and ... | true |
 | conditionals.ps1:28:5:30:6 | {...} | conditionals.ps1:29:9:29:18 | return ... |  |
 | conditionals.ps1:29:9:29:18 | return ... | conditionals.ps1:29:16:29:18 | 10 |  |
 | conditionals.ps1:29:16:29:18 | 10 | conditionals.ps1:29:16:29:18 | 10 |  |
@@ -63,10 +65,12 @@
 | conditionals.ps1:35:5:44:6 | {...} | conditionals.ps1:37:5:44:6 | if (...) {...} else {...} |  |
 | conditionals.ps1:37:5:44:6 | if (...) {...} else {...} | conditionals.ps1:37:8:37:16 | myBool1 |  |
 | conditionals.ps1:37:8:37:16 | myBool1 | conditionals.ps1:37:22:37:30 | myBool2 | false, true |
-| conditionals.ps1:37:8:37:30 | ... -and ... | conditionals.ps1:37:8:37:30 | ... -and ... | false, true |
 | conditionals.ps1:37:8:37:30 | ... -and ... | conditionals.ps1:38:5:40:6 | {...} | true |
 | conditionals.ps1:37:8:37:30 | ... -and ... | conditionals.ps1:42:5:44:6 | {...} | false |
-| conditionals.ps1:37:22:37:30 | myBool2 | conditionals.ps1:37:8:37:30 | ... -and ... | false, true |
+| conditionals.ps1:37:8:37:30 | [false] ... -and ... | conditionals.ps1:37:8:37:30 | ... -and ... | false |
+| conditionals.ps1:37:8:37:30 | [true] ... -and ... | conditionals.ps1:37:8:37:30 | ... -and ... | true |
+| conditionals.ps1:37:22:37:30 | myBool2 | conditionals.ps1:37:8:37:30 | [false] ... -and ... | false |
+| conditionals.ps1:37:22:37:30 | myBool2 | conditionals.ps1:37:8:37:30 | [true] ... -and ... | true |
 | conditionals.ps1:38:5:40:6 | {...} | conditionals.ps1:39:9:39:18 | return ... |  |
 | conditionals.ps1:39:9:39:18 | return ... | conditionals.ps1:39:16:39:18 | 10 |  |
 | conditionals.ps1:39:16:39:18 | 10 | conditionals.ps1:34:28:45:2 | exit {...} (normal) |  |
@@ -83,9 +87,11 @@
 | conditionals.ps1:48:5:54:14 | {...} | conditionals.ps1:50:5:53:6 | if (...) {...} |  |
 | conditionals.ps1:50:5:53:6 | if (...) {...} | conditionals.ps1:50:8:50:16 | myBool1 |  |
 | conditionals.ps1:50:8:50:16 | myBool1 | conditionals.ps1:50:21:50:29 | myBool2 | false, true |
-| conditionals.ps1:50:8:50:29 | ... -or ... | conditionals.ps1:50:8:50:29 | ... -or ... | false, true |
 | conditionals.ps1:50:8:50:29 | ... -or ... | conditionals.ps1:51:5:53:6 | {...} | true |
-| conditionals.ps1:50:21:50:29 | myBool2 | conditionals.ps1:50:8:50:29 | ... -or ... | false, true |
+| conditionals.ps1:50:8:50:29 | [false] ... -or ... | conditionals.ps1:50:8:50:29 | ... -or ... | false |
+| conditionals.ps1:50:8:50:29 | [true] ... -or ... | conditionals.ps1:50:8:50:29 | ... -or ... | true |
+| conditionals.ps1:50:21:50:29 | myBool2 | conditionals.ps1:50:8:50:29 | [false] ... -or ... | false |
+| conditionals.ps1:50:21:50:29 | myBool2 | conditionals.ps1:50:8:50:29 | [true] ... -or ... | true |
 | conditionals.ps1:51:5:53:6 | {...} | conditionals.ps1:52:9:52:18 | return ... |  |
 | conditionals.ps1:52:9:52:18 | return ... | conditionals.ps1:52:16:52:18 | 10 |  |
 | conditionals.ps1:52:16:52:18 | 10 | conditionals.ps1:52:16:52:18 | 10 |  |
@@ -101,10 +107,12 @@
 | conditionals.ps1:58:5:67:6 | {...} | conditionals.ps1:60:5:67:6 | if (...) {...} else {...} |  |
 | conditionals.ps1:60:5:67:6 | if (...) {...} else {...} | conditionals.ps1:60:8:60:16 | myBool1 |  |
 | conditionals.ps1:60:8:60:16 | myBool1 | conditionals.ps1:60:21:60:29 | myBool2 | false, true |
-| conditionals.ps1:60:8:60:29 | ... -or ... | conditionals.ps1:60:8:60:29 | ... -or ... | false, true |
 | conditionals.ps1:60:8:60:29 | ... -or ... | conditionals.ps1:61:5:63:6 | {...} | true |
 | conditionals.ps1:60:8:60:29 | ... -or ... | conditionals.ps1:65:5:67:6 | {...} | false |
-| conditionals.ps1:60:21:60:29 | myBool2 | conditionals.ps1:60:8:60:29 | ... -or ... | false, true |
+| conditionals.ps1:60:8:60:29 | [false] ... -or ... | conditionals.ps1:60:8:60:29 | ... -or ... | false |
+| conditionals.ps1:60:8:60:29 | [true] ... -or ... | conditionals.ps1:60:8:60:29 | ... -or ... | true |
+| conditionals.ps1:60:21:60:29 | myBool2 | conditionals.ps1:60:8:60:29 | [false] ... -or ... | false |
+| conditionals.ps1:60:21:60:29 | myBool2 | conditionals.ps1:60:8:60:29 | [true] ... -or ... | true |
 | conditionals.ps1:61:5:63:6 | {...} | conditionals.ps1:62:9:62:18 | return ... |  |
 | conditionals.ps1:62:9:62:18 | return ... | conditionals.ps1:62:16:62:18 | 10 |  |
 | conditionals.ps1:62:16:62:18 | 10 | conditionals.ps1:57:28:68:2 | exit {...} (normal) |  |
@@ -122,10 +130,17 @@
 | conditionals.ps1:73:5:80:6 | if (...) {...} | conditionals.ps1:73:8:73:16 | myBool1 |  |
 | conditionals.ps1:73:8:73:16 | myBool1 | conditionals.ps1:73:8:73:16 | myBool1 | false, true |
 | conditionals.ps1:73:8:73:16 | myBool1 | conditionals.ps1:74:5:76:6 | {...} | true |
+| conditionals.ps1:73:8:73:16 | myBool1 | conditionals.ps1:77:12:77:19 | myBoo2 | false |
 | conditionals.ps1:74:5:76:6 | {...} | conditionals.ps1:75:9:75:18 | return ... |  |
 | conditionals.ps1:75:9:75:18 | return ... | conditionals.ps1:75:16:75:18 | 10 |  |
 | conditionals.ps1:75:16:75:18 | 10 | conditionals.ps1:75:16:75:18 | 10 |  |
 | conditionals.ps1:75:16:75:18 | 10 | conditionals.ps1:81:5:81:14 | return ... |  |
+| conditionals.ps1:77:12:77:19 | myBoo2 | conditionals.ps1:77:12:77:19 | myBoo2 | false, true |
+| conditionals.ps1:77:12:77:19 | myBoo2 | conditionals.ps1:78:5:80:6 | {...} | true |
+| conditionals.ps1:78:5:80:6 | {...} | conditionals.ps1:79:9:79:18 | return ... |  |
+| conditionals.ps1:79:9:79:18 | return ... | conditionals.ps1:79:16:79:18 | 11 |  |
+| conditionals.ps1:79:16:79:18 | 11 | conditionals.ps1:79:16:79:18 | 11 |  |
+| conditionals.ps1:79:16:79:18 | 11 | conditionals.ps1:81:5:81:14 | return ... |  |
 | conditionals.ps1:81:5:81:14 | return ... | conditionals.ps1:81:12:81:14 | 12 |  |
 | conditionals.ps1:81:12:81:14 | 12 | conditionals.ps1:70:23:82:2 | exit {...} (normal) |  |
 | conditionals.ps1:81:12:81:14 | 12 | conditionals.ps1:81:12:81:14 | 12 |  |
@@ -138,11 +153,18 @@
 | conditionals.ps1:87:5:98:6 | if (...) {...} else {...} | conditionals.ps1:87:8:87:16 | myBool1 |  |
 | conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:87:8:87:16 | myBool1 | false, true |
 | conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:88:5:90:6 | {...} | true |
-| conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:96:5:98:6 | {...} | false |
+| conditionals.ps1:87:8:87:16 | myBool1 | conditionals.ps1:91:12:91:19 | myBoo2 | false |
 | conditionals.ps1:88:5:90:6 | {...} | conditionals.ps1:89:9:89:18 | return ... |  |
 | conditionals.ps1:89:9:89:18 | return ... | conditionals.ps1:89:16:89:18 | 10 |  |
 | conditionals.ps1:89:16:89:18 | 10 | conditionals.ps1:84:28:99:2 | exit {...} (normal) |  |
 | conditionals.ps1:89:16:89:18 | 10 | conditionals.ps1:89:16:89:18 | 10 |  |
+| conditionals.ps1:91:12:91:19 | myBoo2 | conditionals.ps1:91:12:91:19 | myBoo2 | false, true |
+| conditionals.ps1:91:12:91:19 | myBoo2 | conditionals.ps1:92:5:94:6 | {...} | true |
+| conditionals.ps1:91:12:91:19 | myBoo2 | conditionals.ps1:96:5:98:6 | {...} | false |
+| conditionals.ps1:92:5:94:6 | {...} | conditionals.ps1:93:9:93:18 | return ... |  |
+| conditionals.ps1:93:9:93:18 | return ... | conditionals.ps1:93:16:93:18 | 11 |  |
+| conditionals.ps1:93:16:93:18 | 11 | conditionals.ps1:84:28:99:2 | exit {...} (normal) |  |
+| conditionals.ps1:93:16:93:18 | 11 | conditionals.ps1:93:16:93:18 | 11 |  |
 | conditionals.ps1:96:5:98:6 | {...} | conditionals.ps1:97:9:97:18 | return ... |  |
 | conditionals.ps1:97:9:97:18 | return ... | conditionals.ps1:97:16:97:18 | 12 |  |
 | conditionals.ps1:97:16:97:18 | 12 | conditionals.ps1:84:28:99:2 | exit {...} (normal) |  |
@@ -203,8 +225,8 @@
 | conditionals.ps1:116:9:116:17 | default: | conditionals.ps1:116:18:119:10 | {...} | true |
 | conditionals.ps1:116:18:119:10 | {...} | conditionals.ps1:117:13:117:25 | Write-Output |  |
 | conditionals.ps1:117:13:117:25 | Write-Output | conditionals.ps1:117:26:117:34 | Error! |  |
-| conditionals.ps1:117:13:117:34 | Write-Output | conditionals.ps1:118:13:118:21 | return ... |  |
-| conditionals.ps1:117:26:117:34 | Error! | conditionals.ps1:117:13:117:34 | Write-Output |  |
+| conditionals.ps1:117:13:117:34 | call to Write-Output | conditionals.ps1:118:13:118:21 | return ... |  |
+| conditionals.ps1:117:26:117:34 | Error! | conditionals.ps1:117:13:117:34 | call to Write-Output |  |
 | conditionals.ps1:118:13:118:21 | return ... | conditionals.ps1:118:20:118:21 | 3 |  |
 | conditionals.ps1:118:20:118:21 | 3 | conditionals.ps1:110:34:121:2 | exit {...} (normal) |  |
 | conditionals.ps1:118:20:118:21 | 3 | conditionals.ps1:118:20:118:21 | 3 |  |
@@ -527,8 +549,8 @@
 | try.ps1:2:5:7:13 | {...} | try.ps1:2:5:6:6 | try {...} |  |
 | try.ps1:2:9:4:6 | {...} | try.ps1:3:9:3:21 | Write-Output |  |
 | try.ps1:3:9:3:21 | Write-Output | try.ps1:3:22:3:30 | Hello! |  |
-| try.ps1:3:9:3:30 | Write-Output | try.ps1:7:5:7:13 | return ... |  |
-| try.ps1:3:22:3:30 | Hello! | try.ps1:3:9:3:30 | Write-Output |  |
+| try.ps1:3:9:3:30 | call to Write-Output | try.ps1:7:5:7:13 | return ... |  |
+| try.ps1:3:22:3:30 | Hello! | try.ps1:3:9:3:30 | call to Write-Output |  |
 | try.ps1:7:5:7:13 | return ... | try.ps1:7:12:7:13 | 1 |  |
 | try.ps1:7:12:7:13 | 1 | try.ps1:1:25:8:2 | exit {...} (normal) |  |
 | try.ps1:7:12:7:13 | 1 | try.ps1:7:12:7:13 | 1 |  |
@@ -591,8 +613,8 @@
 | try.ps1:44:5:49:13 | {...} | try.ps1:44:5:48:6 | try {...} |  |
 | try.ps1:44:9:46:6 | {...} | try.ps1:45:9:45:21 | Write-Output |  |
 | try.ps1:45:9:45:21 | Write-Output | try.ps1:45:22:45:30 | Hello! |  |
-| try.ps1:45:9:45:30 | Write-Output | try.ps1:49:5:49:13 | return ... |  |
-| try.ps1:45:22:45:30 | Hello! | try.ps1:45:9:45:30 | Write-Output |  |
+| try.ps1:45:9:45:30 | call to Write-Output | try.ps1:49:5:49:13 | return ... |  |
+| try.ps1:45:22:45:30 | Hello! | try.ps1:45:9:45:30 | call to Write-Output |  |
 | try.ps1:49:5:49:13 | return ... | try.ps1:49:12:49:13 | 1 |  |
 | try.ps1:49:12:49:13 | 1 | try.ps1:43:36:50:2 | exit {...} (normal) |  |
 | try.ps1:49:12:49:13 | 1 | try.ps1:49:12:49:13 | 1 |  |
@@ -604,8 +626,8 @@
 | try.ps1:53:5:58:13 | {...} | try.ps1:53:5:57:6 | try {...} |  |
 | try.ps1:53:9:55:6 | {...} | try.ps1:54:9:54:21 | Write-Output |  |
 | try.ps1:54:9:54:21 | Write-Output | try.ps1:54:22:54:30 | Hello! |  |
-| try.ps1:54:9:54:30 | Write-Output | try.ps1:58:5:58:13 | return ... |  |
-| try.ps1:54:22:54:30 | Hello! | try.ps1:54:9:54:30 | Write-Output |  |
+| try.ps1:54:9:54:30 | call to Write-Output | try.ps1:58:5:58:13 | return ... |  |
+| try.ps1:54:22:54:30 | Hello! | try.ps1:54:9:54:30 | call to Write-Output |  |
 | try.ps1:58:5:58:13 | return ... | try.ps1:58:12:58:13 | 1 |  |
 | try.ps1:58:12:58:13 | 1 | try.ps1:52:36:59:2 | exit {...} (normal) |  |
 | try.ps1:58:12:58:13 | 1 | try.ps1:58:12:58:13 | 1 |  |
@@ -617,8 +639,8 @@
 | try.ps1:62:5:69:13 | {...} | try.ps1:62:5:68:6 | try {...} |  |
 | try.ps1:62:9:64:6 | {...} | try.ps1:63:9:63:21 | Write-Output |  |
 | try.ps1:63:9:63:21 | Write-Output | try.ps1:63:22:63:30 | Hello! |  |
-| try.ps1:63:9:63:30 | Write-Output | try.ps1:69:5:69:13 | return ... |  |
-| try.ps1:63:22:63:30 | Hello! | try.ps1:63:9:63:30 | Write-Output |  |
+| try.ps1:63:9:63:30 | call to Write-Output | try.ps1:69:5:69:13 | return ... |  |
+| try.ps1:63:22:63:30 | Hello! | try.ps1:63:9:63:30 | call to Write-Output |  |
 | try.ps1:69:5:69:13 | return ... | try.ps1:69:12:69:13 | 2 |  |
 | try.ps1:69:12:69:13 | 2 | try.ps1:61:40:70:2 | exit {...} (normal) |  |
 | try.ps1:69:12:69:13 | 2 | try.ps1:69:12:69:13 | 2 |  |
@@ -630,8 +652,8 @@
 | try.ps1:73:5:78:13 | {...} | try.ps1:73:5:77:6 | try {...} |  |
 | try.ps1:73:9:75:6 | {...} | try.ps1:74:9:74:21 | Write-Output |  |
 | try.ps1:74:9:74:21 | Write-Output | try.ps1:74:22:74:30 | Hello! |  |
-| try.ps1:74:9:74:30 | Write-Output | try.ps1:78:5:78:13 | return ... |  |
-| try.ps1:74:22:74:30 | Hello! | try.ps1:74:9:74:30 | Write-Output |  |
+| try.ps1:74:9:74:30 | call to Write-Output | try.ps1:78:5:78:13 | return ... |  |
+| try.ps1:74:22:74:30 | Hello! | try.ps1:74:9:74:30 | call to Write-Output |  |
 | try.ps1:78:5:78:13 | return ... | try.ps1:78:12:78:13 | 1 |  |
 | try.ps1:78:12:78:13 | 1 | try.ps1:72:36:79:2 | exit {...} (normal) |  |
 | try.ps1:78:12:78:13 | 1 | try.ps1:78:12:78:13 | 1 |  |
@@ -643,8 +665,8 @@
 | try.ps1:82:5:89:13 | {...} | try.ps1:82:5:88:6 | try {...} |  |
 | try.ps1:82:9:84:6 | {...} | try.ps1:83:9:83:21 | Write-Output |  |
 | try.ps1:83:9:83:21 | Write-Output | try.ps1:83:22:83:30 | Hello! |  |
-| try.ps1:83:9:83:30 | Write-Output | try.ps1:89:5:89:13 | return ... |  |
-| try.ps1:83:22:83:30 | Hello! | try.ps1:83:9:83:30 | Write-Output |  |
+| try.ps1:83:9:83:30 | call to Write-Output | try.ps1:89:5:89:13 | return ... |  |
+| try.ps1:83:22:83:30 | Hello! | try.ps1:83:9:83:30 | call to Write-Output |  |
 | try.ps1:89:5:89:13 | return ... | try.ps1:89:12:89:13 | 2 |  |
 | try.ps1:89:12:89:13 | 2 | try.ps1:81:40:90:2 | exit {...} (normal) |  |
 | try.ps1:89:12:89:13 | 2 | try.ps1:89:12:89:13 | 2 |  |
@@ -656,8 +678,8 @@
 | try.ps1:93:5:102:13 | {...} | try.ps1:93:5:101:6 | try {...} |  |
 | try.ps1:93:9:95:6 | {...} | try.ps1:94:9:94:21 | Write-Output |  |
 | try.ps1:94:9:94:21 | Write-Output | try.ps1:94:22:94:30 | Hello! |  |
-| try.ps1:94:9:94:30 | Write-Output | try.ps1:102:5:102:13 | return ... |  |
-| try.ps1:94:22:94:30 | Hello! | try.ps1:94:9:94:30 | Write-Output |  |
+| try.ps1:94:9:94:30 | call to Write-Output | try.ps1:102:5:102:13 | return ... |  |
+| try.ps1:94:22:94:30 | Hello! | try.ps1:94:9:94:30 | call to Write-Output |  |
 | try.ps1:102:5:102:13 | return ... | try.ps1:102:12:102:13 | 3 |  |
 | try.ps1:102:12:102:13 | 3 | try.ps1:92:42:103:2 | exit {...} (normal) |  |
 | try.ps1:102:12:102:13 | 3 | try.ps1:102:12:102:13 | 3 |  |
@@ -669,12 +691,12 @@
 | try.ps1:106:5:113:13 | {...} | try.ps1:106:5:112:6 | try {...} |  |
 | try.ps1:106:9:108:6 | {...} | try.ps1:107:9:107:21 | Write-Output |  |
 | try.ps1:107:9:107:21 | Write-Output | try.ps1:107:22:107:30 | Hello! |  |
-| try.ps1:107:9:107:30 | Write-Output | try.ps1:110:15:112:6 | {...} |  |
-| try.ps1:107:22:107:30 | Hello! | try.ps1:107:9:107:30 | Write-Output |  |
+| try.ps1:107:9:107:30 | call to Write-Output | try.ps1:110:15:112:6 | {...} |  |
+| try.ps1:107:22:107:30 | Hello! | try.ps1:107:9:107:30 | call to Write-Output |  |
 | try.ps1:110:15:112:6 | {...} | try.ps1:111:9:111:21 | Write-Output |  |
 | try.ps1:111:9:111:21 | Write-Output | try.ps1:111:22:111:32 | Finally! |  |
-| try.ps1:111:9:111:32 | Write-Output | try.ps1:113:5:113:13 | return ... |  |
-| try.ps1:111:22:111:32 | Finally! | try.ps1:111:9:111:32 | Write-Output |  |
+| try.ps1:111:9:111:32 | call to Write-Output | try.ps1:113:5:113:13 | return ... |  |
+| try.ps1:111:22:111:32 | Finally! | try.ps1:111:9:111:32 | call to Write-Output |  |
 | try.ps1:113:5:113:13 | return ... | try.ps1:113:12:113:13 | 1 |  |
 | try.ps1:113:12:113:13 | 1 | try.ps1:105:33:114:2 | exit {...} (normal) |  |
 | try.ps1:113:12:113:13 | 1 | try.ps1:113:12:113:13 | 1 |  |
@@ -686,12 +708,12 @@
 | try.ps1:117:5:122:13 | {...} | try.ps1:117:5:121:6 | try {...} |  |
 | try.ps1:117:9:119:6 | {...} | try.ps1:118:9:118:21 | Write-Output |  |
 | try.ps1:118:9:118:21 | Write-Output | try.ps1:118:22:118:30 | Hello! |  |
-| try.ps1:118:9:118:30 | Write-Output | try.ps1:119:15:121:6 | {...} |  |
-| try.ps1:118:22:118:30 | Hello! | try.ps1:118:9:118:30 | Write-Output |  |
+| try.ps1:118:9:118:30 | call to Write-Output | try.ps1:119:15:121:6 | {...} |  |
+| try.ps1:118:22:118:30 | Hello! | try.ps1:118:9:118:30 | call to Write-Output |  |
 | try.ps1:119:15:121:6 | {...} | try.ps1:120:9:120:21 | Write-Output |  |
 | try.ps1:120:9:120:21 | Write-Output | try.ps1:120:22:120:32 | Finally! |  |
-| try.ps1:120:9:120:32 | Write-Output | try.ps1:122:5:122:13 | return ... |  |
-| try.ps1:120:22:120:32 | Finally! | try.ps1:120:9:120:32 | Write-Output |  |
+| try.ps1:120:9:120:32 | call to Write-Output | try.ps1:122:5:122:13 | return ... |  |
+| try.ps1:120:22:120:32 | Finally! | try.ps1:120:9:120:32 | call to Write-Output |  |
 | try.ps1:122:5:122:13 | return ... | try.ps1:122:12:122:13 | 1 |  |
 | try.ps1:122:12:122:13 | 1 | try.ps1:116:27:123:2 | exit {...} (normal) |  |
 | try.ps1:122:12:122:13 | 1 | try.ps1:122:12:122:13 | 1 |  |
@@ -703,12 +725,12 @@
 | try.ps1:126:5:133:13 | {...} | try.ps1:126:5:132:6 | try {...} |  |
 | try.ps1:126:9:128:6 | {...} | try.ps1:127:9:127:21 | Write-Output |  |
 | try.ps1:127:9:127:21 | Write-Output | try.ps1:127:22:127:30 | Hello! |  |
-| try.ps1:127:9:127:30 | Write-Output | try.ps1:130:15:132:6 | {...} |  |
-| try.ps1:127:22:127:30 | Hello! | try.ps1:127:9:127:30 | Write-Output |  |
+| try.ps1:127:9:127:30 | call to Write-Output | try.ps1:130:15:132:6 | {...} |  |
+| try.ps1:127:22:127:30 | Hello! | try.ps1:127:9:127:30 | call to Write-Output |  |
 | try.ps1:130:15:132:6 | {...} | try.ps1:131:9:131:21 | Write-Output |  |
 | try.ps1:131:9:131:21 | Write-Output | try.ps1:131:22:131:32 | Finally! |  |
-| try.ps1:131:9:131:32 | Write-Output | try.ps1:133:5:133:13 | return ... |  |
-| try.ps1:131:22:131:32 | Finally! | try.ps1:131:9:131:32 | Write-Output |  |
+| try.ps1:131:9:131:32 | call to Write-Output | try.ps1:133:5:133:13 | return ... |  |
+| try.ps1:131:22:131:32 | Finally! | try.ps1:131:9:131:32 | call to Write-Output |  |
 | try.ps1:133:5:133:13 | return ... | try.ps1:133:12:133:13 | 1 |  |
 | try.ps1:133:12:133:13 | 1 | try.ps1:125:44:134:2 | exit {...} (normal) |  |
 | try.ps1:133:12:133:13 | 1 | try.ps1:133:12:133:13 | 1 |  |
@@ -722,8 +744,8 @@
 | try.ps1:138:9:142:10 | try {...} | try.ps1:138:13:140:10 | {...} |  |
 | try.ps1:138:13:140:10 | {...} | try.ps1:139:13:139:25 | Write-Output |  |
 | try.ps1:139:13:139:25 | Write-Output | try.ps1:139:26:139:34 | Hello! |  |
-| try.ps1:139:13:139:34 | Write-Output | try.ps1:146:5:146:13 | return ... |  |
-| try.ps1:139:26:139:34 | Hello! | try.ps1:139:13:139:34 | Write-Output |  |
+| try.ps1:139:13:139:34 | call to Write-Output | try.ps1:146:5:146:13 | return ... |  |
+| try.ps1:139:26:139:34 | Hello! | try.ps1:139:13:139:34 | call to Write-Output |  |
 | try.ps1:146:5:146:13 | return ... | try.ps1:146:12:146:13 | 1 |  |
 | try.ps1:146:12:146:13 | 1 | try.ps1:136:40:147:2 | exit {...} (normal) |  |
 | try.ps1:146:12:146:13 | 1 | try.ps1:146:12:146:13 | 1 |  |
@@ -737,12 +759,12 @@
 | try.ps1:151:9:157:10 | try {...} | try.ps1:151:13:153:10 | {...} |  |
 | try.ps1:151:13:153:10 | {...} | try.ps1:152:13:152:25 | Write-Output |  |
 | try.ps1:152:13:152:25 | Write-Output | try.ps1:152:26:152:34 | Hello! |  |
-| try.ps1:152:13:152:34 | Write-Output | try.ps1:155:19:157:10 | {...} |  |
-| try.ps1:152:26:152:34 | Hello! | try.ps1:152:13:152:34 | Write-Output |  |
+| try.ps1:152:13:152:34 | call to Write-Output | try.ps1:155:19:157:10 | {...} |  |
+| try.ps1:152:26:152:34 | Hello! | try.ps1:152:13:152:34 | call to Write-Output |  |
 | try.ps1:155:19:157:10 | {...} | try.ps1:156:13:156:25 | Write-Output |  |
 | try.ps1:156:13:156:25 | Write-Output | try.ps1:156:26:156:36 | Finally! |  |
-| try.ps1:156:13:156:36 | Write-Output | try.ps1:161:5:161:13 | return ... |  |
-| try.ps1:156:26:156:36 | Finally! | try.ps1:156:13:156:36 | Write-Output |  |
+| try.ps1:156:13:156:36 | call to Write-Output | try.ps1:161:5:161:13 | return ... |  |
+| try.ps1:156:26:156:36 | Finally! | try.ps1:156:13:156:36 | call to Write-Output |  |
 | try.ps1:161:5:161:13 | return ... | try.ps1:161:12:161:13 | 1 |  |
 | try.ps1:161:12:161:13 | 1 | try.ps1:149:40:162:2 | exit {...} (normal) |  |
 | try.ps1:161:12:161:13 | 1 | try.ps1:161:12:161:13 | 1 |  |
@@ -756,12 +778,12 @@
 | try.ps1:166:9:170:10 | try {...} | try.ps1:166:13:168:10 | {...} |  |
 | try.ps1:166:13:168:10 | {...} | try.ps1:167:13:167:25 | Write-Output |  |
 | try.ps1:167:13:167:25 | Write-Output | try.ps1:167:26:167:34 | Hello! |  |
-| try.ps1:167:13:167:34 | Write-Output | try.ps1:173:15:175:6 | {...} |  |
-| try.ps1:167:26:167:34 | Hello! | try.ps1:167:13:167:34 | Write-Output |  |
+| try.ps1:167:13:167:34 | call to Write-Output | try.ps1:173:15:175:6 | {...} |  |
+| try.ps1:167:26:167:34 | Hello! | try.ps1:167:13:167:34 | call to Write-Output |  |
 | try.ps1:173:15:175:6 | {...} | try.ps1:174:9:174:21 | Write-Output |  |
 | try.ps1:174:9:174:21 | Write-Output | try.ps1:174:22:174:32 | Finally! |  |
-| try.ps1:174:9:174:32 | Write-Output | try.ps1:176:5:176:13 | return ... |  |
-| try.ps1:174:22:174:32 | Finally! | try.ps1:174:9:174:32 | Write-Output |  |
+| try.ps1:174:9:174:32 | call to Write-Output | try.ps1:176:5:176:13 | return ... |  |
+| try.ps1:174:22:174:32 | Finally! | try.ps1:174:9:174:32 | call to Write-Output |  |
 | try.ps1:176:5:176:13 | return ... | try.ps1:176:12:176:13 | 1 |  |
 | try.ps1:176:12:176:13 | 1 | try.ps1:164:40:177:2 | exit {...} (normal) |  |
 | try.ps1:176:12:176:13 | 1 | try.ps1:176:12:176:13 | 1 |  |
@@ -775,16 +797,16 @@
 | try.ps1:181:9:187:10 | try {...} | try.ps1:181:13:183:10 | {...} |  |
 | try.ps1:181:13:183:10 | {...} | try.ps1:182:13:182:25 | Write-Output |  |
 | try.ps1:182:13:182:25 | Write-Output | try.ps1:182:26:182:34 | Hello! |  |
-| try.ps1:182:13:182:34 | Write-Output | try.ps1:185:19:187:10 | {...} |  |
-| try.ps1:182:26:182:34 | Hello! | try.ps1:182:13:182:34 | Write-Output |  |
+| try.ps1:182:13:182:34 | call to Write-Output | try.ps1:185:19:187:10 | {...} |  |
+| try.ps1:182:26:182:34 | Hello! | try.ps1:182:13:182:34 | call to Write-Output |  |
 | try.ps1:185:19:187:10 | {...} | try.ps1:186:13:186:25 | Write-Output |  |
 | try.ps1:186:13:186:25 | Write-Output | try.ps1:186:26:186:36 | Finally! |  |
-| try.ps1:186:13:186:36 | Write-Output | try.ps1:190:15:192:6 | {...} |  |
-| try.ps1:186:26:186:36 | Finally! | try.ps1:186:13:186:36 | Write-Output |  |
+| try.ps1:186:13:186:36 | call to Write-Output | try.ps1:190:15:192:6 | {...} |  |
+| try.ps1:186:26:186:36 | Finally! | try.ps1:186:13:186:36 | call to Write-Output |  |
 | try.ps1:190:15:192:6 | {...} | try.ps1:191:9:191:21 | Write-Output |  |
 | try.ps1:191:9:191:21 | Write-Output | try.ps1:191:22:191:32 | Finally! |  |
-| try.ps1:191:9:191:32 | Write-Output | try.ps1:193:5:193:13 | return ... |  |
-| try.ps1:191:22:191:32 | Finally! | try.ps1:191:9:191:32 | Write-Output |  |
+| try.ps1:191:9:191:32 | call to Write-Output | try.ps1:193:5:193:13 | return ... |  |
+| try.ps1:191:22:191:32 | Finally! | try.ps1:191:9:191:32 | call to Write-Output |  |
 | try.ps1:193:5:193:13 | return ... | try.ps1:193:12:193:13 | 1 |  |
 | try.ps1:193:12:193:13 | 1 | try.ps1:179:46:194:2 | exit {...} (normal) |  |
 | try.ps1:193:12:193:13 | 1 | try.ps1:193:12:193:13 | 1 |  |

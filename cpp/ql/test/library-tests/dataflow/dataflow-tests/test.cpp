@@ -1116,3 +1116,19 @@ void indirect_sink_const_ref(const T&);
 void test_temp_with_conversion_from_materialization() {
   indirect_sink_const_ref(source()); // $ ir MISSING: ast
 }
+
+void reads_input(int x) {
+  sink(x); // $ ir MISSING: ast
+}
+
+void not_does_read_input(int x);
+
+void (*dispatch_table[])(int) = {
+  reads_input,
+  not_does_read_input
+};
+
+void test_dispatch_table(int i) {
+  int x = source();
+  dispatch_table[i](x);
+}

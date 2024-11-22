@@ -1,4 +1,9 @@
-// query-type: graph
+/**
+ * query-type: graph
+ *
+ * @kind graph-equivalence-test
+ */
+
 import cpp
 
 class DestructorCallEnhanced extends DestructorCall {

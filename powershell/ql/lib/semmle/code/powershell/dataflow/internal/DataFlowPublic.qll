@@ -1,6 +1,8 @@
 private import powershell
 private import DataFlowDispatch
 private import DataFlowPrivate
+private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
+private import semmle.code.powershell.ApiGraphs
 private import semmle.code.powershell.Cfg
 
 /**
@@ -12,6 +14,8 @@ class Node extends TNode {
   CfgNodes::ExprCfgNode asExpr() { result = this.(ExprNode).getExprNode() }
 
   CfgNodes::StmtCfgNode asStmt() { result = this.(StmtNode).getStmtNode() }
+
+  ScriptBlock asCallable() { result = this.(CallableNode).asCallableAstNode() }
 
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = this.(ParameterNode).getParameter() }
@@ -26,6 +30,12 @@ class Node extends TNode {
    * Gets a data flow node from which data may flow to this node in one local step.
    */
   Node getAPredecessor() { localFlowStep(result, this) }
+
+  /**
+   * Gets a local source node from which data may flow to this node in zero or
+   * more local data-flow steps.
+   */
+  LocalSourceNode getALocalSource() { result.flowsTo(this) }
 
   /**
    * Gets a data flow node to which data may flow from this node in one local step.
@@ -87,10 +97,80 @@ class ParameterNode extends Node {
 }
 
 /**
+ * A data flow node corresponding to a method, block, or lambda expression.
+ */
+class CallableNode extends Node instanceof ScriptBlockNode {
+  private ParameterPosition getParameterPosition(ParameterNodeImpl node) {
+    exists(DataFlowCallable c |
+      c.asCfgScope() = this.asCallableAstNode() and
+      result = getParameterPosition(node, c)
+    )
+  }
+
+  /** Gets the underlying AST node as a `Callable`. */
+  ScriptBlock asCallableAstNode() { result = super.getScriptBlock() }
+
+  /** Gets the `n`th positional parameter. */
+  ParameterNode getParameter(int n) {
+    this.getParameterPosition(result).isPositional(n, emptyNamedSet())
+  }
+
+  /** Gets the number of positional parameters of this callable. */
+  final int getNumberOfParameters() { result = count(this.getParameter(_)) }
+
+  /** Gets the keyword parameter of the given name. */
+  ParameterNode getKeywordParameter(string name) {
+    this.getParameterPosition(result).isKeyword(name)
+  }
+
+  /**
+   * Gets a data flow node whose value is about to be returned by this callable.
+   */
+  Node getAReturnNode() { result = getAReturnNode(this.asCallableAstNode()) }
+}
+
+/**
  * A data-flow node that is a source of local flow.
  */
 class LocalSourceNode extends Node {
   LocalSourceNode() { isLocalSourceNode(this) }
+
+  /** Starts tracking this node forward using API graphs. */
+  pragma[inline]
+  API::Node track() { result = API::Internal::getNodeForForwardTracking(this) }
+
+  /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
+  pragma[inline]
+  predicate flowsTo(Node nodeTo) { flowsTo(this, nodeTo) }
+
+  /**
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
+
+  /**
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  pragma[inline]
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t = t2.step(result, this) }
+
+  /**
+   * Gets a node to which data may flow from this node in zero or
+   * more local data-flow steps.
+   */
+  pragma[inline]
+  Node getALocalUse() { flowsTo(this, result) }
+
+  /** Gets a method call where this node flows to the receiver. */
+  CallNode getAMethodCall() { Cached::hasMethodCall(this, result, _) }
+
+  /** Gets a call to a method named `name`, where this node flows to the receiver. */
+  CallNode getAMethodCall(string name) { Cached::hasMethodCall(this, result, name) }
 }
 
 /**
@@ -113,10 +193,34 @@ class PostUpdateNode extends Node {
   Node getPreUpdateNode() { result = pre }
 }
 
+/**
+ * A dataflow node that represents a component of a type or module path.
+ *
+ * For example, `System`, `System.Management`, `System.Management.Automation`,
+ * and `System.Management.Automation.PowerShell` in the type
+ * name `[System.Management.Automation.PowerShell]`.
+ */
+class TypePathNode extends Node instanceof TypePathNodeImpl {
+  string getComponent() { result = super.getComponent() }
+
+  TypePathNode getConstant(string s) { result = super.getConstant(s) }
+
+  API::Node track() { result = API::mod(super.getType(), super.getIndex()) }
+}
+
 cached
 private module Cached {
   cached
+  predicate hasMethodCall(LocalSourceNode source, CallNode call, string name) {
+    source.flowsTo(call.getQualifier()) and
+    call.getName() = name
+  }
+
+  cached
   CfgScope getCfgScope(NodeImpl node) { result = node.getCfgScope() }
+
+  cached
+  ReturnNode getAReturnNode(ScriptBlock scriptBlock) { getCfgScope(result) = scriptBlock }
 
   cached
   Parameter getParameter(ParameterNodeImpl param) { result = param.getParameter() }
@@ -124,6 +228,11 @@ private module Cached {
   cached
   ParameterPosition getParameterPosition(ParameterNodeImpl param, DataFlowCallable c) {
     param.isParameterOf(c, result)
+  }
+
+  cached
+  ParameterPosition getSourceParameterPosition(ParameterNodeImpl param, ScriptBlock c) {
+    param.isSourceParameterOf(c, result)
   }
 
   cached
@@ -209,6 +318,23 @@ module Content {
     string getName() { result = name }
 
     override string toString() { result = name }
+  }
+
+  /** Gets the element content corresponding to constant value `cv`. */
+  ElementContent getElementContent(ConstantValue cv) {
+    result = TKnownElementContent(cv)
+    or
+    not exists(TKnownElementContent(cv)) and
+    result = TUnknownElementContent()
+  }
+
+  /**
+   * Gets the constant value of `e`, which corresponds to a valid known
+   * element index. Unlike calling simply `e.getConstantValue()`, this
+   * excludes negative array indices.
+   */
+  ConstantValue getKnownElementIndex(Expr e) {
+    result = getElementContent(e.getValue()).(KnownElementContent).getIndex()
   }
 }
 
@@ -321,6 +447,8 @@ class ObjectCreationNode extends Node {
   }
 
   final CfgNodes::ObjectCreationCfgNode getObjectCreationNode() { result = objectCreation }
+
+  string getConstructedTypeName() { result = this.getObjectCreationNode().getConstructedTypeName() }
 }
 
 /** A call, viewed as a node in a data flow graph. */
@@ -330,4 +458,42 @@ class CallNode extends AstNode {
   CallNode() { call = this.getCfgNode() }
 
   CfgNodes::CallCfgNode getCallNode() { result = call }
+
+  string getName() { result = call.getName() }
+
+  Node getQualifier() { result.asExpr() = call.getQualifier() }
+
+  /** Gets the i'th argument to this call. */
+  Node getArgument(int i) { result.asExpr() = call.getArgument(i) }
+
+  /** Gets the i'th positional argument to this call. */
+  Node getPositionalArgument(int i) { result.asExpr() = call.getPositionalArgument(i) }
+
+  /** Gets the argument with the name `name`, if any. */
+  Node getNamedArgument(string name) { result.asExpr() = call.getNamedArgument(name) }
+
+  /**
+   * Gets any argument of this call.
+   *
+   * Note that this predicate doesn't get the pipeline argument, if any.
+   */
+  Node getAnArgument() { result.asExpr() = call.getAnArgument() }
+
+  int getNumberOfArguments() { result = call.getNumberOfArguments() }
+}
+
+/** A call to operator `&`, viwed as a node in a data flow graph. */
+class CallOperatorNode extends CallNode {
+  override CfgNodes::StmtNodes::CallOperatorCfgNode call;
+
+  Node getCommand() { result.asExpr() = call.getCommand() }
+}
+
+/** A use of a type name, viewed as a node in a data flow graph. */
+class TypeNameNode extends ExprNode {
+  override CfgNodes::ExprNodes::TypeNameCfgNode n;
+
+  final override CfgNodes::ExprNodes::TypeNameCfgNode getExprNode() { result = n }
+
+  string getTypeName() { result = n.getTypeName() }
 }

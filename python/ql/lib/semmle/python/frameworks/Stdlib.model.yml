@@ -45,7 +45,7 @@ extensions:
       # See https://docs.python.org/3/library/contextlib.html#contextlib.ExitStack
       - ["contextlib.ExitStack", "Member[enter_context]", "Argument[0,cm:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/copy.html#copy.deepcopy
-      - ["copy", "Member[copy,deepcopy]", "Argument[0,x:]", "ReturnValue", "value"]
+      - ["copy", "Member[copy,deepcopy,replace]", "Argument[0,x:]", "ReturnValue", "value"]
       # See
       #  - https://docs.python.org/3/library/ctypes.html#ctypes.create_string_buffer
       #  - https://docs.python.org/3/library/ctypes.html#ctypes.create_unicode_buffer

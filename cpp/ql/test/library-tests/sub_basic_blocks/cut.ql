@@ -1,4 +1,9 @@
-// query-type: graph
+/**
+ * query-type: graph
+ *
+ * @kind graph-equivalence-test
+ */
+
 import sbb_test
 
 class CutCall extends SubBasicBlockCutNode {

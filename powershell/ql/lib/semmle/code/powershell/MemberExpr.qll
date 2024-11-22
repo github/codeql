@@ -3,7 +3,7 @@ import powershell
 class MemberExpr extends @member_expression, MemberExprBase {
   final override Location getLocation() { member_expression_location(this, result) }
 
-  Expr getBase() { member_expression(this, result, _, _, _) }
+  Expr getQualifier() { member_expression(this, result, _, _, _) }
 
   CmdElement getMember() { member_expression(this, _, result, _, _) }
 

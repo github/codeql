@@ -49,24 +49,20 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
   /**
    * A variable amenable to SSA construction.
    *
-   * All immutable variables are amenable. Mutable variables are restricted
-   * to those that are not captured by closures, and are not borrowed
-   * (either explicitly using `& mut`, or (potentially) implicit as borrowed
-   * receivers in a method call).
+   * All immutable variables are amenable. Mutable variables are restricted to
+   * those that are not borrowed (either explicitly using `& mut`, or
+   * (potentially) implicit as borrowed receivers in a method call).
    */
   class SourceVariable extends Variable {
     SourceVariable() {
-      this.isImmutable()
-      or
-      this.isMutable() and
-      not this.isCaptured() and
-      forall(VariableAccess va | va = this.getAnAccess() |
-        va instanceof VariableReadAccess and
+      this.isMutable()
+      implies
+      not exists(VariableAccess va | va = this.getAnAccess() |
+        va = any(RefExpr re | re.isMut()).getExpr()
+        or
         // receivers can be borrowed implicitly, cf.
         // https://doc.rust-lang.org/reference/expressions/method-call-expr.html
-        not va = any(MethodCallExpr mce).getReceiver()
-        or
-        variableWrite(va, this)
+        va = any(MethodCallExpr mce).getReceiver()
       )
     }
   }
@@ -78,6 +74,8 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
       capturedEntryWrite(bb, i, v)
     ) and
     certain = true
+    or
+    capturedCallWrite(_, bb, i, v) and certain = false
   }
 
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
@@ -102,6 +100,10 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
       v = va.getVariable() and
       certain = false
     )
+    or
+    capturedCallRead(_, bb, i, v) and certain = false
+    or
+    capturedExitRead(bb, i, v) and certain = false
   }
 }
 
@@ -145,6 +147,35 @@ private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
     read.getVariable() = v and
     read = bb.getNode(i).getAstNode()
   )
+}
+
+/**
+ * Holds if captured variable `v` is written directly inside `scope`,
+ * or inside a (transitively) nested scope of `scope`.
+ */
+pragma[noinline]
+private predicate hasCapturedWrite(Variable v, Cfg::CfgScope scope) {
+  any(VariableWriteAccess write | write.getVariable() = v and scope = write.getEnclosingCallable+())
+      .isCapture()
+}
+
+/**
+ * Holds if `v` is read inside basic block `bb` at index `i`, which is in the
+ * immediate outer scope of `scope`.
+ */
+pragma[noinline]
+private predicate variableReadActualInOuterScope(
+  BasicBlock bb, int i, Variable v, Cfg::CfgScope scope
+) {
+  variableReadActual(bb, i, v) and bb.getScope() = scope.getEnclosingCallable()
+}
+
+pragma[noinline]
+private predicate hasVariableReadWithCapturedWrite(
+  BasicBlock bb, int i, Variable v, Cfg::CfgScope scope
+) {
+  hasCapturedWrite(v, scope) and
+  variableReadActualInOuterScope(bb, i, v, scope)
 }
 
 private predicate adjacentDefReachesRead(
@@ -207,14 +238,79 @@ private predicate lastRefSkipUncertainReadsExt(DefinitionExt def, BasicBlock bb,
   )
 }
 
-/** Holds if `bb` contains a captured access to variable `v`. */
+private VariableAccess getACapturedVariableAccess(BasicBlock bb, Variable v) {
+  result = bb.getANode().getAstNode() and
+  result.isCapture() and
+  result.getVariable() = v
+}
+
+/** Holds if `bb` contains a captured write to variable `v`. */
+pragma[noinline]
+private predicate writesCapturedVariable(BasicBlock bb, Variable v) {
+  getACapturedVariableAccess(bb, v) instanceof VariableWriteAccess
+}
+
+/** Holds if `bb` contains a captured read to variable `v`. */
 pragma[nomagic]
-private predicate hasCapturedVariableAccess(BasicBlock bb, Variable v) {
-  exists(VariableAccess read |
-    read = bb.getANode().getAstNode() and
-    read.isCapture() and
-    read.getVariable() = v
+private predicate readsCapturedVariable(BasicBlock bb, Variable v) {
+  getACapturedVariableAccess(bb, v) instanceof VariableReadAccess
+}
+
+/**
+ * Holds if captured variable `v` is read directly inside `scope`,
+ * or inside a (transitively) nested scope of `scope`.
+ */
+pragma[noinline]
+private predicate hasCapturedRead(Variable v, Cfg::CfgScope scope) {
+  any(VariableReadAccess read | read.getVariable() = v and scope = read.getEnclosingCallable+())
+      .isCapture()
+}
+
+/**
+ * Holds if `v` is written inside basic block `bb` at index `i`, which is in
+ * the immediate outer scope of `scope`.
+ */
+pragma[noinline]
+private predicate variableWriteInOuterScope(BasicBlock bb, int i, Variable v, Cfg::CfgScope scope) {
+  SsaInput::variableWrite(bb, i, v, _) and scope.getEnclosingCallable() = bb.getScope()
+}
+
+/**
+ * Holds if the call `call` at index `i` in basic block `bb` may reach
+ * a callable that reads captured variable `v`.
+ */
+private predicate capturedCallRead(CallExprBase call, BasicBlock bb, int i, Variable v) {
+  exists(Cfg::CfgScope scope |
+    hasCapturedRead(v, scope) and
+    (
+      variableWriteInOuterScope(bb, any(int j | j < i), v, scope) or
+      variableWriteInOuterScope(bb.getAPredecessor+(), _, v, scope)
+    ) and
+    call = bb.getNode(i).getAstNode()
   )
+}
+
+/**
+ * Holds if the call `call` at index `i` in basic block `bb` may reach a callable
+ * that writes captured variable `v`.
+ */
+predicate capturedCallWrite(CallExprBase call, BasicBlock bb, int i, Variable v) {
+  call = bb.getNode(i).getAstNode() and
+  exists(Cfg::CfgScope scope |
+    hasVariableReadWithCapturedWrite(bb, any(int j | j > i), v, scope)
+    or
+    hasVariableReadWithCapturedWrite(bb.getASuccessor+(), _, v, scope)
+  )
+}
+
+/**
+ * Holds if a pseudo read of captured variable `v` should be inserted
+ * at index `i` in exit block `bb`.
+ */
+private predicate capturedExitRead(AnnotatedExitBasicBlock bb, int i, Variable v) {
+  bb.isNormal() and
+  writesCapturedVariable(bb.getAPredecessor*(), v) and
+  i = bb.length()
 }
 
 cached
@@ -225,7 +321,7 @@ private module Cached {
    */
   cached
   predicate capturedEntryWrite(EntryBasicBlock bb, int i, Variable v) {
-    hasCapturedVariableAccess(bb.getASuccessor*(), v) and
+    readsCapturedVariable(bb.getASuccessor*(), v) and
     i = -1
   }
 

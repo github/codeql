@@ -1,0 +1,2 @@
+query: TestUtilities/inline-tests/queries/PathProblemQuery.ql
+postprocess: TestUtilities/InlineExpectationsTestQuery.ql

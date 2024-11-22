@@ -2,6 +2,7 @@ using Semmle.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Semmle.Extraction.PowerShell.Entities
 {
@@ -14,6 +15,18 @@ namespace Semmle.Extraction.PowerShell.Entities
         {
         }
 
+        private static string[] GetPSModulePaths()
+        {
+            return Environment.GetEnvironmentVariable("PSModulePath")?.Split(Path.PathSeparator)
+                ?? Array.Empty<string>();
+        }
+
+        private bool PathIsInPSModulePath()
+        {
+            // Check if f's path is inside one of the paths in $Env:PSModulePath
+            return GetPSModulePaths().Any(originalPath.StartsWith);
+        }
+
         public override void Populate(TextWriter trapFile)
         {
             trapFile.files(this, TransformedPath.Value);
@@ -21,6 +34,11 @@ namespace Semmle.Extraction.PowerShell.Entities
             if (TransformedPath.ParentDirectory is PathTransformer.ITransformedPath dir)
             {
                 trapFile.containerparent(Extraction.Entities.Folder.Create(PowerShellContext, dir), this);
+            }
+
+            if(PathIsInPSModulePath())
+            {
+                trapFile.is_in_psmodule_path(this);
             }
 
             try

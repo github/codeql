@@ -113,7 +113,7 @@ module TestPostProcessing {
         )
     }
 
-    predicate results(string relation, int row, int column, string data) {
+    query predicate results(string relation, int row, int column, string data) {
       queryResults(relation, row, column, data) and
       (relation != "edges" or column != provenanceColumn())
       or

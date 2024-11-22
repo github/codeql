@@ -3,7 +3,8 @@
  */
 
 private import powershell
-private import Completion
+private import Completion as Comp
+private import Comp
 private import ControlFlowGraphImpl
 private import Cfg::SuccessorTypes
 private import semmle.code.powershell.controlflow.ControlFlowGraph as Cfg
@@ -11,12 +12,10 @@ private import semmle.code.powershell.controlflow.ControlFlowGraph as Cfg
 cached
 private module Cached {
   cached
-  newtype TSplitKind =
-    TConditionalCompletionSplitKind()
+  newtype TSplitKind = TConditionalCompletionSplitKind()
 
   cached
-  newtype TSplit =
-    TConditionalCompletionSplit(ConditionalCompletion c)
+  newtype TSplit = TConditionalCompletionSplit(ConditionalCompletion c)
 }
 
 import Cached
@@ -27,59 +26,57 @@ class Split extends TSplit {
   string toString() { none() }
 }
 
-private module ConditionalCompletionSplitting {
-  /**
-   * A split for conditional completions.
-   */
+module ConditionalCompletionSplitting {
   class ConditionalCompletionSplit extends Split, TConditionalCompletionSplit {
     ConditionalCompletion completion;
 
     ConditionalCompletionSplit() { this = TConditionalCompletionSplit(completion) }
 
+    ConditionalCompletion getCompletion() { result = completion }
+
     override string toString() { result = completion.toString() }
   }
 
-  // private class ConditionalCompletionSplitKind extends SplitKind, TConditionalCompletionSplitKind {
-  //   override int getListOrder() { result = 0 }
+  private class ConditionalCompletionSplitKind_ extends SplitKind, TConditionalCompletionSplitKind {
+    override int getListOrder() { result = 0 }
 
-  //   override predicate isEnabled(Ast n) { this.appliesTo(n) }
+    override predicate isEnabled(Ast n) { this.appliesTo(n) }
 
-  //   override string toString() { result = "ConditionalCompletion" }
-  // }
+    override string toString() { result = "ConditionalCompletion" }
+  }
 
-  int getNextListOrder() { result = 1 }
+  module ConditionalCompletionSplittingInput {
+    private import Completion as Comp
 
-//   private class ConditionalCompletionSplitImpl extends SplitImpl instanceof ConditionalCompletionSplit
-//   {
-//     ConditionalCompletion completion;
+    class ConditionalCompletion = Comp::ConditionalCompletion;
 
-//     ConditionalCompletionSplitImpl() { this = TConditionalCompletionSplit(completion) }
+    class ConditionalCompletionSplitKind extends ConditionalCompletionSplitKind_, TSplitKind { }
 
-//     override ConditionalCompletionSplitKind getKind() { any() }
+    class ConditionalCompletionSplit = ConditionalCompletionSplitting::ConditionalCompletionSplit;
 
-//     override predicate hasEntry(Ast pred, Ast succ, Completion c) {
-//       succ(pred, succ, c) and
-//       last(succ, _, completion) and
-//       none() // TODO
-//     }
+    bindingset[parent, parentCompletion]
+    predicate condPropagateExpr(
+      Ast parent, ConditionalCompletion parentCompletion, Ast child,
+      ConditionalCompletion childCompletion
+    ) {
+      child = parent.(NotExpr).getOperand() and
+      childCompletion.(BooleanCompletion).getDual() = parentCompletion
+      or
+      childCompletion = parentCompletion and
+      (
+        child = parent.(LogicalAndExpr).getAnOperand()
+        or
+        child = parent.(LogicalOrExpr).getAnOperand()
+        or
+        child = parent.(ConditionalExpr).getBranch(_)
+      )
+    }
 
-//     override predicate hasEntryScope(Cfg::CfgScope scope, Ast succ) { none() }
+    int getNextListOrder() { result = 1 }
 
-//     override predicate hasExit(Ast pred, Ast succ, Completion c) {
-//       this.appliesTo(pred) and
-//       succ(pred, succ, c) and
-//       if c instanceof ConditionalCompletion then completion = c else any()
-//     }
-
-//     override predicate hasExitScope(Cfg::CfgScope scope, Ast last, Completion c) {
-//       this.appliesTo(last) and
-//       succExit(scope, last, c) and
-//       if c instanceof ConditionalCompletion then completion = c else any()
-//     }
-
-//     override predicate hasSuccessor(Ast pred, Ast succ, Completion c) { none() }
-//   }
+    private class ConditionalCompletionSplitImpl extends SplitImplementations::ConditionalCompletionSplitting::ConditionalCompletionSplitImpl
+    { }
+  }
 }
 
 class ConditionalCompletionSplit = ConditionalCompletionSplitting::ConditionalCompletionSplit;
-

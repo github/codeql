@@ -179,15 +179,18 @@ def get_locations(objects):
         try:
             with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
                 data = json.load(resp)
+            assert len(data["objects"]) == len(
+                indexes
+            ), f"received {len(data)} objects, expected {len(indexes)}"
+            for i, resp in zip(indexes, data["objects"]):
+                ret[i] = f'{resp["oid"]} {resp["actions"]["download"]["href"]}'
+            return ret
         except urllib.error.URLError as e:
             warn(f"encountered {type(e).__name__} {e}, ignoring endpoint {endpoint.name}")
             continue
-        assert len(data["objects"]) == len(
-            indexes
-        ), f"received {len(data)} objects, expected {len(indexes)}"
-        for i, resp in zip(indexes, data["objects"]):
-            ret[i] = f'{resp["oid"]} {resp["actions"]["download"]["href"]}'
-        return ret
+        except KeyError:
+            warn(f"encountered malformed response, ignoring endpoint {endpoint.name}:\n{json.dumps(data, indent=2)}")
+            continue
     raise NoEndpointsFound
 
 
@@ -210,5 +213,12 @@ try:
     for resp in get_locations(objects):
         print(resp)
 except NoEndpointsFound as e:
-    print(f"ERROR: no valid endpoints found", file=sys.stderr)
+    print("""\
+ERROR: no valid endpoints found, your git authentication method might be currently unsupported by this script.
+You can bypass this error by running from semmle-code (this might take a while):
+  git config lfs.fetchexclude ""
+  git -C ql config lfs.fetchinclude \\*
+  git lfs fetch && git lfs checkout
+  cd ql
+  git lfs fetch && git lfs checkout""", file=sys.stderr)
     sys.exit(1)
