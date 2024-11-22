@@ -560,7 +560,7 @@ class StructType extends @structtype, CompositeType {
    * The depth of a field `f` declared in this type is zero.
    */
   Field getFieldAtDepth(string name, int depth) {
-    depth = min(int depthCand | exists(Field f | this.hasFieldCand(name, f, depthCand, _))) and
+    depth = min(int depthCand | this.hasFieldCand(name, _, depthCand, _)) and
     this.hasFieldCand(name, result, depth, _) and
     strictcount(Field f | this.hasFieldCand(name, f, depth, _)) = 1
   }
