@@ -95,7 +95,6 @@ fun KotlinFileExtractor.extractClassSource(
                     }
                 } else {
                     try {
-                        val decl = c.declaredMemberScope.declarations.toList()
                         c.declaredMemberScope.declarations.forEach {
                             extractDeclaration(
                                 it,
