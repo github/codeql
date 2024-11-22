@@ -33,8 +33,10 @@
 /FnPtrType/gen_fn_ptr_type.rs linguist-generated
 /ForExpr/gen_for_expr.rs linguist-generated
 /ForType/gen_for_type.rs linguist-generated
-/FormatArgsArg/gen_format_args_arg.rs linguist-generated
+/FormatArgsExpr/gen_format.rs linguist-generated
+/FormatArgsExpr/gen_format_args_arg.rs linguist-generated
 /FormatArgsExpr/gen_format_args_expr.rs linguist-generated
+/FormatArgsExpr/gen_format_argument.rs linguist-generated
 /Function/gen_function.rs linguist-generated
 /GenericArgList/gen_generic_arg_list.rs linguist-generated
 /GenericParamList/gen_generic_param_list.rs linguist-generated

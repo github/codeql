@@ -1011,6 +1011,7 @@ class _:
 
 
 @annotate(FormatArgsArg)
+@qltest.test_with(FormatArgsExpr)
 class _:
     """
     A FormatArgsArg. For example:
@@ -1025,9 +1026,14 @@ class _:
     """
     A FormatArgsExpr. For example:
     ```rust
-    todo!()
+    format_args!("no args");
+    format_args!("{} foo {:?}", 1, 2);
+    format_args!("{b} foo {a:?}", a=1, b=2);
+    let (x, y) = (1, 42);
+    format_args!("{x}, {y}");
     ```
     """
+    formats: list["Format"] | child | synth
 
 
 @annotate(GenericArg)
@@ -1766,14 +1772,15 @@ class _:
     attrs: drop
 
 
-@qltest.skip
 @synth.on_arguments(parent="FormatArgsExpr", index=int, kind=int)
+@qltest.test_with(FormatArgsExpr)
 class FormatTemplateVariableAccess(PathExprBase):
     pass
 
 
-@qltest.skip
 @synth.on_arguments(parent=FormatArgsExpr, index=int, text=string, offset=int)
+@qltest.test_with(FormatArgsExpr)
+
 class Format(Locatable):
     """
     A format element in a formatting template. For example the `{}` in:
@@ -1783,10 +1790,11 @@ class Format(Locatable):
     """
     parent: FormatArgsExpr
     index: int
+    argument: optional["FormatArgument"] | child
 
 
-@qltest.skip
 @synth.on_arguments(parent=FormatArgsExpr, index=int, kind=int, name=string, positional=boolean, offset=int)
+@qltest.test_with(FormatArgsExpr)
 class FormatArgument(Locatable):
     """
     An argument in a format element in a formatting template. For example the `width`, `precision`, and `value` in:
@@ -1799,6 +1807,7 @@ class FormatArgument(Locatable):
     ```
     """
     parent: Format
+    variable: optional[FormatTemplateVariableAccess] | child
 
 @annotate(Item)
 class _:

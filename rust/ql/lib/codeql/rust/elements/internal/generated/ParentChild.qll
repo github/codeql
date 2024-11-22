@@ -52,14 +52,17 @@ private module Impl {
   }
 
   private Element getImmediateChildOfFormat(Format e, int index, string partialPredicateCall) {
-    exists(int b, int bLocatable, int n |
+    exists(int b, int bLocatable, int n, int nArgument |
       b = 0 and
       bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
       n = bLocatable and
+      nArgument = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getArgument() and partialPredicateCall = "Argument()"
       )
     )
   }
@@ -67,14 +70,17 @@ private module Impl {
   private Element getImmediateChildOfFormatArgument(
     FormatArgument e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bLocatable, int n |
+    exists(int b, int bLocatable, int n, int nVariable |
       b = 0 and
       bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
       n = bLocatable and
+      nVariable = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getVariable() and partialPredicateCall = "Variable()"
       )
     )
   }
@@ -1761,13 +1767,14 @@ private module Impl {
   private Element getImmediateChildOfFormatArgsExpr(
     FormatArgsExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int n, int nArg, int nAttr, int nTemplate |
+    exists(int b, int bExpr, int n, int nArg, int nAttr, int nTemplate, int nFormat |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nArg = n + 1 + max(int i | i = -1 or exists(e.getArg(i)) | i) and
       nAttr = nArg + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nTemplate = nAttr + 1 and
+      nFormat = nTemplate + 1 + max(int i | i = -1 or exists(e.getFormat(i)) | i) and
       (
         none()
         or
@@ -1780,6 +1787,9 @@ private module Impl {
         partialPredicateCall = "Attr(" + (index - nArg).toString() + ")"
         or
         index = nAttr and result = e.getTemplate() and partialPredicateCall = "Template()"
+        or
+        result = e.getFormat(index - nTemplate) and
+        partialPredicateCall = "Format(" + (index - nTemplate).toString() + ")"
       )
     )
   }

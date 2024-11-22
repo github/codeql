@@ -16,16 +16,16 @@ module Impl {
   /**
    * A FormatArgsExpr. For example:
    * ```rust
-   * todo!()
+   * format_args!("no args");
+   * format_args!("{} foo {:?}", 1, 2);
+   * format_args!("{b} foo {a:?}", a=1, b=2);
+   * let (x, y) = (1, 42);
+   * format_args!("{x}, {y}");
    * ```
    */
   class FormatArgsExpr extends Generated::FormatArgsExpr {
-    /**
-     * Gets the `index`th format of this `FormatArgsExpr`'s formatting template (0-based).
-     */
-    Format getFormat(int index) {
-      result =
-        rank[index + 1](Format f, int i | f.getParent() = this and f.getIndex() = i | f order by i)
+    override Format getFormat(int index) {
+      result.getParent() = this and result.getIndex() = index + 1
     }
   }
 }
