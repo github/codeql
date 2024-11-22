@@ -614,22 +614,27 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TAddressable = TItem or TVariant;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TAssocItem = TConst or TFunction or TMacroCall or TTypeAlias;
 
   /**
    * INTERNAL: Do not use.
    */
   class TAstNode =
-    TAbi or TArgList or TAssocItem or TAssocItemList or TAttr or TCallable or TClosureBinder or
-        TExpr or TExternItem or TExternItemList or TFieldList or TFormatArgsArg or TGenericArg or
-        TGenericArgList or TGenericParam or TGenericParamList or TItemList or TLabel or TLetElse or
-        TLifetime or TMacroItems or TMacroStmts or TMatchArm or TMatchArmList or TMatchGuard or
-        TMeta or TName or TNameRef or TParam or TParamList or TPat or TPathSegment or
-        TRecordExprField or TRecordExprFieldList or TRecordField or TRecordPatField or
-        TRecordPatFieldList or TRename or TResolvable or TRetType or TReturnTypeSyntax or
-        TSelfParam or TSourceFile or TStmt or TStmtList or TToken or TTokenTree or TTupleField or
-        TTypeBound or TTypeBoundList or TTypeRef or TUseTree or TUseTreeList or TVariant or
-        TVariantList or TVisibility or TWhereClause or TWherePred;
+    TAbi or TAddressable or TArgList or TAssocItem or TAssocItemList or TAttr or TCallable or
+        TClosureBinder or TExpr or TExternItem or TExternItemList or TFieldList or TFormatArgsArg or
+        TGenericArg or TGenericArgList or TGenericParam or TGenericParamList or TItemList or
+        TLabel or TLetElse or TLifetime or TMacroItems or TMacroStmts or TMatchArm or
+        TMatchArmList or TMatchGuard or TMeta or TName or TNameRef or TParam or TParamList or
+        TPat or TPathSegment or TRecordExprField or TRecordExprFieldList or TRecordField or
+        TRecordPatField or TRecordPatFieldList or TRename or TResolvable or TRetType or
+        TReturnTypeSyntax or TSelfParam or TSourceFile or TStmt or TStmtList or TToken or
+        TTokenTree or TTupleField or TTypeBound or TTypeBoundList or TTypeRef or TUseTree or
+        TUseTreeList or TVariantList or TVisibility or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -1616,6 +1621,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TAddressable`, if possible.
+   */
+  TAddressable convertAddressableFromRaw(Raw::Element e) {
+    result = convertItemFromRaw(e)
+    or
+    result = convertVariantFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TAssocItem`, if possible.
    */
   TAssocItem convertAssocItemFromRaw(Raw::Element e) {
@@ -1634,6 +1649,8 @@ module Synth {
    */
   TAstNode convertAstNodeFromRaw(Raw::Element e) {
     result = convertAbiFromRaw(e)
+    or
+    result = convertAddressableFromRaw(e)
     or
     result = convertArgListFromRaw(e)
     or
@@ -1738,8 +1755,6 @@ module Synth {
     result = convertUseTreeFromRaw(e)
     or
     result = convertUseTreeListFromRaw(e)
-    or
-    result = convertVariantFromRaw(e)
     or
     result = convertVariantListFromRaw(e)
     or
@@ -2966,6 +2981,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TAddressable` to a raw DB element, if possible.
+   */
+  Raw::Element convertAddressableToRaw(TAddressable e) {
+    result = convertItemToRaw(e)
+    or
+    result = convertVariantToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TAssocItem` to a raw DB element, if possible.
    */
   Raw::Element convertAssocItemToRaw(TAssocItem e) {
@@ -2984,6 +3009,8 @@ module Synth {
    */
   Raw::Element convertAstNodeToRaw(TAstNode e) {
     result = convertAbiToRaw(e)
+    or
+    result = convertAddressableToRaw(e)
     or
     result = convertArgListToRaw(e)
     or
@@ -3088,8 +3115,6 @@ module Synth {
     result = convertUseTreeToRaw(e)
     or
     result = convertUseTreeListToRaw(e)
-    or
-    result = convertVariantToRaw(e)
     or
     result = convertVariantListToRaw(e)
     or

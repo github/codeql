@@ -1,70 +1,89 @@
 canonicalPaths
-| canonical_paths.rs:1:1:34:1 | Module | repo::test | crate::canonical_paths::a |
-| canonical_paths.rs:2:5:3:22 | Struct | repo::test | crate::canonical_paths::a::Struct |
-| canonical_paths.rs:5:5:7:5 | Trait | repo::test | crate::canonical_paths::a::Trait |
-| canonical_paths.rs:6:9:6:20 | f | repo::test | crate::canonical_paths::a::Trait::f |
-| canonical_paths.rs:9:5:11:5 | Impl | None | None |
-| canonical_paths.rs:10:9:10:22 | f | repo::test | <crate::canonical_paths::a::Struct as crate::canonical_paths::a::Trait>::f |
-| canonical_paths.rs:13:5:15:5 | Impl | None | None |
-| canonical_paths.rs:14:9:14:22 | g | repo::test | <crate::canonical_paths::a::Struct>::g |
-| canonical_paths.rs:17:5:19:5 | Trait | repo::test | crate::canonical_paths::a::TraitWithBlanketImpl |
-| canonical_paths.rs:18:9:18:20 | h | repo::test | crate::canonical_paths::a::TraitWithBlanketImpl::h |
-| canonical_paths.rs:21:5:23:5 | Impl | None | None |
-| canonical_paths.rs:22:9:22:22 | h | repo::test | <_ as crate::canonical_paths::a::TraitWithBlanketImpl>::h |
-| canonical_paths.rs:25:5:25:16 | free | repo::test | crate::canonical_paths::a::free |
-| canonical_paths.rs:27:5:33:5 | usage | repo::test | crate::canonical_paths::a::usage |
-| canonical_paths.rs:36:1:73:1 | Module | repo::test | crate::canonical_paths::without |
-| canonical_paths.rs:37:5:37:24 | Use | None | None |
-| canonical_paths.rs:39:5:68:5 | canonicals | repo::test | crate::canonical_paths::without::canonicals |
-| canonical_paths.rs:40:9:40:27 | Struct | repo::test | {34}::OtherStruct |
-| canonical_paths.rs:42:9:44:9 | Trait | repo::test | {34}::OtherTrait |
-| canonical_paths.rs:43:13:43:24 | g | repo::test | {34}::OtherTrait::g |
-| canonical_paths.rs:46:9:48:9 | Impl | None | None |
-| canonical_paths.rs:47:13:47:26 | g | repo::test | <{34}::OtherStruct as {34}::OtherTrait>::g |
-| canonical_paths.rs:50:9:52:9 | Impl | None | None |
-| canonical_paths.rs:51:13:51:26 | g | repo::test | <crate::canonical_paths::a::Struct as {34}::OtherTrait>::g |
-| canonical_paths.rs:54:9:56:9 | Impl | None | None |
-| canonical_paths.rs:55:13:55:26 | f | repo::test | <{34}::OtherStruct as crate::canonical_paths::a::Trait>::f |
-| canonical_paths.rs:58:9:60:9 | nested | repo::test | {34}::nested |
-| canonical_paths.rs:59:13:59:31 | Struct | repo::test | {35}::OtherStruct |
-| canonical_paths.rs:62:9:67:9 | usage | repo::test | {34}::usage |
-| canonical_paths.rs:70:5:72:5 | other | repo::test | crate::canonical_paths::without::other |
-| canonical_paths.rs:71:9:71:27 | Struct | repo::test | {36}::OtherStruct |
-| lib.rs:1:1:1:20 | Module | repo::test | crate::canonical_paths |
+| anonymous.rs:1:1:1:26 | Use | None | None |
+| anonymous.rs:3:1:32:1 | canonicals | repo::test | crate::anonymous::canonicals |
+| anonymous.rs:4:5:4:23 | Struct | repo::test | {0}::OtherStruct |
+| anonymous.rs:6:5:8:5 | Trait | repo::test | {0}::OtherTrait |
+| anonymous.rs:7:9:7:20 | g | repo::test | {0}::OtherTrait::g |
+| anonymous.rs:10:5:12:5 | Impl | None | None |
+| anonymous.rs:11:9:11:22 | g | repo::test | <{0}::OtherStruct as {0}::OtherTrait>::g |
+| anonymous.rs:14:5:16:5 | Impl | None | None |
+| anonymous.rs:15:9:15:22 | g | repo::test | <crate::regular::Struct as {0}::OtherTrait>::g |
+| anonymous.rs:18:5:20:5 | Impl | None | None |
+| anonymous.rs:19:9:19:22 | f | repo::test | <{0}::OtherStruct as crate::regular::Trait>::f |
+| anonymous.rs:22:5:24:5 | nested | repo::test | {0}::nested |
+| anonymous.rs:23:9:23:27 | Struct | repo::test | {1}::OtherStruct |
+| anonymous.rs:26:5:31:5 | usage | repo::test | {0}::usage |
+| anonymous.rs:34:1:36:1 | other | repo::test | crate::anonymous::other |
+| anonymous.rs:35:5:35:23 | Struct | repo::test | {36}::OtherStruct |
+| lib.rs:1:1:1:14 | Module | repo::test | crate::anonymous |
+| lib.rs:2:1:2:12 | Module | repo::test | crate::regular |
+| regular.rs:1:1:2:18 | Struct | repo::test | crate::regular::Struct |
+| regular.rs:4:1:6:1 | Trait | repo::test | crate::regular::Trait |
+| regular.rs:5:5:5:16 | f | repo::test | crate::regular::Trait::f |
+| regular.rs:8:1:10:1 | Impl | None | None |
+| regular.rs:9:5:9:18 | f | repo::test | <crate::regular::Struct as crate::regular::Trait>::f |
+| regular.rs:12:1:14:1 | Impl | None | None |
+| regular.rs:13:5:13:18 | g | repo::test | <crate::regular::Struct>::g |
+| regular.rs:16:1:18:1 | Trait | repo::test | crate::regular::TraitWithBlanketImpl |
+| regular.rs:17:5:17:16 | h | repo::test | crate::regular::TraitWithBlanketImpl::h |
+| regular.rs:20:1:22:1 | Impl | None | None |
+| regular.rs:21:5:21:18 | h | repo::test | <_ as crate::regular::TraitWithBlanketImpl>::h |
+| regular.rs:24:1:24:12 | free | repo::test | crate::regular::free |
+| regular.rs:26:1:32:1 | usage | repo::test | crate::regular::usage |
+| regular.rs:34:1:38:1 | Enum | repo::test | crate::regular::MyEnum |
+| regular.rs:40:1:46:1 | enum_qualified_usage | repo::test | crate::regular::enum_qualified_usage |
+| regular.rs:48:1:55:1 | enum_unqualified_usage | repo::test | crate::regular::enum_unqualified_usage |
+| regular.rs:51:5:51:18 | Use | None | None |
 resolvedPaths
-| canonical_paths.rs:2:7:2:12 | derive | None | None |
-| canonical_paths.rs:9:10:9:14 | Trait | repo::test | crate::canonical_paths::a::Trait |
-| canonical_paths.rs:9:20:9:25 | Struct | repo::test | crate::canonical_paths::a::Struct |
-| canonical_paths.rs:13:10:13:15 | Struct | repo::test | crate::canonical_paths::a::Struct |
-| canonical_paths.rs:21:13:21:14 | Eq | lang:core | crate::cmp::Eq |
-| canonical_paths.rs:21:17:21:36 | TraitWithBlanketImpl | repo::test | crate::canonical_paths::a::TraitWithBlanketImpl |
-| canonical_paths.rs:21:42:21:42 | T | None | None |
-| canonical_paths.rs:28:17:28:22 | Struct | repo::test | crate::canonical_paths::a::Struct |
-| canonical_paths.rs:29:9:29:9 | s | None | None |
-| canonical_paths.rs:29:9:29:13 | ... .f(...) | repo::test | <crate::canonical_paths::a::Struct as crate::canonical_paths::a::Trait>::f |
-| canonical_paths.rs:30:9:30:9 | s | None | None |
-| canonical_paths.rs:30:9:30:13 | ... .g(...) | repo::test | <crate::canonical_paths::a::Struct>::g |
-| canonical_paths.rs:31:9:31:9 | s | None | None |
-| canonical_paths.rs:31:9:31:13 | ... .h(...) | repo::test | <_ as crate::canonical_paths::a::TraitWithBlanketImpl>::h |
-| canonical_paths.rs:32:9:32:12 | free | repo::test | crate::canonical_paths::a::free |
-| canonical_paths.rs:37:9:37:13 | super | repo::test | crate::canonical_paths |
-| canonical_paths.rs:37:9:37:16 | super::a | repo::test | crate::canonical_paths::a |
-| canonical_paths.rs:37:9:37:23 | super::a::Trait | repo::test | crate::canonical_paths::a::Trait |
-| canonical_paths.rs:46:14:46:23 | OtherTrait | repo::test | {34}::OtherTrait |
-| canonical_paths.rs:46:29:46:39 | OtherStruct | repo::test | {34}::OtherStruct |
-| canonical_paths.rs:50:14:50:23 | OtherTrait | repo::test | {34}::OtherTrait |
-| canonical_paths.rs:50:29:50:33 | crate | None | None |
-| canonical_paths.rs:50:29:50:50 | crate::canonical_paths | repo::test | crate::canonical_paths |
-| canonical_paths.rs:50:29:50:53 | crate::canonical_paths::a | repo::test | crate::canonical_paths::a |
-| canonical_paths.rs:50:29:50:61 | crate::canonical_paths::a::Struct | repo::test | crate::canonical_paths::a::Struct |
-| canonical_paths.rs:54:14:54:18 | crate | None | None |
-| canonical_paths.rs:54:14:54:35 | crate::canonical_paths | repo::test | crate::canonical_paths |
-| canonical_paths.rs:54:14:54:38 | crate::canonical_paths::a | repo::test | crate::canonical_paths::a |
-| canonical_paths.rs:54:14:54:45 | crate::canonical_paths::a::Trait | repo::test | crate::canonical_paths::a::Trait |
-| canonical_paths.rs:54:51:54:61 | OtherStruct | repo::test | {34}::OtherStruct |
-| canonical_paths.rs:63:21:63:31 | OtherStruct | repo::test | {34}::OtherStruct |
-| canonical_paths.rs:64:13:64:13 | s | None | None |
-| canonical_paths.rs:64:13:64:17 | ... .f(...) | repo::test | <{34}::OtherStruct as crate::canonical_paths::a::Trait>::f |
-| canonical_paths.rs:65:13:65:13 | s | None | None |
-| canonical_paths.rs:65:13:65:17 | ... .g(...) | repo::test | <{34}::OtherStruct as {34}::OtherTrait>::g |
-| canonical_paths.rs:66:13:66:18 | nested | repo::test | {34}::nested |
+| anonymous.rs:1:5:1:9 | super | None | None |
+| anonymous.rs:1:5:1:18 | super::regular | repo::test | crate::regular |
+| anonymous.rs:1:5:1:25 | super::regular::Trait | repo::test | crate::regular::Trait |
+| anonymous.rs:10:10:10:19 | OtherTrait | repo::test | {0}::OtherTrait |
+| anonymous.rs:10:25:10:35 | OtherStruct | repo::test | {0}::OtherStruct |
+| anonymous.rs:14:10:14:19 | OtherTrait | repo::test | {0}::OtherTrait |
+| anonymous.rs:14:25:14:29 | crate | None | None |
+| anonymous.rs:14:25:14:38 | crate::regular | repo::test | crate::regular |
+| anonymous.rs:14:25:14:46 | crate::regular::Struct | repo::test | crate::regular::Struct |
+| anonymous.rs:18:10:18:14 | crate | None | None |
+| anonymous.rs:18:10:18:23 | crate::regular | repo::test | crate::regular |
+| anonymous.rs:18:10:18:30 | crate::regular::Trait | repo::test | crate::regular::Trait |
+| anonymous.rs:18:36:18:46 | OtherStruct | repo::test | {0}::OtherStruct |
+| anonymous.rs:27:17:27:27 | OtherStruct | repo::test | {0}::OtherStruct |
+| anonymous.rs:28:9:28:9 | s | None | None |
+| anonymous.rs:28:9:28:13 | ... .f(...) | repo::test | <{0}::OtherStruct as crate::regular::Trait>::f |
+| anonymous.rs:29:9:29:9 | s | None | None |
+| anonymous.rs:29:9:29:13 | ... .g(...) | repo::test | <{0}::OtherStruct as {0}::OtherTrait>::g |
+| anonymous.rs:30:9:30:14 | nested | repo::test | {0}::nested |
+| regular.rs:1:3:1:8 | derive | None | None |
+| regular.rs:8:6:8:10 | Trait | repo::test | crate::regular::Trait |
+| regular.rs:8:16:8:21 | Struct | repo::test | crate::regular::Struct |
+| regular.rs:12:6:12:11 | Struct | repo::test | crate::regular::Struct |
+| regular.rs:20:9:20:10 | Eq | lang:core | crate::cmp::Eq |
+| regular.rs:20:13:20:32 | TraitWithBlanketImpl | repo::test | crate::regular::TraitWithBlanketImpl |
+| regular.rs:20:38:20:38 | T | None | None |
+| regular.rs:27:13:27:18 | Struct | repo::test | crate::regular::Struct |
+| regular.rs:28:5:28:5 | s | None | None |
+| regular.rs:28:5:28:9 | ... .f(...) | repo::test | <crate::regular::Struct as crate::regular::Trait>::f |
+| regular.rs:29:5:29:5 | s | None | None |
+| regular.rs:29:5:29:9 | ... .g(...) | repo::test | <crate::regular::Struct>::g |
+| regular.rs:30:5:30:5 | s | None | None |
+| regular.rs:30:5:30:9 | ... .h(...) | repo::test | <_ as crate::regular::TraitWithBlanketImpl>::h |
+| regular.rs:31:5:31:8 | free | repo::test | crate::regular::free |
+| regular.rs:36:14:36:18 | usize | None | None |
+| regular.rs:37:19:37:23 | usize | None | None |
+| regular.rs:41:9:41:14 | Option | lang:core | crate::option::Option |
+| regular.rs:41:9:41:26 | Option::None::<...> | lang:core | crate::option::Option::None |
+| regular.rs:42:9:42:14 | Option | lang:core | crate::option::Option |
+| regular.rs:42:9:42:20 | Option::Some | lang:core | crate::option::Option::Some |
+| regular.rs:43:9:43:14 | MyEnum | repo::test | crate::regular::MyEnum |
+| regular.rs:43:9:43:24 | MyEnum::Variant1 | repo::test | crate::regular::MyEnum::Variant1 |
+| regular.rs:44:9:44:14 | MyEnum | repo::test | crate::regular::MyEnum |
+| regular.rs:44:9:44:24 | MyEnum::Variant2 | repo::test | crate::regular::MyEnum::Variant2 |
+| regular.rs:45:9:45:14 | MyEnum | repo::test | crate::regular::MyEnum |
+| regular.rs:45:9:45:24 | MyEnum::Variant3 | repo::test | crate::regular::MyEnum::Variant3 |
+| regular.rs:49:9:49:18 | None::<...> | lang:core | crate::option::Option::None |
+| regular.rs:50:9:50:12 | Some | lang:core | crate::option::Option::Some |
+| regular.rs:51:9:51:14 | MyEnum | repo::test | crate::regular::MyEnum |
+| regular.rs:52:9:52:16 | Variant1 | repo::test | crate::regular::MyEnum::Variant1 |
+| regular.rs:53:9:53:16 | Variant2 | repo::test | crate::regular::MyEnum::Variant2 |
+| regular.rs:54:9:54:16 | Variant3 | repo::test | crate::regular::MyEnum::Variant3 |
