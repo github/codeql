@@ -12,6 +12,55 @@ private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
 
+private newtype TReturnKind = TNormalReturnKind()
+
+/**
+ * A return kind. A return kind describes how a value can be returned from a
+ * callable.
+ *
+ * The only return kind is a "normal" return from a `return` statement or an
+ * expression body.
+ */
+final class ReturnKind extends TNormalReturnKind {
+  string toString() { result = "return" }
+}
+
+/**
+ * A callable. This includes callables from source code, as well as callables
+ * defined in library code.
+ */
+final class DataFlowCallable extends TDataFlowCallable {
+  /**
+   * Gets the underlying CFG scope, if any.
+   */
+  CfgScope asCfgScope() { this = TCfgScope(result) }
+
+  /** Gets a textual representation of this callable. */
+  string toString() { result = this.asCfgScope().toString() }
+
+  /** Gets the location of this callable. */
+  Location getLocation() { result = this.asCfgScope().getLocation() }
+}
+
+final class DataFlowCall extends TDataFlowCall {
+  /** Gets the underlying call in the CFG, if any. */
+  CallExprCfgNode asCallExprCfgNode() { this = TNormalCall(result) }
+
+  MethodCallExprCfgNode asMethodCallExprCfgNode() { this = TMethodCall(result) }
+
+  CallExprBaseCfgNode asExprCfgNode() {
+    result = this.asCallExprCfgNode() or result = this.asMethodCallExprCfgNode()
+  }
+
+  DataFlowCallable getEnclosingCallable() {
+    result = TCfgScope(this.asExprCfgNode().getExpr().getEnclosingCfgScope())
+  }
+
+  string toString() { result = this.asExprCfgNode().toString() }
+
+  Location getLocation() { result = this.asExprCfgNode().getLocation() }
+}
+
 module Node {
   /**
    * An element, viewed as a node in a data flow graph. Either an expression
@@ -27,7 +76,13 @@ module Node {
     /**
      * Gets the expression that corresponds to this node, if any.
      */
-    Expr asExpr() { none() }
+    ExprCfgNode asExpr() { none() }
+
+    /** Gets the enclosing callable. */
+    DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.getCfgScope()) }
+
+    /** Do not call: use `getEnclosingCallable()` instead. */
+    abstract CfgScope getCfgScope();
 
     /**
      * Gets the control flow node that corresponds to this data flow node.
@@ -49,48 +104,62 @@ module Node {
   final class NaNode extends Node {
     NaNode() { none() }
 
+    override CfgScope getCfgScope() { none() }
+
     override string toString() { result = "N/A" }
 
     override Location getLocation() { none() }
+  }
+
+  /** A data flow node that corresponds to a CFG node for an AST node. */
+  abstract class AstCfgFlowNode extends Node {
+    AstCfgNode n;
+
+    final override CfgNode getCfgNode() { result = n }
+
+    final override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
+
+    final override Location getLocation() { result = n.getAstNode().getLocation() }
+
+    final override string toString() { result = n.getAstNode().toString() }
   }
 
   /**
    * A node in the data flow graph that corresponds to an expression in the
    * AST.
    *
-   * Note that because of control-flow splitting, one `Expr` may correspond
+   * Note that because of control flow splitting, one `Expr` may correspond
    * to multiple `ExprNode`s, just like it may correspond to multiple
    * `ControlFlow::Node`s.
    */
-  final class ExprNode extends Node, TExprNode {
-    ExprCfgNode n;
+  class ExprNode extends AstCfgFlowNode, TExprNode {
+    override ExprCfgNode n;
 
     ExprNode() { this = TExprNode(n) }
 
-    override Location getLocation() { result = n.getExpr().getLocation() }
+    override ExprCfgNode asExpr() { result = n }
+  }
 
-    override string toString() { result = n.getExpr().toString() }
+  final class PatNode extends AstCfgFlowNode, TPatNode {
+    override PatCfgNode n;
 
-    override Expr asExpr() { result = n.getExpr() }
+    PatNode() { this = TPatNode(n) }
 
-    override CfgNode getCfgNode() { result = n }
+    /** Gets the `Pat` in the AST that this node corresponds to. */
+    Pat getPat() { result = n.getPat() }
   }
 
   /**
    * The value of a parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  final class ParameterNode extends Node, TParameterNode {
-    Param parameter;
+  final class ParameterNode extends AstCfgFlowNode, TParameterNode {
+    override ParamCfgNode n;
 
-    ParameterNode() { this = TParameterNode(parameter) }
+    ParameterNode() { this = TParameterNode(n) }
 
-    override Location getLocation() { result = parameter.getLocation() }
-
-    override string toString() { result = parameter.toString() }
-
-    /** Gets the parameter in the AST that this node corresponds to. */
-    Param getParameter() { result = parameter }
+    /** Gets the parameter in the CFG that this node corresponds to. */
+    ParamCfgNode getParameter() { result = n }
   }
 
   final class ArgumentNode = NaNode;
@@ -105,21 +174,34 @@ module Node {
       def = node.getDefinitionExt()
     }
 
-    SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+    override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
 
-    /** Holds if this node should be hidden from path explanations. */
-    abstract predicate isHidden();
+    SsaImpl::DefinitionExt getDefinitionExt() { result = def }
 
     override Location getLocation() { result = node.getLocation() }
 
-    override string toString() { result = node.toString() }
+    override string toString() { result = "[SSA] " + node.toString() }
   }
 
-  final class ReturnNode extends NaNode {
-    RustDataFlow::ReturnKind getKind() { none() }
+  /** A data flow node that represents a value returned by a callable. */
+  final class ReturnNode extends ExprNode {
+    ReturnNode() { this.getCfgNode().getASuccessor() instanceof ExitCfgNode }
+
+    ReturnKind getKind() { any() }
   }
 
-  final class OutNode = NaNode;
+  /** A data-flow node that represents the output of a call. */
+  abstract class OutNode extends Node, ExprNode {
+    /** Gets the underlying call for this node. */
+    abstract DataFlowCall getCall();
+  }
+
+  final private class ExprOutNode extends ExprNode, OutNode {
+    ExprOutNode() { this.asExpr() instanceof CallExprCfgNode }
+
+    /** Gets the underlying call CFG node that includes this out node. */
+    override DataFlowCall getCall() { result.asExprCfgNode() = this.getCfgNode() }
+  }
 
   /**
    * A node associated with an object after an operation that might have
@@ -146,13 +228,13 @@ final class Node = Node::Node;
 module SsaFlow {
   private module Impl = SsaImpl::DataFlowIntegration;
 
-  private Node::ParameterNode toParameterNode(Param p) { result = TParameterNode(p) }
+  private Node::ParameterNode toParameterNode(ParamCfgNode p) { result.getParameter() = p }
 
   /** Converts a control flow node into an SSA control flow node. */
   Impl::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(Impl::ExprNode).getExpr() = n.(Node::ExprNode).getCfgNode()
+    result.(Impl::ExprNode).getExpr() = n.asExpr()
     or
     n = toParameterNode(result.(Impl::ParameterNode).getParameter())
   }
@@ -167,36 +249,47 @@ module SsaFlow {
 }
 
 /**
- * Holds for expressions `e` that evaluate to the value of any last (in
- * evaluation order) subexpressions within it. E.g., expressions that propagate
- * a values from a subexpression.
- *
- * For instance, the predicate holds for if expressions as `if b { e1 } else {
- * e2 }` evalates to the value of one of the subexpressions `e1` or `e2`.
- */
-private predicate propagatesValue(Expr e) {
-  e instanceof IfExpr or
-  e instanceof LoopExpr or
-  e instanceof ReturnExpr or
-  e instanceof BreakExpr or
-  e.(BlockExpr).getStmtList().hasTailExpr() or
-  e instanceof MatchExpr
-}
-
-/**
  * Gets a node that may execute last in `n`, and which, when it executes last,
  * will be the value of `n`.
  */
-private ExprCfgNode getALastEvalNode(ExprCfgNode n) {
-  propagatesValue(n.getExpr()) and result.getASuccessor() = n
+private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
+  e = any(IfExprCfgNode n | result = [n.getThen(), n.getElse()]) or
+  result = e.(LoopExprCfgNode).getLoopBody() or
+  result = e.(ReturnExprCfgNode).getExpr() or
+  result = e.(BreakExprCfgNode).getExpr() or
+  result = e.(BlockExprCfgNode).getTailExpr() or
+  result = e.(MatchExprCfgNode).getArmExpr(_) or
+  result.(BreakExprCfgNode).getTarget() = e
 }
 
 module LocalFlow {
   pragma[nomagic]
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     nodeFrom.getCfgNode() = getALastEvalNode(nodeTo.getCfgNode())
+    or
+    exists(LetStmtCfgNode s |
+      nodeFrom.getCfgNode() = s.getInitializer() and
+      nodeTo.getCfgNode() = s.getPat()
+    )
+    or
+    // An edge from a pattern/expression to its corresponding SSA definition.
+    nodeFrom.(Node::AstCfgFlowNode).getCfgNode() =
+      nodeTo.(Node::SsaNode).getDefinitionExt().(Ssa::WriteDefinition).getControlFlowNode()
+    or
+    SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
+    or
+    exists(AssignmentExprCfgNode a |
+      a.getRhs() = nodeFrom.getCfgNode() and
+      a.getLhs() = nodeTo.getCfgNode()
+    )
   }
 }
+
+private class DataFlowCallableAlias = DataFlowCallable;
+
+private class ReturnKindAlias = ReturnKind;
+
+private class DataFlowCallAlias = DataFlowCall;
 
 module RustDataFlow implements InputSig<Location> {
   /**
@@ -221,37 +314,41 @@ module RustDataFlow implements InputSig<Location> {
 
   predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) { none() }
 
-  DataFlowCallable nodeGetEnclosingCallable(Node node) { none() }
+  DataFlowCallable nodeGetEnclosingCallable(Node node) { result = node.getEnclosingCallable() }
 
   DataFlowType getNodeType(Node node) { any() }
 
-  predicate nodeIsHidden(Node node) { none() }
+  predicate nodeIsHidden(Node node) { node instanceof Node::SsaNode }
 
   class DataFlowExpr = ExprCfgNode;
 
   /** Gets the node corresponding to `e`. */
-  Node exprNode(DataFlowExpr e) { result.getCfgNode() = e }
+  Node exprNode(DataFlowExpr e) { result.asExpr() = e }
 
-  final class DataFlowCall extends TNormalCall {
-    private CallExpr c;
+  final class DataFlowCall = DataFlowCallAlias;
 
-    DataFlowCall() { this = TNormalCall(c) }
+  final class DataFlowCallable = DataFlowCallableAlias;
 
-    DataFlowCallable getEnclosingCallable() { none() }
-
-    string toString() { result = c.toString() }
-
-    Location getLocation() { result = c.getLocation() }
-  }
-
-  final class DataFlowCallable = CfgScope;
-
-  final class ReturnKind = Void;
+  final class ReturnKind = ReturnKindAlias;
 
   /** Gets a viable implementation of the target of the given `Call`. */
-  DataFlowCallable viableCallable(DataFlowCall c) { none() }
+  DataFlowCallable viableCallable(DataFlowCall c) {
+    exists(Function f, string name | result.asCfgScope() = f and name = f.getName().toString() |
+      if f.getParamList().hasSelfParam()
+      then name = c.asMethodCallExprCfgNode().getMethodCallExpr().getNameRef().getText()
+      else
+        name =
+          c.asCallExprCfgNode().getCallExpr().getExpr().(PathExpr).getPath().getPart().toString()
+    )
+  }
 
-  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { none() }
+  /**
+   * Gets a node that can read the value returned from `call` with return kind
+   * `kind`.
+   */
+  OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
+    call = result.getCall() and exists(kind)
+  }
 
   // NOTE: For now we use the type `Unit` and do not benefit from type
   // information in the data flow analysis.
@@ -298,7 +395,10 @@ module RustDataFlow implements InputSig<Location> {
    * Holds if there is a simple local flow step from `node1` to `node2`. These
    * are the value-preserving intra-callable flow steps.
    */
-  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) { none() }
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+    LocalFlow::localFlowStepCommon(nodeFrom, nodeTo) and
+    model = ""
+  }
 
   /**
    * Holds if data can flow from `node1` to `node2` through a non-local step
@@ -396,11 +496,14 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(ExprCfgNode n) or
-    TParameterNode(Param p) or
+    TParameterNode(ParamCfgNode p) or
+    TPatNode(PatCfgNode p) or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node)
 
   cached
-  newtype TDataFlowCall = TNormalCall(CallExpr c)
+  newtype TDataFlowCall =
+    TNormalCall(CallExprCfgNode c) or
+    TMethodCall(MethodCallExprCfgNode c)
 
   cached
   newtype TOptionalContentSet =
@@ -410,12 +513,13 @@ private module Cached {
   cached
   class TContentSet = TAnyElementContent or TAnyContent;
 
+  cached
+  newtype TDataFlowCallable = TCfgScope(CfgScope scope)
+
   /** This is the local flow predicate that is exposed. */
   cached
   predicate localFlowStepImpl(Node::Node nodeFrom, Node::Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
-    or
-    SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
   }
 }
 

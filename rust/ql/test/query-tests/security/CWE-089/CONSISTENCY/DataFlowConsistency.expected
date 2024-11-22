@@ -1,0 +1,7 @@
+uniqueEnclosingCallable
+| sqlx.rs:52:72:52:84 | remote_number | Node should have one enclosing callable but has 0. |
+| sqlx.rs:56:74:56:86 | remote_string | Node should have one enclosing callable but has 0. |
+| sqlx.rs:199:32:199:44 | enable_remote | Node should have one enclosing callable but has 0. |
+uniqueNodeToString
+| sqlx.rs:154:13:154:81 | (no string representation) | Node should have one toString but has 0. |
+| sqlx.rs:156:17:156:86 | (no string representation) | Node should have one toString but has 0. |

@@ -1,2 +1,0 @@
-uniqueEnclosingCallable
-| gen_match_arm.rs:3:19:3:24 | Param | Node should have one enclosing callable but has 0. |

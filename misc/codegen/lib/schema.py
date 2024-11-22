@@ -94,6 +94,7 @@ class Class:
     properties: List[Property] = field(default_factory=list)
     pragmas: List[str] | Dict[str, object] = field(default_factory=dict)
     doc: List[str] = field(default_factory=list)
+    cfg: bool = False
 
     def __post_init__(self):
         if not isinstance(self.pragmas, dict):

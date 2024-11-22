@@ -7,7 +7,8 @@
  * @security-severity 7.5
  * @precision high
  * @id js/actions/actions-artifact-leak
- * @tags security
+ * @tags actions
+ *       security
  *       external/cwe/cwe-312
  *       external/cwe/cwe-315
  *       external/cwe/cwe-359

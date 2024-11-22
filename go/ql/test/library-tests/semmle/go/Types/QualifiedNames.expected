@@ -91,6 +91,10 @@
 | pkg1/interfaces.go:26:6:26:14 | AExtended | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.AExtended |
 | pkg1/interfaces.go:31:6:31:7 | A2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.A2 |
 | pkg1/interfaces.go:35:6:35:24 | MixedExportedAndNot | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.MixedExportedAndNot |
+| pkg1/promotedStructs.go:4:6:4:6 | S | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.S |
+| pkg1/promotedStructs.go:13:6:13:6 | P | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.P |
+| pkg1/promotedStructs.go:22:6:22:12 | SEmbedS | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.SEmbedS |
+| pkg1/promotedStructs.go:25:6:25:12 | SEmbedP | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.SEmbedP |
 | pkg1/tst.go:3:6:3:6 | T | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T |
 | pkg1/tst.go:9:6:9:7 | T2 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T2 |
 | pkg1/tst.go:14:6:14:7 | T3 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T3 |

@@ -17,6 +17,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<TFrame>", "Declare", "(System.Action<Microsoft.Extensions.FileSystemGlobbing.Internal.IPathSegment,System.Boolean>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<TFrame>", "IsStackEmpty", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<TFrame>", "PopDirectory", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContext<TFrame>", "PushDirectory", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
@@ -31,6 +32,7 @@ extensions:
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinear", "get_Pattern", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinearExclude", "PatternContextLinearExclude", "(Microsoft.Extensions.FileSystemGlobbing.Internal.ILinearPattern)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinearExclude", "Test", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinearInclude", "Declare", "(System.Action<Microsoft.Extensions.FileSystemGlobbing.Internal.IPathSegment,System.Boolean>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinearInclude", "PatternContextLinearInclude", "(Microsoft.Extensions.FileSystemGlobbing.Internal.ILinearPattern)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextLinearInclude", "Test", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextRagged+FrameData", "get_StemItems", "()", "summary", "df-generated"]
@@ -44,5 +46,6 @@ extensions:
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextRagged", "get_Pattern", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextRaggedExclude", "PatternContextRaggedExclude", "(Microsoft.Extensions.FileSystemGlobbing.Internal.IRaggedPattern)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextRaggedExclude", "Test", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextRaggedInclude", "Declare", "(System.Action<Microsoft.Extensions.FileSystemGlobbing.Internal.IPathSegment,System.Boolean>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextRaggedInclude", "PatternContextRaggedInclude", "(Microsoft.Extensions.FileSystemGlobbing.Internal.IRaggedPattern)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PatternContexts", "PatternContextRaggedInclude", "Test", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]

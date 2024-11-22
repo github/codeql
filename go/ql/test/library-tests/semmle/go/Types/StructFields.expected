@@ -45,6 +45,12 @@
 | pkg1/embedding.go:28:6:28:14 | embedder3 | pkg1/embedding.go:28:16:28:33 | struct type | embedder | embedder |
 | pkg1/embedding.go:35:6:35:14 | embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | base | base |
 | pkg1/embedding.go:35:6:35:14 | embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | f | int |
+| pkg1/promotedStructs.go:4:6:4:6 | S | pkg1/promotedStructs.go:4:8:6:1 | struct type | SField | string |
+| pkg1/promotedStructs.go:13:6:13:6 | P | pkg1/promotedStructs.go:13:8:15:1 | struct type | PField | string |
+| pkg1/promotedStructs.go:22:6:22:12 | SEmbedS | pkg1/promotedStructs.go:22:14:22:24 | struct type | S | S |
+| pkg1/promotedStructs.go:22:6:22:12 | SEmbedS | pkg1/promotedStructs.go:22:14:22:24 | struct type | SField | string |
+| pkg1/promotedStructs.go:25:6:25:12 | SEmbedP | pkg1/promotedStructs.go:25:14:25:24 | struct type | P | P |
+| pkg1/promotedStructs.go:25:6:25:12 | SEmbedP | pkg1/promotedStructs.go:25:14:25:24 | struct type | PField | string |
 | pkg1/tst.go:3:6:3:6 | T | pkg1/tst.go:3:8:7:1 | struct type | Bar | Bar |
 | pkg1/tst.go:3:6:3:6 | T | pkg1/tst.go:3:8:7:1 | struct type | Foo | Foo |
 | pkg1/tst.go:3:6:3:6 | T | pkg1/tst.go:3:8:7:1 | struct type | f | int |

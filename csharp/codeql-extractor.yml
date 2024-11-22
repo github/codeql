@@ -70,4 +70,4 @@ options:
     description: >
       [EXPERIMENTAL] The value is a path to the MsBuild binary log file that should be extracted.
       This option only works when `--build-mode none` is also specified.
-    type: string
+    type: array

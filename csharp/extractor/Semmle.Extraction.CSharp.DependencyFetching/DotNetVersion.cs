@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
          * This is the same as FullPath, except that we assume that the
          * reference assemblies are in a directory called "packs" and
          * the reference assemblies themselves are in a directory called
-         * "<Framework>.Ref/ref".
+         * "[Framework].Ref/ref".
          * Example:
          *  FullPath: /usr/share/dotnet/shared/Microsoft.NETCore.App/7.0.2
          *  FullPathReferenceAssemblies: /usr/share/dotnet/packs/Microsoft.NETCore.App.Ref/7.0.2/ref

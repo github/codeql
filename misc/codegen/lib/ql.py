@@ -45,6 +45,7 @@ class Property:
     synth: bool = False
     type_is_hideable: bool = False
     internal: bool = False
+    cfg: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -110,6 +111,7 @@ class Class:
     internal: bool = False
     doc: List[str] = field(default_factory=list)
     hideable: bool = False
+    cfg: bool = False
 
     def __post_init__(self):
         def get_bases(bases): return [Base(str(b), str(prev)) for b, prev in zip(bases, itertools.chain([""], bases))]
@@ -333,3 +335,18 @@ class Synth:
 
         cls: "Synth.FinalClass"
         import_prefix: str
+
+
+@dataclass
+class CfgClass:
+    name: str
+    bases: List[Base] = field(default_factory=list)
+    properties: List[Property] = field(default_factory=list)
+    doc: List[str] = field(default_factory=list)
+
+
+@dataclass
+class CfgClasses:
+    template: ClassVar = 'ql_cfg_nodes'
+    include_file_import: Optional[str] = None
+    classes: List[CfgClass] = field(default_factory=list)

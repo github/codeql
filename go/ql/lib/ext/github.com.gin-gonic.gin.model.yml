@@ -3,9 +3,9 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
-      - ["github.com/gin-gonic/gin", "Context", False, "File", "", "", "Argument[0]", "path-injection", "manual"]
-      - ["github.com/gin-gonic/gin", "Context", False, "FileAttachment", "", "", "Argument[0]", "path-injection", "manual"]
-      - ["github.com/gin-gonic/gin", "Context", False, "SaveUploadedFile", "", "", "Argument[1]", "path-injection", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "File", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "FileAttachment", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/gin-gonic/gin", "Context", True, "SaveUploadedFile", "", "", "Argument[1]", "path-injection", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: summaryModel
