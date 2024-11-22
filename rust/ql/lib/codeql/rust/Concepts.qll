@@ -52,7 +52,13 @@ class ActiveThreatModelSource extends ThreatModelSource {
  */
 final class CommandLineArgsSource = CommandLineArgsSource::Range;
 
+/**
+ * Provides a class for modeling new sources for the program's command line arguments or path.
+ */
 module CommandLineArgsSource {
+  /**
+   * A data flow source corresponding to the program's command line arguments or path.
+   */
   abstract class Range extends ThreatModelSource::Range {
     override string getThreatModel() { result = "commandargs" }
 
@@ -65,7 +71,13 @@ module CommandLineArgsSource {
  */
 final class EnvironmentSource = EnvironmentSource::Range;
 
+/**
+ * Provides a class for modeling new sources for the program's environment.
+ */
 module EnvironmentSource {
+  /**
+   * A data flow source corresponding to the program's environment.
+   */
   abstract class Range extends ThreatModelSource::Range {
     override string getThreatModel() { result = "environment" }
 
@@ -78,7 +90,13 @@ module EnvironmentSource {
  */
 final class RemoteSource = RemoteSource::Range;
 
+/**
+ * Provides a class for modeling new sources of remote (network) data.
+ */
 module RemoteSource {
+  /**
+   * A data flow source for remote (network) data.
+   */
   abstract class Range extends ThreatModelSource::Range {
     override string getThreatModel() { result = "remote" }
 
