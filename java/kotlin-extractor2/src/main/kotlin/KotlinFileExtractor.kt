@@ -3886,11 +3886,8 @@ OLD: KE1
             val type = useType(et)
             val locId = tw.getLocation(e)
             tw.writeExprs_stmtexpr(id, type.javaResult.id, parent, idx)
-            /*
-            OLD: KE1
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        extractExprContext(id, locId, callable, enclosingStmt)
-            */
+            tw.writeExprsKotlinType(id, type.kotlinResult.id)
+            extractExprContext(id, locId, callable, enclosingStmt)
             return StmtParent(id, 0)
         }
 
