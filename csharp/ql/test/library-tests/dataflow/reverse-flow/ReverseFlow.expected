@@ -1,0 +1,22 @@
+models
+edges
+| ReverseFlow.cs:80:9:80:9 | [post] access to local variable a : A [field Field] : String | ReverseFlow.cs:81:14:81:14 | access to local variable a : A [field Field] : String | provenance |  |
+| ReverseFlow.cs:80:9:80:9 | [post] access to local variable a : A [field Field] : String | ReverseFlow.cs:81:14:81:14 | access to local variable a : A [field Field] : String | provenance |  |
+| ReverseFlow.cs:80:19:80:35 | call to method Source<String> : String | ReverseFlow.cs:80:9:80:9 | [post] access to local variable a : A [field Field] : String | provenance |  |
+| ReverseFlow.cs:80:19:80:35 | call to method Source<String> : String | ReverseFlow.cs:80:9:80:9 | [post] access to local variable a : A [field Field] : String | provenance |  |
+| ReverseFlow.cs:81:14:81:14 | access to local variable a : A [field Field] : String | ReverseFlow.cs:81:14:81:20 | access to field Field | provenance |  |
+| ReverseFlow.cs:81:14:81:14 | access to local variable a : A [field Field] : String | ReverseFlow.cs:81:14:81:20 | access to field Field | provenance |  |
+nodes
+| ReverseFlow.cs:80:9:80:9 | [post] access to local variable a : A [field Field] : String | semmle.label | [post] access to local variable a : A [field Field] : String |
+| ReverseFlow.cs:80:9:80:9 | [post] access to local variable a : A [field Field] : String | semmle.label | [post] access to local variable a : A [field Field] : String |
+| ReverseFlow.cs:80:19:80:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| ReverseFlow.cs:80:19:80:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| ReverseFlow.cs:81:14:81:14 | access to local variable a : A [field Field] : String | semmle.label | access to local variable a : A [field Field] : String |
+| ReverseFlow.cs:81:14:81:14 | access to local variable a : A [field Field] : String | semmle.label | access to local variable a : A [field Field] : String |
+| ReverseFlow.cs:81:14:81:20 | access to field Field | semmle.label | access to field Field |
+| ReverseFlow.cs:81:14:81:20 | access to field Field | semmle.label | access to field Field |
+subpaths
+testFailures
+#select
+| ReverseFlow.cs:81:14:81:20 | access to field Field | ReverseFlow.cs:80:19:80:35 | call to method Source<String> : String | ReverseFlow.cs:81:14:81:20 | access to field Field | $@ | ReverseFlow.cs:80:19:80:35 | call to method Source<String> : String | call to method Source<String> : String |
+| ReverseFlow.cs:81:14:81:20 | access to field Field | ReverseFlow.cs:80:19:80:35 | call to method Source<String> : String | ReverseFlow.cs:81:14:81:20 | access to field Field | $@ | ReverseFlow.cs:80:19:80:35 | call to method Source<String> : String | call to method Source<String> : String |
