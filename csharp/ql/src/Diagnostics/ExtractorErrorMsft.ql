@@ -3,9 +3,10 @@
  * @description An error message reported by the extractor, limited to those files where there are no
  *              compilation errors. This indicates a bug or limitation in the extractor, and could lead
  *              to inaccurate results.
- * @kind diagnostic
- * @id cs/extraction-error-msft
+ * @id cs/extractor-error-msft
+ * @kind problem
  * @tags security
+ *       extraction
  */
 
  import csharp

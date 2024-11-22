@@ -1,8 +1,10 @@
 /**
  * @name Extraction errors msft
  * @description A list of extraction errors for files in the source code directory.
- * @kind diagnostic
- * @id java/diagnostics/extraction-errors-msft
+ * @id java/extractor-error-msft
+ * @kind problem
+ * @tags security
+ *       extraction
  */
 
 import java

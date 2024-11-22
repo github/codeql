@@ -1,8 +1,10 @@
 /**
  * @name Python extraction warnings msft
  * @description List all extraction warnings for Python files in the source code directory.
- * @kind diagnostic
- * @id py/diagnostics/extraction-warnings-msft
+ * @id py/extractor-error-msft
+ * @kind problem
+ * @tags security
+ *       extraction
  */
 
  import python

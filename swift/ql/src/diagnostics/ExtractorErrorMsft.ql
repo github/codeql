@@ -1,8 +1,10 @@
 /**
  * @name Compiler errors msft
  * @description List all compiler errors for files in the source code directory.
- * @kind diagnostic
- * @id swift/diagnostics/extraction-errors-msft
+ * @id swift/extractor-error-msft
+ * @kind problem
+ * @tags security
+ *       extraction
  */
 
  import swift

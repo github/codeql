@@ -1,8 +1,10 @@
 /**
- * @id go/diagnostics/extraction-errors-msft
  * @name Extraction errors msft
  * @description List all extraction errors for files in the source code directory.
- * @kind diagnostic
+ * @id go/extractor-error-msft
+ * @kind problem
+ * @tags security
+ *       extraction
  */
 
 import go

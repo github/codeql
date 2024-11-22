@@ -1,8 +1,10 @@
 /**
  * @name Extraction errors msft
  * @description List all extraction errors for files in the source code directory.
- * @kind diagnostic
- * @id rust/diagnostics/extraction-errors-msft
+ * @id rust/extractor-error-msft
+ * @kind problem
+ * @tags security
+ *       extraction
  */
 
  import codeql.rust.Diagnostics

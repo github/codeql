@@ -1,8 +1,10 @@
 /**
  * @name Extraction errors msft
  * @description List all extraction errors for files in the source code directory.
- * @kind diagnostic
- * @id js/diagnostics/extraction-errors-msft
+ * @id js/extractor-error-msft
+ * @kind problem
+ * @tags security
+ *       extraction
  */
 
  import javascript

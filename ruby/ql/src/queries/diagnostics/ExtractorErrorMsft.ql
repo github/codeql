@@ -1,8 +1,10 @@
 /**
  * @name Extraction errors msft
  * @description List all extraction errors for files in the source code directory.
- * @kind diagnostic
- * @id rb/diagnostics/extraction-errors-msft
+ * @id rb/extractor-error-msft
+ * @kind problem
+ * @tags security
+ *       extraction
  */
 
  import codeql.ruby.AST
