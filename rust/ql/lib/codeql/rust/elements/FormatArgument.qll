@@ -5,6 +5,7 @@
 
 private import internal.FormatArgumentImpl
 import codeql.rust.elements.Format
+import codeql.rust.elements.FormatTemplateVariableAccess
 import codeql.rust.elements.Locatable
 
 /**

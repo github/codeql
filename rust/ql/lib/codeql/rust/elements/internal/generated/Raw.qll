@@ -1885,7 +1885,11 @@ module Raw {
    * INTERNAL: Do not use.
    * A FormatArgsExpr. For example:
    * ```rust
-   * todo!()
+   * format_args!("no args");
+   * format_args!("{} foo {:?}", 1, 2);
+   * format_args!("{b} foo {a:?}", a=1, b=2);
+   * let (x, y) = (1, 42);
+   * format_args!("{x}, {y}");
    * ```
    */
   class FormatArgsExpr extends @format_args_expr, Expr {

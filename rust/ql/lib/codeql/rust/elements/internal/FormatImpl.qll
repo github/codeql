@@ -38,6 +38,8 @@ module Impl {
 
     override int getIndex() { result = index }
 
+    override FormatArgument getArgument() { result.getParent() = this }
+
     /**
      * Gets the name or position reference of this format, if any. For example `name` and `0` in:
      * ```rust
