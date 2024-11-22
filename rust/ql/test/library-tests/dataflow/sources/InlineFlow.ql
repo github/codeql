@@ -4,13 +4,13 @@ import codeql.rust.Concepts
 import utils.InlineFlowTest
 
 /**
- * Configuration for flow from any threat model source to an argument of a function called `sink`.
+ * Configuration for flow from any threat model source to an argument of the function `sink`.
  */
 module MyFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
-    any(CallExpr call | call.getExpr().(PathExpr).getPath().toString() = "sink")
+    any(CallExpr call | call.getExpr().(PathExpr).getPath().getResolvedPath() = "crate::test::sink")
         .getArgList()
         .getAnArg() = sink.asExpr().getExpr()
   }
