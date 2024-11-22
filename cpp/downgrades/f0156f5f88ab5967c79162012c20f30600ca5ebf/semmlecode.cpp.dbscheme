@@ -47,22 +47,6 @@ compilation_args(
 );
 
 /**
- * Optionally, record the build mode for each compilation.
- */
-compilation_build_mode(
-    unique int id : @compilation ref,
-    int mode : int ref
-);
-
-/*
-case @compilation_build_mode.mode of
-  0 = @build_mode_none
-| 1 = @build_mode_manual
-| 2 = @build_mode_auto
-;
-*/
-
-/**
  * The source files that are compiled by a compiler invocation.
  * If `id` is for the compiler invocation
  *
