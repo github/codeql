@@ -6,3 +6,4 @@ extractionWarning
 | does_not_compile.rs:2:26:2:25 | expected SEMICOLON |
 | does_not_compile.rs:2:32:2:31 | expected field name or number |
 | error.rs:2:5:2:17 | An error! |
+| my_macro.rs:17:9:17:27 | macro expansion failed: could not resolve macro 'myUndefinedMacro' |
