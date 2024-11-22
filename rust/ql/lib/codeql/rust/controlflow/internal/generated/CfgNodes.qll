@@ -894,7 +894,11 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     /**
      * A FormatArgsExpr. For example:
      * ```rust
-     * todo!()
+     * format_args!("no args");
+     * format_args!("{} foo {:?}", 1, 2);
+     * format_args!("{b} foo {a:?}", a=1, b=2);
+     * let (x, y) = (1, 42);
+     * format_args!("{x}, {y}");
      * ```
      */
     final class FormatArgsExprCfgNode extends CfgNodeFinal, ExprCfgNode {
@@ -946,6 +950,21 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getTemplate()` exists.
        */
       predicate hasTemplate() { exists(this.getTemplate()) }
+
+      /**
+       * Gets the `index`th format of this format arguments expression (0-based).
+       */
+      Format getFormat(int index) { result = node.getFormat(index) }
+
+      /**
+       * Gets any of the formats of this format arguments expression.
+       */
+      Format getAFormat() { result = this.getFormat(_) }
+
+      /**
+       * Gets the number of formats of this format arguments expression.
+       */
+      int getNumberOfFormats() { result = count(int i | exists(this.getFormat(i))) }
     }
 
     final private class ParentFormatTemplateVariableAccess extends ParentAstNode,
