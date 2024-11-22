@@ -3931,7 +3931,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private module Stage4Param implements MkStage<Stage3>::StageParam {
       private module PrevStage = Stage3;
 
-      class Typ = DataFlowType;
+      class Typ = Unit;
 
       class Ap = AccessPathFront;
 
@@ -3939,7 +3939,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       PrevStage::Ap getApprox(Ap ap) { result = ap.toApprox() }
 
-      Typ getTyp(DataFlowType t) { result = t }
+      Typ getTyp(DataFlowType t) { any() }
 
       bindingset[c, tail]
       Ap apCons(Content c, Ap tail) { result.getHead() = c and exists(tail) }
@@ -3964,9 +3964,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
         Typ t, LocalCc lcc, string label
       ) {
-        Stage3Param::localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _, label) and
+        Stage3Param::localFlowBigStep(node1, state1, node2, state2, preservesValue, _, _, label) and
         PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
+        exists(t) and
         exists(lcc)
       }
 
@@ -4015,7 +4016,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
         exists(state) and
         not clear(node, ap) and
-        strengthenType(node, t0, t) and
+        t0 = t and
         (
           notExpectsContent(node)
           or
@@ -4029,7 +4030,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       bindingset[t1, t2]
-      predicate typecheck(Typ t1, Typ t2) { compatibleTypesFilter(t1, t2) }
+      predicate typecheck(Typ t1, Typ t2) { any() }
     }
 
     private module Stage4 = MkStage<Stage3>::Stage<Stage4Param>;
