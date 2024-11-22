@@ -1,8 +1,8 @@
 models
-| 1 | Sink: System.Data.SqlClient; SqlCommand; false; SqlCommand; (System.String,System.Data.SqlClient.SqlConnection); ; Argument[0]; sql-injection; manual |
-| 2 | Source: My.Qltest; TestSources; false; ExecuteQuery; (System.String); ; ReturnValue; database; manual |
-| 3 | Source: My.Qltest; TestSources; false; GetCliArg; (System.Int32); ; ReturnValue; commandargs; manual |
-| 4 | Source: System.Net.Sockets; TcpClient; false; GetStream; ; ; ReturnValue; remote; manual |
+| 1 | Sink: System.Data.SqlClient; SqlCommand; true; SqlCommand; (System.String,System.Data.SqlClient.SqlConnection); ; Argument[0]; sql-injection; manual |
+| 2 | Source: My.Qltest; TestSources; true; ExecuteQuery; (System.String); ; ReturnValue; database; manual |
+| 3 | Source: My.Qltest; TestSources; true; GetCliArg; (System.Int32); ; ReturnValue; commandargs; manual |
+| 4 | Source: System.Net.Sockets; TcpClient; true; GetStream; ; ; ReturnValue; remote; manual |
 | 5 | Summary: System.IO; Stream; true; Read; (System.Byte[],System.Int32,System.Int32); ; Argument[this]; Argument[0].Element; taint; manual |
 | 6 | Summary: System.Text; Encoding; true; GetString; (System.Byte[]); ; Argument[0].Element; ReturnValue; taint; manual |
 edges

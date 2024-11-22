@@ -36,8 +36,8 @@ edges
 | ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | ZipSlipBad.cs:9:16:9:27 | access to local variable destFileName : String | provenance |  |
 | ZipSlipBad.cs:9:59:9:72 | access to property FullName : String | ZipSlipBad.cs:9:31:9:73 | call to method Combine : String | provenance | MaD:1 |
 models
-| 1 | Summary: System.IO; Path; false; Combine; (System.String,System.String); ; Argument[1]; ReturnValue; taint; manual |
-| 2 | Summary: System.IO; Path; false; GetFullPath; (System.String); ; Argument[0]; ReturnValue; taint; manual |
+| 1 | Summary: System.IO; Path; true; Combine; (System.String,System.String); ; Argument[1]; ReturnValue; taint; manual |
+| 2 | Summary: System.IO; Path; true; GetFullPath; (System.String); ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | ZipSlip.cs:15:24:15:31 | access to local variable fullPath : String | semmle.label | access to local variable fullPath : String |
 | ZipSlip.cs:15:35:15:66 | call to method GetFullPath : String | semmle.label | call to method GetFullPath : String |

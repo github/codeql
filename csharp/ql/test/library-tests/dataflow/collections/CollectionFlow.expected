@@ -1,6 +1,6 @@
 models
-| 1 | Summary: System.Collections.Generic; Dictionary<TKey,TValue>; false; get_Keys; (); ; Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]; ReturnValue.Element; value; manual |
-| 2 | Summary: System.Collections.Generic; Dictionary<TKey,TValue>; false; get_Values; (); ; Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]; ReturnValue.Element; value; manual |
+| 1 | Summary: System.Collections.Generic; Dictionary<TKey,TValue>; true; get_Keys; (); ; Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]; ReturnValue.Element; value; manual |
+| 2 | Summary: System.Collections.Generic; Dictionary<TKey,TValue>; true; get_Values; (); ; Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]; ReturnValue.Element; value; manual |
 | 3 | Summary: System.Collections.Generic; ICollection<T>; true; Add; (T); ; Argument[0]; Argument[this].Element; value; manual |
 | 4 | Summary: System.Collections.Generic; IDictionary<TKey,TValue>; true; Add; (TKey,TValue); ; Argument[0]; Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]; value; manual |
 | 5 | Summary: System.Collections.Generic; IDictionary<TKey,TValue>; true; Add; (TKey,TValue); ; Argument[1]; Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]; value; manual |
@@ -11,20 +11,20 @@ models
 | 10 | Summary: System.Collections.Generic; IDictionary<TKey,TValue>; true; set_Item; (TKey,TValue); ; Argument[1]; Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]; value; manual |
 | 11 | Summary: System.Collections.Generic; IList<T>; true; get_Item; (System.Int32); ; Argument[this].Element; ReturnValue; value; manual |
 | 12 | Summary: System.Collections.Generic; IList<T>; true; set_Item; (System.Int32,T); ; Argument[1]; Argument[this].Element; value; manual |
-| 13 | Summary: System.Collections.Generic; KeyValuePair<TKey,TValue>; false; KeyValuePair; (TKey,TValue); ; Argument[0]; Argument[this].Property[System.Collections.Generic.KeyValuePair`2.Key]; value; manual |
-| 14 | Summary: System.Collections.Generic; List<T>+Enumerator; false; get_Current; (); ; Argument[this].Property[System.Collections.Generic.List`1+Enumerator.Current]; ReturnValue; value; dfc-generated |
-| 15 | Summary: System.Collections.Generic; List<T>; false; GetEnumerator; (); ; Argument[this].Element; ReturnValue.Property[System.Collections.Generic.List`1+Enumerator.Current]; value; manual |
+| 13 | Summary: System.Collections.Generic; KeyValuePair<TKey,TValue>; true; KeyValuePair; (TKey,TValue); ; Argument[0]; Argument[this].Property[System.Collections.Generic.KeyValuePair`2.Key]; value; manual |
+| 14 | Summary: System.Collections.Generic; List<T>+Enumerator; true; get_Current; (); ; Argument[this].Property[System.Collections.Generic.List`1+Enumerator.Current]; ReturnValue; value; dfc-generated |
+| 15 | Summary: System.Collections.Generic; List<T>; true; GetEnumerator; (); ; Argument[this].Element; ReturnValue.Property[System.Collections.Generic.List`1+Enumerator.Current]; value; manual |
 | 16 | Summary: System.Collections; IEnumerable; true; GetEnumerator; (); ; Argument[this].Element; ReturnValue.Property[System.Collections.IEnumerator.Current]; value; manual |
-| 17 | Summary: System.Linq; Enumerable; false; First<TSource>; (System.Collections.Generic.IEnumerable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
-| 18 | Summary: System.Linq; Enumerable; false; Select<TSource,TResult>; (System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>); ; Argument[0].Element; Argument[1].Parameter[0]; value; manual |
-| 19 | Summary: System; ReadOnlySpan<T>; false; ReadOnlySpan; (T[]); ; Argument[0].Element; Argument[this].Element; value; manual |
-| 20 | Summary: System; ReadOnlySpan<T>; false; get_Item; (System.Int32); ; Argument[this].Element; ReturnValue; value; manual |
-| 21 | Summary: System; Span<T>; false; CopyTo; (System.Span<T>); ; Argument[this].Element; Argument[0].Element; value; manual |
-| 22 | Summary: System; Span<T>; false; Fill; (T); ; Argument[0]; Argument[this].Element; value; manual |
-| 23 | Summary: System; Span<T>; false; Span; (T); ; Argument[0]; Argument[this].Element; value; manual |
-| 24 | Summary: System; Span<T>; false; Span; (T[]); ; Argument[0].Element; Argument[this].Element; value; manual |
-| 25 | Summary: System; Span<T>; false; ToArray; (); ; Argument[this].Element; ReturnValue.Element; value; manual |
-| 26 | Summary: System; Span<T>; false; get_Item; (System.Int32); ; Argument[this].Element; ReturnValue; value; manual |
+| 17 | Summary: System.Linq; Enumerable; true; First<TSource>; (System.Collections.Generic.IEnumerable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
+| 18 | Summary: System.Linq; Enumerable; true; Select<TSource,TResult>; (System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>); ; Argument[0].Element; Argument[1].Parameter[0]; value; manual |
+| 19 | Summary: System; ReadOnlySpan<T>; true; ReadOnlySpan; (T[]); ; Argument[0].Element; Argument[this].Element; value; manual |
+| 20 | Summary: System; ReadOnlySpan<T>; true; get_Item; (System.Int32); ; Argument[this].Element; ReturnValue; value; manual |
+| 21 | Summary: System; Span<T>; true; CopyTo; (System.Span<T>); ; Argument[this].Element; Argument[0].Element; value; manual |
+| 22 | Summary: System; Span<T>; true; Fill; (T); ; Argument[0]; Argument[this].Element; value; manual |
+| 23 | Summary: System; Span<T>; true; Span; (T); ; Argument[0]; Argument[this].Element; value; manual |
+| 24 | Summary: System; Span<T>; true; Span; (T[]); ; Argument[0].Element; Argument[this].Element; value; manual |
+| 25 | Summary: System; Span<T>; true; ToArray; (); ; Argument[this].Element; ReturnValue.Element; value; manual |
+| 26 | Summary: System; Span<T>; true; get_Item; (System.Int32); ; Argument[this].Element; ReturnValue; value; manual |
 edges
 | CollectionFlow.cs:14:40:14:41 | ts : A[] [element] : A | CollectionFlow.cs:14:52:14:53 | access to parameter ts : A[] [element] : A | provenance |  |
 | CollectionFlow.cs:14:40:14:41 | ts : null [element] : A | CollectionFlow.cs:14:52:14:53 | access to parameter ts : null [element] : A | provenance |  |

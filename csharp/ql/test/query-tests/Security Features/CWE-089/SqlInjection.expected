@@ -101,34 +101,34 @@ edges
 | SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | provenance | MaD:28 |
 | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | SqlInjectionSqlite.cs:56:25:56:27 | access to local variable sql : String | provenance |  |
 models
-| 1 | Sink: Dapper; SqlMapper; false; ExecuteAsync; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
-| 2 | Sink: Dapper; SqlMapper; false; ExecuteReader; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
-| 3 | Sink: Dapper; SqlMapper; false; ExecuteScalar; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
-| 4 | Sink: Dapper; SqlMapper; false; Query<T>; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Boolean,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
-| 5 | Sink: Dapper; SqlMapper; false; QueryAsync<T>; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
-| 6 | Sink: Dapper; SqlMapper; false; QueryFirstAsync; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
-| 7 | Sink: System.Data.Entity; Database; false; ExecuteSqlCommand; (System.String,System.Object[]); ; Argument[0]; sql-injection; manual |
-| 8 | Sink: System.Data.Entity; Database; false; SqlQuery<TElement>; (System.String,System.Object[]); ; Argument[0]; sql-injection; manual |
-| 9 | Sink: System.Data.SQLite; SQLiteCommand; false; SQLiteCommand; (System.String); ; Argument[0]; sql-injection; manual |
-| 10 | Sink: System.Data.SQLite; SQLiteCommand; false; SQLiteCommand; (System.String,System.Data.SQLite.SQLiteConnection); ; Argument[0]; sql-injection; manual |
-| 11 | Sink: System.Data.SQLite; SQLiteDataAdapter; false; SQLiteDataAdapter; (System.Data.SQLite.SQLiteCommand); ; Argument[0]; sql-injection; manual |
-| 12 | Sink: System.Data.SQLite; SQLiteDataAdapter; false; SQLiteDataAdapter; (System.String,System.Data.SQLite.SQLiteConnection); ; Argument[0]; sql-injection; manual |
-| 13 | Sink: System.Data.SQLite; SQLiteDataAdapter; false; SQLiteDataAdapter; (System.String,System.String); ; Argument[0]; sql-injection; manual |
-| 14 | Sink: System.Data.SqlClient; SqlCommand; false; SqlCommand; (System.String); ; Argument[0]; sql-injection; manual |
-| 15 | Sink: System.Data.SqlClient; SqlCommand; false; SqlCommand; (System.String,System.Data.SqlClient.SqlConnection); ; Argument[0]; sql-injection; manual |
-| 16 | Sink: System.Data.SqlClient; SqlDataAdapter; false; SqlDataAdapter; (System.Data.SqlClient.SqlCommand); ; Argument[0]; sql-injection; manual |
-| 17 | Sink: System.Data.SqlClient; SqlDataAdapter; false; SqlDataAdapter; (System.String,System.Data.SqlClient.SqlConnection); ; Argument[0]; sql-injection; manual |
-| 18 | Source: System.IO; FileStream; false; FileStream; ; ; Argument[this]; file-write; manual |
-| 19 | Source: System.IO; FileStream; false; FileStream; ; ; Argument[this]; file; manual |
-| 20 | Source: System; Console; false; ReadLine; ; ; ReturnValue; stdin; manual |
-| 21 | Summary: System.Data.SQLite; SQLiteCommand; false; SQLiteCommand; (System.String,System.Data.SQLite.SQLiteConnection); ; Argument[0]; Argument[this]; taint; manual |
-| 22 | Summary: System.Data.SqlClient; SqlCommand; false; SqlCommand; (System.String); ; Argument[0]; Argument[this]; taint; manual |
+| 1 | Sink: Dapper; SqlMapper; true; ExecuteAsync; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
+| 2 | Sink: Dapper; SqlMapper; true; ExecuteReader; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
+| 3 | Sink: Dapper; SqlMapper; true; ExecuteScalar; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
+| 4 | Sink: Dapper; SqlMapper; true; Query<T>; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Boolean,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
+| 5 | Sink: Dapper; SqlMapper; true; QueryAsync<T>; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
+| 6 | Sink: Dapper; SqlMapper; true; QueryFirstAsync; (System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>); ; Argument[1]; sql-injection; manual |
+| 7 | Sink: System.Data.Entity; Database; true; ExecuteSqlCommand; (System.String,System.Object[]); ; Argument[0]; sql-injection; manual |
+| 8 | Sink: System.Data.Entity; Database; true; SqlQuery<TElement>; (System.String,System.Object[]); ; Argument[0]; sql-injection; manual |
+| 9 | Sink: System.Data.SQLite; SQLiteCommand; true; SQLiteCommand; (System.String); ; Argument[0]; sql-injection; manual |
+| 10 | Sink: System.Data.SQLite; SQLiteCommand; true; SQLiteCommand; (System.String,System.Data.SQLite.SQLiteConnection); ; Argument[0]; sql-injection; manual |
+| 11 | Sink: System.Data.SQLite; SQLiteDataAdapter; true; SQLiteDataAdapter; (System.Data.SQLite.SQLiteCommand); ; Argument[0]; sql-injection; manual |
+| 12 | Sink: System.Data.SQLite; SQLiteDataAdapter; true; SQLiteDataAdapter; (System.String,System.Data.SQLite.SQLiteConnection); ; Argument[0]; sql-injection; manual |
+| 13 | Sink: System.Data.SQLite; SQLiteDataAdapter; true; SQLiteDataAdapter; (System.String,System.String); ; Argument[0]; sql-injection; manual |
+| 14 | Sink: System.Data.SqlClient; SqlCommand; true; SqlCommand; (System.String); ; Argument[0]; sql-injection; manual |
+| 15 | Sink: System.Data.SqlClient; SqlCommand; true; SqlCommand; (System.String,System.Data.SqlClient.SqlConnection); ; Argument[0]; sql-injection; manual |
+| 16 | Sink: System.Data.SqlClient; SqlDataAdapter; true; SqlDataAdapter; (System.Data.SqlClient.SqlCommand); ; Argument[0]; sql-injection; manual |
+| 17 | Sink: System.Data.SqlClient; SqlDataAdapter; true; SqlDataAdapter; (System.String,System.Data.SqlClient.SqlConnection); ; Argument[0]; sql-injection; manual |
+| 18 | Source: System.IO; FileStream; true; FileStream; ; ; Argument[this]; file-write; manual |
+| 19 | Source: System.IO; FileStream; true; FileStream; ; ; Argument[this]; file; manual |
+| 20 | Source: System; Console; true; ReadLine; ; ; ReturnValue; stdin; manual |
+| 21 | Summary: System.Data.SQLite; SQLiteCommand; true; SQLiteCommand; (System.String,System.Data.SQLite.SQLiteConnection); ; Argument[0]; Argument[this]; taint; manual |
+| 22 | Summary: System.Data.SqlClient; SqlCommand; true; SqlCommand; (System.String); ; Argument[0]; Argument[this]; taint; manual |
 | 23 | Summary: System.Data; IDataRecord; true; GetString; (System.Int32); ; Argument[this]; ReturnValue; taint; manual |
-| 24 | Summary: System.IO; FileStream; false; FileStream; (System.String,System.IO.FileMode); ; Argument[0]; Argument[this]; taint; manual |
-| 25 | Summary: System.IO; StreamReader; false; StreamReader; (System.IO.Stream,System.Text.Encoding); ; Argument[0]; Argument[this]; taint; manual |
+| 24 | Summary: System.IO; FileStream; true; FileStream; (System.String,System.IO.FileMode); ; Argument[0]; Argument[this]; taint; manual |
+| 25 | Summary: System.IO; StreamReader; true; StreamReader; (System.IO.Stream,System.Text.Encoding); ; Argument[0]; Argument[this]; taint; manual |
 | 26 | Summary: System.IO; TextReader; true; ReadLine; (); ; Argument[this]; ReturnValue; taint; manual |
-| 27 | Summary: System.Web.UI.WebControls; TextBox; false; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
-| 28 | Summary: System; String; false; Trim; (); ; Argument[this]; ReturnValue; taint; manual |
+| 27 | Summary: System.Web.UI.WebControls; TextBox; true; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
+| 28 | Summary: System; String; true; Trim; (); ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | SecondOrderSqlInjection.cs:20:31:20:44 | access to local variable customerReader : SqlDataReader | semmle.label | access to local variable customerReader : SqlDataReader |
 | SecondOrderSqlInjection.cs:20:48:20:78 | call to method ExecuteReader : SqlDataReader | semmle.label | call to method ExecuteReader : SqlDataReader |

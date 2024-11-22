@@ -23,9 +23,9 @@ edges
 | InsecureRandomness.cs:74:16:74:21 | access to local variable result : String | InsecureRandomness.cs:14:20:14:54 | call to method InsecureRandomStringFromIndexer | provenance |  |
 models
 | 1 | Summary: System.Text; Encoding; true; GetString; (System.Byte[]); ; Argument[0].Element; ReturnValue; taint; manual |
-| 2 | Summary: System.Text; StringBuilder; false; Append; (System.String); ; Argument[0]; Argument[this]; taint; manual |
-| 3 | Summary: System.Text; StringBuilder; false; ToString; (); ; Argument[this]; ReturnValue; taint; manual |
-| 4 | Summary: System; String; false; ToString; (); ; Argument[this]; ReturnValue; value; manual |
+| 2 | Summary: System.Text; StringBuilder; true; Append; (System.String); ; Argument[0]; Argument[this]; taint; manual |
+| 3 | Summary: System.Text; StringBuilder; true; ToString; (); ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: System; String; true; ToString; (); ; Argument[this]; ReturnValue; value; manual |
 nodes
 | InsecureRandomness.cs:12:27:12:50 | call to method InsecureRandomString | semmle.label | call to method InsecureRandomString |
 | InsecureRandomness.cs:13:20:13:56 | call to method InsecureRandomStringFromSelection | semmle.label | call to method InsecureRandomStringFromSelection |

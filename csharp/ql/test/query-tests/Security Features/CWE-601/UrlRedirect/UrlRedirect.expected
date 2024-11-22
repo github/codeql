@@ -49,11 +49,11 @@ edges
 | UrlRedirectCore.cs:45:51:45:55 | value : String | UrlRedirectCore.cs:56:31:56:35 | access to parameter value | provenance |  |
 | UrlRedirectCore.cs:53:40:53:44 | access to parameter value : String | UrlRedirectCore.cs:53:32:53:45 | object creation of type Uri | provenance | MaD:5 |
 models
-| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
-| 2 | Summary: System; String; false; Format; (System.String,System.Object); ; Argument[1]; ReturnValue; taint; manual |
-| 3 | Summary: System; String; false; Format; (System.String,System.Object,System.Object); ; Argument[1]; ReturnValue; taint; manual |
-| 4 | Summary: System; String; false; Format; (System.String,System.Object,System.Object); ; Argument[2]; ReturnValue; taint; manual |
-| 5 | Summary: System; Uri; false; Uri; (System.String); ; Argument[0]; Argument[this]; taint; manual |
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; true; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 2 | Summary: System; String; true; Format; (System.String,System.Object); ; Argument[1]; ReturnValue; taint; manual |
+| 3 | Summary: System; String; true; Format; (System.String,System.Object,System.Object); ; Argument[1]; ReturnValue; taint; manual |
+| 4 | Summary: System; String; true; Format; (System.String,System.Object,System.Object); ; Argument[2]; ReturnValue; taint; manual |
+| 5 | Summary: System; Uri; true; Uri; (System.String); ; Argument[0]; Argument[this]; taint; manual |
 nodes
 | UrlRedirect2.cs:14:31:14:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | UrlRedirect2.cs:14:31:14:61 | access to indexer | semmle.label | access to indexer |

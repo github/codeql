@@ -7,8 +7,8 @@ edges
 | UntrustedData.cs:9:20:9:42 | access to property QueryString : NameValueCollection | UntrustedData.cs:9:20:9:50 | access to indexer : String | provenance | MaD:2 |
 | UntrustedData.cs:9:20:9:50 | access to indexer : String | UntrustedData.cs:9:13:9:16 | access to local variable name : String | provenance |  |
 models
-| 1 | Sink: System.Web; HttpResponse; false; Write; ; ; Argument[0]; html-injection; manual |
-| 2 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+| 1 | Sink: System.Web; HttpResponse; true; Write; ; ; Argument[0]; html-injection; manual |
+| 2 | Summary: System.Collections.Specialized; NameValueCollection; true; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
 | UntrustedData.cs:9:13:9:16 | access to local variable name : String | semmle.label | access to local variable name : String |
 | UntrustedData.cs:9:20:9:30 | access to property Request | semmle.label | access to property Request |

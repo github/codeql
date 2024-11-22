@@ -1,5 +1,5 @@
 models
-| 1 | Summary: System.Threading.Tasks; Task; false; FromResult<TResult>; (TResult); ; Argument[0]; ReturnValue.Property[System.Threading.Tasks.Task`1.Result]; value; manual |
+| 1 | Summary: System.Threading.Tasks; Task; true; FromResult<TResult>; (TResult); ; Argument[0]; ReturnValue.Property[System.Threading.Tasks.Task`1.Result]; value; manual |
 edges
 | Async.cs:9:37:9:41 | input : String | Async.cs:11:21:11:25 | access to parameter input : String | provenance |  |
 | Async.cs:11:21:11:25 | access to parameter input : String | Async.cs:11:14:11:26 | call to method Return | provenance |  |

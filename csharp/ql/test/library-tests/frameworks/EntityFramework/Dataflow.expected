@@ -1,8 +1,8 @@
 models
-| 1 | Summary: Microsoft.EntityFrameworkCore; DbSet<TEntity>; false; Add; (TEntity); ; Argument[0]; Argument[this].Element; value; manual |
-| 2 | Summary: System.Data.Entity; DbSet<TEntity>; false; Add; (TEntity); ; Argument[0]; Argument[this].Element; value; manual |
-| 3 | Summary: System.Linq; Enumerable; false; First<TSource>; (System.Collections.Generic.IEnumerable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
-| 4 | Summary: System.Linq; Queryable; false; First<TSource>; (System.Linq.IQueryable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
+| 1 | Summary: Microsoft.EntityFrameworkCore; DbSet<TEntity>; true; Add; (TEntity); ; Argument[0]; Argument[this].Element; value; manual |
+| 2 | Summary: System.Data.Entity; DbSet<TEntity>; true; Add; (TEntity); ; Argument[0]; Argument[this].Element; value; manual |
+| 3 | Summary: System.Linq; Enumerable; true; First<TSource>; (System.Collections.Generic.IEnumerable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
+| 4 | Summary: System.Linq; Queryable; true; First<TSource>; (System.Linq.IQueryable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
 edges
 | EntityFramework.cs:58:17:58:18 | access to local variable p1 : Person [property Name] : String | EntityFramework.cs:66:29:66:30 | access to local variable p1 : Person [property Name] : String | provenance |  |
 | EntityFramework.cs:59:13:62:13 | { ..., ... } : Person [property Name] : String | EntityFramework.cs:58:17:58:18 | access to local variable p1 : Person [property Name] : String | provenance |  |
