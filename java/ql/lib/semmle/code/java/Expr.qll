@@ -2624,6 +2624,10 @@ class WhenBranchConditionWithExpression extends WhenBranchCondition {
 
   /** Gets the expression of this branch condition. */
   Expr getExpression() { result.isNthChildOf(this, 0) }
+
+  override string toString() { result = "... ->" }
+
+  override string getAPrimaryQlClass() { result = "WhenBranchConditionWithExpression" }
 }
 
 /** A Kotlin `when` branch condition with a range. */
@@ -2638,6 +2642,10 @@ class WhenBranchConditionWithRange extends WhenBranchCondition {
    * Ranges are represented by calls to `operator fun <T : Comparable<T>> T.rangeTo(that: T): ClosedRange<T>`.
    */
   MethodCall getRange() { result.isNthChildOf(this, 0) }
+
+  override string toString() { result = "in ... ->" }
+
+  override string getAPrimaryQlClass() { result = "WhenBranchConditionWithRange" }
 }
 
 /** A Kotlin `when` branch condition with a pattern. */
@@ -2649,6 +2657,10 @@ class WhenBranchConditionWithPattern extends WhenBranchCondition {
 
   /** Gets the type pattern of this branch condition. */
   Type getType() { when_branch_condition_with_pattern(this, _, result, _) }
+
+  override string toString() { result = "is ... ->" }
+
+  override string getAPrimaryQlClass() { result = "WhenBranchConditionWithPattern" }
 }
 
 // TODO: This might need more cases. It might be better as a predicate
