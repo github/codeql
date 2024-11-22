@@ -450,7 +450,9 @@ module RustDataFlow implements InputSig<Location> {
 
   // NOTE: For now we use the type `Unit` and do not benefit from type
   // information in the data flow analysis.
-  final class DataFlowType = Unit;
+  final class DataFlowType extends Unit {
+    string toString() { result = "" }
+  }
 
   predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
