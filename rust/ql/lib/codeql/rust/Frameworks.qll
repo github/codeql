@@ -4,3 +4,4 @@
 
 private import codeql.rust.frameworks.Reqwest
 private import codeql.rust.frameworks.stdlib.Env
+private import codeql.rust.frameworks.Sqlx
