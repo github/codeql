@@ -10,6 +10,8 @@ kt_javac_options(
 kt_kotlinc_options(
     name = "kotlinc-options",
     x_context_receivers = True,
+    # TODO:
+    # warn = "error",
     # if needed, see https://bazelbuild.github.io/rules_kotlin/kotlin.html#kt_kotlinc_options for available options
 )
 
