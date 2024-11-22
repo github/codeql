@@ -1734,16 +1734,13 @@ private fun KotlinFileExtractor.extractWhen(
     tw.writeExprsKotlinType(id, type.kotlinResult.id)
     extractExprContext(id, locId, callable, exprParent.enclosingStmt)
 
-    /* OLD: KE1, Should we remove this `when_if` DB construct?
-    if (e.origin == IrStatementOrigin.IF) {
-        tw.writeWhen_if(id)
-    }
-     */
+    val subjectVariable = e.subjectVariable
+    val subjectExpression = e.subjectExpression
 
-    if (e.subjectVariable != null) {
-        extractVariableExpr(e.subjectVariable!!, callable, id, -1, exprParent.enclosingStmt)
-    } else if (e.subjectExpression != null) {
-        extractExpressionExpr(e.subjectExpression!!, callable, id, -1, exprParent.enclosingStmt)
+    if (subjectVariable != null) {
+        extractVariableExpr(subjectVariable, callable, id, -1, exprParent.enclosingStmt)
+    } else if (subjectExpression != null) {
+        extractExpressionExpr(subjectExpression, callable, id, -1, exprParent.enclosingStmt)
     }
 
     e.entries.forEachIndexed { i, b ->
