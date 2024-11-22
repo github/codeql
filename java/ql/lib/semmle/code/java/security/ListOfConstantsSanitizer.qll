@@ -91,6 +91,10 @@ private predicate collectionAddition(Variable v, VarAccess coll, Expr e) {
     m.hasQualifiedName("java.util", "List", ["add", "addAll"]) and
     m.getNumberOfParameters() = 2 and
     arg = 1
+    or
+    m.hasQualifiedName("java.util", "SequencedCollection", ["addFirst", "addLast"]) and
+    m.getNumberOfParameters() = 1 and
+    arg = 0
   )
   or
   v.getAnAccess() = coll and
