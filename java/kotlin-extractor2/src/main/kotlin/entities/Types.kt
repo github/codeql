@@ -9,31 +9,48 @@ private fun KotlinUsesExtractor.useClassType(
     c: KaClassType
 ): TypeResults {
     // TODO: this cast is unsafe; .symbol is actually a KaClassLikeSymbol
-    val javaResult = TypeResult(addClassLabel(c.symbol as KaClassSymbol) /* , TODO, TODO */)
-    val kotlinResult = TypeResult(fakeKotlinType() /* , "TODO", "TODO" */)
+    val classId = addClassLabel(c.symbol as KaClassSymbol)
+    val javaResult = TypeResult(classId /* , TODO, TODO */)
+    val kotlinTypeId =
+        tw.getLabelFor<DbKt_class_type>("@\"kt_class;{$classId}\"") {
+            tw.writeKt_class_types(it, classId)
+        }
+    val kotlinResult = TypeResult(kotlinTypeId /* , "TODO", "TODO" */)
     return TypeResults(javaResult, kotlinResult)
 }
 
 fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.OTHER): TypeResults {
-    when (t) {
+    val tr = when (t) {
         null -> {
             logger.error("Unexpected null type")
             return extractErrorType()
         }
-        is KaClassType -> return useClassType(t)
-        is KaFlexibleType -> return useType(t.lowerBound) // TODO: take a more reasoned choice here
+        is KaClassType -> useClassType(t)
+        is KaFlexibleType -> useType(t.lowerBound) // TODO: take a more reasoned choice here
         else -> TODO()
     }
-    /*
-    OLD: KE1
-            when (t) {
-                is IrSimpleType -> return useSimpleType(t, context)
-                else -> {
-                    logger.error("Unrecognised IrType: " + t.javaClass)
-                    return extractErrorType()
-                }
-            }
-    */
+    val javaResult = tr.javaResult
+    val kotlinResultBase = tr.kotlinResult
+    val abbreviation = t.abbreviatedType
+    val kotlinResultAlias = if (abbreviation == null) kotlinResultBase else {
+                                // TODO: this cast is unsafe; .symbol is actually a KaClassLikeSymbol
+                                val classId = addClassLabel(abbreviation.symbol as KaClassSymbol)
+                                val kotlinBaseTypeId = kotlinResultBase.id
+                                val kotlinAliasTypeId =
+                                    tw.getLabelFor<DbKt_type_alias>("@\"kt_type_alias;{$classId};{$kotlinBaseTypeId}\"") {
+                                        tw.writeKt_type_aliases(it, classId, kotlinBaseTypeId)
+                                    }
+                                TypeResult(kotlinAliasTypeId /* , "TODO", "TODO" */)
+                            }
+    val kotlinResultNullability = if (t.nullability.isNullable) {
+                                      val kotlinAliasTypeId = kotlinResultAlias.id
+                                      val kotlinNullableTypeId =
+                                          tw.getLabelFor<DbKt_nullable_type>("@\"kt_nullable_type;{$kotlinAliasTypeId}\"") {
+                                              tw.writeKt_nullable_types(it, kotlinAliasTypeId)
+                                          }
+                                      TypeResult(kotlinNullableTypeId /* , "TODO", "TODO" */)
+                                  } else kotlinResultAlias
+    return TypeResults(javaResult, kotlinResultNullability)
 }
 
 private fun KotlinUsesExtractor.extractJavaErrorType(): TypeResult<DbErrortype> {
@@ -44,30 +61,13 @@ private fun KotlinUsesExtractor.extractJavaErrorType(): TypeResult<DbErrortype> 
 private fun KotlinUsesExtractor.extractErrorType(): TypeResults {
     val javaResult = extractJavaErrorType()
     val kotlinTypeId =
-        tw.getLabelFor<DbKt_nullable_type>("@\"errorKotlinType\"") {
-            tw.writeKt_nullable_types(it, javaResult.id)
+        tw.getLabelFor<DbKt_error_type>("@\"errorKotlinType\"") {
+            tw.writeKt_error_types(it)
         }
     return TypeResults(
         javaResult,
         TypeResult(kotlinTypeId /* TODO , "<CodeQL error type>", "<CodeQL error type>" */)
     )
-}
-
-// TODO
-fun KotlinUsesExtractor.fakeKotlinType(): Label<out DbKt_type> {
-    val fakeKotlinPackageId: Label<DbPackage> =
-        tw.getLabelFor("@\"FakeKotlinPackage\"", { tw.writePackages(it, "fake.kotlin") })
-    val fakeKotlinClassId: Label<DbClassorinterface> =
-        tw.getLabelFor(
-            "@\"FakeKotlinClass\"",
-            { tw.writeClasses_or_interfaces(it, "FakeKotlinClass", fakeKotlinPackageId, it) }
-        )
-    val fakeKotlinTypeId: Label<DbKt_nullable_type> =
-        tw.getLabelFor(
-            "@\"FakeKotlinType\"",
-            { tw.writeKt_nullable_types(it, fakeKotlinClassId) }
-        )
-    return fakeKotlinTypeId
 }
 
 /*

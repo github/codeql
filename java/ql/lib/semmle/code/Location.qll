@@ -42,8 +42,10 @@ predicate hasName(Element e, string name) {
   or
   modifiers(e, name)
   or
-  kt_type_alias(e, name, _)
-  or
+  // TODO: An alias declaration might have a name, but the type that
+  // uses it doesn't
+  // or
+  // kt_type_alias(e, name, _)
   ktProperties(e, name)
   or
   e instanceof ErrorType and name = "<CodeQL error type>"
