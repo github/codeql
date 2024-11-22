@@ -481,6 +481,9 @@ class RegExpLiteral extends @regexp_literal, Literal, RegExpParent {
   /** Holds if this regular expression has an `s` flag. */
   predicate isDotAll() { RegExp::isDotAll(this.getFlags()) }
 
+  /** Holds if this regular expression has an `u` flag. */
+  predicate isUnicode() { RegExp::isUnicode(this.getFlags()) }
+
   /** Holds if this regular expression has an `v` flag. */
   predicate isUnicodeSets() { RegExp::isUnicodeSets(this.getFlags()) }
 

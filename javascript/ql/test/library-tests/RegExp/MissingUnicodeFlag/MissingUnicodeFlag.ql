@@ -3,7 +3,7 @@ import javascript
 from RegExpLiteral literal, RegExpConstant wideConstant
 where
   wideConstant.getLiteral() = literal and
-  not literal.getFlags().matches("%u%") and
+  not (literal.isUnicode() or literal.isUnicodeSets()) and
   wideConstant.getValue().length() > 1 and
   (
     wideConstant.getParent() instanceof RegExpCharacterClass
