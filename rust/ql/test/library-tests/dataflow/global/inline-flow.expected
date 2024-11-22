@@ -64,7 +64,6 @@ subpaths
 | main.rs:41:26:44:5 | BlockExpr : unit | main.rs:30:17:30:22 | Param : unit | main.rs:30:32:32:1 | BlockExpr : unit | main.rs:41:13:44:6 | CallExpr : unit |
 | main.rs:90:29:90:29 | a : unit | main.rs:66:28:66:33 | Param : unit | main.rs:66:43:72:5 | BlockExpr : unit | main.rs:90:13:90:30 | ... .data_through(...) : unit |
 testFailures
-| main.rs:45:10:45:10 | a | Fixed missing result: hasValueFlow=14 |
 #select
 | main.rs:18:10:18:10 | a | main.rs:13:5:13:13 | CallExpr : unit | main.rs:18:10:18:10 | a | $@ | main.rs:13:5:13:13 | CallExpr : unit | CallExpr : unit |
 | main.rs:22:10:22:10 | n | main.rs:26:13:26:21 | CallExpr : unit | main.rs:22:10:22:10 | n | $@ | main.rs:26:13:26:21 | CallExpr : unit | CallExpr : unit |

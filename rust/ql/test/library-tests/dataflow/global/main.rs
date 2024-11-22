@@ -42,7 +42,7 @@ fn block_expression_as_argument() {
         println!("Hello");
         source(14)
     });
-    sink(a); // $ MISSING: hasValueFlow=14
+    sink(a); // $ hasValueFlow=14
 }
 
 // -----------------------------------------------------------------------------

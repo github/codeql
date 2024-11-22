@@ -187,10 +187,10 @@ module Node {
    * The value of a parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  final class NormalParameterNode extends ParameterNode, TParameterNode {
+  final class PositionalParameterNode extends ParameterNode, TParameterNode {
     override ParamCfgNode n;
 
-    NormalParameterNode() { this = TParameterNode(n) }
+    PositionalParameterNode() { this = TParameterNode(n) }
 
     /** Gets the parameter in the CFG that this node corresponds to. */
     ParamCfgNode getParameter() { result = n }
@@ -230,10 +230,7 @@ module Node {
 
   /** A data flow node that represents a value returned by a callable. */
   final class ReturnNode extends ExprNode {
-    ReturnNode() {
-      this.getCfgNode().getASuccessor() instanceof ExitCfgNode or
-      this.getCfgNode().getASuccessor() instanceof AnnotatedExitCfgNode
-    }
+    ReturnNode() { this.getCfgNode().getASuccessor() instanceof AnnotatedExitCfgNode }
 
     ReturnKind getKind() { any() }
   }
@@ -270,11 +267,11 @@ module Node {
     /** Gets the node before the state update. */
     Node getPreUpdateNode() { result = TExprNode(n) }
 
-    final override CfgScope getCfgScope() { result = n.getAstNode().getEnclosingCfgScope() }
+    final override CfgScope getCfgScope() { result = n.getScope() }
 
-    final override Location getLocation() { result = n.getAstNode().getLocation() }
+    final override Location getLocation() { result = n.getLocation() }
 
-    final override string toString() { result = n.getAstNode().toString() }
+    final override string toString() { result = n.toString() }
   }
 
   final class CastNode = NaNode;
@@ -287,7 +284,7 @@ module SsaFlow {
   private module SsaFlow = SsaImpl::DataFlowIntegration;
 
   private Node::ParameterNode toParameterNode(ParamCfgNode p) {
-    result.(Node::NormalParameterNode).getParameter() = p
+    result.(Node::PositionalParameterNode).getParameter() = p
   }
 
   /** Converts a control flow node into an SSA control flow node. */
@@ -336,7 +333,8 @@ module LocalFlow {
     nodeFrom.(Node::AstCfgFlowNode).getCfgNode() =
       nodeTo.(Node::SsaNode).getDefinitionExt().(Ssa::WriteDefinition).getControlFlowNode()
     or
-    nodeFrom.(Node::NormalParameterNode).getParameter().getPat() = nodeTo.(Node::PatNode).getPat()
+    nodeFrom.(Node::PositionalParameterNode).getParameter().getPat() =
+      nodeTo.(Node::PatNode).getPat()
     or
     SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
     or
@@ -376,7 +374,7 @@ module RustDataFlow implements InputSig<Location> {
 
   /** Holds if `p` is a parameter of `c` at the position `pos`. */
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
-    p.getCfgNode().getAstNode() = pos.getParameterIn(c.asCfgScope().(Function).getParamList())
+    p.getCfgNode().getAstNode() = pos.getParameterIn(c.asCfgScope().(Callable).getParamList())
   }
 
   /** Holds if `n` is an argument of `c` at the position `pos`. */
@@ -590,7 +588,7 @@ private module Cached {
   cached
   newtype TParameterPosition =
     TPositionalParameterPosition(int i) {
-      exists(any(ParamList l).getParam(i)) or exists(any(ArgList l).getArg(i))
+      i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()]) - 1]
     } or
     TSelfParameterPosition()
 }
