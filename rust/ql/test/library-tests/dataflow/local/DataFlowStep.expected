@@ -1,13 +1,16 @@
 | main.rs:3:11:3:11 | [SSA] i | main.rs:4:12:4:12 | i |
 | main.rs:3:11:3:11 | i | main.rs:3:11:3:11 | [SSA] i |
+| main.rs:3:11:3:16 | Param | main.rs:3:11:3:11 | i |
 | main.rs:4:5:4:12 | ... + ... | main.rs:3:26:5:1 | BlockExpr |
 | main.rs:7:9:7:9 | [SSA] s | main.rs:8:20:8:20 | s |
 | main.rs:7:9:7:9 | s | main.rs:7:9:7:9 | [SSA] s |
+| main.rs:7:9:7:14 | Param | main.rs:7:9:7:9 | s |
 | main.rs:19:9:19:9 | [SSA] s | main.rs:20:10:20:10 | s |
 | main.rs:19:9:19:9 | s | main.rs:19:9:19:9 | [SSA] s |
 | main.rs:19:13:19:21 | CallExpr | main.rs:19:9:19:9 | s |
 | main.rs:23:18:23:21 | [SSA] cond | main.rs:26:16:26:19 | cond |
 | main.rs:23:18:23:21 | cond | main.rs:23:18:23:21 | [SSA] cond |
+| main.rs:23:18:23:27 | Param | main.rs:23:18:23:21 | cond |
 | main.rs:24:9:24:9 | [SSA] a | main.rs:26:23:26:23 | a |
 | main.rs:24:9:24:9 | a | main.rs:24:9:24:9 | [SSA] a |
 | main.rs:24:13:24:21 | CallExpr | main.rs:24:9:24:9 | a |
@@ -23,6 +26,7 @@
 | main.rs:26:34:26:34 | b | main.rs:26:32:26:36 | BlockExpr |
 | main.rs:30:21:30:21 | [SSA] m | main.rs:32:19:32:19 | m |
 | main.rs:30:21:30:21 | m | main.rs:30:21:30:21 | [SSA] m |
+| main.rs:30:21:30:34 | Param | main.rs:30:21:30:21 | m |
 | main.rs:31:9:31:9 | [SSA] a | main.rs:33:20:33:20 | a |
 | main.rs:31:9:31:9 | a | main.rs:31:9:31:9 | [SSA] a |
 | main.rs:31:13:31:21 | CallExpr | main.rs:31:9:31:9 | a |
@@ -91,6 +95,7 @@
 | main.rs:118:5:118:5 | a | main.rs:116:31:119:1 | BlockExpr |
 | main.rs:121:22:121:22 | [SSA] b | main.rs:123:12:123:12 | b |
 | main.rs:121:22:121:22 | b | main.rs:121:22:121:22 | [SSA] b |
+| main.rs:121:22:121:28 | Param | main.rs:121:22:121:22 | b |
 | main.rs:122:9:122:9 | [SSA] a | main.rs:128:5:128:5 | a |
 | main.rs:122:9:122:9 | a | main.rs:122:9:122:9 | [SSA] a |
 | main.rs:122:13:127:5 | BlockExpr | main.rs:122:9:122:9 | a |
@@ -100,6 +105,7 @@
 | main.rs:128:5:128:5 | a | main.rs:121:38:129:1 | BlockExpr |
 | main.rs:131:22:131:22 | [SSA] b | main.rs:133:12:133:12 | b |
 | main.rs:131:22:131:22 | b | main.rs:131:22:131:22 | [SSA] b |
+| main.rs:131:22:131:28 | Param | main.rs:131:22:131:22 | b |
 | main.rs:132:9:132:9 | [SSA] a | main.rs:138:5:138:5 | a |
 | main.rs:132:9:132:9 | a | main.rs:132:9:132:9 | [SSA] a |
 | main.rs:132:13:137:5 | BlockExpr | main.rs:132:9:132:9 | a |

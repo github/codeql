@@ -1,24 +1,27 @@
 | main.rs:13:5:13:13 | CallExpr | main.rs:1:1:3:1 | source |
 | main.rs:17:13:17:23 | CallExpr | main.rs:12:1:14:1 | get_data |
 | main.rs:18:5:18:11 | CallExpr | main.rs:5:1:7:1 | sink |
-| main.rs:22:5:22:15 | CallExpr | main.rs:5:1:7:1 | sink |
+| main.rs:22:5:22:11 | CallExpr | main.rs:5:1:7:1 | sink |
 | main.rs:26:13:26:21 | CallExpr | main.rs:1:1:3:1 | source |
 | main.rs:27:5:27:14 | CallExpr | main.rs:21:1:23:1 | data_in |
 | main.rs:35:13:35:21 | CallExpr | main.rs:1:1:3:1 | source |
 | main.rs:36:13:36:27 | CallExpr | main.rs:30:1:32:1 | pass_through |
 | main.rs:37:5:37:11 | CallExpr | main.rs:5:1:7:1 | sink |
-| main.rs:49:9:49:15 | CallExpr | main.rs:5:1:7:1 | sink |
-| main.rs:55:13:55:21 | CallExpr | main.rs:1:1:3:1 | source |
-| main.rs:69:13:69:25 | ... .get_data(...) | main.rs:51:5:57:5 | get_data |
-| main.rs:70:5:70:11 | CallExpr | main.rs:5:1:7:1 | sink |
-| main.rs:75:13:75:21 | CallExpr | main.rs:1:1:3:1 | source |
-| main.rs:76:5:76:17 | ... .data_in(...) | main.rs:48:5:50:5 | data_in |
-| main.rs:81:13:81:21 | CallExpr | main.rs:1:1:3:1 | source |
-| main.rs:82:5:82:22 | ... .data_through(...) | main.rs:58:5:64:5 | data_through |
-| main.rs:83:5:83:11 | CallExpr | main.rs:5:1:7:1 | sink |
-| main.rs:87:5:87:22 | CallExpr | main.rs:16:1:19:1 | data_out_of_call |
-| main.rs:88:5:88:21 | CallExpr | main.rs:25:1:28:1 | data_in_to_call |
-| main.rs:89:5:89:23 | CallExpr | main.rs:34:1:38:1 | data_through_call |
-| main.rs:91:5:91:24 | CallExpr | main.rs:67:1:71:1 | data_out_of_method |
-| main.rs:92:5:92:28 | CallExpr | main.rs:73:1:77:1 | data_in_to_method_call |
-| main.rs:93:5:93:25 | CallExpr | main.rs:79:1:84:1 | data_through_method |
+| main.rs:41:13:44:6 | CallExpr | main.rs:30:1:32:1 | pass_through |
+| main.rs:43:9:43:18 | CallExpr | main.rs:1:1:3:1 | source |
+| main.rs:45:5:45:11 | CallExpr | main.rs:5:1:7:1 | sink |
+| main.rs:57:9:57:15 | CallExpr | main.rs:5:1:7:1 | sink |
+| main.rs:63:13:63:21 | CallExpr | main.rs:1:1:3:1 | source |
+| main.rs:77:13:77:25 | ... .get_data(...) | main.rs:59:5:65:5 | get_data |
+| main.rs:78:5:78:11 | CallExpr | main.rs:5:1:7:1 | sink |
+| main.rs:83:13:83:21 | CallExpr | main.rs:1:1:3:1 | source |
+| main.rs:84:5:84:17 | ... .data_in(...) | main.rs:56:5:58:5 | data_in |
+| main.rs:89:13:89:21 | CallExpr | main.rs:1:1:3:1 | source |
+| main.rs:90:13:90:30 | ... .data_through(...) | main.rs:66:5:72:5 | data_through |
+| main.rs:91:5:91:11 | CallExpr | main.rs:5:1:7:1 | sink |
+| main.rs:95:5:95:22 | CallExpr | main.rs:16:1:19:1 | data_out_of_call |
+| main.rs:96:5:96:21 | CallExpr | main.rs:25:1:28:1 | data_in_to_call |
+| main.rs:97:5:97:23 | CallExpr | main.rs:34:1:38:1 | data_through_call |
+| main.rs:99:5:99:24 | CallExpr | main.rs:75:1:79:1 | data_out_of_method |
+| main.rs:100:5:100:28 | CallExpr | main.rs:81:1:85:1 | data_in_to_method_call |
+| main.rs:101:5:101:25 | CallExpr | main.rs:87:1:92:1 | data_through_method |
