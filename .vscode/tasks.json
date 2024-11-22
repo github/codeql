@@ -38,6 +38,58 @@
                 "command": "${config:python.pythonPath}",
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Create change note",
+            "type": "process",
+            "command": "python3",
+            "args": [
+                "misc/scripts/create-change-note.py",
+                "${input:language}",
+                "${input:name}",
+                "${input:category}"
+            ],
+            "presentation": {
+                "reveal": "never",
+                "close": true
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "language",
+            "description": "Language",
+            "options":
+            [
+                "go",
+                "java",
+                "javascript",
+                "cpp",
+                "csharp",
+                "python",
+                "ruby",
+                "swift",
+            ]
+        },
+        {
+            "type": "promptString",
+            "id": "name",
+            "description": "Name"
+        },
+        {
+            "type": "pickString",
+            "id": "category",
+            "description": "Category",
+            "options":
+            [
+                "minorAnalysis",
+                "newQuery",
+                "fix",
+                "majorAnalysis",
+                "breaking",
+            ]
         }
     ]
 }
