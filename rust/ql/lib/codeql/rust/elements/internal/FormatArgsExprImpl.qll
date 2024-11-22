@@ -25,7 +25,8 @@ module Impl {
    */
   class FormatArgsExpr extends Generated::FormatArgsExpr {
     override Format getFormat(int index) {
-      result.getParent() = this and result.getIndex() = index + 1
+      result =
+        rank[index + 1](Format f, int i | f.getParent() = this and f.getIndex() = i | f order by i)
     }
   }
 }
