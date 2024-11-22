@@ -13,5 +13,5 @@ import codeql.rust.Concepts
 
 from ThreatModelSource s, string defaultString
 where
-  if s instanceof ActiveThreatModelSource then defaultString = ", DEFAULT" else defaultString = ""
-select s, s.getSourceType() + " (" + s.getThreatModel() + defaultString + ")"
+  if s instanceof ActiveThreatModelSource then defaultString = " (DEFAULT)" else defaultString = ""
+select s, "Flow source '" + s.getSourceType() + "' of type " + s.getThreatModel() + defaultString + "."
