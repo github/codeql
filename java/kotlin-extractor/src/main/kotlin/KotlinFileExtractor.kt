@@ -6274,7 +6274,12 @@ open class KotlinFileExtractor(
                         val bLocId = tw.getLocation(b)
                         tw.writeStmts_whenbranch(bId, id, i, callable)
                         tw.writeHasLocation(bId, bLocId)
-                        extractExpressionExpr(b.condition, callable, bId, 0, bId)
+
+                        val condId = tw.getFreshIdLabel<DbWhenbranchcondition>()
+                        tw.writeStmts_whenbranchcondition(condId, bId, 0, callable)
+                        tw.writeHasLocation(id, bLocId)
+                        tw.writeWhen_branch_condition_with_expr(condId)
+                        extractExpressionExpr(b.condition, callable, condId, 0, condId)
                         extractExpressionStmt(b.result, callable, bId, 1)
                         if (b is IrElseBranch) {
                             tw.writeWhen_branch_else(bId)
