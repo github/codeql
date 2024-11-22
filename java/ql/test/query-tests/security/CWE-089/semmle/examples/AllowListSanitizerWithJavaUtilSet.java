@@ -21,23 +21,23 @@ class AllowListSanitizerWithJavaUtilSet {
 	public static final Set<String> goodAllowList2 = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList("allowed1","allowed2")));
 	public static final Set<String> goodAllowList3;
 	public static final Set<String> goodAllowList4;
+	public static final Set<String> goodAllowList5;
 	public static final Set<String> badAllowList1 = Set.of("allowed1", "allowed2", getNonConstantString());
 	public static final Set<String> badAllowList2 = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList("allowed1", getNonConstantString())));
 	public static final Set<String> badAllowList3;
 	public static final Set<String> badAllowList4;
-	public static final Set<String> badAllowList5;
 	public static Set<String> badAllowList6 = Set.of("allowed1", "allowed2", "allowed3");
-	public final Set<String> badAllowList7 = Set.of("allowed1", "allowed2", "allowed3");
+	public final Set<String> goodAllowList7 = Set.of("allowed1", "allowed2", "allowed3");
 
 	static {
     	goodAllowList3 = Set.of("allowed1", "allowed2", "allowed3");
     	goodAllowList4 = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList("allowed1", "allowed2")));
     	badAllowList3 = Set.of(getNonConstantString(), "allowed2", "allowed3");
     	badAllowList4 = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList("allowed1", getNonConstantString())));
-		badAllowList5 = new HashSet<String>();
-		badAllowList5.add("allowed1");
-		badAllowList5.add("allowed2");
-		badAllowList5.add("allowed3");
+		goodAllowList5 = new HashSet<String>();
+		goodAllowList5.add("allowed1");
+		goodAllowList5.add("allowed2");
+		goodAllowList5.add("allowed3");
 	}
 
 	public static String getNonConstantString() {
@@ -104,8 +104,8 @@ class AllowListSanitizerWithJavaUtilSet {
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
-		// BAD: an allowlist is used with constant strings
-		if(badAllowList5.contains(tainted)){
+		// GOOD: an allowlist is used with constant strings
+		if(goodAllowList5.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
@@ -120,8 +120,8 @@ class AllowListSanitizerWithJavaUtilSet {
 
 	private void testNonStaticFields(String[] args) throws IOException, SQLException {
 		String tainted = args[1];
-		// BAD: the allowlist is in a non-static field
-		if(badAllowList7.contains(tainted)){
+		// GOOD: the allowlist is in a non-static field
+		if(goodAllowList7.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);

@@ -22,23 +22,23 @@ class AllowListSanitizerWithJavaUtilList {
 	public static final List<String> goodAllowList2 = Collections.unmodifiableList(Arrays.asList("allowed1"));
 	public static final List<String> goodAllowList3;
 	public static final List<String> goodAllowList4;
+	public static final List<String> goodAllowList5;
 	public static final List<String> badAllowList1 = List.of("allowed1", "allowed2", getNonConstantString());
 	public static final List<String> badAllowList2 = Collections.unmodifiableList(Arrays.asList("allowed1", getNonConstantString()));
 	public static final List<String> badAllowList3;
 	public static final List<String> badAllowList4;
-	public static final List<String> badAllowList5;
 	public static List<String> badAllowList6 = List.of("allowed1", "allowed2", "allowed3");
-	public final List<String> badAllowList7 = List.of("allowed1", "allowed2", "allowed3");
+	public final List<String> goodAllowList7 = List.of("allowed1", "allowed2", "allowed3");
 
 	static {
     	goodAllowList3 = List.of("allowed1", "allowed2", "allowed3");
     	goodAllowList4 = Collections.unmodifiableList(Arrays.asList("allowed1", "allowed2"));
     	badAllowList3 = List.of(getNonConstantString(), "allowed2", "allowed3");
     	badAllowList4 = Collections.unmodifiableList(Arrays.asList("allowed1", getNonConstantString()));
-		badAllowList5 = new ArrayList<String>();
-		badAllowList5.add("allowed1");
-		badAllowList5.add("allowed2");
-		badAllowList5.add("allowed3");
+		goodAllowList5 = new ArrayList<String>();
+		goodAllowList5.add("allowed1");
+		goodAllowList5.add("allowed2");
+		goodAllowList5.add("allowed3");
 	}
 
 	public static String getNonConstantString() {
@@ -105,8 +105,8 @@ class AllowListSanitizerWithJavaUtilList {
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
 		}
-		// BAD: an allowlist is used with constant strings
-		if(badAllowList5.contains(tainted)){
+		// GOOD: an allowlist is used with constant strings
+		if(goodAllowList5.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
@@ -121,8 +121,8 @@ class AllowListSanitizerWithJavaUtilList {
 
 	private void testNonStaticFields(String[] args) throws IOException, SQLException {
 		String tainted = args[0];
-		// BAD: the allowlist is in a non-static field
-		if(badAllowList7.contains(tainted)){
+		// GOOD: the allowlist is in a non-static field
+		if(goodAllowList7.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
 			ResultSet results = connection.createStatement().executeQuery(query);
