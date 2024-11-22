@@ -28,6 +28,7 @@ import org.jetbrains.kotlin.analysis.project.structure.builder.buildKtSdkModule
 import org.jetbrains.kotlin.analysis.project.structure.builder.buildKtSourceModule
 import org.jetbrains.kotlin.cli.common.arguments.parseCommandLineArguments
 import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
+import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
 import org.jetbrains.kotlin.psi.*
 
@@ -181,6 +182,9 @@ fun doAnalysis(
     lateinit var sourceModule: KaSourceModule
     val k2args: K2JVMCompilerArguments = parseCommandLineArguments(args.toList())
 
+    // TODO: Collect the messages, and log them?
+    val ourLanguageVersionSettings = k2args.toLanguageVersionSettings(MessageCollector.NONE)
+
     val session = buildStandaloneAnalysisAPISession {
         registerProjectService(KotlinLifetimeTokenProvider::class.java, KotlinAlwaysAccessibleLifetimeTokenProvider())
 
@@ -210,6 +214,7 @@ fun doAnalysis(
             )
             sourceModule = addModule(
                 buildKtSourceModule {
+                    languageVersionSettings = ourLanguageVersionSettings
                     addSourceRoots(k2args.freeArgs.map { Paths.get(it) })
                     addRegularDependency(sdk)
                     addRegularDependency(lib)
