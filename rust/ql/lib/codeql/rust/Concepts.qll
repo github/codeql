@@ -50,7 +50,7 @@ class ActiveThreatModelSource extends ThreatModelSource {
 /**
  * A data flow source corresponding to the program's command line arguments or path.
  */
-class CommandLineArgsSource extends ThreatModelSource instanceof CommandLineArgsSource::Range { }
+final class CommandLineArgsSource = CommandLineArgsSource::Range;
 
 module CommandLineArgsSource {
   abstract class Range extends ThreatModelSource::Range {
@@ -63,7 +63,7 @@ module CommandLineArgsSource {
 /**
  * A data flow source corresponding to the program's environment.
  */
-class EnvironmentSource extends ThreatModelSource instanceof EnvironmentSource::Range { }
+final class EnvironmentSource = EnvironmentSource::Range;
 
 module EnvironmentSource {
   abstract class Range extends ThreatModelSource::Range {
@@ -76,7 +76,7 @@ module EnvironmentSource {
 /**
  * A data flow source for remote (network) data.
  */
-class RemoteSource extends ThreatModelSource instanceof RemoteSource::Range { }
+final class RemoteSource = RemoteSource::Range;
 
 module RemoteSource {
   abstract class Range extends ThreatModelSource::Range {
