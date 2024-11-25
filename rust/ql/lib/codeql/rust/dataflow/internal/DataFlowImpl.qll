@@ -399,13 +399,55 @@ module RustDataFlow implements InputSig<Location> {
 
   final class ReturnKind = ReturnKindAlias;
 
+  private import codeql.util.Option
+
+  private class CrateOrigin extends string {
+    CrateOrigin() {
+      this = [any(Item i).getCrateOrigin(), any(Resolvable r).getResolvedCrateOrigin()]
+    }
+  }
+
+  private class CrateOriginOption = Option<CrateOrigin>::Option;
+
+  pragma[nomagic]
+  private predicate hasExtendedCanonicalPath(
+    DataFlowCallable c, CrateOriginOption crate, string path
+  ) {
+    exists(Item i |
+      i = c.asCfgScope() and
+      path = i.getExtendedCanonicalPath()
+    |
+      crate.asSome() = i.getCrateOrigin()
+      or
+      crate.isNone() and
+      not i.hasCrateOrigin()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate resolvesExtendedCanonicalPath(
+    DataFlowCall c, CrateOriginOption crate, string path
+  ) {
+    exists(Resolvable r |
+      path = r.getResolvedPath() and
+      (
+        r = c.asMethodCallExprCfgNode().getExpr()
+        or
+        r = c.asCallExprCfgNode().getExpr().(PathExprCfgNode).getPath()
+      )
+    |
+      crate.asSome() = r.getResolvedCrateOrigin()
+      or
+      crate.isNone() and
+      not r.hasResolvedCrateOrigin()
+    )
+  }
+
   /** Gets a viable implementation of the target of the given `Call`. */
-  DataFlowCallable viableCallable(DataFlowCall c) {
-    exists(Function f, string name | result.asCfgScope() = f and name = f.getName().toString() |
-      if f.getParamList().hasSelfParam()
-      then name = c.asMethodCallExprCfgNode().getNameRef().getText()
-      else
-        name = c.asCallExprCfgNode().getExpr().getExpr().(PathExpr).getPath().getPart().toString()
+  DataFlowCallable viableCallable(DataFlowCall call) {
+    exists(string path, CrateOriginOption crate |
+      hasExtendedCanonicalPath(result, crate, path) and
+      resolvesExtendedCanonicalPath(call, crate, path)
     )
   }
 
