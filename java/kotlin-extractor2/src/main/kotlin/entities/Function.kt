@@ -722,9 +722,6 @@ private fun <T : DbCallable> KotlinUsesExtractor.useFunction(
             classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
     */
 ): Label<out T> {
-    println("=== useFunction")
-    println(f)
-    println(f.returnType)
     val label = getFunctionLabel(javaFun, parentId /* TODO , classTypeArgsIncludingOuterClasses */)
     val id: Label<T> =
         tw.getLabelFor(label) {

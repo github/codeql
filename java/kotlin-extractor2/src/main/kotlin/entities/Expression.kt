@@ -1974,10 +1974,6 @@ private fun KotlinFileExtractor.extractConstant(
         KtNodeTypes.INTEGER_CONSTANT -> {
             val t = e.expressionType
             val i = parseNumericLiteral(text, elementType)
-            println("=== parsed")
-            println(text)
-            println(i)
-            println(i?.javaClass)
             when {
                 i == null -> {
                     TODO()
