@@ -1,6 +1,19 @@
 from misc.codegen.lib.schemadefs import *
 from .ast import *
 
+class LabelableExpr(Expr):
+    """
+    The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
+    """
+    label: optional[Label] | child
+
+class LoopingExpr(LabelableExpr):
+    """
+    The base class for expressions that loop (`LoopExpr`, `ForExpr` or `WhileExpr`).
+    """
+    loop_body: optional["BlockExpr"] | child
+
+
 
 @annotate(Module)
 @rust.doc_test_signature(None)
@@ -68,6 +81,7 @@ class _:
     """
     A path. For example:
     ```rust
+    use some_crate::some_module::some_item;
     foo::bar;
     ```
     """
@@ -107,6 +121,7 @@ class PathExprBase(Expr):
 
 
 @annotate(PathExpr, replace_bases={Expr: PathExprBase}, cfg = True)
+@qltest.test_with(Path)
 class _:
     """
     A path expression. For example:
@@ -151,7 +166,7 @@ class _:
     """
 
 
-@annotate(BlockExpr, cfg = True)
+@annotate(BlockExpr, replace_bases={Expr: LabelableExpr}, cfg = True)
 class _:
     """
     A block expression. For example:
@@ -167,9 +182,10 @@ class _:
     }
     ```
     """
+    label: drop
 
 
-@annotate(LoopExpr, cfg = True)
+@annotate(LoopExpr, replace_bases={Expr: LoopingExpr}, cfg = True)
 class _:
     """
     A loop expression. For example:
@@ -195,6 +211,8 @@ class _:
     };
     ```
     """
+    label: drop
+    loop_body: drop
 
 
 class CallExprBase(Expr):
@@ -705,6 +723,7 @@ class _:
 
 
 @annotate(PathPat, cfg = True)
+@qltest.test_with(Path)
 class _:
     """
     A path pattern. For example:
@@ -990,7 +1009,7 @@ class _:
     """
 
 
-@annotate(ForExpr, cfg = True)
+@annotate(ForExpr, replace_bases={Expr: LoopingExpr}, cfg = True)
 class _:
     """
     A ForExpr. For example:
@@ -998,6 +1017,8 @@ class _:
     todo!()
     ```
     """
+    label: drop
+    loop_body: drop
 
 
 @annotate(ForType)
@@ -1303,14 +1324,29 @@ class _:
     """
 
 
-@annotate(Param, cfg = True)
+class ParamBase(AstNode):
+    """
+    A normal parameter, `Param`, or a self parameter `SelfParam`.
+    """
+    attrs: list["Attr"] | child
+    ty: optional["TypeRef"] | child
+
+@annotate(ParamBase, cfg = True)
+class _:
+    pass
+
+@annotate(Param, replace_bases={AstNode: ParamBase}, cfg = True)
 class _:
     """
-    A Param. For example:
+    A parameter in a function or method. For example `x` in:
     ```rust
-    todo!()
+    fn new(x: T) -> Foo<T> {
+      // ...
+    }
     ```
     """
+    attrs: drop
+    ty: drop
 
 
 @annotate(ParamList)
@@ -1354,21 +1390,21 @@ class _:
 
 
 @annotate(PathSegment)
+@qltest.test_with(Path)
 class _:
     """
-    A PathSegment. For example:
-    ```rust
-    todo!()
-    ```
+    A path segment, which is one part of a whole path.
     """
 
 
 @annotate(PathType)
+@qltest.test_with(Path)
 class _:
     """
-    A PathType. For example:
+    A type referring to a path. For example:
     ```rust
-    todo!()
+    type X = std::collections::HashMap<i32, i32>;
+    type Y = X::Item;
     ```
     """
 
@@ -1473,14 +1509,18 @@ class _:
     """
 
 
-@annotate(SelfParam, cfg = True)
+@annotate(SelfParam, replace_bases={AstNode: ParamBase}, cfg = True)
 class _:
     """
-    A SelfParam. For example:
+    A `self` parameter. For example `self` in:
     ```rust
-    todo!()
+    fn push(&mut self, value: T) {
+      // ...
+    }
     ```
     """
+    attrs: drop
+    ty: drop
 
 
 @annotate(SliceType)
@@ -1750,7 +1790,7 @@ class _:
     """
 
 
-@annotate(WhileExpr, cfg = True)
+@annotate(WhileExpr, replace_bases={Expr: LoopingExpr}, cfg = True)
 class _:
     """
     A WhileExpr. For example:
@@ -1758,6 +1798,8 @@ class _:
     todo!()
     ```
     """
+    label: drop
+    loop_body: drop
 
 
 @annotate(Function, add_bases=[Callable])

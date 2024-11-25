@@ -25,5 +25,8 @@ public class WeakHashing {
 
         // OK: Property does not exist and default is secure
         MessageDigest ok2 = MessageDigest.getInstance(props.getProperty("hashAlg3", "SHA-256"));
+
+        // GOOD: Using a strong hashing algorithm
+        MessageDigest ok3 = MessageDigest.getInstance("SHA3-512");
     }
 }

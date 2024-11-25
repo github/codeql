@@ -5,6 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.BreakExpr
+import codeql.rust.elements.LabelableExpr
 
 /**
  * INTERNAL: This module contains the customizable definition of `BreakExpr` and should not
@@ -101,6 +102,18 @@ module Impl {
         result = getABreakAncestor(this, label) and
         isLabelled(result, label)
       )
+    }
+
+    override string toString() {
+      result = strictconcat(int i | | this.toStringPart(i), " " order by i)
+    }
+
+    private string toStringPart(int index) {
+      index = 0 and result = "break"
+      or
+      index = 1 and result = this.getLifetime().toString()
+      or
+      index = 2 and result = this.getExpr().toAbbreviatedString()
     }
   }
 }

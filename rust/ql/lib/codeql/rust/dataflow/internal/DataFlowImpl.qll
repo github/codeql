@@ -83,7 +83,7 @@ final class ParameterPosition extends TParameterPosition {
     result = "self" and this.isSelf()
   }
 
-  AstNode getParameterIn(ParamList ps) {
+  ParamBase getParameterIn(ParamList ps) {
     result = ps.getParam(this.getPosition())
     or
     result = ps.getSelfParam() and this.isSelf()
@@ -181,28 +181,17 @@ module Node {
     PatCfgNode getPat() { result = n }
   }
 
-  abstract class ParameterNode extends AstCfgFlowNode { }
-
   /**
    * The value of a parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  final class PositionalParameterNode extends ParameterNode, TParameterNode {
-    override ParamCfgNode n;
+  final class ParameterNode extends AstCfgFlowNode, TParameterNode {
+    override ParamBaseCfgNode n;
 
-    PositionalParameterNode() { this = TParameterNode(n) }
+    ParameterNode() { this = TParameterNode(n) }
 
     /** Gets the parameter in the CFG that this node corresponds to. */
-    ParamCfgNode getParameter() { result = n }
-  }
-
-  final class SelfParameterNode extends ParameterNode, TSelfParameterNode {
-    override SelfParamCfgNode n;
-
-    SelfParameterNode() { this = TSelfParameterNode(n) }
-
-    /** Gets the self parameter in the AST that this node corresponds to. */
-    SelfParamCfgNode getSelfParameter() { result = n }
+    ParamBaseCfgNode getParameter() { result = n }
   }
 
   final class ArgumentNode extends ExprNode {
@@ -284,7 +273,7 @@ module SsaFlow {
   private module SsaFlow = SsaImpl::DataFlowIntegration;
 
   private Node::ParameterNode toParameterNode(ParamCfgNode p) {
-    result.(Node::PositionalParameterNode).getParameter() = p
+    result.(Node::ParameterNode).getParameter() = p
   }
 
   /** Converts a control flow node into an SSA control flow node. */
@@ -333,7 +322,7 @@ module LocalFlow {
     nodeFrom.(Node::AstCfgFlowNode).getCfgNode() =
       nodeTo.(Node::SsaNode).getDefinitionExt().(Ssa::WriteDefinition).getControlFlowNode()
     or
-    nodeFrom.(Node::PositionalParameterNode).getParameter().getPat() =
+    nodeFrom.(Node::ParameterNode).getParameter().(ParamCfgNode).getPat() =
       nodeTo.(Node::PatNode).getPat()
     or
     SsaFlow::localFlowStep(_, nodeFrom, nodeTo, _)
@@ -399,13 +388,55 @@ module RustDataFlow implements InputSig<Location> {
 
   final class ReturnKind = ReturnKindAlias;
 
+  private import codeql.util.Option
+
+  private class CrateOrigin extends string {
+    CrateOrigin() {
+      this = [any(Item i).getCrateOrigin(), any(Resolvable r).getResolvedCrateOrigin()]
+    }
+  }
+
+  private class CrateOriginOption = Option<CrateOrigin>::Option;
+
+  pragma[nomagic]
+  private predicate hasExtendedCanonicalPath(
+    DataFlowCallable c, CrateOriginOption crate, string path
+  ) {
+    exists(Item i |
+      i = c.asCfgScope() and
+      path = i.getExtendedCanonicalPath()
+    |
+      crate.asSome() = i.getCrateOrigin()
+      or
+      crate.isNone() and
+      not i.hasCrateOrigin()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate resolvesExtendedCanonicalPath(
+    DataFlowCall c, CrateOriginOption crate, string path
+  ) {
+    exists(Resolvable r |
+      path = r.getResolvedPath() and
+      (
+        r = c.asMethodCallExprCfgNode().getExpr()
+        or
+        r = c.asCallExprCfgNode().getExpr().(PathExprCfgNode).getPath()
+      )
+    |
+      crate.asSome() = r.getResolvedCrateOrigin()
+      or
+      crate.isNone() and
+      not r.hasResolvedCrateOrigin()
+    )
+  }
+
   /** Gets a viable implementation of the target of the given `Call`. */
-  DataFlowCallable viableCallable(DataFlowCall c) {
-    exists(Function f, string name | result.asCfgScope() = f and name = f.getName().toString() |
-      if f.getParamList().hasSelfParam()
-      then name = c.asMethodCallExprCfgNode().getNameRef().getText()
-      else
-        name = c.asCallExprCfgNode().getExpr().getExpr().(PathExpr).getPath().getPart().toString()
+  DataFlowCallable viableCallable(DataFlowCall call) {
+    exists(string path, CrateOriginOption crate |
+      hasExtendedCanonicalPath(result, crate, path) and
+      resolvesExtendedCanonicalPath(call, crate, path)
     )
   }
 
@@ -559,8 +590,7 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(ExprCfgNode n) or
-    TParameterNode(ParamCfgNode p) or
-    TSelfParameterNode(SelfParamCfgNode p) or
+    TParameterNode(ParamBaseCfgNode p) or
     TPatNode(PatCfgNode p) or
     TArgumentPostUpdateNode(ExprCfgNode e) { isArgumentForCall(e, _, _) } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node)

@@ -1,1 +1,1 @@
-| gen_or_pat.rs:6:9:6:38 | OrPat | getNumberOfPats: | 2 |
+| gen_or_pat.rs:6:9:6:38 | ... \| ...::None | getNumberOfPats: | 2 |

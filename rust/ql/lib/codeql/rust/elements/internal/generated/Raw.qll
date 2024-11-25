@@ -549,28 +549,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Param. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A normal parameter, `Param`, or a self parameter `SelfParam`.
    */
-  class Param extends @param, AstNode {
-    override string toString() { result = "Param" }
+  class ParamBase extends @param_base, AstNode {
+    /**
+     * Gets the `index`th attr of this parameter base (0-based).
+     */
+    Attr getAttr(int index) { param_base_attrs(this, index, result) }
 
     /**
-     * Gets the `index`th attr of this parameter (0-based).
+     * Gets the ty of this parameter base, if it exists.
      */
-    Attr getAttr(int index) { param_attrs(this, index, result) }
-
-    /**
-     * Gets the pat of this parameter, if it exists.
-     */
-    Pat getPat() { param_pats(this, result) }
-
-    /**
-     * Gets the ty of this parameter, if it exists.
-     */
-    TypeRef getTy() { param_ties(this, result) }
+    TypeRef getTy() { param_base_ties(this, result) }
   }
 
   /**
@@ -602,10 +592,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A PathSegment. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A path segment, which is one part of a whole path.
    */
   class PathSegment extends @path_segment, AstNode {
     override string toString() { result = "PathSegment" }
@@ -833,42 +820,6 @@ module Raw {
    */
   class ReturnTypeSyntax extends @return_type_syntax, AstNode {
     override string toString() { result = "ReturnTypeSyntax" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A SelfParam. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class SelfParam extends @self_param, AstNode {
-    override string toString() { result = "SelfParam" }
-
-    /**
-     * Gets the `index`th attr of this self parameter (0-based).
-     */
-    Attr getAttr(int index) { self_param_attrs(this, index, result) }
-
-    /**
-     * Holds if this self parameter is mut.
-     */
-    predicate isMut() { self_param_is_mut(this) }
-
-    /**
-     * Gets the lifetime of this self parameter, if it exists.
-     */
-    Lifetime getLifetime() { self_param_lifetimes(this, result) }
-
-    /**
-     * Gets the name of this self parameter, if it exists.
-     */
-    Name getName() { self_param_names(this, result) }
-
-    /**
-     * Gets the ty of this self parameter, if it exists.
-     */
-    TypeRef getTy() { self_param_ties(this, result) }
   }
 
   /**
@@ -1356,70 +1307,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A block expression. For example:
-   * ```rust
-   * {
-   *     let x = 42;
-   * }
-   * ```
-   * ```rust
-   * 'label: {
-   *     let x = 42;
-   *     x
-   * }
-   * ```
-   */
-  class BlockExpr extends @block_expr, Expr {
-    override string toString() { result = "BlockExpr" }
-
-    /**
-     * Gets the `index`th attr of this block expression (0-based).
-     */
-    Attr getAttr(int index) { block_expr_attrs(this, index, result) }
-
-    /**
-     * Holds if this block expression is async.
-     */
-    predicate isAsync() { block_expr_is_async(this) }
-
-    /**
-     * Holds if this block expression is const.
-     */
-    predicate isConst() { block_expr_is_const(this) }
-
-    /**
-     * Holds if this block expression is gen.
-     */
-    predicate isGen() { block_expr_is_gen(this) }
-
-    /**
-     * Holds if this block expression is move.
-     */
-    predicate isMove() { block_expr_is_move(this) }
-
-    /**
-     * Holds if this block expression is try.
-     */
-    predicate isTry() { block_expr_is_try(this) }
-
-    /**
-     * Holds if this block expression is unsafe.
-     */
-    predicate isUnsafe() { block_expr_is_unsafe(this) }
-
-    /**
-     * Gets the label of this block expression, if it exists.
-     */
-    Label getLabel() { block_expr_labels(this, result) }
-
-    /**
-     * Gets the statement list of this block expression, if it exists.
-     */
-    StmtList getStmtList() { block_expr_stmt_lists(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A box pattern. For example:
    * ```rust
    * match x {
@@ -1814,42 +1701,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ForExpr. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class ForExpr extends @for_expr, Expr {
-    override string toString() { result = "ForExpr" }
-
-    /**
-     * Gets the `index`th attr of this for expression (0-based).
-     */
-    Attr getAttr(int index) { for_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the iterable of this for expression, if it exists.
-     */
-    Expr getIterable() { for_expr_iterables(this, result) }
-
-    /**
-     * Gets the label of this for expression, if it exists.
-     */
-    Label getLabel() { for_expr_labels(this, result) }
-
-    /**
-     * Gets the loop body of this for expression, if it exists.
-     */
-    BlockExpr getLoopBody() { for_expr_loop_bodies(this, result) }
-
-    /**
-     * Gets the pat of this for expression, if it exists.
-     */
-    Pat getPat() { for_expr_pats(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A ForType. For example:
    * ```rust
    * todo!()
@@ -2049,6 +1900,17 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
+   */
+  class LabelableExpr extends @labelable_expr, Expr {
+    /**
+     * Gets the label of this labelable expression, if it exists.
+     */
+    Label getLabel() { labelable_expr_labels(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A `let` expression. For example:
    * ```rust
    * if let Some(x) = maybe_some {
@@ -2209,50 +2071,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A loop expression. For example:
-   * ```rust
-   * loop {
-   *     println!("Hello, world (again)!");
-   * };
-   * ```
-   * ```rust
-   * 'label: loop {
-   *     println!("Hello, world (once)!");
-   *     break 'label;
-   * };
-   * ```
-   * ```rust
-   * let mut x = 0;
-   * loop {
-   *     if x < 10 {
-   *         x += 1;
-   *     } else {
-   *         break;
-   *     }
-   * };
-   * ```
-   */
-  class LoopExpr extends @loop_expr, Expr {
-    override string toString() { result = "LoopExpr" }
-
-    /**
-     * Gets the `index`th attr of this loop expression (0-based).
-     */
-    Attr getAttr(int index) { loop_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the label of this loop expression, if it exists.
-     */
-    Label getLabel() { loop_expr_labels(this, result) }
-
-    /**
-     * Gets the loop body of this loop expression, if it exists.
-     */
-    BlockExpr getLoopBody() { loop_expr_loop_bodies(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A MacroExpr. For example:
    * ```rust
    * todo!()
@@ -2391,6 +2209,24 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A parameter in a function or method. For example `x` in:
+   * ```rust
+   * fn new(x: T) -> Foo<T> {
+   *   // ...
+   * }
+   * ```
+   */
+  class Param extends @param, ParamBase {
+    override string toString() { result = "Param" }
+
+    /**
+     * Gets the pat of this parameter, if it exists.
+     */
+    Pat getPat() { param_pats(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A ParenExpr. For example:
    * ```rust
    * todo!()
@@ -2446,6 +2282,7 @@ module Raw {
    * INTERNAL: Do not use.
    * A path. For example:
    * ```rust
+   * use some_crate::some_module::some_item;
    * foo::bar;
    * ```
    */
@@ -2490,9 +2327,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A PathType. For example:
+   * A type referring to a path. For example:
    * ```rust
-   * todo!()
+   * type X = std::collections::HashMap<i32, i32>;
+   * type Y = X::Item;
    * ```
    */
   class PathType extends @path_type, TypeRef {
@@ -2825,6 +2663,34 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `self` parameter. For example `self` in:
+   * ```rust
+   * fn push(&mut self, value: T) {
+   *   // ...
+   * }
+   * ```
+   */
+  class SelfParam extends @self_param, ParamBase {
+    override string toString() { result = "SelfParam" }
+
+    /**
+     * Holds if this self parameter is mut.
+     */
+    predicate isMut() { self_param_is_mut(this) }
+
+    /**
+     * Gets the lifetime of this self parameter, if it exists.
+     */
+    Lifetime getLifetime() { self_param_lifetimes(this, result) }
+
+    /**
+     * Gets the name of this self parameter, if it exists.
+     */
+    Name getName() { self_param_names(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A slice pattern. For example:
    * ```rust
    * match x {
@@ -3077,37 +2943,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A WhileExpr. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class WhileExpr extends @while_expr, Expr {
-    override string toString() { result = "WhileExpr" }
-
-    /**
-     * Gets the `index`th attr of this while expression (0-based).
-     */
-    Attr getAttr(int index) { while_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the condition of this while expression, if it exists.
-     */
-    Expr getCondition() { while_expr_conditions(this, result) }
-
-    /**
-     * Gets the label of this while expression, if it exists.
-     */
-    Label getLabel() { while_expr_labels(this, result) }
-
-    /**
-     * Gets the loop body of this while expression, if it exists.
-     */
-    BlockExpr getLoopBody() { while_expr_loop_bodies(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A wildcard pattern. For example:
    * ```rust
    * let _ = 42;
@@ -3162,6 +2997,65 @@ module Raw {
      * Gets the expression of this yield expression, if it exists.
      */
     Expr getExpr() { yield_expr_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A block expression. For example:
+   * ```rust
+   * {
+   *     let x = 42;
+   * }
+   * ```
+   * ```rust
+   * 'label: {
+   *     let x = 42;
+   *     x
+   * }
+   * ```
+   */
+  class BlockExpr extends @block_expr, LabelableExpr {
+    override string toString() { result = "BlockExpr" }
+
+    /**
+     * Gets the `index`th attr of this block expression (0-based).
+     */
+    Attr getAttr(int index) { block_expr_attrs(this, index, result) }
+
+    /**
+     * Holds if this block expression is async.
+     */
+    predicate isAsync() { block_expr_is_async(this) }
+
+    /**
+     * Holds if this block expression is const.
+     */
+    predicate isConst() { block_expr_is_const(this) }
+
+    /**
+     * Holds if this block expression is gen.
+     */
+    predicate isGen() { block_expr_is_gen(this) }
+
+    /**
+     * Holds if this block expression is move.
+     */
+    predicate isMove() { block_expr_is_move(this) }
+
+    /**
+     * Holds if this block expression is try.
+     */
+    predicate isTry() { block_expr_is_try(this) }
+
+    /**
+     * Holds if this block expression is unsafe.
+     */
+    predicate isUnsafe() { block_expr_is_unsafe(this) }
+
+    /**
+     * Gets the statement list of this block expression, if it exists.
+     */
+    StmtList getStmtList() { block_expr_stmt_lists(this, result) }
   }
 
   /**
@@ -3468,6 +3362,17 @@ module Raw {
      * Gets the where clause of this impl, if it exists.
      */
     WhereClause getWhereClause() { impl_where_clauses(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * The base class for expressions that loop (`LoopExpr`, `ForExpr` or `WhileExpr`).
+   */
+  class LoopingExpr extends @looping_expr, LabelableExpr {
+    /**
+     * Gets the loop body of this looping expression, if it exists.
+     */
+    BlockExpr getLoopBody() { looping_expr_loop_bodies(this, result) }
   }
 
   /**
@@ -3961,5 +3866,86 @@ module Raw {
      * Gets the visibility of this use, if it exists.
      */
     Visibility getVisibility() { use_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A ForExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
+  class ForExpr extends @for_expr, LoopingExpr {
+    override string toString() { result = "ForExpr" }
+
+    /**
+     * Gets the `index`th attr of this for expression (0-based).
+     */
+    Attr getAttr(int index) { for_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the iterable of this for expression, if it exists.
+     */
+    Expr getIterable() { for_expr_iterables(this, result) }
+
+    /**
+     * Gets the pat of this for expression, if it exists.
+     */
+    Pat getPat() { for_expr_pats(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A loop expression. For example:
+   * ```rust
+   * loop {
+   *     println!("Hello, world (again)!");
+   * };
+   * ```
+   * ```rust
+   * 'label: loop {
+   *     println!("Hello, world (once)!");
+   *     break 'label;
+   * };
+   * ```
+   * ```rust
+   * let mut x = 0;
+   * loop {
+   *     if x < 10 {
+   *         x += 1;
+   *     } else {
+   *         break;
+   *     }
+   * };
+   * ```
+   */
+  class LoopExpr extends @loop_expr, LoopingExpr {
+    override string toString() { result = "LoopExpr" }
+
+    /**
+     * Gets the `index`th attr of this loop expression (0-based).
+     */
+    Attr getAttr(int index) { loop_expr_attrs(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A WhileExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
+  class WhileExpr extends @while_expr, LoopingExpr {
+    override string toString() { result = "WhileExpr" }
+
+    /**
+     * Gets the `index`th attr of this while expression (0-based).
+     */
+    Attr getAttr(int index) { while_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the condition of this while expression, if it exists.
+     */
+    Expr getCondition() { while_expr_conditions(this, result) }
   }
 }

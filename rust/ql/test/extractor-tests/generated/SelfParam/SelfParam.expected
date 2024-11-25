@@ -1,0 +1,1 @@
+| gen_self_param.rs:5:13:5:21 | SelfParam | getNumberOfAttrs: | 0 | hasTy: | no | isMut: | yes | hasLifetime: | no | hasName: | yes |
