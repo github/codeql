@@ -33,17 +33,11 @@ jobs:
 
         - name: Check if the 'reminders' comment exists
           run: |
-            checklist_comment=$(gh api "repos/$REPO/issues/$PULL_REQUEST_NUMBER/comments" --jq '.[] | select(.body | test("### Pull Request checklist"))')
+            reminder_comment=$(gh api "repos/$REPO/issues/$PULL_REQUEST_NUMBER/comments" --jq '.[] | select(.body | test("### Pull Request reminders for autofix"))')
 
-            if [ -z "$checklist_comment" ]; then
-              echo "The checklist comment does not exist. Adding it."
-              comment_body="$(cat <<EOF
-                ### Pull Request checklist for autofix (internal access required)
-
-                - [ ] Autofixes generated based on these changes are valid, only needed if this PR makes significant changes to `.ql`, `.qll`, or `.qhelp` files. See [the documentation](https://github.com/github/codeql-team/blob/main/docs/best-practices/validating-autofix-for-query-changes.md).
-                - [ ] Changes to autofix are validated [at scale](https://github.com/github/codeql-dca/blob/main/doc/autofix.md) (internal access required).
-                - [ ] Adding a new query? Consider also [adding the query to autofix](https://github.com/github/codeml-autofix/blob/main/docs/updating-query-support.md#adding-a-new-query-to-the-query-suite).
-              EOF)"
+            if [ -z "$reminder_comment" ]; then
+              echo "The reminder comment does not exist. Adding it."
+              comment_body="$(cat .github/pr-comment-reminder.md)"
 
               gh api "repos/$REPO/issues/$PULL_REQUEST_NUMBER/comments" -f body="$comment_body"
             fi
