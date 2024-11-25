@@ -89,14 +89,14 @@ We need to add a tuple to the ``sinkModel``\(package, type, subtypes, name, sign
          pack: codeql/go-all
          extensible: sinkModel
        data:
-         - ["database/sql", "DB", False, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+         - ["database/sql", "DB", True, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
 
 Since we want to add a new sink, we need to add a tuple to the ``sinkModel`` extensible predicate.
 The first five values identify the function (in this case a method) to be modeled as a sink.
 
 - The first value ``database/sql`` is the package name.
 - The second value ``DB`` is the name of the type that the method is associated with.
-- The third value ``False`` is a flag that indicates whether or not the sink also applies to all overrides of the method.
+- The third value ``True`` is a flag that indicates whether or not the sink also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
 - The fourth value ``Prepare`` is the method name.
 - The fifth value ``""`` is the method input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions or methods may have the same name and they need to be distinguished by the number and types of the arguments.
 
@@ -137,7 +137,7 @@ The first five values identify the function to be modeled as a source.
 
 - The first value ``net/http`` is the package name.
 - The second value ``Request`` is the type name, since the function is a method of the ``Request`` type.
-- The third value ``True`` is a flag that indicates whether or not the source also applies to all overrides of the method.
+- The third value ``True`` is a flag that indicates whether or not the sink also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
 - The fourth value ``FormValue`` is the function name.
 - The fifth value ``""`` is the function input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions or methods may have the same name and they need to be distinguished by the number and types of the arguments.
 
@@ -183,7 +183,7 @@ These are the same for both of the rows above as we are adding two summaries for
 
 - The first value ``strings`` is the package name.
 - The second value ``""`` is left blank, since the function is not a method of a type.
-- The third value ``False`` is a flag that indicates whether or not the summary also applies to all overrides of the method.
+- The third value ``False`` is a flag that indicates whether or not the sink also applies to subtypes. This has no effect for non-method functions.
 - The fourth value ``Join`` is the function name.
 - The fifth value ``""`` is left blank, since specifying the signature is optional and Go does not allow multiple signature overloads for the same function.
 
@@ -238,7 +238,7 @@ The first five values identify the function (in this case a method) to be modele
 
 - The first value ``net/url`` is the package name.
 - The second value ``URL`` is the receiver type.
-- The third value ``True`` is a flag that indicates whether or not the summary also applies to all overrides of the method.
+- The third value ``True`` is a flag that indicates whether or not the sink also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
 - The fourth value ``Hostname`` is the method name.
 - The fifth value ``""`` is left blank, since specifying the signature is optional and Go does not allow multiple signature overloads for the same function.
 
@@ -277,7 +277,7 @@ The first five values identify the field to be modeled as a source.
 
 - The first value ``net/http`` is the package name.
 - The second value ``Request`` is the name of the type that the field is associated with.
-- The third value ``True`` is a flag that indicates whether or not the source also applies to all overrides of the field.
+- The third value ``True`` is a flag that indicates whether or not the sink also applies to subtypes. For fields this means when the field is accessed as a promoted field in another type.
 - The fourth value ``Body`` is the field name.
 - The fifth value ``""`` is blank since it is a field access and field accesses do not have method signatures in Go.
 
