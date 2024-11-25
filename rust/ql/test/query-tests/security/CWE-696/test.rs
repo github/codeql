@@ -97,6 +97,29 @@ fn bad2_8() { // $ Alert[rust/ctor-initialization]
     process::exit(1234);
 }
 
+#[ctor::ctor]
+fn harmless2_9() {
+    libc_print::libc_println!("Hello, world!"); // does not use the std library
+}
+
+#[ctor::ctor]
+fn harmless2_10() {
+    core::assert!(true); // core library should be OK in this context
+}
+
+extern crate alloc;
+use alloc::alloc::{alloc, dealloc, Layout};
+
+#[ctor::ctor]
+unsafe fn harmless2_11() {
+    let layout = Layout::new::<u64>();
+    let ptr = alloc(layout); // alloc library should be OK in this context
+
+    if !ptr.is_null() {
+        dealloc(ptr, layout);
+    }
+}
+
 // --- transitive cases ---
 
 fn call_target3_1() {
