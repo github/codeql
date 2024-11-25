@@ -2018,13 +2018,13 @@ private module Impl {
   }
 
   private Element getImmediateChildOfMatchExpr(MatchExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nAttr, int nExpr, int nMatchArmList |
+    exists(int b, int bExpr, int n, int nAttr, int nScrutinee, int nMatchArmList |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nExpr = nAttr + 1 and
-      nMatchArmList = nExpr + 1 and
+      nScrutinee = nAttr + 1 and
+      nMatchArmList = nScrutinee + 1 and
       (
         none()
         or
@@ -2033,9 +2033,11 @@ private module Impl {
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
-        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
+        index = nAttr and result = e.getScrutinee() and partialPredicateCall = "Scrutinee()"
         or
-        index = nExpr and result = e.getMatchArmList() and partialPredicateCall = "MatchArmList()"
+        index = nScrutinee and
+        result = e.getMatchArmList() and
+        partialPredicateCall = "MatchArmList()"
       )
     )
   }

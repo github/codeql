@@ -1709,7 +1709,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       override predicate relevantChild(AstNode child) {
         none()
         or
-        child = this.getExpr()
+        child = this.getScrutinee()
       }
     }
 
@@ -1752,16 +1752,16 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
-       * Gets the expression of this match expression, if it exists.
+       * Gets the scrutinee (the expression being matched) of this match expression, if it exists.
        */
-      ExprCfgNode getExpr() {
-        any(ChildMapping mapping).hasCfgChild(node, node.getExpr(), this, result)
+      ExprCfgNode getScrutinee() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getScrutinee(), this, result)
       }
 
       /**
-       * Holds if `getExpr()` exists.
+       * Holds if `getScrutinee()` exists.
        */
-      predicate hasExpr() { exists(this.getExpr()) }
+      predicate hasScrutinee() { exists(this.getScrutinee()) }
 
       /**
        * Gets the match arm list of this match expression, if it exists.
@@ -3451,14 +3451,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           cfgNode
         )
       or
-      pred = "getExpr" and
+      pred = "getScrutinee" and
       parent =
         any(Nodes::MatchExprCfgNode cfgNode, MatchExpr astNode |
           astNode = cfgNode.getMatchExpr() and
-          child = getDesugared(astNode.getExpr()) and
+          child = getDesugared(astNode.getScrutinee()) and
           i = -1 and
           hasCfgNode(child) and
-          not child = cfgNode.getExpr().getAstNode()
+          not child = cfgNode.getScrutinee().getAstNode()
         |
           cfgNode
         )
