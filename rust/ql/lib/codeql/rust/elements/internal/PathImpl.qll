@@ -15,14 +15,17 @@ module Impl {
   /**
    * A path. For example:
    * ```rust
+   * use some_crate::some_module::some_item;
    * foo::bar;
    * ```
    */
   class Path extends Generated::Path {
-    override string toString() {
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() {
       if this.hasQualifier()
-      then result = this.getQualifier().toString() + "::" + this.getPart().toString()
-      else result = this.getPart().toString()
+      then result = "...::" + this.getPart().toAbbreviatedString()
+      else result = this.getPart().toAbbreviatedString()
     }
   }
 }

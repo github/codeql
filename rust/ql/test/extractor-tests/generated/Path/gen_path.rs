@@ -2,5 +2,6 @@
 
 fn test_path() -> () {
     // A path. For example:
+    use some_crate::some_module::some_item;
     foo::bar;
 }

@@ -11,10 +11,12 @@ def default_options(codeql):
         threads = 1,
         show_extractor_output = True,
         check_databases = False,
+        learn = True,
     )
 
 @pytest.mark.parametrize("dir", ["lib", "main", "dependencies"])
-def test(codeql, rust, dir):
+def test(codeql, rust, expected_files, dir):
+    expected_files.add(f"{dir}/functions.expected", expected=".nested.expected")
     codeql.test.run(dir)
 
 def test_failing_cargo_check(codeql, rust):
