@@ -12,7 +12,7 @@ Calling functions and methods in the Rust <code>std</code> library from a <code>
 <recommendation>
 
 <p>
-Do not call any part of the <code>std</code> library from a <code>#[ctor]</code> or <code>#[dtor]<code> function. Instead either:
+Do not call any part of the <code>std</code> library from a <code>#[ctor]</code> or <code>#[dtor]</code> function. Instead either:
 </p>
 <ul>
   <li>Move the code to a different location, such as inside your program's <code>main</code> function.</li>
