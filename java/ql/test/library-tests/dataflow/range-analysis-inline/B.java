@@ -1,4 +1,9 @@
 public class B {
+
+    // Use this method to mark non-integer bounds
+    // that should also be annotated.
+    static void bound(int b) { }
+
     public int forloop() {
         int result = 0;
         for (int i = 0;
@@ -91,4 +96,25 @@ public class B {
         }
         return result; // $ bound="result = 5"
     }
+
+    static void arraylength(int[] arr) {
+        bound(arr.length);
+        for (int i = 0;
+            i < arr.length;
+            i++) { // $ bound="i <= arr.length - 1"
+            arr[i]++; // $ bound="i <= arr.length - 1"
+        }
+    }
+
+    static int varbound(int b) {
+        bound(b);
+        int result = 0;
+        for (int i = 0;
+            i < b;
+            i++) { // $ bound="i <= b - 1"
+            result = i; // $ bound="i <= b - 1"
+        }
+        return result; // $ MISSING: bound="result <= b - 1"
+    }
+
 }
