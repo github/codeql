@@ -11,6 +11,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.Format
 private import codeql.rust.elements.NamedFormatArgument
 private import codeql.Locations
+private import codeql.rust.elements.Variable
 
 /**
  * INTERNAL: This module contains the customizable definition of `FormatTemplateVariableAccess` and should not
@@ -36,5 +37,9 @@ module Impl {
 
     /** Gets the underlying `NamedFormatArgument` . */
     NamedFormatArgument getArgument() { result = argument }
+
+    override string getType() {
+      result = any(Variable v | v.getAnAccess() = this).getPat().getType()
+    }
   }
 }

@@ -2,11 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from RangePat x, string hasEnd, string hasOperatorName, string hasStart
+from RangePat x, string hasType, string hasEnd, string hasOperatorName, string hasStart
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   (if x.hasEnd() then hasEnd = "yes" else hasEnd = "no") and
   (if x.hasOperatorName() then hasOperatorName = "yes" else hasOperatorName = "no") and
   if x.hasStart() then hasStart = "yes" else hasStart = "no"
-select x, "hasEnd:", hasEnd, "hasOperatorName:", hasOperatorName, "hasStart:", hasStart
+select x, "hasType:", hasType, "hasEnd:", hasEnd, "hasOperatorName:", hasOperatorName, "hasStart:",
+  hasStart

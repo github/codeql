@@ -1,0 +1,3 @@
+| gen_prefix_expr.rs:5:13:5:15 | - ... | i32 |
+| gen_prefix_expr.rs:6:13:6:17 | ! ... | bool |
+| gen_prefix_expr.rs:7:13:7:16 | * ... | {unknown} |

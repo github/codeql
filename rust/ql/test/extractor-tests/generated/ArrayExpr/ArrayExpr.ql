@@ -2,10 +2,12 @@
 import codeql.rust.elements
 import TestUtils
 
-from ArrayExpr x, int getNumberOfAttrs, int getNumberOfExprs
+from ArrayExpr x, string hasType, int getNumberOfAttrs, int getNumberOfExprs
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   getNumberOfExprs = x.getNumberOfExprs()
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "getNumberOfExprs:", getNumberOfExprs
+select x, "hasType:", hasType, "getNumberOfAttrs:", getNumberOfAttrs, "getNumberOfExprs:",
+  getNumberOfExprs

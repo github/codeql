@@ -1,0 +1,4 @@
+| gen_path_expr.rs:5:13:5:20 | variable | hasType: | yes | getNumberOfAttrs: | 0 | hasPath: | yes |
+| gen_path_expr.rs:6:13:6:20 | foo::bar | hasType: | yes | getNumberOfAttrs: | 0 | hasPath: | yes |
+| gen_path_expr.rs:7:13:7:20 | ::foo | hasType: | yes | getNumberOfAttrs: | 0 | hasPath: | yes |
+| gen_path_expr.rs:8:13:8:35 | ::foo | hasType: | yes | getNumberOfAttrs: | 0 | hasPath: | yes |

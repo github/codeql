@@ -5,6 +5,8 @@
  */
 
 private import codeql.rust.elements.internal.generated.LiteralExpr
+private import codeql.rust.elements.FormatArgsExpr
+private import codeql.rust.elements.LiteralPat
 
 /**
  * INTERNAL: This module contains the customizable definition of `LiteralExpr` and should not
@@ -40,6 +42,14 @@ module Impl {
         v = this.getTextValue() and
         if v.length() > 30 then result = v.substring(0, 30) + "..." else result = v
       )
+    }
+
+    override string getType() {
+      result = super.getType()
+      or
+      exists(FormatArgsExpr f | f.getTemplate() = this and result = "&str")
+      or
+      result = any(LiteralPat p | p.getLiteral() = this).getType()
     }
   }
 }

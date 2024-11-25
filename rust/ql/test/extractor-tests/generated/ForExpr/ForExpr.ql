@@ -3,15 +3,16 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  ForExpr x, string hasLabel, string hasLoopBody, int getNumberOfAttrs, string hasIterable,
-  string hasPat
+  ForExpr x, string hasType, string hasLabel, string hasLoopBody, int getNumberOfAttrs,
+  string hasIterable, string hasPat
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   (if x.hasLabel() then hasLabel = "yes" else hasLabel = "no") and
   (if x.hasLoopBody() then hasLoopBody = "yes" else hasLoopBody = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasIterable() then hasIterable = "yes" else hasIterable = "no") and
   if x.hasPat() then hasPat = "yes" else hasPat = "no"
-select x, "hasLabel:", hasLabel, "hasLoopBody:", hasLoopBody, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasIterable:", hasIterable, "hasPat:", hasPat
+select x, "hasType:", hasType, "hasLabel:", hasLabel, "hasLoopBody:", hasLoopBody,
+  "getNumberOfAttrs:", getNumberOfAttrs, "hasIterable:", hasIterable, "hasPat:", hasPat

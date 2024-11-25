@@ -321,6 +321,12 @@ closure_binder_generic_param_lists(
 | @yield_expr
 ;
 
+#keyset[id]
+expr_types(
+  int id: @expr ref,
+  string type_: string ref
+);
+
 @extern_item =
   @function
 | @macro_call
@@ -640,6 +646,12 @@ param_list_self_params(
 | @tuple_struct_pat
 | @wildcard_pat
 ;
+
+#keyset[id]
+pat_types(
+  int id: @pat ref,
+  string type_: string ref
+);
 
 path_segments(
   unique int id: @path_segment

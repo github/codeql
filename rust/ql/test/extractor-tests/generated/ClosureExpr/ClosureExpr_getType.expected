@@ -1,0 +1,5 @@
+| gen_closure_expr.rs:5:5:5:13 | \|...\| ... | impl Fn({unknown}) -> {unknown} |
+| gen_closure_expr.rs:6:5:6:34 | \|...\| ... | impl Fn(i32) -> i32 |
+| gen_closure_expr.rs:7:5:7:27 | \|...\| ... | impl Fn(i32, {unknown}) -> impl Future<Output = {unknown}> |
+| gen_closure_expr.rs:8:6:9:15 | \|...\| ... | \|{unknown}\| yields {unknown} -> {unknown} |
+| gen_closure_expr.rs:10:6:11:23 | \|...\| ... | \|{unknown}\| yields {unknown} -> {unknown} |

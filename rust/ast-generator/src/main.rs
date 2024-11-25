@@ -452,10 +452,10 @@ use ra_ap_syntax::ast::{{
 use ra_ap_syntax::{{ast, AstNode}};
 
 impl Translator<'_> {{
-    fn emit_else_branch(&mut self, node: ast::ElseBranch) -> Label<generated::Expr> {{
+    fn emit_else_branch(&mut self, node: &ast::ElseBranch) -> Label<generated::Expr> {{
         match node {{
-            ast::ElseBranch::IfExpr(inner) => self.emit_if_expr(inner).into(),
-            ast::ElseBranch::Block(inner) => self.emit_block_expr(inner).into(),
+            ast::ElseBranch::IfExpr(ref inner) => self.emit_if_expr(inner).into(),
+            ast::ElseBranch::Block(ref inner) => self.emit_block_expr(inner).into(),
         }}
     }}\n"
     )?;
@@ -465,22 +465,28 @@ impl Translator<'_> {{
 
         writeln!(
             buf,
-            "    pub(crate) fn emit_{}(&mut self, node: ast::{}) -> Label<generated::{}> {{",
+            "    #[allow(clippy::let_and_return)] pub(crate) fn emit_{}(&mut self, node: &ast::{}) -> Label<generated::{}> {{",
             to_lower_snake_case(type_name),
             type_name,
             class_name
         )?;
-        writeln!(buf, "        match node {{")?;
+        writeln!(buf, "        let label = match node {{")?;
         for variant in &node.variants {
             writeln!(
                 buf,
-                "            ast::{}::{}(inner) => self.emit_{}(inner).into(),",
+                "            ast::{}::{}(ref inner) => self.emit_{}(inner).into(),",
                 type_name,
                 variant,
                 to_lower_snake_case(variant)
             )?;
         }
-        writeln!(buf, "        }}")?;
+        writeln!(buf, "        }};")?;
+        writeln!(
+            buf,
+            "        emit_detached!({}, self, node, label);",
+            class_name
+        )?;
+        writeln!(buf, "        label")?;
         writeln!(buf, "    }}\n")?;
     }
 
@@ -490,7 +496,7 @@ impl Translator<'_> {{
 
         writeln!(
             buf,
-            "    pub(crate) fn emit_{}(&mut self, node: ast::{}) -> Label<generated::{}> {{",
+            "    pub(crate) fn emit_{}(&mut self, node: &ast::{}) -> Label<generated::{}> {{",
             to_lower_snake_case(type_name),
             type_name,
             class_name
@@ -519,7 +525,7 @@ impl Translator<'_> {{
             } else if field.is_many {
                 writeln!(
                     buf,
-                    "        let {} = node.{}().map(|x| self.emit_{}(x)).collect();",
+                    "        let {} = node.{}().map(|x| self.emit_{}(&x)).collect();",
                     class_field_name,
                     struct_field_name,
                     to_lower_snake_case(type_name)
@@ -527,7 +533,7 @@ impl Translator<'_> {{
             } else {
                 writeln!(
                     buf,
-                    "        let {} = node.{}().map(|x| self.emit_{}(x));",
+                    "        let {} = node.{}().map(|x| self.emit_{}(&x));",
                     class_field_name,
                     struct_field_name,
                     to_lower_snake_case(type_name)
@@ -549,7 +555,7 @@ impl Translator<'_> {{
             writeln!(buf, "            {},", class_field_name)?;
         }
         writeln!(buf, "        }});")?;
-        writeln!(buf, "        self.emit_location(label, &node);")?;
+        writeln!(buf, "        self.emit_location(label, node);")?;
         writeln!(
             buf,
             "        emit_detached!({}, self, node, label);",
@@ -557,7 +563,7 @@ impl Translator<'_> {{
         )?;
         writeln!(
             buf,
-            "        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());"
+            "        self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());"
         )?;
         writeln!(buf, "        label")?;
 

@@ -2,9 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from BoxPat x, string hasPat
+from BoxPat x, string hasType, string hasPat
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   if x.hasPat() then hasPat = "yes" else hasPat = "no"
-select x, "hasPat:", hasPat
+select x, "hasType:", hasType, "hasPat:", hasPat

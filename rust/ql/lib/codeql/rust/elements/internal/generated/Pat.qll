@@ -18,5 +18,15 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Pat` class directly.
    * Use the subclass `Pat`, where the following predicates are available.
    */
-  class Pat extends Synth::TPat, AstNodeImpl::AstNode { }
+  class Pat extends Synth::TPat, AstNodeImpl::AstNode {
+    /**
+     * Gets the type of this pat, if it exists.
+     */
+    string getType() { result = Synth::convertPatToRaw(this).(Raw::Pat).getType() }
+
+    /**
+     * Holds if `getType()` exists.
+     */
+    final predicate hasType() { exists(this.getType()) }
+  }
 }

@@ -2,9 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from MacroPat x, string hasMacroCall
+from MacroPat x, string hasType, string hasMacroCall
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   if x.hasMacroCall() then hasMacroCall = "yes" else hasMacroCall = "no"
-select x, "hasMacroCall:", hasMacroCall
+select x, "hasType:", hasType, "hasMacroCall:", hasMacroCall

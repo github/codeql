@@ -2,10 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from ConstBlockPat x, string hasBlockExpr, string isConst
+from ConstBlockPat x, string hasType, string hasBlockExpr, string isConst
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   (if x.hasBlockExpr() then hasBlockExpr = "yes" else hasBlockExpr = "no") and
   if x.isConst() then isConst = "yes" else isConst = "no"
-select x, "hasBlockExpr:", hasBlockExpr, "isConst:", isConst
+select x, "hasType:", hasType, "hasBlockExpr:", hasBlockExpr, "isConst:", isConst

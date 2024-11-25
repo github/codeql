@@ -1,0 +1,7 @@
+| gen_format.rs:5:14:5:32 | FormatArgsExpr | Arguments<'_> |
+| gen_format_args_expr.rs:5:17:5:27 | FormatArgsExpr | Arguments<'_> |
+| gen_format_args_expr.rs:6:17:6:37 | FormatArgsExpr | Arguments<'_> |
+| gen_format_args_expr.rs:7:17:7:43 | FormatArgsExpr | Arguments<'_> |
+| gen_format_args_expr.rs:9:17:9:28 | FormatArgsExpr | Arguments<'_> |
+| gen_format_argument.rs:5:14:5:47 | FormatArgsExpr | Arguments<'_> |
+| gen_format_argument.rs:7:14:7:56 | FormatArgsExpr | Arguments<'_> |

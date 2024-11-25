@@ -1,6 +1,6 @@
 use super::mappings::{AddressableAst, AddressableHir};
-use crate::generated::MacroCall;
 use crate::generated::{self};
+use crate::generated::{Expr, MacroCall, Pat};
 use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
@@ -10,7 +10,10 @@ use log::Level;
 use ra_ap_base_db::salsa::InternKey;
 use ra_ap_base_db::CrateOrigin;
 use ra_ap_hir::db::ExpandDatabase;
-use ra_ap_hir::{Adt, Crate, ItemContainer, Module, ModuleDef, PathResolution, Semantics, Type};
+use ra_ap_hir::{
+    Adt, Crate, HirDisplay, ItemContainer, Module, ModuleDef, PathResolution, Semantics, Type,
+    TypeInfo,
+};
 use ra_ap_hir_def::type_ref::Mutability;
 use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_expand::ExpandTo;
@@ -26,33 +29,39 @@ use ra_ap_syntax::{
 
 #[macro_export]
 macro_rules! emit_detached {
+    (Expr, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_expr_type($node, $label);
+    };
+    (Pat, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_pat_type($node, $label);
+    };
     (MacroCall, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_macro_call_expanded(&$node, $label);
+        $self.extract_macro_call_expanded($node, $label);
     };
     (Function, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Trait, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Struct, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Enum, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Union, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Module, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     // TODO canonical origin of other items
     (Path, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_destination(&$node, $label);
+        $self.extract_canonical_destination($node, $label);
     };
     (MethodCallExpr, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_method_canonical_destination(&$node, $label);
+        $self.extract_method_canonical_destination($node, $label);
     };
     ($($_:tt)*) => {};
 }
@@ -252,22 +261,79 @@ impl<'a> Translator<'a> {
     ) -> Option<Label<generated::AstNode>> {
         match expand_to {
             ra_ap_hir_expand::ExpandTo::Statements => {
-                ast::MacroStmts::cast(expanded).map(|x| self.emit_macro_stmts(x).into())
+                ast::MacroStmts::cast(expanded).map(|x| self.emit_macro_stmts(&x).into())
             }
             ra_ap_hir_expand::ExpandTo::Items => {
-                ast::MacroItems::cast(expanded).map(|x| self.emit_macro_items(x).into())
+                ast::MacroItems::cast(expanded).map(|x| self.emit_macro_items(&x).into())
             }
 
             ra_ap_hir_expand::ExpandTo::Pattern => {
-                ast::Pat::cast(expanded).map(|x| self.emit_pat(x).into())
+                ast::Pat::cast(expanded).map(|x| self.emit_pat(&x).into())
             }
             ra_ap_hir_expand::ExpandTo::Type => {
-                ast::Type::cast(expanded).map(|x| self.emit_type(x).into())
+                ast::Type::cast(expanded).map(|x| self.emit_type(&x).into())
             }
             ra_ap_hir_expand::ExpandTo::Expr => {
-                ast::Expr::cast(expanded).map(|x| self.emit_expr(x).into())
+                ast::Expr::cast(expanded).map(|x| self.emit_expr(&x).into())
             }
         }
+    }
+    pub(crate) fn extract_expr_type(&mut self, expr: &ast::Expr, label: Label<generated::Expr>) {
+        if let Some(semantics) = self.semantics {
+            if let Some(tp) = semantics.type_of_expr(expr) {
+                Expr::emit_type(
+                    label,
+                    Translator::display_type(semantics, tp),
+                    &mut self.trap.writer,
+                )
+            } else {
+                let text_range = self
+                    .text_range_for_node(expr)
+                    .unwrap_or(TextRange::empty(0.into()));
+                self.emit_diagnostic(
+                    DiagnosticSeverity::Info,
+                    "types".to_owned(),
+                    "missing type for expression".to_owned(),
+                    "missing type for expression".to_owned(),
+                    self.location(text_range),
+                );
+            }
+        }
+    }
+    pub(crate) fn extract_pat_type(&mut self, pat: &ast::Pat, label: Label<generated::Pat>) {
+        if let Some(semantics) = self.semantics {
+            if let Some(tp) = semantics.type_of_pat(pat) {
+                Pat::emit_type(
+                    label,
+                    Translator::display_type(semantics, tp),
+                    &mut self.trap.writer,
+                )
+            } else {
+                let text_range = self
+                    .text_range_for_node(pat)
+                    .unwrap_or(TextRange::empty(0.into()));
+                self.emit_diagnostic(
+                    DiagnosticSeverity::Info,
+                    "types".to_owned(),
+                    "missing type for pattern".to_owned(),
+                    "missing type for pattern".to_owned(),
+                    self.location(text_range),
+                );
+            }
+        }
+    }
+    fn display_type(semantics: &Semantics<'_, RootDatabase>, tp: TypeInfo) -> String {
+        let tp = tp.original();
+        let display = tp.into_displayable(
+            semantics.db,
+            None,
+            None,
+            false,
+            ra_ap_hir_ty::display::DisplayTarget::Test,
+            ra_ap_hir_ty::display::ClosureStyle::ImplFn,
+            true,
+        );
+        format!("{display}")
     }
     pub(crate) fn extract_macro_call_expanded(
         &mut self,

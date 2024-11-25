@@ -2,10 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from PathExpr x, int getNumberOfAttrs, string hasPath
+from PathExpr x, string hasType, int getNumberOfAttrs, string hasPath
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   if x.hasPath() then hasPath = "yes" else hasPath = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasPath:", hasPath
+select x, "hasType:", hasType, "getNumberOfAttrs:", getNumberOfAttrs, "hasPath:", hasPath

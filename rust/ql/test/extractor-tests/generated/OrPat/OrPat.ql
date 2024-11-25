@@ -2,9 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from OrPat x, int getNumberOfPats
+from OrPat x, string hasType, int getNumberOfPats
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getNumberOfPats = x.getNumberOfPats()
-select x, "getNumberOfPats:", getNumberOfPats
+select x, "hasType:", hasType, "getNumberOfPats:", getNumberOfPats

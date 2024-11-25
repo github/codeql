@@ -2,6 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-from FormatTemplateVariableAccess x
-where toBeTested(x) and not x.isUnknown()
-select x
+from FormatTemplateVariableAccess x, string hasType
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  if x.hasType() then hasType = "yes" else hasType = "no"
+select x, "hasType:", hasType

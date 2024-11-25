@@ -1,0 +1,4 @@
+| gen_ref_expr.rs:5:25:5:28 | &foo | &{unknown} |
+| gen_ref_expr.rs:6:23:6:30 | &mut foo | &mut {unknown} |
+| gen_ref_expr.rs:7:35:7:48 | &raw const foo | *const {unknown} |
+| gen_ref_expr.rs:8:33:8:44 | &raw mut foo | *mut {unknown} |

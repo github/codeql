@@ -2,11 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from BreakExpr x, int getNumberOfAttrs, string hasExpr, string hasLifetime
+from BreakExpr x, string hasType, int getNumberOfAttrs, string hasExpr, string hasLifetime
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
   if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasLifetime:", hasLifetime
+select x, "hasType:", hasType, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr,
+  "hasLifetime:", hasLifetime

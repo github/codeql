@@ -2,11 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from FieldExpr x, int getNumberOfAttrs, string hasExpr, string hasNameRef
+from FieldExpr x, string hasType, int getNumberOfAttrs, string hasExpr, string hasNameRef
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
   if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasNameRef:", hasNameRef
+select x, "hasType:", hasType, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr,
+  "hasNameRef:", hasNameRef

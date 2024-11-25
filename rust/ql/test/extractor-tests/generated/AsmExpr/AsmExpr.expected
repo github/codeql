@@ -1,1 +1,1 @@
-| gen_asm_expr.rs:6:9:6:24 | AsmExpr | getNumberOfAttrs: | 0 | hasExpr: | yes |
+| gen_asm_expr.rs:6:9:6:24 | AsmExpr | hasType: | yes | getNumberOfAttrs: | 0 | hasExpr: | yes |

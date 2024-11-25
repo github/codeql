@@ -65,7 +65,7 @@ impl Extractor<'_> {
                 no_location,
             );
         }
-        translator.emit_source_file(ast);
+        translator.emit_source_file(&ast);
         translator.trap.commit().unwrap_or_else(|err| {
             log::error!(
                 "Failed to write trap file for: {}: {}",

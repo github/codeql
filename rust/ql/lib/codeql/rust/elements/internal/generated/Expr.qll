@@ -18,5 +18,15 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Expr` class directly.
    * Use the subclass `Expr`, where the following predicates are available.
    */
-  class Expr extends Synth::TExpr, AstNodeImpl::AstNode { }
+  class Expr extends Synth::TExpr, AstNodeImpl::AstNode {
+    /**
+     * Gets the type of this expression, if it exists.
+     */
+    string getType() { result = Synth::convertExprToRaw(this).(Raw::Expr).getType() }
+
+    /**
+     * Holds if `getType()` exists.
+     */
+    final predicate hasType() { exists(this.getType()) }
+  }
 }
