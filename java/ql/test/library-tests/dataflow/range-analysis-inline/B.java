@@ -27,7 +27,8 @@ public class B {
 
     public int forloopexitupd() {
         int result = 0;
-        for (; result < 10; result++) { // $ bound="result in [0..9]" bound="result in [0..10]"
+        for (; result < 10; // $ bound="result in [0..10]"
+            result++) { // $ bound="result in [0..9]"
         }
         return result; // $ bound="result = 10"
     }
@@ -46,7 +47,8 @@ public class B {
 
     public int emptyforloop() {
         int result = 0;
-        for (int i = 0; i < 0; i++) { // $ bound="i = 0" bound="i in [0..-1]"
+        for (int i = 0; i < 0; // $ bound="i = 0"
+            i++) { // $ bound="i in [0..-1]"
             result = i; // $ bound="i in [0..-1]"
         }
         return result; // $ bound="result = 0"
