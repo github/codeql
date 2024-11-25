@@ -215,7 +215,7 @@ This example shows how the Go query pack models flow through a method for a simp
 .. code-block:: go
 
     func TaintFlow(u *url.URL) {
-        host := u.Hostname() // There is taint flow from u to s.
+        host := u.Hostname() // There is taint flow from u to host.
         ...
     }
     
