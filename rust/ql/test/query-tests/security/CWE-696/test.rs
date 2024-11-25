@@ -26,21 +26,21 @@ fn harmless1_5() {
     _ = std::io::stdout().write(b"Hello, world!");
 }
 
-#[ctor::ctor]
-fn bad1_1() { // $ Alert[rust/ctor-initialization]
-    _ = std::io::stdout().write(b"Hello, world!");
+#[ctor::ctor] // $ Source=source1_1
+fn bad1_1() {
+    _ = std::io::stdout().write(b"Hello, world!"); // $ Alert[rust/ctor-initialization]=source1_1
 }
 
-#[ctor::dtor]
-fn bad1_2() { // $ Alert[rust/ctor-initialization]
-    _ = std::io::stdout().write(b"Hello, world!");
+#[ctor::dtor] // $ Source=source1_2
+fn bad1_2() {
+    _ = std::io::stdout().write(b"Hello, world!"); // $ Alert[rust/ctor-initialization]=source1_2
 }
 
 #[rustfmt::skip]
-#[ctor::dtor]
+#[ctor::dtor] // $ Source=source1_3
 #[rustfmt::skip]
-fn bad1_3() { // $ Alert[rust/ctor-initialization]
-    _ = std::io::stdout().write(b"Hello, world!");
+fn bad1_3() {
+    _ = std::io::stdout().write(b"Hello, world!"); // $ Alert[rust/ctor-initialization]=source1_3
 }
 
 // --- code variants ---
@@ -48,53 +48,53 @@ fn bad1_3() { // $ Alert[rust/ctor-initialization]
 use ctor::ctor;
 use std::io::*;
 
-#[ctor]
-fn bad2_1() { // $ Alert[rust/ctor-initialization]
-    _ = stdout().write(b"Hello, world!");
+#[ctor] // $ Source=source2_1
+fn bad2_1() {
+    _ = stdout().write(b"Hello, world!"); // $ Alert[rust/ctor-initialization]=source2_1
 }
 
-#[ctor]
-fn bad2_2() { // $ Alert[rust/ctor-initialization]
-    _ = stderr().write_all(b"Hello, world!");
+#[ctor] // $ Source=source2_2
+fn bad2_2() {
+    _ = stderr().write_all(b"Hello, world!"); // $ Alert[rust/ctor-initialization]=source2_2
 }
 
-#[ctor]
-fn bad2_3() { // $ Alert[rust/ctor-initialization]
-    println!("Hello, world!");
+#[ctor] // $ Source=source2_3
+fn bad2_3() {
+    println!("Hello, world!"); // $ Alert[rust/ctor-initialization]=source2_3
 }
 
-#[ctor]
-fn bad2_4() { // $ Alert[rust/ctor-initialization]
+#[ctor] // $ Source=source2_4
+fn bad2_4() {
     let mut buff = String::new();
-    _ = std::io::stdin().read_line(&mut buff);
+    _ = std::io::stdin().read_line(&mut buff); // $ Alert[rust/ctor-initialization]=source2_4
 }
 
 use std::fs;
 
-#[ctor]
-fn bad2_5() { // $ MISSING: Alert[rust/ctor-initialization]
-    let _buff = fs::File::create("hello.txt").unwrap();
+#[ctor] // $ MISSING: Source=source2_5
+fn bad2_5() {
+    let _buff = fs::File::create("hello.txt").unwrap(); // $ MISSING: Alert[rust/ctor-initialization]=source2_5
 }
 
-#[ctor]
-fn bad2_6() { // $ MISSING: Alert[rust/ctor-initialization]
-    let _t = std::time::Instant::now();
+#[ctor] // $ MISSING: Source=source2_6
+fn bad2_6() {
+    let _t = std::time::Instant::now(); // $ MISSING: Alert[rust/ctor-initialization]=source2_6
 }
 
 use std::time::Duration;
 
 const DURATION2_7: Duration = Duration::new(1, 0);
 
-#[ctor]
-fn bad2_7() { // $ Alert[rust/ctor-initialization]
-    std::thread::sleep(DURATION2_7);
+#[ctor] // $ Source=source2_7
+fn bad2_7() {
+    std::thread::sleep(DURATION2_7); // $ Alert[rust/ctor-initialization]=source2_7
 }
 
 use std::process;
 
-#[ctor]
-fn bad2_8() { // $ Alert[rust/ctor-initialization]
-    process::exit(1234);
+#[ctor] // $ Source=source2_8
+fn bad2_8() {
+    process::exit(1234); // $ Alert[rust/ctor-initialization]=source2_8
 }
 
 #[ctor::ctor]
@@ -123,11 +123,11 @@ unsafe fn harmless2_11() {
 // --- transitive cases ---
 
 fn call_target3_1() {
-    _ = stderr().write_all(b"Hello, world!");
+    _ = stderr().write_all(b"Hello, world!"); // $ MISSING: Alert=source3_1 Alert=source3_3 Alert=source3_4
 }
 
-#[ctor]
-fn bad3_1() { // $ MISSING: Alert[rust/ctor-initialization]
+#[ctor] // $ MISSING: Source=source3_1
+fn bad3_1() {
     call_target3_1();
 }
 
@@ -137,19 +137,19 @@ fn call_target3_2() {
     }
 }
 
-#[ctor]
+#[ctor] // $ MISSING: Source=source3_2
 fn harmless3_2() {
     call_target3_2();
 }
 
 #[ctor]
-fn bad3_3() { // $ MISSING: Alert[rust/ctor-initialization]
+fn bad3_3() {
     call_target3_1();
     call_target3_2();
 }
 
-#[ctor]
-fn bad3_4() { // $ MISSING: Alert[rust/ctor-initialization]
+#[ctor] // $ MISSING: Source=source3_4
+fn bad3_4() {
     bad3_3();
 }
 
@@ -161,7 +161,7 @@ macro_rules! macro4_1 {
     };
 }
 
-#[ctor]
-fn bad4_1() { // $ Alert[rust/ctor-initialization]
-    macro4_1!();
+#[ctor] // $ Source=source4_1
+fn bad4_1() {
+    macro4_1!(); // $ Alert[rust/ctor-initialization]=source4_1
 }

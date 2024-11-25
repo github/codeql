@@ -1,12 +1,12 @@
 /**
  * @name Bad 'ctor' initialization
- * @description TODO
+ * @description Calling functions in the Rust std library from a ctor or dtor function is not safe.
  * @kind path-problem
  * @problem.severity error
- * @ security-severity TODO
- * @ precision TODO
+ * @precision high
  * @id rust/ctor-initialization
- * @tags security
+ * @tags reliability
+ *       correctness
  *       external/cwe/cwe-696
  *       external/cwe/cwe-665
  */
@@ -17,7 +17,14 @@ import rust
  * A `#[ctor]` or `#[dtor]` attribute.
  */
 class CtorAttr extends Attr {
-  CtorAttr() { this.getMeta().getPath().getPart().getNameRef().getText() = ["ctor", "dtor"] }
+  string whichAttr;
+
+  CtorAttr() {
+    whichAttr = this.getMeta().getPath().getPart().getNameRef().getText() and
+    whichAttr = ["ctor", "dtor"]
+  }
+
+  string getWhichAttr() { result = whichAttr }
 }
 
 /**
@@ -30,9 +37,22 @@ class StdCall extends Expr {
   }
 }
 
-from CtorAttr ctor, Function f, StdCall call
-where
-  f.getAnAttr() = ctor and
-  call.getEnclosingCallable() = f
-select f.getName(), "This function has the $@ attribute but calls $@ in the standard library.",
-  ctor, ctor.toString(), call, call.toString()
+class PathElement = AstNode;
+
+query predicate edges(PathElement pred, PathElement succ) {
+  // starting edge
+  exists(CtorAttr ctor, Function f, StdCall call |
+    f.getAnAttr() = ctor and
+    call.getEnclosingCallable() = f and
+    pred = ctor and // source
+    succ = call // sink
+  )
+  // or
+  // transitive edge
+  // TODO
+}
+
+from CtorAttr ctor, StdCall call
+where edges*(ctor, call)
+select call, ctor, call, "Call to $@ in a function with the " + ctor.getWhichAttr() + " attribute.",
+  call, call.toString()
