@@ -2566,16 +2566,74 @@ class WhenExpr extends Expr, StmtParent, @whenexpr {
   override string getAPrimaryQlClass() { result = "WhenExpr" }
 
   /** Gets the `i`th branch. */
-  WhenBranch getBranch(int i) { result.isNthChildOf(this, i) }
+  WhenBranch getBranch(int i) { result.isNthChildOf(this, i) and i >= 0 }
 
   /** Holds if this was written as an `if` expression. */
   predicate isIf() { when_if(this) }
+
+  /**
+   * Gets the expression of this `when` expression, if any; such as `foo()` in the below sample.
+   *
+   * ```
+   * when (foo()) {
+   *   1 -> ...
+   *   2 -> ...
+   * }
+   */
+  Expr getExpr() { result.isNthChildOf(this, -1) }
+
+  /**
+   * Gets the local variable declaration of this `when` expression, if any; such as
+   * `val x = foo()` in the below sample.
+   *
+   * ```
+   * when (val x = foo()) {
+   *   1 -> ...
+   *   2 -> ...
+   * }
+   * ```
+   */
+  LocalVariableDeclExpr getAVariableDeclExpr() { result.isNthChildOf(this, -1) }
 }
 
 /** A Kotlin `when` branch. */
 class WhenBranch extends Stmt, @whenbranch {
-  /** Gets the condition of this branch. */
-  Expr getCondition() { result.isNthChildOf(this, 0) }
+  /**
+   * DEPRECATED: Use `getACondition` or `getCondition/1` instead.
+   *
+   * Gets the condition of this branch.
+   */
+  deprecated Expr getCondition() {
+    result = this.getCondition(0).(WhenBranchConditionWithExpression).getExpression()
+  }
+
+  /**
+   * Gets the `i`th condition of this branch. The first branch in the below sample has two conditions:
+   *
+   * ```
+   * when (foo()) {
+   *   1, !in 4..10 -> ...
+   *   3 -> ...
+   * }
+   * ```
+   */
+  WhenBranchCondition getCondition(int i) { i <= 0 and result.isNthChildOf(this, i) }
+
+  /** Gets a condition of this branch. */
+  WhenBranchCondition getACondition() { result = this.getCondition(_) }
+
+  /**
+   * Gets the guard applicable to this branch, if any. Guards are currently experimental Kotlin features.
+   * In the below sample, the first branch has a guard: `bar() == 42`.
+   *
+   * ```
+   * when (foo()) {
+   *   1 if bar() == 42 -> ...
+   *   else -> ..
+   * }
+   * ```
+   */
+  Expr getGuard() { result.isNthChildOf(this, 2) }
 
   /** Gets the result of this branch. */
   Stmt getRhs() { result.isNthChildOf(this, 1) }
@@ -2592,6 +2650,67 @@ class WhenBranch extends Stmt, @whenbranch {
   override string toString() { result = "... -> ..." }
 
   override string getAPrimaryQlClass() { result = "WhenBranch" }
+}
+
+/**
+ * A Kotlin `when` branch condition. Sample conditions are shown below:
+ *
+ * ```
+ * fun foo(): Number = ...
+ *
+ * when (foo()) {
+ *   1 -> ...
+ *   in 2..10 -> ...
+ *   is Int -> ...
+ *   !is Int -> ...
+ * }
+ * ```
+ */
+abstract class WhenBranchCondition extends Stmt, @whenbranchcondition { }
+
+/** A Kotlin `when` branch condition with an expression. */
+class WhenBranchConditionWithExpression extends WhenBranchCondition {
+  WhenBranchConditionWithExpression() { when_branch_condition_with_expr(this) }
+
+  /** Gets the expression of this branch condition. */
+  Expr getExpression() { result.isNthChildOf(this, 0) }
+
+  override string toString() { result = "... ->" }
+
+  override string getAPrimaryQlClass() { result = "WhenBranchConditionWithExpression" }
+}
+
+/** A Kotlin `when` branch condition with a range. */
+class WhenBranchConditionWithRange extends WhenBranchCondition {
+  WhenBranchConditionWithRange() { when_branch_condition_with_range(this, _) }
+
+  /** Holds if this is a negated range condition. */
+  predicate isNegated() { when_branch_condition_with_range(this, true) }
+
+  /**
+   * Gets the range of this branch condition.
+   * Ranges are represented by calls to `operator fun <T : Comparable<T>> T.rangeTo(that: T): ClosedRange<T>`.
+   */
+  MethodCall getRange() { result.isNthChildOf(this, 0) }
+
+  override string toString() { result = "in ... ->" }
+
+  override string getAPrimaryQlClass() { result = "WhenBranchConditionWithRange" }
+}
+
+/** A Kotlin `when` branch condition with a pattern. */
+class WhenBranchConditionWithPattern extends WhenBranchCondition {
+  WhenBranchConditionWithPattern() { when_branch_condition_with_pattern(this, _, _, _) }
+
+  /** Holds if this is a negated pattern condition. */
+  predicate isNegated() { when_branch_condition_with_pattern(this, true, _, _) }
+
+  /** Gets the type pattern of this branch condition. */
+  Type getType() { when_branch_condition_with_pattern(this, _, result, _) }
+
+  override string toString() { result = "is ... ->" }
+
+  override string getAPrimaryQlClass() { result = "WhenBranchConditionWithPattern" }
 }
 
 // TODO: This might need more cases. It might be better as a predicate
