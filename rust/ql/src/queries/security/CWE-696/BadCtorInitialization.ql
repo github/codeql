@@ -54,4 +54,5 @@ query predicate edges(PathElement pred, PathElement succ) {
 
 from CtorAttr ctor, StdCall call
 where edges*(ctor, call)
-select call, ctor, call, "Call to " + call.toString() + " in a function with the " + ctor.getWhichAttr() + " attribute."
+select call, ctor, call,
+  "Call to " + call.toString() + " in a function with the " + ctor.getWhichAttr() + " attribute."
