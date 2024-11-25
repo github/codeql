@@ -728,6 +728,13 @@ getExprType
 | tst.ts:508:17:508:38 | obj[key ... rCase() | string |
 | tst.ts:508:21:508:23 | key | string |
 | tst.ts:508:26:508:36 | toUpperCase | () => string |
+| tst.ts:513:11:513:14 | TS57 | typeof TS57 in tst.ts |
+| tst.ts:514:17:514:17 | a | symbol |
+| tst.ts:515:16:515:16 | A | A |
+| tst.ts:516:7:516:24 | [a]() { return 1 } | () => number |
+| tst.ts:516:8:516:8 | a | symbol |
+| tst.ts:516:22:516:22 | 1 | 1 |
+| tst.ts:519:17:519:18 | e1 | () => number |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -843,6 +850,7 @@ getTypeDefinitionType
 | tst.ts:447:5:458:5 | class P ... }\\n    } | Person |
 | tst.ts:473:5:476:5 | class S ... ;\\n    } | SomeClass |
 | tst.ts:481:5:481:34 | type Pa ...  T, T]; | Pair3<T> |
+| tst.ts:515:10:517:3 | class A ...  };\\n  } | A |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -1219,6 +1227,11 @@ getTypeExprType
 | tst.ts:506:27:506:32 | string | string |
 | tst.ts:506:35:506:41 | unknown | unknown |
 | tst.ts:506:50:506:55 | string | string |
+| tst.ts:514:20:514:25 | symbol | symbol |
+| tst.ts:519:21:519:21 | A | A |
+| tst.ts:519:21:519:31 | A[typeof a] | () => number |
+| tst.ts:519:23:519:30 | typeof a | symbol |
+| tst.ts:519:30:519:30 | a | symbol |
 | tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
 | tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
 | tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
@@ -1290,6 +1303,7 @@ getTypeExprType
 missingToString
 referenceDefinition
 | A | badTypes.ts:5:1:5:29 | interfa ... is.B {} |
+| A | tst.ts:515:10:517:3 | class A ...  };\\n  } |
 | Action | tst.ts:252:3:254:50 | type Ac ... ring }; |
 | Alias<T> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
 | Alias<number> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
