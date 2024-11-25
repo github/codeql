@@ -844,6 +844,16 @@ isLocalClassOrInterface(
   int parent: @localtypedeclstmt ref
 );
 
+/**
+ * Holds if `constructorid` is a compiler-generated constructor,
+ * i.e. where it is not explicitly defined in the source code.
+ * For example, the constructor for
+ * ```
+ * class SomeClass {}
+ * ```
+ * Only holds for constructors of classes for which we see the
+ * source code, not classes from external libraries.
+ */
 isDefConstr(
   int constructorid: @constructor ref
 );
@@ -854,6 +864,25 @@ lambdaKind(
   int bodyKind: int ref
 );
 
+/**
+ * Holds if `constructorid` is the canonical constructor of a Java
+ * record, e.g. the first constructor in
+ * ```
+ * record Rectangle(double length, double width) {
+ *     public Rectangle(double length, double width) {
+ *         if (length <= 0 || width <= 0) {
+ *             throw new java.lang.IllegalArgumentException("Bad size");
+ *         }
+ *         this.length = length;
+ *         this.width = width;
+ *     }
+ *
+ *     public Rectangle(double size) {
+ *         this(size, size);
+ *     }
+ * }
+ * ```
+ */
 isCanonicalConstr(
   int constructorid: @constructor ref
 );
