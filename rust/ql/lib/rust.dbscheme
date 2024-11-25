@@ -162,7 +162,7 @@ locatable_locations(
 | @meta
 | @name
 | @name_ref
-| @param
+| @param_base
 | @param_list
 | @pat
 | @path_segment
@@ -175,7 +175,6 @@ locatable_locations(
 | @resolvable
 | @ret_type
 | @return_type_syntax
-| @self_param
 | @source_file
 | @stmt
 | @stmt_list
@@ -582,26 +581,21 @@ name_ref_texts(
   string text: string ref
 );
 
-params(
-  unique int id: @param
-);
+@param_base =
+  @param
+| @self_param
+;
 
 #keyset[id, index]
-param_attrs(
-  int id: @param ref,
+param_base_attrs(
+  int id: @param_base ref,
   int index: int ref,
   int attr: @attr ref
 );
 
 #keyset[id]
-param_pats(
-  int id: @param ref,
-  int pat: @pat ref
-);
-
-#keyset[id]
-param_ties(
-  int id: @param ref,
+param_base_ties(
+  int id: @param_base ref,
   int ty: @type_ref ref
 );
 
@@ -842,40 +836,6 @@ ret_type_ties(
 
 return_type_syntaxes(
   unique int id: @return_type_syntax
-);
-
-self_params(
-  unique int id: @self_param
-);
-
-#keyset[id, index]
-self_param_attrs(
-  int id: @self_param ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-self_param_is_mut(
-  int id: @self_param ref
-);
-
-#keyset[id]
-self_param_lifetimes(
-  int id: @self_param ref,
-  int lifetime: @lifetime ref
-);
-
-#keyset[id]
-self_param_names(
-  int id: @self_param ref,
-  int name: @name ref
-);
-
-#keyset[id]
-self_param_ties(
-  int id: @self_param ref,
-  int ty: @type_ref ref
 );
 
 source_files(
@@ -1986,6 +1946,16 @@ or_pat_pats(
   int pat: @pat ref
 );
 
+params(
+  unique int id: @param
+);
+
+#keyset[id]
+param_pats(
+  int id: @param ref,
+  int pat: @pat ref
+);
+
 paren_exprs(
   unique int id: @paren_expr
 );
@@ -2294,6 +2264,27 @@ return_expr_attrs(
 return_expr_exprs(
   int id: @return_expr ref,
   int expr: @expr ref
+);
+
+self_params(
+  unique int id: @self_param
+);
+
+#keyset[id]
+self_param_is_mut(
+  int id: @self_param ref
+);
+
+#keyset[id]
+self_param_lifetimes(
+  int id: @self_param ref,
+  int lifetime: @lifetime ref
+);
+
+#keyset[id]
+self_param_names(
+  int id: @self_param ref,
+  int name: @name ref
 );
 
 slice_pats(

@@ -96,6 +96,7 @@
 /lib/codeql/rust/elements/OffsetOfExpr.qll linguist-generated
 /lib/codeql/rust/elements/OrPat.qll linguist-generated
 /lib/codeql/rust/elements/Param.qll linguist-generated
+/lib/codeql/rust/elements/ParamBase.qll linguist-generated
 /lib/codeql/rust/elements/ParamList.qll linguist-generated
 /lib/codeql/rust/elements/ParenExpr.qll linguist-generated
 /lib/codeql/rust/elements/ParenPat.qll linguist-generated
@@ -294,6 +295,7 @@
 /lib/codeql/rust/elements/internal/OffsetOfExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/OffsetOfExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/OrPatConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/ParamBaseImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParamListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParamListImpl.qll linguist-generated
@@ -507,6 +509,7 @@
 /lib/codeql/rust/elements/internal/generated/OffsetOfExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/OrPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Param.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/ParamBase.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ParamList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ParenExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ParenPat.qll linguist-generated
@@ -846,8 +849,8 @@
 /test/extractor-tests/generated/MatchArmList/MatchArmList_getAttr.ql linguist-generated
 /test/extractor-tests/generated/MatchExpr/MatchExpr.ql linguist-generated
 /test/extractor-tests/generated/MatchExpr/MatchExpr_getAttr.ql linguist-generated
-/test/extractor-tests/generated/MatchExpr/MatchExpr_getExpr.ql linguist-generated
 /test/extractor-tests/generated/MatchExpr/MatchExpr_getMatchArmList.ql linguist-generated
+/test/extractor-tests/generated/MatchExpr/MatchExpr_getScrutinee.ql linguist-generated
 /test/extractor-tests/generated/MatchGuard/MatchGuard.ql linguist-generated
 /test/extractor-tests/generated/MatchGuard/MatchGuard_getCondition.ql linguist-generated
 /test/extractor-tests/generated/Meta/Meta.ql linguist-generated
