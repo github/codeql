@@ -118,17 +118,18 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
         type_is_hideable="ql_hideable" in lookup[prop.type].pragmas if prop.type in lookup else False,
         internal="ql_internal" in prop.pragmas,
     )
+    ql_name = prop.pragmas.get("ql_name", prop.name)
     if prop.is_single:
         args.update(
-            singular=inflection.camelize(prop.name),
+            singular=inflection.camelize(ql_name),
             tablename=inflection.tableize(cls.name),
             tableparams=["this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
             doc=_get_doc(cls, prop),
         )
     elif prop.is_repeated:
         args.update(
-            singular=inflection.singularize(inflection.camelize(prop.name)),
-            plural=inflection.pluralize(inflection.camelize(prop.name)),
+            singular=inflection.singularize(inflection.camelize(ql_name)),
+            plural=inflection.pluralize(inflection.camelize(ql_name)),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"] if not prop.is_unordered else ["this", "result"],
             doc=_get_doc(cls, prop, plural=False),
@@ -136,14 +137,14 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
         )
     elif prop.is_optional:
         args.update(
-            singular=inflection.camelize(prop.name),
+            singular=inflection.camelize(ql_name),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "result"],
             doc=_get_doc(cls, prop),
         )
     elif prop.is_predicate:
         args.update(
-            singular=inflection.camelize(prop.name, uppercase_first_letter=False),
+            singular=inflection.camelize(ql_name, uppercase_first_letter=False),
             tablename=inflection.underscore(f"{cls.name}_{prop.name}"),
             tableparams=["this"],
             doc=_get_doc(cls, prop),
@@ -154,6 +155,8 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
 
 
 def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> ql.Class:
+    if "ql_name" in cls.pragmas:
+        raise Error("ql_name is not supported yet for classes, only for properties")
     prev_child = ""
     properties = []
     for p in cls.properties:

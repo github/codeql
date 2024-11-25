@@ -2170,9 +2170,9 @@ module Raw {
     Attr getAttr(int index) { match_expr_attrs(this, index, result) }
 
     /**
-     * Gets the expression of this match expression, if it exists.
+     * Gets the scrutinee (the expression being matched) of this match expression, if it exists.
      */
-    Expr getExpr() { match_expr_exprs(this, result) }
+    Expr getScrutinee() { match_expr_exprs(this, result) }
 
     /**
      * Gets the match arm list of this match expression, if it exists.
