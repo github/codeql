@@ -4,4 +4,4 @@ import TestUtils
 
 from MatchExpr x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getMatchedExpr()
+select x, x.getScrutinee()

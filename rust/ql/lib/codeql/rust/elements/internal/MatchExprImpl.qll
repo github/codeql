@@ -29,7 +29,7 @@ module Impl {
    */
   class MatchExpr extends Generated::MatchExpr {
     override string toString() {
-      result = "match " + this.getMatchedExpr().toAbbreviatedString() + " { ... }"
+      result = "match " + this.getScrutinee().toAbbreviatedString() + " { ... }"
     }
 
     /**
