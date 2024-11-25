@@ -1,4 +1,4 @@
-name: Check change note
+name: Check change note and reminders
 
 permissions:
   pull-requests: read
@@ -9,17 +9,45 @@ on:
     paths:
       - "*/ql/src/**/*.ql"
       - "*/ql/src/**/*.qll"
+      - "*/ql/src/**/*.qhelp"
       - "*/ql/lib/**/*.ql"
       - "*/ql/lib/**/*.qll"
+      - "*/ql/lib/**/*.qhelp"
       - "*/ql/lib/**/*.yml"
       - "shared/**/*.ql"
       - "shared/**/*.qll"
+      - "shared/**/*.qhelp"
       - "!**/experimental/**"
       - "!ql/**"
       - "!rust/**"
       - ".github/workflows/check-change-note.yml"
 
 jobs:
+  add-pr-reminders:
+    env:
+      REPO: ${{ github.repository }}
+      PULL_REQUEST_NUMBER: ${{ github.event.number }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+
+        - name: Check if the 'reminders' comment exists
+          run: |
+            checklist_comment=$(gh api "repos/$REPO/issues/$PULL_REQUEST_NUMBER/comments" --jq '.[] | select(.body | test("### Pull Request checklist"))')
+
+            if [ -z "$checklist_comment" ]; then
+              echo "The checklist comment does not exist. Adding it."
+              comment_body="$(cat <<EOF
+                ### Pull Request checklist for autofix (internal access required)
+
+                - [ ] Autofixes generated based on these changes are valid, only needed if this PR makes significant changes to `.ql`, `.qll`, or `.qhelp` files. See [the documentation](https://github.com/github/codeql-team/blob/main/docs/best-practices/validating-autofix-for-query-changes.md).
+                - [ ] Changes to autofix are validated [at scale](https://github.com/github/codeql-dca/blob/main/doc/autofix.md) (internal access required).
+                - [ ] Adding a new query? Consider also [adding the query to autofix](https://github.com/github/codeml-autofix/blob/main/docs/updating-query-support.md#adding-a-new-query-to-the-query-suite).
+              EOF)"
+
+              gh api "repos/$REPO/issues/$PULL_REQUEST_NUMBER/comments" -f body="$comment_body"
+            fi
+
   check-change-note:
     env:
       REPO: ${{ github.repository }}
