@@ -525,28 +525,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Param. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A normal parameter, `Param`, or a self parameter `SelfParam`.
    */
-  class Param extends @param, AstNode {
-    override string toString() { result = "Param" }
+  class ParamBase extends @param_base, AstNode {
+    /**
+     * Gets the `index`th attr of this parameter base (0-based).
+     */
+    Attr getAttr(int index) { param_base_attrs(this, index, result) }
 
     /**
-     * Gets the `index`th attr of this parameter (0-based).
+     * Gets the ty of this parameter base, if it exists.
      */
-    Attr getAttr(int index) { param_attrs(this, index, result) }
-
-    /**
-     * Gets the pat of this parameter, if it exists.
-     */
-    Pat getPat() { param_pats(this, result) }
-
-    /**
-     * Gets the ty of this parameter, if it exists.
-     */
-    TypeRef getTy() { param_ties(this, result) }
+    TypeRef getTy() { param_base_ties(this, result) }
   }
 
   /**
@@ -806,42 +796,6 @@ module Raw {
    */
   class ReturnTypeSyntax extends @return_type_syntax, AstNode {
     override string toString() { result = "ReturnTypeSyntax" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A SelfParam. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class SelfParam extends @self_param, AstNode {
-    override string toString() { result = "SelfParam" }
-
-    /**
-     * Gets the `index`th attr of this self parameter (0-based).
-     */
-    Attr getAttr(int index) { self_param_attrs(this, index, result) }
-
-    /**
-     * Holds if this self parameter is mut.
-     */
-    predicate isMut() { self_param_is_mut(this) }
-
-    /**
-     * Gets the lifetime of this self parameter, if it exists.
-     */
-    Lifetime getLifetime() { self_param_lifetimes(this, result) }
-
-    /**
-     * Gets the name of this self parameter, if it exists.
-     */
-    Name getName() { self_param_names(this, result) }
-
-    /**
-     * Gets the ty of this self parameter, if it exists.
-     */
-    TypeRef getTy() { self_param_ties(this, result) }
   }
 
   /**
@@ -2283,6 +2237,24 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A parameter in a function or method. For example `x` in:
+   * ```rust
+   * fn new(x: T) -> Foo<T> {
+   *   // ...
+   * }
+   * ```
+   */
+  class Param extends @param, ParamBase {
+    override string toString() { result = "Param" }
+
+    /**
+     * Gets the pat of this parameter, if it exists.
+     */
+    Pat getPat() { param_pats(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A ParenExpr. For example:
    * ```rust
    * todo!()
@@ -2715,6 +2687,34 @@ module Raw {
      * Gets the expression of this return expression, if it exists.
      */
     Expr getExpr() { return_expr_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A `self` parameter. For example `self` in:
+   * ```rust
+   * fn push(&mut self, value: T) {
+   *   // ...
+   * }
+   * ```
+   */
+  class SelfParam extends @self_param, ParamBase {
+    override string toString() { result = "SelfParam" }
+
+    /**
+     * Holds if this self parameter is mut.
+     */
+    predicate isMut() { self_param_is_mut(this) }
+
+    /**
+     * Gets the lifetime of this self parameter, if it exists.
+     */
+    Lifetime getLifetime() { self_param_lifetimes(this, result) }
+
+    /**
+     * Gets the name of this self parameter, if it exists.
+     */
+    Name getName() { self_param_names(this, result) }
   }
 
   /**

@@ -624,12 +624,12 @@ module Synth {
         TExpr or TExternItem or TExternItemList or TFieldList or TFormatArgsArg or TGenericArg or
         TGenericArgList or TGenericParam or TGenericParamList or TItemList or TLabel or TLetElse or
         TLifetime or TMacroItems or TMacroStmts or TMatchArm or TMatchArmList or TMatchGuard or
-        TMeta or TName or TNameRef or TParam or TParamList or TPat or TPathSegment or
+        TMeta or TName or TNameRef or TParamBase or TParamList or TPat or TPathSegment or
         TRecordExprField or TRecordExprFieldList or TRecordField or TRecordPatField or
         TRecordPatFieldList or TRename or TResolvable or TRetType or TReturnTypeSyntax or
-        TSelfParam or TSourceFile or TStmt or TStmtList or TToken or TTokenTree or TTupleField or
-        TTypeBound or TTypeBoundList or TTypeRef or TUseTree or TUseTreeList or TVariant or
-        TVariantList or TVisibility or TWhereClause or TWherePred;
+        TSourceFile or TStmt or TStmtList or TToken or TTokenTree or TTupleField or TTypeBound or
+        TTypeBoundList or TTypeRef or TUseTree or TUseTreeList or TVariant or TVariantList or
+        TVisibility or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -694,6 +694,11 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TLoopingExpr = TForExpr or TLoopExpr or TWhileExpr;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TParamBase = TParam or TSelfParam;
 
   /**
    * INTERNAL: Do not use.
@@ -1699,7 +1704,7 @@ module Synth {
     or
     result = convertNameRefFromRaw(e)
     or
-    result = convertParamFromRaw(e)
+    result = convertParamBaseFromRaw(e)
     or
     result = convertParamListFromRaw(e)
     or
@@ -1724,8 +1729,6 @@ module Synth {
     result = convertRetTypeFromRaw(e)
     or
     result = convertReturnTypeSyntaxFromRaw(e)
-    or
-    result = convertSelfParamFromRaw(e)
     or
     result = convertSourceFileFromRaw(e)
     or
@@ -1982,6 +1985,16 @@ module Synth {
     result = convertLoopExprFromRaw(e)
     or
     result = convertWhileExprFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TParamBase`, if possible.
+   */
+  TParamBase convertParamBaseFromRaw(Raw::Element e) {
+    result = convertParamFromRaw(e)
+    or
+    result = convertSelfParamFromRaw(e)
   }
 
   /**
@@ -3065,7 +3078,7 @@ module Synth {
     or
     result = convertNameRefToRaw(e)
     or
-    result = convertParamToRaw(e)
+    result = convertParamBaseToRaw(e)
     or
     result = convertParamListToRaw(e)
     or
@@ -3090,8 +3103,6 @@ module Synth {
     result = convertRetTypeToRaw(e)
     or
     result = convertReturnTypeSyntaxToRaw(e)
-    or
-    result = convertSelfParamToRaw(e)
     or
     result = convertSourceFileToRaw(e)
     or
@@ -3348,6 +3359,16 @@ module Synth {
     result = convertLoopExprToRaw(e)
     or
     result = convertWhileExprToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TParamBase` to a raw DB element, if possible.
+   */
+  Raw::Element convertParamBaseToRaw(TParamBase e) {
+    result = convertParamToRaw(e)
+    or
+    result = convertSelfParamToRaw(e)
   }
 
   /**

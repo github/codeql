@@ -1324,14 +1324,29 @@ class _:
     """
 
 
-@annotate(Param, cfg = True)
+class ParamBase(AstNode):
+    """
+    A normal parameter, `Param`, or a self parameter `SelfParam`.
+    """
+    attrs: list["Attr"] | child
+    ty: optional["TypeRef"] | child
+
+@annotate(ParamBase, cfg = True)
+class _:
+    pass
+
+@annotate(Param, replace_bases={AstNode: ParamBase}, cfg = True)
 class _:
     """
-    A Param. For example:
+    A parameter in a function or method. For example `x` in:
     ```rust
-    todo!()
+    fn new(x: T) -> Foo<T> {
+      // ...
+    }
     ```
     """
+    attrs: drop
+    ty: drop
 
 
 @annotate(ParamList)
@@ -1494,14 +1509,18 @@ class _:
     """
 
 
-@annotate(SelfParam, cfg = True)
+@annotate(SelfParam, replace_bases={AstNode: ParamBase}, cfg = True)
 class _:
     """
-    A SelfParam. For example:
+    A `self` parameter. For example `self` in:
     ```rust
-    todo!()
+    fn push(&mut self, value: T) {
+      // ...
+    }
     ```
     """
+    attrs: drop
+    ty: drop
 
 
 @annotate(SliceType)

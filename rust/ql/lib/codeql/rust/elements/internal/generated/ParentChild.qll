@@ -602,14 +602,13 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfParam(Param e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int n, int nAttr, int nPat, int nTy |
+  private Element getImmediateChildOfParamBase(ParamBase e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n, int nAttr, int nTy |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nPat = nAttr + 1 and
-      nTy = nPat + 1 and
+      nTy = nAttr + 1 and
       (
         none()
         or
@@ -618,9 +617,7 @@ private module Impl {
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
-        index = nAttr and result = e.getPat() and partialPredicateCall = "Pat()"
-        or
-        index = nPat and result = e.getTy() and partialPredicateCall = "Ty()"
+        index = nAttr and result = e.getTy() and partialPredicateCall = "Ty()"
       )
     )
   }
@@ -881,32 +878,6 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
-  private Element getImmediateChildOfSelfParam(SelfParam e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int n, int nAttr, int nLifetime, int nName, int nTy |
-      b = 0 and
-      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
-      n = bAstNode and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nLifetime = nAttr + 1 and
-      nName = nLifetime + 1 and
-      nTy = nName + 1 and
-      (
-        none()
-        or
-        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
-        or
-        result = e.getAttr(index - n) and
-        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
-        or
-        index = nAttr and result = e.getLifetime() and partialPredicateCall = "Lifetime()"
-        or
-        index = nLifetime and result = e.getName() and partialPredicateCall = "Name()"
-        or
-        index = nName and result = e.getTy() and partialPredicateCall = "Ty()"
       )
     )
   }
@@ -2137,6 +2108,22 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfParam(Param e, int index, string partialPredicateCall) {
+    exists(int b, int bParamBase, int n, int nPat |
+      b = 0 and
+      bParamBase = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfParamBase(e, i, _)) | i) and
+      n = bParamBase and
+      nPat = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfParamBase(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPat() and partialPredicateCall = "Pat()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfParenExpr(ParenExpr e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n, int nAttr, int nExpr |
       b = 0 and
@@ -2483,6 +2470,25 @@ private module Impl {
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
         index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfSelfParam(SelfParam e, int index, string partialPredicateCall) {
+    exists(int b, int bParamBase, int n, int nLifetime, int nName |
+      b = 0 and
+      bParamBase = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfParamBase(e, i, _)) | i) and
+      n = bParamBase and
+      nLifetime = n + 1 and
+      nName = nLifetime + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfParamBase(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getLifetime() and partialPredicateCall = "Lifetime()"
+        or
+        index = nLifetime and result = e.getName() and partialPredicateCall = "Name()"
       )
     )
   }
@@ -3621,8 +3627,6 @@ private module Impl {
     or
     result = getImmediateChildOfNameRef(e, index, partialAccessor)
     or
-    result = getImmediateChildOfParam(e, index, partialAccessor)
-    or
     result = getImmediateChildOfParamList(e, index, partialAccessor)
     or
     result = getImmediateChildOfPathSegment(e, index, partialAccessor)
@@ -3642,8 +3646,6 @@ private module Impl {
     result = getImmediateChildOfRetType(e, index, partialAccessor)
     or
     result = getImmediateChildOfReturnTypeSyntax(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfSelfParam(e, index, partialAccessor)
     or
     result = getImmediateChildOfSourceFile(e, index, partialAccessor)
     or
@@ -3751,6 +3753,8 @@ private module Impl {
     or
     result = getImmediateChildOfOrPat(e, index, partialAccessor)
     or
+    result = getImmediateChildOfParam(e, index, partialAccessor)
+    or
     result = getImmediateChildOfParenExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfParenPat(e, index, partialAccessor)
@@ -3786,6 +3790,8 @@ private module Impl {
     result = getImmediateChildOfRestPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfReturnExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSelfParam(e, index, partialAccessor)
     or
     result = getImmediateChildOfSlicePat(e, index, partialAccessor)
     or
