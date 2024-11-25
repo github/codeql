@@ -1709,7 +1709,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       override predicate relevantChild(AstNode child) {
         none()
         or
-        child = this.getExpr()
+        child = this.getMatchedExpr()
       }
     }
 
@@ -1754,14 +1754,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the expression of this match expression, if it exists.
        */
-      ExprCfgNode getExpr() {
-        any(ChildMapping mapping).hasCfgChild(node, node.getExpr(), this, result)
+      ExprCfgNode getMatchedExpr() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getMatchedExpr(), this, result)
       }
 
       /**
-       * Holds if `getExpr()` exists.
+       * Holds if `getMatchedExpr()` exists.
        */
-      predicate hasExpr() { exists(this.getExpr()) }
+      predicate hasMatchedExpr() { exists(this.getMatchedExpr()) }
 
       /**
        * Gets the match arm list of this match expression, if it exists.
@@ -3451,14 +3451,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           cfgNode
         )
       or
-      pred = "getExpr" and
+      pred = "getMatchedExpr" and
       parent =
         any(Nodes::MatchExprCfgNode cfgNode, MatchExpr astNode |
           astNode = cfgNode.getMatchExpr() and
-          child = getDesugared(astNode.getExpr()) and
+          child = getDesugared(astNode.getMatchedExpr()) and
           i = -1 and
           hasCfgNode(child) and
-          not child = cfgNode.getExpr().getAstNode()
+          not child = cfgNode.getMatchedExpr().getAstNode()
         |
           cfgNode
         )

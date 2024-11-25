@@ -849,8 +849,8 @@
 /test/extractor-tests/generated/MatchArmList/MatchArmList_getAttr.ql linguist-generated
 /test/extractor-tests/generated/MatchExpr/MatchExpr.ql linguist-generated
 /test/extractor-tests/generated/MatchExpr/MatchExpr_getAttr.ql linguist-generated
-/test/extractor-tests/generated/MatchExpr/MatchExpr_getExpr.ql linguist-generated
 /test/extractor-tests/generated/MatchExpr/MatchExpr_getMatchArmList.ql linguist-generated
+/test/extractor-tests/generated/MatchExpr/MatchExpr_getMatchedExpr.ql linguist-generated
 /test/extractor-tests/generated/MatchGuard/MatchGuard.ql linguist-generated
 /test/extractor-tests/generated/MatchGuard/MatchGuard_getCondition.ql linguist-generated
 /test/extractor-tests/generated/Meta/Meta.ql linguist-generated

@@ -514,14 +514,14 @@ module ExprTrees {
 
   class MatchExprTree extends PostOrderTree instanceof MatchExpr {
     override predicate propagatesAbnormal(AstNode child) {
-      child = [super.getExpr(), super.getAnArm().getExpr()]
+      child = [super.getMatchedExpr(), super.getAnArm().getExpr()]
     }
 
-    override predicate first(AstNode node) { first(super.getExpr(), node) }
+    override predicate first(AstNode node) { first(super.getMatchedExpr(), node) }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       // Edge from the scrutinee to the first arm or to the match expression if no arms.
-      last(super.getExpr(), pred, c) and
+      last(super.getMatchedExpr(), pred, c) and
       (
         first(super.getArm(0).getPat(), succ)
         or

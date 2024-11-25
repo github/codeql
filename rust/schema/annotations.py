@@ -289,6 +289,7 @@ class _:
     }
     ```
     """
+    expr: _ | ql.name("matched_expr")
 
 
 @annotate(ContinueExpr, cfg = True)

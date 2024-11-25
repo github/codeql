@@ -57,15 +57,17 @@ module Generated {
     /**
      * Gets the expression of this match expression, if it exists.
      */
-    Expr getExpr() {
+    Expr getMatchedExpr() {
       result =
-        Synth::convertExprFromRaw(Synth::convertMatchExprToRaw(this).(Raw::MatchExpr).getExpr())
+        Synth::convertExprFromRaw(Synth::convertMatchExprToRaw(this)
+              .(Raw::MatchExpr)
+              .getMatchedExpr())
     }
 
     /**
-     * Holds if `getExpr()` exists.
+     * Holds if `getMatchedExpr()` exists.
      */
-    final predicate hasExpr() { exists(this.getExpr()) }
+    final predicate hasMatchedExpr() { exists(this.getMatchedExpr()) }
 
     /**
      * Gets the match arm list of this match expression, if it exists.

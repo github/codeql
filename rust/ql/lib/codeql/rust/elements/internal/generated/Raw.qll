@@ -2172,7 +2172,7 @@ module Raw {
     /**
      * Gets the expression of this match expression, if it exists.
      */
-    Expr getExpr() { match_expr_exprs(this, result) }
+    Expr getMatchedExpr() { match_expr_exprs(this, result) }
 
     /**
      * Gets the match arm list of this match expression, if it exists.
