@@ -1,16 +1,29 @@
 models
 edges
-| main.rs:21:13:21:21 | CallExpr : unit | main.rs:22:10:22:10 | s | provenance |  |
-| main.rs:32:13:32:21 | CallExpr : unit | main.rs:33:10:33:10 | s | provenance |  |
+| main.rs:9:13:9:19 | ...: ... : unit | main.rs:9:30:14:1 | { ... } : unit | provenance |  |
+| main.rs:21:13:21:21 | source(...) : unit | main.rs:22:10:22:10 | s | provenance |  |
+| main.rs:26:13:26:21 | source(...) : unit | main.rs:27:22:27:22 | s : unit | provenance |  |
+| main.rs:27:13:27:23 | sanitize(...) : unit | main.rs:28:10:28:10 | s | provenance |  |
+| main.rs:27:22:27:22 | s : unit | main.rs:9:13:9:19 | ...: ... : unit | provenance |  |
+| main.rs:27:22:27:22 | s : unit | main.rs:27:13:27:23 | sanitize(...) : unit | provenance |  |
+| main.rs:32:13:32:21 | source(...) : unit | main.rs:33:10:33:10 | s | provenance |  |
 nodes
-| main.rs:17:10:17:18 | CallExpr | semmle.label | CallExpr |
-| main.rs:21:13:21:21 | CallExpr : unit | semmle.label | CallExpr : unit |
+| main.rs:9:13:9:19 | ...: ... : unit | semmle.label | ...: ... : unit |
+| main.rs:9:30:14:1 | { ... } : unit | semmle.label | { ... } : unit |
+| main.rs:17:10:17:18 | source(...) | semmle.label | source(...) |
+| main.rs:21:13:21:21 | source(...) : unit | semmle.label | source(...) : unit |
 | main.rs:22:10:22:10 | s | semmle.label | s |
-| main.rs:32:13:32:21 | CallExpr : unit | semmle.label | CallExpr : unit |
+| main.rs:26:13:26:21 | source(...) : unit | semmle.label | source(...) : unit |
+| main.rs:27:13:27:23 | sanitize(...) : unit | semmle.label | sanitize(...) : unit |
+| main.rs:27:22:27:22 | s : unit | semmle.label | s : unit |
+| main.rs:28:10:28:10 | s | semmle.label | s |
+| main.rs:32:13:32:21 | source(...) : unit | semmle.label | source(...) : unit |
 | main.rs:33:10:33:10 | s | semmle.label | s |
 subpaths
+| main.rs:27:22:27:22 | s : unit | main.rs:9:13:9:19 | ...: ... : unit | main.rs:9:30:14:1 | { ... } : unit | main.rs:27:13:27:23 | sanitize(...) : unit |
 testFailures
 #select
-| main.rs:17:10:17:18 | CallExpr | main.rs:17:10:17:18 | CallExpr | main.rs:17:10:17:18 | CallExpr | $@ | main.rs:17:10:17:18 | CallExpr | CallExpr |
-| main.rs:22:10:22:10 | s | main.rs:21:13:21:21 | CallExpr : unit | main.rs:22:10:22:10 | s | $@ | main.rs:21:13:21:21 | CallExpr : unit | CallExpr : unit |
-| main.rs:33:10:33:10 | s | main.rs:32:13:32:21 | CallExpr : unit | main.rs:33:10:33:10 | s | $@ | main.rs:32:13:32:21 | CallExpr : unit | CallExpr : unit |
+| main.rs:17:10:17:18 | source(...) | main.rs:17:10:17:18 | source(...) | main.rs:17:10:17:18 | source(...) | $@ | main.rs:17:10:17:18 | source(...) | source(...) |
+| main.rs:22:10:22:10 | s | main.rs:21:13:21:21 | source(...) : unit | main.rs:22:10:22:10 | s | $@ | main.rs:21:13:21:21 | source(...) : unit | source(...) : unit |
+| main.rs:28:10:28:10 | s | main.rs:26:13:26:21 | source(...) : unit | main.rs:28:10:28:10 | s | $@ | main.rs:26:13:26:21 | source(...) : unit | source(...) : unit |
+| main.rs:33:10:33:10 | s | main.rs:32:13:32:21 | source(...) : unit | main.rs:33:10:33:10 | s | $@ | main.rs:32:13:32:21 | source(...) : unit | source(...) : unit |

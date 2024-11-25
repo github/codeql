@@ -13,17 +13,22 @@ private import codeql.rust.elements.internal.generated.PathSegment
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A PathSegment. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A path segment, which is one part of a whole path.
    */
   class PathSegment extends Generated::PathSegment {
-    override string toString() {
-      // TODO: this does not cover everything
-      if this.hasGenericArgList()
-      then result = this.getNameRef().toString() + "::<...>"
-      else result = this.getNameRef().toString()
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() {
+      result = strictconcat(int i | | this.toAbbreviatedStringPart(i), "::" order by i)
+    }
+
+    private string toAbbreviatedStringPart(int index) {
+      index = 0 and
+      if this.hasPathType() or this.hasTy()
+      then result = "<...>"
+      else result = this.getNameRef().getText()
+      or
+      index = 1 and result = this.getGenericArgList().toAbbreviatedString()
     }
   }
 }

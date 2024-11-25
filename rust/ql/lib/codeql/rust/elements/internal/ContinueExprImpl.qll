@@ -49,13 +49,23 @@ module Impl {
    * ```
    */
   class ContinueExpr extends Generated::ContinueExpr {
+    override string toString() {
+      result = strictconcat(int i | | this.toStringPart(i), " " order by i)
+    }
+
+    private string toStringPart(int index) {
+      index = 0 and result = "continue"
+      or
+      index = 1 and result = this.getLifetime().getText()
+    }
+
     /**
      * Gets the target of this `continue` expression.
      *
      * The target is either a `LoopExpr`, a `ForExpr`, or a `WhileExpr`.
      */
     pragma[nomagic]
-    Expr getTarget() {
+    LoopingExpr getTarget() {
       exists(string label |
         result = getAContinueAncestor(this, label) and
         BreakExprImpl::isLabelledLoop(result, label)

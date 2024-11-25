@@ -645,12 +645,12 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TExpr =
-    TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBlockExpr or
-        TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
-        TForExpr or TFormatArgsExpr or TIfExpr or TIndexExpr or TLetExpr or TLiteralExpr or
-        TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExprBase or
-        TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTryExpr or
-        TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or TYieldExpr;
+    TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBreakExpr or
+        TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
+        TFormatArgsExpr or TIfExpr or TIndexExpr or TLabelableExpr or TLetExpr or TLiteralExpr or
+        TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExprBase or TPrefixExpr or
+        TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTryExpr or TTupleExpr or
+        TUnderscoreExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -683,7 +683,17 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TLabelableExpr = TBlockExpr or TLoopingExpr;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TLocatable = TAstNode or TFormat or TFormatArgument;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TLoopingExpr = TForExpr or TLoopExpr or TWhileExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1795,8 +1805,6 @@ module Synth {
     or
     result = convertBinaryExprFromRaw(e)
     or
-    result = convertBlockExprFromRaw(e)
-    or
     result = convertBreakExprFromRaw(e)
     or
     result = convertCallExprBaseFromRaw(e)
@@ -1809,19 +1817,17 @@ module Synth {
     or
     result = convertFieldExprFromRaw(e)
     or
-    result = convertForExprFromRaw(e)
-    or
     result = convertFormatArgsExprFromRaw(e)
     or
     result = convertIfExprFromRaw(e)
     or
     result = convertIndexExprFromRaw(e)
     or
+    result = convertLabelableExprFromRaw(e)
+    or
     result = convertLetExprFromRaw(e)
     or
     result = convertLiteralExprFromRaw(e)
-    or
-    result = convertLoopExprFromRaw(e)
     or
     result = convertMacroExprFromRaw(e)
     or
@@ -1848,8 +1854,6 @@ module Synth {
     result = convertTupleExprFromRaw(e)
     or
     result = convertUnderscoreExprFromRaw(e)
-    or
-    result = convertWhileExprFromRaw(e)
     or
     result = convertYeetExprFromRaw(e)
     or
@@ -1948,6 +1952,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TLabelableExpr`, if possible.
+   */
+  TLabelableExpr convertLabelableExprFromRaw(Raw::Element e) {
+    result = convertBlockExprFromRaw(e)
+    or
+    result = convertLoopingExprFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TLocatable`, if possible.
    */
   TLocatable convertLocatableFromRaw(Raw::Element e) {
@@ -1956,6 +1970,18 @@ module Synth {
     result = convertFormatFromRaw(e)
     or
     result = convertFormatArgumentFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TLoopingExpr`, if possible.
+   */
+  TLoopingExpr convertLoopingExprFromRaw(Raw::Element e) {
+    result = convertForExprFromRaw(e)
+    or
+    result = convertLoopExprFromRaw(e)
+    or
+    result = convertWhileExprFromRaw(e)
   }
 
   /**
@@ -3145,8 +3171,6 @@ module Synth {
     or
     result = convertBinaryExprToRaw(e)
     or
-    result = convertBlockExprToRaw(e)
-    or
     result = convertBreakExprToRaw(e)
     or
     result = convertCallExprBaseToRaw(e)
@@ -3159,19 +3183,17 @@ module Synth {
     or
     result = convertFieldExprToRaw(e)
     or
-    result = convertForExprToRaw(e)
-    or
     result = convertFormatArgsExprToRaw(e)
     or
     result = convertIfExprToRaw(e)
     or
     result = convertIndexExprToRaw(e)
     or
+    result = convertLabelableExprToRaw(e)
+    or
     result = convertLetExprToRaw(e)
     or
     result = convertLiteralExprToRaw(e)
-    or
-    result = convertLoopExprToRaw(e)
     or
     result = convertMacroExprToRaw(e)
     or
@@ -3198,8 +3220,6 @@ module Synth {
     result = convertTupleExprToRaw(e)
     or
     result = convertUnderscoreExprToRaw(e)
-    or
-    result = convertWhileExprToRaw(e)
     or
     result = convertYeetExprToRaw(e)
     or
@@ -3298,6 +3318,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TLabelableExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertLabelableExprToRaw(TLabelableExpr e) {
+    result = convertBlockExprToRaw(e)
+    or
+    result = convertLoopingExprToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TLocatable` to a raw DB element, if possible.
    */
   Raw::Element convertLocatableToRaw(TLocatable e) {
@@ -3306,6 +3336,18 @@ module Synth {
     result = convertFormatToRaw(e)
     or
     result = convertFormatArgumentToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TLoopingExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertLoopingExprToRaw(TLoopingExpr e) {
+    result = convertForExprToRaw(e)
+    or
+    result = convertLoopExprToRaw(e)
+    or
+    result = convertWhileExprToRaw(e)
   }
 
   /**

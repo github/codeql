@@ -7,8 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
-import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-import codeql.rust.elements.Label
+import codeql.rust.elements.internal.LabelableExprImpl::Impl as LabelableExprImpl
 import codeql.rust.elements.StmtList
 
 /**
@@ -32,7 +31,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::BlockExpr` class directly.
    * Use the subclass `BlockExpr`, where the following predicates are available.
    */
-  class BlockExpr extends Synth::TBlockExpr, ExprImpl::Expr {
+  class BlockExpr extends Synth::TBlockExpr, LabelableExprImpl::LabelableExpr {
     override string getAPrimaryQlClass() { result = "BlockExpr" }
 
     /**
@@ -82,19 +81,6 @@ module Generated {
      * Holds if this block expression is unsafe.
      */
     predicate isUnsafe() { Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).isUnsafe() }
-
-    /**
-     * Gets the label of this block expression, if it exists.
-     */
-    Label getLabel() {
-      result =
-        Synth::convertLabelFromRaw(Synth::convertBlockExprToRaw(this).(Raw::BlockExpr).getLabel())
-    }
-
-    /**
-     * Holds if `getLabel()` exists.
-     */
-    final predicate hasLabel() { exists(this.getLabel()) }
 
     /**
      * Gets the statement list of this block expression, if it exists.

@@ -21,10 +21,7 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * A PathSegment. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A path segment, which is one part of a whole path.
    * INTERNAL: Do not reference the `Generated::PathSegment` class directly.
    * Use the subclass `PathSegment`, where the following predicates are available.
    */

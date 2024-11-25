@@ -292,20 +292,18 @@ closure_binder_generic_param_lists(
 | @await_expr
 | @become_expr
 | @binary_expr
-| @block_expr
 | @break_expr
 | @call_expr_base
 | @cast_expr
 | @closure_expr
 | @continue_expr
 | @field_expr
-| @for_expr
 | @format_args_expr
 | @if_expr
 | @index_expr
+| @labelable_expr
 | @let_expr
 | @literal_expr
-| @loop_expr
 | @macro_expr
 | @match_expr
 | @offset_of_expr
@@ -319,7 +317,6 @@ closure_binder_generic_param_lists(
 | @try_expr
 | @tuple_expr
 | @underscore_expr
-| @while_expr
 | @yeet_expr
 | @yield_expr
 ;
@@ -1314,59 +1311,6 @@ binary_expr_rhs(
   int rhs: @expr ref
 );
 
-block_exprs(
-  unique int id: @block_expr
-);
-
-#keyset[id, index]
-block_expr_attrs(
-  int id: @block_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-block_expr_is_async(
-  int id: @block_expr ref
-);
-
-#keyset[id]
-block_expr_is_const(
-  int id: @block_expr ref
-);
-
-#keyset[id]
-block_expr_is_gen(
-  int id: @block_expr ref
-);
-
-#keyset[id]
-block_expr_is_move(
-  int id: @block_expr ref
-);
-
-#keyset[id]
-block_expr_is_try(
-  int id: @block_expr ref
-);
-
-#keyset[id]
-block_expr_is_unsafe(
-  int id: @block_expr ref
-);
-
-#keyset[id]
-block_expr_labels(
-  int id: @block_expr ref,
-  int label: @label ref
-);
-
-#keyset[id]
-block_expr_stmt_lists(
-  int id: @block_expr ref,
-  int stmt_list: @stmt_list ref
-);
-
 box_pats(
   unique int id: @box_pat
 );
@@ -1650,41 +1594,6 @@ fn_ptr_type_ret_types(
   int ret_type: @ret_type ref
 );
 
-for_exprs(
-  unique int id: @for_expr
-);
-
-#keyset[id, index]
-for_expr_attrs(
-  int id: @for_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-for_expr_iterables(
-  int id: @for_expr ref,
-  int iterable: @expr ref
-);
-
-#keyset[id]
-for_expr_labels(
-  int id: @for_expr ref,
-  int label: @label ref
-);
-
-#keyset[id]
-for_expr_loop_bodies(
-  int id: @for_expr ref,
-  int loop_body: @block_expr ref
-);
-
-#keyset[id]
-for_expr_pats(
-  int id: @for_expr ref,
-  int pat: @pat ref
-);
-
 for_types(
   unique int id: @for_type
 );
@@ -1856,6 +1765,17 @@ item_crate_origins(
   string crate_origin: string ref
 );
 
+@labelable_expr =
+  @block_expr
+| @looping_expr
+;
+
+#keyset[id]
+labelable_expr_labels(
+  int id: @labelable_expr ref,
+  int label: @label ref
+);
+
 let_exprs(
   unique int id: @let_expr
 );
@@ -1972,29 +1892,6 @@ literal_pats(
 literal_pat_literals(
   int id: @literal_pat ref,
   int literal: @literal_expr ref
-);
-
-loop_exprs(
-  unique int id: @loop_expr
-);
-
-#keyset[id, index]
-loop_expr_attrs(
-  int id: @loop_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-loop_expr_labels(
-  int id: @loop_expr ref,
-  int label: @label ref
-);
-
-#keyset[id]
-loop_expr_loop_bodies(
-  int id: @loop_expr ref,
-  int loop_body: @block_expr ref
 );
 
 macro_exprs(
@@ -2555,35 +2452,6 @@ underscore_expr_attrs(
   int attr: @attr ref
 );
 
-while_exprs(
-  unique int id: @while_expr
-);
-
-#keyset[id, index]
-while_expr_attrs(
-  int id: @while_expr ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-while_expr_conditions(
-  int id: @while_expr ref,
-  int condition: @expr ref
-);
-
-#keyset[id]
-while_expr_labels(
-  int id: @while_expr ref,
-  int label: @label ref
-);
-
-#keyset[id]
-while_expr_loop_bodies(
-  int id: @while_expr ref,
-  int loop_body: @block_expr ref
-);
-
 wildcard_pats(
   unique int id: @wildcard_pat
 );
@@ -2620,6 +2488,53 @@ yield_expr_attrs(
 yield_expr_exprs(
   int id: @yield_expr ref,
   int expr: @expr ref
+);
+
+block_exprs(
+  unique int id: @block_expr
+);
+
+#keyset[id, index]
+block_expr_attrs(
+  int id: @block_expr ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+block_expr_is_async(
+  int id: @block_expr ref
+);
+
+#keyset[id]
+block_expr_is_const(
+  int id: @block_expr ref
+);
+
+#keyset[id]
+block_expr_is_gen(
+  int id: @block_expr ref
+);
+
+#keyset[id]
+block_expr_is_move(
+  int id: @block_expr ref
+);
+
+#keyset[id]
+block_expr_is_try(
+  int id: @block_expr ref
+);
+
+#keyset[id]
+block_expr_is_unsafe(
+  int id: @block_expr ref
+);
+
+#keyset[id]
+block_expr_stmt_lists(
+  int id: @block_expr ref,
+  int stmt_list: @stmt_list ref
 );
 
 call_exprs(
@@ -2906,6 +2821,18 @@ impl_visibilities(
 impl_where_clauses(
   int id: @impl ref,
   int where_clause: @where_clause ref
+);
+
+@looping_expr =
+  @for_expr
+| @loop_expr
+| @while_expr
+;
+
+#keyset[id]
+looping_expr_loop_bodies(
+  int id: @looping_expr ref,
+  int loop_body: @block_expr ref
 );
 
 macro_calls(
@@ -3367,4 +3294,55 @@ use_use_trees(
 use_visibilities(
   int id: @use ref,
   int visibility: @visibility ref
+);
+
+for_exprs(
+  unique int id: @for_expr
+);
+
+#keyset[id, index]
+for_expr_attrs(
+  int id: @for_expr ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+for_expr_iterables(
+  int id: @for_expr ref,
+  int iterable: @expr ref
+);
+
+#keyset[id]
+for_expr_pats(
+  int id: @for_expr ref,
+  int pat: @pat ref
+);
+
+loop_exprs(
+  unique int id: @loop_expr
+);
+
+#keyset[id, index]
+loop_expr_attrs(
+  int id: @loop_expr ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+while_exprs(
+  unique int id: @while_expr
+);
+
+#keyset[id, index]
+while_expr_attrs(
+  int id: @while_expr ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+while_expr_conditions(
+  int id: @while_expr ref,
+  int condition: @expr ref
 );

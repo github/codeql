@@ -13,6 +13,8 @@ class AstCfgNode = CfgImpl::AstCfgNode;
 
 class ExitCfgNode = CfgImpl::ExitNode;
 
+class AnnotatedExitCfgNode = CfgImpl::AnnotatedExitNode;
+
 /**
  * An assignment expression, for example
  *

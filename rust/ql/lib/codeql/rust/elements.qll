@@ -64,6 +64,7 @@ import codeql.rust.elements.InferType
 import codeql.rust.elements.Item
 import codeql.rust.elements.ItemList
 import codeql.rust.elements.Label
+import codeql.rust.elements.LabelableExpr
 import codeql.rust.elements.LetElse
 import codeql.rust.elements.LetExpr
 import codeql.rust.elements.LetStmt
@@ -74,6 +75,7 @@ import codeql.rust.elements.LiteralExpr
 import codeql.rust.elements.LiteralPat
 import codeql.rust.elements.Locatable
 import codeql.rust.elements.LoopExpr
+import codeql.rust.elements.LoopingExpr
 import codeql.rust.elements.MacroCall
 import codeql.rust.elements.MacroDef
 import codeql.rust.elements.MacroExpr
