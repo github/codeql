@@ -385,7 +385,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      * }
      * ```
      */
-    final class BlockExprCfgNode extends CfgNodeFinal, ExprCfgNode {
+    final class BlockExprCfgNode extends CfgNodeFinal, LabelableExprCfgNode {
       private BlockExpr node;
 
       BlockExprCfgNode() { node = this.getAstNode() }
@@ -437,16 +437,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if this block expression is unsafe.
        */
       predicate isUnsafe() { node.isUnsafe() }
-
-      /**
-       * Gets the label of this block expression, if it exists.
-       */
-      Label getLabel() { result = node.getLabel() }
-
-      /**
-       * Holds if `getLabel()` exists.
-       */
-      predicate hasLabel() { exists(this.getLabel()) }
 
       /**
        * Gets the statement list of this block expression, if it exists.
@@ -835,8 +825,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
         or
         child = this.getIterable()
         or
-        child = this.getLoopBody()
-        or
         child = this.getPat()
       }
     }
@@ -847,7 +835,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      * todo!()
      * ```
      */
-    final class ForExprCfgNode extends CfgNodeFinal, ExprCfgNode {
+    final class ForExprCfgNode extends CfgNodeFinal, LoopingExprCfgNode {
       private ForExpr node;
 
       ForExprCfgNode() { node = this.getAstNode() }
@@ -883,28 +871,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasIterable() { exists(this.getIterable()) }
 
       /**
-       * Gets the label of this for expression, if it exists.
-       */
-      Label getLabel() { result = node.getLabel() }
-
-      /**
-       * Holds if `getLabel()` exists.
-       */
-      predicate hasLabel() { exists(this.getLabel()) }
-
-      /**
-       * Gets the loop body of this for expression, if it exists.
-       */
-      BlockExprCfgNode getLoopBody() {
-        any(ChildMapping mapping).hasCfgChild(node, node.getLoopBody(), this, result)
-      }
-
-      /**
-       * Holds if `getLoopBody()` exists.
-       */
-      predicate hasLoopBody() { exists(this.getLoopBody()) }
-
-      /**
        * Gets the pat of this for expression, if it exists.
        */
       PatCfgNode getPat() {
@@ -928,7 +894,11 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     /**
      * A FormatArgsExpr. For example:
      * ```rust
-     * todo!()
+     * format_args!("no args");
+     * format_args!("{} foo {:?}", 1, 2);
+     * format_args!("{b} foo {a:?}", a=1, b=2);
+     * let (x, y) = (1, 42);
+     * format_args!("{x}, {y}");
      * ```
      */
     final class FormatArgsExprCfgNode extends CfgNodeFinal, ExprCfgNode {
@@ -980,6 +950,21 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getTemplate()` exists.
        */
       predicate hasTemplate() { exists(this.getTemplate()) }
+
+      /**
+       * Gets the `index`th format of this format arguments expression (0-based).
+       */
+      Format getFormat(int index) { result = node.getFormat(index) }
+
+      /**
+       * Gets any of the formats of this format arguments expression.
+       */
+      Format getAFormat() { result = this.getFormat(_) }
+
+      /**
+       * Gets the number of formats of this format arguments expression.
+       */
+      int getNumberOfFormats() { result = count(int i | exists(this.getFormat(i))) }
     }
 
     final private class ParentFormatTemplateVariableAccess extends ParentAstNode,
@@ -1230,6 +1215,32 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasIndex() { exists(this.getIndex()) }
     }
 
+    final private class ParentLabelableExpr extends ParentAstNode, LabelableExpr {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     * The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
+     */
+    final class LabelableExprCfgNode extends CfgNodeFinal, ExprCfgNode {
+      private LabelableExpr node;
+
+      LabelableExprCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `LabelableExpr`. */
+      LabelableExpr getLabelableExpr() { result = node }
+
+      /**
+       * Gets the label of this labelable expression, if it exists.
+       */
+      Label getLabel() { result = node.getLabel() }
+
+      /**
+       * Holds if `getLabel()` exists.
+       */
+      predicate hasLabel() { exists(this.getLabel()) }
+    }
+
     final private class ParentLetExpr extends ParentAstNode, LetExpr {
       override predicate relevantChild(AstNode child) {
         none()
@@ -1477,11 +1488,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     final private class ParentLoopExpr extends ParentAstNode, LoopExpr {
-      override predicate relevantChild(AstNode child) {
-        none()
-        or
-        child = this.getLoopBody()
-      }
+      override predicate relevantChild(AstNode child) { none() }
     }
 
     /**
@@ -1508,7 +1515,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      * };
      * ```
      */
-    final class LoopExprCfgNode extends CfgNodeFinal, ExprCfgNode {
+    final class LoopExprCfgNode extends CfgNodeFinal, LoopingExprCfgNode {
       private LoopExpr node;
 
       LoopExprCfgNode() { node = this.getAstNode() }
@@ -1530,19 +1537,29 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Gets the number of attrs of this loop expression.
        */
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+    }
+
+    final private class ParentLoopingExpr extends ParentAstNode, LoopingExpr {
+      override predicate relevantChild(AstNode child) {
+        none()
+        or
+        child = this.getLoopBody()
+      }
+    }
+
+    /**
+     * The base class for expressions that loop (`LoopExpr`, `ForExpr` or `WhileExpr`).
+     */
+    final class LoopingExprCfgNode extends CfgNodeFinal, LabelableExprCfgNode {
+      private LoopingExpr node;
+
+      LoopingExprCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `LoopingExpr`. */
+      LoopingExpr getLoopingExpr() { result = node }
 
       /**
-       * Gets the label of this loop expression, if it exists.
-       */
-      Label getLabel() { result = node.getLabel() }
-
-      /**
-       * Holds if `getLabel()` exists.
-       */
-      predicate hasLabel() { exists(this.getLabel()) }
-
-      /**
-       * Gets the loop body of this loop expression, if it exists.
+       * Gets the loop body of this looping expression, if it exists.
        */
       BlockExprCfgNode getLoopBody() {
         any(ChildMapping mapping).hasCfgChild(node, node.getLoopBody(), this, result)
@@ -2928,8 +2945,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
         none()
         or
         child = this.getCondition()
-        or
-        child = this.getLoopBody()
       }
     }
 
@@ -2939,7 +2954,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      * todo!()
      * ```
      */
-    final class WhileExprCfgNode extends CfgNodeFinal, ExprCfgNode {
+    final class WhileExprCfgNode extends CfgNodeFinal, LoopingExprCfgNode {
       private WhileExpr node;
 
       WhileExprCfgNode() { node = this.getAstNode() }
@@ -2973,28 +2988,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getCondition()` exists.
        */
       predicate hasCondition() { exists(this.getCondition()) }
-
-      /**
-       * Gets the label of this while expression, if it exists.
-       */
-      Label getLabel() { result = node.getLabel() }
-
-      /**
-       * Holds if `getLabel()` exists.
-       */
-      predicate hasLabel() { exists(this.getLabel()) }
-
-      /**
-       * Gets the loop body of this while expression, if it exists.
-       */
-      BlockExprCfgNode getLoopBody() {
-        any(ChildMapping mapping).hasCfgChild(node, node.getLoopBody(), this, result)
-      }
-
-      /**
-       * Holds if `getLoopBody()` exists.
-       */
-      predicate hasLoopBody() { exists(this.getLoopBody()) }
     }
 
     final private class ParentWildcardPat extends ParentAstNode, WildcardPat {
@@ -3271,18 +3264,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           cfgNode
         )
       or
-      pred = "getLoopBody" and
-      parent =
-        any(Nodes::ForExprCfgNode cfgNode, ForExpr astNode |
-          astNode = cfgNode.getForExpr() and
-          child = getDesugared(astNode.getLoopBody()) and
-          i = -1 and
-          hasCfgNode(child) and
-          not child = cfgNode.getLoopBody().getAstNode()
-        |
-          cfgNode
-        )
-      or
       pred = "getPat" and
       parent =
         any(Nodes::ForExprCfgNode cfgNode, ForExpr astNode |
@@ -3441,8 +3422,8 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       or
       pred = "getLoopBody" and
       parent =
-        any(Nodes::LoopExprCfgNode cfgNode, LoopExpr astNode |
-          astNode = cfgNode.getLoopExpr() and
+        any(Nodes::LoopingExprCfgNode cfgNode, LoopingExpr astNode |
+          astNode = cfgNode.getLoopingExpr() and
           child = getDesugared(astNode.getLoopBody()) and
           i = -1 and
           hasCfgNode(child) and
@@ -3682,18 +3663,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           i = -1 and
           hasCfgNode(child) and
           not child = cfgNode.getCondition().getAstNode()
-        |
-          cfgNode
-        )
-      or
-      pred = "getLoopBody" and
-      parent =
-        any(Nodes::WhileExprCfgNode cfgNode, WhileExpr astNode |
-          astNode = cfgNode.getWhileExpr() and
-          child = getDesugared(astNode.getLoopBody()) and
-          i = -1 and
-          hasCfgNode(child) and
-          not child = cfgNode.getLoopBody().getAstNode()
         |
           cfgNode
         )

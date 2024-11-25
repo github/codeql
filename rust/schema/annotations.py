@@ -1,6 +1,19 @@
 from misc.codegen.lib.schemadefs import *
 from .ast import *
 
+class LabelableExpr(Expr):
+    """
+    The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
+    """
+    label: optional[Label] | child
+
+class LoopingExpr(LabelableExpr):
+    """
+    The base class for expressions that loop (`LoopExpr`, `ForExpr` or `WhileExpr`).
+    """
+    loop_body: optional["BlockExpr"] | child
+
+
 
 @annotate(Module)
 @rust.doc_test_signature(None)
@@ -68,6 +81,7 @@ class _:
     """
     A path. For example:
     ```rust
+    use some_crate::some_module::some_item;
     foo::bar;
     ```
     """
@@ -107,6 +121,7 @@ class PathExprBase(Expr):
 
 
 @annotate(PathExpr, replace_bases={Expr: PathExprBase}, cfg = True)
+@qltest.test_with(Path)
 class _:
     """
     A path expression. For example:
@@ -151,7 +166,7 @@ class _:
     """
 
 
-@annotate(BlockExpr, cfg = True)
+@annotate(BlockExpr, replace_bases={Expr: LabelableExpr}, cfg = True)
 class _:
     """
     A block expression. For example:
@@ -167,9 +182,10 @@ class _:
     }
     ```
     """
+    label: drop
 
 
-@annotate(LoopExpr, cfg = True)
+@annotate(LoopExpr, replace_bases={Expr: LoopingExpr}, cfg = True)
 class _:
     """
     A loop expression. For example:
@@ -195,6 +211,8 @@ class _:
     };
     ```
     """
+    label: drop
+    loop_body: drop
 
 
 class CallExprBase(Expr):
@@ -705,6 +723,7 @@ class _:
 
 
 @annotate(PathPat, cfg = True)
+@qltest.test_with(Path)
 class _:
     """
     A path pattern. For example:
@@ -990,7 +1009,7 @@ class _:
     """
 
 
-@annotate(ForExpr, cfg = True)
+@annotate(ForExpr, replace_bases={Expr: LoopingExpr}, cfg = True)
 class _:
     """
     A ForExpr. For example:
@@ -998,6 +1017,8 @@ class _:
     todo!()
     ```
     """
+    label: drop
+    loop_body: drop
 
 
 @annotate(ForType)
@@ -1011,6 +1032,7 @@ class _:
 
 
 @annotate(FormatArgsArg)
+@qltest.test_with(FormatArgsExpr)
 class _:
     """
     A FormatArgsArg. For example:
@@ -1025,9 +1047,14 @@ class _:
     """
     A FormatArgsExpr. For example:
     ```rust
-    todo!()
+    format_args!("no args");
+    format_args!("{} foo {:?}", 1, 2);
+    format_args!("{b} foo {a:?}", a=1, b=2);
+    let (x, y) = (1, 42);
+    format_args!("{x}, {y}");
     ```
     """
+    formats: list["Format"] | child | synth
 
 
 @annotate(GenericArg)
@@ -1348,21 +1375,21 @@ class _:
 
 
 @annotate(PathSegment)
+@qltest.test_with(Path)
 class _:
     """
-    A PathSegment. For example:
-    ```rust
-    todo!()
-    ```
+    A path segment, which is one part of a whole path.
     """
 
 
 @annotate(PathType)
+@qltest.test_with(Path)
 class _:
     """
-    A PathType. For example:
+    A type referring to a path. For example:
     ```rust
-    todo!()
+    type X = std::collections::HashMap<i32, i32>;
+    type Y = X::Item;
     ```
     """
 
@@ -1744,7 +1771,7 @@ class _:
     """
 
 
-@annotate(WhileExpr, cfg = True)
+@annotate(WhileExpr, replace_bases={Expr: LoopingExpr}, cfg = True)
 class _:
     """
     A WhileExpr. For example:
@@ -1752,6 +1779,8 @@ class _:
     todo!()
     ```
     """
+    label: drop
+    loop_body: drop
 
 
 @annotate(Function, add_bases=[Callable])
@@ -1766,14 +1795,15 @@ class _:
     attrs: drop
 
 
-@qltest.skip
 @synth.on_arguments(parent="FormatArgsExpr", index=int, kind=int)
+@qltest.test_with(FormatArgsExpr)
 class FormatTemplateVariableAccess(PathExprBase):
     pass
 
 
-@qltest.skip
 @synth.on_arguments(parent=FormatArgsExpr, index=int, text=string, offset=int)
+@qltest.test_with(FormatArgsExpr)
+
 class Format(Locatable):
     """
     A format element in a formatting template. For example the `{}` in:
@@ -1783,10 +1813,11 @@ class Format(Locatable):
     """
     parent: FormatArgsExpr
     index: int
+    argument: optional["FormatArgument"] | child
 
 
-@qltest.skip
 @synth.on_arguments(parent=FormatArgsExpr, index=int, kind=int, name=string, positional=boolean, offset=int)
+@qltest.test_with(FormatArgsExpr)
 class FormatArgument(Locatable):
     """
     An argument in a format element in a formatting template. For example the `width`, `precision`, and `value` in:
@@ -1799,6 +1830,7 @@ class FormatArgument(Locatable):
     ```
     """
     parent: Format
+    variable: optional[FormatTemplateVariableAccess] | child
 
 @annotate(Item)
 class _:
