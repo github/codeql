@@ -13,9 +13,11 @@ private import codeql.rust.elements.internal.generated.Param
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A Param. For example:
+   * A parameter in a function or method. For example `x` in:
    * ```rust
-   * todo!()
+   * fn new(x: T) -> Foo<T> {
+   *   // ...
+   * }
    * ```
    */
   class Param extends Generated::Param {
