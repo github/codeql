@@ -2603,7 +2603,7 @@ class WhenBranch extends Stmt, @whenbranch {
    *
    * Gets the condition of this branch.
    */
-  deprecated Expr getCondition() {
+  /* TODO: deprecated */ Expr getCondition() {
     result = this.getCondition(0).(WhenBranchConditionWithExpression).getExpression()
   }
 
