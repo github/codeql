@@ -19,7 +19,7 @@ public class WeakHashing {
 
         // BAD: Using a strong hashing algorithm but with a weak default
         MessageDigest bad3 = MessageDigest.getInstance(props.getProperty("hashAlg2", "MD5"));
-        
+
         // GOOD: Using a strong hashing algorithm
         MessageDigest ok = MessageDigest.getInstance(props.getProperty("hashAlg2"));
 
@@ -28,5 +28,8 @@ public class WeakHashing {
 
         // GOOD: Using a strong hashing algorithm
         MessageDigest ok3 = MessageDigest.getInstance("SHA3-512");
+
+         // GOOD: Using a strong hashing algorithm
+        MessageDigest ok4 = MessageDigest.getInstance("SHA384");
     }
 }
