@@ -95,7 +95,7 @@ app.get('/currentGame', function (req, res) {
 });
 
 app.get(
-    new RegExp('^/bar(.*)?', unknownFlag()), // NOT OK - Might be OK if the unknown flag evaluates to case insensitive one
+    new RegExp('^/bar(.*)?', unknownFlag()), // OK - Might be OK if the unknown flag evaluates to case insensitive one
     unknown(),
     function(req, res, next) {
         if (req.params.blah) {
