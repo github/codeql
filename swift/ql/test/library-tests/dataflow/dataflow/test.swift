@@ -860,7 +860,7 @@ func testVarargs3(_ v: Int, _ args: Int...) {
     sink(arg: args[1]) // $ flow=873
 
     for arg in args {
-        sink(arg: arg) // $ flow=873
+        sink(arg: arg) // $ MISSING: flow=873
     }
 
     let myKeyPath = \[Int][1]

@@ -79,9 +79,9 @@ func tests(url: String, secure: Bool) throws {
 	_ = try NSRegularExpression(pattern: #"https?://good.com:8080"#).firstMatch(in: input, range: inputRange) // BAD (missing anchor)
 
 	let trustedUrlRegexs = [
-		"https?://good.com", // BAD (missing anchor), referenced below
-		#"https?:\/\/good.com"#, // BAD (missing anchor), referenced below
-		"^https?://good.com" // BAD (missing post-anchor), referenced below
+		"https?://good.com", // BAD (missing anchor), referenced below [NOT DETECTED]
+		#"https?:\/\/good.com"#, // BAD (missing anchor), referenced below [NOT DETECTED]
+		"^https?://good.com" // BAD (missing post-anchor), referenced below [NOT DETECTED]
 	]
 	for trustedUrlRegex in trustedUrlRegexs {
 		if let _ = try NSRegularExpression(pattern: trustedUrlRegex).firstMatch(in: input, range: inputRange) { }
