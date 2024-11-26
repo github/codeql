@@ -28,4 +28,4 @@ extensions:
       # Sorted should be modeled when we have a way to model iterators
       # SortedFunc should be modeled when we have a way to model iterators
       # SortedStableFunc should be modeled when we have a way to model iterators
-      # Vales should be modeled when we have a way to model iterators
+      # Values should be modeled when we have a way to model iterators
