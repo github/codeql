@@ -4,6 +4,7 @@
 
 # Expects to receive the following arguments:
 # - What language the change note is for
+# - Whether it's a query or library change (the string `src` or `lib`)
 # - The name of the change note (in kebab-case)
 # - The category of the change.
 
@@ -17,8 +18,9 @@ import os
 
 # Read the given arguments
 language = sys.argv[1]
-change_note_name = sys.argv[2]
-change_category = sys.argv[3]
+subdir = sys.argv[2]
+change_note_name = sys.argv[3]
+change_category = sys.argv[4]
 
 # Find the root of the repository. The current script should be located in `misc/scripts`.
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -26,9 +28,11 @@ root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 # Go to the repo root
 os.chdir(root)
 
+output_dir = f"{language}/ql/{subdir}/change-notes"
+
 # Abort if the output directory doesn't exist
-if not os.path.exists(f"{language}/ql/lib/change-notes"):
-    print(f"Output directory {language}/ql/lib/change-notes does not exist")
+if not os.path.exists(output_dir):
+    print(f"Output directory {output_dir} does not exist")
     sys.exit(1)
 
 # Get the current date
@@ -36,7 +40,7 @@ import datetime
 current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
 # Create the change note file
-change_note_file = f"{language}/ql/lib/change-notes/{current_date}-{change_note_name}.md"
+change_note_file = f"{output_dir}/{current_date}-{change_note_name}.md"
 
 change_note = f"""
 ---
