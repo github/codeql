@@ -1,7 +1,7 @@
 <!DOCTYPE qhelp PUBLIC
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
-<qhelp><qhelp>
+<qhelp>
 
 <overview>
 <p>The <code>free</code> function, which deallocates heap memory, may accept a NULL pointer and take no action. Therefore, it is unnecessary to check its argument for the value of NULL before a function call to <code>free</code>. As such, these guards may hinder performance and readability.</p>
