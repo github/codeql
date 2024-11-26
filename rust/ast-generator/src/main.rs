@@ -14,8 +14,8 @@ fn project_root() -> PathBuf {
     PathBuf::from(dir).parent().unwrap().to_owned()
 }
 
-fn class_name(type_name: &String) -> String {
-    match type_name.as_str() {
+fn class_name(type_name: &str) -> String {
+    match type_name {
         "BinExpr" => "BinaryExpr".to_owned(),
         "ElseBranch" => "Expr".to_owned(),
         "Fn" => "Function".to_owned(),
@@ -25,8 +25,8 @@ fn class_name(type_name: &String) -> String {
     }
 }
 
-fn property_name(type_name: &String, field_name: &String) -> String {
-    match (type_name.as_str(), field_name.as_str()) {
+fn property_name(type_name: &str, field_name: &str) -> String {
+    match (type_name, field_name) {
         ("Path", "segment") => "part".to_owned(),
         (_, "then_branch") => "then".to_owned(),
         (_, "else_branch") => "else_".to_owned(),
@@ -61,7 +61,7 @@ fn write_schema(
 
     for node in &grammar.enums {
         let super_classses = if let Some(cls) = super_types.get(&node.name) {
-            let super_classes: Vec<String> = cls.iter().map(class_name).collect();
+            let super_classes: Vec<String> = cls.iter().map(|s| class_name(s)).collect();
             super_classes.join(",")
         } else {
             "AstNode".to_owned()
@@ -76,7 +76,7 @@ fn write_schema(
     }
     for node in &grammar.nodes {
         let super_classses = if let Some(cls) = super_types.get(&node.name) {
-            let super_classes: Vec<String> = cls.iter().map(class_name).collect();
+            let super_classes: Vec<String> = cls.iter().map(|s| class_name(s)).collect();
             super_classes.join(",")
         } else {
             "AstNode".to_owned()
