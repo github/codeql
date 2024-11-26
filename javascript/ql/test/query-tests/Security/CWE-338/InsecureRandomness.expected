@@ -1,4 +1,7 @@
 edges
+| foo.js:5:12:5:22 | getRandom() | library2.js:1:24:1:25 | pw | provenance |  |
+| library1.js:2:12:2:24 | Math.random() | foo.js:5:12:5:22 | getRandom() | provenance |  |
+| library2.js:1:24:1:25 | pw | library2.js:2:20:2:21 | pw | provenance |  |
 | tst.js:6:31:6:43 | Math.random() | tst.js:6:20:6:43 | "prefix ... andom() | provenance | Config |
 | tst.js:19:9:19:36 | suffix | tst.js:20:31:20:36 | suffix | provenance |  |
 | tst.js:19:18:19:30 | Math.random() | tst.js:19:18:19:36 | Math.random() % 255 | provenance | Config |
@@ -32,6 +35,10 @@ edges
 | tst.js:136:38:136:50 | Math.random() | tst.js:136:38:136:65 | Math.ra ... .length | provenance | Config |
 | tst.js:136:38:136:65 | Math.ra ... .length | tst.js:136:27:136:66 | Math.fl ... length) | provenance | Config |
 nodes
+| foo.js:5:12:5:22 | getRandom() | semmle.label | getRandom() |
+| library1.js:2:12:2:24 | Math.random() | semmle.label | Math.random() |
+| library2.js:1:24:1:25 | pw | semmle.label | pw |
+| library2.js:2:20:2:21 | pw | semmle.label | pw |
 | tst.js:2:20:2:32 | Math.random() | semmle.label | Math.random() |
 | tst.js:6:20:6:43 | "prefix ... andom() | semmle.label | "prefix ... andom() |
 | tst.js:6:31:6:43 | Math.random() | semmle.label | Math.random() |
@@ -89,6 +96,7 @@ nodes
 | tst.js:136:38:136:65 | Math.ra ... .length | semmle.label | Math.ra ... .length |
 subpaths
 #select
+| library2.js:2:20:2:21 | pw | library1.js:2:12:2:24 | Math.random() | library2.js:2:20:2:21 | pw | This uses a cryptographically insecure random number generated at $@ in a security context. | library1.js:2:12:2:24 | Math.random() | Math.random() |
 | tst.js:2:20:2:32 | Math.random() | tst.js:2:20:2:32 | Math.random() | tst.js:2:20:2:32 | Math.random() | This uses a cryptographically insecure random number generated at $@ in a security context. | tst.js:2:20:2:32 | Math.random() | Math.random() |
 | tst.js:6:20:6:43 | "prefix ... andom() | tst.js:6:31:6:43 | Math.random() | tst.js:6:20:6:43 | "prefix ... andom() | This uses a cryptographically insecure random number generated at $@ in a security context. | tst.js:6:31:6:43 | Math.random() | Math.random() |
 | tst.js:10:20:10:32 | Math.random() | tst.js:10:20:10:32 | Math.random() | tst.js:10:20:10:32 | Math.random() | This uses a cryptographically insecure random number generated at $@ in a security context. | tst.js:10:20:10:32 | Math.random() | Math.random() |
