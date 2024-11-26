@@ -223,7 +223,7 @@ module TaintedPath {
       output = this and
       not exists(DataFlow::RegExpCreationNode regexp, RegExpTerm term |
         this.(StringReplaceCall).getRegExp() = regexp and
-        this.(StringReplaceCall).isGlobal() and
+        this.(StringReplaceCall).maybeGlobal() and
         regexp.getRoot() = term
       |
         term.getAMatchedString() = "/" or
