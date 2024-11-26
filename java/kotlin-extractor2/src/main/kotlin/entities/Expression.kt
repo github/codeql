@@ -1,6 +1,7 @@
 package com.github.codeql
 
 import com.github.codeql.KotlinFileExtractor.StmtExprParent
+import extractFunctionLiteral
 import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.resolution.*
@@ -18,7 +19,6 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.parsing.parseNumericLiteral
 import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.utils.mapToIndex
 
 context(KaSession)
 private fun KotlinFileExtractor.extractExpressionBody(e: KtExpression, callable: Label<out DbCallable>) {
@@ -1235,91 +1235,6 @@ private fun KotlinFileExtractor.extractExpression(
                             is IrFunctionReference -> {
                                 extractFunctionReference(e, parent, callable)
                             }
-                            is IrFunctionExpression -> {
-                                /*
-                                 * Extract generated class:
-                                 * ```
-                                 * class C : Any, kotlin.FunctionI<T0,T1, ... TI, R> {
-                                 *   constructor() { super(); }
-                                 *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { ... }
-                                 * }
-                                 * ```
-                                 * or in case of big arity lambdas
-                                 * ```
-                                 * class C : Any, kotlin.FunctionN<R> {
-                                 *   constructor() { super(); }
-                                 *   fun invoke(a0:T0, a1:T1, ... aI: TI): R { ... }
-                                 *   fun invoke(vararg args: Any?): R {
-                                 *     return invoke(args[0] as T0, args[1] as T1, ..., args[I] as TI)
-                                 *   }
-                                 * }
-                                 * ```
-                                 **/
-
-                                val ids = getLocallyVisibleFunctionLabels(e.function)
-                                val locId = tw.getLocation(e)
-
-                                val ext = e.function.extensionReceiverParameter
-                                val parameters =
-                                    if (ext != null) {
-                                        listOf(ext) + e.function.valueParameters
-                                    } else {
-                                        e.function.valueParameters
-                                    }
-
-                                var types = parameters.map { it.type }
-                                types += e.function.returnType
-
-                                val isBigArity = types.size > BuiltInFunctionArity.BIG_ARITY
-                                if (isBigArity) {
-                                    implementFunctionNInvoke(e.function, ids, locId, parameters)
-                                } else {
-                                    addModifiers(ids.function, "override")
-                                }
-
-                                val exprParent = parent.expr(e, callable)
-                                val idLambdaExpr = tw.getFreshIdLabel<DbLambdaexpr>()
-                                tw.writeExprs_lambdaexpr(
-                                    idLambdaExpr,
-                                    ids.type.javaResult.id,
-                                    exprParent.parent,
-                                    exprParent.idx
-                                )
-                                tw.writeExprsKotlinType(idLambdaExpr, ids.type.kotlinResult.id)
-                                extractExprContext(idLambdaExpr, locId, callable, exprParent.enclosingStmt)
-                                tw.writeCallableBinding(idLambdaExpr, ids.constructor)
-
-                                // todo: fix hard coded block body of lambda
-                                tw.writeLambdaKind(idLambdaExpr, 1)
-
-                                val fnInterfaceType = getFunctionalInterfaceType(types)
-                                if (fnInterfaceType == null) {
-                                    logger.warnElement(
-                                        "Cannot find functional interface type for function expression",
-                                        e
-                                    )
-                                } else {
-                                    val id =
-                                        extractGeneratedClass(
-                                            e
-                                                .function, // We're adding this function as a member, and
-                                                           // changing its name to `invoke` to implement
-                                                           // `kotlin.FunctionX<,,,>.invoke(,,)`
-                                            listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType)
-                                        )
-
-                                    extractTypeAccessRecursive(
-                                        fnInterfaceType,
-                                        locId,
-                                        idLambdaExpr,
-                                        -3,
-                                        callable,
-                                        exprParent.enclosingStmt
-                                    )
-
-                                    tw.writeIsAnonymClass(id, idLambdaExpr)
-                                }
-                            }
                             is IrClassReference -> {
                                 val exprParent = parent.expr(e, callable)
                                 extractClassReference(
@@ -1353,6 +1268,16 @@ private fun KotlinFileExtractor.extractExpression(
                                 )
                             }
             */
+
+            is KtLambdaExpression -> {
+                // Propagate extraction to the wrapped function literal:
+                return extractExpression(e.functionLiteral, callable, parent)
+            }
+
+            is KtFunctionLiteral -> {
+                return extractFunctionLiteral(e, callable, parent)
+            }
+
             else -> {
                 logger.errorElement("Unrecognised KtExpression: " + e.javaClass, e)
             }

@@ -212,13 +212,11 @@ private val IrDeclaration.isAnonymousFunction
  */
 context(KaSession)
 fun KotlinUsesExtractor.getFunctionShortName(f: KaFunctionSymbol): FunctionNames {
-    /* OLD: KE1
-    if (f.origin == IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA || f.isAnonymousFunction)
+    if (f.isLocal)
         return FunctionNames(
-            OperatorNameConventions.INVOKE.asString(),
-            OperatorNameConventions.INVOKE.asString()
+            "invoke",
+            "invoke"
         )
-    */
     fun getSuffixIfInternal() = ""
         /* OLD: KE1
         if (
@@ -281,10 +279,12 @@ fun KotlinUsesExtractor.getFunctionShortName(f: KaFunctionSymbol): FunctionNames
             )
         }
     }
+
+    // TODO: Justify or drop !!
+    val name = if (f is KaConstructorSymbol) f.containingSymbol!!.name!! else f.name!!
     return FunctionNames(
-        // TODO: Justify or drop !!
-        getJvmName(f) ?: "${f.name!!.asString()}${getSuffixIfInternal()}",
-        f.name!!.identifier
+        getJvmName(f) ?: "${name.asString()}${getSuffixIfInternal()}",
+        name.identifier
     )
 }
 
@@ -534,6 +534,7 @@ OLD: KE1
                         } else {
                             val shortNames = getFunctionShortName(f)
         */
+        val shortNames = getFunctionShortName(f)
         val methodId = id.cast<DbMethod>()
         extractMethod(
             methodId,
@@ -541,7 +542,7 @@ OLD: KE1
             OLD: KE1
                                     locId,
             */
-            f.name!!.asString(), // TODO: Remove !!, // OLD: KE1: shortNames.nameInDB,
+            shortNames.nameInDB,
             f.returnType, // OLD: KE1: substReturnType,
             paramsSignature,
             parentId,
@@ -701,13 +702,10 @@ fun <T : DbCallable> KotlinUsesExtractor.useFunction(
             noReplace: Boolean = false
     */
 ): Label<out T> {
-    /*
-    OLD: KE1
-            if (f.isLocalFunction()) {
-                val ids = getLocallyVisibleFunctionLabels(f)
-                return ids.function.cast<T>()
-            }
-    */
+    if (f.isLocal) {
+        val ids = tw.lm.getLocallyVisibleFunctionLabelMapping(f)
+        return ids.function.cast<T>()
+    }
     val javaFun = f // TODO: kotlinFunctionToJavaEquivalent(f, noReplace)
     return useFunction(f, javaFun, parentId /* TODO , classTypeArgsIncludingOuterClasses */)
 }
