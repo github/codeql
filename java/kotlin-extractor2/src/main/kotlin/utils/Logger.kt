@@ -226,7 +226,7 @@ class LoggerBase(val diagnosticCounter: DiagnosticCounter) : BasicLogger {
         val diagLabel = dtw.getFreshIdLabel<DbDiagnostic>()
         dtw.writeDiagnostics(
             diagLabel,
-            "CodeQL Kotlin extractor",
+            "CodeQL Kotlin: PSI extractor",
             severity.sev,
             "",
             msg,

@@ -35,7 +35,10 @@ class Diagnostic extends @diagnostic {
    */
   int getSeverity() { diagnostics(this, _, result, _, _, _, _) }
 
-  /** Gets the error code for this compiler message. */
+  /**
+   * Gets the error code for this compiler message.
+   * This is often the empty string.
+   */
   string getTag() { diagnostics(this, _, _, result, _, _, _) }
 
   /** Holds if `s` is the error code for this compiler message. */
