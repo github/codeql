@@ -74,32 +74,34 @@ module Impl {
    * pattern.
    */
   private predicate variableDecl(AstNode definingNode, AstNode p, string name) {
-    exists(SelfParam sp | sp = p |
-      definingNode = sp.getName() and
-      name = sp.getName().getText() and
-      // exclude self parameters from functions without a body as these are
-      // trait method declarations without implementations
-      not exists(Function f | not f.hasBody() and f.getParamList().getSelfParam() = sp)
-    )
+    p =
+      any(SelfParam sp |
+        definingNode = sp.getName() and
+        name = sp.getName().getText() and
+        // exclude self parameters from functions without a body as these are
+        // trait method declarations without implementations
+        not exists(Function f | not f.hasBody() and f.getParamList().getSelfParam() = sp)
+      )
     or
-    exists(IdentPat pat | pat = p |
-      (
-        definingNode = getOutermostEnclosingOrPat(pat)
-        or
-        not exists(getOutermostEnclosingOrPat(pat)) and definingNode = pat.getName()
-      ) and
-      name = pat.getName().getText() and
-      // exclude for now anything starting with an uppercase character, which may be a reference to
-      // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
-      // which we don't appear to recognize yet anyway. This also assumes programmers follow the
-      // naming guidelines, which they generally do, but they're not enforced.
-      not name.charAt(0).isUppercase() and
-      // exclude parameters from functions without a body as these are trait method declarations
-      // without implementations
-      not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = pat) and
-      // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
-      not exists(FnPtrType fp | fp.getParamList().getParam(_).getPat() = pat)
-    )
+    p =
+      any(IdentPat pat |
+        (
+          definingNode = getOutermostEnclosingOrPat(pat)
+          or
+          not exists(getOutermostEnclosingOrPat(pat)) and definingNode = pat.getName()
+        ) and
+        name = pat.getName().getText() and
+        // exclude for now anything starting with an uppercase character, which may be a reference to
+        // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
+        // which we don't appear to recognize yet anyway. This also assumes programmers follow the
+        // naming guidelines, which they generally do, but they're not enforced.
+        not name.charAt(0).isUppercase() and
+        // exclude parameters from functions without a body as these are trait method declarations
+        // without implementations
+        not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = pat) and
+        // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
+        not exists(FnPtrType fp | fp.getParamList().getParam(_).getPat() = pat)
+      )
   }
 
   /** A variable. */
@@ -125,7 +127,7 @@ module Impl {
     SelfParam getSelfParam() { variableDecl(definingNode, result, name) }
 
     /**
-     * Gets the pattern that declares this variable, if one exists.
+     * Gets the pattern that declares this variable, if any.
      *
      * Normally, the pattern is unique, except when introduced in an or pattern:
      *
@@ -148,7 +150,7 @@ module Impl {
 
     /** Gets the parameter that introduces this variable, if any. */
     ParamBase getParameter() {
-      result = this.getSelfParam() or result = getAVariablePatAncestor(this).getParentNode()
+      result = this.getSelfParam() or result.(Param).getPat() = getAVariablePatAncestor(this)
     }
 
     /** Hold is this variable is mutable. */
@@ -217,8 +219,7 @@ module Impl {
   }
 
   /**
-   * Holds if parameter `p` introduces the variable `v` inside variable scope
-   * `scope`.
+   * Holds if a parameter declares the variable `v` inside variable scope `scope`.
    */
   private predicate parameterDeclInScope(Variable v, VariableScope scope) {
     exists(Callable f |
