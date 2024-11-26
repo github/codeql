@@ -169,5 +169,5 @@ void test_format() {
 void test(std::format_string s) {
   int x = source();
   int y = std::same_signature_as_format_but_different_name(s, x);
-  sink(y); // $ SPURIOUS: ir
+  sink(y); // clean
 }
