@@ -1,59 +1,5 @@
 {
   "attributes": {
-    "steps": [
-      {
-        "loadManifest": "<test-root-directory>/<manifest>",
-        "ms": "REDACTED"
-      },
-      {
-        "fetchFile": "<test-root-directory>/exe/src/a_module.rs",
-        "ms": "REDACTED"
-      },
-      {
-        "ms": "REDACTED",
-        "parse": "<test-root-directory>/exe/src/a_module.rs"
-      },
-      {
-        "extract": "<test-root-directory>/exe/src/a_module.rs",
-        "ms": "REDACTED"
-      },
-      {
-        "fetchFile": "<test-root-directory>/exe/src/main.rs",
-        "ms": "REDACTED"
-      },
-      {
-        "ms": "REDACTED",
-        "parse": "<test-root-directory>/exe/src/main.rs"
-      },
-      {
-        "extract": "<test-root-directory>/exe/src/main.rs",
-        "ms": "REDACTED"
-      },
-      {
-        "fetchFile": "<test-root-directory>/lib/src/a_module/mod.rs",
-        "ms": "REDACTED"
-      },
-      {
-        "ms": "REDACTED",
-        "parse": "<test-root-directory>/lib/src/a_module/mod.rs"
-      },
-      {
-        "extract": "<test-root-directory>/lib/src/a_module/mod.rs",
-        "ms": "REDACTED"
-      },
-      {
-        "fetchFile": "<test-root-directory>/lib/src/lib.rs",
-        "ms": "REDACTED"
-      },
-      {
-        "ms": "REDACTED",
-        "parse": "<test-root-directory>/lib/src/lib.rs"
-      },
-      {
-        "extract": "<test-root-directory>/lib/src/lib.rs",
-        "ms": "REDACTED"
-      }
-    ],
     "summary": {
       "numberOfFiles": 4,
       "numberOfManifests": 1,
