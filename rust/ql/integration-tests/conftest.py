@@ -20,5 +20,6 @@ def rust_check_diagnostics(check_diagnostics):
         (r'"ms"\s*:\s*[0-9]+', '"ms": "REDACTED"'),
         (r'"pretty"\s*:\s*"[0-9]+:[0-9]{2}:[0-9]{2}.[0-9]{3}"', '"pretty": "REDACTED"'),
         (r'Cargo.toml|rust-project.json', "<manifest>"),
+        (r'"//\?/', '"'),  # remove windows `//?/` long path syntax
     ]
     return check_diagnostics
