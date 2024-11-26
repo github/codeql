@@ -195,6 +195,56 @@ The remaining values are used to define the ``access path``, the ``kind``, and t
 - The eighth value ``ReturnValue`` is the access path to the output (where data flows to), in this case ``ReturnValue``, which means that the input flows to the return value.
 - The ninth value ``value`` is the kind of the flow. ``value`` flow indicates an entire value is moved, ``taint`` means that taint is propagated through the call.
 - The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
+
+Example: Add flow through the ``Concat`` function
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This example shows how the Go query pack models flow through a function for a simple case.
+This pattern covers many of the cases where we need to summarize flow through a function that is stored in a library or framework outside the repository.
+
+.. code-block:: go
+
+    import "slices"
+
+    func ValueFlow {
+        a := []int{1, 2, 3}
+        b := []int{4, 5, 6}
+        c := slices.Concat(a, b) // There is taint flow from `a` and `b` to `c`.
+        ...
+    }
+
+We need to add a tuple to the ``summaryModel``\(package, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate by updating a data extension file:
+
+.. code-block:: yaml
+
+   extensions:
+     - addsTo:
+         pack: codeql/go-all
+         extensible: summaryModel
+       data:
+         - ["slices", "", True, "Concat", "", "", "Argument[0].ArrayElement.ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+
+Since we are adding flow through a method, we need to add tuples to the ``summaryModel`` extensible predicate.
+Each tuple defines flow from one argument to the return value.
+The first row defines flow from the arguments (``a`` and ``b`` in the example) to the return value (``c`` in the example) and the second row defines flow from the second argument (``sep`` in the example) to the return value (``t`` in the example).
+
+The first five values identify the function to be modeled as a summary.
+These are the same for both of the rows above as we are adding two summaries for the same method.
+
+- The first value ``slices`` is the package name.
+- The second value ``""`` is left blank, since the function is not a method of a type.
+- The third value ``False`` is a flag that indicates whether or not the sink also applies to subtypes. This has no effect for non-method functions.
+- The fourth value ``Max`` is the function name.
+- The fifth value ``""`` is left blank, since specifying the signature is optional and Go does not allow multiple signature overloads for the same function.
+
+The sixth value should be left empty and is out of scope for this documentation.
+The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary.
+
+- The seventh value is the access path to the input (where data flows from). ``Argument[0]`` is the access path to the first argument.
+- The eighth value ``ReturnValue`` is the access path to the output (where data flows to), in this case ``ReturnValue``, which means that the input flows to the return value.
+- The ninth value ``value`` is the kind of the flow. ``value`` flow indicates an entire value is moved, ``taint`` means that taint is propagated through the call.
+- The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
+
 Example: Add flow through the ``Join`` function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This example shows how the Go query pack models flow through a method for a simple case.
