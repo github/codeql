@@ -480,11 +480,11 @@ struct MyStruct {
 
 impl MyStruct {
     fn my_get(&mut self) -> i64 {
-        return self.val; // $ MISSING: read_access=self
+        return self.val; // $ read_access=self
     }
 
     fn id(self) -> Self {
-        self // $ MISSING: read_access=self
+        self // $ read_access=self
     }
 }
 
@@ -512,7 +512,7 @@ trait Bar {
 
 impl MyStruct {
   fn bar(&mut self) {
-    *self = MyStruct { val: 3 }; // MISSING: $ read_access=self
+    *self = MyStruct { val: 3 }; // $ read_access=self
   }
 }
 

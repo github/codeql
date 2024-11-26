@@ -95,9 +95,12 @@ variable
 | variables.rs:461:13:461:14 | b1 |
 | variables.rs:461:24:461:25 | b2 |
 | variables.rs:462:9:462:9 | x |
+| variables.rs:482:20:482:23 | self |
+| variables.rs:486:11:486:14 | self |
 | variables.rs:492:13:492:13 | a |
 | variables.rs:501:9:501:9 | x |
 | variables.rs:505:9:505:9 | z |
+| variables.rs:514:15:514:18 | self |
 | variables.rs:520:11:520:11 | a |
 variableAccess
 | variables.rs:4:20:4:20 | s | variables.rs:3:14:3:14 | s |
@@ -246,6 +249,8 @@ variableAccess
 | variables.rs:469:8:469:9 | b2 | variables.rs:461:24:461:25 | b2 |
 | variables.rs:470:19:470:19 | x | variables.rs:462:9:462:9 | x |
 | variables.rs:472:19:472:19 | x | variables.rs:462:9:462:9 | x |
+| variables.rs:483:16:483:19 | self | variables.rs:482:20:482:23 | self |
+| variables.rs:487:9:487:12 | self | variables.rs:486:11:486:14 | self |
 | variables.rs:493:15:493:15 | a | variables.rs:492:13:492:13 | a |
 | variables.rs:494:5:494:5 | a | variables.rs:492:13:492:13 | a |
 | variables.rs:495:15:495:15 | a | variables.rs:492:13:492:13 | a |
@@ -254,6 +259,7 @@ variableAccess
 | variables.rs:502:20:502:20 | x | variables.rs:501:9:501:9 | x |
 | variables.rs:503:15:503:15 | x | variables.rs:501:9:501:9 | x |
 | variables.rs:506:20:506:20 | z | variables.rs:505:9:505:9 | z |
+| variables.rs:515:6:515:9 | self | variables.rs:514:15:514:18 | self |
 | variables.rs:521:3:521:3 | a | variables.rs:520:11:520:11 | a |
 | variables.rs:523:13:523:13 | a | variables.rs:520:11:520:11 | a |
 variableWriteAccess
@@ -396,11 +402,14 @@ variableReadAccess
 | variables.rs:469:8:469:9 | b2 | variables.rs:461:24:461:25 | b2 |
 | variables.rs:470:19:470:19 | x | variables.rs:462:9:462:9 | x |
 | variables.rs:472:19:472:19 | x | variables.rs:462:9:462:9 | x |
+| variables.rs:483:16:483:19 | self | variables.rs:482:20:482:23 | self |
+| variables.rs:487:9:487:12 | self | variables.rs:486:11:486:14 | self |
 | variables.rs:493:15:493:15 | a | variables.rs:492:13:492:13 | a |
 | variables.rs:494:5:494:5 | a | variables.rs:492:13:492:13 | a |
 | variables.rs:495:15:495:15 | a | variables.rs:492:13:492:13 | a |
 | variables.rs:497:15:497:15 | a | variables.rs:492:13:492:13 | a |
 | variables.rs:503:15:503:15 | x | variables.rs:501:9:501:9 | x |
+| variables.rs:515:6:515:9 | self | variables.rs:514:15:514:18 | self |
 | variables.rs:521:3:521:3 | a | variables.rs:520:11:520:11 | a |
 | variables.rs:523:13:523:13 | a | variables.rs:520:11:520:11 | a |
 variableInitializer

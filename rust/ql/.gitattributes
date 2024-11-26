@@ -298,7 +298,6 @@
 /lib/codeql/rust/elements/internal/ParamBaseImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParamListConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/ParamListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParenExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParenPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParenTypeConstructor.qll linguist-generated

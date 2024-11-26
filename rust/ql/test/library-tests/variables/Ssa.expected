@@ -134,8 +134,11 @@ definition
 | variables.rs:461:13:461:14 | b1 | variables.rs:461:13:461:14 | b1 |
 | variables.rs:461:24:461:25 | b2 | variables.rs:461:24:461:25 | b2 |
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x |
+| variables.rs:482:15:482:23 | SelfParam | variables.rs:482:20:482:23 | self |
+| variables.rs:486:11:486:14 | SelfParam | variables.rs:486:11:486:14 | self |
 | variables.rs:501:9:501:9 | x | variables.rs:501:9:501:9 | x |
 | variables.rs:505:9:505:9 | z | variables.rs:505:9:505:9 | z |
+| variables.rs:514:10:514:18 | SelfParam | variables.rs:514:15:514:18 | self |
 read
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s | variables.rs:4:20:4:20 | s |
 | variables.rs:7:14:7:14 | i | variables.rs:7:14:7:14 | i | variables.rs:8:20:8:20 | i |
@@ -257,7 +260,10 @@ read
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:466:19:466:19 | x |
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:470:19:470:19 | x |
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:472:19:472:19 | x |
+| variables.rs:482:15:482:23 | SelfParam | variables.rs:482:20:482:23 | self | variables.rs:483:16:483:19 | self |
+| variables.rs:486:11:486:14 | SelfParam | variables.rs:486:11:486:14 | self | variables.rs:487:9:487:12 | self |
 | variables.rs:501:9:501:9 | x | variables.rs:501:9:501:9 | x | variables.rs:503:15:503:15 | x |
+| variables.rs:514:10:514:18 | SelfParam | variables.rs:514:15:514:18 | self | variables.rs:515:6:515:9 | self |
 firstRead
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s | variables.rs:4:20:4:20 | s |
 | variables.rs:7:14:7:14 | i | variables.rs:7:14:7:14 | i | variables.rs:8:20:8:20 | i |
@@ -356,7 +362,10 @@ firstRead
 | variables.rs:461:24:461:25 | b2 | variables.rs:461:24:461:25 | b2 | variables.rs:469:8:469:9 | b2 |
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:464:19:464:19 | x |
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:466:19:466:19 | x |
+| variables.rs:482:15:482:23 | SelfParam | variables.rs:482:20:482:23 | self | variables.rs:483:16:483:19 | self |
+| variables.rs:486:11:486:14 | SelfParam | variables.rs:486:11:486:14 | self | variables.rs:487:9:487:12 | self |
 | variables.rs:501:9:501:9 | x | variables.rs:501:9:501:9 | x | variables.rs:503:15:503:15 | x |
+| variables.rs:514:10:514:18 | SelfParam | variables.rs:514:15:514:18 | self | variables.rs:515:6:515:9 | self |
 lastRead
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s | variables.rs:4:20:4:20 | s |
 | variables.rs:7:14:7:14 | i | variables.rs:7:14:7:14 | i | variables.rs:8:20:8:20 | i |
@@ -456,7 +465,10 @@ lastRead
 | variables.rs:461:24:461:25 | b2 | variables.rs:461:24:461:25 | b2 | variables.rs:469:8:469:9 | b2 |
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:470:19:470:19 | x |
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:472:19:472:19 | x |
+| variables.rs:482:15:482:23 | SelfParam | variables.rs:482:20:482:23 | self | variables.rs:483:16:483:19 | self |
+| variables.rs:486:11:486:14 | SelfParam | variables.rs:486:11:486:14 | self | variables.rs:487:9:487:12 | self |
 | variables.rs:501:9:501:9 | x | variables.rs:501:9:501:9 | x | variables.rs:503:15:503:15 | x |
+| variables.rs:514:10:514:18 | SelfParam | variables.rs:514:15:514:18 | self | variables.rs:515:6:515:9 | self |
 adjacentReads
 | variables.rs:35:9:35:10 | x3 | variables.rs:35:9:35:10 | x3 | variables.rs:36:15:36:16 | x3 | variables.rs:38:9:38:10 | x3 |
 | variables.rs:43:9:43:10 | x4 | variables.rs:43:9:43:10 | x4 | variables.rs:44:15:44:16 | x4 | variables.rs:49:15:49:16 | x4 |
