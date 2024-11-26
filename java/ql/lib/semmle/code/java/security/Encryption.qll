@@ -223,10 +223,7 @@ string getAnInsecureHashAlgorithmName() {
 }
 
 private string rankedInsecureAlgorithm(int i) {
-  // In this case we know these are being used for encryption, so we want to match
-  // weak hash algorithms too.
-  result =
-    rank[i](string s | s = getAnInsecureAlgorithmName() or s = getAnInsecureHashAlgorithmName())
+  result = rank[i](string s | s = getAnInsecureAlgorithmName())
 }
 
 private string insecureAlgorithmString(int i) {
@@ -250,7 +247,7 @@ string getASecureAlgorithmName() {
   result =
     [
       "RSA", "SHA-?256", "SHA-?512", "CCM", "GCM", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
-      "Blowfish", "ECIES"
+      "Blowfish", "ECIES", "SHA3-(256|384|512)"
     ]
 }
 

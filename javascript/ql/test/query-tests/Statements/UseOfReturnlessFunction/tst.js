@@ -107,3 +107,13 @@ class Bar extends Foo {
 		console.log(super()); // OK.
 	}
 }
+
+() => {
+	let equals = (x, y) => { return x === y; };
+
+	var foo = [1,2,3].findLastIndex(n => { equals(n, 3); }) // NOT OK
+	console.log(foo);
+
+	var foo = [1,2,3].findLast(n => { equals(n, 3); }) // NOT OK
+	console.log(foo);
+}

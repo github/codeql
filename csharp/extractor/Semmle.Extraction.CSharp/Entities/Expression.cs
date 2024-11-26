@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Gets a string representation of a constant value.
         /// </summary>
-        /// <param name="obj">The value.</param>
+        /// <param name="value">The value.</param>
         /// <returns>The string representation.</returns>
         public static string ValueAsString(object? value)
         {
@@ -98,7 +98,6 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="node">The node to extract.</param>
         /// <param name="parent">The parent entity.</param>
         /// <param name="child">The child index.</param>
-        /// <param name="type">A type hint.</param>
         /// <returns>The new expression.</returns>
         public static Expression Create(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child, Boolean isCompilerGenerated = false)
         {
@@ -120,7 +119,6 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="node">The node to extract.</param>
         /// <param name="parent">The parent entity.</param>
         /// <param name="child">The child index.</param>
-        /// <param name="type">A type hint.</param>
         public static void CreateDeferred(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child)
         {
             if (ContainsPattern(node))
@@ -244,7 +242,6 @@ namespace Semmle.Extraction.CSharp.Entities
         /// to show the target of the call. Also note the dynamic method
         /// name if available.
         /// </summary>
-        /// <param name="cx">Context</param>
         /// <param name="node">The expression.</param>
         public void OperatorCall(TextWriter trapFile, ExpressionSyntax node)
         {

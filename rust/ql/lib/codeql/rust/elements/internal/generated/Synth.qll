@@ -624,12 +624,12 @@ module Synth {
         TExpr or TExternItem or TExternItemList or TFieldList or TFormatArgsArg or TGenericArg or
         TGenericArgList or TGenericParam or TGenericParamList or TItemList or TLabel or TLetElse or
         TLifetime or TMacroItems or TMacroStmts or TMatchArm or TMatchArmList or TMatchGuard or
-        TMeta or TName or TNameRef or TParam or TParamList or TPat or TPathSegment or
+        TMeta or TName or TNameRef or TParamBase or TParamList or TPat or TPathSegment or
         TRecordExprField or TRecordExprFieldList or TRecordField or TRecordPatField or
         TRecordPatFieldList or TRename or TResolvable or TRetType or TReturnTypeSyntax or
-        TSelfParam or TSourceFile or TStmt or TStmtList or TToken or TTokenTree or TTupleField or
-        TTypeBound or TTypeBoundList or TTypeRef or TUseTree or TUseTreeList or TVariant or
-        TVariantList or TVisibility or TWhereClause or TWherePred;
+        TSourceFile or TStmt or TStmtList or TToken or TTokenTree or TTupleField or TTypeBound or
+        TTypeBoundList or TTypeRef or TUseTree or TUseTreeList or TVariant or TVariantList or
+        TVisibility or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -645,12 +645,12 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TExpr =
-    TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBlockExpr or
-        TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
-        TForExpr or TFormatArgsExpr or TIfExpr or TIndexExpr or TLetExpr or TLiteralExpr or
-        TLoopExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExprBase or
-        TPrefixExpr or TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTryExpr or
-        TTupleExpr or TUnderscoreExpr or TWhileExpr or TYeetExpr or TYieldExpr;
+    TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBreakExpr or
+        TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
+        TFormatArgsExpr or TIfExpr or TIndexExpr or TLabelableExpr or TLetExpr or TLiteralExpr or
+        TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExprBase or TPrefixExpr or
+        TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTryExpr or TTupleExpr or
+        TUnderscoreExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -683,7 +683,22 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TLabelableExpr = TBlockExpr or TLoopingExpr;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TLocatable = TAstNode or TFormat or TFormatArgument;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TLoopingExpr = TForExpr or TLoopExpr or TWhileExpr;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TParamBase = TParam or TSelfParam;
 
   /**
    * INTERNAL: Do not use.
@@ -1689,7 +1704,7 @@ module Synth {
     or
     result = convertNameRefFromRaw(e)
     or
-    result = convertParamFromRaw(e)
+    result = convertParamBaseFromRaw(e)
     or
     result = convertParamListFromRaw(e)
     or
@@ -1714,8 +1729,6 @@ module Synth {
     result = convertRetTypeFromRaw(e)
     or
     result = convertReturnTypeSyntaxFromRaw(e)
-    or
-    result = convertSelfParamFromRaw(e)
     or
     result = convertSourceFileFromRaw(e)
     or
@@ -1795,8 +1808,6 @@ module Synth {
     or
     result = convertBinaryExprFromRaw(e)
     or
-    result = convertBlockExprFromRaw(e)
-    or
     result = convertBreakExprFromRaw(e)
     or
     result = convertCallExprBaseFromRaw(e)
@@ -1809,19 +1820,17 @@ module Synth {
     or
     result = convertFieldExprFromRaw(e)
     or
-    result = convertForExprFromRaw(e)
-    or
     result = convertFormatArgsExprFromRaw(e)
     or
     result = convertIfExprFromRaw(e)
     or
     result = convertIndexExprFromRaw(e)
     or
+    result = convertLabelableExprFromRaw(e)
+    or
     result = convertLetExprFromRaw(e)
     or
     result = convertLiteralExprFromRaw(e)
-    or
-    result = convertLoopExprFromRaw(e)
     or
     result = convertMacroExprFromRaw(e)
     or
@@ -1848,8 +1857,6 @@ module Synth {
     result = convertTupleExprFromRaw(e)
     or
     result = convertUnderscoreExprFromRaw(e)
-    or
-    result = convertWhileExprFromRaw(e)
     or
     result = convertYeetExprFromRaw(e)
     or
@@ -1948,6 +1955,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TLabelableExpr`, if possible.
+   */
+  TLabelableExpr convertLabelableExprFromRaw(Raw::Element e) {
+    result = convertBlockExprFromRaw(e)
+    or
+    result = convertLoopingExprFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TLocatable`, if possible.
    */
   TLocatable convertLocatableFromRaw(Raw::Element e) {
@@ -1956,6 +1973,28 @@ module Synth {
     result = convertFormatFromRaw(e)
     or
     result = convertFormatArgumentFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TLoopingExpr`, if possible.
+   */
+  TLoopingExpr convertLoopingExprFromRaw(Raw::Element e) {
+    result = convertForExprFromRaw(e)
+    or
+    result = convertLoopExprFromRaw(e)
+    or
+    result = convertWhileExprFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TParamBase`, if possible.
+   */
+  TParamBase convertParamBaseFromRaw(Raw::Element e) {
+    result = convertParamFromRaw(e)
+    or
+    result = convertSelfParamFromRaw(e)
   }
 
   /**
@@ -3039,7 +3078,7 @@ module Synth {
     or
     result = convertNameRefToRaw(e)
     or
-    result = convertParamToRaw(e)
+    result = convertParamBaseToRaw(e)
     or
     result = convertParamListToRaw(e)
     or
@@ -3064,8 +3103,6 @@ module Synth {
     result = convertRetTypeToRaw(e)
     or
     result = convertReturnTypeSyntaxToRaw(e)
-    or
-    result = convertSelfParamToRaw(e)
     or
     result = convertSourceFileToRaw(e)
     or
@@ -3145,8 +3182,6 @@ module Synth {
     or
     result = convertBinaryExprToRaw(e)
     or
-    result = convertBlockExprToRaw(e)
-    or
     result = convertBreakExprToRaw(e)
     or
     result = convertCallExprBaseToRaw(e)
@@ -3159,19 +3194,17 @@ module Synth {
     or
     result = convertFieldExprToRaw(e)
     or
-    result = convertForExprToRaw(e)
-    or
     result = convertFormatArgsExprToRaw(e)
     or
     result = convertIfExprToRaw(e)
     or
     result = convertIndexExprToRaw(e)
     or
+    result = convertLabelableExprToRaw(e)
+    or
     result = convertLetExprToRaw(e)
     or
     result = convertLiteralExprToRaw(e)
-    or
-    result = convertLoopExprToRaw(e)
     or
     result = convertMacroExprToRaw(e)
     or
@@ -3198,8 +3231,6 @@ module Synth {
     result = convertTupleExprToRaw(e)
     or
     result = convertUnderscoreExprToRaw(e)
-    or
-    result = convertWhileExprToRaw(e)
     or
     result = convertYeetExprToRaw(e)
     or
@@ -3298,6 +3329,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TLabelableExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertLabelableExprToRaw(TLabelableExpr e) {
+    result = convertBlockExprToRaw(e)
+    or
+    result = convertLoopingExprToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TLocatable` to a raw DB element, if possible.
    */
   Raw::Element convertLocatableToRaw(TLocatable e) {
@@ -3306,6 +3347,28 @@ module Synth {
     result = convertFormatToRaw(e)
     or
     result = convertFormatArgumentToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TLoopingExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertLoopingExprToRaw(TLoopingExpr e) {
+    result = convertForExprToRaw(e)
+    or
+    result = convertLoopExprToRaw(e)
+    or
+    result = convertWhileExprToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TParamBase` to a raw DB element, if possible.
+   */
+  Raw::Element convertParamBaseToRaw(TParamBase e) {
+    result = convertParamToRaw(e)
+    or
+    result = convertSelfParamToRaw(e)
   }
 
   /**

@@ -2,7 +2,6 @@ import os
 
 def check_build_out(msg, s):
     lines = s.splitlines()
-    lines = s.splitlines()
     assert (
         any (("[build-stdout]" in line) and (msg in line) for line in lines)
     ), f"The C# tracer did not interpret the dotnet path-to-application command correctly."

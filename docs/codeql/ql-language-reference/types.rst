@@ -52,7 +52,7 @@ independent of the database that you are querying.
 QL has a range of built-in operations defined on primitive types. These are available by using dispatch on expressions of the appropriate type. For example, ``1.toString()`` is the string representation of the integer constant ``1``. For a full list of built-in operations available in QL, see the
 section on `built-ins <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins>`__ in the QL language specification.
 
-Additionally, there is an experimental arbitrary-precision integer primitive type at :ref:`QlBuiltins::BigInt <bigint>`. This type is not available in the CodeQL CLI by default, but you can enable it by passing the ``--allow-experimental=bigint`` option to the CodeQL CLI.
+Additionally, there is an arbitrary-range integer primitive type at :ref:`QlBuiltins::BigInt <bigint>`.
 
 .. index:: class
 .. _classes:

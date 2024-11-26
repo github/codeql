@@ -2,12 +2,15 @@
 import codeql.rust.elements
 import TestUtils
 
-from FormatArgsExpr x, int getNumberOfArgs, int getNumberOfAttrs, string hasTemplate
+from
+  FormatArgsExpr x, int getNumberOfArgs, int getNumberOfAttrs, string hasTemplate,
+  int getNumberOfFormats
 where
   toBeTested(x) and
   not x.isUnknown() and
   getNumberOfArgs = x.getNumberOfArgs() and
   getNumberOfAttrs = x.getNumberOfAttrs() and
-  if x.hasTemplate() then hasTemplate = "yes" else hasTemplate = "no"
+  (if x.hasTemplate() then hasTemplate = "yes" else hasTemplate = "no") and
+  getNumberOfFormats = x.getNumberOfFormats()
 select x, "getNumberOfArgs:", getNumberOfArgs, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasTemplate:", hasTemplate
+  "hasTemplate:", hasTemplate, "getNumberOfFormats:", getNumberOfFormats

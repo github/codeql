@@ -15,9 +15,10 @@ import codeql.rust.elements.internal.TypeRefImpl::Impl as TypeRefImpl
  */
 module Generated {
   /**
-   * A PathType. For example:
+   * A type referring to a path. For example:
    * ```rust
-   * todo!()
+   * type X = std::collections::HashMap<i32, i32>;
+   * type Y = X::Item;
    * ```
    * INTERNAL: Do not reference the `Generated::PathType` class directly.
    * Use the subclass `PathType`, where the following predicates are available.

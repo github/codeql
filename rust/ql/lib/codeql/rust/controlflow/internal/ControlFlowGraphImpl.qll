@@ -19,7 +19,7 @@ private module CfgInput implements InputSig<Location> {
 
   predicate completionIsValidFor = C::completionIsValidFor/2;
 
-  /** An AST node with an associated control-flow graph. */
+  /** An AST node with an associated control flow graph. */
   class CfgScope = Scope::CfgScope;
 
   CfgScope getCfgScope(AstNode n) {
@@ -73,9 +73,12 @@ class CallableScopeTree extends StandardTree, PreOrderTree, PostOrderTree, Scope
   override predicate propagatesAbnormal(AstNode child) { none() }
 
   override AstNode getChildNode(int i) {
-    result = this.getParamList().getParam(i)
+    i = 0 and
+    result = this.getParamList().getSelfParam()
     or
-    i = this.getParamList().getNumberOfParams() and
+    result = this.getParamList().getParam(i - 1)
+    or
+    i = this.getParamList().getNumberOfParams() + 1 and
     result = this.getBody()
   }
 }
@@ -190,6 +193,10 @@ class MatchArmTree extends ControlFlowTree, MatchArm {
 class NameTree extends LeafTree, Name { }
 
 class NameRefTree extends LeafTree, NameRef { }
+
+class SelfParamTree extends StandardPostOrderTree, SelfParam {
+  override AstNode getChildNode(int i) { i = 0 and result = this.getName() }
+}
 
 class TypeRefTree extends LeafTree instanceof TypeRef { }
 
@@ -507,14 +514,14 @@ module ExprTrees {
 
   class MatchExprTree extends PostOrderTree instanceof MatchExpr {
     override predicate propagatesAbnormal(AstNode child) {
-      child = [super.getExpr(), super.getAnArm().getExpr()]
+      child = [super.getScrutinee(), super.getAnArm().getExpr()]
     }
 
-    override predicate first(AstNode node) { first(super.getExpr(), node) }
+    override predicate first(AstNode node) { first(super.getScrutinee(), node) }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       // Edge from the scrutinee to the first arm or to the match expression if no arms.
-      last(super.getExpr(), pred, c) and
+      last(super.getScrutinee(), pred, c) and
       (
         first(super.getArm(0).getPat(), succ)
         or

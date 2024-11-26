@@ -71,6 +71,7 @@ module Stages {
     private import codeql.rust.controlflow.internal.Splitting
     private import codeql.rust.controlflow.internal.SuccessorType
     private import codeql.rust.controlflow.internal.ControlFlowGraphImpl
+    private import codeql.rust.controlflow.CfgNodes
 
     /**
      * Always holds.
@@ -93,6 +94,8 @@ module Stages {
       exists(TNormalSuccessor())
       or
       exists(AstCfgNode n)
+      or
+      exists(CallExprCfgNode n | exists(n.getExpr()))
     }
   }
 }
