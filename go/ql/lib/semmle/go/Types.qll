@@ -496,14 +496,15 @@ class StructType extends @structtype, CompositeType {
   Field getFieldOfEmbedded(Field embeddedParent, string name, int depth, boolean isEmbedded) {
     // embeddedParent is a field of 'this' at depth 'depth - 1'
     this.hasFieldCand(_, embeddedParent, depth - 1, true) and
-    // embeddedParent's type has the result field
-    exists(StructType embeddedType, Type fieldType |
-      fieldType = embeddedParent.getType().getUnderlyingType() and
-      pragma[only_bind_into](embeddedType) =
-        [fieldType, fieldType.(PointerType).getBaseType().getUnderlyingType()]
-    |
-      result = embeddedType.getOwnField(name, isEmbedded)
-    )
+    // embeddedParent's type has the result field. Note that it is invalid Go
+    // to have an embedded field with a named type whose underlying type is a
+    // pointer, so we don't have to have
+    // `lookThroughPointerType(embeddedParent.getType().getUnderlyingType())`.
+    result =
+      lookThroughPointerType(embeddedParent.getType())
+          .getUnderlyingType()
+          .(StructType)
+          .getOwnField(name, isEmbedded)
   }
 
   /**
