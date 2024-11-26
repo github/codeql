@@ -86,6 +86,12 @@ func tests(url: String, secure: Bool) throws {
 	for trustedUrlRegex in trustedUrlRegexs {
 		if let _ = try NSRegularExpression(pattern: trustedUrlRegex).firstMatch(in: input, range: inputRange) { }
 	}
+
+	let trustedUrlRegexs2 = [
+		"https?://good.com", // BAD (missing anchor), referenced below
+	]
+	if let _ = try NSRegularExpression(pattern: trustedUrlRegexs2[0]).firstMatch(in: input, range: inputRange) { }
+
 	let notUsedUrlRegexs = [
 		"https?://good.com" // OK (not referenced)
 	]
