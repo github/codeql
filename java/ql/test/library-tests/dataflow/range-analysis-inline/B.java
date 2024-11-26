@@ -4,7 +4,7 @@ public class B {
     // that should also be annotated.
     static void bound(int b) { }
 
-    public int forloop() {
+    public int forLoop() {
         int result = 0;
         for (int i = 0;
             i < 10; // $ bound="i in [0..10]"
@@ -14,7 +14,7 @@ public class B {
         return result; // $ bound="result in [0..9]"
     }
 
-    public int forloopexit() {
+    public int forLoopExit() {
         int result = 0;
         for (; result < 10;) { // $ bound="result in [0..10]"
             result += 1; // $ bound="result in [0..9]"
@@ -22,7 +22,7 @@ public class B {
         return result; // $ bound="result = 10"
     }
 
-    public int forloopexitstep() {
+    public int forLoopExitStep() {
         int result = 0;
         for (; result < 10;) { // $ bound="result in [0..12]"
             result += 3; // $ bound="result in [0..9]"
@@ -30,7 +30,7 @@ public class B {
         return result; // $ bound="result = 12"
     }
 
-    public int forloopexitupd() {
+    public int forLoopExitUpd() {
         int result = 0;
         for (; result < 10; // $ bound="result in [0..10]"
             result++) { // $ bound="result in [0..9]"
@@ -38,7 +38,7 @@ public class B {
         return result; // $ bound="result = 10"
     }
 
-    public int forloopexitnested() {
+    public int forLoopExitNested() {
         int result = 0;
         for (; result < 10;) {
             int i = 0;
@@ -50,7 +50,7 @@ public class B {
         return result; // $ MISSING:bound="result = 12"
     }
 
-    public int emptyforloop() {
+    public int emptyForLoop() {
         int result = 0;
         for (int i = 0; i < 0; // $ bound="i = 0"
             i++) { // $ bound="i in [0..-1]"
@@ -59,13 +59,13 @@ public class B {
         return result; // $ bound="result = 0"
     }
 
-    public int noloop() {
+    public int noLoop() {
         int result = 0;
         result += 1; // $ bound="result = 0"
         return result; // $ bound="result = 1"
     }
 
-    public int foreachloop() {
+    public int foreachLoop() {
         int result = 0;
         for (int i : new int[] {1, 2, 3, 4, 5}) {
             result = i;
@@ -73,7 +73,7 @@ public class B {
         return result;
     }
 
-    public int emptyforeachloop() {
+    public int emptyForeachLoop() {
         int result = 0;
         for (int i : new int[] {}) {
             result = i;
@@ -81,7 +81,7 @@ public class B {
         return result;
     }
 
-    public int whileloop() {
+    public int whileLoop() {
         int result = 100;
         while (result > 5) { // $ bound="result in [4..100]"
             result = result - 2; // $ bound="result in [6..100]"
@@ -89,7 +89,7 @@ public class B {
         return result; // $ bound="result = 4"
     }
 
-    public int oddwhileloop() {
+    public int oddWhileLoop() {
         int result = 101;
         while (result > 5) { // $ bound="result in [5..101]"
             result = result - 2; // $ bound="result in [7..101]"
@@ -97,7 +97,7 @@ public class B {
         return result; // $ bound="result = 5"
     }
 
-    static void arraylength(int[] arr) {
+    static void arrayLength(int[] arr) {
         bound(arr.length);
         for (int i = 0;
             i < arr.length;
@@ -106,8 +106,35 @@ public class B {
         }
     }
 
-    static int varbound(int b) {
+    static int varBound(int b) {
         bound(b);
+        int result = 0;
+        for (int i = 0;
+            i < b;
+            i++) { // $ bound="i <= b - 1"
+            result = i; // $ bound="i <= b - 1"
+        }
+        return result; // We cannot conclude anything here, since we do not know that b > 0
+    }
+
+    static int varBoundPositiveGuard(int b) {
+        bound(b);
+        if (b > 0) {
+            int result = 0;
+            for (int i = 0;
+                i < b;
+                i++) { // $ bound="i <= b - 1"
+                result = i; // $ bound="i <= b - 1"
+            }
+            return result; // $ MISSING: bound="result <= b - 1"
+        } else {
+            return 0;
+        }
+    }
+
+    static int varBoundPositiveGuardEarlyReturn(int b) {
+        bound(b);
+        if (b <= 0) return 0;
         int result = 0;
         for (int i = 0;
             i < b;
@@ -117,4 +144,15 @@ public class B {
         return result; // $ MISSING: bound="result <= b - 1"
     }
 
+    static int varBoundPositiveAssert(int b) {
+        bound(b);
+        assert b > 0;
+        int result = 0;
+        for (int i = 0;
+            i < b;
+            i++) { // $ bound="i <= b - 1"
+            result = i; // $ bound="i <= b - 1"
+        }
+        return result; // $ MISSING: bound="result <= b - 1"
+    }
 }

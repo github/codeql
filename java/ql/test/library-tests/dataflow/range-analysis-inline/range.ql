@@ -6,7 +6,6 @@
 import java
 import semmle.code.java.dataflow.RangeAnalysis
 private import TestUtilities.InlineExpectationsTest as IET
-private import semmle.code.java.dataflow.DataFlow
 
 module RangeTest implements IET::TestSig {
   string getARelevantTag() { result = "bound" }
@@ -29,10 +28,8 @@ module RangeTest implements IET::TestSig {
       )
       or
       // advanced bounds
-      exists(
-        Expr e, int delta, string deltaStr, boolean upper, string cmp, Bound b, Expr boundExpr
-      |
-        annotatedBound(e, b, boundExpr, delta, upper) and
+      exists(Expr e, int delta, string deltaStr, boolean upper, string cmp, Expr boundExpr |
+        annotatedBound(e, _, boundExpr, delta, upper) and
         e instanceof VarRead and
         e.getCompilationUnit().fromSource() and
         (
@@ -67,7 +64,7 @@ module RangeTest implements IET::TestSig {
     boundExpr = b.getExpr() and
     exists(Call c | c.getCallee().getName() = "bound" and c.getArgument(0) = boundExpr) and
     // non-trivial bound
-    (DataFlow::localFlow(DataFlow::exprNode(boundExpr), DataFlow::exprNode(e)) implies delta != 0)
+    not e = b.getExpr()
   }
 }
 
