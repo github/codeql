@@ -1896,9 +1896,9 @@ match_expr_attrs(
 );
 
 #keyset[id]
-match_expr_exprs(
+match_expr_scrutinees(
   int id: @match_expr ref,
-  int expr: @expr ref
+  int scrutinee: @expr ref
 );
 
 #keyset[id]

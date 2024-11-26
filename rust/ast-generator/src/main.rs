@@ -28,6 +28,7 @@ fn class_name(type_name: &String) -> String {
 fn property_name(type_name: &String, field_name: &String) -> String {
     match (type_name.as_str(), field_name.as_str()) {
         ("Path", "segment") => "part".to_owned(),
+        ("MatchExpr", "expr") => "scrutinee".to_owned(),
         (_, "then_branch") => "then".to_owned(),
         (_, "else_branch") => "else_".to_owned(),
         _ => field_name.to_owned(),

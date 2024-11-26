@@ -2172,7 +2172,7 @@ module Raw {
     /**
      * Gets the scrutinee (the expression being matched) of this match expression, if it exists.
      */
-    Expr getScrutinee() { match_expr_exprs(this, result) }
+    Expr getScrutinee() { match_expr_scrutinees(this, result) }
 
     /**
      * Gets the match arm list of this match expression, if it exists.

@@ -364,7 +364,7 @@ class MatchArmList(AstNode):
 
 class MatchExpr(Expr):
    attrs: list["Attr"] | child
-   expr: optional["Expr"] | child
+   scrutinee: optional["Expr"] | child
    match_arm_list: optional["MatchArmList"] | child
 
 class MatchGuard(AstNode):
