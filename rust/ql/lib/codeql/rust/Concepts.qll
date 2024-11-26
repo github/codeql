@@ -6,6 +6,7 @@
 
 private import codeql.rust.dataflow.DataFlow
 private import codeql.threatmodels.ThreatModels
+private import codeql.rust.Frameworks
 
 /**
  * A data flow source for a specific threat-model.
@@ -44,6 +45,63 @@ module ThreatModelSource {
  */
 class ActiveThreatModelSource extends ThreatModelSource {
   ActiveThreatModelSource() { currentThreatModel(this.getThreatModel()) }
+}
+
+/**
+ * A data flow source corresponding to the program's command line arguments or path.
+ */
+final class CommandLineArgsSource = CommandLineArgsSource::Range;
+
+/**
+ * Provides a class for modeling new sources for the program's command line arguments or path.
+ */
+module CommandLineArgsSource {
+  /**
+   * A data flow source corresponding to the program's command line arguments or path.
+   */
+  abstract class Range extends ThreatModelSource::Range {
+    override string getThreatModel() { result = "commandargs" }
+
+    override string getSourceType() { result = "CommandLineArgs" }
+  }
+}
+
+/**
+ * A data flow source corresponding to the program's environment.
+ */
+final class EnvironmentSource = EnvironmentSource::Range;
+
+/**
+ * Provides a class for modeling new sources for the program's environment.
+ */
+module EnvironmentSource {
+  /**
+   * A data flow source corresponding to the program's environment.
+   */
+  abstract class Range extends ThreatModelSource::Range {
+    override string getThreatModel() { result = "environment" }
+
+    override string getSourceType() { result = "EnvironmentSource" }
+  }
+}
+
+/**
+ * A data flow source for remote (network) data.
+ */
+final class RemoteSource = RemoteSource::Range;
+
+/**
+ * Provides a class for modeling new sources of remote (network) data.
+ */
+module RemoteSource {
+  /**
+   * A data flow source for remote (network) data.
+   */
+  abstract class Range extends ThreatModelSource::Range {
+    override string getThreatModel() { result = "remote" }
+
+    override string getSourceType() { result = "RemoteSource" }
+  }
 }
 
 /**
