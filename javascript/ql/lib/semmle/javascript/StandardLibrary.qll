@@ -118,6 +118,14 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
   predicate isGlobal() { this.getRegExp().isGlobal() or this.getMethodName() = "replaceAll" }
 
   /**
+   * Holds if this is a global replacement, that is, the first argument is a regular expression
+   * with the `g` flag, or this is a call to `.replaceAll()`.
+   */
+  predicate maybeGlobal() {
+    RegExp::maybeGlobal(this.getRegExp().tryGetFlags()) or this.getMethodName() = "replaceAll"
+  }
+
+  /**
    * Holds if this call to `replace` replaces `old` with `new`.
    */
   predicate replaces(string old, string new) {

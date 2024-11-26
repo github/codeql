@@ -334,5 +334,5 @@ function typicalBadHtmlSanitizers(s) {
 }
 
 function typicalBadHtmlSanitizers(s) {
-	s().replace(new RegExp("[<>]", unknown()),''); // NOT OK -- should be flagged, because it is st ill a bad sanitizer
+	s().replace(new RegExp("[<>]", unknown()),''); // NOT OK
 }
