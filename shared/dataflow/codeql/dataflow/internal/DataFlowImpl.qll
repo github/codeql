@@ -343,7 +343,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     bindingset[n, cc]
     pragma[inline_late]
     private predicate isUnreachableInCall1(NodeEx n, LocalCallContextSpecificCall cc) {
-      cc.unreachable(n.asNode())
+      cc.unreachable(n)
     }
 
     /**
@@ -423,7 +423,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private predicate readSetEx(NodeEx node1, ContentSet c, NodeEx node2) {
-      readSet(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode())) and
+      readEx(node1, c, node2) and
       stepFilter(node1, node2)
       or
       exists(Node n |
@@ -450,20 +450,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     bindingset[c]
     private predicate expectsContentEx(NodeEx n, Content c) {
       exists(ContentSet cs |
-        expectsContentCached(n.asNode(), cs) and
+        expectsContentSet(n, cs) and
         pragma[only_bind_out](c) = pragma[only_bind_into](cs).getAReadContent()
       )
     }
 
     pragma[nomagic]
-    private predicate notExpectsContent(NodeEx n) { not expectsContentCached(n.asNode(), _) }
+    private predicate notExpectsContent(NodeEx n) { not expectsContentSet(n, _) }
 
     pragma[nomagic]
     private predicate storeExUnrestricted(
       NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     ) {
-      store(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode()),
-        contentType, containerType) and
+      storeEx(node1, c, node2, contentType, containerType) and
       stepFilter(node1, node2)
     }
 
@@ -471,21 +470,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private predicate hasReadStep(Content c) { read(_, c, _) }
 
     pragma[nomagic]
-    private predicate storeEx(
+    private predicate storeExRestricted(
       NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     ) {
       storeExUnrestricted(node1, c, node2, contentType, containerType) and
       hasReadStep(c)
-    }
-
-    pragma[nomagic]
-    private predicate viableReturnPosOutEx(DataFlowCall call, ReturnPosition pos, NodeEx out) {
-      viableReturnPosOut(call, pos, out.asNode())
-    }
-
-    pragma[nomagic]
-    private predicate viableParamArgEx(DataFlowCall call, ParamNodeEx p, ArgNodeEx arg) {
-      viableParamArg(call, p.asNode(), arg.asNode())
     }
 
     /**
@@ -520,7 +509,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       exists(ParameterPosition pos | p.isParameterOf(_, pos) |
         not kind.(ParamUpdateReturnKind).getPosition() = pos
         or
-        allowParameterReturnInSelfCached(p.asNode())
+        allowParameterReturnInSelfEx(p)
       )
     }
 
@@ -558,7 +547,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         exists(NodeEx mid |
           useFieldFlow() and
           fwdFlow(mid, cc) and
-          storeEx(mid, _, node, _, _)
+          storeExRestricted(mid, _, node, _, _)
         )
         or
         // read
@@ -653,7 +642,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           not fullBarrier(node) and
           useFieldFlow() and
           fwdFlow(mid, _) and
-          storeEx(mid, c, node, _, _)
+          storeExRestricted(mid, c, node, _, _)
         )
       }
 
@@ -796,7 +785,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         exists(NodeEx mid |
           revFlow(mid, toReturn) and
           fwdFlowConsCand(c) and
-          storeEx(node, c, mid, _, _)
+          storeExRestricted(node, c, mid, _, _)
         )
       }
 
@@ -893,7 +882,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ) {
         revFlowIsReadAndStored(c) and
         revFlow(node2) and
-        storeEx(node1, c, node2, contentType, containerType) and
+        storeExRestricted(node1, c, node2, contentType, containerType) and
         exists(ap1)
       }
 
@@ -1152,7 +1141,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         flowOutOfCallNodeCand1(call, ret, _, out) and
         c = ret.getEnclosingCallable()
       |
-        scope = getSecondLevelScopeCached(ret.asNode())
+        scope = getSecondLevelScopeEx(ret)
         or
         ret = TParamReturnNode(_, scope)
       )
@@ -1496,7 +1485,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           PrevStage::revFlow(node, state, apa) and
           filter(node, state, t0, ap, t) and
           (
-            if castingNodeEx(node)
+            if node instanceof CastingNodeEx
             then
               ap instanceof ApNil or
               compatibleContainer(getHeadContent(ap), node.getDataFlowType()) or
@@ -2627,10 +2616,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             FlowCheckNode() {
               revFlow(this, _, _) and
               (
-                castNode(this.asNode()) or
-                clearsContentCached(this.asNode(), _) or
-                expectsContentCached(this.asNode(), _) or
-                neverSkipInPathGraph(this.asNode()) or
+                flowCheckNode(this) or
                 Config::neverSkip(this.asNode())
               )
             }
@@ -2665,7 +2651,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               or
               node instanceof ParamNodeEx
               or
-              node.asNode() instanceof OutNodeExt
+              node instanceof OutNodeEx
               or
               storeStepCand(_, _, _, node, _, _)
               or
@@ -2899,15 +2885,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             predicate isHidden() {
               not Config::includeHiddenNodes() and
-              (
-                hiddenNode(this.getNodeEx().asNode()) and
-                not this.isSource() and
-                not this instanceof PathNodeSink
-                or
-                this.getNodeEx() instanceof TNodeImplicitRead
-                or
-                hiddenNode(this.getNodeEx().asParamReturnNode())
-              )
+              hiddenNode(this.getNodeEx()) and
+              not this.isSource() and
+              not this instanceof PathNodeSink
             }
 
             /** Gets a textual representation of this element. */
@@ -3770,11 +3750,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private module Stage2 = MkStage<Stage1>::Stage<Stage2Param>;
 
-    pragma[nomagic]
-    private predicate castingNodeEx(NodeEx node) {
-      node.asNode() instanceof CastingNode or exists(node.asParamReturnNode())
-    }
-
     private module Stage3Param implements MkStage<Stage2>::StageParam {
       private module PrevStage = Stage2;
 
@@ -3888,7 +3863,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     bindingset[node, t0]
     private predicate strengthenType(NodeEx node, DataFlowType t0, DataFlowType t) {
-      if castingNodeEx(node)
+      if node instanceof CastingNodeEx
       then
         exists(DataFlowType nt | nt = node.getDataFlowType() |
           if typeStrongerThanFilter(nt, t0)
@@ -3945,7 +3920,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       pragma[nomagic]
       private predicate clearSet(NodeEx node, ContentSet c) {
         PrevStage::revFlow(node) and
-        clearsContentCached(node.asNode(), c)
+        clearsContentSet(node, c)
       }
 
       pragma[nomagic]
@@ -5024,7 +4999,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[c]
       private predicate clearsContentEx(NodeEx n, Content c) {
         exists(ContentSet cs |
-          clearsContentCached(n.asNode(), cs) and
+          clearsContentSet(n, cs) and
           pragma[only_bind_out](c) = pragma[only_bind_into](cs).getAReadContent()
         )
       }
@@ -5442,9 +5417,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         PartialAccessPath ap
       ) {
         exists(ReturnKindExt kind, DataFlowCall call |
-          partialPathOutOfCallable1(mid, call, kind, state, cc, t, ap)
-        |
-          out.asNode() = kind.getAnOutNode(call)
+          partialPathOutOfCallable1(mid, call, kind, state, cc, t, ap) and
+          out = kind.getAnOutNodeEx(call)
         )
       }
 
@@ -5529,7 +5503,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ) {
         exists(DataFlowCall call, ReturnKindExt kind |
           partialPathThroughCallable0(call, mid, kind, state, cc, t, ap) and
-          out.asNode() = kind.getAnOutNode(call)
+          out = kind.getAnOutNodeEx(call)
         )
       }
 
@@ -5745,7 +5719,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ) {
         exists(DataFlowCall call, ArgumentPosition pos |
           revPartialPathThroughCallable0(call, mid, pos, state, ap) and
-          node.asNode().(ArgNode).argumentOf(call, pos)
+          node.argumentOf(call, pos)
         )
       }
 

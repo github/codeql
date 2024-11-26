@@ -1355,7 +1355,7 @@ module Make<
         exists(DataFlowCall call, ReturnKindExt rk |
           result = summaryArgParam(call, arg, sc) and
           summaryReturnNodeExt(ret, pragma[only_bind_into](rk)) and
-          out = pragma[only_bind_into](rk).getAnOutNode(call)
+          out = getAnOutNodeExt(call, pragma[only_bind_into](rk))
         )
       }
 
