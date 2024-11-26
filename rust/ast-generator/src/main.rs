@@ -14,25 +14,27 @@ fn project_root() -> PathBuf {
     PathBuf::from(dir).parent().unwrap().to_owned()
 }
 
-fn class_name(type_name: &String) -> String {
-    match type_name.as_str() {
-        "BinExpr" => "BinaryExpr".to_owned(),
-        "ElseBranch" => "Expr".to_owned(),
-        "Fn" => "Function".to_owned(),
-        "Literal" => "LiteralExpr".to_owned(),
-        "Type" => "TypeRef".to_owned(),
-        _ => type_name.to_owned(),
-    }
+fn class_name(type_name: &str) -> String {
+    let name = match type_name {
+        "BinExpr" => "BinaryExpr",
+        "ElseBranch" => "Expr",
+        "Fn" => "Function",
+        "Literal" => "LiteralExpr",
+        "Type" => "TypeRef",
+        _ => type_name,
+    };
+    name.to_owned()
 }
 
-fn property_name(type_name: &String, field_name: &String) -> String {
-    match (type_name.as_str(), field_name.as_str()) {
-        ("Path", "segment") => "part".to_owned(),
-        ("MatchExpr", "expr") => "scrutinee".to_owned(),
-        (_, "then_branch") => "then".to_owned(),
-        (_, "else_branch") => "else_".to_owned(),
-        _ => field_name.to_owned(),
-    }
+fn property_name(type_name: &str, field_name: &str) -> String {
+    let name = match (type_name, field_name) {
+        ("Path", "segment") => "part",
+        ("MatchExpr", "expr") => "scrutinee",
+        (_, "then_branch") => "then",
+        (_, "else_branch") => "else_",
+        _ => field_name,
+    };
+    name.to_owned()
 }
 
 fn to_lower_snake_case(s: &str) -> String {
@@ -62,7 +64,7 @@ fn write_schema(
 
     for node in &grammar.enums {
         let super_classses = if let Some(cls) = super_types.get(&node.name) {
-            let super_classes: Vec<String> = cls.iter().map(class_name).collect();
+            let super_classes: Vec<String> = cls.iter().map(|s| class_name(s)).collect();
             super_classes.join(",")
         } else {
             "AstNode".to_owned()
@@ -77,7 +79,7 @@ fn write_schema(
     }
     for node in &grammar.nodes {
         let super_classses = if let Some(cls) = super_types.get(&node.name) {
-            let super_classes: Vec<String> = cls.iter().map(class_name).collect();
+            let super_classes: Vec<String> = cls.iter().map(|s| class_name(s)).collect();
             super_classes.join(",")
         } else {
             "AstNode".to_owned()
