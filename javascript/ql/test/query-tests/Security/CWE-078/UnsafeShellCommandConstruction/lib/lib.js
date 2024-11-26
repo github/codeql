@@ -637,5 +637,5 @@ module.exports.sanitizer = function (name) {
 	cp.exec("rm -rf " + sanitized); // OK 
 
 	var sanitized = "'" + name.replace(new RegExp("\'", unknownFlags()), "'\\''") + "'"
-	cp.exec("rm -rf " + sanitized); // OK -- Currently this is flagged as a bad sanitization, but it is not certain that it is bad.
+	cp.exec("rm -rf " + sanitized); // OK -- Most likely should be okay and not flagged to reduce false positives.
 }
