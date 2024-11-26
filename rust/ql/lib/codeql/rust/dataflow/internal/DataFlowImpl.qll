@@ -422,7 +422,7 @@ module RustDataFlow implements InputSig<Location> {
       (
         r = c.asMethodCallExprCfgNode().getExpr()
         or
-        r = c.asCallExprCfgNode().getExpr().(PathExprCfgNode).getPath()
+        r = c.asCallExprCfgNode().getFunction().(PathExprCfgNode).getPath()
       )
     |
       crate.asSome() = r.getResolvedCrateOrigin()

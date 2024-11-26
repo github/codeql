@@ -637,7 +637,7 @@
 /test/extractor-tests/generated/CallExpr/CallExpr.ql linguist-generated
 /test/extractor-tests/generated/CallExpr/CallExpr_getArgList.ql linguist-generated
 /test/extractor-tests/generated/CallExpr/CallExpr_getAttr.ql linguist-generated
-/test/extractor-tests/generated/CallExpr/CallExpr_getExpr.ql linguist-generated
+/test/extractor-tests/generated/CallExpr/CallExpr_getFunction.ql linguist-generated
 /test/extractor-tests/generated/CastExpr/CastExpr.ql linguist-generated
 /test/extractor-tests/generated/CastExpr/CastExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/CastExpr/CastExpr_getExpr.ql linguist-generated
@@ -781,8 +781,8 @@
 /test/extractor-tests/generated/LetElse/LetElse_getBlockExpr.ql linguist-generated
 /test/extractor-tests/generated/LetExpr/LetExpr.ql linguist-generated
 /test/extractor-tests/generated/LetExpr/LetExpr_getAttr.ql linguist-generated
-/test/extractor-tests/generated/LetExpr/LetExpr_getExpr.ql linguist-generated
 /test/extractor-tests/generated/LetExpr/LetExpr_getPat.ql linguist-generated
+/test/extractor-tests/generated/LetExpr/LetExpr_getScrutinee.ql linguist-generated
 /test/extractor-tests/generated/LetStmt/LetStmt.ql linguist-generated
 /test/extractor-tests/generated/LetStmt/LetStmt_getAttr.ql linguist-generated
 /test/extractor-tests/generated/LetStmt/LetStmt_getInitializer.ql linguist-generated

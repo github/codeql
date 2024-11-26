@@ -48,16 +48,17 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the expression of this let expression, if it exists.
+     * Gets the scrutinee of this let expression, if it exists.
      */
-    Expr getExpr() {
-      result = Synth::convertExprFromRaw(Synth::convertLetExprToRaw(this).(Raw::LetExpr).getExpr())
+    Expr getScrutinee() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertLetExprToRaw(this).(Raw::LetExpr).getScrutinee())
     }
 
     /**
-     * Holds if `getExpr()` exists.
+     * Holds if `getScrutinee()` exists.
      */
-    final predicate hasExpr() { exists(this.getExpr()) }
+    final predicate hasScrutinee() { exists(this.getScrutinee()) }
 
     /**
      * Gets the pat of this let expression, if it exists.

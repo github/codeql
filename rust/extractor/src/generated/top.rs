@@ -4963,7 +4963,7 @@ impl From<trap::Label<LabelableExpr>> for trap::Label<Locatable> {
 pub struct LetExpr {
     pub id: trap::TrapId<LetExpr>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub expr: Option<trap::Label<Expr>>,
+    pub scrutinee: Option<trap::Label<Expr>>,
     pub pat: Option<trap::Label<Pat>>,
 }
 
@@ -4977,8 +4977,8 @@ impl trap::TrapEntry for LetExpr {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("let_expr_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.expr {
-            out.add_tuple("let_expr_exprs", vec![id.into(), v.into()]);
+        if let Some(v) = self.scrutinee {
+            out.add_tuple("let_expr_scrutinees", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.pat {
             out.add_tuple("let_expr_pats", vec![id.into(), v.into()]);
@@ -8066,7 +8066,7 @@ pub struct CallExpr {
     pub id: trap::TrapId<CallExpr>,
     pub arg_list: Option<trap::Label<ArgList>>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub expr: Option<trap::Label<Expr>>,
+    pub function: Option<trap::Label<Expr>>,
 }
 
 impl trap::TrapEntry for CallExpr {
@@ -8082,8 +8082,8 @@ impl trap::TrapEntry for CallExpr {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("call_expr_base_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.expr {
-            out.add_tuple("call_expr_exprs", vec![id.into(), v.into()]);
+        if let Some(v) = self.function {
+            out.add_tuple("call_expr_functions", vec![id.into(), v.into()]);
         }
     }
 }

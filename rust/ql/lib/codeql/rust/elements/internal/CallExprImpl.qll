@@ -23,6 +23,6 @@ module Impl {
    * ```
    */
   class CallExpr extends Generated::CallExpr {
-    override string toString() { result = this.getExpr().toAbbreviatedString() + "(...)" }
+    override string toString() { result = this.getFunction().toAbbreviatedString() + "(...)" }
   }
 }
