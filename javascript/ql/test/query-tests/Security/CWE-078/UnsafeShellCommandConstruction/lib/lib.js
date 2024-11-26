@@ -628,3 +628,14 @@ module.exports.veryIndeirect = function (name) {
 
     cp.exec("rm -rf " + name); // NOT OK
 }
+
+module.exports.sanitizer = function (name) {
+	var sanitized = "'" + name.replace(new RegExp("\'"), "'\\''") + "'"
+	cp.exec("rm -rf " + sanitized); // NOT OK 
+
+	var sanitized = "'" + name.replace(new RegExp("\'", 'g'), "'\\''") + "'"
+	cp.exec("rm -rf " + sanitized); // OK 
+
+	var sanitized = "'" + name.replace(new RegExp("\'", unknownFlags()), "'\\''") + "'"
+	cp.exec("rm -rf " + sanitized); // OK -- Currently this is flagged as a bad sanitization, but it is not certain that it is bad.
+}

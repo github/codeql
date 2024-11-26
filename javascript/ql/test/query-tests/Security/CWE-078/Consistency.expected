@@ -1,0 +1,1 @@
+| UnsafeShellCommandConstruction/lib/lib.js:640 | did not expect an alert, but found an alert for UnsafeShellCommandConstruction | OK -- Currently this is flagged as a bad sanitization, but it is not certain that it is bad. | ComandInjection |
