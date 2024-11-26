@@ -33,3 +33,5 @@ codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
 rust-extractor-macros = { path = "macros" }
 itertools = "0.13.0"
 glob = "0.3.1"
+chrono = { version = "0.4.38", features = ["serde"] }
+serde_json = "1.0.133"
