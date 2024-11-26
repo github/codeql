@@ -332,3 +332,7 @@ function incompleteComplexSanitizers() {
 function typicalBadHtmlSanitizers(s) {
 	s().replace(new RegExp("[<>]", "g"),''); // NOT OK
 }
+
+function typicalBadHtmlSanitizers(s) {
+	s().replace(new RegExp("[<>]", unknown()),''); // NOT OK -- should be flagged, because it is st ill a bad sanitizer
+}
