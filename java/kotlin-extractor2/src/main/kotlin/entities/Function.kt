@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.github.codeql.useType
 import com.github.codeql.utils.getJvmName
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.*
@@ -637,6 +638,38 @@ OLD: KE1
                     }
         */
     }
+}
+
+fun KotlinFileExtractor.extractValueParameter(
+    id: Label<out DbParam>,
+    t: KaType,
+    name: String,
+    locId: Label<DbLocation>,
+    parent: Label<out DbCallable>,
+    idx: Int,
+    paramSourceDeclaration: Label<out DbParam>,
+    syntheticParameterNames: Boolean,
+    isVararg: Boolean,
+    isNoinline: Boolean,
+    isCrossinline: Boolean
+): TypeResults {
+    val type = useType(t)
+    tw.writeParams(id, type.javaResult.id, idx, parent, paramSourceDeclaration)
+    tw.writeParamsKotlinType(id, type.kotlinResult.id)
+    tw.writeHasLocation(id, locId)
+    if (!syntheticParameterNames) {
+        tw.writeParamName(id, name)
+    }
+    if (isVararg) {
+        tw.writeIsVarargsParam(id)
+    }
+    if (isNoinline) {
+        addModifiers(id, "noinline")
+    }
+    if (isCrossinline) {
+        addModifiers(id, "crossinline")
+    }
+    return type
 }
 
 // TODO: Can this be inlined?

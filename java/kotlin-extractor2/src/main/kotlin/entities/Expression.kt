@@ -57,7 +57,7 @@ fun KotlinFileExtractor.extractBody(b: KtExpression, callable: Label<out DbCalla
 }
 
 // TODO: Can this be inlined?
-private fun KotlinFileExtractor.extractBlockBody(callable: Label<out DbCallable>, locId: Label<DbLocation>) =
+fun KotlinFileExtractor.extractBlockBody(callable: Label<out DbCallable>, locId: Label<DbLocation>) =
     tw.getFreshIdLabel<DbBlock>().also {
         tw.writeStmts_block(it, callable, 0, callable)
         tw.writeHasLocation(it, locId)
@@ -166,7 +166,7 @@ OLD: KE1
         }
 */
 
-private fun KotlinFileExtractor.extractConstantInteger(
+fun KotlinFileExtractor.extractConstantInteger(
     text: String,
     t: KaType,
     v: Number,
