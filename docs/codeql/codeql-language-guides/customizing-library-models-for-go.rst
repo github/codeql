@@ -293,7 +293,7 @@ The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary.
 
 - The seventh value is the access path to the input (where data flows from). ``Argument[receiver]`` is the access path to the receiver (``u`` in the example).
-- The eighth value ``ReturnValue`` is the access path to the output (where data flows to), in this case ``ReturnValue``, which means that the input flows to the return value. When there are multiple return values, use `ReturnValue[i]` to refer to the `i`th return value (starting from 0).
+- The eighth value ``ReturnValue`` is the access path to the output (where data flows to), in this case ``ReturnValue``, which means that the input flows to the return value. When there are multiple return values, use ``ReturnValue[i]`` to refer to the ``i`` th return value (starting from 0).
 - The ninth value ``taint`` is the kind of the flow. ``taint`` means that taint is propagated through the call.
 - The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
 
