@@ -1,74 +1,74 @@
 models
 edges
-| main.rs:12:28:14:1 | { ... } : unit | main.rs:17:13:17:23 | get_data(...) : unit | provenance |  |
-| main.rs:13:5:13:13 | source(...) : unit | main.rs:12:28:14:1 | { ... } : unit | provenance |  |
-| main.rs:17:13:17:23 | get_data(...) : unit | main.rs:18:10:18:10 | a | provenance |  |
-| main.rs:21:12:21:17 | ...: i64 : unit | main.rs:22:10:22:10 | n | provenance |  |
-| main.rs:26:13:26:21 | source(...) : unit | main.rs:27:13:27:13 | a : unit | provenance |  |
-| main.rs:27:13:27:13 | a : unit | main.rs:21:12:21:17 | ...: i64 : unit | provenance |  |
-| main.rs:30:17:30:22 | ...: i64 : unit | main.rs:30:32:32:1 | { ... } : unit | provenance |  |
-| main.rs:35:13:35:21 | source(...) : unit | main.rs:36:26:36:26 | a : unit | provenance |  |
-| main.rs:36:13:36:27 | pass_through(...) : unit | main.rs:37:10:37:10 | b | provenance |  |
-| main.rs:36:26:36:26 | a : unit | main.rs:30:17:30:22 | ...: i64 : unit | provenance |  |
-| main.rs:36:26:36:26 | a : unit | main.rs:36:13:36:27 | pass_through(...) : unit | provenance |  |
-| main.rs:41:13:44:6 | pass_through(...) : unit | main.rs:45:10:45:10 | a | provenance |  |
-| main.rs:41:26:44:5 | { ... } : unit | main.rs:30:17:30:22 | ...: i64 : unit | provenance |  |
-| main.rs:41:26:44:5 | { ... } : unit | main.rs:41:13:44:6 | pass_through(...) : unit | provenance |  |
-| main.rs:43:9:43:18 | source(...) : unit | main.rs:41:26:44:5 | { ... } : unit | provenance |  |
-| main.rs:56:23:56:28 | ...: i64 : unit | main.rs:57:14:57:14 | n | provenance |  |
-| main.rs:59:31:65:5 | { ... } : unit | main.rs:77:13:77:25 | ... .get_data(...) : unit | provenance |  |
-| main.rs:63:13:63:21 | source(...) : unit | main.rs:59:31:65:5 | { ... } : unit | provenance |  |
-| main.rs:66:28:66:33 | ...: i64 : unit | main.rs:66:43:72:5 | { ... } : unit | provenance |  |
-| main.rs:77:13:77:25 | ... .get_data(...) : unit | main.rs:78:10:78:10 | a | provenance |  |
-| main.rs:83:13:83:21 | source(...) : unit | main.rs:84:16:84:16 | a : unit | provenance |  |
-| main.rs:84:16:84:16 | a : unit | main.rs:56:23:56:28 | ...: i64 : unit | provenance |  |
-| main.rs:89:13:89:21 | source(...) : unit | main.rs:90:29:90:29 | a : unit | provenance |  |
-| main.rs:90:13:90:30 | ... .data_through(...) : unit | main.rs:91:10:91:10 | b | provenance |  |
-| main.rs:90:29:90:29 | a : unit | main.rs:66:28:66:33 | ...: i64 : unit | provenance |  |
-| main.rs:90:29:90:29 | a : unit | main.rs:90:13:90:30 | ... .data_through(...) : unit | provenance |  |
+| main.rs:12:28:14:1 | { ... } | main.rs:17:13:17:23 | get_data(...) | provenance |  |
+| main.rs:13:5:13:13 | source(...) | main.rs:12:28:14:1 | { ... } | provenance |  |
+| main.rs:17:13:17:23 | get_data(...) | main.rs:18:10:18:10 | a | provenance |  |
+| main.rs:21:12:21:17 | ...: i64 | main.rs:22:10:22:10 | n | provenance |  |
+| main.rs:26:13:26:21 | source(...) | main.rs:27:13:27:13 | a | provenance |  |
+| main.rs:27:13:27:13 | a | main.rs:21:12:21:17 | ...: i64 | provenance |  |
+| main.rs:30:17:30:22 | ...: i64 | main.rs:30:32:32:1 | { ... } | provenance |  |
+| main.rs:35:13:35:21 | source(...) | main.rs:36:26:36:26 | a | provenance |  |
+| main.rs:36:13:36:27 | pass_through(...) | main.rs:37:10:37:10 | b | provenance |  |
+| main.rs:36:26:36:26 | a | main.rs:30:17:30:22 | ...: i64 | provenance |  |
+| main.rs:36:26:36:26 | a | main.rs:36:13:36:27 | pass_through(...) | provenance |  |
+| main.rs:41:13:44:6 | pass_through(...) | main.rs:45:10:45:10 | a | provenance |  |
+| main.rs:41:26:44:5 | { ... } | main.rs:30:17:30:22 | ...: i64 | provenance |  |
+| main.rs:41:26:44:5 | { ... } | main.rs:41:13:44:6 | pass_through(...) | provenance |  |
+| main.rs:43:9:43:18 | source(...) | main.rs:41:26:44:5 | { ... } | provenance |  |
+| main.rs:56:23:56:28 | ...: i64 | main.rs:57:14:57:14 | n | provenance |  |
+| main.rs:59:31:65:5 | { ... } | main.rs:77:13:77:25 | ... .get_data(...) | provenance |  |
+| main.rs:63:13:63:21 | source(...) | main.rs:59:31:65:5 | { ... } | provenance |  |
+| main.rs:66:28:66:33 | ...: i64 | main.rs:66:43:72:5 | { ... } | provenance |  |
+| main.rs:77:13:77:25 | ... .get_data(...) | main.rs:78:10:78:10 | a | provenance |  |
+| main.rs:83:13:83:21 | source(...) | main.rs:84:16:84:16 | a | provenance |  |
+| main.rs:84:16:84:16 | a | main.rs:56:23:56:28 | ...: i64 | provenance |  |
+| main.rs:89:13:89:21 | source(...) | main.rs:90:29:90:29 | a | provenance |  |
+| main.rs:90:13:90:30 | ... .data_through(...) | main.rs:91:10:91:10 | b | provenance |  |
+| main.rs:90:29:90:29 | a | main.rs:66:28:66:33 | ...: i64 | provenance |  |
+| main.rs:90:29:90:29 | a | main.rs:90:13:90:30 | ... .data_through(...) | provenance |  |
 nodes
-| main.rs:12:28:14:1 | { ... } : unit | semmle.label | { ... } : unit |
-| main.rs:13:5:13:13 | source(...) : unit | semmle.label | source(...) : unit |
-| main.rs:17:13:17:23 | get_data(...) : unit | semmle.label | get_data(...) : unit |
+| main.rs:12:28:14:1 | { ... } | semmle.label | { ... } |
+| main.rs:13:5:13:13 | source(...) | semmle.label | source(...) |
+| main.rs:17:13:17:23 | get_data(...) | semmle.label | get_data(...) |
 | main.rs:18:10:18:10 | a | semmle.label | a |
-| main.rs:21:12:21:17 | ...: i64 : unit | semmle.label | ...: i64 : unit |
+| main.rs:21:12:21:17 | ...: i64 | semmle.label | ...: i64 |
 | main.rs:22:10:22:10 | n | semmle.label | n |
-| main.rs:26:13:26:21 | source(...) : unit | semmle.label | source(...) : unit |
-| main.rs:27:13:27:13 | a : unit | semmle.label | a : unit |
-| main.rs:30:17:30:22 | ...: i64 : unit | semmle.label | ...: i64 : unit |
-| main.rs:30:32:32:1 | { ... } : unit | semmle.label | { ... } : unit |
-| main.rs:35:13:35:21 | source(...) : unit | semmle.label | source(...) : unit |
-| main.rs:36:13:36:27 | pass_through(...) : unit | semmle.label | pass_through(...) : unit |
-| main.rs:36:26:36:26 | a : unit | semmle.label | a : unit |
+| main.rs:26:13:26:21 | source(...) | semmle.label | source(...) |
+| main.rs:27:13:27:13 | a | semmle.label | a |
+| main.rs:30:17:30:22 | ...: i64 | semmle.label | ...: i64 |
+| main.rs:30:32:32:1 | { ... } | semmle.label | { ... } |
+| main.rs:35:13:35:21 | source(...) | semmle.label | source(...) |
+| main.rs:36:13:36:27 | pass_through(...) | semmle.label | pass_through(...) |
+| main.rs:36:26:36:26 | a | semmle.label | a |
 | main.rs:37:10:37:10 | b | semmle.label | b |
-| main.rs:41:13:44:6 | pass_through(...) : unit | semmle.label | pass_through(...) : unit |
-| main.rs:41:26:44:5 | { ... } : unit | semmle.label | { ... } : unit |
-| main.rs:43:9:43:18 | source(...) : unit | semmle.label | source(...) : unit |
+| main.rs:41:13:44:6 | pass_through(...) | semmle.label | pass_through(...) |
+| main.rs:41:26:44:5 | { ... } | semmle.label | { ... } |
+| main.rs:43:9:43:18 | source(...) | semmle.label | source(...) |
 | main.rs:45:10:45:10 | a | semmle.label | a |
-| main.rs:56:23:56:28 | ...: i64 : unit | semmle.label | ...: i64 : unit |
+| main.rs:56:23:56:28 | ...: i64 | semmle.label | ...: i64 |
 | main.rs:57:14:57:14 | n | semmle.label | n |
-| main.rs:59:31:65:5 | { ... } : unit | semmle.label | { ... } : unit |
-| main.rs:63:13:63:21 | source(...) : unit | semmle.label | source(...) : unit |
-| main.rs:66:28:66:33 | ...: i64 : unit | semmle.label | ...: i64 : unit |
-| main.rs:66:43:72:5 | { ... } : unit | semmle.label | { ... } : unit |
-| main.rs:77:13:77:25 | ... .get_data(...) : unit | semmle.label | ... .get_data(...) : unit |
+| main.rs:59:31:65:5 | { ... } | semmle.label | { ... } |
+| main.rs:63:13:63:21 | source(...) | semmle.label | source(...) |
+| main.rs:66:28:66:33 | ...: i64 | semmle.label | ...: i64 |
+| main.rs:66:43:72:5 | { ... } | semmle.label | { ... } |
+| main.rs:77:13:77:25 | ... .get_data(...) | semmle.label | ... .get_data(...) |
 | main.rs:78:10:78:10 | a | semmle.label | a |
-| main.rs:83:13:83:21 | source(...) : unit | semmle.label | source(...) : unit |
-| main.rs:84:16:84:16 | a : unit | semmle.label | a : unit |
-| main.rs:89:13:89:21 | source(...) : unit | semmle.label | source(...) : unit |
-| main.rs:90:13:90:30 | ... .data_through(...) : unit | semmle.label | ... .data_through(...) : unit |
-| main.rs:90:29:90:29 | a : unit | semmle.label | a : unit |
+| main.rs:83:13:83:21 | source(...) | semmle.label | source(...) |
+| main.rs:84:16:84:16 | a | semmle.label | a |
+| main.rs:89:13:89:21 | source(...) | semmle.label | source(...) |
+| main.rs:90:13:90:30 | ... .data_through(...) | semmle.label | ... .data_through(...) |
+| main.rs:90:29:90:29 | a | semmle.label | a |
 | main.rs:91:10:91:10 | b | semmle.label | b |
 subpaths
-| main.rs:36:26:36:26 | a : unit | main.rs:30:17:30:22 | ...: i64 : unit | main.rs:30:32:32:1 | { ... } : unit | main.rs:36:13:36:27 | pass_through(...) : unit |
-| main.rs:41:26:44:5 | { ... } : unit | main.rs:30:17:30:22 | ...: i64 : unit | main.rs:30:32:32:1 | { ... } : unit | main.rs:41:13:44:6 | pass_through(...) : unit |
-| main.rs:90:29:90:29 | a : unit | main.rs:66:28:66:33 | ...: i64 : unit | main.rs:66:43:72:5 | { ... } : unit | main.rs:90:13:90:30 | ... .data_through(...) : unit |
+| main.rs:36:26:36:26 | a | main.rs:30:17:30:22 | ...: i64 | main.rs:30:32:32:1 | { ... } | main.rs:36:13:36:27 | pass_through(...) |
+| main.rs:41:26:44:5 | { ... } | main.rs:30:17:30:22 | ...: i64 | main.rs:30:32:32:1 | { ... } | main.rs:41:13:44:6 | pass_through(...) |
+| main.rs:90:29:90:29 | a | main.rs:66:28:66:33 | ...: i64 | main.rs:66:43:72:5 | { ... } | main.rs:90:13:90:30 | ... .data_through(...) |
 testFailures
 #select
-| main.rs:18:10:18:10 | a | main.rs:13:5:13:13 | source(...) : unit | main.rs:18:10:18:10 | a | $@ | main.rs:13:5:13:13 | source(...) : unit | source(...) : unit |
-| main.rs:22:10:22:10 | n | main.rs:26:13:26:21 | source(...) : unit | main.rs:22:10:22:10 | n | $@ | main.rs:26:13:26:21 | source(...) : unit | source(...) : unit |
-| main.rs:37:10:37:10 | b | main.rs:35:13:35:21 | source(...) : unit | main.rs:37:10:37:10 | b | $@ | main.rs:35:13:35:21 | source(...) : unit | source(...) : unit |
-| main.rs:45:10:45:10 | a | main.rs:43:9:43:18 | source(...) : unit | main.rs:45:10:45:10 | a | $@ | main.rs:43:9:43:18 | source(...) : unit | source(...) : unit |
-| main.rs:57:14:57:14 | n | main.rs:83:13:83:21 | source(...) : unit | main.rs:57:14:57:14 | n | $@ | main.rs:83:13:83:21 | source(...) : unit | source(...) : unit |
-| main.rs:78:10:78:10 | a | main.rs:63:13:63:21 | source(...) : unit | main.rs:78:10:78:10 | a | $@ | main.rs:63:13:63:21 | source(...) : unit | source(...) : unit |
-| main.rs:91:10:91:10 | b | main.rs:89:13:89:21 | source(...) : unit | main.rs:91:10:91:10 | b | $@ | main.rs:89:13:89:21 | source(...) : unit | source(...) : unit |
+| main.rs:18:10:18:10 | a | main.rs:13:5:13:13 | source(...) | main.rs:18:10:18:10 | a | $@ | main.rs:13:5:13:13 | source(...) | source(...) |
+| main.rs:22:10:22:10 | n | main.rs:26:13:26:21 | source(...) | main.rs:22:10:22:10 | n | $@ | main.rs:26:13:26:21 | source(...) | source(...) |
+| main.rs:37:10:37:10 | b | main.rs:35:13:35:21 | source(...) | main.rs:37:10:37:10 | b | $@ | main.rs:35:13:35:21 | source(...) | source(...) |
+| main.rs:45:10:45:10 | a | main.rs:43:9:43:18 | source(...) | main.rs:45:10:45:10 | a | $@ | main.rs:43:9:43:18 | source(...) | source(...) |
+| main.rs:57:14:57:14 | n | main.rs:83:13:83:21 | source(...) | main.rs:57:14:57:14 | n | $@ | main.rs:83:13:83:21 | source(...) | source(...) |
+| main.rs:78:10:78:10 | a | main.rs:63:13:63:21 | source(...) | main.rs:78:10:78:10 | a | $@ | main.rs:63:13:63:21 | source(...) | source(...) |
+| main.rs:91:10:91:10 | b | main.rs:89:13:89:21 | source(...) | main.rs:91:10:91:10 | b | $@ | main.rs:89:13:89:21 | source(...) | source(...) |
