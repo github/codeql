@@ -328,3 +328,7 @@ function incompleteComplexSanitizers() {
 			return "&quot;";
 	}) + '"';
 }
+
+function typicalBadHtmlSanitizers(s) {
+	s().replace(new RegExp("[<>]", "g"),''); // NOT OK -- should be not okay, but is not flagged
+}
