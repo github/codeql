@@ -642,5 +642,40 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this INamedTypeSymbol symbol) =>
             symbol.TypeArguments.Zip(symbol.TypeArgumentNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
+
+        /// <summary>
+        /// Returns true if the symbol is public, protected or protected internal.
+        /// </summary>
+        public static bool IsPublicOrProtected(this ISymbol symbol) =>
+            symbol.DeclaredAccessibility == Accessibility.Public
+            || symbol.DeclaredAccessibility == Accessibility.Protected
+            || symbol.DeclaredAccessibility == Accessibility.ProtectedOrInternal;
+
+        /// <summary>
+        /// Returns true if the given symbol should be extracted.
+        /// </summary>
+        public static bool ShouldExtractSymbol(this ISymbol symbol)
+        {
+            // Extract all source symbols and public/protected metadata symbols.
+            if (symbol.Locations.Any(x => !x.IsInMetadata) || symbol.IsPublicOrProtected())
+            {
+                return true;
+            }
+            if (symbol is IMethodSymbol method)
+            {
+                return method.ExplicitInterfaceImplementations.Any(m => m.ContainingType.DeclaredAccessibility == Accessibility.Public);
+            }
+            if (symbol is IPropertySymbol property)
+            {
+                return property.ExplicitInterfaceImplementations.Any(m => m.ContainingType.DeclaredAccessibility == Accessibility.Public);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the symbols that should be extracted.
+        /// </summary>
+        public static IEnumerable<T> ExtractionCandidates<T>(this IEnumerable<T> symbols) where T : ISymbol =>
+            symbols.Where(symbol => symbol.ShouldExtractSymbol());
     }
 }
