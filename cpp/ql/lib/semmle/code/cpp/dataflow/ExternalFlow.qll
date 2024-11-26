@@ -794,6 +794,7 @@ private Element interpretElement0(
   (
     // Non-member functions
     elementSpec(namespace, type, subtypes, name, signature, _) and
+    funcHasQualifiedName(result, namespace, name) and
     subtypes = false and
     type = "" and
     (
