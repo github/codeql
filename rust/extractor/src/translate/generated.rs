@@ -1224,12 +1224,12 @@ impl Translator<'_> {
 
     pub(crate) fn emit_match_expr(&mut self, node: ast::MatchExpr) -> Label<generated::MatchExpr> {
         let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+        let scrutinee = node.expr().map(|x| self.emit_expr(x));
         let match_arm_list = node.match_arm_list().map(|x| self.emit_match_arm_list(x));
         let label = self.trap.emit(generated::MatchExpr {
             id: TrapId::Star,
             attrs,
-            expr,
+            scrutinee,
             match_arm_list,
         });
         self.emit_location(label, &node);

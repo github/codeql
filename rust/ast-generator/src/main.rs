@@ -29,6 +29,7 @@ fn class_name(type_name: &str) -> String {
 fn property_name(type_name: &str, field_name: &str) -> String {
     let name = match (type_name, field_name) {
         ("Path", "segment") => "part",
+        ("MatchExpr", "expr") => "scrutinee",
         (_, "then_branch") => "then",
         (_, "else_branch") => "else_",
         _ => field_name,

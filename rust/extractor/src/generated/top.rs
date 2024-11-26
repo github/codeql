@@ -5530,7 +5530,7 @@ impl From<trap::Label<MacroType>> for trap::Label<TypeRef> {
 pub struct MatchExpr {
     pub id: trap::TrapId<MatchExpr>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub expr: Option<trap::Label<Expr>>,
+    pub scrutinee: Option<trap::Label<Expr>>,
     pub match_arm_list: Option<trap::Label<MatchArmList>>,
 }
 
@@ -5544,8 +5544,8 @@ impl trap::TrapEntry for MatchExpr {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("match_expr_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.expr {
-            out.add_tuple("match_expr_exprs", vec![id.into(), v.into()]);
+        if let Some(v) = self.scrutinee {
+            out.add_tuple("match_expr_scrutinees", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.match_arm_list {
             out.add_tuple("match_expr_match_arm_lists", vec![id.into(), v.into()]);
