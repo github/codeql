@@ -198,3 +198,5 @@ multipleArgumentCall
 | tst.js:266:3:266:6 | map3 | tst.js:266:3:266:14 | map3.forEach (as accessor call) | Multiple calls for argument node. |
 | tst.js:266:3:266:6 | map3 | tst.js:266:3:266:36 | map3.fo ... value)) | Multiple calls for argument node. |
 lambdaCallEnclosingCallableMismatch
+speculativeStepAlreadyHasModel
+| tst.js:223:39:223:44 | array4 | tst.js:223:12:223:45 | Array.p ... array4) | dispatch |

@@ -52,6 +52,11 @@ flow
 | array-mutation.js:31:33:31:40 | source() | array-mutation.js:32:8:32:8 | h |
 | array-mutation.js:35:36:35:43 | source() | array-mutation.js:36:8:36:8 | i |
 | array-mutation.js:39:17:39:24 | source() | array-mutation.js:40:8:40:8 | j |
+| array-mutation.js:43:36:43:43 | source() | array-mutation.js:45:8:45:15 | kSpliced |
+| array-mutation.js:48:25:48:32 | source() | array-mutation.js:49:8:49:8 | l |
+| array-mutation.js:68:21:68:28 | source() | array-mutation.js:69:8:69:8 | q |
+| array-mutation.js:72:39:72:46 | source() | array-mutation.js:73:8:73:15 | rSpliced |
+| array-mutation.js:75:28:75:35 | source() | array-mutation.js:76:8:76:8 | r |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:17:8:17:13 | arr[1] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:22:8:22:13 | arr[6] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:28:8:28:13 | arr[1] |
@@ -296,6 +301,14 @@ flow
 | tst.js:2:13:2:20 | source() | tst.js:48:10:48:22 | new Buffer(x) |
 | tst.js:2:13:2:20 | source() | tst.js:51:10:51:31 | seriali ... ript(x) |
 | tst.js:2:13:2:20 | source() | tst.js:54:14:54:19 | unsafe |
+| tst.js:2:13:2:20 | source() | tst.js:61:10:61:20 | x.reverse() |
+| tst.js:2:13:2:20 | source() | tst.js:62:10:62:22 | x.toSpliced() |
+| tst.js:2:13:2:20 | source() | tst.js:64:10:64:21 | x.toSorted() |
+| tst.js:2:13:2:20 | source() | tst.js:66:10:66:16 | xSorted |
+| tst.js:2:13:2:20 | source() | tst.js:68:10:68:23 | x.toReversed() |
+| tst.js:2:13:2:20 | source() | tst.js:70:10:70:18 | xReversed |
+| tst.js:2:13:2:20 | source() | tst.js:72:10:72:17 | x.with() |
+| tst.js:2:13:2:20 | source() | tst.js:74:10:74:14 | xWith |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:8:10:8:17 | captured |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x |
 | xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |
