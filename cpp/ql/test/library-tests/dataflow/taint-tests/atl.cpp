@@ -103,16 +103,16 @@ void test_CA2AEX() {
     LPSTR x = indirect_source<char>();
     CA2AEX<128> a(x);
     sink(static_cast<LPSTR>(a)); // $ MISSING: ir
-    sink(a.m_psz); // $ MISSING: ir
-    sink(a.m_szBuffer); // $ MISSING: ir
+    sink(a.m_psz); // $ ir
+    sink(a.m_szBuffer); // $ ir
   }
 
   {
     LPSTR x = indirect_source<char>();
     CA2AEX<128> a(x, 0);
     sink(static_cast<LPSTR>(a)); // $ MISSING: ir
-    sink(a.m_psz); // $ MISSING: ir
-    sink(a.m_szBuffer); // $ MISSING: ir
+    sink(a.m_psz); // $ ir
+    sink(a.m_szBuffer); // $ ir
   }
 }
 
@@ -130,14 +130,14 @@ void test_CA2CAEX() {
   {
     CA2CAEX<128> a(x);
     sink(static_cast<LPCSTR>(a)); // $ MISSING: ir
-    sink(a.m_psz); // $ MISSING: ir
-    sink(a.m_psz); // $ MISSING: ir
+    sink(a.m_psz); // $ ir
+    sink(a.m_psz); // $ ir
   }
   {
     CA2CAEX<128> a(x, 0);
     sink(static_cast<LPCSTR>(a)); // $ MISSING: ir
-    sink(a.m_psz); // $ MISSING: ir
-    sink(a.m_psz); // $ MISSING: ir
+    sink(a.m_psz); // $ ir
+    sink(a.m_psz); // $ ir
   }
 }
 
@@ -156,13 +156,13 @@ void test_CA2WEX() {
   {
     CA2WEX<128> a(x);
     sink(static_cast<LPWSTR>(a)); // $ MISSING: ir
-    sink(a.m_psz); // $ MISSING: ir
-    sink(a.m_psz); // $ MISSING: ir
+    sink(a.m_psz); // $ ir
+    sink(a.m_psz); // $ ir
   }
   {
     CA2WEX<128> a(x, 0);
     sink(static_cast<LPWSTR>(a)); // $ MISSING: ir
-    sink(a.m_psz); // $ MISSING: ir
-    sink(a.m_psz); // $ MISSING: ir
+    sink(a.m_psz); // $ ir
+    sink(a.m_psz); // $ ir
   }
 }
