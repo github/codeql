@@ -8,7 +8,7 @@
 # - The name of the change note (in kebab-case)
 # - The category of the change.
 
-# The change note will be created in the `{language}/ql/lib/change-notes` directory.
+# The change note will be created in the `{language}/ql/{subdir}/change-notes` directory, where `subdir` is either `src` or `lib`.
 
 # The format of the change note filename is `{current_date}-{change_note_name}.md` with the date in
 # the format `YYYY-MM-DD`.
