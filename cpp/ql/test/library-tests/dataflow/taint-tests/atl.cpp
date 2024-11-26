@@ -84,3 +84,85 @@ void test__U_STRINGorID() {
     sink(u.m_lpstr); // $ ir
   }
 }
+
+template <int t_nBufferLength>
+struct CA2AEX {
+  LPSTR m_psz;
+  char m_szBuffer[t_nBufferLength];
+
+  CA2AEX(LPCSTR psz, UINT nCodePage);
+  CA2AEX(LPCSTR psz);
+
+  ~CA2AEX();
+
+  operator LPSTR() const throw();
+};
+
+void test_CA2AEX() {
+  {
+    LPSTR x = indirect_source<char>();
+    CA2AEX<128> a(x);
+    sink(static_cast<LPSTR>(a)); // $ MISSING: ir
+    sink(a.m_psz); // $ MISSING: ir
+    sink(a.m_szBuffer); // $ MISSING: ir
+  }
+
+  {
+    LPSTR x = indirect_source<char>();
+    CA2AEX<128> a(x, 0);
+    sink(static_cast<LPSTR>(a)); // $ MISSING: ir
+    sink(a.m_psz); // $ MISSING: ir
+    sink(a.m_szBuffer); // $ MISSING: ir
+  }
+}
+
+template<int t_nBufferLength>
+struct CA2CAEX {
+  CA2CAEX(LPCSTR psz, UINT nCodePage) ;
+  CA2CAEX(LPCSTR psz) ;
+  ~CA2CAEX() throw();
+  operator LPCSTR() const throw();
+  LPCSTR m_psz;
+};
+
+void test_CA2CAEX() {
+  LPCSTR x = indirect_source<char>();
+  {
+    CA2CAEX<128> a(x);
+    sink(static_cast<LPCSTR>(a)); // $ MISSING: ir
+    sink(a.m_psz); // $ MISSING: ir
+    sink(a.m_psz); // $ MISSING: ir
+  }
+  {
+    CA2CAEX<128> a(x, 0);
+    sink(static_cast<LPCSTR>(a)); // $ MISSING: ir
+    sink(a.m_psz); // $ MISSING: ir
+    sink(a.m_psz); // $ MISSING: ir
+  }
+}
+
+template <int t_nBufferLength>
+struct CA2WEX {
+  CA2WEX(LPCSTR psz, UINT nCodePage) ;
+  CA2WEX(LPCSTR psz) ;
+  ~CA2WEX() throw();
+  operator LPWSTR() const throw();
+  LPWSTR m_psz;
+  wchar_t m_szBuffer[t_nBufferLength];
+};
+
+void test_CA2WEX() {
+  LPCSTR x = indirect_source<char>();
+  {
+    CA2WEX<128> a(x);
+    sink(static_cast<LPWSTR>(a)); // $ MISSING: ir
+    sink(a.m_psz); // $ MISSING: ir
+    sink(a.m_psz); // $ MISSING: ir
+  }
+  {
+    CA2WEX<128> a(x, 0);
+    sink(static_cast<LPWSTR>(a)); // $ MISSING: ir
+    sink(a.m_psz); // $ MISSING: ir
+    sink(a.m_psz); // $ MISSING: ir
+  }
+}
