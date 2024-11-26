@@ -434,18 +434,30 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
 }
 
+private predicate isClassConstructedFrom(Class c, Class templateClass) {
+  c.isConstructedFrom(templateClass)
+  or
+  not any(Class c_).isConstructedFrom(templateClass) and c = templateClass
+}
+
+private predicate isFunctionConstructedFrom(Function f, Function templateFunc) {
+  f.isConstructedFrom(templateFunc)
+  or
+  not any(Function f_).isConstructedFrom(templateFunc) and f = templateFunc
+}
+
 /** Gets the fully templated version of `f`. */
 private Function getFullyTemplatedFunction(Function f) {
   not f.isFromUninstantiatedTemplate(_) and
   (
     exists(Class c, Class templateClass, int i |
-      c.isConstructedFrom(templateClass) and
+      isClassConstructedFrom(c, templateClass) and
       f = c.getAMember(i) and
       result = templateClass.getCanonicalMember(i)
     )
     or
     not exists(f.getDeclaringType()) and
-    f.isConstructedFrom(result)
+    isFunctionConstructedFrom(f, result)
   )
 }
 
@@ -489,7 +501,7 @@ private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remain
 private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining) {
   // If there is a declaring type then we start by expanding the function templates
   exists(Class template |
-    f.getDeclaringType().isConstructedFrom(template) and
+    isClassConstructedFrom(f.getDeclaringType(), template) and
     remaining = template.getNumberOfTemplateArguments() and
     result = getTypeNameWithoutFunctionTemplates(f, n, 0)
   )
@@ -501,7 +513,7 @@ private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining
   or
   exists(string mid, TemplateParameter tp, Class template |
     mid = getTypeNameWithoutClassTemplates(f, n, remaining + 1) and
-    f.getDeclaringType().isConstructedFrom(template) and
+    isClassConstructedFrom(f.getDeclaringType(), template) and
     tp = template.getTemplateArgument(remaining) and
     result = mid.replaceAll(tp.getName(), "class:" + remaining.toString())
   )

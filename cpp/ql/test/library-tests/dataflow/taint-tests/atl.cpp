@@ -75,12 +75,12 @@ void test__U_STRINGorID() {
   {
     UINT x = source<UINT>();
     _U_STRINGorID u(x);
-    sink(u.m_lpstr); // $ MISSING: ir
+    sink(u.m_lpstr); // $ ir
   }
 
   {
     LPCTSTR y = indirect_source<const char>();
     _U_STRINGorID u(y);
-    sink(u.m_lpstr); // $ MISSING: ir
+    sink(u.m_lpstr); // $ ir
   }
 }
