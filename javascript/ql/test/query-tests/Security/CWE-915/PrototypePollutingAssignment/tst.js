@@ -128,5 +128,5 @@ app.get('/foo', (req, res) => {
     let obj = {};
     obj[req.query.x.replace(new RegExp('_', 'g'), '')].x = 'foo'; // OK
     obj[req.query.x.replace(new RegExp('_', ''), '')].x = 'foo'; // NOT OK
-    obj[req.query.x.replace(new RegExp('_', unknownFlags()), '')].x = 'foo'; // OK -- Might be okay but it is currently flagged as a problem
+    obj[req.query.x.replace(new RegExp('_', unknownFlags()), '')].x = 'foo'; // OK
 });
