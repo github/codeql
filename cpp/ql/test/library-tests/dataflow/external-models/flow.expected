@@ -11,14 +11,14 @@ edges
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | *send_buffer | provenance | Sink:MaD:6 |
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | provenance |  |
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:10 |
-| test.cpp:4:5:4:11 | [summary param] 0 in ymlStep | test.cpp:4:5:4:11 | [summary] to write: ReturnValue in ymlStep | provenance | MaD:644 |
-| test.cpp:7:10:7:18 | call to ymlSource | test.cpp:7:10:7:18 | call to ymlSource | provenance | Src:MaD:642  |
-| test.cpp:7:10:7:18 | call to ymlSource | test.cpp:11:10:11:10 | x | provenance | Sink:MaD:643 |
+| test.cpp:4:5:4:11 | [summary param] 0 in ymlStep | test.cpp:4:5:4:11 | [summary] to write: ReturnValue in ymlStep | provenance | MaD:819 |
+| test.cpp:7:10:7:18 | call to ymlSource | test.cpp:7:10:7:18 | call to ymlSource | provenance | Src:MaD:817  |
+| test.cpp:7:10:7:18 | call to ymlSource | test.cpp:11:10:11:10 | x | provenance | Sink:MaD:818 |
 | test.cpp:7:10:7:18 | call to ymlSource | test.cpp:13:18:13:18 | x | provenance |  |
 | test.cpp:13:10:13:16 | call to ymlStep | test.cpp:13:10:13:16 | call to ymlStep | provenance |  |
-| test.cpp:13:10:13:16 | call to ymlStep | test.cpp:15:10:15:10 | y | provenance | Sink:MaD:643 |
+| test.cpp:13:10:13:16 | call to ymlStep | test.cpp:15:10:15:10 | y | provenance | Sink:MaD:818 |
 | test.cpp:13:18:13:18 | x | test.cpp:4:5:4:11 | [summary param] 0 in ymlStep | provenance |  |
-| test.cpp:13:18:13:18 | x | test.cpp:13:10:13:16 | call to ymlStep | provenance | MaD:644 |
+| test.cpp:13:18:13:18 | x | test.cpp:13:10:13:16 | call to ymlStep | provenance | MaD:819 |
 nodes
 | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | semmle.label | [summary param] *0 in buffer |
 | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | semmle.label | [summary] to write: ReturnValue in buffer |

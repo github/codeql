@@ -63,3 +63,24 @@ typedef struct tagSAFEARRAY {
   PVOID          pvData;
   SAFEARRAYBOUND rgsabound[1];
 } SAFEARRAY, *LPSAFEARRAY;
+
+struct _U_STRINGorID {
+  _U_STRINGorID(UINT nID);
+  _U_STRINGorID(LPCTSTR lpString);
+
+  LPCTSTR m_lpstr;
+};
+
+void test__U_STRINGorID() {
+  {
+    UINT x = source<UINT>();
+    _U_STRINGorID u(x);
+    sink(u.m_lpstr); // $ MISSING: ir
+  }
+
+  {
+    LPCTSTR y = indirect_source<const char>();
+    _U_STRINGorID u(y);
+    sink(u.m_lpstr); // $ MISSING: ir
+  }
+}

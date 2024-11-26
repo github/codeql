@@ -140,6 +140,13 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | arrayassignment.cpp:145:12:145:12 | 5 | arrayassignment.cpp:145:7:145:13 | access to array | TAINT |
 | arrayassignment.cpp:146:7:146:10 | arr3 | arrayassignment.cpp:146:7:146:13 | access to array |  |
 | arrayassignment.cpp:146:12:146:12 | 5 | arrayassignment.cpp:146:7:146:13 | access to array | TAINT |
+| atl.cpp:32:30:32:30 | 1 | atl.cpp:32:29:32:30 | - ... | TAINT |
+| atl.cpp:76:14:76:25 | call to source | atl.cpp:77:21:77:21 | x |  |
+| atl.cpp:77:21:77:21 | x | atl.cpp:77:21:77:22 | call to _U_STRINGorID | TAINT |
+| atl.cpp:77:21:77:22 | call to _U_STRINGorID | atl.cpp:78:10:78:10 | u |  |
+| atl.cpp:82:17:82:43 | call to indirect_source | atl.cpp:83:21:83:21 | y |  |
+| atl.cpp:83:21:83:21 | y | atl.cpp:83:21:83:22 | call to _U_STRINGorID | TAINT |
+| atl.cpp:83:21:83:22 | call to _U_STRINGorID | atl.cpp:84:10:84:10 | u |  |
 | bsd.cpp:17:11:17:16 | call to source | bsd.cpp:20:18:20:18 | s |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:20:22:20:25 | addr |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:23:8:23:11 | addr |  |
