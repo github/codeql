@@ -6,7 +6,7 @@ private import javascript
 private import semmle.javascript.dataflow.FlowSummary
 private import FlowSummaryUtil
 
-private DataFlow::SourceNode promiseConstructorRef() {
+DataFlow::SourceNode promiseConstructorRef() {
   result = Promises::promiseConstructorRef()
   or
   result = DataFlow::moduleImport("bluebird")

@@ -112,6 +112,33 @@ class FlowSummaryIntermediateAwaitStoreNode extends DataFlow::Node,
   }
 }
 
+predicate mentionsExceptionalReturn(FlowSummaryImpl::Public::SummarizedCallable callable) {
+  exists(FlowSummaryImpl::Private::SummaryNode node | node.getSummarizedCallable() = callable |
+    FlowSummaryImpl::Private::summaryReturnNode(node, MkExceptionalReturnKind())
+    or
+    FlowSummaryImpl::Private::summaryOutNode(_, node, MkExceptionalReturnKind())
+  )
+}
+
+/**
+ * Exceptional return node in a summarized callable whose summary does not mention `ReturnValue[exception]`.
+ *
+ * By default, every call inside such a callable will forward their exceptional return to the caller's
+ * exceptional return, i.e. exceptions are not caught.
+ */
+class FlowSummaryDefaultExceptionalReturn extends DataFlow::Node,
+  TFlowSummaryDefaultExceptionalReturn
+{
+  private FlowSummaryImpl::Public::SummarizedCallable callable;
+
+  FlowSummaryDefaultExceptionalReturn() { this = TFlowSummaryDefaultExceptionalReturn(callable) }
+
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() { result = callable }
+
+  cached
+  override string toString() { result = "[default exceptional return] " + callable }
+}
+
 class CaptureNode extends DataFlow::Node, TSynthCaptureNode {
   /** Gets the underlying node from the variable-capture library. */
   VariableCaptureOutput::SynthesizedCaptureNode getNode() {
@@ -296,6 +323,9 @@ private predicate returnNodeImpl(DataFlow::Node node, ReturnKind kind) {
   )
   or
   FlowSummaryImpl::Private::summaryReturnNode(node.(FlowSummaryNode).getSummaryNode(), kind)
+  or
+  node instanceof FlowSummaryDefaultExceptionalReturn and
+  kind = MkExceptionalReturnKind()
 }
 
 private DataFlow::Node getAnOutNodeImpl(DataFlowCall call, ReturnKind kind) {
@@ -311,6 +341,10 @@ private DataFlow::Node getAnOutNodeImpl(DataFlowCall call, ReturnKind kind) {
   or
   FlowSummaryImpl::Private::summaryOutNode(call.(SummaryCall).getReceiver(),
     result.(FlowSummaryNode).getSummaryNode(), kind)
+  or
+  kind = MkExceptionalReturnKind() and
+  result.(FlowSummaryDefaultExceptionalReturn).getSummarizedCallable() =
+    call.(SummaryCall).getSummarizedCallable()
 }
 
 class ReturnNode extends DataFlow::Node {
@@ -402,6 +436,19 @@ abstract class LibraryCallable extends string {
 
   /** Same as `getACall()` except this does not depend on the call graph or API graph. */
   DataFlow::InvokeNode getACallSimple() { none() }
+}
+
+/** Internal subclass of `LibraryCallable`, whose member predicates should not be visible on `SummarizedCallable`. */
+abstract class LibraryCallableInternal extends LibraryCallable {
+  bindingset[this]
+  LibraryCallableInternal() { any() }
+
+  /**
+   * Gets a call to this library callable.
+   *
+   * Same as `getACall()` but is evaluated later and may depend negatively on `getACall()`.
+   */
+  DataFlow::InvokeNode getACallStage2() { none() }
 }
 
 private predicate isParameterNodeImpl(Node p, DataFlowCallable c, ParameterPosition pos) {
@@ -504,6 +551,8 @@ DataFlowCallable nodeGetEnclosingCallable(Node node) {
   result.asLibraryCallable() = node.(FlowSummaryDynamicParameterArrayNode).getSummarizedCallable()
   or
   result.asLibraryCallable() = node.(FlowSummaryIntermediateAwaitStoreNode).getSummarizedCallable()
+  or
+  result.asLibraryCallable() = node.(FlowSummaryDefaultExceptionalReturn).getSummarizedCallable()
   or
   node = TGenericSynthesizedNode(_, _, result)
 }
@@ -865,6 +914,8 @@ class SummaryCall extends DataFlowCall, MkSummaryCall {
 
   /** Gets the receiver node. */
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
+
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() { result = enclosingCallable }
 }
 
 /**
@@ -976,7 +1027,11 @@ DataFlowCallable viableCallable(DataFlowCall node) {
   or
   exists(LibraryCallable callable |
     result = MkLibraryCallable(callable) and
-    node.asOrdinaryCall() = [callable.getACall(), callable.getACallSimple()]
+    node.asOrdinaryCall() =
+      [
+        callable.getACall(), callable.getACallSimple(),
+        callable.(LibraryCallableInternal).getACallStage2()
+      ]
   )
   or
   result.asSourceCallableNotExterns() = node.asImpliedLambdaCall()
@@ -1218,13 +1273,28 @@ predicate simpleLocalFlowStep(Node node1, Node node2) {
 predicate localMustFlowStep(Node node1, Node node2) { node1 = node2.getImmediatePredecessor() }
 
 /**
+ * Holds if `node1 -> node2` should be removed as a jump step.
+ *
+ * Currently this is done as a workaround for the local steps generated from IIFEs.
+ */
+private predicate excludedJumpStep(Node node1, Node node2) {
+  exists(ImmediatelyInvokedFunctionExpr iife |
+    iife.argumentPassing(node2.asExpr(), node1.asExpr())
+    or
+    node1 = iife.getAReturnedExpr().flow() and
+    node2 = iife.getInvocation().flow()
+  )
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` through a non-local step
  * that does not follow a call edge. For example, a step through a global
  * variable.
  */
 predicate jumpStep(Node node1, Node node2) {
   valuePreservingStep(node1, node2) and
-  node1.getContainer() != node2.getContainer()
+  node1.getContainer() != node2.getContainer() and
+  not excludedJumpStep(node1, node2)
   or
   FlowSummaryPrivate::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode())
