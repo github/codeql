@@ -98,7 +98,7 @@ The first five values identify the function (in this case a method) to be modele
 - The second value ``DB`` is the name of the type that the method is associated with.
 - The third value ``True`` is a flag that indicates whether or not the sink also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
 - The fourth value ``Prepare`` is the method name.
-- The fifth value ``""`` is the method input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions or methods may have the same name and they need to be distinguished by the number and types of the arguments.
+- The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the sink.
@@ -139,7 +139,7 @@ The first five values identify the function to be modeled as a source.
 - The second value ``Request`` is the type name, since the function is a method of the ``Request`` type.
 - The third value ``True`` is a flag that indicates whether or not the sink also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
 - The fourth value ``FormValue`` is the function name.
-- The fifth value ``""`` is the function input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions or methods may have the same name and they need to be distinguished by the number and types of the arguments.
+- The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the source.
@@ -156,11 +156,9 @@ This pattern covers many of the cases where we need to summarize flow through a 
 
 .. code-block:: go
 
-    import "slices"
-
     func ValueFlow {
         a := []int{1, 2, 3}
-        max := slices.Max(a) // There is taint flow from `a` to `max`.
+        max := slices.Max(a) // There is value flow from the elements of `a` to `max`.
         ...
     }
 
@@ -173,25 +171,23 @@ We need to add a tuple to the ``summaryModel``\(package, type, subtypes, name, s
          pack: codeql/go-all
          extensible: summaryModel
        data:
-         - ["slices", "", True, "Max", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"] 
+         - ["slices", "", False, "Max", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"] 
 
 Since we are adding flow through a method, we need to add tuples to the ``summaryModel`` extensible predicate.
-Each tuple defines flow from one argument to the return value.
 The first row defines flow from the first argument (``a`` in the example) to the return value (``max`` in the example).
 
 The first five values identify the function to be modeled as a summary.
-These are the same for both of the rows above as we are adding two summaries for the same method.
 
 - The first value ``slices`` is the package name.
 - The second value ``""`` is left blank, since the function is not a method of a type.
 - The third value ``False`` is a flag that indicates whether or not the sink also applies to subtypes. This has no effect for non-method functions.
 - The fourth value ``Max`` is the function name.
-- The fifth value ``""`` is left blank, since specifying the signature is optional and Go does not allow multiple signature overloads for the same function.
+- The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary.
 
-- The seventh value is the access path to the input (where data flows from). ``Argument[0]`` is the access path to the first argument.
+- The seventh value is the access path to the input (where data flows from). ``Argument[0].ArrayElement`` is the access path to the array elements of the first argument (the elements of the slice in the example).
 - The eighth value ``ReturnValue`` is the access path to the output (where data flows to), in this case ``ReturnValue``, which means that the input flows to the return value.
 - The ninth value ``value`` is the kind of the flow. ``value`` flow indicates an entire value is moved, ``taint`` means that taint is propagated through the call.
 - The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
@@ -203,8 +199,6 @@ This example shows how the Go query pack models flow through a function for a si
 This pattern covers many of the cases where we need to summarize flow through a function that is stored in a library or framework outside the repository.
 
 .. code-block:: go
-
-    import "slices"
 
     func ValueFlow {
         a := []int{1, 2, 3}
@@ -222,26 +216,24 @@ We need to add a tuple to the ``summaryModel``\(package, type, subtypes, name, s
          pack: codeql/go-all
          extensible: summaryModel
        data:
-         - ["slices", "", True, "Concat", "", "", "Argument[0].ArrayElement.ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+         - ["slices", "", False, "Concat", "", "", "Argument[0].ArrayElement.ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
 
 Since we are adding flow through a method, we need to add tuples to the ``summaryModel`` extensible predicate.
-Each tuple defines flow from one argument to the return value.
-The first row defines flow from the arguments (``a`` and ``b`` in the example) to the return value (``c`` in the example) and the second row defines flow from the second argument (``sep`` in the example) to the return value (``t`` in the example).
+The first row defines flow from the arguments (``a`` and ``b`` in the example) to the return value (``c`` in the example).
 
 The first five values identify the function to be modeled as a summary.
-These are the same for both of the rows above as we are adding two summaries for the same method.
 
 - The first value ``slices`` is the package name.
 - The second value ``""`` is left blank, since the function is not a method of a type.
 - The third value ``False`` is a flag that indicates whether or not the sink also applies to subtypes. This has no effect for non-method functions.
 - The fourth value ``Max`` is the function name.
-- The fifth value ``""`` is left blank, since specifying the signature is optional and Go does not allow multiple signature overloads for the same function.
+- The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary.
 
-- The seventh value is the access path to the input (where data flows from). ``Argument[0]`` is the access path to the first argument.
-- The eighth value ``ReturnValue`` is the access path to the output (where data flows to), in this case ``ReturnValue``, which means that the input flows to the return value.
+- The seventh value is the access path to the input (where data flows from). ``Argument[0].ArrayElement.ArrayElement`` is the access path to the array elements of the array elements of the first argument. Note that a variadic parameter of type `...T` is treated as if it has type `[]T` and arguments corresponding to the variadic parameter are accessed as elements of this slice.
+- The eighth value ``ReturnValue.ArrayElement`` is the access path to the output (where data flows to), in this case ``ReturnValue.ArrayElement``, which means that the input flows to the array elements of the return value.
 - The ninth value ``value`` is the kind of the flow. ``value`` flow indicates an entire value is moved, ``taint`` means that taint is propagated through the call.
 - The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
 
@@ -282,7 +274,7 @@ These are the same for both of the rows above as we are adding two summaries for
 - The second value ``""`` is left blank, since the function is not a method of a type.
 - The third value ``False`` is a flag that indicates whether or not the sink also applies to subtypes. This has no effect for non-method functions.
 - The fourth value ``Join`` is the function name.
-- The fifth value ``""`` is left blank, since specifying the signature is optional and Go does not allow multiple signature overloads for the same function.
+- The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary.
@@ -337,7 +329,7 @@ The first five values identify the function (in this case a method) to be modele
 - The second value ``URL`` is the receiver type.
 - The third value ``True`` is a flag that indicates whether or not the sink also applies to subtypes. This includes when the subtype embeds the given type, so that the method or field is promoted to be a method or field of the subtype. For interface methods it also includes types which implement the interface type.
 - The fourth value ``Hostname`` is the method name.
-- The fifth value ``""`` is left blank, since specifying the signature is optional and Go does not allow multiple signature overloads for the same function.
+- The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the summary.
@@ -376,7 +368,7 @@ The first five values identify the field to be modeled as a source.
 - The second value ``Request`` is the name of the type that the field is associated with.
 - The third value ``True`` is a flag that indicates whether or not the sink also applies to subtypes. For fields this means when the field is accessed as a promoted field in another type.
 - The fourth value ``Body`` is the field name.
-- The fifth value ``""`` is blank since it is a field access and field accesses do not have method signatures in Go.
+- The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the source.
