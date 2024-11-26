@@ -2,7 +2,7 @@ const nugget = require('nugget');
 
 function foo() {
     function downloadTools(installer) {
-        nugget(installer.url, {}, () => { }) // NOT OK
+        nugget(installer.url, {}, () => { }) // NOT OK [INCONSISTENCY] - access path too deep
     }
     var constants = {
         buildTools: {

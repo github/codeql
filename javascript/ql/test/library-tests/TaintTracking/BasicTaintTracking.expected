@@ -17,6 +17,7 @@ legacyDataFlowDifference
 | callbacks.js:44:17:44:24 | source() | callbacks.js:38:35:38:35 | x | only flow with NEW data flow library |
 | capture-flow.js:89:13:89:20 | source() | capture-flow.js:89:6:89:21 | test3c(source()) | only flow with NEW data flow library |
 | capture-flow.js:101:12:101:19 | source() | capture-flow.js:102:6:102:20 | test5("safe")() | only flow with OLD data flow library |
+| capture-flow.js:126:25:126:32 | source() | capture-flow.js:123:14:123:26 | orderingTaint | only flow with OLD data flow library |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:40:8:40:14 | e.taint | only flow with NEW data flow library |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:44:8:44:19 | f_safe.taint | only flow with NEW data flow library |
 | constructor-calls.js:20:15:20:22 | source() | constructor-calls.js:39:8:39:14 | e.param | only flow with NEW data flow library |
@@ -109,7 +110,6 @@ flow
 | capture-flow.js:101:12:101:19 | source() | capture-flow.js:101:6:101:22 | test5(source())() |
 | capture-flow.js:110:12:110:19 | source() | capture-flow.js:106:14:106:14 | x |
 | capture-flow.js:118:37:118:44 | source() | capture-flow.js:114:14:114:14 | x |
-| capture-flow.js:126:25:126:32 | source() | capture-flow.js:123:14:123:26 | orderingTaint |
 | capture-flow.js:126:25:126:32 | source() | capture-flow.js:129:14:129:26 | orderingTaint |
 | capture-flow.js:177:26:177:33 | source() | capture-flow.js:173:14:173:14 | x |
 | capture-flow.js:187:34:187:41 | source() | capture-flow.js:183:14:183:14 | x |

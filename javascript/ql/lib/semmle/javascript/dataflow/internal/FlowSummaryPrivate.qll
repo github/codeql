@@ -9,6 +9,7 @@ private import sharedlib.DataFlowImplCommon
 private import sharedlib.FlowSummaryImpl::Private as Private
 private import sharedlib.FlowSummaryImpl::Public
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
+private import semmle.javascript.internal.flow_summaries.ExceptionFlow
 
 /**
  * A class of callables that are candidates for flow summary modeling.
@@ -131,7 +132,11 @@ ReturnKind getStandardReturnValueKind() { result = MkNormalReturnKind() and Stag
 private module FlowSummaryStepInput implements Private::StepsInputSig {
   DataFlowCall getACall(SummarizedCallable sc) {
     exists(LibraryCallable callable | callable = sc |
-      result.asOrdinaryCall() = [callable.getACall(), callable.getACallSimple()]
+      result.asOrdinaryCall() =
+        [
+          callable.getACall(), callable.getACallSimple(),
+          callable.(LibraryCallableInternal).getACallStage2()
+        ]
     )
   }
 }
