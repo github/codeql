@@ -755,6 +755,22 @@ private predicate elementSpecMatchesSignature(
 }
 
 /**
+ * Holds when `method` has name `nameWithoutArgs`, and gets the enclosing
+ * class of `method`. Unlike `method.getClassAndName` this predicate does
+ * not strip typedefs from the name when `method` is an `ConversionOperator`.
+ */
+bindingset[nameWithoutArgs]
+pragma[inline_late]
+private Class getClassAndNameImpl(Function method, string nameWithoutArgs) {
+  exists(string memberName | result = method.getClassAndName(memberName) |
+    nameWithoutArgs = "operator " + method.(ConversionOperator).getDestType()
+    or
+    not method instanceof ConversionOperator and
+    memberName = nameWithoutArgs
+  )
+}
+
+/**
  * Holds if `classWithMethod` has `method` named `name` (excluding any
  * template parameters).
  */
@@ -763,7 +779,7 @@ pragma[inline_late]
 private predicate hasClassAndName(Class classWithMethod, Function method, string name) {
   exists(string nameWithoutArgs |
     parseAngles(name, nameWithoutArgs, _, "") and
-    classWithMethod = method.getClassAndName(nameWithoutArgs)
+    classWithMethod = getClassAndNameImpl(method, nameWithoutArgs)
   )
 }
 
