@@ -793,7 +793,6 @@ private Element interpretElement0(
 ) {
   (
     // Non-member functions
-    elementSpec(namespace, type, subtypes, name, signature, _) and
     funcHasQualifiedName(result, namespace, name) and
     subtypes = false and
     type = "" and
@@ -801,21 +800,20 @@ private Element interpretElement0(
       elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
       or
       signature = "" and
-      elementSpec(namespace, type, subtypes, name, "", _) and
-      funcHasQualifiedName(result, namespace, name)
+      elementSpec(namespace, type, subtypes, name, signature, _)
     )
     or
     // Member functions
     exists(Class namedClass, Class classWithMethod |
+      hasClassAndName(classWithMethod, result, name) and
+      classHasQualifiedName(namedClass, namespace, type)
+    |
       (
-        elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature) and
-        hasClassAndName(classWithMethod, result, name)
+        elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
         or
         signature = "" and
-        elementSpec(namespace, type, subtypes, name, "", _) and
-        hasClassAndName(classWithMethod, result, name)
+        elementSpec(namespace, type, subtypes, name, "", _)
       ) and
-      classHasQualifiedName(namedClass, namespace, type) and
       (
         // member declared in the named type or a subtype of it
         subtypes = true and
