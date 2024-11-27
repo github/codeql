@@ -204,6 +204,14 @@ fun KotlinUsesExtractor.useClassSource(c: KaClassSymbol): Label<out DbClassorint
     return id
 }
 
+/**
+ * Return a replacement class name and type arguments for cBeforeReplacement<argsIncludingOuterClassesBeforeReplacement>
+ *
+ * These could include replacing Android synthetic classes or Parcelize raw types that shouldn't appear in the database
+ * as they appear to the Kotlin compiler.
+ *
+ * TODO: verify how these sorts of classes appear via the analysis API
+ */
 private fun tryReplaceType(
     cBeforeReplacement: KaClassSymbol,
     argsIncludingOuterClassesBeforeReplacement: List<Nothing>?
