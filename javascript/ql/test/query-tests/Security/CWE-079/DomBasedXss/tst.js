@@ -503,3 +503,10 @@ function Foo() {
   };
   Object.assign(this, obj);
 }
+
+function nonGlobalSanitizer() {
+  var target = document.location.search
+  $("#foo").html(target.replace(new RegExp("<|>"), '')); // NOT OK
+  $("#foo").html(target.replace(new RegExp("<|>", unknownFlags()), '')); // OK -- currently flagged, but might introduce a lot of false positives.
+  $("#foo").html(target.replace(new RegExp("<|>", "g"), '')); // OK
+}
