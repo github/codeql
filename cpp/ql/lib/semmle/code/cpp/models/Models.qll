@@ -52,3 +52,4 @@ private import implementations.ZMQ
 private import implementations.Win32CommandExecution
 private import implementations.CA2AEX
 private import implementations.CComBSTR
+private import implementations.CPathT

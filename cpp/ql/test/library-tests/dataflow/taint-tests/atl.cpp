@@ -664,45 +664,45 @@ void test_CPathT() {
   char* x = indirect_source<char>();
   CPath p(x);
   sink(static_cast<char*>(p)); // $ MISSING: ir
-  sink(p.m_strPath); // $ MISSING: ir
+  sink(p.m_strPath); // $ ir
 
   CPath p2(p);
-  sink(p2.m_strPath); // $ MISSING: ir
+  sink(p2.m_strPath); // $ ir
 
   {
     CPath p;
     p.AddExtension(x);
-    sink(p.m_strPath); // $ MISSING: ir
+    sink(p.m_strPath); // $ ir
   }
   {
     CPath p;
     p.Append(x);
-    sink(p.m_strPath); // $ MISSING: ir
+    sink(p.m_strPath); // $ ir
 
     CPath p2;
     p2 += p;
-    sink(p.m_strPath); // $ MISSING: ir
+    sink(p.m_strPath); // $ ir
 
     CPath p3;
     p3 += x;
-    sink(p.m_strPath); // $ MISSING: ir
+    sink(p.m_strPath); // $ ir
   }
 
   {
     CPath p;
     p.Combine(x, nullptr);
-    sink(p.m_strPath); // $ MISSING: ir
+    sink(p.m_strPath); // $ ir
   }
   {
     CPath p;
     p.Combine(nullptr, x);
-    sink(p.m_strPath); // $ MISSING: ir
+    sink(p.m_strPath); // $ ir
   }
 
   {
     CPath p;
     auto p2 = p.CommonPrefix(x);
-    sink(p2.m_strPath); // $ MISSING: ir
+    sink(p2.m_strPath); // $ ir
     sink(p2.GetExtension()); // $ ir
   }
 }
