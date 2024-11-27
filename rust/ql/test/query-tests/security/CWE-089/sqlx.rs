@@ -60,7 +60,7 @@ async fn test_sqlx_mysql(url: &str, enable_remote: bool) -> Result<(), sqlx::Err
     let _ = conn.execute(safe_query_1.as_str()).await?; // $ sql-sink
     let _ = conn.execute(safe_query_2.as_str()).await?; // $ sql-sink
     let _ = conn.execute(safe_query_3.as_str()).await?; // $ sql-sink
-    let _ = conn.execute(unsafe_query_1.as_str()).await?; // $ sql-sink AMISSING: lert[sql-injection]=args1
+    let _ = conn.execute(unsafe_query_1.as_str()).await?; // $ sql-sink MISSING: Alert[sql-injection]=args1
     if enable_remote {
         let _ = conn.execute(unsafe_query_2.as_str()).await?; // $ sql-sink MISSING: Alert[sql-injection]=remote1
         let _ = conn.execute(unsafe_query_3.as_str()).await?; // $ sql-sink MISSING: Alert[sql-injection]=remote1
