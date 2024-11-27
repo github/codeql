@@ -57,7 +57,7 @@ fun KotlinFileExtractor.extractClassSource(
                 }
             }
 
-            val locId = c.psiSafe<KtElement>()?.let { tw.getLocation(it) } ?: tw.getWholeFileLocation()
+            val locId = PsiElementOrSymbol.of(c).getLocation(tw)
             tw.writeHasLocation(id, locId)
 
             // OLD: KE1
