@@ -6,6 +6,7 @@ private import semmle.code.java.frameworks.MyBatis
 private import semmle.code.java.frameworks.Jdbc
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dispatch.VirtualDispatch
 
 /** A method that is not protected from CSRF by default. */
 abstract class CsrfUnprotectedMethod extends Method { }
@@ -70,4 +71,48 @@ private class SqlDatabaseUpdateMethod extends DatabaseUpdateMethod {
         ])
     )
   }
+}
+
+module CallGraph {
+  newtype TPathNode =
+    TMethod(Method m) or
+    TCall(Call c)
+
+  class PathNode extends TPathNode {
+    Method asMethod() { this = TMethod(result) }
+
+    Call asCall() { this = TCall(result) }
+
+    string toString() {
+      result = this.asMethod().toString()
+      or
+      result = this.asCall().toString()
+    }
+
+    private PathNode getACallee() {
+      [viableCallable(this.asCall()), this.asCall().getCallee()] = result.asMethod()
+    }
+
+    PathNode getASuccessor() {
+      this.asMethod() = result.asCall().getEnclosingCallable()
+      or
+      result = this.getACallee() and
+      (
+        exists(PathNode p |
+          p = this.getACallee() and
+          p.asMethod() instanceof DatabaseUpdateMethod
+        )
+        implies
+        result.asMethod() instanceof DatabaseUpdateMethod
+      )
+    }
+
+    Location getLocation() {
+      result = this.asMethod().getLocation()
+      or
+      result = this.asCall().getLocation()
+    }
+  }
+
+  query predicate edges(PathNode pred, PathNode succ) { pred.getASuccessor() = succ }
 }
