@@ -64,6 +64,19 @@ nodes
 | RegExpInjection.js:93:20:93:31 | process.argv |
 | RegExpInjection.js:93:20:93:31 | process.argv |
 | RegExpInjection.js:93:20:93:34 | process.argv[1] |
+| RegExpInjection.js:97:7:97:32 | input |
+| RegExpInjection.js:97:15:97:32 | req.param("input") |
+| RegExpInjection.js:97:15:97:32 | req.param("input") |
+| RegExpInjection.js:99:7:99:106 | sanitized |
+| RegExpInjection.js:99:19:99:23 | input |
+| RegExpInjection.js:99:19:99:106 | input.r ... "\\\\$&") |
+| RegExpInjection.js:100:14:100:22 | sanitized |
+| RegExpInjection.js:100:14:100:22 | sanitized |
+| RegExpInjection.js:105:7:105:122 | sanitized |
+| RegExpInjection.js:105:19:105:23 | input |
+| RegExpInjection.js:105:19:105:122 | input.r ... "\\\\$&") |
+| RegExpInjection.js:106:14:106:22 | sanitized |
+| RegExpInjection.js:106:14:106:22 | sanitized |
 | tst.js:5:9:5:29 | data |
 | tst.js:5:16:5:29 | req.query.data |
 | tst.js:5:16:5:29 | req.query.data |
@@ -133,6 +146,18 @@ edges
 | RegExpInjection.js:93:20:93:31 | process.argv | RegExpInjection.js:93:20:93:34 | process.argv[1] |
 | RegExpInjection.js:93:20:93:34 | process.argv[1] | RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` |
 | RegExpInjection.js:93:20:93:34 | process.argv[1] | RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` |
+| RegExpInjection.js:97:7:97:32 | input | RegExpInjection.js:99:19:99:23 | input |
+| RegExpInjection.js:97:7:97:32 | input | RegExpInjection.js:105:19:105:23 | input |
+| RegExpInjection.js:97:15:97:32 | req.param("input") | RegExpInjection.js:97:7:97:32 | input |
+| RegExpInjection.js:97:15:97:32 | req.param("input") | RegExpInjection.js:97:7:97:32 | input |
+| RegExpInjection.js:99:7:99:106 | sanitized | RegExpInjection.js:100:14:100:22 | sanitized |
+| RegExpInjection.js:99:7:99:106 | sanitized | RegExpInjection.js:100:14:100:22 | sanitized |
+| RegExpInjection.js:99:19:99:23 | input | RegExpInjection.js:99:19:99:106 | input.r ... "\\\\$&") |
+| RegExpInjection.js:99:19:99:106 | input.r ... "\\\\$&") | RegExpInjection.js:99:7:99:106 | sanitized |
+| RegExpInjection.js:105:7:105:122 | sanitized | RegExpInjection.js:106:14:106:22 | sanitized |
+| RegExpInjection.js:105:7:105:122 | sanitized | RegExpInjection.js:106:14:106:22 | sanitized |
+| RegExpInjection.js:105:19:105:23 | input | RegExpInjection.js:105:19:105:122 | input.r ... "\\\\$&") |
+| RegExpInjection.js:105:19:105:122 | input.r ... "\\\\$&") | RegExpInjection.js:105:7:105:122 | sanitized |
 | tst.js:5:9:5:29 | data | tst.js:6:21:6:24 | data |
 | tst.js:5:16:5:29 | req.query.data | tst.js:5:9:5:29 | data |
 | tst.js:5:16:5:29 | req.query.data | tst.js:5:9:5:29 | data |
@@ -157,4 +182,6 @@ edges
 | RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" | RegExpInjection.js:82:15:82:32 | req.param("input") | RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" | This regular expression is constructed from a $@. | RegExpInjection.js:82:15:82:32 | req.param("input") | user-provided value |
 | RegExpInjection.js:91:16:91:50 | `^${pro ... r.app$` | RegExpInjection.js:91:20:91:30 | process.env | RegExpInjection.js:91:16:91:50 | `^${pro ... r.app$` | This regular expression is constructed from a $@. | RegExpInjection.js:91:20:91:30 | process.env | environment variable |
 | RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` | RegExpInjection.js:93:20:93:31 | process.argv | RegExpInjection.js:93:16:93:49 | `^${pro ... r.app$` | This regular expression is constructed from a $@. | RegExpInjection.js:93:20:93:31 | process.argv | command-line argument |
+| RegExpInjection.js:100:14:100:22 | sanitized | RegExpInjection.js:97:15:97:32 | req.param("input") | RegExpInjection.js:100:14:100:22 | sanitized | This regular expression is constructed from a $@. | RegExpInjection.js:97:15:97:32 | req.param("input") | user-provided value |
+| RegExpInjection.js:106:14:106:22 | sanitized | RegExpInjection.js:97:15:97:32 | req.param("input") | RegExpInjection.js:106:14:106:22 | sanitized | This regular expression is constructed from a $@. | RegExpInjection.js:97:15:97:32 | req.param("input") | user-provided value |
 | tst.js:6:16:6:35 | "^"+ data.name + "$" | tst.js:5:16:5:29 | req.query.data | tst.js:6:16:6:35 | "^"+ data.name + "$" | This regular expression is constructed from a $@. | tst.js:5:16:5:29 | req.query.data | user-provided value |
