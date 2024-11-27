@@ -275,7 +275,6 @@ OLD: KE1
 
 */
             extractClassLaterIfExternal(replacedClass)
-            // TODO: This shouldn't be done here, but keeping it simple for now
         }
 
     /*
