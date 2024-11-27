@@ -206,3 +206,16 @@ var server = http.createServer(function(req, res) {
   res.write(fs.readFileSync(path.replace(new RegExp("[\\]\\[*,;'\"`<>\\?/]", ''), ''))); // NOT OK.
   res.write(fs.readFileSync(path.replace(new RegExp("[\\]\\[*,;'\"`<>\\?/]", unknownFlags()), ''))); // OK -- Might be okay depending on what unknownFlags evaluates to.
 });
+
+var server = http.createServer(function(req, res) {
+  let path = url.parse(req.url, true).query.path;
+
+  res.write(fs.readFileSync(path.replace(new RegExp("[.]", 'g'), ''))); // NOT OK (can be absolute) -- Currently not flagged because it is not a literal
+
+  if (!pathModule.isAbsolute(path)) {
+    res.write(fs.readFileSync(path.replace(new RegExp("[.]", ''), ''))); // NOT OK
+    res.write(fs.readFileSync(path.replace(new RegExp("[.]", 'g'), ''))); // OK
+    res.write(fs.readFileSync(path.replace(new RegExp("[.]", unknownFlags()), ''))); // OK
+  }
+});
+  
