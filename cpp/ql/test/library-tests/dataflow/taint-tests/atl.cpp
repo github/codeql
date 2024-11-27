@@ -779,7 +779,7 @@ void test_CSimpleMap() {
   {
     CSimpleMap<char*, wchar_t*> a;
     a.Add("hello", x);
-    sink(a.Lookup("hello")); // $ MISSING: ir
+    sink(a.Lookup("hello")); // $ ir
   }
   {
     CSimpleMap<char*, wchar_t*> a;
@@ -800,11 +800,11 @@ void test_CSimpleMap() {
   {
     CSimpleMap<char*, wchar_t*> a;
     a.SetAt("hello", x);
-    sink(a.Lookup("hello")); // $ MISSING: ir
+    sink(a.Lookup("hello")); // $ ir
   }
   {
     CSimpleMap<char*, wchar_t*> a;
     a.SetAtIndex(0, "hello", x);
-    sink(a.Lookup("hello")); // $ MISSING: ir
+    sink(a.Lookup("hello")); // $ ir
   }
 }
