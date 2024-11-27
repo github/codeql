@@ -128,6 +128,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfAddressable(
+    Addressable e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfArgList(ArgList e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n, int nArg |
       b = 0 and
@@ -1088,37 +1103,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfVariant(Variant e, int index, string partialPredicateCall) {
-    exists(
-      int b, int bAstNode, int n, int nAttr, int nExpr, int nFieldList, int nName, int nVisibility
-    |
-      b = 0 and
-      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
-      n = bAstNode and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nExpr = nAttr + 1 and
-      nFieldList = nExpr + 1 and
-      nName = nFieldList + 1 and
-      nVisibility = nName + 1 and
-      (
-        none()
-        or
-        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
-        or
-        result = e.getAttr(index - n) and
-        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
-        or
-        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
-        or
-        index = nExpr and result = e.getFieldList() and partialPredicateCall = "FieldList()"
-        or
-        index = nFieldList and result = e.getName() and partialPredicateCall = "Name()"
-        or
-        index = nName and result = e.getVisibility() and partialPredicateCall = "Visibility()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfVariantList(
     VariantList e, int index, string partialPredicateCall
   ) {
@@ -1817,14 +1801,18 @@ private module Impl {
   }
 
   private Element getImmediateChildOfItem(Item e, int index, string partialPredicateCall) {
-    exists(int b, int bStmt, int n |
+    exists(int b, int bStmt, int bAddressable, int n |
       b = 0 and
       bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
-      n = bStmt and
+      bAddressable =
+        bStmt + 1 + max(int i | i = -1 or exists(getImmediateChildOfAddressable(e, i, _)) | i) and
+      n = bAddressable and
       (
         none()
         or
         result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfAddressable(e, index - bStmt, partialPredicateCall)
       )
     )
   }
@@ -2705,6 +2693,39 @@ private module Impl {
         or
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfVariant(Variant e, int index, string partialPredicateCall) {
+    exists(
+      int b, int bAddressable, int n, int nAttr, int nExpr, int nFieldList, int nName,
+      int nVisibility
+    |
+      b = 0 and
+      bAddressable =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAddressable(e, i, _)) | i) and
+      n = bAddressable and
+      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nExpr = nAttr + 1 and
+      nFieldList = nExpr + 1 and
+      nName = nFieldList + 1 and
+      nVisibility = nName + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAddressable(e, index - b, partialPredicateCall)
+        or
+        result = e.getAttr(index - n) and
+        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
+        or
+        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
+        or
+        index = nExpr and result = e.getFieldList() and partialPredicateCall = "FieldList()"
+        or
+        index = nFieldList and result = e.getName() and partialPredicateCall = "Name()"
+        or
+        index = nName and result = e.getVisibility() and partialPredicateCall = "Visibility()"
       )
     )
   }
@@ -3665,8 +3686,6 @@ private module Impl {
     or
     result = getImmediateChildOfUseTreeList(e, index, partialAccessor)
     or
-    result = getImmediateChildOfVariant(e, index, partialAccessor)
-    or
     result = getImmediateChildOfVariantList(e, index, partialAccessor)
     or
     result = getImmediateChildOfVisibility(e, index, partialAccessor)
@@ -3816,6 +3835,8 @@ private module Impl {
     result = getImmediateChildOfTypeParam(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnderscoreExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfVariant(e, index, partialAccessor)
     or
     result = getImmediateChildOfWildcardPat(e, index, partialAccessor)
     or

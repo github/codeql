@@ -63,6 +63,30 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * Something that can be addressed by a path.
+   *
+   * TODO: This does not yet include all possible cases.
+   */
+  class Addressable extends @addressable, AstNode {
+    /**
+     * Gets the extended canonical path of this addressable, if it exists.
+     *
+     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
+     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
+     * addressable there-in).
+     */
+    string getExtendedCanonicalPath() { addressable_extended_canonical_paths(this, result) }
+
+    /**
+     * Gets the crate origin of this addressable, if it exists.
+     *
+     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
+     */
+    string getCrateOrigin() { addressable_crate_origins(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A ArgList. For example:
    * ```rust
    * todo!()
@@ -1001,42 +1025,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Variant. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class Variant extends @variant, AstNode {
-    override string toString() { result = "Variant" }
-
-    /**
-     * Gets the `index`th attr of this variant (0-based).
-     */
-    Attr getAttr(int index) { variant_attrs(this, index, result) }
-
-    /**
-     * Gets the expression of this variant, if it exists.
-     */
-    Expr getExpr() { variant_exprs(this, result) }
-
-    /**
-     * Gets the field list of this variant, if it exists.
-     */
-    FieldList getFieldList() { variant_field_lists(this, result) }
-
-    /**
-     * Gets the name of this variant, if it exists.
-     */
-    Name getName() { variant_names(this, result) }
-
-    /**
-     * Gets the visibility of this variant, if it exists.
-     */
-    Visibility getVisibility() { variant_visibilities(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A VariantList. For example:
    * ```rust
    * todo!()
@@ -1908,23 +1896,7 @@ module Raw {
    * todo!()
    * ```
    */
-  class Item extends @item, Stmt {
-    /**
-     * Gets the extended canonical path of this item, if it exists.
-     *
-     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
-     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
-     * addressable there-in).
-     */
-    string getExtendedCanonicalPath() { item_extended_canonical_paths(this, result) }
-
-    /**
-     * Gets the crate origin of this item, if it exists.
-     *
-     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
-     */
-    string getCrateOrigin() { item_crate_origins(this, result) }
-  }
+  class Item extends @item, Stmt, Addressable { }
 
   /**
    * INTERNAL: Do not use.
@@ -2931,6 +2903,42 @@ module Raw {
      * Gets the `index`th attr of this underscore expression (0-based).
      */
     Attr getAttr(int index) { underscore_expr_attrs(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A Variant. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
+  class Variant extends @variant, Addressable {
+    override string toString() { result = "Variant" }
+
+    /**
+     * Gets the `index`th attr of this variant (0-based).
+     */
+    Attr getAttr(int index) { variant_attrs(this, index, result) }
+
+    /**
+     * Gets the expression of this variant, if it exists.
+     */
+    Expr getExpr() { variant_exprs(this, result) }
+
+    /**
+     * Gets the field list of this variant, if it exists.
+     */
+    FieldList getFieldList() { variant_field_lists(this, result) }
+
+    /**
+     * Gets the name of this variant, if it exists.
+     */
+    Name getName() { variant_names(this, result) }
+
+    /**
+     * Gets the visibility of this variant, if it exists.
+     */
+    Visibility getVisibility() { variant_visibilities(this, result) }
   }
 
   /**
