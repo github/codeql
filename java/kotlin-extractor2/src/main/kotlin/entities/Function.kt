@@ -641,6 +641,7 @@ OLD: KE1
     }
 }
 
+context(KaSession)
 fun KotlinFileExtractor.extractValueParameter(
     id: Label<out DbParam>,
     t: KaType,

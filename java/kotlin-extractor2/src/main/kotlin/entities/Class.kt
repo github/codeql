@@ -74,7 +74,7 @@ fun KotlinFileExtractor.extractClassSource(
                         if (getter == null) {
                             logger.warnElement(
                                 "Expected an annotation property to have a getter",
-                                it.psiSafe() ?: TODO()
+                                it
                             )
                         } else {
                             extractFunction(
