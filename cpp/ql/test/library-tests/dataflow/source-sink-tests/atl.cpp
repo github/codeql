@@ -213,5 +213,5 @@ void test_CAtlTemporaryFile() {
   CAtlTemporaryFile file;
   char buffer[1024];
   DWORD bytesRead;
-  file.Read(buffer, 1024, bytesRead); // $ MISSING: local_source
+  file.Read(buffer, 1024, bytesRead); // $ local_source
 }
