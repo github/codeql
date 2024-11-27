@@ -703,6 +703,6 @@ void test_CPathT() {
     CPath p;
     auto p2 = p.CommonPrefix(x);
     sink(p2.m_strPath); // $ MISSING: ir
-    sink(p2.GetExtension()); // $ MISSING: ir
+    sink(p2.GetExtension()); // $ ir
   }
 }
