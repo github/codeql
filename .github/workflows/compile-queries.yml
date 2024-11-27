@@ -8,10 +8,10 @@ on:
       - "codeql-cli-*"
   pull_request:
     paths:
-      - '*.ql'
-      - '*.qll'
+      - '**.ql'
+      - '**.qll'
       - '**/qlpack.yml'
-      - '*.dbscheme'
+      - '**.dbscheme'
 
 permissions:
   contents: read
