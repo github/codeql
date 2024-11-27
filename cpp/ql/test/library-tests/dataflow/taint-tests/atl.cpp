@@ -479,8 +479,8 @@ void test_CComBSTR() {
     CComBSTR b3;
     b3 += x;
     sink(b3.m_str); // $ MISSING: ir
-    sink(static_cast<BSTR>(b3)); // $ MISSING: ir
-    sink(**&b3); // $ MISSING: ir
+    sink(static_cast<BSTR>(b3)); // $ ir
+    sink(**&b3); // $ ir
 
     CComBSTR b4;
     b4.Append(source<char>());
@@ -506,9 +506,9 @@ void test_CComBSTR() {
     SAFEARRAY safe;
     b9.Append(source<char>());
     b9.BSTRToArray(&safe);
-    sink(safe.pvData); // $ MISSING: ir
+    sink(safe.pvData); // $ ir
 
-    sink(b9.Copy()); // $ MISSING: ir
+    sink(b9.Copy()); // $ ir
   }
 
   wchar_t* w = indirect_source<wchar_t>();
