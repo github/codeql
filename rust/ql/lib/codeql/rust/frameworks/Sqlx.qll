@@ -14,7 +14,7 @@ private class SqlxQuery extends SqlConstruction::Range {
 
   SqlxQuery() {
     this.asExpr().getExpr() = call and
-    call.getExpr().(PathExpr).getPath().getResolvedPath() =
+    call.getFunction().(PathExpr).getPath().getResolvedPath() =
       [
         "crate::query::query", "crate::query_as::query_as", "crate::query_with::query_with",
         "crate::query_as_with::query_as_with", "crate::query_scalar::query_scalar",
