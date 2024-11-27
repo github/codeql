@@ -4,6 +4,8 @@ import java
 private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.MyBatis
 private import semmle.code.java.frameworks.Jdbc
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.ExternalFlow
 
 /** A method that is not protected from CSRF by default. */
 abstract class CsrfUnprotectedMethod extends Method { }
@@ -52,5 +54,20 @@ private class PreparedStatementDatabaseUpdateMethod extends DatabaseUpdateMethod
   PreparedStatementDatabaseUpdateMethod() {
     this instanceof PreparedStatementExecuteUpdateMethod or
     this instanceof PreparedStatementExecuteLargeUpdateMethod
+  }
+}
+
+/** A method that updates a SQL database. */
+private class SqlDatabaseUpdateMethod extends DatabaseUpdateMethod {
+  SqlDatabaseUpdateMethod() {
+    // TODO: constrain to only insert/update/delete for `execute%` methods; need to track the sql expression into the execute call.
+    exists(DataFlow::Node n | this = n.asExpr().(Argument).getCall().getCallee() |
+      sinkNode(n, "sql-injection") and
+      // do not include `executeQuery` since it is typically used with a select statement
+      this.hasName([
+          "delete", "insert", "update", "batchUpdate", "executeUpdate", "executeLargeUpdate",
+          "execute"
+        ])
+    )
   }
 }
