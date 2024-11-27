@@ -21,6 +21,7 @@ private RefType boxIfNeeded(J::Type t) {
   result = t
 }
 
+/** Provides the input types and predicates for instantiation of `UniversalFlow`. */
 module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
   private newtype TFlowNode =
     TField(Field f) { not f.getType() instanceof PrimitiveType } or
@@ -32,6 +33,7 @@ module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
    * A `Field`, `BaseSsaVariable`, `Expr`, or `Method`.
    */
   class FlowNode extends TFlowNode {
+    /** Gets a textual representation of this element. */
     string toString() {
       result = this.asField().toString() or
       result = this.asSsa().toString() or
@@ -39,6 +41,7 @@ module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
       result = this.asMethod().toString()
     }
 
+    /** Gets the source location for this element. */
     Location getLocation() {
       result = this.asField().getLocation() or
       result = this.asSsa().getLocation() or
@@ -46,14 +49,19 @@ module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
       result = this.asMethod().getLocation()
     }
 
+    /** Gets the field corresponding to this node, if any. */
     Field asField() { this = TField(result) }
 
+    /** Gets the SSA variable corresponding to this node, if any. */
     BaseSsaVariable asSsa() { this = TSsa(result) }
 
+    /** Gets the expression corresponding to this node, if any. */
     Expr asExpr() { this = TExpr(result) }
 
+    /** Gets the method corresponding to this node, if any. */
     Method asMethod() { this = TMethod(result) }
 
+    /** Gets the type of this node. */
     RefType getType() {
       result = this.asField().getType() or
       result = this.asSsa().getSourceVariable().getType() or
