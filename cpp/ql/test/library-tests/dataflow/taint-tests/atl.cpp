@@ -850,13 +850,13 @@ void test_CUrl() {
   char* x = indirect_source<char>();
   CUrl url;
   url.CrackUrl(x, 0);
-  sink(url); // $ MISSING: ir
-  sink(url.GetExtraInfo()); // $ MISSING: ir
-  sink(url.GetHostName()); // $ MISSING: ir
-  sink(url.GetPassword()); // $ MISSING: ir
-  sink(url.GetSchemeName()); // $ MISSING: ir
-  sink(url.GetUrlPath()); // $ MISSING: ir
-  sink(url.GetUserName()); // $ MISSING: ir
+  sink(url); // $ ir
+  sink(url.GetExtraInfo()); // $ ir
+  sink(url.GetHostName()); // $ ir
+  sink(url.GetPassword()); // $ ir
+  sink(url.GetSchemeName()); // $ ir
+  sink(url.GetUrlPath()); // $ ir
+  sink(url.GetUserName()); // $ ir
 
   {
     CUrl url2;
@@ -864,36 +864,36 @@ void test_CUrl() {
     char buffer[1024];
     url2.CrackUrl(x, 0);
     url2.CreateUrl(buffer, &len, 0);
-    sink(buffer); // $ ast MISSING: ir
+    sink(buffer); // $ ast ir
   }
   {
     CUrl url2;
     url2.SetExtraInfo(x);
-    sink(url2); // $ MISSING: ir
+    sink(url2); // $ ir
   }
   {
     CUrl url2;
     url2.SetHostName(x);
-    sink(url2); // $ MISSING: ir
+    sink(url2); // $ ir
   }
   {
     CUrl url2;
     url2.SetPassword(x);
-    sink(url2); // $ MISSING: ir
+    sink(url2); // $ ir
   }
   {
     CUrl url2;
     url2.SetSchemeName(x);
-    sink(url2); // $ MISSING: ir
+    sink(url2); // $ ir
   }
   {
     CUrl url2;
     url2.SetUrlPath(x);
-    sink(url2); // $ MISSING: ir
+    sink(url2); // $ ir
   }
   {
     CUrl url2;
     url2.SetUserName(x);
-    sink(url2); // $ MISSING: ir
+    sink(url2); // $ ir
   }
 }
