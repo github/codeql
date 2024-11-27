@@ -217,35 +217,35 @@ void test_CAtlArray() {
   {
     CAtlArray<int> a;
     a.Add(x);
-    sink(a[0]); // $ MISSING: ir
+    sink(a[0]); // $ ir
     a.Add(0);
-    sink(a[0]); // $ MISSING: ir
+    sink(a[0]); // $ ir
 
     CAtlArray<int> a2;
     sink(a2[0]);
     a2.Append(a);
-    sink(a2[0]); // $ MISSING: ir
+    sink(a2[0]); // $ ir
 
     CAtlArray<int> a3;
     sink(a3[0]);
     a3.Copy(a2);
-    sink(a3[0]); // $ MISSING: ir
+    sink(a3[0]); // $ ir
 
-    sink(a3.GetAt(0)); // $ MISSING: ir
-    sink(*a3.GetData()); // $ MISSING: ir
+    sink(a3.GetAt(0)); // $ ir
+    sink(*a3.GetData()); // $ ir
 
     CAtlArray<int> a4;
     sink(a4.GetAt(0));
     a4.InsertArrayAt(0, &a3);
-    sink(a4.GetAt(0)); // $ MISSING: ir
+    sink(a4.GetAt(0)); // $ ir
   }
   {
     CAtlArray<int> a5;
     a5.InsertAt(0, source<int>(), 1);
-    sink(a5[0]); // $ MISSING: ir
+    sink(a5[0]); // $ ir
 
     CAtlArray<int> a6;
     a6.SetAtGrow(0, source<int>());
-    sink(a6[0]); // $ MISSING: ir
+    sink(a6[0]); // $ ir
   }
 }
