@@ -223,6 +223,11 @@ fn option_pattern_match_unqualified() {
     }
 }
 
+fn option_unwrap() {
+    let s1 = Some(source(19));
+    sink(s1.unwrap()); // $ hasValueFlow=19
+}
+
 enum MyTupleEnum {
     A(i64),
     B(i64),
@@ -324,6 +329,7 @@ fn main() {
     struct_nested_match();
     option_pattern_match_qualified();
     option_pattern_match_unqualified();
+    option_unwrap();
     custom_tuple_enum_pattern_match_qualified();
     custom_tuple_enum_pattern_match_unqualified();
     custom_record_enum_pattern_match_qualified();

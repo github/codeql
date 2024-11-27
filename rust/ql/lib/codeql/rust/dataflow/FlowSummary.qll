@@ -7,6 +7,17 @@ private import internal.DataFlowImpl
 // import all instances below
 private module Summaries {
   private import codeql.rust.Frameworks
+
+  // TODO: Used models-as-data when it's available
+  private class UnwrapSummary extends SummarizedCallable::Range {
+    UnwrapSummary() { this = "lang:core::_::<crate::option::Option>::unwrap" }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input = "Argument[self].Variant[crate::std::option::Option::Some(0)]" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
 }
 
 /** Provides the `Range` class used to define the extent of `LibraryCallable`. */
