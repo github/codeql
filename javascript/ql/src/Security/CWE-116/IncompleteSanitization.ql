@@ -53,7 +53,7 @@ predicate isSimpleAlt(RegExpAlt t) { forall(RegExpTerm ch | ch = t.getAChild() |
  * regular expression and `new` prefixes the matched string with a backslash.
  */
 predicate isBackslashEscape(StringReplaceCall mce, DataFlow::RegExpCreationNode re) {
-  mce.isGlobal() and
+  mce.maybeGlobal() and
   re = mce.getRegExp() and
   (
     // replacement with `\$&`, `\$1` or similar
@@ -147,7 +147,7 @@ from StringReplaceCall repl, DataFlow::Node old, string msg
 where
   (old = repl.getArgument(0) or old = repl.getRegExp()) and
   (
-    not repl.isGlobal() and
+    not repl.maybeGlobal() and
     msg = "This replaces only the first occurrence of " + old + "." and
     // only flag if this is likely to be a sanitizer or URL encoder or decoder
     exists(string m | m = getAMatchedString(old) |

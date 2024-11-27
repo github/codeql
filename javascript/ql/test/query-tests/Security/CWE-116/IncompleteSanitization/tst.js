@@ -362,6 +362,6 @@ function newlinesNewReGexp(s) {
 	x.replace(new RegExp("\n"), "").replace(x, y); // NOT OK
 	x.replace(x, y).replace(new RegExp("\n"), ""); // NOT OK
 
-	x.replace(new RegExp("\n", unknownFlags()), "").replace(x, y); // OK -- Should not be flagged but now it is 
-	x.replace(x, y).replace(new RegExp("\n", unknownFlags()), ""); // OK -- Should not be flagged but now it is 
+	x.replace(new RegExp("\n", unknownFlags()), "").replace(x, y); // OK
+	x.replace(x, y).replace(new RegExp("\n", unknownFlags()), ""); // OK
 }
