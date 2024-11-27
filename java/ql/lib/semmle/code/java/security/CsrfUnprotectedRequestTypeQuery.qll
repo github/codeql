@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.frameworks.spring.SpringController
+private import semmle.code.java.frameworks.MyBatis
 
 /** A method that is not protected from CSRF by default. */
 abstract class CsrfUnprotectedMethod extends Method { }
