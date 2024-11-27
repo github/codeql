@@ -572,10 +572,10 @@ void test_CComSafeArray() {
   sink(safe->pvData); // $ ir
   {
   CComSafeArray<int> c(safe);
-  sink(c[0]); // $ MISSING: ir
-  sink(c.GetAt(0)); // $ MISSING: ir
-  sink(c.GetSafeArrayPtr()->pvData); // $ MISSING: ir
-  sink(c.m_psa->pvData); // $ MISSING: ir
+  sink(c[0]); // $ ir
+  sink(c.GetAt(0)); // $ ir
+  sink(c.GetSafeArrayPtr()->pvData); // $ ir
+  sink(c.m_psa->pvData); // $ ir
   }
   {
     CComSafeArray<int> c;
@@ -583,22 +583,22 @@ void test_CComSafeArray() {
     sink(c.GetAt(0));
     sink(c.GetSafeArrayPtr()->pvData);
     c.Add(safe);
-    sink(c[0]); // $ MISSING: ir
-    sink(c.GetAt(0)); // $ MISSING: ir
-    sink(c.GetSafeArrayPtr()->pvData); // $ MISSING: ir
-    sink(static_cast<LPSAFEARRAY>(c)->pvData); // $ MISSING: ir
+    sink(c[0]); // $ ir
+    sink(c.GetAt(0)); // $ ir
+    sink(c.GetSafeArrayPtr()->pvData); // $ ir
+    sink(static_cast<LPSAFEARRAY>(c)->pvData); // $ ir
   }
   {
     CComSafeArray<int> c;
     c.Add(source<int>(), true);
-    sink(c[0]); // $ MISSING: ir
-    sink(c.GetAt(0)); // $ MISSING: ir
-    sink(c.GetSafeArrayPtr()->pvData); // $ MISSING: ir
+    sink(c[0]); // $ ir
+    sink(c.GetAt(0)); // $ ir
+    sink(c.GetSafeArrayPtr()->pvData); // $ ir
   }
   {
     CComSafeArray<int> c;
     c.SetAt(0, source<int>(), true);
-    sink(c[0]); // $ MISSING: ir
-    sink(c[0L]); // $ MISSING: ir
+    sink(c[0]); // $ ir
+    sink(c[0L]); // $ ir
   }
 }
