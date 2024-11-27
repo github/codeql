@@ -90,7 +90,8 @@ fun KotlinFileExtractor.extractFunctionLiteral(
                 // `kotlin.FunctionX<,,,>.invoke(,,)`
                 functionSymbol,
                 e,
-                listOf(builtinTypes.any, functionType)
+                listOf(builtinTypes.any, functionType),
+                CompilerGeneratedKinds.CALLABLE_CLASS
             )
 
         /*
@@ -257,7 +258,6 @@ private fun KotlinFileExtractor.addFunctionManual(
                     methodId,
                     idx,
                     paramId,
-                    syntheticParameterNames = false,
                     isVararg = false,
                     isNoinline = false,
                     isCrossinline = false
@@ -406,7 +406,7 @@ private fun KotlinFileExtractor.extractGeneratedClass(
     localFunction: KaFunctionSymbol,
     elementToReportOn: PsiElement,
     superTypes: List<KaType>,
-    compilerGeneratedKindOverride: CompilerGeneratedKinds? = null // OLD: KE1
+    compilerGeneratedKindOverride: CompilerGeneratedKinds
 ): Label<out DbClassorinterface> {
     val ids = tw.lm.getLocallyVisibleFunctionLabelMapping(localFunction)
 
@@ -448,8 +448,7 @@ private fun KotlinFileExtractor.extractGeneratedClass(
     superTypes: List<KaType>,
     locId: Label<DbLocation>,
     elementToReportOn: PsiElement,
-    compilerGeneratedKindOverride: CompilerGeneratedKinds? = null,
-    superConstructorSelector: (KaFunctionSymbol) -> Boolean = { it.valueParameters.isEmpty() },
+    compilerGeneratedKindOverride: CompilerGeneratedKinds,
     extractSuperConstructorArgs: (Label<DbSuperconstructorinvocationstmt>) -> Unit = {},
     /*
     OLD: KE1
@@ -460,10 +459,7 @@ private fun KotlinFileExtractor.extractGeneratedClass(
     val id = ids.type.javaResult.id.cast<DbClassorinterface>()
     val pkgId = extractPackage("")
     tw.writeClasses_or_interfaces(id, "", pkgId, id)
-    tw.writeCompiler_generated(
-        id,
-        (compilerGeneratedKindOverride ?: CompilerGeneratedKinds.CALLABLE_CLASS).kind
-    )
+    tw.writeCompiler_generated(id, compilerGeneratedKindOverride.kind)
     tw.writeHasLocation(id, locId)
 
     // Extract constructor
@@ -485,7 +481,7 @@ private fun KotlinFileExtractor.extractGeneratedClass(
     } else {
         val baseConstructor =
             baseClass.scope?.declarationScope?.constructors?.find {
-                superConstructorSelector(it)
+                it.valueParameters.isEmpty()
             }
         if (baseConstructor == null) {
             logger.warnElement("Cannot find base constructor", elementToReportOn)

@@ -1336,38 +1336,6 @@ OLD: KE1
             }
         }
 
-        private fun extractValueParameter(
-            id: Label<out DbParam>,
-            t: IrType,
-            name: String,
-            locId: Label<DbLocation>,
-            parent: Label<out DbCallable>,
-            idx: Int,
-            paramSourceDeclaration: Label<out DbParam>,
-            syntheticParameterNames: Boolean,
-            isVararg: Boolean,
-            isNoinline: Boolean,
-            isCrossinline: Boolean
-        ): TypeResults {
-            val type = useType(t)
-            tw.writeParams(id, type.javaResult.id, idx, parent, paramSourceDeclaration)
-            tw.writeParamsKotlinType(id, type.kotlinResult.id)
-            tw.writeHasLocation(id, locId)
-            if (!syntheticParameterNames) {
-                tw.writeParamName(id, name)
-            }
-            if (isVararg) {
-                tw.writeIsVarargsParam(id)
-            }
-            if (isNoinline) {
-                addModifiers(id, "noinline")
-            }
-            if (isCrossinline) {
-                addModifiers(id, "crossinline")
-            }
-            return type
-        }
-
         /**
          * mkContainerLabel is a lambda so that we get laziness: If the container is a file, then we
          * don't want to extract the file class unless something actually needs it.

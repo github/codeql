@@ -60,31 +60,28 @@ class TrapLabelManager {
         }
     }
 
+    // TODO: This will only be used in a TrapWriter for a source file, not a diagnostic TRAP writer. Consider moving this out of this class
     private val locallyVisibleFunctionLabelMapping: MutableMap<KaFunctionSymbol, LocallyVisibleFunctionLabels> =
         mutableMapOf()
 
     fun getLocallyVisibleFunctionLabelMapping(
         key: KaFunctionSymbol
     ): LocallyVisibleFunctionLabels {
-        lock.withLock {
-            return locallyVisibleFunctionLabelMapping[key]!!
-        }
+        return locallyVisibleFunctionLabelMapping[key]!!
     }
 
     fun getOrAddLocallyVisibleFunctionLabelMapping(
         key: KaFunctionSymbol,
         add: (KaFunctionSymbol) -> LocallyVisibleFunctionLabels
     ): LocallyVisibleFunctionLabels {
-        lock.withLock {
-            val res = locallyVisibleFunctionLabelMapping[key]
-            if (res != null) {
-                return res
-            }
-
-            val labels = add(key)
-            locallyVisibleFunctionLabelMapping[key] = labels
-            return labels
+        val res = locallyVisibleFunctionLabelMapping[key]
+        if (res != null) {
+            return res
         }
+
+        val labels = add(key)
+        locallyVisibleFunctionLabelMapping[key] = labels
+        return labels
     }
 
     /*

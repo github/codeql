@@ -643,12 +643,11 @@ OLD: KE1
 fun KotlinFileExtractor.extractValueParameter(
     id: Label<out DbParam>,
     t: KaType,
-    name: String,
+    name: String?,
     locId: Label<DbLocation>,
     parent: Label<out DbCallable>,
     idx: Int,
     paramSourceDeclaration: Label<out DbParam>,
-    syntheticParameterNames: Boolean,
     isVararg: Boolean,
     isNoinline: Boolean,
     isCrossinline: Boolean
@@ -657,7 +656,7 @@ fun KotlinFileExtractor.extractValueParameter(
     tw.writeParams(id, type.javaResult.id, idx, parent, paramSourceDeclaration)
     tw.writeParamsKotlinType(id, type.kotlinResult.id)
     tw.writeHasLocation(id, locId)
-    if (!syntheticParameterNames) {
+    if (name != null) {
         tw.writeParamName(id, name)
     }
     if (isVararg) {
