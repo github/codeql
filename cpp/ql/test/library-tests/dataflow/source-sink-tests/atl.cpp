@@ -215,3 +215,175 @@ void test_CAtlTemporaryFile() {
   DWORD bytesRead;
   file.Read(buffer, 1024, bytesRead); // $ local_source
 }
+
+struct CRegKey {
+  CRegKey() throw();
+  CRegKey(CRegKey& key) throw();
+  explicit CRegKey(HKEY hKey) throw();
+  CRegKey(CAtlTransactionManager* pTM) throw();
+
+  ~CRegKey() throw();
+  void Attach(HKEY hKey) throw();
+  LONG Close() throw();
+
+  LONG Create(
+    HKEY hKeyParent,
+    LPCTSTR lpszKeyName,
+    LPTSTR lpszClass,
+    DWORD dwOptions,
+    REGSAM samDesired,
+    LPSECURITY_ATTRIBUTES lpSecAttr,
+    LPDWORD lpdwDisposition) throw();
+
+  LONG DeleteSubKey(LPCTSTR lpszSubKey) throw();
+  LONG DeleteValue(LPCTSTR lpszValue) throw();
+  HKEY Detach() throw();
+  
+  LONG EnumKey(
+    DWORD iIndex,
+    LPTSTR pszName,
+    LPDWORD pnNameLength,
+    FILETIME* pftLastWriteTime) throw();
+  
+  LONG Flush() throw();
+
+  LONG GetKeySecurity(
+    SECURITY_INFORMATION si,
+    PSECURITY_DESCRIPTOR psd,
+    LPDWORD pnBytes) throw();
+  
+  LONG NotifyChangeKeyValue(
+    BOOL bWatchSubtree,
+    DWORD dwNotifyFilter,
+    HANDLE hEvent,
+    BOOL bAsync) throw();
+
+  LONG Open(
+    HKEY hKeyParent,
+    LPCTSTR lpszKeyName,
+    REGSAM samDesired) throw();
+
+  LONG QueryBinaryValue(
+    LPCTSTR pszValueName,
+    void* pValue,
+    ULONG* pnBytes) throw();
+
+  LONG QueryDWORDValue(
+    LPCTSTR pszValueName,
+    DWORD& dwValue) throw();
+
+  LONG QueryGUIDValue(
+    LPCTSTR pszValueName,
+    GUID& guidValue) throw();
+
+  LONG QueryMultiStringValue(
+    LPCTSTR pszValueName,
+    LPTSTR pszValue,
+    ULONG* pnChars) throw();
+
+  LONG QueryQWORDValue(
+    LPCTSTR pszValueName,
+    ULONGLONG& qwValue) throw();
+
+  LONG QueryStringValue(
+    LPCTSTR pszValueName,
+    LPTSTR pszValue,
+    ULONG* pnChars) throw();
+
+  LONG QueryValue(
+      LPCTSTR pszValueName,
+      DWORD* pdwType,
+      void* pData,
+      ULONG* pnBytes) throw();
+
+  LONG QueryValue(
+    DWORD& dwValue,
+    LPCTSTR lpszValueName);
+
+  LONG QueryValue(
+    LPTSTR szValue,
+    LPCTSTR lpszValueName,
+    DWORD* pdwCount);
+
+  LONG RecurseDeleteKey(LPCTSTR lpszKey) throw();
+
+  LONG SetBinaryValue(
+    LPCTSTR pszValueName,
+    const void* pValue,
+    ULONG nBytes) throw();
+
+  LONG SetDWORDValue(LPCTSTR pszValueName, DWORD dwValue) throw();
+
+  LONG SetGUIDValue(LPCTSTR pszValueName, REFGUID guidValue) throw();
+
+  LONG SetKeySecurity(SECURITY_INFORMATION si, PSECURITY_DESCRIPTOR psd) throw();
+
+  LONG SetKeyValue(
+    LPCTSTR lpszKeyName,
+    LPCTSTR lpszValue,
+    LPCTSTR lpszValueName) throw();
+
+  LONG SetMultiStringValue(LPCTSTR pszValueName, LPCTSTR pszValue) throw();
+
+  LONG SetQWORDValue(LPCTSTR pszValueName, ULONGLONG qwValue) throw();
+
+  LONG SetStringValue(
+    LPCTSTR pszValueName,
+    LPCTSTR pszValue,
+    DWORD dwType) throw();
+
+  LONG SetValue(
+    LPCTSTR pszValueName,
+    DWORD dwType,
+    const void* pValue,
+    ULONG nBytes) throw();
+
+  static LONG SetValue(
+    HKEY hKeyParent,
+    LPCTSTR lpszKeyName,
+    LPCTSTR lpszValue,
+    LPCTSTR lpszValueName);
+
+  LONG SetValue(
+    DWORD dwValue,
+    LPCTSTR lpszValueName);
+
+  LONG SetValue(
+    LPCTSTR lpszValue,
+    LPCTSTR lpszValueName,
+    bool bMulti,
+    int nValueLen);
+
+  operator HKEY() const throw();
+  CRegKey& operator= (CRegKey& key) throw();
+
+  HKEY m_hKey;
+};
+
+void test_CRegKey() {
+  CRegKey key;
+  char data[1024];
+  ULONG bytesRead;
+  key.QueryBinaryValue("foo", data, &bytesRead); // $ MISSING: local_source
+
+  DWORD value;
+  key.QueryDWORDValue("foo", value); // $ MISSING: local_source
+  
+  GUID guid;
+  key.QueryGUIDValue("foo", guid); // $ MISSING: local_source
+  
+  key.QueryMultiStringValue("foo", data, &bytesRead); // $ MISSING: local_source
+  
+  ULONGLONG qword;
+  key.QueryQWORDValue("foo", qword); // $ MISSING: local_source
+  
+  key.QueryStringValue("foo", data, &bytesRead); // $ MISSING: local_source
+  
+  key.QueryValue(data, "foo", &bytesRead); // $ MISSING: local_source
+  
+  DWORD type;
+  key.QueryValue("foo", &type, data, &bytesRead); // $ MISSING: local_source
+  
+  DWORD value2;
+  key.QueryValue(value2, "foo"); // $ MISSING: local_source
+}
