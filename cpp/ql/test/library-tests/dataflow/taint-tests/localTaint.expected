@@ -451,6 +451,9 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | format.cpp:162:24:162:27 | {} | format.cpp:162:24:162:27 | call to basic_format_string | TAINT |
 | format.cpp:165:13:165:23 | call to format | format.cpp:166:8:166:9 | s2 |  |
 | format.cpp:165:25:165:38 | call to source | format.cpp:165:25:165:40 | call to basic_format_string | TAINT |
+| format.cpp:169:30:169:30 | s | format.cpp:171:60:171:60 | s |  |
+| format.cpp:170:11:170:16 | call to source | format.cpp:171:63:171:63 | x |  |
+| format.cpp:171:11:171:58 | call to same_signature_as_format_but_different_name | format.cpp:172:8:172:8 | y |  |
 | map.cpp:21:28:21:28 | call to pair | map.cpp:23:2:23:2 | a |  |
 | map.cpp:21:28:21:28 | call to pair | map.cpp:24:7:24:7 | a |  |
 | map.cpp:21:28:21:28 | call to pair | map.cpp:25:7:25:7 | a |  |

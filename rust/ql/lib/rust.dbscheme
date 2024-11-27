@@ -1718,9 +1718,9 @@ let_expr_attrs(
 );
 
 #keyset[id]
-let_expr_exprs(
+let_expr_scrutinees(
   int id: @let_expr ref,
-  int expr: @expr ref
+  int scrutinee: @expr ref
 );
 
 #keyset[id]
@@ -1866,9 +1866,9 @@ match_expr_attrs(
 );
 
 #keyset[id]
-match_expr_exprs(
+match_expr_scrutinees(
   int id: @match_expr ref,
-  int expr: @expr ref
+  int scrutinee: @expr ref
 );
 
 #keyset[id]
@@ -2538,9 +2538,9 @@ call_exprs(
 );
 
 #keyset[id]
-call_expr_exprs(
+call_expr_functions(
   int id: @call_expr ref,
-  int expr: @expr ref
+  int function: @expr ref
 );
 
 consts(

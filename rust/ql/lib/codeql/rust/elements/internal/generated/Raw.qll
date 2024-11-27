@@ -1927,9 +1927,9 @@ module Raw {
     Attr getAttr(int index) { let_expr_attrs(this, index, result) }
 
     /**
-     * Gets the expression of this let expression, if it exists.
+     * Gets the scrutinee of this let expression, if it exists.
      */
-    Expr getExpr() { let_expr_exprs(this, result) }
+    Expr getScrutinee() { let_expr_scrutinees(this, result) }
 
     /**
      * Gets the pat of this let expression, if it exists.
@@ -2144,7 +2144,7 @@ module Raw {
     /**
      * Gets the scrutinee (the expression being matched) of this match expression, if it exists.
      */
-    Expr getScrutinee() { match_expr_exprs(this, result) }
+    Expr getScrutinee() { match_expr_scrutinees(this, result) }
 
     /**
      * Gets the match arm list of this match expression, if it exists.
@@ -3072,9 +3072,9 @@ module Raw {
     override string toString() { result = "CallExpr" }
 
     /**
-     * Gets the expression of this call expression, if it exists.
+     * Gets the function of this call expression, if it exists.
      */
-    Expr getExpr() { call_expr_exprs(this, result) }
+    Expr getFunction() { call_expr_functions(this, result) }
   }
 
   /**

@@ -1836,13 +1836,13 @@ private module Impl {
   }
 
   private Element getImmediateChildOfLetExpr(LetExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nAttr, int nExpr, int nPat |
+    exists(int b, int bExpr, int n, int nAttr, int nScrutinee, int nPat |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nExpr = nAttr + 1 and
-      nPat = nExpr + 1 and
+      nScrutinee = nAttr + 1 and
+      nPat = nScrutinee + 1 and
       (
         none()
         or
@@ -1851,9 +1851,9 @@ private module Impl {
         result = e.getAttr(index - n) and
         partialPredicateCall = "Attr(" + (index - n).toString() + ")"
         or
-        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
+        index = nAttr and result = e.getScrutinee() and partialPredicateCall = "Scrutinee()"
         or
-        index = nExpr and result = e.getPat() and partialPredicateCall = "Pat()"
+        index = nScrutinee and result = e.getPat() and partialPredicateCall = "Pat()"
       )
     )
   }
@@ -2807,18 +2807,18 @@ private module Impl {
   }
 
   private Element getImmediateChildOfCallExpr(CallExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bCallExprBase, int n, int nExpr |
+    exists(int b, int bCallExprBase, int n, int nFunction |
       b = 0 and
       bCallExprBase =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallExprBase(e, i, _)) | i) and
       n = bCallExprBase and
-      nExpr = n + 1 and
+      nFunction = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfCallExprBase(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getExpr() and partialPredicateCall = "Expr()"
+        index = n and result = e.getFunction() and partialPredicateCall = "Function()"
       )
     )
   }

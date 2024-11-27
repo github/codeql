@@ -7,6 +7,7 @@
  */
 
 import rust
+import codeql.rust.Concepts
 import codeql.rust.Diagnostics
 import Stats
 
@@ -37,4 +38,14 @@ where
   key = "Inconsistencies - CFG" and value = getTotalCfgInconsistencies()
   or
   key = "Inconsistencies - data flow" and value = getTotalDataFlowInconsistencies()
-select key, value
+  or
+  key = "Macro calls - total" and value = count(MacroCall mc)
+  or
+  key = "Macro calls - resolved" and value = count(MacroCall mc | mc.hasExpanded())
+  or
+  key = "Macro calls - unresolved" and value = count(MacroCall mc | not mc.hasExpanded())
+  or
+  key = "Taint sources - total" and value = count(ThreatModelSource s)
+  or
+  key = "Taint sources - active" and value = count(ActiveThreatModelSource s)
+select key, value order by key

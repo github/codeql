@@ -570,7 +570,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       override predicate relevantChild(AstNode child) {
         none()
         or
-        child = this.getExpr()
+        child = this.getFunction()
       }
     }
 
@@ -592,16 +592,16 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       CallExpr getCallExpr() { result = node }
 
       /**
-       * Gets the expression of this call expression, if it exists.
+       * Gets the function of this call expression, if it exists.
        */
-      ExprCfgNode getExpr() {
-        any(ChildMapping mapping).hasCfgChild(node, node.getExpr(), this, result)
+      ExprCfgNode getFunction() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getFunction(), this, result)
       }
 
       /**
-       * Holds if `getExpr()` exists.
+       * Holds if `getFunction()` exists.
        */
-      predicate hasExpr() { exists(this.getExpr()) }
+      predicate hasFunction() { exists(this.getFunction()) }
     }
 
     final private class ParentCallExprBase extends ParentAstNode, CallExprBase {
@@ -1245,7 +1245,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       override predicate relevantChild(AstNode child) {
         none()
         or
-        child = this.getExpr()
+        child = this.getScrutinee()
         or
         child = this.getPat()
       }
@@ -1283,16 +1283,16 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
-       * Gets the expression of this let expression, if it exists.
+       * Gets the scrutinee of this let expression, if it exists.
        */
-      ExprCfgNode getExpr() {
-        any(ChildMapping mapping).hasCfgChild(node, node.getExpr(), this, result)
+      ExprCfgNode getScrutinee() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getScrutinee(), this, result)
       }
 
       /**
-       * Holds if `getExpr()` exists.
+       * Holds if `getScrutinee()` exists.
        */
-      predicate hasExpr() { exists(this.getExpr()) }
+      predicate hasScrutinee() { exists(this.getScrutinee()) }
 
       /**
        * Gets the pat of this let expression, if it exists.
@@ -3211,14 +3211,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           cfgNode
         )
       or
-      pred = "getExpr" and
+      pred = "getFunction" and
       parent =
         any(Nodes::CallExprCfgNode cfgNode, CallExpr astNode |
           astNode = cfgNode.getCallExpr() and
-          child = getDesugared(astNode.getExpr()) and
+          child = getDesugared(astNode.getFunction()) and
           i = -1 and
           hasCfgNode(child) and
-          not child = cfgNode.getExpr().getAstNode()
+          not child = cfgNode.getFunction().getAstNode()
         |
           cfgNode
         )
@@ -3355,14 +3355,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           cfgNode
         )
       or
-      pred = "getExpr" and
+      pred = "getScrutinee" and
       parent =
         any(Nodes::LetExprCfgNode cfgNode, LetExpr astNode |
           astNode = cfgNode.getLetExpr() and
-          child = getDesugared(astNode.getExpr()) and
+          child = getDesugared(astNode.getScrutinee()) and
           i = -1 and
           hasCfgNode(child) and
-          not child = cfgNode.getExpr().getAstNode()
+          not child = cfgNode.getScrutinee().getAstNode()
         |
           cfgNode
         )

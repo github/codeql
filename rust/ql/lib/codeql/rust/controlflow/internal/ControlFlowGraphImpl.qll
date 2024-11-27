@@ -313,7 +313,7 @@ module ExprTrees {
 
   class CallExprTree extends StandardPostOrderTree instanceof CallExpr {
     override AstNode getChildNode(int i) {
-      i = 0 and result = super.getExpr()
+      i = 0 and result = super.getFunction()
       or
       result = super.getArgList().getArg(i - 1)
     }
@@ -410,7 +410,7 @@ module ExprTrees {
   class LetExprTree extends StandardPreOrderTree, LetExpr {
     override AstNode getChildNode(int i) {
       i = 0 and
-      result = this.getExpr()
+      result = this.getScrutinee()
       or
       i = 1 and
       result = this.getPat()
