@@ -753,3 +753,58 @@ void test_CSimpleArray() {
     sink(a2[pos]); // $ MISSING: ir
   }
 }
+
+template <class TKey, class TVal>
+struct CSimpleMap {
+  CSimpleMap();
+  ~CSimpleMap();
+
+  BOOL Add(const TKey& key, const TVal& val);
+  int FindKey(const TKey& key) const;
+  int FindVal(const TVal& val) const;
+  TKey& GetKeyAt(int nIndex) const;
+  int GetSize() const;
+  TVal& GetValueAt(int nIndex) const;
+  TVal Lookup(const TKey& key) const;
+  BOOL Remove(const TKey& key);
+  void RemoveAll();
+  BOOL RemoveAt(int nIndex);
+  TKey ReverseLookup(const TVal& val) const;
+  BOOL SetAt(const TKey& key, const TVal& val);
+  BOOL SetAtIndex(int nIndex, const TKey& key, const TVal& val);
+};
+
+void test_CSimpleMap() {
+  wchar_t* x = source<wchar_t*>();
+  {
+    CSimpleMap<char*, wchar_t*> a;
+    a.Add("hello", x);
+    sink(a.Lookup("hello")); // $ MISSING: ir
+  }
+  {
+    CSimpleMap<char*, wchar_t*> a;
+    auto pos = a.FindKey("hello");
+    sink(a.GetValueAt(pos)); // $ MISSING: ir
+  }
+  {
+    CSimpleMap<char*, wchar_t*> a;
+    auto pos = a.FindVal(x);
+    sink(a.GetValueAt(pos)); // $ MISSING: ir
+  }
+  {
+    CSimpleMap<char*, wchar_t*> a;
+    auto key = a.ReverseLookup(x);
+    sink(key);
+    sink(a.Lookup(key)); // $ MISSING: ir
+  }
+  {
+    CSimpleMap<char*, wchar_t*> a;
+    a.SetAt("hello", x);
+    sink(a.Lookup("hello")); // $ MISSING: ir
+  }
+  {
+    CSimpleMap<char*, wchar_t*> a;
+    a.SetAtIndex(0, "hello", x);
+    sink(a.Lookup("hello")); // $ MISSING: ir
+  }
+}
