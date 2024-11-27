@@ -1,28 +1,30 @@
 {
   "attributes": {
     "summary": {
+      "durations": {
+        "extract": {
+          "ms": "__REDACTED__",
+          "pretty": "__REDACTED__"
+        },
+        "loadManifest": {
+          "ms": "__REDACTED__",
+          "pretty": "__REDACTED__"
+        },
+        "loadSource": {
+          "ms": "__REDACTED__",
+          "pretty": "__REDACTED__"
+        },
+        "parse": {
+          "ms": "__REDACTED__",
+          "pretty": "__REDACTED__"
+        },
+        "total": {
+          "ms": "__REDACTED__",
+          "pretty": "__REDACTED__"
+        }
+      },
       "numberOfFiles": 4,
-      "numberOfManifests": 2,
-      "totalDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
-      },
-      "totalExtractDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
-      },
-      "totalFetchFileDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
-      },
-      "totalLoadDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
-      },
-      "totalParseDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
-      }
+      "numberOfManifests": 2
     }
   },
   "severity": "note",

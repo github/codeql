@@ -4,24 +4,24 @@
       "numberOfFiles": 4,
       "numberOfManifests": 1,
       "totalDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
       },
       "totalExtractDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
       },
       "totalFetchFileDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
       },
       "totalLoadDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
       },
       "totalParseDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
       }
     }
   },

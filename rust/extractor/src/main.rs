@@ -118,7 +118,7 @@ impl<'a> Extractor<'a> {
         ret
     }
 
-    pub fn fetch_file(
+    pub fn load_source(
         &mut self,
         file: &Path,
         semantics: &Semantics<'_, RootDatabase>,
@@ -131,7 +131,7 @@ impl<'a> Extractor<'a> {
         if semantics.file_to_module_def(id).is_none() {
             return Err("not included as a module".to_string());
         }
-        self.steps.push(ExtractionStep::fetch_file(before, file));
+        self.steps.push(ExtractionStep::load_source(before, file));
         Ok(())
     }
 
@@ -189,7 +189,7 @@ fn main() -> anyhow::Result<()> {
         if let Some((ref db, ref vfs)) = extractor.load_manifest(manifest, &cargo_config) {
             let semantics = Semantics::new(db);
             for file in files {
-                match extractor.fetch_file(file, &semantics, vfs) {
+                match extractor.load_source(file, &semantics, vfs) {
                     Ok(()) => extractor.extract_with_semantics(file, &semantics, vfs),
                     Err(reason) => extractor.extract_without_semantics(file, &reason),
                 };

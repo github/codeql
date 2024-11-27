@@ -3,7 +3,9 @@ use anyhow::Context;
 use chrono::{DateTime, Utc};
 use log::{debug, info};
 use ra_ap_project_model::ProjectManifest;
+use serde::ser::SerializeMap;
 use serde::Serialize;
+use std::collections::HashMap;
 use std::fmt::Display;
 use std::fs::File;
 use std::path::{Path, PathBuf};
@@ -72,27 +74,29 @@ pub struct Diagnostics<T> {
     attributes: T,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Default, Debug, Clone, Copy, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
-enum ExtractionStepTarget {
-    LoadManifest(PathBuf),
-    FetchFile(PathBuf),
-    Parse(PathBuf),
-    Extract(PathBuf),
+enum ExtractionStepKind {
+    #[default]
+    LoadManifest,
+    LoadSource,
+    Parse,
+    Extract,
 }
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ExtractionStep {
-    #[serde(flatten)]
-    target: ExtractionStepTarget,
+    action: ExtractionStepKind,
+    file: PathBuf,
     ms: u128,
 }
 
 impl ExtractionStep {
-    fn new(start: Instant, target: ExtractionStepTarget) -> Self {
+    fn new(start: Instant, action: ExtractionStepKind, file: PathBuf) -> Self {
         let ret = ExtractionStep {
-            target,
+            action,
+            file,
             ms: start.elapsed().as_millis(),
         };
         debug!("{ret:?}");
@@ -102,58 +106,76 @@ impl ExtractionStep {
     pub fn load_manifest(start: Instant, target: &ProjectManifest) -> Self {
         Self::new(
             start,
-            ExtractionStepTarget::LoadManifest(PathBuf::from(target.manifest_path())),
+            ExtractionStepKind::LoadManifest,
+            PathBuf::from(target.manifest_path()),
         )
     }
 
     pub fn parse(start: Instant, target: &Path) -> Self {
-        Self::new(start, ExtractionStepTarget::Parse(PathBuf::from(target)))
+        Self::new(start, ExtractionStepKind::Parse, PathBuf::from(target))
     }
 
     pub fn extract(start: Instant, target: &Path) -> Self {
-        Self::new(start, ExtractionStepTarget::Extract(PathBuf::from(target)))
+        Self::new(start, ExtractionStepKind::Extract, PathBuf::from(target))
     }
 
-    pub fn fetch_file(start: Instant, target: &Path) -> Self {
-        Self::new(
-            start,
-            ExtractionStepTarget::FetchFile(PathBuf::from(target)),
-        )
+    pub fn load_source(start: Instant, target: &Path) -> Self {
+        Self::new(start, ExtractionStepKind::LoadSource, PathBuf::from(target))
     }
 }
 
-#[derive(Debug, Default, Clone, Serialize)]
-#[serde(rename_all = "camelCase")]
-struct HumanReadableDuration {
-    ms: u128,
-    pretty: String,
+#[derive(Debug, Default, Clone)]
+struct HumanReadableDuration(u128);
+
+impl Serialize for HumanReadableDuration {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        let mut map = serializer.serialize_map(Some(2))?;
+        map.serialize_entry("ms", &self.0)?;
+        map.serialize_entry("pretty", &self.pretty())?;
+        map.end()
+    }
 }
 
 impl HumanReadableDuration {
-    pub fn new(ms: u128) -> Self {
-        let seconds = ms / 1000;
-        let minutes = seconds / 60;
+    pub fn add(&mut self, other: u128) {
+        self.0 += other;
+    }
+
+    pub fn pretty(&self) -> String {
+        let milliseconds = self.0 % 1000;
+        let mut seconds = self.0 / 1000;
+        if seconds < 60 {
+            return format!("{seconds}.{milliseconds:03}s");
+        }
+        let mut minutes = seconds / 60;
+        seconds %= 60;
+        if minutes < 60 {
+            return format!("{minutes}min{seconds:02}.{milliseconds:03}s");
+        }
         let hours = minutes / 60;
-        let pretty = format!(
-            "{hours}:{minutes:02}:{seconds:02}.{milliseconds:03}",
-            minutes = minutes % 60,
-            seconds = seconds % 60,
-            milliseconds = ms % 1000,
-        );
-        Self { ms, pretty }
+        minutes %= 60;
+        format!("{hours}h{minutes:02}min{seconds:02}.{milliseconds:03}s")
     }
 }
 
 impl From<u128> for HumanReadableDuration {
     fn from(val: u128) -> Self {
-        HumanReadableDuration::new(val)
+        HumanReadableDuration(val)
     }
 }
 
 impl Display for HumanReadableDuration {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}ms ({})", self.ms, self.pretty)
+        f.write_str(&self.pretty())
     }
+}
+
+#[derive(Debug, Default, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct DurationsSummary {
+    #[serde(flatten)]
+    durations: HashMap<ExtractionStepKind, HumanReadableDuration>,
+    total: HumanReadableDuration,
 }
 
 #[derive(Debug, Default, Clone, Serialize)]
@@ -161,11 +183,7 @@ impl Display for HumanReadableDuration {
 struct ExtractionSummary {
     number_of_manifests: usize,
     number_of_files: usize,
-    total_load_duration: HumanReadableDuration,
-    total_fetch_file_duration: HumanReadableDuration,
-    total_parse_duration: HumanReadableDuration,
-    total_extract_duration: HumanReadableDuration,
-    total_duration: HumanReadableDuration,
+    durations: DurationsSummary,
 }
 
 #[derive(Debug, Default, Clone, Serialize)]
@@ -180,46 +198,32 @@ type ExtractionDiagnostics = Diagnostics<ExtractionAttributes>;
 fn summary(start: Instant, steps: &[ExtractionStep]) -> ExtractionSummary {
     let mut number_of_manifests = 0;
     let mut number_of_files = 0;
-    let mut total_load_duration = 0;
-    let mut total_parse_duration = 0;
-    let mut total_extract_duration = 0;
-    let mut total_fetch_file_duration: u128 = 0;
+    let mut durations = HashMap::new();
     for step in steps {
-        match &step.target {
-            ExtractionStepTarget::LoadManifest(_) => {
+        match &step.action {
+            ExtractionStepKind::LoadManifest => {
                 number_of_manifests += 1;
-                total_load_duration += step.ms;
             }
-            ExtractionStepTarget::FetchFile(_) => {
+            ExtractionStepKind::Parse => {
                 number_of_files += 1;
-                total_fetch_file_duration += step.ms;
             }
-            ExtractionStepTarget::Parse(_) => {
-                total_parse_duration += step.ms;
-            }
-            ExtractionStepTarget::Extract(_) => {
-                total_extract_duration += step.ms;
-            }
+            _ => {}
         }
+        durations
+            .entry(step.action)
+            .or_insert(HumanReadableDuration(0))
+            .add(step.ms);
     }
-    let ret = ExtractionSummary {
+    let total = start.elapsed().as_millis().into();
+    for (key, value) in &durations {
+        info!("total duration ({key:?}): {value}");
+    }
+    info!("total duration: {total}");
+    ExtractionSummary {
         number_of_manifests,
         number_of_files,
-        total_load_duration: total_load_duration.into(),
-        total_fetch_file_duration: total_fetch_file_duration.into(),
-        total_parse_duration: total_parse_duration.into(),
-        total_extract_duration: total_extract_duration.into(),
-        total_duration: start.elapsed().as_millis().into(),
-    };
-    info!("total loadimg duration: {}", ret.total_load_duration);
-    info!(
-        "total file fetching duration: {}",
-        ret.total_fetch_file_duration
-    );
-    info!("total parsing duration: {}", ret.total_parse_duration);
-    info!("total extracting duration: {}", ret.total_extract_duration);
-    info!("total duration: {}", ret.total_duration);
-    ret
+        durations: DurationsSummary { durations, total },
+    }
 }
 
 pub fn emit_extraction_diagnostics(

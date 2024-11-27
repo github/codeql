@@ -17,8 +17,8 @@ def manifests(cwd):
 @pytest.fixture
 def rust_check_diagnostics(check_diagnostics):
     check_diagnostics.replacements += [
-        (r'"ms"\s*:\s*[0-9]+', '"ms": "REDACTED"'),
-        (r'"pretty"\s*:\s*"[0-9]+:[0-9]{2}:[0-9]{2}.[0-9]{3}"', '"pretty": "REDACTED"'),
+        (r'"ms"\s*:\s*[0-9]+', '"ms": "__REDACTED__"'),
+        (r'"pretty"\s*:\s*"[^"]*"', '"pretty": "__REDACTED__"'),
     ]
     check_diagnostics.skip += [
         "attributes.steps",  # the order of the steps is not stable
