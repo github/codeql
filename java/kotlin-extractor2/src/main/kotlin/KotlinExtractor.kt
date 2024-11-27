@@ -292,7 +292,7 @@ fun doAnalysis(
                                         // stack overflow or an assertion failure in one file.
                                     } catch (e: Throwable) {
                                         fileExtractionProblems.setNonRecoverableProblem()
-                                        loggerBase.error(dtw, "Extraction failed while extracting '${psiFile.virtualFilePath}'.", e.stackTraceToString())
+                                        loggerBase.error(dtw, "Extraction failed while extracting '${psiFile.virtualFilePath}'.", e)
                                     }
                                 } else {
                                     System.out.println("Warning: Not a KtFile")

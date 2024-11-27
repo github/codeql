@@ -286,6 +286,10 @@ class LoggerBase(val diagnosticCounter: DiagnosticCounter) : BasicLogger {
         error(dtw, msg, extraInfo, null)
     }
 
+    fun error(dtw: DiagnosticTrapWriter, msg: String, exn: Throwable) {
+        error(dtw, msg, exn.stackTraceToString())
+    }
+
     fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?, loggerState: LoggerState?) {
         if (verbosity >= 1) {
             diagnostic(dtw, Severity.Error, msg, extraInfo, loggerState)
@@ -385,7 +389,7 @@ open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter) : B
     }
 
     fun error(msg: String, exn: Throwable) {
-        error(msg, exn.stackTraceToString())
+        loggerBase.error(dtw, msg, exn)
     }
 }
 
