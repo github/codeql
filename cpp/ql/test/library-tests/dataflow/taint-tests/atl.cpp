@@ -166,3 +166,86 @@ void test_CA2WEX() {
     sink(a.m_psz); // $ ir
   }
 }
+
+template<typename T>
+struct CElementTraitsBase {
+  typedef const T& INARGTYPE;
+  typedef T& OUTARGTYPE;
+
+  static void CopyElements(T* pDest, const T* pSrc, size_t nElements);
+  static void RelocateElements(T* pDest, T* pSrc, size_t nElements);
+};
+
+template <typename T>
+struct CDefaultElementTraits : public CElementTraitsBase<T> {};
+
+template<typename T>
+struct CElementTraits : public CDefaultElementTraits<T> {};
+
+template<typename E, class ETraits = CElementTraits<E>>
+struct CAtlArray {
+  using INARGTYPE = typename ETraits::INARGTYPE;
+  using OUTARGTYPE = typename ETraits::OUTARGTYPE;
+
+  CAtlArray() throw();
+  ~CAtlArray() throw();
+
+  size_t Add(INARGTYPE element);
+  size_t Add();
+  size_t Append(const CAtlArray<E, ETraits>& aSrc);
+  void Copy(const CAtlArray<E, ETraits>& aSrc);
+  const E& GetAt(size_t iElement) const throw();
+  E& GetAt(size_t iElement) throw();
+  size_t GetCount() const throw();
+  E* GetData() throw();
+  const E* GetData() const throw();
+  void InsertArrayAt(size_t iStart, const CAtlArray<E, ETraits>* paNew);
+  void InsertAt(size_t iElement, INARGTYPE element, size_t nCount);
+  bool IsEmpty() const throw();
+  void RemoveAll() throw();
+  void RemoveAt(size_t iElement, size_t nCount);
+  void SetAt(size_t iElement, INARGTYPE element);
+  void SetAtGrow(size_t iElement, INARGTYPE element);
+  bool SetCount(size_t nNewSize, int nGrowBy);
+  E& operator[](size_t ielement) throw();
+  const E& operator[](size_t ielement) const throw();
+};
+
+void test_CAtlArray() {
+  int x = source<int>();
+
+  {
+    CAtlArray<int> a;
+    a.Add(x);
+    sink(a[0]); // $ MISSING: ir
+    a.Add(0);
+    sink(a[0]); // $ MISSING: ir
+
+    CAtlArray<int> a2;
+    sink(a2[0]);
+    a2.Append(a);
+    sink(a2[0]); // $ MISSING: ir
+
+    CAtlArray<int> a3;
+    sink(a3[0]);
+    a3.Copy(a2);
+    sink(a3[0]); // $ MISSING: ir
+
+    sink(a3.GetAt(0)); // $ MISSING: ir
+    sink(*a3.GetData()); // $ MISSING: ir
+
+    CAtlArray<int> a4;
+    sink(a4.GetAt(0));
+    a4.InsertArrayAt(0, &a3);
+    sink(a4.GetAt(0)); // $ MISSING: ir
+  }
+  {
+    CAtlArray<int> a5;
+    a5.InsertAt(0, source<int>(), 1);
+    sink(a5[0]); // $ MISSING: ir
+
+    CAtlArray<int> a6;
+    a6.SetAtGrow(0, source<int>());
+    sink(a6[0]); // $ MISSING: ir
+  }
+}
