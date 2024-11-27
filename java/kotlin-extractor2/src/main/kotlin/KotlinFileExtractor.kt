@@ -1,7 +1,9 @@
 package com.github.codeql
 
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.analysis.api.components.KaDiagnosticCheckerFilter
+import org.jetbrains.kotlin.analysis.api.diagnostics.KaSeverity
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.KtNodeTypes
@@ -207,42 +209,37 @@ open class KotlinFileExtractor(
 
     // TODO: Add comment
     private fun extractDiagnostics(file: KtFile) {
-        // TODO: Put this in the database
-        println("=== Diagnostics")
         val dcf = KaDiagnosticCheckerFilter.ONLY_COMMON_CHECKERS
         for (d in file.collectDiagnostics(dcf)) {
-            println("--- Diagnostic:")
-            println(d.factoryName)
-            println(d.severity)
-            println(d.defaultMessage)
-            // TODO: We could try to link diagnostics to d.psi, but we
-            // don't have labels for lots of things. We'd either have
-            // to cache the labels, or extract diagnostics from all the
-            // element extractors.
-            for (tr in d.textRanges) {
-                val loc = getLocationInfo(file, tr)
-                println(loc)
+            val diagLabel = tw.getFreshIdLabel<DbDiagnostic>()
+            val severity = when (d.severity) {
+                               KaSeverity.ERROR -> Severity.Error.sev
+                               KaSeverity.WARNING -> Severity.Warn.sev
+                               KaSeverity.INFO -> null
+                           }
+            if (severity != null) {
+                val location = if (d.textRanges.isEmpty()) {
+                                   tw.getWholeFileLocation()
+                               } else {
+                                   // We just use a random location from the set
+                                   tw.getLocation(file, d.textRanges.first())
+                               }
+                tw.writeDiagnostics(
+                    diagLabel,
+                    "CodeQL Kotlin: Analysis API",
+                    severity,
+                    d.factoryName,
+                    d.defaultMessage,
+                    "",
+                    location)
+                // TODO: We could try to link diagnostics to d.psi, but we
+                // don't have labels for lots of things. We'd either have
+                // to cache the labels, or extract diagnostics from all the
+                // element extractors.
             }
         }
         println("--- End diagnostics")
     }
-
-    // TODO: Common this up with TrapWriter's Location
-    private data class Location(val startLine: Int, val startColumn: Int, val endLine: Int, val endColumn: Int)
-
-    // TODO: Common this up with TrapWriter's getLocationInfo
-    private fun getLocationInfo(file: KtFile, range: TextRange): Location {
-        val document = file.getViewProvider().getDocument()
-        val start = range.getStartOffset()
-        val startLine0 = document.getLineNumber(start)
-        val startCol0 = start - document.getLineStartOffset(startLine0)
-        val end = range.getEndOffset()
-        val endLine0 = document.getLineNumber(end)
-        val endCol1 = end - document.getLineStartOffset(endLine0)
-        // TODO: unknown/synthetic locations?
-        return Location(startLine0 + 1, startCol0 + 1, endLine0 + 1, endCol1)
-    }
-
 
     /*
     OLD: KE1

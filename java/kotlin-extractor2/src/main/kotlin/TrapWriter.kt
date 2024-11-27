@@ -4,7 +4,9 @@ package com.github.codeql
 OLD: KE1
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
 */
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.semmle.extractor.java.PopulateFile
 import com.semmle.util.unicode.UTF8Util
 import org.jetbrains.kotlin.analysis.api.symbols.KaVariableSymbol
@@ -406,9 +408,8 @@ open class FileTrapWriter(
 
     private data class Location(val startLine: Int, val startColumn: Int, val endLine: Int, val endColumn: Int)
 
-    private fun getLocationInfo(e: PsiElement): Location {
-        val range = e.getTextRange()
-        val document = e.getContainingFile().getViewProvider().getDocument()
+    private fun getLocationInfo(file: PsiFile, range: TextRange): Location {
+        val document = file.getViewProvider().getDocument()
         val start = range.getStartOffset()
         val startLine0 = document.getLineNumber(start)
         val startCol0 = start - document.getLineStartOffset(startLine0)
@@ -420,9 +421,16 @@ open class FileTrapWriter(
     }
 
     /** Gets a label for the location of `e`. */
-    fun getLocation(e: PsiElement): Label<DbLocation> {
-        val loc = getLocationInfo(e)
+    fun getLocation(file: PsiFile, range: TextRange): Label<DbLocation> {
+        val loc = getLocationInfo(file, range)
         return getLocation(fileId, loc.startLine, loc.startColumn, loc.endLine, loc.endColumn)
+    }
+
+    /** Gets a label for the location of `e`. */
+    fun getLocation(e: PsiElement): Label<DbLocation> {
+        val file = e.getContainingFile()
+        val range = e.getTextRange()
+        return getLocation(file, range)
     }
 
     /*
@@ -447,7 +455,9 @@ open class FileTrapWriter(
      * messages.
      */
     /* TODO open */ fun getLocationString(e: PsiElement): String {
-        val loc = getLocationInfo(e)
+        val file = e.getContainingFile()
+        val range = e.getTextRange()
+        val loc = getLocationInfo(file, range)
         return "file://$filePath:${loc.startLine}:${loc.startColumn}:${loc.endLine}:${loc.endColumn}"
 
         /*
