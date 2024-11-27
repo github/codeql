@@ -4,6 +4,7 @@ import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.analysis.api.symbols.KaSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.markers.KaNamedSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.psiSafe
+import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamed
 import java.io.BufferedWriter
@@ -110,7 +111,7 @@ sealed class PsiElementOrSymbol {
     abstract fun getName(): String
     companion object {
         fun of(e: PsiElement) = PsiElementWrapper(e)
-        fun of(e: KaSymbol) = e.psiSafe<PsiElement>()?.let { of(it) } ?: SymbolWrapper(e)
+        fun of(e: KaSymbol) = e.psiSafe<KtElement>()?.let { of(it) } ?: SymbolWrapper(e)
     }
 }
 
