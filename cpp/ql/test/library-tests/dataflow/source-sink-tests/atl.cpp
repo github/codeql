@@ -135,3 +135,47 @@ void test_CAtlFile() {
   char buffer[1024];
   catFile.Read(buffer, 1024); // $ local_source
 }
+
+struct CAtlFileMappingBase {
+  CAtlFileMappingBase(CAtlFileMappingBase& orig);
+  CAtlFileMappingBase() throw();
+  ~CAtlFileMappingBase() throw();
+
+  HRESULT CopyFrom(CAtlFileMappingBase& orig) throw();
+  void* GetData() const throw();
+  HANDLE GetHandle() throw ();
+  SIZE_T GetMappingSize() throw();
+
+  HRESULT MapFile(
+      HANDLE hFile,
+      SIZE_T nMappingSize,
+      ULONGLONG nOffset,
+      DWORD dwMappingProtection,
+      DWORD dwViewDesiredAccess) throw();
+
+    HRESULT MapSharedMem(
+      SIZE_T nMappingSize,
+      LPCTSTR szName,
+      BOOL* pbAlreadyExisted,
+      LPSECURITY_ATTRIBUTES lpsa,
+      DWORD dwMappingProtection,
+      DWORD dwViewDesiredAccess) throw();
+
+    HRESULT OpenMapping(
+      LPCTSTR szName,
+      SIZE_T nMappingSize,
+      ULONGLONG nOffset,
+      DWORD dwViewDesiredAccess) throw();
+
+    HRESULT Unmap() throw();
+};
+
+template <typename T>
+struct CAtlFileMapping : public CAtlFileMappingBase {
+  operator T*() const throw();
+};
+
+void test_CAtlFileMapping(CAtlFileMapping<char> mapping) {
+  char* data = static_cast<char*>(mapping); // $ MISSING: local_source
+  void* data2 = mapping.GetData(); // $ MISSING: local_source
+}
