@@ -1132,57 +1132,6 @@ open class KotlinUsesExtractor(
                     .firstOrNull()
                 ?: false
 
-        /**
-         * Class to hold labels for generated classes around local functions, lambdas, function
-         * references, and property references.
-         */
-        open class GeneratedClassLabels(
-            val type: TypeResults,
-            val constructor: Label<DbConstructor>,
-            val constructorBlock: Label<DbBlock>
-        )
-
-        /**
-         * Class to hold labels generated for locally visible functions, such as
-         * - local functions,
-         * - lambdas, and
-         * - wrappers around function references.
-         */
-        class LocallyVisibleFunctionLabels(
-            type: TypeResults,
-            constructor: Label<DbConstructor>,
-            constructorBlock: Label<DbBlock>,
-            val function: Label<DbMethod>
-        ) : GeneratedClassLabels(type, constructor, constructorBlock)
-
-        /**
-         * Gets the labels for functions belonging to
-         * - local functions, and
-         * - lambdas.
-         */
-        fun getLocallyVisibleFunctionLabels(f: IrFunction): LocallyVisibleFunctionLabels {
-            if (!f.isLocalFunction()) {
-                logger.error("Extracting a non-local function as a local one")
-            }
-
-            var res = tw.lm.locallyVisibleFunctionLabelMapping[f]
-            if (res == null) {
-                val javaResult = TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", "")
-                val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
-                tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
-                res =
-                    LocallyVisibleFunctionLabels(
-                        TypeResults(javaResult, kotlinResult),
-                        tw.getFreshIdLabel(),
-                        tw.getFreshIdLabel(),
-                        tw.getFreshIdLabel()
-                    )
-                tw.lm.locallyVisibleFunctionLabelMapping[f] = res
-            }
-
-            return res
-        }
-
         fun getExistingLocallyVisibleFunctionLabel(f: IrFunction): Label<DbMethod>? {
             if (!f.isLocalFunction()) {
                 return null

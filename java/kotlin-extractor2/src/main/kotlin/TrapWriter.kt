@@ -1,14 +1,12 @@
 package com.github.codeql
 
-/*
-OLD: KE1
-import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
-*/
+import LocallyVisibleFunctionLabels
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.semmle.extractor.java.PopulateFile
 import com.semmle.util.unicode.UTF8Util
+import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaVariableSymbol
 import java.io.BufferedWriter
 import java.io.File
@@ -62,12 +60,33 @@ class TrapLabelManager {
         }
     }
 
+    // TODO: This will only be used in a TrapWriter for a source file, not a diagnostic TRAP writer. Consider moving this out of this class
+    private val locallyVisibleFunctionLabelMapping: MutableMap<KaFunctionSymbol, LocallyVisibleFunctionLabels> =
+        mutableMapOf()
+
+    fun getLocallyVisibleFunctionLabelMapping(
+        key: KaFunctionSymbol
+    ): LocallyVisibleFunctionLabels {
+        return locallyVisibleFunctionLabelMapping[key]!!
+    }
+
+    fun getOrAddLocallyVisibleFunctionLabelMapping(
+        key: KaFunctionSymbol,
+        add: (KaFunctionSymbol) -> LocallyVisibleFunctionLabels
+    ): LocallyVisibleFunctionLabels {
+        val res = locallyVisibleFunctionLabelMapping[key]
+        if (res != null) {
+            return res
+        }
+
+        val labels = add(key)
+        locallyVisibleFunctionLabelMapping[key] = labels
+        return labels
+    }
+
     /*
     OLD: KE1
         val anonymousTypeMapping: MutableMap<IrClass, TypeResults> = mutableMapOf()
-
-        val locallyVisibleFunctionLabelMapping: MutableMap<IrFunction, LocallyVisibleFunctionLabels> =
-            mutableMapOf()
 
         /**
          * The set of labels of generic specialisations that we have extracted in this TRAP file. We

@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.github.codeql.useType
 import com.github.codeql.utils.getJvmName
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.*
@@ -212,13 +213,11 @@ private val IrDeclaration.isAnonymousFunction
  */
 context(KaSession)
 fun KotlinUsesExtractor.getFunctionShortName(f: KaFunctionSymbol): FunctionNames {
-    /* OLD: KE1
-    if (f.origin == IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA || f.isAnonymousFunction)
+    if (f.isLocal)
         return FunctionNames(
-            OperatorNameConventions.INVOKE.asString(),
-            OperatorNameConventions.INVOKE.asString()
+            "invoke",
+            "invoke"
         )
-    */
     fun getSuffixIfInternal() = ""
         /* OLD: KE1
         if (
@@ -281,10 +280,12 @@ fun KotlinUsesExtractor.getFunctionShortName(f: KaFunctionSymbol): FunctionNames
             )
         }
     }
+
+    // TODO: Justify or drop !!
+    val name = if (f is KaConstructorSymbol) f.containingSymbol!!.name!! else f.name!!
     return FunctionNames(
-        // TODO: Justify or drop !!
-        getJvmName(f) ?: "${f.name!!.asString()}${getSuffixIfInternal()}",
-        f.name!!.identifier
+        getJvmName(f) ?: "${name.asString()}${getSuffixIfInternal()}",
+        name.identifier
     )
 }
 
@@ -534,6 +535,7 @@ OLD: KE1
                         } else {
                             val shortNames = getFunctionShortName(f)
         */
+        val shortNames = getFunctionShortName(f)
         val methodId = id.cast<DbMethod>()
         extractMethod(
             methodId,
@@ -541,7 +543,7 @@ OLD: KE1
             OLD: KE1
                                     locId,
             */
-            f.name!!.asString(), // TODO: Remove !!, // OLD: KE1: shortNames.nameInDB,
+            shortNames.nameInDB,
             f.returnType, // OLD: KE1: substReturnType,
             paramsSignature,
             parentId,
@@ -638,6 +640,37 @@ OLD: KE1
     }
 }
 
+fun KotlinFileExtractor.extractValueParameter(
+    id: Label<out DbParam>,
+    t: KaType,
+    name: String?,
+    locId: Label<DbLocation>,
+    parent: Label<out DbCallable>,
+    idx: Int,
+    paramSourceDeclaration: Label<out DbParam>,
+    isVararg: Boolean,
+    isNoinline: Boolean,
+    isCrossinline: Boolean
+): TypeResults {
+    val type = useType(t)
+    tw.writeParams(id, type.javaResult.id, idx, parent, paramSourceDeclaration)
+    tw.writeParamsKotlinType(id, type.kotlinResult.id)
+    tw.writeHasLocation(id, locId)
+    if (name != null) {
+        tw.writeParamName(id, name)
+    }
+    if (isVararg) {
+        tw.writeIsVarargsParam(id)
+    }
+    if (isNoinline) {
+        addModifiers(id, "noinline")
+    }
+    if (isCrossinline) {
+        addModifiers(id, "crossinline")
+    }
+    return type
+}
+
 // TODO: Can this be inlined?
 private fun KotlinFileExtractor.extractMethod(
     id: Label<out DbMethod>,
@@ -701,13 +734,10 @@ fun <T : DbCallable> KotlinUsesExtractor.useFunction(
             noReplace: Boolean = false
     */
 ): Label<out T> {
-    /*
-    OLD: KE1
-            if (f.isLocalFunction()) {
-                val ids = getLocallyVisibleFunctionLabels(f)
-                return ids.function.cast<T>()
-            }
-    */
+    if (f.isLocal) {
+        val ids = tw.lm.getLocallyVisibleFunctionLabelMapping(f)
+        return ids.function.cast<T>()
+    }
     val javaFun = f // TODO: kotlinFunctionToJavaEquivalent(f, noReplace)
     return useFunction(f, javaFun, parentId /* TODO , classTypeArgsIncludingOuterClasses */)
 }
