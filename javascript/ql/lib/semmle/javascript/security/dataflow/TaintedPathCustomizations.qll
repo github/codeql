@@ -305,9 +305,9 @@ module TaintedPath {
       input = this.getReceiver() and
       output = this and
       this.isGlobal() and
-      exists(RegExpLiteral literal, RegExpTerm term |
-        this.getRegExp().asExpr() = literal and
-        literal.getRoot() = term and
+      exists(DataFlow::RegExpCreationNode regexp, RegExpTerm term |
+        this.getRegExp() = regexp and
+        regexp.getRoot() = term and
         not term.getAMatchedString() = "/"
       |
         term.getAMatchedString() = "." or
