@@ -364,26 +364,26 @@ void test_CRegKey() {
   CRegKey key;
   char data[1024];
   ULONG bytesRead;
-  key.QueryBinaryValue("foo", data, &bytesRead); // $ MISSING: local_source
+  key.QueryBinaryValue("foo", data, &bytesRead); // $ local_source
 
   DWORD value;
-  key.QueryDWORDValue("foo", value); // $ MISSING: local_source
+  key.QueryDWORDValue("foo", value); // $ local_source
   
   GUID guid;
-  key.QueryGUIDValue("foo", guid); // $ MISSING: local_source
+  key.QueryGUIDValue("foo", guid); // $ local_source
   
-  key.QueryMultiStringValue("foo", data, &bytesRead); // $ MISSING: local_source
+  key.QueryMultiStringValue("foo", data, &bytesRead); // $ local_source
   
   ULONGLONG qword;
-  key.QueryQWORDValue("foo", qword); // $ MISSING: local_source
+  key.QueryQWORDValue("foo", qword); // $ local_source
   
-  key.QueryStringValue("foo", data, &bytesRead); // $ MISSING: local_source
+  key.QueryStringValue("foo", data, &bytesRead); // $ local_source
   
-  key.QueryValue(data, "foo", &bytesRead); // $ MISSING: local_source
+  key.QueryValue(data, "foo", &bytesRead); // $ local_source
   
   DWORD type;
-  key.QueryValue("foo", &type, data, &bytesRead); // $ MISSING: local_source
+  key.QueryValue("foo", &type, data, &bytesRead); // $ local_source
   
   DWORD value2;
-  key.QueryValue(value2, "foo"); // $ MISSING: local_source
+  key.QueryValue(value2, "foo"); // $ local_source
 }

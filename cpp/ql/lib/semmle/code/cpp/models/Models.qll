@@ -56,3 +56,4 @@ private import implementations.CPathT
 private import implementations.CAtlFile
 private import implementations.CAtlFileMapping
 private import implementations.CAtlTemporaryFile
+private import implementations.CRegKey
