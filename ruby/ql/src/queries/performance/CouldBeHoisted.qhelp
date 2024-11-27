@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When a Rails ActiveRecord query is executed in a loop, it is potentially an n+1 problem.
+This query identifies situations where an ActiveRecord query execution could be pulled out of a loop.
+</p>
+</overview>
+<recommendation>
+<p>If possible, pull the query out of the loop, thus replacing the many calls with a single one.
+</p>
+</recommendation>
+<example>
+<p>The following (suboptimal) example code queries the User object in each iteration of the loop:</p>
+<sample src="examples/straight_loop.rb" />
+<p>To improve the performance, we instead query the User object once outside the loop, gathereing all necessary information:</p>
+<sample src="examples/preload.rb" />
+</example>
+</qhelp>
