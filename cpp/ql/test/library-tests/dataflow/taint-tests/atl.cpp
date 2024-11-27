@@ -602,3 +602,107 @@ void test_CComSafeArray() {
     sink(c[0L]); // $ ir
   }
 }
+
+template <typename StringType>
+struct CPathT {
+  typedef StringType PCXSTR; // simplified
+  CPathT(PCXSTR pszPath);
+  CPathT(const CPathT<StringType>& path);
+  CPathT() throw();
+
+  void AddBackslash();
+  BOOL AddExtension(PCXSTR pszExtension);
+  BOOL Append(PCXSTR pszMore);
+  void BuildRoot(int iDrive);
+  void Canonicalize();
+  void Combine(PCXSTR pszDir, PCXSTR pszFile);
+  CPathT<StringType> CommonPrefix(PCXSTR pszOther);
+  BOOL CompactPathEx(UINT nMaxChars, DWORD dwFlags);
+  BOOL FileExists() const;
+  int FindExtension() const;
+  int FindFileName() const;
+  int GetDriveNumber() const;
+  StringType GetExtension() const;
+  BOOL IsDirectory() const;
+  BOOL IsFileSpec() const;
+  BOOL IsPrefix(PCXSTR pszPrefix) const;
+  BOOL IsRelative() const;
+  BOOL IsRoot() const;
+  BOOL IsSameRoot(PCXSTR pszOther) const;
+  BOOL IsUNC() const;
+  BOOL IsUNCServer() const;
+  BOOL IsUNCServerShare() const;
+  BOOL MakePretty();
+  BOOL MatchSpec(PCXSTR pszSpec) const;
+  void QuoteSpaces();
+  BOOL RelativePathTo(
+      PCXSTR pszFrom,
+      DWORD dwAttrFrom,
+      PCXSTR pszTo,
+      DWORD dwAttrTo);
+  void RemoveArgs();
+  void RemoveBackslash();
+  void RemoveBlanks();
+  void RemoveExtension();
+  BOOL RemoveFileSpec();
+  BOOL RenameExtension(PCXSTR pszExtension);
+  int SkipRoot() const;
+  void StripPath();
+  BOOL StripToRoot();
+  void UnquoteSpaces();
+  operator const StringType&() const throw();
+  operator PCXSTR() const throw();
+  operator StringType&() throw();
+  CPathT<StringType>& operator+=(PCXSTR pszMore);
+  
+  StringType m_strPath;
+};
+
+using CPath = CPathT<char*>;
+
+void test_CPathT() {
+  char* x = indirect_source<char>();
+  CPath p(x);
+  sink(static_cast<char*>(p)); // $ MISSING: ir
+  sink(p.m_strPath); // $ MISSING: ir
+
+  CPath p2(p);
+  sink(p2.m_strPath); // $ MISSING: ir
+
+  {
+    CPath p;
+    p.AddExtension(x);
+    sink(p.m_strPath); // $ MISSING: ir
+  }
+  {
+    CPath p;
+    p.Append(x);
+    sink(p.m_strPath); // $ MISSING: ir
+
+    CPath p2;
+    p2 += p;
+    sink(p.m_strPath); // $ MISSING: ir
+
+    CPath p3;
+    p3 += x;
+    sink(p.m_strPath); // $ MISSING: ir
+  }
+
+  {
+    CPath p;
+    p.Combine(x, nullptr);
+    sink(p.m_strPath); // $ MISSING: ir
+  }
+  {
+    CPath p;
+    p.Combine(nullptr, x);
+    sink(p.m_strPath); // $ MISSING: ir
+  }
+
+  {
+    CPath p;
+    auto p2 = p.CommonPrefix(x);
+    sink(p2.m_strPath); // $ MISSING: ir
+    sink(p2.GetExtension()); // $ MISSING: ir
+  }
+}
