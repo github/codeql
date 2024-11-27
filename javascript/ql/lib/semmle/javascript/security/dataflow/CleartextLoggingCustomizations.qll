@@ -36,7 +36,7 @@ module CleartextLogging {
    */
   class MaskingReplacer extends Barrier, StringReplaceCall {
     MaskingReplacer() {
-      this.isGlobal() and
+      this.maybeGlobal() and
       exists(this.getRawReplacement().getStringValue()) and
       exists(DataFlow::RegExpCreationNode regexpObj |
         this.(StringReplaceCall).getRegExp() = regexpObj and
