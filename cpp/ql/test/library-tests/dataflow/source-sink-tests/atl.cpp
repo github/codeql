@@ -176,6 +176,6 @@ struct CAtlFileMapping : public CAtlFileMappingBase {
 };
 
 void test_CAtlFileMapping(CAtlFileMapping<char> mapping) {
-  char* data = static_cast<char*>(mapping); // $ MISSING: local_source
-  void* data2 = mapping.GetData(); // $ MISSING: local_source
+  char* data = static_cast<char*>(mapping); // $ local_source
+  void* data2 = mapping.GetData(); // $ local_source
 }
