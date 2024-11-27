@@ -5,24 +5,24 @@ edges
 | main.rs:31:13:31:21 | source(...) | main.rs:36:10:36:10 | b | provenance |  |
 | main.rs:45:15:45:23 | source(...) | main.rs:47:10:47:10 | b | provenance |  |
 | main.rs:53:9:53:17 | source(...) | main.rs:54:10:54:10 | i | provenance |  |
-| main.rs:117:14:117:29 | Some(...) [Some] | main.rs:120:9:120:15 | TupleStructPat [Some] | provenance |  |
-| main.rs:117:19:117:28 | source(...) | main.rs:117:14:117:29 | Some(...) [Some] | provenance |  |
-| main.rs:120:9:120:15 | TupleStructPat [Some] | main.rs:120:14:120:14 | n | provenance |  |
-| main.rs:120:14:120:14 | n | main.rs:120:25:120:25 | n | provenance |  |
-| main.rs:135:14:135:39 | ...::A(...) [A] | main.rs:138:9:138:25 | TupleStructPat [A] | provenance |  |
-| main.rs:135:14:135:39 | ...::A(...) [A] | main.rs:142:10:142:26 | TupleStructPat [A] | provenance |  |
-| main.rs:135:29:135:38 | source(...) | main.rs:135:14:135:39 | ...::A(...) [A] | provenance |  |
-| main.rs:138:9:138:25 | TupleStructPat [A] | main.rs:138:24:138:24 | n | provenance |  |
-| main.rs:138:24:138:24 | n | main.rs:138:35:138:35 | n | provenance |  |
-| main.rs:142:10:142:26 | TupleStructPat [A] | main.rs:142:25:142:25 | n | provenance |  |
-| main.rs:142:25:142:25 | n | main.rs:142:57:142:57 | n | provenance |  |
-| main.rs:174:14:176:5 | ...::C {...} [C] | main.rs:179:9:179:38 | ...::C {...} [C] | provenance |  |
-| main.rs:174:14:176:5 | ...::C {...} [C] | main.rs:183:10:183:39 | ...::C {...} [C] | provenance |  |
-| main.rs:175:18:175:27 | source(...) | main.rs:174:14:176:5 | ...::C {...} [C] | provenance |  |
-| main.rs:179:9:179:38 | ...::C {...} [C] | main.rs:179:36:179:36 | n | provenance |  |
-| main.rs:179:36:179:36 | n | main.rs:179:48:179:48 | n | provenance |  |
-| main.rs:183:10:183:39 | ...::C {...} [C] | main.rs:183:37:183:37 | n | provenance |  |
-| main.rs:183:37:183:37 | n | main.rs:183:83:183:83 | n | provenance |  |
+| main.rs:214:14:214:29 | Some(...) [Some] | main.rs:217:9:217:15 | TupleStructPat [Some] | provenance |  |
+| main.rs:214:19:214:28 | source(...) | main.rs:214:14:214:29 | Some(...) [Some] | provenance |  |
+| main.rs:217:9:217:15 | TupleStructPat [Some] | main.rs:217:14:217:14 | n | provenance |  |
+| main.rs:217:14:217:14 | n | main.rs:217:25:217:25 | n | provenance |  |
+| main.rs:232:14:232:39 | ...::A(...) [A] | main.rs:235:9:235:25 | TupleStructPat [A] | provenance |  |
+| main.rs:232:14:232:39 | ...::A(...) [A] | main.rs:239:9:239:25 | TupleStructPat [A] | provenance |  |
+| main.rs:232:29:232:38 | source(...) | main.rs:232:14:232:39 | ...::A(...) [A] | provenance |  |
+| main.rs:235:9:235:25 | TupleStructPat [A] | main.rs:235:24:235:24 | n | provenance |  |
+| main.rs:235:24:235:24 | n | main.rs:235:35:235:35 | n | provenance |  |
+| main.rs:239:9:239:25 | TupleStructPat [A] | main.rs:239:24:239:24 | n | provenance |  |
+| main.rs:239:24:239:24 | n | main.rs:239:55:239:55 | n | provenance |  |
+| main.rs:271:14:273:5 | ...::C {...} [C] | main.rs:276:9:276:38 | ...::C {...} [C] | provenance |  |
+| main.rs:271:14:273:5 | ...::C {...} [C] | main.rs:280:9:280:38 | ...::C {...} [C] | provenance |  |
+| main.rs:272:18:272:27 | source(...) | main.rs:271:14:273:5 | ...::C {...} [C] | provenance |  |
+| main.rs:276:9:276:38 | ...::C {...} [C] | main.rs:276:36:276:36 | n | provenance |  |
+| main.rs:276:36:276:36 | n | main.rs:276:48:276:48 | n | provenance |  |
+| main.rs:280:9:280:38 | ...::C {...} [C] | main.rs:280:36:280:36 | n | provenance |  |
+| main.rs:280:36:280:36 | n | main.rs:280:81:280:81 | n | provenance |  |
 nodes
 | main.rs:15:10:15:18 | source(...) | semmle.label | source(...) |
 | main.rs:19:13:19:21 | source(...) | semmle.label | source(...) |
@@ -35,27 +35,27 @@ nodes
 | main.rs:47:10:47:10 | b | semmle.label | b |
 | main.rs:53:9:53:17 | source(...) | semmle.label | source(...) |
 | main.rs:54:10:54:10 | i | semmle.label | i |
-| main.rs:117:14:117:29 | Some(...) [Some] | semmle.label | Some(...) [Some] |
-| main.rs:117:19:117:28 | source(...) | semmle.label | source(...) |
-| main.rs:120:9:120:15 | TupleStructPat [Some] | semmle.label | TupleStructPat [Some] |
-| main.rs:120:14:120:14 | n | semmle.label | n |
-| main.rs:120:25:120:25 | n | semmle.label | n |
-| main.rs:135:14:135:39 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
-| main.rs:135:29:135:38 | source(...) | semmle.label | source(...) |
-| main.rs:138:9:138:25 | TupleStructPat [A] | semmle.label | TupleStructPat [A] |
-| main.rs:138:24:138:24 | n | semmle.label | n |
-| main.rs:138:35:138:35 | n | semmle.label | n |
-| main.rs:142:10:142:26 | TupleStructPat [A] | semmle.label | TupleStructPat [A] |
-| main.rs:142:25:142:25 | n | semmle.label | n |
-| main.rs:142:57:142:57 | n | semmle.label | n |
-| main.rs:174:14:176:5 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
-| main.rs:175:18:175:27 | source(...) | semmle.label | source(...) |
-| main.rs:179:9:179:38 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
-| main.rs:179:36:179:36 | n | semmle.label | n |
-| main.rs:179:48:179:48 | n | semmle.label | n |
-| main.rs:183:10:183:39 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
-| main.rs:183:37:183:37 | n | semmle.label | n |
-| main.rs:183:83:183:83 | n | semmle.label | n |
+| main.rs:214:14:214:29 | Some(...) [Some] | semmle.label | Some(...) [Some] |
+| main.rs:214:19:214:28 | source(...) | semmle.label | source(...) |
+| main.rs:217:9:217:15 | TupleStructPat [Some] | semmle.label | TupleStructPat [Some] |
+| main.rs:217:14:217:14 | n | semmle.label | n |
+| main.rs:217:25:217:25 | n | semmle.label | n |
+| main.rs:232:14:232:39 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
+| main.rs:232:29:232:38 | source(...) | semmle.label | source(...) |
+| main.rs:235:9:235:25 | TupleStructPat [A] | semmle.label | TupleStructPat [A] |
+| main.rs:235:24:235:24 | n | semmle.label | n |
+| main.rs:235:35:235:35 | n | semmle.label | n |
+| main.rs:239:9:239:25 | TupleStructPat [A] | semmle.label | TupleStructPat [A] |
+| main.rs:239:24:239:24 | n | semmle.label | n |
+| main.rs:239:55:239:55 | n | semmle.label | n |
+| main.rs:271:14:273:5 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
+| main.rs:272:18:272:27 | source(...) | semmle.label | source(...) |
+| main.rs:276:9:276:38 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
+| main.rs:276:36:276:36 | n | semmle.label | n |
+| main.rs:276:48:276:48 | n | semmle.label | n |
+| main.rs:280:9:280:38 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
+| main.rs:280:36:280:36 | n | semmle.label | n |
+| main.rs:280:81:280:81 | n | semmle.label | n |
 subpaths
 testFailures
 #select
@@ -65,8 +65,8 @@ testFailures
 | main.rs:36:10:36:10 | b | main.rs:31:13:31:21 | source(...) | main.rs:36:10:36:10 | b | $@ | main.rs:31:13:31:21 | source(...) | source(...) |
 | main.rs:47:10:47:10 | b | main.rs:45:15:45:23 | source(...) | main.rs:47:10:47:10 | b | $@ | main.rs:45:15:45:23 | source(...) | source(...) |
 | main.rs:54:10:54:10 | i | main.rs:53:9:53:17 | source(...) | main.rs:54:10:54:10 | i | $@ | main.rs:53:9:53:17 | source(...) | source(...) |
-| main.rs:120:25:120:25 | n | main.rs:117:19:117:28 | source(...) | main.rs:120:25:120:25 | n | $@ | main.rs:117:19:117:28 | source(...) | source(...) |
-| main.rs:138:35:138:35 | n | main.rs:135:29:135:38 | source(...) | main.rs:138:35:138:35 | n | $@ | main.rs:135:29:135:38 | source(...) | source(...) |
-| main.rs:142:57:142:57 | n | main.rs:135:29:135:38 | source(...) | main.rs:142:57:142:57 | n | $@ | main.rs:135:29:135:38 | source(...) | source(...) |
-| main.rs:179:48:179:48 | n | main.rs:175:18:175:27 | source(...) | main.rs:179:48:179:48 | n | $@ | main.rs:175:18:175:27 | source(...) | source(...) |
-| main.rs:183:83:183:83 | n | main.rs:175:18:175:27 | source(...) | main.rs:183:83:183:83 | n | $@ | main.rs:175:18:175:27 | source(...) | source(...) |
+| main.rs:217:25:217:25 | n | main.rs:214:19:214:28 | source(...) | main.rs:217:25:217:25 | n | $@ | main.rs:214:19:214:28 | source(...) | source(...) |
+| main.rs:235:35:235:35 | n | main.rs:232:29:232:38 | source(...) | main.rs:235:35:235:35 | n | $@ | main.rs:232:29:232:38 | source(...) | source(...) |
+| main.rs:239:55:239:55 | n | main.rs:232:29:232:38 | source(...) | main.rs:239:55:239:55 | n | $@ | main.rs:232:29:232:38 | source(...) | source(...) |
+| main.rs:276:48:276:48 | n | main.rs:272:18:272:27 | source(...) | main.rs:276:48:276:48 | n | $@ | main.rs:272:18:272:27 | source(...) | source(...) |
+| main.rs:280:81:280:81 | n | main.rs:272:18:272:27 | source(...) | main.rs:280:81:280:81 | n | $@ | main.rs:272:18:272:27 | source(...) | source(...) |
