@@ -103,9 +103,9 @@ localStep
 | main.rs:109:10:109:10 | a | main.rs:110:10:110:10 | a |
 | main.rs:110:10:110:10 | a | main.rs:111:5:111:5 | a |
 | main.rs:111:5:111:5 | a | main.rs:112:5:112:5 | a |
-| main.rs:111:11:111:11 | 2 | main.rs:111:5:111:7 | a.1 |
+| main.rs:111:11:111:20 | source(...) | main.rs:111:5:111:7 | a.0 |
 | main.rs:112:5:112:5 | a | main.rs:113:10:113:10 | a |
-| main.rs:112:11:112:20 | source(...) | main.rs:112:5:112:7 | a.0 |
+| main.rs:112:11:112:11 | 2 | main.rs:112:5:112:7 | a.1 |
 | main.rs:113:10:113:10 | a | main.rs:114:10:114:10 | a |
 | main.rs:118:9:118:9 | [SSA] a | main.rs:119:14:119:14 | a |
 | main.rs:118:9:118:9 | a | main.rs:118:9:118:9 | [SSA] a |
@@ -329,6 +329,31 @@ localStep
 | main.rs:304:22:304:22 | n | main.rs:304:22:304:22 | [SSA] n |
 | main.rs:304:29:304:35 | sink(...) | main.rs:302:5:305:5 | match s2 { ... } |
 storeStep
+| main.rs:94:14:94:22 | source(...) | tuple.0 | main.rs:94:13:94:26 | TupleExpr |
+| main.rs:94:25:94:25 | 2 | tuple.1 | main.rs:94:13:94:26 | TupleExpr |
+| main.rs:100:14:100:14 | 2 | tuple.0 | main.rs:100:13:100:30 | TupleExpr |
+| main.rs:100:17:100:26 | source(...) | tuple.1 | main.rs:100:13:100:30 | TupleExpr |
+| main.rs:100:29:100:29 | 2 | tuple.2 | main.rs:100:13:100:30 | TupleExpr |
+| main.rs:108:18:108:18 | 2 | tuple.0 | main.rs:108:17:108:31 | TupleExpr |
+| main.rs:108:21:108:30 | source(...) | tuple.1 | main.rs:108:17:108:31 | TupleExpr |
+| main.rs:118:14:118:14 | 3 | tuple.0 | main.rs:118:13:118:27 | TupleExpr |
+| main.rs:118:17:118:26 | source(...) | tuple.1 | main.rs:118:13:118:27 | TupleExpr |
+| main.rs:119:14:119:14 | a | tuple.0 | main.rs:119:13:119:18 | TupleExpr |
+| main.rs:119:17:119:17 | 3 | tuple.1 | main.rs:119:13:119:18 | TupleExpr |
+| main.rs:135:12:135:20 | source(...) | Point.x | main.rs:134:13:137:5 | Point {...} |
+| main.rs:136:12:136:12 | 2 | Point.y | main.rs:134:13:137:5 | Point {...} |
+| main.rs:144:12:144:20 | source(...) | Point.x | main.rs:143:17:146:5 | Point {...} |
+| main.rs:145:12:145:12 | 2 | Point.y | main.rs:143:17:146:5 | Point {...} |
+| main.rs:154:12:154:21 | source(...) | Point.x | main.rs:153:13:156:5 | Point {...} |
+| main.rs:155:12:155:12 | 2 | Point.y | main.rs:153:13:156:5 | Point {...} |
+| main.rs:169:16:172:9 | Point {...} | Point3D.plane | main.rs:168:13:174:5 | Point3D {...} |
+| main.rs:170:16:170:16 | 2 | Point.x | main.rs:169:16:172:9 | Point {...} |
+| main.rs:171:16:171:25 | source(...) | Point.y | main.rs:169:16:172:9 | Point {...} |
+| main.rs:173:12:173:12 | 4 | Point3D.z | main.rs:168:13:174:5 | Point3D {...} |
+| main.rs:182:16:185:9 | Point {...} | Point3D.plane | main.rs:181:13:187:5 | Point3D {...} |
+| main.rs:183:16:183:16 | 2 | Point.x | main.rs:182:16:185:9 | Point {...} |
+| main.rs:184:16:184:25 | source(...) | Point.y | main.rs:182:16:185:9 | Point {...} |
+| main.rs:186:12:186:12 | 4 | Point3D.z | main.rs:181:13:187:5 | Point3D {...} |
 | main.rs:214:19:214:28 | source(...) | Some | main.rs:214:14:214:29 | Some(...) |
 | main.rs:215:19:215:19 | 2 | Some | main.rs:215:14:215:20 | Some(...) |
 | main.rs:232:29:232:38 | source(...) | A | main.rs:232:14:232:39 | ...::A(...) |
@@ -338,6 +363,22 @@ storeStep
 | main.rs:312:27:312:27 | 0 | Some | main.rs:312:22:312:28 | Some(...) |
 readStep
 | main.rs:33:9:33:15 | TupleStructPat | Some | main.rs:33:14:33:14 | _ |
+| main.rs:95:10:95:10 | a | tuple.0 | main.rs:95:10:95:12 | a.0 |
+| main.rs:96:10:96:10 | a | tuple.1 | main.rs:96:10:96:12 | a.1 |
+| main.rs:109:10:109:10 | a | tuple.0 | main.rs:109:10:109:12 | a.0 |
+| main.rs:110:10:110:10 | a | tuple.1 | main.rs:110:10:110:12 | a.1 |
+| main.rs:111:5:111:5 | a | tuple.0 | main.rs:111:5:111:7 | a.0 |
+| main.rs:112:5:112:5 | a | tuple.1 | main.rs:112:5:112:7 | a.1 |
+| main.rs:113:10:113:10 | a | tuple.0 | main.rs:113:10:113:12 | a.0 |
+| main.rs:114:10:114:10 | a | tuple.1 | main.rs:114:10:114:12 | a.1 |
+| main.rs:120:10:120:10 | b | tuple.0 | main.rs:120:10:120:12 | b.0 |
+| main.rs:120:10:120:12 | b.0 | tuple.0 | main.rs:120:10:120:14 | ... .0 |
+| main.rs:121:10:121:10 | b | tuple.0 | main.rs:121:10:121:12 | b.0 |
+| main.rs:121:10:121:12 | b.0 | tuple.1 | main.rs:121:10:121:14 | ... .1 |
+| main.rs:122:10:122:10 | b | tuple.1 | main.rs:122:10:122:12 | b.1 |
+| main.rs:157:9:157:28 | Point {...} | Point.x | main.rs:157:20:157:20 | a |
+| main.rs:157:9:157:28 | Point {...} | Point.y | main.rs:157:26:157:26 | b |
+| main.rs:189:9:189:45 | Point3D {...} | Point3D.plane | main.rs:189:26:189:39 | Point {...} |
 | main.rs:217:9:217:15 | TupleStructPat | Some | main.rs:217:14:217:14 | n |
 | main.rs:221:9:221:15 | TupleStructPat | Some | main.rs:221:14:221:14 | n |
 | main.rs:235:9:235:25 | TupleStructPat | A | main.rs:235:24:235:24 | n |

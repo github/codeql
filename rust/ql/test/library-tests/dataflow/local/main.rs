@@ -92,7 +92,7 @@ fn box_deref() {
 
 fn tuple() {
     let a = (source(8), 2);
-    sink(a.0); // $ MISSING: hasValueFlow=8
+    sink(a.0); // $ hasValueFlow=8
     sink(a.1);
 }
 
@@ -107,18 +107,18 @@ fn tuple_match() {
 fn tuple_mutation() {
     let mut a = (2, source(38));
     sink(a.0);
-    sink(a.1); // $ MISSING: hasValueFlow=38
-    a.1 = 2;
+    sink(a.1); // $ hasValueFlow=38
     a.0 = source(70);
+    a.1 = 2;
     sink(a.0); // $ MISSING: hasValueFlow=70
     sink(a.1);
 }
 
 fn tuple_nested() {
-    let a = (source(59), 3);
+    let a = (3, source(59));
     let b = (a, 3);
     sink(b.0.0);
-    sink(b.0.1); // $ MISSING: hasValueFlow=59
+    sink(b.0.1); // $ hasValueFlow=59
     sink(b.1);
 }
 
@@ -155,7 +155,7 @@ fn struct_pattern_match() {
         y: 2,
     };
     let Point { x: a, y: b } = p;
-    sink(a); // $ MISSING: hasValueFlow=11
+    sink(a); // $ hasValueFlow=11
     sink(b);
 }
 
