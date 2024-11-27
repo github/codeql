@@ -1,15 +1,19 @@
 package com.github.codeql
 
+import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.KaClassSymbol
+import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
 import org.jetbrains.kotlin.analysis.api.types.KaClassType
 import org.jetbrains.kotlin.analysis.api.types.KaFlexibleType
 import org.jetbrains.kotlin.analysis.api.types.KaType
+import org.jetbrains.kotlin.analysis.api.types.KaTypeParameterType
 
+context(KaSession)
 private fun KotlinUsesExtractor.useClassType(
     c: KaClassType
 ): TypeResults {
     // TODO: this cast is unsafe; .symbol is actually a KaClassLikeSymbol
-    val classId = addClassLabel(c.symbol as KaClassSymbol)
+    val classId = addClassLabel(c.symbol as KaClassSymbol, listOf<Nothing>())
     val javaResult = TypeResult(classId /* , TODO, TODO */)
     val kotlinTypeId =
         tw.getLabelFor<DbKt_class_type>("@\"kt_class;{$classId}\"") {
@@ -19,6 +23,60 @@ private fun KotlinUsesExtractor.useClassType(
     return TypeResults(javaResult, kotlinResult)
 }
 
+context(KaSession)
+fun KotlinUsesExtractor.getTypeParameterParentLabel(param: KaTypeParameterType) =
+    param.symbol.containingSymbol?.let {
+        when (it) {
+            is KaClassSymbol -> useClassSource(it)
+            is KaFunctionSymbol ->
+                /* OLD: KE1
+                (if (this is KotlinFileExtractor)
+                    this.declarationStack
+                        .findOverriddenAttributes(it)
+                        ?.takeUnless {
+                            // When extracting the `static fun f$default(...)` that accompanies
+                            // `fun <T> f(val x: T? = defaultExpr, ...)`,
+                            // `f$default` has no type parameters, and so there is no
+                            // `f$default::T` to refer to.
+                            // We have no good way to extract references to `T` in
+                            // `defaultExpr`, so we just fall back on describing it
+                            // in terms of `f::T`, even though that type variable ought to be
+                            // out of scope here.
+                                attribs ->
+                            attribs.typeParameters?.isEmpty() == true
+                        }
+                        ?.id
+                else null) ?:
+                */
+                useFunction(it, useDeclarationParentOf(it, true) ?: TODO()  /* OLD: KE1 noReplace = true */)
+            else -> {
+                logger.error("Unexpected type parameter parent $it")
+                null
+            }
+        }
+    }
+
+context(KaSession)
+fun KotlinUsesExtractor.getTypeParameterLabel(param: KaTypeParameterType): String {
+    // Use this instead of `useDeclarationParent` so we can use useFunction with noReplace = true,
+    // ensuring that e.g. a method-scoped type variable declared on kotlin.String.transform<R> gets
+    // a different name to the corresponding java.lang.String.transform<R>, even though
+    // useFunction will usually replace references to one function with the other.
+    val parentLabel = getTypeParameterParentLabel(param)
+    return "@\"typevar;{$parentLabel};${param.name}\""
+}
+
+context(KaSession)
+private fun KotlinUsesExtractor.useTypeParameterType(param: KaTypeParameterType) =
+    TypeResult(
+        tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(param)),
+        /* OLD: KE1
+        useType(eraseTypeParameter(param)).javaResult.signature,
+        param.name.asString()
+         */
+    )
+
+context(KaSession)
 fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.OTHER): TypeResults {
     val tr = when (t) {
         null -> {
@@ -27,6 +85,7 @@ fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.O
         }
         is KaClassType -> useClassType(t)
         is KaFlexibleType -> useType(t.lowerBound) // TODO: take a more reasoned choice here
+        is KaTypeParameterType -> TypeResults(useTypeParameterType(t), extractErrorType().kotlinResult /* TODO */)
         else -> TODO()
     }
     val javaResult = tr.javaResult
@@ -34,7 +93,7 @@ fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.O
     val abbreviation = t.abbreviatedType
     val kotlinResultAlias = if (abbreviation == null) kotlinResultBase else {
                                 // TODO: this cast is unsafe; .symbol is actually a KaClassLikeSymbol
-                                val classId = addClassLabel(abbreviation.symbol as KaClassSymbol)
+                                val classId = addClassLabel(abbreviation.symbol as KaClassSymbol, listOf<Nothing>() /* TODO */)
                                 val kotlinBaseTypeId = kotlinResultBase.id
                                 val kotlinAliasTypeId =
                                     tw.getLabelFor<DbKt_type_alias>("@\"kt_type_alias;{$classId};{$kotlinBaseTypeId}\"") {

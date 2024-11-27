@@ -86,12 +86,12 @@ context (KaSession)
 open class KotlinFileExtractor(
     override val logger: FileLogger,
     override val tw: FileTrapWriter,
+    externalClassExtractor: ExternalDeclExtractor,
     /*
     OLD: KE1
         val linesOfCode: LinesOfCode?,
         val filePath: String,
         dependencyCollector: OdasaOutput.TrapFileManager?,
-        externalClassExtractor: ExternalDeclExtractor,
         primitiveTypeMapping: PrimitiveTypeMapping,
         pluginContext: IrPluginContext,
         val declarationStack: DeclarationStack,
@@ -101,10 +101,10 @@ open class KotlinFileExtractor(
     KotlinUsesExtractor(
         logger,
         tw,
+        externalClassExtractor,
         /*
         OLD: KE1
                 dependencyCollector,
-                externalClassExtractor,
                 primitiveTypeMapping,
                 pluginContext,
                 globalExtensionState
@@ -117,14 +117,14 @@ open class KotlinFileExtractor(
         val metaAnnotationSupport = MetaAnnotationSupport(logger, pluginContext, this)
     */
 
-    inline fun <T> with(kind: String, element: KtElement, f: () -> T): T {
+    inline fun <T> with(kind: String, element: KtElement?, f: () -> T): T {
         val name =
             when (element) {
                 is KtFile -> element.virtualFilePath
                 is KtNamed -> element.getNameAsName()?.asString() ?: "<missing name>"
                 else -> "<no name>"
             }
-        val loc = tw.getLocationString(element)
+        val loc = element?.let { tw.getLocationString(it) } ?: "<unknown location>"
         val context = logger.loggerState.extractorContextStack
         context.push(ExtractorContext(kind, element, name, loc))
         try {
@@ -299,7 +299,7 @@ open class KotlinFileExtractor(
                 extractAnnotations: Boolean
         */
     ) {
-        with("declaration", declaration.psiSafe() ?: TODO()) {
+        with("declaration", declaration.psiSafe()) {
 /*
 OLD: KE1
             if (!shouldExtractDecl(declaration, extractPrivateMembers)) return

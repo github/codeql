@@ -304,27 +304,24 @@ abstract class TrapWriter(
         }
     }
 
-    /*
-    OLD: KE1
-        /**
-         * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but using the
-         * given `filePath` for locations.
-         */
-        fun makeFileTrapWriter(filePath: String, populateFileTables: Boolean) =
-            FileTrapWriter(
-                basicLogger,
-                lm,
-                bw,
-                this.getDiagnosticTrapWriter(),
-                filePath,
-                populateFileTables
-            )
+    /**
+     * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but using the
+     * given `filePath` for locations.
+     */
+    fun makeFileTrapWriter(filePath: String, populateFileTables: Boolean) =
+        FileTrapWriter(
+            basicLogger,
+            lm,
+            bw,
+            this.getDiagnosticTrapWriter(),
+            filePath,
+            populateFileTables
+        )
 
-        /**
-         * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but using the
-         * given `IrFile` for locations.
-         */
-    */
+    /**
+     * Gets a FileTrapWriter like this one (using the same label manager, writer etc), but using the
+     * given `IrFile` for locations.
+     */
     fun makeSourceFileTrapWriter(file: KtFile, populateFileTables: Boolean) =
         SourceFileTrapWriter(
             basicLogger,
@@ -450,6 +447,10 @@ open class FileTrapWriter(
         val file = e.getContainingFile()
         val range = e.getTextRange()
         return getLocation(file, range)
+    }
+
+    fun getFileOnlyLocation(): Label<DbLocation> {
+        return getLocation(fileId, 0, 0, 0, 0)
     }
 
     /*

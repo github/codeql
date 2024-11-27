@@ -1,34 +1,32 @@
 package com.github.codeql
 
-/*
-OLD: KE1
-import com.github.codeql.utils.isExternalFileClassMember
 import com.semmle.extractor.java.OdasaOutput
 import com.semmle.util.data.StringDigestor
+import org.jetbrains.kotlin.analysis.api.KaSession
+import org.jetbrains.kotlin.analysis.api.symbols.*
+import org.jetbrains.kotlin.analysis.api.symbols.markers.KaNamedSymbol
 import java.io.BufferedWriter
 import java.io.File
 import java.util.ArrayList
 import java.util.HashSet
-import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.util.isFileClass
-import org.jetbrains.kotlin.ir.util.packageFqName
 
+context (KaSession)
 class ExternalDeclExtractor(
     val logger: FileLogger,
     val compression: Compression,
     val invocationTrapFile: String,
     val sourceFilePath: String,
+    /* OLD: KE1
     val primitiveTypeMapping: PrimitiveTypeMapping,
     val pluginContext: IrPluginContext,
     val globalExtensionState: KotlinExtractorGlobalState,
+     */
     val diagnosticTrapWriter: DiagnosticTrapWriter
 ) {
 
-    val declBinaryNames = HashMap<IrDeclaration, String>()
+    val declBinaryNames = HashMap<KaSymbol, String>()
     val externalDeclsDone = HashSet<Pair<String, String>>()
-    val externalDeclWorkList = ArrayList<Pair<IrDeclaration, String>>()
+    val externalDeclWorkList = ArrayList<Pair<KaSymbol, String>>()
 
     val propertySignature = ";property"
     val fieldSignature = ";field"
@@ -38,7 +36,8 @@ class ExternalDeclExtractor(
             it.setCurrentSourceFile(File(sourceFilePath))
         }
 
-    fun extractLater(d: IrDeclarationWithName, signature: String): Boolean {
+    fun extractLater(d: KaSymbol, signature: String): Boolean {
+        /* OLD: KE1
         if (d !is IrClass && !isExternalFileClassMember(d)) {
             logger.errorElement(
                 "External declaration is neither a class, nor a top-level declaration",
@@ -46,15 +45,16 @@ class ExternalDeclExtractor(
             )
             return false
         }
-        val declBinaryName = declBinaryNames.getOrPut(d) { getIrElementBinaryName(d) }
+        */
+        val declBinaryName = declBinaryNames.getOrPut(d) { getSymbolBinaryName(d) }
         val ret = externalDeclsDone.add(Pair(declBinaryName, signature))
         if (ret) externalDeclWorkList.add(Pair(d, signature))
         return ret
     }
 
-    fun extractLater(c: IrClass) = extractLater(c, "")
+    fun extractLater(c: KaClassSymbol) = extractLater(c, "")
 
-    fun writeStubTrapFile(e: IrElement, signature: String = "") {
+    fun writeStubTrapFile(e: KaSymbol, signature: String = "") {
         extractElement(e, signature, true) { trapFileBW, _, _ ->
             trapFileBW.write(
                 "// Trap file stubbed because this declaration was extracted from source in $sourceFilePath\n"
@@ -64,7 +64,7 @@ class ExternalDeclExtractor(
     }
 
     private fun extractElement(
-        element: IrElement,
+        element: KaSymbol,
         possiblyLongSignature: String,
         fromSource: Boolean,
         extractorFn: (BufferedWriter, String, OdasaOutput.TrapFileManager) -> Unit
@@ -84,8 +84,8 @@ class ExternalDeclExtractor(
             locker.trapFileManager.useAC { manager ->
                 val shortName =
                     when (element) {
-                        is IrDeclarationWithName -> element.name.asString()
-                        is IrFile -> element.name
+                        is KaNamedSymbol -> element.name.asString()
+                        is KaFileSymbol -> "(TODO file symbol name)"
                         else -> "(unknown name)"
                     }
                 if (manager == null) {
@@ -126,14 +126,16 @@ class ExternalDeclExtractor(
             val nextBatch = ArrayList(externalDeclWorkList)
             externalDeclWorkList.clear()
             nextBatch.forEach { workPair ->
-                val (irDecl, possiblyLongSignature) = workPair
-                extractElement(irDecl, possiblyLongSignature, false) {
+                val (sym, possiblyLongSignature) = workPair
+                extractElement(sym, possiblyLongSignature, false) {
                     trapFileBW,
                     signature,
                     manager ->
-                    val binaryPath = getIrDeclarationBinaryPath(irDecl)
+                    val binaryPath = getSymbolBinaryPath(sym)
                     if (binaryPath == null) {
-                        logger.errorElement("Unable to get binary path", irDecl)
+                        sym.psi?.also {
+                            logger.errorElement("Unable to get binary path", it)
+                        } ?: logger.error("Unable to get binary path")
                     } else {
                         // We want our comments to be the first thing in the file,
                         // so start off with a PlainTrapWriter
@@ -161,40 +163,46 @@ class ExternalDeclExtractor(
                             KotlinFileExtractor(
                                 logger,
                                 ftw,
+                                this,
+                                /* OLD: KE1
                                 null,
                                 binaryPath,
                                 manager,
-                                this,
                                 primitiveTypeMapping,
                                 pluginContext,
                                 KotlinFileExtractor.DeclarationStack(),
                                 globalExtensionState
+                                */
                             )
 
-                        if (irDecl is IrClass) {
+                        if (sym is KaClassSymbol) {
                             // Populate a location and compilation-unit package for the file. This
                             // is similar to
                             // the beginning of `KotlinFileExtractor.extractFileContents` but
                             // without an `IrFile`
                             // to start from.
-                            val pkg = irDecl.packageFqName?.asString() ?: ""
+                            val pkg = sym.classId?.packageFqName?.asString() ?: ""
                             val pkgId = fileExtractor.extractPackage(pkg)
                             ftw.writeHasLocation(ftw.fileId, ftw.getWholeFileLocation())
                             ftw.writeCupackage(ftw.fileId, pkgId)
 
                             fileExtractor.extractClassSource(
-                                irDecl,
-                                extractDeclarations = !irDecl.isFileClass,
+                                sym,
+                                extractDeclarations = /* OLD: KE1 !sym.isFileClass */true,
+                                /* OLD: KE1
                                 extractStaticInitializer = false,
                                 extractPrivateMembers = false,
                                 extractFunctionBodies = false
+                                */
                             )
                         } else {
                             fileExtractor.extractDeclaration(
-                                irDecl,
+                                sym as KaDeclarationSymbol,
+                                /* OLD: KE1
                                 extractPrivateMembers = false,
                                 extractFunctionBodies = false,
                                 extractAnnotations = true
+                                */
                             )
                         }
                     }
@@ -204,4 +212,3 @@ class ExternalDeclExtractor(
         output.writeTrapSet()
     }
 }
-*/

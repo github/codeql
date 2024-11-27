@@ -101,7 +101,7 @@ class LogMessage(private val kind: String, private val message: String) {
 
 data class ExtractorContext(
     val kind: String,
-    val element: PsiElement,
+    val element: PsiElement?,
     val name: String,
     val loc: String
 )
