@@ -449,10 +449,6 @@ open class FileTrapWriter(
         return getLocation(file, range)
     }
 
-    fun getFileOnlyLocation(): Label<DbLocation> {
-        return getLocation(fileId, 0, 0, 0, 0)
-    }
-
     /*
     OLD: KE1
         /** Gets a label for the location of `e`. */

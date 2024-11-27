@@ -510,7 +510,7 @@ OLD: KE1
         val functionSyntax = f.psi as? KtDeclarationWithBody
         val locId = functionSyntax?.let {
             tw.getLocation(functionSyntax ?: TODO())
-        } ?: tw.getFileOnlyLocation()
+        } ?: tw.getWholeFileLocation()
         /*
         OLD: KE1
                             overriddenAttributes?.sourceLoc

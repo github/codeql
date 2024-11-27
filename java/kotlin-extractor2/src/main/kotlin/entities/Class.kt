@@ -62,7 +62,7 @@ fun KotlinFileExtractor.extractClassSource(
                 }
             }
 
-            val locId = c.psiSafe<KtElement>()?.let { tw.getLocation(it) } ?: tw.getFileOnlyLocation()
+            val locId = c.psiSafe<KtElement>()?.let { tw.getLocation(it) } ?: tw.getWholeFileLocation()
             tw.writeHasLocation(id, locId)
 
             // OLD: KE1
