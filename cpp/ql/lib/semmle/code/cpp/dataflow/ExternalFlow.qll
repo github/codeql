@@ -437,13 +437,13 @@ private predicate elementSpec(
 private predicate isClassConstructedFrom(Class c, Class templateClass) {
   c.isConstructedFrom(templateClass)
   or
-  not any(Class c_).isConstructedFrom(templateClass) and c = templateClass
+  not c.isConstructedFrom(_) and c = templateClass
 }
 
 private predicate isFunctionConstructedFrom(Function f, Function templateFunc) {
   f.isConstructedFrom(templateFunc)
   or
-  not any(Function f_).isConstructedFrom(templateFunc) and f = templateFunc
+  not f.isConstructedFrom(_) and f = templateFunc
 }
 
 /** Gets the fully templated version of `f`. */
