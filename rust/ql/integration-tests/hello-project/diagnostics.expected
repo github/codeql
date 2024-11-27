@@ -1,28 +1,107 @@
 {
   "attributes": {
-    "summary": {
-      "numberOfFiles": 4,
-      "numberOfManifests": 1,
-      "totalDuration": {
-        "ms": "__REDACTED__",
-        "pretty": "__REDACTED__"
+    "steps": [
+      {
+        "action": "extract",
+        "file": "<test-root-directory>/src/directory_module/mod.rs",
+        "ms": "__REDACTED__"
       },
-      "totalExtractDuration": {
-        "ms": "__REDACTED__",
-        "pretty": "__REDACTED__"
+      {
+        "action": "extract",
+        "file": "<test-root-directory>/src/directory_module/nested_module.rs",
+        "ms": "__REDACTED__"
       },
-      "totalFetchFileDuration": {
-        "ms": "__REDACTED__",
-        "pretty": "__REDACTED__"
+      {
+        "action": "extract",
+        "file": "<test-root-directory>/src/directory_module/not_loaded.rs",
+        "ms": "__REDACTED__"
       },
-      "totalLoadDuration": {
-        "ms": "__REDACTED__",
-        "pretty": "__REDACTED__"
+      {
+        "action": "extract",
+        "file": "<test-root-directory>/src/file_module.rs",
+        "ms": "__REDACTED__"
       },
-      "totalParseDuration": {
-        "ms": "__REDACTED__",
-        "pretty": "__REDACTED__"
+      {
+        "action": "extract",
+        "file": "<test-root-directory>/src/main.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "loadManifest",
+        "file": "<test-root-directory>/<manifest-file>",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "loadSource",
+        "file": "<test-root-directory>/src/directory_module/mod.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "loadSource",
+        "file": "<test-root-directory>/src/directory_module/nested_module.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "loadSource",
+        "file": "<test-root-directory>/src/file_module.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "loadSource",
+        "file": "<test-root-directory>/src/main.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "parse",
+        "file": "<test-root-directory>/src/directory_module/mod.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "parse",
+        "file": "<test-root-directory>/src/directory_module/nested_module.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "parse",
+        "file": "<test-root-directory>/src/directory_module/not_loaded.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "parse",
+        "file": "<test-root-directory>/src/file_module.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "parse",
+        "file": "<test-root-directory>/src/main.rs",
+        "ms": "__REDACTED__"
       }
+    ],
+    "summary": {
+      "durations": {
+        "extract": {
+          "ms": "__REDACTED__",
+          "pretty": "__REDACTED__"
+        },
+        "loadManifest": {
+          "ms": "__REDACTED__",
+          "pretty": "__REDACTED__"
+        },
+        "loadSource": {
+          "ms": "__REDACTED__",
+          "pretty": "__REDACTED__"
+        },
+        "parse": {
+          "ms": "__REDACTED__",
+          "pretty": "__REDACTED__"
+        },
+        "total": {
+          "ms": "__REDACTED__",
+          "pretty": "__REDACTED__"
+        }
+      },
+      "numberOfFiles": 5,
+      "numberOfManifests": 1
     }
   },
   "severity": "note",

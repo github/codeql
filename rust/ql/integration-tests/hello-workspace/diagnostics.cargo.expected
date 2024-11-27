@@ -1,5 +1,77 @@
 {
   "attributes": {
+    "steps": [
+      {
+        "action": "extract",
+        "file": "<test-root-directory>/exe/src/a_module.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "extract",
+        "file": "<test-root-directory>/exe/src/main.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "extract",
+        "file": "<test-root-directory>/lib/src/a_module/mod.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "extract",
+        "file": "<test-root-directory>/lib/src/lib.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "loadManifest",
+        "file": "<test-root-directory>/exe/<manifest-file>",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "loadManifest",
+        "file": "<test-root-directory>/lib/<manifest-file>",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "loadSource",
+        "file": "<test-root-directory>/exe/src/a_module.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "loadSource",
+        "file": "<test-root-directory>/exe/src/main.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "loadSource",
+        "file": "<test-root-directory>/lib/src/a_module/mod.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "loadSource",
+        "file": "<test-root-directory>/lib/src/lib.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "parse",
+        "file": "<test-root-directory>/exe/src/a_module.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "parse",
+        "file": "<test-root-directory>/exe/src/main.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "parse",
+        "file": "<test-root-directory>/lib/src/a_module/mod.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "action": "parse",
+        "file": "<test-root-directory>/lib/src/lib.rs",
+        "ms": "__REDACTED__"
+      }
+    ],
     "summary": {
       "durations": {
         "extract": {
