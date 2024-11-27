@@ -218,6 +218,47 @@ private fun KotlinFileExtractor.extractNull(
         extractExprContext(it, locId, callable, enclosingStmt)
     }
 
+private fun KotlinFileExtractor.extractConstantInteger(
+    t: KaType,
+    text: String,
+    v: Number,
+    locId: Label<DbLocation>,
+    parent: Label<out DbExprparent>,
+    idx: Int,
+    callable: Label<out DbCallable>?,
+    enclosingStmt: Label<out DbStmt>?,
+    /*
+    OLD: KE1
+            overrideId: Label<out DbExpr>? = null
+    */
+) =
+    extractConstant(tw::writeExprs_integerliteral, t, text, v.toString(), locId, parent, idx, callable, enclosingStmt)
+
+@Suppress("UNCHECKED_CAST")
+private fun <T : DbExpr> KotlinFileExtractor.extractConstant(
+    write: (Label<out T>, Label<out DbType>, Label<out DbExprparent>, Int) -> Unit,
+    t: KaType,
+    textName: String,
+    textValue: String,
+    locId: Label<DbLocation>,
+    parent: Label<out DbExprparent>,
+    idx: Int,
+    callable: Label<out DbCallable>?,
+    enclosingStmt: Label<out DbStmt>?,
+    /*
+    OLD: KE1
+            overrideId: Label<out DbExpr>? = null
+    */
+) =
+    // OLD: KE1: Was: exprIdOrFresh<DbIntegerliteral>(overrideId).also {
+    tw.getFreshIdLabel<T>().also {
+        val type = useType(t)
+        write(it, type.javaResult.id, parent, idx)
+        tw.writeExprsKotlinType(it, type.kotlinResult.id)
+        tw.writeNamestrings(textName, textValue, it as Label<out DbNamedexprorstmt>)
+        extractExprContext(it, locId, callable, enclosingStmt)
+    }
+
 /*
 OLD: KE1
     private fun extractAssignExpr(
@@ -437,8 +478,8 @@ private fun KotlinFileExtractor.extractBinaryExpression(
         )
 
         extractConstantInteger(
-            "0",
             builtinTypes.int,
+            "0",
             0,
             tw.getLocation(expression),
             id,
@@ -1913,16 +1954,65 @@ private fun KotlinFileExtractor.extractConstant(
     if (t == null) {
         TODO()
     }
-    when (elementType) {
-        KtNodeTypes.NULL -> {
-            return extractNull(
+    return when (elementType) {
+        KtNodeTypes.NULL -> extractNull(
+            t,
+            tw.getLocation(e),
+            parent,
+            idx,
+            enclosingCallable,
+            enclosingStmt,
+            // OLD: KE1: overrideId = overrideId
+        )
+
+        KtNodeTypes.BOOLEAN_CONSTANT -> extractConstant(
+            tw::writeExprs_booleanliteral,
+            t,
+            text,
+            text,
+            tw.getLocation(e),
+            parent,
+            idx,
+            enclosingCallable,
+            enclosingStmt
+        )
+
+        KtNodeTypes.CHARACTER_CONSTANT -> extractConstant(
+            tw::writeExprs_characterliteral,
+            t,
+            text,
+            text,
+            tw.getLocation(e),
+            parent,
+            idx,
+            enclosingCallable,
+            enclosingStmt
+        )
+
+
+        KtNodeTypes.FLOAT_CONSTANT -> {
+            val f = parseNumericLiteral(text, elementType)
+
+            if (f == null) {
+                TODO()
+            }
+
+            val trapWriterWriteExpr = when {
+                t.isFloatType -> tw::writeExprs_floatingpointliteral
+                t.isDoubleType -> tw::writeExprs_doubleliteral
+                else -> TODO()
+            }
+
+            return extractConstant(
+                trapWriterWriteExpr,
                 t,
+                f.toString(),
+                f.toString(),
                 tw.getLocation(e),
                 parent,
                 idx,
                 enclosingCallable,
-                enclosingStmt,
-                // OLD: KE1: overrideId = overrideId
+                enclosingStmt
             )
         }
 
@@ -1934,11 +2024,10 @@ private fun KotlinFileExtractor.extractConstant(
                     TODO()
                 }
 
-
                 t.isIntType || t.isShortType || t.isByteType -> {
                     return extractConstantInteger(
-                        text,
                         t,
+                        text,
                         i,
                         tw.getLocation(e),
                         parent,
@@ -1953,15 +2042,17 @@ private fun KotlinFileExtractor.extractConstant(
                 }
 
                 t.isLongType -> {
-                    // OLD: KE1: Was: exprIdOrFresh<DbLongliteral>(overrideId).also { id ->
-                    return tw.getFreshIdLabel<DbLongliteral>().also { id ->
-                        val type = useType(t)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_longliteral(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        extractExprContext(id, locId, enclosingCallable, enclosingStmt)
-                        tw.writeNamestrings(text, i.toString(), id)
-                    }
+                    return extractConstant(
+                        tw::writeExprs_longliteral,
+                        t,
+                        text,
+                        i.toString(),
+                        tw.getLocation(e),
+                        parent,
+                        idx,
+                        enclosingCallable,
+                        enclosingStmt
+                    )
                 }
 
                 else -> {
@@ -1974,68 +2065,6 @@ private fun KotlinFileExtractor.extractConstant(
             TODO()
         }
     }
-
-    // TODO: Wrong
-    return TODO()
-    /*
-    OLD: KE1
-            val v = e.value
-            return when {
-                v is Float -> {
-                    exprIdOrFresh<DbFloatingpointliteral>(overrideId).also { id ->
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_floatingpointliteral(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        extractExprContext(id, locId, enclosingCallable, enclosingStmt)
-                        tw.writeNamestrings(v.toString(), v.toString(), id)
-                    }
-                }
-                v is Double -> {
-                    exprIdOrFresh<DbDoubleliteral>(overrideId).also { id ->
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_doubleliteral(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        extractExprContext(id, locId, enclosingCallable, enclosingStmt)
-                        tw.writeNamestrings(v.toString(), v.toString(), id)
-                    }
-                }
-                v is Boolean -> {
-                    exprIdOrFresh<DbBooleanliteral>(overrideId).also { id ->
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_booleanliteral(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        extractExprContext(id, locId, enclosingCallable, enclosingStmt)
-                        tw.writeNamestrings(v.toString(), v.toString(), id)
-                    }
-                }
-                v is Char -> {
-                    exprIdOrFresh<DbCharacterliteral>(overrideId).also { id ->
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_characterliteral(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        extractExprContext(id, locId, enclosingCallable, enclosingStmt)
-                        tw.writeNamestrings(v.toString(), v.toString(), id)
-                    }
-                }
-                v is String -> {
-                    exprIdOrFresh<DbStringliteral>(overrideId).also { id ->
-                        val type = useType(e.type)
-                        val locId = tw.getLocation(e)
-                        tw.writeExprs_stringliteral(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        extractExprContext(id, locId, enclosingCallable, enclosingStmt)
-                        tw.writeNamestrings(toQuotedLiteral(v.toString()), v.toString(), id)
-                    }
-                }
-                else -> {
-                    null.also { logger.errorElement("Unrecognised IrConst: " + v.javaClass, e) }
-                }
-            }
-    */
 }
 
 /*
