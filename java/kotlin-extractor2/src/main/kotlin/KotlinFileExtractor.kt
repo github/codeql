@@ -117,14 +117,15 @@ open class KotlinFileExtractor(
         val metaAnnotationSupport = MetaAnnotationSupport(logger, pluginContext, this)
     */
 
-    inline fun <T> with(kind: String, element: KtElement?, f: () -> T): T {
-        val name =
-            when (element) {
-                is KtFile -> element.virtualFilePath
-                is KtNamed -> element.getNameAsName()?.asString() ?: "<missing name>"
-                else -> "<no name>"
-            }
-        val loc = element?.let { tw.getLocationString(it) } ?: "<unknown location>"
+    inline fun <T> with(kind: String, element: PsiElement, f: () -> T) = with(kind, PsiElementWrapper(element), f)
+    inline fun <T> with(kind: String, element: KaSymbol, f: () -> T) =
+        with(kind,
+            element.psiSafe<PsiElement>()?.let { PsiElementWrapper(it) } ?: SymbolWrapper(element),
+            f)
+
+    inline fun <T> with(kind: String, element: PsiElementOrSymbol, f: () -> T): T {
+        val name = element.getName()
+        val loc = element.getLocationString(tw)
         val context = logger.loggerState.extractorContextStack
         context.push(ExtractorContext(kind, element, name, loc))
         try {
@@ -299,7 +300,7 @@ open class KotlinFileExtractor(
                 extractAnnotations: Boolean
         */
     ) {
-        with("declaration", declaration.psiSafe()) {
+        with("declaration", declaration) {
 /*
 OLD: KE1
             if (!shouldExtractDecl(declaration, extractPrivateMembers)) return

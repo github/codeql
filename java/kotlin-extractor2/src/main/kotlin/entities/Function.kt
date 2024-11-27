@@ -409,7 +409,7 @@ private fun KotlinFileExtractor.forceExtractFunction(
             overriddenAttributes: OverriddenFunctionAttributes? = null
     */
 ): Label<out DbCallable> {
-    with("function", f.psiSafe()) {
+    with("function", f) {
 /*
 OLD: KE1
             DeclarationStackAdjuster(f, overriddenAttributes).use {

@@ -1,6 +1,10 @@
 package com.github.codeql
 
 import com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.analysis.api.symbols.KaSymbol
+import org.jetbrains.kotlin.analysis.api.symbols.markers.KaNamedSymbol
+import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtNamed
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -99,9 +103,31 @@ class LogMessage(private val kind: String, private val message: String) {
     }
 }
 
+sealed class PsiElementOrSymbol {
+    abstract fun getLocationString(ftw: FileTrapWriter): String
+    abstract fun getName(): String
+}
+
+data class PsiElementWrapper(val e: PsiElement) : PsiElementOrSymbol() {
+    override fun getLocationString(ftw: FileTrapWriter) = ftw.getLocationString(e)
+    override fun getName() = when (e) {
+        is KtFile -> e.virtualFilePath
+        is KtNamed -> e.nameAsName?.asString() ?: "<missing name>"
+        else -> "<no name>"
+    }
+}
+
+data class SymbolWrapper(val e: KaSymbol) : PsiElementOrSymbol() {
+    override fun getLocationString(ftw: FileTrapWriter) = "file://${ftw.filePath}"
+    override fun getName() = when (e) {
+        is KaNamedSymbol -> e.name.asString()
+        else -> "<no name>"
+    }
+}
+
 data class ExtractorContext(
     val kind: String,
-    val element: PsiElement?,
+    val element: PsiElementOrSymbol,
     val name: String,
     val loc: String
 )

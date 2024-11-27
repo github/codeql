@@ -20,7 +20,7 @@ fun KotlinFileExtractor.extractClassSource(
     extractFunctionBodies: Boolean
      */
 ): Label<out DbClassorinterface> {
-    with("class source", c.psiSafe()) {
+    with("class source", c) {
         // OLD: KE1: DeclarationStackAdjuster(c).use {
             val id = useClassSource(c)
             val pkg = c.classId?.packageFqName?.asString() ?: ""
