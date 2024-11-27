@@ -27,3 +27,20 @@ private class SpringCsrfUnprotectedMethod extends CsrfUnprotectedMethod instance
     )
   }
 }
+
+/** A method that updates a database. */
+abstract class DatabaseUpdateMethod extends Method { }
+
+/** A MyBatis Mapper method that updates a database. */
+private class MyBatisMapperDatabaseUpdateMethod extends DatabaseUpdateMethod {
+  MyBatisMapperDatabaseUpdateMethod() {
+    exists(MyBatisMapperSqlOperation mapperXml |
+      (
+        mapperXml instanceof MyBatisMapperInsert or
+        mapperXml instanceof MyBatisMapperUpdate or
+        mapperXml instanceof MyBatisMapperDelete
+      ) and
+      this = mapperXml.getMapperMethod()
+    )
+  }
+}
