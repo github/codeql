@@ -1030,11 +1030,9 @@ module RustDataFlow implements InputSig<Location> {
   predicate localMustFlowStep(Node node1, Node node2) {
     SsaFlow::localMustFlowStep(_, node1, node2)
     or
-    node1 =
-      unique(Node::FlowSummaryNode n1 |
-        FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
-          node2.(Node::FlowSummaryNode).getSummaryNode(), true, _)
-      )
+    FlowSummaryImpl::Private::Steps::summaryLocalMustFlowStep(node1
+          .(Node::FlowSummaryNode)
+          .getSummaryNode(), node2.(Node::FlowSummaryNode).getSummaryNode())
   }
 
   class LambdaCallKind = Void;
