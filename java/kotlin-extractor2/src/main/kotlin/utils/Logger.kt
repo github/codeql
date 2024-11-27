@@ -3,6 +3,7 @@ package com.github.codeql
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.analysis.api.symbols.KaSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.markers.KaNamedSymbol
+import org.jetbrains.kotlin.analysis.api.symbols.psiSafe
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamed
 import java.io.BufferedWriter
@@ -105,11 +106,17 @@ class LogMessage(private val kind: String, private val message: String) {
 
 sealed class PsiElementOrSymbol {
     abstract fun getLocationString(ftw: FileTrapWriter): String
+    abstract fun getLocation(ftw: FileTrapWriter): Label<DbLocation>
     abstract fun getName(): String
+    companion object {
+        fun of(e: PsiElement) = PsiElementWrapper(e)
+        fun of(e: KaSymbol) = e.psiSafe<PsiElement>()?.let { of(it) } ?: SymbolWrapper(e)
+    }
 }
 
 data class PsiElementWrapper(val e: PsiElement) : PsiElementOrSymbol() {
     override fun getLocationString(ftw: FileTrapWriter) = ftw.getLocationString(e)
+    override fun getLocation(ftw: FileTrapWriter) = ftw.getLocation(e)
     override fun getName() = when (e) {
         is KtFile -> e.virtualFilePath
         is KtNamed -> e.nameAsName?.asString() ?: "<missing name>"
@@ -119,6 +126,7 @@ data class PsiElementWrapper(val e: PsiElement) : PsiElementOrSymbol() {
 
 data class SymbolWrapper(val e: KaSymbol) : PsiElementOrSymbol() {
     override fun getLocationString(ftw: FileTrapWriter) = "file://${ftw.filePath}"
+    override fun getLocation(ftw: FileTrapWriter) = ftw.getWholeFileLocation()
     override fun getName() = when (e) {
         is KaNamedSymbol -> e.name.asString()
         else -> "<no name>"
@@ -434,9 +442,9 @@ class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter, fileNumber: In
         loggerBase.warn(dtw, msg, extraInfo, loggerState)
     }
 
-    fun warnElement(msg: String, element: PsiElement/* TODO , exn: Throwable? = null */) {
-        val locationString = ftw.getLocationString(element)
-        val mkLocationId = { ftw.getLocation(element) }
+    fun warnElement(msg: String, element: PsiElementOrSymbol /* TODO , exn: Throwable? = null */) {
+        val locationString = element.getLocationString(ftw)
+        val mkLocationId = { element.getLocation(ftw) }
         loggerBase.diagnostic(
             ftw.getDiagnosticTrapWriter(),
             Severity.Warn,
@@ -448,13 +456,16 @@ class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter, fileNumber: In
         )
     }
 
+    fun warnElement(msg: String, element: PsiElement /* TODO , exn: Throwable? = null */) = warnElement(msg, PsiElementOrSymbol.of(element))
+    fun warnElement(msg: String, element: KaSymbol /* TODO , exn: Throwable? = null */) = warnElement(msg, PsiElementOrSymbol.of(element))
+
     override fun error(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
         loggerBase.error(dtw, msg, extraInfo, loggerState)
     }
 
-    fun errorElement(msg: String, element: PsiElement /* TODO , exn: Throwable? = null */) {
-        val locationString = ftw.getLocationString(element)
-        val mkLocationId = { ftw.getLocation(element) }
+    fun errorElement(msg: String, element: PsiElementOrSymbol /* TODO , exn: Throwable? = null */) {
+        val locationString = element.getLocationString(ftw)
+        val mkLocationId = { element.getLocation(ftw) }
         loggerBase.diagnostic(
             ftw.getDiagnosticTrapWriter(),
             Severity.Error,
@@ -465,4 +476,7 @@ class FileLogger(loggerBase: LoggerBase, val ftw: FileTrapWriter, fileNumber: In
             mkLocationId
         )
     }
+
+    fun errorElement(msg: String, element: PsiElement /* TODO , exn: Throwable? = null */) = errorElement(msg, PsiElementOrSymbol.of(element))
+    fun errorElement(msg: String, element: KaSymbol /* TODO , exn: Throwable? = null */) = errorElement(msg, PsiElementOrSymbol.of(element))
 }

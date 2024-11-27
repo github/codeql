@@ -42,12 +42,7 @@ fun KotlinFileExtractor.extractClassSource(
                     kind != KaClassKind.OBJECT //&&
                 //OLD KE1: kind != ClassKind.ENUM_ENTRY
                 ) else {
-                    c.psiSafe<KtElement>().let { e ->
-                        if (e != null)
-                            logger.warnElement("Unrecognised class kind $kind", e)
-                        else
-                            logger.warn("Unrecognised class kind $kind")
-                    }
+                    logger.warnElement("Unrecognised class kind $kind", c)
                 }
 
                 /*

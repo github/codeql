@@ -117,12 +117,8 @@ open class KotlinFileExtractor(
         val metaAnnotationSupport = MetaAnnotationSupport(logger, pluginContext, this)
     */
 
-    inline fun <T> with(kind: String, element: PsiElement, f: () -> T) = with(kind, PsiElementWrapper(element), f)
-    inline fun <T> with(kind: String, element: KaSymbol, f: () -> T) =
-        with(kind,
-            element.psiSafe<PsiElement>()?.let { PsiElementWrapper(it) } ?: SymbolWrapper(element),
-            f)
-
+    inline fun <T> with(kind: String, element: PsiElement, f: () -> T) = with(kind, PsiElementOrSymbol.of(element), f)
+    inline fun <T> with(kind: String, element: KaSymbol, f: () -> T) = with(kind, PsiElementOrSymbol.of(element), f)
     inline fun <T> with(kind: String, element: PsiElementOrSymbol, f: () -> T): T {
         val name = element.getName()
         val loc = element.getLocationString(tw)
