@@ -179,3 +179,39 @@ void test_CAtlFileMapping(CAtlFileMapping<char> mapping) {
   char* data = static_cast<char*>(mapping); // $ local_source
   void* data2 = mapping.GetData(); // $ local_source
 }
+
+struct CAtlTemporaryFile {
+  CAtlTemporaryFile() throw();
+  ~CAtlTemporaryFile() throw();
+  HRESULT Close(LPCTSTR szNewName) throw();
+  HRESULT Create(LPCTSTR pszDir, DWORD dwDesiredAccess) throw();
+  HRESULT Flush() throw();
+  HRESULT GetPosition(ULONGLONG& nPos) const throw();
+  HRESULT GetSize(ULONGLONG& nLen) const throw();
+  HRESULT HandsOff() throw();
+  HRESULT HandsOn() throw();
+  HRESULT LockRange(ULONGLONG nPos, ULONGLONG nCount) throw();
+
+  HRESULT Read(
+      LPVOID pBuffer,
+      DWORD nBufSize,
+      DWORD& nBytesRead) throw();
+      HRESULT Seek(LONGLONG nOffset, DWORD dwFrom) throw();
+  
+  HRESULT SetSize(ULONGLONG nNewLen) throw();
+  LPCTSTR TempFileName() throw();
+  HRESULT UnlockRange(ULONGLONG nPos, ULONGLONG nCount) throw();
+  
+  HRESULT Write(
+      LPCVOID pBuffer,
+      DWORD nBufSize,
+      DWORD* pnBytesWritten) throw();
+      operator HANDLE() throw();
+};
+
+void test_CAtlTemporaryFile() {
+  CAtlTemporaryFile file;
+  char buffer[1024];
+  DWORD bytesRead;
+  file.Read(buffer, 1024, bytesRead); // $ MISSING: local_source
+}
