@@ -396,3 +396,132 @@ void test_CAtlList() {
     }
   }
 }
+
+struct IUnknown { };
+
+struct ISequentialStream : public IUnknown { };
+
+struct IStream : public ISequentialStream { };
+
+struct CComBSTR {
+  CComBSTR() throw();
+  CComBSTR(const CComBSTR& src);
+  CComBSTR(int nSize);
+  CComBSTR(int nSize, LPCOLESTR sz);
+  CComBSTR(int nSize, LPCSTR sz);
+  CComBSTR(LPCOLESTR pSrc);
+  CComBSTR(LPCSTR pSrc);
+  CComBSTR(CComBSTR&& src) throw();
+  ~CComBSTR();
+  
+  HRESULT Append(const CComBSTR& bstrSrc) throw();
+  HRESULT Append(wchar_t ch) throw();
+  HRESULT Append(char ch) throw();
+  HRESULT Append(LPCOLESTR lpsz) throw();
+  HRESULT Append(LPCSTR lpsz) throw();
+  HRESULT Append(LPCOLESTR lpsz, int nLen) throw();
+  HRESULT AppendBSTR(BSTR p) throw();
+  HRESULT AppendBytes(const char* lpsz, int nLen) throw();
+  HRESULT ArrayToBSTR(const SAFEARRAY* pSrc) throw();
+  HRESULT AssignBSTR(const BSTR bstrSrc) throw();
+  void Attach(BSTR src) throw();
+  HRESULT BSTRToArray(LPSAFEARRAY ppArray) throw();
+  unsigned int ByteLength() const throw();
+  BSTR Copy() const throw();
+  HRESULT CopyTo(BSTR* pbstr) throw();
+
+  HRESULT CopyTo(VARIANT* pvarDest) throw();
+  BSTR Detach() throw();
+  void Empty() throw();
+  unsigned int Length() const throw();
+  bool LoadString(HINSTANCE hInst, UINT nID) throw();
+  bool LoadString(UINT nID) throw();
+  HRESULT ReadFromStream(IStream* pStream) throw();
+  HRESULT ToUpper() throw();
+  HRESULT WriteToStream(IStream* pStream) throw();
+
+  operator BSTR() const throw();
+  BSTR* operator&() throw();
+
+  CComBSTR& operator+= (const CComBSTR& bstrSrc);
+  CComBSTR& operator+= (const LPCOLESTR pszSrc);
+
+  BSTR m_str;
+};
+
+LPSAFEARRAY getSafeArray() {
+  SAFEARRAY* safe = new SAFEARRAY;
+  safe->pvData = indirect_source<char>();
+  return safe;
+}
+
+void test_CComBSTR() {
+  char* x = indirect_source<char>();
+  {
+    CComBSTR b(x);
+    sink(b.m_str); // $ MISSING: ir
+
+    CComBSTR b2(b);
+    sink(b2.m_str); // $ MISSING: ir
+  }
+  {
+    CComBSTR b(10, x);
+    sink(b.m_str); // $ MISSING: ir
+  }
+  {
+    CComBSTR b(x);
+
+    CComBSTR b2;
+    sink(b2.m_str);
+    b2 += b;
+    sink(b2.m_str); // $ MISSING: ir
+
+    CComBSTR b3;
+    b3 += x;
+    sink(b3.m_str); // $ MISSING: ir
+    sink(static_cast<BSTR>(b3)); // $ MISSING: ir
+    sink(**&b3); // $ MISSING: ir
+
+    CComBSTR b4;
+    b4.Append(source<char>());
+    sink(b4.m_str); // $ MISSING: ir
+
+    CComBSTR b5;
+    b5.AppendBSTR(b4.m_str);
+    sink(b5.m_str); // $ MISSING: ir
+
+    CComBSTR b6;
+    b6.AppendBytes(x, 10);
+    sink(b6.m_str); // $ MISSING: ir
+
+    CComBSTR b7;
+    b7.ArrayToBSTR(getSafeArray());
+    sink(b7.m_str); // $ MISSING: ir
+
+    CComBSTR b8;
+    b8.AssignBSTR(b7.m_str);
+    sink(b8.m_str); // $ MISSING: ir
+
+    CComBSTR b9;
+    SAFEARRAY safe;
+    b9.Append(source<char>());
+    b9.BSTRToArray(&safe);
+    sink(safe.pvData); // $ MISSING: ir
+
+    sink(b9.Copy()); // $ MISSING: ir
+  }
+
+  wchar_t* w = indirect_source<wchar_t>();
+  {
+    CComBSTR b(w);
+    sink(b.m_str); // $ MISSING: ir
+
+    CComBSTR b2;
+    b2.Attach(w);
+    sink(b2.m_str); // $ MISSING: ir
+  }
+  {
+    CComBSTR b(10, w);
+    sink(b.m_str); // $ MISSING: ir
+  }
+}

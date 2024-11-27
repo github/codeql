@@ -506,6 +506,136 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:394:19:394:23 | ref arg list9 | atl.cpp:395:12:395:16 | list9 |  |
 | atl.cpp:394:19:394:23 | ref arg list9 | atl.cpp:396:5:396:5 | list9 |  |
 | atl.cpp:395:12:395:16 | ref arg list9 | atl.cpp:396:5:396:5 | list9 |  |
+| atl.cpp:453:21:453:33 | new | atl.cpp:454:3:454:6 | safe |  |
+| atl.cpp:453:21:453:33 | new | atl.cpp:455:10:455:13 | safe |  |
+| atl.cpp:454:3:454:6 | safe [post update] | atl.cpp:455:10:455:13 | safe |  |
+| atl.cpp:454:3:454:40 | ... = ... | atl.cpp:454:9:454:14 | pvData [post update] |  |
+| atl.cpp:454:18:454:38 | call to indirect_source | atl.cpp:454:3:454:40 | ... = ... |  |
+| atl.cpp:459:13:459:33 | call to indirect_source | atl.cpp:461:16:461:16 | x |  |
+| atl.cpp:459:13:459:33 | call to indirect_source | atl.cpp:468:20:468:20 | x |  |
+| atl.cpp:459:13:459:33 | call to indirect_source | atl.cpp:472:16:472:16 | x |  |
+| atl.cpp:459:13:459:33 | call to indirect_source | atl.cpp:480:11:480:11 | x |  |
+| atl.cpp:459:13:459:33 | call to indirect_source | atl.cpp:494:20:494:20 | x |  |
+| atl.cpp:461:16:461:16 | x | atl.cpp:461:16:461:17 | call to CComBSTR | TAINT |
+| atl.cpp:461:16:461:17 | call to CComBSTR | atl.cpp:462:10:462:10 | b |  |
+| atl.cpp:461:16:461:17 | call to CComBSTR | atl.cpp:464:17:464:17 | b |  |
+| atl.cpp:461:16:461:17 | call to CComBSTR | atl.cpp:466:3:466:3 | b |  |
+| atl.cpp:462:10:462:10 | b [post update] | atl.cpp:464:17:464:17 | b |  |
+| atl.cpp:462:10:462:10 | b [post update] | atl.cpp:466:3:466:3 | b |  |
+| atl.cpp:462:12:462:16 | ref arg m_str | atl.cpp:465:13:465:17 | m_str |  |
+| atl.cpp:464:17:464:17 | b | atl.cpp:464:17:464:18 | call to CComBSTR |  |
+| atl.cpp:464:17:464:18 | call to CComBSTR | atl.cpp:465:10:465:11 | b2 |  |
+| atl.cpp:464:17:464:18 | call to CComBSTR | atl.cpp:466:3:466:3 | b2 |  |
+| atl.cpp:465:10:465:11 | b2 [post update] | atl.cpp:466:3:466:3 | b2 |  |
+| atl.cpp:468:16:468:21 | call to CComBSTR | atl.cpp:469:10:469:10 | b |  |
+| atl.cpp:468:16:468:21 | call to CComBSTR | atl.cpp:470:3:470:3 | b |  |
+| atl.cpp:469:10:469:10 | b [post update] | atl.cpp:470:3:470:3 | b |  |
+| atl.cpp:472:16:472:16 | x | atl.cpp:472:16:472:17 | call to CComBSTR | TAINT |
+| atl.cpp:472:16:472:17 | call to CComBSTR | atl.cpp:476:11:476:11 | b |  |
+| atl.cpp:472:16:472:17 | call to CComBSTR | atl.cpp:512:3:512:3 | b |  |
+| atl.cpp:474:14:474:15 | call to CComBSTR | atl.cpp:475:10:475:11 | b2 |  |
+| atl.cpp:474:14:474:15 | call to CComBSTR | atl.cpp:476:5:476:6 | b2 |  |
+| atl.cpp:474:14:474:15 | call to CComBSTR | atl.cpp:477:10:477:11 | b2 |  |
+| atl.cpp:474:14:474:15 | call to CComBSTR | atl.cpp:512:3:512:3 | b2 |  |
+| atl.cpp:475:10:475:11 | b2 [post update] | atl.cpp:476:5:476:6 | b2 |  |
+| atl.cpp:475:10:475:11 | b2 [post update] | atl.cpp:477:10:477:11 | b2 |  |
+| atl.cpp:475:10:475:11 | b2 [post update] | atl.cpp:512:3:512:3 | b2 |  |
+| atl.cpp:475:13:475:17 | ref arg m_str | atl.cpp:477:13:477:17 | m_str |  |
+| atl.cpp:476:5:476:6 | ref arg b2 | atl.cpp:477:10:477:11 | b2 |  |
+| atl.cpp:476:5:476:6 | ref arg b2 | atl.cpp:512:3:512:3 | b2 |  |
+| atl.cpp:477:10:477:11 | b2 [post update] | atl.cpp:512:3:512:3 | b2 |  |
+| atl.cpp:479:14:479:15 | call to CComBSTR | atl.cpp:480:5:480:6 | b3 |  |
+| atl.cpp:479:14:479:15 | call to CComBSTR | atl.cpp:481:10:481:11 | b3 |  |
+| atl.cpp:479:14:479:15 | call to CComBSTR | atl.cpp:482:28:482:29 | b3 |  |
+| atl.cpp:479:14:479:15 | call to CComBSTR | atl.cpp:483:13:483:14 | b3 |  |
+| atl.cpp:479:14:479:15 | call to CComBSTR | atl.cpp:512:3:512:3 | b3 |  |
+| atl.cpp:480:5:480:6 | ref arg b3 | atl.cpp:481:10:481:11 | b3 |  |
+| atl.cpp:480:5:480:6 | ref arg b3 | atl.cpp:482:28:482:29 | b3 |  |
+| atl.cpp:480:5:480:6 | ref arg b3 | atl.cpp:483:13:483:14 | b3 |  |
+| atl.cpp:480:5:480:6 | ref arg b3 | atl.cpp:512:3:512:3 | b3 |  |
+| atl.cpp:480:11:480:11 | x | atl.cpp:480:11:480:11 | call to CComBSTR | TAINT |
+| atl.cpp:481:10:481:11 | b3 [post update] | atl.cpp:482:28:482:29 | b3 |  |
+| atl.cpp:481:10:481:11 | b3 [post update] | atl.cpp:483:13:483:14 | b3 |  |
+| atl.cpp:481:10:481:11 | b3 [post update] | atl.cpp:512:3:512:3 | b3 |  |
+| atl.cpp:482:28:482:29 | ref arg b3 | atl.cpp:483:13:483:14 | b3 |  |
+| atl.cpp:482:28:482:29 | ref arg b3 | atl.cpp:512:3:512:3 | b3 |  |
+| atl.cpp:483:11:483:14 | * ... | atl.cpp:483:10:483:14 | * ... | TAINT |
+| atl.cpp:483:12:483:12 | call to operator& | atl.cpp:483:11:483:14 | * ... | TAINT |
+| atl.cpp:483:13:483:14 | ref arg b3 | atl.cpp:512:3:512:3 | b3 |  |
+| atl.cpp:485:14:485:15 | call to CComBSTR | atl.cpp:486:5:486:6 | b4 |  |
+| atl.cpp:485:14:485:15 | call to CComBSTR | atl.cpp:487:10:487:11 | b4 |  |
+| atl.cpp:485:14:485:15 | call to CComBSTR | atl.cpp:490:19:490:20 | b4 |  |
+| atl.cpp:485:14:485:15 | call to CComBSTR | atl.cpp:512:3:512:3 | b4 |  |
+| atl.cpp:486:5:486:6 | ref arg b4 | atl.cpp:487:10:487:11 | b4 |  |
+| atl.cpp:486:5:486:6 | ref arg b4 | atl.cpp:490:19:490:20 | b4 |  |
+| atl.cpp:486:5:486:6 | ref arg b4 | atl.cpp:512:3:512:3 | b4 |  |
+| atl.cpp:487:10:487:11 | b4 [post update] | atl.cpp:490:19:490:20 | b4 |  |
+| atl.cpp:487:10:487:11 | b4 [post update] | atl.cpp:512:3:512:3 | b4 |  |
+| atl.cpp:487:13:487:17 | ref arg m_str | atl.cpp:490:22:490:26 | m_str |  |
+| atl.cpp:489:14:489:15 | call to CComBSTR | atl.cpp:490:5:490:6 | b5 |  |
+| atl.cpp:489:14:489:15 | call to CComBSTR | atl.cpp:491:10:491:11 | b5 |  |
+| atl.cpp:489:14:489:15 | call to CComBSTR | atl.cpp:512:3:512:3 | b5 |  |
+| atl.cpp:490:5:490:6 | ref arg b5 | atl.cpp:491:10:491:11 | b5 |  |
+| atl.cpp:490:5:490:6 | ref arg b5 | atl.cpp:512:3:512:3 | b5 |  |
+| atl.cpp:490:19:490:20 | b4 [post update] | atl.cpp:512:3:512:3 | b4 |  |
+| atl.cpp:491:10:491:11 | b5 [post update] | atl.cpp:512:3:512:3 | b5 |  |
+| atl.cpp:493:14:493:15 | call to CComBSTR | atl.cpp:494:5:494:6 | b6 |  |
+| atl.cpp:493:14:493:15 | call to CComBSTR | atl.cpp:495:10:495:11 | b6 |  |
+| atl.cpp:493:14:493:15 | call to CComBSTR | atl.cpp:512:3:512:3 | b6 |  |
+| atl.cpp:494:5:494:6 | ref arg b6 | atl.cpp:495:10:495:11 | b6 |  |
+| atl.cpp:494:5:494:6 | ref arg b6 | atl.cpp:512:3:512:3 | b6 |  |
+| atl.cpp:495:10:495:11 | b6 [post update] | atl.cpp:512:3:512:3 | b6 |  |
+| atl.cpp:497:14:497:15 | call to CComBSTR | atl.cpp:498:5:498:6 | b7 |  |
+| atl.cpp:497:14:497:15 | call to CComBSTR | atl.cpp:499:10:499:11 | b7 |  |
+| atl.cpp:497:14:497:15 | call to CComBSTR | atl.cpp:502:19:502:20 | b7 |  |
+| atl.cpp:497:14:497:15 | call to CComBSTR | atl.cpp:512:3:512:3 | b7 |  |
+| atl.cpp:498:5:498:6 | ref arg b7 | atl.cpp:499:10:499:11 | b7 |  |
+| atl.cpp:498:5:498:6 | ref arg b7 | atl.cpp:502:19:502:20 | b7 |  |
+| atl.cpp:498:5:498:6 | ref arg b7 | atl.cpp:512:3:512:3 | b7 |  |
+| atl.cpp:499:10:499:11 | b7 [post update] | atl.cpp:502:19:502:20 | b7 |  |
+| atl.cpp:499:10:499:11 | b7 [post update] | atl.cpp:512:3:512:3 | b7 |  |
+| atl.cpp:499:13:499:17 | ref arg m_str | atl.cpp:502:22:502:26 | m_str |  |
+| atl.cpp:501:14:501:15 | call to CComBSTR | atl.cpp:502:5:502:6 | b8 |  |
+| atl.cpp:501:14:501:15 | call to CComBSTR | atl.cpp:503:10:503:11 | b8 |  |
+| atl.cpp:501:14:501:15 | call to CComBSTR | atl.cpp:512:3:512:3 | b8 |  |
+| atl.cpp:502:5:502:6 | ref arg b8 | atl.cpp:503:10:503:11 | b8 |  |
+| atl.cpp:502:5:502:6 | ref arg b8 | atl.cpp:512:3:512:3 | b8 |  |
+| atl.cpp:502:19:502:20 | b7 [post update] | atl.cpp:512:3:512:3 | b7 |  |
+| atl.cpp:503:10:503:11 | b8 [post update] | atl.cpp:512:3:512:3 | b8 |  |
+| atl.cpp:505:14:505:15 | call to CComBSTR | atl.cpp:507:5:507:6 | b9 |  |
+| atl.cpp:505:14:505:15 | call to CComBSTR | atl.cpp:508:5:508:6 | b9 |  |
+| atl.cpp:505:14:505:15 | call to CComBSTR | atl.cpp:511:10:511:11 | b9 |  |
+| atl.cpp:505:14:505:15 | call to CComBSTR | atl.cpp:512:3:512:3 | b9 |  |
+| atl.cpp:506:15:506:18 | safe | atl.cpp:508:21:508:24 | safe |  |
+| atl.cpp:506:15:506:18 | safe | atl.cpp:509:10:509:13 | safe |  |
+| atl.cpp:507:5:507:6 | ref arg b9 | atl.cpp:508:5:508:6 | b9 |  |
+| atl.cpp:507:5:507:6 | ref arg b9 | atl.cpp:511:10:511:11 | b9 |  |
+| atl.cpp:507:5:507:6 | ref arg b9 | atl.cpp:512:3:512:3 | b9 |  |
+| atl.cpp:508:5:508:6 | ref arg b9 | atl.cpp:511:10:511:11 | b9 |  |
+| atl.cpp:508:5:508:6 | ref arg b9 | atl.cpp:512:3:512:3 | b9 |  |
+| atl.cpp:508:20:508:24 | ref arg & ... | atl.cpp:508:21:508:24 | safe [inner post update] |  |
+| atl.cpp:508:20:508:24 | ref arg & ... | atl.cpp:509:10:509:13 | safe |  |
+| atl.cpp:508:21:508:24 | safe | atl.cpp:508:20:508:24 | & ... |  |
+| atl.cpp:511:10:511:11 | ref arg b9 | atl.cpp:512:3:512:3 | b9 |  |
+| atl.cpp:514:16:514:39 | call to indirect_source | atl.cpp:516:16:516:16 | w |  |
+| atl.cpp:514:16:514:39 | call to indirect_source | atl.cpp:520:15:520:15 | w |  |
+| atl.cpp:514:16:514:39 | call to indirect_source | atl.cpp:524:20:524:20 | w |  |
+| atl.cpp:516:16:516:16 | ref arg w | atl.cpp:520:15:520:15 | w |  |
+| atl.cpp:516:16:516:16 | ref arg w | atl.cpp:524:20:524:20 | w |  |
+| atl.cpp:516:16:516:16 | w | atl.cpp:516:16:516:17 | call to CComBSTR | TAINT |
+| atl.cpp:516:16:516:17 | call to CComBSTR | atl.cpp:517:10:517:10 | b |  |
+| atl.cpp:516:16:516:17 | call to CComBSTR | atl.cpp:522:3:522:3 | b |  |
+| atl.cpp:517:10:517:10 | b [post update] | atl.cpp:522:3:522:3 | b |  |
+| atl.cpp:519:14:519:15 | call to CComBSTR | atl.cpp:520:5:520:6 | b2 |  |
+| atl.cpp:519:14:519:15 | call to CComBSTR | atl.cpp:521:10:521:11 | b2 |  |
+| atl.cpp:519:14:519:15 | call to CComBSTR | atl.cpp:522:3:522:3 | b2 |  |
+| atl.cpp:520:5:520:6 | ref arg b2 | atl.cpp:521:10:521:11 | b2 |  |
+| atl.cpp:520:5:520:6 | ref arg b2 | atl.cpp:522:3:522:3 | b2 |  |
+| atl.cpp:520:15:520:15 | ref arg w | atl.cpp:524:20:524:20 | w |  |
+| atl.cpp:521:10:521:11 | b2 [post update] | atl.cpp:522:3:522:3 | b2 |  |
+| atl.cpp:524:16:524:21 | call to CComBSTR | atl.cpp:525:10:525:10 | b |  |
+| atl.cpp:524:16:524:21 | call to CComBSTR | atl.cpp:526:3:526:3 | b |  |
+| atl.cpp:525:10:525:10 | b [post update] | atl.cpp:526:3:526:3 | b |  |
 | bsd.cpp:17:11:17:16 | call to source | bsd.cpp:20:18:20:18 | s |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:20:22:20:25 | addr |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:23:8:23:11 | addr |  |
