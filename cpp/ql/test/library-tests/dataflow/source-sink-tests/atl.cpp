@@ -133,5 +133,5 @@ struct CAtlFile : public CHandle {
 void test_CAtlFile() {
   CAtlFile catFile;
   char buffer[1024];
-  catFile.Read(buffer, 1024); // $ MISSING: local_source
+  catFile.Read(buffer, 1024); // $ local_source
 }
