@@ -38,7 +38,10 @@ module CleartextLogging {
     MaskingReplacer() {
       this.isGlobal() and
       exists(this.getRawReplacement().getStringValue()) and
-      any(RegExpDot term).getLiteral() = this.getRegExp().asExpr()
+      exists(DataFlow::RegExpCreationNode regexpObj |
+        this.(StringReplaceCall).getRegExp() = regexpObj and
+        regexpObj.getRoot() = any(RegExpDot term)
+      )
     }
   }
 
