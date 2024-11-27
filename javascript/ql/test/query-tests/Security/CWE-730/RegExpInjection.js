@@ -103,5 +103,5 @@ app.get("argv", function(req, res) {
   new RegExp(sanitized); // OK
 
   var sanitized = input.replace(new RegExp("[\\-\\[\\]\\/\\{\\}\\(\\)\\*\\+\\?\\.\\\\\\^\\$\\|]", unknownFlags()), "\\$&");
-  new RegExp(sanitized); // OK -- Currently flagged, but most likely should not be.
+  new RegExp(sanitized); // OK -- Most likely not a problem.
 });
