@@ -448,8 +448,7 @@ private fun KotlinFileExtractor.extractGeneratedClass(
     superTypes: List<KaType>,
     locId: Label<DbLocation>,
     elementToReportOn: PsiElement,
-    compilerGeneratedKindOverride: CompilerGeneratedKinds,
-    extractSuperConstructorArgs: (Label<DbSuperconstructorinvocationstmt>) -> Unit = {},
+    compilerGeneratedKindOverride: CompilerGeneratedKinds
     /*
     OLD: KE1
     declarationParent: IrDeclarationParent,
@@ -501,7 +500,6 @@ private fun KotlinFileExtractor.extractGeneratedClass(
 
                 tw.writeHasLocation(superCallId, locId)
                 tw.writeCallableBinding(superCallId.cast<DbCaller>(), baseConstructorId)
-                extractSuperConstructorArgs(superCallId)
             }
         }
     }
