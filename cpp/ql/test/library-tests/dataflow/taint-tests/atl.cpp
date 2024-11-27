@@ -734,19 +734,19 @@ void test_CSimpleArray() {
   {
     CSimpleArray<int> a;
     a.Add(x);
-    sink(a[0]); // $ MISSING: ir
+    sink(a[0]); // $ ir
     a.Add(0);
-    sink(a[0]); // $ MISSING: ir
+    sink(a[0]); // $ ir
 
     CSimpleArray<int> a2;
     sink(a2[0]);
     a2 = a;
-    sink(a2[0]); // $ MISSING: ir
+    sink(a2[0]); // $ ir
   }
   {
     CSimpleArray<int> a;
     a.Add(x);
-    sink(a.GetData()); // $ MISSING: ir
+    sink(a.GetData()); // $ ir
 
     CSimpleArray<int> a2;
     int pos = a2.Find(x);
