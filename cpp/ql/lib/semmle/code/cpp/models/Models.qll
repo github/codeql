@@ -51,3 +51,4 @@ private import implementations.StructuredExceptionHandling
 private import implementations.ZMQ
 private import implementations.Win32CommandExecution
 private import implementations.CA2AEX
+private import implementations.CComBSTR

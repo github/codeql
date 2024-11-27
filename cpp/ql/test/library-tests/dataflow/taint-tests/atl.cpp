@@ -459,14 +459,14 @@ void test_CComBSTR() {
   char* x = indirect_source<char>();
   {
     CComBSTR b(x);
-    sink(b.m_str); // $ MISSING: ir
+    sink(b.m_str); // $ ir
 
     CComBSTR b2(b);
-    sink(b2.m_str); // $ MISSING: ir
+    sink(b2.m_str); // $ ir
   }
   {
     CComBSTR b(10, x);
-    sink(b.m_str); // $ MISSING: ir
+    sink(b.m_str); // $ ir
   }
   {
     CComBSTR b(x);
@@ -474,33 +474,33 @@ void test_CComBSTR() {
     CComBSTR b2;
     sink(b2.m_str);
     b2 += b;
-    sink(b2.m_str); // $ MISSING: ir
+    sink(b2.m_str); // $ ir
 
     CComBSTR b3;
     b3 += x;
-    sink(b3.m_str); // $ MISSING: ir
+    sink(b3.m_str); // $ ir
     sink(static_cast<BSTR>(b3)); // $ ir
     sink(**&b3); // $ ir
 
     CComBSTR b4;
     b4.Append(source<char>());
-    sink(b4.m_str); // $ MISSING: ir
+    sink(b4.m_str); // $ ir
 
     CComBSTR b5;
     b5.AppendBSTR(b4.m_str);
-    sink(b5.m_str); // $ MISSING: ir
+    sink(b5.m_str); // $ ir
 
     CComBSTR b6;
     b6.AppendBytes(x, 10);
-    sink(b6.m_str); // $ MISSING: ir
+    sink(b6.m_str); // $ ir
 
     CComBSTR b7;
     b7.ArrayToBSTR(getSafeArray());
-    sink(b7.m_str); // $ MISSING: ir
+    sink(b7.m_str); // $ ir
 
     CComBSTR b8;
     b8.AssignBSTR(b7.m_str);
-    sink(b8.m_str); // $ MISSING: ir
+    sink(b8.m_str); // $ ir
 
     CComBSTR b9;
     SAFEARRAY safe;
@@ -514,14 +514,14 @@ void test_CComBSTR() {
   wchar_t* w = indirect_source<wchar_t>();
   {
     CComBSTR b(w);
-    sink(b.m_str); // $ MISSING: ir
+    sink(b.m_str); // $ ir
 
     CComBSTR b2;
     b2.Attach(w);
-    sink(b2.m_str); // $ MISSING: ir
+    sink(b2.m_str); // $ ir
   }
   {
     CComBSTR b(10, w);
-    sink(b.m_str); // $ MISSING: ir
+    sink(b.m_str); // $ ir
   }
 }
