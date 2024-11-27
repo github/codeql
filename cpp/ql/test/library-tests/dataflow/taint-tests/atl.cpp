@@ -706,3 +706,50 @@ void test_CPathT() {
     sink(p2.GetExtension()); // $ ir
   }
 }
+
+template <class T>
+struct CSimpleArray {
+  CSimpleArray(const CSimpleArray<T>& src);
+  CSimpleArray();
+  ~CSimpleArray();
+
+  BOOL Add(const T& t);
+  int Find(const T& t) const;
+  T* GetData() const;
+  int GetSize() const;
+  BOOL Remove(const T& t);
+  void RemoveAll();
+  BOOL RemoveAt(int nIndex);
+  
+  BOOL SetAtIndex(
+    int nIndex,
+    const T& t);
+  
+  T& operator[](int nindex);
+  CSimpleArray<T> & operator=(const CSimpleArray<T>& src);
+};
+
+void test_CSimpleArray() {
+  int x = source<int>();
+  {
+    CSimpleArray<int> a;
+    a.Add(x);
+    sink(a[0]); // $ MISSING: ir
+    a.Add(0);
+    sink(a[0]); // $ MISSING: ir
+
+    CSimpleArray<int> a2;
+    sink(a2[0]);
+    a2 = a;
+    sink(a2[0]); // $ MISSING: ir
+  }
+  {
+    CSimpleArray<int> a;
+    a.Add(x);
+    sink(a.GetData()); // $ MISSING: ir
+
+    CSimpleArray<int> a2;
+    int pos = a2.Find(x);
+    sink(a2[pos]); // $ MISSING: ir
+  }
+}
