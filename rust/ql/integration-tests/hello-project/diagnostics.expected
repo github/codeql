@@ -1,27 +1,89 @@
 {
   "attributes": {
+    "steps": [
+      {
+        "extract": "<test-root-directory>/src/directory_module/mod.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "extract": "<test-root-directory>/src/directory_module/nested_module.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "extract": "<test-root-directory>/src/directory_module/not_loaded.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "extract": "<test-root-directory>/src/file_module.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "extract": "<test-root-directory>/src/main.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "fetchFile": "<test-root-directory>/src/directory_module/mod.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "fetchFile": "<test-root-directory>/src/directory_module/nested_module.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "fetchFile": "<test-root-directory>/src/file_module.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "fetchFile": "<test-root-directory>/src/main.rs",
+        "ms": "__REDACTED__"
+      },
+      {
+        "loadManifest": "<test-root-directory>/<manifest-file>",
+        "ms": "__REDACTED__"
+      },
+      {
+        "ms": "__REDACTED__",
+        "parse": "<test-root-directory>/src/directory_module/mod.rs"
+      },
+      {
+        "ms": "__REDACTED__",
+        "parse": "<test-root-directory>/src/directory_module/nested_module.rs"
+      },
+      {
+        "ms": "__REDACTED__",
+        "parse": "<test-root-directory>/src/directory_module/not_loaded.rs"
+      },
+      {
+        "ms": "__REDACTED__",
+        "parse": "<test-root-directory>/src/file_module.rs"
+      },
+      {
+        "ms": "__REDACTED__",
+        "parse": "<test-root-directory>/src/main.rs"
+      }
+    ],
     "summary": {
       "numberOfFiles": 4,
       "numberOfManifests": 1,
       "totalDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
       },
       "totalExtractDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
       },
       "totalFetchFileDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
       },
       "totalLoadDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
       },
       "totalParseDuration": {
-        "ms": "REDACTED",
-        "pretty": "REDACTED"
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
       }
     }
   },

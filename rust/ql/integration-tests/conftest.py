@@ -17,10 +17,12 @@ def manifests(cwd):
 @pytest.fixture
 def rust_check_diagnostics(check_diagnostics):
     check_diagnostics.replacements += [
-        (r'"ms"\s*:\s*[0-9]+', '"ms": "REDACTED"'),
-        (r'"pretty"\s*:\s*"[0-9]+:[0-9]{2}:[0-9]{2}.[0-9]{3}"', '"pretty": "REDACTED"'),
+        ("Cargo.toml|rust-project.json", "<manifest-file>"),
     ]
-    check_diagnostics.skip += [
-        "attributes.steps",  # the order of the steps is not stable
+    check_diagnostics.redact += [
+        "attributes.summary.*.ms",
+        "attributes.summary.*.pretty",
+        "attributes.steps.ms",
     ]
+    check_diagnostics.sort = True  # the order of the steps is not stable
     return check_diagnostics
