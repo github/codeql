@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.analysis.api.symbols.markers.KaNamedSymbol
 import java.io.BufferedWriter
 import java.io.File
+import java.lang.Error
 import java.util.ArrayList
 import java.util.HashSet
 
@@ -109,7 +110,7 @@ class ExternalDeclExtractor(
                             logger.error("Failed to rename $trapTmpFile to $trapFile")
                         }
                         logger.info("Finished writing TRAP file $trapFile")
-                    } catch (e: Exception) {
+                    } catch (e: Throwable) {
                         manager.setHasError()
                         logger.error(
                             "Failed to extract '$shortName'. Partial TRAP file location is $trapTmpFile",
