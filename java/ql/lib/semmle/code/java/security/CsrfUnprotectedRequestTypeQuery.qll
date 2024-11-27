@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.MyBatis
+private import semmle.code.java.frameworks.Jdbc
 
 /** A method that is not protected from CSRF by default. */
 abstract class CsrfUnprotectedMethod extends Method { }
@@ -43,5 +44,13 @@ private class MyBatisMapperDatabaseUpdateMethod extends DatabaseUpdateMethod {
       ) and
       this = mapperXml.getMapperMethod()
     )
+  }
+}
+
+/** A method declared in `java.sql.PreparedStatement` that updates a database. */
+private class PreparedStatementDatabaseUpdateMethod extends DatabaseUpdateMethod {
+  PreparedStatementDatabaseUpdateMethod() {
+    this instanceof PreparedStatementExecuteUpdateMethod or
+    this instanceof PreparedStatementExecuteLargeUpdateMethod
   }
 }
