@@ -23,7 +23,7 @@ string metachar() { result = "'\"\\&<>\n\r\t*|{}[]%$".charAt(_) }
 
 /** Gets a string matched by `e` in a `replace` call. */
 string getAMatchedString(DataFlow::Node e) {
-  result = e.(DataFlow::RegExpLiteralNode).getRoot().getAMatchedString()
+  result = e.(DataFlow::RegExpCreationNode).getRoot().getAMatchedString()
   or
   result = e.getStringValue()
 }
@@ -52,7 +52,7 @@ predicate isSimpleAlt(RegExpAlt t) { forall(RegExpTerm ch | ch = t.getAChild() |
  * Holds if `mce` is of the form `x.replace(re, new)`, where `re` is a global
  * regular expression and `new` prefixes the matched string with a backslash.
  */
-predicate isBackslashEscape(StringReplaceCall mce, DataFlow::RegExpLiteralNode re) {
+predicate isBackslashEscape(StringReplaceCall mce, DataFlow::RegExpCreationNode re) {
   mce.isGlobal() and
   re = mce.getRegExp() and
   (
@@ -72,7 +72,7 @@ predicate allBackslashesEscaped(DataFlow::Node nd) {
   nd instanceof JsonStringifyCall
   or
   // check whether `nd` itself escapes backslashes
-  exists(DataFlow::RegExpLiteralNode rel | isBackslashEscape(nd, rel) |
+  exists(DataFlow::RegExpCreationNode rel | isBackslashEscape(nd, rel) |
     // if it's a complex regexp, we conservatively assume that it probably escapes backslashes
     not isSimple(rel.getRoot()) or
     getAMatchedString(rel) = "\\"

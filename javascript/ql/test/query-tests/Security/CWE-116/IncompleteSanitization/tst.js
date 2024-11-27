@@ -338,19 +338,19 @@ function typicalBadHtmlSanitizers(s) {
 }
 
 function bad18NewRegExp(p) {
-	return p.replace(new RegExp("\\.\\./"), ""); // NOT OK -- should be flagged, but currently checking only for literals
+	return p.replace(new RegExp("\\.\\./"), ""); // NOT OK
 }
 
 function bad4NewRegExpG(s) {
-	return s.replace(new RegExp("\'","g"), "\\$&"); // NOT OK -- should be flagged, but currently checking only for literals
+	return s.replace(new RegExp("\'","g"), "\\$&"); // NOT OK
 }
 
 function bad4NewRegExp(s) {
-	return s.replace(new RegExp("\'"), "\\$&"); // NOT OK -- should be flagged, but currently checking only for literals
+	return s.replace(new RegExp("\'"), "\\$&"); // NOT OK
 }
 
 function bad4NewRegExpUnknown(s) {
-	return s.replace(new RegExp("\'", unknownFlags()), "\\$&"); // NOT OK -- should be flagged, but currently checking only for literals
+	return s.replace(new RegExp("\'", unknownFlags()), "\\$&"); // NOT OK
 }
 
 function newlinesNewReGexp(s) {
@@ -359,9 +359,9 @@ function newlinesNewReGexp(s) {
 	x.replace(new RegExp("\n", "g"), "").replace(x, y); // OK
 	x.replace(x, y).replace(new RegExp("\n", "g"), ""); // OK
 
-	x.replace(new RegExp("\n"), "").replace(x, y); // NOT OK -- should be flagged, but currently checking only for literals
-	x.replace(x, y).replace(new RegExp("\n"), ""); // NOT OK -- should be flagged, but currently checking only for literals
+	x.replace(new RegExp("\n"), "").replace(x, y); // NOT OK
+	x.replace(x, y).replace(new RegExp("\n"), ""); // NOT OK
 
-	x.replace(new RegExp("\n", unknownFlags()), "").replace(x, y); // OK
-	x.replace(x, y).replace(new RegExp("\n", unknownFlags()), ""); // OK
+	x.replace(new RegExp("\n", unknownFlags()), "").replace(x, y); // OK -- Should not be flagged but now it is 
+	x.replace(x, y).replace(new RegExp("\n", unknownFlags()), ""); // OK -- Should not be flagged but now it is 
 }
