@@ -2817,7 +2817,7 @@ private fun KotlinFileExtractor.useVariable(v: KaVariableSymbol): Label<out DbLo
 }
 
 context(KaSession)
-fun KotlinFileExtractor.extractReferenceExpression(
+private fun KotlinFileExtractor.extractReferenceExpression(
     ref: KtReferenceExpression,
     enclosingCallable: Label<out DbCallable>,
     stmtExprParent: StmtExprParent
