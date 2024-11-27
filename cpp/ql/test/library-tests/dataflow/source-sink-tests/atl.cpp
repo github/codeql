@@ -54,3 +54,84 @@ typedef struct _OVERLAPPED {
 using LPOVERLAPPED_COMPLETION_ROUTINE = void(DWORD, DWORD, LPOVERLAPPED);
 
 using HKEY = void*;
+
+class CAtlTransactionManager;
+
+class CHandle {
+  CHandle() throw();
+  CHandle(CHandle& h) throw();
+  explicit CHandle(HANDLE h) throw();
+};
+
+struct CAtlFile : public CHandle {
+  CAtlFile() throw();
+  CAtlFile(CAtlTransactionManager* pTM) throw();
+  CAtlFile(CAtlFile& file) throw();
+  explicit CAtlFile(HANDLE hFile) throw();
+
+  HRESULT Create(
+    LPCTSTR szFilename,
+    DWORD dwDesiredAccess,
+    DWORD dwShareMode,
+    DWORD dwCreationDisposition,
+    DWORD dwFlagsAndAttributes,
+    LPSECURITY_ATTRIBUTES lpsa,
+    HANDLE hTemplateFile) throw();
+
+    HRESULT Flush() throw();
+    HRESULT GetOverlappedResult(
+      LPOVERLAPPED pOverlapped,
+      DWORD& dwBytesTransferred,
+      BOOL bWait
+    ) throw();
+
+    HRESULT GetPosition(ULONGLONG& nPos) const throw();
+    HRESULT GetSize(ULONGLONG& nLen) const throw();
+    HRESULT LockRange(ULONGLONG nPos, ULONGLONG nCount) throw();
+    
+    HRESULT Read(
+    LPVOID pBuffer,
+    DWORD nBufSize) throw();
+
+  HRESULT Read(
+      LPVOID pBuffer,
+      DWORD nBufSize,
+      DWORD& nBytesRead) throw();
+  HRESULT Read(
+      LPVOID pBuffer,
+      DWORD nBufSize,
+      LPOVERLAPPED pOverlapped) throw();
+  HRESULT Read(
+      LPVOID pBuffer,
+      DWORD nBufSize,
+      LPOVERLAPPED pOverlapped,
+      LPOVERLAPPED_COMPLETION_ROUTINE pfnCompletionRoutine) throw();
+
+  HRESULT Seek(
+    LONGLONG nOffset,
+    DWORD dwFrom) throw();
+
+  HRESULT SetSize(ULONGLONG nNewLen) throw();
+  HRESULT UnlockRange(ULONGLONG nPos, ULONGLONG nCount) throw();
+  HRESULT Write(
+      LPCVOID pBuffer,
+      DWORD nBufSize,
+      LPOVERLAPPED pOverlapped,
+      LPOVERLAPPED_COMPLETION_ROUTINE pfnCompletionRoutine) throw();
+
+  HRESULT Write(
+      LPCVOID pBuffer,
+      DWORD nBufSize,
+      DWORD* pnBytesWritten) throw();
+
+  HRESULT Write(
+      LPCVOID pBuffer,
+      DWORD nBufSize,
+      LPOVERLAPPED pOverlapped) throw();
+};
+
+void test_CAtlFile() {
+  CAtlFile catFile;
+  char buffer[1024];
+  catFile.Read(buffer, 1024); // $ MISSING: local_source
+}
