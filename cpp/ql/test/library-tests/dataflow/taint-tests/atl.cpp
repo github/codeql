@@ -249,3 +249,150 @@ void test_CAtlArray() {
     sink(a6[0]); // $ ir
   }
 }
+
+template<typename E, class ETraits = CElementTraits<E>>
+struct CAtlList {
+  using INARGTYPE = typename ETraits::INARGTYPE;
+  CAtlList(UINT nBlockSize) throw();
+  ~CAtlList() throw();
+  POSITION AddHead();
+  POSITION AddHead(INARGTYPE element);
+  void AddHeadList(const CAtlList<E, ETraits>* plNew);
+  POSITION AddTail();
+  POSITION AddTail(INARGTYPE element);
+  void AddTailList(const CAtlList<E, ETraits>* plNew);
+  POSITION Find(INARGTYPE element, POSITION posStartAfter) const throw();
+  POSITION FindIndex(size_t iElement) const throw();
+  E& GetAt(POSITION pos) throw();
+  const E& GetAt(POSITION pos) const throw();
+  size_t GetCount() const throw();
+  E& GetHead() throw();
+  const E& GetHead() const throw();
+  POSITION GetHeadPosition() const throw();
+  E& GetNext(POSITION& pos) throw();
+  const E& GetNext(POSITION& pos) const throw();
+  E& GetPrev(POSITION& pos) throw();
+  const E& GetPrev(POSITION& pos) const throw();
+  E& GetTail() throw();
+  const E& GetTail() const throw();
+  POSITION GetTailPosition() const throw();
+  POSITION InsertAfter(POSITION pos, INARGTYPE element);
+  POSITION InsertBefore(POSITION pos, INARGTYPE element);
+  bool IsEmpty() const throw();
+  void MoveToHead(POSITION pos) throw();
+  void MoveToTail(POSITION pos) throw();
+  void RemoveAll() throw();
+  void RemoveAt(POSITION pos) throw();
+  E RemoveHead();
+  void RemoveHeadNoReturn() throw();
+  E RemoveTail();
+  void RemoveTailNoReturn() throw();
+  void SetAt(POSITION pos, INARGTYPE element);
+  void SwapElements(POSITION pos1, POSITION pos2) throw();
+};
+
+void test_CAtlList() {
+  int x = source<int>();
+  {
+    CAtlList<int> list(10);
+    sink(list.GetHead());
+    list.AddHead(x);
+    sink(list.GetHead()); // $ MISSING: ir
+
+    CAtlList<int> list2(10);
+    list2.AddHeadList(&list);
+    sink(list2.GetHead()); // $ MISSING: ir
+
+    CAtlList<int> list3(10);
+    list3.AddTail(x);
+    sink(list3.GetHead()); // $ MISSING: ir
+
+    CAtlList<int> list4(10);
+    list4.AddTailList(&list3);
+    sink(list4.GetHead()); // $ MISSING: ir
+
+    {
+      CAtlList<int> list5(10);
+      auto pos = list5.Find(x, list5.GetHeadPosition());
+      sink(list5.GetAt(pos)); // $ MISSING: ir
+    }
+
+    {
+      CAtlList<int> list6(10);
+      list6.AddHead(x);
+      auto pos = list6.FindIndex(0);
+      sink(list6.GetAt(pos)); // $ MISSING: ir
+    }
+
+    {
+      CAtlList<int> list7(10);
+      auto pos = list7.GetTailPosition();
+      list7.InsertAfter(pos, x);
+      sink(list7.GetHead()); // $ MISSING: ir
+    }
+
+    {
+      CAtlList<int> list8(10);
+      auto pos = list8.GetTailPosition();
+      list8.InsertBefore(pos, x);
+      sink(list8.GetHead()); // $ MISSING: ir
+    }
+    {
+      CAtlList<int> list9(10);
+      list9.SetAt(list9.GetHeadPosition(), x);
+      sink(list9.GetHead()); // $ MISSING: ir
+    }
+  }
+
+  int* p = indirect_source<int>();
+  {
+    CAtlList<int> list(10);
+    sink(list.GetHead());
+    list.AddHead(x);
+    sink(list.GetHead()); // $ MISSING: ir
+
+    CAtlList<int> list2(10);
+    list2.AddHeadList(&list);
+    sink(list2.GetHead()); // $ MISSING: ir
+
+    CAtlList<int> list3(10);
+    list3.AddTail(x);
+    sink(list3.GetHead()); // $ MISSING: ir
+
+    CAtlList<int> list4(10);
+    list4.AddTailList(&list3);
+    sink(list4.GetHead()); // $ MISSING: ir
+
+    {
+      CAtlList<int> list5(10);
+      auto pos = list5.Find(x, list5.GetHeadPosition());
+      sink(list5.GetAt(pos)); // $ MISSING: ir
+    }
+
+    {
+      CAtlList<int> list6(10);
+      list6.AddHead(x);
+      auto pos = list6.FindIndex(0);
+      sink(list6.GetAt(pos)); // $ MISSING: ir
+    }
+
+    {
+      CAtlList<int> list7(10);
+      auto pos = list7.GetTailPosition();
+      list7.InsertAfter(pos, x);
+      sink(list7.GetHead()); // $ MISSING: ir
+    }
+
+    {
+      CAtlList<int> list8(10);
+      auto pos = list8.GetTailPosition();
+      list8.InsertBefore(pos, x);
+      sink(list8.GetHead()); // $ MISSING: ir
+    }
+    {
+      CAtlList<int> list9(10);
+      list9.SetAt(list9.GetHeadPosition(), x);
+      sink(list9.GetHead()); // $ MISSING: ir
+    }
+  }
+}
