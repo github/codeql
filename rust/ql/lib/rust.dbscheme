@@ -116,6 +116,13 @@ locatable_locations(
   int location: @location_default ref
 );
 
+extractor_steps(
+  unique int id: @extractor_step,
+  string action: string ref,
+  int file: @file ref,
+  int duration_ms: int ref
+)
+
 
 // from schema
 

@@ -243,8 +243,8 @@ impl TrapFileProvider {
         })
     }
 
-    pub fn create(&self, category: &str, key: &Path) -> TrapFile {
-        let path = file_paths::path_for(&self.trap_dir.join(category), key, "trap");
+    pub fn create(&self, category: &str, key: impl AsRef<Path>) -> TrapFile {
+        let path = file_paths::path_for(&self.trap_dir.join(category), key.as_ref(), "trap");
         debug!("creating trap file {}", path.display());
         let mut writer = trap::Writer::new();
         extractor::populate_empty_location(&mut writer);

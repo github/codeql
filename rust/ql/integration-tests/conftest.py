@@ -16,13 +16,8 @@ def manifests(cwd):
 
 @pytest.fixture
 def rust_check_diagnostics(check_diagnostics):
-    check_diagnostics.replacements += [
-        ("Cargo.toml|rust-project.json", "<manifest-file>"),
-    ]
     check_diagnostics.redact += [
-        "attributes.summary.durations.*.ms",
-        "attributes.summary.durations.*.pretty",
-        "attributes.steps.ms",
+        "attributes.durations.*.ms",
+        "attributes.durations.*.pretty",
     ]
-    check_diagnostics.sort = True  # the order of the steps is not stable
     return check_diagnostics

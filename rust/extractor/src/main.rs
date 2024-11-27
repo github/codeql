@@ -2,7 +2,7 @@ use crate::diagnostics::{emit_extraction_diagnostics, ExtractionStep};
 use crate::rust_analyzer::path_to_file_id;
 use anyhow::Context;
 use archive::Archiver;
-use log::info;
+use log::{info, warn};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
@@ -140,7 +140,27 @@ impl<'a> Extractor<'a> {
         start: Instant,
         cfg: &config::Config,
     ) -> anyhow::Result<()> {
-        emit_extraction_diagnostics(start, cfg, self.steps)
+        emit_extraction_diagnostics(start, cfg, &self.steps)?;
+        let mut trap = self.traps.create("diagnostics", "extraction");
+        for step in self.steps {
+            let file_label = trap.emit_file(&step.file);
+            let step_label = trap.writer.fresh_id();
+            let ms = usize::try_from(step.ms).unwrap_or_else(|_e| {
+                warn!("extraction step duration overflowed ({step:?})");
+                i32::MAX as usize
+            });
+            trap.writer.add_tuple(
+                "extractor_steps",
+                vec![
+                    step_label.into(),
+                    format!("{:?}", step.action).into(),
+                    file_label.into(),
+                    ms.into(),
+                ],
+            );
+        }
+        trap.commit()?;
+        Ok(())
     }
 }
 

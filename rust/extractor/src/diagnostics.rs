@@ -76,7 +76,7 @@ pub struct Diagnostics<T> {
 
 #[derive(Default, Debug, Clone, Copy, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
-enum ExtractionStepKind {
+pub enum ExtractionStepKind {
     #[default]
     LoadManifest,
     LoadSource,
@@ -87,9 +87,9 @@ enum ExtractionStepKind {
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ExtractionStep {
-    action: ExtractionStepKind,
-    file: PathBuf,
-    ms: u128,
+    pub action: ExtractionStepKind,
+    pub file: PathBuf,
+    pub ms: u128,
 }
 
 impl ExtractionStep {
@@ -186,14 +186,7 @@ struct ExtractionSummary {
     durations: DurationsSummary,
 }
 
-#[derive(Debug, Default, Clone, Serialize)]
-#[serde(rename_all = "camelCase")]
-struct ExtractionAttributes {
-    steps: Vec<ExtractionStep>,
-    summary: ExtractionSummary,
-}
-
-type ExtractionDiagnostics = Diagnostics<ExtractionAttributes>;
+type ExtractionDiagnostics = Diagnostics<ExtractionSummary>;
 
 fn summary(start: Instant, steps: &[ExtractionStep]) -> ExtractionSummary {
     let mut number_of_manifests = 0;
@@ -229,9 +222,9 @@ fn summary(start: Instant, steps: &[ExtractionStep]) -> ExtractionSummary {
 pub fn emit_extraction_diagnostics(
     start: Instant,
     config: &Config,
-    steps: Vec<ExtractionStep>,
+    steps: &[ExtractionStep],
 ) -> anyhow::Result<()> {
-    let summary = summary(start, &steps);
+    let summary = summary(start, steps);
     let diagnostics = ExtractionDiagnostics {
         source: Source {
             id: "rust/extractor/telemetry".to_owned(),
@@ -243,7 +236,7 @@ pub fn emit_extraction_diagnostics(
             ..Default::default()
         },
         timestamp: Utc::now(),
-        attributes: ExtractionAttributes { steps, summary },
+        attributes: summary,
         ..Default::default()
     };
 
