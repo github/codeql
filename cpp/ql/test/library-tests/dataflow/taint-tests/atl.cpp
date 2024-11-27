@@ -525,3 +525,80 @@ void test_CComBSTR() {
     sink(b.m_str); // $ ir
   }
 }
+
+template <typename T>
+struct CComSafeArray {
+  CComSafeArray();
+  CComSafeArray(const SAFEARRAYBOUND& bound);
+  CComSafeArray(ULONG  ulCount, LONG lLBound);
+  CComSafeArray(const SAFEARRAYBOUND* pBound, UINT uDims);
+  CComSafeArray(const CComSafeArray& saSrc);
+  CComSafeArray(const SAFEARRAY& saSrc);
+  CComSafeArray(const SAFEARRAY* psaSrc);
+
+  ~CComSafeArray() throw();
+
+  HRESULT Add(const SAFEARRAY* psaSrc);
+  HRESULT Add(ULONG ulCount, const T* pT, BOOL bCopy);
+  HRESULT Add(const T& t, BOOL bCopy);
+  HRESULT Attach(const SAFEARRAY* psaSrc);
+  HRESULT CopyFrom(LPSAFEARRAY* ppArray);
+  HRESULT CopyTo(LPSAFEARRAY* ppArray);
+  HRESULT Create(const SAFEARRAYBOUND* pBound, UINT uDims);
+  HRESULT Create(ULONG ulCount, LONG lLBound);
+  HRESULT Destroy();
+  LPSAFEARRAY Detach();
+  T& GetAt(LONG lIndex) const;
+  ULONG GetCount(UINT uDim) const;
+  UINT GetDimensions() const;
+  LONG GetLowerBound(UINT uDim) const;
+  LPSAFEARRAY GetSafeArrayPtr() throw();
+  LONG GetUpperBound(UINT uDim) const;
+  bool IsSizable() const;
+  HRESULT MultiDimGetAt(const LONG* alIndex, T& t);
+  HRESULT MultiDimSetAt(const LONG* alIndex, const T& t);
+  HRESULT Resize(const SAFEARRAYBOUND* pBound);
+  HRESULT Resize(ULONG ulCount, LONG lLBound);
+  HRESULT SetAt(LONG lIndex, const T& t, BOOL bCopy);
+  operator LPSAFEARRAY() const;
+  T& operator[](long lindex) const;
+  T& operator[](int nindex) const;
+
+  LPSAFEARRAY m_psa;
+};
+
+void test_CComSafeArray() {
+  LPSAFEARRAY safe = getSafeArray();
+  sink(safe->pvData); // $ ir
+  {
+  CComSafeArray<int> c(safe);
+  sink(c[0]); // $ MISSING: ir
+  sink(c.GetAt(0)); // $ MISSING: ir
+  sink(c.GetSafeArrayPtr()->pvData); // $ MISSING: ir
+  sink(c.m_psa->pvData); // $ MISSING: ir
+  }
+  {
+    CComSafeArray<int> c;
+    sink(c[0]);
+    sink(c.GetAt(0));
+    sink(c.GetSafeArrayPtr()->pvData);
+    c.Add(safe);
+    sink(c[0]); // $ MISSING: ir
+    sink(c.GetAt(0)); // $ MISSING: ir
+    sink(c.GetSafeArrayPtr()->pvData); // $ MISSING: ir
+    sink(static_cast<LPSAFEARRAY>(c)->pvData); // $ MISSING: ir
+  }
+  {
+    CComSafeArray<int> c;
+    c.Add(source<int>(), true);
+    sink(c[0]); // $ MISSING: ir
+    sink(c.GetAt(0)); // $ MISSING: ir
+    sink(c.GetSafeArrayPtr()->pvData); // $ MISSING: ir
+  }
+  {
+    CComSafeArray<int> c;
+    c.SetAt(0, source<int>(), true);
+    sink(c[0]); // $ MISSING: ir
+    sink(c[0L]); // $ MISSING: ir
+  }
+}
