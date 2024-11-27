@@ -104,3 +104,22 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, ContentSet c) {
   // Optional steps are added through isAdditionalFlowStep but we don't want the implicit reads
   not optionalStep(node, _, _)
 }
+
+private predicate isArgumentToResolvedCall(DataFlow::Node arg) {
+  exists(DataFlowCall c |
+    exists(viableCallable(c)) and
+    isArgumentNode(arg, c, _)
+  )
+}
+
+predicate speculativeTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(DataFlow::CallNode call |
+    node1 = call.getAnArgument() and
+    node2 = call and
+    // A given node can appear as argument in more than one call. For example `x` in `fn.call(x)` is
+    // is argument 0 of the `fn.call` call, but also the receiver of a reflective call to `fn`.
+    // It is thus not enough to check if `call` has a known target; we nede to ensure that none of the calls
+    // involving `node1` have a known target.
+    not isArgumentToResolvedCall(node1)
+  )
+}

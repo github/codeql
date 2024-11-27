@@ -17,6 +17,7 @@ flow
 | arrays.js:2:16:2:23 | "source" | arrays.js:86:8:86:35 | arrayFi ... llback) |
 | arrays.js:2:16:2:23 | "source" | arrays.js:90:10:90:10 | x |
 | arrays.js:2:16:2:23 | "source" | arrays.js:93:8:93:17 | arr.at(-1) |
+| arrays.js:2:16:2:23 | "source" | arrays.js:110:8:110:24 | arr8_spread.pop() |
 | arrays.js:18:22:18:29 | "source" | arrays.js:18:50:18:50 | e |
 | arrays.js:22:15:22:22 | "source" | arrays.js:23:8:23:17 | arr2.pop() |
 | arrays.js:25:15:25:22 | "source" | arrays.js:26:8:26:17 | arr3.pop() |
@@ -28,3 +29,5 @@ flow
 | arrays.js:53:4:53:11 | "source" | arrays.js:54:10:54:18 | ary.pop() |
 | arrays.js:96:9:96:16 | "source" | arrays.js:96:8:96:40 | ["sourc ... ).pop() |
 | arrays.js:97:9:97:16 | "source" | arrays.js:97:8:97:42 | ["sourc ... ).pop() |
+| arrays.js:100:31:100:38 | "source" | arrays.js:101:8:101:17 | arr8.pop() |
+| arrays.js:104:55:104:62 | "source" | arrays.js:106:8:106:25 | arr8_variant.pop() |
