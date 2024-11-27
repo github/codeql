@@ -175,3 +175,10 @@ const debug = require('debug')('test');
     const myPasscode = foo();
     console.log(myPasscode); // NOT OK
 });
+
+(function () {
+    console.log(password.replace(/./g, "*")); // OK
+	console.log(password.replace(new RegExp(".", "g"), "*")); // OK -- Currently flagged, though it shouldn't be
+	console.log(password.replace(new RegExp("."), "*")); // NOT OK
+	console.log(password.replace(new RegExp(".", unknownFlags()), "*")); // OK -- Currently flagged, though maybe it should not be.
+})();
