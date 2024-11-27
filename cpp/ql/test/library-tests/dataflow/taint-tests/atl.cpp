@@ -297,19 +297,19 @@ void test_CAtlList() {
     CAtlList<int> list(10);
     sink(list.GetHead());
     list.AddHead(x);
-    sink(list.GetHead()); // $ MISSING: ir
+    sink(list.GetHead()); // $ ir
 
     CAtlList<int> list2(10);
     list2.AddHeadList(&list);
-    sink(list2.GetHead()); // $ MISSING: ir
+    sink(list2.GetHead()); // $ ir
 
     CAtlList<int> list3(10);
     list3.AddTail(x);
-    sink(list3.GetHead()); // $ MISSING: ir
+    sink(list3.GetHead()); // $ ir
 
     CAtlList<int> list4(10);
     list4.AddTailList(&list3);
-    sink(list4.GetHead()); // $ MISSING: ir
+    sink(list4.GetHead()); // $ ir
 
     {
       CAtlList<int> list5(10);
@@ -321,26 +321,26 @@ void test_CAtlList() {
       CAtlList<int> list6(10);
       list6.AddHead(x);
       auto pos = list6.FindIndex(0);
-      sink(list6.GetAt(pos)); // $ MISSING: ir
+      sink(list6.GetAt(pos)); // $ ir
     }
 
     {
       CAtlList<int> list7(10);
       auto pos = list7.GetTailPosition();
       list7.InsertAfter(pos, x);
-      sink(list7.GetHead()); // $ MISSING: ir
+      sink(list7.GetHead()); // $ ir
     }
 
     {
       CAtlList<int> list8(10);
       auto pos = list8.GetTailPosition();
       list8.InsertBefore(pos, x);
-      sink(list8.GetHead()); // $ MISSING: ir
+      sink(list8.GetHead()); // $ ir
     }
     {
       CAtlList<int> list9(10);
       list9.SetAt(list9.GetHeadPosition(), x);
-      sink(list9.GetHead()); // $ MISSING: ir
+      sink(list9.GetHead()); // $ ir
     }
   }
 
@@ -349,19 +349,19 @@ void test_CAtlList() {
     CAtlList<int> list(10);
     sink(list.GetHead());
     list.AddHead(x);
-    sink(list.GetHead()); // $ MISSING: ir
+    sink(list.GetHead()); // $ ir
 
     CAtlList<int> list2(10);
     list2.AddHeadList(&list);
-    sink(list2.GetHead()); // $ MISSING: ir
+    sink(list2.GetHead()); // $ ir
 
     CAtlList<int> list3(10);
     list3.AddTail(x);
-    sink(list3.GetHead()); // $ MISSING: ir
+    sink(list3.GetHead()); // $ ir
 
     CAtlList<int> list4(10);
     list4.AddTailList(&list3);
-    sink(list4.GetHead()); // $ MISSING: ir
+    sink(list4.GetHead()); // $ ir
 
     {
       CAtlList<int> list5(10);
@@ -373,26 +373,26 @@ void test_CAtlList() {
       CAtlList<int> list6(10);
       list6.AddHead(x);
       auto pos = list6.FindIndex(0);
-      sink(list6.GetAt(pos)); // $ MISSING: ir
+      sink(list6.GetAt(pos)); // $ ir
     }
 
     {
       CAtlList<int> list7(10);
       auto pos = list7.GetTailPosition();
       list7.InsertAfter(pos, x);
-      sink(list7.GetHead()); // $ MISSING: ir
+      sink(list7.GetHead()); // $ ir
     }
 
     {
       CAtlList<int> list8(10);
       auto pos = list8.GetTailPosition();
       list8.InsertBefore(pos, x);
-      sink(list8.GetHead()); // $ MISSING: ir
+      sink(list8.GetHead()); // $ ir
     }
     {
       CAtlList<int> list9(10);
       list9.SetAt(list9.GetHeadPosition(), x);
-      sink(list9.GetHead()); // $ MISSING: ir
+      sink(list9.GetHead()); // $ ir
     }
   }
 }
