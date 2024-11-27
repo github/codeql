@@ -542,7 +542,7 @@ module RustDataFlow implements InputSig<Location> {
   private Resolvable getCallResolvable(CallExprBase call) {
     result = call.(MethodCallExpr)
     or
-    result = call.(CallExpr).getExpr().(PathExpr).getPath()
+    result = call.(CallExpr).getFunction().(PathExpr).getPath()
   }
 
   /** Gets a viable implementation of the target of the given `Call`. */
@@ -662,7 +662,7 @@ module RustDataFlow implements InputSig<Location> {
   /** Holds if `ce` constructs an enum value of type `v`. */
   pragma[nomagic]
   private predicate tupleVariantConstruction(CallExpr ce, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(ce.getExpr().(PathExpr).getPath(), v)
+    pathResolveToVariantCanonicalPath(ce.getFunction().(PathExpr).getPath(), v)
   }
 
   /** Holds if `re` constructs an enum value of type `v`. */

@@ -4,4 +4,4 @@ import TestUtils
 
 from CallExpr x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getExpr()
+select x, x.getFunction()
