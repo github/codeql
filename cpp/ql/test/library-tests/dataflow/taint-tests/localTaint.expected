@@ -888,6 +888,72 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:807:5:807:5 | ref arg a | atl.cpp:808:10:808:10 | a |  |
 | atl.cpp:807:5:807:5 | ref arg a | atl.cpp:809:3:809:3 | a |  |
 | atl.cpp:808:10:808:10 | ref arg a | atl.cpp:809:3:809:3 | a |  |
+| atl.cpp:850:13:850:33 | call to indirect_source | atl.cpp:852:16:852:16 | x |  |
+| atl.cpp:850:13:850:33 | call to indirect_source | atl.cpp:865:19:865:19 | x |  |
+| atl.cpp:850:13:850:33 | call to indirect_source | atl.cpp:871:23:871:23 | x |  |
+| atl.cpp:850:13:850:33 | call to indirect_source | atl.cpp:876:22:876:22 | x |  |
+| atl.cpp:850:13:850:33 | call to indirect_source | atl.cpp:881:22:881:22 | x |  |
+| atl.cpp:850:13:850:33 | call to indirect_source | atl.cpp:886:24:886:24 | x |  |
+| atl.cpp:850:13:850:33 | call to indirect_source | atl.cpp:891:21:891:21 | x |  |
+| atl.cpp:850:13:850:33 | call to indirect_source | atl.cpp:896:22:896:22 | x |  |
+| atl.cpp:851:8:851:10 | call to CUrl | atl.cpp:852:3:852:5 | url |  |
+| atl.cpp:851:8:851:10 | call to CUrl | atl.cpp:853:8:853:10 | url |  |
+| atl.cpp:851:8:851:10 | call to CUrl | atl.cpp:854:8:854:10 | url |  |
+| atl.cpp:851:8:851:10 | call to CUrl | atl.cpp:855:8:855:10 | url |  |
+| atl.cpp:851:8:851:10 | call to CUrl | atl.cpp:856:8:856:10 | url |  |
+| atl.cpp:851:8:851:10 | call to CUrl | atl.cpp:857:8:857:10 | url |  |
+| atl.cpp:851:8:851:10 | call to CUrl | atl.cpp:858:8:858:10 | url |  |
+| atl.cpp:851:8:851:10 | call to CUrl | atl.cpp:859:8:859:10 | url |  |
+| atl.cpp:851:8:851:10 | call to CUrl | atl.cpp:899:1:899:1 | url |  |
+| atl.cpp:852:3:852:5 | ref arg url | atl.cpp:853:8:853:10 | url |  |
+| atl.cpp:852:3:852:5 | ref arg url | atl.cpp:854:8:854:10 | url |  |
+| atl.cpp:852:3:852:5 | ref arg url | atl.cpp:855:8:855:10 | url |  |
+| atl.cpp:852:3:852:5 | ref arg url | atl.cpp:856:8:856:10 | url |  |
+| atl.cpp:852:3:852:5 | ref arg url | atl.cpp:857:8:857:10 | url |  |
+| atl.cpp:852:3:852:5 | ref arg url | atl.cpp:858:8:858:10 | url |  |
+| atl.cpp:852:3:852:5 | ref arg url | atl.cpp:859:8:859:10 | url |  |
+| atl.cpp:852:3:852:5 | ref arg url | atl.cpp:899:1:899:1 | url |  |
+| atl.cpp:862:10:862:13 | call to CUrl | atl.cpp:865:5:865:8 | url2 |  |
+| atl.cpp:862:10:862:13 | call to CUrl | atl.cpp:866:5:866:8 | url2 |  |
+| atl.cpp:862:10:862:13 | call to CUrl | atl.cpp:868:3:868:3 | url2 |  |
+| atl.cpp:863:11:863:13 | len | atl.cpp:866:29:866:31 | len |  |
+| atl.cpp:864:10:864:15 | buffer | atl.cpp:866:20:866:25 | buffer |  |
+| atl.cpp:864:10:864:15 | buffer | atl.cpp:867:10:867:15 | buffer |  |
+| atl.cpp:865:5:865:8 | ref arg url2 | atl.cpp:866:5:866:8 | url2 |  |
+| atl.cpp:865:5:865:8 | ref arg url2 | atl.cpp:868:3:868:3 | url2 |  |
+| atl.cpp:866:20:866:25 | ref arg buffer | atl.cpp:867:10:867:15 | buffer |  |
+| atl.cpp:866:28:866:31 | ref arg & ... | atl.cpp:866:29:866:31 | len [inner post update] |  |
+| atl.cpp:866:29:866:31 | len | atl.cpp:866:28:866:31 | & ... |  |
+| atl.cpp:870:10:870:13 | call to CUrl | atl.cpp:871:5:871:8 | url2 |  |
+| atl.cpp:870:10:870:13 | call to CUrl | atl.cpp:872:10:872:13 | url2 |  |
+| atl.cpp:870:10:870:13 | call to CUrl | atl.cpp:873:3:873:3 | url2 |  |
+| atl.cpp:871:5:871:8 | ref arg url2 | atl.cpp:872:10:872:13 | url2 |  |
+| atl.cpp:871:5:871:8 | ref arg url2 | atl.cpp:873:3:873:3 | url2 |  |
+| atl.cpp:875:10:875:13 | call to CUrl | atl.cpp:876:5:876:8 | url2 |  |
+| atl.cpp:875:10:875:13 | call to CUrl | atl.cpp:877:10:877:13 | url2 |  |
+| atl.cpp:875:10:875:13 | call to CUrl | atl.cpp:878:3:878:3 | url2 |  |
+| atl.cpp:876:5:876:8 | ref arg url2 | atl.cpp:877:10:877:13 | url2 |  |
+| atl.cpp:876:5:876:8 | ref arg url2 | atl.cpp:878:3:878:3 | url2 |  |
+| atl.cpp:880:10:880:13 | call to CUrl | atl.cpp:881:5:881:8 | url2 |  |
+| atl.cpp:880:10:880:13 | call to CUrl | atl.cpp:882:10:882:13 | url2 |  |
+| atl.cpp:880:10:880:13 | call to CUrl | atl.cpp:883:3:883:3 | url2 |  |
+| atl.cpp:881:5:881:8 | ref arg url2 | atl.cpp:882:10:882:13 | url2 |  |
+| atl.cpp:881:5:881:8 | ref arg url2 | atl.cpp:883:3:883:3 | url2 |  |
+| atl.cpp:885:10:885:13 | call to CUrl | atl.cpp:886:5:886:8 | url2 |  |
+| atl.cpp:885:10:885:13 | call to CUrl | atl.cpp:887:10:887:13 | url2 |  |
+| atl.cpp:885:10:885:13 | call to CUrl | atl.cpp:888:3:888:3 | url2 |  |
+| atl.cpp:886:5:886:8 | ref arg url2 | atl.cpp:887:10:887:13 | url2 |  |
+| atl.cpp:886:5:886:8 | ref arg url2 | atl.cpp:888:3:888:3 | url2 |  |
+| atl.cpp:890:10:890:13 | call to CUrl | atl.cpp:891:5:891:8 | url2 |  |
+| atl.cpp:890:10:890:13 | call to CUrl | atl.cpp:892:10:892:13 | url2 |  |
+| atl.cpp:890:10:890:13 | call to CUrl | atl.cpp:893:3:893:3 | url2 |  |
+| atl.cpp:891:5:891:8 | ref arg url2 | atl.cpp:892:10:892:13 | url2 |  |
+| atl.cpp:891:5:891:8 | ref arg url2 | atl.cpp:893:3:893:3 | url2 |  |
+| atl.cpp:895:10:895:13 | call to CUrl | atl.cpp:896:5:896:8 | url2 |  |
+| atl.cpp:895:10:895:13 | call to CUrl | atl.cpp:897:10:897:13 | url2 |  |
+| atl.cpp:895:10:895:13 | call to CUrl | atl.cpp:898:3:898:3 | url2 |  |
+| atl.cpp:896:5:896:8 | ref arg url2 | atl.cpp:897:10:897:13 | url2 |  |
+| atl.cpp:896:5:896:8 | ref arg url2 | atl.cpp:898:3:898:3 | url2 |  |
 | bsd.cpp:17:11:17:16 | call to source | bsd.cpp:20:18:20:18 | s |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:20:22:20:25 | addr |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:23:8:23:11 | addr |  |

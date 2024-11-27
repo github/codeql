@@ -808,3 +808,92 @@ void test_CSimpleMap() {
     sink(a.Lookup("hello")); // $ ir
   }
 }
+
+struct CUrl {
+  CUrl& operator= (const CUrl& urlThat) throw();
+  CUrl() throw();
+  CUrl(const CUrl& urlThat) throw();
+  ~CUrl() throw();
+
+  inline BOOL Canonicalize(DWORD dwFlags) throw();
+  inline void Clear() throw();
+
+  BOOL CrackUrl(LPCTSTR lpszUrl, DWORD dwFlags) throw();
+  inline BOOL CreateUrl(LPTSTR lpszUrl, DWORD* pdwMaxLength, DWORD dwFlags) const throw();
+
+  inline LPCTSTR GetExtraInfo() const throw();
+  inline DWORD GetExtraInfoLength() const throw();
+  inline LPCTSTR GetHostName() const throw();
+  inline DWORD GetHostNameLength() const throw();
+  inline LPCTSTR GetPassword() const throw();
+  inline DWORD GetPasswordLength() const throw();
+  inline ATL_URL_PORT GetPortNumber() const throw();
+  inline ATL_URL_SCHEME GetScheme() const throw();
+  inline LPCTSTR GetSchemeName() const throw();
+  inline DWORD GetSchemeNameLength() const throw();
+  inline DWORD GetUrlLength() const throw();
+  inline LPCTSTR GetUrlPath() const throw();
+  inline DWORD GetUrlPathLength() const throw();
+  inline LPCTSTR GetUserName() const throw();
+  inline DWORD GetUserNameLength() const throw();
+  inline BOOL SetExtraInfo(LPCTSTR lpszInfo) throw();
+  inline BOOL SetHostName(LPCTSTR lpszHost) throw();
+  inline BOOL SetPassword(LPCTSTR lpszPass) throw();
+  inline BOOL SetPortNumber(ATL_URL_PORT nPrt) throw();
+  inline BOOL SetScheme(ATL_URL_SCHEME nScheme) throw();
+  inline BOOL SetSchemeName(LPCTSTR lpszSchm) throw();
+  inline BOOL SetUrlPath(LPCTSTR lpszPath) throw();
+  inline BOOL SetUserName(LPCTSTR lpszUser) throw();
+};
+
+void test_CUrl() {
+  char* x = indirect_source<char>();
+  CUrl url;
+  url.CrackUrl(x, 0);
+  sink(url); // $ MISSING: ir
+  sink(url.GetExtraInfo()); // $ MISSING: ir
+  sink(url.GetHostName()); // $ MISSING: ir
+  sink(url.GetPassword()); // $ MISSING: ir
+  sink(url.GetSchemeName()); // $ MISSING: ir
+  sink(url.GetUrlPath()); // $ MISSING: ir
+  sink(url.GetUserName()); // $ MISSING: ir
+
+  {
+    CUrl url2;
+    DWORD len;
+    char buffer[1024];
+    url2.CrackUrl(x, 0);
+    url2.CreateUrl(buffer, &len, 0);
+    sink(buffer); // $ ast MISSING: ir
+  }
+  {
+    CUrl url2;
+    url2.SetExtraInfo(x);
+    sink(url2); // $ MISSING: ir
+  }
+  {
+    CUrl url2;
+    url2.SetHostName(x);
+    sink(url2); // $ MISSING: ir
+  }
+  {
+    CUrl url2;
+    url2.SetPassword(x);
+    sink(url2); // $ MISSING: ir
+  }
+  {
+    CUrl url2;
+    url2.SetSchemeName(x);
+    sink(url2); // $ MISSING: ir
+  }
+  {
+    CUrl url2;
+    url2.SetUrlPath(x);
+    sink(url2); // $ MISSING: ir
+  }
+  {
+    CUrl url2;
+    url2.SetUserName(x);
+    sink(url2); // $ MISSING: ir
+  }
+}
