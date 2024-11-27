@@ -65,7 +65,7 @@ fun main(args: Array<String>) {
 }
 
 @OptIn(KaAnalysisApiInternals::class)
-fun runExtractor(args: Array<String>) {
+private fun runExtractor(args: Array<String>) {
     val startTimeMs = System.currentTimeMillis()
 
     val invocationTrapFile = args[0]
@@ -169,7 +169,7 @@ OLD: KE1
     }
 }
 
-fun doAnalysis(
+private fun doAnalysis(
     compression: Compression,
     trapDir: File,
     srcDir: File,
@@ -306,45 +306,6 @@ fun doAnalysis(
             }
         }
     }
-}
-
-context (KaSession)
-fun dumpFunction(f: KtFunction) {
-    println("=== Have function")
-    println(f)
-    println(f.parent)
-    val block = f.getBodyExpression() as KtBlockExpression
-    for (p: KtExpression in block.getStatements()) {
-        if (p is KtProperty) {
-            dumpProperty(p)
-        }
-    }
-}
-
-context (KaSession)
-fun dumpProperty(p: KtProperty) {
-    println("Got property ${p.name}")
-    val i = p.getInitializer()!!
-    val t = i.expressionType!!
-    println("  Location: ${location(i)}")
-    println("  Initializer type $t (${t.javaClass})")
-    if (i is KtCallExpression) {
-        println("  Call info: ${i.resolveToCall()}")
-    }
-}
-
-fun location(e: KtElement): String {
-    val range = e.getTextRange()
-    val document = e.getContainingFile().getViewProvider().getDocument()
-    val start = showOffset(document, range.getStartOffset(), 1)
-    val end = showOffset(document, range.getEndOffset(), 0)
-    return "$start-$end"
-}
-
-fun showOffset(document: Document, o: Int, colFudge: Int): String {
-    val line = document.getLineNumber(o)
-    val column = o - document.getLineStartOffset(line)
-    return "${line + 1}:${column + colFudge}"
 }
 
 /*
@@ -509,23 +470,6 @@ private fun doFile(
         globalExtensionState: KotlinExtractorGlobalState
     */
 ) {
-    // TODO: Testing
-    val c = srcFile.getDeclarations()[0]
-    if (c is KtClass) {
-        for (d: KtDeclaration in c.getDeclarations()) {
-            if (d is KtFunction) {
-                if (d.name == "f") {
-                    dumpFunction(d)
-                }
-            }
-        }
-    }
-    if (c is KtFunction) {
-        if (c.name == "test") {
-            dumpFunction(c)
-        }
-    }
-
     val srcFilePath = srcFile.virtualFilePath
     val logger = FileLogger(loggerBase, fileDiagnosticTrapWriter, fileNumber)
     logger.info("Extracting file $srcFilePath")
