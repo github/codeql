@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.analysis.api.KaExperimentalApi
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.analysis.api.types.KaClassType
+import org.jetbrains.kotlin.psi.KtElement
 
 context(KaSession)
 @OptIn(KaExperimentalApi::class)
@@ -19,7 +20,7 @@ fun KotlinFileExtractor.extractClassSource(
     extractFunctionBodies: Boolean
      */
 ): Label<out DbClassorinterface> {
-    with("class source", c.psiSafe() ?: TODO()) {
+    with("class source", c) {
         // OLD: KE1: DeclarationStackAdjuster(c).use {
             val id = useClassSource(c)
             val pkg = c.classId?.packageFqName?.asString() ?: ""
@@ -40,8 +41,8 @@ fun KotlinFileExtractor.extractClassSource(
                     kind != KaClassKind.CLASS &&
                     kind != KaClassKind.OBJECT //&&
                 //OLD KE1: kind != ClassKind.ENUM_ENTRY
-                ) {
-                    logger.warnElement("Unrecognised class kind $kind", c.psiSafe() ?: TODO())
+                ) else {
+                    logger.warnElement("Unrecognised class kind $kind", c)
                 }
 
                 /*
@@ -56,7 +57,7 @@ fun KotlinFileExtractor.extractClassSource(
                 }
             }
 
-            val locId = tw.getLocation(c.psiSafe() ?: TODO())
+            val locId = PsiElementOrSymbol.of(c).getLocation(tw)
             tw.writeHasLocation(id, locId)
 
             // OLD: KE1
@@ -73,7 +74,7 @@ fun KotlinFileExtractor.extractClassSource(
                         if (getter == null) {
                             logger.warnElement(
                                 "Expected an annotation property to have a getter",
-                                it.psiSafe() ?: TODO()
+                                it
                             )
                         } else {
                             extractFunction(
@@ -187,12 +188,10 @@ fun KotlinFileExtractor.extractClassSource(
         // `args` can be null to describe a raw generic type.
         // For non-generic types it will be zero-length list.
     */
+context(KaSession)
 private fun KotlinUsesExtractor.getClassLabel(
     c: KaClassSymbol,
-    /*
-    OLD: KE1
-            argsIncludingOuterClasses: List<IrTypeArgument>?
-    */
+    argsIncludingOuterClasses: List<Nothing>?
 ): ClassLabelResults {
     val unquotedLabel = getUnquotedClassLabel(c /* TODO , argsIncludingOuterClasses */)
     return ClassLabelResults("@\"class;${unquotedLabel.classLabel}\"" /* TODO , unquotedLabel.shortName */)
@@ -201,30 +200,67 @@ private fun KotlinUsesExtractor.getClassLabel(
 context(KaSession)
 fun KotlinUsesExtractor.useClassSource(c: KaClassSymbol): Label<out DbClassorinterface> {
     // For source classes, the label doesn't include any type arguments
-    val id = addClassLabel(c)
+    val id = addClassLabel(c, listOf())
     return id
+}
+
+/**
+ * Return a replacement class name and type arguments for cBeforeReplacement<argsIncludingOuterClassesBeforeReplacement>
+ *
+ * These could include replacing Android synthetic classes or Parcelize raw types that shouldn't appear in the database
+ * as they appear to the Kotlin compiler.
+ *
+ * TODO: verify how these sorts of classes appear via the analysis API
+ */
+private fun tryReplaceType(
+    cBeforeReplacement: KaClassSymbol,
+    argsIncludingOuterClassesBeforeReplacement: List<Nothing>?
+): Pair<KaClassSymbol, List<Nothing>?> {
+    return Pair(cBeforeReplacement, argsIncludingOuterClassesBeforeReplacement)
+    /*
+    OLD: KE1
+    val c = tryReplaceAndroidSyntheticClass(cBeforeReplacement)
+    val p = tryReplaceParcelizeRawType(c)
+    return Pair(p?.first ?: c, p?.second ?: argsIncludingOuterClassesBeforeReplacement)
+    */
+}
+
+private fun isExternalDeclaration(d: KaSymbol): Boolean {
+    return d.origin == KaSymbolOrigin.LIBRARY || d.origin == KaSymbolOrigin.JAVA_LIBRARY
+}
+
+private fun KotlinUsesExtractor.extractExternalClassLater(c: KaClassSymbol) {
+    /* OLD: KE1
+    dependencyCollector?.addDependency(c)
+     */
+    externalClassExtractor.extractLater(c)
+}
+
+
+private fun KotlinUsesExtractor.extractClassLaterIfExternal(c: KaClassSymbol) {
+    if (isExternalDeclaration(c)) {
+        extractExternalClassLater(c)
+    }
 }
 
 // `typeArgs` can be null to describe a raw generic type.
 // For non-generic types it will be zero-length list.
 // TODO: Should this be private?
+context(KaSession)
 fun KotlinUsesExtractor.addClassLabel(
-    c: KaClassSymbol, // TODO cBeforeReplacement: IrClass,
+    cBeforeReplacement: KaClassSymbol, // TODO cBeforeReplacement: IrClass,
+    argsIncludingOuterClassesBeforeReplacement: List<Nothing>?,
     /*
     OLD: KE1
-            argsIncludingOuterClassesBeforeReplacement: List<IrTypeArgument>?,
             inReceiverContext: Boolean = false
     */
 ): Label<out DbClassorinterface> {
-    /*
-    OLD: KE1
-            val replaced =
-                tryReplaceType(cBeforeReplacement, argsIncludingOuterClassesBeforeReplacement)
-            val replacedClass = replaced.first
-            val replacedArgsIncludingOuterClasses = replaced.second
+    val replaced =
+        tryReplaceType(cBeforeReplacement, argsIncludingOuterClassesBeforeReplacement)
+    val replacedClass = replaced.first
+    val replacedArgsIncludingOuterClasses = replaced.second
 
-    */
-    val classLabelResult = getClassLabel(c /* TODO replacedClass, replacedArgsIncludingOuterClasses */)
+    val classLabelResult = getClassLabel(replacedClass, replacedArgsIncludingOuterClasses)
 
     /*
     OLD: KE1
@@ -237,16 +273,8 @@ fun KotlinUsesExtractor.addClassLabel(
 OLD: KE1
                 instanceSeenBefore = false
 
-                extractClassLaterIfExternal(replacedClass)
 */
-            // TODO: This shouldn't be done here, but keeping it simple for now
-            val classId = c.classId
-            if (classId == null) {
-                TODO() // this is a local class
-            } else {
-                val pkgId = extractPackage(classId.packageFqName.asString())
-                tw.writeClasses_or_interfaces(it, classId.relativeClassName.asString(), pkgId, it)
-            }
+            extractClassLaterIfExternal(replacedClass)
         }
 
     /*
@@ -297,6 +325,7 @@ OLD: KE1
          * it will be zero-length list.
          */
     */
+context(KaSession)
 private fun KotlinUsesExtractor.getUnquotedClassLabel(
     c: KaClassSymbol,
     /*
@@ -309,25 +338,32 @@ private fun KotlinUsesExtractor.getUnquotedClassLabel(
         TODO() // This is a local class
     }
     val pkg = classId.packageFqName.asString()
-    val cls = classId.relativeClassName.asString()
+    val cls = classId.shortClassName.asString()
     val label =
-        /*
-        OLD: KE1
-                    if (c.isAnonymousObject) "{${useAnonymousClass(c).javaResult.id}}"
-                    else
-                        when (val parent = c.parent) {
-                            is IrClass -> {
-                                "${getUnquotedClassLabel(parent, listOf()).classLabel}\$$cls"
-                            }
-                            is IrFunction -> {
-                                "{${useFunction<DbMethod>(parent)}}.$cls"
-                            }
-                            is IrField -> {
-                                "{${useField(parent)}}.$cls"
-                            }
-                            else -> {
-        */
-        if (pkg.isEmpty()) cls else "$pkg.$cls"
+        /* OLD: KE1
+        if (c.isAnonymousObject) "{${useAnonymousClass(c).javaResult.id}}"
+        else
+         */
+            when (val parent = c.containingSymbol) {
+                is KaClassSymbol -> {
+                    "${getUnquotedClassLabel(parent).classLabel}\$$cls"
+                }
+
+                is KaFunctionSymbol -> {
+                    "{${useFunction<DbMethod>(parent)}}.$cls"
+                }
+
+                is KaPropertySymbol -> {
+                    TODO()
+                    /* OLD: KE1
+                    "{${useField(parent)}}.$cls"
+                    */
+                }
+
+                else -> {
+                    if (pkg.isEmpty()) cls else "$pkg.$cls"
+                }
+            }
     /*
     OLD: KE1
                         }

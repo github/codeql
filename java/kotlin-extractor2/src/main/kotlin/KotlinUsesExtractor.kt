@@ -42,10 +42,11 @@ context (KaSession)
 open class KotlinUsesExtractor(
     open val logger: Logger,
     open val tw: TrapWriter,
+    val externalClassExtractor: ExternalDeclExtractor,
     /*
     OLD: KE1
         val dependencyCollector: OdasaOutput.TrapFileManager?,
-        val externalClassExtractor: ExternalDeclExtractor,
+
         val primitiveTypeMapping: PrimitiveTypeMapping,
         val pluginContext: IrPluginContext,
         val globalExtensionState: KotlinExtractorGlobalState
@@ -317,12 +318,6 @@ open class KotlinUsesExtractor(
             return UseClassInstanceResult(classTypeResult, extractClass)
         }
 
-        private fun extractClassLaterIfExternal(c: IrClass) {
-            if (isExternalDeclaration(c)) {
-                extractExternalClassLater(c)
-            }
-        }
-
         private fun extractExternalEnclosingClassLater(d: IrDeclaration) {
             when (val parent = d.parent) {
                 is IrClass -> extractExternalClassLater(parent)
@@ -514,15 +509,6 @@ open class KotlinUsesExtractor(
                 }
                 result
             } ?: f
-        }
-
-        private fun tryReplaceType(
-            cBeforeReplacement: IrClass,
-            argsIncludingOuterClassesBeforeReplacement: List<IrTypeArgument>?
-        ): Pair<IrClass, List<IrTypeArgument>?> {
-            val c = tryReplaceAndroidSyntheticClass(cBeforeReplacement)
-            val p = tryReplaceParcelizeRawType(c)
-            return Pair(p?.first ?: c, p?.second ?: argsIncludingOuterClassesBeforeReplacement)
         }
 
     */
@@ -1313,58 +1299,6 @@ open class KotlinUsesExtractor(
 
     data class ClassLabelResults(val classLabel: String /* TODO , val shortName: String */)
 
-
-    /*
-       OLD: KE1
-        fun getTypeParameterParentLabel(param: IrTypeParameter) =
-            param.parent.let {
-                when (it) {
-                    is IrClass -> useClassSource(it)
-                    is IrFunction ->
-                        (if (this is KotlinFileExtractor)
-                            this.declarationStack
-                                .findOverriddenAttributes(it)
-                                ?.takeUnless {
-                                    // When extracting the `static fun f$default(...)` that accompanies
-                                    // `fun <T> f(val x: T? = defaultExpr, ...)`,
-                                    // `f$default` has no type parameters, and so there is no
-                                    // `f$default::T` to refer to.
-                                    // We have no good way to extract references to `T` in
-                                    // `defaultExpr`, so we just fall back on describing it
-                                    // in terms of `f::T`, even though that type variable ought to be
-                                    // out of scope here.
-                                    attribs ->
-                                    attribs.typeParameters?.isEmpty() == true
-                                }
-                                ?.id
-                        else null) ?: useFunction(it, noReplace = true)
-                    else -> {
-                        logger.error("Unexpected type parameter parent $it")
-                        null
-                    }
-                }
-            }
-
-        fun getTypeParameterLabel(param: IrTypeParameter): String {
-            // Use this instead of `useDeclarationParent` so we can use useFunction with noReplace =
-            // true,
-            // ensuring that e.g. a method-scoped type variable declared on kotlin.String.transform <R>
-            // gets
-            // a different name to the corresponding java.lang.String.transform <R>, even though
-            // useFunction
-            // will usually replace references to one function with the other.
-            val parentLabel = getTypeParameterParentLabel(param)
-            return "@\"typevar;{$parentLabel};${param.name}\""
-        }
-
-        private fun useTypeParameter(param: IrTypeParameter) =
-            TypeResult(
-                tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(param)),
-                useType(eraseTypeParameter(param)).javaResult.signature,
-                param.name.asString()
-            )
-
-        */
     private fun extractModifier(m: String): Label<DbModifier> {
         val modifierLabel = "@\"modifier;$m\""
         val id: Label<DbModifier> = tw.getLabelFor(modifierLabel, { tw.writeModifiers(it, m) })

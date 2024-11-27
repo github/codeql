@@ -166,6 +166,7 @@ OLD: KE1
         }
 */
 
+context(KaSession)
 fun KotlinFileExtractor.extractConstantInteger(
     text: String,
     t: KaType,
@@ -1576,6 +1577,7 @@ private fun KotlinFileExtractor.extractVariableAccess(
         }
     }
 
+context(KaSession)
 private fun KotlinFileExtractor.extractVariableAccess(
     variable: Label<out DbVariable>?,
     type: KaType,

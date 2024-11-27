@@ -409,7 +409,7 @@ private fun KotlinFileExtractor.forceExtractFunction(
             overriddenAttributes: OverriddenFunctionAttributes? = null
     */
 ): Label<out DbCallable> {
-    with("function", f.psiSafe() ?: TODO()) {
+    with("function", f) {
 /*
 OLD: KE1
             DeclarationStackAdjuster(f, overriddenAttributes).use {
@@ -508,8 +508,9 @@ OLD: KE1
                             } ?: adjustedReturnType
         */
         val functionSyntax = f.psi as? KtDeclarationWithBody
-        val locId =
+        val locId = functionSyntax?.let {
             tw.getLocation(functionSyntax ?: TODO())
+        } ?: tw.getWholeFileLocation()
         /*
         OLD: KE1
                             overriddenAttributes?.sourceLoc
@@ -640,6 +641,7 @@ OLD: KE1
     }
 }
 
+context(KaSession)
 fun KotlinFileExtractor.extractValueParameter(
     id: Label<out DbParam>,
     t: KaType,
@@ -672,6 +674,7 @@ fun KotlinFileExtractor.extractValueParameter(
 }
 
 // TODO: Can this be inlined?
+context(KaSession)
 private fun KotlinFileExtractor.extractMethod(
     id: Label<out DbMethod>,
     /*
@@ -723,6 +726,16 @@ private fun KotlinFileExtractor.extractMethod(
             }
     */
 }
+
+context(KaSession)
+fun <T : DbCallable> KotlinUsesExtractor.useFunction(
+    f: KaFunctionSymbol,
+    /*
+    OLD: KE1
+            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
+            noReplace: Boolean = false
+    */
+): Label<out T> = useFunction(f, useDeclarationParentOf(f, true)!! /* TODO */)
 
 context(KaSession)
 fun <T : DbCallable> KotlinUsesExtractor.useFunction(

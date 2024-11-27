@@ -216,6 +216,7 @@ private val nullableAnyArrayType: KaType
  * Adds a function named `invoke` with the specified parameter types and return type to the
  * class identified by `parentId`.
  */
+context(KaSession)
 private fun KotlinFileExtractor.addFunctionInvoke(
     methodId: Label<DbMethod>,
     parameterTypes: List<KaType>,
@@ -237,6 +238,7 @@ private fun KotlinFileExtractor.addFunctionInvoke(
  * Extracts a function with the given name, parameter types, return type, containing type, and
  * location.
  */
+context(KaSession)
 private fun KotlinFileExtractor.addFunctionManual(
     methodId: Label<DbMethod>,
     name: String,

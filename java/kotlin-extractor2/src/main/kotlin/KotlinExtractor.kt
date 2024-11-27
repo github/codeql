@@ -149,7 +149,7 @@ OLD: KE1
         OLD: KE1
                 val globalExtensionState = KotlinExtractorGlobalState()
         */
-        doAnalysis(compression, trapDir, srcDir, loggerBase, dtw, compilation, invocationExtractionProblems, kotlinArgs)
+        doAnalysis(compression, trapDir, srcDir, loggerBase, dtw, compilation, invocationExtractionProblems, kotlinArgs, invocationTrapFile)
         loggerBase.printLimitedDiagnosticCounts(dtw)
         /*
         OLD: KE1
@@ -177,7 +177,8 @@ private fun doAnalysis(
     dtw: DiagnosticTrapWriter,
     compilation: Label<DbCompilation>,
     invocationExtractionProblems: ExtractionProblems,
-    args: List<String>
+    args: List<String>,
+    invocationTrapFile: String
 ) {
     lateinit var sourceModule: KaSourceModule
     val k2args: K2JVMCompilerArguments = parseCommandLineArguments(args.toList())
@@ -266,8 +267,8 @@ private fun doAnalysis(
                                             /*
                                             OLD: KE1
                                             fileExtractionProblems,
-                                            invocationTrapFile,
                                             */
+                                            invocationTrapFile,
                                             fileDiagnosticTrapWriter,
                                             loggerBase,
                                             checkTrapIdentical,
@@ -290,11 +291,8 @@ private fun doAnalysis(
                                         // continue trying to extract everything else even if we get a
                                         // stack overflow or an assertion failure in one file.
                                     } catch (e: Throwable) {
-                                        /*
-                                        OLD: KE1
-                                        logger.error("Extraction failed while extracting '${psiFile.virtualFilePath}'.", e)
                                         fileExtractionProblems.setNonRecoverableProblem()
-                                        */
+                                        loggerBase.error(dtw, "Extraction failed while extracting '${psiFile.virtualFilePath}'.", e)
                                     }
                                 } else {
                                     System.out.println("Warning: Not a KtFile")
@@ -455,8 +453,8 @@ private fun doFile(
     /*
     OLD: KE1
         fileExtractionProblems: FileExtractionProblems,
-        invocationTrapFile: String,
-    */
+     */
+    invocationTrapFile: String,
     fileDiagnosticTrapWriter: FileTrapWriter,
     loggerBase: LoggerBase,
     checkTrapIdentical: Boolean,
@@ -510,31 +508,35 @@ private fun doFile(
         // Now elevate to a SourceFileTrapWriter, and populate the
         // file information
         val sftw = tw.makeSourceFileTrapWriter(srcFile, true)
-        /*
-        OLD: KE1
-                val externalDeclExtractor =
-                    ExternalDeclExtractor(
-                        logger,
-                        compression,
-                        invocationTrapFile,
-                        srcFilePath,
-                        primitiveTypeMapping,
-                        pluginContext,
-                        globalExtensionState,
-                        fileDiagnosticTrapWriter.getDiagnosticTrapWriter()
-                    )
-                val linesOfCode = LinesOfCode(logger, sftw, srcFile)
-        */
+        val externalDeclExtractor =
+            ExternalDeclExtractor(
+                logger,
+                compression,
+                invocationTrapFile,
+                srcFilePath,
+                /*
+                OLD: KE1
+                                primitiveTypeMapping,
+                                pluginContext,
+                                globalExtensionState,
+                 */
+                fileDiagnosticTrapWriter.getDiagnosticTrapWriter()
+            )
+        /* OLD: KE1
+                                val linesOfCode = LinesOfCode(logger, sftw, srcFile)
+         */
+
         val fileExtractor =
             KotlinFileExtractor(
                 logger,
                 sftw,
+                externalDeclExtractor,
                 /*
                 OLD: KE1
                                 linesOfCode,
                                 srcFilePath,
                                 null,
-                                externalDeclExtractor,
+
                                 primitiveTypeMapping,
                                 pluginContext,
                                 KotlinFileExtractor.DeclarationStack(),
@@ -543,9 +545,6 @@ private fun doFile(
             )
 
         fileExtractor.extractFileContents(srcFile, sftw.fileId)
-        /*
-        OLD: KE1
-                externalDeclExtractor.extractExternalClasses()
-        */
+        externalDeclExtractor.extractExternalClasses()
     }
 }
