@@ -46,6 +46,9 @@
 | UnanchoredUrlRegex.swift:71:46:71:46 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | UnanchoredUrlRegex.swift:78:39:78:39 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | UnanchoredUrlRegex.swift:79:39:79:39 | https?://good.com:8080 | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:82:3:82:3 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:83:3:83:3 | https?:\\/\\/good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| UnanchoredUrlRegex.swift:84:3:84:3 | ^https?://good.com | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | UnanchoredUrlRegex.swift:91:3:91:3 | https?://good.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | UnanchoredUrlRegex.swift:101:39:101:39 | https?:\\/\\/good.com\\/([0-9]+) | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | UnanchoredUrlRegex.swift:107:39:107:39 | example\\.com\|whatever | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |

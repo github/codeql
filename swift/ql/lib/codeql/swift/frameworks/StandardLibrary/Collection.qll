@@ -44,6 +44,7 @@ private class CollectionSummaries extends SummaryModelCsv {
         ";Collection;true;trimmingPrefix(_:);;;Argument[-1].CollectionElement;ReturnValue.CollectionElement;value",
         ";Collection;true;trimmingPrefix(while:);;;Argument[-1];ReturnValue;taint",
         ";Collection;true;trimmingPrefix(while:);;;Argument[-1].CollectionElement;ReturnValue.CollectionElement;value",
+        ";Collection;true;makeIterator();;;Argument[-1].CollectionElement;ReturnValue.CollectionElement;value",
         ";RangeReplaceableCollection;true;init(_:);;;Argument[0];ReturnValue.CollectionElement;taint",
         ";RangeReplaceableCollection;true;init(_:);;;Argument[0].CollectionElement;ReturnValue.CollectionElement;value",
         ";RangeReplaceableCollection;true;init(repeating:count:);;;Argument[0];ReturnValue.CollectionElement;value",

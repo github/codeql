@@ -76,7 +76,7 @@ func testArrays1() {
     var a1 = ["a", "b", "c", source("source5")]
 
     for v in a1 {
-        sink(arg: v) // $ MISSING: flow=source5
+        sink(arg: v) // $ flow=source5
     }
     for ix in 0 ..< a1.count {
         sink(arg: a1[ix]) // $ flow=source5
@@ -93,7 +93,7 @@ func testArrays2() {
     a2[1] = source("source6")
 
     for v in a2 {
-        sink(arg: v) // $ MISSING: flow=source6
+        sink(arg: v) // $ flow=source6
     }
     for ix in 0 ..< a2.count {
         sink(arg: a2[ix]) // $ flow=source6
