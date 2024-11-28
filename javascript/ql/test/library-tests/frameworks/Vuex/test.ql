@@ -1,5 +1,5 @@
 import javascript
-import testUtilities.ConsistencyChecking
+deprecated import testUtilities.ConsistencyChecking
 
 module TestConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.(DataFlow::CallNode).getCalleeName() = "source" }

@@ -1,5 +1,5 @@
 import javascript
-import testUtilities.ConsistencyChecking
+deprecated import testUtilities.ConsistencyChecking
 import testUtilities.InlineSummaries
 
 DataFlow::CallNode getACall(string name) {
@@ -29,7 +29,7 @@ class BasicBarrierGuard extends DataFlow::CallNode {
   }
 }
 
-class ConsistencyConfig extends ConsistencyConfiguration {
+deprecated class ConsistencyConfig extends ConsistencyConfiguration {
   ConsistencyConfig() { this = "ConsistencyConfig" }
 
   override DataFlow::Node getAnAlert() { Configuration::flow(_, result) }

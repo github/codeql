@@ -1,6 +1,6 @@
 import javascript
 import semmle.javascript.security.dataflow.TaintedPathQuery
-import testUtilities.ConsistencyChecking
+deprecated import testUtilities.ConsistencyChecking
 
 class TaintedPathConsistency extends ConsistencyConfiguration {
   TaintedPathConsistency() { this = "TaintedPathConsistency" }
