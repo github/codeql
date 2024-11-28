@@ -1,0 +1,7 @@
+| Quality.cs:8:9:8:19 | access to property MyProperty5 | Call without target $@. | Quality.cs:8:9:8:19 | access to property MyProperty5 | access to property MyProperty5 |
+| Quality.cs:13:9:13:19 | access to property MyProperty1 | Call without target $@. | Quality.cs:13:9:13:19 | access to property MyProperty1 | access to property MyProperty1 |
+| Quality.cs:14:24:14:34 | access to property MyProperty3 | Call without target $@. | Quality.cs:14:24:14:34 | access to property MyProperty3 | access to property MyProperty3 |
+| Quality.cs:15:24:15:34 | access to property MyProperty3 | Call without target $@. | Quality.cs:15:24:15:34 | access to property MyProperty3 | access to property MyProperty3 |
+| Quality.cs:15:24:15:46 | access to property MyProperty2 | Call without target $@. | Quality.cs:15:24:15:46 | access to property MyProperty2 | access to property MyProperty2 |
+| Quality.cs:19:13:19:23 | access to property MyProperty4 | Call without target $@. | Quality.cs:19:13:19:23 | access to property MyProperty4 | access to property MyProperty4 |
+| Quality.cs:24:16:24:26 | access to property MyProperty2 | Call without target $@. | Quality.cs:24:16:24:26 | access to property MyProperty2 | access to property MyProperty2 |
