@@ -2019,6 +2019,13 @@ for_each_stmts(  //dir=stmt
   int body: @brace_stmt_or_none ref
 );
 
+#keyset[id, index]
+for_each_stmt_variables(  //dir=stmt
+  int id: @for_each_stmt ref,
+  int index: int ref,
+  int variable: @var_decl_or_none ref
+);
+
 #keyset[id]
 for_each_stmt_wheres(  //dir=stmt
   int id: @for_each_stmt ref,

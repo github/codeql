@@ -77,6 +77,17 @@ codeql::ForEachStmt StmtTranslator::translateForEachStmt(const swift::ForEachStm
   entry.iteratorVar = dispatcher.fetchLabel(stmt.getIteratorVar());
   entry.where = dispatcher.fetchOptionalLabel(stmt.getWhere());
   entry.nextCall = dispatcher.fetchOptionalLabel(stmt.getNextCall());
+  auto add_variable = [&](swift::VarDecl* var) {
+    entry.variables.push_back(dispatcher.fetchLabel(var));
+  };
+  if (auto pattern = stmt.getPattern()) {
+    pattern->forEachVariable(add_variable);
+  }
+  if (auto iteratorVar = stmt.getIteratorVar()) {
+    for (auto i = 0u; i < iteratorVar->getNumPatternEntries(); ++i) {
+      iteratorVar->getPattern(i)->forEachVariable(add_variable);
+    }
+  }
   return entry;
 }
 
