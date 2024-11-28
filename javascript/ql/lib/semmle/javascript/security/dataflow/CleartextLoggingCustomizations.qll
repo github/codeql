@@ -40,7 +40,7 @@ module CleartextLogging {
       exists(this.getRawReplacement().getStringValue()) and
       exists(DataFlow::RegExpCreationNode regexpObj |
         this.(StringReplaceCall).getRegExp() = regexpObj and
-        regexpObj.getRoot() = any(RegExpDot term)
+        regexpObj.getRoot() = any(RegExpDot term).getRootTerm()
       )
     }
   }
