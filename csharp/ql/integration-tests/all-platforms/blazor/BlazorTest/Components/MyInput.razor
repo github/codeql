@@ -1,0 +1,20 @@
+﻿@rendermode InteractiveServer
+
+<input @bind="Param1" @bind:event="onchange" @bind:after="Fire">
+
+@code {
+    [Parameter]
+    public string? Param1 { get; set; } = "";
+
+    [Parameter]
+    public EventCallback<string?> ValueChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> Param1Changed { get; set; }
+
+    private void Fire()
+    {
+        ValueChanged.InvokeAsync(Param1);
+        Param1Changed.InvokeAsync(Param1);
+    }
+}

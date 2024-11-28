@@ -1,0 +1,1 @@
+| BlazorTest/Components/Pages/TestPage.razor:123:23:123:27 | access to parameter value | BlazorTest/Components/Pages/TestPage.razor:121:40:121:44 | value : String | BlazorTest/Components/Pages/TestPage.razor:123:23:123:27 | access to parameter value | $@ | BlazorTest/Components/Pages/TestPage.razor:121:40:121:44 | value : String | value : String |

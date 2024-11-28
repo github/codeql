@@ -1,0 +1,125 @@
+﻿@page "/"
+@page "/test/{urlParam?}"
+@rendermode InteractiveServer
+
+<PageTitle>TestPage</PageTitle>
+
+<div>
+    <h3>Route parameter</h3>
+    <p>Go to: <a href="/test/@XssUrl">/test/@XssUrl</a></p>
+    <p>Parameter from URL: @UrlParam</p>
+    <p>Raw parameter from URL: @((MarkupString)UrlParam)</p>
+</div>
+
+<hr />
+
+<div>
+    <h3>Query parameter</h3>
+    <p>Go to: <a href="/test/?qs=@XssUrl">/test/?qs=@XssUrl</a></p>
+    <p>Parameter from query string: @QueryParam</p>
+    <p>Raw parameter from query string: @(new MarkupString(QueryParam))</p>
+</div>
+
+<hr />
+
+<div>
+    <h3>Bind InputText component</h3>
+    <InputText @bind-Value="InputValue1" />
+    <p>Value from InputText: @InputValue1</p>
+    <p>Raw value from InputText: @(new MarkupString(InputValue1))</p>
+</div>
+
+<hr />
+
+<div>
+    <h3>Bind input element</h3>
+    <input @bind="InputValue2">
+    <p>Value from InputText: @InputValue2</p>
+    <p>Raw value from InputText: @(new MarkupString(InputValue2))</p>
+</div>
+
+<hr />
+
+<div>
+    <h3>Bind through object property</h3>
+    <input @bind="Container1.Value">
+    <p>Value from InputText: @Container1.Value</p>
+    <p>Raw value from InputText: @(new MarkupString(Container1.Value))</p>
+</div>
+
+<hr />
+
+<div>
+    <h3>Input component with custom event</h3>
+    <MyInput Param1="@InputValue3" ValueChanged="MyInputChanged" />
+    <p>Value from InputText: @InputValue3</p>
+    <p>Raw value from InputText: @(new MarkupString(InputValue3))</p>
+</div>
+
+<hr />
+
+<div>
+    <h3>Input component with binding</h3>
+    <MyInput @bind-Param1="InputValue4" />
+    <p>Value from InputText: @InputValue4</p>
+    <p>Raw value from InputText: @(new MarkupString(InputValue4))</p>
+</div>
+
+<hr />
+
+<div>
+    <h3>Input, Output components</h3>
+    <MyInput @bind-Param1="InputValue5" />
+    <MyOutput Value="@InputValue5" />
+</div>
+
+<hr />
+
+<div>
+    <h3>Bind InputText, Output component</h3>
+    <InputText @bind-Value="InputValue6" />
+    <MyOutput Value="@InputValue6" />
+</div>
+
+@code {
+
+    public class Container
+    {
+        public string? Value { get; set; } = "";
+    }
+
+    private const string XssUrl = "<b>aaaa<%2Fb>";
+    private const string XssUrl2 = "<b>aaaa</b>";
+
+    [Parameter]
+    public string UrlParam { get; set; } = "";
+
+    [SupplyParameterFromQuery(Name = "qs")]
+    public string QueryParam { get; set; } = "";
+
+    public string InputValue1 { get; set; } = "";
+    public string InputValue2 { get; set; } = "";
+    public string InputValue3 { get; set; } = "";
+    public string InputValue4 { get; set; } = "";
+    public string InputValue5 { get; set; } = "";
+    public string InputValue6 { get; set; } = "";
+
+    public Container Container1 { get; set; } = new Container();
+
+    protected override void OnInitialized()
+    {
+        InputValue1 = XssUrl2;
+        InputValue2 = XssUrl2;
+        Container1.Value = XssUrl2;
+        InputValue3 = XssUrl2;
+        InputValue4 = XssUrl2;
+        InputValue5 = XssUrl2;
+        InputValue6 = XssUrl2;
+
+    }
+
+    private void MyInputChanged(string value)
+    {
+        InputValue3 = value;
+    }
+}
