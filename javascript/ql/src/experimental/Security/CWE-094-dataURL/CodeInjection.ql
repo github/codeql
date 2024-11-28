@@ -15,13 +15,11 @@
  */
 
 import javascript
-import DataFlow
-import DataFlow::PathGraph
 
-abstract class Sanitizer extends DataFlow::Node { }
+abstract class Barrier extends DataFlow::Node { }
 
 /** A non-first leaf in a string-concatenation. Seen as a sanitizer for dynamic import code injection. */
-class NonFirstStringConcatLeaf extends Sanitizer {
+class NonFirstStringConcatLeaf extends Barrier {
   NonFirstStringConcatLeaf() {
     exists(StringOps::ConcatenationRoot root |
       this = root.getALeaf() and
@@ -51,39 +49,46 @@ class WorkerThreads extends DataFlow::Node {
   }
 }
 
-class UrlConstructorLabel extends FlowLabel {
+class UrlConstructorLabel extends DataFlow::FlowLabel {
   UrlConstructorLabel() { this = "UrlConstructorLabel" }
 }
 
 /**
  * A taint-tracking configuration for reasoning about code injection vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "CodeInjection" }
+module CodeInjectionConfig implements DataFlow::StateConfigSig {
+  class FlowState = DataFlow::FlowLabel;
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+    source instanceof ActiveThreatModelSource and label.isTaint()
+  }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof DynamicImport }
+  predicate isSink(DataFlow::Node sink) { sink instanceof DynamicImport }
 
-  override predicate isSink(DataFlow::Node sink, FlowLabel label) {
+  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
     sink instanceof WorkerThreads and label instanceof UrlConstructorLabel
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
 
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::Node succ, FlowLabel predlbl, FlowLabel succlbl
+  predicate isAdditionalFlowStep(
+    DataFlow::Node pred, DataFlow::FlowLabel predlbl, DataFlow::Node succ,
+    DataFlow::FlowLabel succlbl
   ) {
     exists(DataFlow::NewNode newUrl | succ = newUrl |
       newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
       pred = newUrl.getArgument(0)
     ) and
-    predlbl instanceof StandardFlowLabel and
+    predlbl.isDataOrTaint() and
     succlbl instanceof UrlConstructorLabel
   }
 }
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+module CodeInjectionFlow = TaintTracking::GlobalWithState<CodeInjectionConfig>;
+
+import CodeInjectionFlow::PathGraph
+
+from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
+where CodeInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This command line depends on a $@.", source.getNode(),
   "user-provided value"
