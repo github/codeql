@@ -1,7 +1,7 @@
 package com.github.codeql
 
-import com.github.codeql.useType
 import com.github.codeql.utils.getJvmName
+import com.github.codeql.utils.type
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.analysis.api.types.KaType
@@ -27,10 +27,11 @@ context(KaSession)
 fun KotlinUsesExtractor.getFunctionLabel(
     f: KaFunctionSymbol,
     parentId: Label<out DbElement>,
+    maybeParameterList: List<KaValueParameterSymbol>? = null
     /*
     OLD: KE1
             classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
-            maybeParameterList: List<IrValueParameter>? = null
+
     */
 ): String =
     getFunctionLabel(
@@ -40,11 +41,11 @@ fun KotlinUsesExtractor.getFunctionLabel(
         */
         parentId,
         getFunctionShortName(f).nameInDB,
+        (maybeParameterList ?: f.valueParameters).map { it.type },
+        getAdjustedReturnType(f),
+        f.receiverParameter?.type,
         /*
         OLD: KE1
-                    (maybeParameterList ?: f.valueParameters).map { it.type },
-                    getAdjustedReturnType(f),
-                    f.extensionReceiverParameter?.type,
                     getFunctionTypeParameters(f),
                     classTypeArgsIncludingOuterClasses,
                     overridesCollectionsMethodWithAlteredParameterTypes(f),
@@ -52,6 +53,48 @@ fun KotlinUsesExtractor.getFunctionLabel(
                     !getInnermostWildcardSupppressionAnnotation(f)
         */
     )
+
+fun getAdjustedReturnType(f: KaFunctionSymbol): KaType {
+    return f.returnType
+    /* OLD: KE1
+    // Replace annotation val accessor types as needed:
+    (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
+        if (isAnnotationClassProperty(it) && f == it.owner.getter) {
+            val replaced = kClassToJavaClass(f.returnType)
+            if (replaced != f.returnType) return replaced
+        }
+    }
+
+    // The return type of `java.util.concurrent.ConcurrentHashMap<K,V>.keySet/0` is defined as
+    // `Set<K>` in the stubs inside the Android SDK.
+    // This does not match the Java SDK return type: `ConcurrentHashMap.KeySetView<K,V>`, so
+    // it's adjusted here.
+    // This is a deliberate change in the Android SDK:
+    // https://github.com/AndroidSDKSources/android-sdk-sources-for-api-level-31/blob/2c56b25f619575bea12f9c5520ed2259620084ac/java/util/concurrent/ConcurrentHashMap.java#L1244-L1249
+    // The annotation on the source is not visible in the android.jar, so we can't make the
+    // change based on that.
+    // TODO: there are other instances of `dalvik.annotation.codegen.CovariantReturnType` in the
+    // Android SDK, we should handle those too if they cause DB inconsistencies
+    val parentClass = f.parentClassOrNull
+    if (
+        parentClass == null ||
+        parentClass.fqNameWhenAvailable?.asString() !=
+        "java.util.concurrent.ConcurrentHashMap" ||
+        getFunctionShortName(f).nameInDB != "keySet" ||
+        f.valueParameters.isNotEmpty() ||
+        f.returnType.classFqName?.asString() != "kotlin.collections.MutableSet"
+    ) {
+        return f.returnType
+    }
+
+    val otherKeySet =
+        parentClass.declarations.findSubType<IrFunction> {
+            it.name.asString() == "keySet" && it.valueParameters.size == 1
+        } ?: return f.returnType
+
+    return otherKeySet.returnType.codeQlWithHasQuestionMark(false)
+    */
+}
 
 /*
 OLD: KE1
@@ -70,20 +113,20 @@ fun KotlinUsesExtractor.getFunctionLabel(
             // The parent of the function; normally f.parent.
             parent: IrDeclarationParent,
     */
-    // OLD: KE1: The ID of the function's parent, or null if we should work it out ourselves.
+    // The ID of the function's parent.
     parentId: Label<out DbElement>,
     // OLD: KE1: The name of the function; normally f.name.asString().
     name: String,
+    // The types of the value parameters that the functions takes; normally
+    // f.valueParameters.map { it.type }.
+    parameterTypes: List<KaType>,
+    // The return type of the function; normally f.returnType.
+    returnType: KaType,
+    // The extension receiver of the function, if any; normally
+    // f.receiverParameter?.type.
+    extensionParamType: KaType?,
     /*
     OLD: KE1
-            // The types of the value parameters that the functions takes; normally
-            // f.valueParameters.map { it.type }.
-            parameterTypes: List<IrType>,
-            // The return type of the function; normally f.returnType.
-            returnType: IrType,
-            // The extension receiver of the function, if any; normally
-            // f.extensionReceiverParameter?.type.
-            extensionParamType: IrType?,
             // The type parameters of the function. This does not include type parameters of enclosing
             // classes.
             functionTypeParameters: List<IrTypeParameter>,
@@ -100,98 +143,105 @@ fun KotlinUsesExtractor.getFunctionLabel(
             // default to this function's value parameters' types.
             // (Return-type wildcard addition is always off by default)
             addParameterWildcardsByDefault: Boolean,
-            // The prefix used in the label. "callable", unless a property label is created, then it's
-            // "property".
-            prefix: String = "callable"
     */
+    // The prefix used in the label. "callable", unless a property label is created, then it's
+    // "property".
+    prefix: String = "callable"
 ): String {
-    /*
-    OLD: KE1
-            val allParamTypes =
-                if (extensionParamType == null) parameterTypes
-                else listOf(extensionParamType) + parameterTypes
 
-            val substitutionMap =
-                classTypeArgsIncludingOuterClasses?.let { notNullArgs ->
-                    if (notNullArgs.isEmpty()) {
-                        null
-                    } else {
-                        val enclosingClass = getEnclosingClass(parent)
-                        enclosingClass?.let { notNullClass ->
-                            makeTypeGenericSubstitutionMap(notNullClass, notNullArgs)
-                        }
-                    }
+    val allParamTypes = (extensionParamType?.let { listOf(it) } ?: listOf()) + parameterTypes
+
+    /* OLD: KE1
+    val substitutionMap =
+        classTypeArgsIncludingOuterClasses?.let { notNullArgs ->
+            if (notNullArgs.isEmpty()) {
+                null
+            } else {
+                val enclosingClass = getEnclosingClass(parent)
+                enclosingClass?.let { notNullClass ->
+                    makeTypeGenericSubstitutionMap(notNullClass, notNullArgs)
                 }
-            val getIdForFunctionLabel = { it: IndexedValue<IrType> ->
-                // Kotlin rewrites certain Java collections types adding additional generic
-                // constraints-- for example,
-                // Collection.remove(Object) because Collection.remove(Collection::E) in the Kotlin
-                // universe.
-                // If this has happened, erase the type again to get the correct Java signature.
-                val maybeAmendedForCollections =
-                    if (overridesCollectionsMethod)
-                        eraseCollectionsMethodParameterType(it.value, name, it.index)
-                    else it.value
-                // Add any wildcard types that the Kotlin compiler would add in the Java lowering of
-                // this function:
-                val withAddedWildcards =
-                    addJavaLoweringWildcards(
-                        maybeAmendedForCollections,
-                        addParameterWildcardsByDefault,
-                        javaSignature?.let { sig -> getJavaValueParameterType(sig, it.index) }
-                    )
-                // Now substitute any class type parameters in:
-                val maybeSubbed =
-                    withAddedWildcards.substituteTypeAndArguments(
-                        substitutionMap,
-                        TypeContext.OTHER,
-                        pluginContext
-                    )
-                // Finally, mimic the Java extractor's behaviour by naming functions with type
-                // parameters for their erased types;
-                // those without type parameters are named for the generic type.
-                val maybeErased =
-                    if (functionTypeParameters.isEmpty()) maybeSubbed else erase(maybeSubbed)
-                "{${useType(maybeErased).javaResult.id}}"
             }
-            val paramTypeIds =
-                allParamTypes
-                    .withIndex()
-                    .joinToString(separator = ",", transform = getIdForFunctionLabel)
-            val labelReturnType =
-                if (name == "<init>") pluginContext.irBuiltIns.unitType
-                else
-                    erase(
-                        returnType.substituteTypeAndArguments(
-                            substitutionMap,
-                            TypeContext.RETURN,
-                            pluginContext
-                        )
-                    )
-            // Note that `addJavaLoweringWildcards` is not required here because the return type used to
-            // form the function
-            // label is always erased.
-            val returnTypeId = useType(labelReturnType, TypeContext.RETURN).javaResult.id
-            // This suffix is added to generic methods (and constructors) to match the Java extractor's
-            // behaviour.
-            // Comments in that extractor indicates it didn't want the label of the callable to clash
-            // with the raw
-            // method (and presumably that disambiguation is never needed when the method belongs to a
-            // parameterized
-            // instance of a generic class), but as of now I don't know when the raw method would be
-            // referred to.
-            val typeArgSuffix =
-                if (
-                    functionTypeParameters.isNotEmpty() &&
-                        classTypeArgsIncludingOuterClasses.isNullOrEmpty()
+        }
+     */
+    val getIdForFunctionLabel = { it: IndexedValue<KaType> ->
+        // Kotlin rewrites certain Java collections types adding additional generic
+        // constraints-- for example,
+        // Collection.remove(Object) because Collection.remove(Collection::E) in the Kotlin
+        // universe.
+        // If this has happened, erase the type again to get the correct Java signature.
+        val maybeAmendedForCollections = it.value
+        /* OLD: KE1
+            if (overridesCollectionsMethod)
+                eraseCollectionsMethodParameterType(it.value, name, it.index)
+            else it.value
+         */
+        // Add any wildcard types that the Kotlin compiler would add in the Java lowering of
+        // this function:
+        val withAddedWildcards = maybeAmendedForCollections
+            /* OLD: KE1
+            addJavaLoweringWildcards(
+                maybeAmendedForCollections,
+                addParameterWildcardsByDefault,
+                javaSignature?.let { sig -> getJavaValueParameterType(sig, it.index) }
+            )
+            */
+        // Now substitute any class type parameters in:
+        val maybeSubbed = withAddedWildcards
+        /* OLD: KE1
+            withAddedWildcards.substituteTypeAndArguments(
+                substitutionMap,
+                TypeContext.OTHER,
+                pluginContext
+            )
+         */
+        // Finally, mimic the Java extractor's behaviour by naming functions with type
+        // parameters for their erased types;
+        // those without type parameters are named for the generic type.
+        val maybeErased = maybeSubbed
+            /* OLD: KE1
+            if (functionTypeParameters.isEmpty()) maybeSubbed else erase(maybeSubbed)
+             */
+        "{${useType(maybeErased).javaResult.id}}"
+    }
+    val paramTypeIds =
+        allParamTypes
+            .withIndex()
+            .joinToString(separator = ",", transform = getIdForFunctionLabel)
+    val labelReturnType = returnType
+        /* OLD: KE1
+        if (name == "<init>") pluginContext.irBuiltIns.unitType
+        else
+            erase(
+                returnType.substituteTypeAndArguments(
+                    substitutionMap,
+                    TypeContext.RETURN,
+                    pluginContext
                 )
-                    "<${functionTypeParameters.size}>"
-                else ""
-    */
-    val prefix = "callable" // TODO
-    val paramTypeIds = "x" // TODO
-    val returnTypeId = "x" // TODO
-    val typeArgSuffix = "" // TODO
+            )
+         */
+    // Note that `addJavaLoweringWildcards` is not required here because the return type used to
+    // form the function
+    // label is always erased.
+    val returnTypeId = useType(labelReturnType, TypeContext.RETURN).javaResult.id
+    // This suffix is added to generic methods (and constructors) to match the Java extractor's
+    // behaviour.
+    // Comments in that extractor indicates it didn't want the label of the callable to clash
+    // with the raw
+    // method (and presumably that disambiguation is never needed when the method belongs to a
+    // parameterized
+    // instance of a generic class), but as of now I don't know when the raw method would be
+    // referred to.
+    val typeArgSuffix = ""
+    /* OLD: KE1
+        if (
+            functionTypeParameters.isNotEmpty() &&
+                classTypeArgsIncludingOuterClasses.isNullOrEmpty()
+        )
+            "<${functionTypeParameters.size}>"
+        else ""
+     */
+
     return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}$typeArgSuffix\""
 }
 

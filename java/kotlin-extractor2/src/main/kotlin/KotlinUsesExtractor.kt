@@ -1058,45 +1058,6 @@ open class KotlinUsesExtractor(
         private fun isAnnotationClassProperty(p: IrPropertySymbol) =
             p.owner.parentClassOrNull?.kind == ClassKind.ANNOTATION_CLASS
 
-        fun getAdjustedReturnType(f: IrFunction): IrType {
-            // Replace annotation val accessor types as needed:
-            (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
-                if (isAnnotationClassProperty(it) && f == it.owner.getter) {
-                    val replaced = kClassToJavaClass(f.returnType)
-                    if (replaced != f.returnType) return replaced
-                }
-            }
-
-            // The return type of `java.util.concurrent.ConcurrentHashMap<K,V>.keySet/0` is defined as
-            // `Set<K>` in the stubs inside the Android SDK.
-            // This does not match the Java SDK return type: `ConcurrentHashMap.KeySetView<K,V>`, so
-            // it's adjusted here.
-            // This is a deliberate change in the Android SDK:
-            // https://github.com/AndroidSDKSources/android-sdk-sources-for-api-level-31/blob/2c56b25f619575bea12f9c5520ed2259620084ac/java/util/concurrent/ConcurrentHashMap.java#L1244-L1249
-            // The annotation on the source is not visible in the android.jar, so we can't make the
-            // change based on that.
-            // TODO: there are other instances of `dalvik.annotation.codegen.CovariantReturnType` in the
-            // Android SDK, we should handle those too if they cause DB inconsistencies
-            val parentClass = f.parentClassOrNull
-            if (
-                parentClass == null ||
-                    parentClass.fqNameWhenAvailable?.asString() !=
-                        "java.util.concurrent.ConcurrentHashMap" ||
-                    getFunctionShortName(f).nameInDB != "keySet" ||
-                    f.valueParameters.isNotEmpty() ||
-                    f.returnType.classFqName?.asString() != "kotlin.collections.MutableSet"
-            ) {
-                return f.returnType
-            }
-
-            val otherKeySet =
-                parentClass.declarations.findSubType<IrFunction> {
-                    it.name.asString() == "keySet" && it.valueParameters.size == 1
-                } ?: return f.returnType
-
-            return otherKeySet.returnType.codeQlWithHasQuestionMark(false)
-        }
-
         @OptIn(ObsoleteDescriptorBasedAPI::class)
         fun getJavaCallable(f: IrFunction) =
             (f.descriptor.source as? JavaSourceElement)?.javaElement as? JavaMember
