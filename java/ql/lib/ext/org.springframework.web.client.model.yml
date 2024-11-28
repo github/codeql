@@ -16,9 +16,6 @@ extensions:
       - ["org.springframework.web.client", "RestTemplate", False, "execute", "", "", "Argument[0]", "request-forgery", "manual"]
       - ["org.springframework.web.client", "RestTemplate", False, "getForEntity", "", "", "Argument[0]", "request-forgery", "manual"]
       - ["org.springframework.web.client", "RestTemplate", False, "getForObject", "", "", "Argument[0]", "request-forgery", "manual"]
-      - ["org.springframework.web.client", "RestTemplate", False, "getForObject", "", "", "Argument[2]", "request-forgery", "manual"] # This is a workaround for the fact that sink model can't currently have access paths
-      # - ["org.springframework.web.client", "RestTemplate", False, "getForObject", "", "", "Argument[2].ArrayElement", "request-forgery", "manual"]
-      # - ["org.springframework.web.client", "RestTemplate", False, "getForObject", "", "", "Argument[2].MapValue", "request-forgery", "manual"]
       - ["org.springframework.web.client", "RestTemplate", False, "headForHeaders", "", "", "Argument[0]", "request-forgery", "manual"]
       - ["org.springframework.web.client", "RestTemplate", False, "optionsForAllow", "", "", "Argument[0]", "request-forgery", "manual"]
       - ["org.springframework.web.client", "RestTemplate", False, "patchForObject", "", "", "Argument[0]", "request-forgery", "manual"]
