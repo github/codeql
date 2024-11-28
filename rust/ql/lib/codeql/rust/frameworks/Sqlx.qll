@@ -28,7 +28,7 @@ private class SqlxQuery extends SqlConstruction::Range {
 /**
  * A call to `sqlx::Executor::execute`.
  */
-private class SqlxExecute extends SqlConstruction::Range {
+private class SqlxExecute extends SqlExecution::Range {
   MethodCallExpr call;
 
   SqlxExecute() {
