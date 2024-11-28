@@ -1,12 +1,5 @@
-import pytest
-
-# currently the DB-check fails on actions because of loading files multiple times and assiging multiple locations
-# see https://github.com/github/codeql-team/issues/3365
-@pytest.mark.ql_test("DB-CHECK", xfail="maybe")
-def test_cargo(codeql, rust, manifests, check_source_archive):
-    manifests.select("Cargo.toml")
+def test_cargo(codeql, rust, cargo, check_source_archive):
     codeql.database.create()
 
-def test_rust_project(codeql, rust, manifests, check_source_archive):
-    manifests.select("rust-project.json")
+def test_rust_project(codeql, rust, rust_project, check_source_archive):
     codeql.database.create()
