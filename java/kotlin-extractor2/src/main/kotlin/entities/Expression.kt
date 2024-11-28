@@ -190,6 +190,7 @@ fun KotlinFileExtractor.extractConstantInteger(
         extractExprContext(it, locId, callable, enclosingStmt)
     }
 
+context(KaSession)
 private fun KotlinFileExtractor.extractNull(
     t: KaType,
     locId: Label<DbLocation>,
