@@ -195,7 +195,6 @@
 /lib/codeql/rust/elements/internal/BlockExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/BoxPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BreakExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/CallExprBaseImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallableImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/CastExprConstructor.qll linguist-generated
@@ -335,7 +334,6 @@
 /lib/codeql/rust/elements/internal/RefTypeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RenameConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RenameImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/ResolvableImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/RestPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RetTypeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/RetTypeImpl.qll linguist-generated

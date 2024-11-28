@@ -538,20 +538,9 @@ module RustDataFlow implements InputSig<Location> {
 
   final class ReturnKind = ReturnKindAlias;
 
-  pragma[nomagic]
-  private Resolvable getCallResolvable(CallExprBase call) {
-    result = call.(MethodCallExpr)
-    or
-    result = call.(CallExpr).getFunction().(PathExpr).getPath()
-  }
-
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
-    exists(Resolvable r, string path, CrateOriginOption crate |
-      hasExtendedCanonicalPath(result.asCfgScope(), crate, path) and
-      r = getCallResolvable(call.asCallBaseExprCfgNode().getExpr()) and
-      resolveExtendedCanonicalPath(r, crate, path)
-    )
+    result.asCfgScope() = call.asCallBaseExprCfgNode().getCallExprBase().getStaticTarget()
   }
 
   /**
