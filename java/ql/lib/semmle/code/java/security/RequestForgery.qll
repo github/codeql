@@ -63,7 +63,7 @@ abstract class RequestForgerySanitizer extends DataFlow::Node { }
 
 private class PrimitiveSanitizer extends RequestForgerySanitizer instanceof SimpleTypeSanitizer { }
 
-private class HostnameSanitizingPrefix extends InterestingPrefix {
+class HostnameSanitizingPrefix extends InterestingPrefix {
   int offset;
 
   HostnameSanitizingPrefix() {
