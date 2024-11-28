@@ -81,8 +81,10 @@ private class HostnameSanitizingPrefix extends InterestingPrefix {
  * A value that is the result of prepending a string that prevents any value from controlling the
  * host of a URL.
  */
-private class HostnameSantizer extends RequestForgerySanitizer {
-  HostnameSantizer() { this.asExpr() = any(HostnameSanitizingPrefix hsp).getAnAppendedExpression() }
+private class HostnameSanitizer extends RequestForgerySanitizer {
+  HostnameSanitizer() {
+    this.asExpr() = any(HostnameSanitizingPrefix hsp).getAnAppendedExpression()
+  }
 }
 
 /**
