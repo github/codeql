@@ -7,7 +7,7 @@ import codeql.files.FileSystem
  */
 class ExtractorStep extends @extractor_step {
   /**
-   * The string representation of this extractor step.
+   * Gets the string representation of this extractor step.
    */
   string toString() {
     exists(File file, string action |
@@ -17,17 +17,17 @@ class ExtractorStep extends @extractor_step {
   }
 
   /**
-   * The action this extractor step carried out.
+   * Gets the action this extractor step carried out.
    */
   string getAction() { extractor_steps(this, result, _, _) }
 
   /**
-   * The file the extractor step was carried out on.
+   * Gets the file the extractor step was carried out on.
    */
   File getFile() { extractor_steps(this, _, result, _) }
 
   /**
-   * The duration of the extractor step in milliseconds.
+   * Gets the duration of the extractor step in milliseconds.
    */
   int getDurationMs() { extractor_steps(this, _, _, result) }
 
