@@ -48,7 +48,7 @@ fun getFileClassName(f: KtFile): String =
             .replaceFirstChar { it.uppercase() }) + "Kt")
 
 private fun getBinaryName(cid: ClassId): String =
-    (cid.outerClassId?.let { ocid -> "${getBinaryName(ocid)}${'$'}" } ?: "${cid.packageFqName}.") + cid.shortClassName
+    (cid.outerClassId?.let { ocid -> "${getBinaryName(ocid)}\$" } ?: "${cid.packageFqName}.") + cid.shortClassName
 
 fun getSymbolBinaryName(that: KaSymbol): String {
     if (that is KaFileSymbol) {
