@@ -35,13 +35,58 @@ private class SpringWebClientRestTemplateGetForObject extends RequestForgerySink
     exists(Method m, MethodCall mc, int i |
       m.getDeclaringType() instanceof SpringRestTemplate and
       m.hasName("getForObject") and
-      mc.getMethod() = m
+      mc.getMethod() = m and
+      // Note that mc.getArgument(0) is modeled separately. This model is for
+      // arguments beyond the first two. There are two relevant overloads, one
+      // with third parameter type `Object...` and one with third parameter
+      // type `Map<String, ?>`. For the latter we cannot deal with mapvalue
+      // content easily but there is a default implicit taint read at sinks
+      // that will catch it.
+      this.asExpr() = mc.getArgument(i + 2) and
+      i >= 0
     |
-      // Deal with two overloads, with third parameter type `Object...` and
-      // `Map<String, ?>`. We cannot deal with mapvalue content easily but
-      // there is a default implicit taint read at sinks that will catch it.
-      this.asExpr() = mc.getArgument(i) and
-      i >= 2
+      // If we can determine that part of mc.getArgument(0) is a hostname
+      // sanitizing prefix, then we count how many placeholders occur before it
+      // and only consider that many arguments beyond the first two as sinks.
+      // For the `Map<String, ?>` overload this has the effect of only
+      // considering the map values as sinks if there is at least one
+      // placeholder in the URL before the hostname sanitizing prefix.
+      exists(HostnameSanitizingPrefix hsp |
+        hsp = mc.getArgument(0) and
+        i <=
+          max(int occurrenceIndex, int occurrenceOffset |
+            exists(
+              hsp.getStringValue().regexpFind("\\{[^}]*\\}", occurrenceIndex, occurrenceOffset)
+            ) and
+            occurrenceOffset < hsp.getOffset()
+          |
+            occurrenceIndex
+          )
+      )
+      or
+      // If we cannot determine that part of mc.getArgument(0) is a hostname
+      // sanitizing prefix, but it is a compile time constant and we can get
+      // its string value, then we count how many placeholders occur in it
+      // and only consider that many arguments beyond the first two as sinks.
+      // For the `Map<String, ?>` overload this has the effect of only
+      // considering the map values as sinks if there is at least one
+      // placeholder in the URL.
+      not mc.getArgument(0) instanceof HostnameSanitizingPrefix and
+      i <=
+        max(int occurrenceIndex |
+          exists(
+            mc.getArgument(0)
+                .(CompileTimeConstantExpr)
+                .getStringValue()
+                .regexpFind("\\{[^}]*\\}", occurrenceIndex, _)
+          )
+        |
+          occurrenceIndex
+        )
+      or
+      // If we cannot determine the string value of mc.getArgument(0), then we
+      // conservatively consider all arguments as sinks.
+      not exists(mc.getArgument(0).(CompileTimeConstantExpr).getStringValue())
     )
   }
 }

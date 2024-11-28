@@ -35,10 +35,10 @@ public class SpringSSRF extends HttpServlet {
             restTemplate.getForObject(fooResourceUrl, String.class, "test"); // $ SSRF
             restTemplate.getForObject("http://{foo}", String.class, fooResourceUrl); // $ SSRF
             restTemplate.getForObject("http://{foo}/a/b", String.class, fooResourceUrl); // $ SSRF
-            restTemplate.getForObject("http://safe.com/{foo}", String.class, fooResourceUrl); // $ SPURIOUS: SSRF // not bad - the tainted value does not affect the host
-            restTemplate.getForObject("http://{foo}", String.class, "safe.com", fooResourceUrl); // $ SPURIOUS: SSRF // not bad - the tainted value is unused
+            restTemplate.getForObject("http://safe.com/{foo}", String.class, fooResourceUrl); // not bad - the tainted value does not affect the host
+            restTemplate.getForObject("http://{foo}", String.class, "safe.com", fooResourceUrl); // not bad - the tainted value is unused
             restTemplate.getForObject("http://{foo}", String.class, Map.of("foo", fooResourceUrl)); // $ SSRF
-            restTemplate.getForObject("http://safe.com/{foo}", String.class, Map.of("foo", fooResourceUrl)); // $ SPURIOUS: SSRF // not bad - the tainted value does not affect the host
+            restTemplate.getForObject("http://safe.com/{foo}", String.class, Map.of("foo", fooResourceUrl)); // not bad - the tainted value does not affect the host
             restTemplate.getForObject("http://{foo}", String.class, Map.of("foo", "safe.com", "unused", fooResourceUrl)); // $ SPURIOUS: SSRF // not bad - the key for the tainted value is unused
             restTemplate.getForObject("http://{foo}", String.class, Map.of("foo", "safe.com", fooResourceUrl, "unused")); // not bad - the tainted value is in a map key
             restTemplate.patchForObject(fooResourceUrl, new String("object"), String.class, "hi"); // $ SSRF
