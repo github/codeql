@@ -81,18 +81,31 @@ module TaintedObject {
   /**
    * A sanitizer guard that blocks deep object taint.
    */
-  abstract class SanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode {
+  abstract class SanitizerGuard extends DataFlow::Node {
     /** Holds if this node blocks flow through `e`, provided it evaluates to `outcome`. */
     predicate blocksExpr(boolean outcome, Expr e) { none() }
 
     /** Holds if this node blocks flow of `label` through `e`, provided it evaluates to `outcome`. */
     predicate blocksExpr(boolean outcome, Expr e, FlowLabel label) { none() }
 
-    override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
       this.blocksExpr(outcome, e, label)
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  }
+
+  deprecated private class SanitizerGuardLegacy extends TaintTracking::LabeledSanitizerGuardNode instanceof SanitizerGuard
+  {
+    deprecated override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
+      SanitizerGuard.super.sanitizes(outcome, e, label)
+    }
+
+    deprecated override predicate sanitizes(boolean outcome, Expr e) {
+      SanitizerGuard.super.sanitizes(outcome, e)
+    }
   }
 
   /**
@@ -148,7 +161,7 @@ module TaintedObject {
             .getACall()
     }
 
-    override predicate sanitizes(boolean outcome, Expr e, FlowLabel lbl) {
+    override predicate blocksExpr(boolean outcome, Expr e, FlowLabel lbl) {
       e = super.getAnArgument().asExpr() and outcome = true and lbl = label()
     }
   }
