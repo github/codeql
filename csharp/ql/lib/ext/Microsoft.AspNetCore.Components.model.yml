@@ -3,6 +3,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: sourceModel
     data:
+      - ["Microsoft.AspNetCore.Components", "NagivationManager", True, "get_BaseUri", "", "", "ReturnValue", "remote", "manual"]
       - ["Microsoft.AspNetCore.Components", "NagivationManager", True, "get_Uri", "", "", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/csharp-all
