@@ -12,7 +12,7 @@ module TestConfig implements DataFlow::ConfigSig {
 
 module TestFlow = TaintTracking::Global<TestConfig>;
 
-class Consistency extends ConsistencyConfiguration {
+deprecated class Consistency extends ConsistencyConfiguration {
   Consistency() { this = "Consistency" }
 
   override DataFlow::Node getAnAlert() { TestFlow::flowTo(result) }

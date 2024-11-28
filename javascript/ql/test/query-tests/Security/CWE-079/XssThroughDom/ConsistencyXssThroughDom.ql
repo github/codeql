@@ -2,7 +2,7 @@ import javascript
 deprecated import testUtilities.ConsistencyChecking
 import semmle.javascript.security.dataflow.XssThroughDomQuery
 
-class ConsistencyConfig extends ConsistencyConfiguration {
+deprecated class ConsistencyConfig extends ConsistencyConfiguration {
   ConsistencyConfig() { this = "ConsistencyConfig" }
 
   override DataFlow::Node getAnAlert() {

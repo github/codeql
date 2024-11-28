@@ -6,7 +6,7 @@ import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironmentQ
 import semmle.javascript.security.dataflow.UnsafeShellCommandConstructionQuery as UnsafeShellCommandConstruction
 import semmle.javascript.security.dataflow.SecondOrderCommandInjectionQuery as SecondOrderCommandInjectionQuery
 
-class CommandInjectionConsistency extends ConsistencyConfiguration {
+deprecated class CommandInjectionConsistency extends ConsistencyConfiguration {
   CommandInjectionConsistency() { this = "ComandInjection" }
 
   override File getAFile() { not result.getBaseName() = "uselesscat.js" }
@@ -14,7 +14,7 @@ class CommandInjectionConsistency extends ConsistencyConfiguration {
 
 import semmle.javascript.security.UselessUseOfCat
 
-class UselessCatConsistency extends ConsistencyConfiguration {
+deprecated class UselessCatConsistency extends ConsistencyConfiguration {
   UselessCatConsistency() { this = "Cat" }
 
   override DataFlow::Node getAnAlert() { result instanceof UselessCat }

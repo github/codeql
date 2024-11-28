@@ -53,7 +53,7 @@ class BasicSanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::C
 
 query predicate flow = TestFlow::flow/2;
 
-class Consistency extends ConsistencyConfiguration {
+deprecated class Consistency extends ConsistencyConfiguration {
   Consistency() { this = "Consistency" }
 
   override DataFlow::Node getAnAlert() { TestFlow::flowTo(result) }

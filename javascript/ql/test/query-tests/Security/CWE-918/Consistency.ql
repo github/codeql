@@ -15,7 +15,7 @@ query predicate resultInWrongFile(DataFlow::Node node) {
   )
 }
 
-class Consistency extends ConsistencyConfiguration {
+deprecated class Consistency extends ConsistencyConfiguration {
   Consistency() { this = "Consistency" }
 
   override DataFlow::Node getAnAlert() {
