@@ -32,6 +32,14 @@ module ReportStats<StatsSig Stats> {
   }
 }
 
+private predicate isNoSetterPropertyCallInConstructor(PropertyCall c) {
+  exists(Property p |
+    p = c.getProperty() and
+    not exists(Setter a | a = p.getAnAccessor()) and
+    c.getEnclosingCallable().(Constructor).getDeclaringType().getASubType*() = p.getDeclaringType()
+  )
+}
+
 module CallTargetStats implements StatsSig {
   int getNumberOfOk() { result = count(Call c | exists(c.getTarget())) }
 
@@ -40,7 +48,8 @@ module CallTargetStats implements StatsSig {
       count(Call c |
         not exists(c.getTarget()) and
         not c instanceof DelegateCall and
-        not c instanceof DynamicExpr
+        not c instanceof DynamicExpr and
+        not isNoSetterPropertyCallInConstructor(c)
       )
   }
 
