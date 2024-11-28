@@ -1,6 +1,6 @@
 import javascript
 private import semmle.javascript.dataflow.internal.StepSummary
-import testUtilities.LegacyDataFlowDiff
+deprecated import testUtilities.LegacyDataFlowDiff
 
 module ValueFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
@@ -45,7 +45,7 @@ class LegacyValueConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { ValueFlowConfig::isSink(sink) }
 }
 
-query predicate valueFlowDifference =
+deprecated query predicate valueFlowDifference =
   DataFlowDiff<ValueFlow, LegacyValueConfig>::legacyDataFlowDifference/3;
 
 class LegacyTaintConfig extends TaintTracking::Configuration {
@@ -56,5 +56,5 @@ class LegacyTaintConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { TaintConfig::isSink(sink) }
 }
 
-query predicate taintFlowDifference =
+deprecated query predicate taintFlowDifference =
   DataFlowDiff<TaintFlow, LegacyTaintConfig>::legacyDataFlowDifference/3;

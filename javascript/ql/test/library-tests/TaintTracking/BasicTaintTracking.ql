@@ -22,7 +22,7 @@ module TestConfig implements DataFlow::ConfigSig {
 
 module TestFlow = TaintTracking::Global<TestConfig>;
 
-class LegacyConfig extends TaintTracking::Configuration {
+deprecated class LegacyConfig extends TaintTracking::Configuration {
   LegacyConfig() { this = "LegacyConfig" }
 
   override predicate isSource(DataFlow::Node node) { TestConfig::isSource(node) }
@@ -39,7 +39,7 @@ class LegacyConfig extends TaintTracking::Configuration {
   }
 }
 
-import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
 class BasicSanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
   BasicSanitizerGuard() { this = getACall("isSafe") }

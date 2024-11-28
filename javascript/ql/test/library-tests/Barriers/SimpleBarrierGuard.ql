@@ -30,7 +30,7 @@ class SimpleBarrierGuardNode extends DataFlow::BarrierGuardNode, DataFlow::Invok
   }
 }
 
-class LegacyConfig extends DataFlow::Configuration {
+deprecated class LegacyConfig extends DataFlow::Configuration {
   LegacyConfig() { this = "LegacyConfig" }
 
   override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
@@ -42,6 +42,6 @@ class LegacyConfig extends DataFlow::Configuration {
   }
 }
 
-import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
 query predicate flow = TestFlow::flow/2;

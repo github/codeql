@@ -14,7 +14,7 @@ module TestFlow = DataFlow::Global<TestConfig>;
 
 query predicate dataFlow = TestFlow::flow/2;
 
-class LegacyConfig extends DataFlow::Configuration {
+deprecated class LegacyConfig extends DataFlow::Configuration {
   LegacyConfig() { this = "Config" }
 
   override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
@@ -22,7 +22,7 @@ class LegacyConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { TestConfig::isSink(sink) }
 }
 
-import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
 DataFlow::SourceNode trackSource(DataFlow::TypeTracker t, DataFlow::SourceNode start) {
   t.start() and
