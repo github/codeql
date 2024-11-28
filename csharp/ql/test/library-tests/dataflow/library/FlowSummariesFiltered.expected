@@ -651,6 +651,7 @@
 | Microsoft.AspNetCore.WebUtilities;FileBufferingReadStream;FileBufferingReadStream;(System.IO.Stream,System.Int32,System.Nullable<System.Int64>,System.Func<System.String>,System.Buffers.ArrayPool<System.Byte>);Argument[3];Argument[3].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.WebUtilities;FileBufferingWriteStream;FileBufferingWriteStream;(System.Int32,System.Nullable<System.Int64>,System.Func<System.String>);Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.WebUtilities;QueryHelpers;ParseNullableQuery;(System.String);Argument[0];ReturnValue;taint;manual |
+| Microsoft.AspNetCore.WebUtilities;QueryHelpers;ParseQuery;(System.String);Argument[0];ReturnValue;taint;manual |
 | Microsoft.AspNetCore;WebHost;Start;(Microsoft.AspNetCore.Http.RequestDelegate);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore;WebHost;Start;(System.Action<Microsoft.AspNetCore.Routing.IRouteBuilder>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore;WebHost;Start;(System.String,Microsoft.AspNetCore.Http.RequestDelegate);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |

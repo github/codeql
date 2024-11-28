@@ -3,5 +3,5 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.AspNetCore.WebUtilities", "QueryHelpers", False, "ParseQueryString", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.WebUtilities", "QueryHelpers", False, "ParseQuery", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Microsoft.AspNetCore.WebUtilities", "QueryHelpers", False, "ParseNullableQuery", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
