@@ -3,7 +3,7 @@ import codeql.rust.security.SqlInjectionExtensions
 import utils.InlineExpectationsTest
 
 module SqlSinksTest implements TestSig {
-  string getARelevantTag() { result = ["sql-sink"] }
+  string getARelevantTag() { result = "sql-sink" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(SqlInjection::Sink sink |
