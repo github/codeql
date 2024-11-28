@@ -190,24 +190,35 @@ fun KotlinFileExtractor.extractConstantInteger(
         extractExprContext(it, locId, callable, enclosingStmt)
     }
 
+private fun KotlinFileExtractor.extractNull(
+    t: KaType,
+    locId: Label<DbLocation>,
+    parent: Label<out DbExprparent>,
+    idx: Int,
+    callable: Label<out DbCallable>?,
+    enclosingStmt: Label<out DbStmt>?,
+    /*
+    OLD: KE1
+            overrideId: Label<out DbExpr>? = null
+    */
+) =
+    // OLD: KE1: Was: exprIdOrFresh<DbNullliteral>(overrideId).also {
+    tw.getFreshIdLabel<DbNullliteral>().also {
+        val type = useType(t)
+        // Match Java by using a special <nulltype> for nulls, rather than Kotlin's view of this which is
+        // kotlin.Nothing?, the type that can only contain null.
+        val nullTypeName = "<nulltype>"
+        val javaNullType = tw.getLabelFor<DbPrimitive>(
+            "@\"type;$nullTypeName\"",
+            { tw.writePrimitives(it, nullTypeName) }
+        )
+        tw.writeExprs_nullliteral(it, javaNullType, parent, idx)
+        tw.writeExprsKotlinType(it, type.kotlinResult.id)
+        extractExprContext(it, locId, callable, enclosingStmt)
+    }
+
 /*
 OLD: KE1
-    private fun extractNull(
-        t: IrType,
-        locId: Label<DbLocation>,
-        parent: Label<out DbExprparent>,
-        idx: Int,
-        callable: Label<out DbCallable>?,
-        enclosingStmt: Label<out DbStmt>?,
-        overrideId: Label<out DbExpr>? = null
-    ) =
-        exprIdOrFresh<DbNullliteral>(overrideId).also {
-            val type = useType(t)
-            tw.writeExprs_nullliteral(it, type.javaResult.id, parent, idx)
-            tw.writeExprsKotlinType(it, type.kotlinResult.id)
-            extractExprContext(it, locId, callable, enclosingStmt)
-        }
-
     private fun extractAssignExpr(
         type: IrType,
         locId: Label<DbLocation>,
@@ -1897,18 +1908,31 @@ private fun KotlinFileExtractor.extractConstant(
     }
 
     val elementType = e.node.elementType
+    val t = e.expressionType
+    if (t == null) {
+        TODO()
+    }
     when (elementType) {
+        KtNodeTypes.NULL -> {
+            return extractNull(
+                t,
+                tw.getLocation(e),
+                parent,
+                idx,
+                enclosingCallable,
+                enclosingStmt,
+                // OLD: KE1: overrideId = overrideId
+            )
+        }
+
         KtNodeTypes.INTEGER_CONSTANT -> {
-            val t = e.expressionType
+
             val i = parseNumericLiteral(text, elementType)
             when {
                 i == null -> {
                     TODO()
                 }
 
-                t == null -> {
-                    TODO()
-                }
 
                 t.isIntType || t.isShortType || t.isByteType -> {
                     return extractConstantInteger(
@@ -2005,17 +2029,6 @@ private fun KotlinFileExtractor.extractConstant(
                         extractExprContext(id, locId, enclosingCallable, enclosingStmt)
                         tw.writeNamestrings(toQuotedLiteral(v.toString()), v.toString(), id)
                     }
-                }
-                v == null -> {
-                    extractNull(
-                        e.type,
-                        tw.getLocation(e),
-                        parent,
-                        idx,
-                        enclosingCallable,
-                        enclosingStmt,
-                        overrideId = overrideId
-                    )
                 }
                 else -> {
                     null.also { logger.errorElement("Unrecognised IrConst: " + v.javaClass, e) }
