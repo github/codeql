@@ -300,7 +300,7 @@ private fun KotlinFileExtractor.extractPrefixUnaryExpression(
     }
 
     if (trapWriterWriteExpr != null) {
-        return extractUnaryExpression(expression, callable, parent, trapWriterWriteExpr)
+        return extractUnaryExpressionWith(expression, callable, parent, trapWriterWriteExpr)
     }
 
     TODO("Extract as method call")
@@ -327,7 +327,7 @@ private fun KotlinFileExtractor.extractPostfixUnaryExpression(
     }
 
     if (trapWriterWriteExpr != null) {
-        return extractUnaryExpression(expression, callable, parent, trapWriterWriteExpr)
+        return extractUnaryExpressionWith(expression, callable, parent, trapWriterWriteExpr)
     }
 
     TODO("Extract as method call")
@@ -372,7 +372,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
             else -> TODO("Extract error expression")
         }
 
-        return extractBinaryExpression(expression, callable, parent, trapWriterWriteExpr)
+        return extractBinaryExpressionWith(expression, callable, parent, trapWriterWriteExpr)
     }
 
     val trapWriterWriteExpr = when {
@@ -395,7 +395,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
     }
 
     if (trapWriterWriteExpr != null) {
-        return extractBinaryExpression(expression, callable, parent, trapWriterWriteExpr)
+        return extractBinaryExpressionWith(expression, callable, parent, trapWriterWriteExpr)
     }
 
     val trapWriterWriteExprComparison = when (op) {
@@ -489,7 +489,7 @@ private fun <T : DbBinaryexpr> KotlinFileExtractor.extractRawBinaryExpression(
 }
 
 context(KaSession)
-private fun <T : DbBinaryexpr> KotlinFileExtractor.extractBinaryExpression(
+private fun <T : DbBinaryexpr> KotlinFileExtractor.extractBinaryExpressionWith(
     expression: KtBinaryExpression,
     callable: Label<out DbCallable>,
     parent: StmtExprParent,
@@ -511,7 +511,7 @@ private fun <T : DbBinaryexpr> KotlinFileExtractor.extractBinaryExpression(
 }
 
 context(KaSession)
-private fun <T : DbUnaryexpr> KotlinFileExtractor.extractUnaryExpression(
+private fun <T : DbUnaryexpr> KotlinFileExtractor.extractUnaryExpressionWith(
     expression: KtUnaryExpression,
     callable: Label<out DbCallable>,
     parent: StmtExprParent,
