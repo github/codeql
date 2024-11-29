@@ -233,6 +233,37 @@ fn block_expression3(b: bool) -> i64 {
     a
 }
 
+// -----------------------------------------------------------------------------
+// Data flow through closures
+
+fn closure_flow_out() {
+    let f = |cond| if cond { source(92) } else { 0 };
+    sink(f(true)); // $ MISSING: hasValueFlow=92
+}
+
+fn closure_flow_in() {
+    let f = |cond, data|
+        if cond {
+            sink(data); // $ MISSING: hasValueFlow=87
+        } else {
+            sink(0)
+        };
+    let a = source(87);
+    f(true, a);
+}
+
+fn closure_flow_through() {
+    let f = |cond, data|
+        if cond {
+            data
+        } else {
+            0
+        };
+    let a = source(43);
+    let b = f(true, a);
+    sink(b); // $ MISSING: hasValueFlow=43
+}
+
 fn main() {
     direct();
     variable_usage();
@@ -253,4 +284,7 @@ fn main() {
     block_expression1();
     block_expression2(true);
     block_expression3(true);
+    closure_flow_out();
+    closure_flow_in();
+    closure_flow_through();
 }

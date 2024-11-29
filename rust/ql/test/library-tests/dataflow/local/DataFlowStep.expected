@@ -280,6 +280,50 @@ localStep
 | main.rs:231:9:231:22 | break ''block 2 | main.rs:227:13:232:5 | 'block: { ... } |
 | main.rs:231:22:231:22 | 2 | main.rs:231:9:231:22 | break ''block 2 |
 | main.rs:233:5:233:5 | a | main.rs:226:38:234:1 | { ... } |
+| main.rs:240:9:240:9 | [SSA] f | main.rs:241:10:241:10 | f |
+| main.rs:240:9:240:9 | f | main.rs:240:9:240:9 | [SSA] f |
+| main.rs:240:13:240:52 | \|...\| ... | main.rs:240:9:240:9 | f |
+| main.rs:240:14:240:17 | ... | main.rs:240:14:240:17 | cond |
+| main.rs:240:14:240:17 | [SSA] cond | main.rs:240:23:240:26 | cond |
+| main.rs:240:14:240:17 | cond | main.rs:240:14:240:17 | [SSA] cond |
+| main.rs:240:28:240:41 | { ... } | main.rs:240:20:240:52 | if cond {...} else {...} |
+| main.rs:240:30:240:39 | source(...) | main.rs:240:28:240:41 | { ... } |
+| main.rs:240:48:240:52 | { ... } | main.rs:240:20:240:52 | if cond {...} else {...} |
+| main.rs:240:50:240:50 | 0 | main.rs:240:48:240:52 | { ... } |
+| main.rs:245:9:245:9 | [SSA] f | main.rs:252:5:252:5 | f |
+| main.rs:245:9:245:9 | f | main.rs:245:9:245:9 | [SSA] f |
+| main.rs:245:13:250:9 | \|...\| ... | main.rs:245:9:245:9 | f |
+| main.rs:245:14:245:17 | ... | main.rs:245:14:245:17 | cond |
+| main.rs:245:14:245:17 | [SSA] cond | main.rs:246:12:246:15 | cond |
+| main.rs:245:14:245:17 | cond | main.rs:245:14:245:17 | [SSA] cond |
+| main.rs:245:20:245:23 | ... | main.rs:245:20:245:23 | data |
+| main.rs:245:20:245:23 | [SSA] data | main.rs:247:18:247:21 | data |
+| main.rs:245:20:245:23 | data | main.rs:245:20:245:23 | [SSA] data |
+| main.rs:246:17:248:9 | { ... } | main.rs:246:9:250:9 | if cond {...} else {...} |
+| main.rs:248:16:250:9 | { ... } | main.rs:246:9:250:9 | if cond {...} else {...} |
+| main.rs:249:13:249:19 | sink(...) | main.rs:248:16:250:9 | { ... } |
+| main.rs:251:9:251:9 | [SSA] a | main.rs:252:13:252:13 | a |
+| main.rs:251:9:251:9 | a | main.rs:251:9:251:9 | [SSA] a |
+| main.rs:251:13:251:22 | source(...) | main.rs:251:9:251:9 | a |
+| main.rs:256:9:256:9 | [SSA] f | main.rs:263:13:263:13 | f |
+| main.rs:256:9:256:9 | f | main.rs:256:9:256:9 | [SSA] f |
+| main.rs:256:13:261:9 | \|...\| ... | main.rs:256:9:256:9 | f |
+| main.rs:256:14:256:17 | ... | main.rs:256:14:256:17 | cond |
+| main.rs:256:14:256:17 | [SSA] cond | main.rs:257:12:257:15 | cond |
+| main.rs:256:14:256:17 | cond | main.rs:256:14:256:17 | [SSA] cond |
+| main.rs:256:20:256:23 | ... | main.rs:256:20:256:23 | data |
+| main.rs:256:20:256:23 | [SSA] data | main.rs:258:13:258:16 | data |
+| main.rs:256:20:256:23 | data | main.rs:256:20:256:23 | [SSA] data |
+| main.rs:257:17:259:9 | { ... } | main.rs:257:9:261:9 | if cond {...} else {...} |
+| main.rs:258:13:258:16 | data | main.rs:257:17:259:9 | { ... } |
+| main.rs:259:16:261:9 | { ... } | main.rs:257:9:261:9 | if cond {...} else {...} |
+| main.rs:260:13:260:13 | 0 | main.rs:259:16:261:9 | { ... } |
+| main.rs:262:9:262:9 | [SSA] a | main.rs:263:21:263:21 | a |
+| main.rs:262:9:262:9 | a | main.rs:262:9:262:9 | [SSA] a |
+| main.rs:262:13:262:22 | source(...) | main.rs:262:9:262:9 | a |
+| main.rs:263:9:263:9 | [SSA] b | main.rs:264:10:264:10 | b |
+| main.rs:263:9:263:9 | b | main.rs:263:9:263:9 | [SSA] b |
+| main.rs:263:13:263:22 | f(...) | main.rs:263:9:263:9 | b |
 storeStep
 | main.rs:117:19:117:28 | source(...) | Some | main.rs:117:14:117:29 | Some(...) |
 | main.rs:118:19:118:19 | 2 | Some | main.rs:118:14:118:20 | Some(...) |
@@ -287,7 +331,7 @@ storeStep
 | main.rs:136:29:136:29 | 2 | B | main.rs:136:14:136:30 | ...::B(...) |
 | main.rs:175:18:175:27 | source(...) | C | main.rs:174:14:176:5 | ...::C {...} |
 | main.rs:177:41:177:41 | 2 | D | main.rs:177:14:177:43 | ...::D {...} |
-| main.rs:240:27:240:27 | 0 | Some | main.rs:240:22:240:28 | Some(...) |
+| main.rs:271:27:271:27 | 0 | Some | main.rs:271:22:271:28 | Some(...) |
 readStep
 | main.rs:33:9:33:15 | TupleStructPat | Some | main.rs:33:14:33:14 | _ |
 | main.rs:120:9:120:15 | TupleStructPat | Some | main.rs:120:14:120:14 | n |
