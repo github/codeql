@@ -18,7 +18,7 @@
         <p>The following is an example of a string that could be used to cause remote code execution when interpreted as a template:</p>
         <sample src="examples/template_exploit.txt" />
 
-        <p>In the following case, user input is not used to construct the template; rather is only used for as the parameters to render the template, which is safe.</p>
+        <p>In the following case, user input is not used to construct the template; rather it is only used as the parameters to render the template, which is safe.</p>
         <sample src="examples/JinjaGoodParam.py" />
         
         <p>In the following case, a <code>SandboxedEnvironment</code> is used, preventing remote code execution.</p>
