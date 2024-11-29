@@ -77,6 +77,12 @@ module CallTargetStats implements StatsSig {
     )
   }
 
+  private predicate isEventFieldAccess(EventCall c) {
+    exists(Event e | c.getEvent() = e |
+      forall(Accessor a | e.getAnAccessor() = a | a.isCompilerGenerated())
+    )
+  }
+
   additional predicate isNotOkCall(Call c) {
     not exists(c.getTarget()) and
     not c instanceof DelegateCall and
@@ -85,7 +91,8 @@ module CallTargetStats implements StatsSig {
     not isNoSetterPropertyInitialization(c) and
     not isAnonymousObjectMemberDeclaration(c) and
     not isInitializedWithCollectionInitializer(c) and
-    not c.getParent+() instanceof NameOfExpr
+    not c.getParent+() instanceof NameOfExpr and
+    not isEventFieldAccess(c)
   }
 
   int getNumberOfNotOk() { result = count(Call c | isNotOkCall(c)) }

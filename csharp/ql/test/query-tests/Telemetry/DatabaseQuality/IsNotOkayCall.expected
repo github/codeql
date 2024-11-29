@@ -1,0 +1,4 @@
+| Quality.cs:25:19:25:26 | access to indexer | Call without target $@. | Quality.cs:25:19:25:26 | access to indexer | access to indexer |
+| Quality.cs:28:21:28:27 | access to indexer | Call without target $@. | Quality.cs:28:21:28:27 | access to indexer | access to indexer |
+| Quality.cs:31:9:31:21 | access to indexer | Call without target $@. | Quality.cs:31:9:31:21 | access to indexer | access to indexer |
+| Quality.cs:46:20:46:26 | object creation of type T | Call without target $@. | Quality.cs:46:20:46:26 | object creation of type T | object creation of type T |
