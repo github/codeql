@@ -235,22 +235,12 @@ string getAnInsecureHashAlgorithmName() {
   result = "MD5"
 }
 
-private string rankedInsecureAlgorithm(int i) {
-  result = rank[i](string name | insecureAlgorithm(name, _))
-}
-
-private string insecureAlgorithmString(int i) {
-  i = 1 and result = rankedInsecureAlgorithm(i)
-  or
-  result = rankedInsecureAlgorithm(i) + "|" + insecureAlgorithmString(i - 1)
-}
-
 /**
  * Gets the regular expression used for matching strings that look like they
  * contain an algorithm that is known to be insecure.
  */
 string getInsecureAlgorithmRegex() {
-  result = algorithmRegex(insecureAlgorithmString(max(int i | exists(rankedInsecureAlgorithm(i)))))
+  result = algorithmRegex(concat(string name | insecureAlgorithm(name, _) | name, "|"))
 }
 
 /** Gets the reason why `input` is an insecure algorithm, if any. */
