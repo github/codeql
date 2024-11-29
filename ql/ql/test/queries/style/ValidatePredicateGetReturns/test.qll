@@ -26,3 +26,12 @@ predicate getImplementation2() { none() }
 
 // OK -- is an alias
 predicate getAlias2 = getImplementation2/0;
+
+// NOT OK -- starts with as and does not return value
+predicate asValue() { none() }
+
+// OK -- starts with as but followed by a lowercase letter, probably should be ignored
+predicate assessment() { none() }
+
+// OK -- starts with as and returns a value
+string asString() { result = "string" }
