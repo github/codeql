@@ -270,8 +270,7 @@ module TaintTracking {
    * implementations of `sanitizes` will _both_ apply to any configuration that includes either of
    * them.
    */
-  abstract class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
-    // TODO: deprecate this class; currently requires too much refactoring
+  abstract deprecated class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
     override predicate blocks(boolean outcome, Expr e) { none() }
 
     /**
