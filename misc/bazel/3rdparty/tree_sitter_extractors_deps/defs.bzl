@@ -321,6 +321,7 @@ _NORMAL_DEPENDENCIES = {
             "anyhow": Label("@vendor__anyhow-1.0.93//:anyhow"),
             "argfile": Label("@vendor__argfile-0.2.1//:argfile"),
             "clap": Label("@vendor__clap-4.5.20//:clap"),
+            "dunce": Label("@vendor__dunce-1.0.5//:dunce"),
             "figment": Label("@vendor__figment-0.10.19//:figment"),
             "glob": Label("@vendor__glob-0.3.1//:glob"),
             "itertools": Label("@vendor__itertools-0.13.0//:itertools"),
@@ -1115,6 +1116,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/drop_bomb/0.1.5/download"],
         strip_prefix = "drop_bomb-0.1.5",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.drop_bomb-0.1.5.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor__dunce-1.0.5",
+        sha256 = "92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/dunce/1.0.5/download"],
+        strip_prefix = "dunce-1.0.5",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.dunce-1.0.5.bazel"),
     )
 
     maybe(
@@ -3311,6 +3322,7 @@ def crate_repositories():
         struct(repo = "vendor__argfile-0.2.1", is_dev_dep = False),
         struct(repo = "vendor__chrono-0.4.38", is_dev_dep = False),
         struct(repo = "vendor__clap-4.5.20", is_dev_dep = False),
+        struct(repo = "vendor__dunce-1.0.5", is_dev_dep = False),
         struct(repo = "vendor__encoding-0.2.33", is_dev_dep = False),
         struct(repo = "vendor__figment-0.10.19", is_dev_dep = False),
         struct(repo = "vendor__flate2-1.0.34", is_dev_dep = False),
