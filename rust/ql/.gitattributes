@@ -104,6 +104,7 @@
 /lib/codeql/rust/elements/ParenType.qll linguist-generated
 /lib/codeql/rust/elements/Pat.qll linguist-generated
 /lib/codeql/rust/elements/Path.qll linguist-generated
+/lib/codeql/rust/elements/PathAstNode.qll linguist-generated
 /lib/codeql/rust/elements/PathExpr.qll linguist-generated
 /lib/codeql/rust/elements/PathExprBase.qll linguist-generated
 /lib/codeql/rust/elements/PathPat.qll linguist-generated
@@ -303,6 +304,7 @@
 /lib/codeql/rust/elements/internal/ParenPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ParenTypeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/PatImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/PathAstNodeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathExprBaseImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathExprConstructor.qll linguist-generated
@@ -516,6 +518,7 @@
 /lib/codeql/rust/elements/internal/generated/ParentChild.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Pat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Path.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/PathAstNode.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/PathExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/PathExprBase.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/PathPat.qll linguist-generated
@@ -728,8 +731,6 @@
 /test/extractor-tests/generated/FormatArgsExpr/FormatArgument.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/FormatArgument_getVariable.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/FormatTemplateVariableAccess.ql linguist-generated
-/test/extractor-tests/generated/FormatArgsExpr/FormatTemplateVariableAccess_getResolvedCrateOrigin.ql linguist-generated
-/test/extractor-tests/generated/FormatArgsExpr/FormatTemplateVariableAccess_getResolvedPath.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/Format_getArgument.ql linguist-generated
 /test/extractor-tests/generated/Function/Function.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getAbi.ql linguist-generated

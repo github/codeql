@@ -5,9 +5,8 @@
 
 private import internal.RecordPatImpl
 import codeql.rust.elements.Pat
-import codeql.rust.elements.Path
+import codeql.rust.elements.PathAstNode
 import codeql.rust.elements.RecordPatFieldList
-import codeql.rust.elements.Resolvable
 
 /**
  * A record pattern. For example:

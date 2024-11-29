@@ -716,13 +716,17 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TPathAstNode = TPathExpr or TPathPat or TRecordExpr or TRecordPat or TTupleStructPat;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TPathExprBase = TFormatTemplateVariableAccess or TPathExpr;
 
   /**
    * INTERNAL: Do not use.
    */
-  class TResolvable =
-    TMethodCallExpr or TPathExprBase or TPathPat or TRecordExpr or TRecordPat or TTupleStructPat;
+  class TResolvable = TMethodCallExpr or TPathAstNode;
 
   /**
    * INTERNAL: Do not use.
@@ -2055,6 +2059,22 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TPathAstNode`, if possible.
+   */
+  TPathAstNode convertPathAstNodeFromRaw(Raw::Element e) {
+    result = convertPathExprFromRaw(e)
+    or
+    result = convertPathPatFromRaw(e)
+    or
+    result = convertRecordExprFromRaw(e)
+    or
+    result = convertRecordPatFromRaw(e)
+    or
+    result = convertTupleStructPatFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TPathExprBase`, if possible.
    */
   TPathExprBase convertPathExprBaseFromRaw(Raw::Element e) {
@@ -2070,15 +2090,7 @@ module Synth {
   TResolvable convertResolvableFromRaw(Raw::Element e) {
     result = convertMethodCallExprFromRaw(e)
     or
-    result = convertPathExprBaseFromRaw(e)
-    or
-    result = convertPathPatFromRaw(e)
-    or
-    result = convertRecordExprFromRaw(e)
-    or
-    result = convertRecordPatFromRaw(e)
-    or
-    result = convertTupleStructPatFromRaw(e)
+    result = convertPathAstNodeFromRaw(e)
   }
 
   /**
@@ -3449,6 +3461,22 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TPathAstNode` to a raw DB element, if possible.
+   */
+  Raw::Element convertPathAstNodeToRaw(TPathAstNode e) {
+    result = convertPathExprToRaw(e)
+    or
+    result = convertPathPatToRaw(e)
+    or
+    result = convertRecordExprToRaw(e)
+    or
+    result = convertRecordPatToRaw(e)
+    or
+    result = convertTupleStructPatToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TPathExprBase` to a raw DB element, if possible.
    */
   Raw::Element convertPathExprBaseToRaw(TPathExprBase e) {
@@ -3464,15 +3492,7 @@ module Synth {
   Raw::Element convertResolvableToRaw(TResolvable e) {
     result = convertMethodCallExprToRaw(e)
     or
-    result = convertPathExprBaseToRaw(e)
-    or
-    result = convertPathPatToRaw(e)
-    or
-    result = convertRecordExprToRaw(e)
-    or
-    result = convertRecordPatToRaw(e)
-    or
-    result = convertTupleStructPatToRaw(e)
+    result = convertPathAstNodeToRaw(e)
   }
 
   /**

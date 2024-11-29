@@ -106,6 +106,7 @@ import codeql.rust.elements.ParenPat
 import codeql.rust.elements.ParenType
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Path
+import codeql.rust.elements.PathAstNode
 import codeql.rust.elements.PathExpr
 import codeql.rust.elements.PathExprBase
 import codeql.rust.elements.PathPat

@@ -5,7 +5,6 @@
 
 private import internal.PathExprBaseImpl
 import codeql.rust.elements.Expr
-import codeql.rust.elements.Resolvable
 
 /**
  * A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.

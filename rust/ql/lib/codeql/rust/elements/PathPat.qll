@@ -5,8 +5,7 @@
 
 private import internal.PathPatImpl
 import codeql.rust.elements.Pat
-import codeql.rust.elements.Path
-import codeql.rust.elements.Resolvable
+import codeql.rust.elements.PathAstNode
 
 /**
  * A path pattern. For example:

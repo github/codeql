@@ -7,6 +7,6 @@ private import internal.ResolvableImpl
 import codeql.rust.elements.AstNode
 
 /**
- * Either a `PathExpr`, a `PathPat`, or a `MethodCallExpr`.
+ * One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.
  */
 final class Resolvable = Impl::Resolvable;

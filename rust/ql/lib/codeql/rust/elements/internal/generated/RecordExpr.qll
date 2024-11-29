@@ -7,9 +7,8 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-import codeql.rust.elements.Path
+import codeql.rust.elements.internal.PathAstNodeImpl::Impl as PathAstNodeImpl
 import codeql.rust.elements.RecordExprFieldList
-import codeql.rust.elements.internal.ResolvableImpl::Impl as ResolvableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `RecordExpr` and should not
@@ -27,21 +26,8 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::RecordExpr` class directly.
    * Use the subclass `RecordExpr`, where the following predicates are available.
    */
-  class RecordExpr extends Synth::TRecordExpr, ExprImpl::Expr, ResolvableImpl::Resolvable {
+  class RecordExpr extends Synth::TRecordExpr, ExprImpl::Expr, PathAstNodeImpl::PathAstNode {
     override string getAPrimaryQlClass() { result = "RecordExpr" }
-
-    /**
-     * Gets the path of this record expression, if it exists.
-     */
-    Path getPath() {
-      result =
-        Synth::convertPathFromRaw(Synth::convertRecordExprToRaw(this).(Raw::RecordExpr).getPath())
-    }
-
-    /**
-     * Holds if `getPath()` exists.
-     */
-    final predicate hasPath() { exists(this.getPath()) }
 
     /**
      * Gets the record expression field list of this record expression, if it exists.

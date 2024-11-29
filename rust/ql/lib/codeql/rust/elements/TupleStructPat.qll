@@ -5,8 +5,7 @@
 
 private import internal.TupleStructPatImpl
 import codeql.rust.elements.Pat
-import codeql.rust.elements.Path
-import codeql.rust.elements.Resolvable
+import codeql.rust.elements.PathAstNode
 
 /**
  * A tuple struct pattern. For example:

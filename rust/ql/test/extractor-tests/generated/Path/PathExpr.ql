@@ -3,8 +3,8 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  PathExpr x, string hasResolvedPath, string hasResolvedCrateOrigin, int getNumberOfAttrs,
-  string hasPath
+  PathExpr x, string hasResolvedPath, string hasResolvedCrateOrigin, string hasPath,
+  int getNumberOfAttrs
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -14,7 +14,7 @@ where
     then hasResolvedCrateOrigin = "yes"
     else hasResolvedCrateOrigin = "no"
   ) and
-  getNumberOfAttrs = x.getNumberOfAttrs() and
-  if x.hasPath() then hasPath = "yes" else hasPath = "no"
+  (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
+  getNumberOfAttrs = x.getNumberOfAttrs()
 select x, "hasResolvedPath:", hasResolvedPath, "hasResolvedCrateOrigin:", hasResolvedCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasPath:", hasPath
+  "hasPath:", hasPath, "getNumberOfAttrs:", getNumberOfAttrs
