@@ -63,14 +63,17 @@ abstract class RequestForgerySanitizer extends DataFlow::Node { }
 
 private class PrimitiveSanitizer extends RequestForgerySanitizer instanceof SimpleTypeSanitizer { }
 
+/**
+ * A string constant that contains a prefix which looks like when it is prepended to untrusted
+ * input, it will restrict the host or entity addressed.
+ *
+ * For example, anything containing `?` or `#`, or a slash that doesn't appear to be a protocol
+ * specifier (e.g. `http://` is not sanitizing), or specifically the string "/".
+ */
 class HostnameSanitizingPrefix extends InterestingPrefix {
   int offset;
 
   HostnameSanitizingPrefix() {
-    // Matches strings that look like when prepended to untrusted input, they will restrict
-    // the host or entity addressed: for example, anything containing `?` or `#`, or a slash that
-    // doesn't appear to be a protocol specifier (e.g. `http://` is not sanitizing), or specifically
-    // the string "/".
     exists(this.getStringValue().regexpFind("([?#]|[^?#:/\\\\][/\\\\])|^/$", 0, offset))
   }
 
