@@ -8,7 +8,8 @@ module SsrfConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof RequestForgery::Sink }
 
   predicate isBarrier(DataFlow::Node node) {
-    node instanceof RequestForgery::Sanitizer or node = Guards::getABarrierNode()
+    node instanceof RequestForgery::Sanitizer or
+    node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
   }
 
   private predicate hasSanitizingSubstring(DataFlow::Node nd) {
@@ -27,14 +28,6 @@ module SsrfConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrierOut(DataFlow::Node node) { strictSanitizingPrefixEdge(node, _) }
-
-  private predicate isBarrierGuard(DataFlow::BarrierGuardNode nd) {
-    nd instanceof IntegerCheck or
-    nd instanceof ValidatorCheck or
-    nd instanceof TernaryOperatorSanitizerGuard
-  }
-
-  private module Guards = DataFlow::MakeLegacyBarrierGuard<isBarrierGuard/1>;
 }
 
 module SsrfFlow = TaintTracking::Global<SsrfConfig>;
@@ -87,6 +80,12 @@ class TernaryOperatorSanitizer extends RequestForgery::Sanitizer {
   }
 }
 
+/** A barrier guard for this SSRF query. */
+abstract class BarrierGuard extends DataFlow::Node {
+  /** Holds if flow through `e` should be blocked, provided this evaluates to `outcome`. */
+  abstract predicate blocksExpr(boolean outcome, Expr e);
+}
+
 /**
  * This sanitizer guard is another way of modeling the example from above
  * In this case:
@@ -101,8 +100,8 @@ class TernaryOperatorSanitizer extends RequestForgery::Sanitizer {
  * Thats why we model this sanitizer guard which says that
  * the result of the ternary operator execution is a sanitizer guard.
  */
-class TernaryOperatorSanitizerGuard extends TaintTracking::SanitizerGuardNode {
-  TaintTracking::SanitizerGuardNode originalGuard;
+class TernaryOperatorSanitizerGuard extends BarrierGuard {
+  TaintTracking::AdditionalBarrierGuard originalGuard;
 
   TernaryOperatorSanitizerGuard() {
     this.getAPredecessor+().asExpr().(BooleanLiteral).mayHaveBooleanValue(false) and
@@ -110,15 +109,13 @@ class TernaryOperatorSanitizerGuard extends TaintTracking::SanitizerGuardNode {
     not this.asExpr() instanceof LogicalBinaryExpr
   }
 
-  override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
-
-  predicate blocksExpr(boolean outcome, Expr e) {
+  override predicate blocksExpr(boolean outcome, Expr e) {
     not this.asExpr() instanceof LogNotExpr and
-    originalGuard.sanitizes(outcome, e)
+    originalGuard.blocksExpr(outcome, e)
     or
     exists(boolean originalOutcome |
       this.asExpr() instanceof LogNotExpr and
-      originalGuard.sanitizes(originalOutcome, e) and
+      originalGuard.blocksExpr(originalOutcome, e) and
       (
         originalOutcome = true and outcome = false
         or
@@ -131,12 +128,10 @@ class TernaryOperatorSanitizerGuard extends TaintTracking::SanitizerGuardNode {
 /**
  * A call to Number.isInteger seen as a sanitizer guard because a number can't be used to exploit a SSRF.
  */
-class IntegerCheck extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
+class IntegerCheck extends DataFlow::CallNode, BarrierGuard {
   IntegerCheck() { this = DataFlow::globalVarRef("Number").getAMemberCall("isInteger") }
 
-  override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
-
-  predicate blocksExpr(boolean outcome, Expr e) {
+  override predicate blocksExpr(boolean outcome, Expr e) {
     outcome = true and
     e = this.getArgument(0).asExpr()
   }
@@ -147,7 +142,7 @@ class IntegerCheck extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode
  * validator is a library which has a variety of input-validation functions. We are interesed in
  * checking that source is a number (any type of number) or an alphanumeric value.
  */
-class ValidatorCheck extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
+class ValidatorCheck extends DataFlow::CallNode, BarrierGuard {
   ValidatorCheck() {
     exists(DataFlow::SourceNode mod, string method |
       mod = DataFlow::moduleImport("validator") and
@@ -159,9 +154,7 @@ class ValidatorCheck extends TaintTracking::SanitizerGuardNode, DataFlow::CallNo
     )
   }
 
-  override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
-
-  predicate blocksExpr(boolean outcome, Expr e) {
+  override predicate blocksExpr(boolean outcome, Expr e) {
     outcome = true and
     e = this.getArgument(0).asExpr()
   }
