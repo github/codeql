@@ -884,6 +884,13 @@ module RustDataFlow implements InputSig<Location> {
         node1.asExpr() = access.getExpr() and
         node2.asExpr() = access
       )
+      or
+      exists(TryExprCfgNode try |
+        node1.asExpr() = try.getExpr() and
+        node2.asExpr() = try and
+        c.(VariantPositionContent).getVariantCanonicalPath(0).getExtendedCanonicalPath() =
+          ["crate::option::Option::Some", "crate::result::Result::Ok"]
+      )
     )
     or
     FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
@@ -1050,7 +1057,8 @@ private module Cached {
     TSourceParameterNode(ParamBaseCfgNode p) or
     TPatNode(PatCfgNode p) or
     TExprPostUpdateNode(ExprCfgNode e) {
-      isArgumentForCall(e, _, _) or e = any(FieldExprCfgNode access).getExpr()
+      isArgumentForCall(e, _, _) or
+      e = [any(FieldExprCfgNode access).getExpr(), any(TryExprCfgNode try).getExpr()]
     } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)

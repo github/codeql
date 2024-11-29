@@ -229,9 +229,8 @@ fn option_questionmark() -> Option<i64> {
     let s1 = Some(source(20));
     let s2 = Some(2);
     let i1 = s1?;
-    let i2 = s2?;
-    sink(i1); // $ MISSING: hasValueFlow=20
-    sink(i2);
+    sink(i1); // $ hasValueFlow=20
+    sink(s2?);
     Some(0)
 }
 
@@ -241,7 +240,7 @@ fn result_questionmark() -> Result<i64, i64> {
     let s3: Result<i64, i64> = Err(source(77));
     let i1 = s1?;
     let i2 = s2?;
-    sink(i1); // $ MISSING: hasValueFlow=20
+    sink(i1); // $ hasValueFlow=20
     sink(i2);
     let i3 = s3?;
     sink(i3); // No flow since value is in `Err`.
