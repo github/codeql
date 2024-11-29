@@ -484,17 +484,16 @@ QlBuiltins::BigInt varMaxVal(Variable v) { result = typeUpperBound(v.getUnspecif
  */
 QlBuiltins::BigInt infinityAsBigInt() { result = 1.toBigInt().bitShiftLeft(1024) }
 
+bindingset[s]
 QlBuiltins::BigInt parseAsBigInt(string s) {
-  exists(Expr e | s = e.getValue() |
-    if exists(s.toBigInt()) then
-      result = s.toBigInt()
-    else
-      exists(float f | f = s.toFloat() |
-        f = 1.0 / 0.0 and result = infinityAsBigInt()
-        or
-        f = -(1.0 / 0.0) and result = -infinityAsBigInt()
-        or
-        result = f.toString().toBigInt()
-      )
-  )
+  if exists(s.toBigInt()) then
+    result = s.toBigInt()
+  else
+    exists(float f | f = s.toFloat() |
+      f = 1.0 / 0.0 and result = infinityAsBigInt()
+      or
+      f = -(1.0 / 0.0) and result = -infinityAsBigInt()
+      or
+      result = f.toString().toBigInt()
+    )
 }
