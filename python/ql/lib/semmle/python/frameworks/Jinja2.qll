@@ -33,22 +33,13 @@ module Jinja2 {
       result = ModelOutput::getATypeNode("jinja.Environment~Subclass").getASubclass*()
     }
 
-    /** Gets a reference to an instance of `jinja2.Environment`. */
-    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
-      t.start() and
-      result = EnvironmentClass::classRef().getACall()
-      or
-      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
-    }
-
-    /** Gets a reference to an instance of `jinja2.Environment`. */
-    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+    API::Node instance() { result = classRef().getAnInstance() }
 
     /** A call to `jinja2.Environment.from_string`. */
-    private class Jinja2FromStringConstruction extends TemplateConstruction::Range,
-      DataFlow::MethodCallNode
-    {
-      Jinja2FromStringConstruction() { this.calls(EnvironmentClass::instance(), "from_string") }
+    private class Jinja2FromStringConstruction extends TemplateConstruction::Range, API::CallNode {
+      Jinja2FromStringConstruction() {
+        this = EnvironmentClass::instance().getMember("from_string").getACall()
+      }
 
       override DataFlow::Node getSourceArg() { result = this.getArg(0) }
     }
