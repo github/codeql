@@ -30,10 +30,16 @@ private module SummaryFlowConfig implements Input {
   }
 
   Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) {
+    // Note: we cannot rely on DataFlowPrivate::DataFlowCall here because that depends on the call graph.
     exists(ArgumentPosition apos, ParameterPosition ppos, Node argNode |
       arg = argument(ppos) and
       parameterMatch(ppos, apos) and
-      isArgumentNode(argNode, any(DataFlowCall c | c.asOrdinaryCall() = call), apos)
+      (
+        argNode = call.(DataFlow::InvokeNode).getArgument(apos.asPositional())
+        or
+        apos.isThis() and
+        argNode = call.(DataFlow::CallNode).getReceiver()
+      )
     |
       isPostUpdate = true and result = argNode.getPostUpdateNode()
       or
@@ -42,11 +48,15 @@ private module SummaryFlowConfig implements Input {
   }
 
   Node parameterOf(Node callable, SummaryComponent param) {
-    exists(ArgumentPosition apos, ParameterPosition ppos, Function function |
+    exists(ArgumentPosition apos, ParameterPosition ppos, DataFlow::FunctionNode function |
       param = parameter(apos) and
       parameterMatch(ppos, apos) and
-      callable = function.flow() and
-      isParameterNode(result, any(DataFlowCallable c | c.asSourceCallable() = function), ppos)
+      callable = function
+    |
+      result = function.getParameter(ppos.asPositional())
+      or
+      ppos.isThis() and
+      result = function.getReceiver()
     )
   }
 
