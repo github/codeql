@@ -1,5 +1,2 @@
 testFailures
-| optionset.swift:60:49:61:1 | // $ tainted=60\n | Missing result: tainted=60 |
-| optionset.swift:65:58:66:1 | // $ tainted=65\n | Missing result: tainted=65 |
-| string.swift:599:35:600:1 | // $ tainted=599\n | Missing result: tainted=599 |
 failures
