@@ -372,7 +372,6 @@
 /lib/codeql/rust/elements/internal/TuplePatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TuplePatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleStructPatConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TupleStructPatImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleTypeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleTypeImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TypeAliasConstructor.qll linguist-generated
@@ -729,6 +728,8 @@
 /test/extractor-tests/generated/FormatArgsExpr/FormatArgument.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/FormatArgument_getVariable.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/FormatTemplateVariableAccess.ql linguist-generated
+/test/extractor-tests/generated/FormatArgsExpr/FormatTemplateVariableAccess_getResolvedCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/FormatArgsExpr/FormatTemplateVariableAccess_getResolvedPath.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/Format_getArgument.ql linguist-generated
 /test/extractor-tests/generated/Function/Function.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getAbi.ql linguist-generated
@@ -901,8 +902,12 @@
 /test/extractor-tests/generated/Path/PathExpr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Path/PathExpr_getPath.ql linguist-generated
+/test/extractor-tests/generated/Path/PathExpr_getResolvedCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Path/PathExpr_getResolvedPath.ql linguist-generated
 /test/extractor-tests/generated/Path/PathPat.ql linguist-generated
 /test/extractor-tests/generated/Path/PathPat_getPath.ql linguist-generated
+/test/extractor-tests/generated/Path/PathPat_getResolvedCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Path/PathPat_getResolvedPath.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getGenericArgList.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment_getNameRef.ql linguist-generated
@@ -915,8 +920,6 @@
 /test/extractor-tests/generated/Path/PathType_getPath.ql linguist-generated
 /test/extractor-tests/generated/Path/Path_getPart.ql linguist-generated
 /test/extractor-tests/generated/Path/Path_getQualifier.ql linguist-generated
-/test/extractor-tests/generated/Path/Path_getResolvedCrateOrigin.ql linguist-generated
-/test/extractor-tests/generated/Path/Path_getResolvedPath.ql linguist-generated
 /test/extractor-tests/generated/PrefixExpr/PrefixExpr.ql linguist-generated
 /test/extractor-tests/generated/PrefixExpr/PrefixExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/PrefixExpr/PrefixExpr_getExpr.ql linguist-generated
@@ -935,6 +938,8 @@
 /test/extractor-tests/generated/RecordExpr/RecordExpr.ql linguist-generated
 /test/extractor-tests/generated/RecordExpr/RecordExpr_getPath.ql linguist-generated
 /test/extractor-tests/generated/RecordExpr/RecordExpr_getRecordExprFieldList.ql linguist-generated
+/test/extractor-tests/generated/RecordExpr/RecordExpr_getResolvedCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/RecordExpr/RecordExpr_getResolvedPath.ql linguist-generated
 /test/extractor-tests/generated/RecordExprField/RecordExprField.ql linguist-generated
 /test/extractor-tests/generated/RecordExprField/RecordExprField_getAttr.ql linguist-generated
 /test/extractor-tests/generated/RecordExprField/RecordExprField_getExpr.ql linguist-generated
@@ -953,6 +958,8 @@
 /test/extractor-tests/generated/RecordPat/RecordPat.ql linguist-generated
 /test/extractor-tests/generated/RecordPat/RecordPat_getPath.ql linguist-generated
 /test/extractor-tests/generated/RecordPat/RecordPat_getRecordPatFieldList.ql linguist-generated
+/test/extractor-tests/generated/RecordPat/RecordPat_getResolvedCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/RecordPat/RecordPat_getResolvedPath.ql linguist-generated
 /test/extractor-tests/generated/RecordPatField/RecordPatField.ql linguist-generated
 /test/extractor-tests/generated/RecordPatField/RecordPatField_getAttr.ql linguist-generated
 /test/extractor-tests/generated/RecordPatField/RecordPatField_getNameRef.ql linguist-generated
@@ -1051,6 +1058,8 @@
 /test/extractor-tests/generated/TupleStructPat/TupleStructPat.ql linguist-generated
 /test/extractor-tests/generated/TupleStructPat/TupleStructPat_getField.ql linguist-generated
 /test/extractor-tests/generated/TupleStructPat/TupleStructPat_getPath.ql linguist-generated
+/test/extractor-tests/generated/TupleStructPat/TupleStructPat_getResolvedCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/TupleStructPat/TupleStructPat_getResolvedPath.ql linguist-generated
 /test/extractor-tests/generated/TupleType/TupleType.ql linguist-generated
 /test/extractor-tests/generated/TupleType/TupleType_getField.ql linguist-generated
 /test/extractor-tests/generated/TypeAlias/TypeAlias.ql linguist-generated

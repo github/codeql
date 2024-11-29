@@ -2,10 +2,19 @@
 import codeql.rust.elements
 import TestUtils
 
-from TupleStructPat x, int getNumberOfFields, string hasPath
+from
+  TupleStructPat x, string hasResolvedPath, string hasResolvedCrateOrigin, int getNumberOfFields,
+  string hasPath
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasResolvedPath() then hasResolvedPath = "yes" else hasResolvedPath = "no") and
+  (
+    if x.hasResolvedCrateOrigin()
+    then hasResolvedCrateOrigin = "yes"
+    else hasResolvedCrateOrigin = "no"
+  ) and
   getNumberOfFields = x.getNumberOfFields() and
   if x.hasPath() then hasPath = "yes" else hasPath = "no"
-select x, "getNumberOfFields:", getNumberOfFields, "hasPath:", hasPath
+select x, "hasResolvedPath:", hasResolvedPath, "hasResolvedCrateOrigin:", hasResolvedCrateOrigin,
+  "getNumberOfFields:", getNumberOfFields, "hasPath:", hasPath

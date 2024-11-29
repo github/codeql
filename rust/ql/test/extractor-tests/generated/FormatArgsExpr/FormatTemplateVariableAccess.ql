@@ -2,6 +2,12 @@
 import codeql.rust.elements
 import TestUtils
 
-from FormatTemplateVariableAccess x
-where toBeTested(x) and not x.isUnknown()
-select x
+from FormatTemplateVariableAccess x, string hasResolvedPath, string hasResolvedCrateOrigin
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  (if x.hasResolvedPath() then hasResolvedPath = "yes" else hasResolvedPath = "no") and
+  if x.hasResolvedCrateOrigin()
+  then hasResolvedCrateOrigin = "yes"
+  else hasResolvedCrateOrigin = "no"
+select x, "hasResolvedPath:", hasResolvedPath, "hasResolvedCrateOrigin:", hasResolvedCrateOrigin

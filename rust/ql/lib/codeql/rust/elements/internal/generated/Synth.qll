@@ -630,7 +630,7 @@ module Synth {
         TGenericArg or TGenericArgList or TGenericParam or TGenericParamList or TItemList or
         TLabel or TLetElse or TLifetime or TMacroItems or TMacroStmts or TMatchArm or
         TMatchArmList or TMatchGuard or TMeta or TName or TNameRef or TParamBase or TParamList or
-        TPat or TPathSegment or TRecordExprField or TRecordExprFieldList or TRecordField or
+        TPat or TPath or TPathSegment or TRecordExprField or TRecordExprFieldList or TRecordField or
         TRecordPatField or TRecordPatFieldList or TRename or TResolvable or TRetType or
         TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or TToken or TTokenTree or
         TTupleField or TTypeBound or TTypeBoundList or TTypeRef or TUseTree or TUseTreeList or
@@ -721,7 +721,8 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TResolvable = TMethodCallExpr or TPath;
+  class TResolvable =
+    TMethodCallExpr or TPathExprBase or TPathPat or TRecordExpr or TRecordPat or TTupleStructPat;
 
   /**
    * INTERNAL: Do not use.
@@ -1727,6 +1728,8 @@ module Synth {
     or
     result = convertPatFromRaw(e)
     or
+    result = convertPathFromRaw(e)
+    or
     result = convertPathSegmentFromRaw(e)
     or
     result = convertRecordExprFieldFromRaw(e)
@@ -2067,7 +2070,15 @@ module Synth {
   TResolvable convertResolvableFromRaw(Raw::Element e) {
     result = convertMethodCallExprFromRaw(e)
     or
-    result = convertPathFromRaw(e)
+    result = convertPathExprBaseFromRaw(e)
+    or
+    result = convertPathPatFromRaw(e)
+    or
+    result = convertRecordExprFromRaw(e)
+    or
+    result = convertRecordPatFromRaw(e)
+    or
+    result = convertTupleStructPatFromRaw(e)
   }
 
   /**
@@ -3111,6 +3122,8 @@ module Synth {
     or
     result = convertPatToRaw(e)
     or
+    result = convertPathToRaw(e)
+    or
     result = convertPathSegmentToRaw(e)
     or
     result = convertRecordExprFieldToRaw(e)
@@ -3451,7 +3464,15 @@ module Synth {
   Raw::Element convertResolvableToRaw(TResolvable e) {
     result = convertMethodCallExprToRaw(e)
     or
-    result = convertPathToRaw(e)
+    result = convertPathExprBaseToRaw(e)
+    or
+    result = convertPathPatToRaw(e)
+    or
+    result = convertRecordExprToRaw(e)
+    or
+    result = convertRecordPatToRaw(e)
+    or
+    result = convertTupleStructPatToRaw(e)
   }
 
   /**

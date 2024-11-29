@@ -166,6 +166,7 @@ locatable_locations(
 | @param_base
 | @param_list
 | @pat
+| @path
 | @path_segment
 | @record_expr_field
 | @record_expr_field_list
@@ -652,6 +653,22 @@ param_list_self_params(
 | @wildcard_pat
 ;
 
+paths(
+  unique int id: @path
+);
+
+#keyset[id]
+path_qualifiers(
+  int id: @path ref,
+  int qualifier: @path ref
+);
+
+#keyset[id]
+path_parts(
+  int id: @path ref,
+  int part: @path_segment ref
+);
+
 path_segments(
   unique int id: @path_segment
 );
@@ -826,7 +843,11 @@ rename_names(
 
 @resolvable =
   @method_call_expr
-| @path
+| @path_expr_base
+| @path_pat
+| @record_expr
+| @record_pat
+| @tuple_struct_pat
 ;
 
 #keyset[id]
@@ -1961,22 +1982,6 @@ paren_types(
 paren_type_ties(
   int id: @paren_type ref,
   int ty: @type_ref ref
-);
-
-paths(
-  unique int id: @path
-);
-
-#keyset[id]
-path_qualifiers(
-  int id: @path ref,
-  int qualifier: @path ref
-);
-
-#keyset[id]
-path_parts(
-  int id: @path ref,
-  int part: @path_segment ref
 );
 
 @path_expr_base =

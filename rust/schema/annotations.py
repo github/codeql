@@ -76,7 +76,7 @@ class _:
     ```
     """
 
-@annotate(Path, replace_bases={AstNode: Resolvable})
+@annotate(Path)
 class _:
     """
     A path. For example:
@@ -114,7 +114,7 @@ class _:
     """
 
 
-class PathExprBase(Expr):
+class PathExprBase(Expr, Resolvable):
     """
     A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.
     """
@@ -412,7 +412,7 @@ class _:
     """
 
 
-@annotate(RecordExpr, cfg = True)
+@annotate(RecordExpr, add_bases=(Resolvable,), cfg = True)
 class _:
     """
     A record expression. For example:
@@ -682,7 +682,7 @@ class _:
     """
 
 
-@annotate(RecordPat, cfg = True)
+@annotate(RecordPat, add_bases=(Resolvable,), cfg = True)
 class _:
     """
     A record pattern. For example:
@@ -723,7 +723,7 @@ class _:
     """
 
 
-@annotate(PathPat, cfg = True)
+@annotate(PathPat, add_bases=(Resolvable,), cfg = True)
 @qltest.test_with(Path)
 class _:
     """
@@ -769,7 +769,7 @@ class _:
     """
 
 
-@annotate(TupleStructPat, cfg = True)
+@annotate(TupleStructPat, add_bases=(Resolvable,), cfg = True)
 class _:
     """
     A tuple struct pattern. For example:

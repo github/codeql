@@ -89,7 +89,7 @@ class Addressable(AstNode):
 
 class Resolvable(AstNode):
     """
-    Either a `Path`, or a `MethodCallExpr`.
+    Either a `PathExpr`, a `PathPat`, or a `MethodCallExpr`.
     """
     resolved_path: optional[string] | rust.detach | ql.internal
     resolved_crate_origin: optional[string] | rust.detach | ql.internal

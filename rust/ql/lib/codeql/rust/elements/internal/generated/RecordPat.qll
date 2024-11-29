@@ -9,6 +9,7 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 import codeql.rust.elements.Path
 import codeql.rust.elements.RecordPatFieldList
+import codeql.rust.elements.internal.ResolvableImpl::Impl as ResolvableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `RecordPat` and should not
@@ -26,7 +27,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::RecordPat` class directly.
    * Use the subclass `RecordPat`, where the following predicates are available.
    */
-  class RecordPat extends Synth::TRecordPat, PatImpl::Pat {
+  class RecordPat extends Synth::TRecordPat, PatImpl::Pat, ResolvableImpl::Resolvable {
     override string getAPrimaryQlClass() { result = "RecordPat" }
 
     /**

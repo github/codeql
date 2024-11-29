@@ -592,6 +592,28 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A path. For example:
+   * ```rust
+   * use some_crate::some_module::some_item;
+   * foo::bar;
+   * ```
+   */
+  class Path extends @path, AstNode {
+    override string toString() { result = "Path" }
+
+    /**
+     * Gets the qualifier of this path, if it exists.
+     */
+    Path getQualifier() { path_qualifiers(this, result) }
+
+    /**
+     * Gets the part of this path, if it exists.
+     */
+    PathSegment getPart() { path_parts(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A path segment, which is one part of a whole path.
    */
   class PathSegment extends @path_segment, AstNode {
@@ -781,7 +803,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * Either a `Path`, or a `MethodCallExpr`.
+   * Either a `PathExpr`, a `PathPat`, or a `MethodCallExpr`.
    */
   class Resolvable extends @resolvable, AstNode {
     /**
@@ -2280,31 +2302,9 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A path. For example:
-   * ```rust
-   * use some_crate::some_module::some_item;
-   * foo::bar;
-   * ```
-   */
-  class Path extends @path, Resolvable {
-    override string toString() { result = "Path" }
-
-    /**
-     * Gets the qualifier of this path, if it exists.
-     */
-    Path getQualifier() { path_qualifiers(this, result) }
-
-    /**
-     * Gets the part of this path, if it exists.
-     */
-    PathSegment getPart() { path_parts(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.
    */
-  class PathExprBase extends @path_expr_base, Expr { }
+  class PathExprBase extends @path_expr_base, Expr, Resolvable { }
 
   /**
    * INTERNAL: Do not use.
@@ -2316,7 +2316,7 @@ module Raw {
    * }
    * ```
    */
-  class PathPat extends @path_pat, Pat {
+  class PathPat extends @path_pat, Pat, Resolvable {
     override string toString() { result = "PathPat" }
 
     /**
@@ -2472,7 +2472,7 @@ module Raw {
    * Foo { .. } = second;
    * ```
    */
-  class RecordExpr extends @record_expr, Expr {
+  class RecordExpr extends @record_expr, Expr, Resolvable {
     override string toString() { result = "RecordExpr" }
 
     /**
@@ -2514,7 +2514,7 @@ module Raw {
    * }
    * ```
    */
-  class RecordPat extends @record_pat, Pat {
+  class RecordPat extends @record_pat, Pat, Resolvable {
     override string toString() { result = "RecordPat" }
 
     /**
@@ -2812,7 +2812,7 @@ module Raw {
    * };
    * ```
    */
-  class TupleStructPat extends @tuple_struct_pat, Pat {
+  class TupleStructPat extends @tuple_struct_pat, Pat, Resolvable {
     override string toString() { result = "TupleStructPat" }
 
     /**

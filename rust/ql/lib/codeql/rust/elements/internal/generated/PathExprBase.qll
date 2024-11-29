@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
+import codeql.rust.elements.internal.ResolvableImpl::Impl as ResolvableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathExprBase` and should not
@@ -18,5 +19,5 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::PathExprBase` class directly.
    * Use the subclass `PathExprBase`, where the following predicates are available.
    */
-  class PathExprBase extends Synth::TPathExprBase, ExprImpl::Expr { }
+  class PathExprBase extends Synth::TPathExprBase, ExprImpl::Expr, ResolvableImpl::Resolvable { }
 }

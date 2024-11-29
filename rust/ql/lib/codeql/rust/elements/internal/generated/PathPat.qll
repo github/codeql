@@ -8,6 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 import codeql.rust.elements.Path
+import codeql.rust.elements.internal.ResolvableImpl::Impl as ResolvableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathPat` and should not
@@ -25,7 +26,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::PathPat` class directly.
    * Use the subclass `PathPat`, where the following predicates are available.
    */
-  class PathPat extends Synth::TPathPat, PatImpl::Pat {
+  class PathPat extends Synth::TPathPat, PatImpl::Pat, ResolvableImpl::Resolvable {
     override string getAPrimaryQlClass() { result = "PathPat" }
 
     /**

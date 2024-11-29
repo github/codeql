@@ -9,6 +9,7 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Pat
 import codeql.rust.elements.internal.PatImpl::Impl as PatImpl
 import codeql.rust.elements.Path
+import codeql.rust.elements.internal.ResolvableImpl::Impl as ResolvableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `TupleStructPat` and should not
@@ -27,7 +28,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::TupleStructPat` class directly.
    * Use the subclass `TupleStructPat`, where the following predicates are available.
    */
-  class TupleStructPat extends Synth::TTupleStructPat, PatImpl::Pat {
+  class TupleStructPat extends Synth::TTupleStructPat, PatImpl::Pat, ResolvableImpl::Resolvable {
     override string getAPrimaryQlClass() { result = "TupleStructPat" }
 
     /**

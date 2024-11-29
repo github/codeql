@@ -9,6 +9,7 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.Path
 import codeql.rust.elements.RecordExprFieldList
+import codeql.rust.elements.internal.ResolvableImpl::Impl as ResolvableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `RecordExpr` and should not
@@ -26,7 +27,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::RecordExpr` class directly.
    * Use the subclass `RecordExpr`, where the following predicates are available.
    */
-  class RecordExpr extends Synth::TRecordExpr, ExprImpl::Expr {
+  class RecordExpr extends Synth::TRecordExpr, ExprImpl::Expr, ResolvableImpl::Resolvable {
     override string getAPrimaryQlClass() { result = "RecordExpr" }
 
     /**

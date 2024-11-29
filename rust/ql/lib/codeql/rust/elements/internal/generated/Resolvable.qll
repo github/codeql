@@ -14,7 +14,7 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * Either a `Path`, or a `MethodCallExpr`.
+   * Either a `PathExpr`, a `PathPat`, or a `MethodCallExpr`.
    * INTERNAL: Do not reference the `Generated::Resolvable` class directly.
    * Use the subclass `Resolvable`, where the following predicates are available.
    */

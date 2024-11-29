@@ -670,6 +670,25 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfPath(Path e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n, int nQualifier, int nPart |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nQualifier = n + 1 and
+      nPart = nQualifier + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getQualifier() and partialPredicateCall = "Qualifier()"
+        or
+        index = nQualifier and result = e.getPart() and partialPredicateCall = "Part()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfPathSegment(
     PathSegment e, int index, string partialPredicateCall
   ) {
@@ -2166,51 +2185,39 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfPath(Path e, int index, string partialPredicateCall) {
-    exists(int b, int bResolvable, int n, int nQualifier, int nPart |
-      b = 0 and
-      bResolvable =
-        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfResolvable(e, i, _)) | i) and
-      n = bResolvable and
-      nQualifier = n + 1 and
-      nPart = nQualifier + 1 and
-      (
-        none()
-        or
-        result = getImmediateChildOfResolvable(e, index - b, partialPredicateCall)
-        or
-        index = n and result = e.getQualifier() and partialPredicateCall = "Qualifier()"
-        or
-        index = nQualifier and result = e.getPart() and partialPredicateCall = "Part()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfPathExprBase(
     PathExprBase e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int n |
+    exists(int b, int bExpr, int bResolvable, int n |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
+      bResolvable =
+        bExpr + 1 + max(int i | i = -1 or exists(getImmediateChildOfResolvable(e, i, _)) | i) and
+      n = bResolvable and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfResolvable(e, index - bExpr, partialPredicateCall)
       )
     )
   }
 
   private Element getImmediateChildOfPathPat(PathPat e, int index, string partialPredicateCall) {
-    exists(int b, int bPat, int n, int nPath |
+    exists(int b, int bPat, int bResolvable, int n, int nPath |
       b = 0 and
       bPat = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPat(e, i, _)) | i) and
-      n = bPat and
+      bResolvable =
+        bPat + 1 + max(int i | i = -1 or exists(getImmediateChildOfResolvable(e, i, _)) | i) and
+      n = bResolvable and
       nPath = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfPat(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfResolvable(e, index - bPat, partialPredicateCall)
         or
         index = n and result = e.getPath() and partialPredicateCall = "Path()"
       )
@@ -2312,16 +2319,20 @@ private module Impl {
   }
 
   private Element getImmediateChildOfRecordExpr(RecordExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nPath, int nRecordExprFieldList |
+    exists(int b, int bExpr, int bResolvable, int n, int nPath, int nRecordExprFieldList |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
+      bResolvable =
+        bExpr + 1 + max(int i | i = -1 or exists(getImmediateChildOfResolvable(e, i, _)) | i) and
+      n = bResolvable and
       nPath = n + 1 and
       nRecordExprFieldList = nPath + 1 and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfResolvable(e, index - bExpr, partialPredicateCall)
         or
         index = n and result = e.getPath() and partialPredicateCall = "Path()"
         or
@@ -2352,16 +2363,20 @@ private module Impl {
   }
 
   private Element getImmediateChildOfRecordPat(RecordPat e, int index, string partialPredicateCall) {
-    exists(int b, int bPat, int n, int nPath, int nRecordPatFieldList |
+    exists(int b, int bPat, int bResolvable, int n, int nPath, int nRecordPatFieldList |
       b = 0 and
       bPat = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPat(e, i, _)) | i) and
-      n = bPat and
+      bResolvable =
+        bPat + 1 + max(int i | i = -1 or exists(getImmediateChildOfResolvable(e, i, _)) | i) and
+      n = bResolvable and
       nPath = n + 1 and
       nRecordPatFieldList = nPath + 1 and
       (
         none()
         or
         result = getImmediateChildOfPat(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfResolvable(e, index - bPat, partialPredicateCall)
         or
         index = n and result = e.getPath() and partialPredicateCall = "Path()"
         or
@@ -2596,16 +2611,20 @@ private module Impl {
   private Element getImmediateChildOfTupleStructPat(
     TupleStructPat e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bPat, int n, int nField, int nPath |
+    exists(int b, int bPat, int bResolvable, int n, int nField, int nPath |
       b = 0 and
       bPat = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPat(e, i, _)) | i) and
-      n = bPat and
+      bResolvable =
+        bPat + 1 + max(int i | i = -1 or exists(getImmediateChildOfResolvable(e, i, _)) | i) and
+      n = bResolvable and
       nField = n + 1 + max(int i | i = -1 or exists(e.getField(i)) | i) and
       nPath = nField + 1 and
       (
         none()
         or
         result = getImmediateChildOfPat(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfResolvable(e, index - bPat, partialPredicateCall)
         or
         result = e.getField(index - n) and
         partialPredicateCall = "Field(" + (index - n).toString() + ")"
@@ -3652,6 +3671,8 @@ private module Impl {
     or
     result = getImmediateChildOfParamList(e, index, partialAccessor)
     or
+    result = getImmediateChildOfPath(e, index, partialAccessor)
+    or
     result = getImmediateChildOfPathSegment(e, index, partialAccessor)
     or
     result = getImmediateChildOfRecordExprField(e, index, partialAccessor)
@@ -3781,8 +3802,6 @@ private module Impl {
     result = getImmediateChildOfParenPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfParenType(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfPath(e, index, partialAccessor)
     or
     result = getImmediateChildOfPathPat(e, index, partialAccessor)
     or
