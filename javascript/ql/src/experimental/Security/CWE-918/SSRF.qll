@@ -55,14 +55,14 @@ deprecated class Configuration extends TaintTracking::Configuration {
 class TernaryOperatorSanitizer extends RequestForgery::Sanitizer {
   TernaryOperatorSanitizer() {
     exists(
-      TaintTracking::SanitizerGuardNode guard, IfStmt ifStmt, DataFlow::Node taintedInput,
+      TaintTracking::AdditionalBarrierGuard guard, IfStmt ifStmt, DataFlow::Node taintedInput,
       boolean outcome, Stmt r, DataFlow::Node falseNode
     |
       ifStmt.getCondition().flow().getAPredecessor+() = guard and
       ifStmt.getCondition().flow().getAPredecessor+() = falseNode and
       falseNode.asExpr().(BooleanLiteral).mayHaveBooleanValue(false) and
       not ifStmt.getCondition() instanceof LogicalBinaryExpr and
-      guard.sanitizes(outcome, taintedInput.asExpr()) and
+      guard.blocksExpr(outcome, taintedInput.asExpr()) and
       (
         outcome = true and r = ifStmt.getThen() and not ifStmt.getCondition() instanceof LogNotExpr
         or
