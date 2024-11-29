@@ -74,7 +74,7 @@ macro_rules! trap_key {
         $(
             key.push_str(&$x.as_key_part());
         )*
-        $crate::TrapId::Key(key)
+        trap::TrapId::Key(key)
     }};
 }
 
@@ -123,7 +123,7 @@ impl<T: TrapClass> From<Label<T>> for trap::Arg {
 }
 
 pub struct TrapFile {
-    path: PathBuf,
+    pub path: PathBuf,
     pub writer: Writer,
     compression: Compression,
 }
