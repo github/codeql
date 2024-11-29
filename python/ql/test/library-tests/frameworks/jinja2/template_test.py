@@ -7,5 +7,5 @@ def test():
     t = Template("abc") # $ templateConstruction="abc"
 
     env2 = SandboxedEnvironment()
-    t = env.from_string("abc") # No result as we don't model SandboxedEnvironment. We may wish to instead specifically model it as NOT vulnerable to template injection vulnerabilities.
+    t = env2.from_string("abc") # No result as we don't model SandboxedEnvironment. We may wish to instead specifically model it as NOT vulnerable to template injection vulnerabilities.
     return t
