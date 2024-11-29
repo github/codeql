@@ -16,7 +16,8 @@ public class Test
 
         new Test()
         {
-            MyProperty4 = { 1, 2, 3 }
+            MyProperty4 = { 1, 2, 3 },
+            MyProperty6 = { [1] = "" }
         };
 
         Event1.Invoke(this, 5);
@@ -36,6 +37,7 @@ public class Test
     public Test MyProperty3 { get; set; }
     public List<int> MyProperty4 { get; }
     static int MyProperty5 { get; }
+    public Dictionary<int, string> MyProperty6 { get; }
 
     public event EventHandler<int> Event1;
 

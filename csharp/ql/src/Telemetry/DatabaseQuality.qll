@@ -68,12 +68,12 @@ module CallTargetStats implements StatsSig {
     )
   }
 
-  private predicate isInitializedWithCollectionInitializer(PropertyCall c) {
+  private predicate isInitializedWithObjectOrCollectionInitializer(PropertyCall c) {
     exists(Property p, AssignExpr assign |
       p = c.getProperty() and
       assign = c.getParent() and
       assign.getLValue() = c and
-      assign.getRValue() instanceof CollectionInitializer
+      assign.getRValue() instanceof ObjectOrCollectionInitializer
     )
   }
 
@@ -94,7 +94,7 @@ module CallTargetStats implements StatsSig {
     not isNoSetterPropertyCallInConstructor(c) and
     not isNoSetterPropertyInitialization(c) and
     not isAnonymousObjectMemberDeclaration(c) and
-    not isInitializedWithCollectionInitializer(c) and
+    not isInitializedWithObjectOrCollectionInitializer(c) and
     not c.getParent+() instanceof NameOfExpr and
     not isEventFieldAccess(c) and
     not isTypeParameterInstantiation(c)
