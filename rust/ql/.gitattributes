@@ -45,6 +45,7 @@
 /lib/codeql/rust/elements/ConstBlockPat.qll linguist-generated
 /lib/codeql/rust/elements/ConstParam.qll linguist-generated
 /lib/codeql/rust/elements/ContinueExpr.qll linguist-generated
+/lib/codeql/rust/elements/Crate.qll linguist-generated
 /lib/codeql/rust/elements/DynTraitTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/Element.qll linguist-generated
 /lib/codeql/rust/elements/Enum.qll linguist-generated
@@ -256,6 +257,8 @@
 /lib/codeql/rust/elements/internal/ConstParamConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstParamImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ContinueExprConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/CrateConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/CrateImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/DynTraitTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/DynTraitTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/EnumConstructor.qll linguist-generated
@@ -503,6 +506,7 @@
 /lib/codeql/rust/elements/internal/generated/ConstBlockPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ConstParam.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ContinueExpr.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/Crate.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/DynTraitTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Element.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Enum.qll linguist-generated
@@ -752,6 +756,7 @@
 /test/extractor-tests/generated/ContinueExpr/ContinueExpr.ql linguist-generated
 /test/extractor-tests/generated/ContinueExpr/ContinueExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/ContinueExpr/ContinueExpr_getLifetime.ql linguist-generated
+/test/extractor-tests/generated/Crate/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/DynTraitTypeRepr/DynTraitTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/DynTraitTypeRepr/DynTraitTypeRepr_getTypeBoundList.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum.ql linguist-generated
