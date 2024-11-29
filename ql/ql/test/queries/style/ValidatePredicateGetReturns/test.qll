@@ -35,3 +35,8 @@ predicate assessment() { none() }
 
 // OK -- starts with as and returns a value
 string asString() { result = "string" }
+
+// OK -- starts with get and returns a value
+HiddenType getInjectableCompositeActionNode() {
+  exists(HiddenType hidden | result = hidden.toString())
+}
