@@ -1,6 +1,6 @@
 /**
- * @name Predicates starting with "get" should return a value
- * @description Checks if predicates that start with "get" actually return a value.
+ * @name Predicates starting with "get" or "as" should return a value
+ * @description Checks if predicates that start with "get" or "as" actually return a value.
  * @kind problem
  * @problem.severity warning
  * @id ql/predicates-get-should-return-value
@@ -13,7 +13,7 @@ import ql
 import codeql_ql.ast.Ast
 
 /**
- * Identifies predicates whose names start with "get" followed by an uppercase letter.
+ * Identifies predicates whose names start with "get", "as" followed by an uppercase letter.
  * This ensures that only predicates like "getValue" are matched, excluding names like "getter".
  */
 predicate isGetPredicate(Predicate pred) { pred.getName().regexpMatch("(get|as)[A-Z].*") }
