@@ -198,19 +198,32 @@ private string algorithmRegex(string algorithmString) {
 }
 
 /**
- * Gets the name of an algorithm that is known to be insecure.
+ * Holds if `name` is the name of an algorithm that is known to be insecure and
+ * `reason` explains why it is insecure.
  */
-string getAnInsecureAlgorithmName() {
-  result =
-    [
-      "DES", "RC2", "RC4", "RC5",
-      // ARCFOUR is a variant of RC4
-      "ARCFOUR",
-      // Encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay and other attacks
-      "ECB",
-      // CBC mode of operation with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks
-      "AES/CBC/PKCS[57]Padding"
-    ]
+predicate insecureAlgorithm(string name, string reason) {
+  name = "DES" and
+  reason =
+    "It has a short key length of 56 bits, making it vulnerable to brute-force attacks. Consider using AES instead."
+  or
+  name = "RC2" and
+  reason = "It is vulnerable to related-key attacks. Consider using AES instead."
+  or
+  // ARCFOUR is a variant of RC4
+  name = ["RC4", "ARCFOUR"] and
+  reason =
+    "It has multiple vulnerabilities, including biases in its output and susceptibility to several attacks. Consider using AES instead."
+  or
+  name = "RC5" and
+  reason = "It is vulnerable to differential and related-key attacks. Consider using AES instead."
+  or
+  name = "ECB" and
+  reason =
+    "Encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay and other attacks. Consider using AES instead."
+  or
+  name = "AES/CBC/PKCS[57]Padding" and
+  reason =
+    "CBC mode of operation with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks. Consider using AES instead."
 }
 
 /**
@@ -223,7 +236,7 @@ string getAnInsecureHashAlgorithmName() {
 }
 
 private string rankedInsecureAlgorithm(int i) {
-  result = rank[i](string s | s = getAnInsecureAlgorithmName())
+  result = rank[i](string name | insecureAlgorithm(name, _))
 }
 
 private string insecureAlgorithmString(int i) {
@@ -238,6 +251,12 @@ private string insecureAlgorithmString(int i) {
  */
 string getInsecureAlgorithmRegex() {
   result = algorithmRegex(insecureAlgorithmString(max(int i | exists(rankedInsecureAlgorithm(i)))))
+}
+
+/** Gets the reason why `input` is an insecure algorithm, if any. */
+bindingset[input]
+string getInsecureAlgorithmReason(string input) {
+  exists(string name | insecureAlgorithm(name, result) | input.regexpMatch(algorithmRegex(name)))
 }
 
 /**
