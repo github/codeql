@@ -146,23 +146,18 @@ predicate whitelistedRemoval(StringReplaceCall repl) {
 /**
  * Gets a nice string representation of the pattern or value of the node.
  */
-predicate getPatternOrValueString(DataFlow::Node node, string patternOrValue) {
+string getPatternOrValueString(DataFlow::Node node) {
   if node instanceof DataFlow::RegExpConstructorInvokeNode
-  then
-    exists(DataFlow::RegExpConstructorInvokeNode regExp |
-      node = regExp and
-      patternOrValue = "/" + regExp.getRoot() + "/"
-    )
-  else patternOrValue = node.toString()
+  then result = "/" + node.(DataFlow::RegExpConstructorInvokeNode).getRoot() + "/"
+  else result = node.toString()
 }
 
-from StringReplaceCall repl, DataFlow::Node old, string patternOrValue, string msg
+from StringReplaceCall repl, DataFlow::Node old, string msg
 where
   (old = repl.getArgument(0) or old = repl.getRegExp()) and
-  getPatternOrValueString(old, patternOrValue) and
   (
     not repl.maybeGlobal() and
-    msg = "This replaces only the first occurrence of " + patternOrValue + "." and
+    msg = "This replaces only the first occurrence of " + getPatternOrValueString(old) + "." and
     // only flag if this is likely to be a sanitizer or URL encoder or decoder
     exists(string m | m = getAMatchedString(old) |
       // sanitizer
