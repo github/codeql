@@ -256,7 +256,7 @@ private predicate isPropertyPresentOnObjectPrototype(string prop) {
 }
 
 /** A check of form `e.prop` where `prop` is not present on `Object.prototype`. */
-private class PropertyPresenceCheck extends BarrierGuardLegacy, DataFlow::ValueNode {
+private class PropertyPresenceCheck extends BarrierGuard, DataFlow::ValueNode {
   override PropAccess astNode;
 
   PropertyPresenceCheck() {
@@ -272,7 +272,7 @@ private class PropertyPresenceCheck extends BarrierGuardLegacy, DataFlow::ValueN
 }
 
 /** A check of form `"prop" in e` where `prop` is not present on `Object.prototype`. */
-private class InExprCheck extends BarrierGuardLegacy, DataFlow::ValueNode {
+private class InExprCheck extends BarrierGuard, DataFlow::ValueNode {
   override InExpr astNode;
 
   InExprCheck() {
@@ -287,7 +287,7 @@ private class InExprCheck extends BarrierGuardLegacy, DataFlow::ValueNode {
 }
 
 /** A check of form `e instanceof X`, which is always false for `Object.prototype`. */
-private class InstanceofCheck extends BarrierGuardLegacy, DataFlow::ValueNode {
+private class InstanceofCheck extends BarrierGuard, DataFlow::ValueNode {
   override InstanceofExpr astNode;
 
   override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
@@ -298,7 +298,7 @@ private class InstanceofCheck extends BarrierGuardLegacy, DataFlow::ValueNode {
 }
 
 /** A check of form `typeof e === "string"`. */
-private class TypeofCheck extends BarrierGuardLegacy, DataFlow::ValueNode {
+private class TypeofCheck extends BarrierGuard, DataFlow::ValueNode {
   override EqualityTest astNode;
   Expr operand;
   boolean polarity;
@@ -319,7 +319,7 @@ private class TypeofCheck extends BarrierGuardLegacy, DataFlow::ValueNode {
 }
 
 /** A guard that checks whether `x` is a number. */
-class NumberGuard extends BarrierGuardLegacy instanceof DataFlow::CallNode {
+class NumberGuard extends BarrierGuard instanceof DataFlow::CallNode {
   Expr x;
   boolean polarity;
 
@@ -329,7 +329,7 @@ class NumberGuard extends BarrierGuardLegacy instanceof DataFlow::CallNode {
 }
 
 /** A call to `Array.isArray`, which is false for `Object.prototype`. */
-private class IsArrayCheck extends BarrierGuardLegacy, DataFlow::CallNode {
+private class IsArrayCheck extends BarrierGuard, DataFlow::CallNode {
   IsArrayCheck() { this = DataFlow::globalVarRef("Array").getAMemberCall("isArray") }
 
   override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
@@ -342,7 +342,7 @@ private class IsArrayCheck extends BarrierGuardLegacy, DataFlow::CallNode {
 /**
  * Sanitizer guard of form `x !== "__proto__"`.
  */
-private class EqualityCheck extends BarrierGuardLegacy, DataFlow::ValueNode {
+private class EqualityCheck extends BarrierGuard, DataFlow::ValueNode {
   override EqualityTest astNode;
 
   EqualityCheck() { astNode.getAnOperand().getStringValue() = "__proto__" }
@@ -356,7 +356,7 @@ private class EqualityCheck extends BarrierGuardLegacy, DataFlow::ValueNode {
 /**
  * Sanitizer guard of the form `x.includes("__proto__")`.
  */
-private class IncludesCheck extends BarrierGuardLegacy, InclusionTest {
+private class IncludesCheck extends BarrierGuard, InclusionTest {
   IncludesCheck() { this.getContainedNode().mayHaveStringValue("__proto__") }
 
   override predicate blocksExpr(boolean outcome, Expr e) {
@@ -368,7 +368,7 @@ private class IncludesCheck extends BarrierGuardLegacy, InclusionTest {
 /**
  * A sanitizer guard that checks tests whether `x` is included in a list like `["__proto__"].includes(x)`.
  */
-private class DenyListInclusionGuard extends BarrierGuardLegacy, InclusionTest {
+private class DenyListInclusionGuard extends BarrierGuard, InclusionTest {
   DenyListInclusionGuard() {
     this.getContainerNode()
         .getALocalSource()

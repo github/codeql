@@ -34,7 +34,7 @@ module TypeConfusionConfig implements DataFlow::ConfigSig {
  */
 module TypeConfusionFlow = DataFlow::Global<TypeConfusionConfig>;
 
-private class TypeOfTestBarrier extends BarrierGuardLegacy, DataFlow::ValueNode {
+private class TypeOfTestBarrier extends BarrierGuard, DataFlow::ValueNode {
   override EqualityTest astNode;
 
   TypeOfTestBarrier() { TaintTracking::isTypeofGuard(astNode, _, _) }
@@ -49,7 +49,7 @@ private class TypeOfTestBarrier extends BarrierGuardLegacy, DataFlow::ValueNode 
   }
 }
 
-private class IsArrayBarrier extends BarrierGuardLegacy, DataFlow::CallNode {
+private class IsArrayBarrier extends BarrierGuard, DataFlow::CallNode {
   IsArrayBarrier() { this = DataFlow::globalVarRef("Array").getAMemberCall("isArray") }
 
   override predicate blocksExpr(boolean outcome, Expr e) {

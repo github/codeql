@@ -87,7 +87,7 @@ deprecated class Configuration extends TaintTracking::Configuration {
 }
 
 /** A test for the value of `typeof x`, restricting the potential types of `x`. */
-class TypeTestGuard extends BarrierGuardLegacy, DataFlow::ValueNode {
+class TypeTestGuard extends BarrierGuard, DataFlow::ValueNode {
   override EqualityTest astNode;
   Expr operand;
   boolean polarity;

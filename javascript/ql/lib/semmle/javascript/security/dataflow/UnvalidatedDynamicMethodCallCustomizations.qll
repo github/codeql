@@ -67,14 +67,25 @@ module UnvalidatedDynamicMethodCall {
      * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
      */
     predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, label)
+    }
   }
 
   /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
-  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
-    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
 
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      this.blocksExpr(outcome, e, label)
+      BarrierGuard.super.sanitizes(outcome, e, label)
     }
   }
 
@@ -138,7 +149,7 @@ module UnvalidatedDynamicMethodCall {
    * A check of the form `typeof x === 'function'`, which sanitizes away the `MaybeNonFunction`
    * taint kind.
    */
-  class FunctionCheck extends BarrierGuardLegacy, DataFlow::ValueNode {
+  class FunctionCheck extends BarrierGuard, DataFlow::ValueNode {
     override EqualityTest astNode;
     Expr operand;
 
@@ -152,7 +163,7 @@ module UnvalidatedDynamicMethodCall {
   }
 
   /** A guard that checks whether `x` is a number. */
-  class NumberGuard extends BarrierGuardLegacy instanceof DataFlow::CallNode {
+  class NumberGuard extends BarrierGuard instanceof DataFlow::CallNode {
     Expr x;
     boolean polarity;
 

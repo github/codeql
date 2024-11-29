@@ -41,14 +41,25 @@ module TaintedPath {
      * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
      */
     predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, label)
+    }
   }
 
   /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
-  abstract class BarrierGuardLegacy extends BarrierGuard, DataFlow::BarrierGuardNode {
-    override predicate blocks(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
 
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      this.blocksExpr(outcome, e, label)
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      BarrierGuard.super.sanitizes(outcome, e, label)
     }
   }
 
@@ -366,7 +377,7 @@ module TaintedPath {
    *
    * This is relevant for paths that are known to be normalized.
    */
-  class StartsWithDotDotSanitizer extends BarrierGuardLegacy instanceof StringOps::StartsWith {
+  class StartsWithDotDotSanitizer extends BarrierGuard instanceof StringOps::StartsWith {
     StartsWithDotDotSanitizer() { isDotDotSlashPrefix(super.getSubstring()) }
 
     override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
@@ -386,7 +397,7 @@ module TaintedPath {
   /**
    * A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch.
    */
-  class MembershipTestBarrierGuard extends BarrierGuardLegacy {
+  class MembershipTestBarrierGuard extends BarrierGuard {
     MembershipCandidate candidate;
 
     MembershipTestBarrierGuard() { this = candidate.getTest() }
@@ -401,7 +412,7 @@ module TaintedPath {
    * A check of form `x.startsWith(dir)` that sanitizes normalized absolute paths, since it is then
    * known to be in a subdirectory of `dir`.
    */
-  class StartsWithDirSanitizer extends BarrierGuardLegacy {
+  class StartsWithDirSanitizer extends BarrierGuard {
     StringOps::StartsWith startsWith;
 
     StartsWithDirSanitizer() {
@@ -425,7 +436,7 @@ module TaintedPath {
    * A call to `path.isAbsolute` as a sanitizer for relative paths in true branch,
    * and a sanitizer for absolute paths in the false branch.
    */
-  class IsAbsoluteSanitizer extends BarrierGuardLegacy {
+  class IsAbsoluteSanitizer extends BarrierGuard {
     DataFlow::Node operand;
     boolean polarity;
     boolean negatable;
@@ -461,7 +472,7 @@ module TaintedPath {
   /**
    * An expression of form `x.includes("..")` or similar.
    */
-  class ContainsDotDotSanitizer extends BarrierGuardLegacy instanceof StringOps::Includes {
+  class ContainsDotDotSanitizer extends BarrierGuard instanceof StringOps::Includes {
     ContainsDotDotSanitizer() { isDotDotSlashPrefix(super.getSubstring()) }
 
     override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
@@ -474,7 +485,7 @@ module TaintedPath {
   /**
    * An expression of form `x.matches(/\.\./)` or similar.
    */
-  class ContainsDotDotRegExpSanitizer extends BarrierGuardLegacy instanceof StringOps::RegExpTest {
+  class ContainsDotDotRegExpSanitizer extends BarrierGuard instanceof StringOps::RegExpTest {
     ContainsDotDotRegExpSanitizer() { super.getRegExp().getAMatchedString() = [".", "..", "../"] }
 
     override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
@@ -505,7 +516,7 @@ module TaintedPath {
    * }
    * ```
    */
-  class RelativePathStartsWithSanitizer extends BarrierGuardLegacy {
+  class RelativePathStartsWithSanitizer extends BarrierGuard {
     StringOps::StartsWith startsWith;
     DataFlow::CallNode pathCall;
     string member;
@@ -563,7 +574,7 @@ module TaintedPath {
    * An expression of form `isInside(x, y)` or similar, where `isInside` is
    * a library check for the relation between `x` and `y`.
    */
-  class IsInsideCheckSanitizer extends BarrierGuardLegacy {
+  class IsInsideCheckSanitizer extends BarrierGuard {
     DataFlow::Node checked;
     boolean onlyNormalizedAbsolutePaths;
 

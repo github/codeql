@@ -54,11 +54,17 @@ module UnsafeShellCommandConstruction {
      * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
      */
     predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
   }
 
   /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
-  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
-    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
   }
 
   /**
@@ -285,7 +291,7 @@ module UnsafeShellCommandConstruction {
    * A sanitizer that sanitizers paths that exist in the file-system.
    * For example: `x` is sanitized in `fs.existsSync(x)` or `fs.existsSync(x + "/suffix/path")`.
    */
-  class PathExistsSanitizerGuard extends BarrierGuardLegacy, DataFlow::CallNode {
+  class PathExistsSanitizerGuard extends BarrierGuard, DataFlow::CallNode {
     PathExistsSanitizerGuard() {
       this = DataFlow::moduleMember("path", "exist").getACall() or
       this = DataFlow::moduleMember("fs", "existsSync").getACall()
@@ -304,7 +310,7 @@ module UnsafeShellCommandConstruction {
    * A guard of the form `typeof x === "<T>"`, where `<T>` is  "number", or "boolean",
    * which sanitizes `x` in its "then" branch.
    */
-  class TypeOfSanitizer extends BarrierGuardLegacy, DataFlow::ValueNode {
+  class TypeOfSanitizer extends BarrierGuard, DataFlow::ValueNode {
     Expr x;
     override EqualityTest astNode;
 
@@ -317,7 +323,7 @@ module UnsafeShellCommandConstruction {
   }
 
   /** A guard that checks whether `x` is a number. */
-  class NumberGuard extends BarrierGuardLegacy instanceof DataFlow::CallNode {
+  class NumberGuard extends BarrierGuard instanceof DataFlow::CallNode {
     Expr x;
     boolean polarity;
 

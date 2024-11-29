@@ -39,11 +39,17 @@ module UnsafeJQueryPlugin {
      * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
      */
     predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
   }
 
   /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
-  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
-    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
   }
 
   /**
@@ -125,7 +131,7 @@ module UnsafeJQueryPlugin {
   /**
    * An expression of form `isElement(x)`, which sanitizes `x`.
    */
-  class IsElementSanitizer extends BarrierGuardLegacy, DataFlow::CallNode {
+  class IsElementSanitizer extends BarrierGuard, DataFlow::CallNode {
     IsElementSanitizer() {
       // common ad hoc sanitizing calls
       exists(string name | this.getCalleeName() = name |
@@ -141,7 +147,7 @@ module UnsafeJQueryPlugin {
   /**
    * An expression like `typeof x.<?> !== "undefined"` or `x.<?>`, which sanitizes `x`, as it is unlikely to be a string afterwards.
    */
-  class PropertyPresenceSanitizer extends BarrierGuardLegacy, DataFlow::ValueNode {
+  class PropertyPresenceSanitizer extends BarrierGuard, DataFlow::ValueNode {
     DataFlow::Node input;
     boolean polarity;
 
@@ -177,7 +183,7 @@ module UnsafeJQueryPlugin {
   }
 
   /** A guard that checks whether `x` is a number. */
-  class NumberGuard extends BarrierGuardLegacy instanceof DataFlow::CallNode {
+  class NumberGuard extends BarrierGuard instanceof DataFlow::CallNode {
     Expr x;
     boolean polarity;
 
