@@ -28,9 +28,21 @@ predicate hasReturnType(Predicate pred) { exists(pred.getReturnType()) }
  */
 predicate isAlias(Predicate pred) { exists(pred.(ClasslessPredicate).getAlias()) }
 
+/**
+ * Returns "get" if the predicate name starts with "get", otherwise "as".
+ */
+string getPrefix(Predicate pred) {
+  if pred.getName().matches("get%")
+  then result = "get"
+  else
+    if pred.getName().matches("as%")
+    then result = "as"
+    else result = ""
+}
+
 from Predicate pred
 where
   isGetPredicate(pred) and
   not hasReturnType(pred) and
   not isAlias(pred)
-select pred, "This predicate starts with 'get' but does not return a value."
+select pred, "This predicate starts with '" + getPrefix(pred) + "' but does not return a value."
