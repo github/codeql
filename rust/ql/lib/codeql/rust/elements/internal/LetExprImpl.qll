@@ -28,7 +28,7 @@ module Impl {
       or
       index = 1 and result = this.getPat().toAbbreviatedString()
       or
-      index = 2 and result = "= " + this.getExpr().toAbbreviatedString()
+      index = 2 and result = "= " + this.getScrutinee().toAbbreviatedString()
     }
   }
 }

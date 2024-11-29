@@ -142,6 +142,7 @@ extractor_steps(
 
 @ast_node =
   @abi
+| @addressable
 | @arg_list
 | @assoc_item
 | @assoc_item_list
@@ -193,7 +194,6 @@ extractor_steps(
 | @type_ref
 | @use_tree
 | @use_tree_list
-| @variant
 | @variant_list
 | @visibility
 | @where_clause
@@ -216,6 +216,23 @@ abis(
 abi_abi_strings(
   int id: @abi ref,
   string abi_string: string ref
+);
+
+@addressable =
+  @item
+| @variant
+;
+
+#keyset[id]
+addressable_extended_canonical_paths(
+  int id: @addressable ref,
+  string extended_canonical_path: string ref
+);
+
+#keyset[id]
+addressable_crate_origins(
+  int id: @addressable ref,
+  string crate_origin: string ref
 );
 
 arg_lists(
@@ -1017,41 +1034,6 @@ use_tree_list_use_trees(
   int use_tree: @use_tree ref
 );
 
-variants(
-  unique int id: @variant
-);
-
-#keyset[id, index]
-variant_attrs(
-  int id: @variant ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-variant_exprs(
-  int id: @variant ref,
-  int expr: @expr ref
-);
-
-#keyset[id]
-variant_field_lists(
-  int id: @variant ref,
-  int field_list: @field_list ref
-);
-
-#keyset[id]
-variant_names(
-  int id: @variant ref,
-  int name: @name ref
-);
-
-#keyset[id]
-variant_visibilities(
-  int id: @variant ref,
-  int visibility: @visibility ref
-);
-
 variant_lists(
   unique int id: @variant_list
 );
@@ -1720,18 +1702,6 @@ infer_types(
 | @use
 ;
 
-#keyset[id]
-item_extended_canonical_paths(
-  int id: @item ref,
-  string extended_canonical_path: string ref
-);
-
-#keyset[id]
-item_crate_origins(
-  int id: @item ref,
-  string crate_origin: string ref
-);
-
 @labelable_expr =
   @block_expr
 | @looping_expr
@@ -1755,9 +1725,9 @@ let_expr_attrs(
 );
 
 #keyset[id]
-let_expr_exprs(
+let_expr_scrutinees(
   int id: @let_expr ref,
-  int expr: @expr ref
+  int scrutinee: @expr ref
 );
 
 #keyset[id]
@@ -2450,6 +2420,41 @@ underscore_expr_attrs(
   int attr: @attr ref
 );
 
+variants(
+  unique int id: @variant
+);
+
+#keyset[id, index]
+variant_attrs(
+  int id: @variant ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+variant_exprs(
+  int id: @variant ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
+variant_field_lists(
+  int id: @variant ref,
+  int field_list: @field_list ref
+);
+
+#keyset[id]
+variant_names(
+  int id: @variant ref,
+  int name: @name ref
+);
+
+#keyset[id]
+variant_visibilities(
+  int id: @variant ref,
+  int visibility: @visibility ref
+);
+
 wildcard_pats(
   unique int id: @wildcard_pat
 );
@@ -2540,9 +2545,9 @@ call_exprs(
 );
 
 #keyset[id]
-call_expr_exprs(
+call_expr_functions(
   int id: @call_expr ref,
-  int expr: @expr ref
+  int function: @expr ref
 );
 
 consts(

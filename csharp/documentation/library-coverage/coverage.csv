@@ -32,6 +32,7 @@ Microsoft.Extensions.Logging,,,91,,,,,,,,,,,,,,,,,,,25,66
 Microsoft.Extensions.Options,,,68,,,,,,,,,,,,,,,,,,,44,24
 Microsoft.Extensions.Primitives,,,73,,,,,,,,,,,,,,,,,,,67,6
 Microsoft.Interop,,,159,,,,,,,,,,,,,,,,,,,75,84
+Microsoft.JSInterop,2,,,,,,,,,,2,,,,,,,,,,,,
 Microsoft.NET.Build.Tasks,,,5,,,,,,,,,,,,,,,,,,,3,2
 Microsoft.NET.Sdk.WebAssembly,,,2,,,,,,,,,,,,,,,,,,,1,1
 Microsoft.NET.WebAssembly.Webcil,,,6,,,,,,,,,,,,,,,,,,,6,

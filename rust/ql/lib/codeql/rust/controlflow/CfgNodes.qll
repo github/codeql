@@ -187,9 +187,37 @@ final class RecordExprCfgNode extends Nodes::RecordExprCfgNode {
 
   RecordExprCfgNode() { node = this.getRecordExpr() }
 
-  /** Gets the `i`th record expression. */
-  ExprCfgNode getExpr(int i) {
-    any(ChildMapping mapping)
-        .hasCfgChild(node, node.getRecordExprFieldList().getField(i).getExpr(), this, result)
+  /** Gets the record expression for the field `field`. */
+  pragma[nomagic]
+  ExprCfgNode getFieldExpr(string field) {
+    exists(RecordExprField ref |
+      ref = node.getRecordExprFieldList().getAField() and
+      any(ChildMapping mapping).hasCfgChild(node, ref.getExpr(), this, result) and
+      field = ref.getNameRef().getText()
+    )
+  }
+}
+
+/**
+ * A record pattern. For example:
+ * ```rust
+ * match x {
+ *     Foo { a: 1, b: 2 } => "ok",
+ *     Foo { .. } => "fail",
+ * }
+ * ```
+ */
+final class RecordPatCfgNode extends Nodes::RecordPatCfgNode {
+  private RecordPatChildMapping node;
+
+  RecordPatCfgNode() { node = this.getRecordPat() }
+
+  /** Gets the record pattern for the field `field`. */
+  PatCfgNode getFieldPat(string field) {
+    exists(RecordPatField rpf |
+      rpf = node.getRecordPatFieldList().getAField() and
+      any(ChildMapping mapping).hasCfgChild(node, rpf.getPat(), this, result) and
+      field = rpf.getNameRef().getText()
+    )
   }
 }

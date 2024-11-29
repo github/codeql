@@ -397,12 +397,12 @@ impl Translator<'_> {
     pub(crate) fn emit_call_expr(&mut self, node: ast::CallExpr) -> Label<generated::CallExpr> {
         let arg_list = node.arg_list().map(|x| self.emit_arg_list(x));
         let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+        let function = node.expr().map(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::CallExpr {
             id: TrapId::Star,
             arg_list,
             attrs,
-            expr,
+            function,
         });
         self.emit_location(label, &node);
         emit_detached!(CallExpr, self, node, label);
@@ -958,12 +958,12 @@ impl Translator<'_> {
 
     pub(crate) fn emit_let_expr(&mut self, node: ast::LetExpr) -> Label<generated::LetExpr> {
         let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().map(|x| self.emit_expr(x));
+        let scrutinee = node.expr().map(|x| self.emit_expr(x));
         let pat = node.pat().map(|x| self.emit_pat(x));
         let label = self.trap.emit(generated::LetExpr {
             id: TrapId::Star,
             attrs,
-            expr,
+            scrutinee,
             pat,
         });
         self.emit_location(label, &node);

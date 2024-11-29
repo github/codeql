@@ -35,14 +35,60 @@ module ReportStats<StatsSig Stats> {
 module CallTargetStats implements StatsSig {
   int getNumberOfOk() { result = count(Call c | exists(c.getTarget())) }
 
-  int getNumberOfNotOk() {
-    result =
-      count(Call c |
-        not exists(c.getTarget()) and
-        not c instanceof DelegateCall and
-        not c instanceof DynamicExpr
+  private predicate isNoSetterPropertyCallInConstructor(PropertyCall c) {
+    exists(Property p, Constructor ctor |
+      p = c.getProperty() and
+      not exists(Setter a | a = p.getAnAccessor()) and
+      c.getEnclosingCallable() = ctor and
+      (
+        c.hasThisQualifier()
+        or
+        ctor instanceof StaticConstructor and p.getDeclaringType() = ctor.getDeclaringType()
       )
+    )
   }
+
+  private predicate isNoSetterPropertyInitialization(PropertyCall c) {
+    exists(Property p, AssignExpr assign |
+      p = c.getProperty() and
+      not exists(Setter a | a = p.getAnAccessor()) and
+      assign = c.getParent() and
+      assign.getLValue() = c and
+      assign.getParent() instanceof Property
+    )
+  }
+
+  private predicate isAnonymousObjectMemberDeclaration(PropertyCall c) {
+    exists(Property p, AssignExpr assign |
+      p = c.getProperty() and
+      assign = c.getParent() and
+      assign.getLValue() = c and
+      assign.getParent() instanceof ObjectInitializer and
+      assign.getParent().getParent() instanceof AnonymousObjectCreation
+    )
+  }
+
+  private predicate isInitializedWithCollectionInitializer(PropertyCall c) {
+    exists(Property p, AssignExpr assign |
+      p = c.getProperty() and
+      assign = c.getParent() and
+      assign.getLValue() = c and
+      assign.getRValue() instanceof CollectionInitializer
+    )
+  }
+
+  additional predicate isNotOkCall(Call c) {
+    not exists(c.getTarget()) and
+    not c instanceof DelegateCall and
+    not c instanceof DynamicExpr and
+    not isNoSetterPropertyCallInConstructor(c) and
+    not isNoSetterPropertyInitialization(c) and
+    not isAnonymousObjectMemberDeclaration(c) and
+    not isInitializedWithCollectionInitializer(c) and
+    not c.getParent+() instanceof NameOfExpr
+  }
+
+  int getNumberOfNotOk() { result = count(Call c | isNotOkCall(c)) }
 
   string getOkText() { result = "calls with call target" }
 
