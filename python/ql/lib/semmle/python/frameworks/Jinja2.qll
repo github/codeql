@@ -33,6 +33,7 @@ module Jinja2 {
       result = ModelOutput::getATypeNode("jinja.Environment~Subclass").getASubclass*()
     }
 
+    /** Gets a reference to an instance of `jinja2.Environment`. */
     API::Node instance() { result = classRef().getAnInstance() }
 
     /** A call to `jinja2.Environment.from_string`. */
