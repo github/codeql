@@ -17,6 +17,7 @@ use ra_ap_vfs::Vfs;
 use ra_ap_vfs::VfsPath;
 use ra_ap_vfs::{AbsPathBuf, FileId};
 use std::borrow::Cow;
+use std::iter;
 use std::path::{Path, PathBuf};
 use triomphe::Arc;
 
@@ -188,10 +189,25 @@ fn from_utf8_lossy(v: &[u8]) -> (Cow<'_, str>, Option<SyntaxError>) {
     (Cow::Owned(res), Some(error))
 }
 
+fn canonicalize_if_on_windows(path: &Path) -> Option<PathBuf> {
+    if cfg!(windows) {
+        dunce::canonicalize(path).ok()
+    } else {
+        None
+    }
+}
+
 pub(crate) fn path_to_file_id(path: &Path, vfs: &Vfs) -> Option<FileId> {
-    Utf8PathBuf::from_path_buf(path.to_path_buf())
-        .ok()
-        .and_then(|x| AbsPathBuf::try_from(x).ok())
-        .map(VfsPath::from)
-        .and_then(|x| vfs.file_id(&x))
+    // There seems to be some flaky inconsistencies around UNC paths on Windows, so if we fail to
+    // find the file id for a UNC path like that, we try to canonicalize it using dunce then.
+    iter::once(path.to_path_buf())
+        .chain(canonicalize_if_on_windows(path))
+        .filter_map(|p| {
+            Utf8PathBuf::from_path_buf(p)
+                .ok()
+                .and_then(|x| AbsPathBuf::try_from(x).ok())
+                .map(VfsPath::from)
+                .and_then(|x| vfs.file_id(&x))
+        })
+        .next()
 }
