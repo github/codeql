@@ -70,14 +70,22 @@ deprecated class Configuration extends TaintTracking::Configuration {
  * A call to a function called `isLocalUrl` or similar, which is
  * considered to sanitize a variable for purposes of URL redirection.
  */
-class LocalUrlSanitizingGuard extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
+class LocalUrlSanitizingGuard extends DataFlow::CallNode {
   LocalUrlSanitizingGuard() { this.getCalleeName().regexpMatch("(?i)(is_?)?local_?url") }
 
-  override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  /** DEPRECATED. Use `blocksExpr` instead. */
+  deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
 
   /** Holds if this node blocks flow through `e`, provided it evaluates to `outcome`. */
   predicate blocksExpr(boolean outcome, Expr e) {
     this.getAnArgument().asExpr() = e and
     outcome = true
+  }
+}
+
+deprecated private class LocalUrlSanitizingGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof LocalUrlSanitizingGuard
+{
+  override predicate sanitizes(boolean outcome, Expr e) {
+    LocalUrlSanitizingGuard.super.sanitizes(outcome, e)
   }
 }
