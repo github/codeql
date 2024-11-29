@@ -16,7 +16,7 @@ import codeql_ql.ast.Ast
  * Identifies predicates whose names start with "get" followed by an uppercase letter.
  * This ensures that only predicates like "getValue" are matched, excluding names like "getter".
  */
-predicate isGetPredicate(Predicate pred) { pred.getName().regexpMatch("get[A-Z].*") }
+predicate isGetPredicate(Predicate pred) { pred.getName().regexpMatch("(get|as)[A-Z].*") }
 
 /**
  * Checks if a predicate has a return type.
