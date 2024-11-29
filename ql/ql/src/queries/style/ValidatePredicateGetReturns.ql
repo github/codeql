@@ -26,9 +26,7 @@ predicate hasReturnType(Predicate pred) { exists(pred.getReturnType()) }
 /**
  * Checks if a predicate is an alias using getAlias().
  */
-predicate isAlias(Predicate pred) {
-  pred instanceof ClasslessPredicate and exists(pred.(ClasslessPredicate).getAlias())
-}
+predicate isAlias(Predicate pred) { exists(pred.(ClasslessPredicate).getAlias()) }
 
 from Predicate pred
 where
