@@ -21,9 +21,7 @@ predicate isGetPredicate(Predicate pred) { pred.getName().regexpMatch("get[A-Z].
 /**
  * Checks if a predicate has a return type.
  */
-predicate hasReturnType(Predicate pred) {
-  exists(Type returnType | pred.getReturnType() = returnType)
-}
+predicate hasReturnType(Predicate pred) { exists(pred.getReturnType()) }
 
 /**
  * Checks if a predicate is an alias using getAlias().
