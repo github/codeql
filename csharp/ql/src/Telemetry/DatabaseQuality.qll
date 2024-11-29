@@ -83,6 +83,10 @@ module CallTargetStats implements StatsSig {
     )
   }
 
+  private predicate isTypeParameterInstantiation(ObjectCreation e) {
+    e.getType() instanceof TypeParameter
+  }
+
   additional predicate isNotOkCall(Call c) {
     not exists(c.getTarget()) and
     not c instanceof DelegateCall and
@@ -92,7 +96,8 @@ module CallTargetStats implements StatsSig {
     not isAnonymousObjectMemberDeclaration(c) and
     not isInitializedWithCollectionInitializer(c) and
     not c.getParent+() instanceof NameOfExpr and
-    not isEventFieldAccess(c)
+    not isEventFieldAccess(c) and
+    not isTypeParameterInstantiation(c)
   }
 
   int getNumberOfNotOk() { result = count(Call c | isNotOkCall(c)) }
