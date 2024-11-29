@@ -38,6 +38,7 @@ class BaseSsaSourceVariable extends TBaseSsaSourceVariable {
   /** Gets the `Callable` in which this `BaseSsaSourceVariable` is defined. */
   Callable getEnclosingCallable() { this = TLocalVar(result, _) }
 
+  /** Gets a textual representation of this element. */
   string toString() {
     exists(LocalScopeVariable v, Callable c | this = TLocalVar(c, v) |
       if c = v.getCallable()
@@ -46,6 +47,7 @@ class BaseSsaSourceVariable extends TBaseSsaSourceVariable {
     )
   }
 
+  /** Gets the source location for this element. */
   Location getLocation() {
     exists(LocalScopeVariable v | this = TLocalVar(_, v) and result = v.getLocation())
   }
@@ -482,8 +484,10 @@ class BaseSsaVariable extends TBaseSsaVariable {
     this = TSsaEntryDef(_, result)
   }
 
+  /** Gets a textual representation of this element. */
   string toString() { none() }
 
+  /** Gets the source location for this element. */
   Location getLocation() { result = this.getCfgNode().getLocation() }
 
   /** Gets the `BasicBlock` in which this SSA variable is defined. */

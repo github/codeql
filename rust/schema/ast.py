@@ -103,7 +103,7 @@ class BreakExpr(Expr):
 class CallExpr(Expr):
    arg_list: optional["ArgList"] | child
    attrs: list["Attr"] | child
-   expr: optional["Expr"] | child
+   function: optional["Expr"] | child
 
 class CastExpr(Expr):
    attrs: list["Attr"] | child
@@ -285,7 +285,7 @@ class LetElse(AstNode):
 
 class LetExpr(Expr):
    attrs: list["Attr"] | child
-   expr: optional["Expr"] | child
+   scrutinee: optional["Expr"] | child
    pat: optional["Pat"] | child
 
 class LetStmt(Stmt):
@@ -364,7 +364,7 @@ class MatchArmList(AstNode):
 
 class MatchExpr(Expr):
    attrs: list["Attr"] | child
-   expr: optional["Expr"] | child
+   scrutinee: optional["Expr"] | child
    match_arm_list: optional["MatchArmList"] | child
 
 class MatchGuard(AstNode):

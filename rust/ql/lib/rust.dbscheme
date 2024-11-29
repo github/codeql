@@ -135,6 +135,7 @@ locatable_locations(
 
 @ast_node =
   @abi
+| @addressable
 | @arg_list
 | @assoc_item
 | @assoc_item_list
@@ -162,7 +163,7 @@ locatable_locations(
 | @meta
 | @name
 | @name_ref
-| @param
+| @param_base
 | @param_list
 | @pat
 | @path_segment
@@ -175,7 +176,6 @@ locatable_locations(
 | @resolvable
 | @ret_type
 | @return_type_syntax
-| @self_param
 | @source_file
 | @stmt
 | @stmt_list
@@ -187,7 +187,6 @@ locatable_locations(
 | @type_ref
 | @use_tree
 | @use_tree_list
-| @variant
 | @variant_list
 | @visibility
 | @where_clause
@@ -210,6 +209,23 @@ abis(
 abi_abi_strings(
   int id: @abi ref,
   string abi_string: string ref
+);
+
+@addressable =
+  @item
+| @variant
+;
+
+#keyset[id]
+addressable_extended_canonical_paths(
+  int id: @addressable ref,
+  string extended_canonical_path: string ref
+);
+
+#keyset[id]
+addressable_crate_origins(
+  int id: @addressable ref,
+  string crate_origin: string ref
 );
 
 arg_lists(
@@ -582,26 +598,21 @@ name_ref_texts(
   string text: string ref
 );
 
-params(
-  unique int id: @param
-);
+@param_base =
+  @param
+| @self_param
+;
 
 #keyset[id, index]
-param_attrs(
-  int id: @param ref,
+param_base_attrs(
+  int id: @param_base ref,
   int index: int ref,
   int attr: @attr ref
 );
 
 #keyset[id]
-param_pats(
-  int id: @param ref,
-  int pat: @pat ref
-);
-
-#keyset[id]
-param_ties(
-  int id: @param ref,
+param_base_ties(
+  int id: @param_base ref,
   int ty: @type_ref ref
 );
 
@@ -844,40 +855,6 @@ return_type_syntaxes(
   unique int id: @return_type_syntax
 );
 
-self_params(
-  unique int id: @self_param
-);
-
-#keyset[id, index]
-self_param_attrs(
-  int id: @self_param ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-self_param_is_mut(
-  int id: @self_param ref
-);
-
-#keyset[id]
-self_param_lifetimes(
-  int id: @self_param ref,
-  int lifetime: @lifetime ref
-);
-
-#keyset[id]
-self_param_names(
-  int id: @self_param ref,
-  int name: @name ref
-);
-
-#keyset[id]
-self_param_ties(
-  int id: @self_param ref,
-  int ty: @type_ref ref
-);
-
 source_files(
   unique int id: @source_file
 );
@@ -1048,41 +1025,6 @@ use_tree_list_use_trees(
   int id: @use_tree_list ref,
   int index: int ref,
   int use_tree: @use_tree ref
-);
-
-variants(
-  unique int id: @variant
-);
-
-#keyset[id, index]
-variant_attrs(
-  int id: @variant ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-variant_exprs(
-  int id: @variant ref,
-  int expr: @expr ref
-);
-
-#keyset[id]
-variant_field_lists(
-  int id: @variant ref,
-  int field_list: @field_list ref
-);
-
-#keyset[id]
-variant_names(
-  int id: @variant ref,
-  int name: @name ref
-);
-
-#keyset[id]
-variant_visibilities(
-  int id: @variant ref,
-  int visibility: @visibility ref
 );
 
 variant_lists(
@@ -1753,18 +1695,6 @@ infer_types(
 | @use
 ;
 
-#keyset[id]
-item_extended_canonical_paths(
-  int id: @item ref,
-  string extended_canonical_path: string ref
-);
-
-#keyset[id]
-item_crate_origins(
-  int id: @item ref,
-  string crate_origin: string ref
-);
-
 @labelable_expr =
   @block_expr
 | @looping_expr
@@ -1788,9 +1718,9 @@ let_expr_attrs(
 );
 
 #keyset[id]
-let_expr_exprs(
+let_expr_scrutinees(
   int id: @let_expr ref,
-  int expr: @expr ref
+  int scrutinee: @expr ref
 );
 
 #keyset[id]
@@ -1936,9 +1866,9 @@ match_expr_attrs(
 );
 
 #keyset[id]
-match_expr_exprs(
+match_expr_scrutinees(
   int id: @match_expr ref,
-  int expr: @expr ref
+  int scrutinee: @expr ref
 );
 
 #keyset[id]
@@ -1983,6 +1913,16 @@ or_pats(
 or_pat_pats(
   int id: @or_pat ref,
   int index: int ref,
+  int pat: @pat ref
+);
+
+params(
+  unique int id: @param
+);
+
+#keyset[id]
+param_pats(
+  int id: @param ref,
   int pat: @pat ref
 );
 
@@ -2296,6 +2236,27 @@ return_expr_exprs(
   int expr: @expr ref
 );
 
+self_params(
+  unique int id: @self_param
+);
+
+#keyset[id]
+self_param_is_mut(
+  int id: @self_param ref
+);
+
+#keyset[id]
+self_param_lifetimes(
+  int id: @self_param ref,
+  int lifetime: @lifetime ref
+);
+
+#keyset[id]
+self_param_names(
+  int id: @self_param ref,
+  int name: @name ref
+);
+
 slice_pats(
   unique int id: @slice_pat
 );
@@ -2452,6 +2413,41 @@ underscore_expr_attrs(
   int attr: @attr ref
 );
 
+variants(
+  unique int id: @variant
+);
+
+#keyset[id, index]
+variant_attrs(
+  int id: @variant ref,
+  int index: int ref,
+  int attr: @attr ref
+);
+
+#keyset[id]
+variant_exprs(
+  int id: @variant ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
+variant_field_lists(
+  int id: @variant ref,
+  int field_list: @field_list ref
+);
+
+#keyset[id]
+variant_names(
+  int id: @variant ref,
+  int name: @name ref
+);
+
+#keyset[id]
+variant_visibilities(
+  int id: @variant ref,
+  int visibility: @visibility ref
+);
+
 wildcard_pats(
   unique int id: @wildcard_pat
 );
@@ -2542,9 +2538,9 @@ call_exprs(
 );
 
 #keyset[id]
-call_expr_exprs(
+call_expr_functions(
   int id: @call_expr ref,
-  int expr: @expr ref
+  int function: @expr ref
 );
 
 consts(

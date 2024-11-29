@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from CallExpr x
+from MatchExpr x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getExpr()
+select x, x.getScrutinee()

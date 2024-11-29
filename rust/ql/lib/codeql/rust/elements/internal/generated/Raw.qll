@@ -63,6 +63,30 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * Something that can be addressed by a path.
+   *
+   * TODO: This does not yet include all possible cases.
+   */
+  class Addressable extends @addressable, AstNode {
+    /**
+     * Gets the extended canonical path of this addressable, if it exists.
+     *
+     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
+     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
+     * addressable there-in).
+     */
+    string getExtendedCanonicalPath() { addressable_extended_canonical_paths(this, result) }
+
+    /**
+     * Gets the crate origin of this addressable, if it exists.
+     *
+     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
+     */
+    string getCrateOrigin() { addressable_crate_origins(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A ArgList. For example:
    * ```rust
    * todo!()
@@ -525,28 +549,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Param. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A normal parameter, `Param`, or a self parameter `SelfParam`.
    */
-  class Param extends @param, AstNode {
-    override string toString() { result = "Param" }
+  class ParamBase extends @param_base, AstNode {
+    /**
+     * Gets the `index`th attr of this parameter base (0-based).
+     */
+    Attr getAttr(int index) { param_base_attrs(this, index, result) }
 
     /**
-     * Gets the `index`th attr of this parameter (0-based).
+     * Gets the ty of this parameter base, if it exists.
      */
-    Attr getAttr(int index) { param_attrs(this, index, result) }
-
-    /**
-     * Gets the pat of this parameter, if it exists.
-     */
-    Pat getPat() { param_pats(this, result) }
-
-    /**
-     * Gets the ty of this parameter, if it exists.
-     */
-    TypeRef getTy() { param_ties(this, result) }
+    TypeRef getTy() { param_base_ties(this, result) }
   }
 
   /**
@@ -810,42 +824,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A SelfParam. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class SelfParam extends @self_param, AstNode {
-    override string toString() { result = "SelfParam" }
-
-    /**
-     * Gets the `index`th attr of this self parameter (0-based).
-     */
-    Attr getAttr(int index) { self_param_attrs(this, index, result) }
-
-    /**
-     * Holds if this self parameter is mut.
-     */
-    predicate isMut() { self_param_is_mut(this) }
-
-    /**
-     * Gets the lifetime of this self parameter, if it exists.
-     */
-    Lifetime getLifetime() { self_param_lifetimes(this, result) }
-
-    /**
-     * Gets the name of this self parameter, if it exists.
-     */
-    Name getName() { self_param_names(this, result) }
-
-    /**
-     * Gets the ty of this self parameter, if it exists.
-     */
-    TypeRef getTy() { self_param_ties(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A SourceFile. For example:
    * ```rust
    * todo!()
@@ -1043,42 +1021,6 @@ module Raw {
      * Gets the `index`th use tree of this use tree list (0-based).
      */
     UseTree getUseTree(int index) { use_tree_list_use_trees(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A Variant. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class Variant extends @variant, AstNode {
-    override string toString() { result = "Variant" }
-
-    /**
-     * Gets the `index`th attr of this variant (0-based).
-     */
-    Attr getAttr(int index) { variant_attrs(this, index, result) }
-
-    /**
-     * Gets the expression of this variant, if it exists.
-     */
-    Expr getExpr() { variant_exprs(this, result) }
-
-    /**
-     * Gets the field list of this variant, if it exists.
-     */
-    FieldList getFieldList() { variant_field_lists(this, result) }
-
-    /**
-     * Gets the name of this variant, if it exists.
-     */
-    Name getName() { variant_names(this, result) }
-
-    /**
-     * Gets the visibility of this variant, if it exists.
-     */
-    Visibility getVisibility() { variant_visibilities(this, result) }
   }
 
   /**
@@ -1954,23 +1896,7 @@ module Raw {
    * todo!()
    * ```
    */
-  class Item extends @item, Stmt {
-    /**
-     * Gets the extended canonical path of this item, if it exists.
-     *
-     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
-     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
-     * addressable there-in).
-     */
-    string getExtendedCanonicalPath() { item_extended_canonical_paths(this, result) }
-
-    /**
-     * Gets the crate origin of this item, if it exists.
-     *
-     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
-     */
-    string getCrateOrigin() { item_crate_origins(this, result) }
-  }
+  class Item extends @item, Stmt, Addressable { }
 
   /**
    * INTERNAL: Do not use.
@@ -2001,9 +1927,9 @@ module Raw {
     Attr getAttr(int index) { let_expr_attrs(this, index, result) }
 
     /**
-     * Gets the expression of this let expression, if it exists.
+     * Gets the scrutinee of this let expression, if it exists.
      */
-    Expr getExpr() { let_expr_exprs(this, result) }
+    Expr getScrutinee() { let_expr_scrutinees(this, result) }
 
     /**
      * Gets the pat of this let expression, if it exists.
@@ -2216,9 +2142,9 @@ module Raw {
     Attr getAttr(int index) { match_expr_attrs(this, index, result) }
 
     /**
-     * Gets the expression of this match expression, if it exists.
+     * Gets the scrutinee (the expression being matched) of this match expression, if it exists.
      */
-    Expr getExpr() { match_expr_exprs(this, result) }
+    Expr getScrutinee() { match_expr_scrutinees(this, result) }
 
     /**
      * Gets the match arm list of this match expression, if it exists.
@@ -2279,6 +2205,24 @@ module Raw {
      * Gets the `index`th pat of this or pat (0-based).
      */
     Pat getPat(int index) { or_pat_pats(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A parameter in a function or method. For example `x` in:
+   * ```rust
+   * fn new(x: T) -> Foo<T> {
+   *   // ...
+   * }
+   * ```
+   */
+  class Param extends @param, ParamBase {
+    override string toString() { result = "Param" }
+
+    /**
+     * Gets the pat of this parameter, if it exists.
+     */
+    Pat getPat() { param_pats(this, result) }
   }
 
   /**
@@ -2719,6 +2663,34 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `self` parameter. For example `self` in:
+   * ```rust
+   * fn push(&mut self, value: T) {
+   *   // ...
+   * }
+   * ```
+   */
+  class SelfParam extends @self_param, ParamBase {
+    override string toString() { result = "SelfParam" }
+
+    /**
+     * Holds if this self parameter is mut.
+     */
+    predicate isMut() { self_param_is_mut(this) }
+
+    /**
+     * Gets the lifetime of this self parameter, if it exists.
+     */
+    Lifetime getLifetime() { self_param_lifetimes(this, result) }
+
+    /**
+     * Gets the name of this self parameter, if it exists.
+     */
+    Name getName() { self_param_names(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A slice pattern. For example:
    * ```rust
    * match x {
@@ -2935,6 +2907,42 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A Variant. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
+  class Variant extends @variant, Addressable {
+    override string toString() { result = "Variant" }
+
+    /**
+     * Gets the `index`th attr of this variant (0-based).
+     */
+    Attr getAttr(int index) { variant_attrs(this, index, result) }
+
+    /**
+     * Gets the expression of this variant, if it exists.
+     */
+    Expr getExpr() { variant_exprs(this, result) }
+
+    /**
+     * Gets the field list of this variant, if it exists.
+     */
+    FieldList getFieldList() { variant_field_lists(this, result) }
+
+    /**
+     * Gets the name of this variant, if it exists.
+     */
+    Name getName() { variant_names(this, result) }
+
+    /**
+     * Gets the visibility of this variant, if it exists.
+     */
+    Visibility getVisibility() { variant_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A wildcard pattern. For example:
    * ```rust
    * let _ = 42;
@@ -3064,9 +3072,9 @@ module Raw {
     override string toString() { result = "CallExpr" }
 
     /**
-     * Gets the expression of this call expression, if it exists.
+     * Gets the function of this call expression, if it exists.
      */
-    Expr getExpr() { call_expr_exprs(this, result) }
+    Expr getFunction() { call_expr_functions(this, result) }
   }
 
   /**

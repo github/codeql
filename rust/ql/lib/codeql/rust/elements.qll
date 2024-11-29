@@ -4,6 +4,7 @@
  */
 
 import codeql.rust.elements.Abi
+import codeql.rust.elements.Addressable
 import codeql.rust.elements.ArgList
 import codeql.rust.elements.ArrayExpr
 import codeql.rust.elements.ArrayType
@@ -98,6 +99,7 @@ import codeql.rust.elements.NeverType
 import codeql.rust.elements.OffsetOfExpr
 import codeql.rust.elements.OrPat
 import codeql.rust.elements.Param
+import codeql.rust.elements.ParamBase
 import codeql.rust.elements.ParamList
 import codeql.rust.elements.ParenExpr
 import codeql.rust.elements.ParenPat
