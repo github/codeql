@@ -37,7 +37,7 @@ query predicate typetrack(DataFlow::SourceNode succ, DataFlow::SourceNode pred, 
   succ = PromiseTypeTracking::promiseStep(pred, summary)
 }
 
-class LegacyValueConfig extends DataFlow::Configuration {
+deprecated class LegacyValueConfig extends DataFlow::Configuration {
   LegacyValueConfig() { this = "LegacyValueConfig" }
 
   override predicate isSource(DataFlow::Node source) { ValueFlowConfig::isSource(source) }
@@ -48,7 +48,7 @@ class LegacyValueConfig extends DataFlow::Configuration {
 deprecated query predicate valueFlowDifference =
   DataFlowDiff<ValueFlow, LegacyValueConfig>::legacyDataFlowDifference/3;
 
-class LegacyTaintConfig extends TaintTracking::Configuration {
+deprecated class LegacyTaintConfig extends TaintTracking::Configuration {
   LegacyTaintConfig() { this = "LegacyTaintConfig" }
 
   override predicate isSource(DataFlow::Node source) { TaintConfig::isSource(source) }
