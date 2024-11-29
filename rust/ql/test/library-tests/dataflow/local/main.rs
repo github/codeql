@@ -238,13 +238,13 @@ fn block_expression3(b: bool) -> i64 {
 
 fn closure_flow_out() {
     let f = |cond| if cond { source(92) } else { 0 };
-    sink(f(true)); // $ MISSING: hasValueFlow=92
+    sink(f(true)); // $ hasValueFlow=92
 }
 
 fn closure_flow_in() {
     let f = |cond, data|
         if cond {
-            sink(data); // $ MISSING: hasValueFlow=87
+            sink(data); // $ hasValueFlow=87
         } else {
             sink(0)
         };
@@ -261,7 +261,7 @@ fn closure_flow_through() {
         };
     let a = source(43);
     let b = f(true, a);
-    sink(b); // $ MISSING: hasValueFlow=43
+    sink(b); // $ hasValueFlow=43
 }
 
 fn main() {
