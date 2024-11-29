@@ -485,61 +485,16 @@ QlBuiltins::BigInt varMaxVal(Variable v) { result = typeUpperBound(v.getUnspecif
 QlBuiltins::BigInt infinityAsBigInt() { result = 1.toBigInt().bitShiftLeft(1024) }
 
 QlBuiltins::BigInt parseAsBigInt(string s) {
-  s = any(Expr e).getValue() and
-  (
-    result = s.toBigInt()
-    or
-    s.toFloat() = 1.0 / 0.0 and result = infinityAsBigInt()
-    or
-    s.toFloat() = -(1.0 / 0.0) and result = -infinityAsBigInt()
-    or
-    exists(QlBuiltins::BigInt coeff, int base10exp | parseFiniteAsBigInt(s, coeff, base10exp) |
-      if base10exp < 0
-      then result = coeff / 10.toBigInt().pow(-base10exp)
-      else result = coeff * 10.toBigInt().pow(base10exp)
-    )
+  exists(Expr e | s = e.getValue() |
+    if exists(s.toBigInt()) then
+      result = s.toBigInt()
+    else
+      exists(float f | f = s.toFloat() |
+        f = 1.0 / 0.0 and result = infinityAsBigInt()
+        or
+        f = -(1.0 / 0.0) and result = -infinityAsBigInt()
+        or
+        result = f.toString().toBigInt()
+      )
   )
-}
-
-bindingset[s]
-private predicate parseFiniteAsBigInt(string s, QlBuiltins::BigInt coeff, int base10exp) {
-  exists(string t | s = "+" + t | parseUnsignedAsBigInt(t, coeff, base10exp))
-  or
-  exists(string t | s = "-" + t | parseUnsignedAsBigInt(t, -coeff, base10exp))
-  or
-  parseUnsignedAsBigInt(s, coeff, base10exp)
-}
-
-bindingset[s]
-private predicate parseUnsignedAsBigInt(string s, QlBuiltins::BigInt coeff, int base10exp) {
-  exists(string beforeE, int base10expAfterE, int base10expBeforeE |
-    beforeE = s.toUpperCase().splitAt("E", 0) and
-    base10expAfterE = parseSignedInt(s.toUpperCase().splitAt("E", 1)) and
-    parseUnsignedDecimalAsBigInt(beforeE, coeff, base10expBeforeE) and
-    base10exp = base10expBeforeE + base10expAfterE
-  )
-  or
-  exists(string beforeDot, string afterDot |
-    beforeDot = s.splitAt(".", 0) and
-    afterDot = s.splitAt(".", 1) and
-    coeff = (beforeDot + afterDot).toBigInt() and
-    base10exp = -afterDot.length()
-  )
-}
-
-bindingset[s]
-private predicate parseUnsignedDecimalAsBigInt(string s, QlBuiltins::BigInt coeff, int base10exp) {
-  exists(string beforeDot, string afterDot |
-    beforeDot = s.splitAt(".", 0) and
-    afterDot = s.splitAt(".", 1) and
-    coeff = (beforeDot + afterDot).toBigInt() and
-    base10exp = -afterDot.length()
-  )
-}
-
-bindingset[s]
-private int parseSignedInt(string s) {
-  exists(string t | s = "+" + t | result = t.toInt())
-  or
-  result = s.toInt()
 }
