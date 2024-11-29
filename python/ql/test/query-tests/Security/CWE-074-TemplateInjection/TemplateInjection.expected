@@ -12,5 +12,5 @@ nodes
 | JinjaSsti.py:21:25:21:32 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
 subpaths
 #select
-| JinjaSsti.py:10:18:10:25 | ControlFlowNode for template | JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | JinjaSsti.py:10:18:10:25 | ControlFlowNode for template | This Template construction depends on $@. | JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | user-provided value |
-| JinjaSsti.py:21:25:21:32 | ControlFlowNode for template | JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | JinjaSsti.py:21:25:21:32 | ControlFlowNode for template | This Template construction depends on $@. | JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | user-provided value |
+| JinjaSsti.py:10:18:10:25 | ControlFlowNode for template | JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | JinjaSsti.py:10:18:10:25 | ControlFlowNode for template | This template construction depends on a $@. | JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | user-provided value |
+| JinjaSsti.py:21:25:21:32 | ControlFlowNode for template | JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | JinjaSsti.py:21:25:21:32 | ControlFlowNode for template | This template construction depends on a $@. | JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | user-provided value |
