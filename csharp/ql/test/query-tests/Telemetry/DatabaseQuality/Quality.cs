@@ -23,15 +23,15 @@ public class Test
         Event1.Invoke(this, 5);
 
         var str = "abcd";
-        var sub = str[..3];
+        var sub = str[..3];         // TODO: this is not an indexer call, but rather a `str.Substring(0, 3)` call.
 
         Span<int> sp = null;
-        var slice = sp[..3];
+        var slice = sp[..3];        // TODO: this is not an indexer call, but rather a `sp.Slice(0, 3)` call.
 
         Span<byte> guidBytes = stackalloc byte[16];
-        guidBytes[08] = 1;
+        guidBytes[08] = 1;          // TODO: this indexer call has no target, because the target is a `ref` returning getter.
 
-        new MyList([new(), new Test()]);
+        new MyList([new(), new Test()]);        // TODO: the `new()` call has no target, which is unexpected, as we know at compile time, that this is a `new Test()` call.
     }
 
     public int MyProperty1 { get; }
