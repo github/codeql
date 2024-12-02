@@ -1533,11 +1533,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
           or
           // read
-          exists(Typ t0, Ap ap0, Content c |
-            fwdFlowRead(t0, ap0, c, _, node, state, cc, summaryCtx) and
-            fwdFlowConsCand(t0, ap0, c, t, ap) and
-            apa = getApprox(ap)
-          )
+          fwdFlowRead(_, _, _, _, node, t, ap, state, cc, summaryCtx) and
+          apa = getApprox(ap)
           or
           // flow into a callable without summary context
           fwdFlowInNoFlowThrough(node, apa, state, cc, t, ap) and
@@ -1676,7 +1673,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
-        private predicate fwdFlowRead(
+        private predicate fwdFlowRead0(
           Typ t, Ap ap, Content c, NodeEx node1, NodeEx node2, FlowState state, Cc cc,
           SummaryCtx summaryCtx
         ) {
@@ -1687,6 +1684,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             apc = getHeadContent(ap) and
             readStepCand0(node1, apc, c, node2)
           )
+        }
+
+        pragma[nomagic]
+        private predicate fwdFlowRead(
+          NodeEx node1, Typ t1, Ap ap1, Content c, NodeEx node2, Typ t2, Ap ap2, FlowState state,
+          Cc cc, SummaryCtx summaryCtx
+        ) {
+          fwdFlowRead0(t1, ap1, c, node1, node2, state, cc, summaryCtx) and
+          fwdFlowConsCand(t1, ap1, c, t2, ap2)
         }
 
         pragma[nomagic]
@@ -2127,10 +2133,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate readStepFwd(NodeEx n1, Ap ap1, Content c, NodeEx n2, Ap ap2) {
-          exists(Typ t1 |
-            fwdFlowRead(t1, ap1, c, n1, n2, _, _, _) and
-            fwdFlowConsCand(t1, ap1, c, _, ap2)
-          )
+          fwdFlowRead(n1, _, ap1, c, n2, _, ap2, _, _, _)
         }
 
         pragma[nomagic]
@@ -3200,10 +3203,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             )
             or
             // read
-            exists(NodeEx mid, Typ t0, Ap ap0, Content c |
+            exists(NodeEx mid, Typ t0, Ap ap0 |
               pn1 = TPathNodeMid(mid, state, cc, summaryCtx, t0, ap0) and
-              fwdFlowRead(t0, ap0, c, mid, node, state, cc, summaryCtx) and
-              fwdFlowConsCand(t0, ap0, c, t, ap) and
+              fwdFlowRead(mid, t0, ap0, _, node, t, ap, state, cc, summaryCtx) and
               label = "" and
               isStoreStep = false
             )
