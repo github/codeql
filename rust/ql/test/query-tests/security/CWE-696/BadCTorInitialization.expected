@@ -50,7 +50,5 @@ edges
 | test.rs:147:5:147:20 | call_target3_1(...) | test.rs:126:9:126:16 | stderr(...) |
 | test.rs:147:5:147:20 | call_target3_1(...) | test.rs:126:9:126:44 | ... .write_all(...) |
 | test.rs:151:1:151:7 | Attr | test.rs:153:5:153:12 | bad3_3(...) |
-| test.rs:157:5:157:20 | call_target3_1(...) | test.rs:126:9:126:16 | stderr(...) |
-| test.rs:157:5:157:20 | call_target3_1(...) | test.rs:126:9:126:44 | ... .write_all(...) |
 | test.rs:169:1:169:7 | Attr | test.rs:171:5:171:15 | ... .write(...) |
 | test.rs:169:1:169:7 | Attr | test.rs:171:5:171:15 | ...::stdout(...) |

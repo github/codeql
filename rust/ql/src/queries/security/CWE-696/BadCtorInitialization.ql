@@ -40,16 +40,17 @@ class StdCall extends Expr {
 class PathElement = AstNode;
 
 query predicate edges(PathElement pred, PathElement succ) {
-  // starting edge
+  // starting edge (`#[ctor]` / `#[dtor]` attribute to call)
   exists(CtorAttr ctor, Function f, CallExprBase call |
     f.getAnAttr() = ctor and
     call.getEnclosingCallable() = f and
-    pred = ctor and // source
-    succ = call // flow or sink node
+    pred = ctor and
+    succ = call
   )
   or
-  // transitive edge
+  // transitive edge (call to call)
   exists(Function f |
+    edges(_, pred) and
     pred.(CallExprBase).getStaticTarget() = f and
     succ.(CallExprBase).getEnclosingCallable() = f
   )
