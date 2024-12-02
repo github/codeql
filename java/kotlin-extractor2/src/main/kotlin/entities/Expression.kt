@@ -247,7 +247,7 @@ private fun KotlinFileExtractor.extractConstantInteger(
 
 context(KaSession)
 @Suppress("UNCHECKED_CAST")
-private fun <T : DbExpr> KotlinFileExtractor.extractConstantWith(
+private fun <T : DbLiteral> KotlinFileExtractor.extractConstantWith(
     write: (Label<out T>, Label<out DbType>, Label<out DbExprparent>, Int) -> Unit,
     t: KaType,
     textName: String,
@@ -267,7 +267,7 @@ private fun <T : DbExpr> KotlinFileExtractor.extractConstantWith(
         val type = useType(t)
         write(it, type.javaResult.id, parent, idx)
         tw.writeExprsKotlinType(it, type.kotlinResult.id)
-        tw.writeNamestrings(textName, textValue, it as Label<out DbNamedexprorstmt>)
+        tw.writeNamestrings(textName, textValue, it)
         extractExprContext(it, locId, callable, enclosingStmt)
     }
 
