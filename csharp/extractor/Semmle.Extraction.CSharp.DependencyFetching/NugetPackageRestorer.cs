@@ -3,8 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -592,7 +593,26 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private bool IsFeedReachable(string feed, int timeoutMilliSeconds, int tryCount, bool allowExceptions = true)
         {
             logger.LogInfo($"Checking if Nuget feed '{feed}' is reachable...");
-            using HttpClient client = new();
+
+            // Configure the HttpClient to be aware of the Dependabot Proxy, if used.
+            HttpClientHandler httpClientHandler = new();
+            if (this.dependabotProxy.IsConfigured)
+            {
+                httpClientHandler.Proxy = new WebProxy(this.dependabotProxy.Address);
+
+                if (!String.IsNullOrEmpty(this.dependabotProxy.CertificatePath))
+                {
+                    X509Certificate2 proxyCert = new X509Certificate2(this.dependabotProxy.CertificatePath);
+                    httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, _) =>
+                    {
+                        chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
+                        chain.ChainPolicy.CustomTrustStore.Add(proxyCert);
+                        return chain.Build(cert);
+                    };
+                }
+            }
+
+            using HttpClient client = new(httpClientHandler);
 
             for (var i = 0; i < tryCount; i++)
             {
