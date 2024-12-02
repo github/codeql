@@ -1410,8 +1410,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[node, ap, isStoreStep]
         predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep);
 
-        bindingset[typ, contentType]
-        predicate typecheckStore(Typ typ, DataFlowType contentType);
+        bindingset[t1, t2]
+        predicate typecheck(Typ t1, Typ t2);
 
         default predicate enableTypeFlow() { any() }
       }
@@ -1641,7 +1641,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             not inBarrier(node2, state) and
             PrevStage::storeStepCand(node1, apa1, c, node2, contentType, containerType) and
             t2 = getTyp(containerType) and
-            typecheckStore(t1, contentType)
+            // We need to typecheck stores here, since reverse flow through a getter
+            // might have a different type here compared to inside the getter.
+            typecheck(t1, getTyp(contentType))
           )
         }
 
@@ -3742,8 +3744,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[node, ap, isStoreStep]
       predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) { any() }
 
-      bindingset[typ, contentType]
-      predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
+      bindingset[t1, t2]
+      predicate typecheck(Typ t1, Typ t2) { any() }
 
       predicate enableTypeFlow() { none() }
     }
@@ -3855,8 +3857,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[node, ap, isStoreStep]
       predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) { any() }
 
-      bindingset[typ, contentType]
-      predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
+      bindingset[t1, t2]
+      predicate typecheck(Typ t1, Typ t2) { any() }
     }
 
     private module Stage3 = MkStage<Stage2>::Stage<Stage3Param>;
@@ -3975,12 +3977,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         if clearExceptStore(node, ap) then isStoreStep = true else any()
       }
 
-      bindingset[typ, contentType]
-      predicate typecheckStore(Typ typ, DataFlowType contentType) {
-        // We need to typecheck stores here, since reverse flow through a getter
-        // might have a different type here compared to inside the getter.
-        compatibleTypesFilter(typ, contentType)
-      }
+      bindingset[t1, t2]
+      predicate typecheck(Typ t1, Typ t2) { compatibleTypesFilter(t1, t2) }
     }
 
     private module Stage4 = MkStage<Stage3>::Stage<Stage4Param>;
@@ -4227,10 +4225,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         if clearExceptStore(node, ap) then isStoreStep = true else any()
       }
 
-      bindingset[typ, contentType]
-      predicate typecheckStore(Typ typ, DataFlowType contentType) {
-        compatibleTypesFilter(typ, contentType)
-      }
+      bindingset[t1, t2]
+      predicate typecheck(Typ t1, Typ t2) { compatibleTypesFilter(t1, t2) }
     }
 
     private module Stage5 = MkStage<Stage4>::Stage<Stage5Param>;
@@ -4426,10 +4422,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         if clearExceptStore(node, ap) then isStoreStep = true else any()
       }
 
-      bindingset[typ, contentType]
-      predicate typecheckStore(Typ typ, DataFlowType contentType) {
-        compatibleTypesFilter(typ, contentType)
-      }
+      bindingset[t1, t2]
+      predicate typecheck(Typ t1, Typ t2) { compatibleTypesFilter(t1, t2) }
     }
 
     module Stage6 = MkStage<Stage5>::Stage<Stage6Param>;
