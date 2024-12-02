@@ -71,6 +71,6 @@ query predicate edges(PathElement pred, PathElement succ) {
 }
 
 from CtorAttr source, StdCall sink
-where edges*(source, sink)
+where edges+(source, sink)
 select sink, source, sink,
   "Call to " + sink.toString() + " in a function with the " + source.getWhichAttr() + " attribute."
