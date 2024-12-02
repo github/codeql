@@ -41,15 +41,18 @@ class PathElement = AstNode;
 
 query predicate edges(PathElement pred, PathElement succ) {
   // starting edge
-  exists(CtorAttr ctor, Function f, StdCall call |
+  exists(CtorAttr ctor, Function f, CallExprBase call |
     f.getAnAttr() = ctor and
     call.getEnclosingCallable() = f and
     pred = ctor and // source
-    succ = call // sink
+    succ = call // flow or sink node
   )
-  // or
+  or
   // transitive edge
-  // TODO
+  exists(Function f |
+    pred.(CallExprBase).getStaticTarget() = f and
+    succ.(CallExprBase).getEnclosingCallable() = f
+  )
 }
 
 from CtorAttr ctor, StdCall call
