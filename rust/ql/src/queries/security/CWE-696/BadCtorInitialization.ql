@@ -14,7 +14,7 @@
 import rust
 
 /**
- * A `#[ctor]` or `#[dtor]` attribute.
+ * A `#[ctor]` or `#[dtor]` attribute, that is, a source for this query.
  */
 class CtorAttr extends Attr {
   string whichAttr;
@@ -28,7 +28,7 @@ class CtorAttr extends Attr {
 }
 
 /**
- * A call into the Rust standard library.
+ * A call into the Rust standard library, that is, a sink for this query.
  */
 class StdCall extends Expr {
   StdCall() {
@@ -39,23 +39,38 @@ class StdCall extends Expr {
 
 class PathElement = AstNode;
 
-query predicate edges(PathElement pred, PathElement succ) {
-  // starting edge (`#[ctor]` / `#[dtor]` attribute to call)
-  exists(CtorAttr ctor, Function f |
-    f.getAnAttr() = ctor and
-    pred = ctor and
-    succ.(CallExprBase).getEnclosingCallable() = f
-  )
+/**
+ * A candidate edge for the query that is reachable from
+ * a source.
+ */
+predicate edgesFwd(PathElement pred, PathElement succ) {
+  // attribute (source) -> callable
+  pred.(CtorAttr) = succ.(Callable).getAnAttr()
   or
-  // transitive edge (call to call)
-  exists(Function f |
-    edges(_, pred) and
-    pred.(CallExprBase).getStaticTarget() = f and
-    succ.(CallExprBase).getEnclosingCallable() = f
+  // [forwards reachable] callable -> enclosed call
+  edgesFwd(_, pred) and
+  pred = succ.(CallExprBase).getEnclosingCallable()
+  or
+  // [forwards reachable] call -> target callable
+  edgesFwd(_, pred) and
+  pred.(CallExprBase).getStaticTarget() = succ
+}
+
+/**
+ * An edge for the query that is reachable from a source and backwards
+ * reachable from a sink (adding the backwards reachability constraint
+ * reduces the amount of output data produced).
+ */
+query predicate edges(PathElement pred, PathElement succ) {
+  edgesFwd(pred, succ) and
+  (
+    succ instanceof StdCall // sink
+    or
+    edges(succ, _) // backwards reachable from a sink
   )
 }
 
-from CtorAttr ctor, StdCall call
-where edges*(ctor, call)
-select call, ctor, call,
-  "Call to " + call.toString() + " in a function with the " + ctor.getWhichAttr() + " attribute."
+from CtorAttr source, StdCall sink
+where edges*(source, sink)
+select sink, source, sink,
+  "Call to " + sink.toString() + " in a function with the " + source.getWhichAttr() + " attribute."

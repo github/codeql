@@ -14,41 +14,31 @@
 | test.rs:126:9:126:44 | ... .write_all(...) | test.rs:145:1:145:7 | Attr | test.rs:126:9:126:44 | ... .write_all(...) | Call to ... .write_all(...) in a function with the ctor attribute. |
 | test.rs:171:5:171:15 | ...::stdout(...) | test.rs:169:1:169:7 | Attr | test.rs:171:5:171:15 | ...::stdout(...) | Call to ...::stdout(...) in a function with the ctor attribute. |
 edges
-| test.rs:29:1:29:13 | Attr | test.rs:31:9:31:25 | ...::stdout(...) |
-| test.rs:29:1:29:13 | Attr | test.rs:31:9:31:49 | ... .write(...) |
-| test.rs:34:1:34:13 | Attr | test.rs:36:9:36:25 | ...::stdout(...) |
-| test.rs:34:1:34:13 | Attr | test.rs:36:9:36:49 | ... .write(...) |
-| test.rs:40:1:40:13 | Attr | test.rs:43:9:43:25 | ...::stdout(...) |
-| test.rs:40:1:40:13 | Attr | test.rs:43:9:43:49 | ... .write(...) |
-| test.rs:51:1:51:7 | Attr | test.rs:53:9:53:16 | stdout(...) |
-| test.rs:51:1:51:7 | Attr | test.rs:53:9:53:40 | ... .write(...) |
-| test.rs:56:1:56:7 | Attr | test.rs:58:9:58:16 | stderr(...) |
-| test.rs:56:1:56:7 | Attr | test.rs:58:9:58:44 | ... .write_all(...) |
-| test.rs:61:1:61:7 | Attr | test.rs:63:14:63:28 | ...::_print(...) |
-| test.rs:66:1:66:7 | Attr | test.rs:68:20:68:32 | ...::new(...) |
-| test.rs:66:1:66:7 | Attr | test.rs:69:9:69:24 | ...::stdin(...) |
-| test.rs:66:1:66:7 | Attr | test.rs:69:9:69:45 | ... .read_line(...) |
-| test.rs:74:1:74:7 | Attr | test.rs:76:17:76:45 | ...::create(...) |
-| test.rs:74:1:74:7 | Attr | test.rs:76:17:76:54 | ... .unwrap(...) |
-| test.rs:79:1:79:7 | Attr | test.rs:81:14:81:38 | ...::now(...) |
-| test.rs:88:1:88:7 | Attr | test.rs:90:5:90:35 | ...::sleep(...) |
-| test.rs:95:1:95:7 | Attr | test.rs:97:5:97:23 | ...::exit(...) |
-| test.rs:100:1:100:13 | Attr | test.rs:102:5:102:46 | ... .write_nl(...) |
-| test.rs:100:1:100:13 | Attr | test.rs:102:5:102:46 | ...::new(...) |
-| test.rs:100:1:100:13 | Attr | test.rs:102:31:102:45 | ... .write_fmt(...) |
-| test.rs:105:1:105:13 | Attr | test.rs:107:5:107:23 | panic_cold_explicit(...) |
-| test.rs:113:1:113:13 | Attr | test.rs:115:18:115:37 | ...::new::<...>(...) |
-| test.rs:113:1:113:13 | Attr | test.rs:116:15:116:27 | alloc(...) |
-| test.rs:113:1:113:13 | Attr | test.rs:118:9:118:21 | ... .is_null(...) |
-| test.rs:113:1:113:13 | Attr | test.rs:119:9:119:28 | dealloc(...) |
-| test.rs:129:1:129:7 | Attr | test.rs:131:5:131:20 | call_target3_1(...) |
-| test.rs:131:5:131:20 | call_target3_1(...) | test.rs:126:9:126:16 | stderr(...) |
-| test.rs:131:5:131:20 | call_target3_1(...) | test.rs:126:9:126:44 | ... .write_all(...) |
-| test.rs:140:1:140:7 | Attr | test.rs:142:5:142:20 | call_target3_2(...) |
-| test.rs:145:1:145:7 | Attr | test.rs:147:5:147:20 | call_target3_1(...) |
-| test.rs:145:1:145:7 | Attr | test.rs:148:5:148:20 | call_target3_2(...) |
-| test.rs:147:5:147:20 | call_target3_1(...) | test.rs:126:9:126:16 | stderr(...) |
-| test.rs:147:5:147:20 | call_target3_1(...) | test.rs:126:9:126:44 | ... .write_all(...) |
-| test.rs:151:1:151:7 | Attr | test.rs:153:5:153:12 | bad3_3(...) |
-| test.rs:169:1:169:7 | Attr | test.rs:171:5:171:15 | ... .write(...) |
-| test.rs:169:1:169:7 | Attr | test.rs:171:5:171:15 | ...::stdout(...) |
+| test.rs:29:1:29:13 | Attr | test.rs:29:1:32:1 | fn bad1_1 |
+| test.rs:29:1:32:1 | fn bad1_1 | test.rs:31:9:31:25 | ...::stdout(...) |
+| test.rs:34:1:34:13 | Attr | test.rs:34:1:37:1 | fn bad1_2 |
+| test.rs:34:1:37:1 | fn bad1_2 | test.rs:36:9:36:25 | ...::stdout(...) |
+| test.rs:39:1:44:1 | fn bad1_3 | test.rs:43:9:43:25 | ...::stdout(...) |
+| test.rs:40:1:40:13 | Attr | test.rs:39:1:44:1 | fn bad1_3 |
+| test.rs:51:1:51:7 | Attr | test.rs:51:1:54:1 | fn bad2_1 |
+| test.rs:51:1:54:1 | fn bad2_1 | test.rs:53:9:53:16 | stdout(...) |
+| test.rs:56:1:56:7 | Attr | test.rs:56:1:59:1 | fn bad2_2 |
+| test.rs:56:1:59:1 | fn bad2_2 | test.rs:58:9:58:16 | stderr(...) |
+| test.rs:61:1:61:7 | Attr | test.rs:61:1:64:1 | fn bad2_3 |
+| test.rs:61:1:64:1 | fn bad2_3 | test.rs:63:14:63:28 | ...::_print(...) |
+| test.rs:66:1:66:7 | Attr | test.rs:66:1:70:1 | fn bad2_4 |
+| test.rs:66:1:70:1 | fn bad2_4 | test.rs:69:9:69:24 | ...::stdin(...) |
+| test.rs:88:1:88:7 | Attr | test.rs:88:1:91:1 | fn bad2_7 |
+| test.rs:88:1:91:1 | fn bad2_7 | test.rs:90:5:90:35 | ...::sleep(...) |
+| test.rs:95:1:95:7 | Attr | test.rs:95:1:98:1 | fn bad2_8 |
+| test.rs:95:1:98:1 | fn bad2_8 | test.rs:97:5:97:23 | ...::exit(...) |
+| test.rs:125:1:127:1 | fn call_target3_1 | test.rs:126:9:126:16 | stderr(...) |
+| test.rs:125:1:127:1 | fn call_target3_1 | test.rs:126:9:126:44 | ... .write_all(...) |
+| test.rs:129:1:129:7 | Attr | test.rs:129:1:132:1 | fn bad3_1 |
+| test.rs:129:1:132:1 | fn bad3_1 | test.rs:131:5:131:20 | call_target3_1(...) |
+| test.rs:131:5:131:20 | call_target3_1(...) | test.rs:125:1:127:1 | fn call_target3_1 |
+| test.rs:145:1:145:7 | Attr | test.rs:145:1:149:1 | fn bad3_3 |
+| test.rs:145:1:149:1 | fn bad3_3 | test.rs:147:5:147:20 | call_target3_1(...) |
+| test.rs:147:5:147:20 | call_target3_1(...) | test.rs:125:1:127:1 | fn call_target3_1 |
+| test.rs:169:1:169:7 | Attr | test.rs:169:1:172:1 | fn bad4_1 |
+| test.rs:169:1:172:1 | fn bad4_1 | test.rs:171:5:171:15 | ...::stdout(...) |
