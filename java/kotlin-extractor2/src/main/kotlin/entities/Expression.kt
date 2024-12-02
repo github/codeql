@@ -218,6 +218,7 @@ private fun KotlinFileExtractor.extractNull(
         extractExprContext(it, locId, callable, enclosingStmt)
     }
 
+context(KaSession)
 private fun KotlinFileExtractor.extractConstantInteger(
     t: KaType,
     text: String,
@@ -232,10 +233,21 @@ private fun KotlinFileExtractor.extractConstantInteger(
             overrideId: Label<out DbExpr>? = null
     */
 ) =
-    extractConstant(tw::writeExprs_integerliteral, t, text, v.toString(), locId, parent, idx, callable, enclosingStmt)
+    extractConstantWith(
+        tw::writeExprs_integerliteral,
+        t,
+        text,
+        v.toString(),
+        locId,
+        parent,
+        idx,
+        callable,
+        enclosingStmt
+    )
 
+context(KaSession)
 @Suppress("UNCHECKED_CAST")
-private fun <T : DbExpr> KotlinFileExtractor.extractConstant(
+private fun <T : DbExpr> KotlinFileExtractor.extractConstantWith(
     write: (Label<out T>, Label<out DbType>, Label<out DbExprparent>, Int) -> Unit,
     t: KaType,
     textName: String,
@@ -341,7 +353,7 @@ private fun KotlinFileExtractor.extractPrefixUnaryExpression(
     }
 
     if (trapWriterWriteExpr != null) {
-        return extractUnaryExpressionWith(expression, callable, parent, trapWriterWriteExpr)
+        return extractUnaryExpressionWith(trapWriterWriteExpr, expression, callable, parent)
     }
 
     TODO("Extract as method call")
@@ -368,7 +380,7 @@ private fun KotlinFileExtractor.extractPostfixUnaryExpression(
     }
 
     if (trapWriterWriteExpr != null) {
-        return extractUnaryExpressionWith(expression, callable, parent, trapWriterWriteExpr)
+        return extractUnaryExpressionWith(trapWriterWriteExpr, expression, callable, parent)
     }
 
     TODO("Extract as method call")
@@ -413,7 +425,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
             else -> TODO("Extract error expression")
         }
 
-        return extractBinaryExpressionWith(expression, callable, parent, trapWriterWriteExpr)
+        return extractBinaryExpressionWith(trapWriterWriteExpr, expression, callable, parent)
     }
 
     val trapWriterWriteExpr = when {
@@ -436,7 +448,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
     }
 
     if (trapWriterWriteExpr != null) {
-        return extractBinaryExpressionWith(expression, callable, parent, trapWriterWriteExpr)
+        return extractBinaryExpressionWith(trapWriterWriteExpr, expression, callable, parent)
     }
 
     val trapWriterWriteExprComparison = when (op) {
@@ -531,15 +543,15 @@ private fun <T : DbBinaryexpr> KotlinFileExtractor.extractRawBinaryExpression(
 
 context(KaSession)
 private fun <T : DbBinaryexpr> KotlinFileExtractor.extractBinaryExpressionWith(
-    expression: KtBinaryExpression,
-    callable: Label<out DbCallable>,
-    parent: StmtExprParent,
     extractExpression: (
         id: Label<out T>,
         typeid: Label<out DbType>,
         parent: Label<out DbExprparent>,
         idx: Int
-    ) -> Unit
+    ) -> Unit,
+    expression: KtBinaryExpression,
+    callable: Label<out DbCallable>,
+    parent: StmtExprParent
 ): Label<out DbExpr> {
     val exprParent = parent.expr(expression, callable)
     val id = extractRawBinaryExpression(expression.expressionType!!, exprParent, extractExpression)
@@ -553,15 +565,15 @@ private fun <T : DbBinaryexpr> KotlinFileExtractor.extractBinaryExpressionWith(
 
 context(KaSession)
 private fun <T : DbUnaryexpr> KotlinFileExtractor.extractUnaryExpressionWith(
-    expression: KtUnaryExpression,
-    callable: Label<out DbCallable>,
-    parent: StmtExprParent,
     extractExpression: (
         id: Label<out T>,
         typeid: Label<out DbType>,
         parent: Label<out DbExprparent>,
         idx: Int
-    ) -> Unit
+    ) -> Unit,
+    expression: KtUnaryExpression,
+    callable: Label<out DbCallable>,
+    parent: StmtExprParent
 ): Label<out DbExpr> {
     val id = tw.getFreshIdLabel<T>()
     val type = useType(expression.expressionType)
@@ -1965,7 +1977,7 @@ private fun KotlinFileExtractor.extractConstant(
             // OLD: KE1: overrideId = overrideId
         )
 
-        KtNodeTypes.BOOLEAN_CONSTANT -> extractConstant(
+        KtNodeTypes.BOOLEAN_CONSTANT -> extractConstantWith(
             tw::writeExprs_booleanliteral,
             t,
             text,
@@ -1977,7 +1989,7 @@ private fun KotlinFileExtractor.extractConstant(
             enclosingStmt
         )
 
-        KtNodeTypes.CHARACTER_CONSTANT -> extractConstant(
+        KtNodeTypes.CHARACTER_CONSTANT -> extractConstantWith(
             tw::writeExprs_characterliteral,
             t,
             text,
@@ -2003,7 +2015,7 @@ private fun KotlinFileExtractor.extractConstant(
                 else -> TODO()
             }
 
-            return extractConstant(
+            return extractConstantWith(
                 trapWriterWriteExpr,
                 t,
                 f.toString(),
@@ -2042,7 +2054,7 @@ private fun KotlinFileExtractor.extractConstant(
                 }
 
                 t.isLongType -> {
-                    return extractConstant(
+                    return extractConstantWith(
                         tw::writeExprs_longliteral,
                         t,
                         text,
