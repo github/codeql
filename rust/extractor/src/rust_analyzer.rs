@@ -198,8 +198,11 @@ fn canonicalize_if_on_windows(path: &Path) -> Option<PathBuf> {
 }
 
 pub(crate) fn path_to_file_id(path: &Path, vfs: &Vfs) -> Option<FileId> {
-    // There seems to be some flaky inconsistencies around UNC paths on Windows, so if we fail to
-    // find the file id for a UNC path like that, we try to canonicalize it using dunce then.
+    // There seems to be some flaky inconsistencies around paths on Windows, where sometimes paths
+    // are registered in `vfs` without the `//?/` long path prefix. Then it happens that paths with
+    // that prefix are not found. To work around that, on Windows after failing to find `path` as
+    // is, we then try to canonicalize it using dunce. Dunce will be able to losslessly convert a
+    // `//?/` path into its equivalent one in `vfs` without the prefix, if there is one.
     iter::once(path.to_path_buf())
         .chain(canonicalize_if_on_windows(path))
         .filter_map(|p| {
