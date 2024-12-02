@@ -10,8 +10,8 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
 import codeql.rust.elements.ParamList
-import codeql.rust.elements.PathType
-import codeql.rust.elements.RetType
+import codeql.rust.elements.PathTypeRef
+import codeql.rust.elements.RetTypeRef
 import codeql.rust.elements.ReturnTypeSyntax
 import codeql.rust.elements.TypeRef
 
@@ -76,9 +76,9 @@ module Generated {
     /**
      * Gets the path type of this path segment, if it exists.
      */
-    PathType getPathType() {
+    PathTypeRef getPathType() {
       result =
-        Synth::convertPathTypeFromRaw(Synth::convertPathSegmentToRaw(this)
+        Synth::convertPathTypeRefFromRaw(Synth::convertPathSegmentToRaw(this)
               .(Raw::PathSegment)
               .getPathType())
     }
@@ -91,9 +91,9 @@ module Generated {
     /**
      * Gets the ret type of this path segment, if it exists.
      */
-    RetType getRetType() {
+    RetTypeRef getRetType() {
       result =
-        Synth::convertRetTypeFromRaw(Synth::convertPathSegmentToRaw(this)
+        Synth::convertRetTypeRefFromRaw(Synth::convertPathSegmentToRaw(this)
               .(Raw::PathSegment)
               .getRetType())
     }

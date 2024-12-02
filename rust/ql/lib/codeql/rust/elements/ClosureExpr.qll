@@ -7,7 +7,7 @@ private import internal.ClosureExprImpl
 import codeql.rust.elements.Callable
 import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.Expr
-import codeql.rust.elements.RetType
+import codeql.rust.elements.RetTypeRef
 
 /**
  * A closure expression. For example:

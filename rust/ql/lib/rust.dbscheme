@@ -174,7 +174,7 @@ locatable_locations(
 | @record_pat_field_list
 | @rename
 | @resolvable
-| @ret_type
+| @ret_type_ref
 | @return_type_syntax
 | @source_file
 | @stmt
@@ -677,13 +677,13 @@ path_segment_param_lists(
 #keyset[id]
 path_segment_path_types(
   int id: @path_segment ref,
-  int path_type: @path_type ref
+  int path_type: @path_type_ref ref
 );
 
 #keyset[id]
 path_segment_ret_types(
   int id: @path_segment ref,
-  int ret_type: @ret_type ref
+  int ret_type: @ret_type_ref ref
 );
 
 #keyset[id]
@@ -841,13 +841,13 @@ resolvable_resolved_crate_origins(
   string resolved_crate_origin: string ref
 );
 
-ret_types(
-  unique int id: @ret_type
+ret_type_refs(
+  unique int id: @ret_type_ref
 );
 
 #keyset[id]
-ret_type_ties(
-  int id: @ret_type ref,
+ret_type_ref_ties(
+  int id: @ret_type_ref ref,
   int ty: @type_ref ref
 );
 
@@ -978,20 +978,20 @@ type_bound_list_bounds(
 );
 
 @type_ref =
-  @array_type
-| @dyn_trait_type
-| @fn_ptr_type
-| @for_type
-| @impl_trait_type
-| @infer_type
-| @macro_type
-| @never_type
-| @paren_type
-| @path_type
-| @ptr_type
-| @ref_type
-| @slice_type
-| @tuple_type
+  @array_type_ref
+| @dyn_trait_type_ref
+| @fn_ptr_type_ref
+| @for_type_ref
+| @impl_trait_type_ref
+| @infer_type_ref
+| @macro_type_ref
+| @never_type_ref
+| @paren_type_ref
+| @path_type_ref
+| @ptr_type_ref
+| @ref_type_ref
+| @slice_type_ref
+| @tuple_type_ref
 ;
 
 use_trees(
@@ -1105,19 +1105,19 @@ array_expr_exprs(
   int expr: @expr ref
 );
 
-array_types(
-  unique int id: @array_type
+array_type_refs(
+  unique int id: @array_type_ref
 );
 
 #keyset[id]
-array_type_const_args(
-  int id: @array_type ref,
+array_type_ref_const_args(
+  int id: @array_type_ref ref,
   int const_arg: @const_arg ref
 );
 
 #keyset[id]
-array_type_ties(
-  int id: @array_type ref,
+array_type_ref_ties(
+  int id: @array_type_ref ref,
   int ty: @type_ref ref
 );
 
@@ -1169,7 +1169,7 @@ assoc_type_arg_param_lists(
 #keyset[id]
 assoc_type_arg_ret_types(
   int id: @assoc_type_arg ref,
-  int ret_type: @ret_type ref
+  int ret_type: @ret_type_ref ref
 );
 
 #keyset[id]
@@ -1371,7 +1371,7 @@ closure_expr_is_static(
 #keyset[id]
 closure_expr_ret_types(
   int id: @closure_expr ref,
-  int ret_type: @ret_type ref
+  int ret_type: @ret_type_ref ref
 );
 
 comments(
@@ -1456,13 +1456,13 @@ continue_expr_lifetimes(
   int lifetime: @lifetime ref
 );
 
-dyn_trait_types(
-  unique int id: @dyn_trait_type
+dyn_trait_type_refs(
+  unique int id: @dyn_trait_type_ref
 );
 
 #keyset[id]
-dyn_trait_type_type_bound_lists(
-  int id: @dyn_trait_type ref,
+dyn_trait_type_ref_type_bound_lists(
+  int id: @dyn_trait_type_ref ref,
   int type_bound_list: @type_bound_list ref
 );
 
@@ -1499,56 +1499,56 @@ field_expr_name_refs(
   int name_ref: @name_ref ref
 );
 
-fn_ptr_types(
-  unique int id: @fn_ptr_type
+fn_ptr_type_refs(
+  unique int id: @fn_ptr_type_ref
 );
 
 #keyset[id]
-fn_ptr_type_abis(
-  int id: @fn_ptr_type ref,
+fn_ptr_type_ref_abis(
+  int id: @fn_ptr_type_ref ref,
   int abi: @abi ref
 );
 
 #keyset[id]
-fn_ptr_type_is_async(
-  int id: @fn_ptr_type ref
+fn_ptr_type_ref_is_async(
+  int id: @fn_ptr_type_ref ref
 );
 
 #keyset[id]
-fn_ptr_type_is_const(
-  int id: @fn_ptr_type ref
+fn_ptr_type_ref_is_const(
+  int id: @fn_ptr_type_ref ref
 );
 
 #keyset[id]
-fn_ptr_type_is_unsafe(
-  int id: @fn_ptr_type ref
+fn_ptr_type_ref_is_unsafe(
+  int id: @fn_ptr_type_ref ref
 );
 
 #keyset[id]
-fn_ptr_type_param_lists(
-  int id: @fn_ptr_type ref,
+fn_ptr_type_ref_param_lists(
+  int id: @fn_ptr_type_ref ref,
   int param_list: @param_list ref
 );
 
 #keyset[id]
-fn_ptr_type_ret_types(
-  int id: @fn_ptr_type ref,
-  int ret_type: @ret_type ref
+fn_ptr_type_ref_ret_types(
+  int id: @fn_ptr_type_ref ref,
+  int ret_type: @ret_type_ref ref
 );
 
-for_types(
-  unique int id: @for_type
+for_type_refs(
+  unique int id: @for_type_ref
 );
 
 #keyset[id]
-for_type_generic_param_lists(
-  int id: @for_type ref,
+for_type_ref_generic_param_lists(
+  int id: @for_type_ref ref,
   int generic_param_list: @generic_param_list ref
 );
 
 #keyset[id]
-for_type_ties(
-  int id: @for_type ref,
+for_type_ref_ties(
+  int id: @for_type_ref ref,
   int ty: @type_ref ref
 );
 
@@ -1638,13 +1638,13 @@ if_expr_thens(
   int then: @block_expr ref
 );
 
-impl_trait_types(
-  unique int id: @impl_trait_type
+impl_trait_type_refs(
+  unique int id: @impl_trait_type_ref
 );
 
 #keyset[id]
-impl_trait_type_type_bound_lists(
-  int id: @impl_trait_type ref,
+impl_trait_type_ref_type_bound_lists(
+  int id: @impl_trait_type_ref ref,
   int type_bound_list: @type_bound_list ref
 );
 
@@ -1671,8 +1671,8 @@ index_expr_indices(
   int index: @expr ref
 );
 
-infer_types(
-  unique int id: @infer_type
+infer_type_refs(
+  unique int id: @infer_type_ref
 );
 
 @item =
@@ -1844,13 +1844,13 @@ macro_pat_macro_calls(
   int macro_call: @macro_call ref
 );
 
-macro_types(
-  unique int id: @macro_type
+macro_type_refs(
+  unique int id: @macro_type_ref
 );
 
 #keyset[id]
-macro_type_macro_calls(
-  int id: @macro_type ref,
+macro_type_ref_macro_calls(
+  int id: @macro_type_ref ref,
   int macro_call: @macro_call ref
 );
 
@@ -1877,8 +1877,8 @@ match_expr_match_arm_lists(
   int match_arm_list: @match_arm_list ref
 );
 
-never_types(
-  unique int id: @never_type
+never_type_refs(
+  unique int id: @never_type_ref
 );
 
 offset_of_exprs(
@@ -1953,13 +1953,13 @@ paren_pat_pats(
   int pat: @pat ref
 );
 
-paren_types(
-  unique int id: @paren_type
+paren_type_refs(
+  unique int id: @paren_type_ref
 );
 
 #keyset[id]
-paren_type_ties(
-  int id: @paren_type ref,
+paren_type_ref_ties(
+  int id: @paren_type_ref ref,
   int ty: @type_ref ref
 );
 
@@ -1993,13 +1993,13 @@ path_pat_paths(
   int path: @path ref
 );
 
-path_types(
-  unique int id: @path_type
+path_type_refs(
+  unique int id: @path_type_ref
 );
 
 #keyset[id]
-path_type_paths(
-  int id: @path_type ref,
+path_type_ref_paths(
+  int id: @path_type_ref ref,
   int path: @path ref
 );
 
@@ -2026,23 +2026,23 @@ prefix_expr_operator_names(
   string operator_name: string ref
 );
 
-ptr_types(
-  unique int id: @ptr_type
+ptr_type_refs(
+  unique int id: @ptr_type_ref
 );
 
 #keyset[id]
-ptr_type_is_const(
-  int id: @ptr_type ref
+ptr_type_ref_is_const(
+  int id: @ptr_type_ref ref
 );
 
 #keyset[id]
-ptr_type_is_mut(
-  int id: @ptr_type ref
+ptr_type_ref_is_mut(
+  int id: @ptr_type_ref ref
 );
 
 #keyset[id]
-ptr_type_ties(
-  int id: @ptr_type ref,
+ptr_type_ref_ties(
+  int id: @ptr_type_ref ref,
   int ty: @type_ref ref
 );
 
@@ -2187,24 +2187,24 @@ ref_pat_pats(
   int pat: @pat ref
 );
 
-ref_types(
-  unique int id: @ref_type
+ref_type_refs(
+  unique int id: @ref_type_ref
 );
 
 #keyset[id]
-ref_type_is_mut(
-  int id: @ref_type ref
+ref_type_ref_is_mut(
+  int id: @ref_type_ref ref
 );
 
 #keyset[id]
-ref_type_lifetimes(
-  int id: @ref_type ref,
+ref_type_ref_lifetimes(
+  int id: @ref_type_ref ref,
   int lifetime: @lifetime ref
 );
 
 #keyset[id]
-ref_type_ties(
-  int id: @ref_type ref,
+ref_type_ref_ties(
+  int id: @ref_type_ref ref,
   int ty: @type_ref ref
 );
 
@@ -2268,13 +2268,13 @@ slice_pat_pats(
   int pat: @pat ref
 );
 
-slice_types(
-  unique int id: @slice_type
+slice_type_refs(
+  unique int id: @slice_type_ref
 );
 
 #keyset[id]
-slice_type_ties(
-  int id: @slice_type ref,
+slice_type_ref_ties(
+  int id: @slice_type_ref ref,
   int ty: @type_ref ref
 );
 
@@ -2352,13 +2352,13 @@ tuple_struct_pat_paths(
   int path: @path ref
 );
 
-tuple_types(
-  unique int id: @tuple_type
+tuple_type_refs(
+  unique int id: @tuple_type_ref
 );
 
 #keyset[id, index]
-tuple_type_fields(
-  int id: @tuple_type ref,
+tuple_type_ref_fields(
+  int id: @tuple_type_ref ref,
   int index: int ref,
   int field: @type_ref ref
 );
@@ -2742,7 +2742,7 @@ function_names(
 #keyset[id]
 function_ret_types(
   int id: @function ref,
-  int ret_type: @ret_type ref
+  int ret_type: @ret_type_ref ref
 );
 
 #keyset[id]

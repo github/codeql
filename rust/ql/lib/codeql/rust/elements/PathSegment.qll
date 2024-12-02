@@ -8,8 +8,8 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
 import codeql.rust.elements.ParamList
-import codeql.rust.elements.PathType
-import codeql.rust.elements.RetType
+import codeql.rust.elements.PathTypeRef
+import codeql.rust.elements.RetTypeRef
 import codeql.rust.elements.ReturnTypeSyntax
 import codeql.rust.elements.TypeRef
 

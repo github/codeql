@@ -9,7 +9,7 @@ import codeql.rust.elements.GenericArg
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
 import codeql.rust.elements.ParamList
-import codeql.rust.elements.RetType
+import codeql.rust.elements.RetTypeRef
 import codeql.rust.elements.ReturnTypeSyntax
 import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRef

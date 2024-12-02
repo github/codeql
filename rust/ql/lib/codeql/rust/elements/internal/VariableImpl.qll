@@ -100,7 +100,7 @@ module Impl {
         // without implementations
         not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = pat) and
         // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
-        not exists(FnPtrType fp | fp.getParamList().getParam(_).getPat() = pat)
+        not exists(FnPtrTypeRef fp | fp.getParamList().getParam(_).getPat() = pat)
       )
   }
 

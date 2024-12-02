@@ -11,7 +11,7 @@ import codeql.rust.elements.internal.GenericArgImpl::Impl as GenericArgImpl
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
 import codeql.rust.elements.ParamList
-import codeql.rust.elements.RetType
+import codeql.rust.elements.RetTypeRef
 import codeql.rust.elements.ReturnTypeSyntax
 import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRef
@@ -95,9 +95,9 @@ module Generated {
     /**
      * Gets the ret type of this assoc type argument, if it exists.
      */
-    RetType getRetType() {
+    RetTypeRef getRetType() {
       result =
-        Synth::convertRetTypeFromRaw(Synth::convertAssocTypeArgToRaw(this)
+        Synth::convertRetTypeRefFromRaw(Synth::convertAssocTypeArgToRaw(this)
               .(Raw::AssocTypeArg)
               .getRetType())
     }

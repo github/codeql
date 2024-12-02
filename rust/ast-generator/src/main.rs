@@ -15,15 +15,14 @@ fn project_root() -> PathBuf {
 }
 
 fn class_name(type_name: &str) -> String {
-    let name = match type_name {
-        "BinExpr" => "BinaryExpr",
-        "ElseBranch" => "Expr",
-        "Fn" => "Function",
-        "Literal" => "LiteralExpr",
-        "Type" => "TypeRef",
-        _ => type_name,
-    };
-    name.to_owned()
+    match type_name {
+        "BinExpr" => "BinaryExpr".to_owned(),
+        "ElseBranch" => "Expr".to_owned(),
+        "Fn" => "Function".to_owned(),
+        "Literal" => "LiteralExpr".to_owned(),
+        _ if type_name.ends_with("Type") => format!("{}Ref", type_name),
+        _ => type_name.to_owned(),
+    }
 }
 
 fn property_name(type_name: &str, field_name: &str) -> String {

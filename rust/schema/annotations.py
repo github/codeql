@@ -842,10 +842,10 @@ class _:
     """
 
 
-@annotate(ArrayType)
+@annotate(ArrayTypeRef)
 class _:
     """
-    A ArrayType. For example:
+    A ArrayTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -930,10 +930,10 @@ class _:
     """
 
 
-@annotate(DynTraitType)
+@annotate(DynTraitTypeRef)
 class _:
     """
-    A DynTraitType. For example:
+    A DynTraitTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -1000,10 +1000,10 @@ class _:
     """
 
 
-@annotate(FnPtrType)
+@annotate(FnPtrTypeRef)
 class _:
     """
-    A FnPtrType. For example:
+    A FnPtrTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -1022,10 +1022,10 @@ class _:
     loop_body: drop
 
 
-@annotate(ForType)
+@annotate(ForTypeRef)
 class _:
     """
-    A ForType. For example:
+    A ForTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -1098,20 +1098,20 @@ class _:
     """
 
 
-@annotate(ImplTraitType)
+@annotate(ImplTraitTypeRef)
 class _:
     """
-    A ImplTraitType. For example:
+    A ImplTraitTypeRef. For example:
     ```rust
     todo!()
     ```
     """
 
 
-@annotate(InferType)
+@annotate(InferTypeRef)
 class _:
     """
-    A InferType. For example:
+    A InferTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -1255,10 +1255,10 @@ class _:
     """
 
 
-@annotate(MacroType)
+@annotate(MacroTypeRef)
 class _:
     """
-    A MacroType. For example:
+    A MacroTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -1315,10 +1315,10 @@ class _:
     """
 
 
-@annotate(NeverType)
+@annotate(NeverTypeRef)
 class _:
     """
-    A NeverType. For example:
+    A NeverTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -1380,10 +1380,10 @@ class _:
     """
 
 
-@annotate(ParenType)
+@annotate(ParenTypeRef)
 class _:
     """
-    A ParenType. For example:
+    A ParenTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -1398,7 +1398,7 @@ class _:
     """
 
 
-@annotate(PathType)
+@annotate(PathTypeRef)
 @qltest.test_with(Path)
 class _:
     """
@@ -1410,10 +1410,10 @@ class _:
     """
 
 
-@annotate(PtrType)
+@annotate(PtrTypeRef)
 class _:
     """
-    A PtrType. For example:
+    A PtrTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -1460,10 +1460,10 @@ class _:
     """
 
 
-@annotate(RefType)
+@annotate(RefTypeRef)
 class _:
     """
-    A RefType. For example:
+    A RefTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -1490,10 +1490,10 @@ class _:
     """
 
 
-@annotate(RetType)
+@annotate(RetTypeRef)
 class _:
     """
-    A RetType. For example:
+    A RetTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -1524,10 +1524,10 @@ class _:
     ty: drop
 
 
-@annotate(SliceType)
+@annotate(SliceTypeRef)
 class _:
     """
-    A SliceType. For example:
+    A SliceTypeRef. For example:
     ```rust
     todo!()
     ```
@@ -1641,10 +1641,10 @@ class _:
     """
 
 
-@annotate(TupleType)
+@annotate(TupleTypeRef)
 class _:
     """
-    A TupleType. For example:
+    A TupleTypeRef. For example:
     ```rust
     todo!()
     ```

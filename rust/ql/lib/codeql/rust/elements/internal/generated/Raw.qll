@@ -615,12 +615,12 @@ module Raw {
     /**
      * Gets the path type of this path segment, if it exists.
      */
-    PathType getPathType() { path_segment_path_types(this, result) }
+    PathTypeRef getPathType() { path_segment_path_types(this, result) }
 
     /**
      * Gets the ret type of this path segment, if it exists.
      */
-    RetType getRetType() { path_segment_ret_types(this, result) }
+    RetTypeRef getRetType() { path_segment_ret_types(this, result) }
 
     /**
      * Gets the return type syntax of this path segment, if it exists.
@@ -797,18 +797,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A RetType. For example:
+   * A RetTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class RetType extends @ret_type, AstNode {
-    override string toString() { result = "RetType" }
+  class RetTypeRef extends @ret_type_ref, AstNode {
+    override string toString() { result = "RetTypeRef" }
 
     /**
-     * Gets the type reference of this ret type, if it exists.
+     * Gets the type reference of this ret type reference, if it exists.
      */
-    TypeRef getTy() { ret_type_ties(this, result) }
+    TypeRef getTy() { ret_type_ref_ties(this, result) }
   }
 
   /**
@@ -1126,23 +1126,23 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ArrayType. For example:
+   * A ArrayTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ArrayType extends @array_type, TypeRef {
-    override string toString() { result = "ArrayType" }
+  class ArrayTypeRef extends @array_type_ref, TypeRef {
+    override string toString() { result = "ArrayTypeRef" }
 
     /**
-     * Gets the const argument of this array type, if it exists.
+     * Gets the const argument of this array type reference, if it exists.
      */
-    ConstArg getConstArg() { array_type_const_args(this, result) }
+    ConstArg getConstArg() { array_type_ref_const_args(this, result) }
 
     /**
-     * Gets the type reference of this array type, if it exists.
+     * Gets the type reference of this array type reference, if it exists.
      */
-    TypeRef getTy() { array_type_ties(this, result) }
+    TypeRef getTy() { array_type_ref_ties(this, result) }
   }
 
   /**
@@ -1201,7 +1201,7 @@ module Raw {
     /**
      * Gets the ret type of this assoc type argument, if it exists.
      */
-    RetType getRetType() { assoc_type_arg_ret_types(this, result) }
+    RetTypeRef getRetType() { assoc_type_arg_ret_types(this, result) }
 
     /**
      * Gets the return type syntax of this assoc type argument, if it exists.
@@ -1465,7 +1465,7 @@ module Raw {
     /**
      * Gets the ret type of this closure expression, if it exists.
      */
-    RetType getRetType() { closure_expr_ret_types(this, result) }
+    RetTypeRef getRetType() { closure_expr_ret_types(this, result) }
   }
 
   /**
@@ -1600,18 +1600,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A DynTraitType. For example:
+   * A DynTraitTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class DynTraitType extends @dyn_trait_type, TypeRef {
-    override string toString() { result = "DynTraitType" }
+  class DynTraitTypeRef extends @dyn_trait_type_ref, TypeRef {
+    override string toString() { result = "DynTraitTypeRef" }
 
     /**
-     * Gets the type bound list of this dyn trait type, if it exists.
+     * Gets the type bound list of this dyn trait type reference, if it exists.
      */
-    TypeBoundList getTypeBoundList() { dyn_trait_type_type_bound_lists(this, result) }
+    TypeBoundList getTypeBoundList() { dyn_trait_type_ref_type_bound_lists(this, result) }
   }
 
   /**
@@ -1660,64 +1660,64 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A FnPtrType. For example:
+   * A FnPtrTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class FnPtrType extends @fn_ptr_type, TypeRef {
-    override string toString() { result = "FnPtrType" }
+  class FnPtrTypeRef extends @fn_ptr_type_ref, TypeRef {
+    override string toString() { result = "FnPtrTypeRef" }
 
     /**
-     * Gets the abi of this fn ptr type, if it exists.
+     * Gets the abi of this fn ptr type reference, if it exists.
      */
-    Abi getAbi() { fn_ptr_type_abis(this, result) }
+    Abi getAbi() { fn_ptr_type_ref_abis(this, result) }
 
     /**
-     * Holds if this fn ptr type is async.
+     * Holds if this fn ptr type reference is async.
      */
-    predicate isAsync() { fn_ptr_type_is_async(this) }
+    predicate isAsync() { fn_ptr_type_ref_is_async(this) }
 
     /**
-     * Holds if this fn ptr type is const.
+     * Holds if this fn ptr type reference is const.
      */
-    predicate isConst() { fn_ptr_type_is_const(this) }
+    predicate isConst() { fn_ptr_type_ref_is_const(this) }
 
     /**
-     * Holds if this fn ptr type is unsafe.
+     * Holds if this fn ptr type reference is unsafe.
      */
-    predicate isUnsafe() { fn_ptr_type_is_unsafe(this) }
+    predicate isUnsafe() { fn_ptr_type_ref_is_unsafe(this) }
 
     /**
-     * Gets the parameter list of this fn ptr type, if it exists.
+     * Gets the parameter list of this fn ptr type reference, if it exists.
      */
-    ParamList getParamList() { fn_ptr_type_param_lists(this, result) }
+    ParamList getParamList() { fn_ptr_type_ref_param_lists(this, result) }
 
     /**
-     * Gets the ret type of this fn ptr type, if it exists.
+     * Gets the ret type of this fn ptr type reference, if it exists.
      */
-    RetType getRetType() { fn_ptr_type_ret_types(this, result) }
+    RetTypeRef getRetType() { fn_ptr_type_ref_ret_types(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
-   * A ForType. For example:
+   * A ForTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ForType extends @for_type, TypeRef {
-    override string toString() { result = "ForType" }
+  class ForTypeRef extends @for_type_ref, TypeRef {
+    override string toString() { result = "ForTypeRef" }
 
     /**
-     * Gets the generic parameter list of this for type, if it exists.
+     * Gets the generic parameter list of this for type reference, if it exists.
      */
-    GenericParamList getGenericParamList() { for_type_generic_param_lists(this, result) }
+    GenericParamList getGenericParamList() { for_type_ref_generic_param_lists(this, result) }
 
     /**
-     * Gets the type reference of this for type, if it exists.
+     * Gets the type reference of this for type reference, if it exists.
      */
-    TypeRef getTy() { for_type_ties(this, result) }
+    TypeRef getTy() { for_type_ref_ties(this, result) }
   }
 
   /**
@@ -1837,18 +1837,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ImplTraitType. For example:
+   * A ImplTraitTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ImplTraitType extends @impl_trait_type, TypeRef {
-    override string toString() { result = "ImplTraitType" }
+  class ImplTraitTypeRef extends @impl_trait_type_ref, TypeRef {
+    override string toString() { result = "ImplTraitTypeRef" }
 
     /**
-     * Gets the type bound list of this impl trait type, if it exists.
+     * Gets the type bound list of this impl trait type reference, if it exists.
      */
-    TypeBoundList getTypeBoundList() { impl_trait_type_type_bound_lists(this, result) }
+    TypeBoundList getTypeBoundList() { impl_trait_type_ref_type_bound_lists(this, result) }
   }
 
   /**
@@ -1880,13 +1880,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A InferType. For example:
+   * A InferTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class InferType extends @infer_type, TypeRef {
-    override string toString() { result = "InferType" }
+  class InferTypeRef extends @infer_type_ref, TypeRef {
+    override string toString() { result = "InferTypeRef" }
   }
 
   /**
@@ -2103,18 +2103,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A MacroType. For example:
+   * A MacroTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class MacroType extends @macro_type, TypeRef {
-    override string toString() { result = "MacroType" }
+  class MacroTypeRef extends @macro_type_ref, TypeRef {
+    override string toString() { result = "MacroTypeRef" }
 
     /**
-     * Gets the macro call of this macro type, if it exists.
+     * Gets the macro call of this macro type reference, if it exists.
      */
-    MacroCall getMacroCall() { macro_type_macro_calls(this, result) }
+    MacroCall getMacroCall() { macro_type_ref_macro_calls(this, result) }
   }
 
   /**
@@ -2154,13 +2154,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A NeverType. For example:
+   * A NeverTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class NeverType extends @never_type, TypeRef {
-    override string toString() { result = "NeverType" }
+  class NeverTypeRef extends @never_type_ref, TypeRef {
+    override string toString() { result = "NeverTypeRef" }
   }
 
   /**
@@ -2264,18 +2264,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ParenType. For example:
+   * A ParenTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ParenType extends @paren_type, TypeRef {
-    override string toString() { result = "ParenType" }
+  class ParenTypeRef extends @paren_type_ref, TypeRef {
+    override string toString() { result = "ParenTypeRef" }
 
     /**
-     * Gets the type reference of this paren type, if it exists.
+     * Gets the type reference of this paren type reference, if it exists.
      */
-    TypeRef getTy() { paren_type_ties(this, result) }
+    TypeRef getTy() { paren_type_ref_ties(this, result) }
   }
 
   /**
@@ -2333,13 +2333,13 @@ module Raw {
    * type Y = X::Item;
    * ```
    */
-  class PathType extends @path_type, TypeRef {
-    override string toString() { result = "PathType" }
+  class PathTypeRef extends @path_type_ref, TypeRef {
+    override string toString() { result = "PathTypeRef" }
 
     /**
-     * Gets the path of this path type, if it exists.
+     * Gets the path of this path type reference, if it exists.
      */
-    Path getPath() { path_type_paths(this, result) }
+    Path getPath() { path_type_ref_paths(this, result) }
   }
 
   /**
@@ -2372,28 +2372,28 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A PtrType. For example:
+   * A PtrTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class PtrType extends @ptr_type, TypeRef {
-    override string toString() { result = "PtrType" }
+  class PtrTypeRef extends @ptr_type_ref, TypeRef {
+    override string toString() { result = "PtrTypeRef" }
 
     /**
-     * Holds if this ptr type is const.
+     * Holds if this ptr type reference is const.
      */
-    predicate isConst() { ptr_type_is_const(this) }
+    predicate isConst() { ptr_type_ref_is_const(this) }
 
     /**
-     * Holds if this ptr type is mut.
+     * Holds if this ptr type reference is mut.
      */
-    predicate isMut() { ptr_type_is_mut(this) }
+    predicate isMut() { ptr_type_ref_is_mut(this) }
 
     /**
-     * Gets the type reference of this ptr type, if it exists.
+     * Gets the type reference of this ptr type reference, if it exists.
      */
-    TypeRef getTy() { ptr_type_ties(this, result) }
+    TypeRef getTy() { ptr_type_ref_ties(this, result) }
   }
 
   /**
@@ -2593,28 +2593,28 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A RefType. For example:
+   * A RefTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class RefType extends @ref_type, TypeRef {
-    override string toString() { result = "RefType" }
+  class RefTypeRef extends @ref_type_ref, TypeRef {
+    override string toString() { result = "RefTypeRef" }
 
     /**
-     * Holds if this reference type is mut.
+     * Holds if this reference type reference is mut.
      */
-    predicate isMut() { ref_type_is_mut(this) }
+    predicate isMut() { ref_type_ref_is_mut(this) }
 
     /**
-     * Gets the lifetime of this reference type, if it exists.
+     * Gets the lifetime of this reference type reference, if it exists.
      */
-    Lifetime getLifetime() { ref_type_lifetimes(this, result) }
+    Lifetime getLifetime() { ref_type_ref_lifetimes(this, result) }
 
     /**
-     * Gets the type reference of this reference type, if it exists.
+     * Gets the type reference of this reference type reference, if it exists.
      */
-    TypeRef getTy() { ref_type_ties(this, result) }
+    TypeRef getTy() { ref_type_ref_ties(this, result) }
   }
 
   /**
@@ -2711,18 +2711,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A SliceType. For example:
+   * A SliceTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class SliceType extends @slice_type, TypeRef {
-    override string toString() { result = "SliceType" }
+  class SliceTypeRef extends @slice_type_ref, TypeRef {
+    override string toString() { result = "SliceTypeRef" }
 
     /**
-     * Gets the type reference of this slice type, if it exists.
+     * Gets the type reference of this slice type reference, if it exists.
      */
-    TypeRef getTy() { slice_type_ties(this, result) }
+    TypeRef getTy() { slice_type_ref_ties(this, result) }
   }
 
   /**
@@ -2828,18 +2828,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TupleType. For example:
+   * A TupleTypeRef. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class TupleType extends @tuple_type, TypeRef {
-    override string toString() { result = "TupleType" }
+  class TupleTypeRef extends @tuple_type_ref, TypeRef {
+    override string toString() { result = "TupleTypeRef" }
 
     /**
-     * Gets the `index`th field of this tuple type (0-based).
+     * Gets the `index`th field of this tuple type reference (0-based).
      */
-    TypeRef getField(int index) { tuple_type_fields(this, index, result) }
+    TypeRef getField(int index) { tuple_type_ref_fields(this, index, result) }
   }
 
   /**
@@ -3290,7 +3290,7 @@ module Raw {
     /**
      * Gets the ret type of this function, if it exists.
      */
-    RetType getRetType() { function_ret_types(this, result) }
+    RetTypeRef getRetType() { function_ret_types(this, result) }
 
     /**
      * Gets the visibility of this function, if it exists.
