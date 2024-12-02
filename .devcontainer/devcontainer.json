@@ -1,4 +1,5 @@
 {
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
   "extensions": [
     "rust-lang.rust-analyzer",
     "bungcip.better-toml",
