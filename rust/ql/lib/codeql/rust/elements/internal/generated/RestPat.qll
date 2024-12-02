@@ -26,7 +26,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RestPat" }
 
     /**
-     * Gets the `index`th attr of this rest pat (0-based).
+     * Gets the `index`th attr of this rest pattern (0-based).
      */
     Attr getAttr(int index) {
       result =
@@ -34,12 +34,12 @@ module Generated {
     }
 
     /**
-     * Gets any of the attrs of this rest pat.
+     * Gets any of the attrs of this rest pattern.
      */
     final Attr getAnAttr() { result = this.getAttr(_) }
 
     /**
-     * Gets the number of attrs of this rest pat.
+     * Gets the number of attrs of this rest pattern.
      */
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
   }

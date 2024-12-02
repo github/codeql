@@ -81,7 +81,7 @@ module Generated {
     final predicate hasLetElse() { exists(this.getLetElse()) }
 
     /**
-     * Gets the pat of this let statement, if it exists.
+     * Gets the pattern of this let statement, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getPat())

@@ -29,7 +29,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "BoxPat" }
 
     /**
-     * Gets the pat of this box pat, if it exists.
+     * Gets the pattern of this box pattern, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertBoxPatToRaw(this).(Raw::BoxPat).getPat())

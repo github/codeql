@@ -442,7 +442,7 @@ module Raw {
     MatchGuard getGuard() { match_arm_guards(this, result) }
 
     /**
-     * Gets the pat of this match arm, if it exists.
+     * Gets the pattern of this match arm, if it exists.
      */
     Pat getPat() { match_arm_pats(this, result) }
   }
@@ -727,17 +727,17 @@ module Raw {
     override string toString() { result = "RecordPatField" }
 
     /**
-     * Gets the `index`th attr of this record pat field (0-based).
+     * Gets the `index`th attr of this record pattern field (0-based).
      */
     Attr getAttr(int index) { record_pat_field_attrs(this, index, result) }
 
     /**
-     * Gets the name reference of this record pat field, if it exists.
+     * Gets the name reference of this record pattern field, if it exists.
      */
     NameRef getNameRef() { record_pat_field_name_refs(this, result) }
 
     /**
-     * Gets the pat of this record pat field, if it exists.
+     * Gets the pattern of this record pattern field, if it exists.
      */
     Pat getPat() { record_pat_field_pats(this, result) }
   }
@@ -753,12 +753,12 @@ module Raw {
     override string toString() { result = "RecordPatFieldList" }
 
     /**
-     * Gets the `index`th field of this record pat field list (0-based).
+     * Gets the `index`th field of this record pattern field list (0-based).
      */
     RecordPatField getField(int index) { record_pat_field_list_fields(this, index, result) }
 
     /**
-     * Gets the rest pat of this record pat field list, if it exists.
+     * Gets the rest pattern of this record pattern field list, if it exists.
      */
     RestPat getRestPat() { record_pat_field_list_rest_pats(this, result) }
   }
@@ -1319,7 +1319,7 @@ module Raw {
     override string toString() { result = "BoxPat" }
 
     /**
-     * Gets the pat of this box pat, if it exists.
+     * Gets the pattern of this box pattern, if it exists.
      */
     Pat getPat() { box_pat_pats(this, result) }
   }
@@ -1520,12 +1520,12 @@ module Raw {
     override string toString() { result = "ConstBlockPat" }
 
     /**
-     * Gets the block expression of this const block pat, if it exists.
+     * Gets the block expression of this const block pattern, if it exists.
      */
     BlockExpr getBlockExpr() { const_block_pat_block_exprs(this, result) }
 
     /**
-     * Holds if this const block pat is const.
+     * Holds if this const block pattern is const.
      */
     predicate isConst() { const_block_pat_is_const(this) }
   }
@@ -1770,27 +1770,27 @@ module Raw {
     override string toString() { result = "IdentPat" }
 
     /**
-     * Gets the `index`th attr of this ident pat (0-based).
+     * Gets the `index`th attr of this ident pattern (0-based).
      */
     Attr getAttr(int index) { ident_pat_attrs(this, index, result) }
 
     /**
-     * Holds if this ident pat is mut.
+     * Holds if this ident pattern is mut.
      */
     predicate isMut() { ident_pat_is_mut(this) }
 
     /**
-     * Holds if this ident pat is reference.
+     * Holds if this ident pattern is reference.
      */
     predicate isRef() { ident_pat_is_ref(this) }
 
     /**
-     * Gets the name of this ident pat, if it exists.
+     * Gets the name of this ident pattern, if it exists.
      */
     Name getName() { ident_pat_names(this, result) }
 
     /**
-     * Gets the pat of this ident pat, if it exists.
+     * Gets the pattern of this ident pattern, if it exists.
      */
     Pat getPat() { ident_pat_pats(this, result) }
   }
@@ -1932,7 +1932,7 @@ module Raw {
     Expr getScrutinee() { let_expr_scrutinees(this, result) }
 
     /**
-     * Gets the pat of this let expression, if it exists.
+     * Gets the pattern of this let expression, if it exists.
      */
     Pat getPat() { let_expr_pats(this, result) }
   }
@@ -1970,7 +1970,7 @@ module Raw {
     LetElse getLetElse() { let_stmt_let_elses(this, result) }
 
     /**
-     * Gets the pat of this let statement, if it exists.
+     * Gets the pattern of this let statement, if it exists.
      */
     Pat getPat() { let_stmt_pats(this, result) }
 
@@ -2064,7 +2064,7 @@ module Raw {
     override string toString() { result = "LiteralPat" }
 
     /**
-     * Gets the literal of this literal pat, if it exists.
+     * Gets the literal of this literal pattern, if it exists.
      */
     LiteralExpr getLiteral() { literal_pat_literals(this, result) }
   }
@@ -2096,7 +2096,7 @@ module Raw {
     override string toString() { result = "MacroPat" }
 
     /**
-     * Gets the macro call of this macro pat, if it exists.
+     * Gets the macro call of this macro pattern, if it exists.
      */
     MacroCall getMacroCall() { macro_pat_macro_calls(this, result) }
   }
@@ -2202,7 +2202,7 @@ module Raw {
     override string toString() { result = "OrPat" }
 
     /**
-     * Gets the `index`th pat of this or pat (0-based).
+     * Gets the `index`th pattern of this or pattern (0-based).
      */
     Pat getPat(int index) { or_pat_pats(this, index, result) }
   }
@@ -2220,7 +2220,7 @@ module Raw {
     override string toString() { result = "Param" }
 
     /**
-     * Gets the pat of this parameter, if it exists.
+     * Gets the pattern of this parameter, if it exists.
      */
     Pat getPat() { param_pats(this, result) }
   }
@@ -2257,7 +2257,7 @@ module Raw {
     override string toString() { result = "ParenPat" }
 
     /**
-     * Gets the pat of this paren pat, if it exists.
+     * Gets the pattern of this paren pattern, if it exists.
      */
     Pat getPat() { paren_pat_pats(this, result) }
   }
@@ -2320,7 +2320,7 @@ module Raw {
     override string toString() { result = "PathPat" }
 
     /**
-     * Gets the path of this path pat, if it exists.
+     * Gets the path of this path pattern, if it exists.
      */
     Path getPath() { path_pat_paths(this, result) }
   }
@@ -2447,17 +2447,17 @@ module Raw {
     override string toString() { result = "RangePat" }
 
     /**
-     * Gets the end of this range pat, if it exists.
+     * Gets the end of this range pattern, if it exists.
      */
     Pat getEnd() { range_pat_ends(this, result) }
 
     /**
-     * Gets the operator name of this range pat, if it exists.
+     * Gets the operator name of this range pattern, if it exists.
      */
     string getOperatorName() { range_pat_operator_names(this, result) }
 
     /**
-     * Gets the start of this range pat, if it exists.
+     * Gets the start of this range pattern, if it exists.
      */
     Pat getStart() { range_pat_starts(this, result) }
   }
@@ -2518,12 +2518,12 @@ module Raw {
     override string toString() { result = "RecordPat" }
 
     /**
-     * Gets the path of this record pat, if it exists.
+     * Gets the path of this record pattern, if it exists.
      */
     Path getPath() { record_pat_paths(this, result) }
 
     /**
-     * Gets the record pat field list of this record pat, if it exists.
+     * Gets the record pattern field list of this record pattern, if it exists.
      */
     RecordPatFieldList getRecordPatFieldList() { record_pat_record_pat_field_lists(this, result) }
   }
@@ -2581,12 +2581,12 @@ module Raw {
     override string toString() { result = "RefPat" }
 
     /**
-     * Holds if this reference pat is mut.
+     * Holds if this reference pattern is mut.
      */
     predicate isMut() { ref_pat_is_mut(this) }
 
     /**
-     * Gets the pat of this reference pat, if it exists.
+     * Gets the pattern of this reference pattern, if it exists.
      */
     Pat getPat() { ref_pat_pats(this, result) }
   }
@@ -2628,7 +2628,7 @@ module Raw {
     override string toString() { result = "RestPat" }
 
     /**
-     * Gets the `index`th attr of this rest pat (0-based).
+     * Gets the `index`th attr of this rest pattern (0-based).
      */
     Attr getAttr(int index) { rest_pat_attrs(this, index, result) }
   }
@@ -2704,7 +2704,7 @@ module Raw {
     override string toString() { result = "SlicePat" }
 
     /**
-     * Gets the `index`th pat of this slice pat (0-based).
+     * Gets the `index`th pattern of this slice pattern (0-based).
      */
     Pat getPat(int index) { slice_pat_pats(this, index, result) }
   }
@@ -2796,7 +2796,7 @@ module Raw {
     override string toString() { result = "TuplePat" }
 
     /**
-     * Gets the `index`th field of this tuple pat (0-based).
+     * Gets the `index`th field of this tuple pattern (0-based).
      */
     Pat getField(int index) { tuple_pat_fields(this, index, result) }
   }
@@ -2816,12 +2816,12 @@ module Raw {
     override string toString() { result = "TupleStructPat" }
 
     /**
-     * Gets the `index`th field of this tuple struct pat (0-based).
+     * Gets the `index`th field of this tuple struct pattern (0-based).
      */
     Pat getField(int index) { tuple_struct_pat_fields(this, index, result) }
 
     /**
-     * Gets the path of this tuple struct pat, if it exists.
+     * Gets the path of this tuple struct pattern, if it exists.
      */
     Path getPath() { tuple_struct_pat_paths(this, result) }
   }
@@ -3889,7 +3889,7 @@ module Raw {
     Expr getIterable() { for_expr_iterables(this, result) }
 
     /**
-     * Gets the pat of this for expression, if it exists.
+     * Gets the pattern of this for expression, if it exists.
      */
     Pat getPat() { for_expr_pats(this, result) }
   }

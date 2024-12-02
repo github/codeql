@@ -61,7 +61,7 @@ module Generated {
     final predicate hasScrutinee() { exists(this.getScrutinee()) }
 
     /**
-     * Gets the pat of this let expression, if it exists.
+     * Gets the pattern of this let expression, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertLetExprToRaw(this).(Raw::LetExpr).getPat())

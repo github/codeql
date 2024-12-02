@@ -59,7 +59,7 @@ module Generated {
     final predicate hasIterable() { exists(this.getIterable()) }
 
     /**
-     * Gets the pat of this for expression, if it exists.
+     * Gets the pattern of this for expression, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertForExprToRaw(this).(Raw::ForExpr).getPat())
