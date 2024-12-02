@@ -30,6 +30,8 @@ public class Test
 
         Span<byte> guidBytes = stackalloc byte[16];
         guidBytes[08] = 1;
+
+        new MyList([new(), new Test()]);
     }
 
     public int MyProperty1 { get; }
@@ -47,5 +49,10 @@ public class Test
         {
             return new T();
         }
+    }
+
+    class MyList
+    {
+        public MyList(IEnumerable<Test> init) { }
     }
 }
