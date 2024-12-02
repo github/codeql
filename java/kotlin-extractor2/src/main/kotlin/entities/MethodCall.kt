@@ -16,7 +16,6 @@ import org.jetbrains.kotlin.utils.mapToIndex
 context(KaSession)
 fun KotlinFileExtractor.extractMethodCall(
     call: KtCallExpression,
-    enclosingCallable: Label<out DbCallable>,
     stmtExprParent: StmtExprParent
 ): Label<out DbExpr> {
     val callTarget = call.resolveCallTarget() as? KaSimpleFunctionCall?
@@ -63,7 +62,7 @@ fun KotlinFileExtractor.extractMethodCall(
         target,
         tw.getLocation(call),
         call.expressionType!!,
-        enclosingCallable,
+        stmtExprParent.callable,
         exprParent.parent,
         exprParent.idx,
         exprParent.enclosingStmt,

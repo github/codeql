@@ -25,7 +25,7 @@ private fun KotlinFileExtractor.extractExpressionBody(e: KtExpression, callable:
     with("expression body", e) {
         val locId = tw.getLocation(e)
         extractExpressionBody(callable, locId).also { returnId ->
-            extractExpression(e, callable, ExprParent(returnId, 0, returnId, callable))
+            extractExpression(e, ExprParent(returnId, 0, returnId, callable))
         }
     }
 }
@@ -68,7 +68,7 @@ private fun KotlinFileExtractor.extractBlockBody(b: KtBlockExpression, callable:
     with("block body", b) {
         extractBlockBody(callable, tw.getLocation(b)).also {
             for ((sIdx, stmt) in b.statements.withIndex()) {
-                extractExpression(stmt, callable, StmtParent(it, sIdx, callable))
+                extractExpression(stmt, StmtParent(it, sIdx, callable))
             }
         }
     }
@@ -109,7 +109,7 @@ private fun KotlinFileExtractor.extractExpressionStmt(
     parent: Label<out DbStmtparent>,
     idx: Int
 ) {
-    extractExpression(e, callable, StmtParent(parent, idx, callable))
+    extractExpression(e, StmtParent(parent, idx, callable))
 }
 
 context(KaSession)
@@ -120,7 +120,7 @@ fun KotlinFileExtractor.extractExpressionExpr(
     idx: Int,
     enclosingStmt: Label<out DbStmt>
 ) {
-    extractExpression(e, callable, ExprParent(parent, idx, enclosingStmt, callable))
+    extractExpression(e, ExprParent(parent, idx, enclosingStmt, callable))
 }
 
 fun KotlinFileExtractor.extractExprContext(
@@ -335,7 +335,6 @@ private fun KaFunctionSymbol.isNumericWithName(functionName: String): Boolean {
 context(KaSession)
 private fun KotlinFileExtractor.extractPrefixUnaryExpression(
     expression: KtPrefixExpression,
-    callable: Label<out DbCallable>,
     parent: StmtExprParent
 ): Label<out DbExpr> {
     val op = expression.operationToken as? KtToken
@@ -353,7 +352,7 @@ private fun KotlinFileExtractor.extractPrefixUnaryExpression(
     }
 
     if (trapWriterWriteExpr != null) {
-        return extractUnaryExpressionWith(trapWriterWriteExpr, expression, callable, parent)
+        return extractUnaryExpressionWith(trapWriterWriteExpr, expression, parent)
     }
 
     TODO("Extract as method call")
@@ -362,7 +361,6 @@ private fun KotlinFileExtractor.extractPrefixUnaryExpression(
 context(KaSession)
 private fun KotlinFileExtractor.extractPostfixUnaryExpression(
     expression: KtPostfixExpression,
-    callable: Label<out DbCallable>,
     parent: StmtExprParent
 ): Label<out DbExpr> {
     val op = expression.operationToken as? KtToken
@@ -380,7 +378,7 @@ private fun KotlinFileExtractor.extractPostfixUnaryExpression(
     }
 
     if (trapWriterWriteExpr != null) {
-        return extractUnaryExpressionWith(trapWriterWriteExpr, expression, callable, parent)
+        return extractUnaryExpressionWith(trapWriterWriteExpr, expression, parent)
     }
 
     TODO("Extract as method call")
@@ -412,7 +410,6 @@ fun KtExpression.resolveCallTarget(): KaCallableMemberCall<*, *>? {
 context(KaSession)
 private fun KotlinFileExtractor.extractBinaryExpression(
     expression: KtBinaryExpression,
-    callable: Label<out DbCallable>,
     parent: StmtExprParent
 ): Label<out DbExpr> {
     val op = expression.operationToken
@@ -425,7 +422,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
             else -> TODO("Extract error expression")
         }
 
-        return extractBinaryExpressionWith(trapWriterWriteExpr, expression, callable, parent)
+        return extractBinaryExpressionWith(trapWriterWriteExpr, expression, parent)
     }
 
     val trapWriterWriteExpr = when {
@@ -448,7 +445,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
     }
 
     if (trapWriterWriteExpr != null) {
-        return extractBinaryExpressionWith(trapWriterWriteExpr, expression, callable, parent)
+        return extractBinaryExpressionWith(trapWriterWriteExpr, expression, parent)
     }
 
     val trapWriterWriteExprComparison = when (op) {
@@ -474,13 +471,13 @@ private fun KotlinFileExtractor.extractBinaryExpression(
         val exprParent = parent.expr(expression)
 
         val id = extractRawBinaryExpression(builtinTypes.boolean, exprParent, trapWriterWriteExprComparison)
-        extractExprContext(id, tw.getLocation(expression), callable, exprParent.enclosingStmt)
+        extractExprContext(id, tw.getLocation(expression), exprParent.callable, exprParent.enclosingStmt)
 
         extractRawMethodAccess(
             target,
             tw.getLocation(expression),
             target.returnType,
-            callable,
+            exprParent.callable,
             id,
             0,
             exprParent.enclosingStmt,
@@ -496,7 +493,7 @@ private fun KotlinFileExtractor.extractBinaryExpression(
             tw.getLocation(expression),
             id,
             1,
-            callable,
+            exprParent.callable,
             exprParent.enclosingStmt,
             /*
             OLD: KE1
@@ -550,15 +547,14 @@ private fun <T : DbBinaryexpr> KotlinFileExtractor.extractBinaryExpressionWith(
         idx: Int
     ) -> Unit,
     expression: KtBinaryExpression,
-    callable: Label<out DbCallable>,
     parent: StmtExprParent
 ): Label<out DbExpr> {
     val exprParent = parent.expr(expression)
     val id = extractRawBinaryExpression(expression.expressionType!!, exprParent, extractExpression)
 
-    extractExprContext(id, tw.getLocation(expression), callable, exprParent.enclosingStmt)
-    extractExpressionExpr(expression.left!!, callable, id, 0, exprParent.enclosingStmt)
-    extractExpressionExpr(expression.right!!, callable, id, 1, exprParent.enclosingStmt)
+    extractExprContext(id, tw.getLocation(expression), exprParent.callable, exprParent.enclosingStmt)
+    extractExpressionExpr(expression.left!!, exprParent.callable, id, 0, exprParent.enclosingStmt)
+    extractExpressionExpr(expression.right!!, exprParent.callable, id, 1, exprParent.enclosingStmt)
 
     return id
 }
@@ -572,7 +568,6 @@ private fun <T : DbUnaryexpr> KotlinFileExtractor.extractUnaryExpressionWith(
         idx: Int
     ) -> Unit,
     expression: KtUnaryExpression,
-    callable: Label<out DbCallable>,
     parent: StmtExprParent
 ): Label<out DbExpr> {
     val id = tw.getFreshIdLabel<T>()
@@ -581,8 +576,8 @@ private fun <T : DbUnaryexpr> KotlinFileExtractor.extractUnaryExpressionWith(
     extractExpression(id, type.javaResult.id, exprParent.parent, exprParent.idx)
     tw.writeExprsKotlinType(id, type.kotlinResult.id)
 
-    extractExprContext(id, tw.getLocation(expression), callable, exprParent.enclosingStmt)
-    extractExpressionExpr(expression.baseExpression!!, callable, id, 0, exprParent.enclosingStmt)
+    extractExprContext(id, tw.getLocation(expression), exprParent.callable, exprParent.enclosingStmt)
+    extractExpressionExpr(expression.baseExpression!!, exprParent.callable, id, 0, exprParent.enclosingStmt)
 
     return id
 }
@@ -601,14 +596,13 @@ fun KotlinFileExtractor.drillIntoParenthesizedExpression(expr: KtExpression): Pa
 context(KaSession)
 private fun KotlinFileExtractor.extractExpression(
     e: KtExpression,
-    callable: Label<out DbCallable>,
     parent: StmtExprParent
 ): Label<out DbExpr>? {
     with("expression", e) {
         when (e) {
             is KtParenthesizedExpression -> {
                 val (childExpr, parensCount) = drillIntoParenthesizedExpression(e)
-                val id = extractExpression(childExpr, callable, parent)
+                val id = extractExpression(childExpr, parent)
 
                 if (id == null) {
                     logger.errorElement("No expression extracted as the child of the parenthesized expression", e)
@@ -622,34 +616,34 @@ private fun KotlinFileExtractor.extractExpression(
             is KtLabeledExpression -> {
                 // TODO: we could handle this here, or in each child that might have a label
                 // We're handling it in the children with the below
-                return extractExpression(e.baseExpression!!, callable, parent)
+                return extractExpression(e.baseExpression!!, parent)
             }
 
             is KtQualifiedExpression -> {
                 // We're propagating the extraction to the child, and then getting the qualifier from the parent of the
                 // child. The selector could be many expression kind, such as KtCallExpression, KtReferenceExpression,
                 // and each of those would need to look for the qualifier
-                return extractExpression(e.selectorExpression!!, callable, parent)
+                return extractExpression(e.selectorExpression!!, parent)
             }
 
             is KtPrefixExpression -> {
-                return extractPrefixUnaryExpression(e, callable, parent)
+                return extractPrefixUnaryExpression(e, parent)
             }
 
             is KtPostfixExpression -> {
-                return extractPostfixUnaryExpression(e, callable, parent)
+                return extractPostfixUnaryExpression(e, parent)
             }
 
             is KtBinaryExpression -> {
-                return extractBinaryExpression(e, callable, parent)
+                return extractBinaryExpression(e, parent)
             }
 
             is KtCallExpression -> {
-                return extractMethodCall(e, callable, parent)
+                return extractMethodCall(e, parent)
             }
 
             is KtReferenceExpression -> {
-                return extractReferenceExpression(e, callable, parent)
+                return extractReferenceExpression(e, parent)
             }
 
             is KtIsExpression -> {
@@ -668,8 +662,8 @@ private fun KotlinFileExtractor.extractExpression(
                 }
 
                 tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
-                extractExpressionExpr(e.leftHandSide, callable, id, 0, exprParent.enclosingStmt)
+                extractExprContext(id, locId, exprParent.callable, exprParent.enclosingStmt)
+                extractExpressionExpr(e.leftHandSide, exprParent.callable, id, 0, exprParent.enclosingStmt)
 
                 // TODO: KE1
                 //extractTypeAccessRecursive(e.typeReference, locId, id, 1, callable, exprParent.enclosingStmt)
@@ -702,17 +696,17 @@ private fun KotlinFileExtractor.extractExpression(
                 }
 
                 tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+                extractExprContext(id, locId, exprParent.callable, exprParent.enclosingStmt)
                 // TODO: KE1
                 //extractTypeAccessRecursive(e.typeOperand, locId, id, 0, callable, exprParent.enclosingStmt)
-                extractExpressionExpr(e.left, callable, id, 1, exprParent.enclosingStmt)
+                extractExpressionExpr(e.left, exprParent.callable, id, 1, exprParent.enclosingStmt)
 
                 return id
             }
 
             is KtProperty -> {
                 val stmtParent = parent.stmt(e)
-                extractVariable(e, callable, stmtParent.parent, stmtParent.idx)
+                extractVariable(e, stmtParent.callable, stmtParent.parent, stmtParent.idx)
             }
 
             /*
@@ -779,23 +773,23 @@ private fun KotlinFileExtractor.extractExpression(
                 val stmtParent = parent.stmt(e)
                 val id = tw.getFreshIdLabel<DbThrowstmt>()
                 val locId = tw.getLocation(e)
-                tw.writeStmts_throwstmt(id, stmtParent.parent, stmtParent.idx, callable)
+                tw.writeStmts_throwstmt(id, stmtParent.parent, stmtParent.idx, stmtParent.callable)
                 tw.writeHasLocation(id, locId)
                 val thrown = e.thrownExpression!!
-                extractExpressionExpr(thrown, callable, id, 0, id)
+                extractExpressionExpr(thrown, stmtParent.callable, id, 0, id)
             }
 
             is KtBreakExpression -> {
                 val stmtParent = parent.stmt(e)
                 val id = tw.getFreshIdLabel<DbBreakstmt>()
-                tw.writeStmts_breakstmt(id, stmtParent.parent, stmtParent.idx, callable)
+                tw.writeStmts_breakstmt(id, stmtParent.parent, stmtParent.idx, stmtParent.callable)
                 extractBreakContinue(e, id)
             }
 
             is KtContinueExpression -> {
                 val stmtParent = parent.stmt(e)
                 val id = tw.getFreshIdLabel<DbContinuestmt>()
-                tw.writeStmts_continuestmt(id, stmtParent.parent, stmtParent.idx, callable)
+                tw.writeStmts_continuestmt(id, stmtParent.parent, stmtParent.idx, stmtParent.callable)
                 extractBreakContinue(e, id)
             }
 
@@ -803,11 +797,11 @@ private fun KotlinFileExtractor.extractExpression(
                 val stmtParent = parent.stmt(e)
                 val id = tw.getFreshIdLabel<DbReturnstmt>()
                 val locId = tw.getLocation(e)
-                tw.writeStmts_returnstmt(id, stmtParent.parent, stmtParent.idx, callable)
+                tw.writeStmts_returnstmt(id, stmtParent.parent, stmtParent.idx, stmtParent.callable)
                 tw.writeHasLocation(id, locId)
                 val returned = e.getReturnedExpression()
                 if (returned != null) {
-                    extractExpression(returned, callable, ExprParent(id, 0, id, callable))
+                    extractExpression(returned, ExprParent(id, 0, id, stmtParent.callable))
                 } else {
                     TODO()
                 }
@@ -818,16 +812,16 @@ private fun KotlinFileExtractor.extractExpression(
                 val stmtParent = parent.stmt(e)
                 val id = tw.getFreshIdLabel<DbTrystmt>()
                 val locId = tw.getLocation(e)
-                tw.writeStmts_trystmt(id, stmtParent.parent, stmtParent.idx, callable)
+                tw.writeStmts_trystmt(id, stmtParent.parent, stmtParent.idx, stmtParent.callable)
                 tw.writeHasLocation(id, locId)
-                extractExpressionStmt(e.tryBlock, callable, id, -1)
+                extractExpressionStmt(e.tryBlock, stmtParent.callable, id, -1)
                 val finallyStmt = e.finallyBlock?.finalExpression
                 if (finallyStmt != null) {
-                    extractExpressionStmt(finallyStmt, callable, id, -2)
+                    extractExpressionStmt(finallyStmt, stmtParent.callable, id, -2)
                 }
                 for ((catchIdx, catchClause) in e.catchClauses.withIndex()) {
                     val catchId = tw.getFreshIdLabel<DbCatchclause>()
-                    tw.writeStmts_catchclause(catchId, id, catchIdx, callable)
+                    tw.writeStmts_catchclause(catchId, id, catchIdx, stmtParent.callable)
                     val catchLocId = tw.getLocation(catchClause)
                     tw.writeHasLocation(catchId, catchLocId)
                     /*
@@ -848,7 +842,7 @@ private fun KotlinFileExtractor.extractExpression(
                         catchId
                     )
                     */
-                    extractExpressionStmt(catchClause.catchBody!!, callable, catchId, 1)
+                    extractExpressionStmt(catchClause.catchBody!!, stmtParent.callable, catchId, 1)
                 }
             }
 
@@ -859,26 +853,26 @@ private fun KotlinFileExtractor.extractExpression(
                     !tryExtractArrayUpdate(e, callable, parent) &&
                         !tryExtractForLoop(e, callable, parent)
                 ) {
-                    extractBlock(e, e.statements, parent, callable)
+                    extractBlock(e, e.statements, parent)
                 }
                 */
-                extractBlock(e, e.statements, parent, callable)
+                extractBlock(e, e.statements, parent)
             }
 
             is KtIfExpression -> {
-                return extractIf(e, parent, callable)
+                return extractIf(e, parent)
             }
 
             is KtWhenExpression -> {
-                return extractWhen(e, parent, callable)
+                return extractWhen(e, parent, parent.callable) // TODO: Remove parent.callable arg
             }
 
             is KtWhileExpression -> {
-                extractLoopWithCondition(e, parent, callable)
+                extractLoopWithCondition(e, parent, parent.callable) // TODO: Remove parent.callable arg
             }
 
             is KtDoWhileExpression -> {
-                extractLoopWithCondition(e, parent, callable)
+                extractLoopWithCondition(e, parent, parent.callable) // TODO: Remove parent.callable arg
             }
             /*
                             is IrInstanceInitializerCall -> {
@@ -959,7 +953,7 @@ private fun KotlinFileExtractor.extractExpression(
                 val exprParent = parent.expr(e)
                 return extractConstant(
                     e,
-                    callable,
+                    exprParent.callable,
                     exprParent.parent,
                     exprParent.idx,
                     exprParent.enclosingStmt
@@ -1299,7 +1293,7 @@ private fun KotlinFileExtractor.extractExpression(
                                 }
                             }
                             is IrFunctionReference -> {
-                                extractFunctionReference(e, parent, callable)
+                                extractFunctionReference(e, parent)
                             }
                             is IrClassReference -> {
                                 val exprParent = parent.expr(e)
@@ -1337,11 +1331,11 @@ private fun KotlinFileExtractor.extractExpression(
 
             is KtLambdaExpression -> {
                 // Propagate extraction to the wrapped function literal:
-                return extractExpression(e.functionLiteral, callable, parent)
+                return extractExpression(e.functionLiteral, parent)
             }
 
             is KtFunctionLiteral -> {
-                return extractFunctionLiteral(e, callable, parent)
+                return extractFunctionLiteral(e, parent)
             }
 
             else -> {
@@ -1358,11 +1352,10 @@ context(KaSession)
 private fun KotlinFileExtractor.extractBlock(
     e: KtBlockExpression,
     statements: List<KtExpression>,
-    parent: StmtExprParent,
-    callable: Label<out DbCallable>
+    parent: StmtExprParent
 ) {
     val stmtParent = parent.stmt(e)
-    extractBlock(e, statements, stmtParent.parent, stmtParent.idx, callable)
+    extractBlock(e, statements, stmtParent.parent, stmtParent.idx, stmtParent.callable)
 }
 
 context(KaSession)
@@ -1719,26 +1712,26 @@ private fun KotlinFileExtractor.extractWhen(
         exprParent.idx
     )
     tw.writeExprsKotlinType(id, type.kotlinResult.id)
-    extractExprContext(id, locId, callable, exprParent.enclosingStmt)
+    extractExprContext(id, locId, exprParent.callable, exprParent.enclosingStmt)
 
     val subjectVariable = e.subjectVariable
     val subjectExpression = e.subjectExpression
 
     if (subjectVariable != null) {
-        extractVariableExpr(subjectVariable, callable, id, -1, exprParent.enclosingStmt)
+        extractVariableExpr(subjectVariable, exprParent.callable, id, -1, exprParent.enclosingStmt)
     } else if (subjectExpression != null) {
-        extractExpressionExpr(subjectExpression, callable, id, -1, exprParent.enclosingStmt)
+        extractExpressionExpr(subjectExpression, exprParent.callable, id, -1, exprParent.enclosingStmt)
     }
 
     e.entries.forEachIndexed { i, b ->
         val bId = tw.getFreshIdLabel<DbWhenbranch>()
         val bLocId = tw.getLocation(b)
-        tw.writeStmts_whenbranch(bId, id, i, callable)
+        tw.writeStmts_whenbranch(bId, id, i, exprParent.callable)
         tw.writeHasLocation(bId, bLocId)
         for ((idx, cond) in b.conditions.withIndex()) {
             val condId = tw.getFreshIdLabel<DbWhenbranchcondition>()
             val locId = tw.getLocation(cond)
-            tw.writeStmts_whenbranchcondition(condId, bId, -1 * idx, callable)
+            tw.writeStmts_whenbranchcondition(condId, bId, -1 * idx, exprParent.callable)
             tw.writeHasLocation(id, locId)
 
             when (cond) {
@@ -1746,7 +1739,7 @@ private fun KotlinFileExtractor.extractWhen(
                     tw.writeWhen_branch_condition_with_expr(condId)
                     extractExpressionExpr(
                         cond.expression!!,
-                        callable,
+                        exprParent.callable,
                         condId,
                         0,
                         condId
@@ -1758,7 +1751,7 @@ private fun KotlinFileExtractor.extractWhen(
                     tw.writeWhen_branch_condition_with_range(condId, cond.isNegated)
                     extractExpressionExpr(
                         cond.rangeExpression!!,
-                        callable,
+                        exprParent.callable,
                         condId,
                         0,
                         condId
@@ -1778,10 +1771,10 @@ private fun KotlinFileExtractor.extractWhen(
             }
         }
 
-        extractExpressionStmt(b.expression!!, callable, bId, 1)
+        extractExpressionStmt(b.expression!!, exprParent.callable, bId, 1)
         val guardExpr = b.guard?.getExpression()
         if (guardExpr != null) {
-            extractExpressionStmt(guardExpr, callable, bId, 2)
+            extractExpressionStmt(guardExpr, exprParent.callable, bId, 2)
         }
 
         if (b.isElse) {
@@ -1795,22 +1788,21 @@ private fun KotlinFileExtractor.extractWhen(
 context(KaSession)
 private fun KotlinFileExtractor.extractIf(
     ifStmt: KtIfExpression,
-    stmtExprParent: StmtExprParent,
-    callable: Label<out DbCallable>
+    stmtExprParent: StmtExprParent
 ): Label<out DbExpr>? {
     if (!ifStmt.isUsedAsExpression) {
         // We're extracting this `if` as a statement
         val stmtParent = stmtExprParent.stmt(ifStmt)
         val id = tw.getFreshIdLabel<DbIfstmt>()
         val locId = tw.getLocation(ifStmt)
-        tw.writeStmts_ifstmt(id, stmtParent.parent, stmtParent.idx, callable)
+        tw.writeStmts_ifstmt(id, stmtParent.parent, stmtParent.idx, stmtParent.callable)
         tw.writeHasLocation(id, locId)
 
-        extractExpressionExpr(ifStmt.condition!!, callable, id, 0, id)
-        extractExpressionStmt(ifStmt.then!!, callable, id, 1)
+        extractExpressionExpr(ifStmt.condition!!, stmtParent.callable, id, 0, id)
+        extractExpressionStmt(ifStmt.then!!, stmtParent.callable, id, 1)
         val elseBranch = ifStmt.`else`
         if (elseBranch != null) {
-            extractExpressionStmt(elseBranch, callable, id, 2)
+            extractExpressionStmt(elseBranch, stmtParent.callable, id, 2)
         }
 
         return null
@@ -1823,11 +1815,11 @@ private fun KotlinFileExtractor.extractIf(
     tw.writeExprs_conditionalexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
     tw.writeExprsKotlinType(id, type.kotlinResult.id)
 
-    extractExprContext(id, tw.getLocation(ifStmt), callable, exprParent.enclosingStmt)
+    extractExprContext(id, tw.getLocation(ifStmt), exprParent.callable, exprParent.enclosingStmt)
 
-    extractExpressionExpr(ifStmt.condition!!, callable, id, 0, exprParent.enclosingStmt)
-    extractExpressionExpr(ifStmt.then!!, callable, id, 1, exprParent.enclosingStmt)
-    extractExpressionExpr(ifStmt.`else`!!, callable, id, 2, exprParent.enclosingStmt)
+    extractExpressionExpr(ifStmt.condition!!, exprParent.callable, id, 0, exprParent.enclosingStmt)
+    extractExpressionExpr(ifStmt.then!!, exprParent.callable, id, 1, exprParent.enclosingStmt)
+    extractExpressionExpr(ifStmt.`else`!!, exprParent.callable, id, 2, exprParent.enclosingStmt)
 
     return id
 }
@@ -2243,7 +2235,7 @@ private fun KotlinFileExtractor.extractConstant(
             }
 
             val id =
-                extractLoop(innerWhile, null, parent, callable) { p, idx ->
+                extractLoop(innerWhile, null, parent, parent.callable) { p, idx -> // TODO: Remove parent.callable arg
                     tw.getFreshIdLabel<DbEnhancedforstmt>().also {
                         tw.writeStmts_enhancedforstmt(it, p, idx, callable)
                     }
@@ -2862,7 +2854,6 @@ private fun KotlinFileExtractor.useVariable(v: KaVariableSymbol): Label<out DbLo
 context(KaSession)
 private fun KotlinFileExtractor.extractReferenceExpression(
     ref: KtReferenceExpression,
-    enclosingCallable: Label<out DbCallable>,
     stmtExprParent: StmtExprParent
 ): Label<out DbExpr> {
     val exprParent = stmtExprParent.expr(ref)
@@ -2888,7 +2879,7 @@ private fun KotlinFileExtractor.extractReferenceExpression(
                         target,
                         tw.getLocation(ref),
                         ref.expressionType!!,
-                        enclosingCallable,
+                        exprParent.callable,
                         exprParent.parent,
                         exprParent.idx,
                         exprParent.enclosingStmt,
@@ -2907,7 +2898,7 @@ private fun KotlinFileExtractor.extractReferenceExpression(
                         tw.getLocation(ref),
                         exprParent.parent,
                         exprParent.idx,
-                        enclosingCallable,
+                        exprParent.callable,
                         exprParent.enclosingStmt
                     )
                 }

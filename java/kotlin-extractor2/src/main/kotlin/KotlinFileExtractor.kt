@@ -3792,12 +3792,12 @@ OLD: KE1
         }
     */
 
-    abstract inner class StmtExprParent {
+    abstract inner class StmtExprParent(val callable: Label<out DbCallable>) {
         abstract fun stmt(e: KtExpression): StmtParent
         abstract fun expr(e: KtExpression): ExprParent
     }
 
-    inner class StmtParent(val parent: Label<out DbStmtparent>, val idx: Int, val callable: Label<out DbCallable>) : StmtExprParent() {
+    inner class StmtParent(val parent: Label<out DbStmtparent>, val idx: Int, callable: Label<out DbCallable>) : StmtExprParent(callable) {
         override fun stmt(e: KtExpression) = this
 
         override fun expr(e: KtExpression) =
@@ -3810,8 +3810,8 @@ OLD: KE1
         val parent: Label<out DbExprparent>,
         val idx: Int,
         val enclosingStmt: Label<out DbStmt>,
-        val callable: Label<out DbCallable>
-    ) : StmtExprParent() {
+        callable: Label<out DbCallable>
+    ) : StmtExprParent(callable) {
         override fun stmt(e: KtExpression): StmtParent {
             val id = tw.getFreshIdLabel<DbStmtexpr>()
             val et = e.expressionType
