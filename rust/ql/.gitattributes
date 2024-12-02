@@ -224,6 +224,8 @@
 /lib/codeql/rust/elements/internal/ExternItemImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ExternItemListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ExternItemListImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/ExtractorStep.qll linguist-generated
+/lib/codeql/rust/elements/internal/ExtractorStepConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FieldExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FieldListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FnPtrTypeConstructor.qll linguist-generated
@@ -451,6 +453,7 @@
 /lib/codeql/rust/elements/internal/generated/ExternCrate.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ExternItem.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ExternItemList.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/ExtractorStep.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FieldExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FieldList.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FnPtrType.qll linguist-generated

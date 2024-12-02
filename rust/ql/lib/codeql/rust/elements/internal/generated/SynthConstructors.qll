@@ -33,6 +33,7 @@ import codeql.rust.elements.internal.ExprStmtConstructor
 import codeql.rust.elements.internal.ExternBlockConstructor
 import codeql.rust.elements.internal.ExternCrateConstructor
 import codeql.rust.elements.internal.ExternItemListConstructor
+import codeql.rust.elements.internal.ExtractorStepConstructor
 import codeql.rust.elements.internal.FieldExprConstructor
 import codeql.rust.elements.internal.FnPtrTypeConstructor
 import codeql.rust.elements.internal.ForExprConstructor

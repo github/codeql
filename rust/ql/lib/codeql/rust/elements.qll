@@ -3,6 +3,7 @@
  * This module exports all modules providing `Element` subclasses.
  */
 
+import codeql.files.FileSystem
 import codeql.rust.elements.Abi
 import codeql.rust.elements.Addressable
 import codeql.rust.elements.ArgList

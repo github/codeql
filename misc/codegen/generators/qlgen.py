@@ -104,8 +104,17 @@ def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
     return f"{prop_name} of this {class_name}"
 
 
-def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dict[str, schema.Class],
+def _type_is_hideable(t: str, lookup: typing.Dict[str, schema.ClassBase]) -> bool:
+    if t in lookup:
+        match lookup[t]:
+            case schema.Class() as cls:
+                return "ql_hideable" in cls.pragmas
+    return False
+
+
+def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dict[str, schema.ClassBase],
                     prev_child: str = "") -> ql.Property:
+
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
         qltest_skip="qltest_skip" in prop.pragmas,
@@ -115,7 +124,8 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
         is_unordered=prop.is_unordered,
         description=prop.description,
         synth=bool(cls.synth) or prop.synth,
-        type_is_hideable="ql_hideable" in lookup[prop.type].pragmas if prop.type in lookup else False,
+        type_is_hideable=_type_is_hideable(prop.type, lookup),
+        type_is_codegen_class=prop.type in lookup and not lookup[prop.type].imported,
         internal="ql_internal" in prop.pragmas,
     )
     ql_name = prop.pragmas.get("ql_name", prop.name)
@@ -154,7 +164,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
     return ql.Property(**args)
 
 
-def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> ql.Class:
+def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.ClassBase]) -> ql.Class:
     if "ql_name" in cls.pragmas:
         raise Error("ql_name is not supported yet for classes, only for properties")
     prev_child = ""
@@ -391,14 +401,15 @@ def generate(opts, renderer):
 
     data = schemaloader.load_file(input)
 
-    classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items()}
+    classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items() if not cls.imported}
     if not classes:
         raise NoClasses
     root = next(iter(classes.values()))
     if root.has_children:
         raise RootElementHasChildren(root)
 
-    imports = {}
+    pre_imports = {n: cls.module for n, cls in data.classes.items() if cls.imported}
+    imports = dict(pre_imports)
     imports_impl = {}
     classes_used_by = {}
     cfg_classes = []
@@ -410,7 +421,7 @@ def generate(opts, renderer):
                          force=opts.force) as renderer:
 
         db_classes = [cls for name, cls in classes.items() if not data.classes[name].synth]
-        renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
+        renderer.render(ql.DbClasses(classes=db_classes, imports=sorted(set(pre_imports.values()))), out / "Raw.qll")
 
         classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
         for c in classes_by_dir_and_name:
@@ -439,6 +450,8 @@ def generate(opts, renderer):
             renderer.render(cfg_classes_val, cfg_qll)
 
         for c in data.classes.values():
+            if c.imported:
+                continue
             path = _get_path(c)
             path_impl = _get_path_impl(c)
             stub_file = stub_out / path_impl
@@ -457,7 +470,7 @@ def generate(opts, renderer):
             renderer.render(class_public, class_public_file)
 
         # for example path/to/elements -> path/to/elements.qll
-        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].internal]),
+        renderer.render(ql.ImportList([i for name, i in imports.items() if name not in classes or not classes[name].internal]),
                         include_file)
 
         elements_module = get_import(include_file, opts.root_dir)
@@ -465,12 +478,15 @@ def generate(opts, renderer):
         renderer.render(
             ql.GetParentImplementation(
                 classes=list(classes.values()),
-                imports=[elements_module] + [i for name, i in imports.items() if classes[name].internal],
+                imports=[elements_module] + [i for name,
+                                             i in imports.items() if name in classes and classes[name].internal],
             ),
             out / 'ParentChild.qll')
 
         if test_out:
             for c in data.classes.values():
+                if c.imported:
+                    continue
                 if should_skip_qltest(c, data.classes):
                     continue
                 test_with_name = c.pragmas.get("qltest_test_with")
@@ -500,7 +516,8 @@ def generate(opts, renderer):
         constructor_imports = []
         synth_constructor_imports = []
         stubs = {}
-        for cls in sorted(data.classes.values(), key=lambda cls: (cls.group, cls.name)):
+        for cls in sorted((cls for cls in data.classes.values() if not cls.imported),
+                          key=lambda cls: (cls.group, cls.name)):
             synth_type = get_ql_synth_class(cls)
             if synth_type.is_final:
                 final_synth_types.append(synth_type)

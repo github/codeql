@@ -116,20 +116,21 @@ locatable_locations(
   int location: @location_default ref
 );
 
+
+// from schema
+
+@element =
+  @extractor_step
+| @locatable
+| @unextracted
+;
+
 extractor_steps(
   unique int id: @extractor_step,
   string action: string ref,
   int file: @file ref,
   int duration_ms: int ref
-)
-
-
-// from schema
-
-@element =
-  @locatable
-| @unextracted
-;
+);
 
 @locatable =
   @ast_node

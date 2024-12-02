@@ -44,6 +44,7 @@ class Property:
     doc_plural: Optional[str] = None
     synth: bool = False
     type_is_hideable: bool = False
+    type_is_codegen_class: bool = False
     internal: bool = False
     cfg: bool = False
 
@@ -65,10 +66,6 @@ class Property:
         if self.plural:
             article = "An" if self.singular[0] in "AEIO" else "A"
             return f"get{article}{self.singular}"
-
-    @property
-    def type_is_class(self):
-        return bool(self.type) and self.type[0].isupper()
 
     @property
     def is_repeated(self):
@@ -191,6 +188,7 @@ class DbClasses:
     template: ClassVar = 'ql_db'
 
     classes: List[Class] = field(default_factory=list)
+    imports: List[str] = field(default_factory=list)
 
 
 @dataclass

@@ -6,7 +6,7 @@ private import codeql.rust.elements.SourceFile
 private import codeql.rust.elements.AstNode
 private import codeql.rust.elements.Comment
 private import codeql.rust.Diagnostics
-private import codeql.rust.internal.ExtractorStep
+private import codeql.rust.elements.internal.ExtractorStep
 
 private module Input implements InputSig {
   abstract class ContainerBase extends @container {

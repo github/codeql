@@ -3,11 +3,35 @@
  * This module holds thin fully generated class definitions around DB entities.
  */
 module Raw {
+  private import codeql.files.FileSystem
+
   /**
    * INTERNAL: Do not use.
    */
   class Element extends @element {
     string toString() { none() }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ExtractorStep extends @extractor_step, Element {
+    override string toString() { result = "ExtractorStep" }
+
+    /**
+     * Gets the action of this extractor step.
+     */
+    string getAction() { extractor_steps(this, result, _, _) }
+
+    /**
+     * Gets the file of this extractor step.
+     */
+    File getFile() { extractor_steps(this, _, result, _) }
+
+    /**
+     * Gets the duration ms of this extractor step.
+     */
+    int getDurationMs() { extractor_steps(this, _, _, result) }
   }
 
   /**

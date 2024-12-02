@@ -1,5 +1,5 @@
-use crate::config;
 use crate::config::Compression;
+use crate::{config, generated};
 use codeql_extractor::{extractor, file_paths, trap};
 use log::debug;
 use ra_ap_ide_db::line_index::LineCol;
@@ -138,7 +138,7 @@ pub enum DiagnosticSeverity {
 impl TrapFile {
     pub fn emit_location_label(
         &mut self,
-        file_label: UntypedLabel,
+        file_label: Label<generated::File>,
         start: LineCol,
         end: LineCol,
     ) -> UntypedLabel {
@@ -149,7 +149,7 @@ impl TrapFile {
         extractor::location_label(
             &mut self.writer,
             trap::Location {
-                file_label,
+                file_label: file_label.as_untyped(),
                 start_line,
                 start_column,
                 end_line,
@@ -159,7 +159,7 @@ impl TrapFile {
     }
     pub fn emit_location<E: TrapClass>(
         &mut self,
-        file_label: UntypedLabel,
+        file_label: Label<generated::File>,
         entity_label: Label<E>,
         start: LineCol,
         end: LineCol,
@@ -192,8 +192,10 @@ impl TrapFile {
             ],
         );
     }
-    pub fn emit_file(&mut self, absolute_path: &Path) -> trap::Label {
-        extractor::populate_file(&mut self.writer, absolute_path)
+    pub fn emit_file(&mut self, absolute_path: &Path) -> Label<generated::File> {
+        let untyped = extractor::populate_file(&mut self.writer, absolute_path);
+        // SAFETY: populate_file emits `@file` typed labels
+        unsafe { Label::from_untyped(untyped) }
     }
 
     pub fn label<T: TrapEntry>(&mut self, id: TrapId<T>) -> Label<T> {

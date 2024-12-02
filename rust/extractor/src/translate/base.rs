@@ -4,7 +4,6 @@ use crate::generated::{self};
 use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
-use codeql_extractor::trap::{self};
 use itertools::Either;
 use log::Level;
 use ra_ap_base_db::salsa::InternKey;
@@ -65,7 +64,7 @@ macro_rules! emit_detached {
 pub struct Translator<'a> {
     pub trap: TrapFile,
     path: &'a str,
-    label: trap::Label,
+    label: Label<generated::File>,
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
@@ -75,7 +74,7 @@ impl<'a> Translator<'a> {
     pub fn new(
         trap: TrapFile,
         path: &'a str,
-        label: trap::Label,
+        label: Label<generated::File>,
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'a>>,
     ) -> Translator<'a> {

@@ -1,15 +1,15 @@
-| Elements extracted | 65 |
+| Elements extracted | 86 |
 | Elements unextracted | 0 |
 | Extraction errors | 0 |
-| Extraction warnings | 1 |
-| Files extracted - total | 5 |
-| Files extracted - with errors | 1 |
+| Extraction warnings | 0 |
+| Files extracted - total | 4 |
+| Files extracted - with errors | 0 |
 | Files extracted - without errors | 4 |
 | Inconsistencies - AST | 0 |
 | Inconsistencies - CFG | 0 |
 | Inconsistencies - data flow | 0 |
-| Lines of code extracted | 6 |
-| Lines of user code extracted | 6 |
+| Lines of code extracted | 9 |
+| Lines of user code extracted | 9 |
 | Macro calls - resolved | 2 |
 | Macro calls - total | 2 |
 | Macro calls - unresolved | 0 |

@@ -1,5 +1,6 @@
 use crate::diagnostics::{emit_extraction_diagnostics, ExtractionStep};
 use crate::rust_analyzer::path_to_file_id;
+use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
 use log::{info, warn};
@@ -143,21 +144,17 @@ impl<'a> Extractor<'a> {
         emit_extraction_diagnostics(start, cfg, &self.steps)?;
         let mut trap = self.traps.create("diagnostics", "extraction");
         for step in self.steps {
-            let file_label = trap.emit_file(&step.file);
-            let step_label = trap.writer.fresh_id();
-            let ms = usize::try_from(step.ms).unwrap_or_else(|_e| {
+            let file = trap.emit_file(&step.file);
+            let duration_ms = usize::try_from(step.ms).unwrap_or_else(|_e| {
                 warn!("extraction step duration overflowed ({step:?})");
                 i32::MAX as usize
             });
-            trap.writer.add_tuple(
-                "extractor_steps",
-                vec![
-                    step_label.into(),
-                    format!("{:?}", step.action).into(),
-                    file_label.into(),
-                    ms.into(),
-                ],
-            );
+            trap.emit(generated::ExtractorStep {
+                id: TrapId::Star,
+                action: format!("{:?}", step.action),
+                file,
+                duration_ms,
+            });
         }
         trap.commit()?;
         Ok(())
