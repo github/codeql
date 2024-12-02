@@ -22,8 +22,9 @@ class BasicBarrierGuard extends DataFlow::CallNode {
   }
 }
 
-deprecated class BasicBarrierGuardLegacy extends DataFlow::BarrierGuardNode, BasicBarrierGuard {
-  override predicate blocks(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+deprecated class BasicBarrierGuardLegacy extends DataFlow::BarrierGuardNode instanceof BasicBarrierGuard
+{
+  override predicate blocks(boolean outcome, Expr e) { super.blocksExpr(outcome, e) }
 }
 
 deprecated class LegacyConfig extends DataFlow::Configuration {

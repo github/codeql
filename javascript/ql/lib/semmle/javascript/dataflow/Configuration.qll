@@ -367,8 +367,7 @@ abstract private class BarrierGuardNodeInternal extends DataFlow::Node { }
  * classes as precise as possible: if two subclasses of `BarrierGuardNode` overlap, their
  * implementations of `blocks` will _both_ apply to any configuration that includes either of them.
  */
-abstract class BarrierGuardNode extends BarrierGuardNodeInternal {
-  // TODO: deprecate this class; currently requires too much refactoring
+abstract deprecated class BarrierGuardNode extends BarrierGuardNodeInternal {
   /**
    * Holds if this node blocks expression `e` provided it evaluates to `outcome`.
    *
