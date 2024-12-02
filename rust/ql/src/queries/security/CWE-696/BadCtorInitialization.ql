@@ -40,8 +40,8 @@ class StdCall extends Expr {
 class PathElement = AstNode;
 
 /**
- * A candidate edge for the query that is reachable from
- * a source.
+ * Holds if (`pred`, `succ`) represents a candidate edge for the query that is
+ * reachable from a source.
  */
 predicate edgesFwd(PathElement pred, PathElement succ) {
   // attribute (source) -> callable
@@ -57,9 +57,9 @@ predicate edgesFwd(PathElement pred, PathElement succ) {
 }
 
 /**
- * An edge for the query that is reachable from a source and backwards
- * reachable from a sink (adding the backwards reachability constraint
- * reduces the amount of output data produced).
+ * Holds if (`pred`, `succ`) represents an edge for the query that is reachable
+ * from a source and backwards reachable from a sink (adding the backwards
+ * reachability constraint reduces the amount of output data produced).
  */
 query predicate edges(PathElement pred, PathElement succ) {
   edgesFwd(pred, succ) and
