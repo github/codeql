@@ -41,11 +41,10 @@ class PathElement = AstNode;
 
 query predicate edges(PathElement pred, PathElement succ) {
   // starting edge (`#[ctor]` / `#[dtor]` attribute to call)
-  exists(CtorAttr ctor, Function f, CallExprBase call |
+  exists(CtorAttr ctor, Function f |
     f.getAnAttr() = ctor and
-    call.getEnclosingCallable() = f and
     pred = ctor and
-    succ = call
+    succ.(CallExprBase).getEnclosingCallable() = f
   )
   or
   // transitive edge (call to call)
