@@ -1330,8 +1330,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         Typ getTyp(DataFlowType t);
 
-        bindingset[c, t, tail]
-        Ap apCons(Content c, Typ t, Ap tail);
+        bindingset[c, tail]
+        Ap apCons(Content c, Ap tail);
 
         /**
          * An approximation of `Content` that corresponds to the precision level of
@@ -1495,11 +1495,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
-        private predicate typeStrengthen(Typ t0, Ap ap, Typ t) {
-          fwdFlow1(_, _, _, _, t0, t, ap, _) and t0 != t
-        }
-
-        pragma[nomagic]
         private predicate fwdFlow0(
           NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa
         ) {
@@ -1526,9 +1521,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           summaryCtx = TSummaryCtxNone()
           or
           // store
-          exists(Content c, Typ t0, Ap ap0 |
-            fwdFlowStore(_, t0, ap0, c, t, node, state, cc, summaryCtx) and
-            ap = apCons(c, t0, ap0) and
+          exists(Content c, Ap ap0 |
+            fwdFlowStore(_, _, ap0, c, t, node, state, cc, summaryCtx) and
+            ap = apCons(c, ap0) and
             apa = getApprox(ap)
           )
           or
@@ -1652,12 +1647,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate fwdFlowConsCand(Typ t2, Ap cons, Content c, Typ t1, Ap tail) {
           fwdFlowStore(_, t1, tail, c, t2, _, _, _, _) and
-          cons = apCons(c, t1, tail)
-          or
-          exists(Typ t0 |
-            typeStrengthen(t0, cons, t2) and
-            fwdFlowConsCand(t0, cons, c, t1, tail)
-          )
+          cons = apCons(c, tail)
         }
 
         pragma[nomagic]
@@ -2125,9 +2115,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
-        private predicate storeStepFwd(NodeEx node1, Typ t1, Ap ap1, Content c, NodeEx node2, Ap ap2) {
-          fwdFlowStore(node1, t1, ap1, c, _, node2, _, _, _) and
-          ap2 = apCons(c, t1, ap1) and
+        private predicate storeStepFwd(NodeEx node1, Ap ap1, Content c, NodeEx node2, Ap ap2) {
+          fwdFlowStore(node1, _, ap1, c, _, node2, _, _, _) and
+          ap2 = apCons(c, ap1) and
           readStepFwd(_, ap2, c, _, _)
         }
 
@@ -2247,7 +2237,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           or
           // store
           exists(Ap ap0, Content c |
-            revFlowStore(ap0, c, ap, _, node, state, _, returnCtx, returnAp) and
+            revFlowStore(ap0, c, ap, node, state, _, returnCtx, returnAp) and
             revFlowConsCand(ap0, c, ap)
           )
           or
@@ -2302,11 +2292,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate revFlowStore(
-          Ap ap0, Content c, Ap ap, Typ t, NodeEx node, FlowState state, NodeEx mid,
-          ReturnCtx returnCtx, ApOption returnAp
+          Ap ap0, Content c, Ap ap, NodeEx node, FlowState state, NodeEx mid, ReturnCtx returnCtx,
+          ApOption returnAp
         ) {
           revFlow(mid, state, returnCtx, returnAp, ap0) and
-          storeStepFwd(node, t, ap, c, mid, ap0)
+          storeStepFwd(node, ap, c, mid, ap0)
         }
 
         /**
@@ -2445,7 +2435,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           exists(Ap ap2 |
             PrevStage::storeStepCand(node1, _, c, node2, contentType, containerType) and
-            revFlowStore(ap2, c, ap1, _, node1, _, node2, _, _) and
+            revFlowStore(ap2, c, ap1, node1, _, node2, _, _) and
             revFlowConsCand(ap2, c, ap1)
           )
         }
@@ -2454,7 +2444,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           exists(Ap ap1, Ap ap2 |
             revFlow(node2, _, _, _, pragma[only_bind_into](ap2)) and
             readStepFwd(node1, ap1, c, node2, ap2) and
-            revFlowStore(ap1, c, pragma[only_bind_into](ap2), _, _, _, _, _, _)
+            revFlowStore(ap1, c, pragma[only_bind_into](ap2), _, _, _, _, _)
           )
         }
 
@@ -2468,11 +2458,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         predicate revFlowAp(NodeEx node, Ap ap) { revFlow(node, _, _, _, ap) }
 
-        private predicate fwdConsCand(Content c, Typ t, Ap ap) { storeStepFwd(_, t, ap, c, _, _) }
+        private predicate fwdConsCand(Content c, Ap ap) { storeStepFwd(_, ap, c, _, _) }
 
-        private predicate revConsCand(Content c, Typ t, Ap ap) {
+        private predicate revConsCand(Content c, Ap ap) {
           exists(Ap ap2 |
-            revFlowStore(ap2, c, ap, t, _, _, _, _, _) and
+            revFlowStore(ap2, c, ap, _, _, _, _, _) and
             revFlowConsCand(ap2, c, ap)
           )
         }
@@ -2480,14 +2470,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private predicate validAp(Ap ap) {
           revFlow(_, _, _, _, ap) and ap instanceof ApNil
           or
-          exists(Content head, Typ t, Ap tail |
-            consCand(head, t, tail) and
-            ap = apCons(head, t, tail)
+          exists(Content head, Ap tail |
+            consCand(head, tail) and
+            ap = apCons(head, tail)
           )
         }
 
-        additional predicate consCand(Content c, Typ t, Ap ap) {
-          revConsCand(c, t, ap) and
+        additional predicate consCand(Content c, Ap ap) {
+          revConsCand(c, ap) and
           validAp(ap)
         }
 
@@ -3197,7 +3187,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             exists(NodeEx mid, Content c, Typ t0, Ap ap0 |
               pn1 = TPathNodeMid(mid, state, cc, summaryCtx, t0, ap0) and
               fwdFlowStore(mid, t0, ap0, c, t, node, state, cc, summaryCtx) and
-              ap = apCons(c, t0, ap0) and
+              ap = apCons(c, ap0) and
               label = "" and
               isStoreStep = true
             )
@@ -3584,8 +3574,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           fwd = true and
           nodes = count(NodeEx node | fwdFlow(node, _, _, _, _, _, _)) and
-          fields = count(Content f0 | fwdConsCand(f0, _, _)) and
-          conscand = count(Content f0, Typ t, Ap ap | fwdConsCand(f0, t, ap)) and
+          fields = count(Content f0 | fwdConsCand(f0, _)) and
+          conscand = count(Content f0, Ap ap | fwdConsCand(f0, ap)) and
           states = count(FlowState state | fwdFlow(_, state, _, _, _, _, _)) and
           tuples =
             count(NodeEx n, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap |
@@ -3600,8 +3590,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           or
           fwd = false and
           nodes = count(NodeEx node | revFlow(node, _, _, _, _)) and
-          fields = count(Content f0 | consCand(f0, _, _)) and
-          conscand = count(Content f0, Typ t, Ap ap | consCand(f0, t, ap)) and
+          fields = count(Content f0 | consCand(f0, _)) and
+          conscand = count(Content f0, Ap ap | consCand(f0, ap)) and
           states = count(FlowState state | revFlow(_, state, _, _, _)) and
           tuples =
             count(NodeEx n, FlowState state, ReturnCtx returnCtx, ApOption retAp, Ap ap |
@@ -3679,11 +3669,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       Typ getTyp(DataFlowType t) { any() }
 
-      bindingset[c, t, tail]
-      Ap apCons(Content c, Typ t, Ap tail) {
+      bindingset[c, tail]
+      Ap apCons(Content c, Ap tail) {
         result = true and
         exists(c) and
-        exists(t) and
         if tail = true then Config::accessPathLimit() > 1 else any()
       }
 
@@ -3767,8 +3756,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       Typ getTyp(DataFlowType t) { any() }
 
-      bindingset[c, t, tail]
-      Ap apCons(Content c, Typ t, Ap tail) { result.getAHead() = c and exists(t) and exists(tail) }
+      bindingset[c, tail]
+      Ap apCons(Content c, Ap tail) { result.getAHead() = c and exists(tail) }
 
       class ApHeadContent = ContentApprox;
 
@@ -3892,8 +3881,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       Typ getTyp(DataFlowType t) { result = t }
 
-      bindingset[c, t, tail]
-      Ap apCons(Content c, Typ t, Ap tail) { result.getHead() = c and exists(t) and exists(tail) }
+      bindingset[c, tail]
+      Ap apCons(Content c, Ap tail) { result.getHead() = c and exists(tail) }
 
       class ApHeadContent = Content;
 
@@ -3991,7 +3980,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     private predicate expensiveLen2unfolding(Content c) {
       exists(int tails, int nodes, int apLimit, int tupleLimit |
-        tails = strictcount(DataFlowType t, AccessPathFront apf | Stage4::consCand(c, t, apf)) and
+        tails = strictcount(AccessPathFront apf | Stage4::consCand(c, apf)) and
         nodes =
           strictcount(NodeEx n, FlowState state |
             Stage4::revFlow(n, state, any(AccessPathFrontHead apf | apf.getHead() = c))
@@ -4007,12 +3996,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private newtype TAccessPathApprox =
       TNil() or
-      TConsNil(Content c, DataFlowType t) {
-        Stage4::consCand(c, t, TFrontNil()) and
+      TConsNil(Content c) {
+        Stage4::consCand(c, TFrontNil()) and
         not expensiveLen2unfolding(c)
       } or
-      TConsCons(Content c1, DataFlowType t, Content c2, int len) {
-        Stage4::consCand(c1, t, TFrontHead(c2)) and
+      TConsCons(Content c1, Content c2, int len) {
+        Stage4::consCand(c1, TFrontHead(c2)) and
         len in [2 .. Config::accessPathLimit()] and
         not expensiveLen2unfolding(c1)
       } or
@@ -4022,12 +4011,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
     /**
-     * Conceptually a list of `Content`s where nested tails are also paired with a
-     * `DataFlowType`, but only the first two elements of the list and its length
-     * are tracked. If data flows from a source to a given node with a given
-     * `AccessPathApprox`, this indicates the sequence of dereference operations
-     * needed to get from the value in the node to the tracked object. The
-     * `DataFlowType`s indicate the types of the stored values.
+     * Conceptually a list of `Content`s, but only the first two elements of
+     * the list and its length are tracked. If data flows from a source to a
+     * given node with a given `AccessPathApprox`, this indicates the sequence
+     * of dereference operations needed to get from the value in the node to
+     * the tracked object.
      */
     abstract private class AccessPathApprox extends TAccessPathApprox {
       abstract string toString();
@@ -4038,8 +4026,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       abstract AccessPathFront getFront();
 
-      /** Holds if this is a representation of `head` followed by the `typ,tail` pair. */
-      abstract predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail);
+      /** Holds if this is a representation of `head` followed by `tail`. */
+      abstract predicate isCons(Content head, AccessPathApprox tail);
     }
 
     private class AccessPathApproxNil extends AccessPathApprox, TNil {
@@ -4051,23 +4039,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override AccessPathFront getFront() { result = TFrontNil() }
 
-      override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) { none() }
+      override predicate isCons(Content head, AccessPathApprox tail) { none() }
     }
 
     abstract private class AccessPathApproxCons extends AccessPathApprox { }
 
     private class AccessPathApproxConsNil extends AccessPathApproxCons, TConsNil {
       private Content c;
-      private DataFlowType t;
 
-      AccessPathApproxConsNil() { this = TConsNil(c, t) }
+      AccessPathApproxConsNil() { this = TConsNil(c) }
 
-      private string ppTyp() { result = t.toString() and result != "" }
-
-      override string toString() {
-        // The `concat` becomes "" if `ppTyp` has no result.
-        result = "[" + c.toString() + "]" + concat(" : " + this.ppTyp())
-      }
+      override string toString() { result = "[" + c.toString() + "]" }
 
       override Content getHead() { result = c }
 
@@ -4075,18 +4057,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override AccessPathFront getFront() { result = TFrontHead(c) }
 
-      override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) {
-        head = c and typ = t and tail = TNil()
-      }
+      override predicate isCons(Content head, AccessPathApprox tail) { head = c and tail = TNil() }
     }
 
     private class AccessPathApproxConsCons extends AccessPathApproxCons, TConsCons {
       private Content c1;
-      private DataFlowType t;
       private Content c2;
       private int len;
 
-      AccessPathApproxConsCons() { this = TConsCons(c1, t, c2, len) }
+      AccessPathApproxConsCons() { this = TConsCons(c1, c2, len) }
 
       override string toString() {
         if len = 2
@@ -4100,14 +4079,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override AccessPathFront getFront() { result = TFrontHead(c1) }
 
-      override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) {
+      override predicate isCons(Content head, AccessPathApprox tail) {
         head = c1 and
-        typ = t and
         (
-          tail = TConsCons(c2, _, _, len - 1)
+          tail = TConsCons(c2, _, len - 1)
           or
           len = 2 and
-          tail = TConsNil(c2, _)
+          tail = TConsNil(c2)
           or
           tail = TCons1(c2, len - 1)
         )
@@ -4132,20 +4110,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override AccessPathFront getFront() { result = TFrontHead(c) }
 
-      override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) {
+      override predicate isCons(Content head, AccessPathApprox tail) {
         head = c and
         (
-          exists(Content c2 | Stage4::consCand(c, typ, TFrontHead(c2)) |
-            tail = TConsCons(c2, _, _, len - 1)
+          exists(Content c2 | Stage4::consCand(c, TFrontHead(c2)) |
+            tail = TConsCons(c2, _, len - 1)
             or
             len = 2 and
-            tail = TConsNil(c2, _)
+            tail = TConsNil(c2)
             or
             tail = TCons1(c2, len - 1)
           )
           or
           len = 1 and
-          Stage4::consCand(c, typ, TFrontNil()) and
+          Stage4::consCand(c, TFrontNil()) and
           tail = TNil()
         )
       }
@@ -4177,8 +4155,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       Typ getTyp(DataFlowType t) { result = t }
 
-      bindingset[c, t, tail]
-      Ap apCons(Content c, Typ t, Ap tail) { result.isCons(c, t, tail) }
+      bindingset[c, tail]
+      Ap apCons(Content c, Ap tail) { result.isCons(c, tail) }
 
       class ApHeadContent = Content;
 
@@ -4234,8 +4212,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private module Stage5 = MkStage<Stage4>::Stage<Stage5Param>;
 
     pragma[nomagic]
-    private predicate stage5ConsCand(Content c, DataFlowType t, AccessPathFront apf, int len) {
-      Stage5::consCand(c, t, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
+    private predicate stage5ConsCand(Content c, AccessPathFront apf, int len) {
+      Stage5::consCand(c, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
     }
 
     /**
@@ -4245,7 +4223,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       exists(Content c, int len |
         c = apa.getHead() and
         len = apa.len() and
-        result = strictcount(DataFlowType t, AccessPathFront apf | stage5ConsCand(c, t, apf, len))
+        result = strictcount(AccessPathFront apf | stage5ConsCand(c, apf, len))
       )
     }
 
@@ -4270,10 +4248,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private predicate hasTail(AccessPathApprox apa, DataFlowType t, AccessPathApprox tail) {
+    private predicate hasTail(AccessPathApprox apa, AccessPathApprox tail) {
       exists(Content head |
-        apa.isCons(head, t, tail) and
-        Stage5::consCand(head, t, tail)
+        apa.isCons(head, tail) and
+        Stage5::consCand(head, tail)
       )
     }
 
@@ -4281,7 +4259,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       forceHighPrecision(apa.getHead())
       or
       exists(Content c2 |
-        apa = TConsCons(_, _, c2, _) and
+        apa = TConsCons(_, c2, _) and
         forceHighPrecision(c2)
       )
     }
@@ -4326,25 +4304,24 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private int countPotentialAps(AccessPathApprox apa) {
       apa instanceof AccessPathApproxNil and result = 1
       or
-      result =
-        strictsum(DataFlowType t, AccessPathApprox tail | hasTail(apa, t, tail) | countAps(tail))
+      result = strictsum(AccessPathApprox tail | hasTail(apa, tail) | countAps(tail))
     }
 
     private newtype TAccessPath =
       TAccessPathNil() or
-      TAccessPathCons(Content head, DataFlowType t, AccessPath tail) {
+      TAccessPathCons(Content head, AccessPath tail) {
         exists(AccessPathApproxCons apa |
           not evalUnfold(apa, false) and
           head = apa.getHead() and
-          hasTail(apa, t, tail.getApprox())
+          hasTail(apa, tail.getApprox())
         )
       } or
-      TAccessPathCons2(Content head1, DataFlowType t, Content head2, int len) {
+      TAccessPathCons2(Content head1, Content head2, int len) {
         exists(AccessPathApproxCons apa, AccessPathApprox tail |
           evalUnfold(apa, false) and
           not expensiveLen1to2unfolding(apa) and
           apa.len() = len and
-          hasTail(apa, t, tail) and
+          hasTail(apa, tail) and
           head1 = apa.getHead() and
           head2 = tail.getHead()
         )
@@ -4372,8 +4349,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       Typ getTyp(DataFlowType t) { result = t }
 
-      bindingset[c, t, tail]
-      Ap apCons(Content c, Typ t, Ap tail) { result.isCons(c, t, tail) }
+      bindingset[c, tail]
+      Ap apCons(Content c, Ap tail) { result.isCons(c, tail) }
 
       class ApHeadContent = Content;
 
@@ -4431,18 +4408,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     module Stage6 = MkStage<Stage5>::Stage<Stage6Param>;
 
     /**
-     * A list of `Content`s where nested tails are also paired with a
-     * `DataFlowType`. If data flows from a source to a given node with a given
-     * `AccessPath`, this indicates the sequence of dereference operations needed
-     * to get from the value in the node to the tracked object. The
-     * `DataFlowType`s indicate the types of the stored values.
+     * A list of `Content`s.
+     *
+     * If data flows from a source to a given node with a given `AccessPath`,
+     * this indicates the sequence of dereference operations needed to get from
+     * the value in the node to the tracked object.
      */
     private class AccessPath extends TAccessPath {
       /** Gets the head of this access path, if any. */
       abstract Content getHead();
 
-      /** Holds if this is a representation of `head` followed by the `typ,tail` pair. */
-      abstract predicate isCons(Content head, DataFlowType typ, AccessPath tail);
+      /** Holds if this is a representation of `head` followed by `tail`. */
+      abstract predicate isCons(Content head, AccessPath tail);
 
       /** Gets the front of this access path. */
       abstract AccessPathFront getFront();
@@ -4460,7 +4437,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private class AccessPathNil extends AccessPath, TAccessPathNil {
       override Content getHead() { none() }
 
-      override predicate isCons(Content head, DataFlowType typ, AccessPath tail) { none() }
+      override predicate isCons(Content head, AccessPath tail) { none() }
 
       override AccessPathFrontNil getFront() { result = TFrontNil() }
 
@@ -4473,39 +4450,34 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private class AccessPathCons extends AccessPath, TAccessPathCons {
       private Content head_;
-      private DataFlowType t;
       private AccessPath tail_;
 
-      AccessPathCons() { this = TAccessPathCons(head_, t, tail_) }
+      AccessPathCons() { this = TAccessPathCons(head_, tail_) }
 
       override Content getHead() { result = head_ }
 
-      override predicate isCons(Content head, DataFlowType typ, AccessPath tail) {
-        head = head_ and typ = t and tail = tail_
-      }
+      override predicate isCons(Content head, AccessPath tail) { head = head_ and tail = tail_ }
 
       override AccessPathFrontHead getFront() { result = TFrontHead(head_) }
 
       override AccessPathApproxCons getApprox() {
-        result = TConsNil(head_, t) and tail_ = TAccessPathNil()
+        result = TConsNil(head_) and tail_ = TAccessPathNil()
         or
-        result = TConsCons(head_, t, tail_.getHead(), this.length())
+        result = TConsCons(head_, tail_.getHead(), this.length())
         or
         result = TCons1(head_, this.length())
       }
 
       override int length() { result = 1 + tail_.length() }
 
-      private string ppTyp() { result = t.toString() and result != "" }
-
       private string toStringImpl(boolean needsSuffix) {
         tail_ = TAccessPathNil() and
         needsSuffix = false and
-        result = head_.toString() + "]" + concat(" : " + this.ppTyp())
+        result = head_.toString() + "]"
         or
         result = head_ + ", " + tail_.(AccessPathCons).toStringImpl(needsSuffix)
         or
-        exists(Content c2, Content c3, int len | tail_ = TAccessPathCons2(c2, _, c3, len) |
+        exists(Content c2, Content c3, int len | tail_ = TAccessPathCons2(c2, c3, len) |
           result = head_ + ", " + c2 + ", " + c3 + ", ... (" and len > 2 and needsSuffix = true
           or
           result = head_ + ", " + c2 + ", " + c3 + "]" and len = 2 and needsSuffix = false
@@ -4527,18 +4499,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private class AccessPathCons2 extends AccessPath, TAccessPathCons2 {
       private Content head1;
-      private DataFlowType t;
       private Content head2;
       private int len;
 
-      AccessPathCons2() { this = TAccessPathCons2(head1, t, head2, len) }
+      AccessPathCons2() { this = TAccessPathCons2(head1, head2, len) }
 
       override Content getHead() { result = head1 }
 
-      override predicate isCons(Content head, DataFlowType typ, AccessPath tail) {
+      override predicate isCons(Content head, AccessPath tail) {
         head = head1 and
-        typ = t and
-        Stage5::consCand(head1, t, tail.getApprox()) and
+        Stage5::consCand(head1, tail.getApprox()) and
         tail.getHead() = head2 and
         tail.length() = len - 1
       }
@@ -4546,7 +4516,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       override AccessPathFrontHead getFront() { result = TFrontHead(head1) }
 
       override AccessPathApproxCons getApprox() {
-        result = TConsCons(head1, t, head2, len) or
+        result = TConsCons(head1, head2, len) or
         result = TCons1(head1, len)
       }
 
@@ -4569,9 +4539,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       override Content getHead() { result = head_ }
 
-      override predicate isCons(Content head, DataFlowType typ, AccessPath tail) {
+      override predicate isCons(Content head, AccessPath tail) {
         head = head_ and
-        Stage5::consCand(head_, typ, tail.getApprox()) and
+        Stage5::consCand(head_, tail.getApprox()) and
         tail.length() = len - 1
       }
 
