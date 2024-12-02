@@ -1424,6 +1424,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[typ, contentType]
         predicate typecheckStore(Typ typ, DataFlowType contentType);
 
+        bindingset[node1, c, node2]
+        default predicate filterStore(NodeEx node1, Content c, NodeEx node2) { any() }
+
         default predicate enableTypeFlow() { any() }
       }
 
@@ -1652,7 +1655,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             not inBarrier(node2, state) and
             PrevStage::storeStepCand(node1, apa1, c, node2, contentType, containerType) and
             t2 = getTyp(containerType) and
-            typecheckStore(t1, contentType)
+            typecheckStore(t1, contentType) and
+            filterStore(node1, c, node2)
           )
         }
 
@@ -3775,6 +3779,126 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       node.asNode() instanceof CastingNode or exists(node.asParamReturnNode())
     }
 
+    /** A bespoke stage in-between stage 2 and 3 for detecting nodes that are unreachable due to AP length restriction. */
+    private module ApLengthStage<StageSig PrevStage> {
+      pragma[nomagic]
+      private predicate flowThroughParam(ParamNodeEx param, ReturnKindExt kind, int delta) {
+        exists(NodeEx ret |
+          parameterFlow(param, ret, delta) and
+          ret.(RetNodeEx).getKind() = kind
+        )
+      }
+
+      // TODO: replace noopt with an inline_late helper
+      pragma[noopt]
+      private predicate flowThroughCall(ArgNodeEx arg, NodeEx out, int delta) {
+        exists(DataFlowCall call, ParamNodeEx param, ReturnKindExt kind, OutNode out1 |
+          flowThroughParam(param, kind, delta) and
+          viableParamArgEx(call, param, arg) and
+          out1 = kind.getAnOutNode(call) and
+          out.asNode() = out1
+        )
+      }
+
+      pragma[nomagic]
+      private predicate parameterFlow(ParamNodeEx param, NodeEx node, int delta) {
+        PrevStage::parameterMayFlowThrough(param, _) and
+        node = param and
+        delta = 0
+        or
+        PrevStage::revFlow(node) and
+        exists(NodeEx midNode, int midDelta | parameterFlow(param, midNode, midDelta) |
+          stepLocal(midNode, node, true) and delta = midDelta
+          or
+          stepLocal(midNode, node, false) and delta = midDelta and delta <= 0
+          or
+          storeEx(midNode, _, node, _, _) and
+          delta = midDelta + 1 and
+          delta <= Config::accessPathLimit()
+          or
+          readSetEx(midNode, _, node) and
+          delta = midDelta - 1 and
+          delta >= -Config::accessPathLimit()
+          or
+          exists(int calleeDelta |
+            flowThroughCall(midNode, node, calleeDelta) and
+            delta = midDelta + calleeDelta and
+            delta in [-Config::accessPathLimit() .. Config::accessPathLimit()]
+          )
+        )
+      }
+
+      bindingset[node1, preservesValue]
+      pragma[inline_late]
+      private predicate stepLocal(NodeEx node1, NodeEx node2, boolean preservesValue) {
+        Stage3Param::localFlowBigStep(node1, _, node2, _, preservesValue, _, _, _)
+      }
+
+      pragma[nomagic]
+      private predicate flow(NodeEx node, int ap, boolean call) {
+        PrevStage::revFlow(node) and
+        sourceNode(node, _) and
+        ap = 0 and
+        call = false
+        or
+        PrevStage::revFlow(node) and
+        exists(NodeEx midNode, int midAp, boolean midCall | flow(midNode, midAp, midCall) |
+          stepLocal(midNode, node, true) and
+          ap = midAp and
+          call = midCall
+          or
+          stepLocal(midNode, node, false) and
+          midAp = 0 and
+          ap = midAp and
+          call = midCall
+          or
+          (
+            jumpStepEx(midNode, node) or
+            additionalJumpStep(midNode, node, _) or
+            additionalJumpStateStep(midNode, _, node, _)
+          ) and
+          ap = midAp and
+          call = false
+          or
+          storeEx(midNode, _, node, _, _) and
+          ap = midAp + 1 and
+          ap <= Config::accessPathLimit() and
+          call = midCall
+          or
+          readSetEx(midNode, _, node) and
+          ap = midAp - 1 and
+          ap >= 0 and
+          call = midCall
+          or
+          exists(int calleeDelta |
+            flowThroughCall(midNode, node, calleeDelta) and
+            ap = midAp + calleeDelta and
+            ap in [-Config::accessPathLimit() .. Config::accessPathLimit()] and
+            call = midCall
+          )
+          or
+          viableParamArgEx(_, node, midNode) and
+          ap = midAp and
+          call = true
+          or
+          viableReturnPosOutEx(_, midNode.(RetNodeEx).getReturnPosition(), node) and
+          midCall = false and
+          ap = midAp and
+          call = false
+        )
+      }
+
+      pragma[nomagic]
+      predicate flow(NodeEx node) { flow(node, _, _) }
+
+      bindingset[node1, c, node2]
+      predicate filterStore(NodeEx node1, Content c, NodeEx node2) {
+        exists(node1) and
+        flow(node2) and
+        exists(c)
+      }
+    }
+
     private module Stage3Param implements MkStage<Stage2>::StageParam {
       private module PrevStage = Stage2;
 
@@ -3902,6 +4026,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private module Stage4Param implements MkStage<Stage3>::StageParam {
       private module PrevStage = Stage3;
+
+      predicate filterStore = ApLengthStage<PrevStage>::filterStore/3;
 
       class Typ = DataFlowType;
 
