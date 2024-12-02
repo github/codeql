@@ -13,7 +13,7 @@ private module Summaries {
     UnwrapSummary() { this = "lang:core::_::<crate::option::Option>::unwrap" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Variant[crate::std::option::Option::Some(0)]" and
+      input = "Argument[self].Variant[crate::option::Option::Some(0)]" and
       output = "ReturnValue" and
       preservesValue = true
     }
