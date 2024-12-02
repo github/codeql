@@ -334,26 +334,7 @@ fun KotlinFileExtractor.extractFunction(
 ): Label<out DbCallable> {
     /*
     OLD: KE1
-            if (isFake(f)) {
-                if (needsInterfaceForwarder(f)) {
-                    return makeInterfaceForwarder(
-                        f,
-                        parentId,
-                        extractBody,
-                        extractMethodAndParameterTypeAccesses,
-                        typeSubstitution,
-                        classTypeArgsIncludingOuterClasses
-                    )
-                } else {
-                    return null
-                }
-            } else {
-                // Work around an apparent bug causing redeclarations of `fun toString(): String`
-                // specifically in interfaces loaded from Java classes show up like fake overrides.
-                val overriddenVisibility =
-                    if (f.isFakeOverride && isJavaBinaryObjectMethodRedeclaration(f))
-                        OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC)
-                    else null
+                val overriddenVisibility = null
     */
     return forceExtractFunction(
         f,

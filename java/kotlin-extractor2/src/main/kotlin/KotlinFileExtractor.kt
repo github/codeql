@@ -48,7 +48,6 @@ import org.jetbrains.kotlin.ir.util.hasAnnotation
 import org.jetbrains.kotlin.ir.util.hasInterfaceParent
 import org.jetbrains.kotlin.ir.util.isAnnotationClass
 import org.jetbrains.kotlin.ir.util.isAnonymousObject
-import org.jetbrains.kotlin.ir.util.isFakeOverride
 import org.jetbrains.kotlin.ir.util.isFunctionOrKFunction
 import org.jetbrains.kotlin.ir.util.isInterface
 import org.jetbrains.kotlin.ir.util.isLocal
@@ -259,29 +258,6 @@ open class KotlinFileExtractor(
                     } && isJavaBinaryDeclaration(d)
                 else -> false
             }
-
-        private fun FunctionDescriptor.tryIsHiddenToOvercomeSignatureClash(d: IrFunction): Boolean {
-            try {
-                return this.isHiddenToOvercomeSignatureClash
-            } catch (e: NotImplementedError) {
-                // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
-                // TODO: We need a replacement for this for Kotlin 2
-                if (!usesK2) {
-                    logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
-                }
-                return false
-            }
-        }
-
-        @OptIn(ObsoleteDescriptorBasedAPI::class)
-        fun isFake(d: IrDeclarationWithVisibility): Boolean {
-            val hasFakeVisibility =
-                d.visibility.let {
-                    it is DelegatedDescriptorVisibility && it.delegate == Visibilities.InvisibleFake
-                } || d.isFakeOverride
-            if (hasFakeVisibility && !isJavaBinaryObjectMethodRedeclaration(d)) return true
-            return (d as? IrFunction)?.descriptor?.tryIsHiddenToOvercomeSignatureClash(d) == true
-        }
 
         private fun shouldExtractDecl(declaration: IrDeclaration, extractPrivateMembers: Boolean) =
             extractPrivateMembers || !isPrivate(declaration)
@@ -2264,13 +2240,6 @@ OLD: KE1
             with("property", p) {
                 fun needsInterfaceForwarderQ(f: IrFunction?) =
                     f?.let { needsInterfaceForwarder(f) } ?: false
-
-                if (
-                    isFake(p) &&
-                        !needsInterfaceForwarderQ(p.getter) &&
-                        !needsInterfaceForwarderQ(p.setter)
-                )
-                    return
 
                 DeclarationStackAdjuster(p).use {
                     val id = useProperty(p, parentId, classTypeArgsIncludingOuterClasses)

@@ -2598,20 +2598,6 @@ private fun KotlinFileExtractor.extractConstant(
                         fun trySub(t: IrType, context: TypeContext) =
                             if (typeSub == null) t else typeSub(t, context, pluginContext)
 
-                        // Force extraction of this function even if this is a fake override --
-                        // This happens in the case where a functional interface inherits its only
-                        // abstract member,
-                        // which usually we wouldn't extract, but in this case we're effectively using
-                        // it as a template
-                        // for the real function we're extracting that will implement this interface,
-                        // and it serves fine
-                        // for that purpose. By contrast if we looked through the fake to the underlying
-                        // abstract method
-                        // we would need to compose generic type substitutions -- for example, if we're
-                        // implementing
-                        // T UnaryOperator<T>.apply(T t) here, we would need to compose substitutions so
-                        // we can implement
-                        // the real underlying R Function<T, R>.apply(T t).
                         forceExtractFunction(
                             samMember,
                             classId,
