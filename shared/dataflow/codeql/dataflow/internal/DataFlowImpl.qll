@@ -459,7 +459,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private predicate notExpectsContent(NodeEx n) { not expectsContentSet(n, _) }
 
     pragma[nomagic]
-    private predicate storeExUnrestricted(
+    private predicate storeUnrestricted(
       NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     ) {
       storeEx(node1, c, node2, contentType, containerType) and
@@ -470,10 +470,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private predicate hasReadStep(Content c) { read(_, c, _) }
 
     pragma[nomagic]
-    private predicate storeExRestricted(
+    private predicate store(
       NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     ) {
-      storeExUnrestricted(node1, c, node2, contentType, containerType) and
+      storeUnrestricted(node1, c, node2, contentType, containerType) and
       hasReadStep(c)
     }
 
@@ -547,7 +547,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         exists(NodeEx mid |
           useFieldFlow() and
           fwdFlow(mid, cc) and
-          storeExRestricted(mid, _, node, _, _)
+          store(mid, _, node, _, _)
         )
         or
         // read
@@ -642,7 +642,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           not fullBarrier(node) and
           useFieldFlow() and
           fwdFlow(mid, _) and
-          storeExRestricted(mid, c, node, _, _)
+          store(mid, c, node, _, _)
         )
       }
 
@@ -785,7 +785,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         exists(NodeEx mid |
           revFlow(mid, toReturn) and
           fwdFlowConsCand(c) and
-          storeExRestricted(node, c, mid, _, _)
+          store(node, c, mid, _, _)
         )
       }
 
@@ -882,7 +882,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       ) {
         revFlowIsReadAndStored(c) and
         revFlow(node2) and
-        storeExRestricted(node1, c, node2, contentType, containerType) and
+        store(node1, c, node2, contentType, containerType) and
         exists(ap1)
       }
 
@@ -5352,7 +5352,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           midNode = mid.getNodeEx() and
           t1 = mid.getType() and
           ap1 = mid.getAp() and
-          storeExUnrestricted(midNode, c, node, contentType, t2) and
+          storeUnrestricted(midNode, c, node, contentType, t2) and
           ap2.getHead() = c and
           ap2.len() = unbindInt(ap1.len() + 1) and
           compatibleTypesFilter(t1, contentType)
@@ -5523,7 +5523,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           not outBarrier(node, state) and
           // if a node is not the target of a store, we can check `clearsContent` immediately
           (
-            storeExUnrestricted(_, _, node, _, _)
+            storeUnrestricted(_, _, node, _, _)
             or
             not clearsContentEx(node, ap.getHead())
           )
@@ -5664,7 +5664,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         exists(NodeEx midNode |
           midNode = mid.getNodeEx() and
           ap = mid.getAp() and
-          storeExUnrestricted(node, c, midNode, _, _) and
+          storeUnrestricted(node, c, midNode, _, _) and
           ap.getHead() = c
         )
       }
