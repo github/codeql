@@ -21,6 +21,11 @@ query predicate multipleToStrings(Element e, string cls, string s) {
  */
 query predicate multipleLocations(Locatable e) { strictcount(e.getLocation()) > 1 }
 
+/**
+ * Holds if `e` does not have a `Location`.
+ */
+query predicate noLocation(Locatable e) { not exists(e.getLocation()) }
+
 private predicate multiplePrimaryQlClasses(Element e) {
   strictcount(string cls | cls = e.getAPrimaryQlClass() and cls != "VariableAccess") > 1
 }
@@ -57,6 +62,9 @@ int getAstInconsistencyCounts(string type) {
   or
   type = "Multiple locations" and
   result = count(Element e | multipleLocations(e) | e)
+  or
+  type = "No location" and
+  result = count(Element e | noLocation(e) | e)
   or
   type = "Multiple primary QL classes" and
   result = count(Element e | multiplePrimaryQlClasses(e) | e)
