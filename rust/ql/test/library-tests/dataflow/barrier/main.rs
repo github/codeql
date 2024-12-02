@@ -1,4 +1,4 @@
-fn source() -> &'static str {
+fn source(i: i64) -> &'static str {
     "source"
 }
 
@@ -13,18 +13,22 @@ fn sanitize(s: &str) -> &str {
     }
 }
 
-fn no_barrier() {
-    let s = source();
-    sink(s);
+fn directly() {
+    sink(source(1)); // $ hasValueFlow=1
+}
+
+fn through_variable() {
+    let s = source(1);
+    sink(s); // $ hasValueFlow=1
 }
 
 fn with_barrier() {
-    let s = source();
+    let s = source(1);
     let s = sanitize(s);
     sink(s);
 }
 
 fn main() {
-    let s = source();
-    sink(s);
+    let s = source(1);
+    sink(s); // $ hasValueFlow=1
 }

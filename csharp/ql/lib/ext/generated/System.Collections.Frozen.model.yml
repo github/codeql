@@ -19,6 +19,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
+      - ["System.Collections.Frozen", "FrozenDictionary", "ToFrozenDictionary<TSource,TKey,TElement>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TKey>,System.Func<TSource,TElement>,System.Collections.Generic.IEqualityComparer<TKey>)", "summary", "df-generated"]
+      - ["System.Collections.Frozen", "FrozenDictionary", "ToFrozenDictionary<TSource,TKey>", "(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TKey>,System.Collections.Generic.IEqualityComparer<TKey>)", "summary", "df-generated"]
       - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>+Enumerator", "Dispose", "()", "summary", "df-generated"]
       - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>+Enumerator", "MoveNext", "()", "summary", "df-generated"]
       - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>+Enumerator", "Reset", "()", "summary", "df-generated"]

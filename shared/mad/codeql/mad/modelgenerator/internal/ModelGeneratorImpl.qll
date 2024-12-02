@@ -207,6 +207,11 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
   predicate isField(Lang::ContentSet c);
 
   /**
+   * Holds if the content set `c` is callback like.
+   */
+  predicate isCallback(Lang::ContentSet c);
+
+  /**
    * Gets the MaD synthetic name string representation for the content set `c`, if any.
    */
   string getSyntheticName(Lang::ContentSet c);
@@ -222,6 +227,15 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
    * This serves as an extra filter for the `relevant` predicate.
    */
   predicate isUninterestingForDataFlowModels(Callable api);
+
+  /**
+   * Holds if it is irrelevant to generate models for `api` based on the heuristic
+   * (non-content) flow analysis.
+   *
+   * This serves as an extra filter for the `relevant`
+   * and `isUninterestingForDataFlowModels` predicates.
+   */
+  predicate isUninterestingForHeuristicDataFlowModels(Callable api);
 
   /**
    * Holds if `namespace`, `type`, `extensible`, `name` and `parameters` are string representations
@@ -300,7 +314,7 @@ module MakeModelGenerator<
     }
   }
 
-  string getOutput(ReturnNodeExt node) {
+  private string getOutput(ReturnNodeExt node) {
     result = PrintReturnNodeExt<paramReturnNodeAsOutput/2>::getOutput(node)
   }
 
@@ -432,7 +446,11 @@ module MakeModelGenerator<
 
     predicate isSource(DataFlow::Node source, FlowState state) {
       source instanceof DataFlow::ParameterNode and
-      source.(NodeExtended).getEnclosingCallable() instanceof DataFlowSummaryTargetApi and
+      exists(Callable c |
+        c = source.(NodeExtended).getEnclosingCallable() and
+        c instanceof DataFlowSummaryTargetApi and
+        not isUninterestingForHeuristicDataFlowModels(c)
+      ) and
       state.(TaintRead).getStep() = 0
     }
 
@@ -603,6 +621,24 @@ module MakeModelGenerator<
      */
     private predicate mentionsField(PropagateContentFlow::AccessPath ap) {
       isField(ap.getAtIndex(_))
+    }
+
+    /**
+     * Holds if this access path `ap` mentions a callback.
+     */
+    private predicate mentionsCallback(PropagateContentFlow::AccessPath ap) {
+      isCallback(ap.getAtIndex(_))
+    }
+
+    /**
+     * Holds if the access path `ap` is not a parameter or returnvalue of a callback
+     * stored in a field.
+     *
+     * That is, we currently don't include summaries that rely on parameters or return values
+     * of callbacks stored in fields.
+     */
+    private predicate validateAccessPath(PropagateContentFlow::AccessPath ap) {
+      not (mentionsField(ap) and mentionsCallback(ap))
     }
 
     private predicate apiFlow(
@@ -846,6 +882,8 @@ module MakeModelGenerator<
         input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
         output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores) and
         input != output and
+        validateAccessPath(reads) and
+        validateAccessPath(stores) and
         (
           if mentionsField(reads) or mentionsField(stores)
           then lift = false and api.isRelevant()

@@ -2,8 +2,8 @@ models
 | 1 | Summary: com.google.common.cache; Cache; true; asMap; (); ; Argument[this].MapKey; ReturnValue.MapKey; value; manual |
 | 2 | Summary: com.google.common.cache; Cache; true; asMap; (); ; Argument[this].MapValue; ReturnValue.MapValue; value; manual |
 | 3 | Summary: com.google.common.cache; Cache; true; get; (Object,Callable); ; Argument[this].MapValue; ReturnValue; value; manual |
-| 4 | Summary: com.google.common.cache; Cache; true; getAllPresent; (Iterable); ; Argument[this].MapKey; ReturnValue.MapKey; value; manual |
-| 5 | Summary: com.google.common.cache; Cache; true; getAllPresent; (Iterable); ; Argument[0].Element; ReturnValue.MapKey; value; manual |
+| 4 | Summary: com.google.common.cache; Cache; true; getAllPresent; (Iterable); ; Argument[0].Element; ReturnValue.MapKey; value; manual |
+| 5 | Summary: com.google.common.cache; Cache; true; getAllPresent; (Iterable); ; Argument[this].MapKey; ReturnValue.MapKey; value; manual |
 | 6 | Summary: com.google.common.cache; Cache; true; getIfPresent; (Object); ; Argument[this].MapValue; ReturnValue; value; manual |
 | 7 | Summary: com.google.common.cache; Cache; true; put; (Object,Object); ; Argument[0]; Argument[this].MapKey; value; manual |
 | 8 | Summary: com.google.common.cache; Cache; true; put; (Object,Object); ; Argument[1]; Argument[this].MapValue; value; manual |
@@ -11,9 +11,9 @@ models
 | 10 | Summary: com.google.common.cache; Cache; true; putAll; (Map); ; Argument[0].MapValue; Argument[this].MapValue; value; manual |
 | 11 | Summary: com.google.common.cache; LoadingCache; true; apply; (Object); ; Argument[this].MapValue; ReturnValue; value; manual |
 | 12 | Summary: com.google.common.cache; LoadingCache; true; get; (Object); ; Argument[this].MapValue; ReturnValue; value; manual |
-| 13 | Summary: com.google.common.cache; LoadingCache; true; getAll; (Iterable); ; Argument[this].MapValue; ReturnValue.MapValue; value; manual |
-| 14 | Summary: com.google.common.cache; LoadingCache; true; getAll; (Iterable); ; Argument[0].Element; Argument[this].MapKey; value; manual |
-| 15 | Summary: com.google.common.cache; LoadingCache; true; getAll; (Iterable); ; Argument[0].Element; ReturnValue.MapKey; value; manual |
+| 13 | Summary: com.google.common.cache; LoadingCache; true; getAll; (Iterable); ; Argument[0].Element; Argument[this].MapKey; value; manual |
+| 14 | Summary: com.google.common.cache; LoadingCache; true; getAll; (Iterable); ; Argument[0].Element; ReturnValue.MapKey; value; manual |
+| 15 | Summary: com.google.common.cache; LoadingCache; true; getAll; (Iterable); ; Argument[this].MapValue; ReturnValue.MapValue; value; manual |
 | 16 | Summary: com.google.common.cache; LoadingCache; true; getUnchecked; (Object); ; Argument[this].MapValue; ReturnValue; value; manual |
 | 17 | Summary: java.lang; Iterable; true; iterator; (); ; Argument[this].Element; ReturnValue.Element; value; manual |
 | 18 | Summary: java.util; Collection; true; add; ; ; Argument[0]; Argument[this].Element; value; manual |
@@ -103,13 +103,13 @@ edges
 | Test.java:88:33:88:40 | source(...) : Object | Test.java:20:33:20:41 | element : Object | provenance |  |
 | Test.java:88:33:88:40 | source(...) : Object | Test.java:88:18:88:41 | newWithElement(...) : ArrayList [<element>] : Object | provenance | MaD:18 |
 | Test.java:90:10:90:35 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | Test.java:91:19:91:21 | out : ImmutableMap [<map.key>] : Object | provenance |  |
-| Test.java:90:33:90:34 | in : ArrayList [<element>] : Object | Test.java:90:10:90:35 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | provenance | MaD:5 |
+| Test.java:90:33:90:34 | in : ArrayList [<element>] : Object | Test.java:90:10:90:35 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | provenance | MaD:4 |
 | Test.java:91:19:91:21 | out : ImmutableMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ImmutableMap [<map.key>] : Object | provenance |  |
 | Test.java:91:19:91:21 | out : ImmutableMap [<map.key>] : Object | Test.java:91:9:91:22 | getMapKey(...) | provenance | MaD:20 |
 | Test.java:96:15:96:42 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object | Test.java:97:10:97:11 | in : LoadingCache [<map.key>] : Object | provenance |  |
 | Test.java:96:34:96:41 | source(...) : Object | Test.java:30:45:30:53 | element : Object | provenance |  |
 | Test.java:96:34:96:41 | source(...) : Object | Test.java:96:15:96:42 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object | provenance | MaD:7 |
-| Test.java:97:10:97:11 | in : LoadingCache [<map.key>] : Object | Test.java:97:10:97:31 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | provenance | MaD:4 |
+| Test.java:97:10:97:11 | in : LoadingCache [<map.key>] : Object | Test.java:97:10:97:31 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | provenance | MaD:5 |
 | Test.java:97:10:97:31 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | Test.java:98:19:98:21 | out : ImmutableMap [<map.key>] : Object | provenance |  |
 | Test.java:98:19:98:21 | out : ImmutableMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ImmutableMap [<map.key>] : Object | provenance |  |
 | Test.java:98:19:98:21 | out : ImmutableMap [<map.key>] : Object | Test.java:98:9:98:22 | getMapKey(...) | provenance | MaD:20 |
@@ -157,7 +157,7 @@ edges
 | Test.java:152:43:152:50 | source(...) : Object | Test.java:20:33:20:41 | element : Object | provenance |  |
 | Test.java:152:43:152:50 | source(...) : Object | Test.java:152:28:152:51 | newWithElement(...) : ArrayList [<element>] : Object | provenance | MaD:18 |
 | Test.java:153:4:153:6 | out [post update] : LoadingCache [<map.key>] : Object | Test.java:154:19:154:21 | out : LoadingCache [<map.key>] : Object | provenance |  |
-| Test.java:153:15:153:16 | in : ArrayList [<element>] : Object | Test.java:153:4:153:6 | out [post update] : LoadingCache [<map.key>] : Object | provenance | MaD:14 |
+| Test.java:153:15:153:16 | in : ArrayList [<element>] : Object | Test.java:153:4:153:6 | out [post update] : LoadingCache [<map.key>] : Object | provenance | MaD:13 |
 | Test.java:154:19:154:21 | out : LoadingCache [<map.key>] : Object | Test.java:17:20:17:39 | container : LoadingCache [<map.key>] : Object | provenance |  |
 | Test.java:154:19:154:21 | out : LoadingCache [<map.key>] : Object | Test.java:154:9:154:22 | getMapKey(...) | provenance | MaD:1 |
 | Test.java:159:18:159:51 | (...)... : ArrayList [<element>] : Object | Test.java:161:26:161:27 | in : ArrayList [<element>] : Object | provenance |  |
@@ -165,13 +165,13 @@ edges
 | Test.java:159:43:159:50 | source(...) : Object | Test.java:20:33:20:41 | element : Object | provenance |  |
 | Test.java:159:43:159:50 | source(...) : Object | Test.java:159:28:159:51 | newWithElement(...) : ArrayList [<element>] : Object | provenance | MaD:18 |
 | Test.java:161:10:161:28 | getAll(...) : ImmutableMap [<map.key>] : Object | Test.java:162:19:162:21 | out : ImmutableMap [<map.key>] : Object | provenance |  |
-| Test.java:161:26:161:27 | in : ArrayList [<element>] : Object | Test.java:161:10:161:28 | getAll(...) : ImmutableMap [<map.key>] : Object | provenance | MaD:15 |
+| Test.java:161:26:161:27 | in : ArrayList [<element>] : Object | Test.java:161:10:161:28 | getAll(...) : ImmutableMap [<map.key>] : Object | provenance | MaD:14 |
 | Test.java:162:19:162:21 | out : ImmutableMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ImmutableMap [<map.key>] : Object | provenance |  |
 | Test.java:162:19:162:21 | out : ImmutableMap [<map.key>] : Object | Test.java:162:9:162:22 | getMapKey(...) | provenance | MaD:20 |
 | Test.java:167:22:167:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | Test.java:168:10:168:11 | in : LoadingCache [<map.value>] : Object | provenance |  |
 | Test.java:167:43:167:50 | source(...) : Object | Test.java:40:47:40:55 | element : Object | provenance |  |
 | Test.java:167:43:167:50 | source(...) : Object | Test.java:167:22:167:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | provenance | MaD:8 |
-| Test.java:168:10:168:11 | in : LoadingCache [<map.value>] : Object | Test.java:168:10:168:24 | getAll(...) : ImmutableMap [<map.value>] : Object | provenance | MaD:13 |
+| Test.java:168:10:168:11 | in : LoadingCache [<map.value>] : Object | Test.java:168:10:168:24 | getAll(...) : ImmutableMap [<map.value>] : Object | provenance | MaD:15 |
 | Test.java:168:10:168:24 | getAll(...) : ImmutableMap [<map.value>] : Object | Test.java:169:21:169:23 | out : ImmutableMap [<map.value>] : Object | provenance |  |
 | Test.java:169:21:169:23 | out : ImmutableMap [<map.value>] : Object | Test.java:18:22:18:39 | container : ImmutableMap [<map.value>] : Object | provenance |  |
 | Test.java:169:21:169:23 | out : ImmutableMap [<map.value>] : Object | Test.java:169:9:169:24 | getMapValue(...) | provenance | MaD:23 |

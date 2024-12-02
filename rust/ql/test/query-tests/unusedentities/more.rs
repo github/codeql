@@ -21,13 +21,13 @@ impl<T> MySettable<T> for MyContainer<T> {
 impl<T> MyGettable<T> for MyContainer<T> {
     fn get(
         &self,
-        val: T, // $ SPURIOUS: Alert[rust/unused-value] $ MISSING: Alert[rust/unused-variable]
+        val: T, // $ Alert[rust/unused-variable]
     ) -> &T {
         return &(self.val);
     }
 }
 
-fn generics() {
+pub fn generics() {
     let mut a = MyContainer { val: 1 }; // $ MISSING: Alert[rust/unused-value]
     let b = MyContainer { val: 2 };
 
@@ -36,7 +36,7 @@ fn generics() {
 
 // --- pointers ---
 
-fn pointers() {
+pub fn pointers() {
     let a = 1;
     let a_ptr1 = &a;
     let a_ptr2 = &a;

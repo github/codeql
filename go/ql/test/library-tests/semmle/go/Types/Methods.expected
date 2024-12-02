@@ -1,4 +1,11 @@
 | * Foo | half | pkg1/tst.go:33:16:33:19 | half |
+| * P | PMethod | pkg1/promotedStructs.go:17:13:17:19 | PMethod |
+| * S | SMethod | pkg1/promotedStructs.go:8:12:8:18 | SMethod |
+| * SEmbedP | PMethod | pkg1/promotedStructs.go:17:13:17:19 | PMethod |
+| * SEmbedS | SMethod | pkg1/promotedStructs.go:8:12:8:18 | SMethod |
+| * T | half | pkg1/tst.go:33:16:33:19 | half |
+| * T3 | half | pkg1/tst.go:33:16:33:19 | half |
+| * T4 | half | pkg1/tst.go:33:16:33:19 | half |
 | * base | f | pkg1/embedding.go:10:13:10:13 | f |
 | * base | g | pkg1/embedding.go:14:14:14:14 | g |
 | * embedder | f | pkg1/embedding.go:10:13:10:13 | f |
@@ -45,6 +52,8 @@
 | MyInterface | dummy18 | generic.go:62:2:62:8 | dummy18 |
 | MyInterface | dummy19 | generic.go:63:2:63:8 | dummy19 |
 | MyInterface | dummy20 | generic.go:64:2:64:8 | dummy20 |
+| S | SMethod | pkg1/promotedStructs.go:8:12:8:18 | SMethod |
+| SEmbedS | SMethod | pkg1/promotedStructs.go:8:12:8:18 | SMethod |
 | T | half | pkg1/tst.go:33:16:33:19 | half |
 | T3 | half | pkg1/tst.go:33:16:33:19 | half |
 | T4 | half | pkg1/tst.go:33:16:33:19 | half |

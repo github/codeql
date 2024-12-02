@@ -578,27 +578,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A path. For example:
-   * ```rust
-   * foo::bar;
-   * ```
-   */
-  class Path extends @path, AstNode {
-    override string toString() { result = "Path" }
-
-    /**
-     * Gets the qualifier of this path, if it exists.
-     */
-    Path getQualifier() { path_qualifiers(this, result) }
-
-    /**
-     * Gets the part of this path, if it exists.
-     */
-    PathSegment getPart() { path_parts(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A PathSegment. For example:
    * ```rust
    * todo!()
@@ -787,6 +766,22 @@ module Raw {
      * Gets the name of this rename, if it exists.
      */
     Name getName() { rename_names(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Either a `Path`, or a `MethodCallExpr`.
+   */
+  class Resolvable extends @resolvable, AstNode {
+    /**
+     * Gets the resolved path of this resolvable, if it exists.
+     */
+    string getResolvedPath() { resolvable_resolved_paths(this, result) }
+
+    /**
+     * Gets the resolved crate origin of this resolvable, if it exists.
+     */
+    string getResolvedCrateOrigin() { resolvable_resolved_crate_origins(this, result) }
   }
 
   /**
@@ -2473,6 +2468,27 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A path. For example:
+   * ```rust
+   * foo::bar;
+   * ```
+   */
+  class Path extends @path, Resolvable {
+    override string toString() { result = "Path" }
+
+    /**
+     * Gets the qualifier of this path, if it exists.
+     */
+    Path getQualifier() { path_qualifiers(this, result) }
+
+    /**
+     * Gets the part of this path, if it exists.
+     */
+    PathSegment getPart() { path_parts(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A path expression or a variable access in a formatting template. See `PathExpr` and `FormatTemplateVariableAccess` for further details.
    */
   class PathExprBase extends @path_expr_base, Expr { }
@@ -3548,7 +3564,7 @@ module Raw {
    * x.foo::<u32, u64>(42);
    * ```
    */
-  class MethodCallExpr extends @method_call_expr, CallExprBase {
+  class MethodCallExpr extends @method_call_expr, CallExprBase, Resolvable {
     override string toString() { result = "MethodCallExpr" }
 
     /**

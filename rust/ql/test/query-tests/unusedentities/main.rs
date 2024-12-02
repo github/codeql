@@ -1,5 +1,7 @@
+mod more;
 mod unreachable;
 
+use more::*;
 use unreachable::*;
 
 // --- locals ---
@@ -195,6 +197,14 @@ fn loops() {
     for x in 1..10 {
         _ = format!("x is {x}");
     }
+
+    for x in 1..10 {
+        _ = format!("x is {x:?}");
+    }
+
+    [1, 2, 3].iter().for_each(|x| {
+        _ = format!("x is {x}");
+    });
 
     for x in 1..10 {
         println!("x is {val}", val = x);
@@ -464,6 +474,33 @@ fn macros() {
         })
     )
 }
+// --- references ---
+
+fn references() {
+    let a = 1;
+    let b = &a;
+    let c = *b; // $ Alert[rust/unused-value]
+    let d = 2;
+    let e = 3;
+    let f = &&e;
+
+    assert!(&d != *f);
+}
+
+// --- declarations in types ---
+
+pub struct my_declaration {
+    field1: fn(i32) -> i32,
+    field2: fn(x: i32) -> i32,
+    field3: fn(y:
+        fn(z: i32) -> i32) -> i32,
+}
+
+type MyType = fn(x: i32) -> i32;
+
+trait MyTrait {
+    fn my_func2(&self, x: i32) -> i32;
+}
 
 // --- main ---
 
@@ -479,16 +516,22 @@ fn main() {
     shadowing();
     func_ptrs();
     folds_and_closures();
+    macros();
+    references();
+
+    generics();
+    pointers();
 
     unreachable_if_1();
-    // unreachable_panic();
+    unreachable_if_2();
+    unreachable_if_3();
+    unreachable_panic();
+    _ = unreachable_bail();
     unreachable_match();
-    // unreachable_loop();
+    unreachable_loop();
+    unreachable_loop_async();
     unreachable_paren();
     unreachable_let_1();
     unreachable_let_2();
-    unreachable_if_2();
-    unreachable_if_3();
-
-    macros();
+    unreachable_attributes();
 }

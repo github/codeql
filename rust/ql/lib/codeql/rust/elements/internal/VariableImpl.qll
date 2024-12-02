@@ -1,4 +1,5 @@
 private import rust
+private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.elements.internal.generated.ParentChild
 private import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
 private import codeql.rust.elements.internal.FormatTemplateVariableAccessImpl::Impl as FormatTemplateVariableAccessImpl
@@ -87,7 +88,9 @@ module Impl {
     not name.charAt(0).isUppercase() and
     // exclude parameters from functions without a body as these are trait method declarations
     // without implementations
-    not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = p)
+    not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = p) and
+    // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
+    not exists(FnPtrType fp | fp.getParamList().getParam(_).getPat() = p)
   }
 
   /** A variable. */
@@ -443,7 +446,7 @@ module Impl {
     Variable getVariable() { result = v }
 
     /** Holds if this access is a capture. */
-    predicate isCapture() { this.getEnclosingCallable() != v.getPat().getEnclosingCallable() }
+    predicate isCapture() { this.getEnclosingCfgScope() != v.getPat().getEnclosingCfgScope() }
 
     override string toString() { result = name }
 

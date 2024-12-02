@@ -1,4 +1,0 @@
-uniqueEnclosingCallable
-| gen_trait.rs:7:32:7:60 | Param | Node should have one enclosing callable but has 0. |
-uniqueType
-| gen_trait.rs:7:32:7:60 | Param | Node should have one type but has 0. |

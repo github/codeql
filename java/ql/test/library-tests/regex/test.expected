@@ -1,9 +1,9 @@
 models
 | 1 | Summary: java.util.regex; Matcher; false; group; ; ; Argument[this]; ReturnValue; taint; manual |
-| 2 | Summary: java.util.regex; Matcher; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
-| 3 | Summary: java.util.regex; Matcher; false; replaceAll; ; ; Argument[0]; ReturnValue; taint; manual |
-| 4 | Summary: java.util.regex; Matcher; false; replaceFirst; ; ; Argument[this]; ReturnValue; taint; manual |
-| 5 | Summary: java.util.regex; Matcher; false; replaceFirst; ; ; Argument[0]; ReturnValue; taint; manual |
+| 2 | Summary: java.util.regex; Matcher; false; replaceAll; ; ; Argument[0]; ReturnValue; taint; manual |
+| 3 | Summary: java.util.regex; Matcher; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: java.util.regex; Matcher; false; replaceFirst; ; ; Argument[0]; ReturnValue; taint; manual |
+| 5 | Summary: java.util.regex; Matcher; false; replaceFirst; ; ; Argument[this]; ReturnValue; taint; manual |
 | 6 | Summary: java.util.regex; Pattern; false; matcher; ; ; Argument[0]; ReturnValue; taint; manual |
 | 7 | Summary: java.util.regex; Pattern; false; quote; ; ; Argument[0]; ReturnValue; taint; manual |
 | 8 | Summary: java.util.regex; Pattern; false; split; ; ; Argument[0]; ReturnValue; taint; manual |
@@ -30,22 +30,22 @@ edges
 | Test.java:44:28:44:35 | source(...) : Object | Test.java:44:19:44:35 | (...)... : String | provenance |  |
 | Test.java:45:19:45:37 | matcher(...) : Matcher | Test.java:46:13:46:13 | m : Matcher | provenance |  |
 | Test.java:45:35:45:36 | in : String | Test.java:45:19:45:37 | matcher(...) : Matcher | provenance | MaD:6 |
-| Test.java:46:13:46:13 | m : Matcher | Test.java:46:13:46:31 | replaceAll(...) : String | provenance | MaD:2 |
+| Test.java:46:13:46:13 | m : Matcher | Test.java:46:13:46:31 | replaceAll(...) : String | provenance | MaD:3 |
 | Test.java:46:13:46:31 | replaceAll(...) : String | Test.java:47:12:47:14 | out | provenance |  |
 | Test.java:52:19:52:35 | (...)... : String | Test.java:54:26:54:27 | in : String | provenance |  |
 | Test.java:52:28:52:35 | source(...) : Object | Test.java:52:19:52:35 | (...)... : String | provenance |  |
 | Test.java:54:13:54:28 | replaceAll(...) : String | Test.java:55:12:55:14 | out | provenance |  |
-| Test.java:54:26:54:27 | in : String | Test.java:54:13:54:28 | replaceAll(...) : String | provenance | MaD:3 |
+| Test.java:54:26:54:27 | in : String | Test.java:54:13:54:28 | replaceAll(...) : String | provenance | MaD:2 |
 | Test.java:60:19:60:35 | (...)... : String | Test.java:61:35:61:36 | in : String | provenance |  |
 | Test.java:60:28:60:35 | source(...) : Object | Test.java:60:19:60:35 | (...)... : String | provenance |  |
 | Test.java:61:19:61:37 | matcher(...) : Matcher | Test.java:62:13:62:13 | m : Matcher | provenance |  |
 | Test.java:61:35:61:36 | in : String | Test.java:61:19:61:37 | matcher(...) : Matcher | provenance | MaD:6 |
-| Test.java:62:13:62:13 | m : Matcher | Test.java:62:13:62:33 | replaceFirst(...) : String | provenance | MaD:4 |
+| Test.java:62:13:62:13 | m : Matcher | Test.java:62:13:62:33 | replaceFirst(...) : String | provenance | MaD:5 |
 | Test.java:62:13:62:33 | replaceFirst(...) : String | Test.java:63:12:63:14 | out | provenance |  |
 | Test.java:68:19:68:35 | (...)... : String | Test.java:70:28:70:29 | in : String | provenance |  |
 | Test.java:68:28:68:35 | source(...) : Object | Test.java:68:19:68:35 | (...)... : String | provenance |  |
 | Test.java:70:13:70:30 | replaceFirst(...) : String | Test.java:71:12:71:14 | out | provenance |  |
-| Test.java:70:28:70:29 | in : String | Test.java:70:13:70:30 | replaceFirst(...) : String | provenance | MaD:5 |
+| Test.java:70:28:70:29 | in : String | Test.java:70:13:70:30 | replaceFirst(...) : String | provenance | MaD:4 |
 | Test.java:76:25:76:46 | (...)... : CharSequence | Test.java:77:29:77:30 | in : CharSequence | provenance |  |
 | Test.java:76:39:76:46 | source(...) : Object | Test.java:76:25:76:46 | (...)... : CharSequence | provenance |  |
 | Test.java:77:13:77:31 | matcher(...) : Matcher | Test.java:78:12:78:14 | out | provenance |  |

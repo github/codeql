@@ -151,9 +151,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => attributeSyntax?.Name.GetLocation();
 
-        private Semmle.Extraction.Entities.Location? location;
+        private Location? location;
 
-        private Semmle.Extraction.Entities.Location Location =>
+        private Location Location =>
             location ??= Context.CreateLocation(attributeSyntax is null
                 ? entity.ReportingLocation
                 : attributeSyntax.Name.GetLocation());
