@@ -16,10 +16,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public string Exec { get; }
 
-        public DotNetCliInvoker(ILogger logger, string exec, TemporaryDirectory tempWorkingDirectory)
+        public DotNetCliInvoker(ILogger logger, string exec, DependabotProxy dependabotProxy)
         {
             this.logger = logger;
-            this.proxy = new DependabotProxy(logger, tempWorkingDirectory);
+            this.proxy = dependabotProxy;
             this.Exec = exec;
             logger.LogInfo($"Using .NET CLI executable: '{Exec}'");
         }

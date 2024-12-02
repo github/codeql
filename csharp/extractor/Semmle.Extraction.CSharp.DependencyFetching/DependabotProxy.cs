@@ -6,7 +6,7 @@ using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal class DependabotProxy
+    public class DependabotProxy
     {
         private readonly string? host;
         private readonly string? port;
