@@ -61,7 +61,7 @@ fun KotlinFileExtractor.extractFunctionLiteral(
         addModifiers(ids.function, "override")
     }
 
-    val exprParent = parent.expr(e, callable)
+    val exprParent = parent.expr(e)
     val idLambdaExpr = tw.getFreshIdLabel<DbLambdaexpr>()
     tw.writeExprs_lambdaexpr(
         idLambdaExpr,

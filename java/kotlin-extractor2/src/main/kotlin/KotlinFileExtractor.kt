@@ -3793,25 +3793,26 @@ OLD: KE1
     */
 
     abstract inner class StmtExprParent {
-        abstract fun stmt(e: KtExpression, callable: Label<out DbCallable>): StmtParent
-        abstract fun expr(e: KtExpression, callable: Label<out DbCallable>): ExprParent
+        abstract fun stmt(e: KtExpression): StmtParent
+        abstract fun expr(e: KtExpression): ExprParent
     }
 
-    inner class StmtParent(val parent: Label<out DbStmtparent>, val idx: Int) : StmtExprParent() {
-        override fun stmt(e: KtExpression, callable: Label<out DbCallable>) = this
+    inner class StmtParent(val parent: Label<out DbStmtparent>, val idx: Int, val callable: Label<out DbCallable>) : StmtExprParent() {
+        override fun stmt(e: KtExpression) = this
 
-        override fun expr(e: KtExpression, callable: Label<out DbCallable>) =
+        override fun expr(e: KtExpression) =
             extractExpressionStmt(tw.getLocation(e), parent, idx, callable).let { id ->
-                ExprParent(id, 0, id)
+                ExprParent(id, 0, id, callable)
             }
     }
 
     inner class ExprParent(
         val parent: Label<out DbExprparent>,
         val idx: Int,
-        val enclosingStmt: Label<out DbStmt>
+        val enclosingStmt: Label<out DbStmt>,
+        val callable: Label<out DbCallable>
     ) : StmtExprParent() {
-        override fun stmt(e: KtExpression, callable: Label<out DbCallable>): StmtParent {
+        override fun stmt(e: KtExpression): StmtParent {
             val id = tw.getFreshIdLabel<DbStmtexpr>()
             val et = e.expressionType
             val type = useType(et)
@@ -3819,10 +3820,10 @@ OLD: KE1
             tw.writeExprs_stmtexpr(id, type.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(id, type.kotlinResult.id)
             extractExprContext(id, locId, callable, enclosingStmt)
-            return StmtParent(id, 0)
+            return StmtParent(id, 0, callable)
         }
 
-        override fun expr(e: KtExpression, callable: Label<out DbCallable>): ExprParent {
+        override fun expr(e: KtExpression): ExprParent {
             return this
         }
     }

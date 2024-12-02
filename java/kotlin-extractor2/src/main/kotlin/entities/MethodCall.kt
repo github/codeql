@@ -57,7 +57,7 @@ fun KotlinFileExtractor.extractMethodCall(
     val extensionReceiver = if (target.isExtension) qualifier else null
     val dispatchReceiver = if (!target.isExtension) qualifier else null
 
-    val exprParent = stmtExprParent.expr(call, enclosingCallable)
+    val exprParent = stmtExprParent.expr(call)
 
     val callId = extractRawMethodAccess(
         target,
