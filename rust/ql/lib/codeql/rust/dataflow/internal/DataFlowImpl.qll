@@ -264,7 +264,7 @@ module Node {
 
     final override Location getLocation() { result = n.getLocation() }
 
-    final override string toString() { result = n.toString() }
+    final override string toString() { result = "[post] " + n.toString() }
   }
 
   final class CastNode = NaNode;
@@ -285,6 +285,9 @@ module SsaFlow {
     n = TSsaNode(result)
     or
     result.(SsaFlow::ExprNode).getExpr() = n.asExpr()
+    or
+    result.(SsaFlow::ExprPostUpdateNode).getExpr() =
+      n.(Node::PostUpdateNode).getPreUpdateNode().asExpr()
     or
     n = toParameterNode(result.(SsaFlow::ParameterNode).getParameter())
   }
@@ -753,6 +756,15 @@ module RustDataFlow implements InputSig<Location> {
     pathResolveToStructCanonicalPath(re.getPath(), s)
   }
 
+  private predicate tupleAssignment(Node node1, Node node2, TuplePositionContent c) {
+    exists(AssignmentExprCfgNode assignment, FieldExprCfgNode access |
+      assignment.getLhs() = access and
+      fieldTuplePositionContent(access, c) and
+      node1.asExpr() = assignment.getRhs() and
+      node2.asExpr() = access.getExpr()
+    )
+  }
+
   /**
    * Holds if data can flow from `node1` to `node2` via a store into `c`.  Thus,
    * `node2` references an object with a content `c.getAStoreContent()` that
@@ -786,12 +798,7 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr() = tuple
       )
       or
-      exists(AssignmentExprCfgNode assignment, FieldExprCfgNode access |
-        assignment.getLhs() = access and
-        fieldTuplePositionContent(access, c) and
-        node1.asExpr() = assignment.getRhs() and
-        node2.asExpr() = access.getExpr()
-      )
+      tupleAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
     )
   }
 
@@ -801,11 +808,7 @@ module RustDataFlow implements InputSig<Location> {
    * in `x.f = newValue`.
    */
   predicate clearsContent(Node n, ContentSet cs) {
-    exists(AssignmentExprCfgNode assignment, FieldExprCfgNode access |
-      assignment.getLhs() = access and
-      n.asExpr() = access.getExpr() and
-      fieldTuplePositionContent(access, cs.(SingletonContentSet).getContent())
-    )
+    tupleAssignment(_, n, cs.(SingletonContentSet).getContent())
   }
 
   /**
