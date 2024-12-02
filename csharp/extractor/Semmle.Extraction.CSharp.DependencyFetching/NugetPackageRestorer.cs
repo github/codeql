@@ -20,6 +20,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly FileProvider fileProvider;
         private readonly FileContent fileContent;
         private readonly IDotNet dotnet;
+        private readonly DependabotProxy dependabotProxy;
         private readonly IDiagnosticsWriter diagnosticsWriter;
         private readonly TemporaryDirectory legacyPackageDirectory;
         private readonly TemporaryDirectory missingPackageDirectory;
@@ -32,6 +33,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             FileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
+            DependabotProxy dependabotProxy,
             IDiagnosticsWriter diagnosticsWriter,
             ILogger logger,
             ICompilationInfoContainer compilationInfoContainer)
@@ -39,6 +41,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.fileProvider = fileProvider;
             this.fileContent = fileContent;
             this.dotnet = dotnet;
+            this.dependabotProxy = dependabotProxy;
             this.diagnosticsWriter = diagnosticsWriter;
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
