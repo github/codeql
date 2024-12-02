@@ -12,7 +12,7 @@ import codeql.rust.elements.ExternItem
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Item
 import codeql.rust.elements.Name
-import codeql.rust.elements.RetTypeRef
+import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 

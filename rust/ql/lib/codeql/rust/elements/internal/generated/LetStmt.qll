@@ -11,7 +11,7 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.LetElse
 import codeql.rust.elements.Pat
 import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `LetStmt` and should not
@@ -95,8 +95,9 @@ module Generated {
     /**
      * Gets the type reference of this let statement, if it exists.
      */
-    TypeRef getTy() {
-      result = Synth::convertTypeRefFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getTy())
+    TypeRepr getTy() {
+      result =
+        Synth::convertTypeReprFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getTy())
     }
 
     /**

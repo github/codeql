@@ -133,7 +133,7 @@ impl Translator<'_> {
         }
     }
 
-    pub(crate) fn emit_type(&mut self, node: ast::Type) -> Label<generated::TypeRef> {
+    pub(crate) fn emit_type(&mut self, node: ast::Type) -> Label<generated::TypeRepr> {
         match node {
             ast::Type::ArrayType(inner) => self.emit_array_type(inner).into(),
             ast::Type::DynTraitType(inner) => self.emit_dyn_trait_type(inner).into(),
@@ -212,16 +212,16 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_array_type(&mut self, node: ast::ArrayType) -> Label<generated::ArrayTypeRef> {
+    pub(crate) fn emit_array_type(&mut self, node: ast::ArrayType) -> Label<generated::ArrayTypeRepr> {
         let const_arg = node.const_arg().map(|x| self.emit_const_arg(x));
         let ty = node.ty().map(|x| self.emit_type(x));
-        let label = self.trap.emit(generated::ArrayTypeRef {
+        let label = self.trap.emit(generated::ArrayTypeRepr {
             id: TrapId::Star,
             const_arg,
             ty,
         });
         self.emit_location(label, &node);
-        emit_detached!(ArrayTypeRef, self, node, label);
+        emit_detached!(ArrayTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -552,14 +552,14 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_dyn_trait_type(&mut self, node: ast::DynTraitType) -> Label<generated::DynTraitTypeRef> {
+    pub(crate) fn emit_dyn_trait_type(&mut self, node: ast::DynTraitType) -> Label<generated::DynTraitTypeRepr> {
         let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
-        let label = self.trap.emit(generated::DynTraitTypeRef {
+        let label = self.trap.emit(generated::DynTraitTypeRepr {
             id: TrapId::Star,
             type_bound_list,
         });
         self.emit_location(label, &node);
-        emit_detached!(DynTraitTypeRef, self, node, label);
+        emit_detached!(DynTraitTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -702,14 +702,14 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_fn_ptr_type(&mut self, node: ast::FnPtrType) -> Label<generated::FnPtrTypeRef> {
+    pub(crate) fn emit_fn_ptr_type(&mut self, node: ast::FnPtrType) -> Label<generated::FnPtrTypeRepr> {
         let abi = node.abi().map(|x| self.emit_abi(x));
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
         let is_unsafe = node.unsafe_token().is_some();
         let param_list = node.param_list().map(|x| self.emit_param_list(x));
         let ret_type = node.ret_type().map(|x| self.emit_ret_type(x));
-        let label = self.trap.emit(generated::FnPtrTypeRef {
+        let label = self.trap.emit(generated::FnPtrTypeRepr {
             id: TrapId::Star,
             abi,
             is_async,
@@ -719,7 +719,7 @@ impl Translator<'_> {
             ret_type,
         });
         self.emit_location(label, &node);
-        emit_detached!(FnPtrTypeRef, self, node, label);
+        emit_detached!(FnPtrTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -744,16 +744,16 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_for_type(&mut self, node: ast::ForType) -> Label<generated::ForTypeRef> {
+    pub(crate) fn emit_for_type(&mut self, node: ast::ForType) -> Label<generated::ForTypeRepr> {
         let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
         let ty = node.ty().map(|x| self.emit_type(x));
-        let label = self.trap.emit(generated::ForTypeRef {
+        let label = self.trap.emit(generated::ForTypeRepr {
             id: TrapId::Star,
             generic_param_list,
             ty,
         });
         self.emit_location(label, &node);
-        emit_detached!(ForTypeRef, self, node, label);
+        emit_detached!(ForTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -880,14 +880,14 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_impl_trait_type(&mut self, node: ast::ImplTraitType) -> Label<generated::ImplTraitTypeRef> {
+    pub(crate) fn emit_impl_trait_type(&mut self, node: ast::ImplTraitType) -> Label<generated::ImplTraitTypeRepr> {
         let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
-        let label = self.trap.emit(generated::ImplTraitTypeRef {
+        let label = self.trap.emit(generated::ImplTraitTypeRepr {
             id: TrapId::Star,
             type_bound_list,
         });
         self.emit_location(label, &node);
-        emit_detached!(ImplTraitTypeRef, self, node, label);
+        emit_detached!(ImplTraitTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -908,12 +908,12 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_infer_type(&mut self, node: ast::InferType) -> Label<generated::InferTypeRef> {
-        let label = self.trap.emit(generated::InferTypeRef {
+    pub(crate) fn emit_infer_type(&mut self, node: ast::InferType) -> Label<generated::InferTypeRepr> {
+        let label = self.trap.emit(generated::InferTypeRepr {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
-        emit_detached!(InferTypeRef, self, node, label);
+        emit_detached!(InferTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -1178,14 +1178,14 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_macro_type(&mut self, node: ast::MacroType) -> Label<generated::MacroTypeRef> {
+    pub(crate) fn emit_macro_type(&mut self, node: ast::MacroType) -> Label<generated::MacroTypeRepr> {
         let macro_call = node.macro_call().map(|x| self.emit_macro_call(x));
-        let label = self.trap.emit(generated::MacroTypeRef {
+        let label = self.trap.emit(generated::MacroTypeRepr {
             id: TrapId::Star,
             macro_call,
         });
         self.emit_location(label, &node);
-        emit_detached!(MacroTypeRef, self, node, label);
+        emit_detached!(MacroTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -1330,12 +1330,12 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_never_type(&mut self, node: ast::NeverType) -> Label<generated::NeverTypeRef> {
-        let label = self.trap.emit(generated::NeverTypeRef {
+    pub(crate) fn emit_never_type(&mut self, node: ast::NeverType) -> Label<generated::NeverTypeRepr> {
+        let label = self.trap.emit(generated::NeverTypeRepr {
             id: TrapId::Star,
         });
         self.emit_location(label, &node);
-        emit_detached!(NeverTypeRef, self, node, label);
+        emit_detached!(NeverTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -1424,14 +1424,14 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_paren_type(&mut self, node: ast::ParenType) -> Label<generated::ParenTypeRef> {
+    pub(crate) fn emit_paren_type(&mut self, node: ast::ParenType) -> Label<generated::ParenTypeRepr> {
         let ty = node.ty().map(|x| self.emit_type(x));
-        let label = self.trap.emit(generated::ParenTypeRef {
+        let label = self.trap.emit(generated::ParenTypeRepr {
             id: TrapId::Star,
             ty,
         });
         self.emit_location(label, &node);
-        emit_detached!(ParenTypeRef, self, node, label);
+        emit_detached!(ParenTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -1500,14 +1500,14 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_path_type(&mut self, node: ast::PathType) -> Label<generated::PathTypeRef> {
+    pub(crate) fn emit_path_type(&mut self, node: ast::PathType) -> Label<generated::PathTypeRepr> {
         let path = node.path().map(|x| self.emit_path(x));
-        let label = self.trap.emit(generated::PathTypeRef {
+        let label = self.trap.emit(generated::PathTypeRepr {
             id: TrapId::Star,
             path,
         });
         self.emit_location(label, &node);
-        emit_detached!(PathTypeRef, self, node, label);
+        emit_detached!(PathTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -1528,18 +1528,18 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_ptr_type(&mut self, node: ast::PtrType) -> Label<generated::PtrTypeRef> {
+    pub(crate) fn emit_ptr_type(&mut self, node: ast::PtrType) -> Label<generated::PtrTypeRepr> {
         let is_const = node.const_token().is_some();
         let is_mut = node.mut_token().is_some();
         let ty = node.ty().map(|x| self.emit_type(x));
-        let label = self.trap.emit(generated::PtrTypeRef {
+        let label = self.trap.emit(generated::PtrTypeRepr {
             id: TrapId::Star,
             is_const,
             is_mut,
             ty,
         });
         self.emit_location(label, &node);
-        emit_detached!(PtrTypeRef, self, node, label);
+        emit_detached!(PtrTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -1732,18 +1732,18 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_ref_type(&mut self, node: ast::RefType) -> Label<generated::RefTypeRef> {
+    pub(crate) fn emit_ref_type(&mut self, node: ast::RefType) -> Label<generated::RefTypeRepr> {
         let is_mut = node.mut_token().is_some();
         let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
         let ty = node.ty().map(|x| self.emit_type(x));
-        let label = self.trap.emit(generated::RefTypeRef {
+        let label = self.trap.emit(generated::RefTypeRepr {
             id: TrapId::Star,
             is_mut,
             lifetime,
             ty,
         });
         self.emit_location(label, &node);
-        emit_detached!(RefTypeRef, self, node, label);
+        emit_detached!(RefTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -1772,14 +1772,14 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_ret_type(&mut self, node: ast::RetType) -> Label<generated::RetTypeRef> {
+    pub(crate) fn emit_ret_type(&mut self, node: ast::RetType) -> Label<generated::RetTypeRepr> {
         let ty = node.ty().map(|x| self.emit_type(x));
-        let label = self.trap.emit(generated::RetTypeRef {
+        let label = self.trap.emit(generated::RetTypeRepr {
             id: TrapId::Star,
             ty,
         });
         self.emit_location(label, &node);
-        emit_detached!(RetTypeRef, self, node, label);
+        emit_detached!(RetTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -1840,14 +1840,14 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_slice_type(&mut self, node: ast::SliceType) -> Label<generated::SliceTypeRef> {
+    pub(crate) fn emit_slice_type(&mut self, node: ast::SliceType) -> Label<generated::SliceTypeRepr> {
         let ty = node.ty().map(|x| self.emit_type(x));
-        let label = self.trap.emit(generated::SliceTypeRef {
+        let label = self.trap.emit(generated::SliceTypeRepr {
             id: TrapId::Star,
             ty,
         });
         self.emit_location(label, &node);
-        emit_detached!(SliceTypeRef, self, node, label);
+        emit_detached!(SliceTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -2070,14 +2070,14 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_tuple_type(&mut self, node: ast::TupleType) -> Label<generated::TupleTypeRef> {
+    pub(crate) fn emit_tuple_type(&mut self, node: ast::TupleType) -> Label<generated::TupleTypeRepr> {
         let fields = node.fields().map(|x| self.emit_type(x)).collect();
-        let label = self.trap.emit(generated::TupleTypeRef {
+        let label = self.trap.emit(generated::TupleTypeRepr {
             id: TrapId::Star,
             fields,
         });
         self.emit_location(label, &node);
-        emit_detached!(TupleTypeRef, self, node, label);
+        emit_detached!(TupleTypeRepr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }

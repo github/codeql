@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.GenericArgImpl::Impl as GenericArgImpl
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `TypeArg` and should not
@@ -28,8 +28,9 @@ module Generated {
     /**
      * Gets the type reference of this type argument, if it exists.
      */
-    TypeRef getTy() {
-      result = Synth::convertTypeRefFromRaw(Synth::convertTypeArgToRaw(this).(Raw::TypeArg).getTy())
+    TypeRepr getTy() {
+      result =
+        Synth::convertTypeReprFromRaw(Synth::convertTypeArgToRaw(this).(Raw::TypeArg).getTy())
     }
 
     /**

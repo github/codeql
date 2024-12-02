@@ -12,8 +12,8 @@
 | gen_path_expr.rs:7:14:7:14 | T | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasQualifier: | no | hasPart: | yes |
 | gen_path_expr.rs:8:13:8:30 | <...> | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasQualifier: | no | hasPart: | yes |
 | gen_path_expr.rs:8:13:8:35 | ...::foo | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasQualifier: | yes | hasPart: | yes |
-| gen_path_expr.rs:8:14:8:20 | TypeRef | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasQualifier: | no | hasPart: | yes |
-| gen_path_expr.rs:8:14:8:20 | TypeRef | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasQualifier: | no | hasPart: | yes |
+| gen_path_expr.rs:8:14:8:20 | TypeRepr | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasQualifier: | no | hasPart: | yes |
+| gen_path_expr.rs:8:14:8:20 | TypeRepr | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasQualifier: | no | hasPart: | yes |
 | gen_path_pat.rs:5:11:5:11 | x | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasQualifier: | no | hasPart: | yes |
 | gen_path_pat.rs:6:9:6:11 | Foo | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasQualifier: | no | hasPart: | yes |
 | gen_path_pat.rs:6:9:6:16 | ...::Bar | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasQualifier: | yes | hasPart: | yes |

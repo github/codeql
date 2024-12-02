@@ -29,7 +29,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TArrayTypeRef(Raw::ArrayTypeRef id) { constructArrayTypeRef(id) } or
+    TArrayTypeRepr(Raw::ArrayTypeRepr id) { constructArrayTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -113,7 +113,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TDynTraitTypeRef(Raw::DynTraitTypeRef id) { constructDynTraitTypeRef(id) } or
+    TDynTraitTypeRepr(Raw::DynTraitTypeRepr id) { constructDynTraitTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -141,7 +141,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TFnPtrTypeRef(Raw::FnPtrTypeRef id) { constructFnPtrTypeRef(id) } or
+    TFnPtrTypeRepr(Raw::FnPtrTypeRepr id) { constructFnPtrTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -149,7 +149,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TForTypeRef(Raw::ForTypeRef id) { constructForTypeRef(id) } or
+    TForTypeRepr(Raw::ForTypeRepr id) { constructForTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -205,7 +205,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TImplTraitTypeRef(Raw::ImplTraitTypeRef id) { constructImplTraitTypeRef(id) } or
+    TImplTraitTypeRepr(Raw::ImplTraitTypeRepr id) { constructImplTraitTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -213,7 +213,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TInferTypeRef(Raw::InferTypeRef id) { constructInferTypeRef(id) } or
+    TInferTypeRepr(Raw::InferTypeRepr id) { constructInferTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -289,7 +289,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TMacroTypeRef(Raw::MacroTypeRef id) { constructMacroTypeRef(id) } or
+    TMacroTypeRepr(Raw::MacroTypeRepr id) { constructMacroTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -333,7 +333,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TNeverTypeRef(Raw::NeverTypeRef id) { constructNeverTypeRef(id) } or
+    TNeverTypeRepr(Raw::NeverTypeRepr id) { constructNeverTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -361,7 +361,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TParenTypeRef(Raw::ParenTypeRef id) { constructParenTypeRef(id) } or
+    TParenTypeRepr(Raw::ParenTypeRepr id) { constructParenTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -381,7 +381,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TPathTypeRef(Raw::PathTypeRef id) { constructPathTypeRef(id) } or
+    TPathTypeRepr(Raw::PathTypeRepr id) { constructPathTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -389,7 +389,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TPtrTypeRef(Raw::PtrTypeRef id) { constructPtrTypeRef(id) } or
+    TPtrTypeRepr(Raw::PtrTypeRepr id) { constructPtrTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -441,7 +441,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TRefTypeRef(Raw::RefTypeRef id) { constructRefTypeRef(id) } or
+    TRefTypeRepr(Raw::RefTypeRepr id) { constructRefTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -453,7 +453,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TRetTypeRef(Raw::RetTypeRef id) { constructRetTypeRef(id) } or
+    TRetTypeRepr(Raw::RetTypeRepr id) { constructRetTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -473,7 +473,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TSliceTypeRef(Raw::SliceTypeRef id) { constructSliceTypeRef(id) } or
+    TSliceTypeRepr(Raw::SliceTypeRepr id) { constructSliceTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -529,7 +529,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TTupleTypeRef(Raw::TupleTypeRef id) { constructTupleTypeRef(id) } or
+    TTupleTypeRepr(Raw::TupleTypeRepr id) { constructTupleTypeRepr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -631,9 +631,9 @@ module Synth {
         TLabel or TLetElse or TLifetime or TMacroItems or TMacroStmts or TMatchArm or
         TMatchArmList or TMatchGuard or TMeta or TName or TNameRef or TParamBase or TParamList or
         TPat or TPathSegment or TRecordExprField or TRecordExprFieldList or TRecordField or
-        TRecordPatField or TRecordPatFieldList or TRename or TResolvable or TRetTypeRef or
+        TRecordPatField or TRecordPatFieldList or TRename or TResolvable or TRetTypeRepr or
         TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or TToken or TTokenTree or
-        TTupleField or TTypeBound or TTypeBoundList or TTypeRef or TUseTree or TUseTreeList or
+        TTupleField or TTypeBound or TTypeBoundList or TTypeRepr or TUseTree or TUseTreeList or
         TVariantList or TVisibility or TWhereClause or TWherePred;
 
   /**
@@ -736,10 +736,10 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TTypeRef =
-    TArrayTypeRef or TDynTraitTypeRef or TFnPtrTypeRef or TForTypeRef or TImplTraitTypeRef or
-        TInferTypeRef or TMacroTypeRef or TNeverTypeRef or TParenTypeRef or TPathTypeRef or
-        TPtrTypeRef or TRefTypeRef or TSliceTypeRef or TTupleTypeRef;
+  class TTypeRepr =
+    TArrayTypeRepr or TDynTraitTypeRepr or TFnPtrTypeRepr or TForTypeRepr or TImplTraitTypeRepr or
+        TInferTypeRepr or TMacroTypeRepr or TNeverTypeRepr or TParenTypeRepr or TPathTypeRepr or
+        TPtrTypeRepr or TRefTypeRepr or TSliceTypeRepr or TTupleTypeRepr;
 
   /**
    * INTERNAL: Do not use.
@@ -766,9 +766,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TArrayTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TArrayTypeRepr`, if possible.
    */
-  TArrayTypeRef convertArrayTypeRefFromRaw(Raw::Element e) { result = TArrayTypeRef(e) }
+  TArrayTypeRepr convertArrayTypeReprFromRaw(Raw::Element e) { result = TArrayTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -892,9 +892,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TDynTraitTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TDynTraitTypeRepr`, if possible.
    */
-  TDynTraitTypeRef convertDynTraitTypeRefFromRaw(Raw::Element e) { result = TDynTraitTypeRef(e) }
+  TDynTraitTypeRepr convertDynTraitTypeReprFromRaw(Raw::Element e) { result = TDynTraitTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -934,9 +934,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TFnPtrTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TFnPtrTypeRepr`, if possible.
    */
-  TFnPtrTypeRef convertFnPtrTypeRefFromRaw(Raw::Element e) { result = TFnPtrTypeRef(e) }
+  TFnPtrTypeRepr convertFnPtrTypeReprFromRaw(Raw::Element e) { result = TFnPtrTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -946,9 +946,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TForTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TForTypeRepr`, if possible.
    */
-  TForTypeRef convertForTypeRefFromRaw(Raw::Element e) { result = TForTypeRef(e) }
+  TForTypeRepr convertForTypeReprFromRaw(Raw::Element e) { result = TForTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1020,9 +1020,11 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TImplTraitTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TImplTraitTypeRepr`, if possible.
    */
-  TImplTraitTypeRef convertImplTraitTypeRefFromRaw(Raw::Element e) { result = TImplTraitTypeRef(e) }
+  TImplTraitTypeRepr convertImplTraitTypeReprFromRaw(Raw::Element e) {
+    result = TImplTraitTypeRepr(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -1032,9 +1034,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TInferTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TInferTypeRepr`, if possible.
    */
-  TInferTypeRef convertInferTypeRefFromRaw(Raw::Element e) { result = TInferTypeRef(e) }
+  TInferTypeRepr convertInferTypeReprFromRaw(Raw::Element e) { result = TInferTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1146,9 +1148,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TMacroTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TMacroTypeRepr`, if possible.
    */
-  TMacroTypeRef convertMacroTypeRefFromRaw(Raw::Element e) { result = TMacroTypeRef(e) }
+  TMacroTypeRepr convertMacroTypeReprFromRaw(Raw::Element e) { result = TMacroTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1212,9 +1214,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TNeverTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TNeverTypeRepr`, if possible.
    */
-  TNeverTypeRef convertNeverTypeRefFromRaw(Raw::Element e) { result = TNeverTypeRef(e) }
+  TNeverTypeRepr convertNeverTypeReprFromRaw(Raw::Element e) { result = TNeverTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1254,9 +1256,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TParenTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TParenTypeRepr`, if possible.
    */
-  TParenTypeRef convertParenTypeRefFromRaw(Raw::Element e) { result = TParenTypeRef(e) }
+  TParenTypeRepr convertParenTypeReprFromRaw(Raw::Element e) { result = TParenTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1284,9 +1286,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TPathTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TPathTypeRepr`, if possible.
    */
-  TPathTypeRef convertPathTypeRefFromRaw(Raw::Element e) { result = TPathTypeRef(e) }
+  TPathTypeRepr convertPathTypeReprFromRaw(Raw::Element e) { result = TPathTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1296,9 +1298,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TPtrTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TPtrTypeRepr`, if possible.
    */
-  TPtrTypeRef convertPtrTypeRefFromRaw(Raw::Element e) { result = TPtrTypeRef(e) }
+  TPtrTypeRepr convertPtrTypeReprFromRaw(Raw::Element e) { result = TPtrTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1378,9 +1380,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRefTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TRefTypeRepr`, if possible.
    */
-  TRefTypeRef convertRefTypeRefFromRaw(Raw::Element e) { result = TRefTypeRef(e) }
+  TRefTypeRepr convertRefTypeReprFromRaw(Raw::Element e) { result = TRefTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1396,9 +1398,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRetTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TRetTypeRepr`, if possible.
    */
-  TRetTypeRef convertRetTypeRefFromRaw(Raw::Element e) { result = TRetTypeRef(e) }
+  TRetTypeRepr convertRetTypeReprFromRaw(Raw::Element e) { result = TRetTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1426,9 +1428,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TSliceTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TSliceTypeRepr`, if possible.
    */
-  TSliceTypeRef convertSliceTypeRefFromRaw(Raw::Element e) { result = TSliceTypeRef(e) }
+  TSliceTypeRepr convertSliceTypeReprFromRaw(Raw::Element e) { result = TSliceTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1510,9 +1512,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TTupleTypeRef`, if possible.
+   * Converts a raw element to a synthesized `TTupleTypeRepr`, if possible.
    */
-  TTupleTypeRef convertTupleTypeRefFromRaw(Raw::Element e) { result = TTupleTypeRef(e) }
+  TTupleTypeRepr convertTupleTypeReprFromRaw(Raw::Element e) { result = TTupleTypeRepr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1743,7 +1745,7 @@ module Synth {
     or
     result = convertResolvableFromRaw(e)
     or
-    result = convertRetTypeRefFromRaw(e)
+    result = convertRetTypeReprFromRaw(e)
     or
     result = convertReturnTypeSyntaxFromRaw(e)
     or
@@ -1763,7 +1765,7 @@ module Synth {
     or
     result = convertTypeBoundListFromRaw(e)
     or
-    result = convertTypeRefFromRaw(e)
+    result = convertTypeReprFromRaw(e)
     or
     result = convertUseTreeFromRaw(e)
     or
@@ -2090,36 +2092,36 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TTypeRef`, if possible.
+   * Converts a raw DB element to a synthesized `TTypeRepr`, if possible.
    */
-  TTypeRef convertTypeRefFromRaw(Raw::Element e) {
-    result = convertArrayTypeRefFromRaw(e)
+  TTypeRepr convertTypeReprFromRaw(Raw::Element e) {
+    result = convertArrayTypeReprFromRaw(e)
     or
-    result = convertDynTraitTypeRefFromRaw(e)
+    result = convertDynTraitTypeReprFromRaw(e)
     or
-    result = convertFnPtrTypeRefFromRaw(e)
+    result = convertFnPtrTypeReprFromRaw(e)
     or
-    result = convertForTypeRefFromRaw(e)
+    result = convertForTypeReprFromRaw(e)
     or
-    result = convertImplTraitTypeRefFromRaw(e)
+    result = convertImplTraitTypeReprFromRaw(e)
     or
-    result = convertInferTypeRefFromRaw(e)
+    result = convertInferTypeReprFromRaw(e)
     or
-    result = convertMacroTypeRefFromRaw(e)
+    result = convertMacroTypeReprFromRaw(e)
     or
-    result = convertNeverTypeRefFromRaw(e)
+    result = convertNeverTypeReprFromRaw(e)
     or
-    result = convertParenTypeRefFromRaw(e)
+    result = convertParenTypeReprFromRaw(e)
     or
-    result = convertPathTypeRefFromRaw(e)
+    result = convertPathTypeReprFromRaw(e)
     or
-    result = convertPtrTypeRefFromRaw(e)
+    result = convertPtrTypeReprFromRaw(e)
     or
-    result = convertRefTypeRefFromRaw(e)
+    result = convertRefTypeReprFromRaw(e)
     or
-    result = convertSliceTypeRefFromRaw(e)
+    result = convertSliceTypeReprFromRaw(e)
     or
-    result = convertTupleTypeRefFromRaw(e)
+    result = convertTupleTypeReprFromRaw(e)
   }
 
   /**
@@ -2152,9 +2154,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TArrayTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TArrayTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertArrayTypeRefToRaw(TArrayTypeRef e) { e = TArrayTypeRef(result) }
+  Raw::Element convertArrayTypeReprToRaw(TArrayTypeRepr e) { e = TArrayTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2278,9 +2280,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TDynTraitTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TDynTraitTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertDynTraitTypeRefToRaw(TDynTraitTypeRef e) { e = TDynTraitTypeRef(result) }
+  Raw::Element convertDynTraitTypeReprToRaw(TDynTraitTypeRepr e) { e = TDynTraitTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2320,9 +2322,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TFnPtrTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TFnPtrTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertFnPtrTypeRefToRaw(TFnPtrTypeRef e) { e = TFnPtrTypeRef(result) }
+  Raw::Element convertFnPtrTypeReprToRaw(TFnPtrTypeRepr e) { e = TFnPtrTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2332,9 +2334,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TForTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TForTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertForTypeRefToRaw(TForTypeRef e) { e = TForTypeRef(result) }
+  Raw::Element convertForTypeReprToRaw(TForTypeRepr e) { e = TForTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2404,9 +2406,11 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TImplTraitTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TImplTraitTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertImplTraitTypeRefToRaw(TImplTraitTypeRef e) { e = TImplTraitTypeRef(result) }
+  Raw::Element convertImplTraitTypeReprToRaw(TImplTraitTypeRepr e) {
+    e = TImplTraitTypeRepr(result)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -2416,9 +2420,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TInferTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TInferTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertInferTypeRefToRaw(TInferTypeRef e) { e = TInferTypeRef(result) }
+  Raw::Element convertInferTypeReprToRaw(TInferTypeRepr e) { e = TInferTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2530,9 +2534,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TMacroTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TMacroTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertMacroTypeRefToRaw(TMacroTypeRef e) { e = TMacroTypeRef(result) }
+  Raw::Element convertMacroTypeReprToRaw(TMacroTypeRepr e) { e = TMacroTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2596,9 +2600,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TNeverTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TNeverTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertNeverTypeRefToRaw(TNeverTypeRef e) { e = TNeverTypeRef(result) }
+  Raw::Element convertNeverTypeReprToRaw(TNeverTypeRepr e) { e = TNeverTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2638,9 +2642,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TParenTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TParenTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertParenTypeRefToRaw(TParenTypeRef e) { e = TParenTypeRef(result) }
+  Raw::Element convertParenTypeReprToRaw(TParenTypeRepr e) { e = TParenTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2668,9 +2672,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TPathTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TPathTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertPathTypeRefToRaw(TPathTypeRef e) { e = TPathTypeRef(result) }
+  Raw::Element convertPathTypeReprToRaw(TPathTypeRepr e) { e = TPathTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2680,9 +2684,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TPtrTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TPtrTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertPtrTypeRefToRaw(TPtrTypeRef e) { e = TPtrTypeRef(result) }
+  Raw::Element convertPtrTypeReprToRaw(TPtrTypeRepr e) { e = TPtrTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2762,9 +2766,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRefTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TRefTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertRefTypeRefToRaw(TRefTypeRef e) { e = TRefTypeRef(result) }
+  Raw::Element convertRefTypeReprToRaw(TRefTypeRepr e) { e = TRefTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2780,9 +2784,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRetTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TRetTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertRetTypeRefToRaw(TRetTypeRef e) { e = TRetTypeRef(result) }
+  Raw::Element convertRetTypeReprToRaw(TRetTypeRepr e) { e = TRetTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2810,9 +2814,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TSliceTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TSliceTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertSliceTypeRefToRaw(TSliceTypeRef e) { e = TSliceTypeRef(result) }
+  Raw::Element convertSliceTypeReprToRaw(TSliceTypeRepr e) { e = TSliceTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -2894,9 +2898,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TTupleTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TTupleTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertTupleTypeRefToRaw(TTupleTypeRef e) { e = TTupleTypeRef(result) }
+  Raw::Element convertTupleTypeReprToRaw(TTupleTypeRepr e) { e = TTupleTypeRepr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3127,7 +3131,7 @@ module Synth {
     or
     result = convertResolvableToRaw(e)
     or
-    result = convertRetTypeRefToRaw(e)
+    result = convertRetTypeReprToRaw(e)
     or
     result = convertReturnTypeSyntaxToRaw(e)
     or
@@ -3147,7 +3151,7 @@ module Synth {
     or
     result = convertTypeBoundListToRaw(e)
     or
-    result = convertTypeRefToRaw(e)
+    result = convertTypeReprToRaw(e)
     or
     result = convertUseTreeToRaw(e)
     or
@@ -3474,36 +3478,36 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TTypeRef` to a raw DB element, if possible.
+   * Converts a synthesized `TTypeRepr` to a raw DB element, if possible.
    */
-  Raw::Element convertTypeRefToRaw(TTypeRef e) {
-    result = convertArrayTypeRefToRaw(e)
+  Raw::Element convertTypeReprToRaw(TTypeRepr e) {
+    result = convertArrayTypeReprToRaw(e)
     or
-    result = convertDynTraitTypeRefToRaw(e)
+    result = convertDynTraitTypeReprToRaw(e)
     or
-    result = convertFnPtrTypeRefToRaw(e)
+    result = convertFnPtrTypeReprToRaw(e)
     or
-    result = convertForTypeRefToRaw(e)
+    result = convertForTypeReprToRaw(e)
     or
-    result = convertImplTraitTypeRefToRaw(e)
+    result = convertImplTraitTypeReprToRaw(e)
     or
-    result = convertInferTypeRefToRaw(e)
+    result = convertInferTypeReprToRaw(e)
     or
-    result = convertMacroTypeRefToRaw(e)
+    result = convertMacroTypeReprToRaw(e)
     or
-    result = convertNeverTypeRefToRaw(e)
+    result = convertNeverTypeReprToRaw(e)
     or
-    result = convertParenTypeRefToRaw(e)
+    result = convertParenTypeReprToRaw(e)
     or
-    result = convertPathTypeRefToRaw(e)
+    result = convertPathTypeReprToRaw(e)
     or
-    result = convertPtrTypeRefToRaw(e)
+    result = convertPtrTypeReprToRaw(e)
     or
-    result = convertRefTypeRefToRaw(e)
+    result = convertRefTypeReprToRaw(e)
     or
-    result = convertSliceTypeRefToRaw(e)
+    result = convertSliceTypeReprToRaw(e)
     or
-    result = convertTupleTypeRefToRaw(e)
+    result = convertTupleTypeReprToRaw(e)
   }
 
   /**

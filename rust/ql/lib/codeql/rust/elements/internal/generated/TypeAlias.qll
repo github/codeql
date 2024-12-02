@@ -13,7 +13,7 @@ import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeBoundList
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
@@ -89,9 +89,9 @@ module Generated {
     /**
      * Gets the type reference of this type alias, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTy() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertTypeAliasToRaw(this).(Raw::TypeAlias).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertTypeAliasToRaw(this).(Raw::TypeAlias).getTy())
     }
 
     /**

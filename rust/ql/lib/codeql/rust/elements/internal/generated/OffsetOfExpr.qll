@@ -9,7 +9,7 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.NameRef
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `OffsetOfExpr` and should not
@@ -70,9 +70,9 @@ module Generated {
     /**
      * Gets the type reference of this offset of expression, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTy() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertOffsetOfExprToRaw(this)
+        Synth::convertTypeReprFromRaw(Synth::convertOffsetOfExprToRaw(this)
               .(Raw::OffsetOfExpr)
               .getTy())
     }

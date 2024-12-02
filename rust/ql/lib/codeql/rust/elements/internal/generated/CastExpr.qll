@@ -9,7 +9,7 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `CastExpr` and should not
@@ -61,9 +61,9 @@ module Generated {
     /**
      * Gets the type reference of this cast expression, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTy() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertCastExprToRaw(this).(Raw::CastExpr).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertCastExprToRaw(this).(Raw::CastExpr).getTy())
     }
 
     /**

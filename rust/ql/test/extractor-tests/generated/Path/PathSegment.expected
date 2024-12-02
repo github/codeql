@@ -11,8 +11,8 @@
 | gen_path_expr.rs:7:14:7:14 | T | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
 | gen_path_expr.rs:7:18:7:20 | foo | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
 | gen_path_expr.rs:8:13:8:30 | <...> | hasGenericArgList: | no | hasNameRef: | no | hasParamList: | no | hasPathType: | yes | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | yes |
-| gen_path_expr.rs:8:14:8:20 | TypeRef | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
-| gen_path_expr.rs:8:14:8:20 | TypeRef | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_expr.rs:8:14:8:20 | TypeRepr | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
+| gen_path_expr.rs:8:14:8:20 | TypeRepr | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
 | gen_path_expr.rs:8:33:8:35 | foo | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
 | gen_path_pat.rs:5:11:5:11 | x | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |
 | gen_path_pat.rs:6:9:6:11 | Foo | hasGenericArgList: | no | hasNameRef: | yes | hasParamList: | no | hasPathType: | no | hasRetType: | no | hasReturnTypeSyntax: | no | hasTy: | no |

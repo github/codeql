@@ -10,7 +10,7 @@ import codeql.rust.elements.internal.CallableImpl::Impl as CallableImpl
 import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-import codeql.rust.elements.RetTypeRef
+import codeql.rust.elements.RetTypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ClosureExpr` and should not
@@ -90,9 +90,9 @@ module Generated {
     /**
      * Gets the ret type of this closure expression, if it exists.
      */
-    RetTypeRef getRetType() {
+    RetTypeRepr getRetType() {
       result =
-        Synth::convertRetTypeRefFromRaw(Synth::convertClosureExprToRaw(this)
+        Synth::convertRetTypeReprFromRaw(Synth::convertClosureExprToRaw(this)
               .(Raw::ClosureExpr)
               .getRetType())
     }

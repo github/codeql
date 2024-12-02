@@ -65,7 +65,7 @@ class _:
     """
 
 
-@annotate(TypeRef)
+@annotate(TypeRepr)
 class _:
     """
     The base class for type references.
@@ -129,7 +129,7 @@ class _:
     let x = variable;
     let x = foo::bar;
     let y = <T>::foo;
-    let z = <TypeRef as Trait>::foo;
+    let z = <TypeRepr as Trait>::foo;
     ```
     """
 
@@ -842,10 +842,10 @@ class _:
     """
 
 
-@annotate(ArrayTypeRef)
+@annotate(ArrayTypeRepr)
 class _:
     """
-    A ArrayTypeRef. For example:
+    A ArrayTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -930,10 +930,10 @@ class _:
     """
 
 
-@annotate(DynTraitTypeRef)
+@annotate(DynTraitTypeRepr)
 class _:
     """
-    A DynTraitTypeRef. For example:
+    A DynTraitTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1000,10 +1000,10 @@ class _:
     """
 
 
-@annotate(FnPtrTypeRef)
+@annotate(FnPtrTypeRepr)
 class _:
     """
-    A FnPtrTypeRef. For example:
+    A FnPtrTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1022,10 +1022,10 @@ class _:
     loop_body: drop
 
 
-@annotate(ForTypeRef)
+@annotate(ForTypeRepr)
 class _:
     """
-    A ForTypeRef. For example:
+    A ForTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1098,20 +1098,20 @@ class _:
     """
 
 
-@annotate(ImplTraitTypeRef)
+@annotate(ImplTraitTypeRepr)
 class _:
     """
-    A ImplTraitTypeRef. For example:
+    A ImplTraitTypeRepr. For example:
     ```rust
     todo!()
     ```
     """
 
 
-@annotate(InferTypeRef)
+@annotate(InferTypeRepr)
 class _:
     """
-    A InferTypeRef. For example:
+    A InferTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1255,10 +1255,10 @@ class _:
     """
 
 
-@annotate(MacroTypeRef)
+@annotate(MacroTypeRepr)
 class _:
     """
-    A MacroTypeRef. For example:
+    A MacroTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1315,10 +1315,10 @@ class _:
     """
 
 
-@annotate(NeverTypeRef)
+@annotate(NeverTypeRepr)
 class _:
     """
-    A NeverTypeRef. For example:
+    A NeverTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1330,7 +1330,7 @@ class ParamBase(AstNode):
     A normal parameter, `Param`, or a self parameter `SelfParam`.
     """
     attrs: list["Attr"] | child
-    ty: optional["TypeRef"] | child
+    ty: optional["TypeRepr"] | child
 
 @annotate(ParamBase, cfg = True)
 class _:
@@ -1380,10 +1380,10 @@ class _:
     """
 
 
-@annotate(ParenTypeRef)
+@annotate(ParenTypeRepr)
 class _:
     """
-    A ParenTypeRef. For example:
+    A ParenTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1398,7 +1398,7 @@ class _:
     """
 
 
-@annotate(PathTypeRef)
+@annotate(PathTypeRepr)
 @qltest.test_with(Path)
 class _:
     """
@@ -1410,10 +1410,10 @@ class _:
     """
 
 
-@annotate(PtrTypeRef)
+@annotate(PtrTypeRepr)
 class _:
     """
-    A PtrTypeRef. For example:
+    A PtrTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1460,10 +1460,10 @@ class _:
     """
 
 
-@annotate(RefTypeRef)
+@annotate(RefTypeRepr)
 class _:
     """
-    A RefTypeRef. For example:
+    A RefTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1490,10 +1490,10 @@ class _:
     """
 
 
-@annotate(RetTypeRef)
+@annotate(RetTypeRepr)
 class _:
     """
-    A RetTypeRef. For example:
+    A RetTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1524,10 +1524,10 @@ class _:
     ty: drop
 
 
-@annotate(SliceTypeRef)
+@annotate(SliceTypeRepr)
 class _:
     """
-    A SliceTypeRef. For example:
+    A SliceTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1641,10 +1641,10 @@ class _:
     """
 
 
-@annotate(TupleTypeRef)
+@annotate(TupleTypeRepr)
 class _:
     """
-    A TupleTypeRef. For example:
+    A TupleTypeRepr. For example:
     ```rust
     todo!()
     ```

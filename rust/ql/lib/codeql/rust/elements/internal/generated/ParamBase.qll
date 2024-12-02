@@ -8,7 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Attr
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ParamBase` and should not
@@ -42,9 +42,9 @@ module Generated {
     /**
      * Gets the type reference of this parameter base, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTy() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertParamBaseToRaw(this).(Raw::ParamBase).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertParamBaseToRaw(this).(Raw::ParamBase).getTy())
     }
 
     /**

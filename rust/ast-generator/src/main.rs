@@ -20,7 +20,7 @@ fn class_name(type_name: &str) -> String {
         "ElseBranch" => "Expr".to_owned(),
         "Fn" => "Function".to_owned(),
         "Literal" => "LiteralExpr".to_owned(),
-        _ if type_name.ends_with("Type") => format!("{}Ref", type_name),
+        _ if type_name.ends_with("Type") => format!("{}Repr", type_name),
         _ => type_name.to_owned(),
     }
 }

@@ -10,7 +10,7 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.ConstArg
 import codeql.rust.elements.internal.GenericParamImpl::Impl as GenericParamImpl
 import codeql.rust.elements.Name
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ConstParam` and should not
@@ -84,9 +84,9 @@ module Generated {
     /**
      * Gets the type reference of this const parameter, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTy() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertConstParamToRaw(this).(Raw::ConstParam).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertConstParamToRaw(this).(Raw::ConstParam).getTy())
     }
 
     /**

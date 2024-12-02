@@ -1390,7 +1390,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the type reference of this let statement, if it exists.
        */
-      TypeRef getTy() { result = node.getTy() }
+      TypeRepr getTy() { result = node.getTy() }
 
       /**
        * Holds if `getTy()` exists.
@@ -1881,7 +1881,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the type reference of this offset of expression, if it exists.
        */
-      TypeRef getTy() { result = node.getTy() }
+      TypeRepr getTy() { result = node.getTy() }
 
       /**
        * Holds if `getTy()` exists.
@@ -2001,7 +2001,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the type reference of this parameter base, if it exists.
        */
-      TypeRef getTy() { result = node.getTy() }
+      TypeRepr getTy() { result = node.getTy() }
 
       /**
        * Holds if `getTy()` exists.
@@ -2035,7 +2035,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      * let x = variable;
      * let x = foo::bar;
      * let y = <T>::foo;
-     * let z = <TypeRef as Trait>::foo;
+     * let z = <TypeRepr as Trait>::foo;
      * ```
      */
     final class PathExprCfgNode extends CfgNodeFinal, PathExprBaseCfgNode {

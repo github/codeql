@@ -560,7 +560,7 @@ module Raw {
     /**
      * Gets the type reference of this parameter base, if it exists.
      */
-    TypeRef getTy() { param_base_ties(this, result) }
+    TypeRepr getTy() { param_base_ties(this, result) }
   }
 
   /**
@@ -615,12 +615,12 @@ module Raw {
     /**
      * Gets the path type of this path segment, if it exists.
      */
-    PathTypeRef getPathType() { path_segment_path_types(this, result) }
+    PathTypeRepr getPathType() { path_segment_path_types(this, result) }
 
     /**
      * Gets the ret type of this path segment, if it exists.
      */
-    RetTypeRef getRetType() { path_segment_ret_types(this, result) }
+    RetTypeRepr getRetType() { path_segment_ret_types(this, result) }
 
     /**
      * Gets the return type syntax of this path segment, if it exists.
@@ -630,7 +630,7 @@ module Raw {
     /**
      * Gets the type reference of this path segment, if it exists.
      */
-    TypeRef getTy() { path_segment_ties(this, result) }
+    TypeRepr getTy() { path_segment_ties(this, result) }
   }
 
   /**
@@ -708,7 +708,7 @@ module Raw {
     /**
      * Gets the type reference of this record field, if it exists.
      */
-    TypeRef getTy() { record_field_ties(this, result) }
+    TypeRepr getTy() { record_field_ties(this, result) }
 
     /**
      * Gets the visibility of this record field, if it exists.
@@ -797,18 +797,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A RetTypeRef. For example:
+   * A RetTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class RetTypeRef extends @ret_type_ref, AstNode {
-    override string toString() { result = "RetTypeRef" }
+  class RetTypeRepr extends @ret_type_repr, AstNode {
+    override string toString() { result = "RetTypeRepr" }
 
     /**
-     * Gets the type reference of this ret type reference, if it exists.
+     * Gets the type reference of this ret type representation, if it exists.
      */
-    TypeRef getTy() { ret_type_ref_ties(this, result) }
+    TypeRepr getTy() { ret_type_repr_ties(this, result) }
   }
 
   /**
@@ -910,7 +910,7 @@ module Raw {
     /**
      * Gets the type reference of this tuple field, if it exists.
      */
-    TypeRef getTy() { tuple_field_ties(this, result) }
+    TypeRepr getTy() { tuple_field_ties(this, result) }
 
     /**
      * Gets the visibility of this tuple field, if it exists.
@@ -951,7 +951,7 @@ module Raw {
     /**
      * Gets the type reference of this type bound, if it exists.
      */
-    TypeRef getTy() { type_bound_ties(this, result) }
+    TypeRepr getTy() { type_bound_ties(this, result) }
   }
 
   /**
@@ -979,7 +979,7 @@ module Raw {
    * let z: Option<i32>;
    * ```
    */
-  class TypeRef extends @type_ref, AstNode { }
+  class TypeRepr extends @type_repr, AstNode { }
 
   /**
    * INTERNAL: Do not use.
@@ -1094,7 +1094,7 @@ module Raw {
     /**
      * Gets the type reference of this where pred, if it exists.
      */
-    TypeRef getTy() { where_pred_ties(this, result) }
+    TypeRepr getTy() { where_pred_ties(this, result) }
 
     /**
      * Gets the type bound list of this where pred, if it exists.
@@ -1126,23 +1126,23 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ArrayTypeRef. For example:
+   * A ArrayTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ArrayTypeRef extends @array_type_ref, TypeRef {
-    override string toString() { result = "ArrayTypeRef" }
+  class ArrayTypeRepr extends @array_type_repr, TypeRepr {
+    override string toString() { result = "ArrayTypeRepr" }
 
     /**
-     * Gets the const argument of this array type reference, if it exists.
+     * Gets the const argument of this array type representation, if it exists.
      */
-    ConstArg getConstArg() { array_type_ref_const_args(this, result) }
+    ConstArg getConstArg() { array_type_repr_const_args(this, result) }
 
     /**
-     * Gets the type reference of this array type reference, if it exists.
+     * Gets the type reference of this array type representation, if it exists.
      */
-    TypeRef getTy() { array_type_ref_ties(this, result) }
+    TypeRepr getTy() { array_type_repr_ties(this, result) }
   }
 
   /**
@@ -1201,7 +1201,7 @@ module Raw {
     /**
      * Gets the ret type of this assoc type argument, if it exists.
      */
-    RetTypeRef getRetType() { assoc_type_arg_ret_types(this, result) }
+    RetTypeRepr getRetType() { assoc_type_arg_ret_types(this, result) }
 
     /**
      * Gets the return type syntax of this assoc type argument, if it exists.
@@ -1211,7 +1211,7 @@ module Raw {
     /**
      * Gets the type reference of this assoc type argument, if it exists.
      */
-    TypeRef getTy() { assoc_type_arg_ties(this, result) }
+    TypeRepr getTy() { assoc_type_arg_ties(this, result) }
 
     /**
      * Gets the type bound list of this assoc type argument, if it exists.
@@ -1408,7 +1408,7 @@ module Raw {
     /**
      * Gets the type reference of this cast expression, if it exists.
      */
-    TypeRef getTy() { cast_expr_ties(this, result) }
+    TypeRepr getTy() { cast_expr_ties(this, result) }
   }
 
   /**
@@ -1465,7 +1465,7 @@ module Raw {
     /**
      * Gets the ret type of this closure expression, if it exists.
      */
-    RetTypeRef getRetType() { closure_expr_ret_types(this, result) }
+    RetTypeRepr getRetType() { closure_expr_ret_types(this, result) }
   }
 
   /**
@@ -1563,7 +1563,7 @@ module Raw {
     /**
      * Gets the type reference of this const parameter, if it exists.
      */
-    TypeRef getTy() { const_param_ties(this, result) }
+    TypeRepr getTy() { const_param_ties(this, result) }
   }
 
   /**
@@ -1600,18 +1600,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A DynTraitTypeRef. For example:
+   * A DynTraitTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class DynTraitTypeRef extends @dyn_trait_type_ref, TypeRef {
-    override string toString() { result = "DynTraitTypeRef" }
+  class DynTraitTypeRepr extends @dyn_trait_type_repr, TypeRepr {
+    override string toString() { result = "DynTraitTypeRepr" }
 
     /**
-     * Gets the type bound list of this dyn trait type reference, if it exists.
+     * Gets the type bound list of this dyn trait type representation, if it exists.
      */
-    TypeBoundList getTypeBoundList() { dyn_trait_type_ref_type_bound_lists(this, result) }
+    TypeBoundList getTypeBoundList() { dyn_trait_type_repr_type_bound_lists(this, result) }
   }
 
   /**
@@ -1660,64 +1660,64 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A FnPtrTypeRef. For example:
+   * A FnPtrTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class FnPtrTypeRef extends @fn_ptr_type_ref, TypeRef {
-    override string toString() { result = "FnPtrTypeRef" }
+  class FnPtrTypeRepr extends @fn_ptr_type_repr, TypeRepr {
+    override string toString() { result = "FnPtrTypeRepr" }
 
     /**
-     * Gets the abi of this fn ptr type reference, if it exists.
+     * Gets the abi of this fn ptr type representation, if it exists.
      */
-    Abi getAbi() { fn_ptr_type_ref_abis(this, result) }
+    Abi getAbi() { fn_ptr_type_repr_abis(this, result) }
 
     /**
-     * Holds if this fn ptr type reference is async.
+     * Holds if this fn ptr type representation is async.
      */
-    predicate isAsync() { fn_ptr_type_ref_is_async(this) }
+    predicate isAsync() { fn_ptr_type_repr_is_async(this) }
 
     /**
-     * Holds if this fn ptr type reference is const.
+     * Holds if this fn ptr type representation is const.
      */
-    predicate isConst() { fn_ptr_type_ref_is_const(this) }
+    predicate isConst() { fn_ptr_type_repr_is_const(this) }
 
     /**
-     * Holds if this fn ptr type reference is unsafe.
+     * Holds if this fn ptr type representation is unsafe.
      */
-    predicate isUnsafe() { fn_ptr_type_ref_is_unsafe(this) }
+    predicate isUnsafe() { fn_ptr_type_repr_is_unsafe(this) }
 
     /**
-     * Gets the parameter list of this fn ptr type reference, if it exists.
+     * Gets the parameter list of this fn ptr type representation, if it exists.
      */
-    ParamList getParamList() { fn_ptr_type_ref_param_lists(this, result) }
+    ParamList getParamList() { fn_ptr_type_repr_param_lists(this, result) }
 
     /**
-     * Gets the ret type of this fn ptr type reference, if it exists.
+     * Gets the ret type of this fn ptr type representation, if it exists.
      */
-    RetTypeRef getRetType() { fn_ptr_type_ref_ret_types(this, result) }
+    RetTypeRepr getRetType() { fn_ptr_type_repr_ret_types(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
-   * A ForTypeRef. For example:
+   * A ForTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ForTypeRef extends @for_type_ref, TypeRef {
-    override string toString() { result = "ForTypeRef" }
+  class ForTypeRepr extends @for_type_repr, TypeRepr {
+    override string toString() { result = "ForTypeRepr" }
 
     /**
-     * Gets the generic parameter list of this for type reference, if it exists.
+     * Gets the generic parameter list of this for type representation, if it exists.
      */
-    GenericParamList getGenericParamList() { for_type_ref_generic_param_lists(this, result) }
+    GenericParamList getGenericParamList() { for_type_repr_generic_param_lists(this, result) }
 
     /**
-     * Gets the type reference of this for type reference, if it exists.
+     * Gets the type reference of this for type representation, if it exists.
      */
-    TypeRef getTy() { for_type_ref_ties(this, result) }
+    TypeRepr getTy() { for_type_repr_ties(this, result) }
   }
 
   /**
@@ -1837,18 +1837,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ImplTraitTypeRef. For example:
+   * A ImplTraitTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ImplTraitTypeRef extends @impl_trait_type_ref, TypeRef {
-    override string toString() { result = "ImplTraitTypeRef" }
+  class ImplTraitTypeRepr extends @impl_trait_type_repr, TypeRepr {
+    override string toString() { result = "ImplTraitTypeRepr" }
 
     /**
-     * Gets the type bound list of this impl trait type reference, if it exists.
+     * Gets the type bound list of this impl trait type representation, if it exists.
      */
-    TypeBoundList getTypeBoundList() { impl_trait_type_ref_type_bound_lists(this, result) }
+    TypeBoundList getTypeBoundList() { impl_trait_type_repr_type_bound_lists(this, result) }
   }
 
   /**
@@ -1880,13 +1880,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A InferTypeRef. For example:
+   * A InferTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class InferTypeRef extends @infer_type_ref, TypeRef {
-    override string toString() { result = "InferTypeRef" }
+  class InferTypeRepr extends @infer_type_repr, TypeRepr {
+    override string toString() { result = "InferTypeRepr" }
   }
 
   /**
@@ -1977,7 +1977,7 @@ module Raw {
     /**
      * Gets the type reference of this let statement, if it exists.
      */
-    TypeRef getTy() { let_stmt_ties(this, result) }
+    TypeRepr getTy() { let_stmt_ties(this, result) }
   }
 
   /**
@@ -2103,18 +2103,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A MacroTypeRef. For example:
+   * A MacroTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class MacroTypeRef extends @macro_type_ref, TypeRef {
-    override string toString() { result = "MacroTypeRef" }
+  class MacroTypeRepr extends @macro_type_repr, TypeRepr {
+    override string toString() { result = "MacroTypeRepr" }
 
     /**
-     * Gets the macro call of this macro type reference, if it exists.
+     * Gets the macro call of this macro type representation, if it exists.
      */
-    MacroCall getMacroCall() { macro_type_ref_macro_calls(this, result) }
+    MacroCall getMacroCall() { macro_type_repr_macro_calls(this, result) }
   }
 
   /**
@@ -2154,13 +2154,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A NeverTypeRef. For example:
+   * A NeverTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class NeverTypeRef extends @never_type_ref, TypeRef {
-    override string toString() { result = "NeverTypeRef" }
+  class NeverTypeRepr extends @never_type_repr, TypeRepr {
+    override string toString() { result = "NeverTypeRepr" }
   }
 
   /**
@@ -2186,7 +2186,7 @@ module Raw {
     /**
      * Gets the type reference of this offset of expression, if it exists.
      */
-    TypeRef getTy() { offset_of_expr_ties(this, result) }
+    TypeRepr getTy() { offset_of_expr_ties(this, result) }
   }
 
   /**
@@ -2264,18 +2264,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ParenTypeRef. For example:
+   * A ParenTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ParenTypeRef extends @paren_type_ref, TypeRef {
-    override string toString() { result = "ParenTypeRef" }
+  class ParenTypeRepr extends @paren_type_repr, TypeRepr {
+    override string toString() { result = "ParenTypeRepr" }
 
     /**
-     * Gets the type reference of this paren type reference, if it exists.
+     * Gets the type reference of this paren type representation, if it exists.
      */
-    TypeRef getTy() { paren_type_ref_ties(this, result) }
+    TypeRepr getTy() { paren_type_repr_ties(this, result) }
   }
 
   /**
@@ -2333,13 +2333,13 @@ module Raw {
    * type Y = X::Item;
    * ```
    */
-  class PathTypeRef extends @path_type_ref, TypeRef {
-    override string toString() { result = "PathTypeRef" }
+  class PathTypeRepr extends @path_type_repr, TypeRepr {
+    override string toString() { result = "PathTypeRepr" }
 
     /**
-     * Gets the path of this path type reference, if it exists.
+     * Gets the path of this path type representation, if it exists.
      */
-    Path getPath() { path_type_ref_paths(this, result) }
+    Path getPath() { path_type_repr_paths(this, result) }
   }
 
   /**
@@ -2372,28 +2372,28 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A PtrTypeRef. For example:
+   * A PtrTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class PtrTypeRef extends @ptr_type_ref, TypeRef {
-    override string toString() { result = "PtrTypeRef" }
+  class PtrTypeRepr extends @ptr_type_repr, TypeRepr {
+    override string toString() { result = "PtrTypeRepr" }
 
     /**
-     * Holds if this ptr type reference is const.
+     * Holds if this ptr type representation is const.
      */
-    predicate isConst() { ptr_type_ref_is_const(this) }
+    predicate isConst() { ptr_type_repr_is_const(this) }
 
     /**
-     * Holds if this ptr type reference is mut.
+     * Holds if this ptr type representation is mut.
      */
-    predicate isMut() { ptr_type_ref_is_mut(this) }
+    predicate isMut() { ptr_type_repr_is_mut(this) }
 
     /**
-     * Gets the type reference of this ptr type reference, if it exists.
+     * Gets the type reference of this ptr type representation, if it exists.
      */
-    TypeRef getTy() { ptr_type_ref_ties(this, result) }
+    TypeRepr getTy() { ptr_type_repr_ties(this, result) }
   }
 
   /**
@@ -2593,28 +2593,28 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A RefTypeRef. For example:
+   * A RefTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class RefTypeRef extends @ref_type_ref, TypeRef {
-    override string toString() { result = "RefTypeRef" }
+  class RefTypeRepr extends @ref_type_repr, TypeRepr {
+    override string toString() { result = "RefTypeRepr" }
 
     /**
-     * Holds if this reference type reference is mut.
+     * Holds if this reference type representation is mut.
      */
-    predicate isMut() { ref_type_ref_is_mut(this) }
+    predicate isMut() { ref_type_repr_is_mut(this) }
 
     /**
-     * Gets the lifetime of this reference type reference, if it exists.
+     * Gets the lifetime of this reference type representation, if it exists.
      */
-    Lifetime getLifetime() { ref_type_ref_lifetimes(this, result) }
+    Lifetime getLifetime() { ref_type_repr_lifetimes(this, result) }
 
     /**
-     * Gets the type reference of this reference type reference, if it exists.
+     * Gets the type reference of this reference type representation, if it exists.
      */
-    TypeRef getTy() { ref_type_ref_ties(this, result) }
+    TypeRepr getTy() { ref_type_repr_ties(this, result) }
   }
 
   /**
@@ -2711,18 +2711,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A SliceTypeRef. For example:
+   * A SliceTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class SliceTypeRef extends @slice_type_ref, TypeRef {
-    override string toString() { result = "SliceTypeRef" }
+  class SliceTypeRepr extends @slice_type_repr, TypeRepr {
+    override string toString() { result = "SliceTypeRepr" }
 
     /**
-     * Gets the type reference of this slice type reference, if it exists.
+     * Gets the type reference of this slice type representation, if it exists.
      */
-    TypeRef getTy() { slice_type_ref_ties(this, result) }
+    TypeRepr getTy() { slice_type_repr_ties(this, result) }
   }
 
   /**
@@ -2828,18 +2828,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A TupleTypeRef. For example:
+   * A TupleTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class TupleTypeRef extends @tuple_type_ref, TypeRef {
-    override string toString() { result = "TupleTypeRef" }
+  class TupleTypeRepr extends @tuple_type_repr, TypeRepr {
+    override string toString() { result = "TupleTypeRepr" }
 
     /**
-     * Gets the `index`th field of this tuple type reference (0-based).
+     * Gets the `index`th field of this tuple type representation (0-based).
      */
-    TypeRef getField(int index) { tuple_type_ref_fields(this, index, result) }
+    TypeRepr getField(int index) { tuple_type_repr_fields(this, index, result) }
   }
 
   /**
@@ -2855,7 +2855,7 @@ module Raw {
     /**
      * Gets the type reference of this type argument, if it exists.
      */
-    TypeRef getTy() { type_arg_ties(this, result) }
+    TypeRepr getTy() { type_arg_ties(this, result) }
   }
 
   /**
@@ -2876,7 +2876,7 @@ module Raw {
     /**
      * Gets the default type of this type parameter, if it exists.
      */
-    TypeRef getDefaultType() { type_param_default_types(this, result) }
+    TypeRepr getDefaultType() { type_param_default_types(this, result) }
 
     /**
      * Gets the name of this type parameter, if it exists.
@@ -3115,7 +3115,7 @@ module Raw {
     /**
      * Gets the type reference of this const, if it exists.
      */
-    TypeRef getTy() { const_ties(this, result) }
+    TypeRepr getTy() { const_ties(this, result) }
 
     /**
      * Gets the visibility of this const, if it exists.
@@ -3290,7 +3290,7 @@ module Raw {
     /**
      * Gets the ret type of this function, if it exists.
      */
-    RetTypeRef getRetType() { function_ret_types(this, result) }
+    RetTypeRepr getRetType() { function_ret_types(this, result) }
 
     /**
      * Gets the visibility of this function, if it exists.
@@ -3346,12 +3346,12 @@ module Raw {
     /**
      * Gets the self type reference of this impl, if it exists.
      */
-    TypeRef getSelfTy() { impl_self_ties(this, result) }
+    TypeRepr getSelfTy() { impl_self_ties(this, result) }
 
     /**
      * Gets the trait of this impl, if it exists.
      */
-    TypeRef getTrait() { impl_traits(this, result) }
+    TypeRepr getTrait() { impl_traits(this, result) }
 
     /**
      * Gets the visibility of this impl, if it exists.
@@ -3543,7 +3543,7 @@ module Raw {
    * let x = variable;
    * let x = foo::bar;
    * let y = <T>::foo;
-   * let z = <TypeRef as Trait>::foo;
+   * let z = <TypeRepr as Trait>::foo;
    * ```
    */
   class PathExpr extends @path_expr, PathExprBase {
@@ -3598,7 +3598,7 @@ module Raw {
     /**
      * Gets the type reference of this static, if it exists.
      */
-    TypeRef getTy() { static_ties(this, result) }
+    TypeRepr getTy() { static_ties(this, result) }
 
     /**
      * Gets the visibility of this static, if it exists.
@@ -3783,7 +3783,7 @@ module Raw {
     /**
      * Gets the type reference of this type alias, if it exists.
      */
-    TypeRef getTy() { type_alias_ties(this, result) }
+    TypeRepr getTy() { type_alias_ties(this, result) }
 
     /**
      * Gets the type bound list of this type alias, if it exists.

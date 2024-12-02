@@ -10,7 +10,7 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeBoundList
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `WherePred` and should not
@@ -61,9 +61,9 @@ module Generated {
     /**
      * Gets the type reference of this where pred, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTy() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertWherePredToRaw(this).(Raw::WherePred).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertWherePredToRaw(this).(Raw::WherePred).getTy())
     }
 
     /**

@@ -11,7 +11,7 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 
 /**
@@ -84,8 +84,8 @@ module Generated {
     /**
      * Gets the type reference of this const, if it exists.
      */
-    TypeRef getTy() {
-      result = Synth::convertTypeRefFromRaw(Synth::convertConstToRaw(this).(Raw::Const).getTy())
+    TypeRepr getTy() {
+      result = Synth::convertTypeReprFromRaw(Synth::convertConstToRaw(this).(Raw::Const).getTy())
     }
 
     /**

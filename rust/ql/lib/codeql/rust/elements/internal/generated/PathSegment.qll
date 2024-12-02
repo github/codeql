@@ -10,10 +10,10 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
 import codeql.rust.elements.ParamList
-import codeql.rust.elements.PathTypeRef
-import codeql.rust.elements.RetTypeRef
+import codeql.rust.elements.PathTypeRepr
+import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.ReturnTypeSyntax
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathSegment` and should not
@@ -76,9 +76,9 @@ module Generated {
     /**
      * Gets the path type of this path segment, if it exists.
      */
-    PathTypeRef getPathType() {
+    PathTypeRepr getPathType() {
       result =
-        Synth::convertPathTypeRefFromRaw(Synth::convertPathSegmentToRaw(this)
+        Synth::convertPathTypeReprFromRaw(Synth::convertPathSegmentToRaw(this)
               .(Raw::PathSegment)
               .getPathType())
     }
@@ -91,9 +91,9 @@ module Generated {
     /**
      * Gets the ret type of this path segment, if it exists.
      */
-    RetTypeRef getRetType() {
+    RetTypeRepr getRetType() {
       result =
-        Synth::convertRetTypeRefFromRaw(Synth::convertPathSegmentToRaw(this)
+        Synth::convertRetTypeReprFromRaw(Synth::convertPathSegmentToRaw(this)
               .(Raw::PathSegment)
               .getRetType())
     }
@@ -121,9 +121,11 @@ module Generated {
     /**
      * Gets the type reference of this path segment, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTy() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertPathSegmentToRaw(this).(Raw::PathSegment).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertPathSegmentToRaw(this)
+              .(Raw::PathSegment)
+              .getTy())
     }
 
     /**
