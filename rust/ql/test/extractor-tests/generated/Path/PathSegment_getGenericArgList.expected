@@ -1,1 +1,1 @@
-| gen_path_type.rs:5:32:5:48 | HashMap::<...> | gen_path_type.rs:5:39:5:48 | <...> |
+| gen_path_type_ref.rs:5:32:5:48 | HashMap::<...> | gen_path_type_ref.rs:5:39:5:48 | <...> |

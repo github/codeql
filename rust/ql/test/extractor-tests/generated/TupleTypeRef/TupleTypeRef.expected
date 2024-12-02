@@ -1,1 +1,1 @@
-| gen_tuple_type.rs:3:25:3:26 | TupleType | getNumberOfFields: | 0 |
+| gen_tuple_type_ref.rs:3:29:3:30 | TupleTypeRef | getNumberOfFields: | 0 |
