@@ -21,18 +21,17 @@ predicate isGetPredicate(Predicate pred, string prefix) {
 }
 
 /**
- * Checks if a predicate has a return type.
+ * Checks if a predicate has a return type. This is phrased negatively to not flag unresolved aliases.
  */
-predicate hasReturnType(Predicate pred) { exists(pred.getReturnTypeExpr()) }
-
-/**
- * Checks if a predicate is an alias using getAlias().
- */
-predicate isAlias(Predicate pred) { exists(pred.(ClasslessPredicate).getAlias()) }
+predicate hasNoReturnType(Predicate pred) {
+  not exists(pred.getReturnTypeExpr()) and
+  not pred.(ClasslessPredicate).getAlias() instanceof PredicateExpr
+  or
+  hasNoReturnType(pred.(ClasslessPredicate).getAlias().(PredicateExpr).getResolvedPredicate())
+}
 
 from Predicate pred, string prefix
 where
   isGetPredicate(pred, prefix) and
-  not hasReturnType(pred) and
-  not isAlias(pred)
+  hasNoReturnType(pred)
 select pred, "This predicate starts with '" + prefix + "' but does not return a value."

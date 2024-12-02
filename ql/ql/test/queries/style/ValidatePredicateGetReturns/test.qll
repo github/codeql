@@ -24,7 +24,7 @@ predicate retrieveValue() { none() }
 // NOT OK -- starts with get and does not return value
 predicate getImplementation2() { none() }
 
-// OK -- is an alias
+// NOT OK -- is an alias for a predicate which does not have a return value
 predicate getAlias2 = getImplementation2/0;
 
 // NOT OK -- starts with as and does not return value
@@ -40,3 +40,28 @@ string asString() { result = "string" }
 HiddenType getInjectableCompositeActionNode() {
   exists(HiddenType hidden | result = hidden.toString())
 }
+
+// OK
+predicate implementation4() { none() }
+
+// NOT OK -- is an alias
+predicate getAlias4 = implementation4/0;
+
+// OK -- is an alias
+predicate alias5 = implementation4/0;
+
+int root() { none() }
+
+predicate edge(int x, int y) { none() }
+
+// OK -- Higher-order predicate
+int getDistance(int x) = shortestDistances(root/0, edge/2)(_, x, result)
+
+// NOT OK -- Higher-order predicate that does not return a value even though has 'get' in the name
+predicate getDistance2(int x, int y) = shortestDistances(root/0, edge/2)(_, x, y)
+
+// OK
+predicate unresolvedAlias = unresolved/0;
+
+// OK -- unresolved alias
+predicate getUnresolvedAlias = unresolved/0;
