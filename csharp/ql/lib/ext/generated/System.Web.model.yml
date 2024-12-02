@@ -25,8 +25,6 @@ extensions:
       - ["System.Web", "AspNetHostingPermissionAttribute", "AspNetHostingPermissionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]
       - ["System.Web", "AspNetHostingPermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "HtmlDecode", "(System.String,System.IO.TextWriter)", "summary", "df-generated"]
-      - ["System.Web", "HttpUtility", "ParseQueryString", "(System.String)", "summary", "df-generated"]
-      - ["System.Web", "HttpUtility", "ParseQueryString", "(System.String,System.Text.Encoding)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "UrlDecode", "(System.Byte[],System.Int32,System.Int32,System.Text.Encoding)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "UrlDecode", "(System.Byte[],System.Text.Encoding)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "UrlDecode", "(System.String)", "summary", "df-generated"]

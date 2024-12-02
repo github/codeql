@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>
+Calling functions and methods in the Rust <code>std</code> library from a <code>#[ctor]</code> or <code>#[dtor]</code> function is not safe. This is because the <code>std</code> library only guarantees stability and portability between the beginning and the end of <code>main</code>, whereas <code>#[ctor]</code> functions are called before <code>main</code>, and <code>#[dtor]</code> functions are called after it.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Do not call any part of the <code>std</code> library from a <code>#[ctor]</code> or <code>#[dtor]</code> function. Instead either:
+</p>
+<ul>
+  <li>Move the code to a different location, such as inside your program's <code>main</code> function.</li>
+  <li>Rewrite the code using an alternative library.</li>
+</ul>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, a <code>#[ctor]</code> function uses the <code>println!</code> macro which calls <code>std</code> library functions. This may cause unexpected behavior at runtime.
+</p>
+
+<sample src="BadCtorInitializationBad.rs" />
+
+<p>
+The issue can be fixed by replacing <code>println!</code> with something that does not rely on the <code>std</code> library. In the fixed code below, we used the <code>libc_println!</code> macro from the <code>libc-print</code> library:
+</p>
+
+<sample src="BadCtorInitializationGood.rs" />
+
+</example>
+<references>
+
+<li>GitHub: <a href="https://github.com/mmastrac/rust-ctor?tab=readme-ov-file#warnings">rust-ctor - Warnings</a>.</li>
+<li>Rust Programming Language: <a href="https://doc.rust-lang.org/std/#use-before-and-after-main">Crate std - Use before and after main()</a>.</li>
+
+</references>
+</qhelp>
