@@ -16,6 +16,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// The full address of the Dependabot proxy, if available.
         /// </summary>
         internal readonly string? Address;
+        /// <summary>
+        /// The path to the temporary file where the certificate is stored.
+        /// </summary>
+        internal readonly string? CertificatePath;
 
         /// <summary>
         /// Gets a value indicating whether a Dependabot proxy is configured.
@@ -49,13 +53,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var certDirPath = new DirectoryInfo(Path.Join(tempWorkingDirectory.DirInfo.FullName, ".dependabot-proxy"));
             Directory.CreateDirectory(certDirPath.FullName);
 
-            var certFilePath = Path.Join(certDirPath.FullName, "proxy.crt");
-            this.certFile = new FileInfo(certFilePath);
+            this.CertificatePath = Path.Join(certDirPath.FullName, "proxy.crt");
+            this.certFile = new FileInfo(this.CertificatePath);
 
             using var writer = this.certFile.CreateText();
             writer.Write(cert);
 
-            logger.LogInfo($"Stored Dependabot proxy certificate at {certFilePath}");
+            logger.LogInfo($"Stored Dependabot proxy certificate at {this.CertificatePath}");
         }
 
         internal void ApplyProxy(ILogger logger, ProcessStartInfo startInfo)
