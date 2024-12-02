@@ -16,8 +16,22 @@ public class Test
 
         new Test()
         {
-            MyProperty4 = { 1, 2, 3 }
+            MyProperty4 = { 1, 2, 3 },
+            MyProperty6 = { [1] = "" }
         };
+
+        Event1.Invoke(this, 5);
+
+        var str = "abcd";
+        var sub = str[..3];         // TODO: this is not an indexer call, but rather a `str.Substring(0, 3)` call.
+
+        Span<int> sp = null;
+        var slice = sp[..3];        // TODO: this is not an indexer call, but rather a `sp.Slice(0, 3)` call.
+
+        Span<byte> guidBytes = stackalloc byte[16];
+        guidBytes[08] = 1;          // TODO: this indexer call has no target, because the target is a `ref` returning getter.
+
+        new MyList([new(), new Test()]);        // TODO: the `new()` call has no target, which is unexpected, as we know at compile time, that this is a `new Test()` call.
     }
 
     public int MyProperty1 { get; }
@@ -25,4 +39,20 @@ public class Test
     public Test MyProperty3 { get; set; }
     public List<int> MyProperty4 { get; }
     static int MyProperty5 { get; }
+    public Dictionary<int, string> MyProperty6 { get; }
+
+    public event EventHandler<int> Event1;
+
+    class Gen<T> where T : new()
+    {
+        public static T Factory()
+        {
+            return new T();
+        }
+    }
+
+    class MyList
+    {
+        public MyList(IEnumerable<Test> init) { }
+    }
 }
