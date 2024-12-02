@@ -93,7 +93,7 @@ module Generated {
     final predicate hasPat() { exists(this.getPat()) }
 
     /**
-     * Gets the ty of this let statement, if it exists.
+     * Gets the type reference of this let statement, if it exists.
      */
     TypeRef getTy() {
       result = Synth::convertTypeRefFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getTy())

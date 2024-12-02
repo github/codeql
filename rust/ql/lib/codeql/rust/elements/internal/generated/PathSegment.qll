@@ -119,7 +119,7 @@ module Generated {
     final predicate hasReturnTypeSyntax() { exists(this.getReturnTypeSyntax()) }
 
     /**
-     * Gets the ty of this path segment, if it exists.
+     * Gets the type reference of this path segment, if it exists.
      */
     TypeRef getTy() {
       result =

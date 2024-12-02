@@ -62,7 +62,7 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the ty of this record field, if it exists.
+     * Gets the type reference of this record field, if it exists.
      */
     TypeRef getTy() {
       result =

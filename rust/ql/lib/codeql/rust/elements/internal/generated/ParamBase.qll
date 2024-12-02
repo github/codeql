@@ -40,7 +40,7 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the ty of this parameter base, if it exists.
+     * Gets the type reference of this parameter base, if it exists.
      */
     TypeRef getTy() {
       result =

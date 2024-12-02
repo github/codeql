@@ -87,7 +87,7 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the ty of this type alias, if it exists.
+     * Gets the type reference of this type alias, if it exists.
      */
     TypeRef getTy() {
       result =

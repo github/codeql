@@ -26,7 +26,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ParenType" }
 
     /**
-     * Gets the ty of this paren type, if it exists.
+     * Gets the type reference of this paren type, if it exists.
      */
     TypeRef getTy() {
       result =

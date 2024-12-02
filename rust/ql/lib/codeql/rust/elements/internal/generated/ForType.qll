@@ -42,7 +42,7 @@ module Generated {
     final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
 
     /**
-     * Gets the ty of this for type, if it exists.
+     * Gets the type reference of this for type, if it exists.
      */
     TypeRef getTy() {
       result = Synth::convertTypeRefFromRaw(Synth::convertForTypeToRaw(this).(Raw::ForType).getTy())

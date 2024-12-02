@@ -82,7 +82,7 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the ty of this const, if it exists.
+     * Gets the type reference of this const, if it exists.
      */
     TypeRef getTy() {
       result = Synth::convertTypeRefFromRaw(Synth::convertConstToRaw(this).(Raw::Const).getTy())

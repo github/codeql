@@ -48,7 +48,7 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the ty of this tuple field, if it exists.
+     * Gets the type reference of this tuple field, if it exists.
      */
     TypeRef getTy() {
       result =

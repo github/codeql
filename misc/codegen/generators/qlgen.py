@@ -65,6 +65,7 @@ abbreviations = {
     "var": "variable",
     "ref": "reference",
     "pat": "pattern",
+    "ty": "type reference",
 }
 
 abbreviations.update({f"{k}s": f"{v}s" for k, v in abbreviations.items()})

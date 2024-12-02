@@ -59,7 +59,7 @@ module Generated {
     final predicate hasExpr() { exists(this.getExpr()) }
 
     /**
-     * Gets the ty of this cast expression, if it exists.
+     * Gets the type reference of this cast expression, if it exists.
      */
     TypeRef getTy() {
       result =

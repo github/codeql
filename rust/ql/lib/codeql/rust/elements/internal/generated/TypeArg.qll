@@ -26,7 +26,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TypeArg" }
 
     /**
-     * Gets the ty of this type argument, if it exists.
+     * Gets the type reference of this type argument, if it exists.
      */
     TypeRef getTy() {
       result = Synth::convertTypeRefFromRaw(Synth::convertTypeArgToRaw(this).(Raw::TypeArg).getTy())

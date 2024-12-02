@@ -26,7 +26,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RetType" }
 
     /**
-     * Gets the ty of this ret type, if it exists.
+     * Gets the type reference of this ret type, if it exists.
      */
     TypeRef getTy() {
       result = Synth::convertTypeRefFromRaw(Synth::convertRetTypeToRaw(this).(Raw::RetType).getTy())

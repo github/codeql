@@ -68,7 +68,7 @@ module Generated {
     final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
 
     /**
-     * Gets the ty of this offset of expression, if it exists.
+     * Gets the type reference of this offset of expression, if it exists.
      */
     TypeRef getTy() {
       result =

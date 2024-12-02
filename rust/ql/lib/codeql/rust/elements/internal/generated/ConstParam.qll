@@ -82,7 +82,7 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the ty of this const parameter, if it exists.
+     * Gets the type reference of this const parameter, if it exists.
      */
     TypeRef getTy() {
       result =

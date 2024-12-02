@@ -45,7 +45,7 @@ module Generated {
     final predicate hasLifetime() { exists(this.getLifetime()) }
 
     /**
-     * Gets the ty of this reference type, if it exists.
+     * Gets the type reference of this reference type, if it exists.
      */
     TypeRef getTy() {
       result = Synth::convertTypeRefFromRaw(Synth::convertRefTypeToRaw(this).(Raw::RefType).getTy())

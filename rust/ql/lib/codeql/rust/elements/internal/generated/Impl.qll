@@ -93,7 +93,7 @@ module Generated {
     predicate isUnsafe() { Synth::convertImplToRaw(this).(Raw::Impl).isUnsafe() }
 
     /**
-     * Gets the self ty of this impl, if it exists.
+     * Gets the self type reference of this impl, if it exists.
      */
     TypeRef getSelfTy() {
       result = Synth::convertTypeRefFromRaw(Synth::convertImplToRaw(this).(Raw::Impl).getSelfTy())

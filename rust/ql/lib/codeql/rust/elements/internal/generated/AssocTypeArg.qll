@@ -123,7 +123,7 @@ module Generated {
     final predicate hasReturnTypeSyntax() { exists(this.getReturnTypeSyntax()) }
 
     /**
-     * Gets the ty of this assoc type argument, if it exists.
+     * Gets the type reference of this assoc type argument, if it exists.
      */
     TypeRef getTy() {
       result =

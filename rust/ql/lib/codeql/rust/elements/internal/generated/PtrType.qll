@@ -36,7 +36,7 @@ module Generated {
     predicate isMut() { Synth::convertPtrTypeToRaw(this).(Raw::PtrType).isMut() }
 
     /**
-     * Gets the ty of this ptr type, if it exists.
+     * Gets the type reference of this ptr type, if it exists.
      */
     TypeRef getTy() {
       result = Synth::convertTypeRefFromRaw(Synth::convertPtrTypeToRaw(this).(Raw::PtrType).getTy())

@@ -68,7 +68,7 @@ module Generated {
     final predicate hasLifetime() { exists(this.getLifetime()) }
 
     /**
-     * Gets the ty of this type bound, if it exists.
+     * Gets the type reference of this type bound, if it exists.
      */
     TypeRef getTy() {
       result =

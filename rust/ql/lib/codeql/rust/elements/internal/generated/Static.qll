@@ -83,7 +83,7 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the ty of this static, if it exists.
+     * Gets the type reference of this static, if it exists.
      */
     TypeRef getTy() {
       result = Synth::convertTypeRefFromRaw(Synth::convertStaticToRaw(this).(Raw::Static).getTy())

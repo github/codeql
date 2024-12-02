@@ -26,7 +26,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "SliceType" }
 
     /**
-     * Gets the ty of this slice type, if it exists.
+     * Gets the type reference of this slice type, if it exists.
      */
     TypeRef getTy() {
       result =

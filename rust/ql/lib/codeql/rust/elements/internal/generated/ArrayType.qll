@@ -42,7 +42,7 @@ module Generated {
     final predicate hasConstArg() { exists(this.getConstArg()) }
 
     /**
-     * Gets the ty of this array type, if it exists.
+     * Gets the type reference of this array type, if it exists.
      */
     TypeRef getTy() {
       result =
