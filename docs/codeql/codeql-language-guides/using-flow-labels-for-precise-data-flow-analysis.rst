@@ -126,8 +126,7 @@ introduced any sanitizers yet.
 
 There are many ways of checking for nullness directly or indirectly. Since this is not the main
 focus of this tutorial, we will only show how to model one specific case: if some variable ``v`` is
-known to be truthy, it cannot be ``null``. This kind of condition is easily expressed using a
-``BarrierGuardNode`` (or its counterpart ``SanitizerGuardNode`` for taint-tracking configurations).
+known to be truthy, it cannot be ``null``. This kind of condition is expressed using a "barrier guard".
 A barrier guard node is a data-flow node ``b`` that blocks flow through some other node ``nd``,
 provided that some condition checked at ``b`` is known to hold, that is, evaluate to a truthy value.
 
