@@ -142,7 +142,7 @@ Implementing this additional condition is easy. We implement a class with a pred
 
 .. code-block:: ql
 
-  class TruthinessCheck extends DataFlow::Node, DataFlow::ValueNode {
+  class TruthinessCheck extends DataFlow::ValueNode {
     SsaVariable v;
 
     TruthinessCheck() {
@@ -290,7 +290,7 @@ step by step in the UI:
 
   import javascript
 
-  class TruthinessCheck extends DataFlow::Node, DataFlow::ValueNode {
+  class TruthinessCheck extends DataFlow::ValueNode {
     SsaVariable v;
 
     TruthinessCheck() {
