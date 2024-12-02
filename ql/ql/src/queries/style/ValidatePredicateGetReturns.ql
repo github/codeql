@@ -16,7 +16,9 @@ import codeql_ql.ast.Ast
  * Identifies predicates whose names start with "get", "as" followed by an uppercase letter.
  * This ensures that only predicates like "getValue" are matched, excluding names like "getter".
  */
-predicate isGetPredicate(Predicate pred) { pred.getName().regexpMatch("(get|as)[A-Z].*") }
+predicate isGetPredicate(Predicate pred, string prefix) {
+  prefix = pred.getName().regexpCapture("(get|as)[A-Z].*", 1)
+}
 
 /**
  * Checks if a predicate has a return type.
@@ -28,21 +30,9 @@ predicate hasReturnType(Predicate pred) { exists(pred.getReturnTypeExpr()) }
  */
 predicate isAlias(Predicate pred) { exists(pred.(ClasslessPredicate).getAlias()) }
 
-/**
- * Returns "get" if the predicate name starts with "get", otherwise "as".
- */
-string getPrefix(Predicate pred) {
-  if pred.getName().matches("get%")
-  then result = "get"
-  else
-    if pred.getName().matches("as%")
-    then result = "as"
-    else result = ""
-}
-
-from Predicate pred
+from Predicate pred, string prefix
 where
-  isGetPredicate(pred) and
+  isGetPredicate(pred, prefix) and
   not hasReturnType(pred) and
   not isAlias(pred)
-select pred, "This predicate starts with '" + getPrefix(pred) + "' but does not return a value."
+select pred, "This predicate starts with '" + prefix + "' but does not return a value."
