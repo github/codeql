@@ -110,7 +110,7 @@ fn tuple_mutation() {
     sink(a.1); // $ hasValueFlow=38
     a.0 = source(70);
     a.1 = 2;
-    sink(a.0); // $ MISSING: hasValueFlow=70
+    sink(a.0); // $ hasValueFlow=70
     sink(a.1);
 }
 

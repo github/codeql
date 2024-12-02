@@ -465,7 +465,7 @@ private class StructCanonicalPath extends MkStructCanonicalPath {
 }
 
 /** Content stored in a field on a struct. */
-private class StructFieldContent extends VariantContent, TStructFieldContent {
+private class StructFieldContent extends Content, TStructFieldContent {
   private StructCanonicalPath s;
   private string field_;
 
@@ -482,7 +482,7 @@ private class StructFieldContent extends VariantContent, TStructFieldContent {
  * NOTE: Unlike `struct`s and `enum`s tuples are structural and not nominal,
  * hence we don't store a canonical path for them.
  */
-private class TuplePositionContent extends VariantContent, TTuplePositionContent {
+private class TuplePositionContent extends Content, TTuplePositionContent {
   private int pos;
 
   TuplePositionContent() { this = TTuplePositionContent(pos) }
@@ -490,6 +490,11 @@ private class TuplePositionContent extends VariantContent, TTuplePositionContent
   int getPosition() { result = pos }
 
   override string toString() { result = "tuple." + pos.toString() }
+}
+
+/** Holds if `access` indexes a tuple at an index corresponding to `c`. */
+private predicate fieldTuplePositionContent(FieldExprCfgNode access, TuplePositionContent c) {
+  access.getNameRef().getText().toInt() = c.getPosition()
 }
 
 /** A value that represents a set of `Content`s. */
@@ -687,7 +692,7 @@ module RustDataFlow implements InputSig<Location> {
     pathResolveToVariantCanonicalPath(p.getPath(), v)
   }
 
-  /** Holds if `p` destructs an struct `s`. */
+  /** Holds if `p` destructs a struct `s`. */
   pragma[nomagic]
   private predicate structDestruction(RecordPat p, StructCanonicalPath s) {
     pathResolveToStructCanonicalPath(p.getPath(), s)
@@ -722,7 +727,7 @@ module RustDataFlow implements InputSig<Location> {
       or
       exists(FieldExprCfgNode access |
         // Read of a tuple entry
-        access.getNameRef().getText().toInt() = c.(TuplePositionContent).getPosition() and
+        fieldTuplePositionContent(access, c) and
         // TODO: Handle read of a struct field.
         node1.asExpr() = access.getExpr() and
         node2.asExpr() = access
@@ -742,7 +747,7 @@ module RustDataFlow implements InputSig<Location> {
     pathResolveToVariantCanonicalPath(re.getPath(), v)
   }
 
-  /** Holds if `re` constructs a struct value of type `v`. */
+  /** Holds if `re` constructs a struct value of type `s`. */
   pragma[nomagic]
   private predicate structConstruction(RecordExpr re, StructCanonicalPath s) {
     pathResolveToStructCanonicalPath(re.getPath(), s)
@@ -780,6 +785,13 @@ module RustDataFlow implements InputSig<Location> {
         node1.asExpr() = tuple.getField(c.(TuplePositionContent).getPosition()) and
         node2.asExpr() = tuple
       )
+      or
+      exists(AssignmentExprCfgNode assignment, FieldExprCfgNode access |
+        assignment.getLhs() = access and
+        fieldTuplePositionContent(access, c) and
+        node1.asExpr() = assignment.getRhs() and
+        node2.asExpr() = access.getExpr()
+      )
     )
   }
 
@@ -788,12 +800,11 @@ module RustDataFlow implements InputSig<Location> {
    * any value stored inside `f` is cleared at the pre-update node associated with `x`
    * in `x.f = newValue`.
    */
-  predicate clearsContent(Node n, ContentSet c) {
+  predicate clearsContent(Node n, ContentSet cs) {
     exists(AssignmentExprCfgNode assignment, FieldExprCfgNode access |
       assignment.getLhs() = access and
       n.asExpr() = access.getExpr() and
-      access.getNameRef().getText().toInt() =
-        c.(SingletonContentSet).getContent().(TuplePositionContent).getPosition()
+      fieldTuplePositionContent(access, cs.(SingletonContentSet).getContent())
     )
   }
 

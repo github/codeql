@@ -336,6 +336,8 @@ storeStep
 | main.rs:100:29:100:29 | 2 | tuple.2 | main.rs:100:13:100:30 | TupleExpr |
 | main.rs:108:18:108:18 | 2 | tuple.0 | main.rs:108:17:108:31 | TupleExpr |
 | main.rs:108:21:108:30 | source(...) | tuple.1 | main.rs:108:17:108:31 | TupleExpr |
+| main.rs:111:11:111:20 | source(...) | tuple.0 | main.rs:111:5:111:5 | a |
+| main.rs:112:11:112:11 | 2 | tuple.1 | main.rs:112:5:112:5 | a |
 | main.rs:118:14:118:14 | 3 | tuple.0 | main.rs:118:13:118:27 | TupleExpr |
 | main.rs:118:17:118:26 | source(...) | tuple.1 | main.rs:118:13:118:27 | TupleExpr |
 | main.rs:119:14:119:14 | a | tuple.0 | main.rs:119:13:119:18 | TupleExpr |
