@@ -77,7 +77,8 @@ fun KotlinFileExtractor.extractClassSource(
                                 it
                             )
                         } else {
-                            extractFunction(
+                            // TODO: Should this be extractFunction?
+                            extractFunctionSymbol(
                                 getter,
                                 id,
                                 /* OLD: KE1

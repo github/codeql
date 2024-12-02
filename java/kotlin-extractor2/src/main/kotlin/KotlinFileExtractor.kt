@@ -305,24 +305,38 @@ OLD: KE1
                 is KaNamedFunctionSymbol -> {
                     val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
                     if (parentId != null) {
-                        extractFunction(
-                            declaration,
-                            parentId,
-                            /*
-                            OLD: KE1
-                                                        extractBody = extractFunctionBodies,
-                                                        extractMethodAndParameterTypeAccesses = extractFunctionBodies,
-                                                        extractAnnotations = extractAnnotations,
-                                                        null,
-                                                        listOf()
-                            */
-                        )
-                    } else
+                        // TODO: Float this PSI further up
+                        val func = declaration.psi as? KtFunction
+                        if (func == null) {
+                            extractFunctionSymbol(
+                                declaration,
+                                parentId,
+                                /*
+                                OLD: KE1
+                                                            extractBody = extractFunctionBodies,
+                                                            extractMethodAndParameterTypeAccesses = extractFunctionBodies,
+                                                            extractAnnotations = extractAnnotations,
+                                                            null,
+                                                            listOf()
+                                */
+                            )
+                        } else {
+                            extractFunction(
+                                func,
+                                parentId,
+                                /*
+                                OLD: KE1
+                                                            extractBody = extractFunctionBodies,
+                                                            extractMethodAndParameterTypeAccesses = extractFunctionBodies,
+                                                            extractAnnotations = extractAnnotations,
+                                                            null,
+                                                            listOf()
+                                */
+                            )
+                        }
+                    } else {
                         Unit
-                    /*
-                    OLD: KE1
-                                        Unit
-                    */
+                    }
                 }
                 /*
                 OLD: KE1

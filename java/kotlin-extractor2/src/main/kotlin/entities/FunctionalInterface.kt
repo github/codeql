@@ -426,7 +426,8 @@ private fun KotlinFileExtractor.extractGeneratedClass(
         )
 
     // Extract local function as a member
-    extractFunction(
+    // TODO: Should this be extractFunction?
+    extractFunctionSymbol(
         localFunction,
         id,
         /*

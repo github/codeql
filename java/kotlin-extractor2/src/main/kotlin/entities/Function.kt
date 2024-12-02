@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.load.java.JvmAbi
-import org.jetbrains.kotlin.psi.KtDeclarationWithBody
+import org.jetbrains.kotlin.psi.*
 
 /*
          * There are some pairs of classes (e.g. `kotlin.Throwable` and
@@ -321,7 +321,7 @@ OLD: KE1
 
 context(KaSession)
 fun KotlinFileExtractor.extractFunction(
-    f: KaFunctionSymbol,
+    f: KtFunction,
     parentId: Label<out DbReftype>,
     /*
     OLD: KE1
@@ -374,14 +374,66 @@ fun KotlinFileExtractor.extractFunction(
     */
 }
 
-// TODO: Can this be inlined?
 context(KaSession)
-private fun KotlinFileExtractor.forceExtractFunction(
+fun KotlinFileExtractor.extractFunctionSymbol(
     f: KaFunctionSymbol,
     parentId: Label<out DbReftype>,
     /*
     OLD: KE1
-            extractBody: Boolean,
+            extractMethodAndParameterTypeAccesses: Boolean,
+            extractAnnotations: Boolean,
+            typeSubstitution: TypeSubstitution?,
+            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
+    */
+): Label<out DbCallable> {
+    /*
+    OLD: KE1
+                val overriddenVisibility = null
+    */
+    return forceExtractFunctionSymbol(
+        f,
+        parentId,
+        /*
+        OLD: KE1
+                            extractMethodAndParameterTypeAccesses,
+                            extractAnnotations,
+                            typeSubstitution,
+                            classTypeArgsIncludingOuterClasses,
+                            overriddenAttributes = overriddenVisibility
+        */
+    )
+    /*
+    OLD: KE1
+                    .also {
+                        // The defaults-forwarder function is a static utility, not a member, so we only
+                        // need to extract this for the unspecialised instance of this class.
+                        if (classTypeArgsIncludingOuterClasses.isNullOrEmpty())
+                            extractDefaultsFunction(
+                                f,
+                                parentId,
+                                extractBody,
+                                extractMethodAndParameterTypeAccesses
+                            )
+                        extractGeneratedOverloads(
+                            f,
+                            parentId,
+                            null,
+                            extractBody,
+                            extractMethodAndParameterTypeAccesses,
+                            typeSubstitution,
+                            classTypeArgsIncludingOuterClasses
+                        )
+                    }
+    */
+}
+
+// TODO: Can this be inlined?
+context(KaSession)
+private fun KotlinFileExtractor.forceExtractFunctionCommon(
+    f: KaFunctionSymbol,
+    parentId: Label<out DbReftype>,
+    /*
+    OLD: KE1
             extractMethodAndParameterTypeAccesses: Boolean,
             extractAnnotations: Boolean,
             typeSubstitution: TypeSubstitution?,
@@ -390,22 +442,7 @@ private fun KotlinFileExtractor.forceExtractFunction(
             overriddenAttributes: OverriddenFunctionAttributes? = null
     */
 ): Label<out DbCallable> {
-    with("function", f) {
-/*
-OLD: KE1
-            DeclarationStackAdjuster(f, overriddenAttributes).use {
-                val javaCallable = getJavaCallable(f)
-                getFunctionTypeParameters(f).mapIndexed { idx, tp ->
-                    extractTypeParameter(
-                        tp,
-                        idx,
-                        (javaCallable as? JavaTypeParameterListOwner)
-                            ?.typeParameters
-                            ?.getOrNull(idx)
-                    )
-                }
-*/
-
+    with("function common", f) {
         val id =
             /*
             OLD: KE1
@@ -488,15 +525,8 @@ OLD: KE1
                                 it(adjustedReturnType, TypeContext.RETURN, pluginContext)
                             } ?: adjustedReturnType
         */
-        val functionSyntax = f.psi as? KtDeclarationWithBody
-        val locId = functionSyntax?.let {
-            tw.getLocation(functionSyntax ?: TODO())
-        } ?: tw.getWholeFileLocation()
-        /*
-        OLD: KE1
-                            overriddenAttributes?.sourceLoc
-                                ?: getLocation(f, classTypeArgsIncludingOuterClasses)
 
+/*
                         if (f.symbol is IrConstructorSymbol) {
                             val shortName =
                                 when {
@@ -553,20 +583,6 @@ OLD: KE1
                         }
         */
 
-        tw.writeHasLocation(id, locId)
-        val body = functionSyntax?.bodyExpression ?: functionSyntax?.bodyBlockExpression
-        if (body != null /* TODO && extractBody */) {
-            /*
-            OLD: KE1
-                                if (typeSubstitution != null)
-                                    logger.errorElement(
-                                        "Type substitution should only be used to extract a function prototype, not the body",
-                                        f
-                                    )
-            */
-            extractBody(body, id)
-        }
-
         /*
         OLD: KE1
                         extractVisibility(f, id, overriddenAttributes?.visibility ?: f.visibility)
@@ -591,8 +607,6 @@ OLD: KE1
                             }
                         }
 
-                        linesOfCode?.linesOfCodeInDeclaration(f, id)
-
                         if (extractAnnotations) {
                             val extraAnnotations =
                                 if (f.symbol is IrConstructorSymbol) listOf()
@@ -615,10 +629,94 @@ OLD: KE1
         */
 
         return id
+    }
+}
+
+context(KaSession)
+private fun KotlinFileExtractor.forceExtractFunctionSymbol(
+    f: KaFunctionSymbol,
+    parentId: Label<out DbReftype>,
+    /*
+    OLD: KE1
+            extractMethodAndParameterTypeAccesses: Boolean,
+            extractAnnotations: Boolean,
+            typeSubstitution: TypeSubstitution?,
+            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
+            extractOrigin: Boolean = true,
+            overriddenAttributes: OverriddenFunctionAttributes? = null
+    */
+): Label<out DbCallable> {
+    with("function symbol", f) {
+        val id = forceExtractFunctionCommon(f, parentId)
+
+        val locId = tw.getWholeFileLocation()
+        tw.writeHasLocation(id, locId)
+
+        return id
+    }
+}
+
+// TODO: Can this be inlined?
+context(KaSession)
+private fun KotlinFileExtractor.forceExtractFunction(
+    f: KtFunction,
+    parentId: Label<out DbReftype>,
+    /*
+    OLD: KE1
+            extractBody: Boolean,
+            extractMethodAndParameterTypeAccesses: Boolean,
+            extractAnnotations: Boolean,
+            typeSubstitution: TypeSubstitution?,
+            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
+            extractOrigin: Boolean = true,
+            overriddenAttributes: OverriddenFunctionAttributes? = null
+    */
+): Label<out DbCallable> {
+    with("function", f) {
+/*
+OLD: KE1
+            DeclarationStackAdjuster(f, overriddenAttributes).use {
+                val javaCallable = getJavaCallable(f)
+                getFunctionTypeParameters(f).mapIndexed { idx, tp ->
+                    extractTypeParameter(
+                        tp,
+                        idx,
+                        (javaCallable as? JavaTypeParameterListOwner)
+                            ?.typeParameters
+                            ?.getOrNull(idx)
+                    )
+                }
+*/
+
+        val id = forceExtractFunctionCommon(f.symbol as KaFunctionSymbol, parentId)
+
+        val locId = tw.getLocation(f)
         /*
         OLD: KE1
-                    }
+                            overriddenAttributes?.sourceLoc
+                                ?: getLocation(f, classTypeArgsIncludingOuterClasses)
+*/
+
+        tw.writeHasLocation(id, locId)
+        val body = f.bodyExpression ?: f.bodyBlockExpression
+        if (body != null /* TODO && extractBody */) {
+            /*
+            OLD: KE1
+                                if (typeSubstitution != null)
+                                    logger.errorElement(
+                                        "Type substitution should only be used to extract a function prototype, not the body",
+                                        f
+                                    )
+            */
+            extractBody(body, id)
+        }
+
+        /*
+        OLD: KE1
+        linesOfCode?.linesOfCodeInDeclaration(f, id)
         */
+
+        return id
     }
 }
 
