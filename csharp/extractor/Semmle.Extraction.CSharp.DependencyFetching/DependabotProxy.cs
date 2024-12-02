@@ -65,9 +65,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             logger.LogInfo($"Setting up Dependabot proxy at {this.Address}");
 
-            startInfo.EnvironmentVariables["HTTP_PROXY"] = this.Address;
-            startInfo.EnvironmentVariables["HTTPS_PROXY"] = this.Address;
-            startInfo.EnvironmentVariables["SSL_CERT_FILE"] = this.certFile?.FullName;
+            startInfo.EnvironmentVariables.Add("HTTP_PROXY", this.Address);
+            startInfo.EnvironmentVariables.Add("HTTPS_PROXY", this.Address);
+            startInfo.EnvironmentVariables.Add("SSL_CERT_FILE", this.certFile?.FullName);
         }
     }
 }
