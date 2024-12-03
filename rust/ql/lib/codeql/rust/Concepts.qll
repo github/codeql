@@ -105,7 +105,7 @@ module RemoteSource {
 }
 
 /**
- * A data-flow node that constructs a SQL statement.
+ * A data-flow node that constructs a SQL statement (for later execution).
  *
  * Often, it is worthy of an alert if a SQL statement is constructed such that
  * executing it would be a security risk.
@@ -133,10 +133,10 @@ module SqlConstruction {
 }
 
 /**
- * A data-flow node that executes SQL statements.
+ * A data-flow node that constructs and executes SQL statements.
  *
  * If the context of interest is such that merely constructing a SQL statement
- * would be valuable to report, consider using `SqlConstruction`.
+ * would be valuable to report, consider also using `SqlConstruction`.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SqlExecution::Range` instead.

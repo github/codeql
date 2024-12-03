@@ -464,8 +464,10 @@ module MakeModelGenerator<
     predicate isAdditionalFlowStep(
       DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
     ) {
-      exists(DataFlow::ContentSet c |
-        DataFlow::store(node1, c.getAStoreContent(), node2, _, _) and
+      exists(DataFlow::NodeEx n1, DataFlow::NodeEx n2, DataFlow::ContentSet c |
+        node1 = n1.asNode() and
+        node2 = n2.asNode() and
+        DataFlow::storeEx(n1, c.getAStoreContent(), n2, _, _) and
         isRelevantContent0(c) and
         (
           state1 instanceof TaintRead and state2.(TaintStore).getStep() = 1

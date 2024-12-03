@@ -8,7 +8,6 @@
  * @id cpp/guarded-free
  * @tags maintainability
  *       readability
- *       experimental
  */
 
 import cpp
