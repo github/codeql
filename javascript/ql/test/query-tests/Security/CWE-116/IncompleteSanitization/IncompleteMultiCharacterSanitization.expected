@@ -39,3 +39,4 @@
 | tst-multi-character-sanitization.js:145:13:145:90 | content ... /g, '') | This string may still contain $@, which may cause an HTML element injection vulnerability. | tst-multi-character-sanitization.js:145:30:145:30 | < | <script |
 | tst-multi-character-sanitization.js:148:3:148:99 | n.clone ... gi, '') | This string may still contain $@, which may cause an HTML element injection vulnerability. | tst-multi-character-sanitization.js:148:41:148:41 | < | <script |
 | tst-multi-character-sanitization.js:152:3:152:99 | n.clone ... gi, '') | This string may still contain $@, which may cause an HTML element injection vulnerability. | tst-multi-character-sanitization.js:152:41:152:41 | < | <script |
+| tst.js:341:9:341:44 | p.repla ... "), "") | This string may still contain $@, which may cause a path injection vulnerability. | tst.js:341:31:341:33 | \\. | ../ |
