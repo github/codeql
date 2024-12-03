@@ -682,11 +682,11 @@ void test_CPathT() {
 
     CPath p2;
     p2 += p;
-    sink(p.m_strPath); // $ ir
+    sink(p2.m_strPath); // $ MISSING: ir
 
     CPath p3;
     p3 += x;
-    sink(p.m_strPath); // $ ir
+    sink(p3.m_strPath); // $ MISSING: ir
   }
 
   {
