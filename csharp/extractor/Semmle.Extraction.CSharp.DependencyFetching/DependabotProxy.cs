@@ -1,12 +1,13 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    public class DependabotProxy
+    public class DependabotProxy : IDisposable
     {
         private readonly string? host;
         private readonly string? port;
@@ -20,6 +21,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// The path to the temporary file where the certificate is stored.
         /// </summary>
         internal readonly string? CertificatePath;
+        /// <summary>
+        /// The certificate used for the Dependabot proxy.
+        /// </summary>
+        internal readonly X509Certificate2? Certificate;
 
         /// <summary>
         /// Gets a value indicating whether a Dependabot proxy is configured.
@@ -60,6 +65,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             writer.Write(cert);
 
             logger.LogInfo($"Stored Dependabot proxy certificate at {this.CertificatePath}");
+
+            this.Certificate = new X509Certificate2(this.CertificatePath);
         }
 
         internal void ApplyProxy(ILogger logger, ProcessStartInfo startInfo)
@@ -72,6 +79,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             startInfo.EnvironmentVariables.Add("HTTP_PROXY", this.Address);
             startInfo.EnvironmentVariables.Add("HTTPS_PROXY", this.Address);
             startInfo.EnvironmentVariables.Add("SSL_CERT_FILE", this.certFile?.FullName);
+        }
+
+        public void Dispose()
+        {
+            if (this.Certificate != null)
+            {
+                this.Certificate.Dispose();
+            }
         }
     }
 }
