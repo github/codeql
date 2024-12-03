@@ -117,8 +117,8 @@ fn tuple_mutation() {
 fn tuple_nested() {
     let a = (3, source(59));
     let b = (a, 3);
-    sink(b.0.0);
-    sink(b.0.1); // $ hasValueFlow=59
+    sink(b.0 .0);
+    sink(b.0 .1); // $ hasValueFlow=59
     sink(b.1);
 }
 
@@ -131,19 +131,13 @@ struct Point {
 }
 
 fn struct_field() {
-    let p = Point {
-        x: source(9),
-        y: 2,
-    };
+    let p = Point { x: source(9), y: 2 };
     sink(p.x); // $ MISSING: hasValueFlow=9
     sink(p.y);
 }
 
 fn struct_mutation() {
-    let mut p = Point {
-        x: source(9),
-        y: 2,
-    };
+    let mut p = Point { x: source(9), y: 2 };
     sink(p.y);
     p.y = source(54);
     sink(p.y); // $ MISSING: hasValueFlow=54
@@ -161,7 +155,7 @@ fn struct_pattern_match() {
 
 struct Point3D {
     plane: Point,
-    z: i64
+    z: i64,
 }
 
 fn struct_nested_field() {
@@ -170,7 +164,7 @@ fn struct_nested_field() {
             x: 2,
             y: source(77),
         },
-        z: 4
+        z: 4,
     };
     sink(p.plane.x);
     sink(p.plane.y); // $ MISSING: hasValueFlow=77
@@ -183,10 +177,13 @@ fn struct_nested_match() {
             x: 2,
             y: source(93),
         },
-        z: 4
+        z: 4,
     };
     match p {
-        Point3D { plane: Point { x, y }, z, } => {
+        Point3D {
+            plane: Point { x, y },
+            z,
+        } => {
             sink(x);
             sink(y); // MISSING: hasValueFlow=93
             sink(z);
@@ -201,7 +198,7 @@ fn option_pattern_match_qualified() {
     let s1 = Option::Some(source(13));
     let s2 = Option::Some(2);
     match s1 {
-        Option::Some(n) => sink(n), // $ MISSING: hasValueFlow=13
+        Option::Some(n) => sink(n), // $ hasValueFlow=13
         Option::None => sink(0),
     }
     match s2 {
@@ -255,11 +252,11 @@ fn custom_tuple_enum_pattern_match_unqualified() {
     let s1 = A(source(16));
     let s2 = B(2);
     match s1 {
-        A(n) => sink(n), // $ MISSING: hasValueFlow=16
+        A(n) => sink(n), // $ hasValueFlow=16
         B(n) => sink(n),
     }
     match s1 {
-        A(n) | B(n) => sink(n), // $ MISSING: hasValueFlow=16
+        A(n) | B(n) => sink(n), // $ hasValueFlow=16
     }
     match s2 {
         A(n) => sink(n),
@@ -298,11 +295,11 @@ fn custom_record_enum_pattern_match_unqualified() {
     };
     let s2 = D { field_d: 2 };
     match s1 {
-        C { field_c: n } => sink(n), // $ MISSING: hasValueFlow=18
+        C { field_c: n } => sink(n), // $ hasValueFlow=18
         D { field_d: n } => sink(n),
     }
     match s1 {
-        C { field_c: n } | D { field_d: n } => sink(n), // $ MISSING: hasValueFlow=18
+        C { field_c: n } | D { field_d: n } => sink(n), // $ hasValueFlow=18
     }
     match s2 {
         C { field_c: n } => sink(n),
