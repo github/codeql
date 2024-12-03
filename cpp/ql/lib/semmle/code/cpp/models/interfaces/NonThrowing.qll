@@ -7,7 +7,8 @@ import semmle.code.cpp.models.Models
 
 /**
  * A function that is guaranteed to never throw a C++ exception
- * (distinct from a structured exception handling, SEH, exception).
+ *
+ * The function may still raise a structured exception handling (SEH) exception.
  */
 abstract class NonCppThrowingFunction extends Function { }
 

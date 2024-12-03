@@ -14,8 +14,6 @@ import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
  * A function that is known to raise an exception.
  */
 abstract class ThrowingFunction extends Function {
-  ThrowingFunction() { any() }
-
   /**
    * Holds if this function may throw an exception during evaluation.
    * If `unconditional` is `true` the function always throws an exception.
@@ -24,8 +22,6 @@ abstract class ThrowingFunction extends Function {
 }
 
 /**
- * A function that is known to raise an exception unconditionally.
- * The only cases known where this happens is for SEH
- * (structured exception handling) exceptions.
+ * A function that unconditionally raises a structured exception handling (SEH) exception.
  */
 abstract class AlwaysSehThrowingFunction extends Function { }
