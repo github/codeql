@@ -649,7 +649,7 @@ private fun KotlinFileExtractor.extractExpression(
             is KtIsExpression -> {
 
                 val locId = tw.getLocation(e)
-                val type = useType(e.expressionType!!)
+                val type = useType(e.expressionType)
                 val exprParent = parent.expr(e)
 
                 val id: Label<out DbExpr>
@@ -673,7 +673,7 @@ private fun KotlinFileExtractor.extractExpression(
 
             is KtBinaryExpressionWithTypeRHS -> {
                 val locId = tw.getLocation(e)
-                val type = useType(e.expressionType!!)
+                val type = useType(e.expressionType)
                 val exprParent = parent.expr(e)
 
                 val id: Label<out DbExpr>
