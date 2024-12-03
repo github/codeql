@@ -1192,6 +1192,24 @@ edges
 | L.cs:33:17:33:33 | call to method Source<String> : String | L.cs:33:9:33:10 | [post] access to local variable d4 : Object [dynamic property f1] : String | provenance |  |
 | L.cs:34:14:34:15 | access to local variable d4 : Object [dynamic property f1] : String | L.cs:34:14:34:18 | dynamic access to member f1 | provenance |  |
 | L.cs:34:14:34:15 | access to local variable d4 : Object [dynamic property f1] : String | L.cs:34:14:34:18 | dynamic access to member f1 | provenance |  |
+| L.cs:38:9:38:10 | [post] access to local variable d5 : Object [dynamic property f2] : String | L.cs:39:16:39:17 | (...) ... : L [dynamic property f2] : String | provenance |  |
+| L.cs:38:9:38:10 | [post] access to local variable d5 : Object [dynamic property f2] : String | L.cs:39:16:39:17 | (...) ... : L [dynamic property f2] : String | provenance |  |
+| L.cs:38:17:38:33 | call to method Source<String> : String | L.cs:38:9:38:10 | [post] access to local variable d5 : Object [dynamic property f2] : String | provenance |  |
+| L.cs:38:17:38:33 | call to method Source<String> : String | L.cs:38:9:38:10 | [post] access to local variable d5 : Object [dynamic property f2] : String | provenance |  |
+| L.cs:39:11:39:12 | access to local variable l5 : L [dynamic property f2] : String | L.cs:40:14:40:15 | access to local variable l5 : L [dynamic property f2] : String | provenance |  |
+| L.cs:39:11:39:12 | access to local variable l5 : L [dynamic property f2] : String | L.cs:40:14:40:15 | access to local variable l5 : L [dynamic property f2] : String | provenance |  |
+| L.cs:39:16:39:17 | (...) ... : L [dynamic property f2] : String | L.cs:39:11:39:12 | access to local variable l5 : L [dynamic property f2] : String | provenance |  |
+| L.cs:39:16:39:17 | (...) ... : L [dynamic property f2] : String | L.cs:39:11:39:12 | access to local variable l5 : L [dynamic property f2] : String | provenance |  |
+| L.cs:40:14:40:15 | access to local variable l5 : L [dynamic property f2] : String | L.cs:40:14:40:18 | access to field f2 | provenance |  |
+| L.cs:40:14:40:15 | access to local variable l5 : L [dynamic property f2] : String | L.cs:40:14:40:18 | access to field f2 | provenance |  |
+| L.cs:43:9:43:12 | [post] this access : L [field f3] : String | L.cs:44:17:44:18 | access to local variable d6 : L [field f3] : String | provenance |  |
+| L.cs:43:9:43:12 | [post] this access : L [field f3] : String | L.cs:44:17:44:18 | access to local variable d6 : L [field f3] : String | provenance |  |
+| L.cs:43:19:43:35 | call to method Source<String> : String | L.cs:43:9:43:12 | [post] this access : L [field f3] : String | provenance |  |
+| L.cs:43:19:43:35 | call to method Source<String> : String | L.cs:43:9:43:12 | [post] this access : L [field f3] : String | provenance |  |
+| L.cs:44:17:44:18 | access to local variable d6 : L [field f3] : String | L.cs:45:14:45:15 | access to local variable d6 : L [field f3] : String | provenance |  |
+| L.cs:44:17:44:18 | access to local variable d6 : L [field f3] : String | L.cs:45:14:45:15 | access to local variable d6 : L [field f3] : String | provenance |  |
+| L.cs:45:14:45:15 | access to local variable d6 : L [field f3] : String | L.cs:45:14:45:18 | dynamic access to member f3 | provenance |  |
+| L.cs:45:14:45:15 | access to local variable d6 : L [field f3] : String | L.cs:45:14:45:18 | dynamic access to member f3 | provenance |  |
 nodes
 | A.cs:5:13:5:13 | access to local variable c : C | semmle.label | access to local variable c : C |
 | A.cs:5:13:5:13 | access to local variable c : C | semmle.label | access to local variable c : C |
@@ -2483,6 +2501,28 @@ nodes
 | L.cs:34:14:34:15 | access to local variable d4 : Object [dynamic property f1] : String | semmle.label | access to local variable d4 : Object [dynamic property f1] : String |
 | L.cs:34:14:34:18 | dynamic access to member f1 | semmle.label | dynamic access to member f1 |
 | L.cs:34:14:34:18 | dynamic access to member f1 | semmle.label | dynamic access to member f1 |
+| L.cs:38:9:38:10 | [post] access to local variable d5 : Object [dynamic property f2] : String | semmle.label | [post] access to local variable d5 : Object [dynamic property f2] : String |
+| L.cs:38:9:38:10 | [post] access to local variable d5 : Object [dynamic property f2] : String | semmle.label | [post] access to local variable d5 : Object [dynamic property f2] : String |
+| L.cs:38:17:38:33 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| L.cs:38:17:38:33 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| L.cs:39:11:39:12 | access to local variable l5 : L [dynamic property f2] : String | semmle.label | access to local variable l5 : L [dynamic property f2] : String |
+| L.cs:39:11:39:12 | access to local variable l5 : L [dynamic property f2] : String | semmle.label | access to local variable l5 : L [dynamic property f2] : String |
+| L.cs:39:16:39:17 | (...) ... : L [dynamic property f2] : String | semmle.label | (...) ... : L [dynamic property f2] : String |
+| L.cs:39:16:39:17 | (...) ... : L [dynamic property f2] : String | semmle.label | (...) ... : L [dynamic property f2] : String |
+| L.cs:40:14:40:15 | access to local variable l5 : L [dynamic property f2] : String | semmle.label | access to local variable l5 : L [dynamic property f2] : String |
+| L.cs:40:14:40:15 | access to local variable l5 : L [dynamic property f2] : String | semmle.label | access to local variable l5 : L [dynamic property f2] : String |
+| L.cs:40:14:40:18 | access to field f2 | semmle.label | access to field f2 |
+| L.cs:40:14:40:18 | access to field f2 | semmle.label | access to field f2 |
+| L.cs:43:9:43:12 | [post] this access : L [field f3] : String | semmle.label | [post] this access : L [field f3] : String |
+| L.cs:43:9:43:12 | [post] this access : L [field f3] : String | semmle.label | [post] this access : L [field f3] : String |
+| L.cs:43:19:43:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| L.cs:43:19:43:35 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| L.cs:44:17:44:18 | access to local variable d6 : L [field f3] : String | semmle.label | access to local variable d6 : L [field f3] : String |
+| L.cs:44:17:44:18 | access to local variable d6 : L [field f3] : String | semmle.label | access to local variable d6 : L [field f3] : String |
+| L.cs:45:14:45:15 | access to local variable d6 : L [field f3] : String | semmle.label | access to local variable d6 : L [field f3] : String |
+| L.cs:45:14:45:15 | access to local variable d6 : L [field f3] : String | semmle.label | access to local variable d6 : L [field f3] : String |
+| L.cs:45:14:45:18 | dynamic access to member f3 | semmle.label | dynamic access to member f3 |
+| L.cs:45:14:45:18 | dynamic access to member f3 | semmle.label | dynamic access to member f3 |
 subpaths
 | A.cs:6:24:6:24 | access to local variable c : C | A.cs:147:32:147:32 | c : C | A.cs:149:20:149:27 | object creation of type B : B [field c] : C | A.cs:6:17:6:25 | call to method Make : B [field c] : C |
 | A.cs:6:24:6:24 | access to local variable c : C | A.cs:147:32:147:32 | c : C | A.cs:149:20:149:27 | object creation of type B : B [field c] : C | A.cs:6:17:6:25 | call to method Make : B [field c] : C |
@@ -2748,3 +2788,7 @@ testFailures
 | L.cs:29:14:29:18 | dynamic access to member p3 | L.cs:27:19:27:35 | call to method Source<String> : String | L.cs:29:14:29:18 | dynamic access to member p3 | $@ | L.cs:27:19:27:35 | call to method Source<String> : String | call to method Source<String> : String |
 | L.cs:34:14:34:18 | dynamic access to member f1 | L.cs:33:17:33:33 | call to method Source<String> : String | L.cs:34:14:34:18 | dynamic access to member f1 | $@ | L.cs:33:17:33:33 | call to method Source<String> : String | call to method Source<String> : String |
 | L.cs:34:14:34:18 | dynamic access to member f1 | L.cs:33:17:33:33 | call to method Source<String> : String | L.cs:34:14:34:18 | dynamic access to member f1 | $@ | L.cs:33:17:33:33 | call to method Source<String> : String | call to method Source<String> : String |
+| L.cs:40:14:40:18 | access to field f2 | L.cs:38:17:38:33 | call to method Source<String> : String | L.cs:40:14:40:18 | access to field f2 | $@ | L.cs:38:17:38:33 | call to method Source<String> : String | call to method Source<String> : String |
+| L.cs:40:14:40:18 | access to field f2 | L.cs:38:17:38:33 | call to method Source<String> : String | L.cs:40:14:40:18 | access to field f2 | $@ | L.cs:38:17:38:33 | call to method Source<String> : String | call to method Source<String> : String |
+| L.cs:45:14:45:18 | dynamic access to member f3 | L.cs:43:19:43:35 | call to method Source<String> : String | L.cs:45:14:45:18 | dynamic access to member f3 | $@ | L.cs:43:19:43:35 | call to method Source<String> : String | call to method Source<String> : String |
+| L.cs:45:14:45:18 | dynamic access to member f3 | L.cs:43:19:43:35 | call to method Source<String> : String | L.cs:45:14:45:18 | dynamic access to member f3 | $@ | L.cs:43:19:43:35 | call to method Source<String> : String | call to method Source<String> : String |

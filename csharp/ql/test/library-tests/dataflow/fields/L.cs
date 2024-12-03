@@ -37,12 +37,12 @@ public class L
         dynamic d5 = this;
         d5.f2 = Source<string>(5);
         L l5 = d5;
-        Sink(l5.f2); // $ MISSING: hasValueFlow=5
+        Sink(l5.f2); // $ hasValueFlow=5
 
         // static field write followed by dynamic property read
         this.f3 = Source<string>(6);
         dynamic d6 = this;
-        Sink(d6.f3); // $ MISSING: hasValueFlow=6
+        Sink(d6.f3); // $ hasValueFlow=6
     }
 
     public static void Sink(object o) { }

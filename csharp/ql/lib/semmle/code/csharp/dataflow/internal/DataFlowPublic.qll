@@ -385,13 +385,15 @@ class ContentSet extends TContentSet {
       overridesOrImplementsSourceDecl(p1, p2)
     )
     or
-    exists(Property p |
-      this.isProperty(p) and
+    exists(FieldOrProperty p |
+      this = p.getContentSet() and
       result.(DynamicPropertyContent).getName() = p.getName()
     )
     or
     this.isDynamicProperty([
-        result.(DynamicPropertyContent).getName(), result.(PropertyContent).getProperty().getName()
+        result.(DynamicPropertyContent).getName(),
+        result.(PropertyContent).getProperty().getName(),
+        result.(FieldContent).getField().getName()
       ])
   }
 
