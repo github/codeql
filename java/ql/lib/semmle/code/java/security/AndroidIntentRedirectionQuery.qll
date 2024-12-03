@@ -2,9 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-deprecated import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.TaintTracking
-deprecated import semmle.code.java.dataflow.TaintTracking3
 import semmle.code.java.security.AndroidIntentRedirection
 
 /** A taint tracking configuration for tainted Intents being used to start Android components. */
