@@ -707,7 +707,7 @@ A module implementing the signature `DataFlow::ConfigSig` may specify a data flo
 -  ``isSource(DataFlow::Node nd)`` selects all nodes ``nd`` from where flow tracking starts.
 -  ``isSink(DataFlow::Node nd)`` selects all nodes ``nd`` to which the flow is tracked.
 -  ``isBarrier(DataFlow::Node nd)`` selects all nodes ``nd`` that act as a barrier/sanitizer for data flow.
--  ``isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg)`` allows specifying custom additional flow steps for this analysis; ``isAdditionalTaintStep`` is the corresponding predicate for taint tracking configurations.
+-  ``isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg)`` allows specifying custom additional flow steps for this analysis.
 
 Such a module can be passed to ``DataFlow::Global<...>``. This will produce a module with a ``flow`` predicate that performs the actual flow tracking, starting at a source and looking for flow to a sink that does not pass through a barrier node.
 
