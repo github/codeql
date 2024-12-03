@@ -2,10 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from ArrayTypeRepr x, string hasConstArg, string hasTy
+from ArrayTypeRepr x, string hasConstArg, string hasElementTypeRepr
 where
   toBeTested(x) and
   not x.isUnknown() and
   (if x.hasConstArg() then hasConstArg = "yes" else hasConstArg = "no") and
-  if x.hasTy() then hasTy = "yes" else hasTy = "no"
-select x, "hasConstArg:", hasConstArg, "hasTy:", hasTy
+  if x.hasElementTypeRepr() then hasElementTypeRepr = "yes" else hasElementTypeRepr = "no"
+select x, "hasConstArg:", hasConstArg, "hasElementTypeRepr:", hasElementTypeRepr

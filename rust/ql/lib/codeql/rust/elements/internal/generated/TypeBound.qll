@@ -68,16 +68,18 @@ module Generated {
     final predicate hasLifetime() { exists(this.getLifetime()) }
 
     /**
-     * Gets the type reference of this type bound, if it exists.
+     * Gets the type representation of this type bound, if it exists.
      */
-    TypeRepr getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeReprFromRaw(Synth::convertTypeBoundToRaw(this).(Raw::TypeBound).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertTypeBoundToRaw(this)
+              .(Raw::TypeBound)
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

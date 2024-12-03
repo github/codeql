@@ -93,16 +93,16 @@ module Generated {
     final predicate hasPat() { exists(this.getPat()) }
 
     /**
-     * Gets the type reference of this let statement, if it exists.
+     * Gets the type representation of this let statement, if it exists.
      */
-    TypeRepr getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeReprFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertLetStmtToRaw(this).(Raw::LetStmt).getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

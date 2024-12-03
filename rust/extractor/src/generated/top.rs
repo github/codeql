@@ -1680,7 +1680,7 @@ pub struct PathSegment {
     pub path_type: Option<trap::Label<PathTypeRepr>>,
     pub ret_type: Option<trap::Label<RetTypeRepr>>,
     pub return_type_syntax: Option<trap::Label<ReturnTypeSyntax>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for PathSegment {
@@ -1708,8 +1708,8 @@ impl trap::TrapEntry for PathSegment {
         if let Some(v) = self.return_type_syntax {
             out.add_tuple("path_segment_return_type_syntaxes", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("path_segment_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("path_segment_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -1866,7 +1866,7 @@ pub struct RecordField {
     pub id: trap::TrapId<RecordField>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub name: Option<trap::Label<Name>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
 }
 
@@ -1883,8 +1883,8 @@ impl trap::TrapEntry for RecordField {
         if let Some(v) = self.name {
             out.add_tuple("record_field_names", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("record_field_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("record_field_type_reprs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.visibility {
             out.add_tuple("record_field_visibilities", vec![id.into(), v.into()]);
@@ -2133,7 +2133,7 @@ impl From<trap::Label<Resolvable>> for trap::Label<Locatable> {
 #[derive(Debug)]
 pub struct RetTypeRepr {
     pub id: trap::TrapId<RetTypeRepr>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for RetTypeRepr {
@@ -2143,8 +2143,8 @@ impl trap::TrapEntry for RetTypeRepr {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("ret_type_reprs", vec![id.into()]);
-        if let Some(v) = self.ty {
-            out.add_tuple("ret_type_repr_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("ret_type_repr_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -2460,7 +2460,7 @@ impl From<trap::Label<TokenTree>> for trap::Label<Locatable> {
 pub struct TupleField {
     pub id: trap::TrapId<TupleField>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
 }
 
@@ -2474,8 +2474,8 @@ impl trap::TrapEntry for TupleField {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("tuple_field_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("tuple_field_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("tuple_field_type_reprs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.visibility {
             out.add_tuple("tuple_field_visibilities", vec![id.into(), v.into()]);
@@ -2521,7 +2521,7 @@ pub struct TypeBound {
     pub is_async: bool,
     pub is_const: bool,
     pub lifetime: Option<trap::Label<Lifetime>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for TypeBound {
@@ -2543,8 +2543,8 @@ impl trap::TrapEntry for TypeBound {
         if let Some(v) = self.lifetime {
             out.add_tuple("type_bound_lifetimes", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("type_bound_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("type_bound_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -2929,7 +2929,7 @@ pub struct WherePred {
     pub id: trap::TrapId<WherePred>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub lifetime: Option<trap::Label<Lifetime>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
     pub type_bound_list: Option<trap::Label<TypeBoundList>>,
 }
 
@@ -2946,8 +2946,8 @@ impl trap::TrapEntry for WherePred {
         if let Some(v) = self.lifetime {
             out.add_tuple("where_pred_lifetimes", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("where_pred_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("where_pred_type_reprs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.type_bound_list {
             out.add_tuple("where_pred_type_bound_lists", vec![id.into(), v.into()]);
@@ -3053,7 +3053,7 @@ impl From<trap::Label<ArrayExpr>> for trap::Label<Locatable> {
 pub struct ArrayTypeRepr {
     pub id: trap::TrapId<ArrayTypeRepr>,
     pub const_arg: Option<trap::Label<ConstArg>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub element_type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for ArrayTypeRepr {
@@ -3066,8 +3066,8 @@ impl trap::TrapEntry for ArrayTypeRepr {
         if let Some(v) = self.const_arg {
             out.add_tuple("array_type_repr_const_args", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("array_type_repr_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.element_type_repr {
+            out.add_tuple("array_type_repr_element_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -3184,7 +3184,7 @@ pub struct AssocTypeArg {
     pub param_list: Option<trap::Label<ParamList>>,
     pub ret_type: Option<trap::Label<RetTypeRepr>>,
     pub return_type_syntax: Option<trap::Label<ReturnTypeSyntax>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
     pub type_bound_list: Option<trap::Label<TypeBoundList>>,
 }
 
@@ -3213,8 +3213,8 @@ impl trap::TrapEntry for AssocTypeArg {
         if let Some(v) = self.return_type_syntax {
             out.add_tuple("assoc_type_arg_return_type_syntaxes", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("assoc_type_arg_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("assoc_type_arg_type_reprs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.type_bound_list {
             out.add_tuple("assoc_type_arg_type_bound_lists", vec![id.into(), v.into()]);
@@ -3635,7 +3635,7 @@ pub struct CastExpr {
     pub id: trap::TrapId<CastExpr>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub expr: Option<trap::Label<Expr>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for CastExpr {
@@ -3651,8 +3651,8 @@ impl trap::TrapEntry for CastExpr {
         if let Some(v) = self.expr {
             out.add_tuple("cast_expr_exprs", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("cast_expr_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("cast_expr_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -3987,7 +3987,7 @@ pub struct ConstParam {
     pub default_val: Option<trap::Label<ConstArg>>,
     pub is_const: bool,
     pub name: Option<trap::Label<Name>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for ConstParam {
@@ -4009,8 +4009,8 @@ impl trap::TrapEntry for ConstParam {
         if let Some(v) = self.name {
             out.add_tuple("const_param_names", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("const_param_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("const_param_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -4386,7 +4386,7 @@ impl From<trap::Label<FnPtrTypeRepr>> for trap::Label<TypeRepr> {
 pub struct ForTypeRepr {
     pub id: trap::TrapId<ForTypeRepr>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for ForTypeRepr {
@@ -4399,8 +4399,8 @@ impl trap::TrapEntry for ForTypeRepr {
         if let Some(v) = self.generic_param_list {
             out.add_tuple("for_type_repr_generic_param_lists", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("for_type_repr_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("for_type_repr_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -5012,7 +5012,7 @@ pub struct LetStmt {
     pub initializer: Option<trap::Label<Expr>>,
     pub let_else: Option<trap::Label<LetElse>>,
     pub pat: Option<trap::Label<Pat>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for LetStmt {
@@ -5034,8 +5034,8 @@ impl trap::TrapEntry for LetStmt {
         if let Some(v) = self.pat {
             out.add_tuple("let_stmt_pats", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("let_stmt_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("let_stmt_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -5632,7 +5632,7 @@ pub struct OffsetOfExpr {
     pub id: trap::TrapId<OffsetOfExpr>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub fields: Vec<trap::Label<NameRef>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for OffsetOfExpr {
@@ -5648,8 +5648,8 @@ impl trap::TrapEntry for OffsetOfExpr {
         for (i, v) in self.fields.into_iter().enumerate() {
             out.add_tuple("offset_of_expr_fields", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("offset_of_expr_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("offset_of_expr_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -5757,7 +5757,7 @@ impl From<trap::Label<OrPat>> for trap::Label<Pat> {
 pub struct Param {
     pub id: trap::TrapId<Param>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
     pub pat: Option<trap::Label<Pat>>,
 }
 
@@ -5771,8 +5771,8 @@ impl trap::TrapEntry for Param {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("param_base_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("param_base_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("param_base_type_reprs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.pat {
             out.add_tuple("param_pats", vec![id.into(), v.into()]);
@@ -5945,7 +5945,7 @@ impl From<trap::Label<ParenPat>> for trap::Label<Pat> {
 #[derive(Debug)]
 pub struct ParenTypeRepr {
     pub id: trap::TrapId<ParenTypeRepr>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for ParenTypeRepr {
@@ -5955,8 +5955,8 @@ impl trap::TrapEntry for ParenTypeRepr {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("paren_type_reprs", vec![id.into()]);
-        if let Some(v) = self.ty {
-            out.add_tuple("paren_type_repr_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("paren_type_repr_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -6299,7 +6299,7 @@ pub struct PtrTypeRepr {
     pub id: trap::TrapId<PtrTypeRepr>,
     pub is_const: bool,
     pub is_mut: bool,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for PtrTypeRepr {
@@ -6315,8 +6315,8 @@ impl trap::TrapEntry for PtrTypeRepr {
         if self.is_mut {
             out.add_tuple("ptr_type_repr_is_mut", vec![id.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("ptr_type_repr_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("ptr_type_repr_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -6827,7 +6827,7 @@ pub struct RefTypeRepr {
     pub id: trap::TrapId<RefTypeRepr>,
     pub is_mut: bool,
     pub lifetime: Option<trap::Label<Lifetime>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for RefTypeRepr {
@@ -6843,8 +6843,8 @@ impl trap::TrapEntry for RefTypeRepr {
         if let Some(v) = self.lifetime {
             out.add_tuple("ref_type_repr_lifetimes", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("ref_type_repr_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("ref_type_repr_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -7015,7 +7015,7 @@ impl From<trap::Label<ReturnExpr>> for trap::Label<Locatable> {
 pub struct SelfParam {
     pub id: trap::TrapId<SelfParam>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
     pub is_mut: bool,
     pub lifetime: Option<trap::Label<Lifetime>>,
     pub name: Option<trap::Label<Name>>,
@@ -7031,8 +7031,8 @@ impl trap::TrapEntry for SelfParam {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("param_base_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("param_base_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("param_base_type_reprs", vec![id.into(), v.into()]);
         }
         if self.is_mut {
             out.add_tuple("self_param_is_mut", vec![id.into()]);
@@ -7148,7 +7148,7 @@ impl From<trap::Label<SlicePat>> for trap::Label<Pat> {
 #[derive(Debug)]
 pub struct SliceTypeRepr {
     pub id: trap::TrapId<SliceTypeRepr>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for SliceTypeRepr {
@@ -7158,8 +7158,8 @@ impl trap::TrapEntry for SliceTypeRepr {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("slice_type_reprs", vec![id.into()]);
-        if let Some(v) = self.ty {
-            out.add_tuple("slice_type_repr_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("slice_type_repr_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -7573,7 +7573,7 @@ impl From<trap::Label<TupleTypeRepr>> for trap::Label<TypeRepr> {
 #[derive(Debug)]
 pub struct TypeArg {
     pub id: trap::TrapId<TypeArg>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for TypeArg {
@@ -7583,8 +7583,8 @@ impl trap::TrapEntry for TypeArg {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("type_args", vec![id.into()]);
-        if let Some(v) = self.ty {
-            out.add_tuple("type_arg_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("type_arg_type_reprs", vec![id.into(), v.into()]);
         }
     }
 }
@@ -8199,7 +8199,7 @@ pub struct Const {
     pub is_const: bool,
     pub is_default: bool,
     pub name: Option<trap::Label<Name>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
 }
 
@@ -8225,8 +8225,8 @@ impl trap::TrapEntry for Const {
         if let Some(v) = self.name {
             out.add_tuple("const_names", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("const_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("const_type_reprs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.visibility {
             out.add_tuple("const_visibilities", vec![id.into(), v.into()]);
@@ -9452,7 +9452,7 @@ pub struct Static {
     pub is_mut: bool,
     pub is_static: bool,
     pub name: Option<trap::Label<Name>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
 }
 
@@ -9478,8 +9478,8 @@ impl trap::TrapEntry for Static {
         if let Some(v) = self.name {
             out.add_tuple("static_names", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("static_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("static_type_reprs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.visibility {
             out.add_tuple("static_visibilities", vec![id.into(), v.into()]);
@@ -9864,7 +9864,7 @@ pub struct TypeAlias {
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub is_default: bool,
     pub name: Option<trap::Label<Name>>,
-    pub ty: Option<trap::Label<TypeRepr>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
     pub type_bound_list: Option<trap::Label<TypeBoundList>>,
     pub visibility: Option<trap::Label<Visibility>>,
     pub where_clause: Option<trap::Label<WhereClause>>,
@@ -9889,8 +9889,8 @@ impl trap::TrapEntry for TypeAlias {
         if let Some(v) = self.name {
             out.add_tuple("type_alias_names", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.ty {
-            out.add_tuple("type_alias_ties", vec![id.into(), v.into()]);
+        if let Some(v) = self.type_repr {
+            out.add_tuple("type_alias_type_reprs", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.type_bound_list {
             out.add_tuple("type_alias_type_bound_lists", vec![id.into(), v.into()]);

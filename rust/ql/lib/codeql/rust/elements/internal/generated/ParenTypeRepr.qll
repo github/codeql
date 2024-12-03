@@ -26,18 +26,18 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ParenTypeRepr" }
 
     /**
-     * Gets the type reference of this paren type representation, if it exists.
+     * Gets the type representation of this paren type representation, if it exists.
      */
-    TypeRepr getTy() {
+    TypeRepr getTypeRepr() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertParenTypeReprToRaw(this)
               .(Raw::ParenTypeRepr)
-              .getTy())
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

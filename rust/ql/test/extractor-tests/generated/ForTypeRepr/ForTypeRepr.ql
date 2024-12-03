@@ -2,10 +2,10 @@
 import codeql.rust.elements
 import TestUtils
 
-from ForTypeRepr x, string hasGenericParamList, string hasTy
+from ForTypeRepr x, string hasGenericParamList, string hasTypeRepr
 where
   toBeTested(x) and
   not x.isUnknown() and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
-  if x.hasTy() then hasTy = "yes" else hasTy = "no"
-select x, "hasGenericParamList:", hasGenericParamList, "hasTy:", hasTy
+  if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
+select x, "hasGenericParamList:", hasGenericParamList, "hasTypeRepr:", hasTypeRepr

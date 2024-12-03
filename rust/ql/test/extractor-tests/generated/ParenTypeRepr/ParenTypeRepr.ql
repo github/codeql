@@ -2,9 +2,9 @@
 import codeql.rust.elements
 import TestUtils
 
-from ParenTypeRepr x, string hasTy
+from ParenTypeRepr x, string hasTypeRepr
 where
   toBeTested(x) and
   not x.isUnknown() and
-  if x.hasTy() then hasTy = "yes" else hasTy = "no"
-select x, "hasTy:", hasTy
+  if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
+select x, "hasTypeRepr:", hasTypeRepr

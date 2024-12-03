@@ -44,7 +44,7 @@ class ArrayExpr(Expr):
 
 class ArrayTypeRepr(TypeRepr):
    const_arg: optional["ConstArg"] | child
-   ty: optional["TypeRepr"] | child
+   element_type_repr: optional["TypeRepr"] | child
 
 class AsmExpr(Expr):
    attrs: list["Attr"] | child
@@ -61,7 +61,7 @@ class AssocTypeArg(GenericArg):
    param_list: optional["ParamList"] | child
    ret_type: optional["RetTypeRepr"] | child
    return_type_syntax: optional["ReturnTypeSyntax"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
    type_bound_list: optional["TypeBoundList"] | child
 
 class Attr(AstNode):
@@ -108,7 +108,7 @@ class CallExpr(Expr):
 class CastExpr(Expr):
    attrs: list["Attr"] | child
    expr: optional["Expr"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class ClosureBinder(AstNode):
    generic_param_list: optional["GenericParamList"] | child
@@ -131,7 +131,7 @@ class Const(AssocItem,Item):
    is_const: predicate
    is_default: predicate
    name: optional["Name"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
    visibility: optional["Visibility"] | child
 
 class ConstArg(GenericArg):
@@ -146,7 +146,7 @@ class ConstParam(GenericParam):
    default_val: optional["ConstArg"] | child
    is_const: predicate
    name: optional["Name"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class ContinueExpr(Expr):
    attrs: list["Attr"] | child
@@ -220,7 +220,7 @@ class ForExpr(Expr):
 
 class ForTypeRepr(TypeRepr):
    generic_param_list: optional["GenericParamList"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class FormatArgsArg(AstNode):
    expr: optional["Expr"] | child
@@ -293,7 +293,7 @@ class LetStmt(Stmt):
    initializer: optional["Expr"] | child
    let_else: optional["LetElse"] | child
    pat: optional["Pat"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class Lifetime(AstNode):
    text: optional[string]
@@ -401,7 +401,7 @@ class NeverTypeRepr(TypeRepr):
 class OffsetOfExpr(Expr):
    attrs: list["Attr"] | child
    fields: list["NameRef"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class OrPat(Pat):
    pats: list["Pat"] | child
@@ -409,7 +409,7 @@ class OrPat(Pat):
 class Param(AstNode):
    attrs: list["Attr"] | child
    pat: optional["Pat"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class ParamList(AstNode):
    params: list["Param"] | child
@@ -423,7 +423,7 @@ class ParenPat(Pat):
    pat: optional["Pat"] | child
 
 class ParenTypeRepr(TypeRepr):
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class Path(AstNode):
    qualifier: optional["Path"] | child
@@ -443,7 +443,7 @@ class PathSegment(AstNode):
    path_type: optional["PathTypeRepr"] | child
    ret_type: optional["RetTypeRepr"] | child
    return_type_syntax: optional["ReturnTypeSyntax"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class PathTypeRepr(TypeRepr):
    path: optional["Path"] | child
@@ -456,7 +456,7 @@ class PrefixExpr(Expr):
 class PtrTypeRepr(TypeRepr):
    is_const: predicate
    is_mut: predicate
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class RangeExpr(Expr):
    attrs: list["Attr"] | child
@@ -486,7 +486,7 @@ class RecordExprFieldList(AstNode):
 class RecordField(AstNode):
    attrs: list["Attr"] | child
    name: optional["Name"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
    visibility: optional["Visibility"] | child
 
 class RecordFieldList(FieldList):
@@ -519,7 +519,7 @@ class RefPat(Pat):
 class RefTypeRepr(TypeRepr):
    is_mut: predicate
    lifetime: optional["Lifetime"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class Rename(AstNode):
    name: optional["Name"] | child
@@ -528,7 +528,7 @@ class RestPat(Pat):
    attrs: list["Attr"] | child
 
 class RetTypeRepr(AstNode):
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class ReturnExpr(Expr):
    attrs: list["Attr"] | child
@@ -542,13 +542,13 @@ class SelfParam(AstNode):
    is_mut: predicate
    lifetime: optional["Lifetime"] | child
    name: optional["Name"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class SlicePat(Pat):
    pats: list["Pat"] | child
 
 class SliceTypeRepr(TypeRepr):
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class SourceFile(AstNode):
    attrs: list["Attr"] | child
@@ -560,7 +560,7 @@ class Static(ExternItem,Item):
    is_mut: predicate
    is_static: predicate
    name: optional["Name"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
    visibility: optional["Visibility"] | child
 
 class StmtList(AstNode):
@@ -608,7 +608,7 @@ class TupleExpr(Expr):
 
 class TupleField(AstNode):
    attrs: list["Attr"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
    visibility: optional["Visibility"] | child
 
 class TupleFieldList(FieldList):
@@ -629,20 +629,20 @@ class TypeAlias(AssocItem,ExternItem,Item):
    generic_param_list: optional["GenericParamList"] | child
    is_default: predicate
    name: optional["Name"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
    type_bound_list: optional["TypeBoundList"] | child
    visibility: optional["Visibility"] | child
    where_clause: optional["WhereClause"] | child
 
 class TypeArg(GenericArg):
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class TypeBound(AstNode):
    generic_param_list: optional["GenericParamList"] | child
    is_async: predicate
    is_const: predicate
    lifetime: optional["Lifetime"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
 
 class TypeBoundList(AstNode):
    bounds: list["TypeBound"] | child
@@ -696,7 +696,7 @@ class WhereClause(AstNode):
 class WherePred(AstNode):
    generic_param_list: optional["GenericParamList"] | child
    lifetime: optional["Lifetime"] | child
-   ty: optional["TypeRepr"] | child
+   type_repr: optional["TypeRepr"] | child
    type_bound_list: optional["TypeBoundList"] | child
 
 class WhileExpr(Expr):

@@ -62,19 +62,19 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the type reference of this record field, if it exists.
+     * Gets the type representation of this record field, if it exists.
      */
-    TypeRepr getTy() {
+    TypeRepr getTypeRepr() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertRecordFieldToRaw(this)
               .(Raw::RecordField)
-              .getTy())
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
 
     /**
      * Gets the visibility of this record field, if it exists.

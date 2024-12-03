@@ -40,16 +40,18 @@ module Generated {
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the type reference of this parameter base, if it exists.
+     * Gets the type representation of this parameter base, if it exists.
      */
-    TypeRepr getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeReprFromRaw(Synth::convertParamBaseToRaw(this).(Raw::ParamBase).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertParamBaseToRaw(this)
+              .(Raw::ParamBase)
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

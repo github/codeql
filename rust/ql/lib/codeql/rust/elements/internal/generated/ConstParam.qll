@@ -82,16 +82,18 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the type reference of this const parameter, if it exists.
+     * Gets the type representation of this const parameter, if it exists.
      */
-    TypeRepr getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeReprFromRaw(Synth::convertConstParamToRaw(this).(Raw::ConstParam).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertConstParamToRaw(this)
+              .(Raw::ConstParam)
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

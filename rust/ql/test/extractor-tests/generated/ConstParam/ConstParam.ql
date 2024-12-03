@@ -4,7 +4,7 @@ import TestUtils
 
 from
   ConstParam x, int getNumberOfAttrs, string hasDefaultVal, string isConst, string hasName,
-  string hasTy
+  string hasTypeRepr
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -12,6 +12,6 @@ where
   (if x.hasDefaultVal() then hasDefaultVal = "yes" else hasDefaultVal = "no") and
   (if x.isConst() then isConst = "yes" else isConst = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
-  if x.hasTy() then hasTy = "yes" else hasTy = "no"
+  if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
 select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasDefaultVal:", hasDefaultVal, "isConst:",
-  isConst, "hasName:", hasName, "hasTy:", hasTy
+  isConst, "hasName:", hasName, "hasTypeRepr:", hasTypeRepr

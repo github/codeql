@@ -83,16 +83,17 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the type reference of this static, if it exists.
+     * Gets the type representation of this static, if it exists.
      */
-    TypeRepr getTy() {
-      result = Synth::convertTypeReprFromRaw(Synth::convertStaticToRaw(this).(Raw::Static).getTy())
+    TypeRepr getTypeRepr() {
+      result =
+        Synth::convertTypeReprFromRaw(Synth::convertStaticToRaw(this).(Raw::Static).getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
 
     /**
      * Gets the visibility of this static, if it exists.

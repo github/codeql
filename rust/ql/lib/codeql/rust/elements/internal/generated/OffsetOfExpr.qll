@@ -68,18 +68,18 @@ module Generated {
     final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
 
     /**
-     * Gets the type reference of this offset of expression, if it exists.
+     * Gets the type representation of this offset of expression, if it exists.
      */
-    TypeRepr getTy() {
+    TypeRepr getTypeRepr() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertOffsetOfExprToRaw(this)
               .(Raw::OffsetOfExpr)
-              .getTy())
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

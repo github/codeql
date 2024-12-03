@@ -33,6 +33,8 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         ("Path", "segment") => "part",
         (_, "then_branch") => "then",
         (_, "else_branch") => "else_",
+        ("ArrayType", "ty") => "element_type_repr",
+        (_, "ty") => "type_repr",
         _ => field_name,
     };
     name.to_owned()

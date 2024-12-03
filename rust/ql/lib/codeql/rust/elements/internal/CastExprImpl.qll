@@ -20,7 +20,8 @@ module Impl {
    */
   class CastExpr extends Generated::CastExpr {
     override string toString() {
-      result = this.getExpr().toAbbreviatedString() + " as " + this.getTy().toAbbreviatedString()
+      result =
+        this.getExpr().toAbbreviatedString() + " as " + this.getTypeRepr().toAbbreviatedString()
     }
   }
 }

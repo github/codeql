@@ -2,11 +2,11 @@
 import codeql.rust.elements
 import TestUtils
 
-from RefTypeRepr x, string isMut, string hasLifetime, string hasTy
+from RefTypeRepr x, string isMut, string hasLifetime, string hasTypeRepr
 where
   toBeTested(x) and
   not x.isUnknown() and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
   (if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no") and
-  if x.hasTy() then hasTy = "yes" else hasTy = "no"
-select x, "isMut:", isMut, "hasLifetime:", hasLifetime, "hasTy:", hasTy
+  if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
+select x, "isMut:", isMut, "hasLifetime:", hasLifetime, "hasTypeRepr:", hasTypeRepr

@@ -36,18 +36,18 @@ module Generated {
     predicate isMut() { Synth::convertPtrTypeReprToRaw(this).(Raw::PtrTypeRepr).isMut() }
 
     /**
-     * Gets the type reference of this ptr type representation, if it exists.
+     * Gets the type representation of this ptr type representation, if it exists.
      */
-    TypeRepr getTy() {
+    TypeRepr getTypeRepr() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertPtrTypeReprToRaw(this)
               .(Raw::PtrTypeRepr)
-              .getTy())
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

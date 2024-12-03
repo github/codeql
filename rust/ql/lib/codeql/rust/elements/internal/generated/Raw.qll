@@ -558,9 +558,9 @@ module Raw {
     Attr getAttr(int index) { param_base_attrs(this, index, result) }
 
     /**
-     * Gets the type reference of this parameter base, if it exists.
+     * Gets the type representation of this parameter base, if it exists.
      */
-    TypeRepr getTy() { param_base_ties(this, result) }
+    TypeRepr getTypeRepr() { param_base_type_reprs(this, result) }
   }
 
   /**
@@ -628,9 +628,9 @@ module Raw {
     ReturnTypeSyntax getReturnTypeSyntax() { path_segment_return_type_syntaxes(this, result) }
 
     /**
-     * Gets the type reference of this path segment, if it exists.
+     * Gets the type representation of this path segment, if it exists.
      */
-    TypeRepr getTy() { path_segment_ties(this, result) }
+    TypeRepr getTypeRepr() { path_segment_type_reprs(this, result) }
   }
 
   /**
@@ -706,9 +706,9 @@ module Raw {
     Name getName() { record_field_names(this, result) }
 
     /**
-     * Gets the type reference of this record field, if it exists.
+     * Gets the type representation of this record field, if it exists.
      */
-    TypeRepr getTy() { record_field_ties(this, result) }
+    TypeRepr getTypeRepr() { record_field_type_reprs(this, result) }
 
     /**
      * Gets the visibility of this record field, if it exists.
@@ -806,9 +806,9 @@ module Raw {
     override string toString() { result = "RetTypeRepr" }
 
     /**
-     * Gets the type reference of this ret type representation, if it exists.
+     * Gets the type representation of this ret type representation, if it exists.
      */
-    TypeRepr getTy() { ret_type_repr_ties(this, result) }
+    TypeRepr getTypeRepr() { ret_type_repr_type_reprs(this, result) }
   }
 
   /**
@@ -908,9 +908,9 @@ module Raw {
     Attr getAttr(int index) { tuple_field_attrs(this, index, result) }
 
     /**
-     * Gets the type reference of this tuple field, if it exists.
+     * Gets the type representation of this tuple field, if it exists.
      */
-    TypeRepr getTy() { tuple_field_ties(this, result) }
+    TypeRepr getTypeRepr() { tuple_field_type_reprs(this, result) }
 
     /**
      * Gets the visibility of this tuple field, if it exists.
@@ -949,9 +949,9 @@ module Raw {
     Lifetime getLifetime() { type_bound_lifetimes(this, result) }
 
     /**
-     * Gets the type reference of this type bound, if it exists.
+     * Gets the type representation of this type bound, if it exists.
      */
-    TypeRepr getTy() { type_bound_ties(this, result) }
+    TypeRepr getTypeRepr() { type_bound_type_reprs(this, result) }
   }
 
   /**
@@ -1092,9 +1092,9 @@ module Raw {
     Lifetime getLifetime() { where_pred_lifetimes(this, result) }
 
     /**
-     * Gets the type reference of this where pred, if it exists.
+     * Gets the type representation of this where pred, if it exists.
      */
-    TypeRepr getTy() { where_pred_ties(this, result) }
+    TypeRepr getTypeRepr() { where_pred_type_reprs(this, result) }
 
     /**
      * Gets the type bound list of this where pred, if it exists.
@@ -1140,9 +1140,9 @@ module Raw {
     ConstArg getConstArg() { array_type_repr_const_args(this, result) }
 
     /**
-     * Gets the type reference of this array type representation, if it exists.
+     * Gets the element type representation of this array type representation, if it exists.
      */
-    TypeRepr getTy() { array_type_repr_ties(this, result) }
+    TypeRepr getElementTypeRepr() { array_type_repr_element_type_reprs(this, result) }
   }
 
   /**
@@ -1209,9 +1209,9 @@ module Raw {
     ReturnTypeSyntax getReturnTypeSyntax() { assoc_type_arg_return_type_syntaxes(this, result) }
 
     /**
-     * Gets the type reference of this assoc type argument, if it exists.
+     * Gets the type representation of this assoc type argument, if it exists.
      */
-    TypeRepr getTy() { assoc_type_arg_ties(this, result) }
+    TypeRepr getTypeRepr() { assoc_type_arg_type_reprs(this, result) }
 
     /**
      * Gets the type bound list of this assoc type argument, if it exists.
@@ -1406,9 +1406,9 @@ module Raw {
     Expr getExpr() { cast_expr_exprs(this, result) }
 
     /**
-     * Gets the type reference of this cast expression, if it exists.
+     * Gets the type representation of this cast expression, if it exists.
      */
-    TypeRepr getTy() { cast_expr_ties(this, result) }
+    TypeRepr getTypeRepr() { cast_expr_type_reprs(this, result) }
   }
 
   /**
@@ -1561,9 +1561,9 @@ module Raw {
     Name getName() { const_param_names(this, result) }
 
     /**
-     * Gets the type reference of this const parameter, if it exists.
+     * Gets the type representation of this const parameter, if it exists.
      */
-    TypeRepr getTy() { const_param_ties(this, result) }
+    TypeRepr getTypeRepr() { const_param_type_reprs(this, result) }
   }
 
   /**
@@ -1715,9 +1715,9 @@ module Raw {
     GenericParamList getGenericParamList() { for_type_repr_generic_param_lists(this, result) }
 
     /**
-     * Gets the type reference of this for type representation, if it exists.
+     * Gets the type representation of this for type representation, if it exists.
      */
-    TypeRepr getTy() { for_type_repr_ties(this, result) }
+    TypeRepr getTypeRepr() { for_type_repr_type_reprs(this, result) }
   }
 
   /**
@@ -1975,9 +1975,9 @@ module Raw {
     Pat getPat() { let_stmt_pats(this, result) }
 
     /**
-     * Gets the type reference of this let statement, if it exists.
+     * Gets the type representation of this let statement, if it exists.
      */
-    TypeRepr getTy() { let_stmt_ties(this, result) }
+    TypeRepr getTypeRepr() { let_stmt_type_reprs(this, result) }
   }
 
   /**
@@ -2184,9 +2184,9 @@ module Raw {
     NameRef getField(int index) { offset_of_expr_fields(this, index, result) }
 
     /**
-     * Gets the type reference of this offset of expression, if it exists.
+     * Gets the type representation of this offset of expression, if it exists.
      */
-    TypeRepr getTy() { offset_of_expr_ties(this, result) }
+    TypeRepr getTypeRepr() { offset_of_expr_type_reprs(this, result) }
   }
 
   /**
@@ -2273,9 +2273,9 @@ module Raw {
     override string toString() { result = "ParenTypeRepr" }
 
     /**
-     * Gets the type reference of this paren type representation, if it exists.
+     * Gets the type representation of this paren type representation, if it exists.
      */
-    TypeRepr getTy() { paren_type_repr_ties(this, result) }
+    TypeRepr getTypeRepr() { paren_type_repr_type_reprs(this, result) }
   }
 
   /**
@@ -2391,9 +2391,9 @@ module Raw {
     predicate isMut() { ptr_type_repr_is_mut(this) }
 
     /**
-     * Gets the type reference of this ptr type representation, if it exists.
+     * Gets the type representation of this ptr type representation, if it exists.
      */
-    TypeRepr getTy() { ptr_type_repr_ties(this, result) }
+    TypeRepr getTypeRepr() { ptr_type_repr_type_reprs(this, result) }
   }
 
   /**
@@ -2612,9 +2612,9 @@ module Raw {
     Lifetime getLifetime() { ref_type_repr_lifetimes(this, result) }
 
     /**
-     * Gets the type reference of this reference type representation, if it exists.
+     * Gets the type representation of this reference type representation, if it exists.
      */
-    TypeRepr getTy() { ref_type_repr_ties(this, result) }
+    TypeRepr getTypeRepr() { ref_type_repr_type_reprs(this, result) }
   }
 
   /**
@@ -2720,9 +2720,9 @@ module Raw {
     override string toString() { result = "SliceTypeRepr" }
 
     /**
-     * Gets the type reference of this slice type representation, if it exists.
+     * Gets the type representation of this slice type representation, if it exists.
      */
-    TypeRepr getTy() { slice_type_repr_ties(this, result) }
+    TypeRepr getTypeRepr() { slice_type_repr_type_reprs(this, result) }
   }
 
   /**
@@ -2853,9 +2853,9 @@ module Raw {
     override string toString() { result = "TypeArg" }
 
     /**
-     * Gets the type reference of this type argument, if it exists.
+     * Gets the type representation of this type argument, if it exists.
      */
-    TypeRepr getTy() { type_arg_ties(this, result) }
+    TypeRepr getTypeRepr() { type_arg_type_reprs(this, result) }
   }
 
   /**
@@ -3113,9 +3113,9 @@ module Raw {
     Name getName() { const_names(this, result) }
 
     /**
-     * Gets the type reference of this const, if it exists.
+     * Gets the type representation of this const, if it exists.
      */
-    TypeRepr getTy() { const_ties(this, result) }
+    TypeRepr getTypeRepr() { const_type_reprs(this, result) }
 
     /**
      * Gets the visibility of this const, if it exists.
@@ -3344,7 +3344,7 @@ module Raw {
     predicate isUnsafe() { impl_is_unsafe(this) }
 
     /**
-     * Gets the self type reference of this impl, if it exists.
+     * Gets the self ty of this impl, if it exists.
      */
     TypeRepr getSelfTy() { impl_self_ties(this, result) }
 
@@ -3596,9 +3596,9 @@ module Raw {
     Name getName() { static_names(this, result) }
 
     /**
-     * Gets the type reference of this static, if it exists.
+     * Gets the type representation of this static, if it exists.
      */
-    TypeRepr getTy() { static_ties(this, result) }
+    TypeRepr getTypeRepr() { static_type_reprs(this, result) }
 
     /**
      * Gets the visibility of this static, if it exists.
@@ -3781,9 +3781,9 @@ module Raw {
     Name getName() { type_alias_names(this, result) }
 
     /**
-     * Gets the type reference of this type alias, if it exists.
+     * Gets the type representation of this type alias, if it exists.
      */
-    TypeRepr getTy() { type_alias_ties(this, result) }
+    TypeRepr getTypeRepr() { type_alias_type_reprs(this, result) }
 
     /**
      * Gets the type bound list of this type alias, if it exists.

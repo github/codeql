@@ -59,16 +59,18 @@ module Generated {
     final predicate hasExpr() { exists(this.getExpr()) }
 
     /**
-     * Gets the type reference of this cast expression, if it exists.
+     * Gets the type representation of this cast expression, if it exists.
      */
-    TypeRepr getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeReprFromRaw(Synth::convertCastExprToRaw(this).(Raw::CastExpr).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertCastExprToRaw(this)
+              .(Raw::CastExpr)
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

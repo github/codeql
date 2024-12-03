@@ -1388,14 +1388,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasPat() { exists(this.getPat()) }
 
       /**
-       * Gets the type reference of this let statement, if it exists.
+       * Gets the type representation of this let statement, if it exists.
        */
-      TypeRepr getTy() { result = node.getTy() }
+      TypeRepr getTypeRepr() { result = node.getTypeRepr() }
 
       /**
-       * Holds if `getTy()` exists.
+       * Holds if `getTypeRepr()` exists.
        */
-      predicate hasTy() { exists(this.getTy()) }
+      predicate hasTypeRepr() { exists(this.getTypeRepr()) }
     }
 
     final private class ParentLiteralExpr extends ParentAstNode, LiteralExpr {
@@ -1879,14 +1879,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
 
       /**
-       * Gets the type reference of this offset of expression, if it exists.
+       * Gets the type representation of this offset of expression, if it exists.
        */
-      TypeRepr getTy() { result = node.getTy() }
+      TypeRepr getTypeRepr() { result = node.getTypeRepr() }
 
       /**
-       * Holds if `getTy()` exists.
+       * Holds if `getTypeRepr()` exists.
        */
-      predicate hasTy() { exists(this.getTy()) }
+      predicate hasTypeRepr() { exists(this.getTypeRepr()) }
     }
 
     final private class ParentOrPat extends ParentAstNode, OrPat {
@@ -1999,14 +1999,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
-       * Gets the type reference of this parameter base, if it exists.
+       * Gets the type representation of this parameter base, if it exists.
        */
-      TypeRepr getTy() { result = node.getTy() }
+      TypeRepr getTypeRepr() { result = node.getTypeRepr() }
 
       /**
-       * Holds if `getTy()` exists.
+       * Holds if `getTypeRepr()` exists.
        */
-      predicate hasTy() { exists(this.getTy()) }
+      predicate hasTypeRepr() { exists(this.getTypeRepr()) }
     }
 
     final private class ParentPat extends ParentAstNode, Pat {

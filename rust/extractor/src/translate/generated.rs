@@ -214,11 +214,11 @@ impl Translator<'_> {
 
     pub(crate) fn emit_array_type(&mut self, node: ast::ArrayType) -> Label<generated::ArrayTypeRepr> {
         let const_arg = node.const_arg().map(|x| self.emit_const_arg(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let element_type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::ArrayTypeRepr {
             id: TrapId::Star,
             const_arg,
-            ty,
+            element_type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(ArrayTypeRepr, self, node, label);
@@ -261,7 +261,7 @@ impl Translator<'_> {
         let param_list = node.param_list().map(|x| self.emit_param_list(x));
         let ret_type = node.ret_type().map(|x| self.emit_ret_type(x));
         let return_type_syntax = node.return_type_syntax().map(|x| self.emit_return_type_syntax(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
         let label = self.trap.emit(generated::AssocTypeArg {
             id: TrapId::Star,
@@ -271,7 +271,7 @@ impl Translator<'_> {
             param_list,
             ret_type,
             return_type_syntax,
-            ty,
+            type_repr,
             type_bound_list,
         });
         self.emit_location(label, &node);
@@ -413,12 +413,12 @@ impl Translator<'_> {
     pub(crate) fn emit_cast_expr(&mut self, node: ast::CastExpr) -> Label<generated::CastExpr> {
         let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
         let expr = node.expr().map(|x| self.emit_expr(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::CastExpr {
             id: TrapId::Star,
             attrs,
             expr,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(CastExpr, self, node, label);
@@ -474,7 +474,7 @@ impl Translator<'_> {
         let is_const = node.const_token().is_some();
         let is_default = node.default_token().is_some();
         let name = node.name().map(|x| self.emit_name(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let visibility = node.visibility().map(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::Const {
             id: TrapId::Star,
@@ -483,7 +483,7 @@ impl Translator<'_> {
             is_const,
             is_default,
             name,
-            ty,
+            type_repr,
             visibility,
         });
         self.emit_location(label, &node);
@@ -523,14 +523,14 @@ impl Translator<'_> {
         let default_val = node.default_val().map(|x| self.emit_const_arg(x));
         let is_const = node.const_token().is_some();
         let name = node.name().map(|x| self.emit_name(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::ConstParam {
             id: TrapId::Star,
             attrs,
             default_val,
             is_const,
             name,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(ConstParam, self, node, label);
@@ -746,11 +746,11 @@ impl Translator<'_> {
 
     pub(crate) fn emit_for_type(&mut self, node: ast::ForType) -> Label<generated::ForTypeRepr> {
         let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::ForTypeRepr {
             id: TrapId::Star,
             generic_param_list,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(ForTypeRepr, self, node, label);
@@ -977,14 +977,14 @@ impl Translator<'_> {
         let initializer = node.initializer().map(|x| self.emit_expr(x));
         let let_else = node.let_else().map(|x| self.emit_let_else(x));
         let pat = node.pat().map(|x| self.emit_pat(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::LetStmt {
             id: TrapId::Star,
             attrs,
             initializer,
             let_else,
             pat,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(LetStmt, self, node, label);
@@ -1343,12 +1343,12 @@ impl Translator<'_> {
     pub(crate) fn emit_offset_of_expr(&mut self, node: ast::OffsetOfExpr) -> Label<generated::OffsetOfExpr> {
         let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
         let fields = node.fields().map(|x| self.emit_name_ref(x)).collect();
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::OffsetOfExpr {
             id: TrapId::Star,
             attrs,
             fields,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(OffsetOfExpr, self, node, label);
@@ -1371,12 +1371,12 @@ impl Translator<'_> {
     pub(crate) fn emit_param(&mut self, node: ast::Param) -> Label<generated::Param> {
         let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
         let pat = node.pat().map(|x| self.emit_pat(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::Param {
             id: TrapId::Star,
             attrs,
             pat,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(Param, self, node, label);
@@ -1425,10 +1425,10 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_paren_type(&mut self, node: ast::ParenType) -> Label<generated::ParenTypeRepr> {
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::ParenTypeRepr {
             id: TrapId::Star,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(ParenTypeRepr, self, node, label);
@@ -1483,7 +1483,7 @@ impl Translator<'_> {
         let path_type = node.path_type().map(|x| self.emit_path_type(x));
         let ret_type = node.ret_type().map(|x| self.emit_ret_type(x));
         let return_type_syntax = node.return_type_syntax().map(|x| self.emit_return_type_syntax(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::PathSegment {
             id: TrapId::Star,
             generic_arg_list,
@@ -1492,7 +1492,7 @@ impl Translator<'_> {
             path_type,
             ret_type,
             return_type_syntax,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(PathSegment, self, node, label);
@@ -1531,12 +1531,12 @@ impl Translator<'_> {
     pub(crate) fn emit_ptr_type(&mut self, node: ast::PtrType) -> Label<generated::PtrTypeRepr> {
         let is_const = node.const_token().is_some();
         let is_mut = node.mut_token().is_some();
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::PtrTypeRepr {
             id: TrapId::Star,
             is_const,
             is_mut,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(PtrTypeRepr, self, node, label);
@@ -1627,13 +1627,13 @@ impl Translator<'_> {
     pub(crate) fn emit_record_field(&mut self, node: ast::RecordField) -> Label<generated::RecordField> {
         let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
         let name = node.name().map(|x| self.emit_name(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let visibility = node.visibility().map(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::RecordField {
             id: TrapId::Star,
             attrs,
             name,
-            ty,
+            type_repr,
             visibility,
         });
         self.emit_location(label, &node);
@@ -1735,12 +1735,12 @@ impl Translator<'_> {
     pub(crate) fn emit_ref_type(&mut self, node: ast::RefType) -> Label<generated::RefTypeRepr> {
         let is_mut = node.mut_token().is_some();
         let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::RefTypeRepr {
             id: TrapId::Star,
             is_mut,
             lifetime,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(RefTypeRepr, self, node, label);
@@ -1773,10 +1773,10 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_ret_type(&mut self, node: ast::RetType) -> Label<generated::RetTypeRepr> {
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::RetTypeRepr {
             id: TrapId::Star,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(RetTypeRepr, self, node, label);
@@ -1813,14 +1813,14 @@ impl Translator<'_> {
         let is_mut = node.mut_token().is_some();
         let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
         let name = node.name().map(|x| self.emit_name(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::SelfParam {
             id: TrapId::Star,
             attrs,
             is_mut,
             lifetime,
             name,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(SelfParam, self, node, label);
@@ -1841,10 +1841,10 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_slice_type(&mut self, node: ast::SliceType) -> Label<generated::SliceTypeRepr> {
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::SliceTypeRepr {
             id: TrapId::Star,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(SliceTypeRepr, self, node, label);
@@ -1872,7 +1872,7 @@ impl Translator<'_> {
         let is_mut = node.mut_token().is_some();
         let is_static = node.static_token().is_some();
         let name = node.name().map(|x| self.emit_name(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let visibility = node.visibility().map(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::Static {
             id: TrapId::Star,
@@ -1881,7 +1881,7 @@ impl Translator<'_> {
             is_mut,
             is_static,
             name,
-            ty,
+            type_repr,
             visibility,
         });
         self.emit_location(label, &node);
@@ -2018,12 +2018,12 @@ impl Translator<'_> {
 
     pub(crate) fn emit_tuple_field(&mut self, node: ast::TupleField) -> Label<generated::TupleField> {
         let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let visibility = node.visibility().map(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::TupleField {
             id: TrapId::Star,
             attrs,
-            ty,
+            type_repr,
             visibility,
         });
         self.emit_location(label, &node);
@@ -2087,7 +2087,7 @@ impl Translator<'_> {
         let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
         let is_default = node.default_token().is_some();
         let name = node.name().map(|x| self.emit_name(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
         let visibility = node.visibility().map(|x| self.emit_visibility(x));
         let where_clause = node.where_clause().map(|x| self.emit_where_clause(x));
@@ -2097,7 +2097,7 @@ impl Translator<'_> {
             generic_param_list,
             is_default,
             name,
-            ty,
+            type_repr,
             type_bound_list,
             visibility,
             where_clause,
@@ -2109,10 +2109,10 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_type_arg(&mut self, node: ast::TypeArg) -> Label<generated::TypeArg> {
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::TypeArg {
             id: TrapId::Star,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(TypeArg, self, node, label);
@@ -2125,14 +2125,14 @@ impl Translator<'_> {
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
         let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let label = self.trap.emit(generated::TypeBound {
             id: TrapId::Star,
             generic_param_list,
             is_async,
             is_const,
             lifetime,
-            ty,
+            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(TypeBound, self, node, label);
@@ -2307,13 +2307,13 @@ impl Translator<'_> {
     pub(crate) fn emit_where_pred(&mut self, node: ast::WherePred) -> Label<generated::WherePred> {
         let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
         let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
-        let ty = node.ty().map(|x| self.emit_type(x));
+        let type_repr = node.ty().map(|x| self.emit_type(x));
         let type_bound_list = node.type_bound_list().map(|x| self.emit_type_bound_list(x));
         let label = self.trap.emit(generated::WherePred {
             id: TrapId::Star,
             generic_param_list,
             lifetime,
-            ty,
+            type_repr,
             type_bound_list,
         });
         self.emit_location(label, &node);

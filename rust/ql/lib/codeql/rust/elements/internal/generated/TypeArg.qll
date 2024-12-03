@@ -26,16 +26,16 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TypeArg" }
 
     /**
-     * Gets the type reference of this type argument, if it exists.
+     * Gets the type representation of this type argument, if it exists.
      */
-    TypeRepr getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeReprFromRaw(Synth::convertTypeArgToRaw(this).(Raw::TypeArg).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertTypeArgToRaw(this).(Raw::TypeArg).getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

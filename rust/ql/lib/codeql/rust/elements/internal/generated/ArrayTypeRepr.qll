@@ -42,18 +42,18 @@ module Generated {
     final predicate hasConstArg() { exists(this.getConstArg()) }
 
     /**
-     * Gets the type reference of this array type representation, if it exists.
+     * Gets the element type representation of this array type representation, if it exists.
      */
-    TypeRepr getTy() {
+    TypeRepr getElementTypeRepr() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertArrayTypeReprToRaw(this)
               .(Raw::ArrayTypeRepr)
-              .getTy())
+              .getElementTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getElementTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasElementTypeRepr() { exists(this.getElementTypeRepr()) }
   }
 }

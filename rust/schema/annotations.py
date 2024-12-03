@@ -1330,7 +1330,7 @@ class ParamBase(AstNode):
     A normal parameter, `Param`, or a self parameter `SelfParam`.
     """
     attrs: list["Attr"] | child
-    ty: optional["TypeRepr"] | child
+    type_repr: optional["TypeRepr"] | child
 
 @annotate(ParamBase, cfg = True)
 class _:
@@ -1347,7 +1347,7 @@ class _:
     ```
     """
     attrs: drop
-    ty: drop
+    type_repr: drop
 
 
 @annotate(ParamList)
@@ -1521,7 +1521,7 @@ class _:
     ```
     """
     attrs: drop
-    ty: drop
+    type_repr: drop
 
 
 @annotate(SliceTypeRepr)
