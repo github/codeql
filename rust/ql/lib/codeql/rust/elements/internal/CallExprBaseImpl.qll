@@ -17,7 +17,7 @@ module Impl {
   private import codeql.rust.elements.internal.PathExprImpl::Impl
 
   pragma[nomagic]
-  private Resolvable getCallResolvable(CallExprBase call) {
+  Resolvable getCallResolvable(CallExprBase call) {
     result = call.(MethodCallExpr)
     or
     result = call.(CallExpr).getFunction().(PathExpr).getPath()

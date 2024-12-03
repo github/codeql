@@ -2,13 +2,13 @@
 
 private import rust
 private import internal.FlowSummaryImpl as Impl
-private import internal.DataFlowImpl
+private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 
 // import all instances below
 private module Summaries {
   private import codeql.rust.Frameworks
 
-  // TODO: Used models-as-data when it's available
+  // TODO: Use models-as-data when it's available
   private class UnwrapSummary extends SummarizedCallable::Range {
     UnwrapSummary() { this = "lang:core::_::<crate::option::Option>::unwrap" }
 
@@ -30,7 +30,7 @@ module LibraryCallable {
     /** Gets a call to this library callable. */
     CallExprBase getACall() {
       exists(Resolvable r, string crate |
-        r = getCallResolvable(result) and
+        r = CallExprBaseImpl::getCallResolvable(result) and
         this = crate + r.getResolvedPath()
       |
         crate = r.getResolvedCrateOrigin() + "::_::"

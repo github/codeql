@@ -15,12 +15,7 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   ReturnKind getStandardReturnValueKind() { result = TNormalReturnKind() }
 
-  string encodeParameterPosition(ParameterPosition pos) {
-    result = pos.getPosition().toString()
-    or
-    pos.isSelf() and
-    result = "self"
-  }
+  string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
   predicate encodeArgumentPosition = encodeParameterPosition/1;
 

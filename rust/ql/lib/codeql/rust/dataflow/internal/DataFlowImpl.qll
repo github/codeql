@@ -173,7 +173,7 @@ module Node {
     override Location getLocation() { none() }
   }
 
-  /** A data-flow node used to model flow summaries. */
+  /** A data flow node used to model flow summaries. */
   class FlowSummaryNode extends Node, TFlowSummaryNode {
     FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
@@ -375,10 +375,6 @@ module Node {
     /** Gets the node before the state update. */
     abstract Node getPreUpdateNode();
 
-    override CfgScope getCfgScope() { result = this.getPreUpdateNode().getCfgScope() }
-
-    override Location getLocation() { result = this.getPreUpdateNode().getLocation() }
-
     override string toString() { result = "[post] " + this.getPreUpdateNode().toString() }
   }
 
@@ -388,6 +384,10 @@ module Node {
     ExprPostUpdateNode() { this = TExprPostUpdateNode(n) }
 
     override Node getPreUpdateNode() { result = TExprNode(n) }
+
+    override CfgScope getCfgScope() { result = n.getScope() }
+
+    override Location getLocation() { result = n.getLocation() }
   }
 
   final class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
@@ -398,10 +398,6 @@ module Node {
     }
 
     override Node getPreUpdateNode() { result = pre }
-
-    override CfgScope getCfgScope() { result = PostUpdateNode.super.getCfgScope() }
-
-    override EmptyLocation getLocation() { result = PostUpdateNode.super.getLocation() }
 
     final override string toString() { result = PostUpdateNode.super.toString() }
   }
@@ -687,13 +683,6 @@ private module Aliases {
   class ContentAlias = Content;
 
   class ContentSetAlias = ContentSet;
-}
-
-pragma[nomagic]
-Resolvable getCallResolvable(CallExprBase call) {
-  result = call.(MethodCallExpr)
-  or
-  result = call.(CallExpr).getFunction().(PathExpr).getPath()
 }
 
 module RustDataFlow implements InputSig<Location> {
