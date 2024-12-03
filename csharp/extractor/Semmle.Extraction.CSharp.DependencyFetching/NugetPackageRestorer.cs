@@ -600,13 +600,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 httpClientHandler.Proxy = new WebProxy(this.dependabotProxy.Address);
 
-                if (!String.IsNullOrEmpty(this.dependabotProxy.CertificatePath))
+                if (this.dependabotProxy.Certificate != null)
                 {
-                    X509Certificate2 proxyCert = new X509Certificate2(this.dependabotProxy.CertificatePath);
                     httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, _) =>
                     {
                         chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
-                        chain.ChainPolicy.CustomTrustStore.Add(proxyCert);
+                        chain.ChainPolicy.CustomTrustStore.Add(this.dependabotProxy.Certificate);
                         return chain.Build(cert);
                     };
                 }
