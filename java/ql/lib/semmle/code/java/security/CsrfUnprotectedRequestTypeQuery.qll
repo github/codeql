@@ -114,5 +114,15 @@ module CallGraph {
     }
   }
 
-  query predicate edges(PathNode pred, PathNode succ) { pred.getASuccessor() = succ }
+  predicate edges(PathNode pred, PathNode succ) { pred.getASuccessor() = succ }
+}
+
+import CallGraph
+
+/** Holds if `src` is an unprotected request handler that reaches a state-changing `sink`. */
+predicate unprotectedStateChange(PathNode src, PathNode sink, PathNode sinkPred) {
+  src.asMethod() instanceof CsrfUnprotectedMethod and
+  sink.asMethod() instanceof DatabaseUpdateMethod and
+  sinkPred.getASuccessor() = sink and
+  src.getASuccessor+() = sinkPred
 }

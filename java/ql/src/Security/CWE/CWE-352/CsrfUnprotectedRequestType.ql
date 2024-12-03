@@ -14,14 +14,11 @@
 
 import java
 import semmle.code.java.security.CsrfUnprotectedRequestTypeQuery
-import CallGraph
+
+query predicate edges(PathNode pred, PathNode succ) { CallGraph::edges(pred, succ) }
 
 from PathNode source, PathNode reachable, PathNode callsReachable
-where
-  source.asMethod() instanceof CsrfUnprotectedMethod and
-  reachable.asMethod() instanceof DatabaseUpdateMethod and
-  callsReachable.getASuccessor() = reachable and
-  source.getASuccessor+() = callsReachable
+where unprotectedStateChange(source, reachable, callsReachable)
 select source.asMethod(), source, callsReachable,
   "Potential CSRF vulnerability due to using an HTTP request type which is not default-protected from CSRF for an apparent $@.",
   callsReachable, "state-changing action"
