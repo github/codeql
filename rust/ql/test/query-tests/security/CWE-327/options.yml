@@ -7,3 +7,4 @@ qltest_dependencies:
     - des = { version = "0.8.1" }
     - rc2 = { version = "0.8.1" }
     - rc5 = { version = "0.0.1" }
+    - cbc = { version = "0.1.2" }
