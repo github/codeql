@@ -1,10 +1,12 @@
 package com.github.codeql
 
+import com.github.codeql.entities.extractTypeParameter
 import com.github.codeql.utils.getJvmName
 import com.github.codeql.utils.type
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.analysis.api.types.KaType
+import org.jetbrains.kotlin.analysis.api.types.KaTypeProjection
 import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.psi.KtDeclarationWithBody
 
@@ -27,12 +29,8 @@ context(KaSession)
 fun KotlinUsesExtractor.getFunctionLabel(
     f: KaFunctionSymbol,
     parentId: Label<out DbElement>,
-    maybeParameterList: List<KaValueParameterSymbol>? = null
-    /*
-    OLD: KE1
-            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
-
-    */
+    classTypeArgsIncludingOuterClasses: List<KaTypeProjection>?,
+    maybeParameterList: List<KaValueParameterSymbol>? = null,
 ): String =
     getFunctionLabel(
         /*
@@ -41,13 +39,14 @@ fun KotlinUsesExtractor.getFunctionLabel(
         */
         parentId,
         getFunctionShortName(f).nameInDB,
+        f is KaConstructorSymbol,
         (maybeParameterList ?: f.valueParameters).map { it.type },
         getAdjustedReturnType(f),
         f.receiverParameter?.type,
+        getFunctionTypeParameters(f),
+        classTypeArgsIncludingOuterClasses,
         /*
         OLD: KE1
-                    getFunctionTypeParameters(f),
-                    classTypeArgsIncludingOuterClasses,
                     overridesCollectionsMethodWithAlteredParameterTypes(f),
                     getJavaCallable(f),
                     !getInnermostWildcardSupppressionAnnotation(f)
@@ -119,19 +118,20 @@ fun KotlinUsesExtractor.getFunctionLabel(
     name: String,
     // The types of the value parameters that the functions takes; normally
     // f.valueParameters.map { it.type }.
+    isConstructor: Boolean,
     parameterTypes: List<KaType>,
     // The return type of the function; normally f.returnType.
     returnType: KaType,
     // The extension receiver of the function, if any; normally
     // f.receiverParameter?.type.
     extensionParamType: KaType?,
+    // The type parameters of the function. This does not include type parameters of enclosing
+    // classes.
+    functionTypeParameters: List<KaTypeParameterSymbol>,
+    // The type arguments of enclosing classes of the function.
+    classTypeArgsIncludingOuterClasses: List<KaTypeProjection>?,
     /*
     OLD: KE1
-            // The type parameters of the function. This does not include type parameters of enclosing
-            // classes.
-            functionTypeParameters: List<IrTypeParameter>,
-            // The type arguments of enclosing classes of the function.
-            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
             // If true, this method implements a Java Collections interface (Collection, Map or List)
             // and may need
             // parameter erasure to match the way this class will appear to an external consumer of the
@@ -196,28 +196,29 @@ fun KotlinUsesExtractor.getFunctionLabel(
         // Finally, mimic the Java extractor's behaviour by naming functions with type
         // parameters for their erased types;
         // those without type parameters are named for the generic type.
-        val maybeErased = maybeSubbed
-            /* OLD: KE1
-            if (functionTypeParameters.isEmpty()) maybeSubbed else erase(maybeSubbed)
-             */
+        val maybeErased = if (functionTypeParameters.isEmpty()) maybeSubbed else erase(maybeSubbed)
+
         "{${useType(maybeErased).javaResult.id}}"
     }
     val paramTypeIds =
         allParamTypes
             .withIndex()
             .joinToString(separator = ",", transform = getIdForFunctionLabel)
-    val labelReturnType = returnType
-        /* OLD: KE1
-        if (name == "<init>") pluginContext.irBuiltIns.unitType
+    val labelReturnType =
+        if (isConstructor)
+            builtinTypes.unit
         else
             erase(
+                /*
+                OLD: KE1
                 returnType.substituteTypeAndArguments(
                     substitutionMap,
                     TypeContext.RETURN,
                     pluginContext
                 )
+                */
+                returnType
             )
-         */
     // Note that `addJavaLoweringWildcards` is not required here because the return type used to
     // form the function
     // label is always erased.
@@ -230,15 +231,13 @@ fun KotlinUsesExtractor.getFunctionLabel(
     // parameterized
     // instance of a generic class), but as of now I don't know when the raw method would be
     // referred to.
-    val typeArgSuffix = ""
-    /* OLD: KE1
+    val typeArgSuffix =
         if (
             functionTypeParameters.isNotEmpty() &&
                 classTypeArgsIncludingOuterClasses.isNullOrEmpty()
         )
             "<${functionTypeParameters.size}>"
         else ""
-     */
 
     return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}$typeArgSuffix\""
 }
@@ -339,13 +338,6 @@ fun KotlinUsesExtractor.getFunctionShortName(f: KaFunctionSymbol): FunctionNames
 
 /*
 OLD: KE1
-        // This excludes class type parameters that show up in (at least) constructors' typeParameters
-        // list.
-        fun getFunctionTypeParameters(f: IrFunction): List<IrTypeParameter> {
-            return if (f is IrConstructor) f.typeParameters
-            else f.typeParameters.filter { it.parent == f }
-        }
-
         /*
          * This is the normal getFunctionLabel function to use. If you want
          * to refer to the function in its source class then
@@ -367,17 +359,26 @@ OLD: KE1
         }
  */
 
+// This excludes class type parameters that show up in (at least) constructors' typeParameters list.
+context(KaSession)
+fun getFunctionTypeParameters(f: KaFunctionSymbol): List<KaTypeParameterSymbol> =
+    when (f) {
+        is KaConstructorSymbol -> f.typeParameters.filter { it.containingSymbol == f }
+        is KaNamedFunctionSymbol -> f.typeParameters
+        else -> listOf()
+    }
+
 context(KaSession)
 fun KotlinFileExtractor.extractFunction(
     f: KaFunctionSymbol,
     parentId: Label<out DbReftype>,
+    classTypeArgsIncludingOuterClasses: List<KaTypeProjection>?
     /*
     OLD: KE1
             extractBody: Boolean,
             extractMethodAndParameterTypeAccesses: Boolean,
             extractAnnotations: Boolean,
             typeSubstitution: TypeSubstitution?,
-            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
     */
 ): Label<out DbCallable> {
     /*
@@ -387,13 +388,13 @@ fun KotlinFileExtractor.extractFunction(
     return forceExtractFunction(
         f,
         parentId,
+        classTypeArgsIncludingOuterClasses,
         /*
         OLD: KE1
                             extractBody,
                             extractMethodAndParameterTypeAccesses,
                             extractAnnotations,
                             typeSubstitution,
-                            classTypeArgsIncludingOuterClasses,
                             overriddenAttributes = overriddenVisibility
         */
     )
@@ -427,13 +428,13 @@ context(KaSession)
 private fun KotlinFileExtractor.forceExtractFunction(
     f: KaFunctionSymbol,
     parentId: Label<out DbReftype>,
+    classTypeArgsIncludingOuterClasses: List<KaTypeProjection>?,
     /*
     OLD: KE1
             extractBody: Boolean,
             extractMethodAndParameterTypeAccesses: Boolean,
             extractAnnotations: Boolean,
             typeSubstitution: TypeSubstitution?,
-            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
             extractOrigin: Boolean = true,
             overriddenAttributes: OverriddenFunctionAttributes? = null
     */
@@ -442,17 +443,22 @@ private fun KotlinFileExtractor.forceExtractFunction(
 /*
 OLD: KE1
             DeclarationStackAdjuster(f, overriddenAttributes).use {
-                val javaCallable = getJavaCallable(f)
-                getFunctionTypeParameters(f).mapIndexed { idx, tp ->
-                    extractTypeParameter(
-                        tp,
-                        idx,
-                        (javaCallable as? JavaTypeParameterListOwner)
-                            ?.typeParameters
-                            ?.getOrNull(idx)
-                    )
-                }
 */
+        /* OLD: KE1
+        val javaCallable = getJavaCallable(f)
+         */
+        getFunctionTypeParameters(f).mapIndexed { idx, tp ->
+            extractTypeParameter(
+                tp,
+                idx,
+                /* OLD: KE1
+                (javaCallable as? JavaTypeParameterListOwner)
+                    ?.typeParameters
+                    ?.getOrNull(idx)
+                 */
+            )
+        }
+
 
         val id =
             /*
@@ -465,9 +471,9 @@ OLD: KE1
             useFunction<DbCallable>(
                 f,
                 parentId,
+                classTypeArgsIncludingOuterClasses,
                 /*
                 OLD: KE1
-                                            classTypeArgsIncludingOuterClasses,
                                             noReplace = true
                 */
             )
@@ -538,7 +544,7 @@ OLD: KE1
         */
         val functionSyntax = f.psi as? KtDeclarationWithBody
         val locId = functionSyntax?.let {
-            tw.getLocation(functionSyntax ?: TODO())
+            tw.getLocation(functionSyntax)
         } ?: tw.getWholeFileLocation()
         /*
         OLD: KE1
@@ -759,20 +765,20 @@ private fun KotlinFileExtractor.extractMethod(
 context(KaSession)
 fun <T : DbCallable> KotlinUsesExtractor.useFunction(
     f: KaFunctionSymbol,
+    classTypeArgsIncludingOuterClasses: List<KaTypeProjection>?,
     /*
     OLD: KE1
-            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
             noReplace: Boolean = false
     */
-): Label<out T> = useFunction(f, useDeclarationParentOf(f, true)!! /* TODO */)
+): Label<out T> = useFunction(f, useDeclarationParentOf(f, true)!!, classTypeArgsIncludingOuterClasses)
 
 context(KaSession)
 fun <T : DbCallable> KotlinUsesExtractor.useFunction(
     f: KaFunctionSymbol,
     parentId: Label<out DbElement>,
+    classTypeArgsIncludingOuterClasses: List<KaTypeProjection>?,
     /*
     OLD: KE1
-            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
             noReplace: Boolean = false
     */
 ): Label<out T> {
@@ -781,7 +787,7 @@ fun <T : DbCallable> KotlinUsesExtractor.useFunction(
         return ids.function.cast<T>()
     }
     val javaFun = f // TODO: kotlinFunctionToJavaEquivalent(f, noReplace)
-    return useFunction(f, javaFun, parentId /* TODO , classTypeArgsIncludingOuterClasses */)
+    return useFunction(f, javaFun, parentId, classTypeArgsIncludingOuterClasses)
 }
 
 context(KaSession)
@@ -789,12 +795,9 @@ private fun <T : DbCallable> KotlinUsesExtractor.useFunction(
     f: KaFunctionSymbol,
     javaFun: KaFunctionSymbol,
     parentId: Label<out DbElement>,
-    /*
-    OLD: KE1
-            classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
-    */
+    classTypeArgsIncludingOuterClasses: List<KaTypeProjection>?
 ): Label<out T> {
-    val label = getFunctionLabel(javaFun, parentId /* TODO , classTypeArgsIncludingOuterClasses */)
+    val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
     val id: Label<T> =
         tw.getLabelFor(label) {
 /*

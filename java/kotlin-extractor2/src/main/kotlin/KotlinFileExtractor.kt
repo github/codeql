@@ -301,20 +301,19 @@ OLD: KE1
                     */
                 }
 
-                // TODO: the below should be KaFunctionSymbol
-                is KaNamedFunctionSymbol -> {
+                is KaFunctionSymbol -> {
                     val parentId = useDeclarationParentOf(declaration, false)?.cast<DbReftype>()
                     if (parentId != null) {
                         extractFunction(
                             declaration,
                             parentId,
+                            listOf()
                             /*
                             OLD: KE1
                                                         extractBody = extractFunctionBodies,
                                                         extractMethodAndParameterTypeAccesses = extractFunctionBodies,
                                                         extractAnnotations = extractAnnotations,
                                                         null,
-                                                        listOf()
                             */
                         )
                     } else
@@ -390,69 +389,6 @@ OLD: KE1
 
     /*
     OLD: KE1
-        private fun extractTypeParameter(
-            tp: IrTypeParameter,
-            apparentIndex: Int,
-            javaTypeParameter: JavaTypeParameter?
-        ): Label<out DbTypevariable>? {
-            with("type parameter", tp) {
-                val parentId = getTypeParameterParentLabel(tp) ?: return null
-                val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
-
-                // Note apparentIndex does not necessarily equal `tp.index`, because at least
-                // constructor type parameters
-                // have indices offset from the type parameters of the constructed class (i.e. the
-                // parameter S of
-                // `class Generic<T> { public <S> Generic(T t, S s) { ... } }` will have `tp.index` 1,
-                // not 0).
-                tw.writeTypeVars(id, tp.name.asString(), apparentIndex, 0, parentId)
-                val locId = tw.getLocation(tp)
-                tw.writeHasLocation(id, locId)
-
-                // Annoyingly, we have no obvious way to pair up the bounds of an IrTypeParameter and a
-                // JavaTypeParameter
-                // because JavaTypeParameter provides a Collection not an ordered list, so we can only
-                // do our best here:
-                fun tryGetJavaBound(idx: Int) =
-                    when (tp.superTypes.size) {
-                        1 -> javaTypeParameter?.upperBounds?.singleOrNull()
-                        else -> (javaTypeParameter?.upperBounds as? List)?.getOrNull(idx)
-                    }
-
-                tp.superTypes.forEachIndexed { boundIdx, bound ->
-                    if (!(bound.isAny() || bound.isNullableAny())) {
-                        tw.getLabelFor<DbTypebound>("@\"bound;$boundIdx;{$id}\"") {
-                            // Note we don't look for @JvmSuppressWildcards here because it doesn't seem
-                            // to have any impact
-                            // on kotlinc adding wildcards to type parameter bounds.
-                            val boundWithWildcards =
-                                addJavaLoweringWildcards(bound, true, tryGetJavaBound(tp.index))
-                            tw.writeTypeBounds(
-                                it,
-                                useType(boundWithWildcards).javaResult.id.cast<DbReftype>(),
-                                boundIdx,
-                                id
-                            )
-                        }
-                    }
-                }
-
-                if (tp.isReified) {
-                    addModifiers(id, "reified")
-                }
-
-                if (tp.variance == Variance.IN_VARIANCE) {
-                    addModifiers(id, "in")
-                } else if (tp.variance == Variance.OUT_VARIANCE) {
-                    addModifiers(id, "out")
-                }
-
-                // extractAnnotations(tp, id)
-                // TODO: introduce annotations once they can be disambiguated from bounds, which are
-                // also child expressions.
-                return id
-            }
-        }
 
         private fun extractVisibility(
             elementForLocation: IrElement,

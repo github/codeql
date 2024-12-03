@@ -382,12 +382,12 @@ private fun KotlinFileExtractor.getLocallyVisibleFunctionLabels(f: KaAnonymousFu
 
     return tw.lm.getOrAddLocallyVisibleFunctionLabelMapping(f) {
         val classId = tw.getFreshIdLabel<DbClassorinterface>()
-        val javaResult = TypeResult(classId/* , "TODO", "TODO" */)
+        val javaResult = TypeResult(classId, /* "TODO", */ "")
         val kotlinTypeId =
             tw.getLabelFor<DbKt_class_type>("@\"kt_class;{$classId}\"") {
                 tw.writeKt_class_types(it, classId)
             }
-        val kotlinResult = TypeResult(kotlinTypeId /* , "TODO", "TODO" */)
+        val kotlinResult = TypeResult(kotlinTypeId, /* "TODO", */ "")
 
         LocallyVisibleFunctionLabels(
             type = TypeResults(javaResult, kotlinResult),
@@ -428,13 +428,13 @@ private fun KotlinFileExtractor.extractGeneratedClass(
     extractFunction(
         localFunction,
         id,
+        listOf()
         /*
         OLD: KE1
         extractBody = true,
         extractMethodAndParameterTypeAccesses = true,
         extractAnnotations = false,
         null,
-        listOf()
          */
     )
 
@@ -490,7 +490,7 @@ private fun KotlinFileExtractor.extractGeneratedClass(
             if (baseConstructorParentId == null) {
                 logger.errorElement("Cannot find base constructor ID", elementToReportOn)
             } else {
-                val baseConstructorId = useFunction<DbConstructor>(baseConstructor, baseConstructorParentId)
+                val baseConstructorId = useFunction<DbConstructor>(baseConstructor, baseConstructorParentId, listOf())
                 val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
                 tw.writeStmts_superconstructorinvocationstmt(
                     superCallId,
