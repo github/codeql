@@ -663,11 +663,11 @@ namespace Semmle.Extraction.CSharp
             }
             if (symbol is IMethodSymbol method)
             {
-                return method.ExplicitInterfaceImplementations.Any(m => m.ContainingType.DeclaredAccessibility == Accessibility.Public);
+                return method.ExplicitInterfaceImplementations.Any(m => m.ContainingType.ShouldExtractSymbol());
             }
             if (symbol is IPropertySymbol property)
             {
-                return property.ExplicitInterfaceImplementations.Any(m => m.ContainingType.DeclaredAccessibility == Accessibility.Public);
+                return property.ExplicitInterfaceImplementations.Any(m => m.ContainingType.ShouldExtractSymbol());
             }
             return false;
         }
