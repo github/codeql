@@ -366,7 +366,7 @@ The characteristic predicate of this class checks that the sanitizer guard is a 
 of ``blocksExpr`` says such a call sanitizes its first argument (that is, ``getArgument(0)``) if it evaluates to ``true`` (or rather, a truthy
 value).
 
-Now we can implement ``isBarrier`` to add this sanitizer guards to our configuration:
+Now we can implement ``isBarrier`` to add this sanitizer guard to our configuration:
 
 .. code-block:: ql
 
