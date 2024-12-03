@@ -253,7 +253,7 @@ Similarly, we update ``isSink`` and require the base of the property read to hav
 Our definition of ``isAdditionalFlowStep`` now needs to specify two flow states, a
 predecessor state ``predState`` and a successor state ``succState``. In addition to specifying flow from
 the predecessor node ``pred`` to the successor node ``succ``, it requires that ``pred`` has state
-``state1``, and adds state ``succState`` to ``succ``. In our case, we use this to add both the
+``predState``, and adds state ``succState`` to ``succ``. In our case, we use this to add both the
 ``json`` state and the ``maybe-null`` state to any property read from a value in the ``json`` state
 (no matter whether it has the ``maybe-null`` state):
 
