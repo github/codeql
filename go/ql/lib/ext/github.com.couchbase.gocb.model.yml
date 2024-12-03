@@ -49,6 +49,7 @@ extensions:
       - ["group:gocb1", "QueryResults", True, "One", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
       - ["group:gocb1", "QueryResults", True, "Next", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
       - ["group:gocb1", "QueryResults", True, "NextBytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "SearchResults", True, "Hits", "", "", "Argument[receiver]", "ReturnValue.ArrayElement", "taint", "manual"]
       - ["group:gocb2", "GetResult", True, "Content", "", "", "Argument[receiver]", "Argument[0]", "taint", "manual"]
       - ["group:gocb2", "LookupInResult", True, "ContentAt", "", "", "Argument[receiver]", "Argument[1]", "taint", "manual"]
       - ["group:gocb2", "ScanResult", True, "Next", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
