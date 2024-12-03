@@ -94,3 +94,21 @@ function testWithCapturedVar(x) {
 function encodeDecodeEncode(s) {
  return goodEncode(goodDecode(goodEncode(s)));
 }
+
+function badEncode(s) {
+  return s.replace(new RegExp("\"", "g"), "&quot;")
+          .replace(new RegExp("\'", "g"), "&apos;")
+          .replace(new RegExp("&", "g"), "&amp;"); // NOT OK
+}
+
+function goodEncode(s) {
+  return s.replace(new RegExp("\"", ""), "&quot;")
+          .replace(new RegExp("\'", ""), "&apos;")
+          .replace(new RegExp("&", ""), "&amp;"); // OK
+}
+
+function goodEncode(s) {
+  return s.replace(new RegExp("\"", unknownFlags()), "&quot;")
+          .replace(new RegExp("\'", unknownFlags()), "&apos;")
+          .replace(new RegExp("&", unknownFlags()), "&amp;"); // OK
+}

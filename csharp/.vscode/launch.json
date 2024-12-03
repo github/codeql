@@ -61,5 +61,21 @@
             ],
             "env": {}
         },
+        {
+            "name": "C#: Tracing Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Driver/bin/Debug/net9.0/Semmle.Extraction.CSharp.Driver.dll",
+            // Set the path to the folder that should be extracted:
+            "cwd": "${workspaceFolder}/ql/test/library-tests/dataflow/local",
+            "args": [
+                "LocalDataFlow.cs"
+            ],
+            "env": {},
+            "stopAtEntry": true,
+            "justMyCode": false,
+            "suppressJITOptimizations": true
+        },
     ]
 }
