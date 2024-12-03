@@ -3,5 +3,9 @@
 extern int printf(const char *fmt, ...);
 
 void test_syntax_error() {
-    printf("Error code %d: " FMT_MSG, 0, "");
+    printf("Error code %d: " UNDEFINED_MACRO, 0, "");
+
+    printf("%d%d",
+        (UNDEFINED_MACRO)1,
+        (UNDEFINED_MACRO)2);
 }
