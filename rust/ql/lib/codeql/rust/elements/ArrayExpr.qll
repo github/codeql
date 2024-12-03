@@ -4,11 +4,10 @@
  */
 
 private import internal.ArrayExprImpl
-import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
 /**
- * An array expression. For example:
+ * The base class for array expressions. For example:
  * ```rust
  * [1, 2, 3];
  * [1; 10];

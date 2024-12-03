@@ -303,7 +303,7 @@ closure_binder_generic_param_lists(
 );
 
 @expr =
-  @array_expr
+  @array_expr_internal
 | @asm_expr
 | @await_expr
 | @become_expr
@@ -1087,22 +1087,27 @@ where_pred_type_bound_lists(
   int type_bound_list: @type_bound_list ref
 );
 
-array_exprs(
-  unique int id: @array_expr
+array_expr_internals(
+  unique int id: @array_expr_internal
 );
 
 #keyset[id, index]
-array_expr_attrs(
-  int id: @array_expr ref,
+array_expr_internal_attrs(
+  int id: @array_expr_internal ref,
   int index: int ref,
   int attr: @attr ref
 );
 
 #keyset[id, index]
-array_expr_exprs(
-  int id: @array_expr ref,
+array_expr_internal_exprs(
+  int id: @array_expr_internal ref,
   int index: int ref,
   int expr: @expr ref
+);
+
+#keyset[id]
+array_expr_internal_is_semicolon(
+  int id: @array_expr_internal ref
 );
 
 array_types(

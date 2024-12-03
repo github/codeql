@@ -81,7 +81,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * An array expression. For example:
+     * The base class for array expressions. For example:
      * ```rust
      * [1, 2, 3];
      * [1; 10];
@@ -94,21 +94,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
 
       /** Gets the underlying `ArrayExpr`. */
       ArrayExpr getArrayExpr() { result = node }
-
-      /**
-       * Gets the `index`th attr of this array expression (0-based).
-       */
-      Attr getAttr(int index) { result = node.getAttr(index) }
-
-      /**
-       * Gets any of the attrs of this array expression.
-       */
-      Attr getAnAttr() { result = this.getAttr(_) }
-
-      /**
-       * Gets the number of attrs of this array expression.
-       */
-      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
        * Gets the `index`th expression of this array expression (0-based).
@@ -126,6 +111,64 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Gets the number of expressions of this array expression.
        */
       int getNumberOfExprs() { result = count(int i | exists(this.getExpr(i))) }
+    }
+
+    final private class ParentArrayListExpr extends ParentAstNode, ArrayListExpr {
+      override predicate relevantChild(AstNode child) { none() }
+    }
+
+    /**
+     * An array expression with a list of elements. For example:
+     * ```rust
+     * [1, 2, 3];
+     * ```
+     */
+    final class ArrayListExprCfgNode extends CfgNodeFinal, ArrayExprCfgNode {
+      private ArrayListExpr node;
+
+      ArrayListExprCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `ArrayListExpr`. */
+      ArrayListExpr getArrayListExpr() { result = node }
+    }
+
+    final private class ParentArrayRepeatExpr extends ParentAstNode, ArrayRepeatExpr {
+      override predicate relevantChild(AstNode child) {
+        none()
+        or
+        child = this.getRepeatOperand()
+        or
+        child = this.getRepeatLength()
+      }
+    }
+
+    /**
+     * An array expression with a repeat oeprand and a repeat length. For example:
+     * ```rust
+     * [1; 10];
+     * ```
+     */
+    final class ArrayRepeatExprCfgNode extends CfgNodeFinal, ArrayExprCfgNode {
+      private ArrayRepeatExpr node;
+
+      ArrayRepeatExprCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `ArrayRepeatExpr`. */
+      ArrayRepeatExpr getArrayRepeatExpr() { result = node }
+
+      /**
+       * Gets the repeat operand of this array repeat expression.
+       */
+      ExprCfgNode getRepeatOperand() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getRepeatOperand(), this, result)
+      }
+
+      /**
+       * Gets the repeat length of this array repeat expression.
+       */
+      ExprCfgNode getRepeatLength() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getRepeatLength(), this, result)
+      }
     }
 
     final private class ParentAsmExpr extends ParentAstNode, AsmExpr {
@@ -3123,6 +3166,30 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           child = getDesugared(astNode.getExpr(i)) and
           hasCfgNode(child) and
           not child = cfgNode.getExpr(i).getAstNode()
+        |
+          cfgNode
+        )
+      or
+      pred = "getRepeatOperand" and
+      parent =
+        any(Nodes::ArrayRepeatExprCfgNode cfgNode, ArrayRepeatExpr astNode |
+          astNode = cfgNode.getArrayRepeatExpr() and
+          child = getDesugared(astNode.getRepeatOperand()) and
+          i = -1 and
+          hasCfgNode(child) and
+          not child = cfgNode.getRepeatOperand().getAstNode()
+        |
+          cfgNode
+        )
+      or
+      pred = "getRepeatLength" and
+      parent =
+        any(Nodes::ArrayRepeatExprCfgNode cfgNode, ArrayRepeatExpr astNode |
+          astNode = cfgNode.getArrayRepeatExpr() and
+          child = getDesugared(astNode.getRepeatLength()) and
+          i = -1 and
+          hasCfgNode(child) and
+          not child = cfgNode.getRepeatLength().getAstNode()
         |
           cfgNode
         )
