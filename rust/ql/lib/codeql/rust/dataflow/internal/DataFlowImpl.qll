@@ -788,9 +788,7 @@ module RustDataFlow implements InputSig<Location> {
     (
       LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
       or
-      exists(SsaImpl::DefinitionExt def, boolean isUseStep |
-        SsaFlow::localFlowStep(def, nodeFrom, nodeTo, isUseStep)
-      |
+      exists(boolean isUseStep | SsaFlow::localFlowStep(_, nodeFrom, nodeTo, isUseStep) |
         isUseStep = false
         or
         isUseStep = true and
@@ -823,18 +821,8 @@ module RustDataFlow implements InputSig<Location> {
   /** Holds if path `p` resolves to variant `v`. */
   private predicate pathResolveToVariantCanonicalPath(PathAstNode p, VariantCanonicalPath v) {
     exists(CrateOriginOption crate, string path, string name |
-      // TODO: this is bad, but will be solved by moving to semantic paths away from strings
       resolveExtendedCanonicalPath(p, crate, path + "::" + name) and
       v = MkVariantCanonicalPath(crate, path, name)
-    )
-    or
-    // TODO: Remove once library types are extracted
-    exists(Path path |
-      path = p.getPath() and
-      not path.hasQualifier() and
-      v =
-        MkVariantCanonicalPath(_, ["crate::std::option::Option", "crate::std::result::Result"],
-          path.getPart().getNameRef().getText())
     )
   }
 
@@ -1101,20 +1089,22 @@ private module Cached {
   cached
   newtype TReturnKind = TNormalReturnKind()
 
+  private CrateOriginOption langCoreCrate() { result.asSome() = "lang:core" }
+
   cached
   newtype TVariantCanonicalPath =
     MkVariantCanonicalPath(CrateOriginOption crate, string path, string name) {
       variantHasExtendedCanonicalPath(_, _, crate, path, name)
       or
       // TODO: Remove once library types are extracted
-      crate.isNone() and
-      path = "crate::std::option::Option" and
-      name = "Some"
-      or
-      // TODO: Remove once library types are extracted
-      crate.isNone() and
-      path = "crate::std::result::Result" and
-      name = ["Ok", "Err"]
+      crate = langCoreCrate() and
+      (
+        path = "crate::option::Option" and
+        name = "Some"
+        or
+        path = "crate::result::Result" and
+        name = ["Ok", "Err"]
+      )
     }
 
   cached
@@ -1129,11 +1119,11 @@ private module Cached {
       pos in [0 .. v.getVariant().getFieldList().(TupleFieldList).getNumberOfFields() - 1]
       or
       // TODO: Remove once library types are extracted
-      v = MkVariantCanonicalPath(_, "crate::std::option::Option", "Some") and
+      v = MkVariantCanonicalPath(langCoreCrate(), "crate::option::Option", "Some") and
       pos = 0
       or
       // TODO: Remove once library types are extracted
-      v = MkVariantCanonicalPath(_, "crate::std::result::Result", ["Ok", "Err"]) and
+      v = MkVariantCanonicalPath(langCoreCrate(), "crate::result::Result", ["Ok", "Err"]) and
       pos = 0
     } or
     TVariantFieldContent(VariantCanonicalPath v, string field) {

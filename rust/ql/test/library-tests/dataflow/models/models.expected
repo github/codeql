@@ -7,9 +7,9 @@ edges
 | main.rs:31:27:31:27 | s | main.rs:31:14:31:28 | ...::A(...) [A] | provenance |  |
 | main.rs:32:22:32:23 | e1 [A] | main.rs:32:10:32:24 | get_var_pos(...) | provenance |  |
 | main.rs:43:13:43:21 | source(...) | main.rs:44:26:44:26 | s | provenance |  |
-| main.rs:44:14:44:27 | set_var_pos(...) [B] | main.rs:47:9:47:23 | TupleStructPat [B] | provenance |  |
+| main.rs:44:14:44:27 | set_var_pos(...) [B] | main.rs:47:9:47:23 | ...::B(...) [B] | provenance |  |
 | main.rs:44:26:44:26 | s | main.rs:44:14:44:27 | set_var_pos(...) [B] | provenance |  |
-| main.rs:47:9:47:23 | TupleStructPat [B] | main.rs:47:22:47:22 | i | provenance |  |
+| main.rs:47:9:47:23 | ...::B(...) [B] | main.rs:47:22:47:22 | i | provenance |  |
 | main.rs:47:22:47:22 | i | main.rs:47:33:47:33 | i | provenance |  |
 | main.rs:62:13:62:21 | source(...) | main.rs:63:40:63:40 | s | provenance |  |
 | main.rs:63:14:63:42 | ...::C {...} [C] | main.rs:64:24:64:25 | e1 [C] | provenance |  |
@@ -32,7 +32,7 @@ nodes
 | main.rs:43:13:43:21 | source(...) | semmle.label | source(...) |
 | main.rs:44:14:44:27 | set_var_pos(...) [B] | semmle.label | set_var_pos(...) [B] |
 | main.rs:44:26:44:26 | s | semmle.label | s |
-| main.rs:47:9:47:23 | TupleStructPat [B] | semmle.label | TupleStructPat [B] |
+| main.rs:47:9:47:23 | ...::B(...) [B] | semmle.label | ...::B(...) [B] |
 | main.rs:47:22:47:22 | i | semmle.label | i |
 | main.rs:47:33:47:33 | i | semmle.label | i |
 | main.rs:62:13:62:21 | source(...) | semmle.label | source(...) |
