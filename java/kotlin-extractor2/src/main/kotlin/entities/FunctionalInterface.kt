@@ -40,7 +40,6 @@ import org.jetbrains.kotlin.psi.KtFunctionLiteral
 context(KaSession)
 fun KotlinFileExtractor.extractFunctionLiteral(
     e: KtFunctionLiteral,
-    callable: Label<out DbCallable>,
     parent: StmtExprParent
 ): Label<out DbExpr> {
 
@@ -61,7 +60,7 @@ fun KotlinFileExtractor.extractFunctionLiteral(
         addModifiers(ids.function, "override")
     }
 
-    val exprParent = parent.expr(e, callable)
+    val exprParent = parent.expr(e)
     val idLambdaExpr = tw.getFreshIdLabel<DbLambdaexpr>()
     tw.writeExprs_lambdaexpr(
         idLambdaExpr,
@@ -70,7 +69,7 @@ fun KotlinFileExtractor.extractFunctionLiteral(
         exprParent.idx
     )
     tw.writeExprsKotlinType(idLambdaExpr, ids.type.kotlinResult.id)
-    extractExprContext(idLambdaExpr, locId, callable, exprParent.enclosingStmt)
+    extractExprContext(idLambdaExpr, locId, exprParent.callable, exprParent.enclosingStmt)
     tw.writeCallableBinding(idLambdaExpr, ids.constructor)
 
     // todo: fix hard coded block body of lambda
