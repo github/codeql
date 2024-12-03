@@ -1,6 +1,7 @@
 import javascript
 private import semmle.javascript.dataflow.TypeTracking
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.dataflow.internal.Contents as Contents
 private import sharedlib.SummaryTypeTracker as SummaryTypeTracker
 private import FlowSteps
 
@@ -30,6 +31,8 @@ private module Cached {
         SharedTypeTrackingStep::loadStoreStep(_, _, _, this)
         or
         this = DataFlow::PseudoProperties::arrayLikeElement()
+        or
+        this instanceof Contents::Private::PropertyName
       }
     }
 
