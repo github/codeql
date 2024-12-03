@@ -15,7 +15,7 @@ private import codeql.rust.elements.internal.generated.Synth
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * An array expression with a repeat oeprand and a repeat length. For example:
+   * An array expression with a repeat operand and a repeat length. For example:
    * ```rust
    * [1; 10];
    * ```

@@ -579,7 +579,7 @@ class ArrayListExpr(ArrayExpr):
 @synth.from_class(ArrayExprInternal)
 class ArrayRepeatExpr(ArrayExpr):
     """
-    An array expression with a repeat oeprand and a repeat length. For example:
+    An array expression with a repeat operand and a repeat length. For example:
     ```rust
     [1; 10];
     ```

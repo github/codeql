@@ -143,7 +143,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     }
 
     /**
-     * An array expression with a repeat oeprand and a repeat length. For example:
+     * An array expression with a repeat operand and a repeat length. For example:
      * ```rust
      * [1; 10];
      * ```
