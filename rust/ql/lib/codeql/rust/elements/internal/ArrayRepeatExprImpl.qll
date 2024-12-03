@@ -21,9 +21,6 @@ module Impl {
    * ```
    */
   class ArrayRepeatExpr extends Generated::ArrayRepeatExpr {
-    cached
-    private Raw::ArrayExprInternal getUnderlyingEntity() { this = Synth::TArrayRepeatExpr(result) }
-
     override string toString() {
       result =
         "[" + this.getRepeatOperand().toAbbreviatedString() + "; " +
@@ -33,9 +30,5 @@ module Impl {
     override Expr getRepeatOperand() { result = this.getExpr(0) }
 
     override Expr getRepeatLength() { result = this.getExpr(1) }
-
-    override Expr getExpr(int index) {
-      result = Synth::convertExprFromRaw(this.getUnderlyingEntity().getExpr(index))
-    }
   }
 }

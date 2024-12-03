@@ -565,6 +565,7 @@ class ArrayExpr(Expr):
     ```
     """
     exprs: list[Expr] | child
+    attrs: list[Attr] | child
 
 @synth.from_class(ArrayExprInternal)
 class ArrayListExpr(ArrayExpr):

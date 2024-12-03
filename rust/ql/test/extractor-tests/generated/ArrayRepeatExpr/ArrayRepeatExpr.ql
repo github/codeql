@@ -2,12 +2,15 @@
 import codeql.rust.elements
 import TestUtils
 
-from ArrayRepeatExpr x, int getNumberOfExprs, Expr getRepeatOperand, Expr getRepeatLength
+from
+  ArrayRepeatExpr x, int getNumberOfExprs, int getNumberOfAttrs, Expr getRepeatOperand,
+  Expr getRepeatLength
 where
   toBeTested(x) and
   not x.isUnknown() and
   getNumberOfExprs = x.getNumberOfExprs() and
+  getNumberOfAttrs = x.getNumberOfAttrs() and
   getRepeatOperand = x.getRepeatOperand() and
   getRepeatLength = x.getRepeatLength()
-select x, "getNumberOfExprs:", getNumberOfExprs, "getRepeatOperand:", getRepeatOperand,
-  "getRepeatLength:", getRepeatLength
+select x, "getNumberOfExprs:", getNumberOfExprs, "getNumberOfAttrs:", getNumberOfAttrs,
+  "getRepeatOperand:", getRepeatOperand, "getRepeatLength:", getRepeatLength

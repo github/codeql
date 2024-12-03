@@ -22,13 +22,6 @@ module Impl {
    * ```
    */
   class ArrayListExpr extends Generated::ArrayListExpr {
-    cached
-    private Raw::ArrayExprInternal getUnderlyingEntity() { this = Synth::TArrayListExpr(result) }
-
     override string toString() { result = "[...]" }
-
-    override Expr getExpr(int index) {
-      result = Synth::convertExprFromRaw(this.getUnderlyingEntity().getExpr(index))
-    }
   }
 }

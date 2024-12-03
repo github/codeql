@@ -111,6 +111,21 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Gets the number of expressions of this array expression.
        */
       int getNumberOfExprs() { result = count(int i | exists(this.getExpr(i))) }
+
+      /**
+       * Gets the `index`th attr of this array expression (0-based).
+       */
+      Attr getAttr(int index) { result = node.getAttr(index) }
+
+      /**
+       * Gets any of the attrs of this array expression.
+       */
+      Attr getAnAttr() { result = this.getAttr(_) }
+
+      /**
+       * Gets the number of attrs of this array expression.
+       */
+      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
     }
 
     final private class ParentArrayListExpr extends ParentAstNode, ArrayListExpr {

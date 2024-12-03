@@ -359,7 +359,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
             result.push(FieldInfo {
                 name: "is_semicolon".to_string(),
                 tp: "predicate".to_string(),
-                is_many: true,
+                is_many: false,
             });
         }
         _ => {}

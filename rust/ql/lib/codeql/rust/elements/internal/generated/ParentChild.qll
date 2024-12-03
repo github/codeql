@@ -1190,11 +1190,12 @@ private module Impl {
   }
 
   private Element getImmediateChildOfArrayExpr(ArrayExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nExpr |
+    exists(int b, int bExpr, int n, int nExpr, int nAttr |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nExpr = n + 1 + max(int i | i = -1 or exists(e.getExpr(i)) | i) and
+      nAttr = nExpr + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       (
         none()
         or
@@ -1202,6 +1203,9 @@ private module Impl {
         or
         result = e.getExpr(index - n) and
         partialPredicateCall = "Expr(" + (index - n).toString() + ")"
+        or
+        result = e.getAttr(index - nExpr) and
+        partialPredicateCall = "Attr(" + (index - nExpr).toString() + ")"
       )
     )
   }

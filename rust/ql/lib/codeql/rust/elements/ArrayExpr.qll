@@ -4,6 +4,7 @@
  */
 
 private import internal.ArrayExprImpl
+import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
 /**

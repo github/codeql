@@ -178,7 +178,6 @@
 /lib/codeql/rust/elements/internal/AddressableImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/ArrayExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArrayExprInternal.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArrayExprInternalConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArrayExprInternalImpl.qll linguist-generated
@@ -602,8 +601,10 @@
 /test/extractor-tests/generated/ArgList/ArgList.ql linguist-generated
 /test/extractor-tests/generated/ArgList/ArgList_getArg.ql linguist-generated
 /test/extractor-tests/generated/ArrayListExpr/ArrayListExpr.ql linguist-generated
+/test/extractor-tests/generated/ArrayListExpr/ArrayListExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/ArrayListExpr/ArrayListExpr_getExpr.ql linguist-generated
 /test/extractor-tests/generated/ArrayRepeatExpr/ArrayRepeatExpr.ql linguist-generated
+/test/extractor-tests/generated/ArrayRepeatExpr/ArrayRepeatExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/ArrayRepeatExpr/ArrayRepeatExpr_getExpr.ql linguist-generated
 /test/extractor-tests/generated/ArrayType/ArrayType.ql linguist-generated
 /test/extractor-tests/generated/ArrayType/ArrayType_getConstArg.ql linguist-generated
