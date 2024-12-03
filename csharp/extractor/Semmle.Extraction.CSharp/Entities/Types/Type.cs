@@ -285,7 +285,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     Context.CreateEntity(member);
                 }
 
-                if (Symbol.BaseType is not null && Symbol.BaseType.ShouldExtractSymbol())
+                if (Symbol.BaseType is not null)
                     Create(Context, Symbol.BaseType).PopulateGenerics();
 
                 foreach (var i in Symbol.Interfaces.ExtractionCandidates())
