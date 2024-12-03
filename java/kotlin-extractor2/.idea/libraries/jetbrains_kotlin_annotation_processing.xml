@@ -1,14 +1,14 @@
 <component name="libraryTable">
   <library name="jetbrains.kotlin.annotation.processing" type="repository">
-    <properties maven-id="org.jetbrains.kotlin:kotlin-annotation-processing:2.0.20" />
+    <properties maven-id="org.jetbrains.kotlin:kotlin-annotation-processing:2.1.0" />
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-annotation-processing/2.0.20/kotlin-annotation-processing-2.0.20.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-annotation-processing-compiler/2.0.20/kotlin-annotation-processing-compiler-2.0.20.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-annotation-processing/2.1.0/kotlin-annotation-processing-2.1.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-annotation-processing-compiler/2.1.0/kotlin-annotation-processing-compiler-2.1.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-annotation-processing/2.0.20/kotlin-annotation-processing-2.0.20-sources.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-annotation-processing-compiler/2.0.20/kotlin-annotation-processing-compiler-2.0.20-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-annotation-processing/2.1.0/kotlin-annotation-processing-2.1.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-annotation-processing-compiler/2.1.0/kotlin-annotation-processing-compiler-2.1.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

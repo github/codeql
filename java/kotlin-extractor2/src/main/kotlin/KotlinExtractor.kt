@@ -19,8 +19,8 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.kotlin.analysis.api.KaAnalysisApiInternals
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.analyze
-import org.jetbrains.kotlin.analysis.api.platform.lifetime.KotlinAlwaysAccessibleLifetimeTokenProvider
-import org.jetbrains.kotlin.analysis.api.platform.lifetime.KotlinLifetimeTokenProvider
+import org.jetbrains.kotlin.analysis.api.platform.lifetime.KotlinAlwaysAccessibleLifetimeTokenFactory
+import org.jetbrains.kotlin.analysis.api.platform.lifetime.KotlinLifetimeTokenFactory
 import org.jetbrains.kotlin.analysis.api.projectStructure.KaSourceModule
 import org.jetbrains.kotlin.analysis.api.standalone.buildStandaloneAnalysisAPISession
 import org.jetbrains.kotlin.analysis.project.structure.builder.buildKtLibraryModule
@@ -166,6 +166,7 @@ OLD: KE1
         )
         dtw.flush()
         loggerBase.close()
+        System.exit(0) // TODO: figure out what's keeping the JVM awake
     }
 }
 
@@ -187,7 +188,7 @@ private fun doAnalysis(
     val ourLanguageVersionSettings = k2args.toLanguageVersionSettings(MessageCollector.NONE)
 
     val session = buildStandaloneAnalysisAPISession {
-        registerProjectService(KotlinLifetimeTokenProvider::class.java, KotlinAlwaysAccessibleLifetimeTokenProvider())
+        registerProjectService(KotlinLifetimeTokenFactory::class.java, KotlinAlwaysAccessibleLifetimeTokenFactory())
 
         // TODO: Is there a better way we can do all this directly from k2args?
 
