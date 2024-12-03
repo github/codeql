@@ -25,7 +25,8 @@ typedef wchar_t* LPWSTR, *PWSTR;
 typedef BSTR* LPBSTR;
 typedef unsigned short USHORT;
 typedef char *LPTSTR;
-struct __POSITION { int unused; };typedef __POSITION* POSITION;
+struct __POSITION { int unused; };
+typedef __POSITION* POSITION;
 typedef WORD ATL_URL_PORT;
 
 enum ATL_URL_SCHEME{
