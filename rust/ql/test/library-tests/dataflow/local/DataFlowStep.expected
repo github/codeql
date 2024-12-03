@@ -388,11 +388,14 @@ localStep
 | main.rs:351:9:351:19 | [SSA] mut_arr | main.rs:352:10:352:16 | mut_arr |
 | main.rs:351:9:351:19 | mut_arr | main.rs:351:9:351:19 | [SSA] mut_arr |
 | main.rs:351:23:351:31 | [...] | main.rs:351:9:351:19 | mut_arr |
-| main.rs:354:5:354:11 | [SSA] mut_arr | main.rs:355:13:355:19 | mut_arr |
-| main.rs:354:5:354:11 | mut_arr | main.rs:354:5:354:11 | [SSA] mut_arr |
+| main.rs:352:10:352:16 | [post] mut_arr | main.rs:354:5:354:11 | mut_arr |
+| main.rs:352:10:352:16 | mut_arr | main.rs:354:5:354:11 | mut_arr |
+| main.rs:354:5:354:11 | [post] mut_arr | main.rs:355:13:355:19 | mut_arr |
+| main.rs:354:5:354:11 | mut_arr | main.rs:355:13:355:19 | mut_arr |
 | main.rs:354:18:354:27 | source(...) | main.rs:354:5:354:14 | mut_arr[1] |
 | main.rs:355:9:355:9 | [SSA] d | main.rs:356:10:356:10 | d |
 | main.rs:355:9:355:9 | d | main.rs:355:9:355:9 | [SSA] d |
+| main.rs:355:13:355:19 | [post] mut_arr | main.rs:357:10:357:16 | mut_arr |
 | main.rs:355:13:355:19 | mut_arr | main.rs:357:10:357:16 | mut_arr |
 | main.rs:355:13:355:22 | mut_arr[1] | main.rs:355:9:355:9 | d |
 storeStep
@@ -436,6 +439,27 @@ storeStep
 | main.rs:276:41:276:41 | 2 | D | main.rs:276:14:276:43 | ...::D {...} |
 | main.rs:294:18:294:27 | source(...) | C | main.rs:293:14:295:5 | C {...} |
 | main.rs:296:27:296:27 | 2 | D | main.rs:296:14:296:29 | D {...} |
+| main.rs:314:17:314:17 | 1 | array[] | main.rs:314:16:314:33 | [...] |
+| main.rs:314:20:314:20 | 2 | array[] | main.rs:314:16:314:33 | [...] |
+| main.rs:314:23:314:32 | source(...) | array[] | main.rs:314:16:314:33 | [...] |
+| main.rs:318:17:318:26 | source(...) | array[] | main.rs:318:16:318:31 | [...] |
+| main.rs:318:29:318:30 | 10 | array[] | main.rs:318:16:318:31 | [...] |
+| main.rs:322:17:322:17 | 1 | array[] | main.rs:322:16:322:24 | [...] |
+| main.rs:322:20:322:20 | 2 | array[] | main.rs:322:16:322:24 | [...] |
+| main.rs:322:23:322:23 | 3 | array[] | main.rs:322:16:322:24 | [...] |
+| main.rs:328:17:328:17 | 1 | array[] | main.rs:328:16:328:33 | [...] |
+| main.rs:328:20:328:20 | 2 | array[] | main.rs:328:16:328:33 | [...] |
+| main.rs:328:23:328:32 | source(...) | array[] | main.rs:328:16:328:33 | [...] |
+| main.rs:333:17:333:17 | 1 | array[] | main.rs:333:16:333:24 | [...] |
+| main.rs:333:20:333:20 | 2 | array[] | main.rs:333:16:333:24 | [...] |
+| main.rs:333:23:333:23 | 3 | array[] | main.rs:333:16:333:24 | [...] |
+| main.rs:340:17:340:17 | 1 | array[] | main.rs:340:16:340:33 | [...] |
+| main.rs:340:20:340:20 | 2 | array[] | main.rs:340:16:340:33 | [...] |
+| main.rs:340:23:340:32 | source(...) | array[] | main.rs:340:16:340:33 | [...] |
+| main.rs:351:24:351:24 | 1 | array[] | main.rs:351:23:351:31 | [...] |
+| main.rs:351:27:351:27 | 2 | array[] | main.rs:351:23:351:31 | [...] |
+| main.rs:351:30:351:30 | 3 | array[] | main.rs:351:23:351:31 | [...] |
+| main.rs:354:18:354:27 | source(...) | array[] | main.rs:354:5:354:11 | [post] mut_arr |
 | main.rs:364:27:364:27 | 0 | Some | main.rs:364:22:364:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap |
@@ -484,3 +508,15 @@ readStep
 | main.rs:302:28:302:43 | D {...} | D | main.rs:302:41:302:41 | n |
 | main.rs:305:9:305:24 | C {...} | C | main.rs:305:22:305:22 | n |
 | main.rs:306:9:306:24 | D {...} | D | main.rs:306:22:306:22 | n |
+| main.rs:315:14:315:17 | arr1 | array[] | main.rs:315:14:315:20 | arr1[2] |
+| main.rs:319:14:319:17 | arr2 | array[] | main.rs:319:14:319:20 | arr2[4] |
+| main.rs:323:14:323:17 | arr3 | array[] | main.rs:323:14:323:20 | arr3[2] |
+| main.rs:329:15:329:18 | arr1 | array[] | main.rs:329:9:329:10 | n1 |
+| main.rs:334:15:334:18 | arr2 | array[] | main.rs:334:9:334:10 | n2 |
+| main.rs:342:9:342:17 | SlicePat | array[] | main.rs:342:10:342:10 | a |
+| main.rs:342:9:342:17 | SlicePat | array[] | main.rs:342:13:342:13 | b |
+| main.rs:342:9:342:17 | SlicePat | array[] | main.rs:342:16:342:16 | c |
+| main.rs:352:10:352:16 | mut_arr | array[] | main.rs:352:10:352:19 | mut_arr[1] |
+| main.rs:354:5:354:11 | mut_arr | array[] | main.rs:354:5:354:14 | mut_arr[1] |
+| main.rs:355:13:355:19 | mut_arr | array[] | main.rs:355:13:355:22 | mut_arr[1] |
+| main.rs:357:10:357:16 | mut_arr | array[] | main.rs:357:10:357:19 | mut_arr[0] |

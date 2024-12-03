@@ -313,11 +313,11 @@ fn custom_record_enum_pattern_match_unqualified() {
 fn array_lookup() {
     let arr1 = [1, 2, source(94)];
     let n1 = arr1[2];
-    sink(n1); // $ MISSING: hasValueFlow=94
+    sink(n1); // $ hasValueFlow=94
 
     let arr2 = [source(20); 10];
     let n2 = arr2[4];
-    sink(n2); // $ MISSING: hasValueFlow=20
+    sink(n2); // $ hasValueFlow=20
 
     let arr3 = [1, 2, 3];
     let n3 = arr3[2];
@@ -327,7 +327,7 @@ fn array_lookup() {
 fn array_for_loop() {
     let arr1 = [1, 2, source(43)];
     for n1 in arr1 {
-        sink(n1); // $ MISSING: hasValueFlow=43
+        sink(n1); // $ hasValueFlow=43
     }
 
     let arr2 = [1, 2, 3];
@@ -340,9 +340,9 @@ fn array_slice_pattern() {
     let arr1 = [1, 2, source(43)];
     match arr1 {
         [a, b, c] => {
-            sink(a);
-            sink(b);
-            sink(c); // $ MISSING: hasValueFlow=43
+            sink(a); // $ SPURIOUS: hasValueFlow=43
+            sink(b); // $ SPURIOUS: hasValueFlow=43
+            sink(c); // $ hasValueFlow=43
         }
     }
 }
@@ -353,8 +353,8 @@ fn array_assignment() {
 
     mut_arr[1] = source(55);
     let d = mut_arr[1];
-    sink(d); // $ MISSING: hasValueFlow=55
-    sink(mut_arr[0]);
+    sink(d); // $ hasValueFlow=55
+    sink(mut_arr[0]); // $ SPURIOUS: hasValueFlow=55
 }
 
 fn main() {

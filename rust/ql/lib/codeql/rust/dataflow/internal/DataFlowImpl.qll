@@ -624,6 +624,15 @@ private class StructFieldContent extends Content, TStructFieldContent {
 }
 
 /**
+ * Content stored at an element in an array.
+ */
+final private class ArrayElementContent extends VariantContent, TArrayElement {
+  ArrayElementContent() { this = TArrayElement() }
+
+  override string toString() { result = "array[]" }
+}
+
+/**
  * Content stored at a position in a tuple.
  *
  * NOTE: Unlike `struct`s and `enum`s tuples are structural and not nominal,
@@ -884,6 +893,24 @@ module RustDataFlow implements InputSig<Location> {
         node1.asExpr() = access.getExpr() and
         node2.asExpr() = access
       )
+      or
+      exists(IndexExprCfgNode arr |
+        c instanceof ArrayElementContent and
+        node1.asExpr() = arr.getBase() and
+        node2.asExpr() = arr
+      )
+      or
+      exists(ForExprCfgNode for |
+        c instanceof ArrayElementContent and
+        node1.asExpr() = for.getIterable() and
+        node2.asPat() = for.getPat()
+      )
+      or
+      exists(SlicePatCfgNode pat |
+        c instanceof ArrayElementContent and
+        node1.asPat() = pat and
+        node2.asPat() = pat.getAPat()
+      )
     )
     or
     FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
@@ -950,7 +977,20 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr() = tuple
       )
       or
+      exists(ArrayExprCfgNode arr |
+        c instanceof ArrayElementContent and
+        node1.asExpr() = arr.getAnExpr() and
+        node2.asExpr() = arr
+      )
+      or
       tupleAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
+      or
+      exists(AssignmentExprCfgNode assignment, IndexExprCfgNode index |
+        c instanceof ArrayElementContent and
+        assignment.getLhs() = index and
+        node1.asExpr() = assignment.getRhs() and
+        node2.(PostUpdateNode).getPreUpdateNode().asExpr() = index.getBase()
+      )
     )
     or
     FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
@@ -1050,7 +1090,8 @@ private module Cached {
     TSourceParameterNode(ParamBaseCfgNode p) or
     TPatNode(PatCfgNode p) or
     TExprPostUpdateNode(ExprCfgNode e) {
-      isArgumentForCall(e, _, _) or e = any(FieldExprCfgNode access).getExpr()
+      isArgumentForCall(e, _, _) or
+      e = [any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr()]
     } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
@@ -1135,6 +1176,7 @@ private module Cached {
     TVariantFieldContent(VariantCanonicalPath v, string field) {
       field = v.getVariant().getFieldList().(RecordFieldList).getAField().getName().getText()
     } or
+    TArrayElement() or
     TTuplePositionContent(int pos) {
       pos in [0 .. max([
                 any(TuplePat pat).getNumberOfFields(),

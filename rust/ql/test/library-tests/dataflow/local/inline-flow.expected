@@ -64,6 +64,32 @@ edges
 | main.rs:298:22:298:22 | n | main.rs:298:34:298:34 | n | provenance |  |
 | main.rs:302:9:302:24 | C {...} [C] | main.rs:302:22:302:22 | n | provenance |  |
 | main.rs:302:22:302:22 | n | main.rs:302:53:302:53 | n | provenance |  |
+| main.rs:314:16:314:33 | [...] [array[]] | main.rs:315:14:315:17 | arr1 [array[]] | provenance |  |
+| main.rs:314:23:314:32 | source(...) | main.rs:314:16:314:33 | [...] [array[]] | provenance |  |
+| main.rs:315:14:315:17 | arr1 [array[]] | main.rs:315:14:315:20 | arr1[2] | provenance |  |
+| main.rs:315:14:315:20 | arr1[2] | main.rs:316:10:316:11 | n1 | provenance |  |
+| main.rs:318:16:318:31 | [...] [array[]] | main.rs:319:14:319:17 | arr2 [array[]] | provenance |  |
+| main.rs:318:17:318:26 | source(...) | main.rs:318:16:318:31 | [...] [array[]] | provenance |  |
+| main.rs:319:14:319:17 | arr2 [array[]] | main.rs:319:14:319:20 | arr2[4] | provenance |  |
+| main.rs:319:14:319:20 | arr2[4] | main.rs:320:10:320:11 | n2 | provenance |  |
+| main.rs:328:16:328:33 | [...] [array[]] | main.rs:329:15:329:18 | arr1 [array[]] | provenance |  |
+| main.rs:328:23:328:32 | source(...) | main.rs:328:16:328:33 | [...] [array[]] | provenance |  |
+| main.rs:329:9:329:10 | n1 | main.rs:330:14:330:15 | n1 | provenance |  |
+| main.rs:329:15:329:18 | arr1 [array[]] | main.rs:329:9:329:10 | n1 | provenance |  |
+| main.rs:340:16:340:33 | [...] [array[]] | main.rs:342:9:342:17 | SlicePat [array[]] | provenance |  |
+| main.rs:340:23:340:32 | source(...) | main.rs:340:16:340:33 | [...] [array[]] | provenance |  |
+| main.rs:342:9:342:17 | SlicePat [array[]] | main.rs:342:10:342:10 | a | provenance |  |
+| main.rs:342:9:342:17 | SlicePat [array[]] | main.rs:342:13:342:13 | b | provenance |  |
+| main.rs:342:9:342:17 | SlicePat [array[]] | main.rs:342:16:342:16 | c | provenance |  |
+| main.rs:342:10:342:10 | a | main.rs:343:18:343:18 | a | provenance |  |
+| main.rs:342:13:342:13 | b | main.rs:344:18:344:18 | b | provenance |  |
+| main.rs:342:16:342:16 | c | main.rs:345:18:345:18 | c | provenance |  |
+| main.rs:354:5:354:11 | [post] mut_arr [array[]] | main.rs:355:13:355:19 | mut_arr [array[]] | provenance |  |
+| main.rs:354:5:354:11 | [post] mut_arr [array[]] | main.rs:357:10:357:16 | mut_arr [array[]] | provenance |  |
+| main.rs:354:18:354:27 | source(...) | main.rs:354:5:354:11 | [post] mut_arr [array[]] | provenance |  |
+| main.rs:355:13:355:19 | mut_arr [array[]] | main.rs:355:13:355:22 | mut_arr[1] | provenance |  |
+| main.rs:355:13:355:22 | mut_arr[1] | main.rs:356:10:356:10 | d | provenance |  |
+| main.rs:357:10:357:16 | mut_arr [array[]] | main.rs:357:10:357:19 | mut_arr[0] | provenance |  |
 nodes
 | main.rs:15:10:15:18 | source(...) | semmle.label | source(...) |
 | main.rs:19:13:19:21 | source(...) | semmle.label | source(...) |
@@ -147,6 +173,37 @@ nodes
 | main.rs:302:9:302:24 | C {...} [C] | semmle.label | C {...} [C] |
 | main.rs:302:22:302:22 | n | semmle.label | n |
 | main.rs:302:53:302:53 | n | semmle.label | n |
+| main.rs:314:16:314:33 | [...] [array[]] | semmle.label | [...] [array[]] |
+| main.rs:314:23:314:32 | source(...) | semmle.label | source(...) |
+| main.rs:315:14:315:17 | arr1 [array[]] | semmle.label | arr1 [array[]] |
+| main.rs:315:14:315:20 | arr1[2] | semmle.label | arr1[2] |
+| main.rs:316:10:316:11 | n1 | semmle.label | n1 |
+| main.rs:318:16:318:31 | [...] [array[]] | semmle.label | [...] [array[]] |
+| main.rs:318:17:318:26 | source(...) | semmle.label | source(...) |
+| main.rs:319:14:319:17 | arr2 [array[]] | semmle.label | arr2 [array[]] |
+| main.rs:319:14:319:20 | arr2[4] | semmle.label | arr2[4] |
+| main.rs:320:10:320:11 | n2 | semmle.label | n2 |
+| main.rs:328:16:328:33 | [...] [array[]] | semmle.label | [...] [array[]] |
+| main.rs:328:23:328:32 | source(...) | semmle.label | source(...) |
+| main.rs:329:9:329:10 | n1 | semmle.label | n1 |
+| main.rs:329:15:329:18 | arr1 [array[]] | semmle.label | arr1 [array[]] |
+| main.rs:330:14:330:15 | n1 | semmle.label | n1 |
+| main.rs:340:16:340:33 | [...] [array[]] | semmle.label | [...] [array[]] |
+| main.rs:340:23:340:32 | source(...) | semmle.label | source(...) |
+| main.rs:342:9:342:17 | SlicePat [array[]] | semmle.label | SlicePat [array[]] |
+| main.rs:342:10:342:10 | a | semmle.label | a |
+| main.rs:342:13:342:13 | b | semmle.label | b |
+| main.rs:342:16:342:16 | c | semmle.label | c |
+| main.rs:343:18:343:18 | a | semmle.label | a |
+| main.rs:344:18:344:18 | b | semmle.label | b |
+| main.rs:345:18:345:18 | c | semmle.label | c |
+| main.rs:354:5:354:11 | [post] mut_arr [array[]] | semmle.label | [post] mut_arr [array[]] |
+| main.rs:354:18:354:27 | source(...) | semmle.label | source(...) |
+| main.rs:355:13:355:19 | mut_arr [array[]] | semmle.label | mut_arr [array[]] |
+| main.rs:355:13:355:22 | mut_arr[1] | semmle.label | mut_arr[1] |
+| main.rs:356:10:356:10 | d | semmle.label | d |
+| main.rs:357:10:357:16 | mut_arr [array[]] | semmle.label | mut_arr [array[]] |
+| main.rs:357:10:357:19 | mut_arr[0] | semmle.label | mut_arr[0] |
 subpaths
 testFailures
 #select
@@ -172,3 +229,11 @@ testFailures
 | main.rs:282:81:282:81 | n | main.rs:274:18:274:27 | source(...) | main.rs:282:81:282:81 | n | $@ | main.rs:274:18:274:27 | source(...) | source(...) |
 | main.rs:298:34:298:34 | n | main.rs:294:18:294:27 | source(...) | main.rs:298:34:298:34 | n | $@ | main.rs:294:18:294:27 | source(...) | source(...) |
 | main.rs:302:53:302:53 | n | main.rs:294:18:294:27 | source(...) | main.rs:302:53:302:53 | n | $@ | main.rs:294:18:294:27 | source(...) | source(...) |
+| main.rs:316:10:316:11 | n1 | main.rs:314:23:314:32 | source(...) | main.rs:316:10:316:11 | n1 | $@ | main.rs:314:23:314:32 | source(...) | source(...) |
+| main.rs:320:10:320:11 | n2 | main.rs:318:17:318:26 | source(...) | main.rs:320:10:320:11 | n2 | $@ | main.rs:318:17:318:26 | source(...) | source(...) |
+| main.rs:330:14:330:15 | n1 | main.rs:328:23:328:32 | source(...) | main.rs:330:14:330:15 | n1 | $@ | main.rs:328:23:328:32 | source(...) | source(...) |
+| main.rs:343:18:343:18 | a | main.rs:340:23:340:32 | source(...) | main.rs:343:18:343:18 | a | $@ | main.rs:340:23:340:32 | source(...) | source(...) |
+| main.rs:344:18:344:18 | b | main.rs:340:23:340:32 | source(...) | main.rs:344:18:344:18 | b | $@ | main.rs:340:23:340:32 | source(...) | source(...) |
+| main.rs:345:18:345:18 | c | main.rs:340:23:340:32 | source(...) | main.rs:345:18:345:18 | c | $@ | main.rs:340:23:340:32 | source(...) | source(...) |
+| main.rs:356:10:356:10 | d | main.rs:354:18:354:27 | source(...) | main.rs:356:10:356:10 | d | $@ | main.rs:354:18:354:27 | source(...) | source(...) |
+| main.rs:357:10:357:19 | mut_arr[0] | main.rs:354:18:354:27 | source(...) | main.rs:357:10:357:19 | mut_arr[0] | $@ | main.rs:354:18:354:27 | source(...) | source(...) |
