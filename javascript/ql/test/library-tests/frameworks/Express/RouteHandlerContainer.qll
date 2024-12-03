@@ -1,8 +1,7 @@
 import javascript
 
-query predicate getRouteHandlerContainerStep(
-  Http::RouteHandlerCandidateContainer container, DataFlow::SourceNode handler,
-  DataFlow::SourceNode access
+query DataFlow::SourceNode getRouteHandlerContainerStep(
+  Http::RouteHandlerCandidateContainer container, DataFlow::SourceNode handler
 ) {
-  handler = container.getRouteHandler(access)
+  handler = container.getRouteHandler(result)
 }

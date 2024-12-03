@@ -4,12 +4,12 @@ query predicate fieldStep(DataFlow::Node pred, DataFlow::Node succ) {
   DataFlow::localFieldStep(pred, succ)
 }
 
-query predicate getAReceiverNode(DataFlow::ClassNode cls, DataFlow::SourceNode recv) {
-  cls.getAReceiverNode() = recv
+query DataFlow::SourceNode getAReceiverNode(DataFlow::ClassNode cls) {
+  result = cls.getAReceiverNode()
 }
 
-query predicate getFieldTypeAnnotation(DataFlow::ClassNode cls, string name, TypeAnnotation ann) {
-  ann = cls.getFieldTypeAnnotation(name)
+query TypeAnnotation getFieldTypeAnnotation(DataFlow::ClassNode cls, string name) {
+  result = cls.getFieldTypeAnnotation(name)
 }
 
 query predicate instanceMember(
