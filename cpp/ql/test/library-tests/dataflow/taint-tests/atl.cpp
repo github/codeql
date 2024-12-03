@@ -682,11 +682,11 @@ void test_CPathT() {
 
     CPath p2;
     p2 += p;
-    sink(p2.m_strPath); // $ MISSING: ir
+    sink(p2.m_strPath); // $ MISSING: ir // this requires flow through `operator StringType&()` which we can't yet model in MaD
 
     CPath p3;
     p3 += x;
-    sink(p3.m_strPath); // $ MISSING: ir
+    sink(p3.m_strPath); // $ ir
   }
 
   {
