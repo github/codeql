@@ -11,18 +11,18 @@ public class L
         // dynamic write followed by dynamic read
         dynamic d1 = this;
         d1.f1 = Source<string>(1);
-        Sink(d1.f1); // $ MISSING: hasValueFlow=1
+        Sink(d1.f1); // $ hasValueFlow=1
 
         // dynamic write followed by static read
         dynamic d2 = this;
         d2.f2 = Source<string>(2);
         L l2 = d2;
-        Sink(l2.f2); // $ MISSING: hasValueFlow=2
+        Sink(l2.f2); // $ hasValueFlow=2
 
         // static write followed by dynamic read
         this.f3 = Source<string>(3);
         dynamic d3 = this;
-        Sink(d3.f3); // $ MISSING: hasValueFlow=3
+        Sink(d3.f3); // $ hasValueFlow=3
     }
 
     public static void Sink(object o) { }
