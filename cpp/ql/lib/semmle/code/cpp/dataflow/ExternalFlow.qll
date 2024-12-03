@@ -434,12 +434,30 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
 }
 
+/**
+ * Holds if `c` is an instantiation of a class template `templateClass`, or
+ * holds with `c = templateClass` if `c` is not an instantiation of any class
+ * template.
+ *
+ * This predicate is used instead of `Class.isConstructedFrom` (which only
+ * holds for template instantiations) in this file to allow for uniform
+ * treatment of non-templated classes and class template instantiations.
+ */
 private predicate isClassConstructedFrom(Class c, Class templateClass) {
   c.isConstructedFrom(templateClass)
   or
   not c.isConstructedFrom(_) and c = templateClass
 }
 
+/**
+ * Holds if `f` is an instantiation of a function template `templateFunc`, or
+ * holds with `f = templateFunc` if `f` is not an instantiation of any function
+ * template.
+ *
+ * This predicate is used instead of `Function.isConstructedFrom` (which only
+ * holds for template instantiations) in this file to allow for uniform
+ * treatment of non-templated classes and class template instantiations.
+ */
 private predicate isFunctionConstructedFrom(Function f, Function templateFunc) {
   f.isConstructedFrom(templateFunc)
   or
