@@ -16,7 +16,7 @@ class IteratorNext extends SummarizedCallable {
     result.getNumArgument() = 0
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[this].IteratorElement" and

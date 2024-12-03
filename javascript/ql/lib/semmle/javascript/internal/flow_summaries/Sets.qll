@@ -15,7 +15,7 @@ class SetConstructor extends SummarizedCallable {
     result = setConstructorRef().getAnInstantiation()
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[0]." + ["ArrayElement", "SetElement", "IteratorElement"] and
@@ -38,7 +38,7 @@ class SetAdd extends SummarizedCallable {
     result.getNumArgument() = 1
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[0]" and
     output = "Argument[this].SetElement"

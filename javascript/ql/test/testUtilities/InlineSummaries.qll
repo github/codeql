@@ -11,11 +11,11 @@ class MkSummary extends SummarizedCallable {
         mkSummary.getLocation().getStartLine()
   }
 
-  override DataFlow::InvokeNode getACall() {
+  override DataFlow::InvokeNode getACallSimple() {
     result = mkSummary.flow().(DataFlow::CallNode).getAnInvocation()
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       // mkSummary(input, output)

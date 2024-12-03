@@ -40,7 +40,7 @@ private class ExceptionFlowSummary extends SummarizedCallable, LibraryCallableIn
     isCallback(result.getAnArgument().getALocalSource())
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[0..].ReturnValue[exception]" and
     output = "ReturnValue[exception]"

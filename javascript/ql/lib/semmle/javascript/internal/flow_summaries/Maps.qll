@@ -15,7 +15,7 @@ class MapConstructor extends SummarizedCallable {
     result = mapConstructorRef().getAnInstantiation()
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     (
       input = "Argument[0]." + ["ArrayElement", "SetElement", "IteratorElement"] + ".Member[0]" and
@@ -87,7 +87,7 @@ class MapGet extends SummarizedCallable {
     result.getNumArgument() = 1
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = "Argument[this].MapValue" and
     output = "ReturnValue"
@@ -102,7 +102,7 @@ class MapSet extends SummarizedCallable {
     result.getNumArgument() = 2
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
     input = ["Argument[this].WithMapKey", "Argument[this].WithMapValue"] and
     output = "ReturnValue"

@@ -15,7 +15,7 @@ private class StringReplaceNoWildcard extends SummarizedCallable {
 
   override StringReplaceCall getACall() { not result.hasRegExpContainingWildcard() }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = false and
     (
       input = "Argument[this]" and
@@ -39,7 +39,7 @@ private class StringReplaceWithWildcard extends SummarizedCallable {
 
   override StringReplaceCall getACall() { result.hasRegExpContainingWildcard() }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = false and
     (
       input = "Argument[this]" and
@@ -60,7 +60,7 @@ class StringSplit extends SummarizedCallable {
     not result.getArgument(0).getStringValue() = ["#", "?"]
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = false and
     input = "Argument[this]" and
     output = "ReturnValue.ArrayElement"
@@ -85,7 +85,7 @@ class StringSplitHashOrQuestionMark extends SummarizedCallable {
     result.getArgument(0).getStringValue() = ["#", "?"]
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = false and
     (
       input = "Argument[this].OptionalBarrier[split-url-suffix]" and

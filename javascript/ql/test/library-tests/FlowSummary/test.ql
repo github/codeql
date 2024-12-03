@@ -1,6 +1,6 @@
 import javascript
 import testUtilities.ConsistencyChecking
-import Summaries
+import testUtilities.InlineSummaries
 
 DataFlow::CallNode getACall(string name) {
   result.getCalleeName() = name
