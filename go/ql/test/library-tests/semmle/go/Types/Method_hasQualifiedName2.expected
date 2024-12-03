@@ -59,9 +59,12 @@
 | pkg1/promotedStructs.go:8:12:8:18 | SMethod | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.SEmbedS | SMethod |
 | pkg1/promotedStructs.go:17:13:17:19 | PMethod | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.P | PMethod |
 | pkg1/promotedStructs.go:17:13:17:19 | PMethod | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.SEmbedP | PMethod |
-| pkg1/tst.go:33:16:33:19 | half | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.Foo | half |
-| pkg1/tst.go:33:16:33:19 | half | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T | half |
-| pkg1/tst.go:33:16:33:19 | half | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T3 | half |
-| pkg1/tst.go:33:16:33:19 | half | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T4 | half |
+| pkg1/tst.go:35:16:35:19 | half | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.Foo | half |
+| pkg1/tst.go:35:16:35:19 | half | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T | half |
+| pkg1/tst.go:35:16:35:19 | half | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T3 | half |
+| pkg1/tst.go:35:16:35:19 | half | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.T4 | half |
 | pkg2/tst.go:12:2:12:9 | Exported | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.MixedExportedAndNot | Exported |
 | pkg2/tst.go:13:2:13:12 | notExported | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.MixedExportedAndNot | notExported |
+| pkg2/tst.go:20:20:20:27 | NCMethod | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types.EmbedsNameClash | NCMethod |
+| pkg2/tst.go:20:20:20:27 | NCMethod | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg1.NameClash | NCMethod |
+| pkg2/tst.go:20:20:20:27 | NCMethod | github.com/github/codeql-go/ql/test/library-tests/semmle/go/Types/pkg2.NameClash | NCMethod |
