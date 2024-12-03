@@ -812,10 +812,10 @@ edges
 | H.cs:106:26:106:39 | (...) ... : A [field FieldA] : Object | H.cs:33:19:33:19 | a : A [field FieldA] : Object | provenance |  |
 | H.cs:106:26:106:39 | (...) ... : A [field FieldA] : Object | H.cs:106:16:106:40 | call to method Transform : B [field FieldB] : Object | provenance |  |
 | H.cs:106:26:106:39 | (...) ... : A [field FieldA] : Object | H.cs:106:16:106:40 | call to method Transform : B [field FieldB] : Object | provenance |  |
-| H.cs:106:29:106:32 | access to local variable temp : B [field FieldB, field FieldA] : Object | H.cs:106:29:106:39 | access to field FieldB : A [field FieldA] : Object | provenance |  |
-| H.cs:106:29:106:32 | access to local variable temp : B [field FieldB, field FieldA] : Object | H.cs:106:29:106:39 | access to field FieldB : A [field FieldA] : Object | provenance |  |
-| H.cs:106:29:106:39 | access to field FieldB : A [field FieldA] : Object | H.cs:106:26:106:39 | (...) ... : A [field FieldA] : Object | provenance |  |
-| H.cs:106:29:106:39 | access to field FieldB : A [field FieldA] : Object | H.cs:106:26:106:39 | (...) ... : A [field FieldA] : Object | provenance |  |
+| H.cs:106:29:106:32 | access to local variable temp : B [field FieldB, field FieldA] : Object | H.cs:106:29:106:39 | access to field FieldB : Object [field FieldA] : Object | provenance |  |
+| H.cs:106:29:106:32 | access to local variable temp : B [field FieldB, field FieldA] : Object | H.cs:106:29:106:39 | access to field FieldB : Object [field FieldA] : Object | provenance |  |
+| H.cs:106:29:106:39 | access to field FieldB : Object [field FieldA] : Object | H.cs:106:26:106:39 | (...) ... : A [field FieldA] : Object | provenance |  |
+| H.cs:106:29:106:39 | access to field FieldB : Object [field FieldA] : Object | H.cs:106:26:106:39 | (...) ... : A [field FieldA] : Object | provenance |  |
 | H.cs:112:9:112:9 | [post] access to local variable a : A [field FieldA] : Object | H.cs:113:31:113:31 | access to local variable a : A [field FieldA] : Object | provenance |  |
 | H.cs:112:9:112:9 | [post] access to local variable a : A [field FieldA] : Object | H.cs:113:31:113:31 | access to local variable a : A [field FieldA] : Object | provenance |  |
 | H.cs:112:20:112:36 | call to method Source<Object> : Object | H.cs:112:9:112:9 | [post] access to local variable a : A [field FieldA] : Object | provenance |  |
@@ -908,14 +908,14 @@ edges
 | H.cs:165:17:165:27 | (...) ... : B | H.cs:165:13:165:13 | access to local variable b : B | provenance |  |
 | H.cs:165:17:165:27 | (...) ... : B [field FieldB] : Object | H.cs:165:13:165:13 | access to local variable b : B [field FieldB] : Object | provenance |  |
 | H.cs:165:17:165:27 | (...) ... : B [field FieldB] : Object | H.cs:165:13:165:13 | access to local variable b : B [field FieldB] : Object | provenance |  |
-| H.cs:165:20:165:20 | access to local variable a : A [field FieldA, field FieldB] : Object | H.cs:165:20:165:27 | access to field FieldA : B [field FieldB] : Object | provenance |  |
-| H.cs:165:20:165:20 | access to local variable a : A [field FieldA, field FieldB] : Object | H.cs:165:20:165:27 | access to field FieldA : B [field FieldB] : Object | provenance |  |
+| H.cs:165:20:165:20 | access to local variable a : A [field FieldA, field FieldB] : Object | H.cs:165:20:165:27 | access to field FieldA : Object [field FieldB] : Object | provenance |  |
+| H.cs:165:20:165:20 | access to local variable a : A [field FieldA, field FieldB] : Object | H.cs:165:20:165:27 | access to field FieldA : Object [field FieldB] : Object | provenance |  |
 | H.cs:165:20:165:20 | access to local variable a : A [field FieldA] : B | H.cs:165:20:165:27 | access to field FieldA : B | provenance |  |
 | H.cs:165:20:165:20 | access to local variable a : A [field FieldA] : B | H.cs:165:20:165:27 | access to field FieldA : B | provenance |  |
 | H.cs:165:20:165:27 | access to field FieldA : B | H.cs:165:17:165:27 | (...) ... : B | provenance |  |
 | H.cs:165:20:165:27 | access to field FieldA : B | H.cs:165:17:165:27 | (...) ... : B | provenance |  |
-| H.cs:165:20:165:27 | access to field FieldA : B [field FieldB] : Object | H.cs:165:17:165:27 | (...) ... : B [field FieldB] : Object | provenance |  |
-| H.cs:165:20:165:27 | access to field FieldA : B [field FieldB] : Object | H.cs:165:17:165:27 | (...) ... : B [field FieldB] : Object | provenance |  |
+| H.cs:165:20:165:27 | access to field FieldA : Object [field FieldB] : Object | H.cs:165:17:165:27 | (...) ... : B [field FieldB] : Object | provenance |  |
+| H.cs:165:20:165:27 | access to field FieldA : Object [field FieldB] : Object | H.cs:165:17:165:27 | (...) ... : B [field FieldB] : Object | provenance |  |
 | H.cs:167:14:167:14 | access to local variable b : B [field FieldB] : Object | H.cs:167:14:167:21 | access to field FieldB | provenance |  |
 | H.cs:167:14:167:14 | access to local variable b : B [field FieldB] : Object | H.cs:167:14:167:21 | access to field FieldB | provenance |  |
 | I.cs:5:12:5:12 | this [Return] : I [field Field1] : Object | I.cs:21:13:21:19 | object creation of type I : I [field Field1] : Object | provenance |  |
@@ -2033,8 +2033,8 @@ nodes
 | H.cs:106:26:106:39 | (...) ... : A [field FieldA] : Object | semmle.label | (...) ... : A [field FieldA] : Object |
 | H.cs:106:29:106:32 | access to local variable temp : B [field FieldB, field FieldA] : Object | semmle.label | access to local variable temp : B [field FieldB, field FieldA] : Object |
 | H.cs:106:29:106:32 | access to local variable temp : B [field FieldB, field FieldA] : Object | semmle.label | access to local variable temp : B [field FieldB, field FieldA] : Object |
-| H.cs:106:29:106:39 | access to field FieldB : A [field FieldA] : Object | semmle.label | access to field FieldB : A [field FieldA] : Object |
-| H.cs:106:29:106:39 | access to field FieldB : A [field FieldA] : Object | semmle.label | access to field FieldB : A [field FieldA] : Object |
+| H.cs:106:29:106:39 | access to field FieldB : Object [field FieldA] : Object | semmle.label | access to field FieldB : Object [field FieldA] : Object |
+| H.cs:106:29:106:39 | access to field FieldB : Object [field FieldA] : Object | semmle.label | access to field FieldB : Object [field FieldA] : Object |
 | H.cs:112:9:112:9 | [post] access to local variable a : A [field FieldA] : Object | semmle.label | [post] access to local variable a : A [field FieldA] : Object |
 | H.cs:112:9:112:9 | [post] access to local variable a : A [field FieldA] : Object | semmle.label | [post] access to local variable a : A [field FieldA] : Object |
 | H.cs:112:20:112:36 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
@@ -2133,8 +2133,8 @@ nodes
 | H.cs:165:20:165:20 | access to local variable a : A [field FieldA] : B | semmle.label | access to local variable a : A [field FieldA] : B |
 | H.cs:165:20:165:27 | access to field FieldA : B | semmle.label | access to field FieldA : B |
 | H.cs:165:20:165:27 | access to field FieldA : B | semmle.label | access to field FieldA : B |
-| H.cs:165:20:165:27 | access to field FieldA : B [field FieldB] : Object | semmle.label | access to field FieldA : B [field FieldB] : Object |
-| H.cs:165:20:165:27 | access to field FieldA : B [field FieldB] : Object | semmle.label | access to field FieldA : B [field FieldB] : Object |
+| H.cs:165:20:165:27 | access to field FieldA : Object [field FieldB] : Object | semmle.label | access to field FieldA : Object [field FieldB] : Object |
+| H.cs:165:20:165:27 | access to field FieldA : Object [field FieldB] : Object | semmle.label | access to field FieldA : Object [field FieldB] : Object |
 | H.cs:166:14:166:14 | access to local variable b | semmle.label | access to local variable b |
 | H.cs:166:14:166:14 | access to local variable b | semmle.label | access to local variable b |
 | H.cs:167:14:167:14 | access to local variable b : B [field FieldB] : Object | semmle.label | access to local variable b : B [field FieldB] : Object |
