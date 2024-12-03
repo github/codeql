@@ -497,6 +497,15 @@ fn structs() {
     print_i64(a.my_get()); // $ read_access=a
 }
 
+fn arrays() {
+    let mut a = [1, 2, 3]; // a
+    print_i64(a[0]); // $ read_access=a
+    a[1] = 5; // $ read_access=a
+    print_i64(a[1]); // $ read_access=a
+    a = [4, 5, 6]; // $ write_access=a
+    print_i64(a[2]); // $ read_access=a
+}
+
 fn ref_arg() {
     let x = 16; // x
     print_i64_ref(&x); // $ access=x
