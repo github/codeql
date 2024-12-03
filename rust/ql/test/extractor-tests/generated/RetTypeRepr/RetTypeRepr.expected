@@ -1,1 +1,1 @@
-| gen_ret_type_ref.rs:3:24:3:28 | RetTypeRepr | hasTy: | yes |
+| gen_ret_type_repr.rs:3:25:3:29 | RetTypeRepr | hasTy: | yes |

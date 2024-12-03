@@ -1,1 +1,1 @@
-| gen_ret_type_ref.rs:3:24:3:28 | RetTypeRepr | gen_ret_type_ref.rs:3:27:3:28 | TupleTypeRepr |
+| gen_ret_type_repr.rs:3:25:3:29 | RetTypeRepr | gen_ret_type_repr.rs:3:28:3:29 | TupleTypeRepr |
