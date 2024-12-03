@@ -43,3 +43,13 @@ function m4() {
   sink(fn({ p: obj }));
   sink(fn({ p: obj }).q); // $ track=m4.1
 }
+
+function m5() {
+  // Store and read to a property that isn't mentioned anywhere in the source code.
+  const store = mkSummary("Argument[0]", "ReturnValue.Member[propOnlyMentionedInSummary]");
+  const read = mkSummary("Argument[0].Member[propOnlyMentionedInSummary]", "ReturnValue");
+  sink(read(store(source("m5.1")))); // $ MISSING: track=m5.1
+  sink(read(source("m5.1")));
+  sink(store(source("m5.1")));
+  sink(store(read(source("m5.1"))));
+}
