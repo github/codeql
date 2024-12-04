@@ -22,6 +22,7 @@ import com.semmle.js.ast.regexp.Error;
 import com.semmle.js.ast.regexp.Group;
 import com.semmle.js.ast.regexp.HexEscapeSequence;
 import com.semmle.js.ast.regexp.IdentityEscape;
+import com.semmle.js.ast.regexp.Intersection;
 import com.semmle.js.ast.regexp.Literal;
 import com.semmle.js.ast.regexp.NamedBackReference;
 import com.semmle.js.ast.regexp.NonWordBoundary;
@@ -92,6 +93,7 @@ public class RegExpExtractor {
     termkinds.put("ZeroWidthPositiveLookbehind", 25);
     termkinds.put("ZeroWidthNegativeLookbehind", 26);
     termkinds.put("UnicodePropertyEscape", 27);
+    termkinds.put("Intersection", 28);
   }
 
   private static final String[] errmsgs =
@@ -343,6 +345,14 @@ public class RegExpExtractor {
       Label lbl = extractTerm(nd, parent, idx);
       visit(nd.getLeft(), lbl, 0);
       visit(nd.getRight(), lbl, 1);
+    }
+
+    @Override
+    public void visit(Intersection nd) {
+      Label lbl = extractTerm(nd, parent, idx);
+      int i = 0;
+      for (RegExpTerm element : nd.getIntersections())
+        visit(element, lbl, i++);
     }
   }
 
