@@ -182,7 +182,7 @@ extractor_steps(
 | @record_pat_field_list
 | @rename
 | @resolvable
-| @ret_type
+| @ret_type_repr
 | @return_type_syntax
 | @source_file
 | @stmt
@@ -192,7 +192,7 @@ extractor_steps(
 | @tuple_field
 | @type_bound
 | @type_bound_list
-| @type_ref
+| @type_repr
 | @use_tree
 | @use_tree_list
 | @variant_list
@@ -311,7 +311,7 @@ closure_binder_generic_param_lists(
 );
 
 @expr =
-  @array_expr
+  @array_expr_internal
 | @asm_expr
 | @await_expr
 | @become_expr
@@ -619,9 +619,9 @@ param_base_attrs(
 );
 
 #keyset[id]
-param_base_ties(
+param_base_type_reprs(
   int id: @param_base ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 param_lists(
@@ -685,13 +685,13 @@ path_segment_param_lists(
 #keyset[id]
 path_segment_path_types(
   int id: @path_segment ref,
-  int path_type: @path_type ref
+  int path_type: @path_type_repr ref
 );
 
 #keyset[id]
 path_segment_ret_types(
   int id: @path_segment ref,
-  int ret_type: @ret_type ref
+  int ret_type: @ret_type_repr ref
 );
 
 #keyset[id]
@@ -701,9 +701,9 @@ path_segment_return_type_syntaxes(
 );
 
 #keyset[id]
-path_segment_ties(
+path_segment_type_reprs(
   int id: @path_segment ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 record_expr_fields(
@@ -771,9 +771,9 @@ record_field_names(
 );
 
 #keyset[id]
-record_field_ties(
+record_field_type_reprs(
   int id: @record_field ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 #keyset[id]
@@ -849,14 +849,14 @@ resolvable_resolved_crate_origins(
   string resolved_crate_origin: string ref
 );
 
-ret_types(
-  unique int id: @ret_type
+ret_type_reprs(
+  unique int id: @ret_type_repr
 );
 
 #keyset[id]
-ret_type_ties(
-  int id: @ret_type ref,
-  int ty: @type_ref ref
+ret_type_repr_type_reprs(
+  int id: @ret_type_repr ref,
+  int type_repr: @type_repr ref
 );
 
 return_type_syntaxes(
@@ -931,9 +931,9 @@ tuple_field_attrs(
 );
 
 #keyset[id]
-tuple_field_ties(
+tuple_field_type_reprs(
   int id: @tuple_field ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 #keyset[id]
@@ -969,9 +969,9 @@ type_bound_lifetimes(
 );
 
 #keyset[id]
-type_bound_ties(
+type_bound_type_reprs(
   int id: @type_bound ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 type_bound_lists(
@@ -985,21 +985,21 @@ type_bound_list_bounds(
   int bound: @type_bound ref
 );
 
-@type_ref =
-  @array_type
-| @dyn_trait_type
-| @fn_ptr_type
-| @for_type
-| @impl_trait_type
-| @infer_type
-| @macro_type
-| @never_type
-| @paren_type
-| @path_type
-| @ptr_type
-| @ref_type
-| @slice_type
-| @tuple_type
+@type_repr =
+  @array_type_repr
+| @dyn_trait_type_repr
+| @fn_ptr_type_repr
+| @for_type_repr
+| @impl_trait_type_repr
+| @infer_type_repr
+| @macro_type_repr
+| @never_type_repr
+| @paren_type_repr
+| @path_type_repr
+| @ptr_type_repr
+| @ref_type_repr
+| @slice_type_repr
+| @tuple_type_repr
 ;
 
 use_trees(
@@ -1084,9 +1084,9 @@ where_pred_lifetimes(
 );
 
 #keyset[id]
-where_pred_ties(
+where_pred_type_reprs(
   int id: @where_pred ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 #keyset[id]
@@ -1095,38 +1095,43 @@ where_pred_type_bound_lists(
   int type_bound_list: @type_bound_list ref
 );
 
-array_exprs(
-  unique int id: @array_expr
+array_expr_internals(
+  unique int id: @array_expr_internal
 );
 
 #keyset[id, index]
-array_expr_attrs(
-  int id: @array_expr ref,
+array_expr_internal_attrs(
+  int id: @array_expr_internal ref,
   int index: int ref,
   int attr: @attr ref
 );
 
 #keyset[id, index]
-array_expr_exprs(
-  int id: @array_expr ref,
+array_expr_internal_exprs(
+  int id: @array_expr_internal ref,
   int index: int ref,
   int expr: @expr ref
 );
 
-array_types(
-  unique int id: @array_type
+#keyset[id]
+array_expr_internal_is_semicolon(
+  int id: @array_expr_internal ref
+);
+
+array_type_reprs(
+  unique int id: @array_type_repr
 );
 
 #keyset[id]
-array_type_const_args(
-  int id: @array_type ref,
+array_type_repr_const_args(
+  int id: @array_type_repr ref,
   int const_arg: @const_arg ref
 );
 
 #keyset[id]
-array_type_ties(
-  int id: @array_type ref,
-  int ty: @type_ref ref
+array_type_repr_element_type_reprs(
+  int id: @array_type_repr ref,
+  int element_type_repr: @type_repr ref
 );
 
 asm_exprs(
@@ -1177,7 +1182,7 @@ assoc_type_arg_param_lists(
 #keyset[id]
 assoc_type_arg_ret_types(
   int id: @assoc_type_arg ref,
-  int ret_type: @ret_type ref
+  int ret_type: @ret_type_repr ref
 );
 
 #keyset[id]
@@ -1187,9 +1192,9 @@ assoc_type_arg_return_type_syntaxes(
 );
 
 #keyset[id]
-assoc_type_arg_ties(
+assoc_type_arg_type_reprs(
   int id: @assoc_type_arg ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 #keyset[id]
@@ -1330,9 +1335,9 @@ cast_expr_exprs(
 );
 
 #keyset[id]
-cast_expr_ties(
+cast_expr_type_reprs(
   int id: @cast_expr ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 closure_exprs(
@@ -1379,7 +1384,7 @@ closure_expr_is_static(
 #keyset[id]
 closure_expr_ret_types(
   int id: @closure_expr ref,
-  int ret_type: @ret_type ref
+  int ret_type: @ret_type_repr ref
 );
 
 comments(
@@ -1442,9 +1447,9 @@ const_param_names(
 );
 
 #keyset[id]
-const_param_ties(
+const_param_type_reprs(
   int id: @const_param ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 continue_exprs(
@@ -1464,13 +1469,13 @@ continue_expr_lifetimes(
   int lifetime: @lifetime ref
 );
 
-dyn_trait_types(
-  unique int id: @dyn_trait_type
+dyn_trait_type_reprs(
+  unique int id: @dyn_trait_type_repr
 );
 
 #keyset[id]
-dyn_trait_type_type_bound_lists(
-  int id: @dyn_trait_type ref,
+dyn_trait_type_repr_type_bound_lists(
+  int id: @dyn_trait_type_repr ref,
   int type_bound_list: @type_bound_list ref
 );
 
@@ -1507,57 +1512,57 @@ field_expr_name_refs(
   int name_ref: @name_ref ref
 );
 
-fn_ptr_types(
-  unique int id: @fn_ptr_type
+fn_ptr_type_reprs(
+  unique int id: @fn_ptr_type_repr
 );
 
 #keyset[id]
-fn_ptr_type_abis(
-  int id: @fn_ptr_type ref,
+fn_ptr_type_repr_abis(
+  int id: @fn_ptr_type_repr ref,
   int abi: @abi ref
 );
 
 #keyset[id]
-fn_ptr_type_is_async(
-  int id: @fn_ptr_type ref
+fn_ptr_type_repr_is_async(
+  int id: @fn_ptr_type_repr ref
 );
 
 #keyset[id]
-fn_ptr_type_is_const(
-  int id: @fn_ptr_type ref
+fn_ptr_type_repr_is_const(
+  int id: @fn_ptr_type_repr ref
 );
 
 #keyset[id]
-fn_ptr_type_is_unsafe(
-  int id: @fn_ptr_type ref
+fn_ptr_type_repr_is_unsafe(
+  int id: @fn_ptr_type_repr ref
 );
 
 #keyset[id]
-fn_ptr_type_param_lists(
-  int id: @fn_ptr_type ref,
+fn_ptr_type_repr_param_lists(
+  int id: @fn_ptr_type_repr ref,
   int param_list: @param_list ref
 );
 
 #keyset[id]
-fn_ptr_type_ret_types(
-  int id: @fn_ptr_type ref,
-  int ret_type: @ret_type ref
+fn_ptr_type_repr_ret_types(
+  int id: @fn_ptr_type_repr ref,
+  int ret_type: @ret_type_repr ref
 );
 
-for_types(
-  unique int id: @for_type
+for_type_reprs(
+  unique int id: @for_type_repr
 );
 
 #keyset[id]
-for_type_generic_param_lists(
-  int id: @for_type ref,
+for_type_repr_generic_param_lists(
+  int id: @for_type_repr ref,
   int generic_param_list: @generic_param_list ref
 );
 
 #keyset[id]
-for_type_ties(
-  int id: @for_type ref,
-  int ty: @type_ref ref
+for_type_repr_type_reprs(
+  int id: @for_type_repr ref,
+  int type_repr: @type_repr ref
 );
 
 format_args_exprs(
@@ -1646,13 +1651,13 @@ if_expr_thens(
   int then: @block_expr ref
 );
 
-impl_trait_types(
-  unique int id: @impl_trait_type
+impl_trait_type_reprs(
+  unique int id: @impl_trait_type_repr
 );
 
 #keyset[id]
-impl_trait_type_type_bound_lists(
-  int id: @impl_trait_type ref,
+impl_trait_type_repr_type_bound_lists(
+  int id: @impl_trait_type_repr ref,
   int type_bound_list: @type_bound_list ref
 );
 
@@ -1679,8 +1684,8 @@ index_expr_indices(
   int index: @expr ref
 );
 
-infer_types(
-  unique int id: @infer_type
+infer_type_reprs(
+  unique int id: @infer_type_repr
 );
 
 @item =
@@ -1767,9 +1772,9 @@ let_stmt_pats(
 );
 
 #keyset[id]
-let_stmt_ties(
+let_stmt_type_reprs(
   int id: @let_stmt ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 lifetime_args(
@@ -1852,13 +1857,13 @@ macro_pat_macro_calls(
   int macro_call: @macro_call ref
 );
 
-macro_types(
-  unique int id: @macro_type
+macro_type_reprs(
+  unique int id: @macro_type_repr
 );
 
 #keyset[id]
-macro_type_macro_calls(
-  int id: @macro_type ref,
+macro_type_repr_macro_calls(
+  int id: @macro_type_repr ref,
   int macro_call: @macro_call ref
 );
 
@@ -1885,8 +1890,8 @@ match_expr_match_arm_lists(
   int match_arm_list: @match_arm_list ref
 );
 
-never_types(
-  unique int id: @never_type
+never_type_reprs(
+  unique int id: @never_type_repr
 );
 
 offset_of_exprs(
@@ -1908,9 +1913,9 @@ offset_of_expr_fields(
 );
 
 #keyset[id]
-offset_of_expr_ties(
+offset_of_expr_type_reprs(
   int id: @offset_of_expr ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 or_pats(
@@ -1961,14 +1966,14 @@ paren_pat_pats(
   int pat: @pat ref
 );
 
-paren_types(
-  unique int id: @paren_type
+paren_type_reprs(
+  unique int id: @paren_type_repr
 );
 
 #keyset[id]
-paren_type_ties(
-  int id: @paren_type ref,
-  int ty: @type_ref ref
+paren_type_repr_type_reprs(
+  int id: @paren_type_repr ref,
+  int type_repr: @type_repr ref
 );
 
 paths(
@@ -2001,13 +2006,13 @@ path_pat_paths(
   int path: @path ref
 );
 
-path_types(
-  unique int id: @path_type
+path_type_reprs(
+  unique int id: @path_type_repr
 );
 
 #keyset[id]
-path_type_paths(
-  int id: @path_type ref,
+path_type_repr_paths(
+  int id: @path_type_repr ref,
   int path: @path ref
 );
 
@@ -2034,24 +2039,24 @@ prefix_expr_operator_names(
   string operator_name: string ref
 );
 
-ptr_types(
-  unique int id: @ptr_type
+ptr_type_reprs(
+  unique int id: @ptr_type_repr
 );
 
 #keyset[id]
-ptr_type_is_const(
-  int id: @ptr_type ref
+ptr_type_repr_is_const(
+  int id: @ptr_type_repr ref
 );
 
 #keyset[id]
-ptr_type_is_mut(
-  int id: @ptr_type ref
+ptr_type_repr_is_mut(
+  int id: @ptr_type_repr ref
 );
 
 #keyset[id]
-ptr_type_ties(
-  int id: @ptr_type ref,
-  int ty: @type_ref ref
+ptr_type_repr_type_reprs(
+  int id: @ptr_type_repr ref,
+  int type_repr: @type_repr ref
 );
 
 range_exprs(
@@ -2195,25 +2200,25 @@ ref_pat_pats(
   int pat: @pat ref
 );
 
-ref_types(
-  unique int id: @ref_type
+ref_type_reprs(
+  unique int id: @ref_type_repr
 );
 
 #keyset[id]
-ref_type_is_mut(
-  int id: @ref_type ref
+ref_type_repr_is_mut(
+  int id: @ref_type_repr ref
 );
 
 #keyset[id]
-ref_type_lifetimes(
-  int id: @ref_type ref,
+ref_type_repr_lifetimes(
+  int id: @ref_type_repr ref,
   int lifetime: @lifetime ref
 );
 
 #keyset[id]
-ref_type_ties(
-  int id: @ref_type ref,
-  int ty: @type_ref ref
+ref_type_repr_type_reprs(
+  int id: @ref_type_repr ref,
+  int type_repr: @type_repr ref
 );
 
 rest_pats(
@@ -2276,14 +2281,14 @@ slice_pat_pats(
   int pat: @pat ref
 );
 
-slice_types(
-  unique int id: @slice_type
+slice_type_reprs(
+  unique int id: @slice_type_repr
 );
 
 #keyset[id]
-slice_type_ties(
-  int id: @slice_type ref,
-  int ty: @type_ref ref
+slice_type_repr_type_reprs(
+  int id: @slice_type_repr ref,
+  int type_repr: @type_repr ref
 );
 
 try_exprs(
@@ -2360,15 +2365,15 @@ tuple_struct_pat_paths(
   int path: @path ref
 );
 
-tuple_types(
-  unique int id: @tuple_type
+tuple_type_reprs(
+  unique int id: @tuple_type_repr
 );
 
 #keyset[id, index]
-tuple_type_fields(
-  int id: @tuple_type ref,
+tuple_type_repr_fields(
+  int id: @tuple_type_repr ref,
   int index: int ref,
-  int field: @type_ref ref
+  int field: @type_repr ref
 );
 
 type_args(
@@ -2376,9 +2381,9 @@ type_args(
 );
 
 #keyset[id]
-type_arg_ties(
+type_arg_type_reprs(
   int id: @type_arg ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 type_params(
@@ -2395,7 +2400,7 @@ type_param_attrs(
 #keyset[id]
 type_param_default_types(
   int id: @type_param ref,
-  int default_type: @type_ref ref
+  int default_type: @type_repr ref
 );
 
 #keyset[id]
@@ -2585,9 +2590,9 @@ const_names(
 );
 
 #keyset[id]
-const_ties(
+const_type_reprs(
   int id: @const ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 #keyset[id]
@@ -2750,7 +2755,7 @@ function_names(
 #keyset[id]
 function_ret_types(
   int id: @function ref,
-  int ret_type: @ret_type ref
+  int ret_type: @ret_type_repr ref
 );
 
 #keyset[id]
@@ -2806,13 +2811,13 @@ impl_is_unsafe(
 #keyset[id]
 impl_self_ties(
   int id: @impl ref,
-  int self_ty: @type_ref ref
+  int self_ty: @type_repr ref
 );
 
 #keyset[id]
 impl_traits(
   int id: @impl ref,
-  int trait: @type_ref ref
+  int trait: @type_repr ref
 );
 
 #keyset[id]
@@ -3034,9 +3039,9 @@ static_names(
 );
 
 #keyset[id]
-static_ties(
+static_type_reprs(
   int id: @static ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 #keyset[id]
@@ -3213,9 +3218,9 @@ type_alias_names(
 );
 
 #keyset[id]
-type_alias_ties(
+type_alias_type_reprs(
   int id: @type_alias ref,
-  int ty: @type_ref ref
+  int type_repr: @type_repr ref
 );
 
 #keyset[id]

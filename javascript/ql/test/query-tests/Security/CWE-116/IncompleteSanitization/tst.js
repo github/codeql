@@ -328,3 +328,40 @@ function incompleteComplexSanitizers() {
 			return "&quot;";
 	}) + '"';
 }
+
+function typicalBadHtmlSanitizers(s) {
+	s().replace(new RegExp("[<>]", "g"),''); // NOT OK
+}
+
+function typicalBadHtmlSanitizers(s) {
+	s().replace(new RegExp("[<>]", unknown()),''); // NOT OK
+}
+
+function bad18NewRegExp(p) {
+	return p.replace(new RegExp("\\.\\./"), ""); // NOT OK
+}
+
+function bad4NewRegExpG(s) {
+	return s.replace(new RegExp("\'","g"), "\\$&"); // NOT OK
+}
+
+function bad4NewRegExp(s) {
+	return s.replace(new RegExp("\'"), "\\$&"); // NOT OK
+}
+
+function bad4NewRegExpUnknown(s) {
+	return s.replace(new RegExp("\'", unknownFlags()), "\\$&"); // NOT OK
+}
+
+function newlinesNewReGexp(s) {
+	require("child_process").execSync("which emacs").toString().replace(new RegExp("\n"), ""); // OK
+
+	x.replace(new RegExp("\n", "g"), "").replace(x, y); // OK
+	x.replace(x, y).replace(new RegExp("\n", "g"), ""); // OK
+
+	x.replace(new RegExp("\n"), "").replace(x, y); // NOT OK
+	x.replace(x, y).replace(new RegExp("\n"), ""); // NOT OK
+
+	x.replace(new RegExp("\n", unknownFlags()), "").replace(x, y); // OK
+	x.replace(x, y).replace(new RegExp("\n", unknownFlags()), ""); // OK
+}

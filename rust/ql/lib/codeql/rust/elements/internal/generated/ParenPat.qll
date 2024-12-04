@@ -26,7 +26,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ParenPat" }
 
     /**
-     * Gets the pat of this paren pat, if it exists.
+     * Gets the pattern of this paren pattern, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertParenPatToRaw(this).(Raw::ParenPat).getPat())

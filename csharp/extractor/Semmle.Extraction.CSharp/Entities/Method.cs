@@ -101,7 +101,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            if (Symbol.OverriddenMethod is not null)
+            if (Symbol.OverriddenMethod is not null && Symbol.OverriddenMethod.ShouldExtractSymbol())
             {
                 trapFile.overrides(this, Method.Create(Context, Symbol.OverriddenMethod));
             }
