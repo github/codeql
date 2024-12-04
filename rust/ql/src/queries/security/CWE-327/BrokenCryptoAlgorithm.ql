@@ -11,7 +11,15 @@
  */
 
 import rust
+import codeql.rust.Concepts
 
-from int i
-where none()
-select i
+from Cryptography::CryptographicOperation operation, string msgPrefix
+where
+  exists(Cryptography::EncryptionAlgorithm algorithm | algorithm = operation.getAlgorithm() |
+    algorithm.isWeak() and
+    msgPrefix = "The cryptographic algorithm " + algorithm.getName()
+  )
+  or
+  operation.getBlockMode().isWeak() and msgPrefix = "The block mode " + operation.getBlockMode()
+select operation, "$@ is broken or weak, and should not be used.", operation.getInitialization(),
+  msgPrefix

@@ -172,3 +172,32 @@ module SqlSanitization {
    */
   abstract class Range extends DataFlow::Node { }
 }
+
+/**
+ * Provides models for cryptographic things.
+ */
+module Cryptography {
+  private import codeql.rust.internal.ConceptsShared::Cryptography as SC
+
+  /**
+   * A data-flow node that is an application of a cryptographic algorithm. For example,
+   * encryption, decryption, signature-validation.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `CryptographicOperation::Range` instead.
+   */
+  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range
+  { }
+
+  class EncryptionAlgorithm = SC::EncryptionAlgorithm;
+
+  class HashingAlgorithm = SC::HashingAlgorithm;
+
+  class PasswordHashingAlgorithm = SC::PasswordHashingAlgorithm;
+
+  module CryptographicOperation = SC::CryptographicOperation;
+
+  class BlockMode = SC::BlockMode;
+
+  class CryptographicAlgorithm = SC::CryptographicAlgorithm;
+}
