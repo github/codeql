@@ -3795,6 +3795,7 @@ OLD: KE1
     abstract inner class StmtExprParent(val callable: Label<out DbCallable>) {
         abstract fun stmt(e: KtExpression): StmtParent
         abstract fun expr(e: KtExpression): ExprParent
+        abstract fun makeError()
     }
 
     inner class StmtParent(val parent: Label<out DbStmtparent>, val idx: Int, callable: Label<out DbCallable>) : StmtExprParent(callable) {
@@ -3804,6 +3805,11 @@ OLD: KE1
             extractExpressionStmt(tw.getLocation(e), parent, idx, callable).let { id ->
                 ExprParent(id, 0, id, callable)
             }
+
+        override fun makeError() {
+            val id = tw.getFreshIdLabel<DbErrorstmt>()
+            tw.writeStmts_errorstmt(id, parent, idx, callable)
+        }
     }
 
     inner class ExprParent(
@@ -3825,6 +3831,15 @@ OLD: KE1
 
         override fun expr(e: KtExpression): ExprParent {
             return this
+        }
+
+        override fun makeError() {
+            val id = tw.getFreshIdLabel<DbErrorexpr>()
+            val type = useType(null)
+
+            tw.writeExprs_errorexpr(id, type.javaResult.id, parent, idx)
+            tw.writeExprsKotlinType(id, type.kotlinResult.id)
+            extractExprContext(id, tw.getWholeFileLocation(), callable, enclosingStmt)
         }
     }
 
