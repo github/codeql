@@ -23,7 +23,7 @@ fn coerce(_i: i64) -> i64 {
 
 fn test_coerce() {
     let s = source(14);
-    sink(coerce(s)); // $ MISSING: hasTaintFlow=14
+    sink(coerce(s)); // $ hasTaintFlow=14
 }
 
 enum MyPosEnum {

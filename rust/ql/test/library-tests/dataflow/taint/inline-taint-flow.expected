@@ -1,6 +1,18 @@
 models
 edges
+| main.rs:12:13:12:22 | source(...) | main.rs:13:10:13:14 | ... + ... | provenance |  |
+| main.rs:17:13:17:22 | source(...) | main.rs:18:10:18:11 | - ... | provenance |  |
+| main.rs:22:13:22:22 | source(...) | main.rs:24:10:24:17 | b as i64 | provenance |  |
 nodes
+| main.rs:12:13:12:22 | source(...) | semmle.label | source(...) |
+| main.rs:13:10:13:14 | ... + ... | semmle.label | ... + ... |
+| main.rs:17:13:17:22 | source(...) | semmle.label | source(...) |
+| main.rs:18:10:18:11 | - ... | semmle.label | - ... |
+| main.rs:22:13:22:22 | source(...) | semmle.label | source(...) |
+| main.rs:24:10:24:17 | b as i64 | semmle.label | b as i64 |
 subpaths
 testFailures
 #select
+| main.rs:13:10:13:14 | ... + ... | main.rs:12:13:12:22 | source(...) | main.rs:13:10:13:14 | ... + ... | $@ | main.rs:12:13:12:22 | source(...) | source(...) |
+| main.rs:18:10:18:11 | - ... | main.rs:17:13:17:22 | source(...) | main.rs:18:10:18:11 | - ... | $@ | main.rs:17:13:17:22 | source(...) | source(...) |
+| main.rs:24:10:24:17 | b as i64 | main.rs:22:13:22:22 | source(...) | main.rs:24:10:24:17 | b as i64 | $@ | main.rs:22:13:22:22 | source(...) | source(...) |

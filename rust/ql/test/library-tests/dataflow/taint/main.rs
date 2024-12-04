@@ -10,18 +10,18 @@ fn sink(s: i64) {
 
 fn addition() {
     let a = source(42);
-    sink(a + 1); // $ MISSING: hasTaintFlow=42
+    sink(a + 1); // $ hasTaintFlow=42
 }
 
 fn negation() {
     let a = source(17);
-    sink(-a); // $ MISSING: hasTaintFlow=17
+    sink(-a); // $ hasTaintFlow=17
 }
 
 fn cast() {
     let a = source(77);
     let b = a as u8;
-    sink(b as i64); // $ MISSING: hasTaintFlow=77
+    sink(b as i64); // $ hasTaintFlow=77
 }
 
 mod string {
