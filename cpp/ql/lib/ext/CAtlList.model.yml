@@ -12,4 +12,4 @@ extensions:
       - ["", "CAtlList", True, "GetTail", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
       - ["", "CAtlList", True, "InsertAfter", "", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
       - ["", "CAtlList", True, "InsertBefore", "", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
-      - ["", "CAtlList", True, "SetAt", "", "", "Argument[*@1]", "Argument[-1].Element[@]", "taint", "manual"]
+      - ["", "CAtlList", True, "SetAt", "", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
