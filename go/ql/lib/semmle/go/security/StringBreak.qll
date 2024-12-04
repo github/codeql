@@ -13,27 +13,6 @@ import go
 module StringBreak {
   import StringBreakCustomizations::StringBreak
 
-  /**
-   * DEPRECATED: Use `Flow` instead.
-   *
-   * A taint-tracking configuration for reasoning about unsafe-quoting vulnerabilities,
-   * parameterized with the type of quote being tracked.
-   */
-  deprecated class Configuration extends TaintTracking::Configuration {
-    Quote quote;
-
-    Configuration() { this = "StringBreak" + quote }
-
-    /** Gets the type of quote being tracked by this configuration. */
-    Quote getQuote() { result = quote }
-
-    override predicate isSource(DataFlow::Node nd) { nd instanceof Source }
-
-    override predicate isSink(DataFlow::Node nd) { quote = nd.(Sink).getQuote() }
-
-    override predicate isSanitizer(DataFlow::Node nd) { quote = nd.(Sanitizer).getQuote() }
-  }
-
   private module Config implements DataFlow::StateConfigSig {
     /** The flow state that we track is the type of quote used. */
     class FlowState = Quote;
