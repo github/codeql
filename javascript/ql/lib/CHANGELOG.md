@@ -10,8 +10,8 @@
 
 * Added taint-steps for `String.prototype.toWellFormed`.
 * Added taint-steps for `Map.groupBy` and `Object.groupBy`.
-* Added taint-steps for `Array.prototype.findLast`  
-* Added taint-steps for `Array.prototype.findLastIndex`
+* Added taint-steps for `Array.prototype.findLast`.
+* Added taint-steps for `Array.prototype.findLastIndex`.
 
 ## 2.1.1
 
