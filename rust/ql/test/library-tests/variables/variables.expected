@@ -1,5 +1,4 @@
 testFailures
-failures
 variable
 | variables.rs:3:14:3:14 | s |
 | variables.rs:7:14:7:14 | i |
