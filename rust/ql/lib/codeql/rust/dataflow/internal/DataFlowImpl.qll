@@ -984,11 +984,12 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr() = tuple
       )
       or
-      exists(ArrayExprCfgNode arr |
-        c instanceof ArrayElementContent and
-        node1.asExpr() = arr.getAnExpr() and
-        node2.asExpr() = arr
-      )
+      c instanceof ArrayElementContent and
+      node1.asExpr() =
+        [
+          node2.asExpr().(ArrayRepeatExprCfgNode).getRepeatOperand(),
+          node2.asExpr().(ArrayListExprCfgNode).getAnExpr()
+        ]
       or
       tupleAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
       or
