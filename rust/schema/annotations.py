@@ -550,15 +550,45 @@ class _:
     """
 
 
-@annotate(ArrayExpr, cfg = True)
+@annotate(ArrayExprInternal)
+@ql.internal
+@qltest.skip
 class _:
+    pass
+
+class ArrayExpr(Expr):
     """
-    An array expression. For example:
+    The base class for array expressions. For example:
     ```rust
     [1, 2, 3];
     [1; 10];
     ```
     """
+    exprs: list[Expr] | child
+    attrs: list[Attr] | child
+
+@synth.from_class(ArrayExprInternal)
+class ArrayListExpr(ArrayExpr):
+    """
+    An array expression with a list of elements. For example:
+    ```rust
+    [1, 2, 3];
+    ```
+    """
+    __cfg__ = True
+
+@synth.from_class(ArrayExprInternal)
+class ArrayRepeatExpr(ArrayExpr):
+    """
+    An array expression with a repeat operand and a repeat length. For example:
+    ```rust
+    [1; 10];
+    ```
+    """
+    __cfg__ = True
+
+    repeat_operand: Expr | child
+    repeat_length: Expr | child
 
 
 @annotate(LiteralExpr, cfg = True)

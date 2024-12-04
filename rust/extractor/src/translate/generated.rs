@@ -198,16 +198,18 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_array_expr(&mut self, node: ast::ArrayExpr) -> Label<generated::ArrayExpr> {
+    pub(crate) fn emit_array_expr(&mut self, node: ast::ArrayExpr) -> Label<generated::ArrayExprInternal> {
         let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
         let exprs = node.exprs().map(|x| self.emit_expr(x)).collect();
-        let label = self.trap.emit(generated::ArrayExpr {
+        let is_semicolon = node.semicolon_token().is_some();
+        let label = self.trap.emit(generated::ArrayExprInternal {
             id: TrapId::Star,
             attrs,
             exprs,
+            is_semicolon,
         });
         self.emit_location(label, &node);
-        emit_detached!(ArrayExpr, self, node, label);
+        emit_detached!(ArrayExprInternal, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }

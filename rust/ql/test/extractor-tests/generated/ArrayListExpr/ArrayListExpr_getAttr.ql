@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from ArrayExpr x, int index
+from ArrayListExpr x, int index
 where toBeTested(x) and not x.isUnknown()
 select x, index, x.getAttr(index)
