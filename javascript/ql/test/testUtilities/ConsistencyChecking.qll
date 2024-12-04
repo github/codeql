@@ -46,10 +46,10 @@ deprecated final private class Conf extends string {
 }
 
 /**
- * A line-comment that asserts whether a result exists at that line or not.
+ * A comment that asserts whether a result exists at that line or not.
  * Can optionally include `[INCONSISTENCY]` to indicate that a consistency issue is expected at the location
  */
-private class AssertionComment extends LineComment {
+private class AssertionComment extends Comment {
   boolean shouldHaveAlert;
 
   AssertionComment() {
