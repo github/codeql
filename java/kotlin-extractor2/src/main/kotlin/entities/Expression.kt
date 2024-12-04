@@ -595,9 +595,14 @@ fun KotlinFileExtractor.drillIntoParenthesizedExpression(expr: KtExpression): Pa
 
 context(KaSession)
 private fun KotlinFileExtractor.extractExpression(
-    e: KtExpression,
+    e: KtExpression?,
     parent: StmtExprParent
 ): Label<out DbExpr>? {
+    if (e == null) {
+        parent.makeError()
+        return null // TODO: Should return the ID of the error
+    }
+
     with("expression", e) {
         when (e) {
             is KtParenthesizedExpression -> {
