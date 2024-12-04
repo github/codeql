@@ -1423,6 +1423,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         private class TypOption = TypOption::Option;
 
+        private string ppStored(TypOption stored) {
+          exists(string ppt | ppt = stored.toString() |
+            if stored.isNone() or ppt = "" then result = "" else result = " : " + ppt
+          )
+        }
+
         /* Begin: Stage logic. */
         pragma[nomagic]
         private Typ getNodeTyp(NodeEx node) {
@@ -1604,14 +1610,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           private string ppTyp() { result = t.toString() and result != "" }
 
-          private string ppStored() {
-            exists(string ppt | ppt = stored.toString() |
-              if stored.isNone() or ppt = "" then result = "" else result = " : " + ppt
-            )
-          }
-
           override string toString() {
-            result = p + concat(" : " + this.ppTyp()) + " " + ap + this.ppStored()
+            result = p + concat(" : " + this.ppTyp()) + " " + ap + ppStored(stored)
           }
 
           override Location getLocation() { result = p.getLocation() }
@@ -3050,12 +3050,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               )
             }
 
-            private string ppStored() {
-              exists(string ppt | ppt = stored.toString() |
-                if stored.isNone() or ppt = "" then result = "" else result = " : " + ppt
-              )
-            }
-
             private string ppCtx() { result = " <" + cc + ">" }
 
             private string ppSummaryCtx() {
@@ -3066,7 +3060,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             }
 
             override string toString() {
-              result = node.toString() + this.ppType() + this.ppAp() + this.ppStored()
+              result = node.toString() + this.ppType() + this.ppAp() + ppStored(stored)
             }
 
             /**
@@ -3075,7 +3069,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
              */
             string toStringWithContext() {
               result =
-                node.toString() + this.ppType() + this.ppAp() + this.ppStored() + this.ppCtx() +
+                node.toString() + this.ppType() + this.ppAp() + ppStored(stored) + this.ppCtx() +
                   this.ppSummaryCtx()
             }
 
