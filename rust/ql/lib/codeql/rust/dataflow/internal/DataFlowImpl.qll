@@ -843,8 +843,10 @@ module RustDataFlow implements InputSig<Location> {
 
   /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
   predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-    exists(Expr cl | cl = creation.asExpr().getExpr() and cl = c.asCfgScope() |
-      cl instanceof ClosureExpr or cl instanceof AsyncBlockExpr
+    exists(Expr cl |
+      cl = creation.asExpr().getExpr() and
+      cl = c.asCfgScope() and
+      cl instanceof ClosureExpr
     ) and
     exists(kind)
   }
