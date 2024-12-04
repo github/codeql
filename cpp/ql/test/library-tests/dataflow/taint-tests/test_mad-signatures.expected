@@ -3,6 +3,8 @@ signatureMatches
 | atl.cpp:69:3:69:15 | _U_STRINGorID | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:70:3:70:15 | _U_STRINGorID | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:257:3:257:10 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:257:3:257:10 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:257:3:257:10 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:257:3:257:10 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:411:3:411:10 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:411:3:411:10 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 1 |
@@ -543,19 +545,34 @@ getParameterTypeName
 | atl.cpp:209:8:209:16 | SetAtGrow | 1 | INARGTYPclass:0 |
 | atl.cpp:211:6:211:15 | operator[] | 0 | size_t |
 | atl.cpp:257:3:257:10 | CAtlList | 0 | UINT |
+| atl.cpp:257:3:257:10 | CAtlList | 0 | UINT |
+| atl.cpp:260:12:260:18 | AddHead | 0 | INARGTYPclass:0 |
 | atl.cpp:260:12:260:18 | AddHead | 0 | INARGTYPclass:0 |
 | atl.cpp:261:8:261:18 | AddHeadList | 0 | const CAtlList * |
+| atl.cpp:261:8:261:18 | AddHeadList | 0 | const CAtlList * |
+| atl.cpp:263:12:263:18 | AddTail | 0 | INARGTYPclass:0 |
 | atl.cpp:263:12:263:18 | AddTail | 0 | INARGTYPclass:0 |
 | atl.cpp:264:8:264:18 | AddTailList | 0 | const CAtlList * |
+| atl.cpp:264:8:264:18 | AddTailList | 0 | const CAtlList * |
+| atl.cpp:265:12:265:15 | Find | 0 | INARGTYPclass:0 |
 | atl.cpp:265:12:265:15 | Find | 0 | INARGTYPclass:0 |
 | atl.cpp:265:12:265:15 | Find | 1 | POSITION |
+| atl.cpp:265:12:265:15 | Find | 1 | POSITION |
+| atl.cpp:266:12:266:20 | FindIndex | 0 | size_t |
 | atl.cpp:266:12:266:20 | FindIndex | 0 | size_t |
 | atl.cpp:267:6:267:10 | GetAt | 0 | POSITION |
+| atl.cpp:267:6:267:10 | GetAt | 0 | POSITION |
+| atl.cpp:280:12:280:22 | InsertAfter | 0 | POSITION |
 | atl.cpp:280:12:280:22 | InsertAfter | 0 | POSITION |
 | atl.cpp:280:12:280:22 | InsertAfter | 1 | INARGTYPclass:0 |
+| atl.cpp:280:12:280:22 | InsertAfter | 1 | INARGTYPclass:0 |
+| atl.cpp:281:12:281:23 | InsertBefore | 0 | POSITION |
 | atl.cpp:281:12:281:23 | InsertBefore | 0 | POSITION |
 | atl.cpp:281:12:281:23 | InsertBefore | 1 | INARGTYPclass:0 |
+| atl.cpp:281:12:281:23 | InsertBefore | 1 | INARGTYPclass:0 |
 | atl.cpp:291:8:291:12 | SetAt | 0 | POSITION |
+| atl.cpp:291:8:291:12 | SetAt | 0 | POSITION |
+| atl.cpp:291:8:291:12 | SetAt | 1 | INARGTYPclass:0 |
 | atl.cpp:291:8:291:12 | SetAt | 1 | INARGTYPclass:0 |
 | atl.cpp:401:8:401:8 | operator= | 0 | IUnknown && |
 | atl.cpp:401:8:401:8 | operator= | 0 | const IUnknown & |

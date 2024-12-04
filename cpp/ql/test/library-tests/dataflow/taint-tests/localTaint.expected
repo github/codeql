@@ -299,13 +299,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:296:11:296:21 | call to source | atl.cpp:331:30:331:30 | x |  |
 | atl.cpp:296:11:296:21 | call to source | atl.cpp:338:31:338:31 | x |  |
 | atl.cpp:296:11:296:21 | call to source | atl.cpp:343:44:343:44 | x |  |
-| atl.cpp:296:11:296:21 | call to source | atl.cpp:352:18:352:18 | x |  |
-| atl.cpp:296:11:296:21 | call to source | atl.cpp:360:19:360:19 | x |  |
-| atl.cpp:296:11:296:21 | call to source | atl.cpp:369:29:369:29 | x |  |
-| atl.cpp:296:11:296:21 | call to source | atl.cpp:375:21:375:21 | x |  |
-| atl.cpp:296:11:296:21 | call to source | atl.cpp:383:30:383:30 | x |  |
-| atl.cpp:296:11:296:21 | call to source | atl.cpp:390:31:390:31 | x |  |
-| atl.cpp:296:11:296:21 | call to source | atl.cpp:395:44:395:44 | x |  |
 | atl.cpp:298:24:298:25 | 10 | atl.cpp:298:24:298:26 | call to CAtlList | TAINT |
 | atl.cpp:298:24:298:26 | call to CAtlList | atl.cpp:299:10:299:13 | list |  |
 | atl.cpp:298:24:298:26 | call to CAtlList | atl.cpp:300:5:300:8 | list |  |
@@ -406,12 +399,19 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:343:19:343:23 | ref arg list9 | atl.cpp:344:12:344:16 | list9 |  |
 | atl.cpp:343:19:343:23 | ref arg list9 | atl.cpp:345:5:345:5 | list9 |  |
 | atl.cpp:344:12:344:16 | ref arg list9 | atl.cpp:345:5:345:5 | list9 |  |
-| atl.cpp:350:24:350:25 | 10 | atl.cpp:350:24:350:26 | call to CAtlList | TAINT |
-| atl.cpp:350:24:350:26 | call to CAtlList | atl.cpp:351:10:351:13 | list |  |
-| atl.cpp:350:24:350:26 | call to CAtlList | atl.cpp:352:5:352:8 | list |  |
-| atl.cpp:350:24:350:26 | call to CAtlList | atl.cpp:353:10:353:13 | list |  |
-| atl.cpp:350:24:350:26 | call to CAtlList | atl.cpp:356:24:356:27 | list |  |
-| atl.cpp:350:24:350:26 | call to CAtlList | atl.cpp:398:3:398:3 | list |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:352:18:352:18 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:360:19:360:19 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:369:29:369:29 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:375:21:375:21 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:383:30:383:30 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:390:31:390:31 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:395:44:395:44 | p |  |
+| atl.cpp:350:25:350:26 | 10 | atl.cpp:350:25:350:27 | call to CAtlList | TAINT |
+| atl.cpp:350:25:350:27 | call to CAtlList | atl.cpp:351:10:351:13 | list |  |
+| atl.cpp:350:25:350:27 | call to CAtlList | atl.cpp:352:5:352:8 | list |  |
+| atl.cpp:350:25:350:27 | call to CAtlList | atl.cpp:353:10:353:13 | list |  |
+| atl.cpp:350:25:350:27 | call to CAtlList | atl.cpp:356:24:356:27 | list |  |
+| atl.cpp:350:25:350:27 | call to CAtlList | atl.cpp:398:3:398:3 | list |  |
 | atl.cpp:351:10:351:13 | ref arg list | atl.cpp:352:5:352:8 | list |  |
 | atl.cpp:351:10:351:13 | ref arg list | atl.cpp:353:10:353:13 | list |  |
 | atl.cpp:351:10:351:13 | ref arg list | atl.cpp:356:24:356:27 | list |  |
@@ -421,37 +421,37 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:352:5:352:8 | ref arg list | atl.cpp:398:3:398:3 | list |  |
 | atl.cpp:353:10:353:13 | ref arg list | atl.cpp:356:24:356:27 | list |  |
 | atl.cpp:353:10:353:13 | ref arg list | atl.cpp:398:3:398:3 | list |  |
-| atl.cpp:355:25:355:26 | 10 | atl.cpp:355:25:355:27 | call to CAtlList | TAINT |
-| atl.cpp:355:25:355:27 | call to CAtlList | atl.cpp:356:5:356:9 | list2 |  |
-| atl.cpp:355:25:355:27 | call to CAtlList | atl.cpp:357:10:357:14 | list2 |  |
-| atl.cpp:355:25:355:27 | call to CAtlList | atl.cpp:398:3:398:3 | list2 |  |
+| atl.cpp:355:26:355:27 | 10 | atl.cpp:355:26:355:28 | call to CAtlList | TAINT |
+| atl.cpp:355:26:355:28 | call to CAtlList | atl.cpp:356:5:356:9 | list2 |  |
+| atl.cpp:355:26:355:28 | call to CAtlList | atl.cpp:357:10:357:14 | list2 |  |
+| atl.cpp:355:26:355:28 | call to CAtlList | atl.cpp:398:3:398:3 | list2 |  |
 | atl.cpp:356:5:356:9 | ref arg list2 | atl.cpp:357:10:357:14 | list2 |  |
 | atl.cpp:356:5:356:9 | ref arg list2 | atl.cpp:398:3:398:3 | list2 |  |
 | atl.cpp:356:24:356:27 | list | atl.cpp:356:23:356:27 | & ... |  |
 | atl.cpp:357:10:357:14 | ref arg list2 | atl.cpp:398:3:398:3 | list2 |  |
-| atl.cpp:359:25:359:26 | 10 | atl.cpp:359:25:359:27 | call to CAtlList | TAINT |
-| atl.cpp:359:25:359:27 | call to CAtlList | atl.cpp:360:5:360:9 | list3 |  |
-| atl.cpp:359:25:359:27 | call to CAtlList | atl.cpp:361:10:361:14 | list3 |  |
-| atl.cpp:359:25:359:27 | call to CAtlList | atl.cpp:364:24:364:28 | list3 |  |
-| atl.cpp:359:25:359:27 | call to CAtlList | atl.cpp:398:3:398:3 | list3 |  |
+| atl.cpp:359:26:359:27 | 10 | atl.cpp:359:26:359:28 | call to CAtlList | TAINT |
+| atl.cpp:359:26:359:28 | call to CAtlList | atl.cpp:360:5:360:9 | list3 |  |
+| atl.cpp:359:26:359:28 | call to CAtlList | atl.cpp:361:10:361:14 | list3 |  |
+| atl.cpp:359:26:359:28 | call to CAtlList | atl.cpp:364:24:364:28 | list3 |  |
+| atl.cpp:359:26:359:28 | call to CAtlList | atl.cpp:398:3:398:3 | list3 |  |
 | atl.cpp:360:5:360:9 | ref arg list3 | atl.cpp:361:10:361:14 | list3 |  |
 | atl.cpp:360:5:360:9 | ref arg list3 | atl.cpp:364:24:364:28 | list3 |  |
 | atl.cpp:360:5:360:9 | ref arg list3 | atl.cpp:398:3:398:3 | list3 |  |
 | atl.cpp:361:10:361:14 | ref arg list3 | atl.cpp:364:24:364:28 | list3 |  |
 | atl.cpp:361:10:361:14 | ref arg list3 | atl.cpp:398:3:398:3 | list3 |  |
-| atl.cpp:363:25:363:26 | 10 | atl.cpp:363:25:363:27 | call to CAtlList | TAINT |
-| atl.cpp:363:25:363:27 | call to CAtlList | atl.cpp:364:5:364:9 | list4 |  |
-| atl.cpp:363:25:363:27 | call to CAtlList | atl.cpp:365:10:365:14 | list4 |  |
-| atl.cpp:363:25:363:27 | call to CAtlList | atl.cpp:398:3:398:3 | list4 |  |
+| atl.cpp:363:26:363:27 | 10 | atl.cpp:363:26:363:28 | call to CAtlList | TAINT |
+| atl.cpp:363:26:363:28 | call to CAtlList | atl.cpp:364:5:364:9 | list4 |  |
+| atl.cpp:363:26:363:28 | call to CAtlList | atl.cpp:365:10:365:14 | list4 |  |
+| atl.cpp:363:26:363:28 | call to CAtlList | atl.cpp:398:3:398:3 | list4 |  |
 | atl.cpp:364:5:364:9 | ref arg list4 | atl.cpp:365:10:365:14 | list4 |  |
 | atl.cpp:364:5:364:9 | ref arg list4 | atl.cpp:398:3:398:3 | list4 |  |
 | atl.cpp:364:24:364:28 | list3 | atl.cpp:364:23:364:28 | & ... |  |
 | atl.cpp:365:10:365:14 | ref arg list4 | atl.cpp:398:3:398:3 | list4 |  |
-| atl.cpp:368:27:368:28 | 10 | atl.cpp:368:27:368:29 | call to CAtlList | TAINT |
-| atl.cpp:368:27:368:29 | call to CAtlList | atl.cpp:369:18:369:22 | list5 |  |
-| atl.cpp:368:27:368:29 | call to CAtlList | atl.cpp:369:32:369:36 | list5 |  |
-| atl.cpp:368:27:368:29 | call to CAtlList | atl.cpp:370:12:370:16 | list5 |  |
-| atl.cpp:368:27:368:29 | call to CAtlList | atl.cpp:371:5:371:5 | list5 |  |
+| atl.cpp:368:28:368:29 | 10 | atl.cpp:368:28:368:30 | call to CAtlList | TAINT |
+| atl.cpp:368:28:368:30 | call to CAtlList | atl.cpp:369:18:369:22 | list5 |  |
+| atl.cpp:368:28:368:30 | call to CAtlList | atl.cpp:369:32:369:36 | list5 |  |
+| atl.cpp:368:28:368:30 | call to CAtlList | atl.cpp:370:12:370:16 | list5 |  |
+| atl.cpp:368:28:368:30 | call to CAtlList | atl.cpp:371:5:371:5 | list5 |  |
 | atl.cpp:369:18:369:22 | ref arg list5 | atl.cpp:370:12:370:16 | list5 |  |
 | atl.cpp:369:18:369:22 | ref arg list5 | atl.cpp:371:5:371:5 | list5 |  |
 | atl.cpp:369:24:369:27 | call to Find | atl.cpp:370:24:370:26 | pos |  |
@@ -459,11 +459,11 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:369:32:369:36 | ref arg list5 | atl.cpp:370:12:370:16 | list5 |  |
 | atl.cpp:369:32:369:36 | ref arg list5 | atl.cpp:371:5:371:5 | list5 |  |
 | atl.cpp:370:12:370:16 | ref arg list5 | atl.cpp:371:5:371:5 | list5 |  |
-| atl.cpp:374:27:374:28 | 10 | atl.cpp:374:27:374:29 | call to CAtlList | TAINT |
-| atl.cpp:374:27:374:29 | call to CAtlList | atl.cpp:375:7:375:11 | list6 |  |
-| atl.cpp:374:27:374:29 | call to CAtlList | atl.cpp:376:18:376:22 | list6 |  |
-| atl.cpp:374:27:374:29 | call to CAtlList | atl.cpp:377:12:377:16 | list6 |  |
-| atl.cpp:374:27:374:29 | call to CAtlList | atl.cpp:378:5:378:5 | list6 |  |
+| atl.cpp:374:28:374:29 | 10 | atl.cpp:374:28:374:30 | call to CAtlList | TAINT |
+| atl.cpp:374:28:374:30 | call to CAtlList | atl.cpp:375:7:375:11 | list6 |  |
+| atl.cpp:374:28:374:30 | call to CAtlList | atl.cpp:376:18:376:22 | list6 |  |
+| atl.cpp:374:28:374:30 | call to CAtlList | atl.cpp:377:12:377:16 | list6 |  |
+| atl.cpp:374:28:374:30 | call to CAtlList | atl.cpp:378:5:378:5 | list6 |  |
 | atl.cpp:375:7:375:11 | ref arg list6 | atl.cpp:376:18:376:22 | list6 |  |
 | atl.cpp:375:7:375:11 | ref arg list6 | atl.cpp:377:12:377:16 | list6 |  |
 | atl.cpp:375:7:375:11 | ref arg list6 | atl.cpp:378:5:378:5 | list6 |  |
@@ -471,11 +471,11 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:376:18:376:22 | ref arg list6 | atl.cpp:378:5:378:5 | list6 |  |
 | atl.cpp:376:24:376:32 | call to FindIndex | atl.cpp:377:24:377:26 | pos |  |
 | atl.cpp:377:12:377:16 | ref arg list6 | atl.cpp:378:5:378:5 | list6 |  |
-| atl.cpp:381:27:381:28 | 10 | atl.cpp:381:27:381:29 | call to CAtlList | TAINT |
-| atl.cpp:381:27:381:29 | call to CAtlList | atl.cpp:382:18:382:22 | list7 |  |
-| atl.cpp:381:27:381:29 | call to CAtlList | atl.cpp:383:7:383:11 | list7 |  |
-| atl.cpp:381:27:381:29 | call to CAtlList | atl.cpp:384:12:384:16 | list7 |  |
-| atl.cpp:381:27:381:29 | call to CAtlList | atl.cpp:385:5:385:5 | list7 |  |
+| atl.cpp:381:28:381:29 | 10 | atl.cpp:381:28:381:30 | call to CAtlList | TAINT |
+| atl.cpp:381:28:381:30 | call to CAtlList | atl.cpp:382:18:382:22 | list7 |  |
+| atl.cpp:381:28:381:30 | call to CAtlList | atl.cpp:383:7:383:11 | list7 |  |
+| atl.cpp:381:28:381:30 | call to CAtlList | atl.cpp:384:12:384:16 | list7 |  |
+| atl.cpp:381:28:381:30 | call to CAtlList | atl.cpp:385:5:385:5 | list7 |  |
 | atl.cpp:382:18:382:22 | ref arg list7 | atl.cpp:383:7:383:11 | list7 |  |
 | atl.cpp:382:18:382:22 | ref arg list7 | atl.cpp:384:12:384:16 | list7 |  |
 | atl.cpp:382:18:382:22 | ref arg list7 | atl.cpp:385:5:385:5 | list7 |  |
@@ -483,11 +483,11 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:383:7:383:11 | ref arg list7 | atl.cpp:384:12:384:16 | list7 |  |
 | atl.cpp:383:7:383:11 | ref arg list7 | atl.cpp:385:5:385:5 | list7 |  |
 | atl.cpp:384:12:384:16 | ref arg list7 | atl.cpp:385:5:385:5 | list7 |  |
-| atl.cpp:388:27:388:28 | 10 | atl.cpp:388:27:388:29 | call to CAtlList | TAINT |
-| atl.cpp:388:27:388:29 | call to CAtlList | atl.cpp:389:18:389:22 | list8 |  |
-| atl.cpp:388:27:388:29 | call to CAtlList | atl.cpp:390:7:390:11 | list8 |  |
-| atl.cpp:388:27:388:29 | call to CAtlList | atl.cpp:391:12:391:16 | list8 |  |
-| atl.cpp:388:27:388:29 | call to CAtlList | atl.cpp:392:5:392:5 | list8 |  |
+| atl.cpp:388:28:388:29 | 10 | atl.cpp:388:28:388:30 | call to CAtlList | TAINT |
+| atl.cpp:388:28:388:30 | call to CAtlList | atl.cpp:389:18:389:22 | list8 |  |
+| atl.cpp:388:28:388:30 | call to CAtlList | atl.cpp:390:7:390:11 | list8 |  |
+| atl.cpp:388:28:388:30 | call to CAtlList | atl.cpp:391:12:391:16 | list8 |  |
+| atl.cpp:388:28:388:30 | call to CAtlList | atl.cpp:392:5:392:5 | list8 |  |
 | atl.cpp:389:18:389:22 | ref arg list8 | atl.cpp:390:7:390:11 | list8 |  |
 | atl.cpp:389:18:389:22 | ref arg list8 | atl.cpp:391:12:391:16 | list8 |  |
 | atl.cpp:389:18:389:22 | ref arg list8 | atl.cpp:392:5:392:5 | list8 |  |
@@ -495,11 +495,11 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:390:7:390:11 | ref arg list8 | atl.cpp:391:12:391:16 | list8 |  |
 | atl.cpp:390:7:390:11 | ref arg list8 | atl.cpp:392:5:392:5 | list8 |  |
 | atl.cpp:391:12:391:16 | ref arg list8 | atl.cpp:392:5:392:5 | list8 |  |
-| atl.cpp:394:27:394:28 | 10 | atl.cpp:394:27:394:29 | call to CAtlList | TAINT |
-| atl.cpp:394:27:394:29 | call to CAtlList | atl.cpp:395:7:395:11 | list9 |  |
-| atl.cpp:394:27:394:29 | call to CAtlList | atl.cpp:395:19:395:23 | list9 |  |
-| atl.cpp:394:27:394:29 | call to CAtlList | atl.cpp:396:12:396:16 | list9 |  |
-| atl.cpp:394:27:394:29 | call to CAtlList | atl.cpp:397:5:397:5 | list9 |  |
+| atl.cpp:394:28:394:29 | 10 | atl.cpp:394:28:394:30 | call to CAtlList | TAINT |
+| atl.cpp:394:28:394:30 | call to CAtlList | atl.cpp:395:7:395:11 | list9 |  |
+| atl.cpp:394:28:394:30 | call to CAtlList | atl.cpp:395:19:395:23 | list9 |  |
+| atl.cpp:394:28:394:30 | call to CAtlList | atl.cpp:396:12:396:16 | list9 |  |
+| atl.cpp:394:28:394:30 | call to CAtlList | atl.cpp:397:5:397:5 | list9 |  |
 | atl.cpp:395:7:395:11 | ref arg list9 | atl.cpp:396:12:396:16 | list9 |  |
 | atl.cpp:395:7:395:11 | ref arg list9 | atl.cpp:397:5:397:5 | list9 |  |
 | atl.cpp:395:19:395:23 | ref arg list9 | atl.cpp:395:7:395:11 | list9 |  |
