@@ -3,6 +3,9 @@ import org.springframework.stereotype.Repository;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.Insert;
 
 @Mapper
 @Repository
@@ -28,4 +31,13 @@ public interface MyBatisMapper {
 			method = "badInsert"
 	)
 	void badInsert(String input);
+
+	@Delete("DELETE FROM users WHERE id = #{id}")
+   	boolean bad8(int id);
+
+	@Insert("INSERT INTO users (id, name) VALUES(#{id}, #{name})")
+   	void bad9(String user);
+
+	@Update("UPDATE users SET name = #{name} WHERE id = #{id}")
+   	boolean bad10(String user);
 }

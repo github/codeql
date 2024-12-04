@@ -22,4 +22,16 @@ public class MyBatisService {
 	public void badInsert(String input) {
 		myBatisMapper.badInsert(input);
 	}
+
+	public void bad8(int id){
+		myBatisMapper.bad8(id);
+	}
+
+	public void bad9(String user){
+		myBatisMapper.bad9(user);
+	}
+
+	public void bad10(String user){
+		myBatisMapper.bad10(user);
+	}
 }

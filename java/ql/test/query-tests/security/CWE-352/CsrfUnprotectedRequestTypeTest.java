@@ -138,21 +138,39 @@ public class CsrfUnprotectedRequestTypeTest {
 		myBatisService.bad7(name);
 	}
 
-    // BAD: uses GET request when updating a database with `@DeleteProvider`
+    // BAD: uses GET request when updating a database with MyBatis `@DeleteProvider`
     @GetMapping(value = "badDelete")
 	public void badDelete(@RequestParam String name) { // $ hasCsrfUnprotectedRequestType
 		myBatisService.badDelete(name);
 	}
 
-    // BAD: uses GET request when updating a database with `@UpdateProvider`
+    // BAD: uses GET request when updating a database with MyBatis `@UpdateProvider`
 	@GetMapping(value = "badUpdate")
 	public void badUpdate(@RequestParam String name) { // $ hasCsrfUnprotectedRequestType
 		myBatisService.badUpdate(name);
 	}
 
-    // BAD: uses GET request when updating a database with `@InsertProvider`
+    // BAD: uses GET request when updating a database with MyBatis `@InsertProvider`
 	@GetMapping(value = "badInsert")
 	public void badInsert(@RequestParam String name) { // $ hasCsrfUnprotectedRequestType
 		myBatisService.badInsert(name);
+	}
+
+    // BAD: uses GET request when updating a database with MyBatis `@Delete`
+    @GetMapping(value = "bad8")
+	public void bad8(@RequestParam int id) { // $ hasCsrfUnprotectedRequestType
+		myBatisService.bad8(id);
+	}
+
+    // BAD: uses GET request when updating a database with MyBatis `@Insert`
+    @GetMapping(value = "bad9")
+	public void bad9(@RequestParam String user) { // $ hasCsrfUnprotectedRequestType
+		myBatisService.bad9(user);
+	}
+
+    // BAD: uses GET request when updating a database with MyBatis `@Update`
+    @GetMapping(value = "bad10")
+	public void bad10(@RequestParam String user) { // $ hasCsrfUnprotectedRequestType
+		myBatisService.bad10(user);
 	}
 }
