@@ -6,8 +6,15 @@ import semmle.code.cpp.Function
 import semmle.code.cpp.models.Models
 
 /**
+ * A function that is guaranteed to never throw a C++ exception
+ *
+ * The function may still raise a structured exception handling (SEH) exception.
+ */
+abstract class NonCppThrowingFunction extends Function { }
+
+/**
  * A function that is guaranteed to never throw.
  *
- * DEPRECATED: use `NonThrowingFunction` in `semmle.code.cpp.models.Models.Interfaces.Throwing` instead.
+ * DEPRECATED: use `NonCppThrowingFunction` instead.
  */
-abstract deprecated class NonThrowingFunction extends Function { }
+deprecated class NonThrowingFunction = NonCppThrowingFunction;

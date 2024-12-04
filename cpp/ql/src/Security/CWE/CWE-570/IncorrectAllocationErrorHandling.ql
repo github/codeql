@@ -45,7 +45,7 @@ predicate deleteMayThrow(DeleteOrDeleteArrayExpr deleteExpr) {
  * like it might throw an exception, and the function does not have a `noexcept` or `throw()` specifier.
  */
 predicate functionMayThrow(Function f) {
-  not f instanceof NonThrowingFunction and
+  not f instanceof NonCppThrowingFunction and
   (not exists(f.getBlock()) or stmtMayThrow(f.getBlock()))
 }
 
