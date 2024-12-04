@@ -225,6 +225,28 @@ fn option_unwrap() {
     sink(s1.unwrap()); // $ hasValueFlow=19
 }
 
+fn option_questionmark() -> Option<i64> {
+    let s1 = Some(source(20));
+    let s2 = Some(2);
+    let i1 = s1?;
+    sink(i1); // $ hasValueFlow=20
+    sink(s2?);
+    Some(0)
+}
+
+fn result_questionmark() -> Result<i64, i64> {
+    let s1: Result<i64, i64> = Ok(source(20));
+    let s2: Result<i64, i64> = Ok(2);
+    let s3: Result<i64, i64> = Err(source(77));
+    let i1 = s1?;
+    let i2 = s2?;
+    sink(i1); // $ hasValueFlow=20
+    sink(i2);
+    let i3 = s3?;
+    sink(i3); // No flow since value is in `Err`.
+    Ok(0)
+}
+
 enum MyTupleEnum {
     A(i64),
     B(i64),
@@ -358,6 +380,8 @@ fn main() {
     option_pattern_match_qualified();
     option_pattern_match_unqualified();
     option_unwrap();
+    option_questionmark();
+    let _ = result_questionmark();
     custom_tuple_enum_pattern_match_qualified();
     custom_tuple_enum_pattern_match_unqualified();
     custom_record_enum_pattern_match_qualified();
