@@ -86,4 +86,5 @@ fn main() {
     test_set_var_pos();
     test_get_var_field();
     test_set_var_field();
+    let dummy = Some(0); // ensure that the the `lang:core` crate is extracted
 }

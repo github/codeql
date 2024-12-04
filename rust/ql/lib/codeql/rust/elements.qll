@@ -7,6 +7,8 @@ import codeql.rust.elements.Abi
 import codeql.rust.elements.Addressable
 import codeql.rust.elements.ArgList
 import codeql.rust.elements.ArrayExpr
+import codeql.rust.elements.ArrayListExpr
+import codeql.rust.elements.ArrayRepeatExpr
 import codeql.rust.elements.ArrayTypeRepr
 import codeql.rust.elements.AsmExpr
 import codeql.rust.elements.AssocItem

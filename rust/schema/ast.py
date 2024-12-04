@@ -38,9 +38,10 @@ class Abi(AstNode):
 class ArgList(AstNode):
    args: list["Expr"] | child
 
-class ArrayExpr(Expr):
+class ArrayExprInternal(Expr):
    attrs: list["Attr"] | child
    exprs: list["Expr"] | child
+   is_semicolon: predicate
 
 class ArrayTypeRepr(TypeRepr):
    const_arg: optional["ConstArg"] | child

@@ -25,7 +25,15 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TArrayExpr(Raw::ArrayExpr id) { constructArrayExpr(id) } or
+    TArrayExprInternal(Raw::ArrayExprInternal id) { constructArrayExprInternal(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TArrayListExpr(Raw::ArrayExprInternal id) { constructArrayListExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TArrayRepeatExpr(Raw::ArrayExprInternal id) { constructArrayRepeatExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -619,6 +627,11 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TArrayExpr = TArrayListExpr or TArrayRepeatExpr;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TAssocItem = TConst or TFunction or TMacroCall or TTypeAlias;
 
   /**
@@ -650,8 +663,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TExpr =
-    TArrayExpr or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or TBreakExpr or
-        TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
+    TArrayExpr or TArrayExprInternal or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or
+        TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
         TFormatArgsExpr or TIfExpr or TIndexExpr or TLabelableExpr or TLetExpr or TLiteralExpr or
         TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExprBase or TPrefixExpr or
         TRangeExpr or TRecordExpr or TRefExpr or TReturnExpr or TTryExpr or TTupleExpr or
@@ -760,9 +773,23 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TArrayExpr`, if possible.
+   * Converts a raw element to a synthesized `TArrayExprInternal`, if possible.
    */
-  TArrayExpr convertArrayExprFromRaw(Raw::Element e) { result = TArrayExpr(e) }
+  TArrayExprInternal convertArrayExprInternalFromRaw(Raw::Element e) {
+    result = TArrayExprInternal(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TArrayListExpr`, if possible.
+   */
+  TArrayListExpr convertArrayListExprFromRaw(Raw::Element e) { result = TArrayListExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TArrayRepeatExpr`, if possible.
+   */
+  TArrayRepeatExpr convertArrayRepeatExprFromRaw(Raw::Element e) { result = TArrayRepeatExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1648,6 +1675,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TArrayExpr`, if possible.
+   */
+  TArrayExpr convertArrayExprFromRaw(Raw::Element e) {
+    result = convertArrayListExprFromRaw(e)
+    or
+    result = convertArrayRepeatExprFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TAssocItem`, if possible.
    */
   TAssocItem convertAssocItemFromRaw(Raw::Element e) {
@@ -1816,6 +1853,8 @@ module Synth {
    */
   TExpr convertExprFromRaw(Raw::Element e) {
     result = convertArrayExprFromRaw(e)
+    or
+    result = convertArrayExprInternalFromRaw(e)
     or
     result = convertAsmExprFromRaw(e)
     or
@@ -2148,9 +2187,23 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TArrayExpr` to a raw DB element, if possible.
+   * Converts a synthesized `TArrayExprInternal` to a raw DB element, if possible.
    */
-  Raw::Element convertArrayExprToRaw(TArrayExpr e) { e = TArrayExpr(result) }
+  Raw::Element convertArrayExprInternalToRaw(TArrayExprInternal e) {
+    e = TArrayExprInternal(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TArrayListExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertArrayListExprToRaw(TArrayListExpr e) { e = TArrayListExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TArrayRepeatExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertArrayRepeatExprToRaw(TArrayRepeatExpr e) { e = TArrayRepeatExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3034,6 +3087,16 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TArrayExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertArrayExprToRaw(TArrayExpr e) {
+    result = convertArrayListExprToRaw(e)
+    or
+    result = convertArrayRepeatExprToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TAssocItem` to a raw DB element, if possible.
    */
   Raw::Element convertAssocItemToRaw(TAssocItem e) {
@@ -3202,6 +3265,8 @@ module Synth {
    */
   Raw::Element convertExprToRaw(TExpr e) {
     result = convertArrayExprToRaw(e)
+    or
+    result = convertArrayExprInternalToRaw(e)
     or
     result = convertAsmExprToRaw(e)
     or
