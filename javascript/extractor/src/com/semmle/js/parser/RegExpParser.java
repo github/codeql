@@ -18,6 +18,7 @@ import com.semmle.js.ast.regexp.Error;
 import com.semmle.js.ast.regexp.Group;
 import com.semmle.js.ast.regexp.HexEscapeSequence;
 import com.semmle.js.ast.regexp.IdentityEscape;
+import com.semmle.js.ast.regexp.Intersection;
 import com.semmle.js.ast.regexp.NamedBackReference;
 import com.semmle.js.ast.regexp.NonWordBoundary;
 import com.semmle.js.ast.regexp.OctalEscape;
@@ -225,20 +226,33 @@ public class RegExpParser {
   private RegExpTerm parseDisjunction() {
     SourceLocation loc = new SourceLocation(pos());
     List<RegExpTerm> disjuncts = new ArrayList<>();
-    disjuncts.add(this.parseAlternative());
-    while (this.match("|")) disjuncts.add(this.parseAlternative());
+    disjuncts.add(this.parseIntersection());
+    while (this.match("|")) {
+        disjuncts.add(this.parseIntersection());
+    }
     if (disjuncts.size() == 1) return disjuncts.get(0);
     return this.finishTerm(new Disjunction(loc, disjuncts));
-  }
+}
 
   private RegExpTerm parseAlternative() {
     SourceLocation loc = new SourceLocation(pos());
     List<RegExpTerm> elements = new ArrayList<>();
-    while (!this.lookahead(null, "|", ")")) elements.add(this.parseTerm());
+    while (!this.lookahead(null, "|", "&&", ")")) elements.add(this.parseTerm());
     if (elements.size() == 1) return elements.get(0);
     return this.finishTerm(new Sequence(loc, elements));
   }
 
+  private RegExpTerm parseIntersection() {
+    SourceLocation loc = new SourceLocation(pos());
+    List<RegExpTerm> intersections = new ArrayList<>();
+    intersections.add(this.parseAlternative());
+    while (this.match("&&")) {
+        intersections.add(this.parseAlternative());
+    }
+    if (intersections.size() == 1) return intersections.get(0);
+    return this.finishTerm(new Intersection(loc, intersections));
+}
+  
   private RegExpTerm parseTerm() {
     SourceLocation loc = new SourceLocation(pos());
 
