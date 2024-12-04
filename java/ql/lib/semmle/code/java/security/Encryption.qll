@@ -219,7 +219,7 @@ predicate insecureAlgorithm(string name, string reason) {
   or
   name = "ECB" and
   reason =
-    "Encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay and other attacks. Consider using a different encryption mode, like CBC or GCM, instead."
+    "Encryption mode ECB, as in AES/ECB/NoPadding for example, is vulnerable to replay and other attacks. Consider using a different encryption mode, like CBC or GCM, instead."
   or
   name = "AES/CBC/PKCS[57]Padding" and
   reason =
