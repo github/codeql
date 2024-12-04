@@ -407,9 +407,6 @@ private predicate typeBounds(ArithmeticType t, QlBuiltins::BigInt lb, QlBuiltins
         lb = 0.toBigInt() and ub = limit - 1.toBigInt()
       )
   )
-  or
-  // This covers all floating point types. The range is (-Inf, +Inf).
-  t instanceof FloatingPointType and lb = -infinityAsBigInt() and ub = infinityAsBigInt()
 }
 
 private Type stripReference(Type t) {
