@@ -1,3 +1,13 @@
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* Calling `coll.contains(x)` is now a taint sanitizer (for any query) for the value `x`, where `coll` is a collection of constants.
+
 ## 4.2.1
 
 ### Minor Analysis Improvements
