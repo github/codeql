@@ -876,39 +876,39 @@ module TaintedPath {
   }
 
   /**
-   * Holds if there is a step `src -> dst` mapping `srclabel` to `dstlabel` relevant for path traversal vulnerabilities.
+   * Holds if there is a step `node1 -> node2` mapping `state1` to `state2` relevant for path traversal vulnerabilities.
    */
   predicate isAdditionalFlowStep(
-    DataFlow::Node src, FlowState srclabel, DataFlow::Node dst, FlowState dstlabel
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    isPosixPathStep(src, srclabel, dst, dstlabel)
+    isPosixPathStep(node1, state1, node2, state2)
     or
     // Ignore all preliminary sanitization after decoding URI components
-    srclabel instanceof FlowState::PosixPath and
-    dstlabel instanceof FlowState::PosixPath and
+    state1 instanceof FlowState::PosixPath and
+    state2 instanceof FlowState::PosixPath and
     (
-      TaintTracking::uriStep(src, dst)
+      TaintTracking::uriStep(node1, node2)
       or
       exists(DataFlow::CallNode decode |
         decode.getCalleeName() = "decodeURIComponent" or decode.getCalleeName() = "decodeURI"
       |
-        src = decode.getArgument(0) and
-        dst = decode
+        node1 = decode.getArgument(0) and
+        node2 = decode
       )
     )
     or
-    TaintTracking::persistentStorageStep(src, dst) and srclabel = dstlabel
+    TaintTracking::persistentStorageStep(node1, node2) and state1 = state2
     or
-    exists(DataFlow::PropRead read | read = dst |
-      src = read.getBase() and
+    exists(DataFlow::PropRead read | read = node2 |
+      node1 = read.getBase() and
       read.getPropertyName() != "length" and
-      srclabel = dstlabel and
+      state1 = state2 and
       not AccessPath::DominatingPaths::hasDominatingWrite(read)
     )
     or
     // string method calls of interest
     exists(DataFlow::MethodCallNode mcn, string name |
-      srclabel = dstlabel and dst = mcn and mcn.calls(src, name)
+      state1 = state2 and node2 = mcn and mcn.calls(node1, name)
     |
       name = StringOps::substringMethodName() and
       // to avoid very dynamic transformations, require at least one fixed index
@@ -926,49 +926,49 @@ module TaintedPath {
     )
     or
     // A `str.split()` call can either split into path elements (`str.split("/")`) or split by some other string.
-    exists(StringSplitCall mcn | dst = mcn and mcn.getBaseString() = src |
+    exists(StringSplitCall mcn | node2 = mcn and mcn.getBaseString() = node1 |
       if mcn.getSeparator() = "/"
       then
-        srclabel.(FlowState::PosixPath).canContainDotDotSlash() and
-        dstlabel instanceof FlowState::SplitPath
-      else srclabel = dstlabel
+        state1.(FlowState::PosixPath).canContainDotDotSlash() and
+        state2 instanceof FlowState::SplitPath
+      else state1 = state2
     )
     or
     // array method calls of interest
-    exists(DataFlow::MethodCallNode mcn, string name | dst = mcn and mcn.calls(src, name) |
+    exists(DataFlow::MethodCallNode mcn, string name | node2 = mcn and mcn.calls(node1, name) |
       (
         name = "pop" or
         name = "shift"
       ) and
-      srclabel instanceof FlowState::SplitPath and
-      dstlabel.(FlowState::PosixPath).canContainDotDotSlash()
+      state1 instanceof FlowState::SplitPath and
+      state2.(FlowState::PosixPath).canContainDotDotSlash()
       or
       (
         name = "slice" or
         name = "splice" or
         name = "concat"
       ) and
-      dstlabel instanceof FlowState::SplitPath and
-      srclabel instanceof FlowState::SplitPath
+      state2 instanceof FlowState::SplitPath and
+      state1 instanceof FlowState::SplitPath
       or
       name = "join" and
       mcn.getArgument(0).mayHaveStringValue("/") and
-      srclabel instanceof FlowState::SplitPath and
-      dstlabel.(FlowState::PosixPath).canContainDotDotSlash()
+      state1 instanceof FlowState::SplitPath and
+      state2.(FlowState::PosixPath).canContainDotDotSlash()
     )
     or
     // prefix.concat(path)
     exists(DataFlow::MethodCallNode mcn |
-      mcn.getMethodName() = "concat" and mcn.getAnArgument() = src
+      mcn.getMethodName() = "concat" and mcn.getAnArgument() = node1
     |
-      dst = mcn and
-      dstlabel instanceof FlowState::SplitPath and
-      srclabel instanceof FlowState::SplitPath
+      node2 = mcn and
+      state2 instanceof FlowState::SplitPath and
+      state1 instanceof FlowState::SplitPath
     )
     or
     // reading unknown property of split path
-    exists(DataFlow::PropRead read | read = dst |
-      src = read.getBase() and
+    exists(DataFlow::PropRead read | read = node2 |
+      node1 = read.getBase() and
       not read.getPropertyName() = "length" and
       not exists(read.getPropertyNameExpr().getIntValue()) and
       // split[split.length - 1]
@@ -977,97 +977,97 @@ module TaintedPath {
         binop.getAnOperand().getIntValue() = 1 and
         binop.getAnOperand().(PropAccess).getPropertyName() = "length"
       ) and
-      srclabel instanceof FlowState::SplitPath and
-      dstlabel.(FlowState::PosixPath).canContainDotDotSlash()
+      state1 instanceof FlowState::SplitPath and
+      state2.(FlowState::PosixPath).canContainDotDotSlash()
     )
     or
     exists(API::CallNode call | call = API::moduleImport("slash").getACall() |
-      src = call.getArgument(0) and
-      dst = call and
-      srclabel = dstlabel
+      node1 = call.getArgument(0) and
+      node2 = call and
+      state1 = state2
     )
     or
     exists(HtmlSanitizerCall call |
-      src = call.getInput() and
-      dst = call and
-      srclabel = dstlabel
+      node1 = call.getInput() and
+      node2 = call and
+      state1 = state2
     )
     or
     exists(DataFlow::CallNode join |
       // path.join() with spread argument
       join = NodeJSLib::Path::moduleMember("join").getACall() and
-      src = join.getASpreadArgument() and
-      dst = join and
+      node1 = join.getASpreadArgument() and
+      node2 = join and
       (
-        srclabel.(FlowState::PosixPath).canContainDotDotSlash()
+        state1.(FlowState::PosixPath).canContainDotDotSlash()
         or
-        srclabel instanceof FlowState::SplitPath
+        state1 instanceof FlowState::SplitPath
       ) and
-      dstlabel.(FlowState::PosixPath).isNormalized() and
+      state2.(FlowState::PosixPath).isNormalized() and
       if isRelative(join.getArgument(0).getStringValue())
-      then dstlabel.(FlowState::PosixPath).isRelative()
-      else dstlabel.(FlowState::PosixPath).isAbsolute()
+      then state2.(FlowState::PosixPath).isRelative()
+      else state2.(FlowState::PosixPath).isAbsolute()
     )
   }
 
   /**
-   * Holds if we should include a step from `src -> dst` with labels `srclabel -> dstlabel`, and the
-   * standard taint step `src -> dst` should be suppressed.
+   * Holds if we should include a step from `node1 -> node2` with labels `state1 -> state2`, and the
+   * standard taint step `node1 -> node2` should be suppressed.
    */
   private predicate isPosixPathStep(
-    DataFlow::Node src, FlowState::PosixPath srclabel, DataFlow::Node dst,
-    FlowState::PosixPath dstlabel
+    DataFlow::Node node1, FlowState::PosixPath state1, DataFlow::Node node2,
+    FlowState::PosixPath state2
   ) {
     // path.normalize() and similar
     exists(NormalizingPathCall call |
-      src = call.getInput() and
-      dst = call.getOutput() and
-      dstlabel = srclabel.toNormalized()
+      node1 = call.getInput() and
+      node2 = call.getOutput() and
+      state2 = state1.toNormalized()
     )
     or
     // path.resolve() and similar
     exists(ResolvingPathCall call |
-      src = call.getInput() and
-      dst = call.getOutput() and
-      dstlabel.isAbsolute() and
-      dstlabel.isNormalized()
+      node1 = call.getInput() and
+      node2 = call.getOutput() and
+      state2.isAbsolute() and
+      state2.isNormalized()
     )
     or
     // path.relative() and similar
     exists(NormalizingRelativePathCall call |
-      src = call.getInput() and
-      dst = call.getOutput() and
-      dstlabel.isRelative() and
-      dstlabel.isNormalized()
+      node1 = call.getInput() and
+      node2 = call.getOutput() and
+      state2.isRelative() and
+      state2.isNormalized()
     )
     or
     // path.dirname() and similar
     exists(PreservingPathCall call |
-      src = call.getInput() and
-      dst = call.getOutput() and
-      srclabel = dstlabel
+      node1 = call.getInput() and
+      node2 = call.getOutput() and
+      state1 = state2
     )
     or
     // foo.replace(/\./, "") and similar
     exists(DotRemovingReplaceCall call |
-      src = call.getInput() and
-      dst = call.getOutput() and
-      srclabel.isAbsolute() and
-      dstlabel.isAbsolute() and
-      dstlabel.isNormalized()
+      node1 = call.getInput() and
+      node2 = call.getOutput() and
+      state1.isAbsolute() and
+      state2.isAbsolute() and
+      state2.isNormalized()
     )
     or
     // foo.replace(/(\.\.\/)*/, "") and similar
     exists(DotDotSlashPrefixRemovingReplace call |
-      src = call.getInput() and
-      dst = call.getOutput()
+      node1 = call.getInput() and
+      node2 = call.getOutput()
     |
-      // the 4 possible combinations of normalized + relative for `srclabel`, and the possible values for `dstlabel` in each case.
-      srclabel.isNonNormalized() and srclabel.isRelative() // raw + relative -> any()
+      // the 4 possible combinations of normalized + relative for `state1`, and the possible values for `state2` in each case.
+      state1.isNonNormalized() and state1.isRelative() // raw + relative -> any()
       or
-      srclabel.isNormalized() and srclabel.isAbsolute() and srclabel = dstlabel // normalized + absolute -> normalized + absolute
+      state1.isNormalized() and state1.isAbsolute() and state1 = state2 // normalized + absolute -> normalized + absolute
       or
-      srclabel.isNonNormalized() and srclabel.isAbsolute() and dstlabel.isAbsolute() // raw + absolute -> raw/normalized + absolute
+      state1.isNonNormalized() and state1.isAbsolute() and state2.isAbsolute() // raw + absolute -> raw/normalized + absolute
       // normalized + relative -> none()
     )
     or
@@ -1075,37 +1075,39 @@ module TaintedPath {
     exists(DataFlow::CallNode join, int n |
       join = NodeJSLib::Path::moduleMember("join").getACall()
     |
-      src = join.getArgument(n) and
-      dst = join and
+      node1 = join.getArgument(n) and
+      node2 = join and
       (
         // If the initial argument is tainted, just normalize it. It can be relative or absolute.
         n = 0 and
-        dstlabel = srclabel.toNormalized()
+        state2 = state1.toNormalized()
         or
         // For later arguments, the flow label depends on whether the first argument is absolute or relative.
         // If in doubt, we assume it is absolute.
         n > 0 and
-        srclabel.canContainDotDotSlash() and
-        dstlabel.isNormalized() and
+        state1.canContainDotDotSlash() and
+        state2.isNormalized() and
         if isRelative(join.getArgument(0).getStringValue())
-        then dstlabel.isRelative()
-        else dstlabel.isAbsolute()
+        then state2.isRelative()
+        else state2.isAbsolute()
       )
     )
     or
     // String concatenation - behaves like path.join() except without normalization
-    exists(DataFlow::Node operator, int n | StringConcatenation::taintStep(src, dst, operator, n) |
+    exists(DataFlow::Node operator, int n |
+      StringConcatenation::taintStep(node1, node2, operator, n)
+    |
       // use ordinary taint flow for the first operand
       n = 0 and
-      srclabel = dstlabel
+      state1 = state2
       or
       n > 0 and
-      srclabel.canContainDotDotSlash() and
-      dstlabel.isNonNormalized() and // The ../ is no longer at the beginning of the string.
+      state1.canContainDotDotSlash() and
+      state2.isNonNormalized() and // The ../ is no longer at the beginning of the string.
       (
         if isRelative(StringConcatenation::getOperand(operator, 0).getStringValue())
-        then dstlabel.isRelative()
-        else dstlabel.isAbsolute()
+        then state2.isRelative()
+        else state2.isAbsolute()
       )
     )
   }
