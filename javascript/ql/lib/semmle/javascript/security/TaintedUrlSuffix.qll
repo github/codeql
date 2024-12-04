@@ -108,7 +108,7 @@ module TaintedUrlSuffix {
       or
       // Assume calls to regexp.exec always extract query/fragment parameters.
       exists(MethodCallNode call |
-        call = any(RegExpLiteral re).flow().(DataFlow::SourceNode).getAMethodCall("exec") and
+        call = any(DataFlow::RegExpCreationNode re).getAMethodCall("exec") and
         src = call.getArgument(0) and
         dst = call
       )
