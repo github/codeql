@@ -11,40 +11,38 @@ import javascript
 import ZipSlipCustomizations::ZipSlip
 
 // Materialize flow labels
-private class ConcretePosixPath extends TaintedPath::Label::PosixPath {
+deprecated private class ConcretePosixPath extends TaintedPath::Label::PosixPath {
   ConcretePosixPath() { this = this }
 }
 
-private class ConcreteSplitPath extends TaintedPath::Label::SplitPath {
+deprecated private class ConcreteSplitPath extends TaintedPath::Label::SplitPath {
   ConcreteSplitPath() { this = this }
 }
 
 /** A taint tracking configuration for unsafe archive extraction. */
 module ZipSlipConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  class FlowState = TaintedPath::FlowState;
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    label = source.(Source).getAFlowLabel()
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    state = source.(Source).getAFlowState()
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    label = sink.(Sink).getAFlowLabel()
-  }
+  predicate isSink(DataFlow::Node sink, FlowState state) { state = sink.(Sink).getAFlowState() }
 
   predicate isBarrier(DataFlow::Node node) {
     node instanceof TaintedPath::Sanitizer or
     node = DataFlow::MakeBarrierGuard<TaintedPath::BarrierGuard>::getABarrierNode()
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
-    node = DataFlow::MakeLabeledBarrierGuard<TaintedPath::BarrierGuard>::getABarrierNode(label)
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    node =
+      DataFlow::MakeStateBarrierGuard<FlowState, TaintedPath::BarrierGuard>::getABarrierNode(state)
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node node1, DataFlow::FlowLabel state1, DataFlow::Node node2,
-    DataFlow::FlowLabel state2
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    TaintedPath::isAdditionalTaintedPathFlowStep(node1, node2, state1, state2)
+    TaintedPath::isAdditionalFlowStep(node1, state1, node2, state2)
   }
 }
 
@@ -76,6 +74,7 @@ deprecated class Configuration extends DataFlow::Configuration {
     DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
     DataFlow::FlowLabel dstlabel
   ) {
-    ZipSlipConfig::isAdditionalFlowStep(src, srclabel, dst, dstlabel)
+    ZipSlipConfig::isAdditionalFlowStep(src, TaintedPath::Label::toFlowState(srclabel), dst,
+      TaintedPath::Label::toFlowState(dstlabel))
   }
 }
