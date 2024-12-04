@@ -373,7 +373,51 @@ localStep
 | main.rs:328:22:328:22 | [SSA] n | main.rs:328:34:328:34 | n |
 | main.rs:328:22:328:22 | n | main.rs:328:22:328:22 | [SSA] n |
 | main.rs:328:29:328:35 | sink(...) | main.rs:326:5:329:5 | match s2 { ... } |
-| main.rs:353:13:353:33 | result_questionmark(...) | main.rs:353:9:353:9 | _ |
+| main.rs:336:9:336:9 | [SSA] f | main.rs:337:10:337:10 | f |
+| main.rs:336:9:336:9 | f | main.rs:336:9:336:9 | [SSA] f |
+| main.rs:336:13:336:52 | \|...\| ... | main.rs:336:9:336:9 | f |
+| main.rs:336:14:336:17 | ... | main.rs:336:14:336:17 | cond |
+| main.rs:336:14:336:17 | [SSA] cond | main.rs:336:23:336:26 | cond |
+| main.rs:336:14:336:17 | cond | main.rs:336:14:336:17 | [SSA] cond |
+| main.rs:336:28:336:41 | { ... } | main.rs:336:20:336:52 | if cond {...} else {...} |
+| main.rs:336:30:336:39 | source(...) | main.rs:336:28:336:41 | { ... } |
+| main.rs:336:48:336:52 | { ... } | main.rs:336:20:336:52 | if cond {...} else {...} |
+| main.rs:336:50:336:50 | 0 | main.rs:336:48:336:52 | { ... } |
+| main.rs:341:9:341:9 | [SSA] f | main.rs:348:5:348:5 | f |
+| main.rs:341:9:341:9 | f | main.rs:341:9:341:9 | [SSA] f |
+| main.rs:341:13:346:9 | \|...\| ... | main.rs:341:9:341:9 | f |
+| main.rs:341:14:341:17 | ... | main.rs:341:14:341:17 | cond |
+| main.rs:341:14:341:17 | [SSA] cond | main.rs:342:12:342:15 | cond |
+| main.rs:341:14:341:17 | cond | main.rs:341:14:341:17 | [SSA] cond |
+| main.rs:341:20:341:23 | ... | main.rs:341:20:341:23 | data |
+| main.rs:341:20:341:23 | [SSA] data | main.rs:343:18:343:21 | data |
+| main.rs:341:20:341:23 | data | main.rs:341:20:341:23 | [SSA] data |
+| main.rs:342:17:344:9 | { ... } | main.rs:342:9:346:9 | if cond {...} else {...} |
+| main.rs:344:16:346:9 | { ... } | main.rs:342:9:346:9 | if cond {...} else {...} |
+| main.rs:345:13:345:19 | sink(...) | main.rs:344:16:346:9 | { ... } |
+| main.rs:347:9:347:9 | [SSA] a | main.rs:348:13:348:13 | a |
+| main.rs:347:9:347:9 | a | main.rs:347:9:347:9 | [SSA] a |
+| main.rs:347:13:347:22 | source(...) | main.rs:347:9:347:9 | a |
+| main.rs:352:9:352:9 | [SSA] f | main.rs:359:13:359:13 | f |
+| main.rs:352:9:352:9 | f | main.rs:352:9:352:9 | [SSA] f |
+| main.rs:352:13:357:9 | \|...\| ... | main.rs:352:9:352:9 | f |
+| main.rs:352:14:352:17 | ... | main.rs:352:14:352:17 | cond |
+| main.rs:352:14:352:17 | [SSA] cond | main.rs:353:12:353:15 | cond |
+| main.rs:352:14:352:17 | cond | main.rs:352:14:352:17 | [SSA] cond |
+| main.rs:352:20:352:23 | ... | main.rs:352:20:352:23 | data |
+| main.rs:352:20:352:23 | [SSA] data | main.rs:354:13:354:16 | data |
+| main.rs:352:20:352:23 | data | main.rs:352:20:352:23 | [SSA] data |
+| main.rs:353:17:355:9 | { ... } | main.rs:353:9:357:9 | if cond {...} else {...} |
+| main.rs:354:13:354:16 | data | main.rs:353:17:355:9 | { ... } |
+| main.rs:355:16:357:9 | { ... } | main.rs:353:9:357:9 | if cond {...} else {...} |
+| main.rs:356:13:356:13 | 0 | main.rs:355:16:357:9 | { ... } |
+| main.rs:358:9:358:9 | [SSA] a | main.rs:359:21:359:21 | a |
+| main.rs:358:9:358:9 | a | main.rs:358:9:358:9 | [SSA] a |
+| main.rs:358:13:358:22 | source(...) | main.rs:358:9:358:9 | a |
+| main.rs:359:9:359:9 | [SSA] b | main.rs:360:10:360:10 | b |
+| main.rs:359:9:359:9 | b | main.rs:359:9:359:9 | [SSA] b |
+| main.rs:359:13:359:22 | f(...) | main.rs:359:9:359:9 | b |
+| main.rs:384:13:384:33 | result_questionmark(...) | main.rs:384:9:384:9 | _ |
 storeStep
 | main.rs:94:14:94:22 | source(...) | tuple.0 | main.rs:94:13:94:26 | TupleExpr |
 | main.rs:94:25:94:25 | 2 | tuple.1 | main.rs:94:13:94:26 | TupleExpr |
@@ -422,7 +466,7 @@ storeStep
 | main.rs:298:41:298:41 | 2 | D | main.rs:298:14:298:43 | ...::D {...} |
 | main.rs:316:18:316:27 | source(...) | C | main.rs:315:14:317:5 | C {...} |
 | main.rs:318:27:318:27 | 2 | D | main.rs:318:14:318:29 | D {...} |
-| main.rs:336:27:336:27 | 0 | Some | main.rs:336:22:336:28 | Some(...) |
+| main.rs:367:27:367:27 | 0 | Some | main.rs:367:22:367:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap |
 | main.rs:33:9:33:15 | TupleStructPat | Some | main.rs:33:14:33:14 | _ |

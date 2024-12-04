@@ -18,7 +18,7 @@ module Impl {
    * let x = variable;
    * let x = foo::bar;
    * let y = <T>::foo;
-   * let z = <TypeRef as Trait>::foo;
+   * let z = <TypeRepr as Trait>::foo;
    * ```
    */
   class PathExpr extends Generated::PathExpr {

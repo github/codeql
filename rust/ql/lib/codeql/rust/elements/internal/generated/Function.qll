@@ -14,7 +14,7 @@ import codeql.rust.elements.internal.ExternItemImpl::Impl as ExternItemImpl
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
-import codeql.rust.elements.RetType
+import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
@@ -123,9 +123,11 @@ module Generated {
     /**
      * Gets the ret type of this function, if it exists.
      */
-    RetType getRetType() {
+    RetTypeRepr getRetType() {
       result =
-        Synth::convertRetTypeFromRaw(Synth::convertFunctionToRaw(this).(Raw::Function).getRetType())
+        Synth::convertRetTypeReprFromRaw(Synth::convertFunctionToRaw(this)
+              .(Raw::Function)
+              .getRetType())
     }
 
     /**

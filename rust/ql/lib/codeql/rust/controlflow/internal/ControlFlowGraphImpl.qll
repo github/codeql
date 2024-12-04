@@ -198,7 +198,7 @@ class SelfParamTree extends StandardPostOrderTree, SelfParam {
   override AstNode getChildNode(int i) { i = 0 and result = this.getName() }
 }
 
-class TypeRefTree extends LeafTree instanceof TypeRef { }
+class TypeReprTree extends LeafTree instanceof TypeRepr { }
 
 /**
  * Provides `ControlFlowTree`s for expressions.
