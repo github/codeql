@@ -98,55 +98,55 @@ abstract private class GuardConditionImpl extends Expr {
    * being short-circuited) then it will only control blocks dominated by the
    * true (for `&&`) or false (for `||`) branch.
    */
-  cached
   final predicate controls(BasicBlock controlled, boolean testIsTrue) {
     this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
   }
 
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
+  pragma[inline]
   abstract predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue);
 
   /**
    * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
    *   If `isLessThan = false` then this implies `left >= right + k`.
    */
-  cached
+  pragma[inline]
   abstract predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan);
 
   /**
    * Holds if (determined by this guard) `e < k` evaluates to `isLessThan` if
    * this expression evaluates to `value`.
    */
-  cached
+  pragma[inline]
   abstract predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value);
 
   /**
    * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
    * If `isLessThan = false` then this implies `e >= k`.
    */
-  cached
+  pragma[inline]
   abstract predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan);
 
   /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
-  cached
+  pragma[inline]
   abstract predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue);
 
   /**
    * Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
    * If `areEqual = false` then this implies `left != right + k`.
    */
-  cached
+  pragma[inline]
   abstract predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual);
 
   /** Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression evaluates to `value`. */
-  cached
+  pragma[inline]
   abstract predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value);
 
   /**
    * Holds if (determined by this guard) `e == k` must be `areEqual` in `block`.
    * If `areEqual = false` then this implies `e != k`.
    */
-  cached
+  pragma[inline]
   abstract predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual);
 }
 
@@ -187,12 +187,14 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
+  pragma[inline]
   override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
     exists(boolean testIsTrue |
       this.comparesLt(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
 
+  pragma[inline]
   override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
     exists(AbstractValue value |
       this.comparesLt(e, k, isLessThan, value) and this.valueControls(block, value)
@@ -207,6 +209,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
+  pragma[inline]
   override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
     exists(boolean testIsTrue |
       this.comparesEq(left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
@@ -222,6 +225,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
     )
   }
 
+  pragma[inline]
   override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
     exists(AbstractValue value |
       this.comparesEq(e, k, areEqual, value) and this.valueControls(block, value)
@@ -244,6 +248,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
     this.controlsBlock(controlled, v)
   }
 
+  pragma[inline]
   override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
     exists(Instruction li, Instruction ri |
       li.getUnconvertedResultExpression() = left and
@@ -252,6 +257,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
     )
   }
 
+  pragma[inline]
   override predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
@@ -259,6 +265,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
     )
   }
 
+  pragma[inline]
   override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
     exists(Instruction li, Instruction ri, boolean testIsTrue |
       li.getUnconvertedResultExpression() = left and
@@ -268,6 +275,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
     )
   }
 
+  pragma[inline]
   override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
     exists(Instruction i, AbstractValue value |
       i.getUnconvertedResultExpression() = e and
@@ -276,6 +284,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
     )
   }
 
+  pragma[inline]
   override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
     exists(Instruction li, Instruction ri |
       li.getUnconvertedResultExpression() = left and
@@ -284,6 +293,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
     )
   }
 
+  pragma[inline]
   override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
     exists(Instruction li, Instruction ri, boolean testIsTrue |
       li.getUnconvertedResultExpression() = left and
@@ -293,6 +303,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
     )
   }
 
+  pragma[inline]
   override predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
@@ -300,6 +311,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
     )
   }
 
+  pragma[inline]
   override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
     exists(Instruction i, AbstractValue value |
       i.getUnconvertedResultExpression() = e and
@@ -362,7 +374,6 @@ private predicate nonExcludedIRAndBasicBlock(IRBlock irb, BasicBlock controlled)
  * For performance reasons conditions inside static local initializers or
  * global initializers are not considered `IRGuardCondition`s.
  */
-cached
 class IRGuardCondition extends Instruction {
   Instruction branch;
 
@@ -383,7 +394,7 @@ class IRGuardCondition extends Instruction {
    * gcc extension.
    *
    * The implementation of all four follows the same structure: Each relation
-   * has a cached user-facing predicate that. For example,
+   * has a user-facing predicate that. For example,
    * `GuardCondition::comparesEq` calls `compares_eq`. This predicate has
    * several cases that recursively decompose the relation to bring it to a
    * canonical form (i.e., a relation of the form `e1 == e2 + k`). The base
@@ -393,7 +404,6 @@ class IRGuardCondition extends Instruction {
    * `e1 + k1 == e2 + k2` into canonical the form `e1 == e2 + (k2 - k1)`.
    */
 
-  cached
   IRGuardCondition() { branch = getBranchForCondition(this) }
 
   /**
@@ -402,7 +412,6 @@ class IRGuardCondition extends Instruction {
    *
    * For details on what "controls" mean, see the QLDoc for `controls`.
    */
-  cached
   predicate valueControls(IRBlock controlled, AbstractValue v) {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
@@ -440,7 +449,6 @@ class IRGuardCondition extends Instruction {
    * being short-circuited) then it will only control blocks dominated by the
    * true (for `&&`) or false (for `||`) branch.
    */
-  cached
   predicate controls(IRBlock controlled, boolean testIsTrue) {
     this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
   }
@@ -449,7 +457,6 @@ class IRGuardCondition extends Instruction {
    * Holds if the control-flow edge `(pred, succ)` may be taken only if
    * the value of this condition is `v`.
    */
-  cached
   predicate valueControlsEdge(IRBlock pred, IRBlock succ, AbstractValue v) {
     pred.getASuccessor() = succ and
     this.valueControls(pred, v)
@@ -468,7 +475,6 @@ class IRGuardCondition extends Instruction {
    * Holds if the control-flow edge `(pred, succ)` may be taken only if
    * the value of this condition is `testIsTrue`.
    */
-  cached
   final predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
     this.valueControlsEdge(pred, succ, any(BooleanValue bv | bv.getValue() = testIsTrue))
   }
@@ -506,7 +512,7 @@ class IRGuardCondition extends Instruction {
   }
 
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
-  cached
+  pragma[inline]
   predicate comparesLt(Operand left, Operand right, int k, boolean isLessThan, boolean testIsTrue) {
     exists(BooleanValue value |
       compares_lt(valueNumber(this), left, right, k, isLessThan, value) and
@@ -518,7 +524,7 @@ class IRGuardCondition extends Instruction {
    * Holds if (determined by this guard) `op < k` evaluates to `isLessThan` if
    * this expression evaluates to `value`.
    */
-  cached
+  pragma[inline]
   predicate comparesLt(Operand op, int k, boolean isLessThan, AbstractValue value) {
     compares_lt(valueNumber(this), op, k, isLessThan, value)
   }
@@ -527,7 +533,7 @@ class IRGuardCondition extends Instruction {
    * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
    * If `isLessThan = false` then this implies `left >= right + k`.
    */
-  cached
+  pragma[inline]
   predicate ensuresLt(Operand left, Operand right, int k, IRBlock block, boolean isLessThan) {
     exists(AbstractValue value |
       compares_lt(valueNumber(this), left, right, k, isLessThan, value) and
@@ -539,7 +545,7 @@ class IRGuardCondition extends Instruction {
    * Holds if (determined by this guard) `op < k` must be `isLessThan` in `block`.
    * If `isLessThan = false` then this implies `op >= k`.
    */
-  cached
+  pragma[inline]
   predicate ensuresLt(Operand op, int k, IRBlock block, boolean isLessThan) {
     exists(AbstractValue value |
       compares_lt(valueNumber(this), op, k, isLessThan, value) and
@@ -551,7 +557,7 @@ class IRGuardCondition extends Instruction {
    * Holds if (determined by this guard) `left < right + k` must be `isLessThan` on the edge from
    * `pred` to `succ`. If `isLessThan = false` then this implies `left >= right + k`.
    */
-  cached
+  pragma[inline]
   predicate ensuresLtEdge(
     Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean isLessThan
   ) {
@@ -565,7 +571,7 @@ class IRGuardCondition extends Instruction {
    * Holds if (determined by this guard) `op < k` must be `isLessThan` on the edge from
    * `pred` to `succ`. If `isLessThan = false` then this implies `op >= k`.
    */
-  cached
+  pragma[inline]
   predicate ensuresLtEdge(Operand left, int k, IRBlock pred, IRBlock succ, boolean isLessThan) {
     exists(AbstractValue value |
       compares_lt(valueNumber(this), left, k, isLessThan, value) and
@@ -574,7 +580,7 @@ class IRGuardCondition extends Instruction {
   }
 
   /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
-  cached
+  pragma[inline]
   predicate comparesEq(Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
     exists(BooleanValue value |
       compares_eq(valueNumber(this), left, right, k, areEqual, value) and
@@ -583,7 +589,7 @@ class IRGuardCondition extends Instruction {
   }
 
   /** Holds if (determined by this guard) `op == k` evaluates to `areEqual` if this expression evaluates to `value`. */
-  cached
+  pragma[inline]
   predicate comparesEq(Operand op, int k, boolean areEqual, AbstractValue value) {
     unary_compares_eq(valueNumber(this), op, k, areEqual, false, value)
   }
@@ -592,7 +598,7 @@ class IRGuardCondition extends Instruction {
    * Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
    * If `areEqual = false` then this implies `left != right + k`.
    */
-  cached
+  pragma[inline]
   predicate ensuresEq(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
     exists(AbstractValue value |
       compares_eq(valueNumber(this), left, right, k, areEqual, value) and
@@ -604,7 +610,7 @@ class IRGuardCondition extends Instruction {
    * Holds if (determined by this guard) `op == k` must be `areEqual` in `block`.
    * If `areEqual = false` then this implies `op != k`.
    */
-  cached
+  pragma[inline]
   predicate ensuresEq(Operand op, int k, IRBlock block, boolean areEqual) {
     exists(AbstractValue value |
       unary_compares_eq(valueNumber(this), op, k, areEqual, false, value) and
@@ -616,7 +622,7 @@ class IRGuardCondition extends Instruction {
    * Holds if (determined by this guard) `left == right + k` must be `areEqual` on the edge from
    * `pred` to `succ`. If `areEqual = false` then this implies `left != right + k`.
    */
-  cached
+  pragma[inline]
   predicate ensuresEqEdge(
     Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean areEqual
   ) {
@@ -630,7 +636,7 @@ class IRGuardCondition extends Instruction {
    * Holds if (determined by this guard) `op == k` must be `areEqual` on the edge from
    * `pred` to `succ`. If `areEqual = false` then this implies `op != k`.
    */
-  cached
+  pragma[inline]
   predicate ensuresEqEdge(Operand op, int k, IRBlock pred, IRBlock succ, boolean areEqual) {
     exists(AbstractValue value |
       unary_compares_eq(valueNumber(this), op, k, areEqual, false, value) and
