@@ -149,7 +149,7 @@ fun KotlinUsesExtractor.getFunctionLabel(
     prefix: String = "callable"
 ): String {
 
-    val allParamTypes = (extensionParamType?.let { listOf(it) } ?: listOf()) + parameterTypes
+    val allParamTypes = listOfNotNull(extensionParamType) + parameterTypes
 
     /* OLD: KE1
     val substitutionMap =
@@ -165,10 +165,8 @@ fun KotlinUsesExtractor.getFunctionLabel(
         }
      */
     val getIdForFunctionLabel = { it: IndexedValue<KaType> ->
-        // Kotlin rewrites certain Java collections types adding additional generic
-        // constraints-- for example,
-        // Collection.remove(Object) because Collection.remove(Collection::E) in the Kotlin
-        // universe.
+        // Kotlin rewrites certain Java collections types adding additional generic constraints-- for example,
+        // Collection.remove(Object) becomes Collection.remove(Collection::E) in the Kotlin universe.
         // If this has happened, erase the type again to get the correct Java signature.
         val maybeAmendedForCollections = it.value
         /* OLD: KE1
