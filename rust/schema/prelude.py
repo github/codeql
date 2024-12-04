@@ -3,6 +3,7 @@ from misc.codegen.lib.schemadefs import *
 include("../shared/tree-sitter-extractor/src/generator/prefix.dbscheme")
 include("prefix.dbscheme")
 
+File = imported("File", "codeql.files.FileSystem")
 
 @qltest.skip
 class Element:
@@ -100,3 +101,11 @@ class PathAstNode(Resolvable):
     An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
     """
     path: optional["Path"] | child
+
+
+@qltest.skip
+@ql.internal
+class ExtractorStep(Element):
+    action: string
+    file: File
+    duration_ms: int

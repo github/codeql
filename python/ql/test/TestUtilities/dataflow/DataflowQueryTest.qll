@@ -103,15 +103,3 @@ module FromTaintTrackingStateConfig<DataFlow::StateConfigSig C> {
 
   import MakeQueryTest<Impl>
 }
-
-deprecated signature class LegacyConfiguration extends DataFlow::Configuration;
-
-deprecated module FromLegacyConfiguration<LegacyConfiguration C> {
-  module Impl implements QueryTestSig {
-    predicate isSink(DataFlow::Node sink) { any(C c).isSink(sink) or any(C c).isSink(sink, _) }
-
-    predicate flowTo(DataFlow::Node sink) { any(C c).hasFlowTo(sink) }
-  }
-
-  import MakeQueryTest<Impl>
-}

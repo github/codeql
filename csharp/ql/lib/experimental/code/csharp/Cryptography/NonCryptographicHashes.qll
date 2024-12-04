@@ -8,7 +8,6 @@
 
 import csharp
 private import DataFlow
-private import semmle.code.csharp.dataflow.TaintTracking2
 
 predicate maybeANonCryptographicHash(
   Callable callable, Variable v, Expr xor, Expr mul, LoopStmt loop

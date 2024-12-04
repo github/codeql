@@ -145,6 +145,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TExtractorStep(Raw::ExtractorStep id) { constructExtractorStep(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TFieldExpr(Raw::FieldExpr id) { constructFieldExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -957,6 +961,12 @@ module Synth {
    * Converts a raw element to a synthesized `TExternItemList`, if possible.
    */
   TExternItemList convertExternItemListFromRaw(Raw::Element e) { result = TExternItemList(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TExtractorStep`, if possible.
+   */
+  TExtractorStep convertExtractorStepFromRaw(Raw::Element e) { result = TExtractorStep(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1849,6 +1859,8 @@ module Synth {
    * Converts a raw DB element to a synthesized `TElement`, if possible.
    */
   TElement convertElementFromRaw(Raw::Element e) {
+    result = convertExtractorStepFromRaw(e)
+    or
     result = convertLocatableFromRaw(e)
     or
     result = convertUnextractedFromRaw(e)
@@ -2389,6 +2401,12 @@ module Synth {
    * Converts a synthesized `TExternItemList` to a raw DB element, if possible.
    */
   Raw::Element convertExternItemListToRaw(TExternItemList e) { e = TExternItemList(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TExtractorStep` to a raw DB element, if possible.
+   */
+  Raw::Element convertExtractorStepToRaw(TExtractorStep e) { e = TExtractorStep(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3279,6 +3297,8 @@ module Synth {
    * Converts a synthesized `TElement` to a raw DB element, if possible.
    */
   Raw::Element convertElementToRaw(TElement e) {
+    result = convertExtractorStepToRaw(e)
+    or
     result = convertLocatableToRaw(e)
     or
     result = convertUnextractedToRaw(e)
