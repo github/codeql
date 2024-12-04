@@ -62,5 +62,5 @@ resolvedPaths
 | regular.rs:54:9:54:25 | Variant3 {...} | repo::test | crate::regular::MyEnum::Variant3 |
 | regular.rs:58:11:58:11 | e | None | None |
 | regular.rs:59:9:59:24 | ...::Variant1 | repo::test | crate::regular::MyEnum::Variant1 |
-| regular.rs:60:9:60:27 | TupleStructPat | repo::test | crate::regular::MyEnum::Variant2 |
+| regular.rs:60:9:60:27 | ...::Variant2(...) | repo::test | crate::regular::MyEnum::Variant2 |
 | regular.rs:61:9:61:31 | ...::Variant3 {...} | repo::test | crate::regular::MyEnum::Variant3 |
