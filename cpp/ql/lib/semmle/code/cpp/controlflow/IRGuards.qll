@@ -142,28 +142,15 @@ private class LogicalNotValueNumber extends ValueNumber {
 /**
  * A Boolean condition in the AST that guards one or more basic blocks. This includes
  * operands of logical operators but not switch statements.
- *
- * For performance reasons conditions inside static local initializers or
- * global initializers are not considered `GuardCondition`s.
  */
-cached
-class GuardCondition extends Expr {
-  cached
-  GuardCondition() {
-    exists(IRGuardCondition ir | this = ir.getUnconvertedResultExpression())
-    or
-    // no binary operators in the IR
-    this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
-  }
-
+abstract private class GuardConditionImpl extends Expr {
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
    * entered if the value of this condition is `v`.
    *
    * For details on what "controls" mean, see the QLDoc for `controls`.
    */
-  cached
-  predicate valueControls(BasicBlock controlled, AbstractValue v) { none() }
+  abstract predicate valueControls(BasicBlock controlled, AbstractValue v);
 
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
@@ -197,61 +184,58 @@ class GuardCondition extends Expr {
   }
 
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
-  cached
-  predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
-    none()
-  }
+  abstract predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue);
 
   /**
    * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
    *   If `isLessThan = false` then this implies `left >= right + k`.
    */
   cached
-  predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) { none() }
+  abstract predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan);
 
   /**
    * Holds if (determined by this guard) `e < k` evaluates to `isLessThan` if
    * this expression evaluates to `value`.
    */
   cached
-  predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) { none() }
+  abstract predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value);
 
   /**
    * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
    * If `isLessThan = false` then this implies `e >= k`.
    */
   cached
-  predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) { none() }
+  abstract predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan);
 
   /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
   cached
-  predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
-    none()
-  }
+  abstract predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue);
 
   /**
    * Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
    * If `areEqual = false` then this implies `left != right + k`.
    */
   cached
-  predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) { none() }
+  abstract predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual);
 
   /** Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression evaluates to `value`. */
   cached
-  predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) { none() }
+  abstract predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value);
 
   /**
    * Holds if (determined by this guard) `e == k` must be `areEqual` in `block`.
    * If `areEqual = false` then this implies `e != k`.
    */
   cached
-  predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) { none() }
+  abstract predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual);
 }
+
+final class GuardCondition = GuardConditionImpl;
 
 /**
  * A binary logical operator in the AST that guards one or more basic blocks.
  */
-private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
+private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl {
   GuardConditionFromBinaryLogicalOperator() {
     this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
   }
@@ -329,7 +313,7 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
  * A Boolean condition in the AST that guards one or more basic blocks and has a corresponding IR
  * instruction.
  */
-private class GuardConditionFromIR extends GuardCondition {
+private class GuardConditionFromIR extends GuardConditionImpl {
   IRGuardCondition ir;
 
   GuardConditionFromIR() { this = ir.getUnconvertedResultExpression() }
