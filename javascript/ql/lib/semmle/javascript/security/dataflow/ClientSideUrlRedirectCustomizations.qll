@@ -5,6 +5,7 @@
  */
 
 import javascript
+private import semmle.javascript.security.TaintedUrlSuffix
 
 module ClientSideUrlRedirect {
   /**
@@ -31,12 +32,12 @@ module ClientSideUrlRedirect {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED. Replaced by functionality from the `TaintedUrlSuffix` library.
+   *
    * A flow label for values that represent the URL of the current document, and
    * hence are only partially user-controlled.
    */
-  abstract class DocumentUrl extends DataFlow::FlowLabel {
-    DocumentUrl() { this = "document.url" } // TODO: replace with TaintedUrlSuffix
-  }
+  deprecated class DocumentUrl = TaintedUrlSuffix::TaintedUrlSuffixLabel;
 
   /**
    * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
@@ -50,8 +51,8 @@ module ClientSideUrlRedirect {
     ActiveThreatModelSourceAsSource() { not this.(ClientSideRemoteFlowSource).getKind().isPath() }
 
     override DataFlow::FlowLabel getAFlowLabel() {
-      if this.(ClientSideRemoteFlowSource).getKind().isUrl()
-      then result instanceof DocumentUrl
+      if this = TaintedUrlSuffix::source()
+      then result = TaintedUrlSuffix::label()
       else result.isTaint()
     }
   }
@@ -60,7 +61,7 @@ module ClientSideUrlRedirect {
    * Holds if `node` extracts a part of a URL that does not contain the suffix.
    */
   pragma[inline]
-  predicate isPrefixExtraction(DataFlow::MethodCallNode node) {
+  deprecated predicate isPrefixExtraction(DataFlow::MethodCallNode node) {
     // Block flow through prefix-extraction `substring(0, ...)` and `split("#")[0]`
     node.getMethodName() = [StringOps::substringMethodName(), "split"] and
     not untrustedUrlSubstring(_, node)
@@ -70,7 +71,7 @@ module ClientSideUrlRedirect {
    * Holds if `substring` refers to a substring of `base` which is considered untrusted
    * when `base` is the current URL.
    */
-  predicate untrustedUrlSubstring(DataFlow::Node base, DataFlow::Node substring) {
+  deprecated predicate untrustedUrlSubstring(DataFlow::Node base, DataFlow::Node substring) {
     exists(DataFlow::MethodCallNode mcn, string methodName |
       mcn = substring and mcn.calls(base, methodName)
     |
