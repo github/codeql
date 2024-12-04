@@ -5,7 +5,7 @@
 
 private import internal.TypeArgImpl
 import codeql.rust.elements.GenericArg
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * A TypeArg. For example:

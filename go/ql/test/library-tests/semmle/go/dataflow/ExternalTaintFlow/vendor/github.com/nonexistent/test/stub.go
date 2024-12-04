@@ -72,3 +72,6 @@ func (c C) Get() string  { return "" }
 
 func (c *C) SetThroughPointer(f string) {}
 func (c *C) GetThroughPointer() string  { return "" }
+
+var SourceVariable string
+var SinkVariable string

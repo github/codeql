@@ -4,7 +4,7 @@ import TestUtils
 
 from
   AssocTypeArg x, string hasConstArg, string hasGenericArgList, string hasNameRef,
-  string hasParamList, string hasRetType, string hasReturnTypeSyntax, string hasTy,
+  string hasParamList, string hasRetType, string hasReturnTypeSyntax, string hasTypeRepr,
   string hasTypeBoundList
 where
   toBeTested(x) and
@@ -15,8 +15,8 @@ where
   (if x.hasParamList() then hasParamList = "yes" else hasParamList = "no") and
   (if x.hasRetType() then hasRetType = "yes" else hasRetType = "no") and
   (if x.hasReturnTypeSyntax() then hasReturnTypeSyntax = "yes" else hasReturnTypeSyntax = "no") and
-  (if x.hasTy() then hasTy = "yes" else hasTy = "no") and
+  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
   if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no"
 select x, "hasConstArg:", hasConstArg, "hasGenericArgList:", hasGenericArgList, "hasNameRef:",
   hasNameRef, "hasParamList:", hasParamList, "hasRetType:", hasRetType, "hasReturnTypeSyntax:",
-  hasReturnTypeSyntax, "hasTy:", hasTy, "hasTypeBoundList:", hasTypeBoundList
+  hasReturnTypeSyntax, "hasTypeRepr:", hasTypeRepr, "hasTypeBoundList:", hasTypeBoundList

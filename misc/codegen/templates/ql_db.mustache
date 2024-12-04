@@ -3,6 +3,10 @@
  * This module holds thin fully generated class definitions around DB entities.
  */
 module Raw {
+  {{#imports}}
+  private import {{.}}
+  {{/imports}}
+
   {{#classes}}
   /**
    * INTERNAL: Do not use.

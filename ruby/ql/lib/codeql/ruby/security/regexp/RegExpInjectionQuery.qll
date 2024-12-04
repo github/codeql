@@ -11,20 +11,6 @@ import codeql.ruby.TaintTracking
 import RegExpInjectionCustomizations
 import codeql.ruby.dataflow.BarrierGuards
 
-/**
- * A taint-tracking configuration for detecting regexp injection vulnerabilities.
- * DEPRECATED: Use `RegExpInjectionFlow`
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "RegExpInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RegExpInjection::Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof RegExpInjection::Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof RegExpInjection::Sanitizer }
-}
-
 private module RegExpInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RegExpInjection::Source }
 

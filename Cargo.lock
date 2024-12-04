@@ -381,8 +381,10 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "argfile",
+ "chrono",
  "clap",
  "codeql-extractor",
+ "dunce",
  "figment",
  "glob",
  "itertools 0.13.0",
@@ -404,6 +406,7 @@ dependencies = [
  "ra_ap_vfs",
  "rust-extractor-macros",
  "serde",
+ "serde_json",
  "serde_with",
  "stderrlog",
  "triomphe",
@@ -539,6 +542,12 @@ name = "drop_bomb"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9bda8e21c04aca2ae33ffc2fd8c23134f3cac46db123ba97bd9d3f3b8a4a85e1"
+
+[[package]]
+name = "dunce"
+version = "1.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813"
 
 [[package]]
 name = "either"
@@ -2034,9 +2043,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.132"
+version = "1.0.133"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d726bfaff4b320266d395898905d0eba0345aae23b54aee3a737e260fd46db03"
+checksum = "c7fceb2473b9166b2294ef05efcb65a3db80803f0b03ef86a5fc88a2b85ee377"
 dependencies = [
  "itoa",
  "memchr",

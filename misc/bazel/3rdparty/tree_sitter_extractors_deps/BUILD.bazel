@@ -56,6 +56,12 @@ alias(
 )
 
 alias(
+    name = "dunce",
+    actual = "@vendor__dunce-1.0.5//:dunce",
+    tags = ["manual"],
+)
+
+alias(
     name = "encoding",
     actual = "@vendor__encoding-0.2.33//:encoding",
     tags = ["manual"],
@@ -243,7 +249,7 @@ alias(
 
 alias(
     name = "serde_json",
-    actual = "@vendor__serde_json-1.0.132//:serde_json",
+    actual = "@vendor__serde_json-1.0.133//:serde_json",
     tags = ["manual"],
 )
 

@@ -277,6 +277,13 @@ mod logical_operators {
     fn test_and_return(a: bool) {
         a && return;
     }
+
+    fn test_and_true(a: bool) -> i64 {
+        if (a && true) {
+            return 1;
+        }
+        0
+    }
 }
 
 mod question_mark_operator {
@@ -492,4 +499,22 @@ fn test_nested_function2() {
 
 trait MyFrom<T> {
     fn my_from(x: T) -> Self;
+}
+
+struct MyNumber {
+    n: i64,
+}
+
+impl MyNumber {
+    fn new(a: i64) -> Self {
+        MyNumber { n: a }
+    }
+
+    fn negated(self) -> Self {
+        MyNumber { n: self.n }
+    }
+
+    fn multifly_add(&mut self, a: i64, b: i64) {
+        self.n = (self.n * a) + b;
+    }
 }

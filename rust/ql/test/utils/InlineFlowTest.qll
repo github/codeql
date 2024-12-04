@@ -5,26 +5,27 @@
 
 import rust
 private import codeql.dataflow.test.InlineFlowTest
+private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import internal.InlineExpectationsTestImpl as InlineExpectationsTestImpl
 
 // Holds if the target expression of `call` is a path and the string representation of the path is `name`.
-private predicate callTargetName(CallExpr call, string name) {
-  call.getExpr().(PathExpr).toString() = name
+private predicate callTargetName(CallExprCfgNode call, string name) {
+  call.getFunction().(PathExprCfgNode).toString() = name
 }
 
 private module FlowTestImpl implements InputSig<Location, RustDataFlow> {
   predicate defaultSource(DataFlow::Node source) { callTargetName(source.asExpr(), "source") }
 
   predicate defaultSink(DataFlow::Node sink) {
-    any(CallExpr call | callTargetName(call, "sink")).getArgList().getAnArg() = sink.asExpr()
+    any(CallExprCfgNode call | callTargetName(call, "sink")).getArgument(_) = sink.asExpr()
   }
 
   private string getSourceArgString(DataFlow::Node src) {
     defaultSource(src) and
-    result = src.asExpr().(CallExpr).getArgList().getArg(0).toString()
+    result = src.asExpr().(CallExprCfgNode).getArgument(0).toString()
   }
 
   bindingset[src, sink]

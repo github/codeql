@@ -7,10 +7,8 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
-import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.Expr
-import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-import codeql.rust.elements.Label
+import codeql.rust.elements.internal.LoopingExprImpl::Impl as LoopingExprImpl
 import codeql.rust.elements.Pat
 
 /**
@@ -26,7 +24,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::ForExpr` class directly.
    * Use the subclass `ForExpr`, where the following predicates are available.
    */
-  class ForExpr extends Synth::TForExpr, ExprImpl::Expr {
+  class ForExpr extends Synth::TForExpr, LoopingExprImpl::LoopingExpr {
     override string getAPrimaryQlClass() { result = "ForExpr" }
 
     /**
@@ -61,33 +59,7 @@ module Generated {
     final predicate hasIterable() { exists(this.getIterable()) }
 
     /**
-     * Gets the label of this for expression, if it exists.
-     */
-    Label getLabel() {
-      result =
-        Synth::convertLabelFromRaw(Synth::convertForExprToRaw(this).(Raw::ForExpr).getLabel())
-    }
-
-    /**
-     * Holds if `getLabel()` exists.
-     */
-    final predicate hasLabel() { exists(this.getLabel()) }
-
-    /**
-     * Gets the loop body of this for expression, if it exists.
-     */
-    BlockExpr getLoopBody() {
-      result =
-        Synth::convertBlockExprFromRaw(Synth::convertForExprToRaw(this).(Raw::ForExpr).getLoopBody())
-    }
-
-    /**
-     * Holds if `getLoopBody()` exists.
-     */
-    final predicate hasLoopBody() { exists(this.getLoopBody()) }
-
-    /**
-     * Gets the pat of this for expression, if it exists.
+     * Gets the pattern of this for expression, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertForExprToRaw(this).(Raw::ForExpr).getPat())

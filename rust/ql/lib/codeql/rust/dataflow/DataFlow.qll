@@ -15,9 +15,22 @@ private import DataFlowImpl::Node as Node
 module DataFlow {
   final class Node = Node::Node;
 
-  final class ParameterNode = Node::ParameterNode;
+  /**
+   * The value of a parameter at function entry, viewed as a node in a data
+   * flow graph.
+   */
+  final class ParameterNode extends Node instanceof Node::SourceParameterNode {
+    /** Gets the parameter that this node corresponds to. */
+    ParamBase getParameter() { result = super.getParameter().getParamBase() }
+  }
 
   final class PostUpdateNode = Node::PostUpdateNode;
+
+  final class Content = DataFlowImpl::Content;
+
+  final class VariantContent = DataFlowImpl::VariantContent;
+
+  final class ContentSet = DataFlowImpl::ContentSet;
 
   /**
    * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local

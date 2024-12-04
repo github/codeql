@@ -373,6 +373,48 @@ module LoggerCall {
   }
 }
 
+private class DefaultLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
+  DataFlow::ArgumentNode messageComponent;
+
+  DefaultLoggerCall() {
+    sinkNode(messageComponent, "log-injection") and
+    this = messageComponent.getCall()
+  }
+
+  override DataFlow::Node getAMessageComponent() {
+    not messageComponent instanceof DataFlow::ImplicitVarargsSlice and
+    result = messageComponent
+    or
+    messageComponent instanceof DataFlow::ImplicitVarargsSlice and
+    result = this.getAnImplicitVarargsArgument()
+  }
+}
+
+/**
+ * A call to an interface that looks like a logger. It is common to use a
+ * locally-defined interface for logging to make it easy to changing logging
+ * library.
+ */
+private class HeuristicLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
+  HeuristicLoggerCall() {
+    exists(Method m, string tp, string logFunctionPrefix, string name |
+      m = this.getTarget() and
+      m.hasQualifiedName(_, tp, name) and
+      m.getReceiverBaseType().getUnderlyingType() instanceof InterfaceType
+    |
+      tp.regexpMatch(".*[lL]ogger") and
+      logFunctionPrefix =
+        [
+          "Debug", "Error", "Fatal", "Info", "Log", "Output", "Panic", "Print", "Trace", "Warn",
+          "With"
+        ] and
+      name.matches(logFunctionPrefix + "%")
+    )
+  }
+
+  override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
+}
+
 /**
  * A function that encodes data into a binary or textual format.
  *

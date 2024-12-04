@@ -24,6 +24,8 @@ predicate variableWrite(AstNode write, Variable v) {
     not isUnitializedLet(pat, v)
   )
   or
+  exists(SelfParam self | self = write and self = v.getSelfParam())
+  or
   exists(VariableAccess access |
     access = write and
     access.getVariable() = v
@@ -474,14 +476,14 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
   predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    exists(BasicBlock bb, int i | def.definesAt(_, bb, i) and value = bb.getNode(i))
+    none() // handled in `DataFlowImpl.qll` instead
   }
 
-  class Parameter = Param;
+  class Parameter = CfgNodes::ParamBaseCfgNode;
 
   /** Holds if SSA definition `def` initializes parameter `p` at function entry. */
   predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) {
-    exists(BasicBlock bb, int i | bb.getNode(i).getAstNode() = p and def.definesAt(_, bb, i))
+    none() // handled in `DataFlowImpl.qll` instead
   }
 
   class Guard extends CfgNodes::AstCfgNode {
