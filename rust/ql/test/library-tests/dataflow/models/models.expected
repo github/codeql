@@ -1,0 +1,57 @@
+models
+edges
+| main.rs:15:13:15:21 | source(...) | main.rs:16:19:16:19 | s | provenance |  |
+| main.rs:16:19:16:19 | s | main.rs:16:10:16:20 | identity(...) | provenance |  |
+| main.rs:30:13:30:21 | source(...) | main.rs:31:27:31:27 | s | provenance |  |
+| main.rs:31:14:31:28 | ...::A(...) [A] | main.rs:32:22:32:23 | e1 [A] | provenance |  |
+| main.rs:31:27:31:27 | s | main.rs:31:14:31:28 | ...::A(...) [A] | provenance |  |
+| main.rs:32:22:32:23 | e1 [A] | main.rs:32:10:32:24 | get_var_pos(...) | provenance |  |
+| main.rs:43:13:43:21 | source(...) | main.rs:44:26:44:26 | s | provenance |  |
+| main.rs:44:14:44:27 | set_var_pos(...) [B] | main.rs:47:9:47:23 | TupleStructPat [B] | provenance |  |
+| main.rs:44:26:44:26 | s | main.rs:44:14:44:27 | set_var_pos(...) [B] | provenance |  |
+| main.rs:47:9:47:23 | TupleStructPat [B] | main.rs:47:22:47:22 | i | provenance |  |
+| main.rs:47:22:47:22 | i | main.rs:47:33:47:33 | i | provenance |  |
+| main.rs:62:13:62:21 | source(...) | main.rs:63:40:63:40 | s | provenance |  |
+| main.rs:63:14:63:42 | ...::C {...} [C] | main.rs:64:24:64:25 | e1 [C] | provenance |  |
+| main.rs:63:40:63:40 | s | main.rs:63:14:63:42 | ...::C {...} [C] | provenance |  |
+| main.rs:64:24:64:25 | e1 [C] | main.rs:64:10:64:26 | get_var_field(...) | provenance |  |
+| main.rs:75:13:75:21 | source(...) | main.rs:76:28:76:28 | s | provenance |  |
+| main.rs:76:14:76:29 | set_var_field(...) [D] | main.rs:79:9:79:37 | ...::D {...} [D] | provenance |  |
+| main.rs:76:28:76:28 | s | main.rs:76:14:76:29 | set_var_field(...) [D] | provenance |  |
+| main.rs:79:9:79:37 | ...::D {...} [D] | main.rs:79:35:79:35 | i | provenance |  |
+| main.rs:79:35:79:35 | i | main.rs:79:47:79:47 | i | provenance |  |
+nodes
+| main.rs:15:13:15:21 | source(...) | semmle.label | source(...) |
+| main.rs:16:10:16:20 | identity(...) | semmle.label | identity(...) |
+| main.rs:16:19:16:19 | s | semmle.label | s |
+| main.rs:30:13:30:21 | source(...) | semmle.label | source(...) |
+| main.rs:31:14:31:28 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
+| main.rs:31:27:31:27 | s | semmle.label | s |
+| main.rs:32:10:32:24 | get_var_pos(...) | semmle.label | get_var_pos(...) |
+| main.rs:32:22:32:23 | e1 [A] | semmle.label | e1 [A] |
+| main.rs:43:13:43:21 | source(...) | semmle.label | source(...) |
+| main.rs:44:14:44:27 | set_var_pos(...) [B] | semmle.label | set_var_pos(...) [B] |
+| main.rs:44:26:44:26 | s | semmle.label | s |
+| main.rs:47:9:47:23 | TupleStructPat [B] | semmle.label | TupleStructPat [B] |
+| main.rs:47:22:47:22 | i | semmle.label | i |
+| main.rs:47:33:47:33 | i | semmle.label | i |
+| main.rs:62:13:62:21 | source(...) | semmle.label | source(...) |
+| main.rs:63:14:63:42 | ...::C {...} [C] | semmle.label | ...::C {...} [C] |
+| main.rs:63:40:63:40 | s | semmle.label | s |
+| main.rs:64:10:64:26 | get_var_field(...) | semmle.label | get_var_field(...) |
+| main.rs:64:24:64:25 | e1 [C] | semmle.label | e1 [C] |
+| main.rs:75:13:75:21 | source(...) | semmle.label | source(...) |
+| main.rs:76:14:76:29 | set_var_field(...) [D] | semmle.label | set_var_field(...) [D] |
+| main.rs:76:28:76:28 | s | semmle.label | s |
+| main.rs:79:9:79:37 | ...::D {...} [D] | semmle.label | ...::D {...} [D] |
+| main.rs:79:35:79:35 | i | semmle.label | i |
+| main.rs:79:47:79:47 | i | semmle.label | i |
+subpaths
+testFailures
+invalidSpecComponent
+#select
+| main.rs:16:10:16:20 | identity(...) | main.rs:15:13:15:21 | source(...) | main.rs:16:10:16:20 | identity(...) | $@ | main.rs:15:13:15:21 | source(...) | source(...) |
+| main.rs:32:10:32:24 | get_var_pos(...) | main.rs:30:13:30:21 | source(...) | main.rs:32:10:32:24 | get_var_pos(...) | $@ | main.rs:30:13:30:21 | source(...) | source(...) |
+| main.rs:47:33:47:33 | i | main.rs:43:13:43:21 | source(...) | main.rs:47:33:47:33 | i | $@ | main.rs:43:13:43:21 | source(...) | source(...) |
+| main.rs:64:10:64:26 | get_var_field(...) | main.rs:62:13:62:21 | source(...) | main.rs:64:10:64:26 | get_var_field(...) | $@ | main.rs:62:13:62:21 | source(...) | source(...) |
+| main.rs:79:47:79:47 | i | main.rs:75:13:75:21 | source(...) | main.rs:79:47:79:47 | i | $@ | main.rs:75:13:75:21 | source(...) | source(...) |
