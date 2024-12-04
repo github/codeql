@@ -4,7 +4,7 @@ import TestUtils
 
 from
   PathSegment x, string hasGenericArgList, string hasNameRef, string hasParamList,
-  string hasPathType, string hasRetType, string hasReturnTypeSyntax, string hasTy
+  string hasPathType, string hasRetType, string hasReturnTypeSyntax, string hasTypeRepr
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -14,7 +14,7 @@ where
   (if x.hasPathType() then hasPathType = "yes" else hasPathType = "no") and
   (if x.hasRetType() then hasRetType = "yes" else hasRetType = "no") and
   (if x.hasReturnTypeSyntax() then hasReturnTypeSyntax = "yes" else hasReturnTypeSyntax = "no") and
-  if x.hasTy() then hasTy = "yes" else hasTy = "no"
+  if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
 select x, "hasGenericArgList:", hasGenericArgList, "hasNameRef:", hasNameRef, "hasParamList:",
   hasParamList, "hasPathType:", hasPathType, "hasRetType:", hasRetType, "hasReturnTypeSyntax:",
-  hasReturnTypeSyntax, "hasTy:", hasTy
+  hasReturnTypeSyntax, "hasTypeRepr:", hasTypeRepr

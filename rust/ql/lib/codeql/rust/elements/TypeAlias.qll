@@ -11,7 +11,7 @@ import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Item
 import codeql.rust.elements.Name
 import codeql.rust.elements.TypeBoundList
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 

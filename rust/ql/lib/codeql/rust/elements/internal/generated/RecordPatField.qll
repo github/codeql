@@ -28,7 +28,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RecordPatField" }
 
     /**
-     * Gets the `index`th attr of this record pat field (0-based).
+     * Gets the `index`th attr of this record pattern field (0-based).
      */
     Attr getAttr(int index) {
       result =
@@ -38,17 +38,17 @@ module Generated {
     }
 
     /**
-     * Gets any of the attrs of this record pat field.
+     * Gets any of the attrs of this record pattern field.
      */
     final Attr getAnAttr() { result = this.getAttr(_) }
 
     /**
-     * Gets the number of attrs of this record pat field.
+     * Gets the number of attrs of this record pattern field.
      */
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
-     * Gets the name reference of this record pat field, if it exists.
+     * Gets the name reference of this record pattern field, if it exists.
      */
     NameRef getNameRef() {
       result =
@@ -63,7 +63,7 @@ module Generated {
     final predicate hasNameRef() { exists(this.getNameRef()) }
 
     /**
-     * Gets the pat of this record pat field, if it exists.
+     * Gets the pattern of this record pattern field, if it exists.
      */
     Pat getPat() {
       result =

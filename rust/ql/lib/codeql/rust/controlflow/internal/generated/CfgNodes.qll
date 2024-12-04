@@ -533,7 +533,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       BoxPat getBoxPat() { result = node }
 
       /**
-       * Gets the pat of this box pat, if it exists.
+       * Gets the pattern of this box pattern, if it exists.
        */
       PatCfgNode getPat() {
         any(ChildMapping mapping).hasCfgChild(node, node.getPat(), this, result)
@@ -729,7 +729,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       ConstBlockPat getConstBlockPat() { result = node }
 
       /**
-       * Gets the block expression of this const block pat, if it exists.
+       * Gets the block expression of this const block pattern, if it exists.
        */
       BlockExprCfgNode getBlockExpr() {
         any(ChildMapping mapping).hasCfgChild(node, node.getBlockExpr(), this, result)
@@ -741,7 +741,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasBlockExpr() { exists(this.getBlockExpr()) }
 
       /**
-       * Holds if this const block pat is const.
+       * Holds if this const block pattern is const.
        */
       predicate isConst() { node.isConst() }
     }
@@ -929,7 +929,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasIterable() { exists(this.getIterable()) }
 
       /**
-       * Gets the pat of this for expression, if it exists.
+       * Gets the pattern of this for expression, if it exists.
        */
       PatCfgNode getPat() {
         any(ChildMapping mapping).hasCfgChild(node, node.getPat(), this, result)
@@ -1074,32 +1074,32 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       IdentPat getIdentPat() { result = node }
 
       /**
-       * Gets the `index`th attr of this ident pat (0-based).
+       * Gets the `index`th attr of this ident pattern (0-based).
        */
       Attr getAttr(int index) { result = node.getAttr(index) }
 
       /**
-       * Gets any of the attrs of this ident pat.
+       * Gets any of the attrs of this ident pattern.
        */
       Attr getAnAttr() { result = this.getAttr(_) }
 
       /**
-       * Gets the number of attrs of this ident pat.
+       * Gets the number of attrs of this ident pattern.
        */
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
-       * Holds if this ident pat is mut.
+       * Holds if this ident pattern is mut.
        */
       predicate isMut() { node.isMut() }
 
       /**
-       * Holds if this ident pat is reference.
+       * Holds if this ident pattern is reference.
        */
       predicate isRef() { node.isRef() }
 
       /**
-       * Gets the name of this ident pat, if it exists.
+       * Gets the name of this ident pattern, if it exists.
        */
       Name getName() { result = node.getName() }
 
@@ -1109,7 +1109,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasName() { exists(this.getName()) }
 
       /**
-       * Gets the pat of this ident pat, if it exists.
+       * Gets the pattern of this ident pattern, if it exists.
        */
       PatCfgNode getPat() {
         any(ChildMapping mapping).hasCfgChild(node, node.getPat(), this, result)
@@ -1353,7 +1353,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasScrutinee() { exists(this.getScrutinee()) }
 
       /**
-       * Gets the pat of this let expression, if it exists.
+       * Gets the pattern of this let expression, if it exists.
        */
       PatCfgNode getPat() {
         any(ChildMapping mapping).hasCfgChild(node, node.getPat(), this, result)
@@ -1434,7 +1434,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasLetElse() { exists(this.getLetElse()) }
 
       /**
-       * Gets the pat of this let statement, if it exists.
+       * Gets the pattern of this let statement, if it exists.
        */
       PatCfgNode getPat() {
         any(ChildMapping mapping).hasCfgChild(node, node.getPat(), this, result)
@@ -1446,14 +1446,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasPat() { exists(this.getPat()) }
 
       /**
-       * Gets the ty of this let statement, if it exists.
+       * Gets the type representation of this let statement, if it exists.
        */
-      TypeRef getTy() { result = node.getTy() }
+      TypeRepr getTypeRepr() { result = node.getTypeRepr() }
 
       /**
-       * Holds if `getTy()` exists.
+       * Holds if `getTypeRepr()` exists.
        */
-      predicate hasTy() { exists(this.getTy()) }
+      predicate hasTypeRepr() { exists(this.getTypeRepr()) }
     }
 
     final private class ParentLiteralExpr extends ParentAstNode, LiteralExpr {
@@ -1533,7 +1533,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       LiteralPat getLiteralPat() { result = node }
 
       /**
-       * Gets the literal of this literal pat, if it exists.
+       * Gets the literal of this literal pattern, if it exists.
        */
       LiteralExprCfgNode getLiteral() {
         any(ChildMapping mapping).hasCfgChild(node, node.getLiteral(), this, result)
@@ -1751,7 +1751,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       MacroPat getMacroPat() { result = node }
 
       /**
-       * Gets the macro call of this macro pat, if it exists.
+       * Gets the macro call of this macro pattern, if it exists.
        */
       MacroCallCfgNode getMacroCall() {
         any(ChildMapping mapping).hasCfgChild(node, node.getMacroCall(), this, result)
@@ -1937,14 +1937,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
 
       /**
-       * Gets the ty of this offset of expression, if it exists.
+       * Gets the type representation of this offset of expression, if it exists.
        */
-      TypeRef getTy() { result = node.getTy() }
+      TypeRepr getTypeRepr() { result = node.getTypeRepr() }
 
       /**
-       * Holds if `getTy()` exists.
+       * Holds if `getTypeRepr()` exists.
        */
-      predicate hasTy() { exists(this.getTy()) }
+      predicate hasTypeRepr() { exists(this.getTypeRepr()) }
     }
 
     final private class ParentOrPat extends ParentAstNode, OrPat {
@@ -1972,19 +1972,19 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       OrPat getOrPat() { result = node }
 
       /**
-       * Gets the `index`th pat of this or pat (0-based).
+       * Gets the `index`th pattern of this or pattern (0-based).
        */
       PatCfgNode getPat(int index) {
         any(ChildMapping mapping).hasCfgChild(node, node.getPat(index), this, result)
       }
 
       /**
-       * Gets any of the pats of this or pat.
+       * Gets any of the patterns of this or pattern.
        */
       PatCfgNode getAPat() { result = this.getPat(_) }
 
       /**
-       * Gets the number of pats of this or pat.
+       * Gets the number of patterns of this or pattern.
        */
       int getNumberOfPats() { result = count(int i | exists(this.getPat(i))) }
     }
@@ -2014,7 +2014,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       Param getParam() { result = node }
 
       /**
-       * Gets the pat of this parameter, if it exists.
+       * Gets the pattern of this parameter, if it exists.
        */
       PatCfgNode getPat() {
         any(ChildMapping mapping).hasCfgChild(node, node.getPat(), this, result)
@@ -2057,14 +2057,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
-       * Gets the ty of this parameter base, if it exists.
+       * Gets the type representation of this parameter base, if it exists.
        */
-      TypeRef getTy() { result = node.getTy() }
+      TypeRepr getTypeRepr() { result = node.getTypeRepr() }
 
       /**
-       * Holds if `getTy()` exists.
+       * Holds if `getTypeRepr()` exists.
        */
-      predicate hasTy() { exists(this.getTy()) }
+      predicate hasTypeRepr() { exists(this.getTypeRepr()) }
     }
 
     final private class ParentPat extends ParentAstNode, Pat {
@@ -2093,7 +2093,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      * let x = variable;
      * let x = foo::bar;
      * let y = <T>::foo;
-     * let z = <TypeRef as Trait>::foo;
+     * let z = <TypeRepr as Trait>::foo;
      * ```
      */
     final class PathExprCfgNode extends CfgNodeFinal, PathExprBaseCfgNode {
@@ -2328,7 +2328,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       RangePat getRangePat() { result = node }
 
       /**
-       * Gets the end of this range pat, if it exists.
+       * Gets the end of this range pattern, if it exists.
        */
       PatCfgNode getEnd() {
         any(ChildMapping mapping).hasCfgChild(node, node.getEnd(), this, result)
@@ -2340,7 +2340,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasEnd() { exists(this.getEnd()) }
 
       /**
-       * Gets the operator name of this range pat, if it exists.
+       * Gets the operator name of this range pattern, if it exists.
        */
       string getOperatorName() { result = node.getOperatorName() }
 
@@ -2350,7 +2350,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasOperatorName() { exists(this.getOperatorName()) }
 
       /**
-       * Gets the start of this range pat, if it exists.
+       * Gets the start of this range pattern, if it exists.
        */
       PatCfgNode getStart() {
         any(ChildMapping mapping).hasCfgChild(node, node.getStart(), this, result)
@@ -2416,7 +2416,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       RecordPat getRecordPat() { result = node }
 
       /**
-       * Gets the record pat field list of this record pat, if it exists.
+       * Gets the record pattern field list of this record pattern, if it exists.
        */
       RecordPatFieldList getRecordPatFieldList() { result = node.getRecordPatFieldList() }
 
@@ -2520,12 +2520,12 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       RefPat getRefPat() { result = node }
 
       /**
-       * Holds if this reference pat is mut.
+       * Holds if this reference pattern is mut.
        */
       predicate isMut() { node.isMut() }
 
       /**
-       * Gets the pat of this reference pat, if it exists.
+       * Gets the pattern of this reference pattern, if it exists.
        */
       PatCfgNode getPat() {
         any(ChildMapping mapping).hasCfgChild(node, node.getPat(), this, result)
@@ -2556,17 +2556,17 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       RestPat getRestPat() { result = node }
 
       /**
-       * Gets the `index`th attr of this rest pat (0-based).
+       * Gets the `index`th attr of this rest pattern (0-based).
        */
       Attr getAttr(int index) { result = node.getAttr(index) }
 
       /**
-       * Gets any of the attrs of this rest pat.
+       * Gets any of the attrs of this rest pattern.
        */
       Attr getAnAttr() { result = this.getAttr(_) }
 
       /**
-       * Gets the number of attrs of this rest pat.
+       * Gets the number of attrs of this rest pattern.
        */
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
     }
@@ -2701,19 +2701,19 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       SlicePat getSlicePat() { result = node }
 
       /**
-       * Gets the `index`th pat of this slice pat (0-based).
+       * Gets the `index`th pattern of this slice pattern (0-based).
        */
       PatCfgNode getPat(int index) {
         any(ChildMapping mapping).hasCfgChild(node, node.getPat(index), this, result)
       }
 
       /**
-       * Gets any of the pats of this slice pat.
+       * Gets any of the patterns of this slice pattern.
        */
       PatCfgNode getAPat() { result = this.getPat(_) }
 
       /**
-       * Gets the number of pats of this slice pat.
+       * Gets the number of patterns of this slice pattern.
        */
       int getNumberOfPats() { result = count(int i | exists(this.getPat(i))) }
     }
@@ -2848,19 +2848,19 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       TuplePat getTuplePat() { result = node }
 
       /**
-       * Gets the `index`th field of this tuple pat (0-based).
+       * Gets the `index`th field of this tuple pattern (0-based).
        */
       PatCfgNode getField(int index) {
         any(ChildMapping mapping).hasCfgChild(node, node.getField(index), this, result)
       }
 
       /**
-       * Gets any of the fields of this tuple pat.
+       * Gets any of the fields of this tuple pattern.
        */
       PatCfgNode getAField() { result = this.getField(_) }
 
       /**
-       * Gets the number of fields of this tuple pat.
+       * Gets the number of fields of this tuple pattern.
        */
       int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
     }
@@ -2892,19 +2892,19 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       TupleStructPat getTupleStructPat() { result = node }
 
       /**
-       * Gets the `index`th field of this tuple struct pat (0-based).
+       * Gets the `index`th field of this tuple struct pattern (0-based).
        */
       PatCfgNode getField(int index) {
         any(ChildMapping mapping).hasCfgChild(node, node.getField(index), this, result)
       }
 
       /**
-       * Gets any of the fields of this tuple struct pat.
+       * Gets any of the fields of this tuple struct pattern.
        */
       PatCfgNode getAField() { result = this.getField(_) }
 
       /**
-       * Gets the number of fields of this tuple struct pat.
+       * Gets the number of fields of this tuple struct pattern.
        */
       int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
     }

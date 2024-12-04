@@ -4,7 +4,7 @@ import TestUtils
 
 from
   LetStmt x, int getNumberOfAttrs, string hasInitializer, string hasLetElse, string hasPat,
-  string hasTy
+  string hasTypeRepr
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -12,6 +12,6 @@ where
   (if x.hasInitializer() then hasInitializer = "yes" else hasInitializer = "no") and
   (if x.hasLetElse() then hasLetElse = "yes" else hasLetElse = "no") and
   (if x.hasPat() then hasPat = "yes" else hasPat = "no") and
-  if x.hasTy() then hasTy = "yes" else hasTy = "no"
+  if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
 select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasInitializer:", hasInitializer, "hasLetElse:",
-  hasLetElse, "hasPat:", hasPat, "hasTy:", hasTy
+  hasLetElse, "hasPat:", hasPat, "hasTypeRepr:", hasTypeRepr

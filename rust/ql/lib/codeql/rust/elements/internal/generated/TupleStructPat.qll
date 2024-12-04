@@ -31,7 +31,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TupleStructPat" }
 
     /**
-     * Gets the `index`th field of this tuple struct pat (0-based).
+     * Gets the `index`th field of this tuple struct pattern (0-based).
      */
     Pat getField(int index) {
       result =
@@ -41,12 +41,12 @@ module Generated {
     }
 
     /**
-     * Gets any of the fields of this tuple struct pat.
+     * Gets any of the fields of this tuple struct pattern.
      */
     final Pat getAField() { result = this.getField(_) }
 
     /**
-     * Gets the number of fields of this tuple struct pat.
+     * Gets the number of fields of this tuple struct pattern.
      */
     final int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
   }

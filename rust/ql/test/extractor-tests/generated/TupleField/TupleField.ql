@@ -2,11 +2,12 @@
 import codeql.rust.elements
 import TestUtils
 
-from TupleField x, int getNumberOfAttrs, string hasTy, string hasVisibility
+from TupleField x, int getNumberOfAttrs, string hasTypeRepr, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
   getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasTy() then hasTy = "yes" else hasTy = "no") and
+  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasTy:", hasTy, "hasVisibility:", hasVisibility
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasTypeRepr:", hasTypeRepr, "hasVisibility:",
+  hasVisibility

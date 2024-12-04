@@ -15,16 +15,15 @@ fn project_root() -> PathBuf {
 }
 
 fn class_name(type_name: &str) -> String {
-    let name = match type_name {
-        "BinExpr" => "BinaryExpr",
-        "ElseBranch" => "Expr",
-        "Fn" => "Function",
-        "Literal" => "LiteralExpr",
-        "Type" => "TypeRef",
-        "ArrayExpr" => "ArrayExprInternal",
-        _ => type_name,
-    };
-    name.to_owned()
+    match type_name {
+        "BinExpr" => "BinaryExpr".to_owned(),
+        "ElseBranch" => "Expr".to_owned(),
+        "Fn" => "Function".to_owned(),
+        "Literal" => "LiteralExpr".to_owned(),
+        "ArrayExpr" => "ArrayExprInternal".to_owned(),
+        _ if type_name.ends_with("Type") => format!("{}Repr", type_name),
+        _ => type_name.to_owned(),
+    }
 }
 
 fn property_name(type_name: &str, field_name: &str) -> String {
@@ -35,6 +34,8 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         ("Path", "segment") => "part",
         (_, "then_branch") => "then",
         (_, "else_branch") => "else_",
+        ("ArrayType", "ty") => "element_type_repr",
+        (_, "ty") => "type_repr",
         _ => field_name,
     };
     name.to_owned()

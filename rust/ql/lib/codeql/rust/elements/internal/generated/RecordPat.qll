@@ -30,7 +30,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RecordPat" }
 
     /**
-     * Gets the record pat field list of this record pat, if it exists.
+     * Gets the record pattern field list of this record pattern, if it exists.
      */
     RecordPatFieldList getRecordPatFieldList() {
       result =

@@ -8,7 +8,7 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeBoundList
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * A WherePred. For example:
