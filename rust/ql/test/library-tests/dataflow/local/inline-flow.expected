@@ -64,6 +64,16 @@ edges
 | main.rs:298:22:298:22 | n | main.rs:298:34:298:34 | n | provenance |  |
 | main.rs:302:9:302:24 | C {...} [C] | main.rs:302:22:302:22 | n | provenance |  |
 | main.rs:302:22:302:22 | n | main.rs:302:53:302:53 | n | provenance |  |
+| main.rs:314:20:314:52 | if cond {...} else {...} | main.rs:315:10:315:16 | f(...) | provenance |  |
+| main.rs:314:30:314:39 | source(...) | main.rs:314:20:314:52 | if cond {...} else {...} | provenance |  |
+| main.rs:319:20:319:23 | ... | main.rs:321:18:321:21 | data | provenance |  |
+| main.rs:325:13:325:22 | source(...) | main.rs:326:13:326:13 | a | provenance |  |
+| main.rs:326:13:326:13 | a | main.rs:319:20:319:23 | ... | provenance |  |
+| main.rs:330:20:330:23 | ... | main.rs:331:9:335:9 | if cond {...} else {...} | provenance |  |
+| main.rs:336:13:336:22 | source(...) | main.rs:337:21:337:21 | a | provenance |  |
+| main.rs:337:13:337:22 | f(...) | main.rs:338:10:338:10 | b | provenance |  |
+| main.rs:337:21:337:21 | a | main.rs:330:20:330:23 | ... | provenance |  |
+| main.rs:337:21:337:21 | a | main.rs:337:13:337:22 | f(...) | provenance |  |
 nodes
 | main.rs:15:10:15:18 | source(...) | semmle.label | source(...) |
 | main.rs:19:13:19:21 | source(...) | semmle.label | source(...) |
@@ -147,7 +157,21 @@ nodes
 | main.rs:302:9:302:24 | C {...} [C] | semmle.label | C {...} [C] |
 | main.rs:302:22:302:22 | n | semmle.label | n |
 | main.rs:302:53:302:53 | n | semmle.label | n |
+| main.rs:314:20:314:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
+| main.rs:314:30:314:39 | source(...) | semmle.label | source(...) |
+| main.rs:315:10:315:16 | f(...) | semmle.label | f(...) |
+| main.rs:319:20:319:23 | ... | semmle.label | ... |
+| main.rs:321:18:321:21 | data | semmle.label | data |
+| main.rs:325:13:325:22 | source(...) | semmle.label | source(...) |
+| main.rs:326:13:326:13 | a | semmle.label | a |
+| main.rs:330:20:330:23 | ... | semmle.label | ... |
+| main.rs:331:9:335:9 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
+| main.rs:336:13:336:22 | source(...) | semmle.label | source(...) |
+| main.rs:337:13:337:22 | f(...) | semmle.label | f(...) |
+| main.rs:337:21:337:21 | a | semmle.label | a |
+| main.rs:338:10:338:10 | b | semmle.label | b |
 subpaths
+| main.rs:337:21:337:21 | a | main.rs:330:20:330:23 | ... | main.rs:331:9:335:9 | if cond {...} else {...} | main.rs:337:13:337:22 | f(...) |
 testFailures
 #select
 | main.rs:15:10:15:18 | source(...) | main.rs:15:10:15:18 | source(...) | main.rs:15:10:15:18 | source(...) | $@ | main.rs:15:10:15:18 | source(...) | source(...) |
@@ -172,3 +196,6 @@ testFailures
 | main.rs:282:81:282:81 | n | main.rs:274:18:274:27 | source(...) | main.rs:282:81:282:81 | n | $@ | main.rs:274:18:274:27 | source(...) | source(...) |
 | main.rs:298:34:298:34 | n | main.rs:294:18:294:27 | source(...) | main.rs:298:34:298:34 | n | $@ | main.rs:294:18:294:27 | source(...) | source(...) |
 | main.rs:302:53:302:53 | n | main.rs:294:18:294:27 | source(...) | main.rs:302:53:302:53 | n | $@ | main.rs:294:18:294:27 | source(...) | source(...) |
+| main.rs:315:10:315:16 | f(...) | main.rs:314:30:314:39 | source(...) | main.rs:315:10:315:16 | f(...) | $@ | main.rs:314:30:314:39 | source(...) | source(...) |
+| main.rs:321:18:321:21 | data | main.rs:325:13:325:22 | source(...) | main.rs:321:18:321:21 | data | $@ | main.rs:325:13:325:22 | source(...) | source(...) |
+| main.rs:338:10:338:10 | b | main.rs:336:13:336:22 | source(...) | main.rs:338:10:338:10 | b | $@ | main.rs:336:13:336:22 | source(...) | source(...) |

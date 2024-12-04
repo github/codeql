@@ -344,6 +344,50 @@ localStep
 | main.rs:306:22:306:22 | [SSA] n | main.rs:306:34:306:34 | n |
 | main.rs:306:22:306:22 | n | main.rs:306:22:306:22 | [SSA] n |
 | main.rs:306:29:306:35 | sink(...) | main.rs:304:5:307:5 | match s2 { ... } |
+| main.rs:314:9:314:9 | [SSA] f | main.rs:315:10:315:10 | f |
+| main.rs:314:9:314:9 | f | main.rs:314:9:314:9 | [SSA] f |
+| main.rs:314:13:314:52 | \|...\| ... | main.rs:314:9:314:9 | f |
+| main.rs:314:14:314:17 | ... | main.rs:314:14:314:17 | cond |
+| main.rs:314:14:314:17 | [SSA] cond | main.rs:314:23:314:26 | cond |
+| main.rs:314:14:314:17 | cond | main.rs:314:14:314:17 | [SSA] cond |
+| main.rs:314:28:314:41 | { ... } | main.rs:314:20:314:52 | if cond {...} else {...} |
+| main.rs:314:30:314:39 | source(...) | main.rs:314:28:314:41 | { ... } |
+| main.rs:314:48:314:52 | { ... } | main.rs:314:20:314:52 | if cond {...} else {...} |
+| main.rs:314:50:314:50 | 0 | main.rs:314:48:314:52 | { ... } |
+| main.rs:319:9:319:9 | [SSA] f | main.rs:326:5:326:5 | f |
+| main.rs:319:9:319:9 | f | main.rs:319:9:319:9 | [SSA] f |
+| main.rs:319:13:324:9 | \|...\| ... | main.rs:319:9:319:9 | f |
+| main.rs:319:14:319:17 | ... | main.rs:319:14:319:17 | cond |
+| main.rs:319:14:319:17 | [SSA] cond | main.rs:320:12:320:15 | cond |
+| main.rs:319:14:319:17 | cond | main.rs:319:14:319:17 | [SSA] cond |
+| main.rs:319:20:319:23 | ... | main.rs:319:20:319:23 | data |
+| main.rs:319:20:319:23 | [SSA] data | main.rs:321:18:321:21 | data |
+| main.rs:319:20:319:23 | data | main.rs:319:20:319:23 | [SSA] data |
+| main.rs:320:17:322:9 | { ... } | main.rs:320:9:324:9 | if cond {...} else {...} |
+| main.rs:322:16:324:9 | { ... } | main.rs:320:9:324:9 | if cond {...} else {...} |
+| main.rs:323:13:323:19 | sink(...) | main.rs:322:16:324:9 | { ... } |
+| main.rs:325:9:325:9 | [SSA] a | main.rs:326:13:326:13 | a |
+| main.rs:325:9:325:9 | a | main.rs:325:9:325:9 | [SSA] a |
+| main.rs:325:13:325:22 | source(...) | main.rs:325:9:325:9 | a |
+| main.rs:330:9:330:9 | [SSA] f | main.rs:337:13:337:13 | f |
+| main.rs:330:9:330:9 | f | main.rs:330:9:330:9 | [SSA] f |
+| main.rs:330:13:335:9 | \|...\| ... | main.rs:330:9:330:9 | f |
+| main.rs:330:14:330:17 | ... | main.rs:330:14:330:17 | cond |
+| main.rs:330:14:330:17 | [SSA] cond | main.rs:331:12:331:15 | cond |
+| main.rs:330:14:330:17 | cond | main.rs:330:14:330:17 | [SSA] cond |
+| main.rs:330:20:330:23 | ... | main.rs:330:20:330:23 | data |
+| main.rs:330:20:330:23 | [SSA] data | main.rs:332:13:332:16 | data |
+| main.rs:330:20:330:23 | data | main.rs:330:20:330:23 | [SSA] data |
+| main.rs:331:17:333:9 | { ... } | main.rs:331:9:335:9 | if cond {...} else {...} |
+| main.rs:332:13:332:16 | data | main.rs:331:17:333:9 | { ... } |
+| main.rs:333:16:335:9 | { ... } | main.rs:331:9:335:9 | if cond {...} else {...} |
+| main.rs:334:13:334:13 | 0 | main.rs:333:16:335:9 | { ... } |
+| main.rs:336:9:336:9 | [SSA] a | main.rs:337:21:337:21 | a |
+| main.rs:336:9:336:9 | a | main.rs:336:9:336:9 | [SSA] a |
+| main.rs:336:13:336:22 | source(...) | main.rs:336:9:336:9 | a |
+| main.rs:337:9:337:9 | [SSA] b | main.rs:338:10:338:10 | b |
+| main.rs:337:9:337:9 | b | main.rs:337:9:337:9 | [SSA] b |
+| main.rs:337:13:337:22 | f(...) | main.rs:337:9:337:9 | b |
 storeStep
 | main.rs:94:14:94:22 | source(...) | tuple.0 | main.rs:94:13:94:26 | TupleExpr |
 | main.rs:94:25:94:25 | 2 | tuple.1 | main.rs:94:13:94:26 | TupleExpr |
@@ -385,7 +429,7 @@ storeStep
 | main.rs:276:41:276:41 | 2 | D | main.rs:276:14:276:43 | ...::D {...} |
 | main.rs:294:18:294:27 | source(...) | C | main.rs:293:14:295:5 | C {...} |
 | main.rs:296:27:296:27 | 2 | D | main.rs:296:14:296:29 | D {...} |
-| main.rs:314:27:314:27 | 0 | Some | main.rs:314:22:314:28 | Some(...) |
+| main.rs:345:27:345:27 | 0 | Some | main.rs:345:22:345:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap |
 | main.rs:33:9:33:15 | TupleStructPat | Some | main.rs:33:14:33:14 | _ |
