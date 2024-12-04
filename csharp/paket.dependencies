@@ -2,7 +2,7 @@ framework: net9.0
 storage: none
 source https://api.nuget.org/v3/index.json
 # behave like nuget in choosing transitive dependency versions
-strategy: min
+strategy: max
 
 nuget Basic.CompilerLog.Util
 nuget Mono.Posix.NETStandard
