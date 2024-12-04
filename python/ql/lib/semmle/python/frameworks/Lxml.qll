@@ -387,6 +387,15 @@ module Lxml {
   module ElementTree {
     API::Node classRef() { result = etreeRef().getMember("ElementTree") }
 
+    /**
+     * A source of instances of `lxml.etree.ElementTree` instances, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `ElementTree::instance()` to get references to instances of `lxml.etree.ElementTree` instances.
+     */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** Gets a reference to an `lxml.etree.ElementTree` instance.` */
@@ -397,7 +406,7 @@ module Lxml {
       exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
     }
 
-    /** Gets a reference to an `lxml.etree.ElementTree` parsers instance. */
+    /** Gets a reference to an `lxml.etree.ElementTree` instance. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /** An `ElementTree` instantiated directly. */
@@ -439,7 +448,9 @@ module Lxml {
 
   /** A call to serialise xml to a string */
   private class XmlEncoding extends Encoding::Range, DataFlow::CallCfgNode {
-    XmlEncoding() { this = etreeRef().getMember("tostring").getACall() }
+    XmlEncoding() {
+      this = etreeRef().getMember(["tostring", "tostringlist", "tounicode"]).getACall()
+    }
 
     override DataFlow::Node getAnInput() {
       result = [this.getArg(0), this.getArgByName("element_or_tree")]
