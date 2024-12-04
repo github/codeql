@@ -5,4 +5,5 @@
 | lib.rs:0:0:0:0 | lib.rs | 5 |
 | does_not_compile.rs:0:0:0:0 | does_not_compile.rs | 3 |
 | error.rs:0:0:0:0 | error.rs | 3 |
+| Cargo.toml:0:0:0:0 | Cargo.toml | 0 |
 | options.yml:0:0:0:0 | options.yml | 0 |

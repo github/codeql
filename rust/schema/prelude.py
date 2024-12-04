@@ -3,6 +3,7 @@ from misc.codegen.lib.schemadefs import *
 include("../shared/tree-sitter-extractor/src/generator/prefix.dbscheme")
 include("prefix.dbscheme")
 
+File = imported("File", "codeql.files.FileSystem")
 
 @qltest.skip
 class Element:
@@ -93,3 +94,11 @@ class Resolvable(AstNode):
     """
     resolved_path: optional[string] | rust.detach | ql.internal
     resolved_crate_origin: optional[string] | rust.detach | ql.internal
+
+
+@qltest.skip
+@ql.internal
+class ExtractorStep(Element):
+    action: string
+    file: File
+    duration_ms: int
