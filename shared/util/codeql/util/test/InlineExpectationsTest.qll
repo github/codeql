@@ -500,55 +500,6 @@ module Make<InlineExpectationsTestSig Impl> {
     }
   }
 
-  deprecated private module LegacyImpl implements TestSig {
-    string getARelevantTag() { result = any(InlineExpectationsTest t).getARelevantTag() }
-
-    predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
-      any(InlineExpectationsTest t).hasActualResult(location, element, tag, value)
-    }
-
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
-      any(InlineExpectationsTest t).hasOptionalResult(location, element, tag, value)
-    }
-  }
-
-  /**
-   * DEPRECATED: Use the InlineExpectationsTest module.
-   *
-   * The base class for tests with inline expectations. The test extends this class to provide the actual
-   * results of the query, which are then compared with the expected results in comments to produce a
-   * list of failure messages that point out where the actual results differ from the expected
-   * results.
-   */
-  abstract deprecated class InlineExpectationsTest extends string {
-    bindingset[this]
-    InlineExpectationsTest() { any() }
-
-    abstract string getARelevantTag();
-
-    abstract predicate hasActualResult(
-      Impl::Location location, string element, string tag, string value
-    );
-
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
-      none()
-    }
-  }
-
-  deprecated import MakeTest<LegacyImpl> as LegacyTest
-
-  deprecated query predicate failures = LegacyTest::testFailures/2;
-
-  deprecated class ActualResult = LegacyTest::ActualTestResult;
-
-  deprecated class GoodExpectation = LegacyTest::GoodTestExpectation;
-
-  deprecated class FalsePositiveExpectation = LegacyTest::FalsePositiveTestExpectation;
-
-  deprecated class FalseNegativeExpectation = LegacyTest::FalseNegativeTestExpectation;
-
-  deprecated class InvalidExpectation = LegacyTest::InvalidTestExpectation;
-
   /**
    * Holds if the expectation `tag=value` is found in one or more expectation comments.
    *

@@ -223,6 +223,7 @@ query predicate test26(ConstructedGeneric cg, string s) {
 }
 
 query predicate test27(ConstructedType ct, UnboundGenericType ugt, UnboundGenericType sourceDecl) {
+  ct.fromSource() and
   ct instanceof NestedType and
   ugt = ct.getUnboundGeneric() and
   sourceDecl = ct.getUnboundDeclaration() and

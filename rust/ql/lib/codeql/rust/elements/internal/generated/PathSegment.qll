@@ -10,10 +10,10 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
 import codeql.rust.elements.ParamList
-import codeql.rust.elements.PathType
-import codeql.rust.elements.RetType
+import codeql.rust.elements.PathTypeRepr
+import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.ReturnTypeSyntax
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `PathSegment` and should not
@@ -21,10 +21,7 @@ import codeql.rust.elements.TypeRef
  */
 module Generated {
   /**
-   * A PathSegment. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A path segment, which is one part of a whole path.
    * INTERNAL: Do not reference the `Generated::PathSegment` class directly.
    * Use the subclass `PathSegment`, where the following predicates are available.
    */
@@ -79,9 +76,9 @@ module Generated {
     /**
      * Gets the path type of this path segment, if it exists.
      */
-    PathType getPathType() {
+    PathTypeRepr getPathType() {
       result =
-        Synth::convertPathTypeFromRaw(Synth::convertPathSegmentToRaw(this)
+        Synth::convertPathTypeReprFromRaw(Synth::convertPathSegmentToRaw(this)
               .(Raw::PathSegment)
               .getPathType())
     }
@@ -94,9 +91,9 @@ module Generated {
     /**
      * Gets the ret type of this path segment, if it exists.
      */
-    RetType getRetType() {
+    RetTypeRepr getRetType() {
       result =
-        Synth::convertRetTypeFromRaw(Synth::convertPathSegmentToRaw(this)
+        Synth::convertRetTypeReprFromRaw(Synth::convertPathSegmentToRaw(this)
               .(Raw::PathSegment)
               .getRetType())
     }
@@ -122,16 +119,18 @@ module Generated {
     final predicate hasReturnTypeSyntax() { exists(this.getReturnTypeSyntax()) }
 
     /**
-     * Gets the ty of this path segment, if it exists.
+     * Gets the type representation of this path segment, if it exists.
      */
-    TypeRef getTy() {
+    TypeRepr getTypeRepr() {
       result =
-        Synth::convertTypeRefFromRaw(Synth::convertPathSegmentToRaw(this).(Raw::PathSegment).getTy())
+        Synth::convertTypeReprFromRaw(Synth::convertPathSegmentToRaw(this)
+              .(Raw::PathSegment)
+              .getTypeRepr())
     }
 
     /**
-     * Holds if `getTy()` exists.
+     * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTy() { exists(this.getTy()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

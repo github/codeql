@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.FormatArgsExpr
+import codeql.rust.elements.FormatArgument
 import codeql.rust.elements.internal.LocatableImpl::Impl as LocatableImpl
 
 /**
@@ -34,5 +35,15 @@ module Generated {
      * Gets the index of this format.
      */
     int getIndex() { none() }
+
+    /**
+     * Gets the argument of this format, if it exists.
+     */
+    FormatArgument getArgument() { none() }
+
+    /**
+     * Holds if `getArgument()` exists.
+     */
+    final predicate hasArgument() { exists(this.getArgument()) }
   }
 }

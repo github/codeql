@@ -13,9 +13,11 @@ private import codeql.rust.elements.internal.generated.SelfParam
  */
 module Impl {
   /**
-   * A SelfParam. For example:
+   * A `self` parameter. For example `self` in:
    * ```rust
-   * todo!()
+   * fn push(&mut self, value: T) {
+   *   // ...
+   * }
    * ```
    */
   class SelfParam extends Generated::SelfParam { }

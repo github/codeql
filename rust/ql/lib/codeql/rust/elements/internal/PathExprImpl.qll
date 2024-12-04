@@ -18,10 +18,12 @@ module Impl {
    * let x = variable;
    * let x = foo::bar;
    * let y = <T>::foo;
-   * let z = <TypeRef as Trait>::foo;
+   * let z = <TypeRepr as Trait>::foo;
    * ```
    */
   class PathExpr extends Generated::PathExpr {
-    override string toString() { result = this.getPath().toString() }
+    override string toString() { result = this.toAbbreviatedString() }
+
+    override string toAbbreviatedString() { result = this.getPath().toString() }
   }
 }

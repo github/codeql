@@ -49,3 +49,4 @@ private import implementations.PostgreSql
 private import implementations.System
 private import implementations.StructuredExceptionHandling
 private import implementations.ZMQ
+private import implementations.Win32CommandExecution

@@ -92,3 +92,16 @@ app.get("argv", function(req, res) {
 
     new RegExp(`^${process.argv[1]}/Foo/bar.app$`); // NOT OK
 });
+
+app.get("argv", function(req, res) {
+  var input = req.param("input");
+
+  var sanitized = input.replace(new RegExp("[\\-\\[\\]\\/\\{\\}\\(\\)\\*\\+\\?\\.\\\\\\^\\$\\|]"), "\\$&");
+  new RegExp(sanitized); // NOT OK
+  
+  var sanitized = input.replace(new RegExp("[\\-\\[\\]\\/\\{\\}\\(\\)\\*\\+\\?\\.\\\\\\^\\$\\|]", "g"), "\\$&");
+  new RegExp(sanitized); // OK
+
+  var sanitized = input.replace(new RegExp("[\\-\\[\\]\\/\\{\\}\\(\\)\\*\\+\\?\\.\\\\\\^\\$\\|]", unknownFlags()), "\\$&");
+  new RegExp(sanitized); // OK -- Most likely not a problem.
+});

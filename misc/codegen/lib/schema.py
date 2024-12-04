@@ -3,7 +3,7 @@ import abc
 import typing
 from collections.abc import Iterable
 from dataclasses import dataclass, field
-from typing import List, Set, Union, Dict, Optional
+from typing import List, Set, Union, Dict, Optional, FrozenSet
 from enum import Enum, auto
 import functools
 
@@ -87,13 +87,28 @@ class SynthInfo:
 
 
 @dataclass
-class Class:
+class ClassBase:
+    imported: typing.ClassVar[bool]
     name: str
+
+
+@dataclass
+class ImportedClass(ClassBase):
+    imported: typing.ClassVar[bool] = True
+
+    module: str
+
+
+@dataclass
+class Class(ClassBase):
+    imported: typing.ClassVar[bool] = False
+
     bases: List[str] = field(default_factory=list)
     derived: Set[str] = field(default_factory=set)
     properties: List[Property] = field(default_factory=list)
     pragmas: List[str] | Dict[str, object] = field(default_factory=dict)
     doc: List[str] = field(default_factory=list)
+    cfg: bool = False
 
     def __post_init__(self):
         if not isinstance(self.pragmas, dict):
@@ -132,7 +147,7 @@ class Class:
 
 @dataclass
 class Schema:
-    classes: Dict[str, Class] = field(default_factory=dict)
+    classes: Dict[str, ClassBase] = field(default_factory=dict)
     includes: List[str] = field(default_factory=list)
     null: Optional[str] = None
 
@@ -154,7 +169,7 @@ class Schema:
 
 predicate_marker = object()
 
-TypeRef = Union[type, str]
+TypeRef = type | str | ImportedClass
 
 
 def get_type_name(arg: TypeRef) -> str:
@@ -163,6 +178,8 @@ def get_type_name(arg: TypeRef) -> str:
             return arg.__name__
         case str():
             return arg
+        case ImportedClass():
+            return arg.name
         case _:
             raise Error(f"Not a schema type or string ({arg})")
 
@@ -171,9 +188,9 @@ def _make_property(arg: object) -> Property:
     match arg:
         case _ if arg is predicate_marker:
             return PredicateProperty()
-        case str() | type():
+        case (str() | type() | ImportedClass()) as arg:
             return SingleProperty(type=get_type_name(arg))
-        case Property():
+        case Property() as arg:
             return arg
         case _:
             raise Error(f"Illegal property specifier {arg}")

@@ -86,7 +86,7 @@ rust_library(
         "@vendor__cargo-platform-0.1.8//:cargo_platform",
         "@vendor__semver-1.0.23//:semver",
         "@vendor__serde-1.0.214//:serde",
-        "@vendor__serde_json-1.0.132//:serde_json",
+        "@vendor__serde_json-1.0.133//:serde_json",
         "@vendor__thiserror-1.0.69//:thiserror",
     ],
 )

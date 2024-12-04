@@ -53,7 +53,7 @@ private class SpringViewUrlRedirectSink extends SpringUrlRedirectSink {
     )
     or
     exists(MethodCall ma, RedirectAppendCall rac |
-      DataFlow2::localExprFlow(rac.getQualifier(), ma.getQualifier()) and
+      DataFlow::localExprFlow(rac.getQualifier(), ma.getQualifier()) and
       ma.getMethod().hasName("append") and
       ma.getArgument(0) = this.asExpr() and
       any(SpringRequestMappingMethod sqmm).polyCalls*(this.getEnclosingCallable())

@@ -19,7 +19,6 @@ import semmle.code.cpp.security.Security
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import semmle.code.cpp.ir.dataflow.TaintTracking2
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.models.implementations.Strcat
 import ExecTaint::PathGraph

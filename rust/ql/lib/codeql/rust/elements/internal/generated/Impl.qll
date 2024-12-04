@@ -10,7 +10,7 @@ import codeql.rust.elements.AssocItemList
 import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
@@ -95,8 +95,8 @@ module Generated {
     /**
      * Gets the self ty of this impl, if it exists.
      */
-    TypeRef getSelfTy() {
-      result = Synth::convertTypeRefFromRaw(Synth::convertImplToRaw(this).(Raw::Impl).getSelfTy())
+    TypeRepr getSelfTy() {
+      result = Synth::convertTypeReprFromRaw(Synth::convertImplToRaw(this).(Raw::Impl).getSelfTy())
     }
 
     /**
@@ -107,8 +107,8 @@ module Generated {
     /**
      * Gets the trait of this impl, if it exists.
      */
-    TypeRef getTrait() {
-      result = Synth::convertTypeRefFromRaw(Synth::convertImplToRaw(this).(Raw::Impl).getTrait())
+    TypeRepr getTrait() {
+      result = Synth::convertTypeReprFromRaw(Synth::convertImplToRaw(this).(Raw::Impl).getTrait())
     }
 
     /**

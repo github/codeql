@@ -1,4 +1,3 @@
-testFailures
 | blocks.rb:4:10:4:10 | r | Fixed missing result: hasValueFlow=1 |
 | captured_variables.rb:50:10:50:10 | x | Fixed missing result: hasValueFlow=2 |
 | captured_variables.rb:68:25:68:68 | # $ hasValueFlow=3 $ MISSING: hasValueFlow=4 | Missing result: hasValueFlow=3 |
@@ -30,4 +29,3 @@ testFailures
 | instance_variables.rb:114:23:114:41 | # $ hasValueFlow=28 | Missing result: hasValueFlow=28 |
 | instance_variables.rb:117:23:117:41 | # $ hasValueFlow=29 | Missing result: hasValueFlow=29 |
 | instance_variables.rb:120:23:120:41 | # $ hasValueFlow=30 | Missing result: hasValueFlow=30 |
-failures

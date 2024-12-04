@@ -73,24 +73,35 @@ module Impl {
    * where `definingNode` is the entire `Either::Left(x) | Either::Right(x)`
    * pattern.
    */
-  private predicate variableDecl(AstNode definingNode, IdentPat p, string name) {
-    (
-      definingNode = getOutermostEnclosingOrPat(p)
-      or
-      not exists(getOutermostEnclosingOrPat(p)) and
-      definingNode = p.getName()
-    ) and
-    name = p.getName().getText() and
-    // exclude for now anything starting with an uppercase character, which may be a reference to
-    // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
-    // which we don't appear to recognize yet anyway. This also assumes programmers follow the
-    // naming guidelines, which they generally do, but they're not enforced.
-    not name.charAt(0).isUppercase() and
-    // exclude parameters from functions without a body as these are trait method declarations
-    // without implementations
-    not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = p) and
-    // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
-    not exists(FnPtrType fp | fp.getParamList().getParam(_).getPat() = p)
+  private predicate variableDecl(AstNode definingNode, AstNode p, string name) {
+    p =
+      any(SelfParam sp |
+        definingNode = sp.getName() and
+        name = sp.getName().getText() and
+        // exclude self parameters from functions without a body as these are
+        // trait method declarations without implementations
+        not exists(Function f | not f.hasBody() and f.getParamList().getSelfParam() = sp)
+      )
+    or
+    p =
+      any(IdentPat pat |
+        (
+          definingNode = getOutermostEnclosingOrPat(pat)
+          or
+          not exists(getOutermostEnclosingOrPat(pat)) and definingNode = pat.getName()
+        ) and
+        name = pat.getName().getText() and
+        // exclude for now anything starting with an uppercase character, which may be a reference to
+        // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
+        // which we don't appear to recognize yet anyway. This also assumes programmers follow the
+        // naming guidelines, which they generally do, but they're not enforced.
+        not name.charAt(0).isUppercase() and
+        // exclude parameters from functions without a body as these are trait method declarations
+        // without implementations
+        not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = pat) and
+        // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
+        not exists(FnPtrTypeRepr fp | fp.getParamList().getParam(_).getPat() = pat)
+      )
   }
 
   /** A variable. */
@@ -112,8 +123,11 @@ module Impl {
     /** Gets an access to this variable. */
     VariableAccess getAnAccess() { result.getVariable() = this }
 
+    /** Gets the `self` parameter that declares this variable, if one exists. */
+    SelfParam getSelfParam() { variableDecl(definingNode, result, name) }
+
     /**
-     * Gets the pattern that declares this variable.
+     * Gets the pattern that declares this variable, if any.
      *
      * Normally, the pattern is unique, except when introduced in an or pattern:
      *
@@ -135,7 +149,9 @@ module Impl {
     predicate isCaptured() { this.getAnAccess().isCapture() }
 
     /** Gets the parameter that introduces this variable, if any. */
-    Param getParameter() { parameterDeclInScope(result, this, _) }
+    ParamBase getParameter() {
+      result = this.getSelfParam() or result.(Param).getPat() = getAVariablePatAncestor(this)
+    }
 
     /** Hold is this variable is mutable. */
     predicate isMutable() { this.getPat().isMut() }
@@ -144,7 +160,11 @@ module Impl {
     predicate isImmutable() { not this.isMutable() }
   }
 
-  /** A path expression that may access a local variable. */
+  /**
+   * A path expression that may access a local variable. These are paths that
+   * only consists of a simple name (i.e., without generic arguments,
+   * qualifiers, etc.).
+   */
   private class VariableAccessCand extends PathExprBase {
     string name_;
 
@@ -190,10 +210,7 @@ module Impl {
   private VariableScope getEnclosingScope(AstNode n) { result = getAnAncestorInVariableScope(n) }
 
   private Pat getAVariablePatAncestor(Variable v) {
-    exists(AstNode definingNode, string name |
-      v = MkVariable(definingNode, name) and
-      variableDecl(definingNode, result, name)
-    )
+    result = v.getPat()
     or
     exists(Pat mid |
       mid = getAVariablePatAncestor(v) and
@@ -202,23 +219,12 @@ module Impl {
   }
 
   /**
-   * Holds if parameter `p` introduces the variable `v` inside variable scope
-   * `scope`.
+   * Holds if a parameter declares the variable `v` inside variable scope `scope`.
    */
-  private predicate parameterDeclInScope(Param p, Variable v, VariableScope scope) {
-    exists(Pat pat |
-      pat = getAVariablePatAncestor(v) and
-      p.getPat() = pat
-    |
-      exists(Function f |
-        f.getParamList().getAParam() = p and
-        scope = f.getBody()
-      )
-      or
-      exists(ClosureExpr ce |
-        ce.getParamList().getAParam() = p and
-        scope = ce.getBody()
-      )
+  private predicate parameterDeclInScope(Variable v, VariableScope scope) {
+    exists(Callable f |
+      v.getParameter() = f.getParamList().getAParamBase() and
+      scope = [f.(Function).getBody(), f.(ClosureExpr).getBody()]
     )
   }
 
@@ -231,7 +237,7 @@ module Impl {
   ) {
     name = v.getName() and
     (
-      parameterDeclInScope(_, v, scope) and
+      parameterDeclInScope(v, scope) and
       scope.getLocation().hasLocationFileInfo(_, line, column, _, _)
       or
       exists(Pat pat | pat = getAVariablePatAncestor(v) |

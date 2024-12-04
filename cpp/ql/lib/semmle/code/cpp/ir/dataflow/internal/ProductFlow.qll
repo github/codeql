@@ -545,7 +545,7 @@ module ProductFlow {
     private predicate outImpl1(Flow1::PathNode pred1, Flow1::PathNode succ1, DataFlowCall call) {
       Flow1::PathGraph::edges(pred1, succ1, _, _) and
       exists(ReturnKindExt returnKind |
-        succ1.getNode() = returnKind.getAnOutNode(call) and
+        succ1.getNode() = getAnOutNodeExt(call, returnKind) and
         returnKind = getParamReturnPosition(_, pred1.asParameterReturnNode()).getKind()
       )
     }
@@ -573,7 +573,7 @@ module ProductFlow {
     private predicate outImpl2(Flow2::PathNode pred2, Flow2::PathNode succ2, DataFlowCall call) {
       Flow2::PathGraph::edges(pred2, succ2, _, _) and
       exists(ReturnKindExt returnKind |
-        succ2.getNode() = returnKind.getAnOutNode(call) and
+        succ2.getNode() = getAnOutNodeExt(call, returnKind) and
         returnKind = getParamReturnPosition(_, pred2.asParameterReturnNode()).getKind()
       )
     }

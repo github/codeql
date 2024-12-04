@@ -10,8 +10,9 @@ private predicate multipleToStrings(Element e) { strictcount(e.toString()) > 1 }
 /**
  * Holds if `e` has more than one `toString()` result.
  */
-query predicate multipleToStrings(Element e, string s) {
+query predicate multipleToStrings(Element e, string cls, string s) {
   multipleToStrings(e) and
+  cls = e.getPrimaryQlClasses() and
   s = strictconcat(e.toString(), ", ")
 }
 
@@ -19,6 +20,11 @@ query predicate multipleToStrings(Element e, string s) {
  * Holds if `e` has more than one `Location`.
  */
 query predicate multipleLocations(Locatable e) { strictcount(e.getLocation()) > 1 }
+
+/**
+ * Holds if `e` does not have a `Location`.
+ */
+query predicate noLocation(Locatable e) { not exists(e.getLocation()) }
 
 private predicate multiplePrimaryQlClasses(Element e) {
   strictcount(string cls | cls = e.getAPrimaryQlClass() and cls != "VariableAccess") > 1
@@ -39,9 +45,11 @@ private predicate multipleParents(Element child) { strictcount(getParent(child))
 /**
  * Holds if `child` has more than one AST parent.
  */
-query predicate multipleParents(Element child, Element parent) {
+query predicate multipleParents(Element child, string childClass, Element parent, string parentClass) {
   multipleParents(child) and
-  parent = getParent(child)
+  childClass = child.getPrimaryQlClasses() and
+  parent = getParent(child) and
+  parentClass = parent.getPrimaryQlClasses()
 }
 
 /**
@@ -54,6 +62,9 @@ int getAstInconsistencyCounts(string type) {
   or
   type = "Multiple locations" and
   result = count(Element e | multipleLocations(e) | e)
+  or
+  type = "No location" and
+  result = count(Element e | noLocation(e) | e)
   or
   type = "Multiple primary QL classes" and
   result = count(Element e | multiplePrimaryQlClasses(e) | e)
