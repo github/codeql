@@ -26,7 +26,7 @@ module Impl {
     private string toStringPart(int index) {
       index = 0 and result = this.getPat().toAbbreviatedString()
       or
-      index = 1 and result = ": " + this.getTy().toAbbreviatedString()
+      index = 1 and result = ": " + this.getTypeRepr().toAbbreviatedString()
     }
   }
 }
