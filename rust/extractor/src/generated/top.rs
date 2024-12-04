@@ -5,12 +5,52 @@
 use crate::trap;
 
 #[derive(Debug)]
+pub struct File {
+    _unused: ()
+}
+
+impl trap::TrapClass for File {
+    fn class_name() -> &'static str { "File" }
+}
+
+#[derive(Debug)]
 pub struct Element {
     _unused: ()
 }
 
 impl trap::TrapClass for Element {
     fn class_name() -> &'static str { "Element" }
+}
+
+#[derive(Debug)]
+pub struct ExtractorStep {
+    pub id: trap::TrapId<ExtractorStep>,
+    pub action: String,
+    pub file: trap::Label<File>,
+    pub duration_ms: usize,
+}
+
+impl trap::TrapEntry for ExtractorStep {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("extractor_steps", vec![id.into(), self.action.into(), self.file.into(), self.duration_ms.into()]);
+    }
+}
+
+impl trap::TrapClass for ExtractorStep {
+    fn class_name() -> &'static str { "ExtractorStep" }
+}
+
+impl From<trap::Label<ExtractorStep>> for trap::Label<Element> {
+    fn from(value: trap::Label<ExtractorStep>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ExtractorStep is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
 }
 
 #[derive(Debug)]

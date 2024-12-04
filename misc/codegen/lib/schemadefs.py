@@ -8,8 +8,6 @@ from misc.codegen.lib import schema as _schema
 import inspect as _inspect
 from dataclasses import dataclass as _dataclass
 
-from misc.codegen.lib.schema import Property
-
 _set = set
 
 
@@ -67,6 +65,9 @@ class _DescModifier(_schema.PropertyModifier, metaclass=_DescModifierMetaclass):
 def include(source: str):
     # add to `includes` variable in calling context
     _inspect.currentframe().f_back.f_locals.setdefault("includes", []).append(source)
+
+
+imported = _schema.ImportedClass
 
 
 @_dataclass
@@ -264,7 +265,7 @@ class _PropertyModifierList(_schema.PropertyModifier):
     def __or__(self, other: _schema.PropertyModifier):
         return _PropertyModifierList(self._mods + (other,))
 
-    def modify(self, prop: Property):
+    def modify(self, prop: _schema.Property):
         for m in self._mods:
             m.modify(prop)
 

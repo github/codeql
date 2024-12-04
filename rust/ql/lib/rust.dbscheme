@@ -120,9 +120,17 @@ locatable_locations(
 // from schema
 
 @element =
-  @locatable
+  @extractor_step
+| @locatable
 | @unextracted
 ;
+
+extractor_steps(
+  unique int id: @extractor_step,
+  string action: string ref,
+  int file: @file ref,
+  int duration_ms: int ref
+);
 
 @locatable =
   @ast_node
