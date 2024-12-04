@@ -4,6 +4,7 @@
  */
 
 import codeql.rust.elements
+import codeql.rust.elements.internal.ArrayExprInternal
 
 private module Impl {
   private Element getImmediateChildOfElement(Element e, int index, string partialPredicateCall) {
@@ -1208,6 +1209,29 @@ private module Impl {
   }
 
   private Element getImmediateChildOfArrayExpr(ArrayExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nExpr, int nAttr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nExpr = n + 1 + max(int i | i = -1 or exists(e.getExpr(i)) | i) and
+      nAttr = nExpr + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getExpr(index - n) and
+        partialPredicateCall = "Expr(" + (index - n).toString() + ")"
+        or
+        result = e.getAttr(index - nExpr) and
+        partialPredicateCall = "Attr(" + (index - nExpr).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfArrayExprInternal(
+    ArrayExprInternal e, int index, string partialPredicateCall
+  ) {
     exists(int b, int bExpr, int n, int nAttr, int nExpr |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
@@ -2723,6 +2747,44 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfArrayListExpr(
+    ArrayListExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bArrayExpr, int n |
+      b = 0 and
+      bArrayExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArrayExpr(e, i, _)) | i) and
+      n = bArrayExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfArrayExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfArrayRepeatExpr(
+    ArrayRepeatExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bArrayExpr, int n, int nRepeatOperand, int nRepeatLength |
+      b = 0 and
+      bArrayExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArrayExpr(e, i, _)) | i) and
+      n = bArrayExpr and
+      nRepeatOperand = n + 1 and
+      nRepeatLength = nRepeatOperand + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfArrayExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getRepeatOperand() and partialPredicateCall = "RepeatOperand()"
+        or
+        index = nRepeatOperand and
+        result = e.getRepeatLength() and
+        partialPredicateCall = "RepeatLength()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfBlockExpr(BlockExpr e, int index, string partialPredicateCall) {
     exists(int b, int bLabelableExpr, int n, int nAttr, int nStmtList |
       b = 0 and
@@ -3720,7 +3782,7 @@ private module Impl {
     or
     result = getImmediateChildOfWherePred(e, index, partialAccessor)
     or
-    result = getImmediateChildOfArrayExpr(e, index, partialAccessor)
+    result = getImmediateChildOfArrayExprInternal(e, index, partialAccessor)
     or
     result = getImmediateChildOfArrayType(e, index, partialAccessor)
     or
@@ -3859,6 +3921,10 @@ private module Impl {
     result = getImmediateChildOfYeetExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfYieldExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfArrayListExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfArrayRepeatExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBlockExpr(e, index, partialAccessor)
     or

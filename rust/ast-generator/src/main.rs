@@ -21,6 +21,7 @@ fn class_name(type_name: &str) -> String {
         "Fn" => "Function",
         "Literal" => "LiteralExpr",
         "Type" => "TypeRef",
+        "ArrayExpr" => "ArrayExprInternal",
         _ => type_name,
     };
     name.to_owned()
@@ -351,6 +352,13 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
             result.push(FieldInfo {
                 name: "body".to_string(),
                 tp: "Expr".to_string(),
+                is_many: false,
+            });
+        }
+        "ArrayExpr" => {
+            result.push(FieldInfo {
+                name: "is_semicolon".to_string(),
+                tp: "predicate".to_string(),
                 is_many: false,
             });
         }

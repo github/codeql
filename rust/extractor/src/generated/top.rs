@@ -3041,62 +3041,66 @@ impl From<trap::Label<WherePred>> for trap::Label<Locatable> {
 }
 
 #[derive(Debug)]
-pub struct ArrayExpr {
-    pub id: trap::TrapId<ArrayExpr>,
+pub struct ArrayExprInternal {
+    pub id: trap::TrapId<ArrayExprInternal>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub exprs: Vec<trap::Label<Expr>>,
+    pub is_semicolon: bool,
 }
 
-impl trap::TrapEntry for ArrayExpr {
+impl trap::TrapEntry for ArrayExprInternal {
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("array_exprs", vec![id.into()]);
+        out.add_tuple("array_expr_internals", vec![id.into()]);
         for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("array_expr_attrs", vec![id.into(), i.into(), v.into()]);
+            out.add_tuple("array_expr_internal_attrs", vec![id.into(), i.into(), v.into()]);
         }
         for (i, v) in self.exprs.into_iter().enumerate() {
-            out.add_tuple("array_expr_exprs", vec![id.into(), i.into(), v.into()]);
+            out.add_tuple("array_expr_internal_exprs", vec![id.into(), i.into(), v.into()]);
+        }
+        if self.is_semicolon {
+            out.add_tuple("array_expr_internal_is_semicolon", vec![id.into()]);
         }
     }
 }
 
-impl trap::TrapClass for ArrayExpr {
-    fn class_name() -> &'static str { "ArrayExpr" }
+impl trap::TrapClass for ArrayExprInternal {
+    fn class_name() -> &'static str { "ArrayExprInternal" }
 }
 
-impl From<trap::Label<ArrayExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<ArrayExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ArrayExpr is a subclass of AstNode
+impl From<trap::Label<ArrayExprInternal>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ArrayExprInternal>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ArrayExprInternal is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ArrayExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<ArrayExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ArrayExpr is a subclass of Element
+impl From<trap::Label<ArrayExprInternal>> for trap::Label<Element> {
+    fn from(value: trap::Label<ArrayExprInternal>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ArrayExprInternal is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ArrayExpr>> for trap::Label<Expr> {
-    fn from(value: trap::Label<ArrayExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ArrayExpr is a subclass of Expr
+impl From<trap::Label<ArrayExprInternal>> for trap::Label<Expr> {
+    fn from(value: trap::Label<ArrayExprInternal>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ArrayExprInternal is a subclass of Expr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ArrayExpr>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<ArrayExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ArrayExpr is a subclass of Locatable
+impl From<trap::Label<ArrayExprInternal>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<ArrayExprInternal>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ArrayExprInternal is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

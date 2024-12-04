@@ -5,7 +5,9 @@
 
 import codeql.rust.elements.internal.AbiConstructor
 import codeql.rust.elements.internal.ArgListConstructor
-import codeql.rust.elements.internal.ArrayExprConstructor
+import codeql.rust.elements.internal.ArrayExprInternalConstructor
+import codeql.rust.elements.internal.ArrayListExprConstructor
+import codeql.rust.elements.internal.ArrayRepeatExprConstructor
 import codeql.rust.elements.internal.ArrayTypeConstructor
 import codeql.rust.elements.internal.AsmExprConstructor
 import codeql.rust.elements.internal.AssocItemListConstructor

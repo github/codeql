@@ -2,7 +2,8 @@
 /.gitattributes linguist-generated
 /Abi/gen_abi.rs linguist-generated
 /ArgList/gen_arg_list.rs linguist-generated
-/ArrayExpr/gen_array_expr.rs linguist-generated
+/ArrayListExpr/gen_array_list_expr.rs linguist-generated
+/ArrayRepeatExpr/gen_array_repeat_expr.rs linguist-generated
 /ArrayType/gen_array_type.rs linguist-generated
 /AsmExpr/gen_asm_expr.rs linguist-generated
 /AssocTypeArg/gen_assoc_type_arg.rs linguist-generated

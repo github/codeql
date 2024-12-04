@@ -1126,24 +1126,24 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An array expression. For example:
-   * ```rust
-   * [1, 2, 3];
-   * [1; 10];
-   * ```
    */
-  class ArrayExpr extends @array_expr, Expr {
-    override string toString() { result = "ArrayExpr" }
+  class ArrayExprInternal extends @array_expr_internal, Expr {
+    override string toString() { result = "ArrayExprInternal" }
 
     /**
-     * Gets the `index`th attr of this array expression (0-based).
+     * Gets the `index`th attr of this array expression internal (0-based).
      */
-    Attr getAttr(int index) { array_expr_attrs(this, index, result) }
+    Attr getAttr(int index) { array_expr_internal_attrs(this, index, result) }
 
     /**
-     * Gets the `index`th expression of this array expression (0-based).
+     * Gets the `index`th expression of this array expression internal (0-based).
      */
-    Expr getExpr(int index) { array_expr_exprs(this, index, result) }
+    Expr getExpr(int index) { array_expr_internal_exprs(this, index, result) }
+
+    /**
+     * Holds if this array expression internal is semicolon.
+     */
+    predicate isSemicolon() { array_expr_internal_is_semicolon(this) }
   }
 
   /**
