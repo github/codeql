@@ -3,4 +3,4 @@
 | gen_let_stmt.rs:7:5:7:15 | let ... | gen_let_stmt.rs:7:9:7:9 | x |
 | gen_let_stmt.rs:8:5:8:10 | let ... | gen_let_stmt.rs:8:9:8:9 | x |
 | gen_let_stmt.rs:9:5:9:24 | let ... = ... | gen_let_stmt.rs:9:9:9:14 | TuplePat |
-| gen_let_stmt.rs:10:5:12:6 | let ... = ... else {...} | gen_let_stmt.rs:10:9:10:15 | TupleStructPat |
+| gen_let_stmt.rs:10:5:12:6 | let ... = ... else {...} | gen_let_stmt.rs:10:9:10:15 | Some(...) |
