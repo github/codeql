@@ -1,5 +1,4 @@
 testFailures
-failures
 edges
 | insecure_download.rb:31:5:31:7 | url | insecure_download.rb:33:15:33:17 | url | provenance |  |
 | insecure_download.rb:31:5:31:7 | url | insecure_download.rb:33:15:33:17 | url | provenance |  |

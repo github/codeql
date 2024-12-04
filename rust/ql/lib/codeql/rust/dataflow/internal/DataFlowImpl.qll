@@ -911,6 +911,13 @@ module RustDataFlow implements InputSig<Location> {
         node1.asPat() = pat and
         node2.asPat() = pat.getAPat()
       )
+      or
+      exists(TryExprCfgNode try |
+        node1.asExpr() = try.getExpr() and
+        node2.asExpr() = try and
+        c.(VariantPositionContent).getVariantCanonicalPath(0).getExtendedCanonicalPath() =
+          ["crate::option::Option::Some", "crate::result::Result::Ok"]
+      )
     )
     or
     FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
@@ -1060,14 +1067,29 @@ module RustDataFlow implements InputSig<Location> {
           .getSummaryNode(), node2.(Node::FlowSummaryNode).getSummaryNode())
   }
 
-  class LambdaCallKind = Void;
+  class LambdaCallKind = Unit;
 
-  // class LambdaCallKind;
   /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-  predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+  predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+    exists(ClosureExpr cl |
+      cl = creation.asExpr().getExpr() and
+      cl = c.asCfgScope()
+    ) and
+    exists(kind)
+  }
 
-  /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
-  predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+  /**
+   * Holds if `call` is a lambda call of kind `kind` where `receiver` is the
+   * invoked expression.
+   */
+  predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+    receiver.asExpr() = call.asCallExprCfgNode().getFunction() and
+    // All calls to complex expressions and local variable accesses are lambda call.
+    exists(Expr f | f = receiver.asExpr().getExpr() |
+      f instanceof PathExpr implies f = any(Variable v).getAnAccess()
+    ) and
+    exists(kind)
+  }
 
   /** Extra data flow steps needed for lambda flow analysis. */
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
@@ -1091,7 +1113,11 @@ private module Cached {
     TPatNode(PatCfgNode p) or
     TExprPostUpdateNode(ExprCfgNode e) {
       isArgumentForCall(e, _, _) or
-      e = [any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr()]
+      e =
+        [
+          any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
+          any(TryExprCfgNode try).getExpr()
+        ]
     } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)

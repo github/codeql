@@ -123,10 +123,10 @@ unsafe fn harmless2_11() {
 // --- transitive cases ---
 
 fn call_target3_1() {
-    _ = stderr().write_all(b"Hello, world!"); // $ MISSING: Alert=source3_1 Alert=source3_3 Alert=source3_4
+    _ = stderr().write_all(b"Hello, world!"); // $ Alert=source3_1 Alert=source3_3 MISSING: Alert=source3_4
 }
 
-#[ctor] // $ MISSING: Source=source3_1
+#[ctor] // $ Source=source3_1
 fn bad3_1() {
     call_target3_1();
 }
@@ -137,12 +137,12 @@ fn call_target3_2() {
     }
 }
 
-#[ctor] // $ MISSING: Source=source3_2
+#[ctor]
 fn harmless3_2() {
     call_target3_2();
 }
 
-#[ctor]
+#[ctor] // $ Source=source3_3
 fn bad3_3() {
     call_target3_1();
     call_target3_2();
@@ -151,6 +151,11 @@ fn bad3_3() {
 #[ctor] // $ MISSING: Source=source3_4
 fn bad3_4() {
     bad3_3();
+}
+
+fn harmless3_5() {
+    call_target3_1();
+    call_target3_2();
 }
 
 // --- macros ---

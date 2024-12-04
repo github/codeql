@@ -225,6 +225,28 @@ fn option_unwrap() {
     sink(s1.unwrap()); // $ hasValueFlow=19
 }
 
+fn option_questionmark() -> Option<i64> {
+    let s1 = Some(source(20));
+    let s2 = Some(2);
+    let i1 = s1?;
+    sink(i1); // $ hasValueFlow=20
+    sink(s2?);
+    Some(0)
+}
+
+fn result_questionmark() -> Result<i64, i64> {
+    let s1: Result<i64, i64> = Ok(source(20));
+    let s2: Result<i64, i64> = Ok(2);
+    let s3: Result<i64, i64> = Err(source(77));
+    let i1 = s1?;
+    let i2 = s2?;
+    sink(i1); // $ hasValueFlow=20
+    sink(i2);
+    let i3 = s3?;
+    sink(i3); // No flow since value is in `Err`.
+    Ok(0)
+}
+
 enum MyTupleEnum {
     A(i64),
     B(i64),
@@ -357,6 +379,34 @@ fn array_assignment() {
     sink(mut_arr[0]); // $ SPURIOUS: hasValueFlow=55
 }
 
+fn closure_flow_out() {
+    let f = |cond| if cond { source(92) } else { 0 };
+    sink(f(true)); // $ hasValueFlow=92
+}
+
+fn closure_flow_in() {
+    let f = |cond, data|
+        if cond {
+            sink(data); // $ hasValueFlow=87
+        } else {
+            sink(0)
+        };
+    let a = source(87);
+    f(true, a);
+}
+
+fn closure_flow_through() {
+    let f = |cond, data|
+        if cond {
+            data
+        } else {
+            0
+        };
+    let a = source(43);
+    let b = f(true, a);
+    sink(b); // $ hasValueFlow=43
+}
+
 fn main() {
     direct();
     variable_usage();
@@ -377,6 +427,8 @@ fn main() {
     option_pattern_match_qualified();
     option_pattern_match_unqualified();
     option_unwrap();
+    option_questionmark();
+    let _ = result_questionmark();
     custom_tuple_enum_pattern_match_qualified();
     custom_tuple_enum_pattern_match_unqualified();
     custom_record_enum_pattern_match_qualified();
@@ -388,4 +440,7 @@ fn main() {
     array_for_loop();
     array_slice_pattern();
     array_assignment();
+    closure_flow_out();
+    closure_flow_in();
+    closure_flow_through();
 }
