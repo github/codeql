@@ -1,4 +1,4 @@
-import semmle.code.cpp.models.interfaces.NonThrowing
+import semmle.code.cpp.models.interfaces.Throwing
 
 /**
  * A function that is annotated with a `noexcept` specifier (or the equivalent
@@ -8,4 +8,6 @@ import semmle.code.cpp.models.interfaces.NonThrowing
  */
 class NoexceptFunction extends NonThrowingFunction {
   NoexceptFunction() { this.isNoExcept() or this.isNoThrow() }
+
+  override TCxxException getExceptionType() { any() }
 }

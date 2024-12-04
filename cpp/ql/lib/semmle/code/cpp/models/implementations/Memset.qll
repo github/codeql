@@ -8,7 +8,7 @@ import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
-import semmle.code.cpp.models.interfaces.NonThrowing
+import semmle.code.cpp.models.interfaces.Throwing
 
 private class MemsetFunctionModel extends ArrayFunction, DataFlowFunction, AliasFunction,
   SideEffectFunction, NonThrowingFunction
@@ -74,6 +74,8 @@ private class MemsetFunctionModel extends ArrayFunction, DataFlowFunction, Alias
     i = 0 and
     if this.hasGlobalName(bzero()) then result = 1 else result = 2
   }
+
+  override TCxxException getExceptionType() { any() }
 }
 
 private string bzero() { result = ["bzero", "explicit_bzero"] }
