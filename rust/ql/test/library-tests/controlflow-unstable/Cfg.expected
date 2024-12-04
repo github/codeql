@@ -14,10 +14,10 @@ edges
 | test.rs:6:12:6:31 | [boolean(false)] ... && ... | test.rs:9:13:9:17 | false | false |
 | test.rs:6:12:6:31 | [boolean(true)] ... && ... | test.rs:7:13:7:13 | d | true |
 | test.rs:6:17:6:31 | let ... = b | test.rs:6:31:6:31 | b |  |
-| test.rs:6:21:6:27 | Some(...) | test.rs:6:12:6:31 | [boolean(false)] ... && ... | no-match |
-| test.rs:6:21:6:27 | Some(...) | test.rs:6:26:6:26 | d | match |
+| test.rs:6:21:6:27 | TupleStructPat | test.rs:6:12:6:31 | [boolean(false)] ... && ... | no-match |
+| test.rs:6:21:6:27 | TupleStructPat | test.rs:6:26:6:26 | d | match |
 | test.rs:6:26:6:26 | d | test.rs:6:12:6:31 | [boolean(true)] ... && ... | match |
-| test.rs:6:31:6:31 | b | test.rs:6:21:6:27 | Some(...) |  |
+| test.rs:6:31:6:31 | b | test.rs:6:21:6:27 | TupleStructPat |  |
 | test.rs:6:33:8:9 | { ... } | test.rs:6:9:10:9 | if ... {...} else {...} |  |
 | test.rs:7:13:7:13 | d | test.rs:6:33:8:9 | { ... } |  |
 | test.rs:8:16:10:9 | { ... } | test.rs:6:9:10:9 | if ... {...} else {...} |  |
