@@ -67,7 +67,7 @@ final class ExceptionEdge = ExceptionEdgeImpl;
 
 /**
  * An "exception" edge, representing the successor of an instruction when that
- * instruction's evaluation throws an exception for C++ exceptions
+ * instruction's evaluation throws a C++ exception.
  */
 class CppExceptionEdge extends ExceptionEdgeImpl, TCppExceptionEdge {
   final override string toString() { result = "C++ Exception" }
