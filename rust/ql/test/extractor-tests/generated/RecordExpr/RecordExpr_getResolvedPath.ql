@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from Path x
+from RecordExpr x
 where toBeTested(x) and not x.isUnknown()
 select x, x.getResolvedPath()

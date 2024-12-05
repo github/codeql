@@ -76,7 +76,7 @@ class _:
     ```
     """
 
-@annotate(Path, replace_bases={AstNode: Resolvable})
+@annotate(Path)
 class _:
     """
     A path. For example:
@@ -120,7 +120,7 @@ class PathExprBase(Expr):
     """
 
 
-@annotate(PathExpr, replace_bases={Expr: PathExprBase}, cfg = True)
+@annotate(PathExpr, replace_bases={Expr: PathExprBase}, add_bases=(PathAstNode,), cfg = True)
 @qltest.test_with(Path)
 class _:
     """
@@ -132,6 +132,7 @@ class _:
     let z = <TypeRepr as Trait>::foo;
     ```
     """
+    path: drop
 
 
 @annotate(IfExpr, cfg = True)
@@ -412,7 +413,7 @@ class _:
     """
 
 
-@annotate(RecordExpr, cfg = True)
+@annotate(RecordExpr, add_bases=(PathAstNode,), cfg = True)
 class _:
     """
     A record expression. For example:
@@ -423,6 +424,7 @@ class _:
     Foo { .. } = second;
     ```
     """
+    path: drop
 
 
 @annotate(FieldExpr, cfg = True)
@@ -712,7 +714,7 @@ class _:
     """
 
 
-@annotate(RecordPat, cfg = True)
+@annotate(RecordPat, add_bases=(PathAstNode,), cfg = True)
 class _:
     """
     A record pattern. For example:
@@ -723,6 +725,7 @@ class _:
     }
     ```
     """
+    path: drop
 
 
 @annotate(RangePat, cfg = True)
@@ -753,7 +756,7 @@ class _:
     """
 
 
-@annotate(PathPat, cfg = True)
+@annotate(PathPat, add_bases=(PathAstNode,), cfg = True)
 @qltest.test_with(Path)
 class _:
     """
@@ -765,6 +768,7 @@ class _:
     }
     ```
     """
+    path: drop
 
 
 @annotate(LiteralPat, cfg = True)
@@ -799,7 +803,7 @@ class _:
     """
 
 
-@annotate(TupleStructPat, cfg = True)
+@annotate(TupleStructPat, add_bases=(PathAstNode,), cfg = True)
 class _:
     """
     A tuple struct pattern. For example:
@@ -811,6 +815,7 @@ class _:
     };
     ```
     """
+    path: drop
 
 
 @annotate(RefPat, cfg = True)
