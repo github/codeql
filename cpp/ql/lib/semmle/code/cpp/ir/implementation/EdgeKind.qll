@@ -58,10 +58,8 @@ abstract private class ExceptionEdgeImpl extends EdgeKindImpl { }
  * An "exception" edge, representing the successor of an instruction when that
  * instruction's evaluation throws an exception.
  *
- * Exception edges are expclitly sublcassed to
- * `CppExceptionEdge` and `SehExceptionEdge` only.
- * Further sublcasses, if required, should be added privately
- * here for IR efficiency.
+ * Exception edges are expclitly sublcassed to `CppExceptionEdge` and `SehExceptionEdge`
+ * only. Further sublcasses, if required, should be added privately here for IR efficiency.
  */
 final class ExceptionEdge = ExceptionEdgeImpl;
 
