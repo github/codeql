@@ -1,10 +1,9 @@
 private import rust
 private import codeql.dataflow.TaintTracking
 private import codeql.rust.controlflow.CfgNodes
-private import DataFlowImpl
 private import codeql.rust.dataflow.FlowSummary
-private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowImpl
+private import FlowSummaryImpl as FlowSummaryImpl
 
 module RustTaintTracking implements InputSig<Location, RustDataFlow> {
   predicate defaultTaintSanitizer(Node::Node node) { none() }
@@ -35,6 +34,15 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
         pred.asExpr() = index.getBase() and
         succ.asExpr() = index
       )
+      or
+      // Although data flow through collections is modeled using stores/reads,
+      // we also allow taint to flow out of a tainted collection. This is
+      // needed in order to support taint-tracking configurations where the
+      // source is a collection.
+      exists(SingletonContentSet cs |
+        RustDataFlow::readStep(pred, cs, succ) and
+        cs.getContent() instanceof ArrayElementContent
+      )
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(Node::FlowSummaryNode).getSummaryNode(),
@@ -46,7 +54,10 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
    * and inputs to additional taint steps.
    */
   bindingset[node]
-  predicate defaultImplicitTaintRead(Node::Node node, ContentSet c) { none() }
+  predicate defaultImplicitTaintRead(Node::Node node, ContentSet cs) {
+    exists(node) and
+    cs.(SingletonContentSet).getContent() instanceof ArrayElementContent
+  }
 
   /**
    * Holds if the additional step from `src` to `sink` should be considered in

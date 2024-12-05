@@ -38,11 +38,11 @@ fn test_env_args() {
     sink(arg3); // $ MISSING: hasTaintFlow
 
     for arg in std::env::args() { // $ Alert[rust/summary/taint-sources]
-        sink(arg); // $ MISSING: hasTaintFlow
+        sink(arg); // $ hasTaintFlow
     }
 
     for arg in std::env::args_os() { // $ Alert[rust/summary/taint-sources]
-        sink(arg); // $ MISSING: hasTaintFlow
+        sink(arg); // $ hasTaintFlow
     }
 }
 

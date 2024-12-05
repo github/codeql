@@ -467,7 +467,8 @@ module Impl {
       assignmentExprDescendant(mid) and
       getImmediateParent(e) = mid and
       not mid.(PrefixExpr).getOperatorName() = "*" and
-      not mid instanceof FieldExpr
+      not mid instanceof FieldExpr and
+      not mid instanceof IndexExpr
     )
   }
 
