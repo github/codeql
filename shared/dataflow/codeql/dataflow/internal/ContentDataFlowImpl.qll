@@ -47,6 +47,13 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
     predicate isSink(Node sink);
 
     /**
+     * INTERNAL: Do not use.
+     *
+     * Holds if `sink` is a relevant reverse data flow sink.
+     */
+    default predicate isSinkReverse(Node sink) { none() }
+
+    /**
      * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
      */
     default predicate isAdditionalFlowStep(Node node1, Node node2) { none() }
@@ -91,6 +98,15 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
 
       predicate isSink(Node sink, FlowState state) {
         ContentConfig::isSink(sink) and
+        (
+          state instanceof InitState or
+          state instanceof StoreState or
+          state instanceof ReadState
+        )
+      }
+
+      predicate isSinkReverse(Node sink, FlowState state) {
+        ContentConfig::isSinkReverse(sink) and
         (
           state instanceof InitState or
           state instanceof StoreState or
@@ -202,7 +218,7 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
       Node node1, State state1, ContentSet c, Node node2, StoreState state2
     ) {
       exists(boolean preservesValue, int size |
-        storeSet(node1, c, node2, _, _) and
+        storeSet(node1, c, node2) and
         ContentConfig::isRelevantContent(c) and
         state2.decode(size + 1, preservesValue)
       |
@@ -358,6 +374,8 @@ module MakeImplContentDataFlow<LocationSig Location, InputSig<Location> Lang> {
           bigStepEntry(node)
           or
           FlowConfig::isSink(node.getNode(), node.getState())
+          or
+          FlowConfig::isSinkReverse(node.getNode(), node.getState())
           or
           excludeStep(node, _)
           or

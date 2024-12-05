@@ -364,6 +364,13 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
     predicate isSink(Node sink);
 
     /**
+     * INTERNAL: Do not use.
+     *
+     * Holds if `sink` is a relevant reverse data flow sink.
+     */
+    default predicate isSinkReverse(Node sink) { none() }
+
+    /**
      * Holds if data flow through `node` is prohibited. This completely removes
      * `node` from the data flow graph.
      */
@@ -464,6 +471,20 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * Holds if `sink` is a relevant data flow sink for any state.
      */
     default predicate isSink(Node sink) { none() }
+
+    /**
+     * INTERNAL: Do not use.
+     *
+     * Holds if `sink` is a relevant reverse data flow sink for any state.
+     */
+    default predicate isSinkReverse(Node sink) { none() }
+
+    /**
+     * INTERNAL: Do not use.
+     *
+     * Holds if `sink` is a relevant reverse data flow sink accepting `state`.
+     */
+    default predicate isSinkReverse(Node sink, FlowState state) { none() }
 
     /**
      * Holds if data flow through `node` is prohibited. This completely removes

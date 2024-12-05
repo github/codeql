@@ -179,6 +179,10 @@ module TaintFlowMake<
       Config::isSink(sink, state.getState())
     }
 
+    predicate isSinkReverse(DataFlowLang::Node sink, FlowState state) {
+      Config::isSinkReverse(sink, state.getState())
+    }
+
     predicate isBarrier(DataFlowLang::Node node, FlowState state) {
       Config::isBarrier(node, state.getState())
     }
