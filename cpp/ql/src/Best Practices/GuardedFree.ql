@@ -27,8 +27,12 @@ predicate blockContainsPreprocessorBranches(BasicBlock bb) {
   )
 }
 
-from GuardCondition gc, FreeCall fc, Variable v, BasicBlock bb
-where
+/**
+ * Holds if `gc` ensures that `v` is non-zero when reaching `bb`, and `bb`
+ * contains a single statement which is `fc`.
+ */
+pragma[nomagic]
+private predicate interesting(GuardCondition gc, FreeCall fc, Variable v, BasicBlock bb) {
   gc.ensuresEq(v.getAnAccess(), 0, bb, false) and
   fc.getArgument(0) = v.getAnAccess() and
   bb = fc.getBasicBlock() and
@@ -39,9 +43,21 @@ where
     // Block statement with a single nested statement: if (x) { free(x); }
     strictcount(bb.(BlockStmt).getAStmt()) = 1
   ) and
-  strictcount(BasicBlock bb2 | gc.ensuresEq(_, 0, bb2, _) | bb2) = 1 and
   not fc.isInMacroExpansion() and
   not blockContainsPreprocessorBranches(bb) and
   not (gc instanceof BinaryOperation and not gc instanceof ComparisonOperation) and
   not exists(CommaExpr c | c.getAChild*() = fc)
+}
+
+/** Holds if `gc` only guards a single block. */
+bindingset[gc]
+pragma[inline_late]
+private predicate guardConditionGuardsUniqueBlock(GuardCondition gc) {
+  strictcount(BasicBlock bb | gc.ensuresEq(_, 0, bb, _)) = 1
+}
+
+from GuardCondition gc, FreeCall fc, Variable v, BasicBlock bb
+where
+  interesting(gc, fc, v, bb) and
+  guardConditionGuardsUniqueBlock(gc)
 select gc, "unnecessary NULL check before call to $@", fc, "free"

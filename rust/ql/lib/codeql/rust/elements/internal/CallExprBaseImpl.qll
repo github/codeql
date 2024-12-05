@@ -5,6 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.CallExprBase
+private import codeql.rust.elements.Resolvable
 
 /**
  * INTERNAL: This module contains the customizable definition of `CallExprBase` and should not
@@ -17,10 +18,10 @@ module Impl {
   private import codeql.rust.elements.internal.PathExprImpl::Impl
 
   pragma[nomagic]
-  private Resolvable getCallResolvable(CallExprBase call) {
+  Resolvable getCallResolvable(CallExprBase call) {
     result = call.(MethodCallExpr)
     or
-    result = call.(CallExpr).getFunction().(PathExpr).getPath()
+    result = call.(CallExpr).getFunction().(PathExpr)
   }
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file

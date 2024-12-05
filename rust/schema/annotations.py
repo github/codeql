@@ -65,7 +65,7 @@ class _:
     """
 
 
-@annotate(TypeRef)
+@annotate(TypeRepr)
 class _:
     """
     The base class for type references.
@@ -76,7 +76,7 @@ class _:
     ```
     """
 
-@annotate(Path, replace_bases={AstNode: Resolvable})
+@annotate(Path)
 class _:
     """
     A path. For example:
@@ -120,7 +120,7 @@ class PathExprBase(Expr):
     """
 
 
-@annotate(PathExpr, replace_bases={Expr: PathExprBase}, cfg = True)
+@annotate(PathExpr, replace_bases={Expr: PathExprBase}, add_bases=(PathAstNode,), cfg = True)
 @qltest.test_with(Path)
 class _:
     """
@@ -129,9 +129,10 @@ class _:
     let x = variable;
     let x = foo::bar;
     let y = <T>::foo;
-    let z = <TypeRef as Trait>::foo;
+    let z = <TypeRepr as Trait>::foo;
     ```
     """
+    path: drop
 
 
 @annotate(IfExpr, cfg = True)
@@ -412,7 +413,7 @@ class _:
     """
 
 
-@annotate(RecordExpr, cfg = True)
+@annotate(RecordExpr, add_bases=(PathAstNode,), cfg = True)
 class _:
     """
     A record expression. For example:
@@ -423,6 +424,7 @@ class _:
     Foo { .. } = second;
     ```
     """
+    path: drop
 
 
 @annotate(FieldExpr, cfg = True)
@@ -448,10 +450,10 @@ class _:
     """
 
 
-@annotate(CastExpr)
+@annotate(CastExpr, cfg = True)
 class _:
     """
-    A cast expression. For example:
+    A type cast expression. For example:
     ```rust
     value as u64;
     ```
@@ -550,15 +552,45 @@ class _:
     """
 
 
-@annotate(ArrayExpr, cfg = True)
+@annotate(ArrayExprInternal)
+@ql.internal
+@qltest.skip
 class _:
+    pass
+
+class ArrayExpr(Expr):
     """
-    An array expression. For example:
+    The base class for array expressions. For example:
     ```rust
     [1, 2, 3];
     [1; 10];
     ```
     """
+    exprs: list[Expr] | child
+    attrs: list[Attr] | child
+
+@synth.from_class(ArrayExprInternal)
+class ArrayListExpr(ArrayExpr):
+    """
+    An array expression with a list of elements. For example:
+    ```rust
+    [1, 2, 3];
+    ```
+    """
+    __cfg__ = True
+
+@synth.from_class(ArrayExprInternal)
+class ArrayRepeatExpr(ArrayExpr):
+    """
+    An array expression with a repeat operand and a repeat length. For example:
+    ```rust
+    [1; 10];
+    ```
+    """
+    __cfg__ = True
+
+    repeat_operand: Expr | child
+    repeat_length: Expr | child
 
 
 @annotate(LiteralExpr, cfg = True)
@@ -682,7 +714,7 @@ class _:
     """
 
 
-@annotate(RecordPat, cfg = True)
+@annotate(RecordPat, add_bases=(PathAstNode,), cfg = True)
 class _:
     """
     A record pattern. For example:
@@ -693,6 +725,7 @@ class _:
     }
     ```
     """
+    path: drop
 
 
 @annotate(RangePat, cfg = True)
@@ -723,7 +756,7 @@ class _:
     """
 
 
-@annotate(PathPat, cfg = True)
+@annotate(PathPat, add_bases=(PathAstNode,), cfg = True)
 @qltest.test_with(Path)
 class _:
     """
@@ -735,6 +768,7 @@ class _:
     }
     ```
     """
+    path: drop
 
 
 @annotate(LiteralPat, cfg = True)
@@ -769,7 +803,7 @@ class _:
     """
 
 
-@annotate(TupleStructPat, cfg = True)
+@annotate(TupleStructPat, add_bases=(PathAstNode,), cfg = True)
 class _:
     """
     A tuple struct pattern. For example:
@@ -781,6 +815,7 @@ class _:
     };
     ```
     """
+    path: drop
 
 
 @annotate(RefPat, cfg = True)
@@ -842,10 +877,10 @@ class _:
     """
 
 
-@annotate(ArrayType)
+@annotate(ArrayTypeRepr)
 class _:
     """
-    A ArrayType. For example:
+    A ArrayTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -930,10 +965,10 @@ class _:
     """
 
 
-@annotate(DynTraitType)
+@annotate(DynTraitTypeRepr)
 class _:
     """
-    A DynTraitType. For example:
+    A DynTraitTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1000,10 +1035,10 @@ class _:
     """
 
 
-@annotate(FnPtrType)
+@annotate(FnPtrTypeRepr)
 class _:
     """
-    A FnPtrType. For example:
+    A FnPtrTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1022,10 +1057,10 @@ class _:
     loop_body: drop
 
 
-@annotate(ForType)
+@annotate(ForTypeRepr)
 class _:
     """
-    A ForType. For example:
+    A ForTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1098,20 +1133,20 @@ class _:
     """
 
 
-@annotate(ImplTraitType)
+@annotate(ImplTraitTypeRepr)
 class _:
     """
-    A ImplTraitType. For example:
+    A ImplTraitTypeRepr. For example:
     ```rust
     todo!()
     ```
     """
 
 
-@annotate(InferType)
+@annotate(InferTypeRepr)
 class _:
     """
-    A InferType. For example:
+    A InferTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1255,10 +1290,10 @@ class _:
     """
 
 
-@annotate(MacroType)
+@annotate(MacroTypeRepr)
 class _:
     """
-    A MacroType. For example:
+    A MacroTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1315,10 +1350,10 @@ class _:
     """
 
 
-@annotate(NeverType)
+@annotate(NeverTypeRepr)
 class _:
     """
-    A NeverType. For example:
+    A NeverTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1330,7 +1365,7 @@ class ParamBase(AstNode):
     A normal parameter, `Param`, or a self parameter `SelfParam`.
     """
     attrs: list["Attr"] | child
-    ty: optional["TypeRef"] | child
+    type_repr: optional["TypeRepr"] | child
 
 @annotate(ParamBase, cfg = True)
 class _:
@@ -1347,7 +1382,7 @@ class _:
     ```
     """
     attrs: drop
-    ty: drop
+    type_repr: drop
 
 
 @annotate(ParamList)
@@ -1380,10 +1415,10 @@ class _:
     """
 
 
-@annotate(ParenType)
+@annotate(ParenTypeRepr)
 class _:
     """
-    A ParenType. For example:
+    A ParenTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1398,7 +1433,7 @@ class _:
     """
 
 
-@annotate(PathType)
+@annotate(PathTypeRepr)
 @qltest.test_with(Path)
 class _:
     """
@@ -1410,10 +1445,10 @@ class _:
     """
 
 
-@annotate(PtrType)
+@annotate(PtrTypeRepr)
 class _:
     """
-    A PtrType. For example:
+    A PtrTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1460,10 +1495,10 @@ class _:
     """
 
 
-@annotate(RefType)
+@annotate(RefTypeRepr)
 class _:
     """
-    A RefType. For example:
+    A RefTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1490,10 +1525,10 @@ class _:
     """
 
 
-@annotate(RetType)
+@annotate(RetTypeRepr)
 class _:
     """
-    A RetType. For example:
+    A RetTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1521,13 +1556,13 @@ class _:
     ```
     """
     attrs: drop
-    ty: drop
+    type_repr: drop
 
 
-@annotate(SliceType)
+@annotate(SliceTypeRepr)
 class _:
     """
-    A SliceType. For example:
+    A SliceTypeRepr. For example:
     ```rust
     todo!()
     ```
@@ -1641,10 +1676,10 @@ class _:
     """
 
 
-@annotate(TupleType)
+@annotate(TupleTypeRepr)
 class _:
     """
-    A TupleType. For example:
+    A TupleTypeRepr. For example:
     ```rust
     todo!()
     ```

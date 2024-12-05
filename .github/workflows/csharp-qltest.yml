@@ -5,8 +5,10 @@ on:
     paths:
       - "csharp/**"
       - "shared/**"
+      - "misc/bazel/**"
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
+      - "MODULE.bazel"
     branches:
       - main
       - "rc/*"
@@ -14,9 +16,11 @@ on:
     paths:
       - "csharp/**"
       - "shared/**"
+      - "misc/bazel/**"
       - .github/workflows/csharp-qltest.yml
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
+      - "MODULE.bazel"
     branches:
       - main
       - "rc/*"

@@ -24,7 +24,7 @@ module Impl {
 
     private string toAbbreviatedStringPart(int index) {
       index = 0 and
-      if this.hasPathType() or this.hasTy()
+      if this.hasPathType() or this.hasTypeRepr()
       then result = "<...>"
       else result = this.getNameRef().getText()
       or

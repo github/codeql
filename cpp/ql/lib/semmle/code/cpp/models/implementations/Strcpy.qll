@@ -13,7 +13,7 @@ import semmle.code.cpp.models.interfaces.NonThrowing
  * The standard function `strcpy` and its wide, sized, and Microsoft variants.
  */
 class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, SideEffectFunction,
-  NonThrowingFunction
+  NonCppThrowingFunction
 {
   StrcpyFunction() {
     this.hasGlobalOrStdOrBslName([

@@ -2,7 +2,6 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.System
-private import semmle.code.csharp.dataflow.DataFlow3
 
 /** The `System.Xml` namespace. */
 class SystemXmlNamespace extends Namespace {

@@ -21,10 +21,13 @@ where
   or
   key = "Extraction warnings" and value = count(ExtractionWarning w)
   or
-  key = "Files extracted - total" and value = count(File f | exists(f.getRelativePath()))
+  key = "Files extracted - total" and value = count(ExtractedFile f | exists(f.getRelativePath()))
   or
   key = "Files extracted - with errors" and
-  value = count(File f | exists(f.getRelativePath()) and not f instanceof SuccessfullyExtractedFile)
+  value =
+    count(ExtractedFile f |
+      exists(f.getRelativePath()) and not f instanceof SuccessfullyExtractedFile
+    )
   or
   key = "Files extracted - without errors" and
   value = count(SuccessfullyExtractedFile f | exists(f.getRelativePath()))

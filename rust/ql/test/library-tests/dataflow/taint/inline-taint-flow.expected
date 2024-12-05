@@ -1,0 +1,28 @@
+models
+edges
+| main.rs:12:13:12:22 | source(...) | main.rs:13:10:13:14 | ... + ... | provenance |  |
+| main.rs:17:13:17:22 | source(...) | main.rs:18:10:18:11 | - ... | provenance |  |
+| main.rs:22:13:22:22 | source(...) | main.rs:24:10:24:17 | b as i64 | provenance |  |
+| main.rs:53:19:53:28 | source(...) | main.rs:54:14:54:19 | arr[1] | provenance |  |
+| main.rs:69:9:69:12 | [post] arr2 [array[]] | main.rs:70:14:70:17 | arr2 | provenance |  |
+| main.rs:69:19:69:28 | source(...) | main.rs:69:9:69:12 | [post] arr2 [array[]] | provenance |  |
+nodes
+| main.rs:12:13:12:22 | source(...) | semmle.label | source(...) |
+| main.rs:13:10:13:14 | ... + ... | semmle.label | ... + ... |
+| main.rs:17:13:17:22 | source(...) | semmle.label | source(...) |
+| main.rs:18:10:18:11 | - ... | semmle.label | - ... |
+| main.rs:22:13:22:22 | source(...) | semmle.label | source(...) |
+| main.rs:24:10:24:17 | b as i64 | semmle.label | b as i64 |
+| main.rs:53:19:53:28 | source(...) | semmle.label | source(...) |
+| main.rs:54:14:54:19 | arr[1] | semmle.label | arr[1] |
+| main.rs:69:9:69:12 | [post] arr2 [array[]] | semmle.label | [post] arr2 [array[]] |
+| main.rs:69:19:69:28 | source(...) | semmle.label | source(...) |
+| main.rs:70:14:70:17 | arr2 | semmle.label | arr2 |
+subpaths
+testFailures
+#select
+| main.rs:13:10:13:14 | ... + ... | main.rs:12:13:12:22 | source(...) | main.rs:13:10:13:14 | ... + ... | $@ | main.rs:12:13:12:22 | source(...) | source(...) |
+| main.rs:18:10:18:11 | - ... | main.rs:17:13:17:22 | source(...) | main.rs:18:10:18:11 | - ... | $@ | main.rs:17:13:17:22 | source(...) | source(...) |
+| main.rs:24:10:24:17 | b as i64 | main.rs:22:13:22:22 | source(...) | main.rs:24:10:24:17 | b as i64 | $@ | main.rs:22:13:22:22 | source(...) | source(...) |
+| main.rs:54:14:54:19 | arr[1] | main.rs:53:19:53:28 | source(...) | main.rs:54:14:54:19 | arr[1] | $@ | main.rs:53:19:53:28 | source(...) | source(...) |
+| main.rs:70:14:70:17 | arr2 | main.rs:69:19:69:28 | source(...) | main.rs:70:14:70:17 | arr2 | $@ | main.rs:69:19:69:28 | source(...) | source(...) |

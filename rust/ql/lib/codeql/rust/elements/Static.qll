@@ -9,7 +9,7 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.ExternItem
 import codeql.rust.elements.Item
 import codeql.rust.elements.Name
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 
 /**

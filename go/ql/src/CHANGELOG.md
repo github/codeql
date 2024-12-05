@@ -1,3 +1,13 @@
+## 1.1.4
+
+### Minor Analysis Improvements
+
+* Added value flow models for functions in the `slices` package which do not involve the `iter` package.
+
+## 1.1.3
+
+No user-facing changes.
+
 ## 1.1.2
 
 No user-facing changes.

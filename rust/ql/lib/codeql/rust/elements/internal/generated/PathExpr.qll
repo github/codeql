@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
-import codeql.rust.elements.Path
+import codeql.rust.elements.internal.PathAstNodeImpl::Impl as PathAstNodeImpl
 import codeql.rust.elements.internal.PathExprBaseImpl::Impl as PathExprBaseImpl
 
 /**
@@ -21,12 +21,14 @@ module Generated {
    * let x = variable;
    * let x = foo::bar;
    * let y = <T>::foo;
-   * let z = <TypeRef as Trait>::foo;
+   * let z = <TypeRepr as Trait>::foo;
    * ```
    * INTERNAL: Do not reference the `Generated::PathExpr` class directly.
    * Use the subclass `PathExpr`, where the following predicates are available.
    */
-  class PathExpr extends Synth::TPathExpr, PathExprBaseImpl::PathExprBase {
+  class PathExpr extends Synth::TPathExpr, PathExprBaseImpl::PathExprBase,
+    PathAstNodeImpl::PathAstNode
+  {
     override string getAPrimaryQlClass() { result = "PathExpr" }
 
     /**
@@ -46,18 +48,5 @@ module Generated {
      * Gets the number of attrs of this path expression.
      */
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
-
-    /**
-     * Gets the path of this path expression, if it exists.
-     */
-    Path getPath() {
-      result =
-        Synth::convertPathFromRaw(Synth::convertPathExprToRaw(this).(Raw::PathExpr).getPath())
-    }
-
-    /**
-     * Holds if `getPath()` exists.
-     */
-    final predicate hasPath() { exists(this.getPath()) }
   }
 }

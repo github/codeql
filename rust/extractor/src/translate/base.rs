@@ -1,10 +1,9 @@
-use super::mappings::{AddressableAst, AddressableHir};
+use super::mappings::{AddressableAst, AddressableHir, PathAst};
 use crate::generated::MacroCall;
 use crate::generated::{self};
 use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
-use codeql_extractor::trap::{self};
 use itertools::Either;
 use log::Level;
 use ra_ap_base_db::salsa::InternKey;
@@ -53,8 +52,20 @@ macro_rules! emit_detached {
         $self.extract_canonical_origin_of_enum_variant(&$node, $label);
     };
     // TODO canonical origin of other items
-    (Path, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_destination(&$node, $label);
+    (PathExpr, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_path_canonical_destination(&$node, $label.into());
+    };
+    (RecordExpr, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_path_canonical_destination(&$node, $label.into());
+    };
+    (PathPat, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_path_canonical_destination(&$node, $label.into());
+    };
+    (RecordPat, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_path_canonical_destination(&$node, $label.into());
+    };
+    (TupleStructPat, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_path_canonical_destination(&$node, $label.into());
     };
     (MethodCallExpr, $self:ident, $node:ident, $label:ident) => {
         $self.extract_method_canonical_destination(&$node, $label);
@@ -65,7 +76,7 @@ macro_rules! emit_detached {
 pub struct Translator<'a> {
     pub trap: TrapFile,
     path: &'a str,
-    label: trap::Label,
+    label: Label<generated::File>,
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
@@ -75,7 +86,7 @@ impl<'a> Translator<'a> {
     pub fn new(
         trap: TrapFile,
         path: &'a str,
-        label: trap::Label,
+        label: Label<generated::File>,
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'a>>,
     ) -> Translator<'a> {
@@ -506,25 +517,22 @@ impl<'a> Translator<'a> {
         })();
     }
 
-    pub(crate) fn extract_canonical_destination(
+    pub(crate) fn extract_path_canonical_destination(
         &mut self,
-        item: &ast::Path,
-        label: Label<generated::Path>,
+        item: &impl PathAst,
+        label: Label<generated::Resolvable>,
     ) {
         (|| {
+            let path = item.path()?;
             let sema = self.semantics.as_ref()?;
-            let resolution = sema.resolve_path(item)?;
+            let resolution = sema.resolve_path(&path)?;
             let PathResolution::Def(def) = resolution else {
                 return None;
             };
             let origin = self.origin_from_module_def(def)?;
             let path = self.canonical_path_from_module_def(def)?;
-            generated::Resolvable::emit_resolved_crate_origin(
-                label.into(),
-                origin,
-                &mut self.trap.writer,
-            );
-            generated::Resolvable::emit_resolved_path(label.into(), path, &mut self.trap.writer);
+            generated::Resolvable::emit_resolved_crate_origin(label, origin, &mut self.trap.writer);
+            generated::Resolvable::emit_resolved_path(label, path, &mut self.trap.writer);
             Some(())
         })();
     }

@@ -1,2 +1,0 @@
-| gen_path_type.rs:5:14:5:29 | ...::collections | lang:std |
-| gen_path_type.rs:5:14:5:48 | ...::HashMap::<...> | lang:std |

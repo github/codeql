@@ -12,9 +12,8 @@ private class ReqwestGet extends RemoteSource::Range {
   ReqwestGet() {
     exists(CallExpr ce |
       this.asExpr().getExpr() = ce and
-      ce.getFunction().(PathExpr).getPath().getResolvedCrateOrigin().matches("%reqwest") and
-      ce.getFunction().(PathExpr).getPath().getResolvedPath() =
-        ["crate::get", "crate::blocking::get"]
+      ce.getFunction().(PathExpr).getResolvedCrateOrigin().matches("%reqwest") and
+      ce.getFunction().(PathExpr).getResolvedPath() = ["crate::get", "crate::blocking::get"]
     )
   }
 }

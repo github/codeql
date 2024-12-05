@@ -139,6 +139,10 @@ nodes
 | passwords.js:176:17:176:26 | myPasscode |
 | passwords.js:176:17:176:26 | myPasscode |
 | passwords.js:176:17:176:26 | myPasscode |
+| passwords.js:182:14:182:21 | password |
+| passwords.js:182:14:182:21 | password |
+| passwords.js:182:14:182:51 | passwor ... ), "*") |
+| passwords.js:182:14:182:51 | passwor ... ), "*") |
 | passwords_in_browser1.js:2:13:2:20 | password |
 | passwords_in_browser1.js:2:13:2:20 | password |
 | passwords_in_browser1.js:2:13:2:20 | password |
@@ -285,6 +289,10 @@ edges
 | passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") |
 | passwords.js:173:17:173:26 | myPassword | passwords.js:173:17:173:26 | myPassword |
 | passwords.js:176:17:176:26 | myPasscode | passwords.js:176:17:176:26 | myPasscode |
+| passwords.js:182:14:182:21 | password | passwords.js:182:14:182:51 | passwor ... ), "*") |
+| passwords.js:182:14:182:21 | password | passwords.js:182:14:182:51 | passwor ... ), "*") |
+| passwords.js:182:14:182:21 | password | passwords.js:182:14:182:51 | passwor ... ), "*") |
+| passwords.js:182:14:182:21 | password | passwords.js:182:14:182:51 | passwor ... ), "*") |
 | passwords_in_browser1.js:2:13:2:20 | password | passwords_in_browser1.js:2:13:2:20 | password |
 | passwords_in_browser2.js:2:13:2:20 | password | passwords_in_browser2.js:2:13:2:20 | password |
 | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password |
@@ -332,6 +340,7 @@ edges
 | passwords.js:170:11:170:39 | passwor ... g, "*") | passwords.js:170:11:170:18 | password | passwords.js:170:11:170:39 | passwor ... g, "*") | This logs sensitive data returned by $@ as clear text. | passwords.js:170:11:170:18 | password | an access to password |
 | passwords.js:173:17:173:26 | myPassword | passwords.js:173:17:173:26 | myPassword | passwords.js:173:17:173:26 | myPassword | This logs sensitive data returned by $@ as clear text. | passwords.js:173:17:173:26 | myPassword | an access to myPassword |
 | passwords.js:176:17:176:26 | myPasscode | passwords.js:176:17:176:26 | myPasscode | passwords.js:176:17:176:26 | myPasscode | This logs sensitive data returned by $@ as clear text. | passwords.js:176:17:176:26 | myPasscode | an access to myPasscode |
+| passwords.js:182:14:182:51 | passwor ... ), "*") | passwords.js:182:14:182:21 | password | passwords.js:182:14:182:51 | passwor ... ), "*") | This logs sensitive data returned by $@ as clear text. | passwords.js:182:14:182:21 | password | an access to password |
 | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password | passwords_in_server_1.js:6:13:6:20 | password | This logs sensitive data returned by $@ as clear text. | passwords_in_server_1.js:6:13:6:20 | password | an access to password |
 | passwords_in_server_2.js:3:13:3:20 | password | passwords_in_server_2.js:3:13:3:20 | password | passwords_in_server_2.js:3:13:3:20 | password | This logs sensitive data returned by $@ as clear text. | passwords_in_server_2.js:3:13:3:20 | password | an access to password |
 | passwords_in_server_3.js:2:13:2:20 | password | passwords_in_server_3.js:2:13:2:20 | password | passwords_in_server_3.js:2:13:2:20 | password | This logs sensitive data returned by $@ as clear text. | passwords_in_server_3.js:2:13:2:20 | password | an access to password |

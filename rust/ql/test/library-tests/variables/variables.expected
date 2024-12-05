@@ -1,5 +1,4 @@
 testFailures
-failures
 variable
 | variables.rs:3:14:3:14 | s |
 | variables.rs:7:14:7:14 | i |
@@ -98,10 +97,11 @@ variable
 | variables.rs:482:20:482:23 | self |
 | variables.rs:486:11:486:14 | self |
 | variables.rs:492:13:492:13 | a |
-| variables.rs:501:9:501:9 | x |
-| variables.rs:505:9:505:9 | z |
-| variables.rs:514:15:514:18 | self |
-| variables.rs:520:11:520:11 | a |
+| variables.rs:501:13:501:13 | a |
+| variables.rs:510:9:510:9 | x |
+| variables.rs:514:9:514:9 | z |
+| variables.rs:523:15:523:18 | self |
+| variables.rs:529:11:529:11 | a |
 variableAccess
 | variables.rs:4:20:4:20 | s | variables.rs:3:14:3:14 | s |
 | variables.rs:8:20:8:20 | i | variables.rs:7:14:7:14 | i |
@@ -256,12 +256,17 @@ variableAccess
 | variables.rs:495:15:495:15 | a | variables.rs:492:13:492:13 | a |
 | variables.rs:496:5:496:5 | a | variables.rs:492:13:492:13 | a |
 | variables.rs:497:15:497:15 | a | variables.rs:492:13:492:13 | a |
-| variables.rs:502:20:502:20 | x | variables.rs:501:9:501:9 | x |
-| variables.rs:503:15:503:15 | x | variables.rs:501:9:501:9 | x |
-| variables.rs:506:20:506:20 | z | variables.rs:505:9:505:9 | z |
-| variables.rs:515:6:515:9 | self | variables.rs:514:15:514:18 | self |
-| variables.rs:521:3:521:3 | a | variables.rs:520:11:520:11 | a |
-| variables.rs:523:13:523:13 | a | variables.rs:520:11:520:11 | a |
+| variables.rs:502:15:502:15 | a | variables.rs:501:13:501:13 | a |
+| variables.rs:503:5:503:5 | a | variables.rs:501:13:501:13 | a |
+| variables.rs:504:15:504:15 | a | variables.rs:501:13:501:13 | a |
+| variables.rs:505:5:505:5 | a | variables.rs:501:13:501:13 | a |
+| variables.rs:506:15:506:15 | a | variables.rs:501:13:501:13 | a |
+| variables.rs:511:20:511:20 | x | variables.rs:510:9:510:9 | x |
+| variables.rs:512:15:512:15 | x | variables.rs:510:9:510:9 | x |
+| variables.rs:515:20:515:20 | z | variables.rs:514:9:514:9 | z |
+| variables.rs:524:6:524:9 | self | variables.rs:523:15:523:18 | self |
+| variables.rs:530:3:530:3 | a | variables.rs:529:11:529:11 | a |
+| variables.rs:532:13:532:13 | a | variables.rs:529:11:529:11 | a |
 variableWriteAccess
 | variables.rs:23:5:23:6 | x2 | variables.rs:21:13:21:14 | x2 |
 | variables.rs:30:5:30:5 | x | variables.rs:28:13:28:13 | x |
@@ -273,6 +278,7 @@ variableWriteAccess
 | variables.rs:450:9:450:9 | x | variables.rs:446:13:446:13 | x |
 | variables.rs:454:9:454:9 | x | variables.rs:446:13:446:13 | x |
 | variables.rs:496:5:496:5 | a | variables.rs:492:13:492:13 | a |
+| variables.rs:505:5:505:5 | a | variables.rs:501:13:501:13 | a |
 variableReadAccess
 | variables.rs:4:20:4:20 | s | variables.rs:3:14:3:14 | s |
 | variables.rs:8:20:8:20 | i | variables.rs:7:14:7:14 | i |
@@ -408,10 +414,14 @@ variableReadAccess
 | variables.rs:494:5:494:5 | a | variables.rs:492:13:492:13 | a |
 | variables.rs:495:15:495:15 | a | variables.rs:492:13:492:13 | a |
 | variables.rs:497:15:497:15 | a | variables.rs:492:13:492:13 | a |
-| variables.rs:503:15:503:15 | x | variables.rs:501:9:501:9 | x |
-| variables.rs:515:6:515:9 | self | variables.rs:514:15:514:18 | self |
-| variables.rs:521:3:521:3 | a | variables.rs:520:11:520:11 | a |
-| variables.rs:523:13:523:13 | a | variables.rs:520:11:520:11 | a |
+| variables.rs:502:15:502:15 | a | variables.rs:501:13:501:13 | a |
+| variables.rs:503:5:503:5 | a | variables.rs:501:13:501:13 | a |
+| variables.rs:504:15:504:15 | a | variables.rs:501:13:501:13 | a |
+| variables.rs:506:15:506:15 | a | variables.rs:501:13:501:13 | a |
+| variables.rs:512:15:512:15 | x | variables.rs:510:9:510:9 | x |
+| variables.rs:524:6:524:9 | self | variables.rs:523:15:523:18 | self |
+| variables.rs:530:3:530:3 | a | variables.rs:529:11:529:11 | a |
+| variables.rs:532:13:532:13 | a | variables.rs:529:11:529:11 | a |
 variableInitializer
 | variables.rs:16:9:16:10 | x1 | variables.rs:16:14:16:16 | "a" |
 | variables.rs:21:13:21:14 | x2 | variables.rs:21:18:21:18 | 4 |
@@ -460,9 +470,10 @@ variableInitializer
 | variables.rs:446:13:446:13 | x | variables.rs:446:17:446:17 | 1 |
 | variables.rs:462:9:462:9 | x | variables.rs:462:13:462:13 | 1 |
 | variables.rs:492:13:492:13 | a | variables.rs:492:17:492:35 | MyStruct {...} |
-| variables.rs:501:9:501:9 | x | variables.rs:501:13:501:14 | 16 |
-| variables.rs:505:9:505:9 | z | variables.rs:505:13:505:14 | 17 |
-| variables.rs:520:11:520:11 | a | variables.rs:520:15:520:33 | MyStruct {...} |
+| variables.rs:501:13:501:13 | a | variables.rs:501:17:501:25 | [...] |
+| variables.rs:510:9:510:9 | x | variables.rs:510:13:510:14 | 16 |
+| variables.rs:514:9:514:9 | z | variables.rs:514:13:514:14 | 17 |
+| variables.rs:529:11:529:11 | a | variables.rs:529:15:529:33 | MyStruct {...} |
 capturedVariable
 | variables.rs:400:9:400:9 | x |
 | variables.rs:410:13:410:13 | x |

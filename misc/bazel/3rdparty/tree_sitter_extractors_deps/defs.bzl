@@ -320,6 +320,7 @@ _NORMAL_DEPENDENCIES = {
         _COMMON_CONDITION: {
             "anyhow": Label("@vendor__anyhow-1.0.93//:anyhow"),
             "argfile": Label("@vendor__argfile-0.2.1//:argfile"),
+            "chrono": Label("@vendor__chrono-0.4.38//:chrono"),
             "clap": Label("@vendor__clap-4.5.20//:clap"),
             "dunce": Label("@vendor__dunce-1.0.5//:dunce"),
             "figment": Label("@vendor__figment-0.10.19//:figment"),
@@ -342,6 +343,7 @@ _NORMAL_DEPENDENCIES = {
             "ra_ap_syntax": Label("@vendor__ra_ap_syntax-0.0.232//:ra_ap_syntax"),
             "ra_ap_vfs": Label("@vendor__ra_ap_vfs-0.0.232//:ra_ap_vfs"),
             "serde": Label("@vendor__serde-1.0.214//:serde"),
+            "serde_json": Label("@vendor__serde_json-1.0.133//:serde_json"),
             "serde_with": Label("@vendor__serde_with-3.11.0//:serde_with"),
             "stderrlog": Label("@vendor__stderrlog-0.6.0//:stderrlog"),
             "triomphe": Label("@vendor__triomphe-0.1.14//:triomphe"),
@@ -364,7 +366,7 @@ _NORMAL_DEPENDENCIES = {
             "rayon": Label("@vendor__rayon-1.10.0//:rayon"),
             "regex": Label("@vendor__regex-1.11.1//:regex"),
             "serde": Label("@vendor__serde-1.0.214//:serde"),
-            "serde_json": Label("@vendor__serde_json-1.0.132//:serde_json"),
+            "serde_json": Label("@vendor__serde_json-1.0.133//:serde_json"),
             "tracing": Label("@vendor__tracing-0.1.40//:tracing"),
             "tracing-subscriber": Label("@vendor__tracing-subscriber-0.3.18//:tracing_subscriber"),
             "tree-sitter": Label("@vendor__tree-sitter-0.24.4//:tree_sitter"),
@@ -2519,12 +2521,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor__serde_json-1.0.132",
-        sha256 = "d726bfaff4b320266d395898905d0eba0345aae23b54aee3a737e260fd46db03",
+        name = "vendor__serde_json-1.0.133",
+        sha256 = "c7fceb2473b9166b2294ef05efcb65a3db80803f0b03ef86a5fc88a2b85ee377",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/serde_json/1.0.132/download"],
-        strip_prefix = "serde_json-1.0.132",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_json-1.0.132.bazel"),
+        urls = ["https://static.crates.io/crates/serde_json/1.0.133/download"],
+        strip_prefix = "serde_json-1.0.133",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.serde_json-1.0.133.bazel"),
     )
 
     maybe(
@@ -3353,7 +3355,7 @@ def crate_repositories():
         struct(repo = "vendor__rayon-1.10.0", is_dev_dep = False),
         struct(repo = "vendor__regex-1.11.1", is_dev_dep = False),
         struct(repo = "vendor__serde-1.0.214", is_dev_dep = False),
-        struct(repo = "vendor__serde_json-1.0.132", is_dev_dep = False),
+        struct(repo = "vendor__serde_json-1.0.133", is_dev_dep = False),
         struct(repo = "vendor__serde_with-3.11.0", is_dev_dep = False),
         struct(repo = "vendor__stderrlog-0.6.0", is_dev_dep = False),
         struct(repo = "vendor__syn-2.0.87", is_dev_dep = False),

@@ -1207,6 +1207,11 @@ module Make<
         )
       }
 
+      /** Holds if the value of `succ` is uniquely determined by the value of `pred`. */
+      predicate summaryLocalMustFlowStep(SummaryNode pred, SummaryNode succ) {
+        pred = unique(SummaryNode n1 | summaryLocalStep(n1, succ, true, _))
+      }
+
       /**
        * Holds if there is a read step of content `c` from `pred` to `succ`, which
        * is synthesized from a flow summary.

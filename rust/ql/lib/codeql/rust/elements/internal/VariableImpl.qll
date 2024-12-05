@@ -100,7 +100,7 @@ module Impl {
         // without implementations
         not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = pat) and
         // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
-        not exists(FnPtrType fp | fp.getParamList().getParam(_).getPat() = pat)
+        not exists(FnPtrTypeRepr fp | fp.getParamList().getParam(_).getPat() = pat)
       )
   }
 
@@ -467,7 +467,8 @@ module Impl {
       assignmentExprDescendant(mid) and
       getImmediateParent(e) = mid and
       not mid.(PrefixExpr).getOperatorName() = "*" and
-      not mid instanceof FieldExpr
+      not mid instanceof FieldExpr and
+      not mid instanceof IndexExpr
     )
   }
 

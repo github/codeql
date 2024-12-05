@@ -1,4 +1,0 @@
----
-category: minorAnalysis
----
-* In a switch statement with a constant switch expression, all non-matching cases were being marked as unreachable, including those that can be reached by falling through from the matching case. This has now been fixed.

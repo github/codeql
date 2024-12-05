@@ -28,7 +28,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "Param" }
 
     /**
-     * Gets the pat of this parameter, if it exists.
+     * Gets the pattern of this parameter, if it exists.
      */
     Pat getPat() {
       result = Synth::convertPatFromRaw(Synth::convertParamToRaw(this).(Raw::Param).getPat())

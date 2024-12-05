@@ -160,11 +160,8 @@ predicate localMustFlowStep(Node node1, Node node2) {
   or
   node2.asExpr().(AssignExpr).getSource() = node1.asExpr()
   or
-  node1 =
-    unique(FlowSummaryNode n1 |
-      FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
-        node2.(FlowSummaryNode).getSummaryNode(), true, _)
-    )
+  FlowSummaryImpl::Private::Steps::summaryLocalMustFlowStep(node1.(FlowSummaryNode).getSummaryNode(),
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 import Cached
