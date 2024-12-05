@@ -27,6 +27,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         internal static DependabotProxy? GetDependabotProxy(ILogger logger, TemporaryDirectory tempWorkingDirectory)
         {
+            // Setting HTTP(S)_PROXY and SSL_CERT_FILE have no effect on Windows or macOS,
+            // but we would still end up using the Dependabot proxy to check for feed reachability.
+            // This would result in us discovering that the feeds are reachable, but `dotnet` would
+            // fail to connect to them. To prevent this from happening, we do not initialise an
+            // instance of `DependabotProxy` on those platforms.
+            if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMacOs()) return null;
+
             // Obtain and store the address of the Dependabot proxy, if available.
             var host = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyHost);
             var port = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyPort);
