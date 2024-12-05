@@ -150,7 +150,7 @@ module EdgeKind {
   CppExceptionEdge cppExceptionEdge() { result = TCppExceptionEdge() }
 
   /**
-   * Gets an instance of the `SehExceptionEdge` class.
+   * Gets the single instance of the `SehExceptionEdge` class.
    */
   SehExceptionEdge sehExceptionEdge() { result = TSehExceptionEdge() }
 
