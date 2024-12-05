@@ -4,6 +4,7 @@ private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.FlowSummary
 private import DataFlowImpl
 private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.rust.internal.CachedStages
 
 module RustTaintTracking implements InputSig<Location, RustDataFlow> {
   predicate defaultTaintSanitizer(Node::Node node) { none() }
@@ -12,7 +13,9 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
    * Holds if the additional step from `pred` to `succ` should be included in all
    * global taint flow configurations.
    */
+  cached
   predicate defaultAdditionalTaintStep(Node::Node pred, Node::Node succ, string model) {
+    Stages::DataFlowStage::ref() and
     model = "" and
     (
       exists(BinaryExprCfgNode binary |
