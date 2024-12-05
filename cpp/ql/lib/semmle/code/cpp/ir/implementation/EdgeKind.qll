@@ -20,16 +20,18 @@ private newtype TEdgeKind =
  * `Instruction` or `IRBlock` has at most one successor of any single
  * `EdgeKind`.
  */
-abstract class EdgeKind extends TEdgeKind {
+abstract private class EdgeKindImpl extends TEdgeKind {
   /** Gets a textual representation of this edge kind. */
   abstract string toString();
 }
+
+final class EdgeKind = EdgeKindImpl;
 
 /**
  * A "goto" edge, representing the unconditional successor of an `Instruction`
  * or `IRBlock`.
  */
-class GotoEdge extends EdgeKind, TGotoEdge {
+class GotoEdge extends EdgeKindImpl, TGotoEdge {
   final override string toString() { result = "Goto" }
 }
 
@@ -37,7 +39,7 @@ class GotoEdge extends EdgeKind, TGotoEdge {
  * A "true" edge, representing the successor of a conditional branch when the
  * condition is non-zero.
  */
-class TrueEdge extends EdgeKind, TTrueEdge {
+class TrueEdge extends EdgeKindImpl, TTrueEdge {
   final override string toString() { result = "True" }
 }
 
@@ -45,7 +47,7 @@ class TrueEdge extends EdgeKind, TTrueEdge {
  * A "false" edge, representing the successor of a conditional branch when the
  * condition is zero.
  */
-class FalseEdge extends EdgeKind, TFalseEdge {
+class FalseEdge extends EdgeKindImpl, TFalseEdge {
   final override string toString() { result = "False" }
 }
 
@@ -53,7 +55,7 @@ class FalseEdge extends EdgeKind, TFalseEdge {
  * An "exception" edge, representing the successor of an instruction when that
  * instruction's evaluation throws an exception.
  */
-class ExceptionEdge extends EdgeKind, TExceptionEdge {
+class ExceptionEdge extends EdgeKindImpl, TExceptionEdge {
   final override string toString() { result = "Exception" }
 }
 
@@ -61,7 +63,7 @@ class ExceptionEdge extends EdgeKind, TExceptionEdge {
  * A "default" edge, representing the successor of a `Switch` instruction when
  * none of the case values matches the condition value.
  */
-class DefaultEdge extends EdgeKind, TDefaultEdge {
+class DefaultEdge extends EdgeKindImpl, TDefaultEdge {
   final override string toString() { result = "Default" }
 }
 
@@ -69,7 +71,7 @@ class DefaultEdge extends EdgeKind, TDefaultEdge {
  * A "case" edge, representing the successor of a `Switch` instruction when the
  * the condition value matches a corresponding `case` label.
  */
-class CaseEdge extends EdgeKind, TCaseEdge {
+class CaseEdge extends EdgeKindImpl, TCaseEdge {
   string minValue;
   string maxValue;
 
