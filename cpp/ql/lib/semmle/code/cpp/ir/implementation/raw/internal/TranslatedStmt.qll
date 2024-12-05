@@ -932,7 +932,7 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
       kind instanceof GotoEdge and
       result = this.getParameter().getFirstInstruction(kind)
       or
-      kind = EdgeKind::exceptionEdge(false) and
+      kind instanceof CppExceptionEdge and
       if exists(this.getDestructors())
       then result = this.getDestructors().getFirstInstruction(any(GotoEdge edge))
       else result = this.getParent().(TranslatedTryStmt).getNextHandler(this, any(GotoEdge edge))

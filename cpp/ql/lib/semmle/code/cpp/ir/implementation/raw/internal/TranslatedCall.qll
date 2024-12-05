@@ -88,7 +88,7 @@ abstract class TranslatedCall extends TranslatedExpr {
       result = this.getParent().getChildSuccessor(this, kind)
       or
       this.mayThrowException() and
-      kind = EdgeKind::exceptionEdge(false) and
+      kind instanceof CppExceptionEdge and
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
     )
   }

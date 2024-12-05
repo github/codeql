@@ -8,7 +8,8 @@ private newtype TEdgeKind =
   TGotoEdge() or // Single successor (including fall-through)
   TTrueEdge() or // 'true' edge of conditional branch
   TFalseEdge() or // 'false' edge of conditional branch
-  TExceptionEdge() or // Thrown exception
+  TCppExceptionEdge() or // Thrown C++ exception
+  TSehExceptionEdge() or // Thrown C++ exception
   TDefaultEdge() or // 'default' label of switch
   TCaseEdge(string minValue, string maxValue) {
     // Case label of switch
@@ -51,12 +52,33 @@ class FalseEdge extends EdgeKindImpl, TFalseEdge {
   final override string toString() { result = "False" }
 }
 
+abstract private class ExceptionEdgeImpl extends EdgeKindImpl { }
+
 /**
  * An "exception" edge, representing the successor of an instruction when that
  * instruction's evaluation throws an exception.
+ *
+ * Exception edges are expclitly sublcassed to
+ * `CppExceptionEdge` and `SehExceptionEdge` only.
+ * Further sublcasses, if required, should be added privately
+ * here for IR efficiency.
  */
-class ExceptionEdge extends EdgeKindImpl, TExceptionEdge {
-  final override string toString() { result = "Exception" }
+final class ExceptionEdge = ExceptionEdgeImpl;
+
+/**
+ * An "exception" edge, representing the successor of an instruction when that
+ * instruction's evaluation throws an exception for C++ exceptions
+ */
+class CppExceptionEdge extends ExceptionEdgeImpl, TCppExceptionEdge {
+  final override string toString() { result = "C++ Exception" }
+}
+
+/**
+ * An "exception" edge, representing the successor of an instruction when that
+ * instruction's evaluation throws an exception for SEH exceptions
+ */
+class SehExceptionEdge extends ExceptionEdgeImpl, TSehExceptionEdge {
+  final override string toString() { result = "SEH Exception" }
 }
 
 /**
@@ -123,9 +145,22 @@ module EdgeKind {
   FalseEdge falseEdge() { result = TFalseEdge() }
 
   /**
-   * Gets the single instance of the `ExceptionEdge` class.
+   * Gets an instance of the `CppExceptionEdge` class.
    */
-  ExceptionEdge exceptionEdge() { result = TExceptionEdge() }
+  CppExceptionEdge cppExceptionEdge() { result = TCppExceptionEdge() }
+
+  /**
+   * Gets an instance of the `SehExceptionEdge` class.
+   */
+  SehExceptionEdge sehExceptionEdge() { result = TSehExceptionEdge() }
+
+  /**
+   * Gets an instance of the `ExceptionEdge` class.
+   */
+  ExceptionEdge exceptionEdge() {
+    result = cppExceptionEdge() or
+    result = sehExceptionEdge()
+  }
 
   /**
    * Gets the single instance of the `DefaultEdge` class.
