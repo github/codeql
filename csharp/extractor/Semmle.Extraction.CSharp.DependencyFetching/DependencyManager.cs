@@ -545,7 +545,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public void Dispose()
         {
             nugetPackageRestorer?.Dispose();
-            dependabotProxy.Dispose();
+            dependabotProxy?.Dispose();
             if (cleanupTempWorkingDirectory)
             {
                 tempWorkingDirectory?.Dispose();
