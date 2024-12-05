@@ -17,16 +17,16 @@ fn test_stream_cipher(
     // rc4 (broken)
     let rc4_key = rc4::Key::<U16>::from_slice(key128);
 
-    let mut rc4_cipher1 = Rc4::<_>::new(rc4_key); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let mut rc4_cipher1 = Rc4::<_>::new(rc4_key); // $ Alert[rust/weak-cryptographic-algorithm]
     rc4_cipher1.apply_keystream(&mut data);
 
-    let mut rc4_cipher2 = Rc4::<U16>::new_from_slice(key128).unwrap(); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let mut rc4_cipher2 = Rc4::<U16>::new_from_slice(key128).unwrap(); // $ Alert[rust/weak-cryptographic-algorithm]
     rc4_cipher2.apply_keystream(&mut data);
 
-    let mut rc4_cipher3 = Rc4::<_>::new(rc4_key); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let mut rc4_cipher3 = Rc4::<_>::new(rc4_key); // $ Alert[rust/weak-cryptographic-algorithm]
     let _ = rc4_cipher3.try_apply_keystream(&mut data);
 
-    let mut rc4_cipher4 = Rc4::<_>::new(rc4_key); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let mut rc4_cipher4 = Rc4::<_>::new(rc4_key); // $ Alert[rust/weak-cryptographic-algorithm]
     let _ = rc4_cipher4.apply_keystream_b2b(plaintext.as_bytes(), &mut data);
 
     // rabbit
@@ -56,23 +56,23 @@ fn test_block_cipher(
     aes_cipher3.decrypt_block(block128.into());
 
     // des (broken)
-    let des_cipher1 = Des::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher1 = Des::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
     des_cipher1.encrypt_block(data.into());
     des_cipher1.decrypt_block(data.into());
 
-    let des_cipher2 = des::Des::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher2 = des::Des::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
     des_cipher2.encrypt_block(data.into());
     des_cipher2.decrypt_block(data.into());
 
-    let des_cipher3 = Des::new_from_slice(key).expect("fail"); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher3 = Des::new_from_slice(key).expect("fail"); // $ Alert[rust/weak-cryptographic-algorithm]
     des_cipher3.encrypt_block(data.into());
     des_cipher3.decrypt_block(data.into());
 
-    let des_cipher4 = Des::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher4 = Des::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
     des_cipher4.encrypt_block_b2b(input.into(), data.into());
     des_cipher4.decrypt_block_b2b(input.into(), data.into());
 
-    let mut des_cipher5 = Des::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let mut des_cipher5 = Des::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
     des_cipher5.encrypt_block_mut(data.into());
     des_cipher5.decrypt_block_mut(data.into());
 
@@ -94,11 +94,11 @@ fn test_block_cipher(
     tdes_cipher4.decrypt_block(data.into());
 
     // rc2 (broken)
-    let rc2_cipher1 = Rc2::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let rc2_cipher1 = Rc2::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
     rc2_cipher1.encrypt_block(data.into());
     rc2_cipher1.decrypt_block(data.into());
 
-    let rc2_cipher2 = Rc2::new_from_slice(key).expect("fail"); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let rc2_cipher2 = Rc2::new_from_slice(key).expect("fail"); // $ Alert[rust/weak-cryptographic-algorithm]
     rc2_cipher2.encrypt_block(data.into());
     rc2_cipher2.decrypt_block(data.into());
 
@@ -107,11 +107,11 @@ fn test_block_cipher(
     rc2_cipher3.decrypt_block(data.into());
 
     // rc5 (broken)
-    let rc5_cipher1 = RC5_16_16_8::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let rc5_cipher1 = RC5_16_16_8::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
     rc5_cipher1.encrypt_block(data.into());
     rc5_cipher1.decrypt_block(data.into());
 
-    let rc5_cipher2 = RC5_32_16_16::new_from_slice(key).unwrap(); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let rc5_cipher2 = RC5_32_16_16::new_from_slice(key).unwrap(); // $ Alert[rust/weak-cryptographic-algorithm]
     rc5_cipher2.encrypt_block(data.into());
     rc5_cipher2.decrypt_block(data.into());
 }
