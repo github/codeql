@@ -2,12 +2,21 @@
 import codeql.rust.elements
 import TestUtils
 
-from RecordExpr x, string hasPath, string hasRecordExprFieldList
+from
+  RecordExpr x, string hasResolvedPath, string hasResolvedCrateOrigin, string hasPath,
+  string hasRecordExprFieldList
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasResolvedPath() then hasResolvedPath = "yes" else hasResolvedPath = "no") and
+  (
+    if x.hasResolvedCrateOrigin()
+    then hasResolvedCrateOrigin = "yes"
+    else hasResolvedCrateOrigin = "no"
+  ) and
   (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
   if x.hasRecordExprFieldList()
   then hasRecordExprFieldList = "yes"
   else hasRecordExprFieldList = "no"
-select x, "hasPath:", hasPath, "hasRecordExprFieldList:", hasRecordExprFieldList
+select x, "hasResolvedPath:", hasResolvedPath, "hasResolvedCrateOrigin:", hasResolvedCrateOrigin,
+  "hasPath:", hasPath, "hasRecordExprFieldList:", hasRecordExprFieldList

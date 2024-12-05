@@ -223,10 +223,7 @@ edges
 | Test.java:79:46:79:53 | source(...) : Object | Test.java:26:30:26:43 | element : Object | provenance |  |
 | Test.java:79:46:79:53 | source(...) : Object | Test.java:79:25:79:54 | newWithMapKeyDefault(...) : Bundle [<map.key>] : String | provenance | MaD:105 |
 | Test.java:80:4:80:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:81:26:81:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | provenance |  |
-| Test.java:80:4:80:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:81:26:81:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | provenance |  |
 | Test.java:80:18:80:19 | in : Bundle [<map.key>] : String | Test.java:80:4:80:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | provenance | MaD:4 |
-| Test.java:80:18:80:19 | in : Bundle [<map.key>] : String | Test.java:80:4:80:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | provenance | MaD:4 |
-| Test.java:81:26:81:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:81:26:81:40 | getExtras(...) : Bundle [<map.key>] : String | provenance | MaD:11 |
 | Test.java:81:26:81:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:81:26:81:40 | getExtras(...) : Bundle [<map.key>] : String | provenance | MaD:11 |
 | Test.java:81:26:81:40 | getExtras(...) : Bundle [<map.key>] : String | Test.java:81:9:81:41 | getMapKeyDefault(...) | provenance | MaD:194 |
 | Test.java:88:16:88:56 | (...)... : Bundle [<map.value>] : String | Test.java:89:18:89:19 | in : Bundle [<map.value>] : String | provenance |  |
@@ -234,10 +231,7 @@ edges
 | Test.java:88:48:88:55 | source(...) : Object | Test.java:32:32:32:45 | element : Object | provenance |  |
 | Test.java:88:48:88:55 | source(...) : Object | Test.java:88:25:88:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | provenance | MaD:106 |
 | Test.java:89:4:89:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:90:28:90:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:89:4:89:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:90:28:90:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
 | Test.java:89:18:89:19 | in : Bundle [<map.value>] : String | Test.java:89:4:89:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:5 |
-| Test.java:89:18:89:19 | in : Bundle [<map.value>] : String | Test.java:89:4:89:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:5 |
-| Test.java:90:28:90:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:90:28:90:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:11 |
 | Test.java:90:28:90:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:90:28:90:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:11 |
 | Test.java:90:28:90:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:22:28:22:43 | container : Bundle [<map.value>] : String | provenance |  |
 | Test.java:90:28:90:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:90:9:90:43 | getMapValueDefault(...) | provenance | MaD:104 |
@@ -254,15 +248,9 @@ edges
 | Test.java:112:48:112:55 | source(...) : Object | Test.java:32:32:32:45 | element : Object | provenance |  |
 | Test.java:112:48:112:55 | source(...) : Object | Test.java:112:25:112:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | provenance | MaD:106 |
 | Test.java:113:4:113:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:114:10:114:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:113:4:113:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:114:10:114:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:113:22:113:23 | in : Bundle [<map.value>] : String | Test.java:113:4:113:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:5 |
 | Test.java:113:22:113:23 | in : Bundle [<map.value>] : String | Test.java:113:4:113:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:5 |
 | Test.java:114:10:114:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:114:10:114:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | provenance | MaD:8 |
-| Test.java:114:10:114:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:114:10:114:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | provenance | MaD:8 |
-| Test.java:114:10:114:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:114:10:114:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | provenance | MaD:8 |
 | Test.java:114:10:114:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | Test.java:115:28:115:30 | out : Action [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:114:10:114:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | Test.java:115:28:115:30 | out : Action [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:115:28:115:30 | out : Action [android.content.Intent.extras, <map.value>] : String | Test.java:115:28:115:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:17 |
 | Test.java:115:28:115:30 | out : Action [android.content.Intent.extras, <map.value>] : String | Test.java:115:28:115:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:17 |
 | Test.java:115:28:115:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:22:28:22:43 | container : Bundle [<map.value>] : String | provenance |  |
 | Test.java:115:28:115:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:115:9:115:43 | getMapValueDefault(...) | provenance | MaD:104 |
@@ -319,10 +307,7 @@ edges
 | Test.java:206:46:206:53 | source(...) : Object | Test.java:26:30:26:43 | element : Object | provenance |  |
 | Test.java:206:46:206:53 | source(...) : Object | Test.java:206:25:206:54 | newWithMapKeyDefault(...) : Bundle [<map.key>] : String | provenance | MaD:105 |
 | Test.java:207:4:207:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:208:26:208:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | provenance |  |
-| Test.java:207:4:207:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:208:26:208:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | provenance |  |
 | Test.java:207:18:207:19 | in : Bundle [<map.key>] : String | Test.java:207:4:207:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | provenance | MaD:32 |
-| Test.java:207:18:207:19 | in : Bundle [<map.key>] : String | Test.java:207:4:207:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | provenance | MaD:32 |
-| Test.java:208:26:208:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:208:26:208:40 | getExtras(...) : Bundle [<map.key>] : String | provenance | MaD:39 |
 | Test.java:208:26:208:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:208:26:208:40 | getExtras(...) : Bundle [<map.key>] : String | provenance | MaD:39 |
 | Test.java:208:26:208:40 | getExtras(...) : Bundle [<map.key>] : String | Test.java:208:9:208:41 | getMapKeyDefault(...) | provenance | MaD:194 |
 | Test.java:214:16:214:56 | (...)... : Bundle [<map.value>] : String | Test.java:215:18:215:19 | in : Bundle [<map.value>] : String | provenance |  |
@@ -330,10 +315,7 @@ edges
 | Test.java:214:48:214:55 | source(...) : Object | Test.java:32:32:32:45 | element : Object | provenance |  |
 | Test.java:214:48:214:55 | source(...) : Object | Test.java:214:25:214:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | provenance | MaD:106 |
 | Test.java:215:4:215:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:216:28:216:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:215:4:215:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:216:28:216:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
 | Test.java:215:18:215:19 | in : Bundle [<map.value>] : String | Test.java:215:4:215:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:33 |
-| Test.java:215:18:215:19 | in : Bundle [<map.value>] : String | Test.java:215:4:215:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:33 |
-| Test.java:216:28:216:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:216:28:216:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:39 |
 | Test.java:216:28:216:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:216:28:216:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:39 |
 | Test.java:216:28:216:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:22:28:22:43 | container : Bundle [<map.value>] : String | provenance |  |
 | Test.java:216:28:216:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:216:9:216:43 | getMapValueDefault(...) | provenance | MaD:104 |
@@ -354,15 +336,9 @@ edges
 | Test.java:244:48:244:55 | source(...) : Object | Test.java:32:32:32:45 | element : Object | provenance |  |
 | Test.java:244:48:244:55 | source(...) : Object | Test.java:244:25:244:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | provenance | MaD:106 |
 | Test.java:245:4:245:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:246:10:246:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:245:4:245:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:246:10:246:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:245:22:245:23 | in : Bundle [<map.value>] : String | Test.java:245:4:245:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:33 |
 | Test.java:245:22:245:23 | in : Bundle [<map.value>] : String | Test.java:245:4:245:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:33 |
 | Test.java:246:10:246:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:246:10:246:24 | build(...) : Notification [extras, <map.value>] : String | provenance | MaD:36 |
-| Test.java:246:10:246:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:246:10:246:24 | build(...) : Notification [extras, <map.value>] : String | provenance | MaD:36 |
-| Test.java:246:10:246:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:246:10:246:24 | build(...) : Notification [extras, <map.value>] : String | provenance | MaD:36 |
 | Test.java:246:10:246:24 | build(...) : Notification [extras, <map.value>] : String | Test.java:247:28:247:30 | out : Notification [extras, <map.value>] : String | provenance |  |
-| Test.java:246:10:246:24 | build(...) : Notification [extras, <map.value>] : String | Test.java:247:28:247:30 | out : Notification [extras, <map.value>] : String | provenance |  |
-| Test.java:247:28:247:30 | out : Notification [extras, <map.value>] : String | Test.java:247:28:247:37 | out.extras : Bundle [<map.value>] : String | provenance |  |
 | Test.java:247:28:247:30 | out : Notification [extras, <map.value>] : String | Test.java:247:28:247:37 | out.extras : Bundle [<map.value>] : String | provenance |  |
 | Test.java:247:28:247:37 | out.extras : Bundle [<map.value>] : String | Test.java:22:28:22:43 | container : Bundle [<map.value>] : String | provenance |  |
 | Test.java:247:28:247:37 | out.extras : Bundle [<map.value>] : String | Test.java:247:9:247:38 | getMapValueDefault(...) | provenance | MaD:104 |
@@ -722,10 +698,7 @@ edges
 | Test.java:851:46:851:53 | source(...) : Object | Test.java:26:30:26:43 | element : Object | provenance |  |
 | Test.java:851:46:851:53 | source(...) : Object | Test.java:851:25:851:54 | newWithMapKeyDefault(...) : Bundle [<map.key>] : String | provenance | MaD:105 |
 | Test.java:852:4:852:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:853:26:853:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | provenance |  |
-| Test.java:852:4:852:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:853:26:853:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | provenance |  |
 | Test.java:852:18:852:19 | in : Bundle [<map.key>] : String | Test.java:852:4:852:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | provenance | MaD:110 |
-| Test.java:852:18:852:19 | in : Bundle [<map.key>] : String | Test.java:852:4:852:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | provenance | MaD:110 |
-| Test.java:853:26:853:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:853:26:853:40 | getExtras(...) : Bundle [<map.key>] : String | provenance | MaD:117 |
 | Test.java:853:26:853:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:853:26:853:40 | getExtras(...) : Bundle [<map.key>] : String | provenance | MaD:117 |
 | Test.java:853:26:853:40 | getExtras(...) : Bundle [<map.key>] : String | Test.java:853:9:853:41 | getMapKeyDefault(...) | provenance | MaD:194 |
 | Test.java:858:16:858:56 | (...)... : Bundle [<map.value>] : String | Test.java:859:18:859:19 | in : Bundle [<map.value>] : String | provenance |  |
@@ -733,10 +706,7 @@ edges
 | Test.java:858:48:858:55 | source(...) : Object | Test.java:32:32:32:45 | element : Object | provenance |  |
 | Test.java:858:48:858:55 | source(...) : Object | Test.java:858:25:858:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | provenance | MaD:106 |
 | Test.java:859:4:859:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:860:28:860:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:859:4:859:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:860:28:860:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
 | Test.java:859:18:859:19 | in : Bundle [<map.value>] : String | Test.java:859:4:859:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:111 |
-| Test.java:859:18:859:19 | in : Bundle [<map.value>] : String | Test.java:859:4:859:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:111 |
-| Test.java:860:28:860:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:860:28:860:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:117 |
 | Test.java:860:28:860:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:860:28:860:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:117 |
 | Test.java:860:28:860:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:22:28:22:43 | container : Bundle [<map.value>] : String | provenance |  |
 | Test.java:860:28:860:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:860:9:860:43 | getMapValueDefault(...) | provenance | MaD:104 |
@@ -749,15 +719,9 @@ edges
 | Test.java:873:48:873:55 | source(...) : Object | Test.java:32:32:32:45 | element : Object | provenance |  |
 | Test.java:873:48:873:55 | source(...) : Object | Test.java:873:25:873:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | provenance | MaD:106 |
 | Test.java:874:4:874:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:875:10:875:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:874:4:874:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:875:10:875:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:874:22:874:23 | in : Bundle [<map.value>] : String | Test.java:874:4:874:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:111 |
 | Test.java:874:22:874:23 | in : Bundle [<map.value>] : String | Test.java:874:4:874:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:111 |
 | Test.java:875:10:875:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:875:10:875:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | provenance | MaD:114 |
-| Test.java:875:10:875:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:875:10:875:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | provenance | MaD:114 |
-| Test.java:875:10:875:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:875:10:875:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | provenance | MaD:114 |
 | Test.java:875:10:875:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | Test.java:876:28:876:30 | out : Action [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:875:10:875:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | Test.java:876:28:876:30 | out : Action [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:876:28:876:30 | out : Action [android.content.Intent.extras, <map.value>] : String | Test.java:876:28:876:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:123 |
 | Test.java:876:28:876:30 | out : Action [android.content.Intent.extras, <map.value>] : String | Test.java:876:28:876:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:123 |
 | Test.java:876:28:876:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:22:28:22:43 | container : Bundle [<map.value>] : String | provenance |  |
 | Test.java:876:28:876:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:876:9:876:43 | getMapValueDefault(...) | provenance | MaD:104 |
@@ -858,10 +822,7 @@ edges
 | Test.java:1042:46:1042:53 | source(...) : Object | Test.java:26:30:26:43 | element : Object | provenance |  |
 | Test.java:1042:46:1042:53 | source(...) : Object | Test.java:1042:25:1042:54 | newWithMapKeyDefault(...) : Bundle [<map.key>] : String | provenance | MaD:105 |
 | Test.java:1043:4:1043:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:1044:26:1044:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | provenance |  |
-| Test.java:1043:4:1043:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:1044:26:1044:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | provenance |  |
 | Test.java:1043:18:1043:19 | in : Bundle [<map.key>] : String | Test.java:1043:4:1043:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | provenance | MaD:134 |
-| Test.java:1043:18:1043:19 | in : Bundle [<map.key>] : String | Test.java:1043:4:1043:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | provenance | MaD:134 |
-| Test.java:1044:26:1044:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:1044:26:1044:40 | getExtras(...) : Bundle [<map.key>] : String | provenance | MaD:141 |
 | Test.java:1044:26:1044:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | Test.java:1044:26:1044:40 | getExtras(...) : Bundle [<map.key>] : String | provenance | MaD:141 |
 | Test.java:1044:26:1044:40 | getExtras(...) : Bundle [<map.key>] : String | Test.java:1044:9:1044:41 | getMapKeyDefault(...) | provenance | MaD:194 |
 | Test.java:1049:16:1049:56 | (...)... : Bundle [<map.value>] : String | Test.java:1050:18:1050:19 | in : Bundle [<map.value>] : String | provenance |  |
@@ -869,10 +830,7 @@ edges
 | Test.java:1049:48:1049:55 | source(...) : Object | Test.java:32:32:32:45 | element : Object | provenance |  |
 | Test.java:1049:48:1049:55 | source(...) : Object | Test.java:1049:25:1049:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | provenance | MaD:106 |
 | Test.java:1050:4:1050:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:1051:28:1051:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:1050:4:1050:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:1051:28:1051:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
 | Test.java:1050:18:1050:19 | in : Bundle [<map.value>] : String | Test.java:1050:4:1050:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:135 |
-| Test.java:1050:18:1050:19 | in : Bundle [<map.value>] : String | Test.java:1050:4:1050:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:135 |
-| Test.java:1051:28:1051:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:1051:28:1051:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:141 |
 | Test.java:1051:28:1051:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:1051:28:1051:42 | getExtras(...) : Bundle [<map.value>] : String | provenance | MaD:141 |
 | Test.java:1051:28:1051:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:22:28:22:43 | container : Bundle [<map.value>] : String | provenance |  |
 | Test.java:1051:28:1051:42 | getExtras(...) : Bundle [<map.value>] : String | Test.java:1051:9:1051:43 | getMapValueDefault(...) | provenance | MaD:104 |
@@ -889,15 +847,9 @@ edges
 | Test.java:1071:48:1071:55 | source(...) : Object | Test.java:32:32:32:45 | element : Object | provenance |  |
 | Test.java:1071:48:1071:55 | source(...) : Object | Test.java:1071:25:1071:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | provenance | MaD:106 |
 | Test.java:1072:4:1072:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:1073:10:1073:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:1072:4:1072:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:1073:10:1073:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | provenance |  |
-| Test.java:1072:22:1072:23 | in : Bundle [<map.value>] : String | Test.java:1072:4:1072:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:135 |
 | Test.java:1072:22:1072:23 | in : Bundle [<map.value>] : String | Test.java:1072:4:1072:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | provenance | MaD:135 |
 | Test.java:1073:10:1073:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:1073:10:1073:24 | build(...) : Notification [extras, <map.value>] : String | provenance | MaD:138 |
-| Test.java:1073:10:1073:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:1073:10:1073:24 | build(...) : Notification [extras, <map.value>] : String | provenance | MaD:138 |
-| Test.java:1073:10:1073:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | Test.java:1073:10:1073:24 | build(...) : Notification [extras, <map.value>] : String | provenance | MaD:138 |
 | Test.java:1073:10:1073:24 | build(...) : Notification [extras, <map.value>] : String | Test.java:1074:28:1074:30 | out : Notification [extras, <map.value>] : String | provenance |  |
-| Test.java:1073:10:1073:24 | build(...) : Notification [extras, <map.value>] : String | Test.java:1074:28:1074:30 | out : Notification [extras, <map.value>] : String | provenance |  |
-| Test.java:1074:28:1074:30 | out : Notification [extras, <map.value>] : String | Test.java:1074:28:1074:37 | out.extras : Bundle [<map.value>] : String | provenance |  |
 | Test.java:1074:28:1074:30 | out : Notification [extras, <map.value>] : String | Test.java:1074:28:1074:37 | out.extras : Bundle [<map.value>] : String | provenance |  |
 | Test.java:1074:28:1074:37 | out.extras : Bundle [<map.value>] : String | Test.java:22:28:22:43 | container : Bundle [<map.value>] : String | provenance |  |
 | Test.java:1074:28:1074:37 | out.extras : Bundle [<map.value>] : String | Test.java:1074:9:1074:38 | getMapValueDefault(...) | provenance | MaD:104 |
@@ -1174,20 +1126,16 @@ nodes
 | Test.java:79:25:79:54 | newWithMapKeyDefault(...) : Bundle [<map.key>] : String | semmle.label | newWithMapKeyDefault(...) : Bundle [<map.key>] : String |
 | Test.java:79:46:79:53 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:80:4:80:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String |
-| Test.java:80:4:80:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:80:18:80:19 | in : Bundle [<map.key>] : String | semmle.label | in : Bundle [<map.key>] : String |
 | Test.java:81:9:81:41 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
-| Test.java:81:26:81:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:81:26:81:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:81:26:81:40 | getExtras(...) : Bundle [<map.key>] : String | semmle.label | getExtras(...) : Bundle [<map.key>] : String |
 | Test.java:88:16:88:56 | (...)... : Bundle [<map.value>] : String | semmle.label | (...)... : Bundle [<map.value>] : String |
 | Test.java:88:25:88:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | semmle.label | newWithMapValueDefault(...) : Bundle [<map.value>] : String |
 | Test.java:88:48:88:55 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:89:4:89:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:89:4:89:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:89:18:89:19 | in : Bundle [<map.value>] : String | semmle.label | in : Bundle [<map.value>] : String |
 | Test.java:90:9:90:43 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
-| Test.java:90:28:90:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:90:28:90:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:90:28:90:42 | getExtras(...) : Bundle [<map.value>] : String | semmle.label | getExtras(...) : Bundle [<map.value>] : String |
 | Test.java:95:37:95:74 | (...)... : Builder | semmle.label | (...)... : Builder |
@@ -1204,14 +1152,10 @@ nodes
 | Test.java:112:25:112:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | semmle.label | newWithMapValueDefault(...) : Bundle [<map.value>] : String |
 | Test.java:112:48:112:55 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:113:4:113:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:113:4:113:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:113:22:113:23 | in : Bundle [<map.value>] : String | semmle.label | in : Bundle [<map.value>] : String |
 | Test.java:114:10:114:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:114:10:114:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:114:10:114:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | semmle.label | build(...) : Action [android.content.Intent.extras, <map.value>] : String |
 | Test.java:114:10:114:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | semmle.label | build(...) : Action [android.content.Intent.extras, <map.value>] : String |
 | Test.java:115:9:115:43 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
-| Test.java:115:28:115:30 | out : Action [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Action [android.content.Intent.extras, <map.value>] : String |
 | Test.java:115:28:115:30 | out : Action [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Action [android.content.Intent.extras, <map.value>] : String |
 | Test.java:115:28:115:42 | getExtras(...) : Bundle [<map.value>] : String | semmle.label | getExtras(...) : Bundle [<map.value>] : String |
 | Test.java:120:37:120:74 | (...)... : Builder | semmle.label | (...)... : Builder |
@@ -1278,20 +1222,16 @@ nodes
 | Test.java:206:25:206:54 | newWithMapKeyDefault(...) : Bundle [<map.key>] : String | semmle.label | newWithMapKeyDefault(...) : Bundle [<map.key>] : String |
 | Test.java:206:46:206:53 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:207:4:207:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String |
-| Test.java:207:4:207:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:207:18:207:19 | in : Bundle [<map.key>] : String | semmle.label | in : Bundle [<map.key>] : String |
 | Test.java:208:9:208:41 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
-| Test.java:208:26:208:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:208:26:208:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:208:26:208:40 | getExtras(...) : Bundle [<map.key>] : String | semmle.label | getExtras(...) : Bundle [<map.key>] : String |
 | Test.java:214:16:214:56 | (...)... : Bundle [<map.value>] : String | semmle.label | (...)... : Bundle [<map.value>] : String |
 | Test.java:214:25:214:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | semmle.label | newWithMapValueDefault(...) : Bundle [<map.value>] : String |
 | Test.java:214:48:214:55 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:215:4:215:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:215:4:215:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:215:18:215:19 | in : Bundle [<map.value>] : String | semmle.label | in : Bundle [<map.value>] : String |
 | Test.java:216:9:216:43 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
-| Test.java:216:28:216:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:216:28:216:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:216:28:216:42 | getExtras(...) : Bundle [<map.value>] : String | semmle.label | getExtras(...) : Bundle [<map.value>] : String |
 | Test.java:221:30:221:60 | (...)... : Builder | semmle.label | (...)... : Builder |
@@ -1313,14 +1253,10 @@ nodes
 | Test.java:244:25:244:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | semmle.label | newWithMapValueDefault(...) : Bundle [<map.value>] : String |
 | Test.java:244:48:244:55 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:245:4:245:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:245:4:245:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:245:22:245:23 | in : Bundle [<map.value>] : String | semmle.label | in : Bundle [<map.value>] : String |
 | Test.java:246:10:246:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:246:10:246:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:246:10:246:24 | build(...) : Notification [extras, <map.value>] : String | semmle.label | build(...) : Notification [extras, <map.value>] : String |
 | Test.java:246:10:246:24 | build(...) : Notification [extras, <map.value>] : String | semmle.label | build(...) : Notification [extras, <map.value>] : String |
 | Test.java:247:9:247:38 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
-| Test.java:247:28:247:30 | out : Notification [extras, <map.value>] : String | semmle.label | out : Notification [extras, <map.value>] : String |
 | Test.java:247:28:247:30 | out : Notification [extras, <map.value>] : String | semmle.label | out : Notification [extras, <map.value>] : String |
 | Test.java:247:28:247:37 | out.extras : Bundle [<map.value>] : String | semmle.label | out.extras : Bundle [<map.value>] : String |
 | Test.java:252:30:252:60 | (...)... : Builder | semmle.label | (...)... : Builder |
@@ -1765,20 +1701,16 @@ nodes
 | Test.java:851:25:851:54 | newWithMapKeyDefault(...) : Bundle [<map.key>] : String | semmle.label | newWithMapKeyDefault(...) : Bundle [<map.key>] : String |
 | Test.java:851:46:851:53 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:852:4:852:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String |
-| Test.java:852:4:852:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:852:18:852:19 | in : Bundle [<map.key>] : String | semmle.label | in : Bundle [<map.key>] : String |
 | Test.java:853:9:853:41 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
-| Test.java:853:26:853:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:853:26:853:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:853:26:853:40 | getExtras(...) : Bundle [<map.key>] : String | semmle.label | getExtras(...) : Bundle [<map.key>] : String |
 | Test.java:858:16:858:56 | (...)... : Bundle [<map.value>] : String | semmle.label | (...)... : Bundle [<map.value>] : String |
 | Test.java:858:25:858:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | semmle.label | newWithMapValueDefault(...) : Bundle [<map.value>] : String |
 | Test.java:858:48:858:55 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:859:4:859:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:859:4:859:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:859:18:859:19 | in : Bundle [<map.value>] : String | semmle.label | in : Bundle [<map.value>] : String |
 | Test.java:860:9:860:43 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
-| Test.java:860:28:860:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:860:28:860:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:860:28:860:42 | getExtras(...) : Bundle [<map.value>] : String | semmle.label | getExtras(...) : Bundle [<map.value>] : String |
 | Test.java:865:43:865:86 | (...)... : Builder | semmle.label | (...)... : Builder |
@@ -1790,14 +1722,10 @@ nodes
 | Test.java:873:25:873:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | semmle.label | newWithMapValueDefault(...) : Bundle [<map.value>] : String |
 | Test.java:873:48:873:55 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:874:4:874:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:874:4:874:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:874:22:874:23 | in : Bundle [<map.value>] : String | semmle.label | in : Bundle [<map.value>] : String |
 | Test.java:875:10:875:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:875:10:875:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:875:10:875:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | semmle.label | build(...) : Action [android.content.Intent.extras, <map.value>] : String |
 | Test.java:875:10:875:24 | build(...) : Action [android.content.Intent.extras, <map.value>] : String | semmle.label | build(...) : Action [android.content.Intent.extras, <map.value>] : String |
 | Test.java:876:9:876:43 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
-| Test.java:876:28:876:30 | out : Action [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Action [android.content.Intent.extras, <map.value>] : String |
 | Test.java:876:28:876:30 | out : Action [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Action [android.content.Intent.extras, <map.value>] : String |
 | Test.java:876:28:876:42 | getExtras(...) : Bundle [<map.value>] : String | semmle.label | getExtras(...) : Bundle [<map.value>] : String |
 | Test.java:881:43:881:86 | (...)... : Builder | semmle.label | (...)... : Builder |
@@ -1919,20 +1847,16 @@ nodes
 | Test.java:1042:25:1042:54 | newWithMapKeyDefault(...) : Bundle [<map.key>] : String | semmle.label | newWithMapKeyDefault(...) : Bundle [<map.key>] : String |
 | Test.java:1042:46:1042:53 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:1043:4:1043:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String |
-| Test.java:1043:4:1043:6 | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:1043:18:1043:19 | in : Bundle [<map.key>] : String | semmle.label | in : Bundle [<map.key>] : String |
 | Test.java:1044:9:1044:41 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
-| Test.java:1044:26:1044:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:1044:26:1044:28 | out : Builder [android.content.Intent.extras, <map.key>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.key>] : String |
 | Test.java:1044:26:1044:40 | getExtras(...) : Bundle [<map.key>] : String | semmle.label | getExtras(...) : Bundle [<map.key>] : String |
 | Test.java:1049:16:1049:56 | (...)... : Bundle [<map.value>] : String | semmle.label | (...)... : Bundle [<map.value>] : String |
 | Test.java:1049:25:1049:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | semmle.label | newWithMapValueDefault(...) : Bundle [<map.value>] : String |
 | Test.java:1049:48:1049:55 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:1050:4:1050:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:1050:4:1050:6 | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:1050:18:1050:19 | in : Bundle [<map.value>] : String | semmle.label | in : Bundle [<map.value>] : String |
 | Test.java:1051:9:1051:43 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
-| Test.java:1051:28:1051:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:1051:28:1051:30 | out : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | out : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:1051:28:1051:42 | getExtras(...) : Bundle [<map.value>] : String | semmle.label | getExtras(...) : Bundle [<map.value>] : String |
 | Test.java:1056:36:1056:72 | (...)... : Builder | semmle.label | (...)... : Builder |
@@ -1949,14 +1873,10 @@ nodes
 | Test.java:1071:25:1071:56 | newWithMapValueDefault(...) : Bundle [<map.value>] : String | semmle.label | newWithMapValueDefault(...) : Bundle [<map.value>] : String |
 | Test.java:1071:48:1071:55 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:1072:4:1072:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:1072:4:1072:10 | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder [post update] : Builder [android.content.Intent.extras, <map.value>] : String |
 | Test.java:1072:22:1072:23 | in : Bundle [<map.value>] : String | semmle.label | in : Bundle [<map.value>] : String |
 | Test.java:1073:10:1073:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:1073:10:1073:16 | builder : Builder [android.content.Intent.extras, <map.value>] : String | semmle.label | builder : Builder [android.content.Intent.extras, <map.value>] : String |
-| Test.java:1073:10:1073:24 | build(...) : Notification [extras, <map.value>] : String | semmle.label | build(...) : Notification [extras, <map.value>] : String |
 | Test.java:1073:10:1073:24 | build(...) : Notification [extras, <map.value>] : String | semmle.label | build(...) : Notification [extras, <map.value>] : String |
 | Test.java:1074:9:1074:38 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
-| Test.java:1074:28:1074:30 | out : Notification [extras, <map.value>] : String | semmle.label | out : Notification [extras, <map.value>] : String |
 | Test.java:1074:28:1074:30 | out : Notification [extras, <map.value>] : String | semmle.label | out : Notification [extras, <map.value>] : String |
 | Test.java:1074:28:1074:37 | out.extras : Bundle [<map.value>] : String | semmle.label | out.extras : Bundle [<map.value>] : String |
 | Test.java:1079:36:1079:72 | (...)... : Builder | semmle.label | (...)... : Builder |

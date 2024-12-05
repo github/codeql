@@ -3,13 +3,12 @@
  */
 
 private import internal.EdgeKindInternal
-private import codeql.util.Boolean
 
 private newtype TEdgeKind =
   TGotoEdge() or // Single successor (including fall-through)
   TTrueEdge() or // 'true' edge of conditional branch
   TFalseEdge() or // 'false' edge of conditional branch
-  TExceptionEdge(Boolean isSeh) or // Thrown exception, true for SEH exceptions, false otherwise
+  TExceptionEdge() or // Thrown exception
   TDefaultEdge() or // 'default' label of switch
   TCaseEdge(string minValue, string maxValue) {
     // Case label of switch
@@ -21,16 +20,18 @@ private newtype TEdgeKind =
  * `Instruction` or `IRBlock` has at most one successor of any single
  * `EdgeKind`.
  */
-abstract class EdgeKind extends TEdgeKind {
+abstract private class EdgeKindImpl extends TEdgeKind {
   /** Gets a textual representation of this edge kind. */
   abstract string toString();
 }
+
+final class EdgeKind = EdgeKindImpl;
 
 /**
  * A "goto" edge, representing the unconditional successor of an `Instruction`
  * or `IRBlock`.
  */
-class GotoEdge extends EdgeKind, TGotoEdge {
+class GotoEdge extends EdgeKindImpl, TGotoEdge {
   final override string toString() { result = "Goto" }
 }
 
@@ -38,7 +39,7 @@ class GotoEdge extends EdgeKind, TGotoEdge {
  * A "true" edge, representing the successor of a conditional branch when the
  * condition is non-zero.
  */
-class TrueEdge extends EdgeKind, TTrueEdge {
+class TrueEdge extends EdgeKindImpl, TTrueEdge {
   final override string toString() { result = "True" }
 }
 
@@ -46,7 +47,7 @@ class TrueEdge extends EdgeKind, TTrueEdge {
  * A "false" edge, representing the successor of a conditional branch when the
  * condition is zero.
  */
-class FalseEdge extends EdgeKind, TFalseEdge {
+class FalseEdge extends EdgeKindImpl, TFalseEdge {
   final override string toString() { result = "False" }
 }
 
@@ -54,26 +55,15 @@ class FalseEdge extends EdgeKind, TFalseEdge {
  * An "exception" edge, representing the successor of an instruction when that
  * instruction's evaluation throws an exception.
  */
-class ExceptionEdge extends EdgeKind, TExceptionEdge {
-  Boolean isSeh; //true for Structured Exception Handling, false for C++ exceptions
-
-  ExceptionEdge() { this = TExceptionEdge(isSeh) }
-
-  /**
-   * Holds if the exception is a Structured Exception Handling (SEH) exception.
-   */
-  final predicate isSeh() { isSeh = true }
-
-  final override string toString() {
-    if isSeh = true then result = "SEH Exception" else result = "C++ Exception"
-  }
+class ExceptionEdge extends EdgeKindImpl, TExceptionEdge {
+  final override string toString() { result = "Exception" }
 }
 
 /**
  * A "default" edge, representing the successor of a `Switch` instruction when
  * none of the case values matches the condition value.
  */
-class DefaultEdge extends EdgeKind, TDefaultEdge {
+class DefaultEdge extends EdgeKindImpl, TDefaultEdge {
   final override string toString() { result = "Default" }
 }
 
@@ -81,7 +71,7 @@ class DefaultEdge extends EdgeKind, TDefaultEdge {
  * A "case" edge, representing the successor of a `Switch` instruction when the
  * the condition value matches a corresponding `case` label.
  */
-class CaseEdge extends EdgeKind, TCaseEdge {
+class CaseEdge extends EdgeKindImpl, TCaseEdge {
   string minValue;
   string maxValue;
 
@@ -134,10 +124,8 @@ module EdgeKind {
 
   /**
    * Gets the single instance of the `ExceptionEdge` class.
-   * Gets the instance of the `ExceptionEdge` class.
-   * `isSeh` is true if the exception is an SEH exception, and false for a C++ edge.
    */
-  ExceptionEdge exceptionEdge(Boolean isSeh) { result = TExceptionEdge(isSeh) }
+  ExceptionEdge exceptionEdge() { result = TExceptionEdge() }
 
   /**
    * Gets the single instance of the `DefaultEdge` class.

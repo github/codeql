@@ -15,7 +15,7 @@ module Impl {
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * Either a `Path`, or a `MethodCallExpr`.
+   * One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.
    */
   class Resolvable extends Generated::Resolvable {
     /**
