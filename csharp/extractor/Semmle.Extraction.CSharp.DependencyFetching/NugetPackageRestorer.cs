@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly FileProvider fileProvider;
         private readonly FileContent fileContent;
         private readonly IDotNet dotnet;
-        private readonly DependabotProxy dependabotProxy;
+        private readonly DependabotProxy? dependabotProxy;
         private readonly IDiagnosticsWriter diagnosticsWriter;
         private readonly TemporaryDirectory legacyPackageDirectory;
         private readonly TemporaryDirectory missingPackageDirectory;
@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             FileProvider fileProvider,
             FileContent fileContent,
             IDotNet dotnet,
-            DependabotProxy dependabotProxy,
+            DependabotProxy? dependabotProxy,
             IDiagnosticsWriter diagnosticsWriter,
             ILogger logger,
             ICompilationInfoContainer compilationInfoContainer)
@@ -596,7 +596,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             // Configure the HttpClient to be aware of the Dependabot Proxy, if used.
             HttpClientHandler httpClientHandler = new();
-            if (this.dependabotProxy.IsConfigured)
+            if (this.dependabotProxy != null)
             {
                 httpClientHandler.Proxy = new WebProxy(this.dependabotProxy.Address);
 

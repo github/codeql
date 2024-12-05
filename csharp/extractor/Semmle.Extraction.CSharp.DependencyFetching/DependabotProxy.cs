@@ -9,84 +9,71 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     public class DependabotProxy : IDisposable
     {
-        private readonly string? host;
-        private readonly string? port;
-        private readonly FileInfo? certFile;
+        private readonly string host;
+        private readonly string port;
 
         /// <summary>
         /// The full address of the Dependabot proxy, if available.
         /// </summary>
-        internal readonly string? Address;
+        internal string Address { get; }
         /// <summary>
         /// The path to the temporary file where the certificate is stored.
         /// </summary>
-        internal readonly string? CertificatePath;
+        internal string? CertificatePath { get; private set; }
         /// <summary>
         /// The certificate used for the Dependabot proxy.
         /// </summary>
-        internal readonly X509Certificate2? Certificate;
+        internal X509Certificate2? Certificate { get; private set; }
 
-        /// <summary>
-        /// Gets a value indicating whether a Dependabot proxy is configured.
-        /// </summary>
-        internal bool IsConfigured => !string.IsNullOrEmpty(this.Address);
-
-        internal DependabotProxy(ILogger logger, TemporaryDirectory tempWorkingDirectory)
+        internal static DependabotProxy? GetDependabotProxy(ILogger logger, TemporaryDirectory tempWorkingDirectory)
         {
             // Obtain and store the address of the Dependabot proxy, if available.
-            this.host = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyHost);
-            this.port = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyPort);
+            var host = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyHost);
+            var port = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyPort);
 
             if (string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(port))
             {
                 logger.LogInfo("No Dependabot proxy credentials are configured.");
-                return;
+                return null;
             }
 
-            this.Address = $"http://{this.host}:{this.port}";
-            logger.LogInfo($"Dependabot proxy configured at {this.Address}");
+            var result = new DependabotProxy(host, port);
+            logger.LogInfo($"Dependabot proxy configured at {result.Address}");
 
             // Obtain and store the proxy's certificate, if available.
             var cert = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyCertificate);
 
-            if (string.IsNullOrWhiteSpace(cert))
+            if (!string.IsNullOrWhiteSpace(cert))
             {
                 logger.LogInfo("No certificate configured for Dependabot proxy.");
-                return;
+
+                var certDirPath = new DirectoryInfo(Path.Join(tempWorkingDirectory.DirInfo.FullName, ".dependabot-proxy"));
+                Directory.CreateDirectory(certDirPath.FullName);
+
+                result.CertificatePath = Path.Join(certDirPath.FullName, "proxy.crt");
+                var certFile = new FileInfo(result.CertificatePath);
+
+                using var writer = certFile.CreateText();
+                writer.Write(cert);
+
+                logger.LogInfo($"Stored Dependabot proxy certificate at {result.CertificatePath}");
+
+                result.Certificate = new X509Certificate2(result.CertificatePath);
             }
 
-            var certDirPath = new DirectoryInfo(Path.Join(tempWorkingDirectory.DirInfo.FullName, ".dependabot-proxy"));
-            Directory.CreateDirectory(certDirPath.FullName);
-
-            this.CertificatePath = Path.Join(certDirPath.FullName, "proxy.crt");
-            this.certFile = new FileInfo(this.CertificatePath);
-
-            using var writer = this.certFile.CreateText();
-            writer.Write(cert);
-
-            logger.LogInfo($"Stored Dependabot proxy certificate at {this.CertificatePath}");
-
-            this.Certificate = new X509Certificate2(this.CertificatePath);
+            return result;
         }
 
-        internal void ApplyProxy(ILogger logger, ProcessStartInfo startInfo)
+        private DependabotProxy(string host, string port)
         {
-            // If the proxy isn't configured, we have nothing to do.
-            if (!this.IsConfigured) return;
-
-            logger.LogInfo($"Setting up Dependabot proxy at {this.Address}");
-
-            startInfo.EnvironmentVariables.Add("HTTP_PROXY", this.Address);
-            startInfo.EnvironmentVariables.Add("HTTPS_PROXY", this.Address);
-            startInfo.EnvironmentVariables.Add("SSL_CERT_FILE", this.certFile?.FullName);
+            this.host = host;
+            this.port = port;
+            this.Address = $"http://{this.host}:{this.port}";
         }
 
         public void Dispose()
         {
-            if (this.Certificate != null)
-            {
-                this.Certificate.Dispose();
-            }
+            this.Certificate?.Dispose();
         }
     }
 }
