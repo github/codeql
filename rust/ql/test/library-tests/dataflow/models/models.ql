@@ -25,6 +25,16 @@ private class SummarizedCallableIdentity extends SummarizedCallable::Range {
   }
 }
 
+private class SummarizedCallableCoerce extends SummarizedCallable::Range {
+  SummarizedCallableCoerce() { this = "repo::test::_::crate::coerce" }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[0]" and
+    output = "ReturnValue" and
+    preservesValue = false
+  }
+}
+
 private class SummarizedCallableGetVarPos extends SummarizedCallable::Range {
   SummarizedCallableGetVarPos() { this = "repo::test::_::crate::get_var_pos" }
 
@@ -71,7 +81,7 @@ module CustomConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { DefaultFlowConfig::isSink(sink) }
 }
 
-import ValueFlowTest<CustomConfig>
+import FlowTest<CustomConfig, CustomConfig>
 
 from PathNode source, PathNode sink
 where flowPath(source, sink)

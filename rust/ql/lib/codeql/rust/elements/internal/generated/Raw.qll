@@ -1433,7 +1433,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A cast expression. For example:
+   * A type cast expression. For example:
    * ```rust
    * value as u64;
    * ```
