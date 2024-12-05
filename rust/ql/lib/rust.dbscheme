@@ -120,7 +120,8 @@ locatable_locations(
 // from schema
 
 @element =
-  @extractor_step
+  @canonical_path_element
+| @extractor_step
 | @locatable
 | @unextracted
 ;
@@ -235,6 +236,12 @@ addressable_extended_canonical_paths(
 addressable_crate_origins(
   int id: @addressable ref,
   string crate_origin: string ref
+);
+
+#keyset[id]
+addressable_canonical_paths(
+  int id: @addressable ref,
+  int canonical_path: @canonical_path ref
 );
 
 arg_lists(
@@ -864,6 +871,12 @@ resolvable_resolved_paths(
 resolvable_resolved_crate_origins(
   int id: @resolvable ref,
   string resolved_crate_origin: string ref
+);
+
+#keyset[id]
+resolvable_resolved_canonical_paths(
+  int id: @resolvable ref,
+  int resolved_canonical_path: @canonical_path ref
 );
 
 ret_type_reprs(
@@ -3339,4 +3352,142 @@ while_expr_attrs(
 while_expr_conditions(
   int id: @while_expr ref,
   int condition: @expr ref
+);
+
+@canonical_path_element =
+  @canonical_path
+| @crate_root
+| @type_generic_arg
+;
+
+@canonical_path =
+  @impl_item_canonical_path
+| @module_item_canonical_path
+| @namespace
+| @parametrized_canonical_path
+| @type_canonical_path
+| @type_item_canonical_path
+;
+
+@crate_root =
+  @lang_crate_root
+| @repo_crate_root
+| @rustc_crate_root
+;
+
+@type_generic_arg =
+  @const_generic_type_arg
+| @type_generic_type_arg
+;
+
+const_generic_type_args(  //dir=canonical_paths
+  unique int id: @const_generic_type_arg,
+  string value: string ref
+);
+
+impl_item_canonical_paths(  //dir=canonical_paths
+  unique int id: @impl_item_canonical_path,
+  int type_path: @type_canonical_path ref,
+  string name: string ref
+);
+
+#keyset[id]
+impl_item_canonical_path_trait_paths(  //dir=canonical_paths
+  int id: @impl_item_canonical_path ref,
+  int trait_path: @parametrized_canonical_path ref
+);
+
+lang_crate_roots(  //dir=canonical_paths
+  unique int id: @lang_crate_root,
+  string name: string ref
+);
+
+module_item_canonical_paths(  //dir=canonical_paths
+  unique int id: @module_item_canonical_path,
+  int namespace: @namespace ref,
+  string name: string ref
+);
+
+namespaces(  //dir=canonical_paths
+  unique int id: @namespace,
+  int root: @crate_root ref,
+  string path: string ref
+);
+
+parametrized_canonical_paths(  //dir=canonical_paths
+  unique int id: @parametrized_canonical_path,
+  int base: @module_item_canonical_path ref
+);
+
+#keyset[id, index]
+parametrized_canonical_path_generic_args(  //dir=canonical_paths
+  int id: @parametrized_canonical_path ref,
+  int index: int ref,
+  int generic_arg: @type_generic_arg ref
+);
+
+repo_crate_roots(  //dir=canonical_paths
+  unique int id: @repo_crate_root,
+  int source: @file ref
+);
+
+#keyset[id]
+repo_crate_root_names(  //dir=canonical_paths
+  int id: @repo_crate_root ref,
+  string name: string ref
+);
+
+#keyset[id]
+repo_crate_root_repos(  //dir=canonical_paths
+  int id: @repo_crate_root ref,
+  string repo: string ref
+);
+
+rustc_crate_roots(  //dir=canonical_paths
+  unique int id: @rustc_crate_root,
+  string name: string ref
+);
+
+@type_canonical_path =
+  @builtin_type_canonical_path
+| @concrete_type_canonical_path
+| @derived_type_canonical_path
+| @placeholder_type_canonical_path
+;
+
+type_generic_type_args(  //dir=canonical_paths
+  unique int id: @type_generic_type_arg,
+  int path: @type_canonical_path ref
+);
+
+type_item_canonical_paths(  //dir=canonical_paths
+  unique int id: @type_item_canonical_path,
+  int parent: @module_item_canonical_path ref,
+  string name: string ref
+);
+
+builtin_type_canonical_paths(  //dir=canonical_paths
+  unique int id: @builtin_type_canonical_path,
+  string name: string ref
+);
+
+concrete_type_canonical_paths(  //dir=canonical_paths
+  unique int id: @concrete_type_canonical_path,
+  int path: @parametrized_canonical_path ref
+);
+
+derived_type_canonical_paths(  //dir=canonical_paths
+  unique int id: @derived_type_canonical_path,
+  string modifier: string ref
+);
+
+#keyset[id, index]
+derived_type_canonical_path_bases(  //dir=canonical_paths
+  int id: @derived_type_canonical_path ref,
+  int index: int ref,
+  int base: @type_canonical_path ref
+);
+
+placeholder_type_canonical_paths(  //dir=canonical_paths
+  unique int id: @placeholder_type_canonical_path
 );

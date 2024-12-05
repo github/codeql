@@ -3,8 +3,8 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  ExternCrate x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasNameRef, string hasRename, string hasVisibility
+  ExternCrate x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasCanonicalPath,
+  int getNumberOfAttrs, string hasNameRef, string hasRename, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -14,10 +14,11 @@ where
     else hasExtendedCanonicalPath = "no"
   ) and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  (if x.hasCanonicalPath() then hasCanonicalPath = "yes" else hasCanonicalPath = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no") and
   (if x.hasRename() then hasRename = "yes" else hasRename = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasNameRef:", hasNameRef, "hasRename:", hasRename,
-  "hasVisibility:", hasVisibility
+  "hasCanonicalPath:", hasCanonicalPath, "getNumberOfAttrs:", getNumberOfAttrs, "hasNameRef:",
+  hasNameRef, "hasRename:", hasRename, "hasVisibility:", hasVisibility

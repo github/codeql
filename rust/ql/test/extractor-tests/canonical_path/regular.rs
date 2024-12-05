@@ -61,3 +61,59 @@ fn enum_match(e: MyEnum) {
         MyEnum::Variant3 { .. } => {}
     }
 }
+
+trait GenericTrait<T> {
+    fn generic_method(&self, t: T);
+}
+
+struct GenericStruct<T, U> {
+    pub t: T,
+    pub u: U,
+}
+
+struct GenericTupleStruct<T, U>(T, U);
+
+
+enum GenericEnum<T, U> {
+    T(T),
+    U(U),
+}
+
+impl<T> GenericTrait<T> for GenericStruct<i32, T> {
+    fn generic_method(&self, t: T) {}
+}
+
+impl GenericTrait<i32> for GenericStruct<&str, i32> {
+    fn generic_method(&self, t: i32) {}
+}
+
+impl<T> GenericTrait<T> for GenericTupleStruct<i32, T> {
+    fn generic_method(&self, t: T) {}
+}
+
+impl GenericTrait<i32> for GenericTupleStruct<&str, i32> {
+    fn generic_method(&self, t: i32) {}
+}
+
+impl<T> GenericTrait<T> for GenericEnum<i32, T> {
+    fn generic_method(&self, t: T) {}
+}
+
+impl GenericTrait<i32> for GenericEnum<&str, i32> {
+    fn generic_method(&self, t: i32) {}
+}
+
+fn generic_usage() {
+    let x = GenericStruct { t: 0, u: "" };
+    x.generic_method("hi");
+    let x = GenericStruct { t: "hello", u: 42 };
+    x.generic_method(0);
+    let x = GenericTupleStruct(0, "");
+    x.generic_method("hi");
+    let x = GenericTupleStruct("hello", 42);
+    x.generic_method(0);
+    let x = GenericEnum::<_, &str>::T(0);
+    x.generic_method("hey");
+    let x = GenericEnum::<&str, _>::U(0);
+    x.generic_method(1);
+}

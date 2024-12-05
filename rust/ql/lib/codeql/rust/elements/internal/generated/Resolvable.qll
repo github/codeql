@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.canonical_paths.CanonicalPath
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Resolvable` and should not
@@ -48,5 +49,23 @@ module Generated {
      * INTERNAL: Do not use.
      */
     final predicate hasResolvedCrateOrigin() { exists(this.getResolvedCrateOrigin()) }
+
+    /**
+     * Gets the resolved canonical path of this resolvable, if it exists.
+     *
+     * INTERNAL: Do not use.
+     */
+    CanonicalPath getResolvedCanonicalPath() {
+      result =
+        Synth::convertCanonicalPathFromRaw(Synth::convertResolvableToRaw(this)
+              .(Raw::Resolvable)
+              .getResolvedCanonicalPath())
+    }
+
+    /**
+     * Holds if `getResolvedCanonicalPath()` exists.
+     * INTERNAL: Do not use.
+     */
+    final predicate hasResolvedCanonicalPath() { exists(this.getResolvedCanonicalPath()) }
   }
 }

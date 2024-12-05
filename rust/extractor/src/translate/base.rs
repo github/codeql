@@ -2,17 +2,18 @@ use super::mappings::{AddressableAst, AddressableHir, PathAst};
 use crate::generated::MacroCall;
 use crate::generated::{self};
 use crate::rust_analyzer::FileSemanticInformation;
+use crate::trap::AsTrapKeyPart;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
-use itertools::Either;
-use log::Level;
-use ra_ap_base_db::salsa::InternKey;
+use crate::trap_key;
+use itertools::{Either, Itertools};
+use log::{warn, Level};
 use ra_ap_base_db::CrateOrigin;
 use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir::{
-    Adt, Crate, ItemContainer, Module, ModuleDef, PathResolution, Semantics, Type, Variant,
+    Adt, Crate, Enum, ItemContainer, Module, ModuleDef, PathResolution, Semantics, Trait, TraitRef,
+    Type, Variant,
 };
-use ra_ap_hir_def::type_ref::Mutability;
 use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_expand::ExpandTo;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
@@ -24,6 +25,8 @@ use ra_ap_syntax::{
     ast, AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken,
     TextRange,
 };
+use ra_ap_vfs::Vfs;
+use std::path::PathBuf;
 
 #[macro_export]
 macro_rules! emit_detached {
@@ -80,6 +83,7 @@ pub struct Translator<'a> {
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
+    vfs: Option<&'a Vfs>,
 }
 
 impl<'a> Translator<'a> {
@@ -97,6 +101,7 @@ impl<'a> Translator<'a> {
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
+            vfs: semantic_info.map(|i| i.vfs),
         }
     }
     fn location(&self, range: TextRange) -> (LineCol, LineCol) {
@@ -322,89 +327,313 @@ impl<'a> Translator<'a> {
             );
         }
     }
-    fn canonical_path_from_type(&self, ty: Type) -> Option<String> {
+    fn canonical_path_from_type(
+        &mut self,
+        ty: Type,
+    ) -> Option<Label<generated::TypeCanonicalPath>> {
         let sema = self.semantics.as_ref().unwrap();
         // rust-analyzer doesn't provide a type enum directly
         if let Some(it) = ty.as_adt() {
-            return match it {
-                Adt::Struct(it) => self.canonical_path_from_hir(it),
-                Adt::Union(it) => self.canonical_path_from_hir(it),
-                Adt::Enum(it) => self.canonical_path_from_hir(it),
-            };
-        };
-        if let Some((it, size)) = ty.as_array(sema.db) {
-            return self
-                .canonical_path_from_type(it)
-                .map(|p| format!("[{p}; {size}]"));
-        }
-        if let Some(it) = ty.as_slice() {
-            return self
-                .canonical_path_from_type(it)
-                .map(|p| format!("[{}]", p));
-        }
-        if let Some(it) = ty.as_builtin() {
-            return Some(it.name().as_str().to_owned());
-        }
-        if let Some(it) = ty.as_dyn_trait() {
-            return self.canonical_path_from_hir(it).map(|p| format!("dyn {p}"));
-        }
-        if let Some((it, mutability)) = ty.as_reference() {
-            let mut_str = match mutability {
-                Mutability::Shared => "",
-                Mutability::Mut => "mut ",
-            };
-            return self
-                .canonical_path_from_type(it)
-                .map(|p| format!("&{mut_str}{p}"));
-        }
-        if let Some(it) = ty.as_impl_traits(sema.db) {
-            let paths = it
-                .map(|t| self.canonical_path_from_hir(t))
-                .collect::<Option<Vec<_>>>()?;
-            return Some(format!("impl {}", paths.join(" + ")));
-        }
-        if ty.as_type_param(sema.db).is_some() {
+            let name = it.name(sema.db).as_str().to_owned();
+            let module = it.module(sema.db);
+            let mut generic_args = Vec::new();
+            for arg in ty.type_arguments() {
+                let path = self.canonical_path_from_type(arg)?;
+                generic_args.push(
+                    self.trap
+                        .emit(generated::TypeGenericTypeArg {
+                            id: trap_key!(path),
+                            path,
+                        })
+                        .into(),
+                );
+            }
+            let namespace = self.canonical_path_from_hir_module(module)?;
+            let base = self.trap.emit(generated::ModuleItemCanonicalPath {
+                id: trap_key!(namespace, "::", name),
+                namespace,
+                name,
+            });
+            let path = self.trap.emit(generated::ParametrizedCanonicalPath {
+                id: trap_key!(base, generic_args),
+                base,
+                generic_args,
+            });
+            Some(
+                self.trap
+                    .emit(generated::ConcreteTypeCanonicalPath {
+                        id: trap_key!(path),
+                        path,
+                    })
+                    .into(),
+            )
+        } else if let Some((it, size)) = ty.as_array(sema.db) {
+            let modifier = format!("[{{0}}; {size}]");
+            let base = vec![self.canonical_path_from_type(it)?];
+            Some(
+                self.trap
+                    .emit(generated::DerivedTypeCanonicalPath {
+                        id: trap_key!(modifier, base),
+                        modifier,
+                        base,
+                    })
+                    .into(),
+            )
+        } else if let Some(it) = ty.as_slice() {
+            let modifier = "[{0}]".to_owned();
+            let base = vec![self.canonical_path_from_type(it)?];
+            Some(
+                self.trap
+                    .emit(generated::DerivedTypeCanonicalPath {
+                        id: trap_key!(modifier, base),
+                        modifier,
+                        base,
+                    })
+                    .into(),
+            )
+        } else if ty.is_unit() {
+            let modifier = "()".to_owned();
+            let base = vec![];
+            Some(
+                self.trap
+                    .emit(generated::DerivedTypeCanonicalPath {
+                        id: trap_key!(modifier, base),
+                        modifier,
+                        base,
+                    })
+                    .into(),
+            )
+        } else if let Some(it) = ty.as_builtin() {
+            let name = it.name().as_str().to_owned();
+            Some(
+                self.trap
+                    .emit(generated::BuiltinTypeCanonicalPath {
+                        id: trap_key!(name),
+                        name,
+                    })
+                    .into(),
+            )
+        } else if let Some((it, mutability)) = ty.as_reference() {
+            let modifier = format!("&{}{{0}}", mutability.as_keyword_for_ref());
+            let base = vec![self.canonical_path_from_type(it)?];
+            Some(
+                self.trap
+                    .emit(generated::DerivedTypeCanonicalPath {
+                        id: trap_key!(modifier, base),
+                        modifier,
+                        base,
+                    })
+                    .into(),
+            )
+        } else if ty.as_type_param(sema.db).is_some() {
             // from the canonical path perspective, we just want a special name
             // e.g. `crate::<_ as SomeTrait>::func`
-            return Some("_".to_owned());
+            Some(
+                self.trap
+                    .emit(generated::PlaceholderTypeCanonicalPath { id: trap_key!("_") })
+                    .into(),
+            )
+        } else {
+            let tuple_args = ty.tuple_fields(sema.db);
+            if tuple_args.is_empty() {
+                None
+            } else {
+                let modifier = format!("({{{}}})", (0..tuple_args.len()).join("}, {"));
+                let base = tuple_args
+                    .into_iter()
+                    .map(|arg| self.canonical_path_from_type(arg))
+                    .collect::<Option<Vec<_>>>()?;
+                Some(
+                    self.trap
+                        .emit(generated::DerivedTypeCanonicalPath {
+                            id: trap_key!(modifier, base),
+                            modifier,
+                            base,
+                        })
+                        .into(),
+                )
+            }
         }
-        None
     }
 
-    fn canonical_path_from_hir_module(&self, item: Module) -> Option<String> {
-        if let Some(block_id) = ModuleId::from(item).containing_block() {
-            // this means this is a block module, i.e. a virtual module for a block scope
-            return Some(format!("{{{}}}", block_id.as_intern_id()));
-        }
-        if item.is_crate_root() {
-            return Some("crate".into());
-        }
-        self.canonical_path_from_hir::<ast::Module>(item)
+    fn emit_crate_root(&mut self, item: Crate) -> Option<Label<generated::CrateRoot>> {
+        let db = self.semantics.unwrap().db;
+        let (repo, name) = match item.origin(db) {
+            CrateOrigin::Rustc { name } => (None, Some(name)),
+            CrateOrigin::Local { repo, name } => (repo, name),
+            CrateOrigin::Library { repo, name } => (repo, Some(name)),
+            CrateOrigin::Lang(it) => {
+                let name = it.to_string();
+                return Some(
+                    self.trap
+                        .emit(generated::LangCrateRoot {
+                            id: trap_key!(name),
+                            name,
+                        })
+                        .into(),
+                );
+            }
+        };
+        let name = name.map(|s| s.to_string());
+        let vfs_path = self.vfs.unwrap().file_path(item.root_file(db));
+        let Some(file) = vfs_path.as_path() else {
+            warn!("Crate root file not found: {}", vfs_path);
+            return None;
+        };
+        let source = self.trap.emit_file(&PathBuf::from(file.as_os_str()));
+        Some(
+            self.trap
+                .emit(generated::RepoCrateRoot {
+                    id: trap_key!(source, name, repo),
+                    name,
+                    repo,
+                    source,
+                })
+                .into(),
+        )
     }
 
-    fn canonical_path_from_hir<T: AstNode>(&self, item: impl AddressableHir<T>) -> Option<String> {
+    fn canonical_path_from_hir_module(
+        &mut self,
+        item: Module,
+    ) -> Option<Label<generated::Namespace>> {
+        // if we have a Hir entity, it means we have semantics
+        let sema = self.semantics.as_ref().unwrap();
+        // do not assign namespaces to unnamed modules, i.e. a virtual modules for block scopes
+        if ModuleId::from(item).is_block_module() {
+            return None;
+        }
+        let path = item
+            .path_to_root(sema.db)
+            .iter()
+            .filter_map(|m| m.name(sema.db))
+            .map(|n| n.as_str().to_owned())
+            .join("::");
+        let root = self.emit_crate_root(item.krate())?;
+        Some(self.trap.emit(generated::Namespace {
+            id: trap_key!(root, "::", path),
+            root,
+            path,
+        }))
+    }
+
+    fn canonical_path_from_trait(
+        &mut self,
+        item: Trait,
+    ) -> Option<Label<generated::ModuleItemCanonicalPath>> {
+        // if we have a Hir entity, it means we have semantics
+        let sema = self.semantics.as_ref().unwrap();
+        let module = item.module(sema.db);
+        let name = item.name(sema.db).as_str().to_owned();
+        let namespace = self.canonical_path_from_hir_module(module)?;
+        Some(self.trap.emit(generated::ModuleItemCanonicalPath {
+            id: trap_key!(namespace, "::", name),
+            namespace,
+            name,
+        }))
+    }
+
+    fn canonical_path_from_enum(
+        &mut self,
+        item: Enum,
+    ) -> Option<Label<generated::ModuleItemCanonicalPath>> {
+        // if we have a Hir entity, it means we have semantics
+        let sema = self.semantics.as_ref().unwrap();
+        let module = item.module(sema.db);
+        let name = item.name(sema.db).as_str().to_owned();
+        let namespace = self.canonical_path_from_hir_module(module)?;
+        Some(self.trap.emit(generated::ModuleItemCanonicalPath {
+            id: trap_key!(namespace, "::", name),
+            namespace,
+            name,
+        }))
+    }
+
+    fn canonical_path_from_trait_ref(
+        &mut self,
+        item: TraitRef,
+    ) -> Option<Label<generated::ParametrizedCanonicalPath>> {
+        let db = self.semantics.unwrap().db;
+        let trait_ = item.trait_();
+        let base = self.canonical_path_from_trait(trait_)?;
+        let param_count = trait_.type_or_const_param_count(db, false);
+        let mut generic_args = Vec::new();
+        for i in 1..=param_count {
+            // TODO seems like you can't get const arguments currently...
+            let arg = item.get_type_argument(i)?;
+            let path = self.canonical_path_from_type(arg)?;
+            generic_args.push(
+                self.trap
+                    .emit(generated::TypeGenericTypeArg {
+                        id: trap_key!(path),
+                        path,
+                    })
+                    .into(),
+            );
+        }
+        Some(self.trap.emit(generated::ParametrizedCanonicalPath {
+            id: trap_key!(base, generic_args),
+            base,
+            generic_args,
+        }))
+    }
+
+    fn canonical_path_from_hir<T: AstNode>(
+        &mut self,
+        item: impl AddressableHir<T>,
+    ) -> Option<Label<generated::CanonicalPath>> {
         // if we have a Hir entity, it means we have semantics
         let sema = self.semantics.as_ref().unwrap();
         let name = item.name(sema)?;
-        let container = item.container(sema.db);
-        let prefix = match container {
-            ItemContainer::Trait(it) => self.canonical_path_from_hir(it),
-            ItemContainer::Impl(it) => {
-                let ty = self.canonical_path_from_type(it.self_ty(sema.db))?;
-                if let Some(trait_) = it.trait_(sema.db) {
-                    let tr = self.canonical_path_from_hir(trait_)?;
-                    Some(format!("<{ty} as {tr}>"))
-                } else {
-                    Some(format!("<{ty}>"))
-                }
+        match item.container(sema.db) {
+            ItemContainer::Trait(it) => {
+                let parent = self.canonical_path_from_trait(it)?;
+                Some(
+                    self.trap
+                        .emit(generated::TypeItemCanonicalPath {
+                            id: trap_key!(parent, "::", name),
+                            parent,
+                            name,
+                        })
+                        .into(),
+                )
             }
-            ItemContainer::Module(it) => self.canonical_path_from_hir_module(it),
-            ItemContainer::ExternBlock() | ItemContainer::Crate(_) => Some("".to_owned()),
-        }?;
-        Some(format!("{prefix}::{name}"))
+            ItemContainer::Impl(it) => {
+                let trait_ref = it.trait_ref(sema.db);
+                let type_path = self.canonical_path_from_type(it.self_ty(sema.db))?;
+                let trait_path = trait_ref.and_then(|t| self.canonical_path_from_trait_ref(t));
+                Some(
+                    self.trap
+                        .emit(generated::ImplItemCanonicalPath {
+                            id: trap_key!("<", type_path, "as", trait_path, ">::", name),
+                            type_path,
+                            trait_path,
+                            name,
+                        })
+                        .into(),
+                )
+            }
+            ItemContainer::Module(it) => {
+                let namespace = self.canonical_path_from_hir_module(it)?;
+                Some(
+                    self.trap
+                        .emit(generated::ModuleItemCanonicalPath {
+                            id: trap_key!(namespace, "::", name),
+                            namespace,
+                            name,
+                        })
+                        .into(),
+                )
+            }
+            ItemContainer::ExternBlock() => None,
+            ItemContainer::Crate(_) => None,
+        }
     }
 
-    fn canonical_path_from_module_def(&self, item: ModuleDef) -> Option<String> {
+    fn canonical_path_from_module_def(
+        &mut self,
+        item: ModuleDef,
+    ) -> Option<Label<generated::CanonicalPath>> {
         match item {
             ModuleDef::Module(it) => self.canonical_path_from_hir(it),
             ModuleDef::Function(it) => self.canonical_path_from_hir(it),
@@ -422,59 +651,24 @@ impl<'a> Translator<'a> {
         }
     }
 
-    fn canonical_path_from_enum_variant(&self, item: Variant) -> Option<String> {
+    fn canonical_path_from_enum_variant(
+        &mut self,
+        item: Variant,
+    ) -> Option<Label<generated::CanonicalPath>> {
         // if we have a Hir entity, it means we have semantics
         let sema = self.semantics.as_ref().unwrap();
-        let prefix = self.canonical_path_from_hir(item.parent_enum(sema.db))?;
-        let name = item.name(sema.db);
-        Some(format!("{prefix}::{}", name.as_str()))
-    }
-
-    fn origin_from_hir<T: AstNode>(&self, item: impl AddressableHir<T>) -> String {
-        // if we have a Hir entity, it means we have semantics
-        let sema = self.semantics.as_ref().unwrap();
-        self.origin_from_crate(item.module(sema).krate())
-    }
-
-    fn origin_from_crate(&self, item: Crate) -> String {
-        // if we have a Hir entity, it means we have semantics
-        let sema = self.semantics.as_ref().unwrap();
-        match item.origin(sema.db) {
-            CrateOrigin::Rustc { name } => format!("rustc:{}", name),
-            CrateOrigin::Local { repo, name } => format!(
-                "repo:{}:{}",
-                repo.unwrap_or_default(),
-                name.map(|s| s.as_str().to_owned()).unwrap_or_default()
-            ),
-            CrateOrigin::Library { repo, name } => {
-                format!("repo:{}:{}", repo.unwrap_or_default(), name)
-            }
-            CrateOrigin::Lang(it) => format!("lang:{}", it),
-        }
-    }
-
-    fn origin_from_module_def(&self, item: ModuleDef) -> Option<String> {
-        match item {
-            ModuleDef::Module(it) => Some(self.origin_from_hir(it)),
-            ModuleDef::Function(it) => Some(self.origin_from_hir(it)),
-            ModuleDef::Adt(Adt::Enum(it)) => Some(self.origin_from_hir(it)),
-            ModuleDef::Adt(Adt::Struct(it)) => Some(self.origin_from_hir(it)),
-            ModuleDef::Adt(Adt::Union(it)) => Some(self.origin_from_hir(it)),
-            ModuleDef::Trait(it) => Some(self.origin_from_hir(it)),
-            ModuleDef::Variant(it) => Some(self.origin_from_enum_variant(it)),
-            ModuleDef::Static(_) => None,
-            ModuleDef::TraitAlias(_) => None,
-            ModuleDef::TypeAlias(_) => None,
-            ModuleDef::BuiltinType(_) => None,
-            ModuleDef::Macro(_) => None,
-            ModuleDef::Const(_) => None,
-        }
-    }
-
-    fn origin_from_enum_variant(&self, item: Variant) -> String {
-        // if we have a Hir entity, it means we have semantics
-        let sema = self.semantics.as_ref().unwrap();
-        self.origin_from_hir(item.parent_enum(sema.db))
+        let enum_ = item.parent_enum(sema.db);
+        let name = item.name(sema.db).as_str().to_owned();
+        let parent = self.canonical_path_from_enum(enum_)?;
+        Some(
+            self.trap
+                .emit(generated::TypeItemCanonicalPath {
+                    id: trap_key!(parent, "::", name),
+                    parent,
+                    name,
+                })
+                .into(),
+        )
     }
 
     pub(crate) fn extract_canonical_origin<T: AddressableAst + HasName>(
@@ -486,13 +680,7 @@ impl<'a> Translator<'a> {
             let sema = self.semantics.as_ref()?;
             let def = T::Hir::try_from_source(item, sema)?;
             let path = self.canonical_path_from_hir(def)?;
-            let origin = self.origin_from_hir(def);
-            generated::Addressable::emit_crate_origin(label, origin, &mut self.trap.writer);
-            generated::Addressable::emit_extended_canonical_path(
-                label,
-                path,
-                &mut self.trap.writer,
-            );
+            generated::Addressable::emit_canonical_path(label, path, &mut self.trap.writer);
             Some(())
         })();
     }
@@ -506,13 +694,7 @@ impl<'a> Translator<'a> {
             let sema = self.semantics.as_ref()?;
             let def = sema.to_enum_variant_def(item)?;
             let path = self.canonical_path_from_enum_variant(def)?;
-            let origin = self.origin_from_enum_variant(def);
-            generated::Addressable::emit_crate_origin(label.into(), origin, &mut self.trap.writer);
-            generated::Addressable::emit_extended_canonical_path(
-                label.into(),
-                path,
-                &mut self.trap.writer,
-            );
+            generated::Addressable::emit_canonical_path(label.into(), path, &mut self.trap.writer);
             Some(())
         })();
     }
@@ -529,10 +711,12 @@ impl<'a> Translator<'a> {
             let PathResolution::Def(def) = resolution else {
                 return None;
             };
-            let origin = self.origin_from_module_def(def)?;
             let path = self.canonical_path_from_module_def(def)?;
-            generated::Resolvable::emit_resolved_crate_origin(label, origin, &mut self.trap.writer);
-            generated::Resolvable::emit_resolved_path(label, path, &mut self.trap.writer);
+            generated::Resolvable::emit_resolved_canonical_path(
+                label.into(),
+                path,
+                &mut self.trap.writer,
+            );
             Some(())
         })();
     }
@@ -548,14 +732,12 @@ impl<'a> Translator<'a> {
             let Either::Left(function) = resolved else {
                 return None;
             };
-            let origin = self.origin_from_hir(function);
             let path = self.canonical_path_from_hir(function)?;
-            generated::Resolvable::emit_resolved_crate_origin(
+            generated::Resolvable::emit_resolved_canonical_path(
                 label.into(),
-                origin,
+                path,
                 &mut self.trap.writer,
             );
-            generated::Resolvable::emit_resolved_path(label.into(), path, &mut self.trap.writer);
             Some(())
         })();
     }

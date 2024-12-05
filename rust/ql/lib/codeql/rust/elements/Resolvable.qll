@@ -5,6 +5,7 @@
 
 private import internal.ResolvableImpl
 import codeql.rust.elements.AstNode
+import codeql.rust.elements.canonical_paths.CanonicalPath
 
 /**
  * One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.

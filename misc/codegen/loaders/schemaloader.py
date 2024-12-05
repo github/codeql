@@ -121,9 +121,14 @@ def _fill_hideable_information(classes: typing.Dict[str, schema.Class]):
 
 
 def _check_test_with(classes: typing.Dict[str, schema.Class]):
+    pragma = "qlest_test_with"
     for cls in classes.values():
-        test_with = typing.cast(str, cls.pragmas.get("qltest_test_with"))
-        transitive_test_with = test_with and classes[test_with].pragmas.get("qltest_test_with")
+        if cls.name == cls.pragmas.get(pragma):
+            # this is already implicit
+            del cls.pragmas[pragma]
+    for cls in classes.values():
+        test_with = typing.cast(str, cls.pragmas.get(pragma))
+        transitive_test_with = test_with and classes[test_with].pragmas.get(pragma)
         if test_with and transitive_test_with:
             raise schema.Error(f"{cls.name} has test_with {test_with} which in turn "
                                f"has test_with {transitive_test_with}, use that directly")

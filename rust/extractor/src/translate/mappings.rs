@@ -56,7 +56,6 @@ impl TextValue for ast::RangePat {
 pub(crate) trait AddressableHir<Ast: AstNode>: HasContainer + Copy {
     fn name(self, sema: &Semantics<'_, RootDatabase>) -> Option<String>;
     fn try_from_source(value: &Ast, sema: &Semantics<'_, RootDatabase>) -> Option<Self>;
-    fn module(self, sema: &Semantics<'_, RootDatabase>) -> Module;
 }
 
 impl AddressableHir<ast::Fn> for Function {
@@ -66,10 +65,6 @@ impl AddressableHir<ast::Fn> for Function {
 
     fn try_from_source(value: &ast::Fn, sema: &Semantics<'_, RootDatabase>) -> Option<Self> {
         sema.to_fn_def(value)
-    }
-
-    fn module(self, sema: &Semantics<'_, RootDatabase>) -> Module {
-        self.module(sema.db)
     }
 }
 
@@ -81,10 +76,6 @@ impl AddressableHir<ast::Trait> for Trait {
     fn try_from_source(value: &ast::Trait, sema: &Semantics<'_, RootDatabase>) -> Option<Self> {
         sema.to_trait_def(value)
     }
-
-    fn module(self, sema: &Semantics<'_, RootDatabase>) -> Module {
-        self.module(sema.db)
-    }
 }
 
 impl AddressableHir<ast::Module> for Module {
@@ -94,10 +85,6 @@ impl AddressableHir<ast::Module> for Module {
 
     fn try_from_source(value: &ast::Module, sema: &Semantics<'_, RootDatabase>) -> Option<Self> {
         sema.to_module_def(value)
-    }
-
-    fn module(self, _sema: &Semantics<'_, RootDatabase>) -> Module {
-        self
     }
 }
 
@@ -109,10 +96,6 @@ impl AddressableHir<ast::Struct> for Struct {
     fn try_from_source(value: &ast::Struct, sema: &Semantics<'_, RootDatabase>) -> Option<Self> {
         sema.to_struct_def(value)
     }
-
-    fn module(self, sema: &Semantics<'_, RootDatabase>) -> Module {
-        self.module(sema.db)
-    }
 }
 
 impl AddressableHir<ast::Enum> for Enum {
@@ -123,10 +106,6 @@ impl AddressableHir<ast::Enum> for Enum {
     fn try_from_source(value: &ast::Enum, sema: &Semantics<'_, RootDatabase>) -> Option<Self> {
         sema.to_enum_def(value)
     }
-
-    fn module(self, sema: &Semantics<'_, RootDatabase>) -> Module {
-        self.module(sema.db)
-    }
 }
 
 impl AddressableHir<ast::Union> for Union {
@@ -136,10 +115,6 @@ impl AddressableHir<ast::Union> for Union {
 
     fn try_from_source(value: &ast::Union, sema: &Semantics<'_, RootDatabase>) -> Option<Self> {
         sema.to_union_def(value)
-    }
-
-    fn module(self, sema: &Semantics<'_, RootDatabase>) -> Module {
-        self.module(sema.db)
     }
 }
 

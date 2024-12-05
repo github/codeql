@@ -1,13 +1,13 @@
 use crate::config::Compression;
 use crate::{config, generated};
 use codeql_extractor::{extractor, file_paths, trap};
+use itertools::Itertools;
 use log::debug;
 use ra_ap_ide_db::line_index::LineCol;
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::marker::PhantomData;
 use std::path::{Path, PathBuf};
-
 pub use trap::Label as UntypedLabel;
 pub use trap::Writer;
 
@@ -119,6 +119,24 @@ impl<T: TrapClass> AsTrapKeyPart for Label<T> {
 impl<T: TrapClass> From<Label<T>> for trap::Arg {
     fn from(value: Label<T>) -> Self {
         trap::Arg::Label(value.as_untyped())
+    }
+}
+
+impl<T: TrapClass> AsTrapKeyPart for Option<Label<T>> {
+    fn as_key_part(&self) -> String {
+        format!("[{}]", self.map(|l| l.as_key_part()).unwrap_or_default())
+    }
+}
+
+impl AsTrapKeyPart for Option<String> {
+    fn as_key_part(&self) -> String {
+        format!("[{}]", self.as_ref().map(|s| s.as_str()).unwrap_or(""))
+    }
+}
+
+impl<T: TrapClass> AsTrapKeyPart for Vec<Label<T>> {
+    fn as_key_part(&self) -> String {
+        format!("[{}]", self.iter().map(|l| l.as_key_part()).join(","))
     }
 }
 

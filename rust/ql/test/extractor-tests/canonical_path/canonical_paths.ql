@@ -1,30 +1,26 @@
 import rust
 import TestUtils
 
-query predicate canonicalPaths(Item i, string origin, string path) {
+query predicate canonicalPaths(Addressable i, string answer) {
   toBeTested(i) and
   (
-    origin = i.getCrateOrigin()
+    answer = i.getCanonicalPath().toString()
     or
-    not i.hasCrateOrigin() and origin = "None"
-  ) and
-  (
-    path = i.getExtendedCanonicalPath()
-    or
-    not i.hasExtendedCanonicalPath() and path = "None"
+    not i.hasCanonicalPath() and answer = "None"
   )
 }
 
-query predicate resolvedPaths(Resolvable e, string origin, string path) {
-  toBeTested(e) and
+query predicate resolvedPaths(Resolvable i, string answer) {
+  toBeTested(i) and
   (
-    origin = e.getResolvedCrateOrigin()
+    answer = i.getResolvedCanonicalPath().toString()
     or
-    not e.hasResolvedCrateOrigin() and origin = "None"
-  ) and
-  (
-    path = e.getResolvedPath()
-    or
-    not e.hasResolvedPath() and path = "None"
+    not i.hasResolvedCanonicalPath() and answer = "None"
   )
+}
+
+query predicate resolve(Resolvable i, Addressable j) {
+  toBeTested(i) and
+  toBeTested(j) and
+  i.getResolvedCanonicalPath() = j.getCanonicalPath()
 }

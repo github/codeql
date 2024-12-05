@@ -107,6 +107,11 @@ module Raw {
      * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
      */
     string getCrateOrigin() { addressable_crate_origins(this, result) }
+
+    /**
+     * Gets the canonical path of this addressable, if it exists.
+     */
+    CanonicalPath getCanonicalPath() { addressable_canonical_paths(this, result) }
   }
 
   /**
@@ -839,6 +844,11 @@ module Raw {
      * Gets the resolved crate origin of this resolvable, if it exists.
      */
     string getResolvedCrateOrigin() { resolvable_resolved_crate_origins(this, result) }
+
+    /**
+     * Gets the resolved canonical path of this resolvable, if it exists.
+     */
+    CanonicalPath getResolvedCanonicalPath() { resolvable_resolved_canonical_paths(this, result) }
   }
 
   /**
@@ -3957,5 +3967,258 @@ module Raw {
      * Gets the condition of this while expression, if it exists.
      */
     Expr getCondition() { while_expr_conditions(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * The base class for all elements in a canonical path.
+   */
+  class CanonicalPathElement extends @canonical_path_element, Element { }
+
+  /**
+   * INTERNAL: Do not use.
+   * The base class for all canonical paths that can be the result of a path resolution.
+   */
+  class CanonicalPath extends @canonical_path, CanonicalPathElement { }
+
+  /**
+   * INTERNAL: Do not use.
+   * The base class for all crate references.
+   */
+  class CrateRoot extends @crate_root, CanonicalPathElement { }
+
+  /**
+   * INTERNAL: Do not use.
+   * A generic argument for a type.
+   */
+  class TypeGenericArg extends @type_generic_arg, CanonicalPathElement { }
+
+  /**
+   * INTERNAL: Do not use.
+   * A generic argument for a type that is a const.
+   */
+  class ConstGenericTypeArg extends @const_generic_type_arg, TypeGenericArg {
+    override string toString() { result = "ConstGenericTypeArg" }
+
+    /**
+     * Gets the value of this const generic type argument.
+     */
+    string getValue() { const_generic_type_args(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A canonical path for an item defined in an impl (a method or associated type).
+   */
+  class ImplItemCanonicalPath extends @impl_item_canonical_path, CanonicalPath {
+    override string toString() { result = "ImplItemCanonicalPath" }
+
+    /**
+     * Gets the type path of this impl item canonical path.
+     */
+    TypeCanonicalPath getTypePath() { impl_item_canonical_paths(this, result, _) }
+
+    /**
+     * Gets the trait path of this impl item canonical path, if it exists.
+     */
+    ParametrizedCanonicalPath getTraitPath() { impl_item_canonical_path_trait_paths(this, result) }
+
+    /**
+     * Gets the name of this impl item canonical path.
+     */
+    string getName() { impl_item_canonical_paths(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A reference to a crate in the Rust standard libraries.
+   */
+  class LangCrateRoot extends @lang_crate_root, CrateRoot {
+    override string toString() { result = "LangCrateRoot" }
+
+    /**
+     * Gets the name of this lang crate root.
+     */
+    string getName() { lang_crate_roots(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A canonical path for an item defined in a module.
+   */
+  class ModuleItemCanonicalPath extends @module_item_canonical_path, CanonicalPath {
+    override string toString() { result = "ModuleItemCanonicalPath" }
+
+    /**
+     * Gets the namespace of this module item canonical path.
+     */
+    Namespace getNamespace() { module_item_canonical_paths(this, result, _) }
+
+    /**
+     * Gets the name of this module item canonical path.
+     */
+    string getName() { module_item_canonical_paths(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A namespace, comprised of a crate root and a possibly empty `::` separated module path.
+   */
+  class Namespace extends @namespace, CanonicalPath {
+    override string toString() { result = "Namespace" }
+
+    /**
+     * Gets the root of this namespace.
+     */
+    CrateRoot getRoot() { namespaces(this, result, _) }
+
+    /**
+     * Gets the path of this namespace.
+     */
+    string getPath() { namespaces(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ParametrizedCanonicalPath extends @parametrized_canonical_path, CanonicalPath {
+    override string toString() { result = "ParametrizedCanonicalPath" }
+
+    /**
+     * Gets the base of this parametrized canonical path.
+     */
+    ModuleItemCanonicalPath getBase() { parametrized_canonical_paths(this, result) }
+
+    /**
+     * Gets the `index`th generic argument of this parametrized canonical path (0-based).
+     */
+    TypeGenericArg getGenericArg(int index) {
+      parametrized_canonical_path_generic_args(this, index, result)
+    }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A reference to a crate in the repository.
+   */
+  class RepoCrateRoot extends @repo_crate_root, CrateRoot {
+    override string toString() { result = "RepoCrateRoot" }
+
+    /**
+     * Gets the name of this repo crate root, if it exists.
+     */
+    string getName() { repo_crate_root_names(this, result) }
+
+    /**
+     * Gets the repo of this repo crate root, if it exists.
+     */
+    string getRepo() { repo_crate_root_repos(this, result) }
+
+    /**
+     * Gets the source of this repo crate root.
+     */
+    File getSource() { repo_crate_roots(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A reference to a crate provided by rustc. TODO: understand where these come from.
+   */
+  class RustcCrateRoot extends @rustc_crate_root, CrateRoot {
+    override string toString() { result = "RustcCrateRoot" }
+
+    /**
+     * Gets the name of this rustc crate root.
+     */
+    string getName() { rustc_crate_roots(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * The base for canonical paths for types.
+   */
+  class TypeCanonicalPath extends @type_canonical_path, CanonicalPath { }
+
+  /**
+   * INTERNAL: Do not use.
+   * A generic argument for a type that is a type.
+   */
+  class TypeGenericTypeArg extends @type_generic_type_arg, TypeGenericArg {
+    override string toString() { result = "TypeGenericTypeArg" }
+
+    /**
+     * Gets the path of this type generic type argument.
+     */
+    TypeCanonicalPath getPath() { type_generic_type_args(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A canonical path for an item defined in a type or trait.
+   */
+  class TypeItemCanonicalPath extends @type_item_canonical_path, CanonicalPath {
+    override string toString() { result = "TypeItemCanonicalPath" }
+
+    /**
+     * Gets the parent of this type item canonical path.
+     */
+    ModuleItemCanonicalPath getParent() { type_item_canonical_paths(this, result, _) }
+
+    /**
+     * Gets the name of this type item canonical path.
+     */
+    string getName() { type_item_canonical_paths(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A canonical path for a builtin type.
+   */
+  class BuiltinTypeCanonicalPath extends @builtin_type_canonical_path, TypeCanonicalPath {
+    override string toString() { result = "BuiltinTypeCanonicalPath" }
+
+    /**
+     * Gets the name of this builtin type canonical path.
+     */
+    string getName() { builtin_type_canonical_paths(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A canonical path for an actual type.
+   */
+  class ConcreteTypeCanonicalPath extends @concrete_type_canonical_path, TypeCanonicalPath {
+    override string toString() { result = "ConcreteTypeCanonicalPath" }
+
+    /**
+     * Gets the path of this concrete type canonical path.
+     */
+    ParametrizedCanonicalPath getPath() { concrete_type_canonical_paths(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A derived canonical type, like `[i32; 4]`, `&mut std::string::String` or `(i32, std::string::String)`.
+   */
+  class DerivedTypeCanonicalPath extends @derived_type_canonical_path, TypeCanonicalPath {
+    override string toString() { result = "DerivedTypeCanonicalPath" }
+
+    /**
+     * Gets the modifier of this derived type canonical path.
+     */
+    string getModifier() { derived_type_canonical_paths(this, result) }
+
+    /**
+     * Gets the `index`th base of this derived type canonical path (0-based).
+     */
+    TypeCanonicalPath getBase(int index) { derived_type_canonical_path_bases(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A placeholder for a type parameter bound in an impl.
+   */
+  class PlaceholderTypeCanonicalPath extends @placeholder_type_canonical_path, TypeCanonicalPath {
+    override string toString() { result = "PlaceholderTypeCanonicalPath" }
   }
 }
