@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["lang:core", "<crate::option::Option>::unwrap", "Argument[self].Variant[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]

@@ -597,7 +597,7 @@ private class VariantFieldContent extends VariantContent, TVariantFieldContent {
 }
 
 /** A canonical path pointing to a struct. */
-private class StructCanonicalPath extends MkStructCanonicalPath {
+class StructCanonicalPath extends MkStructCanonicalPath {
   CrateOriginOption crate;
   string path;
 
@@ -605,6 +605,8 @@ private class StructCanonicalPath extends MkStructCanonicalPath {
 
   /** Gets the underlying struct. */
   Struct getStruct() { hasExtendedCanonicalPath(result, crate, path) }
+
+  string getExtendedCanonicalPath() { result = path }
 
   string toString() { result = this.getStruct().getName().getText() }
 

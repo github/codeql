@@ -15,66 +15,6 @@ query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) 
   Private::External::invalidSpecComponent(s, c)
 }
 
-private class SummarizedCallableIdentity extends SummarizedCallable::Range {
-  SummarizedCallableIdentity() { this = "repo::test::_::crate::identity" }
-
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-    input = "Argument[0]" and
-    output = "ReturnValue" and
-    preservesValue = true
-  }
-}
-
-private class SummarizedCallableCoerce extends SummarizedCallable::Range {
-  SummarizedCallableCoerce() { this = "repo::test::_::crate::coerce" }
-
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-    input = "Argument[0]" and
-    output = "ReturnValue" and
-    preservesValue = false
-  }
-}
-
-private class SummarizedCallableGetVarPos extends SummarizedCallable::Range {
-  SummarizedCallableGetVarPos() { this = "repo::test::_::crate::get_var_pos" }
-
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-    input = "Argument[0].Variant[crate::MyPosEnum::A(0)]" and
-    output = "ReturnValue" and
-    preservesValue = true
-  }
-}
-
-private class SummarizedCallableSetVarPos extends SummarizedCallable::Range {
-  SummarizedCallableSetVarPos() { this = "repo::test::_::crate::set_var_pos" }
-
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-    input = "Argument[0]" and
-    output = "ReturnValue.Variant[crate::MyPosEnum::B(0)]" and
-    preservesValue = true
-  }
-}
-
-private class SummarizedCallableGetVarField extends SummarizedCallable::Range {
-  SummarizedCallableGetVarField() { this = "repo::test::_::crate::get_var_field" }
-
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-    input = "Argument[0].Variant[crate::MyFieldEnum::C::field_c]" and
-    output = "ReturnValue" and
-    preservesValue = true
-  }
-}
-
-private class SummarizedCallableSetVarField extends SummarizedCallable::Range {
-  SummarizedCallableSetVarField() { this = "repo::test::_::crate::set_var_field" }
-
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-    input = "Argument[0]" and
-    output = "ReturnValue.Variant[crate::MyFieldEnum::D::field_d]" and
-    preservesValue = true
-  }
-}
-
 module CustomConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { DefaultFlowConfig::isSource(source) }
 

@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["repo::test", "crate::identity", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["repo::test", "crate::coerce", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["repo::test", "crate::get_var_pos", "Argument[0].Variant[crate::MyPosEnum::A(0)]", "ReturnValue", "value", "manual"]
+      - ["repo::test", "crate::set_var_pos", "Argument[0]", "ReturnValue.Variant[crate::MyPosEnum::B(0)]", "value", "manual"]
+      - ["repo::test", "crate::get_var_field", "Argument[0].Variant[crate::MyFieldEnum::C::field_c]", "ReturnValue", "value", "manual"]
+      - ["repo::test", "crate::set_var_field", "Argument[0]", "ReturnValue.Variant[crate::MyFieldEnum::D::field_d]", "value", "manual"]
+      - ["repo::test", "crate::get_struct_field", "Argument[0].Struct[crate::MyStruct::field1]", "ReturnValue", "value", "manual"]
+      - ["repo::test", "crate::set_struct_field", "Argument[0]", "ReturnValue.Struct[crate::MyStruct::field2]", "value", "manual"]
+      - ["repo::test", "crate::get_array_element", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
+      - ["repo::test", "crate::set_array_element", "Argument[0]", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["repo::test", "crate::get_tuple_element", "Argument[0].Tuple[0]", "ReturnValue", "value", "manual"]
+      - ["repo::test", "crate::set_tuple_element", "Argument[0]", "ReturnValue.Tuple[1]", "value", "manual"]

@@ -1,4 +1,5 @@
 models
+| 1 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Variant[crate::option::Option::Some(0)]; ReturnValue; value |
 edges
 | main.rs:19:13:19:21 | source(...) | main.rs:20:10:20:10 | s | provenance |  |
 | main.rs:24:13:24:21 | source(...) | main.rs:27:10:27:10 | c | provenance |  |
@@ -35,7 +36,7 @@ edges
 | main.rs:214:14:214:14 | n | main.rs:214:25:214:25 | n | provenance |  |
 | main.rs:224:14:224:29 | Some(...) [Some] | main.rs:225:10:225:11 | s1 [Some] | provenance |  |
 | main.rs:224:19:224:28 | source(...) | main.rs:224:14:224:29 | Some(...) [Some] | provenance |  |
-| main.rs:225:10:225:11 | s1 [Some] | main.rs:225:10:225:20 | s1.unwrap(...) | provenance |  |
+| main.rs:225:10:225:11 | s1 [Some] | main.rs:225:10:225:20 | s1.unwrap(...) | provenance | MaD:1 |
 | main.rs:229:14:229:29 | Some(...) [Some] | main.rs:231:14:231:15 | s1 [Some] | provenance |  |
 | main.rs:229:19:229:28 | source(...) | main.rs:229:14:229:29 | Some(...) [Some] | provenance |  |
 | main.rs:231:14:231:15 | s1 [Some] | main.rs:231:14:231:16 | TryExpr | provenance |  |
