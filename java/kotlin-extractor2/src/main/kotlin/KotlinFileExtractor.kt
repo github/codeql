@@ -3795,6 +3795,11 @@ OLD: KE1
     abstract inner class StmtExprParent(val callable: Label<out DbCallable>) {
         abstract fun stmt(e: KtExpression): StmtParent
         abstract fun expr(e: KtExpression): ExprParent
+        // TODO: makeError isn't producing locations for statements,
+        // and can only give whole-file locations for expressions.
+        // We either need to give it more information (add
+        // `var locationId` to StmtExprParent?) or patch this up on the
+        // QL side.
         abstract fun makeError()
     }
 
