@@ -75,7 +75,7 @@ class CppExceptionEdge extends ExceptionEdgeImpl, TCppExceptionEdge {
 
 /**
  * An "exception" edge, representing the successor of an instruction when that
- * instruction's evaluation throws an exception for SEH exceptions
+ * instruction's evaluation throws an SEH exception.
  */
 class SehExceptionEdge extends ExceptionEdgeImpl, TSehExceptionEdge {
   final override string toString() { result = "SEH Exception" }
