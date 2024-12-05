@@ -40,6 +40,37 @@ mod string {
     }
 }
 
+mod array_source {
+    fn source(i: i64) -> [i64; 3] {
+        [i; 3]
+    }
+
+    fn sink(i: i64) {
+        println!("{}", i);
+    }
+
+    pub fn array_tainted() {
+        let arr = source(76);
+        sink(arr[1]); // $ MISSING: hasTaintFlow=76
+    }
+}
+
+mod array_sink {
+    fn source(i: i64) -> i64 {
+        i
+    }
+
+    fn sink(s: [i64; 3]) {
+        println!("{}", s[1]);
+    }
+
+    pub fn array_with_taint() {
+        let mut arr2 = [1, 2, 3];
+        arr2[1] = source(36);
+        sink(arr2); // $ MISSING: hasTaintFlow=36
+    }
+}
+
 use string::*;
 
 fn main() {
@@ -47,4 +78,6 @@ fn main() {
     negation();
     cast();
     string_slice();
+    array_source::array_tainted();
+    array_sink::array_with_taint();
 }
