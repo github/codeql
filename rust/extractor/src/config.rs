@@ -45,6 +45,7 @@ pub struct Config {
     pub scratch_dir: PathBuf,
     pub trap_dir: PathBuf,
     pub source_archive_dir: PathBuf,
+    pub diagnostic_dir: PathBuf,
     pub cargo_target_dir: Option<PathBuf>,
     pub cargo_target: Option<String>,
     pub cargo_features: Vec<String>,

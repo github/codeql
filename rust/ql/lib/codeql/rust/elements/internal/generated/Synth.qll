@@ -145,6 +145,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TExtractorStep(Raw::ExtractorStep id) { constructExtractorStep(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TFieldExpr(Raw::FieldExpr id) { constructFieldExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -643,7 +647,7 @@ module Synth {
         TGenericArg or TGenericArgList or TGenericParam or TGenericParamList or TItemList or
         TLabel or TLetElse or TLifetime or TMacroItems or TMacroStmts or TMatchArm or
         TMatchArmList or TMatchGuard or TMeta or TName or TNameRef or TParamBase or TParamList or
-        TPat or TPathSegment or TRecordExprField or TRecordExprFieldList or TRecordField or
+        TPat or TPath or TPathSegment or TRecordExprField or TRecordExprFieldList or TRecordField or
         TRecordPatField or TRecordPatFieldList or TRename or TResolvable or TRetTypeRepr or
         TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or TToken or TTokenTree or
         TTupleField or TTypeBound or TTypeBoundList or TTypeRepr or TUseTree or TUseTreeList or
@@ -729,12 +733,17 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TPathAstNode = TPathExpr or TPathPat or TRecordExpr or TRecordPat or TTupleStructPat;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TPathExprBase = TFormatTemplateVariableAccess or TPathExpr;
 
   /**
    * INTERNAL: Do not use.
    */
-  class TResolvable = TMethodCallExpr or TPath;
+  class TResolvable = TMethodCallExpr or TPathAstNode;
 
   /**
    * INTERNAL: Do not use.
@@ -952,6 +961,12 @@ module Synth {
    * Converts a raw element to a synthesized `TExternItemList`, if possible.
    */
   TExternItemList convertExternItemListFromRaw(Raw::Element e) { result = TExternItemList(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TExtractorStep`, if possible.
+   */
+  TExtractorStep convertExtractorStepFromRaw(Raw::Element e) { result = TExtractorStep(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1766,6 +1781,8 @@ module Synth {
     or
     result = convertPatFromRaw(e)
     or
+    result = convertPathFromRaw(e)
+    or
     result = convertPathSegmentFromRaw(e)
     or
     result = convertRecordExprFieldFromRaw(e)
@@ -1842,6 +1859,8 @@ module Synth {
    * Converts a raw DB element to a synthesized `TElement`, if possible.
    */
   TElement convertElementFromRaw(Raw::Element e) {
+    result = convertExtractorStepFromRaw(e)
+    or
     result = convertLocatableFromRaw(e)
     or
     result = convertUnextractedFromRaw(e)
@@ -2093,6 +2112,22 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TPathAstNode`, if possible.
+   */
+  TPathAstNode convertPathAstNodeFromRaw(Raw::Element e) {
+    result = convertPathExprFromRaw(e)
+    or
+    result = convertPathPatFromRaw(e)
+    or
+    result = convertRecordExprFromRaw(e)
+    or
+    result = convertRecordPatFromRaw(e)
+    or
+    result = convertTupleStructPatFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TPathExprBase`, if possible.
    */
   TPathExprBase convertPathExprBaseFromRaw(Raw::Element e) {
@@ -2108,7 +2143,7 @@ module Synth {
   TResolvable convertResolvableFromRaw(Raw::Element e) {
     result = convertMethodCallExprFromRaw(e)
     or
-    result = convertPathFromRaw(e)
+    result = convertPathAstNodeFromRaw(e)
   }
 
   /**
@@ -2366,6 +2401,12 @@ module Synth {
    * Converts a synthesized `TExternItemList` to a raw DB element, if possible.
    */
   Raw::Element convertExternItemListToRaw(TExternItemList e) { e = TExternItemList(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TExtractorStep` to a raw DB element, if possible.
+   */
+  Raw::Element convertExtractorStepToRaw(TExtractorStep e) { e = TExtractorStep(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3178,6 +3219,8 @@ module Synth {
     or
     result = convertPatToRaw(e)
     or
+    result = convertPathToRaw(e)
+    or
     result = convertPathSegmentToRaw(e)
     or
     result = convertRecordExprFieldToRaw(e)
@@ -3254,6 +3297,8 @@ module Synth {
    * Converts a synthesized `TElement` to a raw DB element, if possible.
    */
   Raw::Element convertElementToRaw(TElement e) {
+    result = convertExtractorStepToRaw(e)
+    or
     result = convertLocatableToRaw(e)
     or
     result = convertUnextractedToRaw(e)
@@ -3505,6 +3550,22 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TPathAstNode` to a raw DB element, if possible.
+   */
+  Raw::Element convertPathAstNodeToRaw(TPathAstNode e) {
+    result = convertPathExprToRaw(e)
+    or
+    result = convertPathPatToRaw(e)
+    or
+    result = convertRecordExprToRaw(e)
+    or
+    result = convertRecordPatToRaw(e)
+    or
+    result = convertTupleStructPatToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TPathExprBase` to a raw DB element, if possible.
    */
   Raw::Element convertPathExprBaseToRaw(TPathExprBase e) {
@@ -3520,7 +3581,7 @@ module Synth {
   Raw::Element convertResolvableToRaw(TResolvable e) {
     result = convertMethodCallExprToRaw(e)
     or
-    result = convertPathToRaw(e)
+    result = convertPathAstNodeToRaw(e)
   }
 
   /**

@@ -120,9 +120,17 @@ locatable_locations(
 // from schema
 
 @element =
-  @locatable
+  @extractor_step
+| @locatable
 | @unextracted
 ;
+
+extractor_steps(
+  unique int id: @extractor_step,
+  string action: string ref,
+  int file: @file ref,
+  int duration_ms: int ref
+);
 
 @locatable =
   @ast_node
@@ -166,6 +174,7 @@ locatable_locations(
 | @param_base
 | @param_list
 | @pat
+| @path
 | @path_segment
 | @record_expr_field
 | @record_expr_field_list
@@ -652,6 +661,22 @@ param_list_self_params(
 | @wildcard_pat
 ;
 
+paths(
+  unique int id: @path
+);
+
+#keyset[id]
+path_qualifiers(
+  int id: @path ref,
+  int qualifier: @path ref
+);
+
+#keyset[id]
+path_parts(
+  int id: @path ref,
+  int part: @path_segment ref
+);
+
 path_segments(
   unique int id: @path_segment
 );
@@ -826,7 +851,7 @@ rename_names(
 
 @resolvable =
   @method_call_expr
-| @path
+| @path_ast_node
 ;
 
 #keyset[id]
@@ -1968,35 +1993,23 @@ paren_type_repr_type_reprs(
   int type_repr: @type_repr ref
 );
 
-paths(
-  unique int id: @path
-);
+@path_ast_node =
+  @path_expr
+| @path_pat
+| @record_expr
+| @record_pat
+| @tuple_struct_pat
+;
 
 #keyset[id]
-path_qualifiers(
-  int id: @path ref,
-  int qualifier: @path ref
-);
-
-#keyset[id]
-path_parts(
-  int id: @path ref,
-  int part: @path_segment ref
+path_ast_node_paths(
+  int id: @path_ast_node ref,
+  int path: @path ref
 );
 
 @path_expr_base =
   @path_expr
 ;
-
-path_pats(
-  unique int id: @path_pat
-);
-
-#keyset[id]
-path_pat_paths(
-  int id: @path_pat ref,
-  int path: @path ref
-);
 
 path_type_reprs(
   unique int id: @path_type_repr
@@ -2102,22 +2115,6 @@ range_pat_starts(
   int start: @pat ref
 );
 
-record_exprs(
-  unique int id: @record_expr
-);
-
-#keyset[id]
-record_expr_paths(
-  int id: @record_expr ref,
-  int path: @path ref
-);
-
-#keyset[id]
-record_expr_record_expr_field_lists(
-  int id: @record_expr ref,
-  int record_expr_field_list: @record_expr_field_list ref
-);
-
 record_field_lists(
   unique int id: @record_field_list
 );
@@ -2127,22 +2124,6 @@ record_field_list_fields(
   int id: @record_field_list ref,
   int index: int ref,
   int field: @record_field ref
-);
-
-record_pats(
-  unique int id: @record_pat
-);
-
-#keyset[id]
-record_pat_paths(
-  int id: @record_pat ref,
-  int path: @path ref
-);
-
-#keyset[id]
-record_pat_record_pat_field_lists(
-  int id: @record_pat ref,
-  int record_pat_field_list: @record_pat_field_list ref
 );
 
 ref_exprs(
@@ -2338,23 +2319,6 @@ tuple_pat_fields(
   int id: @tuple_pat ref,
   int index: int ref,
   int field: @pat ref
-);
-
-tuple_struct_pats(
-  unique int id: @tuple_struct_pat
-);
-
-#keyset[id, index]
-tuple_struct_pat_fields(
-  int id: @tuple_struct_pat ref,
-  int index: int ref,
-  int field: @pat ref
-);
-
-#keyset[id]
-tuple_struct_pat_paths(
-  int id: @tuple_struct_pat ref,
-  int path: @path ref
 );
 
 tuple_type_reprs(
@@ -2991,10 +2955,28 @@ path_expr_attrs(
   int attr: @attr ref
 );
 
+path_pats(
+  unique int id: @path_pat
+);
+
+record_exprs(
+  unique int id: @record_expr
+);
+
 #keyset[id]
-path_expr_paths(
-  int id: @path_expr ref,
-  int path: @path ref
+record_expr_record_expr_field_lists(
+  int id: @record_expr ref,
+  int record_expr_field_list: @record_expr_field_list ref
+);
+
+record_pats(
+  unique int id: @record_pat
+);
+
+#keyset[id]
+record_pat_record_pat_field_lists(
+  int id: @record_pat ref,
+  int record_pat_field_list: @record_pat_field_list ref
 );
 
 statics(
@@ -3179,6 +3161,17 @@ trait_alias_visibilities(
 trait_alias_where_clauses(
   int id: @trait_alias ref,
   int where_clause: @where_clause ref
+);
+
+tuple_struct_pats(
+  unique int id: @tuple_struct_pat
+);
+
+#keyset[id, index]
+tuple_struct_pat_fields(
+  int id: @tuple_struct_pat ref,
+  int index: int ref,
+  int field: @pat ref
 );
 
 type_aliases(

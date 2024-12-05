@@ -17,7 +17,7 @@ import codeql.rust.elements.TypeRepr
  */
 module Generated {
   /**
-   * A cast expression. For example:
+   * A type cast expression. For example:
    * ```rust
    * value as u64;
    * ```

@@ -820,7 +820,7 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   /** Holds if path `p` resolves to struct `s`. */
-  private predicate pathResolveToStructCanonicalPath(Path p, StructCanonicalPath s) {
+  private predicate pathResolveToStructCanonicalPath(PathAstNode p, StructCanonicalPath s) {
     exists(CrateOriginOption crate, string path |
       resolveExtendedCanonicalPath(p, crate, path) and
       s = MkStructCanonicalPath(crate, path)
@@ -828,35 +828,29 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   /** Holds if path `p` resolves to variant `v`. */
-  private predicate pathResolveToVariantCanonicalPath(Path p, VariantCanonicalPath v) {
-    exists(CrateOriginOption crate, string path |
-      resolveExtendedCanonicalPath(p.getQualifier(), crate, path) and
-      v = MkVariantCanonicalPath(crate, path, p.getPart().getNameRef().getText())
-      or
-      exists(string name |
-        not p.hasQualifier() and
-        resolveExtendedCanonicalPath(p, crate, path + "::" + name) and
-        v = MkVariantCanonicalPath(crate, path, name)
-      )
+  private predicate pathResolveToVariantCanonicalPath(PathAstNode p, VariantCanonicalPath v) {
+    exists(CrateOriginOption crate, string path, string name |
+      resolveExtendedCanonicalPath(p, crate, path + "::" + name) and
+      v = MkVariantCanonicalPath(crate, path, name)
     )
   }
 
   /** Holds if `p` destructs an enum variant `v`. */
   pragma[nomagic]
   private predicate tupleVariantDestruction(TupleStructPat p, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(p.getPath(), v)
+    pathResolveToVariantCanonicalPath(p, v)
   }
 
   /** Holds if `p` destructs an enum variant `v`. */
   pragma[nomagic]
   private predicate recordVariantDestruction(RecordPat p, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(p.getPath(), v)
+    pathResolveToVariantCanonicalPath(p, v)
   }
 
   /** Holds if `p` destructs a struct `s`. */
   pragma[nomagic]
   private predicate structDestruction(RecordPat p, StructCanonicalPath s) {
-    pathResolveToStructCanonicalPath(p.getPath(), s)
+    pathResolveToStructCanonicalPath(p, s)
   }
 
   /**
@@ -927,19 +921,19 @@ module RustDataFlow implements InputSig<Location> {
   /** Holds if `ce` constructs an enum value of type `v`. */
   pragma[nomagic]
   private predicate tupleVariantConstruction(CallExpr ce, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(ce.getFunction().(PathExpr).getPath(), v)
+    pathResolveToVariantCanonicalPath(ce.getFunction().(PathExpr), v)
   }
 
   /** Holds if `re` constructs an enum value of type `v`. */
   pragma[nomagic]
   private predicate recordVariantConstruction(RecordExpr re, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(re.getPath(), v)
+    pathResolveToVariantCanonicalPath(re, v)
   }
 
   /** Holds if `re` constructs a struct value of type `s`. */
   pragma[nomagic]
   private predicate structConstruction(RecordExpr re, StructCanonicalPath s) {
-    pathResolveToStructCanonicalPath(re.getPath(), s)
+    pathResolveToStructCanonicalPath(re, s)
   }
 
   private predicate tupleAssignment(Node node1, Node node2, TuplePositionContent c) {
