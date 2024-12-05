@@ -9,7 +9,7 @@ private newtype TEdgeKind =
   TTrueEdge() or // 'true' edge of conditional branch
   TFalseEdge() or // 'false' edge of conditional branch
   TCppExceptionEdge() or // Thrown C++ exception
-  TSehExceptionEdge() or // Thrown C++ exception
+  TSehExceptionEdge() or // Thrown SEH exception
   TDefaultEdge() or // 'default' label of switch
   TCaseEdge(string minValue, string maxValue) {
     // Case label of switch
