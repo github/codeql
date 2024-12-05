@@ -90,14 +90,20 @@ edges
 | passwords.go:127:14:127:19 | config [y] | passwords.go:127:14:127:21 | selection of y | provenance |  |
 | protobuf.go:11:2:11:6 | definition of query [pointer, Description] | protobuf.go:12:2:12:6 | query [pointer, Description] | provenance |  |
 | protobuf.go:11:2:11:6 | definition of query [pointer, Description] | protobuf.go:14:14:14:18 | query [pointer, Description] | provenance |  |
+| protobuf.go:11:2:11:6 | definition of query [pointer, Description] | protobuf.go:15:14:15:18 | query [pointer, Description] | provenance |  |
 | protobuf.go:12:2:12:6 | implicit dereference [Description] | protobuf.go:11:2:11:6 | definition of query [pointer, Description] | provenance |  |
 | protobuf.go:12:2:12:6 | query [pointer, Description] | protobuf.go:12:2:12:6 | implicit dereference [Description] | provenance |  |
 | protobuf.go:12:22:12:29 | password | protobuf.go:12:2:12:6 | implicit dereference [Description] | provenance |  |
+| protobuf.go:14:14:14:18 | query [pointer, Description] | protobuf.go:11:2:11:6 | definition of query [pointer, Description] | provenance |  |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protobuf.go:14:14:14:35 | call to GetDescription | provenance |  |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | provenance |  |
+| protobuf.go:15:14:15:18 | query [pointer, Description] | protobuf.go:11:2:11:6 | definition of query [pointer, Description] | provenance |  |
+| protobuf.go:15:14:15:18 | query [pointer, Description] | protos/query/query.pb.go:124:7:124:7 | definition of x [pointer, Description] | provenance |  |
+| protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | definition of x [Return] [pointer, Description] | provenance |  |
 | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | provenance |  |
 | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | provenance |  |
 | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | provenance |  |
+| protos/query/query.pb.go:124:7:124:7 | definition of x [pointer, Description] | protos/query/query.pb.go:124:7:124:7 | definition of x [Return] [pointer, Description] | provenance |  |
 models
 | 1 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
 nodes
@@ -190,9 +196,15 @@ nodes
 | protobuf.go:12:22:12:29 | password | semmle.label | password |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | semmle.label | query [pointer, Description] |
 | protobuf.go:14:14:14:35 | call to GetDescription | semmle.label | call to GetDescription |
+| protobuf.go:15:14:15:18 | query [pointer, Description] | semmle.label | query [pointer, Description] |
+| protos/query/query.pb.go:117:7:117:7 | definition of x [Return] [pointer, Description] | semmle.label | definition of x [Return] [pointer, Description] |
 | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | semmle.label | definition of x [pointer, Description] |
 | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | semmle.label | implicit dereference [Description] |
 | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | semmle.label | x [pointer, Description] |
 | protos/query/query.pb.go:119:10:119:22 | selection of Description | semmle.label | selection of Description |
+| protos/query/query.pb.go:124:7:124:7 | definition of x [Return] [pointer, Description] | semmle.label | definition of x [Return] [pointer, Description] |
+| protos/query/query.pb.go:124:7:124:7 | definition of x [pointer, Description] | semmle.label | definition of x [pointer, Description] |
 subpaths
+| protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | definition of x [Return] [pointer, Description] | protobuf.go:11:2:11:6 | definition of query [pointer, Description] |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | protobuf.go:14:14:14:35 | call to GetDescription |
+| protobuf.go:15:14:15:18 | query [pointer, Description] | protos/query/query.pb.go:124:7:124:7 | definition of x [pointer, Description] | protos/query/query.pb.go:124:7:124:7 | definition of x [Return] [pointer, Description] | protobuf.go:11:2:11:6 | definition of query [pointer, Description] |
