@@ -5,7 +5,7 @@
 
 private import internal.RecordPatImpl
 import codeql.rust.elements.Pat
-import codeql.rust.elements.Path
+import codeql.rust.elements.PathAstNode
 import codeql.rust.elements.RecordPatFieldList
 
 /**
