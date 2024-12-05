@@ -146,8 +146,8 @@ edges
 | Capture.cs:334:9:334:30 | access to local function CapturingLocalFunction : CapturingLocalFunction [captured x] : String | Capture.cs:332:42:332:62 | access to local function CapturedLocalFunction : CapturedLocalFunction [captured x] : String | provenance |  |
 | Capture.cs:339:17:339:30 | "taint source" : String | Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | provenance |  |
 | Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | provenance |  |
-| Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | Capture.cs:341:45:341:45 | access to local variable x | provenance |  |
-| Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | provenance |  |
+| Capture.cs:343:40:343:53 | access to local variable capturedLambda : Action [captured x] : String | Capture.cs:341:45:341:45 | access to local variable x | provenance |  |
+| Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | Capture.cs:343:40:343:53 | access to local variable capturedLambda : Action [captured x] : String | provenance |  |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured s] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured s] : String | provenance |  |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
@@ -709,7 +709,7 @@ nodes
 | Capture.cs:339:17:339:30 | "taint source" : String | semmle.label | "taint source" : String |
 | Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | semmle.label | (...) => ... : (...) => ... [captured x] : String |
 | Capture.cs:341:45:341:45 | access to local variable x | semmle.label | access to local variable x |
-| Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | semmle.label | access to local variable capturedLambda : (...) => ... [captured x] : String |
+| Capture.cs:343:40:343:53 | access to local variable capturedLambda : Action [captured x] : String | semmle.label | access to local variable capturedLambda : Action [captured x] : String |
 | Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | semmle.label | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured s] : String | semmle.label | a : (...) => ... [captured s] : String |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | semmle.label | a : (...) => ... [captured sink39] : String |
