@@ -624,7 +624,7 @@ private class StructFieldContent extends Content, TStructFieldContent {
 }
 
 /**
- * Content stored at an element in an array.
+ * An element in an array.
  */
 final class ArrayElementContent extends Content, TArrayElement {
   ArrayElementContent() { this = TArrayElement() }

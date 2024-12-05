@@ -39,9 +39,9 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
       // we also allow taint to flow out of a tainted collection. This is
       // needed in order to support taint-tracking configurations where the
       // source is a collection.
-      exists(ContentSet cs |
+      exists(SingletonContentSet cs |
         RustDataFlow::readStep(pred, cs, succ) and
-        cs.(SingletonContentSet).getContent() instanceof ArrayElementContent
+        cs.getContent() instanceof ArrayElementContent
       )
     )
     or
