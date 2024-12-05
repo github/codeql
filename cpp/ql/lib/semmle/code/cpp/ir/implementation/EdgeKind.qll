@@ -145,7 +145,7 @@ module EdgeKind {
   FalseEdge falseEdge() { result = TFalseEdge() }
 
   /**
-   * Gets an instance of the `CppExceptionEdge` class.
+   * Gets the single instance of the `CppExceptionEdge` class.
    */
   CppExceptionEdge cppExceptionEdge() { result = TCppExceptionEdge() }
 
