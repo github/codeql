@@ -2574,4 +2574,284 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       this = TAccessPathFrontSome(any(AccessPathFront apf | result = apf.toString()))
     }
   }
+
+  /** Provides the input to `StoreReadMatching`. */
+  signature module StoreReadMatchingInputSig {
+    class NodeEx {
+      string toString();
+
+      DataFlowType getDataFlowType();
+    }
+
+    predicate nodeRange(NodeEx node, boolean fromArg, DataFlowCallOption callCtx);
+
+    predicate localValueStep(NodeEx node1, NodeEx node2);
+
+    predicate jumpValueStep(NodeEx node1, NodeEx node2);
+
+    bindingset[outerCallCtx]
+    predicate callEdgeArgParam(
+      NodeEx arg, NodeEx param, DataFlowCallOption outerCallCtx, DataFlowCallOption innerCallCtx
+    );
+
+    predicate callEdgeReturn(DataFlowCall call, NodeEx ret, NodeEx out, boolean mayFlowThrough);
+
+    predicate readContentStep(NodeEx node1, Content c, NodeEx node2);
+
+    predicate storeContentStep(NodeEx node1, Content c, NodeEx node2);
+
+    int accessPathConfigLimit();
+  }
+
+  /**
+   * Provides logic for computing compatible and (likely) matching store-read pairs.
+   *
+   * In order to determine whether a store can be matched with a compatible read, we
+   * check whether the target of a store may reach the source of a read, using over-
+   * approximated data flow (depth 1 call contexts only).
+   *
+   * The implementation is based on `doublyBoundedFastTC`, and in order to avoid poor
+   * performance through recursion, we unroll the recursion manually 4 times, in order to
+   * be able to handle access paths of maximum length 5.
+   */
+  module StoreReadMatching<StoreReadMatchingInputSig Input> {
+    private import codeql.util.Boolean
+    private import Input
+
+    private signature module StoreReachesReadInputSig {
+      int iteration();
+
+      predicate storeMayReachReadDelta(
+        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
+      );
+
+      predicate storeMayReachReadPrev(
+        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
+      );
+    }
+
+    private newtype TNodeExt =
+      MkNodeExt(NodeEx n, Boolean usesPrevDelta, boolean fromArg, DataFlowCallOption callCtx) {
+        nodeRange(n, fromArg, callCtx)
+      }
+
+    private class NodeExt extends MkNodeExt {
+      NodeEx asNodeEx(boolean usesPrevDelta, boolean fromArg, DataFlowCallOption callCtx) {
+        this = MkNodeExt(result, usesPrevDelta, fromArg, callCtx)
+      }
+
+      DataFlowType getType() { result = this.asNodeEx(_, _, _).getDataFlowType() }
+
+      string toString() { result = this.asNodeEx(_, _, _).toString() }
+    }
+
+    pragma[nomagic]
+    private predicate stepNodeCommon(
+      NodeExt node1, NodeEx n2, boolean usesPrevDelta2, Boolean fromArg2,
+      DataFlowCallOption callCtx2
+    ) {
+      exists(NodeEx n1, boolean fromArg1, DataFlowCallOption callCtx1 |
+        n1 = node1.asNodeEx(usesPrevDelta2, fromArg1, callCtx1)
+      |
+        localValueStep(n1, n2) and
+        fromArg1 = fromArg2 and
+        callCtx1 = callCtx2
+        or
+        jumpValueStep(n1, n2) and
+        fromArg2 = false and
+        callCtx2 = TDataFlowCallNone()
+        or
+        callEdgeArgParam(n1, n2, callCtx1, callCtx2) and
+        fromArg2 = true
+        or
+        exists(DataFlowCall call, boolean mayFlowThrough |
+          callEdgeReturn(call, n1, n2, mayFlowThrough) and
+          nodeRange(n2, fromArg2, callCtx2) // depth 1 call contexts only
+        |
+          fromArg1 = false
+          or
+          callCtx1 = TDataFlowCallSome(call) and mayFlowThrough = true
+        )
+      )
+    }
+
+    private module StoreReachesRead<StoreReachesReadInputSig Prev> implements
+      StoreReachesReadInputSig
+    {
+      int iteration() { result = Prev::iteration() + 1 }
+
+      private predicate enabled() { accessPathConfigLimit() > Prev::iteration() }
+
+      private predicate usesPrevDelta(Boolean usesPrevDelta) {
+        // in the first iteration there is no previous delta to use
+        if iteration() > 1 then usesPrevDelta = true else any()
+      }
+
+      pragma[nomagic]
+      private predicate stepNode(
+        NodeExt node1, NodeEx n2, boolean usesPrevDelta2, Boolean fromArg2,
+        DataFlowCallOption callCtx2
+      ) {
+        enabled() and
+        (
+          stepNodeCommon(node1, n2, usesPrevDelta2, fromArg2, callCtx2)
+          or
+          exists(NodeEx n1, boolean usesPrevDelta1, boolean fromArg1, DataFlowCallOption callCtx1 |
+            n1 = node1.asNodeEx(usesPrevDelta1, fromArg1, callCtx1)
+          |
+            Prev::storeMayReachReadDelta(n1, _, n2, fromArg1, fromArg2, callCtx1, callCtx2) and
+            usesPrevDelta2 = true
+            or
+            Prev::storeMayReachReadPrev(n1, _, n2, fromArg1, fromArg2, callCtx1, callCtx2) and
+            usesPrevDelta1 = usesPrevDelta2
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate step(NodeExt node1, NodeExt node2) {
+        exists(NodeEx n2, boolean usesPrevDelta2, boolean fromArg2, DataFlowCallOption callCtx2 |
+          n2 = node2.asNodeEx(usesPrevDelta2, fromArg2, callCtx2) and
+          stepNode(node1, n2, usesPrevDelta2, fromArg2, callCtx2)
+        )
+      }
+
+      pragma[nomagic]
+      private predicate isStoreTarget0(NodeExt node, Content c) {
+        exists(boolean usesPrevDelta |
+          storeContentStep(_, c, node.asNodeEx(usesPrevDelta, _, _)) and
+          usesPrevDelta = false
+        )
+      }
+
+      private predicate isStoreTarget(NodeExt node) { isStoreTarget0(node, _) }
+
+      pragma[nomagic]
+      private predicate isReadSource0(NodeExt node, Content c) {
+        exists(boolean usesPrevDelta |
+          readContentStep(node.asNodeEx(usesPrevDelta, _, _), c, _) and
+          usesPrevDelta(usesPrevDelta)
+        )
+      }
+
+      private predicate isReadSource(NodeExt node) { isReadSource0(node, _) }
+
+      private predicate storeMayReachReadTc(NodeExt node1, NodeExt node2) =
+        doublyBoundedFastTC(step/2, isStoreTarget/1, isReadSource/1)(node1, node2)
+
+      pragma[nomagic]
+      private predicate storeMayReachReadDeltaJoinLeft(
+        NodeEx node1, Content c, NodeExt node2, boolean fromArg2, DataFlowCallOption callCtx2
+      ) {
+        exists(boolean usesPrevDelta |
+          storeContentStep(node1, c, node2.asNodeEx(usesPrevDelta, fromArg2, callCtx2)) and
+          usesPrevDelta = false
+        )
+      }
+
+      pragma[nomagic]
+      private predicate storeMayReachReadDeltaJoinRight(
+        NodeExt node1, Content c, NodeEx node2, boolean fromArg1, DataFlowCallOption callCtx1
+      ) {
+        exists(boolean usesPrevDelta |
+          readContentStep(node1.asNodeEx(usesPrevDelta, fromArg1, callCtx1), c, node2) and
+          usesPrevDelta(usesPrevDelta)
+        )
+      }
+
+      pragma[nomagic]
+      predicate storeMayReachReadDelta(
+        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
+      ) {
+        exists(NodeExt storeTarget, NodeExt readSource |
+          storeMayReachReadTc(storeTarget, readSource) and
+          storeMayReachReadDeltaJoinLeft(storeSource, c, storeTarget, fromArg1, callCtx1) and
+          storeMayReachReadDeltaJoinRight(readSource, c, readTarget, fromArg2, callCtx2) and
+          (
+            compatibleTypesFilter(storeTarget.getType(), readSource.getType())
+            or
+            not exists(readSource.getType())
+          ) and
+          (
+            compatibleTypesFilter(storeSource.getDataFlowType(), readTarget.getDataFlowType())
+            or
+            not exists(readTarget.getDataFlowType())
+          )
+        ) and
+        not Prev::storeMayReachReadPrev(storeSource, c, readTarget, fromArg1, fromArg2, callCtx1,
+          callCtx2)
+      }
+
+      pragma[nomagic]
+      predicate storeMayReachReadPrev(
+        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
+      ) {
+        Prev::storeMayReachReadPrev(storeSource, c, readTarget, fromArg1, fromArg2, callCtx1,
+          callCtx2)
+        or
+        Prev::storeMayReachReadDelta(storeSource, c, readTarget, fromArg1, fromArg2, callCtx1,
+          callCtx2)
+      }
+    }
+
+    module Iteration0 implements StoreReachesReadInputSig {
+      int iteration() { result = 0 }
+
+      predicate storeMayReachReadDelta(
+        NodeEx node1, Content c, NodeEx node2, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
+      ) {
+        none()
+      }
+
+      predicate storeMayReachReadPrev(
+        NodeEx node1, Content c, NodeEx node2, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
+      ) {
+        none()
+      }
+    }
+
+    private module StoreReachesRead1 implements StoreReachesReadInputSig {
+      private module M = StoreReachesRead<Iteration0>;
+
+      import M
+
+      predicate storeMayReachReadDelta(
+        NodeEx storeSource, Content c, NodeEx readTarget, boolean fromArg1, boolean fromArg2,
+        DataFlowCallOption callCtx1, DataFlowCallOption callCtx2
+      ) {
+        M::storeMayReachReadDelta(storeSource, c, readTarget, fromArg1, fromArg2, callCtx1, callCtx2)
+        or
+        // special case only needed for the first iteration: a store immediately followed by a read
+        exists(NodeEx storeTargetReadSource |
+          storeContentStep(storeSource, c, storeTargetReadSource) and
+          readContentStep(storeTargetReadSource, c, readTarget)
+        ) and
+        nodeRange(storeSource, fromArg1, callCtx1) and
+        nodeRange(readTarget, fromArg2, callCtx2) and
+        fromArg1 = fromArg2 and
+        pragma[only_bind_into](pragma[only_bind_out](callCtx1)) =
+          pragma[only_bind_into](pragma[only_bind_out](callCtx2))
+      }
+    }
+
+    private module StoreReachesRead2 = StoreReachesRead<StoreReachesRead1>;
+
+    private module StoreReachesRead3 = StoreReachesRead<StoreReachesRead2>;
+
+    private module StoreReachesRead4 = StoreReachesRead<StoreReachesRead3>;
+
+    private module StoreReachesRead5 = StoreReachesRead<StoreReachesRead4>;
+
+    predicate storeMayReachRead(NodeEx storeSource, Content c, NodeEx readTarget) {
+      StoreReachesRead5::storeMayReachReadDelta(storeSource, c, readTarget, _, _, _, _)
+      or
+      StoreReachesRead5::storeMayReachReadPrev(storeSource, c, readTarget, _, _, _, _)
+    }
+  }
 }
