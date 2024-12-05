@@ -56,7 +56,10 @@ private class SpringWebClientRestTemplateGetForObject extends RequestForgerySink
         i <=
           max(int occurrenceIndex, int occurrenceOffset |
             exists(
-              hsp.getStringValue().regexpFind("\\{[^}]*\\}", occurrenceIndex, occurrenceOffset)
+              hsp.getStringValue()
+                  .replaceAll("\\{", "  ")
+                  .replaceAll("\\}", "  ")
+                  .regexpFind("\\{[^}]*\\}", occurrenceIndex, occurrenceOffset)
             ) and
             occurrenceOffset < hsp.getOffset()
           |
@@ -78,6 +81,8 @@ private class SpringWebClientRestTemplateGetForObject extends RequestForgerySink
             mc.getArgument(0)
                 .(CompileTimeConstantExpr)
                 .getStringValue()
+                .replaceAll("\\{", "  ")
+                .replaceAll("\\}", "  ")
                 .regexpFind("\\{[^}]*\\}", occurrenceIndex, _)
           )
         |
