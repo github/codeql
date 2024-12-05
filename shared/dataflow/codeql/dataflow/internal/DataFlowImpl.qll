@@ -498,21 +498,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    /**
-     * Holds if flow from `p` to a return node of kind `kind` is allowed.
-     *
-     * We don't expect a parameter to return stored in itself, unless
-     * explicitly allowed
-     */
-    bindingset[p, kind]
-    private predicate parameterFlowThroughAllowed(ParamNodeEx p, ReturnKindExt kind) {
-      exists(ParameterPosition pos | p.isParameterOf(_, pos) |
-        not kind.(ParamUpdateReturnKind).getPosition() = pos
-        or
-        allowParameterReturnInSelfEx(p)
-      )
-    }
-
     private module Stage1 implements StageSig {
       class Ap = Unit;
 
@@ -936,8 +921,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           throughFlowNodeCand(p) and
           returnFlowCallableNodeCand(c, kind) and
           p.getEnclosingCallable() = c and
-          exists(ap) and
-          parameterFlowThroughAllowed(p, kind)
+          exists(ap)
         )
       }
 
@@ -2103,7 +2087,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               TSummaryCtxSome(pragma[only_bind_into](p), _, _, pragma[only_bind_into](argAp), _) and
             not outBarrier(ret, state) and
             kind = ret.getKind() and
-            parameterFlowThroughAllowed(p, kind) and
             argApa = getApprox(argAp) and
             PrevStage::returnMayFlowThrough(ret, pragma[only_bind_into](argApa), apa, kind)
           )
@@ -2439,7 +2422,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           revFlow(pragma[only_bind_into](p), state, TReturnCtxMaybeFlowThrough(pos),
             apSome(returnAp), pragma[only_bind_into](ap)) and
-          parameterFlowThroughAllowed(p, pos.getKind()) and
           PrevStage::parameterMayFlowThrough(p, getApprox(ap))
         }
 
@@ -2525,8 +2507,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private predicate parameterFlowsThroughRev(
           ParamNodeEx p, Ap ap, ReturnPosition pos, Ap returnAp
         ) {
-          revFlow(p, _, TReturnCtxMaybeFlowThrough(pos), apSome(returnAp), ap) and
-          parameterFlowThroughAllowed(p, pos.getKind())
+          revFlow(p, _, TReturnCtxMaybeFlowThrough(pos), apSome(returnAp), ap)
         }
 
         pragma[nomagic]

@@ -1342,23 +1342,6 @@ predicate knownSourceModel(Node source, string model) { External::sourceNode(sou
 
 predicate knownSinkModel(Node sink, string model) { External::sinkNode(sink, _, model) }
 
-/**
- * Holds if flow is allowed to pass from parameter `p` and back to itself as a
- * side-effect, resulting in a summary from `p` to itself.
- *
- * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
- * by default as a heuristic.
- */
-predicate allowParameterReturnInSelf(ParameterNode p) {
-  p instanceof IndirectParameterNode
-  or
-  // models-as-data summarized flow
-  exists(DataFlowCallable c, ParameterPosition pos |
-    p.isParameterOf(c, pos) and
-    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
-  )
-}
-
 private predicate fieldHasApproxName(Field f, string s) {
   s = f.getName().charAt(0) and
   // Reads and writes of union fields are tracked using `UnionContent`.
