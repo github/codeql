@@ -51,7 +51,7 @@ mod array_source {
 
     pub fn array_tainted() {
         let arr = source(76);
-        sink(arr[1]); // $ MISSING: hasTaintFlow=76
+        sink(arr[1]); // $ hasTaintFlow=76
     }
 }
 
@@ -67,7 +67,7 @@ mod array_sink {
     pub fn array_with_taint() {
         let mut arr2 = [1, 2, 3];
         arr2[1] = source(36);
-        sink(arr2); // $ MISSING: hasTaintFlow=36
+        sink(arr2); // $ hasTaintFlow=36
     }
 }
 

@@ -626,7 +626,7 @@ private class StructFieldContent extends Content, TStructFieldContent {
 /**
  * Content stored at an element in an array.
  */
-final private class ArrayElementContent extends VariantContent, TArrayElement {
+final class ArrayElementContent extends Content, TArrayElement {
   ArrayElementContent() { this = TArrayElement() }
 
   override string toString() { result = "array[]" }
@@ -665,7 +665,7 @@ abstract class ContentSet extends TContentSet {
   abstract Content getAReadContent();
 }
 
-final private class SingletonContentSet extends ContentSet, TSingletonContentSet {
+final class SingletonContentSet extends ContentSet, TSingletonContentSet {
   private Content c;
 
   SingletonContentSet() { this = TSingletonContentSet(c) }
