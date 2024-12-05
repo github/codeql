@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly ILogger logger;
         private readonly IDiagnosticsWriter diagnosticsWriter;
         private readonly NugetPackageRestorer nugetPackageRestorer;
-        private readonly DependabotProxy dependabotProxy;
+        private readonly DependabotProxy? dependabotProxy;
         private readonly IDotNet dotnet;
         private readonly FileContent fileContent;
         private readonly FileProvider fileProvider;
@@ -107,7 +107,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return BuildScript.Success;
             }).Run(SystemBuildActions.Instance, startCallback, exitCallback);
 
-            dependabotProxy = new DependabotProxy(logger, tempWorkingDirectory);
+            dependabotProxy = DependabotProxy.GetDependabotProxy(logger, tempWorkingDirectory);
 
             try
             {

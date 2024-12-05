@@ -12,11 +12,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal sealed class DotNetCliInvoker : IDotNetCliInvoker
     {
         private readonly ILogger logger;
-        private readonly DependabotProxy proxy;
+        private readonly DependabotProxy? proxy;
 
         public string Exec { get; }
 
-        public DotNetCliInvoker(ILogger logger, string exec, DependabotProxy dependabotProxy)
+        public DotNetCliInvoker(ILogger logger, string exec, DependabotProxy? dependabotProxy)
         {
             this.logger = logger;
             this.proxy = dependabotProxy;
@@ -42,7 +42,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             startInfo.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"] = "true";
 
             // Configure the proxy settings, if applicable.
-            this.proxy.ApplyProxy(this.logger, startInfo);
+            if (this.proxy != null)
+            {
+                logger.LogInfo($"Setting up Dependabot proxy at {this.proxy.Address}");
+
+                startInfo.EnvironmentVariables.Add("HTTP_PROXY", this.proxy.Address);
+                startInfo.EnvironmentVariables.Add("HTTPS_PROXY", this.proxy.Address);
+                startInfo.EnvironmentVariables.Add("SSL_CERT_FILE", this.proxy.CertificatePath);
+            }
 
             return startInfo;
         }
