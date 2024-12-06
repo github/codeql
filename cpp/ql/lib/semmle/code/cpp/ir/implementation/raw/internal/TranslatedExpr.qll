@@ -15,6 +15,7 @@ private import TranslatedInitialization
 private import TranslatedStmt
 private import TranslatedGlobalVar
 private import IRConstruction
+private import EdgeKind
 import TranslatedCall
 
 /**
@@ -391,7 +392,13 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = LoadTag() and
+    (
     result = this.getParent().getChildSuccessor(this, kind)
+    or 
+     // All load instructions could throw an SEH exception
+     result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), kind) and
+     kind instanceof SehExceptionEdge
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -2375,14 +2382,16 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
         result = getTranslatedExpr(expr.getAllocatorCall().getArgument(index).getFullyConverted())
   }
 
-  final override predicate mayThrowException() {
+  final override predicate mayThrowException(ExceptionEdge e) { none() }
+
+  final override predicate mustThrowException(ExceptionEdge e) { none() }
+
+  final override predicate neverThrowException(ExceptionEdge e) {
     // We assume that a call to `new` or `new[]` will never throw. This is not
     // sound in general, but this will greatly reduce the number of exceptional
     // edges.
-    none()
+    any()
   }
-
-  final override predicate mustThrowException() { none() }
 }
 
 TranslatedAllocatorCall getTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
@@ -2448,14 +2457,16 @@ class TranslatedDeleteOrDeleteArrayExpr extends TranslatedNonConstantExpr, Trans
     result = getTranslatedExpr(expr.getExprWithReuse().getFullyConverted())
   }
 
-  final override predicate mayThrowException() {
+  final override predicate mayThrowException(ExceptionEdge e) { none() }
+
+  final override predicate mustThrowException(ExceptionEdge e) { none() }
+
+  final override predicate neverThrowException(ExceptionEdge e) {
     // We assume that a call to `delete` or `delete[]` will never throw. This is not
     // sound in general, but this will greatly reduce the number of exceptional
     // edges.
-    none()
+    any()
   }
-
-  final override predicate mustThrowException() { none() }
 }
 
 TranslatedDeleteOrDeleteArrayExpr getTranslatedDeleteOrDeleteArray(DeleteOrDeleteArrayExpr newExpr) {
@@ -3040,7 +3051,7 @@ class TranslatedDestructorsAfterThrow extends TranslatedElement, TTranslatedDest
       // And otherwise, exit this element with an exceptional edge
       not exists(this.getChild(id + 1)) and
       kind instanceof CppExceptionEdge and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), kind)
     )
   }
 
@@ -3079,7 +3090,7 @@ abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
       or
       not exists(this.getDestructors()) and
       kind instanceof CppExceptionEdge and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), kind)
     )
   }
 

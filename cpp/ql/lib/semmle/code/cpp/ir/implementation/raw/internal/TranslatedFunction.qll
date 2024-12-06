@@ -214,7 +214,7 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
         exists(ThrowExpr throw | throw.getEnclosingFunction() = func)
         or
         exists(FunctionCall call | call.getEnclosingFunction() = func |
-          getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException()
+          getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException(_)
         )
       )
       or
@@ -228,7 +228,10 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
     )
   }
 
-  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
+  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind, ExceptionEdge exception) {
+    // only unwind for C++ exceptions since SEH exceptions are too verbose
+    // and would generate unwind for all functions.
+    exception instanceof CppExceptionEdge and
     result = this.getInstruction(UnwindTag()) and
     kind instanceof GotoEdge
   }

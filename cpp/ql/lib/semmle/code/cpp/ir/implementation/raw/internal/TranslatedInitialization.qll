@@ -281,7 +281,13 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = InitializerStoreTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      // All store instructions could throw an Seh exception
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), kind) and
+      kind instanceof SehExceptionEdge
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -357,9 +363,14 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
   }
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
-    kind instanceof GotoEdge and
     tag = InitializerLoadStringTag() and
-    result = this.getInstruction(InitializerStoreTag())
+    (
+      result = this.getInstruction(InitializerStoreTag()) and kind instanceof GotoEdge
+      or
+      // All store instructions could throw an Seh exception
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), kind) and
+      kind instanceof SehExceptionEdge
+    )
     or
     if this.zeroInitRange(_, _)
     then (
@@ -650,7 +661,13 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
     )
     or
     tag = this.getFieldDefaultValueStoreTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      // All store instructions could throw an Seh exception
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), kind) and
+      kind instanceof SehExceptionEdge
+    )
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {
@@ -850,7 +867,13 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     )
     or
     tag = this.getElementDefaultValueStoreTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      // All store instructions could throw an Seh exception
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), kind) and
+      kind instanceof SehExceptionEdge
+    )
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {

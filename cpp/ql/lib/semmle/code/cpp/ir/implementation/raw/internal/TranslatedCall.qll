@@ -4,6 +4,7 @@ private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.models.interfaces.SideEffect
 private import semmle.code.cpp.models.interfaces.Throwing
+private import semmle.code.cpp.models.interfaces.NonThrowing
 private import InstructionTag
 private import SideEffects
 private import TranslatedElement
@@ -84,12 +85,14 @@ abstract class TranslatedCall extends TranslatedExpr {
           this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction()
         )
     else (
-      not this.mustThrowException() and
+      not this.mustThrowException(_) and
       result = this.getParent().getChildSuccessor(this, kind)
       or
-      this.mayThrowException() and
-      kind instanceof CppExceptionEdge and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+      exists(ExceptionEdge e | this.hasExceptionBehavior(e) |
+        this.mayThrowException(e) and
+        kind = e and
+        result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), kind)
+      )
     )
   }
 
@@ -118,13 +121,42 @@ abstract class TranslatedCall extends TranslatedExpr {
 
   /**
    * Holds if the evaluation of this call may throw an exception.
+   * The edge `e` determines what type of exception is being considered,
+   * `CppExceptionEdge` or `SehExceptionEdge`.
    */
-  abstract predicate mayThrowException();
+  abstract predicate mayThrowException(ExceptionEdge e);
 
   /**
    * Holds if the evaluation of this call always throws an exception.
+   * The edge `e` determines what type of exception is being considered,
+   * `CppExceptionEdge` or `SehExceptionEdge`.
    */
-  abstract predicate mustThrowException();
+  abstract predicate mustThrowException(ExceptionEdge e);
+
+  /**
+   * Holds when the call target is known to never raise an exception.
+   * The edge `e` determines what type of exception is being considered,
+   * `CppExceptionEdge` or `SehExceptionEdge`.
+   *
+   * Note that `alwaysRaiseException`, `mayRaiseException`,
+   * and `neverRaiseException` may conflict (e.g., all hold for a given target).
+   * Conflicting results are resolved during IR generation.
+   */
+  abstract predicate neverThrowException(ExceptionEdge e);
+
+  /**
+   * Holds if the call has any exception behavior defined for exception edge type `e`,
+   * i.e., if the function is known to throw or never throw an exception.
+   * This handles cases where a function has no annotation to specify
+   * if a function throws or doesn't throw.
+   */
+  final predicate hasExceptionBehavior(ExceptionEdge e) {
+    this.mayThrowException(e)
+    or
+    this.mayThrowException(e)
+    or
+    this.neverThrowException(e)
+  }
 
   /**
    * Gets the result type of the call.
@@ -320,6 +352,32 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
   final override int getNumberOfArguments() { result = expr.getNumberOfArguments() }
 
   final override predicate isNoReturn() { any(Options opt).exits(expr.getTarget()) }
+
+  override predicate mustThrowException(ExceptionEdge e) {
+    // Functions that always raise exceptions only occur with Seh exceptions
+    // Use the `AlwaysSehThrowingFunction` instance unless the function is known to never throw
+    not this.neverThrowException(e) and
+    expr.getTarget() instanceof AlwaysSehThrowingFunction and
+    e instanceof SehExceptionEdge
+  }
+
+  override predicate mayThrowException(ExceptionEdge e) {
+    // by default, all functions may throw exceptions of any kind
+    // unless explicitly annotated to never throw
+    not this.neverThrowException(e) and
+    // for now assuming all calls may throw for Seh only
+    e instanceof SehExceptionEdge
+  }
+
+  override predicate neverThrowException(ExceptionEdge e) {
+    // currently, only functions can only explicitly stipulate they
+    // never through a C++ exception
+    // NOTE: we cannot simply check if not exists may and must throw.
+    // since an annotation exists to override any other behavior
+    // i.e., `NonCppThrowingFunction`.
+    e instanceof CppExceptionEdge and
+    expr.getTarget() instanceof NonCppThrowingFunction
+  }
 }
 
 /**
@@ -332,14 +390,16 @@ class TranslatedExprCall extends TranslatedCallExpr {
     result = getTranslatedExpr(expr.getExpr().getFullyConverted())
   }
 
-  final override predicate mayThrowException() {
+  final override predicate mayThrowException(ExceptionEdge e) { none() }
+
+  final override predicate mustThrowException(ExceptionEdge e) { none() }
+
+  final override predicate neverThrowException(ExceptionEdge e) {
     // We assume that a call to a function pointer will not throw an exception.
     // This is not sound in general, but this will greatly reduce the number of
     // exceptional edges.
-    none()
+    any()
   }
-
-  final override predicate mustThrowException() { none() }
 }
 
 /**
@@ -360,18 +420,6 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   override predicate hasQualifier() {
     exists(this.getQualifier()) and
     not exists(MemberFunction func | expr.getTarget() = func and func.isStatic())
-  }
-
-  final override predicate mayThrowException() {
-    expr.getTarget().(ThrowingFunction).mayThrowException(_)
-    or
-    expr.getTarget() instanceof AlwaysSehThrowingFunction
-  }
-
-  final override predicate mustThrowException() {
-    expr.getTarget().(ThrowingFunction).mayThrowException(true)
-    or
-    expr.getTarget() instanceof AlwaysSehThrowingFunction
   }
 }
 
