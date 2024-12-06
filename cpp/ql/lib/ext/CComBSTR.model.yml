@@ -19,7 +19,7 @@ extensions:
       - ["", "CComBSTR", True, "AppendBSTR", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
       - ["", "CComBSTR", True, "ArrayToBSTR", "", "", "Argument[*0].Field[*pvData]", "Argument[-1]", "value", "manual"]
       - ["", "CComBSTR", True, "AssignBSTR", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
-      - ["", "CComBSTR", True, "Attach", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "Attach", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
       - ["", "CComBSTR", True, "BSTRToArray", "", "", "Argument[-1]", "Argument[*0].Field[*pvData]", "value", "manual"]
       - ["", "CComBSTR", True, "Copy", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
       - ["", "CComBSTR", True, "CopyTo", "", "", "Argument[-1]", "Argument[*0]", "value", "manual"]
