@@ -1,4 +1,6 @@
 /** Provides classes for working with JSON Web Token (JWT) libraries. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.FlowSinks

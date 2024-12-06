@@ -2,6 +2,8 @@
  * Provides predicates for working with the internal logic of the `Guards`
  * library.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.controlflow.Guards
