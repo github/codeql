@@ -54,3 +54,8 @@ codeql_pack(
     ],
     experimental = True,
 )
+
+exports_files([
+    "Cargo.toml",
+    "Cargo.lock",
+])

@@ -7,6 +7,8 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
     cd ../../../
     time bazel run //misc/bazel/3rdparty:vendor_py_deps
     bazel mod tidy
-    time bazel run //misc/bazel/3rdparty:vendor_tree_sitter_extractors
+    time bazel run //misc/bazel/3rdparty:vendor_rust_deps
+    bazel mod tidy
+    time bazel run //misc/bazel/3rdparty:vendor_ruby_deps
     bazel mod tidy
 )
