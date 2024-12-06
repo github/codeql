@@ -1,12 +1,27 @@
+## 2.2.0
+
+### Major Analysis Improvements
+
+* The `js/incomplete-sanitization` query now also checks regular expressions constructed using `new RegExp(..)`. Previously it only checked regular expression literals.
+* Regular expression-based sanitisers implemented with `new RegExp(..)` are now detected in more cases.
+* Regular expression related queries now account for unknown flags.
+
+### Minor Analysis Improvements
+
+* Added taint-steps for `String.prototype.toWellFormed`.
+* Added taint-steps for `Map.groupBy` and `Object.groupBy`.
+* Added taint-steps for `Array.prototype.findLast`  
+* Added taint-steps for `Array.prototype.findLastIndex`
+
 ## 2.1.1
 
 ### Minor Analysis Improvements
 
-Added taint-steps for `Array.prototype.with`.
-Added taint-steps for `Array.prototype.toSpliced`
+* Added taint-steps for `Array.prototype.with`.
+* Added taint-steps for `Array.prototype.toSpliced`
 * Added taint-steps for `Array.prototype.toReversed`.
 * Added taint-steps for `Array.prototype.toSorted`.
-Added support for `String.prototype.matchAll`.
+* Added support for `String.prototype.matchAll`.
 * Added taint-steps for `Array.prototype.reverse`
 
 ## 2.1.0
