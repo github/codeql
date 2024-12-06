@@ -86,7 +86,7 @@ impl MyStruct {
         return self.val;
     }
 
-    fn get_flags(&self) -> i64 { // $ SPURIOUS: Alert[rust/unused-variable]
+    fn get_flags(&self) -> i64 {
         return 0;
     }
 }

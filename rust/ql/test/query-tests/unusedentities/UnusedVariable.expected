@@ -1,5 +1,4 @@
 | main.rs:29:9:29:9 | a | Variable 'a' is not used. |
-| main.rs:89:19:89:22 | self | Variable 'self' is not used. |
 | main.rs:98:13:98:13 | d | Variable 'd' is not used. |
 | main.rs:147:5:147:5 | y | Variable 'y' is not used. |
 | main.rs:174:9:174:9 | x | Variable 'x' is not used. |
