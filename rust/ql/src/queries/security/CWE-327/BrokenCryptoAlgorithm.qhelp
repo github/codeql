@@ -42,8 +42,8 @@
           <sample src="BrokenCryptoAlgorithmBad.rs" />
 
           <p>
-               Instead we should use a strong modern algorithm. In this
-               case we have selected the 256-bit version of the AES
+               Instead, we should use a strong modern algorithm. In this
+               case, we have selected the 256-bit version of the AES
                algorithm.
           </p>
 
@@ -52,8 +52,8 @@
      </example>
 
      <references>
-          <li>NIST, FIPS 140 Annex a: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf"> Approved Security Functions</a>.</li>
-          <li>NIST, SP 800-131A: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar1.pdf"> Transitions: Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+          <li>NIST, FIPS 140 Annex A: <a href="http://csrc.nist.gov/publications/fips/fips140-2/fips1402annexa.pdf"> Approved Security Functions</a>.</li>
+          <li>NIST, SP 800-131A Revision 2: <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf">Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
           <li>OWASP: <a
           href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#algorithms"> Cryptographic Storage Cheat Sheet - Algorithms</a>.
           </li>
