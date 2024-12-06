@@ -2,6 +2,8 @@
  * Provides a default taint sanitizer identifying comparisons against lists of
  * compile-time constants.
  */
+overlay[local?]
+module;
 
 import java
 private import codeql.typeflow.UniversalFlow as UniversalFlow

@@ -1,6 +1,8 @@
 /**
  * Provides utility predicates for representing dependencies between types.
  */
+overlay[local?]
+module;
 
 import Type
 import Generics

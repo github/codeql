@@ -1,4 +1,6 @@
 /** Provides guards and predicates to reason about arithmetic. */
+overlay[local?]
+module;
 
 import semmle.code.java.arithmetic.Overflow
 import semmle.code.java.controlflow.Guards
