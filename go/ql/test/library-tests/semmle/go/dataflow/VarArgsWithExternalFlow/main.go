@@ -29,8 +29,8 @@ func main() {
 	var out1 *string
 	var out2 *string
 	test.FunctionWithVarArgsOutParameter(source(), out1, out2)
-	sink(out1) // $ MISSING: hasValueFlow="out1"
-	sink(out2) // $ MISSING: hasValueFlow="out2"
+	sink(out1) // $ hasValueFlow="out1"
+	sink(out2) // $ hasValueFlow="out2"
 
 	sliceOfStructs := []test.A{{Field: source()}}
 	sink(sliceOfStructs[0].Field) // $ hasValueFlow="selection of Field"
