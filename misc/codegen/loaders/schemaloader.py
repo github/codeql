@@ -121,7 +121,7 @@ def _fill_hideable_information(classes: typing.Dict[str, schema.Class]):
 
 
 def _check_test_with(classes: typing.Dict[str, schema.Class]):
-    pragma = "qlest_test_with"
+    pragma = "qltest_test_with"
     for cls in classes.values():
         if cls.name == cls.pragmas.get(pragma):
             # this is already implicit
