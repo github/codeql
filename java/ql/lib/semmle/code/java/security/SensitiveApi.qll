@@ -1,6 +1,8 @@
 /**
  * Provides predicates defining methods that consume sensitive data, such as usernames and passwords.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Java imports.
  */
+overlay[local?]
+module;
 
 import semmle.code.Location
 import CompilationUnit

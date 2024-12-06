@@ -2,6 +2,8 @@
  * Provides classes and predicates for simple data-flow reachability suitable
  * for tracking types.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Boolean
 private import codeql.util.Option
@@ -510,6 +512,7 @@ module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
      * }
      * ```
      */
+    overlay[caller]
     pragma[inline]
     TypeTracker smallstep(Node nodeFrom, Node nodeTo) {
       result = this.smallstepNoSimpleLocalFlowStep(nodeFrom, nodeTo)
@@ -654,6 +657,7 @@ module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
      * }
      * ```
      */
+    overlay[caller]
     pragma[inline]
     TypeBackTracker smallstep(Node nodeFrom, Node nodeTo) {
       result = this.smallstepNoSimpleLocalFlowStep(nodeFrom, nodeTo)

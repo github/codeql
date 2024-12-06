@@ -1,4 +1,6 @@
 /** Provides utility predicates relating to switch cases. */
+overlay[local?]
+module;
 
 import java
 

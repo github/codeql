@@ -30,6 +30,8 @@
  *
  * The terminology for generic methods is analogous.
  */
+overlay[local?]
+module;
 
 import Type
 

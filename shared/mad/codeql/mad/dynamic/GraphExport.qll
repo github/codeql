@@ -1,6 +1,8 @@
 /**
  * Contains predicates for converting an arbitrary graph to a set of `typeModel` rows.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Location
 

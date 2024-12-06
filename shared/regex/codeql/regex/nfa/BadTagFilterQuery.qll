@@ -1,6 +1,8 @@
 /**
  * Provides predicates for reasoning about bad tag filter vulnerabilities.
  */
+overlay[local?]
+module;
 
 private import NfaUtils as NfaUtils
 private import RegexpMatching as RM
