@@ -3310,12 +3310,11 @@ cfg.swift:
 #  533|             getBase().getFullyConverted(): [LoadExpr] (AsyncStream<Int>) ...
 #-----|             getMethodRef(): [DeclRefExpr] makeAsyncIterator()
 #  533|         getPattern(0): [NamedPattern] $i$generator
-#  533|       getNextCall(): [CallExpr] call to next(isolation:)
-#  533|         getFunction(): [MethodLookupExpr] .next(isolation:)
+#  533|       getNextCall(): [CallExpr] call to next()
+#  533|         getFunction(): [MethodLookupExpr] .next()
 #  533|           getBase(): [DeclRefExpr] $i$generator
 #  533|           getBase().getFullyConverted(): [InOutExpr] &...
-#-----|           getMethodRef(): [DeclRefExpr] next(isolation:)
-#  533|         getArgument(0): (no string representation)
+#-----|           getMethodRef(): [DeclRefExpr] next()
 #  533|       getNextCall().getFullyConverted(): [AwaitExpr] await ...
 #  533|       getBody(): [BraceStmt] { ... }
 #  534|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
