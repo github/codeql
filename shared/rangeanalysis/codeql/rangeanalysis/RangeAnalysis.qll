@@ -62,6 +62,8 @@
  * a path follows a second back-edge (we postpone weakening till the second
  * back-edge as a precise bound might require traversing a loop once).
  */
+overlay[local?]
+module;
 
 private import codeql.util.Location
 

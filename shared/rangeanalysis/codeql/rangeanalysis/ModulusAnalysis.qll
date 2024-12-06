@@ -9,6 +9,8 @@
  * (for constant values). The most interesting recursive case is `phiModulusRankStep`, which
  * handles phi inputs.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Location
 private import RangeAnalysis

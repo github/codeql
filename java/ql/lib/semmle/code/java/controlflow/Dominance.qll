@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for control-flow graph dominance.
  */
+overlay[local?]
+module;
 
 import java
 

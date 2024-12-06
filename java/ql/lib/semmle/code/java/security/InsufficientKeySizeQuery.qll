@@ -1,5 +1,8 @@
 /** Provides data flow configurations to be used in queries related to insufficient key sizes. */
 
+overlay[local?]
+module;
+
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.InsufficientKeySize
 

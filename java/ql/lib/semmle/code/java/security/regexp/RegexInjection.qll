@@ -1,5 +1,8 @@
 /** Provides classes and predicates related to regex injection in Java. */
 
+overlay[local?]
+module;
+
 import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow

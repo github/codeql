@@ -95,6 +95,8 @@
  *
  * `tag1=expected-value tag2=expected-value`
  */
+overlay[local?]
+module;
 
 /**
  * A signature specifying the required parts for constructing inline expectations.

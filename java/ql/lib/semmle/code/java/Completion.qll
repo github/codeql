@@ -16,6 +16,8 @@
  * relevant for conditional contexts in which the value controls the
  * control-flow successor.
  */
+overlay[local?]
+module;
 
 import java
 

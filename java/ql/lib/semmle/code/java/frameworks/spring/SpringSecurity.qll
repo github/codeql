@@ -3,6 +3,9 @@
  * `org.springframework.security.*`.
  */
 
+overlay[local?]
+module;
+
 import java
 
 /** The class `org.springframework.security.config.annotation.web.builders.HttpSecurity`. */

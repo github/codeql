@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Java Reflection.
  */
+overlay[local?]
+module;
 
 import java
 import JDKAnnotations
