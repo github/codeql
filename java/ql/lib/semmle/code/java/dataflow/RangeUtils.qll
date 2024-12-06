@@ -1,6 +1,8 @@
 /**
  * Provides utility predicates for range analysis.
  */
+overlay[local?]
+module;
 
 import java
 private import SSA

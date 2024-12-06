@@ -1,6 +1,8 @@
 /**
  * Cucumber is an open-source project for writing executable acceptance tests in human-readable `.feature` files.
  */
+overlay[local?]
+module;
 
 import java
 

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 
 /** The class `android.webkit.WebView`. */

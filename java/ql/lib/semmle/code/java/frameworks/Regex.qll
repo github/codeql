@@ -1,4 +1,6 @@
 /** Definitions related to `java.util.regex`. */
+overlay[local?]
+module;
 
 import java
 

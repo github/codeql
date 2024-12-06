@@ -8,6 +8,8 @@
  * If an inferred bound relies directly on a condition, then this condition is
  * reported as the reason for the bound.
  */
+overlay[local?]
+module;
 
 /*
  * This library tackles range analysis as a flow problem. Consider e.g.:
