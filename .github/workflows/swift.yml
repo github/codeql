@@ -54,13 +54,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
-  qltests-linux:
-    if: github.repository_owner == 'github'
-    needs: build-and-test-linux
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./swift/actions/run-ql-tests
   qltests-macos:
     if: ${{ github.repository_owner == 'github' && github.event_name == 'pull_request' }}
     needs: build-and-test-macos
