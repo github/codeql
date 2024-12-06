@@ -2490,7 +2490,7 @@ destructors_for_temps.cpp:
 #   47|     v47_6(void)                         = ^IndirectReadSideEffect[-1]            : &:r47_1, ~m47_5
 #   47|     m47_7(ClassWithDestructor2)         = ^IndirectMayWriteSideEffect[-1]        : &:r47_1
 #   47|     m47_8(unknown)                      = Chi                                    : total:m47_5, partial:m47_7
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 
 #   47|   Block 4
 #   47|     v47_9(void)                         = NoOp                                   : 
@@ -2574,7 +2574,7 @@ destructors_for_temps.cpp:
 #   52|     v52_6(void)                         = ^IndirectReadSideEffect[-1]            : &:r52_1, ~m52_5
 #   52|     m52_7(ClassWithDestructor2)         = ^IndirectMayWriteSideEffect[-1]        : &:r52_1
 #   52|     m52_8(unknown)                      = Chi                                    : total:m52_5, partial:m52_7
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 
 #   51|   Block 4
 #   51|     r51_32(glval<ClassWithDestructor2>) = VariableAddress[#temp51:75]            : 
@@ -2656,7 +2656,7 @@ destructors_for_temps.cpp:
 #   55|     m55_29(ClassWithConstructor)        = ^IndirectMayWriteSideEffect[-1]       : &:r55_5
 #   55|     m55_30(unknown)                     = Chi                                   : total:m55_28, partial:m55_29
 #   55|     v55_31(void)                        = ThrowValue                            : &:r55_5, ~m55_30
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 
 #   55|   Block 4
 #   55|     r55_32(glval<ClassWithDestructor2>) = VariableAddress[#temp55:75]           : 
@@ -2721,7 +2721,7 @@ destructors_for_temps.cpp:
 #   59|     m59_20(unknown)                    = Chi                                   : total:m59_17, partial:m59_19
 #   59|     m59_21(char)                       = Store[#throw59:9]                     : &:r59_4, r59_15
 #   59|     v59_22(void)                       = ThrowValue                            : &:r59_4, m59_21
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 
 #   59|   Block 4
 #   59|     r59_23(char)        = Constant[97]               : 
@@ -3120,7 +3120,7 @@ ir.c:
 #   25|     v25_4(void)           = Call[ExRaiseAccessViolation]            : func:r25_1, 0:r25_3
 #   25|     m25_5(unknown)        = ^CallSideEffect                         : ~m21_4
 #   25|     m25_6(unknown)        = Chi                                     : total:m21_4, partial:m25_5
-#-----|   Exception -> Block 3
+#-----|   C++ Exception -> Block 3
 
 #   26|   Block 1
 #   26|     r26_1(int)  = Constant[0]       : 
@@ -3167,7 +3167,7 @@ ir.c:
 #   36|     v36_3(void)           = Call[ExRaiseAccessViolation]            : func:r36_1, 0:r36_2
 #   36|     m36_4(unknown)        = ^CallSideEffect                         : ~m32_4
 #   36|     m36_5(unknown)        = Chi                                     : total:m32_4, partial:m36_4
-#-----|   Exception -> Block 4
+#-----|   C++ Exception -> Block 4
 
 #   32|   Block 1
 #   32|     v32_5(void) = Unwind       : 
@@ -3202,7 +3202,7 @@ ir.c:
 #   40|     v40_3(void)           = Call[ExRaiseAccessViolation]            : func:r40_1, 0:r40_2
 #   40|     m40_4(unknown)        = ^CallSideEffect                         : ~m36_5
 #   40|     m40_5(unknown)        = Chi                                     : total:m36_5, partial:m40_4
-#-----|   Exception -> Block 1
+#-----|   C++ Exception -> Block 1
 
 #   32|   Block 6
 #   32|     v32_8(void) = Unreached : 
@@ -3241,7 +3241,7 @@ ir.c:
 #   62|     v62_3(void)           = Call[ExRaiseAccessViolation]            : func:r62_1, 0:r62_2
 #   62|     m62_4(unknown)        = ^CallSideEffect                         : ~m57_4
 #   62|     m62_5(unknown)        = Chi                                     : total:m57_4, partial:m62_4
-#-----|   Exception -> Block 1
+#-----|   C++ Exception -> Block 1
 
 #   66|   Block 1
 #   66|     r66_1(int)        = Constant[1]        : 
@@ -3263,7 +3263,7 @@ ir.c:
 #   73|     v73_3(void)           = Call[ExRaiseAccessViolation]            : func:r73_1, 0:r73_2
 #   73|     m73_4(unknown)        = ^CallSideEffect                         : ~m70_4
 #   73|     m73_5(unknown)        = Chi                                     : total:m70_4, partial:m73_4
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 
 #   70|   Block 1
 #   70|     v70_5(void) = Unwind       : 
@@ -3276,7 +3276,7 @@ ir.c:
 #   76|     v76_3(void)           = Call[ExRaiseAccessViolation]            : func:r76_1, 0:r76_2
 #   76|     m76_4(unknown)        = ^CallSideEffect                         : ~m73_5
 #   76|     m76_5(unknown)        = Chi                                     : total:m73_5, partial:m76_4
-#-----|   Exception -> Block 1
+#-----|   C++ Exception -> Block 1
 
 #   80| void raise_access_violation()
 #   80|   Block 0
@@ -3289,7 +3289,7 @@ ir.c:
 #   81|     v81_3(void)           = Call[ExRaiseAccessViolation]            : func:r81_1, 0:r81_2
 #   81|     m81_4(unknown)        = ^CallSideEffect                         : ~m80_4
 #   81|     m81_5(unknown)        = Chi                                     : total:m80_4, partial:m81_4
-#-----|   Exception -> Block 1
+#-----|   C++ Exception -> Block 1
 
 #   80|   Block 1
 #   80|     v80_5(void) = Unwind       : 
@@ -6976,7 +6976,7 @@ ir.cpp:
 #  728|     r728_3(char *)          = Convert                          : r728_2
 #  728|     m728_4(char *)          = Store[#throw728:7]               : &:r728_1, r728_3
 #  728|     v728_5(void)            = ThrowValue                       : &:r728_1, m728_4
-#-----|   Exception -> Block 6
+#-----|   C++ Exception -> Block 6
 
 #  730|   Block 4
 #  730|     r730_1(glval<int>) = VariableAddress[x] : 
@@ -6995,7 +6995,7 @@ ir.cpp:
 
 #  735|   Block 6
 #  735|     v735_1(void) = CatchByType[const char *] : 
-#-----|   Exception -> Block 8
+#-----|   C++ Exception -> Block 8
 #-----|   Goto -> Block 7
 
 #  735|   Block 7
@@ -7017,11 +7017,11 @@ ir.cpp:
 #  736|     m736_11(String)        = ^IndirectMayWriteSideEffect[-1] : &:r736_1
 #  736|     m736_12(unknown)       = Chi                             : total:m736_9, partial:m736_11
 #  736|     v736_13(void)          = ThrowValue                      : &:r736_1, ~m736_12
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 
 #  738|   Block 8
 #  738|     v738_1(void) = CatchByType[const String &] : 
-#-----|   Exception -> Block 10
+#-----|   C++ Exception -> Block 10
 #-----|   Goto -> Block 9
 
 #  738|   Block 9
@@ -7035,7 +7035,7 @@ ir.cpp:
 #  740|   Block 10
 #  740|     v740_1(void) = CatchAny : 
 #  741|     v741_1(void) = ReThrow  : 
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 
 #  743|   Block 11
 #  743|     v743_1(void)  = NoOp       : 
@@ -9943,7 +9943,7 @@ ir.cpp:
 # 1195|     r1195_3(char *)          = Convert                          : r1195_2
 # 1195|     m1195_4(char *)          = Store[#throw1195:7]              : &:r1195_1, r1195_3
 # 1195|     v1195_5(void)            = ThrowValue                       : &:r1195_1, m1195_4
-#-----|   Exception -> Block 6
+#-----|   C++ Exception -> Block 6
 
 # 1197|   Block 4
 # 1197|     r1197_1(glval<int>) = VariableAddress[x] : 
@@ -9962,7 +9962,7 @@ ir.cpp:
 
 # 1202|   Block 6
 # 1202|     v1202_1(void) = CatchByType[const char *] : 
-#-----|   Exception -> Block 8
+#-----|   C++ Exception -> Block 8
 #-----|   Goto -> Block 7
 
 # 1202|   Block 7
@@ -9984,11 +9984,11 @@ ir.cpp:
 # 1203|     m1203_11(String)        = ^IndirectMayWriteSideEffect[-1] : &:r1203_1
 # 1203|     m1203_12(unknown)       = Chi                             : total:m1203_9, partial:m1203_11
 # 1203|     v1203_13(void)          = ThrowValue                      : &:r1203_1, ~m1203_12
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 
 # 1205|   Block 8
 # 1205|     v1205_1(void) = CatchByType[const String &] : 
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 #-----|   Goto -> Block 9
 
 # 1205|   Block 9
@@ -16924,7 +16924,7 @@ ir.cpp:
 # 2281|     v2281_6(void)            = ^IndirectReadSideEffect[-1]      : &:r2281_1, ~m2281_5
 # 2281|     m2281_7(String)          = ^IndirectMayWriteSideEffect[-1]  : &:r2281_1
 # 2281|     m2281_8(unknown)         = Chi                              : total:m2281_5, partial:m2281_7
-#-----|   Exception -> Block 5
+#-----|   C++ Exception -> Block 5
 
 # 2280|   Block 4
 # 2280|     r2280_1(glval<String>)   = VariableAddress[s2]             : 
@@ -16956,7 +16956,7 @@ ir.cpp:
 
 # 2282|   Block 5
 # 2282|     v2282_1(void) = CatchByType[const char *] : 
-#-----|   Exception -> Block 7
+#-----|   C++ Exception -> Block 7
 #-----|   Goto -> Block 6
 
 # 2282|   Block 6
@@ -16978,11 +16978,11 @@ ir.cpp:
 # 2283|     m2283_11(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2283_1
 # 2283|     m2283_12(unknown)       = Chi                             : total:m2283_9, partial:m2283_11
 # 2283|     v2283_13(void)          = ThrowValue                      : &:r2283_1, ~m2283_12
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 
 # 2285|   Block 7
 # 2285|     v2285_1(void) = CatchByType[const String &] : 
-#-----|   Exception -> Block 9
+#-----|   C++ Exception -> Block 9
 #-----|   Goto -> Block 8
 
 # 2285|   Block 8
@@ -16996,7 +16996,7 @@ ir.cpp:
 # 2287|   Block 9
 # 2287|     v2287_1(void) = CatchAny : 
 # 2288|     v2288_1(void) = ReThrow  : 
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 
 # 2290|   Block 10
 # 2290|     m2290_1(unknown) = Phi        : from 4:~m2281_24, from 8:~m2281_8
@@ -18266,7 +18266,7 @@ ir.cpp:
 # 2454|     v2454_6(void)                       = ^IndirectReadSideEffect[-1]           : &:r2454_1, m2452_8
 # 2454|     m2454_7(ClassWithDestructor)        = ^IndirectMayWriteSideEffect[-1]       : &:r2454_1
 # 2454|     m2454_8(ClassWithDestructor)        = Chi                                   : total:m2452_8, partial:m2454_7
-#-----|   Exception -> Block 1
+#-----|   C++ Exception -> Block 1
 
 # 2451|   Block 1
 # 2451|     v2451_7(void) = Unwind       : 
@@ -18693,7 +18693,7 @@ ir.cpp:
 # 2537|     r2537_2(int)                        = Constant[42]                         : 
 # 2537|     m2537_3(int)                        = Store[#throw2537:5]                  : &:r2537_1, r2537_2
 # 2537|     v2537_4(void)                       = ThrowValue                           : &:r2537_1, m2537_3
-#-----|   Exception -> Block 2
+#-----|   C++ Exception -> Block 2
 
 # 2534|   Block 1
 # 2534|     m2534_5(unknown) = Phi          : from 3:~m2541_6, from 4:~m2541_14
@@ -18702,7 +18702,7 @@ ir.cpp:
 
 # 2539|   Block 2
 # 2539|     v2539_1(void) = CatchByType[char] : 
-#-----|   Exception -> Block 4
+#-----|   C++ Exception -> Block 4
 #-----|   Goto -> Block 3
 
 # 2539|   Block 3
@@ -38962,7 +38962,7 @@ try_except.cpp:
 #   48|     r48_2(int)        = Constant[1]                  : 
 #   48|     m48_3(int)        = Store[#throw48:13]           : &:r48_1, r48_2
 #   48|     v48_4(void)       = ThrowValue                   : &:r48_1, m48_3
-#-----|   Exception -> Block 4
+#-----|   C++ Exception -> Block 4
 
 #   51|   Block 2
 #   51|     r51_1(int)  = Constant[0]       : 
