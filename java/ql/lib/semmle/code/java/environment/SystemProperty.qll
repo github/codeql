@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with java system properties.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
