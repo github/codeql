@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * Provides Java-specific definitions for use in sign analysis.
  */

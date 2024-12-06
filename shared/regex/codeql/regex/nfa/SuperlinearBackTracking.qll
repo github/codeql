@@ -34,6 +34,8 @@
  * It has the same suffix detection issue as the `js/redos` query, which can cause false positives.
  * It also doesn't find all transitions in the product automaton, which can cause false negatives.
  */
+overlay[local?]
+module;
 
 private import NfaUtils as NfaUtils
 private import codeql.regex.RegexTreeView

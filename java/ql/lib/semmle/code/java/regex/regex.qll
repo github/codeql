@@ -1,6 +1,8 @@
 /**
  * Definitions for parsing regular expressions.
  */
+overlay[local?]
+module;
 
 import java
 private import RegexFlowConfigs

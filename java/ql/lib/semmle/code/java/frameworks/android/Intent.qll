@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 private import semmle.code.java.frameworks.android.Android
 private import semmle.code.java.dataflow.DataFlow

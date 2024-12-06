@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with members of Java classes and interfaces,
  * that is, methods, constructors, fields and nested types.
  */
+overlay[local?]
+module;
 
 import Element
 import Type

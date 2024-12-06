@@ -3,6 +3,7 @@
  *
  * Only import this directly from .ql files, to avoid the possibility of polluting the Configuration hierarchy accidentally.
  */
+module;
 
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.RequestForgery

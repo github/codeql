@@ -8,6 +8,8 @@
  * the `TypePath` type, and `Make2`, which (using `TypePath` in the input
  * signature) constructs the `Matching` module.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Location
 

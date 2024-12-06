@@ -2,6 +2,8 @@
  * Provides a module for synthesizing data-flow nodes and related step relations
  * for supporting flow through captured variables.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Boolean
 private import codeql.util.Unit

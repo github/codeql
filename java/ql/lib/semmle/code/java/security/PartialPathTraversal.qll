@@ -1,4 +1,6 @@
 /** Provides classes to reason about partial path traversal vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
