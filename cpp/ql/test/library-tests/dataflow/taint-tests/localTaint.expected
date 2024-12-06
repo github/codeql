@@ -606,8 +606,8 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:506:14:506:15 | call to CComBSTR | atl.cpp:509:5:509:6 | b9 |  |
 | atl.cpp:506:14:506:15 | call to CComBSTR | atl.cpp:512:10:512:11 | b9 |  |
 | atl.cpp:506:14:506:15 | call to CComBSTR | atl.cpp:513:3:513:3 | b9 |  |
-| atl.cpp:507:15:507:18 | safe | atl.cpp:509:21:509:24 | safe |  |
-| atl.cpp:507:15:507:18 | safe | atl.cpp:510:10:510:13 | safe |  |
+| atl.cpp:507:17:507:20 | safe | atl.cpp:509:21:509:24 | safe |  |
+| atl.cpp:507:17:507:20 | safe | atl.cpp:510:10:510:13 | safe |  |
 | atl.cpp:508:5:508:6 | ref arg b9 | atl.cpp:509:5:509:6 | b9 |  |
 | atl.cpp:508:5:508:6 | ref arg b9 | atl.cpp:512:10:512:11 | b9 |  |
 | atl.cpp:508:5:508:6 | ref arg b9 | atl.cpp:513:3:513:3 | b9 |  |

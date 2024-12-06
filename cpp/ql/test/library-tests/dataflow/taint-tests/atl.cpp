@@ -426,7 +426,7 @@ struct CComBSTR {
   HRESULT ArrayToBSTR(const SAFEARRAY* pSrc) throw();
   HRESULT AssignBSTR(const BSTR bstrSrc) throw();
   void Attach(BSTR src) throw();
-  HRESULT BSTRToArray(LPSAFEARRAY ppArray) throw();
+  HRESULT BSTRToArray(LPSAFEARRAY* ppArray) throw();
   unsigned int ByteLength() const throw();
   BSTR Copy() const throw();
   HRESULT CopyTo(BSTR* pbstr) throw();
@@ -504,10 +504,10 @@ void test_CComBSTR() {
     sink(b8.m_str); // $ ir
 
     CComBSTR b9;
-    SAFEARRAY safe;
+    LPSAFEARRAY safe;
     b9.Append(source<char>());
     b9.BSTRToArray(&safe);
-    sink(safe.pvData); // $ ir
+    sink(safe->pvData); // $ ir
 
     sink(b9.Copy()); // $ ir
   }

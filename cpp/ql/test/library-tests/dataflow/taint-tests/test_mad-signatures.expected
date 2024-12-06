@@ -613,7 +613,7 @@ getParameterTypeName
 | atl.cpp:426:11:426:21 | ArrayToBSTR | 0 | const SAFEARRAY * |
 | atl.cpp:427:11:427:20 | AssignBSTR | 0 | const BSTR |
 | atl.cpp:428:8:428:13 | Attach | 0 | BSTR |
-| atl.cpp:429:11:429:21 | BSTRToArray | 0 | LPSAFEARRAY |
+| atl.cpp:429:11:429:21 | BSTRToArray | 0 | LPSAFEARRAY * |
 | atl.cpp:432:11:432:16 | CopyTo | 0 | BSTR * |
 | atl.cpp:434:11:434:16 | CopyTo | 0 | VARIANT * |
 | atl.cpp:438:8:438:17 | LoadString | 0 | HINSTANCE |
