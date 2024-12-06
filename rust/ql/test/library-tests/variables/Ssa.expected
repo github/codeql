@@ -5,8 +5,8 @@ nonSsaVariable
 | variables.rs:379:13:379:13 | z |
 | variables.rs:392:13:392:13 | x |
 | variables.rs:426:13:426:13 | z |
-| variables.rs:492:13:492:13 | a |
-| variables.rs:520:11:520:11 | a |
+| variables.rs:501:13:501:13 | a |
+| variables.rs:538:11:538:11 | a |
 definition
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s |
 | variables.rs:7:14:7:14 | i | variables.rs:7:14:7:14 | i |
@@ -136,9 +136,15 @@ definition
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x |
 | variables.rs:482:15:482:23 | SelfParam | variables.rs:482:20:482:23 | self |
 | variables.rs:486:11:486:14 | SelfParam | variables.rs:486:11:486:14 | self |
-| variables.rs:501:9:501:9 | x | variables.rs:501:9:501:9 | x |
-| variables.rs:505:9:505:9 | z | variables.rs:505:9:505:9 | z |
-| variables.rs:514:10:514:18 | SelfParam | variables.rs:514:15:514:18 | self |
+| variables.rs:490:18:490:26 | SelfParam | variables.rs:490:23:490:26 | self |
+| variables.rs:491:13:491:17 | f | variables.rs:491:17:491:17 | f |
+| variables.rs:491:21:494:9 | <captured entry> self | variables.rs:490:23:490:26 | self |
+| variables.rs:491:22:491:22 | n | variables.rs:491:22:491:22 | n |
+| variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a |
+| variables.rs:514:5:514:5 | a | variables.rs:510:13:510:13 | a |
+| variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x |
+| variables.rs:523:9:523:9 | z | variables.rs:523:9:523:9 | z |
+| variables.rs:532:10:532:18 | SelfParam | variables.rs:532:15:532:18 | self |
 read
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s | variables.rs:4:20:4:20 | s |
 | variables.rs:7:14:7:14 | i | variables.rs:7:14:7:14 | i | variables.rs:8:20:8:20 | i |
@@ -262,8 +268,16 @@ read
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:472:19:472:19 | x |
 | variables.rs:482:15:482:23 | SelfParam | variables.rs:482:20:482:23 | self | variables.rs:483:16:483:19 | self |
 | variables.rs:486:11:486:14 | SelfParam | variables.rs:486:11:486:14 | self | variables.rs:487:9:487:12 | self |
-| variables.rs:501:9:501:9 | x | variables.rs:501:9:501:9 | x | variables.rs:503:15:503:15 | x |
-| variables.rs:514:10:514:18 | SelfParam | variables.rs:514:15:514:18 | self | variables.rs:515:6:515:9 | self |
+| variables.rs:491:13:491:17 | f | variables.rs:491:17:491:17 | f | variables.rs:495:9:495:9 | f |
+| variables.rs:491:13:491:17 | f | variables.rs:491:17:491:17 | f | variables.rs:496:9:496:9 | f |
+| variables.rs:491:21:494:9 | <captured entry> self | variables.rs:490:23:490:26 | self | variables.rs:493:13:493:16 | self |
+| variables.rs:491:22:491:22 | n | variables.rs:491:22:491:22 | n | variables.rs:493:25:493:25 | n |
+| variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:511:15:511:15 | a |
+| variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:512:5:512:5 | a |
+| variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:513:15:513:15 | a |
+| variables.rs:514:5:514:5 | a | variables.rs:510:13:510:13 | a | variables.rs:515:15:515:15 | a |
+| variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:521:15:521:15 | x |
+| variables.rs:532:10:532:18 | SelfParam | variables.rs:532:15:532:18 | self | variables.rs:533:6:533:9 | self |
 firstRead
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s | variables.rs:4:20:4:20 | s |
 | variables.rs:7:14:7:14 | i | variables.rs:7:14:7:14 | i | variables.rs:8:20:8:20 | i |
@@ -364,8 +378,13 @@ firstRead
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:466:19:466:19 | x |
 | variables.rs:482:15:482:23 | SelfParam | variables.rs:482:20:482:23 | self | variables.rs:483:16:483:19 | self |
 | variables.rs:486:11:486:14 | SelfParam | variables.rs:486:11:486:14 | self | variables.rs:487:9:487:12 | self |
-| variables.rs:501:9:501:9 | x | variables.rs:501:9:501:9 | x | variables.rs:503:15:503:15 | x |
-| variables.rs:514:10:514:18 | SelfParam | variables.rs:514:15:514:18 | self | variables.rs:515:6:515:9 | self |
+| variables.rs:491:13:491:17 | f | variables.rs:491:17:491:17 | f | variables.rs:495:9:495:9 | f |
+| variables.rs:491:21:494:9 | <captured entry> self | variables.rs:490:23:490:26 | self | variables.rs:493:13:493:16 | self |
+| variables.rs:491:22:491:22 | n | variables.rs:491:22:491:22 | n | variables.rs:493:25:493:25 | n |
+| variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:511:15:511:15 | a |
+| variables.rs:514:5:514:5 | a | variables.rs:510:13:510:13 | a | variables.rs:515:15:515:15 | a |
+| variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:521:15:521:15 | x |
+| variables.rs:532:10:532:18 | SelfParam | variables.rs:532:15:532:18 | self | variables.rs:533:6:533:9 | self |
 lastRead
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s | variables.rs:4:20:4:20 | s |
 | variables.rs:7:14:7:14 | i | variables.rs:7:14:7:14 | i | variables.rs:8:20:8:20 | i |
@@ -467,8 +486,13 @@ lastRead
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:472:19:472:19 | x |
 | variables.rs:482:15:482:23 | SelfParam | variables.rs:482:20:482:23 | self | variables.rs:483:16:483:19 | self |
 | variables.rs:486:11:486:14 | SelfParam | variables.rs:486:11:486:14 | self | variables.rs:487:9:487:12 | self |
-| variables.rs:501:9:501:9 | x | variables.rs:501:9:501:9 | x | variables.rs:503:15:503:15 | x |
-| variables.rs:514:10:514:18 | SelfParam | variables.rs:514:15:514:18 | self | variables.rs:515:6:515:9 | self |
+| variables.rs:491:13:491:17 | f | variables.rs:491:17:491:17 | f | variables.rs:496:9:496:9 | f |
+| variables.rs:491:21:494:9 | <captured entry> self | variables.rs:490:23:490:26 | self | variables.rs:493:13:493:16 | self |
+| variables.rs:491:22:491:22 | n | variables.rs:491:22:491:22 | n | variables.rs:493:25:493:25 | n |
+| variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:513:15:513:15 | a |
+| variables.rs:514:5:514:5 | a | variables.rs:510:13:510:13 | a | variables.rs:515:15:515:15 | a |
+| variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:521:15:521:15 | x |
+| variables.rs:532:10:532:18 | SelfParam | variables.rs:532:15:532:18 | self | variables.rs:533:6:533:9 | self |
 adjacentReads
 | variables.rs:35:9:35:10 | x3 | variables.rs:35:9:35:10 | x3 | variables.rs:36:15:36:16 | x3 | variables.rs:38:9:38:10 | x3 |
 | variables.rs:43:9:43:10 | x4 | variables.rs:43:9:43:10 | x4 | variables.rs:44:15:44:16 | x4 | variables.rs:49:15:49:16 | x4 |
@@ -496,6 +520,9 @@ adjacentReads
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:464:19:464:19 | x | variables.rs:472:19:472:19 | x |
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:466:19:466:19 | x | variables.rs:470:19:470:19 | x |
 | variables.rs:462:9:462:9 | x | variables.rs:462:9:462:9 | x | variables.rs:466:19:466:19 | x | variables.rs:472:19:472:19 | x |
+| variables.rs:491:13:491:17 | f | variables.rs:491:17:491:17 | f | variables.rs:495:9:495:9 | f | variables.rs:496:9:496:9 | f |
+| variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:511:15:511:15 | a | variables.rs:512:5:512:5 | a |
+| variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:512:5:512:5 | a | variables.rs:513:15:513:15 | a |
 phi
 | variables.rs:191:9:191:44 | [match(true)] phi | variables.rs:191:9:191:44 | a3 | variables.rs:191:22:191:23 | a3 |
 | variables.rs:191:9:191:44 | [match(true)] phi | variables.rs:191:9:191:44 | a3 | variables.rs:191:42:191:43 | a3 |
@@ -571,3 +598,4 @@ assigns
 | variables.rs:438:9:438:9 | i | variables.rs:438:13:438:13 | 1 |
 | variables.rs:450:9:450:9 | x | variables.rs:450:13:450:13 | 2 |
 | variables.rs:454:9:454:9 | x | variables.rs:454:13:454:13 | 3 |
+| variables.rs:514:5:514:5 | a | variables.rs:514:9:514:17 | [...] |

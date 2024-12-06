@@ -4,5 +4,5 @@
 
 import csharp
 
-where forall(Parameter p | p.isParams() | p.getType() instanceof ArrayType)
+where forall(Parameter p | p.isParams() and p.fromSource() | p.getType() instanceof ArrayType)
 select 1

@@ -16,6 +16,16 @@ fn test_identify() {
     sink(identity(s)); // $ hasValueFlow=1
 }
 
+// has a flow model
+fn coerce(_i: i64) -> i64 {
+    0
+}
+
+fn test_coerce() {
+    let s = source(14);
+    sink(coerce(s)); // $ hasTaintFlow=14
+}
+
 enum MyPosEnum {
     A(i64),
     B(i64),

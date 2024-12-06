@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from Path x
+from PathExpr x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getResolvedCrateOrigin()
+select x, x.getResolvedPath()

@@ -945,9 +945,9 @@ edges
 | variables.rs:428:24:430:5 | exit \|...\| ... (normal) | variables.rs:428:24:430:5 | exit \|...\| ... |  |
 | variables.rs:428:27:430:5 | { ... } | variables.rs:428:24:430:5 | exit \|...\| ... (normal) |  |
 | variables.rs:429:9:429:9 | z | variables.rs:429:22:429:22 | 1 |  |
-| variables.rs:429:9:429:23 | ... .add_assign(...) | variables.rs:428:27:430:5 | { ... } |  |
+| variables.rs:429:9:429:23 | z.add_assign(...) | variables.rs:428:27:430:5 | { ... } |  |
 | variables.rs:429:9:429:24 | ExprStmt | variables.rs:429:9:429:9 | z |  |
-| variables.rs:429:22:429:22 | 1 | variables.rs:429:9:429:23 | ... .add_assign(...) |  |
+| variables.rs:429:22:429:22 | 1 | variables.rs:429:9:429:23 | z.add_assign(...) |  |
 | variables.rs:431:5:431:12 | closure3 | variables.rs:431:5:431:14 | closure3(...) |  |
 | variables.rs:431:5:431:14 | closure3(...) | variables.rs:432:5:432:17 | ExprStmt |  |
 | variables.rs:431:5:431:15 | ExprStmt | variables.rs:431:5:431:12 | closure3 |  |
@@ -1084,195 +1084,261 @@ edges
 | variables.rs:486:11:486:14 | self | variables.rs:486:11:486:14 | SelfParam |  |
 | variables.rs:486:25:488:5 | { ... } | variables.rs:486:5:488:5 | exit fn id (normal) |  |
 | variables.rs:487:9:487:12 | self | variables.rs:486:25:488:5 | { ... } |  |
-| variables.rs:491:1:498:1 | enter fn structs | variables.rs:492:5:492:36 | let ... = ... |  |
-| variables.rs:491:1:498:1 | exit fn structs (normal) | variables.rs:491:1:498:1 | exit fn structs |  |
-| variables.rs:491:14:498:1 | { ... } | variables.rs:491:1:498:1 | exit fn structs (normal) |  |
-| variables.rs:492:5:492:36 | let ... = ... | variables.rs:492:33:492:33 | 1 |  |
-| variables.rs:492:9:492:13 | a | variables.rs:493:5:493:26 | ExprStmt | match |
-| variables.rs:492:17:492:35 | MyStruct {...} | variables.rs:492:9:492:13 | a |  |
-| variables.rs:492:33:492:33 | 1 | variables.rs:492:17:492:35 | MyStruct {...} |  |
-| variables.rs:493:5:493:13 | print_i64 | variables.rs:493:15:493:15 | a |  |
-| variables.rs:493:5:493:25 | print_i64(...) | variables.rs:494:5:494:14 | ExprStmt |  |
-| variables.rs:493:5:493:26 | ExprStmt | variables.rs:493:5:493:13 | print_i64 |  |
-| variables.rs:493:15:493:15 | a | variables.rs:493:15:493:24 | ... .my_get(...) |  |
-| variables.rs:493:15:493:24 | ... .my_get(...) | variables.rs:493:5:493:25 | print_i64(...) |  |
-| variables.rs:494:5:494:5 | a | variables.rs:494:5:494:9 | a.val |  |
-| variables.rs:494:5:494:9 | a.val | variables.rs:494:13:494:13 | 5 |  |
-| variables.rs:494:5:494:13 | ... = ... | variables.rs:495:5:495:26 | ExprStmt |  |
-| variables.rs:494:5:494:14 | ExprStmt | variables.rs:494:5:494:5 | a |  |
-| variables.rs:494:13:494:13 | 5 | variables.rs:494:5:494:13 | ... = ... |  |
-| variables.rs:495:5:495:13 | print_i64 | variables.rs:495:15:495:15 | a |  |
-| variables.rs:495:5:495:25 | print_i64(...) | variables.rs:496:5:496:28 | ExprStmt |  |
-| variables.rs:495:5:495:26 | ExprStmt | variables.rs:495:5:495:13 | print_i64 |  |
-| variables.rs:495:15:495:15 | a | variables.rs:495:15:495:24 | ... .my_get(...) |  |
-| variables.rs:495:15:495:24 | ... .my_get(...) | variables.rs:495:5:495:25 | print_i64(...) |  |
-| variables.rs:496:5:496:5 | a | variables.rs:496:25:496:25 | 2 |  |
-| variables.rs:496:5:496:27 | ... = ... | variables.rs:497:5:497:26 | ExprStmt |  |
-| variables.rs:496:5:496:28 | ExprStmt | variables.rs:496:5:496:5 | a |  |
-| variables.rs:496:9:496:27 | MyStruct {...} | variables.rs:496:5:496:27 | ... = ... |  |
-| variables.rs:496:25:496:25 | 2 | variables.rs:496:9:496:27 | MyStruct {...} |  |
-| variables.rs:497:5:497:13 | print_i64 | variables.rs:497:15:497:15 | a |  |
-| variables.rs:497:5:497:25 | print_i64(...) | variables.rs:491:14:498:1 | { ... } |  |
-| variables.rs:497:5:497:26 | ExprStmt | variables.rs:497:5:497:13 | print_i64 |  |
-| variables.rs:497:15:497:15 | a | variables.rs:497:15:497:24 | ... .my_get(...) |  |
-| variables.rs:497:15:497:24 | ... .my_get(...) | variables.rs:497:5:497:25 | print_i64(...) |  |
-| variables.rs:500:1:507:1 | enter fn ref_arg | variables.rs:501:5:501:15 | let ... = 16 |  |
-| variables.rs:500:1:507:1 | exit fn ref_arg (normal) | variables.rs:500:1:507:1 | exit fn ref_arg |  |
-| variables.rs:500:14:507:1 | { ... } | variables.rs:500:1:507:1 | exit fn ref_arg (normal) |  |
-| variables.rs:501:5:501:15 | let ... = 16 | variables.rs:501:13:501:14 | 16 |  |
-| variables.rs:501:9:501:9 | x | variables.rs:502:5:502:22 | ExprStmt | match |
-| variables.rs:501:13:501:14 | 16 | variables.rs:501:9:501:9 | x |  |
-| variables.rs:502:5:502:17 | print_i64_ref | variables.rs:502:20:502:20 | x |  |
-| variables.rs:502:5:502:21 | print_i64_ref(...) | variables.rs:503:5:503:17 | ExprStmt |  |
-| variables.rs:502:5:502:22 | ExprStmt | variables.rs:502:5:502:17 | print_i64_ref |  |
-| variables.rs:502:19:502:20 | &x | variables.rs:502:5:502:21 | print_i64_ref(...) |  |
-| variables.rs:502:20:502:20 | x | variables.rs:502:19:502:20 | &x |  |
-| variables.rs:503:5:503:13 | print_i64 | variables.rs:503:15:503:15 | x |  |
-| variables.rs:503:5:503:16 | print_i64(...) | variables.rs:505:5:505:15 | let ... = 17 |  |
-| variables.rs:503:5:503:17 | ExprStmt | variables.rs:503:5:503:13 | print_i64 |  |
-| variables.rs:503:15:503:15 | x | variables.rs:503:5:503:16 | print_i64(...) |  |
-| variables.rs:505:5:505:15 | let ... = 17 | variables.rs:505:13:505:14 | 17 |  |
-| variables.rs:505:9:505:9 | z | variables.rs:506:5:506:22 | ExprStmt | match |
-| variables.rs:505:13:505:14 | 17 | variables.rs:505:9:505:9 | z |  |
-| variables.rs:506:5:506:17 | print_i64_ref | variables.rs:506:20:506:20 | z |  |
-| variables.rs:506:5:506:21 | print_i64_ref(...) | variables.rs:500:14:507:1 | { ... } |  |
-| variables.rs:506:5:506:22 | ExprStmt | variables.rs:506:5:506:17 | print_i64_ref |  |
-| variables.rs:506:19:506:20 | &z | variables.rs:506:5:506:21 | print_i64_ref(...) |  |
-| variables.rs:506:20:506:20 | z | variables.rs:506:19:506:20 | &z |  |
-| variables.rs:514:3:516:3 | enter fn bar | variables.rs:514:15:514:18 | self |  |
-| variables.rs:514:3:516:3 | exit fn bar (normal) | variables.rs:514:3:516:3 | exit fn bar |  |
-| variables.rs:514:10:514:18 | SelfParam | variables.rs:515:5:515:32 | ExprStmt |  |
-| variables.rs:514:15:514:18 | self | variables.rs:514:10:514:18 | SelfParam |  |
-| variables.rs:514:21:516:3 | { ... } | variables.rs:514:3:516:3 | exit fn bar (normal) |  |
-| variables.rs:515:5:515:9 | * ... | variables.rs:515:29:515:29 | 3 |  |
-| variables.rs:515:5:515:31 | ... = ... | variables.rs:514:21:516:3 | { ... } |  |
-| variables.rs:515:5:515:32 | ExprStmt | variables.rs:515:6:515:9 | self |  |
-| variables.rs:515:6:515:9 | self | variables.rs:515:5:515:9 | * ... |  |
-| variables.rs:515:13:515:31 | MyStruct {...} | variables.rs:515:5:515:31 | ... = ... |  |
-| variables.rs:515:29:515:29 | 3 | variables.rs:515:13:515:31 | MyStruct {...} |  |
-| variables.rs:519:1:524:1 | enter fn ref_methodcall_receiver | variables.rs:520:3:520:34 | let ... = ... |  |
-| variables.rs:519:1:524:1 | exit fn ref_methodcall_receiver (normal) | variables.rs:519:1:524:1 | exit fn ref_methodcall_receiver |  |
-| variables.rs:519:30:524:1 | { ... } | variables.rs:519:1:524:1 | exit fn ref_methodcall_receiver (normal) |  |
-| variables.rs:520:3:520:34 | let ... = ... | variables.rs:520:31:520:31 | 1 |  |
-| variables.rs:520:7:520:11 | a | variables.rs:521:3:521:10 | ExprStmt | match |
-| variables.rs:520:15:520:33 | MyStruct {...} | variables.rs:520:7:520:11 | a |  |
-| variables.rs:520:31:520:31 | 1 | variables.rs:520:15:520:33 | MyStruct {...} |  |
-| variables.rs:521:3:521:3 | a | variables.rs:521:3:521:9 | ... .bar(...) |  |
-| variables.rs:521:3:521:9 | ... .bar(...) | variables.rs:523:3:523:19 | ExprStmt |  |
-| variables.rs:521:3:521:10 | ExprStmt | variables.rs:521:3:521:3 | a |  |
-| variables.rs:523:3:523:11 | print_i64 | variables.rs:523:13:523:13 | a |  |
-| variables.rs:523:3:523:18 | print_i64(...) | variables.rs:519:30:524:1 | { ... } |  |
-| variables.rs:523:3:523:19 | ExprStmt | variables.rs:523:3:523:11 | print_i64 |  |
-| variables.rs:523:13:523:13 | a | variables.rs:523:13:523:17 | a.val |  |
-| variables.rs:523:13:523:17 | a.val | variables.rs:523:3:523:18 | print_i64(...) |  |
-| variables.rs:526:1:560:1 | enter fn main | variables.rs:527:5:527:25 | ExprStmt |  |
-| variables.rs:526:1:560:1 | exit fn main (normal) | variables.rs:526:1:560:1 | exit fn main |  |
-| variables.rs:526:11:560:1 | { ... } | variables.rs:526:1:560:1 | exit fn main (normal) |  |
-| variables.rs:527:5:527:22 | immutable_variable | variables.rs:527:5:527:24 | immutable_variable(...) |  |
-| variables.rs:527:5:527:24 | immutable_variable(...) | variables.rs:528:5:528:23 | ExprStmt |  |
-| variables.rs:527:5:527:25 | ExprStmt | variables.rs:527:5:527:22 | immutable_variable |  |
-| variables.rs:528:5:528:20 | mutable_variable | variables.rs:528:5:528:22 | mutable_variable(...) |  |
-| variables.rs:528:5:528:22 | mutable_variable(...) | variables.rs:529:5:529:40 | ExprStmt |  |
-| variables.rs:528:5:528:23 | ExprStmt | variables.rs:528:5:528:20 | mutable_variable |  |
-| variables.rs:529:5:529:37 | mutable_variable_immutable_borrow | variables.rs:529:5:529:39 | mutable_variable_immutable_borrow(...) |  |
-| variables.rs:529:5:529:39 | mutable_variable_immutable_borrow(...) | variables.rs:530:5:530:23 | ExprStmt |  |
-| variables.rs:529:5:529:40 | ExprStmt | variables.rs:529:5:529:37 | mutable_variable_immutable_borrow |  |
-| variables.rs:530:5:530:20 | variable_shadow1 | variables.rs:530:5:530:22 | variable_shadow1(...) |  |
-| variables.rs:530:5:530:22 | variable_shadow1(...) | variables.rs:531:5:531:23 | ExprStmt |  |
-| variables.rs:530:5:530:23 | ExprStmt | variables.rs:530:5:530:20 | variable_shadow1 |  |
-| variables.rs:531:5:531:20 | variable_shadow2 | variables.rs:531:5:531:22 | variable_shadow2(...) |  |
-| variables.rs:531:5:531:22 | variable_shadow2(...) | variables.rs:532:5:532:19 | ExprStmt |  |
-| variables.rs:531:5:531:23 | ExprStmt | variables.rs:531:5:531:20 | variable_shadow2 |  |
-| variables.rs:532:5:532:16 | let_pattern1 | variables.rs:532:5:532:18 | let_pattern1(...) |  |
-| variables.rs:532:5:532:18 | let_pattern1(...) | variables.rs:533:5:533:19 | ExprStmt |  |
-| variables.rs:532:5:532:19 | ExprStmt | variables.rs:532:5:532:16 | let_pattern1 |  |
-| variables.rs:533:5:533:16 | let_pattern2 | variables.rs:533:5:533:18 | let_pattern2(...) |  |
-| variables.rs:533:5:533:18 | let_pattern2(...) | variables.rs:534:5:534:19 | ExprStmt |  |
-| variables.rs:533:5:533:19 | ExprStmt | variables.rs:533:5:533:16 | let_pattern2 |  |
-| variables.rs:534:5:534:16 | let_pattern3 | variables.rs:534:5:534:18 | let_pattern3(...) |  |
-| variables.rs:534:5:534:18 | let_pattern3(...) | variables.rs:535:5:535:19 | ExprStmt |  |
-| variables.rs:534:5:534:19 | ExprStmt | variables.rs:534:5:534:16 | let_pattern3 |  |
-| variables.rs:535:5:535:16 | let_pattern4 | variables.rs:535:5:535:18 | let_pattern4(...) |  |
-| variables.rs:535:5:535:18 | let_pattern4(...) | variables.rs:536:5:536:21 | ExprStmt |  |
-| variables.rs:535:5:535:19 | ExprStmt | variables.rs:535:5:535:16 | let_pattern4 |  |
-| variables.rs:536:5:536:18 | match_pattern1 | variables.rs:536:5:536:20 | match_pattern1(...) |  |
-| variables.rs:536:5:536:20 | match_pattern1(...) | variables.rs:537:5:537:21 | ExprStmt |  |
-| variables.rs:536:5:536:21 | ExprStmt | variables.rs:536:5:536:18 | match_pattern1 |  |
-| variables.rs:537:5:537:18 | match_pattern2 | variables.rs:537:5:537:20 | match_pattern2(...) |  |
-| variables.rs:537:5:537:20 | match_pattern2(...) | variables.rs:538:5:538:21 | ExprStmt |  |
-| variables.rs:537:5:537:21 | ExprStmt | variables.rs:537:5:537:18 | match_pattern2 |  |
-| variables.rs:538:5:538:18 | match_pattern3 | variables.rs:538:5:538:20 | match_pattern3(...) |  |
-| variables.rs:538:5:538:20 | match_pattern3(...) | variables.rs:539:5:539:21 | ExprStmt |  |
-| variables.rs:538:5:538:21 | ExprStmt | variables.rs:538:5:538:18 | match_pattern3 |  |
-| variables.rs:539:5:539:18 | match_pattern4 | variables.rs:539:5:539:20 | match_pattern4(...) |  |
-| variables.rs:539:5:539:20 | match_pattern4(...) | variables.rs:540:5:540:21 | ExprStmt |  |
-| variables.rs:539:5:539:21 | ExprStmt | variables.rs:539:5:539:18 | match_pattern4 |  |
-| variables.rs:540:5:540:18 | match_pattern5 | variables.rs:540:5:540:20 | match_pattern5(...) |  |
-| variables.rs:540:5:540:20 | match_pattern5(...) | variables.rs:541:5:541:21 | ExprStmt |  |
-| variables.rs:540:5:540:21 | ExprStmt | variables.rs:540:5:540:18 | match_pattern5 |  |
-| variables.rs:541:5:541:18 | match_pattern6 | variables.rs:541:5:541:20 | match_pattern6(...) |  |
-| variables.rs:541:5:541:20 | match_pattern6(...) | variables.rs:542:5:542:21 | ExprStmt |  |
-| variables.rs:541:5:541:21 | ExprStmt | variables.rs:541:5:541:18 | match_pattern6 |  |
-| variables.rs:542:5:542:18 | match_pattern7 | variables.rs:542:5:542:20 | match_pattern7(...) |  |
-| variables.rs:542:5:542:20 | match_pattern7(...) | variables.rs:543:5:543:21 | ExprStmt |  |
-| variables.rs:542:5:542:21 | ExprStmt | variables.rs:542:5:542:18 | match_pattern7 |  |
-| variables.rs:543:5:543:18 | match_pattern8 | variables.rs:543:5:543:20 | match_pattern8(...) |  |
-| variables.rs:543:5:543:20 | match_pattern8(...) | variables.rs:544:5:544:21 | ExprStmt |  |
-| variables.rs:543:5:543:21 | ExprStmt | variables.rs:543:5:543:18 | match_pattern8 |  |
-| variables.rs:544:5:544:18 | match_pattern9 | variables.rs:544:5:544:20 | match_pattern9(...) |  |
-| variables.rs:544:5:544:20 | match_pattern9(...) | variables.rs:545:5:545:36 | ExprStmt |  |
-| variables.rs:544:5:544:21 | ExprStmt | variables.rs:544:5:544:18 | match_pattern9 |  |
-| variables.rs:545:5:545:18 | param_pattern1 | variables.rs:545:20:545:22 | "a" |  |
-| variables.rs:545:5:545:35 | param_pattern1(...) | variables.rs:546:5:546:37 | ExprStmt |  |
-| variables.rs:545:5:545:36 | ExprStmt | variables.rs:545:5:545:18 | param_pattern1 |  |
-| variables.rs:545:20:545:22 | "a" | variables.rs:545:26:545:28 | "b" |  |
-| variables.rs:545:25:545:34 | TupleExpr | variables.rs:545:5:545:35 | param_pattern1(...) |  |
-| variables.rs:545:26:545:28 | "b" | variables.rs:545:31:545:33 | "c" |  |
-| variables.rs:545:31:545:33 | "c" | variables.rs:545:25:545:34 | TupleExpr |  |
-| variables.rs:546:5:546:18 | param_pattern2 | variables.rs:546:20:546:31 | ...::Left |  |
-| variables.rs:546:5:546:36 | param_pattern2(...) | variables.rs:547:5:547:26 | ExprStmt |  |
-| variables.rs:546:5:546:37 | ExprStmt | variables.rs:546:5:546:18 | param_pattern2 |  |
-| variables.rs:546:20:546:31 | ...::Left | variables.rs:546:33:546:34 | 45 |  |
-| variables.rs:546:20:546:35 | ...::Left(...) | variables.rs:546:5:546:36 | param_pattern2(...) |  |
-| variables.rs:546:33:546:34 | 45 | variables.rs:546:20:546:35 | ...::Left(...) |  |
-| variables.rs:547:5:547:23 | destruct_assignment | variables.rs:547:5:547:25 | destruct_assignment(...) |  |
-| variables.rs:547:5:547:25 | destruct_assignment(...) | variables.rs:548:5:548:23 | ExprStmt |  |
-| variables.rs:547:5:547:26 | ExprStmt | variables.rs:547:5:547:23 | destruct_assignment |  |
-| variables.rs:548:5:548:20 | closure_variable | variables.rs:548:5:548:22 | closure_variable(...) |  |
-| variables.rs:548:5:548:22 | closure_variable(...) | variables.rs:549:5:549:19 | ExprStmt |  |
-| variables.rs:548:5:548:23 | ExprStmt | variables.rs:548:5:548:20 | closure_variable |  |
-| variables.rs:549:5:549:16 | for_variable | variables.rs:549:5:549:18 | for_variable(...) |  |
-| variables.rs:549:5:549:18 | for_variable(...) | variables.rs:550:5:550:17 | ExprStmt |  |
-| variables.rs:549:5:549:19 | ExprStmt | variables.rs:549:5:549:16 | for_variable |  |
-| variables.rs:550:5:550:14 | add_assign | variables.rs:550:5:550:16 | add_assign(...) |  |
-| variables.rs:550:5:550:16 | add_assign(...) | variables.rs:551:5:551:13 | ExprStmt |  |
-| variables.rs:550:5:550:17 | ExprStmt | variables.rs:550:5:550:14 | add_assign |  |
-| variables.rs:551:5:551:10 | mutate | variables.rs:551:5:551:12 | mutate(...) |  |
-| variables.rs:551:5:551:12 | mutate(...) | variables.rs:552:5:552:17 | ExprStmt |  |
-| variables.rs:551:5:551:13 | ExprStmt | variables.rs:551:5:551:10 | mutate |  |
-| variables.rs:552:5:552:14 | mutate_arg | variables.rs:552:5:552:16 | mutate_arg(...) |  |
-| variables.rs:552:5:552:16 | mutate_arg(...) | variables.rs:553:5:553:12 | ExprStmt |  |
-| variables.rs:552:5:552:17 | ExprStmt | variables.rs:552:5:552:14 | mutate_arg |  |
-| variables.rs:553:5:553:9 | alias | variables.rs:553:5:553:11 | alias(...) |  |
-| variables.rs:553:5:553:11 | alias(...) | variables.rs:554:5:554:18 | ExprStmt |  |
-| variables.rs:553:5:553:12 | ExprStmt | variables.rs:553:5:553:9 | alias |  |
-| variables.rs:554:5:554:15 | capture_mut | variables.rs:554:5:554:17 | capture_mut(...) |  |
-| variables.rs:554:5:554:17 | capture_mut(...) | variables.rs:555:5:555:20 | ExprStmt |  |
-| variables.rs:554:5:554:18 | ExprStmt | variables.rs:554:5:554:15 | capture_mut |  |
-| variables.rs:555:5:555:17 | capture_immut | variables.rs:555:5:555:19 | capture_immut(...) |  |
-| variables.rs:555:5:555:19 | capture_immut(...) | variables.rs:556:5:556:26 | ExprStmt |  |
-| variables.rs:555:5:555:20 | ExprStmt | variables.rs:555:5:555:17 | capture_immut |  |
-| variables.rs:556:5:556:23 | async_block_capture | variables.rs:556:5:556:25 | async_block_capture(...) |  |
-| variables.rs:556:5:556:25 | async_block_capture(...) | variables.rs:557:5:557:14 | ExprStmt |  |
-| variables.rs:556:5:556:26 | ExprStmt | variables.rs:556:5:556:23 | async_block_capture |  |
-| variables.rs:557:5:557:11 | structs | variables.rs:557:5:557:13 | structs(...) |  |
-| variables.rs:557:5:557:13 | structs(...) | variables.rs:558:5:558:14 | ExprStmt |  |
-| variables.rs:557:5:557:14 | ExprStmt | variables.rs:557:5:557:11 | structs |  |
-| variables.rs:558:5:558:11 | ref_arg | variables.rs:558:5:558:13 | ref_arg(...) |  |
-| variables.rs:558:5:558:13 | ref_arg(...) | variables.rs:559:5:559:30 | ExprStmt |  |
-| variables.rs:558:5:558:14 | ExprStmt | variables.rs:558:5:558:11 | ref_arg |  |
-| variables.rs:559:5:559:27 | ref_methodcall_receiver | variables.rs:559:5:559:29 | ref_methodcall_receiver(...) |  |
-| variables.rs:559:5:559:29 | ref_methodcall_receiver(...) | variables.rs:526:11:560:1 | { ... } |  |
-| variables.rs:559:5:559:30 | ExprStmt | variables.rs:559:5:559:27 | ref_methodcall_receiver |  |
+| variables.rs:490:5:497:5 | enter fn my_method | variables.rs:490:23:490:26 | self |  |
+| variables.rs:490:5:497:5 | exit fn my_method (normal) | variables.rs:490:5:497:5 | exit fn my_method |  |
+| variables.rs:490:18:490:26 | SelfParam | variables.rs:491:9:494:10 | let ... = ... |  |
+| variables.rs:490:23:490:26 | self | variables.rs:490:18:490:26 | SelfParam |  |
+| variables.rs:490:29:497:5 | { ... } | variables.rs:490:5:497:5 | exit fn my_method (normal) |  |
+| variables.rs:491:9:494:10 | let ... = ... | variables.rs:491:21:494:9 | \|...\| ... |  |
+| variables.rs:491:13:491:17 | f | variables.rs:495:9:495:13 | ExprStmt | match |
+| variables.rs:491:21:494:9 | \|...\| ... | variables.rs:491:13:491:17 | f |  |
+| variables.rs:491:21:494:9 | enter \|...\| ... | variables.rs:491:22:491:22 | n |  |
+| variables.rs:491:21:494:9 | exit \|...\| ... (normal) | variables.rs:491:21:494:9 | exit \|...\| ... |  |
+| variables.rs:491:22:491:22 | ... | variables.rs:493:13:493:26 | ExprStmt |  |
+| variables.rs:491:22:491:22 | n | variables.rs:491:22:491:22 | ... | match |
+| variables.rs:491:25:494:9 | { ... } | variables.rs:491:21:494:9 | exit \|...\| ... (normal) |  |
+| variables.rs:493:13:493:16 | self | variables.rs:493:13:493:20 | self.val |  |
+| variables.rs:493:13:493:20 | self.val | variables.rs:493:25:493:25 | n |  |
+| variables.rs:493:13:493:25 | ... += ... | variables.rs:491:25:494:9 | { ... } |  |
+| variables.rs:493:13:493:26 | ExprStmt | variables.rs:493:13:493:16 | self |  |
+| variables.rs:493:25:493:25 | n | variables.rs:493:13:493:25 | ... += ... |  |
+| variables.rs:495:9:495:9 | f | variables.rs:495:11:495:11 | 3 |  |
+| variables.rs:495:9:495:12 | f(...) | variables.rs:496:9:496:13 | ExprStmt |  |
+| variables.rs:495:9:495:13 | ExprStmt | variables.rs:495:9:495:9 | f |  |
+| variables.rs:495:11:495:11 | 3 | variables.rs:495:9:495:12 | f(...) |  |
+| variables.rs:496:9:496:9 | f | variables.rs:496:11:496:11 | 4 |  |
+| variables.rs:496:9:496:12 | f(...) | variables.rs:490:29:497:5 | { ... } |  |
+| variables.rs:496:9:496:13 | ExprStmt | variables.rs:496:9:496:9 | f |  |
+| variables.rs:496:11:496:11 | 4 | variables.rs:496:9:496:12 | f(...) |  |
+| variables.rs:500:1:507:1 | enter fn structs | variables.rs:501:5:501:36 | let ... = ... |  |
+| variables.rs:500:1:507:1 | exit fn structs (normal) | variables.rs:500:1:507:1 | exit fn structs |  |
+| variables.rs:500:14:507:1 | { ... } | variables.rs:500:1:507:1 | exit fn structs (normal) |  |
+| variables.rs:501:5:501:36 | let ... = ... | variables.rs:501:33:501:33 | 1 |  |
+| variables.rs:501:9:501:13 | a | variables.rs:502:5:502:26 | ExprStmt | match |
+| variables.rs:501:17:501:35 | MyStruct {...} | variables.rs:501:9:501:13 | a |  |
+| variables.rs:501:33:501:33 | 1 | variables.rs:501:17:501:35 | MyStruct {...} |  |
+| variables.rs:502:5:502:13 | print_i64 | variables.rs:502:15:502:15 | a |  |
+| variables.rs:502:5:502:25 | print_i64(...) | variables.rs:503:5:503:14 | ExprStmt |  |
+| variables.rs:502:5:502:26 | ExprStmt | variables.rs:502:5:502:13 | print_i64 |  |
+| variables.rs:502:15:502:15 | a | variables.rs:502:15:502:24 | a.my_get(...) |  |
+| variables.rs:502:15:502:24 | a.my_get(...) | variables.rs:502:5:502:25 | print_i64(...) |  |
+| variables.rs:503:5:503:5 | a | variables.rs:503:5:503:9 | a.val |  |
+| variables.rs:503:5:503:9 | a.val | variables.rs:503:13:503:13 | 5 |  |
+| variables.rs:503:5:503:13 | ... = ... | variables.rs:504:5:504:26 | ExprStmt |  |
+| variables.rs:503:5:503:14 | ExprStmt | variables.rs:503:5:503:5 | a |  |
+| variables.rs:503:13:503:13 | 5 | variables.rs:503:5:503:13 | ... = ... |  |
+| variables.rs:504:5:504:13 | print_i64 | variables.rs:504:15:504:15 | a |  |
+| variables.rs:504:5:504:25 | print_i64(...) | variables.rs:505:5:505:28 | ExprStmt |  |
+| variables.rs:504:5:504:26 | ExprStmt | variables.rs:504:5:504:13 | print_i64 |  |
+| variables.rs:504:15:504:15 | a | variables.rs:504:15:504:24 | a.my_get(...) |  |
+| variables.rs:504:15:504:24 | a.my_get(...) | variables.rs:504:5:504:25 | print_i64(...) |  |
+| variables.rs:505:5:505:5 | a | variables.rs:505:25:505:25 | 2 |  |
+| variables.rs:505:5:505:27 | ... = ... | variables.rs:506:5:506:26 | ExprStmt |  |
+| variables.rs:505:5:505:28 | ExprStmt | variables.rs:505:5:505:5 | a |  |
+| variables.rs:505:9:505:27 | MyStruct {...} | variables.rs:505:5:505:27 | ... = ... |  |
+| variables.rs:505:25:505:25 | 2 | variables.rs:505:9:505:27 | MyStruct {...} |  |
+| variables.rs:506:5:506:13 | print_i64 | variables.rs:506:15:506:15 | a |  |
+| variables.rs:506:5:506:25 | print_i64(...) | variables.rs:500:14:507:1 | { ... } |  |
+| variables.rs:506:5:506:26 | ExprStmt | variables.rs:506:5:506:13 | print_i64 |  |
+| variables.rs:506:15:506:15 | a | variables.rs:506:15:506:24 | a.my_get(...) |  |
+| variables.rs:506:15:506:24 | a.my_get(...) | variables.rs:506:5:506:25 | print_i64(...) |  |
+| variables.rs:509:1:516:1 | enter fn arrays | variables.rs:510:5:510:26 | let ... = ... |  |
+| variables.rs:509:1:516:1 | exit fn arrays (normal) | variables.rs:509:1:516:1 | exit fn arrays |  |
+| variables.rs:509:13:516:1 | { ... } | variables.rs:509:1:516:1 | exit fn arrays (normal) |  |
+| variables.rs:510:5:510:26 | let ... = ... | variables.rs:510:18:510:18 | 1 |  |
+| variables.rs:510:9:510:13 | a | variables.rs:511:5:511:20 | ExprStmt | match |
+| variables.rs:510:17:510:25 | [...] | variables.rs:510:9:510:13 | a |  |
+| variables.rs:510:18:510:18 | 1 | variables.rs:510:21:510:21 | 2 |  |
+| variables.rs:510:21:510:21 | 2 | variables.rs:510:24:510:24 | 3 |  |
+| variables.rs:510:24:510:24 | 3 | variables.rs:510:17:510:25 | [...] |  |
+| variables.rs:511:5:511:13 | print_i64 | variables.rs:511:15:511:15 | a |  |
+| variables.rs:511:5:511:19 | print_i64(...) | variables.rs:512:5:512:13 | ExprStmt |  |
+| variables.rs:511:5:511:20 | ExprStmt | variables.rs:511:5:511:13 | print_i64 |  |
+| variables.rs:511:15:511:15 | a | variables.rs:511:17:511:17 | 0 |  |
+| variables.rs:511:15:511:18 | a[0] | variables.rs:511:5:511:19 | print_i64(...) |  |
+| variables.rs:511:17:511:17 | 0 | variables.rs:511:15:511:18 | a[0] |  |
+| variables.rs:512:5:512:5 | a | variables.rs:512:7:512:7 | 1 |  |
+| variables.rs:512:5:512:8 | a[1] | variables.rs:512:12:512:12 | 5 |  |
+| variables.rs:512:5:512:12 | ... = ... | variables.rs:513:5:513:20 | ExprStmt |  |
+| variables.rs:512:5:512:13 | ExprStmt | variables.rs:512:5:512:5 | a |  |
+| variables.rs:512:7:512:7 | 1 | variables.rs:512:5:512:8 | a[1] |  |
+| variables.rs:512:12:512:12 | 5 | variables.rs:512:5:512:12 | ... = ... |  |
+| variables.rs:513:5:513:13 | print_i64 | variables.rs:513:15:513:15 | a |  |
+| variables.rs:513:5:513:19 | print_i64(...) | variables.rs:514:5:514:18 | ExprStmt |  |
+| variables.rs:513:5:513:20 | ExprStmt | variables.rs:513:5:513:13 | print_i64 |  |
+| variables.rs:513:15:513:15 | a | variables.rs:513:17:513:17 | 1 |  |
+| variables.rs:513:15:513:18 | a[1] | variables.rs:513:5:513:19 | print_i64(...) |  |
+| variables.rs:513:17:513:17 | 1 | variables.rs:513:15:513:18 | a[1] |  |
+| variables.rs:514:5:514:5 | a | variables.rs:514:10:514:10 | 4 |  |
+| variables.rs:514:5:514:17 | ... = ... | variables.rs:515:5:515:20 | ExprStmt |  |
+| variables.rs:514:5:514:18 | ExprStmt | variables.rs:514:5:514:5 | a |  |
+| variables.rs:514:9:514:17 | [...] | variables.rs:514:5:514:17 | ... = ... |  |
+| variables.rs:514:10:514:10 | 4 | variables.rs:514:13:514:13 | 5 |  |
+| variables.rs:514:13:514:13 | 5 | variables.rs:514:16:514:16 | 6 |  |
+| variables.rs:514:16:514:16 | 6 | variables.rs:514:9:514:17 | [...] |  |
+| variables.rs:515:5:515:13 | print_i64 | variables.rs:515:15:515:15 | a |  |
+| variables.rs:515:5:515:19 | print_i64(...) | variables.rs:509:13:516:1 | { ... } |  |
+| variables.rs:515:5:515:20 | ExprStmt | variables.rs:515:5:515:13 | print_i64 |  |
+| variables.rs:515:15:515:15 | a | variables.rs:515:17:515:17 | 2 |  |
+| variables.rs:515:15:515:18 | a[2] | variables.rs:515:5:515:19 | print_i64(...) |  |
+| variables.rs:515:17:515:17 | 2 | variables.rs:515:15:515:18 | a[2] |  |
+| variables.rs:518:1:525:1 | enter fn ref_arg | variables.rs:519:5:519:15 | let ... = 16 |  |
+| variables.rs:518:1:525:1 | exit fn ref_arg (normal) | variables.rs:518:1:525:1 | exit fn ref_arg |  |
+| variables.rs:518:14:525:1 | { ... } | variables.rs:518:1:525:1 | exit fn ref_arg (normal) |  |
+| variables.rs:519:5:519:15 | let ... = 16 | variables.rs:519:13:519:14 | 16 |  |
+| variables.rs:519:9:519:9 | x | variables.rs:520:5:520:22 | ExprStmt | match |
+| variables.rs:519:13:519:14 | 16 | variables.rs:519:9:519:9 | x |  |
+| variables.rs:520:5:520:17 | print_i64_ref | variables.rs:520:20:520:20 | x |  |
+| variables.rs:520:5:520:21 | print_i64_ref(...) | variables.rs:521:5:521:17 | ExprStmt |  |
+| variables.rs:520:5:520:22 | ExprStmt | variables.rs:520:5:520:17 | print_i64_ref |  |
+| variables.rs:520:19:520:20 | &x | variables.rs:520:5:520:21 | print_i64_ref(...) |  |
+| variables.rs:520:20:520:20 | x | variables.rs:520:19:520:20 | &x |  |
+| variables.rs:521:5:521:13 | print_i64 | variables.rs:521:15:521:15 | x |  |
+| variables.rs:521:5:521:16 | print_i64(...) | variables.rs:523:5:523:15 | let ... = 17 |  |
+| variables.rs:521:5:521:17 | ExprStmt | variables.rs:521:5:521:13 | print_i64 |  |
+| variables.rs:521:15:521:15 | x | variables.rs:521:5:521:16 | print_i64(...) |  |
+| variables.rs:523:5:523:15 | let ... = 17 | variables.rs:523:13:523:14 | 17 |  |
+| variables.rs:523:9:523:9 | z | variables.rs:524:5:524:22 | ExprStmt | match |
+| variables.rs:523:13:523:14 | 17 | variables.rs:523:9:523:9 | z |  |
+| variables.rs:524:5:524:17 | print_i64_ref | variables.rs:524:20:524:20 | z |  |
+| variables.rs:524:5:524:21 | print_i64_ref(...) | variables.rs:518:14:525:1 | { ... } |  |
+| variables.rs:524:5:524:22 | ExprStmt | variables.rs:524:5:524:17 | print_i64_ref |  |
+| variables.rs:524:19:524:20 | &z | variables.rs:524:5:524:21 | print_i64_ref(...) |  |
+| variables.rs:524:20:524:20 | z | variables.rs:524:19:524:20 | &z |  |
+| variables.rs:532:3:534:3 | enter fn bar | variables.rs:532:15:532:18 | self |  |
+| variables.rs:532:3:534:3 | exit fn bar (normal) | variables.rs:532:3:534:3 | exit fn bar |  |
+| variables.rs:532:10:532:18 | SelfParam | variables.rs:533:5:533:32 | ExprStmt |  |
+| variables.rs:532:15:532:18 | self | variables.rs:532:10:532:18 | SelfParam |  |
+| variables.rs:532:21:534:3 | { ... } | variables.rs:532:3:534:3 | exit fn bar (normal) |  |
+| variables.rs:533:5:533:9 | * ... | variables.rs:533:29:533:29 | 3 |  |
+| variables.rs:533:5:533:31 | ... = ... | variables.rs:532:21:534:3 | { ... } |  |
+| variables.rs:533:5:533:32 | ExprStmt | variables.rs:533:6:533:9 | self |  |
+| variables.rs:533:6:533:9 | self | variables.rs:533:5:533:9 | * ... |  |
+| variables.rs:533:13:533:31 | MyStruct {...} | variables.rs:533:5:533:31 | ... = ... |  |
+| variables.rs:533:29:533:29 | 3 | variables.rs:533:13:533:31 | MyStruct {...} |  |
+| variables.rs:537:1:542:1 | enter fn ref_methodcall_receiver | variables.rs:538:3:538:34 | let ... = ... |  |
+| variables.rs:537:1:542:1 | exit fn ref_methodcall_receiver (normal) | variables.rs:537:1:542:1 | exit fn ref_methodcall_receiver |  |
+| variables.rs:537:30:542:1 | { ... } | variables.rs:537:1:542:1 | exit fn ref_methodcall_receiver (normal) |  |
+| variables.rs:538:3:538:34 | let ... = ... | variables.rs:538:31:538:31 | 1 |  |
+| variables.rs:538:7:538:11 | a | variables.rs:539:3:539:10 | ExprStmt | match |
+| variables.rs:538:15:538:33 | MyStruct {...} | variables.rs:538:7:538:11 | a |  |
+| variables.rs:538:31:538:31 | 1 | variables.rs:538:15:538:33 | MyStruct {...} |  |
+| variables.rs:539:3:539:3 | a | variables.rs:539:3:539:9 | a.bar(...) |  |
+| variables.rs:539:3:539:9 | a.bar(...) | variables.rs:541:3:541:19 | ExprStmt |  |
+| variables.rs:539:3:539:10 | ExprStmt | variables.rs:539:3:539:3 | a |  |
+| variables.rs:541:3:541:11 | print_i64 | variables.rs:541:13:541:13 | a |  |
+| variables.rs:541:3:541:18 | print_i64(...) | variables.rs:537:30:542:1 | { ... } |  |
+| variables.rs:541:3:541:19 | ExprStmt | variables.rs:541:3:541:11 | print_i64 |  |
+| variables.rs:541:13:541:13 | a | variables.rs:541:13:541:17 | a.val |  |
+| variables.rs:541:13:541:17 | a.val | variables.rs:541:3:541:18 | print_i64(...) |  |
+| variables.rs:544:1:578:1 | enter fn main | variables.rs:545:5:545:25 | ExprStmt |  |
+| variables.rs:544:1:578:1 | exit fn main (normal) | variables.rs:544:1:578:1 | exit fn main |  |
+| variables.rs:544:11:578:1 | { ... } | variables.rs:544:1:578:1 | exit fn main (normal) |  |
+| variables.rs:545:5:545:22 | immutable_variable | variables.rs:545:5:545:24 | immutable_variable(...) |  |
+| variables.rs:545:5:545:24 | immutable_variable(...) | variables.rs:546:5:546:23 | ExprStmt |  |
+| variables.rs:545:5:545:25 | ExprStmt | variables.rs:545:5:545:22 | immutable_variable |  |
+| variables.rs:546:5:546:20 | mutable_variable | variables.rs:546:5:546:22 | mutable_variable(...) |  |
+| variables.rs:546:5:546:22 | mutable_variable(...) | variables.rs:547:5:547:40 | ExprStmt |  |
+| variables.rs:546:5:546:23 | ExprStmt | variables.rs:546:5:546:20 | mutable_variable |  |
+| variables.rs:547:5:547:37 | mutable_variable_immutable_borrow | variables.rs:547:5:547:39 | mutable_variable_immutable_borrow(...) |  |
+| variables.rs:547:5:547:39 | mutable_variable_immutable_borrow(...) | variables.rs:548:5:548:23 | ExprStmt |  |
+| variables.rs:547:5:547:40 | ExprStmt | variables.rs:547:5:547:37 | mutable_variable_immutable_borrow |  |
+| variables.rs:548:5:548:20 | variable_shadow1 | variables.rs:548:5:548:22 | variable_shadow1(...) |  |
+| variables.rs:548:5:548:22 | variable_shadow1(...) | variables.rs:549:5:549:23 | ExprStmt |  |
+| variables.rs:548:5:548:23 | ExprStmt | variables.rs:548:5:548:20 | variable_shadow1 |  |
+| variables.rs:549:5:549:20 | variable_shadow2 | variables.rs:549:5:549:22 | variable_shadow2(...) |  |
+| variables.rs:549:5:549:22 | variable_shadow2(...) | variables.rs:550:5:550:19 | ExprStmt |  |
+| variables.rs:549:5:549:23 | ExprStmt | variables.rs:549:5:549:20 | variable_shadow2 |  |
+| variables.rs:550:5:550:16 | let_pattern1 | variables.rs:550:5:550:18 | let_pattern1(...) |  |
+| variables.rs:550:5:550:18 | let_pattern1(...) | variables.rs:551:5:551:19 | ExprStmt |  |
+| variables.rs:550:5:550:19 | ExprStmt | variables.rs:550:5:550:16 | let_pattern1 |  |
+| variables.rs:551:5:551:16 | let_pattern2 | variables.rs:551:5:551:18 | let_pattern2(...) |  |
+| variables.rs:551:5:551:18 | let_pattern2(...) | variables.rs:552:5:552:19 | ExprStmt |  |
+| variables.rs:551:5:551:19 | ExprStmt | variables.rs:551:5:551:16 | let_pattern2 |  |
+| variables.rs:552:5:552:16 | let_pattern3 | variables.rs:552:5:552:18 | let_pattern3(...) |  |
+| variables.rs:552:5:552:18 | let_pattern3(...) | variables.rs:553:5:553:19 | ExprStmt |  |
+| variables.rs:552:5:552:19 | ExprStmt | variables.rs:552:5:552:16 | let_pattern3 |  |
+| variables.rs:553:5:553:16 | let_pattern4 | variables.rs:553:5:553:18 | let_pattern4(...) |  |
+| variables.rs:553:5:553:18 | let_pattern4(...) | variables.rs:554:5:554:21 | ExprStmt |  |
+| variables.rs:553:5:553:19 | ExprStmt | variables.rs:553:5:553:16 | let_pattern4 |  |
+| variables.rs:554:5:554:18 | match_pattern1 | variables.rs:554:5:554:20 | match_pattern1(...) |  |
+| variables.rs:554:5:554:20 | match_pattern1(...) | variables.rs:555:5:555:21 | ExprStmt |  |
+| variables.rs:554:5:554:21 | ExprStmt | variables.rs:554:5:554:18 | match_pattern1 |  |
+| variables.rs:555:5:555:18 | match_pattern2 | variables.rs:555:5:555:20 | match_pattern2(...) |  |
+| variables.rs:555:5:555:20 | match_pattern2(...) | variables.rs:556:5:556:21 | ExprStmt |  |
+| variables.rs:555:5:555:21 | ExprStmt | variables.rs:555:5:555:18 | match_pattern2 |  |
+| variables.rs:556:5:556:18 | match_pattern3 | variables.rs:556:5:556:20 | match_pattern3(...) |  |
+| variables.rs:556:5:556:20 | match_pattern3(...) | variables.rs:557:5:557:21 | ExprStmt |  |
+| variables.rs:556:5:556:21 | ExprStmt | variables.rs:556:5:556:18 | match_pattern3 |  |
+| variables.rs:557:5:557:18 | match_pattern4 | variables.rs:557:5:557:20 | match_pattern4(...) |  |
+| variables.rs:557:5:557:20 | match_pattern4(...) | variables.rs:558:5:558:21 | ExprStmt |  |
+| variables.rs:557:5:557:21 | ExprStmt | variables.rs:557:5:557:18 | match_pattern4 |  |
+| variables.rs:558:5:558:18 | match_pattern5 | variables.rs:558:5:558:20 | match_pattern5(...) |  |
+| variables.rs:558:5:558:20 | match_pattern5(...) | variables.rs:559:5:559:21 | ExprStmt |  |
+| variables.rs:558:5:558:21 | ExprStmt | variables.rs:558:5:558:18 | match_pattern5 |  |
+| variables.rs:559:5:559:18 | match_pattern6 | variables.rs:559:5:559:20 | match_pattern6(...) |  |
+| variables.rs:559:5:559:20 | match_pattern6(...) | variables.rs:560:5:560:21 | ExprStmt |  |
+| variables.rs:559:5:559:21 | ExprStmt | variables.rs:559:5:559:18 | match_pattern6 |  |
+| variables.rs:560:5:560:18 | match_pattern7 | variables.rs:560:5:560:20 | match_pattern7(...) |  |
+| variables.rs:560:5:560:20 | match_pattern7(...) | variables.rs:561:5:561:21 | ExprStmt |  |
+| variables.rs:560:5:560:21 | ExprStmt | variables.rs:560:5:560:18 | match_pattern7 |  |
+| variables.rs:561:5:561:18 | match_pattern8 | variables.rs:561:5:561:20 | match_pattern8(...) |  |
+| variables.rs:561:5:561:20 | match_pattern8(...) | variables.rs:562:5:562:21 | ExprStmt |  |
+| variables.rs:561:5:561:21 | ExprStmt | variables.rs:561:5:561:18 | match_pattern8 |  |
+| variables.rs:562:5:562:18 | match_pattern9 | variables.rs:562:5:562:20 | match_pattern9(...) |  |
+| variables.rs:562:5:562:20 | match_pattern9(...) | variables.rs:563:5:563:36 | ExprStmt |  |
+| variables.rs:562:5:562:21 | ExprStmt | variables.rs:562:5:562:18 | match_pattern9 |  |
+| variables.rs:563:5:563:18 | param_pattern1 | variables.rs:563:20:563:22 | "a" |  |
+| variables.rs:563:5:563:35 | param_pattern1(...) | variables.rs:564:5:564:37 | ExprStmt |  |
+| variables.rs:563:5:563:36 | ExprStmt | variables.rs:563:5:563:18 | param_pattern1 |  |
+| variables.rs:563:20:563:22 | "a" | variables.rs:563:26:563:28 | "b" |  |
+| variables.rs:563:25:563:34 | TupleExpr | variables.rs:563:5:563:35 | param_pattern1(...) |  |
+| variables.rs:563:26:563:28 | "b" | variables.rs:563:31:563:33 | "c" |  |
+| variables.rs:563:31:563:33 | "c" | variables.rs:563:25:563:34 | TupleExpr |  |
+| variables.rs:564:5:564:18 | param_pattern2 | variables.rs:564:20:564:31 | ...::Left |  |
+| variables.rs:564:5:564:36 | param_pattern2(...) | variables.rs:565:5:565:26 | ExprStmt |  |
+| variables.rs:564:5:564:37 | ExprStmt | variables.rs:564:5:564:18 | param_pattern2 |  |
+| variables.rs:564:20:564:31 | ...::Left | variables.rs:564:33:564:34 | 45 |  |
+| variables.rs:564:20:564:35 | ...::Left(...) | variables.rs:564:5:564:36 | param_pattern2(...) |  |
+| variables.rs:564:33:564:34 | 45 | variables.rs:564:20:564:35 | ...::Left(...) |  |
+| variables.rs:565:5:565:23 | destruct_assignment | variables.rs:565:5:565:25 | destruct_assignment(...) |  |
+| variables.rs:565:5:565:25 | destruct_assignment(...) | variables.rs:566:5:566:23 | ExprStmt |  |
+| variables.rs:565:5:565:26 | ExprStmt | variables.rs:565:5:565:23 | destruct_assignment |  |
+| variables.rs:566:5:566:20 | closure_variable | variables.rs:566:5:566:22 | closure_variable(...) |  |
+| variables.rs:566:5:566:22 | closure_variable(...) | variables.rs:567:5:567:19 | ExprStmt |  |
+| variables.rs:566:5:566:23 | ExprStmt | variables.rs:566:5:566:20 | closure_variable |  |
+| variables.rs:567:5:567:16 | for_variable | variables.rs:567:5:567:18 | for_variable(...) |  |
+| variables.rs:567:5:567:18 | for_variable(...) | variables.rs:568:5:568:17 | ExprStmt |  |
+| variables.rs:567:5:567:19 | ExprStmt | variables.rs:567:5:567:16 | for_variable |  |
+| variables.rs:568:5:568:14 | add_assign | variables.rs:568:5:568:16 | add_assign(...) |  |
+| variables.rs:568:5:568:16 | add_assign(...) | variables.rs:569:5:569:13 | ExprStmt |  |
+| variables.rs:568:5:568:17 | ExprStmt | variables.rs:568:5:568:14 | add_assign |  |
+| variables.rs:569:5:569:10 | mutate | variables.rs:569:5:569:12 | mutate(...) |  |
+| variables.rs:569:5:569:12 | mutate(...) | variables.rs:570:5:570:17 | ExprStmt |  |
+| variables.rs:569:5:569:13 | ExprStmt | variables.rs:569:5:569:10 | mutate |  |
+| variables.rs:570:5:570:14 | mutate_arg | variables.rs:570:5:570:16 | mutate_arg(...) |  |
+| variables.rs:570:5:570:16 | mutate_arg(...) | variables.rs:571:5:571:12 | ExprStmt |  |
+| variables.rs:570:5:570:17 | ExprStmt | variables.rs:570:5:570:14 | mutate_arg |  |
+| variables.rs:571:5:571:9 | alias | variables.rs:571:5:571:11 | alias(...) |  |
+| variables.rs:571:5:571:11 | alias(...) | variables.rs:572:5:572:18 | ExprStmt |  |
+| variables.rs:571:5:571:12 | ExprStmt | variables.rs:571:5:571:9 | alias |  |
+| variables.rs:572:5:572:15 | capture_mut | variables.rs:572:5:572:17 | capture_mut(...) |  |
+| variables.rs:572:5:572:17 | capture_mut(...) | variables.rs:573:5:573:20 | ExprStmt |  |
+| variables.rs:572:5:572:18 | ExprStmt | variables.rs:572:5:572:15 | capture_mut |  |
+| variables.rs:573:5:573:17 | capture_immut | variables.rs:573:5:573:19 | capture_immut(...) |  |
+| variables.rs:573:5:573:19 | capture_immut(...) | variables.rs:574:5:574:26 | ExprStmt |  |
+| variables.rs:573:5:573:20 | ExprStmt | variables.rs:573:5:573:17 | capture_immut |  |
+| variables.rs:574:5:574:23 | async_block_capture | variables.rs:574:5:574:25 | async_block_capture(...) |  |
+| variables.rs:574:5:574:25 | async_block_capture(...) | variables.rs:575:5:575:14 | ExprStmt |  |
+| variables.rs:574:5:574:26 | ExprStmt | variables.rs:574:5:574:23 | async_block_capture |  |
+| variables.rs:575:5:575:11 | structs | variables.rs:575:5:575:13 | structs(...) |  |
+| variables.rs:575:5:575:13 | structs(...) | variables.rs:576:5:576:14 | ExprStmt |  |
+| variables.rs:575:5:575:14 | ExprStmt | variables.rs:575:5:575:11 | structs |  |
+| variables.rs:576:5:576:11 | ref_arg | variables.rs:576:5:576:13 | ref_arg(...) |  |
+| variables.rs:576:5:576:13 | ref_arg(...) | variables.rs:577:5:577:30 | ExprStmt |  |
+| variables.rs:576:5:576:14 | ExprStmt | variables.rs:576:5:576:11 | ref_arg |  |
+| variables.rs:577:5:577:27 | ref_methodcall_receiver | variables.rs:577:5:577:29 | ref_methodcall_receiver(...) |  |
+| variables.rs:577:5:577:29 | ref_methodcall_receiver(...) | variables.rs:544:11:578:1 | { ... } |  |
+| variables.rs:577:5:577:30 | ExprStmt | variables.rs:577:5:577:27 | ref_methodcall_receiver |  |
 breakTarget
 continueTarget

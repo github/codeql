@@ -14,7 +14,7 @@ using System;
 /// </summary>
 public class Testrunner
 {
-    private static readonly object ConsoleLock = new();
+    private static readonly Lock ConsoleLock = new();
 
     private static readonly ManualResetEvent Finished = new(false);
 

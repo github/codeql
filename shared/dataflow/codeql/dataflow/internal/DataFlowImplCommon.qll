@@ -891,6 +891,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       nodeDataFlowType(this.asNode(), result)
       or
       nodeDataFlowType(this.asParamReturnNode(), result)
+      or
+      isTopType(result) and this.isImplicitReadNode(_)
     }
 
     pragma[inline]

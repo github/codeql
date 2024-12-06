@@ -330,7 +330,54 @@ fn custom_record_enum_pattern_match_unqualified() {
 }
 
 // -----------------------------------------------------------------------------
-// Data flow through closures
+// Data flow through arrays
+
+fn array_lookup() {
+    let arr1 = [1, 2, source(94)];
+    let n1 = arr1[2];
+    sink(n1); // $ hasValueFlow=94
+
+    let arr2 = [source(20); 10];
+    let n2 = arr2[4];
+    sink(n2); // $ hasValueFlow=20
+
+    let arr3 = [1, 2, 3];
+    let n3 = arr3[2];
+    sink(n3);
+}
+
+fn array_for_loop() {
+    let arr1 = [1, 2, source(43)];
+    for n1 in arr1 {
+        sink(n1); // $ hasValueFlow=43
+    }
+
+    let arr2 = [1, 2, 3];
+    for n2 in arr2 {
+        sink(n2);
+    }
+}
+
+fn array_slice_pattern() {
+    let arr1 = [1, 2, source(43)];
+    match arr1 {
+        [a, b, c] => {
+            sink(a); // $ SPURIOUS: hasValueFlow=43
+            sink(b); // $ SPURIOUS: hasValueFlow=43
+            sink(c); // $ hasValueFlow=43
+        }
+    }
+}
+
+fn array_assignment() {
+    let mut mut_arr = [1, 2, 3];
+    sink(mut_arr[1]);
+
+    mut_arr[1] = source(55);
+    let d = mut_arr[1];
+    sink(d); // $ hasValueFlow=55
+    sink(mut_arr[0]); // $ SPURIOUS: hasValueFlow=55
+}
 
 fn closure_flow_out() {
     let f = |cond| if cond { source(92) } else { 0 };
@@ -389,6 +436,10 @@ fn main() {
     block_expression1();
     block_expression2(true);
     block_expression3(true);
+    array_lookup();
+    array_for_loop();
+    array_slice_pattern();
+    array_assignment();
     closure_flow_out();
     closure_flow_in();
     closure_flow_through();

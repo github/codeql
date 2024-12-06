@@ -268,7 +268,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var isWindows = fileContent.UseWindowsForms || fileContent.UseWpf;
 
-            var sync = new object();
+            var sync = new Lock();
             var projectGroups = projects.GroupBy(Path.GetDirectoryName);
             Parallel.ForEach(projectGroups, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, projectGroup =>
             {
@@ -350,7 +350,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Fallback nuget restore", notYetDownloadedPackages.Count.ToString()));
 
             var successCount = 0;
-            var sync = new object();
+            var sync = new Lock();
 
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, package =>
             {

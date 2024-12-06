@@ -624,6 +624,15 @@ private class StructFieldContent extends Content, TStructFieldContent {
 }
 
 /**
+ * An element in an array.
+ */
+final class ArrayElementContent extends Content, TArrayElement {
+  ArrayElementContent() { this = TArrayElement() }
+
+  override string toString() { result = "array[]" }
+}
+
+/**
  * Content stored at a position in a tuple.
  *
  * NOTE: Unlike `struct`s and `enum`s tuples are structural and not nominal,
@@ -656,7 +665,7 @@ abstract class ContentSet extends TContentSet {
   abstract Content getAReadContent();
 }
 
-final private class SingletonContentSet extends ContentSet, TSingletonContentSet {
+final class SingletonContentSet extends ContentSet, TSingletonContentSet {
   private Content c;
 
   SingletonContentSet() { this = TSingletonContentSet(c) }
@@ -811,7 +820,7 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   /** Holds if path `p` resolves to struct `s`. */
-  private predicate pathResolveToStructCanonicalPath(Path p, StructCanonicalPath s) {
+  private predicate pathResolveToStructCanonicalPath(PathAstNode p, StructCanonicalPath s) {
     exists(CrateOriginOption crate, string path |
       resolveExtendedCanonicalPath(p, crate, path) and
       s = MkStructCanonicalPath(crate, path)
@@ -819,35 +828,29 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   /** Holds if path `p` resolves to variant `v`. */
-  private predicate pathResolveToVariantCanonicalPath(Path p, VariantCanonicalPath v) {
-    exists(CrateOriginOption crate, string path |
-      resolveExtendedCanonicalPath(p.getQualifier(), crate, path) and
-      v = MkVariantCanonicalPath(crate, path, p.getPart().getNameRef().getText())
-      or
-      exists(string name |
-        not p.hasQualifier() and
-        resolveExtendedCanonicalPath(p, crate, path + "::" + name) and
-        v = MkVariantCanonicalPath(crate, path, name)
-      )
+  private predicate pathResolveToVariantCanonicalPath(PathAstNode p, VariantCanonicalPath v) {
+    exists(CrateOriginOption crate, string path, string name |
+      resolveExtendedCanonicalPath(p, crate, path + "::" + name) and
+      v = MkVariantCanonicalPath(crate, path, name)
     )
   }
 
   /** Holds if `p` destructs an enum variant `v`. */
   pragma[nomagic]
   private predicate tupleVariantDestruction(TupleStructPat p, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(p.getPath(), v)
+    pathResolveToVariantCanonicalPath(p, v)
   }
 
   /** Holds if `p` destructs an enum variant `v`. */
   pragma[nomagic]
   private predicate recordVariantDestruction(RecordPat p, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(p.getPath(), v)
+    pathResolveToVariantCanonicalPath(p, v)
   }
 
   /** Holds if `p` destructs a struct `s`. */
   pragma[nomagic]
   private predicate structDestruction(RecordPat p, StructCanonicalPath s) {
-    pathResolveToStructCanonicalPath(p.getPath(), s)
+    pathResolveToStructCanonicalPath(p, s)
   }
 
   /**
@@ -885,6 +888,24 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr() = access
       )
       or
+      exists(IndexExprCfgNode arr |
+        c instanceof ArrayElementContent and
+        node1.asExpr() = arr.getBase() and
+        node2.asExpr() = arr
+      )
+      or
+      exists(ForExprCfgNode for |
+        c instanceof ArrayElementContent and
+        node1.asExpr() = for.getIterable() and
+        node2.asPat() = for.getPat()
+      )
+      or
+      exists(SlicePatCfgNode pat |
+        c instanceof ArrayElementContent and
+        node1.asPat() = pat and
+        node2.asPat() = pat.getAPat()
+      )
+      or
       exists(TryExprCfgNode try |
         node1.asExpr() = try.getExpr() and
         node2.asExpr() = try and
@@ -900,19 +921,19 @@ module RustDataFlow implements InputSig<Location> {
   /** Holds if `ce` constructs an enum value of type `v`. */
   pragma[nomagic]
   private predicate tupleVariantConstruction(CallExpr ce, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(ce.getFunction().(PathExpr).getPath(), v)
+    pathResolveToVariantCanonicalPath(ce.getFunction().(PathExpr), v)
   }
 
   /** Holds if `re` constructs an enum value of type `v`. */
   pragma[nomagic]
   private predicate recordVariantConstruction(RecordExpr re, VariantCanonicalPath v) {
-    pathResolveToVariantCanonicalPath(re.getPath(), v)
+    pathResolveToVariantCanonicalPath(re, v)
   }
 
   /** Holds if `re` constructs a struct value of type `s`. */
   pragma[nomagic]
   private predicate structConstruction(RecordExpr re, StructCanonicalPath s) {
-    pathResolveToStructCanonicalPath(re.getPath(), s)
+    pathResolveToStructCanonicalPath(re, s)
   }
 
   private predicate tupleAssignment(Node node1, Node node2, TuplePositionContent c) {
@@ -957,7 +978,21 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr() = tuple
       )
       or
+      c instanceof ArrayElementContent and
+      node1.asExpr() =
+        [
+          node2.asExpr().(ArrayRepeatExprCfgNode).getRepeatOperand(),
+          node2.asExpr().(ArrayListExprCfgNode).getAnExpr()
+        ]
+      or
       tupleAssignment(node1, node2.(PostUpdateNode).getPreUpdateNode(), c)
+      or
+      exists(AssignmentExprCfgNode assignment, IndexExprCfgNode index |
+        c instanceof ArrayElementContent and
+        assignment.getLhs() = index and
+        node1.asExpr() = assignment.getRhs() and
+        node2.(PostUpdateNode).getPreUpdateNode().asExpr() = index.getBase()
+      )
     )
     or
     FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
@@ -1066,14 +1101,20 @@ import MakeImpl<Location, RustDataFlow>
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
+  private import codeql.rust.internal.CachedStages
+
   cached
   newtype TNode =
-    TExprNode(ExprCfgNode n) or
+    TExprNode(ExprCfgNode n) { Stages::DataFlowStage::ref() } or
     TSourceParameterNode(ParamBaseCfgNode p) or
     TPatNode(PatCfgNode p) or
     TExprPostUpdateNode(ExprCfgNode e) {
       isArgumentForCall(e, _, _) or
-      e = [any(FieldExprCfgNode access).getExpr(), any(TryExprCfgNode try).getExpr()]
+      e =
+        [
+          any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
+          any(TryExprCfgNode try).getExpr()
+        ]
     } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
@@ -1158,6 +1199,7 @@ private module Cached {
     TVariantFieldContent(VariantCanonicalPath v, string field) {
       field = v.getVariant().getFieldList().(RecordFieldList).getAField().getName().getText()
     } or
+    TArrayElement() or
     TTuplePositionContent(int pos) {
       pos in [0 .. max([
                 any(TuplePat pat).getNumberOfFields(),
