@@ -3792,28 +3792,33 @@ OLD: KE1
         }
     */
 
-    abstract inner class StmtExprParent(val callable: Label<out DbCallable>) {
-        abstract fun stmt(e: KtExpression): StmtParent
-        abstract fun expr(e: KtExpression): ExprParent
+    abstract inner class StmtExprParent<SE: AnyDbType>(val callable: Label<out DbCallable>) {
+        abstract fun asStmt(e: KtExpression, run: (StmtParent) -> Label<out DbStmt>): Label<out SE>
+        abstract fun asExpr(e: KtExpression, run: (ExprParent) -> Label<out DbExpr>): Label<out SE>
         // TODO: makeError isn't producing locations for statements,
         // and can only give whole-file locations for expressions.
         // We either need to give it more information (add
         // `var locationId` to StmtExprParent?) or patch this up on the
         // QL side.
-        abstract fun makeError()
+        abstract fun makeError(): Label<out SE>
     }
 
-    inner class StmtParent(val parent: Label<out DbStmtparent>, val idx: Int, callable: Label<out DbCallable>) : StmtExprParent(callable) {
-        override fun stmt(e: KtExpression) = this
+    inner class StmtParent(val parent: Label<out DbStmtparent>, val idx: Int, callable: Label<out DbCallable>) : StmtExprParent<DbStmt>(callable) {
+        override fun asStmt(e: KtExpression, run: (StmtParent) -> Label<out DbStmt>): Label<out DbStmt> {
+            return run(this)
+        }
 
-        override fun expr(e: KtExpression) =
+        override fun asExpr(e: KtExpression, run: (ExprParent) -> Label<out DbExpr>): Label<out DbStmt> {
             extractExpressionStmt(tw.getLocation(e), parent, idx, callable).let { id ->
-                ExprParent(id, 0, id, callable)
+                run(ExprParent(id, 0, id, callable))
+                return id
             }
+        }
 
-        override fun makeError() {
+        override fun makeError(): Label<out DbStmt> {
             val id = tw.getFreshIdLabel<DbErrorstmt>()
             tw.writeStmts_errorstmt(id, parent, idx, callable)
+            return id
         }
     }
 
@@ -3822,8 +3827,8 @@ OLD: KE1
         val idx: Int,
         val enclosingStmt: Label<out DbStmt>,
         callable: Label<out DbCallable>
-    ) : StmtExprParent(callable) {
-        override fun stmt(e: KtExpression): StmtParent {
+    ) : StmtExprParent<DbExpr>(callable) {
+        override fun asStmt(e: KtExpression, run: (StmtParent) -> Label<out DbStmt>): Label<out DbExpr> {
             val id = tw.getFreshIdLabel<DbStmtexpr>()
             val et = e.expressionType
             val type = useType(et)
@@ -3831,20 +3836,22 @@ OLD: KE1
             tw.writeExprs_stmtexpr(id, type.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(id, type.kotlinResult.id)
             extractExprContext(id, locId, callable, enclosingStmt)
-            return StmtParent(id, 0, callable)
+            run(StmtParent(id, 0, callable))
+            return id
         }
 
-        override fun expr(e: KtExpression): ExprParent {
-            return this
+        override fun asExpr(e: KtExpression, run: (ExprParent) -> Label<out DbExpr>): Label<out DbExpr> {
+            return run(this)
         }
 
-        override fun makeError() {
+        override fun makeError(): Label<out DbExpr> {
             val id = tw.getFreshIdLabel<DbErrorexpr>()
             val type = useType(null)
 
             tw.writeExprs_errorexpr(id, type.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(id, type.kotlinResult.id)
             extractExprContext(id, tw.getWholeFileLocation(), callable, enclosingStmt)
+            return id
         }
     }
 

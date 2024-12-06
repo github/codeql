@@ -1,5 +1,5 @@
 import com.github.codeql.*
-import com.github.codeql.KotlinFileExtractor.StmtExprParent
+import com.github.codeql.KotlinFileExtractor.ExprParent
 import com.github.codeql.utils.type
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.analysis.api.KaExperimentalApi
@@ -40,7 +40,7 @@ import org.jetbrains.kotlin.psi.KtFunctionLiteral
 context(KaSession)
 fun KotlinFileExtractor.extractFunctionLiteral(
     e: KtFunctionLiteral,
-    parent: StmtExprParent
+    exprParent: ExprParent
 ): Label<out DbExpr> {
 
     val locId = tw.getLocation(e)
@@ -60,7 +60,6 @@ fun KotlinFileExtractor.extractFunctionLiteral(
         addModifiers(ids.function, "override")
     }
 
-    val exprParent = parent.expr(e)
     val idLambdaExpr = tw.getFreshIdLabel<DbLambdaexpr>()
     tw.writeExprs_lambdaexpr(
         idLambdaExpr,
