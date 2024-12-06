@@ -168,8 +168,8 @@ edges
 | conversions.swift:271:35:271:60 | call to MyValue.init(_:) [v] | conversions.swift:271:12:271:61 | call to mkInt(withMyValue:) | provenance |  |
 | conversions.swift:271:43:271:59 | call to sourceInt(_:) | conversions.swift:229:7:229:12 | v | provenance |  |
 | conversions.swift:271:43:271:59 | call to sourceInt(_:) | conversions.swift:271:35:271:60 | call to MyValue.init(_:) [v] | provenance |  |
-| file://:0:0:0:0 | [post] self [first] | stringinterpolation.swift:6:6:6:6 | self [Return] [first] | provenance |  |
-| file://:0:0:0:0 | [post] self [second] | stringinterpolation.swift:7:6:7:6 | self [Return] [second] | provenance |  |
+| file://:0:0:0:0 | [post] self [first] | stringinterpolation.swift:6:6:6:6 | self [Reverse] [first] | provenance |  |
+| file://:0:0:0:0 | [post] self [second] | stringinterpolation.swift:7:6:7:6 | self [Reverse] [second] | provenance |  |
 | file://:0:0:0:0 | self [first] | file://:0:0:0:0 | .first | provenance |  |
 | file://:0:0:0:0 | self [second] | file://:0:0:0:0 | .second | provenance |  |
 | file://:0:0:0:0 | self [v] | file://:0:0:0:0 | .v | provenance |  |
@@ -221,7 +221,7 @@ edges
 | stringinterpolation.swift:13:36:13:36 | pair [first] | stringinterpolation.swift:6:6:6:6 | self [first] | provenance |  |
 | stringinterpolation.swift:13:36:13:36 | pair [first] | stringinterpolation.swift:13:36:13:41 | .first | provenance |  |
 | stringinterpolation.swift:13:36:13:41 | .first | stringinterpolation.swift:11:11:14:2 | self[return] | provenance |  |
-| stringinterpolation.swift:13:36:13:41 | .first | stringinterpolation.swift:11:16:11:16 | self [Return] | provenance |  |
+| stringinterpolation.swift:13:36:13:41 | .first | stringinterpolation.swift:11:16:11:16 | self [Reverse] | provenance |  |
 | stringinterpolation.swift:19:2:19:2 | [post] p1 [first] | stringinterpolation.swift:20:2:20:2 | p1 [first] | provenance |  |
 | stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:6:6:6:6 | value | provenance |  |
 | stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:19:2:19:2 | [post] p1 [first] | provenance |  |
@@ -569,14 +569,14 @@ nodes
 | simple.swift:87:14:87:21 | call to source() | semmle.label | call to source() |
 | simple.swift:156:12:156:19 | call to source() | semmle.label | call to source() |
 | simple.swift:157:12:157:19 | call to source() | semmle.label | call to source() |
-| stringinterpolation.swift:6:6:6:6 | self [Return] [first] | semmle.label | self [Return] [first] |
+| stringinterpolation.swift:6:6:6:6 | self [Reverse] [first] | semmle.label | self [Reverse] [first] |
 | stringinterpolation.swift:6:6:6:6 | self [first] | semmle.label | self [first] |
 | stringinterpolation.swift:6:6:6:6 | value | semmle.label | value |
-| stringinterpolation.swift:7:6:7:6 | self [Return] [second] | semmle.label | self [Return] [second] |
+| stringinterpolation.swift:7:6:7:6 | self [Reverse] [second] | semmle.label | self [Reverse] [second] |
 | stringinterpolation.swift:7:6:7:6 | self [second] | semmle.label | self [second] |
 | stringinterpolation.swift:7:6:7:6 | value | semmle.label | value |
 | stringinterpolation.swift:11:11:14:2 | self[return] | semmle.label | self[return] |
-| stringinterpolation.swift:11:16:11:16 | self [Return] | semmle.label | self [Return] |
+| stringinterpolation.swift:11:16:11:16 | self [Reverse] | semmle.label | self [Reverse] |
 | stringinterpolation.swift:11:36:11:44 | pair [first] | semmle.label | pair [first] |
 | stringinterpolation.swift:13:36:13:36 | pair [first] | semmle.label | pair [first] |
 | stringinterpolation.swift:13:36:13:41 | .first | semmle.label | .first |
@@ -623,11 +623,11 @@ subpaths
 | conversions.swift:271:35:271:60 | call to MyValue.init(_:) [v] | conversions.swift:254:20:254:33 | withMyValue [v] | conversions.swift:256:10:256:22 | .v | conversions.swift:271:12:271:61 | call to mkInt(withMyValue:) |
 | conversions.swift:271:43:271:59 | call to sourceInt(_:) | conversions.swift:229:7:229:12 | v | conversions.swift:229:2:231:2 | self[return] [v] | conversions.swift:271:35:271:60 | call to MyValue.init(_:) [v] |
 | stringinterpolation.swift:13:36:13:36 | pair [first] | stringinterpolation.swift:6:6:6:6 | self [first] | file://:0:0:0:0 | .first | stringinterpolation.swift:13:36:13:41 | .first |
-| stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:6:6:6:6 | value | stringinterpolation.swift:6:6:6:6 | self [Return] [first] | stringinterpolation.swift:19:2:19:2 | [post] p1 [first] |
+| stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:6:6:6:6 | value | stringinterpolation.swift:6:6:6:6 | self [Reverse] [first] | stringinterpolation.swift:19:2:19:2 | [post] p1 [first] |
 | stringinterpolation.swift:22:21:22:21 | p1 [first] | stringinterpolation.swift:6:6:6:6 | self [first] | file://:0:0:0:0 | .first | stringinterpolation.swift:22:21:22:24 | .first |
 | stringinterpolation.swift:24:21:24:21 | p1 [first] | stringinterpolation.swift:11:36:11:44 | pair [first] | stringinterpolation.swift:11:11:14:2 | self[return] | stringinterpolation.swift:24:20:24:20 | [post] $interpolation |
-| stringinterpolation.swift:24:21:24:21 | p1 [first] | stringinterpolation.swift:11:36:11:44 | pair [first] | stringinterpolation.swift:11:16:11:16 | self [Return] | stringinterpolation.swift:24:20:24:20 | [post] $interpolation |
-| stringinterpolation.swift:28:14:28:21 | call to source() | stringinterpolation.swift:7:6:7:6 | value | stringinterpolation.swift:7:6:7:6 | self [Return] [second] | stringinterpolation.swift:28:2:28:2 | [post] p2 [second] |
+| stringinterpolation.swift:24:21:24:21 | p1 [first] | stringinterpolation.swift:11:36:11:44 | pair [first] | stringinterpolation.swift:11:16:11:16 | self [Reverse] | stringinterpolation.swift:24:20:24:20 | [post] $interpolation |
+| stringinterpolation.swift:28:14:28:21 | call to source() | stringinterpolation.swift:7:6:7:6 | value | stringinterpolation.swift:7:6:7:6 | self [Reverse] [second] | stringinterpolation.swift:28:2:28:2 | [post] p2 [second] |
 | stringinterpolation.swift:31:21:31:21 | p2 [second] | stringinterpolation.swift:7:6:7:6 | self [second] | file://:0:0:0:0 | .second | stringinterpolation.swift:31:21:31:24 | .second |
 #select
 | conversions.swift:32:12:32:31 | call to sourceInt(_:) | conversions.swift:32:12:32:31 | call to sourceInt(_:) | conversions.swift:32:12:32:31 | call to sourceInt(_:) | result |

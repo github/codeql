@@ -15,14 +15,14 @@ edges
 | rpc/notes/service.twirp.go:558:44:558:51 | typedReq | server/main.go:19:56:19:61 | definition of params | provenance |  |
 | rpc/notes/service.twirp.go:574:2:574:2 | capture variable reqContent | rpc/notes/service.twirp.go:576:35:576:44 | reqContent | provenance |  |
 | rpc/notes/service.twirp.go:576:35:576:44 | reqContent | server/main.go:19:56:19:61 | definition of params | provenance |  |
-| server/main.go:19:56:19:61 | definition of params | server/main.go:19:56:19:61 | definition of params [Return] | provenance |  |
+| server/main.go:19:56:19:61 | definition of params | server/main.go:19:56:19:61 | definition of params [Reverse] | provenance |  |
 | server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text | provenance |  |
 | server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text | provenance |  |
-| server/main.go:19:56:19:61 | definition of params [Return] | client/main.go:16:35:16:78 | &... | provenance |  |
-| server/main.go:19:56:19:61 | definition of params [Return] | rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq | provenance |  |
-| server/main.go:19:56:19:61 | definition of params [Return] | rpc/notes/service.twirp.go:493:2:493:2 | capture variable reqContent | provenance |  |
-| server/main.go:19:56:19:61 | definition of params [Return] | rpc/notes/service.twirp.go:554:6:554:13 | definition of typedReq | provenance |  |
-| server/main.go:19:56:19:61 | definition of params [Return] | rpc/notes/service.twirp.go:574:2:574:2 | capture variable reqContent | provenance |  |
+| server/main.go:19:56:19:61 | definition of params [Reverse] | client/main.go:16:35:16:78 | &... | provenance |  |
+| server/main.go:19:56:19:61 | definition of params [Reverse] | rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq | provenance |  |
+| server/main.go:19:56:19:61 | definition of params [Reverse] | rpc/notes/service.twirp.go:493:2:493:2 | capture variable reqContent | provenance |  |
+| server/main.go:19:56:19:61 | definition of params [Reverse] | rpc/notes/service.twirp.go:554:6:554:13 | definition of typedReq | provenance |  |
+| server/main.go:19:56:19:61 | definition of params [Reverse] | rpc/notes/service.twirp.go:574:2:574:2 | capture variable reqContent | provenance |  |
 models
 | 1 | Source: net/http; Request; true; Body; ; ; ; remote; manual |
 | 2 | Summary: google.golang.org/protobuf/proto; ; false; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
@@ -43,6 +43,6 @@ nodes
 | rpc/notes/service.twirp.go:576:35:576:44 | reqContent | semmle.label | reqContent |
 | server/main.go:19:56:19:61 | definition of params | semmle.label | definition of params |
 | server/main.go:19:56:19:61 | definition of params | semmle.label | definition of params |
-| server/main.go:19:56:19:61 | definition of params [Return] | semmle.label | definition of params [Return] |
+| server/main.go:19:56:19:61 | definition of params [Reverse] | semmle.label | definition of params [Reverse] |
 | server/main.go:30:38:30:48 | selection of Text | semmle.label | selection of Text |
 subpaths

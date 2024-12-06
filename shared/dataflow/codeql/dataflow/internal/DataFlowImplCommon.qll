@@ -858,7 +858,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       or
       exists(Node n | this.isImplicitReadNode(n) | result = n.toString() + " [Ext]")
       or
-      result = this.asParamReturnNode().toString() + " [Return]"
+      result = this.asParamReturnNode().toString() + " [Reverse]"
     }
 
     Node asNode() { this = TNodeNormal(result) }
