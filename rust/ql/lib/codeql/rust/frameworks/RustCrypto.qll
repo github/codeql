@@ -7,7 +7,7 @@ private import codeql.rust.Concepts
 private import codeql.rust.dataflow.DataFlow
 
 bindingset[algorithmName]
-string simplifyAlgorithmName(string algorithmName) {
+private string simplifyAlgorithmName(string algorithmName) {
   // the cipher library gives triple-DES names like "TdesEee2" and "TdesEde2"
   if algorithmName.matches("Tdes%") then result = "3des" else result = algorithmName
 }
