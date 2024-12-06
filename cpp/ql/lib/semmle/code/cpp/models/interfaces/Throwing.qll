@@ -12,12 +12,12 @@ import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 
 /**
  * A function that is known to raise an exception.
- * 
- * DEPRECATED: This was originally used to differentiate Seh and C++ exception use. 
- * `AlwaysSehThrowingFunction` should be used instead for Seh exceptions that are 
- * known to always throw and 
+ *
+ * DEPRECATED: This was originally used to differentiate Seh and C++ exception use.
+ * `AlwaysSehThrowingFunction` should be used instead for Seh exceptions that are
+ * known to always throw and
  * `NonCppThrowingFunction` in `semmle.code.cpp.models.interfaces.NonThrowing`
- * should be used for C++ exceptions that are known to never throw. 
+ * should be used for C++ exceptions that are known to never throw.
  */
 abstract deprecated class ThrowingFunction extends Function {
   /**

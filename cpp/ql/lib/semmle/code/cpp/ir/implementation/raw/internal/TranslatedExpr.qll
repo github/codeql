@@ -393,11 +393,11 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = LoadTag() and
     (
-    result = this.getParent().getChildSuccessor(this, kind)
-    or 
-     // All load instructions could throw an SEH exception
-     result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), kind) and
-     kind instanceof SehExceptionEdge
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      // All load instructions could throw an SEH exception
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e), kind) and
+      kind instanceof SehExceptionEdge
     )
   }
 
