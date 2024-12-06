@@ -62,6 +62,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 using var writer = certFile.CreateText();
                 writer.Write(cert);
+                writer.Close();
 
                 logger.LogInfo($"Stored Dependabot proxy certificate at {result.CertificatePath}");
 
