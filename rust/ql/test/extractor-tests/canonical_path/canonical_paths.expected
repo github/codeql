@@ -1,66 +1,135 @@
 canonicalPaths
-| anonymous.rs:1:1:1:26 | Use | None | None |
-| anonymous.rs:3:1:32:1 | fn canonicals | repo::test | crate::anonymous::canonicals |
-| anonymous.rs:4:5:4:23 | Struct | repo::test | {0}::OtherStruct |
-| anonymous.rs:6:5:8:5 | trait OtherTrait | repo::test | {0}::OtherTrait |
-| anonymous.rs:7:9:7:20 | fn g | repo::test | {0}::OtherTrait::g |
-| anonymous.rs:10:5:12:5 | impl OtherTrait for OtherStruct { ... } | None | None |
-| anonymous.rs:11:9:11:22 | fn g | repo::test | <{0}::OtherStruct as {0}::OtherTrait>::g |
-| anonymous.rs:14:5:16:5 | impl OtherTrait for ...::Struct { ... } | None | None |
-| anonymous.rs:15:9:15:22 | fn g | repo::test | <crate::regular::Struct as {0}::OtherTrait>::g |
-| anonymous.rs:18:5:20:5 | impl ...::Trait for OtherStruct { ... } | None | None |
-| anonymous.rs:19:9:19:22 | fn f | repo::test | <{0}::OtherStruct as crate::regular::Trait>::f |
-| anonymous.rs:22:5:24:5 | fn nested | repo::test | {0}::nested |
-| anonymous.rs:23:9:23:27 | Struct | repo::test | {1}::OtherStruct |
-| anonymous.rs:26:5:31:5 | fn usage | repo::test | {0}::usage |
-| anonymous.rs:34:1:36:1 | fn other | repo::test | crate::anonymous::other |
-| anonymous.rs:35:5:35:23 | Struct | repo::test | {36}::OtherStruct |
-| lib.rs:1:1:1:14 | mod anonymous | repo::test | crate::anonymous |
-| lib.rs:2:1:2:12 | mod regular | repo::test | crate::regular |
-| regular.rs:1:1:2:18 | Struct | repo::test | crate::regular::Struct |
-| regular.rs:4:1:6:1 | trait Trait | repo::test | crate::regular::Trait |
-| regular.rs:5:5:5:16 | fn f | repo::test | crate::regular::Trait::f |
-| regular.rs:8:1:10:1 | impl Trait for Struct { ... } | None | None |
-| regular.rs:9:5:9:18 | fn f | repo::test | <crate::regular::Struct as crate::regular::Trait>::f |
-| regular.rs:12:1:14:1 | impl Struct { ... } | None | None |
-| regular.rs:13:5:13:18 | fn g | repo::test | <crate::regular::Struct>::g |
-| regular.rs:16:1:18:1 | trait TraitWithBlanketImpl | repo::test | crate::regular::TraitWithBlanketImpl |
-| regular.rs:17:5:17:16 | fn h | repo::test | crate::regular::TraitWithBlanketImpl::h |
-| regular.rs:20:1:22:1 | impl TraitWithBlanketImpl for T { ... } | None | None |
-| regular.rs:21:5:21:18 | fn h | repo::test | <_ as crate::regular::TraitWithBlanketImpl>::h |
-| regular.rs:24:1:24:12 | fn free | repo::test | crate::regular::free |
-| regular.rs:26:1:32:1 | fn usage | repo::test | crate::regular::usage |
-| regular.rs:34:1:38:1 | enum MyEnum | repo::test | crate::regular::MyEnum |
-| regular.rs:40:1:46:1 | fn enum_qualified_usage | repo::test | crate::regular::enum_qualified_usage |
-| regular.rs:48:1:55:1 | fn enum_unqualified_usage | repo::test | crate::regular::enum_unqualified_usage |
-| regular.rs:51:5:51:18 | Use | None | None |
-| regular.rs:57:1:63:1 | fn enum_match | repo::test | crate::regular::enum_match |
+| anonymous.rs:1:1:1:26 | Use | None |
+| anonymous.rs:3:1:32:1 | fn canonicals | ...::canonicals |
+| anonymous.rs:4:5:4:23 | struct OtherStruct | None |
+| anonymous.rs:6:5:8:5 | trait OtherTrait | None |
+| anonymous.rs:7:9:7:20 | fn g | None |
+| anonymous.rs:10:5:12:5 | impl OtherTrait for OtherStruct { ... } | None |
+| anonymous.rs:11:9:11:22 | fn g | None |
+| anonymous.rs:14:5:16:5 | impl OtherTrait for ...::Struct { ... } | None |
+| anonymous.rs:15:9:15:22 | fn g | <...>::g |
+| anonymous.rs:18:5:20:5 | impl ...::Trait for OtherStruct { ... } | None |
+| anonymous.rs:19:9:19:22 | fn f | None |
+| anonymous.rs:22:5:24:5 | fn nested | None |
+| anonymous.rs:23:9:23:27 | struct OtherStruct | None |
+| anonymous.rs:26:5:31:5 | fn usage | None |
+| anonymous.rs:34:1:36:1 | fn other | ...::other |
+| anonymous.rs:35:5:35:23 | struct OtherStruct | None |
+| lib.rs:1:1:1:14 | mod anonymous | ...::anonymous |
+| lib.rs:2:1:2:12 | mod regular | ...::regular |
+| regular.rs:1:1:2:18 | struct Struct | ...::Struct |
+| regular.rs:4:1:6:1 | trait Trait | ...::Trait |
+| regular.rs:5:5:5:16 | fn f | ...::f |
+| regular.rs:8:1:10:1 | impl Trait for Struct { ... } | None |
+| regular.rs:9:5:9:18 | fn f | <... as ...>::f |
+| regular.rs:12:1:14:1 | impl Struct { ... } | None |
+| regular.rs:13:5:13:18 | fn g | <...>::g |
+| regular.rs:16:1:18:1 | trait TraitWithBlanketImpl | ...::TraitWithBlanketImpl |
+| regular.rs:17:5:17:16 | fn h | ...::h |
+| regular.rs:20:1:22:1 | impl TraitWithBlanketImpl for T { ... } | None |
+| regular.rs:21:5:21:18 | fn h | <_ as ...>::h |
+| regular.rs:24:1:24:12 | fn free | ...::free |
+| regular.rs:26:1:32:1 | fn usage | ...::usage |
+| regular.rs:34:1:38:1 | enum MyEnum | ...::MyEnum |
+| regular.rs:35:5:35:12 | Variant1 | ...::Variant1 |
+| regular.rs:36:5:36:19 | Variant2 | ...::Variant2 |
+| regular.rs:37:5:37:25 | Variant3 | ...::Variant3 |
+| regular.rs:40:1:46:1 | fn enum_qualified_usage | ...::enum_qualified_usage |
+| regular.rs:48:1:55:1 | fn enum_unqualified_usage | ...::enum_unqualified_usage |
+| regular.rs:51:5:51:18 | Use | None |
+| regular.rs:57:1:63:1 | fn enum_match | ...::enum_match |
+| regular.rs:65:1:67:1 | trait GenericTrait | ...::GenericTrait |
+| regular.rs:66:5:66:35 | fn generic_method | ...::generic_method |
+| regular.rs:69:1:72:1 | struct GenericStruct | ...::GenericStruct |
+| regular.rs:74:1:74:38 | struct GenericTupleStruct | ...::GenericTupleStruct |
+| regular.rs:77:1:80:1 | enum GenericEnum | ...::GenericEnum |
+| regular.rs:78:5:78:8 | T | ...::T |
+| regular.rs:79:5:79:8 | U | ...::U |
+| regular.rs:82:1:84:1 | impl GenericTrait::<...> for GenericStruct::<...> { ... } | None |
+| regular.rs:83:5:83:37 | fn generic_method | <... as ...>::generic_method |
+| regular.rs:86:1:88:1 | impl GenericTrait::<...> for GenericStruct::<...> { ... } | None |
+| regular.rs:87:5:87:39 | fn generic_method | <... as ...>::generic_method |
+| regular.rs:90:1:92:1 | impl GenericTrait::<...> for GenericTupleStruct::<...> { ... } | None |
+| regular.rs:91:5:91:37 | fn generic_method | <... as ...>::generic_method |
+| regular.rs:94:1:96:1 | impl GenericTrait::<...> for GenericTupleStruct::<...> { ... } | None |
+| regular.rs:95:5:95:39 | fn generic_method | <... as ...>::generic_method |
+| regular.rs:98:1:100:1 | impl GenericTrait::<...> for GenericEnum::<...> { ... } | None |
+| regular.rs:99:5:99:37 | fn generic_method | <... as ...>::generic_method |
+| regular.rs:102:1:104:1 | impl GenericTrait::<...> for GenericEnum::<...> { ... } | None |
+| regular.rs:103:5:103:39 | fn generic_method | <... as ...>::generic_method |
+| regular.rs:106:1:119:1 | fn generic_usage | ...::generic_usage |
 resolvedPaths
-| anonymous.rs:27:17:27:30 | OtherStruct {...} | repo::test | {0}::OtherStruct |
-| anonymous.rs:28:9:28:9 | s | None | None |
-| anonymous.rs:28:9:28:13 | ... .f(...) | repo::test | <{0}::OtherStruct as crate::regular::Trait>::f |
-| anonymous.rs:29:9:29:9 | s | None | None |
-| anonymous.rs:29:9:29:13 | ... .g(...) | repo::test | <{0}::OtherStruct as {0}::OtherTrait>::g |
-| anonymous.rs:30:9:30:14 | nested | repo::test | {0}::nested |
-| regular.rs:27:13:27:21 | Struct {...} | repo::test | crate::regular::Struct |
-| regular.rs:28:5:28:5 | s | None | None |
-| regular.rs:28:5:28:9 | ... .f(...) | repo::test | <crate::regular::Struct as crate::regular::Trait>::f |
-| regular.rs:29:5:29:5 | s | None | None |
-| regular.rs:29:5:29:9 | ... .g(...) | repo::test | <crate::regular::Struct>::g |
-| regular.rs:30:5:30:5 | s | None | None |
-| regular.rs:30:5:30:9 | ... .h(...) | repo::test | <_ as crate::regular::TraitWithBlanketImpl>::h |
-| regular.rs:31:5:31:8 | free | repo::test | crate::regular::free |
-| regular.rs:41:9:41:26 | ...::None::<...> | lang:core | crate::option::Option::None |
-| regular.rs:42:9:42:20 | ...::Some | lang:core | crate::option::Option::Some |
-| regular.rs:43:9:43:24 | ...::Variant1 | repo::test | crate::regular::MyEnum::Variant1 |
-| regular.rs:44:9:44:24 | ...::Variant2 | repo::test | crate::regular::MyEnum::Variant2 |
-| regular.rs:45:9:45:33 | ...::Variant3 {...} | repo::test | crate::regular::MyEnum::Variant3 |
-| regular.rs:49:9:49:18 | None::<...> | lang:core | crate::option::Option::None |
-| regular.rs:50:9:50:12 | Some | lang:core | crate::option::Option::Some |
-| regular.rs:52:9:52:16 | Variant1 | repo::test | crate::regular::MyEnum::Variant1 |
-| regular.rs:53:9:53:16 | Variant2 | repo::test | crate::regular::MyEnum::Variant2 |
-| regular.rs:54:9:54:25 | Variant3 {...} | repo::test | crate::regular::MyEnum::Variant3 |
-| regular.rs:58:11:58:11 | e | None | None |
-| regular.rs:59:9:59:24 | ...::Variant1 | repo::test | crate::regular::MyEnum::Variant1 |
-| regular.rs:60:9:60:27 | ...::Variant2(...) | repo::test | crate::regular::MyEnum::Variant2 |
-| regular.rs:61:9:61:31 | ...::Variant3 {...} | repo::test | crate::regular::MyEnum::Variant3 |
+| anonymous.rs:27:17:27:30 | OtherStruct {...} | None |
+| anonymous.rs:28:9:28:9 | s | None |
+| anonymous.rs:28:9:28:13 | ... .f(...) | None |
+| anonymous.rs:29:9:29:9 | s | None |
+| anonymous.rs:29:9:29:13 | ... .g(...) | None |
+| anonymous.rs:30:9:30:14 | nested | None |
+| regular.rs:27:13:27:21 | Struct {...} | ...::Struct |
+| regular.rs:28:5:28:5 | s | None |
+| regular.rs:28:5:28:9 | ... .f(...) | <... as ...>::f |
+| regular.rs:29:5:29:5 | s | None |
+| regular.rs:29:5:29:9 | ... .g(...) | <...>::g |
+| regular.rs:30:5:30:5 | s | None |
+| regular.rs:30:5:30:9 | ... .h(...) | <_ as ...>::h |
+| regular.rs:31:5:31:8 | free | ...::free |
+| regular.rs:41:9:41:26 | ...::None::<...> | ...::None |
+| regular.rs:42:9:42:20 | ...::Some | ...::Some |
+| regular.rs:43:9:43:24 | ...::Variant1 | ...::Variant1 |
+| regular.rs:44:9:44:24 | ...::Variant2 | ...::Variant2 |
+| regular.rs:45:9:45:33 | ...::Variant3 {...} | ...::Variant3 |
+| regular.rs:49:9:49:18 | None::<...> | ...::None |
+| regular.rs:50:9:50:12 | Some | ...::Some |
+| regular.rs:52:9:52:16 | Variant1 | ...::Variant1 |
+| regular.rs:53:9:53:16 | Variant2 | ...::Variant2 |
+| regular.rs:54:9:54:25 | Variant3 {...} | ...::Variant3 |
+| regular.rs:58:11:58:11 | e | None |
+| regular.rs:59:9:59:24 | ...::Variant1 | ...::Variant1 |
+| regular.rs:60:9:60:27 | ...::Variant2(...) | ...::Variant2 |
+| regular.rs:61:9:61:31 | ...::Variant3 {...} | ...::Variant3 |
+| regular.rs:107:13:107:41 | GenericStruct {...} | ...::GenericStruct |
+| regular.rs:108:5:108:5 | x | None |
+| regular.rs:108:5:108:26 | ... .generic_method(...) | <... as ...>::generic_method |
+| regular.rs:109:13:109:47 | GenericStruct {...} | ...::GenericStruct |
+| regular.rs:110:5:110:5 | x | None |
+| regular.rs:110:5:110:23 | ... .generic_method(...) | <... as ...>::generic_method |
+| regular.rs:111:13:111:30 | GenericTupleStruct | ...::GenericTupleStruct |
+| regular.rs:112:5:112:5 | x | None |
+| regular.rs:112:5:112:26 | ... .generic_method(...) | <... as ...>::generic_method |
+| regular.rs:113:13:113:30 | GenericTupleStruct | ...::GenericTupleStruct |
+| regular.rs:114:5:114:5 | x | None |
+| regular.rs:114:5:114:23 | ... .generic_method(...) | <... as ...>::generic_method |
+| regular.rs:115:13:115:37 | ...::T | ...::T |
+| regular.rs:116:5:116:5 | x | None |
+| regular.rs:116:5:116:27 | ... .generic_method(...) | <... as ...>::generic_method |
+| regular.rs:117:13:117:37 | ...::U | ...::U |
+| regular.rs:118:5:118:5 | x | None |
+| regular.rs:118:5:118:23 | ... .generic_method(...) | <... as ...>::generic_method |
+resolve
+| regular.rs:27:13:27:21 | Struct {...} | regular.rs:1:1:2:18 | struct Struct |
+| regular.rs:28:5:28:9 | ... .f(...) | regular.rs:9:5:9:18 | fn f |
+| regular.rs:29:5:29:9 | ... .g(...) | anonymous.rs:15:9:15:22 | fn g |
+| regular.rs:29:5:29:9 | ... .g(...) | regular.rs:13:5:13:18 | fn g |
+| regular.rs:30:5:30:9 | ... .h(...) | regular.rs:21:5:21:18 | fn h |
+| regular.rs:31:5:31:8 | free | regular.rs:24:1:24:12 | fn free |
+| regular.rs:43:9:43:24 | ...::Variant1 | regular.rs:35:5:35:12 | Variant1 |
+| regular.rs:44:9:44:24 | ...::Variant2 | regular.rs:36:5:36:19 | Variant2 |
+| regular.rs:45:9:45:33 | ...::Variant3 {...} | regular.rs:37:5:37:25 | Variant3 |
+| regular.rs:52:9:52:16 | Variant1 | regular.rs:35:5:35:12 | Variant1 |
+| regular.rs:53:9:53:16 | Variant2 | regular.rs:36:5:36:19 | Variant2 |
+| regular.rs:54:9:54:25 | Variant3 {...} | regular.rs:37:5:37:25 | Variant3 |
+| regular.rs:59:9:59:24 | ...::Variant1 | regular.rs:35:5:35:12 | Variant1 |
+| regular.rs:60:9:60:27 | ...::Variant2(...) | regular.rs:36:5:36:19 | Variant2 |
+| regular.rs:61:9:61:31 | ...::Variant3 {...} | regular.rs:37:5:37:25 | Variant3 |
+| regular.rs:107:13:107:41 | GenericStruct {...} | regular.rs:69:1:72:1 | struct GenericStruct |
+| regular.rs:108:5:108:26 | ... .generic_method(...) | regular.rs:83:5:83:37 | fn generic_method |
+| regular.rs:109:13:109:47 | GenericStruct {...} | regular.rs:69:1:72:1 | struct GenericStruct |
+| regular.rs:110:5:110:23 | ... .generic_method(...) | regular.rs:87:5:87:39 | fn generic_method |
+| regular.rs:111:13:111:30 | GenericTupleStruct | regular.rs:74:1:74:38 | struct GenericTupleStruct |
+| regular.rs:112:5:112:26 | ... .generic_method(...) | regular.rs:91:5:91:37 | fn generic_method |
+| regular.rs:113:13:113:30 | GenericTupleStruct | regular.rs:74:1:74:38 | struct GenericTupleStruct |
+| regular.rs:114:5:114:23 | ... .generic_method(...) | regular.rs:95:5:95:39 | fn generic_method |
+| regular.rs:115:13:115:37 | ...::T | regular.rs:78:5:78:8 | T |
+| regular.rs:116:5:116:27 | ... .generic_method(...) | regular.rs:99:5:99:37 | fn generic_method |
+| regular.rs:117:13:117:37 | ...::U | regular.rs:79:5:79:8 | U |
+| regular.rs:118:5:118:23 | ... .generic_method(...) | regular.rs:103:5:103:39 | fn generic_method |

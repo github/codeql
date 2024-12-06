@@ -101,12 +101,12 @@ class Processor:
         )
 
     def get_classes(self):
-        ret = {"": []}
+        ret = []
         for k, cls in self._classmap.items():
             if not cls.imported and not cls.synth:
-                ret.setdefault(cls.group, []).append(self._get_class(cls.name))
+                ret.append(self._get_class(cls.name))
             elif cls.imported:
-                ret[""].append(rust.Class(name=cls.name))
+                ret.append(rust.Class(name=cls.name))
         return ret
 
 
@@ -114,25 +114,14 @@ def generate(opts, renderer):
     assert opts.rust_output
     processor = Processor(schemaloader.load_file(opts.schema))
     out = opts.rust_output
-    groups = set()
     with renderer.manage(generated=out.rglob("*.rs"),
                          stubs=(),
                          registry=out / ".generated.list",
                          force=opts.force) as renderer:
-        for group, classes in processor.get_classes().items():
-            group = group or "top"
-            groups.add(group)
-            renderer.render(
-                rust.ClassList(
-                    classes,
-                    opts.schema,
-                ),
-                out / f"{group}.rs",
-            )
         renderer.render(
-            rust.ModuleList(
-                groups,
-                opts.schema,
+            rust.ClassList(
+                classes=processor.get_classes(),
+                source=opts.schema,
             ),
             out / f"mod.rs",
         )

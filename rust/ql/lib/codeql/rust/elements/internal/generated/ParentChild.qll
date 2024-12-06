@@ -3739,6 +3739,302 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCanonicalPathElement(
+    CanonicalPathElement e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfCanonicalPath(
+    CanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCanonicalPathElement, int n |
+      b = 0 and
+      bCanonicalPathElement =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPathElement(e, i, _)) | i) and
+      n = bCanonicalPathElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfCanonicalPathElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfCrateRoot(CrateRoot e, int index, string partialPredicateCall) {
+    exists(int b, int bCanonicalPathElement, int n |
+      b = 0 and
+      bCanonicalPathElement =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPathElement(e, i, _)) | i) and
+      n = bCanonicalPathElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfCanonicalPathElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTypeGenericArg(
+    TypeGenericArg e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCanonicalPathElement, int n |
+      b = 0 and
+      bCanonicalPathElement =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPathElement(e, i, _)) | i) and
+      n = bCanonicalPathElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfCanonicalPathElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfConstGenericTypeArg(
+    ConstGenericTypeArg e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bTypeGenericArg, int n |
+      b = 0 and
+      bTypeGenericArg =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeGenericArg(e, i, _)) | i) and
+      n = bTypeGenericArg and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeGenericArg(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfImplItemCanonicalPath(
+    ImplItemCanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCanonicalPath, int n |
+      b = 0 and
+      bCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
+      n = bCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfLangCrateRoot(
+    LangCrateRoot e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCrateRoot, int n |
+      b = 0 and
+      bCrateRoot = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCrateRoot(e, i, _)) | i) and
+      n = bCrateRoot and
+      (
+        none()
+        or
+        result = getImmediateChildOfCrateRoot(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfModuleItemCanonicalPath(
+    ModuleItemCanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCanonicalPath, int n |
+      b = 0 and
+      bCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
+      n = bCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfNamespace(Namespace e, int index, string partialPredicateCall) {
+    exists(int b, int bCanonicalPath, int n |
+      b = 0 and
+      bCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
+      n = bCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfParametrizedCanonicalPath(
+    ParametrizedCanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCanonicalPath, int n |
+      b = 0 and
+      bCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
+      n = bCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfRepoCrateRoot(
+    RepoCrateRoot e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCrateRoot, int n |
+      b = 0 and
+      bCrateRoot = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCrateRoot(e, i, _)) | i) and
+      n = bCrateRoot and
+      (
+        none()
+        or
+        result = getImmediateChildOfCrateRoot(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfRustcCrateRoot(
+    RustcCrateRoot e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCrateRoot, int n |
+      b = 0 and
+      bCrateRoot = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCrateRoot(e, i, _)) | i) and
+      n = bCrateRoot and
+      (
+        none()
+        or
+        result = getImmediateChildOfCrateRoot(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTypeCanonicalPath(
+    TypeCanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCanonicalPath, int n |
+      b = 0 and
+      bCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
+      n = bCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTypeGenericTypeArg(
+    TypeGenericTypeArg e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bTypeGenericArg, int n |
+      b = 0 and
+      bTypeGenericArg =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeGenericArg(e, i, _)) | i) and
+      n = bTypeGenericArg and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeGenericArg(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTypeItemCanonicalPath(
+    TypeItemCanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCanonicalPath, int n |
+      b = 0 and
+      bCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
+      n = bCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfBuiltinTypeCanonicalPath(
+    BuiltinTypeCanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bTypeCanonicalPath, int n |
+      b = 0 and
+      bTypeCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeCanonicalPath(e, i, _)) | i) and
+      n = bTypeCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeCanonicalPath(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfConcreteTypeCanonicalPath(
+    ConcreteTypeCanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bTypeCanonicalPath, int n |
+      b = 0 and
+      bTypeCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeCanonicalPath(e, i, _)) | i) and
+      n = bTypeCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeCanonicalPath(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfDerivedTypeCanonicalPath(
+    DerivedTypeCanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bTypeCanonicalPath, int n |
+      b = 0 and
+      bTypeCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeCanonicalPath(e, i, _)) | i) and
+      n = bTypeCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeCanonicalPath(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPlaceholderTypeCanonicalPath(
+    PlaceholderTypeCanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bTypeCanonicalPath, int n |
+      b = 0 and
+      bTypeCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeCanonicalPath(e, i, _)) | i) and
+      n = bTypeCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeCanonicalPath(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   cached
   Element getImmediateChild(Element e, int index, string partialAccessor) {
     // why does this look more complicated than it should?
@@ -4044,6 +4340,34 @@ private module Impl {
     result = getImmediateChildOfLoopExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfWhileExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfConstGenericTypeArg(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfImplItemCanonicalPath(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfLangCrateRoot(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfModuleItemCanonicalPath(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfNamespace(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfParametrizedCanonicalPath(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfRepoCrateRoot(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfRustcCrateRoot(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypeGenericTypeArg(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypeItemCanonicalPath(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinTypeCanonicalPath(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfConcreteTypeCanonicalPath(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDerivedTypeCanonicalPath(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPlaceholderTypeCanonicalPath(e, index, partialAccessor)
   }
 }
 

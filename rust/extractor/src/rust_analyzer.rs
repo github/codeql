@@ -34,6 +34,7 @@ pub enum RustAnalyzer<'a> {
 pub struct FileSemanticInformation<'a> {
     pub file_id: EditionedFileId,
     pub semantics: &'a Semantics<'a, RootDatabase>,
+    pub vfs: &'a Vfs,
 }
 
 pub struct ParseResult<'a> {
@@ -87,7 +88,11 @@ impl<'a> RustAnalyzer<'a> {
                             ast: source_file,
                             text: input,
                             errors,
-                            semantics_info: Ok(FileSemanticInformation { file_id, semantics }),
+                            semantics_info: Ok(FileSemanticInformation {
+                                file_id,
+                                semantics,
+                                vfs,
+                            }),
                         };
                     }
                     debug!(

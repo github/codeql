@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.canonical_paths.CanonicalPath
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Addressable` and should not
@@ -54,5 +55,23 @@ module Generated {
      * INTERNAL: Do not use.
      */
     final predicate hasCrateOrigin() { exists(this.getCrateOrigin()) }
+
+    /**
+     * Gets the canonical path of this addressable, if it exists.
+     *
+     * INTERNAL: Do not use.
+     */
+    CanonicalPath getCanonicalPath() {
+      result =
+        Synth::convertCanonicalPathFromRaw(Synth::convertAddressableToRaw(this)
+              .(Raw::Addressable)
+              .getCanonicalPath())
+    }
+
+    /**
+     * Holds if `getCanonicalPath()` exists.
+     * INTERNAL: Do not use.
+     */
+    final predicate hasCanonicalPath() { exists(this.getCanonicalPath()) }
   }
 }

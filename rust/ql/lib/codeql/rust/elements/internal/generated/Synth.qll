@@ -621,7 +621,75 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TYieldExpr(Raw::YieldExpr id) { constructYieldExpr(id) }
+    TYieldExpr(Raw::YieldExpr id) { constructYieldExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TBuiltinTypeCanonicalPath(Raw::BuiltinTypeCanonicalPath id) {
+      constructBuiltinTypeCanonicalPath(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TConcreteTypeCanonicalPath(Raw::ConcreteTypeCanonicalPath id) {
+      constructConcreteTypeCanonicalPath(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TConstGenericTypeArg(Raw::ConstGenericTypeArg id) { constructConstGenericTypeArg(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TDerivedTypeCanonicalPath(Raw::DerivedTypeCanonicalPath id) {
+      constructDerivedTypeCanonicalPath(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TImplItemCanonicalPath(Raw::ImplItemCanonicalPath id) { constructImplItemCanonicalPath(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TLangCrateRoot(Raw::LangCrateRoot id) { constructLangCrateRoot(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TModuleItemCanonicalPath(Raw::ModuleItemCanonicalPath id) {
+      constructModuleItemCanonicalPath(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TNamespace(Raw::Namespace id) { constructNamespace(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TParametrizedCanonicalPath(Raw::ParametrizedCanonicalPath id) {
+      constructParametrizedCanonicalPath(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TPlaceholderTypeCanonicalPath(Raw::PlaceholderTypeCanonicalPath id) {
+      constructPlaceholderTypeCanonicalPath(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TRepoCrateRoot(Raw::RepoCrateRoot id) { constructRepoCrateRoot(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TRustcCrateRoot(Raw::RustcCrateRoot id) { constructRustcCrateRoot(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TTypeGenericTypeArg(Raw::TypeGenericTypeArg id) { constructTypeGenericTypeArg(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TTypeItemCanonicalPath(Raw::TypeItemCanonicalPath id) { constructTypeItemCanonicalPath(id) }
 
   /**
    * INTERNAL: Do not use.
@@ -767,6 +835,35 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TUnextracted = TMissing or TUnimplemented;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TCanonicalPath =
+    TImplItemCanonicalPath or TModuleItemCanonicalPath or TNamespace or
+        TParametrizedCanonicalPath or TTypeCanonicalPath or TTypeItemCanonicalPath;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TCanonicalPathElement = TCanonicalPath or TCrateRoot or TTypeGenericArg;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TCrateRoot = TLangCrateRoot or TRepoCrateRoot or TRustcCrateRoot;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TTypeCanonicalPath =
+    TBuiltinTypeCanonicalPath or TConcreteTypeCanonicalPath or TDerivedTypeCanonicalPath or
+        TPlaceholderTypeCanonicalPath;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TTypeGenericArg = TConstGenericTypeArg or TTypeGenericTypeArg;
 
   /**
    * INTERNAL: Do not use.
@@ -1680,6 +1777,110 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TBuiltinTypeCanonicalPath`, if possible.
+   */
+  TBuiltinTypeCanonicalPath convertBuiltinTypeCanonicalPathFromRaw(Raw::Element e) {
+    result = TBuiltinTypeCanonicalPath(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TConcreteTypeCanonicalPath`, if possible.
+   */
+  TConcreteTypeCanonicalPath convertConcreteTypeCanonicalPathFromRaw(Raw::Element e) {
+    result = TConcreteTypeCanonicalPath(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TConstGenericTypeArg`, if possible.
+   */
+  TConstGenericTypeArg convertConstGenericTypeArgFromRaw(Raw::Element e) {
+    result = TConstGenericTypeArg(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TDerivedTypeCanonicalPath`, if possible.
+   */
+  TDerivedTypeCanonicalPath convertDerivedTypeCanonicalPathFromRaw(Raw::Element e) {
+    result = TDerivedTypeCanonicalPath(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TImplItemCanonicalPath`, if possible.
+   */
+  TImplItemCanonicalPath convertImplItemCanonicalPathFromRaw(Raw::Element e) {
+    result = TImplItemCanonicalPath(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TLangCrateRoot`, if possible.
+   */
+  TLangCrateRoot convertLangCrateRootFromRaw(Raw::Element e) { result = TLangCrateRoot(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TModuleItemCanonicalPath`, if possible.
+   */
+  TModuleItemCanonicalPath convertModuleItemCanonicalPathFromRaw(Raw::Element e) {
+    result = TModuleItemCanonicalPath(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TNamespace`, if possible.
+   */
+  TNamespace convertNamespaceFromRaw(Raw::Element e) { result = TNamespace(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TParametrizedCanonicalPath`, if possible.
+   */
+  TParametrizedCanonicalPath convertParametrizedCanonicalPathFromRaw(Raw::Element e) {
+    result = TParametrizedCanonicalPath(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPlaceholderTypeCanonicalPath`, if possible.
+   */
+  TPlaceholderTypeCanonicalPath convertPlaceholderTypeCanonicalPathFromRaw(Raw::Element e) {
+    result = TPlaceholderTypeCanonicalPath(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TRepoCrateRoot`, if possible.
+   */
+  TRepoCrateRoot convertRepoCrateRootFromRaw(Raw::Element e) { result = TRepoCrateRoot(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TRustcCrateRoot`, if possible.
+   */
+  TRustcCrateRoot convertRustcCrateRootFromRaw(Raw::Element e) { result = TRustcCrateRoot(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TTypeGenericTypeArg`, if possible.
+   */
+  TTypeGenericTypeArg convertTypeGenericTypeArgFromRaw(Raw::Element e) {
+    result = TTypeGenericTypeArg(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TTypeItemCanonicalPath`, if possible.
+   */
+  TTypeItemCanonicalPath convertTypeItemCanonicalPathFromRaw(Raw::Element e) {
+    result = TTypeItemCanonicalPath(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TAddressable`, if possible.
    */
   TAddressable convertAddressableFromRaw(Raw::Element e) {
@@ -1859,6 +2060,8 @@ module Synth {
    * Converts a raw DB element to a synthesized `TElement`, if possible.
    */
   TElement convertElementFromRaw(Raw::Element e) {
+    result = convertCanonicalPathElementFromRaw(e)
+    or
     result = convertExtractorStepFromRaw(e)
     or
     result = convertLocatableFromRaw(e)
@@ -2206,6 +2409,72 @@ module Synth {
     result = convertMissingFromRaw(e)
     or
     result = convertUnimplementedFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TCanonicalPath`, if possible.
+   */
+  TCanonicalPath convertCanonicalPathFromRaw(Raw::Element e) {
+    result = convertImplItemCanonicalPathFromRaw(e)
+    or
+    result = convertModuleItemCanonicalPathFromRaw(e)
+    or
+    result = convertNamespaceFromRaw(e)
+    or
+    result = convertParametrizedCanonicalPathFromRaw(e)
+    or
+    result = convertTypeCanonicalPathFromRaw(e)
+    or
+    result = convertTypeItemCanonicalPathFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TCanonicalPathElement`, if possible.
+   */
+  TCanonicalPathElement convertCanonicalPathElementFromRaw(Raw::Element e) {
+    result = convertCanonicalPathFromRaw(e)
+    or
+    result = convertCrateRootFromRaw(e)
+    or
+    result = convertTypeGenericArgFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TCrateRoot`, if possible.
+   */
+  TCrateRoot convertCrateRootFromRaw(Raw::Element e) {
+    result = convertLangCrateRootFromRaw(e)
+    or
+    result = convertRepoCrateRootFromRaw(e)
+    or
+    result = convertRustcCrateRootFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TTypeCanonicalPath`, if possible.
+   */
+  TTypeCanonicalPath convertTypeCanonicalPathFromRaw(Raw::Element e) {
+    result = convertBuiltinTypeCanonicalPathFromRaw(e)
+    or
+    result = convertConcreteTypeCanonicalPathFromRaw(e)
+    or
+    result = convertDerivedTypeCanonicalPathFromRaw(e)
+    or
+    result = convertPlaceholderTypeCanonicalPathFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TTypeGenericArg`, if possible.
+   */
+  TTypeGenericArg convertTypeGenericArgFromRaw(Raw::Element e) {
+    result = convertConstGenericTypeArgFromRaw(e)
+    or
+    result = convertTypeGenericTypeArgFromRaw(e)
   }
 
   /**
@@ -3118,6 +3387,110 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TBuiltinTypeCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertBuiltinTypeCanonicalPathToRaw(TBuiltinTypeCanonicalPath e) {
+    e = TBuiltinTypeCanonicalPath(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TConcreteTypeCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertConcreteTypeCanonicalPathToRaw(TConcreteTypeCanonicalPath e) {
+    e = TConcreteTypeCanonicalPath(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TConstGenericTypeArg` to a raw DB element, if possible.
+   */
+  Raw::Element convertConstGenericTypeArgToRaw(TConstGenericTypeArg e) {
+    e = TConstGenericTypeArg(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TDerivedTypeCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertDerivedTypeCanonicalPathToRaw(TDerivedTypeCanonicalPath e) {
+    e = TDerivedTypeCanonicalPath(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TImplItemCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertImplItemCanonicalPathToRaw(TImplItemCanonicalPath e) {
+    e = TImplItemCanonicalPath(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TLangCrateRoot` to a raw DB element, if possible.
+   */
+  Raw::Element convertLangCrateRootToRaw(TLangCrateRoot e) { e = TLangCrateRoot(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TModuleItemCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertModuleItemCanonicalPathToRaw(TModuleItemCanonicalPath e) {
+    e = TModuleItemCanonicalPath(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TNamespace` to a raw DB element, if possible.
+   */
+  Raw::Element convertNamespaceToRaw(TNamespace e) { e = TNamespace(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TParametrizedCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertParametrizedCanonicalPathToRaw(TParametrizedCanonicalPath e) {
+    e = TParametrizedCanonicalPath(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPlaceholderTypeCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertPlaceholderTypeCanonicalPathToRaw(TPlaceholderTypeCanonicalPath e) {
+    e = TPlaceholderTypeCanonicalPath(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TRepoCrateRoot` to a raw DB element, if possible.
+   */
+  Raw::Element convertRepoCrateRootToRaw(TRepoCrateRoot e) { e = TRepoCrateRoot(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TRustcCrateRoot` to a raw DB element, if possible.
+   */
+  Raw::Element convertRustcCrateRootToRaw(TRustcCrateRoot e) { e = TRustcCrateRoot(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTypeGenericTypeArg` to a raw DB element, if possible.
+   */
+  Raw::Element convertTypeGenericTypeArgToRaw(TTypeGenericTypeArg e) {
+    e = TTypeGenericTypeArg(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTypeItemCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertTypeItemCanonicalPathToRaw(TTypeItemCanonicalPath e) {
+    e = TTypeItemCanonicalPath(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TAddressable` to a raw DB element, if possible.
    */
   Raw::Element convertAddressableToRaw(TAddressable e) {
@@ -3297,6 +3670,8 @@ module Synth {
    * Converts a synthesized `TElement` to a raw DB element, if possible.
    */
   Raw::Element convertElementToRaw(TElement e) {
+    result = convertCanonicalPathElementToRaw(e)
+    or
     result = convertExtractorStepToRaw(e)
     or
     result = convertLocatableToRaw(e)
@@ -3644,5 +4019,71 @@ module Synth {
     result = convertMissingToRaw(e)
     or
     result = convertUnimplementedToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertCanonicalPathToRaw(TCanonicalPath e) {
+    result = convertImplItemCanonicalPathToRaw(e)
+    or
+    result = convertModuleItemCanonicalPathToRaw(e)
+    or
+    result = convertNamespaceToRaw(e)
+    or
+    result = convertParametrizedCanonicalPathToRaw(e)
+    or
+    result = convertTypeCanonicalPathToRaw(e)
+    or
+    result = convertTypeItemCanonicalPathToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCanonicalPathElement` to a raw DB element, if possible.
+   */
+  Raw::Element convertCanonicalPathElementToRaw(TCanonicalPathElement e) {
+    result = convertCanonicalPathToRaw(e)
+    or
+    result = convertCrateRootToRaw(e)
+    or
+    result = convertTypeGenericArgToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCrateRoot` to a raw DB element, if possible.
+   */
+  Raw::Element convertCrateRootToRaw(TCrateRoot e) {
+    result = convertLangCrateRootToRaw(e)
+    or
+    result = convertRepoCrateRootToRaw(e)
+    or
+    result = convertRustcCrateRootToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTypeCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertTypeCanonicalPathToRaw(TTypeCanonicalPath e) {
+    result = convertBuiltinTypeCanonicalPathToRaw(e)
+    or
+    result = convertConcreteTypeCanonicalPathToRaw(e)
+    or
+    result = convertDerivedTypeCanonicalPathToRaw(e)
+    or
+    result = convertPlaceholderTypeCanonicalPathToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTypeGenericArg` to a raw DB element, if possible.
+   */
+  Raw::Element convertTypeGenericArgToRaw(TTypeGenericArg e) {
+    result = convertConstGenericTypeArgToRaw(e)
+    or
+    result = convertTypeGenericTypeArgToRaw(e)
   }
 }

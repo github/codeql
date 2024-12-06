@@ -5,6 +5,7 @@
 
 private import internal.AddressableImpl
 import codeql.rust.elements.AstNode
+import codeql.rust.elements.canonical_paths.CanonicalPath
 
 /**
  * Something that can be addressed by a path.
