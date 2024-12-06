@@ -1,14 +1,17 @@
-use super::mappings::{AddressableAst, AddressableHir};
+use super::mappings::{AddressableAst, AddressableHir, PathAst};
 use crate::generated::MacroCall;
 use crate::generated::{self};
+use crate::rust_analyzer::FileSemanticInformation;
 use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
-use codeql_extractor::trap::{self};
+use itertools::Either;
 use log::Level;
 use ra_ap_base_db::salsa::InternKey;
 use ra_ap_base_db::CrateOrigin;
 use ra_ap_hir::db::ExpandDatabase;
-use ra_ap_hir::{Adt, ItemContainer, Module, Semantics, Type};
+use ra_ap_hir::{
+    Adt, Crate, ItemContainer, Module, ModuleDef, PathResolution, Semantics, Type, Variant,
+};
 use ra_ap_hir_def::type_ref::Mutability;
 use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_expand::ExpandTo;
@@ -45,14 +48,35 @@ macro_rules! emit_detached {
     (Module, $self:ident, $node:ident, $label:ident) => {
         $self.extract_canonical_origin(&$node, $label.into());
     };
+    (Variant, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_canonical_origin_of_enum_variant(&$node, $label);
+    };
     // TODO canonical origin of other items
+    (PathExpr, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_path_canonical_destination(&$node, $label.into());
+    };
+    (RecordExpr, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_path_canonical_destination(&$node, $label.into());
+    };
+    (PathPat, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_path_canonical_destination(&$node, $label.into());
+    };
+    (RecordPat, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_path_canonical_destination(&$node, $label.into());
+    };
+    (TupleStructPat, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_path_canonical_destination(&$node, $label.into());
+    };
+    (MethodCallExpr, $self:ident, $node:ident, $label:ident) => {
+        $self.extract_method_canonical_destination(&$node, $label);
+    };
     ($($_:tt)*) => {};
 }
 
 pub struct Translator<'a> {
     pub trap: TrapFile,
     path: &'a str,
-    label: trap::Label,
+    label: Label<generated::File>,
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
@@ -62,18 +86,17 @@ impl<'a> Translator<'a> {
     pub fn new(
         trap: TrapFile,
         path: &'a str,
-        label: trap::Label,
+        label: Label<generated::File>,
         line_index: LineIndex,
-        file_id: Option<EditionedFileId>,
-        semantics: Option<&'a Semantics<'a, RootDatabase>>,
+        semantic_info: Option<&FileSemanticInformation<'a>>,
     ) -> Translator<'a> {
         Translator {
             trap,
             path,
             label,
             line_index,
-            file_id,
-            semantics,
+            file_id: semantic_info.map(|i| i.file_id),
+            semantics: semantic_info.map(|i| i.semantics),
         }
     }
     fn location(&self, range: TextRange) -> (LineCol, LineCol) {
@@ -160,7 +183,7 @@ impl<'a> Translator<'a> {
             self.path,
             start.line + 1,
             start.col + 1,
-            &message
+            &full_message
         );
         if severity > DiagnosticSeverity::Debug {
             let location = self.trap.emit_location_label(self.label, start, end);
@@ -276,15 +299,16 @@ impl<'a> Translator<'a> {
             } else {
                 let range = self.text_range_for_node(mcall);
                 self.emit_parse_error(mcall, &SyntaxError::new(
-                        format!(
-                            "macro expansion failed: the macro '{}' expands to {:?} but a {:?} was expected",
-                            mcall.path().map(|p| p.to_string()).unwrap_or_default(),
-                            kind, expand_to
-                        ),
-                        range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
-                    ));
+                    format!(
+                        "macro expansion failed: the macro '{}' expands to {:?} but a {:?} was expected",
+                        mcall.path().map(|p| p.to_string()).unwrap_or_default(),
+                        kind, expand_to
+                    ),
+                    range.unwrap_or_else(|| TextRange::empty(TextSize::from(0))),
+                ));
             }
-        } else {
+        } else if self.semantics.is_some() {
+            // let's not spam warnings if we don't have semantics, we already emitted one
             let range = self.text_range_for_node(mcall);
             self.emit_parse_error(
                 mcall,
@@ -380,10 +404,42 @@ impl<'a> Translator<'a> {
         Some(format!("{prefix}::{name}"))
     }
 
+    fn canonical_path_from_module_def(&self, item: ModuleDef) -> Option<String> {
+        match item {
+            ModuleDef::Module(it) => self.canonical_path_from_hir(it),
+            ModuleDef::Function(it) => self.canonical_path_from_hir(it),
+            ModuleDef::Adt(Adt::Enum(it)) => self.canonical_path_from_hir(it),
+            ModuleDef::Adt(Adt::Struct(it)) => self.canonical_path_from_hir(it),
+            ModuleDef::Adt(Adt::Union(it)) => self.canonical_path_from_hir(it),
+            ModuleDef::Trait(it) => self.canonical_path_from_hir(it),
+            ModuleDef::Variant(it) => self.canonical_path_from_enum_variant(it),
+            ModuleDef::Static(_) => None,
+            ModuleDef::TraitAlias(_) => None,
+            ModuleDef::TypeAlias(_) => None,
+            ModuleDef::BuiltinType(_) => None,
+            ModuleDef::Macro(_) => None,
+            ModuleDef::Const(_) => None,
+        }
+    }
+
+    fn canonical_path_from_enum_variant(&self, item: Variant) -> Option<String> {
+        // if we have a Hir entity, it means we have semantics
+        let sema = self.semantics.as_ref().unwrap();
+        let prefix = self.canonical_path_from_hir(item.parent_enum(sema.db))?;
+        let name = item.name(sema.db);
+        Some(format!("{prefix}::{}", name.as_str()))
+    }
+
     fn origin_from_hir<T: AstNode>(&self, item: impl AddressableHir<T>) -> String {
         // if we have a Hir entity, it means we have semantics
         let sema = self.semantics.as_ref().unwrap();
-        match item.module(sema).krate().origin(sema.db) {
+        self.origin_from_crate(item.module(sema).krate())
+    }
+
+    fn origin_from_crate(&self, item: Crate) -> String {
+        // if we have a Hir entity, it means we have semantics
+        let sema = self.semantics.as_ref().unwrap();
+        match item.origin(sema.db) {
             CrateOrigin::Rustc { name } => format!("rustc:{}", name),
             CrateOrigin::Local { repo, name } => format!(
                 "repo:{}:{}",
@@ -397,18 +453,109 @@ impl<'a> Translator<'a> {
         }
     }
 
+    fn origin_from_module_def(&self, item: ModuleDef) -> Option<String> {
+        match item {
+            ModuleDef::Module(it) => Some(self.origin_from_hir(it)),
+            ModuleDef::Function(it) => Some(self.origin_from_hir(it)),
+            ModuleDef::Adt(Adt::Enum(it)) => Some(self.origin_from_hir(it)),
+            ModuleDef::Adt(Adt::Struct(it)) => Some(self.origin_from_hir(it)),
+            ModuleDef::Adt(Adt::Union(it)) => Some(self.origin_from_hir(it)),
+            ModuleDef::Trait(it) => Some(self.origin_from_hir(it)),
+            ModuleDef::Variant(it) => Some(self.origin_from_enum_variant(it)),
+            ModuleDef::Static(_) => None,
+            ModuleDef::TraitAlias(_) => None,
+            ModuleDef::TypeAlias(_) => None,
+            ModuleDef::BuiltinType(_) => None,
+            ModuleDef::Macro(_) => None,
+            ModuleDef::Const(_) => None,
+        }
+    }
+
+    fn origin_from_enum_variant(&self, item: Variant) -> String {
+        // if we have a Hir entity, it means we have semantics
+        let sema = self.semantics.as_ref().unwrap();
+        self.origin_from_hir(item.parent_enum(sema.db))
+    }
+
     pub(crate) fn extract_canonical_origin<T: AddressableAst + HasName>(
         &mut self,
         item: &T,
-        label: Label<generated::Item>,
+        label: Label<generated::Addressable>,
     ) {
         (|| {
             let sema = self.semantics.as_ref()?;
             let def = T::Hir::try_from_source(item, sema)?;
             let path = self.canonical_path_from_hir(def)?;
             let origin = self.origin_from_hir(def);
-            generated::Item::emit_crate_origin(label, origin, &mut self.trap.writer);
-            generated::Item::emit_extended_canonical_path(label, path, &mut self.trap.writer);
+            generated::Addressable::emit_crate_origin(label, origin, &mut self.trap.writer);
+            generated::Addressable::emit_extended_canonical_path(
+                label,
+                path,
+                &mut self.trap.writer,
+            );
+            Some(())
+        })();
+    }
+
+    pub(crate) fn extract_canonical_origin_of_enum_variant(
+        &mut self,
+        item: &ast::Variant,
+        label: Label<generated::Variant>,
+    ) {
+        (|| {
+            let sema = self.semantics.as_ref()?;
+            let def = sema.to_enum_variant_def(item)?;
+            let path = self.canonical_path_from_enum_variant(def)?;
+            let origin = self.origin_from_enum_variant(def);
+            generated::Addressable::emit_crate_origin(label.into(), origin, &mut self.trap.writer);
+            generated::Addressable::emit_extended_canonical_path(
+                label.into(),
+                path,
+                &mut self.trap.writer,
+            );
+            Some(())
+        })();
+    }
+
+    pub(crate) fn extract_path_canonical_destination(
+        &mut self,
+        item: &impl PathAst,
+        label: Label<generated::Resolvable>,
+    ) {
+        (|| {
+            let path = item.path()?;
+            let sema = self.semantics.as_ref()?;
+            let resolution = sema.resolve_path(&path)?;
+            let PathResolution::Def(def) = resolution else {
+                return None;
+            };
+            let origin = self.origin_from_module_def(def)?;
+            let path = self.canonical_path_from_module_def(def)?;
+            generated::Resolvable::emit_resolved_crate_origin(label, origin, &mut self.trap.writer);
+            generated::Resolvable::emit_resolved_path(label, path, &mut self.trap.writer);
+            Some(())
+        })();
+    }
+
+    pub(crate) fn extract_method_canonical_destination(
+        &mut self,
+        item: &ast::MethodCallExpr,
+        label: Label<generated::MethodCallExpr>,
+    ) {
+        (|| {
+            let sema = self.semantics.as_ref()?;
+            let resolved = sema.resolve_method_call_fallback(item)?;
+            let Either::Left(function) = resolved else {
+                return None;
+            };
+            let origin = self.origin_from_hir(function);
+            let path = self.canonical_path_from_hir(function)?;
+            generated::Resolvable::emit_resolved_crate_origin(
+                label.into(),
+                origin,
+                &mut self.trap.writer,
+            );
+            generated::Resolvable::emit_resolved_path(label.into(), path, &mut self.trap.writer);
             Some(())
         })();
     }

@@ -7,6 +7,7 @@ extensions:
       - ["System.Threading.Channels", "BoundedChannelOptions", "BoundedChannelOptions", "(System.Int32)", "summary", "df-generated"]
       - ["System.Threading.Channels", "Channel", "CreateBounded<T>", "(System.Int32)", "summary", "df-generated"]
       - ["System.Threading.Channels", "Channel", "CreateBounded<T>", "(System.Threading.Channels.BoundedChannelOptions)", "summary", "df-generated"]
+      - ["System.Threading.Channels", "Channel", "CreateBounded<T>", "(System.Threading.Channels.BoundedChannelOptions,System.Action<T>)", "summary", "df-generated"]
       - ["System.Threading.Channels", "Channel", "CreateUnbounded<T>", "()", "summary", "df-generated"]
       - ["System.Threading.Channels", "Channel", "CreateUnbounded<T>", "(System.Threading.Channels.UnboundedChannelOptions)", "summary", "df-generated"]
       - ["System.Threading.Channels", "ChannelClosedException", "ChannelClosedException", "(System.Exception)", "summary", "df-generated"]

@@ -4,8 +4,8 @@ extensions:
       extensible: sinkModel
     data:
       # path-injection
-      - ["github.com/labstack/echo", "Context", False, "Attachment", "", "", "Argument[0]", "path-injection", "manual"]
-      - ["github.com/labstack/echo", "Context", False, "File", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "Attachment", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["github.com/labstack/echo", "Context", True, "File", "", "", "Argument[0]", "path-injection", "manual"]
       # url-redirection
       - ["github.com/labstack/echo", "Context", True, "Redirect", "", "", "Argument[1]", "url-redirection", "manual"]
   - addsTo:

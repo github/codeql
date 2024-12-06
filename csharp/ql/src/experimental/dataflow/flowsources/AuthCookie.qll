@@ -114,61 +114,6 @@ Expr getAValueForProp(ObjectCreation create, Assignment a, string prop) {
  */
 predicate isPropertySet(ObjectCreation oc, string prop) { exists(getAValueForProp(oc, _, prop)) }
 
-/**
- * Tracks if a callback used in `OnAppendCookie` sets a cookie property to `true`.
- */
-abstract deprecated private class OnAppendCookieTrackingConfig extends DataFlow::Configuration {
-  bindingset[this]
-  OnAppendCookieTrackingConfig() { any() }
-
-  /**
-   * Specifies the cookie property name to track.
-   */
-  abstract string propertyName();
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(PropertyWrite pw, Assignment delegateAssign, Callable c |
-      pw.getProperty().getName() = "OnAppendCookie" and
-      pw.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreBuilderCookiePolicyOptions and
-      delegateAssign.getLValue() = pw and
-      (
-        exists(LambdaExpr lambda |
-          delegateAssign.getRValue() = lambda and
-          lambda = c
-        )
-        or
-        exists(DelegateCreation delegate |
-          delegateAssign.getRValue() = delegate and
-          delegate.getArgument().(CallableAccess).getTarget() = c
-        )
-      ) and
-      c.getParameter(0) = source.asParameter()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(PropertyWrite pw, Assignment a |
-      pw.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
-      pw.getProperty().getName() = this.propertyName() and
-      a.getLValue() = pw and
-      exists(Expr val |
-        DataFlow::localExprFlow(val, a.getRValue()) and
-        val.getValue() = "true"
-      ) and
-      sink.asExpr() = pw.getQualifier()
-    )
-  }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    node2.asExpr() =
-      any(PropertyRead pr |
-        pr.getQualifier() = node1.asExpr() and
-        pr.getProperty().getDeclaringType() instanceof
-          MicrosoftAspNetCoreCookiePolicyAppendCookieContext
-      )
-  }
-}
-
 private signature string propertyName();
 
 /**

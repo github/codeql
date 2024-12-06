@@ -1,4 +1,0 @@
-| gen_path_segment.rs:5:5:5:8 | PathSegment | gen_path_segment.rs:5:5:5:8 | NameRef |
-| gen_path_segment.rs:5:5:5:11 | PathSegment | gen_path_segment.rs:5:5:5:11 | NameRef |
-| gen_path_segment.rs:5:5:5:11 | PathSegment | gen_path_segment.rs:5:5:5:11 | NameRef |
-| gen_path_segment.rs:5:5:5:11 | PathSegment | gen_path_segment.rs:5:5:5:11 | NameRef |

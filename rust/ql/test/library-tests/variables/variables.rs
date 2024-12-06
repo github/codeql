@@ -117,7 +117,7 @@ fn match_pattern1() {
         =>
         {
             print_i64(y1)// $ read_access=y1_2
-        } 
+        }
         None => print_str("NONE"),
     }
 
@@ -432,6 +432,16 @@ fn capture_mut() {
     print_i64(z); // $ read_access=z
 }
 
+async fn async_block_capture() {
+    let mut i: i64 = 0; // i
+    let block = async {
+        i = 1; // $ write_access=i
+    };
+    // The await below causes write to `i`
+    block.await; // $ read_access=block
+    print_i64(i); // $ read_access=i
+}
+
 fn phi(b : bool) {
     let mut x = 1; // x
     print_i64(x); // $ read_access=x
@@ -470,7 +480,11 @@ struct MyStruct {
 
 impl MyStruct {
     fn my_get(&mut self) -> i64 {
-        return self.val;
+        return self.val; // $ read_access=self
+    }
+
+    fn id(self) -> Self {
+        self // $ read_access=self
     }
 }
 
@@ -481,6 +495,15 @@ fn structs() {
     print_i64(a.my_get()); // $ read_access=a
     a = MyStruct { val: 2 }; // $ write_access=a
     print_i64(a.my_get()); // $ read_access=a
+}
+
+fn arrays() {
+    let mut a = [1, 2, 3]; // a
+    print_i64(a[0]); // $ read_access=a
+    a[1] = 5; // $ read_access=a
+    print_i64(a[1]); // $ read_access=a
+    a = [4, 5, 6]; // $ write_access=a
+    print_i64(a[2]); // $ read_access=a
 }
 
 fn ref_arg() {
@@ -498,7 +521,7 @@ trait Bar {
 
 impl MyStruct {
   fn bar(&mut self) {
-    *self = MyStruct { val: 3 };
+    *self = MyStruct { val: 3 }; // $ read_access=self
   }
 }
 
@@ -539,6 +562,7 @@ fn main() {
     alias();
     capture_mut();
     capture_immut();
+    async_block_capture();
     structs();
     ref_arg();
     ref_methodcall_receiver();

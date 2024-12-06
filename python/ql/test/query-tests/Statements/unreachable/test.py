@@ -137,3 +137,12 @@ def unreachable_catch_all_raise(x):
         pass
     else:
         raise ValueError(x)
+
+def ok_match(x):
+    match x:
+        case False:
+            pass  # FP
+        case True:
+            pass
+        case _:  # FP
+            pass

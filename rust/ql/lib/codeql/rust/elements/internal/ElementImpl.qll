@@ -14,6 +14,14 @@ module Impl {
   class Element extends Generated::Element {
     override string toString() { result = this.getAPrimaryQlClass() }
 
+    /**
+     * Returns a string suitable to be inserted into the name of the parent. Typically `"..."`,
+     * but may be overridden by subclasses.
+     *
+     * INTERNAL: Do not use.
+     */
+    string toAbbreviatedString() { result = "..." }
+
     predicate isUnknown() { none() } // compatibility with test generation, to be fixed
   }
 }

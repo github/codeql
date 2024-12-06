@@ -3,6 +3,7 @@ from misc.codegen.lib.schemadefs import *
 include("../shared/tree-sitter-extractor/src/generator/prefix.dbscheme")
 include("prefix.dbscheme")
 
+File = imported("File", "codeql.files.FileSystem")
 
 @qltest.skip
 class Element:
@@ -71,3 +72,40 @@ class Callable(AstNode):
     """
     param_list: optional["ParamList"] | child
     attrs: list["Attr"] | child
+
+
+class Addressable(AstNode):
+    """
+    Something that can be addressed by a path.
+
+    TODO: This does not yet include all possible cases.
+    """
+    extended_canonical_path: optional[string] | desc("""
+        Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
+        or `{<block id>}::name` for addressable items defined in an anonymous block (and only
+        addressable there-in).
+    """) | rust.detach | ql.internal
+    crate_origin: optional[string] | desc("One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.") | rust.detach | ql.internal
+
+
+class Resolvable(AstNode):
+    """
+    One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.
+    """
+    resolved_path: optional[string] | rust.detach | ql.internal
+    resolved_crate_origin: optional[string] | rust.detach | ql.internal
+
+
+class PathAstNode(Resolvable):
+    """
+    An AST element wrapping a path (`PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat`).
+    """
+    path: optional["Path"] | child
+
+
+@qltest.skip
+@ql.internal
+class ExtractorStep(Element):
+    action: string
+    file: File
+    duration_ms: int

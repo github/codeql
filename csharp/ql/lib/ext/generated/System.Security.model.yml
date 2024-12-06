@@ -131,6 +131,7 @@ extensions:
       - ["System.Security", "SecurityContext", "IsFlowSuppressed", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityContext", "IsWindowsIdentityFlowSuppressed", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityContext", "RestoreFlow", "()", "summary", "df-generated"]
+      - ["System.Security", "SecurityContext", "Run", "(System.Security.SecurityContext,System.Threading.ContextCallback,System.Object)", "summary", "df-generated"]
       - ["System.Security", "SecurityContext", "SuppressFlow", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityContext", "SuppressFlowWindowsIdentity", "()", "summary", "df-generated"]
       - ["System.Security", "SecurityCriticalAttribute", "SecurityCriticalAttribute", "(System.Security.SecurityCriticalScope)", "summary", "df-generated"]

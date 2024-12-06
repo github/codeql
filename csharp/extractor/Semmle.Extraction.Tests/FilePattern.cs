@@ -1,4 +1,5 @@
 ﻿using Xunit;
+using Semmle.Extraction.CSharp;
 
 namespace Semmle.Extraction.Tests
 {

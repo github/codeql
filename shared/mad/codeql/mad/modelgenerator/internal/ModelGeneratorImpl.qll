@@ -207,6 +207,11 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
   predicate isField(Lang::ContentSet c);
 
   /**
+   * Holds if the content set `c` is callback like.
+   */
+  predicate isCallback(Lang::ContentSet c);
+
+  /**
    * Gets the MaD synthetic name string representation for the content set `c`, if any.
    */
   string getSyntheticName(Lang::ContentSet c);
@@ -222,6 +227,15 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
    * This serves as an extra filter for the `relevant` predicate.
    */
   predicate isUninterestingForDataFlowModels(Callable api);
+
+  /**
+   * Holds if it is irrelevant to generate models for `api` based on the heuristic
+   * (non-content) flow analysis.
+   *
+   * This serves as an extra filter for the `relevant`
+   * and `isUninterestingForDataFlowModels` predicates.
+   */
+  predicate isUninterestingForHeuristicDataFlowModels(Callable api);
 
   /**
    * Holds if `namespace`, `type`, `extensible`, `name` and `parameters` are string representations
@@ -300,7 +314,7 @@ module MakeModelGenerator<
     }
   }
 
-  string getOutput(ReturnNodeExt node) {
+  private string getOutput(ReturnNodeExt node) {
     result = PrintReturnNodeExt<paramReturnNodeAsOutput/2>::getOutput(node)
   }
 
@@ -432,7 +446,11 @@ module MakeModelGenerator<
 
     predicate isSource(DataFlow::Node source, FlowState state) {
       source instanceof DataFlow::ParameterNode and
-      source.(NodeExtended).getEnclosingCallable() instanceof DataFlowSummaryTargetApi and
+      exists(Callable c |
+        c = source.(NodeExtended).getEnclosingCallable() and
+        c instanceof DataFlowSummaryTargetApi and
+        not isUninterestingForHeuristicDataFlowModels(c)
+      ) and
       state.(TaintRead).getStep() = 0
     }
 
@@ -446,8 +464,10 @@ module MakeModelGenerator<
     predicate isAdditionalFlowStep(
       DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
     ) {
-      exists(DataFlow::ContentSet c |
-        DataFlow::store(node1, c.getAStoreContent(), node2, _, _) and
+      exists(DataFlow::NodeEx n1, DataFlow::NodeEx n2, DataFlow::ContentSet c |
+        node1 = n1.asNode() and
+        node2 = n2.asNode() and
+        DataFlow::storeEx(n1, c.getAStoreContent(), n2, _, _) and
         isRelevantContent0(c) and
         (
           state1 instanceof TaintRead and state2.(TaintStore).getStep() = 1
@@ -603,6 +623,24 @@ module MakeModelGenerator<
      */
     private predicate mentionsField(PropagateContentFlow::AccessPath ap) {
       isField(ap.getAtIndex(_))
+    }
+
+    /**
+     * Holds if this access path `ap` mentions a callback.
+     */
+    private predicate mentionsCallback(PropagateContentFlow::AccessPath ap) {
+      isCallback(ap.getAtIndex(_))
+    }
+
+    /**
+     * Holds if the access path `ap` is not a parameter or returnvalue of a callback
+     * stored in a field.
+     *
+     * That is, we currently don't include summaries that rely on parameters or return values
+     * of callbacks stored in fields.
+     */
+    private predicate validateAccessPath(PropagateContentFlow::AccessPath ap) {
+      not (mentionsField(ap) and mentionsCallback(ap))
     }
 
     private predicate apiFlow(
@@ -846,6 +884,8 @@ module MakeModelGenerator<
         input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
         output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores) and
         input != output and
+        validateAccessPath(reads) and
+        validateAccessPath(stores) and
         (
           if mentionsField(reads) or mentionsField(stores)
           then lift = false and api.isRelevant()

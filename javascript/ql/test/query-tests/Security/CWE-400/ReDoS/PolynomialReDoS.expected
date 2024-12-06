@@ -249,6 +249,12 @@ nodes
 | polynomial-redos.js:136:5:136:13 | modified3 |
 | polynomial-redos.js:138:5:138:11 | tainted |
 | polynomial-redos.js:138:5:138:11 | tainted |
+| polynomial-redos.js:140:2:140:10 | modified3 |
+| polynomial-redos.js:140:2:140:10 | modified3 |
+| polynomial-redos.js:141:2:141:10 | modified3 |
+| polynomial-redos.js:141:2:141:10 | modified3 |
+| polynomial-redos.js:142:2:142:10 | modified3 |
+| polynomial-redos.js:142:2:142:10 | modified3 |
 edges
 | lib/closure.js:3:21:3:21 | x | lib/closure.js:4:16:4:16 | x |
 | lib/closure.js:3:21:3:21 | x | lib/closure.js:4:16:4:16 | x |
@@ -489,6 +495,12 @@ edges
 | polynomial-redos.js:132:18:132:50 | tainted ... g, "e") | polynomial-redos.js:132:6:132:50 | modified2 |
 | polynomial-redos.js:135:9:135:47 | modified3 | polynomial-redos.js:136:5:136:13 | modified3 |
 | polynomial-redos.js:135:9:135:47 | modified3 | polynomial-redos.js:136:5:136:13 | modified3 |
+| polynomial-redos.js:135:9:135:47 | modified3 | polynomial-redos.js:140:2:140:10 | modified3 |
+| polynomial-redos.js:135:9:135:47 | modified3 | polynomial-redos.js:140:2:140:10 | modified3 |
+| polynomial-redos.js:135:9:135:47 | modified3 | polynomial-redos.js:141:2:141:10 | modified3 |
+| polynomial-redos.js:135:9:135:47 | modified3 | polynomial-redos.js:141:2:141:10 | modified3 |
+| polynomial-redos.js:135:9:135:47 | modified3 | polynomial-redos.js:142:2:142:10 | modified3 |
+| polynomial-redos.js:135:9:135:47 | modified3 | polynomial-redos.js:142:2:142:10 | modified3 |
 | polynomial-redos.js:135:21:135:27 | tainted | polynomial-redos.js:135:21:135:47 | tainted ... /g, "") |
 | polynomial-redos.js:135:21:135:47 | tainted ... /g, "") | polynomial-redos.js:135:9:135:47 | modified3 |
 #select
@@ -590,3 +602,6 @@ edges
 | polynomial-redos.js:133:2:133:32 | modifie ... g, "b") | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:133:2:133:10 | modified2 | This $@ that depends on $@ may run slow on strings starting with 'f' and with many repetitions of 'f'. | polynomial-redos.js:133:22:133:23 | f+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
 | polynomial-redos.js:136:5:136:35 | modifie ... g, "b") | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:136:5:136:13 | modified3 | This $@ that depends on $@ may run slow on strings starting with 'h' and with many repetitions of 'h'. | polynomial-redos.js:136:25:136:26 | h+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
 | polynomial-redos.js:138:5:138:326 | tainted ... )C.*X/) | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:138:5:138:11 | tainted | This $@ that depends on $@ may run slow on strings starting with 'AAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC' and with many repetitions of 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC'. | polynomial-redos.js:138:322:138:323 | .* | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:140:2:140:48 | modifie ... ), "b") | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:140:2:140:10 | modified3 | This $@ that depends on $@ may run slow on strings starting with 'h' and with many repetitions of 'h'. | polynomial-redos.js:140:33:140:34 | h+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:141:2:141:59 | modifie ... ), "b") | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:141:2:141:10 | modified3 | This $@ that depends on $@ may run slow on strings starting with 'h' and with many repetitions of 'h'. | polynomial-redos.js:141:33:141:34 | h+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
+| polynomial-redos.js:142:2:142:47 | modifie ... ), "b") | polynomial-redos.js:5:16:5:32 | req.query.tainted | polynomial-redos.js:142:2:142:10 | modified3 | This $@ that depends on $@ may run slow on strings starting with 'h' and with many repetitions of 'h'. | polynomial-redos.js:142:33:142:34 | h+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |

@@ -170,3 +170,37 @@ impl AddressableAst for ast::Union {
 impl AddressableAst for ast::Module {
     type Hir = Module;
 }
+
+pub trait PathAst: AstNode {
+    fn path(&self) -> Option<ast::Path>;
+}
+
+impl PathAst for ast::PathExpr {
+    fn path(&self) -> Option<ast::Path> {
+        self.path()
+    }
+}
+
+impl PathAst for ast::RecordExpr {
+    fn path(&self) -> Option<ast::Path> {
+        self.path()
+    }
+}
+
+impl PathAst for ast::PathPat {
+    fn path(&self) -> Option<ast::Path> {
+        self.path()
+    }
+}
+
+impl PathAst for ast::RecordPat {
+    fn path(&self) -> Option<ast::Path> {
+        self.path()
+    }
+}
+
+impl PathAst for ast::TupleStructPat {
+    fn path(&self) -> Option<ast::Path> {
+        self.path()
+    }
+}

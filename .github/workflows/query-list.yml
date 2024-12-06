@@ -37,7 +37,7 @@ jobs:
       run: |
         python codeql/misc/scripts/generate-code-scanning-query-list.py > code-scanning-query-list.csv
     - name: Upload code scanning query list
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: code-scanning-query-list
         path: code-scanning-query-list.csv

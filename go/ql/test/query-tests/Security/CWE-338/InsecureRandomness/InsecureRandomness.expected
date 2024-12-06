@@ -22,7 +22,7 @@ edges
 | sample.go:56:18:56:39 | index expression | sample.go:56:11:56:40 | type conversion | provenance |  |
 | sample.go:56:29:56:38 | randNumber | sample.go:56:18:56:39 | index expression | provenance | Config |
 models
-| 1 | Summary: fmt; ; true; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 1 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
 | 2 | Summary: io; ; false; ReadFull; ; ; Argument[0]; Argument[1]; taint; manual |
 nodes
 | InsecureRandomness.go:12:18:12:40 | call to Intn | semmle.label | call to Intn |

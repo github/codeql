@@ -15,4 +15,3 @@ extensions:
       - ["github.com/nonexistent/sources", "", False, "ReadEnvironment", "", "", "ReturnValue", "environment", "manual"]
       - ["github.com/nonexistent/sources", "", False, "GetCustom", "", "", "ReturnValue", "custom", "manual"]
       - ["github.com/nonexistent/sources", "", False, "GetCliArg", "", "", "ReturnValue", "commandargs", "manual"]
-

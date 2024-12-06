@@ -24,6 +24,8 @@ predicate variableWrite(AstNode write, Variable v) {
     not isUnitializedLet(pat, v)
   )
   or
+  exists(SelfParam self | self = write and self = v.getSelfParam())
+  or
   exists(VariableAccess access |
     access = write and
     access.getVariable() = v
@@ -156,19 +158,19 @@ private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
  */
 pragma[noinline]
 private predicate hasCapturedWrite(Variable v, Cfg::CfgScope scope) {
-  any(VariableWriteAccess write | write.getVariable() = v and scope = write.getEnclosingCallable+())
+  any(VariableWriteAccess write | write.getVariable() = v and scope = write.getEnclosingCfgScope+())
       .isCapture()
 }
 
 /**
  * Holds if `v` is read inside basic block `bb` at index `i`, which is in the
- * immediate outer scope of `scope`.
+ * immediate outer CFG scope of `scope`.
  */
 pragma[noinline]
 private predicate variableReadActualInOuterScope(
   BasicBlock bb, int i, Variable v, Cfg::CfgScope scope
 ) {
-  variableReadActual(bb, i, v) and bb.getScope() = scope.getEnclosingCallable()
+  variableReadActual(bb, i, v) and bb.getScope() = scope.getEnclosingCfgScope()
 }
 
 pragma[noinline]
@@ -263,7 +265,7 @@ private predicate readsCapturedVariable(BasicBlock bb, Variable v) {
  */
 pragma[noinline]
 private predicate hasCapturedRead(Variable v, Cfg::CfgScope scope) {
-  any(VariableReadAccess read | read.getVariable() = v and scope = read.getEnclosingCallable+())
+  any(VariableReadAccess read | read.getVariable() = v and scope = read.getEnclosingCfgScope+())
       .isCapture()
 }
 
@@ -273,14 +275,18 @@ private predicate hasCapturedRead(Variable v, Cfg::CfgScope scope) {
  */
 pragma[noinline]
 private predicate variableWriteInOuterScope(BasicBlock bb, int i, Variable v, Cfg::CfgScope scope) {
-  SsaInput::variableWrite(bb, i, v, _) and scope.getEnclosingCallable() = bb.getScope()
+  SsaInput::variableWrite(bb, i, v, _) and scope.getEnclosingCfgScope() = bb.getScope()
 }
+
+/** Holds if evaluating `e` jumps to the evaluation of a different CFG scope. */
+private predicate isControlFlowJump(Expr e) { e instanceof CallExprBase or e instanceof AwaitExpr }
 
 /**
  * Holds if the call `call` at index `i` in basic block `bb` may reach
  * a callable that reads captured variable `v`.
  */
-private predicate capturedCallRead(CallExprBase call, BasicBlock bb, int i, Variable v) {
+private predicate capturedCallRead(Expr call, BasicBlock bb, int i, Variable v) {
+  isControlFlowJump(call) and
   exists(Cfg::CfgScope scope |
     hasCapturedRead(v, scope) and
     (
@@ -295,7 +301,8 @@ private predicate capturedCallRead(CallExprBase call, BasicBlock bb, int i, Vari
  * Holds if the call `call` at index `i` in basic block `bb` may reach a callable
  * that writes captured variable `v`.
  */
-predicate capturedCallWrite(CallExprBase call, BasicBlock bb, int i, Variable v) {
+predicate capturedCallWrite(Expr call, BasicBlock bb, int i, Variable v) {
+  isControlFlowJump(call) and
   call = bb.getNode(i).getAstNode() and
   exists(Cfg::CfgScope scope |
     hasVariableReadWithCapturedWrite(bb, any(int j | j > i), v, scope)
@@ -469,14 +476,14 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
   /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
   predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    exists(BasicBlock bb, int i | def.definesAt(_, bb, i) and value = bb.getNode(i))
+    none() // handled in `DataFlowImpl.qll` instead
   }
 
-  class Parameter = Param;
+  class Parameter = CfgNodes::ParamBaseCfgNode;
 
   /** Holds if SSA definition `def` initializes parameter `p` at function entry. */
   predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) {
-    exists(BasicBlock bb, int i | bb.getNode(i).getAstNode() = p and def.definesAt(_, bb, i))
+    none() // handled in `DataFlowImpl.qll` instead
   }
 
   class Guard extends CfgNodes::AstCfgNode {

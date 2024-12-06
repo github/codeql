@@ -1,6 +1,0 @@
-uniqueEnclosingCallable
-| gen_let_expr.rs:3:18:3:43 | Param | Node should have one enclosing callable but has 0. |
-uniqueCallEnclosingCallable
-| gen_let_expr.rs:6:18:6:24 | CallExpr | Call should have one enclosing callable but has 0. |
-uniqueType
-| gen_let_expr.rs:3:18:3:43 | Param | Node should have one type but has 0. |

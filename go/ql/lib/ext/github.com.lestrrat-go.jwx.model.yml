@@ -3,4 +3,4 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
-      - ["github.com/lestrrat-go/jwx", "", True, "New", "", "", "Argument[0]", "credentials-key", "manual"]
+      - ["github.com/lestrrat-go/jwx", "", False, "New", "", "", "Argument[0]", "credentials-key", "manual"]

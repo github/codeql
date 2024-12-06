@@ -94,4 +94,54 @@
 
   sink(["source"].filter((x) => x)); // NOT OK
   sink(["source"].filter((x) => !!x)); // NOT OK
+  
+  var arr8 = [];
+  arr8 = arr8.toSpliced(0, 0, "source");
+  sink(arr8.pop()); // NOT OK
+
+  var arr8_variant = [];
+  arr8_variant = arr8_variant.toSpliced(0, 0, "safe", "source");
+  arr8_variant.pop();
+  sink(arr8_variant.pop()); // NOT OK
+
+  var arr8_spread = [];
+  arr8_spread = arr8_spread.toSpliced(0, 0, ...arr);
+  sink(arr8_spread.pop()); // NOT OK
+
+  sink(arr.findLast(someCallback)); // NOT OK
+
+  {  // Test for findLast function
+    const list = ["source"];
+    const element = list.findLast((item) => sink(item)); // NOT OK
+    sink(element); // NOT OK
+  }
+
+  {  // Test for find function
+    const list = ["source"];
+    const element = list.find((item) => sink(item)); // NOT OK
+    sink(element); // NOT OK
+  }
+
+  {  // Test for findLastIndex function
+    const list = ["source"];
+    const element = list.findLastIndex((item) => sink(item)); // NOT OK
+    sink(element); // OK
+  }
+  {
+    const arr = source();
+    const element1 = arr.find((item) => sink(item)); // NOT OK
+    sink(element1); // NOT OK
+  }
+
+  {
+    const arr = source();
+    const element1 = arr.findLast((item) => sink(item)); // NOT OK
+    sink(element1); // NOT OK
+  }
+  
+  {
+    const arr = source();
+    const element1 = arr.findLastIndex((item) => sink(item)); // NOT OK
+    sink(element1); // OK
+  }
 });

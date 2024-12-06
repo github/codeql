@@ -88,7 +88,7 @@ abstract class TranslatedCall extends TranslatedExpr {
       result = this.getParent().getChildSuccessor(this, kind)
       or
       this.mayThrowException() and
-      kind instanceof ExceptionEdge and
+      kind instanceof CppExceptionEdge and
       result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
     )
   }
@@ -364,10 +364,14 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
 
   final override predicate mayThrowException() {
     expr.getTarget().(ThrowingFunction).mayThrowException(_)
+    or
+    expr.getTarget() instanceof AlwaysSehThrowingFunction
   }
 
   final override predicate mustThrowException() {
     expr.getTarget().(ThrowingFunction).mayThrowException(true)
+    or
+    expr.getTarget() instanceof AlwaysSehThrowingFunction
   }
 }
 
