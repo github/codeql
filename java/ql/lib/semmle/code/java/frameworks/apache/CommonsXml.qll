@@ -1,4 +1,6 @@
 /** Provides XML definitions related to the `org.apache.commons` package. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.RangeUtils

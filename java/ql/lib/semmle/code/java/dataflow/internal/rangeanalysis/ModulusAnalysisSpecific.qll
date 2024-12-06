@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 module Private {
   private import java as J
   private import semmle.code.java.dataflow.SSA as Ssa

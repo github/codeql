@@ -1,4 +1,6 @@
 /** Provides classes for working with files and folders. */
+overlay[local?]
+module;
 
 /** Provides the input specification of the files and folders implementation. */
 signature module InputSig {

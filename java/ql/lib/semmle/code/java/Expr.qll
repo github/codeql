@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with Java expressions.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.frameworks.android.Compose

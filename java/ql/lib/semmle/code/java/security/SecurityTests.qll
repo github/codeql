@@ -1,4 +1,6 @@
 /** Test detection for the security pack. */
+overlay[local?]
+module;
 
 import java
 

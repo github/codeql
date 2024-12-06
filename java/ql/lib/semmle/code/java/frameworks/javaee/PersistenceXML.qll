@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with JavaEE
  * persistence configuration XML files (`persistence.xml`).
  */
+overlay[local?]
+module;
 
 import java
 

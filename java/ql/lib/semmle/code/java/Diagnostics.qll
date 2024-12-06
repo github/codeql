@@ -1,6 +1,8 @@
 /**
  * Provides classes representing warnings generated during compilation.
  */
+overlay[local?]
+module;
 
 import java
 

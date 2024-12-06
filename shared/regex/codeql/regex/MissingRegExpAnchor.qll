@@ -2,6 +2,8 @@
  * Provides predicates for reasoning about regular expressions
  * without anchors.
  */
+overlay[local?]
+module;
 
 private import RegexTreeView
 import HostnameRegexp as HostnameShared
