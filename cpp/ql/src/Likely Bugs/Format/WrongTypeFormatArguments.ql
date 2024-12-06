@@ -170,11 +170,7 @@ where
   ) and
   not arg.isAffectedByMacro() and
   not arg.isFromUninstantiatedTemplate(_) and
-  not actual.getUnspecifiedType() instanceof ErroneousType and
-  not (
-    expected instanceof PointerType and
-    actual.getUnspecifiedType().(PointerType).getBaseType() instanceof ErroneousType
-  ) and
+  not actual.stripType() instanceof ErroneousType and
   not arg.(Call).mayBeFromImplicitlyDeclaredFunction()
 select arg,
   "This format specifier for type '" + expected.getName() + "' does not match the argument type '" +
