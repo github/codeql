@@ -23,13 +23,13 @@ def _load_resource_dir(plat):
     if override:
         http_file(
             name = name,
-            downloaded_file_path = file,
+            downloaded_file_path = file.lower(),
             **override
         )
     else:
         lfs_files(
             name = name,
-            srcs = ["//swift/third_party/resources:%s" % file],
+            srcs = ["//swift/third_party/resources:%s" % file.lower()],
         )
 
 def _load_prebuilt(plat):
@@ -52,14 +52,14 @@ def _load_prebuilt(plat):
     else:
         lfs_archive(
             name = name,
-            src = "//swift/third_party/resources:%s" % file,
+            src = "//swift/third_party/resources:%s" % file.lower(),
             build_file = build,
         )
 
         # unused, but saves us some bazel mod tidy dance when in override mode
         lfs_files(
             name = name + "-download-only",
-            srcs = ["//swift/third_party/resources:%s" % file],
+            srcs = ["//swift/third_party/resources:%s" % file.lower()],
         )
 
 def _github_archive(*, name, repository, commit, build_file = None, sha256 = None):
