@@ -945,9 +945,9 @@ edges
 | variables.rs:428:24:430:5 | exit \|...\| ... (normal) | variables.rs:428:24:430:5 | exit \|...\| ... |  |
 | variables.rs:428:27:430:5 | { ... } | variables.rs:428:24:430:5 | exit \|...\| ... (normal) |  |
 | variables.rs:429:9:429:9 | z | variables.rs:429:22:429:22 | 1 |  |
-| variables.rs:429:9:429:23 | ... .add_assign(...) | variables.rs:428:27:430:5 | { ... } |  |
+| variables.rs:429:9:429:23 | z.add_assign(...) | variables.rs:428:27:430:5 | { ... } |  |
 | variables.rs:429:9:429:24 | ExprStmt | variables.rs:429:9:429:9 | z |  |
-| variables.rs:429:22:429:22 | 1 | variables.rs:429:9:429:23 | ... .add_assign(...) |  |
+| variables.rs:429:22:429:22 | 1 | variables.rs:429:9:429:23 | z.add_assign(...) |  |
 | variables.rs:431:5:431:12 | closure3 | variables.rs:431:5:431:14 | closure3(...) |  |
 | variables.rs:431:5:431:14 | closure3(...) | variables.rs:432:5:432:17 | ExprStmt |  |
 | variables.rs:431:5:431:15 | ExprStmt | variables.rs:431:5:431:12 | closure3 |  |
@@ -1094,8 +1094,8 @@ edges
 | variables.rs:493:5:493:13 | print_i64 | variables.rs:493:15:493:15 | a |  |
 | variables.rs:493:5:493:25 | print_i64(...) | variables.rs:494:5:494:14 | ExprStmt |  |
 | variables.rs:493:5:493:26 | ExprStmt | variables.rs:493:5:493:13 | print_i64 |  |
-| variables.rs:493:15:493:15 | a | variables.rs:493:15:493:24 | ... .my_get(...) |  |
-| variables.rs:493:15:493:24 | ... .my_get(...) | variables.rs:493:5:493:25 | print_i64(...) |  |
+| variables.rs:493:15:493:15 | a | variables.rs:493:15:493:24 | a.my_get(...) |  |
+| variables.rs:493:15:493:24 | a.my_get(...) | variables.rs:493:5:493:25 | print_i64(...) |  |
 | variables.rs:494:5:494:5 | a | variables.rs:494:5:494:9 | a.val |  |
 | variables.rs:494:5:494:9 | a.val | variables.rs:494:13:494:13 | 5 |  |
 | variables.rs:494:5:494:13 | ... = ... | variables.rs:495:5:495:26 | ExprStmt |  |
@@ -1104,8 +1104,8 @@ edges
 | variables.rs:495:5:495:13 | print_i64 | variables.rs:495:15:495:15 | a |  |
 | variables.rs:495:5:495:25 | print_i64(...) | variables.rs:496:5:496:28 | ExprStmt |  |
 | variables.rs:495:5:495:26 | ExprStmt | variables.rs:495:5:495:13 | print_i64 |  |
-| variables.rs:495:15:495:15 | a | variables.rs:495:15:495:24 | ... .my_get(...) |  |
-| variables.rs:495:15:495:24 | ... .my_get(...) | variables.rs:495:5:495:25 | print_i64(...) |  |
+| variables.rs:495:15:495:15 | a | variables.rs:495:15:495:24 | a.my_get(...) |  |
+| variables.rs:495:15:495:24 | a.my_get(...) | variables.rs:495:5:495:25 | print_i64(...) |  |
 | variables.rs:496:5:496:5 | a | variables.rs:496:25:496:25 | 2 |  |
 | variables.rs:496:5:496:27 | ... = ... | variables.rs:497:5:497:26 | ExprStmt |  |
 | variables.rs:496:5:496:28 | ExprStmt | variables.rs:496:5:496:5 | a |  |
@@ -1114,8 +1114,8 @@ edges
 | variables.rs:497:5:497:13 | print_i64 | variables.rs:497:15:497:15 | a |  |
 | variables.rs:497:5:497:25 | print_i64(...) | variables.rs:491:14:498:1 | { ... } |  |
 | variables.rs:497:5:497:26 | ExprStmt | variables.rs:497:5:497:13 | print_i64 |  |
-| variables.rs:497:15:497:15 | a | variables.rs:497:15:497:24 | ... .my_get(...) |  |
-| variables.rs:497:15:497:24 | ... .my_get(...) | variables.rs:497:5:497:25 | print_i64(...) |  |
+| variables.rs:497:15:497:15 | a | variables.rs:497:15:497:24 | a.my_get(...) |  |
+| variables.rs:497:15:497:24 | a.my_get(...) | variables.rs:497:5:497:25 | print_i64(...) |  |
 | variables.rs:500:1:507:1 | enter fn arrays | variables.rs:501:5:501:26 | let ... = ... |  |
 | variables.rs:500:1:507:1 | exit fn arrays (normal) | variables.rs:500:1:507:1 | exit fn arrays |  |
 | variables.rs:500:13:507:1 | { ... } | variables.rs:500:1:507:1 | exit fn arrays (normal) |  |
@@ -1197,8 +1197,8 @@ edges
 | variables.rs:529:7:529:11 | a | variables.rs:530:3:530:10 | ExprStmt | match |
 | variables.rs:529:15:529:33 | MyStruct {...} | variables.rs:529:7:529:11 | a |  |
 | variables.rs:529:31:529:31 | 1 | variables.rs:529:15:529:33 | MyStruct {...} |  |
-| variables.rs:530:3:530:3 | a | variables.rs:530:3:530:9 | ... .bar(...) |  |
-| variables.rs:530:3:530:9 | ... .bar(...) | variables.rs:532:3:532:19 | ExprStmt |  |
+| variables.rs:530:3:530:3 | a | variables.rs:530:3:530:9 | a.bar(...) |  |
+| variables.rs:530:3:530:9 | a.bar(...) | variables.rs:532:3:532:19 | ExprStmt |  |
 | variables.rs:530:3:530:10 | ExprStmt | variables.rs:530:3:530:3 | a |  |
 | variables.rs:532:3:532:11 | print_i64 | variables.rs:532:13:532:13 | a |  |
 | variables.rs:532:3:532:18 | print_i64(...) | variables.rs:528:30:533:1 | { ... } |  |
