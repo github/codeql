@@ -32,6 +32,11 @@ where
   key = "Files extracted - without errors" and
   value = count(SuccessfullyExtractedFile f | exists(f.getRelativePath()))
   or
+  key = "Files extracted - without errors %" and
+  value =
+    (count(SuccessfullyExtractedFile f | exists(f.getRelativePath())) * 100) /
+      count(ExtractedFile f | exists(f.getRelativePath()))
+  or
   key = "Lines of code extracted" and value = getLinesOfCode()
   or
   key = "Lines of user code extracted" and value = getLinesOfUserCode()
