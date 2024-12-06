@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 logger.LogInfo($"Stored Dependabot proxy certificate at {result.CertificatePath}");
 
-                result.Certificate = new X509Certificate2(result.CertificatePath);
+                result.Certificate = X509Certificate2.CreateFromPem(cert);
             }
 
             return result;
