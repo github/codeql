@@ -11,7 +11,6 @@ extensions:
       - ["", "CComSafeArray", True, "Attach", "", "", "Argument[*0]", "Argument[-1].Field[*m_psa]", "value", "manual"]
       - ["", "CComSafeArray", True, "CopyFrom", "", "", "Argument[*0]", "Argument[-1].Field[*m_psa]", "value", "manual"]
       - ["", "CComSafeArray", True, "CopyTo", "", "", "Argument[-1].Field[*m_psa]", "Argument[*0]", "value", "manual"]
-      - ["", "CComSafeArray", True, "Create", "(const SAFEARRAYBOUND *,UINT)", "", "Argument[*0]", "Argument[-1].Field[*m_psa]", "value", "manual"]
       - ["", "CComSafeArray", True, "GetAt", "", "", "Argument[-1].Field[*m_psa].Field[*@pvData]", "ReturnValue[*@]", "value", "manual"]
       - ["", "CComSafeArray", True, "GetLowerBound", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["", "CComSafeArray", True, "GetSafeArrayPtr", "", "", "Argument[-1].Field[*m_psa]", "ReturnValue[*]", "value", "manual"]

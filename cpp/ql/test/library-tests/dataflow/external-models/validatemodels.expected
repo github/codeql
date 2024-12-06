@@ -21,7 +21,6 @@
 | Dubious signature "(const CComSafeArray &)" in summary model. |
 | Dubious signature "(const SAFEARRAY &)" in summary model. |
 | Dubious signature "(const SAFEARRAY *)" in summary model. |
-| Dubious signature "(const SAFEARRAYBOUND *,UINT)" in summary model. |
 | Dubious signature "(const T &,BOOL)" in summary model. |
 | Dubious signature "(const deque &)" in summary model. |
 | Dubious signature "(const deque &,const Allocator &)" in summary model. |

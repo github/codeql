@@ -35,7 +35,6 @@ signatureMatches
 | atl.cpp:426:11:426:21 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
 | atl.cpp:438:8:438:17 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 0 |
 | atl.cpp:438:8:438:17 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 1 |
-| atl.cpp:438:8:438:17 | LoadString | (const SAFEARRAYBOUND *,UINT) | CComSafeArray | Create | 1 |
 | atl.cpp:439:8:439:17 | LoadString | (UINT) | CComBSTR | LoadString | 0 |
 | atl.cpp:439:8:439:17 | LoadString | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:447:13:447:22 | operator+= | (const CComBSTR &) | CComBSTR | Append | 0 |
@@ -419,8 +418,6 @@ getSignatureParameterName
 | (const SAFEARRAY *) | CComSafeArray | Add | 0 | const SAFEARRAY * |
 | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 | const SAFEARRAY * |
 | (const SAFEARRAY *) | CComSafeArray | operator= | 0 | const SAFEARRAY * |
-| (const SAFEARRAYBOUND *,UINT) | CComSafeArray | Create | 0 | const SAFEARRAYBOUND * |
-| (const SAFEARRAYBOUND *,UINT) | CComSafeArray | Create | 1 | UINT |
 | (const T &,BOOL) | CComSafeArray<T> | Add | 0 | const class:0 & |
 | (const T &,BOOL) | CComSafeArray<T> | Add | 1 | BOOL |
 | (const deque &) | deque | deque | 0 | const deque & |
