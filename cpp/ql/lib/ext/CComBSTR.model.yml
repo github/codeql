@@ -28,6 +28,6 @@ extensions:
       - ["", "CComBSTR", True, "ReadFromStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
       - ["", "CComBSTR", True, "WriteToStream", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
       - ["", "CComBSTR", True, "operator BSTR", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
-      - ["", "CComBSTR", True, "operator&", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["", "CComBSTR", True, "operator&", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
       - ["", "CComBSTR", True, "operator+=", "", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
       - ["", "CComBSTR", True, "operator+=", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
