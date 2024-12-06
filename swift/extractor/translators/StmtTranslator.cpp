@@ -74,7 +74,7 @@ codeql::ForEachStmt StmtTranslator::translateForEachStmt(const swift::ForEachStm
   fillLabeledStmt(stmt, entry);
   entry.body = dispatcher.fetchLabel(stmt.getBody());
   entry.pattern = dispatcher.fetchLabel(stmt.getPattern());
-  entry.iteratorVar = dispatcher.fetchLabel(stmt.getIteratorVar());
+  entry.iteratorVar = dispatcher.fetchOptionalLabel(stmt.getIteratorVar());
   entry.where = dispatcher.fetchOptionalLabel(stmt.getWhere());
   entry.nextCall = dispatcher.fetchOptionalLabel(stmt.getNextCall());
   auto add_variable = [&](swift::VarDecl* var) {
