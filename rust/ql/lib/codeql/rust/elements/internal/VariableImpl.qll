@@ -139,6 +139,9 @@ module Impl {
      */
     IdentPat getPat() { variableDecl(definingNode, result, name) }
 
+    /** Gets the enclosing CFG scope for this variable declaration. */
+    CfgScope getEnclosingCfgScope() { result = definingNode.getEnclosingCfgScope() }
+
     /** Gets the `let` statement that introduces this variable, if any. */
     LetStmt getLetStmt() { this.getPat() = result.getPat() }
 
@@ -452,7 +455,7 @@ module Impl {
     Variable getVariable() { result = v }
 
     /** Holds if this access is a capture. */
-    predicate isCapture() { this.getEnclosingCfgScope() != v.getPat().getEnclosingCfgScope() }
+    predicate isCapture() { this.getEnclosingCfgScope() != v.getEnclosingCfgScope() }
 
     override string toString() { result = name }
 

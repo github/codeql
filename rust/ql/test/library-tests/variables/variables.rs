@@ -486,6 +486,15 @@ impl MyStruct {
     fn id(self) -> Self {
         self // $ read_access=self
     }
+
+    fn my_method(&mut self) {
+        let mut f = |n| {
+            // Capture of `self`
+            self.val += n; // $ read_access=self read_access=n
+        };
+        f(3); // $ read_access=f
+        f(4); // $ read_access=f
+    }
 }
 
 fn structs() {
