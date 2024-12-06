@@ -3,7 +3,7 @@ STRATEGY: MAX
 RESTRICTION: == net9.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    Basic.CompilerLog.Util (0.9.3)
+    Basic.CompilerLog.Util (0.9.4)
       MessagePack (>= 2.5.187)
       Microsoft.CodeAnalysis (>= 4.11)
       Microsoft.CodeAnalysis.CSharp (>= 4.11)
@@ -12,10 +12,12 @@ NUGET
       MSBuild.StructuredLogger (>= 2.2.243)
       System.Buffers (>= 4.6)
     Humanizer.Core (2.14.1)
-    MessagePack (2.5.192)
-      MessagePack.Annotations (>= 2.5.192)
-      Microsoft.NET.StringTools (>= 17.6.3)
-    MessagePack.Annotations (2.5.192)
+    MessagePack (3.0.3)
+      MessagePack.Annotations (>= 3.0.3)
+      MessagePackAnalyzer (>= 3.0.3)
+      Microsoft.NET.StringTools (>= 17.11.4)
+    MessagePack.Annotations (3.0.3)
+    MessagePackAnalyzer (3.0.3)
     Microsoft.Bcl.AsyncInterfaces (9.0)
     Microsoft.Build (17.12.6)
       Microsoft.Build.Framework (>= 17.12.6)
