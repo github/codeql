@@ -2,6 +2,8 @@
  * Provides classes and predicates related to jump-to-definition links
  * in the code viewer.
  */
+overlay[local?]
+module;
 
 import java
 import IDEContextual

@@ -3,6 +3,9 @@
  * `org.springframework.boot.*`.
  */
 
+overlay[local?]
+module;
+
 import java
 
 /**

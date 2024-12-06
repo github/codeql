@@ -78,6 +78,8 @@
  * l-values that aren't r-values as well, and expressions in `ConstCase`s.
  * For example, the `x` in `x=3` is not in the CFG, but the `x` in `x+=3` is.
  */
+overlay[local?]
+module;
 
 import java
 private import Completion

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * Provides some simple predicates for models as data related tests using
  * inline expectations (as comments in the source code).

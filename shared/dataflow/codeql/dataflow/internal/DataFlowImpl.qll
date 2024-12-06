@@ -3,6 +3,8 @@
  *
  * Provides an implementation of global (interprocedural) data flow.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Unit
 private import codeql.util.Option
