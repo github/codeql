@@ -96,7 +96,9 @@ use_repo(
     "binlog",
     "picosha2",
     "swift-prebuilt-linux",
+    "swift-prebuilt-linux-download-only",
     "swift-prebuilt-macos",
+    "swift-prebuilt-macos-download-only",
     "swift-resource-dir-linux",
     "swift-resource-dir-macos",
 )

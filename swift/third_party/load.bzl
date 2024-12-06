@@ -47,11 +47,23 @@ def _load_prebuilt(plat):
             build_file = build,
             **override
         )
+
+        # this is for `//swift/third_party/resources:update-prebuilt-*` support
+        http_file(
+            name = name + "-download-only",
+            **override
+        )
     else:
         lfs_archive(
             name = name,
             src = "//swift/third_party/resources:%s" % file,
             build_file = build,
+        )
+
+        # unused, but saves us some bazel mod tidy dance when in override mode
+        lfs_files(
+            name = name + "-download-only",
+            srcs = ["//swift/third_party/resources:%s" % file],
         )
 
 def _github_archive(*, name, repository, commit, build_file = None, sha256 = None):

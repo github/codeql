@@ -25,23 +25,25 @@ alias(
         name = "update-%s-%s" % (what, os),
         srcs = ["update.sh"],
         args = [
-            "$(rlocationpath %s)" % what,
+            "$(rlocationpath %s)" % source,
             "$(rlocationpath %s)" % target,
         ],
         data = [
-            what,
+            source,
             target,
         ],
         deps = ["//misc/bazel:sh_runfiles"],
     )
     for os in _oses
-    for what, target in (
+    for what, source, target in (
         (
             "prebuilt",
+            "@swift-prebuilt-%s-download-only//file" % os,
             "swift-prebuilt-%s.tar.zst" % os,
         ),
         (
             "dir",
+            "@swift-resource-dir-%s//file" % os,
             "resource-dir-%s.zip" % os,
         ),
     )
