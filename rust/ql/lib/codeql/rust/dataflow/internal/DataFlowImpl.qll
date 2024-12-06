@@ -1101,9 +1101,11 @@ import MakeImpl<Location, RustDataFlow>
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
+  private import codeql.rust.internal.CachedStages
+
   cached
   newtype TNode =
-    TExprNode(ExprCfgNode n) or
+    TExprNode(ExprCfgNode n) { Stages::DataFlowStage::ref() } or
     TSourceParameterNode(ParamBaseCfgNode p) or
     TPatNode(PatCfgNode p) or
     TExprPostUpdateNode(ExprCfgNode e) {
