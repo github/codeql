@@ -35,7 +35,7 @@ edges
 | main.rs:214:14:214:14 | n | main.rs:214:25:214:25 | n | provenance |  |
 | main.rs:224:14:224:29 | Some(...) [Some] | main.rs:225:10:225:11 | s1 [Some] | provenance |  |
 | main.rs:224:19:224:28 | source(...) | main.rs:224:14:224:29 | Some(...) [Some] | provenance |  |
-| main.rs:225:10:225:11 | s1 [Some] | main.rs:225:10:225:20 | ... .unwrap(...) | provenance |  |
+| main.rs:225:10:225:11 | s1 [Some] | main.rs:225:10:225:20 | s1.unwrap(...) | provenance |  |
 | main.rs:229:14:229:29 | Some(...) [Some] | main.rs:231:14:231:15 | s1 [Some] | provenance |  |
 | main.rs:229:19:229:28 | source(...) | main.rs:229:14:229:29 | Some(...) [Some] | provenance |  |
 | main.rs:231:14:231:15 | s1 [Some] | main.rs:231:14:231:16 | TryExpr | provenance |  |
@@ -158,7 +158,7 @@ nodes
 | main.rs:224:14:224:29 | Some(...) [Some] | semmle.label | Some(...) [Some] |
 | main.rs:224:19:224:28 | source(...) | semmle.label | source(...) |
 | main.rs:225:10:225:11 | s1 [Some] | semmle.label | s1 [Some] |
-| main.rs:225:10:225:20 | ... .unwrap(...) | semmle.label | ... .unwrap(...) |
+| main.rs:225:10:225:20 | s1.unwrap(...) | semmle.label | s1.unwrap(...) |
 | main.rs:229:14:229:29 | Some(...) [Some] | semmle.label | Some(...) [Some] |
 | main.rs:229:19:229:28 | source(...) | semmle.label | source(...) |
 | main.rs:231:14:231:15 | s1 [Some] | semmle.label | s1 [Some] |
@@ -262,7 +262,7 @@ testFailures
 | main.rs:152:10:152:10 | a | main.rs:148:12:148:21 | source(...) | main.rs:152:10:152:10 | a | $@ | main.rs:148:12:148:21 | source(...) | source(...) |
 | main.rs:201:33:201:33 | n | main.rs:198:27:198:36 | source(...) | main.rs:201:33:201:33 | n | $@ | main.rs:198:27:198:36 | source(...) | source(...) |
 | main.rs:214:25:214:25 | n | main.rs:211:19:211:28 | source(...) | main.rs:214:25:214:25 | n | $@ | main.rs:211:19:211:28 | source(...) | source(...) |
-| main.rs:225:10:225:20 | ... .unwrap(...) | main.rs:224:19:224:28 | source(...) | main.rs:225:10:225:20 | ... .unwrap(...) | $@ | main.rs:224:19:224:28 | source(...) | source(...) |
+| main.rs:225:10:225:20 | s1.unwrap(...) | main.rs:224:19:224:28 | source(...) | main.rs:225:10:225:20 | s1.unwrap(...) | $@ | main.rs:224:19:224:28 | source(...) | source(...) |
 | main.rs:232:10:232:11 | i1 | main.rs:229:19:229:28 | source(...) | main.rs:232:10:232:11 | i1 | $@ | main.rs:229:19:229:28 | source(...) | source(...) |
 | main.rs:243:10:243:11 | i1 | main.rs:238:35:238:44 | source(...) | main.rs:243:10:243:11 | i1 | $@ | main.rs:238:35:238:44 | source(...) | source(...) |
 | main.rs:259:35:259:35 | n | main.rs:256:29:256:38 | source(...) | main.rs:259:35:259:35 | n | $@ | main.rs:256:29:256:38 | source(...) | source(...) |
