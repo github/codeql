@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with SMAP files (see JSR-045).
  */
+overlay[local?]
+module;
 
 import java
 
