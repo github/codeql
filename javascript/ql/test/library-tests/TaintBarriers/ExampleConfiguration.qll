@@ -42,7 +42,7 @@ module TestConfig implements DataFlow::ConfigSig {
 
 module TestFlow = TaintTracking::Global<TestConfig>;
 
-class ExampleConfiguration extends TaintTracking::Configuration {
+deprecated class ExampleConfiguration extends TaintTracking::Configuration {
   ExampleConfiguration() { this = "ExampleConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }

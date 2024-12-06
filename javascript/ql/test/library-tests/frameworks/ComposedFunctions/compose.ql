@@ -15,7 +15,7 @@ module TestConfig implements DataFlow::ConfigSig {
 
 module TestFlow = TaintTracking::Global<TestConfig>;
 
-class LegacyConfig extends TaintTracking::Configuration {
+deprecated class LegacyConfig extends TaintTracking::Configuration {
   LegacyConfig() { this = "LegacyConfig" }
 
   override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
@@ -23,7 +23,7 @@ class LegacyConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { TestConfig::isSink(sink) }
 }
 
-import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
 from DataFlow::Node source, DataFlow::Node sink
 where TestFlow::flow(source, sink)

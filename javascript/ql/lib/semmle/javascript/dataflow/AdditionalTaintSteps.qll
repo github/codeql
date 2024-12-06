@@ -11,9 +11,10 @@ private import semmle.javascript.internal.CachedStages
  *
  * This class is a singleton, and thus subclasses do not need to specify a characteristic predicate.
  *
+ * As an alternative to this class, consider using `DataFlow::SummarizedCallable`.
+ *
  * Note: For performance reasons, all subclasses of this class should be part
- * of the standard library. Override `Configuration::isAdditionalTaintStep`
- * for analysis-specific taint steps.
+ * of the standard library. Use `isAdditionalFlowStep` for query-specific taint steps.
  */
 class AdditionalTaintStep extends Unit {
   /**

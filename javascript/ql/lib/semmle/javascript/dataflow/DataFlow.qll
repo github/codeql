@@ -1935,4 +1935,5 @@ module DataFlow {
   import internal.FunctionWrapperSteps
   import internal.sharedlib.DataFlow
   import internal.BarrierGuards
+  import FlowSummary
 }

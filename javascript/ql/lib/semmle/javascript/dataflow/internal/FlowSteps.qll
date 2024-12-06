@@ -49,7 +49,7 @@ private predicate legacyPostUpdateStep(DataFlow::Node pred, DataFlow::Node succ)
  * additional steps from the configuration into account.
  */
 pragma[inline]
-predicate localFlowStep(
+deprecated predicate localFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration configuration,
   FlowLabel predlbl, FlowLabel succlbl
 ) {

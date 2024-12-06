@@ -1,6 +1,6 @@
 import javascript
 private import semmle.javascript.dataflow.internal.StepSummary
-import testUtilities.LegacyDataFlowDiff
+deprecated import testUtilities.LegacyDataFlowDiff
 
 module ValueFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
@@ -37,7 +37,7 @@ query predicate typetrack(DataFlow::SourceNode succ, DataFlow::SourceNode pred, 
   succ = PromiseTypeTracking::promiseStep(pred, summary)
 }
 
-class LegacyValueConfig extends DataFlow::Configuration {
+deprecated class LegacyValueConfig extends DataFlow::Configuration {
   LegacyValueConfig() { this = "LegacyValueConfig" }
 
   override predicate isSource(DataFlow::Node source) { ValueFlowConfig::isSource(source) }
@@ -45,10 +45,10 @@ class LegacyValueConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { ValueFlowConfig::isSink(sink) }
 }
 
-query predicate valueFlowDifference =
+deprecated query predicate valueFlowDifference =
   DataFlowDiff<ValueFlow, LegacyValueConfig>::legacyDataFlowDifference/3;
 
-class LegacyTaintConfig extends TaintTracking::Configuration {
+deprecated class LegacyTaintConfig extends TaintTracking::Configuration {
   LegacyTaintConfig() { this = "LegacyTaintConfig" }
 
   override predicate isSource(DataFlow::Node source) { TaintConfig::isSource(source) }
@@ -56,5 +56,5 @@ class LegacyTaintConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { TaintConfig::isSink(sink) }
 }
 
-query predicate taintFlowDifference =
+deprecated query predicate taintFlowDifference =
   DataFlowDiff<TaintFlow, LegacyTaintConfig>::legacyDataFlowDifference/3;

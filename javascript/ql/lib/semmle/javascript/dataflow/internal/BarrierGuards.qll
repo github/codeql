@@ -63,13 +63,21 @@ module MakeLabeledBarrierGuard<LabeledBarrierGuardSig BaseGuard> {
   }
 }
 
-private signature predicate isBarrierGuardSig(DataFlow::BarrierGuardNode node);
+/**
+ * Contains deprecated signatures.
+ *
+ * This module is a workaround for the fact that deprecated signatures can't refer to deprecated classes
+ * without getting a deprecation warning
+ */
+deprecated private module DeprecatedSigs {
+  signature predicate isBarrierGuardSig(DataFlow::BarrierGuardNode node);
+}
 
 /**
  * Converts a labeled barrier guard class to a set of nodes to include in an implementation of `isBarrier(node)` and `isBarrier(node, label)`
  * in a `DataFlow::StateConfigSig` implementation.
  */
-module MakeLegacyBarrierGuardLabeled<isBarrierGuardSig/1 isBarrierGuard> {
+deprecated module MakeLegacyBarrierGuardLabeled<DeprecatedSigs::isBarrierGuardSig/1 isBarrierGuard> {
   final private class FinalNode = DataFlow::Node;
 
   private class Adapter extends FinalNode instanceof DataFlow::BarrierGuardNode {
@@ -100,7 +108,7 @@ module MakeLegacyBarrierGuardLabeled<isBarrierGuardSig/1 isBarrierGuard> {
 /**
  * Converts a barrier guard class to a set of nodes to include in an implementation of `isBarrier(node)` in a `DataFlow::ConfigSig` implementation.
  */
-module MakeLegacyBarrierGuard<isBarrierGuardSig/1 isBarrierGuard> {
+deprecated module MakeLegacyBarrierGuard<DeprecatedSigs::isBarrierGuardSig/1 isBarrierGuard> {
   final private class FinalNode = DataFlow::Node;
 
   private class Adapter extends FinalNode instanceof DataFlow::BarrierGuardNode {

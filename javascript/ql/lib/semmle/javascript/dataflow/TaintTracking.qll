@@ -33,7 +33,7 @@ module TaintTracking {
    * If a different set of flow edges is desired, extend this class and override
    * `isAdditionalTaintStep`.
    */
-  abstract class Configuration extends DataFlow::Configuration {
+  abstract deprecated class Configuration extends DataFlow::Configuration {
     bindingset[this]
     Configuration() { any() }
 
@@ -174,35 +174,71 @@ module TaintTracking {
   }
 
   /**
-   * A `SanitizerGuardNode` that controls which taint tracking
-   * configurations it is used in.
+   * A barrier guard that applies to all taint-tracking configurations.
    *
    * Note: For performance reasons, all subclasses of this class should be part
-   * of the standard library. Override `Configuration::isSanitizerGuard`
-   * for analysis-specific taint sanitizer guards.
+   * of the standard library. To define a query-specific barrier guard, instead override
+   * `isBarrier` and use the `DataFlow::MakeBarrierGuard` module. For example:
+   * ```codeql
+   * module MyConfig implements DataFlow::ConfigSig {
+   *   predicate isBarrier(DataFlow::Node node) {
+   *     node = DataFlow::MakeBarrierGuard<MyGuard>
+   *   }
+   * }
+   * class MyGuard extends DataFlow::Node {
+   *   MyGuard() { ... }
+   *   predicate blocksExpr(boolean outcome, Expr e) { ... }
+   * }
    */
+  abstract class AdditionalBarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node blocks expression `e`, provided it evaluates to `outcome`.
+     */
+    abstract predicate blocksExpr(boolean outcome, Expr e);
+  }
+
+  /**
+   * Internal barrier guard class that populates both the new `AdditionalBarrierGuard` class
+   * and the legacy `AdditionalSanitizerGuardNode` class.
+   *
+   * It exposes the member predicates of `AdditionalSanitizerGuardNode` for backwards compatibility.
+   */
+  abstract private class LegacyAdditionalBarrierGuard extends AdditionalBarrierGuard,
+    AdditionalSanitizerGuardNodeDeprecated
+  {
+    deprecated override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    deprecated override predicate appliesTo(Configuration cfg) { any() }
+  }
+
+  /**
+   * DEPRECATED. This class was part of the old data flow library which is now deprecated.
+   * Use `TaintTracking::AdditionalBarrierGuard` instead.
+   */
+  deprecated class AdditionalSanitizerGuardNode = AdditionalSanitizerGuardNodeDeprecated;
+
   cached
-  abstract class AdditionalSanitizerGuardNode extends DataFlow::Node {
+  abstract private class AdditionalSanitizerGuardNodeDeprecated extends DataFlow::Node {
     // For backwards compatibility, this contains a copy of the SanitizerGuard interface,
     // but is does not inherit from it as that would cause re-evaluation of cached barriers.
     /**
      * Holds if this node blocks expression `e`, provided it evaluates to `outcome`.
      */
     cached
-    predicate blocks(boolean outcome, Expr e) { none() }
+    deprecated predicate blocks(boolean outcome, Expr e) { none() }
 
     /**
      * Holds if this node sanitizes expression `e`, provided it evaluates
      * to `outcome`.
      */
     cached
-    abstract predicate sanitizes(boolean outcome, Expr e);
+    abstract deprecated predicate sanitizes(boolean outcome, Expr e);
 
     /**
      * Holds if this node blocks expression `e` from flow of type `label`, provided it evaluates to `outcome`.
      */
     cached
-    predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    deprecated predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       this.sanitizes(outcome, e) and label.isTaint()
       or
       this.sanitizes(outcome, e, label)
@@ -213,13 +249,13 @@ module TaintTracking {
      * to `outcome`.
      */
     cached
-    predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+    deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
 
     /**
      * Holds if this guard applies to the flow in `cfg`.
      */
     cached
-    abstract predicate appliesTo(Configuration cfg);
+    abstract deprecated predicate appliesTo(Configuration cfg);
   }
 
   /**
@@ -234,7 +270,7 @@ module TaintTracking {
    * implementations of `sanitizes` will _both_ apply to any configuration that includes either of
    * them.
    */
-  abstract class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
+  abstract deprecated class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
     override predicate blocks(boolean outcome, Expr e) { none() }
 
     /**
@@ -259,7 +295,9 @@ module TaintTracking {
   /**
    * A sanitizer guard node that only blocks specific flow labels.
    */
-  abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode, DataFlow::BarrierGuardNode {
+  abstract deprecated class LabeledSanitizerGuardNode extends SanitizerGuardNode,
+    DataFlow::BarrierGuardNode
+  {
     override predicate sanitizes(boolean outcome, Expr e) { none() }
   }
 
@@ -775,7 +813,7 @@ module TaintTracking {
    * A conditional checking a tainted string against a regular expression, which is
    * considered to be a sanitizer for all configurations.
    */
-  class SanitizingRegExpTest extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  class SanitizingRegExpTest extends LegacyAdditionalBarrierGuard, DataFlow::ValueNode {
     Expr expr;
     boolean sanitizedOutcome;
 
@@ -808,12 +846,10 @@ module TaintTracking {
 
     private boolean getSanitizedOutcome() { result = sanitizedOutcome }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       outcome = sanitizedOutcome and
       e = expr
     }
-
-    override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
@@ -823,14 +859,14 @@ module TaintTracking {
    *
    * Note that the `includes` method is covered by `MembershipTestSanitizer`.
    */
-  class WhitelistContainmentCallSanitizer extends AdditionalSanitizerGuardNode,
+  class WhitelistContainmentCallSanitizer extends LegacyAdditionalBarrierGuard,
     DataFlow::MethodCallNode
   {
     WhitelistContainmentCallSanitizer() {
       this.getMethodName() = ["contains", "has", "hasOwnProperty", "hasOwn"]
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       exists(int propertyIndex |
         if this.getMethodName() = "hasOwn" then propertyIndex = 1 else propertyIndex = 0
       |
@@ -838,8 +874,6 @@ module TaintTracking {
         e = this.getArgument(propertyIndex).asExpr()
       )
     }
-
-    override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
@@ -849,14 +883,12 @@ module TaintTracking {
    *
    * This sanitizer is not enabled by default.
    */
-  class AdHocWhitelistCheckSanitizer extends SanitizerGuardNode, DataFlow::CallNode {
+  class AdHocWhitelistCheckSanitizer extends DataFlow::CallNode {
     AdHocWhitelistCheckSanitizer() {
       this.getCalleeName()
           .regexpMatch("(?i).*((?<!un)safe|whitelist|(?<!in)valid|allow|(?<!un)auth(?!or\\b)).*") and
       this.getNumArgument() = 1
     }
-
-    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
 
     /** Holds if this node blocks flow through `e`, provided it evaluates to `outcome`. */
     predicate blocksExpr(boolean outcome, Expr e) {
@@ -865,23 +897,26 @@ module TaintTracking {
     }
   }
 
+  deprecated private class AdHocWhitelistCheckSanitizerAsSanitizerGuardNode extends SanitizerGuardNode instanceof AdHocWhitelistCheckSanitizer
+  {
+    override predicate sanitizes(boolean outcome, Expr e) { super.blocksExpr(outcome, e) }
+  }
+
   /** Barrier nodes derived from the `AdHocWhitelistCheckSanitizer` class. */
   module AdHocWhitelistCheckSanitizer = DataFlow::MakeBarrierGuard<AdHocWhitelistCheckSanitizer>;
 
   /** A check of the form `if(x in o)`, which sanitizes `x` in its "then" branch. */
-  class InSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  class InSanitizer extends LegacyAdditionalBarrierGuard, DataFlow::ValueNode {
     override InExpr astNode;
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       outcome = true and
       e = astNode.getLeftOperand()
     }
-
-    override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /** A check of the form `if(o[x] != undefined)`, which sanitizes `x` in its "then" branch. */
-  class UndefinedCheckSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  class UndefinedCheckSanitizer extends LegacyAdditionalBarrierGuard, DataFlow::ValueNode {
     Expr x;
     override EqualityTest astNode;
 
@@ -897,27 +932,23 @@ module TaintTracking {
       )
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       outcome = astNode.getPolarity().booleanNot() and
       e = x
     }
-
-    override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /** A check of the form `type x === "undefined"`, which sanitized `x` in its "then" branch. */
-  class TypeOfUndefinedSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  class TypeOfUndefinedSanitizer extends LegacyAdditionalBarrierGuard, DataFlow::ValueNode {
     Expr x;
     override EqualityTest astNode;
 
     TypeOfUndefinedSanitizer() { isTypeofGuard(astNode, x, "undefined") }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       outcome = astNode.getPolarity() and
       e = x
     }
-
-    override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
@@ -978,7 +1009,7 @@ module TaintTracking {
   /**
    * A test of form `x.length === "0"`, preventing `x` from being tainted.
    */
-  class IsEmptyGuard extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  class IsEmptyGuard extends LegacyAdditionalBarrierGuard, DataFlow::ValueNode {
     override EqualityTest astNode;
     boolean polarity;
     Expr operand;
@@ -992,24 +1023,20 @@ module TaintTracking {
       )
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) { polarity = outcome and e = operand }
-
-    override predicate appliesTo(Configuration cfg) { any() }
+    override predicate blocksExpr(boolean outcome, Expr e) { polarity = outcome and e = operand }
   }
 
   /**
    * A check of the form `whitelist.includes(x)` or equivalent, which sanitizes `x` in its "then" branch.
    */
-  class MembershipTestSanitizer extends AdditionalSanitizerGuardNode {
+  class MembershipTestSanitizer extends LegacyAdditionalBarrierGuard {
     MembershipCandidate candidate;
 
     MembershipTestSanitizer() { this = candidate.getTest() }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       candidate = e.flow() and candidate.getTestPolarity() = outcome
     }
-
-    override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
@@ -1017,7 +1044,7 @@ module TaintTracking {
    *
    * The more typical case of `x.indexOf(y) >= 0` is covered by `MembershipTestSanitizer`.
    */
-  class PositiveIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
+  class PositiveIndexOfSanitizer extends LegacyAdditionalBarrierGuard, DataFlow::ValueNode {
     MethodCallExpr indexOf;
     override RelationalComparison astNode;
 
@@ -1030,19 +1057,17 @@ module TaintTracking {
       )
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       outcome = true and
       e = indexOf.getArgument(0)
     }
-
-    override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
    * An equality test on `e.origin` or `e.source` where `e` is a `postMessage` event object,
    * considered as a sanitizer for `e`.
    */
-  private class PostMessageEventSanitizer extends AdditionalSanitizerGuardNode {
+  private class PostMessageEventSanitizer extends LegacyAdditionalBarrierGuard {
     VarAccess event;
     boolean polarity;
 
@@ -1059,12 +1084,10 @@ module TaintTracking {
       )
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       outcome = polarity and
       e = event
     }
-
-    override predicate appliesTo(Configuration cfg) { any() }
   }
 
   import internal.sharedlib.TaintTracking

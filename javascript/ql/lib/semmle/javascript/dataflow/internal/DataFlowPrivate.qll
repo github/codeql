@@ -1055,10 +1055,14 @@ private predicate sameContainerAsEnclosingContainer(Node node, Function fun) {
   node.getContainer() = fun.getEnclosingContainer()
 }
 
-private class BarrierGuardAdapter extends DataFlow::Node instanceof DataFlow::AdditionalBarrierGuardNode
-{
+abstract private class BarrierGuardAdapter extends DataFlow::Node {
   // Note: avoid depending on DataFlow::FlowLabel here as it will cause these barriers to be re-evaluated
-  predicate blocksExpr(boolean outcome, Expr e) { super.blocks(outcome, e) }
+  predicate blocksExpr(boolean outcome, Expr e) { none() }
+}
+
+deprecated private class BarrierGuardAdapterSubclass extends BarrierGuardAdapter instanceof DataFlow::AdditionalBarrierGuardNode
+{
+  override predicate blocksExpr(boolean outcome, Expr e) { super.blocks(outcome, e) }
 }
 
 /**

@@ -1,6 +1,6 @@
 import javascript
 private import semmle.javascript.heuristics.AdditionalSources
-import testUtilities.ConsistencyChecking
+deprecated import testUtilities.ConsistencyChecking
 
 module TestConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof HeuristicSource }
@@ -12,13 +12,13 @@ module TestConfig implements DataFlow::ConfigSig {
 
 module TestFlow = TaintTracking::Global<TestConfig>;
 
-class Consistency extends ConsistencyConfiguration {
+deprecated class Consistency extends ConsistencyConfiguration {
   Consistency() { this = "Consistency" }
 
   override DataFlow::Node getAnAlert() { TestFlow::flowTo(result) }
 }
 
-class LegacyConfig extends TaintTracking::Configuration {
+deprecated class LegacyConfig extends TaintTracking::Configuration {
   LegacyConfig() { this = "LegacyConfig" }
 
   override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
@@ -26,4 +26,4 @@ class LegacyConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { TestConfig::isSink(sink) }
 }
 
-import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>

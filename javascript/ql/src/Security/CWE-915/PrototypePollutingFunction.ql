@@ -465,7 +465,7 @@ class AllowListInclusionGuard extends BarrierGuard {
   }
 
   override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
-    this.(TaintTracking::AdditionalSanitizerGuardNode).sanitizes(outcome, e) and
+    this.(TaintTracking::AdditionalBarrierGuard).blocksExpr(outcome, e) and
     lbl instanceof UnsafePropLabel
   }
 }

@@ -20,19 +20,15 @@ module TestConfig implements DataFlow::StateConfigSig {
     )
   }
 
-  additional predicate isBarrierGuard(DataFlow::BarrierGuardNode node) {
-    node instanceof IsTypeAGuard or
-    node instanceof IsSanitizedGuard
-  }
-
   predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
-    node = DataFlow::MakeLegacyBarrierGuardLabeled<isBarrierGuard/1>::getABarrierNode(lbl)
+    node = DataFlow::MakeLabeledBarrierGuard<IsTypeAGuard>::getABarrierNode(lbl) or
+    node = DataFlow::MakeLabeledBarrierGuard<IsSanitizedGuard>::getABarrierNode(lbl)
   }
 }
 
 module TestFlow = TaintTracking::GlobalWithState<TestConfig>;
 
-class LegacyConfig extends TaintTracking::Configuration {
+deprecated class LegacyConfig extends TaintTracking::Configuration {
   LegacyConfig() { this = "LegacyConfig" }
 
   override predicate isSource(DataFlow::Node node, DataFlow::FlowLabel lbl) {
@@ -44,7 +40,8 @@ class LegacyConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
-    TestConfig::isBarrierGuard(node)
+    node instanceof IsTypeAGuardLegacy or
+    node instanceof IsSanitizedGuardLegacy
   }
 }
 
@@ -52,12 +49,8 @@ class LegacyConfig extends TaintTracking::Configuration {
  * A condition that checks what kind of value the input is. Not enough to
  * sanitize the value, but later sanitizers only need to handle the relevant case.
  */
-class IsTypeAGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::CallNode {
+class IsTypeAGuard extends DataFlow::CallNode {
   IsTypeAGuard() { this.getCalleeName() = "isTypeA" }
-
-  override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
-    this.blocksExpr(outcome, e, lbl)
-  }
 
   predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
     e = this.getArgument(0).asExpr() and
@@ -69,12 +62,14 @@ class IsTypeAGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::C
   }
 }
 
-class IsSanitizedGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::CallNode {
-  IsSanitizedGuard() { this.getCalleeName() = "sanitizeA" or this.getCalleeName() = "sanitizeB" }
-
+deprecated class IsTypeAGuardLegacy extends IsTypeAGuard, TaintTracking::LabeledSanitizerGuardNode {
   override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
     this.blocksExpr(outcome, e, lbl)
   }
+}
+
+class IsSanitizedGuard extends DataFlow::CallNode {
+  IsSanitizedGuard() { this.getCalleeName() = "sanitizeA" or this.getCalleeName() = "sanitizeB" }
 
   predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
     e = this.getArgument(0).asExpr() and
@@ -87,7 +82,15 @@ class IsSanitizedGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlo
   }
 }
 
-import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated class IsSanitizedGuardLegacy extends IsSanitizedGuard,
+  TaintTracking::LabeledSanitizerGuardNode
+{
+  override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+    this.blocksExpr(outcome, e, lbl)
+  }
+}
+
+deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
 from DataFlow::Node source, DataFlow::Node sink
 where TestFlow::flow(source, sink)

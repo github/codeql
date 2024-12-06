@@ -198,7 +198,6 @@ nodes
 | mongoose.js:130:16:130:26 | { _id: id } | semmle.label | { _id: id } |
 | mongoose.js:130:23:130:24 | id | semmle.label | id |
 | mongoose.js:133:38:133:42 | query | semmle.label | query |
-| mongoose.js:134:30:134:34 | query | semmle.label | query |
 | mongoose.js:136:30:136:34 | query | semmle.label | query |
 | mongooseJsonParse.js:19:11:19:20 | query | semmle.label | query |
 | mongooseJsonParse.js:19:19:19:20 | {} | semmle.label | {} |
@@ -453,7 +452,6 @@ edges
 | mongoose.js:20:8:20:17 | query | mongoose.js:111:14:111:18 | query | provenance |  |
 | mongoose.js:20:8:20:17 | query | mongoose.js:113:31:113:35 | query | provenance |  |
 | mongoose.js:20:8:20:17 | query | mongoose.js:133:38:133:42 | query | provenance |  |
-| mongoose.js:20:8:20:17 | query | mongoose.js:134:30:134:34 | query | provenance |  |
 | mongoose.js:20:8:20:17 | query | mongoose.js:136:30:136:34 | query | provenance |  |
 | mongoose.js:20:16:20:17 | {} | mongoose.js:20:8:20:17 | query | provenance |  |
 | mongoose.js:21:2:21:6 | query | mongoose.js:24:22:24:26 | query | provenance |  |
@@ -498,7 +496,6 @@ edges
 | mongoose.js:21:16:21:29 | req.body.title | mongoose.js:111:14:111:18 | query | provenance | Config |
 | mongoose.js:21:16:21:29 | req.body.title | mongoose.js:113:31:113:35 | query | provenance | Config |
 | mongoose.js:21:16:21:29 | req.body.title | mongoose.js:133:38:133:42 | query | provenance | Config |
-| mongoose.js:21:16:21:29 | req.body.title | mongoose.js:134:30:134:34 | query | provenance | Config |
 | mongoose.js:21:16:21:29 | req.body.title | mongoose.js:136:30:136:34 | query | provenance | Config |
 | mongoose.js:24:22:24:26 | query | mongoose.js:24:21:24:27 | [query] | provenance | Config |
 | mongoose.js:24:22:24:26 | query | mongoose.js:27:17:27:21 | query | provenance |  |
@@ -555,7 +552,6 @@ edges
 | mongoose.js:115:25:115:45 | cond | mongoose.js:129:21:129:24 | cond | provenance |  |
 | mongoose.js:115:32:115:45 | req.query.cond | mongoose.js:115:25:115:45 | cond | provenance |  |
 | mongoose.js:130:23:130:24 | id | mongoose.js:130:16:130:26 | { _id: id } | provenance | Config |
-| mongoose.js:133:38:133:42 | query | mongoose.js:134:30:134:34 | query | provenance |  |
 | mongoose.js:133:38:133:42 | query | mongoose.js:136:30:136:34 | query | provenance |  |
 | mongooseJsonParse.js:19:11:19:20 | query | mongooseJsonParse.js:23:19:23:23 | query | provenance |  |
 | mongooseJsonParse.js:19:19:19:20 | {} | mongooseJsonParse.js:19:11:19:20 | query | provenance |  |
@@ -718,7 +714,6 @@ subpaths
 | mongoose.js:128:22:128:25 | cond | mongoose.js:115:32:115:45 | req.query.cond | mongoose.js:128:22:128:25 | cond | This query object depends on a $@. | mongoose.js:115:32:115:45 | req.query.cond | user-provided value |
 | mongoose.js:129:21:129:24 | cond | mongoose.js:115:32:115:45 | req.query.cond | mongoose.js:129:21:129:24 | cond | This query object depends on a $@. | mongoose.js:115:32:115:45 | req.query.cond | user-provided value |
 | mongoose.js:130:16:130:26 | { _id: id } | mongoose.js:115:11:115:22 | req.query.id | mongoose.js:130:16:130:26 | { _id: id } | This query object depends on a $@. | mongoose.js:115:11:115:22 | req.query.id | user-provided value |
-| mongoose.js:134:30:134:34 | query | mongoose.js:21:16:21:23 | req.body | mongoose.js:134:30:134:34 | query | This query object depends on a $@. | mongoose.js:21:16:21:23 | req.body | user-provided value |
 | mongoose.js:136:30:136:34 | query | mongoose.js:21:16:21:23 | req.body | mongoose.js:136:30:136:34 | query | This query object depends on a $@. | mongoose.js:21:16:21:23 | req.body | user-provided value |
 | mongooseJsonParse.js:23:19:23:23 | query | mongooseJsonParse.js:20:30:20:43 | req.query.data | mongooseJsonParse.js:23:19:23:23 | query | This query object depends on a $@. | mongooseJsonParse.js:20:30:20:43 | req.query.data | user-provided value |
 | mongooseModelClient.js:11:16:11:24 | { id: v } | mongooseModelClient.js:10:22:10:29 | req.body | mongooseModelClient.js:11:16:11:24 | { id: v } | This query object depends on a $@. | mongooseModelClient.js:10:22:10:29 | req.body | user-provided value |

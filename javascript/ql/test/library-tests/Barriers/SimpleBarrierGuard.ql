@@ -19,10 +19,8 @@ module TestConfig implements DataFlow::ConfigSig {
 
 module TestFlow = DataFlow::Global<TestConfig>;
 
-class SimpleBarrierGuardNode extends DataFlow::BarrierGuardNode, DataFlow::InvokeNode {
+class SimpleBarrierGuardNode extends DataFlow::InvokeNode {
   SimpleBarrierGuardNode() { this.getCalleeName() = "BARRIER" }
-
-  override predicate blocks(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
 
   predicate blocksExpr(boolean outcome, Expr e) {
     outcome = true and
@@ -30,7 +28,12 @@ class SimpleBarrierGuardNode extends DataFlow::BarrierGuardNode, DataFlow::Invok
   }
 }
 
-class LegacyConfig extends DataFlow::Configuration {
+deprecated class SimpleBarrierGuardNodeLegacy extends DataFlow::BarrierGuardNode instanceof SimpleBarrierGuardNode
+{
+  override predicate blocks(boolean outcome, Expr e) { super.blocksExpr(outcome, e) }
+}
+
+deprecated class LegacyConfig extends DataFlow::Configuration {
   LegacyConfig() { this = "LegacyConfig" }
 
   override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
@@ -38,10 +41,10 @@ class LegacyConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { TestConfig::isSink(sink) }
 
   override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
-    guard instanceof SimpleBarrierGuardNode
+    guard instanceof SimpleBarrierGuardNodeLegacy
   }
 }
 
-import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
 query predicate flow = TestFlow::flow/2;

@@ -1,3 +1,3 @@
 import javascript
-import testUtilities.ConsistencyChecking
+deprecated import testUtilities.ConsistencyChecking
 import semmle.javascript.security.dataflow.ExceptionXssQuery as ExceptionXss

@@ -1,17 +1,21 @@
 import javascript
 import ExampleConfiguration
 
-query predicate isBarrier(ExampleConfiguration cfg, DataFlow::Node n) { cfg.isBarrier(n) }
+deprecated query predicate isBarrier(ExampleConfiguration cfg, DataFlow::Node n) {
+  cfg.isBarrier(n)
+}
 
-query predicate isLabeledBarrier(
+deprecated query predicate isLabeledBarrier(
   ExampleConfiguration cfg, DataFlow::Node n, DataFlow::FlowLabel label
 ) {
   cfg.isLabeledBarrier(n, label)
 }
 
-query predicate isSanitizer(ExampleConfiguration cfg, DataFlow::Node n) { cfg.isSanitizer(n) }
+deprecated query predicate isSanitizer(ExampleConfiguration cfg, DataFlow::Node n) {
+  cfg.isSanitizer(n)
+}
 
-query predicate sanitizingGuard(DataFlow::Node g, Expr e, boolean b) {
+deprecated query predicate sanitizingGuard(DataFlow::Node g, Expr e, boolean b) {
   g.(TaintTracking::SanitizerGuardNode).sanitizes(b, e)
   or
   g.(TaintTracking::AdditionalSanitizerGuardNode).sanitizes(b, e)
@@ -21,4 +25,4 @@ query predicate taintedSink(DataFlow::Node source, DataFlow::Node sink) {
   TestFlow::flow(source, sink)
 }
 
-import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, ExampleConfiguration>
+deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, ExampleConfiguration>

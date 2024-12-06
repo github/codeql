@@ -74,14 +74,25 @@ module UnsafeHtmlConstruction {
      * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
      */
     predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, label)
+    }
   }
 
   /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
-  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
-    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
 
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      this.blocksExpr(outcome, e, label)
+      BarrierGuard.super.sanitizes(outcome, e, label)
     }
   }
 
@@ -200,7 +211,7 @@ module UnsafeHtmlConstruction {
   }
 
   /** A test for the value of `typeof x`, restricting the potential types of `x`. */
-  class TypeTestGuard extends BarrierGuardLegacy, DataFlow::ValueNode {
+  class TypeTestGuard extends BarrierGuard, DataFlow::ValueNode {
     override EqualityTest astNode;
     Expr operand;
     boolean polarity;

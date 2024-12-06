@@ -1,8 +1,8 @@
 import javascript
-import testUtilities.ConsistencyChecking
+deprecated import testUtilities.ConsistencyChecking
 import semmle.javascript.security.dataflow.PrototypePollutingAssignmentQuery
 
-class Config extends ConsistencyConfiguration {
+deprecated class Config extends ConsistencyConfiguration {
   Config() { this = "Config" }
 
   override File getAFile() { any() }

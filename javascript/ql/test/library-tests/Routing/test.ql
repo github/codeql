@@ -1,5 +1,5 @@
 import javascript
-import testUtilities.ConsistencyChecking
+deprecated import testUtilities.ConsistencyChecking
 
 API::Node testInstance() { result = API::moduleImport("@example/test").getInstance() }
 
@@ -19,13 +19,13 @@ module TestConfig implements DataFlow::ConfigSig {
 
 module TestFlow = TaintTracking::Global<TestConfig>;
 
-class Consistency extends ConsistencyConfiguration {
+deprecated class Consistency extends ConsistencyConfiguration {
   Consistency() { this = "Consistency" }
 
   override DataFlow::Node getAnAlert() { TestFlow::flowTo(result) }
 }
 
-class LegacyConfig extends TaintTracking::Configuration {
+deprecated class LegacyConfig extends TaintTracking::Configuration {
   LegacyConfig() { this = "LegacyConfig" }
 
   override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
@@ -33,4 +33,4 @@ class LegacyConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { TestConfig::isSink(sink) }
 }
 
-import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>

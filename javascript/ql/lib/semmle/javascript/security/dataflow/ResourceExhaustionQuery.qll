@@ -73,7 +73,7 @@ predicate isNumericFlowStep(DataFlow::Node src, DataFlow::Node dst) {
 /**
  * A sanitizer that blocks taint flow if the size of a number is limited.
  */
-class UpperBoundsCheckSanitizerGuard extends BarrierGuardLegacy, DataFlow::ValueNode {
+class UpperBoundsCheckSanitizerGuard extends BarrierGuard, DataFlow::ValueNode {
   override RelationalComparison astNode;
 
   override predicate blocksExpr(boolean outcome, Expr e) {

@@ -1,6 +1,8 @@
 private import javascript
 
-private signature class LegacyConfigSig extends DataFlow::Configuration;
+private signature class LegacyConfigSig {
+  predicate hasFlow(DataFlow::Node source, DataFlow::Node sink);
+}
 
 module DataFlowDiff<DataFlow::GlobalFlowSig NewFlow, LegacyConfigSig LegacyConfig> {
   query predicate legacyDataFlowDifference(

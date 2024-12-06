@@ -39,12 +39,6 @@ predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2,
   defaultAdditionalTaintStep(node1, node2) and model = "" // TODO: set model
 }
 
-private class SanitizerGuardAdapter extends DataFlow::Node instanceof TaintTracking::AdditionalSanitizerGuardNode
-{
-  // Note: avoid depending on DataFlow::FlowLabel here as it will cause these barriers to be re-evaluated
-  predicate blocksExpr(boolean outcome, Expr e) { super.sanitizes(outcome, e) }
-}
-
 bindingset[node]
 pragma[inline_late]
 private BasicBlock getBasicBlockFromSsa2(Ssa2::Node node) {
@@ -90,7 +84,7 @@ cached
 predicate defaultTaintSanitizer(DataFlow::Node node) {
   node instanceof DataFlow::VarAccessBarrier or
   varAccessBarrier(node) or
-  node = MakeBarrierGuard<SanitizerGuardAdapter>::getABarrierNode()
+  node = MakeBarrierGuard<TaintTracking::AdditionalBarrierGuard>::getABarrierNode()
 }
 
 /**

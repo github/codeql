@@ -69,7 +69,7 @@ module TestConfig implements DataFlow::ConfigSig {
 
 module TestFlow = DataFlow::Global<TestConfig>;
 
-class LegacyConfig extends DataFlow::Configuration {
+deprecated class LegacyConfig extends DataFlow::Configuration {
   LegacyConfig() { this = "LegacyConfig" }
 
   override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
@@ -77,7 +77,7 @@ class LegacyConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { TestConfig::isSink(sink) }
 }
 
-import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
 query predicate dataflow = TestFlow::flow/2;
 

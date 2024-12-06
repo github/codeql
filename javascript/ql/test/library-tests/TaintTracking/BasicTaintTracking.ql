@@ -1,6 +1,6 @@
 import javascript
 import semmle.javascript.dataflow.InferredTypes
-import testUtilities.ConsistencyChecking
+deprecated import testUtilities.ConsistencyChecking
 
 DataFlow::CallNode getACall(string name) {
   result.getCalleeName() = name
@@ -22,7 +22,7 @@ module TestConfig implements DataFlow::ConfigSig {
 
 module TestFlow = TaintTracking::Global<TestConfig>;
 
-class LegacyConfig extends TaintTracking::Configuration {
+deprecated class LegacyConfig extends TaintTracking::Configuration {
   LegacyConfig() { this = "LegacyConfig" }
 
   override predicate isSource(DataFlow::Node node) { TestConfig::isSource(node) }
@@ -34,26 +34,29 @@ class LegacyConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
-    node instanceof BasicSanitizerGuard or
+    node instanceof BasicSanitizerGuardLegacy or
     node instanceof TaintTracking::AdHocWhitelistCheckSanitizer
   }
 }
 
-import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
-class BasicSanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
+class BasicSanitizerGuard extends DataFlow::CallNode {
   BasicSanitizerGuard() { this = getACall("isSafe") }
-
-  override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
 
   predicate blocksExpr(boolean outcome, Expr e) {
     outcome = true and e = this.getArgument(0).asExpr()
   }
 }
 
+deprecated class BasicSanitizerGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BasicSanitizerGuard
+{
+  override predicate sanitizes(boolean outcome, Expr e) { super.blocksExpr(outcome, e) }
+}
+
 query predicate flow = TestFlow::flow/2;
 
-class Consistency extends ConsistencyConfiguration {
+deprecated class Consistency extends ConsistencyConfiguration {
   Consistency() { this = "Consistency" }
 
   override DataFlow::Node getAnAlert() { TestFlow::flowTo(result) }
