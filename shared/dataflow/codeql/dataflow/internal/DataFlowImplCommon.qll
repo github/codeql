@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import codeql.dataflow.DataFlow
 private import codeql.typetracking.TypeTracking as Tt
 private import codeql.util.Location

@@ -1,6 +1,8 @@
 /**
  * Provides Java-specific definitions for bounds.
  */
+overlay[local?]
+module;
 
 private import java as J
 private import semmle.code.java.dataflow.SSA as Ssa

@@ -4,6 +4,8 @@
  * Provides an implementation of a fast initial pruning of global
  * (interprocedural) data flow reachability (Stage 1).
  */
+overlay[local?]
+module;
 
 private import codeql.util.Unit
 private import codeql.util.Location

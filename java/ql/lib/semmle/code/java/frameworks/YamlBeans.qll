@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the YamlBeans framework.
  */
+overlay[local?]
+module;
 
 import java
 

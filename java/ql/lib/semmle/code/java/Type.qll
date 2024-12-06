@@ -9,6 +9,8 @@
  * Classes and interfaces can also be local (`LocalClassOrInterface`, `LocalClass`) or anonymous (`AnonymousClass`).
  * Enumerated types (`EnumType`) and records (`Record`) are special kinds of classes.
  */
+overlay[local?]
+module;
 
 import Member
 import Modifier

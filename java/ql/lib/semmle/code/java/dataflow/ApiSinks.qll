@@ -1,4 +1,6 @@
 /** Provides classes representing various flow sinks for data flow / taint tracking. */
+overlay[local?]
+module;
 
 private import semmle.code.java.dataflow.FlowSinks as FlowSinks
 

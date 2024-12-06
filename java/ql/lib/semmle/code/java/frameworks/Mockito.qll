@@ -3,6 +3,8 @@
  *
  * QL classes are provided for detecting uses of Mockito annotations on fields.
  */
+overlay[local?]
+module;
 
 import java
 
