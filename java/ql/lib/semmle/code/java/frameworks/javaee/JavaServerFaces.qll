@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with Java Server Faces. */
+overlay[local?]
+module;
 
 import default
 import semmle.code.java.frameworks.javaee.jsf.JSFAnnotations

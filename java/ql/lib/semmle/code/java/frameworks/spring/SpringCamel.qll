@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for identifying Spring integration for the Apache Camel messaging framework.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.frameworks.spring.SpringXMLElement

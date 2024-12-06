@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the most common types of generated files.
  */
+overlay[local?]
+module;
 
 import Type
 private import semmle.code.java.frameworks.JavaxAnnotations

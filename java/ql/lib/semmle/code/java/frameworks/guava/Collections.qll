@@ -1,4 +1,6 @@
 /** Definitions of flow steps through the collection types in the Guava framework */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
