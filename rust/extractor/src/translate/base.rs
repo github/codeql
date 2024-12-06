@@ -327,6 +327,31 @@ impl<'a> Translator<'a> {
             );
         }
     }
+
+    fn emit_derived_type_canonical_path<T: AsRef<str>>(
+        &mut self,
+        modifiers: &[T],
+        bases: Vec<Label<generated::TypeCanonicalPath>>,
+    ) -> Label<generated::TypeCanonicalPath> {
+        let modifiers = modifiers
+            .iter()
+            .map(|s| s.as_ref().to_owned())
+            .collect::<Vec<String>>();
+        let id = itertools::interleave(
+            modifiers.iter().cloned(),
+            bases.iter().map(|t| t.as_key_part()),
+        )
+        .join("")
+        .into();
+        self.trap
+            .emit(generated::DerivedTypeCanonicalPath {
+                id,
+                modifiers,
+                base: bases,
+            })
+            .into()
+    }
+
     fn canonical_path_from_type(
         &mut self,
         ty: Type,
@@ -368,41 +393,17 @@ impl<'a> Translator<'a> {
                     .into(),
             )
         } else if let Some((it, size)) = ty.as_array(sema.db) {
-            let modifier = format!("[{{0}}; {size}]");
-            let base = vec![self.canonical_path_from_type(it)?];
-            Some(
-                self.trap
-                    .emit(generated::DerivedTypeCanonicalPath {
-                        id: trap_key!(modifier, base),
-                        modifier,
-                        base,
-                    })
-                    .into(),
-            )
+            let modifiers = ["[".to_owned(), format!("; {size}]")];
+            let bases = vec![self.canonical_path_from_type(it)?];
+            Some(self.emit_derived_type_canonical_path(&modifiers, bases))
         } else if let Some(it) = ty.as_slice() {
-            let modifier = "[{0}]".to_owned();
-            let base = vec![self.canonical_path_from_type(it)?];
-            Some(
-                self.trap
-                    .emit(generated::DerivedTypeCanonicalPath {
-                        id: trap_key!(modifier, base),
-                        modifier,
-                        base,
-                    })
-                    .into(),
-            )
+            let modifiers = ["[", "]"];
+            let bases = vec![self.canonical_path_from_type(it)?];
+            Some(self.emit_derived_type_canonical_path(&modifiers, bases))
         } else if ty.is_unit() {
-            let modifier = "()".to_owned();
-            let base = vec![];
-            Some(
-                self.trap
-                    .emit(generated::DerivedTypeCanonicalPath {
-                        id: trap_key!(modifier, base),
-                        modifier,
-                        base,
-                    })
-                    .into(),
-            )
+            let modifiers = ["()"];
+            let bases = vec![];
+            Some(self.emit_derived_type_canonical_path(&modifiers, bases))
         } else if let Some(it) = ty.as_builtin() {
             let name = it.name().as_str().to_owned();
             Some(
@@ -414,20 +415,13 @@ impl<'a> Translator<'a> {
                     .into(),
             )
         } else if let Some((it, mutability)) = ty.as_reference() {
-            let modifier = format!("&{}{{0}}", mutability.as_keyword_for_ref());
-            let base = vec![self.canonical_path_from_type(it)?];
-            Some(
-                self.trap
-                    .emit(generated::DerivedTypeCanonicalPath {
-                        id: trap_key!(modifier, base),
-                        modifier,
-                        base,
-                    })
-                    .into(),
-            )
+            let modifiers = [format!("&{}", mutability.as_keyword_for_ref())];
+            let bases = vec![self.canonical_path_from_type(it)?];
+            Some(self.emit_derived_type_canonical_path(&modifiers, bases))
         } else if ty.as_type_param(sema.db).is_some() {
             // from the canonical path perspective, we just want a special name
             // e.g. `crate::<_ as SomeTrait>::func`
+            // TODO: This will not work for assigning trap keys to types themselves!
             Some(
                 self.trap
                     .emit(generated::PlaceholderTypeCanonicalPath { id: trap_key!("_") })
@@ -438,20 +432,15 @@ impl<'a> Translator<'a> {
             if tuple_args.is_empty() {
                 None
             } else {
-                let modifier = format!("({{{}}})", (0..tuple_args.len()).join("}, {"));
-                let base = tuple_args
+                let modifiers = std::iter::once("(")
+                    .chain(std::iter::repeat(", ").take(tuple_args.len() - 1))
+                    .chain(std::iter::once(")"))
+                    .collect::<Vec<_>>();
+                let bases = tuple_args
                     .into_iter()
                     .map(|arg| self.canonical_path_from_type(arg))
                     .collect::<Option<Vec<_>>>()?;
-                Some(
-                    self.trap
-                        .emit(generated::DerivedTypeCanonicalPath {
-                            id: trap_key!(modifier, base),
-                            modifier,
-                            base,
-                        })
-                        .into(),
-                )
+                Some(self.emit_derived_type_canonical_path(&modifiers, bases))
             }
         }
     }
@@ -712,11 +701,7 @@ impl<'a> Translator<'a> {
                 return None;
             };
             let path = self.canonical_path_from_module_def(def)?;
-            generated::Resolvable::emit_resolved_canonical_path(
-                label.into(),
-                path,
-                &mut self.trap.writer,
-            );
+            generated::Resolvable::emit_resolved_canonical_path(label, path, &mut self.trap.writer);
             Some(())
         })();
     }

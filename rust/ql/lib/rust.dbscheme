@@ -3477,7 +3477,13 @@ concrete_type_canonical_paths(  //dir=canonical_paths
 );
 
 derived_type_canonical_paths(  //dir=canonical_paths
-  unique int id: @derived_type_canonical_path,
+  unique int id: @derived_type_canonical_path
+);
+
+#keyset[id, index]
+derived_type_canonical_path_modifiers(  //dir=canonical_paths
+  int id: @derived_type_canonical_path ref,
+  int index: int ref,
   string modifier: string ref
 );
 

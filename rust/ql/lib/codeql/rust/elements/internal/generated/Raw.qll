@@ -4204,9 +4204,9 @@ module Raw {
     override string toString() { result = "DerivedTypeCanonicalPath" }
 
     /**
-     * Gets the modifier of this derived type canonical path.
+     * Gets the `index`th modifier of this derived type canonical path (0-based).
      */
-    string getModifier() { derived_type_canonical_paths(this, result) }
+    string getModifier(int index) { derived_type_canonical_path_modifiers(this, index, result) }
 
     /**
      * Gets the `index`th base of this derived type canonical path (0-based).

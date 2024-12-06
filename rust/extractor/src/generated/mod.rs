@@ -11345,7 +11345,7 @@ impl From<trap::Label<ConcreteTypeCanonicalPath>> for trap::Label<TypeCanonicalP
 #[derive(Debug)]
 pub struct DerivedTypeCanonicalPath {
     pub id: trap::TrapId<DerivedTypeCanonicalPath>,
-    pub modifier: String,
+    pub modifiers: Vec<String>,
     pub base: Vec<trap::Label<TypeCanonicalPath>>,
 }
 
@@ -11355,7 +11355,10 @@ impl trap::TrapEntry for DerivedTypeCanonicalPath {
     }
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("derived_type_canonical_paths", vec![id.into(), self.modifier.into()]);
+        out.add_tuple("derived_type_canonical_paths", vec![id.into()]);
+        for (i, v) in self.modifiers.into_iter().enumerate() {
+            out.add_tuple("derived_type_canonical_path_modifiers", vec![id.into(), i.into(), v.into()]);
+        }
         for (i, v) in self.base.into_iter().enumerate() {
             out.add_tuple("derived_type_canonical_path_bases", vec![id.into(), i.into(), v.into()]);
         }

@@ -25,14 +25,24 @@ module Generated {
     override string getAPrimaryQlClass() { result = "DerivedTypeCanonicalPath" }
 
     /**
-     * Gets the modifier of this derived type canonical path.
+     * Gets the `index`th modifier of this derived type canonical path (0-based).
      */
-    string getModifier() {
+    string getModifier(int index) {
       result =
         Synth::convertDerivedTypeCanonicalPathToRaw(this)
             .(Raw::DerivedTypeCanonicalPath)
-            .getModifier()
+            .getModifier(index)
     }
+
+    /**
+     * Gets any of the modifiers of this derived type canonical path.
+     */
+    final string getAModifier() { result = this.getModifier(_) }
+
+    /**
+     * Gets the number of modifiers of this derived type canonical path.
+     */
+    final int getNumberOfModifiers() { result = count(int i | exists(this.getModifier(i))) }
 
     /**
      * Gets the `index`th base of this derived type canonical path (0-based).

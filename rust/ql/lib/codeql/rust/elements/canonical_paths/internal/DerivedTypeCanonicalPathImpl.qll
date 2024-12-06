@@ -16,10 +16,14 @@ module Impl {
    * A derived canonical type, like `[i32; 4]`, `&mut std::string::String` or `(i32, std::string::String)`.
    */
   class DerivedTypeCanonicalPath extends Generated::DerivedTypeCanonicalPath {
-    override string toString() {
-      result =
-        this.getModifier() + "(" +
-          strictconcat(int i | | this.getBase(i).toAbbreviatedString(), ", " order by i) + ")"
+    override string toString() { result = strictconcat(int i | | this.toStringPart(i) order by i) }
+
+    private string toStringPart(int index) {
+      exists(int j |
+        index = 2 * j and result = this.getModifier(j)
+        or
+        index = 2 * j + 1 and result = this.getBase(j).toAbbreviatedString()
+      )
     }
   }
 }

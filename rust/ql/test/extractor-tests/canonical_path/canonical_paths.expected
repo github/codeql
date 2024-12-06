@@ -58,6 +58,18 @@ canonicalPaths
 | regular.rs:102:1:104:1 | impl GenericTrait::<...> for GenericEnum::<...> { ... } | None |
 | regular.rs:103:5:103:39 | fn generic_method | <... as ...>::generic_method |
 | regular.rs:106:1:119:1 | fn generic_usage | ...::generic_usage |
+| regular.rs:121:1:123:1 | impl Trait for ... { ... } | None |
+| regular.rs:122:5:122:18 | fn f | <... as ...>::f |
+| regular.rs:125:1:127:1 | impl Trait for ... { ... } | None |
+| regular.rs:126:5:126:18 | fn f | <... as ...>::f |
+| regular.rs:129:1:131:1 | impl Trait for ... { ... } | None |
+| regular.rs:130:5:130:18 | fn f | <... as ...>::f |
+| regular.rs:133:1:135:1 | impl Trait for ... { ... } | None |
+| regular.rs:134:5:134:18 | fn f | <... as ...>::f |
+| regular.rs:137:1:139:1 | impl Trait for ... { ... } | None |
+| regular.rs:138:5:138:18 | fn f | <... as ...>::f |
+| regular.rs:141:1:147:1 | fn use_trait | ...::use_trait |
+| regular.rs:144:5:144:17 | vec!... | None |
 resolvedPaths
 | anonymous.rs:27:17:27:30 | OtherStruct {...} | None |
 | anonymous.rs:28:9:28:9 | s | None |
@@ -105,6 +117,14 @@ resolvedPaths
 | regular.rs:117:13:117:37 | ...::U | ...::U |
 | regular.rs:118:5:118:5 | x | None |
 | regular.rs:118:5:118:23 | ... .generic_method(...) | <... as ...>::generic_method |
+| regular.rs:142:5:142:10 | ... .f(...) | <... as ...>::f |
+| regular.rs:143:5:143:15 | ... .f(...) | <... as ...>::f |
+| regular.rs:144:5:144:17 | ...::into_vec | <...>::into_vec |
+| regular.rs:144:5:144:17 | ...::new | None |
+| regular.rs:144:5:144:28 | ... .as_slice(...) | <...>::as_slice |
+| regular.rs:144:5:144:32 | ... .f(...) | <... as ...>::f |
+| regular.rs:145:5:145:16 | ... .f(...) | <... as ...>::f |
+| regular.rs:146:5:146:20 | ... .f(...) | <... as ...>::f |
 resolve
 | regular.rs:27:13:27:21 | Struct {...} | regular.rs:1:1:2:18 | struct Struct |
 | regular.rs:28:5:28:9 | ... .f(...) | regular.rs:9:5:9:18 | fn f |
@@ -133,3 +153,8 @@ resolve
 | regular.rs:116:5:116:27 | ... .generic_method(...) | regular.rs:99:5:99:37 | fn generic_method |
 | regular.rs:117:13:117:37 | ...::U | regular.rs:79:5:79:8 | U |
 | regular.rs:118:5:118:23 | ... .generic_method(...) | regular.rs:103:5:103:39 | fn generic_method |
+| regular.rs:142:5:142:10 | ... .f(...) | regular.rs:122:5:122:18 | fn f |
+| regular.rs:143:5:143:15 | ... .f(...) | regular.rs:126:5:126:18 | fn f |
+| regular.rs:144:5:144:32 | ... .f(...) | regular.rs:130:5:130:18 | fn f |
+| regular.rs:145:5:145:16 | ... .f(...) | regular.rs:134:5:134:18 | fn f |
+| regular.rs:146:5:146:20 | ... .f(...) | regular.rs:138:5:138:18 | fn f |

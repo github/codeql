@@ -117,3 +117,31 @@ fn generic_usage() {
     let x = GenericEnum::<&str, _>::U(0);
     x.generic_method(1);
 }
+
+impl Trait for () {
+    fn f(&self) {}
+}
+
+impl Trait for (i32, &str) {
+    fn f(&self) {}
+}
+
+impl Trait for [i32] {
+    fn f(&self) {}
+}
+
+impl Trait for [&str; 2] {
+    fn f(&self) {}
+}
+
+impl Trait for [&str; 3] {
+    fn f(&self) {}
+}
+
+fn use_trait() {
+    ().f();
+    (0, "").f();
+    vec![0, 1, 2].as_slice().f();
+    ["", ""].f();
+    ["", "", ""].f();
+}

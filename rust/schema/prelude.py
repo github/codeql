@@ -202,7 +202,7 @@ class DerivedTypeCanonicalPath(TypeCanonicalPath):
     """
     A derived canonical type, like `[i32; 4]`, `&mut std::string::String` or `(i32, std::string::String)`.
     """
-    modifier: string
+    modifiers: list[string]
     base: list[TypeCanonicalPath]
 
 class ModuleItemCanonicalPath(CanonicalPath):
