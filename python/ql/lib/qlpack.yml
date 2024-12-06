@@ -1,5 +1,5 @@
 name: codeql/python-all
-version: 2.2.1-dev
+version: 3.0.0
 groups: python
 dbscheme: semmlecode.python.dbscheme
 extractor: python
