@@ -1,8 +1,4 @@
 testFailures
-| variables.rs:493:13:493:16 | self | Unexpected result: read_access=self |
-| variables.rs:493:25:493:25 | n | Unexpected result: read_access=n |
-| variables.rs:495:9:495:9 | f | Unexpected result: read_access=f |
-| variables.rs:496:9:496:9 | f | Unexpected result: read_access=f |
 variable
 | variables.rs:3:14:3:14 | s |
 | variables.rs:7:14:7:14 | i |
