@@ -22,7 +22,7 @@ module Impl {
    * ```
    */
   class ArrayExpr extends Generated::ArrayExpr {
-    cached
+    pragma[nomagic]
     private Raw::ArrayExprInternal getUnderlyingEntity() {
       this = Synth::TArrayListExpr(result) or this = Synth::TArrayRepeatExpr(result)
     }
