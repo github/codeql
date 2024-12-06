@@ -26,7 +26,7 @@ where
   bw.hasExplicitLimit() and // has an explicit size limit
   destSize = max(getBufferSize(bw.getDest(), _)) and
   bw.getExplicitLimit() > destSize and // but it's larger than the destination
-  not bw.getDest().getUnderlyingType().stripType() instanceof ErroneousType // destSize may be incorrect
+  not bw.getDest().getType().stripType() instanceof ErroneousType // destSize may be incorrect
 select bw,
   "This '" + bw.getBWDesc() + "' operation is limited to " + bw.getExplicitLimit() +
     " bytes but the destination is only " + destSize + " bytes."
