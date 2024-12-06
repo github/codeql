@@ -15,8 +15,8 @@ extensions:
       - ["", "CPathT", True, "RelativePathTo", "", "", "Argument[*2]", "ReturnValue[-1]", "taint", "manual"]
       - ["", "CPathT", True, "RenameExtension", "", "", "Argument[*0]", "ReturnValue[-1]", "taint", "manual"]
       # Note: These don't work currently since we cannot use the template parameter in the name of the function
-      # - ["", "CPathT<T>", True, "operator const T&", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
-      # - ["", "CPathT<T>", True, "operator T&", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      # - ["", "CPathT<T>", True, "operator const T &", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      # - ["", "CPathT<T>", True, "operator T &", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
       - ["", "CPathT", True, "operator PCXSTR", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
       - ["", "CPathT", True, "operator+=", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
       - ["", "CPathT", True, "operator+=", "", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]

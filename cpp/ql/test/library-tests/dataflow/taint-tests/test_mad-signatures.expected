@@ -6,6 +6,10 @@ signatureMatches
 | atl.cpp:257:3:257:10 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
 | atl.cpp:257:3:257:10 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:257:3:257:10 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:407:8:407:8 | operator= | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:407:8:407:8 | operator= | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:409:3:409:10 | CComBSTR | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:409:3:409:10 | CComBSTR | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:411:3:411:10 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:411:3:411:10 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 1 |
 | atl.cpp:412:3:412:10 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 0 |
@@ -14,6 +18,9 @@ signatureMatches
 | atl.cpp:413:3:413:10 | CComBSTR | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:414:3:414:10 | CComBSTR | (LPCSTR) | CComBSTR | Append | 0 |
 | atl.cpp:414:3:414:10 | CComBSTR | (LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:415:3:415:10 | CComBSTR | (CComBSTR &&) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:418:11:418:16 | Append | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:418:11:418:16 | Append | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:419:11:419:16 | Append | (wchar_t) | CComBSTR | Append | 0 |
 | atl.cpp:420:11:420:16 | Append | (char) | CComBSTR | Append | 0 |
 | atl.cpp:421:11:421:16 | Append | (LPCOLESTR) | CComBSTR | Append | 0 |
@@ -31,6 +38,8 @@ signatureMatches
 | atl.cpp:438:8:438:17 | LoadString | (const SAFEARRAYBOUND *,UINT) | CComSafeArray | Create | 1 |
 | atl.cpp:439:8:439:17 | LoadString | (UINT) | CComBSTR | LoadString | 0 |
 | atl.cpp:439:8:439:17 | LoadString | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:447:13:447:22 | operator+= | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:447:13:447:22 | operator+= | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:448:13:448:22 | operator+= | (LPCOLESTR) | CComBSTR | Append | 0 |
 | atl.cpp:448:13:448:22 | operator+= | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:538:3:538:15 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
@@ -357,9 +366,10 @@ signatureMatches
 | vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 getSignatureParameterName
 | (CAtlFile &) | CAtlFile | CAtlFile | 0 | CAtlFile & |
-| (CRegKey&) | CRegKey | CRegKey | 0 | CRegKey& |
-| (DWORD&,LPCTSTR) | CRegKey | QueryValue | 0 | DWORD& |
-| (DWORD&,LPCTSTR) | CRegKey | QueryValue | 1 | LPCTSTR |
+| (CComBSTR &&) | CComBSTR | CComBSTR | 0 | CComBSTR && |
+| (CRegKey &) | CRegKey | CRegKey | 0 | CRegKey & |
+| (DWORD &,LPCTSTR) | CRegKey | QueryValue | 0 | DWORD & |
+| (DWORD &,LPCTSTR) | CRegKey | QueryValue | 1 | LPCTSTR |
 | (HANDLE) | CAtlFile | CAtlFile | 0 | HANDLE |
 | (HINSTANCE,UINT) | CComBSTR | LoadString | 0 | HINSTANCE |
 | (HINSTANCE,UINT) | CComBSTR | LoadString | 1 | UINT |
@@ -401,10 +411,10 @@ getSignatureParameterName
 | (UINT) | CComBSTR | LoadString | 0 | UINT |
 | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 | UINT |
 | (char) | CComBSTR | Append | 0 | char |
-| (const CComBSTR&) | CComBSTR | Append | 0 | const CComBSTR& |
-| (const CComBSTR&) | CComBSTR | CComBSTR | 0 | const CComBSTR& |
+| (const CComBSTR &) | CComBSTR | Append | 0 | const CComBSTR & |
+| (const CComBSTR &) | CComBSTR | CComBSTR | 0 | const CComBSTR & |
 | (const CComSafeArray &) | CComSafeArray | CComSafeArray | 0 | const CComSafeArray & |
-| (const CComSafeArray&) | CComSafeArray | operator= | 0 | const CComSafeArray& |
+| (const CComSafeArray &) | CComSafeArray | operator= | 0 | const CComSafeArray & |
 | (const SAFEARRAY &) | CComSafeArray | CComSafeArray | 0 | const SAFEARRAY & |
 | (const SAFEARRAY *) | CComSafeArray | Add | 0 | const SAFEARRAY * |
 | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 | const SAFEARRAY * |
