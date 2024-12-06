@@ -362,7 +362,6 @@
 /lib/codeql/rust/elements/internal/StmtListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/StmtListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/StructConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/StructImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TokenImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TokenTreeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TokenTreeImpl.qll linguist-generated
@@ -405,7 +404,6 @@
 /lib/codeql/rust/elements/internal/UseTreeListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseTreeListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/VariantConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/VariantImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/VariantListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/VariantListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/VisibilityConstructor.qll linguist-generated
