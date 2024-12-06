@@ -11,10 +11,10 @@ codeql_csharp_library(
     ]),
     allow_unsafe_blocks = True,
     internals_visible_to = ["Semmle.Extraction.Tests"],
-    nowarn = ["CA1822"],
     visibility = ["//csharp:__subpackages__"],
     deps = [
         "//csharp/extractor/Semmle.Extraction.CSharp",
         "//csharp/extractor/Semmle.Util",
+        "@paket.main//newtonsoft.json",
     ],
 )
