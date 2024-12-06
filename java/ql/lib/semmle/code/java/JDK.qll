@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with standard classes and methods from the JDK.
  */
+overlay[local?]
+module;
 
 import Member
 import semmle.code.java.security.ExternalProcess

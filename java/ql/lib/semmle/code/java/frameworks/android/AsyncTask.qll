@@ -1,4 +1,6 @@
 /** Provides classes and predicates to reason about `AsyncTask`s in Android. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

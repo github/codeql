@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with Spring web clients.
  */
+overlay[local?]
+module;
 
 import java
 import SpringHttp

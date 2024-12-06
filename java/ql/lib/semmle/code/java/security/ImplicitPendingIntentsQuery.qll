@@ -1,4 +1,6 @@
 /** Provides taint tracking configurations to be used in queries related to implicit `PendingIntent`s. */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.TaintTracking

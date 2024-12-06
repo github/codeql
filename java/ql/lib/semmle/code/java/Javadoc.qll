@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Javadoc documentation.
  */
+overlay[local?]
+module;
 
 import semmle.code.Location
 
