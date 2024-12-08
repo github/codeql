@@ -4,7 +4,8 @@ load(
 )
 
 codeql_xunit_test(
-    name = "Semmle.Autobuild.CSharp.Tests",
+    # short name as we run into long path limitations on Windows
+    name = "t",
     srcs = glob([
         "*.cs",
     ]),
