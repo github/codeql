@@ -1132,3 +1132,10 @@ void test_dispatch_table(int i) {
   int x = source();
   dispatch_table[i](x);
 }
+
+void test_uncertain_array(int n1, int n2) {
+  int data[10];
+  *(data + 1) = source();
+  *data = 0;
+  sink(*(data + 1)); // $ ast=1138:17 ast=1137:7 MISSING: ir
+}
