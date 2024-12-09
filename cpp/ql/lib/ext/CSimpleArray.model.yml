@@ -9,3 +9,4 @@ extensions:
       - ["", "CSimpleArray", True, "SetAtIndex", "", "", "Argument[*1]", "Argument[-1].Element[@]", "value", "manual"]
       - ["", "CSimpleArray", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
       - ["", "CSimpleArray", True, "operator=", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CSimpleArray", True, "operator=", "", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]
