@@ -1,0 +1,30 @@
+nodes
+| src/validators.js:35:21:35:62 | `<h1>Se ... !</h1>` |
+| src/validators.js:35:21:35:62 | `<h1>Se ... !</h1>` |
+| src/validators.js:35:39:35:54 | req.query.search |
+| src/validators.js:35:39:35:54 | req.query.search |
+| src/validators.js:38:21:38:60 | `<h1>Se ... !</h1>` |
+| src/validators.js:38:21:38:60 | `<h1>Se ... !</h1>` |
+| src/validators.js:38:39:38:52 | req.query.name |
+| src/validators.js:38:39:38:52 | req.query.name |
+| src/validators.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+| src/validators.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+| src/validators.js:41:39:41:52 | req.query.name |
+| src/validators.js:41:39:41:52 | req.query.name |
+edges
+| src/validators.js:35:39:35:54 | req.query.search | src/validators.js:35:21:35:62 | `<h1>Se ... !</h1>` |
+| src/validators.js:35:39:35:54 | req.query.search | src/validators.js:35:21:35:62 | `<h1>Se ... !</h1>` |
+| src/validators.js:35:39:35:54 | req.query.search | src/validators.js:35:21:35:62 | `<h1>Se ... !</h1>` |
+| src/validators.js:35:39:35:54 | req.query.search | src/validators.js:35:21:35:62 | `<h1>Se ... !</h1>` |
+| src/validators.js:38:39:38:52 | req.query.name | src/validators.js:38:21:38:60 | `<h1>Se ... !</h1>` |
+| src/validators.js:38:39:38:52 | req.query.name | src/validators.js:38:21:38:60 | `<h1>Se ... !</h1>` |
+| src/validators.js:38:39:38:52 | req.query.name | src/validators.js:38:21:38:60 | `<h1>Se ... !</h1>` |
+| src/validators.js:38:39:38:52 | req.query.name | src/validators.js:38:21:38:60 | `<h1>Se ... !</h1>` |
+| src/validators.js:41:39:41:52 | req.query.name | src/validators.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+| src/validators.js:41:39:41:52 | req.query.name | src/validators.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+| src/validators.js:41:39:41:52 | req.query.name | src/validators.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+| src/validators.js:41:39:41:52 | req.query.name | src/validators.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+#select
+| src/validators.js:35:21:35:62 | `<h1>Se ... !</h1>` | src/validators.js:35:39:35:54 | req.query.search | src/validators.js:35:21:35:62 | `<h1>Se ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validators.js:35:39:35:54 | req.query.search | user-provided value |
+| src/validators.js:38:21:38:60 | `<h1>Se ... !</h1>` | src/validators.js:38:39:38:52 | req.query.name | src/validators.js:38:21:38:60 | `<h1>Se ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validators.js:38:39:38:52 | req.query.name | user-provided value |
+| src/validators.js:41:21:41:60 | `<h1>Se ... !</h1>` | src/validators.js:41:39:41:52 | req.query.name | src/validators.js:41:21:41:60 | `<h1>Se ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validators.js:41:39:41:52 | req.query.name | user-provided value |

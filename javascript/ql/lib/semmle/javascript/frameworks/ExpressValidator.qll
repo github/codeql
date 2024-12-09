@@ -5,6 +5,7 @@
 import javascript
 private import semmle.javascript.frameworks.HTTP
 private import semmle.javascript.frameworks.Express
+private import semmle.javascript.security.dataflow.Xss
 
 /**
  * Models of the express-validator npm module.
@@ -95,5 +96,19 @@ module ExpressValidator {
           ]) and
       isSafe(builder)
     )
+  }
+
+  /**
+   * Holds ExpressValidator sanitizers.
+   * 
+   * These are a list of source nodes that are automatically sanitized by the 
+   * express-validator library.
+   */
+  class ExpressValidationSanitizer extends Shared::Sanitizer {
+    ExpressValidationSanitizer() {
+      exists(ExpressValidator::MiddlewareInstance middleware |
+        this = middleware.getSecureRequestInputAccess()
+      )
+    }
   }
 }
