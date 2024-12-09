@@ -31,16 +31,19 @@ abstract class RemoteFlowSource extends SourceNode {
 class GitHubCtxSource extends RemoteFlowSource {
   string flag;
   string event;
+  GitHubExpression e;
 
   GitHubCtxSource() {
-    exists(Expression e, string context, string context_prefix |
-      this.asExpr() = e and
-      context = e.getExpression() and
-      normalizeExpr(context) = "github.head_ref" and
-      event = e.getEnclosingWorkflow().getATriggerEvent().getName() and
-      contextTriggerDataModel(event, context_prefix) and
-      normalizeExpr(context).matches("%" + context_prefix + "%") and
-      flag = "branch"
+    this.asExpr() = e and
+    // github.head_ref
+    e.getFieldName() = "head_ref" and
+    flag = "branch" and
+    (
+      event = e.getATriggerEvent().getName() and
+      event = "pull_request_target"
+      or
+      not exists(e.getATriggerEvent()) and
+      event = "unknown"
     )
   }
 
@@ -58,15 +61,16 @@ class GitHubEventCtxSource extends RemoteFlowSource {
     exists(Expression e, string regexp |
       this.asExpr() = e and
       context = e.getExpression() and
-      event = e.getATriggerEvent().getName() and
       (
         // the context is available for the job trigger events
+        event = e.getATriggerEvent().getName() and
         exists(string context_prefix |
           contextTriggerDataModel(event, context_prefix) and
           normalizeExpr(context).matches("%" + context_prefix + "%")
         )
         or
-        exists(e.getEnclosingCompositeAction())
+        not exists(e.getATriggerEvent()) and
+        event = "unknown"
       ) and
       untrustedEventPropertiesDataModel(regexp, flag) and
       not flag = "json" and
@@ -182,20 +186,24 @@ class GitHubEventJsonSource extends RemoteFlowSource {
     exists(Expression e, string context, string regexp |
       this.asExpr() = e and
       context = e.getExpression() and
-      event = e.getEnclosingWorkflow().getATriggerEvent().getName() and
       untrustedEventPropertiesDataModel(regexp, _) and
       (
         // only contexts for the triggering events are considered tainted.
         // eg: for `pull_request`, we only consider `github.event.pull_request`
+        event = e.getEnclosingWorkflow().getATriggerEvent().getName() and
         exists(string context_prefix |
           contextTriggerDataModel(event, context_prefix) and
           normalizeExpr(context).matches("%" + context_prefix + "%")
         ) and
         normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp(regexp) + ".*")
         or
-        // github.event is taintes for all triggers
+        // github.event is tainted for all triggers
+        event = e.getEnclosingWorkflow().getATriggerEvent().getName() and
         contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), _) and
         normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp("\\bgithub.event\\b") + ".*")
+        or
+        not exists(e.getATriggerEvent()) and
+        event = "unknown"
       ) and
       flag = "json"
     )
