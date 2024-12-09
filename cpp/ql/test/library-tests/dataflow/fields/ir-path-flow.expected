@@ -88,8 +88,11 @@ edges
 | A.cpp:142:7:142:20 | ... = ... | A.cpp:142:7:142:7 | *b [post update] [c] | provenance |  |
 | A.cpp:142:14:142:20 | new | A.cpp:142:7:142:20 | ... = ... | provenance |  |
 | A.cpp:143:7:143:10 | *this [post update] [*b, c] | A.cpp:140:5:140:5 | *this [Reverse] [*b, c] | provenance |  |
+| A.cpp:143:7:143:10 | *this [post update] [*b, c] | A.cpp:143:7:143:10 | *this [post update] [Reverse] [*b, c] | provenance |  |
+| A.cpp:143:7:143:10 | *this [post update] [Reverse] [*b, c] | A.cpp:143:7:143:31 | *... = ... [Reverse] [c] | provenance |  |
 | A.cpp:143:7:143:10 | *this [post update] [b] | A.cpp:140:5:140:5 | *this [Reverse] [b] | provenance |  |
 | A.cpp:143:7:143:10 | *this [post update] [b] | A.cpp:140:5:140:5 | *this [Reverse] [b] | provenance |  |
+| A.cpp:143:7:143:31 | *... = ... [Reverse] [c] | A.cpp:140:13:140:13 | *b [Reverse] [c] | provenance |  |
 | A.cpp:143:7:143:31 | *... = ... [c] | A.cpp:143:7:143:10 | *this [post update] [*b, c] | provenance |  |
 | A.cpp:143:7:143:31 | ... = ... | A.cpp:143:7:143:10 | *this [post update] [b] | provenance |  |
 | A.cpp:143:7:143:31 | ... = ... | A.cpp:143:7:143:10 | *this [post update] [b] | provenance |  |
@@ -194,7 +197,9 @@ edges
 | C.cpp:19:5:19:5 | *c [s1] | C.cpp:27:8:27:11 | *this [s1] | provenance |  |
 | C.cpp:19:5:19:5 | *c [s3] | C.cpp:27:8:27:11 | *this [s3] | provenance |  |
 | C.cpp:22:3:22:3 | *this [Reverse] [s1] | C.cpp:18:12:18:18 | call to C [s1] | provenance |  |
+| C.cpp:22:3:22:3 | *this [Reverse] [s1] | C.cpp:18:12:18:18 | call to C [s1] | provenance |  |
 | C.cpp:22:3:22:3 | *this [Reverse] [s3] | C.cpp:18:12:18:18 | call to C [s3] | provenance |  |
+| C.cpp:22:3:22:3 | *this [post update] [s1] | C.cpp:22:3:22:3 | *this [Reverse] [s1] | provenance |  |
 | C.cpp:22:3:22:3 | *this [post update] [s1] | C.cpp:22:3:22:3 | *this [Reverse] [s1] | provenance |  |
 | C.cpp:22:12:22:21 | new | C.cpp:22:3:22:3 | *this [post update] [s1] | provenance |  |
 | C.cpp:22:12:22:21 | new | C.cpp:22:12:22:21 | new | provenance |  |
@@ -212,10 +217,14 @@ edges
 | D.cpp:11:24:11:24 | e | D.cpp:11:29:11:36 | ... = ... | provenance |  |
 | D.cpp:11:29:11:32 | *this [post update] [elem] | D.cpp:11:10:11:16 | *this [Reverse] [elem] | provenance |  |
 | D.cpp:11:29:11:36 | ... = ... | D.cpp:11:29:11:32 | *this [post update] [elem] | provenance |  |
+| D.cpp:17:11:17:17 | **getBox1 [Reverse] [elem] | D.cpp:17:30:17:32 | *box [Reverse] [elem] | provenance |  |
 | D.cpp:17:11:17:17 | *this [*box, elem] | D.cpp:17:30:17:32 | *this [*box, elem] | provenance |  |
+| D.cpp:17:30:17:32 | *box [Reverse] [elem] | D.cpp:17:30:17:32 | *box [Reverse] [elem] | provenance |  |
+| D.cpp:17:30:17:32 | *box [Reverse] [elem] | D.cpp:17:30:17:32 | *this [Reverse] [*box, elem] | provenance |  |
 | D.cpp:17:30:17:32 | *box [elem] | D.cpp:17:11:17:17 | **getBox1 [elem] | provenance |  |
 | D.cpp:17:30:17:32 | *box [elem] | D.cpp:17:30:17:32 | *box [elem] | provenance |  |
 | D.cpp:17:30:17:32 | *this [*box, elem] | D.cpp:17:30:17:32 | *box [elem] | provenance |  |
+| D.cpp:17:30:17:32 | *this [Reverse] [*box, elem] | D.cpp:17:11:17:17 | *this [Reverse] [*box, elem] | provenance |  |
 | D.cpp:21:30:21:31 | *b2 [*box, elem] | D.cpp:22:10:22:11 | *b2 [*box, elem] | provenance |  |
 | D.cpp:22:10:22:11 | *b2 [*box, elem] | D.cpp:17:11:17:17 | *this [*box, elem] | provenance |  |
 | D.cpp:22:10:22:11 | *b2 [*box, elem] | D.cpp:22:14:22:20 | *call to getBox1 [elem] | provenance |  |
@@ -238,12 +247,16 @@ edges
 | D.cpp:42:15:42:24 | new | D.cpp:44:5:44:26 | ... = ... | provenance |  |
 | D.cpp:44:5:44:5 | getBox1 output argument [*box, elem] | D.cpp:45:14:45:14 | *b [*box, elem] | provenance |  |
 | D.cpp:44:5:44:26 | ... = ... | D.cpp:44:8:44:14 | *call to getBox1 [post update] [elem] | provenance |  |
-| D.cpp:44:8:44:14 | *call to getBox1 [post update] [elem] | D.cpp:44:5:44:5 | getBox1 output argument [*box, elem] | provenance |  |
+| D.cpp:44:8:44:14 | *call to getBox1 [Reverse] [elem] | D.cpp:17:11:17:17 | **getBox1 [Reverse] [elem] | provenance |  |
+| D.cpp:44:8:44:14 | *call to getBox1 [Reverse] [elem] | D.cpp:44:5:44:5 | getBox1 output argument [*box, elem] | provenance |  |
+| D.cpp:44:8:44:14 | *call to getBox1 [post update] [elem] | D.cpp:44:8:44:14 | *call to getBox1 [Reverse] [elem] | provenance |  |
 | D.cpp:45:14:45:14 | *b [*box, elem] | D.cpp:21:30:21:31 | *b2 [*box, elem] | provenance |  |
 | D.cpp:49:15:49:24 | new | D.cpp:49:15:49:24 | new | provenance |  |
 | D.cpp:49:15:49:24 | new | D.cpp:51:27:51:27 | e | provenance |  |
 | D.cpp:51:5:51:5 | getBox1 output argument [*box, elem] | D.cpp:52:14:52:14 | *b [*box, elem] | provenance |  |
-| D.cpp:51:8:51:14 | setElem output argument [elem] | D.cpp:51:5:51:5 | getBox1 output argument [*box, elem] | provenance |  |
+| D.cpp:51:8:51:14 | *call to getBox1 [Reverse] [elem] | D.cpp:17:11:17:17 | **getBox1 [Reverse] [elem] | provenance |  |
+| D.cpp:51:8:51:14 | *call to getBox1 [Reverse] [elem] | D.cpp:51:5:51:5 | getBox1 output argument [*box, elem] | provenance |  |
+| D.cpp:51:8:51:14 | setElem output argument [elem] | D.cpp:51:8:51:14 | *call to getBox1 [Reverse] [elem] | provenance |  |
 | D.cpp:51:27:51:27 | e | D.cpp:11:24:11:24 | e | provenance |  |
 | D.cpp:51:27:51:27 | e | D.cpp:51:8:51:14 | setElem output argument [elem] | provenance |  |
 | D.cpp:52:14:52:14 | *b [*box, elem] | D.cpp:21:30:21:31 | *b2 [*box, elem] | provenance |  |
@@ -727,47 +740,77 @@ edges
 | qualifiers.cpp:9:21:9:25 | value | qualifiers.cpp:9:30:9:44 | ... = ... | provenance |  |
 | qualifiers.cpp:9:30:9:33 | *this [post update] [a] | qualifiers.cpp:9:10:9:13 | *this [Reverse] [a] | provenance |  |
 | qualifiers.cpp:9:30:9:44 | ... = ... | qualifiers.cpp:9:30:9:33 | *this [post update] [a] | provenance |  |
+| qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | provenance |  |
 | qualifiers.cpp:12:40:12:44 | value | qualifiers.cpp:12:49:12:64 | ... = ... | provenance |  |
 | qualifiers.cpp:12:49:12:53 | *inner [post update] [a] | qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | provenance |  |
 | qualifiers.cpp:12:49:12:53 | *inner [post update] [a] | qualifiers.cpp:12:27:12:31 | *inner [a] | provenance |  |
 | qualifiers.cpp:12:49:12:64 | ... = ... | qualifiers.cpp:12:49:12:53 | *inner [post update] [a] | provenance |  |
+| qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | provenance |  |
 | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:51:13:65 | ... = ... | provenance |  |
 | qualifiers.cpp:13:51:13:55 | *inner [post update] [a] | qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | provenance |  |
 | qualifiers.cpp:13:51:13:55 | *inner [post update] [a] | qualifiers.cpp:13:29:13:33 | *inner [a] | provenance |  |
 | qualifiers.cpp:13:51:13:65 | ... = ... | qualifiers.cpp:13:51:13:55 | *inner [post update] [a] | provenance |  |
+| qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | qualifiers.cpp:18:32:18:36 | *inner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:18:32:18:36 | *inner [Reverse] [a] | qualifiers.cpp:18:32:18:36 | *inner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:18:32:18:36 | *inner [Reverse] [a] | qualifiers.cpp:18:32:18:36 | *this [Reverse] [*inner, a] | provenance |  |
+| qualifiers.cpp:18:32:18:36 | *this [Reverse] [*inner, a] | qualifiers.cpp:18:12:18:19 | *this [Reverse] [*inner, a] | provenance |  |
 | qualifiers.cpp:22:5:22:9 | getInner output argument [*inner, a] | qualifiers.cpp:23:10:23:14 | *outer [*inner, a] | provenance |  |
 | qualifiers.cpp:22:5:22:38 | ... = ... | qualifiers.cpp:22:11:22:18 | *call to getInner [post update] [a] | provenance |  |
-| qualifiers.cpp:22:11:22:18 | *call to getInner [post update] [a] | qualifiers.cpp:22:5:22:9 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:22:11:22:18 | *call to getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:22:11:22:18 | *call to getInner [Reverse] [a] | qualifiers.cpp:22:5:22:9 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:22:11:22:18 | *call to getInner [post update] [a] | qualifiers.cpp:22:11:22:18 | *call to getInner [Reverse] [a] | provenance |  |
 | qualifiers.cpp:22:27:22:36 | call to user_input | qualifiers.cpp:22:5:22:38 | ... = ... | provenance |  |
 | qualifiers.cpp:23:10:23:14 | *outer [*inner, a] | qualifiers.cpp:23:16:23:20 | *inner [a] | provenance |  |
 | qualifiers.cpp:23:16:23:20 | *inner [a] | qualifiers.cpp:23:23:23:23 | a | provenance |  |
 | qualifiers.cpp:27:5:27:9 | getInner output argument [*inner, a] | qualifiers.cpp:28:10:28:14 | *outer [*inner, a] | provenance |  |
-| qualifiers.cpp:27:11:27:18 | setA output argument [a] | qualifiers.cpp:27:5:27:9 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:27:11:27:18 | *call to getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:27:11:27:18 | *call to getInner [Reverse] [a] | qualifiers.cpp:27:5:27:9 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:27:11:27:18 | setA output argument [a] | qualifiers.cpp:27:11:27:18 | *call to getInner [Reverse] [a] | provenance |  |
 | qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:9:21:9:25 | value | provenance |  |
 | qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:27:11:27:18 | setA output argument [a] | provenance |  |
 | qualifiers.cpp:28:10:28:14 | *outer [*inner, a] | qualifiers.cpp:28:16:28:20 | *inner [a] | provenance |  |
 | qualifiers.cpp:28:16:28:20 | *inner [a] | qualifiers.cpp:28:23:28:23 | a | provenance |  |
 | qualifiers.cpp:32:17:32:21 | getInner output argument [*inner, a] | qualifiers.cpp:33:10:33:14 | *outer [*inner, a] | provenance |  |
-| qualifiers.cpp:32:23:32:30 | pointerSetA output argument [a] | qualifiers.cpp:32:17:32:21 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] | qualifiers.cpp:32:17:32:21 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] | qualifiers.cpp:32:23:32:30 | pointerSetA output argument [Reverse] [a] | provenance |  |
+| qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] | qualifiers.cpp:32:23:32:30 | pointerSetA output argument [Reverse] [a] | provenance |  |
+| qualifiers.cpp:32:23:32:30 | pointerSetA output argument [Reverse] [a] | qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:32:23:32:30 | pointerSetA output argument [Reverse] [a] | qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:32:23:32:30 | pointerSetA output argument [Reverse] [a] | qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:32:23:32:30 | pointerSetA output argument [a] | qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:32:23:32:30 | pointerSetA output argument [a] | qualifiers.cpp:32:23:32:30 | pointerSetA output argument [Reverse] [a] | provenance |  |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:12:40:12:44 | value | provenance |  |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:32:23:32:30 | pointerSetA output argument [a] | provenance |  |
 | qualifiers.cpp:33:10:33:14 | *outer [*inner, a] | qualifiers.cpp:33:16:33:20 | *inner [a] | provenance |  |
 | qualifiers.cpp:33:16:33:20 | *inner [a] | qualifiers.cpp:33:23:33:23 | a | provenance |  |
-| qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] | qualifiers.cpp:37:20:37:24 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [Reverse] [a] | provenance |  |
+| qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [Reverse] [a] | provenance |  |
+| qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] | qualifiers.cpp:37:20:37:24 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:37:19:37:35 | referenceSetA output argument [Reverse] [a] | qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:37:19:37:35 | referenceSetA output argument [Reverse] [a] | qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] | provenance |  |
+| qualifiers.cpp:37:19:37:35 | referenceSetA output argument [Reverse] [a] | qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] | provenance |  |
+| qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] | qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] | provenance |  |
+| qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [Reverse] [a] | provenance |  |
 | qualifiers.cpp:37:20:37:24 | getInner output argument [*inner, a] | qualifiers.cpp:38:10:38:14 | *outer [*inner, a] | provenance |  |
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:13:42:13:46 | value | provenance |  |
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] | provenance |  |
 | qualifiers.cpp:38:10:38:14 | *outer [*inner, a] | qualifiers.cpp:38:16:38:20 | *inner [a] | provenance |  |
 | qualifiers.cpp:38:16:38:20 | *inner [a] | qualifiers.cpp:38:23:38:23 | a | provenance |  |
 | qualifiers.cpp:42:5:42:40 | ... = ... | qualifiers.cpp:42:6:42:22 | ** ... [post update] [a] | provenance |  |
-| qualifiers.cpp:42:6:42:22 | ** ... [post update] [a] | qualifiers.cpp:42:7:42:11 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:42:6:42:22 | ** ... [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:42:6:42:22 | ** ... [Reverse] [a] | qualifiers.cpp:42:7:42:11 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:42:6:42:22 | ** ... [post update] [a] | qualifiers.cpp:42:6:42:22 | ** ... [Reverse] [a] | provenance |  |
 | qualifiers.cpp:42:7:42:11 | getInner output argument [*inner, a] | qualifiers.cpp:43:10:43:14 | *outer [*inner, a] | provenance |  |
 | qualifiers.cpp:42:29:42:38 | call to user_input | qualifiers.cpp:42:5:42:40 | ... = ... | provenance |  |
 | qualifiers.cpp:43:10:43:14 | *outer [*inner, a] | qualifiers.cpp:43:16:43:20 | *inner [a] | provenance |  |
 | qualifiers.cpp:43:16:43:20 | *inner [a] | qualifiers.cpp:43:23:43:23 | a | provenance |  |
 | qualifiers.cpp:47:5:47:42 | ... = ... | qualifiers.cpp:47:15:47:22 | *call to getInner [post update] [a] | provenance |  |
 | qualifiers.cpp:47:6:47:11 | getInner output argument [*inner, a] | qualifiers.cpp:48:10:48:14 | *outer [*inner, a] | provenance |  |
-| qualifiers.cpp:47:15:47:22 | *call to getInner [post update] [a] | qualifiers.cpp:47:6:47:11 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:47:15:47:22 | *call to getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | provenance |  |
+| qualifiers.cpp:47:15:47:22 | *call to getInner [Reverse] [a] | qualifiers.cpp:47:6:47:11 | getInner output argument [*inner, a] | provenance |  |
+| qualifiers.cpp:47:15:47:22 | *call to getInner [post update] [a] | qualifiers.cpp:47:15:47:22 | *call to getInner [Reverse] [a] | provenance |  |
 | qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:47:5:47:42 | ... = ... | provenance |  |
 | qualifiers.cpp:48:10:48:14 | *outer [*inner, a] | qualifiers.cpp:48:16:48:20 | *inner [a] | provenance |  |
 | qualifiers.cpp:48:16:48:20 | *inner [a] | qualifiers.cpp:48:23:48:23 | a | provenance |  |
@@ -974,8 +1017,10 @@ nodes
 | A.cpp:142:7:142:20 | ... = ... | semmle.label | ... = ... |
 | A.cpp:142:14:142:20 | new | semmle.label | new |
 | A.cpp:143:7:143:10 | *this [post update] [*b, c] | semmle.label | *this [post update] [*b, c] |
+| A.cpp:143:7:143:10 | *this [post update] [Reverse] [*b, c] | semmle.label | *this [post update] [Reverse] [*b, c] |
 | A.cpp:143:7:143:10 | *this [post update] [b] | semmle.label | *this [post update] [b] |
 | A.cpp:143:7:143:10 | *this [post update] [b] | semmle.label | *this [post update] [b] |
+| A.cpp:143:7:143:31 | *... = ... [Reverse] [c] | semmle.label | *... = ... [Reverse] [c] |
 | A.cpp:143:7:143:31 | *... = ... [c] | semmle.label | *... = ... [c] |
 | A.cpp:143:7:143:31 | ... = ... | semmle.label | ... = ... |
 | A.cpp:143:7:143:31 | ... = ... | semmle.label | ... = ... |
@@ -1083,6 +1128,7 @@ nodes
 | C.cpp:19:5:19:5 | *c [s1] | semmle.label | *c [s1] |
 | C.cpp:19:5:19:5 | *c [s3] | semmle.label | *c [s3] |
 | C.cpp:22:3:22:3 | *this [Reverse] [s1] | semmle.label | *this [Reverse] [s1] |
+| C.cpp:22:3:22:3 | *this [Reverse] [s1] | semmle.label | *this [Reverse] [s1] |
 | C.cpp:22:3:22:3 | *this [Reverse] [s3] | semmle.label | *this [Reverse] [s3] |
 | C.cpp:22:3:22:3 | *this [post update] [s1] | semmle.label | *this [post update] [s1] |
 | C.cpp:22:12:22:21 | new | semmle.label | new |
@@ -1105,11 +1151,16 @@ nodes
 | D.cpp:11:24:11:24 | e | semmle.label | e |
 | D.cpp:11:29:11:32 | *this [post update] [elem] | semmle.label | *this [post update] [elem] |
 | D.cpp:11:29:11:36 | ... = ... | semmle.label | ... = ... |
+| D.cpp:17:11:17:17 | **getBox1 [Reverse] [elem] | semmle.label | **getBox1 [Reverse] [elem] |
 | D.cpp:17:11:17:17 | **getBox1 [elem] | semmle.label | **getBox1 [elem] |
 | D.cpp:17:11:17:17 | *this [*box, elem] | semmle.label | *this [*box, elem] |
+| D.cpp:17:11:17:17 | *this [Reverse] [*box, elem] | semmle.label | *this [Reverse] [*box, elem] |
+| D.cpp:17:30:17:32 | *box [Reverse] [elem] | semmle.label | *box [Reverse] [elem] |
+| D.cpp:17:30:17:32 | *box [Reverse] [elem] | semmle.label | *box [Reverse] [elem] |
 | D.cpp:17:30:17:32 | *box [elem] | semmle.label | *box [elem] |
 | D.cpp:17:30:17:32 | *box [elem] | semmle.label | *box [elem] |
 | D.cpp:17:30:17:32 | *this [*box, elem] | semmle.label | *this [*box, elem] |
+| D.cpp:17:30:17:32 | *this [Reverse] [*box, elem] | semmle.label | *this [Reverse] [*box, elem] |
 | D.cpp:21:30:21:31 | *b2 [*box, elem] | semmle.label | *b2 [*box, elem] |
 | D.cpp:22:10:22:11 | *b2 [*box, elem] | semmle.label | *b2 [*box, elem] |
 | D.cpp:22:10:22:33 | call to getElem | semmle.label | call to getElem |
@@ -1130,11 +1181,13 @@ nodes
 | D.cpp:42:15:42:24 | new | semmle.label | new |
 | D.cpp:44:5:44:5 | getBox1 output argument [*box, elem] | semmle.label | getBox1 output argument [*box, elem] |
 | D.cpp:44:5:44:26 | ... = ... | semmle.label | ... = ... |
+| D.cpp:44:8:44:14 | *call to getBox1 [Reverse] [elem] | semmle.label | *call to getBox1 [Reverse] [elem] |
 | D.cpp:44:8:44:14 | *call to getBox1 [post update] [elem] | semmle.label | *call to getBox1 [post update] [elem] |
 | D.cpp:45:14:45:14 | *b [*box, elem] | semmle.label | *b [*box, elem] |
 | D.cpp:49:15:49:24 | new | semmle.label | new |
 | D.cpp:49:15:49:24 | new | semmle.label | new |
 | D.cpp:51:5:51:5 | getBox1 output argument [*box, elem] | semmle.label | getBox1 output argument [*box, elem] |
+| D.cpp:51:8:51:14 | *call to getBox1 [Reverse] [elem] | semmle.label | *call to getBox1 [Reverse] [elem] |
 | D.cpp:51:8:51:14 | setElem output argument [elem] | semmle.label | setElem output argument [elem] |
 | D.cpp:51:27:51:27 | e | semmle.label | e |
 | D.cpp:52:14:52:14 | *b [*box, elem] | semmle.label | *b [*box, elem] |
@@ -1629,34 +1682,51 @@ nodes
 | qualifiers.cpp:9:30:9:33 | *this [post update] [a] | semmle.label | *this [post update] [a] |
 | qualifiers.cpp:9:30:9:44 | ... = ... | semmle.label | ... = ... |
 | qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | semmle.label | *inner [Reverse] [a] |
+| qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | semmle.label | *inner [Reverse] [a] |
+| qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | semmle.label | *inner [Reverse] [a] |
 | qualifiers.cpp:12:27:12:31 | *inner [a] | semmle.label | *inner [a] |
 | qualifiers.cpp:12:40:12:44 | value | semmle.label | value |
 | qualifiers.cpp:12:49:12:53 | *inner [post update] [a] | semmle.label | *inner [post update] [a] |
 | qualifiers.cpp:12:49:12:64 | ... = ... | semmle.label | ... = ... |
 | qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | semmle.label | *inner [Reverse] [a] |
+| qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | semmle.label | *inner [Reverse] [a] |
+| qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | semmle.label | *inner [Reverse] [a] |
 | qualifiers.cpp:13:29:13:33 | *inner [a] | semmle.label | *inner [a] |
 | qualifiers.cpp:13:42:13:46 | value | semmle.label | value |
 | qualifiers.cpp:13:51:13:55 | *inner [post update] [a] | semmle.label | *inner [post update] [a] |
 | qualifiers.cpp:13:51:13:65 | ... = ... | semmle.label | ... = ... |
+| qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | semmle.label | **getInner [Reverse] [a] |
+| qualifiers.cpp:18:12:18:19 | *this [Reverse] [*inner, a] | semmle.label | *this [Reverse] [*inner, a] |
+| qualifiers.cpp:18:32:18:36 | *inner [Reverse] [a] | semmle.label | *inner [Reverse] [a] |
+| qualifiers.cpp:18:32:18:36 | *inner [Reverse] [a] | semmle.label | *inner [Reverse] [a] |
+| qualifiers.cpp:18:32:18:36 | *this [Reverse] [*inner, a] | semmle.label | *this [Reverse] [*inner, a] |
 | qualifiers.cpp:22:5:22:9 | getInner output argument [*inner, a] | semmle.label | getInner output argument [*inner, a] |
 | qualifiers.cpp:22:5:22:38 | ... = ... | semmle.label | ... = ... |
+| qualifiers.cpp:22:11:22:18 | *call to getInner [Reverse] [a] | semmle.label | *call to getInner [Reverse] [a] |
 | qualifiers.cpp:22:11:22:18 | *call to getInner [post update] [a] | semmle.label | *call to getInner [post update] [a] |
 | qualifiers.cpp:22:27:22:36 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:23:10:23:14 | *outer [*inner, a] | semmle.label | *outer [*inner, a] |
 | qualifiers.cpp:23:16:23:20 | *inner [a] | semmle.label | *inner [a] |
 | qualifiers.cpp:23:23:23:23 | a | semmle.label | a |
 | qualifiers.cpp:27:5:27:9 | getInner output argument [*inner, a] | semmle.label | getInner output argument [*inner, a] |
+| qualifiers.cpp:27:11:27:18 | *call to getInner [Reverse] [a] | semmle.label | *call to getInner [Reverse] [a] |
 | qualifiers.cpp:27:11:27:18 | setA output argument [a] | semmle.label | setA output argument [a] |
 | qualifiers.cpp:27:28:27:37 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:28:10:28:14 | *outer [*inner, a] | semmle.label | *outer [*inner, a] |
 | qualifiers.cpp:28:16:28:20 | *inner [a] | semmle.label | *inner [a] |
 | qualifiers.cpp:28:23:28:23 | a | semmle.label | a |
 | qualifiers.cpp:32:17:32:21 | getInner output argument [*inner, a] | semmle.label | getInner output argument [*inner, a] |
+| qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] | semmle.label | *call to getInner [Reverse] [a] |
+| qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] | semmle.label | *call to getInner [Reverse] [a] |
+| qualifiers.cpp:32:23:32:30 | pointerSetA output argument [Reverse] [a] | semmle.label | pointerSetA output argument [Reverse] [a] |
 | qualifiers.cpp:32:23:32:30 | pointerSetA output argument [a] | semmle.label | pointerSetA output argument [a] |
 | qualifiers.cpp:32:35:32:44 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:33:10:33:14 | *outer [*inner, a] | semmle.label | *outer [*inner, a] |
 | qualifiers.cpp:33:16:33:20 | *inner [a] | semmle.label | *inner [a] |
 | qualifiers.cpp:33:23:33:23 | a | semmle.label | a |
+| qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] | semmle.label | ** ... [Reverse] [a] |
+| qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] | semmle.label | ** ... [Reverse] [a] |
+| qualifiers.cpp:37:19:37:35 | referenceSetA output argument [Reverse] [a] | semmle.label | referenceSetA output argument [Reverse] [a] |
 | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] | semmle.label | referenceSetA output argument [a] |
 | qualifiers.cpp:37:20:37:24 | getInner output argument [*inner, a] | semmle.label | getInner output argument [*inner, a] |
 | qualifiers.cpp:37:38:37:47 | call to user_input | semmle.label | call to user_input |
@@ -1664,6 +1734,7 @@ nodes
 | qualifiers.cpp:38:16:38:20 | *inner [a] | semmle.label | *inner [a] |
 | qualifiers.cpp:38:23:38:23 | a | semmle.label | a |
 | qualifiers.cpp:42:5:42:40 | ... = ... | semmle.label | ... = ... |
+| qualifiers.cpp:42:6:42:22 | ** ... [Reverse] [a] | semmle.label | ** ... [Reverse] [a] |
 | qualifiers.cpp:42:6:42:22 | ** ... [post update] [a] | semmle.label | ** ... [post update] [a] |
 | qualifiers.cpp:42:7:42:11 | getInner output argument [*inner, a] | semmle.label | getInner output argument [*inner, a] |
 | qualifiers.cpp:42:29:42:38 | call to user_input | semmle.label | call to user_input |
@@ -1672,6 +1743,7 @@ nodes
 | qualifiers.cpp:43:23:43:23 | a | semmle.label | a |
 | qualifiers.cpp:47:5:47:42 | ... = ... | semmle.label | ... = ... |
 | qualifiers.cpp:47:6:47:11 | getInner output argument [*inner, a] | semmle.label | getInner output argument [*inner, a] |
+| qualifiers.cpp:47:15:47:22 | *call to getInner [Reverse] [a] | semmle.label | *call to getInner [Reverse] [a] |
 | qualifiers.cpp:47:15:47:22 | *call to getInner [post update] [a] | semmle.label | *call to getInner [post update] [a] |
 | qualifiers.cpp:47:31:47:40 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:48:10:48:14 | *outer [*inner, a] | semmle.label | *outer [*inner, a] |
@@ -1819,6 +1891,8 @@ subpaths
 | D.cpp:22:10:22:11 | *b2 [*box, elem] | D.cpp:17:11:17:17 | *this [*box, elem] | D.cpp:17:11:17:17 | **getBox1 [elem] | D.cpp:22:14:22:20 | *call to getBox1 [elem] |
 | D.cpp:22:14:22:20 | *call to getBox1 [elem] | D.cpp:10:11:10:17 | *this [elem] | D.cpp:10:11:10:17 | *getElem | D.cpp:22:10:22:33 | call to getElem |
 | D.cpp:37:21:37:21 | e | D.cpp:11:24:11:24 | e | D.cpp:11:10:11:16 | *this [Reverse] [elem] | D.cpp:37:8:37:10 | setElem output argument [elem] |
+| D.cpp:44:8:44:14 | *call to getBox1 [Reverse] [elem] | D.cpp:17:11:17:17 | **getBox1 [Reverse] [elem] | D.cpp:17:11:17:17 | *this [Reverse] [*box, elem] | D.cpp:44:5:44:5 | getBox1 output argument [*box, elem] |
+| D.cpp:51:8:51:14 | *call to getBox1 [Reverse] [elem] | D.cpp:17:11:17:17 | **getBox1 [Reverse] [elem] | D.cpp:17:11:17:17 | *this [Reverse] [*box, elem] | D.cpp:51:5:51:5 | getBox1 output argument [*box, elem] |
 | D.cpp:51:27:51:27 | e | D.cpp:11:24:11:24 | e | D.cpp:11:10:11:16 | *this [Reverse] [elem] | D.cpp:51:8:51:14 | setElem output argument [elem] |
 | by_reference.cpp:20:23:20:27 | value | by_reference.cpp:15:26:15:30 | value | by_reference.cpp:15:8:15:18 | *this [Reverse] [a] | by_reference.cpp:20:5:20:8 | setDirectly output argument [a] |
 | by_reference.cpp:24:25:24:29 | value | by_reference.cpp:11:48:11:52 | value | by_reference.cpp:11:39:11:39 | *s [Reverse] [a] | by_reference.cpp:24:19:24:22 | nonMemberSetA output argument [a] |
@@ -1846,11 +1920,21 @@ subpaths
 | constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:5:23:7 | *this [Reverse] [b_] | constructors.cpp:35:9:35:9 | call to Foo [b_] |
 | constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:5:23:7 | *this [Reverse] [a_] | constructors.cpp:36:9:36:9 | call to Foo [a_] |
 | constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:5:23:7 | *this [Reverse] [b_] | constructors.cpp:36:9:36:9 | call to Foo [b_] |
+| qualifiers.cpp:22:11:22:18 | *call to getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | *this [Reverse] [*inner, a] | qualifiers.cpp:22:5:22:9 | getInner output argument [*inner, a] |
+| qualifiers.cpp:27:11:27:18 | *call to getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | *this [Reverse] [*inner, a] | qualifiers.cpp:27:5:27:9 | getInner output argument [*inner, a] |
 | qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:9:21:9:25 | value | qualifiers.cpp:9:10:9:13 | *this [Reverse] [a] | qualifiers.cpp:27:11:27:18 | setA output argument [a] |
+| qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | *this [Reverse] [*inner, a] | qualifiers.cpp:32:17:32:21 | getInner output argument [*inner, a] |
+| qualifiers.cpp:32:23:32:30 | pointerSetA output argument [Reverse] [a] | qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] |
+| qualifiers.cpp:32:23:32:30 | pointerSetA output argument [Reverse] [a] | qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | qualifiers.cpp:32:23:32:30 | *call to getInner [Reverse] [a] |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:12:40:12:44 | value | qualifiers.cpp:12:27:12:31 | *inner [Reverse] [a] | qualifiers.cpp:32:23:32:30 | pointerSetA output argument [a] |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:12:40:12:44 | value | qualifiers.cpp:12:27:12:31 | *inner [a] | qualifiers.cpp:32:23:32:30 | pointerSetA output argument [a] |
+| qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | *this [Reverse] [*inner, a] | qualifiers.cpp:37:20:37:24 | getInner output argument [*inner, a] |
+| qualifiers.cpp:37:19:37:35 | referenceSetA output argument [Reverse] [a] | qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] |
+| qualifiers.cpp:37:19:37:35 | referenceSetA output argument [Reverse] [a] | qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | qualifiers.cpp:37:19:37:35 | ** ... [Reverse] [a] |
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:29:13:33 | *inner [Reverse] [a] | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] |
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:29:13:33 | *inner [a] | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] |
+| qualifiers.cpp:42:6:42:22 | ** ... [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | *this [Reverse] [*inner, a] | qualifiers.cpp:42:7:42:11 | getInner output argument [*inner, a] |
+| qualifiers.cpp:47:15:47:22 | *call to getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | **getInner [Reverse] [a] | qualifiers.cpp:18:12:18:19 | *this [Reverse] [*inner, a] | qualifiers.cpp:47:6:47:11 | getInner output argument [*inner, a] |
 | simple.cpp:28:10:28:10 | *f [a_] | simple.cpp:18:9:18:9 | *this [a_] | simple.cpp:18:9:18:9 | *a | simple.cpp:28:12:28:12 | call to a |
 | simple.cpp:29:10:29:10 | *f [b_] | simple.cpp:19:9:19:9 | *this [b_] | simple.cpp:19:9:19:9 | *b | simple.cpp:29:12:29:12 | call to b |
 | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:20:19:20:19 | a | simple.cpp:20:10:20:13 | *this [Reverse] [a_] | simple.cpp:39:5:39:5 | setA output argument [a_] |
