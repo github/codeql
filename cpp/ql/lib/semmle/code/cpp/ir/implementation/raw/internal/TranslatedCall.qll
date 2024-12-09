@@ -364,9 +364,16 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
   override predicate mayThrowException(ExceptionEdge e) {
     // by default, all functions may throw exceptions of any kind
     // unless explicitly annotated to never throw
+    // Only consider a call to "may" throw an Seh exception
+    // if inside a MicrosoftTryStmt
     not this.neverThrowException(e) and
-    // for now assuming all calls may throw for Seh only
-    e instanceof SehExceptionEdge
+    (
+      this.mustThrowException(e)
+      or
+      // for now assuming all calls may throw for Seh only
+      e instanceof SehExceptionEdge and
+      exists(MicrosoftTryStmt trystmt | trystmt.getAChild*() = expr)
+    )
   }
 
   override predicate neverThrowException(ExceptionEdge e) {

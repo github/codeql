@@ -11,6 +11,7 @@ private import TranslatedExpr
 private import TranslatedInitialization
 private import TranslatedStmt
 private import VarArgs
+private import EdgeKind
 
 /**
  * Gets the `TranslatedFunction` that represents function `func`.
@@ -209,14 +210,16 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
       (
         // Only generate the `Unwind` instruction if there is any exception
         // handling present in the function.
-        // Do not unwind for MicrosoftTryStmt (SEH), as an optimization (SEH exception
-        // will occur at any store/load, so unwind would appear everywhere as a result)
-        exists(TryStmt try | try.getEnclosingFunction() = func)
+        exists(TryOrMicrosoftTryStmt try | try.getEnclosingFunction() = func)
         or
         exists(ThrowExpr throw | throw.getEnclosingFunction() = func)
         or
-        exists(FunctionCall call, CppExceptionEdge exception | call.getEnclosingFunction() = func |
-          getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException(exception)
+        // or
+        // exists(FunctionCall call | call.getEnclosingFunction() = func |
+        //   getTranslatedExpr(call).(TranslatedCallExpr).mustThrowException(_)
+        // )
+        exists(FunctionCall call | call.getEnclosingFunction() = func |
+          getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException(_)
         )
       )
       or
@@ -231,9 +234,7 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
   }
 
   final override Instruction getExceptionSuccessorInstruction(EdgeKind kind, ExceptionEdge exception) {
-    // only unwind for C++ exceptions since SEH exceptions are too verbose
-    // and would generate unwind for all functions.
-    exception instanceof CppExceptionEdge and
+    (exception = cppExceptionEdge() or exception = sehExceptionEdge()) and
     result = this.getInstruction(UnwindTag()) and
     kind instanceof GotoEdge
   }
