@@ -1,6 +1,6 @@
 package com.github.codeql
 
-import com.github.codeql.KotlinFileExtractor.StmtExprParent
+import com.github.codeql.KotlinFileExtractor.ExprParent
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.resolution.KaSimpleFunctionCall
 import org.jetbrains.kotlin.analysis.api.resolution.symbol
@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.utils.mapToIndex
 context(KaSession)
 fun KotlinFileExtractor.extractMethodCall(
     call: KtCallExpression,
-    stmtExprParent: StmtExprParent
+    parent: ExprParent
 ): Label<out DbExpr> {
     val callTarget = call.resolveCallTarget() as? KaSimpleFunctionCall?
     val target = callTarget?.symbol
@@ -56,16 +56,14 @@ fun KotlinFileExtractor.extractMethodCall(
     val extensionReceiver = if (target.isExtension) qualifier else null
     val dispatchReceiver = if (!target.isExtension) qualifier else null
 
-    val exprParent = stmtExprParent.expr(call)
-
     val callId = extractRawMethodAccess(
         target,
         tw.getLocation(call),
         call.expressionType!!,
-        stmtExprParent.callable,
-        exprParent.parent,
-        exprParent.idx,
-        exprParent.enclosingStmt,
+        parent.callable,
+        parent.parent,
+        parent.idx,
+        parent.enclosingStmt,
         dispatchReceiver,
         extensionReceiver,
         args
