@@ -11,6 +11,31 @@ nodes
 | react.js:37:43:37:74 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
 | react.js:43:19:43:40 | documen ... on.hash | semmle.label | documen ... on.hash |
 | react.js:43:19:43:50 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
+| regexp-exec.js:4:11:4:20 | [, group1] | semmle.label | [, group1] |
+| regexp-exec.js:4:11:4:57 | group1 | semmle.label | group1 |
+| regexp-exec.js:4:24:4:57 | /#(.*)/ ... n.href) | semmle.label | /#(.*)/ ... n.href) |
+| regexp-exec.js:4:37:4:56 | window.location.href | semmle.label | window.location.href |
+| regexp-exec.js:5:28:5:33 | group1 | semmle.label | group1 |
+| regexp-exec.js:9:11:9:20 | [, group1] | semmle.label | [, group1] |
+| regexp-exec.js:9:11:9:58 | group1 | semmle.label | group1 |
+| regexp-exec.js:9:24:9:58 | /\\?(.*) ... n.href) | semmle.label | /\\?(.*) ... n.href) |
+| regexp-exec.js:9:38:9:57 | window.location.href | semmle.label | window.location.href |
+| regexp-exec.js:10:28:10:33 | group1 | semmle.label | group1 |
+| regexp-exec.js:14:11:14:20 | [, group1] | semmle.label | [, group1] |
+| regexp-exec.js:14:11:14:62 | group1 | semmle.label | group1 |
+| regexp-exec.js:14:24:14:62 | /^([a-z ... n.href) | semmle.label | /^([a-z ... n.href) |
+| regexp-exec.js:14:42:14:61 | window.location.href | semmle.label | window.location.href |
+| regexp-exec.js:15:28:15:33 | group1 | semmle.label | group1 |
+| regexp-exec.js:19:11:19:20 | [, group1] | semmle.label | [, group1] |
+| regexp-exec.js:19:11:19:56 | group1 | semmle.label | group1 |
+| regexp-exec.js:19:24:19:56 | /(.*)/. ... n.href) | semmle.label | /(.*)/. ... n.href) |
+| regexp-exec.js:19:36:19:55 | window.location.href | semmle.label | window.location.href |
+| regexp-exec.js:20:28:20:33 | group1 | semmle.label | group1 |
+| regexp-exec.js:24:11:24:20 | [, group1] | semmle.label | [, group1] |
+| regexp-exec.js:24:11:24:60 | group1 | semmle.label | group1 |
+| regexp-exec.js:24:24:24:60 | /blah#b ... n.href) | semmle.label | /blah#b ... n.href) |
+| regexp-exec.js:24:40:24:59 | window.location.href | semmle.label | window.location.href |
+| regexp-exec.js:25:28:25:33 | group1 | semmle.label | group1 |
 | sanitizer.js:2:9:2:25 | url | semmle.label | url |
 | sanitizer.js:2:15:2:25 | window.name | semmle.label | window.name |
 | sanitizer.js:4:27:4:29 | url | semmle.label | url |
@@ -168,6 +193,26 @@ edges
 | react.js:31:43:31:64 | documen ... on.hash | react.js:31:43:31:74 | documen ... bstr(1) | provenance | Config |
 | react.js:37:43:37:64 | documen ... on.hash | react.js:37:43:37:74 | documen ... bstr(1) | provenance | Config |
 | react.js:43:19:43:40 | documen ... on.hash | react.js:43:19:43:50 | documen ... bstr(1) | provenance | Config |
+| regexp-exec.js:4:11:4:20 | [, group1] | regexp-exec.js:4:11:4:57 | group1 | provenance |  |
+| regexp-exec.js:4:11:4:57 | group1 | regexp-exec.js:5:28:5:33 | group1 | provenance |  |
+| regexp-exec.js:4:24:4:57 | /#(.*)/ ... n.href) | regexp-exec.js:4:11:4:20 | [, group1] | provenance |  |
+| regexp-exec.js:4:37:4:56 | window.location.href | regexp-exec.js:4:24:4:57 | /#(.*)/ ... n.href) | provenance | Config |
+| regexp-exec.js:9:11:9:20 | [, group1] | regexp-exec.js:9:11:9:58 | group1 | provenance |  |
+| regexp-exec.js:9:11:9:58 | group1 | regexp-exec.js:10:28:10:33 | group1 | provenance |  |
+| regexp-exec.js:9:24:9:58 | /\\?(.*) ... n.href) | regexp-exec.js:9:11:9:20 | [, group1] | provenance |  |
+| regexp-exec.js:9:38:9:57 | window.location.href | regexp-exec.js:9:24:9:58 | /\\?(.*) ... n.href) | provenance | Config |
+| regexp-exec.js:14:11:14:20 | [, group1] | regexp-exec.js:14:11:14:62 | group1 | provenance |  |
+| regexp-exec.js:14:11:14:62 | group1 | regexp-exec.js:15:28:15:33 | group1 | provenance |  |
+| regexp-exec.js:14:24:14:62 | /^([a-z ... n.href) | regexp-exec.js:14:11:14:20 | [, group1] | provenance |  |
+| regexp-exec.js:14:42:14:61 | window.location.href | regexp-exec.js:14:24:14:62 | /^([a-z ... n.href) | provenance | Config |
+| regexp-exec.js:19:11:19:20 | [, group1] | regexp-exec.js:19:11:19:56 | group1 | provenance |  |
+| regexp-exec.js:19:11:19:56 | group1 | regexp-exec.js:20:28:20:33 | group1 | provenance |  |
+| regexp-exec.js:19:24:19:56 | /(.*)/. ... n.href) | regexp-exec.js:19:11:19:20 | [, group1] | provenance |  |
+| regexp-exec.js:19:36:19:55 | window.location.href | regexp-exec.js:19:24:19:56 | /(.*)/. ... n.href) | provenance | Config |
+| regexp-exec.js:24:11:24:20 | [, group1] | regexp-exec.js:24:11:24:60 | group1 | provenance |  |
+| regexp-exec.js:24:11:24:60 | group1 | regexp-exec.js:25:28:25:33 | group1 | provenance |  |
+| regexp-exec.js:24:24:24:60 | /blah#b ... n.href) | regexp-exec.js:24:11:24:20 | [, group1] | provenance |  |
+| regexp-exec.js:24:40:24:59 | window.location.href | regexp-exec.js:24:24:24:60 | /blah#b ... n.href) | provenance | Config |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:4:27:4:29 | url | provenance |  |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:16:27:16:29 | url | provenance |  |
 | sanitizer.js:2:9:2:25 | url | sanitizer.js:19:27:19:29 | url | provenance |  |
@@ -294,6 +339,11 @@ subpaths
 | react.js:31:43:31:74 | documen ... bstr(1) | react.js:31:43:31:64 | documen ... on.hash | react.js:31:43:31:74 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:31:43:31:64 | documen ... on.hash | user-provided value |
 | react.js:37:43:37:74 | documen ... bstr(1) | react.js:37:43:37:64 | documen ... on.hash | react.js:37:43:37:74 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:37:43:37:64 | documen ... on.hash | user-provided value |
 | react.js:43:19:43:50 | documen ... bstr(1) | react.js:43:19:43:40 | documen ... on.hash | react.js:43:19:43:50 | documen ... bstr(1) | Untrusted URL redirection depends on a $@. | react.js:43:19:43:40 | documen ... on.hash | user-provided value |
+| regexp-exec.js:5:28:5:33 | group1 | regexp-exec.js:4:37:4:56 | window.location.href | regexp-exec.js:5:28:5:33 | group1 | Untrusted URL redirection depends on a $@. | regexp-exec.js:4:37:4:56 | window.location.href | user-provided value |
+| regexp-exec.js:10:28:10:33 | group1 | regexp-exec.js:9:38:9:57 | window.location.href | regexp-exec.js:10:28:10:33 | group1 | Untrusted URL redirection depends on a $@. | regexp-exec.js:9:38:9:57 | window.location.href | user-provided value |
+| regexp-exec.js:15:28:15:33 | group1 | regexp-exec.js:14:42:14:61 | window.location.href | regexp-exec.js:15:28:15:33 | group1 | Untrusted URL redirection depends on a $@. | regexp-exec.js:14:42:14:61 | window.location.href | user-provided value |
+| regexp-exec.js:20:28:20:33 | group1 | regexp-exec.js:19:36:19:55 | window.location.href | regexp-exec.js:20:28:20:33 | group1 | Untrusted URL redirection depends on a $@. | regexp-exec.js:19:36:19:55 | window.location.href | user-provided value |
+| regexp-exec.js:25:28:25:33 | group1 | regexp-exec.js:24:40:24:59 | window.location.href | regexp-exec.js:25:28:25:33 | group1 | Untrusted URL redirection depends on a $@. | regexp-exec.js:24:40:24:59 | window.location.href | user-provided value |
 | sanitizer.js:4:27:4:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:4:27:4:29 | url | Untrusted URL redirection depends on a $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:16:27:16:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:16:27:16:29 | url | Untrusted URL redirection depends on a $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
 | sanitizer.js:19:27:19:29 | url | sanitizer.js:2:15:2:25 | window.name | sanitizer.js:19:27:19:29 | url | Untrusted URL redirection depends on a $@. | sanitizer.js:2:15:2:25 | window.name | user-provided value |
