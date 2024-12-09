@@ -111,7 +111,7 @@ class TestCollect {
         sink(t1.remove("r", "c")); // $numValueFlow=1
 
         t3.row("r").put("c", x);
-        sink(tableValue(t3));  // $ MISSING:numValueFlow=1 // depends on aliasing
+        sink(tableValue(t3));  // $ numValueFlow=1
     }
 
     void test5(Multimap<String, String> m1, Multimap<String, String> m2, Multimap<String, String> m3, 
@@ -133,7 +133,7 @@ class TestCollect {
         }
 
         m5.asMap().get("k").add(x);
-        sink(multimapValue(m5));  // $ MISSING:numValueFlow=1 // depends on aliasing
+        sink(multimapValue(m5));  // $ numValueFlow=1
     }
 
     void test6(Comparator<String> comp, SortedSet<String> sorS, SortedMap<String, String> sorM) {
