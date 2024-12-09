@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import subprocess
 import json
 import csv
@@ -52,7 +54,7 @@ class CodeQL:
         except:
             self.proc.kill()
 
-    def command(self, args): 
+    def command(self, args):
         data = json.dumps(args)
         data_bytes = data.encode('utf-8')
         self.proc.stdin.write(data_bytes)
