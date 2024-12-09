@@ -6,9 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.c:40:5:40:26 | Chi: call to ExRaiseAccessViolation | Instruction 'Chi: call to ExRaiseAccessViolation' has no successors in function '$@'. | ir.c:32:6:32:32 | void unexplained_loop_regression() | void unexplained_loop_regression() |
-| ir.c:76:5:76:26 | Chi: call to ExRaiseAccessViolation | Instruction 'Chi: call to ExRaiseAccessViolation' has no successors in function '$@'. | ir.c:70:6:70:39 | void throw_in_try_with_throw_in_finally() | void throw_in_try_with_throw_in_finally() |
-| ir.c:81:3:81:24 | Chi: call to ExRaiseAccessViolation | Instruction 'Chi: call to ExRaiseAccessViolation' has no successors in function '$@'. | ir.c:80:6:80:27 | void raise_access_violation() | void raise_access_violation() |
 | try_except.cpp:48:13:48:19 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | try_except.cpp:44:6:44:14 | void throw_cpp(int) | void throw_cpp(int) |
 ambiguousSuccessors
 unexplainedLoop
