@@ -9,7 +9,7 @@ extensions:
       - ["", "CRegKey", True, "Attach", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["", "CRegKey", True, "QueryBinaryValue", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
       - ["", "CRegKey", True, "QueryDWORDValue", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
-      - ["", "CRegKey", True, "QueryMultiStringValue", "", "", "Argument[*0]", "Argument[**1]", "taint", "manual"]
+      - ["", "CRegKey", True, "QueryMultiStringValue", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
       - ["", "CRegKey", True, "QueryQWORDValue", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
       - ["", "CRegKey", True, "QueryStringValue", "", "", "Argument[*0]", "Argument[**1]", "taint", "manual"]
       - ["", "CRegKey", True, "QueryValue", "(LPCTSTR,DWORD *,void *,ULONG *)", "", "Argument[*0]", "Argument[*2]", "taint", "manual"]
