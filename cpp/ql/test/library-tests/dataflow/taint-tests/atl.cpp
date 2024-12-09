@@ -785,7 +785,7 @@ void test_CSimpleMap() {
   {
     CSimpleMap<char*, wchar_t*> a;
     auto pos = a.FindKey("hello");
-    sink(a.GetValueAt(pos)); // $ MISSING: ir
+    sink(a.GetValueAt(pos)); // clean
   }
   {
     CSimpleMap<char*, wchar_t*> a;
