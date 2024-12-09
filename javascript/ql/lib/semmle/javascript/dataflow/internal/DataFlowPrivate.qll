@@ -390,7 +390,15 @@ class CastNode extends DataFlow::Node {
 cached
 newtype TDataFlowCallable =
   MkSourceCallable(StmtContainer container) or
-  MkLibraryCallable(LibraryCallable callable)
+  MkLibraryCallable(LibraryCallable callable) or
+  MkClassHarnessCallable(Function f) {
+    // We only need a class harness for functions that act as classes (i.e. constructors),
+    // but since DataFlow::Node has not been materialised at this stage, we can't use DataFlow::ClassNode.
+    // Exclude arrow functions as they can't be called with 'new'.
+    not f instanceof ArrowFunctionExpr and
+    // We also don't need harnesses for externs
+    not f.getTopLevel().isExterns()
+  }
 
 /**
  * A callable entity. This is a wrapper around either a `StmtContainer` or a `LibraryCallable`.
@@ -401,13 +409,20 @@ class DataFlowCallable extends TDataFlowCallable {
     result = this.asSourceCallable().toString()
     or
     result = this.asLibraryCallable()
+    or
+    result = this.asClassHarness().toString()
   }
 
   /** Gets the location of this callable, if it is present in the source code. */
-  Location getLocation() { result = this.asSourceCallable().getLocation() }
+  Location getLocation() {
+    result = this.asSourceCallable().getLocation() or result = this.asClassHarness().getLocation()
+  }
 
   /** Gets the corresponding `StmtContainer` if this is a source callable. */
   StmtContainer asSourceCallable() { this = MkSourceCallable(result) }
+
+  /** Gets the class constructor for which this is a class harness. */
+  Function asClassHarness() { this = MkClassHarnessCallable(result) }
 
   /** Gets the corresponding `StmtContainer` if this is a source callable. */
   pragma[nomagic]
