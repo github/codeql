@@ -15,8 +15,6 @@ private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     (
       // remote flow sources
-      source instanceof ArtifactSource
-      or
       source instanceof GitHubCtxSource
       or
       source instanceof GitHubEventCtxSource
@@ -245,10 +243,14 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
       exists(string value, Expression expr |
         value.regexpMatch(".*(head|branch|ref).*") and expr = this.getArgumentExpr("ref")
       |
-        expr.(StepsExpression).getStepId() = value or
-        expr.(SimpleReferenceExpression).getFieldName() = value or
-        expr.(NeedsExpression).getNeededJobId() = value or
-        expr.(JsonReferenceExpression).getAccessPath() = value or
+        expr.(StepsExpression).getStepId() = value
+        or
+        expr.(SimpleReferenceExpression).getFieldName() = value
+        or
+        expr.(NeedsExpression).getNeededJobId() = value
+        or
+        expr.(JsonReferenceExpression).getAccessPath() = value
+        or
         expr.(JsonReferenceExpression).getInnerExpression() = value
       )
     )
@@ -275,10 +277,14 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
       exists(string value, Expression expr |
         value.regexpMatch(".*(head|sha|commit).*") and expr = this.getArgumentExpr("ref")
       |
-        expr.(StepsExpression).getStepId() = value or
-        expr.(SimpleReferenceExpression).getFieldName() = value or
-        expr.(NeedsExpression).getNeededJobId() = value or
-        expr.(JsonReferenceExpression).getAccessPath() = value or
+        expr.(StepsExpression).getStepId() = value
+        or
+        expr.(SimpleReferenceExpression).getFieldName() = value
+        or
+        expr.(NeedsExpression).getNeededJobId() = value
+        or
+        expr.(JsonReferenceExpression).getAccessPath() = value
+        or
         expr.(JsonReferenceExpression).getInnerExpression() = value
       )
     )
