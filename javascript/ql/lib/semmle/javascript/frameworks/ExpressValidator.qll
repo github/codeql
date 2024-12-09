@@ -25,15 +25,15 @@ module ExpressValidator {
           validator = "parameter"
           or
           // body('search').notEmpty().escape()
-          middleware = DataFlow::moduleMember("express-validator", ["body"]).getACall() and
+          middleware = DataFlow::moduleMember("express-validator", "body").getACall() and
           validator = "body"
           or
           // cookie('search').notEmpty().escape()
-          middleware = DataFlow::moduleMember("express-validator", ["cookie"]).getACall() and
+          middleware = DataFlow::moduleMember("express-validator", "cookie").getACall() and
           validator = "cookie"
           or
           // header('search').notEmpty().escape()
-          middleware = DataFlow::moduleMember("express-validator", ["header"]).getACall() and
+          middleware = DataFlow::moduleMember("express-validator", "header").getACall() and
           validator = "header"
         ) and
         isSafe(middleware)
@@ -99,7 +99,7 @@ module ExpressValidator {
   }
 
   /**
-   * Holds ExpressValidator sanitizers.
+   * The sanitizers for `express-validator` validated requests.
    *
    * These are a list of source nodes that are automatically sanitized by the
    * express-validator library.
