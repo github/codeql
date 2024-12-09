@@ -116,7 +116,7 @@ private fun KotlinFileExtractor.extractExpressionStmt(
 
 context(KaSession)
 fun KotlinFileExtractor.extractExpressionExpr(
-    e: KtExpression,
+    e: KtExpression?,
     callable: Label<out DbCallable>,
     parent: Label<out DbExprparent>,
     idx: Int,
@@ -777,8 +777,7 @@ private fun <SE: AnyDbType> KotlinFileExtractor.extractExpression(
                     val locId = tw.getLocation(e)
                     tw.writeStmts_throwstmt(id, stmtParent.parent, stmtParent.idx, stmtParent.callable)
                     tw.writeHasLocation(id, locId)
-                    val thrown = e.thrownExpression!!
-                    extractExpressionExpr(thrown, stmtParent.callable, id, 0, id)
+                    extractExpressionExpr(e.thrownExpression, stmtParent.callable, id, 0, id)
                     id
                 }
             }
@@ -1760,7 +1759,7 @@ private fun KotlinFileExtractor.extractWhen(
                 is KtWhenConditionWithExpression -> {
                     tw.writeWhen_branch_condition_with_expr(condId)
                     extractExpressionExpr(
-                        cond.expression!!,
+                        cond.expression,
                         exprParent.callable,
                         condId,
                         0,
@@ -1772,7 +1771,7 @@ private fun KotlinFileExtractor.extractWhen(
                     // [!]in 1..10
                     tw.writeWhen_branch_condition_with_range(condId, cond.isNegated)
                     extractExpressionExpr(
-                        cond.rangeExpression!!,
+                        cond.rangeExpression,
                         exprParent.callable,
                         condId,
                         0,
@@ -1820,7 +1819,7 @@ private fun <SE: AnyDbType> KotlinFileExtractor.extractIf(
             tw.writeStmts_ifstmt(id, stmtParent.parent, stmtParent.idx, stmtParent.callable)
             tw.writeHasLocation(id, locId)
 
-            extractExpressionExpr(ifStmt.condition!!, stmtParent.callable, id, 0, id)
+            extractExpressionExpr(ifStmt.condition, stmtParent.callable, id, 0, id)
             extractExpressionStmt(ifStmt.then!!, stmtParent.callable, id, 1)
             val elseBranch = ifStmt.`else`
             if (elseBranch != null) {
@@ -1840,9 +1839,9 @@ private fun <SE: AnyDbType> KotlinFileExtractor.extractIf(
 
         extractExprContext(id, tw.getLocation(ifStmt), exprParent.callable, exprParent.enclosingStmt)
 
-        extractExpressionExpr(ifStmt.condition!!, exprParent.callable, id, 0, exprParent.enclosingStmt)
-        extractExpressionExpr(ifStmt.then!!, exprParent.callable, id, 1, exprParent.enclosingStmt)
-        extractExpressionExpr(ifStmt.`else`!!, exprParent.callable, id, 2, exprParent.enclosingStmt)
+        extractExpressionExpr(ifStmt.condition, exprParent.callable, id, 0, exprParent.enclosingStmt)
+        extractExpressionExpr(ifStmt.then, exprParent.callable, id, 1, exprParent.enclosingStmt)
+        extractExpressionExpr(ifStmt.`else`, exprParent.callable, id, 2, exprParent.enclosingStmt)
 
         id
     }
@@ -1866,8 +1865,7 @@ private fun KotlinFileExtractor.extractLoopWithCondition(
                 }
             }
         }
-    val condition = loop.condition!!
-    extractExpressionExpr(condition, callable, id, 0, id)
+    extractExpressionExpr(loop.condition, callable, id, 0, id)
     return id
 }
 
