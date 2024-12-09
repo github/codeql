@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "_U_STRINGorID", True, "_U_STRINGorID", "(UINT)", "", "Argument[0]", "Argument[-1].Field[*m_lpstr]", "value", "manual"]
+      - ["", "_U_STRINGorID", True, "_U_STRINGorID", "(LPCTSTR)", "", "Argument[*0]", "Argument[-1].Field[*m_lpstr]", "value", "manual"]
+      - ["", "CA2AEX", True, "CA2AEX", "", "", "Argument[*0]", "Argument[-1].Field[*m_psz]", "value", "manual"]
+      - ["", "CA2AEX", True, "CA2AEX", "", "", "Argument[*0]", "Argument[-1].Field[m_szBuffer]", "value", "manual"]
+      - ["", "CA2AEX", True, "operator LPSTR", "", "", "Argument[-1].Field[*m_psz]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CA2AEX", True, "CA2AEX", "", "", "Argument[*0]", "Argument[-1].Field[m_szBuffer]", "value", "manual"]
+      - ["", "CA2AEX", True, "operator LPSTR", "", "", "Argument[-1].Field[m_szBuffer]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CA2CAEX", True, "CA2CAEX", "", "", "Argument[*0]", "Argument[-1].Field[*m_psz]", "value", "manual"]
+      - ["", "CA2CAEX", True, "operator LPCSTR", "", "", "Argument[-1].Field[*m_psz]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CA2WEX", True, "CA2WEX", "", "", "Argument[*0]", "Argument[-1].Field[*m_psz]", "value", "manual"]
+      - ["", "CA2WEX", True, "operator LPWSTR", "", "", "Argument[-1].Field[*m_psz]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CA2WEX", True, "CA2WEX", "", "", "Argument[*0]", "Argument[-1].Field[m_szBuffer]", "value", "manual"]
+      - ["", "CA2WEX", True, "operator LPWSTR", "", "", "Argument[-1].Field[m_szBuffer]", "ReturnValue[*]", "value", "manual"]

@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "CAtlArray", True, "Add", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlArray", True, "Append", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlArray", True, "Copy", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlArray", True, "GetAt", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["", "CAtlArray", True, "GetData", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["", "CAtlArray", True, "InsertArrayAt", "", "", "Argument[*1].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlArray", True, "InsertAt", "", "", "Argument[@1]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlArray", True, "SetAt", "", "", "Argument[@1]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlArray", True, "SetAtGrow", "", "", "Argument[@1]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlArray", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*]", "value", "manual"]
