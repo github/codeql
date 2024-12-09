@@ -15,7 +15,7 @@ void ms_except_mix(int b1) {
     __try {
         C c102(102);
         if (b1) {
-            throw 1;
+            throw 1; // invalid use of throw in Seh exception
         }
         C c103(103);
     }
@@ -32,7 +32,7 @@ void ms_finally_mix(int b2) {
     __try {
         C c106(106);
         if (b2) {
-            throw 2;
+            throw 2; // invalid use of throw in Seh exception
         }
         C c107(107);
     }
@@ -50,7 +50,7 @@ void ms_empty_finally_at_end() {
   C c201(201);
 
   __try {
-    throw 3;
+    throw 3; // invalid use of throw in Seh exception
   }
   __finally {
   }

@@ -7,9 +7,58 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ms_try_mix.cpp:53:5:53:11 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:49:6:49:28 | void ms_empty_finally_at_end() | void ms_empty_finally_at_end() |
 | stmt_expr.cpp:27:5:27:15 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | stmt_expr.cpp:21:13:21:13 | void stmtexpr::g(int) | void stmtexpr::g(int) |
 ambiguousSuccessors
 unexplainedLoop
+| ms_try_mix.cpp:22:15:22:39 | Constant: 1 | Instruction 'Constant: 1' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:22:42:24:5 | CompareEQ: { ... } | Instruction 'CompareEQ: { ... }' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:22:42:24:5 | CompareEQ: { ... } | Instruction 'CompareEQ: { ... }' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:22:42:24:5 | CompareEQ: { ... } | Instruction 'CompareEQ: { ... }' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:22:42:24:5 | ConditionalBranch: { ... } | Instruction 'ConditionalBranch: { ... }' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:22:42:24:5 | ConditionalBranch: { ... } | Instruction 'ConditionalBranch: { ... }' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:22:42:24:5 | ConditionalBranch: { ... } | Instruction 'ConditionalBranch: { ... }' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:22:42:24:5 | Constant: { ... } | Instruction 'Constant: { ... }' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:22:42:24:5 | Constant: { ... } | Instruction 'Constant: { ... }' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:22:42:24:5 | Constant: { ... } | Instruction 'Constant: { ... }' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:23:11:23:14 | Uninitialized: definition of c104 | Instruction 'Uninitialized: definition of c104' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:23:11:23:14 | VariableAddress: definition of c104 | Instruction 'VariableAddress: definition of c104' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:23:16:23:18 | Constant: 104 | Instruction 'Constant: 104' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:23:16:23:19 | Call: call to C | Instruction 'Call: call to C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:23:16:23:19 | CallSideEffect: call to C | Instruction 'CallSideEffect: call to C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:23:16:23:19 | FunctionAddress: call to C | Instruction 'FunctionAddress: call to C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:23:16:23:19 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:24:5:24:5 | Call: call to ~C | Instruction 'Call: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:24:5:24:5 | CallSideEffect: call to ~C | Instruction 'CallSideEffect: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:24:5:24:5 | FunctionAddress: call to ~C | Instruction 'FunctionAddress: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:24:5:24:5 | IndirectMayWriteSideEffect: c104 | Instruction 'IndirectMayWriteSideEffect: c104' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:24:5:24:5 | IndirectReadSideEffect: c104 | Instruction 'IndirectReadSideEffect: c104' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:24:5:24:5 | VariableAddress: c104 | Instruction 'VariableAddress: c104' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:27:1:27:1 | Call: call to ~C | Instruction 'Call: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:27:1:27:1 | CallSideEffect: call to ~C | Instruction 'CallSideEffect: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:27:1:27:1 | FunctionAddress: call to ~C | Instruction 'FunctionAddress: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:27:1:27:1 | IndirectMayWriteSideEffect: c101 | Instruction 'IndirectMayWriteSideEffect: c101' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:27:1:27:1 | IndirectReadSideEffect: c101 | Instruction 'IndirectReadSideEffect: c101' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:27:1:27:1 | VariableAddress: c101 | Instruction 'VariableAddress: c101' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:40:11:40:14 | Uninitialized: definition of c108 | Instruction 'Uninitialized: definition of c108' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:40:11:40:14 | VariableAddress: definition of c108 | Instruction 'VariableAddress: definition of c108' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:40:16:40:18 | Constant: 108 | Instruction 'Constant: 108' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:40:16:40:19 | Call: call to C | Instruction 'Call: call to C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:40:16:40:19 | CallSideEffect: call to C | Instruction 'CallSideEffect: call to C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:40:16:40:19 | FunctionAddress: call to C | Instruction 'FunctionAddress: call to C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:40:16:40:19 | IndirectMayWriteSideEffect: call to C | Instruction 'IndirectMayWriteSideEffect: call to C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:41:5:41:5 | Call: call to ~C | Instruction 'Call: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:41:5:41:5 | CallSideEffect: call to ~C | Instruction 'CallSideEffect: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:41:5:41:5 | FunctionAddress: call to ~C | Instruction 'FunctionAddress: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:41:5:41:5 | IndirectMayWriteSideEffect: c108 | Instruction 'IndirectMayWriteSideEffect: c108' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:41:5:41:5 | IndirectReadSideEffect: c108 | Instruction 'IndirectReadSideEffect: c108' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:41:5:41:5 | VariableAddress: c108 | Instruction 'VariableAddress: c108' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:44:1:44:1 | Call: call to ~C | Instruction 'Call: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:44:1:44:1 | CallSideEffect: call to ~C | Instruction 'CallSideEffect: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:44:1:44:1 | FunctionAddress: call to ~C | Instruction 'FunctionAddress: call to ~C' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:44:1:44:1 | IndirectMayWriteSideEffect: c101 | Instruction 'IndirectMayWriteSideEffect: c101' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:44:1:44:1 | IndirectReadSideEffect: c101 | Instruction 'IndirectReadSideEffect: c101' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
+| ms_try_mix.cpp:44:1:44:1 | VariableAddress: c101 | Instruction 'VariableAddress: c101' is part of an unexplained loop in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
@@ -20,6 +69,11 @@ containsLoopOfForwardEdges
 missingIRType
 multipleIRTypes
 lostReachability
+| ms_try_mix.cpp:22:42:24:5 | Constant: { ... } | Block 'Constant: { ... }' is not reachable by traversing only forward edges in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:22:42:24:5 | Constant: { ... } | Block 'Constant: { ... }' is not reachable by traversing only forward edges in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:23:11:23:14 | VariableAddress: definition of c104 | Block 'VariableAddress: definition of c104' is not reachable by traversing only forward edges in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:26:7:26:10 | VariableAddress: definition of c105 | Block 'VariableAddress: definition of c105' is not reachable by traversing only forward edges in function '$@'. | ms_try_mix.cpp:12:6:12:18 | void ms_except_mix(int) | void ms_except_mix(int) |
+| ms_try_mix.cpp:43:7:43:10 | VariableAddress: definition of c109 | Block 'VariableAddress: definition of c109' is not reachable by traversing only forward edges in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
 backEdgeCountMismatch
 useNotDominatedByDefinition
 switchInstructionWithoutDefaultEdge
