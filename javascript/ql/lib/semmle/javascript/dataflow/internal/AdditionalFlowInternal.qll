@@ -9,6 +9,14 @@ DataFlow::Node getSynthesizedNode(AstNode node, string tag) {
   result = TGenericSynthesizedNode(node, tag, _)
 }
 
+DataFlowCallable getSynthesizedCallable(AstNode node, string tag) {
+  result = MkGenericSynthesizedCallable(node, tag)
+}
+
+DataFlowCall getSynthesizedCall(AstNode node, string tag) {
+  result = MkGenericSynthesizedCall(node, tag, _)
+}
+
 /**
  * An extension to `AdditionalFlowStep` with additional internal-only predicates.
  */
@@ -22,6 +30,10 @@ class AdditionalFlowInternal extends DataFlow::AdditionalFlowStep {
    */
   predicate needsSynthesizedNode(AstNode node, string tag, DataFlowCallable container) { none() }
 
+  predicate needsSynthesizedCallable(AstNode node, string tag) { none() }
+
+  predicate needsSynthesizedCall(AstNode node, string tag, DataFlowCallable container) { none() }
+
   /**
    * Holds if `node` should only permit flow of values stored in `contents`.
    */
@@ -31,4 +43,10 @@ class AdditionalFlowInternal extends DataFlow::AdditionalFlowStep {
    * Holds if `node` should not permit flow of values stored in `contents`.
    */
   predicate clearsContent(DataFlow::Node node, DataFlow::ContentSet contents) { none() }
+
+  predicate argument(DataFlowCall call, ArgumentPosition pos, DataFlow::Node value) { none() }
+
+  predicate postUpdate(DataFlow::Node pre, DataFlow::Node post) { none() }
+
+  predicate viableCallable(DataFlowCall call, DataFlowCallable target) { none() }
 }
