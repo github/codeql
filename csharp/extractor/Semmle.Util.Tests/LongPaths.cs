@@ -12,7 +12,7 @@ namespace SemmleTests.Semmle.Util
     /// </summary>
     public sealed class LongPaths : IDisposable
     {
-        private static readonly string tmpDir = Path.GetTempPath();
+        private static readonly string tmpDir = Environment.GetEnvironmentVariable("TEST_TMPDIR") ?? Path.GetTempPath();
         private static readonly string shortPath = Path.Combine(tmpDir, "test.txt");
         private static readonly string longPath = Path.Combine(tmpDir, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
             "ccccccccccccccccccccccccccccccc", "ddddddddddddddddddddddddddddddddddddd", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "fffffffffffffffffffffffffffffffff",
