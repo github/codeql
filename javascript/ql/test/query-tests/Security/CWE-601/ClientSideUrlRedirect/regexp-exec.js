@@ -12,15 +12,15 @@ function extractFromQuery() {
 
 function extractFromProtocol() {
     const [, group1] = /^([a-z]+:)/.exec(window.location.href);
-    window.location.href = group1; // OK [INCONSISTENCY]
+    window.location.href = group1; // OK
 }
 
 function extractTooMuch() {
     const [, group1] = /(.*)/.exec(window.location.href);
-    window.location.href = group1; // OK [INCONSISTENCY]
+    window.location.href = group1; // OK
 }
 
 function extractNothing() {
     const [, group1] = /blah#baz/.exec(window.location.href);
-    window.location.href = group1; // OK [INCONSISTENCY]
+    window.location.href = group1; // OK
 }

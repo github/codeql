@@ -106,12 +106,29 @@ module TaintedUrlSuffix {
         read.getPropertyName() = "query"
       )
       or
-      // Assume calls to regexp.exec always extract query/fragment parameters.
-      exists(MethodCallNode call |
-        call = any(DataFlow::RegExpCreationNode re).getAMethodCall("exec") and
+      exists(MethodCallNode call, DataFlow::RegExpCreationNode re |
+        call = re.getAMethodCall("exec") and
         src = call.getArgument(0) and
-        dst = call
+        dst = call and
+        captureAfterSuffixIndicator(re.getRoot().getAChild*())
       )
+    )
+  }
+
+  private predicate containsSuffixIndicator(RegExpSequence seq, int n) {
+    // Also include '=' as it usually only appears in the URL suffix
+    seq.getChild(n).getAChild*().(RegExpConstant).getValue().regexpMatch(".*[?#=].*")
+  }
+
+  private predicate containsCaptureGroup(RegExpSequence seq, int n) {
+    seq.getChild(n).getAChild*().(RegExpGroup).isCapture()
+  }
+
+  private predicate captureAfterSuffixIndicator(RegExpSequence seq) {
+    exists(int suffix, int capture |
+      containsSuffixIndicator(seq, suffix) and
+      containsCaptureGroup(seq, capture) and
+      suffix < capture
     )
   }
 }
