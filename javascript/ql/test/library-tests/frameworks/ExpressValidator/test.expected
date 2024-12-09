@@ -1,0 +1,10 @@
+| src/validators.js:7:22:7:36 | query('search') | parameter | search |
+| src/validators.js:10:22:10:34 | query('type') | parameter | type |
+| src/validators.js:13:22:13:35 | query('email') | parameter | email |
+| src/validators.js:16:22:16:34 | query('type') | parameter | type |
+| src/validators.js:19:22:19:36 | query('search') | parameter | search |
+| src/validators.js:23:28:23:42 | query('search') | parameter | search |
+| src/validators.js:23:54:23:66 | query('type') | parameter | type |
+| src/validators.js:23:77:23:90 | query('email') | parameter | email |
+| src/validators.js:30:24:30:38 | query('search') | parameter | search |
+| src/validators.js:33:24:33:35 | body('name') | body | name |
