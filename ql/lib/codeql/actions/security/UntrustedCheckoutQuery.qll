@@ -245,7 +245,8 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
       |
         expr.(StepsExpression).getStepId() = value
         or
-        expr.(SimpleReferenceExpression).getFieldName() = value
+        expr.(SimpleReferenceExpression).getFieldName() = value and
+        not expr instanceof GitHubExpression
         or
         expr.(NeedsExpression).getNeededJobId() = value
         or
@@ -279,7 +280,8 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
       |
         expr.(StepsExpression).getStepId() = value
         or
-        expr.(SimpleReferenceExpression).getFieldName() = value
+        expr.(SimpleReferenceExpression).getFieldName() = value and
+        not expr instanceof GitHubExpression
         or
         expr.(NeedsExpression).getNeededJobId() = value
         or
