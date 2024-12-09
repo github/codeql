@@ -373,7 +373,15 @@ cached
 newtype TDataFlowCallable =
   MkSourceCallable(StmtContainer container) or
   MkLibraryCallable(LibraryCallable callable) or
-  MkFileCallable(File file)
+  MkFileCallable(File file) or
+  MkClassHarnessCallable(Function f) {
+    // We only need a class harness for functions that act as classes (i.e. constructors),
+    // but since DataFlow::Node has not been materialised at this stage, we can't use DataFlow::ClassNode.
+    // Exclude arrow functions as they can't be called with 'new'.
+    not f instanceof ArrowFunctionExpr and
+    // We also don't need harnesses for externs
+    not f.getTopLevel().isExterns()
+  }
 
 /**
  * A callable entity. This is a wrapper around either a `StmtContainer`, `LibraryCallable`, or `File`.
@@ -383,14 +391,20 @@ class DataFlowCallable extends TDataFlowCallable {
   string toString() {
     result = this.asSourceCallable().toString()
     or
-    result = this.asLibraryCallable()
+    result = this.asLibraryCallable().toString()
     or
     result = this.asFileCallable().toString()
+    or
+    result = this.asClassHarness().toString()
   }
 
   /** Gets the location of this callable, if it is present in the source code. */
   Location getLocation() {
-    result = this.asSourceCallable().getLocation() or result = this.asFileCallable().getLocation()
+    result = this.asSourceCallable().getLocation()
+    or
+    result = this.asFileCallable().getLocation()
+    or
+    result = this.asClassHarness().getLocation()
   }
 
   /** Gets the corresponding `StmtContainer` if this is a source callable. */
@@ -398,6 +412,9 @@ class DataFlowCallable extends TDataFlowCallable {
 
   /** Gets the corresponding `File` if this is a file representing a callable. */
   File asFileCallable() { this = MkFileCallable(result) }
+
+  /** Gets the class constructor for which this is a class harness. */
+  Function asClassHarness() { this = MkClassHarnessCallable(result) }
 
   /** Gets the corresponding `StmtContainer` if this is a source callable. */
   pragma[nomagic]
