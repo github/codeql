@@ -5,7 +5,7 @@
  */
 
 import javascript
-private import semmle.javascript.security.TaintedUrlSuffix
+private import semmle.javascript.security.TaintedUrlSuffixCustomizations
 
 module ClientSideUrlRedirect {
   /**
