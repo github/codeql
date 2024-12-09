@@ -209,12 +209,14 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
       (
         // Only generate the `Unwind` instruction if there is any exception
         // handling present in the function.
-        exists(TryOrMicrosoftTryStmt try | try.getEnclosingFunction() = func)
+        // Do not unwind for MicrosoftTryStmt (SEH), as an optimization (SEH exception
+        // will occur at any store/load, so unwind would appear everywhere as a result)
+        exists(TryStmt try | try.getEnclosingFunction() = func)
         or
         exists(ThrowExpr throw | throw.getEnclosingFunction() = func)
         or
-        exists(FunctionCall call | call.getEnclosingFunction() = func |
-          getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException(_)
+        exists(FunctionCall call, CppExceptionEdge exception | call.getEnclosingFunction() = func |
+          getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException(exception)
         )
       )
       or
