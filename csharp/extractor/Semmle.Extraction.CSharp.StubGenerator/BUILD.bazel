@@ -8,7 +8,7 @@ codeql_csharp_library(
     srcs = glob([
         "*.cs",
     ]),
-    internals_visible_to = ["t"],
+    internals_visible_to = ["et"],
     visibility = ["//csharp:__subpackages__"],
     deps = [
         "//csharp/extractor/Semmle.Extraction.CSharp.DependencyFetching",

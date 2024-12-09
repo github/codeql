@@ -10,7 +10,7 @@ codeql_csharp_library(
         "SourceGenerators/**/*.cs",
     ]),
     allow_unsafe_blocks = True,
-    internals_visible_to = ["t"],
+    internals_visible_to = ["et"],
     visibility = ["//csharp:__subpackages__"],
     deps = [
         "//csharp/extractor/Semmle.Extraction.CSharp",

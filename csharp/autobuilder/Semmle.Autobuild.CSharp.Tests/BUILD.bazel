@@ -5,7 +5,7 @@ load(
 
 codeql_xunit_test(
     # short name as we run into long path limitations on Windows
-    name = "t",
+    name = "acst",
     srcs = glob([
         "*.cs",
     ]),
