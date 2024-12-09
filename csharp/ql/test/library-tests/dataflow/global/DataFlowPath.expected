@@ -39,7 +39,8 @@ edges
 | Capture.cs:79:26:79:39 | "taint source" : String | Capture.cs:81:13:81:13 | [post] access to local function M : M [captured sink31] : String | provenance |  |
 | Capture.cs:81:13:81:13 | [post] access to local function M : M [captured sink31] : String | Capture.cs:83:9:83:19 | [post] access to local function CaptureOut2 : CaptureOut2 [captured sink31] : String | provenance |  |
 | Capture.cs:83:9:83:19 | [post] access to local function CaptureOut2 : CaptureOut2 [captured sink31] : String | Capture.cs:84:15:84:20 | access to local variable sink31 | provenance |  |
-| Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | provenance |  |
+| Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | provenance | MaD:3 |
+| Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | provenance | MaD:4 |
 | Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | provenance | heuristic-callback |
 | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | Capture.cs:93:15:93:20 | access to local variable sink32 | provenance |  |
 | Capture.cs:114:23:117:13 | [post] (...) => ... : (...) => ... [captured sink40] : String | Capture.cs:123:9:123:33 | [post] access to local function CaptureOutMultipleLambdas : CaptureOutMultipleLambdas [captured sink40] : String | provenance |  |
@@ -96,7 +97,7 @@ edges
 | Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:231:19:231:19 | access to local variable x | provenance | MaD:1 |
 | Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:231:19:231:19 | access to local variable x | provenance | heuristic-callback |
 | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | Capture.cs:234:15:234:15 | access to local variable x | provenance |  |
-| Capture.cs:232:17:232:30 | "taint source" : String | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | provenance |  |
+| Capture.cs:232:17:232:30 | "taint source" : String | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | provenance | MaD:1 |
 | Capture.cs:232:17:232:30 | "taint source" : String | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | provenance | heuristic-callback |
 | Capture.cs:242:9:242:9 | [post] access to local variable c : Capture [field Field] : String | Capture.cs:249:9:249:9 | access to local variable a : Action [captured c, field Field] : String | provenance |  |
 | Capture.cs:242:9:242:9 | [post] access to local variable c : Capture [field Field] : String | Capture.cs:251:15:251:15 | access to local variable c : Capture [field Field] : String | provenance |  |

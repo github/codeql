@@ -636,8 +636,12 @@ edges
 | G.cs:23:18:23:32 | call to method Source<Elem> : Elem | G.cs:23:14:23:14 | access to local variable e : Elem | provenance |  |
 | G.cs:25:9:25:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | G.cs:26:18:26:18 | access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
 | G.cs:25:9:25:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | G.cs:26:18:26:18 | access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
-| G.cs:25:9:25:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | G.cs:25:9:25:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
-| G.cs:25:9:25:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | G.cs:25:9:25:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
+| G.cs:25:9:25:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | G.cs:25:9:25:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | provenance |  |
+| G.cs:25:9:25:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | G.cs:25:9:25:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | provenance |  |
+| G.cs:25:9:25:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:25:9:25:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
+| G.cs:25:9:25:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:25:9:25:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
+| G.cs:25:9:25:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | provenance |  |
+| G.cs:25:9:25:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | provenance |  |
 | G.cs:25:28:25:28 | access to local variable e : Elem | G.cs:25:9:25:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | provenance |  |
 | G.cs:25:28:25:28 | access to local variable e : Elem | G.cs:25:9:25:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | provenance |  |
 | G.cs:26:18:26:18 | access to local variable b : Box2 [field Box1, field Elem] : Elem | G.cs:37:38:37:39 | b2 : Box2 [field Box1, field Elem] : Elem | provenance |  |
@@ -648,8 +652,12 @@ edges
 | G.cs:31:18:31:32 | call to method Source<Elem> : Elem | G.cs:31:14:31:14 | access to local variable e : Elem | provenance |  |
 | G.cs:33:9:33:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | G.cs:34:18:34:18 | access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
 | G.cs:33:9:33:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | G.cs:34:18:34:18 | access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
-| G.cs:33:9:33:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | G.cs:33:9:33:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
-| G.cs:33:9:33:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | G.cs:33:9:33:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
+| G.cs:33:9:33:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | G.cs:33:9:33:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | provenance |  |
+| G.cs:33:9:33:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | G.cs:33:9:33:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | provenance |  |
+| G.cs:33:9:33:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:33:9:33:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
+| G.cs:33:9:33:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:33:9:33:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | provenance |  |
+| G.cs:33:9:33:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | provenance |  |
+| G.cs:33:9:33:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | provenance |  |
 | G.cs:33:29:33:29 | access to local variable e : Elem | G.cs:33:9:33:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | provenance |  |
 | G.cs:33:29:33:29 | access to local variable e : Elem | G.cs:33:9:33:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | provenance |  |
 | G.cs:33:29:33:29 | access to local variable e : Elem | G.cs:64:34:64:34 | e : Elem | provenance |  |
@@ -700,8 +708,12 @@ edges
 | G.cs:64:46:64:46 | access to parameter e : Elem | G.cs:64:39:64:42 | [post] this access : Box1 [field Elem] : Elem | provenance |  |
 | G.cs:71:21:71:27 | this : Box2 [field Box1, field Elem] : Elem | G.cs:71:34:71:37 | this access : Box2 [field Box1, field Elem] : Elem | provenance |  |
 | G.cs:71:21:71:27 | this : Box2 [field Box1, field Elem] : Elem | G.cs:71:34:71:37 | this access : Box2 [field Box1, field Elem] : Elem | provenance |  |
+| G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:34:71:37 | this access [Reverse] : Box2 [field Box1, field Elem] : Elem | provenance |  |
+| G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:34:71:37 | this access [Reverse] : Box2 [field Box1, field Elem] : Elem | provenance |  |
 | G.cs:71:34:71:37 | this access : Box2 [field Box1, field Elem] : Elem | G.cs:71:34:71:37 | access to field Box1 : Box1 [field Elem] : Elem | provenance |  |
 | G.cs:71:34:71:37 | this access : Box2 [field Box1, field Elem] : Elem | G.cs:71:34:71:37 | access to field Box1 : Box1 [field Elem] : Elem | provenance |  |
+| G.cs:71:34:71:37 | this access [Reverse] : Box2 [field Box1, field Elem] : Elem | G.cs:71:21:71:27 | this [Reverse] : Box2 [field Box1, field Elem] : Elem | provenance |  |
+| G.cs:71:34:71:37 | this access [Reverse] : Box2 [field Box1, field Elem] : Elem | G.cs:71:21:71:27 | this [Reverse] : Box2 [field Box1, field Elem] : Elem | provenance |  |
 | H.cs:13:15:13:15 | a : A [field FieldA] : Object | H.cs:16:22:16:22 | access to parameter a : A [field FieldA] : Object | provenance |  |
 | H.cs:13:15:13:15 | a : A [field FieldA] : Object | H.cs:16:22:16:22 | access to parameter a : A [field FieldA] : Object | provenance |  |
 | H.cs:16:9:16:11 | [post] access to local variable ret : A [field FieldA] : Object | H.cs:17:16:17:18 | access to local variable ret : A [field FieldA] : Object | provenance |  |
@@ -1893,6 +1905,8 @@ nodes
 | G.cs:25:9:25:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | semmle.label | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem |
 | G.cs:25:9:25:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | semmle.label | [post] call to method GetBox1 : Box1 [field Elem] : Elem |
 | G.cs:25:9:25:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | semmle.label | [post] call to method GetBox1 : Box1 [field Elem] : Elem |
+| G.cs:25:9:25:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | semmle.label | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem |
+| G.cs:25:9:25:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | semmle.label | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem |
 | G.cs:25:28:25:28 | access to local variable e : Elem | semmle.label | access to local variable e : Elem |
 | G.cs:25:28:25:28 | access to local variable e : Elem | semmle.label | access to local variable e : Elem |
 | G.cs:26:18:26:18 | access to local variable b : Box2 [field Box1, field Elem] : Elem | semmle.label | access to local variable b : Box2 [field Box1, field Elem] : Elem |
@@ -1905,6 +1919,8 @@ nodes
 | G.cs:33:9:33:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem | semmle.label | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem |
 | G.cs:33:9:33:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | semmle.label | [post] call to method GetBox1 : Box1 [field Elem] : Elem |
 | G.cs:33:9:33:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem | semmle.label | [post] call to method GetBox1 : Box1 [field Elem] : Elem |
+| G.cs:33:9:33:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | semmle.label | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem |
+| G.cs:33:9:33:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | semmle.label | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem |
 | G.cs:33:29:33:29 | access to local variable e : Elem | semmle.label | access to local variable e : Elem |
 | G.cs:33:29:33:29 | access to local variable e : Elem | semmle.label | access to local variable e : Elem |
 | G.cs:34:18:34:18 | access to local variable b : Box2 [field Box1, field Elem] : Elem | semmle.label | access to local variable b : Box2 [field Box1, field Elem] : Elem |
@@ -1957,10 +1973,16 @@ nodes
 | G.cs:64:46:64:46 | access to parameter e : Elem | semmle.label | access to parameter e : Elem |
 | G.cs:71:21:71:27 | this : Box2 [field Box1, field Elem] : Elem | semmle.label | this : Box2 [field Box1, field Elem] : Elem |
 | G.cs:71:21:71:27 | this : Box2 [field Box1, field Elem] : Elem | semmle.label | this : Box2 [field Box1, field Elem] : Elem |
+| G.cs:71:21:71:27 | this [Reverse] : Box2 [field Box1, field Elem] : Elem | semmle.label | this [Reverse] : Box2 [field Box1, field Elem] : Elem |
+| G.cs:71:21:71:27 | this [Reverse] : Box2 [field Box1, field Elem] : Elem | semmle.label | this [Reverse] : Box2 [field Box1, field Elem] : Elem |
 | G.cs:71:34:71:37 | access to field Box1 : Box1 [field Elem] : Elem | semmle.label | access to field Box1 : Box1 [field Elem] : Elem |
 | G.cs:71:34:71:37 | access to field Box1 : Box1 [field Elem] : Elem | semmle.label | access to field Box1 : Box1 [field Elem] : Elem |
+| G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | semmle.label | access to field Box1 [Reverse] : Box1 [field Elem] : Elem |
+| G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | semmle.label | access to field Box1 [Reverse] : Box1 [field Elem] : Elem |
 | G.cs:71:34:71:37 | this access : Box2 [field Box1, field Elem] : Elem | semmle.label | this access : Box2 [field Box1, field Elem] : Elem |
 | G.cs:71:34:71:37 | this access : Box2 [field Box1, field Elem] : Elem | semmle.label | this access : Box2 [field Box1, field Elem] : Elem |
+| G.cs:71:34:71:37 | this access [Reverse] : Box2 [field Box1, field Elem] : Elem | semmle.label | this access [Reverse] : Box2 [field Box1, field Elem] : Elem |
+| G.cs:71:34:71:37 | this access [Reverse] : Box2 [field Box1, field Elem] : Elem | semmle.label | this access [Reverse] : Box2 [field Box1, field Elem] : Elem |
 | H.cs:13:15:13:15 | a : A [field FieldA] : Object | semmle.label | a : A [field FieldA] : Object |
 | H.cs:13:15:13:15 | a : A [field FieldA] : Object | semmle.label | a : A [field FieldA] : Object |
 | H.cs:16:9:16:11 | [post] access to local variable ret : A [field FieldA] : Object | semmle.label | [post] access to local variable ret : A [field FieldA] : Object |
@@ -2592,6 +2614,10 @@ subpaths
 | F.cs:15:26:15:42 | call to method Source<Object> : Object | F.cs:6:39:6:40 | o2 : Object | F.cs:6:46:6:81 | object creation of type F : F [field Field2] : Object | F.cs:15:13:15:43 | call to method Create : F [field Field2] : Object |
 | G.cs:17:24:17:24 | access to local variable e : Elem | G.cs:64:34:64:34 | e : Elem | G.cs:64:21:64:27 | this [Reverse] : Box1 [field Elem] : Elem | G.cs:17:9:17:14 | [post] access to field Box1 : Box1 [field Elem] : Elem |
 | G.cs:17:24:17:24 | access to local variable e : Elem | G.cs:64:34:64:34 | e : Elem | G.cs:64:21:64:27 | this [Reverse] : Box1 [field Elem] : Elem | G.cs:17:9:17:14 | [post] access to field Box1 : Box1 [field Elem] : Elem |
+| G.cs:25:9:25:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:21:71:27 | this [Reverse] : Box2 [field Box1, field Elem] : Elem | G.cs:25:9:25:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem |
+| G.cs:25:9:25:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:21:71:27 | this [Reverse] : Box2 [field Box1, field Elem] : Elem | G.cs:25:9:25:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem |
+| G.cs:33:9:33:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:21:71:27 | this [Reverse] : Box2 [field Box1, field Elem] : Elem | G.cs:33:9:33:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem |
+| G.cs:33:9:33:19 | call to method GetBox1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:34:71:37 | access to field Box1 [Reverse] : Box1 [field Elem] : Elem | G.cs:71:21:71:27 | this [Reverse] : Box2 [field Box1, field Elem] : Elem | G.cs:33:9:33:9 | [post] access to local variable b : Box2 [field Box1, field Elem] : Elem |
 | G.cs:33:29:33:29 | access to local variable e : Elem | G.cs:64:34:64:34 | e : Elem | G.cs:64:21:64:27 | this [Reverse] : Box1 [field Elem] : Elem | G.cs:33:9:33:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem |
 | G.cs:33:29:33:29 | access to local variable e : Elem | G.cs:64:34:64:34 | e : Elem | G.cs:64:21:64:27 | this [Reverse] : Box1 [field Elem] : Elem | G.cs:33:9:33:19 | [post] call to method GetBox1 : Box1 [field Elem] : Elem |
 | G.cs:39:14:39:15 | access to parameter b2 : Box2 [field Box1, field Elem] : Elem | G.cs:71:21:71:27 | this : Box2 [field Box1, field Elem] : Elem | G.cs:71:34:71:37 | access to field Box1 : Box1 [field Elem] : Elem | G.cs:39:14:39:25 | call to method GetBox1 : Box1 [field Elem] : Elem |

@@ -8,7 +8,7 @@ public class A
     {
         var a = new A();
         M2(a);
-        Sink(a.Nested.Field); // $ MISSING: hasValueFlow=1
+        Sink(a.Nested.Field); // $ hasValueFlow=1
     }
 
     public void M2(A a)
@@ -25,7 +25,7 @@ public class A
     public void M4()
     {
         this.M5();
-        Sink(this.Nested.Field); // $ MISSING: hasValueFlow=2
+        Sink(this.Nested.Field); // $ hasValueFlow=2
     }
 
     public void M5()
@@ -43,7 +43,7 @@ public class A
     {
         var a = new A();
         M8(a);
-        Sink(a.Field); // $ MISSING: hasValueFlow=3
+        Sink(a.Field); // $ hasValueFlow=3
     }
 
     public void M8(A a)
@@ -64,7 +64,7 @@ public class A
         Sink(a);
         Sink(a.Nested.Nested.Field);
         GetNestedNested(a).Field = Source<string>(4);
-        Sink(a.Nested.Nested.Field); // $ MISSING: hasValueFlow=4
+        Sink(a.Nested.Nested.Field); // $ hasValueFlow=4
     }
 
     public void M11(A a)
