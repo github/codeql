@@ -27,17 +27,17 @@ import javax.ws.rs.ext.MessageBodyReader;
 // This is not a resource class because it doesn't have a @Path annotation.
 // Note that inheritance of class or interface annotations is not supported in
 // JAX-RS.
-public class JaxRs4 implements JaxRsInterface {
-  public JaxRs4() {
+public class JaxRs4 implements JaxRsInterface { // $ RootResourceClass
+  public JaxRs4() { // $ InjectableConstructor
   }
 
   @Override
-  public int Get() { // $ ResourceMethod
-    return 1;
+  public int Get() { // $ ResourceMethod ResourceMethodOnResourceClass
+    return 1; // $ XssSink
   }
 
   @Override
-  public void Post() { // $ ResourceMethod
+  public void Post() { // $ ResourceMethod ResourceMethodOnResourceClass
   }
 
   @Produces("application/json") // $ ProducesAnnotation=application/json
@@ -52,11 +52,11 @@ public class JaxRs4 implements JaxRsInterface {
   }
 
   @Override
-  public void Options() { // $ ResourceMethod
+  public void Options() { // $ ResourceMethod ResourceMethodOnResourceClass
   }
 
   @Override
-  public void Head() { // $ ResourceMethod
+  public void Head() { // $ ResourceMethod ResourceMethodOnResourceClass
   }
 
 
@@ -65,21 +65,21 @@ public class JaxRs4 implements JaxRsInterface {
     return null;
   }
 
-  public class NonRootResourceClass {
+  public class NonRootResourceClass { // $ NonRootResourceClass
     @GET
-    int Get() { // $ ResourceMethod
-      return 0;
+    int Get() { // $ ResourceMethod ResourceMethodOnResourceClass
+      return 0; // $ XssSink
     }
 
     @Produces("text/html") // $ ProducesAnnotation=text/html
     @POST
-    boolean Post() { // $ ResourceMethod=text/html
-      return false;
+    boolean Post() { // $ ResourceMethod=text/html ResourceMethodOnResourceClass
+      return false; // $ XssSink
     }
 
     @Produces(MediaType.TEXT_PLAIN) // $ ProducesAnnotation=text/plain
     @DELETE
-    double Delete() { // $ ResourceMethod=text/plain
+    double Delete() { // $ ResourceMethod=text/plain ResourceMethodOnResourceClass
       return 0.0;
     }
 
@@ -90,13 +90,13 @@ public class JaxRs4 implements JaxRsInterface {
 
     @GET
     @Path("")
-    NotAResourceClass1 NotASubResourceLocator1() { // $ ResourceMethod
-      return null; //
+    NotAResourceClass1 NotASubResourceLocator1() { // $ ResourceMethod ResourceMethodOnResourceClass
+      return null; // $ XssSink
     }
 
     @GET
-    NotAResourceClass2 NotASubResourceLocator2() { // $ ResourceMethod
-      return null; //
+    NotAResourceClass2 NotASubResourceLocator2() { // $ ResourceMethod ResourceMethodOnResourceClass
+      return null; // $ XssSink
     }
 
     NotAResourceClass2 NotASubResourceLocator3() {

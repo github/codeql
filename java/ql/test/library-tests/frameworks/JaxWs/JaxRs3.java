@@ -24,7 +24,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.MessageBodyReader;
 
-class ExtendsJaxRs3 extends JaxRs3 {
+class ExtendsJaxRs3 extends JaxRs3 { // $ RootResourceClass
   @Override
   public int Get() { // $ ResourceMethod
     return 1;
@@ -57,7 +57,7 @@ class ExtendsJaxRs3 extends JaxRs3 {
 }
 
 @Produces(MediaType.TEXT_XML) // $ ProducesAnnotation=text/xml
-class ExtendsJaxRs3WithProducesAnnotation extends JaxRs3 {
+class ExtendsJaxRs3WithProducesAnnotation extends JaxRs3 { // Not a root resource class because it has a JAX-RS annotation
   @Override
   public int Get() { // $ ResourceMethod=text/xml
     return 2;

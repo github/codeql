@@ -24,7 +24,7 @@ import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.MessageBodyReader;
 
-class ExtendsJakartaRs3 extends JakartaRs3 {
+class ExtendsJakartaRs3 extends JakartaRs3 { // $ RootResourceClass
   @Override
   public int Get() { // $ ResourceMethod
     return 1;
@@ -57,7 +57,7 @@ class ExtendsJakartaRs3 extends JakartaRs3 {
 }
 
 @Produces(MediaType.TEXT_XML) // $ ProducesAnnotation=text/xml
-class ExtendsJakartaRs3WithProducesAnnotation extends JakartaRs3 {
+class ExtendsJakartaRs3WithProducesAnnotation extends JakartaRs3 { // Not a root resource class because it has a JAX-RS annotation
   @Override
   public int Get() { // $ ResourceMethod=text/xml
     return 2;
