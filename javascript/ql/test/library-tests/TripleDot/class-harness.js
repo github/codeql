@@ -6,7 +6,7 @@ function h1() {
             this.x = source("h1.1")
         }
         method() {
-            sink(this.x); // $ MISSING: hasValueFlow=h1.1
+            sink(this.x); // $ hasValueFlow=h1.1
         }
     }
 }
@@ -17,7 +17,7 @@ function h2() {
             this.x = source("h2.1")
         }
         method2() {
-            sink(this.x); // $ MISSING: hasValueFlow=h2.1
+            sink(this.x); // $ hasValueFlow=h2.1
         }
     }
 }
