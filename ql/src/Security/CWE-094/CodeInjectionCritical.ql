@@ -23,7 +23,7 @@ from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, Event
 where
   CodeInjectionFlow::flowPath(source, sink) and
   inPrivilegedContext(sink.getNode().asExpr(), event) and
-  source.getNode().(RemoteFlowSource).getEvent() = event and
+  source.getNode().(RemoteFlowSource).getEventName() = event.getName() and
   not exists(ControlCheck check | check.protects(sink.getNode().asExpr(), event, "code-injection")) and
   // exclude cases where the sink is a JS script and the expression uses toJson
   not exists(UsesStep script |
