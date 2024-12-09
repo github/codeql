@@ -100,8 +100,8 @@ module ExpressValidator {
 
   /**
    * Holds ExpressValidator sanitizers.
-   * 
-   * These are a list of source nodes that are automatically sanitized by the 
+   *
+   * These are a list of source nodes that are automatically sanitized by the
    * express-validator library.
    */
   class ExpressValidationSanitizer extends Shared::Sanitizer {
