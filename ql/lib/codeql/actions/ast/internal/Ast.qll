@@ -1540,25 +1540,27 @@ string getAJsonReferenceAccessPath(string s, int offset) {
  * A ${{}} expression accessing a sigcle context variable such as steps, needs, jobs, env, inputs, or matrix.
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  */
-abstract class SimpleReferenceExpressionImpl extends ExpressionImpl {
-  string expression;
-
+class SimpleReferenceExpressionImpl extends ExpressionImpl {
   SimpleReferenceExpressionImpl() {
-    (
-      expression = getASimpleReferenceExpression(this.getFullExpression(), _)
-      or
-      exists(getAJsonReferenceExpression(this.getFullExpression(), _)) and
-      expression = this.getFullExpression()
-    )
+    exists(getASimpleReferenceExpression(this.getFullExpression(), _))
+    or
+    exists(getAJsonReferenceExpression(this.getFullExpression(), _))
   }
 
-  override string getExpression() { result = expression }
+  override string getExpression() {
+    (
+      result = getASimpleReferenceExpression(this.getFullExpression(), _)
+      or
+      exists(getAJsonReferenceExpression(this.getFullExpression(), _)) and
+      result = this.getFullExpression()
+    )
+  }
 
   abstract string getFieldName();
 
   abstract AstNodeImpl getTarget();
 
-  override string toString() { result = expression }
+  override string toString() { result = this.getFullExpression() }
 }
 
 class JsonReferenceExpressionImpl extends ExpressionImpl {
@@ -1597,6 +1599,44 @@ private string inputsCtxRegex() {
 
 private string secretsCtxRegex() { result = wrapRegexp("secrets\\.([A-Za-z0-9_-]+)") }
 
+private string githubCtxRegex() {
+  result = wrapRegexp("github\\.([A-Za-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)")
+}
+
+/**
+ * Holds for an expression accesing the `github` context.
+ * e.g. `${{ github.head_ref }}`
+ */
+class GitHubExpressionImpl extends SimpleReferenceExpressionImpl {
+  GitHubExpressionImpl() {
+    exists(string expr |
+      (
+        exists(getAJsonReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression()).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        or
+        exists(getASimpleReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression())
+      ) and
+      expr.regexpMatch(githubCtxRegex())
+    )
+  }
+
+  override string getFieldName() {
+    exists(string expr |
+      (
+        exists(getAJsonReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression()).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        or
+        exists(getASimpleReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression())
+      ) and
+      result = expr.regexpCapture(githubCtxRegex(), 1)
+    )
+  }
+
+  override AstNodeImpl getTarget() { none() }
+}
+
 /**
  * Holds for an expression accesing the `secrets` context.
  * e.g. `${{ secrets.FOO }}`
@@ -1607,11 +1647,11 @@ class SecretsExpressionImpl extends SimpleReferenceExpressionImpl {
   SecretsExpressionImpl() {
     exists(string expr |
       (
-        exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
+        exists(getAJsonReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression()).regexpCapture("(?i)fromjson\\((.*)\\).*", 1)
         or
-        exists(getASimpleReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression)
+        exists(getASimpleReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression())
       ) and
       expr.regexpMatch(secretsCtxRegex()) and
       fieldName = expr.regexpCapture(secretsCtxRegex(), 1)
@@ -1635,11 +1675,11 @@ class StepsExpressionImpl extends SimpleReferenceExpressionImpl {
   StepsExpressionImpl() {
     exists(string expr |
       (
-        exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
+        exists(getAJsonReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression()).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
-        exists(getASimpleReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression)
+        exists(getASimpleReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression())
       ) and
       expr.regexpMatch(stepsCtxRegex()) and
       stepId = expr.regexpCapture(stepsCtxRegex(), 1) and
@@ -1676,11 +1716,11 @@ class NeedsExpressionImpl extends SimpleReferenceExpressionImpl {
   NeedsExpressionImpl() {
     exists(string expr |
       (
-        exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
+        exists(getAJsonReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression()).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
-        exists(getASimpleReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression)
+        exists(getASimpleReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression())
       ) and
       expr.regexpMatch(needsCtxRegex()) and
       fieldName = expr.regexpCapture(needsCtxRegex(), 2) and
@@ -1720,11 +1760,11 @@ class JobsExpressionImpl extends SimpleReferenceExpressionImpl {
   JobsExpressionImpl() {
     exists(string expr |
       (
-        exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
+        exists(getAJsonReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression()).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
-        exists(getASimpleReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression)
+        exists(getASimpleReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression())
       ) and
       expr.regexpMatch(jobsCtxRegex()) and
       jobId = expr.regexpCapture(jobsCtxRegex(), 1) and
@@ -1752,8 +1792,8 @@ class InputsExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   InputsExpressionImpl() {
-    normalizeExpr(expression).regexpMatch(inputsCtxRegex()) and
-    fieldName = normalizeExpr(expression).regexpCapture(inputsCtxRegex(), 1)
+    normalizeExpr(this.getExpression()).regexpMatch(inputsCtxRegex()) and
+    fieldName = normalizeExpr(this.getExpression()).regexpCapture(inputsCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
@@ -1779,11 +1819,11 @@ class EnvExpressionImpl extends SimpleReferenceExpressionImpl {
   EnvExpressionImpl() {
     exists(string expr |
       (
-        exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
+        exists(getAJsonReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression()).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
-        exists(getASimpleReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression)
+        exists(getASimpleReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression())
       ) and
       expr.regexpMatch(envCtxRegex()) and
       fieldName = expr.regexpCapture(envCtxRegex(), 1)
@@ -1814,11 +1854,11 @@ class MatrixExpressionImpl extends SimpleReferenceExpressionImpl {
   MatrixExpressionImpl() {
     exists(string expr |
       (
-        exists(getAJsonReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
+        exists(getAJsonReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression()).regexpCapture("(?i)(from|to)json\\((.*)\\).*", 2)
         or
-        exists(getASimpleReferenceExpression(expression, _)) and
-        expr = normalizeExpr(expression)
+        exists(getASimpleReferenceExpression(this.getExpression(), _)) and
+        expr = normalizeExpr(this.getExpression())
       ) and
       expr.regexpMatch(matrixCtxRegex()) and
       fieldAccess = expr.regexpCapture(matrixCtxRegex(), 1)
