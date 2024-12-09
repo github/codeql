@@ -8,7 +8,7 @@
     <recommendation>
         <p>
             Ensure that an untrusted value is not used to directly construct a template. 
-            Jinja also provides a <code>SandboxedEnvironment</code> that prohibits access to unsafe methods and attributes, that can be used if constructing a template from user input is absolutely necessary. 
+            Jinja also provides <code>SandboxedEnvironment</code> that prohibits access to unsafe methods and attributes. This can be used if constructing a template from user input is absolutely necessary. 
         </p>
     </recommendation>
     <example>
@@ -18,7 +18,7 @@
         <p>The following is an example of a string that could be used to cause remote code execution when interpreted as a template:</p>
         <sample src="examples/template_exploit.txt" />
 
-        <p>In the following case, user input is not used to construct the template; rather it is only used as the parameters to render the template, which is safe.</p>
+        <p>In the following case, user input is not used to construct the template. Instead, it is only used as the parameters to render the template, which is safe.</p>
         <sample src="examples/JinjaGoodParam.py" />
         
         <p>In the following case, a <code>SandboxedEnvironment</code> is used, preventing remote code execution.</p>
