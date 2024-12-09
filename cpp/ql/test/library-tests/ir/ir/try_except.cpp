@@ -45,7 +45,7 @@ void throw_cpp(int b) {
   int x = 0;
     __try {
         if (b) {
-            throw 1;
+            throw 1; // invalid use of throw in Seh exception
         }
     }
     __except (1) {
