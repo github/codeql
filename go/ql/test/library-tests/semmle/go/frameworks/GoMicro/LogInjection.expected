@@ -1,26 +1,72 @@
 edges
 | main.go:18:46:18:48 | definition of req | main.go:18:46:18:48 | definition of req [Reverse] | provenance |  |
+| main.go:18:46:18:48 | definition of req | main.go:20:10:20:12 | implicit dereference | provenance |  |
+| main.go:18:46:18:48 | definition of req | main.go:20:10:20:12 | implicit dereference | provenance |  |
+| main.go:18:46:18:48 | definition of req | main.go:21:28:21:31 | name | provenance |  |
 | main.go:18:46:18:48 | definition of req | main.go:21:28:21:31 | name | provenance |  |
 | main.go:18:46:18:48 | definition of req | main.go:21:28:21:31 | name | provenance |  |
 | main.go:18:46:18:48 | definition of req [Reverse] | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | provenance |  |
+| main.go:18:46:18:48 | definition of req [Reverse] [pointer, Name] | proto/Hello.pb.micro.go:85:53:85:54 | definition of in [pointer, Name] | provenance |  |
+| main.go:18:46:18:48 | definition of req [pointer, Name] | main.go:20:10:20:12 | req [pointer, Name] | provenance |  |
+| main.go:20:10:20:12 | implicit dereference | main.go:18:46:18:48 | definition of req [Reverse] | provenance |  |
+| main.go:20:10:20:12 | implicit dereference | main.go:21:28:21:31 | name | provenance |  |
+| main.go:20:10:20:12 | implicit dereference | main.go:21:28:21:31 | name | provenance |  |
+| main.go:20:10:20:12 | implicit dereference | main.go:21:28:21:31 | name | provenance |  |
+| main.go:20:10:20:12 | implicit dereference [Name] | main.go:20:10:20:17 | selection of Name | provenance |  |
+| main.go:20:10:20:12 | implicit dereference [Reverse] [Name] | main.go:20:10:20:12 | req [Reverse] [pointer, Name] | provenance |  |
+| main.go:20:10:20:12 | req [Reverse] [pointer, Name] | main.go:18:46:18:48 | definition of req [Reverse] [pointer, Name] | provenance |  |
+| main.go:20:10:20:12 | req [pointer, Name] | main.go:20:10:20:12 | implicit dereference [Name] | provenance |  |
+| main.go:20:10:20:17 | selection of Name | main.go:21:28:21:31 | name | provenance |  |
+| main.go:20:10:20:17 | selection of Name [Reverse] | main.go:20:10:20:12 | implicit dereference [Reverse] [Name] | provenance |  |
+| main.go:21:2:21:32 | []type{args} [Reverse] [array] | main.go:21:28:21:31 | name [Reverse] | provenance |  |
+| main.go:21:2:21:32 | []type{args} [array] | main.go:21:2:21:32 | []type{args} [Reverse] [array] | provenance |  |
+| main.go:21:28:21:31 | name | main.go:21:2:21:32 | []type{args} [array] | provenance |  |
+| main.go:21:28:21:31 | name [Reverse] | main.go:20:10:20:17 | selection of Name [Reverse] | provenance |  |
 | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | proto/Hello.pb.micro.go:85:53:85:54 | definition of in [Reverse] | provenance |  |
 | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | proto/Hello.pb.micro.go:86:37:86:38 | in | provenance |  |
 | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | proto/Hello.pb.micro.go:86:37:86:38 | in | provenance |  |
 | proto/Hello.pb.micro.go:85:53:85:54 | definition of in [Reverse] | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | provenance |  |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in [Reverse] [pointer, Name] | proto/Hello.pb.micro.go:85:53:85:54 | definition of in [pointer, Name] | provenance |  |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in [pointer, Name] | proto/Hello.pb.micro.go:85:53:85:54 | definition of in [Reverse] [pointer, Name] | provenance |  |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in [pointer, Name] | proto/Hello.pb.micro.go:86:37:86:38 | in [pointer, Name] | provenance |  |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in [pointer, Name] | proto/Hello.pb.micro.go:86:37:86:38 | in [pointer, Name] | provenance |  |
 | proto/Hello.pb.micro.go:86:37:86:38 | in | main.go:18:46:18:48 | definition of req | provenance |  |
 | proto/Hello.pb.micro.go:86:37:86:38 | in | main.go:18:46:18:48 | definition of req | provenance |  |
 | proto/Hello.pb.micro.go:86:37:86:38 | in | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | provenance |  |
 | proto/Hello.pb.micro.go:86:37:86:38 | in | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | provenance |  |
+| proto/Hello.pb.micro.go:86:37:86:38 | in [pointer, Name] | main.go:18:46:18:48 | definition of req [pointer, Name] | provenance |  |
+| proto/Hello.pb.micro.go:86:37:86:38 | in [pointer, Name] | main.go:18:46:18:48 | definition of req [pointer, Name] | provenance |  |
+| proto/Hello.pb.micro.go:86:37:86:38 | in [pointer, Name] | proto/Hello.pb.micro.go:85:53:85:54 | definition of in [pointer, Name] | provenance |  |
+| proto/Hello.pb.micro.go:86:37:86:38 | in [pointer, Name] | proto/Hello.pb.micro.go:85:53:85:54 | definition of in [pointer, Name] | provenance |  |
 nodes
 | main.go:18:46:18:48 | definition of req | semmle.label | definition of req |
 | main.go:18:46:18:48 | definition of req | semmle.label | definition of req |
 | main.go:18:46:18:48 | definition of req [Reverse] | semmle.label | definition of req [Reverse] |
+| main.go:18:46:18:48 | definition of req [Reverse] [pointer, Name] | semmle.label | definition of req [Reverse] [pointer, Name] |
+| main.go:18:46:18:48 | definition of req [pointer, Name] | semmle.label | definition of req [pointer, Name] |
+| main.go:20:10:20:12 | implicit dereference | semmle.label | implicit dereference |
+| main.go:20:10:20:12 | implicit dereference | semmle.label | implicit dereference |
+| main.go:20:10:20:12 | implicit dereference [Name] | semmle.label | implicit dereference [Name] |
+| main.go:20:10:20:12 | implicit dereference [Reverse] [Name] | semmle.label | implicit dereference [Reverse] [Name] |
+| main.go:20:10:20:12 | req [Reverse] [pointer, Name] | semmle.label | req [Reverse] [pointer, Name] |
+| main.go:20:10:20:12 | req [pointer, Name] | semmle.label | req [pointer, Name] |
+| main.go:20:10:20:17 | selection of Name | semmle.label | selection of Name |
+| main.go:20:10:20:17 | selection of Name [Reverse] | semmle.label | selection of Name [Reverse] |
+| main.go:21:2:21:32 | []type{args} [Reverse] [array] | semmle.label | []type{args} [Reverse] [array] |
+| main.go:21:2:21:32 | []type{args} [array] | semmle.label | []type{args} [array] |
 | main.go:21:28:21:31 | name | semmle.label | name |
+| main.go:21:28:21:31 | name | semmle.label | name |
+| main.go:21:28:21:31 | name [Reverse] | semmle.label | name [Reverse] |
 | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | semmle.label | definition of in |
 | proto/Hello.pb.micro.go:85:53:85:54 | definition of in | semmle.label | definition of in |
 | proto/Hello.pb.micro.go:85:53:85:54 | definition of in [Reverse] | semmle.label | definition of in [Reverse] |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in [Reverse] [pointer, Name] | semmle.label | definition of in [Reverse] [pointer, Name] |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in [pointer, Name] | semmle.label | definition of in [pointer, Name] |
+| proto/Hello.pb.micro.go:85:53:85:54 | definition of in [pointer, Name] | semmle.label | definition of in [pointer, Name] |
 | proto/Hello.pb.micro.go:86:37:86:38 | in | semmle.label | in |
 | proto/Hello.pb.micro.go:86:37:86:38 | in | semmle.label | in |
+| proto/Hello.pb.micro.go:86:37:86:38 | in [pointer, Name] | semmle.label | in [pointer, Name] |
+| proto/Hello.pb.micro.go:86:37:86:38 | in [pointer, Name] | semmle.label | in [pointer, Name] |
 subpaths
 #select
 | main.go:21:28:21:31 | name | main.go:18:46:18:48 | definition of req | main.go:21:28:21:31 | name | This log entry depends on a $@. | main.go:18:46:18:48 | definition of req | user-provided value |
