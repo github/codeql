@@ -604,6 +604,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, _) =>
                     {
+                        if (chain is null || cert is null)
+                        {
+                            return false;
+                        }
                         chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
                         chain.ChainPolicy.CustomTrustStore.Add(this.dependabotProxy.Certificate);
                         return chain.Build(cert);
