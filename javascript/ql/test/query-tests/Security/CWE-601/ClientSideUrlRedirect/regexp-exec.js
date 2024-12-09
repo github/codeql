@@ -24,3 +24,18 @@ function extractNothing() {
     const [, group1] = /blah#baz/.exec(window.location.href);
     window.location.href = group1; // OK
 }
+
+function extractWithMatch() {
+    const [, group1] = window.location.href.match(/#(.*)/);
+    window.location.href = group1; // NOT OK
+}
+
+function extractWithMatchAll() {
+    const [, group1] = window.location.href.matchAll(/#(.*)/)[0];
+    window.location.href = group1; // NOT OK
+}
+
+function extractFromUnknownRegExp() {
+    const [, group1] = new RegExp(unknown()).exec(window.location.href);
+    window.location.href = group1; // NOT OK
+}

@@ -107,10 +107,21 @@ module TaintedUrlSuffix {
       )
       or
       exists(MethodCallNode call, DataFlow::RegExpCreationNode re |
-        call = re.getAMethodCall("exec") and
-        src = call.getArgument(0) and
-        dst = call and
+        (
+          call = re.getAMethodCall("exec") and
+          src = call.getArgument(0) and
+          dst = call
+          or
+          call.getMethodName() = ["match", "matchAll"] and
+          re.flowsTo(call.getArgument(0)) and
+          src = call.getReceiver() and
+          dst = call
+        )
+      |
         captureAfterSuffixIndicator(re.getRoot().getAChild*())
+        or
+        // If the regexp is unknown, assume it will extract the URL suffix
+        not exists(re.getRoot())
       )
     )
   }
