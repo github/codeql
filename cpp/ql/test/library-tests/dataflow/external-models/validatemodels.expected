@@ -1,4 +1,5 @@
 | Dubious member name "operator BSTR" in summary model. |
+| Dubious member name "operator HKEY" in summary model. |
 | Dubious member name "operator LPCSTR" in summary model. |
 | Dubious member name "operator LPSAFEARRAY" in summary model. |
 | Dubious member name "operator LPSTR" in summary model. |
@@ -44,5 +45,3 @@
 | Dubious signature "(size_type,const T &,const Allocator &)" in summary model. |
 | Dubious signature "(vector &&)" in summary model. |
 | Dubious signature "(vector &&,const Allocator &)" in summary model. |
-| Dubious signature "operator HKEY" in summary model. |
-| Dubious signature "operator=" in summary model. |
