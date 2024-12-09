@@ -57,14 +57,20 @@ edges
 | SQLite.swift:197:17:197:49 | [...] [Collection element] | SQLite.swift:197:16:197:50 | [...] [Collection element, Collection element] | provenance |  |
 | SQLite.swift:197:18:197:32 | ... <-(_:_:) ... | SQLite.swift:197:17:197:49 | [...] [Collection element] | provenance |  |
 | SQLite.swift:197:32:197:32 | mobilePhoneNumber | SQLite.swift:197:18:197:32 | ... <-(_:_:) ... | provenance |  |
-| file://:0:0:0:0 | [post] self [data, Collection element] | testRealm2.swift:13:6:13:6 | self [Reverse] [data, Collection element] | provenance |  |
-| file://:0:0:0:0 | [post] self [data] | testRealm2.swift:13:6:13:6 | self [Reverse] [data] | provenance |  |
-| file://:0:0:0:0 | [post] self [data] | testRealm.swift:27:6:27:6 | self [Reverse] [data] | provenance |  |
-| file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] | testCoreData2.swift:23:13:23:13 | self [Reverse] [notStoredBankAccountNumber] | provenance |  |
-| file://:0:0:0:0 | [post] self [password] | testRealm.swift:34:6:34:6 | self [Reverse] [password] | provenance |  |
-| file://:0:0:0:0 | [post] self [value] | testCoreData2.swift:70:9:70:9 | self [Reverse] [value] | provenance |  |
+| file://:0:0:0:0 | [post] self [data, Collection element] | file://:0:0:0:0 | self [Reverse] [data, Collection element] | provenance |  |
+| file://:0:0:0:0 | [post] self [data] | file://:0:0:0:0 | self [Reverse] [data] | provenance |  |
+| file://:0:0:0:0 | [post] self [data] | file://:0:0:0:0 | self [Reverse] [data] | provenance |  |
+| file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] | file://:0:0:0:0 | self [Reverse] [notStoredBankAccountNumber] | provenance |  |
+| file://:0:0:0:0 | [post] self [password] | file://:0:0:0:0 | self [Reverse] [password] | provenance |  |
+| file://:0:0:0:0 | [post] self [value] | file://:0:0:0:0 | self [Reverse] [value] | provenance |  |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance | Config |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .value2 | provenance | Config |
+| file://:0:0:0:0 | self [Reverse] [data, Collection element] | testRealm2.swift:13:6:13:6 | self [Reverse] [data, Collection element] | provenance |  |
+| file://:0:0:0:0 | self [Reverse] [data] | testRealm2.swift:13:6:13:6 | self [Reverse] [data] | provenance |  |
+| file://:0:0:0:0 | self [Reverse] [data] | testRealm.swift:27:6:27:6 | self [Reverse] [data] | provenance |  |
+| file://:0:0:0:0 | self [Reverse] [notStoredBankAccountNumber] | testCoreData2.swift:23:13:23:13 | self [Reverse] [notStoredBankAccountNumber] | provenance |  |
+| file://:0:0:0:0 | self [Reverse] [password] | testRealm.swift:34:6:34:6 | self [Reverse] [password] | provenance |  |
+| file://:0:0:0:0 | self [Reverse] [value] | testCoreData2.swift:70:9:70:9 | self [Reverse] [value] | provenance |  |
 | file://:0:0:0:0 | self [value] | file://:0:0:0:0 | .value | provenance |  |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [data] | provenance |  |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [data] | provenance |  |
@@ -337,6 +343,12 @@ nodes
 | file://:0:0:0:0 | [post] self [value] | semmle.label | [post] self [value] |
 | file://:0:0:0:0 | self | semmle.label | self |
 | file://:0:0:0:0 | self | semmle.label | self |
+| file://:0:0:0:0 | self [Reverse] [data, Collection element] | semmle.label | self [Reverse] [data, Collection element] |
+| file://:0:0:0:0 | self [Reverse] [data] | semmle.label | self [Reverse] [data] |
+| file://:0:0:0:0 | self [Reverse] [data] | semmle.label | self [Reverse] [data] |
+| file://:0:0:0:0 | self [Reverse] [notStoredBankAccountNumber] | semmle.label | self [Reverse] [notStoredBankAccountNumber] |
+| file://:0:0:0:0 | self [Reverse] [password] | semmle.label | self [Reverse] [password] |
+| file://:0:0:0:0 | self [Reverse] [value] | semmle.label | self [Reverse] [value] |
 | file://:0:0:0:0 | self [value] | semmle.label | self [value] |
 | file://:0:0:0:0 | value | semmle.label | value |
 | file://:0:0:0:0 | value | semmle.label | value |

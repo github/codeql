@@ -1,4 +1,5 @@
 edges
+| file://:0:0:0:0 | .a [Reverse] [x] | file://:0:0:0:0 | self [Reverse] [a, x] | provenance |  |
 | file://:0:0:0:0 | .wrappedValue | test.swift:949:15:949:15 | x | provenance |  |
 | file://:0:0:0:0 | .wrappedValue | test.swift:951:15:951:15 | x | provenance |  |
 | file://:0:0:0:0 | KeyPathComponent [some:0] | test.swift:663:13:663:29 | exit #keyPath(...) [some:0] | provenance |  |
@@ -10,6 +11,7 @@ edges
 | file://:0:0:0:0 | [post] self [x, some:0] | test.swift:559:9:559:9 | self [Reverse] [x, some:0] | provenance |  |
 | file://:0:0:0:0 | [post] self [x] | test.swift:163:7:163:7 | self [Reverse] [x] | provenance |  |
 | file://:0:0:0:0 | [post] self [x] | test.swift:559:9:559:9 | self [Reverse] [x] | provenance |  |
+| file://:0:0:0:0 | self [Reverse] [a, x] | test.swift:185:7:185:7 | self [Reverse] [a, x] | provenance |  |
 | file://:0:0:0:0 | self [a, x] | file://:0:0:0:0 | .a [x] | provenance |  |
 | file://:0:0:0:0 | self [s, x] | file://:0:0:0:0 | .s [x] | provenance |  |
 | file://:0:0:0:0 | self [str] | file://:0:0:0:0 | .str | provenance |  |
@@ -234,7 +236,10 @@ edges
 | test.swift:181:13:181:13 | a [x] | test.swift:181:13:181:15 | .x | provenance |  |
 | test.swift:185:7:185:7 | self [a, x] | file://:0:0:0:0 | self [a, x] | provenance |  |
 | test.swift:194:3:194:3 | [post] b [a, x] | test.swift:195:13:195:13 | b [a, x] | provenance |  |
+| test.swift:194:3:194:5 | .a [Reverse] [x] | file://:0:0:0:0 | .a [Reverse] [x] | provenance |  |
+| test.swift:194:3:194:5 | .a [Reverse] [x] | test.swift:194:3:194:3 | [post] b [a, x] | provenance |  |
 | test.swift:194:3:194:5 | [post] getter for .a [x] | test.swift:194:3:194:3 | [post] b [a, x] | provenance |  |
+| test.swift:194:3:194:5 | [post] getter for .a [x] | test.swift:194:3:194:5 | .a [Reverse] [x] | provenance |  |
 | test.swift:194:11:194:18 | call to source() | test.swift:163:7:163:7 | value | provenance |  |
 | test.swift:194:11:194:18 | call to source() | test.swift:194:3:194:5 | [post] getter for .a [x] | provenance |  |
 | test.swift:195:13:195:13 | b [a, x] | test.swift:185:7:185:7 | self [a, x] | provenance |  |
@@ -257,7 +262,10 @@ edges
 | test.swift:213:13:213:13 | a [x] | test.swift:173:8:173:8 | self [x] | provenance |  |
 | test.swift:213:13:213:13 | a [x] | test.swift:213:13:213:19 | call to get() | provenance |  |
 | test.swift:218:3:218:3 | [post] b [a, x] | test.swift:219:13:219:13 | b [a, x] | provenance |  |
+| test.swift:218:3:218:5 | .a [Reverse] [x] | file://:0:0:0:0 | .a [Reverse] [x] | provenance |  |
+| test.swift:218:3:218:5 | .a [Reverse] [x] | test.swift:218:3:218:3 | [post] b [a, x] | provenance |  |
 | test.swift:218:3:218:5 | [post] getter for .a [x] | test.swift:218:3:218:3 | [post] b [a, x] | provenance |  |
+| test.swift:218:3:218:5 | [post] getter for .a [x] | test.swift:218:3:218:5 | .a [Reverse] [x] | provenance |  |
 | test.swift:218:11:218:18 | call to source() | test.swift:169:12:169:22 | value | provenance |  |
 | test.swift:218:11:218:18 | call to source() | test.swift:218:3:218:5 | [post] getter for .a [x] | provenance |  |
 | test.swift:219:13:219:13 | b [a, x] | test.swift:185:7:185:7 | self [a, x] | provenance |  |
@@ -779,6 +787,7 @@ edges
 | test.swift:988:34:988:34 | value | file://:0:0:0:0 | value | provenance |  |
 | test.swift:991:10:991:17 | call to source() | test.swift:988:34:988:34 | value | provenance |  |
 nodes
+| file://:0:0:0:0 | .a [Reverse] [x] | semmle.label | .a [Reverse] [x] |
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .s [x] | semmle.label | .s [x] |
 | file://:0:0:0:0 | .str | semmle.label | .str |
@@ -800,6 +809,7 @@ nodes
 | file://:0:0:0:0 | [post] self [x, some:0] | semmle.label | [post] self [x, some:0] |
 | file://:0:0:0:0 | [post] self [x] | semmle.label | [post] self [x] |
 | file://:0:0:0:0 | [post] self [x] | semmle.label | [post] self [x] |
+| file://:0:0:0:0 | self [Reverse] [a, x] | semmle.label | self [Reverse] [a, x] |
 | file://:0:0:0:0 | self [a, x] | semmle.label | self [a, x] |
 | file://:0:0:0:0 | self [s, x] | semmle.label | self [s, x] |
 | file://:0:0:0:0 | self [str] | semmle.label | self [str] |
@@ -1037,8 +1047,10 @@ nodes
 | test.swift:180:9:180:16 | call to source() | semmle.label | call to source() |
 | test.swift:181:13:181:13 | a [x] | semmle.label | a [x] |
 | test.swift:181:13:181:15 | .x | semmle.label | .x |
+| test.swift:185:7:185:7 | self [Reverse] [a, x] | semmle.label | self [Reverse] [a, x] |
 | test.swift:185:7:185:7 | self [a, x] | semmle.label | self [a, x] |
 | test.swift:194:3:194:3 | [post] b [a, x] | semmle.label | [post] b [a, x] |
+| test.swift:194:3:194:5 | .a [Reverse] [x] | semmle.label | .a [Reverse] [x] |
 | test.swift:194:3:194:5 | [post] getter for .a [x] | semmle.label | [post] getter for .a [x] |
 | test.swift:194:11:194:18 | call to source() | semmle.label | call to source() |
 | test.swift:195:13:195:13 | b [a, x] | semmle.label | b [a, x] |
@@ -1057,6 +1069,7 @@ nodes
 | test.swift:213:13:213:13 | a [x] | semmle.label | a [x] |
 | test.swift:213:13:213:19 | call to get() | semmle.label | call to get() |
 | test.swift:218:3:218:3 | [post] b [a, x] | semmle.label | [post] b [a, x] |
+| test.swift:218:3:218:5 | .a [Reverse] [x] | semmle.label | .a [Reverse] [x] |
 | test.swift:218:3:218:5 | [post] getter for .a [x] | semmle.label | [post] getter for .a [x] |
 | test.swift:218:11:218:18 | call to source() | semmle.label | call to source() |
 | test.swift:219:13:219:13 | b [a, x] | semmle.label | b [a, x] |
@@ -1623,6 +1636,7 @@ subpaths
 | test.swift:174:12:174:12 | self [x] | test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | .x | test.swift:174:12:174:12 | .x |
 | test.swift:180:9:180:16 | call to source() | test.swift:163:7:163:7 | value | test.swift:163:7:163:7 | self [Reverse] [x] | test.swift:180:3:180:3 | [post] a [x] |
 | test.swift:181:13:181:13 | a [x] | test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | .x | test.swift:181:13:181:15 | .x |
+| test.swift:194:3:194:5 | .a [Reverse] [x] | file://:0:0:0:0 | .a [Reverse] [x] | test.swift:185:7:185:7 | self [Reverse] [a, x] | test.swift:194:3:194:3 | [post] b [a, x] |
 | test.swift:194:11:194:18 | call to source() | test.swift:163:7:163:7 | value | test.swift:163:7:163:7 | self [Reverse] [x] | test.swift:194:3:194:5 | [post] getter for .a [x] |
 | test.swift:195:13:195:13 | b [a, x] | test.swift:185:7:185:7 | self [a, x] | file://:0:0:0:0 | .a [x] | test.swift:195:13:195:15 | .a [x] |
 | test.swift:195:13:195:15 | .a [x] | test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | .x | test.swift:195:13:195:17 | .x |
@@ -1634,6 +1648,7 @@ subpaths
 | test.swift:212:9:212:16 | call to source() | test.swift:169:12:169:22 | value | test.swift:169:3:171:3 | self[return] [x] | test.swift:212:3:212:3 | [post] a [x] |
 | test.swift:212:9:212:16 | call to source() | test.swift:169:12:169:22 | value | test.swift:169:8:169:8 | self [Reverse] [x] | test.swift:212:3:212:3 | [post] a [x] |
 | test.swift:213:13:213:13 | a [x] | test.swift:173:8:173:8 | self [x] | test.swift:174:12:174:12 | .x | test.swift:213:13:213:19 | call to get() |
+| test.swift:218:3:218:5 | .a [Reverse] [x] | file://:0:0:0:0 | .a [Reverse] [x] | test.swift:185:7:185:7 | self [Reverse] [a, x] | test.swift:218:3:218:3 | [post] b [a, x] |
 | test.swift:218:11:218:18 | call to source() | test.swift:169:12:169:22 | value | test.swift:169:3:171:3 | self[return] [x] | test.swift:218:3:218:5 | [post] getter for .a [x] |
 | test.swift:218:11:218:18 | call to source() | test.swift:169:12:169:22 | value | test.swift:169:8:169:8 | self [Reverse] [x] | test.swift:218:3:218:5 | [post] getter for .a [x] |
 | test.swift:219:13:219:13 | b [a, x] | test.swift:185:7:185:7 | self [a, x] | file://:0:0:0:0 | .a [x] | test.swift:219:13:219:15 | .a [x] |
