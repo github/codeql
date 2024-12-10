@@ -74,7 +74,7 @@ deprecated class Configuration extends DataFlow::Configuration {
     DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
     DataFlow::FlowLabel dstlabel
   ) {
-    ZipSlipConfig::isAdditionalFlowStep(src, TaintedPath::Label::toFlowState(srclabel), dst,
-      TaintedPath::Label::toFlowState(dstlabel))
+    ZipSlipConfig::isAdditionalFlowStep(src, TaintedPath::FlowState::fromFlowLabel(srclabel), dst,
+      TaintedPath::FlowState::fromFlowLabel(dstlabel))
   }
 }

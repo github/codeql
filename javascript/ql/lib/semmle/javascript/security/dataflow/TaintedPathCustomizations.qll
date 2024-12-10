@@ -53,7 +53,7 @@ module TaintedPath {
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      this.blocksExpr(outcome, e, Label::toFlowState(label))
+      this.blocksExpr(outcome, e, FlowState::fromFlowLabel(label))
     }
   }
 
@@ -178,11 +178,12 @@ module TaintedPath {
 
       deprecated override Label::SplitPath toFlowLabel() { any() }
     }
+
+    /** Convert the given flow label to the corresponding flow state. */
+    deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
   }
 
   deprecated module Label {
-    FlowState toFlowState(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
-
     class Normalization = FlowState::Normalization;
 
     class Relativeness = FlowState::Relativeness;
@@ -872,7 +873,8 @@ module TaintedPath {
     DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
     DataFlow::FlowLabel dstlabel
   ) {
-    isAdditionalFlowStep(src, Label::toFlowState(srclabel), dst, Label::toFlowState(dstlabel))
+    isAdditionalFlowStep(src, FlowState::fromFlowLabel(srclabel), dst,
+      FlowState::fromFlowLabel(dstlabel))
   }
 
   /**
