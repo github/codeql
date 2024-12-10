@@ -1,3 +1,5 @@
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+
 alias(
     name = "resource-dir",
     actual = select({"@platforms//os:" + os: "@swift-resource-dir-" + os for os in ("linux", "macos")}),
