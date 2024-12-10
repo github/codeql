@@ -1102,10 +1102,10 @@ void test_CStringT() {
   sink(s1.GetString()); // $ ir
 
   CStringT<char> s2(v, nullptr);
-  sink(s2.GetString()); // $ MISSING: ir
+  sink(s2.GetString()); // $ ir
 
   CStringT<char> s3(s2);
-  sink(s3.GetString()); // $ MISSING: ir
+  sink(s3.GetString()); // $ ir
 
   char* x = indirect_source<char>();
   CStringT<char> s4(x);
@@ -1116,10 +1116,10 @@ void test_CStringT() {
   sink(s5.GetString()); // $ ir
 
   CStringT<char> s6(x, nullptr);
-  sink(s6.GetString()); // $ MISSING: ir
+  sink(s6.GetString()); // $ ir
 
   CStringT<wchar_t> s7(y, nullptr);
-  sink(s7.GetString()); // $ MISSING: ir
+  sink(s7.GetString()); // $ ir
 
   unsigned char* ucs = indirect_source<unsigned char>();
   CStringT<char> s8(ucs);
@@ -1136,7 +1136,7 @@ void test_CStringT() {
   sink(&s1); // $ ast ir
 
   auto bstr = s1.AllocSysString();
-  sink(bstr); // $ MISSING: ir
+  sink(bstr); // $ ir
 
   CStringT<char> s11;
   s11.AppendFormat("%d", source<int>());
@@ -1163,50 +1163,50 @@ void test_CStringT() {
 
   CStringT<char> s17;
   s17.Insert(0, x);
-  sink(s17.GetString()); // $ MISSING: ir
+  sink(s17.GetString()); // $ ir
 
   CStringT<char> s18;
   s18.Insert(0, source<char>());
-  sink(s18.GetString()); // $ MISSING: ir
+  sink(s18.GetString()); // $ ir
 
-  sink(s1.Left(42).GetString()); // $ MISSING: ir
+  sink(s1.Left(42).GetString()); // $ ir
 
   CStringT<char> s20;
   s20.LoadString(source<UINT>());
-  sink(s20.GetString()); // $ MISSING: ir
+  sink(s20.GetString()); // $ ir
 
-  sink(s1.MakeLower().GetString()); // $ MISSING: ir
-  sink(s1.MakeReverse().GetString()); // $ MISSING: ir
-  sink(s1.MakeUpper().GetString()); // $ MISSING: ir
-  sink(s1.Mid(0, 42).GetString()); // $ MISSING: ir
+  sink(s1.MakeLower().GetString()); // $ ir
+  sink(s1.MakeReverse().GetString()); // $ ir
+  sink(s1.MakeUpper().GetString()); // $ ir
+  sink(s1.Mid(0, 42).GetString()); // $ ir
 
   CStringT<char> s21;
   s21.Replace("abc", x);
-  sink(s21.GetString()); // $ MISSING: ir
+  sink(s21.GetString()); // $ ir
 
   CStringT<char> s22;
   s22.Replace('\n', source<char>());
-  sink(s22.GetString()); // $ MISSING: ir
+  sink(s22.GetString()); // $ ir
 
-  sink(s2.Right(42).GetString()); // $ MISSING: ir
+  sink(s2.Right(42).GetString()); // $ ir
 
   BSTR bstr2;
   s1.SetSysString(&bstr2);
-  sink(bstr2); // $ ast MISSING: ir
+  sink(bstr2); // $ ast ir
 
-  sink(s1.SpanExcluding("abc").GetString()); // $ MISSING: ir
-  sink(s1.SpanIncluding("abc").GetString()); // $ MISSING: ir
+  sink(s1.SpanExcluding("abc").GetString()); // $ ir
+  sink(s1.SpanIncluding("abc").GetString()); // $ ir
   
   int start = 0;
-  sink(s1.Tokenize("abc", start).GetString()); // $ MISSING: ir
+  sink(s1.Tokenize("abc", start).GetString()); // $ ir
 
-  sink(s1.Trim('a').GetString()); // $ MISSING: ir
-  sink(s1.Trim("abc").GetString()); // $ MISSING: ir
-  sink(s1.Trim().GetString()); // $ MISSING: ir
-  sink(s1.TrimLeft('a').GetString()); // $ MISSING: ir
-  sink(s1.TrimLeft("abc").GetString()); // $ MISSING: ir
-  sink(s1.TrimLeft().GetString()); // $ MISSING: ir
-  sink(s1.TrimRight('a').GetString()); // $ MISSING: ir
-  sink(s1.TrimRight("abc").GetString()); // $ MISSING: ir
-  sink(s1.TrimRight().GetString()); // $ MISSING: ir
+  sink(s1.Trim('a').GetString()); // $ ir
+  sink(s1.Trim("abc").GetString()); // $ ir
+  sink(s1.Trim().GetString()); // $ ir
+  sink(s1.TrimLeft('a').GetString()); // $ ir
+  sink(s1.TrimLeft("abc").GetString()); // $ ir
+  sink(s1.TrimLeft().GetString()); // $ ir
+  sink(s1.TrimRight('a').GetString()); // $ ir
+  sink(s1.TrimRight("abc").GetString()); // $ ir
+  sink(s1.TrimRight().GetString()); // $ ir
 }
