@@ -55,9 +55,7 @@ module ExpressValidator {
     /**
      * Gets the route handler that is validated.
      */
-    Express::RouteHandler getRouteHandler() {
-      Routing::getRouteHandler(result).isGuardedBy(this)
-    }
+    Express::RouteHandler getRouteHandler() { Routing::getRouteHandler(result).isGuardedBy(this) }
 
     /**
      * Gets the parameter that is validated and is secure
@@ -80,7 +78,7 @@ module ExpressValidator {
   /**
    * If the `query/body/cookie/header` functions are called, we want to check if one of the
    * chaining method calls is a sanitizer.
-   * 
+   *
    * If a non-sanitizing functions is called, we want to recursively check if the parent is safe
    */
   private predicate isSafe(DataFlow::SourceNode node) {
