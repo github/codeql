@@ -56,11 +56,7 @@ module ExpressValidator {
      * Gets the route handler that is validated.
      */
     Express::RouteHandler getRouteHandler() {
-      exists(Express::RouteSetup route |
-        this.getAstNode().getParent*() = route.getARouteHandlerNode().getAstNode()
-      |
-        result = route.getLastRouteHandlerNode()
-      )
+      Routing::getRouteHandler(result).isGuardedBy(this)
     }
 
     /**
@@ -82,13 +78,16 @@ module ExpressValidator {
   }
 
   /**
-   *  If the `query` function is called and it then uses `.escape()`.
+   * If the `query/body/cookie/header` functions are called, we want to check if one of the
+   * chaining method calls is a sanitizer.
+   * 
+   * If a non-sanitizing functions is called, we want to recursively check if the parent is safe
    */
   private predicate isSafe(DataFlow::SourceNode node) {
     // Sanitizers
     exists(node.getAChainedMethodCall(["escape", "isEmail", "isIn", "isInt"]))
     or
-    // If the `query` function is called and it then uses `.notEmpty()` or `.toString()` or `.isInt()`
+    // Non-sanitizing chained calls
     exists(DataFlow::SourceNode builder |
       builder =
         node.getAChainedMethodCall([
