@@ -427,11 +427,18 @@ query predicate edges(PrintableIRBlock pred, PrintableIRBlock succ, string key, 
     succBlock = succ.getBlock() and
     predBlock.getSuccessor(kind) = succBlock and
     (
-      (
-        key = "semmle.label" and
+      key = "semmle.label" and
+      exists(string kinds |
+        kinds =
+          concat(EdgeKind k |
+            predBlock.getSuccessor(k) = succBlock
+          |
+            k.toString(), "|" order by k.toString()
+          )
+      |
         if predBlock.getBackEdgeSuccessor(kind) = succBlock
-        then value = kind.toString() + " (back edge)"
-        else value = kind.toString()
+        then value = kinds + " (back edge)"
+        else value = kinds
       )
       or
       key = "semmle.order" and
