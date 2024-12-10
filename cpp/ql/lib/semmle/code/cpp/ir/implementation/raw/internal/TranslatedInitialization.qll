@@ -669,7 +669,7 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
     tag = this.getFieldDefaultValueStoreTag() and
     (
       result = this.getParent().getChildSuccessor(this, kind)
-      or 
+      or
       // All load/store instructions could throw an Seh exception
       // If the load/store  is in a MicrosoftTryStmt, add an exception edge
       kind = sehExceptionEdge() and
@@ -877,7 +877,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     tag = this.getElementDefaultValueStoreTag() and
     (
       result = this.getParent().getChildSuccessor(this, kind)
-      or 
+      or
       // All load/store instructions could throw an Seh exception
       // If the load/store  is in a MicrosoftTryStmt, add an exception edge
       kind = sehExceptionEdge() and
