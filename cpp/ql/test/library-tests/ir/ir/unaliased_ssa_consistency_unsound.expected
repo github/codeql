@@ -6,7 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| try_except.cpp:48:13:48:19 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | try_except.cpp:44:6:44:14 | void throw_cpp(int) | void throw_cpp(int) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

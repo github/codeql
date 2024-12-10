@@ -37381,6 +37381,7 @@ try_except.cpp:
 #   48|     r48_2(int)        = Constant[1]                  : 
 #   48|     mu48_3(int)       = Store[#throw48:13]           : &:r48_1, r48_2
 #   48|     v48_4(void)       = ThrowValue                   : &:r48_1, ~m?
+#-----|   C++ Exception -> Block 6
 
 #   51|   Block 4
 #   51|     r51_1(int)  = Constant[0]       : 
