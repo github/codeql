@@ -17,12 +17,6 @@ private import TranslatedGlobalVar
 private import IRConstruction
 import TranslatedCall
 
-predicate tbd(TranslatedElement e, Instruction i, string s) {
-  e.getInstruction(_) = i and
-  not exists(i.getSuccessor(_)) and
-  s = concat(e.getAQlClass(), ",")
-}
-
 /**
  * Gets the TranslatedExpr for the specified expression. If `expr` is a load or synthesized
  * temporary object, the result is the TranslatedExpr for the load or synthetic temporary object
