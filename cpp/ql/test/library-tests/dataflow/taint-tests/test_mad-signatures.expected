@@ -1100,6 +1100,11 @@ getParameterTypeName
 | atl.cpp:1091:13:1091:20 | TrimLeft | 0 | PCXSTR |
 | atl.cpp:1093:13:1093:21 | TrimRight | 0 | XCHAR |
 | atl.cpp:1094:13:1094:21 | TrimRight | 0 | PCXSTR |
+| atl.cpp:1214:8:1214:8 | operator= | 0 | CStringData && |
+| atl.cpp:1214:8:1214:8 | operator= | 0 | const CStringData & |
+| atl.cpp:1230:3:1230:10 | CStrBufT | 0 | StringType & |
+| atl.cpp:1230:3:1230:10 | CStrBufT | 1 | int |
+| atl.cpp:1230:3:1230:10 | CStrBufT | 2 | DWORD |
 | bsd.cpp:6:8:6:8 | operator= | 0 | const sockaddr & |
 | bsd.cpp:6:8:6:8 | operator= | 0 | sockaddr && |
 | bsd.cpp:12:5:12:10 | accept | 0 | int |

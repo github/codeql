@@ -1293,6 +1293,13 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:1210:8:1210:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
 | atl.cpp:1210:8:1210:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
 | atl.cpp:1211:8:1211:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1219:19:1219:37 | call to source | atl.cpp:1220:8:1220:8 | d |  |
+| atl.cpp:1238:22:1238:43 | call to source | atl.cpp:1239:20:1239:20 | s |  |
+| atl.cpp:1238:22:1238:43 | call to source | atl.cpp:1242:1:1242:1 | s |  |
+| atl.cpp:1239:20:1239:20 | ref arg s | atl.cpp:1242:1:1242:1 | s |  |
+| atl.cpp:1239:20:1239:28 | call to CStrBufT | atl.cpp:1240:44:1240:44 | b |  |
+| atl.cpp:1239:20:1239:28 | call to CStrBufT | atl.cpp:1241:43:1241:43 | b |  |
+| atl.cpp:1240:44:1240:44 | ref arg b | atl.cpp:1241:43:1241:43 | b |  |
 | bsd.cpp:17:11:17:16 | call to source | bsd.cpp:20:18:20:18 | s |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:20:22:20:25 | addr |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:23:8:23:11 | addr |  |

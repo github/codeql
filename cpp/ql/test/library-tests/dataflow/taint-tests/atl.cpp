@@ -1210,3 +1210,33 @@ void test_CStringT() {
   sink(s1.TrimRight("abc").GetString()); // $ ir
   sink(s1.TrimRight().GetString()); // $ ir
 }
+
+struct CStringData {
+  void* data() throw();
+};
+
+void test_CStringData() {
+  CStringData d = source<CStringData>();
+  sink(d.data()); // $ MISSING: ir
+}
+
+template<typename TCharType>
+struct CStrBufT {
+  typedef CSimpleStringT<TCharType> StringType;
+
+  using PCXSTR = typename StringType::PCXSTR;
+  using PXSTR = typename StringType::PXSTR;
+
+  CStrBufT(StringType& str, int nMinLength, DWORD dwFlags);
+  CStrBufT(StringType& str);
+
+  operator PCXSTR() const throw();
+  operator PXSTR() throw();
+};
+
+void test_CStrBufT() {
+  CStringT<char> s = source<CStringT<char>>();
+  CStrBufT<char> b(s, 42, 0);
+  sink(static_cast<CStrBufT<char>::PCXSTR>(b)); // $ MISSING: ir
+  sink(static_cast<CStrBufT<char>::PXSTR>(b)); // $ MISSING: ir
+}
