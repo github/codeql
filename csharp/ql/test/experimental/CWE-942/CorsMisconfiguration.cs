@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 
-public class Startup
+public class Test
 {
     public void ConfigureServices(string[] args)
     {
@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.SetIsOriginAllowed(test => true).AllowCredentials().AllowAnyHeader().AllowAnyMethod();
+                          policy.AllowAnyOrigin().AllowCredentials().AllowAnyHeader().AllowAnyMethod();
                       });
 });
 
