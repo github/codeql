@@ -15,8 +15,13 @@ private import TranslatedInitialization
 private import TranslatedStmt
 private import TranslatedGlobalVar
 private import IRConstruction
-private import EdgeKind
 import TranslatedCall
+
+predicate tbd(TranslatedElement e, Instruction i, string s) {
+  e.getInstruction(_) = i and
+  not exists(i.getSuccessor(_)) and
+  s = concat(e.getAQlClass(), ",")
+}
 
 /**
  * Gets the TranslatedExpr for the specified expression. If `expr` is a load or synthesized
@@ -3045,7 +3050,7 @@ class TranslatedDestructorsAfterThrow extends TranslatedElement, TTranslatedDest
       // And otherwise, exit this element with an exceptional edge
       not exists(this.getChild(id + 1)) and
       kind instanceof CppExceptionEdge and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), kind)
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
     )
   }
 
@@ -3084,7 +3089,7 @@ abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
       or
       not exists(this.getDestructors()) and
       kind instanceof CppExceptionEdge and
-      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), kind)
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
     )
   }
 

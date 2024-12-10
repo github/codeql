@@ -11,7 +11,6 @@ private import TranslatedExpr
 private import TranslatedInitialization
 private import TranslatedStmt
 private import VarArgs
-private import EdgeKind
 
 /**
  * Gets the `TranslatedFunction` that represents function `func`.
@@ -214,10 +213,6 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
         or
         exists(ThrowExpr throw | throw.getEnclosingFunction() = func)
         or
-        // or
-        // exists(FunctionCall call | call.getEnclosingFunction() = func |
-        //   getTranslatedExpr(call).(TranslatedCallExpr).mustThrowException(_)
-        // )
         exists(FunctionCall call | call.getEnclosingFunction() = func |
           getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException(_)
         )
@@ -233,8 +228,7 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
     )
   }
 
-  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind, ExceptionEdge exception) {
-    (exception = cppExceptionEdge() or exception = sehExceptionEdge()) and
+  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
     result = this.getInstruction(UnwindTag()) and
     kind instanceof GotoEdge
   }

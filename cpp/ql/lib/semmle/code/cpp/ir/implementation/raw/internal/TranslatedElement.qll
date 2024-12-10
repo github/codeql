@@ -1107,8 +1107,8 @@ abstract class TranslatedElement extends TTranslatedElement {
    * nearest enclosing `try`, or the `Unwind` instruction for the function if
    * there is no enclosing `try`. The successor edge kind is specified by `kind`.
    */
-  Instruction getExceptionSuccessorInstruction(EdgeKind kind, ExceptionEdge exception) {
-    result = this.getParent().getExceptionSuccessorInstruction(kind, exception)
+  Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
+    result = this.getParent().getExceptionSuccessorInstruction(kind)
   }
 
   /**

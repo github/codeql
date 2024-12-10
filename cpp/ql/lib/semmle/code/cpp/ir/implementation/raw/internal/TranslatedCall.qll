@@ -91,7 +91,7 @@ abstract class TranslatedCall extends TranslatedExpr {
       exists(ExceptionEdge e | this.hasExceptionBehavior(e) |
         this.mayThrowException(e) and
         kind = e and
-        result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge), kind)
+        result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
       )
     )
   }

@@ -10,7 +10,6 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
 private import TranslatedInitialization
-private import EdgeKind
 
 TranslatedStmt getTranslatedStmt(Stmt stmt) { result.getAst() = stmt }
 
@@ -152,7 +151,7 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
       // TODO: This is not really correct. The semantics of `EXCEPTION_CONTINUE_EXECUTION` is that
       // we should continue execution at the point where the exception occurred. But we don't have
       // any instruction to model this behavior.
-      result = this.getExceptionSuccessorInstruction(any(GotoEdge edge), sehExceptionEdge())
+      result = this.getExceptionSuccessorInstruction(any(GotoEdge edge))
       or
       kind instanceof FalseEdge and
       result = this.getInstruction(TryExceptGenerateZero())
@@ -172,7 +171,7 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
     tag = TryExceptCompareZeroBranch() and
     (
       kind instanceof TrueEdge and
-      result = this.getExceptionSuccessorInstruction(any(GotoEdge edge), sehExceptionEdge())
+      result = this.getExceptionSuccessorInstruction(any(GotoEdge edge))
       or
       kind instanceof FalseEdge and
       result = this.getInstruction(TryExceptGenerateOne())
@@ -227,10 +226,10 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
 
   final override Function getFunction() { result = tryExcept.getEnclosingFunction() }
 
-  override Instruction getExceptionSuccessorInstruction(EdgeKind kind, ExceptionEdge exception) {
+  override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
     // A throw from within a `__except` block flows to the handler for the parent of
     // the `__try`.
-    result = this.getParent().getParent().getExceptionSuccessorInstruction(kind, exception)
+    result = this.getParent().getParent().getExceptionSuccessorInstruction(kind)
   }
 }
 
@@ -283,10 +282,10 @@ class TranslatedMicrosoftTryFinallyHandler extends TranslatedElement,
     result = getTranslatedStmt(tryFinally.getFinally())
   }
 
-  override Instruction getExceptionSuccessorInstruction(EdgeKind kind, ExceptionEdge exception) {
+  override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
     // A throw from within a `__finally` block flows to the handler for the parent of
     // the `__try`.
-    result = this.getParent().getParent().getExceptionSuccessorInstruction(kind, exception)
+    result = this.getParent().getParent().getExceptionSuccessorInstruction(kind)
   }
 }
 
@@ -735,32 +734,14 @@ class TranslatedTryStmt extends TranslatedStmt {
     // of the `try`, because the exception successor of the `try` itself is
     // the first catch clause.
     handler = this.getHandler(stmt.getNumberOfCatchClauses() - 1) and
-    exists(ExceptionEdge exception |
-      stmt instanceof MicrosoftTryStmt and exception instanceof SehExceptionEdge
-      or
-      stmt instanceof TryStmt and exception instanceof CppExceptionEdge
-    |
-      result = this.getParent().getExceptionSuccessorInstruction(kind, exception)
-    )
+    result = this.getParent().getExceptionSuccessorInstruction(kind)
   }
 
-  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind, ExceptionEdge exception) {
-    // Seh exceptions are only handled for Seh try statements and
-    // C++ exceptions for C++ try statements.
-    // I.e., we are assuming there isn't a mix and match between Seh and C++ exceptions.
-    // They are either all Seh or all C++ within a single try block depending on the
-    // try type (TryStmt vs MicrosoftTryStmt).
-    (
-      stmt instanceof TryStmt and exception instanceof CppExceptionEdge
-      or
-      stmt instanceof MicrosoftTryStmt and exception instanceof SehExceptionEdge
-    ) and
-    (
-      result = this.getHandler(0).getFirstInstruction(kind)
-      or
-      not exists(this.getHandler(_)) and
-      result = this.getFinally().getFirstInstruction(kind)
-    )
+  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
+    result = this.getHandler(0).getFirstInstruction(kind)
+    or
+    not exists(this.getHandler(_)) and
+    result = this.getFinally().getFirstInstruction(kind)
   }
 
   private TranslatedElement getHandler(int index) { result = stmt.getTranslatedHandler(index) }
@@ -840,10 +821,10 @@ abstract class TranslatedHandler extends TranslatedStmt {
     child = this.getBlock() and result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getExceptionSuccessorInstruction(EdgeKind kind, ExceptionEdge exception) {
+  override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
     // A throw from within a `catch` block flows to the handler for the parent of
     // the `try`.
-    result = this.getParent().getParent().getExceptionSuccessorInstruction(kind, exception)
+    result = this.getParent().getParent().getExceptionSuccessorInstruction(kind)
   }
 
   TranslatedStmt getBlock() { result = getTranslatedStmt(stmt.getBlock()) }
