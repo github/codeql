@@ -1,0 +1,3 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - libc = { version = "0.2.11" }
