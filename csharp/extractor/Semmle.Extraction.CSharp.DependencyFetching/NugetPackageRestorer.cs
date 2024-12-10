@@ -606,6 +606,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     {
                         if (chain is null || cert is null)
                         {
+                            logger.LogWarning("Certificate validation trivially failed due to missing chain or certificate.");
                             return false;
                         }
                         chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
