@@ -2166,13 +2166,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private predicate flowThroughIntoCall(
           DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, Ap argAp, Ap ap
         ) {
-          exists(ApApprox argApa, Typ argT, TypOption argStored, boolean emptyArgAp |
+          exists(Typ argT, TypOption argStored, boolean emptyArgAp |
             returnFlowsThrough(_, _, _, _, pragma[only_bind_into](p), pragma[only_bind_into](argT),
-              pragma[only_bind_into](argAp), pragma[only_bind_into](argApa),
-              pragma[only_bind_into](argStored), ap) and
+              pragma[only_bind_into](argAp), _, pragma[only_bind_into](argStored), ap) and
             flowIntoCallApaTaken(call, _, pragma[only_bind_into](arg), p, emptyArgAp) and
-            fwdFlow(arg, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
-              pragma[only_bind_into](argApa), pragma[only_bind_into](argStored)) and
+            fwdFlow(arg, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp), _,
+              pragma[only_bind_into](argStored)) and
             if argAp instanceof ApNil then emptyArgAp = true else emptyArgAp = false
           )
         }
