@@ -6,7 +6,7 @@
  * @problem.severity error
  * @security-severity 7.5
  * @precision high
- * @id cs/web/cors-misconfiguration-credentials
+ * @id cs/web/cors-misconfiguration
  * @tags security
  *       external/cwe/cwe-942
  */
