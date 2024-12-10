@@ -83,6 +83,8 @@ signatureMatches
 | atl.cpp:846:15:846:27 | SetSchemeName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:847:15:847:24 | SetUrlPath | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:848:15:848:25 | SetUserName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:921:8:921:13 | Append | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:938:8:938:16 | SetString | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | constructor_delegation.cpp:10:2:10:8 | MyValue | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | standalone_iterators.cpp:103:27:103:36 | operator+= | (LPCOLESTR,int) | CComBSTR | Append | 1 |
@@ -670,6 +672,37 @@ getParameterTypeName
 | atl.cpp:846:15:846:27 | SetSchemeName | 0 | LPCTSTR |
 | atl.cpp:847:15:847:24 | SetUrlPath | 0 | LPCTSTR |
 | atl.cpp:848:15:848:25 | SetUserName | 0 | LPCTSTR |
+| atl.cpp:903:8:903:8 | operator= | 0 | IAtlStringMgr && |
+| atl.cpp:903:8:903:8 | operator= | 0 | const IAtlStringMgr & |
+| atl.cpp:914:3:914:16 | CSimpleStringT | 0 | const XCHAR * |
+| atl.cpp:914:3:914:16 | CSimpleStringT | 1 | int |
+| atl.cpp:914:3:914:16 | CSimpleStringT | 2 | IAtlStringMgr * |
+| atl.cpp:915:3:915:16 | CSimpleStringT | 0 | PCXSTR |
+| atl.cpp:915:3:915:16 | CSimpleStringT | 1 | IAtlStringMgr * |
+| atl.cpp:916:3:916:16 | CSimpleStringT | 0 | const CSimpleStringT & |
+| atl.cpp:920:8:920:13 | Append | 0 | const CSimpleStringT & |
+| atl.cpp:921:8:921:13 | Append | 0 | PCXSTR |
+| atl.cpp:921:8:921:13 | Append | 1 | int |
+| atl.cpp:922:8:922:13 | Append | 0 | PCXSTR |
+| atl.cpp:926:15:926:23 | CopyChars | 0 | XCHAR * |
+| atl.cpp:926:15:926:23 | CopyChars | 1 | const XCHAR * |
+| atl.cpp:926:15:926:23 | CopyChars | 2 | int |
+| atl.cpp:927:15:927:23 | CopyChars | 0 | XCHAR * |
+| atl.cpp:927:15:927:23 | CopyChars | 1 | size_t |
+| atl.cpp:927:15:927:23 | CopyChars | 2 | const XCHAR * |
+| atl.cpp:927:15:927:23 | CopyChars | 3 | int |
+| atl.cpp:928:15:928:33 | CopyCharsOverlapped | 0 | XCHAR * |
+| atl.cpp:928:15:928:33 | CopyCharsOverlapped | 1 | const XCHAR * |
+| atl.cpp:928:15:928:33 | CopyCharsOverlapped | 2 | int |
+| atl.cpp:930:9:930:13 | GetAt | 0 | int |
+| atl.cpp:931:9:931:17 | GetBuffer | 0 | int |
+| atl.cpp:933:9:933:26 | GetBufferSetLength | 0 | int |
+| atl.cpp:937:8:937:12 | SetAt | 0 | int |
+| atl.cpp:937:8:937:12 | SetAt | 1 | XCHAR |
+| atl.cpp:938:8:938:16 | SetString | 0 | PCXSTR |
+| atl.cpp:938:8:938:16 | SetString | 1 | int |
+| atl.cpp:939:8:939:16 | SetString | 0 | PCXSTR |
+| atl.cpp:941:9:941:18 | operator[] | 0 | int |
 | bsd.cpp:6:8:6:8 | operator= | 0 | const sockaddr & |
 | bsd.cpp:6:8:6:8 | operator= | 0 | sockaddr && |
 | bsd.cpp:12:5:12:10 | accept | 0 | int |

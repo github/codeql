@@ -946,6 +946,82 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:897:10:897:13 | call to CUrl | atl.cpp:900:3:900:3 | url2 |  |
 | atl.cpp:898:5:898:8 | ref arg url2 | atl.cpp:899:10:899:13 | url2 |  |
 | atl.cpp:898:5:898:8 | ref arg url2 | atl.cpp:900:3:900:3 | url2 |  |
+| atl.cpp:954:13:954:33 | call to indirect_source | atl.cpp:956:27:956:27 | x |  |
+| atl.cpp:954:13:954:33 | call to indirect_source | atl.cpp:959:27:959:27 | x |  |
+| atl.cpp:954:13:954:33 | call to indirect_source | atl.cpp:978:44:978:44 | x |  |
+| atl.cpp:954:13:954:33 | call to indirect_source | atl.cpp:982:49:982:49 | x |  |
+| atl.cpp:954:13:954:33 | call to indirect_source | atl.cpp:986:54:986:54 | x |  |
+| atl.cpp:956:27:956:41 | call to CSimpleStringT | atl.cpp:957:8:957:9 | s1 |  |
+| atl.cpp:956:27:956:41 | call to CSimpleStringT | atl.cpp:1008:50:1008:51 | s1 |  |
+| atl.cpp:956:27:956:41 | call to CSimpleStringT | atl.cpp:1010:8:1010:9 | s1 |  |
+| atl.cpp:956:27:956:41 | call to CSimpleStringT | atl.cpp:1011:1:1011:1 | s1 |  |
+| atl.cpp:959:27:959:37 | call to CSimpleStringT | atl.cpp:960:8:960:9 | s2 |  |
+| atl.cpp:959:27:959:37 | call to CSimpleStringT | atl.cpp:962:27:962:28 | s2 |  |
+| atl.cpp:959:27:959:37 | call to CSimpleStringT | atl.cpp:1011:1:1011:1 | s2 |  |
+| atl.cpp:962:27:962:28 | s2 | atl.cpp:962:27:962:29 | call to CSimpleStringT |  |
+| atl.cpp:962:27:962:29 | call to CSimpleStringT | atl.cpp:963:8:963:9 | s3 |  |
+| atl.cpp:962:27:962:29 | call to CSimpleStringT | atl.cpp:1011:1:1011:1 | s3 |  |
+| atl.cpp:965:24:965:25 | call to CSimpleStringT | atl.cpp:966:3:966:4 | s4 |  |
+| atl.cpp:965:24:965:25 | call to CSimpleStringT | atl.cpp:967:8:967:9 | s4 |  |
+| atl.cpp:965:24:965:25 | call to CSimpleStringT | atl.cpp:970:13:970:14 | s4 |  |
+| atl.cpp:965:24:965:25 | call to CSimpleStringT | atl.cpp:989:8:989:9 | s4 |  |
+| atl.cpp:965:24:965:25 | call to CSimpleStringT | atl.cpp:990:8:990:9 | s4 |  |
+| atl.cpp:965:24:965:25 | call to CSimpleStringT | atl.cpp:991:8:991:9 | s4 |  |
+| atl.cpp:965:24:965:25 | call to CSimpleStringT | atl.cpp:992:8:992:9 | s4 |  |
+| atl.cpp:965:24:965:25 | call to CSimpleStringT | atl.cpp:994:8:994:9 | s4 |  |
+| atl.cpp:965:24:965:25 | call to CSimpleStringT | atl.cpp:1011:1:1011:1 | s4 |  |
+| atl.cpp:966:3:966:4 | ref arg s4 | atl.cpp:967:8:967:9 | s4 |  |
+| atl.cpp:966:3:966:4 | ref arg s4 | atl.cpp:970:13:970:14 | s4 |  |
+| atl.cpp:966:3:966:4 | ref arg s4 | atl.cpp:989:8:989:9 | s4 |  |
+| atl.cpp:966:3:966:4 | ref arg s4 | atl.cpp:990:8:990:9 | s4 |  |
+| atl.cpp:966:3:966:4 | ref arg s4 | atl.cpp:991:8:991:9 | s4 |  |
+| atl.cpp:966:3:966:4 | ref arg s4 | atl.cpp:992:8:992:9 | s4 |  |
+| atl.cpp:966:3:966:4 | ref arg s4 | atl.cpp:994:8:994:9 | s4 |  |
+| atl.cpp:966:3:966:4 | ref arg s4 | atl.cpp:1011:1:1011:1 | s4 |  |
+| atl.cpp:969:24:969:25 | call to CSimpleStringT | atl.cpp:970:3:970:4 | s5 |  |
+| atl.cpp:969:24:969:25 | call to CSimpleStringT | atl.cpp:971:8:971:9 | s5 |  |
+| atl.cpp:969:24:969:25 | call to CSimpleStringT | atl.cpp:1011:1:1011:1 | s5 |  |
+| atl.cpp:970:3:970:4 | ref arg s5 | atl.cpp:971:8:971:9 | s5 |  |
+| atl.cpp:970:3:970:4 | ref arg s5 | atl.cpp:1011:1:1011:1 | s5 |  |
+| atl.cpp:973:24:973:25 | call to CSimpleStringT | atl.cpp:974:3:974:4 | s6 |  |
+| atl.cpp:973:24:973:25 | call to CSimpleStringT | atl.cpp:975:8:975:9 | s6 |  |
+| atl.cpp:973:24:973:25 | call to CSimpleStringT | atl.cpp:1011:1:1011:1 | s6 |  |
+| atl.cpp:974:3:974:4 | ref arg s6 | atl.cpp:975:8:975:9 | s6 |  |
+| atl.cpp:974:3:974:4 | ref arg s6 | atl.cpp:1011:1:1011:1 | s6 |  |
+| atl.cpp:977:8:977:14 | buffer1 | atl.cpp:978:35:978:41 | buffer1 |  |
+| atl.cpp:977:8:977:14 | buffer1 | atl.cpp:979:8:979:14 | buffer1 |  |
+| atl.cpp:978:35:978:41 | ref arg buffer1 | atl.cpp:979:8:979:14 | buffer1 |  |
+| atl.cpp:981:8:981:14 | buffer2 | atl.cpp:982:35:982:41 | buffer2 |  |
+| atl.cpp:981:8:981:14 | buffer2 | atl.cpp:983:8:983:14 | buffer2 |  |
+| atl.cpp:982:35:982:41 | ref arg buffer2 | atl.cpp:983:8:983:14 | buffer2 |  |
+| atl.cpp:985:8:985:14 | buffer3 | atl.cpp:986:45:986:51 | buffer3 |  |
+| atl.cpp:985:8:985:14 | buffer3 | atl.cpp:987:8:987:14 | buffer3 |  |
+| atl.cpp:986:45:986:51 | ref arg buffer3 | atl.cpp:987:8:987:14 | buffer3 |  |
+| atl.cpp:990:8:990:9 | ref arg s4 | atl.cpp:991:8:991:9 | s4 |  |
+| atl.cpp:990:8:990:9 | ref arg s4 | atl.cpp:992:8:992:9 | s4 |  |
+| atl.cpp:990:8:990:9 | ref arg s4 | atl.cpp:994:8:994:9 | s4 |  |
+| atl.cpp:990:8:990:9 | ref arg s4 | atl.cpp:1011:1:1011:1 | s4 |  |
+| atl.cpp:991:8:991:9 | ref arg s4 | atl.cpp:992:8:992:9 | s4 |  |
+| atl.cpp:991:8:991:9 | ref arg s4 | atl.cpp:994:8:994:9 | s4 |  |
+| atl.cpp:991:8:991:9 | ref arg s4 | atl.cpp:1011:1:1011:1 | s4 |  |
+| atl.cpp:992:8:992:9 | ref arg s4 | atl.cpp:994:8:994:9 | s4 |  |
+| atl.cpp:992:8:992:9 | ref arg s4 | atl.cpp:1011:1:1011:1 | s4 |  |
+| atl.cpp:994:8:994:9 | ref arg s4 | atl.cpp:1011:1:1011:1 | s4 |  |
+| atl.cpp:996:24:996:25 | call to CSimpleStringT | atl.cpp:997:3:997:4 | s7 |  |
+| atl.cpp:996:24:996:25 | call to CSimpleStringT | atl.cpp:998:8:998:9 | s7 |  |
+| atl.cpp:996:24:996:25 | call to CSimpleStringT | atl.cpp:1011:1:1011:1 | s7 |  |
+| atl.cpp:997:3:997:4 | ref arg s7 | atl.cpp:998:8:998:9 | s7 |  |
+| atl.cpp:997:3:997:4 | ref arg s7 | atl.cpp:1011:1:1011:1 | s7 |  |
+| atl.cpp:1000:24:1000:25 | call to CSimpleStringT | atl.cpp:1001:3:1001:4 | s8 |  |
+| atl.cpp:1000:24:1000:25 | call to CSimpleStringT | atl.cpp:1002:8:1002:9 | s8 |  |
+| atl.cpp:1000:24:1000:25 | call to CSimpleStringT | atl.cpp:1011:1:1011:1 | s8 |  |
+| atl.cpp:1001:3:1001:4 | ref arg s8 | atl.cpp:1002:8:1002:9 | s8 |  |
+| atl.cpp:1001:3:1001:4 | ref arg s8 | atl.cpp:1011:1:1011:1 | s8 |  |
+| atl.cpp:1004:24:1004:25 | call to CSimpleStringT | atl.cpp:1005:3:1005:4 | s9 |  |
+| atl.cpp:1004:24:1004:25 | call to CSimpleStringT | atl.cpp:1006:8:1006:9 | s9 |  |
+| atl.cpp:1004:24:1004:25 | call to CSimpleStringT | atl.cpp:1011:1:1011:1 | s9 |  |
+| atl.cpp:1005:3:1005:4 | ref arg s9 | atl.cpp:1006:8:1006:9 | s9 |  |
+| atl.cpp:1005:3:1005:4 | ref arg s9 | atl.cpp:1011:1:1011:1 | s9 |  |
 | bsd.cpp:17:11:17:16 | call to source | bsd.cpp:20:18:20:18 | s |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:20:22:20:25 | addr |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:23:8:23:11 | addr |  |

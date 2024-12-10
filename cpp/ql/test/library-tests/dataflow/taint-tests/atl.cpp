@@ -899,3 +899,113 @@ void test_CUrl() {
     sink(url2); // $ ir
   }
 }
+
+struct IAtlStringMgr {}; // simplified
+
+using XCHAR = char;
+using YCHAR = wchar_t;
+
+template <typename BaseType>
+struct CSimpleStringT {
+  using PCXSTR = const BaseType*; // simplified
+  using PXSTR = BaseType*; // simplified
+
+  CSimpleStringT() throw();
+  CSimpleStringT(const XCHAR* pchSrc, int nLength, IAtlStringMgr* pStringMgr);
+  CSimpleStringT(PCXSTR pszSrc, IAtlStringMgr* pStringMgr);
+  CSimpleStringT(const CSimpleStringT& strSrc);
+
+  ~CSimpleStringT() throw();
+
+  void Append(const CSimpleStringT& strSrc);
+  void Append(PCXSTR pszSrc, int nLength);
+  void Append(PCXSTR pszSrc);
+
+  void AppendChar(XCHAR ch);
+
+  static void CopyChars(XCHAR* pchDest, const XCHAR* pchSrc, int nChars) throw();
+  static void CopyChars(XCHAR* pchDest, size_t nDestLen, const XCHAR* pchSrc, int nChars) throw();
+  static void CopyCharsOverlapped(XCHAR* pchDest, const XCHAR* pchSrc, int nChars) throw();
+
+  XCHAR GetAt(int iChar) const;
+  PXSTR GetBuffer(int nMinBufferLength);
+  PXSTR GetBuffer();
+  PXSTR GetBufferSetLength(int nLength);
+
+  PCXSTR GetString() const throw();
+  PXSTR LockBuffer();
+  void SetAt(int iChar, XCHAR ch);
+  void SetString(PCXSTR pszSrc, int nLength);
+  void SetString(PCXSTR pszSrc);
+  operator PCXSTR() const throw();
+  XCHAR operator[](int iChar) const;
+
+  CSimpleStringT& operator+=(PCXSTR pszSrc);
+  CSimpleStringT& operator+=(const CSimpleStringT& strSrc);
+  CSimpleStringT& operator+=(char ch);
+  CSimpleStringT& operator+=(unsigned char ch);
+  CSimpleStringT& operator+=(wchar_t ch);
+
+  CSimpleStringT& operator=(PCXSTR pszSrc);
+  CSimpleStringT& operator=(const CSimpleStringT& strSrc);
+};
+
+void test_CSimpleStringT() {
+  char* x = indirect_source<char>();
+
+  CSimpleStringT<char> s1(x, 10, nullptr);
+  sink(s1.GetString()); // $ MISSING: ir
+
+  CSimpleStringT<char> s2(x, nullptr);
+  sink(s2.GetString()); // $ MISSING: ir
+
+  CSimpleStringT<char> s3(s2);
+  sink(s3.GetString()); // $ MISSING: ir
+
+  CSimpleStringT<char> s4;
+  s4.Append(indirect_source<char>());
+  sink(s4.GetString()); // $ MISSING: ir
+
+  CSimpleStringT<char> s5;
+  s5.Append(s4);
+  sink(s5.GetString()); // $ MISSING: ir
+
+  CSimpleStringT<char> s6;
+  s6.Append(indirect_source<char>(), 42);
+  sink(s6.GetString()); // $ MISSING: ir
+
+  char buffer1[128];
+  CSimpleStringT<char>::CopyChars(buffer1, x, 10);
+  sink(buffer1); // $ ast MISSING: ir
+
+  char buffer2[128];
+  CSimpleStringT<char>::CopyChars(buffer2, 128, x, 10);
+  sink(buffer2); // $ ast MISSING: ir
+
+  char buffer3[128];
+  CSimpleStringT<char>::CopyCharsOverlapped(buffer3, x, 10);
+  sink(buffer3); // $ ast MISSING: ir
+
+  sink(s4.GetAt(0)); // $ MISSING: ir
+  sink(s4.GetBuffer(10)); // $ MISSING: ir
+  sink(s4.GetBuffer()); // $ MISSING: ir
+  sink(s4.GetBufferSetLength(10)); // $ MISSING: ir
+
+  sink(s4.LockBuffer());
+
+  CSimpleStringT<char> s7;
+  s7.SetAt(0, source<char>());
+  sink(s7.GetAt(0)); // $ MISSING: ir
+
+  CSimpleStringT<char> s8;
+  s8.SetString(indirect_source<char>());
+  sink(s8.GetAt(0)); // $ MISSING: ir
+
+  CSimpleStringT<char> s9;
+  s9.SetString(indirect_source<char>(), 1024);
+  sink(s9.GetAt(0)); // $ MISSING: ir
+
+  sink(static_cast<CSimpleStringT<char>::PCXSTR>(s1)); // $ MISSING: ir
+  
+  sink(s1[0]); // $ MISSING: ir
+}
