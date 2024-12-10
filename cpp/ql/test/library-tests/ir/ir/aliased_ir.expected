@@ -3244,7 +3244,7 @@ ir.c:
 #   25|     v25_4(void)           = Call[ExRaiseAccessViolation]            : func:r25_1, 0:r25_3
 #   25|     m25_5(unknown)        = ^CallSideEffect                         : ~m21_4
 #   25|     m25_6(unknown)        = Chi                                     : total:m21_4, partial:m25_5
-#-----|   C++ Exception -> Block 3
+#-----|   SEH Exception -> Block 3
 
 #   26|   Block 1
 #   26|     r26_1(int)  = Constant[0]       : 
@@ -3291,7 +3291,7 @@ ir.c:
 #   36|     v36_3(void)           = Call[ExRaiseAccessViolation]            : func:r36_1, 0:r36_2
 #   36|     m36_4(unknown)        = ^CallSideEffect                         : ~m32_4
 #   36|     m36_5(unknown)        = Chi                                     : total:m32_4, partial:m36_4
-#-----|   C++ Exception -> Block 4
+#-----|   SEH Exception -> Block 4
 
 #   32|   Block 1
 #   32|     v32_5(void) = Unwind       : 
@@ -3326,7 +3326,7 @@ ir.c:
 #   40|     v40_3(void)           = Call[ExRaiseAccessViolation]            : func:r40_1, 0:r40_2
 #   40|     m40_4(unknown)        = ^CallSideEffect                         : ~m36_5
 #   40|     m40_5(unknown)        = Chi                                     : total:m36_5, partial:m40_4
-#-----|   C++ Exception -> Block 1
+#-----|   SEH Exception -> Block 1
 
 #   32|   Block 6
 #   32|     v32_8(void) = Unreached : 
@@ -3365,7 +3365,7 @@ ir.c:
 #   62|     v62_3(void)           = Call[ExRaiseAccessViolation]            : func:r62_1, 0:r62_2
 #   62|     m62_4(unknown)        = ^CallSideEffect                         : ~m57_4
 #   62|     m62_5(unknown)        = Chi                                     : total:m57_4, partial:m62_4
-#-----|   C++ Exception -> Block 1
+#-----|   SEH Exception -> Block 1
 
 #   66|   Block 1
 #   66|     r66_1(int)        = Constant[1]        : 
@@ -3387,7 +3387,7 @@ ir.c:
 #   73|     v73_3(void)           = Call[ExRaiseAccessViolation]            : func:r73_1, 0:r73_2
 #   73|     m73_4(unknown)        = ^CallSideEffect                         : ~m70_4
 #   73|     m73_5(unknown)        = Chi                                     : total:m70_4, partial:m73_4
-#-----|   C++ Exception -> Block 2
+#-----|   SEH Exception -> Block 2
 
 #   70|   Block 1
 #   70|     v70_5(void) = Unwind       : 
@@ -3400,7 +3400,7 @@ ir.c:
 #   76|     v76_3(void)           = Call[ExRaiseAccessViolation]            : func:r76_1, 0:r76_2
 #   76|     m76_4(unknown)        = ^CallSideEffect                         : ~m73_5
 #   76|     m76_5(unknown)        = Chi                                     : total:m73_5, partial:m76_4
-#-----|   C++ Exception -> Block 1
+#-----|   SEH Exception -> Block 1
 
 #   80| void raise_access_violation()
 #   80|   Block 0
@@ -3413,7 +3413,7 @@ ir.c:
 #   81|     v81_3(void)           = Call[ExRaiseAccessViolation]            : func:r81_1, 0:r81_2
 #   81|     m81_4(unknown)        = ^CallSideEffect                         : ~m80_4
 #   81|     m81_5(unknown)        = Chi                                     : total:m80_4, partial:m81_4
-#-----|   C++ Exception -> Block 1
+#-----|   SEH Exception -> Block 1
 
 #   80|   Block 1
 #   80|     v80_5(void) = Unwind       : 
