@@ -1140,23 +1140,23 @@ void test_CStringT() {
 
   CStringT<char> s11;
   s11.AppendFormat("%d", source<int>());
-  sink(s11.GetString()); // $ MISSING: ir
+  sink(s11.GetString()); // $ ir
 
   CStringT<char> s12;
   s12.AppendFormat(indirect_source<char>());
-  sink(s12.GetString()); // $ MISSING: ir
+  sink(s12.GetString()); // $ ir
 
   CStringT<char> s13;
   s13.AppendFormat(source<UINT>());
-  sink(s13.GetString()); // $ MISSING: ir
+  sink(s13.GetString()); // $ ir
 
   CStringT<char> s14;
   s14.AppendFormat(42, source<char>());
-  sink(s14.GetString()); // $ MISSING: ir
+  sink(s14.GetString()); // $ ir
 
   CStringT<char> s15;
   s15.AppendFormat(42, source<char>());
-  sink(s15.GetString()); // $ MISSING: ir
+  sink(s15.GetString()); // $ ir
 
   CStringT<char> s16;
   s16.AppendFormat("%s", indirect_source<char>());

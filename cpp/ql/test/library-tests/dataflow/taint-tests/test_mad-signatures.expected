@@ -208,11 +208,24 @@ signatureMatches
 | atl.cpp:1049:3:1049:10 | CStringT | (const YCHAR *,int) | CStringT | CStringT | 1 |
 | atl.cpp:1049:3:1049:10 | CStringT | (wchar_t,int) | CStringT | CStringT | 0 |
 | atl.cpp:1049:3:1049:10 | CStringT | (wchar_t,int) | CStringT | CStringT | 1 |
-| atl.cpp:1060:8:1060:19 | AppendFormat | (PCXSTR) |  | operator+= | 0 |
-| atl.cpp:1060:8:1060:19 | AppendFormat | (PCXSTR) | CSimpleStringT | operator+= | 0 |
-| atl.cpp:1060:8:1060:19 | AppendFormat | (PCXSTR) | CStringT | operator= | 0 |
-| atl.cpp:1061:8:1061:19 | AppendFormat | (UINT) | CComBSTR | LoadString | 0 |
-| atl.cpp:1061:8:1061:19 | AppendFormat | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:1060:8:1060:19 | AppendFormat | (PCXSTR,...) | CStringT | AppendFormat | 0 |
+| atl.cpp:1060:8:1060:19 | AppendFormat | (PCXSTR,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1060:8:1060:19 | AppendFormat | (PCXSTR,...) | CStringT | Format | 0 |
+| atl.cpp:1060:8:1060:19 | AppendFormat | (PCXSTR,...) | CStringT | Format | 1 |
+| atl.cpp:1060:8:1060:19 | AppendFormat | (PCXSTR,...) | CStringT | FormatMessage | 0 |
+| atl.cpp:1060:8:1060:19 | AppendFormat | (PCXSTR,...) | CStringT | FormatMessage | 1 |
+| atl.cpp:1060:8:1060:19 | AppendFormat | (UINT,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1060:8:1060:19 | AppendFormat | (UINT,...) | CStringT | Format | 1 |
+| atl.cpp:1060:8:1060:19 | AppendFormat | (UINT,...) | CStringT | FormatMessage | 1 |
+| atl.cpp:1061:8:1061:19 | AppendFormat | (PCXSTR,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1061:8:1061:19 | AppendFormat | (PCXSTR,...) | CStringT | Format | 1 |
+| atl.cpp:1061:8:1061:19 | AppendFormat | (PCXSTR,...) | CStringT | FormatMessage | 1 |
+| atl.cpp:1061:8:1061:19 | AppendFormat | (UINT,...) | CStringT | AppendFormat | 0 |
+| atl.cpp:1061:8:1061:19 | AppendFormat | (UINT,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1061:8:1061:19 | AppendFormat | (UINT,...) | CStringT | Format | 0 |
+| atl.cpp:1061:8:1061:19 | AppendFormat | (UINT,...) | CStringT | Format | 1 |
+| atl.cpp:1061:8:1061:19 | AppendFormat | (UINT,...) | CStringT | FormatMessage | 0 |
+| atl.cpp:1061:8:1061:19 | AppendFormat | (UINT,...) | CStringT | FormatMessage | 1 |
 | atl.cpp:1069:7:1069:12 | Insert | (PCXSTR,PCXSTR) | CStringT | Replace | 1 |
 | atl.cpp:1069:7:1069:12 | Insert | (const CStringT &,PCXSTR) |  | operator+ | 1 |
 | atl.cpp:1069:7:1069:12 | Insert | (int,PCXSTR) | CStringT | Insert | 0 |
@@ -867,6 +880,7 @@ getParameterTypeName
 | arrayassignment.cpp:88:7:88:9 | get | 0 | int |
 | arrayassignment.cpp:90:7:90:16 | operator[] | 0 | int |
 | arrayassignment.cpp:124:6:124:9 | sink | 0 | int * |
+| atl.cpp:4:8:4:11 | sink | 0 | ... |
 | atl.cpp:29:8:29:8 | operator= | 0 | __POSITION && |
 | atl.cpp:29:8:29:8 | operator= | 0 | const __POSITION & |
 | atl.cpp:51:16:51:16 | operator= | 0 | const tagSAFEARRAYBOUND & |
@@ -1059,7 +1073,9 @@ getParameterTypeName
 | atl.cpp:1049:3:1049:10 | CStringT | 0 | wchar_t |
 | atl.cpp:1049:3:1049:10 | CStringT | 1 | int |
 | atl.cpp:1060:8:1060:19 | AppendFormat | 0 | PCXSTR |
+| atl.cpp:1060:8:1060:19 | AppendFormat | 1 | ... |
 | atl.cpp:1061:8:1061:19 | AppendFormat | 0 | UINT |
+| atl.cpp:1061:8:1061:19 | AppendFormat | 1 | ... |
 | atl.cpp:1069:7:1069:12 | Insert | 0 | int |
 | atl.cpp:1069:7:1069:12 | Insert | 1 | PCXSTR |
 | atl.cpp:1070:7:1070:12 | Insert | 0 | int |
@@ -1123,11 +1139,14 @@ getParameterTypeName
 | format.cpp:5:5:5:12 | snprintf | 0 | char * |
 | format.cpp:5:5:5:12 | snprintf | 1 | size_t |
 | format.cpp:5:5:5:12 | snprintf | 2 | const char * |
+| format.cpp:5:5:5:12 | snprintf | 3 | ... |
 | format.cpp:6:5:6:11 | sprintf | 0 | char * |
 | format.cpp:6:5:6:11 | sprintf | 1 | const char * |
+| format.cpp:6:5:6:11 | sprintf | 2 | ... |
 | format.cpp:7:5:7:12 | swprintf | 0 | wchar_t * |
 | format.cpp:7:5:7:12 | swprintf | 1 | size_t |
 | format.cpp:7:5:7:12 | swprintf | 2 | const wchar_t * |
+| format.cpp:7:5:7:12 | swprintf | 3 | ... |
 | format.cpp:14:5:14:13 | vsnprintf | 0 | char * |
 | format.cpp:14:5:14:13 | vsnprintf | 1 | size_t |
 | format.cpp:14:5:14:13 | vsnprintf | 2 | const char * |
@@ -1135,8 +1154,10 @@ getParameterTypeName
 | format.cpp:16:5:16:13 | mysprintf | 0 | char * |
 | format.cpp:16:5:16:13 | mysprintf | 1 | size_t |
 | format.cpp:16:5:16:13 | mysprintf | 2 | const char * |
+| format.cpp:16:5:16:13 | mysprintf | 3 | ... |
 | format.cpp:28:5:28:10 | sscanf | 0 | const char * |
 | format.cpp:28:5:28:10 | sscanf | 1 | const char * |
+| format.cpp:28:5:28:10 | sscanf | 2 | ... |
 | format.cpp:142:8:142:13 | strlen | 0 | const char * |
 | format.cpp:143:8:143:13 | wcslen | 0 | const wchar_t * |
 | format.cpp:169:6:169:9 | test | 0 | format_string |
@@ -1151,6 +1172,7 @@ getParameterTypeName
 | map.cpp:16:6:16:9 | sink | 0 | unordered_map, hash<char *>, equal_to<char *>, allocator<pair<char *const, pair<int, int>>>> |
 | map.cpp:17:6:17:9 | sink | 0 | iterator |
 | map.cpp:442:7:442:19 | indirect_sink | 0 | int * |
+| movableclass.cpp:3:6:3:9 | sink | 0 | ... |
 | movableclass.cpp:5:7:5:7 | MyMovableClass | 0 | const MyMovableClass & |
 | movableclass.cpp:5:7:5:7 | operator= | 0 | const MyMovableClass & |
 | movableclass.cpp:8:2:8:15 | MyMovableClass | 0 | int |
@@ -1788,6 +1810,7 @@ getParameterTypeName
 | taint.cpp:751:9:751:9 | operator= | 0 | const A & |
 | taint.cpp:758:5:758:11 | sprintf | 0 | char * |
 | taint.cpp:758:5:758:11 | sprintf | 1 | const char * |
+| taint.cpp:758:5:758:11 | sprintf | 2 | ... |
 | taint.cpp:760:6:760:23 | call_sprintf_twice | 0 | char * |
 | taint.cpp:760:6:760:23 | call_sprintf_twice | 1 | char * |
 | taint.cpp:771:8:771:8 | operator= | 0 | TaintInheritingContentObject && |
