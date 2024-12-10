@@ -3000,7 +3000,7 @@ ir.c:
 #   25|     r25_3(int)            = Load[x]                                 : &:r25_2, ~m?
 #   25|     v25_4(void)           = Call[ExRaiseAccessViolation]            : func:r25_1, 0:r25_3
 #   25|     mu25_5(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 6
+#-----|   SEH Exception -> Block 6
 
 #   21|   Block 1
 #   21|     v21_6(void) = AliasedUse   : ~m?
@@ -3057,7 +3057,7 @@ ir.c:
 #   36|     r36_2(int)            = Constant[0]                             : 
 #   36|     v36_3(void)           = Call[ExRaiseAccessViolation]            : func:r36_1, 0:r36_2
 #   36|     mu36_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 5
+#-----|   SEH Exception -> Block 5
 
 #   32|   Block 1
 #   32|     v32_4(void) = AliasedUse   : ~m?
@@ -3093,7 +3093,7 @@ ir.c:
 #   40|     r40_2(int)            = Constant[1]                             : 
 #   40|     v40_3(void)           = Call[ExRaiseAccessViolation]            : func:r40_1, 0:r40_2
 #   40|     mu40_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 2
+#-----|   SEH Exception -> Block 2
 
 #   42|   Block 7
 #   42|     v42_1(void) = NoOp       : 
@@ -3138,7 +3138,7 @@ ir.c:
 #   62|     r62_2(int)            = Constant[0]                             : 
 #   62|     v62_3(void)           = Call[ExRaiseAccessViolation]            : func:r62_1, 0:r62_2
 #   62|     mu62_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 3
+#-----|   SEH Exception -> Block 3
 
 #   57|   Block 1
 #   57|     v57_4(void) = AliasedUse   : ~m?
@@ -3165,7 +3165,7 @@ ir.c:
 #   73|     r73_2(int)            = Constant[0]                             : 
 #   73|     v73_3(void)           = Call[ExRaiseAccessViolation]            : func:r73_1, 0:r73_2
 #   73|     mu73_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 3
+#-----|   SEH Exception -> Block 3
 
 #   70|   Block 1
 #   70|     v70_4(void) = AliasedUse   : ~m?
@@ -3180,7 +3180,7 @@ ir.c:
 #   76|     r76_2(int)            = Constant[0]                             : 
 #   76|     v76_3(void)           = Call[ExRaiseAccessViolation]            : func:r76_1, 0:r76_2
 #   76|     mu76_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 2
+#-----|   SEH Exception -> Block 2
 
 #   78|   Block 4
 #   78|     v78_1(void) = NoOp       : 
@@ -3196,7 +3196,7 @@ ir.c:
 #   81|     r81_2(int)            = Constant[1]                             : 
 #   81|     v81_3(void)           = Call[ExRaiseAccessViolation]            : func:r81_1, 0:r81_2
 #   81|     mu81_4(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   C++ Exception -> Block 2
+#-----|   SEH Exception -> Block 2
 
 #   80|   Block 1
 #   80|     v80_4(void) = AliasedUse   : ~m?
