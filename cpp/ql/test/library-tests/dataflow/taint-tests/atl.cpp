@@ -954,58 +954,58 @@ void test_CSimpleStringT() {
   char* x = indirect_source<char>();
 
   CSimpleStringT<char> s1(x, 10, nullptr);
-  sink(s1.GetString()); // $ MISSING: ir
+  sink(s1.GetString()); // $ ir
 
   CSimpleStringT<char> s2(x, nullptr);
-  sink(s2.GetString()); // $ MISSING: ir
+  sink(s2.GetString()); // $ ir
 
   CSimpleStringT<char> s3(s2);
-  sink(s3.GetString()); // $ MISSING: ir
+  sink(s3.GetString()); // $ ir
 
   CSimpleStringT<char> s4;
   s4.Append(indirect_source<char>());
-  sink(s4.GetString()); // $ MISSING: ir
+  sink(s4.GetString()); // $ ir
 
   CSimpleStringT<char> s5;
   s5.Append(s4);
-  sink(s5.GetString()); // $ MISSING: ir
+  sink(s5.GetString()); // $ ir
 
   CSimpleStringT<char> s6;
   s6.Append(indirect_source<char>(), 42);
-  sink(s6.GetString()); // $ MISSING: ir
+  sink(s6.GetString()); // $ ir
 
   char buffer1[128];
   CSimpleStringT<char>::CopyChars(buffer1, x, 10);
-  sink(buffer1); // $ ast MISSING: ir
+  sink(buffer1); // $ ast ir
 
   char buffer2[128];
   CSimpleStringT<char>::CopyChars(buffer2, 128, x, 10);
-  sink(buffer2); // $ ast MISSING: ir
+  sink(buffer2); // $ ast ir
 
   char buffer3[128];
   CSimpleStringT<char>::CopyCharsOverlapped(buffer3, x, 10);
-  sink(buffer3); // $ ast MISSING: ir
+  sink(buffer3); // $ ast ir
 
-  sink(s4.GetAt(0)); // $ MISSING: ir
-  sink(s4.GetBuffer(10)); // $ MISSING: ir
-  sink(s4.GetBuffer()); // $ MISSING: ir
-  sink(s4.GetBufferSetLength(10)); // $ MISSING: ir
+  sink(s4.GetAt(0)); // $ ir
+  sink(s4.GetBuffer(10)); // $ ir
+  sink(s4.GetBuffer()); // $ ir
+  sink(s4.GetBufferSetLength(10)); // $ ir
 
   sink(s4.LockBuffer());
 
   CSimpleStringT<char> s7;
   s7.SetAt(0, source<char>());
-  sink(s7.GetAt(0)); // $ MISSING: ir
+  sink(s7.GetAt(0)); // $ ir
 
   CSimpleStringT<char> s8;
   s8.SetString(indirect_source<char>());
-  sink(s8.GetAt(0)); // $ MISSING: ir
+  sink(s8.GetAt(0)); // $ ir
 
   CSimpleStringT<char> s9;
   s9.SetString(indirect_source<char>(), 1024);
-  sink(s9.GetAt(0)); // $ MISSING: ir
+  sink(s9.GetAt(0)); // $ ir
 
-  sink(static_cast<CSimpleStringT<char>::PCXSTR>(s1)); // $ MISSING: ir
+  sink(static_cast<CSimpleStringT<char>::PCXSTR>(s1)); // $ ir
   
-  sink(s1[0]); // $ MISSING: ir
+  sink(s1[0]); // $ ir
 }

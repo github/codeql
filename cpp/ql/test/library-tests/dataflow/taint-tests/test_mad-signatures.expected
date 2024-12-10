@@ -22,7 +22,9 @@ signatureMatches
 | atl.cpp:419:11:419:16 | Append | (const CComBSTR &) | CComBSTR | Append | 0 |
 | atl.cpp:419:11:419:16 | Append | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:420:11:420:16 | Append | (wchar_t) | CComBSTR | Append | 0 |
+| atl.cpp:420:11:420:16 | Append | (wchar_t) | CSimpleStringT | operator+= | 0 |
 | atl.cpp:421:11:421:16 | Append | (char) | CComBSTR | Append | 0 |
+| atl.cpp:421:11:421:16 | Append | (char) | CSimpleStringT | operator+= | 0 |
 | atl.cpp:422:11:422:16 | Append | (LPCOLESTR) | CComBSTR | Append | 0 |
 | atl.cpp:422:11:422:16 | Append | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:423:11:423:16 | Append | (LPCSTR) | CComBSTR | Append | 0 |
@@ -49,6 +51,11 @@ signatureMatches
 | atl.cpp:543:11:543:13 | Add | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
 | atl.cpp:545:11:545:13 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 0 |
 | atl.cpp:545:11:545:13 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 1 |
+| atl.cpp:611:3:611:8 | CPathT | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:616:8:616:19 | AddExtension | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:617:8:617:13 | Append | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:621:22:621:33 | CommonPrefix | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:658:23:658:32 | operator+= | (PCXSTR) | CSimpleStringT | operator+= | 0 |
 | atl.cpp:764:8:764:10 | Add | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
 | atl.cpp:764:8:764:10 | Add | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
 | atl.cpp:764:8:764:10 | Add | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
@@ -83,8 +90,35 @@ signatureMatches
 | atl.cpp:846:15:846:27 | SetSchemeName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:847:15:847:24 | SetUrlPath | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:848:15:848:25 | SetUserName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:914:3:914:16 | CSimpleStringT | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 |
+| atl.cpp:914:3:914:16 | CSimpleStringT | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 |
+| atl.cpp:914:3:914:16 | CSimpleStringT | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 2 |
+| atl.cpp:915:3:915:16 | CSimpleStringT | (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 |
+| atl.cpp:915:3:915:16 | CSimpleStringT | (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 |
+| atl.cpp:916:3:916:16 | CSimpleStringT | (const CSimpleStringT &) | CSimpleStringT | CSimpleStringT | 0 |
+| atl.cpp:916:3:916:16 | CSimpleStringT | (const CSimpleStringT &) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:920:8:920:13 | Append | (const CSimpleStringT &) | CSimpleStringT | CSimpleStringT | 0 |
+| atl.cpp:920:8:920:13 | Append | (const CSimpleStringT &) | CSimpleStringT | operator+= | 0 |
 | atl.cpp:921:8:921:13 | Append | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:922:8:922:13 | Append | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:926:15:926:23 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 |
+| atl.cpp:926:15:926:23 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 |
+| atl.cpp:926:15:926:23 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| atl.cpp:926:15:926:23 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 0 |
+| atl.cpp:926:15:926:23 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 1 |
+| atl.cpp:926:15:926:23 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
+| atl.cpp:927:15:927:23 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 |
+| atl.cpp:927:15:927:23 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 |
+| atl.cpp:927:15:927:23 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| atl.cpp:927:15:927:23 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 3 |
+| atl.cpp:928:15:928:33 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 |
+| atl.cpp:928:15:928:33 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 |
+| atl.cpp:928:15:928:33 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| atl.cpp:928:15:928:33 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 0 |
+| atl.cpp:928:15:928:33 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 1 |
+| atl.cpp:928:15:928:33 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
 | atl.cpp:938:8:938:16 | SetString | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:939:8:939:16 | SetString | (PCXSTR) | CSimpleStringT | operator+= | 0 |
 | constructor_delegation.cpp:10:2:10:8 | MyValue | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | standalone_iterators.cpp:103:27:103:36 | operator+= | (LPCOLESTR,int) | CComBSTR | Append | 1 |
@@ -357,13 +391,20 @@ signatureMatches
 | stl.h:683:6:683:48 | same_signature_as_format_but_different_name | (format_string,Args &&) |  | format<Args> | 0 |
 | stl.h:683:6:683:48 | same_signature_as_format_but_different_name | (format_string,Args &&) |  | format<Args> | 1 |
 | string.cpp:20:6:20:9 | sink | (char) | CComBSTR | Append | 0 |
+| string.cpp:20:6:20:9 | sink | (char) | CSimpleStringT | operator+= | 0 |
 | taint.cpp:4:6:4:21 | arithAssignments | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:142:5:142:10 | select | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| taint.cpp:142:5:142:10 | select | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
+| taint.cpp:190:7:190:12 | memcpy | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| taint.cpp:190:7:190:12 | memcpy | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
 | taint.cpp:249:13:249:13 | _FUN | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | taint.cpp:249:13:249:13 | operator() | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | taint.cpp:302:6:302:14 | myAssign2 | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | taint.cpp:307:6:307:14 | myAssign3 | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | taint.cpp:312:6:312:14 | myAssign4 | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | taint.cpp:523:7:523:13 | _strset | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:725:10:725:15 | strtol | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| taint.cpp:725:10:725:15 | strtol | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
 | vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 getSignatureParameterName
 | (CAtlFile &) | CAtlFile | CAtlFile | 0 | CAtlFile & |
@@ -409,19 +450,39 @@ getSignatureParameterName
 | (LPTSTR,LPCTSTR,DWORD *) | CRegKey | QueryValue | 0 | LPTSTR |
 | (LPTSTR,LPCTSTR,DWORD *) | CRegKey | QueryValue | 1 | LPCTSTR |
 | (LPTSTR,LPCTSTR,DWORD *) | CRegKey | QueryValue | 2 | DWORD * |
+| (PCXSTR) | CSimpleStringT | operator+= | 0 | PCXSTR |
+| (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 | PCXSTR |
+| (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 | IAtlStringMgr * |
 | (UINT) | CComBSTR | LoadString | 0 | UINT |
 | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 | UINT |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 | XCHAR * |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 | const XCHAR * |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 | int |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 0 | XCHAR * |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 1 | const XCHAR * |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 | int |
+| (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 | XCHAR * |
+| (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 | size_t |
+| (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 | const XCHAR * |
+| (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 3 | int |
 | (char) | CComBSTR | Append | 0 | char |
+| (char) | CSimpleStringT | operator+= | 0 | char |
 | (const CComBSTR &) | CComBSTR | Append | 0 | const CComBSTR & |
 | (const CComBSTR &) | CComBSTR | CComBSTR | 0 | const CComBSTR & |
 | (const CComSafeArray &) | CComSafeArray | CComSafeArray | 0 | const CComSafeArray & |
 | (const CComSafeArray &) | CComSafeArray | operator= | 0 | const CComSafeArray & |
+| (const CSimpleStringT &) | CSimpleStringT | CSimpleStringT | 0 | const CSimpleStringT & |
+| (const CSimpleStringT &) | CSimpleStringT | operator+= | 0 | const CSimpleStringT & |
+| (const CStaticString &) | CSimpleStringT | operator+= | 0 | const CStaticString & |
 | (const SAFEARRAY &) | CComSafeArray | CComSafeArray | 0 | const SAFEARRAY & |
 | (const SAFEARRAY *) | CComSafeArray | Add | 0 | const SAFEARRAY * |
 | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 | const SAFEARRAY * |
 | (const SAFEARRAY *) | CComSafeArray | operator= | 0 | const SAFEARRAY * |
 | (const T &,BOOL) | CComSafeArray<T> | Add | 0 | const class:0 & |
 | (const T &,BOOL) | CComSafeArray<T> | Add | 1 | BOOL |
+| (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 | const XCHAR * |
+| (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 | int |
+| (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 2 | IAtlStringMgr * |
 | (const deque &) | deque | deque | 0 | const deque & |
 | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 0 | const deque & |
 | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 | const class:1 & |
@@ -509,10 +570,12 @@ getSignatureParameterName
 | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 | size_type |
 | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:0 & |
 | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 | const class:1 & |
+| (unsigned char) | CSimpleStringT | operator+= | 0 | unsigned char |
 | (vector &&) | vector | vector | 0 | vector && |
 | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 0 | vector && |
 | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:1 & |
 | (wchar_t) | CComBSTR | Append | 0 | wchar_t |
+| (wchar_t) | CSimpleStringT | operator+= | 0 | wchar_t |
 getParameterTypeName
 | arrayassignment.cpp:3:6:3:9 | sink | 0 | int |
 | arrayassignment.cpp:4:6:4:9 | sink | 0 | MyInt |

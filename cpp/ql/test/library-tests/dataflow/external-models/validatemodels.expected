@@ -18,11 +18,17 @@
 | Dubious signature "(InputIterator,InputIterator,const Allocator &)" in summary model. |
 | Dubious signature "(LPCTSTR,DWORD *,void *,ULONG *)" in summary model. |
 | Dubious signature "(LPTSTR,LPCTSTR,DWORD *)" in summary model. |
+| Dubious signature "(PCXSTR,IAtlStringMgr *)" in summary model. |
+| Dubious signature "(XCHAR *,const XCHAR *,int)" in summary model. |
+| Dubious signature "(XCHAR *,size_t,const XCHAR *,int)" in summary model. |
 | Dubious signature "(const CComBSTR &)" in summary model. |
 | Dubious signature "(const CComSafeArray &)" in summary model. |
+| Dubious signature "(const CSimpleStringT &)" in summary model. |
+| Dubious signature "(const CStaticString &)" in summary model. |
 | Dubious signature "(const SAFEARRAY &)" in summary model. |
 | Dubious signature "(const SAFEARRAY *)" in summary model. |
 | Dubious signature "(const T &,BOOL)" in summary model. |
+| Dubious signature "(const XCHAR *,int,IAtlStringMgr *)" in summary model. |
 | Dubious signature "(const deque &)" in summary model. |
 | Dubious signature "(const deque &,const Allocator &)" in summary model. |
 | Dubious signature "(const forward_list &)" in summary model. |
@@ -43,5 +49,6 @@
 | Dubious signature "(list &&,const Allocator &)" in summary model. |
 | Dubious signature "(size_type,const T &)" in summary model. |
 | Dubious signature "(size_type,const T &,const Allocator &)" in summary model. |
+| Dubious signature "(unsigned char)" in summary model. |
 | Dubious signature "(vector &&)" in summary model. |
 | Dubious signature "(vector &&,const Allocator &)" in summary model. |
