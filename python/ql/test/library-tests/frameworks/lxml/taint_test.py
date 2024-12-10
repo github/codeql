@@ -1,36 +1,37 @@
 import lxml.etree as ET
+import io
 
 def ensure_tainted(*args):
-    pass 
+    print("ensure_tainted: ", *args)
 
-TAINTED_STRING = "<a><b></b></a>"
+TAINTED_STRING = "<a><b></b><c></c></a>"
 src = TAINTED_STRING
 
 def test():
     ensure_tainted(
         src, # $ tainted
-        ET.fromstring(src),  # $ tainted
-        ET.XML(src),  # $ tainted
-        ET.HTML(src),  # $ tainted
-        ET.fromstringlist([src]),  # $ tainted
-        ET.XMLID(src),  # $ tainted
-        ET.XMLDTD(src),  # $ tainted
+        ET.fromstring(src),  # $ tainted decodeFormat=XML decodeInput=src xmlVuln='XXE' decodeOutput=ET.fromstring(..)
+        ET.XML(src),  # $ tainted decodeFormat=XML decodeInput=src xmlVuln='XXE' decodeOutput=ET.XML(..)
+        ET.HTML(src),  # $ tainted decodeFormat=XML decodeInput=src decodeOutput=ET.HTML(..)
+        ET.fromstringlist([src]),  # $ tainted decodeFormat=XML decodeInput=List xmlVuln='XXE' decodeOutput=ET.fromstringlist(..)
+        ET.XMLID(src),  # $ tainted decodeFormat=XML decodeInput=src xmlVuln='XXE' decodeOutput=ET.XMLID(..)
+        ET.XMLDTDID(src),  # $ tainted decodeFormat=XML decodeInput=src xmlVuln='XXE' decodeOutput=ET.XMLDTDID(..)
     )
 
 
-    parser = ET.XmlParser()
-    parser.feed(src)
-    ensure_tainted(parser.close()),  # $ tainted
+    parser = ET.XMLParser()
+    parser.feed(src) # $ decodeFormat=XML decodeInput=src xmlVuln='XXE'
+    ensure_tainted(parser.close()),  # $ tainted decodeOutput=parser.close()
 
     parser2 = ET.get_default_parser()
-    parser.feed(data=src)
-    ensure_tainted(parser2.close()),  # $ tainted
+    parser2.feed(data=src) # $ decodeFormat=XML decodeInput=src xmlVuln='XXE'
+    ensure_tainted(parser2.close()),  # $ tainted decodeOutput=parser2.close()
 
-    elem = ET.XML(src)
+    elem = ET.XML(src) # $ decodeFormat=XML decodeInput=src xmlVuln='XXE' decodeOutput=ET.XML(..)
     ensure_tainted(
         elem,  # $ tainted
-        ET.tostring(elem),  # $ tainted
-        ET.tostringlist(elem),  # $ tainted
+        ET.tostring(elem),  # $ tainted encodeFormat=XML encodeInput=elem encodeOutput=ET.tostring(..)
+        ET.tostringlist(elem),  # $ tainted encodeFormat=XML encodeInput=elem encodeOutput=ET.tostringlist(..)
         elem.attrib,  # $ tainted
         elem.base,  # $ tainted
         elem.nsmap,  # $ tainted
@@ -44,60 +45,92 @@ def test():
         elem.cssselect("b")[0].text,  # $ tainted
         elem.find("b").text,  # $ tainted
         elem.findall("b"),  # $ tainted
-        list(elem.findall("b"))[0].text,  # $ tainted
+        elem.findall("b")[0].text,   # $ tainted 
+        list(elem.findall("b"))[0].text,  # $ MISSING:tainted # Type tracking is not followed through call to `list`, 
         elem.get("at"),  # $ tainted
-        elem.getchildren(),  # $ tainted
-        list(elem.getchildren())[0].text,  # $ tainted,
+        elem.getchildren()[0].text,  # $ tainted
         elem.getiterator(),  # $ tainted
-        list(elem.getiterator())[0].text,  # $ tainted
-        elem.getnext().text,  # $ tainted
-        elem.getparent().text,  # $ tainted
-        elem.getprevious().text,  # $ tainted
+        next(elem.getiterator()).text,  # $ MISSING:tainted
+        elem[0].getnext().text,  # $ tainted
+        elem[0].getparent().text,  # $ tainted
+        elem[1].getprevious().text,  # $ tainted
         elem.getroottree(),  # $ tainted
         elem.getroottree().getroot().text,  # $ tainted
         elem.items(),  # $ tainted
-        list(elem.items())[0].text,  # $ tainted
         elem.iter(),  # $ tainted
-        list(elem.iter())[0].text,  # $ tainted
+        next(elem.iter()).text,  # $ MISSING:tainted
         elem.iterancestors(),  # $ tainted
-        list(elem.iterancestors())[0].text,  # $ tainted
-        elem.iterchildren(), # $ tainted
-        list(elem.iterchildren())[0].text,  # $ tainted
-        elem.iterdecendants(),  # $ tainted
-        list(elem.iterdecendants())[0].text,  # $ tainted
-        elem.iterfind(),  # $ tainted
-        list(elem.iterfind())[0].text,  # $ tainted
-        elem.itersiblings(),  # $ tainted
-        list(elem.itersiblings())[0].text,  # $ tainted
+        next(elem[0].iterancestors()).text,  # $ MISSING:tainted
+        elem.iterchildren(),  # $ tainted
+        next(elem.iterchildren()).text, # $ MISSING:tainted
+        elem.iterdescendants(),  # $ tainted
+        next(elem.iterdescendants()).text,  # $ MISSING:tainted
+        elem.iterfind("b"),  # $ tainted
+        next(elem.iterfind("b")).text,  # $ MISSING:tainted
+        elem[0].itersiblings(),  # $ tainted
+        next(elem[0].itersiblings()).text,  # $ MISSING:tainted
         elem.itertext(),  # $ tainted
-        list(elem.itertext())[0].text,  # $ tainted
         elem.keys(),  # $ tainted
         elem.values(),  # $ tainted
-        elem.xpath("b"),  # $ tainted
-        list(elem.xpath("b"))[0].text,  # $ tainted
+        elem.xpath("b")[0].text,  # $ tainted getXPath="b"
     )
 
     for ch in elem:
         ensure_tainted(
             ch,  # $ tainted
-            ch.text  # $ tainted
+            ch.text  # $ MISSING: tainted # API node getASubscript() appears to not consider things like for loops 
         )
 
-    tree = ET.parse(src)
+    buf = io.StringIO(src)
+    tree = ET.parse(buf) # $ decodeFormat=XML decodeInput=buf xmlVuln='XXE' decodeOutput=ET.parse(..) SPURIOUS:getAPathArgument=buf # Spurious as this is used as a file-like objectt, not a path 
     ensure_tainted(
         tree,  # $ tainted
         tree.getroot().text,  # $ tainted
-        tree.find("a").text,  # $ tainted
-        tree.findall("a"),  # $ tainted
-        list(tree.findall("a"))[0].text,  # $ tainted
+        tree.find("b").text,  # $ tainted
+        tree.findall("b")[0].text,  # $ tainted
         tree.getiterator(),  # $ tainted
-        list(tree.getiterator())[0].text,  # $ tainted
+        next(tree.getiterator()).text,  # $ MISSING:tainted
         tree.iter(),  # $ tainted
-        list(tree.iter())[0].text,  # $ tainted
-        tree.iterfind(),  # $ tainted
-        list(tree.iterfind())[0].text,  # $ tainted
+        next(tree.iter()).text,  # $ MISSING:tainted
+        tree.iterfind("b"),  # $ tainted
+        next(tree.iterfind("b")).text,  # $ MISSING:tainted
     )
 
+    (elem2, ids) = ET.XMLID(src) # $ decodeFormat=XML decodeInput=src xmlVuln='XXE' decodeOutput=ET.XMLID(..)
+    (elem3, ids2) = ET.XMLDTDID(src) # $ decodeFormat=XML decodeInput=src xmlVuln='XXE' decodeOutput=ET.XMLDTDID(..)
+
+    ensure_tainted(
+        elem2,  # $ tainted
+        elem3,  # $ tainted
+        ids,  # $ tainted
+        ids2,  # $ tainted
+        elem2.text,  # $ MISSING:tainted # Type is not tracked to the tuple return value
+        elem3.text,  # $ MISSING:tainted
+    )
+
+    buf = io.StringIO(src)
+    (tree2,ids3) = ET.parseid(buf)  # $ decodeFormat=XML decodeInput=buf xmlVuln='XXE' decodeOutput=ET.parseid(..) SPURIOUS:getAPathArgument=buf
+
+    ensure_tainted(
+        tree2, # $ tainted
+        ids3, # $ tainted
+        tree2.getroot() # $ MISSING:tainted
+    )
+
+    buf = io.BytesIO(bytes(src, "utf8"))
+    for ev, el in ET.iterparse(buf):  # $ decodeFormat=XML decodeInput=buf xmlVuln='XXE' decodeOutput=ET.iterparse(..) SPURIOUS:getAPathArgument=buf
+        ensure_tainted(
+            el, # $ tainted
+            el.text, # $ MISSING:tainted
+        )
+
+    def func(tree_arg: ET.ElementTree):
+        ensure_tainted(
+            tree_arg, # $ tainted
+            tree_arg.getroot().text # $ tainted # Type tracking from the type hint
+        )
+
+    func(tree2)
     
 
 test()

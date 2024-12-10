@@ -69,7 +69,7 @@ module Lxml {
    */
   class XPathCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
     XPathCall() {
-      this.(DataFlow::MethodCallNode).calls([Element::instance(), ElementTree::instance()], "xpath")
+      this = [Element::instance(), ElementTree::instance()].getMember("xpath").getACall()
     }
 
     override DataFlow::Node getXPath() { result in [this.getArg(0), this.getArgByName("_path")] }
@@ -201,6 +201,7 @@ module Lxml {
    * A call to either of:
    * - `lxml.etree.fromstring`
    * - `lxml.etree.fromstringlist`
+   * -
    * - `lxml.etree.XML`
    * - `lxml.etree.XMLID`
    * - `lxml.etree.parse`
@@ -209,8 +210,10 @@ module Lxml {
    * See
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.fromstring
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.fromstringlist
+   * - https://lxml.de/apidoc/lxml.etree.html#lxml.etree.HTML
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.XML
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.XMLID
+   * - https://lxml.de/apidoc/lxml.etree.html#lxml.etree.XMLDTDID
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parse
    * - https://lxml.de/apidoc/lxml.etree.html?highlight=parseids#lxml.etree.parseid
    */
@@ -218,14 +221,16 @@ module Lxml {
     string functionName;
 
     LxmlParsing() {
-      functionName in ["fromstring", "fromstringlist", "XML", "XMLID", "parse", "parseid"] and
+      functionName in [
+          "fromstring", "fromstringlist", "HTML", "XML", "XMLID", "XMLDTDID", "parse", "parseid"
+        ] and
       this = etreeRef().getMember(functionName).getACall()
     }
 
     override DataFlow::Node getAnInput() {
       result in [
           this.getArg(0),
-          // fromstring / XML / XMLID
+          // fromstring / HTML / XML / XMLID / XMLDTDID
           this.getArgByName("text"),
           // fromstringlist
           this.getArgByName("strings"),
@@ -240,7 +245,8 @@ module Lxml {
       this.getParserArg() = XmlParser::instanceVulnerableTo(kind)
       or
       kind.isXxe() and
-      not exists(this.getParserArg())
+      not exists(this.getParserArg()) and
+      not functionName = "HTML"
     }
 
     override predicate mayExecuteInput() { none() }
@@ -314,70 +320,89 @@ module Lxml {
   /** Provides models for instances of the `lxml.etree.Element` class. */
   module Element {
     /** Gets a reference to the `Element` class. */
-    API::Node classRef() { result = etreeRef().getMember("Element") }
+    API::Node classRef() { result = etreeRef().getMember(["Element", "_Element"]) }
 
-    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
-
-    /** Gets a reference to an `lxml.etree.Element` instance. */
-    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
-      t.start() and
-      result instanceof InstanceSource
-      or
-      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    abstract class InstanceSource instanceof API::Node {
+      string toString() { result = super.toString() }
     }
 
     /** Gets a reference to an `lxml.etree.Element` instance. */
-    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+    API::Node instance() { result instanceof InstanceSource }
 
     /** An `Element` instantiated directly. */
     private class ElementInstance extends InstanceSource {
-      ElementInstance() { this = classRef().getACall() }
+      ElementInstance() { this = classRef().getAnInstance() }
     }
 
     /** The result of a parse operation that returns an `Element`. */
-    private class ParseResult extends InstanceSource, DataFlow::MethodCallNode {
+    private class ParseResult extends InstanceSource {
       ParseResult() {
-        this.calls(XmlParser::instance(_), "close")
+        // TODO: The XmlParser module does not currently use API graphs
+        this =
+          [
+            etreeRef().getMember("XMLParser").getAnInstance(),
+            etreeRef().getMember("get_default_parser").getReturn()
+          ].getMember("close").getReturn()
         or
         // TODO: `XMLID` and `parseid` returns a tuple of which the first element is an `Element`
-        this = etreeRef().getMember(["XML", "HTML", "fromstring", "fromstringlist"]).getACall()
+        this = etreeRef().getMember(["XML", "HTML", "fromstring", "fromstringlist"]).getReturn()
       }
     }
 
-    /** An element index such as `etree.parse(...)[0]` */
-    private class ElementIndex extends InstanceSource, DataFlow::Node {
-      ElementIndex() { this.asExpr().(Subscript).getObject() = instance().asExpr() }
-    }
-
     /** A call to a method on an `Element` that returns another `Element`. */
-    private class ElementMethod extends InstanceSource, DataFlow::MethodCallNode {
+    private class ElementMethod extends InstanceSource {
       ElementMethod() {
-        // TODO: methods that return iterators of `Element`s - `findall`, `finditer`, `iter`, a few others
-        // an `Element` itself can be used as an iterator of its children.
-        this.calls(instance(), ["find", "getnext", "getprevious", "getparent"])
+        // an Element is an iterator of Elements
+        this = instance().getASubscript()
+        or
+        // methods that return an Element
+        this = instance().getMember(["find", "getnext", "getprevious", "getparent"]).getReturn()
+        or
+        // methods that return an iterator of Elements
+        this =
+          instance()
+              .getMember([
+                  "cssselect", "findall", "getchildren", "getiterator", "iter", "iterancestors",
+                  "iterdecendants", "iterchildren", "itersiblings", "iterfind", "xpath"
+                ])
+              .getReturn()
+              .getASubscript()
       }
     }
 
     /** A call to a method on an `ElementTree` that returns an `Element`. */
-    private class ElementTreeMethod extends InstanceSource, DataFlow::MethodCallNode {
-      ElementTreeMethod() { this.calls(ElementTree::instance(), "getroot") }
+    private class ElementTreeMethod extends InstanceSource {
+      ElementTreeMethod() {
+        this = ElementTree::instance().getMember(["getroot", "find"]).getReturn()
+        or
+        this =
+          ElementTree::instance()
+              .getMember(["findall", "getiterator", "iter", "iterfind", "xpath"])
+              .getReturn()
+              .getASubscript()
+      }
     }
 
     /** An additional taint step from an `Element` instance. See https://lxml.de/apidoc/lxml.etree.html#lxml.etree.ElementBase */
     private class ElementTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        exists(DataFlow::MethodCallNode call | nodeTo = call and nodeFrom = instance() |
+        exists(DataFlow::MethodCallNode call |
+          nodeTo = call and instance().asSource().flowsTo(nodeFrom)
+        |
           call.calls(nodeFrom,
-            // We don't consider sibling nodes to be tainted (getnext, getprevious, itersiblings)
+            // We consider a node to be tainted if there could be taint anywhere in the element tree
+            // So sibling nodes (e.g. `getnext`) are also tainted
+            // This ensures nodes like `elem[0].getnext()` are tracked.
             [
               "cssselect", "find", "findall", "findtext", "get", "getchildren", "getiterator",
-              "getparent", "getroottree", "items", "iter", "iterancestors", "iterchildren",
-              "iterdescendants", "iterfind", "itertext", "keys", "values", "xpath"
+              "getnext", "getparent", "getprevious", "getroottree", "items", "iter",
+              "iterancestors", "iterchildren", "iterdescendants", "itersiblings", "iterfind",
+              "itertext", "keys", "values", "xpath"
             ])
         )
         or
-        exists(DataFlow::AttrRead attr | nodeTo = attr and nodeFrom = instance() |
-          attr.accesses(nodeFrom, ["attrib", "base", "nsmap", "tag", "tail", "text"])
+        exists(DataFlow::AttrRead attr | nodeTo = attr and instance().asSource().flowsTo(nodeFrom) |
+          attr.accesses(nodeFrom, ["attrib", "base", "nsmap", "prefix", "tag", "tail", "text"])
         )
       }
     }
@@ -385,7 +410,7 @@ module Lxml {
 
   /** Provides models for instances of the `lxml.etree.ElementTree` class. */
   module ElementTree {
-    API::Node classRef() { result = etreeRef().getMember("ElementTree") }
+    API::Node classRef() { result = etreeRef().getMember(["ElementTree", "_ElementTree"]) }
 
     /**
      * A source of instances of `lxml.etree.ElementTree` instances, extend this class to model new instances.
@@ -396,42 +421,34 @@ module Lxml {
      *
      * Use the predicate `ElementTree::instance()` to get references to instances of `lxml.etree.ElementTree` instances.
      */
-    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
-
-    /** Gets a reference to an `lxml.etree.ElementTree` instance.` */
-    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
-      t.start() and
-      result instanceof InstanceSource
-      or
-      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    abstract class InstanceSource instanceof API::Node {
+      string toString() { result = super.toString() }
     }
 
     /** Gets a reference to an `lxml.etree.ElementTree` instance. */
-    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+    API::Node instance() { result instanceof InstanceSource }
 
     /** An `ElementTree` instantiated directly. */
     private class ElementTreeInstance extends InstanceSource {
-      ElementTreeInstance() { this = classRef().getACall() }
+      ElementTreeInstance() { this = classRef().getAnInstance() }
     }
 
     /** The result of a parst operation that returns an `ElementTree` */
-    private class ParseResult extends InstanceSource, DataFlow::MethodCallNode {
-      ParseResult() { this = etreeRef().getMember("parse").getACall() }
+    private class ParseResult extends InstanceSource {
+      ParseResult() { this = etreeRef().getMember("parse").getReturn() }
     }
 
     /** A call to a method on an `Element` that returns another `Element`. */
-    private class ElementMethod extends InstanceSource, DataFlow::MethodCallNode {
-      ElementMethod() {
-        // TODO: methods that return iterators of `Element`s - `findall`, `finditer`, `iter`, a few others
-        // an `Element` itself can be used as an iterator of its children.
-        this.calls(Element::instance(), "getroottree")
-      }
+    private class ElementMethod extends InstanceSource {
+      ElementMethod() { this = Element::instance().getMember("getroottree").getReturn() }
     }
 
     /** An additional taint step from an `ElementTree` instance. See https://lxml.de/apidoc/lxml.etree.html#lxml.etree._ElementTree */
     private class ElementTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-        exists(DataFlow::MethodCallNode call | nodeTo = call and nodeFrom = instance() |
+        exists(DataFlow::MethodCallNode call |
+          nodeTo = call and instance().asSource().flowsTo(nodeFrom)
+        |
           call.calls(nodeFrom,
             [
               "find", "findall", "findtext", "get", "getiterator", "getroot", "iter", "iterfind",
@@ -439,7 +456,7 @@ module Lxml {
             ])
         )
         or
-        exists(DataFlow::AttrRead attr | nodeTo = attr and nodeFrom = instance() |
+        exists(DataFlow::AttrRead attr | nodeTo = attr and instance().asSource().flowsTo(nodeFrom) |
           attr.accesses(nodeFrom, "docinfo")
         )
       }
