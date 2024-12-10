@@ -1557,7 +1557,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           summaryCtx = TSummaryCtxSome(node, state, t, ap, stored)
           or
           // flow out of a callable
-          fwdFlowOut(_, _, node, state, cc, summaryCtx, t, ap, apa, stored)
+          fwdFlowOut(_, _, node, state, cc, summaryCtx, t, ap, stored) and
+          apa = getApprox(ap)
           or
           // flow through a callable
           exists(DataFlowCall call, CcCall ccc, RetNodeEx ret, boolean allowsFieldFlow |
@@ -1939,19 +1940,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate fwdFlowIntoRet(
           RetNodeEx ret, FlowState state, CcNoCall cc, SummaryCtx summaryCtx, Typ t, Ap ap,
-          ApApprox apa, TypOption stored
+          TypOption stored
         ) {
           instanceofCcNoCall(cc) and
           not outBarrier(ret, state) and
-          fwdFlow(ret, state, cc, summaryCtx, t, ap, apa, stored)
+          fwdFlow(ret, state, cc, summaryCtx, t, ap, _, stored)
         }
 
         pragma[nomagic]
         private predicate fwdFlowOutCand(
           DataFlowCall call, RetNodeEx ret, CcNoCall innercc, DataFlowCallable inner, NodeEx out,
-          ApApprox apa, boolean allowsFieldFlow
+          boolean allowsFieldFlow
         ) {
-          fwdFlowIntoRet(ret, _, innercc, _, _, _, apa, _) and
+          fwdFlowIntoRet(ret, _, innercc, _, _, _, _) and
           inner = ret.getEnclosingCallable() and
           (
             call = viableImplCallContextReducedReverseInlineLate(inner, innercc) and
@@ -1964,9 +1965,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate fwdFlowOutValidEdge(
           DataFlowCall call, RetNodeEx ret, CcNoCall innercc, DataFlowCallable inner, NodeEx out,
-          CcNoCall outercc, ApApprox apa, boolean allowsFieldFlow
+          CcNoCall outercc, boolean allowsFieldFlow
         ) {
-          fwdFlowOutCand(call, ret, innercc, inner, out, apa, allowsFieldFlow) and
+          fwdFlowOutCand(call, ret, innercc, inner, out, allowsFieldFlow) and
           FwdTypeFlow::typeFlowValidEdgeOut(call, inner) and
           outercc = getCallContextReturn(inner, call)
         }
@@ -1974,11 +1975,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[inline]
         private predicate fwdFlowOut(
           DataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state, CcNoCall outercc,
-          SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa, TypOption stored
+          SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored
         ) {
           exists(RetNodeEx ret, CcNoCall innercc, boolean allowsFieldFlow |
-            fwdFlowIntoRet(ret, state, innercc, summaryCtx, t, ap, apa, stored) and
-            fwdFlowOutValidEdge(call, ret, innercc, inner, out, outercc, apa, allowsFieldFlow) and
+            fwdFlowIntoRet(ret, state, innercc, summaryCtx, t, ap, stored) and
+            fwdFlowOutValidEdge(call, ret, innercc, inner, out, outercc, allowsFieldFlow) and
             not inBarrier(out, state) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
@@ -2022,7 +2023,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             DataFlowCall call, DataFlowCallable c, NodeEx node, FlowState state, Cc cc, Typ t,
             Ap ap, TypOption stored
           ) {
-            fwdFlowOut(call, c, node, state, cc, _, t, ap, _, stored)
+            fwdFlowOut(call, c, node, state, cc, _, t, ap, stored)
           }
 
           pragma[nomagic]
@@ -3299,10 +3300,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             )
             or
             // flow out of a callable
-            exists(RetNodeEx ret, CcNoCall innercc, boolean allowsFieldFlow, ApApprox apa |
+            exists(RetNodeEx ret, CcNoCall innercc, boolean allowsFieldFlow |
               pn1 = TPathNodeMid(ret, state, innercc, summaryCtx, t, ap, stored) and
-              fwdFlowIntoRet(ret, state, innercc, summaryCtx, t, ap, apa, stored) and
-              fwdFlowOutValidEdge(_, ret, innercc, _, node, cc, apa, allowsFieldFlow) and
+              fwdFlowIntoRet(ret, state, innercc, summaryCtx, t, ap, stored) and
+              fwdFlowOutValidEdge(_, ret, innercc, _, node, cc, allowsFieldFlow) and
               not inBarrier(node, state) and
               label = "" and
               if allowsFieldFlow = false then ap instanceof ApNil else any()
