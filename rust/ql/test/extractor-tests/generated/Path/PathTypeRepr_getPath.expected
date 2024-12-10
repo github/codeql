@@ -1,0 +1,8 @@
+| gen_path_expr.rs:7:14:7:14 | T | gen_path_expr.rs:7:14:7:14 | T |
+| gen_path_expr.rs:7:14:7:14 | T | gen_path_expr.rs:7:14:7:14 | T |
+| gen_path_expr.rs:8:14:8:21 | TypeRepr | gen_path_expr.rs:8:14:8:21 | TypeRepr |
+| gen_path_expr.rs:8:14:8:21 | TypeRepr | gen_path_expr.rs:8:14:8:21 | TypeRepr |
+| gen_path_type_repr.rs:5:14:5:48 | ...::HashMap::<...> | gen_path_type_repr.rs:5:14:5:48 | ...::HashMap::<...> |
+| gen_path_type_repr.rs:5:40:5:42 | i32 | gen_path_type_repr.rs:5:40:5:42 | i32 |
+| gen_path_type_repr.rs:5:45:5:47 | i32 | gen_path_type_repr.rs:5:45:5:47 | i32 |
+| gen_path_type_repr.rs:6:14:6:20 | ...::Item | gen_path_type_repr.rs:6:14:6:20 | ...::Item |

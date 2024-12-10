@@ -117,7 +117,7 @@ fn match_pattern1() {
         =>
         {
             print_i64(y1)// $ read_access=y1_2
-        } 
+        }
         None => print_str("NONE"),
     }
 
@@ -480,7 +480,11 @@ struct MyStruct {
 
 impl MyStruct {
     fn my_get(&mut self) -> i64 {
-        return self.val;
+        return self.val; // $ read_access=self
+    }
+
+    fn id(self) -> Self {
+        self // $ read_access=self
     }
 }
 
@@ -508,7 +512,7 @@ trait Bar {
 
 impl MyStruct {
   fn bar(&mut self) {
-    *self = MyStruct { val: 3 };
+    *self = MyStruct { val: 3 }; // $ read_access=self
   }
 }
 

@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sourceModel
+    data:
+      - ["Microsoft.AspNetCore.Components", "NagivationManager", True, "get_BaseUri", "", "", "ReturnValue", "remote", "manual"]
+      - ["Microsoft.AspNetCore.Components", "NagivationManager", True, "get_Uri", "", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.AspNetCore.Components", "NagivationManager", True, "ToAbsoluteUri", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -64,6 +64,7 @@ abbreviations = {
     "int": "integer",
     "var": "variable",
     "ref": "reference",
+    "pat": "pattern",
 }
 
 abbreviations.update({f"{k}s": f"{v}s" for k, v in abbreviations.items()})
@@ -104,8 +105,17 @@ def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
     return f"{prop_name} of this {class_name}"
 
 
-def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dict[str, schema.Class],
+def _type_is_hideable(t: str, lookup: typing.Dict[str, schema.ClassBase]) -> bool:
+    if t in lookup:
+        match lookup[t]:
+            case schema.Class() as cls:
+                return "ql_hideable" in cls.pragmas
+    return False
+
+
+def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dict[str, schema.ClassBase],
                     prev_child: str = "") -> ql.Property:
+
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
         qltest_skip="qltest_skip" in prop.pragmas,
@@ -115,20 +125,22 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
         is_unordered=prop.is_unordered,
         description=prop.description,
         synth=bool(cls.synth) or prop.synth,
-        type_is_hideable="ql_hideable" in lookup[prop.type].pragmas if prop.type in lookup else False,
+        type_is_hideable=_type_is_hideable(prop.type, lookup),
+        type_is_codegen_class=prop.type in lookup and not lookup[prop.type].imported,
         internal="ql_internal" in prop.pragmas,
     )
+    ql_name = prop.pragmas.get("ql_name", prop.name)
     if prop.is_single:
         args.update(
-            singular=inflection.camelize(prop.name),
+            singular=inflection.camelize(ql_name),
             tablename=inflection.tableize(cls.name),
             tableparams=["this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
             doc=_get_doc(cls, prop),
         )
     elif prop.is_repeated:
         args.update(
-            singular=inflection.singularize(inflection.camelize(prop.name)),
-            plural=inflection.pluralize(inflection.camelize(prop.name)),
+            singular=inflection.singularize(inflection.camelize(ql_name)),
+            plural=inflection.pluralize(inflection.camelize(ql_name)),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"] if not prop.is_unordered else ["this", "result"],
             doc=_get_doc(cls, prop, plural=False),
@@ -136,14 +148,14 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
         )
     elif prop.is_optional:
         args.update(
-            singular=inflection.camelize(prop.name),
+            singular=inflection.camelize(ql_name),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "result"],
             doc=_get_doc(cls, prop),
         )
     elif prop.is_predicate:
         args.update(
-            singular=inflection.camelize(prop.name, uppercase_first_letter=False),
+            singular=inflection.camelize(ql_name, uppercase_first_letter=False),
             tablename=inflection.underscore(f"{cls.name}_{prop.name}"),
             tableparams=["this"],
             doc=_get_doc(cls, prop),
@@ -153,13 +165,17 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dic
     return ql.Property(**args)
 
 
-def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> ql.Class:
+def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.ClassBase]) -> ql.Class:
+    if "ql_name" in cls.pragmas:
+        raise Error("ql_name is not supported yet for classes, only for properties")
     prev_child = ""
     properties = []
     for p in cls.properties:
         prop = get_ql_property(cls, p, lookup, prev_child)
         if prop.is_child:
             prev_child = prop.singular
+            if prop.type in lookup and lookup[prop.type].cfg:
+                prop.cfg = True
         properties.append(prop)
     return ql.Class(
         name=cls.name,
@@ -171,6 +187,16 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> q
         doc=cls.doc,
         hideable="ql_hideable" in cls.pragmas,
         internal="ql_internal" in cls.pragmas,
+        cfg=cls.cfg,
+    )
+
+
+def get_ql_cfg_class(cls: schema.Class, lookup: typing.Dict[str, ql.Class]) -> ql.CfgClass:
+    return ql.CfgClass(
+        name=cls.name,
+        bases=[base for base in cls.bases if lookup[base.base].cfg],
+        properties=cls.properties,
+        doc=cls.doc
     )
 
 
@@ -361,6 +387,7 @@ def generate(opts, renderer):
     input = opts.schema
     out = opts.ql_output
     stub_out = opts.ql_stub_output
+    cfg_out = opts.ql_cfg_output
     test_out = opts.ql_test_output
     missing_test_source_filename = "MISSING_SOURCE.txt"
     include_file = stub_out.with_suffix(".qll")
@@ -375,16 +402,18 @@ def generate(opts, renderer):
 
     data = schemaloader.load_file(input)
 
-    classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items()}
+    classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items() if not cls.imported}
     if not classes:
         raise NoClasses
     root = next(iter(classes.values()))
     if root.has_children:
         raise RootElementHasChildren(root)
 
-    imports = {}
+    pre_imports = {n: cls.module for n, cls in data.classes.items() if cls.imported}
+    imports = dict(pre_imports)
     imports_impl = {}
     classes_used_by = {}
+    cfg_classes = []
     generated_import_prefix = get_import(out, opts.root_dir)
     registry = opts.generated_registry or pathlib.Path(
         os.path.commonpath((out, stub_out, test_out)), ".generated.list")
@@ -393,7 +422,7 @@ def generate(opts, renderer):
                          force=opts.force) as renderer:
 
         db_classes = [cls for name, cls in classes.items() if not data.classes[name].synth]
-        renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
+        renderer.render(ql.DbClasses(classes=db_classes, imports=sorted(set(pre_imports.values()))), out / "Raw.qll")
 
         classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
         for c in classes_by_dir_and_name:
@@ -402,6 +431,8 @@ def generate(opts, renderer):
             imports[c.name] = path
             path_impl = get_import(stub_out / c.dir / "internal" / c.name, opts.root_dir)
             imports_impl[c.name + "Impl"] = path_impl + "Impl"
+            if c.cfg:
+                cfg_classes.append(get_ql_cfg_class(c, classes))
 
         for c in classes.values():
             qll = out / c.path.with_suffix(".qll")
@@ -411,7 +442,17 @@ def generate(opts, renderer):
             c.import_prefix = generated_import_prefix
             renderer.render(c, qll)
 
+        if cfg_out:
+            cfg_classes_val = ql.CfgClasses(
+                include_file_import=get_import(include_file, opts.root_dir),
+                classes=cfg_classes
+            )
+            cfg_qll = cfg_out / "CfgNodes.qll"
+            renderer.render(cfg_classes_val, cfg_qll)
+
         for c in data.classes.values():
+            if c.imported:
+                continue
             path = _get_path(c)
             path_impl = _get_path_impl(c)
             stub_file = stub_out / path_impl
@@ -430,7 +471,7 @@ def generate(opts, renderer):
             renderer.render(class_public, class_public_file)
 
         # for example path/to/elements -> path/to/elements.qll
-        renderer.render(ql.ImportList([i for name, i in imports.items() if not classes[name].internal]),
+        renderer.render(ql.ImportList([i for name, i in imports.items() if name not in classes or not classes[name].internal]),
                         include_file)
 
         elements_module = get_import(include_file, opts.root_dir)
@@ -438,12 +479,15 @@ def generate(opts, renderer):
         renderer.render(
             ql.GetParentImplementation(
                 classes=list(classes.values()),
-                imports=[elements_module] + [i for name, i in imports.items() if classes[name].internal],
+                imports=[elements_module] + [i for name,
+                                             i in imports.items() if name in classes and classes[name].internal],
             ),
             out / 'ParentChild.qll')
 
         if test_out:
             for c in data.classes.values():
+                if c.imported:
+                    continue
                 if should_skip_qltest(c, data.classes):
                     continue
                 test_with_name = c.pragmas.get("qltest_test_with")
@@ -473,7 +517,8 @@ def generate(opts, renderer):
         constructor_imports = []
         synth_constructor_imports = []
         stubs = {}
-        for cls in sorted(data.classes.values(), key=lambda cls: (cls.group, cls.name)):
+        for cls in sorted((cls for cls in data.classes.values() if not cls.imported),
+                          key=lambda cls: (cls.group, cls.name)):
             synth_type = get_ql_synth_class(cls)
             if synth_type.is_final:
                 final_synth_types.append(synth_type)

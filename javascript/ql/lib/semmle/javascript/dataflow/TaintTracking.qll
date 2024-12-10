@@ -612,7 +612,7 @@ module TaintTracking {
                 "italics", "link", "padEnd", "padStart", "repeat", "replace", "replaceAll", "slice",
                 "small", "split", "strike", "sub", "substr", "substring", "sup",
                 "toLocaleLowerCase", "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim",
-                "trimLeft", "trimRight"
+                "trimLeft", "trimRight", "toWellFormed"
               ]
             or
             // sorted, interesting, properties of Object.prototype

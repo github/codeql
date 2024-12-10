@@ -1,5 +1,0 @@
-uniqueEnclosingCallable
-| main.rs:194:25:194:25 | x | Node should have one enclosing callable but has 0. |
-| main.rs:198:28:198:28 | x | Node should have one enclosing callable but has 0. |
-| main.rs:202:28:202:28 | x | Node should have one enclosing callable but has 0. |
-| main.rs:206:28:206:28 | x | Node should have one enclosing callable but has 0. |

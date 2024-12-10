@@ -1,0 +1,44 @@
+#select
+| test.rs:31:9:31:25 | ...::stdout(...) | test.rs:29:1:29:13 | Attr | test.rs:31:9:31:25 | ...::stdout(...) | Call to ...::stdout(...) in a function with the ctor attribute. |
+| test.rs:36:9:36:25 | ...::stdout(...) | test.rs:34:1:34:13 | Attr | test.rs:36:9:36:25 | ...::stdout(...) | Call to ...::stdout(...) in a function with the dtor attribute. |
+| test.rs:43:9:43:25 | ...::stdout(...) | test.rs:40:1:40:13 | Attr | test.rs:43:9:43:25 | ...::stdout(...) | Call to ...::stdout(...) in a function with the dtor attribute. |
+| test.rs:53:9:53:16 | stdout(...) | test.rs:51:1:51:7 | Attr | test.rs:53:9:53:16 | stdout(...) | Call to stdout(...) in a function with the ctor attribute. |
+| test.rs:58:9:58:16 | stderr(...) | test.rs:56:1:56:7 | Attr | test.rs:58:9:58:16 | stderr(...) | Call to stderr(...) in a function with the ctor attribute. |
+| test.rs:63:14:63:28 | ...::_print(...) | test.rs:61:1:61:7 | Attr | test.rs:63:14:63:28 | ...::_print(...) | Call to ...::_print(...) in a function with the ctor attribute. |
+| test.rs:69:9:69:24 | ...::stdin(...) | test.rs:66:1:66:7 | Attr | test.rs:69:9:69:24 | ...::stdin(...) | Call to ...::stdin(...) in a function with the ctor attribute. |
+| test.rs:90:5:90:35 | ...::sleep(...) | test.rs:88:1:88:7 | Attr | test.rs:90:5:90:35 | ...::sleep(...) | Call to ...::sleep(...) in a function with the ctor attribute. |
+| test.rs:97:5:97:23 | ...::exit(...) | test.rs:95:1:95:7 | Attr | test.rs:97:5:97:23 | ...::exit(...) | Call to ...::exit(...) in a function with the ctor attribute. |
+| test.rs:126:9:126:16 | stderr(...) | test.rs:129:1:129:7 | Attr | test.rs:126:9:126:16 | stderr(...) | Call to stderr(...) in a function with the ctor attribute. |
+| test.rs:126:9:126:16 | stderr(...) | test.rs:145:1:145:7 | Attr | test.rs:126:9:126:16 | stderr(...) | Call to stderr(...) in a function with the ctor attribute. |
+| test.rs:126:9:126:44 | ... .write_all(...) | test.rs:129:1:129:7 | Attr | test.rs:126:9:126:44 | ... .write_all(...) | Call to ... .write_all(...) in a function with the ctor attribute. |
+| test.rs:126:9:126:44 | ... .write_all(...) | test.rs:145:1:145:7 | Attr | test.rs:126:9:126:44 | ... .write_all(...) | Call to ... .write_all(...) in a function with the ctor attribute. |
+| test.rs:171:5:171:15 | ...::stdout(...) | test.rs:169:1:169:7 | Attr | test.rs:171:5:171:15 | ...::stdout(...) | Call to ...::stdout(...) in a function with the ctor attribute. |
+edges
+| test.rs:29:1:29:13 | Attr | test.rs:29:1:32:1 | fn bad1_1 |
+| test.rs:29:1:32:1 | fn bad1_1 | test.rs:31:9:31:25 | ...::stdout(...) |
+| test.rs:34:1:34:13 | Attr | test.rs:34:1:37:1 | fn bad1_2 |
+| test.rs:34:1:37:1 | fn bad1_2 | test.rs:36:9:36:25 | ...::stdout(...) |
+| test.rs:39:1:44:1 | fn bad1_3 | test.rs:43:9:43:25 | ...::stdout(...) |
+| test.rs:40:1:40:13 | Attr | test.rs:39:1:44:1 | fn bad1_3 |
+| test.rs:51:1:51:7 | Attr | test.rs:51:1:54:1 | fn bad2_1 |
+| test.rs:51:1:54:1 | fn bad2_1 | test.rs:53:9:53:16 | stdout(...) |
+| test.rs:56:1:56:7 | Attr | test.rs:56:1:59:1 | fn bad2_2 |
+| test.rs:56:1:59:1 | fn bad2_2 | test.rs:58:9:58:16 | stderr(...) |
+| test.rs:61:1:61:7 | Attr | test.rs:61:1:64:1 | fn bad2_3 |
+| test.rs:61:1:64:1 | fn bad2_3 | test.rs:63:14:63:28 | ...::_print(...) |
+| test.rs:66:1:66:7 | Attr | test.rs:66:1:70:1 | fn bad2_4 |
+| test.rs:66:1:70:1 | fn bad2_4 | test.rs:69:9:69:24 | ...::stdin(...) |
+| test.rs:88:1:88:7 | Attr | test.rs:88:1:91:1 | fn bad2_7 |
+| test.rs:88:1:91:1 | fn bad2_7 | test.rs:90:5:90:35 | ...::sleep(...) |
+| test.rs:95:1:95:7 | Attr | test.rs:95:1:98:1 | fn bad2_8 |
+| test.rs:95:1:98:1 | fn bad2_8 | test.rs:97:5:97:23 | ...::exit(...) |
+| test.rs:125:1:127:1 | fn call_target3_1 | test.rs:126:9:126:16 | stderr(...) |
+| test.rs:125:1:127:1 | fn call_target3_1 | test.rs:126:9:126:44 | ... .write_all(...) |
+| test.rs:129:1:129:7 | Attr | test.rs:129:1:132:1 | fn bad3_1 |
+| test.rs:129:1:132:1 | fn bad3_1 | test.rs:131:5:131:20 | call_target3_1(...) |
+| test.rs:131:5:131:20 | call_target3_1(...) | test.rs:125:1:127:1 | fn call_target3_1 |
+| test.rs:145:1:145:7 | Attr | test.rs:145:1:149:1 | fn bad3_3 |
+| test.rs:145:1:149:1 | fn bad3_3 | test.rs:147:5:147:20 | call_target3_1(...) |
+| test.rs:147:5:147:20 | call_target3_1(...) | test.rs:125:1:127:1 | fn call_target3_1 |
+| test.rs:169:1:169:7 | Attr | test.rs:169:1:172:1 | fn bad4_1 |
+| test.rs:169:1:172:1 | fn bad4_1 | test.rs:171:5:171:15 | ...::stdout(...) |

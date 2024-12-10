@@ -4,16 +4,16 @@
  */
 
 private import internal.SelfParamImpl
-import codeql.rust.elements.AstNode
-import codeql.rust.elements.Attr
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.Name
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.ParamBase
 
 /**
- * A SelfParam. For example:
+ * A `self` parameter. For example `self` in:
  * ```rust
- * todo!()
+ * fn push(&mut self, value: T) {
+ *   // ...
+ * }
  * ```
  */
 final class SelfParam = Impl::SelfParam;

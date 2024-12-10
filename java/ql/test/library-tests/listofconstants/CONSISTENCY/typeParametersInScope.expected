@@ -1,0 +1,1 @@
+| Type A uses out-of-scope type variable E. Note the Java extractor is known to sometimes do this; the Kotlin extractor should not. |

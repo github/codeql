@@ -46,7 +46,7 @@ class Configuration extends TaintTracking::Configuration {
       // Replacing with "_" is likely to be exploitable
       not replace.getRawReplacement().getStringValue() = "_" and
       (
-        replace.isGlobal()
+        replace.maybeGlobal()
         or
         // Non-global replace with a non-empty string can also prevent __proto__ by
         // inserting a chunk of text that doesn't fit anywhere in __proto__

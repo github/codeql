@@ -3,7 +3,10 @@ import javascript
 class ArrayFlowConfig extends DataFlow::Configuration {
   ArrayFlowConfig() { this = "ArrayFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr().getStringValue() = "source" }
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr().getStringValue() = "source" or
+    source.(DataFlow::CallNode).getCalleeName() = "source"
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     sink = any(DataFlow::CallNode call | call.getCalleeName() = "sink").getAnArgument()

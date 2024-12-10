@@ -8,6 +8,8 @@ import Consistency
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 private import codeql.rust.controlflow.internal.Completion
+private import codeql.rust.controlflow.internal.CfgNodes::Consistency as CfgNodes
+private import codeql.rust.Diagnostics
 
 private predicate nonPostOrderExpr(Expr e) {
   not e instanceof LetExpr and
@@ -52,6 +54,25 @@ private predicate letElsePanic(BlockExpr be) {
 query predicate deadEnd(CfgImpl::Node node) {
   Consistency::deadEnd(node) and
   not letElsePanic(node.getAstNode())
+}
+
+pragma[nomagic]
+private predicate successfullyExtractedFile(File f) {
+  not exists(ExtractionWarning ee | ee.getLocation().getFile() = f)
+}
+
+query predicate missingCfgChild(CfgNode parent, string pred, int i, AstNode child) {
+  CfgNodes::missingCfgChild(parent, pred, i, child) and
+  successfullyExtractedFile(child.getLocation().getFile()) and
+  not exists(AstNode last, CfgImpl::Completion c | CfgImpl::last(child, last, c) |
+    // In for example `if (a && true) ...`, there is no edge from the CFG node
+    // for `true` into the `[false] a && true` node.
+    strictcount(ConditionalSuccessor cs | exists(last.getACfgNode().getASuccessor(cs)) | cs) = 1
+    or
+    // In for example `x && return`, there is no edge from the node for
+    // `return` into the `&&` node.
+    not c instanceof CfgImpl::NormalCompletion
+  )
 }
 
 /**
@@ -99,4 +120,7 @@ int getCfgInconsistencyCounts(string type) {
   or
   type = "Non-PostOrderTree Expr node" and
   result = count(Expr e | nonPostOrderExpr(e) | e)
+  or
+  type = "Missing CFG child" and
+  result = count(CfgNode parent, string pred, int child | missingCfgChild(parent, pred, child, _))
 }

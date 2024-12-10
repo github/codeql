@@ -8,6 +8,11 @@ extensions:
       - ["beego-utils", "github.com/beego/beego/core/utils"]
   - addsTo:
       pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:beego-utils", "", False, "Display", "", "", "Argument[0]", "log-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: summaryModel
     data:
       - ["group:beego-utils", "", False, "SliceChunk", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

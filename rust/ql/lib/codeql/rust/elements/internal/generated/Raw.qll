@@ -3,11 +3,35 @@
  * This module holds thin fully generated class definitions around DB entities.
  */
 module Raw {
+  private import codeql.files.FileSystem
+
   /**
    * INTERNAL: Do not use.
    */
   class Element extends @element {
     string toString() { none() }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ExtractorStep extends @extractor_step, Element {
+    override string toString() { result = "ExtractorStep" }
+
+    /**
+     * Gets the action of this extractor step.
+     */
+    string getAction() { extractor_steps(this, result, _, _) }
+
+    /**
+     * Gets the file of this extractor step.
+     */
+    File getFile() { extractor_steps(this, _, result, _) }
+
+    /**
+     * Gets the duration ms of this extractor step.
+     */
+    int getDurationMs() { extractor_steps(this, _, _, result) }
   }
 
   /**
@@ -59,6 +83,30 @@ module Raw {
      * Gets the abi string of this abi, if it exists.
      */
     string getAbiString() { abi_abi_strings(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Something that can be addressed by a path.
+   *
+   * TODO: This does not yet include all possible cases.
+   */
+  class Addressable extends @addressable, AstNode {
+    /**
+     * Gets the extended canonical path of this addressable, if it exists.
+     *
+     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
+     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
+     * addressable there-in).
+     */
+    string getExtendedCanonicalPath() { addressable_extended_canonical_paths(this, result) }
+
+    /**
+     * Gets the crate origin of this addressable, if it exists.
+     *
+     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
+     */
+    string getCrateOrigin() { addressable_crate_origins(this, result) }
   }
 
   /**
@@ -418,7 +466,7 @@ module Raw {
     MatchGuard getGuard() { match_arm_guards(this, result) }
 
     /**
-     * Gets the pat of this match arm, if it exists.
+     * Gets the pattern of this match arm, if it exists.
      */
     Pat getPat() { match_arm_pats(this, result) }
   }
@@ -525,28 +573,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A Param. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A normal parameter, `Param`, or a self parameter `SelfParam`.
    */
-  class Param extends @param, AstNode {
-    override string toString() { result = "Param" }
+  class ParamBase extends @param_base, AstNode {
+    /**
+     * Gets the `index`th attr of this parameter base (0-based).
+     */
+    Attr getAttr(int index) { param_base_attrs(this, index, result) }
 
     /**
-     * Gets the `index`th attr of this parameter (0-based).
+     * Gets the type representation of this parameter base, if it exists.
      */
-    Attr getAttr(int index) { param_attrs(this, index, result) }
-
-    /**
-     * Gets the pat of this parameter, if it exists.
-     */
-    Pat getPat() { param_pats(this, result) }
-
-    /**
-     * Gets the ty of this parameter, if it exists.
-     */
-    TypeRef getTy() { param_ties(this, result) }
+    TypeRepr getTypeRepr() { param_base_type_reprs(this, result) }
   }
 
   /**
@@ -578,10 +616,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A PathSegment. For example:
-   * ```rust
-   * todo!()
-   * ```
+   * A path segment, which is one part of a whole path.
    */
   class PathSegment extends @path_segment, AstNode {
     override string toString() { result = "PathSegment" }
@@ -604,12 +639,12 @@ module Raw {
     /**
      * Gets the path type of this path segment, if it exists.
      */
-    PathType getPathType() { path_segment_path_types(this, result) }
+    PathTypeRepr getPathType() { path_segment_path_types(this, result) }
 
     /**
      * Gets the ret type of this path segment, if it exists.
      */
-    RetType getRetType() { path_segment_ret_types(this, result) }
+    RetTypeRepr getRetType() { path_segment_ret_types(this, result) }
 
     /**
      * Gets the return type syntax of this path segment, if it exists.
@@ -617,9 +652,9 @@ module Raw {
     ReturnTypeSyntax getReturnTypeSyntax() { path_segment_return_type_syntaxes(this, result) }
 
     /**
-     * Gets the ty of this path segment, if it exists.
+     * Gets the type representation of this path segment, if it exists.
      */
-    TypeRef getTy() { path_segment_ties(this, result) }
+    TypeRepr getTypeRepr() { path_segment_type_reprs(this, result) }
   }
 
   /**
@@ -695,9 +730,9 @@ module Raw {
     Name getName() { record_field_names(this, result) }
 
     /**
-     * Gets the ty of this record field, if it exists.
+     * Gets the type representation of this record field, if it exists.
      */
-    TypeRef getTy() { record_field_ties(this, result) }
+    TypeRepr getTypeRepr() { record_field_type_reprs(this, result) }
 
     /**
      * Gets the visibility of this record field, if it exists.
@@ -716,17 +751,17 @@ module Raw {
     override string toString() { result = "RecordPatField" }
 
     /**
-     * Gets the `index`th attr of this record pat field (0-based).
+     * Gets the `index`th attr of this record pattern field (0-based).
      */
     Attr getAttr(int index) { record_pat_field_attrs(this, index, result) }
 
     /**
-     * Gets the name reference of this record pat field, if it exists.
+     * Gets the name reference of this record pattern field, if it exists.
      */
     NameRef getNameRef() { record_pat_field_name_refs(this, result) }
 
     /**
-     * Gets the pat of this record pat field, if it exists.
+     * Gets the pattern of this record pattern field, if it exists.
      */
     Pat getPat() { record_pat_field_pats(this, result) }
   }
@@ -742,12 +777,12 @@ module Raw {
     override string toString() { result = "RecordPatFieldList" }
 
     /**
-     * Gets the `index`th field of this record pat field list (0-based).
+     * Gets the `index`th field of this record pattern field list (0-based).
      */
     RecordPatField getField(int index) { record_pat_field_list_fields(this, index, result) }
 
     /**
-     * Gets the rest pat of this record pat field list, if it exists.
+     * Gets the rest pattern of this record pattern field list, if it exists.
      */
     RestPat getRestPat() { record_pat_field_list_rest_pats(this, result) }
   }
@@ -786,18 +821,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A RetType. For example:
+   * A RetTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class RetType extends @ret_type, AstNode {
-    override string toString() { result = "RetType" }
+  class RetTypeRepr extends @ret_type_repr, AstNode {
+    override string toString() { result = "RetTypeRepr" }
 
     /**
-     * Gets the ty of this ret type, if it exists.
+     * Gets the type representation of this ret type representation, if it exists.
      */
-    TypeRef getTy() { ret_type_ties(this, result) }
+    TypeRepr getTypeRepr() { ret_type_repr_type_reprs(this, result) }
   }
 
   /**
@@ -809,42 +844,6 @@ module Raw {
    */
   class ReturnTypeSyntax extends @return_type_syntax, AstNode {
     override string toString() { result = "ReturnTypeSyntax" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A SelfParam. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class SelfParam extends @self_param, AstNode {
-    override string toString() { result = "SelfParam" }
-
-    /**
-     * Gets the `index`th attr of this self parameter (0-based).
-     */
-    Attr getAttr(int index) { self_param_attrs(this, index, result) }
-
-    /**
-     * Holds if this self parameter is mut.
-     */
-    predicate isMut() { self_param_is_mut(this) }
-
-    /**
-     * Gets the lifetime of this self parameter, if it exists.
-     */
-    Lifetime getLifetime() { self_param_lifetimes(this, result) }
-
-    /**
-     * Gets the name of this self parameter, if it exists.
-     */
-    Name getName() { self_param_names(this, result) }
-
-    /**
-     * Gets the ty of this self parameter, if it exists.
-     */
-    TypeRef getTy() { self_param_ties(this, result) }
   }
 
   /**
@@ -933,9 +932,9 @@ module Raw {
     Attr getAttr(int index) { tuple_field_attrs(this, index, result) }
 
     /**
-     * Gets the ty of this tuple field, if it exists.
+     * Gets the type representation of this tuple field, if it exists.
      */
-    TypeRef getTy() { tuple_field_ties(this, result) }
+    TypeRepr getTypeRepr() { tuple_field_type_reprs(this, result) }
 
     /**
      * Gets the visibility of this tuple field, if it exists.
@@ -974,9 +973,9 @@ module Raw {
     Lifetime getLifetime() { type_bound_lifetimes(this, result) }
 
     /**
-     * Gets the ty of this type bound, if it exists.
+     * Gets the type representation of this type bound, if it exists.
      */
-    TypeRef getTy() { type_bound_ties(this, result) }
+    TypeRepr getTypeRepr() { type_bound_type_reprs(this, result) }
   }
 
   /**
@@ -1004,7 +1003,7 @@ module Raw {
    * let z: Option<i32>;
    * ```
    */
-  class TypeRef extends @type_ref, AstNode { }
+  class TypeRepr extends @type_repr, AstNode { }
 
   /**
    * INTERNAL: Do not use.
@@ -1046,42 +1045,6 @@ module Raw {
      * Gets the `index`th use tree of this use tree list (0-based).
      */
     UseTree getUseTree(int index) { use_tree_list_use_trees(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A Variant. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class Variant extends @variant, AstNode {
-    override string toString() { result = "Variant" }
-
-    /**
-     * Gets the `index`th attr of this variant (0-based).
-     */
-    Attr getAttr(int index) { variant_attrs(this, index, result) }
-
-    /**
-     * Gets the expression of this variant, if it exists.
-     */
-    Expr getExpr() { variant_exprs(this, result) }
-
-    /**
-     * Gets the field list of this variant, if it exists.
-     */
-    FieldList getFieldList() { variant_field_lists(this, result) }
-
-    /**
-     * Gets the name of this variant, if it exists.
-     */
-    Name getName() { variant_names(this, result) }
-
-    /**
-     * Gets the visibility of this variant, if it exists.
-     */
-    Visibility getVisibility() { variant_visibilities(this, result) }
   }
 
   /**
@@ -1153,9 +1116,9 @@ module Raw {
     Lifetime getLifetime() { where_pred_lifetimes(this, result) }
 
     /**
-     * Gets the ty of this where pred, if it exists.
+     * Gets the type representation of this where pred, if it exists.
      */
-    TypeRef getTy() { where_pred_ties(this, result) }
+    TypeRepr getTypeRepr() { where_pred_type_reprs(this, result) }
 
     /**
      * Gets the type bound list of this where pred, if it exists.
@@ -1165,45 +1128,45 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An array expression. For example:
-   * ```rust
-   * [1, 2, 3];
-   * [1; 10];
-   * ```
    */
-  class ArrayExpr extends @array_expr, Expr {
-    override string toString() { result = "ArrayExpr" }
+  class ArrayExprInternal extends @array_expr_internal, Expr {
+    override string toString() { result = "ArrayExprInternal" }
 
     /**
-     * Gets the `index`th attr of this array expression (0-based).
+     * Gets the `index`th attr of this array expression internal (0-based).
      */
-    Attr getAttr(int index) { array_expr_attrs(this, index, result) }
+    Attr getAttr(int index) { array_expr_internal_attrs(this, index, result) }
 
     /**
-     * Gets the `index`th expression of this array expression (0-based).
+     * Gets the `index`th expression of this array expression internal (0-based).
      */
-    Expr getExpr(int index) { array_expr_exprs(this, index, result) }
+    Expr getExpr(int index) { array_expr_internal_exprs(this, index, result) }
+
+    /**
+     * Holds if this array expression internal is semicolon.
+     */
+    predicate isSemicolon() { array_expr_internal_is_semicolon(this) }
   }
 
   /**
    * INTERNAL: Do not use.
-   * A ArrayType. For example:
+   * A ArrayTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ArrayType extends @array_type, TypeRef {
-    override string toString() { result = "ArrayType" }
+  class ArrayTypeRepr extends @array_type_repr, TypeRepr {
+    override string toString() { result = "ArrayTypeRepr" }
 
     /**
-     * Gets the const argument of this array type, if it exists.
+     * Gets the const argument of this array type representation, if it exists.
      */
-    ConstArg getConstArg() { array_type_const_args(this, result) }
+    ConstArg getConstArg() { array_type_repr_const_args(this, result) }
 
     /**
-     * Gets the ty of this array type, if it exists.
+     * Gets the element type representation of this array type representation, if it exists.
      */
-    TypeRef getTy() { array_type_ties(this, result) }
+    TypeRepr getElementTypeRepr() { array_type_repr_element_type_reprs(this, result) }
   }
 
   /**
@@ -1262,7 +1225,7 @@ module Raw {
     /**
      * Gets the ret type of this assoc type argument, if it exists.
      */
-    RetType getRetType() { assoc_type_arg_ret_types(this, result) }
+    RetTypeRepr getRetType() { assoc_type_arg_ret_types(this, result) }
 
     /**
      * Gets the return type syntax of this assoc type argument, if it exists.
@@ -1270,9 +1233,9 @@ module Raw {
     ReturnTypeSyntax getReturnTypeSyntax() { assoc_type_arg_return_type_syntaxes(this, result) }
 
     /**
-     * Gets the ty of this assoc type argument, if it exists.
+     * Gets the type representation of this assoc type argument, if it exists.
      */
-    TypeRef getTy() { assoc_type_arg_ties(this, result) }
+    TypeRepr getTypeRepr() { assoc_type_arg_type_reprs(this, result) }
 
     /**
      * Gets the type bound list of this assoc type argument, if it exists.
@@ -1368,70 +1331,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A block expression. For example:
-   * ```rust
-   * {
-   *     let x = 42;
-   * }
-   * ```
-   * ```rust
-   * 'label: {
-   *     let x = 42;
-   *     x
-   * }
-   * ```
-   */
-  class BlockExpr extends @block_expr, Expr {
-    override string toString() { result = "BlockExpr" }
-
-    /**
-     * Gets the `index`th attr of this block expression (0-based).
-     */
-    Attr getAttr(int index) { block_expr_attrs(this, index, result) }
-
-    /**
-     * Holds if this block expression is async.
-     */
-    predicate isAsync() { block_expr_is_async(this) }
-
-    /**
-     * Holds if this block expression is const.
-     */
-    predicate isConst() { block_expr_is_const(this) }
-
-    /**
-     * Holds if this block expression is gen.
-     */
-    predicate isGen() { block_expr_is_gen(this) }
-
-    /**
-     * Holds if this block expression is move.
-     */
-    predicate isMove() { block_expr_is_move(this) }
-
-    /**
-     * Holds if this block expression is try.
-     */
-    predicate isTry() { block_expr_is_try(this) }
-
-    /**
-     * Holds if this block expression is unsafe.
-     */
-    predicate isUnsafe() { block_expr_is_unsafe(this) }
-
-    /**
-     * Gets the label of this block expression, if it exists.
-     */
-    Label getLabel() { block_expr_labels(this, result) }
-
-    /**
-     * Gets the statement list of this block expression, if it exists.
-     */
-    StmtList getStmtList() { block_expr_stmt_lists(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A box pattern. For example:
    * ```rust
    * match x {
@@ -1444,7 +1343,7 @@ module Raw {
     override string toString() { result = "BoxPat" }
 
     /**
-     * Gets the pat of this box pat, if it exists.
+     * Gets the pattern of this box pattern, if it exists.
      */
     Pat getPat() { box_pat_pats(this, result) }
   }
@@ -1531,9 +1430,9 @@ module Raw {
     Expr getExpr() { cast_expr_exprs(this, result) }
 
     /**
-     * Gets the ty of this cast expression, if it exists.
+     * Gets the type representation of this cast expression, if it exists.
      */
-    TypeRef getTy() { cast_expr_ties(this, result) }
+    TypeRepr getTypeRepr() { cast_expr_type_reprs(this, result) }
   }
 
   /**
@@ -1590,7 +1489,7 @@ module Raw {
     /**
      * Gets the ret type of this closure expression, if it exists.
      */
-    RetType getRetType() { closure_expr_ret_types(this, result) }
+    RetTypeRepr getRetType() { closure_expr_ret_types(this, result) }
   }
 
   /**
@@ -1645,12 +1544,12 @@ module Raw {
     override string toString() { result = "ConstBlockPat" }
 
     /**
-     * Gets the block expression of this const block pat, if it exists.
+     * Gets the block expression of this const block pattern, if it exists.
      */
     BlockExpr getBlockExpr() { const_block_pat_block_exprs(this, result) }
 
     /**
-     * Holds if this const block pat is const.
+     * Holds if this const block pattern is const.
      */
     predicate isConst() { const_block_pat_is_const(this) }
   }
@@ -1686,9 +1585,9 @@ module Raw {
     Name getName() { const_param_names(this, result) }
 
     /**
-     * Gets the ty of this const parameter, if it exists.
+     * Gets the type representation of this const parameter, if it exists.
      */
-    TypeRef getTy() { const_param_ties(this, result) }
+    TypeRepr getTypeRepr() { const_param_type_reprs(this, result) }
   }
 
   /**
@@ -1725,18 +1624,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A DynTraitType. For example:
+   * A DynTraitTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class DynTraitType extends @dyn_trait_type, TypeRef {
-    override string toString() { result = "DynTraitType" }
+  class DynTraitTypeRepr extends @dyn_trait_type_repr, TypeRepr {
+    override string toString() { result = "DynTraitTypeRepr" }
 
     /**
-     * Gets the type bound list of this dyn trait type, if it exists.
+     * Gets the type bound list of this dyn trait type representation, if it exists.
      */
-    TypeBoundList getTypeBoundList() { dyn_trait_type_type_bound_lists(this, result) }
+    TypeBoundList getTypeBoundList() { dyn_trait_type_repr_type_bound_lists(this, result) }
   }
 
   /**
@@ -1785,107 +1684,75 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A FnPtrType. For example:
+   * A FnPtrTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class FnPtrType extends @fn_ptr_type, TypeRef {
-    override string toString() { result = "FnPtrType" }
+  class FnPtrTypeRepr extends @fn_ptr_type_repr, TypeRepr {
+    override string toString() { result = "FnPtrTypeRepr" }
 
     /**
-     * Gets the abi of this fn ptr type, if it exists.
+     * Gets the abi of this fn ptr type representation, if it exists.
      */
-    Abi getAbi() { fn_ptr_type_abis(this, result) }
+    Abi getAbi() { fn_ptr_type_repr_abis(this, result) }
 
     /**
-     * Holds if this fn ptr type is async.
+     * Holds if this fn ptr type representation is async.
      */
-    predicate isAsync() { fn_ptr_type_is_async(this) }
+    predicate isAsync() { fn_ptr_type_repr_is_async(this) }
 
     /**
-     * Holds if this fn ptr type is const.
+     * Holds if this fn ptr type representation is const.
      */
-    predicate isConst() { fn_ptr_type_is_const(this) }
+    predicate isConst() { fn_ptr_type_repr_is_const(this) }
 
     /**
-     * Holds if this fn ptr type is unsafe.
+     * Holds if this fn ptr type representation is unsafe.
      */
-    predicate isUnsafe() { fn_ptr_type_is_unsafe(this) }
+    predicate isUnsafe() { fn_ptr_type_repr_is_unsafe(this) }
 
     /**
-     * Gets the parameter list of this fn ptr type, if it exists.
+     * Gets the parameter list of this fn ptr type representation, if it exists.
      */
-    ParamList getParamList() { fn_ptr_type_param_lists(this, result) }
+    ParamList getParamList() { fn_ptr_type_repr_param_lists(this, result) }
 
     /**
-     * Gets the ret type of this fn ptr type, if it exists.
+     * Gets the ret type of this fn ptr type representation, if it exists.
      */
-    RetType getRetType() { fn_ptr_type_ret_types(this, result) }
+    RetTypeRepr getRetType() { fn_ptr_type_repr_ret_types(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
-   * A ForExpr. For example:
+   * A ForTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ForExpr extends @for_expr, Expr {
-    override string toString() { result = "ForExpr" }
+  class ForTypeRepr extends @for_type_repr, TypeRepr {
+    override string toString() { result = "ForTypeRepr" }
 
     /**
-     * Gets the `index`th attr of this for expression (0-based).
+     * Gets the generic parameter list of this for type representation, if it exists.
      */
-    Attr getAttr(int index) { for_expr_attrs(this, index, result) }
+    GenericParamList getGenericParamList() { for_type_repr_generic_param_lists(this, result) }
 
     /**
-     * Gets the iterable of this for expression, if it exists.
+     * Gets the type representation of this for type representation, if it exists.
      */
-    Expr getIterable() { for_expr_iterables(this, result) }
-
-    /**
-     * Gets the label of this for expression, if it exists.
-     */
-    Label getLabel() { for_expr_labels(this, result) }
-
-    /**
-     * Gets the loop body of this for expression, if it exists.
-     */
-    BlockExpr getLoopBody() { for_expr_loop_bodies(this, result) }
-
-    /**
-     * Gets the pat of this for expression, if it exists.
-     */
-    Pat getPat() { for_expr_pats(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A ForType. For example:
-   * ```rust
-   * todo!()
-   * ```
-   */
-  class ForType extends @for_type, TypeRef {
-    override string toString() { result = "ForType" }
-
-    /**
-     * Gets the generic parameter list of this for type, if it exists.
-     */
-    GenericParamList getGenericParamList() { for_type_generic_param_lists(this, result) }
-
-    /**
-     * Gets the ty of this for type, if it exists.
-     */
-    TypeRef getTy() { for_type_ties(this, result) }
+    TypeRepr getTypeRepr() { for_type_repr_type_reprs(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    * A FormatArgsExpr. For example:
    * ```rust
-   * todo!()
+   * format_args!("no args");
+   * format_args!("{} foo {:?}", 1, 2);
+   * format_args!("{b} foo {a:?}", a=1, b=2);
+   * let (x, y) = (1, 42);
+   * format_args!("{x}, {y}");
    * ```
    */
   class FormatArgsExpr extends @format_args_expr, Expr {
@@ -1927,27 +1794,27 @@ module Raw {
     override string toString() { result = "IdentPat" }
 
     /**
-     * Gets the `index`th attr of this ident pat (0-based).
+     * Gets the `index`th attr of this ident pattern (0-based).
      */
     Attr getAttr(int index) { ident_pat_attrs(this, index, result) }
 
     /**
-     * Holds if this ident pat is mut.
+     * Holds if this ident pattern is mut.
      */
     predicate isMut() { ident_pat_is_mut(this) }
 
     /**
-     * Holds if this ident pat is reference.
+     * Holds if this ident pattern is reference.
      */
     predicate isRef() { ident_pat_is_ref(this) }
 
     /**
-     * Gets the name of this ident pat, if it exists.
+     * Gets the name of this ident pattern, if it exists.
      */
     Name getName() { ident_pat_names(this, result) }
 
     /**
-     * Gets the pat of this ident pat, if it exists.
+     * Gets the pattern of this ident pattern, if it exists.
      */
     Pat getPat() { ident_pat_pats(this, result) }
   }
@@ -1994,18 +1861,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A ImplTraitType. For example:
+   * A ImplTraitTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ImplTraitType extends @impl_trait_type, TypeRef {
-    override string toString() { result = "ImplTraitType" }
+  class ImplTraitTypeRepr extends @impl_trait_type_repr, TypeRepr {
+    override string toString() { result = "ImplTraitTypeRepr" }
 
     /**
-     * Gets the type bound list of this impl trait type, if it exists.
+     * Gets the type bound list of this impl trait type representation, if it exists.
      */
-    TypeBoundList getTypeBoundList() { impl_trait_type_type_bound_lists(this, result) }
+    TypeBoundList getTypeBoundList() { impl_trait_type_repr_type_bound_lists(this, result) }
   }
 
   /**
@@ -2037,13 +1904,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A InferType. For example:
+   * A InferTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class InferType extends @infer_type, TypeRef {
-    override string toString() { result = "InferType" }
+  class InferTypeRepr extends @infer_type_repr, TypeRepr {
+    override string toString() { result = "InferTypeRepr" }
   }
 
   /**
@@ -2053,22 +1920,17 @@ module Raw {
    * todo!()
    * ```
    */
-  class Item extends @item, Stmt {
-    /**
-     * Gets the extended canonical path of this item, if it exists.
-     *
-     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
-     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
-     * addressable there-in).
-     */
-    string getExtendedCanonicalPath() { item_extended_canonical_paths(this, result) }
+  class Item extends @item, Stmt, Addressable { }
 
+  /**
+   * INTERNAL: Do not use.
+   * The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
+   */
+  class LabelableExpr extends @labelable_expr, Expr {
     /**
-     * Gets the crate origin of this item, if it exists.
-     *
-     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
+     * Gets the label of this labelable expression, if it exists.
      */
-    string getCrateOrigin() { item_crate_origins(this, result) }
+    Label getLabel() { labelable_expr_labels(this, result) }
   }
 
   /**
@@ -2089,12 +1951,12 @@ module Raw {
     Attr getAttr(int index) { let_expr_attrs(this, index, result) }
 
     /**
-     * Gets the expression of this let expression, if it exists.
+     * Gets the scrutinee of this let expression, if it exists.
      */
-    Expr getExpr() { let_expr_exprs(this, result) }
+    Expr getScrutinee() { let_expr_scrutinees(this, result) }
 
     /**
-     * Gets the pat of this let expression, if it exists.
+     * Gets the pattern of this let expression, if it exists.
      */
     Pat getPat() { let_expr_pats(this, result) }
   }
@@ -2132,14 +1994,14 @@ module Raw {
     LetElse getLetElse() { let_stmt_let_elses(this, result) }
 
     /**
-     * Gets the pat of this let statement, if it exists.
+     * Gets the pattern of this let statement, if it exists.
      */
     Pat getPat() { let_stmt_pats(this, result) }
 
     /**
-     * Gets the ty of this let statement, if it exists.
+     * Gets the type representation of this let statement, if it exists.
      */
-    TypeRef getTy() { let_stmt_ties(this, result) }
+    TypeRepr getTypeRepr() { let_stmt_type_reprs(this, result) }
   }
 
   /**
@@ -2226,53 +2088,9 @@ module Raw {
     override string toString() { result = "LiteralPat" }
 
     /**
-     * Gets the literal of this literal pat, if it exists.
+     * Gets the literal of this literal pattern, if it exists.
      */
     LiteralExpr getLiteral() { literal_pat_literals(this, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * A loop expression. For example:
-   * ```rust
-   * loop {
-   *     println!("Hello, world (again)!");
-   * };
-   * ```
-   * ```rust
-   * 'label: loop {
-   *     println!("Hello, world (once)!");
-   *     break 'label;
-   * };
-   * ```
-   * ```rust
-   * let mut x = 0;
-   * loop {
-   *     if x < 10 {
-   *         x += 1;
-   *     } else {
-   *         break;
-   *     }
-   * };
-   * ```
-   */
-  class LoopExpr extends @loop_expr, Expr {
-    override string toString() { result = "LoopExpr" }
-
-    /**
-     * Gets the `index`th attr of this loop expression (0-based).
-     */
-    Attr getAttr(int index) { loop_expr_attrs(this, index, result) }
-
-    /**
-     * Gets the label of this loop expression, if it exists.
-     */
-    Label getLabel() { loop_expr_labels(this, result) }
-
-    /**
-     * Gets the loop body of this loop expression, if it exists.
-     */
-    BlockExpr getLoopBody() { loop_expr_loop_bodies(this, result) }
   }
 
   /**
@@ -2302,25 +2120,25 @@ module Raw {
     override string toString() { result = "MacroPat" }
 
     /**
-     * Gets the macro call of this macro pat, if it exists.
+     * Gets the macro call of this macro pattern, if it exists.
      */
     MacroCall getMacroCall() { macro_pat_macro_calls(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
-   * A MacroType. For example:
+   * A MacroTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class MacroType extends @macro_type, TypeRef {
-    override string toString() { result = "MacroType" }
+  class MacroTypeRepr extends @macro_type_repr, TypeRepr {
+    override string toString() { result = "MacroTypeRepr" }
 
     /**
-     * Gets the macro call of this macro type, if it exists.
+     * Gets the macro call of this macro type representation, if it exists.
      */
-    MacroCall getMacroCall() { macro_type_macro_calls(this, result) }
+    MacroCall getMacroCall() { macro_type_repr_macro_calls(this, result) }
   }
 
   /**
@@ -2348,9 +2166,9 @@ module Raw {
     Attr getAttr(int index) { match_expr_attrs(this, index, result) }
 
     /**
-     * Gets the expression of this match expression, if it exists.
+     * Gets the scrutinee (the expression being matched) of this match expression, if it exists.
      */
-    Expr getExpr() { match_expr_exprs(this, result) }
+    Expr getScrutinee() { match_expr_scrutinees(this, result) }
 
     /**
      * Gets the match arm list of this match expression, if it exists.
@@ -2360,13 +2178,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A NeverType. For example:
+   * A NeverTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class NeverType extends @never_type, TypeRef {
-    override string toString() { result = "NeverType" }
+  class NeverTypeRepr extends @never_type_repr, TypeRepr {
+    override string toString() { result = "NeverTypeRepr" }
   }
 
   /**
@@ -2390,9 +2208,9 @@ module Raw {
     NameRef getField(int index) { offset_of_expr_fields(this, index, result) }
 
     /**
-     * Gets the ty of this offset of expression, if it exists.
+     * Gets the type representation of this offset of expression, if it exists.
      */
-    TypeRef getTy() { offset_of_expr_ties(this, result) }
+    TypeRepr getTypeRepr() { offset_of_expr_type_reprs(this, result) }
   }
 
   /**
@@ -2408,9 +2226,27 @@ module Raw {
     override string toString() { result = "OrPat" }
 
     /**
-     * Gets the `index`th pat of this or pat (0-based).
+     * Gets the `index`th pattern of this or pattern (0-based).
      */
     Pat getPat(int index) { or_pat_pats(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A parameter in a function or method. For example `x` in:
+   * ```rust
+   * fn new(x: T) -> Foo<T> {
+   *   // ...
+   * }
+   * ```
+   */
+  class Param extends @param, ParamBase {
+    override string toString() { result = "Param" }
+
+    /**
+     * Gets the pattern of this parameter, if it exists.
+     */
+    Pat getPat() { param_pats(this, result) }
   }
 
   /**
@@ -2445,31 +2281,32 @@ module Raw {
     override string toString() { result = "ParenPat" }
 
     /**
-     * Gets the pat of this paren pat, if it exists.
+     * Gets the pattern of this paren pattern, if it exists.
      */
     Pat getPat() { paren_pat_pats(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
-   * A ParenType. For example:
+   * A ParenTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class ParenType extends @paren_type, TypeRef {
-    override string toString() { result = "ParenType" }
+  class ParenTypeRepr extends @paren_type_repr, TypeRepr {
+    override string toString() { result = "ParenTypeRepr" }
 
     /**
-     * Gets the ty of this paren type, if it exists.
+     * Gets the type representation of this paren type representation, if it exists.
      */
-    TypeRef getTy() { paren_type_ties(this, result) }
+    TypeRepr getTypeRepr() { paren_type_repr_type_reprs(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    * A path. For example:
    * ```rust
+   * use some_crate::some_module::some_item;
    * foo::bar;
    * ```
    */
@@ -2507,25 +2344,26 @@ module Raw {
     override string toString() { result = "PathPat" }
 
     /**
-     * Gets the path of this path pat, if it exists.
+     * Gets the path of this path pattern, if it exists.
      */
     Path getPath() { path_pat_paths(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
-   * A PathType. For example:
+   * A type referring to a path. For example:
    * ```rust
-   * todo!()
+   * type X = std::collections::HashMap<i32, i32>;
+   * type Y = X::Item;
    * ```
    */
-  class PathType extends @path_type, TypeRef {
-    override string toString() { result = "PathType" }
+  class PathTypeRepr extends @path_type_repr, TypeRepr {
+    override string toString() { result = "PathTypeRepr" }
 
     /**
-     * Gets the path of this path type, if it exists.
+     * Gets the path of this path type representation, if it exists.
      */
-    Path getPath() { path_type_paths(this, result) }
+    Path getPath() { path_type_repr_paths(this, result) }
   }
 
   /**
@@ -2558,28 +2396,28 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A PtrType. For example:
+   * A PtrTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class PtrType extends @ptr_type, TypeRef {
-    override string toString() { result = "PtrType" }
+  class PtrTypeRepr extends @ptr_type_repr, TypeRepr {
+    override string toString() { result = "PtrTypeRepr" }
 
     /**
-     * Holds if this ptr type is const.
+     * Holds if this ptr type representation is const.
      */
-    predicate isConst() { ptr_type_is_const(this) }
+    predicate isConst() { ptr_type_repr_is_const(this) }
 
     /**
-     * Holds if this ptr type is mut.
+     * Holds if this ptr type representation is mut.
      */
-    predicate isMut() { ptr_type_is_mut(this) }
+    predicate isMut() { ptr_type_repr_is_mut(this) }
 
     /**
-     * Gets the ty of this ptr type, if it exists.
+     * Gets the type representation of this ptr type representation, if it exists.
      */
-    TypeRef getTy() { ptr_type_ties(this, result) }
+    TypeRepr getTypeRepr() { ptr_type_repr_type_reprs(this, result) }
   }
 
   /**
@@ -2633,17 +2471,17 @@ module Raw {
     override string toString() { result = "RangePat" }
 
     /**
-     * Gets the end of this range pat, if it exists.
+     * Gets the end of this range pattern, if it exists.
      */
     Pat getEnd() { range_pat_ends(this, result) }
 
     /**
-     * Gets the operator name of this range pat, if it exists.
+     * Gets the operator name of this range pattern, if it exists.
      */
     string getOperatorName() { range_pat_operator_names(this, result) }
 
     /**
-     * Gets the start of this range pat, if it exists.
+     * Gets the start of this range pattern, if it exists.
      */
     Pat getStart() { range_pat_starts(this, result) }
   }
@@ -2704,12 +2542,12 @@ module Raw {
     override string toString() { result = "RecordPat" }
 
     /**
-     * Gets the path of this record pat, if it exists.
+     * Gets the path of this record pattern, if it exists.
      */
     Path getPath() { record_pat_paths(this, result) }
 
     /**
-     * Gets the record pat field list of this record pat, if it exists.
+     * Gets the record pattern field list of this record pattern, if it exists.
      */
     RecordPatFieldList getRecordPatFieldList() { record_pat_record_pat_field_lists(this, result) }
   }
@@ -2767,40 +2605,40 @@ module Raw {
     override string toString() { result = "RefPat" }
 
     /**
-     * Holds if this reference pat is mut.
+     * Holds if this reference pattern is mut.
      */
     predicate isMut() { ref_pat_is_mut(this) }
 
     /**
-     * Gets the pat of this reference pat, if it exists.
+     * Gets the pattern of this reference pattern, if it exists.
      */
     Pat getPat() { ref_pat_pats(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
-   * A RefType. For example:
+   * A RefTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class RefType extends @ref_type, TypeRef {
-    override string toString() { result = "RefType" }
+  class RefTypeRepr extends @ref_type_repr, TypeRepr {
+    override string toString() { result = "RefTypeRepr" }
 
     /**
-     * Holds if this reference type is mut.
+     * Holds if this reference type representation is mut.
      */
-    predicate isMut() { ref_type_is_mut(this) }
+    predicate isMut() { ref_type_repr_is_mut(this) }
 
     /**
-     * Gets the lifetime of this reference type, if it exists.
+     * Gets the lifetime of this reference type representation, if it exists.
      */
-    Lifetime getLifetime() { ref_type_lifetimes(this, result) }
+    Lifetime getLifetime() { ref_type_repr_lifetimes(this, result) }
 
     /**
-     * Gets the ty of this reference type, if it exists.
+     * Gets the type representation of this reference type representation, if it exists.
      */
-    TypeRef getTy() { ref_type_ties(this, result) }
+    TypeRepr getTypeRepr() { ref_type_repr_type_reprs(this, result) }
   }
 
   /**
@@ -2814,7 +2652,7 @@ module Raw {
     override string toString() { result = "RestPat" }
 
     /**
-     * Gets the `index`th attr of this rest pat (0-based).
+     * Gets the `index`th attr of this rest pattern (0-based).
      */
     Attr getAttr(int index) { rest_pat_attrs(this, index, result) }
   }
@@ -2849,6 +2687,34 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A `self` parameter. For example `self` in:
+   * ```rust
+   * fn push(&mut self, value: T) {
+   *   // ...
+   * }
+   * ```
+   */
+  class SelfParam extends @self_param, ParamBase {
+    override string toString() { result = "SelfParam" }
+
+    /**
+     * Holds if this self parameter is mut.
+     */
+    predicate isMut() { self_param_is_mut(this) }
+
+    /**
+     * Gets the lifetime of this self parameter, if it exists.
+     */
+    Lifetime getLifetime() { self_param_lifetimes(this, result) }
+
+    /**
+     * Gets the name of this self parameter, if it exists.
+     */
+    Name getName() { self_param_names(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A slice pattern. For example:
    * ```rust
    * match x {
@@ -2862,25 +2728,25 @@ module Raw {
     override string toString() { result = "SlicePat" }
 
     /**
-     * Gets the `index`th pat of this slice pat (0-based).
+     * Gets the `index`th pattern of this slice pattern (0-based).
      */
     Pat getPat(int index) { slice_pat_pats(this, index, result) }
   }
 
   /**
    * INTERNAL: Do not use.
-   * A SliceType. For example:
+   * A SliceTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class SliceType extends @slice_type, TypeRef {
-    override string toString() { result = "SliceType" }
+  class SliceTypeRepr extends @slice_type_repr, TypeRepr {
+    override string toString() { result = "SliceTypeRepr" }
 
     /**
-     * Gets the ty of this slice type, if it exists.
+     * Gets the type representation of this slice type representation, if it exists.
      */
-    TypeRef getTy() { slice_type_ties(this, result) }
+    TypeRepr getTypeRepr() { slice_type_repr_type_reprs(this, result) }
   }
 
   /**
@@ -2954,7 +2820,7 @@ module Raw {
     override string toString() { result = "TuplePat" }
 
     /**
-     * Gets the `index`th field of this tuple pat (0-based).
+     * Gets the `index`th field of this tuple pattern (0-based).
      */
     Pat getField(int index) { tuple_pat_fields(this, index, result) }
   }
@@ -2974,30 +2840,30 @@ module Raw {
     override string toString() { result = "TupleStructPat" }
 
     /**
-     * Gets the `index`th field of this tuple struct pat (0-based).
+     * Gets the `index`th field of this tuple struct pattern (0-based).
      */
     Pat getField(int index) { tuple_struct_pat_fields(this, index, result) }
 
     /**
-     * Gets the path of this tuple struct pat, if it exists.
+     * Gets the path of this tuple struct pattern, if it exists.
      */
     Path getPath() { tuple_struct_pat_paths(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
-   * A TupleType. For example:
+   * A TupleTypeRepr. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class TupleType extends @tuple_type, TypeRef {
-    override string toString() { result = "TupleType" }
+  class TupleTypeRepr extends @tuple_type_repr, TypeRepr {
+    override string toString() { result = "TupleTypeRepr" }
 
     /**
-     * Gets the `index`th field of this tuple type (0-based).
+     * Gets the `index`th field of this tuple type representation (0-based).
      */
-    TypeRef getField(int index) { tuple_type_fields(this, index, result) }
+    TypeRepr getField(int index) { tuple_type_repr_fields(this, index, result) }
   }
 
   /**
@@ -3011,9 +2877,9 @@ module Raw {
     override string toString() { result = "TypeArg" }
 
     /**
-     * Gets the ty of this type argument, if it exists.
+     * Gets the type representation of this type argument, if it exists.
      */
-    TypeRef getTy() { type_arg_ties(this, result) }
+    TypeRepr getTypeRepr() { type_arg_type_reprs(this, result) }
   }
 
   /**
@@ -3034,7 +2900,7 @@ module Raw {
     /**
      * Gets the default type of this type parameter, if it exists.
      */
-    TypeRef getDefaultType() { type_param_default_types(this, result) }
+    TypeRepr getDefaultType() { type_param_default_types(this, result) }
 
     /**
      * Gets the name of this type parameter, if it exists.
@@ -3065,33 +2931,38 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A WhileExpr. For example:
+   * A Variant. For example:
    * ```rust
    * todo!()
    * ```
    */
-  class WhileExpr extends @while_expr, Expr {
-    override string toString() { result = "WhileExpr" }
+  class Variant extends @variant, Addressable {
+    override string toString() { result = "Variant" }
 
     /**
-     * Gets the `index`th attr of this while expression (0-based).
+     * Gets the `index`th attr of this variant (0-based).
      */
-    Attr getAttr(int index) { while_expr_attrs(this, index, result) }
+    Attr getAttr(int index) { variant_attrs(this, index, result) }
 
     /**
-     * Gets the condition of this while expression, if it exists.
+     * Gets the expression of this variant, if it exists.
      */
-    Expr getCondition() { while_expr_conditions(this, result) }
+    Expr getExpr() { variant_exprs(this, result) }
 
     /**
-     * Gets the label of this while expression, if it exists.
+     * Gets the field list of this variant, if it exists.
      */
-    Label getLabel() { while_expr_labels(this, result) }
+    FieldList getFieldList() { variant_field_lists(this, result) }
 
     /**
-     * Gets the loop body of this while expression, if it exists.
+     * Gets the name of this variant, if it exists.
      */
-    BlockExpr getLoopBody() { while_expr_loop_bodies(this, result) }
+    Name getName() { variant_names(this, result) }
+
+    /**
+     * Gets the visibility of this variant, if it exists.
+     */
+    Visibility getVisibility() { variant_visibilities(this, result) }
   }
 
   /**
@@ -3154,6 +3025,65 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A block expression. For example:
+   * ```rust
+   * {
+   *     let x = 42;
+   * }
+   * ```
+   * ```rust
+   * 'label: {
+   *     let x = 42;
+   *     x
+   * }
+   * ```
+   */
+  class BlockExpr extends @block_expr, LabelableExpr {
+    override string toString() { result = "BlockExpr" }
+
+    /**
+     * Gets the `index`th attr of this block expression (0-based).
+     */
+    Attr getAttr(int index) { block_expr_attrs(this, index, result) }
+
+    /**
+     * Holds if this block expression is async.
+     */
+    predicate isAsync() { block_expr_is_async(this) }
+
+    /**
+     * Holds if this block expression is const.
+     */
+    predicate isConst() { block_expr_is_const(this) }
+
+    /**
+     * Holds if this block expression is gen.
+     */
+    predicate isGen() { block_expr_is_gen(this) }
+
+    /**
+     * Holds if this block expression is move.
+     */
+    predicate isMove() { block_expr_is_move(this) }
+
+    /**
+     * Holds if this block expression is try.
+     */
+    predicate isTry() { block_expr_is_try(this) }
+
+    /**
+     * Holds if this block expression is unsafe.
+     */
+    predicate isUnsafe() { block_expr_is_unsafe(this) }
+
+    /**
+     * Gets the statement list of this block expression, if it exists.
+     */
+    StmtList getStmtList() { block_expr_stmt_lists(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A function call expression. For example:
    * ```rust
    * foo(42);
@@ -3166,9 +3096,9 @@ module Raw {
     override string toString() { result = "CallExpr" }
 
     /**
-     * Gets the expression of this call expression, if it exists.
+     * Gets the function of this call expression, if it exists.
      */
-    Expr getExpr() { call_expr_exprs(this, result) }
+    Expr getFunction() { call_expr_functions(this, result) }
   }
 
   /**
@@ -3207,9 +3137,9 @@ module Raw {
     Name getName() { const_names(this, result) }
 
     /**
-     * Gets the ty of this const, if it exists.
+     * Gets the type representation of this const, if it exists.
      */
-    TypeRef getTy() { const_ties(this, result) }
+    TypeRepr getTypeRepr() { const_type_reprs(this, result) }
 
     /**
      * Gets the visibility of this const, if it exists.
@@ -3384,7 +3314,7 @@ module Raw {
     /**
      * Gets the ret type of this function, if it exists.
      */
-    RetType getRetType() { function_ret_types(this, result) }
+    RetTypeRepr getRetType() { function_ret_types(this, result) }
 
     /**
      * Gets the visibility of this function, if it exists.
@@ -3440,12 +3370,12 @@ module Raw {
     /**
      * Gets the self ty of this impl, if it exists.
      */
-    TypeRef getSelfTy() { impl_self_ties(this, result) }
+    TypeRepr getSelfTy() { impl_self_ties(this, result) }
 
     /**
      * Gets the trait of this impl, if it exists.
      */
-    TypeRef getTrait() { impl_traits(this, result) }
+    TypeRepr getTrait() { impl_traits(this, result) }
 
     /**
      * Gets the visibility of this impl, if it exists.
@@ -3456,6 +3386,17 @@ module Raw {
      * Gets the where clause of this impl, if it exists.
      */
     WhereClause getWhereClause() { impl_where_clauses(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * The base class for expressions that loop (`LoopExpr`, `ForExpr` or `WhileExpr`).
+   */
+  class LoopingExpr extends @looping_expr, LabelableExpr {
+    /**
+     * Gets the loop body of this looping expression, if it exists.
+     */
+    BlockExpr getLoopBody() { looping_expr_loop_bodies(this, result) }
   }
 
   /**
@@ -3626,7 +3567,7 @@ module Raw {
    * let x = variable;
    * let x = foo::bar;
    * let y = <T>::foo;
-   * let z = <TypeRef as Trait>::foo;
+   * let z = <TypeRepr as Trait>::foo;
    * ```
    */
   class PathExpr extends @path_expr, PathExprBase {
@@ -3679,9 +3620,9 @@ module Raw {
     Name getName() { static_names(this, result) }
 
     /**
-     * Gets the ty of this static, if it exists.
+     * Gets the type representation of this static, if it exists.
      */
-    TypeRef getTy() { static_ties(this, result) }
+    TypeRepr getTypeRepr() { static_type_reprs(this, result) }
 
     /**
      * Gets the visibility of this static, if it exists.
@@ -3864,9 +3805,9 @@ module Raw {
     Name getName() { type_alias_names(this, result) }
 
     /**
-     * Gets the ty of this type alias, if it exists.
+     * Gets the type representation of this type alias, if it exists.
      */
-    TypeRef getTy() { type_alias_ties(this, result) }
+    TypeRepr getTypeRepr() { type_alias_type_reprs(this, result) }
 
     /**
      * Gets the type bound list of this type alias, if it exists.
@@ -3949,5 +3890,86 @@ module Raw {
      * Gets the visibility of this use, if it exists.
      */
     Visibility getVisibility() { use_visibilities(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A ForExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
+  class ForExpr extends @for_expr, LoopingExpr {
+    override string toString() { result = "ForExpr" }
+
+    /**
+     * Gets the `index`th attr of this for expression (0-based).
+     */
+    Attr getAttr(int index) { for_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the iterable of this for expression, if it exists.
+     */
+    Expr getIterable() { for_expr_iterables(this, result) }
+
+    /**
+     * Gets the pattern of this for expression, if it exists.
+     */
+    Pat getPat() { for_expr_pats(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A loop expression. For example:
+   * ```rust
+   * loop {
+   *     println!("Hello, world (again)!");
+   * };
+   * ```
+   * ```rust
+   * 'label: loop {
+   *     println!("Hello, world (once)!");
+   *     break 'label;
+   * };
+   * ```
+   * ```rust
+   * let mut x = 0;
+   * loop {
+   *     if x < 10 {
+   *         x += 1;
+   *     } else {
+   *         break;
+   *     }
+   * };
+   * ```
+   */
+  class LoopExpr extends @loop_expr, LoopingExpr {
+    override string toString() { result = "LoopExpr" }
+
+    /**
+     * Gets the `index`th attr of this loop expression (0-based).
+     */
+    Attr getAttr(int index) { loop_expr_attrs(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A WhileExpr. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
+  class WhileExpr extends @while_expr, LoopingExpr {
+    override string toString() { result = "WhileExpr" }
+
+    /**
+     * Gets the `index`th attr of this while expression (0-based).
+     */
+    Attr getAttr(int index) { while_expr_attrs(this, index, result) }
+
+    /**
+     * Gets the condition of this while expression, if it exists.
+     */
+    Expr getCondition() { while_expr_conditions(this, result) }
   }
 }

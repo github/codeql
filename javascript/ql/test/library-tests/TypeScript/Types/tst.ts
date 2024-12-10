@@ -509,3 +509,12 @@ module TS55 {
     }
   }
 }
+
+namespace TS57{
+  declare const a: symbol;
+  export class A {
+      [a]() { return 1 };
+  }
+
+  declare const e1: A[typeof a]; // Now okay, previously was compilation error TS2538: Type 'symbol' cannot be used as an index type.
+}
