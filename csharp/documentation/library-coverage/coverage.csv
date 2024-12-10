@@ -14,7 +14,6 @@ Microsoft.Android.Build,,1,14,,,,,,,,,,,,,1,,,,,,12,2
 Microsoft.Apple.Build,,,7,,,,,,,,,,,,,,,,,,,7,
 Microsoft.ApplicationBlocks.Data,28,,,,,,,,,,,,28,,,,,,,,,,
 Microsoft.AspNetCore.Components,,2,1,,,,,,,,,,,,,,,,2,,,1,
-Microsoft.AspNetCore.Mvc,,,2,,,,,,,,,,,,,,,,,,,,2
 Microsoft.AspNetCore.WebUtilities,,,2,,,,,,,,,,,,,,,,,,,2,
 Microsoft.CSharp,,,2,,,,,,,,,,,,,,,,,,,2,
 Microsoft.Diagnostics.Tools.Pgo,,,25,,,,,,,,,,,,,,,,,,,2,23
