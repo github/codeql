@@ -877,13 +877,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       pragma[nomagic]
       predicate storeStepCand(
-        NodeEx node1, Ap ap1, Content c, NodeEx node2, DataFlowType contentType,
-        DataFlowType containerType
+        NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
       ) {
         revFlowIsReadAndStored(c) and
         revFlow(node2) and
-        store(node1, c, node2, contentType, containerType) and
-        exists(ap1)
+        store(node1, c, node2, contentType, containerType)
       }
 
       pragma[nomagic]
@@ -1292,8 +1290,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       predicate returnMayFlowThrough(RetNodeEx ret, ReturnKindExt kind);
 
       predicate storeStepCand(
-        NodeEx node1, Ap ap1, Content c, NodeEx node2, DataFlowType contentType,
-        DataFlowType containerType
+        NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
       );
 
       predicate readStepCand(NodeEx n1, Content c, NodeEx n2);
@@ -1451,7 +1448,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate compatibleContainer0(ApHeadContent apc, DataFlowType containerType) {
           exists(DataFlowType containerType0, Content c |
-            PrevStage::storeStepCand(_, _, c, _, _, containerType0) and
+            PrevStage::storeStepCand(_, c, _, _, containerType0) and
             not isTopType(containerType0) and
             compatibleTypesCached(containerType0, containerType) and
             apc = projectToHeadContent(c)
@@ -1461,7 +1458,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate topTypeContent(ApHeadContent apc) {
           exists(DataFlowType containerType0, Content c |
-            PrevStage::storeStepCand(_, _, c, _, _, containerType0) and
+            PrevStage::storeStepCand(_, c, _, _, containerType0) and
             isTopType(containerType0) and
             apc = projectToHeadContent(c)
           )
@@ -1646,11 +1643,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           NodeEx node1, Typ t1, Ap ap1, TypOption stored1, Content c, Typ t2, TypOption stored2,
           NodeEx node2, FlowState state, Cc cc, SummaryCtx summaryCtx
         ) {
-          exists(DataFlowType contentType, DataFlowType containerType, ApApprox apa1 |
-            fwdFlow(node1, state, cc, summaryCtx, t1, ap1, apa1, stored1) and
+          exists(DataFlowType contentType, DataFlowType containerType |
+            fwdFlow(node1, state, cc, summaryCtx, t1, ap1, _, stored1) and
             not outBarrier(node1, state) and
             not inBarrier(node2, state) and
-            PrevStage::storeStepCand(node1, apa1, c, node2, contentType, containerType) and
+            PrevStage::storeStepCand(node1, c, node2, contentType, containerType) and
             t2 = getTyp(containerType) and
             // We need to typecheck stores here, since reverse flow through a getter
             // might have a different type here compared to inside the getter.
@@ -2443,11 +2440,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         predicate storeStepCand(
-          NodeEx node1, Ap ap1, Content c, NodeEx node2, DataFlowType contentType,
+          NodeEx node1, Content c, NodeEx node2, DataFlowType contentType,
           DataFlowType containerType
         ) {
-          exists(Ap ap2 |
-            PrevStage::storeStepCand(node1, _, c, node2, contentType, containerType) and
+          exists(Ap ap2, Ap ap1 |
+            PrevStage::storeStepCand(node1, c, node2, contentType, containerType) and
             revFlowStore(ap2, c, ap1, node1, _, node2, _, _) and
             revFlowConsCand(ap2, c, ap1)
           )
@@ -2664,7 +2661,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               or
               node instanceof OutNodeEx
               or
-              storeStepCand(_, _, _, node, _, _)
+              storeStepCand(_, _, node, _, _)
               or
               readStepCand(_, _, node)
               or
@@ -2698,7 +2695,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
                 callEdgeReturn(_, _, node, _, next, _) and
                 apNext = ap
                 or
-                storeStepCand(node, _, _, next, _, _)
+                storeStepCand(node, _, next, _, _)
                 or
                 readStepCand(node, _, next)
               )
@@ -3950,7 +3947,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           PrevStage::readStepCand(_, pragma[only_bind_into](c), _) and
           c = cs.getAReadContent() and
           clearSet(node, cs) and
-          if PrevStage::storeStepCand(_, _, _, node, _, _)
+          if PrevStage::storeStepCand(_, _, node, _, _)
           then isStoreTarget = true
           else isStoreTarget = false
         )
