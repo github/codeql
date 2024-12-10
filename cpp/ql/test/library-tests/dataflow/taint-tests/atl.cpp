@@ -1217,7 +1217,7 @@ struct CStringData {
 
 void test_CStringData() {
   CStringData d = source<CStringData>();
-  sink(d.data()); // $ MISSING: ir
+  sink(d.data()); // $ ir
 }
 
 template<typename TCharType>
@@ -1237,6 +1237,6 @@ struct CStrBufT {
 void test_CStrBufT() {
   CStringT<char> s = source<CStringT<char>>();
   CStrBufT<char> b(s, 42, 0);
-  sink(static_cast<CStrBufT<char>::PCXSTR>(b)); // $ MISSING: ir
-  sink(static_cast<CStrBufT<char>::PXSTR>(b)); // $ MISSING: ir
+  sink(static_cast<CStrBufT<char>::PCXSTR>(b)); // $ ir
+  sink(static_cast<CStrBufT<char>::PXSTR>(b)); // $ ir
 }

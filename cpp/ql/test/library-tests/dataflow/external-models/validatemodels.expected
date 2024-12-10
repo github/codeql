@@ -5,6 +5,7 @@
 | Dubious member name "operator LPSTR" in summary model. |
 | Dubious member name "operator LPWSTR" in summary model. |
 | Dubious member name "operator PCXSTR" in summary model. |
+| Dubious member name "operator PXSTR" in summary model. |
 | Dubious member name "operator&" in summary model. |
 | Dubious member name "operator*" in summary model. |
 | Dubious member name "operator+" in summary model. |
