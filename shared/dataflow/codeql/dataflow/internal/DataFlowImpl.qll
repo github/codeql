@@ -2043,7 +2043,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             exists(NodeEx node, FlowState state |
               sourceNode(node, state) and
               (if hasSourceCallCtx() then cc = true else cc = false) and
-              PrevStage::revFlow(node, state, getApprox(any(ApNil nil))) and
+              PrevStage::revFlow(node, state, any(PrevStage::ApNil nil)) and
               c = node.getEnclosingCallable()
             )
             or
