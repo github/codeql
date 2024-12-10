@@ -1562,7 +1562,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           or
           // flow through a callable
           exists(DataFlowCall call, CcCall ccc, RetNodeEx ret, boolean allowsFieldFlow |
-            fwdFlowThrough(call, cc, state, ccc, summaryCtx, t, ap, apa, stored, ret, _) and
+            fwdFlowThrough(call, cc, state, ccc, summaryCtx, t, ap, apa, stored, ret) and
             flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow) and
             not inBarrier(node, state) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
@@ -2098,10 +2098,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate fwdFlowThrough(
           DataFlowCall call, Cc cc, FlowState state, CcCall ccc, SummaryCtx summaryCtx, Typ t,
-          Ap ap, ApApprox apa, TypOption stored, RetNodeEx ret, ApApprox innerArgApa
+          Ap ap, ApApprox apa, TypOption stored, RetNodeEx ret
         ) {
-          fwdFlowThrough0(call, _, cc, state, ccc, summaryCtx, t, ap, apa, stored, ret, _,
-            innerArgApa)
+          fwdFlowThrough0(call, _, cc, state, ccc, summaryCtx, t, ap, apa, stored, ret, _, _)
         }
 
         pragma[nomagic]
@@ -3136,10 +3135,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           private predicate fwdFlowThroughStep0(
             DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
             SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa, TypOption stored, RetNodeEx ret,
-            SummaryCtxSome innerSummaryCtx, ApApprox innerArgApa
+            SummaryCtxSome innerSummaryCtx
           ) {
             fwdFlowThrough0(call, arg, cc, state, ccc, summaryCtx, t, ap, apa, stored, ret,
-              innerSummaryCtx, innerArgApa)
+              innerSummaryCtx, _)
           }
 
           bindingset[node, state, cc, summaryCtx, t, ap, stored]
@@ -3165,14 +3164,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           private predicate fwdFlowThroughStep1(
             PathNodeImpl pn1, PathNodeImpl pn2, PathNodeImpl pn3, DataFlowCall call, Cc cc,
             FlowState state, CcCall ccc, SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa,
-            TypOption stored, RetNodeEx ret, ApApprox innerArgApa
+            TypOption stored, RetNodeEx ret
           ) {
             exists(
               FlowState state0, ArgNodeEx arg, SummaryCtxSome innerSummaryCtx, ParamNodeEx p,
               Typ innerArgT, Ap innerArgAp, TypOption innerArgStored
             |
               fwdFlowThroughStep0(call, arg, cc, state, ccc, summaryCtx, t, ap, apa, stored, ret,
-                innerSummaryCtx, innerArgApa) and
+                innerSummaryCtx) and
               innerSummaryCtx = TSummaryCtxSome(p, state0, innerArgT, innerArgAp, innerArgStored) and
               pn1 = mkPathNode(arg, state0, cc, summaryCtx, innerArgT, innerArgAp, innerArgStored) and
               pn2 =
@@ -3189,7 +3188,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ) {
             exists(DataFlowCall call, CcCall ccc, RetNodeEx ret, boolean allowsFieldFlow |
               fwdFlowThroughStep1(pn1, pn2, pn3, call, cc, state, ccc, summaryCtx, t, ap, _, stored,
-                ret, _) and
+                ret) and
               flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow) and
               not inBarrier(node, state) and
               if allowsFieldFlow = false then ap instanceof ApNil else any()
