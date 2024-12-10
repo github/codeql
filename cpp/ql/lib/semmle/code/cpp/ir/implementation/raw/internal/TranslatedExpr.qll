@@ -15,6 +15,7 @@ private import TranslatedInitialization
 private import TranslatedStmt
 private import TranslatedGlobalVar
 private import IRConstruction
+private import EdgeKind
 import TranslatedCall
 
 /**
@@ -391,7 +392,15 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = LoadTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      // All load instructions could throw an Seh exception
+      // If the load is in a MicrosoftTryStmt, add an exception edge
+      kind = sehExceptionEdge() and
+      exists(MicrosoftTryStmt trystmt | trystmt.getAChild*() = expr) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {

@@ -6,6 +6,7 @@ private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
+private import EdgeKind
 
 /**
  * Gets the `TranslatedInitialization` for the expression `expr`.
@@ -281,7 +282,15 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = InitializerStoreTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      // All store instructions could throw an Seh exception
+      // If the store is in a MicrosoftTryStmt, add an exception edge
+      kind = sehExceptionEdge() and
+      exists(MicrosoftTryStmt trystmt | trystmt.getAChild*() = expr) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -359,7 +368,15 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     tag = InitializerLoadStringTag() and
-    result = this.getInstruction(InitializerStoreTag())
+    (
+      result = this.getInstruction(InitializerStoreTag())
+      or
+      // All load/store instructions could throw an Seh exception
+      // If the load/store  is in a MicrosoftTryStmt, add an exception edge
+      kind = sehExceptionEdge() and
+      exists(MicrosoftTryStmt trystmt | trystmt.getAChild*() = expr) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
+    )
     or
     if this.zeroInitRange(_, _)
     then (
@@ -650,7 +667,15 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
     )
     or
     tag = this.getFieldDefaultValueStoreTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or 
+      // All load/store instructions could throw an Seh exception
+      // If the load/store  is in a MicrosoftTryStmt, add an exception edge
+      kind = sehExceptionEdge() and
+      exists(MicrosoftTryStmt trystmt | trystmt.getAChild*() = ast) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
+    )
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {
@@ -850,7 +875,15 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     )
     or
     tag = this.getElementDefaultValueStoreTag() and
-    result = this.getParent().getChildSuccessor(this, kind)
+    (
+      result = this.getParent().getChildSuccessor(this, kind)
+      or 
+      // All load/store instructions could throw an Seh exception
+      // If the load/store  is in a MicrosoftTryStmt, add an exception edge
+      kind = sehExceptionEdge() and
+      exists(MicrosoftTryStmt trystmt | trystmt.getAChild*() = initList) and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge e))
+    )
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {
