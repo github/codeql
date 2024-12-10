@@ -25,7 +25,7 @@ import cpp
  * Provides classes for performing local (intra-procedural) and
  * global (inter-procedural) data flow analyses.
  */
-module DataFlow {
+deprecated module DataFlow {
   private import semmle.code.cpp.dataflow.internal.DataFlowImplSpecific
   private import codeql.dataflow.DataFlow
   import DataFlowMake<Location, CppOldDataFlow>
