@@ -106,7 +106,7 @@ OLD: KE1
 
 context(KaSession)
 private fun KotlinFileExtractor.extractExpressionStmt(
-    e: KtExpression,
+    e: KtExpression?,
     callable: Label<out DbCallable>,
     parent: Label<out DbStmtparent>,
     idx: Int
@@ -851,7 +851,7 @@ private fun <SE: AnyDbType> KotlinFileExtractor.extractExpression(
                             catchId
                         )
                         */
-                        extractExpressionStmt(catchClause.catchBody!!, stmtParent.callable, catchId, 1)
+                        extractExpressionStmt(catchClause.catchBody, stmtParent.callable, catchId, 1)
                     }
                     id
                 }
@@ -1792,7 +1792,7 @@ private fun KotlinFileExtractor.extractWhen(
             }
         }
 
-        extractExpressionStmt(b.expression!!, exprParent.callable, bId, 1)
+        extractExpressionStmt(b.expression, exprParent.callable, bId, 1)
         val guardExpr = b.guard?.getExpression()
         if (guardExpr != null) {
             extractExpressionStmt(guardExpr, exprParent.callable, bId, 2)
@@ -1820,7 +1820,7 @@ private fun <SE: AnyDbType> KotlinFileExtractor.extractIf(
             tw.writeHasLocation(id, locId)
 
             extractExpressionExpr(ifStmt.condition, stmtParent.callable, id, 0, id)
-            extractExpressionStmt(ifStmt.then!!, stmtParent.callable, id, 1)
+            extractExpressionStmt(ifStmt.then, stmtParent.callable, id, 1)
             val elseBranch = ifStmt.`else`
             if (elseBranch != null) {
                 extractExpressionStmt(elseBranch, stmtParent.callable, id, 2)
