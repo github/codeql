@@ -11,6 +11,7 @@ typedef void* PVOID;
 typedef bool BOOL;
 typedef char* PSTR, *LPSTR;
 typedef const char* LPCTSTR;
+typedef const wchar_t* LPCWSTR;
 typedef unsigned short WORD;
 typedef unsigned long DWORD;
 typedef void* HANDLE;

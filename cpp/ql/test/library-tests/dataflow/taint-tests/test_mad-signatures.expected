@@ -1,88 +1,88 @@
 signatureMatches
-| atl.cpp:69:3:69:15 | _U_STRINGorID | (UINT) | CComBSTR | LoadString | 0 |
-| atl.cpp:69:3:69:15 | _U_STRINGorID | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:70:3:70:15 | _U_STRINGorID | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:257:3:257:10 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
-| atl.cpp:257:3:257:10 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
-| atl.cpp:257:3:257:10 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:257:3:257:10 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:407:8:407:8 | operator= | (const CComBSTR &) | CComBSTR | Append | 0 |
-| atl.cpp:407:8:407:8 | operator= | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:409:3:409:10 | CComBSTR | (const CComBSTR &) | CComBSTR | Append | 0 |
-| atl.cpp:409:3:409:10 | CComBSTR | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:411:3:411:10 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:411:3:411:10 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 1 |
-| atl.cpp:412:3:412:10 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:412:3:412:10 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 1 |
-| atl.cpp:413:3:413:10 | CComBSTR | (LPCOLESTR) | CComBSTR | Append | 0 |
-| atl.cpp:413:3:413:10 | CComBSTR | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:414:3:414:10 | CComBSTR | (LPCSTR) | CComBSTR | Append | 0 |
-| atl.cpp:414:3:414:10 | CComBSTR | (LPCSTR) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:415:3:415:10 | CComBSTR | (CComBSTR &&) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:418:11:418:16 | Append | (const CComBSTR &) | CComBSTR | Append | 0 |
-| atl.cpp:418:11:418:16 | Append | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:419:11:419:16 | Append | (wchar_t) | CComBSTR | Append | 0 |
-| atl.cpp:420:11:420:16 | Append | (char) | CComBSTR | Append | 0 |
-| atl.cpp:421:11:421:16 | Append | (LPCOLESTR) | CComBSTR | Append | 0 |
-| atl.cpp:421:11:421:16 | Append | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:422:11:422:16 | Append | (LPCSTR) | CComBSTR | Append | 0 |
-| atl.cpp:422:11:422:16 | Append | (LPCSTR) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:423:11:423:16 | Append | (LPCOLESTR,int) | CComBSTR | Append | 0 |
-| atl.cpp:423:11:423:16 | Append | (LPCOLESTR,int) | CComBSTR | Append | 1 |
-| atl.cpp:425:11:425:21 | AppendBytes | (LPCOLESTR,int) | CComBSTR | Append | 1 |
-| atl.cpp:426:11:426:21 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
-| atl.cpp:426:11:426:21 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
-| atl.cpp:426:11:426:21 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
-| atl.cpp:438:8:438:17 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 0 |
-| atl.cpp:438:8:438:17 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 1 |
-| atl.cpp:439:8:439:17 | LoadString | (UINT) | CComBSTR | LoadString | 0 |
-| atl.cpp:439:8:439:17 | LoadString | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:447:13:447:22 | operator+= | (const CComBSTR &) | CComBSTR | Append | 0 |
-| atl.cpp:447:13:447:22 | operator+= | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:448:13:448:22 | operator+= | (LPCOLESTR) | CComBSTR | Append | 0 |
-| atl.cpp:448:13:448:22 | operator+= | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
-| atl.cpp:538:3:538:15 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
-| atl.cpp:538:3:538:15 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
-| atl.cpp:538:3:538:15 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
-| atl.cpp:542:11:542:13 | Add | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
-| atl.cpp:542:11:542:13 | Add | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
-| atl.cpp:542:11:542:13 | Add | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
-| atl.cpp:544:11:544:13 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 0 |
-| atl.cpp:544:11:544:13 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 1 |
-| atl.cpp:763:8:763:10 | Add | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
-| atl.cpp:763:8:763:10 | Add | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
-| atl.cpp:763:8:763:10 | Add | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
-| atl.cpp:763:8:763:10 | Add | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| atl.cpp:763:8:763:10 | Add | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
-| atl.cpp:763:8:763:10 | Add | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
-| atl.cpp:763:8:763:10 | Add | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
-| atl.cpp:763:8:763:10 | Add | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| atl.cpp:774:8:774:12 | SetAt | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
-| atl.cpp:774:8:774:12 | SetAt | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
-| atl.cpp:774:8:774:12 | SetAt | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
-| atl.cpp:774:8:774:12 | SetAt | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| atl.cpp:774:8:774:12 | SetAt | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
-| atl.cpp:774:8:774:12 | SetAt | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
-| atl.cpp:774:8:774:12 | SetAt | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
-| atl.cpp:774:8:774:12 | SetAt | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 1 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 1 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
-| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
-| atl.cpp:840:15:840:26 | SetExtraInfo | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:841:15:841:25 | SetHostName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:842:15:842:25 | SetPassword | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:845:15:845:27 | SetSchemeName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:846:15:846:24 | SetUrlPath | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
-| atl.cpp:847:15:847:25 | SetUserName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:70:3:70:15 | _U_STRINGorID | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:70:3:70:15 | _U_STRINGorID | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:71:3:71:15 | _U_STRINGorID | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:258:3:258:10 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:258:3:258:10 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:258:3:258:10 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:258:3:258:10 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:408:8:408:8 | operator= | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:408:8:408:8 | operator= | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:410:3:410:10 | CComBSTR | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:410:3:410:10 | CComBSTR | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:412:3:412:10 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:412:3:412:10 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 1 |
+| atl.cpp:413:3:413:10 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:413:3:413:10 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 1 |
+| atl.cpp:414:3:414:10 | CComBSTR | (LPCOLESTR) | CComBSTR | Append | 0 |
+| atl.cpp:414:3:414:10 | CComBSTR | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:415:3:415:10 | CComBSTR | (LPCSTR) | CComBSTR | Append | 0 |
+| atl.cpp:415:3:415:10 | CComBSTR | (LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:416:3:416:10 | CComBSTR | (CComBSTR &&) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:419:11:419:16 | Append | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:419:11:419:16 | Append | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:420:11:420:16 | Append | (wchar_t) | CComBSTR | Append | 0 |
+| atl.cpp:421:11:421:16 | Append | (char) | CComBSTR | Append | 0 |
+| atl.cpp:422:11:422:16 | Append | (LPCOLESTR) | CComBSTR | Append | 0 |
+| atl.cpp:422:11:422:16 | Append | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:423:11:423:16 | Append | (LPCSTR) | CComBSTR | Append | 0 |
+| atl.cpp:423:11:423:16 | Append | (LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:424:11:424:16 | Append | (LPCOLESTR,int) | CComBSTR | Append | 0 |
+| atl.cpp:424:11:424:16 | Append | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:426:11:426:21 | AppendBytes | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:427:11:427:21 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
+| atl.cpp:427:11:427:21 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
+| atl.cpp:427:11:427:21 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
+| atl.cpp:439:8:439:17 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:439:8:439:17 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 1 |
+| atl.cpp:440:8:440:17 | LoadString | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:440:8:440:17 | LoadString | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:448:13:448:22 | operator+= | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:448:13:448:22 | operator+= | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:449:13:449:22 | operator+= | (LPCOLESTR) | CComBSTR | Append | 0 |
+| atl.cpp:449:13:449:22 | operator+= | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:539:3:539:15 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
+| atl.cpp:539:3:539:15 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
+| atl.cpp:539:3:539:15 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
+| atl.cpp:543:11:543:13 | Add | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
+| atl.cpp:543:11:543:13 | Add | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
+| atl.cpp:543:11:543:13 | Add | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
+| atl.cpp:545:11:545:13 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 0 |
+| atl.cpp:545:11:545:13 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 1 |
+| atl.cpp:764:8:764:10 | Add | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:764:8:764:10 | Add | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:764:8:764:10 | Add | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:764:8:764:10 | Add | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:764:8:764:10 | Add | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:764:8:764:10 | Add | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:764:8:764:10 | Add | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:764:8:764:10 | Add | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:775:8:775:12 | SetAt | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:775:8:775:12 | SetAt | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:775:8:775:12 | SetAt | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:775:8:775:12 | SetAt | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:775:8:775:12 | SetAt | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:775:8:775:12 | SetAt | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:775:8:775:12 | SetAt | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:775:8:775:12 | SetAt | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:776:8:776:17 | SetAtIndex | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| atl.cpp:841:15:841:26 | SetExtraInfo | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:842:15:842:25 | SetHostName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:843:15:843:25 | SetPassword | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:846:15:846:27 | SetSchemeName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:847:15:847:24 | SetUrlPath | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:848:15:848:25 | SetUserName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
 | constructor_delegation.cpp:10:2:10:8 | MyValue | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | standalone_iterators.cpp:103:27:103:36 | operator+= | (LPCOLESTR,int) | CComBSTR | Append | 1 |
@@ -525,151 +525,151 @@ getParameterTypeName
 | arrayassignment.cpp:88:7:88:9 | get | 0 | int |
 | arrayassignment.cpp:90:7:90:16 | operator[] | 0 | int |
 | arrayassignment.cpp:124:6:124:9 | sink | 0 | int * |
-| atl.cpp:28:8:28:8 | operator= | 0 | __POSITION && |
-| atl.cpp:28:8:28:8 | operator= | 0 | const __POSITION & |
-| atl.cpp:50:16:50:16 | operator= | 0 | const tagSAFEARRAYBOUND & |
-| atl.cpp:50:16:50:16 | operator= | 0 | tagSAFEARRAYBOUND && |
-| atl.cpp:55:16:55:16 | operator= | 0 | const tagVARIANT & |
-| atl.cpp:55:16:55:16 | operator= | 0 | tagVARIANT && |
-| atl.cpp:59:16:59:16 | operator= | 0 | const tagSAFEARRAY & |
-| atl.cpp:59:16:59:16 | operator= | 0 | tagSAFEARRAY && |
-| atl.cpp:68:8:68:8 | _U_STRINGorID | 0 | _U_STRINGorID && |
-| atl.cpp:68:8:68:8 | _U_STRINGorID | 0 | const _U_STRINGorID & |
-| atl.cpp:68:8:68:8 | operator= | 0 | _U_STRINGorID && |
-| atl.cpp:68:8:68:8 | operator= | 0 | const _U_STRINGorID & |
-| atl.cpp:69:3:69:15 | _U_STRINGorID | 0 | UINT |
-| atl.cpp:70:3:70:15 | _U_STRINGorID | 0 | LPCTSTR |
-| atl.cpp:194:10:194:12 | Add | 0 | INARGTYPclass:0 |
-| atl.cpp:196:10:196:15 | Append | 0 | const CAtlArray & |
-| atl.cpp:197:8:197:11 | Copy | 0 | const CAtlArray & |
-| atl.cpp:199:6:199:10 | GetAt | 0 | size_t |
-| atl.cpp:203:8:203:20 | InsertArrayAt | 0 | size_t |
-| atl.cpp:203:8:203:20 | InsertArrayAt | 1 | const CAtlArray * |
-| atl.cpp:204:8:204:15 | InsertAt | 0 | size_t |
-| atl.cpp:204:8:204:15 | InsertAt | 1 | INARGTYPclass:0 |
-| atl.cpp:204:8:204:15 | InsertAt | 2 | size_t |
-| atl.cpp:209:8:209:16 | SetAtGrow | 0 | size_t |
-| atl.cpp:209:8:209:16 | SetAtGrow | 1 | INARGTYPclass:0 |
-| atl.cpp:211:6:211:15 | operator[] | 0 | size_t |
-| atl.cpp:257:3:257:10 | CAtlList | 0 | UINT |
-| atl.cpp:257:3:257:10 | CAtlList | 0 | UINT |
-| atl.cpp:260:12:260:18 | AddHead | 0 | INARGTYPclass:0 |
-| atl.cpp:260:12:260:18 | AddHead | 0 | INARGTYPclass:0 |
-| atl.cpp:261:8:261:18 | AddHeadList | 0 | const CAtlList * |
-| atl.cpp:261:8:261:18 | AddHeadList | 0 | const CAtlList * |
-| atl.cpp:263:12:263:18 | AddTail | 0 | INARGTYPclass:0 |
-| atl.cpp:263:12:263:18 | AddTail | 0 | INARGTYPclass:0 |
-| atl.cpp:264:8:264:18 | AddTailList | 0 | const CAtlList * |
-| atl.cpp:264:8:264:18 | AddTailList | 0 | const CAtlList * |
-| atl.cpp:265:12:265:15 | Find | 0 | INARGTYPclass:0 |
-| atl.cpp:265:12:265:15 | Find | 0 | INARGTYPclass:0 |
-| atl.cpp:265:12:265:15 | Find | 1 | POSITION |
-| atl.cpp:265:12:265:15 | Find | 1 | POSITION |
-| atl.cpp:266:12:266:20 | FindIndex | 0 | size_t |
-| atl.cpp:266:12:266:20 | FindIndex | 0 | size_t |
-| atl.cpp:267:6:267:10 | GetAt | 0 | POSITION |
-| atl.cpp:267:6:267:10 | GetAt | 0 | POSITION |
-| atl.cpp:280:12:280:22 | InsertAfter | 0 | POSITION |
-| atl.cpp:280:12:280:22 | InsertAfter | 0 | POSITION |
-| atl.cpp:280:12:280:22 | InsertAfter | 1 | INARGTYPclass:0 |
-| atl.cpp:280:12:280:22 | InsertAfter | 1 | INARGTYPclass:0 |
-| atl.cpp:281:12:281:23 | InsertBefore | 0 | POSITION |
-| atl.cpp:281:12:281:23 | InsertBefore | 0 | POSITION |
-| atl.cpp:281:12:281:23 | InsertBefore | 1 | INARGTYPclass:0 |
-| atl.cpp:281:12:281:23 | InsertBefore | 1 | INARGTYPclass:0 |
-| atl.cpp:291:8:291:12 | SetAt | 0 | POSITION |
-| atl.cpp:291:8:291:12 | SetAt | 0 | POSITION |
-| atl.cpp:291:8:291:12 | SetAt | 1 | INARGTYPclass:0 |
-| atl.cpp:291:8:291:12 | SetAt | 1 | INARGTYPclass:0 |
-| atl.cpp:401:8:401:8 | operator= | 0 | IUnknown && |
-| atl.cpp:401:8:401:8 | operator= | 0 | const IUnknown & |
-| atl.cpp:403:8:403:8 | operator= | 0 | ISequentialStream && |
-| atl.cpp:403:8:403:8 | operator= | 0 | const ISequentialStream & |
-| atl.cpp:405:8:405:8 | operator= | 0 | IStream && |
-| atl.cpp:405:8:405:8 | operator= | 0 | const IStream & |
-| atl.cpp:407:8:407:8 | operator= | 0 | const CComBSTR & |
-| atl.cpp:409:3:409:10 | CComBSTR | 0 | const CComBSTR & |
-| atl.cpp:410:3:410:10 | CComBSTR | 0 | int |
+| atl.cpp:29:8:29:8 | operator= | 0 | __POSITION && |
+| atl.cpp:29:8:29:8 | operator= | 0 | const __POSITION & |
+| atl.cpp:51:16:51:16 | operator= | 0 | const tagSAFEARRAYBOUND & |
+| atl.cpp:51:16:51:16 | operator= | 0 | tagSAFEARRAYBOUND && |
+| atl.cpp:56:16:56:16 | operator= | 0 | const tagVARIANT & |
+| atl.cpp:56:16:56:16 | operator= | 0 | tagVARIANT && |
+| atl.cpp:60:16:60:16 | operator= | 0 | const tagSAFEARRAY & |
+| atl.cpp:60:16:60:16 | operator= | 0 | tagSAFEARRAY && |
+| atl.cpp:69:8:69:8 | _U_STRINGorID | 0 | _U_STRINGorID && |
+| atl.cpp:69:8:69:8 | _U_STRINGorID | 0 | const _U_STRINGorID & |
+| atl.cpp:69:8:69:8 | operator= | 0 | _U_STRINGorID && |
+| atl.cpp:69:8:69:8 | operator= | 0 | const _U_STRINGorID & |
+| atl.cpp:70:3:70:15 | _U_STRINGorID | 0 | UINT |
+| atl.cpp:71:3:71:15 | _U_STRINGorID | 0 | LPCTSTR |
+| atl.cpp:195:10:195:12 | Add | 0 | INARGTYPclass:0 |
+| atl.cpp:197:10:197:15 | Append | 0 | const CAtlArray & |
+| atl.cpp:198:8:198:11 | Copy | 0 | const CAtlArray & |
+| atl.cpp:200:6:200:10 | GetAt | 0 | size_t |
+| atl.cpp:204:8:204:20 | InsertArrayAt | 0 | size_t |
+| atl.cpp:204:8:204:20 | InsertArrayAt | 1 | const CAtlArray * |
+| atl.cpp:205:8:205:15 | InsertAt | 0 | size_t |
+| atl.cpp:205:8:205:15 | InsertAt | 1 | INARGTYPclass:0 |
+| atl.cpp:205:8:205:15 | InsertAt | 2 | size_t |
+| atl.cpp:210:8:210:16 | SetAtGrow | 0 | size_t |
+| atl.cpp:210:8:210:16 | SetAtGrow | 1 | INARGTYPclass:0 |
+| atl.cpp:212:6:212:15 | operator[] | 0 | size_t |
+| atl.cpp:258:3:258:10 | CAtlList | 0 | UINT |
+| atl.cpp:258:3:258:10 | CAtlList | 0 | UINT |
+| atl.cpp:261:12:261:18 | AddHead | 0 | INARGTYPclass:0 |
+| atl.cpp:261:12:261:18 | AddHead | 0 | INARGTYPclass:0 |
+| atl.cpp:262:8:262:18 | AddHeadList | 0 | const CAtlList * |
+| atl.cpp:262:8:262:18 | AddHeadList | 0 | const CAtlList * |
+| atl.cpp:264:12:264:18 | AddTail | 0 | INARGTYPclass:0 |
+| atl.cpp:264:12:264:18 | AddTail | 0 | INARGTYPclass:0 |
+| atl.cpp:265:8:265:18 | AddTailList | 0 | const CAtlList * |
+| atl.cpp:265:8:265:18 | AddTailList | 0 | const CAtlList * |
+| atl.cpp:266:12:266:15 | Find | 0 | INARGTYPclass:0 |
+| atl.cpp:266:12:266:15 | Find | 0 | INARGTYPclass:0 |
+| atl.cpp:266:12:266:15 | Find | 1 | POSITION |
+| atl.cpp:266:12:266:15 | Find | 1 | POSITION |
+| atl.cpp:267:12:267:20 | FindIndex | 0 | size_t |
+| atl.cpp:267:12:267:20 | FindIndex | 0 | size_t |
+| atl.cpp:268:6:268:10 | GetAt | 0 | POSITION |
+| atl.cpp:268:6:268:10 | GetAt | 0 | POSITION |
+| atl.cpp:281:12:281:22 | InsertAfter | 0 | POSITION |
+| atl.cpp:281:12:281:22 | InsertAfter | 0 | POSITION |
+| atl.cpp:281:12:281:22 | InsertAfter | 1 | INARGTYPclass:0 |
+| atl.cpp:281:12:281:22 | InsertAfter | 1 | INARGTYPclass:0 |
+| atl.cpp:282:12:282:23 | InsertBefore | 0 | POSITION |
+| atl.cpp:282:12:282:23 | InsertBefore | 0 | POSITION |
+| atl.cpp:282:12:282:23 | InsertBefore | 1 | INARGTYPclass:0 |
+| atl.cpp:282:12:282:23 | InsertBefore | 1 | INARGTYPclass:0 |
+| atl.cpp:292:8:292:12 | SetAt | 0 | POSITION |
+| atl.cpp:292:8:292:12 | SetAt | 0 | POSITION |
+| atl.cpp:292:8:292:12 | SetAt | 1 | INARGTYPclass:0 |
+| atl.cpp:292:8:292:12 | SetAt | 1 | INARGTYPclass:0 |
+| atl.cpp:402:8:402:8 | operator= | 0 | IUnknown && |
+| atl.cpp:402:8:402:8 | operator= | 0 | const IUnknown & |
+| atl.cpp:404:8:404:8 | operator= | 0 | ISequentialStream && |
+| atl.cpp:404:8:404:8 | operator= | 0 | const ISequentialStream & |
+| atl.cpp:406:8:406:8 | operator= | 0 | IStream && |
+| atl.cpp:406:8:406:8 | operator= | 0 | const IStream & |
+| atl.cpp:408:8:408:8 | operator= | 0 | const CComBSTR & |
+| atl.cpp:410:3:410:10 | CComBSTR | 0 | const CComBSTR & |
 | atl.cpp:411:3:411:10 | CComBSTR | 0 | int |
-| atl.cpp:411:3:411:10 | CComBSTR | 1 | LPCOLESTR |
 | atl.cpp:412:3:412:10 | CComBSTR | 0 | int |
-| atl.cpp:412:3:412:10 | CComBSTR | 1 | LPCSTR |
-| atl.cpp:413:3:413:10 | CComBSTR | 0 | LPCOLESTR |
-| atl.cpp:414:3:414:10 | CComBSTR | 0 | LPCSTR |
-| atl.cpp:415:3:415:10 | CComBSTR | 0 | CComBSTR && |
-| atl.cpp:418:11:418:16 | Append | 0 | const CComBSTR & |
-| atl.cpp:419:11:419:16 | Append | 0 | wchar_t |
-| atl.cpp:420:11:420:16 | Append | 0 | char |
-| atl.cpp:421:11:421:16 | Append | 0 | LPCOLESTR |
-| atl.cpp:422:11:422:16 | Append | 0 | LPCSTR |
-| atl.cpp:423:11:423:16 | Append | 0 | LPCOLESTR |
-| atl.cpp:423:11:423:16 | Append | 1 | int |
-| atl.cpp:424:11:424:20 | AppendBSTR | 0 | BSTR |
-| atl.cpp:425:11:425:21 | AppendBytes | 0 | const char * |
-| atl.cpp:425:11:425:21 | AppendBytes | 1 | int |
-| atl.cpp:426:11:426:21 | ArrayToBSTR | 0 | const SAFEARRAY * |
-| atl.cpp:427:11:427:20 | AssignBSTR | 0 | const BSTR |
-| atl.cpp:428:8:428:13 | Attach | 0 | BSTR |
-| atl.cpp:429:11:429:21 | BSTRToArray | 0 | LPSAFEARRAY * |
-| atl.cpp:432:11:432:16 | CopyTo | 0 | BSTR * |
-| atl.cpp:434:11:434:16 | CopyTo | 0 | VARIANT * |
-| atl.cpp:438:8:438:17 | LoadString | 0 | HINSTANCE |
-| atl.cpp:438:8:438:17 | LoadString | 1 | UINT |
-| atl.cpp:439:8:439:17 | LoadString | 0 | UINT |
-| atl.cpp:440:11:440:24 | ReadFromStream | 0 | IStream * |
-| atl.cpp:442:11:442:23 | WriteToStream | 0 | IStream * |
-| atl.cpp:447:13:447:22 | operator+= | 0 | const CComBSTR & |
-| atl.cpp:448:13:448:22 | operator+= | 0 | LPCOLESTR |
-| atl.cpp:538:3:538:15 | CComSafeArray | 0 | const SAFEARRAY * |
-| atl.cpp:542:11:542:13 | Add | 0 | const SAFEARRAY * |
-| atl.cpp:544:11:544:13 | Add | 0 | const class:0 & |
-| atl.cpp:544:11:544:13 | Add | 1 | BOOL |
-| atl.cpp:552:6:552:10 | GetAt | 0 | LONG |
-| atl.cpp:563:11:563:15 | SetAt | 0 | LONG |
-| atl.cpp:563:11:563:15 | SetAt | 1 | const class:0 & |
-| atl.cpp:563:11:563:15 | SetAt | 2 | BOOL |
-| atl.cpp:565:6:565:15 | operator[] | 0 | long |
-| atl.cpp:566:6:566:15 | operator[] | 0 | int |
-| atl.cpp:610:3:610:8 | CPathT | 0 | PCXSTR |
-| atl.cpp:611:3:611:8 | CPathT | 0 | const CPathT & |
-| atl.cpp:615:8:615:19 | AddExtension | 0 | PCXSTR |
-| atl.cpp:616:8:616:13 | Append | 0 | PCXSTR |
-| atl.cpp:619:8:619:14 | Combine | 0 | PCXSTR |
-| atl.cpp:619:8:619:14 | Combine | 1 | PCXSTR |
-| atl.cpp:620:22:620:33 | CommonPrefix | 0 | PCXSTR |
-| atl.cpp:657:23:657:32 | operator+= | 0 | PCXSTR |
-| atl.cpp:717:8:717:10 | Add | 0 | const class:0 & |
-| atl.cpp:718:7:718:10 | Find | 0 | const class:0 & |
-| atl.cpp:729:6:729:15 | operator[] | 0 | int |
-| atl.cpp:730:21:730:29 | operator= | 0 | const CSimpleArray & |
-| atl.cpp:763:8:763:10 | Add | 0 | const class:0 & |
-| atl.cpp:763:8:763:10 | Add | 1 | const class:1 & |
-| atl.cpp:764:7:764:13 | FindKey | 0 | const class:0 & |
-| atl.cpp:765:7:765:13 | FindVal | 0 | const class:1 & |
-| atl.cpp:768:9:768:18 | GetValueAt | 0 | int |
-| atl.cpp:769:8:769:13 | Lookup | 0 | const class:0 & |
-| atl.cpp:773:8:773:20 | ReverseLookup | 0 | const class:1 & |
-| atl.cpp:774:8:774:12 | SetAt | 0 | const class:0 & |
-| atl.cpp:774:8:774:12 | SetAt | 1 | const class:1 & |
-| atl.cpp:775:8:775:17 | SetAtIndex | 0 | int |
-| atl.cpp:775:8:775:17 | SetAtIndex | 1 | const class:0 & |
-| atl.cpp:775:8:775:17 | SetAtIndex | 2 | const class:1 & |
-| atl.cpp:814:9:814:17 | operator= | 0 | const CUrl & |
-| atl.cpp:816:3:816:6 | CUrl | 0 | const CUrl & |
-| atl.cpp:819:15:819:26 | Canonicalize | 0 | DWORD |
-| atl.cpp:822:8:822:15 | CrackUrl | 0 | LPCTSTR |
-| atl.cpp:822:8:822:15 | CrackUrl | 1 | DWORD |
-| atl.cpp:823:15:823:23 | CreateUrl | 0 | LPTSTR |
-| atl.cpp:823:15:823:23 | CreateUrl | 1 | DWORD * |
-| atl.cpp:823:15:823:23 | CreateUrl | 2 | DWORD |
-| atl.cpp:840:15:840:26 | SetExtraInfo | 0 | LPCTSTR |
-| atl.cpp:841:15:841:25 | SetHostName | 0 | LPCTSTR |
-| atl.cpp:842:15:842:25 | SetPassword | 0 | LPCTSTR |
-| atl.cpp:843:15:843:27 | SetPortNumber | 0 | ATL_URL_PORT |
-| atl.cpp:844:15:844:23 | SetScheme | 0 | ATL_URL_SCHEME |
-| atl.cpp:845:15:845:27 | SetSchemeName | 0 | LPCTSTR |
-| atl.cpp:846:15:846:24 | SetUrlPath | 0 | LPCTSTR |
-| atl.cpp:847:15:847:25 | SetUserName | 0 | LPCTSTR |
+| atl.cpp:412:3:412:10 | CComBSTR | 1 | LPCOLESTR |
+| atl.cpp:413:3:413:10 | CComBSTR | 0 | int |
+| atl.cpp:413:3:413:10 | CComBSTR | 1 | LPCSTR |
+| atl.cpp:414:3:414:10 | CComBSTR | 0 | LPCOLESTR |
+| atl.cpp:415:3:415:10 | CComBSTR | 0 | LPCSTR |
+| atl.cpp:416:3:416:10 | CComBSTR | 0 | CComBSTR && |
+| atl.cpp:419:11:419:16 | Append | 0 | const CComBSTR & |
+| atl.cpp:420:11:420:16 | Append | 0 | wchar_t |
+| atl.cpp:421:11:421:16 | Append | 0 | char |
+| atl.cpp:422:11:422:16 | Append | 0 | LPCOLESTR |
+| atl.cpp:423:11:423:16 | Append | 0 | LPCSTR |
+| atl.cpp:424:11:424:16 | Append | 0 | LPCOLESTR |
+| atl.cpp:424:11:424:16 | Append | 1 | int |
+| atl.cpp:425:11:425:20 | AppendBSTR | 0 | BSTR |
+| atl.cpp:426:11:426:21 | AppendBytes | 0 | const char * |
+| atl.cpp:426:11:426:21 | AppendBytes | 1 | int |
+| atl.cpp:427:11:427:21 | ArrayToBSTR | 0 | const SAFEARRAY * |
+| atl.cpp:428:11:428:20 | AssignBSTR | 0 | const BSTR |
+| atl.cpp:429:8:429:13 | Attach | 0 | BSTR |
+| atl.cpp:430:11:430:21 | BSTRToArray | 0 | LPSAFEARRAY * |
+| atl.cpp:433:11:433:16 | CopyTo | 0 | BSTR * |
+| atl.cpp:435:11:435:16 | CopyTo | 0 | VARIANT * |
+| atl.cpp:439:8:439:17 | LoadString | 0 | HINSTANCE |
+| atl.cpp:439:8:439:17 | LoadString | 1 | UINT |
+| atl.cpp:440:8:440:17 | LoadString | 0 | UINT |
+| atl.cpp:441:11:441:24 | ReadFromStream | 0 | IStream * |
+| atl.cpp:443:11:443:23 | WriteToStream | 0 | IStream * |
+| atl.cpp:448:13:448:22 | operator+= | 0 | const CComBSTR & |
+| atl.cpp:449:13:449:22 | operator+= | 0 | LPCOLESTR |
+| atl.cpp:539:3:539:15 | CComSafeArray | 0 | const SAFEARRAY * |
+| atl.cpp:543:11:543:13 | Add | 0 | const SAFEARRAY * |
+| atl.cpp:545:11:545:13 | Add | 0 | const class:0 & |
+| atl.cpp:545:11:545:13 | Add | 1 | BOOL |
+| atl.cpp:553:6:553:10 | GetAt | 0 | LONG |
+| atl.cpp:564:11:564:15 | SetAt | 0 | LONG |
+| atl.cpp:564:11:564:15 | SetAt | 1 | const class:0 & |
+| atl.cpp:564:11:564:15 | SetAt | 2 | BOOL |
+| atl.cpp:566:6:566:15 | operator[] | 0 | long |
+| atl.cpp:567:6:567:15 | operator[] | 0 | int |
+| atl.cpp:611:3:611:8 | CPathT | 0 | PCXSTR |
+| atl.cpp:612:3:612:8 | CPathT | 0 | const CPathT & |
+| atl.cpp:616:8:616:19 | AddExtension | 0 | PCXSTR |
+| atl.cpp:617:8:617:13 | Append | 0 | PCXSTR |
+| atl.cpp:620:8:620:14 | Combine | 0 | PCXSTR |
+| atl.cpp:620:8:620:14 | Combine | 1 | PCXSTR |
+| atl.cpp:621:22:621:33 | CommonPrefix | 0 | PCXSTR |
+| atl.cpp:658:23:658:32 | operator+= | 0 | PCXSTR |
+| atl.cpp:718:8:718:10 | Add | 0 | const class:0 & |
+| atl.cpp:719:7:719:10 | Find | 0 | const class:0 & |
+| atl.cpp:730:6:730:15 | operator[] | 0 | int |
+| atl.cpp:731:21:731:29 | operator= | 0 | const CSimpleArray & |
+| atl.cpp:764:8:764:10 | Add | 0 | const class:0 & |
+| atl.cpp:764:8:764:10 | Add | 1 | const class:1 & |
+| atl.cpp:765:7:765:13 | FindKey | 0 | const class:0 & |
+| atl.cpp:766:7:766:13 | FindVal | 0 | const class:1 & |
+| atl.cpp:769:9:769:18 | GetValueAt | 0 | int |
+| atl.cpp:770:8:770:13 | Lookup | 0 | const class:0 & |
+| atl.cpp:774:8:774:20 | ReverseLookup | 0 | const class:1 & |
+| atl.cpp:775:8:775:12 | SetAt | 0 | const class:0 & |
+| atl.cpp:775:8:775:12 | SetAt | 1 | const class:1 & |
+| atl.cpp:776:8:776:17 | SetAtIndex | 0 | int |
+| atl.cpp:776:8:776:17 | SetAtIndex | 1 | const class:0 & |
+| atl.cpp:776:8:776:17 | SetAtIndex | 2 | const class:1 & |
+| atl.cpp:815:9:815:17 | operator= | 0 | const CUrl & |
+| atl.cpp:817:3:817:6 | CUrl | 0 | const CUrl & |
+| atl.cpp:820:15:820:26 | Canonicalize | 0 | DWORD |
+| atl.cpp:823:8:823:15 | CrackUrl | 0 | LPCTSTR |
+| atl.cpp:823:8:823:15 | CrackUrl | 1 | DWORD |
+| atl.cpp:824:15:824:23 | CreateUrl | 0 | LPTSTR |
+| atl.cpp:824:15:824:23 | CreateUrl | 1 | DWORD * |
+| atl.cpp:824:15:824:23 | CreateUrl | 2 | DWORD |
+| atl.cpp:841:15:841:26 | SetExtraInfo | 0 | LPCTSTR |
+| atl.cpp:842:15:842:25 | SetHostName | 0 | LPCTSTR |
+| atl.cpp:843:15:843:25 | SetPassword | 0 | LPCTSTR |
+| atl.cpp:844:15:844:27 | SetPortNumber | 0 | ATL_URL_PORT |
+| atl.cpp:845:15:845:23 | SetScheme | 0 | ATL_URL_SCHEME |
+| atl.cpp:846:15:846:27 | SetSchemeName | 0 | LPCTSTR |
+| atl.cpp:847:15:847:24 | SetUrlPath | 0 | LPCTSTR |
+| atl.cpp:848:15:848:25 | SetUserName | 0 | LPCTSTR |
 | bsd.cpp:6:8:6:8 | operator= | 0 | const sockaddr & |
 | bsd.cpp:6:8:6:8 | operator= | 0 | sockaddr && |
 | bsd.cpp:12:5:12:10 | accept | 0 | int |
