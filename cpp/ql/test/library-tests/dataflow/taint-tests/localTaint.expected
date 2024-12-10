@@ -1022,6 +1022,277 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | atl.cpp:1004:24:1004:25 | call to CSimpleStringT | atl.cpp:1011:1:1011:1 | s9 |  |
 | atl.cpp:1005:3:1005:4 | ref arg s9 | atl.cpp:1006:8:1006:9 | s9 |  |
 | atl.cpp:1005:3:1005:4 | ref arg s9 | atl.cpp:1011:1:1011:1 | s9 |  |
+| atl.cpp:1099:15:1099:29 | call to source | atl.cpp:1101:21:1101:21 | v |  |
+| atl.cpp:1099:15:1099:29 | call to source | atl.cpp:1104:21:1104:21 | v |  |
+| atl.cpp:1101:21:1101:21 | v | atl.cpp:1101:21:1101:22 | call to CStringT | TAINT |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1102:8:1102:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1136:9:1136:10 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1138:15:1138:16 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1172:8:1172:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1178:8:1178:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1179:8:1179:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1180:8:1180:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1181:8:1181:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1194:3:1194:4 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1197:8:1197:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1198:8:1198:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1201:8:1201:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1203:8:1203:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1204:8:1204:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1205:8:1205:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1206:8:1206:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1207:8:1207:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1101:21:1101:22 | call to CStringT | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1104:21:1104:31 | call to CStringT | atl.cpp:1105:8:1105:9 | s2 |  |
+| atl.cpp:1104:21:1104:31 | call to CStringT | atl.cpp:1107:21:1107:22 | s2 |  |
+| atl.cpp:1104:21:1104:31 | call to CStringT | atl.cpp:1191:8:1191:9 | s2 |  |
+| atl.cpp:1104:21:1104:31 | call to CStringT | atl.cpp:1212:1:1212:1 | s2 |  |
+| atl.cpp:1107:21:1107:22 | s2 | atl.cpp:1107:21:1107:23 | call to CStringT |  |
+| atl.cpp:1107:21:1107:23 | call to CStringT | atl.cpp:1108:8:1108:9 | s3 |  |
+| atl.cpp:1107:21:1107:23 | call to CStringT | atl.cpp:1212:1:1212:1 | s3 |  |
+| atl.cpp:1110:13:1110:33 | call to indirect_source | atl.cpp:1111:21:1111:21 | x |  |
+| atl.cpp:1110:13:1110:33 | call to indirect_source | atl.cpp:1118:21:1118:21 | x |  |
+| atl.cpp:1110:13:1110:33 | call to indirect_source | atl.cpp:1165:17:1165:17 | x |  |
+| atl.cpp:1110:13:1110:33 | call to indirect_source | atl.cpp:1184:22:1184:22 | x |  |
+| atl.cpp:1111:21:1111:21 | ref arg x | atl.cpp:1118:21:1118:21 | x |  |
+| atl.cpp:1111:21:1111:21 | ref arg x | atl.cpp:1165:17:1165:17 | x |  |
+| atl.cpp:1111:21:1111:21 | ref arg x | atl.cpp:1184:22:1184:22 | x |  |
+| atl.cpp:1111:21:1111:21 | x | atl.cpp:1111:21:1111:22 | call to CStringT | TAINT |
+| atl.cpp:1111:21:1111:22 | call to CStringT | atl.cpp:1112:8:1112:9 | s4 |  |
+| atl.cpp:1111:21:1111:22 | call to CStringT | atl.cpp:1212:1:1212:1 | s4 |  |
+| atl.cpp:1114:16:1114:39 | call to indirect_source | atl.cpp:1115:24:1115:24 | y |  |
+| atl.cpp:1114:16:1114:39 | call to indirect_source | atl.cpp:1121:24:1121:24 | y |  |
+| atl.cpp:1115:24:1115:24 | ref arg y | atl.cpp:1121:24:1121:24 | y |  |
+| atl.cpp:1115:24:1115:24 | y | atl.cpp:1115:24:1115:25 | call to CStringT | TAINT |
+| atl.cpp:1115:24:1115:25 | call to CStringT | atl.cpp:1116:8:1116:9 | s5 |  |
+| atl.cpp:1115:24:1115:25 | call to CStringT | atl.cpp:1212:1:1212:1 | s5 |  |
+| atl.cpp:1118:21:1118:31 | call to CStringT | atl.cpp:1119:8:1119:9 | s6 |  |
+| atl.cpp:1118:21:1118:31 | call to CStringT | atl.cpp:1212:1:1212:1 | s6 |  |
+| atl.cpp:1121:24:1121:34 | call to CStringT | atl.cpp:1122:8:1122:9 | s7 |  |
+| atl.cpp:1121:24:1121:34 | call to CStringT | atl.cpp:1212:1:1212:1 | s7 |  |
+| atl.cpp:1124:24:1124:53 | call to indirect_source | atl.cpp:1125:21:1125:23 | ucs |  |
+| atl.cpp:1125:21:1125:23 | ucs | atl.cpp:1125:21:1125:24 | call to CStringT | TAINT |
+| atl.cpp:1125:21:1125:24 | call to CStringT | atl.cpp:1126:8:1126:9 | s8 |  |
+| atl.cpp:1125:21:1125:24 | call to CStringT | atl.cpp:1212:1:1212:1 | s8 |  |
+| atl.cpp:1128:12:1128:23 | call to source | atl.cpp:1129:21:1129:21 | c |  |
+| atl.cpp:1129:21:1129:21 | c | atl.cpp:1129:21:1129:22 | call to CStringT | TAINT |
+| atl.cpp:1129:21:1129:22 | call to CStringT | atl.cpp:1130:8:1130:9 | s9 |  |
+| atl.cpp:1129:21:1129:22 | call to CStringT | atl.cpp:1212:1:1212:1 | s9 |  |
+| atl.cpp:1132:16:1132:30 | call to source | atl.cpp:1133:25:1133:26 | wc |  |
+| atl.cpp:1133:25:1133:26 | wc | atl.cpp:1133:25:1133:27 | call to CStringT | TAINT |
+| atl.cpp:1133:25:1133:27 | call to CStringT | atl.cpp:1134:8:1134:10 | s10 |  |
+| atl.cpp:1133:25:1133:27 | call to CStringT | atl.cpp:1212:1:1212:1 | s10 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1136:9:1136:10 | s1 [inner post update] |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1138:15:1138:16 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1172:8:1172:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1178:8:1178:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1179:8:1179:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1180:8:1180:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1181:8:1181:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1194:3:1194:4 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1197:8:1197:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1198:8:1198:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1201:8:1201:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1203:8:1203:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1204:8:1204:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1205:8:1205:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1206:8:1206:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1207:8:1207:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1136:8:1136:10 | ref arg & ... | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1136:9:1136:10 | s1 | atl.cpp:1136:8:1136:10 | & ... |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1172:8:1172:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1178:8:1178:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1179:8:1179:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1180:8:1180:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1181:8:1181:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1194:3:1194:4 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1197:8:1197:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1198:8:1198:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1201:8:1201:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1203:8:1203:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1204:8:1204:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1205:8:1205:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1206:8:1206:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1207:8:1207:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1138:15:1138:16 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1138:18:1138:31 | call to AllocSysString | atl.cpp:1139:8:1139:11 | bstr |  |
+| atl.cpp:1141:18:1141:20 | call to CStringT | atl.cpp:1142:3:1142:5 | s11 |  |
+| atl.cpp:1141:18:1141:20 | call to CStringT | atl.cpp:1143:8:1143:10 | s11 |  |
+| atl.cpp:1141:18:1141:20 | call to CStringT | atl.cpp:1212:1:1212:1 | s11 |  |
+| atl.cpp:1142:3:1142:5 | ref arg s11 | atl.cpp:1143:8:1143:10 | s11 |  |
+| atl.cpp:1142:3:1142:5 | ref arg s11 | atl.cpp:1212:1:1212:1 | s11 |  |
+| atl.cpp:1145:18:1145:20 | call to CStringT | atl.cpp:1146:3:1146:5 | s12 |  |
+| atl.cpp:1145:18:1145:20 | call to CStringT | atl.cpp:1147:8:1147:10 | s12 |  |
+| atl.cpp:1145:18:1145:20 | call to CStringT | atl.cpp:1212:1:1212:1 | s12 |  |
+| atl.cpp:1146:3:1146:5 | ref arg s12 | atl.cpp:1147:8:1147:10 | s12 |  |
+| atl.cpp:1146:3:1146:5 | ref arg s12 | atl.cpp:1212:1:1212:1 | s12 |  |
+| atl.cpp:1149:18:1149:20 | call to CStringT | atl.cpp:1150:3:1150:5 | s13 |  |
+| atl.cpp:1149:18:1149:20 | call to CStringT | atl.cpp:1151:8:1151:10 | s13 |  |
+| atl.cpp:1149:18:1149:20 | call to CStringT | atl.cpp:1212:1:1212:1 | s13 |  |
+| atl.cpp:1150:3:1150:5 | ref arg s13 | atl.cpp:1151:8:1151:10 | s13 |  |
+| atl.cpp:1150:3:1150:5 | ref arg s13 | atl.cpp:1212:1:1212:1 | s13 |  |
+| atl.cpp:1153:18:1153:20 | call to CStringT | atl.cpp:1154:3:1154:5 | s14 |  |
+| atl.cpp:1153:18:1153:20 | call to CStringT | atl.cpp:1155:8:1155:10 | s14 |  |
+| atl.cpp:1153:18:1153:20 | call to CStringT | atl.cpp:1212:1:1212:1 | s14 |  |
+| atl.cpp:1154:3:1154:5 | ref arg s14 | atl.cpp:1155:8:1155:10 | s14 |  |
+| atl.cpp:1154:3:1154:5 | ref arg s14 | atl.cpp:1212:1:1212:1 | s14 |  |
+| atl.cpp:1157:18:1157:20 | call to CStringT | atl.cpp:1158:3:1158:5 | s15 |  |
+| atl.cpp:1157:18:1157:20 | call to CStringT | atl.cpp:1159:8:1159:10 | s15 |  |
+| atl.cpp:1157:18:1157:20 | call to CStringT | atl.cpp:1212:1:1212:1 | s15 |  |
+| atl.cpp:1158:3:1158:5 | ref arg s15 | atl.cpp:1159:8:1159:10 | s15 |  |
+| atl.cpp:1158:3:1158:5 | ref arg s15 | atl.cpp:1212:1:1212:1 | s15 |  |
+| atl.cpp:1161:18:1161:20 | call to CStringT | atl.cpp:1162:3:1162:5 | s16 |  |
+| atl.cpp:1161:18:1161:20 | call to CStringT | atl.cpp:1212:1:1212:1 | s16 |  |
+| atl.cpp:1162:3:1162:5 | ref arg s16 | atl.cpp:1212:1:1212:1 | s16 |  |
+| atl.cpp:1164:18:1164:20 | call to CStringT | atl.cpp:1165:3:1165:5 | s17 |  |
+| atl.cpp:1164:18:1164:20 | call to CStringT | atl.cpp:1166:8:1166:10 | s17 |  |
+| atl.cpp:1164:18:1164:20 | call to CStringT | atl.cpp:1212:1:1212:1 | s17 |  |
+| atl.cpp:1165:3:1165:5 | ref arg s17 | atl.cpp:1166:8:1166:10 | s17 |  |
+| atl.cpp:1165:3:1165:5 | ref arg s17 | atl.cpp:1212:1:1212:1 | s17 |  |
+| atl.cpp:1168:18:1168:20 | call to CStringT | atl.cpp:1169:3:1169:5 | s18 |  |
+| atl.cpp:1168:18:1168:20 | call to CStringT | atl.cpp:1170:8:1170:10 | s18 |  |
+| atl.cpp:1168:18:1168:20 | call to CStringT | atl.cpp:1212:1:1212:1 | s18 |  |
+| atl.cpp:1169:3:1169:5 | ref arg s18 | atl.cpp:1170:8:1170:10 | s18 |  |
+| atl.cpp:1169:3:1169:5 | ref arg s18 | atl.cpp:1212:1:1212:1 | s18 |  |
+| atl.cpp:1174:18:1174:20 | call to CStringT | atl.cpp:1175:3:1175:5 | s20 |  |
+| atl.cpp:1174:18:1174:20 | call to CStringT | atl.cpp:1176:8:1176:10 | s20 |  |
+| atl.cpp:1174:18:1174:20 | call to CStringT | atl.cpp:1212:1:1212:1 | s20 |  |
+| atl.cpp:1175:3:1175:5 | ref arg s20 | atl.cpp:1176:8:1176:10 | s20 |  |
+| atl.cpp:1175:3:1175:5 | ref arg s20 | atl.cpp:1212:1:1212:1 | s20 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1179:8:1179:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1180:8:1180:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1181:8:1181:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1194:3:1194:4 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1197:8:1197:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1198:8:1198:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1201:8:1201:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1203:8:1203:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1204:8:1204:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1205:8:1205:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1206:8:1206:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1207:8:1207:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1178:8:1178:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1180:8:1180:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1181:8:1181:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1194:3:1194:4 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1197:8:1197:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1198:8:1198:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1201:8:1201:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1203:8:1203:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1204:8:1204:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1205:8:1205:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1206:8:1206:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1207:8:1207:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1179:8:1179:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1181:8:1181:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1194:3:1194:4 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1197:8:1197:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1198:8:1198:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1201:8:1201:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1203:8:1203:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1204:8:1204:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1205:8:1205:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1206:8:1206:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1207:8:1207:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1180:8:1180:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1183:18:1183:20 | call to CStringT | atl.cpp:1184:3:1184:5 | s21 |  |
+| atl.cpp:1183:18:1183:20 | call to CStringT | atl.cpp:1185:8:1185:10 | s21 |  |
+| atl.cpp:1183:18:1183:20 | call to CStringT | atl.cpp:1212:1:1212:1 | s21 |  |
+| atl.cpp:1184:3:1184:5 | ref arg s21 | atl.cpp:1185:8:1185:10 | s21 |  |
+| atl.cpp:1184:3:1184:5 | ref arg s21 | atl.cpp:1212:1:1212:1 | s21 |  |
+| atl.cpp:1187:18:1187:20 | call to CStringT | atl.cpp:1188:3:1188:5 | s22 |  |
+| atl.cpp:1187:18:1187:20 | call to CStringT | atl.cpp:1189:8:1189:10 | s22 |  |
+| atl.cpp:1187:18:1187:20 | call to CStringT | atl.cpp:1212:1:1212:1 | s22 |  |
+| atl.cpp:1188:3:1188:5 | ref arg s22 | atl.cpp:1189:8:1189:10 | s22 |  |
+| atl.cpp:1188:3:1188:5 | ref arg s22 | atl.cpp:1212:1:1212:1 | s22 |  |
+| atl.cpp:1193:8:1193:12 | bstr2 | atl.cpp:1194:20:1194:24 | bstr2 |  |
+| atl.cpp:1193:8:1193:12 | bstr2 | atl.cpp:1195:8:1195:12 | bstr2 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1197:8:1197:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1198:8:1198:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1201:8:1201:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1203:8:1203:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1204:8:1204:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1205:8:1205:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1206:8:1206:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1207:8:1207:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1194:3:1194:4 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1194:19:1194:24 | ref arg & ... | atl.cpp:1194:20:1194:24 | bstr2 [inner post update] |  |
+| atl.cpp:1194:19:1194:24 | ref arg & ... | atl.cpp:1195:8:1195:12 | bstr2 |  |
+| atl.cpp:1194:20:1194:24 | bstr2 | atl.cpp:1194:19:1194:24 | & ... |  |
+| atl.cpp:1200:14:1200:15 | 0 | atl.cpp:1201:27:1201:31 | start |  |
+| atl.cpp:1203:8:1203:9 | ref arg s1 | atl.cpp:1204:8:1204:9 | s1 |  |
+| atl.cpp:1203:8:1203:9 | ref arg s1 | atl.cpp:1205:8:1205:9 | s1 |  |
+| atl.cpp:1203:8:1203:9 | ref arg s1 | atl.cpp:1206:8:1206:9 | s1 |  |
+| atl.cpp:1203:8:1203:9 | ref arg s1 | atl.cpp:1207:8:1207:9 | s1 |  |
+| atl.cpp:1203:8:1203:9 | ref arg s1 | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1203:8:1203:9 | ref arg s1 | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1203:8:1203:9 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1203:8:1203:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1203:8:1203:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1204:8:1204:9 | ref arg s1 | atl.cpp:1205:8:1205:9 | s1 |  |
+| atl.cpp:1204:8:1204:9 | ref arg s1 | atl.cpp:1206:8:1206:9 | s1 |  |
+| atl.cpp:1204:8:1204:9 | ref arg s1 | atl.cpp:1207:8:1207:9 | s1 |  |
+| atl.cpp:1204:8:1204:9 | ref arg s1 | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1204:8:1204:9 | ref arg s1 | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1204:8:1204:9 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1204:8:1204:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1204:8:1204:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1205:8:1205:9 | ref arg s1 | atl.cpp:1206:8:1206:9 | s1 |  |
+| atl.cpp:1205:8:1205:9 | ref arg s1 | atl.cpp:1207:8:1207:9 | s1 |  |
+| atl.cpp:1205:8:1205:9 | ref arg s1 | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1205:8:1205:9 | ref arg s1 | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1205:8:1205:9 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1205:8:1205:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1205:8:1205:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1206:8:1206:9 | ref arg s1 | atl.cpp:1207:8:1207:9 | s1 |  |
+| atl.cpp:1206:8:1206:9 | ref arg s1 | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1206:8:1206:9 | ref arg s1 | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1206:8:1206:9 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1206:8:1206:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1206:8:1206:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1207:8:1207:9 | ref arg s1 | atl.cpp:1208:8:1208:9 | s1 |  |
+| atl.cpp:1207:8:1207:9 | ref arg s1 | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1207:8:1207:9 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1207:8:1207:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1207:8:1207:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1208:8:1208:9 | ref arg s1 | atl.cpp:1209:8:1209:9 | s1 |  |
+| atl.cpp:1208:8:1208:9 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1208:8:1208:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1208:8:1208:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1209:8:1209:9 | ref arg s1 | atl.cpp:1210:8:1210:9 | s1 |  |
+| atl.cpp:1209:8:1209:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1209:8:1209:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1210:8:1210:9 | ref arg s1 | atl.cpp:1211:8:1211:9 | s1 |  |
+| atl.cpp:1210:8:1210:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
+| atl.cpp:1211:8:1211:9 | ref arg s1 | atl.cpp:1212:1:1212:1 | s1 |  |
 | bsd.cpp:17:11:17:16 | call to source | bsd.cpp:20:18:20:18 | s |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:20:22:20:25 | addr |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:23:8:23:11 | addr |  |

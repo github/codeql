@@ -1009,3 +1009,204 @@ void test_CSimpleStringT() {
   
   sink(s1[0]); // $ ir
 }
+
+template<typename T>
+struct MakeOther {};
+
+template<>
+struct MakeOther<char> {
+  using other_t = wchar_t;
+};
+
+template<>
+struct MakeOther<wchar_t> {
+  using other_t = char;
+};
+
+template<typename BaseType>
+struct CStringT : public CSimpleStringT<BaseType> {
+  using XCHAR = BaseType; // simplified
+  using YCHAR = typename MakeOther<BaseType>::other_t; // simplified
+  using PCXSTR = typename CSimpleStringT<BaseType>::PCXSTR;
+  using PXSTR = typename CSimpleStringT<BaseType>::PXSTR;
+  CStringT() throw();
+
+  CStringT(IAtlStringMgr* pStringMgr) throw();
+  CStringT(const VARIANT& varSrc);
+  CStringT(const VARIANT& varSrc, IAtlStringMgr* pStringMgr);
+  CStringT(const CStringT& strSrc);
+  CStringT(const CSimpleStringT<BaseType>& strSrc);
+  CStringT(const XCHAR* pszSrc);
+  CStringT(const YCHAR* pszSrc);
+  CStringT(LPCSTR pszSrc, IAtlStringMgr* pStringMgr);
+  CStringT(LPCWSTR pszSrc, IAtlStringMgr* pStringMgr);
+  CStringT(const unsigned char* pszSrc);
+  CStringT(char* pszSrc);
+  CStringT(unsigned char* pszSrc);
+  CStringT(wchar_t* pszSrc);
+  CStringT(const unsigned char* pszSrc, IAtlStringMgr* pStringMgr);
+  CStringT(char ch, int nLength = 1);
+  CStringT(wchar_t ch, int nLength = 1);
+  CStringT(const XCHAR* pch, int nLength);
+  CStringT(const YCHAR* pch, int nLength);
+  CStringT(const XCHAR* pch, int nLength, IAtlStringMgr* pStringMgr);
+  CStringT(const YCHAR* pch, int nLength, IAtlStringMgr* pStringMgr);
+
+  operator CSimpleStringT<BaseType> &();
+
+  ~CStringT() throw();
+
+  BSTR AllocSysString() const;
+  void AppendFormat(PCXSTR pszFormat, ...);
+  void AppendFormat(UINT nFormatID, ...);
+  int Delete(int iIndex, int nCount = 1);
+  int Find(PCXSTR pszSub, int iStart=0) const throw();
+  int Find(XCHAR ch, int iStart=0) const throw();
+  int FindOneOf(PCXSTR pszCharSet) const throw();
+  void Format(UINT nFormatID, ...);
+  void Format(PCXSTR pszFormat, ...);
+  BOOL GetEnvironmentVariable(PCXSTR pszVar);
+  int Insert(int iIndex, PCXSTR psz);
+  int Insert(int iIndex, XCHAR ch);
+  CStringT Left(int nCount) const;
+  BOOL LoadString(HINSTANCE hInstance, UINT nID, WORD wLanguageID);
+  BOOL LoadString(HINSTANCE hInstance, UINT nID);
+  BOOL LoadString(UINT nID);
+  CStringT& MakeLower();
+  CStringT& MakeReverse();
+  CStringT& MakeUpper();
+  CStringT Mid(int iFirst, int nCount) const;
+  CStringT Mid(int iFirst) const;
+  int Replace(PCXSTR pszOld, PCXSTR pszNew);
+  int Replace(XCHAR chOld, XCHAR chNew);
+  CStringT Right(int nCount) const;
+  BSTR SetSysString(BSTR* pbstr) const;
+  CStringT SpanExcluding(PCXSTR pszCharSet) const;
+  CStringT SpanIncluding(PCXSTR pszCharSet) const;
+  CStringT Tokenize(PCXSTR pszTokens, int& iStart) const;
+  CStringT& Trim(XCHAR chTarget);
+  CStringT& Trim(PCXSTR pszTargets);
+  CStringT& Trim();
+  CStringT& TrimLeft(XCHAR chTarget);
+  CStringT& TrimLeft(PCXSTR pszTargets);
+  CStringT& TrimLeft();
+  CStringT& TrimRight(XCHAR chTarget);
+  CStringT& TrimRight(PCXSTR pszTargets);
+  CStringT& TrimRight();
+};
+
+void test_CStringT() {
+  VARIANT v = source<VARIANT>();
+
+  CStringT<char> s1(v);
+  sink(s1.GetString()); // $ ir
+
+  CStringT<char> s2(v, nullptr);
+  sink(s2.GetString()); // $ MISSING: ir
+
+  CStringT<char> s3(s2);
+  sink(s3.GetString()); // $ MISSING: ir
+
+  char* x = indirect_source<char>();
+  CStringT<char> s4(x);
+  sink(s4.GetString()); // $ ir
+
+  wchar_t* y = indirect_source<wchar_t>();
+  CStringT<wchar_t> s5(y);
+  sink(s5.GetString()); // $ ir
+
+  CStringT<char> s6(x, nullptr);
+  sink(s6.GetString()); // $ MISSING: ir
+
+  CStringT<wchar_t> s7(y, nullptr);
+  sink(s7.GetString()); // $ MISSING: ir
+
+  unsigned char* ucs = indirect_source<unsigned char>();
+  CStringT<char> s8(ucs);
+  sink(s8.GetString()); // $ ir
+
+  char c = source<char>();
+  CStringT<char> s9(c);
+  sink(s9.GetString()); // $ ir
+
+  wchar_t wc = source<wchar_t>();
+  CStringT<wchar_t> s10(wc);
+  sink(s10.GetString()); // $ ir
+
+  sink(&s1); // $ ast ir
+
+  auto bstr = s1.AllocSysString();
+  sink(bstr); // $ MISSING: ir
+
+  CStringT<char> s11;
+  s11.AppendFormat("%d", source<int>());
+  sink(s11.GetString()); // $ MISSING: ir
+
+  CStringT<char> s12;
+  s12.AppendFormat(indirect_source<char>());
+  sink(s12.GetString()); // $ MISSING: ir
+
+  CStringT<char> s13;
+  s13.AppendFormat(source<UINT>());
+  sink(s13.GetString()); // $ MISSING: ir
+
+  CStringT<char> s14;
+  s14.AppendFormat(42, source<char>());
+  sink(s14.GetString()); // $ MISSING: ir
+
+  CStringT<char> s15;
+  s15.AppendFormat(42, source<char>());
+  sink(s15.GetString()); // $ MISSING: ir
+
+  CStringT<char> s16;
+  s16.AppendFormat("%s", indirect_source<char>());
+
+  CStringT<char> s17;
+  s17.Insert(0, x);
+  sink(s17.GetString()); // $ MISSING: ir
+
+  CStringT<char> s18;
+  s18.Insert(0, source<char>());
+  sink(s18.GetString()); // $ MISSING: ir
+
+  sink(s1.Left(42).GetString()); // $ MISSING: ir
+
+  CStringT<char> s20;
+  s20.LoadString(source<UINT>());
+  sink(s20.GetString()); // $ MISSING: ir
+
+  sink(s1.MakeLower().GetString()); // $ MISSING: ir
+  sink(s1.MakeReverse().GetString()); // $ MISSING: ir
+  sink(s1.MakeUpper().GetString()); // $ MISSING: ir
+  sink(s1.Mid(0, 42).GetString()); // $ MISSING: ir
+
+  CStringT<char> s21;
+  s21.Replace("abc", x);
+  sink(s21.GetString()); // $ MISSING: ir
+
+  CStringT<char> s22;
+  s22.Replace('\n', source<char>());
+  sink(s22.GetString()); // $ MISSING: ir
+
+  sink(s2.Right(42).GetString()); // $ MISSING: ir
+
+  BSTR bstr2;
+  s1.SetSysString(&bstr2);
+  sink(bstr2); // $ ast MISSING: ir
+
+  sink(s1.SpanExcluding("abc").GetString()); // $ MISSING: ir
+  sink(s1.SpanIncluding("abc").GetString()); // $ MISSING: ir
+  
+  int start = 0;
+  sink(s1.Tokenize("abc", start).GetString()); // $ MISSING: ir
+
+  sink(s1.Trim('a').GetString()); // $ MISSING: ir
+  sink(s1.Trim("abc").GetString()); // $ MISSING: ir
+  sink(s1.Trim().GetString()); // $ MISSING: ir
+  sink(s1.TrimLeft('a').GetString()); // $ MISSING: ir
+  sink(s1.TrimLeft("abc").GetString()); // $ MISSING: ir
+  sink(s1.TrimLeft().GetString()); // $ MISSING: ir
+  sink(s1.TrimRight('a').GetString()); // $ MISSING: ir
+  sink(s1.TrimRight("abc").GetString()); // $ MISSING: ir
+  sink(s1.TrimRight().GetString()); // $ MISSING: ir
+}
