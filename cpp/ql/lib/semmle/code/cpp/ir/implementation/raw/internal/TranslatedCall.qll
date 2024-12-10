@@ -361,7 +361,12 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
     not exists(MemberFunction func | expr.getTarget() = func and func.isStatic())
   }
 
-  final override predicate mayThrowException(ExceptionEdge e) { this.mustThrowException(e) }
+  final override predicate mayThrowException(ExceptionEdge e) {
+    this.mustThrowException(e)
+    or
+    expr.getEnclosingStmt().getParentStmt*() instanceof MicrosoftTryStmt and
+    e instanceof SehExceptionEdge
+  }
 
   final override predicate mustThrowException(ExceptionEdge e) {
     expr.getTarget() instanceof AlwaysSehThrowingFunction and
