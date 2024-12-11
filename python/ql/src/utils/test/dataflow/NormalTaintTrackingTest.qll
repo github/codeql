@@ -1,6 +1,6 @@
 import python
-import TestUtilities.dataflow.FlowTest
-import TestUtilities.dataflow.testTaintConfig
+import utils.test.dataflow.FlowTest
+import utils.test.dataflow.testTaintConfig
 private import semmle.python.dataflow.new.internal.PrintNode
 
 module DataFlowTest implements FlowTestSig {
