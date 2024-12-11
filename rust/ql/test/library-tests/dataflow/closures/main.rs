@@ -42,9 +42,9 @@ fn closure_captured_variable() {
         capt = source(73);
     };
     f();
-    sink(capt); // $ MISSING: hasValueFlow=73
+    sink(capt); // $ hasValueFlow=73
     let g = || {
-        sink(capt); // $ MISSING: hasValueFlow=73
+        sink(capt); // $ hasValueFlow=73
     };
     g();
 }

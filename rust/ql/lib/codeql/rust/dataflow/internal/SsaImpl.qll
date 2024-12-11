@@ -335,7 +335,7 @@ private module Cached {
 
   /**
    * Holds if `v` is written at index `i` in basic block `bb`, and the corresponding
-   * AST write access is `write`.
+   * write access node in the CFG is `write`.
    */
   cached
   predicate variableWriteActual(BasicBlock bb, int i, Variable v, CfgNode write) {

@@ -10,6 +10,9 @@ edges
 | main.rs:34:13:34:22 | f(...) | main.rs:35:10:35:10 | b | provenance |  |
 | main.rs:34:21:34:21 | a | main.rs:27:20:27:23 | ... | provenance |  |
 | main.rs:34:21:34:21 | a | main.rs:34:13:34:22 | f(...) | provenance |  |
+| main.rs:42:16:42:25 | source(...) | main.rs:44:5:44:5 | [post] f [captured capt] | provenance |  |
+| main.rs:44:5:44:5 | [post] f [captured capt] | main.rs:45:10:45:13 | capt | provenance |  |
+| main.rs:44:5:44:5 | [post] f [captured capt] | main.rs:47:14:47:17 | capt | provenance |  |
 nodes
 | main.rs:11:20:11:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
 | main.rs:11:30:11:39 | source(...) | semmle.label | source(...) |
@@ -24,6 +27,10 @@ nodes
 | main.rs:34:13:34:22 | f(...) | semmle.label | f(...) |
 | main.rs:34:21:34:21 | a | semmle.label | a |
 | main.rs:35:10:35:10 | b | semmle.label | b |
+| main.rs:42:16:42:25 | source(...) | semmle.label | source(...) |
+| main.rs:44:5:44:5 | [post] f [captured capt] | semmle.label | [post] f [captured capt] |
+| main.rs:45:10:45:13 | capt | semmle.label | capt |
+| main.rs:47:14:47:17 | capt | semmle.label | capt |
 subpaths
 | main.rs:34:21:34:21 | a | main.rs:27:20:27:23 | ... | main.rs:28:9:32:9 | if cond {...} else {...} | main.rs:34:13:34:22 | f(...) |
 testFailures
@@ -31,3 +38,5 @@ testFailures
 | main.rs:12:10:12:16 | f(...) | main.rs:11:30:11:39 | source(...) | main.rs:12:10:12:16 | f(...) | $@ | main.rs:11:30:11:39 | source(...) | source(...) |
 | main.rs:18:18:18:21 | data | main.rs:22:13:22:22 | source(...) | main.rs:18:18:18:21 | data | $@ | main.rs:22:13:22:22 | source(...) | source(...) |
 | main.rs:35:10:35:10 | b | main.rs:33:13:33:22 | source(...) | main.rs:35:10:35:10 | b | $@ | main.rs:33:13:33:22 | source(...) | source(...) |
+| main.rs:45:10:45:13 | capt | main.rs:42:16:42:25 | source(...) | main.rs:45:10:45:13 | capt | $@ | main.rs:42:16:42:25 | source(...) | source(...) |
+| main.rs:47:14:47:17 | capt | main.rs:42:16:42:25 | source(...) | main.rs:47:14:47:17 | capt | $@ | main.rs:42:16:42:25 | source(...) | source(...) |
