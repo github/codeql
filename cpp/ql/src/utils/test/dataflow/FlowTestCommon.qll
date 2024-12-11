@@ -14,7 +14,7 @@
 import cpp
 private import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow as IRDataFlow
 private import semmle.code.cpp.dataflow.DataFlow::DataFlow as AstDataFlow
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module IRFlowTest<IRDataFlow::GlobalFlowSig Flow> implements TestSig {
   string getARelevantTag() { result = "ir" }
