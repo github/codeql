@@ -8,6 +8,7 @@ private import semmle.javascript.dataflow.InferredTypes
 
 module DomBasedXss {
   private import Xss::Shared as Shared
+  import semmle.javascript.security.CommonFlowState
 
   /** A data flow source for DOM-based XSS vulnerabilities. */
   abstract class Source extends Shared::Source { }
@@ -28,16 +29,16 @@ module DomBasedXss {
     predicate blocksExpr(boolean outcome, Expr e) { none() }
 
     /**
-     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     * Holds if this node acts as a barrier for `state`, blocking further flow from `e` if `this` evaluates to `outcome`.
      */
-    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+    predicate blocksExpr(boolean outcome, Expr e, FlowState state) { none() }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      this.blocksExpr(outcome, e, label)
+      this.blocksExpr(outcome, e, FlowState::fromFlowLabel(label))
     }
   }
 
@@ -379,20 +380,20 @@ module DomBasedXss {
   /**
    * A flow-label representing tainted values where the prefix is attacker controlled.
    */
-  abstract class PrefixString extends DataFlow::FlowLabel {
+  abstract deprecated class PrefixString extends DataFlow::FlowLabel {
     PrefixString() { this = "PrefixString" }
   }
 
   /** Gets the flow-label representing tainted values where the prefix is attacker controlled. */
-  PrefixString prefixLabel() { any() }
+  deprecated PrefixString prefixLabel() { any() }
 
   /**
    * A sanitizer that blocks the `PrefixString` label when the start of the string is being tested as being of a particular prefix.
    */
   abstract class PrefixStringSanitizer extends BarrierGuard instanceof StringOps::StartsWith {
-    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
       e = super.getBaseString().asExpr() and
-      label = prefixLabel() and
+      state.isTaintedPrefix() and
       outcome = super.getPolarity()
     }
   }

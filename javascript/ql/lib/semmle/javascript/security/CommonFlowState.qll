@@ -8,6 +8,7 @@ private import TaintedUrlSuffixCustomizations
 private newtype TFlowState =
   TTaint() or
   TTaintedUrlSuffix() or
+  TTaintedPrefix()
 
 /**
  * A flow state indicating which part of a value is tainted.
@@ -23,6 +24,11 @@ class FlowState extends TFlowState {
    * Holds if this represents a URL whose fragment and/or query parts are considered tainted.
    */
   predicate isTaintedUrlSuffix() { this = TTaintedUrlSuffix() }
+
+  /**
+   * Holds if this represents a string whose prefix is known to be tainted.
+   */
+  predicate isTaintedPrefix() { this = TTaintedPrefix() }
 
   /** Gets a string representation of this flow state. */
   string toString() {
@@ -55,6 +61,11 @@ module FlowState {
    * Gets the flow state representing a URL whose fragment and/or query parts are considered tainted.
    */
   FlowState taintedUrlSuffix() { result.isTaintedUrlSuffix() }
+
+  /**
+   * Gets the flow state representing a string whose prefix is known to be tainted.
+   */
+  FlowState taintedPrefix() { result.isTaintedPrefix() }
 
   /** DEPRECATED. Gets the flow state corresponding to `label`. */
   deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
