@@ -337,3 +337,18 @@ private Method getSourceMethod(Method m) {
   not exists(Method src | m = src.getKotlinParameterDefaultsProxy()) and
   result = m
 }
+
+/**
+ * A sanitizer that protects against path injection vulnerabilities
+ * by extracting the final component of the user provided path.
+ *
+ * TODO: convert this class to models-as-data if sanitizer support is added
+ */
+private class FileGetNameSanitizer extends PathInjectionSanitizer {
+  FileGetNameSanitizer() {
+    exists(MethodCall mc |
+      mc.getMethod().hasQualifiedName("java.io", "File", "getName") and
+      this.asExpr() = mc
+    )
+  }
+}
