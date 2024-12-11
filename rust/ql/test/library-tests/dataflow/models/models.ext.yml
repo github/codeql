@@ -3,7 +3,6 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["repo::test", "crate::identity", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["repo::test", "crate::coerce", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["repo::test", "crate::get_var_pos", "Argument[0].Variant[crate::MyPosEnum::A(0)]", "ReturnValue", "value", "manual"]
       - ["repo::test", "crate::set_var_pos", "Argument[0]", "ReturnValue.Variant[crate::MyPosEnum::B(0)]", "value", "manual"]

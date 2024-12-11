@@ -15,6 +15,21 @@ query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) 
   Private::External::invalidSpecComponent(s, c)
 }
 
+// not defined in `models.ext.yml`, in order to test that we can also define
+// models directly in QL
+private class SummarizedCallableIdentity extends SummarizedCallable::Range {
+  SummarizedCallableIdentity() { this = "repo::test::_::crate::identity" }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string provenance
+  ) {
+    input = "Argument[0]" and
+    output = "ReturnValue" and
+    preservesValue = true and
+    provenance = "QL"
+  }
+}
+
 module CustomConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { DefaultFlowConfig::isSource(source) }
 

@@ -1,5 +1,48 @@
 /**
  * Defines extensible predicates for contributing library models from data extensions.
+ *
+ * The extensible relations have the following columns:
+ *
+ * - Sources:
+ *   `crate; path; output; kind; provenance`
+ * - Sinks:
+ *   `crate; path; input; kind; provenance`
+ * - Summaries:
+ *   `crate; path; input; output; kind; provenance`
+ *
+ * The interpretation of a row is similar to API-graphs with a left-to-right
+ * reading.
+ *
+ * 1. The `crate` column selects a crate.
+ * 2. The `path` column selects a function with the given canonical path within
+ *    the crate.
+ * 3. The `input` column specifies how data enters the element selected by the
+ *    first 2 columns, and the `output` column specifies how data leaves the
+ *    element selected by the first 2 columns. Both `input` and `output` are
+ *    `.`-separated lists of "access path tokens" to resolve, starting at the
+ *    selected function.
+ *
+ *    The following tokens are supported:
+ *     - `Argument[n]`: the `n`-th argument to a call. May be a range of form `x..y` (inclusive)
+ *                      and/or a comma-separated list.
+ *     - `Parameter[n]`: the `n`-th parameter of a callback. May be a range of form `x..y` (inclusive)
+ *                       and/or a comma-separated list.
+ *     - `ReturnValue`: the value returned by a function call.
+ *     - `ArrayElement`: an element of an array.
+ *     - `Variant[v::f]`: field `f` of the variant with canonical path `v`, for example
+ *                        `Variant[crate::ihex::Record::Data::value]`.
+ *     - `Variant[v(i)]`: position `i` inside the variant with canonical path `v`, for example
+ *                        `Variant[crate::option::Option::Some(0)]`.
+ *     - `Struct[s::f]`: field `f` of the struct with canonical path `v`, for example
+ *                       `Struct[crate::process::Child::stdin]`.
+ *     - `Tuple[i]`: the `i`th element of a tuple.
+ * 4. The `kind` column is a tag that can be referenced from QL to determine to
+ *    which classes the interpreted elements should be added. For example, for
+ *    sources `"remote"` indicates a default remote flow source, and for summaries
+ *    `"taint"` indicates a default additional taint step and `"value"` indicates a
+ *    globally applicable value-preserving step.
+ * 5. The `provenance` column is mainly used internally, and should be set to `"manual"` for
+ *    all custom models.
  */
 
 private import rust
@@ -12,9 +55,8 @@ private import codeql.rust.dataflow.FlowSummary
  *
  * `output = "ReturnValue"` simply means the result of the call itself.
  *
- * The following kinds are supported:
- *
- * - `remote`: a general remote flow source.
+ * For more information on the `kind` parameter, see
+ * https://github.com/github/codeql/blob/main/docs/codeql/reusables/threat-model-description.rst.
  */
 extensible predicate sourceModel(
   string crate, string path, string output, string kind, string provenance,
