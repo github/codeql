@@ -179,15 +179,7 @@ module SqlSanitization {
 module Cryptography {
   private import codeql.rust.internal.ConceptsShared::Cryptography as SC
 
-  /**
-   * A data-flow node that is an application of a cryptographic algorithm. For example,
-   * encryption, decryption, signature-validation.
-   *
-   * Extend this class to refine existing API models. If you want to model new APIs,
-   * extend `CryptographicOperation::Range` instead.
-   */
-  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range
-  { }
+  final class CryptographicOperation = SC:: CryptographicOperation;
 
   class EncryptionAlgorithm = SC::EncryptionAlgorithm;
 

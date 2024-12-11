@@ -16,7 +16,7 @@ private string simplifyAlgorithmName(string algorithmName) {
  * An operation that initializes a cipher through the `cipher::KeyInit` or
  * `cipher::KeyIvInit` trait, for example `Des::new` or `cbc::Encryptor<des::Des>::new`.
  */
-class StreamCipherInit extends Cryptography::CryptographicOperation::Range, DataFlow::Node {
+class StreamCipherInit extends Cryptography::CryptographicOperation::Range {
   string algorithmName;
 
   StreamCipherInit() {
