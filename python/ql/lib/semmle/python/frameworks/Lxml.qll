@@ -69,6 +69,8 @@ module Lxml {
    */
   class XPathCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
     XPathCall() {
+      // TODO: lxml.etree.parseid(<text>)[0] will contain the root element from parsing <text>
+      // but we don't really have a way to model that nicely.
       this = [Element::instance(), ElementTree::instance()].getMember("xpath").getACall()
     }
 
@@ -201,9 +203,10 @@ module Lxml {
    * A call to either of:
    * - `lxml.etree.fromstring`
    * - `lxml.etree.fromstringlist`
-   * -
+   * - `lxml.etree.HTML`
    * - `lxml.etree.XML`
    * - `lxml.etree.XMLID`
+   * - `lxml.etree.XMLDTDID`
    * - `lxml.etree.parse`
    * - `lxml.etree.parseid`
    *
@@ -329,7 +332,7 @@ module Lxml {
      * calls, or a special parameter that will be set when functions are called by an external
      * library.
      *
-     * Use the predicate `Element::instance()` to get references to instances of `lxml.etree.ElementTree` instances.
+     * Use the predicate `Element::instance()` to get references to instances of `lxml.etree.Element` instances.
      */
     abstract class InstanceSource instanceof API::Node {
       /** Gets a textual representation of this element. */
@@ -354,7 +357,8 @@ module Lxml {
             etreeRef().getMember("get_default_parser").getReturn()
           ].getMember("close").getReturn()
         or
-        // TODO: `XMLID` and `parseid` returns a tuple of which the first element is an `Element`
+        // TODO: `XMLID`, `XMLDTDID`, `parseid` returns a tuple of which the first element is an `Element`.
+        // `iterparse` returns an iterator of tuples, each of which has a second element that is an `Element`.
         this = etreeRef().getMember(["XML", "HTML", "fromstring", "fromstringlist"]).getReturn()
       }
     }
@@ -393,15 +397,18 @@ module Lxml {
       }
     }
 
-    /** An additional taint step from an `Element` instance. See https://lxml.de/apidoc/lxml.etree.html#lxml.etree.ElementBase */
+    /**
+     * An additional taint step from an `Element` instance.
+     * See https://lxml.de/apidoc/lxml.etree.html#lxml.etree.ElementBase.
+     */
     private class ElementTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         exists(DataFlow::MethodCallNode call |
           nodeTo = call and instance().asSource().flowsTo(nodeFrom)
         |
           call.calls(nodeFrom,
-            // We consider a node to be tainted if there could be taint anywhere in the element tree
-            // So sibling nodes (e.g. `getnext`) are also tainted
+            // We consider a node to be tainted if there could be taint anywhere in the element tree;
+            // So sibling nodes (e.g. `getnext`) are also tainted.
             // This ensures nodes like `elem[0].getnext()` are tracked.
             [
               "cssselect", "find", "findall", "findtext", "get", "getchildren", "getiterator",
@@ -445,7 +452,7 @@ module Lxml {
       ElementTreeInstance() { this = classRef().getAnInstance() }
     }
 
-    /** The result of a parst operation that returns an `ElementTree` */
+    /** The result of a parst operation that returns an `ElementTree`. */
     private class ParseResult extends InstanceSource {
       ParseResult() { this = etreeRef().getMember("parse").getReturn() }
     }

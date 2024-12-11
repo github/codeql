@@ -32,6 +32,7 @@ def test():
         elem,  # $ tainted
         ET.tostring(elem),  # $ tainted encodeFormat=XML encodeInput=elem encodeOutput=ET.tostring(..)
         ET.tostringlist(elem),  # $ tainted encodeFormat=XML encodeInput=elem encodeOutput=ET.tostringlist(..)
+        ET.tounicode(elem), # $ tainted encodeFormat=XML encodeInput=elem encodeOutput=ET.tounicode(..)
         elem.attrib,  # $ tainted
         elem.base,  # $ tainted
         elem.nsmap,  # $ tainted
@@ -82,7 +83,7 @@ def test():
         )
 
     buf = io.StringIO(src)
-    tree = ET.parse(buf) # $ decodeFormat=XML decodeInput=buf xmlVuln='XXE' decodeOutput=ET.parse(..) SPURIOUS:getAPathArgument=buf # Spurious as this is used as a file-like objectt, not a path 
+    tree = ET.parse(buf) # $ decodeFormat=XML decodeInput=buf xmlVuln='XXE' decodeOutput=ET.parse(..) SPURIOUS:getAPathArgument=buf # Spurious as this is used as a file-like object, not a path 
     ensure_tainted(
         tree,  # $ tainted
         tree.getroot().text,  # $ tainted
@@ -94,6 +95,7 @@ def test():
         next(tree.iter()).text,  # $ MISSING:tainted
         tree.iterfind("b"),  # $ tainted
         next(tree.iterfind("b")).text,  # $ MISSING:tainted
+        tree.xpath("b")[0].text,  # $ tainted getXPath="b"
     )
 
     (elem2, ids) = ET.XMLID(src) # $ decodeFormat=XML decodeInput=src xmlVuln='XXE' decodeOutput=ET.XMLID(..)
