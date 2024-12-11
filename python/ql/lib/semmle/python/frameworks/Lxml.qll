@@ -322,7 +322,17 @@ module Lxml {
     /** Gets a reference to the `Element` class. */
     API::Node classRef() { result = etreeRef().getMember(["Element", "_Element"]) }
 
+    /**
+     * A source of instances of `lxml.etree.Element` instances, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Element::instance()` to get references to instances of `lxml.etree.ElementTree` instances.
+     */
     abstract class InstanceSource instanceof API::Node {
+      /** Gets a textual representation of this element. */
       string toString() { result = super.toString() }
     }
 
@@ -410,6 +420,7 @@ module Lxml {
 
   /** Provides models for instances of the `lxml.etree.ElementTree` class. */
   module ElementTree {
+    /** Gets a reference to the `ElementTree` class. */
     API::Node classRef() { result = etreeRef().getMember(["ElementTree", "_ElementTree"]) }
 
     /**
@@ -422,6 +433,7 @@ module Lxml {
      * Use the predicate `ElementTree::instance()` to get references to instances of `lxml.etree.ElementTree` instances.
      */
     abstract class InstanceSource instanceof API::Node {
+      /** Gets a textual representation of this element. */
       string toString() { result = super.toString() }
     }
 
