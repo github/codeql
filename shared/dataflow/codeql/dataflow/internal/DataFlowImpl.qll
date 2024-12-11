@@ -1427,6 +1427,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
+        bindingset[ap]
+        private boolean isNil(Ap ap) {
+          if ap instanceof ApNil then result = true else result = false
+        }
+
         /* Begin: Stage logic. */
         pragma[nomagic]
         private Typ getNodeTyp(NodeEx node) {
@@ -1719,7 +1724,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           fwdFlow(arg, state, outercc, summaryCtx, t, ap, stored) and
           (if instanceofCcCall(outercc) then cc = true else cc = false) and
-          if ap instanceof ApNil then emptyAp = true else emptyAp = false
+          emptyAp = isNil(ap)
         }
 
         private signature predicate flowThroughSig();
@@ -2161,13 +2166,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private predicate flowThroughIntoCall(
           DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, Ap argAp, Ap ap
         ) {
-          exists(Typ argT, TypOption argStored, boolean emptyArgAp |
+          exists(Typ argT, TypOption argStored |
             returnFlowsThrough(_, _, _, _, pragma[only_bind_into](p), pragma[only_bind_into](argT),
               pragma[only_bind_into](argAp), pragma[only_bind_into](argStored), ap) and
-            flowIntoCallApaTaken(call, _, pragma[only_bind_into](arg), p, emptyArgAp) and
+            flowIntoCallApaTaken(call, _, pragma[only_bind_into](arg), p, isNil(argAp)) and
             fwdFlow(arg, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
-              pragma[only_bind_into](argStored)) and
-            if argAp instanceof ApNil then emptyArgAp = true else emptyArgAp = false
+              pragma[only_bind_into](argStored))
           )
         }
 
@@ -2175,11 +2179,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private predicate flowIntoCallAp(
           DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, Ap ap
         ) {
-          exists(boolean emptyAp |
-            flowIntoCallApaTaken(call, c, arg, p, emptyAp) and
-            fwdFlow(arg, _, _, _, _, ap, _) and
-            if ap instanceof ApNil then emptyAp = true else emptyAp = false
-          )
+          flowIntoCallApaTaken(call, c, arg, p, isNil(ap)) and
+          fwdFlow(arg, _, _, _, _, ap, _)
         }
 
         pragma[nomagic]
@@ -2405,13 +2406,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private predicate revFlowParamToReturn(
           ParamNodeEx p, FlowState state, ReturnPosition pos, Ap returnAp, Ap ap
         ) {
-          exists(boolean emptyAp |
-            revFlow(pragma[only_bind_into](p), state, TReturnCtxMaybeFlowThrough(pos),
-              apSome(returnAp), pragma[only_bind_into](ap)) and
-            parameterFlowThroughAllowed(p, pos.getKind()) and
-            PrevStage::parameterMayFlowThrough(p, emptyAp) and
-            if ap instanceof ApNil then emptyAp = true else emptyAp = false
-          )
+          revFlow(pragma[only_bind_into](p), state, TReturnCtxMaybeFlowThrough(pos),
+            apSome(returnAp), pragma[only_bind_into](ap)) and
+          parameterFlowThroughAllowed(p, pos.getKind()) and
+          PrevStage::parameterMayFlowThrough(p, isNil(ap))
         }
 
         pragma[nomagic]
@@ -2512,7 +2510,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         predicate parameterMayFlowThrough(ParamNodeEx p, boolean emptyAp) {
           exists(Ap ap |
             parameterMayFlowThroughAp(p, ap) and
-            if ap instanceof ApNil then emptyAp = true else emptyAp = false
+            emptyAp = isNil(ap)
           )
         }
 
@@ -2572,7 +2570,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             flowIntoCallAp(call, c, arg, p, ap) and
             revFlow(arg, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
             revFlow(p, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
-            if ap instanceof ApNil then emptyAp = true else emptyAp = false
+            emptyAp = isNil(ap)
           |
             // both directions are needed for flow-through
             RevTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
