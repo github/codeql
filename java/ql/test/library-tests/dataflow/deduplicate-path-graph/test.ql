@@ -47,7 +47,7 @@ predicate reachableFromPropagate(Graph::PathNode node, string state, boolean cal
   node.getNode().asExpr() = propagateCall(state) and call = false
   or
   exists(Graph::PathNode prev | reachableFromPropagate(prev, state, call) |
-    Graph::edges(prev, node)
+    Graph::edges(prev, node, _, _)
     or
     Graph::subpaths(prev, _, _, node) // arg -> out
   )
