@@ -58,6 +58,9 @@ module TaintedUrlSuffix {
 
     /** Gets the `tainted-url-suffix` flow state. */
     FlowState taintedUrlSuffix() { result.isTaintedUrlSuffix() }
+
+    /** DEPRECATED. Gets the flow state correpsonding to `label`. */
+    deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
   }
 
   /**
@@ -65,14 +68,14 @@ module TaintedUrlSuffix {
    *
    * Can also be accessed using `TaintedUrlSuffix::label()`.
    */
-  abstract class TaintedUrlSuffixLabel extends FlowLabel {
+  abstract deprecated class TaintedUrlSuffixLabel extends FlowLabel {
     TaintedUrlSuffixLabel() { this = "tainted-url-suffix" }
   }
 
   /**
    * Gets the flow label representing a URL with a tainted query and fragment part.
    */
-  FlowLabel label() { result instanceof TaintedUrlSuffixLabel }
+  deprecated FlowLabel label() { result instanceof TaintedUrlSuffixLabel }
 
   /** Gets a remote flow source that is a tainted URL query or fragment part from `window.location`. */
   ClientSideRemoteFlowSource source() {
@@ -84,22 +87,39 @@ module TaintedUrlSuffix {
   }
 
   /**
+   * DEPRECATED. Use `isStateBarrier(node, state)` instead.
+   *
    * Holds if `node` should be a barrier for the given `label`.
    *
    * This should be used in the `isBarrier` predicate of a configuration that uses the tainted-url-suffix
    * label.
    */
-  predicate isBarrier(Node node, FlowLabel label) {
-    label = label() and
-    DataFlowPrivate::optionalBarrier(node, "split-url-suffix")
+  deprecated predicate isBarrier(Node node, FlowLabel label) {
+    isStateBarrier(node, FlowState::fromFlowLabel(label))
   }
 
   /**
-   * Holds if there is a flow step `src -> dst` involving the URL suffix taint label.
+   * Holds if `node` should be blocked in `state`.
+   */
+  predicate isStateBarrier(Node node, FlowState state) {
+    DataFlowPrivate::optionalBarrier(node, "split-url-suffix") and
+    state.isTaintedUrlSuffix()
+  }
+
+  /**
+   * DEPRECATED. Use `isAdditionalFlowStep` instead.
+   */
+  deprecated predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
+    isAdditionalFlowStep(src, FlowState::fromFlowLabel(srclbl), dst,
+      FlowState::fromFlowLabel(dstlbl))
+  }
+
+  /**
+   * Holds if there is a flow step `src -> dst` involving the URL suffix flow state.
    *
    * This handles steps through string operations, promises, URL parsers, and URL accessors.
    */
-  predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
+  predicate isAdditionalFlowStep(Node src, FlowState srclbl, Node dst, FlowState dstlbl) {
     // Transition from tainted-url-suffix to general taint when entering the second array element
     // of a split('#') or split('?') array.
     //
@@ -108,12 +128,12 @@ module TaintedUrlSuffix {
     // Technically we should also preverse tainted-url-suffix when entering the first array element of such
     // a split, but this mostly leads to FPs since we currently don't track if the taint has been through URI-decoding.
     // (The query/fragment parts are often URI-decoded in practice, but not the other URL parts are not)
-    srclbl = label() and
+    srclbl.isTaintedUrlSuffix() and
     dstlbl.isTaint() and
     DataFlowPrivate::optionalStep(src, "split-url-suffix-post", dst)
     or
     // Transition from URL suffix to full taint when extracting the query/fragment part.
-    srclbl = label() and
+    srclbl.isTaintedUrlSuffix() and
     dstlbl.isTaint() and
     (
       exists(MethodCallNode call, string name |
