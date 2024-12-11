@@ -927,7 +927,9 @@ private predicate isInterfaceComponentWithQualifiedName(
 
 private newtype TOptInterfaceComponent =
   MkNoIComponent() or
-  MkSomeIComponent(string name, Type tp) { component_types(any(InterfaceType i), _, name, tp) }
+  MkSomeIComponent(string name, Type tp) {
+    isInterfaceComponentWithQualifiedName(any(InterfaceType i), _, name, tp)
+  }
 
 private class OptInterfaceComponent extends TOptInterfaceComponent {
   OptInterfaceComponent getWithDeepUnaliasedType() {
@@ -947,7 +949,7 @@ private class InterfaceComponent extends MkSomeIComponent {
 
   predicate isComponentOf(InterfaceType intf, int i) {
     exists(string name, Type tp |
-      component_types(intf, i, name, tp) and
+      isInterfaceComponentWithQualifiedName(intf, i, name, tp) and
       this = MkSomeIComponent(name, tp)
     )
   }
@@ -1135,8 +1137,8 @@ class InterfaceType extends @interfacetype, CompositeType {
       i = 5 or
       this.hasDeepUnaliasedComponentTypesUpTo(unaliased, i - 1)
     ) and
-    exists(string name, Type tp | component_types(this, i, name, tp) |
-      component_types(unaliased, i, name, tp.getDeepUnaliasedType())
+    exists(string name, Type tp | isInterfaceComponentWithQualifiedName(this, i, name, tp) |
+      isInterfaceComponentWithQualifiedName(unaliased, i, name, tp.getDeepUnaliasedType())
     )
   }
 
@@ -1147,21 +1149,23 @@ class InterfaceType extends @interfacetype, CompositeType {
       i = 3 or
       this.hasDeepUnaliasedEmbeddedTypesUpTo(unaliased, i - 1)
     ) and
-    exists(string name, Type tp | component_types(this, -i, name, tp) |
-      component_types(unaliased, -i, name, tp.getDeepUnaliasedType())
+    exists(string name, Type tp | isInterfaceComponentWithQualifiedName(this, -i, name, tp) |
+      isInterfaceComponentWithQualifiedName(unaliased, -i, name, tp.getDeepUnaliasedType())
     )
   }
 
   override InterfaceType getDeepUnaliasedType() {
     result = this.getDeepUnaliasedTypeCandidate() and
     exists(int nComponents |
-      nComponents = count(int i | component_types(this, i, _, _) and i >= 0)
+      nComponents = count(int i | isInterfaceComponentWithQualifiedName(this, i, _, _) and i >= 0)
     |
       this.hasDeepUnaliasedComponentTypesUpTo(result, nComponents - 1)
       or
       nComponents <= 5
     ) and
-    exists(int nEmbeds | nEmbeds = count(int i | component_types(this, i, _, _) and i < 0) |
+    exists(int nEmbeds |
+      nEmbeds = count(int i | isInterfaceComponentWithQualifiedName(this, i, _, _) and i < 0)
+    |
       // Note no -1 here, because the first embedded type is at -1
       this.hasDeepUnaliasedEmbeddedTypesUpTo(result, nEmbeds)
       or
