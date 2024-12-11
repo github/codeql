@@ -188,6 +188,8 @@ data class ClassLabelResults(val classLabel: String, val shortName: String)
 // `args` can be null to describe a raw generic type.
 // For non-generic types it will be zero-length list.
 // TODO: raw types not yet implemented for KE2
+// Structure of argsIncludingOuterClasses: for Outer<OuterArg>.Inner<InnerArg1, InnerArg2>,
+// argsIncludingOuterClasses will be `[[OuterArg], [InnerArg1, InnerArg2]]`
 context(KaSession)
 private fun KotlinUsesExtractor.getClassLabel(
     c: KaClassSymbol,
