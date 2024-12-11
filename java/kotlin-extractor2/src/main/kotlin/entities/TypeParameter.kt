@@ -9,14 +9,19 @@ import org.jetbrains.kotlin.analysis.api.types.KaTypeParameterType
 import org.jetbrains.kotlin.types.Variance
 
 context(KaSession)
-fun KotlinUsesExtractor.getTypeParameterLabel(param: KaTypeParameterSymbol): String {
+fun KotlinUsesExtractor.getTypeParameterLabel(param: KaTypeParameterSymbol, parentLabel: Label<out DbClassorinterfaceorcallable>): String {
+    return "@\"typevar;{$parentLabel};${param.name}\""
+}
+
+context(KaSession)
+fun KotlinUsesExtractor.getTypeParameterLabel(param: KaTypeParameterSymbol) =
     // Use this instead of `useDeclarationParent` so we can use useFunction with noReplace = true,
     // ensuring that e.g. a method-scoped type variable declared on kotlin.String.transform<R> gets
     // a different name to the corresponding java.lang.String.transform<R>, even though
     // useFunction will usually replace references to one function with the other.
-    val parentLabel = getTypeParameterParentLabel(param)
-    return "@\"typevar;{$parentLabel};${param.name}\""
-}
+    getTypeParameterParentLabel(param)?.let {
+        getTypeParameterLabel(param, it)
+    }
 
 context(KaSession)
 fun KotlinFileExtractor.extractTypeParameter(
@@ -27,7 +32,7 @@ fun KotlinFileExtractor.extractTypeParameter(
 ): Label<out DbTypevariable>? {
     with("type parameter", tp) {
         val parentId = getTypeParameterParentLabel(tp) ?: return null
-        val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp))
+        val id = tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(tp, parentId))
 
         /* COMMENT OLD: KE1 -- check if this still applies */
         // Note apparentIndex does not necessarily equal `tp.index`, because at least constructor type parameters

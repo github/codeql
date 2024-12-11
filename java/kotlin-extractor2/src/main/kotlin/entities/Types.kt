@@ -57,13 +57,15 @@ fun KotlinUsesExtractor.getTypeParameterParentLabel(param: KaTypeParameterSymbol
 
 context(KaSession)
 private fun KotlinUsesExtractor.useTypeParameterType(param: KaTypeParameterType) =
-    TypeResult(
-        tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(param.symbol)),
-        /* OLD: KE1
-        useType(eraseTypeParameter(param)).javaResult.signature,
-         */
-        param.name.asString()
-    )
+    getTypeParameterLabel(param.symbol)?.let {
+        TypeResult(
+            tw.getLabelFor<DbTypevariable>(it),
+            /* OLD: KE1
+            useType(eraseTypeParameter(param)).javaResult.signature,
+             */
+            param.name.asString()
+        )
+    } ?: extractErrorType()
 
 context(KaSession)
 fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.OTHER): TypeResults {
