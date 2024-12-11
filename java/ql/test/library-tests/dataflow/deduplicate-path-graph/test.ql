@@ -6,7 +6,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import DataFlow
 
-MethodAccess propagateCall(string state) {
+MethodCall propagateCall(string state) {
   result.getMethod().getName() = "propagateState" and
   state = result.getArgument(1).(StringLiteral).getValue()
 }
@@ -15,16 +15,16 @@ module TestConfig implements StateConfigSig {
   class FlowState = string;
 
   predicate isSource(Node n, FlowState state) {
-    n.asExpr().(MethodAccess).getMethod().getName() = "source" and state = ["A", "B"]
+    n.asExpr().(MethodCall).getMethod().getName() = "source" and state = ["A", "B"]
   }
 
   predicate isSink(Node n, FlowState state) {
-    n.asExpr() = any(MethodAccess acc | acc.getMethod().getName() = "sink").getAnArgument() and
+    n.asExpr() = any(MethodCall acc | acc.getMethod().getName() = "sink").getAnArgument() and
     state = ["A", "B"]
   }
 
   predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
-    exists(MethodAccess call |
+    exists(MethodCall call |
       call = propagateCall(state1) and
       state2 = state1 and
       node1.asExpr() = call.getArgument(0) and
