@@ -62,7 +62,7 @@ fun KotlinUsesExtractor.getTypeArgumentLabel(arg: KaTypeProjection): TypeResultW
             }
         }
         else -> {
-            logger.error("Unexpected type argument.")
+            logger.error("Unexpected type argument: " + arg.javaClass)
             extractJavaErrorType().forgetSignature()
         }
     }
