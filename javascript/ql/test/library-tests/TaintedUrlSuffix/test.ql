@@ -3,17 +3,17 @@ import testUtilities.InlineExpectationsTest
 import semmle.javascript.security.TaintedUrlSuffix
 
 module TestConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  import semmle.javascript.security.CommonFlowState
 
-  predicate isSource(DataFlow::Node node, DataFlow::FlowLabel state) {
-    node = TaintedUrlSuffix::source() and state = TaintedUrlSuffix::label()
+  predicate isSource(DataFlow::Node node, FlowState state) {
+    node = TaintedUrlSuffix::source() and state.isTaintedUrlSuffix()
     or
     node instanceof RemoteFlowSource and
     not node = TaintedUrlSuffix::source() and
     state.isTaint()
   }
 
-  predicate isSink(DataFlow::Node node, DataFlow::FlowLabel state) { none() }
+  predicate isSink(DataFlow::Node node, FlowState state) { none() }
 
   predicate isSink(DataFlow::Node node) {
     exists(DataFlow::CallNode call |
@@ -23,14 +23,13 @@ module TestConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node node1, DataFlow::FlowLabel state1, DataFlow::Node node2,
-    DataFlow::FlowLabel state2
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    TaintedUrlSuffix::step(node1, node2, state1, state2)
+    TaintedUrlSuffix::isAdditionalFlowStep(node1, state1, node2, state2)
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
-    TaintedUrlSuffix::isBarrier(node, label)
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    TaintedUrlSuffix::isStateBarrier(node, state)
   }
 }
 
@@ -44,7 +43,7 @@ module InlineTest implements TestSig {
     exists(TestFlow::PathNode src, TestFlow::PathNode sink | TestFlow::flowPath(src, sink) |
       sink.getLocation() = location and
       element = "" and
-      value = sink.getState()
+      value = sink.getState().toString()
     )
   }
 }
