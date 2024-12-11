@@ -4,7 +4,7 @@
 
 use super::base::Translator;
 use super::mappings::TextValue;
-use crate::emit_detached;
+use crate::{emit_detached,emit_canonical_origin};
 use crate::generated;
 use crate::trap::{Label, TrapId};
 use ra_ap_syntax::ast::{

@@ -34,25 +34,67 @@ macro_rules! emit_detached {
         $self.extract_macro_call_expanded(&$node, $label);
     };
     (Function, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin_of_function(&$node, $label);
+        emit_canonical_origin!(
+            $self,
+            $node,
+            $label,
+            to_fn_def,
+            canonical_path_from_function
+        );
     };
     (Trait, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin_of_trait(&$node, $label);
+        emit_canonical_origin!(
+            $self,
+            $node,
+            $label,
+            to_trait_def,
+            canonical_path_from_module_item
+        );
     };
     (Struct, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin_of_struct(&$node, $label);
+        emit_canonical_origin!(
+            $self,
+            $node,
+            $label,
+            to_struct_def,
+            canonical_path_from_module_item
+        );
     };
     (Enum, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin_of_enum(&$node, $label);
+        emit_canonical_origin!(
+            $self,
+            $node,
+            $label,
+            to_enum_def,
+            canonical_path_from_module_item
+        );
     };
     (Union, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin_of_union(&$node, $label);
+        emit_canonical_origin!(
+            $self,
+            $node,
+            $label,
+            to_union_def,
+            canonical_path_from_module_item
+        );
     };
     (Module, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin_of_module(&$node, $label);
+        emit_canonical_origin!(
+            $self,
+            $node,
+            $label,
+            to_module_def,
+            canonical_path_from_module
+        );
     };
     (Variant, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin_of_enum_variant(&$node, $label);
+        emit_canonical_origin!(
+            $self,
+            $node,
+            $label,
+            to_enum_variant_def,
+            canonical_path_from_enum_variant
+        );
     };
     // TODO canonical origin of other items
     (PathExpr, $self:ident, $node:ident, $label:ident) => {
@@ -74,6 +116,23 @@ macro_rules! emit_detached {
         $self.extract_method_canonical_destination(&$node, $label);
     };
     ($($_:tt)*) => {};
+}
+
+#[macro_export]
+macro_rules! emit_canonical_origin {
+    ($self:ident, $node:ident, $label:ident, $to_def:ident, $canonical_path_method:ident) => {
+        (|| {
+            let sema = $self.semantics.as_ref()?;
+            let def = sema.$to_def(&$node)?;
+            let path = $self.$canonical_path_method(def)?;
+            generated::Addressable::emit_canonical_path(
+                $label.into(),
+                path.into(),
+                &mut $self.trap.writer,
+            );
+            Some(())
+        })();
+    };
 }
 
 pub struct Translator<'a> {
@@ -488,7 +547,10 @@ impl<'a> Translator<'a> {
         })
     }
 
-    fn canonical_path_from_module(&mut self, item: Module) -> Option<Label<generated::Namespace>> {
+    pub(crate) fn canonical_path_from_module(
+        &mut self,
+        item: Module,
+    ) -> Option<Label<generated::Namespace>> {
         cache_get_or_assign!(self.canonical_path_cache, item, {
             // if we have a Hir entity, it means we have semantics
             let sema = self.semantics.as_ref().unwrap();
@@ -511,7 +573,7 @@ impl<'a> Translator<'a> {
         })
     }
 
-    fn canonical_path_from_module_item(
+    pub(crate) fn canonical_path_from_module_item(
         &mut self,
         item: impl ModuleItem,
     ) -> Option<Label<generated::ModuleItemCanonicalPath>> {
@@ -560,7 +622,7 @@ impl<'a> Translator<'a> {
         })
     }
 
-    fn canonical_path_from_function(
+    pub(crate) fn canonical_path_from_function(
         &mut self,
         item: Function,
     ) -> Option<Label<generated::CanonicalPath>> {
@@ -639,7 +701,7 @@ impl<'a> Translator<'a> {
         }
     }
 
-    fn canonical_path_from_enum_variant(
+    pub(crate) fn canonical_path_from_enum_variant(
         &mut self,
         item: Variant,
     ) -> Option<Label<generated::CanonicalPath>> {
@@ -659,124 +721,6 @@ impl<'a> Translator<'a> {
                     .into(),
             )
         })
-    }
-
-    pub(crate) fn extract_canonical_origin_of_module(
-        &mut self,
-        item: &ast::Module,
-        label: Label<generated::Module>,
-    ) {
-        (|| {
-            let sema = self.semantics.as_ref()?;
-            let def = sema.to_module_def(item)?;
-            let path = self.canonical_path_from_module(def)?;
-            generated::Addressable::emit_canonical_path(
-                label.into(),
-                path.into(),
-                &mut self.trap.writer,
-            );
-            Some(())
-        })();
-    }
-
-    pub(crate) fn extract_canonical_origin_of_function(
-        &mut self,
-        item: &ast::Fn,
-        label: Label<generated::Function>,
-    ) {
-        (|| {
-            let sema = self.semantics.as_ref()?;
-            let def = sema.to_fn_def(item)?;
-            let path = self.canonical_path_from_function(def)?;
-            generated::Addressable::emit_canonical_path(label.into(), path, &mut self.trap.writer);
-            Some(())
-        })();
-    }
-
-    pub(crate) fn extract_canonical_origin_of_enum(
-        &mut self,
-        item: &ast::Enum,
-        label: Label<generated::Enum>,
-    ) {
-        (|| {
-            let sema = self.semantics.as_ref()?;
-            let def = sema.to_enum_def(item)?;
-            let path = self.canonical_path_from_module_item(def)?;
-            generated::Addressable::emit_canonical_path(
-                label.into(),
-                path.into(),
-                &mut self.trap.writer,
-            );
-            Some(())
-        })();
-    }
-
-    pub(crate) fn extract_canonical_origin_of_struct(
-        &mut self,
-        item: &ast::Struct,
-        label: Label<generated::Struct>,
-    ) {
-        (|| {
-            let sema = self.semantics.as_ref()?;
-            let def = sema.to_struct_def(item)?;
-            let path = self.canonical_path_from_module_item(def)?;
-            generated::Addressable::emit_canonical_path(
-                label.into(),
-                path.into(),
-                &mut self.trap.writer,
-            );
-            Some(())
-        })();
-    }
-
-    pub(crate) fn extract_canonical_origin_of_union(
-        &mut self,
-        item: &ast::Union,
-        label: Label<generated::Union>,
-    ) {
-        (|| {
-            let sema = self.semantics.as_ref()?;
-            let def = sema.to_union_def(item)?;
-            let path = self.canonical_path_from_module_item(def)?;
-            generated::Addressable::emit_canonical_path(
-                label.into(),
-                path.into(),
-                &mut self.trap.writer,
-            );
-            Some(())
-        })();
-    }
-
-    pub(crate) fn extract_canonical_origin_of_trait(
-        &mut self,
-        item: &ast::Trait,
-        label: Label<generated::Trait>,
-    ) {
-        (|| {
-            let sema = self.semantics.as_ref()?;
-            let def = sema.to_trait_def(item)?;
-            let path = self.canonical_path_from_module_item(def)?;
-            generated::Addressable::emit_canonical_path(
-                label.into(),
-                path.into(),
-                &mut self.trap.writer,
-            );
-            Some(())
-        })();
-    }
-
-    pub(crate) fn extract_canonical_origin_of_enum_variant(
-        &mut self,
-        item: &ast::Variant,
-        label: Label<generated::Variant>,
-    ) {
-        (|| {
-            let sema = self.semantics.as_ref()?;
-            let def = sema.to_enum_variant_def(item)?;
-            let path = self.canonical_path_from_enum_variant(def)?;
-            generated::Addressable::emit_canonical_path(label.into(), path, &mut self.trap.writer);
-            Some(())
-        })();
     }
 
     pub(crate) fn extract_path_canonical_destination(
