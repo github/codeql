@@ -14,6 +14,8 @@ private fun KotlinUsesExtractor.useClassType(
 ): TypeResults {
     // TODO: this cast is unsafe; .symbol is actually a KaClassLikeSymbol
     val javaResult = addClassLabel(c.symbol as KaClassSymbol, c.qualifiers.map { it.typeArguments })
+    // TODO: Actually the Kotlin class ID should sometimes differ from javaResult.id, e.g.
+    //   when collections types differ.
     val kotlinTypeId =
         tw.getLabelFor<DbKt_class_type>("@\"kt_class;{${javaResult.id}}\"") {
             tw.writeKt_class_types(it, javaResult.id)
