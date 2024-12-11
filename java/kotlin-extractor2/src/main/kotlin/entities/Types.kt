@@ -86,11 +86,11 @@ fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.O
     val abbreviation = t.abbreviatedType
     val kotlinResultAlias = if (abbreviation == null) kotlinResultBase else {
                                 // TODO: this cast is unsafe; .symbol is actually a KaClassLikeSymbol
-                                val classId = addClassLabel(abbreviation.symbol as KaClassSymbol, listOf<Nothing>() /* TODO */)
+                                val classResult = addClassLabel(abbreviation.symbol as KaClassSymbol, listOf<Nothing>() /* TODO */)
                                 val kotlinBaseTypeId = kotlinResultBase.id
                                 val kotlinAliasTypeId =
-                                    tw.getLabelFor<DbKt_type_alias>("@\"kt_type_alias;{$classId};{$kotlinBaseTypeId}\"") {
-                                        tw.writeKt_type_aliases(it, classId.id, kotlinBaseTypeId)
+                                    tw.getLabelFor<DbKt_type_alias>("@\"kt_type_alias;{${classResult.id}};{$kotlinBaseTypeId}\"") {
+                                        tw.writeKt_type_aliases(it, classResult.id, kotlinBaseTypeId)
                                     }
                                 TypeResult(kotlinAliasTypeId , "TODO"/*, "TODO" */)
                             }
