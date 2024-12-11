@@ -52,7 +52,21 @@ class DispatchCall extends Internal::TDispatchCall {
   }
 
   /** Holds if this call uses reflection. */
-  predicate isReflection() { this instanceof Internal::TDispatchReflectionCall }
+  predicate isReflection() {
+    this instanceof Internal::TDispatchReflectionCall
+    or
+    this instanceof Internal::TDispatchDynamicElementAccess
+    or
+    this instanceof Internal::TDispatchDynamicMemberAccess
+    or
+    this instanceof Internal::TDispatchDynamicMethodCall
+    or
+    this instanceof Internal::TDispatchDynamicOperatorCall
+    or
+    this instanceof Internal::TDispatchDynamicEventAccess
+    or
+    this instanceof Internal::TDispatchDynamicObjectCreation
+  }
 }
 
 /** Internal implementation details. */
