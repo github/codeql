@@ -140,7 +140,7 @@ Requirements: `codeql` should both appear on your path.
             generator.setenvironment(sys.argv[1], sys.argv[2])
 
         return generator
-    
+
 
     def runQuery(self, query):
         print("########## Querying " + query + "...")
@@ -224,7 +224,7 @@ extensions:
         if self.dryRun:
             print("Models as data extensions generated, but not written to file.")
             sys.exit(0)
-        
+
         if (self.generateSinks or
            self.generateSources or
            self.generateSummaries or
