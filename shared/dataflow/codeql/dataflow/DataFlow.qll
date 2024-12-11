@@ -869,7 +869,9 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
 
     private signature predicate collapseCandidateSig(Node node, string toString);
 
-    private signature predicate stepSig(InputPathNode node1, InputPathNode node2);
+    private signature predicate stepSig(
+      InputPathNode node1, InputPathNode node2, string key, string val
+    );
 
     private signature predicate subpathStepSig(
       InputPathNode arg, InputPathNode param, InputPathNode ret, InputPathNode out
@@ -887,22 +889,28 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
      * used to perform the opposite direction.
      */
     private module MakeDiscriminatorPass<
-      collapseCandidateSig/2 collapseCandidate, stepSig/2 step, subpathStepSig/4 subpathStep>
+      collapseCandidateSig/2 collapseCandidate, stepSig/4 step, subpathStepSig/4 subpathStep>
     {
       /**
-       * Gets the number of `(node, toString)` pairs reachable in one step from `pathNode`.
+       * Gets the number of `(key, val, node, toString)` tuples reachable in one step from `pathNode`.
+       *
+       * That is, two edges are counted as one if their target nodes are the same after projection, and the edges have the
+       * same `(key, val)`.
        */
       private int getOutDegreeFromPathNode(InputPathNode pathNode) {
-        result = count(Node node, string toString | step(pathNode, getAPathNode(node, toString)))
+        result =
+          count(Node node, string toString, string key, string val |
+            step(pathNode, getAPathNode(node, toString), key, val)
+          )
       }
 
       /**
-       * Gets the number of `(node2, toString2)` pairs reachable in one step from path nodes corresponding to `(node, toString)`.
+       * Gets the number of `(key, val, node2, toString2)` pairs reachable in one step from path nodes corresponding to `(node, toString)`.
        */
       private int getOutDegreeFromNode(Node node, string toString) {
         result =
-          strictcount(Node node2, string toString2 |
-            step(getAPathNode(node, toString), getAPathNode(node2, toString2))
+          strictcount(Node node2, string toString2, string key, string val |
+            step(getAPathNode(node, toString), getAPathNode(node2, toString2), key, val)
           )
       }
 
@@ -929,7 +937,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
 
       /** Gets a successor of `node` including subpath flow-through. */
       InputPathNode stepEx(InputPathNode node) {
-        step(node, result)
+        step(node, result, _, _)
         or
         subpathStep(node, _, _, result) // assuming the input is pruned properly, all subpaths have flow-through
       }
@@ -993,10 +1001,10 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     }
 
     private module Pass1 =
-      MakeDiscriminatorPass<initialCandidate/2, Graph::edges/2, Graph::subpaths/4>;
+      MakeDiscriminatorPass<initialCandidate/2, Graph::edges/4, Graph::subpaths/4>;
 
-    private predicate edgesRev(InputPathNode node1, InputPathNode node2) {
-      Graph::edges(node2, node1)
+    private predicate edgesRev(InputPathNode node1, InputPathNode node2, string key, string val) {
+      Graph::edges(node2, node1, key, val)
     }
 
     private predicate subpathsRev(
@@ -1006,7 +1014,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     }
 
     private module Pass2 =
-      MakeDiscriminatorPass<Pass1::discriminatedPair/2, edgesRev/2, subpathsRev/4>;
+      MakeDiscriminatorPass<Pass1::discriminatedPair/2, edgesRev/4, subpathsRev/4>;
 
     private newtype TPathNode =
       TPreservedPathNode(InputPathNode node) { Pass2::discriminatedPathNode(node) } or
@@ -1036,19 +1044,8 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
         result = this.asPreservedNode().toString() or this = TCollapsedPathNode(_, result)
       }
 
-      /**
-       * Holds if this element is at the specified location.
-       * The location spans column `startcolumn` of line `startline` to
-       * column `endcolumn` of line `endline` in file `filepath`.
-       * For more information, see
-       * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-       */
-      predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        this.getAnOriginalPathNode()
-            .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
+      /** Gets the location of this node. */
+      Location getLocation() { result = this.getAnOriginalPathNode().getLocation() }
 
       /** Gets the corresponding data-flow node. */
       Node getNode() {
@@ -1066,8 +1063,8 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
         Graph::nodes(node.getAnOriginalPathNode(), key, val)
       }
 
-      query predicate edges(PathNode node1, PathNode node2) {
-        Graph::edges(node1.getAnOriginalPathNode(), node2.getAnOriginalPathNode())
+      query predicate edges(PathNode node1, PathNode node2, string key, string val) {
+        Graph::edges(node1.getAnOriginalPathNode(), node2.getAnOriginalPathNode(), key, val)
       }
 
       query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
