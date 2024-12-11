@@ -8,9 +8,7 @@ import javascript
 private import semmle.javascript.security.TaintedUrlSuffixCustomizations
 
 module ClientSideUrlRedirect {
-  class FlowState = TaintedUrlSuffix::FlowState;
-
-  module FlowState = TaintedUrlSuffix::FlowState;
+  import semmle.javascript.security.CommonFlowState
 
   /**
    * A data flow source for unvalidated URL redirect vulnerabilities.

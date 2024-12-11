@@ -21,7 +21,7 @@ deprecated private class ConcreteDocumentUrl extends DocumentUrl {
  * A taint-tracking configuration for reasoning about unvalidated URL redirections.
  */
 module ClientSideUrlRedirectConfig implements DataFlow::StateConfigSig {
-  class FlowState = TaintedUrlSuffix::FlowState;
+  import semmle.javascript.security.CommonFlowState
 
   predicate isSource(DataFlow::Node source, FlowState state) {
     source.(Source).getAFlowState() = state

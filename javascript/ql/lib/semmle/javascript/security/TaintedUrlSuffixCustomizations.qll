@@ -12,56 +12,7 @@ private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPr
  */
 module TaintedUrlSuffix {
   private import DataFlow
-
-  private newtype TFlowState =
-    TTaint() or
-    TTaintedUrlSuffix()
-
-  /**
-   * A flow state with two values, `taint` and `tainted-url-suffix`.
-   *
-   * The `tainted-url-suffix` state represents a URL with a tainted query and fragment part,
-   * which we collectively refer to as the "suffix" of the URL.
-   *
-   * The `taint` state corresponds to ordinary taint.
-   */
-  class FlowState extends TFlowState {
-    /**
-     * Holds if this represents a value that is considered entirely tainted.
-     */
-    predicate isTaint() { this = TTaint() }
-
-    /**
-     * Holds if this represents a URL whose fragment and/or query parts are considered tainted.
-     */
-    predicate isTaintedUrlSuffix() { this = TTaintedUrlSuffix() }
-
-    /** Gets a string representation of this flow state. */
-    string toString() {
-      this.isTaint() and result = "taint"
-      or
-      this.isTaintedUrlSuffix() and result = "tainted-url-suffix"
-    }
-
-    /** DEPRECATED. Gets the corresponding flow label. */
-    deprecated DataFlow::FlowLabel toFlowLabel() {
-      this.isTaint() and result.isTaint()
-      or
-      this.isTaintedUrlSuffix() and result instanceof TaintedUrlSuffixLabel
-    }
-  }
-
-  /** Convenience predicates for working with flow states. */
-  module FlowState {
-    /** Gets the `taint` flow state. */
-    FlowState taint() { result.isTaint() }
-
-    /** Gets the `tainted-url-suffix` flow state. */
-    FlowState taintedUrlSuffix() { result.isTaintedUrlSuffix() }
-
-    /** DEPRECATED. Gets the flow state correpsonding to `label`. */
-    deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
-  }
+  import CommonFlowState
 
   /**
    * The flow label representing a URL with a tainted query and fragment part.
