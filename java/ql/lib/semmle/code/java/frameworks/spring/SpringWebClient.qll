@@ -4,6 +4,7 @@
 
 import java
 import SpringHttp
+private import semmle.code.java.security.RequestForgery
 
 /** The class `org.springframework.web.client.RestTemplate`. */
 class SpringRestTemplate extends Class {
@@ -27,8 +28,6 @@ class SpringWebClient extends Interface {
     this.hasQualifiedName("org.springframework.web.reactive.function.client", "WebClient")
   }
 }
-
-private import semmle.code.java.security.RequestForgery
 
 /** The method `getForObject` on `org.springframework.web.reactive.function.client.RestTemplate`. */
 class SpringRestTemplateGetForObjectMethod extends Method {
