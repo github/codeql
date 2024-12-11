@@ -106,7 +106,7 @@ private class PrefixStringSanitizer extends DomBasedXss::PrefixStringSanitizer {
   PrefixStringSanitizer() { this = this }
 }
 
-private class PrefixString extends DataFlow::FlowLabel, DomBasedXss::PrefixString {
+deprecated private class PrefixString extends DataFlow::FlowLabel, DomBasedXss::PrefixString {
   PrefixString() { this = this }
 }
 
