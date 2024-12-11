@@ -268,15 +268,6 @@ signature module InputSig<LocationSig Location> {
   default int accessPathLimit() { result = 5 }
 
   /**
-   * Holds if flow is allowed to pass from parameter `p` and back to itself as a
-   * side-effect, resulting in a summary from `p` to itself.
-   *
-   * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
-   * by default as a heuristic.
-   */
-  predicate allowParameterReturnInSelf(ParameterNode p);
-
-  /**
    * Holds if the value of `node2` is given by `node1`.
    *
    * This predicate is combined with type information in the following way: If

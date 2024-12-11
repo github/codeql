@@ -1032,20 +1032,6 @@ module RustDataFlow implements InputSig<Location> {
   predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
   /**
-   * Holds if flow is allowed to pass from parameter `p` and back to itself as a
-   * side-effect, resulting in a summary from `p` to itself.
-   *
-   * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
-   * by default as a heuristic.
-   */
-  predicate allowParameterReturnInSelf(ParameterNode p) {
-    exists(DataFlowCallable c, ParameterPosition pos |
-      p.isParameterOf(c, pos) and
-      FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asLibraryCallable(), pos)
-    )
-  }
-
-  /**
    * Holds if the value of `node2` is given by `node1`.
    *
    * This predicate is combined with type information in the following way: If

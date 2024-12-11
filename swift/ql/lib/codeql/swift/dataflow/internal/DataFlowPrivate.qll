@@ -1420,25 +1420,6 @@ predicate knownSinkModel(Node sink, string model) { sinkNode(sink, _, model) }
 
 class DataFlowSecondLevelScope = Unit;
 
-/**
- * Holds if flow is allowed to pass from parameter `p` and back to itself as a
- * side-effect, resulting in a summary from `p` to itself.
- *
- * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
- * by default as a heuristic.
- */
-predicate allowParameterReturnInSelf(ParameterNode p) {
-  exists(Callable c |
-    c = p.(ParameterNodeImpl).getEnclosingCallable().asSourceCallable() and
-    CaptureFlow::heuristicAllowInstanceParameterReturnInSelf(c)
-  )
-  or
-  exists(DataFlowCallable c, ParameterPosition pos |
-    p.(ParameterNodeImpl).isParameterOf(c, pos) and
-    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
-  )
-}
-
 /** An approximated `Content`. */
 class ContentApprox = Unit;
 

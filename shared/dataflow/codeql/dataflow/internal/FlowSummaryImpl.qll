@@ -1051,18 +1051,6 @@ module Make<
       )
     }
 
-    /**
-     * Holds if flow is allowed to pass from the parameter at position `pos` of `c`,
-     * to a return node, and back out to the parameter.
-     */
-    predicate summaryAllowParameterReturnInSelf(SummarizedCallable c, ParameterPosition ppos) {
-      exists(SummaryComponentStack inputContents, SummaryComponentStack outputContents |
-        summary(c, inputContents, outputContents, _, _) and
-        inputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos)) and
-        outputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos))
-      )
-    }
-
     signature module TypesInputSig {
       /** Gets the type of content `c`. */
       DataFlowType getContentType(ContentSet c);

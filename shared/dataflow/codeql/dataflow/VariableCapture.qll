@@ -245,9 +245,6 @@ signature module OutputSig<LocationSig Location, InputSig<Location> I> {
   /** Holds if there is a read step from `node1` to `node2`. */
   predicate readStep(ClosureNode node1, I::CapturedVariable v, ClosureNode node2);
 
-  /** Holds if this-to-this summaries are expected for `c`. */
-  predicate heuristicAllowInstanceParameterReturnInSelf(I::Callable c);
-
   /** Holds if captured variable `v` is cleared at `node`. */
   predicate clearsContent(ClosureNode node, I::CapturedVariable v);
 }
@@ -577,18 +574,6 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
   /** Holds if the closure defined by `ce` captures `v`. */
   private predicate closureCaptures(ClosureExpr ce, CapturedVariable v) {
     exists(Callable c | ce.hasBody(c) and captureAccess(v, c))
-  }
-
-  predicate heuristicAllowInstanceParameterReturnInSelf(Callable c) {
-    // If multiple variables are captured, then we should allow flow from one to
-    // another, which entails a this-to-this summary.
-    2 <= strictcount(CapturedVariable v | captureAccess(v, c))
-    or
-    // Constructors that capture a variable may assign it to a field, which also
-    // entails a this-to-this summary. If there are multiple constructors, then
-    // they might call each other, so if one constructor captures a variable we
-    // allow this-to-this summaries for all of them.
-    exists(ClosureExpr ce | ce.hasBody(c) and c.isConstructor() and hasConstructorCapture(ce, _))
   }
 
   /** Holds if a constructor, if any, for the closure defined by `ce` captures `v`. */

@@ -364,10 +364,14 @@ edges
 | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | Test.java:267:29:267:30 | a1 : Object[] [[]] : Object | provenance |  |
 | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | Test.java:266:29:266:30 | a2 : Object[] [[]] : Object | provenance |  |
 | Test.java:266:21:266:22 | a1 [post update] : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 [Return] : Object[] [[]] : Object | provenance |  |
+| Test.java:266:21:266:22 | a1 [post update] : Object[] [[]] : Object | Test.java:267:29:267:30 | a1 : Object[] [[]] : Object | provenance |  |
 | Test.java:266:29:266:30 | a2 : Object[] [[]] : Object | Test.java:266:29:266:33 | ...[...] : Object | provenance |  |
 | Test.java:266:29:266:33 | ...[...] : Object | Test.java:266:21:266:22 | a1 [post update] : Object[] [[]] : Object | provenance |  |
 | Test.java:267:21:267:22 | a2 [post update] : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 [Return] : Object[] [[]] : Object | provenance |  |
+| Test.java:267:21:267:22 | a2 [post update] : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 [Return] : Object[] [[]] : Object | provenance |  |
 | Test.java:267:29:267:30 | a1 : Object[] [[]] : Object | Test.java:267:29:267:33 | ...[...] : Object | provenance |  |
+| Test.java:267:29:267:30 | a1 : Object[] [[]] : Object | Test.java:267:29:267:33 | ...[...] : Object | provenance |  |
+| Test.java:267:29:267:33 | ...[...] : Object | Test.java:267:21:267:22 | a2 [post update] : Object[] [[]] : Object | provenance |  |
 | Test.java:267:29:267:33 | ...[...] : Object | Test.java:267:21:267:22 | a2 [post update] : Object[] [[]] : Object | provenance |  |
 | Test.java:269:18:269:20 | out : Object[] [[]] : Object | Test.java:269:18:269:23 | ...[...] | provenance |  |
 | Test.java:273:33:273:62 | of(...) : Stream [<element>] : Object | Test.java:274:13:274:14 | in : Stream [<element>] : Object | provenance |  |
@@ -812,11 +816,15 @@ nodes
 | Test.java:265:18:265:19 | a1 [Return] : Object[] [[]] : Object | semmle.label | a1 [Return] : Object[] [[]] : Object |
 | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | semmle.label | a2 : Object[] [[]] : Object |
 | Test.java:265:22:265:23 | a2 [Return] : Object[] [[]] : Object | semmle.label | a2 [Return] : Object[] [[]] : Object |
+| Test.java:265:22:265:23 | a2 [Return] : Object[] [[]] : Object | semmle.label | a2 [Return] : Object[] [[]] : Object |
 | Test.java:266:21:266:22 | a1 [post update] : Object[] [[]] : Object | semmle.label | a1 [post update] : Object[] [[]] : Object |
 | Test.java:266:29:266:30 | a2 : Object[] [[]] : Object | semmle.label | a2 : Object[] [[]] : Object |
 | Test.java:266:29:266:33 | ...[...] : Object | semmle.label | ...[...] : Object |
 | Test.java:267:21:267:22 | a2 [post update] : Object[] [[]] : Object | semmle.label | a2 [post update] : Object[] [[]] : Object |
+| Test.java:267:21:267:22 | a2 [post update] : Object[] [[]] : Object | semmle.label | a2 [post update] : Object[] [[]] : Object |
 | Test.java:267:29:267:30 | a1 : Object[] [[]] : Object | semmle.label | a1 : Object[] [[]] : Object |
+| Test.java:267:29:267:30 | a1 : Object[] [[]] : Object | semmle.label | a1 : Object[] [[]] : Object |
+| Test.java:267:29:267:33 | ...[...] : Object | semmle.label | ...[...] : Object |
 | Test.java:267:29:267:33 | ...[...] : Object | semmle.label | ...[...] : Object |
 | Test.java:269:18:269:20 | out : Object[] [[]] : Object | semmle.label | out : Object[] [[]] : Object |
 | Test.java:269:18:269:23 | ...[...] | semmle.label | ...[...] |
@@ -1040,6 +1048,7 @@ subpaths
 | Test.java:262:28:262:29 | in : Stream [<element>] : Object | Test.java:264:21:264:21 | x : Object | Test.java:264:18:264:18 | a [Return] : Object[] [[]] : Object | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object |
 | Test.java:262:28:262:29 | in : Stream [<element>] : Object | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 [Return] : Object[] [[]] : Object | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object |
 | Test.java:262:28:262:29 | in : Stream [<element>] : Object | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 [Return] : Object[] [[]] : Object | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object |
+| Test.java:262:28:262:29 | in : Stream [<element>] : Object | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 [Return] : Object[] [[]] : Object | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object |
 | Test.java:289:29:289:31 | out : Stream [<element>] : Object | Test.java:17:22:17:38 | s : Stream [<element>] : Object | Test.java:17:50:17:68 | next(...) : Object | Test.java:289:18:289:32 | getElement(...) |
 | Test.java:319:29:319:31 | out : Stream [<element>] : Object | Test.java:17:22:17:38 | s : Stream [<element>] : Object | Test.java:17:50:17:68 | next(...) : Object | Test.java:319:18:319:32 | getElement(...) |
 | Test.java:335:29:335:31 | out : Stream [<element>] : Object | Test.java:17:22:17:38 | s : Stream [<element>] : Object | Test.java:17:50:17:68 | next(...) : Object | Test.java:335:18:335:32 | getElement(...) |
