@@ -25,3 +25,7 @@ func FunctionWithSliceOfStructsParameter(s []A) string {
 func FunctionWithVarArgsOfStructsParameter(s ...A) string {
 	return ""
 }
+
+func VariadicSource(s ...*string) {}
+
+func VariadicSink(s ...string) {}
