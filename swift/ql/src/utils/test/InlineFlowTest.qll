@@ -4,7 +4,7 @@
  * Example for a test.ql:
  * ```ql
  * import swift
- * import TestUtilities.InlineFlowTest
+ * import utils.test.InlineFlowTest
  * import DefaultFlowTest
  * import PathGraph
  *
@@ -39,7 +39,7 @@
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.ExternalFlow
 import codeql.swift.dataflow.TaintTracking
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 private predicate defaultSource(DataFlow::Node source) {
   source
