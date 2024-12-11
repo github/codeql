@@ -8,14 +8,15 @@
  */
 
 import javascript
+private import TaintedPathCustomizations
 private import TaintedPathCustomizations::TaintedPath
 
 // Materialize flow labels
-private class ConcretePosixPath extends Label::PosixPath {
+deprecated private class ConcretePosixPath extends Label::PosixPath {
   ConcretePosixPath() { this = this }
 }
 
-private class ConcreteSplitPath extends Label::SplitPath {
+deprecated private class ConcreteSplitPath extends Label::SplitPath {
   ConcreteSplitPath() { this = this }
 }
 
@@ -23,20 +24,18 @@ private class ConcreteSplitPath extends Label::SplitPath {
  * A taint-tracking configuration for reasoning about tainted-path vulnerabilities.
  */
 module TaintedPathConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  class FlowState = TaintedPath::FlowState;
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel state) {
-    state = source.(Source).getAFlowLabel()
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    state = source.(Source).getAFlowState()
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel state) {
-    state = sink.(Sink).getAFlowLabel()
-  }
+  predicate isSink(DataFlow::Node sink, FlowState state) { state = sink.(Sink).getAFlowState() }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
-    node instanceof Sanitizer and exists(label)
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    node instanceof Sanitizer and exists(state)
     or
-    node = DataFlow::MakeLabeledBarrierGuard<BarrierGuard>::getABarrierNode(label)
+    node = DataFlow::MakeStateBarrierGuard<FlowState, BarrierGuard>::getABarrierNode(state)
   }
 
   predicate isBarrier(DataFlow::Node node) {
@@ -44,10 +43,9 @@ module TaintedPathConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node node1, DataFlow::FlowLabel state1, DataFlow::Node node2,
-    DataFlow::FlowLabel state2
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    isAdditionalTaintedPathFlowStep(node1, node2, state1, state2)
+    TaintedPath::isAdditionalFlowStep(node1, state1, node2, state2)
   }
 }
 
