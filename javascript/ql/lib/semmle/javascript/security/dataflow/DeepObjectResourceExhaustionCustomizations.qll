@@ -11,21 +11,26 @@ private import semmle.javascript.security.TaintedObjectCustomizations
  * DoS attacks due to inefficient handling of user-controlled objects.
  */
 module DeepObjectResourceExhaustion {
+  import semmle.javascript.security.CommonFlowState
+
   /**
    * A data flow source for inefficient handling of user-controlled objects.
    */
   abstract class Source extends DataFlow::Node {
-    /** Gets a flow label to associate with this source. */
-    DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
+    /** Gets a flow state to associate with this source. */
+    FlowState getAFlowState() { result.isTaintedObject() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getAFlowLabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   private class TaintedObjectSourceAsSource extends Source instanceof TaintedObject::Source {
-    override DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
+    override FlowState getAFlowState() { result.isTaintedObject() }
   }
 
   /** An active threat-model source, considered as a flow source. */
   private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource {
-    override DataFlow::FlowLabel getAFlowLabel() { result.isTaint() }
+    override FlowState getAFlowState() { result.isTaint() }
   }
 
   /**

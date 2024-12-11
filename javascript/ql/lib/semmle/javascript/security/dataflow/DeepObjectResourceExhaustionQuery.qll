@@ -12,26 +12,26 @@ import DeepObjectResourceExhaustionCustomizations::DeepObjectResourceExhaustion
  * of user-controlled objects.
  */
 module DeepObjectResourceExhaustionConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  import semmle.javascript.security.CommonFlowState
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source.(Source).getAFlowLabel() = label
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source.(Source).getAFlowState() = state
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink instanceof Sink and label = TaintedObject::label()
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof Sink and state.isTaintedObject()
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
-    node = TaintedObject::SanitizerGuard::getABarrierNode(label)
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    node = TaintedObject::SanitizerGuard::getABarrierNode(state)
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::FlowLabel inlbl, DataFlow::Node trg, DataFlow::FlowLabel outlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    TaintedObject::step(src, trg, inlbl, outlbl)
+    TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
   }
 }
 
