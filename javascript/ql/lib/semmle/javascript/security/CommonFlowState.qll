@@ -4,11 +4,13 @@
 
 private import javascript
 private import TaintedUrlSuffixCustomizations
+private import TaintedObjectCustomizations
 
 private newtype TFlowState =
   TTaint() or
   TTaintedUrlSuffix() or
-  TTaintedPrefix()
+  TTaintedPrefix() or
+  TTaintedObject()
 
 /**
  * A flow state indicating which part of a value is tainted.
@@ -30,6 +32,12 @@ class FlowState extends TFlowState {
    */
   predicate isTaintedPrefix() { this = TTaintedPrefix() }
 
+  /**
+   * Holds if this represents a deeply tainted object, such as a JSON object
+   * parsed from user-controlled data.
+   */
+  predicate isTaintedObject() { this = TTaintedObject() }
+
   /** Gets a string representation of this flow state. */
   string toString() {
     this.isTaint() and result = "taint"
@@ -37,6 +45,8 @@ class FlowState extends TFlowState {
     this.isTaintedUrlSuffix() and result = "tainted-url-suffix"
     or
     this.isTaintedPrefix() and result = "tainted-prefix"
+    or
+    this.isTaintedObject() and result = "tainted-object"
   }
 
   /** DEPRECATED. Gets the corresponding flow label. */
@@ -46,6 +56,8 @@ class FlowState extends TFlowState {
     this.isTaintedUrlSuffix() and result = TaintedUrlSuffix::label()
     or
     this.isTaintedPrefix() and result = "PrefixString"
+    or
+    this.isTaintedObject() and result = TaintedObject::label()
   }
 }
 
@@ -66,6 +78,12 @@ module FlowState {
    * Gets the flow state representing a string whose prefix is known to be tainted.
    */
   FlowState taintedPrefix() { result.isTaintedPrefix() }
+
+  /**
+   * Gets the flow state representing a deeply tainted object, such as a JSON object
+   * parsed from user-controlled data.
+   */
+  FlowState taintedObject() { result.isTaintedObject() }
 
   /** DEPRECATED. Gets the flow state corresponding to `label`. */
   deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
