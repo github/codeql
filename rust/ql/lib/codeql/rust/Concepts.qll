@@ -179,7 +179,7 @@ module SqlSanitization {
 module Cryptography {
   private import codeql.rust.internal.ConceptsShared::Cryptography as SC
 
-  final class CryptographicOperation = SC:: CryptographicOperation;
+  final class CryptographicOperation = SC::CryptographicOperation;
 
   class EncryptionAlgorithm = SC::EncryptionAlgorithm;
 
