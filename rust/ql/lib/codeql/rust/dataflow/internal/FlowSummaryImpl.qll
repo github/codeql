@@ -32,6 +32,22 @@ module Input implements InputSig<Location, RustDataFlow> {
           arg = v.getExtendedCanonicalPath() + "::" + field
         )
       )
+      or
+      exists(StructCanonicalPath s, string field |
+        result = "Struct" and
+        c = TStructFieldContent(s, field) and
+        arg = s.getExtendedCanonicalPath() + "::" + field
+      )
+      or
+      result = "ArrayElement" and
+      c = TArrayElement() and
+      arg = ""
+      or
+      exists(int pos |
+        result = "Tuple" and
+        c = TTuplePositionContent(pos) and
+        arg = pos.toString()
+      )
     )
   }
 

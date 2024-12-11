@@ -9,6 +9,7 @@ private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
+private import codeql.rust.dataflow.internal.ModelsAsData as MaD
 private import internal.InlineExpectationsTestImpl as InlineExpectationsTestImpl
 
 // Holds if the target expression of `call` is a path and the string representation of the path is `name`.
@@ -38,7 +39,7 @@ private module FlowTestImpl implements InputSig<Location, RustDataFlow> {
     exists(sink)
   }
 
-  predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) { none() }
+  predicate interpretModelForTest = MaD::interpretModelForTest/2;
 }
 
 import InlineFlowTestMake<Location, RustDataFlow, RustTaintTracking, InlineExpectationsTestImpl::Impl, FlowTestImpl>
