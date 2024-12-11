@@ -1922,7 +1922,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         bindingset[call]
         pragma[inline_late]
-        private predicate flowOutOfCallApaInlineLate(
+        private predicate flowOutOfCallInlineLate(
           DataFlowCall call, DataFlowCallable c, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow
         ) {
           PrevStage::callEdgeReturn(call, c, ret, _, out, allowsFieldFlow)
@@ -1931,7 +1931,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[c, ret, innercc]
         pragma[inline_late]
         pragma[noopt]
-        private predicate flowOutOfCallApaNotCallContextReduced(
+        private predicate flowOutOfCallNotCallContextReduced(
           DataFlowCall call, DataFlowCallable c, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
           CcNoCall innercc
         ) {
@@ -1958,9 +1958,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           inner = ret.getEnclosingCallable() and
           (
             call = viableImplCallContextReducedReverseInlineLate(inner, innercc) and
-            flowOutOfCallApaInlineLate(call, inner, ret, out, allowsFieldFlow)
+            flowOutOfCallInlineLate(call, inner, ret, out, allowsFieldFlow)
             or
-            flowOutOfCallApaNotCallContextReduced(call, inner, ret, out, allowsFieldFlow, innercc)
+            flowOutOfCallNotCallContextReduced(call, inner, ret, out, allowsFieldFlow, innercc)
           )
         }
 
@@ -2062,7 +2062,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         private module FwdTypeFlow = TypeFlow<FwdTypeFlowInput>;
 
-        private predicate flowIntoCallApaTaken(
+        private predicate flowIntoCallTaken(
           DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
         ) {
           PrevStage::callEdgeArgParam(call, c, arg, p, emptyAp) and
@@ -2169,7 +2169,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           exists(Typ argT, TypOption argStored |
             returnFlowsThrough(_, _, _, _, pragma[only_bind_into](p), pragma[only_bind_into](argT),
               pragma[only_bind_into](argAp), pragma[only_bind_into](argStored), ap) and
-            flowIntoCallApaTaken(call, _, pragma[only_bind_into](arg), p, isNil(argAp)) and
+            flowIntoCallTaken(call, _, pragma[only_bind_into](arg), p, isNil(argAp)) and
             fwdFlow(arg, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
               pragma[only_bind_into](argStored))
           )
@@ -2179,7 +2179,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private predicate flowIntoCallAp(
           DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, Ap ap
         ) {
-          flowIntoCallApaTaken(call, c, arg, p, isNil(ap)) and
+          flowIntoCallTaken(call, c, arg, p, isNil(ap)) and
           fwdFlow(arg, _, _, _, _, ap, _)
         }
 
