@@ -2708,20 +2708,22 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           private predicate localFlowExit(NodeEx node, FlowState state, Ap ap) {
             revFlow(node, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
             (
-              exists(NodeEx next, Ap apNext | revFlow(next, pragma[only_bind_into](state), apNext) |
-                jumpStepEx(node, next) and
-                apNext = ap
+              exists(NodeEx next |
+                revFlow(pragma[only_bind_out](next), pragma[only_bind_into](state), ap)
+              |
+                jumpStepEx(node, next)
                 or
                 additionalJumpStep(node, next, _) and
-                apNext = ap and
                 ap instanceof ApNil
                 or
-                callEdgeArgParam(_, _, node, next, _, ap) and
-                apNext = ap
+                callEdgeArgParam(_, _, node, next, _, ap)
                 or
-                callEdgeReturn(_, _, node, _, next, _, ap) and
-                apNext = ap
-                or
+                callEdgeReturn(_, _, node, _, next, _, ap)
+              )
+              or
+              exists(NodeEx next |
+                revFlow(pragma[only_bind_out](next), pragma[only_bind_into](state), _)
+              |
                 storeStepCand(node, _, _, next, _, _)
                 or
                 readStepCand(node, _, next)
