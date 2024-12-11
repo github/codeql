@@ -196,7 +196,6 @@
 /lib/codeql/rust/elements/canonical_paths/TypeItemCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/BuiltinTypeCanonicalPathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/BuiltinTypeCanonicalPathImpl.qll linguist-generated
-/lib/codeql/rust/elements/canonical_paths/internal/CanonicalPathImpl.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/ConcreteTypeCanonicalPathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/ConstGenericTypeArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/DerivedTypeCanonicalPathConstructor.qll linguist-generated
@@ -214,7 +213,6 @@
 /lib/codeql/rust/elements/canonical_paths/internal/TypeItemCanonicalPathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/AddressableImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArrayExprInternal.qll linguist-generated

@@ -19,6 +19,17 @@ query predicate resolvedPaths(Resolvable i, string answer) {
   )
 }
 
+query predicate standardPaths(Addressable i, string answer) {
+  toBeTested(i) and
+  exists(string namespace, string name |
+    i.hasStandardPath(namespace, name) and answer = namespace + "::" + name
+    or
+    exists(string type |
+      i.hasStandardPath(namespace, type, name) and answer = namespace + "::" + type + "::" + name
+    )
+  )
+}
+
 query predicate resolve(Resolvable i, Addressable j) {
   toBeTested(i) and
   toBeTested(j) and

@@ -29,14 +29,20 @@ module LibraryCallable {
 
     /** Gets a call to this library callable. */
     CallExprBase getACall() {
-      exists(Resolvable r, string crate |
-        r = CallExprBaseImpl::getCallResolvable(result) and
-        this = crate + r.getResolvedPath()
+      exists(
+        TypeItemCanonicalPath path, ModuleItemCanonicalPath item, Namespace namespace,
+        string namespace_path
       |
-        crate = r.getResolvedCrateOrigin() + "::_::"
-        or
-        not r.hasResolvedCrateOrigin() and
-        crate = ""
+        path = CallExprBaseImpl::getCallResolvable(result).getResolvedCanonicalPath() and
+        item = path.getParent() and
+        namespace = item.getNamespace() and
+        namespace_path = namespace.getPath() and
+        if namespace_path = ""
+        then this = namespace.getRoot().toString() + "::" + item.getName() + "::" + path.getName()
+        else
+          this =
+            namespace.getRoot().toString() + "::" + namespace_path + "::" + item.getName() + "::" +
+              path.getName()
       )
     }
   }

@@ -19,5 +19,9 @@ module Impl {
     override string toString() {
       result = this.getParent().toAbbreviatedString() + "::" + this.getName()
     }
+
+    override predicate hasStandardPath(string namespace, string type, string name) {
+      this.getName() = name and this.getParent().hasStandardPath(namespace, type)
+    }
   }
 }

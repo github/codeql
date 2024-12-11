@@ -22,5 +22,17 @@ module Impl {
         if this.getPath() = "" then result = root else result = root + "::" + this.getPath()
       )
     }
+
+    /**
+     * Returns a string representation of this namespace, with the root and path separated by `::`.
+     */
+    cached
+    string getNamespaceString() {
+      exists(string root, string path |
+        root = this.getRoot().toString() and
+        path = this.getPath() and
+        if path = "" then result = root else result = root + "::" + path
+      )
+    }
   }
 }

@@ -19,5 +19,9 @@ module Impl {
     override string toString() {
       result = this.getNamespace().toAbbreviatedString() + "::" + this.getName()
     }
+
+    override predicate hasStandardPath(string namespace, string name) {
+      this.getName() = name and namespace = this.getNamespace().getNamespaceString()
+    }
   }
 }

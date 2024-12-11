@@ -20,16 +20,9 @@ module Impl {
   class Resolvable extends Generated::Resolvable {
     /**
      * Holds if this resolvable and the item `i` resolves to the same canonical
-     * path in the same crate
+     * path
      */
     pragma[nomagic]
-    predicate resolvesAsItem(Item i) {
-      this.getResolvedPath() = i.getExtendedCanonicalPath() and
-      (
-        this.getResolvedCrateOrigin() = i.getCrateOrigin()
-        or
-        not this.hasResolvedCrateOrigin() and not i.hasCrateOrigin()
-      )
-    }
+    predicate resolvesAsItem(Item i) { this.getResolvedCanonicalPath() = i.getCanonicalPath() }
   }
 }

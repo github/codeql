@@ -121,12 +121,40 @@ resolvedPaths
 | usage.rs:48:5:48:23 | ... .generic_method(...) | <... as ...>::generic_method |
 | usage.rs:52:5:52:10 | ... .f(...) | <... as ...>::f |
 | usage.rs:53:5:53:15 | ... .f(...) | <... as ...>::f |
-| usage.rs:54:5:54:17 | ...::into_vec | <...>::into_vec |
+| usage.rs:54:5:54:17 | ...::into_vec | None |
 | usage.rs:54:5:54:17 | ...::new | None |
 | usage.rs:54:5:54:28 | ... .as_slice(...) | <...>::as_slice |
 | usage.rs:54:5:54:32 | ... .f(...) | <... as ...>::f |
 | usage.rs:55:5:55:16 | ... .f(...) | <... as ...>::f |
 | usage.rs:56:5:56:20 | ... .f(...) | <... as ...>::f |
+standardPaths
+| anonymous.rs:3:1:32:1 | fn canonicals | test::anonymous::canonicals |
+| anonymous.rs:15:9:15:22 | fn g | test::regular::Struct::g |
+| anonymous.rs:34:1:36:1 | fn other | test::anonymous::other |
+| regular.rs:1:1:2:18 | struct Struct | test::regular::Struct |
+| regular.rs:4:1:6:1 | trait Trait | test::regular::Trait |
+| regular.rs:5:5:5:16 | fn f | test::regular::Trait::f |
+| regular.rs:13:5:13:22 | fn g | test::regular::Struct::g |
+| regular.rs:16:1:18:1 | trait TraitWithBlanketImpl | test::regular::TraitWithBlanketImpl |
+| regular.rs:17:5:17:16 | fn h | test::regular::TraitWithBlanketImpl::h |
+| regular.rs:24:1:24:16 | fn free | test::regular::free |
+| regular.rs:26:1:30:1 | enum MyEnum | test::regular::MyEnum |
+| regular.rs:27:5:27:12 | Variant1 | test::regular::MyEnum::Variant1 |
+| regular.rs:28:5:28:19 | Variant2 | test::regular::MyEnum::Variant2 |
+| regular.rs:29:5:29:25 | Variant3 | test::regular::MyEnum::Variant3 |
+| regular.rs:32:1:34:1 | trait GenericTrait | test::regular::GenericTrait |
+| regular.rs:33:5:33:35 | fn generic_method | test::regular::GenericTrait::generic_method |
+| regular.rs:36:1:39:1 | struct GenericStruct | test::regular::GenericStruct |
+| regular.rs:41:1:41:50 | struct GenericTupleStruct | test::regular::GenericTupleStruct |
+| regular.rs:44:1:47:1 | enum GenericEnum | test::regular::GenericEnum |
+| regular.rs:45:5:45:8 | T | test::regular::GenericEnum::T |
+| regular.rs:46:5:46:8 | U | test::regular::GenericEnum::U |
+| usage.rs:3:1:9:1 | fn usage | test::usage::usage |
+| usage.rs:11:1:17:1 | fn enum_qualified_usage | test::usage::enum_qualified_usage |
+| usage.rs:19:1:26:1 | fn enum_unqualified_usage | test::usage::enum_unqualified_usage |
+| usage.rs:28:1:34:1 | fn enum_match | test::usage::enum_match |
+| usage.rs:36:1:49:1 | fn generic_usage | test::usage::generic_usage |
+| usage.rs:51:1:57:1 | fn use_trait | test::usage::use_trait |
 resolve
 | usage.rs:4:13:4:21 | Struct {...} | regular.rs:1:1:2:18 | struct Struct |
 | usage.rs:5:5:5:9 | ... .f(...) | regular.rs:9:5:9:18 | fn f |
