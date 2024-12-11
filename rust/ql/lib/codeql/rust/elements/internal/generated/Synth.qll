@@ -647,10 +647,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TImplItemCanonicalPath(Raw::ImplItemCanonicalPath id) { constructImplItemCanonicalPath(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TLangCrateRoot(Raw::LangCrateRoot id) { constructLangCrateRoot(id) } or
     /**
      * INTERNAL: Do not use.
@@ -685,7 +681,19 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TTraitImplItemCanonicalPath(Raw::TraitImplItemCanonicalPath id) {
+      constructTraitImplItemCanonicalPath(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TTypeGenericTypeArg(Raw::TypeGenericTypeArg id) { constructTypeGenericTypeArg(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TTypeImplItemCanonicalPath(Raw::TypeImplItemCanonicalPath id) {
+      constructTypeImplItemCanonicalPath(id)
+    } or
     /**
      * INTERNAL: Do not use.
      */
@@ -840,8 +848,9 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TCanonicalPath =
-    TImplItemCanonicalPath or TModuleItemCanonicalPath or TNamespace or
-        TParametrizedCanonicalPath or TTypeCanonicalPath or TTypeItemCanonicalPath;
+    TModuleItemCanonicalPath or TNamespace or TParametrizedCanonicalPath or
+        TTraitImplItemCanonicalPath or TTypeCanonicalPath or TTypeImplItemCanonicalPath or
+        TTypeItemCanonicalPath;
 
   /**
    * INTERNAL: Do not use.
@@ -1809,14 +1818,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TImplItemCanonicalPath`, if possible.
-   */
-  TImplItemCanonicalPath convertImplItemCanonicalPathFromRaw(Raw::Element e) {
-    result = TImplItemCanonicalPath(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TLangCrateRoot`, if possible.
    */
   TLangCrateRoot convertLangCrateRootFromRaw(Raw::Element e) { result = TLangCrateRoot(e) }
@@ -1865,10 +1866,26 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TTraitImplItemCanonicalPath`, if possible.
+   */
+  TTraitImplItemCanonicalPath convertTraitImplItemCanonicalPathFromRaw(Raw::Element e) {
+    result = TTraitImplItemCanonicalPath(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TTypeGenericTypeArg`, if possible.
    */
   TTypeGenericTypeArg convertTypeGenericTypeArgFromRaw(Raw::Element e) {
     result = TTypeGenericTypeArg(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TTypeImplItemCanonicalPath`, if possible.
+   */
+  TTypeImplItemCanonicalPath convertTypeImplItemCanonicalPathFromRaw(Raw::Element e) {
+    result = TTypeImplItemCanonicalPath(e)
   }
 
   /**
@@ -2416,15 +2433,17 @@ module Synth {
    * Converts a raw DB element to a synthesized `TCanonicalPath`, if possible.
    */
   TCanonicalPath convertCanonicalPathFromRaw(Raw::Element e) {
-    result = convertImplItemCanonicalPathFromRaw(e)
-    or
     result = convertModuleItemCanonicalPathFromRaw(e)
     or
     result = convertNamespaceFromRaw(e)
     or
     result = convertParametrizedCanonicalPathFromRaw(e)
     or
+    result = convertTraitImplItemCanonicalPathFromRaw(e)
+    or
     result = convertTypeCanonicalPathFromRaw(e)
+    or
+    result = convertTypeImplItemCanonicalPathFromRaw(e)
     or
     result = convertTypeItemCanonicalPathFromRaw(e)
   }
@@ -3419,14 +3438,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TImplItemCanonicalPath` to a raw DB element, if possible.
-   */
-  Raw::Element convertImplItemCanonicalPathToRaw(TImplItemCanonicalPath e) {
-    e = TImplItemCanonicalPath(result)
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TLangCrateRoot` to a raw DB element, if possible.
    */
   Raw::Element convertLangCrateRootToRaw(TLangCrateRoot e) { e = TLangCrateRoot(result) }
@@ -3475,10 +3486,26 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TTraitImplItemCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertTraitImplItemCanonicalPathToRaw(TTraitImplItemCanonicalPath e) {
+    e = TTraitImplItemCanonicalPath(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TTypeGenericTypeArg` to a raw DB element, if possible.
    */
   Raw::Element convertTypeGenericTypeArgToRaw(TTypeGenericTypeArg e) {
     e = TTypeGenericTypeArg(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TTypeImplItemCanonicalPath` to a raw DB element, if possible.
+   */
+  Raw::Element convertTypeImplItemCanonicalPathToRaw(TTypeImplItemCanonicalPath e) {
+    e = TTypeImplItemCanonicalPath(result)
   }
 
   /**
@@ -4026,15 +4053,17 @@ module Synth {
    * Converts a synthesized `TCanonicalPath` to a raw DB element, if possible.
    */
   Raw::Element convertCanonicalPathToRaw(TCanonicalPath e) {
-    result = convertImplItemCanonicalPathToRaw(e)
-    or
     result = convertModuleItemCanonicalPathToRaw(e)
     or
     result = convertNamespaceToRaw(e)
     or
     result = convertParametrizedCanonicalPathToRaw(e)
     or
+    result = convertTraitImplItemCanonicalPathToRaw(e)
+    or
     result = convertTypeCanonicalPathToRaw(e)
+    or
+    result = convertTypeImplItemCanonicalPathToRaw(e)
     or
     result = convertTypeItemCanonicalPathToRaw(e)
   }

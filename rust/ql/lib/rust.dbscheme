@@ -3361,11 +3361,12 @@ while_expr_conditions(
 ;
 
 @canonical_path =
-  @impl_item_canonical_path
-| @module_item_canonical_path
+  @module_item_canonical_path
 | @namespace
 | @parametrized_canonical_path
+| @trait_impl_item_canonical_path
 | @type_canonical_path
+| @type_impl_item_canonical_path
 | @type_item_canonical_path
 ;
 
@@ -3383,18 +3384,6 @@ while_expr_conditions(
 const_generic_type_args(  //dir=canonical_paths
   unique int id: @const_generic_type_arg,
   string value: string ref
-);
-
-impl_item_canonical_paths(  //dir=canonical_paths
-  unique int id: @impl_item_canonical_path,
-  int type_path: @type_canonical_path ref,
-  string name: string ref
-);
-
-#keyset[id]
-impl_item_canonical_path_trait_paths(  //dir=canonical_paths
-  int id: @impl_item_canonical_path ref,
-  int trait_path: @parametrized_canonical_path ref
 );
 
 lang_crate_roots(  //dir=canonical_paths
@@ -3448,6 +3437,13 @@ rustc_crate_roots(  //dir=canonical_paths
   string name: string ref
 );
 
+trait_impl_item_canonical_paths(  //dir=canonical_paths
+  unique int id: @trait_impl_item_canonical_path,
+  int type_path: @type_canonical_path ref,
+  int trait_path: @parametrized_canonical_path ref,
+  string name: string ref
+);
+
 @type_canonical_path =
   @builtin_type_canonical_path
 | @concrete_type_canonical_path
@@ -3458,6 +3454,12 @@ rustc_crate_roots(  //dir=canonical_paths
 type_generic_type_args(  //dir=canonical_paths
   unique int id: @type_generic_type_arg,
   int path: @type_canonical_path ref
+);
+
+type_impl_item_canonical_paths(  //dir=canonical_paths
+  unique int id: @type_impl_item_canonical_path,
+  int parent: @module_item_canonical_path ref,
+  string name: string ref
 );
 
 type_item_canonical_paths(  //dir=canonical_paths

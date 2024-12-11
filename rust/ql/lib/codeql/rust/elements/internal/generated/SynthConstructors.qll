@@ -157,7 +157,6 @@ import codeql.rust.elements.canonical_paths.internal.BuiltinTypeCanonicalPathCon
 import codeql.rust.elements.canonical_paths.internal.ConcreteTypeCanonicalPathConstructor
 import codeql.rust.elements.canonical_paths.internal.ConstGenericTypeArgConstructor
 import codeql.rust.elements.canonical_paths.internal.DerivedTypeCanonicalPathConstructor
-import codeql.rust.elements.canonical_paths.internal.ImplItemCanonicalPathConstructor
 import codeql.rust.elements.canonical_paths.internal.LangCrateRootConstructor
 import codeql.rust.elements.canonical_paths.internal.ModuleItemCanonicalPathConstructor
 import codeql.rust.elements.canonical_paths.internal.NamespaceConstructor
@@ -165,5 +164,7 @@ import codeql.rust.elements.canonical_paths.internal.ParametrizedCanonicalPathCo
 import codeql.rust.elements.canonical_paths.internal.PlaceholderTypeCanonicalPathConstructor
 import codeql.rust.elements.canonical_paths.internal.RepoCrateRootConstructor
 import codeql.rust.elements.canonical_paths.internal.RustcCrateRootConstructor
+import codeql.rust.elements.canonical_paths.internal.TraitImplItemCanonicalPathConstructor
 import codeql.rust.elements.canonical_paths.internal.TypeGenericTypeArgConstructor
+import codeql.rust.elements.canonical_paths.internal.TypeImplItemCanonicalPathConstructor
 import codeql.rust.elements.canonical_paths.internal.TypeItemCanonicalPathConstructor

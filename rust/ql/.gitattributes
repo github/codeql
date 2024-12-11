@@ -181,7 +181,6 @@
 /lib/codeql/rust/elements/canonical_paths/ConstGenericTypeArg.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/CrateRoot.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/DerivedTypeCanonicalPath.qll linguist-generated
-/lib/codeql/rust/elements/canonical_paths/ImplItemCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/LangCrateRoot.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/ModuleItemCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/Namespace.qll linguist-generated
@@ -189,9 +188,11 @@
 /lib/codeql/rust/elements/canonical_paths/PlaceholderTypeCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/RepoCrateRoot.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/RustcCrateRoot.qll linguist-generated
+/lib/codeql/rust/elements/canonical_paths/TraitImplItemCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/TypeCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/TypeGenericArg.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/TypeGenericTypeArg.qll linguist-generated
+/lib/codeql/rust/elements/canonical_paths/TypeImplItemCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/TypeItemCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/BuiltinTypeCanonicalPathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/BuiltinTypeCanonicalPathImpl.qll linguist-generated
@@ -199,7 +200,6 @@
 /lib/codeql/rust/elements/canonical_paths/internal/ConcreteTypeCanonicalPathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/ConstGenericTypeArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/DerivedTypeCanonicalPathConstructor.qll linguist-generated
-/lib/codeql/rust/elements/canonical_paths/internal/ImplItemCanonicalPathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/LangCrateRootConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/ModuleItemCanonicalPathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/NamespaceConstructor.qll linguist-generated
@@ -207,8 +207,10 @@
 /lib/codeql/rust/elements/canonical_paths/internal/PlaceholderTypeCanonicalPathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/RepoCrateRootConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/RustcCrateRootConstructor.qll linguist-generated
+/lib/codeql/rust/elements/canonical_paths/internal/TraitImplItemCanonicalPathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/TypeCanonicalPathImpl.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/TypeGenericTypeArgConstructor.qll linguist-generated
+/lib/codeql/rust/elements/canonical_paths/internal/TypeImplItemCanonicalPathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/canonical_paths/internal/TypeItemCanonicalPathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiImpl.qll linguist-generated
@@ -641,7 +643,6 @@
 /lib/codeql/rust/elements/internal/generated/canonical_paths/ConstGenericTypeArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/canonical_paths/CrateRoot.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/canonical_paths/DerivedTypeCanonicalPath.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/canonical_paths/ImplItemCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/canonical_paths/LangCrateRoot.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/canonical_paths/ModuleItemCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/canonical_paths/Namespace.qll linguist-generated
@@ -649,9 +650,11 @@
 /lib/codeql/rust/elements/internal/generated/canonical_paths/PlaceholderTypeCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/canonical_paths/RepoCrateRoot.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/canonical_paths/RustcCrateRoot.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/canonical_paths/TraitImplItemCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/canonical_paths/TypeCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/canonical_paths/TypeGenericArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/canonical_paths/TypeGenericTypeArg.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/canonical_paths/TypeImplItemCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/canonical_paths/TypeItemCanonicalPath.qll linguist-generated
 /lib/codeql/rust/elements.qll linguist-generated
 /test/extractor-tests/generated/Abi/Abi.ql linguist-generated

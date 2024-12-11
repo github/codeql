@@ -10752,58 +10752,6 @@ impl From<trap::Label<ConstGenericTypeArg>> for trap::Label<TypeGenericArg> {
 }
 
 #[derive(Debug)]
-pub struct ImplItemCanonicalPath {
-    pub id: trap::TrapId<ImplItemCanonicalPath>,
-    pub type_path: trap::Label<TypeCanonicalPath>,
-    pub trait_path: Option<trap::Label<ParametrizedCanonicalPath>>,
-    pub name: String,
-}
-
-impl trap::TrapEntry for ImplItemCanonicalPath {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("impl_item_canonical_paths", vec![id.into(), self.type_path.into(), self.name.into()]);
-        if let Some(v) = self.trait_path {
-            out.add_tuple("impl_item_canonical_path_trait_paths", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for ImplItemCanonicalPath {
-    fn class_name() -> &'static str { "ImplItemCanonicalPath" }
-}
-
-impl From<trap::Label<ImplItemCanonicalPath>> for trap::Label<CanonicalPath> {
-    fn from(value: trap::Label<ImplItemCanonicalPath>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ImplItemCanonicalPath is a subclass of CanonicalPath
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ImplItemCanonicalPath>> for trap::Label<CanonicalPathElement> {
-    fn from(value: trap::Label<ImplItemCanonicalPath>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ImplItemCanonicalPath is a subclass of CanonicalPathElement
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ImplItemCanonicalPath>> for trap::Label<Element> {
-    fn from(value: trap::Label<ImplItemCanonicalPath>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ImplItemCanonicalPath is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct LangCrateRoot {
     pub id: trap::TrapId<LangCrateRoot>,
     pub name: String,
@@ -11100,6 +11048,55 @@ impl From<trap::Label<RustcCrateRoot>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
+pub struct TraitImplItemCanonicalPath {
+    pub id: trap::TrapId<TraitImplItemCanonicalPath>,
+    pub type_path: trap::Label<TypeCanonicalPath>,
+    pub trait_path: trap::Label<ParametrizedCanonicalPath>,
+    pub name: String,
+}
+
+impl trap::TrapEntry for TraitImplItemCanonicalPath {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("trait_impl_item_canonical_paths", vec![id.into(), self.type_path.into(), self.trait_path.into(), self.name.into()]);
+    }
+}
+
+impl trap::TrapClass for TraitImplItemCanonicalPath {
+    fn class_name() -> &'static str { "TraitImplItemCanonicalPath" }
+}
+
+impl From<trap::Label<TraitImplItemCanonicalPath>> for trap::Label<CanonicalPath> {
+    fn from(value: trap::Label<TraitImplItemCanonicalPath>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TraitImplItemCanonicalPath is a subclass of CanonicalPath
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TraitImplItemCanonicalPath>> for trap::Label<CanonicalPathElement> {
+    fn from(value: trap::Label<TraitImplItemCanonicalPath>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TraitImplItemCanonicalPath is a subclass of CanonicalPathElement
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TraitImplItemCanonicalPath>> for trap::Label<Element> {
+    fn from(value: trap::Label<TraitImplItemCanonicalPath>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TraitImplItemCanonicalPath is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct TypeCanonicalPath {
     _unused: ()
 }
@@ -11176,6 +11173,54 @@ impl From<trap::Label<TypeGenericTypeArg>> for trap::Label<Element> {
 impl From<trap::Label<TypeGenericTypeArg>> for trap::Label<TypeGenericArg> {
     fn from(value: trap::Label<TypeGenericTypeArg>) -> Self {
         // SAFETY: this is safe because in the dbscheme TypeGenericTypeArg is a subclass of TypeGenericArg
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct TypeImplItemCanonicalPath {
+    pub id: trap::TrapId<TypeImplItemCanonicalPath>,
+    pub parent: trap::Label<ModuleItemCanonicalPath>,
+    pub name: String,
+}
+
+impl trap::TrapEntry for TypeImplItemCanonicalPath {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("type_impl_item_canonical_paths", vec![id.into(), self.parent.into(), self.name.into()]);
+    }
+}
+
+impl trap::TrapClass for TypeImplItemCanonicalPath {
+    fn class_name() -> &'static str { "TypeImplItemCanonicalPath" }
+}
+
+impl From<trap::Label<TypeImplItemCanonicalPath>> for trap::Label<CanonicalPath> {
+    fn from(value: trap::Label<TypeImplItemCanonicalPath>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeImplItemCanonicalPath is a subclass of CanonicalPath
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TypeImplItemCanonicalPath>> for trap::Label<CanonicalPathElement> {
+    fn from(value: trap::Label<TypeImplItemCanonicalPath>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeImplItemCanonicalPath is a subclass of CanonicalPathElement
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TypeImplItemCanonicalPath>> for trap::Label<Element> {
+    fn from(value: trap::Label<TypeImplItemCanonicalPath>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeImplItemCanonicalPath is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

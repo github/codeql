@@ -1,5 +1,5 @@
 use crate::translate::label_cache::StorableAsModuleItemCanonicalPath;
-use ra_ap_hir::{Enum, Module, Semantics, Struct, Trait, Union};
+use ra_ap_hir::{Adt, Enum, Module, Semantics, Struct, Trait, Union};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_syntax::{ast, ast::RangeItem, AstNode};
 
@@ -90,6 +90,16 @@ impl PathAst for ast::TupleStructPat {
 pub trait ModuleItem: StorableAsModuleItemCanonicalPath {
     fn module(&self, sema: &Semantics<'_, RootDatabase>) -> Module;
     fn name(&self, sema: &Semantics<'_, RootDatabase>) -> String;
+}
+
+impl ModuleItem for Adt {
+    fn module(&self, sema: &Semantics<'_, RootDatabase>) -> Module {
+        Adt::module(*self, sema.db)
+    }
+
+    fn name(&self, sema: &Semantics<'_, RootDatabase>) -> String {
+        Adt::name(*self, sema.db).as_str().to_owned()
+    }
 }
 
 impl ModuleItem for Enum {

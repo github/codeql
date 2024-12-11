@@ -220,13 +220,20 @@ class TypeItemCanonicalPath(CanonicalPath):
     """
     A canonical path for an item defined in a type or trait.
     """
-    parent: "ModuleItemCanonicalPath"
+    parent: ModuleItemCanonicalPath
     name: string
 
-class ImplItemCanonicalPath(CanonicalPath):
+class TraitImplItemCanonicalPath(CanonicalPath):
     """
-    A canonical path for an item defined in an impl (a method or associated type).
+    A canonical path for an item defined in a trait impl.
     """
     type_path: TypeCanonicalPath
-    trait_path: optional[ParametrizedCanonicalPath]
+    trait_path: ParametrizedCanonicalPath
+    name: string
+
+class TypeImplItemCanonicalPath(CanonicalPath):
+    """
+    A canonical path for an item defined in a type impl.
+    """
+    parent: ModuleItemCanonicalPath
     name: string

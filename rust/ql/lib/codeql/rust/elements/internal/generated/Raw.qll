@@ -4008,29 +4008,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A canonical path for an item defined in an impl (a method or associated type).
-   */
-  class ImplItemCanonicalPath extends @impl_item_canonical_path, CanonicalPath {
-    override string toString() { result = "ImplItemCanonicalPath" }
-
-    /**
-     * Gets the type path of this impl item canonical path.
-     */
-    TypeCanonicalPath getTypePath() { impl_item_canonical_paths(this, result, _) }
-
-    /**
-     * Gets the trait path of this impl item canonical path, if it exists.
-     */
-    ParametrizedCanonicalPath getTraitPath() { impl_item_canonical_path_trait_paths(this, result) }
-
-    /**
-     * Gets the name of this impl item canonical path.
-     */
-    string getName() { impl_item_canonical_paths(this, _, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * A reference to a crate in the Rust standard libraries.
    */
   class LangCrateRoot extends @lang_crate_root, CrateRoot {
@@ -4135,6 +4112,29 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A canonical path for an item defined in a trait impl.
+   */
+  class TraitImplItemCanonicalPath extends @trait_impl_item_canonical_path, CanonicalPath {
+    override string toString() { result = "TraitImplItemCanonicalPath" }
+
+    /**
+     * Gets the type path of this trait impl item canonical path.
+     */
+    TypeCanonicalPath getTypePath() { trait_impl_item_canonical_paths(this, result, _, _) }
+
+    /**
+     * Gets the trait path of this trait impl item canonical path.
+     */
+    ParametrizedCanonicalPath getTraitPath() { trait_impl_item_canonical_paths(this, _, result, _) }
+
+    /**
+     * Gets the name of this trait impl item canonical path.
+     */
+    string getName() { trait_impl_item_canonical_paths(this, _, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * The base for canonical paths for types.
    */
   class TypeCanonicalPath extends @type_canonical_path, CanonicalPath { }
@@ -4150,6 +4150,24 @@ module Raw {
      * Gets the path of this type generic type argument.
      */
     TypeCanonicalPath getPath() { type_generic_type_args(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A canonical path for an item defined in a type impl.
+   */
+  class TypeImplItemCanonicalPath extends @type_impl_item_canonical_path, CanonicalPath {
+    override string toString() { result = "TypeImplItemCanonicalPath" }
+
+    /**
+     * Gets the parent of this type impl item canonical path.
+     */
+    ModuleItemCanonicalPath getParent() { type_impl_item_canonical_paths(this, result, _) }
+
+    /**
+     * Gets the name of this type impl item canonical path.
+     */
+    string getName() { type_impl_item_canonical_paths(this, _, result) }
   }
 
   /**

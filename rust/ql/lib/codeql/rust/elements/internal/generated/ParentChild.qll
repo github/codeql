@@ -3816,22 +3816,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfImplItemCanonicalPath(
-    ImplItemCanonicalPath e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bCanonicalPath, int n |
-      b = 0 and
-      bCanonicalPath =
-        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
-      n = bCanonicalPath and
-      (
-        none()
-        or
-        result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfLangCrateRoot(
     LangCrateRoot e, int index, string partialPredicateCall
   ) {
@@ -3923,6 +3907,22 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfTraitImplItemCanonicalPath(
+    TraitImplItemCanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCanonicalPath, int n |
+      b = 0 and
+      bCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
+      n = bCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfTypeCanonicalPath(
     TypeCanonicalPath e, int index, string partialPredicateCall
   ) {
@@ -3951,6 +3951,22 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfTypeGenericArg(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfTypeImplItemCanonicalPath(
+    TypeImplItemCanonicalPath e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCanonicalPath, int n |
+      b = 0 and
+      bCanonicalPath =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
+      n = bCanonicalPath and
+      (
+        none()
+        or
+        result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -4343,8 +4359,6 @@ private module Impl {
     or
     result = getImmediateChildOfConstGenericTypeArg(e, index, partialAccessor)
     or
-    result = getImmediateChildOfImplItemCanonicalPath(e, index, partialAccessor)
-    or
     result = getImmediateChildOfLangCrateRoot(e, index, partialAccessor)
     or
     result = getImmediateChildOfModuleItemCanonicalPath(e, index, partialAccessor)
@@ -4357,7 +4371,11 @@ private module Impl {
     or
     result = getImmediateChildOfRustcCrateRoot(e, index, partialAccessor)
     or
+    result = getImmediateChildOfTraitImplItemCanonicalPath(e, index, partialAccessor)
+    or
     result = getImmediateChildOfTypeGenericTypeArg(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypeImplItemCanonicalPath(e, index, partialAccessor)
     or
     result = getImmediateChildOfTypeItemCanonicalPath(e, index, partialAccessor)
     or

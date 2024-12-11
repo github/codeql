@@ -184,7 +184,6 @@ import codeql.rust.elements.canonical_paths.ConcreteTypeCanonicalPath
 import codeql.rust.elements.canonical_paths.ConstGenericTypeArg
 import codeql.rust.elements.canonical_paths.CrateRoot
 import codeql.rust.elements.canonical_paths.DerivedTypeCanonicalPath
-import codeql.rust.elements.canonical_paths.ImplItemCanonicalPath
 import codeql.rust.elements.canonical_paths.LangCrateRoot
 import codeql.rust.elements.canonical_paths.ModuleItemCanonicalPath
 import codeql.rust.elements.canonical_paths.Namespace
@@ -192,7 +191,9 @@ import codeql.rust.elements.canonical_paths.ParametrizedCanonicalPath
 import codeql.rust.elements.canonical_paths.PlaceholderTypeCanonicalPath
 import codeql.rust.elements.canonical_paths.RepoCrateRoot
 import codeql.rust.elements.canonical_paths.RustcCrateRoot
+import codeql.rust.elements.canonical_paths.TraitImplItemCanonicalPath
 import codeql.rust.elements.canonical_paths.TypeCanonicalPath
 import codeql.rust.elements.canonical_paths.TypeGenericArg
 import codeql.rust.elements.canonical_paths.TypeGenericTypeArg
+import codeql.rust.elements.canonical_paths.TypeImplItemCanonicalPath
 import codeql.rust.elements.canonical_paths.TypeItemCanonicalPath

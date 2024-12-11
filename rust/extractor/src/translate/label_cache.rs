@@ -1,6 +1,8 @@
 use crate::generated::{self};
 use crate::trap::{Label, TrapClass, UntypedLabel};
-use ra_ap_hir::{Crate, Enum, Function, Module, Struct, Trait, TraitRef, Type, Union, Variant};
+use ra_ap_hir::{
+    Adt, Crate, Enum, Function, Module, Struct, Trait, TraitRef, Type, Union, Variant,
+};
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -54,6 +56,16 @@ impl StorableAsCanonicalPath for Function {
 impl StorableAsModuleItemCanonicalPath for Trait {
     fn to_key(&self) -> Key {
         Key::Trait(*self)
+    }
+}
+
+impl StorableAsModuleItemCanonicalPath for Adt {
+    fn to_key(&self) -> Key {
+        match *self {
+            Adt::Struct(it) => Key::Struct(it),
+            Adt::Union(it) => Key::Union(it),
+            Adt::Enum(it) => Key::Enum(it),
+        }
     }
 }
 

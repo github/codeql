@@ -643,19 +643,36 @@ impl<'a> Translator<'a> {
                 )
             }
             ItemContainer::Impl(it) => {
-                let trait_ref = it.trait_ref(sema.db);
-                let type_path = self.canonical_path_from_type(it.self_ty(sema.db))?;
-                let trait_path = trait_ref.and_then(|t| self.canonical_path_from_trait_ref(t));
-                Some(
-                    self.trap
-                        .emit(generated::ImplItemCanonicalPath {
-                            id: trap_key!("<", type_path, "as", trait_path, ">::", name),
-                            type_path,
-                            trait_path,
-                            name,
-                        })
-                        .into(),
-                )
+                let ty = it.self_ty(sema.db);
+                if let Some(trait_path) = it
+                    .trait_ref(sema.db)
+                    .and_then(|t| self.canonical_path_from_trait_ref(t))
+                {
+                    let type_path = self.canonical_path_from_type(ty)?;
+                    Some(
+                        self.trap
+                            .emit(generated::TraitImplItemCanonicalPath {
+                                id: trap_key!("<", type_path, "as", trait_path, ">::", name),
+                                type_path,
+                                trait_path,
+                                name,
+                            })
+                            .into(),
+                    )
+                } else {
+                    // with no trait this must be an Adt impl
+                    let adt = ty.as_adt()?;
+                    let parent = self.canonical_path_from_module_item(adt)?;
+                    Some(
+                        self.trap
+                            .emit(generated::TypeImplItemCanonicalPath {
+                                id: trap_key!(parent, name),
+                                parent,
+                                name,
+                            })
+                            .into(),
+                    )
+                }
             }
             ItemContainer::Module(it) => {
                 let namespace = self.canonical_path_from_module(it)?;
