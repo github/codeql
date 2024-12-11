@@ -1,7 +1,7 @@
 import go
 import semmle.go.dataflow.ExternalFlow
 import ModelValidation
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 predicate isYamlFunction(Function f) {
   f.hasQualifiedName(package("gopkg.in/yaml", ""), _)
