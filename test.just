@@ -1,24 +1,24 @@
-#!/usr/bin/env just --justfile
+import 'build.just'
 
-set allow-duplicate-recipes
-set allow-duplicate-variables
-set unstable
-set quiet
-
-_install LANGUAGE:
-    cd {{ source_dir() }}; bazel run //{{ trim_end_match(LANGUAGE, '/') }}:install
-
-_build LANGUAGE:
+[no-cd, positional-arguments, no-exit-message]
+@_language_tests LANGUAGE *ARGS: (_build LANGUAGE)
+    shift; \
     if [ -n "${SEMMLE_CODE:-}" ]; then \
-      cd $SEMMLE_CODE; ./build target/intree/codeql-{{ LANGUAGE }}; \
+      CODEQL_CONFIG_FILE= $SEMMLE_CODE/target/intree/codeql-{{ LANGUAGE }}/codeql test run -j0 "$@"; \
     else \
-      just install {{ LANGUAGE }}; \
+      codeql test run --search-path={{ source_dir() }} -j0 "$@"; \
     fi
 
-build LANGUAGE: (_build LANGUAGE)
-install LANGUAGE: (_install LANGUAGE)
+[no-cd, positional-arguments, no-exit-message]
+@_integration_tests *ARGS:
+    if [ -n "${SEMMLE_CODE:-}" ]; then \
+      $SEMMLE_CODE/tools/pytest "$@"; \
+    else \
+      echo "integration tests require running from an internal repository working copy" >&2; \
+      exit 1; \
+    fi
 
-[no-cd, script:'python3', positional-arguments, no-exit-message]
+[group('test'), no-cd, script:'python3', positional-arguments, no-exit-message]
 test +ARGS:  # TODO: fuzzy test chooser when no arguments are provided!
     import pathlib
     import subprocess
@@ -43,20 +43,4 @@ test +ARGS:  # TODO: fuzzy test chooser when no arguments are provided!
         cwd=common_path).returncode
     sys.exit(ret)
 
-[no-cd, positional-arguments]
-_run_language_tests LANGUAGE *ARGS: (_build LANGUAGE)
-    shift; \
-    if [ -n "${SEMMLE_CODE:-}" ]; then \
-      $SEMMLE_CODE/target/intree/codeql-{{ LANGUAGE }}/codeql test run "$@"; \
-    else \
-      codeql test run --search-path={{ source_dir() }} "$@"; \
-    fi
-
-[no-cd, positional-arguments]
-_run_integration_tests *ARGS:
-    if [ -n "${SEMMLE_CODE:-}" ]; then \
-      $SEMMLE_CODE/tools/pytest "$@"; \
-    else \
-      echo "integration tests require running from an internal repository working copy" >&2; \
-      exit 1; \
-    fi
+alias t := test

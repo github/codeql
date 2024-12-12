@@ -1,5 +1,9 @@
-import 'impl.just'
-import? '../justfile'  # internal repo just file, if present
+import 'build.just'
+import 'test.just'
+import 'install.just'
+import? 'local.just'
+
+mod rust
 
 @_default:
-    {{ just_executable() }} --list
+    {{ just_executable() }} --list --list-submodules

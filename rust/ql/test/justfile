@@ -1,5 +1,4 @@
-#!/usr/bin/env just --justfile
+import '../../../test.just'
 
-import '../../justfile'
-
-test *ARGS=".": (_run_language_tests "rust" ARGS)
+[group('test')]
+test *ARGS=".": (_language_tests "rust" ARGS)

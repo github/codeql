@@ -1,3 +1,4 @@
-import '../../justfile'
+import '../../../test.just'
 
-test *ARGS=".": (_run_integration_tests ARGS)
+[group('test')]
+test *ARGS=".": (_integration_tests ARGS)

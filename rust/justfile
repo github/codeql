@@ -1,4 +1,24 @@
-import '../justfile'
+import '../build.just'
+import '../install.just'
+import '../test.just'
 
+@_default: generate (build "rust")
+
+[group('build')]
 install LANGUAGE='rust': (_install LANGUAGE)
+
+[group('build')]
 build LANGUAGE='rust': (_build LANGUAGE)
+
+[group('generate')]
+generate:
+    bazel run @codeql//rust/codegen
+
+alias gen := generate
+alias g := generate
+
+[group('test')]
+integration-tests: (_integration_tests (source_dir() / 'ql/integration-tests'))
+
+[group('test')]
+language-tests: (_language_tests 'rust' (source_dir() / 'ql/test'))
