@@ -1,4 +1,0 @@
-variableAccessAstNesting
-| variables.rs:436:13:436:13 | i | variables.rs:437:17:439:5 | { ... } | CapturedVariable access is not nested in the defining callable |
-consistencyOverview
-| CapturedVariable access is not nested in the defining callable | 1 |

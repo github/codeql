@@ -8,6 +8,7 @@ private import codeql.dataflow.DataFlow
 private import codeql.dataflow.internal.DataFlowImpl
 private import rust
 private import SsaImpl as SsaImpl
+private import codeql.rust.controlflow.internal.Scope as Scope
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
@@ -771,7 +772,12 @@ class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind`. */
 private predicate lambdaCreationExpr(Expr creation, LambdaCallKind kind) {
-  creation instanceof ClosureExpr and exists(kind)
+  (
+    creation instanceof ClosureExpr
+    or
+    creation instanceof Scope::AsyncBlockScope
+  ) and
+  exists(kind)
 }
 
 /**

@@ -1,5 +1,0 @@
-variableAccessAstNesting
-| test.rs:396:26:396:26 | b | test.rs:409:28:414:9 | { ... } | CapturedVariable access is not nested in the defining callable |
-| test.rs:409:23:409:25 | foo | test.rs:409:28:414:9 | { ... } | CapturedVariable access is not nested in the defining callable |
-consistencyOverview
-| CapturedVariable access is not nested in the defining callable | 2 |
