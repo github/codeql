@@ -1611,7 +1611,12 @@ class RegExpConstructorInvokeNode extends DataFlow::InvokeNode {
    * Gets the AST of the regular expression created here, provided that the
    * first argument is a string literal.
    */
-  RegExpTerm getRoot() { result = this.getArgument(0).asExpr().(StringLiteral).asRegExp() }
+  RegExpTerm getRoot() {
+    result = this.getArgument(0).asExpr().(StringLiteral).asRegExp()
+    or
+    // In case someone writes `new RegExp(/foo/)` for some reason
+    result = this.getArgument(0).asExpr().(RegExpLiteral).getRoot()
+  }
 
   /**
    * Gets the flags provided in the second argument, or an empty string if no

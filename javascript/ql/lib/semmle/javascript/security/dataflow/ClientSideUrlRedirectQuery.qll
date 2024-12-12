@@ -10,9 +10,10 @@
 import javascript
 import UrlConcatenation
 import ClientSideUrlRedirectCustomizations::ClientSideUrlRedirect
+import semmle.javascript.security.TaintedUrlSuffix
 
 // Materialize flow labels
-private class ConcreteDocumentUrl extends DocumentUrl {
+deprecated private class ConcreteDocumentUrl extends DocumentUrl {
   ConcreteDocumentUrl() { this = this }
 }
 
@@ -35,8 +36,7 @@ module ClientSideUrlRedirectConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel state) {
-    isPrefixExtraction(node) and
-    state instanceof DocumentUrl
+    TaintedUrlSuffix::isBarrier(node, state)
   }
 
   predicate isBarrierOut(DataFlow::Node node) { hostnameSanitizingPrefixEdge(node, _) }
@@ -47,9 +47,7 @@ module ClientSideUrlRedirectConfig implements DataFlow::StateConfigSig {
     DataFlow::Node node1, DataFlow::FlowLabel state1, DataFlow::Node node2,
     DataFlow::FlowLabel state2
   ) {
-    untrustedUrlSubstring(node1, node2) and
-    state1 instanceof DocumentUrl and
-    state2.isTaint()
+    TaintedUrlSuffix::step(node1, node2, state1, state2)
     or
     exists(HtmlSanitizerCall call |
       node1 = call.getInput() and
