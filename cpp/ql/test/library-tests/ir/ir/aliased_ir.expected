@@ -19713,6 +19713,33 @@ ir.cpp:
 # 2698|     v2698_10(void) = AliasedUse   : m2698_3
 # 2698|     v2698_11(void) = ExitFunction : 
 
+# 2724| char UseBracketOperator(WithBracketOperator const, int)
+# 2724|   Block 0
+# 2724|     v2724_1(void)                       = EnterFunction               : 
+# 2724|     m2724_2(unknown)                    = AliasedDefinition           : 
+# 2724|     m2724_3(unknown)                    = InitializeNonLocal          : 
+# 2724|     m2724_4(unknown)                    = Chi                         : total:m2724_2, partial:m2724_3
+# 2724|     r2724_5(glval<WithBracketOperator>) = VariableAddress[x]          : 
+# 2724|     m2724_6(WithBracketOperator)        = InitializeParameter[x]      : &:r2724_5
+# 2724|     m2724_7(unknown)                    = Chi                         : total:m2724_4, partial:m2724_6
+# 2724|     r2724_8(glval<int>)                 = VariableAddress[i]          : 
+# 2724|     m2724_9(int)                        = InitializeParameter[i]      : &:r2724_8
+# 2725|     r2725_1(glval<char>)                = VariableAddress[#return]    : 
+# 2725|     r2725_2(glval<WithBracketOperator>) = VariableAddress[x]          : 
+# 2725|     r2725_3(glval<unknown>)             = FunctionAddress[operator[]] : 
+# 2725|     r2725_4(glval<int>)                 = VariableAddress[i]          : 
+# 2725|     r2725_5(int)                        = Load[i]                     : &:r2725_4, m2724_9
+# 2725|     r2725_6(char &)                     = Call[operator[]]            : func:r2725_3, this:r2725_2, 0:r2725_5
+# 2725|     m2725_7(unknown)                    = ^CallSideEffect             : ~m2724_7
+# 2725|     m2725_8(unknown)                    = Chi                         : total:m2724_7, partial:m2725_7
+# 2725|     v2725_9(void)                       = ^IndirectReadSideEffect[-1] : &:r2725_2, ~m2725_8
+# 2725|     r2725_10(char)                      = Load[?]                     : &:r2725_6, ~m2725_8
+# 2725|     m2725_11(char)                      = Store[#return]              : &:r2725_1, r2725_10
+# 2724|     r2724_10(glval<char>)               = VariableAddress[#return]    : 
+# 2724|     v2724_11(void)                      = ReturnValue                 : &:r2724_10, m2725_11
+# 2724|     v2724_12(void)                      = AliasedUse                  : ~m2725_8
+# 2724|     v2724_13(void)                      = ExitFunction                : 
+
 many-defs-per-use.cpp:
 #   34| void many_defs_per_use()
 #   34|   Block 0
