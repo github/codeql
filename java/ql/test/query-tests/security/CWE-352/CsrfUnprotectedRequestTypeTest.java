@@ -10,9 +10,13 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 @Controller
 public class CsrfUnprotectedRequestTypeTest {
+    public static Connection connection;
 
     // Test Spring sources with `PreparedStatement.executeUpdate()` as a default database update method call
 
@@ -126,6 +130,40 @@ public class CsrfUnprotectedRequestTypeTest {
             Connection conn = DriverManager.getConnection("url");
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.executeLargeUpdate(); // database update method call
+        } catch (SQLException e) { }
+    }
+
+    @RequestMapping("/")
+    public void badStatementExecuteUpdate() { // $ hasCsrfUnprotectedRequestType
+        try {
+            String item = "item";
+            String price = "price";
+            Statement statement = connection.createStatement();
+            String query = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+            int count = statement.executeUpdate(query);
+        } catch (SQLException e) { }
+    }
+
+    @RequestMapping("/")
+    public void badStatementExecute() { // $ hasCsrfUnprotectedRequestType
+        try {
+            String item = "item";
+            String price = "price";
+            Statement statement = connection.createStatement();
+            String query = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+            boolean bool = statement.execute(query);
+        } catch (SQLException e) { }
+    }
+
+    // GOOD: select not insert/update/delete
+    @RequestMapping("/")
+    public void goodStatementExecute() {
+        try {
+            String category = "category";
+            Statement statement = connection.createStatement();
+            String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+                    + category + "' ORDER BY PRICE";
+            boolean bool = statement.execute(query);
         } catch (SQLException e) { }
     }
 

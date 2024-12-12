@@ -4,9 +4,9 @@ import java
 private import semmle.code.java.frameworks.spring.SpringController
 private import semmle.code.java.frameworks.MyBatis
 private import semmle.code.java.frameworks.Jdbc
-private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dispatch.VirtualDispatch
+private import semmle.code.java.dataflow.TaintTracking
 
 /** A method that is not protected from CSRF by default. */
 abstract class CsrfUnprotectedMethod extends Method { }
@@ -66,10 +66,9 @@ private class PreparedStatementDatabaseUpdateMethod extends DatabaseUpdateMethod
   }
 }
 
-/** A method that updates a SQL database. */
-private class SqlDatabaseUpdateMethod extends DatabaseUpdateMethod {
-  SqlDatabaseUpdateMethod() {
-    // TODO: constrain to only insert/update/delete for `execute%` methods; need to track the sql expression into the execute call.
+/** A method found via the sql-injection models which may update a SQL database. */
+private class SqlInjectionMethod extends DatabaseUpdateMethod {
+  SqlInjectionMethod() {
     exists(DataFlow::Node n | this = n.asExpr().(Argument).getCall().getCallee() |
       sinkNode(n, "sql-injection") and
       // do not include `executeQuery` since it is typically used with a select statement
@@ -81,12 +80,33 @@ private class SqlDatabaseUpdateMethod extends DatabaseUpdateMethod {
   }
 }
 
+/**
+ * A taint-tracking configuration for reasoning about SQL queries that update a database.
+ */
+module SqlExecuteConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(StringLiteral sl | source.asExpr() = sl |
+      sl.getValue().regexpMatch("^(?i)(insert|update|delete).*")
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(Method m | m = sink.asExpr().(Argument).getCall().getCallee() |
+      m instanceof SqlInjectionMethod and
+      m.hasName("execute")
+    )
+  }
+}
+
+/** Tracks flow from SQL queries that update a database to the argument of an execute method call. */
+module SqlExecuteFlow = TaintTracking::Global<SqlExecuteConfig>;
+
 module CallGraph {
-  newtype TPathNode =
+  newtype TCallPathNode =
     TMethod(Method m) or
     TCall(Call c)
 
-  class PathNode extends TPathNode {
+  class CallPathNode extends TCallPathNode {
     Method asMethod() { this = TMethod(result) }
 
     Call asCall() { this = TCall(result) }
@@ -97,16 +117,16 @@ module CallGraph {
       result = this.asCall().toString()
     }
 
-    private PathNode getACallee() {
+    private CallPathNode getACallee() {
       [viableCallable(this.asCall()), this.asCall().getCallee()] = result.asMethod()
     }
 
-    PathNode getASuccessor() {
+    CallPathNode getASuccessor() {
       this.asMethod() = result.asCall().getEnclosingCallable()
       or
       result = this.getACallee() and
       (
-        exists(PathNode p |
+        exists(CallPathNode p |
           p = this.getACallee() and
           p.asMethod() instanceof DatabaseUpdateMethod
         )
@@ -122,15 +142,25 @@ module CallGraph {
     }
   }
 
-  predicate edges(PathNode pred, PathNode succ) { pred.getASuccessor() = succ }
+  predicate edges(CallPathNode pred, CallPathNode succ) { pred.getASuccessor() = succ }
 }
 
 import CallGraph
 
 /** Holds if `src` is an unprotected request handler that reaches a state-changing `sink`. */
-predicate unprotectedStateChange(PathNode src, PathNode sink, PathNode sinkPred) {
+predicate unprotectedStateChange(CallPathNode src, CallPathNode sink, CallPathNode sinkPred) {
   src.asMethod() instanceof CsrfUnprotectedMethod and
   sink.asMethod() instanceof DatabaseUpdateMethod and
   sinkPred.getASuccessor() = sink and
-  src.getASuccessor+() = sinkPred
+  src.getASuccessor+() = sinkPred and
+  if
+    sink.asMethod() instanceof SqlInjectionMethod and
+    sink.asMethod().hasName("execute")
+  then
+    exists(SqlExecuteFlow::PathNode executeSrc, SqlExecuteFlow::PathNode executeSink |
+      SqlExecuteFlow::flowPath(executeSrc, executeSink)
+    |
+      sinkPred.asCall() = executeSink.getNode().asExpr().(Argument).getCall()
+    )
+  else any()
 }
