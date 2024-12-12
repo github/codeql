@@ -769,7 +769,7 @@ final class SingletonContentSet extends ContentSet, TSingletonContentSet {
 
 class LambdaCallKind = Unit;
 
-/** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
+/** Holds if `creation` is an expression that creates a lambda of kind `kind`. */
 private predicate lambdaCreationExpr(Expr creation, LambdaCallKind kind) {
   creation instanceof ClosureExpr and exists(kind)
 }

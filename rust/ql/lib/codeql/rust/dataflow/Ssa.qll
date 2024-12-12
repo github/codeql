@@ -342,7 +342,7 @@ module Ssa {
    * An SSA definition inserted at a call that may update the value of a captured
    * variable. For example, in
    *
-   * ```rb
+   * ```rust
    * fn capture_mut() {
    *   let mut y = 0;
    *   (0..5).for_each(|| {
