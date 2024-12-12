@@ -102,10 +102,10 @@ final class ParameterPosition extends TParameterPosition {
   predicate isSelf() { this = TSelfParameterPosition() }
 
   /**
-   * Holds if this position represents a reference to a lambda itself. Only
+   * Holds if this position represents a reference to a closure itself. Only
    * used for tracking flow through captured variables.
    */
-  predicate isLambdaSelf() { this = TLambdaSelfParameterPosition() }
+  predicate isClosureSelf() { this = TClosureSelfParameterPosition() }
 
   /** Gets a textual representation of this position. */
   string toString() {
@@ -113,7 +113,7 @@ final class ParameterPosition extends TParameterPosition {
     or
     result = "self" and this.isSelf()
     or
-    result = "lambda self" and this.isLambdaSelf()
+    result = "closure self" and this.isClosureSelf()
   }
 
   ParamBase getParameterIn(ParamList ps) {
@@ -276,15 +276,15 @@ module Node {
    * The run-time representation of a closure itself at function entry, viewed
    * as a node in a data flow graph.
    */
-  final class ClosureParameterNode extends ParameterNode, TLambdaSelfReferenceNode {
+  final class ClosureParameterNode extends ParameterNode, TClosureSelfReferenceNode {
     private CfgScope cfgScope;
 
-    ClosureParameterNode() { this = TLambdaSelfReferenceNode(cfgScope) }
+    ClosureParameterNode() { this = TClosureSelfReferenceNode(cfgScope) }
 
     final override CfgScope getCfgScope() { result = cfgScope }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      cfgScope = c.asCfgScope() and pos.isLambdaSelf()
+      cfgScope = c.asCfgScope() and pos.isClosureSelf()
     }
 
     override Location getLocation() { result = cfgScope.getLocation() }
@@ -331,7 +331,7 @@ module Node {
 
     override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
       call.asCallExprCfgNode() = call_ and
-      pos.isLambdaSelf()
+      pos.isClosureSelf()
     }
   }
 
@@ -404,6 +404,24 @@ module Node {
   }
 
   /**
+   * A synthesized data flow node representing a closure object that tracks
+   * captured variables.
+   */
+  class CaptureNode extends Node, TCaptureNode {
+    private VariableCapture::Flow::SynthesizedCaptureNode cn;
+
+    CaptureNode() { this = TCaptureNode(cn) }
+
+    VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
+
+    override CfgScope getCfgScope() { result = cn.getEnclosingCallable() }
+
+    override Location getLocation() { result = cn.getLocation() }
+
+    override string toString() { result = cn.toString() }
+  }
+
+  /**
    * A node associated with an object after an operation that might have
    * changed its state.
    *
@@ -456,24 +474,6 @@ module Node {
     override Node getPreUpdateNode() { result = pre }
 
     final override string toString() { result = PostUpdateNode.super.toString() }
-  }
-
-  /**
-   * A synthesized data flow node representing a closure object that tracks
-   * captured variables.
-   */
-  class CaptureNode extends Node, TCaptureNode {
-    private VariableCapture::Flow::SynthesizedCaptureNode cn;
-
-    CaptureNode() { this = TCaptureNode(cn) }
-
-    VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
-
-    override CfgScope getCfgScope() { result = cn.getEnclosingCallable() }
-
-    override Location getLocation() { result = cn.getLocation() }
-
-    override string toString() { result = cn.toString() }
   }
 
   final class CastNode = NaNode;
@@ -847,8 +847,6 @@ module RustDataFlow implements InputSig<Location> {
     node instanceof Node::CaptureNode
     or
     node instanceof Node::ClosureParameterNode
-    or
-    node instanceof Node::ClosureArgumentNode
   }
 
   class DataFlowExpr = ExprCfgNode;
@@ -1383,7 +1381,7 @@ private module Cached {
     } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
-    TLambdaSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or
+    TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or
     TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
 
   cached
@@ -1421,7 +1419,7 @@ private module Cached {
       or
       FlowSummaryImpl::ParsePositions::isParsedParameterPosition(_, i)
     } or
-    TLambdaSelfParameterPosition() or
+    TClosureSelfParameterPosition() or
     TSelfParameterPosition()
 
   cached

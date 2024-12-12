@@ -214,7 +214,7 @@ module Ssa {
      * variable.
      *
      * This is either the value in a direct assignment, `x = value`, or in a
-     * `let` statement, `let x = value`. Note that patterns on the rhs. are
+     * `let` statement, `let x = value`. Note that patterns on the lhs. are
      * currently not supported.
      */
     predicate assigns(ExprCfgNode value) {
@@ -336,38 +336,5 @@ module Ssa {
     final override string toString() { result = "<captured entry> " + this.getSourceVariable() }
 
     override Location getLocation() { result = this.getBasicBlock().getLocation() }
-  }
-
-  /**
-   * An SSA definition inserted at a call that may update the value of a captured
-   * variable. For example, in
-   *
-   * ```rust
-   * fn capture_mut() {
-   *   let mut y = 0;
-   *   (0..5).for_each(|| {
-   *     y += x
-   *   });
-   *   y
-   * }
-   * ```
-   *
-   * a definition for `y` is inserted at the call to `for_each`.
-   */
-  class CapturedCallDefinition extends Definition, SsaImpl::UncertainWriteDefinition {
-    CapturedCallDefinition() {
-      exists(Variable v, BasicBlock bb, int i |
-        this.definesAt(v, bb, i) and
-        SsaImpl::capturedCallWrite(_, bb, i, v)
-      )
-    }
-
-    /**
-     * Gets the immediately preceding definition. Since this update is uncertain,
-     * the value from the preceding definition might still be valid.
-     */
-    final Definition getPriorDefinition() { result = SsaImpl::uncertainWriteDefinitionInput(this) }
-
-    override string toString() { result = "<captured exit> " + this.getSourceVariable() }
   }
 }
