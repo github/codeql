@@ -129,13 +129,16 @@ module ControlFlow {
     Callable getEnclosingCallable() { none() }
 
     /** Gets the statement this `Node` corresponds to, if any. */
-    Stmt asStmt() { none() }
+    Stmt asStmt() { this = TStmtNode(result) }
 
     /** Gets the expression this `Node` corresponds to, if any. */
-    Expr asExpr() { none() }
+    Expr asExpr() { this = TExprNode(result) }
 
     /** Gets the call this `Node` corresponds to, if any. */
-    Call asCall() { none() }
+    Call asCall() {
+      result = this.asExpr() or
+      result = this.asStmt()
+    }
 
     /** Gets a textual representation of this element. */
     string toString() { none() }
@@ -159,10 +162,6 @@ module ControlFlow {
 
     override Callable getEnclosingCallable() { result = e.getEnclosingCallable() }
 
-    override Expr asExpr() { result = e }
-
-    override Call asCall() { result = e }
-
     override ExprParent getAstNode() { result = e }
 
     /** Gets a textual representation of this element. */
@@ -181,10 +180,6 @@ module ControlFlow {
     override Stmt getEnclosingStmt() { result = s }
 
     override Callable getEnclosingCallable() { result = s.getEnclosingCallable() }
-
-    override Stmt asStmt() { result = s }
-
-    override Call asCall() { result = s }
 
     override ExprParent getAstNode() { result = s }
 
