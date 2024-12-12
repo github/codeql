@@ -8,6 +8,7 @@ import javascript
 
 module LoopBoundInjection {
   import semmle.javascript.security.TaintedObject
+  import semmle.javascript.security.CommonFlowState
 
   /**
    * Holds if an exception will be thrown whenever `e` evaluates to `undefined` or `null`.
@@ -176,16 +177,16 @@ module LoopBoundInjection {
     predicate blocksExpr(boolean outcome, Expr e) { none() }
 
     /**
-     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     * Holds if this node acts as a barrier for `state`, blocking further flow from `e` if `this` evaluates to `outcome`.
      */
-    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+    predicate blocksExpr(boolean outcome, Expr e, FlowState state) { none() }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      this.blocksExpr(outcome, e, label)
+      this.blocksExpr(outcome, e, FlowState::fromFlowLabel(label))
     }
   }
 
@@ -214,10 +215,10 @@ module LoopBoundInjection {
 
     IsArraySanitizerGuard() { astNode.getCalleeName() = "isArray" }
 
-    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
       true = outcome and
       e = astNode.getAnArgument() and
-      label = TaintedObject::label()
+      state.isTaintedObject()
     }
   }
 
@@ -232,10 +233,10 @@ module LoopBoundInjection {
       DataFlow::globalVarRef("Array").flowsToExpr(astNode.getRightOperand())
     }
 
-    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
       true = outcome and
       e = astNode.getLeftOperand() and
-      label = TaintedObject::label()
+      state.isTaintedObject()
     }
   }
 
@@ -253,10 +254,10 @@ module LoopBoundInjection {
       propRead.getPropertyName() = "length"
     }
 
-    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
       false = outcome and
       e = propRead.getBase().asExpr() and
-      label = TaintedObject::label()
+      state.isTaintedObject()
     }
   }
 }
