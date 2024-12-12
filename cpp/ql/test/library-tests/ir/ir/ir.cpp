@@ -2721,8 +2721,8 @@ struct WithBracketOperator {
   const char& operator[](int pos) const;
 };
 
-char UseBracketOperator(const WithBracketOperator line, int indent) {
-  return line[indent];
+char UseBracketOperator(const WithBracketOperator x, int i) {
+  return x[i];
 }
 
 // semmle-extractor-options: -std=c++20 --clang
