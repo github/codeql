@@ -211,9 +211,11 @@ module Sem implements Semantic {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
 
-  private predicate id(BasicBlock x, BasicBlock y) { x = y }
+  private predicate id(ExprParent x, ExprParent y) { x = y }
 
-  private predicate idOf(BasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
+  private predicate idOfAst(ExprParent x, int y) = equivalenceRelation(id/2)(x, y)
+
+  private predicate idOf(BasicBlock x, int y) { idOfAst(x.getAstNode(), y) }
 
   int getBlockId1(BasicBlock bb) { idOf(bb, result) }
 

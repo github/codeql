@@ -1,5 +1,6 @@
 load("@gazelle//:def.bzl", "gazelle")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load("@rules_python//python:defs.bzl", "py_binary")
 load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pkg_files")
 
 gazelle(

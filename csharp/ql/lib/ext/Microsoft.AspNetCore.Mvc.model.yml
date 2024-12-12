@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.AspNetCore.Mvc", "Controller", True, "View", "", "", "Argument[this].Property[Microsoft.AspNetCore.Mvc.Controller.ViewData].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "ReturnValue.Property[Microsoft.AspNetCore.Mvc.Controller.ViewData].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "value", "manual"]
+      - ["Microsoft.AspNetCore.Mvc", "Controller", True, "View", "", "", "Argument[this].Property[Microsoft.AspNetCore.Mvc.Controller.ViewBag]", "ReturnValue.Property[Microsoft.AspNetCore.Mvc.Controller.ViewData].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "value", "manual"]

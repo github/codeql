@@ -434,18 +434,48 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
 }
 
+/**
+ * Holds if `c` is an instantiation of a class template `templateClass`, or
+ * holds with `c = templateClass` if `c` is not an instantiation of any class
+ * template.
+ *
+ * This predicate is used instead of `Class.isConstructedFrom` (which only
+ * holds for template instantiations) in this file to allow for uniform
+ * treatment of non-templated classes and class template instantiations.
+ */
+private predicate isClassConstructedFrom(Class c, Class templateClass) {
+  c.isConstructedFrom(templateClass)
+  or
+  not c.isConstructedFrom(_) and c = templateClass
+}
+
+/**
+ * Holds if `f` is an instantiation of a function template `templateFunc`, or
+ * holds with `f = templateFunc` if `f` is not an instantiation of any function
+ * template.
+ *
+ * This predicate is used instead of `Function.isConstructedFrom` (which only
+ * holds for template instantiations) in this file to allow for uniform
+ * treatment of non-templated classes and class template instantiations.
+ */
+private predicate isFunctionConstructedFrom(Function f, Function templateFunc) {
+  f.isConstructedFrom(templateFunc)
+  or
+  not f.isConstructedFrom(_) and f = templateFunc
+}
+
 /** Gets the fully templated version of `f`. */
 private Function getFullyTemplatedFunction(Function f) {
   not f.isFromUninstantiatedTemplate(_) and
   (
     exists(Class c, Class templateClass, int i |
-      c.isConstructedFrom(templateClass) and
+      isClassConstructedFrom(c, templateClass) and
       f = c.getAMember(i) and
       result = templateClass.getCanonicalMember(i)
     )
     or
     not exists(f.getDeclaringType()) and
-    f.isConstructedFrom(result)
+    isFunctionConstructedFrom(f, result)
   )
 }
 
@@ -489,7 +519,7 @@ private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remain
 private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining) {
   // If there is a declaring type then we start by expanding the function templates
   exists(Class template |
-    f.getDeclaringType().isConstructedFrom(template) and
+    isClassConstructedFrom(f.getDeclaringType(), template) and
     remaining = template.getNumberOfTemplateArguments() and
     result = getTypeNameWithoutFunctionTemplates(f, n, 0)
   )
@@ -501,7 +531,7 @@ private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining
   or
   exists(string mid, TemplateParameter tp, Class template |
     mid = getTypeNameWithoutClassTemplates(f, n, remaining + 1) and
-    f.getDeclaringType().isConstructedFrom(template) and
+    isClassConstructedFrom(f.getDeclaringType(), template) and
     tp = template.getTemplateArgument(remaining) and
     result = mid.replaceAll(tp.getName(), "class:" + remaining.toString())
   )
@@ -743,6 +773,22 @@ private predicate elementSpecMatchesSignature(
 }
 
 /**
+ * Holds when `method` has name `nameWithoutArgs`, and gets the enclosing
+ * class of `method`. Unlike `method.getClassAndName` this predicate does
+ * not strip typedefs from the name when `method` is an `ConversionOperator`.
+ */
+bindingset[nameWithoutArgs]
+pragma[inline_late]
+private Class getClassAndNameImpl(Function method, string nameWithoutArgs) {
+  exists(string memberName | result = method.getClassAndName(memberName) |
+    nameWithoutArgs = "operator " + method.(ConversionOperator).getDestType()
+    or
+    not method instanceof ConversionOperator and
+    memberName = nameWithoutArgs
+  )
+}
+
+/**
  * Holds if `classWithMethod` has `method` named `name` (excluding any
  * template parameters).
  */
@@ -751,7 +797,7 @@ pragma[inline_late]
 private predicate hasClassAndName(Class classWithMethod, Function method, string name) {
   exists(string nameWithoutArgs |
     parseAngles(name, nameWithoutArgs, _, "") and
-    classWithMethod = method.getClassAndName(nameWithoutArgs)
+    classWithMethod = getClassAndNameImpl(method, nameWithoutArgs)
   )
 }
 

@@ -1,0 +1,30 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+                A template from a server templating engine such as Jinja constructed from user input can allow the user to execute arbitrary code using certain template features. It can also allow for cross-site scripting.
+        </p>
+    </overview>
+    <recommendation>
+        <p>
+            Ensure that an untrusted value is not used to directly construct a template. 
+            Jinja also provides <code>SandboxedEnvironment</code> that prohibits access to unsafe methods and attributes. This can be used if constructing a template from user input is absolutely necessary. 
+        </p>
+    </recommendation>
+    <example>
+        <p>In the following case, <code>template</code> is used to generate a Jinja2 template string. This can lead to remote code execution. </p>
+        <sample src="examples/JinjaBad.py" />
+
+        <p>The following is an example of a string that could be used to cause remote code execution when interpreted as a template:</p>
+        <sample src="examples/template_exploit.txt" />
+
+        <p>In the following case, user input is not used to construct the template. Instead, it is only used as the parameters to render the template, which is safe.</p>
+        <sample src="examples/JinjaGoodParam.py" />
+        
+        <p>In the following case, a <code>SandboxedEnvironment</code> is used, preventing remote code execution.</p>
+        <sample src="examples/JinjaGoodSandbox.py" />
+    </example>
+    <references>
+        <li>Portswigger: <a href="https://portswigger.net/web-security/server-side-template-injection">Server-Side Template Injection</a>.</li>
+    </references>
+</qhelp>

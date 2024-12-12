@@ -13,4 +13,6 @@ dependencies:
   codeql/ssa: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
+dataExtensions:
+  - /**/*.model.yml
 warnOnImplicitThis: true

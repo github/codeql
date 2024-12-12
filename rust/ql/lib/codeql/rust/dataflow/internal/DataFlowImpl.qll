@@ -597,7 +597,7 @@ private class VariantFieldContent extends VariantContent, TVariantFieldContent {
 }
 
 /** A canonical path pointing to a struct. */
-private class StructCanonicalPath extends MkStructCanonicalPath {
+class StructCanonicalPath extends MkStructCanonicalPath {
   CrateOriginOption crate;
   string path;
 
@@ -605,6 +605,8 @@ private class StructCanonicalPath extends MkStructCanonicalPath {
 
   /** Gets the underlying struct. */
   Struct getStruct() { hasExtendedCanonicalPath(result, crate, path) }
+
+  string getExtendedCanonicalPath() { result = path }
 
   string toString() { result = this.getStruct().getName().getText() }
 
@@ -1101,9 +1103,11 @@ import MakeImpl<Location, RustDataFlow>
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
+  private import codeql.rust.internal.CachedStages
+
   cached
   newtype TNode =
-    TExprNode(ExprCfgNode n) or
+    TExprNode(ExprCfgNode n) { Stages::DataFlowStage::ref() } or
     TSourceParameterNode(ParamBaseCfgNode p) or
     TPatNode(PatCfgNode p) or
     TExprPostUpdateNode(ExprCfgNode e) {

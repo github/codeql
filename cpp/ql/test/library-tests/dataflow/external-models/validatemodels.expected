@@ -1,8 +1,28 @@
+| Dubious member name "operator BSTR" in summary model. |
+| Dubious member name "operator HKEY" in summary model. |
+| Dubious member name "operator LPCSTR" in summary model. |
+| Dubious member name "operator LPSAFEARRAY" in summary model. |
+| Dubious member name "operator LPSTR" in summary model. |
+| Dubious member name "operator LPWSTR" in summary model. |
+| Dubious member name "operator PCXSTR" in summary model. |
+| Dubious member name "operator&" in summary model. |
 | Dubious member name "operator*" in summary model. |
+| Dubious member name "operator+=" in summary model. |
 | Dubious member name "operator->" in summary model. |
 | Dubious member name "operator=" in summary model. |
 | Dubious member name "operator[]" in summary model. |
+| Dubious signature "(CAtlFile &)" in summary model. |
+| Dubious signature "(CComBSTR &&)" in summary model. |
+| Dubious signature "(CRegKey &)" in summary model. |
+| Dubious signature "(DWORD &,LPCTSTR)" in summary model. |
 | Dubious signature "(InputIterator,InputIterator,const Allocator &)" in summary model. |
+| Dubious signature "(LPCTSTR,DWORD *,void *,ULONG *)" in summary model. |
+| Dubious signature "(LPTSTR,LPCTSTR,DWORD *)" in summary model. |
+| Dubious signature "(const CComBSTR &)" in summary model. |
+| Dubious signature "(const CComSafeArray &)" in summary model. |
+| Dubious signature "(const SAFEARRAY &)" in summary model. |
+| Dubious signature "(const SAFEARRAY *)" in summary model. |
+| Dubious signature "(const T &,BOOL)" in summary model. |
 | Dubious signature "(const deque &)" in summary model. |
 | Dubious signature "(const deque &,const Allocator &)" in summary model. |
 | Dubious signature "(const forward_list &)" in summary model. |
