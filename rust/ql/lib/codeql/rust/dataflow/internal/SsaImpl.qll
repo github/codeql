@@ -467,39 +467,6 @@ class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
   override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
 }
 
-/**
- * An SSA definition inserted at a call that may update the value of a captured
- * variable. For example, in
- *
- * ```rust
- * fn capture_mut() {
- *   let mut y = 0;
- *   (0..5).for_each(|x| {
- *     y += x
- *   });
- *   y
- * }
- * ```
- *
- * a definition for `y` is inserted at the call to `for_each`.
- */
-class CapturedCallDefinition extends Definition, Impl::UncertainWriteDefinition {
-  CapturedCallDefinition() {
-    exists(Variable v, BasicBlock bb, int i |
-      this.definesAt(v, bb, i) and
-      capturedCallWrite(_, bb, i, v)
-    )
-  }
-
-  /**
-   * Gets the immediately preceding definition. Since this update is uncertain,
-   * the value from the preceding definition might still be valid.
-   */
-  final Definition getPriorDefinition() { result = uncertainWriteDefinitionInput(this) }
-
-  override string toString() { result = "<captured exit> " + this.getSourceVariable() }
-}
-
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   class Expr extends CfgNodes::AstCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }

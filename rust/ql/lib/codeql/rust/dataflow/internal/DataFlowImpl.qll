@@ -289,7 +289,7 @@ module Node {
 
     override Location getLocation() { result = cfgScope.getLocation() }
 
-    override string toString() { result = "lambda self in " + cfgScope }
+    override string toString() { result = "closure self in " + cfgScope }
   }
 
   abstract class ArgumentNode extends Node {
