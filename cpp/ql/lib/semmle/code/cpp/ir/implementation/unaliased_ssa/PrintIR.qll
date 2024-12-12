@@ -422,21 +422,20 @@ private int getSuccessorIndex(IRBlock pred, IRBlock succ) {
  * has the given `value`.
  */
 query predicate edges(PrintableIRBlock pred, PrintableIRBlock succ, string key, string value) {
-  exists(EdgeKind kind, IRBlock predBlock, IRBlock succBlock |
+  exists(IRBlock predBlock, IRBlock succBlock |
     predBlock = pred.getBlock() and
     succBlock = succ.getBlock() and
-    predBlock.getSuccessor(kind) = succBlock and
     (
       key = "semmle.label" and
       exists(string kinds |
         kinds =
-          concat(EdgeKind k |
+          strictconcat(EdgeKind k |
             predBlock.getSuccessor(k) = succBlock
           |
             k.toString(), "|" order by k.toString()
           )
       |
-        if predBlock.getBackEdgeSuccessor(kind) = succBlock
+        if predBlock.getBackEdgeSuccessor(_) = succBlock
         then value = kinds + " (back edge)"
         else value = kinds
       )
