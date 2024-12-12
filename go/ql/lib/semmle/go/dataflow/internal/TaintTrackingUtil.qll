@@ -37,7 +37,8 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   or
   // Treat container flow as taint for the local taint flow relation
   exists(DataFlow::Content c | DataFlowPrivate::containerContent(c) |
-    DataFlowPrivate::readStep(src, c, sink) or
+    // `DataFlowPrivate::readStep` has already been included in
+    // `localAdditionalTaintStep`.
     DataFlowPrivate::storeStep(src, c, sink) or
     FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink, _) or
     FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink, _)
@@ -112,7 +113,7 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, str
     or
     sliceStep(pred, succ)
     or
-    // Treat container flow as taint for the local taint flow relation
+    // Treat container read steps as taint for global taint flow.
     exists(DataFlow::Content c | DataFlowPrivate::containerContent(c) |
       DataFlowPrivate::readStep(pred, c, succ)
     )
