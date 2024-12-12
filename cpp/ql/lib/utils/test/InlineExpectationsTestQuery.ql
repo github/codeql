@@ -2,9 +2,9 @@
  * @kind test-postprocess
  */
 
-private import python
+private import cpp
 private import codeql.util.test.InlineExpectationsTest as T
-private import utils.test.internal.InlineExpectationsTestImpl
+private import internal.InlineExpectationsTestImpl
 import T::TestPostProcessing
 import T::TestPostProcessing::Make<Impl, Input>
 
