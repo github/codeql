@@ -954,9 +954,18 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
       expr.(C11GenericExpr).getAssociationExpr(n) = ele and pred = "getAssociationExpr(" + n + ")"
     )
     or
-    expr.(Call).getQualifier() = ele and pred = "getQualifier()"
+    // OverloadedArrayExpr::getArrayBase/0 also considers qualifiers, and is already handled below.
+    not expr.(OverloadedArrayExpr).getArrayBase() = expr.(Call).getQualifier() and
+    expr.(Call).getQualifier() = ele and
+    pred = "getQualifier()"
     or
-    exists(int n | expr.(Call).getArgument(n) = ele and pred = "getArgument(" + n.toString() + ")")
+    // OverloadedArrayExpr::getArrayBase/0 and OverloadedArrayExpr::getArrayOffset/0 also consider arguments, and are already handled below.
+    exists(int n, Expr arg | expr.(Call).getArgument(n) = arg |
+      not expr.(OverloadedArrayExpr).getArrayBase() = arg and
+      not expr.(OverloadedArrayExpr).getArrayOffset() = arg and
+      arg = ele and
+      pred = "getArgument(" + n.toString() + ")"
+    )
     or
     expr.(ExprCall).getExpr() = ele and pred = "getExpr()"
     or
@@ -964,7 +973,7 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(OverloadedArrayExpr).getArrayOffset() = ele and pred = "getArrayOffset()"
     or
-    // OverloadedPointerDereferenceExpr::getExpr/0 also considers qualifiers, which are already handled above for all Call classes.
+    // OverloadedPointerDereferenceExpr::getExpr/0 also considers qualifiers, and is already handled above for all Call classes.
     not expr.(OverloadedPointerDereferenceExpr).getQualifier() =
       expr.(OverloadedPointerDereferenceExpr).getExpr() and
     expr.(OverloadedPointerDereferenceExpr).getExpr() = ele and
