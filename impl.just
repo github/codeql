@@ -6,7 +6,7 @@ set unstable
 set quiet
 
 _install LANGUAGE:
-    bazel run //{{ trim_end_match(LANGUAGE, '/') }}:install
+    cd {{ source_dir() }}; bazel run //{{ trim_end_match(LANGUAGE, '/') }}:install
 
 _build LANGUAGE:
     if [ -n "${SEMMLE_CODE:-}" ]; then \
