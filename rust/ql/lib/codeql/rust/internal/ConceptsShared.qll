@@ -30,7 +30,7 @@ module Cryptography {
   class PasswordHashingAlgorithm = CryptoAlgorithms::PasswordHashingAlgorithm;
 
   /**
-   * A data flow node that is an application of a cryptographic algorithm. For example,
+   * A data-flow node that is an application of a cryptographic algorithm. For example,
    * encryption, decryption, signature-validation.
    *
    * Extend this class to refine existing API models. If you want to model new APIs,
