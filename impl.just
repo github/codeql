@@ -9,7 +9,7 @@ _install LANGUAGE:
     bazel run //{{ trim_end_match(LANGUAGE, '/') }}:install
 
 _build LANGUAGE:
-    if [ -n ${SEMMLE_CODE:-} ]; then \
+    if [ -n "${SEMMLE_CODE:-}" ]; then \
       cd $SEMMLE_CODE; ./build target/intree/codeql-{{ LANGUAGE }}; \
     else \
       just install {{ LANGUAGE }}; \
@@ -43,18 +43,19 @@ test +ARGS:  # TODO: fuzzy test chooser when no arguments are provided!
         cwd=common_path).returncode
     sys.exit(ret)
 
-[no-cd]
+[no-cd, positional-arguments]
 _run_language_tests LANGUAGE *ARGS: (_build LANGUAGE)
-    if [ -n ${SEMMLE_CODE:-} ]; then \
-      $SEMMLE_CODE/target/intree/codeql-{{ LANGUAGE }}/codeql test run $ARGS; \
+    shift; \
+    if [ -n "${SEMMLE_CODE:-}" ]; then \
+      $SEMMLE_CODE/target/intree/codeql-{{ LANGUAGE }}/codeql test run "$@"; \
     else \
-      codeql --search-path={{ source_dir() }} test run $ARGS; \
+      codeql test run --search-path={{ source_dir() }} "$@"; \
     fi
 
-[no-cd]
+[no-cd, positional-arguments]
 _run_integration_tests *ARGS:
-    if [ -n ${SEMMLE_CODE:-} ]; then \
-      $SEMMLE_CODE/tools/pytest $ARGS; \
+    if [ -n "${SEMMLE_CODE:-}" ]; then \
+      $SEMMLE_CODE/tools/pytest "$@"; \
     else \
       echo "integration tests require running from an internal repository working copy" >&2; \
       exit 1; \
