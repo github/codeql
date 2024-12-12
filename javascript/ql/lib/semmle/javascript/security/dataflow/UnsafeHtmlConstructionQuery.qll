@@ -16,16 +16,16 @@ deprecated class Configration = Configuration;
  * A taint-tracking configuration for reasoning about unsafe HTML constructed from library input vulnerabilities.
  */
 module UnsafeHtmlConstructionConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  import semmle.javascript.security.CommonFlowState
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+  predicate isSource(DataFlow::Node source, FlowState state) {
     source instanceof Source and
-    label = [TaintedObject::label(), DataFlow::FlowLabel::taint(), DataFlow::FlowLabel::data()]
+    state = [FlowState::taintedObject(), FlowState::taint()]
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
+  predicate isSink(DataFlow::Node sink, FlowState state) {
     sink instanceof Sink and
-    label = DataFlow::FlowLabel::taint()
+    state = FlowState::taint()
   }
 
   predicate isBarrier(DataFlow::Node node) {
@@ -38,14 +38,14 @@ module UnsafeHtmlConstructionConfig implements DataFlow::StateConfigSig {
     node = Shared::BarrierGuard::getABarrierNode()
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
-    TaintTracking::defaultSanitizer(node) and label.isTaint()
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    TaintTracking::defaultSanitizer(node) and state.isTaint()
     or
-    node = DataFlow::MakeLabeledBarrierGuard<BarrierGuard>::getABarrierNode(label)
+    node = DataFlow::MakeStateBarrierGuard<FlowState, BarrierGuard>::getABarrierNode(state)
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::FlowLabel inlbl, DataFlow::Node succ, DataFlow::FlowLabel outlbl
+    DataFlow::Node pred, FlowState inlbl, DataFlow::Node succ, FlowState outlbl
   ) {
     // TODO: localFieldStep is too expensive with dataflow2
     // DataFlow::localFieldStep(pred, succ) and
@@ -53,12 +53,12 @@ module UnsafeHtmlConstructionConfig implements DataFlow::StateConfigSig {
     // outlbl.isTaint()
     none()
     or
-    TaintedObject::step(pred, succ, inlbl, outlbl)
+    TaintedObject::isAdditionalFlowStep(pred, inlbl, succ, outlbl)
     or
     // property read from a tainted object is considered tainted
     succ.(DataFlow::PropRead).getBase() = pred and
-    inlbl = TaintedObject::label() and
-    outlbl = DataFlow::FlowLabel::taint()
+    inlbl.isTaintedObject() and
+    outlbl.isTaint()
     or
     TaintTracking::defaultTaintStep(pred, succ) and
     inlbl.isTaint() and
