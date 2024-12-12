@@ -10,13 +10,8 @@ import 'build.just'
     fi
 
 [no-cd, positional-arguments, no-exit-message]
-@_integration_tests *ARGS:
-    if [ -n "${SEMMLE_CODE:-}" ]; then \
-      $SEMMLE_CODE/tools/pytest "$@"; \
-    else \
-      echo "integration tests require running from an internal repository working copy" >&2; \
-      exit 1; \
-    fi
+@_integration_tests *ARGS: (_require_semmle_code "integration tests")
+    $SEMMLE_CODE/tools/pytest "$@"
 
 [group('test'), no-cd, script:'python3', positional-arguments, no-exit-message]
 test +ARGS:  # TODO: fuzzy test chooser when no arguments are provided!
