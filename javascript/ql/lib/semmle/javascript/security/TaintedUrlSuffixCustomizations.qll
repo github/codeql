@@ -126,15 +126,23 @@ module TaintedUrlSuffix {
     )
   }
 
+  /** Holds if the `n`th child of `seq` contains a character indicating that everything thereafter is part of the suffix */
   private predicate containsSuffixIndicator(RegExpSequence seq, int n) {
     // Also include '=' as it usually only appears in the URL suffix
     seq.getChild(n).getAChild*().(RegExpConstant).getValue().regexpMatch(".*[?#=].*")
   }
 
+  /** Holds if the `n`th child of `seq` contains a capture group. */
   private predicate containsCaptureGroup(RegExpSequence seq, int n) {
     seq.getChild(n).getAChild*().(RegExpGroup).isCapture()
   }
 
+  /**
+   * Holds if `seq` contains a capture group that will likely match path of the URL suffix,
+   * thereby extracting tainted data.
+   *
+   * For example, `/#(.*)/.exec(url)` will extract the tainted URL suffix from `url`.
+   */
   private predicate captureAfterSuffixIndicator(RegExpSequence seq) {
     exists(int suffix, int capture |
       containsSuffixIndicator(seq, suffix) and
