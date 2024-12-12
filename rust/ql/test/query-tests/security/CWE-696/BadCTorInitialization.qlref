@@ -1,2 +1,2 @@
 query: queries/security/CWE-696/BadCtorInitialization.ql
-postprocess: utils/InlineExpectationsTestQuery.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
