@@ -1,5 +1,6 @@
 import lxml.etree as ET
 import io
+import typing
 
 def ensure_tainted(*args):
     print("ensure_tainted: ", *args)
@@ -133,6 +134,21 @@ def test():
         )
 
     func(tree2)
+
+    def func2(x):
+        return x 
+
+    def func3(x) -> ET.Element:
+        return x
+
+    ensure_tainted(
+        func2(tree), # $ tainted
+        func2(tree).text, # $ MISSING:tainted - type tracking not tracked through flow preserving calls
+        func3(tree).text, # $ MISSING:tainted - this includes if there is a type hint annotation on the return
+        typing.cast(ET.ElementTree, tree), # $ tainted
+        typing.cast(ET.ElementTree, tree).text, # $ MISSING:tainted - this includes for flow summary models
+
+    )
     
 
 test()
