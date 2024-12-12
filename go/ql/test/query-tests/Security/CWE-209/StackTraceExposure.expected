@@ -1,16 +1,29 @@
 edges
+| test.go:14:2:14:4 | definition of buf | test.go:15:8:15:37 | slice element node | provenance |  |
 | test.go:14:2:14:4 | definition of buf | test.go:17:10:17:12 | buf | provenance |  |
 | test.go:14:2:14:4 | definition of buf | test.go:20:29:20:31 | buf | provenance |  |
 | test.go:15:2:15:4 | definition of buf | test.go:17:10:17:12 | buf | provenance |  |
 | test.go:15:2:15:4 | definition of buf | test.go:20:29:20:31 | buf | provenance |  |
+| test.go:15:2:15:4 | definition of buf [array] | test.go:17:10:17:12 | buf | provenance |  |
+| test.go:15:2:15:4 | definition of buf [array] | test.go:20:29:20:31 | buf [array] | provenance |  |
+| test.go:15:8:15:37 | slice element node | test.go:15:8:15:37 | slice expression [array] | provenance |  |
+| test.go:15:8:15:37 | slice expression [array] | test.go:17:10:17:12 | buf | provenance |  |
+| test.go:15:8:15:37 | slice expression [array] | test.go:20:29:20:31 | buf [array] | provenance |  |
+| test.go:20:2:20:32 | []type{args} [array, array] | test.go:15:2:15:4 | definition of buf [array] | provenance |  |
 | test.go:20:2:20:32 | []type{args} [array] | test.go:15:2:15:4 | definition of buf | provenance |  |
 | test.go:20:29:20:31 | buf | test.go:20:2:20:32 | []type{args} [array] | provenance |  |
+| test.go:20:29:20:31 | buf [array] | test.go:20:2:20:32 | []type{args} [array, array] | provenance |  |
 nodes
 | test.go:14:2:14:4 | definition of buf | semmle.label | definition of buf |
 | test.go:15:2:15:4 | definition of buf | semmle.label | definition of buf |
+| test.go:15:2:15:4 | definition of buf [array] | semmle.label | definition of buf [array] |
+| test.go:15:8:15:37 | slice element node | semmle.label | slice element node |
+| test.go:15:8:15:37 | slice expression [array] | semmle.label | slice expression [array] |
 | test.go:17:10:17:12 | buf | semmle.label | buf |
+| test.go:20:2:20:32 | []type{args} [array, array] | semmle.label | []type{args} [array, array] |
 | test.go:20:2:20:32 | []type{args} [array] | semmle.label | []type{args} [array] |
 | test.go:20:29:20:31 | buf | semmle.label | buf |
+| test.go:20:29:20:31 | buf [array] | semmle.label | buf [array] |
 subpaths
 #select
 | test.go:17:10:17:12 | buf | test.go:14:2:14:4 | definition of buf | test.go:17:10:17:12 | buf | HTTP response depends on $@ and may be exposed to an external user. | test.go:14:2:14:4 | definition of buf | stack trace information |

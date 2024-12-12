@@ -98,13 +98,24 @@ class AdditionalTaintStep extends Unit {
  */
 predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, string model) {
   (
-    referenceStep(pred, succ) or
-    elementWriteStep(pred, succ) or
-    fieldReadStep(pred, succ) or
-    elementStep(pred, succ) or
-    tupleStep(pred, succ) or
-    stringConcatStep(pred, succ) or
+    referenceStep(pred, succ)
+    or
+    elementWriteStep(pred, succ)
+    or
+    fieldReadStep(pred, succ)
+    or
+    elementStep(pred, succ)
+    or
+    tupleStep(pred, succ)
+    or
+    stringConcatStep(pred, succ)
+    or
     sliceStep(pred, succ)
+    or
+    // Treat container flow as taint for the local taint flow relation
+    exists(DataFlow::Content c | DataFlowPrivate::containerContent(c) |
+      DataFlowPrivate::readStep(pred, c, succ)
+    )
   ) and
   model = ""
   or
