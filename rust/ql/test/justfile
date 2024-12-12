@@ -1,0 +1,5 @@
+#!/usr/bin/env just --justfile
+
+import '../../justfile'
+
+test *ARGS=".": (_run_language_tests "rust" ARGS)

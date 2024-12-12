@@ -1,0 +1,4 @@
+import '../justfile'
+
+install LANGUAGE='rust': (_install LANGUAGE)
+build LANGUAGE='rust': (_build LANGUAGE)
