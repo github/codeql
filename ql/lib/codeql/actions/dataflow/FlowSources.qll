@@ -19,50 +19,58 @@ abstract class RemoteFlowSource extends SourceNode {
   abstract string getSourceType();
 
   /** Gets the event that triggered the source. */
-  abstract Event getEvent();
+  abstract string getEventName();
 
   override string getThreatModel() { result = "remote" }
 }
 
+/**
+ * A data flow source of user input from github context.
+ * eg: github.head_ref
+ */
 class GitHubCtxSource extends RemoteFlowSource {
   string flag;
-  Event event;
+  string event;
+  GitHubExpression e;
 
   GitHubCtxSource() {
-    exists(Expression e, string context, string context_prefix |
-      this.asExpr() = e and
-      context = e.getExpression() and
-      event = e.getEnclosingWorkflow().getATriggerEvent() and
-      normalizeExpr(context) = "github.head_ref" and
-      contextTriggerDataModel(event.getName(), context_prefix) and
-      normalizeExpr(context).matches("%" + context_prefix + "%") and
-      flag = "branch"
+    this.asExpr() = e and
+    // github.head_ref
+    e.getFieldName() = "head_ref" and
+    flag = "branch" and
+    (
+      event = e.getATriggerEvent().getName() and
+      event = "pull_request_target"
+      or
+      not exists(e.getATriggerEvent()) and
+      event = "unknown"
     )
   }
 
   override string getSourceType() { result = flag }
 
-  override Event getEvent() { result = event }
+  override string getEventName() { result = event }
 }
 
 class GitHubEventCtxSource extends RemoteFlowSource {
   string flag;
   string context;
-  Event event;
+  string event;
 
   GitHubEventCtxSource() {
     exists(Expression e, string regexp |
       this.asExpr() = e and
       context = e.getExpression() and
-      event = e.getATriggerEvent() and
       (
         // the context is available for the job trigger events
+        event = e.getATriggerEvent().getName() and
         exists(string context_prefix |
-          contextTriggerDataModel(event.getName(), context_prefix) and
+          contextTriggerDataModel(event, context_prefix) and
           normalizeExpr(context).matches("%" + context_prefix + "%")
         )
         or
-        exists(e.getEnclosingCompositeAction())
+        not exists(e.getATriggerEvent()) and
+        event = "unknown"
       ) and
       untrustedEventPropertiesDataModel(regexp, flag) and
       not flag = "json" and
@@ -74,7 +82,7 @@ class GitHubEventCtxSource extends RemoteFlowSource {
 
   string getContext() { result = context }
 
-  override Event getEvent() { result = event }
+  override string getEventName() { result = event }
 }
 
 abstract class CommandSource extends RemoteFlowSource {
@@ -82,7 +90,7 @@ abstract class CommandSource extends RemoteFlowSource {
 
   abstract Run getEnclosingRun();
 
-  override Event getEvent() { result = this.getEnclosingRun().getATriggerEvent() }
+  override string getEventName() { result = this.getEnclosingRun().getATriggerEvent().getName() }
 }
 
 class GitCommandSource extends RemoteFlowSource, CommandSource {
@@ -92,28 +100,7 @@ class GitCommandSource extends RemoteFlowSource, CommandSource {
 
   GitCommandSource() {
     exists(Step checkout, string cmd_regex |
-      // This should be:
-      // source instanceof PRHeadCheckoutStep
-      // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
-      // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
-      // instead of using  ActionsMutableRefCheckout and ActionsSHACheckout
-      (
-        exists(Uses uses |
-          checkout = uses and
-          uses.getCallee() = "actions/checkout" and
-          exists(uses.getArgument("ref")) and
-          not uses.getArgument("ref").matches("%base%") and
-          uses.getATriggerEvent().getName() = checkoutTriggers()
-        )
-        or
-        checkout instanceof GitMutableRefCheckout
-        or
-        checkout instanceof GitSHACheckout
-        or
-        checkout instanceof GhMutableRefCheckout
-        or
-        checkout instanceof GhSHACheckout
-      ) and
+      checkout instanceof SimplePRHeadCheckoutStep and
       this.asExpr() = run.getScript() and
       checkout.getAFollowingStep() = run and
       run.getScript().getAStmt() = cmd and
@@ -193,26 +180,30 @@ class GitHubEventPathSource extends RemoteFlowSource, CommandSource {
 
 class GitHubEventJsonSource extends RemoteFlowSource {
   string flag;
-  Event event;
+  string event;
 
   GitHubEventJsonSource() {
     exists(Expression e, string context, string regexp |
       this.asExpr() = e and
       context = e.getExpression() and
-      event = e.getEnclosingWorkflow().getATriggerEvent() and
       untrustedEventPropertiesDataModel(regexp, _) and
       (
         // only contexts for the triggering events are considered tainted.
         // eg: for `pull_request`, we only consider `github.event.pull_request`
+        event = e.getEnclosingWorkflow().getATriggerEvent().getName() and
         exists(string context_prefix |
-          contextTriggerDataModel(event.getName(), context_prefix) and
+          contextTriggerDataModel(event, context_prefix) and
           normalizeExpr(context).matches("%" + context_prefix + "%")
         ) and
         normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp(regexp) + ".*")
         or
-        // github.event is taintes for all triggers
+        // github.event is tainted for all triggers
+        event = e.getEnclosingWorkflow().getATriggerEvent().getName() and
         contextTriggerDataModel(e.getEnclosingWorkflow().getATriggerEvent().getName(), _) and
         normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp("\\bgithub.event\\b") + ".*")
+        or
+        not exists(e.getATriggerEvent()) and
+        event = "unknown"
       ) and
       flag = "json"
     )
@@ -220,7 +211,7 @@ class GitHubEventJsonSource extends RemoteFlowSource {
 
   override string getSourceType() { result = flag }
 
-  override Event getEvent() { result = event }
+  override string getEventName() { result = event }
 }
 
 /**
@@ -233,7 +224,7 @@ class MaDSource extends RemoteFlowSource {
 
   override string getSourceType() { result = sourceType }
 
-  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
+  override string getEventName() { result = this.asExpr().getATriggerEvent().getName() }
 }
 
 abstract class FileSource extends RemoteFlowSource { }
@@ -246,42 +237,18 @@ class ArtifactSource extends RemoteFlowSource, FileSource {
 
   override string getSourceType() { result = "artifact" }
 
-  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
+  override string getEventName() { result = this.asExpr().getATriggerEvent().getName() }
 }
 
 /**
  * A file from an untrusted checkout.
  */
 private class CheckoutSource extends RemoteFlowSource, FileSource {
-  Event event;
-
-  CheckoutSource() {
-    // This should be:
-    // source instanceof PRHeadCheckoutStep
-    // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
-    // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
-    // instead of using  ActionsMutableRefCheckout and ActionsSHACheckout
-    exists(Uses uses |
-      this.asExpr() = uses and
-      uses.getCallee() = "actions/checkout" and
-      exists(uses.getArgument("ref")) and
-      not uses.getArgument("ref").matches("%base%") and
-      event = uses.getATriggerEvent() and
-      event.getName() = checkoutTriggers()
-    )
-    or
-    this.asExpr() instanceof GitMutableRefCheckout
-    or
-    this.asExpr() instanceof GitSHACheckout
-    or
-    this.asExpr() instanceof GhMutableRefCheckout
-    or
-    this.asExpr() instanceof GhSHACheckout
-  }
+  CheckoutSource() { this.asExpr() instanceof SimplePRHeadCheckoutStep }
 
   override string getSourceType() { result = "artifact" }
 
-  override Event getEvent() { result = event }
+  override string getEventName() { result = this.asExpr().getATriggerEvent().getName() }
 }
 
 /**
@@ -298,7 +265,7 @@ class DornyPathsFilterSource extends RemoteFlowSource {
 
   override string getSourceType() { result = "filename" }
 
-  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
+  override string getEventName() { result = this.asExpr().getATriggerEvent().getName() }
 }
 
 /**
@@ -321,7 +288,7 @@ class TJActionsChangedFilesSource extends RemoteFlowSource {
 
   override string getSourceType() { result = "filename" }
 
-  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
+  override string getEventName() { result = this.asExpr().getATriggerEvent().getName() }
 }
 
 /**
@@ -344,7 +311,7 @@ class TJActionsVerifyChangedFilesSource extends RemoteFlowSource {
 
   override string getSourceType() { result = "filename" }
 
-  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
+  override string getEventName() { result = this.asExpr().getATriggerEvent().getName() }
 }
 
 class Xt0rtedSlashCommandSource extends RemoteFlowSource {
@@ -358,7 +325,7 @@ class Xt0rtedSlashCommandSource extends RemoteFlowSource {
 
   override string getSourceType() { result = "text" }
 
-  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
+  override string getEventName() { result = this.asExpr().getATriggerEvent().getName() }
 }
 
 class ZenteredIssueFormBodyParserSource extends RemoteFlowSource {
@@ -372,7 +339,7 @@ class ZenteredIssueFormBodyParserSource extends RemoteFlowSource {
 
   override string getSourceType() { result = "text" }
 
-  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
+  override string getEventName() { result = this.asExpr().getATriggerEvent().getName() }
 }
 
 class OctokitRequestActionSource extends RemoteFlowSource {
@@ -395,5 +362,5 @@ class OctokitRequestActionSource extends RemoteFlowSource {
 
   override string getSourceType() { result = "text" }
 
-  override Event getEvent() { result = this.asExpr().getATriggerEvent() }
+  override string getEventName() { result = this.asExpr().getATriggerEvent().getName() }
 }

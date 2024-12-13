@@ -57,3 +57,4 @@ jobs:
           echo "BENCHEOF" >> $GITHUB_OUTPUT
         shell: bash
       - run: python2.7 foo.py
+      - run: pip install --no-deps .

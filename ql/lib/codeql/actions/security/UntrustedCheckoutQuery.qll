@@ -15,8 +15,6 @@ private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     (
       // remote flow sources
-      source instanceof ArtifactSource
-      or
       source instanceof GitHubCtxSource
       or
       source instanceof GitHubEventCtxSource
@@ -193,6 +191,31 @@ predicate containsHeadRef(string s) {
   )
 }
 
+class SimplePRHeadCheckoutStep extends Step {
+  SimplePRHeadCheckoutStep() {
+    // This should be:
+    // artifact instanceof PRHeadCheckoutStep
+    // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
+    // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
+    // instead of using ActionsMutableRefCheckout and ActionsSHACheckout
+    exists(Uses uses |
+      this = uses and
+      uses.getCallee() = "actions/checkout" and
+      exists(uses.getArgument("ref")) and
+      not uses.getArgument("ref").matches("%base%") and
+      uses.getATriggerEvent().getName() = checkoutTriggers()
+    )
+    or
+    this instanceof GitMutableRefCheckout
+    or
+    this instanceof GitSHACheckout
+    or
+    this instanceof GhMutableRefCheckout
+    or
+    this instanceof GhSHACheckout
+  }
+}
+
 /** Checkout of a Pull Request HEAD */
 abstract class PRHeadCheckoutStep extends Step {
   abstract string getPath();
@@ -220,10 +243,15 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
       exists(string value, Expression expr |
         value.regexpMatch(".*(head|branch|ref).*") and expr = this.getArgumentExpr("ref")
       |
-        expr.(StepsExpression).getStepId() = value or
-        expr.(SimpleReferenceExpression).getFieldName() = value or
-        expr.(NeedsExpression).getNeededJobId() = value or
-        expr.(JsonReferenceExpression).getAccessPath() = value or
+        expr.(StepsExpression).getStepId() = value
+        or
+        expr.(SimpleReferenceExpression).getFieldName() = value and
+        not expr instanceof GitHubExpression
+        or
+        expr.(NeedsExpression).getNeededJobId() = value
+        or
+        expr.(JsonReferenceExpression).getAccessPath() = value
+        or
         expr.(JsonReferenceExpression).getInnerExpression() = value
       )
     )
@@ -250,10 +278,15 @@ class ActionsSHACheckout extends SHACheckoutStep instanceof UsesStep {
       exists(string value, Expression expr |
         value.regexpMatch(".*(head|sha|commit).*") and expr = this.getArgumentExpr("ref")
       |
-        expr.(StepsExpression).getStepId() = value or
-        expr.(SimpleReferenceExpression).getFieldName() = value or
-        expr.(NeedsExpression).getNeededJobId() = value or
-        expr.(JsonReferenceExpression).getAccessPath() = value or
+        expr.(StepsExpression).getStepId() = value
+        or
+        expr.(SimpleReferenceExpression).getFieldName() = value and
+        not expr instanceof GitHubExpression
+        or
+        expr.(NeedsExpression).getNeededJobId() = value
+        or
+        expr.(JsonReferenceExpression).getAccessPath() = value
+        or
         expr.(JsonReferenceExpression).getInnerExpression() = value
       )
     )

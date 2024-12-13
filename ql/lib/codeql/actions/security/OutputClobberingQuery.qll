@@ -20,26 +20,7 @@ class OutputClobberingFromFileReadSink extends OutputClobberingSink {
       (
         step instanceof UntrustedArtifactDownloadStep
         or
-        // This should be:
-        // artifact instanceof PRHeadCheckoutStep
-        // but PRHeadCheckoutStep uses Taint Tracking anc causes a non-Monolitic Recursion error
-        // so we list all the subclasses of PRHeadCheckoutStep here and use actions/checkout as a workaround
-        // instead of using  ActionsMutableRefCheckout and ActionsSHACheckout
-        exists(Uses uses |
-          step = uses and
-          uses.getCallee() = "actions/checkout" and
-          exists(uses.getArgument("ref")) and
-          not uses.getArgument("ref").matches("%base%") and
-          uses.getATriggerEvent().getName() = checkoutTriggers()
-        )
-        or
-        step instanceof GitMutableRefCheckout
-        or
-        step instanceof GitSHACheckout
-        or
-        step instanceof GhMutableRefCheckout
-        or
-        step instanceof GhSHACheckout
+        step instanceof SimplePRHeadCheckoutStep
       ) and
       step.getAFollowingStep() = run and
       this.asExpr() = run.getScript() and

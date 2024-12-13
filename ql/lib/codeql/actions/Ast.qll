@@ -379,6 +379,8 @@ class JsonReferenceExpression extends AstNode instanceof JsonReferenceExpression
   string getInnerExpression() { result = super.getInnerExpression() }
 }
 
+class GitHubExpression extends SimpleReferenceExpression instanceof GitHubExpressionImpl { }
+
 class SecretsExpression extends SimpleReferenceExpression instanceof SecretsExpressionImpl { }
 
 class StepsExpression extends SimpleReferenceExpression instanceof StepsExpressionImpl {
