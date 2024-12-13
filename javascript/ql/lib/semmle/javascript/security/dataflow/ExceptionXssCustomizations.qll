@@ -55,6 +55,7 @@ module ExceptionXss {
      */
     FlowState getAFlowState() { result = FlowState::thrown() }
 
+    /** DEPRECATED. Use `getAFlowState()` instead. */
     deprecated DataFlow::FlowLabel getAFlowLabel() { result = this.getAFlowState().toFlowLabel() }
 
     /**
