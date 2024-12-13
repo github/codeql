@@ -32,3 +32,9 @@ predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nod
  */
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
+
+/**
+ * Holds if the additional step from `src` to `sink` should be considered in
+ * speculative taint flow exploration.
+ */
+predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) { none() }
