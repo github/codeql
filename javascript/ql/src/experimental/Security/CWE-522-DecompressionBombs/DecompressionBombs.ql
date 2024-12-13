@@ -19,9 +19,9 @@ module DecompressionBombConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionBomb::Sink }
 
-  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(DecompressionBomb::AdditionalTaintStep addstep |
-      addstep.isAdditionalTaintStep(pred, succ)
+      addstep.isAdditionalTaintStep(node1, node2)
     )
   }
 }

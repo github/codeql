@@ -19,9 +19,11 @@ private import HardcodedDataInterpretedAsCodeCustomizations::HardcodedDataInterp
 module HardcodedDataInterpretedAsCodeConfig implements DataFlow::StateConfigSig {
   class FlowState = HardcodedDataInterpretedAsCode::FlowState;
 
-  predicate isSource(DataFlow::Node source, FlowState lbl) { source.(Source).getAFlowState() = lbl }
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source.(Source).getAFlowState() = state
+  }
 
-  predicate isSink(DataFlow::Node nd, FlowState lbl) { nd.(Sink).getAFlowState() = lbl }
+  predicate isSink(DataFlow::Node nd, FlowState state) { nd.(Sink).getAFlowState() = state }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 

@@ -146,12 +146,12 @@ module ExceptionXssConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node pred, FlowState inlbl, DataFlow::Node succ, FlowState outlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    inlbl = FlowState::notYetThrown() and
-    outlbl = [FlowState::thrown(), FlowState::notYetThrown()] and
-    canThrowSensitiveInformation(pred) and
-    succ = getExceptionTarget(pred)
+    state1 = FlowState::notYetThrown() and
+    state2 = [FlowState::thrown(), FlowState::notYetThrown()] and
+    canThrowSensitiveInformation(node1) and
+    node2 = getExceptionTarget(node1)
   }
 }
 

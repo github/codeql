@@ -35,15 +35,15 @@ module TemplateObjectInjectionConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node src, FlowState inlbl, DataFlow::Node trg, FlowState outlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    TaintedObject::isAdditionalFlowStep(src, inlbl, trg, outlbl)
+    TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
     or
     // We're not using a taint-tracking config because taint steps would then apply to all flow states.
     // So we use a plain data flow config and manually add the default taint steps.
-    inlbl.isTaint() and
-    TaintTracking::defaultTaintStep(src, trg) and
-    inlbl = outlbl
+    state1.isTaint() and
+    TaintTracking::defaultTaintStep(node1, node2) and
+    state1 = state2
   }
 }
 

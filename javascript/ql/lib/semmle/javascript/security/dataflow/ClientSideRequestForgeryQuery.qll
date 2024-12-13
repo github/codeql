@@ -28,8 +28,8 @@ module ClientSideRequestForgeryConfig implements DataFlow::ConfigSig {
 
   predicate isBarrierOut(DataFlow::Node node) { sanitizingPrefixEdge(node, _) }
 
-  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    isAdditionalRequestForgeryStep(pred, succ)
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    isAdditionalRequestForgeryStep(node1, node2)
   }
 }
 

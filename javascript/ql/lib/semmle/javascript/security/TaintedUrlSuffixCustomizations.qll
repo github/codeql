@@ -66,11 +66,11 @@ module TaintedUrlSuffix {
   }
 
   /**
-   * Holds if there is a flow step `src -> dst` involving the URL suffix flow state.
+   * Holds if there is a flow step `node1 -> node2` involving the URL suffix flow state.
    *
    * This handles steps through string operations, promises, URL parsers, and URL accessors.
    */
-  predicate isAdditionalFlowStep(Node src, FlowState srclbl, Node dst, FlowState dstlbl) {
+  predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
     // Transition from tainted-url-suffix to general taint when entering the second array element
     // of a split('#') or split('?') array.
     //
@@ -79,17 +79,17 @@ module TaintedUrlSuffix {
     // Technically we should also preverse tainted-url-suffix when entering the first array element of such
     // a split, but this mostly leads to FPs since we currently don't track if the taint has been through URI-decoding.
     // (The query/fragment parts are often URI-decoded in practice, but not the other URL parts are not)
-    srclbl.isTaintedUrlSuffix() and
-    dstlbl.isTaint() and
-    DataFlowPrivate::optionalStep(src, "split-url-suffix-post", dst)
+    state1.isTaintedUrlSuffix() and
+    state2.isTaint() and
+    DataFlowPrivate::optionalStep(node1, "split-url-suffix-post", node2)
     or
     // Transition from URL suffix to full taint when extracting the query/fragment part.
-    srclbl.isTaintedUrlSuffix() and
-    dstlbl.isTaint() and
+    state1.isTaintedUrlSuffix() and
+    state2.isTaint() and
     (
       exists(MethodCallNode call, string name |
-        src = call.getReceiver() and
-        dst = call and
+        node1 = call.getReceiver() and
+        node2 = call and
         name = call.getMethodName()
       |
         // Substring that is not a prefix
@@ -118,8 +118,8 @@ module TaintedUrlSuffix {
       )
       or
       exists(PropRead read |
-        src = read.getBase() and
-        dst = read and
+        node1 = read.getBase() and
+        node2 = read and
         // Unlike the `search` property, the `query` property from `url.parse` does not include the `?`.
         read.getPropertyName() = "query"
       )
@@ -127,13 +127,13 @@ module TaintedUrlSuffix {
       exists(MethodCallNode call, DataFlow::RegExpCreationNode re |
         (
           call = re.getAMethodCall("exec") and
-          src = call.getArgument(0) and
-          dst = call
+          node1 = call.getArgument(0) and
+          node2 = call
           or
           call.getMethodName() = ["match", "matchAll"] and
           re.flowsTo(call.getArgument(0)) and
-          src = call.getReceiver() and
-          dst = call
+          node1 = call.getReceiver() and
+          node2 = call
         )
       |
         captureAfterSuffixIndicator(re.getRoot().getAChild*())

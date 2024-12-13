@@ -20,15 +20,15 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(LdapJS::TaintPreservingLdapFilterStep filter |
-      pred = filter.getInput() and
-      succ = filter.getOutput()
+      node1 = filter.getInput() and
+      node2 = filter.getOutput()
     )
     or
     exists(HtmlSanitizerCall call |
-      pred = call.getInput() and
-      succ = call
+      node1 = call.getInput() and
+      node2 = call
     )
   }
 }

@@ -20,9 +20,9 @@ module ConditionalBypassConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dst) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // comparing a tainted expression against a constant gives a tainted result
-    dst.asExpr().(Comparison).hasOperands(src.asExpr(), any(ConstantExpr c))
+    node2.asExpr().(Comparison).hasOperands(node1.asExpr(), any(ConstantExpr c))
   }
 }
 

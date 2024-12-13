@@ -26,9 +26,9 @@ module XssThroughDomConfig implements DataFlow::ConfigSig {
     node = Shared::BarrierGuard::getABarrierNode()
   }
 
-  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    succ = DataFlow::globalVarRef("URL").getAMemberCall("createObjectURL") and
-    pred = succ.(DataFlow::InvokeNode).getArgument(0)
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node2 = DataFlow::globalVarRef("URL").getAMemberCall("createObjectURL") and
+    node1 = node2.(DataFlow::InvokeNode).getArgument(0)
   }
 }
 

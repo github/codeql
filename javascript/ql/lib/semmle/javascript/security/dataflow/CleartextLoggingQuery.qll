@@ -32,8 +32,8 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
     isSource(node)
   }
 
-  predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
-    CleartextLogging::isAdditionalTaintStep(src, trg)
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    CleartextLogging::isAdditionalTaintStep(node1, node2)
   }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet contents) {

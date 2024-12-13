@@ -45,7 +45,7 @@ module UnsafeHtmlConstructionConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node pred, FlowState inlbl, DataFlow::Node succ, FlowState outlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
     // TODO: localFieldStep is too expensive with dataflow2
     // DataFlow::localFieldStep(pred, succ) and
@@ -53,16 +53,16 @@ module UnsafeHtmlConstructionConfig implements DataFlow::StateConfigSig {
     // outlbl.isTaint()
     none()
     or
-    TaintedObject::isAdditionalFlowStep(pred, inlbl, succ, outlbl)
+    TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
     or
     // property read from a tainted object is considered tainted
-    succ.(DataFlow::PropRead).getBase() = pred and
-    inlbl.isTaintedObject() and
-    outlbl.isTaint()
+    node2.(DataFlow::PropRead).getBase() = node1 and
+    state1.isTaintedObject() and
+    state2.isTaint()
     or
-    TaintTracking::defaultTaintStep(pred, succ) and
-    inlbl.isTaint() and
-    outlbl = inlbl
+    TaintTracking::defaultTaintStep(node1, node2) and
+    state1.isTaint() and
+    state2 = state1
   }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }

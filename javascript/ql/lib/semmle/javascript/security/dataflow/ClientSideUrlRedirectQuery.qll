@@ -41,7 +41,7 @@ module ClientSideUrlRedirectConfig implements DataFlow::StateConfigSig {
 
   predicate isBarrierOut(DataFlow::Node node) { hostnameSanitizingPrefixEdge(node, _) }
 
-  predicate isBarrierOut(DataFlow::Node node, FlowState label) { isSink(node, label) }
+  predicate isBarrierOut(DataFlow::Node node, FlowState state) { isSink(node, state) }
 
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2

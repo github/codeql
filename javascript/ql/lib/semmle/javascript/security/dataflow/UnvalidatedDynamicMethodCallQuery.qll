@@ -30,19 +30,19 @@ deprecated private class ConcreteMaybeFromProto extends MaybeFromProto {
 module UnvalidatedDynamicMethodCallConfig implements DataFlow::StateConfigSig {
   class FlowState = UnvalidatedDynamicMethodCall::FlowState;
 
-  predicate isSource(DataFlow::Node source, FlowState label) {
-    source.(Source).getAFlowState() = label
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source.(Source).getAFlowState() = state
   }
 
-  predicate isSink(DataFlow::Node sink, FlowState label) { sink.(Sink).getAFlowState() = label }
+  predicate isSink(DataFlow::Node sink, FlowState state) { sink.(Sink).getAFlowState() = state }
 
-  predicate isBarrier(DataFlow::Node node, FlowState label) {
-    node.(Sanitizer).getAFlowState() = label
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    node.(Sanitizer).getAFlowState() = state
     or
     TaintTracking::defaultSanitizer(node) and
-    label = FlowState::taint()
+    state = FlowState::taint()
     or
-    node = DataFlow::MakeStateBarrierGuard<FlowState, BarrierGuard>::getABarrierNode(label)
+    node = DataFlow::MakeStateBarrierGuard<FlowState, BarrierGuard>::getABarrierNode(state)
   }
 
   predicate isBarrier(DataFlow::Node node) {
@@ -50,33 +50,33 @@ module UnvalidatedDynamicMethodCallConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node src, FlowState srclabel, DataFlow::Node dst, FlowState dstlabel
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
     exists(DataFlow::PropRead read |
-      src = read.getPropertyNameExpr().flow() and
-      dst = read and
-      srclabel = FlowState::taint() and
+      node1 = read.getPropertyNameExpr().flow() and
+      node2 = read and
+      state1 = FlowState::taint() and
       (
-        dstlabel = FlowState::maybeNonFunction()
+        state2 = FlowState::maybeNonFunction()
         or
         // a property of `Object.create(null)` cannot come from a prototype
         not PropertyInjection::isPrototypeLessObject(read.getBase().getALocalSource()) and
-        dstlabel = FlowState::maybeFromProto()
+        state2 = FlowState::maybeFromProto()
       ) and
       // avoid overlapping results with unsafe dynamic method access query
       not PropertyInjection::hasUnsafeMethods(read.getBase().getALocalSource())
     )
     or
     exists(DataFlow::SourceNode base, DataFlow::CallNode get | get = base.getAMethodCall("get") |
-      src = get.getArgument(0) and
-      dst = get
+      node1 = get.getArgument(0) and
+      node2 = get
     ) and
-    srclabel = FlowState::taint() and
-    dstlabel = FlowState::maybeNonFunction()
+    state1 = FlowState::taint() and
+    state2 = FlowState::maybeNonFunction()
     or
-    srclabel = FlowState::taint() and
-    TaintTracking::defaultTaintStep(src, dst) and
-    srclabel = dstlabel
+    state1 = FlowState::taint() and
+    TaintTracking::defaultTaintStep(node1, node2) and
+    state1 = state2
   }
 }
 

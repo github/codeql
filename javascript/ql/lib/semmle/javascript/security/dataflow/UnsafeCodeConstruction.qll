@@ -26,9 +26,9 @@ module UnsafeCodeConstruction {
 
     predicate isBarrier(DataFlow::Node node) { node instanceof CodeInjection::Sanitizer }
 
-    predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       // HTML sanitizers are insufficient protection against code injection
-      src = trg.(HtmlSanitizerCall).getInput()
+      node1 = node2.(HtmlSanitizerCall).getInput()
       or
       none()
       // TODO: localFieldStep is too expensive with dataflow2

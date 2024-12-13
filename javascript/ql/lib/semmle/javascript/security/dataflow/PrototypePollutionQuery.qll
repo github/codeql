@@ -32,9 +32,9 @@ module PrototypePollutionConfig implements DataFlow::StateConfigSig {
   predicate isSink(DataFlow::Node node, FlowState state) { node.(Sink).getAFlowState() = state }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node src, FlowState inlbl, DataFlow::Node dst, FlowState outlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    TaintedObject::isAdditionalFlowStep(src, inlbl, dst, outlbl)
+    TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
   }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet contents) {

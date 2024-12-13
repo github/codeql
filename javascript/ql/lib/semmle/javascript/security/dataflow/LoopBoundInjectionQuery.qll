@@ -34,9 +34,9 @@ module LoopBoundInjectionConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node src, FlowState inlbl, DataFlow::Node trg, FlowState outlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    TaintedObject::isAdditionalFlowStep(src, inlbl, trg, outlbl)
+    TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
   }
 }
 

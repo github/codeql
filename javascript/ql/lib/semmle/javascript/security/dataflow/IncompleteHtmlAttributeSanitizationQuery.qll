@@ -29,16 +29,16 @@ deprecated private module Label {
 module IncompleteHtmlAttributeSanitizationConfig implements DataFlow::StateConfigSig {
   class FlowState = IncompleteHtmlAttributeSanitization::FlowState;
 
-  predicate isSource(DataFlow::Node source, FlowState label) {
-    label = FlowState::character(source.(Source).getAnUnsanitizedCharacter())
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    state = FlowState::character(source.(Source).getAnUnsanitizedCharacter())
   }
 
-  predicate isSink(DataFlow::Node sink, FlowState label) {
-    label = FlowState::character(sink.(Sink).getADangerousCharacter())
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    state = FlowState::character(sink.(Sink).getADangerousCharacter())
   }
 
-  predicate isBarrier(DataFlow::Node node, FlowState lbl) {
-    lbl = FlowState::character(node.(StringReplaceCall).getAReplacedString())
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    state = FlowState::character(node.(StringReplaceCall).getAReplacedString())
   }
 
   predicate isBarrier(DataFlow::Node n) { n instanceof Sanitizer }

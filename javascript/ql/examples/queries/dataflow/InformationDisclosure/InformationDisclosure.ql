@@ -37,16 +37,16 @@ module AuthKeyTrackingConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // Step into objects: x -> { f: x }
-    succ.(DataFlow::SourceNode).getAPropertyWrite().getRhs() = pred
+    node2.(DataFlow::SourceNode).getAPropertyWrite().getRhs() = node1
     or
     // Step through JSON serialization: x -> JSON.stringify(x)
     // Note: TaintTracking::Configuration includes this step by default, but not DataFlow::Configuration
     exists(DataFlow::CallNode call |
       call = DataFlow::globalVarRef("JSON").getAMethodCall("stringify") and
-      pred = call.getArgument(0) and
-      succ = call
+      node1 = call.getArgument(0) and
+      node2 = call
     )
   }
 }

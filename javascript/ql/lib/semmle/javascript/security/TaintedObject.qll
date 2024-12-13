@@ -36,42 +36,42 @@ module TaintedObject {
   /**
    * Holds for the flows steps that are relevant for tracking user-controlled JSON objects.
    */
-  predicate isAdditionalFlowStep(Node src, FlowState inlbl, Node trg, FlowState outlbl) {
+  predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
     // JSON parsers map tainted inputs to tainted JSON
-    inlbl.isTaint() and
-    outlbl.isTaintedObject() and
+    state1.isTaint() and
+    state2.isTaintedObject() and
     exists(JsonParserCall parse |
-      src = parse.getInput() and
-      trg = parse.getOutput()
+      node1 = parse.getInput() and
+      node2 = parse.getOutput()
     )
     or
     // Property reads preserve deep object taint.
-    inlbl.isTaintedObject() and
-    outlbl.isTaintedObject() and
-    trg.(PropRead).getBase() = src
+    state1.isTaintedObject() and
+    state2.isTaintedObject() and
+    node2.(PropRead).getBase() = node1
     or
     // Property projection preserves deep object taint
-    inlbl.isTaintedObject() and
-    outlbl.isTaintedObject() and
-    trg.(PropertyProjection).getObject() = src
+    state1.isTaintedObject() and
+    state2.isTaintedObject() and
+    node2.(PropertyProjection).getObject() = node1
     or
     // Extending objects preserves deep object taint
-    inlbl.isTaintedObject() and
-    outlbl.isTaintedObject() and
+    state1.isTaintedObject() and
+    state2.isTaintedObject() and
     exists(ExtendCall call |
-      src = call.getAnOperand() and
-      trg = call
+      node1 = call.getAnOperand() and
+      node2 = call
       or
-      src = call.getASourceOperand() and
-      trg = call.getDestinationOperand().getALocalSource()
+      node1 = call.getASourceOperand() and
+      node2 = call.getDestinationOperand().getALocalSource()
     )
     or
     // Spreading into an object preserves deep object taint: `p -> { ...p }`
-    inlbl.isTaintedObject() and
-    outlbl.isTaintedObject() and
+    state1.isTaintedObject() and
+    state2.isTaintedObject() and
     exists(ObjectLiteralNode obj |
-      src = obj.getASpreadProperty() and
-      trg = obj
+      node1 = obj.getASpreadProperty() and
+      node2 = obj
     )
   }
 
@@ -96,8 +96,8 @@ module TaintedObject {
     /** Holds if this node blocks flow through `e`, provided it evaluates to `outcome`. */
     predicate blocksExpr(boolean outcome, Expr e) { none() }
 
-    /** Holds if this node blocks flow of `label` through `e`, provided it evaluates to `outcome`. */
-    predicate blocksExpr(boolean outcome, Expr e, FlowState label) { none() }
+    /** Holds if this node blocks flow of `state` through `e`, provided it evaluates to `outcome`. */
+    predicate blocksExpr(boolean outcome, Expr e, FlowState state) { none() }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {

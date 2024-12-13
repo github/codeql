@@ -65,27 +65,27 @@ module CodeInjectionConfig implements DataFlow::StateConfigSig {
     }
   }
 
-  predicate isSource(DataFlow::Node source, FlowState label) {
-    source instanceof ActiveThreatModelSource and label = TTaint()
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source instanceof ActiveThreatModelSource and state = TTaint()
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof DynamicImport }
 
-  predicate isSink(DataFlow::Node sink, FlowState label) {
-    sink instanceof WorkerThreads and label = TUrlConstructor()
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof WorkerThreads and state = TUrlConstructor()
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node pred, FlowState predlbl, DataFlow::Node succ, FlowState succlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    exists(DataFlow::NewNode newUrl | succ = newUrl |
+    exists(DataFlow::NewNode newUrl | node2 = newUrl |
       newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
-      pred = newUrl.getArgument(0)
+      node1 = newUrl.getArgument(0)
     ) and
-    predlbl = TTaint() and
-    succlbl = TUrlConstructor()
+    state1 = TTaint() and
+    state2 = TUrlConstructor()
   }
 }
 

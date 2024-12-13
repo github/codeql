@@ -21,8 +21,8 @@ module BuildArtifactLeakConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof CleartextLogging::Barrier }
 
-  predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
-    CleartextLogging::isAdditionalTaintStep(src, trg)
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    CleartextLogging::isAdditionalTaintStep(node1, node2)
   }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet contents) {

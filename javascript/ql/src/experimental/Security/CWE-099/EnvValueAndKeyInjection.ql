@@ -21,15 +21,15 @@ module EnvValueAndKeyInjectionConfig implements DataFlow::ConfigSig {
     sink = valueOfEnv()
   }
 
-  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(DataFlow::InvokeNode ikn |
       ikn = DataFlow::globalVarRef("Object").getAMemberInvocation("keys")
     |
-      pred = ikn.getArgument(0) and
+      node1 = ikn.getArgument(0) and
       (
-        succ = ikn.getAChainedMethodCall(["filter", "map"]) or
-        succ = ikn or
-        succ = ikn.getAChainedMethodCall("forEach").getABoundCallbackParameter(0, 0)
+        node2 = ikn.getAChainedMethodCall(["filter", "map"]) or
+        node2 = ikn or
+        node2 = ikn.getAChainedMethodCall("forEach").getABoundCallbackParameter(0, 0)
       )
     )
   }
