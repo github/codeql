@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.frameworks.spring.SpringController
+private import semmle.code.java.frameworks.stapler.Stapler
 private import semmle.code.java.frameworks.MyBatis
 private import semmle.code.java.frameworks.Jdbc
 private import semmle.code.java.dataflow.ExternalFlow
@@ -29,6 +30,21 @@ private class SpringCsrfUnprotectedMethod extends CsrfUnprotectedMethod instance
       // If no request type is specified with `@RequestMapping`, then all request types
       // are possible, so we treat this as unsafe; example: @RequestMapping(value = "test").
       not exists(this.getAnAnnotation().getAnArrayValue("method"))
+    )
+  }
+}
+
+/**
+ * A Stapler web method that is not protected from CSRF by default.
+ *
+ * https://www.jenkins.io/doc/developer/security/form-validation/#protecting-from-csrf
+ */
+private class StaplerCsrfUnprotectedMethod extends CsrfUnprotectedMethod instanceof StaplerWebMethod
+{
+  StaplerCsrfUnprotectedMethod() {
+    not (
+      this.hasAnnotation("org.kohsuke.stapler.interceptor", "RequirePOST") or
+      this.hasAnnotation("org.kohsuke.stapler.verb", "POST")
     )
   }
 }
