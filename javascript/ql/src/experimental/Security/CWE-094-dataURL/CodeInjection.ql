@@ -49,38 +49,43 @@ class WorkerThreads extends DataFlow::Node {
   }
 }
 
-class UrlConstructorLabel extends DataFlow::FlowLabel {
-  UrlConstructorLabel() { this = "UrlConstructorLabel" }
-}
+newtype TFlowState =
+  TTaint() or
+  TUrlConstructor()
 
 /**
  * A taint-tracking configuration for reasoning about code injection vulnerabilities.
  */
 module CodeInjectionConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  class FlowState extends TFlowState {
+    string toString() {
+      this = TTaint() and result = "taint"
+      or
+      this = TUrlConstructor() and result = "url-constructor"
+    }
+  }
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source instanceof ActiveThreatModelSource and label.isTaint()
+  predicate isSource(DataFlow::Node source, FlowState label) {
+    source instanceof ActiveThreatModelSource and label = TTaint()
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof DynamicImport }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink instanceof WorkerThreads and label instanceof UrlConstructorLabel
+  predicate isSink(DataFlow::Node sink, FlowState label) {
+    sink instanceof WorkerThreads and label = TUrlConstructor()
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::FlowLabel predlbl, DataFlow::Node succ,
-    DataFlow::FlowLabel succlbl
+    DataFlow::Node pred, FlowState predlbl, DataFlow::Node succ, FlowState succlbl
   ) {
     exists(DataFlow::NewNode newUrl | succ = newUrl |
       newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
       pred = newUrl.getArgument(0)
     ) and
-    predlbl.isDataOrTaint() and
-    succlbl instanceof UrlConstructorLabel
+    predlbl = TTaint() and
+    succlbl = TUrlConstructor()
   }
 }
 
