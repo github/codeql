@@ -1,7 +1,7 @@
 ---
 library: true
 warnOnImplicitThis: true
-name: github/actions-all
+name: codeql/actions-all
 version: 0.2.2
 dependencies:
   codeql/util: ^1.0.1

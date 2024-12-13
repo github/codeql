@@ -1,6 +1,6 @@
 ---
 library: false
-name: github/actions-queries
+name: codeql/actions-queries
 version: 0.2.2
 groups: [actions, queries]
 suites: codeql-suites

@@ -7,4 +7,3 @@ dependencies:
 extractor: actions
 tests: .
 warnOnImplicitThis: true
-
