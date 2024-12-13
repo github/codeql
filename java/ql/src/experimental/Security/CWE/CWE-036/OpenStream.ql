@@ -53,11 +53,11 @@ module RemoteUrlToOpenStreamFlowConfig implements DataFlow::ConfigSig {
 
 module RemoteUrlToOpenStreamFlow = TaintTracking::Global<RemoteUrlToOpenStreamFlowConfig>;
 
-from
-  RemoteUrlToOpenStreamFlow::PathNode source, RemoteUrlToOpenStreamFlow::PathNode sink,
-  MethodCall call
-where
+deprecated query predicate problems(
+  MethodCall call, RemoteUrlToOpenStreamFlow::PathNode source,
+  RemoteUrlToOpenStreamFlow::PathNode sink, string message
+) {
   sink.getNode().asExpr() = call.getQualifier() and
-  RemoteUrlToOpenStreamFlow::flowPath(source, sink)
-select call, source, sink,
-  "URL on which openStream is called may have been constructed from remote source."
+  RemoteUrlToOpenStreamFlow::flowPath(source, sink) and
+  message = "URL on which openStream is called may have been constructed from remote source."
+}

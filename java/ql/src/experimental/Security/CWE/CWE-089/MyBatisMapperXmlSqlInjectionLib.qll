@@ -1,6 +1,7 @@
 /**
  * Provide classes for SQL injection detection in MyBatis Mapper XML.
  */
+deprecated module;
 
 import java
 import semmle.code.xml.MyBatisMapperXML
