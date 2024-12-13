@@ -112,11 +112,6 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, str
     stringConcatStep(pred, succ)
     or
     sliceStep(pred, succ)
-    or
-    // Treat container read steps as taint for global taint flow.
-    exists(DataFlow::Content c | DataFlowPrivate::containerContent(c) |
-      DataFlowPrivate::readStep(pred, c, succ)
-    )
   ) and
   model = ""
   or
@@ -184,6 +179,12 @@ predicate elementStep(DataFlow::Node pred, DataFlow::Node succ) {
     pred.asInstruction() = nextEntry.getDomain() and
     // only step into the value, not the index
     succ.asInstruction() = IR::extractTupleElement(nextEntry, 1)
+  )
+  or
+  exists(DataFlow::ImplicitVarargsSlice ivs |
+    pred.(DataFlow::PostUpdateNode).getPreUpdateNode() = ivs and
+    succ.(DataFlow::PostUpdateNode).getPreUpdateNode() =
+      ivs.getCallNode().getAnImplicitVarargsArgument()
   )
 }
 
