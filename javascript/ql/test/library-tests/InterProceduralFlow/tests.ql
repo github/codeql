@@ -3,33 +3,42 @@ import DataFlowConfig
 
 query predicate dataFlow(DataFlow::Node src, DataFlow::Node snk) { TestFlow::flow(src, snk) }
 
-class Parity extends DataFlow::FlowLabel {
-  Parity() { this = "even" or this = "odd" }
-
-  Parity flip() { result != this }
-}
-
 module FlowLabelConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  private newtype TFlowState =
+    TEven() or
+    TOdd()
 
-  predicate isSource(DataFlow::Node nd, DataFlow::FlowLabel lbl) {
-    nd.(DataFlow::CallNode).getCalleeName() = "source" and
-    lbl = "even"
+  class FlowState extends TFlowState {
+    string toString() {
+      this = TEven() and result = "even"
+      or
+      this = TOdd() and result = "odd"
+    }
+
+    FlowState flip() {
+      this = TEven() and result = TOdd()
+      or
+      this = TOdd() and result = TEven()
+    }
   }
 
-  predicate isSink(DataFlow::Node nd, DataFlow::FlowLabel lbl) {
+  predicate isSource(DataFlow::Node nd, FlowState state) {
+    nd.(DataFlow::CallNode).getCalleeName() = "source" and
+    state = TEven()
+  }
+
+  predicate isSink(DataFlow::Node nd, FlowState state) {
     nd = any(DataFlow::CallNode c | c.getCalleeName() = "sink").getAnArgument() and
-    lbl = "even"
+    state = TEven()
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::FlowLabel predLabel, DataFlow::Node succ,
-    DataFlow::FlowLabel succLabel
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    exists(DataFlow::CallNode c | c = succ |
+    exists(DataFlow::CallNode c | c = node2 |
       c.getCalleeName() = "inc" and
-      pred = c.getAnArgument() and
-      succLabel = predLabel.(Parity).flip()
+      node1 = c.getAnArgument() and
+      state2 = state1.flip()
     )
   }
 }
