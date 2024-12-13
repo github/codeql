@@ -49,6 +49,12 @@ pkg_filegroup(
 )
 
 pkg_filegroup(
+    name = "tools",
+    srcs = ["//swift/tools"],
+    prefix = "tools",
+)
+
+pkg_filegroup(
     name = "extractor",
     srcs = select_os(
         posix = [
@@ -67,15 +73,6 @@ codeql_pkg_files(
     ],
 )
 
-pkg_filegroup(
-    name = "common",
-    srcs = [
-        ":autobuilder",
-        ":root-files",
-        "//swift/downgrades",
-    ],
-)
-
 zip_map = {
     "//swift/third_party/resources:dir": "resource-dir/{CODEQL_PLATFORM}",
 }
@@ -84,13 +81,17 @@ zip_map = {
     codeql_pack(
         name = "swift-linux-included" if linux_included else "swift",
         srcs = [
-            ":common",
+            ":autobuilder",
+            ":root-files",
+            ":tools",
+            "//swift/downgrades",
         ] + select_os(
             linux = [":extractor"] if linux_included else [],
             macos = [":extractor"],
             windows = [],
         ),
         installer_alias = "install-linux" if linux_included else "install-other",
+        pack_prefix = "swift",
         zips = select_os(
             linux = zip_map if linux_included else {},
             macos = zip_map,
@@ -105,7 +106,7 @@ zip_map = {
 
 alias(
     name = "create-extractor-pack",
-    actual = ":swift-installer",
+    actual = ":install",
 )
 
 alias(
