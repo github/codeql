@@ -88,7 +88,7 @@ module InsecureDownload {
   /**
    * Flow-labels for reasoning about download of sensitive file through insecure connection.
    */
-  module Label {
+  deprecated module Label {
     /**
      * A flow-label for file URLs that are both sensitive and downloaded over an insecure connection.
      */

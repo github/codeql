@@ -9,7 +9,6 @@
 
 import javascript
 import PropertyInjectionShared
-private import DataFlow::FlowLabel
 import UnsafeDynamicMethodAccessCustomizations::UnsafeDynamicMethodAccess
 private import UnsafeDynamicMethodAccessCustomizations::UnsafeDynamicMethodAccess as UnsafeDynamicMethodAccess
 
