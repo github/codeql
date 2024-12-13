@@ -1,12 +1,12 @@
 package com.github.codeql
 
-import com.github.codeql.KotlinUsesExtractor.ClassLabelResults
+import com.github.codeql.entities.extractTypeParameter
+import com.github.codeql.entities.getTypeArgumentLabel
 import com.github.codeql.utils.isInterfaceLike
 import org.jetbrains.kotlin.analysis.api.KaExperimentalApi
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.*
-import org.jetbrains.kotlin.analysis.api.types.KaClassType
-import org.jetbrains.kotlin.psi.KtElement
+import org.jetbrains.kotlin.analysis.api.types.KaTypeProjection
 
 context(KaSession)
 @OptIn(KaExperimentalApi::class)
@@ -65,7 +65,7 @@ fun KotlinFileExtractor.extractClassSource(
             //val javaClass = (c.source as? JavaSourceElement)?.javaElement as? JavaClass
 
             c.typeParameters.mapIndexed { idx, param ->
-                //extractTypeParameter(param, idx, javaClass?.typeParameters?.getOrNull(idx))
+                extractTypeParameter(param, idx, /* OLD: KE1 javaClass?.typeParameters?.getOrNull(idx) */)
             }
             if (extractDeclarations) {
                 if (c.classKind == KaClassKind.ANNOTATION_CLASS) {
@@ -80,13 +80,13 @@ fun KotlinFileExtractor.extractClassSource(
                             extractFunction(
                                 getter,
                                 id,
+                                listOf(),
                                 /* OLD: KE1
                                 extractBody = false,
                                 extractMethodAndParameterTypeAccesses =
                                 extractFunctionBodies,
                                 extractAnnotations = true,
-                                null,
-                                listOf()
+                                null
                                  */
                             )
                                 ?.also { functionLabel ->
@@ -183,24 +183,26 @@ fun KotlinFileExtractor.extractClassSource(
     }
 }
 
-/*
-    OLD: KE1
-        // `args` can be null to describe a raw generic type.
-        // For non-generic types it will be zero-length list.
-    */
+data class ClassLabelResults(val classLabel: String, val shortName: String)
+
+// `args` can be null to describe a raw generic type.
+// For non-generic types it will be zero-length list.
+// TODO: raw types not yet implemented for KE2
+// Structure of argsIncludingOuterClasses: for Outer<OuterArg>.Inner<InnerArg1, InnerArg2>,
+// argsIncludingOuterClasses will be `[[OuterArg], [InnerArg1, InnerArg2]]`
 context(KaSession)
 private fun KotlinUsesExtractor.getClassLabel(
     c: KaClassSymbol,
-    argsIncludingOuterClasses: List<Nothing>?
+    argsIncludingOuterClasses: List<List<KaTypeProjection>>?
 ): ClassLabelResults {
-    val unquotedLabel = getUnquotedClassLabel(c /* TODO , argsIncludingOuterClasses */)
-    return ClassLabelResults("@\"class;${unquotedLabel.classLabel}\"" /* TODO , unquotedLabel.shortName */)
+    val unquotedLabel = getUnquotedClassLabel(c, argsIncludingOuterClasses)
+    return ClassLabelResults("@\"class;${unquotedLabel.classLabel}\"", /* TODO , */ unquotedLabel.shortName)
 }
 
 context(KaSession)
 fun KotlinUsesExtractor.useClassSource(c: KaClassSymbol): Label<out DbClassorinterface> {
     // For source classes, the label doesn't include any type arguments
-    val id = addClassLabel(c, listOf())
+    val id = addClassLabel(c, listOf()).id
     return id
 }
 
@@ -214,8 +216,8 @@ fun KotlinUsesExtractor.useClassSource(c: KaClassSymbol): Label<out DbClassorint
  */
 private fun tryReplaceType(
     cBeforeReplacement: KaClassSymbol,
-    argsIncludingOuterClassesBeforeReplacement: List<Nothing>?
-): Pair<KaClassSymbol, List<Nothing>?> {
+    argsIncludingOuterClassesBeforeReplacement: List<List<KaTypeProjection>>?
+): Pair<KaClassSymbol, List<List<KaTypeProjection>>?> {
     return Pair(cBeforeReplacement, argsIncludingOuterClassesBeforeReplacement)
     /*
     OLD: KE1
@@ -249,12 +251,12 @@ private fun KotlinUsesExtractor.extractClassLaterIfExternal(c: KaClassSymbol) {
 context(KaSession)
 fun KotlinUsesExtractor.addClassLabel(
     cBeforeReplacement: KaClassSymbol, // TODO cBeforeReplacement: IrClass,
-    argsIncludingOuterClassesBeforeReplacement: List<Nothing>?,
+    argsIncludingOuterClassesBeforeReplacement: List<List<KaTypeProjection>>?,
     /*
     OLD: KE1
             inReceiverContext: Boolean = false
     */
-): Label<out DbClassorinterface> {
+): TypeResult<out DbClassorinterface> {
     val replaced =
         tryReplaceType(cBeforeReplacement, argsIncludingOuterClassesBeforeReplacement)
     val replacedClass = replaced.first
@@ -311,9 +313,9 @@ OLD: KE1
                 } else {
                     fqName.asString()
                 }
-            return TypeResult(classLabel /* TODO , signature, classLabelResult.shortName */)
+
     */
-    return classLabel
+    return TypeResult(classLabel, /* TODO , signature, */ classLabelResult.shortName)
 }
 
 /*
@@ -328,10 +330,7 @@ OLD: KE1
 context(KaSession)
 private fun KotlinUsesExtractor.getUnquotedClassLabel(
     c: KaClassSymbol,
-    /*
-    OLD: KE1
-            argsIncludingOuterClasses: List<IrTypeArgument>?
-    */
+    argsIncludingOuterClasses: List<List<KaTypeProjection>>?
 ): ClassLabelResults {
     val classId = c.classId
     if (classId == null) {
@@ -346,11 +345,11 @@ private fun KotlinUsesExtractor.getUnquotedClassLabel(
          */
             when (val parent = c.containingSymbol) {
                 is KaClassSymbol -> {
-                    "${getUnquotedClassLabel(parent).classLabel}\$$cls"
+                    "${getUnquotedClassLabel(parent, listOf()).classLabel}\$$cls"
                 }
 
                 is KaFunctionSymbol -> {
-                    "{${useFunction<DbMethod>(parent)}}.$cls"
+                    "{${useFunction<DbMethod>(parent, listOf())}}.$cls"
                 }
 
                 is KaPropertySymbol -> {
@@ -364,32 +363,23 @@ private fun KotlinUsesExtractor.getUnquotedClassLabel(
                     if (pkg.isEmpty()) cls else "$pkg.$cls"
                 }
             }
-    /*
-    OLD: KE1
-                        }
-                    }
 
-            val reorderedArgs = orderTypeArgsLeftToRight(c, argsIncludingOuterClasses)
-            val typeArgLabels = reorderedArgs?.map { getTypeArgumentLabel(it) }
+            val typeArgLabels = argsIncludingOuterClasses?.flatten()?.map { getTypeArgumentLabel(it) }
             val typeArgsShortName =
                 if (typeArgLabels == null) "<>"
                 else if (typeArgLabels.isEmpty()) ""
                 else
-                    typeArgLabels.takeLast(c.typeParameters.size).joinToString(
+                    typeArgLabels.takeLast((c as? KaNamedClassSymbol)?.typeParameters?.size ?: 0).joinToString(
                         prefix = "<",
                         postfix = ">",
                         separator = ","
                     ) {
                         it.shortName
                     }
-            val shortNamePrefix = if (c.isAnonymousObject) "" else cls
-    */
+            val shortNamePrefix = if (c.name == null) "" else cls
 
     return ClassLabelResults(
-        label // OLD: KE1: + (typeArgLabels?.joinToString(separator = "") { ";{${it.id}}" } ?: "<>"),
-        /*
-        OLD: KE1
-                    shortNamePrefix + typeArgsShortName
-        */
+        label + (typeArgLabels?.joinToString(separator = "") { ";{${it.id}}" } ?: "<>"),
+        shortNamePrefix + typeArgsShortName
     )
 }

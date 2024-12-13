@@ -1,31 +1,32 @@
 package com.github.codeql
 
+import com.github.codeql.entities.getTypeParameterLabel
 import org.jetbrains.kotlin.analysis.api.KaSession
+import org.jetbrains.kotlin.analysis.api.components.DefaultTypeClassIds
 import org.jetbrains.kotlin.analysis.api.symbols.KaClassSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
-import org.jetbrains.kotlin.analysis.api.types.KaClassType
-import org.jetbrains.kotlin.analysis.api.types.KaFlexibleType
-import org.jetbrains.kotlin.analysis.api.types.KaType
-import org.jetbrains.kotlin.analysis.api.types.KaTypeParameterType
+import org.jetbrains.kotlin.analysis.api.symbols.KaTypeParameterSymbol
+import org.jetbrains.kotlin.analysis.api.types.*
 
 context(KaSession)
 private fun KotlinUsesExtractor.useClassType(
     c: KaClassType
 ): TypeResults {
     // TODO: this cast is unsafe; .symbol is actually a KaClassLikeSymbol
-    val classId = addClassLabel(c.symbol as KaClassSymbol, listOf<Nothing>())
-    val javaResult = TypeResult(classId /* , TODO, TODO */)
+    val javaResult = addClassLabel(c.symbol as KaClassSymbol, c.qualifiers.map { it.typeArguments })
+    // TODO: Actually the Kotlin class ID should sometimes differ from javaResult.id, e.g.
+    //   when collections types differ.
     val kotlinTypeId =
-        tw.getLabelFor<DbKt_class_type>("@\"kt_class;{$classId}\"") {
-            tw.writeKt_class_types(it, classId)
+        tw.getLabelFor<DbKt_class_type>("@\"kt_class;{${javaResult.id}}\"") {
+            tw.writeKt_class_types(it, javaResult.id)
         }
-    val kotlinResult = TypeResult(kotlinTypeId /* , "TODO", "TODO" */)
+    val kotlinResult = TypeResult(kotlinTypeId /* , "TODO"*/, "TODO")
     return TypeResults(javaResult, kotlinResult)
 }
 
 context(KaSession)
-fun KotlinUsesExtractor.getTypeParameterParentLabel(param: KaTypeParameterType) =
-    param.symbol.containingSymbol?.let {
+fun KotlinUsesExtractor.getTypeParameterParentLabel(param: KaTypeParameterSymbol) =
+    param.containingSymbol?.let {
         when (it) {
             is KaClassSymbol -> useClassSource(it)
             is KaFunctionSymbol ->
@@ -48,7 +49,7 @@ fun KotlinUsesExtractor.getTypeParameterParentLabel(param: KaTypeParameterType) 
                         ?.id
                 else null) ?:
                 */
-                useFunction(it, useDeclarationParentOf(it, true) ?: TODO()  /* OLD: KE1 noReplace = true */)
+                useFunction(it, useDeclarationParentOf(it, true) ?: TODO(), listOf(),  /* OLD: KE1 noReplace = true */)
             else -> {
                 logger.error("Unexpected type parameter parent $it")
                 null
@@ -57,24 +58,16 @@ fun KotlinUsesExtractor.getTypeParameterParentLabel(param: KaTypeParameterType) 
     }
 
 context(KaSession)
-fun KotlinUsesExtractor.getTypeParameterLabel(param: KaTypeParameterType): String {
-    // Use this instead of `useDeclarationParent` so we can use useFunction with noReplace = true,
-    // ensuring that e.g. a method-scoped type variable declared on kotlin.String.transform<R> gets
-    // a different name to the corresponding java.lang.String.transform<R>, even though
-    // useFunction will usually replace references to one function with the other.
-    val parentLabel = getTypeParameterParentLabel(param)
-    return "@\"typevar;{$parentLabel};${param.name}\""
-}
-
-context(KaSession)
 private fun KotlinUsesExtractor.useTypeParameterType(param: KaTypeParameterType) =
-    TypeResult(
-        tw.getLabelFor<DbTypevariable>(getTypeParameterLabel(param)),
-        /* OLD: KE1
-        useType(eraseTypeParameter(param)).javaResult.signature,
-        param.name.asString()
-         */
-    )
+    getTypeParameterLabel(param.symbol)?.let {
+        TypeResult(
+            tw.getLabelFor<DbTypevariable>(it),
+            /* OLD: KE1
+            useType(eraseTypeParameter(param)).javaResult.signature,
+             */
+            param.name.asString()
+        )
+    } ?: extractErrorType()
 
 context(KaSession)
 fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.OTHER): TypeResults {
@@ -93,13 +86,13 @@ fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.O
     val abbreviation = t.abbreviatedType
     val kotlinResultAlias = if (abbreviation == null) kotlinResultBase else {
                                 // TODO: this cast is unsafe; .symbol is actually a KaClassLikeSymbol
-                                val classId = addClassLabel(abbreviation.symbol as KaClassSymbol, listOf<Nothing>() /* TODO */)
+                                val classResult = addClassLabel(abbreviation.symbol as KaClassSymbol, listOf<Nothing>() /* TODO */)
                                 val kotlinBaseTypeId = kotlinResultBase.id
                                 val kotlinAliasTypeId =
-                                    tw.getLabelFor<DbKt_type_alias>("@\"kt_type_alias;{$classId};{$kotlinBaseTypeId}\"") {
-                                        tw.writeKt_type_aliases(it, classId, kotlinBaseTypeId)
+                                    tw.getLabelFor<DbKt_type_alias>("@\"kt_type_alias;{${classResult.id}};{$kotlinBaseTypeId}\"") {
+                                        tw.writeKt_type_aliases(it, classResult.id, kotlinBaseTypeId)
                                     }
-                                TypeResult(kotlinAliasTypeId /* , "TODO", "TODO" */)
+                                TypeResult(kotlinAliasTypeId , "TODO"/*, "TODO" */)
                             }
     val kotlinResultNullability = if (t.nullability.isNullable) {
                                       val kotlinAliasTypeId = kotlinResultAlias.id
@@ -107,14 +100,14 @@ fun KotlinUsesExtractor.useType(t: KaType?, context: TypeContext = TypeContext.O
                                           tw.getLabelFor<DbKt_nullable_type>("@\"kt_nullable_type;{$kotlinAliasTypeId}\"") {
                                               tw.writeKt_nullable_types(it, kotlinAliasTypeId)
                                           }
-                                      TypeResult(kotlinNullableTypeId /* , "TODO", "TODO" */)
+                                      TypeResult(kotlinNullableTypeId, "TODO", /* "TODO" */)
                                   } else kotlinResultAlias
     return TypeResults(javaResult, kotlinResultNullability)
 }
 
-private fun KotlinUsesExtractor.extractJavaErrorType(): TypeResult<DbErrortype> {
+fun KotlinUsesExtractor.extractJavaErrorType(): TypeResult<DbErrortype> {
     val typeId = tw.getLabelFor<DbErrortype>("@\"errorType\"") { tw.writeError_type(it) }
-    return TypeResult(typeId /* TODO , "<CodeQL error type>", "<CodeQL error type>" */)
+    return TypeResult(typeId, /* TODO , */ "<CodeQL error type>")
 }
 
 private fun KotlinUsesExtractor.extractErrorType(): TypeResults {
@@ -125,7 +118,7 @@ private fun KotlinUsesExtractor.extractErrorType(): TypeResults {
         }
     return TypeResults(
         javaResult,
-        TypeResult(kotlinTypeId /* TODO , "<CodeQL error type>", "<CodeQL error type>" */)
+        TypeResult(kotlinTypeId, /* TODO, */"<CodeQL error type>")
     )
 }
 
@@ -292,3 +285,43 @@ OLD: KE1
     }
 */
 
+/**
+ * Returns `t` with generic types replaced by raw types, and type parameters replaced by their first bound.
+ *
+ * Note that `Array<T>` is retained (with `T` itself erased) because these are expected to be lowered to Java arrays,
+ * which are not generic.
+ */
+context(KaSession)
+fun erase(t: KaType): KaType =
+    when (t) {
+        is KaTypeParameterType -> erase(t.symbol.upperBounds.getOrElse(0) { buildClassType(DefaultTypeClassIds.ANY) })
+        is KaClassType -> buildClassType(t.classId)
+        is KaFlexibleType -> erase(t.lowerBound) // TODO: Check this -- see also useType's treatment of flexible types.
+        else -> t
+    }
+/* OLD: KE1 -- note might need to restore creation of a RAW type
+    when (val sym = t.symbol) {
+        is KaTypeParameterSymbol -> erase(sym.upperBounds[0])
+        is KaClassSymbol -> {
+            buildClassType()
+        }
+
+        if (owner is IrClass) {
+            if (t.isBoxedArray) {
+                val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
+                val erasedElementType = erase(elementType)
+                return owner
+                    .typeWith(erasedElementType)
+                    .codeQlWithHasQuestionMark(t.isNullable())
+            }
+
+            return if (t.arguments.isNotEmpty())
+                t.addAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
+            else t
+        }
+    }
+    return t
+}
+
+private fun eraseTypeParameter(t: KaTypeParameterSymbol) = erase(t.upperBounds[0])
+*/

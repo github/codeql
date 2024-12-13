@@ -5,7 +5,9 @@ import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.resolution.KaSimpleFunctionCall
 import org.jetbrains.kotlin.analysis.api.resolution.symbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaFunctionSymbol
+import org.jetbrains.kotlin.analysis.api.types.KaClassType
 import org.jetbrains.kotlin.analysis.api.types.KaType
+import org.jetbrains.kotlin.analysis.api.types.KaTypeProjection
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtParenthesizedExpression
@@ -115,10 +117,10 @@ private fun KotlinFileExtractor.extractCallValueArguments(
 }
 
 context(KaSession)
-private fun KotlinFileExtractor.getCalleeMethodId(callTarget: KaFunctionSymbol): Label<out DbCallable> {
+private fun KotlinFileExtractor.getCalleeMethodId(callTarget: KaFunctionSymbol, classTypeArgsIncludingOuterClasses: List<KaTypeProjection>?): Label<out DbCallable> {
     // TODO: is the below `useDeclarationParentOf` call correct?
     // TODO: what should happen if the parent label is null?
-    return useFunction<DbCallable>(callTarget, useDeclarationParentOf(callTarget, false)!!)
+    return useFunction<DbCallable>(callTarget, useDeclarationParentOf(callTarget, false)!!, classTypeArgsIncludingOuterClasses)
 }
 
 context(KaSession)
@@ -159,7 +161,7 @@ fun KotlinFileExtractor.extractRawMethodAccess(
     }
      */
 
-    val methodId = getCalleeMethodId(callTarget)
+    val methodId = getCalleeMethodId(callTarget, (dispatchReceiver?.expressionType as? KaClassType)?.typeArguments)
 
     val id =
         extractMethodAccessWithoutArgs(

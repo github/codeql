@@ -40,7 +40,7 @@ kt_jvm_library(
             "kotlin_annotation_processing",
             "kotlin_compiler",
         )
-    ],
+    ] + ["@maven_deps//:com_github_ben_manes_caffeine_caffeine"],
 )
 
 java_binary(

@@ -1,7 +1,6 @@
 package com.github.codeql
 
-/*
-OLD: KE1
+// TODO: the Java equivalence stuff described below isn't implemented for KE2 yet
 /**
  * A triple of a type's database label, its signature for use in callable signatures, and its short
  * name for use in all tables that provide a user-facing type name.
@@ -14,21 +13,14 @@ OLD: KE1
  * arguments ("InnerClass<E>" or "OuterClass<ConcreteArgument>" or "OtherClass<? extends Bound>") or
  * an array ("componentShortName[]").
  */
-*/
 data class TypeResultGeneric<SignatureType, out LabelType : AnyDbType>(
     val id: Label<out LabelType>,
-    /*
-    OLD: KE1
-        val signature: SignatureType?,
-        val shortName: String
-    */
+    // OLD: KE1: val signature: SignatureType?,
+    val shortName: String
 ) {
-    /*
-    OLD: KE1
-        fun <U : AnyDbType> cast(): TypeResultGeneric<SignatureType, U> {
-            @Suppress("UNCHECKED_CAST") return this as TypeResultGeneric<SignatureType, U>
-        }
-    */
+    fun <U : AnyDbType> cast(): TypeResultGeneric<SignatureType, U> {
+        @Suppress("UNCHECKED_CAST") return this as TypeResultGeneric<SignatureType, U>
+    }
 }
 
 data class TypeResultsGeneric<SignatureType>(
@@ -38,18 +30,12 @@ data class TypeResultsGeneric<SignatureType>(
 
 typealias TypeResult<T> = TypeResultGeneric<String, T>
 
-/*
-OLD: KE1
 typealias TypeResultWithoutSignature<T> = TypeResultGeneric<Unit, T>
-*/
 
 typealias TypeResults = TypeResultsGeneric<String>
 
-/*
-OLD: KE1
 typealias TypeResultsWithoutSignatures = TypeResultsGeneric<Unit>
 
 fun <T : AnyDbType> TypeResult<T>.forgetSignature(): TypeResultWithoutSignature<T> {
-    return TypeResultWithoutSignature(this.id, Unit, this.shortName)
+    return TypeResultWithoutSignature(this.id, /* OLD: KE1: Unit ,*/ this.shortName)
 }
-*/

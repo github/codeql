@@ -170,10 +170,13 @@ maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 # from this directory after modifying the following to update maven_install.json
 maven.install(
     name = "maven_deps",
+    # The Caffeine version needs to match https://github.com/JetBrains/kotlin/blob/master/gradle/libs.versions.toml
+    # See also https://youtrack.jetbrains.com/issue/KT-73751/Analysis-API-Caffeine-dependency which seeks a better
+    # way of including the needed dependency.
     artifacts = [
-        "org.jetbrains.kotlin:%s:2.0.20-RC2" % kotlin_lib
+        "org.jetbrains.kotlin:%s:2.1.0" % kotlin_lib
         for kotlin_lib in ("kotlin-annotation-processing", "kotlin-compiler")
-    ],
+    ] + [ "com.github.ben-manes.caffeine:caffeine:2.9.3" ]  ,
     lock_file = "//:maven_install.json",
     repositories = [
         "https://repo1.maven.org/maven2",
