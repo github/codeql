@@ -9,8 +9,9 @@
 
 import javascript
 import IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization
+private import IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHtmlAttributeSanitization
 
-private module Label {
+deprecated private module Label {
   class Quote extends DataFlow::FlowLabel {
     Quote() { this = ["\"", "'"] }
   }
@@ -26,18 +27,18 @@ private module Label {
  * A taint-tracking configuration for reasoning about incomplete HTML sanitization vulnerabilities.
  */
 module IncompleteHtmlAttributeSanitizationConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  class FlowState = IncompleteHtmlAttributeSanitization::FlowState;
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    label = Label::characterToLabel(source.(Source).getAnUnsanitizedCharacter())
+  predicate isSource(DataFlow::Node source, FlowState label) {
+    label = FlowState::character(source.(Source).getAnUnsanitizedCharacter())
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    label = Label::characterToLabel(sink.(Sink).getADangerousCharacter())
+  predicate isSink(DataFlow::Node sink, FlowState label) {
+    label = FlowState::character(sink.(Sink).getADangerousCharacter())
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
-    lbl = Label::characterToLabel(node.(StringReplaceCall).getAReplacedString())
+  predicate isBarrier(DataFlow::Node node, FlowState lbl) {
+    lbl = FlowState::character(node.(StringReplaceCall).getAReplacedString())
   }
 
   predicate isBarrier(DataFlow::Node n) { n instanceof Sanitizer }
