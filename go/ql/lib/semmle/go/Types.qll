@@ -501,8 +501,10 @@ private class StructComponent extends MkSomeComponent {
   }
 }
 
+/**
+ */
 pragma[nomagic]
-predicate unpackStructType(
+private predicate unpackStructType(
   StructType s, TOptStructComponent c0, TOptStructComponent c1, TOptStructComponent c2,
   TOptStructComponent c3, TOptStructComponent c4, int nComponents
 ) {
@@ -535,7 +537,7 @@ predicate unpackStructType(
 }
 
 pragma[nomagic]
-predicate unpackAndUnaliasStructType(
+private predicate unpackAndUnaliasStructType(
   StructType s, TOptStructComponent c0, TOptStructComponent c1, TOptStructComponent c2,
   TOptStructComponent c3, TOptStructComponent c4, int nComponents
 ) {
@@ -956,7 +958,7 @@ private class InterfaceComponent extends MkSomeIComponent {
 }
 
 pragma[nomagic]
-predicate unpackInterfaceType(
+private predicate unpackInterfaceType(
   InterfaceType intf, TOptInterfaceComponent c0, TOptInterfaceComponent c1,
   TOptInterfaceComponent c2, TOptInterfaceComponent c3, TOptInterfaceComponent c4,
   TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds,
@@ -1003,7 +1005,7 @@ predicate unpackInterfaceType(
 }
 
 pragma[nomagic]
-predicate unpackAndUnaliasInterfaceType(
+private predicate unpackAndUnaliasInterfaceType(
   InterfaceType intf, TOptInterfaceComponent c0, TOptInterfaceComponent c1,
   TOptInterfaceComponent c2, TOptInterfaceComponent c3, TOptInterfaceComponent c4,
   TOptInterfaceComponent e1, TOptInterfaceComponent e2, int nComponents, int nEmbeds,
