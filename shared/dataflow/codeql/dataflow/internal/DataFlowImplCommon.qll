@@ -1065,6 +1065,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       )
       or
       // store
+      none() and
       exists(Node mid |
         parameterValueFlow(p, mid) and
         Lang::storeStep(mid, _, node)
@@ -1173,6 +1174,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     predicate readStep(NodeEx node1, ContentSet c, NodeEx node2) {
+      none() and
       exists(boolean allowFwdFlowOut |
         Lang::storeStep(pragma[only_bind_into](node2.asNodeReverse(allowFwdFlowOut)), c,
           pragma[only_bind_into](node1.asNodeReverse(allowFwdFlowOut)))

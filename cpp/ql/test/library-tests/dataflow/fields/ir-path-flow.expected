@@ -88,11 +88,8 @@ edges
 | A.cpp:142:7:142:20 | ... = ... | A.cpp:142:7:142:7 | *b [post update] [c] | provenance |  |
 | A.cpp:142:14:142:20 | new | A.cpp:142:7:142:20 | ... = ... | provenance |  |
 | A.cpp:143:7:143:10 | *this [post update] [*b, c] | A.cpp:140:5:140:5 | *this [Reverse] [*b, c] | provenance |  |
-| A.cpp:143:7:143:10 | *this [post update] [*b, c] | A.cpp:143:7:143:10 | *this [post update] [Reverse] [*b, c] | provenance |  |
-| A.cpp:143:7:143:10 | *this [post update] [Reverse] [*b, c] | A.cpp:143:7:143:31 | *... = ... [Reverse] [c] | provenance |  |
 | A.cpp:143:7:143:10 | *this [post update] [b] | A.cpp:140:5:140:5 | *this [Reverse] [b] | provenance |  |
 | A.cpp:143:7:143:10 | *this [post update] [b] | A.cpp:140:5:140:5 | *this [Reverse] [b] | provenance |  |
-| A.cpp:143:7:143:31 | *... = ... [Reverse] [c] | A.cpp:140:13:140:13 | *b [Reverse] [c] | provenance |  |
 | A.cpp:143:7:143:31 | *... = ... [c] | A.cpp:143:7:143:10 | *this [post update] [*b, c] | provenance |  |
 | A.cpp:143:7:143:31 | ... = ... | A.cpp:143:7:143:10 | *this [post update] [b] | provenance |  |
 | A.cpp:143:7:143:31 | ... = ... | A.cpp:143:7:143:10 | *this [post update] [b] | provenance |  |
@@ -1017,10 +1014,8 @@ nodes
 | A.cpp:142:7:142:20 | ... = ... | semmle.label | ... = ... |
 | A.cpp:142:14:142:20 | new | semmle.label | new |
 | A.cpp:143:7:143:10 | *this [post update] [*b, c] | semmle.label | *this [post update] [*b, c] |
-| A.cpp:143:7:143:10 | *this [post update] [Reverse] [*b, c] | semmle.label | *this [post update] [Reverse] [*b, c] |
 | A.cpp:143:7:143:10 | *this [post update] [b] | semmle.label | *this [post update] [b] |
 | A.cpp:143:7:143:10 | *this [post update] [b] | semmle.label | *this [post update] [b] |
-| A.cpp:143:7:143:31 | *... = ... [Reverse] [c] | semmle.label | *... = ... [Reverse] [c] |
 | A.cpp:143:7:143:31 | *... = ... [c] | semmle.label | *... = ... [c] |
 | A.cpp:143:7:143:31 | ... = ... | semmle.label | ... = ... |
 | A.cpp:143:7:143:31 | ... = ... | semmle.label | ... = ... |

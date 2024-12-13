@@ -43,7 +43,7 @@ public class A
     {
         var a = new A();
         M8(a);
-        Sink(a.Field); // $ hasValueFlow=3
+        Sink(a.Field); // $ MISSING: hasValueFlow=3
     }
 
     public void M8(A a)

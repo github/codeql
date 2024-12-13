@@ -5,30 +5,10 @@ edges
 | InsecureHostKeyCallbackExample.go:45:3:47:3 | function literal | InsecureHostKeyCallbackExample.go:52:20:52:48 | type conversion | provenance |  |
 | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback | InsecureHostKeyCallbackExample.go:62:20:62:27 | callback | provenance |  |
 | InsecureHostKeyCallbackExample.go:68:48:68:55 | definition of callback | InsecureHostKeyCallbackExample.go:78:28:78:35 | callback | provenance |  |
-| InsecureHostKeyCallbackExample.go:68:48:68:55 | definition of callback [Reverse] | InsecureHostKeyCallbackExample.go:109:2:109:26 | definition of potentiallySecureCallback | provenance |  |
-| InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [HostKeyCallback] | InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [Reverse] [HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [Reverse] [HostKeyCallback] | InsecureHostKeyCallbackExample.go:78:28:78:35 | callback [Reverse] | provenance |  |
-| InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [Reverse] [pointer, HostKeyCallback] | InsecureHostKeyCallbackExample.go:78:3:78:8 | implicit dereference [Reverse] [HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [pointer, HostKeyCallback] | InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [Reverse] [pointer, HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [pointer, HostKeyCallback] | InsecureHostKeyCallbackExample.go:76:3:76:8 | config [pointer, HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [pointer, HostKeyCallback] | InsecureHostKeyCallbackExample.go:78:3:78:8 | config [pointer, HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:76:3:76:8 | config [pointer, HostKeyCallback] | InsecureHostKeyCallbackExample.go:76:3:76:8 | implicit dereference [HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:76:3:76:8 | implicit dereference [HostKeyCallback] | InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [pointer, HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:76:28:76:54 | call to InsecureIgnoreHostKey | InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:76:28:76:54 | call to InsecureIgnoreHostKey | InsecureHostKeyCallbackExample.go:76:3:76:8 | implicit dereference [HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:78:3:78:8 | config [pointer, HostKeyCallback] | InsecureHostKeyCallbackExample.go:78:3:78:8 | implicit dereference [HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:78:3:78:8 | implicit dereference [HostKeyCallback] | InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [pointer, HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:78:3:78:8 | implicit dereference [HostKeyCallback] | InsecureHostKeyCallbackExample.go:78:3:78:8 | implicit dereference [Reverse] [HostKeyCallback] | provenance |  |
-| InsecureHostKeyCallbackExample.go:78:3:78:8 | implicit dereference [Reverse] [HostKeyCallback] | InsecureHostKeyCallbackExample.go:78:28:78:35 | callback [Reverse] | provenance |  |
-| InsecureHostKeyCallbackExample.go:78:3:78:8 | implicit dereference [Reverse] [HostKeyCallback] | InsecureHostKeyCallbackExample.go:78:28:78:35 | callback [Reverse] | provenance |  |
-| InsecureHostKeyCallbackExample.go:78:28:78:35 | callback [Reverse] | InsecureHostKeyCallbackExample.go:68:48:68:55 | definition of callback [Reverse] | provenance |  |
-| InsecureHostKeyCallbackExample.go:78:28:78:35 | callback [Reverse] | InsecureHostKeyCallbackExample.go:68:48:68:55 | definition of callback [Reverse] | provenance |  |
 | InsecureHostKeyCallbackExample.go:94:3:94:43 | ... := ...[0] | InsecureHostKeyCallbackExample.go:95:28:95:35 | callback | provenance |  |
 | InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion | InsecureHostKeyCallbackExample.go:107:35:107:50 | insecureCallback | provenance |  |
 | InsecureHostKeyCallbackExample.go:103:3:105:3 | function literal | InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion | provenance |  |
 | InsecureHostKeyCallbackExample.go:107:35:107:50 | insecureCallback | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback | provenance |  |
-| InsecureHostKeyCallbackExample.go:109:2:109:26 | definition of potentiallySecureCallback | InsecureHostKeyCallbackExample.go:117:35:117:59 | potentiallySecureCallback | provenance |  |
-| InsecureHostKeyCallbackExample.go:109:2:109:26 | definition of potentiallySecureCallback | InsecureHostKeyCallbackExample.go:120:44:120:68 | potentiallySecureCallback | provenance |  |
 | InsecureHostKeyCallbackExample.go:109:31:115:4 | type conversion | InsecureHostKeyCallbackExample.go:117:35:117:59 | potentiallySecureCallback | provenance |  |
 | InsecureHostKeyCallbackExample.go:109:31:115:4 | type conversion | InsecureHostKeyCallbackExample.go:120:44:120:68 | potentiallySecureCallback | provenance |  |
 | InsecureHostKeyCallbackExample.go:110:3:115:3 | function literal | InsecureHostKeyCallbackExample.go:109:31:115:4 | type conversion | provenance |  |
@@ -47,29 +27,14 @@ nodes
 | InsecureHostKeyCallbackExample.go:58:39:58:46 | definition of callback | semmle.label | definition of callback |
 | InsecureHostKeyCallbackExample.go:62:20:62:27 | callback | semmle.label | callback |
 | InsecureHostKeyCallbackExample.go:68:48:68:55 | definition of callback | semmle.label | definition of callback |
-| InsecureHostKeyCallbackExample.go:68:48:68:55 | definition of callback [Reverse] | semmle.label | definition of callback [Reverse] |
-| InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [HostKeyCallback] | semmle.label | definition of config [HostKeyCallback] |
-| InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [Reverse] [HostKeyCallback] | semmle.label | definition of config [Reverse] [HostKeyCallback] |
-| InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [Reverse] [pointer, HostKeyCallback] | semmle.label | definition of config [Reverse] [pointer, HostKeyCallback] |
-| InsecureHostKeyCallbackExample.go:69:2:69:7 | definition of config [pointer, HostKeyCallback] | semmle.label | definition of config [pointer, HostKeyCallback] |
-| InsecureHostKeyCallbackExample.go:76:3:76:8 | config [pointer, HostKeyCallback] | semmle.label | config [pointer, HostKeyCallback] |
-| InsecureHostKeyCallbackExample.go:76:3:76:8 | implicit dereference [HostKeyCallback] | semmle.label | implicit dereference [HostKeyCallback] |
 | InsecureHostKeyCallbackExample.go:76:28:76:54 | call to InsecureIgnoreHostKey | semmle.label | call to InsecureIgnoreHostKey |
-| InsecureHostKeyCallbackExample.go:76:28:76:54 | call to InsecureIgnoreHostKey | semmle.label | call to InsecureIgnoreHostKey |
-| InsecureHostKeyCallbackExample.go:78:3:78:8 | config [pointer, HostKeyCallback] | semmle.label | config [pointer, HostKeyCallback] |
-| InsecureHostKeyCallbackExample.go:78:3:78:8 | implicit dereference [HostKeyCallback] | semmle.label | implicit dereference [HostKeyCallback] |
-| InsecureHostKeyCallbackExample.go:78:3:78:8 | implicit dereference [Reverse] [HostKeyCallback] | semmle.label | implicit dereference [Reverse] [HostKeyCallback] |
-| InsecureHostKeyCallbackExample.go:78:3:78:8 | implicit dereference [Reverse] [HostKeyCallback] | semmle.label | implicit dereference [Reverse] [HostKeyCallback] |
 | InsecureHostKeyCallbackExample.go:78:28:78:35 | callback | semmle.label | callback |
-| InsecureHostKeyCallbackExample.go:78:28:78:35 | callback [Reverse] | semmle.label | callback [Reverse] |
-| InsecureHostKeyCallbackExample.go:78:28:78:35 | callback [Reverse] | semmle.label | callback [Reverse] |
 | InsecureHostKeyCallbackExample.go:92:28:92:54 | call to InsecureIgnoreHostKey | semmle.label | call to InsecureIgnoreHostKey |
 | InsecureHostKeyCallbackExample.go:94:3:94:43 | ... := ...[0] | semmle.label | ... := ...[0] |
 | InsecureHostKeyCallbackExample.go:95:28:95:35 | callback | semmle.label | callback |
 | InsecureHostKeyCallbackExample.go:102:22:105:4 | type conversion | semmle.label | type conversion |
 | InsecureHostKeyCallbackExample.go:103:3:105:3 | function literal | semmle.label | function literal |
 | InsecureHostKeyCallbackExample.go:107:35:107:50 | insecureCallback | semmle.label | insecureCallback |
-| InsecureHostKeyCallbackExample.go:109:2:109:26 | definition of potentiallySecureCallback | semmle.label | definition of potentiallySecureCallback |
 | InsecureHostKeyCallbackExample.go:109:31:115:4 | type conversion | semmle.label | type conversion |
 | InsecureHostKeyCallbackExample.go:110:3:115:3 | function literal | semmle.label | function literal |
 | InsecureHostKeyCallbackExample.go:117:35:117:59 | potentiallySecureCallback | semmle.label | potentiallySecureCallback |

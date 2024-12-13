@@ -33,16 +33,10 @@ edges
 | B.java:39:5:39:7 | inp : HashMap [<map.key>] : String | B.java:39:18:39:20 | key : String | provenance | MaD:4 |
 | B.java:39:5:39:7 | inp : HashMap [<map.value>] : String | B.java:39:17:39:56 | ...->... [post update] : new BiConsumer<String,String>(...) { ... } [out, <map.value>] : String | provenance | MaD:5 |
 | B.java:39:5:39:7 | inp : HashMap [<map.value>] : String | B.java:39:23:39:27 | value : String | provenance | MaD:5 |
-| B.java:39:17:39:56 | ...->... [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.key>] : String | B.java:39:17:39:56 | out [Reverse] : Map [<map.key>] : String | provenance |  |
-| B.java:39:17:39:56 | ...->... [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.value>] : String | B.java:39:17:39:56 | out [Reverse] : Map [<map.value>] : String | provenance |  |
-| B.java:39:17:39:56 | ...->... [post update] : new BiConsumer<String,String>(...) { ... } [out, <map.key>] : String | B.java:39:17:39:56 | ...->... [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.key>] : String | provenance |  |
 | B.java:39:17:39:56 | ...->... [post update] : new BiConsumer<String,String>(...) { ... } [out, <map.key>] : String | B.java:39:17:39:56 | out : Map [<map.key>] : String | provenance |  |
-| B.java:39:17:39:56 | ...->... [post update] : new BiConsumer<String,String>(...) { ... } [out, <map.value>] : String | B.java:39:17:39:56 | ...->... [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.value>] : String | provenance |  |
 | B.java:39:17:39:56 | ...->... [post update] : new BiConsumer<String,String>(...) { ... } [out, <map.value>] : String | B.java:39:17:39:56 | out : Map [<map.value>] : String | provenance |  |
 | B.java:39:17:39:56 | out : Map [<map.key>] : String | B.java:38:48:38:70 | out [Reverse] : Map [<map.key>] : String | provenance |  |
 | B.java:39:17:39:56 | out : Map [<map.value>] : String | B.java:38:48:38:70 | out [Reverse] : Map [<map.value>] : String | provenance |  |
-| B.java:39:17:39:56 | out [Reverse] : Map [<map.key>] : String | B.java:38:48:38:70 | out [Reverse] : Map [<map.key>] : String | provenance |  |
-| B.java:39:17:39:56 | out [Reverse] : Map [<map.value>] : String | B.java:38:48:38:70 | out [Reverse] : Map [<map.value>] : String | provenance |  |
 | B.java:39:18:39:20 | key : String | B.java:39:43:39:45 | key : String | provenance |  |
 | B.java:39:23:39:27 | value : String | B.java:39:48:39:52 | value : String | provenance |  |
 | B.java:39:35:39:37 | out [post update] : HashMap [<map.key>] : String | B.java:39:35:39:37 | this : new BiConsumer<String,String>(...) { ... } [out, <map.key>] : String | provenance |  |
@@ -74,19 +68,12 @@ edges
 | B.java:71:19:71:23 | other [post update] : B [elem] : String | B.java:74:10:74:14 | other : B [elem] : String | provenance |  |
 | B.java:74:10:74:14 | other : B [elem] : String | B.java:74:10:74:19 | other.elem | provenance |  |
 | B.java:77:22:77:28 | param [Reverse] : B [elem] : String | B.java:71:19:71:23 | other [post update] : B [elem] : String | provenance |  |
-| B.java:78:18:81:5 | ...->... [Reverse] : new Runnable(...) { ... } [param, elem] : String | B.java:78:18:81:5 | param [Reverse] : B [elem] : String | provenance |  |
-| B.java:78:18:81:5 | param [Reverse] : B [elem] : String | B.java:77:22:77:28 | param [Reverse] : B [elem] : String | provenance |  |
 | B.java:78:18:81:5 | parameter this [Reverse] : new Runnable(...) { ... } [param, elem] : String | B.java:82:5:82:5 | r [post update] : new Runnable(...) { ... } [param, elem] : String | provenance |  |
 | B.java:80:7:80:11 | param [post update] : B [elem] : String | B.java:80:7:80:11 | this : new Runnable(...) { ... } [param, elem] : String | provenance |  |
 | B.java:80:7:80:11 | this : new Runnable(...) { ... } [param, elem] : String | B.java:78:18:81:5 | parameter this [Reverse] : new Runnable(...) { ... } [param, elem] : String | provenance |  |
 | B.java:80:20:80:39 | source(...) : String | B.java:80:7:80:11 | param [post update] : B [elem] : String | provenance |  |
 | B.java:82:5:82:5 | param : B [elem] : String | B.java:77:22:77:28 | param [Reverse] : B [elem] : String | provenance |  |
-| B.java:82:5:82:5 | param [Reverse] : B [elem] : String | B.java:77:22:77:28 | param [Reverse] : B [elem] : String | provenance |  |
-| B.java:82:5:82:5 | r [Reverse] : new Runnable(...) { ... } [param, elem] : String | B.java:78:18:81:5 | ...->... [Reverse] : new Runnable(...) { ... } [param, elem] : String | provenance |  |
-| B.java:82:5:82:5 | r [Reverse] : new Runnable(...) { ... } [param, elem] : String | B.java:82:5:82:5 | param [Reverse] : B [elem] : String | provenance |  |
-| B.java:82:5:82:5 | r [post update] : new Runnable(...) { ... } [param, elem] : String | B.java:78:18:81:5 | ...->... [Reverse] : new Runnable(...) { ... } [param, elem] : String | provenance |  |
 | B.java:82:5:82:5 | r [post update] : new Runnable(...) { ... } [param, elem] : String | B.java:82:5:82:5 | param : B [elem] : String | provenance |  |
-| B.java:82:5:82:5 | r [post update] : new Runnable(...) { ... } [param, elem] : String | B.java:82:5:82:5 | r [Reverse] : new Runnable(...) { ... } [param, elem] : String | provenance |  |
 | B.java:88:22:88:44 | parameter this : new Runnable(...) { ... } [B b, elem] : String | B.java:88:35:88:35 | this : new Runnable(...) { ... } [B b, elem] : String | provenance |  |
 | B.java:88:35:88:35 | b : B [elem] : String | B.java:88:35:88:40 | b.elem | provenance |  |
 | B.java:88:35:88:35 | this : new Runnable(...) { ... } [B b, elem] : String | B.java:88:35:88:35 | b : B [elem] : String | provenance |  |
@@ -338,14 +325,10 @@ nodes
 | B.java:38:48:38:70 | out [Reverse] : Map [<map.value>] : String | semmle.label | out [Reverse] : Map [<map.value>] : String |
 | B.java:39:5:39:7 | inp : HashMap [<map.key>] : String | semmle.label | inp : HashMap [<map.key>] : String |
 | B.java:39:5:39:7 | inp : HashMap [<map.value>] : String | semmle.label | inp : HashMap [<map.value>] : String |
-| B.java:39:17:39:56 | ...->... [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.key>] : String | semmle.label | ...->... [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.key>] : String |
-| B.java:39:17:39:56 | ...->... [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.value>] : String | semmle.label | ...->... [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.value>] : String |
 | B.java:39:17:39:56 | ...->... [post update] : new BiConsumer<String,String>(...) { ... } [out, <map.key>] : String | semmle.label | ...->... [post update] : new BiConsumer<String,String>(...) { ... } [out, <map.key>] : String |
 | B.java:39:17:39:56 | ...->... [post update] : new BiConsumer<String,String>(...) { ... } [out, <map.value>] : String | semmle.label | ...->... [post update] : new BiConsumer<String,String>(...) { ... } [out, <map.value>] : String |
 | B.java:39:17:39:56 | out : Map [<map.key>] : String | semmle.label | out : Map [<map.key>] : String |
 | B.java:39:17:39:56 | out : Map [<map.value>] : String | semmle.label | out : Map [<map.value>] : String |
-| B.java:39:17:39:56 | out [Reverse] : Map [<map.key>] : String | semmle.label | out [Reverse] : Map [<map.key>] : String |
-| B.java:39:17:39:56 | out [Reverse] : Map [<map.value>] : String | semmle.label | out [Reverse] : Map [<map.value>] : String |
 | B.java:39:17:39:56 | parameter this [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.key>] : String | semmle.label | parameter this [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.key>] : String |
 | B.java:39:17:39:56 | parameter this [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.value>] : String | semmle.label | parameter this [Reverse] : new BiConsumer<String,String>(...) { ... } [out, <map.value>] : String |
 | B.java:39:18:39:20 | key : String | semmle.label | key : String |
@@ -381,15 +364,11 @@ nodes
 | B.java:74:10:74:14 | other : B [elem] : String | semmle.label | other : B [elem] : String |
 | B.java:74:10:74:19 | other.elem | semmle.label | other.elem |
 | B.java:77:22:77:28 | param [Reverse] : B [elem] : String | semmle.label | param [Reverse] : B [elem] : String |
-| B.java:78:18:81:5 | ...->... [Reverse] : new Runnable(...) { ... } [param, elem] : String | semmle.label | ...->... [Reverse] : new Runnable(...) { ... } [param, elem] : String |
-| B.java:78:18:81:5 | param [Reverse] : B [elem] : String | semmle.label | param [Reverse] : B [elem] : String |
 | B.java:78:18:81:5 | parameter this [Reverse] : new Runnable(...) { ... } [param, elem] : String | semmle.label | parameter this [Reverse] : new Runnable(...) { ... } [param, elem] : String |
 | B.java:80:7:80:11 | param [post update] : B [elem] : String | semmle.label | param [post update] : B [elem] : String |
 | B.java:80:7:80:11 | this : new Runnable(...) { ... } [param, elem] : String | semmle.label | this : new Runnable(...) { ... } [param, elem] : String |
 | B.java:80:20:80:39 | source(...) : String | semmle.label | source(...) : String |
 | B.java:82:5:82:5 | param : B [elem] : String | semmle.label | param : B [elem] : String |
-| B.java:82:5:82:5 | param [Reverse] : B [elem] : String | semmle.label | param [Reverse] : B [elem] : String |
-| B.java:82:5:82:5 | r [Reverse] : new Runnable(...) { ... } [param, elem] : String | semmle.label | r [Reverse] : new Runnable(...) { ... } [param, elem] : String |
 | B.java:82:5:82:5 | r [post update] : new Runnable(...) { ... } [param, elem] : String | semmle.label | r [post update] : new Runnable(...) { ... } [param, elem] : String |
 | B.java:88:22:88:44 | parameter this : new Runnable(...) { ... } [B b, elem] : String | semmle.label | parameter this : new Runnable(...) { ... } [B b, elem] : String |
 | B.java:88:35:88:35 | b : B [elem] : String | semmle.label | b : B [elem] : String |

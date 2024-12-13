@@ -44,26 +44,6 @@ edges
 | ReverseFlow.cs:39:9:39:12 | [post] this access : A [field Field] : String | ReverseFlow.cs:37:17:37:18 | this [Reverse] : A [field Field] : String | provenance |  |
 | ReverseFlow.cs:39:22:39:38 | call to method Source<String> : String | ReverseFlow.cs:39:9:39:12 | [post] this access : A [field Field] : String | provenance |  |
 | ReverseFlow.cs:39:22:39:38 | call to method Source<String> : String | ReverseFlow.cs:39:9:39:12 | [post] this access : A [field Field] : String | provenance |  |
-| ReverseFlow.cs:45:12:45:12 | [post] access to local variable a : A [field Field] : String | ReverseFlow.cs:46:14:46:14 | access to local variable a : A [field Field] : String | provenance |  |
-| ReverseFlow.cs:45:12:45:12 | [post] access to local variable a : A [field Field] : String | ReverseFlow.cs:46:14:46:14 | access to local variable a : A [field Field] : String | provenance |  |
-| ReverseFlow.cs:46:14:46:14 | access to local variable a : A [field Field] : String | ReverseFlow.cs:46:14:46:20 | access to field Field | provenance |  |
-| ReverseFlow.cs:46:14:46:14 | access to local variable a : A [field Field] : String | ReverseFlow.cs:46:14:46:20 | access to field Field | provenance |  |
-| ReverseFlow.cs:49:22:49:22 | a [Reverse] : A [field Field] : String | ReverseFlow.cs:45:12:45:12 | [post] access to local variable a : A [field Field] : String | provenance |  |
-| ReverseFlow.cs:49:22:49:22 | a [Reverse] : A [field Field] : String | ReverseFlow.cs:45:12:45:12 | [post] access to local variable a : A [field Field] : String | provenance |  |
-| ReverseFlow.cs:52:9:52:9 | [post] access to local variable b [Reverse] : A [field Nested, field Field] : String | ReverseFlow.cs:52:20:52:20 | access to parameter a [Reverse] : A [field Field] : String | provenance |  |
-| ReverseFlow.cs:52:9:52:9 | [post] access to local variable b [Reverse] : A [field Nested, field Field] : String | ReverseFlow.cs:52:20:52:20 | access to parameter a [Reverse] : A [field Field] : String | provenance |  |
-| ReverseFlow.cs:52:20:52:20 | access to parameter a [Reverse] : A [field Field] : String | ReverseFlow.cs:49:22:49:22 | a [Reverse] : A [field Field] : String | provenance |  |
-| ReverseFlow.cs:52:20:52:20 | access to parameter a [Reverse] : A [field Field] : String | ReverseFlow.cs:49:22:49:22 | a [Reverse] : A [field Field] : String | provenance |  |
-| ReverseFlow.cs:53:12:53:12 | [post] access to local variable b : A [field Nested, field Field] : String | ReverseFlow.cs:52:9:52:9 | [post] access to local variable b [Reverse] : A [field Nested, field Field] : String | provenance |  |
-| ReverseFlow.cs:53:12:53:12 | [post] access to local variable b : A [field Nested, field Field] : String | ReverseFlow.cs:52:9:52:9 | [post] access to local variable b [Reverse] : A [field Nested, field Field] : String | provenance |  |
-| ReverseFlow.cs:56:22:56:22 | a [Reverse] : A [field Nested, field Field] : String | ReverseFlow.cs:53:12:53:12 | [post] access to local variable b : A [field Nested, field Field] : String | provenance |  |
-| ReverseFlow.cs:56:22:56:22 | a [Reverse] : A [field Nested, field Field] : String | ReverseFlow.cs:53:12:53:12 | [post] access to local variable b : A [field Nested, field Field] : String | provenance |  |
-| ReverseFlow.cs:58:9:58:9 | [post] access to parameter a : A [field Nested, field Field] : String | ReverseFlow.cs:56:22:56:22 | a [Reverse] : A [field Nested, field Field] : String | provenance |  |
-| ReverseFlow.cs:58:9:58:9 | [post] access to parameter a : A [field Nested, field Field] : String | ReverseFlow.cs:56:22:56:22 | a [Reverse] : A [field Nested, field Field] : String | provenance |  |
-| ReverseFlow.cs:58:9:58:16 | [post] access to field Nested : A [field Field] : String | ReverseFlow.cs:58:9:58:9 | [post] access to parameter a : A [field Nested, field Field] : String | provenance |  |
-| ReverseFlow.cs:58:9:58:16 | [post] access to field Nested : A [field Field] : String | ReverseFlow.cs:58:9:58:9 | [post] access to parameter a : A [field Nested, field Field] : String | provenance |  |
-| ReverseFlow.cs:58:26:58:42 | call to method Source<String> : String | ReverseFlow.cs:58:9:58:16 | [post] access to field Nested : A [field Field] : String | provenance |  |
-| ReverseFlow.cs:58:26:58:42 | call to method Source<String> : String | ReverseFlow.cs:58:9:58:16 | [post] access to field Nested : A [field Field] : String | provenance |  |
 | ReverseFlow.cs:66:9:66:26 | [post] call to method GetNestedNested : A [field Field] : String | ReverseFlow.cs:66:9:66:26 | call to method GetNestedNested [Reverse] : A [field Field] : String | provenance |  |
 | ReverseFlow.cs:66:9:66:26 | [post] call to method GetNestedNested : A [field Field] : String | ReverseFlow.cs:66:9:66:26 | call to method GetNestedNested [Reverse] : A [field Field] : String | provenance |  |
 | ReverseFlow.cs:66:9:66:26 | call to method GetNestedNested [Reverse] : A [field Field] : String | ReverseFlow.cs:66:25:66:25 | [post] access to local variable a : A [field Nested, field Nested, field Field] : String | provenance |  |
@@ -141,28 +121,6 @@ nodes
 | ReverseFlow.cs:39:9:39:12 | [post] this access : A [field Field] : String | semmle.label | [post] this access : A [field Field] : String |
 | ReverseFlow.cs:39:22:39:38 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
 | ReverseFlow.cs:39:22:39:38 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
-| ReverseFlow.cs:45:12:45:12 | [post] access to local variable a : A [field Field] : String | semmle.label | [post] access to local variable a : A [field Field] : String |
-| ReverseFlow.cs:45:12:45:12 | [post] access to local variable a : A [field Field] : String | semmle.label | [post] access to local variable a : A [field Field] : String |
-| ReverseFlow.cs:46:14:46:14 | access to local variable a : A [field Field] : String | semmle.label | access to local variable a : A [field Field] : String |
-| ReverseFlow.cs:46:14:46:14 | access to local variable a : A [field Field] : String | semmle.label | access to local variable a : A [field Field] : String |
-| ReverseFlow.cs:46:14:46:20 | access to field Field | semmle.label | access to field Field |
-| ReverseFlow.cs:46:14:46:20 | access to field Field | semmle.label | access to field Field |
-| ReverseFlow.cs:49:22:49:22 | a [Reverse] : A [field Field] : String | semmle.label | a [Reverse] : A [field Field] : String |
-| ReverseFlow.cs:49:22:49:22 | a [Reverse] : A [field Field] : String | semmle.label | a [Reverse] : A [field Field] : String |
-| ReverseFlow.cs:52:9:52:9 | [post] access to local variable b [Reverse] : A [field Nested, field Field] : String | semmle.label | [post] access to local variable b [Reverse] : A [field Nested, field Field] : String |
-| ReverseFlow.cs:52:9:52:9 | [post] access to local variable b [Reverse] : A [field Nested, field Field] : String | semmle.label | [post] access to local variable b [Reverse] : A [field Nested, field Field] : String |
-| ReverseFlow.cs:52:20:52:20 | access to parameter a [Reverse] : A [field Field] : String | semmle.label | access to parameter a [Reverse] : A [field Field] : String |
-| ReverseFlow.cs:52:20:52:20 | access to parameter a [Reverse] : A [field Field] : String | semmle.label | access to parameter a [Reverse] : A [field Field] : String |
-| ReverseFlow.cs:53:12:53:12 | [post] access to local variable b : A [field Nested, field Field] : String | semmle.label | [post] access to local variable b : A [field Nested, field Field] : String |
-| ReverseFlow.cs:53:12:53:12 | [post] access to local variable b : A [field Nested, field Field] : String | semmle.label | [post] access to local variable b : A [field Nested, field Field] : String |
-| ReverseFlow.cs:56:22:56:22 | a [Reverse] : A [field Nested, field Field] : String | semmle.label | a [Reverse] : A [field Nested, field Field] : String |
-| ReverseFlow.cs:56:22:56:22 | a [Reverse] : A [field Nested, field Field] : String | semmle.label | a [Reverse] : A [field Nested, field Field] : String |
-| ReverseFlow.cs:58:9:58:9 | [post] access to parameter a : A [field Nested, field Field] : String | semmle.label | [post] access to parameter a : A [field Nested, field Field] : String |
-| ReverseFlow.cs:58:9:58:9 | [post] access to parameter a : A [field Nested, field Field] : String | semmle.label | [post] access to parameter a : A [field Nested, field Field] : String |
-| ReverseFlow.cs:58:9:58:16 | [post] access to field Nested : A [field Field] : String | semmle.label | [post] access to field Nested : A [field Field] : String |
-| ReverseFlow.cs:58:9:58:16 | [post] access to field Nested : A [field Field] : String | semmle.label | [post] access to field Nested : A [field Field] : String |
-| ReverseFlow.cs:58:26:58:42 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
-| ReverseFlow.cs:58:26:58:42 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
 | ReverseFlow.cs:66:9:66:26 | [post] call to method GetNestedNested : A [field Field] : String | semmle.label | [post] call to method GetNestedNested : A [field Field] : String |
 | ReverseFlow.cs:66:9:66:26 | [post] call to method GetNestedNested : A [field Field] : String | semmle.label | [post] call to method GetNestedNested : A [field Field] : String |
 | ReverseFlow.cs:66:9:66:26 | call to method GetNestedNested [Reverse] : A [field Field] : String | semmle.label | call to method GetNestedNested [Reverse] : A [field Field] : String |
@@ -204,8 +162,6 @@ testFailures
 | ReverseFlow.cs:11:14:11:27 | access to field Field | ReverseFlow.cs:22:19:22:35 | call to method Source<String> : String | ReverseFlow.cs:11:14:11:27 | access to field Field | $@ | ReverseFlow.cs:22:19:22:35 | call to method Source<String> : String | call to method Source<String> : String |
 | ReverseFlow.cs:28:14:28:30 | access to field Field | ReverseFlow.cs:39:22:39:38 | call to method Source<String> : String | ReverseFlow.cs:28:14:28:30 | access to field Field | $@ | ReverseFlow.cs:39:22:39:38 | call to method Source<String> : String | call to method Source<String> : String |
 | ReverseFlow.cs:28:14:28:30 | access to field Field | ReverseFlow.cs:39:22:39:38 | call to method Source<String> : String | ReverseFlow.cs:28:14:28:30 | access to field Field | $@ | ReverseFlow.cs:39:22:39:38 | call to method Source<String> : String | call to method Source<String> : String |
-| ReverseFlow.cs:46:14:46:20 | access to field Field | ReverseFlow.cs:58:26:58:42 | call to method Source<String> : String | ReverseFlow.cs:46:14:46:20 | access to field Field | $@ | ReverseFlow.cs:58:26:58:42 | call to method Source<String> : String | call to method Source<String> : String |
-| ReverseFlow.cs:46:14:46:20 | access to field Field | ReverseFlow.cs:58:26:58:42 | call to method Source<String> : String | ReverseFlow.cs:46:14:46:20 | access to field Field | $@ | ReverseFlow.cs:58:26:58:42 | call to method Source<String> : String | call to method Source<String> : String |
 | ReverseFlow.cs:67:14:67:34 | access to field Field | ReverseFlow.cs:66:36:66:52 | call to method Source<String> : String | ReverseFlow.cs:67:14:67:34 | access to field Field | $@ | ReverseFlow.cs:66:36:66:52 | call to method Source<String> : String | call to method Source<String> : String |
 | ReverseFlow.cs:67:14:67:34 | access to field Field | ReverseFlow.cs:66:36:66:52 | call to method Source<String> : String | ReverseFlow.cs:67:14:67:34 | access to field Field | $@ | ReverseFlow.cs:66:36:66:52 | call to method Source<String> : String | call to method Source<String> : String |
 | ReverseFlow.cs:81:14:81:20 | access to field Field | ReverseFlow.cs:80:19:80:35 | call to method Source<String> : String | ReverseFlow.cs:81:14:81:20 | access to field Field | $@ | ReverseFlow.cs:80:19:80:35 | call to method Source<String> : String | call to method Source<String> : String |
