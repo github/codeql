@@ -416,11 +416,11 @@ additional taint step from the first argument of ``resolveSymlinks`` to its resu
 
     // ...
 
-    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       exists(DataFlow::CallNode c |
         c = DataFlow::moduleImport("resolve-symlinks").getACall() and
-        pred = c.getArgument(0) and
-        succ = c
+        node1 = c.getArgument(0) and
+        node2 = c
       )
     }
   }
@@ -431,11 +431,11 @@ to wrap it in a new subclass of ``TaintTracking::SharedTaintStep`` like this:
 .. code-block:: ql
 
   class StepThroughResolveSymlinks extends TaintTracking::SharedTaintStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
       exists(DataFlow::CallNode c |
         c = DataFlow::moduleImport("resolve-symlinks").getACall() and
-        pred = c.getArgument(0) and
-        succ = c
+        node1 = c.getArgument(0) and
+        node2 = c
       )
     }
   }
