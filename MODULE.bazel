@@ -29,6 +29,7 @@ bazel_dep(name = "gazelle", version = "0.40.0")
 bazel_dep(name = "rules_dotnet", version = "0.17.4")
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
 bazel_dep(name = "rules_rust", version = "0.52.2")
+bazel_dep(name = "zstd", version = "1.5.5.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
 
@@ -95,10 +96,12 @@ use_repo(
     swift_deps,
     "binlog",
     "picosha2",
-    "swift_prebuilt_darwin_x86_64",
-    "swift_prebuilt_linux",
-    "swift_toolchain_linux",
-    "swift_toolchain_macos",
+    "swift-prebuilt-linux",
+    "swift-prebuilt-linux-download-only",
+    "swift-prebuilt-macos",
+    "swift-prebuilt-macos-download-only",
+    "swift-resource-dir-linux",
+    "swift-resource-dir-macos",
 )
 
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
@@ -188,16 +191,6 @@ lfs_files(
     name = "ripunzip-macos",
     srcs = ["//misc/ripunzip:ripunzip-macos"],
     executable = True,
-)
-
-lfs_files(
-    name = "swift-resource-dir-linux",
-    srcs = ["//swift/third_party/resource-dir:resource-dir-linux.zip"],
-)
-
-lfs_files(
-    name = "swift-resource-dir-macos",
-    srcs = ["//swift/third_party/resource-dir:resource-dir-macos.zip"],
 )
 
 register_toolchains(

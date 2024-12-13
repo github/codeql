@@ -1,1 +1,17 @@
 | P<Int, String> | getName: | P<Int, String> | getCanonicalType: | P<Int, String> | getBase: | P | getNumberOfArgs: | 2 |
+| RawRepresentable<Bool> | getName: | RawRepresentable<Bool> | getCanonicalType: | RawRepresentable<Bool> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<Double> | getName: | RawRepresentable<Double> | getCanonicalType: | RawRepresentable<Double> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<Float> | getName: | RawRepresentable<Float> | getCanonicalType: | RawRepresentable<Float> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<Int8> | getName: | RawRepresentable<Int8> | getCanonicalType: | RawRepresentable<Int8> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<Int16> | getName: | RawRepresentable<Int16> | getCanonicalType: | RawRepresentable<Int16> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<Int32> | getName: | RawRepresentable<Int32> | getCanonicalType: | RawRepresentable<Int32> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<Int64> | getName: | RawRepresentable<Int64> | getCanonicalType: | RawRepresentable<Int64> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<Int128> | getName: | RawRepresentable<Int128> | getCanonicalType: | RawRepresentable<Int128> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<Int> | getName: | RawRepresentable<Int> | getCanonicalType: | RawRepresentable<Int> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<String> | getName: | RawRepresentable<String> | getCanonicalType: | RawRepresentable<String> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<UInt8> | getName: | RawRepresentable<UInt8> | getCanonicalType: | RawRepresentable<UInt8> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<UInt16> | getName: | RawRepresentable<UInt16> | getCanonicalType: | RawRepresentable<UInt16> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<UInt32> | getName: | RawRepresentable<UInt32> | getCanonicalType: | RawRepresentable<UInt32> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<UInt64> | getName: | RawRepresentable<UInt64> | getCanonicalType: | RawRepresentable<UInt64> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<UInt128> | getName: | RawRepresentable<UInt128> | getCanonicalType: | RawRepresentable<UInt128> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |
+| RawRepresentable<UInt> | getName: | RawRepresentable<UInt> | getCanonicalType: | RawRepresentable<UInt> | getBase: | RawRepresentable | getNumberOfArgs: | 1 |

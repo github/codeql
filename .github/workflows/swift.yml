@@ -50,17 +50,10 @@ jobs:
       - uses: ./swift/actions/build-and-test
   build-and-test-linux:
     if: github.repository_owner == 'github'
-    runs-on: ubuntu-latest-xl
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
-  qltests-linux:
-    if: github.repository_owner == 'github'
-    needs: build-and-test-linux
-    runs-on: ubuntu-latest-xl
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./swift/actions/run-ql-tests
   qltests-macos:
     if: ${{ github.repository_owner == 'github' && github.event_name == 'pull_request' }}
     needs: build-and-test-macos
@@ -109,3 +102,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/fetch-codeql
       - uses: ./swift/actions/database-upgrade-scripts
+  check-no-override:
+    if : github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - shell: bash
+        run: bazel test //swift/... --test_tag_filters=override --test_output=errors

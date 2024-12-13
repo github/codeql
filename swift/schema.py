@@ -1016,6 +1016,7 @@ class DoStmt(LabeledStmt):
     body: BraceStmt | child
 
 class ForEachStmt(LabeledStmt):
+    variables: list[VarDecl] | child
     pattern: Pattern | child
     where: optional[Expr] | child
     iteratorVar: optional[PatternBindingDecl] | child

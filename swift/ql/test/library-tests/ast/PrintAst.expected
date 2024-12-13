@@ -702,6 +702,8 @@ cfg.swift:
 #  155|     getVariable(1): [ConcreteVarDecl] xOptional
 #  155|         Type = Int?
 #  138|     getElement(0): [ForEachStmt] for ... in ... { ... }
+#  138|       getVariable(0): [ConcreteVarDecl] $generator
+#  138|           Type = IndexingIterator<ClosedRange<Int>>
 #  138|       getPattern(): [AnyPattern] _
 #-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
 #  138|         getInit(0): [CallExpr] call to makeIterator()
@@ -844,8 +846,6 @@ cfg.swift:
 #  158|       getElse(): [BraceStmt] { ... }
 #  159|         getElement(0): [ReturnStmt] return ...
 #  159|           getResult(): [BooleanLiteralExpr] false
-#  138| [ConcreteVarDecl] $generator
-#  138|     Type = IndexingIterator<ClosedRange<Int>>
 #  141| [ConcreteVarDecl] $match
 #  141|     Type = Int
 #  141| [ConcreteVarDecl] $match
@@ -3259,6 +3259,10 @@ cfg.swift:
 #  525|                   getExpr(): [ExplicitClosureExpr] { ... }
 #  525|                     getBody(): [BraceStmt] { ... }
 #  526|                       getElement(0): [ForEachStmt] for ... in ... { ... }
+#  526|                         getVariable(0): [ConcreteVarDecl] i
+#  526|                             Type = Int
+#  526|                         getVariable(1): [ConcreteVarDecl] $i$generator
+#  526|                             Type = IndexingIterator<ClosedRange<Int>>
 #  526|                         getPattern(): [NamedPattern] i
 #-----|                         getIteratorVar(): [PatternBindingDecl] var ... = ...
 #  526|                           getInit(0): [CallExpr] call to makeIterator()
@@ -3291,8 +3295,13 @@ cfg.swift:
 #  529|                           getBase(): [DeclRefExpr] continuation
 #  529|                           getMethodRef(): [DeclRefExpr] finish()
 #  527|                     getCapture(0): [CapturedDecl] continuation
+#  525|                   getExpr().getFullyConverted(): [FunctionConversionExpr] (@isolated(any) () async -> ()) ...
 #  523|       getPattern(0): [NamedPattern] stream
 #  533|     getElement(1): [ForEachStmt] for ... in ... { ... }
+#  533|       getVariable(0): [ConcreteVarDecl] i
+#  533|           Type = Int
+#  533|       getVariable(1): [ConcreteVarDecl] $i$generator
+#  533|           Type = AsyncStream<Int>.Iterator
 #  533|       getPattern(): [NamedPattern] i
 #-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
 #  533|         getInit(0): [CallExpr] call to makeAsyncIterator()
@@ -3306,7 +3315,7 @@ cfg.swift:
 #  533|           getBase(): [DeclRefExpr] $i$generator
 #  533|           getBase().getFullyConverted(): [InOutExpr] &...
 #-----|           getMethodRef(): [DeclRefExpr] next()
-#-----|       getNextCall().getFullyConverted(): [AwaitExpr] await ...
+#  533|       getNextCall().getFullyConverted(): [AwaitExpr] await ...
 #  533|       getBody(): [BraceStmt] { ... }
 #  534|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #  534|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -3320,14 +3329,6 @@ cfg.swift:
 #  534|           getArgument(2): [Argument] terminator: default terminator
 #  534|             getExpr(): [DefaultArgumentExpr] default terminator
 #  525| [NilLiteralExpr] nil
-#  526| [ConcreteVarDecl] i
-#  526|     Type = Int
-#  526| [ConcreteVarDecl] $i$generator
-#  526|     Type = IndexingIterator<ClosedRange<Int>>
-#  533| [ConcreteVarDecl] i
-#  533|     Type = Int
-#  533| [ConcreteVarDecl] $i$generator
-#  533|     Type = AsyncStream<Int>.Iterator
 #  538| [NamedFunction] testNilCoalescing(x:)
 #  538|     InterfaceType = (Int?) -> Int
 #  538|   getParam(0): [ParamDecl] x
@@ -5137,7 +5138,6 @@ expressions.swift:
 #   60|                 getFunction(): [DeclRefExpr] unsafeFunction(pointer:)
 #   60|                 getArgument(0): [Argument] pointer: $0
 #   60|                   getExpr(): [DeclRefExpr] $0
-#   60|         getExpr().getFullyConverted(): [FunctionConversionExpr] ((UnsafePointer<Int>) throws -> ()) ...
 #   62| [ClassDecl] FailingToInit
 #   63|   getMember(0): [Initializer] FailingToInit.init(x:)
 #   63|       InterfaceType = (FailingToInit.Type) -> (Int) -> FailingToInit?
@@ -5972,12 +5972,12 @@ expressions.swift:
 #  179|   getBody(): [BraceStmt] { ... }
 #  179|     getElement(0): [PatternBindingDecl] var ... = ...
 #  179|       getInit(0): [KeyPathExpr] #keyPath(...)
-#  179|         getRoot(): [TypeRepr] Int?
+#  179|         getRoot(): [TypeRepr] Optional<Int>
 #  179|         getComponent(0): [KeyPathComponent] KeyPathComponent
 #  179|         getComponent(1): [KeyPathComponent] KeyPathComponent
 #  179|       getPattern(0): [NamedPattern] optForce
 #  179| [ConcreteVarDecl] optForce
-#  179|     Type = WritableKeyPath<Int?, Int>
+#  179|     Type = WritableKeyPath<Optional<Int>, Int>
 #  180| [TopLevelCodeDecl] { ... }
 #  180|   getBody(): [BraceStmt] { ... }
 #  180|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -6936,6 +6936,10 @@ statements.swift:
 #    9|     getVariable(0): [ConcreteVarDecl] i
 #    9|         Type = Int
 #    2|     getElement(0): [ForEachStmt] for ... in ... { ... }
+#    2|       getVariable(0): [ConcreteVarDecl] i
+#    2|           Type = Int
+#    2|       getVariable(1): [ConcreteVarDecl] $i$generator
+#    2|           Type = IndexingIterator<ClosedRange<Int>>
 #    2|       getPattern(): [NamedPattern] i
 #-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
 #    2|         getInit(0): [CallExpr] call to makeIterator()
@@ -7097,10 +7101,6 @@ statements.swift:
 #   30|               getExpr(): [DefaultArgumentExpr] default separator
 #   30|             getArgument(2): [Argument] terminator: default terminator
 #   30|               getExpr(): [DefaultArgumentExpr] default terminator
-#    2| [ConcreteVarDecl] i
-#    2|     Type = Int
-#    2| [ConcreteVarDecl] $i$generator
-#    2|     Type = IndexingIterator<ClosedRange<Int>>
 #   34| [EnumDecl] AnError
 #   35|   getMember(0): [EnumCaseDecl] case ...
 #   35|   getMember(1): [EnumElementDecl] failed
@@ -7371,6 +7371,10 @@ statements.swift:
 #   71| [TopLevelCodeDecl] { ... }
 #   71|   getBody(): [BraceStmt] { ... }
 #   71|     getElement(0): [ForEachStmt] for ... in ... where ... { ... }
+#   71|       getVariable(0): [ConcreteVarDecl] number
+#   71|           Type = Int
+#   71|       getVariable(1): [ConcreteVarDecl] $number$generator
+#   71|           Type = IndexingIterator<[Int]>
 #   71|       getPattern(): [NamedPattern] number
 #   71|       getWhere(): [BinaryExpr] ... .==(_:_:) ...
 #   71|         getFunction(): [MethodLookupExpr] .==(_:_:)
@@ -7401,10 +7405,6 @@ statements.swift:
 #   71|           getBase().getFullyConverted(): [InOutExpr] &...
 #-----|           getMethodRef(): [DeclRefExpr] next()
 #   71|       getBody(): [BraceStmt] { ... }
-#   71| [ConcreteVarDecl] number
-#   71|     Type = Int
-#   71| [ConcreteVarDecl] $number$generator
-#   71|     Type = IndexingIterator<[Int]>
 #   74| [StructDecl] HasModifyAccessorDecl
 #   75|   getMember(0): [PatternBindingDecl] var ... = ...
 #   75|     getPattern(0): [TypedPattern] ... as ...

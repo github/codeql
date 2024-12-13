@@ -113,3 +113,8 @@ In particular for breakpoints to work you might need to setup the following remo
 ### Thread safety
 
 The extractor is single-threaded, and there was no effort to make anything in it thread-safe.
+
+### Updating the swift compiler version
+
+This can only be done with access to the internal repository at the moment. Some (incomplete) instructions are
+found [here](third_party/resources/updating.md).
