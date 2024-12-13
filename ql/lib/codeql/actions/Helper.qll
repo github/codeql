@@ -50,10 +50,12 @@ string getRepoRoot() {
           .getRelativePath()
           .prefix(w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") + 1) and
     // exclude workflow_enum reusable workflows directory root
-    not result.indexOf(".github/reusable_workflows/") > -1
+    not result.indexOf(".github/workflows/external/") > -1 and
+    not result.indexOf(".github/actions/external/") > -1
     or
     not w.getLocation().getFile().getRelativePath().indexOf("/.github/workflows") > 0 and
-    not w.getLocation().getFile().getRelativePath().indexOf(".github/reusable_workflows") > -1 and
+    not w.getLocation().getFile().getRelativePath().indexOf(".github/workflows/external/") > -1 and
+    not w.getLocation().getFile().getRelativePath().indexOf(".github/actions/external/") > -1 and
     result = ""
   )
 }
