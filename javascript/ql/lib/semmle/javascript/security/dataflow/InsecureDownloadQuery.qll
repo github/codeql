@@ -29,7 +29,7 @@ module InsecureDownloadConfig implements DataFlow::StateConfigSig {
 /**
  * Taint tracking for download of sensitive file through insecure connection.
  */
-module InsecureDownload = DataFlow::GlobalWithState<InsecureDownloadConfig>;
+module InsecureDownloadFlow = DataFlow::GlobalWithState<InsecureDownloadConfig>;
 
 /**
  * DEPRECATED. Use the `InsecureDownload` module instead.
