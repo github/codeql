@@ -21,6 +21,7 @@ module HardcodedDataInterpretedAsCode {
       this = TModified() and result = "modified"
     }
 
+    /** Gets the corresponding flow label. */
     deprecated DataFlow::FlowLabel toFlowLabel() {
       this = TUnmodified() and result.isData()
       or
@@ -30,6 +31,7 @@ module HardcodedDataInterpretedAsCode {
 
   /** Predicates for working with flow states. */
   module FlowState {
+    /** Gets the flow state corresponding to `label`. */
     deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
 
     /** An unmodified value originating from a string constant. */

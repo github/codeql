@@ -23,6 +23,7 @@ module InsecureDownload {
       this = TInsecureUrl() and result = "insecure-url"
     }
 
+    /** Gets the corresponding flow label. */
     deprecated DataFlow::FlowLabel toFlowLabel() {
       this = TSensitiveInsecureUrl() and result instanceof Label::SensitiveInsecureUrl
       or
@@ -32,6 +33,7 @@ module InsecureDownload {
 
   /** Predicates for working with flow states. */
   module FlowState {
+    /** Gets the flow state corresponding to `label`. */
     deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
 
     /**

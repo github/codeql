@@ -23,6 +23,7 @@ module UnsafeDynamicMethodAccess {
       this = TUnsafeFunction() and result = "unsafe-function"
     }
 
+    /** Gets the corresponding flow label. */
     deprecated DataFlow::FlowLabel toFlowLabel() {
       this = TTaint() and result.isTaint()
       or
@@ -32,6 +33,7 @@ module UnsafeDynamicMethodAccess {
 
   /** Predicates for working with flow states. */
   module FlowState {
+    /** Gets the flow state corresponding to `label`. */
     deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
 
     /** A tainted value. */

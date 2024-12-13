@@ -26,6 +26,9 @@ module TaintedObject {
     ConcreteTaintedObjectLabel() { this = this }
   }
 
+  /**
+   * DEPRECATED. Use `isAdditionalFlowStep(node1, state1, node2, state2)` instead.
+   */
   deprecated predicate step(Node src, Node trg, FlowLabel inlbl, FlowLabel outlbl) {
     isAdditionalFlowStep(src, FlowState::fromFlowLabel(inlbl), trg, FlowState::fromFlowLabel(outlbl))
   }
