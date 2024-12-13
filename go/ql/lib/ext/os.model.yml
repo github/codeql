@@ -46,6 +46,7 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
+      - ["os", "", False, "Args", "", "", "", "commandargs", "manual"]
       - ["os", "", False, "Environ", "", "", "ReturnValue", "environment", "manual"] # TODO: when sources can have access paths, use .ArrayElement
       - ["os", "", False, "ExpandEnv", "", "", "ReturnValue", "environment", "manual"]
       - ["os", "", False, "Getenv", "", "", "ReturnValue", "environment", "manual"]
