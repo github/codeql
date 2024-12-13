@@ -5,6 +5,7 @@ load(
     "codeql_pkg_files",
     "codeql_pkg_runfiles",
 )
+load("//misc/bazel:utils.bzl", "select_os")
 
 filegroup(
     name = "schema",
@@ -30,35 +31,31 @@ codeql_pkg_files(
 )
 
 codeql_pkg_runfiles(
-    name = "autobuilder",
+    name = "autobuilder-files",
     exes = ["//swift/swift-autobuilder"],
 )
 
 pkg_filegroup(
-    name = "tools-arch",
-    srcs = select({
-        "@platforms//os:macos": [
-            ":autobuilder",
-            "//swift/extractor:pkg",
+    name = "autobuilder",
+    srcs = select_os(
+        macos = [
+            ":autobuilder-files",
         ],
-        "@platforms//os:linux": [
-            ":autobuilder-incompatible-os",
-            "//swift/extractor:pkg",
-        ],
-        "@platforms//os:windows": [
+        otherwise = [
             ":autobuilder-incompatible-os",
         ],
-    }),
-    prefix = "{CODEQL_PLATFORM}",
+    ),
+    prefix = "tools/{CODEQL_PLATFORM}",
 )
 
 pkg_filegroup(
-    name = "tools",
-    srcs = [
-        ":tools-arch",
-        "//swift/tools",
-    ],
-    prefix = "tools",
+    name = "extractor",
+    srcs = select_os(
+        posix = [
+            "//swift/extractor:pkg",
+        ],
+    ),
+    prefix = "tools/{CODEQL_PLATFORM}",
 )
 
 codeql_pkg_files(
@@ -70,22 +67,51 @@ codeql_pkg_files(
     ],
 )
 
-codeql_pack(
-    name = "swift",
+pkg_filegroup(
+    name = "common",
     srcs = [
+        ":autobuilder",
         ":root-files",
-        ":tools",
         "//swift/downgrades",
     ],
-    zips = select({
-        "@platforms//os:windows": {},
-        "//conditions:default": {
-            "//swift/third_party/resources:dir": "resource-dir/{CODEQL_PLATFORM}",
-        },
-    }),
 )
+
+zip_map = {
+    "//swift/third_party/resources:dir": "resource-dir/{CODEQL_PLATFORM}",
+}
+
+[
+    codeql_pack(
+        name = "swift-linux-included" if linux_included else "swift",
+        srcs = [
+            ":common",
+        ] + select_os(
+            linux = [":extractor"] if linux_included else [],
+            macos = [":extractor"],
+            windows = [],
+        ),
+        installer_alias = "install-linux" if linux_included else "install-other",
+        zips = select_os(
+            linux = zip_map if linux_included else {},
+            macos = zip_map,
+            windows = {},
+        ),
+    )
+    for linux_included in [
+        True,
+        False,
+    ]
+]
 
 alias(
     name = "create-extractor-pack",
     actual = ":swift-installer",
+)
+
+alias(
+    name = "install",
+    actual = select_os(
+        linux = ":install-linux",
+        otherwise = ":install-other",
+    ),
 )
