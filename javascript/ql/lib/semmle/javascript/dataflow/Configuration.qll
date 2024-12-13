@@ -295,6 +295,9 @@ deprecated private predicate isBarrierGuardInternal(
 }
 
 /**
+ * DEPRECATED. Use a query-specific `FlowState` class instead.
+ * See [guide on using flow state](https://codeql.github.com/docs/codeql-language-guides/using-flow-labels-for-precise-data-flow-analysis) for more details.
+ *
  * A label describing the kind of information tracked by a flow configuration.
  *
  * There are two standard labels "data" and "taint".
@@ -303,7 +306,7 @@ deprecated private predicate isBarrierGuardInternal(
  * - "taint" additionally permits flow through transformations such as string operations,
  *   and is the default flow source for a `TaintTracking::Configuration`.
  */
-abstract class FlowLabel extends string {
+abstract deprecated class FlowLabel extends string {
   bindingset[this]
   FlowLabel() { any() }
 
@@ -341,7 +344,7 @@ deprecated class StandardFlowLabel extends FlowLabel {
   StandardFlowLabel() { this = "data" or this = "taint" }
 }
 
-module FlowLabel {
+deprecated module FlowLabel {
   /**
    * Gets the standard flow label for describing values that directly originate from a flow source.
    */

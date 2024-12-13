@@ -147,10 +147,12 @@ class LegacyFlowStep extends Unit {
   predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
   /**
+   * DEPRECATED. The `FlowLabel` class and steps involving flow labels are no longer used by any queries.
+   *
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge
    * transforming values with label `predlbl` to have label `succlbl`.
    */
-  predicate step(
+  deprecated predicate step(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
     DataFlow::FlowLabel succlbl
   ) {
@@ -199,11 +201,13 @@ module LegacyFlowStep {
   }
 
   /**
+   * DEPRECATED. The `FlowLabel` class and steps involving flow labels are no longer used by any queries.
+   *
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge
    * transforming values with label `predlbl` to have label `succlbl`.
    */
   cached
-  predicate step(
+  deprecated predicate step(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
     DataFlow::FlowLabel succlbl
   ) {
@@ -273,10 +277,12 @@ class SharedFlowStep extends Unit {
   predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
   /**
+   * DEPRECATED. The `FlowLabel` class and steps involving flow labels are no longer used by any queries.
+   *
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge
    * transforming values with label `predlbl` to have label `succlbl`.
    */
-  predicate step(
+  deprecated predicate step(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
     DataFlow::FlowLabel succlbl
   ) {
@@ -353,10 +359,12 @@ module SharedFlowStep {
 
   // The following are aliases for old step predicates that have no corresponding predicate in AdditionalFlowStep
   /**
+   * DEPRECATED. The `FlowLabel` class and steps involving flow labels are no longer used by any queries.
+   *
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge
    * transforming values with label `predlbl` to have label `succlbl`.
    */
-  predicate step(
+  deprecated predicate step(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
     DataFlow::FlowLabel succlbl
   ) {

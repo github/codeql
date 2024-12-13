@@ -36,17 +36,19 @@ module MakeBarrierGuard<BarrierGuardSig BaseGuard> {
   }
 }
 
-private signature class LabeledBarrierGuardSig extends DataFlow::Node {
-  /**
-   * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
-   */
-  predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label);
+deprecated private module DeprecationWrapper {
+  signature class LabeledBarrierGuardSig extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label);
+  }
 }
 
 /**
  * Converts a barrier guard class to a set of nodes to include in an implementation of `isBarrier(node, label)`.
  */
-module MakeLabeledBarrierGuard<LabeledBarrierGuardSig BaseGuard> {
+deprecated module MakeLabeledBarrierGuard<DeprecationWrapper::LabeledBarrierGuardSig BaseGuard> {
   final private class FinalBaseGuard = BaseGuard;
 
   private class Adapter extends FinalBaseGuard {
