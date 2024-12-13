@@ -330,7 +330,7 @@ module Node {
     override ReturnKind getKind() { result = rk }
   }
 
-  /** A data-flow node that represents the output of a call. */
+  /** A data flow node that represents the output of a call. */
   abstract class OutNode extends Node {
     /** Gets the underlying call for this node. */
     abstract DataFlowCall getCall(ReturnKind kind);

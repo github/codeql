@@ -30,7 +30,7 @@ module Cryptography {
   class PasswordHashingAlgorithm = CryptoAlgorithms::PasswordHashingAlgorithm;
 
   /**
-   * A data-flow node that is an application of a cryptographic algorithm. For example,
+   * A data flow node that is an application of a cryptographic algorithm. For example,
    * encryption, decryption, signature-validation.
    *
    * Extend this class to refine existing API models. If you want to model new APIs,
@@ -40,7 +40,7 @@ module Cryptography {
     /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
     CryptographicAlgorithm getAlgorithm() { result = super.getAlgorithm() }
 
-    /** Gets the data-flow node where the cryptographic algorithm used in this operation is configured. */
+    /** Gets the data flow node where the cryptographic algorithm used in this operation is configured. */
     DataFlow::Node getInitialization() { result = super.getInitialization() }
 
     /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
@@ -61,14 +61,14 @@ module Cryptography {
   /** Provides classes for modeling new applications of a cryptographic algorithms. */
   module CryptographicOperation {
     /**
-     * A data-flow node that is an application of a cryptographic algorithm. For example,
+     * A data flow node that is an application of a cryptographic algorithm. For example,
      * encryption, decryption, signature-validation.
      *
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `CryptographicOperation` instead.
      */
     abstract class Range extends DataFlow::Node {
-      /** Gets the data-flow node where the cryptographic algorithm used in this operation is configured. */
+      /** Gets the data flow node where the cryptographic algorithm used in this operation is configured. */
       abstract DataFlow::Node getInitialization();
 
       /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
@@ -118,14 +118,14 @@ module Http {
   /** Provides classes for modeling HTTP clients. */
   module Client {
     /**
-     * A data-flow node that makes an outgoing HTTP request.
+     * A data flow node that makes an outgoing HTTP request.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `Http::Client::Request::Range` instead.
      */
     class Request extends DataFlow::Node instanceof Request::Range {
       /**
-       * Gets a data-flow node that contributes to the URL of the request.
+       * Gets a data flow node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
       DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
@@ -150,14 +150,14 @@ module Http {
     /** Provides a class for modeling new HTTP requests. */
     module Request {
       /**
-       * A data-flow node that makes an outgoing HTTP request.
+       * A data flow node that makes an outgoing HTTP request.
        *
        * Extend this class to model new APIs. If you want to refine existing API models,
        * extend `Http::Client::Request` instead.
        */
       abstract class Range extends DataFlow::Node {
         /**
-         * Gets a data-flow node that contributes to the URL of the request.
+         * Gets a data flow node that contributes to the URL of the request.
          * Depending on the framework, a request may have multiple nodes which contribute to the URL.
          */
         abstract DataFlow::Node getAUrlPart();

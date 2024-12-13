@@ -105,7 +105,7 @@ module RemoteSource {
 }
 
 /**
- * A data-flow node that constructs a SQL statement (for later execution).
+ * A data flow node that constructs a SQL statement (for later execution).
  *
  * Often, it is worthy of an alert if a SQL statement is constructed such that
  * executing it would be a security risk.
@@ -122,7 +122,7 @@ final class SqlConstruction = SqlConstruction::Range;
  */
 module SqlConstruction {
   /**
-   * A data-flow node that constructs a SQL statement.
+   * A data flow node that constructs a SQL statement.
    */
   abstract class Range extends DataFlow::Node {
     /**
@@ -133,7 +133,7 @@ module SqlConstruction {
 }
 
 /**
- * A data-flow node that constructs and executes SQL statements.
+ * A data flow node that constructs and executes SQL statements.
  *
  * If the context of interest is such that merely constructing a SQL statement
  * would be valuable to report, consider also using `SqlConstruction`.
@@ -148,7 +148,7 @@ final class SqlExecution = SqlExecution::Range;
  */
 module SqlExecution {
   /**
-   * A data-flow node that executes SQL statements.
+   * A data flow node that executes SQL statements.
    */
   abstract class Range extends DataFlow::Node {
     /**
@@ -159,7 +159,7 @@ module SqlExecution {
 }
 
 /**
- * A data-flow node that performs SQL sanitization.
+ * A data flow node that performs SQL sanitization.
  */
 final class SqlSanitization = SqlSanitization::Range;
 
@@ -168,7 +168,28 @@ final class SqlSanitization = SqlSanitization::Range;
  */
 module SqlSanitization {
   /**
-   * A data-flow node that performs SQL sanitization.
+   * A data flow node that performs SQL sanitization.
    */
   abstract class Range extends DataFlow::Node { }
+}
+
+/**
+ * Provides models for cryptographic things.
+ */
+module Cryptography {
+  private import codeql.rust.internal.ConceptsShared::Cryptography as SC
+
+  final class CryptographicOperation = SC::CryptographicOperation;
+
+  class EncryptionAlgorithm = SC::EncryptionAlgorithm;
+
+  class HashingAlgorithm = SC::HashingAlgorithm;
+
+  class PasswordHashingAlgorithm = SC::PasswordHashingAlgorithm;
+
+  module CryptographicOperation = SC::CryptographicOperation;
+
+  class BlockMode = SC::BlockMode;
+
+  class CryptographicAlgorithm = SC::CryptographicAlgorithm;
 }

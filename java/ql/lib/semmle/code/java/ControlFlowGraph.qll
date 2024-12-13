@@ -104,31 +104,6 @@ module ControlFlow {
 
   /** A node in the expression-level control-flow graph. */
   class Node extends TNode {
-    /** Gets the statement containing this node, if any. */
-    Stmt getEnclosingStmt() {
-      result = this.asStmt() or
-      result = this.asExpr().getEnclosingStmt()
-    }
-
-    /** Gets the immediately enclosing callable whose body contains this node. */
-    Callable getEnclosingCallable() {
-      this = TExitNode(result) or
-      result = this.asStmt().getEnclosingCallable() or
-      result = this.asExpr().getEnclosingCallable()
-    }
-
-    /** Gets the statement this `Node` corresponds to, if any. */
-    Stmt asStmt() { this = TStmtNode(result) }
-
-    /** Gets the expression this `Node` corresponds to, if any. */
-    Expr asExpr() { this = TExprNode(result) }
-
-    /** Gets the call this `Node` corresponds to, if any. */
-    Call asCall() {
-      result = this.asExpr() or
-      result = this.asStmt()
-    }
-
     /** Gets an immediate successor of this node. */
     Node getASuccessor() { result = succ(this) }
 
@@ -147,34 +122,88 @@ module ControlFlow {
     /** Gets the basic block that contains this node. */
     BasicBlock getBasicBlock() { result.getANode() = this }
 
-    /** Gets a textual representation of this element. */
-    string toString() {
-      result = this.asExpr().toString()
-      or
-      result = this.asStmt().toString()
-      or
-      result = "Exit" and this instanceof ExitNode
+    /** Gets the statement containing this node, if any. */
+    Stmt getEnclosingStmt() { none() }
+
+    /** Gets the immediately enclosing callable whose body contains this node. */
+    Callable getEnclosingCallable() { none() }
+
+    /** Gets the statement this `Node` corresponds to, if any. */
+    Stmt asStmt() { this = TStmtNode(result) }
+
+    /** Gets the expression this `Node` corresponds to, if any. */
+    Expr asExpr() { this = TExprNode(result) }
+
+    /** Gets the call this `Node` corresponds to, if any. */
+    Call asCall() {
+      result = this.asExpr() or
+      result = this.asStmt()
     }
 
+    /** Gets a textual representation of this element. */
+    string toString() { none() }
+
     /** Gets the source location for this element. */
-    Location getLocation() {
-      result = this.asExpr().getLocation() or
-      result = this.asStmt().getLocation() or
-      result = this.(ExitNode).getEnclosingCallable().getLocation()
-    }
+    Location getLocation() { none() }
 
     /**
      * Gets the most appropriate AST node for this control flow node, if any.
      */
-    ExprParent getAstNode() {
-      result = this.asExpr() or
-      result = this.asStmt() or
-      this = TExitNode(result)
-    }
+    ExprParent getAstNode() { none() }
+  }
+
+  /** A control-flow node that represents the evaluation of an expression. */
+  class ExprNode extends Node, TExprNode {
+    Expr e;
+
+    ExprNode() { this = TExprNode(e) }
+
+    override Stmt getEnclosingStmt() { result = e.getEnclosingStmt() }
+
+    override Callable getEnclosingCallable() { result = e.getEnclosingCallable() }
+
+    override ExprParent getAstNode() { result = e }
+
+    /** Gets a textual representation of this element. */
+    override string toString() { result = e.toString() }
+
+    /** Gets the source location for this element. */
+    override Location getLocation() { result = e.getLocation() }
+  }
+
+  /** A control-flow node that represents a statement. */
+  class StmtNode extends Node, TStmtNode {
+    Stmt s;
+
+    StmtNode() { this = TStmtNode(s) }
+
+    override Stmt getEnclosingStmt() { result = s }
+
+    override Callable getEnclosingCallable() { result = s.getEnclosingCallable() }
+
+    override ExprParent getAstNode() { result = s }
+
+    override string toString() { result = s.toString() }
+
+    override Location getLocation() { result = s.getLocation() }
   }
 
   /** A control flow node indicating the termination of a callable. */
-  class ExitNode extends Node, TExitNode { }
+  class ExitNode extends Node, TExitNode {
+    Callable c;
+
+    ExitNode() { this = TExitNode(c) }
+
+    override Callable getEnclosingCallable() { result = c }
+
+    override ExprParent getAstNode() { result = c }
+
+    /** Gets a textual representation of this element. */
+    override string toString() { result = "Exit" }
+
+    /** Gets the source location for this element. */
+    override Location getLocation() { result = c.getLocation() }
+  }
 }
 
 class ControlFlowNode = ControlFlow::Node;

@@ -604,6 +604,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, _) =>
                     {
+                        if (chain is null || cert is null)
+                        {
+                            var msg = cert is null && chain is null
+                                ? "certificate and chain"
+                                : chain is null
+                                    ? "chain"
+                                    : "certificate";
+                            logger.LogWarning($"Dependabot proxy certificate validation failed due to missing {msg}");
+                            return false;
+                        }
                         chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
                         chain.ChainPolicy.CustomTrustStore.Add(this.dependabotProxy.Certificate);
                         return chain.Build(cert);
