@@ -1,5 +1,7 @@
 import 'build.just'
 
+print_test_roots := ""
+
 [no-cd, positional-arguments, no-exit-message]
 @_language_tests LANGUAGE *ARGS: (_build LANGUAGE)
     shift; \
@@ -67,3 +69,26 @@ test +ARGS:  # TODO: fuzzy test chooser when no arguments are provided!
     sys.exit(ret)
 
 alias t := test
+
+[script:'python3', positional-arguments, no-exit-message]
+_test_roots KIND SOURCE_DIR *ROOTS:
+    import sys
+    import subprocess
+    import os
+    from pathlib import Path as P
+    workspace_dir = P("{{ justfile_dir() }}")
+    just = "{{ just_executable() }}"
+    kind = sys.argv[1]
+    if kind.startswith("language"):
+       _, _, language = kind.partition(" ")
+       targets = ["_language_tests", language]
+    else:
+        targets = [f"_{kind}_tests"]
+    source_dir = P(sys.argv[2])
+    roots = sys.argv[3:]
+    if os.environ.get("JUST_PRINT_TEST_ROOTS"):
+        source_dir = source_dir.relative_to(workspace_dir)
+        for root in roots:
+            print(source_dir / root)
+    else:
+        sys.exit(subprocess.run([just] + targets + roots, cwd=source_dir).returncode)
