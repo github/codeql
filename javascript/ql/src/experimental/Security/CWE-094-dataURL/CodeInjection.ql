@@ -1,5 +1,5 @@
 /**
- * @name Code injection
+ * @name Code injection from dynamically imported code
  * @description Interpreting unsanitized user input as code allows a malicious user arbitrary
  *              code execution.
  * @kind path-problem
