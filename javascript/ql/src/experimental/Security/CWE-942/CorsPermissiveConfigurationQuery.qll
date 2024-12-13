@@ -10,25 +10,26 @@
 
 import javascript
 import CorsPermissiveConfigurationCustomizations::CorsPermissiveConfiguration
+private import CorsPermissiveConfigurationCustomizations::CorsPermissiveConfiguration as CorsPermissiveConfiguration
 
 /**
  * A data flow configuration for overly permissive CORS configuration.
  */
 module CorsPermissiveConfigurationConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  class FlowState = CorsPermissiveConfiguration::FlowState;
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source instanceof TrueNullValue and label = truenullLabel()
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source instanceof TrueNullValue and state = FlowState::trueOrNull()
     or
-    source instanceof WildcardValue and label = wildcardLabel()
+    source instanceof WildcardValue and state = FlowState::wildcard()
     or
-    source instanceof RemoteFlowSource and label = DataFlow::FlowLabel::taint()
+    source instanceof RemoteFlowSource and state = FlowState::taint()
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink instanceof CorsApolloServer and label = [DataFlow::FlowLabel::taint(), truenullLabel()]
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof CorsApolloServer and state = [FlowState::taint(), FlowState::trueOrNull()]
     or
-    sink instanceof ExpressCors and label = [DataFlow::FlowLabel::taint(), wildcardLabel()]
+    sink instanceof ExpressCors and state = [FlowState::taint(), FlowState::wildcard()]
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
@@ -44,11 +45,11 @@ deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "CorsPermissiveConfiguration" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    CorsPermissiveConfigurationConfig::isSource(source, label)
+    CorsPermissiveConfigurationConfig::isSource(source, FlowState::fromFlowLabel(label))
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    CorsPermissiveConfigurationConfig::isSink(sink, label)
+    CorsPermissiveConfigurationConfig::isSink(sink, FlowState::fromFlowLabel(label))
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -57,10 +58,10 @@ deprecated class Configuration extends TaintTracking::Configuration {
   }
 }
 
-private class WildcardActivated extends DataFlow::FlowLabel, Wildcard {
+deprecated private class WildcardActivated extends DataFlow::FlowLabel, Wildcard {
   WildcardActivated() { this = this }
 }
 
-private class TrueAndNullActivated extends DataFlow::FlowLabel, TrueAndNull {
+deprecated private class TrueAndNullActivated extends DataFlow::FlowLabel, TrueAndNull {
   TrueAndNullActivated() { this = this }
 }
