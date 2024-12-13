@@ -10,6 +10,37 @@ private import javascript
  * that my cause prototype pollution.
  */
 module PrototypePollutingAssignment {
+  private newtype TFlowState =
+    TTaint() or
+    TObjectPrototype()
+
+  /** A flow state to associate with a tracked value. */
+  class FlowState extends TFlowState {
+    /** Gets a string representation fo this flow state */
+    string toString() {
+      this = TTaint() and result = "taint"
+      or
+      this = TObjectPrototype() and result = "object-prototype"
+    }
+
+    deprecated DataFlow::FlowLabel toFlowLabel() {
+      this = TTaint() and result.isTaint()
+      or
+      this = TObjectPrototype() and result instanceof ObjectPrototype
+    }
+  }
+
+  /** Predicates for working with flow states. */
+  module FlowState {
+    deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
+
+    /** A tainted value. */
+    FlowState taint() { result = TTaint() }
+
+    /** A reference to `Object.prototype` obtained by reading from a tainted property name. */
+    FlowState objectPrototype() { result = TObjectPrototype() }
+  }
+
   /**
    * A data flow source for untrusted data from which the special `__proto__` property name may be arise.
    */
@@ -30,7 +61,10 @@ module PrototypePollutingAssignment {
      * Use the `taint` label for untrusted property names, and the `ObjectPrototype` label for
      * object mutations.
      */
-    abstract DataFlow::FlowLabel getAFlowLabel();
+    FlowState getAFlowState() { result = FlowState::objectPrototype() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getAFlowLabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   /**
@@ -48,16 +82,16 @@ module PrototypePollutingAssignment {
     predicate blocksExpr(boolean outcome, Expr e) { none() }
 
     /**
-     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     * Holds if this node acts as a barrier for `state`, blocking further flow from `e` if `this` evaluates to `outcome`.
      */
-    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+    predicate blocksExpr(boolean outcome, Expr e, FlowState state) { none() }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      this.blocksExpr(outcome, e, label)
+      this.blocksExpr(outcome, e, FlowState::fromFlowLabel(label))
     }
   }
 
@@ -74,7 +108,7 @@ module PrototypePollutingAssignment {
   }
 
   /** A flow label representing the `Object.prototype` value. */
-  abstract class ObjectPrototype extends DataFlow::FlowLabel {
+  abstract deprecated class ObjectPrototype extends DataFlow::FlowLabel {
     ObjectPrototype() { this = "Object.prototype" }
   }
 
@@ -90,7 +124,7 @@ module PrototypePollutingAssignment {
       this = any(DeleteExpr del).getOperand().flow().(DataFlow::PropRef).getBase()
     }
 
-    override DataFlow::FlowLabel getAFlowLabel() { result instanceof ObjectPrototype }
+    override FlowState getAFlowState() { result = FlowState::objectPrototype() }
   }
 
   /** A remote flow source or location.{hash,search} as a taint source. */
