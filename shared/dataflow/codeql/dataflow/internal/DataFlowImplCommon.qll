@@ -84,6 +84,361 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   private module TypeTrackingInput implements Tt::TypeTrackingInput {
     final class Node = Lang::Node;
 
+    /** Provides predicates for calculating flow-through summaries. */
+    additional module FlowThrough {
+      /**
+       * The first flow-through approximation:
+       *
+       * - Input access paths are abstracted with a Boolean parameter
+       *   that indicates (non-)emptiness.
+       */
+      private module Cand {
+        /**
+         * Holds if `p` can flow to `node` in the same callable using only
+         * value-preserving steps.
+         *
+         * `read` indicates whether it is contents of `p` that can flow to `node`.
+         */
+        pragma[nomagic]
+        private predicate parameterValueFlowCand(ParamNode p, Node node, boolean read) {
+          (
+            p = node and
+            read = false
+            or
+            // local flow
+            exists(Node mid |
+              parameterValueFlowCand(p, mid, read) and
+              simpleLocalFlowStep(mid, node, _) and
+              validParameterAliasStep(mid, node)
+            )
+            or
+            // read
+            exists(Node mid |
+              parameterValueFlowCand(p, mid, false) and
+              readSet(mid, _, node) and
+              read = true
+            )
+            or
+            // flow through: no prior read
+            exists(ArgNode arg |
+              parameterValueFlowArgCand(p, arg, false) and
+              argumentValueFlowsThroughCand(arg, node, read)
+            )
+            or
+            // flow through: no read inside method
+            exists(ArgNode arg |
+              parameterValueFlowArgCand(p, arg, read) and
+              argumentValueFlowsThroughCand(arg, node, false)
+            )
+          ) and
+          not expectsContent(node, _)
+        }
+
+        pragma[nomagic]
+        private predicate parameterValueFlowArgCand(ParamNode p, ArgNode arg, boolean read) {
+          parameterValueFlowCand(p, arg, read)
+        }
+
+        pragma[nomagic]
+        predicate parameterValueFlowsToPreUpdateCand(ParamNode p, PostUpdateNode n) {
+          parameterValueFlowCand(p, n.getPreUpdateNode(), false)
+        }
+
+        /**
+         * Holds if `p` can flow to a return node of kind `kind` in the same
+         * callable using only value-preserving steps, not taking call contexts
+         * into account.
+         *
+         * `read` indicates whether it is contents of `p` that can flow to the return
+         * node.
+         */
+        predicate parameterValueFlowReturnCand(ParamNode p, ReturnKind kind, boolean read) {
+          exists(ReturnNode ret |
+            parameterValueFlowCand(p, ret, read) and
+            kind = ret.getKind()
+          )
+        }
+
+        pragma[nomagic]
+        private predicate argumentValueFlowsThroughCand0(
+          DataFlowCall call, ArgNode arg, ReturnKind kind, boolean read
+        ) {
+          exists(ParamNode param | viableParamArg(call, param, arg) |
+            parameterValueFlowReturnCand(param, kind, read)
+          )
+        }
+
+        /**
+         * Holds if `arg` flows to `out` through a call using only value-preserving steps,
+         * not taking call contexts into account.
+         *
+         * `read` indicates whether it is contents of `arg` that can flow to `out`.
+         */
+        predicate argumentValueFlowsThroughCand(ArgNode arg, Node out, boolean read) {
+          exists(DataFlowCall call, ReturnKind kind |
+            argumentValueFlowsThroughCand0(call, arg, kind, read) and
+            out = getAnOutNode(call, kind)
+          )
+        }
+
+        predicate cand(ParamNode p, Node n) {
+          parameterValueFlowCand(p, n, _) and
+          (
+            parameterValueFlowReturnCand(p, _, _)
+            or
+            parameterValueFlowsToPreUpdateCand(p, _)
+          )
+        }
+      }
+
+      /**
+       * The final flow-through calculation:
+       *
+       * - Calculated flow is either value-preserving (`read = TReadStepTypesNone()`)
+       *   or summarized as a single read step with before and after types recorded
+       *   in the `ReadStepTypesOption` parameter.
+       * - Types are checked using the `compatibleTypes()` relation.
+       * - Call contexts are taken into account.
+       */
+      private module Final {
+        /**
+         * Holds if `p` can flow to `node` in the same callable using only
+         * value-preserving steps and possibly a single read step, not taking
+         * call contexts into account.
+         *
+         * If a read step was taken, then `read` captures the `Content`, the
+         * container type, and the content type.
+         */
+        predicate parameterValueFlow(
+          ParamNode p, Node node, ReadStepTypesOption read, string model,
+          CachedCallContextSensitivity::CcNoCall ctx
+        ) {
+          parameterValueFlow0(p, node, read, model, ctx) and
+          Cand::cand(p, node) and
+          if node instanceof CastingNode
+          then
+            // normal flow through
+            read = TReadStepTypesNone() and
+            compatibleTypesFilter(getNodeDataFlowType(p), getNodeDataFlowType(node))
+            or
+            // getter
+            compatibleTypesFilter(read.getContentType(), getNodeDataFlowType(node))
+          else any()
+        }
+
+        bindingset[model1, model2]
+        pragma[inline_late]
+        private string mergeModels(string model1, string model2) {
+          if model1 = "" then result = model2 else result = model1
+        }
+
+        pragma[nomagic]
+        private predicate parameterValueFlow0(
+          ParamNode p, Node node, ReadStepTypesOption read, string model,
+          CachedCallContextSensitivity::CcNoCall ctx
+        ) {
+          p = node and
+          Cand::cand(p, _) and
+          read = TReadStepTypesNone() and
+          model = "" and
+          CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(ctx)
+          or
+          // local flow
+          exists(Node mid, string model1, string model2 |
+            parameterValueFlow(p, mid, read, model1, ctx) and
+            simpleLocalFlowStep(mid, node, model2) and
+            validParameterAliasStep(mid, node) and
+            model = mergeModels(model1, model2)
+          )
+          or
+          // read
+          exists(Node mid |
+            parameterValueFlow(p, mid, TReadStepTypesNone(), model, ctx) and
+            readStepWithTypes(mid, read.getContainerType(), read.getContent(), node,
+              read.getContentType()) and
+            Cand::parameterValueFlowReturnCand(p, _, true) and
+            compatibleTypesFilter(getNodeDataFlowType(p), read.getContainerType())
+          )
+          or
+          parameterValueFlow0_0(TReadStepTypesNone(), p, node, read, model, ctx)
+        }
+
+        bindingset[ctx1, ctx2]
+        pragma[inline_late]
+        private CachedCallContextSensitivity::CcNoCall mergeContexts(
+          CachedCallContextSensitivity::CcNoCall ctx1, CachedCallContextSensitivity::CcNoCall ctx2
+        ) {
+          if CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(ctx1)
+          then result = ctx2
+          else
+            if CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(ctx2)
+            then result = ctx1
+            else
+              // check that `ctx1` is compatible with `ctx2` for at least _some_ outer call,
+              // and then (arbitrarily) continue with `ctx2`
+              exists(DataFlowCall someOuterCall, DataFlowCallable callable |
+                someOuterCall =
+                  CachedCallContextSensitivity::viableImplCallContextReducedReverse(callable, ctx1) and
+                someOuterCall =
+                  CachedCallContextSensitivity::viableImplCallContextReducedReverse(callable, ctx2) and
+                result = ctx2
+              )
+        }
+
+        pragma[nomagic]
+        private predicate parameterValueFlow0_0(
+          ReadStepTypesOption mustBeNone, ParamNode p, Node node, ReadStepTypesOption read,
+          string model, CachedCallContextSensitivity::CcNoCall ctx
+        ) {
+          exists(
+            ArgNode arg, string model1, string model2, CachedCallContextSensitivity::CcNoCall ctx1,
+            CachedCallContextSensitivity::CcNoCall ctx2
+          |
+            model = mergeModels(model1, model2) and
+            ctx = mergeContexts(ctx1, ctx2)
+          |
+            // flow through: no prior read
+            parameterValueFlowArg(p, arg, mustBeNone, model1, ctx1) and
+            argumentValueFlowsThrough(arg, read, node, model2, ctx2)
+            or
+            // flow through: no read inside method
+            parameterValueFlowArg(p, arg, read, model1, ctx1) and
+            argumentValueFlowsThrough(arg, mustBeNone, node, model2, ctx2)
+          )
+        }
+
+        pragma[nomagic]
+        private predicate parameterValueFlowArg(
+          ParamNode p, ArgNode arg, ReadStepTypesOption read, string model,
+          CachedCallContextSensitivity::CcNoCall ctx
+        ) {
+          parameterValueFlow(p, arg, read, model, ctx) and
+          Cand::argumentValueFlowsThroughCand(arg, _, _)
+        }
+
+        pragma[nomagic]
+        private predicate argumentValueFlowsThrough0(
+          DataFlowCall call, ArgNode arg, ReturnKind kind, ReadStepTypesOption read, string model,
+          CachedCallContextSensitivity::CcNoCall outerCtx
+        ) {
+          exists(
+            ParamNode param, DataFlowCallable callable,
+            CachedCallContextSensitivity::CcNoCall innerCtx
+          |
+            viableParamArg(call, param, arg) and
+            parameterValueFlowReturn(param, kind, read, model, innerCtx) and
+            callable = nodeGetEnclosingCallable(param) and
+            outerCtx =
+              CachedCallContextSensitivity::getCallContextReturn(callable, TNormalDataFlowCall(call))
+          |
+            CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(innerCtx)
+            or
+            call =
+              CachedCallContextSensitivity::viableImplCallContextReducedReverse(callable, innerCtx)
+          )
+        }
+
+        pragma[nomagic]
+        private predicate argumentValueFlowsThrough(
+          ArgNode arg, ReadStepTypesOption read, Node out, string model,
+          CachedCallContextSensitivity::CcNoCall ctx
+        ) {
+          exists(DataFlowCall call, ReturnKind kind |
+            argumentValueFlowsThrough0(call, arg, kind, read, model, ctx) and
+            out = getAnOutNode(call, kind)
+          |
+            // normal flow through
+            read = TReadStepTypesNone() and
+            compatibleTypesFilter(getNodeDataFlowType(arg), getNodeDataFlowType(out))
+            or
+            // getter
+            compatibleTypesFilter(getNodeDataFlowType(arg), read.getContainerType()) and
+            compatibleTypesFilter(read.getContentType(), getNodeDataFlowType(out))
+          )
+        }
+
+        /**
+         * Holds if `arg` flows to `out` through a call using only
+         * value-preserving steps and possibly a single read step, not taking
+         * call contexts into account.
+         *
+         * If a read step was taken, then `read` captures the `Content`, the
+         * container type, and the content type.
+         */
+        predicate argumentValueFlowsThrough(
+          ArgNode arg, ReadStepTypesOption read, Node out, string model
+        ) {
+          argumentValueFlowsThrough(arg, read, out, model, _)
+        }
+
+        /**
+         * Holds if `p` can flow to a return node of kind `kind` in the same
+         * callable using only value-preserving steps and possibly a single read
+         * step.
+         *
+         * If a read step was taken, then `read` captures the `Content`, the
+         * container type, and the content type.
+         */
+        private predicate parameterValueFlowReturn(
+          ParamNode p, ReturnKind kind, ReadStepTypesOption read, string model,
+          CachedCallContextSensitivity::CcNoCall ctx
+        ) {
+          exists(ReturnNode ret |
+            parameterValueFlow(p, ret, read, model, ctx) and
+            kind = ret.getKind()
+          )
+        }
+      }
+
+      import Final
+    }
+
+    /**
+     * Holds if `p` can flow to the pre-update node associated with post-update
+     * node `n`, in the same callable, using only value-preserving steps.
+     */
+    private predicate parameterValueFlowsToPreUpdate(ParamNode p, PostUpdateNode n) {
+      FlowThrough::parameterValueFlow(p, n.getPreUpdateNode(), TReadStepTypesNone(), _, _)
+    }
+
+    pragma[nomagic]
+    private predicate paramReturnNode(
+      PostUpdateNode n, ParamNode p, SndLevelScopeOption scope, ReturnKindExt k
+    ) {
+      exists(ParameterPosition pos |
+        parameterValueFlowsToPreUpdate(p, n) and
+        p.isParameterOf(_, pos) and
+        k = TParamUpdate(pos) and
+        scope = getSecondLevelScope0(n)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate hasParamReturnKindIn(
+      PostUpdateNode n, ParamNode p, ReturnKindExt kind, DataFlowCallable c
+    ) {
+      c = getNodeEnclosingCallable(n) and
+      paramReturnNode(n, p, _, kind)
+    }
+
+    cached
+    private module Cached {
+      cached
+      ReturnPosition getParamReturnPosition(PostUpdateNode n, ParamNode p) {
+        exists(ReturnKindExt kind, DataFlowCallable c |
+          hasParamReturnKindIn(n, p, kind, c) and
+          result = TReturnPosition0(c, kind)
+        )
+      }
+
+      cached
+      predicate argumentValueFlowsThrough(ArgNode arg, ReadStepTypesOption read, Node out) {
+        FlowThrough::argumentValueFlowsThrough(arg, read, out, _)
+      }
+    }
+
+    private import Cached
+
     class LocalSourceNode extends Node {
       LocalSourceNode() {
         storeStep(_, this, _) or
@@ -115,7 +470,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     predicate levelStepNoCall(Node n1, LocalSourceNode n2) { none() }
 
     predicate levelStepCall(Node n1, LocalSourceNode n2) {
-      argumentValueFlowsThrough(n1, TReadStepTypesNone(), n2, _)
+      argumentValueFlowsThrough(n1, TReadStepTypesNone(), n2)
     }
 
     // TODO: support setters
@@ -125,14 +480,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       exists(Node pre1, Node pre2 |
         pre1 = n1.(PostUpdateNode).getPreUpdateNode() and
         pre2 = n2.(PostUpdateNode).getPreUpdateNode() and
-        argumentValueFlowsThrough(pre2, TReadStepTypesSome(_, f, _), pre1, _)
+        argumentValueFlowsThrough(pre2, TReadStepTypesSome(_, f, _), pre1)
       )
     }
 
     private predicate loadStep0(Node n1, Node n2, Content f) {
       readSet(n1, f, n2)
       or
-      argumentValueFlowsThrough(n1, TReadStepTypesSome(_, f, _), n2, _)
+      argumentValueFlowsThrough(n1, TReadStepTypesSome(_, f, _), n2)
     }
 
     predicate loadStep(Node n1, LocalSourceNode n2, Content f) { loadStep0(n1, n2, f) }
@@ -155,6 +510,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   }
 
   private module TypeTracking = Tt::TypeTracking<TypeTrackingInput>;
+
+  predicate argumentValueFlowsThroughExposedForCppOnly =
+    TypeTrackingInput::FlowThrough::argumentValueFlowsThrough/4;
 
   /**
    * The cost limits for the `AccessPathFront` to `AccessPathApprox` expansion.
@@ -1357,18 +1715,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[nomagic]
-    private predicate paramReturnNode(
-      PostUpdateNode n, ParamNode p, SndLevelScopeOption scope, ReturnKindExt k
-    ) {
-      exists(ParameterPosition pos |
-        parameterValueFlowsToPreUpdate(p, n) and
-        p.isParameterOf(_, pos) and
-        k = TParamUpdate(pos) and
-        scope = getSecondLevelScope0(n)
-      )
-    }
-
-    pragma[nomagic]
     private predicate paramReturnNode(ParamNode p, ReturnKindExt k) {
       exists(ParameterPosition pos |
         p.isParameterOf(_, pos) and
@@ -1631,337 +1977,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    /** Provides predicates for calculating flow-through summaries. */
-    private module FlowThrough {
-      /**
-       * The first flow-through approximation:
-       *
-       * - Input access paths are abstracted with a Boolean parameter
-       *   that indicates (non-)emptiness.
-       */
-      private module Cand {
-        /**
-         * Holds if `p` can flow to `node` in the same callable using only
-         * value-preserving steps.
-         *
-         * `read` indicates whether it is contents of `p` that can flow to `node`.
-         */
-        pragma[nomagic]
-        private predicate parameterValueFlowCand(ParamNode p, Node node, boolean read) {
-          (
-            p = node and
-            read = false
-            or
-            // local flow
-            exists(Node mid |
-              parameterValueFlowCand(p, mid, read) and
-              simpleLocalFlowStep(mid, node, _) and
-              validParameterAliasStep(mid, node)
-            )
-            or
-            // read
-            exists(Node mid |
-              parameterValueFlowCand(p, mid, false) and
-              readSet(mid, _, node) and
-              read = true
-            )
-            or
-            // flow through: no prior read
-            exists(ArgNode arg |
-              parameterValueFlowArgCand(p, arg, false) and
-              argumentValueFlowsThroughCand(arg, node, read)
-            )
-            or
-            // flow through: no read inside method
-            exists(ArgNode arg |
-              parameterValueFlowArgCand(p, arg, read) and
-              argumentValueFlowsThroughCand(arg, node, false)
-            )
-          ) and
-          not expectsContent(node, _)
-        }
-
-        pragma[nomagic]
-        private predicate parameterValueFlowArgCand(ParamNode p, ArgNode arg, boolean read) {
-          parameterValueFlowCand(p, arg, read)
-        }
-
-        pragma[nomagic]
-        predicate parameterValueFlowsToPreUpdateCand(ParamNode p, PostUpdateNode n) {
-          parameterValueFlowCand(p, n.getPreUpdateNode(), false)
-        }
-
-        /**
-         * Holds if `p` can flow to a return node of kind `kind` in the same
-         * callable using only value-preserving steps, not taking call contexts
-         * into account.
-         *
-         * `read` indicates whether it is contents of `p` that can flow to the return
-         * node.
-         */
-        predicate parameterValueFlowReturnCand(ParamNode p, ReturnKind kind, boolean read) {
-          exists(ReturnNode ret |
-            parameterValueFlowCand(p, ret, read) and
-            kind = ret.getKind()
-          )
-        }
-
-        pragma[nomagic]
-        private predicate argumentValueFlowsThroughCand0(
-          DataFlowCall call, ArgNode arg, ReturnKind kind, boolean read
-        ) {
-          exists(ParamNode param | viableParamArg(call, param, arg) |
-            parameterValueFlowReturnCand(param, kind, read)
-          )
-        }
-
-        /**
-         * Holds if `arg` flows to `out` through a call using only value-preserving steps,
-         * not taking call contexts into account.
-         *
-         * `read` indicates whether it is contents of `arg` that can flow to `out`.
-         */
-        predicate argumentValueFlowsThroughCand(ArgNode arg, Node out, boolean read) {
-          exists(DataFlowCall call, ReturnKind kind |
-            argumentValueFlowsThroughCand0(call, arg, kind, read) and
-            out = getAnOutNode(call, kind)
-          )
-        }
-
-        predicate cand(ParamNode p, Node n) {
-          parameterValueFlowCand(p, n, _) and
-          (
-            parameterValueFlowReturnCand(p, _, _)
-            or
-            parameterValueFlowsToPreUpdateCand(p, _)
-          )
-        }
-      }
-
-      /**
-       * The final flow-through calculation:
-       *
-       * - Calculated flow is either value-preserving (`read = TReadStepTypesNone()`)
-       *   or summarized as a single read step with before and after types recorded
-       *   in the `ReadStepTypesOption` parameter.
-       * - Types are checked using the `compatibleTypes()` relation.
-       * - Call contexts are taken into account.
-       */
-      private module Final {
-        /**
-         * Holds if `p` can flow to `node` in the same callable using only
-         * value-preserving steps and possibly a single read step, not taking
-         * call contexts into account.
-         *
-         * If a read step was taken, then `read` captures the `Content`, the
-         * container type, and the content type.
-         */
-        predicate parameterValueFlow(
-          ParamNode p, Node node, ReadStepTypesOption read, string model,
-          CachedCallContextSensitivity::CcNoCall ctx
-        ) {
-          parameterValueFlow0(p, node, read, model, ctx) and
-          Cand::cand(p, node) and
-          if node instanceof CastingNode
-          then
-            // normal flow through
-            read = TReadStepTypesNone() and
-            compatibleTypesFilter(getNodeDataFlowType(p), getNodeDataFlowType(node))
-            or
-            // getter
-            compatibleTypesFilter(read.getContentType(), getNodeDataFlowType(node))
-          else any()
-        }
-
-        bindingset[model1, model2]
-        pragma[inline_late]
-        private string mergeModels(string model1, string model2) {
-          if model1 = "" then result = model2 else result = model1
-        }
-
-        pragma[nomagic]
-        private predicate parameterValueFlow0(
-          ParamNode p, Node node, ReadStepTypesOption read, string model,
-          CachedCallContextSensitivity::CcNoCall ctx
-        ) {
-          p = node and
-          Cand::cand(p, _) and
-          read = TReadStepTypesNone() and
-          model = "" and
-          CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(ctx)
-          or
-          // local flow
-          exists(Node mid, string model1, string model2 |
-            parameterValueFlow(p, mid, read, model1, ctx) and
-            simpleLocalFlowStep(mid, node, model2) and
-            validParameterAliasStep(mid, node) and
-            model = mergeModels(model1, model2)
-          )
-          or
-          // read
-          exists(Node mid |
-            parameterValueFlow(p, mid, TReadStepTypesNone(), model, ctx) and
-            readStepWithTypes(mid, read.getContainerType(), read.getContent(), node,
-              read.getContentType()) and
-            Cand::parameterValueFlowReturnCand(p, _, true) and
-            compatibleTypesFilter(getNodeDataFlowType(p), read.getContainerType())
-          )
-          or
-          parameterValueFlow0_0(TReadStepTypesNone(), p, node, read, model, ctx)
-        }
-
-        bindingset[ctx1, ctx2]
-        pragma[inline_late]
-        private CachedCallContextSensitivity::CcNoCall mergeContexts(
-          CachedCallContextSensitivity::CcNoCall ctx1, CachedCallContextSensitivity::CcNoCall ctx2
-        ) {
-          if CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(ctx1)
-          then result = ctx2
-          else
-            if CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(ctx2)
-            then result = ctx1
-            else
-              // check that `ctx1` is compatible with `ctx2` for at least _some_ outer call,
-              // and then (arbitrarily) continue with `ctx2`
-              exists(DataFlowCall someOuterCall, DataFlowCallable callable |
-                someOuterCall =
-                  CachedCallContextSensitivity::viableImplCallContextReducedReverse(callable, ctx1) and
-                someOuterCall =
-                  CachedCallContextSensitivity::viableImplCallContextReducedReverse(callable, ctx2) and
-                result = ctx2
-              )
-        }
-
-        pragma[nomagic]
-        private predicate parameterValueFlow0_0(
-          ReadStepTypesOption mustBeNone, ParamNode p, Node node, ReadStepTypesOption read,
-          string model, CachedCallContextSensitivity::CcNoCall ctx
-        ) {
-          exists(
-            ArgNode arg, string model1, string model2, CachedCallContextSensitivity::CcNoCall ctx1,
-            CachedCallContextSensitivity::CcNoCall ctx2
-          |
-            model = mergeModels(model1, model2) and
-            ctx = mergeContexts(ctx1, ctx2)
-          |
-            // flow through: no prior read
-            parameterValueFlowArg(p, arg, mustBeNone, model1, ctx1) and
-            argumentValueFlowsThrough(arg, read, node, model2, ctx2)
-            or
-            // flow through: no read inside method
-            parameterValueFlowArg(p, arg, read, model1, ctx1) and
-            argumentValueFlowsThrough(arg, mustBeNone, node, model2, ctx2)
-          )
-        }
-
-        pragma[nomagic]
-        private predicate parameterValueFlowArg(
-          ParamNode p, ArgNode arg, ReadStepTypesOption read, string model,
-          CachedCallContextSensitivity::CcNoCall ctx
-        ) {
-          parameterValueFlow(p, arg, read, model, ctx) and
-          Cand::argumentValueFlowsThroughCand(arg, _, _)
-        }
-
-        pragma[nomagic]
-        private predicate argumentValueFlowsThrough0(
-          DataFlowCall call, ArgNode arg, ReturnKind kind, ReadStepTypesOption read, string model,
-          CachedCallContextSensitivity::CcNoCall outerCtx
-        ) {
-          exists(
-            ParamNode param, DataFlowCallable callable,
-            CachedCallContextSensitivity::CcNoCall innerCtx
-          |
-            viableParamArg(call, param, arg) and
-            parameterValueFlowReturn(param, kind, read, model, innerCtx) and
-            callable = nodeGetEnclosingCallable(param) and
-            outerCtx =
-              CachedCallContextSensitivity::getCallContextReturn(callable, TNormalDataFlowCall(call))
-          |
-            CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(innerCtx)
-            or
-            call =
-              CachedCallContextSensitivity::viableImplCallContextReducedReverse(callable, innerCtx)
-          )
-        }
-
-        pragma[nomagic]
-        private predicate argumentValueFlowsThrough(
-          ArgNode arg, ReadStepTypesOption read, Node out, string model,
-          CachedCallContextSensitivity::CcNoCall ctx
-        ) {
-          exists(DataFlowCall call, ReturnKind kind |
-            argumentValueFlowsThrough0(call, arg, kind, read, model, ctx) and
-            out = getAnOutNode(call, kind)
-          |
-            // normal flow through
-            read = TReadStepTypesNone() and
-            compatibleTypesFilter(getNodeDataFlowType(arg), getNodeDataFlowType(out))
-            or
-            // getter
-            compatibleTypesFilter(getNodeDataFlowType(arg), read.getContainerType()) and
-            compatibleTypesFilter(read.getContentType(), getNodeDataFlowType(out))
-          )
-        }
-
-        /**
-         * Holds if `arg` flows to `out` through a call using only
-         * value-preserving steps and possibly a single read step, not taking
-         * call contexts into account.
-         *
-         * If a read step was taken, then `read` captures the `Content`, the
-         * container type, and the content type.
-         */
-        cached
-        predicate argumentValueFlowsThrough(
-          ArgNode arg, ReadStepTypesOption read, Node out, string model
-        ) {
-          argumentValueFlowsThrough(arg, read, out, model, _)
-        }
-
-        /**
-         * Holds if `arg` flows to `out` through a call using only
-         * value-preserving steps and a single read step, not taking call
-         * contexts into account, thus representing a getter-step.
-         *
-         * This predicate is exposed for testing only.
-         */
-        predicate getterStep(ArgNode arg, ContentSet c, Node out) {
-          argumentValueFlowsThrough(arg, TReadStepTypesSome(_, c, _), out, _)
-        }
-
-        /**
-         * Holds if `p` can flow to a return node of kind `kind` in the same
-         * callable using only value-preserving steps and possibly a single read
-         * step.
-         *
-         * If a read step was taken, then `read` captures the `Content`, the
-         * container type, and the content type.
-         */
-        private predicate parameterValueFlowReturn(
-          ParamNode p, ReturnKind kind, ReadStepTypesOption read, string model,
-          CachedCallContextSensitivity::CcNoCall ctx
-        ) {
-          exists(ReturnNode ret |
-            parameterValueFlow(p, ret, read, model, ctx) and
-            kind = ret.getKind()
-          )
-        }
-      }
-
-      import Final
-    }
-
-    import FlowThrough
-
-    /**
-     * Holds if `p` can flow to the pre-update node associated with post-update
-     * node `n`, in the same callable, using only value-preserving steps.
-     */
-    private predicate parameterValueFlowsToPreUpdate(ParamNode p, PostUpdateNode n) {
-      parameterValueFlow(p, n.getPreUpdateNode(), TReadStepTypesNone(), _, _)
-    }
-
     cached
     predicate readSet(Node node1, ContentSet c, Node node2) { readStep(node1, c, node2) }
 
@@ -2067,14 +2082,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[nomagic]
-    private predicate hasParamReturnKindIn(
-      PostUpdateNode n, ParamNode p, ReturnKindExt kind, DataFlowCallable c
-    ) {
-      c = getNodeEnclosingCallable(n) and
-      paramReturnNode(n, p, _, kind)
-    }
-
-    pragma[nomagic]
     private predicate hasParamReturnKindIn(ParamNode p, ReturnKindExt kind, DataFlowCallable c) {
       c = getNodeEnclosingCallable(p) and
       paramReturnNode(p, kind)
@@ -2092,14 +2099,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     ReturnPosition getValueReturnPosition(ReturnNode ret) {
       exists(ReturnKindExt kind, DataFlowCallable c |
         hasValueReturnKindIn(ret, kind, c) and
-        result = TReturnPosition0(c, kind)
-      )
-    }
-
-    cached
-    ReturnPosition getParamReturnPosition(PostUpdateNode n, ParamNode p) {
-      exists(ReturnKindExt kind, DataFlowCallable c |
-        hasParamReturnKindIn(n, p, kind, c) and
         result = TReturnPosition0(c, kind)
       )
     }
