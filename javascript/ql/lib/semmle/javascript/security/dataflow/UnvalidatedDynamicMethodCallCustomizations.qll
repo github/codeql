@@ -10,16 +10,60 @@ import PropertyInjectionShared
 private import semmle.javascript.dataflow.InferredTypes
 
 module UnvalidatedDynamicMethodCall {
-  private import DataFlow::FlowLabel
+  private newtype TFlowState =
+    TTaint() or
+    TMaybeNonFunction() or
+    TMaybeFromProto()
+
+  /** A flow state to associate with a tracked value. */
+  class FlowState extends TFlowState {
+    /** Gets a string representation fo this flow state */
+    string toString() {
+      this = TTaint() and result = "taint"
+      or
+      this = TMaybeNonFunction() and result = "maybe-non-function"
+      or
+      this = TMaybeFromProto() and result = "maybe-from-proto"
+    }
+
+    deprecated DataFlow::FlowLabel toFlowLabel() {
+      this = TTaint() and result.isTaint()
+      or
+      this = TMaybeNonFunction() and result instanceof MaybeNonFunction
+      or
+      this = TMaybeFromProto() and result instanceof MaybeFromProto
+    }
+  }
+
+  /** Predicates for working with flow states. */
+  module FlowState {
+    deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
+
+    /** A tainted value. */
+    FlowState taint() { result = TTaint() }
+
+    /**
+     * A non-function value, obtained by reading from a tainted property name.
+     */
+    FlowState maybeNonFunction() { result = TMaybeNonFunction() }
+
+    /**
+     * A value obtained from a prototype object while reading from a tainted property name.
+     */
+    FlowState maybeFromProto() { result = TMaybeFromProto() }
+  }
 
   /**
    * A data flow source for unvalidated dynamic method calls.
    */
   abstract class Source extends DataFlow::Node {
     /**
-     * Gets the flow label relevant for this source.
+     * Gets the flow state relevant for this source.
      */
-    DataFlow::FlowLabel getFlowLabel() { result = taint() }
+    FlowState getAFlowState() { result = FlowState::taint() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getFlowLabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   /**
@@ -27,9 +71,12 @@ module UnvalidatedDynamicMethodCall {
    */
   abstract class Sink extends DataFlow::Node {
     /**
-     * Gets the flow label relevant for this sink
+     * Gets the flow state relevant for this sink
      */
-    abstract DataFlow::FlowLabel getFlowLabel();
+    FlowState getAFlowState() { result = FlowState::taint() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getFlowLabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   /**
@@ -37,9 +84,12 @@ module UnvalidatedDynamicMethodCall {
    */
   abstract class Sanitizer extends DataFlow::Node {
     /**
-     * Gets the flow label blocked by this sanitizer.
+     * Gets a flow state blocked by this sanitizer.
      */
-    DataFlow::FlowLabel getFlowLabel() { result.isTaint() }
+    FlowState getAFlowState() { result = FlowState::taint() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getFlowLabel() { result = this.getAFlowState().toFlowLabel() }
 
     /**
      * DEPRECATED. Use sanitizer nodes instead.
@@ -64,16 +114,16 @@ module UnvalidatedDynamicMethodCall {
     predicate blocksExpr(boolean outcome, Expr e) { none() }
 
     /**
-     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     * Holds if this node acts as a barrier for `state`, blocking further flow from `e` if `this` evaluates to `outcome`.
      */
-    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+    predicate blocksExpr(boolean outcome, Expr e, FlowState state) { none() }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      this.blocksExpr(outcome, e, label)
+      this.blocksExpr(outcome, e, FlowState::fromFlowLabel(label))
     }
   }
 
@@ -93,7 +143,7 @@ module UnvalidatedDynamicMethodCall {
    * A flow label describing values read from a user-controlled property that
    * may not be functions.
    */
-  abstract class MaybeNonFunction extends DataFlow::FlowLabel {
+  abstract deprecated class MaybeNonFunction extends DataFlow::FlowLabel {
     MaybeNonFunction() { this = "MaybeNonFunction" }
   }
 
@@ -101,7 +151,7 @@ module UnvalidatedDynamicMethodCall {
    * A flow label describing values read from a user-controlled property that
    * may originate from a prototype object.
    */
-  abstract class MaybeFromProto extends DataFlow::FlowLabel {
+  abstract deprecated class MaybeFromProto extends DataFlow::FlowLabel {
     MaybeFromProto() { this = "MaybeFromProto" }
   }
 
@@ -134,14 +184,14 @@ module UnvalidatedDynamicMethodCall {
       )
     }
 
-    override DataFlow::FlowLabel getFlowLabel() {
-      result instanceof MaybeNonFunction and
+    override FlowState getAFlowState() {
+      result = FlowState::maybeNonFunction() and
       // don't flag if the type inference can prove that it is a function;
       // this complements the `FunctionCheck` sanitizer below: the type inference can
       // detect more checks locally, but doesn't provide inter-procedural reasoning
       this.analyze().getAType() != TTFunction()
       or
-      result instanceof MaybeFromProto
+      result = FlowState::maybeFromProto()
     }
   }
 
@@ -155,10 +205,10 @@ module UnvalidatedDynamicMethodCall {
 
     FunctionCheck() { TaintTracking::isTypeofGuard(astNode, operand, "function") }
 
-    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
       outcome = astNode.getPolarity() and
       e = operand and
-      label instanceof MaybeNonFunction
+      state = FlowState::maybeNonFunction()
     }
   }
 
