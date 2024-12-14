@@ -425,7 +425,7 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
             .replaceAll(getRepoRoot(), "")
             .replaceAll("/action.yml", "")
             .replaceAll("/action.yaml", "")
-            .replaceAll(".github/reusable_workflows/", "")
+            .replaceAll(".github/actions/external/", "")
   }
 
   private predicate hasExplicitSecretAccess() {
@@ -550,7 +550,7 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
             .getFile()
             .getRelativePath()
             .replaceAll(getRepoRoot(), "")
-            .replaceAll(".github/reusable_workflows/", "")
+            .replaceAll(".github/workflows/external/", "")
   }
 }
 
