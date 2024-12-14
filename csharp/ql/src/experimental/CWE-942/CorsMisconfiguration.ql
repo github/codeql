@@ -12,8 +12,6 @@
  */
 
 import csharp
-private import DataFlow
-import semmle.code.csharp.frameworks.system.Web
 import CorsMisconfigurationLib
 
 /**

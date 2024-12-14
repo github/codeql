@@ -12,13 +12,9 @@
  */
 
 import csharp
-private import DataFlow
-import semmle.code.csharp.frameworks.system.Web
 import CorsMisconfigurationLib
 
-/**
- * Holds if credentials are allowed
- */
+/** A call to `CorsPolicyBuilder.AllowCredentials`. */
 class AllowsCredentials extends MethodCall {
   AllowsCredentials() {
     this.getTarget()
