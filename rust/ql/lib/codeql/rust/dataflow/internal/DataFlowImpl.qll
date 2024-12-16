@@ -186,18 +186,49 @@ module Node {
   class FlowSummaryNode extends Node, TFlowSummaryNode {
     FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
-    /** Gets the summarized callable that this node belongs to. */
+    /** Gets the summarized callable that this node belongs to, if any. */
     FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
       result = this.getSummaryNode().getSummarizedCallable()
     }
 
-    override CfgScope getCfgScope() { none() }
+    /** Gets the source node that this node belongs to, if any */
+    FlowSummaryImpl::Public::SourceNode getSourceNode() {
+      result = this.getSummaryNode().getSourceNode()
+    }
+
+    /** Gets the sink node that this node belongs to, if any */
+    FlowSummaryImpl::Public::SinkNode getSinkNode() { result = this.getSummaryNode().getSinkNode() }
+
+    /** Holds is this node is a source node of kind `kind`. */
+    predicate isSource(string kind) {
+      this.getSummaryNode().(FlowSummaryImpl::Private::SourceOutputNode).isEntry(kind)
+    }
+
+    /** Holds is this node is a sink node of kind `kind`. */
+    predicate isSink(string kind) {
+      this.getSummaryNode().(FlowSummaryImpl::Private::SinkInputNode).isExit(kind)
+    }
+
+    override CfgScope getCfgScope() {
+      result = this.getSummaryNode().getSourceNode().getEnclosingCfgScope()
+      or
+      result = this.getSummaryNode().getSinkNode().getEnclosingCfgScope()
+    }
 
     override DataFlowCallable getEnclosingCallable() {
       result.asLibraryCallable() = this.getSummarizedCallable()
+      or
+      result.asCfgScope() = this.getCfgScope()
     }
 
-    override EmptyLocation getLocation() { any() }
+    override Location getLocation() {
+      exists(this.getSummarizedCallable()) and
+      result instanceof EmptyLocation
+      or
+      result = this.getSourceNode().getLocation()
+      or
+      result = this.getSinkNode().getLocation()
+    }
 
     override string toString() { result = this.getSummaryNode().toString() }
   }
@@ -526,13 +557,20 @@ private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
 }
 
 module LocalFlow {
-  predicate flowSummaryLocalStep(
-    Node::FlowSummaryNode nodeFrom, Node::FlowSummaryNode nodeTo,
-    FlowSummaryImpl::Public::SummarizedCallable c, string model
-  ) {
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.getSummaryNode(),
-      nodeTo.getSummaryNode(), true, model) and
-    c = nodeFrom.getSummarizedCallable()
+  predicate flowSummaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
+    exists(FlowSummaryImpl::Public::SummarizedCallable c |
+      FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom
+            .(Node::FlowSummaryNode)
+            .getSummaryNode(), nodeTo.(Node::FlowSummaryNode).getSummaryNode(), true, model) and
+      c = nodeFrom.(Node::FlowSummaryNode).getSummarizedCallable()
+    )
+    or
+    FlowSummaryImpl::Private::Steps::sourceLocalStep(nodeFrom
+          .(Node::FlowSummaryNode)
+          .getSummaryNode(), nodeTo, model)
+    or
+    FlowSummaryImpl::Private::Steps::sinkLocalStep(nodeFrom,
+      nodeTo.(Node::FlowSummaryNode).getSummaryNode(), model)
   }
 
   pragma[nomagic]
@@ -853,7 +891,7 @@ module RustDataFlow implements InputSig<Location> {
   predicate nodeIsHidden(Node node) {
     node instanceof Node::SsaNode
     or
-    node instanceof Node::FlowSummaryNode
+    node.(Node::FlowSummaryNode).getSummaryNode().isHidden()
     or
     node instanceof Node::CaptureNode
     or
@@ -869,6 +907,10 @@ module RustDataFlow implements InputSig<Location> {
       node.asExpr() = match.getScrutinee() or
       node.asExpr() = match.getArmPat(_)
     )
+    or
+    FlowSummaryImpl::Private::Steps::sourceLocalStep(_, node, _)
+    or
+    FlowSummaryImpl::Private::Steps::sinkLocalStep(node, _, _)
   }
 
   class DataFlowExpr = ExprCfgNode;
@@ -949,7 +991,7 @@ module RustDataFlow implements InputSig<Location> {
     ) and
     model = ""
     or
-    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, _, model)
+    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, model)
   }
 
   /**
@@ -1528,6 +1570,14 @@ private module Cached {
 
   cached
   newtype TContentSet = TSingletonContentSet(Content c)
+
+  /** Holds if `n` is a flow source of kind `kind`. */
+  cached
+  predicate sourceNode(Node n, string kind) { n.(Node::FlowSummaryNode).isSource(kind) }
+
+  /** Holds if `n` is a flow sink of kind `kind`. */
+  cached
+  predicate sinkNode(Node n, string kind) { n.(Node::FlowSummaryNode).isSink(kind) }
 }
 
 import Cached

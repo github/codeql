@@ -20,6 +20,24 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
   }
 
   /**
+   * A base class of elements that are candidates for flow source modeling.
+   */
+  bindingset[this]
+  class SourceBase {
+    bindingset[this]
+    string toString();
+  }
+
+  /**
+   * A base class of elements that are candidates for flow sink modeling.
+   */
+  bindingset[this]
+  class SinkBase {
+    bindingset[this]
+    string toString();
+  }
+
+  /**
    * Holds if a neutral (MaD) model exists for `c` of kind `kind`
    * with provenance `provenance` and `isExact` is true if the model
    * signature matches `c` exactly - otherwise false.
@@ -159,6 +177,10 @@ module Make<
 
   final private class SummarizedCallableBaseFinal = SummarizedCallableBase;
 
+  final private class SourceBaseFinal = SourceBase;
+
+  final private class SinkBaseFinal = SinkBase;
+
   /** Provides classes and predicates for defining flow summaries. */
   module Public {
     private import Private
@@ -271,6 +293,32 @@ module Make<
        * the model.
        */
       predicate hasExactModel() { none() }
+    }
+
+    /** A source node. */
+    abstract class SourceNode extends SourceBaseFinal {
+      bindingset[this]
+      SourceNode() { any() }
+
+      /**
+       * Holds if this element is a flow source of kind `kind`, where data
+       * flows out as described by `output`.
+       */
+      pragma[nomagic]
+      abstract predicate isSource(string output, string kind, Provenance provenance, string model);
+    }
+
+    /** A sink node. */
+    abstract class SinkNode extends SinkBaseFinal {
+      bindingset[this]
+      SinkNode() { any() }
+
+      /**
+       * Holds if this element is a flow sink of kind `kind`, where data
+       * flows in as described by `input`.
+       */
+      pragma[nomagic]
+      abstract predicate isSink(string input, string kind, Provenance provenance, string model);
     }
 
     private signature predicate hasKindSig(string kind);
@@ -488,6 +536,10 @@ module Make<
         or
         c.propagatesFlow(_, spec, _, _)
       )
+      or
+      any(SourceNode s).isSource(spec, _, _, _)
+      or
+      any(SinkNode s).isSink(spec, _, _, _)
     }
 
     import AccessPathSyntax::AccessPath<summarySpec/1>
@@ -837,9 +889,57 @@ module Make<
       outputState(c, s) and s = SummaryComponentStack::argument(_)
     }
 
+    pragma[nomagic]
+    private predicate sourceOutputStateEntry(
+      SourceNode source, SummaryComponentStack s, string kind, string model
+    ) {
+      exists(string outSpec |
+        source.isSource(outSpec, kind, _, model) and
+        External::interpretSpec(outSpec, s)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate sourceOutputState(
+      SourceNode source, SummaryComponentStack s, string kind, string model
+    ) {
+      sourceOutputStateEntry(source, s, kind, model)
+      or
+      exists(SummaryComponentStack out |
+        sourceOutputState(source, out, kind, model) and
+        out.head() = TContentSummaryComponent(_) and
+        s = out.tail()
+      )
+    }
+
+    pragma[nomagic]
+    private predicate sinkInputStateExit(
+      SinkNode sink, SummaryComponentStack s, string kind, string model
+    ) {
+      exists(string inSpec |
+        sink.isSink(inSpec, kind, _, model) and
+        External::interpretSpec(inSpec, s)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate sinkInputState(
+      SinkNode sink, SummaryComponentStack s, string kind, string model
+    ) {
+      sinkInputStateExit(sink, s, kind, model)
+      or
+      exists(SummaryComponentStack inp |
+        sinkInputState(sink, inp, kind, model) and
+        inp.head() = TContentSummaryComponent(_) and
+        s = inp.tail()
+      )
+    }
+
     private newtype TSummaryNodeState =
       TSummaryNodeInputState(SummaryComponentStack s) { inputState(_, s) } or
-      TSummaryNodeOutputState(SummaryComponentStack s) { outputState(_, s) }
+      TSummaryNodeOutputState(SummaryComponentStack s) { outputState(_, s) } or
+      TSourceOutputState(SummaryComponentStack s) { sourceOutputState(_, s, _, _) } or
+      TSinkInputState(SummaryComponentStack s) { sinkInputState(_, s, _, _) }
 
     /**
      * A state used to break up (complex) flow summaries into atomic flow steps.
@@ -875,6 +975,22 @@ module Make<
         outputState(c, s)
       }
 
+      /** Holds if this state is a valid output state for `source`. */
+      pragma[nomagic]
+      predicate isSourceOutputState(
+        SourceNode source, SummaryComponentStack s, string kind, string model
+      ) {
+        sourceOutputState(source, s, kind, model) and
+        this = TSourceOutputState(s)
+      }
+
+      /** Holds if this state is a valid input state for `sink`. */
+      pragma[nomagic]
+      predicate isSinkInputState(SinkNode sink, SummaryComponentStack s, string kind, string model) {
+        sinkInputState(sink, s, kind, model) and
+        this = TSinkInputState(s)
+      }
+
       /** Gets a textual representation of this state. */
       string toString() {
         exists(SummaryComponentStack s |
@@ -886,6 +1002,16 @@ module Make<
           this = TSummaryNodeOutputState(s) and
           result = "to write: " + s
         )
+        or
+        exists(SummaryComponentStack s |
+          this = TSourceOutputState(s) and
+          result = "to write source: " + s
+        )
+        or
+        exists(SummaryComponentStack s |
+          this = TSinkInputState(s) and
+          result = "read sink: " + s
+        )
       }
     }
 
@@ -895,12 +1021,24 @@ module Make<
       } or
       TSummaryParameterNode(SummarizedCallable c, ParameterPosition pos) {
         summaryParameterNodeRange(c, pos)
+      } or
+      TSourceOutputNode(SourceNode source, SummaryNodeState state, string kind, string model) {
+        state.isSourceOutputState(source, _, kind, model)
+      } or
+      TSinkInputNode(SinkNode sink, SummaryNodeState state, string kind, string model) {
+        state.isSinkInputState(sink, _, kind, model)
       }
 
     abstract class SummaryNode extends TSummaryNode {
       abstract string toString();
 
       abstract SummarizedCallable getSummarizedCallable();
+
+      abstract SourceNode getSourceNode();
+
+      abstract SinkNode getSinkNode();
+
+      predicate isHidden() { any() }
     }
 
     private class SummaryInternalNode extends SummaryNode, TSummaryInternalNode {
@@ -912,6 +1050,10 @@ module Make<
       override string toString() { result = "[summary] " + state + " in " + c }
 
       override SummarizedCallable getSummarizedCallable() { result = c }
+
+      override SourceNode getSourceNode() { none() }
+
+      override SinkNode getSinkNode() { none() }
     }
 
     private class SummaryParamNode extends SummaryNode, TSummaryParameterNode {
@@ -923,6 +1065,105 @@ module Make<
       override string toString() { result = "[summary param] " + pos + " in " + c }
 
       override SummarizedCallable getSummarizedCallable() { result = c }
+
+      override SourceNode getSourceNode() { none() }
+
+      override SinkNode getSinkNode() { none() }
+    }
+
+    class SourceOutputNode extends SummaryNode, TSourceOutputNode {
+      private SourceNode source_;
+      private SummaryNodeState state_;
+      private string kind_;
+      private string model_;
+
+      SourceOutputNode() { this = TSourceOutputNode(source_, state_, kind_, model_) }
+
+      /**
+       * Holds if this node is an entry node, i.e. before any stores have been performed.
+       *
+       * This node should be used as the actual source node in data flow configurations.
+       */
+      predicate isEntry(string kind) {
+        exists(SummaryComponentStack out |
+          sourceOutputStateEntry(source_, out, kind, model_) and
+          state_.isSourceOutputState(source_, out, kind, model_)
+        )
+      }
+
+      /**
+       * Holds if this node is an exit node, i.e. after all stores have been performed.
+       *
+       * A local flow step should be added from this node to a data flow node representing
+       * `sc` inside `source`.
+       */
+      predicate isExit(SourceNode source, SummaryComponent sc, string model) {
+        source = source_ and
+        model = model_ and
+        state_.isSourceOutputState(source, TSingletonSummaryComponentStack(sc), _, model)
+      }
+
+      override predicate isHidden() { not this.isEntry(_) }
+
+      override string toString() {
+        if this.isEntry(_)
+        then result = source_.toString()
+        else result = "[source] " + state_ + " at " + source_
+      }
+
+      override SummarizedCallable getSummarizedCallable() { none() }
+
+      override SourceNode getSourceNode() { result = source_ }
+
+      override SinkNode getSinkNode() { none() }
+    }
+
+    class SinkInputNode extends SummaryNode, TSinkInputNode {
+      private SinkNode sink_;
+      private SummaryNodeState state_;
+      private string kind_;
+      private string model_;
+
+      SinkInputNode() { this = TSinkInputNode(sink_, state_, kind_, model_) }
+
+      /**
+       * Holds if this node is an entry node, i.e. before any reads have been performed.
+       *
+       * A local flow step should be added to this node from a data flow node representing
+       * `sc` inside `sink`.
+       */
+      predicate isEntry(SinkNode sink, SummaryComponent sc, string model) {
+        sink = sink_ and
+        model = model_ and
+        state_.isSinkInputState(sink, TSingletonSummaryComponentStack(sc), _, model)
+      }
+
+      /**
+       * Holds if this node is an exit node, i.e. after all reads have been performed.
+       *
+       * This node should be used as the actual sink node in data flow configurations.
+       */
+      predicate isExit(string kind) {
+        kind = kind_ and
+        exists(SummaryComponentStack inp |
+          sinkInputStateExit(sink_, inp, kind, model_) and
+          state_.isSinkInputState(sink_, inp, kind, model_)
+        )
+      }
+
+      override predicate isHidden() { not this.isExit(_) }
+
+      override string toString() {
+        if this.isExit(_)
+        then result = sink_.toString()
+        else result = "[sink] " + state_ + " at " + sink_
+      }
+
+      override SummarizedCallable getSummarizedCallable() { none() }
+
+      override SourceNode getSourceNode() { none() }
+
+      override SinkNode getSinkNode() { result = sink_ }
     }
 
     /**
@@ -964,6 +1205,22 @@ module Make<
       exists(SummaryNodeState state |
         state.isOutputState(c, s) and
         result = TSummaryInternalNode(c, state)
+      )
+    }
+
+    pragma[noinline]
+    private SummaryNode sourceNodeOutputState(SourceNode source, SummaryComponentStack s) {
+      exists(SummaryNodeState state, string kind, string model |
+        state.isSourceOutputState(source, s, kind, model) and
+        result = TSourceOutputNode(source, state, kind, model)
+      )
+    }
+
+    pragma[noinline]
+    private SummaryNode sinkNodeInputState(SinkNode sink, SummaryComponentStack s) {
+      exists(SummaryNodeState state, string kind, string model |
+        state.isSinkInputState(sink, s, kind, model) and
+        result = TSinkInputNode(sink, state, kind, model)
       )
     }
 
@@ -1090,6 +1347,10 @@ module Make<
       DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk);
 
       DataFlowType getSyntheticGlobalType(SyntheticGlobal sg);
+
+      DataFlowType getSourceNodeType(SourceBase source, SummaryComponent sc);
+
+      DataFlowType getSinkNodeType(SinkBase sink, SummaryComponent sc);
     }
 
     /**
@@ -1168,12 +1429,54 @@ module Make<
             )
           )
         )
+        or
+        exists(SourceNode source |
+          exists(SummaryComponent sc |
+            n.(SourceOutputNode).isExit(source, sc, _) and
+            result = getSourceNodeType(source, sc)
+          )
+          or
+          exists(SummaryComponentStack s, ContentSet cont |
+            n = sourceNodeOutputState(source, s) and
+            s.head() = TContentSummaryComponent(cont) and
+            result = getContentType(cont)
+          )
+        )
+        or
+        exists(SinkNode sink |
+          exists(SummaryComponent sc |
+            n.(SinkInputNode).isEntry(sink, sc, _) and
+            result = getSinkNodeType(sink, sc)
+          )
+          or
+          exists(SummaryComponentStack s, ContentSet cont |
+            n = sinkNodeInputState(sink, s) and
+            s.head() = TContentSummaryComponent(cont) and
+            result = getContentType(cont)
+          )
+        )
       }
     }
 
     signature module StepsInputSig {
       /** Gets a call that targets summarized callable `sc`. */
       DataFlowCall getACall(SummarizedCallable sc);
+
+      /**
+       * Gets a data flow node corresponding to the `sc` part of `source`.
+       *
+       * `sc` is typically `ReturnValue` and the result is the node that
+       * represents the return value of `source`.
+       */
+      Node getSourceNode(SourceBase source, SummaryComponent sc);
+
+      /**
+       * Gets a data flow node corresponding to the `sc` part of `sink`.
+       *
+       * `sc` is typically `Argument[i]` and the result is the node that
+       * represents the `i`th argument of `sink`.
+       */
+      Node getSinkNode(SinkBase sink, SummaryComponent sc);
     }
 
     /** Provides a compilation of flow summaries to atomic data-flow steps. */
@@ -1207,6 +1510,20 @@ module Make<
         )
       }
 
+      predicate sourceLocalStep(SourceOutputNode nodeFrom, Node nodeTo, string model) {
+        exists(SummaryComponent sc, SourceNode source |
+          nodeFrom.isExit(source, sc, model) and
+          nodeTo = StepsInput::getSourceNode(source, sc)
+        )
+      }
+
+      predicate sinkLocalStep(Node nodeFrom, SinkInputNode nodeTo, string model) {
+        exists(SummaryComponent sc, SinkNode sink |
+          nodeFrom = StepsInput::getSinkNode(sink, sc) and
+          nodeTo.isEntry(sink, sc, model)
+        )
+      }
+
       /** Holds if the value of `succ` is uniquely determined by the value of `pred`. */
       predicate summaryLocalMustFlowStep(SummaryNode pred, SummaryNode succ) {
         pred = unique(SummaryNode n1 | summaryLocalStep(n1, succ, true, _))
@@ -1222,6 +1539,12 @@ module Make<
           succ = summaryNodeInputState(sc, s) and
           SummaryComponent::content(c) = s.head()
         )
+        or
+        exists(SinkNode sink, SummaryComponentStack s |
+          pred = sinkNodeInputState(sink, s.tail()) and
+          succ = sinkNodeInputState(sink, s) and
+          SummaryComponent::content(c) = s.head()
+        )
       }
 
       /**
@@ -1232,6 +1555,12 @@ module Make<
         exists(SummarizedCallable sc, SummaryComponentStack s |
           pred = summaryNodeOutputState(sc, s) and
           succ = summaryNodeOutputState(sc, s.tail()) and
+          SummaryComponent::content(c) = s.head()
+        )
+        or
+        exists(SourceNode source, SummaryComponentStack s |
+          pred = sourceNodeOutputState(source, s) and
+          succ = sourceNodeOutputState(source, s.tail()) and
           SummaryComponent::content(c) = s.head()
         )
       }
