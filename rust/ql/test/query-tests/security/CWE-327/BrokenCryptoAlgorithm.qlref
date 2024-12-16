@@ -1,2 +1,2 @@
 query: queries/security/CWE-327/BrokenCryptoAlgorithm.ql
-postprocess: utils/InlineExpectationsTestQuery.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
