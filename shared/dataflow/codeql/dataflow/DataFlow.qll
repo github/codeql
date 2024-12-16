@@ -996,8 +996,12 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       predicate discriminatedPathNode(InputPathNode pathNode) { discriminatedPathNode(pathNode, _) }
     }
 
+    private InputPathNode getUniqPathNode(Node node, string toString) {
+      result = unique(InputPathNode pathNode | pathNode = getAPathNode(node, toString))
+    }
+
     private predicate initialCandidate(Node node, string toString) {
-      exists(getAPathNode(node, toString))
+      exists(getAPathNode(node, toString)) and not exists(getUniqPathNode(node, toString))
     }
 
     private module Pass1 =
@@ -1017,7 +1021,7 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       MakeDiscriminatorPass<Pass1::discriminatedPair/2, edgesRev/4, subpathsRev/4>;
 
     private newtype TPathNode =
-      TPreservedPathNode(InputPathNode node) { Pass2::discriminatedPathNode(node) } or
+      TPreservedPathNode(InputPathNode node) { Pass2::discriminatedPathNode(node) or node = getUniqPathNode(_, _) } or
       TCollapsedPathNode(Node node, string toString) {
         initialCandidate(node, toString) and
         not Pass2::discriminatedPair(node, toString)
