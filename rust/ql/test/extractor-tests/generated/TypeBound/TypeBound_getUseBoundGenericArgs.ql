@@ -4,4 +4,4 @@ import TestUtils
 
 from TypeBound x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getGenericParamList()
+select x, x.getUseBoundGenericArgs()

@@ -5,9 +5,9 @@
 
 private import internal.TypeBoundImpl
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeRepr
+import codeql.rust.elements.UseBoundGenericArgs
 
 /**
  * A TypeBound. For example:

@@ -11,7 +11,20 @@ import codeql.rust.elements.ArrayExpr
 import codeql.rust.elements.ArrayListExpr
 import codeql.rust.elements.ArrayRepeatExpr
 import codeql.rust.elements.ArrayTypeRepr
+import codeql.rust.elements.AsmClobberAbi
+import codeql.rust.elements.AsmConst
+import codeql.rust.elements.AsmDirSpec
 import codeql.rust.elements.AsmExpr
+import codeql.rust.elements.AsmLabel
+import codeql.rust.elements.AsmOperand
+import codeql.rust.elements.AsmOperandExpr
+import codeql.rust.elements.AsmOperandNamed
+import codeql.rust.elements.AsmOption
+import codeql.rust.elements.AsmOptionsList
+import codeql.rust.elements.AsmPiece
+import codeql.rust.elements.AsmRegOperand
+import codeql.rust.elements.AsmRegSpec
+import codeql.rust.elements.AsmSym
 import codeql.rust.elements.AssocItem
 import codeql.rust.elements.AssocItemList
 import codeql.rust.elements.AssocTypeArg
@@ -107,6 +120,7 @@ import codeql.rust.elements.ParamList
 import codeql.rust.elements.ParenExpr
 import codeql.rust.elements.ParenPat
 import codeql.rust.elements.ParenTypeRepr
+import codeql.rust.elements.ParenthesizedArgList
 import codeql.rust.elements.Pat
 import codeql.rust.elements.Path
 import codeql.rust.elements.PathAstNode
@@ -166,6 +180,8 @@ import codeql.rust.elements.Unextracted
 import codeql.rust.elements.Unimplemented
 import codeql.rust.elements.Union
 import codeql.rust.elements.Use
+import codeql.rust.elements.UseBoundGenericArg
+import codeql.rust.elements.UseBoundGenericArgs
 import codeql.rust.elements.UseTree
 import codeql.rust.elements.UseTreeList
 import codeql.rust.elements.Variant

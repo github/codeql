@@ -71,6 +71,11 @@ module Generated {
     predicate isStatic() { Synth::convertStaticToRaw(this).(Raw::Static).isStatic() }
 
     /**
+     * Holds if this static is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertStaticToRaw(this).(Raw::Static).isUnsafe() }
+
+    /**
      * Gets the name of this static, if it exists.
      */
     Name getName() {

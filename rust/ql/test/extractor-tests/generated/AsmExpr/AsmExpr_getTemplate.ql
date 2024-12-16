@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from AsmExpr x
+from AsmExpr x, int index
 where toBeTested(x) and not x.isUnknown()
-select x, x.getExpr()
+select x, index, x.getTemplate(index)

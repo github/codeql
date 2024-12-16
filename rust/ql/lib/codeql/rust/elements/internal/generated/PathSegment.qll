@@ -9,7 +9,7 @@ private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.GenericArgList
 import codeql.rust.elements.NameRef
-import codeql.rust.elements.ParamList
+import codeql.rust.elements.ParenthesizedArgList
 import codeql.rust.elements.PathTypeRepr
 import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.ReturnTypeSyntax
@@ -59,19 +59,19 @@ module Generated {
     final predicate hasNameRef() { exists(this.getNameRef()) }
 
     /**
-     * Gets the parameter list of this path segment, if it exists.
+     * Gets the parenthesized argument list of this path segment, if it exists.
      */
-    ParamList getParamList() {
+    ParenthesizedArgList getParenthesizedArgList() {
       result =
-        Synth::convertParamListFromRaw(Synth::convertPathSegmentToRaw(this)
+        Synth::convertParenthesizedArgListFromRaw(Synth::convertPathSegmentToRaw(this)
               .(Raw::PathSegment)
-              .getParamList())
+              .getParenthesizedArgList())
     }
 
     /**
-     * Holds if `getParamList()` exists.
+     * Holds if `getParenthesizedArgList()` exists.
      */
-    final predicate hasParamList() { exists(this.getParamList()) }
+    final predicate hasParenthesizedArgList() { exists(this.getParenthesizedArgList()) }
 
     /**
      * Gets the path type of this path segment, if it exists.
