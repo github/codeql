@@ -1,14 +1,14 @@
 #select
-| main.rs:77:13:77:14 | p1 | main.rs:29:9:29:18 | &my_local1 | main.rs:77:13:77:14 | p1 | Access of a pointer to $@ after the end of it's lifetime. | main.rs:29:10:29:18 | my_local1 | my_local1 |
-| main.rs:78:13:78:14 | p2 | main.rs:35:9:35:22 | &mut my_local2 | main.rs:78:13:78:14 | p2 | Access of a pointer to $@ after the end of it's lifetime. | main.rs:35:14:35:22 | my_local2 | my_local2 |
-| main.rs:79:13:79:14 | p3 | main.rs:41:9:41:28 | &raw const my_local3 | main.rs:79:13:79:14 | p3 | Access of a pointer to $@ after the end of it's lifetime. | main.rs:41:20:41:28 | my_local3 | my_local3 |
-| main.rs:80:13:80:14 | p4 | main.rs:47:9:47:26 | &raw mut my_local4 | main.rs:80:13:80:14 | p4 | Access of a pointer to $@ after the end of it's lifetime. | main.rs:47:18:47:26 | my_local4 | my_local4 |
-| main.rs:82:13:82:14 | p6 | main.rs:58:9:58:18 | &... | main.rs:82:13:82:14 | p6 | Access of a pointer to $@ after the end of it's lifetime. | main.rs:58:10:58:18 | val.value | val.value |
-| main.rs:83:13:83:14 | p7 | main.rs:71:8:71:27 | &raw const my_local7 | main.rs:83:13:83:14 | p7 | Access of a pointer to $@ after the end of it's lifetime. | main.rs:71:19:71:27 | my_local7 | my_local7 |
-| main.rs:84:4:84:5 | p2 | main.rs:35:9:35:22 | &mut my_local2 | main.rs:84:4:84:5 | p2 | Access of a pointer to $@ after the end of it's lifetime. | main.rs:35:14:35:22 | my_local2 | my_local2 |
-| main.rs:85:4:85:5 | p4 | main.rs:47:9:47:26 | &raw mut my_local4 | main.rs:85:4:85:5 | p4 | Access of a pointer to $@ after the end of it's lifetime. | main.rs:47:18:47:26 | my_local4 | my_local4 |
-| main.rs:200:13:200:15 | ptr | main.rs:215:12:215:22 | &my_local40 | main.rs:200:13:200:15 | ptr | Access of a pointer to $@ after the end of it's lifetime. | main.rs:215:13:215:22 | my_local40 | my_local40 |
-| main.rs:613:13:613:18 | result | main.rs:598:26:598:27 | &x | main.rs:613:13:613:18 | result | Access of a pointer to $@ after the end of it's lifetime. | main.rs:598:27:598:27 | x | x |
+| main.rs:77:13:77:14 | p1 | main.rs:29:9:29:18 | &my_local1 | main.rs:77:13:77:14 | p1 | Access of a pointer to $@ after it's lifetime has ended. | main.rs:29:10:29:18 | my_local1 | my_local1 |
+| main.rs:78:13:78:14 | p2 | main.rs:35:9:35:22 | &mut my_local2 | main.rs:78:13:78:14 | p2 | Access of a pointer to $@ after it's lifetime has ended. | main.rs:35:14:35:22 | my_local2 | my_local2 |
+| main.rs:79:13:79:14 | p3 | main.rs:41:9:41:28 | &raw const my_local3 | main.rs:79:13:79:14 | p3 | Access of a pointer to $@ after it's lifetime has ended. | main.rs:41:20:41:28 | my_local3 | my_local3 |
+| main.rs:80:13:80:14 | p4 | main.rs:47:9:47:26 | &raw mut my_local4 | main.rs:80:13:80:14 | p4 | Access of a pointer to $@ after it's lifetime has ended. | main.rs:47:18:47:26 | my_local4 | my_local4 |
+| main.rs:82:13:82:14 | p6 | main.rs:58:9:58:18 | &... | main.rs:82:13:82:14 | p6 | Access of a pointer to $@ after it's lifetime has ended. | main.rs:58:10:58:18 | val.value | val.value |
+| main.rs:83:13:83:14 | p7 | main.rs:71:8:71:27 | &raw const my_local7 | main.rs:83:13:83:14 | p7 | Access of a pointer to $@ after it's lifetime has ended. | main.rs:71:19:71:27 | my_local7 | my_local7 |
+| main.rs:84:4:84:5 | p2 | main.rs:35:9:35:22 | &mut my_local2 | main.rs:84:4:84:5 | p2 | Access of a pointer to $@ after it's lifetime has ended. | main.rs:35:14:35:22 | my_local2 | my_local2 |
+| main.rs:85:4:85:5 | p4 | main.rs:47:9:47:26 | &raw mut my_local4 | main.rs:85:4:85:5 | p4 | Access of a pointer to $@ after it's lifetime has ended. | main.rs:47:18:47:26 | my_local4 | my_local4 |
+| main.rs:200:13:200:15 | ptr | main.rs:215:12:215:22 | &my_local40 | main.rs:200:13:200:15 | ptr | Access of a pointer to $@ after it's lifetime has ended. | main.rs:215:13:215:22 | my_local40 | my_local40 |
+| main.rs:613:13:613:18 | result | main.rs:598:26:598:27 | &x | main.rs:613:13:613:18 | result | Access of a pointer to $@ after it's lifetime has ended. | main.rs:598:27:598:27 | x | x |
 edges
 | main.rs:29:2:29:18 | return ... | main.rs:62:11:62:30 | get_local_dangling(...) | provenance |  |
 | main.rs:29:9:29:18 | &my_local1 | main.rs:29:2:29:18 | return ... | provenance |  |

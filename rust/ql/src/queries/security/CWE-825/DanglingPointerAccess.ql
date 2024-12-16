@@ -35,4 +35,4 @@ where
   accessScope = sinkNode.getNode().asExpr().getExpr().getEnclosingBlock() and
   not maybeOnStack(valueScope, accessScope)
 select sinkNode.getNode(), sourceNode, sinkNode,
-  "Access of a pointer to $@ after the end of it's lifetime.", targetValue, targetValue.toString()
+  "Access of a pointer to $@ after it's lifetime has ended.", targetValue, targetValue.toString()
