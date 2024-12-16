@@ -1,2 +1,2 @@
 query: Security/CWE-312/CleartextLogging.ql
-postprocess: TestUtilities/PrettyPrintModels.ql
+postprocess: utils/test/PrettyPrintModels.ql

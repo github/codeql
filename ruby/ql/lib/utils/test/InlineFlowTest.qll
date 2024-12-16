@@ -12,7 +12,7 @@ private import codeql.ruby.frameworks.data.internal.ApiGraphModelsExtensions as 
 private import internal.InlineExpectationsTestImpl
 
 private module FlowTestImpl implements InputSig<Location, RubyDataFlow> {
-  import TestUtilities.InlineFlowTestUtil
+  import utils.test.InlineFlowTestUtil
 
   bindingset[src, sink]
   string getArgString(DataFlow::Node src, DataFlow::Node sink) {

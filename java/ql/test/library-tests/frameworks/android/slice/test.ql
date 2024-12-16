@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import semmle.code.java.dataflow.FlowSources
 
 module SliceValueFlowConfig implements DataFlow::ConfigSig {

@@ -1,5 +1,5 @@
 import cpp
-private import TestUtilities.InlineExpectationsTest
+private import utils.test.InlineExpectationsTest
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 
 private predicate ignoreAllocation(string name) {

@@ -3,7 +3,7 @@
  */
 
 import rust
-import utils.InlineFlowTest
+import utils.test.InlineFlowTest
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.FlowSummary
 import codeql.rust.dataflow.TaintTracking

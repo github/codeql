@@ -1,6 +1,6 @@
 import ruby
-import TestUtilities.InlineExpectationsTest
-import TestUtilities.InlineFlowTestUtil
+import utils.test.InlineExpectationsTest
+import utils.test.InlineFlowTestUtil
 private import codeql.ruby.typetracking.TypeTracking
 
 private DataFlow::LocalSourceNode track(TypeTracker t, DataFlow::CallNode source) {

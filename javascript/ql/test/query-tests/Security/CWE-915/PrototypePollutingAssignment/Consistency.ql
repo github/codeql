@@ -1,5 +1,5 @@
 import javascript
-import testUtilities.ConsistencyChecking
+import utils.test.ConsistencyChecking
 import semmle.javascript.security.dataflow.PrototypePollutingAssignmentQuery
 
 class Config extends ConsistencyConfiguration, Configuration {

@@ -1,7 +1,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
 
 signature module QueryTestSig {

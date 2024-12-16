@@ -1,6 +1,6 @@
 import go
 import semmle.go.security.OpenUrlRedirectCustomizations
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module FasthttpTest implements TestSig {
   string getARelevantTag() { result = "OpenRedirect" }
