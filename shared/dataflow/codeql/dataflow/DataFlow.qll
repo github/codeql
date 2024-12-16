@@ -935,11 +935,15 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
           )
       }
 
-      /** Gets a successor of `node` including subpath flow-through. */
+      /** Gets a successor of `node`, including subpath flow-through, but not enter or exit subpath steps. */
       InputPathNode stepEx(InputPathNode node) {
-        step(node, result, _, _)
+        step(node, result, _, _) and
+        not result = enterSubpathStep(node) and
+        not result = exitSubpathStep(node)
         or
-        subpathStep(node, _, _, result) // assuming the input is pruned properly, all subpaths have flow-through
+        // Assuming the input is pruned properly, all subpaths have flow-through.
+        // This step should be in 'step' as well, but include it here for clarity as we rely on it.
+        subpathStep(node, _, _, result)
       }
 
       InputPathNode enterSubpathStep(InputPathNode node) { subpathStep(node, result, _, _) }
