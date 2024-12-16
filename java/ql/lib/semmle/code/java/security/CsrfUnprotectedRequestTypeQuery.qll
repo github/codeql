@@ -186,9 +186,7 @@ predicate unprotectedDatabaseUpdate(CallPathNode sourceMethod, CallPathNode sink
       sinkMethod.asMethod() instanceof SqlInjectionMethod and
       sinkMethod.asMethod().hasName("execute")
     then
-      exists(SqlExecuteFlow::PathNode executeSrc, SqlExecuteFlow::PathNode executeSink |
-        SqlExecuteFlow::flowPath(executeSrc, executeSink)
-      |
+      exists(SqlExecuteFlow::PathNode executeSink | SqlExecuteFlow::flowPath(_, executeSink) |
         sinkMethodCall.asCall() = executeSink.getNode().asExpr().(Argument).getCall()
       )
     else any()
