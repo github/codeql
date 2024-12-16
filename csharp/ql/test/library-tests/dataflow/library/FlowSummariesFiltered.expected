@@ -164,6 +164,7 @@
 | Microsoft.AspNetCore.Components.CompilerServices;RuntimeHelpers;InvokeAsynchronousDelegate;(System.Action);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components.CompilerServices;RuntimeHelpers;InvokeAsynchronousDelegate;(System.Func<System.Threading.Tasks.Task>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components.CompilerServices;RuntimeHelpers;InvokeSynchronousDelegate;(System.Action);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
+| Microsoft.AspNetCore.Components.CompilerServices;RuntimeHelpers;TypeCheck<T>;(T);Argument[0];ReturnValue;value;manual |
 | Microsoft.AspNetCore.Components.Forms.Mapping;FormValueMappingContext;set_MapErrorToContainer;(System.Action<System.String,System.Object>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components.Forms.Mapping;FormValueMappingContext;set_OnError;(System.Action<System.String,System.FormattableString,System.String>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components.Forms;EditContext;GetValidationMessages;(System.Linq.Expressions.Expression<System.Func<System.Object>>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
