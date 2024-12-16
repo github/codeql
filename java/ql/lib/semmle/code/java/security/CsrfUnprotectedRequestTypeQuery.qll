@@ -180,8 +180,8 @@ predicate unprotectedDatabaseUpdate(CallPathNode sourceMethod, CallPathNode sink
   sourceMethod.asMethod() instanceof CsrfUnprotectedMethod and
   exists(CallPathNode sinkMethod |
     sinkMethod.asMethod() instanceof DatabaseUpdateMethod and
-    sinkMethodCall.getASuccessor() = sinkMethod and
-    sourceMethod.getASuccessor+() = sinkMethodCall and
+    sinkMethodCall.getASuccessor() = pragma[only_bind_into](sinkMethod) and
+    sourceMethod.getASuccessor+() = pragma[only_bind_into](sinkMethodCall) and
     if
       sinkMethod.asMethod() instanceof SqlInjectionMethod and
       sinkMethod.asMethod().hasName("execute")
