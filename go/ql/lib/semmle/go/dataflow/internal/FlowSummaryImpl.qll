@@ -525,7 +525,9 @@ module Private {
     SummaryComponent qualifier() { result = argument(-1) }
 
     /** Gets a summary component for field `f`. */
-    SummaryComponent field(Field f) { result = content(any(FieldContent c | c.getField() = f).asContentSet()) }
+    SummaryComponent field(Field f) {
+      result = content(any(FieldContent c | c.getField() = f).asContentSet())
+    }
 
     /** Gets a summary component that represents the return value of a call. */
     SummaryComponent return() { result = SC::return(_) }

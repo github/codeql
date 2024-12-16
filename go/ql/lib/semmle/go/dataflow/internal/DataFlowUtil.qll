@@ -186,9 +186,7 @@ class Content extends TContent {
   /**
    * Gets the `ContentSet` contaning only this content.
    */
-  ContentSet asContentSet() {
-    result.asOneContent() = this
-  }
+  ContentSet asContentSet() { result.asOneContent() = this }
 }
 
 /** A reference through a field. */
@@ -268,9 +266,7 @@ private newtype TContentSet =
  */
 class ContentSet instanceof TContentSet {
   /** Gets a content that may be stored into when storing into this set. */
-  Content getAStoreContent() {
-    this = TOneContent(result)
-  }
+  Content getAStoreContent() { this = TOneContent(result) }
 
   /** Gets a content that may be read from when reading from this set. */
   Content getAReadContent() {
@@ -311,16 +307,12 @@ class ContentSet instanceof TContentSet {
   /**
    * If this is a singleton content set, returns the content.
    */
-  Content asOneContent() {
-    this = TOneContent(result)
-  }
+  Content asOneContent() { this = TOneContent(result) }
 
   /**
    * Holds if this is a universal content set.
    */
-  predicate isUniversalContent() {
-    this = TAllContent()
-  }
+  predicate isUniversalContent() { this = TAllContent() }
 }
 
 /**
