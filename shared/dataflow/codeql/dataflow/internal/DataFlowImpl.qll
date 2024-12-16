@@ -337,7 +337,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private predicate sinkNodeWithStateReverse(NodeEx node, FlowState state) {
-      Config::isSinkReverse(node.asNodeReverse(_), state) and
+      Config::isSinkReverse(node.asNodeReverse(), state) and
       not fullBarrier(node) and
       not stateBarrier(node, state)
     }
@@ -582,11 +582,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         cc = true
         or
         // flow out of a callable
-        fwdFlowOut(any(NormalDataFlowCall call), node, false) and
+        fwdFlowOut(_, node, false) and
         cc = false
         or
         // flow through a callable
-        exists(DataFlowCallEx call |
+        exists(DataFlowCall call |
           fwdFlowOutFromArg(call, node) and
           fwdFlowIsEntered(call, cc)
         )
@@ -594,8 +594,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       // inline to reduce the number of iterations
       pragma[inline]
-      private predicate fwdFlowIn(DataFlowCallEx call, NodeEx arg, Cc cc, ParamNodeEx p) {
-        exists(DataFlowCall underlyingCall | underlyingCall = call.projectCall() |
+      private predicate fwdFlowIn(DataFlowCall call, NodeEx arg, Cc cc, ParamNodeEx p) {
+        exists(DataFlowCall underlyingCall | underlyingCall = call |
           // call context cannot help reduce virtual dispatch
           fwdFlow(arg, cc) and
           viableParamArgEx(call, p, arg) and
@@ -620,15 +620,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
        * Holds if an argument to `call` is reached in the flow covered by `fwdFlow`.
        */
       pragma[nomagic]
-      private predicate fwdFlowIsEntered(DataFlowCallEx call, Cc cc) { fwdFlowIn(call, _, cc, _) }
+      private predicate fwdFlowIsEntered(DataFlowCall call, Cc cc) { fwdFlowIn(call, _, cc, _) }
 
       pragma[nomagic]
       private predicate fwdFlowInReducedViableImplInSomeCallContext(
-        DataFlowCallEx call, NodeEx arg, ParamNodeEx p, DataFlowCallable target
+        DataFlowCall call, NodeEx arg, ParamNodeEx p, DataFlowCallable target
       ) {
         fwdFlow(arg, true) and
         viableParamArgEx(call, p, arg) and
-        CachedCallContextSensitivity::reducedViableImplInCallContext(call.projectCall(), _, _) and
+        CachedCallContextSensitivity::reducedViableImplInCallContext(call, _, _) and
         target = p.getEnclosingCallable() and
         not fullBarrier(p)
       }
@@ -640,9 +640,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
        */
       pragma[nomagic]
       private DataFlowCallable viableImplInSomeFwdFlowCallContextExt(DataFlowCall call) {
-        exists(DataFlowCallEx ctx |
+        exists(DataFlowCall ctx |
           fwdFlowIsEntered(ctx, _) and
-          result = viableImplInCallContextExt(call, ctx.projectCall())
+          result = viableImplInCallContextExt(call, ctx)
         )
       }
 
@@ -689,7 +689,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       // inline to reduce the number of iterations
       pragma[inline]
-      private predicate fwdFlowOut(DataFlowCallEx call, NodeEx out, Cc cc) {
+      private predicate fwdFlowOut(DataFlowCall call, NodeEx out, Cc cc) {
         exists(ReturnPosition pos |
           fwdFlowReturnPosition(pos, cc) and
           viableReturnPosOutEx(call, pos, out) and
@@ -698,7 +698,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       pragma[nomagic]
-      private predicate fwdFlowOutFromArg(DataFlowCallEx call, NodeEx out) {
+      private predicate fwdFlowOutFromArg(DataFlowCall call, NodeEx out) {
         fwdFlowOut(call, out, true)
       }
 
@@ -731,7 +731,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         or
         fwdFlow(pragma[only_bind_into](node)) and
         fwdFlowState(state) and
-        Config::isSinkReverse(node.asNodeReverse(_))
+        Config::isSinkReverse(node.asNodeReverse())
         or
         fwdFlow(node) and
         fwdFlowState(state) and
@@ -781,7 +781,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
         or
         // flow into a callable
-        revFlowIn(any(NormalDataFlowCall call), node, false) and
+        revFlowIn(_, node, false) and
         toReturn = false
         or
         // flow out of a callable
@@ -792,7 +792,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
         or
         // flow through a callable
-        exists(DataFlowCallEx call |
+        exists(DataFlowCall call |
           revFlowInToReturn(call, node) and
           revFlowIsReturned(call, toReturn)
         )
@@ -832,7 +832,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       pragma[nomagic]
       additional predicate viableReturnPosOutNodeCandFwd1(
-        DataFlowCallEx call, ReturnPosition pos, NodeEx out
+        DataFlowCall call, ReturnPosition pos, NodeEx out
       ) {
         fwdFlowReturnPosition(pos, _) and
         viableReturnPosOutEx(call, pos, out)
@@ -848,14 +848,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       pragma[nomagic]
       additional predicate viableParamArgNodeCandFwd1(
-        DataFlowCallEx call, ParamNodeEx p, ArgNodeEx arg
+        DataFlowCall call, ParamNodeEx p, ArgNodeEx arg
       ) {
         fwdFlowIn(call, arg, _, p)
       }
 
       // inline to reduce the number of iterations
       pragma[inline]
-      private predicate revFlowIn(DataFlowCallEx call, ArgNodeEx arg, boolean toReturn) {
+      private predicate revFlowIn(DataFlowCall call, ArgNodeEx arg, boolean toReturn) {
         exists(ParamNodeEx p |
           revFlow(p, toReturn) and
           viableParamArgNodeCandFwd1(call, p, arg)
@@ -863,7 +863,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       pragma[nomagic]
-      private predicate revFlowInToReturn(DataFlowCallEx call, ArgNodeEx arg) {
+      private predicate revFlowInToReturn(DataFlowCall call, ArgNodeEx arg) {
         revFlowIn(call, arg, true)
       }
 
@@ -873,7 +873,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
        * reaching an argument of `call`.
        */
       pragma[nomagic]
-      private predicate revFlowIsReturned(DataFlowCallEx call, boolean toReturn) {
+      private predicate revFlowIsReturned(DataFlowCall call, boolean toReturn) {
         exists(NodeEx out |
           revFlow(out, toReturn) and
           fwdFlowOutFromArg(call, out)
@@ -977,7 +977,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       pragma[nomagic]
-      predicate callMayFlowThroughRev(DataFlowCallEx call) {
+      predicate callMayFlowThroughRev(DataFlowCall call) {
         exists(ArgNodeEx arg, boolean toReturn |
           revFlow(arg, toReturn) and
           revFlowInToReturn(call, arg) and
@@ -986,7 +986,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       predicate callEdgeArgParam(
-        DataFlowCallEx call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
+        DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
       ) {
         exists(boolean allowsFieldFlow |
           flowIntoCallNodeCand1(call, arg, p, allowsFieldFlow) and
@@ -1000,18 +1000,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       predicate callEdgeReturn(
-        DataFlowCallEx call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
+        DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
         boolean allowsFieldFlow
       ) {
         flowOutOfCallNodeCand1(call, ret, kind, out, allowsFieldFlow) and
         c = ret.getEnclosingCallable()
       }
 
-      predicate relevantCallEdgeIn(DataFlowCallEx call, DataFlowCallable c) {
+      predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
         callEdgeArgParam(call, c, _, _, _)
       }
 
-      predicate relevantCallEdgeOut(DataFlowCallEx call, DataFlowCallable c) {
+      predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
         callEdgeReturn(call, c, _, _, _, _)
       }
 
@@ -1033,7 +1033,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         states = count(FlowState state | revFlowState(state)) and
         tuples = count(NodeEx n, boolean b | revFlow(n, b)) and
         calledges =
-          count(DataFlowCallEx call, DataFlowCallable c |
+          count(DataFlowCall call, DataFlowCallable c |
             callEdgeArgParam(call, c, _, _, _) or
             callEdgeReturn(call, c, _, _, _, _)
           )
@@ -1054,7 +1054,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private predicate sinkModel(NodeEx node, string model) {
       sinkNode(node, _) and
-      exists(Node n | n = [node.asNodeOrImplicitRead(), node.asNodeReverse(_)] |
+      exists(Node n | n = [node.asNodeOrImplicitRead(), node.asNodeReverse()] |
         knownSinkModel(n, model)
         or
         not knownSinkModel(n, _) and model = ""
@@ -1111,9 +1111,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[nomagic]
-    private predicate viableReturnPosOutNodeCand1(
-      DataFlowCallEx call, ReturnPosition pos, NodeEx out
-    ) {
+    private predicate viableReturnPosOutNodeCand1(DataFlowCall call, ReturnPosition pos, NodeEx out) {
       Stage1::revFlow(out) and
       Stage1::viableReturnPosOutNodeCandFwd1(call, pos, out)
     }
@@ -1125,7 +1123,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     pragma[nomagic]
     private predicate flowOutOfCallNodeCand1(
-      DataFlowCallEx call, RetNodeEx ret, ReturnKindExt kind, NodeEx out
+      DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out
     ) {
       exists(ReturnPosition pos |
         viableReturnPosOutNodeCand1(call, pos, out) and
@@ -1138,7 +1136,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[nomagic]
-    private predicate viableParamArgNodeCand1(DataFlowCallEx call, ParamNodeEx p, ArgNodeEx arg) {
+    private predicate viableParamArgNodeCand1(DataFlowCall call, ParamNodeEx p, ArgNodeEx arg) {
       Stage1::viableParamArgNodeCandFwd1(call, p, arg) and
       Stage1::revFlow(arg)
     }
@@ -1148,7 +1146,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      * path from a source to a sink.
      */
     pragma[nomagic]
-    private predicate flowIntoCallNodeCand1(DataFlowCallEx call, ArgNodeEx arg, ParamNodeEx p) {
+    private predicate flowIntoCallNodeCand1(DataFlowCall call, ArgNodeEx arg, ParamNodeEx p) {
       viableParamArgNodeCand1(call, p, arg) and
       Stage1::revFlow(p) and
       not outBarrier(arg) and
@@ -1168,7 +1166,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private predicate returnCallEdge1(
-      DataFlowCallable c, SndLevelScopeOption scope, DataFlowCallEx call, NodeEx out
+      DataFlowCallable c, SndLevelScopeOption scope, DataFlowCall call, NodeEx out
     ) {
       exists(RetNodeEx ret |
         flowOutOfCallNodeCand1(call, ret, _, out) and
@@ -1177,7 +1175,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private int simpleDispatchFanoutOnReturn(DataFlowCallEx call, NodeEx out) {
+    private int simpleDispatchFanoutOnReturn(DataFlowCall call, NodeEx out) {
       result =
         strictcount(DataFlowCallable c, SndLevelScopeOption scope |
           returnCallEdge1(c, scope, call, out)
@@ -1186,29 +1184,28 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     pragma[nomagic]
     private predicate returnCallEdgeInCtx1(
-      DataFlowCallable c, SndLevelScopeOption scope, DataFlowCallEx call, NodeEx out,
-      DataFlowCall ctx
+      DataFlowCallable c, SndLevelScopeOption scope, DataFlowCall call, NodeEx out, DataFlowCall ctx
     ) {
       returnCallEdge1(c, scope, call, out) and
-      c = viableImplInCallContextExt(call.projectCall(), ctx)
+      c = viableImplInCallContextExt(call, ctx)
     }
 
-    private int ctxDispatchFanoutOnReturn(NodeEx out, DataFlowCallEx ctx) {
-      exists(DataFlowCallEx call, DataFlowCallable c |
+    private int ctxDispatchFanoutOnReturn(NodeEx out, DataFlowCall ctx) {
+      exists(DataFlowCall call, DataFlowCallable c |
         simpleDispatchFanoutOnReturn(call, out) > 1 and
         not Stage1::revFlow(out, false) and
         call.getEnclosingCallable() = c and
         returnCallEdge1(c, _, ctx, _) and
-        mayBenefitFromCallContextExt(call.projectCall(), _) and
+        mayBenefitFromCallContextExt(call, _) and
         result =
           count(DataFlowCallable tgt, SndLevelScopeOption scope |
-            returnCallEdgeInCtx1(tgt, scope, call, out, ctx.projectCall())
+            returnCallEdgeInCtx1(tgt, scope, call, out, ctx)
           )
       )
     }
 
     private int ctxDispatchFanoutOnReturn(NodeEx out) {
-      result = max(DataFlowCallEx ctx | | ctxDispatchFanoutOnReturn(out, ctx))
+      result = max(DataFlowCall ctx | | ctxDispatchFanoutOnReturn(out, ctx))
     }
 
     private int dispatchFanoutOnReturn(NodeEx out) {
@@ -1259,7 +1256,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     pragma[nomagic]
     private predicate flowOutOfCallNodeCand1(
-      DataFlowCallEx call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow
+      DataFlowCall call, RetNodeEx ret, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow
     ) {
       flowOutOfCallNodeCand1(call, ret, kind, out) and
       exists(int j |
@@ -1274,7 +1271,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[nomagic]
-    private predicate allowsFieldFlowThrough(DataFlowCallEx call, DataFlowCallable c) {
+    private predicate allowsFieldFlowThrough(DataFlowCall call, DataFlowCallable c) {
       exists(RetNodeEx ret |
         flowOutOfCallNodeCand1(call, ret, _, _, true) and
         c = ret.getEnclosingCallable()
@@ -1288,7 +1285,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      */
     pragma[nomagic]
     private predicate flowIntoCallNodeCand1(
-      DataFlowCallEx call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow
+      DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow
     ) {
       flowIntoCallNodeCand1(call, arg, p) and
       exists(int b, int j |
@@ -1314,7 +1311,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[node, state]
       predicate revFlow(NodeEx node, FlowState state, Ap ap);
 
-      predicate callMayFlowThroughRev(DataFlowCallEx call);
+      predicate callMayFlowThroughRev(DataFlowCall call);
 
       predicate parameterMayFlowThrough(ParamNodeEx p, boolean emptyAp);
 
@@ -1327,17 +1324,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       predicate readStepCand(NodeEx n1, Content c, NodeEx n2);
 
       predicate callEdgeArgParam(
-        DataFlowCallEx call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
+        DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
       );
 
       predicate callEdgeReturn(
-        DataFlowCallEx call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
+        DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
         boolean allowsFieldFlow
       );
 
-      predicate relevantCallEdgeIn(DataFlowCallEx call, DataFlowCallable c);
+      predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c);
 
-      predicate relevantCallEdgeOut(DataFlowCallEx call, DataFlowCallable c);
+      predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c);
     }
 
     private module MkStage<StageSig PrevStage> {
@@ -1414,14 +1411,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx);
 
         bindingset[call, c]
-        CcCall getCallContextCall(DataFlowCallEx call, DataFlowCallable c);
+        CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c);
 
         DataFlowCall viableImplCallContextReducedReverse(DataFlowCallable c, CcNoCall ctx);
 
         predicate viableImplNotCallContextReducedReverse(CcNoCall ctx);
 
         bindingset[call, c]
-        CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCallEx call);
+        CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call);
 
         bindingset[cc]
         LocalCc getLocalCc(Cc cc);
@@ -1471,7 +1468,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate flowThroughOutOfCall(
-          DataFlowCallEx call, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow
+          DataFlowCall call, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow
         ) {
           exists(ReturnKindExt kind |
             PrevStage::callEdgeReturn(call, _, ret, kind, out, allowsFieldFlow) and
@@ -1598,7 +1595,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           apa = getApprox(ap)
           or
           // flow through a callable
-          exists(DataFlowCallEx call, RetNodeEx ret, boolean allowsFieldFlow |
+          exists(DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow |
             fwdFlowThrough(call, cc, state, summaryCtx, t, ap, stored, ret) and
             flowThroughOutOfCall(call, ret, node, allowsFieldFlow) and
             apa = getApprox(ap) and
@@ -1773,7 +1770,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private module FwdFlowIn<flowThroughSig/0 flowThrough> {
           pragma[nomagic]
           private predicate callEdgeArgParamRestricted(
-            DataFlowCallEx call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
+            DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
           ) {
             PrevStage::callEdgeArgParam(call, c, arg, p, emptyAp) and
             if
@@ -1790,16 +1787,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[nomagic]
           private DataFlowCallable viableImplCallContextReducedRestricted(
-            DataFlowCallEx call, CcCall ctx
+            DataFlowCall call, CcCall ctx
           ) {
-            result = viableImplCallContextReduced(call.projectCall(), ctx) and
+            result = viableImplCallContextReduced(call, ctx) and
             callEdgeArgParamRestricted(call, result, _, _, _)
           }
 
           bindingset[call, ctx]
           pragma[inline_late]
           private DataFlowCallable viableImplCallContextReducedInlineLate(
-            DataFlowCallEx call, CcCall ctx
+            DataFlowCall call, CcCall ctx
           ) {
             result = viableImplCallContextReducedRestricted(call, ctx)
           }
@@ -1807,7 +1804,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           bindingset[arg, ctx]
           pragma[inline_late]
           private DataFlowCallable viableImplCallContextReducedInlineLate(
-            DataFlowCallEx call, ArgNodeEx arg, CcCall ctx
+            DataFlowCall call, ArgNodeEx arg, CcCall ctx
           ) {
             callEdgeArgParamRestricted(call, _, arg, _, _) and
             instanceofCcCall(ctx) and
@@ -1817,7 +1814,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           bindingset[call]
           pragma[inline_late]
           private predicate callEdgeArgParamRestrictedInlineLate(
-            DataFlowCallEx call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
+            DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
           ) {
             callEdgeArgParamRestricted(call, c, arg, p, emptyAp)
           }
@@ -1832,16 +1829,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           bindingset[arg, outercc]
           pragma[inline_late]
           private predicate viableImplArgNotCallContextReduced(
-            DataFlowCallEx call, ArgNodeEx arg, Cc outercc
+            DataFlowCall call, ArgNodeEx arg, Cc outercc
           ) {
             callEdgeArgParamRestricted(call, _, arg, _, _) and
             instanceofCc(outercc) and
-            viableImplNotCallContextReducedInlineLate(call.projectCall(), outercc)
+            viableImplNotCallContextReducedInlineLate(call, outercc)
           }
 
           pragma[inline]
           private predicate fwdFlowInCand(
-            DataFlowCallEx call, ArgNodeEx arg, FlowState state, Cc outercc, DataFlowCallable inner,
+            DataFlowCall call, ArgNodeEx arg, FlowState state, Cc outercc, DataFlowCallable inner,
             ParamNodeEx p, SummaryCtx summaryCtx, Typ t, Ap ap, boolean emptyAp, TypOption stored,
             boolean cc
           ) {
@@ -1858,7 +1855,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[inline]
           private predicate fwdFlowInCandTypeFlowDisabled(
-            DataFlowCallEx call, ArgNodeEx arg, FlowState state, Cc outercc, DataFlowCallable inner,
+            DataFlowCall call, ArgNodeEx arg, FlowState state, Cc outercc, DataFlowCallable inner,
             ParamNodeEx p, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored, boolean cc
           ) {
             not enableTypeFlow() and
@@ -1867,7 +1864,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[nomagic]
           private predicate fwdFlowInCandTypeFlowEnabled(
-            DataFlowCallEx call, ArgNodeEx arg, Cc outercc, DataFlowCallable inner, ParamNodeEx p,
+            DataFlowCall call, ArgNodeEx arg, Cc outercc, DataFlowCallable inner, ParamNodeEx p,
             boolean emptyAp, boolean cc
           ) {
             enableTypeFlow() and
@@ -1876,26 +1873,26 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[nomagic]
           private predicate fwdFlowInValidEdgeTypeFlowDisabled(
-            DataFlowCallEx call, DataFlowCallable inner, CcCall innercc, boolean cc
+            DataFlowCall call, DataFlowCallable inner, CcCall innercc, boolean cc
           ) {
             not enableTypeFlow() and
-            FwdTypeFlow::typeFlowValidEdgeIn(call.projectCall(), inner, cc) and
+            FwdTypeFlow::typeFlowValidEdgeIn(call, inner, cc) and
             innercc = getCallContextCall(call, inner)
           }
 
           pragma[nomagic]
           private predicate fwdFlowInValidEdgeTypeFlowEnabled(
-            DataFlowCallEx call, ArgNodeEx arg, Cc outercc, DataFlowCallable inner, ParamNodeEx p,
+            DataFlowCall call, ArgNodeEx arg, Cc outercc, DataFlowCallable inner, ParamNodeEx p,
             CcCall innercc, boolean emptyAp, boolean cc
           ) {
             fwdFlowInCandTypeFlowEnabled(call, arg, outercc, inner, p, emptyAp, cc) and
-            FwdTypeFlow::typeFlowValidEdgeIn(call.projectCall(), inner, cc) and
+            FwdTypeFlow::typeFlowValidEdgeIn(call, inner, cc) and
             innercc = getCallContextCall(call, inner)
           }
 
           pragma[inline]
           predicate fwdFlowIn(
-            DataFlowCallEx call, ArgNodeEx arg, DataFlowCallable inner, ParamNodeEx p,
+            DataFlowCall call, ArgNodeEx arg, DataFlowCallable inner, ParamNodeEx p,
             FlowState state, Cc outercc, CcCall innercc, SummaryCtx summaryCtx, Typ t, Ap ap,
             TypOption stored, boolean cc
           ) {
@@ -1918,10 +1915,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowInNoFlowThrough(
-          ParamNodeEx p, FlowState state, CcCall innercc, Typ t, Ap ap, TypOption stored
+          NormalParamNodeEx p, FlowState state, CcCall innercc, Typ t, Ap ap, TypOption stored
         ) {
-          FwdFlowInNoThrough::fwdFlowIn(any(NormalDataFlowCall call), _, _, p, state, _, innercc, _,
-            t, ap, stored, _)
+          FwdFlowInNoThrough::fwdFlowIn(_, _, _, p, state, _, innercc, _, t, ap, stored, _)
         }
 
         private predicate top() { any() }
@@ -1936,16 +1932,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
-        private DataFlowCallEx viableImplCallContextReducedReverseRestricted(
+        private DataFlowCall viableImplCallContextReducedReverseRestricted(
           DataFlowCallable c, CcNoCall ctx
         ) {
-          result.projectCall() = viableImplCallContextReducedReverse(c, ctx) and
+          result = viableImplCallContextReducedReverse(c, ctx) and
           PrevStage::callEdgeReturn(result, c, _, _, _, _)
         }
 
         bindingset[c, ctx]
         pragma[inline_late]
-        private DataFlowCallEx viableImplCallContextReducedReverseInlineLate(
+        private DataFlowCall viableImplCallContextReducedReverseInlineLate(
           DataFlowCallable c, CcNoCall ctx
         ) {
           result = viableImplCallContextReducedReverseRestricted(c, ctx)
@@ -1954,8 +1950,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         bindingset[call]
         pragma[inline_late]
         private predicate flowOutOfCallInlineLate(
-          DataFlowCallEx call, DataFlowCallable c, RetNodeEx ret, NodeEx out,
-          boolean allowsFieldFlow
+          DataFlowCall call, DataFlowCallable c, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow
         ) {
           PrevStage::callEdgeReturn(call, c, ret, _, out, allowsFieldFlow)
         }
@@ -1964,8 +1959,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[inline_late]
         pragma[noopt]
         private predicate flowOutOfCallNotCallContextReduced(
-          DataFlowCallEx call, DataFlowCallable c, RetNodeEx ret, NodeEx out,
-          boolean allowsFieldFlow, CcNoCall innercc
+          DataFlowCall call, DataFlowCallable c, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
+          CcNoCall innercc
         ) {
           viableImplNotCallContextReducedReverse(innercc) and
           PrevStage::callEdgeReturn(call, c, ret, _, out, allowsFieldFlow)
@@ -1983,8 +1978,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowOutCand(
-          NormalDataFlowCall call, RetNodeEx ret, CcNoCall innercc, DataFlowCallable inner,
-          NodeEx out, boolean allowsFieldFlow
+          DataFlowCall call, RetNodeEx ret, CcNoCall innercc, DataFlowCallable inner, NodeEx out,
+          boolean allowsFieldFlow
         ) {
           fwdFlowIntoRet(ret, _, innercc, _, _, _, _) and
           inner = ret.getEnclosingCallable() and
@@ -1998,18 +1993,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowOutValidEdge(
-          NormalDataFlowCall call, RetNodeEx ret, CcNoCall innercc, DataFlowCallable inner,
-          NodeEx out, CcNoCall outercc, boolean allowsFieldFlow
+          DataFlowCall call, RetNodeEx ret, CcNoCall innercc, DataFlowCallable inner, NodeEx out,
+          CcNoCall outercc, boolean allowsFieldFlow
         ) {
           fwdFlowOutCand(call, ret, innercc, inner, out, allowsFieldFlow) and
-          FwdTypeFlow::typeFlowValidEdgeOut(call.projectCall(), inner) and
+          FwdTypeFlow::typeFlowValidEdgeOut(call, inner) and
           outercc = getCallContextReturn(inner, call)
         }
 
         pragma[inline]
         private predicate fwdFlowOut(
-          NormalDataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state,
-          CcNoCall outercc, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored
+          DataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state, CcNoCall outercc,
+          SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored
         ) {
           exists(RetNodeEx ret, CcNoCall innercc, boolean allowsFieldFlow |
             fwdFlowIntoRet(ret, state, innercc, summaryCtx, t, ap, stored) and
@@ -2023,11 +2018,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           predicate enableTypeFlow = Param::enableTypeFlow/0;
 
           predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
-            PrevStage::relevantCallEdgeIn(injectCall(call), c)
+            PrevStage::relevantCallEdgeIn(call, c)
           }
 
           predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
-            PrevStage::relevantCallEdgeOut(injectCall(call), c)
+            PrevStage::relevantCallEdgeOut(call, c)
           }
 
           pragma[nomagic]
@@ -2035,11 +2030,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             DataFlowCall call, DataFlowCallable c, ParamNodeEx p, FlowState state, CcCall innercc,
             Typ t, Ap ap, TypOption stored, boolean cc
           ) {
-            FwdFlowInNoThrough::fwdFlowIn(injectCall(call), _, c, p, state, _, innercc, _, t, ap,
-              stored, cc)
+            FwdFlowInNoThrough::fwdFlowIn(call, _, c, p, state, _, innercc, _, t, ap, stored, cc)
             or
-            FwdFlowInThrough::fwdFlowIn(injectCall(call), _, c, p, state, _, innercc, _, t, ap,
-              stored, cc)
+            FwdFlowInThrough::fwdFlowIn(call, _, c, p, state, _, innercc, _, t, ap, stored, cc)
           }
 
           pragma[nomagic]
@@ -2063,7 +2056,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             DataFlowCall call, DataFlowCallable c, NodeEx node, FlowState state, Cc cc, Typ t,
             Ap ap, TypOption stored
           ) {
-            fwdFlowOut(injectCall(call), c, node, state, cc, _, t, ap, stored)
+            fwdFlowOut(call, c, node, state, cc, _, t, ap, stored)
           }
 
           pragma[nomagic]
@@ -2101,10 +2094,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private module FwdTypeFlow = TypeFlow<FwdTypeFlowInput>;
 
         private predicate flowIntoCallTaken(
-          DataFlowCallEx call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
         ) {
           PrevStage::callEdgeArgParam(call, c, arg, p, emptyAp) and
-          FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call.projectCall(), c, _)
+          FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _)
         }
 
         pragma[nomagic]
@@ -2126,7 +2119,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[inline]
         private predicate fwdFlowThrough0(
-          DataFlowCallEx call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
+          DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
           SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored, RetNodeEx ret,
           SummaryCtxSome innerSummaryCtx
         ) {
@@ -2136,7 +2129,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowThrough(
-          DataFlowCallEx call, Cc cc, FlowState state, SummaryCtx summaryCtx, Typ t, Ap ap,
+          DataFlowCall call, Cc cc, FlowState state, SummaryCtx summaryCtx, Typ t, Ap ap,
           TypOption stored, RetNodeEx ret
         ) {
           fwdFlowThrough0(call, _, cc, state, _, summaryCtx, t, ap, stored, ret, _)
@@ -2144,7 +2137,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowIsEntered0(
-          DataFlowCallEx call, ArgNodeEx arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx,
+          DataFlowCall call, ArgNodeEx arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx,
           ParamNodeEx p, FlowState state, Typ t, Ap ap, TypOption stored
         ) {
           FwdFlowInThrough::fwdFlowIn(call, arg, _, p, state, cc, innerCc, summaryCtx, t, ap,
@@ -2157,7 +2150,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          */
         pragma[nomagic]
         private predicate fwdFlowIsEntered(
-          DataFlowCallEx call, ArgNodeEx arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx,
+          DataFlowCall call, ArgNodeEx arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx,
           SummaryCtxSome innerSummaryCtx
         ) {
           exists(ParamNodeEx p, FlowState state, Typ t, Ap ap, TypOption stored |
@@ -2180,7 +2173,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate returnFlowsThrough0(
-          DataFlowCallEx call, FlowState state, CcCall ccc, Ap ap, RetNodeEx ret,
+          DataFlowCall call, FlowState state, CcCall ccc, Ap ap, RetNodeEx ret,
           SummaryCtxSome innerSummaryCtx
         ) {
           fwdFlowThrough0(call, _, _, state, ccc, _, _, ap, _, ret, innerSummaryCtx)
@@ -2191,7 +2184,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           RetNodeEx ret, ReturnPosition pos, FlowState state, CcCall ccc, ParamNodeEx p, Typ argT,
           Ap argAp, TypOption argStored, Ap ap
         ) {
-          exists(DataFlowCallEx call, boolean allowsFieldFlow |
+          exists(DataFlowCall call, boolean allowsFieldFlow |
             returnFlowsThrough0(call, state, ccc, ap, ret,
               TSummaryCtxSome(p, _, argT, argAp, argStored)) and
             flowThroughOutOfCall(call, ret, _, allowsFieldFlow) and
@@ -2202,7 +2195,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate flowThroughIntoCall(
-          DataFlowCallEx call, ArgNodeEx arg, ParamNodeEx p, Ap argAp, Ap ap
+          DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, Ap argAp, Ap ap
         ) {
           exists(Typ argT, TypOption argStored |
             returnFlowsThrough(_, _, _, _, pragma[only_bind_into](p), pragma[only_bind_into](argT),
@@ -2215,7 +2208,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate flowIntoCallAp(
-          DataFlowCallEx call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, Ap ap
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, Ap ap
         ) {
           flowIntoCallTaken(call, c, arg, p, isNil(ap)) and
           fwdFlow(arg, _, _, _, _, ap, _)
@@ -2223,7 +2216,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate flowOutOfCallAp(
-          DataFlowCallEx call, DataFlowCallable c, RetNodeEx ret, ReturnPosition pos, NodeEx out,
+          DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnPosition pos, NodeEx out,
           Ap ap, boolean allowsFieldFlow
         ) {
           PrevStage::callEdgeReturn(call, c, ret, _, out, allowsFieldFlow) and
@@ -2232,8 +2225,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           (if allowsFieldFlow = false then ap instanceof ApNil else any()) and
           (
             // both directions are needed for flow-through
-            FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call.projectCall(), c, _) or
-            FwdTypeFlowInput::dataFlowTakenCallEdgeOut(call.projectCall(), c)
+            FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
+            FwdTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
           )
         }
 
@@ -2295,25 +2288,24 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
           or
           // flow into a callable
-          revFlowIn(any(NormalDataFlowCall call), _, node, state, ap) and
+          revFlowIn(_, _, node.(NormalArgNodeEx), state, ap) and
           returnCtx = TReturnCtxNone() and
           returnAp = apNone()
           or
           // flow through a callable
-          exists(DataFlowCallEx call, ParamNodeEx p, Ap innerReturnAp |
+          exists(DataFlowCall call, ParamNodeEx p, Ap innerReturnAp |
             revFlowThrough(call, returnCtx, p, state, _, returnAp, ap, innerReturnAp) and
             flowThroughIntoCall(call, node, p, ap, innerReturnAp)
           )
           or
           // flow out of a callable
-          exists(DataFlowCallEx call, ReturnPosition pos |
+          exists(DataFlowCall call, ReturnPosition pos |
             revFlowOut(call, node, pos, state, _, _, _, ap) and
             if returnFlowsThrough(node, pos, state, _, _, _, _, _, ap)
             then (
               returnCtx = TReturnCtxMaybeFlowThrough(pos) and
               returnAp = apSome(ap)
             ) else (
-              call instanceof NormalDataFlowCall and
               returnCtx = TReturnCtxNoFlowThrough() and
               returnAp = apNone()
             )
@@ -2365,24 +2357,24 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           predicate enableTypeFlow = Param::enableTypeFlow/0;
 
           predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
-            flowOutOfCallAp(injectCall(call), c, _, _, _, _, _)
+            flowOutOfCallAp(call, c, _, _, _, _, _)
           }
 
           predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
-            flowIntoCallAp(injectCall(call), c, _, _, _)
+            flowIntoCallAp(call, c, _, _, _)
           }
 
           pragma[nomagic]
           predicate dataFlowTakenCallEdgeIn(DataFlowCall call, DataFlowCallable c, boolean cc) {
             exists(RetNodeEx ret |
-              revFlowOut(injectCall(call), ret, _, _, _, cc, _, _) and
+              revFlowOut(call, ret, _, _, _, cc, _, _) and
               c = ret.getEnclosingCallable()
             )
           }
 
           pragma[nomagic]
           predicate dataFlowTakenCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
-            revFlowIn(injectCall(call), c, _, _, _)
+            revFlowIn(call, c, _, _, _)
           }
 
           predicate dataFlowNonCallEntry(DataFlowCallable c, boolean cc) {
@@ -2405,24 +2397,24 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate flowIntoCallApValid(
-          DataFlowCallEx call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, Ap ap
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, Ap ap
         ) {
           flowIntoCallAp(call, c, arg, p, ap) and
-          RevTypeFlow::typeFlowValidEdgeOut(call.projectCall(), c)
+          RevTypeFlow::typeFlowValidEdgeOut(call, c)
         }
 
         pragma[nomagic]
         private predicate flowOutOfCallApValid(
-          DataFlowCallEx call, RetNodeEx ret, ReturnPosition pos, NodeEx out, Ap ap, boolean cc
+          DataFlowCall call, RetNodeEx ret, ReturnPosition pos, NodeEx out, Ap ap, boolean cc
         ) {
           exists(DataFlowCallable c |
             flowOutOfCallAp(call, c, ret, pos, out, ap, _) and
-            RevTypeFlow::typeFlowValidEdgeIn(call.projectCall(), c, cc)
+            RevTypeFlow::typeFlowValidEdgeIn(call, c, cc)
           )
         }
 
         private predicate revFlowIn(
-          DataFlowCallEx call, DataFlowCallable c, ArgNodeEx arg, FlowState state, Ap ap
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, FlowState state, Ap ap
         ) {
           exists(ParamNodeEx p |
             revFlow(p, state, TReturnCtxNone(), _, ap) and
@@ -2432,7 +2424,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate revFlowOut(
-          DataFlowCallEx call, RetNodeEx ret, ReturnPosition pos, FlowState state,
+          DataFlowCall call, RetNodeEx ret, ReturnPosition pos, FlowState state,
           ReturnCtx returnCtx, boolean cc, ApOption returnAp, Ap ap
         ) {
           exists(NodeEx out |
@@ -2454,7 +2446,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate revFlowThrough(
-          DataFlowCallEx call, ReturnCtx returnCtx, ParamNodeEx p, FlowState state,
+          DataFlowCall call, ReturnCtx returnCtx, ParamNodeEx p, FlowState state,
           ReturnPosition pos, ApOption returnAp, Ap ap, Ap innerReturnAp
         ) {
           revFlowParamToReturn(p, state, pos, innerReturnAp, ap) and
@@ -2468,12 +2460,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          */
         pragma[nomagic]
         private predicate revFlowIsReturned(
-          DataFlowCallEx call, ReturnCtx returnCtx, ApOption returnAp, ReturnPosition pos, Ap ap
+          DataFlowCall call, ReturnCtx returnCtx, ApOption returnAp, ReturnPosition pos, Ap ap
         ) {
           exists(RetNodeEx ret, FlowState state, CcCall ccc |
             revFlowOut(call, ret, pos, state, returnCtx, _, returnAp, ap) and
             returnFlowsThrough(ret, pos, state, ccc, _, _, _, _, ap) and
-            matchesCall(ccc, call.projectCall())
+            matchesCall(ccc, call)
           )
         }
 
@@ -2586,8 +2578,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate revFlowThroughArg(
-          DataFlowCallEx call, ArgNodeEx arg, FlowState state, ReturnCtx returnCtx,
-          ApOption returnAp, Ap ap
+          DataFlowCall call, ArgNodeEx arg, FlowState state, ReturnCtx returnCtx, ApOption returnAp,
+          Ap ap
         ) {
           exists(ParamNodeEx p, Ap innerReturnAp |
             revFlowThrough(call, returnCtx, p, state, _, returnAp, ap, innerReturnAp) and
@@ -2596,7 +2588,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
-        predicate callMayFlowThroughRev(DataFlowCallEx call) {
+        predicate callMayFlowThroughRev(DataFlowCall call) {
           exists(ArgNodeEx arg, FlowState state, ReturnCtx returnCtx, ApOption returnAp, Ap ap |
             revFlow(arg, state, returnCtx, returnAp, ap) and
             revFlowThroughArg(call, arg, state, returnCtx, returnAp, ap)
@@ -2604,7 +2596,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         predicate callEdgeArgParam(
-          DataFlowCallEx call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
+          DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, boolean emptyAp
         ) {
           exists(FlowState state, Ap ap |
             flowIntoCallAp(call, c, arg, p, ap) and
@@ -2613,13 +2605,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             emptyAp = isNil(ap)
           |
             // both directions are needed for flow-through
-            RevTypeFlowInput::dataFlowTakenCallEdgeIn(call.projectCall(), c, _) or
-            RevTypeFlowInput::dataFlowTakenCallEdgeOut(call.projectCall(), c)
+            RevTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
+            RevTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
           )
         }
 
         predicate callEdgeReturn(
-          DataFlowCallEx call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
+          DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
           boolean allowsFieldFlow
         ) {
           exists(FlowState state, ReturnPosition pos, Ap ap |
@@ -2627,15 +2619,15 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             revFlow(ret, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
             revFlow(out, pragma[only_bind_into](state), pragma[only_bind_into](ap)) and
             kind = pos.getKind() and
-            RevTypeFlowInput::dataFlowTakenCallEdgeIn(call.projectCall(), c, _)
+            RevTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _)
           )
         }
 
-        predicate relevantCallEdgeIn(DataFlowCallEx call, DataFlowCallable c) {
+        predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
           callEdgeArgParam(call, c, _, _, _)
         }
 
-        predicate relevantCallEdgeOut(DataFlowCallEx call, DataFlowCallable c) {
+        predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
           callEdgeReturn(call, c, _, _, _, _)
         }
 
@@ -3027,7 +3019,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               )
               or
               exists(Node n |
-                node.asNodeReverse(_) = n and
+                node.asNodeReverse() = n and
                 result = node
               |
                 Config::isSinkReverse(n) or Config::isSinkReverse(n, _)
@@ -3174,7 +3166,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[nomagic]
           private predicate fwdFlowThroughStep0(
-            DataFlowCallEx call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
+            DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
             SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored, RetNodeEx ret,
             SummaryCtxSome innerSummaryCtx
           ) {
@@ -3203,7 +3195,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[nomagic]
           private predicate fwdFlowThroughStep1(
-            PathNodeImpl pn1, PathNodeImpl pn2, PathNodeImpl pn3, DataFlowCallEx call, Cc cc,
+            PathNodeImpl pn1, PathNodeImpl pn2, PathNodeImpl pn3, DataFlowCall call, Cc cc,
             FlowState state, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored, RetNodeEx ret
           ) {
             exists(
@@ -3226,7 +3218,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             PathNodeImpl pn1, PathNodeImpl pn2, PathNodeImpl pn3, NodeEx node, Cc cc,
             FlowState state, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored
           ) {
-            exists(DataFlowCallEx call, RetNodeEx ret, boolean allowsFieldFlow |
+            exists(DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow |
               fwdFlowThroughStep1(pn1, pn2, pn3, call, cc, state, summaryCtx, t, ap, stored, ret) and
               flowThroughOutOfCall(call, ret, node, allowsFieldFlow) and
               not inBarrier(node, state) and
@@ -3527,11 +3519,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               final Node getNode() { super.getNodeEx().projectToNode() = result }
 
               /** Gets the underlying `Node`, but only when it represents a reverse-flow node. */
-              final Node getNodeReverse() { super.getNodeEx().asNodeReverse(_) = result }
+              final Node getNodeReverse() { super.getNodeEx().asNodeReverse() = result }
 
               /** Gets the parameter node through which data is returned, if any. */
               final ParameterNode asParameterReturnNode() {
-                result = super.getNodeEx().asNodeReverse(_)
+                result = super.getNodeEx().asNodeReverse()
               }
 
               /** Gets the `FlowState` of this node. */
@@ -3716,14 +3708,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) { any() }
 
       bindingset[call, c]
-      CcCall getCallContextCall(DataFlowCallEx call, DataFlowCallable c) { any() }
+      CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) { any() }
 
       DataFlowCall viableImplCallContextReducedReverse(DataFlowCallable c, CcNoCall ctx) { none() }
 
       predicate viableImplNotCallContextReducedReverse(CcNoCall ctx) { any() }
 
       bindingset[call, c]
-      CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCallEx call) { any() }
+      CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
     }
 
     private module Stage2Param implements MkStage<Stage1>::StageParam {
@@ -3847,11 +3839,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
         predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
-          PrevStage::relevantCallEdgeIn(injectCall(call), c)
+          PrevStage::relevantCallEdgeIn(call, c)
         }
 
         predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
-          PrevStage::relevantCallEdgeOut(injectCall(call), c)
+          PrevStage::relevantCallEdgeOut(call, c)
         }
 
         predicate reducedViableImplInCallContextCand =
@@ -4251,11 +4243,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
         predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
-          PrevStage::relevantCallEdgeIn(injectCall(call), c)
+          PrevStage::relevantCallEdgeIn(call, c)
         }
 
         predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
-          PrevStage::relevantCallEdgeOut(injectCall(call), c)
+          PrevStage::relevantCallEdgeOut(call, c)
         }
 
         predicate reducedViableImplInCallContextCand =
@@ -4451,11 +4443,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
         predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
-          PrevStage::relevantCallEdgeIn(injectCall(call), c)
+          PrevStage::relevantCallEdgeIn(call, c)
         }
 
         predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
-          PrevStage::relevantCallEdgeOut(injectCall(call), c)
+          PrevStage::relevantCallEdgeOut(call, c)
         }
 
         predicate reducedViableImplInCallContextCand =
@@ -4987,7 +4979,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         not fullBarrier(node) and
         not stateBarrier(node, state)
         or
-        Config::isSinkReverse(node.asNodeReverse(_)) and
+        Config::isSinkReverse(node.asNodeReverse()) and
         relevantState(state) and
         not fullBarrier(node) and
         not stateBarrier(node, state)
@@ -5461,14 +5453,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       pragma[nomagic]
       private predicate partialPathOutOfCallable1(
-        PartialPathNodeFwd mid, DataFlowCallEx call, ReturnKindExt kind, FlowState state,
+        PartialPathNodeFwd mid, DataFlowCall call, ReturnKindExt kind, FlowState state,
         CallContext cc, DataFlowType t, PartialAccessPath ap
       ) {
         exists(ReturnPosition pos, DataFlowCallable c, CallContext innercc |
           partialPathOutOfCallable0(mid, pos, state, innercc, t, ap) and
           c = pos.getCallable() and
           kind = pos.getKind() and
-          CachedCallContextSensitivity::resolveReturn(innercc, c, call.projectCall()) and
+          CachedCallContextSensitivity::resolveReturn(innercc, c, call) and
           cc = CachedCallContextSensitivity::getCallContextReturn(c, call)
         )
       }
@@ -5477,7 +5469,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         PartialPathNodeFwd mid, NodeEx out, FlowState state, CallContext cc, DataFlowType t,
         PartialAccessPath ap
       ) {
-        exists(ReturnKindExt kind, DataFlowCallEx call |
+        exists(ReturnKindExt kind, DataFlowCall call |
           partialPathOutOfCallable1(mid, call, kind, state, cc, t, ap) and
           out = kind.getAnOutNodeEx(call)
         )
@@ -5486,7 +5478,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       pragma[noinline]
       private predicate partialPathIntoArg(
         PartialPathNodeFwd mid, ParameterPositionEx ppos, FlowState state, CallContext cc,
-        DataFlowCallEx call, DataFlowType t, PartialAccessPath ap
+        DataFlowCall call, DataFlowType t, PartialAccessPath ap
       ) {
         exists(ArgNodeEx arg, ArgumentPositionEx apos |
           arg = mid.getNodeEx() and
@@ -5502,16 +5494,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       pragma[nomagic]
       private predicate partialPathIntoCallable0(
         PartialPathNodeFwd mid, DataFlowCallable callable, ParameterPositionEx pos, FlowState state,
-        CallContext outercc, DataFlowCallEx call, DataFlowType t, PartialAccessPath ap
+        CallContext outercc, DataFlowCall call, DataFlowType t, PartialAccessPath ap
       ) {
         partialPathIntoArg(mid, pos, state, outercc, call, t, ap) and
-        callable = CachedCallContextSensitivity::resolveCall(call.projectCall(), outercc)
+        callable = CachedCallContextSensitivity::resolveCall(call, outercc)
       }
 
       private predicate partialPathIntoCallable(
         PartialPathNodeFwd mid, ParamNodeEx p, FlowState state, CallContext outercc,
         CallContextCall innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2, TSummaryCtx3 sc3,
-        TSummaryCtx4 sc4, DataFlowCallEx call, DataFlowType t, PartialAccessPath ap
+        TSummaryCtx4 sc4, DataFlowCall call, DataFlowType t, PartialAccessPath ap
       ) {
         exists(ParameterPositionEx pos, DataFlowCallable callable |
           partialPathIntoCallable0(mid, callable, pos, state, outercc, call, t, ap) and
@@ -5546,7 +5538,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       pragma[noinline]
       private predicate partialPathThroughCallable0(
-        DataFlowCallEx call, PartialPathNodeFwd mid, ReturnKindExt kind, FlowState state,
+        DataFlowCall call, PartialPathNodeFwd mid, ReturnKindExt kind, FlowState state,
         CallContext cc, DataFlowType t, PartialAccessPath ap
       ) {
         exists(
@@ -5562,7 +5554,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         PartialPathNodeFwd mid, NodeEx out, FlowState state, CallContext cc, DataFlowType t,
         PartialAccessPath ap
       ) {
-        exists(DataFlowCallEx call, ReturnKindExt kind |
+        exists(DataFlowCall call, ReturnKindExt kind |
           partialPathThroughCallable0(call, mid, kind, state, cc, t, ap) and
           out = kind.getAnOutNodeEx(call)
         )
@@ -5733,7 +5725,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       pragma[nomagic]
       private predicate revPartialPathIntoReturn(
         PartialPathNodeRev mid, ReturnPosition pos, FlowState state, TRevSummaryCtx1Some sc1,
-        TRevSummaryCtx2Some sc2, TRevSummaryCtx3Some sc3, DataFlowCallEx call, PartialAccessPath ap
+        TRevSummaryCtx2Some sc2, TRevSummaryCtx3Some sc3, DataFlowCall call, PartialAccessPath ap
       ) {
         exists(NodeEx out |
           mid.getNodeEx() = out and
@@ -5765,7 +5757,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       pragma[nomagic]
       private predicate revPartialPathThroughCallable0(
-        DataFlowCallEx call, PartialPathNodeRev mid, ArgumentPositionEx pos, FlowState state,
+        DataFlowCall call, PartialPathNodeRev mid, ArgumentPositionEx pos, FlowState state,
         PartialAccessPath ap
       ) {
         exists(TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2, TRevSummaryCtx3Some sc3 |
@@ -5778,7 +5770,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       private predicate revPartialPathThroughCallable(
         PartialPathNodeRev mid, ArgNodeEx node, FlowState state, PartialAccessPath ap
       ) {
-        exists(DataFlowCallEx call, ArgumentPositionEx pos |
+        exists(DataFlowCall call, ArgumentPositionEx pos |
           revPartialPathThroughCallable0(call, mid, pos, state, ap) and
           node.argumentOf(call, pos)
         )

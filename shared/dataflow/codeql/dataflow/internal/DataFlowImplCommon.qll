@@ -328,8 +328,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
             viableParamArg(call, param, arg) and
             parameterValueFlowReturn(param, kind, read, model, innerCtx) and
             callable = nodeGetEnclosingCallable(param) and
-            outerCtx =
-              CachedCallContextSensitivity::getCallContextReturn(callable, TNormalDataFlowCall(call))
+            outerCtx = CachedCallContextSensitivity::getCallContextReturn(callable, call)
           |
             CachedCallContextSensitivity::viableImplNotCallContextReducedReverse(innerCtx)
             or
@@ -555,7 +554,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
    * parameter position `ppos`.
    */
   pragma[noinline]
-  predicate argumentPositionMatchEx(DataFlowCallEx call, ArgNodeEx arg, ParameterPositionEx ppos) {
+  predicate argumentPositionMatchEx(DataFlowCall call, ArgNodeEx arg, ParameterPositionEx ppos) {
     exists(ArgumentPositionEx apos |
       arg.argumentOf(call, apos) and
       parameterMatchEx(ppos, apos)
@@ -1136,10 +1135,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       /** Gets the call context when returning from `c` to `call`. */
       bindingset[call, c]
-      CallContextNoCall getCallContextReturn(DataFlowCallable c, DataFlowCallEx call) {
-        result = Input2::getSpecificCallContextReturn(c, call.projectCall())
+      CallContextNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
+        result = Input2::getSpecificCallContextReturn(c, call)
         or
-        not exists(Input2::getSpecificCallContextReturn(c, call.projectCall())) and
+        not exists(Input2::getSpecificCallContextReturn(c, call)) and
         result = TAnyCallContext()
       }
 
@@ -1167,9 +1166,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         LocalCc getLocalCc(CallContext cc) { any() }
 
         bindingset[call, c]
-        CallContextCall getCallContextCall(DataFlowCallEx call, DataFlowCallable c) {
-          if recordDataFlowCallSiteDispatch(call.projectCall(), c)
-          then result = Input2::getSpecificCallContextCall(call.projectCall(), c)
+        CallContextCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
+          if recordDataFlowCallSiteDispatch(call, c)
+          then result = Input2::getSpecificCallContextCall(call, c)
           else result = TSomeCall()
         }
       }
@@ -1195,9 +1194,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         LocalCc getLocalCc(CallContext cc) { result = getLocalCallContext(cc) }
 
         bindingset[call, c]
-        CallContextCall getCallContextCall(DataFlowCallEx call, DataFlowCallable c) {
-          if recordDataFlowCallSite(call.projectCall(), c)
-          then result = Input2::getSpecificCallContextCall(call.projectCall(), c)
+        CallContextCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
+          if recordDataFlowCallSite(call, c)
+          then result = Input2::getSpecificCallContextCall(call, c)
           else result = TSomeCall()
         }
       }
@@ -1238,14 +1237,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       or
       exists(Node n | this.isImplicitReadNode(n) | result = n + " [Ext]")
       or
-      result = this.asNodeReverse(_) + " [Reverse]"
+      result = this.asNodeReverse() + " [Reverse]"
     }
 
     Node asNode() { this = TNodeNormal(result) }
 
-    Node asNodeReverse(boolean allowFwdFlowOut) { this = TNodeReverse(result, allowFwdFlowOut) }
+    Node asNodeReverse() { this = TNodeReverse(result) }
 
-    Node asNodeOrReverse() { result = [this.asNode(), this.asNodeReverse(_)] }
+    Node asNodeOrReverse() { result = [this.asNode(), this.asNodeReverse()] }
 
     /** Gets the corresponding Node if this is a normal node or its post-implicit read node. */
     Node asNodeOrImplicitRead() { this = TNodeNormal(result) or this = TNodeImplicitRead(result) }
@@ -1255,7 +1254,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     Node projectToNode() {
       this = TNodeNormal(result) or
       this = TNodeImplicitRead(result) or
-      this = TNodeReverse(result, _)
+      this = TNodeReverse(result)
     }
 
     pragma[nomagic]
@@ -1290,28 +1289,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     CastingNodeEx() { castingNodeEx(this) }
   }
 
-  abstract class DataFlowCallEx extends TDataFlowCallEx {
-    abstract DataFlowCall projectCall();
-
-    DataFlowCallable getEnclosingCallable() { result = this.projectCall().getEnclosingCallable() }
-
-    abstract string toString();
-
-    Location getLocation() { result = this.projectCall().getLocation() }
-  }
-
-  DataFlowCallEx injectCall(DataFlowCall c) { result.projectCall() = c }
-
-  final class NormalDataFlowCall extends DataFlowCallEx, TNormalDataFlowCall {
-    private DataFlowCall call;
-
-    NormalDataFlowCall() { this = TNormalDataFlowCall(call) }
-
-    override DataFlowCall projectCall() { result = call }
-
-    override string toString() { result = call.toString() }
-  }
-
   final class ArgumentPositionEx extends TArgumentPositionEx {
     ArgumentPosition asArgumentPosition() { this = TNormalArgumentPosition(result) }
 
@@ -1337,20 +1314,18 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   }
 
   abstract class ArgNodeEx extends NodeEx {
-    abstract predicate argumentOf(DataFlowCallEx call, ArgumentPositionEx pos);
+    abstract predicate argumentOf(DataFlowCall call, ArgumentPositionEx pos);
 
-    DataFlowCallEx getCall() { this.argumentOf(result, _) }
+    DataFlowCall getCall() { this.argumentOf(result, _) }
   }
 
   final class NormalArgNodeEx extends ArgNodeEx {
-    private NormalDataFlowCall call_;
+    private DataFlowCall call_;
     private ArgumentPositionEx pos_;
 
-    NormalArgNodeEx() {
-      this.asNode().(ArgNode).argumentOf(call_.projectCall(), pos_.asArgumentPosition())
-    }
+    NormalArgNodeEx() { this.asNode().(ArgNode).argumentOf(call_, pos_.asArgumentPosition()) }
 
-    override predicate argumentOf(DataFlowCallEx call, ArgumentPositionEx pos) {
+    override predicate argumentOf(DataFlowCall call, ArgumentPositionEx pos) {
       call = call_ and
       pos = pos_
     }
@@ -1391,7 +1366,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     OutNodeEx() {
       this.asNode() instanceof OutNodeExt
       or
-      this.asNodeReverse(_) instanceof ArgNode
+      this.asNodeReverse() instanceof ArgNode
     }
   }
 
@@ -1406,49 +1381,54 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   /**
    * todo
    */
-  private module ReverseFlow {
+  module ReverseFlow {
     /**
      * Holds if `p` can flow to `node` in the same callable using only
      * value-preserving or read/store steps.
      */
     pragma[nomagic]
-    predicate parameterValueFlow(ParamNode p, Node node) {
-      p = node
+    predicate parameterValueFlow(ParamNode p, Node node, boolean flowThrough) {
+      p = node and
+      flowThrough = false
       or
       // local flow
       exists(Node mid |
-        parameterValueFlow(p, mid) and
+        parameterValueFlow(p, mid, flowThrough) and
         simpleLocalFlowStep(mid, node, _) and
-        validParameterAliasStep(mid, node)
+        validParameterAliasStep(mid, node) and
+        flowThrough = false
       )
       or
       // store
       none() and
       exists(Node mid |
-        parameterValueFlow(p, mid) and
+        parameterValueFlow(p, mid, flowThrough) and
         Lang::storeStep(mid, _, node)
       )
       or
       // read
       exists(Node mid |
-        parameterValueFlow(p, mid) and
+        parameterValueFlow(p, mid, flowThrough) and
         Lang::readStep(mid, _, node)
       )
       or
       // flow through
       exists(ArgNode arg |
         parameterValueFlowArg(p, arg) and
-        argumentValueFlowsThrough(arg, node)
+        argumentValueFlowsThrough(arg, node) and
+        flowThrough = true
       )
     }
 
     pragma[nomagic]
-    private predicate parameterValueFlowArg(ParamNode p, ArgNode arg) { parameterValueFlow(p, arg) }
+    private predicate parameterValueFlowArg(ParamNode p, ArgNode arg) {
+      parameterValueFlow(p, arg, _)
+    }
 
     pragma[nomagic]
     private predicate parameterValueFlowReturn(ParamNode p, ReturnKind kind) {
       exists(ReturnNode ret |
-        parameterValueFlow(p, ret) and
+        parameterValueFlow(p, ret, _) and
         kind = ret.getKind()
       )
     }
@@ -1468,14 +1448,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    // predicate cand(ParamNode p, Node n) {
-    //   parameterValueFlowCand(p, n) and
-    //   (
-    //     parameterValueFlowReturnCand(p, _)
-    //     or
-    //     parameterValueFlowsToPreUpdateCand(p, _)
-    //   )
-    // }
     /**
      * Holds if the local step from `arg` to `out` actually models a flow-through
      * step.
@@ -1493,34 +1465,29 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       // as soon as we take a reverse local step, forward out flow must be prohibited
       // in order to prevent time travelling
       exists(Node n1, Node n2 |
-        node1.asNodeReverse(_) = n1 and
-        node2.asNodeReverse(false) = n2 and
+        node1.asNodeReverse() = n1 and
+        node2.asNodeReverse() = n2 and
         simpleLocalFlowStep(pragma[only_bind_into](n2), pragma[only_bind_into](n1), model) and
         validParameterAliasStep(n2, n1) and
         not isFlowThroughLocalStep(n2, n1, model)
       )
       or
-      exists(Node n1, Node n2, boolean allowFwdFlowOut |
-        node1.asNodeReverse(pragma[only_bind_into](allowFwdFlowOut)) = n1 and
+      exists(Node n1, Node n2 |
+        node1.asNode().(PostUpdateNode).getPreUpdateNode() = n1 and
+        node2.asNode().(PostUpdateNode).getPreUpdateNode() = n2 and
         isFlowThroughLocalStep(n2, n1, model) and
         validParameterAliasStep(n2, n1)
-      |
-        allowFwdFlowOut = false and
-        node2.asNodeReverse(pragma[only_bind_into](allowFwdFlowOut)) = n2
-        or
-        allowFwdFlowOut = true and
-        node2.asNode().(PostUpdateNode).getPreUpdateNode() = n2
       )
       or
-      node1.asNode().(PostUpdateNode).getPreUpdateNode() = node2.asNodeReverse(true) and
+      node1.asNode().(PostUpdateNode).getPreUpdateNode() = node2.asNodeReverse() and
       model = ""
     }
 
     predicate storeStep(NodeEx node1, Content c, NodeEx node2) {
       exists(ContentSet cs | c = cs.getAStoreContent() |
-        exists(Node n1, Node n2, boolean allowFwdFlowOut |
-          n1 = pragma[only_bind_into](node1.asNodeReverse(allowFwdFlowOut)) and
-          n2 = pragma[only_bind_into](node2.asNodeReverse(allowFwdFlowOut)) and
+        exists(Node n1, Node n2 |
+          n1 = pragma[only_bind_into](node1.asNodeReverse()) and
+          n2 = pragma[only_bind_into](node2.asNodeReverse()) and
           Lang::readStep(n2, cs, n1) and
           // avoid overlap with `storeSet`
           not exists(PostUpdateNode pn1, PostUpdateNode pn2 |
@@ -1533,46 +1500,27 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
     predicate readStep(NodeEx node1, ContentSet c, NodeEx node2) {
       none() and
-      exists(boolean allowFwdFlowOut |
-        Lang::storeStep(pragma[only_bind_into](node2.asNodeReverse(allowFwdFlowOut)), c,
-          pragma[only_bind_into](node1.asNodeReverse(allowFwdFlowOut)))
-      )
-    }
-
-    final class ReverseDataFlowCall extends DataFlowCallEx, TReverseDataFlowCall {
-      private DataFlowCall call;
-      private boolean allowFwdFlowOut;
-
-      ReverseDataFlowCall() { this = TReverseDataFlowCall(call, allowFwdFlowOut) }
-
-      override DataFlowCall projectCall() { result = call }
-
-      override string toString() {
-        exists(string s |
-          s = call.toString() and
-          if allowFwdFlowOut = true
-          then result = s + " [Reverse]"
-          else result = s + " [Reverse, no out flow]"
-        )
-      }
+      Lang::storeStep(pragma[only_bind_into](node2.asNodeReverse()), c,
+        pragma[only_bind_into](node1.asNodeReverse()))
     }
 
     final class ReverseArgNodeEx extends ArgNodeEx {
-      private ReverseFlow::ReverseDataFlowCall call_;
+      private DataFlowCall call_;
       private ArgumentPositionEx pos_;
 
       ReverseArgNodeEx() {
-        exists(DataFlowCall c, boolean allowFwdFlowOut |
-          call_ = TReverseDataFlowCall(c, allowFwdFlowOut) and
-          pragma[only_bind_into](this.asNodeReverse(allowFwdFlowOut)) =
-            getAnOutNode(c, pos_.asReturnKind().(ValueReturnKind).getKind())
-        )
+        this.asNode().(PostUpdateNode).getPreUpdateNode() =
+          getAnOutNode(call_, pos_.asReturnKind().(ValueReturnKind).getKind())
       }
 
-      override predicate argumentOf(DataFlowCallEx call, ArgumentPositionEx pos) {
+      override predicate argumentOf(DataFlowCall call, ArgumentPositionEx pos) {
         call = call_ and
         pos = pos_
       }
+    }
+
+    final class ReverseNodeEx extends NodeEx, TNodeReverse {
+      ParameterNode getAParameterNode() { parameterValueFlow(result, this.asNodeReverse(), _) }
     }
 
     final class ReverseParamNodeEx extends ParamNodeEx, TNodeReverse {
@@ -1581,7 +1529,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       ReverseParamNodeEx() {
         exists(ReturnPosition pos |
-          pos = getValueReturnPosition(this.asNodeReverse(false)) and
+          pos = getValueReturnPosition(this.asNodeReverse()) and
           c_ = pos.getCallable() and
           pos_.asReturnKind() = pos.getKind()
         )
@@ -1590,6 +1538,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       override predicate isParameterOf(DataFlowCallable c, ParameterPositionEx pos) {
         c = c_ and pos = pos_
       }
+
+      ParameterNode getAParameterNode() { parameterValueFlow(result, this.asNodeReverse(), _) }
     }
   }
 
@@ -1602,11 +1552,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      */
     cached
     predicate forceCachingInSameStage() { any() }
-
-    cached
-    newtype TDataFlowCallEx =
-      TNormalDataFlowCall(DataFlowCall call) or
-      TReverseDataFlowCall(DataFlowCall call, Boolean allowFwdFlowOut)
 
     cached
     newtype TArgumentPositionEx =
@@ -1694,21 +1639,14 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    OutNodeEx getAnOutNodeEx(DataFlowCallEx call, ReturnKindExt k) {
+    OutNodeEx getAnOutNodeEx(DataFlowCall call, ReturnKindExt k) {
       exists(DataFlowCall c |
-        c = call.(NormalDataFlowCall).projectCall() and
+        c = call.(DataFlowCall) and
         result.asNode() = getAnOutNode(c, k.(ValueReturnKind).getKind())
         or
         exists(ArgNode arg |
-          arg.argumentOf(c, k.(ParamUpdateReturnKind).getAMatchingArgumentPosition())
-        |
-          call = TReverseDataFlowCall(c, false) and
-          result.asNodeReverse(_) = arg
-          or
-          (
-            call = TReverseDataFlowCall(c, true) or
-            c = call.(NormalDataFlowCall).projectCall()
-          ) and
+          arg.argumentOf(c, k.(ParamUpdateReturnKind).getAMatchingArgumentPosition()) and
+          c = call.(DataFlowCall) and
           result.asNode().(PostUpdateNode).getPreUpdateNode() = arg
         )
       )
@@ -1934,11 +1872,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * dispatch into account.
      */
     cached
-    predicate viableParamArgEx(DataFlowCallEx call, ParamNodeEx p, ArgNodeEx arg) {
+    predicate viableParamArgEx(DataFlowCall call, ParamNodeEx p, ArgNodeEx arg) {
       // viableParamArg(call, p.asNode(), arg.asNode())
       // or
       exists(ParameterPositionEx ppos, DataFlowCall underlyingCall |
-        underlyingCall = call.projectCall() and
+        underlyingCall = call and
         viableParamEx(underlyingCall, ppos, p) and
         argumentPositionMatchEx(call, arg, ppos) and
         compatibleTypesFilter(arg.getDataFlowType(), p.getDataFlowType()) and
@@ -1969,9 +1907,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * taking virtual dispatch into account.
      */
     cached
-    predicate viableReturnPosOutEx(DataFlowCallEx call, ReturnPosition pos, OutNodeEx out) {
+    predicate viableReturnPosOutEx(DataFlowCall call, ReturnPosition pos, OutNodeEx out) {
       exists(ReturnKindExt kind |
-        pos = viableReturnPos(call.projectCall(), kind) and
+        pos = viableReturnPos(call, kind) and
         out = kind.getAnOutNodeEx(call) //and
         // call.toString().matches("%GetBox1%")
       )
@@ -2026,9 +1964,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     cached
-    predicate allowParameterReturnInSelfEx(ParamNodeEx p) {
-      allowParameterReturnInSelf(p.asNodeOrReverse())
-    }
+    predicate allowParameterReturnInSelfEx(ParamNodeEx p) { allowParameterReturnInSelf(p.asNode()) }
 
     cached
     predicate paramMustFlow(ParamNode p, ArgNode arg) { localMustFlowStep+(p, arg) }
@@ -2161,15 +2097,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     newtype TNodeEx =
       TNodeNormal(Node n) or
       TNodeImplicitRead(Node n) or // will be restricted to nodes with actual implicit reads in `DataFlowImpl.qll`
-      TNodeReverse(Node n, Boolean allowFwdFlowOut) {
-        (
-          allowFwdFlowOut = false and
-          ReverseFlow::parameterValueFlow(_, n)
-          or
-          allowFwdFlowOut = true and
-          n = any(PostUpdateNode p).getPreUpdateNode()
-        )
-      }
+      TNodeReverse(Node n) { ReverseFlow::parameterValueFlow(_, n, _) }
 
     /**
      * Holds if data can flow in one local step from `node1` to `node2`.
@@ -2189,7 +2117,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     ReturnPosition getReturnPositionEx(NodeEx ret) {
       result = getValueReturnPosition(ret.asNode())
       or
-      result = getParamReturnPosition(ret.asNodeReverse(_))
+      result = getParamReturnPosition(ret.asNodeReverse())
     }
   }
 
@@ -2723,7 +2651,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     abstract string toString();
 
     /** Gets a node corresponding to data flow out of `call`. */
-    final OutNodeEx getAnOutNodeEx(DataFlowCallEx call) { result = getAnOutNodeEx(call, this) }
+    final OutNodeEx getAnOutNodeEx(DataFlowCall call) { result = getAnOutNodeEx(call, this) }
   }
 
   class ValueReturnKind extends ReturnKindExt, TValueReturn {
