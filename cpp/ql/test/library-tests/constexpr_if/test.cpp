@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --c++20
+// semmle-extractor-options: -std=c++20
 
 void test(void) {
     int x;
