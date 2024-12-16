@@ -440,7 +440,28 @@ localStep
 | main.rs:395:9:395:9 | b | main.rs:395:9:395:9 | [SSA] b |
 | main.rs:395:13:395:18 | &mut a | main.rs:395:9:395:9 | b |
 | main.rs:396:10:396:19 | source(...) | main.rs:396:5:396:6 | * ... |
-| main.rs:421:13:421:33 | result_questionmark(...) | main.rs:421:9:421:9 | _ |
+| main.rs:402:39:402:43 | [SSA] names | main.rs:404:23:404:27 | names |
+| main.rs:402:39:402:43 | names | main.rs:402:39:402:43 | [SSA] names |
+| main.rs:402:39:402:72 | ...: Vec::<...> | main.rs:402:39:402:43 | names |
+| main.rs:403:7:403:18 | [SSA] default_name | main.rs:404:23:404:27 | [SSA] [input] SSA phi read(default_name) |
+| main.rs:403:7:403:18 | default_name | main.rs:403:7:403:18 | [SSA] default_name |
+| main.rs:403:22:403:43 | ... .to_string(...) | main.rs:403:7:403:18 | default_name |
+| main.rs:404:3:410:3 | for ... in ... { ... } | main.rs:402:75:411:1 | { ... } |
+| main.rs:404:7:404:18 | [SSA] SSA phi read(default_name) | main.rs:404:29:410:3 | [SSA] [input] SSA phi read(default_name) |
+| main.rs:404:7:404:18 | [SSA] SSA phi read(default_name) | main.rs:408:7:408:14 | [SSA] [input] SSA phi read(default_name) |
+| main.rs:404:8:404:11 | [SSA] cond | main.rs:405:8:405:11 | cond |
+| main.rs:404:8:404:11 | cond | main.rs:404:8:404:11 | [SSA] cond |
+| main.rs:404:14:404:17 | [SSA] name | main.rs:406:15:406:18 | name |
+| main.rs:404:14:404:17 | name | main.rs:404:14:404:17 | [SSA] name |
+| main.rs:404:23:404:27 | [SSA] [input] SSA phi read(default_name) | main.rs:404:7:404:18 | [SSA] SSA phi read(default_name) |
+| main.rs:404:29:410:3 | [SSA] [input] SSA phi read(default_name) | main.rs:404:7:404:18 | [SSA] SSA phi read(default_name) |
+| main.rs:405:5:409:5 | if cond {...} | main.rs:404:29:410:3 | { ... } |
+| main.rs:406:11:406:11 | [SSA] n | main.rs:407:12:407:12 | n |
+| main.rs:406:11:406:11 | n | main.rs:406:11:406:11 | [SSA] n |
+| main.rs:406:15:406:62 | name.unwrap_or_else(...) | main.rs:406:11:406:11 | n |
+| main.rs:406:35:406:61 | [SSA] <captured entry> default_name | main.rs:406:38:406:49 | default_name |
+| main.rs:408:7:408:14 | [SSA] [input] SSA phi read(default_name) | main.rs:404:7:404:18 | [SSA] SSA phi read(default_name) |
+| main.rs:434:13:434:33 | result_questionmark(...) | main.rs:434:9:434:9 | _ |
 storeStep
 | main.rs:94:14:94:22 | source(...) | tuple.0 | main.rs:94:13:94:26 | TupleExpr |
 | main.rs:94:25:94:25 | 2 | tuple.1 | main.rs:94:13:94:26 | TupleExpr |
@@ -509,7 +530,8 @@ storeStep
 | main.rs:373:27:373:27 | 2 | array[] | main.rs:373:23:373:31 | [...] |
 | main.rs:373:30:373:30 | 3 | array[] | main.rs:373:23:373:31 | [...] |
 | main.rs:376:18:376:27 | source(...) | array[] | main.rs:376:5:376:11 | [post] mut_arr |
-| main.rs:404:27:404:27 | 0 | Some | main.rs:404:22:404:28 | Some(...) |
+| main.rs:406:35:406:61 | default_name | captured default_name | main.rs:406:35:406:61 | \|...\| ... |
+| main.rs:417:27:417:27 | 0 | Some | main.rs:417:22:417:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap |
 | main.rs:33:9:33:15 | Some(...) | Some | main.rs:33:14:33:14 | _ |
@@ -579,3 +601,6 @@ readStep
 | main.rs:376:5:376:11 | mut_arr | array[] | main.rs:376:5:376:14 | mut_arr[1] |
 | main.rs:377:13:377:19 | mut_arr | array[] | main.rs:377:13:377:22 | mut_arr[1] |
 | main.rs:379:10:379:16 | mut_arr | array[] | main.rs:379:10:379:19 | mut_arr[0] |
+| main.rs:404:23:404:27 | names | array[] | main.rs:404:7:404:18 | TuplePat |
+| main.rs:406:35:406:61 | [post] \|...\| ... | captured default_name | main.rs:406:35:406:61 | [post] default_name |
+| main.rs:406:38:406:49 | this | captured default_name | main.rs:406:38:406:49 | default_name |

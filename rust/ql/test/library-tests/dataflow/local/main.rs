@@ -397,6 +397,19 @@ fn write_through_borrow() {
     sink(a); // $ MISSING: hasValueFlow=39
 }
 
+// Test data flow inconsistency occuring with captured variables and `continue`
+// in a loop.
+pub fn captured_variable_and_continue(names: Vec<(bool, Option<String>)>) {
+  let default_name = source(83).to_string();
+  for (cond, name) in names {
+    if cond {
+      let n = name.unwrap_or_else(|| default_name.to_string());
+      sink(n.len() as i64);
+      continue;
+    }
+  }
+}
+
 fn main() {
     direct();
     variable_usage();
@@ -432,4 +445,5 @@ fn main() {
     array_assignment();
     read_through_borrow();
     write_through_borrow();
+    captured_variable_and_continue(vec![]);
 }
