@@ -74,15 +74,15 @@ fn test_local_dangling() {
 	use_the_stack();
 
 	unsafe {
-		let v1 = *p1; // BAD
-		let v2 = *p2; // BAD
-		let v3 = *p3; // BAD
-		let v4 = *p4; // BAD
-		let v5 = *p5; // BAD
-		let v6 = *p6; // BAD
-		let v7 = *p7; // BAD
-		*p2 = 8; // BAD
-		*p4 = 9; // BAD
+		let v1 = *p1; // $ deref=my_local1 MISSING: Alert[rust/dangling-ptr]
+		let v2 = *p2; // $ deref=my_local2 MISSING: Alert[rust/dangling-ptr]
+		let v3 = *p3; // $ deref=my_local3 MISSING: Alert[rust/dangling-ptr]
+		let v4 = *p4; // $ deref=my_local4 MISSING: Alert[rust/dangling-ptr]
+		let v5 = *p5; // $ deref=param5 MISSING: Alert[rust/dangling-ptr]
+		let v6 = *p6; // $ deref=val.value MISSING: Alert[rust/dangling-ptr]
+		let v7 = *p7; // $ deref=my_local7 MISSING: Alert[rust/dangling-ptr]
+		*p2 = 8; // $ deref=my_local2 MISSING: Alert[rust/dangling-ptr]
+		*p4 = 9; // $ deref=my_local4 MISSING: Alert[rust/dangling-ptr]
 
 		println!("	v1 = {v1} (!)"); // corrupt
 		println!("	v2 = {v2} (!)"); // corrupt
@@ -104,10 +104,10 @@ fn use_pointers(p1: *const i64, p2: *mut i64) {
 	use_the_stack();
 
 	unsafe {
-		let v1 = *p1;
-		let v2 = *p2;
-		let v3 = *p3;
-		*p2 = 10;
+		let v1 = *p1; // $ deref=my_local11
+		let v2 = *p2; // $ deref=my_local_mut12
+		let v3 = *p3; // $ deref=my_local10
+		*p2 = 10; // $ deref=my_local_mut12
 		println!("	v1 = {v1}");
 		println!("	v2 = {v2}");
 		println!("	v3 = {v3}");
@@ -144,9 +144,9 @@ fn test_static() {
 	use_the_stack();
 
 	unsafe {
-		let v1 = *p1;
-		let v2 = *p2;
-		*p2 = 22;
+		let v1 = *p1; // $ deref=MY_GLOBAL_CONST
+		let v2 = *p2; // $ deref=MY_GLOBAL_STATIC
+		*p2 = 22; // $ deref=MY_GLOBAL_STATIC
 		println!("	v1 = {v1}");
 		println!("	v2 = {v2}");
 	}
@@ -175,9 +175,9 @@ fn test_overwrite(maybe: bool) {
 	}
 
 	unsafe {
-		let v1 = *p1; // BAD
-		let v2 = *p2; // BAD
-		let v3 = *p3;
+		let v1 = *p1; // $ deref=val.value MISSING: Alert[rust/dangling-ptr]
+		let v2 = *p2; // $ deref=val.value MISSING: Alert[rust/dangling-ptr]
+		let v3 = *p3; // $ deref=val.value
 		println!("	v1 = {v1} (!)"); // corrupt
 		println!("	v2 = {v2} (!)"); // corrupt
 		println!("	v3 = {v3}");
@@ -189,7 +189,7 @@ fn test_overwrite(maybe: bool) {
 fn access_ptr_1(ptr: *const i64) {
 	// only called with `ptr` safe
 	unsafe {
-		let v1 = *ptr;
+		let v1 = *ptr; // $ deref=my_local40
 		println!("	v1 = {v1}");
 	}
 }
@@ -197,7 +197,7 @@ fn access_ptr_1(ptr: *const i64) {
 fn access_ptr_2(ptr: *const i64) {
 	// only called with `ptr` dangling
 	unsafe {
-		let v2 = *ptr; // BAD
+		let v2 = *ptr; // $ deref=my_local40 MISSING: Alert[rust/dangling-ptr]
 		println!("	v2 = {v2} (!)"); // corrupt
 	}
 }
@@ -205,7 +205,7 @@ fn access_ptr_2(ptr: *const i64) {
 fn access_ptr_3(ptr: *const i64) {
 	// called from contexts with `ptr` safe and dangling
 	unsafe {
-		let v3 = *ptr; // BAD
+		let v3 = *ptr; // $ deref=my_local40 MISSING: Alert[rust/dangling-ptr]
 		println!("	v3 = {v3} (!)"); // corrupt (in one context)
 	}
 }
@@ -241,9 +241,9 @@ fn access_ptr_rec(ptr_up: *const i64, count: i64) -> *const i64 {
 		use_the_stack();
 
 		unsafe {
-			let v_up = *ptr_up;
-			let v_ours = *ptr_ours;
-			let v_down = *ptr_down; // BAD
+			let v_up = *ptr_up; // $ deref=my_local_rec2 deref=my_local_rec
+			let v_ours = *ptr_ours; // $ deref=my_local_rec
+			let v_down = *ptr_down; // $ deref=my_local_rec MISSING: Alert[rust/dangling-ptr]
 			println!("	v_up = {v_up}");
 			println!("	v_ours = {v_ours}");
 			println!("	v_down = {v_down} (!)"); // potentially corrupt
@@ -290,12 +290,12 @@ fn test_boxes_1(do_dangerous_writes: bool) {
 	} // b2, b3 go out of scope, thus p2, p3 are dangling
 
 	unsafe {
-		let v4 = *p1;
-		let v5 = *p2; // BAD
-		let v6 = *p3; // BAD
+		let v4 = *p1; // $ MISSING: deref=b1
+		let v5 = *p2; // $ MISSING: deref=b2 MISSING: Alert[rust/dangling-ptr]
+		let v6 = *p3; // $ MISSING: deref=b3 MISSING: Alert[rust/dangling-ptr]
 
 		if do_dangerous_writes {
-			*p3 = 5; // BAD
+			*p3 = 5; // $ MISSING: deref=b3 MISSING: Alert[rust/dangling-ptr]
 			use_the_heap(); // "malloc: Heap corruption detected" "Incorrect guard value: 34"
 		}
 
@@ -312,12 +312,12 @@ fn test_boxes_2() {
 	unsafe {
 		let _b2 = Box::from_raw(p1); // now b2 owns the memory
 
-		let v1 = *p1;
+		let v1 = *p1; // $ MISSING: deref=b1
 		println!("	v1 = {v1}");
 	} // b2 goes out of scope, thus the memory is freed and p1 is dangling
 
 	unsafe {
-		let v2 = *p1; // BAD
+		let v2 = *p1; // $ MISSING: deref=b1 MISSING: Alert[rust/dangling-ptr]
 		println!("	v2 = {v2} (!)"); // corrupt
 	}
 }
@@ -327,7 +327,7 @@ fn test_boxes_3() {
 	let p1 = Box::as_ptr(&b1); // b1 still owns the memory
 
 	unsafe {
-		let v1 = *p1;
+		let v1 = *p1; // $ MISSING: deref=b1
 		println!("	v1 = {v1}");
 	}
 
@@ -335,7 +335,7 @@ fn test_boxes_3() {
 	println!("	v2 = {v2}");
 
 	unsafe {
-		let v3 = *p1; // BAD
+		let v3 = *p1; // $ MISSING: deref=b1 MISSING: Alert[rust/dangling-ptr]
 		println!("	v3 = {v3} (!)"); // corrupt
 	}
 }
@@ -355,24 +355,24 @@ fn test_rc() {
 			p2 = std::rc::Rc::<i64>::as_ptr(&rc2);
 
 			unsafe {
-				let v1 = *p1;
-				let v2 = *p2;
+				let v1 = *p1; // $ MISSING: deref=rc1
+				let v2 = *p2; // $ MISSING: deref=rc2
 				println!("	v1 = {v1}");
 				println!("	v2 = {v2}");
 			}
 		} // rc2 goes out of scope, but the reference count is still 1 so the pointer remains still valid
 
 		unsafe {
-			let v3 = *p1;
-			let v4 = *p2; // good
+			let v3 = *p1; // $ MISSING: deref=rc1
+			let v4 = *p2; // $ MISSING: deref=rc2
 			println!("	v3 = {v3}");
 			println!("	v4 = {v4}");
 		}
 	} // rc1 go out of scope, the reference count is 0, so p1, p2 are dangling
 
 	unsafe {
-		let v5 = *p1; // BAD
-		let v6 = *p2; // BAD
+		let v5 = *p1; // $ MISSING: deref=rc1 MISSING: Alert[rust/dangling-ptr]
+		let v6 = *p2; // $ MISSING: deref=rc2 MISSING: Alert[rust/dangling-ptr]
 		println!("	v5 = {v5} (!)"); // corrupt
 		println!("	v6 = {v6} (!)"); // corrupt
 	}
@@ -401,13 +401,13 @@ fn test_ptr_to_struct() {
 		p3 = std::ptr::addr_of_mut!(my_pair.b);
 
 		unsafe {
-			let v1 = (*p1).a;
-			let v2 = (*p1).b;
-			let v3 = *p2;
-			let v4 = *p3;
-			(*p1).a = 3;
-			(*p1).b = 4;
-			*p3 = 5;
+			let v1 = (*p1).a; // $ MISSING: deref=?
+			let v2 = (*p1).b; // $ MISSING: deref=?
+			let v3 = *p2; // $ MISSING: deref=?
+			let v4 = *p3; // $ MISSING: deref=?
+			(*p1).a = 3; // $ MISSING: deref=?
+			(*p1).b = 4; // $ MISSING: deref=?
+			*p3 = 5; // $ MISSING: deref=?
 			println!("	v1 = {v1}");
 			println!("	v2 = {v2}");
 			println!("	v3 = {v3}");
@@ -416,13 +416,13 @@ fn test_ptr_to_struct() {
 	}; // my_pair goes out of scope, thus p1, p2, p3 are dangling
 
 	unsafe {
-		let v5 = (*p1).a; // BAD
-		let v6 = (*p1).b; // BAD
-		let v7 = *p2; // BAD
-		let v8 = *p3; // BAD
-		(*p1).a = 6; // BAD
-		(*p1).b = 7; // BAD
-		*p3 = 8; // BAD
+		let v5 = (*p1).a; // $ MISSING: deref=? Alert[rust/dangling-ptr]
+		let v6 = (*p1).b; // $ MISSING: deref=? Alert[rust/dangling-ptr]
+		let v7 = *p2; // $ MISSING: deref=? Alert[rust/dangling-ptr]
+		let v8 = *p3; // $ MISSING: deref=? Alert[rust/dangling-ptr]
+		(*p1).a = 6; // $ MISSING: deref=? Alert[rust/dangling-ptr]
+		(*p1).b = 7; // $ MISSING: deref=? Alert[rust/dangling-ptr]
+		*p3 = 8; // $ MISSING: deref=? Alert[rust/dangling-ptr]
 		println!("	v5 = {v5} (!)"); // potentially corrupt
 		println!("	v6 = {v6} (!)"); // potentially corrupt
 		println!("	v7 = {v7} (!)"); // potentially corrupt
@@ -438,9 +438,9 @@ fn test_ptr_explicit(do_dangerous_access: bool) {
 	if do_dangerous_access {
 		unsafe {
 			// (a segmentation fault occurs in the code below)
-			let v1 = *p1; // BAD
-			let v2 = *p2; // BAD
-			let v3 = *p3; // BAD
+			let v1 = *p1; // $ MISSING: deref=? Alert[rust/dangling-ptr]
+			let v2 = *p2; // $ MISSING: deref=? Alert[rust/dangling-ptr]
+			let v3 = *p3; // $ MISSING: deref=? Alert[rust/dangling-ptr]
 			println!("	v1 = {v1} (!)");
 			println!("	v2 = {v2} (!)");
 			println!("	v3 = {v3} (!)");
@@ -454,7 +454,7 @@ fn get_ptr_from_ref(val: i32) -> *const i32 {
 	let p1: *const i32 = std::ptr::from_ref(r1);
 
 	unsafe {
-		let v1 = *p1;
+		let v1 = *p1; // $ MISSING: deref=my_val Alert[rust/dangling-ptr]
 		println!("	v1 = {v1}");
 	}
 
@@ -467,8 +467,8 @@ fn test_ptr_from_ref() {
 	use_the_stack();
 
 	unsafe {
-		let v2 = *p1; // BAD
-		let v3 = *get_ptr_from_ref(2); // BAD
+		let v2 = *p1; // $ MISSING: deref=my_val MISSING: Alert[rust/dangling-ptr]
+		let v3 = *get_ptr_from_ref(2); // $ MISSING: deref=my_val MISSING: Alert[rust/dangling-ptr]
 		println!("	v2 = {v2} (!)"); // corrupt
 		println!("	v3 = {v3} (!)"); // potentially corrupt
 	}
@@ -483,10 +483,10 @@ fn test_alloc(do_dangerous_writes: bool) {
 		let m2 = m1 as *mut i64; // *mut i64
 		*m2 = 1;
 
-		let v1 = *m1;
-		let v2 = *m2;
-		let v3 = std::ptr::read::<u8>(m1);
-		let v4 = std::ptr::read::<i64>(m2);
+		let v1 = *m1; // $ MISSING: deref=?
+		let v2 = *m2; // $ MISSING: deref=?
+		let v3 = std::ptr::read::<u8>(m1); // $ MISSING: deref=?
+		let v4 = std::ptr::read::<i64>(m2); // $ MISSING: deref=?
 		println!("	v1 = {v1}");
 		println!("	v2 = {v2}");
 		println!("	v3 = {v3}");
@@ -494,20 +494,20 @@ fn test_alloc(do_dangerous_writes: bool) {
 
 		std::alloc::dealloc(m1, layout); // m1, m2 are now dangling
 
-		let v5 = *m1;
-		let v6 = *m2;
-		let v7 = std::ptr::read::<u8>(m1); // BAD
-		let v8 = std::ptr::read::<i64>(m2); // BAD
+		let v5 = *m1; // $ MISSING: deref=? Alert[rust/dangling-ptr]
+		let v6 = *m2; // $ MISSING: deref=? Alert[rust/dangling-ptr]
+		let v7 = std::ptr::read::<u8>(m1); // $ MISSING: deref=? Alert[rust/dangling-ptr]
+		let v8 = std::ptr::read::<i64>(m2); // $ MISSING: deref=? Alert[rust/dangling-ptr]
 		println!("	v5 = {v5} (!)"); // corrupt
 		println!("	v6 = {v6} (!)"); // corrupt
 		println!("	v7 = {v7} (!)"); // corrupt
 		println!("	v8 = {v8} (!)"); // corrupt
 
 		if do_dangerous_writes {
-			*m1 = 2; // BAD
-			*m2 = 3; // BAD
-			std::ptr::write::<u8>(m1, 4); // BAD
-			std::ptr::write::<i64>(m2, 5); // BAD
+			*m1 = 2; // MISSING: deref=? Alert[rust/dangling-ptr]
+			*m2 = 3; // MISSING: deref=? Alert[rust/dangling-ptr]
+			std::ptr::write::<u8>(m1, 4); // MISSING: deref=? Alert[rust/dangling-ptr]
+			std::ptr::write::<i64>(m2, 5); // MISSING: deref=? Alert[rust/dangling-ptr]
 		}
 	}
 }
@@ -520,23 +520,23 @@ fn test_alloc_array(do_dangerous_writes: bool) {
 		(*m2)[0] = 1;
 		(*m2)[1] = 2;
 
-		let v1 = (*m2)[0];
-		let v2 = (*m2)[1];
+		let v1 = (*m2)[0]; // MISSING: deref=?
+		let v2 = (*m2)[1]; // MISSING: deref=?
 		println!("	v1 = {v1}");
 		println!("	v2 = {v2}");
 
 		std::alloc::dealloc(m2 as *mut u8, layout); // m1, m2 are now dangling
 
-		let v3 = (*m2)[0]; // BAD
-		let v4 = (*m2)[1]; // BAD
+		let v3 = (*m2)[0]; // MISSING: deref=? Alert[rust/dangling-ptr]
+		let v4 = (*m2)[1]; // MISSING: deref=? Alert[rust/dangling-ptr]
 		println!("	v3 = {v3} (!)"); // corrupt
 		println!("	v4 = {v4} (!)"); // corrupt
 
 		if do_dangerous_writes {
-			(*m2)[0] = 3; // BAD
-			(*m2)[1] = 4; // BAD
-			std::ptr::write::<u8>(m1, 5); // BAD
-			std::ptr::write::<[u8; 10]>(m2, [6; 10]); // BAD
+			(*m2)[0] = 3; // MISSING: deref=? Alert[rust/dangling-ptr]
+			(*m2)[1] = 4; // MISSING: deref=? Alert[rust/dangling-ptr]
+			std::ptr::write::<u8>(m1, 5); // MISSING: deref=? Alert[rust/dangling-ptr]
+			std::ptr::write::<[u8; 10]>(m2, [6; 10]); // MISSING: deref=? Alert[rust/dangling-ptr]
 		}
 	}
 }
@@ -546,12 +546,12 @@ fn test_libc() {
 		let my_ptr = libc::malloc(256) as *mut i64;
 		*my_ptr = 1;
 
-		let v1 = *my_ptr;
+		let v1 = *my_ptr; // MISSING: deref=?
 		println!("	v1 = {v1}");
 
 		libc::free(my_ptr as *mut libc::c_void);
 
-		let v2 = *my_ptr; // BAD
+		let v2 = *my_ptr; // MISSING: deref=? Alert[rust/dangling-ptr]
 		println!("	v2 = {v2} (!)"); // corrupt
 	}
 }
@@ -570,9 +570,9 @@ fn test_loop() {
 		use_the_stack();
 
 		unsafe {
-			let v1 = *first;
-			let v2 = *ours;
-			let v3 = *prev; // BAD
+			let v1 = *first; // $ deref=my_local1
+			let v2 = *ours; // $ deref=my_local2
+			let v3 = *prev; // $ deref=my_local1 deref=my_local2 MISSING: Alert[rust/dangling-ptr]
 			println!("	v1 = {v1}");
 			println!("	v2 = {v2}");
 			println!("	v3 = {v3} (!)"); // corrupt
@@ -602,7 +602,7 @@ fn test_enum() {
 
 		unsafe {
 			// not sure if this is OK or BAD.  Seen in real world code.
-			let v1 = *result;
+			let v1 = *result; // $ deref=x
 			println!("	v1 = {v1}");
 		}
 	}
@@ -610,7 +610,7 @@ fn test_enum() {
 	use_the_stack();
 
 	unsafe {
-		let v2 = *result; // BAD
+		let v2 = *result; // $ deref=x MISSING: Alert[rust/dangling-ptr]
 		println!("	v2 = {v2}");
 	}
 }
