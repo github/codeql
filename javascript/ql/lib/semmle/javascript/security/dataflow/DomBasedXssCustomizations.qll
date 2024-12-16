@@ -329,6 +329,12 @@ module DomBasedXss {
    */
   deprecated predicate isOptionallySanitizedEdge = isOptionallySanitizedEdgeInternal/2;
 
+  bindingset[call]
+  pragma[inline_late]
+  private SsaVariable getSanitizedSsaVariable(HtmlSanitizerCall call) {
+    call.getAnArgument().asExpr().(VarAccess).getVariable() = result.getSourceVariable()
+  }
+
   private predicate isOptionallySanitizedEdgeInternal(DataFlow::Node pred, DataFlow::Node succ) {
     exists(HtmlSanitizerCall sanitizer |
       // sanitized = sanitize ? sanitizer(source) : source;
@@ -348,7 +354,7 @@ module DomBasedXss {
         count(phi.getAnInput()) = 2 and
         not a = b and
         sanitizer = DataFlow::valueNode(a.getDef().getSource()) and
-        sanitizer.getAnArgument().asExpr().(VarAccess).getVariable() = b.getSourceVariable()
+        getSanitizedSsaVariable(sanitizer) = b
       |
         pred = DataFlow::ssaDefinitionNode(b) and
         succ = DataFlow::ssaDefinitionNode(phi)
