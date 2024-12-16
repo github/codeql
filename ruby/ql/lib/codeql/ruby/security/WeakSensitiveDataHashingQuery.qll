@@ -68,9 +68,7 @@ module ComputationallyExpensiveHashFunction {
  * `computationallyExpensiveHashFunctionFlowPath`.
  */
 module WeakSensitiveDataHashingFlow =
-  DataFlow::MergePathGraph<NormalHashFunction::Flow::PathNode,
-    ComputationallyExpensiveHashFunction::Flow::PathNode, NormalHashFunction::Flow::PathGraph,
-    ComputationallyExpensiveHashFunction::Flow::PathGraph>;
+  DataFlow::MergeFlows<NormalHashFunction::Flow, ComputationallyExpensiveHashFunction::Flow>;
 
 /** Holds if data can flow from `source` to `sink` with `NormalHashFunction::Flow`. */
 predicate normalHashFunctionFlowPath(

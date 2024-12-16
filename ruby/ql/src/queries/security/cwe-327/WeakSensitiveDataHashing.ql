@@ -14,11 +14,9 @@
 
 import ruby
 import codeql.ruby.security.WeakSensitiveDataHashingQuery
-import WeakSensitiveDataHashingFlow::PathGraph
+import WeakSensitiveDataHashingFlow
 
-from
-  WeakSensitiveDataHashingFlow::PathNode source, WeakSensitiveDataHashingFlow::PathNode sink,
-  string ending, string algorithmName, string classification
+from PathNode source, PathNode sink, string ending, string algorithmName, string classification
 where
   normalHashFunctionFlowPath(source, sink) and
   algorithmName = sink.getNode().(NormalHashFunction::Sink).getAlgorithmName() and
