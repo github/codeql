@@ -207,9 +207,11 @@ localStep
 | main.rs:229:9:229:10 | [SSA] s1 | main.rs:230:10:230:11 | s1 |
 | main.rs:229:9:229:10 | s1 | main.rs:229:9:229:10 | [SSA] s1 |
 | main.rs:229:14:229:29 | Some(...) | main.rs:229:9:229:10 | s1 |
+| main.rs:230:23:230:23 | 0 | main.rs:230:10:230:24 | s1.unwrap_or(...) |
 | main.rs:232:9:232:10 | [SSA] s2 | main.rs:233:10:233:11 | s2 |
 | main.rs:232:9:232:10 | s2 | main.rs:232:9:232:10 | [SSA] s2 |
 | main.rs:232:14:232:20 | Some(...) | main.rs:232:9:232:10 | s2 |
+| main.rs:233:23:233:32 | source(...) | main.rs:233:10:233:33 | s2.unwrap_or(...) |
 | main.rs:237:9:237:10 | [SSA] s1 | main.rs:239:14:239:15 | s1 |
 | main.rs:237:9:237:10 | s1 | main.rs:237:9:237:10 | [SSA] s1 |
 | main.rs:237:14:237:29 | Some(...) | main.rs:237:9:237:10 | s1 |
@@ -529,6 +531,9 @@ storeStep
 | main.rs:407:27:407:27 | 0 | Some | main.rs:407:22:407:28 | Some(...) |
 readStep
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap_or | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap_or |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap |
+| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::result::Result>::unwrap_or | Ok | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::result::Result::Ok(0)] in lang:core::_::<crate::result::Result>::unwrap_or |
 | main.rs:33:9:33:15 | Some(...) | Some | main.rs:33:14:33:14 | _ |
 | main.rs:87:11:87:11 | i | &ref | main.rs:87:10:87:11 | * ... |
 | main.rs:95:10:95:10 | a | tuple.0 | main.rs:95:10:95:12 | a.0 |

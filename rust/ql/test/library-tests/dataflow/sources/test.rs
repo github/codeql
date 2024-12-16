@@ -12,7 +12,7 @@ fn test_env_vars() {
     let var2 = std::env::var_os("PATH").unwrap(); // $ Alert[rust/summary/taint-sources]
 
     sink(var1); // $ MISSING: hasTaintFlow
-    sink(var2); // $ MISSING: hasTaintFlow
+    sink(var2); // $ hasTaintFlow
 
     for (key, value) in std::env::vars() { // $ Alert[rust/summary/taint-sources]
         sink(key); // $ MISSING: hasTaintFlow
@@ -61,7 +61,7 @@ async fn test_reqwest() -> Result<(), reqwest::Error> {
     sink(remote_string1); // $ MISSING: hasTaintFlow
 
     let remote_string2 = reqwest::blocking::get("http://example.com/").unwrap().text().unwrap(); // $ Alert[rust/summary/taint-sources]
-    sink(remote_string2); // $ MISSING: hasTaintFlow
+    sink(remote_string2); // $ hasTaintFlow
 
     let remote_string3 = reqwest::get("http://example.com/").await?.text().await?; // $ Alert[rust/summary/taint-sources]
     sink(remote_string3); // $ MISSING: hasTaintFlow

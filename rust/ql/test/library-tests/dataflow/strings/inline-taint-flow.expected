@@ -1,4 +1,5 @@
 models
+| 1 | Summary: lang:alloc; <crate::string::String>::as_str; Argument[self]; ReturnValue; taint |
 edges
 | main.rs:20:13:20:22 | source(...) | main.rs:21:19:21:25 | s[...] | provenance |  |
 | main.rs:20:13:20:22 | source(...) | main.rs:22:16:22:21 | sliced | provenance |  |
@@ -6,6 +7,8 @@ edges
 | main.rs:21:19:21:25 | s[...] | main.rs:21:18:21:25 | &... [&ref] | provenance |  |
 | main.rs:26:14:26:23 | source(...) | main.rs:32:10:32:11 | s4 | provenance |  |
 | main.rs:37:14:37:23 | source(...) | main.rs:40:10:40:35 | ... + ... | provenance |  |
+| main.rs:57:13:57:22 | source(...) | main.rs:58:16:58:16 | s | provenance |  |
+| main.rs:58:16:58:16 | s | main.rs:58:16:58:25 | s.as_str(...) | provenance | MaD:1 |
 nodes
 | main.rs:20:13:20:22 | source(...) | semmle.label | source(...) |
 | main.rs:21:18:21:25 | &... [&ref] | semmle.label | &... [&ref] |
@@ -15,9 +18,13 @@ nodes
 | main.rs:32:10:32:11 | s4 | semmle.label | s4 |
 | main.rs:37:14:37:23 | source(...) | semmle.label | source(...) |
 | main.rs:40:10:40:35 | ... + ... | semmle.label | ... + ... |
+| main.rs:57:13:57:22 | source(...) | semmle.label | source(...) |
+| main.rs:58:16:58:16 | s | semmle.label | s |
+| main.rs:58:16:58:25 | s.as_str(...) | semmle.label | s.as_str(...) |
 subpaths
 testFailures
 #select
 | main.rs:22:16:22:21 | sliced | main.rs:20:13:20:22 | source(...) | main.rs:22:16:22:21 | sliced | $@ | main.rs:20:13:20:22 | source(...) | source(...) |
 | main.rs:32:10:32:11 | s4 | main.rs:26:14:26:23 | source(...) | main.rs:32:10:32:11 | s4 | $@ | main.rs:26:14:26:23 | source(...) | source(...) |
 | main.rs:40:10:40:35 | ... + ... | main.rs:37:14:37:23 | source(...) | main.rs:40:10:40:35 | ... + ... | $@ | main.rs:37:14:37:23 | source(...) | source(...) |
+| main.rs:58:16:58:25 | s.as_str(...) | main.rs:57:13:57:22 | source(...) | main.rs:58:16:58:25 | s.as_str(...) | $@ | main.rs:57:13:57:22 | source(...) | source(...) |

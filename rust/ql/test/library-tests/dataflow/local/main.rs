@@ -227,10 +227,10 @@ fn option_unwrap() {
 
 fn option_unwrap_or() {
     let s1 = Some(source(46));
-    sink(s1.unwrap_or(0)); // $ MISSING: hasValueFlow=46
+    sink(s1.unwrap_or(0)); // $ hasValueFlow=46
 
     let s2 = Some(0);
-    sink(s2.unwrap_or(source(47))); // $ MISSING: hasValueFlow=47
+    sink(s2.unwrap_or(source(47))); // $ hasValueFlow=47
 }
 
 fn option_questionmark() -> Option<i64> {
