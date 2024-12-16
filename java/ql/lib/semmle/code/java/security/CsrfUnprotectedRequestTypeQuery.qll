@@ -49,6 +49,15 @@ private class StaplerCsrfUnprotectedMethod extends CsrfUnprotectedMethod instanc
   }
 }
 
+/** A method that appears to change application state based on its name. */
+private class NameStateChangeMethod extends Method {
+  NameStateChangeMethod() {
+    this.getName()
+        .regexpMatch("(^|\\w+(?=[A-Z]))((?i)post|put|patch|delete|remove|create|add|update|edit|(un|)publish|fill|move|transfer|log(out|in)|access|connect(|ion)|register|submit)($|(?![a-z])\\w+)") and
+    not this.getName().regexpMatch("^(get|show|view|list|query|find)(?![a-z])\\w*")
+  }
+}
+
 /** A method that updates a database. */
 abstract class DatabaseUpdateMethod extends Method { }
 
@@ -163,20 +172,46 @@ module CallGraph {
 
 import CallGraph
 
-/** Holds if `src` is an unprotected request handler that reaches a state-changing `sink`. */
-predicate unprotectedStateChange(CallPathNode src, CallPathNode sink, CallPathNode sinkPred) {
-  src.asMethod() instanceof CsrfUnprotectedMethod and
-  sink.asMethod() instanceof DatabaseUpdateMethod and
-  sinkPred.getASuccessor() = sink and
-  src.getASuccessor+() = sinkPred and
-  if
-    sink.asMethod() instanceof SqlInjectionMethod and
-    sink.asMethod().hasName("execute")
-  then
-    exists(SqlExecuteFlow::PathNode executeSrc, SqlExecuteFlow::PathNode executeSink |
-      SqlExecuteFlow::flowPath(executeSrc, executeSink)
-    |
-      sinkPred.asCall() = executeSink.getNode().asExpr().(Argument).getCall()
-    )
-  else any()
+/**
+ * Holds if `src` is an unprotected request handler that reaches a
+ * `sink` that updates a database.
+ */
+predicate unprotectedDatabaseUpdate(CallPathNode sourceMethod, CallPathNode sinkMethodCall) {
+  sourceMethod.asMethod() instanceof CsrfUnprotectedMethod and
+  exists(CallPathNode sinkMethod |
+    sinkMethod.asMethod() instanceof DatabaseUpdateMethod and
+    sinkMethodCall.getASuccessor() = sinkMethod and
+    sourceMethod.getASuccessor+() = sinkMethodCall and
+    if
+      sinkMethod.asMethod() instanceof SqlInjectionMethod and
+      sinkMethod.asMethod().hasName("execute")
+    then
+      exists(SqlExecuteFlow::PathNode executeSrc, SqlExecuteFlow::PathNode executeSink |
+        SqlExecuteFlow::flowPath(executeSrc, executeSink)
+      |
+        sinkMethodCall.asCall() = executeSink.getNode().asExpr().(Argument).getCall()
+      )
+    else any()
+  )
+}
+
+/**
+ * Holds if `src` is an unprotected request handler that appears to
+ * change application state based on its name.
+ */
+private predicate unprotectedHeuristicStateChange(CallPathNode sourceMethod, CallPathNode sinkMethod) {
+  sourceMethod.asMethod() instanceof CsrfUnprotectedMethod and
+  sinkMethod.asMethod() instanceof NameStateChangeMethod and
+  sinkMethod = sourceMethod and
+  // exclude any alerts that update a database
+  not unprotectedDatabaseUpdate(sourceMethod, _)
+}
+
+/**
+ * Holds if `src` is an unprotected request handler that may
+ * change an application's state.
+ */
+predicate unprotectedStateChange(CallPathNode source, CallPathNode sink) {
+  unprotectedDatabaseUpdate(source, sink) or
+  unprotectedHeuristicStateChange(source, sink)
 }

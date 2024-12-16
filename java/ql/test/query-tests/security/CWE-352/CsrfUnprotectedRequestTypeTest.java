@@ -211,4 +211,10 @@ public class CsrfUnprotectedRequestTypeTest {
 	public void bad10(@RequestParam String user) { // $ hasCsrfUnprotectedRequestType
 		myBatisService.bad10(user);
 	}
+
+    // BAD: method name implies a state-change
+    @GetMapping(value = "delete")
+	public String delete(@RequestParam String user) { // $ hasCsrfUnprotectedRequestType
+		return "delete";
+	}
 }

@@ -7,9 +7,7 @@ module CsrfUnprotectedRequestTypeTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasCsrfUnprotectedRequestType" and
-    exists(CallPathNode src, CallPathNode sink, CallPathNode sinkPred |
-      unprotectedStateChange(src, sink, sinkPred)
-    |
+    exists(CallPathNode src, CallPathNode sink | unprotectedStateChange(src, sink) |
       src.getLocation() = location and
       element = src.toString() and
       value = ""
