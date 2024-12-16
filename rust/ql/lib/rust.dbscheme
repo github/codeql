@@ -2227,6 +2227,11 @@ self_params(
 );
 
 #keyset[id]
+self_param_is_ref(
+  int id: @self_param ref
+);
+
+#keyset[id]
 self_param_is_mut(
   int id: @self_param ref
 );
