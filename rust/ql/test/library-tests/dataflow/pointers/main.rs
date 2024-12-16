@@ -13,7 +13,7 @@ fn read_through_borrow() {
     let a = source(21);
     let b = &a;
     let c = *b;
-    sink(c); // $ MISSING: hasValueFlow=21
+    sink(c); // $ hasValueFlow=21
 }
 
 fn write_through_borrow() {

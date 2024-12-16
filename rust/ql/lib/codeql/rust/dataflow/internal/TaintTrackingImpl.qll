@@ -46,6 +46,8 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
         RustDataFlow::readStep(pred, cs, succ) and
         cs.getContent() instanceof ArrayElementContent
       )
+      or
+      pred.asExpr() = succ.asExpr().(RefExprCfgNode).getExpr()
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(Node::FlowSummaryNode).getSummaryNode(),
@@ -59,7 +61,10 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
   bindingset[node]
   predicate defaultImplicitTaintRead(Node::Node node, ContentSet cs) {
     exists(node) and
-    cs.(SingletonContentSet).getContent() instanceof ArrayElementContent
+    exists(Content c | c = cs.(SingletonContentSet).getContent() |
+      c instanceof ArrayElementContent or
+      c instanceof ReferenceContent
+    )
   }
 
   /**

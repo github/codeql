@@ -712,6 +712,11 @@ private class CapturedVariableContent extends Content, TCapturedVariableContent 
   override string toString() { result = "captured " + v }
 }
 
+/** A value refered to by a reference. */
+final class ReferenceContent extends Content, TReferenceContent {
+  override string toString() { result = "&ref" }
+}
+
 /**
  * An element in an array.
  */
@@ -1040,6 +1045,13 @@ module RustDataFlow implements InputSig<Location> {
           ["crate::option::Option::Some", "crate::result::Result::Ok"]
       )
       or
+      exists(PrefixExprCfgNode deref |
+        c instanceof ReferenceContent and
+        deref.getOperatorName() = "*" and
+        node1.asExpr() = deref.getExpr() and
+        node2.asExpr() = deref
+      )
+      or
       VariableCapture::readStep(node1, c, node2)
     )
     or
@@ -1121,6 +1133,12 @@ module RustDataFlow implements InputSig<Location> {
         assignment.getLhs() = index and
         node1.asExpr() = assignment.getRhs() and
         node2.(PostUpdateNode).getPreUpdateNode().asExpr() = index.getBase()
+      )
+      or
+      exists(RefExprCfgNode ref |
+        c instanceof ReferenceContent and
+        node1.asExpr() = ref.getExpr() and
+        node2.asExpr() = ref
       )
       or
       VariableCapture::storeStep(node1, c, node2)
@@ -1382,7 +1400,8 @@ private module Cached {
       e =
         [
           any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
-          any(TryExprCfgNode try).getExpr()
+          any(TryExprCfgNode try).getExpr(),
+          any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr()
         ]
     } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
@@ -1482,7 +1501,8 @@ private module Cached {
     TStructFieldContent(StructCanonicalPath s, string field) {
       field = s.getStruct().getFieldList().(RecordFieldList).getAField().getName().getText()
     } or
-    TCapturedVariableContent(VariableCapture::CapturedVariable v)
+    TCapturedVariableContent(VariableCapture::CapturedVariable v) or
+    TReferenceContent()
 
   cached
   newtype TContentSet = TSingletonContentSet(Content c)

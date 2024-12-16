@@ -293,6 +293,8 @@ variableReadAccess
 | variables.rs:17:15:17:16 | x1 | variables.rs:16:9:16:10 | x1 |
 | variables.rs:22:15:22:16 | x2 | variables.rs:21:13:21:14 | x2 |
 | variables.rs:24:15:24:16 | x2 | variables.rs:21:13:21:14 | x2 |
+| variables.rs:29:20:29:20 | x | variables.rs:28:13:28:13 | x |
+| variables.rs:31:20:31:20 | x | variables.rs:28:13:28:13 | x |
 | variables.rs:36:15:36:16 | x3 | variables.rs:35:9:35:10 | x3 |
 | variables.rs:38:9:38:10 | x3 | variables.rs:35:9:35:10 | x3 |
 | variables.rs:39:15:39:16 | x3 | variables.rs:37:9:37:10 | x3 |
@@ -369,7 +371,9 @@ variableReadAccess
 | variables.rs:335:12:335:12 | v | variables.rs:332:9:332:9 | v |
 | variables.rs:336:19:336:22 | text | variables.rs:334:9:334:12 | text |
 | variables.rs:343:15:343:15 | a | variables.rs:341:13:341:13 | a |
+| variables.rs:344:11:344:11 | a | variables.rs:341:13:341:13 | a |
 | variables.rs:345:15:345:15 | a | variables.rs:341:13:341:13 | a |
+| variables.rs:351:14:351:14 | i | variables.rs:349:13:349:13 | i |
 | variables.rs:352:6:352:10 | ref_i | variables.rs:350:9:350:13 | ref_i |
 | variables.rs:353:15:353:15 | i | variables.rs:349:13:349:13 | i |
 | variables.rs:357:6:357:6 | x | variables.rs:356:17:356:17 | x |
@@ -381,11 +385,15 @@ variableReadAccess
 | variables.rs:366:10:366:10 | x | variables.rs:363:22:363:22 | x |
 | variables.rs:367:6:367:6 | y | variables.rs:363:39:363:39 | y |
 | variables.rs:368:9:368:9 | x | variables.rs:363:22:363:22 | x |
+| variables.rs:374:27:374:27 | x | variables.rs:372:13:372:13 | x |
 | variables.rs:375:6:375:6 | y | variables.rs:373:9:373:9 | y |
 | variables.rs:377:15:377:15 | x | variables.rs:372:13:372:13 | x |
+| variables.rs:381:19:381:19 | x | variables.rs:372:13:372:13 | x |
+| variables.rs:383:14:383:14 | z | variables.rs:379:13:379:13 | z |
 | variables.rs:384:9:384:9 | w | variables.rs:380:9:380:9 | w |
 | variables.rs:386:7:386:7 | w | variables.rs:380:9:380:9 | w |
 | variables.rs:388:15:388:15 | z | variables.rs:379:13:379:13 | z |
+| variables.rs:394:14:394:14 | x | variables.rs:392:13:392:13 | x |
 | variables.rs:395:6:395:6 | y | variables.rs:393:9:393:9 | y |
 | variables.rs:396:15:396:15 | x | variables.rs:392:13:392:13 | x |
 | variables.rs:403:19:403:19 | x | variables.rs:400:9:400:9 | x |
@@ -429,7 +437,9 @@ variableReadAccess
 | variables.rs:512:5:512:5 | a | variables.rs:510:13:510:13 | a |
 | variables.rs:513:15:513:15 | a | variables.rs:510:13:510:13 | a |
 | variables.rs:515:15:515:15 | a | variables.rs:510:13:510:13 | a |
+| variables.rs:520:20:520:20 | x | variables.rs:519:9:519:9 | x |
 | variables.rs:521:15:521:15 | x | variables.rs:519:9:519:9 | x |
+| variables.rs:524:20:524:20 | z | variables.rs:523:9:523:9 | z |
 | variables.rs:533:6:533:9 | self | variables.rs:532:15:532:18 | self |
 | variables.rs:539:3:539:3 | a | variables.rs:538:11:538:11 | a |
 | variables.rs:541:13:541:13 | a | variables.rs:538:11:538:11 | a |

@@ -36,7 +36,7 @@ mod string {
     pub fn string_slice() {
         let s = source(35);
         let sliced = &s[1..3];
-        sink(sliced); // $ MISSING: hasTaintFlow=35
+        sink(sliced); // $ hasTaintFlow=35
     }
 }
 

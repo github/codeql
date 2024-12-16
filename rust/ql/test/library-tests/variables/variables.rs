@@ -26,9 +26,9 @@ fn mutable_variable() {
 
 fn mutable_variable_immutable_borrow() {
     let mut x = 1;
-    print_i64_ref(&x); // $ access=x
+    print_i64_ref(&x); // $ read_access=x
     x = 2; // $ write_access=x
-    print_i64_ref(&x); // $ access=x
+    print_i64_ref(&x); // $ read_access=x
 }
 
 fn variable_shadow1() {
@@ -341,14 +341,14 @@ fn add_assign() {
     let mut a = 0; // a
     a += 1; // $ access=a
     print_i64(a); // $ read_access=a
-    (&mut a).add_assign(10); // $ access=a
+    (&mut a).add_assign(10); // $ read_access=a
     print_i64(a); // $ read_access=a
 }
 
 fn mutate() {
     let mut i = 1; // i
     let ref_i = // ref_i
-        &mut i; // $ access=i
+        &mut i; // $ read_access=i
     *ref_i = 2; // $ read_access=ref_i
     print_i64(i); // $ read_access=i
 }
@@ -371,16 +371,16 @@ fn mutate_param2<'a>(x : &'a mut i64, y :&mut &'a mut i64) {
 fn mutate_arg() {
     let mut x = 2; // x
     let y = // y
-        mutate_param(&mut x); // $ access=x
+        mutate_param(&mut x); // $ read_access=x
     *y = 10; // $ read_access=y
     // prints 10, not 4
     print_i64(x); // $ read_access=x
 
     let mut z = 4; // z
     let w = // w
-        &mut &mut x; // $ access=x
+        &mut &mut x; // $ read_access=x
     mutate_param2(
-        &mut z, // $ access=z
+        &mut z, // $ read_access=z
         w // $ read_access=w
     );
     **w = 11; // $ read_access=w
@@ -391,7 +391,7 @@ fn mutate_arg() {
 fn alias() {
     let mut x = 1; // x
     let y = // y
-        &mut x; // $ access=x
+        &mut x; // $ read_access=x
     *y = 2; // $ read_access=y
     print_i64(x); // $ read_access=x
 }
@@ -517,11 +517,11 @@ fn arrays() {
 
 fn ref_arg() {
     let x = 16; // x
-    print_i64_ref(&x); // $ access=x
+    print_i64_ref(&x); // $ read_access=x
     print_i64(x); // $ read_access=x
 
     let z = 17; // z
-    print_i64_ref(&z); // $ access=z
+    print_i64_ref(&z); // $ read_access=z
 }
 
 trait Bar {

@@ -530,6 +530,7 @@ storeStep
 readStep
 | file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap |
 | main.rs:33:9:33:15 | Some(...) | Some | main.rs:33:14:33:14 | _ |
+| main.rs:87:11:87:11 | i | &ref | main.rs:87:10:87:11 | * ... |
 | main.rs:95:10:95:10 | a | tuple.0 | main.rs:95:10:95:12 | a.0 |
 | main.rs:96:10:96:10 | a | tuple.1 | main.rs:96:10:96:12 | a.1 |
 | main.rs:109:10:109:10 | a | tuple.0 | main.rs:109:10:109:12 | a.0 |
