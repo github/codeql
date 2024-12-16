@@ -1,19 +1,15 @@
-import 'build.just'
-
 print_test_roots := ""
 
-[no-cd, positional-arguments, no-exit-message]
-@_language_tests LANGUAGE *ARGS: (_build LANGUAGE)
-    shift; \
-    if [ -n "${SEMMLE_CODE:-}" ]; then \
-      CODEQL_CONFIG_FILE= $SEMMLE_CODE/target/intree/codeql-{{ LANGUAGE }}/codeql test run -j0 "$@"; \
-    else \
-      codeql test run --search-path={{ source_dir() }} -j0 "$@"; \
-    fi
+# We want to restrict how much memory codeql threads use, or we can OOM.
+RAM := if os() == "linux" { "3000" } else { "2048" }
 
 [no-cd, positional-arguments, no-exit-message]
-@_integration_tests *ARGS: (_require_semmle_code "integration tests")
-    $SEMMLE_CODE/tools/pytest "$@"
+_language_tests LANGUAGE *ARGS: (_build LANGUAGE)
+    shift;
+    codeql test run --search-path={{ source_dir() }} -j0 --ram {{ RAM }} "$@";
+
+@_integration_tests:
+    echo "No integration tests implemented yet"
 
 [no-cd, script:'python3', positional-arguments, no-exit-message]
 _unit_tests *ARGS:
@@ -26,20 +22,11 @@ _unit_tests *ARGS:
     def bazel_path(a, cwd):
         return P(a).resolve().joinpath("...").relative_to(cwd)
 
-    semmle_code = os.environ.get("SEMMLE_CODE")
     flags = [arg for arg in sys.argv[1:] if arg.startswith('-')]
     args = [arg for arg in sys.argv[1:] if not arg.startswith('-')]
-    if semmle_code:
-        cwd = P(semmle_code)
-        bazel = shutil.which("bazel", path=cwd / "tools")
-        ql = P("ql")
-        args[:] = [bazel_path(a, cwd) for a in args]
-        args[:] = [f"@codeql//{a.relative_to(ql)}"
-                   if a.parts[0] == "ql" else f"//{a}" for a in args]
-    else:
-        cwd = P("{{ source_dir() }}").resolve()
-        bazel = shutil.which("bazel")
-        args[:] = [f"//{bazel_path(a, cwd)}" for a in args]
+    cwd = P("{{ source_dir() }}").resolve()
+    bazel = shutil.which("bazel")
+    args[:] = [f"//{bazel_path(a, cwd)}" for a in args]
     res = subprocess.run([bazel, "test"] + flags + args, cwd=cwd).returncode
     sys.exit(res)
 

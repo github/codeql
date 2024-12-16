@@ -2,6 +2,7 @@ import? '../semmle-code.just'  # internal repo just file, if present
 
 set fallback
 set allow-duplicate-recipes
+set allow-duplicate-variables
 set unstable
 
 error := style("error") + "error" + NORMAL + ":"
