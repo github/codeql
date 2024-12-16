@@ -855,6 +855,12 @@ module RustDataFlow implements InputSig<Location> {
     node instanceof Node::ClosureParameterNode
   }
 
+  predicate neverSkipInPathGraph(Node node) {
+    node.getCfgNode() = any(LetStmtCfgNode s).getPat()
+    or
+    node.getCfgNode() = any(AssignmentExprCfgNode a).getLhs()
+  }
+
   class DataFlowExpr = ExprCfgNode;
 
   /** Gets the node corresponding to `e`. */
