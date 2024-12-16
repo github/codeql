@@ -10,3 +10,9 @@ extensions:
       extensible: summaryModel
     data:
       - ["Microsoft.AspNetCore.Components", "NagivationManager", True, "ToAbsoluteUri", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["Microsoft.AspNetCore.Components", "MarkupString", False, "MarkupString", "(System.String)", "", "Argument[0]", "html-injection", "manual"]
+      - ["Microsoft.AspNetCore.Components", "MarkupString", False, "op_Explicit", "(System.String)", "", "Argument[0]", "html-injection", "manual"]
