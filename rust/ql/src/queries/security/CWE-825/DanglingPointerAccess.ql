@@ -25,8 +25,12 @@ from
   PointerDereferenceFlow::PathNode sourceNode, PointerDereferenceFlow::PathNode sinkNode,
   DataFlow::Node targetValue, BlockExpr valueScope, BlockExpr accessScope
 where
+  // flow from a pointer or reference to the dereference
   PointerDereferenceFlow::flowPath(sourceNode, sinkNode) and
   createsPointer(sourceNode.getNode(), targetValue) and
+  // check that the dereference is outside the lifetime of the target; in
+  // practice this is only possible for a pointer, and the dereference has to
+  // be in unsafe code, though we don't explicitly check for either.
   valueScope(targetValue.asExpr().getExpr(), valueScope) and
   accessScope = sinkNode.getNode().asExpr().getExpr().getEnclosingBlock() and
   not maybeOnStack(valueScope, accessScope)

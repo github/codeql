@@ -2,7 +2,7 @@ import rust
 private import codeql.rust.dataflow.DataFlow
 
 /**
- * Holds if `createsPointer` creates a pointer pointing at `targetValue`.
+ * Holds if `createsPointer` creates a pointer or reference pointing at `targetValue`.
  */
 predicate createsPointer(DataFlow::Node createsPointer, DataFlow::Node targetValue) {
   exists(RefExpr re |
@@ -12,7 +12,7 @@ predicate createsPointer(DataFlow::Node createsPointer, DataFlow::Node targetVal
 }
 
 /**
- * Holds if `derefPointer` dereferences a pointer (in unsafe code).
+ * Holds if `derefPointer` dereferences a pointer.
  */
 predicate dereferencesPointer(DataFlow::Node derefPointer) {
   exists(PrefixExpr pe |
@@ -22,7 +22,8 @@ predicate dereferencesPointer(DataFlow::Node derefPointer) {
 }
 
 /**
- * A taint configuration for a pointer that is created and later dereferenced.
+ * A taint configuration for a pointer or reference that is created and later
+ * dereferenced.
  */
 module PointerDereferenceConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { createsPointer(node, _) }
