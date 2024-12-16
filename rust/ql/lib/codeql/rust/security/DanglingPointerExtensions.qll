@@ -1,3 +1,8 @@
+/**
+ * Provides classes and predicates for reasoning about dangling pointer
+ * accesses.
+ */
+
 import rust
 private import codeql.rust.dataflow.DataFlow
 
