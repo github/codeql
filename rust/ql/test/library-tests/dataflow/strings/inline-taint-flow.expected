@@ -1,0 +1,10 @@
+models
+edges
+| main.rs:26:14:26:23 | source(...) | main.rs:32:10:32:11 | s4 | provenance |  |
+nodes
+| main.rs:26:14:26:23 | source(...) | semmle.label | source(...) |
+| main.rs:32:10:32:11 | s4 | semmle.label | s4 |
+subpaths
+testFailures
+#select
+| main.rs:32:10:32:11 | s4 | main.rs:26:14:26:23 | source(...) | main.rs:32:10:32:11 | s4 | $@ | main.rs:26:14:26:23 | source(...) | source(...) |

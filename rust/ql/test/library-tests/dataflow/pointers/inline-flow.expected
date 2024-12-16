@@ -1,0 +1,23 @@
+models
+edges
+| main.rs:40:18:40:21 | SelfParam [MyNumber] | main.rs:42:13:42:38 | ...::MyNumber(...) [MyNumber] | provenance |  |
+| main.rs:42:13:42:38 | ...::MyNumber(...) [MyNumber] | main.rs:42:32:42:37 | number | provenance |  |
+| main.rs:42:32:42:37 | number | main.rs:40:31:46:5 | { ... } | provenance |  |
+| main.rs:58:21:58:50 | ...::MyNumber(...) [MyNumber] | main.rs:59:10:59:18 | my_number [MyNumber] | provenance |  |
+| main.rs:58:40:58:49 | source(...) | main.rs:58:21:58:50 | ...::MyNumber(...) [MyNumber] | provenance |  |
+| main.rs:59:10:59:18 | my_number [MyNumber] | main.rs:40:18:40:21 | SelfParam [MyNumber] | provenance |  |
+| main.rs:59:10:59:18 | my_number [MyNumber] | main.rs:59:10:59:30 | my_number.to_number(...) | provenance |  |
+nodes
+| main.rs:40:18:40:21 | SelfParam [MyNumber] | semmle.label | SelfParam [MyNumber] |
+| main.rs:40:31:46:5 | { ... } | semmle.label | { ... } |
+| main.rs:42:13:42:38 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
+| main.rs:42:32:42:37 | number | semmle.label | number |
+| main.rs:58:21:58:50 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
+| main.rs:58:40:58:49 | source(...) | semmle.label | source(...) |
+| main.rs:59:10:59:18 | my_number [MyNumber] | semmle.label | my_number [MyNumber] |
+| main.rs:59:10:59:30 | my_number.to_number(...) | semmle.label | my_number.to_number(...) |
+subpaths
+| main.rs:59:10:59:18 | my_number [MyNumber] | main.rs:40:18:40:21 | SelfParam [MyNumber] | main.rs:40:31:46:5 | { ... } | main.rs:59:10:59:30 | my_number.to_number(...) |
+testFailures
+#select
+| main.rs:59:10:59:30 | my_number.to_number(...) | main.rs:58:40:58:49 | source(...) | main.rs:59:10:59:30 | my_number.to_number(...) | $@ | main.rs:58:40:58:49 | source(...) | source(...) |
