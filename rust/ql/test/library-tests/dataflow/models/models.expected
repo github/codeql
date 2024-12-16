@@ -35,12 +35,14 @@ edges
 | main.rs:53:9:53:9 | s | main.rs:54:26:54:26 | s | provenance |  |
 | main.rs:53:13:53:21 | source(...) | main.rs:53:9:53:9 | s | provenance |  |
 | main.rs:53:13:53:21 | source(...) | main.rs:53:9:53:9 | s | provenance |  |
-| main.rs:54:9:54:10 | e1 [B] | main.rs:57:9:57:23 | ...::B(...) [B] | provenance |  |
-| main.rs:54:9:54:10 | e1 [B] | main.rs:57:9:57:23 | ...::B(...) [B] | provenance |  |
+| main.rs:54:9:54:10 | e1 [B] | main.rs:55:11:55:12 | e1 [B] | provenance |  |
+| main.rs:54:9:54:10 | e1 [B] | main.rs:55:11:55:12 | e1 [B] | provenance |  |
 | main.rs:54:14:54:27 | set_var_pos(...) [B] | main.rs:54:9:54:10 | e1 [B] | provenance |  |
 | main.rs:54:14:54:27 | set_var_pos(...) [B] | main.rs:54:9:54:10 | e1 [B] | provenance |  |
 | main.rs:54:26:54:26 | s | main.rs:54:14:54:27 | set_var_pos(...) [B] | provenance | MaD:10 |
 | main.rs:54:26:54:26 | s | main.rs:54:14:54:27 | set_var_pos(...) [B] | provenance | MaD:10 |
+| main.rs:55:11:55:12 | e1 [B] | main.rs:57:9:57:23 | ...::B(...) [B] | provenance |  |
+| main.rs:55:11:55:12 | e1 [B] | main.rs:57:9:57:23 | ...::B(...) [B] | provenance |  |
 | main.rs:57:9:57:23 | ...::B(...) [B] | main.rs:57:22:57:22 | i | provenance |  |
 | main.rs:57:9:57:23 | ...::B(...) [B] | main.rs:57:22:57:22 | i | provenance |  |
 | main.rs:57:22:57:22 | i | main.rs:57:33:57:33 | i | provenance |  |
@@ -61,12 +63,14 @@ edges
 | main.rs:85:9:85:9 | s | main.rs:86:28:86:28 | s | provenance |  |
 | main.rs:85:13:85:21 | source(...) | main.rs:85:9:85:9 | s | provenance |  |
 | main.rs:85:13:85:21 | source(...) | main.rs:85:9:85:9 | s | provenance |  |
-| main.rs:86:9:86:10 | e1 [D] | main.rs:89:9:89:37 | ...::D {...} [D] | provenance |  |
-| main.rs:86:9:86:10 | e1 [D] | main.rs:89:9:89:37 | ...::D {...} [D] | provenance |  |
+| main.rs:86:9:86:10 | e1 [D] | main.rs:87:11:87:12 | e1 [D] | provenance |  |
+| main.rs:86:9:86:10 | e1 [D] | main.rs:87:11:87:12 | e1 [D] | provenance |  |
 | main.rs:86:14:86:29 | set_var_field(...) [D] | main.rs:86:9:86:10 | e1 [D] | provenance |  |
 | main.rs:86:14:86:29 | set_var_field(...) [D] | main.rs:86:9:86:10 | e1 [D] | provenance |  |
 | main.rs:86:28:86:28 | s | main.rs:86:14:86:29 | set_var_field(...) [D] | provenance | MaD:9 |
 | main.rs:86:28:86:28 | s | main.rs:86:14:86:29 | set_var_field(...) [D] | provenance | MaD:9 |
+| main.rs:87:11:87:12 | e1 [D] | main.rs:89:9:89:37 | ...::D {...} [D] | provenance |  |
+| main.rs:87:11:87:12 | e1 [D] | main.rs:89:9:89:37 | ...::D {...} [D] | provenance |  |
 | main.rs:89:9:89:37 | ...::D {...} [D] | main.rs:89:35:89:35 | i | provenance |  |
 | main.rs:89:9:89:37 | ...::D {...} [D] | main.rs:89:35:89:35 | i | provenance |  |
 | main.rs:89:35:89:35 | i | main.rs:89:47:89:47 | i | provenance |  |
@@ -164,6 +168,8 @@ nodes
 | main.rs:54:14:54:27 | set_var_pos(...) [B] | semmle.label | set_var_pos(...) [B] |
 | main.rs:54:26:54:26 | s | semmle.label | s |
 | main.rs:54:26:54:26 | s | semmle.label | s |
+| main.rs:55:11:55:12 | e1 [B] | semmle.label | e1 [B] |
+| main.rs:55:11:55:12 | e1 [B] | semmle.label | e1 [B] |
 | main.rs:57:9:57:23 | ...::B(...) [B] | semmle.label | ...::B(...) [B] |
 | main.rs:57:9:57:23 | ...::B(...) [B] | semmle.label | ...::B(...) [B] |
 | main.rs:57:22:57:22 | i | semmle.label | i |
@@ -194,6 +200,8 @@ nodes
 | main.rs:86:14:86:29 | set_var_field(...) [D] | semmle.label | set_var_field(...) [D] |
 | main.rs:86:28:86:28 | s | semmle.label | s |
 | main.rs:86:28:86:28 | s | semmle.label | s |
+| main.rs:87:11:87:12 | e1 [D] | semmle.label | e1 [D] |
+| main.rs:87:11:87:12 | e1 [D] | semmle.label | e1 [D] |
 | main.rs:89:9:89:37 | ...::D {...} [D] | semmle.label | ...::D {...} [D] |
 | main.rs:89:9:89:37 | ...::D {...} [D] | semmle.label | ...::D {...} [D] |
 | main.rs:89:35:89:35 | i | semmle.label | i |

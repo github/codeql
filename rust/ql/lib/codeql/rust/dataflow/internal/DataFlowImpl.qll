@@ -859,6 +859,11 @@ module RustDataFlow implements InputSig<Location> {
     node.getCfgNode() = any(LetStmtCfgNode s).getPat()
     or
     node.getCfgNode() = any(AssignmentExprCfgNode a).getLhs()
+    or
+    exists(MatchExprCfgNode match |
+      node.asExpr() = match.getScrutinee() or
+      node.asExpr() = match.getArmPat(_)
+    )
   }
 
   class DataFlowExpr = ExprCfgNode;
