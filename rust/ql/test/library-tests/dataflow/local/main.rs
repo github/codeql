@@ -379,32 +379,35 @@ fn array_assignment() {
     sink(mut_arr[0]); // $ SPURIOUS: hasValueFlow=55
 }
 
-fn closure_flow_out() {
-    let f = |cond| if cond { source(92) } else { 0 };
-    sink(f(true)); // $ hasValueFlow=92
+// -----------------------------------------------------------------------------
+// Data flow through mutable borrows
+
+fn read_through_borrow() {
+    let a = source(21);
+    let b = &a;
+    let c = *b;
+    sink(c); // $ MISSING: hasValueFlow=21
 }
 
-fn closure_flow_in() {
-    let f = |cond, data|
-        if cond {
-            sink(data); // $ hasValueFlow=87
-        } else {
-            sink(0)
-        };
-    let a = source(87);
-    f(true, a);
+fn write_through_borrow() {
+    let mut a = 1;
+    sink(a);
+    let b = &mut a;
+    *b = source(39);
+    sink(a); // $ MISSING: hasValueFlow=39
 }
 
-fn closure_flow_through() {
-    let f = |cond, data|
-        if cond {
-            data
-        } else {
-            0
-        };
-    let a = source(43);
-    let b = f(true, a);
-    sink(b); // $ hasValueFlow=43
+// Test data flow inconsistency occuring with captured variables and `continue`
+// in a loop.
+pub fn captured_variable_and_continue(names: Vec<(bool, Option<String>)>) {
+  let default_name = source(83).to_string();
+  for (cond, name) in names {
+    if cond {
+      let n = name.unwrap_or_else(|| default_name.to_string());
+      sink(n.len() as i64);
+      continue;
+    }
+  }
 }
 
 fn main() {
@@ -440,7 +443,7 @@ fn main() {
     array_for_loop();
     array_slice_pattern();
     array_assignment();
-    closure_flow_out();
-    closure_flow_in();
-    closure_flow_through();
+    read_through_borrow();
+    write_through_borrow();
+    captured_variable_and_continue(vec![]);
 }

@@ -99,16 +99,6 @@ edges
 | main.rs:377:13:377:19 | mut_arr [array[]] | main.rs:377:13:377:22 | mut_arr[1] | provenance |  |
 | main.rs:377:13:377:22 | mut_arr[1] | main.rs:378:10:378:10 | d | provenance |  |
 | main.rs:379:10:379:16 | mut_arr [array[]] | main.rs:379:10:379:19 | mut_arr[0] | provenance |  |
-| main.rs:383:20:383:52 | if cond {...} else {...} | main.rs:384:10:384:16 | f(...) | provenance |  |
-| main.rs:383:30:383:39 | source(...) | main.rs:383:20:383:52 | if cond {...} else {...} | provenance |  |
-| main.rs:388:20:388:23 | ... | main.rs:390:18:390:21 | data | provenance |  |
-| main.rs:394:13:394:22 | source(...) | main.rs:395:13:395:13 | a | provenance |  |
-| main.rs:395:13:395:13 | a | main.rs:388:20:388:23 | ... | provenance |  |
-| main.rs:399:20:399:23 | ... | main.rs:400:9:404:9 | if cond {...} else {...} | provenance |  |
-| main.rs:405:13:405:22 | source(...) | main.rs:406:21:406:21 | a | provenance |  |
-| main.rs:406:13:406:22 | f(...) | main.rs:407:10:407:10 | b | provenance |  |
-| main.rs:406:21:406:21 | a | main.rs:399:20:399:23 | ... | provenance |  |
-| main.rs:406:21:406:21 | a | main.rs:406:13:406:22 | f(...) | provenance |  |
 nodes
 | main.rs:15:10:15:18 | source(...) | semmle.label | source(...) |
 | main.rs:19:13:19:21 | source(...) | semmle.label | source(...) |
@@ -233,21 +223,7 @@ nodes
 | main.rs:378:10:378:10 | d | semmle.label | d |
 | main.rs:379:10:379:16 | mut_arr [array[]] | semmle.label | mut_arr [array[]] |
 | main.rs:379:10:379:19 | mut_arr[0] | semmle.label | mut_arr[0] |
-| main.rs:383:20:383:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
-| main.rs:383:30:383:39 | source(...) | semmle.label | source(...) |
-| main.rs:384:10:384:16 | f(...) | semmle.label | f(...) |
-| main.rs:388:20:388:23 | ... | semmle.label | ... |
-| main.rs:390:18:390:21 | data | semmle.label | data |
-| main.rs:394:13:394:22 | source(...) | semmle.label | source(...) |
-| main.rs:395:13:395:13 | a | semmle.label | a |
-| main.rs:399:20:399:23 | ... | semmle.label | ... |
-| main.rs:400:9:404:9 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
-| main.rs:405:13:405:22 | source(...) | semmle.label | source(...) |
-| main.rs:406:13:406:22 | f(...) | semmle.label | f(...) |
-| main.rs:406:21:406:21 | a | semmle.label | a |
-| main.rs:407:10:407:10 | b | semmle.label | b |
 subpaths
-| main.rs:406:21:406:21 | a | main.rs:399:20:399:23 | ... | main.rs:400:9:404:9 | if cond {...} else {...} | main.rs:406:13:406:22 | f(...) |
 testFailures
 #select
 | main.rs:15:10:15:18 | source(...) | main.rs:15:10:15:18 | source(...) | main.rs:15:10:15:18 | source(...) | $@ | main.rs:15:10:15:18 | source(...) | source(...) |
@@ -282,6 +258,3 @@ testFailures
 | main.rs:367:18:367:18 | c | main.rs:362:23:362:32 | source(...) | main.rs:367:18:367:18 | c | $@ | main.rs:362:23:362:32 | source(...) | source(...) |
 | main.rs:378:10:378:10 | d | main.rs:376:18:376:27 | source(...) | main.rs:378:10:378:10 | d | $@ | main.rs:376:18:376:27 | source(...) | source(...) |
 | main.rs:379:10:379:19 | mut_arr[0] | main.rs:376:18:376:27 | source(...) | main.rs:379:10:379:19 | mut_arr[0] | $@ | main.rs:376:18:376:27 | source(...) | source(...) |
-| main.rs:384:10:384:16 | f(...) | main.rs:383:30:383:39 | source(...) | main.rs:384:10:384:16 | f(...) | $@ | main.rs:383:30:383:39 | source(...) | source(...) |
-| main.rs:390:18:390:21 | data | main.rs:394:13:394:22 | source(...) | main.rs:390:18:390:21 | data | $@ | main.rs:394:13:394:22 | source(...) | source(...) |
-| main.rs:407:10:407:10 | b | main.rs:405:13:405:22 | source(...) | main.rs:407:10:407:10 | b | $@ | main.rs:405:13:405:22 | source(...) | source(...) |

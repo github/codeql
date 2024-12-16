@@ -8,6 +8,7 @@ private import codeql.dataflow.DataFlow
 private import codeql.dataflow.internal.DataFlowImpl
 private import rust
 private import SsaImpl as SsaImpl
+private import codeql.rust.controlflow.internal.Scope as Scope
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
@@ -101,11 +102,19 @@ final class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents the `self` position. */
   predicate isSelf() { this = TSelfParameterPosition() }
 
+  /**
+   * Holds if this position represents a reference to a closure itself. Only
+   * used for tracking flow through captured variables.
+   */
+  predicate isClosureSelf() { this = TClosureSelfParameterPosition() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     result = this.getPosition().toString()
     or
     result = "self" and this.isSelf()
+    or
+    result = "closure self" and this.isClosureSelf()
   }
 
   ParamBase getParameterIn(ParamList ps) {
@@ -264,6 +273,26 @@ module Node {
     }
   }
 
+  /**
+   * The run-time representation of a closure itself at function entry, viewed
+   * as a node in a data flow graph.
+   */
+  final class ClosureParameterNode extends ParameterNode, TClosureSelfReferenceNode {
+    private CfgScope cfgScope;
+
+    ClosureParameterNode() { this = TClosureSelfReferenceNode(cfgScope) }
+
+    final override CfgScope getCfgScope() { result = cfgScope }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      cfgScope = c.asCfgScope() and pos.isClosureSelf()
+    }
+
+    override Location getLocation() { result = cfgScope.getLocation() }
+
+    override string toString() { result = "closure self in " + cfgScope }
+  }
+
   abstract class ArgumentNode extends Node {
     abstract predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos);
   }
@@ -289,6 +318,21 @@ module Node {
 
     override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
       call.isSummaryCall(_, receiver) and pos = pos_
+    }
+  }
+
+  /**
+   * A data flow node that represents the run-time representation of a closure
+   * passed into the closure body at an invocation.
+   */
+  final class ClosureArgumentNode extends ArgumentNode, ExprNode {
+    private CallExprCfgNode call_;
+
+    ClosureArgumentNode() { lambdaCallExpr(call_, _, this.asExpr()) }
+
+    override predicate isArgumentOf(DataFlowCall call, RustDataFlow::ArgumentPosition pos) {
+      call.asCallExprCfgNode() = call_ and
+      pos.isClosureSelf()
     }
   }
 
@@ -361,6 +405,24 @@ module Node {
   }
 
   /**
+   * A synthesized data flow node representing a closure object that tracks
+   * captured variables.
+   */
+  class CaptureNode extends Node, TCaptureNode {
+    private VariableCapture::Flow::SynthesizedCaptureNode cn;
+
+    CaptureNode() { this = TCaptureNode(cn) }
+
+    VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
+
+    override CfgScope getCfgScope() { result = cn.getEnclosingCallable() }
+
+    override Location getLocation() { result = cn.getLocation() }
+
+    override string toString() { result = cn.toString() }
+  }
+
+  /**
    * A node associated with an object after an operation that might have
    * changed its state.
    *
@@ -395,6 +457,19 @@ module Node {
 
     SummaryPostUpdateNode() {
       FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), pre.getSummaryNode())
+    }
+
+    override Node getPreUpdateNode() { result = pre }
+
+    final override string toString() { result = PostUpdateNode.super.toString() }
+  }
+
+  private class CapturePostUpdateNode extends PostUpdateNode, CaptureNode {
+    private CaptureNode pre;
+
+    CapturePostUpdateNode() {
+      VariableCapture::Flow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+        pre.getSynthesizedCaptureNode())
     }
 
     override Node getPreUpdateNode() { result = pre }
@@ -625,6 +700,18 @@ private class StructFieldContent extends Content, TStructFieldContent {
   override string toString() { result = s.toString() + "." + field_.toString() }
 }
 
+/** A captured variable. */
+private class CapturedVariableContent extends Content, TCapturedVariableContent {
+  private Variable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  /** Gets the captured variable. */
+  Variable getVariable() { result = v }
+
+  override string toString() { result = "captured " + v }
+}
+
 /**
  * An element in an array.
  */
@@ -681,6 +768,31 @@ final class SingletonContentSet extends ContentSet, TSingletonContentSet {
   override Content getAReadContent() { result = c }
 }
 
+class LambdaCallKind = Unit;
+
+/** Holds if `creation` is an expression that creates a lambda of kind `kind`. */
+private predicate lambdaCreationExpr(Expr creation, LambdaCallKind kind) {
+  (
+    creation instanceof ClosureExpr
+    or
+    creation instanceof Scope::AsyncBlockScope
+  ) and
+  exists(kind)
+}
+
+/**
+ * Holds if `call` is a lambda call of kind `kind` where `receiver` is the
+ * invoked expression.
+ */
+predicate lambdaCallExpr(CallExprCfgNode call, LambdaCallKind kind, ExprCfgNode receiver) {
+  receiver = call.getFunction() and
+  // All calls to complex expressions and local variable accesses are lambda call.
+  exists(Expr f | f = receiver.getExpr() |
+    f instanceof PathExpr implies f = any(Variable v).getAnAccess()
+  ) and
+  exists(kind)
+}
+
 // Defines a set of aliases needed for the `RustDataFlow` module
 private module Aliases {
   class DataFlowCallableAlias = DataFlowCallable;
@@ -694,6 +806,8 @@ private module Aliases {
   class ContentAlias = Content;
 
   class ContentSetAlias = ContentSet;
+
+  class LambdaCallKindAlias = LambdaCallKind;
 }
 
 module RustDataFlow implements InputSig<Location> {
@@ -735,6 +849,10 @@ module RustDataFlow implements InputSig<Location> {
     node instanceof Node::SsaNode
     or
     node instanceof Node::FlowSummaryNode
+    or
+    node instanceof Node::CaptureNode
+    or
+    node instanceof Node::ClosureParameterNode
   }
 
   class DataFlowExpr = ExprCfgNode;
@@ -775,6 +893,8 @@ module RustDataFlow implements InputSig<Location> {
 
   class ContentSet = ContentSetAlias;
 
+  class LambdaCallKind = LambdaCallKindAlias;
+
   predicate forceHighPrecision(Content c) { none() }
 
   final class ContentApprox = Content; // TODO: Implement if needed
@@ -799,12 +919,17 @@ module RustDataFlow implements InputSig<Location> {
     (
       LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
       or
-      exists(boolean isUseStep | SsaFlow::localFlowStep(_, nodeFrom, nodeTo, isUseStep) |
+      exists(SsaImpl::DefinitionExt def, boolean isUseStep |
+        SsaFlow::localFlowStep(def, nodeFrom, nodeTo, isUseStep) and
+        not def instanceof VariableCapture::CapturedSsaDefinitionExt
+      |
         isUseStep = false
         or
         isUseStep = true and
         not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
       )
+      or
+      VariableCapture::localFlowStep(nodeFrom, nodeTo)
     ) and
     model = ""
     or
@@ -914,6 +1039,8 @@ module RustDataFlow implements InputSig<Location> {
         c.(VariantPositionContent).getVariantCanonicalPath(0).getExtendedCanonicalPath() =
           ["crate::option::Option::Some", "crate::result::Result::Ok"]
       )
+      or
+      VariableCapture::readStep(node1, c, node2)
     )
     or
     FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
@@ -995,6 +1122,8 @@ module RustDataFlow implements InputSig<Location> {
         node1.asExpr() = assignment.getRhs() and
         node2.(PostUpdateNode).getPreUpdateNode().asExpr() = index.getBase()
       )
+      or
+      VariableCapture::storeStep(node1, c, node2)
     )
     or
     FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(Node::FlowSummaryNode).getSummaryNode(),
@@ -1011,6 +1140,8 @@ module RustDataFlow implements InputSig<Location> {
     or
     FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(Node::FlowSummaryNode).getSummaryNode(),
       cs)
+    or
+    VariableCapture::clearsContent(n, cs.(SingletonContentSet).getContent())
   }
 
   /**
@@ -1045,6 +1176,9 @@ module RustDataFlow implements InputSig<Location> {
       p.isParameterOf(c, pos) and
       FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asLibraryCallable(), pos)
     )
+    or
+    VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(Node::ClosureParameterNode)
+          .getCfgScope())
   }
 
   /**
@@ -1064,15 +1198,11 @@ module RustDataFlow implements InputSig<Location> {
           .getSummaryNode(), node2.(Node::FlowSummaryNode).getSummaryNode())
   }
 
-  class LambdaCallKind = Unit;
-
   /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
   predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-    exists(ClosureExpr cl |
-      cl = creation.asExpr().getExpr() and
-      cl = c.asCfgScope()
-    ) and
-    exists(kind)
+    exists(Expr e |
+      e = creation.asExpr().getExpr() and lambdaCreationExpr(e, kind) and e = c.asCfgScope()
+    )
   }
 
   /**
@@ -1098,6 +1228,141 @@ module RustDataFlow implements InputSig<Location> {
   class DataFlowSecondLevelScope = Void;
 }
 
+/** Provides logic related to captured variables. */
+module VariableCapture {
+  private import codeql.dataflow.VariableCapture as SharedVariableCapture
+
+  private predicate closureFlowStep(ExprCfgNode e1, ExprCfgNode e2) {
+    e1 = getALastEvalNode(e2)
+    or
+    exists(Ssa::Definition def |
+      def.getARead() = e2 and
+      def.getAnUltimateDefinition().(Ssa::WriteDefinition).assigns(e1)
+    )
+  }
+
+  private module CaptureInput implements SharedVariableCapture::InputSig<Location> {
+    private import rust as Ast
+    private import codeql.rust.controlflow.BasicBlocks as BasicBlocks
+    private import codeql.rust.elements.Variable as Variable
+
+    class BasicBlock extends BasicBlocks::BasicBlock {
+      Callable getEnclosingCallable() { result = this.getScope() }
+    }
+
+    class ControlFlowNode = CfgNode;
+
+    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
+      result = bb.getImmediateDominator()
+    }
+
+    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
+
+    class CapturedVariable extends Variable {
+      CapturedVariable() { this.isCaptured() }
+
+      Callable getCallable() { result = this.getEnclosingCfgScope() }
+    }
+
+    final class CapturedParameter extends CapturedVariable {
+      ParamBase p;
+
+      CapturedParameter() { p = this.getParameter() }
+
+      Node::SourceParameterNode getParameterNode() { result.getParameter().getParamBase() = p }
+    }
+
+    class Expr extends CfgNode {
+      predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
+    }
+
+    class VariableWrite extends Expr {
+      ExprCfgNode source;
+      CapturedVariable v;
+
+      VariableWrite() {
+        exists(AssignmentExprCfgNode assign, Variable::VariableWriteAccess write |
+          this = assign and
+          v = write.getVariable() and
+          assign.getLhs().getExpr() = write and
+          assign.getRhs() = source
+        )
+        or
+        exists(LetStmtCfgNode ls |
+          this = ls and
+          v.getPat() = ls.getPat().getPat() and
+          ls.getInitializer() = source
+        )
+      }
+
+      CapturedVariable getVariable() { result = v }
+
+      ExprCfgNode getSource() { result = source }
+    }
+
+    class VariableRead extends Expr instanceof ExprCfgNode {
+      CapturedVariable v;
+
+      VariableRead() {
+        exists(VariableReadAccess read | this.getExpr() = read and v = read.getVariable())
+      }
+
+      CapturedVariable getVariable() { result = v }
+    }
+
+    class ClosureExpr extends Expr instanceof ExprCfgNode {
+      ClosureExpr() { lambdaCreationExpr(super.getExpr(), _) }
+
+      predicate hasBody(Callable body) { body = super.getExpr() }
+
+      predicate hasAliasedAccess(Expr f) { closureFlowStep+(this, f) and not closureFlowStep(f, _) }
+    }
+
+    class Callable extends CfgScope {
+      predicate isConstructor() { none() }
+    }
+  }
+
+  class CapturedVariable = CaptureInput::CapturedVariable;
+
+  module Flow = SharedVariableCapture::Flow<Location, CaptureInput>;
+
+  private Flow::ClosureNode asClosureNode(Node n) {
+    result = n.(Node::CaptureNode).getSynthesizedCaptureNode()
+    or
+    result.(Flow::ExprNode).getExpr() = n.asExpr()
+    or
+    result.(Flow::VariableWriteSourceNode).getVariableWrite().getSource() = n.asExpr()
+    or
+    result.(Flow::ExprPostUpdateNode).getExpr() =
+      n.(Node::PostUpdateNode).getPreUpdateNode().asExpr()
+    or
+    result.(Flow::ParameterNode).getParameter().getParameterNode() = n
+    or
+    result.(Flow::ThisParameterNode).getCallable() = n.(Node::ClosureParameterNode).getCfgScope()
+  }
+
+  predicate storeStep(Node node1, CapturedVariableContent c, Node node2) {
+    Flow::storeStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
+  }
+
+  predicate readStep(Node node1, CapturedVariableContent c, Node node2) {
+    Flow::readStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
+  }
+
+  predicate localFlowStep(Node node1, Node node2) {
+    Flow::localFlowStep(asClosureNode(node1), asClosureNode(node2))
+  }
+
+  predicate clearsContent(Node node, CapturedVariableContent c) {
+    Flow::clearsContent(asClosureNode(node), c.getVariable())
+  }
+
+  class CapturedSsaDefinitionExt extends SsaImpl::DefinitionExt {
+    CapturedSsaDefinitionExt() { this.getSourceVariable() instanceof CapturedVariable }
+  }
+}
+
 import MakeImpl<Location, RustDataFlow>
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -1112,6 +1377,8 @@ private module Cached {
     TPatNode(PatCfgNode p) or
     TExprPostUpdateNode(ExprCfgNode e) {
       isArgumentForCall(e, _, _) or
+      lambdaCallExpr(_, _, e) or
+      lambdaCreationExpr(e.getExpr(), _) or
       e =
         [
           any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
@@ -1119,7 +1386,9 @@ private module Cached {
         ]
     } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
-    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
+    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+    TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c, _) } or
+    TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
 
   cached
   newtype TDataFlowCall =
@@ -1156,6 +1425,7 @@ private module Cached {
       or
       FlowSummaryImpl::ParsePositions::isParsedParameterPosition(_, i)
     } or
+    TClosureSelfParameterPosition() or
     TSelfParameterPosition()
 
   cached
@@ -1211,7 +1481,8 @@ private module Cached {
     } or
     TStructFieldContent(StructCanonicalPath s, string field) {
       field = s.getStruct().getFieldList().(RecordFieldList).getAField().getName().getText()
-    }
+    } or
+    TCapturedVariableContent(VariableCapture::CapturedVariable v)
 
   cached
   newtype TContentSet = TSingletonContentSet(Content c)
