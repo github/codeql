@@ -26,30 +26,30 @@ impl Drop for MyValue {
 fn get_local_dangling() -> *const i64 {
 	let my_local1: i64 = 1;
 
-	return &my_local1; // immediately becomes dangling
-}
+	return &my_local1; // $ Source
+} // (return value immediately becomes dangling)
 
 fn get_local_dangling_mut() -> *mut i64 {
 	let mut my_local2: i64 = 2;
 
-	return &mut my_local2; // immediately becomes dangling
-}
+	return &mut my_local2; // $ Source
+} // (return value immediately becomes dangling)
 
 fn get_local_dangling_raw_const() -> *const i64 {
 	let my_local3: i64 = 3;
 
-	return &raw const my_local3; // immediately becomes dangling
-}
+	return &raw const my_local3; // $ Source
+} // (return value immediately becomes dangling)
 
 fn get_local_dangling_raw_mut() -> *mut i64 {
 	let mut my_local4: i64 = 4;
 
-	return &raw mut my_local4; // immediately becomes dangling
-}
+	return &raw mut my_local4; // $ Source
+} // (return value immediately becomes dangling)
 
 fn get_param_dangling(param5: i64) -> *const i64 {
-	return &param5; // immediately becomes dangling
-}
+	return &param5;
+} // (return value immediately becomes dangling)
 
 fn get_local_field_dangling() -> *const i64 {
 	let val: MyValue;
@@ -68,21 +68,21 @@ fn test_local_dangling() {
 	let p7: *const i64;
 	{
 		let my_local7 = 7;
-		p7 = &raw const my_local7;
-	} // my_local goes out of scope, thus p7 is dangling
+		p7 = &raw const my_local7; // $ Source
+	} // (my_local goes out of scope, thus p7 is dangling)
 
 	use_the_stack();
 
 	unsafe {
-		let v1 = *p1; // $ deref=my_local1 MISSING: Alert[rust/dangling-ptr]
-		let v2 = *p2; // $ deref=my_local2 MISSING: Alert[rust/dangling-ptr]
-		let v3 = *p3; // $ deref=my_local3 MISSING: Alert[rust/dangling-ptr]
-		let v4 = *p4; // $ deref=my_local4 MISSING: Alert[rust/dangling-ptr]
+		let v1 = *p1; // $ deref=my_local1 Alert[rust/dangling-ptr]
+		let v2 = *p2; // $ deref=my_local2 Alert[rust/dangling-ptr]
+		let v3 = *p3; // $ deref=my_local3 Alert[rust/dangling-ptr]
+		let v4 = *p4; // $ deref=my_local4 Alert[rust/dangling-ptr]
 		let v5 = *p5; // $ deref=param5 MISSING: Alert[rust/dangling-ptr]
 		let v6 = *p6; // $ deref=val.value MISSING: Alert[rust/dangling-ptr]
-		let v7 = *p7; // $ deref=my_local7 MISSING: Alert[rust/dangling-ptr]
-		*p2 = 8; // $ deref=my_local2 MISSING: Alert[rust/dangling-ptr]
-		*p4 = 9; // $ deref=my_local4 MISSING: Alert[rust/dangling-ptr]
+		let v7 = *p7; // $ deref=my_local7 Alert[rust/dangling-ptr]
+		*p2 = 8; // $ deref=my_local2 Alert[rust/dangling-ptr]
+		*p4 = 9; // $ deref=my_local4 Alert[rust/dangling-ptr]
 
 		println!("	v1 = {v1} (!)"); // corrupt
 		println!("	v2 = {v2} (!)"); // corrupt
@@ -197,7 +197,7 @@ fn access_ptr_1(ptr: *const i64) {
 fn access_ptr_2(ptr: *const i64) {
 	// only called with `ptr` dangling
 	unsafe {
-		let v2 = *ptr; // $ deref=my_local40 MISSING: Alert[rust/dangling-ptr]
+		let v2 = *ptr; // $ deref=my_local40 Alert[rust/dangling-ptr]
 		println!("	v2 = {v2} (!)"); // corrupt
 	}
 }
@@ -212,7 +212,7 @@ fn access_ptr_3(ptr: *const i64) {
 
 fn access_and_get_dangling() -> *const i64 {
 	let my_local40 = 40;
-	let ptr = &my_local40;
+	let ptr = &my_local40; // $ Source
 
 	access_ptr_1(ptr);
 	access_ptr_3(ptr);
@@ -595,7 +595,7 @@ fn test_enum() {
 		let e1 = MyEnum::Value(1);
 
 		result = match e1 {
-			MyEnum::Value(x) => { &x }
+			MyEnum::Value(x) => { &x } // $ Source
 		};
 
 		use_the_stack();
@@ -610,7 +610,7 @@ fn test_enum() {
 	use_the_stack();
 
 	unsafe {
-		let v2 = *result; // $ deref=x MISSING: Alert[rust/dangling-ptr]
+		let v2 = *result; // $ deref=x Alert[rust/dangling-ptr]
 		println!("	v2 = {v2}");
 	}
 }

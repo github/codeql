@@ -123,6 +123,17 @@ module Impl {
     /** Gets an access to this variable. */
     VariableAccess getAnAccess() { result.getVariable() = this }
 
+    /** Gets the block that encloses this variable, if any. */
+    cached
+    BlockExpr getEnclosingBlock() {
+      exists(AstNode p | p = definingNode.getParentNode() |
+        result = p
+        or
+        not p instanceof BlockExpr and
+        result = p.getEnclosingBlock()
+      )
+    }
+
     /** Gets the `self` parameter that declares this variable, if one exists. */
     SelfParam getSelfParam() { variableDecl(definingNode, result, name) }
 
