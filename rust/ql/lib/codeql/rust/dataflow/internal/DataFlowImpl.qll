@@ -957,8 +957,8 @@ module RustDataFlow implements InputSig<Location> {
   /** Holds if path `p` resolves to variant `v`. */
   private predicate pathResolveToVariantCanonicalPath(PathAstNode p, VariantCanonicalPath v) {
     exists(CrateOriginOption crate, string path, string name |
-      resolveExtendedCanonicalPath(p, crate, path + "::" + name) and
-      v = MkVariantCanonicalPath(crate, path, name)
+      resolveExtendedCanonicalPath(p, pragma[only_bind_into](crate), path + "::" + name) and
+      v = MkVariantCanonicalPath(pragma[only_bind_into](crate), path, name)
     )
   }
 
