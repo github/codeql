@@ -2,7 +2,7 @@
 
 ## Description
 
-Using an immutable action without indicating proper semantic version will result in the version being resolved to a tag that is mutable. This means the action code can between runs and without the user's knowledge. Using an immutable action with proper semantic versioning will resolve to the exact version
+Using an immutable action without indicating proper semantic version will result in the version being resolved to a tag that is mutable. This means the action code can change between runs and without the user's knowledge. Using an immutable action with proper semantic versioning will resolve to the exact version
 of the action stored in the GitHub package registry. The action code will not change between runs.
 
 ## Recommendations
