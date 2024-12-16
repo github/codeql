@@ -69,15 +69,16 @@ module TextTemplate {
   }
 
   private class ExecuteTemplateMethod extends Method {
-    string name;
     int inputArg;
 
     ExecuteTemplateMethod() {
-      this.hasQualifiedName("text/template", "Template", name) and
-      (
-        name = "Execute" and inputArg = 1
-        or
-        name = "ExecuteTemplate" and inputArg = 2
+      exists(string name |
+        this.hasQualifiedName("text/template", "Template", name) and
+        (
+          name = "Execute" and inputArg = 1
+          or
+          name = "ExecuteTemplate" and inputArg = 2
+        )
       )
     }
 

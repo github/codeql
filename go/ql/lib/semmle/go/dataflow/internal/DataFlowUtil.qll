@@ -54,7 +54,7 @@ abstract class FunctionModel extends Function {
 /**
  * A unit class for adding nodes that should implicitly read from all nested content.
  *
- * For example, this might be appopriate for the argument to a method that serializes a struct.
+ * For example, this might be appropriate for the argument to a method that serializes a struct.
  */
 class ImplicitFieldReadNode extends Unit {
   /**
@@ -276,7 +276,7 @@ class ContentSet instanceof TContentSet {
   Content getAReadContent() {
     this = TOneContent(result)
     or
-    this = TAllContent() and result = any(Content c)
+    this = TAllContent() and exists(result)
   }
 
   /** Gets a textual representation of this content set. */
