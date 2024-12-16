@@ -26,8 +26,14 @@ filegroup(
 )
 
 codeql_pkg_files(
-    name = "autobuilder-incompatible-os",
-    exes = ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
+    name = "incompatible-os",
+    exes = ["//swift/tools/incompatible-os"],
+    renames = select_os(
+        otherwise = {},
+        windows = {
+            "//swift/tools/incompatible-os": "extractor.exe",
+        },
+    ),
 )
 
 codeql_pkg_runfiles(
@@ -42,7 +48,7 @@ pkg_filegroup(
             ":autobuilder-files",
         ],
         otherwise = [
-            ":autobuilder-incompatible-os",
+            ":incompatible-os",
         ],
     ),
     prefix = "tools/{CODEQL_PLATFORM}",
@@ -62,6 +68,13 @@ pkg_filegroup(
         ],
     ),
     prefix = "tools/{CODEQL_PLATFORM}",
+)
+
+pkg_filegroup(
+    name = "incompatible-linux-extractor",
+    srcs = ["//swift/extractor:incompatible"],
+    prefix = "tools/{CODEQL_PLATFORM}",
+    target_compatible_with = ["@platforms//os:linux"],
 )
 
 codeql_pkg_files(
@@ -86,7 +99,7 @@ zip_map = {
             ":tools",
             "//swift/downgrades",
         ] + select_os(
-            linux = [":extractor"] if linux_included else [],
+            linux = [":extractor"] if linux_included else [":incompatible-linux-extractor"],
             macos = [":extractor"],
             windows = [],
         ),
