@@ -55,7 +55,7 @@ fn get_local_field_dangling() -> *const i64 {
 	let val: MyValue;
 
 	val = MyValue { value: 6 };
-	return &val.value;
+	return &val.value; // $ Source
 }
 
 fn test_local_dangling() {
@@ -79,7 +79,7 @@ fn test_local_dangling() {
 		let v3 = *p3; // $ deref=my_local3 Alert[rust/dangling-ptr]
 		let v4 = *p4; // $ deref=my_local4 Alert[rust/dangling-ptr]
 		let v5 = *p5; // $ deref=param5 MISSING: Alert[rust/dangling-ptr]
-		let v6 = *p6; // $ deref=val.value MISSING: Alert[rust/dangling-ptr]
+		let v6 = *p6; // $ deref=val.value Alert[rust/dangling-ptr]
 		let v7 = *p7; // $ deref=my_local7 Alert[rust/dangling-ptr]
 		*p2 = 8; // $ deref=my_local2 Alert[rust/dangling-ptr]
 		*p4 = 9; // $ deref=my_local4 Alert[rust/dangling-ptr]

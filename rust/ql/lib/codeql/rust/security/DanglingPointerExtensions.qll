@@ -36,6 +36,9 @@ module PointerDereferenceConfig implements DataFlow::ConfigSig {
 predicate valueScope(Expr value, BlockExpr scope) {
   // variable access
   scope = value.(VariableAccess).getVariable().getEnclosingBlock()
+  or
+  // field access
+  valueScope(value.(FieldExpr).getExpr(), scope)
 }
 
 /**
