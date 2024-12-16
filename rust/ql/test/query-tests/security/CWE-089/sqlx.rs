@@ -38,7 +38,7 @@ use sqlx::Executor;
  */
 
 async fn test_sqlx_mysql(url: &str, enable_remote: bool) -> Result<(), sqlx::Error> {
-    // connect through a MySql connection pool
+    // connect through a MySQL connection pool
     let pool = sqlx::mysql::MySqlPool::connect(url).await?;
     let mut conn = pool.acquire().await?;
 
@@ -88,7 +88,7 @@ async fn test_sqlx_mysql(url: &str, enable_remote: bool) -> Result<(), sqlx::Err
 }
 
 async fn test_sqlx_sqlite(url: &str, enable_remote: bool) -> Result<(), sqlx::Error> {
-    // connect through Sqlite, no connection pool
+    // connect through SQLite, no connection pool
     let mut conn = sqlx::sqlite::SqliteConnection::connect(url).await?;
 
     // construct queries
@@ -160,7 +160,7 @@ async fn test_sqlx_sqlite(url: &str, enable_remote: bool) -> Result<(), sqlx::Er
 }
 
 async fn test_sqlx_postgres(url: &str, enable_remote: bool) -> Result<(), sqlx::Error> {
-    // connect through a PostGres connection pool
+    // connect through a PostgreSQL connection pool
     let pool = sqlx::postgres::PgPool::connect(url).await?;
     let mut conn = pool.acquire().await?;
 
