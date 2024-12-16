@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.CsrfUnprotectedRequestTypeQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module CsrfUnprotectedRequestTypeTest implements TestSig {
   string getARelevantTag() { result = "hasCsrfUnprotectedRequestType" }
