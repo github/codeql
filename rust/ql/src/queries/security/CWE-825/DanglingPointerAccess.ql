@@ -1,10 +1,10 @@
 /**
  * @name Access to dangling pointer.
- * @description Accessing a dangling pointer is undefined behavior.
+ * @description Accessing a pointer after the lifetime of it's target has ended is undefined behavior.
  * @kind path-problem
  * @problem.severity error
- * @security-severity TODO
- * @precision TODO
+ * @security-severity 9.8
+ * @precision high
  * @id rust/dangling-ptr
  * @tags security
  *       reliability
