@@ -4523,6 +4523,118 @@ module StdlibPrivate {
     }
   }
 
+  /** A flow summary for `map`. */
+  class MapSummary extends SummarizedCallable {
+    MapSummary() { this = "builtins.map" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("map").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("map").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      exists(int i | exists(any(Call c).getArg(i)) |
+        (
+          input = "Argument[" + (i + 1).toString() + "].ListElement"
+          or
+          input = "Argument[" + (i + 1).toString() + "].SetElement"
+          or
+          exists(DataFlow::TupleElementContent tc, int j | j = tc.getIndex() |
+            input = "Argument[" + (i + 1).toString() + "].TupleElement[" + j.toString() + "]"
+          )
+          // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
+        ) and
+        output = "Argument[0].Parameter[" + i.toString() + "]" and
+        preservesValue = true
+      )
+      or
+      input = "Argument[0].ReturnValue" and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
+    }
+  }
+
+  /** A flow summary for `filter`. */
+  class FilterSummary extends SummarizedCallable {
+    FilterSummary() { this = "builtins.filter" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("filter").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("filter").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      (
+        input = "Argument[1].ListElement"
+        or
+        input = "Argument[1].SetElement"
+        or
+        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+          input = "Argument[1].TupleElement[" + i.toString() + "]"
+        )
+        // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
+      ) and
+      output = "Argument[0].Parameter[0]" and
+      preservesValue = true
+    }
+  }
+
+  /**A summary for `enumerate`. */
+  class EnumerateSummary extends SummarizedCallable {
+    EnumerateSummary() { this = "builtins.enumerate" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("enumerate").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("enumerate").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      (
+        input = "Argument[0].ListElement"
+        or
+        input = "Argument[0].SetElement"
+        or
+        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+          input = "Argument[0].TupleElement[" + i.toString() + "]"
+        )
+        // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
+      ) and
+      output = "ReturnValue.ListElement.TupleElement[1]" and
+      preservesValue = true
+    }
+  }
+
+  /** A flow summary for ``zip`. */
+  class ZipSummary extends SummarizedCallable {
+    ZipSummary() { this = "builtins.zip" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("zip").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("zip").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      exists(int i | exists(any(Call c).getArg(i)) |
+        (
+          input = "Argument[" + i.toString() + "].ListElement"
+          or
+          input = "Argument[" + i.toString() + "].SetElement"
+          or
+          exists(DataFlow::TupleElementContent tc, int j | j = tc.getIndex() |
+            input = "Argument[" + i.toString() + "].TupleElement[" + j.toString() + "]"
+          )
+          // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
+        ) and
+        output = "ReturnValue.ListElement.TupleElement[" + i.toString() + "]" and
+        preservesValue = true
+      )
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // Flow summaries for container methods
   // ---------------------------------------------------------------------------
