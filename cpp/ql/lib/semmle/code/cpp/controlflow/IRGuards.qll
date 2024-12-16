@@ -818,7 +818,7 @@ private module Cached {
   /**
    * Holds if `left == right + k` is `areEqual` given that test is `testIsTrue`.
    *
-   * Beware making mistaken logical implications here relating `areEqual` and `testIsTrue`.
+   * Beware making mistaken logical implications here relating `areEqual` and `value`.
    */
   cached
   predicate compares_eq(
@@ -1093,7 +1093,7 @@ private module Cached {
    * Simplify conditions in the source to the canonical form l < r + k.
    */
 
-  /** Holds if `left < right + k` evaluates to `isLt` given that test is `testIsTrue`. */
+  /** Holds if `left < right + k` evaluates to `isLt` given that test is `value`. */
   cached
   predicate compares_lt(
     ValueNumber test, Operand left, Operand right, int k, boolean isLt, AbstractValue value
