@@ -21,6 +21,7 @@ fn class_name(type_name: &str) -> String {
         "Fn" => "Function".to_owned(),
         "Literal" => "LiteralExpr".to_owned(),
         "ArrayExpr" => "ArrayExprInternal".to_owned(),
+        "AsmOptions" => "AsmOptionsList".to_owned(),
         _ if type_name.ends_with("Type") => format!("{}Repr", type_name),
         _ => type_name.to_owned(),
     }
