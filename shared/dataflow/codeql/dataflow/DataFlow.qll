@@ -727,6 +727,35 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
 
   import PathGraphSigMod
 
+  private module GetPathGraph<GlobalFlowSig Flow> implements PathGraphSig<Flow::PathNode> {
+    import Flow
+  }
+
+  /**
+   * Constructs a graph containing the disjoint union of two graphs.
+   */
+  module MergeFlows<GlobalFlowSig Graph1, GlobalFlowSig Graph2> implements GlobalFlowSig {
+    private module PathGraph1 = GetPathGraph<Graph1>;
+
+    private module PathGraph2 = GetPathGraph<Graph2>;
+
+    import MergePathGraph<Graph1::PathNode, Graph2::PathNode, PathGraph1, PathGraph2>
+    import PathGraph
+
+    predicate flowPath(PathNode source, PathNode sink) {
+      Graph1::flowPath(source.asPathNode1(), sink.asPathNode1()) or
+      Graph2::flowPath(source.asPathNode2(), sink.asPathNode2())
+    }
+
+    predicate flow(Node source, Node sink) {
+      Graph1::flow(source, sink) or Graph2::flow(source, sink)
+    }
+
+    predicate flowTo(Node sink) { Graph1::flowTo(sink) or Graph2::flowTo(sink) }
+
+    predicate flowToExpr(DataFlowExpr sink) { Graph1::flowToExpr(sink) or Graph2::flowToExpr(sink) }
+  }
+
   /**
    * Constructs a `PathGraph` from two `PathGraph`s by disjoint union.
    */
