@@ -27,11 +27,21 @@ predicate localExprTaint(Expr src, Expr sink) {
  * Holds if taint can flow in one local step from `src` to `sink`.
  */
 predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  DataFlow::localFlowStep(src, sink) or
-  localAdditionalTaintStep(src, sink, _) or
+  DataFlow::localFlowStep(src, sink)
+  or
+  localAdditionalTaintStep(src, sink, _)
+  or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural
   FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
+  or
+  // Treat container flow as taint for the local taint flow relation
+  exists(DataFlow::Content c | DataFlowPrivate::containerContent(c) |
+    DataFlowPrivate::readStep(src, c, sink) or
+    DataFlowPrivate::storeStep(src, c, sink) or
+    FlowSummaryImpl::Private::Steps::summaryGetterStep(src, c, sink, _) or
+    FlowSummaryImpl::Private::Steps::summarySetterStep(src, c, sink, _)
+  )
 }
 
 private Type getElementType(Type containerType) {
@@ -88,12 +98,18 @@ class AdditionalTaintStep extends Unit {
  */
 predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, string model) {
   (
-    referenceStep(pred, succ) or
-    elementWriteStep(pred, succ) or
-    fieldReadStep(pred, succ) or
-    elementStep(pred, succ) or
-    tupleStep(pred, succ) or
-    stringConcatStep(pred, succ) or
+    referenceStep(pred, succ)
+    or
+    elementWriteStep(pred, succ)
+    or
+    fieldReadStep(pred, succ)
+    or
+    elementStep(pred, succ)
+    or
+    tupleStep(pred, succ)
+    or
+    stringConcatStep(pred, succ)
+    or
     sliceStep(pred, succ)
   ) and
   model = ""
@@ -162,6 +178,12 @@ predicate elementStep(DataFlow::Node pred, DataFlow::Node succ) {
     pred.asInstruction() = nextEntry.getDomain() and
     // only step into the value, not the index
     succ.asInstruction() = IR::extractTupleElement(nextEntry, 1)
+  )
+  or
+  exists(DataFlow::ImplicitVarargsSlice ivs |
+    pred.(DataFlow::PostUpdateNode).getPreUpdateNode() = ivs and
+    succ.(DataFlow::PostUpdateNode).getPreUpdateNode() =
+      ivs.getCallNode().getAnImplicitVarargsArgument()
   )
 }
 

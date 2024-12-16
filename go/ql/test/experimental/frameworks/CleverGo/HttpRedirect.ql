@@ -1,5 +1,5 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import experimental.frameworks.CleverGo
 
 module HttpRedirectTest implements TestSig {

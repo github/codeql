@@ -210,23 +210,22 @@ module Ssa {
     final CfgNode getWriteAccess() { result = write }
 
     /**
-     * Holds if this SSA definition assigns `value` to the underlying variable.
+     * Holds if this SSA definition assigns `value` to the underlying
+     * variable.
      *
-     * This is either a direct assignment, `x = value`, or an assignment via
-     * simple pattern matching
-     *
-     * ```rb
-     * case value
-     *  in Foo => x then ...
-     *  in y => then ...
-     * end
-     * ```
+     * This is either the value in a direct assignment, `x = value`, or in a
+     * `let` statement, `let x = value`. Note that patterns on the lhs. are
+     * currently not supported.
      */
     predicate assigns(ExprCfgNode value) {
-      exists(AssignmentExprCfgNode ae, BasicBlock bb, int i |
-        this.definesAt(_, bb, i) and
-        ae.getLhs() = bb.getNode(i) and
-        value = ae.getRhs()
+      exists(AssignmentExprCfgNode ae |
+        ae.getLhs() = write and
+        ae.getRhs() = value
+      )
+      or
+      exists(LetStmtCfgNode ls |
+        ls.getPat() = write and
+        ls.getInitializer() = value
       )
     }
 
@@ -337,5 +336,38 @@ module Ssa {
     final override string toString() { result = "<captured entry> " + this.getSourceVariable() }
 
     override Location getLocation() { result = this.getBasicBlock().getLocation() }
+  }
+
+  /**
+   * An SSA definition inserted at a call that may update the value of a captured
+   * variable. For example, in
+   *
+   * ```rust
+   * fn capture_mut() {
+   *   let mut y = 0;
+   *   (0..5).for_each(|x| {
+   *     y += x
+   *   });
+   *   y
+   * }
+   * ```
+   *
+   * a definition for `y` is inserted at the call to `for_each`.
+   */
+  private class CapturedCallDefinition extends Definition, SsaImpl::UncertainWriteDefinition {
+    CapturedCallDefinition() {
+      exists(Variable v, BasicBlock bb, int i |
+        this.definesAt(v, bb, i) and
+        SsaImpl::capturedCallWrite(_, bb, i, v)
+      )
+    }
+
+    /**
+     * Gets the immediately preceding definition. Since this update is uncertain,
+     * the value from the preceding definition might still be valid.
+     */
+    final Definition getPriorDefinition() { result = SsaImpl::uncertainWriteDefinitionInput(this) }
+
+    override string toString() { result = "<captured exit> " + this.getSourceVariable() }
   }
 }

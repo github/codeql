@@ -2717,4 +2717,12 @@ void branch_on_integral_in_cpp(int x1, int x2) {
   if(!x_1_and_2) {}
 }
 
+struct WithBracketOperator {
+  const char& operator[](int pos) const;
+};
+
+char UseBracketOperator(const WithBracketOperator x, int i) {
+  return x[i];
+}
+
 // semmle-extractor-options: -std=c++20 --clang

@@ -19,6 +19,6 @@ module Impl {
    * ```
    */
   class Struct extends Generated::Struct {
-    override string toString() { result = "struct " + this.getName() }
+    override string toString() { result = "struct " + this.getName().getText() }
   }
 }

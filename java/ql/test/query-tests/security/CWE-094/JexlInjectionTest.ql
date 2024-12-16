@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.JexlInjectionQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module JexlInjectionTest implements TestSig {
   string getARelevantTag() { result = "hasJexlInjection" }

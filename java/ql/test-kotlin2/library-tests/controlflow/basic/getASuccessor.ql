@@ -21,7 +21,7 @@ class YesMaybeControlFlowNode extends MaybeControlFlowNode {
 
   override Location getLocation() { result = c.getLocation() }
 
-  override string getPrimaryQlClasses() { result = c.getPrimaryQlClasses() }
+  override string getPrimaryQlClasses() { result = c.getAstNode().getPrimaryQlClasses() }
 }
 
 class NoMaybeControlFlowNode extends MaybeControlFlowNode {
@@ -43,11 +43,11 @@ MaybeControlFlowNode maybeSuccessor(ControlFlowNode n) {
 from ControlFlowNode n, MaybeControlFlowNode m
 where
   m = maybeSuccessor(n) and
-  n.getFile().(CompilationUnit).fromSource()
-select n, n.getPrimaryQlClasses(), m, m.getPrimaryQlClasses()
+  n.getLocation().getFile().(CompilationUnit).fromSource()
+select n, n.getAstNode().getPrimaryQlClasses(), m, m.getPrimaryQlClasses()
 
 query predicate missingSuccessor(Expr n) {
-  maybeSuccessor(n) instanceof NoMaybeControlFlowNode and
+  maybeSuccessor(n.getControlFlowNode()) instanceof NoMaybeControlFlowNode and
   n.getFile().(CompilationUnit).fromSource() and
   not n instanceof TypeAccess and
   not n instanceof VarWrite

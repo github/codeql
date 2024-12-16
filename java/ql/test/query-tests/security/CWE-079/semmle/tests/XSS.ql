@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.XssQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module XssTest implements TestSig {
   string getARelevantTag() { result = "xss" }

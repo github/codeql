@@ -1,6 +1,6 @@
-| Exhaustive.java:1:14:1:23 | super(...) | Exhaustive.java:1:14:1:23 | Exhaustive |
+| Exhaustive.java:1:14:1:23 | super(...) | Exhaustive.java:1:14:1:23 | Exit |
 | Exhaustive.java:1:14:1:23 | { ... } | Exhaustive.java:1:14:1:23 | super(...) |
-| Exhaustive.java:3:8:3:8 | super(...) | Exhaustive.java:3:8:3:8 | E |
+| Exhaustive.java:3:8:3:8 | super(...) | Exhaustive.java:3:8:3:8 | Exit |
 | Exhaustive.java:3:8:3:8 | { ... } | Exhaustive.java:3:8:3:8 | super(...) |
 | Exhaustive.java:3:8:3:8 | { ... } | Exhaustive.java:3:12:3:12 | <Expr>; |
 | Exhaustive.java:3:12:3:12 | ...=... | Exhaustive.java:3:15:3:15 | <Expr>; |
@@ -9,12 +9,12 @@
 | Exhaustive.java:3:15:3:15 | ...=... | Exhaustive.java:3:18:3:18 | <Expr>; |
 | Exhaustive.java:3:15:3:15 | <Expr>; | Exhaustive.java:3:15:3:15 | new E(...) |
 | Exhaustive.java:3:15:3:15 | new E(...) | Exhaustive.java:3:15:3:15 | ...=... |
-| Exhaustive.java:3:18:3:18 | ...=... | Exhaustive.java:3:8:3:8 | <clinit> |
+| Exhaustive.java:3:18:3:18 | ...=... | Exhaustive.java:3:8:3:8 | Exit |
 | Exhaustive.java:3:18:3:18 | <Expr>; | Exhaustive.java:3:18:3:18 | new E(...) |
 | Exhaustive.java:3:18:3:18 | new E(...) | Exhaustive.java:3:18:3:18 | ...=... |
-| Exhaustive.java:5:15:5:15 | super(...) | Exhaustive.java:5:15:5:15 | X |
+| Exhaustive.java:5:15:5:15 | super(...) | Exhaustive.java:5:15:5:15 | Exit |
 | Exhaustive.java:5:15:5:15 | { ... } | Exhaustive.java:5:15:5:15 | super(...) |
-| Exhaustive.java:6:15:6:15 | super(...) | Exhaustive.java:6:15:6:15 | Y |
+| Exhaustive.java:6:15:6:15 | super(...) | Exhaustive.java:6:15:6:15 | Exit |
 | Exhaustive.java:6:15:6:15 | { ... } | Exhaustive.java:6:15:6:15 | super(...) |
 | Exhaustive.java:8:47:35:3 | { ... } | Exhaustive.java:11:5:11:14 | switch (...) |
 | Exhaustive.java:11:5:11:14 | switch (...) | Exhaustive.java:11:13:11:13 | o |
@@ -50,10 +50,10 @@
 | Exhaustive.java:30:13:30:13 | i | Exhaustive.java:31:7:31:15 | case <Pattern> |
 | Exhaustive.java:31:7:31:15 | case <Pattern> | Exhaustive.java:31:14:31:14 | <anonymous local variable> |
 | Exhaustive.java:31:7:31:15 | case <Pattern> | Exhaustive.java:32:7:32:15 | case <Pattern> |
-| Exhaustive.java:31:14:31:14 | <anonymous local variable> | Exhaustive.java:8:22:8:25 | test |
+| Exhaustive.java:31:14:31:14 | <anonymous local variable> | Exhaustive.java:8:22:8:25 | Exit |
 | Exhaustive.java:32:7:32:15 | case <Pattern> | Exhaustive.java:32:14:32:14 | <anonymous local variable> |
-| Exhaustive.java:32:14:32:14 | <anonymous local variable> | Exhaustive.java:8:22:8:25 | test |
-| Test.java:1:14:1:17 | super(...) | Test.java:1:14:1:17 | Test |
+| Exhaustive.java:32:14:32:14 | <anonymous local variable> | Exhaustive.java:8:22:8:25 | Exit |
+| Test.java:1:14:1:17 | super(...) | Test.java:1:14:1:17 | Exit |
 | Test.java:1:14:1:17 | { ... } | Test.java:1:14:1:17 | super(...) |
 | Test.java:3:41:134:3 | { ... } | Test.java:5:6:5:19 | switch (...) |
 | Test.java:5:6:5:19 | switch (...) | Test.java:5:14:5:18 | thing |
@@ -380,9 +380,9 @@
 | Test.java:130:8:130:21 | case <Pattern> | Test.java:130:20:130:20 | <anonymous local variable> |
 | Test.java:130:8:130:21 | case <Pattern> | Test.java:131:8:131:15 | default |
 | Test.java:130:20:130:20 | <anonymous local variable> | Test.java:131:8:131:15 | default |
-| Test.java:131:8:131:15 | default | Test.java:3:22:3:25 | test |
+| Test.java:131:8:131:15 | default | Test.java:3:22:3:25 | Exit |
 | Test.java:138:8:138:8 | ...=... | Test.java:138:8:138:8 | <Expr>; |
-| Test.java:138:8:138:8 | ...=... | Test.java:138:8:138:8 | A |
+| Test.java:138:8:138:8 | ...=... | Test.java:138:8:138:8 | Exit |
 | Test.java:138:8:138:8 | <Expr>; | Test.java:138:8:138:8 | this |
 | Test.java:138:8:138:8 | <Expr>; | Test.java:138:8:138:8 | this |
 | Test.java:138:8:138:8 | b | Test.java:138:8:138:8 | ...=... |
@@ -392,7 +392,7 @@
 | Test.java:138:8:138:8 | this | Test.java:138:8:138:8 | field3 |
 | Test.java:138:8:138:8 | { ... } | Test.java:138:8:138:8 | super(...) |
 | Test.java:139:8:139:8 | ...=... | Test.java:139:8:139:8 | <Expr>; |
-| Test.java:139:8:139:8 | ...=... | Test.java:139:8:139:8 | B |
+| Test.java:139:8:139:8 | ...=... | Test.java:139:8:139:8 | Exit |
 | Test.java:139:8:139:8 | <Expr>; | Test.java:139:8:139:8 | this |
 | Test.java:139:8:139:8 | <Expr>; | Test.java:139:8:139:8 | this |
 | Test.java:139:8:139:8 | field1 | Test.java:139:8:139:8 | ...=... |

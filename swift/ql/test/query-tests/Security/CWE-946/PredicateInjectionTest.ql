@@ -1,7 +1,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.PredicateInjectionQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module PredicateInjectionTest implements TestSig {
   string getARelevantTag() { result = "hasPredicateInjection" }

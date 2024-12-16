@@ -5,7 +5,7 @@ class PathTestConf extends ActionConfiguration {
   PathTestConf() { this = "PathTestConf" }
 
   override predicate isAction(ControlFlowNode node) {
-    node.(MethodCall).getMethod().hasName("action")
+    node.asExpr().(MethodCall).getMethod().hasName("action")
   }
 }
 

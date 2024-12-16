@@ -90,11 +90,102 @@ fn test_set_var_field() {
     }
 }
 
+struct MyStruct {
+    field1: i64,
+    field2: i64,
+}
+
+// has a flow model
+fn get_struct_field(s: MyStruct) -> i64 {
+    0
+}
+
+fn test_get_struct_field() {
+    let s = source(6);
+    let my_struct = MyStruct {
+        field1: s,
+        field2: 0,
+    };
+    sink(get_struct_field(my_struct)); // $ hasValueFlow=6
+    let my_struct2 = MyStruct {
+        field1: 0,
+        field2: s,
+    };
+    sink(get_struct_field(my_struct2));
+}
+
+// has a flow model
+fn set_struct_field(i: i64) -> MyStruct {
+    MyStruct {
+        field1: 0,
+        field2: 1,
+    }
+}
+
+fn test_set_struct_field() {
+    let s = source(7);
+    let my_struct = set_struct_field(s);
+    sink(my_struct.field1);
+    sink(my_struct.field2); // $ MISSING: hasValueFlow=7
+}
+
+// has a flow model
+fn get_array_element(a: [i64; 1]) -> i64 {
+    0
+}
+
+fn test_get_array_element() {
+    let s = source(8);
+    sink(get_array_element([s])); // $ hasValueFlow=8
+}
+
+// has a flow model
+fn set_array_element(i: i64) -> [i64; 1] {
+    [0]
+}
+
+fn test_set_array_element() {
+    let s = source(9);
+    let arr = set_array_element(s);
+    sink(arr[0]); // $ hasValueFlow=9
+}
+
+// has a flow model
+fn get_tuple_element(a: (i64, i64)) -> i64 {
+    0
+}
+
+fn test_get_tuple_element() {
+    let s = source(10);
+    let t = (s, 0);
+    sink(get_tuple_element(t)); // $ hasValueFlow=10
+    let t = (0, s);
+    sink(get_tuple_element(t));
+}
+
+// has a flow model
+fn set_tuple_element(i: i64) -> (i64, i64) {
+    (0, 1)
+}
+
+fn test_set_tuple_element() {
+    let s = source(11);
+    let t = set_tuple_element(s);
+    sink(t.0);
+    sink(t.1); // $ hasValueFlow=11
+}
+
 fn main() {
     test_identify();
     test_get_var_pos();
     test_set_var_pos();
     test_get_var_field();
     test_set_var_field();
+    test_get_struct_field();
+    test_set_struct_field();
+    test_get_array_element();
+    test_set_array_element();
+    test_get_tuple_element();
+    test_set_tuple_element();
     let dummy = Some(0); // ensure that the the `lang:core` crate is extracted
 }

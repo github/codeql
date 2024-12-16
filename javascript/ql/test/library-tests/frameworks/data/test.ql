@@ -1,5 +1,5 @@
 import javascript
-import testUtilities.ConsistencyChecking
+import utils.test.ConsistencyChecking
 import semmle.javascript.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 
 class TypeModelFromCodeQL extends ModelInput::TypeModel {

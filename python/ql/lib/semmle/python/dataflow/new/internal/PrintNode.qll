@@ -55,7 +55,7 @@ string prettyNode(DataFlow::Node node) {
  * INTERNAL: Do not use.
  *
  * Gets the pretty-printed version of the DataFlow::Node `node`, that is suitable for use
- * with `TestUtilities.InlineExpectationsTest` (that is, no spaces unless required).
+ * with `utils.test.InlineExpectationsTest` (that is, no spaces unless required).
  */
 bindingset[node]
 string prettyNodeForInlineTest(DataFlow::Node node) {

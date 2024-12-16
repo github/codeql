@@ -1,5 +1,5 @@
 func source(_ label: String) -> String { return ""; }
-func sink(arg: String) {}
+func sink<T>(arg: T) {}
 
 func testDicts() {
     let d1 = ["a": "apple", "b": "banana", "c": source("source1")]
@@ -69,5 +69,37 @@ func testDicts4() {
     for (key, value) in d4 {
         sink(arg: key) // $ flow=source4
         sink(arg: value)
+    }
+}
+
+func testArrays1() {
+    var a1 = ["a", "b", "c", source("source5")]
+
+    for v in a1 {
+        sink(arg: v) // $ flow=source5
+    }
+    for ix in 0 ..< a1.count {
+        sink(arg: a1[ix]) // $ flow=source5
+    }
+    for (ix, v) in a1.enumerated() {
+        sink(arg: ix)
+        sink(arg: v) // $ flow=source5
+    }
+}
+
+func testArrays2() {
+    var a2 = ["a", "b", "c", "d"]
+
+    a2[1] = source("source6")
+
+    for v in a2 {
+        sink(arg: v) // $ flow=source6
+    }
+    for ix in 0 ..< a2.count {
+        sink(arg: a2[ix]) // $ flow=source6
+    }
+    for (ix, v) in a2.enumerated() {
+        sink(arg: ix)
+        sink(arg: v) // $ flow=source6
     }
 }

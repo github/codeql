@@ -24086,6 +24086,38 @@ ir.cpp:
 # 2717|             ValueCategory = prvalue
 # 2717|       getThen(): [BlockStmt] { ... }
 # 2718|     getStmt(16): [ReturnStmt] return ...
+# 2720| [CopyAssignmentOperator] WithBracketOperator& WithBracketOperator::operator=(WithBracketOperator const&)
+# 2720|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const WithBracketOperator &
+# 2720| [MoveAssignmentOperator] WithBracketOperator& WithBracketOperator::operator=(WithBracketOperator&&)
+# 2720|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] WithBracketOperator &&
+# 2721| [ConstMemberFunction] char const& WithBracketOperator::operator[](int) const
+# 2721|   <params>: 
+# 2721|     getParameter(0): [Parameter] pos
+# 2721|         Type = [IntType] int
+# 2724| [TopLevelFunction] char UseBracketOperator(WithBracketOperator const, int)
+# 2724|   <params>: 
+# 2724|     getParameter(0): [Parameter] x
+# 2724|         Type = [SpecifiedType] const WithBracketOperator
+# 2724|     getParameter(1): [Parameter] i
+# 2724|         Type = [IntType] int
+# 2724|   getEntryPoint(): [BlockStmt] { ... }
+# 2725|     getStmt(0): [ReturnStmt] return ...
+# 2725|       getExpr(): [OverloadedArrayExpr] call to operator[]
+# 2725|           Type = [LValueReferenceType] const char &
+# 2725|           ValueCategory = prvalue
+# 2725|         getArrayBase(): [VariableAccess] x
+# 2725|             Type = [SpecifiedType] const WithBracketOperator
+# 2725|             ValueCategory = lvalue
+# 2725|         getArrayOffset(): [VariableAccess] i
+# 2725|             Type = [IntType] int
+# 2725|             ValueCategory = prvalue(load)
+# 2725|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2725|           Type = [PlainCharType] char
+# 2725|           ValueCategory = prvalue(load)
 many-defs-per-use.cpp:
 #   34| [TopLevelFunction] void many_defs_per_use()
 #   34|   <params>: 

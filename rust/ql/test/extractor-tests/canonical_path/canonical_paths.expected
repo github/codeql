@@ -75,17 +75,17 @@ canonicalPaths
 resolvedPaths
 | anonymous.rs:27:17:27:30 | OtherStruct {...} | None |
 | anonymous.rs:28:9:28:9 | s | None |
-| anonymous.rs:28:9:28:13 | ... .f(...) | None |
+| anonymous.rs:28:9:28:13 | s.f(...) | None |
 | anonymous.rs:29:9:29:9 | s | None |
-| anonymous.rs:29:9:29:13 | ... .g(...) | None |
+| anonymous.rs:29:9:29:13 | s.g(...) | None |
 | anonymous.rs:30:9:30:14 | nested | None |
 | usage.rs:4:13:4:21 | Struct {...} | ...::Struct |
 | usage.rs:5:5:5:5 | s | None |
-| usage.rs:5:5:5:9 | ... .f(...) | <... as ...>::f |
+| usage.rs:5:5:5:9 | s.f(...) | <... as ...>::f |
 | usage.rs:6:5:6:5 | s | None |
-| usage.rs:6:5:6:9 | ... .g(...) | <...>::g |
+| usage.rs:6:5:6:9 | s.g(...) | <...>::g |
 | usage.rs:7:5:7:5 | s | None |
-| usage.rs:7:5:7:9 | ... .h(...) | <_ as ...>::h |
+| usage.rs:7:5:7:9 | s.h(...) | <_ as ...>::h |
 | usage.rs:8:5:8:8 | free | ...::free |
 | usage.rs:12:9:12:26 | ...::None::<...> | ...::None |
 | usage.rs:13:9:13:20 | ...::Some | ...::Some |
@@ -103,22 +103,22 @@ resolvedPaths
 | usage.rs:32:9:32:31 | ...::Variant3 {...} | ...::Variant3 |
 | usage.rs:37:13:37:41 | GenericStruct {...} | ...::GenericStruct |
 | usage.rs:38:5:38:5 | x | None |
-| usage.rs:38:5:38:26 | ... .generic_method(...) | <... as ...>::generic_method |
+| usage.rs:38:5:38:26 | x.generic_method(...) | <... as ...>::generic_method |
 | usage.rs:39:13:39:47 | GenericStruct {...} | ...::GenericStruct |
 | usage.rs:40:5:40:5 | x | None |
-| usage.rs:40:5:40:23 | ... .generic_method(...) | <... as ...>::generic_method |
+| usage.rs:40:5:40:23 | x.generic_method(...) | <... as ...>::generic_method |
 | usage.rs:41:13:41:30 | GenericTupleStruct | ...::GenericTupleStruct |
 | usage.rs:42:5:42:5 | x | None |
-| usage.rs:42:5:42:26 | ... .generic_method(...) | <... as ...>::generic_method |
+| usage.rs:42:5:42:26 | x.generic_method(...) | <... as ...>::generic_method |
 | usage.rs:43:13:43:30 | GenericTupleStruct | ...::GenericTupleStruct |
 | usage.rs:44:5:44:5 | x | None |
-| usage.rs:44:5:44:23 | ... .generic_method(...) | <... as ...>::generic_method |
+| usage.rs:44:5:44:23 | x.generic_method(...) | <... as ...>::generic_method |
 | usage.rs:45:13:45:37 | ...::T | ...::T |
 | usage.rs:46:5:46:5 | x | None |
-| usage.rs:46:5:46:27 | ... .generic_method(...) | <... as ...>::generic_method |
+| usage.rs:46:5:46:27 | x.generic_method(...) | <... as ...>::generic_method |
 | usage.rs:47:13:47:37 | ...::U | ...::U |
 | usage.rs:48:5:48:5 | x | None |
-| usage.rs:48:5:48:23 | ... .generic_method(...) | <... as ...>::generic_method |
+| usage.rs:48:5:48:23 | x.generic_method(...) | <... as ...>::generic_method |
 | usage.rs:52:5:52:10 | ... .f(...) | <... as ...>::f |
 | usage.rs:53:5:53:15 | ... .f(...) | <... as ...>::f |
 | usage.rs:54:5:54:17 | ...::into_vec | None |
@@ -157,10 +157,10 @@ standardPaths
 | usage.rs:51:1:57:1 | fn use_trait | test::usage::use_trait |
 resolve
 | usage.rs:4:13:4:21 | Struct {...} | regular.rs:1:1:2:18 | struct Struct |
-| usage.rs:5:5:5:9 | ... .f(...) | regular.rs:9:5:9:18 | fn f |
-| usage.rs:6:5:6:9 | ... .g(...) | anonymous.rs:15:9:15:22 | fn g |
-| usage.rs:6:5:6:9 | ... .g(...) | regular.rs:13:5:13:22 | fn g |
-| usage.rs:7:5:7:9 | ... .h(...) | regular.rs:21:5:21:18 | fn h |
+| usage.rs:5:5:5:9 | s.f(...) | regular.rs:9:5:9:18 | fn f |
+| usage.rs:6:5:6:9 | s.g(...) | anonymous.rs:15:9:15:22 | fn g |
+| usage.rs:6:5:6:9 | s.g(...) | regular.rs:13:5:13:22 | fn g |
+| usage.rs:7:5:7:9 | s.h(...) | regular.rs:21:5:21:18 | fn h |
 | usage.rs:8:5:8:8 | free | regular.rs:24:1:24:16 | fn free |
 | usage.rs:14:9:14:24 | ...::Variant1 | regular.rs:27:5:27:12 | Variant1 |
 | usage.rs:15:9:15:24 | ...::Variant2 | regular.rs:28:5:28:19 | Variant2 |
@@ -172,17 +172,17 @@ resolve
 | usage.rs:31:9:31:27 | ...::Variant2(...) | regular.rs:28:5:28:19 | Variant2 |
 | usage.rs:32:9:32:31 | ...::Variant3 {...} | regular.rs:29:5:29:25 | Variant3 |
 | usage.rs:37:13:37:41 | GenericStruct {...} | regular.rs:36:1:39:1 | struct GenericStruct |
-| usage.rs:38:5:38:26 | ... .generic_method(...) | regular.rs:50:5:50:37 | fn generic_method |
+| usage.rs:38:5:38:26 | x.generic_method(...) | regular.rs:50:5:50:37 | fn generic_method |
 | usage.rs:39:13:39:47 | GenericStruct {...} | regular.rs:36:1:39:1 | struct GenericStruct |
-| usage.rs:40:5:40:23 | ... .generic_method(...) | regular.rs:54:5:54:39 | fn generic_method |
+| usage.rs:40:5:40:23 | x.generic_method(...) | regular.rs:54:5:54:39 | fn generic_method |
 | usage.rs:41:13:41:30 | GenericTupleStruct | regular.rs:41:1:41:50 | struct GenericTupleStruct |
-| usage.rs:42:5:42:26 | ... .generic_method(...) | regular.rs:58:5:58:37 | fn generic_method |
+| usage.rs:42:5:42:26 | x.generic_method(...) | regular.rs:58:5:58:37 | fn generic_method |
 | usage.rs:43:13:43:30 | GenericTupleStruct | regular.rs:41:1:41:50 | struct GenericTupleStruct |
-| usage.rs:44:5:44:23 | ... .generic_method(...) | regular.rs:62:5:62:39 | fn generic_method |
+| usage.rs:44:5:44:23 | x.generic_method(...) | regular.rs:62:5:62:39 | fn generic_method |
 | usage.rs:45:13:45:37 | ...::T | regular.rs:45:5:45:8 | T |
-| usage.rs:46:5:46:27 | ... .generic_method(...) | regular.rs:66:5:66:37 | fn generic_method |
+| usage.rs:46:5:46:27 | x.generic_method(...) | regular.rs:66:5:66:37 | fn generic_method |
 | usage.rs:47:13:47:37 | ...::U | regular.rs:46:5:46:8 | U |
-| usage.rs:48:5:48:23 | ... .generic_method(...) | regular.rs:70:5:70:39 | fn generic_method |
+| usage.rs:48:5:48:23 | x.generic_method(...) | regular.rs:70:5:70:39 | fn generic_method |
 | usage.rs:52:5:52:10 | ... .f(...) | regular.rs:74:5:74:18 | fn f |
 | usage.rs:53:5:53:15 | ... .f(...) | regular.rs:78:5:78:18 | fn f |
 | usage.rs:54:5:54:32 | ... .f(...) | regular.rs:82:5:82:18 | fn f |

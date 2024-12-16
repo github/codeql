@@ -24,15 +24,15 @@ predicate switchCaseControlFlowPlus(SwitchStmt switch, BasicBlock b1, BasicBlock
   exists(BasicBlock mid |
     switchCaseControlFlowPlus(switch, mid, b2) and
     switchCaseControlFlow(switch, b1, mid) and
-    not mid.getFirstNode() = switch.getACase()
+    not mid.getFirstNode().asStmt() = switch.getACase()
   )
 }
 
 predicate mayDropThroughWithoutComment(SwitchStmt switch, Stmt switchCase) {
   switchCase = switch.getACase() and
   exists(Stmt other, BasicBlock b1, BasicBlock b2 |
-    b1.getFirstNode() = switchCase and
-    b2.getFirstNode() = other and
+    b1.getFirstNode().asStmt() = switchCase and
+    b2.getFirstNode().asStmt() = other and
     switchCaseControlFlowPlus(switch, b1, b2) and
     other = switch.getACase() and
     not fallThroughCommented(other)

@@ -20,6 +20,12 @@ module Impl {
    * ```
    */
   class MethodCallExpr extends Generated::MethodCallExpr {
-    override string toString() { result = "... ." + this.getNameRef().toString() + "(...)" }
+    override string toString() {
+      exists(string base, string separator |
+        base = this.getReceiver().toAbbreviatedString() and
+        (if base = "..." then separator = " ." else separator = ".") and
+        result = base + separator + this.getNameRef().toString() + "(...)"
+      )
+    }
   }
 }

@@ -1,5 +1,5 @@
 import swift
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import FlowConfig
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.dataflow.DataFlow

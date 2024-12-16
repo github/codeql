@@ -75,6 +75,7 @@
             "env": {},
             "stopAtEntry": true,
             "justMyCode": false,
+            "requireExactSource": false,
             "suppressJITOptimizations": true
         },
     ]
