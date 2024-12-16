@@ -2695,8 +2695,13 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     /**
      * A `self` parameter. For example `self` in:
      * ```rust
-     * fn push(&mut self, value: T) {
-     *   // ...
+     * struct X;
+     * impl X {
+     *   fn one(&self) {}
+     *   fn two(&mut self) {}
+     *   fn three(self) {}
+     *   fn four(mut self) {}
+     *   fn five<'a>(&'a self) {}
      * }
      * ```
      */
@@ -2707,6 +2712,11 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
 
       /** Gets the underlying `SelfParam`. */
       SelfParam getSelfParam() { result = node }
+
+      /**
+       * Holds if this self parameter is reference.
+       */
+      predicate isRef() { node.isRef() }
 
       /**
        * Holds if this self parameter is mut.

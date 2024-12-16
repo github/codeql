@@ -1812,6 +1812,7 @@ impl Translator<'_> {
 
     pub(crate) fn emit_self_param(&mut self, node: ast::SelfParam) -> Label<generated::SelfParam> {
         let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+        let is_ref = node.amp_token().is_some();
         let is_mut = node.mut_token().is_some();
         let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
         let name = node.name().map(|x| self.emit_name(x));
@@ -1819,6 +1820,7 @@ impl Translator<'_> {
         let label = self.trap.emit(generated::SelfParam {
             id: TrapId::Star,
             attrs,
+            is_ref,
             is_mut,
             lifetime,
             name,

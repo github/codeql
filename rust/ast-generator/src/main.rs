@@ -35,6 +35,7 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         (_, "then_branch") => "then",
         (_, "else_branch") => "else_",
         ("ArrayType", "ty") => "element_type_repr",
+        ("SelfParam", "is_amp") => "is_ref",
         (_, "ty") => "type_repr",
         _ => field_name,
     };
@@ -359,6 +360,13 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         "ArrayExpr" => {
             result.push(FieldInfo {
                 name: "is_semicolon".to_string(),
+                tp: "predicate".to_string(),
+                is_many: false,
+            });
+        }
+        "SelfParam" => {
+            result.push(FieldInfo {
+                name: "is_amp".to_string(),
                 tp: "predicate".to_string(),
                 is_many: false,
             });

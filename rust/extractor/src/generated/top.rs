@@ -6911,6 +6911,7 @@ pub struct SelfParam {
     pub id: trap::TrapId<SelfParam>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
+    pub is_ref: bool,
     pub is_mut: bool,
     pub lifetime: Option<trap::Label<Lifetime>>,
     pub name: Option<trap::Label<Name>>,
@@ -6928,6 +6929,9 @@ impl trap::TrapEntry for SelfParam {
         }
         if let Some(v) = self.type_repr {
             out.add_tuple("param_base_type_reprs", vec![id.into(), v.into()]);
+        }
+        if self.is_ref {
+            out.add_tuple("self_param_is_ref", vec![id.into()]);
         }
         if self.is_mut {
             out.add_tuple("self_param_is_mut", vec![id.into()]);
