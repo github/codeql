@@ -1,5 +1,5 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 class Sink extends DataFlow::Node {
   Sink() {

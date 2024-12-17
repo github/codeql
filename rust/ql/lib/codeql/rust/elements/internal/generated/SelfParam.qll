@@ -18,8 +18,13 @@ module Generated {
   /**
    * A `self` parameter. For example `self` in:
    * ```rust
-   * fn push(&mut self, value: T) {
-   *   // ...
+   * struct X;
+   * impl X {
+   *   fn one(&self) {}
+   *   fn two(&mut self) {}
+   *   fn three(self) {}
+   *   fn four(mut self) {}
+   *   fn five<'a>(&'a self) {}
    * }
    * ```
    * INTERNAL: Do not reference the `Generated::SelfParam` class directly.
@@ -27,6 +32,11 @@ module Generated {
    */
   class SelfParam extends Synth::TSelfParam, ParamBaseImpl::ParamBase {
     override string getAPrimaryQlClass() { result = "SelfParam" }
+
+    /**
+     * Holds if this self parameter is reference.
+     */
+    predicate isRef() { Synth::convertSelfParamToRaw(this).(Raw::SelfParam).isRef() }
 
     /**
      * Holds if this self parameter is mut.

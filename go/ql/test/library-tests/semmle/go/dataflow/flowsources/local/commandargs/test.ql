@@ -1,6 +1,6 @@
 import go
 import ModelValidation
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module SourceTest implements TestSig {
   string getARelevantTag() { result = "source" }

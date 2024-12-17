@@ -1,6 +1,6 @@
 import csharp
 import utils.modelgenerator.internal.CaptureModels
-import TestUtilities.InlineMadTest
+import utils.test.InlineMadTest
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {
   string getCapturedModel(Callable c) { result = ContentSensitive::captureFlow(c, _) }

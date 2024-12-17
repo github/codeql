@@ -1,5 +1,5 @@
 import javascript
-import testUtilities.ConsistencyChecking
+import utils.test.ConsistencyChecking
 
 API::Node testInstance() { result = API::moduleImport("@example/test").getInstance() }
 

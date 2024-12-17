@@ -6,7 +6,7 @@
 
 ### Deprecated APIs
 
-* The `NonThrowing` class (`semmle.code.cpp.models.interfaces.NonThrowing`) has been deprecated. Please use the `NonCppThrowingFunction` class instead.
+* The `NonThrowingFunction` class (`semmle.code.cpp.models.interfaces.NonThrowing.NonThrowingFunction`) has been deprecated. Please use the `NonCppThrowingFunction` class instead.
 
 ## 2.1.1
 

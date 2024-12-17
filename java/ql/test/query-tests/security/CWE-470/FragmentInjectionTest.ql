@@ -1,4 +1,4 @@
 import java
 import semmle.code.java.security.FragmentInjectionQuery
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import TaintFlowTest<FragmentInjectionTaintConfig>

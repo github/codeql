@@ -540,6 +540,7 @@ class ReturnTypeSyntax(AstNode):
 
 class SelfParam(AstNode):
    attrs: list["Attr"] | child
+   is_ref: predicate
    is_mut: predicate
    lifetime: optional["Lifetime"] | child
    name: optional["Name"] | child

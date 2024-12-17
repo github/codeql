@@ -3,7 +3,7 @@ import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysi
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR as IR
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module RangeAnalysisTest implements TestSig {
   string getARelevantTag() { result = "range" }

@@ -1,4 +1,4 @@
-import TestUtilities.dataflow.FlowTestCommon
+import utils.test.dataflow.FlowTestCommon
 import testModels
 
 module IRTest {

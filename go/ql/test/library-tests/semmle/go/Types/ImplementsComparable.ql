@@ -1,5 +1,5 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module ImplementsComparableTest implements TestSig {
   string getARelevantTag() { result = "implementsComparable" }

@@ -1,5 +1,5 @@
 import javascript
-import testUtilities.ConsistencyChecking
+import utils.test.ConsistencyChecking
 import semmle.javascript.security.dataflow.CommandInjectionQuery as CommandInjection
 import semmle.javascript.security.dataflow.IndirectCommandInjectionQuery as IndirectCommandInjection
 import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironmentQuery as ShellCommandInjectionFromEnvironment

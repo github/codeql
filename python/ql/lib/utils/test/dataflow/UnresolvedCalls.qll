@@ -2,7 +2,7 @@ import python
 private import semmle.python.dataflow.new.internal.PrintNode
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.python.ApiGraphs
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 signature module UnresolvedCallExpectationsSig {
   predicate unresolvedCall(CallNode call);

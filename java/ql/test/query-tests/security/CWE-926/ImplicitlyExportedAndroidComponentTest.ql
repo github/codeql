@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.ImplicitlyExportedAndroidComponent
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module ImplicitlyExportedAndroidComponentTest implements TestSig {
   string getARelevantTag() { result = "hasImplicitExport" }

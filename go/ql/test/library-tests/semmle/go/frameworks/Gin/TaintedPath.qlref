@@ -1,4 +1,4 @@
 query: Security/CWE-022/TaintedPath.ql
 postprocess:
-  - TestUtilities/PrettyPrintModels.ql
-  - TestUtilities/InlineExpectationsTestQuery.ql
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql

@@ -5,7 +5,7 @@
 
 import java
 import semmle.code.java.dataflow.RangeAnalysis
-private import TestUtilities.InlineExpectationsTest as IET
+private import utils.test.InlineExpectationsTest as IET
 
 module RangeTest implements IET::TestSig {
   string getARelevantTag() { result = "bound" }

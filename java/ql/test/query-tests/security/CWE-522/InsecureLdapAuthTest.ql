@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.InsecureLdapAuthQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module InsecureLdapAuthenticationTest implements TestSig {
   string getARelevantTag() { result = "hasInsecureLdapAuth" }

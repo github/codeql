@@ -2631,13 +2631,23 @@ module Raw {
    * INTERNAL: Do not use.
    * A `self` parameter. For example `self` in:
    * ```rust
-   * fn push(&mut self, value: T) {
-   *   // ...
+   * struct X;
+   * impl X {
+   *   fn one(&self) {}
+   *   fn two(&mut self) {}
+   *   fn three(self) {}
+   *   fn four(mut self) {}
+   *   fn five<'a>(&'a self) {}
    * }
    * ```
    */
   class SelfParam extends @self_param, ParamBase {
     override string toString() { result = "SelfParam" }
+
+    /**
+     * Holds if this self parameter is reference.
+     */
+    predicate isRef() { self_param_is_ref(this) }
 
     /**
      * Holds if this self parameter is mut.
