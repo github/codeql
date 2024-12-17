@@ -2275,7 +2275,7 @@ private predicate guardControlsPhiInput(
  */
 signature predicate guardChecksSig(IRGuardCondition g, Expr e, boolean branch);
 
-bindingset[g, n]
+bindingset[g]
 pragma[inline_late]
 private predicate controls(IRGuardCondition g, Node n, boolean edge) {
   g.controls(n.getBasicBlock(), edge)
@@ -2288,6 +2288,13 @@ private predicate controls(IRGuardCondition g, Node n, boolean edge) {
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
+  bindingset[value, n]
+  pragma[inline_late]
+  private predicate convertedExprHasValueNumber(Expr e, ValueNumber value, Node n) {
+    e = value.getAnInstruction().getConvertedResultExpression() and
+    n.asConvertedExpr() = e
+  }
+
   /**
    * Gets an expression node that is safely guarded by the given guard check.
    *
@@ -2322,8 +2329,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    */
   Node getABarrierNode() {
     exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
-      e = value.getAnInstruction().getConvertedResultExpression() and
-      result.asConvertedExpr() = e and
+      convertedExprHasValueNumber(e, value, result) and
       guardChecks(g,
         pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge) and
       controls(g, result, edge)
