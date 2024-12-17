@@ -26,16 +26,16 @@ class AllowsCredentials extends MethodCall {
 from MethodCall add_policy, MethodCall setIsOriginAllowed, AllowsCredentials allowsCredentials
 where
   (
-    add_policy.getArgument(1) = setIsOriginAllowed.getParent*() and
+    getCallableFromExpr(add_policy.getArgument(1)).calls*(setIsOriginAllowed.getTarget()) and
     usedPolicy(add_policy) and
-    add_policy.getArgument(1) = allowsCredentials.getParent*()
+    getCallableFromExpr(add_policy.getArgument(1)).calls*(allowsCredentials.getTarget())
     or
     add_policy
         .getTarget()
         .hasFullyQualifiedName("Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions",
           "AddDefaultPolicy") and
-    add_policy.getArgument(0) = setIsOriginAllowed.getParent*() and
-    add_policy.getArgument(0) = allowsCredentials.getParent*()
+    getCallableFromExpr(add_policy.getArgument(0)).calls*(setIsOriginAllowed.getTarget()) and
+    getCallableFromExpr(add_policy.getArgument(0)).calls*(allowsCredentials.getTarget())
   ) and
   setIsOriginAllowedReturnsTrue(setIsOriginAllowed)
 select add_policy,

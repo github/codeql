@@ -1,1 +1,2 @@
 | CorsMisconfiguration.cs:12:7:15:10 | call to method AddPolicy | The following CORS policy may allow requests from 3rd party websites |
+| CorsMisconfiguration.cs:16:7:20:26 | call to method AddDefaultPolicy | The following CORS policy may allow requests from 3rd party websites |

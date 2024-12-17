@@ -30,13 +30,9 @@ private predicate hasDangerousOrigins(MethodCall m) {
   m.getTarget()
       .hasFullyQualifiedName("Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicyBuilder",
         "WithOrigins") and
-  (
-    m.getAnArgument().getValue() = ["null", "*"]
-    or
-    exists(StringLiteral idStr |
-      idStr.getValue().toLowerCase().matches(["null", "*"]) and
-      DataFlow::localExprFlow(idStr, m.getAnArgument())
-    )
+  exists(StringLiteral idStr |
+    idStr.getValue().toLowerCase().matches(["null", "*"]) and
+    TaintTracking::localExprTaint(idStr, m.getAnArgument())
   )
 }
 
@@ -45,14 +41,14 @@ where
   (
     usedPolicy(add_policy) and
     // Misconfigured origin affects used policy
-    add_policy.getArgument(1) = child.getParent*()
+    getCallableFromExpr(add_policy.getArgument(1)).calls*(child.getTarget())
     or
     add_policy
         .getTarget()
         .hasFullyQualifiedName("Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions",
           "AddDefaultPolicy") and
     // Misconfigured origin affects added default policy
-    add_policy.getArgument(0) = child.getParent*()
+    getCallableFromExpr(add_policy.getArgument(0)).calls*(child.getTarget())
   ) and
   (hasDangerousOrigins(child) or allowAnyOrigin(child))
 select add_policy, "The following CORS policy may allow requests from 3rd party websites"

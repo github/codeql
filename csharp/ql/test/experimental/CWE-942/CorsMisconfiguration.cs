@@ -11,8 +11,13 @@ public class Test {
     builder.Services.AddCors(options => {
       options.AddPolicy(MyAllowSpecificOrigins,
         policy => {
-          policy.AllowAnyOrigin().AllowCredentials().AllowAnyHeader().AllowAnyMethod();
+          policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
         });
+      options.AddDefaultPolicy(
+        builder => builder
+        .WithOrigins(["*"])
+        .AllowAnyMethod()
+        .AllowAnyHeader());
     });
 
     var app = builder.Build();

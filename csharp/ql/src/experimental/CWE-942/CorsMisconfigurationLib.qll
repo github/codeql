@@ -2,6 +2,18 @@ import csharp
 import DataFlow
 
 /**
+ * Gets the actual callable corresponding to the expression `e`.
+ */
+Callable getCallableFromExpr(Expr e) {
+  exists(Expr dcArg | dcArg = e.(DelegateCreation).getArgument() |
+    result = dcArg.(CallableAccess).getTarget() or
+    result = dcArg.(AnonymousFunctionExpr)
+  )
+  or
+  result = e
+}
+
+/**
  * Holds if the `Callable` c throws any exception other than `ThrowsArgumentNullException`
  */
 predicate callableMayThrowException(Callable c) {
