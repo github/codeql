@@ -1025,7 +1025,9 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       MakeDiscriminatorPass<Pass1::discriminatedPair/2, edgesRev/4, subpathsRev/4>;
 
     private newtype TPathNode =
-      TPreservedPathNode(InputPathNode node) { Pass2::discriminatedPathNode(node) or node = getUniqPathNode(_, _) } or
+      TPreservedPathNode(InputPathNode node) {
+        Pass2::discriminatedPathNode(node) or node = getUniqPathNode(_, _)
+      } or
       TCollapsedPathNode(Node node, string toString) {
         initialCandidate(node, toString) and
         not Pass2::discriminatedPair(node, toString)
