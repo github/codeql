@@ -1,3 +1,5 @@
+/** Provides classes and predicates related to handling test libraries. */
+
 private import csharp
 
 pragma[nomagic]
