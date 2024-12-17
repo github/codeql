@@ -973,13 +973,13 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
           // Retain flow state if one of the successors requires it to be retained
           discriminatedPathNode(stepEx(getAPathNode(node, toString)), hasEnter)
           or
-          // Enter a subpath
-          discriminatedPathNode(enterSubpathStep(getAPathNode(node, toString)), _) and
-          hasEnter = true
-          or
-          // Exit a subpath
-          discriminatedPathNode(exitSubpathStep(getAPathNode(node, toString)), false) and
+          // Propagate backwards from parameter to argument
+          discriminatedPathNode(enterSubpathStep(getAPathNode(node, toString)), false) and
           hasEnter = false
+          or
+          // Propagate backwards from out to return
+          discriminatedPathNode(exitSubpathStep(getAPathNode(node, toString)), _) and
+          hasEnter = true
         )
       }
 
