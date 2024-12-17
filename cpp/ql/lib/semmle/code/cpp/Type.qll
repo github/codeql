@@ -1666,6 +1666,28 @@ class RoutineType extends Type, @routinetype {
   }
 }
 
+abstract private class TemplateParameterImpl extends Locatable {
+  override string getAPrimaryQlClass() { result = "TemplateParameterImpl" }
+}
+
+/**
+ * A C++ template parameter.
+ *
+ * In the example below, `T` and `I` are template parameters:
+ * ```
+ * template <class T, int I>
+ * class C { };
+ * ```
+ */
+final class TemplateParameterBase = TemplateParameterImpl;
+
+/**
+ * A C++ `typename` (or `class`) template parameter.
+ *
+ * DEPRECATED: Use `TypeTemplateParameter` instead.
+ */
+deprecated class TemplateParameter = TypeTemplateParameter;
+
 /**
  * A C++ `typename` (or `class`) template parameter.
  *
@@ -1675,12 +1697,12 @@ class RoutineType extends Type, @routinetype {
  * class C { };
  * ```
  */
-class TemplateParameter extends UserType {
-  TemplateParameter() {
+class TypeTemplateParameter extends UserType, TemplateParameterImpl {
+  TypeTemplateParameter() {
     usertypes(underlyingElement(this), _, 7) or usertypes(underlyingElement(this), _, 8)
   }
 
-  override string getAPrimaryQlClass() { result = "TemplateParameter" }
+  override string getAPrimaryQlClass() { result = "TypeTemplateParameter" }
 
   override predicate involvesTemplateParameter() { any() }
 }
@@ -1695,7 +1717,7 @@ class TemplateParameter extends UserType {
  * void foo(const Container<Elem> &value) { }
  * ```
  */
-class TemplateTemplateParameter extends TemplateParameter {
+class TemplateTemplateParameter extends TypeTemplateParameter {
   TemplateTemplateParameter() { usertypes(underlyingElement(this), _, 8) }
 
   override string getAPrimaryQlClass() { result = "TemplateTemplateParameter" }
@@ -1707,7 +1729,7 @@ class TemplateTemplateParameter extends TemplateParameter {
  * auto val = some_typed_expr();
  * ```
  */
-class AutoType extends TemplateParameter {
+class AutoType extends TypeTemplateParameter {
   AutoType() { usertypes(underlyingElement(this), "auto", 7) }
 
   override string getAPrimaryQlClass() { result = "AutoType" }

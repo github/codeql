@@ -504,7 +504,7 @@ private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remain
     result = getParameterTypeWithoutTemplateArguments(templateFunction, n)
   )
   or
-  exists(string mid, TemplateParameter tp, Function templateFunction |
+  exists(string mid, TypeTemplateParameter tp, Function templateFunction |
     mid = getTypeNameWithoutFunctionTemplates(f, n, remaining + 1) and
     templateFunction = getFullyTemplatedFunction(f) and
     tp = templateFunction.getTemplateArgument(remaining) and
@@ -529,7 +529,7 @@ private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining
   remaining = 0 and
   result = getTypeNameWithoutFunctionTemplates(f, n, 0)
   or
-  exists(string mid, TemplateParameter tp, Class template |
+  exists(string mid, TypeTemplateParameter tp, Class template |
     mid = getTypeNameWithoutClassTemplates(f, n, remaining + 1) and
     isClassConstructedFrom(f.getDeclaringType(), template) and
     tp = template.getTemplateArgument(remaining) and
