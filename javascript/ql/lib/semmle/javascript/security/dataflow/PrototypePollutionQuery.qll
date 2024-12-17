@@ -25,31 +25,27 @@ deprecated private class ConcreteTaintedObjectWrapper extends TaintedObjectWrapp
  * leading to prototype pollution.
  */
 module PrototypePollutionConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  import semmle.javascript.security.CommonFlowState
 
-  predicate isSource(DataFlow::Node node, DataFlow::FlowLabel label) {
-    node.(Source).getAFlowLabel() = label
-  }
+  predicate isSource(DataFlow::Node node, FlowState state) { node.(Source).getAFlowState() = state }
 
-  predicate isSink(DataFlow::Node node, DataFlow::FlowLabel label) {
-    node.(Sink).getAFlowLabel() = label
-  }
+  predicate isSink(DataFlow::Node node, FlowState state) { node.(Sink).getAFlowState() = state }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::FlowLabel inlbl, DataFlow::Node dst, DataFlow::FlowLabel outlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    TaintedObject::step(src, dst, inlbl, outlbl)
+    TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
   }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet contents) {
     // For recursive merge sinks, the deeply tainted object only needs to be reachable from the input, the input itself
     // does not need to be deeply tainted.
-    isSink(node, TaintedObject::label()) and
+    isSink(node, FlowState::taintedObject()) and
     contents = DataFlow::ContentSet::anyProperty()
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
-    node = TaintedObject::SanitizerGuard::getABarrierNode(label)
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    node = TaintedObject::SanitizerGuard::getABarrierNode(state)
   }
 }
 

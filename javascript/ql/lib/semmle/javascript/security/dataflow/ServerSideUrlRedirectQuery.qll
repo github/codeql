@@ -24,10 +24,10 @@ module ServerSideUrlRedirectConfig implements DataFlow::ConfigSig {
 
   predicate isBarrierOut(DataFlow::Node node) { hostnameSanitizingPrefixEdge(node, _) }
 
-  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(HtmlSanitizerCall call |
-      pred = call.getInput() and
-      succ = call
+      node1 = call.getInput() and
+      node2 = call
     )
   }
 }

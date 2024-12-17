@@ -18,9 +18,9 @@ module IdorTaintConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { exists(ClientRequest req | node = req.getADataNode()) }
 
-  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // Step from x -> { userId: x }
-    succ.(DataFlow::SourceNode).getAPropertyWrite("userId").getRhs() = pred
+    node2.(DataFlow::SourceNode).getAPropertyWrite("userId").getRhs() = node1
   }
 
   predicate isBarrier(DataFlow::Node node) {

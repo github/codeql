@@ -8,6 +8,7 @@ import javascript
 import DomBasedXssCustomizations::DomBasedXss as DomBasedXssCustom
 import ReflectedXssCustomizations::ReflectedXss as ReflectedXssCustom
 import ExceptionXssCustomizations::ExceptionXss
+private import ExceptionXssCustomizations::ExceptionXss as ExceptionXss
 private import semmle.javascript.dataflow.InferredTypes
 import Xss::Shared as XssShared
 
@@ -71,7 +72,7 @@ predicate canThrowSensitiveInformation(DataFlow::Node node) {
 }
 
 // Materialize flow labels
-private class ConcreteNotYetThrown extends NotYetThrown {
+deprecated private class ConcreteNotYetThrown extends NotYetThrown {
   ConcreteNotYetThrown() { this = this }
 }
 
@@ -130,14 +131,14 @@ private DataFlow::Node getExceptionTarget(DataFlow::Node pred) {
  * an exception.
  */
 module ExceptionXssConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  class FlowState = ExceptionXss::FlowState;
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source.(Source).getAFlowLabel() = label
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source.(Source).getAFlowState() = state
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink instanceof XssShared::Sink and not label instanceof NotYetThrown
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof XssShared::Sink and not state = FlowState::notYetThrown()
   }
 
   predicate isBarrier(DataFlow::Node node) {
@@ -145,12 +146,12 @@ module ExceptionXssConfig implements DataFlow::StateConfigSig {
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::FlowLabel inlbl, DataFlow::Node succ, DataFlow::FlowLabel outlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    inlbl instanceof NotYetThrown and
-    (outlbl.isTaint() or outlbl instanceof NotYetThrown) and
-    canThrowSensitiveInformation(pred) and
-    succ = getExceptionTarget(pred)
+    state1 = FlowState::notYetThrown() and
+    state2 = [FlowState::thrown(), FlowState::notYetThrown()] and
+    canThrowSensitiveInformation(node1) and
+    node2 = getExceptionTarget(node1)
   }
 }
 
@@ -178,7 +179,8 @@ deprecated class Configuration extends TaintTracking::Configuration {
   override predicate isAdditionalFlowStep(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
   ) {
-    ExceptionXssConfig::isAdditionalFlowStep(pred, inlbl, succ, outlbl)
+    ExceptionXssConfig::isAdditionalFlowStep(pred, FlowState::fromFlowLabel(inlbl), succ,
+      FlowState::fromFlowLabel(outlbl))
     or
     // All the usual taint-flow steps apply on data-flow before it has been thrown in an exception.
     // Note: this step is not needed in StateConfigSig module since flow states inherit taint steps.

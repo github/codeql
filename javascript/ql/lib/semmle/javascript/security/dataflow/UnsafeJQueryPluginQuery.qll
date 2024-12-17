@@ -22,13 +22,13 @@ module UnsafeJQueryPluginConfig implements DataFlow::ConfigSig {
     node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
   }
 
-  predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node sink) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node sink) {
     // jQuery plugins tend to be implemented as classes that store data in fields initialized by the constructor.
     // TODO: localFieldStep is too expensive with dataflow2
     // DataFlow::localFieldStep(pred, succ)
     none()
     or
-    aliasPropertyPresenceStep(src, sink)
+    aliasPropertyPresenceStep(node1, sink)
   }
 
   predicate isBarrierOut(DataFlow::Node node) {

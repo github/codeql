@@ -11,24 +11,23 @@ private import javascript
 private import semmle.javascript.DynamicPropertyAccess
 private import semmle.javascript.dataflow.InferredTypes
 import PrototypePollutingAssignmentCustomizations::PrototypePollutingAssignment
+private import PrototypePollutingAssignmentCustomizations::PrototypePollutingAssignment as PrototypePollutingAssignment
 private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
 
 // Materialize flow labels
-private class ConcreteObjectPrototype extends ObjectPrototype {
+deprecated private class ConcreteObjectPrototype extends ObjectPrototype {
   ConcreteObjectPrototype() { this = this }
 }
 
 /** A taint-tracking configuration for reasoning about prototype-polluting assignments. */
 module PrototypePollutingAssignmentConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  class FlowState = PrototypePollutingAssignment::FlowState;
 
-  predicate isSource(DataFlow::Node node, DataFlow::FlowLabel label) {
-    node instanceof Source and label.isTaint()
+  predicate isSource(DataFlow::Node node, FlowState state) {
+    node instanceof Source and state = FlowState::taint()
   }
 
-  predicate isSink(DataFlow::Node node, DataFlow::FlowLabel lbl) {
-    node.(Sink).getAFlowLabel() = lbl
-  }
+  predicate isSink(DataFlow::Node node, FlowState state) { node.(Sink).getAFlowState() = state }
 
   predicate isBarrier(DataFlow::Node node) {
     node instanceof Sanitizer
@@ -59,28 +58,28 @@ module PrototypePollutingAssignmentConfig implements DataFlow::StateConfigSig {
     node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
   }
 
-  predicate isBarrierOut(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+  predicate isBarrierOut(DataFlow::Node node, FlowState state) {
     // Suppress the value-preserving step src -> dst in `extend(dst, src)`. This is modeled as a value-preserving
     // step because it preserves all properties, but the destination is not actually Object.prototype.
     node = any(ExtendCall call).getASourceOperand() and
-    lbl instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 
-  predicate isBarrierIn(DataFlow::Node node, DataFlow::FlowLabel lbl) {
+  predicate isBarrierIn(DataFlow::Node node, FlowState state) {
     // FIXME: This should only be an in-barrier for the corresponding flow state, but flow-state specific in-barriers are not supported right now.
-    isSource(node, lbl)
+    isSource(node, state)
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::FlowLabel inlbl, DataFlow::Node succ, DataFlow::FlowLabel outlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
     // Step from x -> obj[x] while switching to the ObjectPrototype label
     // (If `x` can have the value `__proto__` then the result can be Object.prototype)
     exists(DynamicPropRead read |
-      pred = read.getPropertyNameNode() and
-      succ = read and
-      inlbl.isTaint() and
-      outlbl instanceof ObjectPrototype and
+      node1 = read.getPropertyNameNode() and
+      node2 = read and
+      state1 = FlowState::taint() and
+      state2 = FlowState::objectPrototype() and
       // Exclude cases where the property name came from a property enumeration.
       // If the property name is an own property of the base object, the read won't
       // return Object.prototype.
@@ -94,10 +93,10 @@ module PrototypePollutingAssignmentConfig implements DataFlow::StateConfigSig {
     // Same as above, but for property projection.
     exists(PropertyProjection proj |
       proj.isSingletonProjection() and
-      pred = proj.getASelector() and
-      succ = proj and
-      inlbl.isTaint() and
-      outlbl instanceof ObjectPrototype
+      node1 = proj.getASelector() and
+      node2 = proj and
+      state1 = FlowState::taint() and
+      state2 = FlowState::objectPrototype()
     )
     or
     // TODO: local field step becomes a jump step, resulting in FPs (closure-lib)
@@ -105,22 +104,22 @@ module PrototypePollutingAssignmentConfig implements DataFlow::StateConfigSig {
     // DataFlow::localFieldStep(pred, succ)
     none()
     or
-    inlbl.isTaint() and
-    TaintTracking::defaultTaintStep(pred, succ) and
-    inlbl = outlbl
+    state1 = FlowState::taint() and
+    TaintTracking::defaultTaintStep(node1, node2) and
+    state1 = state2
   }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
-    lbl.isTaint() and
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    state = FlowState::taint() and
     TaintTracking::defaultSanitizer(node)
     or
     // Don't propagate into the receiver, as the method lookups will generally fail on Object.prototype.
     node instanceof DataFlow::ThisNode and
-    lbl instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
     or
-    node = DataFlow::MakeLabeledBarrierGuard<BarrierGuard>::getABarrierNode(lbl)
+    node = DataFlow::MakeStateBarrierGuard<FlowState, BarrierGuard>::getABarrierNode(state)
   }
 }
 
@@ -173,7 +172,8 @@ deprecated class Configuration extends TaintTracking::Configuration {
   override predicate isAdditionalFlowStep(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
   ) {
-    PrototypePollutingAssignmentConfig::isAdditionalFlowStep(pred, inlbl, succ, outlbl)
+    PrototypePollutingAssignmentConfig::isAdditionalFlowStep(pred, FlowState::fromFlowLabel(inlbl),
+      succ, FlowState::fromFlowLabel(outlbl))
   }
 
   override predicate hasFlowPath(DataFlow::SourcePathNode source, DataFlow::SinkPathNode sink) {
@@ -264,10 +264,10 @@ private class PropertyPresenceCheck extends BarrierGuard, DataFlow::ValueNode {
     not isPropertyPresentOnObjectPrototype(astNode.getPropertyName())
   }
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     e = astNode.getBase() and
     outcome = true and
-    label instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 }
 
@@ -279,10 +279,10 @@ private class InExprCheck extends BarrierGuard, DataFlow::ValueNode {
     not isPropertyPresentOnObjectPrototype(astNode.getLeftOperand().getStringValue())
   }
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     e = astNode.getRightOperand() and
     outcome = true and
-    label instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 }
 
@@ -290,10 +290,10 @@ private class InExprCheck extends BarrierGuard, DataFlow::ValueNode {
 private class InstanceofCheck extends BarrierGuard, DataFlow::ValueNode {
   override InstanceofExpr astNode;
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     e = astNode.getLeftOperand() and
     outcome = true and
-    label instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 }
 
@@ -311,10 +311,10 @@ private class TypeofCheck extends BarrierGuard, DataFlow::ValueNode {
     )
   }
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     polarity = outcome and
     e = operand and
-    label instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 }
 
@@ -332,10 +332,10 @@ class NumberGuard extends BarrierGuard instanceof DataFlow::CallNode {
 private class IsArrayCheck extends BarrierGuard, DataFlow::CallNode {
   IsArrayCheck() { this = DataFlow::globalVarRef("Array").getAMemberCall("isArray") }
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     e = this.getArgument(0).asExpr() and
     outcome = true and
-    label instanceof ObjectPrototype
+    state = FlowState::objectPrototype()
   }
 }
 

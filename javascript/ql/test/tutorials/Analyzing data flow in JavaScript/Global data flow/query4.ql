@@ -9,11 +9,11 @@ module CommandLineFileNameConfig implements DataFlow::ConfigSig {
     DataFlow::moduleMember("fs", "readFile").getACall().getArgument(0) = sink
   }
 
-  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(DataFlow::CallNode c |
       c = DataFlow::moduleImport("resolve-symlinks").getACall() and
-      pred = c.getArgument(0) and
-      succ = c
+      node1 = c.getArgument(0) and
+      node2 = c
     )
   }
 }

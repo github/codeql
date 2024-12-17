@@ -21,13 +21,13 @@ deprecated private class ConcreteDocumentUrl extends DocumentUrl {
  * A taint-tracking configuration for reasoning about unvalidated URL redirections.
  */
 module ClientSideUrlRedirectConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  import semmle.javascript.security.CommonFlowState
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel state) {
-    source.(Source).getAFlowLabel() = state
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source.(Source).getAFlowState() = state
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel state) {
+  predicate isSink(DataFlow::Node sink, FlowState state) {
     sink instanceof Sink and state.isTaint()
   }
 
@@ -35,19 +35,18 @@ module ClientSideUrlRedirectConfig implements DataFlow::StateConfigSig {
     node instanceof Sanitizer or node = HostnameSanitizerGuard::getABarrierNode()
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel state) {
-    TaintedUrlSuffix::isBarrier(node, state)
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    TaintedUrlSuffix::isStateBarrier(node, state)
   }
 
   predicate isBarrierOut(DataFlow::Node node) { hostnameSanitizingPrefixEdge(node, _) }
 
-  predicate isBarrierOut(DataFlow::Node node, DataFlow::FlowLabel label) { isSink(node, label) }
+  predicate isBarrierOut(DataFlow::Node node, FlowState state) { isSink(node, state) }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node node1, DataFlow::FlowLabel state1, DataFlow::Node node2,
-    DataFlow::FlowLabel state2
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    TaintedUrlSuffix::step(node1, node2, state1, state2)
+    TaintedUrlSuffix::isAdditionalFlowStep(node1, state1, node2, state2)
     or
     exists(HtmlSanitizerCall call |
       node1 = call.getInput() and
@@ -85,7 +84,8 @@ deprecated class Configuration extends TaintTracking::Configuration {
     DataFlow::Node node1, DataFlow::Node node2, DataFlow::FlowLabel state1,
     DataFlow::FlowLabel state2
   ) {
-    ClientSideUrlRedirectConfig::isAdditionalFlowStep(node1, state1, node2, state2)
+    ClientSideUrlRedirectConfig::isAdditionalFlowStep(node1, FlowState::fromFlowLabel(state1),
+      node2, FlowState::fromFlowLabel(state2))
     or
     // Preserve document.url label in step from `location` to `location.href` or `location.toString()`
     state1 instanceof DocumentUrl and

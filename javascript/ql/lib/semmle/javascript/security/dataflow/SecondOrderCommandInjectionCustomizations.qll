@@ -10,6 +10,8 @@ private import semmle.javascript.security.TaintedObjectCustomizations
 
 /** Classes and predicates for reasoning about second order command injection. */
 module SecondOrderCommandInjection {
+  import semmle.javascript.security.CommonFlowState
+
   /** A shell command that allows for second order command injection. */
   private class VulnerableCommand extends string {
     VulnerableCommand() { this = ["git", "hg"] }
@@ -39,8 +41,11 @@ module SecondOrderCommandInjection {
     /** Gets a string that describes the source. For use in the alert message. */
     abstract string describe();
 
-    /** Gets a label for which this is a source. */
-    abstract DataFlow::FlowLabel getALabel();
+    /** Gets a flow state for which this is a source. */
+    FlowState getAFlowState() { result.isTaint() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead */
+    deprecated DataFlow::FlowLabel getALabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   /** A parameter of an exported function, seen as a source for second order command injection. */
@@ -49,18 +54,18 @@ module SecondOrderCommandInjection {
 
     override string describe() { result = "library input" }
 
-    override DataFlow::FlowLabel getALabel() { result = TaintedObject::label() or result.isTaint() }
+    override FlowState getAFlowState() { result.isTaintedObject() or result.isTaint() }
   }
 
   /** A source of remote flow, seen as a source for second order command injection. */
   class RemoteFlowAsSource extends Source instanceof RemoteFlowSource {
     override string describe() { result = "a user-provided value" }
 
-    override DataFlow::FlowLabel getALabel() { result.isTaint() }
+    override FlowState getAFlowState() { result.isTaint() }
   }
 
   private class TaintedObjectSourceAsSource extends Source instanceof TaintedObject::Source {
-    override DataFlow::FlowLabel getALabel() { result = TaintedObject::label() }
+    override FlowState getAFlowState() { result.isTaintedObject() }
 
     override string describe() { result = "a user-provided value" }
   }
@@ -70,8 +75,11 @@ module SecondOrderCommandInjection {
 
   /** A sink for second order command injection. */
   abstract class Sink extends DataFlow::Node {
-    /** Gets a label for which this is a sink. */
-    abstract DataFlow::FlowLabel getALabel();
+    /** Gets a flow state for which this is a sink. */
+    FlowState getAFlowState() { result.isTaint() or result.isTaintedObject() }
+
+    /** DERECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getALabel() { result = this.getAFlowState().toFlowLabel() }
 
     /** Gets the command getting invoked. I.e. `git` or `hg`. */
     abstract string getCommand();
@@ -93,16 +101,16 @@ module SecondOrderCommandInjection {
     predicate blocksExpr(boolean outcome, Expr e) { none() }
 
     /**
-     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     * Holds if this node acts as a barrier for `state`, blocking further flow from `e` if `this` evaluates to `outcome`.
      */
-    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+    predicate blocksExpr(boolean outcome, Expr e, FlowState state) { none() }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
 
     /** DEPRECATED. Use `blocksExpr` instead. */
     deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-      this.blocksExpr(outcome, e, label)
+      this.blocksExpr(outcome, e, FlowState::fromFlowLabel(label))
     }
   }
 
@@ -205,7 +213,7 @@ module SecondOrderCommandInjection {
       )
     }
 
-    override DataFlow::FlowLabel getALabel() { result.isTaint() }
+    override FlowState getAFlowState() { result.isTaint() }
   }
 
   /**
@@ -219,7 +227,7 @@ module SecondOrderCommandInjection {
     }
 
     // only vulnerable if an attacker controls the entire array
-    override DataFlow::FlowLabel getALabel() { result = TaintedObject::label() }
+    override FlowState getAFlowState() { result.isTaintedObject() }
   }
 
   /**

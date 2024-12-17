@@ -1,3 +1,6 @@
+// Delete test when LabelledBarrierGuards have been removed
+deprecated module;
+
 import javascript
 
 class CustomFlowLabel extends DataFlow::FlowLabel {

@@ -8,12 +8,17 @@ import javascript
 private import semmle.javascript.security.TaintedUrlSuffixCustomizations
 
 module ClientSideUrlRedirect {
+  import semmle.javascript.security.CommonFlowState
+
   /**
    * A data flow source for unvalidated URL redirect vulnerabilities.
    */
   abstract class Source extends DataFlow::Node {
-    /** Gets a flow label to associate with this source. */
-    DataFlow::FlowLabel getAFlowLabel() { result.isTaint() }
+    /** Gets a flow state to associate with this source. */
+    FlowState getAFlowState() { result.isTaint() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getAFlowLabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   /**
@@ -50,10 +55,8 @@ module ClientSideUrlRedirect {
   private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
     ActiveThreatModelSourceAsSource() { not this.(ClientSideRemoteFlowSource).getKind().isPath() }
 
-    override DataFlow::FlowLabel getAFlowLabel() {
-      if this = TaintedUrlSuffix::source()
-      then result = TaintedUrlSuffix::label()
-      else result.isTaint()
+    override FlowState getAFlowState() {
+      if this = TaintedUrlSuffix::source() then result.isTaintedUrlSuffix() else result.isTaint()
     }
   }
 

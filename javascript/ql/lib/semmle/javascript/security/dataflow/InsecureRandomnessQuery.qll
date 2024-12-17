@@ -32,13 +32,13 @@ module InsecureRandomnessConfig implements DataFlow::ConfigSig {
     isSink(node)
   }
 
-  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    InsecureRandomness::isAdditionalTaintStep(pred, succ)
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    InsecureRandomness::isAdditionalTaintStep(node1, node2)
     or
     // We want to make use of default taint steps but not the default taint sanitizers, as they
     // generally assume numbers aren't taintable. So we use a data-flow configuration that includes all
     // taint steps as additional flow steps.
-    TaintTracking::defaultTaintStep(pred, succ)
+    TaintTracking::defaultTaintStep(node1, node2)
   }
 }
 

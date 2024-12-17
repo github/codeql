@@ -1,5 +1,5 @@
 /**
- * @name Code injection
+ * @name Code injection from dynamically imported code
  * @description Interpreting unsanitized user input as code allows a malicious user arbitrary
  *              code execution.
  * @kind path-problem
@@ -49,38 +49,43 @@ class WorkerThreads extends DataFlow::Node {
   }
 }
 
-class UrlConstructorLabel extends DataFlow::FlowLabel {
-  UrlConstructorLabel() { this = "UrlConstructorLabel" }
-}
+newtype TFlowState =
+  TTaint() or
+  TUrlConstructor()
 
 /**
  * A taint-tracking configuration for reasoning about code injection vulnerabilities.
  */
 module CodeInjectionConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  class FlowState extends TFlowState {
+    string toString() {
+      this = TTaint() and result = "taint"
+      or
+      this = TUrlConstructor() and result = "url-constructor"
+    }
+  }
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source instanceof ActiveThreatModelSource and label.isTaint()
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source instanceof ActiveThreatModelSource and state = TTaint()
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof DynamicImport }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink instanceof WorkerThreads and label instanceof UrlConstructorLabel
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof WorkerThreads and state = TUrlConstructor()
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::FlowLabel predlbl, DataFlow::Node succ,
-    DataFlow::FlowLabel succlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    exists(DataFlow::NewNode newUrl | succ = newUrl |
+    exists(DataFlow::NewNode newUrl | node2 = newUrl |
       newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
-      pred = newUrl.getArgument(0)
+      node1 = newUrl.getArgument(0)
     ) and
-    predlbl.isDataOrTaint() and
-    succlbl instanceof UrlConstructorLabel
+    state1 = TTaint() and
+    state2 = TUrlConstructor()
   }
 }
 

@@ -24,8 +24,8 @@ module ResourceExhaustionConfig implements DataFlow::ConfigSig {
     node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
   }
 
-  predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dst) {
-    isNumericFlowStep(src, dst)
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    isNumericFlowStep(node1, node2)
   }
 }
 

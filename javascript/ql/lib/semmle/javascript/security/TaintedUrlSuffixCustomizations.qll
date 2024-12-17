@@ -1,5 +1,5 @@
 /**
- * Provides a flow label for reasoning about URLs with a tainted query and fragment part,
+ * Provides a flow state for reasoning about URLs with a tainted query and fragment part,
  * which we collectively refer to as the "suffix" of the URL.
  */
 
@@ -7,25 +7,26 @@ import javascript
 private import semmle.javascript.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
- * Provides a flow label for reasoning about URLs with a tainted query and fragment part,
+ * Provides a flow state for reasoning about URLs with a tainted query and fragment part,
  * which we collectively refer to as the "suffix" of the URL.
  */
 module TaintedUrlSuffix {
   private import DataFlow
+  import CommonFlowState
 
   /**
    * The flow label representing a URL with a tainted query and fragment part.
    *
    * Can also be accessed using `TaintedUrlSuffix::label()`.
    */
-  abstract class TaintedUrlSuffixLabel extends FlowLabel {
+  abstract deprecated class TaintedUrlSuffixLabel extends FlowLabel {
     TaintedUrlSuffixLabel() { this = "tainted-url-suffix" }
   }
 
   /**
    * Gets the flow label representing a URL with a tainted query and fragment part.
    */
-  FlowLabel label() { result instanceof TaintedUrlSuffixLabel }
+  deprecated FlowLabel label() { result instanceof TaintedUrlSuffixLabel }
 
   /** Gets a remote flow source that is a tainted URL query or fragment part from `window.location`. */
   ClientSideRemoteFlowSource source() {
@@ -37,22 +38,39 @@ module TaintedUrlSuffix {
   }
 
   /**
+   * DEPRECATED. Use `isStateBarrier(node, state)` instead.
+   *
    * Holds if `node` should be a barrier for the given `label`.
    *
    * This should be used in the `isBarrier` predicate of a configuration that uses the tainted-url-suffix
    * label.
    */
-  predicate isBarrier(Node node, FlowLabel label) {
-    label = label() and
-    DataFlowPrivate::optionalBarrier(node, "split-url-suffix")
+  deprecated predicate isBarrier(Node node, FlowLabel label) {
+    isStateBarrier(node, FlowState::fromFlowLabel(label))
   }
 
   /**
-   * Holds if there is a flow step `src -> dst` involving the URL suffix taint label.
+   * Holds if `node` should be blocked in `state`.
+   */
+  predicate isStateBarrier(Node node, FlowState state) {
+    DataFlowPrivate::optionalBarrier(node, "split-url-suffix") and
+    state.isTaintedUrlSuffix()
+  }
+
+  /**
+   * DEPRECATED. Use `isAdditionalFlowStep` instead.
+   */
+  deprecated predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
+    isAdditionalFlowStep(src, FlowState::fromFlowLabel(srclbl), dst,
+      FlowState::fromFlowLabel(dstlbl))
+  }
+
+  /**
+   * Holds if there is a flow step `node1 -> node2` involving the URL suffix flow state.
    *
    * This handles steps through string operations, promises, URL parsers, and URL accessors.
    */
-  predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
+  predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2) {
     // Transition from tainted-url-suffix to general taint when entering the second array element
     // of a split('#') or split('?') array.
     //
@@ -61,17 +79,17 @@ module TaintedUrlSuffix {
     // Technically we should also preverse tainted-url-suffix when entering the first array element of such
     // a split, but this mostly leads to FPs since we currently don't track if the taint has been through URI-decoding.
     // (The query/fragment parts are often URI-decoded in practice, but not the other URL parts are not)
-    srclbl = label() and
-    dstlbl.isTaint() and
-    DataFlowPrivate::optionalStep(src, "split-url-suffix-post", dst)
+    state1.isTaintedUrlSuffix() and
+    state2.isTaint() and
+    DataFlowPrivate::optionalStep(node1, "split-url-suffix-post", node2)
     or
     // Transition from URL suffix to full taint when extracting the query/fragment part.
-    srclbl = label() and
-    dstlbl.isTaint() and
+    state1.isTaintedUrlSuffix() and
+    state2.isTaint() and
     (
       exists(MethodCallNode call, string name |
-        src = call.getReceiver() and
-        dst = call and
+        node1 = call.getReceiver() and
+        node2 = call and
         name = call.getMethodName()
       |
         // Substring that is not a prefix
@@ -100,8 +118,8 @@ module TaintedUrlSuffix {
       )
       or
       exists(PropRead read |
-        src = read.getBase() and
-        dst = read and
+        node1 = read.getBase() and
+        node2 = read and
         // Unlike the `search` property, the `query` property from `url.parse` does not include the `?`.
         read.getPropertyName() = "query"
       )
@@ -109,13 +127,13 @@ module TaintedUrlSuffix {
       exists(MethodCallNode call, DataFlow::RegExpCreationNode re |
         (
           call = re.getAMethodCall("exec") and
-          src = call.getArgument(0) and
-          dst = call
+          node1 = call.getArgument(0) and
+          node2 = call
           or
           call.getMethodName() = ["match", "matchAll"] and
           re.flowsTo(call.getArgument(0)) and
-          src = call.getReceiver() and
-          dst = call
+          node1 = call.getReceiver() and
+          node2 = call
         )
       |
         captureAfterSuffixIndicator(re.getRoot().getAChild*())

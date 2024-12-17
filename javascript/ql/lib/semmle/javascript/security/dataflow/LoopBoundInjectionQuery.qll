@@ -14,29 +14,29 @@ import LoopBoundInjectionCustomizations::LoopBoundInjection
  * A taint tracking configuration for reasoning about looping on tainted objects with unbounded length.
  */
 module LoopBoundInjectionConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  import semmle.javascript.security.CommonFlowState
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source instanceof Source and label = TaintedObject::label()
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source instanceof Source and state.isTaintedObject()
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink instanceof Sink and label = TaintedObject::label()
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof Sink and state.isTaintedObject()
   }
 
   predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
-    node = DataFlow::MakeLabeledBarrierGuard<BarrierGuard>::getABarrierNode(label) or
-    node = TaintedObject::SanitizerGuard::getABarrierNode(label)
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    node = DataFlow::MakeStateBarrierGuard<FlowState, BarrierGuard>::getABarrierNode(state) or
+    node = TaintedObject::SanitizerGuard::getABarrierNode(state)
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::FlowLabel inlbl, DataFlow::Node trg, DataFlow::FlowLabel outlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    TaintedObject::step(src, trg, inlbl, outlbl)
+    TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
   }
 }
 

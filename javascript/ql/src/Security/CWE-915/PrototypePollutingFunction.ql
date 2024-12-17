@@ -193,14 +193,6 @@ string unsafePropName() {
 }
 
 /**
- * A flow label representing an unsafe property name, or an object obtained
- * by using such a property in a dynamic read.
- */
-class UnsafePropLabel extends DataFlow::FlowLabel {
-  UnsafePropLabel() { this = unsafePropName() }
-}
-
-/**
  * Tracks data from property enumerations to dynamic property writes.
  *
  * The intent is to find code of the general form:
@@ -233,10 +225,12 @@ class UnsafePropLabel extends DataFlow::FlowLabel {
  * a standalone configuration like in most path queries.
  */
 module PropNameTrackingConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  class FlowState extends string {
+    FlowState() { this = unsafePropName() }
+  }
 
-  predicate isSource(DataFlow::Node node, DataFlow::FlowLabel label) {
-    label instanceof UnsafePropLabel and
+  predicate isSource(DataFlow::Node node, FlowState state) {
+    exists(state) and
     (
       isPollutedPropNameSource(node)
       or
@@ -244,8 +238,8 @@ module PropNameTrackingConfig implements DataFlow::StateConfigSig {
     )
   }
 
-  predicate isSink(DataFlow::Node node, DataFlow::FlowLabel label) {
-    label instanceof UnsafePropLabel and
+  predicate isSink(DataFlow::Node node, FlowState state) {
+    exists(state) and
     (
       dynamicPropWrite(node, _, _) or
       dynamicPropWrite(_, node, _) or
@@ -253,29 +247,28 @@ module PropNameTrackingConfig implements DataFlow::StateConfigSig {
     )
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
-    node = DataFlow::MakeLabeledBarrierGuard<BarrierGuard>::getABarrierNode(label)
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    node = DataFlow::MakeStateBarrierGuard<FlowState, BarrierGuard>::getABarrierNode(state)
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::FlowLabel predlbl, DataFlow::Node succ,
-    DataFlow::FlowLabel succlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    predlbl instanceof UnsafePropLabel and
-    succlbl = predlbl and
+    exists(state1) and
+    state2 = state1 and
     (
       // Step through `p -> x[p]`
       exists(DataFlow::PropRead read |
-        pred = read.getPropertyNameExpr().flow() and
+        node1 = read.getPropertyNameExpr().flow() and
         not read.(DynamicPropRead).hasDominatingAssignment() and
-        succ = read
+        node2 = read
       )
       or
       // Step through `x -> x[p]`
       exists(DynamicPropRead read |
         not read.hasDominatingAssignment() and
-        pred = read.getBase() and
-        succ = read
+        node1 = read.getBase() and
+        node2 = read
       )
     )
   }
@@ -285,6 +278,8 @@ module PropNameTrackingConfig implements DataFlow::StateConfigSig {
     node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
   }
 }
+
+class FlowState = PropNameTrackingConfig::FlowState;
 
 module PropNameTracking = DataFlow::GlobalWithState<PropNameTrackingConfig>;
 
@@ -298,9 +293,9 @@ abstract class BarrierGuard extends DataFlow::Node {
   predicate blocksExpr(boolean outcome, Expr e) { none() }
 
   /**
-   * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+   * Holds if this node acts as a barrier for `state`, blocking further flow from `e` if `this` evaluates to `outcome`.
    */
-  predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+  predicate blocksExpr(boolean outcome, Expr e, FlowState state) { none() }
 }
 
 /**
@@ -315,10 +310,10 @@ class DenyListEqualityGuard extends BarrierGuard, DataFlow::ValueNode {
     propName = unsafePropName()
   }
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     e = astNode.getAnOperand() and
     outcome = astNode.getPolarity().booleanNot() and
-    label = propName
+    state = propName
   }
 }
 
@@ -333,10 +328,9 @@ class AllowListEqualityGuard extends BarrierGuard, DataFlow::ValueNode {
     astNode.getAnOperand() instanceof Literal
   }
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e) {
     e = astNode.getAnOperand() and
-    outcome = astNode.getPolarity() and
-    label instanceof UnsafePropLabel
+    outcome = astNode.getPolarity()
   }
 }
 
@@ -382,24 +376,24 @@ class InExprGuard extends BarrierGuard, DataFlow::ValueNode {
 /**
  * A sanitizer guard for `instanceof` expressions.
  *
- * `Object.prototype instanceof X` is never true, so this blocks the `__proto__` label.
+ * `Object.prototype instanceof X` is never true, so this blocks the `__proto__` state.
  *
  * It is still possible to get to `Function.prototype` through `constructor.constructor.prototype`
- * so we do not block the `constructor` label.
+ * so we do not block the `constructor` state.
  */
 class InstanceOfGuard extends BarrierGuard, DataFlow::ValueNode {
   override InstanceOfExpr astNode;
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
-    e = astNode.getLeftOperand() and outcome = true and label = "__proto__"
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
+    e = astNode.getLeftOperand() and outcome = true and state = "__proto__"
   }
 }
 
 /**
  * Sanitizer guard of form `typeof x === "object"` or `typeof x === "function"`.
  *
- * The former blocks the `constructor` label as that payload must pass through a function,
- * and the latter blocks the `__proto__` label as that only passes through objects.
+ * The former blocks the `constructor` state as that payload must pass through a function,
+ * and the latter blocks the `__proto__` state as that only passes through objects.
  */
 class TypeofGuard extends BarrierGuard, DataFlow::ValueNode {
   override EqualityTest astNode;
@@ -408,15 +402,15 @@ class TypeofGuard extends BarrierGuard, DataFlow::ValueNode {
 
   TypeofGuard() { TaintTracking::isTypeofGuard(astNode, operand, tag) }
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     e = operand and
     outcome = astNode.getPolarity() and
     (
       tag = "object" and
-      label = "constructor"
+      state = "constructor"
       or
       tag = "function" and
-      label = "__proto__"
+      state = "__proto__"
     )
     or
     e = operand and
@@ -425,10 +419,10 @@ class TypeofGuard extends BarrierGuard, DataFlow::ValueNode {
       // If something is not an object, sanitize object, as both must end
       // in non-function prototype object.
       tag = "object" and
-      label instanceof UnsafePropLabel
+      exists(state)
       or
       tag = "function" and
-      label = "constructor"
+      state = "constructor"
     )
   }
 }
@@ -437,19 +431,19 @@ class TypeofGuard extends BarrierGuard, DataFlow::ValueNode {
  * A check of form `["__proto__"].includes(x)` or similar.
  */
 class DenyListInclusionGuard extends BarrierGuard, InclusionTest {
-  UnsafePropLabel label;
+  string blockedProp;
 
   DenyListInclusionGuard() {
     exists(DataFlow::ArrayCreationNode array |
-      array.getAnElement().getStringValue() = label and
+      array.getAnElement().getStringValue() = blockedProp and
       array.flowsTo(this.getContainerNode())
     )
   }
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     outcome = this.getPolarity().booleanNot() and
     e = this.getContainedNode().asExpr() and
-    label = lbl
+    blockedProp = state
   }
 }
 
@@ -464,9 +458,8 @@ class AllowListInclusionGuard extends BarrierGuard {
     not this = any(MembershipCandidate::ObjectPropertyNameMembershipCandidate c).getTest() // handled with more precision in `HasOwnPropertyGuard`
   }
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
-    this.(TaintTracking::AdditionalBarrierGuard).blocksExpr(outcome, e) and
-    lbl instanceof UnsafePropLabel
+  override predicate blocksExpr(boolean outcome, Expr e) {
+    this.(TaintTracking::AdditionalBarrierGuard).blocksExpr(outcome, e)
   }
 }
 
@@ -482,10 +475,10 @@ class IsPlainObjectGuard extends BarrierGuard, DataFlow::CallNode {
     )
   }
 
-  override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+  override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
     e = this.getArgument(0).asExpr() and
     outcome = true and
-    lbl = "constructor"
+    state = "constructor"
   }
 }
 

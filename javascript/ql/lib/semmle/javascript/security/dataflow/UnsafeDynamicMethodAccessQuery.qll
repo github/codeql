@@ -9,11 +9,11 @@
 
 import javascript
 import PropertyInjectionShared
-private import DataFlow::FlowLabel
 import UnsafeDynamicMethodAccessCustomizations::UnsafeDynamicMethodAccess
+private import UnsafeDynamicMethodAccessCustomizations::UnsafeDynamicMethodAccess as UnsafeDynamicMethodAccess
 
 // Materialize flow labels
-private class ConcreteUnsafeFunction extends UnsafeFunction {
+deprecated private class ConcreteUnsafeFunction extends UnsafeFunction {
   ConcreteUnsafeFunction() { this = this }
 }
 
@@ -21,15 +21,13 @@ private class ConcreteUnsafeFunction extends UnsafeFunction {
  * A taint-tracking configuration for reasoning about unsafe dynamic method access.
  */
 module UnsafeDynamicMethodAccessConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  class FlowState = UnsafeDynamicMethodAccess::FlowState;
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source.(Source).getFlowLabel() = label
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source.(Source).getAFlowState() = state
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink.(Sink).getFlowLabel() = label
-  }
+  predicate isSink(DataFlow::Node sink, FlowState state) { sink.(Sink).getAFlowState() = state }
 
   predicate isBarrier(DataFlow::Node node) {
     node instanceof Sanitizer
@@ -38,46 +36,44 @@ module UnsafeDynamicMethodAccessConfig implements DataFlow::StateConfigSig {
     not StringConcatenation::isCoercion(node)
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
     TaintTracking::defaultSanitizer(node) and
-    label.isTaint()
+    state = FlowState::taint()
   }
 
   /** An additional flow step for use in both this configuration and the legacy configuration. */
   additional predicate additionalFlowStep(
-    DataFlow::Node src, DataFlow::FlowLabel srclabel, DataFlow::Node dst,
-    DataFlow::FlowLabel dstlabel
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
     // Reading a property of the global object or of a function
     exists(DataFlow::PropRead read |
       PropertyInjection::hasUnsafeMethods(read.getBase().getALocalSource()) and
-      src = read.getPropertyNameExpr().flow() and
-      dst = read and
-      srclabel.isTaint() and
-      dstlabel = unsafeFunction()
+      node1 = read.getPropertyNameExpr().flow() and
+      node2 = read and
+      state1 = FlowState::taint() and
+      state2 = FlowState::unsafeFunction()
     )
     or
     // Reading a chain of properties from any object with a prototype can lead to Function
     exists(PropertyProjection proj |
       not PropertyInjection::isPrototypeLessObject(proj.getObject().getALocalSource()) and
-      src = proj.getASelector() and
-      dst = proj and
-      srclabel.isTaint() and
-      dstlabel = unsafeFunction()
+      node1 = proj.getASelector() and
+      node2 = proj and
+      state1 = FlowState::taint() and
+      state2 = FlowState::unsafeFunction()
     )
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::FlowLabel srclabel, DataFlow::Node dst,
-    DataFlow::FlowLabel dstlabel
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    additionalFlowStep(src, srclabel, dst, dstlabel)
+    additionalFlowStep(node1, state1, node2, state2)
     or
     // We're not using a taint-tracking config because taint steps would then apply to all flow states.
     // So we use a plain data flow config and manually add the default taint steps.
-    srclabel.isTaint() and
-    TaintTracking::defaultTaintStep(src, dst) and
-    srclabel = dstlabel
+    state1 = FlowState::taint() and
+    TaintTracking::defaultTaintStep(node1, node2) and
+    state1 = state2
   }
 }
 
@@ -93,11 +89,11 @@ deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "UnsafeDynamicMethodAccess" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    UnsafeDynamicMethodAccessConfig::isSource(source, label)
+    UnsafeDynamicMethodAccessConfig::isSource(source, FlowState::fromFlowLabel(label))
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    UnsafeDynamicMethodAccessConfig::isSink(sink, label)
+    UnsafeDynamicMethodAccessConfig::isSink(sink, FlowState::fromFlowLabel(label))
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -117,6 +113,7 @@ deprecated class Configuration extends TaintTracking::Configuration {
     DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
     DataFlow::FlowLabel dstlabel
   ) {
-    UnsafeDynamicMethodAccessConfig::additionalFlowStep(src, srclabel, dst, dstlabel)
+    UnsafeDynamicMethodAccessConfig::additionalFlowStep(src, FlowState::fromFlowLabel(srclabel),
+      dst, FlowState::fromFlowLabel(dstlabel))
   }
 }

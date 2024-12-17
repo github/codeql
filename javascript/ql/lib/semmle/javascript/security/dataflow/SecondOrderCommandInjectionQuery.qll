@@ -15,39 +15,37 @@ private import semmle.javascript.security.TaintedObject
  * A taint-tracking configuration for reasoning about second order command-injection vulnerabilities.
  */
 module SecondOrderCommandInjectionConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowLabel;
+  import semmle.javascript.security.CommonFlowState
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source.(Source).getALabel() = label
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source.(Source).getAFlowState() = state
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink.(Sink).getALabel() = label
-  }
+  predicate isSink(DataFlow::Node sink, FlowState state) { sink.(Sink).getAFlowState() = state }
 
   predicate isBarrier(DataFlow::Node node) {
     node instanceof Sanitizer or node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
   }
 
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
     TaintTracking::defaultSanitizer(node) and
-    label.isTaint()
+    state.isTaint()
     or
-    node = DataFlow::MakeLabeledBarrierGuard<BarrierGuard>::getABarrierNode(label)
+    node = DataFlow::MakeStateBarrierGuard<FlowState, BarrierGuard>::getABarrierNode(state)
     or
-    node = TaintedObject::SanitizerGuard::getABarrierNode(label)
+    node = TaintedObject::SanitizerGuard::getABarrierNode(state)
   }
 
   predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::FlowLabel inlbl, DataFlow::Node trg, DataFlow::FlowLabel outlbl
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    TaintedObject::step(src, trg, inlbl, outlbl)
+    TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
     or
     // We're not using a taint-tracking config because taint steps would then apply to all flow states.
     // So we use a plain data flow config and manually add the default taint steps.
-    inlbl.isTaint() and
-    TaintTracking::defaultTaintStep(src, trg) and
-    inlbl = outlbl
+    state1.isTaint() and
+    TaintTracking::defaultTaintStep(node1, node2) and
+    state1 = state2
   }
 }
 
