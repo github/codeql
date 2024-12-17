@@ -1,35 +1,6 @@
-models
-edges
-| main.rs:13:13:13:22 | source(...) | main.rs:14:14:14:14 | a | provenance |  |
-| main.rs:14:13:14:14 | &a [&ref] | main.rs:15:14:15:14 | b [&ref] | provenance |  |
-| main.rs:14:14:14:14 | a | main.rs:14:13:14:14 | &a [&ref] | provenance |  |
-| main.rs:15:13:15:14 | * ... | main.rs:16:10:16:10 | c | provenance |  |
-| main.rs:15:14:15:14 | b [&ref] | main.rs:15:13:15:14 | * ... | provenance |  |
-| main.rs:40:18:40:21 | SelfParam [MyNumber] | main.rs:42:13:42:38 | ...::MyNumber(...) [MyNumber] | provenance |  |
-| main.rs:42:13:42:38 | ...::MyNumber(...) [MyNumber] | main.rs:42:32:42:37 | number | provenance |  |
-| main.rs:42:32:42:37 | number | main.rs:40:31:46:5 | { ... } | provenance |  |
-| main.rs:58:21:58:50 | ...::MyNumber(...) [MyNumber] | main.rs:59:10:59:18 | my_number [MyNumber] | provenance |  |
-| main.rs:58:40:58:49 | source(...) | main.rs:58:21:58:50 | ...::MyNumber(...) [MyNumber] | provenance |  |
-| main.rs:59:10:59:18 | my_number [MyNumber] | main.rs:40:18:40:21 | SelfParam [MyNumber] | provenance |  |
-| main.rs:59:10:59:18 | my_number [MyNumber] | main.rs:59:10:59:30 | my_number.to_number(...) | provenance |  |
-nodes
-| main.rs:13:13:13:22 | source(...) | semmle.label | source(...) |
-| main.rs:14:13:14:14 | &a [&ref] | semmle.label | &a [&ref] |
-| main.rs:14:14:14:14 | a | semmle.label | a |
-| main.rs:15:13:15:14 | * ... | semmle.label | * ... |
-| main.rs:15:14:15:14 | b [&ref] | semmle.label | b [&ref] |
-| main.rs:16:10:16:10 | c | semmle.label | c |
-| main.rs:40:18:40:21 | SelfParam [MyNumber] | semmle.label | SelfParam [MyNumber] |
-| main.rs:40:31:46:5 | { ... } | semmle.label | { ... } |
-| main.rs:42:13:42:38 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
-| main.rs:42:32:42:37 | number | semmle.label | number |
-| main.rs:58:21:58:50 | ...::MyNumber(...) [MyNumber] | semmle.label | ...::MyNumber(...) [MyNumber] |
-| main.rs:58:40:58:49 | source(...) | semmle.label | source(...) |
-| main.rs:59:10:59:18 | my_number [MyNumber] | semmle.label | my_number [MyNumber] |
-| main.rs:59:10:59:30 | my_number.to_number(...) | semmle.label | my_number.to_number(...) |
-subpaths
-| main.rs:59:10:59:18 | my_number [MyNumber] | main.rs:40:18:40:21 | SelfParam [MyNumber] | main.rs:40:31:46:5 | { ... } | main.rs:59:10:59:30 | my_number.to_number(...) |
-testFailures
-#select
-| main.rs:16:10:16:10 | c | main.rs:13:13:13:22 | source(...) | main.rs:16:10:16:10 | c | $@ | main.rs:13:13:13:22 | source(...) | source(...) |
-| main.rs:59:10:59:30 | my_number.to_number(...) | main.rs:58:40:58:49 | source(...) | main.rs:59:10:59:30 | my_number.to_number(...) | $@ | main.rs:58:40:58:49 | source(...) | source(...) |
+ERROR: could not resolve module DefaultFlowTest (inline-flow.ql:7,8-23)
+ERROR: could not resolve module ValueFlow (inline-flow.ql:8,8-17)
+ERROR: could not resolve module ValueFlow (inline-flow.ql:10,6-15)
+ERROR: could not resolve module ValueFlow (inline-flow.ql:10,34-43)
+ERROR: could not resolve module ValueFlow (inline-flow.ql:11,7-16)
+ERROR: could not resolve module utils.InlineFlowTest (inline-flow.ql:6,8-28)
