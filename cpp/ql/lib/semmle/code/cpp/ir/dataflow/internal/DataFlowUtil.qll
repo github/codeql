@@ -2380,6 +2380,15 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    */
   Node getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
 
+  bindingset[value, n]
+  pragma[inline_late]
+  private predicate indirectConvertedExprHasValueNumber(
+    Expr e, int indirectionIndex, ValueNumber value, Node n
+  ) {
+    e = value.getAnInstruction().getConvertedResultExpression() and
+    n.asIndirectConvertedExpr(indirectionIndex) = e
+  }
+
   /**
    * Gets an indirect expression node with indirection index `indirectionIndex` that is
    * safely guarded by the given guard check.
@@ -2416,8 +2425,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    */
   Node getAnIndirectBarrierNode(int indirectionIndex) {
     exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
-      e = value.getAnInstruction().getConvertedResultExpression() and
-      result.asIndirectConvertedExpr(indirectionIndex) = e and
+      indirectConvertedExprHasValueNumber(e, indirectionIndex, value, result) and
       guardChecks(g,
         pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge) and
       controls(g, result, edge)
@@ -2456,12 +2464,18 @@ private EdgeKind getConditionalEdge(boolean branch) {
  * in data flow and taint tracking.
  */
 module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardChecks> {
+  bindingset[value, n]
+  pragma[inline_late]
+  private predicate operandHasValueNumber(Operand use, ValueNumber value, Node n) {
+    use = value.getAnInstruction().getAUse() and
+    n.asOperand() = use
+  }
+
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
     exists(IRGuardCondition g, ValueNumber value, boolean edge, Operand use |
       instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge) and
-      use = value.getAnInstruction().getAUse() and
-      result.asOperand() = use and
+      operandHasValueNumber(use, value, result) and
       controls(g, result, edge)
     )
     or
