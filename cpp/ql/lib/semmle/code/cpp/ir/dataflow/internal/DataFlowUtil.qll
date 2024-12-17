@@ -2290,9 +2290,11 @@ private predicate controls(IRGuardCondition g, Node n, boolean edge) {
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   bindingset[value, n]
   pragma[inline_late]
-  private predicate convertedExprHasValueNumber(Expr e, ValueNumber value, Node n) {
-    e = value.getAnInstruction().getConvertedResultExpression() and
-    n.asConvertedExpr() = e
+  private predicate convertedExprHasValueNumber(ValueNumber value, Node n) {
+    exists(Expr e |
+      e = value.getAnInstruction().getConvertedResultExpression() and
+      n.asConvertedExpr() = e
+    )
   }
 
   /**
@@ -2328,8 +2330,8 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    * NOTE: If an indirect expression is tracked, use `getAnIndirectBarrierNode` instead.
    */
   Node getABarrierNode() {
-    exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
-      convertedExprHasValueNumber(e, value, result) and
+    exists(IRGuardCondition g, ValueNumber value, boolean edge |
+      convertedExprHasValueNumber(value, result) and
       guardChecks(g,
         pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge) and
       controls(g, result, edge)
@@ -2383,10 +2385,12 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   bindingset[value, n]
   pragma[inline_late]
   private predicate indirectConvertedExprHasValueNumber(
-    Expr e, int indirectionIndex, ValueNumber value, Node n
+    int indirectionIndex, ValueNumber value, Node n
   ) {
-    e = value.getAnInstruction().getConvertedResultExpression() and
-    n.asIndirectConvertedExpr(indirectionIndex) = e
+    exists(Expr e |
+      e = value.getAnInstruction().getConvertedResultExpression() and
+      n.asIndirectConvertedExpr(indirectionIndex) = e
+    )
   }
 
   /**
@@ -2424,8 +2428,8 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
    * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
    */
   Node getAnIndirectBarrierNode(int indirectionIndex) {
-    exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
-      indirectConvertedExprHasValueNumber(e, indirectionIndex, value, result) and
+    exists(IRGuardCondition g, ValueNumber value, boolean edge |
+      indirectConvertedExprHasValueNumber(indirectionIndex, value, result) and
       guardChecks(g,
         pragma[only_bind_into](value.getAnInstruction().getConvertedResultExpression()), edge) and
       controls(g, result, edge)
@@ -2466,16 +2470,18 @@ private EdgeKind getConditionalEdge(boolean branch) {
 module InstructionBarrierGuard<instructionGuardChecksSig/3 instructionGuardChecks> {
   bindingset[value, n]
   pragma[inline_late]
-  private predicate operandHasValueNumber(Operand use, ValueNumber value, Node n) {
-    use = value.getAnInstruction().getAUse() and
-    n.asOperand() = use
+  private predicate operandHasValueNumber(ValueNumber value, Node n) {
+    exists(Operand use |
+      use = value.getAnInstruction().getAUse() and
+      n.asOperand() = use
+    )
   }
 
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(IRGuardCondition g, ValueNumber value, boolean edge, Operand use |
+    exists(IRGuardCondition g, ValueNumber value, boolean edge |
       instructionGuardChecks(g, pragma[only_bind_into](value.getAnInstruction()), edge) and
-      operandHasValueNumber(use, value, result) and
+      operandHasValueNumber(value, result) and
       controls(g, result, edge)
     )
     or
