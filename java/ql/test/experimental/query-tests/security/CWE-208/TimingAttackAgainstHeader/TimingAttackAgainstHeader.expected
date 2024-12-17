@@ -2,5 +2,5 @@ edges
 nodes
 | Test.java:10:27:10:59 | getHeader(...) | semmle.label | getHeader(...) |
 subpaths
-#select
+problems
 | Test.java:10:27:10:59 | getHeader(...) | Test.java:10:27:10:59 | getHeader(...) | Test.java:10:27:10:59 | getHeader(...) | Possible timing attack against $@ validation. | Test.java:10:27:10:59 | getHeader(...) | client-supplied token |
