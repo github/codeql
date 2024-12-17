@@ -712,7 +712,7 @@ private class CapturedVariableContent extends Content, TCapturedVariableContent 
   override string toString() { result = "captured " + v }
 }
 
-/** A value refered to by a reference. */
+/** A value referred to by a reference. */
 final class ReferenceContent extends Content, TReferenceContent {
   override string toString() { result = "&ref" }
 }

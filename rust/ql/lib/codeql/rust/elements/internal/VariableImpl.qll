@@ -484,6 +484,7 @@ module Impl {
   class VariableReadAccess extends VariableAccess {
     VariableReadAccess() {
       not this instanceof VariableWriteAccess and
+      not this = any(RefExpr re).getExpr() and
       not this = any(CompoundAssignmentExpr cae).getLhs()
     }
   }
