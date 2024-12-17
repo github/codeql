@@ -126,16 +126,21 @@ module SqlExecuteConfig implements DataFlow::ConfigSig {
 /** Tracks flow from SQL queries that update a database to the argument of an execute method call. */
 module SqlExecuteFlow = TaintTracking::Global<SqlExecuteConfig>;
 
+/** Provides classes and predicates representing call paths. */
 module CallGraph {
-  newtype TCallPathNode =
+  private newtype TCallPathNode =
     TMethod(Method m) or
     TCall(Call c)
 
+  /** A node in a call path graph */
   class CallPathNode extends TCallPathNode {
+    /** Gets the method corresponding to this `CallPathNode`, if any. */
     Method asMethod() { this = TMethod(result) }
 
+    /** Gets the call corresponding to this `CallPathNode`, if any. */
     Call asCall() { this = TCall(result) }
 
+    /** Gets the string representation of this `CallPathNode`. */
     string toString() {
       result = this.asMethod().toString()
       or
@@ -146,6 +151,7 @@ module CallGraph {
       [viableCallable(this.asCall()), this.asCall().getCallee()] = result.asMethod()
     }
 
+    /** Gets a successor node of this `CallPathNode`, if any. */
     CallPathNode getASuccessor() {
       this.asMethod() = result.asCall().getEnclosingCallable()
       or
@@ -160,6 +166,7 @@ module CallGraph {
       )
     }
 
+    /** Gets the location of this `CallPathNode`. */
     Location getLocation() {
       result = this.asMethod().getLocation()
       or
@@ -167,6 +174,7 @@ module CallGraph {
     }
   }
 
+  /** Holds if `pred` has a successor node `succ`. */
   predicate edges(CallPathNode pred, CallPathNode succ) { pred.getASuccessor() = succ }
 }
 
