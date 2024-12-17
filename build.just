@@ -1,9 +1,4 @@
-import 'lib.just'
-
-@_build LANGUAGE:
-  just install {{ LANGUAGE }};
-
-[group('build')]
-build LANGUAGE: (_build LANGUAGE)
-
-alias b := build
+# import recipes from internal repo, if present
+import? '../build_impl.just'
+# otherwise, use the local versions
+import 'build_impl.just'
