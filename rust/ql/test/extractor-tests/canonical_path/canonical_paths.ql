@@ -1,21 +1,25 @@
 import rust
 import TestUtils
 
-query predicate canonicalPaths(Addressable i, string answer) {
+query predicate canonicalPaths(Addressable i, string answer, string cls) {
   toBeTested(i) and
   (
-    answer = i.getCanonicalPath().toString()
+    exists(CanonicalPath p |
+      p = i.getCanonicalPath() and answer = p.toString() and cls = p.getPrimaryQlClasses()
+    )
     or
-    not i.hasCanonicalPath() and answer = "None"
+    not i.hasCanonicalPath() and answer = "None" and cls = ""
   )
 }
 
-query predicate resolvedPaths(Resolvable i, string answer) {
+query predicate resolvedPaths(Resolvable i, string answer, string cls) {
   toBeTested(i) and
   (
-    answer = i.getResolvedCanonicalPath().toString()
+    exists(CanonicalPath p |
+      p = i.getResolvedCanonicalPath() and answer = p.toString() and cls = p.getPrimaryQlClasses()
+    )
     or
-    not i.hasResolvedCanonicalPath() and answer = "None"
+    not i.hasResolvedCanonicalPath() and answer = "None" and cls = ""
   )
 }
 

@@ -26,6 +26,7 @@ edges
 | main.rs:148:12:148:21 | source(...) | main.rs:147:13:150:5 | Point {...} [Point.x] | provenance |  |
 | main.rs:151:9:151:28 | Point {...} [Point.x] | main.rs:151:20:151:20 | a | provenance |  |
 | main.rs:151:20:151:20 | a | main.rs:152:10:152:10 | a | provenance |  |
+<<<<<<< Updated upstream
 | main.rs:198:14:198:37 | ...::Some(...) [Some] | main.rs:201:9:201:23 | ...::Some(...) [Some] | provenance |  |
 | main.rs:198:27:198:36 | source(...) | main.rs:198:14:198:37 | ...::Some(...) [Some] | provenance |  |
 | main.rs:201:9:201:23 | ...::Some(...) [Some] | main.rs:201:22:201:22 | n | provenance |  |
@@ -45,6 +46,8 @@ edges
 | main.rs:238:35:238:44 | source(...) | main.rs:238:32:238:45 | Ok(...) [Ok] | provenance |  |
 | main.rs:241:14:241:15 | s1 [Ok] | main.rs:241:14:241:16 | TryExpr | provenance |  |
 | main.rs:241:14:241:16 | TryExpr | main.rs:243:10:243:11 | i1 | provenance |  |
+=======
+>>>>>>> Stashed changes
 | main.rs:256:14:256:39 | ...::A(...) [A] | main.rs:259:9:259:25 | ...::A(...) [A] | provenance |  |
 | main.rs:256:14:256:39 | ...::A(...) [A] | main.rs:263:9:263:25 | ...::A(...) [A] | provenance |  |
 | main.rs:256:29:256:38 | source(...) | main.rs:256:14:256:39 | ...::A(...) [A] | provenance |  |
@@ -136,6 +139,7 @@ nodes
 | main.rs:151:9:151:28 | Point {...} [Point.x] | semmle.label | Point {...} [Point.x] |
 | main.rs:151:20:151:20 | a | semmle.label | a |
 | main.rs:152:10:152:10 | a | semmle.label | a |
+<<<<<<< Updated upstream
 | main.rs:198:14:198:37 | ...::Some(...) [Some] | semmle.label | ...::Some(...) [Some] |
 | main.rs:198:27:198:36 | source(...) | semmle.label | source(...) |
 | main.rs:201:9:201:23 | ...::Some(...) [Some] | semmle.label | ...::Some(...) [Some] |
@@ -160,6 +164,8 @@ nodes
 | main.rs:241:14:241:15 | s1 [Ok] | semmle.label | s1 [Ok] |
 | main.rs:241:14:241:16 | TryExpr | semmle.label | TryExpr |
 | main.rs:243:10:243:11 | i1 | semmle.label | i1 |
+=======
+>>>>>>> Stashed changes
 | main.rs:256:14:256:39 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
 | main.rs:256:29:256:38 | source(...) | semmle.label | source(...) |
 | main.rs:259:9:259:25 | ...::A(...) [A] | semmle.label | ...::A(...) [A] |
@@ -225,6 +231,11 @@ nodes
 | main.rs:379:10:379:19 | mut_arr[0] | semmle.label | mut_arr[0] |
 subpaths
 testFailures
+| main.rs:201:37:201:56 | //... | Missing result: hasValueFlow=13 |
+| main.rs:214:29:214:48 | //... | Missing result: hasValueFlow=14 |
+| main.rs:225:24:225:43 | //... | Missing result: hasValueFlow=19 |
+| main.rs:232:15:232:34 | //... | Missing result: hasValueFlow=20 |
+| main.rs:243:15:243:34 | //... | Missing result: hasValueFlow=20 |
 #select
 | main.rs:15:10:15:18 | source(...) | main.rs:15:10:15:18 | source(...) | main.rs:15:10:15:18 | source(...) | $@ | main.rs:15:10:15:18 | source(...) | source(...) |
 | main.rs:20:10:20:10 | s | main.rs:19:13:19:21 | source(...) | main.rs:20:10:20:10 | s | $@ | main.rs:19:13:19:21 | source(...) | source(...) |
@@ -237,11 +248,14 @@ testFailures
 | main.rs:113:10:113:12 | a.0 | main.rs:111:11:111:20 | source(...) | main.rs:113:10:113:12 | a.0 | $@ | main.rs:111:11:111:20 | source(...) | source(...) |
 | main.rs:121:10:121:15 | ... .1 | main.rs:118:17:118:26 | source(...) | main.rs:121:10:121:15 | ... .1 | $@ | main.rs:118:17:118:26 | source(...) | source(...) |
 | main.rs:152:10:152:10 | a | main.rs:148:12:148:21 | source(...) | main.rs:152:10:152:10 | a | $@ | main.rs:148:12:148:21 | source(...) | source(...) |
+<<<<<<< Updated upstream
 | main.rs:201:33:201:33 | n | main.rs:198:27:198:36 | source(...) | main.rs:201:33:201:33 | n | $@ | main.rs:198:27:198:36 | source(...) | source(...) |
 | main.rs:214:25:214:25 | n | main.rs:211:19:211:28 | source(...) | main.rs:214:25:214:25 | n | $@ | main.rs:211:19:211:28 | source(...) | source(...) |
 | main.rs:225:10:225:20 | s1.unwrap(...) | main.rs:224:19:224:28 | source(...) | main.rs:225:10:225:20 | s1.unwrap(...) | $@ | main.rs:224:19:224:28 | source(...) | source(...) |
 | main.rs:232:10:232:11 | i1 | main.rs:229:19:229:28 | source(...) | main.rs:232:10:232:11 | i1 | $@ | main.rs:229:19:229:28 | source(...) | source(...) |
 | main.rs:243:10:243:11 | i1 | main.rs:238:35:238:44 | source(...) | main.rs:243:10:243:11 | i1 | $@ | main.rs:238:35:238:44 | source(...) | source(...) |
+=======
+>>>>>>> Stashed changes
 | main.rs:259:35:259:35 | n | main.rs:256:29:256:38 | source(...) | main.rs:259:35:259:35 | n | $@ | main.rs:256:29:256:38 | source(...) | source(...) |
 | main.rs:263:55:263:55 | n | main.rs:256:29:256:38 | source(...) | main.rs:263:55:263:55 | n | $@ | main.rs:256:29:256:38 | source(...) | source(...) |
 | main.rs:277:22:277:22 | n | main.rs:274:16:274:25 | source(...) | main.rs:277:22:277:22 | n | $@ | main.rs:274:16:274:25 | source(...) | source(...) |

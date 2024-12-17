@@ -508,7 +508,7 @@ impl<'a> Translator<'a> {
         })
     }
 
-    fn emit_crate_root(&mut self, item: Crate) -> Option<Label<generated::CrateRoot>> {
+    fn emit_crate_root(&mut self, item: Crate) -> Option<Label<generated::CrateRef>> {
         cache_get_or_assign!(self.canonical_path_cache, item, {
             let db = self.semantics.unwrap().db;
             let (repo, name) = match item.origin(db) {
@@ -519,7 +519,7 @@ impl<'a> Translator<'a> {
                     let name = it.to_string();
                     return Some(
                         self.trap
-                            .emit(generated::LangCrateRoot {
+                            .emit(generated::LangCrateRef {
                                 id: trap_key!(name),
                                 name,
                             })
@@ -536,7 +536,7 @@ impl<'a> Translator<'a> {
             let source = self.trap.emit_file(&PathBuf::from(file.as_os_str()));
             Some(
                 self.trap
-                    .emit(generated::RepoCrateRoot {
+                    .emit(generated::RepoCrateRef {
                         id: trap_key!(source, name, repo),
                         name,
                         repo,

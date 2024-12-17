@@ -1,13 +1,13 @@
 /**
- * This module provides a hand-modifiable wrapper around the generated class `RustcCrateRoot`.
+ * This module provides a hand-modifiable wrapper around the generated class `RustcCrateRef`.
  *
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.elements.internal.generated.canonical_paths.RustcCrateRoot
+private import codeql.rust.elements.internal.generated.canonical_paths.RustcCrateRef
 
 /**
- * INTERNAL: This module contains the customizable definition of `RustcCrateRoot` and should not
+ * INTERNAL: This module contains the customizable definition of `RustcCrateRef` and should not
  * be referenced directly.
  */
 module Impl {
@@ -15,7 +15,7 @@ module Impl {
   /**
    * A reference to a crate provided by rustc. TODO: understand where these come from.
    */
-  class RustcCrateRoot extends Generated::RustcCrateRoot {
+  class RustcCrateRef extends Generated::RustcCrateRef {
     override string toAbbreviatedString() { result = this.getName() }
   }
 }

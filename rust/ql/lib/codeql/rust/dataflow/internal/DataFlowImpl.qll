@@ -566,45 +566,6 @@ module LocalFlow {
 
 private import codeql.util.Option
 
-private class CrateOrigin extends string {
-  CrateOrigin() {
-    this = [any(Item i).getCrateOrigin(), any(Resolvable r).getResolvedCrateOrigin()]
-  }
-}
-
-private class CrateOriginOption = Option<CrateOrigin>::Option;
-
-pragma[nomagic]
-private predicate hasExtendedCanonicalPath(Item i, CrateOriginOption crate, string path) {
-  path = i.getExtendedCanonicalPath() and
-  (
-    crate.asSome() = i.getCrateOrigin()
-    or
-    crate.isNone() and
-    not i.hasCrateOrigin()
-  )
-}
-
-pragma[nomagic]
-private predicate variantHasExtendedCanonicalPath(
-  Enum e, Variant v, CrateOriginOption crate, string path, string name
-) {
-  hasExtendedCanonicalPath(e, crate, path) and
-  v = e.getVariantList().getAVariant() and
-  name = v.getName().getText()
-}
-
-pragma[nomagic]
-private predicate resolveExtendedCanonicalPath(Resolvable r, CrateOriginOption crate, string path) {
-  path = r.getResolvedPath() and
-  (
-    crate.asSome() = r.getResolvedCrateOrigin()
-    or
-    crate.isNone() and
-    not r.hasResolvedCrateOrigin()
-  )
-}
-
 /**
  * A path to a value contained in an object. For example a field name of a struct.
  */
@@ -615,16 +576,16 @@ abstract class Content extends TContent {
 
 /** A canonical path pointing to an enum variant. */
 class VariantCanonicalPath extends MkVariantCanonicalPath {
-  CrateOriginOption crate;
-  string path;
+  string namespace;
+  string enum;
   string name;
 
-  VariantCanonicalPath() { this = MkVariantCanonicalPath(crate, path, name) }
+  VariantCanonicalPath() { this = MkVariantCanonicalPath(namespace, enum, name) }
 
   /** Gets the underlying variant. */
-  Variant getVariant() { variantHasExtendedCanonicalPath(_, result, crate, path, name) }
+  Variant getVariant() { result.hasStandardPath(namespace, enum, name) }
 
-  string getExtendedCanonicalPath() { result = path + "::" + name }
+  string getCanonicalPath() { result = namespace + "::" + enum + "::" + name }
 
   string toString() { result = name }
 
@@ -673,17 +634,17 @@ private class VariantFieldContent extends VariantContent, TVariantFieldContent {
 
 /** A canonical path pointing to a struct. */
 class StructCanonicalPath extends MkStructCanonicalPath {
-  CrateOriginOption crate;
-  string path;
+  string namespace;
+  string name;
 
-  StructCanonicalPath() { this = MkStructCanonicalPath(crate, path) }
+  StructCanonicalPath() { this = MkStructCanonicalPath(namespace, name) }
 
   /** Gets the underlying struct. */
-  Struct getStruct() { hasExtendedCanonicalPath(result, crate, path) }
+  Struct getStruct() { result.hasStandardPath(namespace, name) }
 
-  string getExtendedCanonicalPath() { result = path }
+  string getCanonicalPath() { result = namespace + "::" + name }
 
-  string toString() { result = this.getStruct().getName().getText() }
+  string toString() { result = name }
 
   Location getLocation() { result = this.getStruct().getLocation() }
 }
@@ -948,17 +909,17 @@ module RustDataFlow implements InputSig<Location> {
 
   /** Holds if path `p` resolves to struct `s`. */
   private predicate pathResolveToStructCanonicalPath(PathAstNode p, StructCanonicalPath s) {
-    exists(CrateOriginOption crate, string path |
-      resolveExtendedCanonicalPath(p, crate, path) and
-      s = MkStructCanonicalPath(crate, path)
+    exists(string namespace, string name |
+      p.resolvesToStandardPath(namespace, name) and
+      s = MkStructCanonicalPath(namespace, name)
     )
   }
 
   /** Holds if path `p` resolves to variant `v`. */
   private predicate pathResolveToVariantCanonicalPath(PathAstNode p, VariantCanonicalPath v) {
-    exists(CrateOriginOption crate, string path, string name |
-      resolveExtendedCanonicalPath(p, crate, path + "::" + name) and
-      v = MkVariantCanonicalPath(crate, path, name)
+    exists(string namespace, string enum, string name |
+      p.resolvesToStandardPath(namespace, enum, name) and
+      v = MkVariantCanonicalPath(namespace, enum, name)
     )
   }
 
@@ -1036,8 +997,8 @@ module RustDataFlow implements InputSig<Location> {
       exists(TryExprCfgNode try |
         node1.asExpr() = try.getExpr() and
         node2.asExpr() = try and
-        c.(VariantPositionContent).getVariantCanonicalPath(0).getExtendedCanonicalPath() =
-          ["crate::option::Option::Some", "crate::result::Result::Ok"]
+        c.(VariantPositionContent).getVariantCanonicalPath(0).getCanonicalPath() =
+          ["std::option::Option::Some", "std::result::Result::Ok"]
       )
       or
       VariableCapture::readStep(node1, c, node2)
@@ -1431,28 +1392,27 @@ private module Cached {
   cached
   newtype TReturnKind = TNormalReturnKind()
 
-  private CrateOriginOption langCoreCrate() { result.asSome() = "lang:core" }
-
   cached
   newtype TVariantCanonicalPath =
-    MkVariantCanonicalPath(CrateOriginOption crate, string path, string name) {
-      variantHasExtendedCanonicalPath(_, _, crate, path, name)
+    MkVariantCanonicalPath(string namespace, string enum, string name) {
+      any(Variant v).hasStandardPath(namespace, enum, name)
       or
       // TODO: Remove once library types are extracted
-      crate = langCoreCrate() and
       (
-        path = "crate::option::Option" and
+        namespace = "std::option" and
+        enum = "Option" and
         name = "Some"
         or
-        path = "crate::result::Result" and
+        namespace = "std::result" and
+        enum = "Result" and
         name = ["Ok", "Err"]
       )
     }
 
   cached
   newtype TStructCanonicalPath =
-    MkStructCanonicalPath(CrateOriginOption crate, string path) {
-      exists(Struct s | hasExtendedCanonicalPath(s, crate, path))
+    MkStructCanonicalPath(string namespace, string name) {
+      any(Struct s).hasStandardPath(namespace, name)
     }
 
   cached
@@ -1461,11 +1421,11 @@ private module Cached {
       pos in [0 .. v.getVariant().getFieldList().(TupleFieldList).getNumberOfFields() - 1]
       or
       // TODO: Remove once library types are extracted
-      v = MkVariantCanonicalPath(langCoreCrate(), "crate::option::Option", "Some") and
-      pos = 0
-      or
-      // TODO: Remove once library types are extracted
-      v = MkVariantCanonicalPath(langCoreCrate(), "crate::result::Result", ["Ok", "Err"]) and
+      v =
+        [
+          MkVariantCanonicalPath("std::option", "Option", "Some"),
+          MkVariantCanonicalPath("std::result", "Result", ["Ok", "Err"])
+        ] and
       pos = 0
     } or
     TVariantFieldContent(VariantCanonicalPath v, string field) {

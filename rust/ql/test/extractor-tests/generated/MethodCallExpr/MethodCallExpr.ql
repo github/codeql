@@ -3,20 +3,13 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  MethodCallExpr x, string hasArgList, int getNumberOfAttrs, string hasResolvedPath,
-  string hasResolvedCrateOrigin, string hasResolvedCanonicalPath, string hasGenericArgList,
-  string hasNameRef, string hasReceiver
+  MethodCallExpr x, string hasArgList, int getNumberOfAttrs, string hasResolvedCanonicalPath,
+  string hasGenericArgList, string hasNameRef, string hasReceiver
 where
   toBeTested(x) and
   not x.isUnknown() and
   (if x.hasArgList() then hasArgList = "yes" else hasArgList = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasResolvedPath() then hasResolvedPath = "yes" else hasResolvedPath = "no") and
-  (
-    if x.hasResolvedCrateOrigin()
-    then hasResolvedCrateOrigin = "yes"
-    else hasResolvedCrateOrigin = "no"
-  ) and
   (
     if x.hasResolvedCanonicalPath()
     then hasResolvedCanonicalPath = "yes"
@@ -25,7 +18,6 @@ where
   (if x.hasGenericArgList() then hasGenericArgList = "yes" else hasGenericArgList = "no") and
   (if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no") and
   if x.hasReceiver() then hasReceiver = "yes" else hasReceiver = "no"
-select x, "hasArgList:", hasArgList, "getNumberOfAttrs:", getNumberOfAttrs, "hasResolvedPath:",
-  hasResolvedPath, "hasResolvedCrateOrigin:", hasResolvedCrateOrigin, "hasResolvedCanonicalPath:",
-  hasResolvedCanonicalPath, "hasGenericArgList:", hasGenericArgList, "hasNameRef:", hasNameRef,
-  "hasReceiver:", hasReceiver
+select x, "hasArgList:", hasArgList, "getNumberOfAttrs:", getNumberOfAttrs,
+  "hasResolvedCanonicalPath:", hasResolvedCanonicalPath, "hasGenericArgList:", hasGenericArgList,
+  "hasNameRef:", hasNameRef, "hasReceiver:", hasReceiver

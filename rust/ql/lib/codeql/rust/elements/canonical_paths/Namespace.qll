@@ -5,7 +5,7 @@
 
 private import internal.NamespaceImpl
 import codeql.rust.elements.canonical_paths.CanonicalPath
-import codeql.rust.elements.canonical_paths.CrateRoot
+import codeql.rust.elements.canonical_paths.CrateRef
 
 /**
  * A namespace, comprised of a crate root and a possibly empty `::` separated module path.

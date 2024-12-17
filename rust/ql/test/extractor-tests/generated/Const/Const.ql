@@ -3,18 +3,11 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  Const x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasCanonicalPath,
-  int getNumberOfAttrs, string hasBody, string isConst, string isDefault, string hasName,
-  string hasTypeRepr, string hasVisibility
+  Const x, string hasCanonicalPath, int getNumberOfAttrs, string hasBody, string isConst,
+  string isDefault, string hasName, string hasTypeRepr, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
   (if x.hasCanonicalPath() then hasCanonicalPath = "yes" else hasCanonicalPath = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
@@ -23,7 +16,6 @@ where
   (if x.hasName() then hasName = "yes" else hasName = "no") and
   (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasCanonicalPath:", hasCanonicalPath, "getNumberOfAttrs:", getNumberOfAttrs, "hasBody:", hasBody,
-  "isConst:", isConst, "isDefault:", isDefault, "hasName:", hasName, "hasTypeRepr:", hasTypeRepr,
-  "hasVisibility:", hasVisibility
+select x, "hasCanonicalPath:", hasCanonicalPath, "getNumberOfAttrs:", getNumberOfAttrs, "hasBody:",
+  hasBody, "isConst:", isConst, "isDefault:", isDefault, "hasName:", hasName, "hasTypeRepr:",
+  hasTypeRepr, "hasVisibility:", hasVisibility

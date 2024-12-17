@@ -3770,7 +3770,7 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfCrateRoot(CrateRoot e, int index, string partialPredicateCall) {
+  private Element getImmediateChildOfCrateRef(CrateRef e, int index, string partialPredicateCall) {
     exists(int b, int bCanonicalPathElement, int n |
       b = 0 and
       bCanonicalPathElement =
@@ -3816,17 +3816,17 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfLangCrateRoot(
-    LangCrateRoot e, int index, string partialPredicateCall
+  private Element getImmediateChildOfLangCrateRef(
+    LangCrateRef e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bCrateRoot, int n |
+    exists(int b, int bCrateRef, int n |
       b = 0 and
-      bCrateRoot = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCrateRoot(e, i, _)) | i) and
-      n = bCrateRoot and
+      bCrateRef = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCrateRef(e, i, _)) | i) and
+      n = bCrateRef and
       (
         none()
         or
-        result = getImmediateChildOfCrateRoot(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfCrateRef(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -3834,29 +3834,35 @@ private module Impl {
   private Element getImmediateChildOfModuleItemCanonicalPath(
     ModuleItemCanonicalPath e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bCanonicalPath, int n |
+    exists(int b, int bCanonicalPath, int n, int nNamespace |
       b = 0 and
       bCanonicalPath =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
       n = bCanonicalPath and
+      nNamespace = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getNamespace() and partialPredicateCall = "Namespace()"
       )
     )
   }
 
   private Element getImmediateChildOfNamespace(Namespace e, int index, string partialPredicateCall) {
-    exists(int b, int bCanonicalPath, int n |
+    exists(int b, int bCanonicalPath, int n, int nRoot |
       b = 0 and
       bCanonicalPath =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
       n = bCanonicalPath and
+      nRoot = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getRoot() and partialPredicateCall = "Root()"
       )
     )
   }
@@ -3864,45 +3870,52 @@ private module Impl {
   private Element getImmediateChildOfParametrizedCanonicalPath(
     ParametrizedCanonicalPath e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bCanonicalPath, int n |
+    exists(int b, int bCanonicalPath, int n, int nBase, int nGenericArg |
       b = 0 and
       bCanonicalPath =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
       n = bCanonicalPath and
+      nBase = n + 1 and
+      nGenericArg = nBase + 1 + max(int i | i = -1 or exists(e.getGenericArg(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getBase() and partialPredicateCall = "Base()"
+        or
+        result = e.getGenericArg(index - nBase) and
+        partialPredicateCall = "GenericArg(" + (index - nBase).toString() + ")"
       )
     )
   }
 
-  private Element getImmediateChildOfRepoCrateRoot(
-    RepoCrateRoot e, int index, string partialPredicateCall
+  private Element getImmediateChildOfRepoCrateRef(
+    RepoCrateRef e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bCrateRoot, int n |
+    exists(int b, int bCrateRef, int n |
       b = 0 and
-      bCrateRoot = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCrateRoot(e, i, _)) | i) and
-      n = bCrateRoot and
+      bCrateRef = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCrateRef(e, i, _)) | i) and
+      n = bCrateRef and
       (
         none()
         or
-        result = getImmediateChildOfCrateRoot(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfCrateRef(e, index - b, partialPredicateCall)
       )
     )
   }
 
-  private Element getImmediateChildOfRustcCrateRoot(
-    RustcCrateRoot e, int index, string partialPredicateCall
+  private Element getImmediateChildOfRustcCrateRef(
+    RustcCrateRef e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bCrateRoot, int n |
+    exists(int b, int bCrateRef, int n |
       b = 0 and
-      bCrateRoot = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCrateRoot(e, i, _)) | i) and
-      n = bCrateRoot and
+      bCrateRef = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCrateRef(e, i, _)) | i) and
+      n = bCrateRef and
       (
         none()
         or
-        result = getImmediateChildOfCrateRoot(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfCrateRef(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -3910,15 +3923,21 @@ private module Impl {
   private Element getImmediateChildOfTraitImplItemCanonicalPath(
     TraitImplItemCanonicalPath e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bCanonicalPath, int n |
+    exists(int b, int bCanonicalPath, int n, int nTypePath, int nTraitPath |
       b = 0 and
       bCanonicalPath =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
       n = bCanonicalPath and
+      nTypePath = n + 1 and
+      nTraitPath = nTypePath + 1 and
       (
         none()
         or
         result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getTypePath() and partialPredicateCall = "TypePath()"
+        or
+        index = nTypePath and result = e.getTraitPath() and partialPredicateCall = "TraitPath()"
       )
     )
   }
@@ -3942,15 +3961,18 @@ private module Impl {
   private Element getImmediateChildOfTypeGenericTypeArg(
     TypeGenericTypeArg e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bTypeGenericArg, int n |
+    exists(int b, int bTypeGenericArg, int n, int nPath |
       b = 0 and
       bTypeGenericArg =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeGenericArg(e, i, _)) | i) and
       n = bTypeGenericArg and
+      nPath = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfTypeGenericArg(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
       )
     )
   }
@@ -3958,15 +3980,18 @@ private module Impl {
   private Element getImmediateChildOfTypeImplItemCanonicalPath(
     TypeImplItemCanonicalPath e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bCanonicalPath, int n |
+    exists(int b, int bCanonicalPath, int n, int nParent |
       b = 0 and
       bCanonicalPath =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
       n = bCanonicalPath and
+      nParent = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getParent() and partialPredicateCall = "Parent()"
       )
     )
   }
@@ -3974,15 +3999,18 @@ private module Impl {
   private Element getImmediateChildOfTypeItemCanonicalPath(
     TypeItemCanonicalPath e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bCanonicalPath, int n |
+    exists(int b, int bCanonicalPath, int n, int nParent |
       b = 0 and
       bCanonicalPath =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCanonicalPath(e, i, _)) | i) and
       n = bCanonicalPath and
+      nParent = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfCanonicalPath(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getParent() and partialPredicateCall = "Parent()"
       )
     )
   }
@@ -4006,15 +4034,18 @@ private module Impl {
   private Element getImmediateChildOfConcreteTypeCanonicalPath(
     ConcreteTypeCanonicalPath e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bTypeCanonicalPath, int n |
+    exists(int b, int bTypeCanonicalPath, int n, int nPath |
       b = 0 and
       bTypeCanonicalPath =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeCanonicalPath(e, i, _)) | i) and
       n = bTypeCanonicalPath and
+      nPath = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfTypeCanonicalPath(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
       )
     )
   }
@@ -4022,15 +4053,19 @@ private module Impl {
   private Element getImmediateChildOfDerivedTypeCanonicalPath(
     DerivedTypeCanonicalPath e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bTypeCanonicalPath, int n |
+    exists(int b, int bTypeCanonicalPath, int n, int nBase |
       b = 0 and
       bTypeCanonicalPath =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeCanonicalPath(e, i, _)) | i) and
       n = bTypeCanonicalPath and
+      nBase = n + 1 + max(int i | i = -1 or exists(e.getBase(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfTypeCanonicalPath(e, index - b, partialPredicateCall)
+        or
+        result = e.getBase(index - n) and
+        partialPredicateCall = "Base(" + (index - n).toString() + ")"
       )
     )
   }
@@ -4359,7 +4394,7 @@ private module Impl {
     or
     result = getImmediateChildOfConstGenericTypeArg(e, index, partialAccessor)
     or
-    result = getImmediateChildOfLangCrateRoot(e, index, partialAccessor)
+    result = getImmediateChildOfLangCrateRef(e, index, partialAccessor)
     or
     result = getImmediateChildOfModuleItemCanonicalPath(e, index, partialAccessor)
     or
@@ -4367,9 +4402,9 @@ private module Impl {
     or
     result = getImmediateChildOfParametrizedCanonicalPath(e, index, partialAccessor)
     or
-    result = getImmediateChildOfRepoCrateRoot(e, index, partialAccessor)
+    result = getImmediateChildOfRepoCrateRef(e, index, partialAccessor)
     or
-    result = getImmediateChildOfRustcCrateRoot(e, index, partialAccessor)
+    result = getImmediateChildOfRustcCrateRef(e, index, partialAccessor)
     or
     result = getImmediateChildOfTraitImplItemCanonicalPath(e, index, partialAccessor)
     or

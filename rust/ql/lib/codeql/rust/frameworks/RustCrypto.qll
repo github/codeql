@@ -22,28 +22,22 @@ class StreamCipherInit extends Cryptography::CryptographicOperation::Range {
   StreamCipherInit() {
     // a call to `cipher::KeyInit::new`, `cipher::KeyInit::new_from_slice`,
     // `cipher::KeyIvInit::new`, `cipher::KeyIvInit::new_from_slices` or `rc2::Rc2::new_with_eff_key_len`.
-    exists(PathExpr p, string rawAlgorithmName |
-      this.asExpr().getExpr().(CallExpr).getFunction() = p and
-      p.getResolvedCrateOrigin().matches("%/RustCrypto%") and
-      p.getPath().getPart().getNameRef().getText() =
-        ["new", "new_from_slice", "new_from_slices", "new_with_eff_key_len"] and
-      (
-        rawAlgorithmName = p.getPath().getQualifier().getPart().getNameRef().getText() or
-        rawAlgorithmName =
-          p.getPath()
-              .getQualifier()
-              .getPart()
-              .getGenericArgList()
-              .getGenericArg(0)
-              .(TypeArg)
-              .getTypeRepr()
-              .(PathTypeRepr)
-              .getPath()
-              .getPart()
-              .getNameRef()
-              .getText()
-      ) and
-      algorithmName = simplifyAlgorithmName(rawAlgorithmName)
+    exists(PathExpr e |
+      e = this.asExpr().getExpr().(CallExpr).getFunction() and
+      exists(TraitImplItemCanonicalPath path, string rawAlgorithmName |
+        path = e.getResolvedCanonicalPath() and
+        path.getTraitPath().getBase().hasStandardPath("crypto-common", ["KeyInit", "KeyIvInit"]) and
+        path.getName() = ["new", "new_from_slice", "new_from_slices"] and
+        path.getTypePath()
+            .(ConcreteTypeCanonicalPath)
+            .getPath()
+            .getBase()
+            .hasStandardPath(_, rawAlgorithmName) and
+        algorithmName = simplifyAlgorithmName(rawAlgorithmName)
+      )
+      or
+      e.resolvesToStandardPath("rc2::Rc2", "new_with_eff_key_len") and
+      algorithmName = "Rc2"
     )
   }
 

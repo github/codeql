@@ -3,23 +3,16 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  MacroDef x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasCanonicalPath,
-  string hasArgs, int getNumberOfAttrs, string hasBody, string hasName, string hasVisibility
+  MacroDef x, string hasCanonicalPath, string hasArgs, int getNumberOfAttrs, string hasBody,
+  string hasName, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
   (if x.hasCanonicalPath() then hasCanonicalPath = "yes" else hasCanonicalPath = "no") and
   (if x.hasArgs() then hasArgs = "yes" else hasArgs = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasCanonicalPath:", hasCanonicalPath, "hasArgs:", hasArgs, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasBody:", hasBody, "hasName:", hasName, "hasVisibility:", hasVisibility
+select x, "hasCanonicalPath:", hasCanonicalPath, "hasArgs:", hasArgs, "getNumberOfAttrs:",
+  getNumberOfAttrs, "hasBody:", hasBody, "hasName:", hasName, "hasVisibility:", hasVisibility

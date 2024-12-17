@@ -10,8 +10,12 @@ private import codeql.rust.Concepts
  */
 private class StdEnvArgs extends CommandLineArgsSource::Range {
   StdEnvArgs() {
-    this.asExpr().getExpr().(CallExpr).getFunction().(PathExpr).getResolvedPath() =
-      ["crate::env::args", "crate::env::args_os"]
+    this.asExpr()
+        .getExpr()
+        .(CallExpr)
+        .getFunction()
+        .(PathExpr)
+        .resolvesToStandardPath("std::env", ["args", "args_os"])
   }
 }
 
@@ -20,8 +24,12 @@ private class StdEnvArgs extends CommandLineArgsSource::Range {
  */
 private class StdEnvDir extends CommandLineArgsSource::Range {
   StdEnvDir() {
-    this.asExpr().getExpr().(CallExpr).getFunction().(PathExpr).getResolvedPath() =
-      ["crate::env::current_dir", "crate::env::current_exe", "crate::env::home_dir"]
+    this.asExpr()
+        .getExpr()
+        .(CallExpr)
+        .getFunction()
+        .(PathExpr)
+        .resolvesToStandardPath("std::env", ["current_dir", "current_exe", "home_dir"])
   }
 }
 
@@ -30,7 +38,11 @@ private class StdEnvDir extends CommandLineArgsSource::Range {
  */
 private class StdEnvVar extends EnvironmentSource::Range {
   StdEnvVar() {
-    this.asExpr().getExpr().(CallExpr).getFunction().(PathExpr).getResolvedPath() =
-      ["crate::env::var", "crate::env::var_os", "crate::env::vars", "crate::env::vars_os"]
+    this.asExpr()
+        .getExpr()
+        .(CallExpr)
+        .getFunction()
+        .(PathExpr)
+        .resolvesToStandardPath("std::env", ["var", "var_os", "vars", "vars_os"])
   }
 }

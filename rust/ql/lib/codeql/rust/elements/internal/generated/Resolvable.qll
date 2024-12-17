@@ -21,36 +21,6 @@ module Generated {
    */
   class Resolvable extends Synth::TResolvable, AstNodeImpl::AstNode {
     /**
-     * Gets the resolved path of this resolvable, if it exists.
-     *
-     * INTERNAL: Do not use.
-     */
-    string getResolvedPath() {
-      result = Synth::convertResolvableToRaw(this).(Raw::Resolvable).getResolvedPath()
-    }
-
-    /**
-     * Holds if `getResolvedPath()` exists.
-     * INTERNAL: Do not use.
-     */
-    final predicate hasResolvedPath() { exists(this.getResolvedPath()) }
-
-    /**
-     * Gets the resolved crate origin of this resolvable, if it exists.
-     *
-     * INTERNAL: Do not use.
-     */
-    string getResolvedCrateOrigin() {
-      result = Synth::convertResolvableToRaw(this).(Raw::Resolvable).getResolvedCrateOrigin()
-    }
-
-    /**
-     * Holds if `getResolvedCrateOrigin()` exists.
-     * INTERNAL: Do not use.
-     */
-    final predicate hasResolvedCrateOrigin() { exists(this.getResolvedCrateOrigin()) }
-
-    /**
      * Gets the resolved canonical path of this resolvable, if it exists.
      *
      * INTERNAL: Do not use.

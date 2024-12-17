@@ -24,19 +24,19 @@ module Input implements InputSig<Location, RustDataFlow> {
       exists(VariantCanonicalPath v | result = "Variant" |
         exists(int pos |
           c = TVariantPositionContent(v, pos) and
-          arg = v.getExtendedCanonicalPath() + "(" + pos + ")"
+          arg = v.getCanonicalPath() + "(" + pos + ")"
         )
         or
         exists(string field |
           c = TVariantFieldContent(v, field) and
-          arg = v.getExtendedCanonicalPath() + "::" + field
+          arg = v.getCanonicalPath() + "::" + field
         )
       )
       or
       exists(StructCanonicalPath s, string field |
         result = "Struct" and
         c = TStructFieldContent(s, field) and
-        arg = s.getExtendedCanonicalPath() + "::" + field
+        arg = s.getCanonicalPath() + "::" + field
       )
       or
       result = "ArrayElement" and

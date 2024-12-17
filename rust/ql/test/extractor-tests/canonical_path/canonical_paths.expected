@@ -1,132 +1,141 @@
 canonicalPaths
-| anonymous.rs:1:1:1:26 | Use | None |
-| anonymous.rs:3:1:32:1 | fn canonicals | ...::canonicals |
-| anonymous.rs:4:5:4:23 | struct OtherStruct | None |
-| anonymous.rs:6:5:8:5 | trait OtherTrait | None |
-| anonymous.rs:7:9:7:20 | fn g | None |
-| anonymous.rs:10:5:12:5 | impl OtherTrait for OtherStruct { ... } | None |
-| anonymous.rs:11:9:11:22 | fn g | None |
-| anonymous.rs:14:5:16:5 | impl OtherTrait for ...::Struct { ... } | None |
-| anonymous.rs:15:9:15:22 | fn g | <...>::g |
-| anonymous.rs:18:5:20:5 | impl ...::Trait for OtherStruct { ... } | None |
-| anonymous.rs:19:9:19:22 | fn f | None |
-| anonymous.rs:22:5:24:5 | fn nested | None |
-| anonymous.rs:23:9:23:27 | struct OtherStruct | None |
-| anonymous.rs:26:5:31:5 | fn usage | None |
-| anonymous.rs:34:1:36:1 | fn other | ...::other |
-| anonymous.rs:35:5:35:23 | struct OtherStruct | None |
-| lib.rs:1:1:1:14 | mod anonymous | test::anonymous |
-| lib.rs:2:1:2:12 | mod regular | test::regular |
-| lib.rs:3:1:3:10 | mod usage | test::usage |
-| regular.rs:1:1:2:18 | struct Struct | ...::Struct |
-| regular.rs:4:1:6:1 | trait Trait | ...::Trait |
-| regular.rs:5:5:5:16 | fn f | ...::f |
-| regular.rs:8:1:10:1 | impl Trait for Struct { ... } | None |
-| regular.rs:9:5:9:18 | fn f | <... as ...>::f |
-| regular.rs:12:1:14:1 | impl Struct { ... } | None |
-| regular.rs:13:5:13:22 | fn g | <...>::g |
-| regular.rs:16:1:18:1 | trait TraitWithBlanketImpl | ...::TraitWithBlanketImpl |
-| regular.rs:17:5:17:16 | fn h | ...::h |
-| regular.rs:20:1:22:1 | impl TraitWithBlanketImpl for T { ... } | None |
-| regular.rs:21:5:21:18 | fn h | <_ as ...>::h |
-| regular.rs:24:1:24:16 | fn free | ...::free |
-| regular.rs:26:1:30:1 | enum MyEnum | ...::MyEnum |
-| regular.rs:27:5:27:12 | Variant1 | ...::Variant1 |
-| regular.rs:28:5:28:19 | Variant2 | ...::Variant2 |
-| regular.rs:29:5:29:25 | Variant3 | ...::Variant3 |
-| regular.rs:32:1:34:1 | trait GenericTrait | ...::GenericTrait |
-| regular.rs:33:5:33:35 | fn generic_method | ...::generic_method |
-| regular.rs:36:1:39:1 | struct GenericStruct | ...::GenericStruct |
-| regular.rs:41:1:41:50 | struct GenericTupleStruct | ...::GenericTupleStruct |
-| regular.rs:44:1:47:1 | enum GenericEnum | ...::GenericEnum |
-| regular.rs:45:5:45:8 | T | ...::T |
-| regular.rs:46:5:46:8 | U | ...::U |
-| regular.rs:49:1:51:1 | impl GenericTrait::<...> for GenericStruct::<...> { ... } | None |
-| regular.rs:50:5:50:37 | fn generic_method | <... as ...>::generic_method |
-| regular.rs:53:1:55:1 | impl GenericTrait::<...> for GenericStruct::<...> { ... } | None |
-| regular.rs:54:5:54:39 | fn generic_method | <... as ...>::generic_method |
-| regular.rs:57:1:59:1 | impl GenericTrait::<...> for GenericTupleStruct::<...> { ... } | None |
-| regular.rs:58:5:58:37 | fn generic_method | <... as ...>::generic_method |
-| regular.rs:61:1:63:1 | impl GenericTrait::<...> for GenericTupleStruct::<...> { ... } | None |
-| regular.rs:62:5:62:39 | fn generic_method | <... as ...>::generic_method |
-| regular.rs:65:1:67:1 | impl GenericTrait::<...> for GenericEnum::<...> { ... } | None |
-| regular.rs:66:5:66:37 | fn generic_method | <... as ...>::generic_method |
-| regular.rs:69:1:71:1 | impl GenericTrait::<...> for GenericEnum::<...> { ... } | None |
-| regular.rs:70:5:70:39 | fn generic_method | <... as ...>::generic_method |
-| regular.rs:73:1:75:1 | impl Trait for ... { ... } | None |
-| regular.rs:74:5:74:18 | fn f | <... as ...>::f |
-| regular.rs:77:1:79:1 | impl Trait for ... { ... } | None |
-| regular.rs:78:5:78:18 | fn f | <... as ...>::f |
-| regular.rs:81:1:83:1 | impl Trait for ... { ... } | None |
-| regular.rs:82:5:82:18 | fn f | <... as ...>::f |
-| regular.rs:85:1:87:1 | impl Trait for ... { ... } | None |
-| regular.rs:86:5:86:18 | fn f | <... as ...>::f |
-| regular.rs:89:1:91:1 | impl Trait for ... { ... } | None |
-| regular.rs:90:5:90:18 | fn f | <... as ...>::f |
-| usage.rs:1:1:1:22 | Use | None |
-| usage.rs:3:1:9:1 | fn usage | ...::usage |
-| usage.rs:11:1:17:1 | fn enum_qualified_usage | ...::enum_qualified_usage |
-| usage.rs:19:1:26:1 | fn enum_unqualified_usage | ...::enum_unqualified_usage |
-| usage.rs:22:5:22:18 | Use | None |
-| usage.rs:28:1:34:1 | fn enum_match | ...::enum_match |
-| usage.rs:36:1:49:1 | fn generic_usage | ...::generic_usage |
-| usage.rs:51:1:57:1 | fn use_trait | ...::use_trait |
-| usage.rs:54:5:54:17 | vec!... | None |
+| anonymous.rs:1:1:1:26 | Use | None |  |
+| anonymous.rs:3:1:32:1 | fn canonicals | ...::canonicals | ModuleItemCanonicalPath |
+| anonymous.rs:4:5:4:23 | struct OtherStruct | None |  |
+| anonymous.rs:6:5:8:5 | trait OtherTrait | None |  |
+| anonymous.rs:7:9:7:20 | fn g | None |  |
+| anonymous.rs:10:5:12:5 | impl OtherTrait for OtherStruct { ... } | None |  |
+| anonymous.rs:11:9:11:22 | fn g | None |  |
+| anonymous.rs:14:5:16:5 | impl OtherTrait for ...::Struct { ... } | None |  |
+| anonymous.rs:15:9:15:22 | fn g | <...>::g | TypeImplItemCanonicalPath |
+| anonymous.rs:18:5:20:5 | impl ...::Trait for OtherStruct { ... } | None |  |
+| anonymous.rs:19:9:19:22 | fn f | None |  |
+| anonymous.rs:22:5:24:5 | fn nested | None |  |
+| anonymous.rs:23:9:23:27 | struct OtherStruct | None |  |
+| anonymous.rs:26:5:31:5 | fn usage | None |  |
+| anonymous.rs:34:1:36:1 | fn other | ...::other | ModuleItemCanonicalPath |
+| anonymous.rs:35:5:35:23 | struct OtherStruct | None |  |
+| lib.rs:1:1:1:14 | mod anonymous | test::anonymous | Namespace |
+| lib.rs:2:1:2:12 | mod regular | test::regular | Namespace |
+| lib.rs:3:1:3:10 | mod usage | test::usage | Namespace |
+| regular.rs:1:1:2:18 | struct Struct | ...::Struct | ModuleItemCanonicalPath |
+| regular.rs:4:1:6:1 | trait Trait | ...::Trait | ModuleItemCanonicalPath |
+| regular.rs:5:5:5:16 | fn f | ...::f | TypeItemCanonicalPath |
+| regular.rs:8:1:10:1 | impl Trait for Struct { ... } | None |  |
+| regular.rs:9:5:9:18 | fn f | <... as ...>::f | TraitImplItemCanonicalPath |
+| regular.rs:12:1:14:1 | impl Struct { ... } | None |  |
+| regular.rs:13:5:13:22 | fn g | <...>::g | TypeImplItemCanonicalPath |
+| regular.rs:16:1:18:1 | trait TraitWithBlanketImpl | ...::TraitWithBlanketImpl | ModuleItemCanonicalPath |
+| regular.rs:17:5:17:16 | fn h | ...::h | TypeItemCanonicalPath |
+| regular.rs:20:1:22:1 | impl TraitWithBlanketImpl for T { ... } | None |  |
+| regular.rs:21:5:21:18 | fn h | <_ as ...>::h | TraitImplItemCanonicalPath |
+| regular.rs:24:1:24:16 | fn free | ...::free | ModuleItemCanonicalPath |
+| regular.rs:26:1:30:1 | enum MyEnum | ...::MyEnum | ModuleItemCanonicalPath |
+| regular.rs:27:5:27:12 | Variant1 | ...::Variant1 | TypeItemCanonicalPath |
+| regular.rs:28:5:28:19 | Variant2 | ...::Variant2 | TypeItemCanonicalPath |
+| regular.rs:29:5:29:25 | Variant3 | ...::Variant3 | TypeItemCanonicalPath |
+| regular.rs:32:1:34:1 | trait GenericTrait | ...::GenericTrait | ModuleItemCanonicalPath |
+| regular.rs:33:5:33:35 | fn generic_method | ...::generic_method | TypeItemCanonicalPath |
+| regular.rs:36:1:39:1 | struct GenericStruct | ...::GenericStruct | ModuleItemCanonicalPath |
+| regular.rs:41:1:41:50 | struct GenericTupleStruct | ...::GenericTupleStruct | ModuleItemCanonicalPath |
+| regular.rs:44:1:47:1 | enum GenericEnum | ...::GenericEnum | ModuleItemCanonicalPath |
+| regular.rs:45:5:45:8 | T | ...::T | TypeItemCanonicalPath |
+| regular.rs:46:5:46:8 | U | ...::U | TypeItemCanonicalPath |
+| regular.rs:49:1:51:1 | impl GenericTrait::<...> for GenericStruct::<...> { ... } | None |  |
+| regular.rs:50:5:50:37 | fn generic_method | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| regular.rs:53:1:55:1 | impl GenericTrait::<...> for GenericStruct::<...> { ... } | None |  |
+| regular.rs:54:5:54:39 | fn generic_method | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| regular.rs:57:1:59:1 | impl GenericTrait::<...> for GenericTupleStruct::<...> { ... } | None |  |
+| regular.rs:58:5:58:37 | fn generic_method | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| regular.rs:61:1:63:1 | impl GenericTrait::<...> for GenericTupleStruct::<...> { ... } | None |  |
+| regular.rs:62:5:62:39 | fn generic_method | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| regular.rs:65:1:67:1 | impl GenericTrait::<...> for GenericEnum::<...> { ... } | None |  |
+| regular.rs:66:5:66:37 | fn generic_method | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| regular.rs:69:1:71:1 | impl GenericTrait::<...> for GenericEnum::<...> { ... } | None |  |
+| regular.rs:70:5:70:39 | fn generic_method | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| regular.rs:73:1:75:1 | impl Trait for ... { ... } | None |  |
+| regular.rs:74:5:74:18 | fn f | <... as ...>::f | TraitImplItemCanonicalPath |
+| regular.rs:77:1:79:1 | impl Trait for ... { ... } | None |  |
+| regular.rs:78:5:78:18 | fn f | <... as ...>::f | TraitImplItemCanonicalPath |
+| regular.rs:81:1:83:1 | impl Trait for ... { ... } | None |  |
+| regular.rs:82:5:82:18 | fn f | <... as ...>::f | TraitImplItemCanonicalPath |
+| regular.rs:85:1:87:1 | impl Trait for ... { ... } | None |  |
+| regular.rs:86:5:86:18 | fn f | <... as ...>::f | TraitImplItemCanonicalPath |
+| regular.rs:89:1:91:1 | impl Trait for ... { ... } | None |  |
+| regular.rs:90:5:90:18 | fn f | <... as ...>::f | TraitImplItemCanonicalPath |
+| regular.rs:93:1:95:1 | trait TraitWithNew | ...::TraitWithNew | ModuleItemCanonicalPath |
+| regular.rs:94:5:94:21 | fn new | ...::new | TypeItemCanonicalPath |
+| regular.rs:97:1:101:1 | impl TraitWithNew for GenericStruct::<...> { ... } | None |  |
+| regular.rs:98:5:100:5 | fn new | <... as ...>::new | TraitImplItemCanonicalPath |
+| usage.rs:1:1:1:22 | Use | None |  |
+| usage.rs:3:1:9:1 | fn usage | ...::usage | ModuleItemCanonicalPath |
+| usage.rs:11:1:17:1 | fn enum_qualified_usage | ...::enum_qualified_usage | ModuleItemCanonicalPath |
+| usage.rs:19:1:26:1 | fn enum_unqualified_usage | ...::enum_unqualified_usage | ModuleItemCanonicalPath |
+| usage.rs:22:5:22:18 | Use | None |  |
+| usage.rs:28:1:34:1 | fn enum_match | ...::enum_match | ModuleItemCanonicalPath |
+| usage.rs:36:1:49:1 | fn generic_usage | ...::generic_usage | ModuleItemCanonicalPath |
+| usage.rs:51:1:57:1 | fn use_trait | ...::use_trait | ModuleItemCanonicalPath |
+| usage.rs:54:5:54:17 | vec!... | None |  |
+| usage.rs:59:1:61:1 | fn use_trait_with_new | ...::use_trait_with_new | ModuleItemCanonicalPath |
 resolvedPaths
-| anonymous.rs:27:17:27:30 | OtherStruct {...} | None |
-| anonymous.rs:28:9:28:9 | s | None |
-| anonymous.rs:28:9:28:13 | s.f(...) | None |
-| anonymous.rs:29:9:29:9 | s | None |
-| anonymous.rs:29:9:29:13 | s.g(...) | None |
-| anonymous.rs:30:9:30:14 | nested | None |
-| usage.rs:4:13:4:21 | Struct {...} | ...::Struct |
-| usage.rs:5:5:5:5 | s | None |
-| usage.rs:5:5:5:9 | s.f(...) | <... as ...>::f |
-| usage.rs:6:5:6:5 | s | None |
-| usage.rs:6:5:6:9 | s.g(...) | <...>::g |
-| usage.rs:7:5:7:5 | s | None |
-| usage.rs:7:5:7:9 | s.h(...) | <_ as ...>::h |
-| usage.rs:8:5:8:8 | free | ...::free |
-| usage.rs:12:9:12:26 | ...::None::<...> | ...::None |
-| usage.rs:13:9:13:20 | ...::Some | ...::Some |
-| usage.rs:14:9:14:24 | ...::Variant1 | ...::Variant1 |
-| usage.rs:15:9:15:24 | ...::Variant2 | ...::Variant2 |
-| usage.rs:16:9:16:33 | ...::Variant3 {...} | ...::Variant3 |
-| usage.rs:20:9:20:18 | None::<...> | ...::None |
-| usage.rs:21:9:21:12 | Some | ...::Some |
-| usage.rs:23:9:23:16 | Variant1 | ...::Variant1 |
-| usage.rs:24:9:24:16 | Variant2 | ...::Variant2 |
-| usage.rs:25:9:25:25 | Variant3 {...} | ...::Variant3 |
-| usage.rs:29:11:29:11 | e | None |
-| usage.rs:30:9:30:24 | ...::Variant1 | ...::Variant1 |
-| usage.rs:31:9:31:27 | ...::Variant2(...) | ...::Variant2 |
-| usage.rs:32:9:32:31 | ...::Variant3 {...} | ...::Variant3 |
-| usage.rs:37:13:37:41 | GenericStruct {...} | ...::GenericStruct |
-| usage.rs:38:5:38:5 | x | None |
-| usage.rs:38:5:38:26 | x.generic_method(...) | <... as ...>::generic_method |
-| usage.rs:39:13:39:47 | GenericStruct {...} | ...::GenericStruct |
-| usage.rs:40:5:40:5 | x | None |
-| usage.rs:40:5:40:23 | x.generic_method(...) | <... as ...>::generic_method |
-| usage.rs:41:13:41:30 | GenericTupleStruct | ...::GenericTupleStruct |
-| usage.rs:42:5:42:5 | x | None |
-| usage.rs:42:5:42:26 | x.generic_method(...) | <... as ...>::generic_method |
-| usage.rs:43:13:43:30 | GenericTupleStruct | ...::GenericTupleStruct |
-| usage.rs:44:5:44:5 | x | None |
-| usage.rs:44:5:44:23 | x.generic_method(...) | <... as ...>::generic_method |
-| usage.rs:45:13:45:37 | ...::T | ...::T |
-| usage.rs:46:5:46:5 | x | None |
-| usage.rs:46:5:46:27 | x.generic_method(...) | <... as ...>::generic_method |
-| usage.rs:47:13:47:37 | ...::U | ...::U |
-| usage.rs:48:5:48:5 | x | None |
-| usage.rs:48:5:48:23 | x.generic_method(...) | <... as ...>::generic_method |
-| usage.rs:52:5:52:10 | ... .f(...) | <... as ...>::f |
-| usage.rs:53:5:53:15 | ... .f(...) | <... as ...>::f |
-| usage.rs:54:5:54:17 | ...::into_vec | None |
-| usage.rs:54:5:54:17 | ...::new | None |
-| usage.rs:54:5:54:28 | ... .as_slice(...) | <...>::as_slice |
-| usage.rs:54:5:54:32 | ... .f(...) | <... as ...>::f |
-| usage.rs:55:5:55:16 | ... .f(...) | <... as ...>::f |
-| usage.rs:56:5:56:20 | ... .f(...) | <... as ...>::f |
+| anonymous.rs:27:17:27:30 | OtherStruct {...} | None |  |
+| anonymous.rs:28:9:28:9 | s | None |  |
+| anonymous.rs:28:9:28:13 | s.f(...) | None |  |
+| anonymous.rs:29:9:29:9 | s | None |  |
+| anonymous.rs:29:9:29:13 | s.g(...) | None |  |
+| anonymous.rs:30:9:30:14 | nested | None |  |
+| regular.rs:99:9:99:67 | GenericStruct {...} | ...::GenericStruct | ModuleItemCanonicalPath |
+| regular.rs:99:26:99:41 | ...::default | ...::default | TypeItemCanonicalPath |
+| regular.rs:99:49:99:64 | ...::default | ...::default | TypeItemCanonicalPath |
+| usage.rs:4:13:4:21 | Struct {...} | ...::Struct | ModuleItemCanonicalPath |
+| usage.rs:5:5:5:5 | s | None |  |
+| usage.rs:5:5:5:9 | s.f(...) | <... as ...>::f | TraitImplItemCanonicalPath |
+| usage.rs:6:5:6:5 | s | None |  |
+| usage.rs:6:5:6:9 | s.g(...) | <...>::g | TypeImplItemCanonicalPath |
+| usage.rs:7:5:7:5 | s | None |  |
+| usage.rs:7:5:7:9 | s.h(...) | <_ as ...>::h | TraitImplItemCanonicalPath |
+| usage.rs:8:5:8:8 | free | ...::free | ModuleItemCanonicalPath |
+| usage.rs:12:9:12:26 | ...::None::<...> | ...::None | TypeItemCanonicalPath |
+| usage.rs:13:9:13:20 | ...::Some | ...::Some | TypeItemCanonicalPath |
+| usage.rs:14:9:14:24 | ...::Variant1 | ...::Variant1 | TypeItemCanonicalPath |
+| usage.rs:15:9:15:24 | ...::Variant2 | ...::Variant2 | TypeItemCanonicalPath |
+| usage.rs:16:9:16:33 | ...::Variant3 {...} | ...::Variant3 | TypeItemCanonicalPath |
+| usage.rs:20:9:20:18 | None::<...> | ...::None | TypeItemCanonicalPath |
+| usage.rs:21:9:21:12 | Some | ...::Some | TypeItemCanonicalPath |
+| usage.rs:23:9:23:16 | Variant1 | ...::Variant1 | TypeItemCanonicalPath |
+| usage.rs:24:9:24:16 | Variant2 | ...::Variant2 | TypeItemCanonicalPath |
+| usage.rs:25:9:25:25 | Variant3 {...} | ...::Variant3 | TypeItemCanonicalPath |
+| usage.rs:29:11:29:11 | e | None |  |
+| usage.rs:30:9:30:24 | ...::Variant1 | ...::Variant1 | TypeItemCanonicalPath |
+| usage.rs:31:9:31:27 | ...::Variant2(...) | ...::Variant2 | TypeItemCanonicalPath |
+| usage.rs:32:9:32:31 | ...::Variant3 {...} | ...::Variant3 | TypeItemCanonicalPath |
+| usage.rs:37:13:37:41 | GenericStruct {...} | ...::GenericStruct | ModuleItemCanonicalPath |
+| usage.rs:38:5:38:5 | x | None |  |
+| usage.rs:38:5:38:26 | x.generic_method(...) | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| usage.rs:39:13:39:47 | GenericStruct {...} | ...::GenericStruct | ModuleItemCanonicalPath |
+| usage.rs:40:5:40:5 | x | None |  |
+| usage.rs:40:5:40:23 | x.generic_method(...) | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| usage.rs:41:13:41:30 | GenericTupleStruct | ...::GenericTupleStruct | ModuleItemCanonicalPath |
+| usage.rs:42:5:42:5 | x | None |  |
+| usage.rs:42:5:42:26 | x.generic_method(...) | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| usage.rs:43:13:43:30 | GenericTupleStruct | ...::GenericTupleStruct | ModuleItemCanonicalPath |
+| usage.rs:44:5:44:5 | x | None |  |
+| usage.rs:44:5:44:23 | x.generic_method(...) | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| usage.rs:45:13:45:37 | ...::T | ...::T | TypeItemCanonicalPath |
+| usage.rs:46:5:46:5 | x | None |  |
+| usage.rs:46:5:46:27 | x.generic_method(...) | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| usage.rs:47:13:47:37 | ...::U | ...::U | TypeItemCanonicalPath |
+| usage.rs:48:5:48:5 | x | None |  |
+| usage.rs:48:5:48:23 | x.generic_method(...) | <... as ...>::generic_method | TraitImplItemCanonicalPath |
+| usage.rs:52:5:52:10 | ... .f(...) | <... as ...>::f | TraitImplItemCanonicalPath |
+| usage.rs:53:5:53:15 | ... .f(...) | <... as ...>::f | TraitImplItemCanonicalPath |
+| usage.rs:54:5:54:17 | ...::into_vec | None |  |
+| usage.rs:54:5:54:17 | ...::new | None |  |
+| usage.rs:54:5:54:28 | ... .as_slice(...) | <...>::as_slice | TypeImplItemCanonicalPath |
+| usage.rs:54:5:54:32 | ... .f(...) | <... as ...>::f | TraitImplItemCanonicalPath |
+| usage.rs:55:5:55:16 | ... .f(...) | <... as ...>::f | TraitImplItemCanonicalPath |
+| usage.rs:56:5:56:20 | ... .f(...) | <... as ...>::f | TraitImplItemCanonicalPath |
+| usage.rs:60:43:60:60 | ...::new | <... as ...>::new | TraitImplItemCanonicalPath |
 standardPaths
 | anonymous.rs:3:1:32:1 | fn canonicals | test::anonymous::canonicals |
 | anonymous.rs:15:9:15:22 | fn g | test::regular::Struct::g |
@@ -149,13 +158,17 @@ standardPaths
 | regular.rs:44:1:47:1 | enum GenericEnum | test::regular::GenericEnum |
 | regular.rs:45:5:45:8 | T | test::regular::GenericEnum::T |
 | regular.rs:46:5:46:8 | U | test::regular::GenericEnum::U |
+| regular.rs:93:1:95:1 | trait TraitWithNew | test::regular::TraitWithNew |
+| regular.rs:94:5:94:21 | fn new | test::regular::TraitWithNew::new |
 | usage.rs:3:1:9:1 | fn usage | test::usage::usage |
 | usage.rs:11:1:17:1 | fn enum_qualified_usage | test::usage::enum_qualified_usage |
 | usage.rs:19:1:26:1 | fn enum_unqualified_usage | test::usage::enum_unqualified_usage |
 | usage.rs:28:1:34:1 | fn enum_match | test::usage::enum_match |
 | usage.rs:36:1:49:1 | fn generic_usage | test::usage::generic_usage |
 | usage.rs:51:1:57:1 | fn use_trait | test::usage::use_trait |
+| usage.rs:59:1:61:1 | fn use_trait_with_new | test::usage::use_trait_with_new |
 resolve
+| regular.rs:99:9:99:67 | GenericStruct {...} | regular.rs:36:1:39:1 | struct GenericStruct |
 | usage.rs:4:13:4:21 | Struct {...} | regular.rs:1:1:2:18 | struct Struct |
 | usage.rs:5:5:5:9 | s.f(...) | regular.rs:9:5:9:18 | fn f |
 | usage.rs:6:5:6:9 | s.g(...) | anonymous.rs:15:9:15:22 | fn g |
@@ -188,3 +201,4 @@ resolve
 | usage.rs:54:5:54:32 | ... .f(...) | regular.rs:82:5:82:18 | fn f |
 | usage.rs:55:5:55:16 | ... .f(...) | regular.rs:86:5:86:18 | fn f |
 | usage.rs:56:5:56:20 | ... .f(...) | regular.rs:90:5:90:18 | fn f |
+| usage.rs:60:43:60:60 | ...::new | regular.rs:98:5:100:5 | fn new |

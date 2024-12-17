@@ -1,13 +1,13 @@
 /**
- * This module provides a hand-modifiable wrapper around the generated class `LangCrateRoot`.
+ * This module provides a hand-modifiable wrapper around the generated class `LangCrateRef`.
  *
  * INTERNAL: Do not use.
  */
 
-private import codeql.rust.elements.internal.generated.canonical_paths.LangCrateRoot
+private import codeql.rust.elements.internal.generated.canonical_paths.LangCrateRef
 
 /**
- * INTERNAL: This module contains the customizable definition of `LangCrateRoot` and should not
+ * INTERNAL: This module contains the customizable definition of `LangCrateRef` and should not
  * be referenced directly.
  */
 module Impl {
@@ -15,7 +15,7 @@ module Impl {
   /**
    * A reference to a crate in the Rust standard libraries.
    */
-  class LangCrateRoot extends Generated::LangCrateRoot {
+  class LangCrateRef extends Generated::LangCrateRef {
     override string toAbbreviatedString() { result = this.getName() }
   }
 }

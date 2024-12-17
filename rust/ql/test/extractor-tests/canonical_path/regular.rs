@@ -89,3 +89,13 @@ impl Trait for [&str; 2] {
 impl Trait for [&str; 3] {
     fn f(&self) {}
 }
+
+pub trait TraitWithNew {
+    fn new() -> Self;
+}
+
+impl<T: Default, U: Default> TraitWithNew for GenericStruct<T, U> {
+    fn new() -> Self {
+        GenericStruct{t: Default::default(), u: Default::default()}
+    }
+}

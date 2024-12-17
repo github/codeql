@@ -24,5 +24,19 @@ module Impl {
      */
     pragma[nomagic]
     predicate resolvesAsItem(Item i) { this.getResolvedCanonicalPath() = i.getCanonicalPath() }
+
+    /**
+     * Splits the standard path this resolves into into its components (see `CanonicalPath::hasStandardPath/3`).
+     */
+    predicate resolvesToStandardPath(string namespace, string type, string name) {
+      this.getResolvedCanonicalPath().hasStandardPath(namespace, type, name)
+    }
+
+    /**
+     * Splits the standard path into its components (see `CanonicalPath::hasStandardPath/2`).
+     */
+    predicate resolvesToStandardPath(string namespace, string name) {
+      this.getResolvedCanonicalPath().hasStandardPath(namespace, name)
+    }
   }
 }

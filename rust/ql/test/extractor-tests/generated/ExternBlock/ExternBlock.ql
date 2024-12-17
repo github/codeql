@@ -3,22 +3,15 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  ExternBlock x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasCanonicalPath,
-  string hasAbi, int getNumberOfAttrs, string hasExternItemList, string isUnsafe
+  ExternBlock x, string hasCanonicalPath, string hasAbi, int getNumberOfAttrs,
+  string hasExternItemList, string isUnsafe
 where
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
   (if x.hasCanonicalPath() then hasCanonicalPath = "yes" else hasCanonicalPath = "no") and
   (if x.hasAbi() then hasAbi = "yes" else hasAbi = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasExternItemList() then hasExternItemList = "yes" else hasExternItemList = "no") and
   if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasCanonicalPath:", hasCanonicalPath, "hasAbi:", hasAbi, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasExternItemList:", hasExternItemList, "isUnsafe:", isUnsafe
+select x, "hasCanonicalPath:", hasCanonicalPath, "hasAbi:", hasAbi, "getNumberOfAttrs:",
+  getNumberOfAttrs, "hasExternItemList:", hasExternItemList, "isUnsafe:", isUnsafe

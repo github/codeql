@@ -88,7 +88,7 @@ impl StorableAsModuleItemCanonicalPath for Struct {
 }
 
 impl StorableAsCanonicalPath for Crate {
-    type TrapClass = generated::CrateRoot;
+    type TrapClass = generated::CrateRef;
 
     fn to_key(&self) -> Key {
         Key::Crate(*self)

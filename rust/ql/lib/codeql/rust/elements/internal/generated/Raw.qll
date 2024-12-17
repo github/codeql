@@ -93,22 +93,6 @@ module Raw {
    */
   class Addressable extends @addressable, AstNode {
     /**
-     * Gets the extended canonical path of this addressable, if it exists.
-     *
-     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
-     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
-     * addressable there-in).
-     */
-    string getExtendedCanonicalPath() { addressable_extended_canonical_paths(this, result) }
-
-    /**
-     * Gets the crate origin of this addressable, if it exists.
-     *
-     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
-     */
-    string getCrateOrigin() { addressable_crate_origins(this, result) }
-
-    /**
      * Gets the canonical path of this addressable, if it exists.
      */
     CanonicalPath getCanonicalPath() { addressable_canonical_paths(this, result) }
@@ -835,16 +819,6 @@ module Raw {
    * One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.
    */
   class Resolvable extends @resolvable, AstNode {
-    /**
-     * Gets the resolved path of this resolvable, if it exists.
-     */
-    string getResolvedPath() { resolvable_resolved_paths(this, result) }
-
-    /**
-     * Gets the resolved crate origin of this resolvable, if it exists.
-     */
-    string getResolvedCrateOrigin() { resolvable_resolved_crate_origins(this, result) }
-
     /**
      * Gets the resolved canonical path of this resolvable, if it exists.
      */
@@ -3985,7 +3959,7 @@ module Raw {
    * INTERNAL: Do not use.
    * The base class for all crate references.
    */
-  class CrateRoot extends @crate_root, CanonicalPathElement { }
+  class CrateRef extends @crate_ref, CanonicalPathElement { }
 
   /**
    * INTERNAL: Do not use.
@@ -4010,13 +3984,13 @@ module Raw {
    * INTERNAL: Do not use.
    * A reference to a crate in the Rust standard libraries.
    */
-  class LangCrateRoot extends @lang_crate_root, CrateRoot {
-    override string toString() { result = "LangCrateRoot" }
+  class LangCrateRef extends @lang_crate_ref, CrateRef {
+    override string toString() { result = "LangCrateRef" }
 
     /**
-     * Gets the name of this lang crate root.
+     * Gets the name of this lang crate reference.
      */
-    string getName() { lang_crate_roots(this, result) }
+    string getName() { lang_crate_refs(this, result) }
   }
 
   /**
@@ -4047,7 +4021,7 @@ module Raw {
     /**
      * Gets the root of this namespace.
      */
-    CrateRoot getRoot() { namespaces(this, result, _) }
+    CrateRef getRoot() { namespaces(this, result, _) }
 
     /**
      * Gets the path of this namespace.
@@ -4078,36 +4052,36 @@ module Raw {
    * INTERNAL: Do not use.
    * A reference to a crate in the repository.
    */
-  class RepoCrateRoot extends @repo_crate_root, CrateRoot {
-    override string toString() { result = "RepoCrateRoot" }
+  class RepoCrateRef extends @repo_crate_ref, CrateRef {
+    override string toString() { result = "RepoCrateRef" }
 
     /**
-     * Gets the name of this repo crate root, if it exists.
+     * Gets the name of this repo crate reference, if it exists.
      */
-    string getName() { repo_crate_root_names(this, result) }
+    string getName() { repo_crate_ref_names(this, result) }
 
     /**
-     * Gets the repo of this repo crate root, if it exists.
+     * Gets the repo of this repo crate reference, if it exists.
      */
-    string getRepo() { repo_crate_root_repos(this, result) }
+    string getRepo() { repo_crate_ref_repos(this, result) }
 
     /**
-     * Gets the source of this repo crate root.
+     * Gets the source of this repo crate reference.
      */
-    File getSource() { repo_crate_roots(this, result) }
+    File getSource() { repo_crate_refs(this, result) }
   }
 
   /**
    * INTERNAL: Do not use.
    * A reference to a crate provided by rustc. TODO: understand where these come from.
    */
-  class RustcCrateRoot extends @rustc_crate_root, CrateRoot {
-    override string toString() { result = "RustcCrateRoot" }
+  class RustcCrateRef extends @rustc_crate_ref, CrateRef {
+    override string toString() { result = "RustcCrateRef" }
 
     /**
-     * Gets the name of this rustc crate root.
+     * Gets the name of this rustc crate reference.
      */
-    string getName() { rustc_crate_roots(this, result) }
+    string getName() { rustc_crate_refs(this, result) }
   }
 
   /**

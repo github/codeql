@@ -647,7 +647,7 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TLangCrateRoot(Raw::LangCrateRoot id) { constructLangCrateRoot(id) } or
+    TLangCrateRef(Raw::LangCrateRef id) { constructLangCrateRef(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -673,11 +673,11 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TRepoCrateRoot(Raw::RepoCrateRoot id) { constructRepoCrateRoot(id) } or
+    TRepoCrateRef(Raw::RepoCrateRef id) { constructRepoCrateRef(id) } or
     /**
      * INTERNAL: Do not use.
      */
-    TRustcCrateRoot(Raw::RustcCrateRoot id) { constructRustcCrateRoot(id) } or
+    TRustcCrateRef(Raw::RustcCrateRef id) { constructRustcCrateRef(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -855,12 +855,12 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TCanonicalPathElement = TCanonicalPath or TCrateRoot or TTypeGenericArg;
+  class TCanonicalPathElement = TCanonicalPath or TCrateRef or TTypeGenericArg;
 
   /**
    * INTERNAL: Do not use.
    */
-  class TCrateRoot = TLangCrateRoot or TRepoCrateRoot or TRustcCrateRoot;
+  class TCrateRef = TLangCrateRef or TRepoCrateRef or TRustcCrateRef;
 
   /**
    * INTERNAL: Do not use.
@@ -1818,9 +1818,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TLangCrateRoot`, if possible.
+   * Converts a raw element to a synthesized `TLangCrateRef`, if possible.
    */
-  TLangCrateRoot convertLangCrateRootFromRaw(Raw::Element e) { result = TLangCrateRoot(e) }
+  TLangCrateRef convertLangCrateRefFromRaw(Raw::Element e) { result = TLangCrateRef(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1854,15 +1854,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRepoCrateRoot`, if possible.
+   * Converts a raw element to a synthesized `TRepoCrateRef`, if possible.
    */
-  TRepoCrateRoot convertRepoCrateRootFromRaw(Raw::Element e) { result = TRepoCrateRoot(e) }
+  TRepoCrateRef convertRepoCrateRefFromRaw(Raw::Element e) { result = TRepoCrateRef(e) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TRustcCrateRoot`, if possible.
+   * Converts a raw element to a synthesized `TRustcCrateRef`, if possible.
    */
-  TRustcCrateRoot convertRustcCrateRootFromRaw(Raw::Element e) { result = TRustcCrateRoot(e) }
+  TRustcCrateRef convertRustcCrateRefFromRaw(Raw::Element e) { result = TRustcCrateRef(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2455,21 +2455,21 @@ module Synth {
   TCanonicalPathElement convertCanonicalPathElementFromRaw(Raw::Element e) {
     result = convertCanonicalPathFromRaw(e)
     or
-    result = convertCrateRootFromRaw(e)
+    result = convertCrateRefFromRaw(e)
     or
     result = convertTypeGenericArgFromRaw(e)
   }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `TCrateRoot`, if possible.
+   * Converts a raw DB element to a synthesized `TCrateRef`, if possible.
    */
-  TCrateRoot convertCrateRootFromRaw(Raw::Element e) {
-    result = convertLangCrateRootFromRaw(e)
+  TCrateRef convertCrateRefFromRaw(Raw::Element e) {
+    result = convertLangCrateRefFromRaw(e)
     or
-    result = convertRepoCrateRootFromRaw(e)
+    result = convertRepoCrateRefFromRaw(e)
     or
-    result = convertRustcCrateRootFromRaw(e)
+    result = convertRustcCrateRefFromRaw(e)
   }
 
   /**
@@ -3438,9 +3438,9 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TLangCrateRoot` to a raw DB element, if possible.
+   * Converts a synthesized `TLangCrateRef` to a raw DB element, if possible.
    */
-  Raw::Element convertLangCrateRootToRaw(TLangCrateRoot e) { e = TLangCrateRoot(result) }
+  Raw::Element convertLangCrateRefToRaw(TLangCrateRef e) { e = TLangCrateRef(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3474,15 +3474,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRepoCrateRoot` to a raw DB element, if possible.
+   * Converts a synthesized `TRepoCrateRef` to a raw DB element, if possible.
    */
-  Raw::Element convertRepoCrateRootToRaw(TRepoCrateRoot e) { e = TRepoCrateRoot(result) }
+  Raw::Element convertRepoCrateRefToRaw(TRepoCrateRef e) { e = TRepoCrateRef(result) }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TRustcCrateRoot` to a raw DB element, if possible.
+   * Converts a synthesized `TRustcCrateRef` to a raw DB element, if possible.
    */
-  Raw::Element convertRustcCrateRootToRaw(TRustcCrateRoot e) { e = TRustcCrateRoot(result) }
+  Raw::Element convertRustcCrateRefToRaw(TRustcCrateRef e) { e = TRustcCrateRef(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -4075,21 +4075,21 @@ module Synth {
   Raw::Element convertCanonicalPathElementToRaw(TCanonicalPathElement e) {
     result = convertCanonicalPathToRaw(e)
     or
-    result = convertCrateRootToRaw(e)
+    result = convertCrateRefToRaw(e)
     or
     result = convertTypeGenericArgToRaw(e)
   }
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TCrateRoot` to a raw DB element, if possible.
+   * Converts a synthesized `TCrateRef` to a raw DB element, if possible.
    */
-  Raw::Element convertCrateRootToRaw(TCrateRoot e) {
-    result = convertLangCrateRootToRaw(e)
+  Raw::Element convertCrateRefToRaw(TCrateRef e) {
+    result = convertLangCrateRefToRaw(e)
     or
-    result = convertRepoCrateRootToRaw(e)
+    result = convertRepoCrateRefToRaw(e)
     or
-    result = convertRustcCrateRootToRaw(e)
+    result = convertRustcCrateRefToRaw(e)
   }
 
   /**

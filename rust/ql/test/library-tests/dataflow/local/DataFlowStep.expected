@@ -490,18 +490,6 @@ storeStep
 | main.rs:177:16:177:16 | 2 | Point.x | main.rs:176:16:179:9 | Point {...} |
 | main.rs:178:16:178:25 | source(...) | Point.y | main.rs:176:16:179:9 | Point {...} |
 | main.rs:180:12:180:12 | 4 | Point3D.z | main.rs:175:13:181:5 | Point3D {...} |
-| main.rs:198:27:198:36 | source(...) | Some | main.rs:198:14:198:37 | ...::Some(...) |
-| main.rs:199:27:199:27 | 2 | Some | main.rs:199:14:199:28 | ...::Some(...) |
-| main.rs:211:19:211:28 | source(...) | Some | main.rs:211:14:211:29 | Some(...) |
-| main.rs:212:19:212:19 | 2 | Some | main.rs:212:14:212:20 | Some(...) |
-| main.rs:224:19:224:28 | source(...) | Some | main.rs:224:14:224:29 | Some(...) |
-| main.rs:229:19:229:28 | source(...) | Some | main.rs:229:14:229:29 | Some(...) |
-| main.rs:230:19:230:19 | 2 | Some | main.rs:230:14:230:20 | Some(...) |
-| main.rs:234:10:234:10 | 0 | Some | main.rs:234:5:234:11 | Some(...) |
-| main.rs:238:35:238:44 | source(...) | Ok | main.rs:238:32:238:45 | Ok(...) |
-| main.rs:239:35:239:35 | 2 | Ok | main.rs:239:32:239:36 | Ok(...) |
-| main.rs:240:36:240:45 | source(...) | Err | main.rs:240:32:240:46 | Err(...) |
-| main.rs:247:8:247:8 | 0 | Ok | main.rs:247:5:247:9 | Ok(...) |
 | main.rs:256:29:256:38 | source(...) | A | main.rs:256:14:256:39 | ...::A(...) |
 | main.rs:257:29:257:29 | 2 | B | main.rs:257:14:257:30 | ...::B(...) |
 | main.rs:274:16:274:25 | source(...) | A | main.rs:274:14:274:26 | A(...) |
@@ -530,11 +518,12 @@ storeStep
 | main.rs:373:27:373:27 | 2 | array[] | main.rs:373:23:373:31 | [...] |
 | main.rs:373:30:373:30 | 3 | array[] | main.rs:373:23:373:31 | [...] |
 | main.rs:376:18:376:27 | source(...) | array[] | main.rs:376:5:376:11 | [post] mut_arr |
+<<<<<<< Updated upstream
 | main.rs:406:35:406:61 | default_name | captured default_name | main.rs:406:35:406:61 | \|...\| ... |
 | main.rs:417:27:417:27 | 0 | Some | main.rs:417:22:417:28 | Some(...) |
+=======
+>>>>>>> Stashed changes
 readStep
-| file://:0:0:0:0 | [summary param] self in lang:core::_::<crate::option::Option>::unwrap | Some | file://:0:0:0:0 | [summary] read: Argument[self].Variant[crate::option::Option::Some(0)] in lang:core::_::<crate::option::Option>::unwrap |
-| main.rs:33:9:33:15 | Some(...) | Some | main.rs:33:14:33:14 | _ |
 | main.rs:95:10:95:10 | a | tuple.0 | main.rs:95:10:95:12 | a.0 |
 | main.rs:96:10:96:10 | a | tuple.1 | main.rs:96:10:96:12 | a.1 |
 | main.rs:109:10:109:10 | a | tuple.0 | main.rs:109:10:109:12 | a.0 |
@@ -551,10 +540,6 @@ readStep
 | main.rs:151:9:151:28 | Point {...} | Point.x | main.rs:151:20:151:20 | a |
 | main.rs:151:9:151:28 | Point {...} | Point.y | main.rs:151:26:151:26 | b |
 | main.rs:183:9:186:9 | Point3D {...} | Point3D.plane | main.rs:184:20:184:33 | Point {...} |
-| main.rs:201:9:201:23 | ...::Some(...) | Some | main.rs:201:22:201:22 | n |
-| main.rs:205:9:205:23 | ...::Some(...) | Some | main.rs:205:22:205:22 | n |
-| main.rs:214:9:214:15 | Some(...) | Some | main.rs:214:14:214:14 | n |
-| main.rs:218:9:218:15 | Some(...) | Some | main.rs:218:14:218:14 | n |
 | main.rs:231:14:231:15 | s1 | Ok | main.rs:231:14:231:16 | TryExpr |
 | main.rs:231:14:231:15 | s1 | Some | main.rs:231:14:231:16 | TryExpr |
 | main.rs:233:10:233:11 | s2 | Ok | main.rs:233:10:233:12 | TryExpr |

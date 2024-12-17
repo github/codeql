@@ -55,3 +55,7 @@ fn use_trait() {
     ["", ""].f();
     ["", "", ""].f();
 }
+
+fn use_trait_with_new() {
+    let x: GenericStruct<usize, String> = GenericStruct::new();
+}

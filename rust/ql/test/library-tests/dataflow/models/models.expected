@@ -10,6 +10,7 @@ models
 | 9 | Summary: repo::test; crate::set_var_field; Argument[0]; ReturnValue.Variant[crate::MyFieldEnum::D::field_d]; value |
 | 10 | Summary: repo::test; crate::set_var_pos; Argument[0]; ReturnValue.Variant[crate::MyPosEnum::B(0)]; value |
 edges
+<<<<<<< Updated upstream
 | main.rs:15:13:15:21 | source(...) | main.rs:16:19:16:19 | s | provenance |  |
 | main.rs:15:13:15:21 | source(...) | main.rs:16:19:16:19 | s | provenance |  |
 | main.rs:16:19:16:19 | s | main.rs:16:10:16:20 | identity(...) | provenance | QL |
@@ -192,10 +193,25 @@ nodes
 | main.rs:175:10:175:10 | t [tuple.1] | semmle.label | t [tuple.1] |
 | main.rs:175:10:175:12 | t.1 | semmle.label | t.1 |
 | main.rs:175:10:175:12 | t.1 | semmle.label | t.1 |
+=======
+nodes
+>>>>>>> Stashed changes
 subpaths
 testFailures
+| main.rs:16:24:16:42 | //... | Missing result: hasValueFlow=1 |
+| main.rs:26:22:26:41 | //... | Missing result: hasTaintFlow=14 |
+| main.rs:42:28:42:46 | //... | Missing result: hasValueFlow=2 |
+| main.rs:57:37:57:55 | //... | Missing result: hasValueFlow=3 |
+| main.rs:74:30:74:48 | //... | Missing result: hasValueFlow=4 |
+| main.rs:89:51:89:69 | //... | Missing result: hasValueFlow=5 |
 invalidSpecComponent
+| lang:core::_::<crate::option::Option>::unwrap | Argument[self].Variant[crate::option::Option::Some(0)] | Variant[crate::option::Option::Some(0)] |
+| repo::test::_::crate::get_var_field | Argument[0].Variant[crate::MyFieldEnum::C::field_c] | Variant[crate::MyFieldEnum::C::field_c] |
+| repo::test::_::crate::get_var_pos | Argument[0].Variant[crate::MyPosEnum::A(0)] | Variant[crate::MyPosEnum::A(0)] |
+| repo::test::_::crate::set_var_field | ReturnValue.Variant[crate::MyFieldEnum::D::field_d] | Variant[crate::MyFieldEnum::D::field_d] |
+| repo::test::_::crate::set_var_pos | ReturnValue.Variant[crate::MyPosEnum::B(0)] | Variant[crate::MyPosEnum::B(0)] |
 #select
+<<<<<<< Updated upstream
 | main.rs:16:10:16:20 | identity(...) | main.rs:15:13:15:21 | source(...) | main.rs:16:10:16:20 | identity(...) | $@ | main.rs:15:13:15:21 | source(...) | source(...) |
 | main.rs:16:10:16:20 | identity(...) | main.rs:15:13:15:21 | source(...) | main.rs:16:10:16:20 | identity(...) | $@ | main.rs:15:13:15:21 | source(...) | source(...) |
 | main.rs:26:10:26:18 | coerce(...) | main.rs:25:13:25:22 | source(...) | main.rs:26:10:26:18 | coerce(...) | $@ | main.rs:25:13:25:22 | source(...) | source(...) |
@@ -217,3 +233,5 @@ invalidSpecComponent
 | main.rs:161:10:161:29 | get_tuple_element(...) | main.rs:159:13:159:22 | source(...) | main.rs:161:10:161:29 | get_tuple_element(...) | $@ | main.rs:159:13:159:22 | source(...) | source(...) |
 | main.rs:175:10:175:12 | t.1 | main.rs:172:13:172:22 | source(...) | main.rs:175:10:175:12 | t.1 | $@ | main.rs:172:13:172:22 | source(...) | source(...) |
 | main.rs:175:10:175:12 | t.1 | main.rs:172:13:172:22 | source(...) | main.rs:175:10:175:12 | t.1 | $@ | main.rs:172:13:172:22 | source(...) | source(...) |
+=======
+>>>>>>> Stashed changes

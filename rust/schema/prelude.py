@@ -80,20 +80,12 @@ class Addressable(AstNode):
 
     TODO: This does not yet include all possible cases.
     """
-    extended_canonical_path: optional[string] | desc("""
-        Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
-        or `{<block id>}::name` for addressable items defined in an anonymous block (and only
-        addressable there-in).
-    """) | rust.detach | ql.internal
-    crate_origin: optional[string] | desc("One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.") | rust.detach | ql.internal
     canonical_path: optional["CanonicalPath"] | rust.detach | ql.internal
 
 class Resolvable(AstNode):
     """
     One of `PathExpr`, `RecordExpr`, `PathPat`, `RecordPat`, `TupleStructPat` or `MethodCallExpr`.
     """
-    resolved_path: optional[string] | rust.detach | ql.internal
-    resolved_crate_origin: optional[string] | rust.detach | ql.internal
     resolved_canonical_path: optional["CanonicalPath"] | rust.detach | ql.internal
 
 class PathAstNode(Resolvable):
@@ -127,27 +119,27 @@ class Namespace(CanonicalPath):
     """
     A namespace, comprised of a crate root and a possibly empty `::` separated module path.
     """
-    root: "CrateRoot"
+    root: "CrateRef" | child
     path: string
 
-class CrateRoot(CanonicalPathElement):
+class CrateRef(CanonicalPathElement):
     """
     The base class for all crate references.
     """
 
-class LangCrateRoot(CrateRoot):
+class LangCrateRef(CrateRef):
     """
     A reference to a crate in the Rust standard libraries.
     """
     name: string
 
-class RustcCrateRoot(CrateRoot):
+class RustcCrateRef(CrateRef):
     """
     A reference to a crate provided by rustc. TODO: understand where these come from.
     """
     name: string
 
-class RepoCrateRoot(CrateRoot):
+class RepoCrateRef(CrateRef):
     """
     A reference to a crate in the repository.
     """
@@ -165,7 +157,7 @@ class TypeGenericTypeArg(TypeGenericArg):
     """
     A generic argument for a type that is a type.
     """
-    path: "TypeCanonicalPath"
+    path: "TypeCanonicalPath" | child
 
 
 class ConstGenericTypeArg(TypeGenericArg):
@@ -185,7 +177,7 @@ class ConcreteTypeCanonicalPath(TypeCanonicalPath):
     """
     A canonical path for an actual type.
     """
-    path: "ParametrizedCanonicalPath"
+    path: "ParametrizedCanonicalPath" | child
 
 class PlaceholderTypeCanonicalPath(TypeCanonicalPath):
     """
@@ -203,37 +195,37 @@ class DerivedTypeCanonicalPath(TypeCanonicalPath):
     A derived canonical type, like `[i32; 4]`, `&mut std::string::String` or `(i32, std::string::String)`.
     """
     modifiers: list[string]
-    base: list[TypeCanonicalPath]
+    base: list[TypeCanonicalPath] | child
 
 class ModuleItemCanonicalPath(CanonicalPath):
     """
     A canonical path for an item defined in a module.
     """
-    namespace: Namespace
+    namespace: Namespace | child
     name: string
 
 class ParametrizedCanonicalPath(CanonicalPath):
-    base: ModuleItemCanonicalPath
-    generic_args: list[TypeGenericArg]
+    base: ModuleItemCanonicalPath | child
+    generic_args: list[TypeGenericArg] | child
 
 class TypeItemCanonicalPath(CanonicalPath):
     """
     A canonical path for an item defined in a type or trait.
     """
-    parent: ModuleItemCanonicalPath
+    parent: ModuleItemCanonicalPath | child
     name: string
 
 class TraitImplItemCanonicalPath(CanonicalPath):
     """
     A canonical path for an item defined in a trait impl.
     """
-    type_path: TypeCanonicalPath
-    trait_path: ParametrizedCanonicalPath
+    type_path: TypeCanonicalPath | child
+    trait_path: ParametrizedCanonicalPath | child
     name: string
 
 class TypeImplItemCanonicalPath(CanonicalPath):
     """
     A canonical path for an item defined in a type impl.
     """
-    parent: ModuleItemCanonicalPath
+    parent: ModuleItemCanonicalPath | child
     name: string

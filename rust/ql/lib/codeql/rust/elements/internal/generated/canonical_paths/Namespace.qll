@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.canonical_paths.internal.CanonicalPathImpl::Impl as CanonicalPathImpl
-import codeql.rust.elements.canonical_paths.CrateRoot
+import codeql.rust.elements.canonical_paths.CrateRef
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Namespace` and should not
@@ -25,9 +25,9 @@ module Generated {
     /**
      * Gets the root of this namespace.
      */
-    CrateRoot getRoot() {
+    CrateRef getRoot() {
       result =
-        Synth::convertCrateRootFromRaw(Synth::convertNamespaceToRaw(this).(Raw::Namespace).getRoot())
+        Synth::convertCrateRefFromRaw(Synth::convertNamespaceToRaw(this).(Raw::Namespace).getRoot())
     }
 
     /**

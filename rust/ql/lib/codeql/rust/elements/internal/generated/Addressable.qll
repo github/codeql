@@ -23,40 +23,6 @@ module Generated {
    */
   class Addressable extends Synth::TAddressable, AstNodeImpl::AstNode {
     /**
-     * Gets the extended canonical path of this addressable, if it exists.
-     *
-     * Either a canonical path (see https://doc.rust-lang.org/reference/paths.html#canonical-paths),
-     * or `{<block id>}::name` for addressable items defined in an anonymous block (and only
-     * addressable there-in).
-     * INTERNAL: Do not use.
-     */
-    string getExtendedCanonicalPath() {
-      result = Synth::convertAddressableToRaw(this).(Raw::Addressable).getExtendedCanonicalPath()
-    }
-
-    /**
-     * Holds if `getExtendedCanonicalPath()` exists.
-     * INTERNAL: Do not use.
-     */
-    final predicate hasExtendedCanonicalPath() { exists(this.getExtendedCanonicalPath()) }
-
-    /**
-     * Gets the crate origin of this addressable, if it exists.
-     *
-     * One of `rustc:<name>`, `repo:<repository>:<name>` or `lang:<name>`.
-     * INTERNAL: Do not use.
-     */
-    string getCrateOrigin() {
-      result = Synth::convertAddressableToRaw(this).(Raw::Addressable).getCrateOrigin()
-    }
-
-    /**
-     * Holds if `getCrateOrigin()` exists.
-     * INTERNAL: Do not use.
-     */
-    final predicate hasCrateOrigin() { exists(this.getCrateOrigin()) }
-
-    /**
      * Gets the canonical path of this addressable, if it exists.
      *
      * INTERNAL: Do not use.

@@ -246,12 +246,6 @@ pub struct Addressable {
 }
 
 impl Addressable {
-    pub fn emit_extended_canonical_path(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
-        out.add_tuple("addressable_extended_canonical_paths", vec![id.into(), value.into()]);
-    }
-    pub fn emit_crate_origin(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
-        out.add_tuple("addressable_crate_origins", vec![id.into(), value.into()]);
-    }
     pub fn emit_canonical_path(id: trap::Label<Self>, value: trap::Label<CanonicalPath>, out: &mut trap::Writer) {
         out.add_tuple("addressable_canonical_paths", vec![id.into(), value.into()]);
     }
@@ -2188,12 +2182,6 @@ pub struct Resolvable {
 }
 
 impl Resolvable {
-    pub fn emit_resolved_path(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
-        out.add_tuple("resolvable_resolved_paths", vec![id.into(), value.into()]);
-    }
-    pub fn emit_resolved_crate_origin(id: trap::Label<Self>, value: String, out: &mut trap::Writer) {
-        out.add_tuple("resolvable_resolved_crate_origins", vec![id.into(), value.into()]);
-    }
     pub fn emit_resolved_canonical_path(id: trap::Label<Self>, value: trap::Label<CanonicalPath>, out: &mut trap::Writer) {
         out.add_tuple("resolvable_resolved_canonical_paths", vec![id.into(), value.into()]);
     }
@@ -10651,26 +10639,26 @@ impl From<trap::Label<CanonicalPath>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
-pub struct CrateRoot {
+pub struct CrateRef {
     _unused: ()
 }
 
-impl trap::TrapClass for CrateRoot {
-    fn class_name() -> &'static str { "CrateRoot" }
+impl trap::TrapClass for CrateRef {
+    fn class_name() -> &'static str { "CrateRef" }
 }
 
-impl From<trap::Label<CrateRoot>> for trap::Label<CanonicalPathElement> {
-    fn from(value: trap::Label<CrateRoot>) -> Self {
-        // SAFETY: this is safe because in the dbscheme CrateRoot is a subclass of CanonicalPathElement
+impl From<trap::Label<CrateRef>> for trap::Label<CanonicalPathElement> {
+    fn from(value: trap::Label<CrateRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CrateRef is a subclass of CanonicalPathElement
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<CrateRoot>> for trap::Label<Element> {
-    fn from(value: trap::Label<CrateRoot>) -> Self {
-        // SAFETY: this is safe because in the dbscheme CrateRoot is a subclass of Element
+impl From<trap::Label<CrateRef>> for trap::Label<Element> {
+    fn from(value: trap::Label<CrateRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CrateRef is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10752,46 +10740,46 @@ impl From<trap::Label<ConstGenericTypeArg>> for trap::Label<TypeGenericArg> {
 }
 
 #[derive(Debug)]
-pub struct LangCrateRoot {
-    pub id: trap::TrapId<LangCrateRoot>,
+pub struct LangCrateRef {
+    pub id: trap::TrapId<LangCrateRef>,
     pub name: String,
 }
 
-impl trap::TrapEntry for LangCrateRoot {
+impl trap::TrapEntry for LangCrateRef {
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("lang_crate_roots", vec![id.into(), self.name.into()]);
+        out.add_tuple("lang_crate_refs", vec![id.into(), self.name.into()]);
     }
 }
 
-impl trap::TrapClass for LangCrateRoot {
-    fn class_name() -> &'static str { "LangCrateRoot" }
+impl trap::TrapClass for LangCrateRef {
+    fn class_name() -> &'static str { "LangCrateRef" }
 }
 
-impl From<trap::Label<LangCrateRoot>> for trap::Label<CanonicalPathElement> {
-    fn from(value: trap::Label<LangCrateRoot>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LangCrateRoot is a subclass of CanonicalPathElement
+impl From<trap::Label<LangCrateRef>> for trap::Label<CanonicalPathElement> {
+    fn from(value: trap::Label<LangCrateRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LangCrateRef is a subclass of CanonicalPathElement
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<LangCrateRoot>> for trap::Label<CrateRoot> {
-    fn from(value: trap::Label<LangCrateRoot>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LangCrateRoot is a subclass of CrateRoot
+impl From<trap::Label<LangCrateRef>> for trap::Label<CrateRef> {
+    fn from(value: trap::Label<LangCrateRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LangCrateRef is a subclass of CrateRef
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<LangCrateRoot>> for trap::Label<Element> {
-    fn from(value: trap::Label<LangCrateRoot>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LangCrateRoot is a subclass of Element
+impl From<trap::Label<LangCrateRef>> for trap::Label<Element> {
+    fn from(value: trap::Label<LangCrateRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LangCrateRef is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10849,7 +10837,7 @@ impl From<trap::Label<ModuleItemCanonicalPath>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct Namespace {
     pub id: trap::TrapId<Namespace>,
-    pub root: trap::Label<CrateRoot>,
+    pub root: trap::Label<CrateRef>,
     pub path: String,
 }
 
@@ -10946,54 +10934,54 @@ impl From<trap::Label<ParametrizedCanonicalPath>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
-pub struct RepoCrateRoot {
-    pub id: trap::TrapId<RepoCrateRoot>,
+pub struct RepoCrateRef {
+    pub id: trap::TrapId<RepoCrateRef>,
     pub name: Option<String>,
     pub repo: Option<String>,
     pub source: trap::Label<File>,
 }
 
-impl trap::TrapEntry for RepoCrateRoot {
+impl trap::TrapEntry for RepoCrateRef {
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("repo_crate_roots", vec![id.into(), self.source.into()]);
+        out.add_tuple("repo_crate_refs", vec![id.into(), self.source.into()]);
         if let Some(v) = self.name {
-            out.add_tuple("repo_crate_root_names", vec![id.into(), v.into()]);
+            out.add_tuple("repo_crate_ref_names", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.repo {
-            out.add_tuple("repo_crate_root_repos", vec![id.into(), v.into()]);
+            out.add_tuple("repo_crate_ref_repos", vec![id.into(), v.into()]);
         }
     }
 }
 
-impl trap::TrapClass for RepoCrateRoot {
-    fn class_name() -> &'static str { "RepoCrateRoot" }
+impl trap::TrapClass for RepoCrateRef {
+    fn class_name() -> &'static str { "RepoCrateRef" }
 }
 
-impl From<trap::Label<RepoCrateRoot>> for trap::Label<CanonicalPathElement> {
-    fn from(value: trap::Label<RepoCrateRoot>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RepoCrateRoot is a subclass of CanonicalPathElement
+impl From<trap::Label<RepoCrateRef>> for trap::Label<CanonicalPathElement> {
+    fn from(value: trap::Label<RepoCrateRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme RepoCrateRef is a subclass of CanonicalPathElement
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<RepoCrateRoot>> for trap::Label<CrateRoot> {
-    fn from(value: trap::Label<RepoCrateRoot>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RepoCrateRoot is a subclass of CrateRoot
+impl From<trap::Label<RepoCrateRef>> for trap::Label<CrateRef> {
+    fn from(value: trap::Label<RepoCrateRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme RepoCrateRef is a subclass of CrateRef
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<RepoCrateRoot>> for trap::Label<Element> {
-    fn from(value: trap::Label<RepoCrateRoot>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RepoCrateRoot is a subclass of Element
+impl From<trap::Label<RepoCrateRef>> for trap::Label<Element> {
+    fn from(value: trap::Label<RepoCrateRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme RepoCrateRef is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11001,46 +10989,46 @@ impl From<trap::Label<RepoCrateRoot>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
-pub struct RustcCrateRoot {
-    pub id: trap::TrapId<RustcCrateRoot>,
+pub struct RustcCrateRef {
+    pub id: trap::TrapId<RustcCrateRef>,
     pub name: String,
 }
 
-impl trap::TrapEntry for RustcCrateRoot {
+impl trap::TrapEntry for RustcCrateRef {
     fn extract_id(&mut self) -> trap::TrapId<Self> {
         std::mem::replace(&mut self.id, trap::TrapId::Star)
     }
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("rustc_crate_roots", vec![id.into(), self.name.into()]);
+        out.add_tuple("rustc_crate_refs", vec![id.into(), self.name.into()]);
     }
 }
 
-impl trap::TrapClass for RustcCrateRoot {
-    fn class_name() -> &'static str { "RustcCrateRoot" }
+impl trap::TrapClass for RustcCrateRef {
+    fn class_name() -> &'static str { "RustcCrateRef" }
 }
 
-impl From<trap::Label<RustcCrateRoot>> for trap::Label<CanonicalPathElement> {
-    fn from(value: trap::Label<RustcCrateRoot>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RustcCrateRoot is a subclass of CanonicalPathElement
+impl From<trap::Label<RustcCrateRef>> for trap::Label<CanonicalPathElement> {
+    fn from(value: trap::Label<RustcCrateRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme RustcCrateRef is a subclass of CanonicalPathElement
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<RustcCrateRoot>> for trap::Label<CrateRoot> {
-    fn from(value: trap::Label<RustcCrateRoot>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RustcCrateRoot is a subclass of CrateRoot
+impl From<trap::Label<RustcCrateRef>> for trap::Label<CrateRef> {
+    fn from(value: trap::Label<RustcCrateRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme RustcCrateRef is a subclass of CrateRef
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<RustcCrateRoot>> for trap::Label<Element> {
-    fn from(value: trap::Label<RustcCrateRoot>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RustcCrateRoot is a subclass of Element
+impl From<trap::Label<RustcCrateRef>> for trap::Label<Element> {
+    fn from(value: trap::Label<RustcCrateRef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme RustcCrateRef is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

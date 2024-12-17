@@ -3,18 +3,12 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  TypeAlias x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasCanonicalPath,
-  int getNumberOfAttrs, string hasGenericParamList, string isDefault, string hasName,
-  string hasTypeRepr, string hasTypeBoundList, string hasVisibility, string hasWhereClause
+  TypeAlias x, string hasCanonicalPath, int getNumberOfAttrs, string hasGenericParamList,
+  string isDefault, string hasName, string hasTypeRepr, string hasTypeBoundList,
+  string hasVisibility, string hasWhereClause
 where
   toBeTested(x) and
   not x.isUnknown() and
-  (
-    if x.hasExtendedCanonicalPath()
-    then hasExtendedCanonicalPath = "yes"
-    else hasExtendedCanonicalPath = "no"
-  ) and
-  (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
   (if x.hasCanonicalPath() then hasCanonicalPath = "yes" else hasCanonicalPath = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
@@ -24,8 +18,7 @@ where
   (if x.hasTypeBoundList() then hasTypeBoundList = "yes" else hasTypeBoundList = "no") and
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
-select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasCanonicalPath:", hasCanonicalPath, "getNumberOfAttrs:", getNumberOfAttrs,
+select x, "hasCanonicalPath:", hasCanonicalPath, "getNumberOfAttrs:", getNumberOfAttrs,
   "hasGenericParamList:", hasGenericParamList, "isDefault:", isDefault, "hasName:", hasName,
   "hasTypeRepr:", hasTypeRepr, "hasTypeBoundList:", hasTypeBoundList, "hasVisibility:",
   hasVisibility, "hasWhereClause:", hasWhereClause
