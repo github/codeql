@@ -22,7 +22,7 @@ import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.security.Sanitizers
 import Log4jInjectionFlow::PathGraph
 
-private class ActivateModels extends ActiveExperimentalModels {
+deprecated private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "log4j-injection" }
 }
 

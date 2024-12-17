@@ -17,7 +17,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.ExternalFlow
 import RemoteUrlToOpenStreamFlow::PathGraph
 
-private class ActivateModels extends ActiveExperimentalModels {
+deprecated private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "openstream-called-on-tainted-url" }
 }
 

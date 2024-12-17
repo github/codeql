@@ -22,7 +22,7 @@ import semmle.code.java.security.PathSanitizer
 private import semmle.code.java.security.Sanitizers
 import InjectFilePathFlow::PathGraph
 
-private class ActivateModels extends ActiveExperimentalModels {
+deprecated private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "file-path-injection" }
 }
 

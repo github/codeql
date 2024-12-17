@@ -34,6 +34,8 @@ extensible predicate neutralModel(
 );
 
 /**
+ * DEPRECATED: Do not use.
+ *
  * Holds if an experimental source model exists for the given parameters.
  * This is only for experimental queries.
  */
@@ -43,6 +45,8 @@ extensible predicate experimentalSourceModel(
 );
 
 /**
+ * DEPRECATED: Do not use.
+ *
  * Holds if an experimental sink model exists for the given parameters.
  * This is only for experimental queries.
  */
@@ -52,6 +56,8 @@ extensible predicate experimentalSinkModel(
 );
 
 /**
+ * DEPRECATED: Do not use.
+ *
  * Holds if an experimental summary model exists for the given parameters.
  * This is only for experimental queries.
  */
