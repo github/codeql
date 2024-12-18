@@ -100,7 +100,8 @@ struct MyInt {
 impl Add for MyInt {
     type Output = MyInt;
 
-    fn add(self, other: MyInt) -> MyInt {
+    fn add(self, _other: MyInt) -> MyInt {
+        // Ignore `_other` to get value flow for `self.value`
         MyInt { value: self.value }
     }
 }
@@ -111,9 +112,9 @@ pub fn test_operator_overloading() {
     let c = a + b;
     sink(c.value); // $ MISSING: hasValueFlow=5
 
-    let a = MyInt { value: source(6) };
-    let b = MyInt { value: 2 };
-    let d = b + a;
+    let a = MyInt { value: 2 };
+    let b = MyInt { value: source(6) };
+    let d = a + b;
     sink(d.value);
 
     let a = MyInt { value: source(7) };
