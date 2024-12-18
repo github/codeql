@@ -1673,9 +1673,9 @@ abstract private class TemplateParameterImpl extends Locatable {
 /**
  * A C++ template parameter.
  *
- * In the example below, `T` and `I` are template parameters:
+ * In the example below, `T`, `TT`, and `I` are template parameters:
  * ```
- * template <class T, int I>
+ * template <class T, template<typename> TT, int I>
  * class C { };
  * ```
  */
