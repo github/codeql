@@ -785,6 +785,10 @@ usertype_uuid(
     string uuid: string ref
 );
 
+nontype_template_parameters(
+    int id: @expr ref
+);
+
 mangled_name(
     unique int id: @declaration ref,
     int mangled_name : @mangledname,
