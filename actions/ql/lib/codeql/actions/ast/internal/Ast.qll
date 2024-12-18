@@ -273,7 +273,7 @@ class ExpressionImpl extends AstNodeImpl, TExpressionNode {
 
   override ScalarValueImpl getParentNode() { result.getNode() = value }
 
-  override string getAPrimaryQlClass() { result = "ExpressionNode" }
+  override string getAPrimaryQlClass() { result = "ExpressionImpl" }
 
   override YamlNode getNode() { none() }
 
