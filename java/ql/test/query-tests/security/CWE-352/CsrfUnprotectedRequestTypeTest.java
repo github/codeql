@@ -22,6 +22,10 @@ import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.HttpRedirect;
 import org.kohsuke.stapler.HttpResponses;
+import org.apache.ibatis.jdbc.SqlRunner;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import java.util.Map;
 
 @Controller
 public class CsrfUnprotectedRequestTypeTest {
@@ -142,29 +146,46 @@ public class CsrfUnprotectedRequestTypeTest {
         } catch (SQLException e) { }
     }
 
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `Statement.executeUpdate`
     @RequestMapping("/")
     public void badStatementExecuteUpdate() { // $ hasCsrfUnprotectedRequestType
         try {
             String item = "item";
             String price = "price";
             Statement statement = connection.createStatement();
-            String query = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
-            int count = statement.executeUpdate(query);
+            String sql = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+            int count = statement.executeUpdate(sql);
         } catch (SQLException e) { }
     }
 
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `Statement.executeLargeUpdate`
+    @RequestMapping("/")
+    public void badStatementExecuteLargeUpdate() { // $ hasCsrfUnprotectedRequestType
+        try {
+            String item = "item";
+            String price = "price";
+            Statement statement = connection.createStatement();
+            String sql = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+            long count = statement.executeLargeUpdate(sql);
+        } catch (SQLException e) { }
+    }
+
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `Statement.execute` with SQL UPDATE
     @RequestMapping("/")
     public void badStatementExecute() { // $ hasCsrfUnprotectedRequestType
         try {
             String item = "item";
             String price = "price";
             Statement statement = connection.createStatement();
-            String query = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
-            boolean bool = statement.execute(query);
+            String sql = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+            boolean bool = statement.execute(sql);
         } catch (SQLException e) { }
     }
 
-    // GOOD: select not insert/update/delete
+    // GOOD: does not update a database, queries with SELECT
     @RequestMapping("/")
     public void goodStatementExecute() {
         try {
@@ -174,6 +195,135 @@ public class CsrfUnprotectedRequestTypeTest {
                     + category + "' ORDER BY PRICE";
             boolean bool = statement.execute(query);
         } catch (SQLException e) { }
+    }
+
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `SqlRunner.insert`
+    @RequestMapping("/")
+    public void badSqlRunnerInsert() { // $ hasCsrfUnprotectedRequestType
+        try {
+            String item = "item";
+            String price = "price";
+            String sql = "INSERT PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+            SqlRunner sqlRunner = new SqlRunner(connection);
+            sqlRunner.insert(sql);
+        } catch (SQLException e) { }
+    }
+
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `SqlRunner.update`
+    @RequestMapping("/")
+    public void badSqlRunnerUpdate() { // $ hasCsrfUnprotectedRequestType
+        try {
+            String item = "item";
+            String price = "price";
+            String sql = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+            SqlRunner sqlRunner = new SqlRunner(connection);
+            sqlRunner.update(sql);
+        } catch (SQLException e) { }
+    }
+
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `SqlRunner.delete`
+    @RequestMapping("/")
+    public void badSqlRunnerDelete() { // $ hasCsrfUnprotectedRequestType
+        try {
+            String item = "item";
+            String price = "price";
+            String sql = "DELETE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+            SqlRunner sqlRunner = new SqlRunner(connection);
+            sqlRunner.delete(sql);
+        } catch (SQLException e) { }
+    }
+
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `JdbcTemplate.update`
+    @RequestMapping("/")
+    public void badJdbcTemplateUpdate() { // $ hasCsrfUnprotectedRequestType
+        String item = "item";
+        String price = "price";
+        String sql = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        jdbcTemplate.update(sql);
+    }
+
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `JdbcTemplate.batchUpdate`
+    @RequestMapping("/")
+    public void badJdbcTemplateBatchUpdate() { // $ hasCsrfUnprotectedRequestType
+        String item = "item";
+        String price = "price";
+        String sql = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        jdbcTemplate.batchUpdate(sql, null, null);
+    }
+
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `JdbcTemplate.execute`
+    @RequestMapping("/")
+    public void badJdbcTemplateExecute() { // $ hasCsrfUnprotectedRequestType
+        String item = "item";
+        String price = "price";
+        String sql = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        jdbcTemplate.execute(sql);
+    }
+
+    // GOOD: does not update a database, queries with SELECT
+    @RequestMapping("/")
+    public void goodJdbcTemplateExecute() {
+        String category = "category";
+        String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+                + category + "' ORDER BY PRICE";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        jdbcTemplate.execute(query);
+    }
+
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `NamedParameterJdbcTemplate.update`
+    @RequestMapping("/")
+    public void badNamedParameterJdbcTemplateUpdate() { // $ hasCsrfUnprotectedRequestType
+        String item = "item";
+        String price = "price";
+        String sql = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        NamedParameterJdbcTemplate namedParamJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        namedParamJdbcTemplate.update(sql, null, null);
+    }
+
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `NamedParameterJdbcTemplate.batchUpdate`
+    @RequestMapping("/")
+    public void badNamedParameterJdbcTemplateBatchUpdate() { // $ hasCsrfUnprotectedRequestType
+        String item = "item";
+        String price = "price";
+        String sql = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        NamedParameterJdbcTemplate namedParamJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        namedParamJdbcTemplate.batchUpdate(sql, (Map<String,?>[]) null);
+    }
+
+    // BAD: allows request type not default-protected from CSRF when
+    // updating a database using `NamedParameterJdbcTemplate.execute`
+    @RequestMapping("/")
+    public void badNamedParameterJdbcTemplateExecute() { // $ hasCsrfUnprotectedRequestType
+        String item = "item";
+        String price = "price";
+        String sql = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        NamedParameterJdbcTemplate namedParamJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        namedParamJdbcTemplate.execute(sql, null);
+    }
+
+    // GOOD: does not update a database, queries with SELECT
+    @RequestMapping("/")
+    public void goodNamedParameterJdbcTemplateExecute() {
+        String category = "category";
+        String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+                + category + "' ORDER BY PRICE";
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        NamedParameterJdbcTemplate namedParamJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        namedParamJdbcTemplate.execute(query, null);
     }
 
     @Autowired
