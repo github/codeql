@@ -124,11 +124,7 @@ predicate vulnerableActionsDataModel(
  * Fields:
  *    - action: action name
  */
-predicate immutableActionsDataModel(
-  string action
-) {
-  Extensions::immutableActionsDataModel(action)
-}
+predicate immutableActionsDataModel(string action) { Extensions::immutableActionsDataModel(action) }
 
 /**
  * MaD models for untrusted git commands

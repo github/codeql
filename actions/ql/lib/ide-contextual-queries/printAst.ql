@@ -26,4 +26,3 @@ class Cfg extends PrintAstConfiguration {
     n.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
   }
 }
-

@@ -7,9 +7,7 @@ private import actions
  *       uses: github/codeql-action/init@v2
  *       with:
  *         languages: ruby, javascript
- * 
  */
-
 class DefaultableCodeQLInitiatlizeActionQuery extends UsesStep {
   DefaultableCodeQLInitiatlizeActionQuery() {
     this.getCallee() = "github/codeql-action/init" and
@@ -17,7 +15,7 @@ class DefaultableCodeQLInitiatlizeActionQuery extends UsesStep {
   }
 }
 
-/** 
+/**
  * Holds if the with: part of the workflow step contains any arguments for with: other than "languages".
  * e.g.
  *  - name: Initialize CodeQL
@@ -25,9 +23,7 @@ class DefaultableCodeQLInitiatlizeActionQuery extends UsesStep {
  *       with:
  *         languages: ${{ matrix.language }}
  *         config-file: ./.github/codeql/${{ matrix.language }}/codeql-config.yml
- * 
  */
-
 predicate customizedWorkflowStep(UsesStep codeQLInitStep) {
   exists(string arg |
     exists(codeQLInitStep.getArgument(arg)) and

@@ -7,47 +7,47 @@
  * @tags ide-contextual-queries/print-cfg
  */
 
- private import codeql.actions.Cfg
- private import codeql.actions.Cfg::TestOutput
- private import codeql.actions.ideContextual.IDEContextual
- private import codeql.Locations
- 
- /**
-  * Gets the source file to generate a CFG from.
-  */
- external string selectedSourceFile();
- 
- external string selectedSourceLine();
- 
- external string selectedSourceColumn();
- 
- bindingset[file, line, column]
- private CfgScope smallestEnclosingScope(File file, int line, int column) {
-   result =
-     min(Location loc, CfgScope scope |
-       loc = scope.getLocation() and
-       (
-         loc.getStartLine() < line
-         or
-         loc.getStartLine() = line and loc.getStartColumn() <= column
-       ) and
-       (
-         loc.getEndLine() > line
-         or
-         loc.getEndLine() = line and loc.getEndColumn() >= column
-       ) and
-       loc.getFile() = file
-     |
-       scope
-       order by
-         loc.getStartLine() desc, loc.getStartColumn() desc, loc.getEndLine(), loc.getEndColumn()
-     )
- }
- 
- class MyRelevantNode extends RelevantNode {
-   MyRelevantNode() {
-     this.getScope() =
-       smallestEnclosingScope(getFileBySourceArchiveName(selectedSourceFile()),
-         selectedSourceLine().toInt(), selectedSourceColumn().toInt())
-   }
- }
+private import codeql.actions.Cfg
+private import codeql.actions.Cfg::TestOutput
+private import codeql.actions.ideContextual.IDEContextual
+private import codeql.Locations
+
+/**
+ * Gets the source file to generate a CFG from.
+ */
+external string selectedSourceFile();
+
+external string selectedSourceLine();
+
+external string selectedSourceColumn();
+
+bindingset[file, line, column]
+private CfgScope smallestEnclosingScope(File file, int line, int column) {
+  result =
+    min(Location loc, CfgScope scope |
+      loc = scope.getLocation() and
+      (
+        loc.getStartLine() < line
+        or
+        loc.getStartLine() = line and loc.getStartColumn() <= column
+      ) and
+      (
+        loc.getEndLine() > line
+        or
+        loc.getEndLine() = line and loc.getEndColumn() >= column
+      ) and
+      loc.getFile() = file
+    |
+      scope
+      order by
+        loc.getStartLine() desc, loc.getStartColumn() desc, loc.getEndLine(), loc.getEndColumn()
+    )
+}
+
+class MyRelevantNode extends RelevantNode {
+  MyRelevantNode() {
+    this.getScope() =
+      smallestEnclosingScope(getFileBySourceArchiveName(selectedSourceFile()),
+        selectedSourceLine().toInt(), selectedSourceColumn().toInt())
+  }
+}

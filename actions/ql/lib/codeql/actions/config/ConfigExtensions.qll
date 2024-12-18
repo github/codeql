@@ -61,9 +61,7 @@ extensible predicate vulnerableActionsDataModel(
 /**
  * Holds for actions that are known to be immutable.
  */
-extensible predicate immutableActionsDataModel(
-  string action
-);
+extensible predicate immutableActionsDataModel(string action);
 
 /**
  * Holds for git commands that may introduce untrusted data when called on an attacker controlled branch.
