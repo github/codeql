@@ -1,7 +1,7 @@
 ---
 library: false
 name: codeql/actions-queries
-version: 0.3.0
+version: 0.3.1
 groups: [actions, queries]
 suites: codeql-suites
 extractor: actions
