@@ -100,7 +100,7 @@ fn tuple_match() {
     let a = (2, source(38), 2);
     let (a0, a1, a2) = a;
     sink(a0);
-    sink(a1); // $ MISSING: hasValueFlow=38
+    sink(a1); // $ hasValueFlow=38
     sink(a2);
 }
 

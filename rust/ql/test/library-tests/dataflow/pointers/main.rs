@@ -33,7 +33,7 @@ fn write_and_read_through_borrow() {
 }
 
 fn takes_borrowed_value(&n: &i64) {
-    sink(n); // $ MISSING: hasValueFlow=83
+    sink(n); // $ hasValueFlow=83
 }
 
 fn pass_borrowed_value() {
@@ -75,7 +75,7 @@ fn through_self_in_method_implicit_borrow() {
 
 fn through_self_in_method_explicit_borrow() {
     let my_number = &MyNumber::MyNumber(source(40));
-    sink(my_number.get_number()); // $ MISSING: hasValueFlow=40
+    sink(my_number.get_number()); // $ hasValueFlow=40
 }
 
 fn ref_nested_pattern_match() {
@@ -85,7 +85,7 @@ fn ref_nested_pattern_match() {
     let b = match a {
         &(n, _) => n
     };
-    sink(b); // $ MISSING: hasValueFlow=23
+    sink(b); // $ hasValueFlow=23
 
     // Match "out of order", tuple then ref
     let c = match a {
