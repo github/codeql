@@ -1010,6 +1010,12 @@ module RustDataFlow implements InputSig<Location> {
         node2.asPat() = pat.getField(pos)
       )
       or
+      exists(TuplePatCfgNode pat, int pos |
+        pos = c.(TuplePositionContent).getPosition() and
+        node1.asPat() = pat and
+        node2.asPat() = pat.getField(pos)
+      )
+      or
       exists(RecordPatCfgNode pat, string field |
         pat = node1.asPat() and
         (
@@ -1022,6 +1028,9 @@ module RustDataFlow implements InputSig<Location> {
         ) and
         node2.asPat() = pat.getFieldPat(field)
       )
+      or
+      c instanceof ReferenceContent and
+      node1.asPat().(RefPatCfgNode).getPat() = node2.asPat()
       or
       exists(FieldExprCfgNode access |
         // Read of a tuple entry
