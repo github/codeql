@@ -7,10 +7,8 @@ edges
 | main.rs:22:9:22:9 | a | main.rs:23:9:23:9 | b | provenance |  |
 | main.rs:22:13:22:22 | source(...) | main.rs:22:9:22:9 | a | provenance |  |
 | main.rs:23:9:23:9 | b | main.rs:24:10:24:17 | b as i64 | provenance |  |
-| main.rs:37:13:37:13 | s | main.rs:38:13:38:18 | sliced | provenance |  |
 | main.rs:37:13:37:13 | s | main.rs:38:23:38:29 | s[...] | provenance |  |
 | main.rs:37:17:37:26 | source(...) | main.rs:37:13:37:13 | s | provenance |  |
-| main.rs:38:13:38:18 | sliced | main.rs:39:14:39:19 | sliced | provenance |  |
 | main.rs:38:13:38:18 | sliced [&ref] | main.rs:39:14:39:19 | sliced | provenance |  |
 | main.rs:38:22:38:29 | &... [&ref] | main.rs:38:13:38:18 | sliced [&ref] | provenance |  |
 | main.rs:38:23:38:29 | s[...] | main.rs:38:22:38:29 | &... [&ref] | provenance |  |
@@ -31,7 +29,6 @@ nodes
 | main.rs:24:10:24:17 | b as i64 | semmle.label | b as i64 |
 | main.rs:37:13:37:13 | s | semmle.label | s |
 | main.rs:37:17:37:26 | source(...) | semmle.label | source(...) |
-| main.rs:38:13:38:18 | sliced | semmle.label | sliced |
 | main.rs:38:13:38:18 | sliced [&ref] | semmle.label | sliced [&ref] |
 | main.rs:38:22:38:29 | &... [&ref] | semmle.label | &... [&ref] |
 | main.rs:38:23:38:29 | s[...] | semmle.label | s[...] |

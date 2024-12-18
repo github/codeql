@@ -46,8 +46,6 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
         RustDataFlow::readStep(pred, cs, succ) and
         cs.getContent() instanceof ArrayElementContent
       )
-      or
-      pred.asExpr() = succ.asExpr().(RefExprCfgNode).getExpr()
     )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(Node::FlowSummaryNode).getSummaryNode(),

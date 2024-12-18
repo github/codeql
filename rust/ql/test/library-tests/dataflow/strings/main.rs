@@ -37,7 +37,7 @@ fn string_add_reference() {
     let s1 = source(37);
     let s2 = "1".to_string();
 
-    sink("Hello ".to_string() + &s1); // $ hasTaintFlow=37
+    sink("Hello ".to_string() + &s1); // $ MISSING: hasTaintFlow=37
     sink("Hello ".to_string() + &s2);
 }
 
