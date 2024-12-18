@@ -4,6 +4,7 @@ use std::{fs, path::PathBuf};
 pub mod codegen;
 mod flags;
 use codegen::grammar::ast_src::{AstNodeSrc, AstSrc, Field};
+use itertools::Itertools;
 use std::collections::{BTreeMap, BTreeSet};
 use std::env;
 use ungrammar::Grammar;
@@ -475,10 +476,10 @@ use ra_ap_syntax::ast::{{
 use ra_ap_syntax::{{ast, AstNode}};
 
 impl Translator<'_> {{
-    fn emit_else_branch(&mut self, node: ast::ElseBranch) -> Label<generated::Expr> {{
+    fn emit_else_branch(&mut self, node: ast::ElseBranch) -> Option<Label<generated::Expr>> {{
         match node {{
-            ast::ElseBranch::IfExpr(inner) => self.emit_if_expr(inner).into(),
-            ast::ElseBranch::Block(inner) => self.emit_block_expr(inner).into(),
+            ast::ElseBranch::IfExpr(inner) => self.emit_if_expr(inner).map(Into::into),
+            ast::ElseBranch::Block(inner) => self.emit_block_expr(inner).map(Into::into),
         }}
     }}\n"
     )?;
@@ -488,7 +489,7 @@ impl Translator<'_> {{
 
         writeln!(
             buf,
-            "    pub(crate) fn emit_{}(&mut self, node: ast::{}) -> Label<generated::{}> {{",
+            "    pub(crate) fn emit_{}(&mut self, node: ast::{}) -> Option<Label<generated::{}>> {{",
             to_lower_snake_case(type_name),
             type_name,
             class_name
@@ -497,7 +498,7 @@ impl Translator<'_> {{
         for variant in &node.variants {
             writeln!(
                 buf,
-                "            ast::{}::{}(inner) => self.emit_{}(inner).into(),",
+                "            ast::{}::{}(inner) => self.emit_{}(inner).map(Into::into),",
                 type_name,
                 variant,
                 to_lower_snake_case(variant)
@@ -513,7 +514,7 @@ impl Translator<'_> {{
 
         writeln!(
             buf,
-            "    pub(crate) fn emit_{}(&mut self, node: ast::{}) -> Label<generated::{}> {{",
+            "    pub(crate) fn emit_{}(&mut self, node: ast::{}) -> Option<Label<generated::{}>> {{",
             to_lower_snake_case(type_name),
             type_name,
             class_name
@@ -521,6 +522,15 @@ impl Translator<'_> {{
         for field in get_fields(node) {
             if &field.tp == "SyntaxToken" {
                 continue;
+            }
+
+            if field.name == "attrs" {
+                // special case: this means the node type implements `HasAttrs`, and we want to
+                // check whether it was not excluded by a `cfg` attribute
+                writeln!(
+                    buf,
+                    "        if self.should_be_excluded(&node) {{ return None; }}"
+                )?;
             }
 
             let type_name = &field.tp;
@@ -542,7 +552,7 @@ impl Translator<'_> {{
             } else if field.is_many {
                 writeln!(
                     buf,
-                    "        let {} = node.{}().map(|x| self.emit_{}(x)).collect();",
+                    "        let {} = node.{}().filter_map(|x| self.emit_{}(x)).collect();",
                     class_field_name,
                     struct_field_name,
                     to_lower_snake_case(type_name)
@@ -550,7 +560,7 @@ impl Translator<'_> {{
             } else {
                 writeln!(
                     buf,
-                    "        let {} = node.{}().map(|x| self.emit_{}(x));",
+                    "        let {} = node.{}().and_then(|x| self.emit_{}(x));",
                     class_field_name,
                     struct_field_name,
                     to_lower_snake_case(type_name)
@@ -582,7 +592,7 @@ impl Translator<'_> {{
             buf,
             "        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());"
         )?;
-        writeln!(buf, "        label")?;
+        writeln!(buf, "        Some(label)")?;
 
         writeln!(buf, "    }}\n")?;
     }
