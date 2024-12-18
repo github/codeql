@@ -13,6 +13,15 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import org.kohsuke.stapler.WebMethod;
+import org.kohsuke.stapler.interceptor.RequirePOST;
+import org.kohsuke.stapler.verb.POST;
+import org.kohsuke.stapler.verb.GET;
+import org.kohsuke.stapler.verb.PUT;
+import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.HttpRedirect;
+import org.kohsuke.stapler.HttpResponses;
 
 @Controller
 public class CsrfUnprotectedRequestTypeTest {
@@ -212,9 +221,71 @@ public class CsrfUnprotectedRequestTypeTest {
 		myBatisService.bad10(user);
 	}
 
+    // Test name-based heuristic
+
     // BAD: method name implies a state-change
     @GetMapping(value = "delete")
 	public String delete(@RequestParam String user) { // $ hasCsrfUnprotectedRequestType
 		return "delete";
+	}
+
+    // Test Stapler web methods with name-based heuristic
+
+    // BAD: Stapler web method annotated with `@WebMethod` and method name that implies a state-change
+    @WebMethod(name = "post")
+	public String doPost(String user) { // $ hasCsrfUnprotectedRequestType
+		return "post";
+	}
+
+    // GOOD: nothing to indicate that this is a Stapler web method
+	public String postNotAWebMethod(String user) {
+		return "post";
+	}
+
+    // GOOD: Stapler web method annotated with `@RequirePOST` and method name that implies a state-change
+    @RequirePOST
+	public String doPost1(String user) {
+		return "post";
+	}
+
+    // GOOD: Stapler web method annotated with `@POST` and method name that implies a state-change
+    @POST
+	public String doPost2(String user) {
+		return "post";
+	}
+
+    // BAD: Stapler web method annotated with `@GET` and method name that implies a state-change
+    @GET
+	public String doPost3(String user) { // $ hasCsrfUnprotectedRequestType
+		return "post";
+	}
+
+    // BAD: Stapler web method annotated with `@PUT` and method name that implies a state-change
+    // We treat this case as bad for Stapler since the Jenkins docs only say that @POST/@RequirePOST
+    // provide default protection against CSRF.
+    @PUT
+	public String doPut(String user) { // $ hasCsrfUnprotectedRequestType
+		return "put";
+	}
+
+    // BAD: Stapler web method parameter of type `StaplerRequest` and method name that implies a state-change
+	public String doPost4(StaplerRequest request) { // $ hasCsrfUnprotectedRequestType
+		return "post";
+	}
+
+    // BAD: Stapler web method parameter annotated with `@QueryParameter` and method name that implies a state-change
+	public String doPost5(@QueryParameter(value="user", fixEmpty=false, required=false) String user) { // $ hasCsrfUnprotectedRequestType
+		return "post";
+	}
+
+    // BAD: Stapler web method with declared exception type implementing HttpResponse and method name that implies a state-change
+	public String doPost6(String user) throws HttpResponses.HttpResponseException { // $ hasCsrfUnprotectedRequestType
+		return "post";
+	}
+
+    // BAD: Stapler web method with return type implementing HttpResponse and method name that implies a state-change
+	public HttpRedirect doPost7(String url) { // $ hasCsrfUnprotectedRequestType
+        HttpRedirect redirect = new HttpRedirect(url);
+		return redirect;
 	}
 }
