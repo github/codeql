@@ -202,23 +202,23 @@ async def request_test(request: Request): # $ requestHandler routedParameter=req
     ensure_tainted(
         request, # $ tainted
 
-        await request.body(), # $ MISSING: tainted
+        await request.body(), # $ tainted
 
-        await request.json(), # $ MISSING: tainted
-        await request.json()["key"], # $ MISSING: tainted
+        await request.json(), # $ tainted
+        await request.json()["key"], # $ tainted
 
-        # form() returns a FormDat (which is a starlette ImmutableMultiDict)
-        await request.form(), # $ MISSING: tainted
-        await request.form()["key"], # $ MISSING: tainted
+        # form() returns a FormData (which is a starlette ImmutableMultiDict)
+        await request.form(), # $ tainted
+        await request.form()["key"], # $ tainted
         await request.form().getlist("key"), # $ MISSING: tainted
         await request.form().getlist("key")[0], # $ MISSING: tainted
         # data in the form could be an starlette.datastructures.UploadFile
         await request.form()["file"].filename, # $ MISSING: tainted
         await request.form().getlist("file")[0].filename, # $ MISSING: tainted
 
-        request.cookies, # $ MISSING: tainted
-        request.cookies["key"], # $ MISSING: tainted
+        request.cookies, # $ tainted
+        request.cookies["key"], # $ tainted
     )
 
     async for chunk in request.stream():
-        ensure_tainted(chunk) # $ MISSING: tainted
+        ensure_tainted(chunk) # $ tainted
