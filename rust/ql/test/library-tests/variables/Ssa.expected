@@ -152,6 +152,8 @@ read
 | variables.rs:16:9:16:10 | x1 | variables.rs:16:9:16:10 | x1 | variables.rs:17:15:17:16 | x1 |
 | variables.rs:21:9:21:14 | x2 | variables.rs:21:13:21:14 | x2 | variables.rs:22:15:22:16 | x2 |
 | variables.rs:23:5:23:6 | x2 | variables.rs:21:13:21:14 | x2 | variables.rs:24:15:24:16 | x2 |
+| variables.rs:28:9:28:13 | x | variables.rs:28:13:28:13 | x | variables.rs:29:20:29:20 | x |
+| variables.rs:30:5:30:5 | x | variables.rs:28:13:28:13 | x | variables.rs:31:20:31:20 | x |
 | variables.rs:35:9:35:10 | x3 | variables.rs:35:9:35:10 | x3 | variables.rs:36:15:36:16 | x3 |
 | variables.rs:35:9:35:10 | x3 | variables.rs:35:9:35:10 | x3 | variables.rs:38:9:38:10 | x3 |
 | variables.rs:37:9:37:10 | x3 | variables.rs:37:9:37:10 | x3 | variables.rs:39:15:39:16 | x3 |
@@ -276,7 +278,9 @@ read
 | variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:512:5:512:5 | a |
 | variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:513:15:513:15 | a |
 | variables.rs:514:5:514:5 | a | variables.rs:510:13:510:13 | a | variables.rs:515:15:515:15 | a |
+| variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:520:20:520:20 | x |
 | variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:521:15:521:15 | x |
+| variables.rs:523:9:523:9 | z | variables.rs:523:9:523:9 | z | variables.rs:524:20:524:20 | z |
 | variables.rs:532:10:532:18 | SelfParam | variables.rs:532:15:532:18 | self | variables.rs:533:6:533:9 | self |
 firstRead
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s | variables.rs:4:20:4:20 | s |
@@ -285,6 +289,8 @@ firstRead
 | variables.rs:16:9:16:10 | x1 | variables.rs:16:9:16:10 | x1 | variables.rs:17:15:17:16 | x1 |
 | variables.rs:21:9:21:14 | x2 | variables.rs:21:13:21:14 | x2 | variables.rs:22:15:22:16 | x2 |
 | variables.rs:23:5:23:6 | x2 | variables.rs:21:13:21:14 | x2 | variables.rs:24:15:24:16 | x2 |
+| variables.rs:28:9:28:13 | x | variables.rs:28:13:28:13 | x | variables.rs:29:20:29:20 | x |
+| variables.rs:30:5:30:5 | x | variables.rs:28:13:28:13 | x | variables.rs:31:20:31:20 | x |
 | variables.rs:35:9:35:10 | x3 | variables.rs:35:9:35:10 | x3 | variables.rs:36:15:36:16 | x3 |
 | variables.rs:37:9:37:10 | x3 | variables.rs:37:9:37:10 | x3 | variables.rs:39:15:39:16 | x3 |
 | variables.rs:43:9:43:10 | x4 | variables.rs:43:9:43:10 | x4 | variables.rs:44:15:44:16 | x4 |
@@ -383,7 +389,8 @@ firstRead
 | variables.rs:491:22:491:22 | n | variables.rs:491:22:491:22 | n | variables.rs:493:25:493:25 | n |
 | variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:511:15:511:15 | a |
 | variables.rs:514:5:514:5 | a | variables.rs:510:13:510:13 | a | variables.rs:515:15:515:15 | a |
-| variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:521:15:521:15 | x |
+| variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:520:20:520:20 | x |
+| variables.rs:523:9:523:9 | z | variables.rs:523:9:523:9 | z | variables.rs:524:20:524:20 | z |
 | variables.rs:532:10:532:18 | SelfParam | variables.rs:532:15:532:18 | self | variables.rs:533:6:533:9 | self |
 lastRead
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s | variables.rs:4:20:4:20 | s |
@@ -392,6 +399,8 @@ lastRead
 | variables.rs:16:9:16:10 | x1 | variables.rs:16:9:16:10 | x1 | variables.rs:17:15:17:16 | x1 |
 | variables.rs:21:9:21:14 | x2 | variables.rs:21:13:21:14 | x2 | variables.rs:22:15:22:16 | x2 |
 | variables.rs:23:5:23:6 | x2 | variables.rs:21:13:21:14 | x2 | variables.rs:24:15:24:16 | x2 |
+| variables.rs:28:9:28:13 | x | variables.rs:28:13:28:13 | x | variables.rs:29:20:29:20 | x |
+| variables.rs:30:5:30:5 | x | variables.rs:28:13:28:13 | x | variables.rs:31:20:31:20 | x |
 | variables.rs:35:9:35:10 | x3 | variables.rs:35:9:35:10 | x3 | variables.rs:38:9:38:10 | x3 |
 | variables.rs:37:9:37:10 | x3 | variables.rs:37:9:37:10 | x3 | variables.rs:39:15:39:16 | x3 |
 | variables.rs:43:9:43:10 | x4 | variables.rs:43:9:43:10 | x4 | variables.rs:49:15:49:16 | x4 |
@@ -492,6 +501,7 @@ lastRead
 | variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:513:15:513:15 | a |
 | variables.rs:514:5:514:5 | a | variables.rs:510:13:510:13 | a | variables.rs:515:15:515:15 | a |
 | variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:521:15:521:15 | x |
+| variables.rs:523:9:523:9 | z | variables.rs:523:9:523:9 | z | variables.rs:524:20:524:20 | z |
 | variables.rs:532:10:532:18 | SelfParam | variables.rs:532:15:532:18 | self | variables.rs:533:6:533:9 | self |
 adjacentReads
 | variables.rs:35:9:35:10 | x3 | variables.rs:35:9:35:10 | x3 | variables.rs:36:15:36:16 | x3 | variables.rs:38:9:38:10 | x3 |
@@ -523,6 +533,7 @@ adjacentReads
 | variables.rs:491:13:491:17 | f | variables.rs:491:17:491:17 | f | variables.rs:495:9:495:9 | f | variables.rs:496:9:496:9 | f |
 | variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:511:15:511:15 | a | variables.rs:512:5:512:5 | a |
 | variables.rs:510:9:510:13 | a | variables.rs:510:13:510:13 | a | variables.rs:512:5:512:5 | a | variables.rs:513:15:513:15 | a |
+| variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:520:20:520:20 | x | variables.rs:521:15:521:15 | x |
 phi
 | variables.rs:191:9:191:44 | [match(true)] phi | variables.rs:191:9:191:44 | a3 | variables.rs:191:22:191:23 | a3 |
 | variables.rs:191:9:191:44 | [match(true)] phi | variables.rs:191:9:191:44 | a3 | variables.rs:191:42:191:43 | a3 |
