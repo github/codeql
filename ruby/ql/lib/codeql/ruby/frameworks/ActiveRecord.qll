@@ -10,6 +10,7 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.Stdlib
 private import codeql.ruby.frameworks.Core
+private import codeql.ruby.dataflow.FlowSummary
 
 /// See https://api.rubyonrails.org/classes/ActiveRecord/Persistence.html
 private string activeRecordPersistenceInstanceMethodName() {
@@ -635,6 +636,13 @@ class ActiveRecordAssociation extends DataFlow::CallNode {
   }
 
   /**
+   * Gets the referenced table or field as it appears in the first argument.
+   *
+   * For example, in `has_many :posts`, this is `posts`.
+   */
+  string getName() { result = this.getArgument(0).getConstantValue().getStringlikeValue() }
+
+  /**
    * Gets the (lowercase) name of the model this association targets.
    * For example, in `has_many :posts`, this is `post`.
    */
@@ -689,7 +697,7 @@ private string pluralize(string input) {
  * do not yield ActiveRecord instances.
  * https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html
  */
-private class ActiveRecordAssociationMethodCall extends DataFlow::CallNode {
+class ActiveRecordAssociationMethodCall extends DataFlow::CallNode {
   ActiveRecordAssociation assoc;
 
   ActiveRecordAssociationMethodCall() {
@@ -830,5 +838,17 @@ private module MassAssignmentSinks {
         this = call.getArgument(1)
       )
     }
+  }
+}
+
+private class ConnectedTo extends SummarizedCallable {
+  ConnectedTo() { this = "ActiveRecord::Base.connected_to" }
+
+  override MethodCall getACallSimple() { result.getMethodName() = "connected_to" }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[block].ReturnValue" and
+    output = "ReturnValue" and
+    preservesValue = true
   }
 }
