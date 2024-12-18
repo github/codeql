@@ -1,4 +1,0 @@
-provide:
-  - "**/ql/src/qlpack.yml"
-  - "**/ql/lib/qlpack.yml"
-  - "**/ql/test/qlpack.yml"

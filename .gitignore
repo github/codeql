@@ -1,7 +1,0 @@
-.DS_Store
-**/*.testproj
-ql/lib/.codeql/
-ql/src/.codeql/
-ql/test/.codeql/
-db/
-.cache
