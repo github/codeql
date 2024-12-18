@@ -516,12 +516,18 @@ module SignAnalysis<DeltaSig D> {
    */
   private Sign guardedSsaSignOk(SemSsaVariable v, SsaReadPosition pos) {
     result = TPos() and
+    // optimised version of
+    // `forex(SemExpr bound | posBound(bound, v, pos) | posBoundOk(bound, v, pos))`
     posBoundGuardedSsaSignOk(v, pos)
     or
     result = TNeg() and
+    // optimised version of
+    // `forex(SemExpr bound | negBound(bound, v, pos) | negBoundOk(bound, v, pos))`
     negBoundGuardedSsaSignOk(v, pos)
     or
     result = TZero() and
+    // optimised version of
+    // `forex(SemExpr bound | zeroBound(bound, v, pos) | zeroBoundOk(bound, v, pos))`
     zeroBoundGuardedSsaSignOk(v, pos)
   }
 
