@@ -1,12 +1,6 @@
 #! /usr/bin/env bash
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+set -eu
 
-(
-    cd "$SCRIPT_DIR" || exit 1
-    cd ../../../
-    time bazel run //misc/bazel/3rdparty:vendor_py_deps
-    bazel mod tidy
-    time bazel run //misc/bazel/3rdparty:vendor_tree_sitter_extractors
-    bazel mod tidy
-)
+"${BASH_SOURCE[0]}/update_py_deps.sh"
+"${BASH_SOURCE[0]}/update_tree_sitter_extractors_deps.sh"

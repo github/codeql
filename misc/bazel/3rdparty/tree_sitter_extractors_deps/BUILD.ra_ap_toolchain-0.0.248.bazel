@@ -80,6 +80,6 @@ rust_library(
     version = "0.0.248",
     deps = [
         "@vendor__camino-1.1.9//:camino",
-        "@vendor__home-0.5.9//:home",
+        "@vendor__home-0.5.11//:home",
     ],
 )
