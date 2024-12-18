@@ -915,7 +915,7 @@ VacuousDestructorCall.cpp:
 #    2| [TemplateFunction,TopLevelFunction] void CallDestructor<T>(T, T*)
 #    2|   <params>: 
 #    2|     getParameter(0): [Parameter] x
-#    2|         Type = [TemplateParameter] T
+#    2|         Type = [TypeTemplateParameter] T
 #    2|     getParameter(1): [Parameter] y
 #    2|         Type = [PointerType] T *
 #    2|   getEntryPoint(): [BlockStmt] { ... }
@@ -927,7 +927,7 @@ VacuousDestructorCall.cpp:
 #    3|             Type = [UnknownType] unknown
 #    3|             ValueCategory = prvalue
 #    3|           getChild(-1): [VariableAccess] x
-#    3|               Type = [TemplateParameter] T
+#    3|               Type = [TypeTemplateParameter] T
 #    3|               ValueCategory = lvalue
 #    4|     getStmt(1): [ExprStmt] ExprStmt
 #    4|       getExpr(): [ExprCall] call to expression
