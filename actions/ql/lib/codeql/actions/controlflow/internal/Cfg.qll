@@ -97,9 +97,9 @@ private module Implementation implements CfgShared::InputSig<Location> {
   // Not using CFG splitting, so the following are just dummy types.
   private newtype TUnit = Unit()
 
-  class SplitKindBase = TUnit;
+  additional class SplitKindBase = TUnit;
 
-  class Split extends TUnit {
+  additional class Split extends TUnit {
     abstract string toString();
   }
 
@@ -115,7 +115,7 @@ private module Implementation implements CfgShared::InputSig<Location> {
     )
   }
 
-  int maxSplits() { result = 0 }
+  additional int maxSplits() { result = 0 }
 
   predicate scopeFirst(CfgScope scope, AstNode e) {
     first(scope.(Workflow), e) or
