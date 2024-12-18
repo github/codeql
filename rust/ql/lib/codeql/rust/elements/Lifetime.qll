@@ -4,7 +4,7 @@
  */
 
 private import internal.LifetimeImpl
-import codeql.rust.elements.AstNode
+import codeql.rust.elements.UseBoundGenericArg
 
 /**
  * A Lifetime. For example:

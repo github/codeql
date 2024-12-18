@@ -6,7 +6,7 @@ use crate::trap::{DiagnosticSeverity, TrapFile, TrapId};
 use crate::trap::{Label, TrapClass};
 use itertools::Either;
 use log::Level;
-use ra_ap_base_db::salsa::InternKey;
+use ra_ap_base_db::ra_salsa::InternKey;
 use ra_ap_base_db::CrateOrigin;
 use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir::{
@@ -242,7 +242,7 @@ impl<'a> Translator<'a> {
             })
         {
             if let Some(err) = &value.err {
-                let (message, _error) = err.render_to_string(semantics.db);
+                let error = err.render_to_string(semantics.db);
 
                 if err.span().anchor.file_id == semantics.hir_file_for(mcall.syntax()) {
                     let location = err.span().range
@@ -252,7 +252,7 @@ impl<'a> Translator<'a> {
                             .get_erased(err.span().anchor.ast_id)
                             .text_range()
                             .start();
-                    self.emit_parse_error(mcall, &SyntaxError::new(message, location));
+                    self.emit_parse_error(mcall, &SyntaxError::new(error.message, location));
                 };
             }
             for err in value.value.iter() {

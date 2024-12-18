@@ -136,8 +136,8 @@ fn to_cfg_overrides(specs: &Vec<String>) -> CfgOverrides {
     let mut disabled_cfgs = Vec::new();
     let mut has_test_explicitly_enabled = false;
     for spec in specs {
-        if spec.starts_with("-") {
-            disabled_cfgs.push(to_cfg_override(&spec[1..]));
+        if let Some(spec) = spec.strip_prefix("-") {
+            disabled_cfgs.push(to_cfg_override(spec));
         } else {
             enabled_cfgs.push(to_cfg_override(spec));
             if spec == "test" {

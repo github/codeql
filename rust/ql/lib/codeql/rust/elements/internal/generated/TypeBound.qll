@@ -7,9 +7,9 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.Lifetime
 import codeql.rust.elements.TypeRepr
+import codeql.rust.elements.UseBoundGenericArgs
 
 /**
  * INTERNAL: This module contains the fully generated definition of `TypeBound` and should not
@@ -26,21 +26,6 @@ module Generated {
    */
   class TypeBound extends Synth::TTypeBound, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "TypeBound" }
-
-    /**
-     * Gets the generic parameter list of this type bound, if it exists.
-     */
-    GenericParamList getGenericParamList() {
-      result =
-        Synth::convertGenericParamListFromRaw(Synth::convertTypeBoundToRaw(this)
-              .(Raw::TypeBound)
-              .getGenericParamList())
-    }
-
-    /**
-     * Holds if `getGenericParamList()` exists.
-     */
-    final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
 
     /**
      * Holds if this type bound is async.
@@ -81,5 +66,20 @@ module Generated {
      * Holds if `getTypeRepr()` exists.
      */
     final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
+
+    /**
+     * Gets the use bound generic arguments of this type bound, if it exists.
+     */
+    UseBoundGenericArgs getUseBoundGenericArgs() {
+      result =
+        Synth::convertUseBoundGenericArgsFromRaw(Synth::convertTypeBoundToRaw(this)
+              .(Raw::TypeBound)
+              .getUseBoundGenericArgs())
+    }
+
+    /**
+     * Holds if `getUseBoundGenericArgs()` exists.
+     */
+    final predicate hasUseBoundGenericArgs() { exists(this.getUseBoundGenericArgs()) }
   }
 }

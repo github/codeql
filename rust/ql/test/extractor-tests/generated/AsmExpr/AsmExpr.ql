@@ -2,10 +2,12 @@
 import codeql.rust.elements
 import TestUtils
 
-from AsmExpr x, int getNumberOfAttrs, string hasExpr
+from AsmExpr x, int getNumberOfAsmPieces, int getNumberOfAttrs, int getNumberOfTemplates
 where
   toBeTested(x) and
   not x.isUnknown() and
+  getNumberOfAsmPieces = x.getNumberOfAsmPieces() and
   getNumberOfAttrs = x.getNumberOfAttrs() and
-  if x.hasExpr() then hasExpr = "yes" else hasExpr = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr
+  getNumberOfTemplates = x.getNumberOfTemplates()
+select x, "getNumberOfAsmPieces:", getNumberOfAsmPieces, "getNumberOfAttrs:", getNumberOfAttrs,
+  "getNumberOfTemplates:", getNumberOfTemplates

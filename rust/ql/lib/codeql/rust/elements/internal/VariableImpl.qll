@@ -177,7 +177,7 @@ module Impl {
         not p.hasQualifier() and
         ps = p.getPart() and
         not ps.hasGenericArgList() and
-        not ps.hasParamList() and
+        not ps.hasParenthesizedArgList() and
         not ps.hasPathType() and
         not ps.hasReturnTypeSyntax() and
         name_ = ps.getNameRef().getText()
