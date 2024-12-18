@@ -1,0 +1,40 @@
+on: push
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+
+    outputs:
+      job_output: ${{ steps.step.outputs.value }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: source
+        uses: tj-actions/changed-files@v40
+
+      - name: Remove foo from changed files
+        id: step
+        uses: mad9000/actions-find-and-replace-string@3
+        with:
+          source: ${{ steps.source.outputs.all_changed_files }}
+          find: "foo"
+          replace: ""
+      - id: simplesink1
+        run: echo ${{ steps.source.outputs.all_changed_files }}
+      - id: simplesink2
+        run: ${{ github.event.pull_request.head.ref }}
+
+  job2:
+    runs-on: ubuntu-latest
+
+    if: ${{ always() }}
+
+    needs: job1
+
+    steps:
+      - id: sink
+        run: echo ${{needs.job1.outputs.job_output}}

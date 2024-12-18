@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["redisearch/redisearch/.github/workflows/flow-build-artifacts.yml", "*", "input.architecture", "code-injection", "generated"]

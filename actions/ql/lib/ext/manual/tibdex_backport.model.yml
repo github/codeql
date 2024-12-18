@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["tibdex/backport", "*", "input.body_template", "code-injection", "manual"]
+      - ["tibdex/backport", "*", "input.head_template", "code-injection", "manual"]
+      - ["tibdex/backport", "*", "input.labels_template", "code-injection", "manual"]
+      - ["tibdex/backport", "*", "input.title_template", "code-injection", "manual"]

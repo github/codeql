@@ -1,0 +1,6 @@
+- description: Bughalla queries for Actions
+- queries: '.'
+- exclude:
+    tags contain:
+      - debug
+      

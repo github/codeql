@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["armadaproject/armada", "*", "input.tox-env", "code-injection", "generated"]

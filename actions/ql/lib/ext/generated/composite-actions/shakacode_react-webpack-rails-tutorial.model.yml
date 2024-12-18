@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["shakacode/react-webpack-rails-tutorial", "*", "input.org", "code-injection", "generated"]
+     - ["shakacode/react-webpack-rails-tutorial", "*", "input.app_name", "code-injection", "generated"]

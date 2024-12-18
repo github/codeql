@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["nix-community/nixos-wsl", "*", "input.filename", "code-injection", "generated"]
+     - ["nix-community/nixos-wsl", "*", "input.expression", "code-injection", "generated"]

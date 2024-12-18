@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["stackhawk/hawkscan-action", "*", "input.workspace", "command-injection", "manual"]
+      - ["stackhawk/hawkscan-action", "*", "input.apiKey", "command-injection", "manual"]
+      - ["stackhawk/hawkscan-action", "*", "input.command", "command-injection", "manual"]
+      - ["stackhawk/hawkscan-action", "*", "input.args", "command-injection", "manual"]
+      - ["stackhawk/hawkscan-action", "*", "input.version", "command-injection", "manual"]

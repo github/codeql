@@ -1,0 +1,11 @@
+- description: Standard Code Scanning queries for Actions
+- queries: '.'
+- include:
+    problem.severity: 
+      - error
+      - recommendation
+- exclude:
+    tags contain:
+      - experimental
+      - debug
+      

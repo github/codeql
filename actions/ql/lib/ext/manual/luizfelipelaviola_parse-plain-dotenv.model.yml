@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["luizfelipelaviola/parse-plain-dotenv", "*", "input.data", "envvar-injection", "manual"]

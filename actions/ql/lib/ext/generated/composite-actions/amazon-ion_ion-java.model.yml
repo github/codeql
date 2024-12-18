@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["amazon-ion/ion-java", "*", "input.project_version", "code-injection", "generated"]
+     - ["amazon-ion/ion-java", "*", "input.repo", "code-injection", "generated"]

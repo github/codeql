@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["paolosalvatori/servicebusexplorer/.github/workflows/publish.yml", "*", "input.release-version", "code-injection", "generated"]
+     - ["paolosalvatori/servicebusexplorer/.github/workflows/build-test.yml", "*", "input.release-version", "code-injection", "generated"]

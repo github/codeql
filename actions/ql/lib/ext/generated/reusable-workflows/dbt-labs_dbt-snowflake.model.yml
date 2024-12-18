@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["dbt-labs/dbt-snowflake/.github/workflows/release.yml", "*", "input.s3_bucket_name", "code-injection", "generated"]
+     - ["dbt-labs/dbt-snowflake/.github/workflows/release.yml", "*", "input.build_script_path", "code-injection", "generated"]
+     - ["dbt-labs/dbt-snowflake/.github/workflows/release.yml", "*", "input.nightly_release", "code-injection", "generated"]
+     - ["dbt-labs/dbt-snowflake/.github/workflows/release.yml", "*", "input.test_run", "code-injection", "generated"]
+     - ["dbt-labs/dbt-snowflake/.github/workflows/release.yml", "*", "input.env_setup_script_path", "code-injection", "generated"]
+     - ["dbt-labs/dbt-snowflake/.github/workflows/release.yml", "*", "input.target_branch", "code-injection", "generated"]
+     - ["dbt-labs/dbt-snowflake/.github/workflows/release.yml", "*", "input.sha", "code-injection", "generated"]
+     - ["dbt-labs/dbt-snowflake/.github/workflows/release.yml", "*", "input.package_test_command", "code-injection", "generated"]
+     - ["dbt-labs/dbt-snowflake/.github/workflows/release.yml", "*", "input.version_number", "code-injection", "generated"]
