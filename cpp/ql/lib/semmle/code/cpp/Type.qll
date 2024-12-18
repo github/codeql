@@ -4,6 +4,7 @@
 
 import semmle.code.cpp.Element
 import semmle.code.cpp.Function
+import semmle.code.cpp.TemplateParameter
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
@@ -288,10 +289,7 @@ class Type extends Locatable, @type {
    */
   Type stripType() { result = this }
 
-  override Location getLocation() {
-    suppressUnusedThis(this) and
-    result instanceof UnknownDefaultLocation
-  }
+  override Location getLocation() { result instanceof UnknownDefaultLocation }
 }
 
 /**
@@ -1665,82 +1663,6 @@ class RoutineType extends Type, @routinetype {
     this.getAParameterType().involvesTemplateParameter()
   }
 }
-
-abstract private class TemplateParameterImpl extends Locatable {
-  override string getAPrimaryQlClass() { result = "TemplateParameterImpl" }
-}
-
-/**
- * A C++ template parameter.
- *
- * In the example below, `T`, `TT`, and `I` are template parameters:
- * ```
- * template <class T, template<typename> TT, int I>
- * class C { };
- * ```
- */
-final class TemplateParameterBase = TemplateParameterImpl;
-
-/**
- * A C++ `typename` (or `class`) template parameter.
- *
- * DEPRECATED: Use `TypeTemplateParameter` instead.
- */
-deprecated class TemplateParameter = TypeTemplateParameter;
-
-/**
- * A C++ `typename` (or `class`) template parameter.
- *
- * In the example below, `T` is a template parameter:
- * ```
- * template <class T>
- * class C { };
- * ```
- */
-class TypeTemplateParameter extends UserType, TemplateParameterImpl {
-  TypeTemplateParameter() {
-    usertypes(underlyingElement(this), _, 7) or usertypes(underlyingElement(this), _, 8)
-  }
-
-  override string getAPrimaryQlClass() { result = "TypeTemplateParameter" }
-
-  override predicate involvesTemplateParameter() { any() }
-}
-
-/**
- * A C++ template template parameter.
- *
- * In the example below, `T` is a template template parameter (although its name
- * may be omitted):
- * ```
- * template <template <typename T> class Container, class Elem>
- * void foo(const Container<Elem> &value) { }
- * ```
- */
-class TemplateTemplateParameter extends TypeTemplateParameter {
-  TemplateTemplateParameter() { usertypes(underlyingElement(this), _, 8) }
-
-  override string getAPrimaryQlClass() { result = "TemplateTemplateParameter" }
-}
-
-/**
- * A type representing the use of the C++11 `auto` keyword.
- * ```
- * auto val = some_typed_expr();
- * ```
- */
-class AutoType extends TypeTemplateParameter {
-  AutoType() { usertypes(underlyingElement(this), "auto", 7) }
-
-  override string getAPrimaryQlClass() { result = "AutoType" }
-
-  override Location getLocation() {
-    suppressUnusedThis(this) and
-    result instanceof UnknownDefaultLocation
-  }
-}
-
-private predicate suppressUnusedThis(Type t) { any() }
 
 /**
  * A source code location referring to a user-defined type.
