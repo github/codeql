@@ -1,3 +1,4 @@
+private import codeql.Locations
 private import DataFlowImplSpecific
 private import codeql.dataflow.internal.DataFlowImplCommon
-import MakeImplCommon<RubyDataFlow>
+import MakeImplCommon<Location, RubyDataFlow>

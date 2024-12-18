@@ -64,9 +64,6 @@ module Make<RegexTreeViewSig TreeImpl> {
     }
   }
 
-  /** DEPRECATED: Use `EmptyPositiveSubPattern` instead. */
-  deprecated class EmptyPositiveSubPatttern = EmptyPositiveSubPattern;
-
   final private class FinalRegExpTerm = RegExpTerm;
 
   /**

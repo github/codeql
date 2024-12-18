@@ -1,0 +1,4 @@
+extractedFiles
+| work/subdir/go.mod:0:0:0:0 | work/subdir/go.mod |
+| work/subdir/test.go:0:0:0:0 | work/subdir/test.go |
+#select

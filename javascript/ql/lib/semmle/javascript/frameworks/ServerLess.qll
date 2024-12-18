@@ -5,7 +5,7 @@
  */
 
 import javascript
-import codeql.serverless.ServerLess
+private import codeql.serverless.ServerLess
 
 private module YamlImpl implements Input {
   import semmle.javascript.Files

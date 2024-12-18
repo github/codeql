@@ -5,8 +5,6 @@ Overflow-prone comparisons in Java and Kotlin
 
 You can use CodeQL to check for comparisons in Java/Kotlin code where one side of the comparison is prone to overflow.
 
-.. include:: ../reusables/kotlin-beta-note.rst
-
 About this article
 ------------------
 

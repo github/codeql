@@ -5,7 +5,6 @@
 import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Text
-private import semmle.code.csharp.dataflow.DataFlow2
 
 /** A method that formats a string, for example `string.Format()`. */
 class FormatMethod extends Method {
@@ -134,7 +133,7 @@ class ValidFormatString extends StringLiteral {
     result = this.getValue().regexpFind(getValidFormatTokenRegex(), _, outPosition)
   }
 
-  /**Gets the insert number at the given position in the string. */
+  /** Gets the insert number at the given position in the string. */
   int getInsert(int position) {
     result = this.getToken(position).regexpCapture(getFormatInsertRegex(), 1).toInt()
   }

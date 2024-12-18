@@ -1,2 +1,0 @@
-| assembly.dll:0:0:0:0 | [MyAssemblyGeneric1Attribute<Object>(...)] | MyAssemblyGeneric1Attribute<Object> | 1 | (Object) |
-| assembly.dll:0:0:0:0 | [MyAssemblyGeneric2Attribute<Int32,String>(...)] | MyAssemblyGeneric2Attribute<Int32,String> | 2 | (Int32,String) |

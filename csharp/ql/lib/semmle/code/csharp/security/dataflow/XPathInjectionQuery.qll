@@ -3,7 +3,8 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.xml.XPath
 private import semmle.code.csharp.frameworks.system.Xml
 private import semmle.code.csharp.security.Sanitizers
@@ -16,27 +17,12 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for untrusted user input used in XPath expression.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for untrusted user input used in XPath expression.
  */
 abstract class Sanitizer extends DataFlow::ExprNode { }
-
-/**
- * DEPRECATED: Use `XpathInjection` instead.
- *
- * A taint-tracking configuration for untrusted user input used in XPath expression.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "XPathInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
 
 /**
  * A taint-tracking configuration for untrusted user input used in XPath expression.
@@ -64,8 +50,15 @@ module XpathInjectionConfig implements DataFlow::ConfigSig {
  */
 module XpathInjection = TaintTracking::Global<XpathInjectionConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** The `xpath` argument to an `XPathExpression.Compile(..)` call. */
 class XPathExpressionCompileSink extends Sink {

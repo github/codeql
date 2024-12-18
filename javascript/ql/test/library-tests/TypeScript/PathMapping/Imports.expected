@@ -1,11 +1,11 @@
 symbols
-| src/lib/foo.ts:1:1:4:0 | <toplevel> | library-tests/TypeScript/PathMapping/src/lib/foo.ts |
-| src/lib/foo.ts:1:8:3:1 | functio ...  123;\\n} | foo in library-tests/TypeScript/PathMapping/src/lib/foo.ts |
-| test/test_foo.ts:1:1:1:28 | import  ... @/foo"; | library-tests/TypeScript/PathMapping/src/lib/foo.ts |
-| test/test_foo.ts:1:1:7:0 | <toplevel> | library-tests/TypeScript/PathMapping/test/test_foo.ts |
-| test/test_foo.ts:2:17:2:32 | require("@/foo") | library-tests/TypeScript/PathMapping/src/lib/foo.ts |
-| test/test_foo.ts:4:1:4:5 | foo() | foo in library-tests/TypeScript/PathMapping/src/lib/foo.ts |
-| test/test_foo.ts:6:1:6:12 | foolib.foo() | foo in library-tests/TypeScript/PathMapping/src/lib/foo.ts |
+| src/lib/foo.ts:1:1:4:0 | <toplevel> | src/lib/foo.ts |
+| src/lib/foo.ts:1:8:3:1 | functio ...  123;\\n} | foo in src/lib/foo.ts |
+| test/test_foo.ts:1:1:1:28 | import  ... @/foo"; | src/lib/foo.ts |
+| test/test_foo.ts:1:1:7:0 | <toplevel> | test/test_foo.ts |
+| test/test_foo.ts:2:17:2:32 | require("@/foo") | src/lib/foo.ts |
+| test/test_foo.ts:4:1:4:5 | foo() | foo in src/lib/foo.ts |
+| test/test_foo.ts:6:1:6:12 | foolib.foo() | foo in src/lib/foo.ts |
 #select
 | test/test_foo.ts:1:1:1:28 | import  ... @/foo"; | src/lib/foo.ts:1:1:4:0 | <toplevel> |
 | test/test_foo.ts:2:17:2:32 | require("@/foo") | src/lib/foo.ts:1:1:4:0 | <toplevel> |

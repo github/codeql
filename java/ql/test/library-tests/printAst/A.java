@@ -50,6 +50,61 @@ class A {
                if (thing instanceof String s) {
                    throw new RuntimeException(s);
                }
+               switch (thing) {
+                   case String s -> System.out.println(s);
+                   case Integer i -> System.out.println("An integer: " + i);
+                   default -> { }
+               }
+               switch (thing) {
+                   case String s:
+                       System.out.println(s);
+                       break;
+                   case Integer i:
+                       System.out.println("An integer:" + i);
+                       break;
+                   default:
+                       break;
+               }
+               var thingAsString = switch(thing) {
+                   case String s -> s;
+                   case Integer i -> "An integer: " + i;
+                   default -> "Something else";
+               };
+               var thingAsString2 = switch(thing) {
+                   case String s:
+                       yield s;
+                   case Integer i:
+                       yield "An integer: " + i;
+                   default:
+                       yield "Something else";
+               };
+               var nullTest = switch(thing) {
+                   case null -> "Null";
+                   default -> "Not null";
+               };
+               var whenTest = switch((String)thing) {
+                   case "constant" -> "It's constant";
+                   case String s when s.length() == 3 -> "It's 3 letters long";
+                   case String s when s.length() == 5 -> "it's 5 letters long";
+                   default -> "It's something else";
+               };
+               var nullDefaultTest = switch(thing) {
+                   case String s -> "It's a string";
+                   case null, default -> "It's something else";
+               };
+               var qualifiedEnumTest = switch(thing) {
+                   case E.A -> "It's E.A";
+                   default -> "It's something else";
+               };
+               var unnecessaryQualifiedEnumTest = switch((E)thing) {
+                   case A -> "It's E.A";
+                   case E.B -> "It's E.B";
+                   default -> "It's something else";
+               };
+               var recordPatterntest = switch(thing) {
+                   case Middle(Inner(String field)) -> field;
+                   default -> "Doesn't match pattern Middle(Inner(...))";
+               };
            }
        }
        catch (RuntimeException rte) {
@@ -71,3 +126,6 @@ class A {
     */
     int i, j, k;
 }
+
+record Inner(String field) { }
+record Middle(Inner inner) { }

@@ -112,6 +112,19 @@ module FileSystemAccess {
   }
 }
 
+private class DefaultFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+  DataFlow::ArgumentNode pathArgument;
+
+  DefaultFileSystemAccess() {
+    sinkNode(pathArgument, "path-injection") and
+    this = pathArgument.getCall()
+  }
+
+  override DataFlow::Node getAPathArgument() {
+    result = pathArgument.getACorrespondingSyntacticArgument()
+  }
+}
+
 /** A function that escapes meta-characters to prevent injection attacks. */
 class EscapeFunction extends Function instanceof EscapeFunction::Range {
   /**
@@ -358,6 +371,48 @@ module LoggerCall {
     /** Gets a node that is a part of the logged message. */
     abstract DataFlow::Node getAMessageComponent();
   }
+}
+
+private class DefaultLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
+  DataFlow::ArgumentNode messageComponent;
+
+  DefaultLoggerCall() {
+    sinkNode(messageComponent, "log-injection") and
+    this = messageComponent.getCall()
+  }
+
+  override DataFlow::Node getAMessageComponent() {
+    not messageComponent instanceof DataFlow::ImplicitVarargsSlice and
+    result = messageComponent
+    or
+    messageComponent instanceof DataFlow::ImplicitVarargsSlice and
+    result = this.getAnImplicitVarargsArgument()
+  }
+}
+
+/**
+ * A call to an interface that looks like a logger. It is common to use a
+ * locally-defined interface for logging to make it easy to changing logging
+ * library.
+ */
+private class HeuristicLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
+  HeuristicLoggerCall() {
+    exists(Method m, string tp, string logFunctionPrefix, string name |
+      m = this.getTarget() and
+      m.hasQualifiedName(_, tp, name) and
+      m.getReceiverBaseType().getUnderlyingType() instanceof InterfaceType
+    |
+      tp.regexpMatch(".*[lL]ogger") and
+      logFunctionPrefix =
+        [
+          "Debug", "Error", "Fatal", "Info", "Log", "Output", "Panic", "Print", "Trace", "Warn",
+          "With"
+        ] and
+      name.matches(logFunctionPrefix + "%")
+    )
+  }
+
+  override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
 }
 
 /**

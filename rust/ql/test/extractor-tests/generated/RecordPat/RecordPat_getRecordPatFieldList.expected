@@ -1,0 +1,2 @@
+| gen_record_pat.rs:6:9:6:26 | Foo {...} | gen_record_pat.rs:6:13:6:26 | RecordPatFieldList |
+| gen_record_pat.rs:7:9:7:18 | Foo {...} | gen_record_pat.rs:7:13:7:18 | RecordPatFieldList |

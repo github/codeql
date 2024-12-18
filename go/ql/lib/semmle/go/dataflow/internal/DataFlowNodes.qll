@@ -11,6 +11,7 @@ private newtype TNode =
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
   MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
+  MkSliceElementNode(SliceExpr se) or
   MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
 
 /** Nodes intended for only use inside the data-flow libraries. */
@@ -85,7 +86,8 @@ module Private {
 
     /** Holds if this summary node is the `i`th argument of `call`. */
     predicate isArgumentOf(DataFlowCall call, int i) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), i)
+      // We do not currently have support for callback-based library models.
+      none()
     }
 
     /** Holds if this summary node is a return node. */
@@ -95,7 +97,8 @@ module Private {
 
     /** Holds if this summary node is an out node for `call`. */
     predicate isOut(DataFlowCall call) {
-      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), _)
+      // We do not currently have support for callback-based library models.
+      none()
     }
   }
 }
@@ -152,6 +155,14 @@ module Public {
       startcolumn = 0 and
       endline = 0 and
       endcolumn = 0
+    }
+
+    /** Gets the location of this node. */
+    Location getLocation() {
+      exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+        this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+        result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      )
     }
 
     /** Gets the file in which this node appears. */
@@ -444,8 +455,8 @@ module Public {
     CallNode getCallNode() { result = call }
 
     override Type getType() {
-      exists(Function f | f = call.getTarget() |
-        result = f.getParameterType(f.getNumParameter() - 1)
+      exists(SignatureType t | t = call.getCall().getCalleeType() |
+        result = t.getParameterType(t.getNumParameter() - 1)
       )
     }
 
@@ -472,6 +483,7 @@ module Public {
   private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
     result = cn.getCalleeNode() or
     basicLocalFlowStep(result, getACalleeSource(cn)) or
+    jumpStep(result, getACalleeSource(cn)) or
     result.asExpr() = getACalleeSource(cn).asExpr().(GenericFunctionInstantiationExpr).getBase()
   }
 
@@ -479,7 +491,11 @@ module Public {
   class CallNode extends ExprNode {
     override CallExpr expr;
 
-    /** Gets the declared target of this call */
+    /**
+     * Gets the declared target of this call, if it exists.
+     *
+     * This doesn't exist when a function is called via a variable.
+     */
     Function getTarget() { result = expr.getTarget() }
 
     private DataFlow::Node getACalleeSource() { result = getACalleeSource(this) }
@@ -509,6 +525,7 @@ module Public {
      * As `getACalleeIncludingExternals`, except excluding external functions (those for which
      * we lack a definition, such as standard library functions).
      */
+    pragma[nomagic]
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
 
     /**
@@ -636,14 +653,41 @@ module Public {
     /** Gets a result of this call. */
     Node getAResult() { result = this.getResult(_) }
 
-    /** Gets the data flow node corresponding to the receiver of this call, if any. */
+    /**
+     * Gets the data flow node corresponding to the receiver of this call, if any.
+     *
+     * When a method value is assigned to a variable then when it is called it
+     * looks like a function call, as in the following example.
+     *
+     * ```go
+     * file, _ := os.Open("test.txt")
+     * f := file.Close
+     * f()
+     * ```
+     *
+     * In this case we use local flow to try to find the receiver (`file` in
+     * the  above example).
+     */
     Node getReceiver() { result = this.getACalleeSource().(MethodReadNode).getReceiver() }
 
     /** Holds if this call has an ellipsis after its last argument. */
     predicate hasEllipsis() { expr.hasEllipsis() }
   }
 
-  /** A data flow node that represents a call to a method. */
+  /**
+   * A data flow node that represents a direct call to a method.
+   *
+   * When a method value is assigned to a variable then when it is called it
+   * syntactically looks like a function call, as in the following example.
+   *
+   * ```go
+   * file, _ := os.Open("test.txt")
+   * f := file.Close
+   * f()
+   * ```
+   *
+   * In this case it will not be considered a `MethodCallNode`.
+   */
   class MethodCallNode extends CallNode {
     MethodCallNode() { expr.getTarget() instanceof Method }
 
@@ -683,7 +727,10 @@ module Public {
     override string getNodeKind() { result = "external parameter node" }
 
     override Type getType() {
-      result = this.getSummarizedCallable().getType().getParameterType(this.getPos())
+      result =
+        this.getSummarizedCallable()
+            .getType()
+            .getParameterType(pragma[only_bind_into](this.getPos()))
       or
       this.getPos() = -1 and
       result = this.getSummarizedCallable().asFunction().(Method).getReceiverType()
@@ -798,11 +845,10 @@ module Public {
         or
         preupd = getAWrittenNode()
         or
-        (
-          preupd instanceof ArgumentNode and not preupd instanceof ImplicitVarargsSlice
-          or
-          preupd = any(CallNode c).getAnImplicitVarargsArgument()
-        ) and
+        preupd instanceof ImplicitVarargsSlice and
+        mutableType(preupd.(ImplicitVarargsSlice).getType().(SliceType).getElementType())
+        or
+        preupd = any(ArgumentNode arg).getACorrespondingSyntacticArgument() and
         mutableType(preupd.getType())
       ) and
       (
@@ -846,6 +892,21 @@ module Public {
      * Gets this argument's position.
      */
     int getPosition() { result = i }
+
+    /**
+     * Gets a data-flow node for a syntactic argument corresponding this this
+     * argument. If this argument is not an implicit varargs slice then this
+     * will just be the argument itself. If this argument is an implicit
+     * varargs slice then this will be a data-flow node that for an argument
+     * that is stored in the implicit varargs slice.
+     */
+    Node getACorrespondingSyntacticArgument() {
+      not this instanceof DataFlow::ImplicitVarargsSlice and
+      result = this
+      or
+      this instanceof DataFlow::ImplicitVarargsSlice and
+      result = c.getAnImplicitVarargsArgument()
+    }
   }
 
   /**
@@ -996,6 +1057,37 @@ module Public {
 
     /** Gets the maximum of this slice node. */
     Node getMax() { result = DataFlow::instructionNode(insn.getMax()) }
+  }
+
+  /**
+   * A data-flow node which exists solely to model the value flow from array
+   * elements of the base of a `SliceNode` to array elements of the `SliceNode`
+   * itself.
+   */
+  class SliceElementNode extends Node, MkSliceElementNode {
+    IR::SliceInstruction si;
+
+    SliceElementNode() { this = MkSliceElementNode(si.getExpr()) }
+
+    override ControlFlow::Root getRoot() { result = this.getSliceNode().getRoot() }
+
+    override Type getType() {
+      result = si.getResultType().(ArrayType).getElementType() or
+      result = si.getResultType().(SliceType).getElementType()
+    }
+
+    override string getNodeKind() { result = "slice element node" }
+
+    override string toString() { result = "slice element node" }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      si.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /** Gets the `SliceNode` which this node relates to. */
+    SliceNode getSliceNode() { result = DataFlow::instructionNode(si) }
   }
 
   /**

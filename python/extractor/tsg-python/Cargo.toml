@@ -1,0 +1,23 @@
+[workspace]
+
+[package]
+name = "tsg-python"
+version = "0.1.0"
+authors = ["Taus Brock-Nannestad <tausbn@github.com>"]
+edition = "2021"
+
+# When updating these dependencies, run `misc/bazel/3rdparty/update_cargo_deps.sh`
+[dependencies]
+anyhow = "1.0"
+regex = "1"
+smallvec = { version="1.6", features=["union"] }
+thiserror = "1.0"
+tree-sitter = "0.20.4"
+tree-sitter-graph = "0.7.0"
+tsp = {path = "tsp"}
+clap = "2.32"
+
+[dependencies.string-interner]
+version = "0.12"
+default-features = false
+features = ["std", "inline-more", "backends"]

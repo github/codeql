@@ -11,7 +11,7 @@ private int getTypeSizeWorkaround(Type type) {
   exists(Type unspecifiedType |
     unspecifiedType = type.getUnspecifiedType() and
     (
-      unspecifiedType instanceof FunctionReferenceType and
+      (unspecifiedType instanceof FunctionReferenceType or unspecifiedType instanceof RoutineType) and
       result = getPointerSize()
       or
       exists(PointerToMemberType ptmType |
@@ -176,7 +176,7 @@ private IRType getIRTypeForPRValue(Type type) {
     isPointerIshType(unspecifiedType) and
     result.(IRAddressType).getByteSize() = getTypeSize(unspecifiedType)
     or
-    unspecifiedType instanceof FunctionPointerIshType and
+    (unspecifiedType instanceof FunctionPointerIshType or unspecifiedType instanceof RoutineType) and
     result.(IRFunctionAddressType).getByteSize() = getTypeSize(type)
     or
     unspecifiedType instanceof VoidType and result instanceof IRVoidType
@@ -227,13 +227,25 @@ class CppType extends TCppType {
   predicate hasType(Type type, boolean isGLValue) { none() }
 
   /**
-   * Holds if this type represents the C++ type `type`. If `isGLValue` is `true`, then this type
+   * Holds if this type represents the C++ unspecified type `type`. If `isGLValue` is `true`, then this type
    * represents a glvalue of type `type`. Otherwise, it represents a prvalue of type `type`.
    */
   final predicate hasUnspecifiedType(Type type, boolean isGLValue) {
     exists(Type specifiedType |
       this.hasType(specifiedType, isGLValue) and
       type = specifiedType.getUnspecifiedType()
+    )
+  }
+
+  /**
+   * Holds if this type represents the C++ type `type` (after resolving
+   * typedefs). If `isGLValue` is `true`, then this type represents a glvalue
+   * of type `type`. Otherwise, it represents a prvalue of type `type`.
+   */
+  final predicate hasUnderlyingType(Type type, boolean isGLValue) {
+    exists(Type typedefType |
+      this.hasType(typedefType, isGLValue) and
+      type = typedefType.getUnderlyingType()
     )
   }
 }

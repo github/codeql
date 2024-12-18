@@ -26,7 +26,7 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -105,6 +105,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
 }
 
 /**
+ * A node in the data flow graph which corresponds to an SSA variable definition.
  */
 class SsaDefinitionNode extends Node, TSsaDefinitionNode {
   Ssa::Definition def;

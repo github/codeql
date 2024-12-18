@@ -1,0 +1,68 @@
+load("@gazelle//:def.bzl", "gazelle")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load("@rules_python//python:defs.bzl", "py_binary")
+load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pkg_files")
+
+gazelle(
+    name = "gazelle",
+    args = ["go/extractor"],
+)
+
+_gen_binaries = [
+    "@rules_go//go",
+    ":gazelle",
+    "//go/extractor/cli/go-gen-dbscheme",
+]
+
+py_binary(
+    name = "gen",
+    srcs = ["gen.py"],
+    args = ["$(rlocationpath %s)" % bin for bin in _gen_binaries],
+    data = _gen_binaries,
+    deps = ["@rules_python//python/runfiles"],
+)
+
+# this is an instance of the dbscheme kept in the bazel build tree
+# this allows everything that bazel builds to be up-to-date,
+# independently from whether //go:gen was already run to update the checked in files
+genrule(
+    name = "dbscheme",
+    outs = ["go.dbscheme"],
+    cmd = "$(execpath //go/extractor/cli/go-gen-dbscheme) $@",
+    tools = ["//go/extractor/cli/go-gen-dbscheme"],
+)
+
+pkg_files(
+    name = "resources",
+    srcs = [
+        "LICENSE",
+        "codeql-extractor.yml",
+        "ql/lib/go.dbscheme.stats",
+        ":dbscheme",
+    ],
+)
+
+codeql_pkg_files(
+    name = "extractor-pack-arch",
+    exes = [
+        "//go/extractor/cli/go-autobuilder",
+        "//go/extractor/cli/go-bootstrap",
+        "//go/extractor/cli/go-build-runner",
+        "//go/extractor/cli/go-configure-baseline",
+        "//go/extractor/cli/go-extractor",
+        "//go/extractor/cli/go-gen-dbscheme",
+        "//go/extractor/cli/go-tokenizer",
+    ],
+    prefix = "tools/{CODEQL_PLATFORM}",
+)
+
+codeql_pack(
+    name = "go",
+    srcs = [
+        ":extractor-pack-arch",
+        ":resources",
+        "//go/codeql-tools",
+        "//go/downgrades",
+        "//go/extractor:tokenizer",
+    ],
+)

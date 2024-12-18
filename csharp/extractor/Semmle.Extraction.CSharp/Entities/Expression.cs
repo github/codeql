@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         private readonly IExpressionInfo info;
         public AnnotatedTypeSymbol? Type { get; private set; }
-        public Extraction.Entities.Location Location { get; }
+        public Location Location { get; }
         public ExprKind Kind { get; }
 
         internal Expression(IExpressionInfo info, bool shouldPopulate = true)
@@ -54,7 +54,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             if (info.IsCompilerGenerated)
-                trapFile.expr_compiler_generated(this);
+                trapFile.compiler_generated(this);
 
             if (info.ExprValue is string value)
                 trapFile.expr_value(this, value);
@@ -62,7 +62,7 @@ namespace Semmle.Extraction.CSharp.Entities
             type.PopulateGenerics();
         }
 
-        public override Location? ReportingLocation => Location.Symbol;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Location.Symbol;
 
         internal void SetType(ITypeSymbol? type)
         {
@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Gets a string representation of a constant value.
         /// </summary>
-        /// <param name="obj">The value.</param>
+        /// <param name="value">The value.</param>
         /// <returns>The string representation.</returns>
         public static string ValueAsString(object? value)
         {
@@ -98,10 +98,15 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="node">The node to extract.</param>
         /// <param name="parent">The parent entity.</param>
         /// <param name="child">The child index.</param>
-        /// <param name="type">A type hint.</param>
         /// <returns>The new expression.</returns>
-        public static Expression Create(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child) =>
-            CreateFromNode(new ExpressionNodeInfo(cx, node, parent, child));
+        public static Expression Create(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child, Boolean isCompilerGenerated = false)
+        {
+            var info = new ExpressionNodeInfo(cx, node, parent, child)
+            {
+                IsCompilerGenerated = isCompilerGenerated
+            };
+            return CreateFromNode(info);
+        }
 
         public static Expression CreateFromNode(ExpressionNodeInfo info) => Expressions.ImplicitCast.Create(info);
 
@@ -114,7 +119,6 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="node">The node to extract.</param>
         /// <param name="parent">The parent entity.</param>
         /// <param name="child">The child index.</param>
-        /// <param name="type">A type hint.</param>
         public static void CreateDeferred(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child)
         {
             if (ContainsPattern(node))
@@ -132,7 +136,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// Creates a generated expression from a typed constant.
         /// </summary>
         public static Expression? CreateGenerated(Context cx, TypedConstant constant, IExpressionParentEntity parent,
-            int childIndex, Extraction.Entities.Location location)
+            int childIndex, Location location)
         {
             if (constant.IsNull ||
                 constant.Type is null)
@@ -170,7 +174,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// Creates a generated expression for a default argument value.
         /// </summary>
         public static Expression? CreateGenerated(Context cx, IParameterSymbol parameter, IExpressionParentEntity parent,
-            int childIndex, Extraction.Entities.Location location)
+            int childIndex, Location location)
         {
             if (!parameter.HasExplicitDefaultValue ||
                 parameter.Type is IErrorTypeSymbol)
@@ -202,24 +206,21 @@ namespace Semmle.Extraction.CSharp.Entities
                 return Default.CreateGenerated(cx, parent, childIndex, location, parameter.Type.IsReferenceType ? ValueAsString(null) : null);
             }
 
-            if (parameter.Type.SpecialType is SpecialType.System_Object)
-            {
-                // this can happen in VB.NET
-                cx.ExtractionError($"Extracting default argument value 'object {parameter.Name} = default' instead of 'object {parameter.Name} = {defaultValue}'. The latter is not supported in C#.",
-                    null, null, severity: Semmle.Util.Logging.Severity.Warning);
-
-                // we're generating a default expression:
-                return Default.CreateGenerated(cx, parent, childIndex, location, ValueAsString(null));
-            }
-
             if (type.SpecialType is SpecialType.None)
             {
-                return ImplicitCast.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+                return ImplicitCast.CreateGeneratedConversion(cx, parent, childIndex, type, defaultValue, location);
             }
 
             if (type.SpecialType is SpecialType.System_DateTime)
             {
                 return DateTimeObjectCreation.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+            }
+
+            if (type.SpecialType is SpecialType.System_Object ||
+                type.SpecialType is SpecialType.System_IntPtr ||
+                type.SpecialType is SpecialType.System_UIntPtr)
+            {
+                return ImplicitCast.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
             }
 
             // const literal:
@@ -241,7 +242,6 @@ namespace Semmle.Extraction.CSharp.Entities
         /// to show the target of the call. Also note the dynamic method
         /// name if available.
         /// </summary>
-        /// <param name="cx">Context</param>
         /// <param name="node">The expression.</param>
         public void OperatorCall(TextWriter trapFile, ExpressionSyntax node)
         {
@@ -311,23 +311,45 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
-        /// Given b in a?.b.c, return a.
+        /// Given `b` in `a?.b.c`, return `(a?.b, a?.b)`.
+        ///
+        /// Given `c` in `a?.b?.c.d`, return `(b?.c, a?.b?.c)`.
         /// </summary>
         /// <param name="node">A MemberBindingExpression.</param>
-        /// <returns>The qualifier of the conditional access.</returns>
-        protected static ExpressionSyntax FindConditionalQualifier(ExpressionSyntax node)
+        /// <returns>The conditional access.</returns>
+        public static (ConditionalAccessExpressionSyntax Parent, ConditionalAccessExpressionSyntax Root) FindConditionalAccessParent(ExpressionSyntax node)
         {
-            for (SyntaxNode? n = node; n is not null; n = n.Parent)
+            (ConditionalAccessExpressionSyntax, ConditionalAccessExpressionSyntax)? res = null;
+            SyntaxNode? prev = null;
+
+            for (SyntaxNode? n = node; n is not null; prev = n, n = n.Parent)
             {
-                if (n.Parent is ConditionalAccessExpressionSyntax conditionalAccess &&
-                    conditionalAccess.WhenNotNull == n)
+                if (n is ConditionalAccessExpressionSyntax conditionalAccess &&
+                    (prev is null || conditionalAccess.WhenNotNull == prev))
                 {
-                    return conditionalAccess.Expression;
+                    res = res is null ? (conditionalAccess, conditionalAccess) : (res.Value.Item1, conditionalAccess);
                 }
+                else if (res.HasValue)
+                {
+                    break;
+                }
+            }
+
+            if (res.HasValue)
+            {
+                return res.Value;
             }
 
             throw new InternalError(node, "Unable to locate a ConditionalAccessExpression");
         }
+
+        /// <summary>
+        /// Given b in a?.b.c, return a.
+        /// </summary>
+        /// <param name="node">A MemberBindingExpression.</param>
+        /// <returns>The qualifier of the conditional access.</returns>
+        protected static ExpressionSyntax FindConditionalQualifier(ExpressionSyntax node) =>
+            FindConditionalAccessParent(node).Parent.Expression;
 
         public void MakeConditional(TextWriter trapFile)
         {

@@ -148,7 +148,7 @@ class Capture
         void M5()
         {
             Use(e);
-            e = 0; // Should *not* get an SSA definition (`e` is never read)
+            e = 0; // Should *not* get an SSA definition (`e` is never read), but does since captured variables are conservatively considered live
         }
 
         var f = 12;
@@ -165,7 +165,7 @@ class Capture
             Use(g);
         };
 
-        var h = 12; // Should *not* get an SSA definition
+        var h = 12; // Should *not* get an SSA definition, but does since captured variables are conservatively considered live
         void M8()
         {
             h = 0;

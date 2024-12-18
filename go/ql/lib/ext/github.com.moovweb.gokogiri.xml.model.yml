@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["gokogiri/xml", "github.com/moovweb/gokogiri/xml"]
+      - ["gokogiri/xml", "github.com/jbowtie/gokogiri/xml"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:gokogiri/xml", "Node", True, "Search", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["group:gokogiri/xml", "Node", True, "SearchWithVariables", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["group:gokogiri/xml", "Node", True, "EvalXPath", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["group:gokogiri/xml", "Node", True, "EvalXPathAsBoolean", "", "", "Argument[0]", "xpath-injection", "manual"]

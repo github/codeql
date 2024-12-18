@@ -1,4 +1,6 @@
 /**
+ * DEPRECATED: Use `semmle.code.cpp.dataflow.new.DataFlow` instead.
+ *
  * Provides C++-specific definitions for use in the data flow library.
  */
 
@@ -103,7 +105,7 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -514,7 +516,7 @@ private module ThisFlow {
  */
 cached
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo)
+  simpleLocalFlowStep(nodeFrom, nodeTo, _)
   or
   // Field flow is not strictly a "step" but covers the whole function
   // transitively. There's no way to get a step-like relation out of the global
@@ -528,64 +530,67 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
  * This is the local flow predicate that's used as a building block in global
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  // Expr -> Expr
-  exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
-  or
-  // Assignment -> LValue post-update node
-  //
-  // This is used for assignments whose left-hand side is not a variable
-  // assignment or a storeStep but is still modeled by other means. It could be
-  // a call to `operator*` or `operator[]` where taint should flow to the
-  // post-update node of the qualifier.
-  exists(AssignExpr assign |
-    nodeFrom.asExpr() = assign and
-    nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() = assign.getLValue()
-  )
-  or
-  // Node -> FlowVar -> VariableAccess
-  exists(FlowVar var |
-    (
-      exprToVarStep(nodeFrom.asExpr(), var)
-      or
-      varSourceBaseCase(var, nodeFrom.asParameter())
-      or
-      varSourceBaseCase(var, nodeFrom.asUninitialized())
-      or
-      var.definedPartiallyAt(nodeFrom.asPartialDefinition())
-    ) and
-    varToNodeStep(var, nodeTo)
-  )
-  or
-  // Expr -> DefinitionByReferenceNode
-  exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
-  or
-  // `this` -> adjacent-`this`
-  ThisFlow::adjacentThisRefs(nodeFrom, nodeTo)
-  or
-  // post-update-`this` -> following-`this`-ref
-  ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
-  or
-  // In `f(&x->a)`, this step provides the flow from post-`&` to post-`x->a`,
-  // from which there is field flow to `x` via reverse read.
-  exists(PartialDefinition def, Expr inner, Expr outer |
-    def.definesExpressions(inner, outer) and
-    inner = nodeTo.(InnerPartialDefinitionNode).getPreUpdateNode().asExpr() and
-    outer = nodeFrom.(PartialDefinitionNode).getPreUpdateNode().asExpr()
-  )
-  or
-  // Reverse flow: data that flows from the post-update node of a reference
-  // returned by a function call, back into the qualifier of that function.
-  // This allows data to flow 'in' through references returned by a modeled
-  // function such as `operator[]`.
-  exists(DataFlowFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
-    call.getTarget() = f and
-    inModel.isReturnValueDeref() and
-    outModel.isQualifierObject() and
-    f.hasDataFlow(inModel, outModel) and
-    nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr() = call and
-    nodeTo.asDefiningArgument() = call.getQualifier()
-  )
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+  (
+    // Expr -> Expr
+    exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
+    or
+    // Assignment -> LValue post-update node
+    //
+    // This is used for assignments whose left-hand side is not a variable
+    // assignment or a storeStep but is still modeled by other means. It could be
+    // a call to `operator*` or `operator[]` where taint should flow to the
+    // post-update node of the qualifier.
+    exists(AssignExpr assign |
+      nodeFrom.asExpr() = assign and
+      nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() = assign.getLValue()
+    )
+    or
+    // Node -> FlowVar -> VariableAccess
+    exists(FlowVar var |
+      (
+        exprToVarStep(nodeFrom.asExpr(), var)
+        or
+        varSourceBaseCase(var, nodeFrom.asParameter())
+        or
+        varSourceBaseCase(var, nodeFrom.asUninitialized())
+        or
+        var.definedPartiallyAt(nodeFrom.asPartialDefinition())
+      ) and
+      varToNodeStep(var, nodeTo)
+    )
+    or
+    // Expr -> DefinitionByReferenceNode
+    exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
+    or
+    // `this` -> adjacent-`this`
+    ThisFlow::adjacentThisRefs(nodeFrom, nodeTo)
+    or
+    // post-update-`this` -> following-`this`-ref
+    ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+    or
+    // In `f(&x->a)`, this step provides the flow from post-`&` to post-`x->a`,
+    // from which there is field flow to `x` via reverse read.
+    exists(PartialDefinition def, Expr inner, Expr outer |
+      def.definesExpressions(inner, outer) and
+      inner = nodeTo.(InnerPartialDefinitionNode).getPreUpdateNode().asExpr() and
+      outer = nodeFrom.(PartialDefinitionNode).getPreUpdateNode().asExpr()
+    )
+    or
+    // Reverse flow: data that flows from the post-update node of a reference
+    // returned by a function call, back into the qualifier of that function.
+    // This allows data to flow 'in' through references returned by a modeled
+    // function such as `operator[]`.
+    exists(DataFlowFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
+      call.getTarget() = f and
+      inModel.isReturnValueDeref() and
+      outModel.isQualifierObject() and
+      f.hasDataFlow(inModel, outModel) and
+      nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr() = call and
+      nodeTo.asDefiningArgument() = call.getQualifier()
+    )
+  ) and
+  model = ""
 }
 
 /**
@@ -724,41 +729,39 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
 
 private module FieldFlow {
   private import DataFlowImplCommon
-  private import DataFlowImplLocal
   private import DataFlowPrivate
+  private import semmle.code.cpp.dataflow.DataFlow
 
   /**
-   * A configuration for finding local-only flow through fields. This uses the
-   * `Configuration` class in the dedicated `DataFlowImplLocal` copy of the
-   * shared library that's not user-exposed directly.
+   * A configuration for finding local-only flow through fields.
    *
    * To keep the flow local to a single function, we put barriers on parameters
    * and return statements. Sources and sinks are the values that go into and
    * out of fields, respectively.
    */
-  private class FieldConfiguration extends Configuration {
-    FieldConfiguration() { this = "FieldConfiguration" }
-
-    override predicate isSource(Node source) {
+  private module FieldConfig implements DataFlow::ConfigSig {
+    predicate isSource(Node source) {
       storeStep(source, _, _)
       or
       // Also mark `foo(a.b);` as a source when `a.b` may be overwritten by `foo`.
       readStep(_, _, any(Node node | node.asExpr() = source.asDefiningArgument()))
     }
 
-    override predicate isSink(Node sink) { readStep(_, _, sink) }
+    predicate isSink(Node sink) { readStep(_, _, sink) }
 
-    override predicate isBarrier(Node node) { node instanceof ParameterNode }
+    predicate isBarrier(Node node) { node instanceof ParameterNode }
 
-    override predicate isBarrierOut(Node node) {
+    predicate isBarrierOut(Node node) {
       node.asExpr().getParent() instanceof ReturnStmt
       or
       node.asExpr().getParent() instanceof ThrowExpr
     }
   }
 
+  private module Flow = DataFlow::Global<FieldConfig>;
+
   predicate fieldFlow(Node node1, Node node2) {
-    exists(FieldConfiguration cfg | cfg.hasFlow(node1, node2)) and
+    Flow::flow(node1, node2) and
     // This configuration should not be able to cross function boundaries, but
     // we double-check here just to be sure.
     getNodeEnclosingCallable(node1) = getNodeEnclosingCallable(node2)

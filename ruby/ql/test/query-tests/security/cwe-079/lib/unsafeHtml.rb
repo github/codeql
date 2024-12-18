@@ -19,4 +19,12 @@ class Foobar
     # escape
     sprintf("<h2>%s</h2>", ERB::Util.html_escape(name)).html_safe # OK - the parameter is escaped
   end
+
+  def create_user_description2(name)
+    "<h2>#{name}</h2>".html_safe # NOT OK - the value is not necessarily HTML safe
+
+    if name.html_safe?
+      "<h2>#{name}</h2>".html_safe # OK - value is marked as being HTML safe
+    end
+  end
 end

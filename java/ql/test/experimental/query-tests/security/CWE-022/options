@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/lingala-zip4j-2.11.5:${testdir}/../../../stubs/software-amazon-awssdk-crt-0.20.3:${testdir}/../../../../stubs/springframework-5.3.8:${testdir}/../../../stubs/reactivestreams-1.0.4:${testdir}/../../../../stubs/slf4j-2.0.0

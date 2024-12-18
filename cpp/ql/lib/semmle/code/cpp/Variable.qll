@@ -234,7 +234,20 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
    * int f(int y) { return y; }
    * ```
    */
-  override string getName() { var_decls(underlyingElement(this), _, _, result, _) and result != "" }
+  override string getName() {
+    exists(string name |
+      var_decls(underlyingElement(this), _, _, name, _) and
+      (
+        name != "" and result = name
+        or
+        name = "" and result = this.getVariable().(LocalVariable).getName()
+        or
+        name = "" and
+        not this instanceof ParameterDeclarationEntry and
+        result = this.getVariable().(Parameter).getName()
+      )
+    )
+  }
 
   /**
    * Gets the type of the variable which is being declared or defined.
@@ -286,19 +299,11 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
 
   private string getAnonymousParameterDescription() {
     not exists(this.getName()) and
-    exists(string idx |
-      idx =
-        ((this.getIndex() + 1).toString() + "th")
-            .replaceAll("1th", "1st")
-            .replaceAll("2th", "2nd")
-            .replaceAll("3th", "3rd")
-            .replaceAll("11st", "11th")
-            .replaceAll("12nd", "12th")
-            .replaceAll("13rd", "13th") and
+    exists(string anon |
+      anon = "(unnamed parameter " + this.getIndex().toString() + ")" and
       if exists(this.getCanonicalName())
-      then
-        result = "declaration of " + this.getCanonicalName() + " as anonymous " + idx + " parameter"
-      else result = "declaration of " + idx + " parameter"
+      then result = "declaration of " + this.getCanonicalName() + " as " + anon
+      else result = "declaration of " + anon
     )
   }
 
@@ -400,6 +405,17 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
     exists(ConditionDeclExpr e | e.getVariable() = this and e.getEnclosingFunction() = result)
     or
     orphaned_variables(underlyingElement(this), unresolveElement(result))
+    or
+    coroutine_placeholder_variable(underlyingElement(this), _, unresolveElement(result))
+  }
+
+  override predicate isStatic() {
+    super.isStatic() or orphaned_variables(underlyingElement(this), _)
+  }
+
+  override predicate isCompilerGenerated() {
+    super.isCompilerGenerated() or
+    coroutine_placeholder_variable(underlyingElement(this), _, _)
   }
 }
 
@@ -579,6 +595,33 @@ class TemplateVariable extends Variable {
    * Gets an instantiation of this variable template.
    */
   Variable getAnInstantiation() { result.isConstructedFrom(this) }
+}
+
+/**
+ * A variable that is an instantiation of a template. For example
+ * the instantiation `myTemplateVariable<int>` in the following code:
+ * ```
+ * template<class T>
+ * T myTemplateVariable;
+ *
+ * void caller(int i) {
+ *   myTemplateVariable<int> = i;
+ * }
+ * ```
+ */
+class VariableTemplateInstantiation extends Variable {
+  TemplateVariable tv;
+
+  VariableTemplateInstantiation() { tv.getAnInstantiation() = this }
+
+  override string getAPrimaryQlClass() { result = "VariableTemplateInstantiation" }
+
+  /**
+   * Gets the variable template from which this instantiation was instantiated.
+   *
+   * Example: For `int x<int>`, returns `T x`.
+   */
+  TemplateVariable getTemplate() { result = tv }
 }
 
 /**

@@ -1,3 +1,4 @@
+invalidModelRow
 passingPositiveTests
 | PASSED | clientConstructor | rpc/notes/service.twirp.go:53:114:53:139 | comment |
 | PASSED | clientConstructor | rpc/notes/service.twirp.go:192:110:192:135 | comment |

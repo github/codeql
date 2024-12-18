@@ -1,0 +1,34 @@
+We need to build different extractor variants with different -language-version options, which is not allowed
+in current kotlin_rules
+diff --git a/src/main/starlark/core/options/opts.kotlinc.bzl b/src/main/starlark/core/options/opts.kotlinc.bzl
+index 5e1461b..b93e6aa 100644
+--- a/src/main/starlark/core/options/opts.kotlinc.bzl
++++ b/src/main/starlark/core/options/opts.kotlinc.bzl
+@@ -33,6 +33,11 @@ def _map_jdk_release_to_flag(version):
+         return None
+     return ["-Xjdk-release=%s" % version]
+
++def _map_language_version_to_flag(version):
++    if not version:
++        return None
++    return ["-language-version=%s" % version, "-api-version=%s" % version]
++
+ _KOPTS_ALL = {
+     "warn": struct(
+         args = dict(
+@@ -417,6 +422,15 @@ _KOPTS_ALL = {
+         value_to_flag = None,
+         map_value_to_flag = _map_jdk_release_to_flag,
+     ),
++    "language_version": struct(
++        args = dict(
++            default = "1.9",
++            doc = "-language-version",
++        ),
++        type = attr.string,
++        value_to_flag = None,
++        map_value_to_flag = _map_language_version_to_flag,
++    ),
+ }
+
+ # Filters out options that are not available in current compiler release

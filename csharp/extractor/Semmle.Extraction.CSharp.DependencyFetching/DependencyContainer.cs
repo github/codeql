@@ -9,14 +9,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class DependencyContainer
     {
-        private readonly List<string> requiredPaths = new();
-        private readonly HashSet<string> usedPackages = new();
+        /// <summary>
+        /// Paths to dependencies required for compilation.
+        /// </summary>
+        public HashSet<string> Paths { get; } = [];
 
         /// <summary>
-        /// In most cases paths in asset files point to dll's or the empty _._ file, which
-        /// is sometimes there to avoid the directory being empty.
-        /// That is, if the path specifically adds a .dll we use that, otherwise we as a fallback
-        /// add the entire directory (which should be fine in case of _._ as well).
+        /// Packages that are used as a part of the required dependencies.
+        /// </summary>
+        public HashSet<string> Packages { get; } = [];
+
+        /// <summary>
+        /// If the path specifically adds a .dll we use that, otherwise we as a fallback
+        /// add the entire directory.
         /// </summary>
         private static string ParseFilePath(string path)
         {
@@ -28,19 +33,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         private static string GetPackageName(string package) =>
-            package
-                .Split(Path.DirectorySeparatorChar)
-                .First();
-
-        /// <summary>
-        /// Paths to dependencies required for compilation.
-        /// </summary>
-        public IEnumerable<string> RequiredPaths => requiredPaths;
-
-        /// <summary>
-        /// Packages that are used as a part of the required dependencies.
-        /// </summary>
-        public HashSet<string> UsedPackages => usedPackages;
+            package.Split(Path.DirectorySeparatorChar)[0];
 
         /// <summary>
         /// Add a dependency inside a package.
@@ -50,20 +43,41 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var p = package.Replace('/', Path.DirectorySeparatorChar);
             var d = dependency.Replace('/', Path.DirectorySeparatorChar);
 
+            // In most cases paths in assets files point to dll's or the empty _._ file.
+            // That is, for _._ we don't need to add anything.
+            if (Path.GetFileName(d) == "_._")
+            {
+                return;
+            }
+
             var path = Path.Combine(p, ParseFilePath(d));
-            requiredPaths.Add(path);
-            usedPackages.Add(GetPackageName(p));
+            Paths.Add(path);
+            Packages.Add(GetPackageName(p));
         }
 
         /// <summary>
-        /// Add a dependency to an entire package
+        /// Add a dependency to an entire framework package.
         /// </summary>
-        public void Add(string package)
+        public void AddFramework(string framework)
         {
-            var p = package.Replace('/', Path.DirectorySeparatorChar);
+            var p = framework.Replace('/', Path.DirectorySeparatorChar);
 
-            requiredPaths.Add(p);
-            usedPackages.Add(GetPackageName(p));
+            Paths.Add(p);
+            Packages.Add(GetPackageName(p));
         }
+    }
+
+    internal static class DependencyContainerExtensions
+    {
+        /// <summary>
+        /// Flatten a list of containers into a single container.
+        /// </summary>
+        public static DependencyContainer Flatten(this IEnumerable<DependencyContainer> containers, DependencyContainer init) =>
+            containers.Aggregate(init, (acc, container) =>
+            {
+                acc.Paths.UnionWith(container.Paths);
+                acc.Packages.UnionWith(container.Packages);
+                return acc;
+            });
     }
 }

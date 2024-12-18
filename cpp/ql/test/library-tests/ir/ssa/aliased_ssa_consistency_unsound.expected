@@ -12,7 +12,11 @@ unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
 instructionWithoutUniqueBlock
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
 containsLoopOfForwardEdges
+missingIRType
+multipleIRTypes
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
@@ -24,8 +28,5 @@ nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 nonUniqueIRVariable
-missingCanonicalLanguageType
-multipleCanonicalLanguageTypes
-missingIRType
-multipleIRTypes
+nonBooleanOperand
 missingCppType

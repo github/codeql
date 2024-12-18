@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Microsoft.CSharp/4.7.0/Microsoft.CSharp.csproj" />
+    <ProjectReference Include="../../System.Diagnostics.DiagnosticSource/6.0.0/System.Diagnostics.DiagnosticSource.csproj" />
+    <ProjectReference Include="../../System.Memory/4.5.5/System.Memory.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

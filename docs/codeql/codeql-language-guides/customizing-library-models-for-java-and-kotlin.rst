@@ -5,9 +5,7 @@ Customizing library models for Java and Kotlin
 
 You can model the methods and callables that control data flow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.
 
-.. include:: ../reusables/kotlin-beta-note.rst
-
-.. include:: ../reusables/beta-note-model-packs-java.rst
+.. include:: ../reusables/beta-note-customizing-library-models.rst
 
 About this article
 ------------------
@@ -16,7 +14,8 @@ This article contains reference material about how to define custom models for s
 
 The best way to create your own models is using the CodeQL model editor in the CodeQL extension for Visual Studio Code. The model editor automatically guides you through the process of defining models, displaying the properties you need to define and the options available. You can save the resulting models as data extension files in CodeQL model packs and use them without worrying about the syntax.
 
-For more information, see ":ref:`Using the CodeQL model editor <using-the-codeql-model-editor>`."
+For more information, see `Using the CodeQL model editor  <https://docs.github.com/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/using-the-codeql-model-editor>`__ in the GitHub documentation.
+
 
 About data extensions
 ---------------------
@@ -54,17 +53,17 @@ Data extensions use union semantics, which means that the tuples of all extensio
 Publish data extension files in a CodeQL model pack to share
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can group one or more data extention files into a CodeQL model pack and publish it to the GitHub Container Registry. This makes it easy for anyone to download the model pack and use it to extend their analysis. For more information, see "`Creating a CodeQL model pack <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack/>`__ and `Publishing and using CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs/>`__ in the CodeQL CLI documentation.
+You can group one or more data extension files into a CodeQL model pack and publish it to the GitHub Container Registry. This makes it easy for anyone to download the model pack and use it to extend their analysis. For more information, see `Creating a CodeQL model pack <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack>`__ and `Publishing and using CodeQL packs <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs/>`__ in the CodeQL CLI documentation.
 
 Extensible predicates used to create custom models in Java and Kotlin
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The CodeQL library for Java and Kotlin analysis exposes the following extensible predicates:
 
-- ``sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model sources of potentially tainted data.
+- ``sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model sources of potentially tainted data. The ``kind`` of the sources defined using this predicate determine which threat model they are associated with. Different threat models can be used to customize the sources used in an analysis. For more information, see ":ref:`Threat models <threat-models-java>`."
 - ``sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)``. This is used to model sinks where tainted data maybe used in a way that makes the code vulnerable.
 - ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to model flow through elements.
-- ``neutralModel(package, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the dataflow analysis.
+- ``neutralModel(package, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the dataflow analysis. Manual neutral models (those with a provenance such as ``manual`` or ``ai-manual``) override generated summary models (those with a provenance such as ``df-generated``) so that the summary will be ignored. Other than that, neutral models have a slight impact on the dataflow dispatch logic, which is out of scope for this documentation.
 
 The extensible predicates are populated using the models defined in data extension files.
 
@@ -151,7 +150,7 @@ The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the source.
 
 - The seventh value ``ReturnValue`` is the access path to the return of the method, which means that it is the return value that should be considered a source of tainted input.
-- The eighth value ``remote`` is the kind of the source. The source kind is used to define the queries where the source is in scope. ``remote`` applies to many of the security related queries as it means a remote source of untrusted data. As an example the SQL injection query uses ``remote`` sources.
+- The eighth value ``remote`` is the kind of the source. The source kind is used to define the threat model where the source is in scope. ``remote`` applies to many of the security related queries as it means a remote source of untrusted data. As an example the SQL injection query uses ``remote`` sources. For more information, see ":ref:`Threat models <threat-models-java>`."
 - The ninth value ``manual`` is the provenance of the source, which is used to identify the origin of the source.
 
 Example: Add flow through the ``concat`` method
@@ -291,3 +290,10 @@ The first four values identify the callable (in this case a method) to be modele
 - The fourth value ``()`` is the method input type signature.
 - The fifth value ``summary`` is the kind of the neutral.
 - The sixth value ``manual`` is the provenance of the neutral.
+
+.. _threat-models-java:
+
+Threat models
+-------------
+
+.. include:: ../reusables/threat-model-description.rst

@@ -378,7 +378,7 @@ codeql::KeyPathExpr ExprTranslator::translateKeyPathExpr(const swift::KeyPathExp
     for (const auto& component : expr.getComponents()) {
       entry.components.push_back(emitKeyPathComponent(component));
     }
-    if (auto rootTypeRepr = expr.getRootType()) {
+    if (auto rootTypeRepr = expr.getExplicitRootType()) {
       auto keyPathType = expr.getType()->getAs<swift::BoundGenericClassType>();
       CODEQL_EXPECT_OR(return entry, keyPathType, "KeyPathExpr must have BoundGenericClassType");
       auto keyPathTypeArgs = keyPathType->getGenericArgs();
@@ -666,6 +666,13 @@ codeql::CopyExpr ExprTranslator::translateCopyExpr(const swift::CopyExpr& expr) 
 codeql::ConsumeExpr ExprTranslator::translateConsumeExpr(const swift::ConsumeExpr& expr) {
   auto entry = createExprEntry(expr);
   entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
+  return entry;
+}
+
+codeql::MaterializePackExpr ExprTranslator::translateMaterializePackExpr(
+    const swift::MaterializePackExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.sub_expr = dispatcher.fetchLabel(expr.getFromExpr());
   return entry;
 }
 

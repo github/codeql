@@ -1,6 +1,0 @@
-| file://:0:0:0:0 | MyByte | Byte |
-| file://:0:0:0:0 | MyEmptyClass | MyEmptyClass |
-| file://:0:0:0:0 | MyObject | Object |
-| file://:0:0:0:0 | MyReadonlyByte | Byte |
-| file://:0:0:0:0 | MyReadonlyObject | Object |
-| file://:0:0:0:0 | MyReadonlyString | String |

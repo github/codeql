@@ -1,0 +1,33 @@
+| lib.rs:1:1:1:21 | SourceFile |
+| lib.rs:1:1:1:21 | mod utf8_identifiers |
+| lib.rs:1:5:1:20 | utf8_identifiers |
+| utf8_identifiers.rs:1:1:4:6 | fn foo |
+| utf8_identifiers.rs:1:1:12:2 | SourceFile |
+| utf8_identifiers.rs:1:4:1:6 | foo |
+| utf8_identifiers.rs:1:7:4:1 | GenericParamList |
+| utf8_identifiers.rs:2:5:2:6 | ''\u03b2 |
+| utf8_identifiers.rs:2:5:2:6 | LifetimeParam |
+| utf8_identifiers.rs:3:5:3:5 | TypeParam |
+| utf8_identifiers.rs:3:5:3:5 | \u03b3 |
+| utf8_identifiers.rs:4:2:4:3 | ParamList |
+| utf8_identifiers.rs:4:5:4:6 | StmtList |
+| utf8_identifiers.rs:4:5:4:6 | { ... } |
+| utf8_identifiers.rs:6:1:8:1 | struct X |
+| utf8_identifiers.rs:6:8:6:8 | X |
+| utf8_identifiers.rs:6:10:8:1 | RecordFieldList |
+| utf8_identifiers.rs:7:5:7:5 | \u03b4 |
+| utf8_identifiers.rs:7:5:7:13 | RecordField |
+| utf8_identifiers.rs:7:9:7:13 | usize |
+| utf8_identifiers.rs:7:9:7:13 | usize |
+| utf8_identifiers.rs:7:9:7:13 | usize |
+| utf8_identifiers.rs:7:9:7:13 | usize |
+| utf8_identifiers.rs:10:1:10:3 | Visibility |
+| utf8_identifiers.rs:10:1:12:1 | fn main |
+| utf8_identifiers.rs:10:8:10:11 | main |
+| utf8_identifiers.rs:10:12:10:13 | ParamList |
+| utf8_identifiers.rs:10:15:12:1 | StmtList |
+| utf8_identifiers.rs:10:15:12:1 | { ... } |
+| utf8_identifiers.rs:11:5:11:24 | let ... = 0.00001f64 |
+| utf8_identifiers.rs:11:9:11:9 | \u03b1 |
+| utf8_identifiers.rs:11:9:11:9 | \u03b1 |
+| utf8_identifiers.rs:11:14:11:23 | 0.00001f64 |

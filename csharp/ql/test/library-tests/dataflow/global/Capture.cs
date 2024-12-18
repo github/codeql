@@ -111,10 +111,12 @@ class Capture
         string sink40 = "";
         void CaptureOutMultipleLambdas()
         {
-            RunAction(() => {
+            RunAction(() =>
+            {
                 sink40 = "taint source";
             });
-            RunAction(() => {
+            RunAction(() =>
+            {
                 nonSink0 = "not tainted";
             });
         };
@@ -197,10 +199,161 @@ class Capture
         Check(nonSink0);
     }
 
+    void M1(string s)
+    {
+        Action a = () =>
+        {
+            Check(s);
+        };
+        a();
+    }
+
+    void M2() => M1("taint source");
+
+    Action M3(string s)
+    {
+        return () =>
+        {
+            Check(s);
+        };
+    }
+
+    void M4() => M3("taint source")();
+
+    void M5() => RunAction(M3("taint source"));
+
+    void M6()
+    {
+        List<int> xs = new List<int> { 0, 1, 2 };
+        var x = "taint source";
+        xs.ForEach(_ =>
+        {
+            Check(x);
+            x = "taint source";
+        });
+        Check(x);
+    }
+
+    public string Field;
+
+    void M7()
+    {
+        var c = new Capture();
+        c.Field = "taint source";
+
+        Action a = () =>
+        {
+            Check(c.Field);
+            c.Field = "taint source";
+        };
+        a();
+
+        Check(c.Field);
+    }
+
+    void M7(bool b)
+    {
+        var c = new Capture();
+        if (b)
+        {
+            c = null;
+        }
+
+        Action a = () =>
+        {
+            c.Field = "taint source";
+        };
+        a();
+
+        Check(c.Field);
+    }
+
+    void M8()
+    {
+        RunAction(x => Check(x), "taint source");
+    }
+
+    void M9()
+    {
+        var x = "taint source";
+
+        Action middle = () =>
+        {
+            Action inner = () =>
+            {
+                Check(x);
+                x = "taint source";
+            };
+            inner();
+        };
+
+        middle();
+
+        Check(x);
+    }
+
+    void M10()
+    {
+        this.Field = "taint source";
+
+        Action a = () =>
+        {
+            Check(this.Field);
+            this.Field = "taint source";
+        };
+        a();
+
+        Check(this.Field);
+    }
+
+    void M11()
+    {
+        var x = "taint source";
+        Check(x);
+        x = "safe";
+        Check(x);
+
+        Action a = () =>
+        {
+            x = "taint source";
+            Check(x);
+            x = "safe";
+            Check(x);
+        };
+        a();
+    }
+
+    void M12()
+    {
+        var x = "taint source";
+
+        void CapturedLocalFunction() => Check(x);
+
+        void CapturingLocalFunction() => CapturedLocalFunction();
+
+        CapturingLocalFunction();
+    }
+
+    void M13()
+    {
+        var x = "taint source";
+
+        Action capturedLambda = () => Check(x);
+
+        Action capturingLambda = () => capturedLambda();
+
+        capturingLambda();
+    }
+
     static void Check<T>(T x) { }
 
     static void RunAction(Action a)
     {
         a.Invoke();
+    }
+
+    static void RunAction<T>(Action<T> a, T x)
+    {
+        a(x);
     }
 }

@@ -1,0 +1,272 @@
+models
+| 1 | Summary: java.io; File; false; File; ; ; Argument[0]; Argument[this]; taint; manual |
+| 2 | Summary: java.io; File; false; File; ; ; Argument[1]; Argument[this]; taint; manual |
+| 3 | Summary: java.io; File; true; getAbsoluteFile; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: java.io; File; true; getAbsolutePath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: java.io; File; true; getCanonicalFile; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: java.io; File; true; getCanonicalPath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 7 | Summary: java.io; File; true; toPath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 8 | Summary: java.io; File; true; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 9 | Summary: java.io; File; true; toURI; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: java.nio.file; FileSystem; true; getPath; (String,String[]); ; Argument[0]; ReturnValue; taint; manual |
+| 11 | Summary: java.nio.file; Path; false; toFile; ; ; Argument[this]; ReturnValue; taint; manual |
+| 12 | Summary: java.nio.file; Path; true; getParent; ; ; Argument[this]; ReturnValue; taint; manual |
+| 13 | Summary: java.nio.file; Path; true; normalize; ; ; Argument[this]; ReturnValue; taint; manual |
+| 14 | Summary: java.nio.file; Path; true; resolve; ; ; Argument[0]; ReturnValue; taint; manual |
+| 15 | Summary: java.nio.file; Path; true; resolve; ; ; Argument[this]; ReturnValue; taint; manual |
+| 16 | Summary: java.nio.file; Path; true; toAbsolutePath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 17 | Summary: java.nio.file; Path; true; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 18 | Summary: java.nio.file; Path; true; toUri; ; ; Argument[this]; ReturnValue; taint; manual |
+| 19 | Summary: java.nio.file; Paths; true; get; ; ; Argument[0]; ReturnValue; taint; manual |
+| 20 | Summary: java.nio.file; Paths; true; get; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+edges
+| Test.java:20:14:20:27 | (...)... : File | Test.java:21:19:21:20 | in : File | provenance |  |
+| Test.java:20:20:20:27 | source(...) : Object | Test.java:20:14:20:27 | (...)... : File | provenance |  |
+| Test.java:21:10:21:35 | new File(...) : File | Test.java:22:9:22:11 | out | provenance |  |
+| Test.java:21:19:21:20 | in : File | Test.java:21:10:21:35 | new File(...) : File | provenance | MaD:1 |
+| Test.java:27:16:27:31 | (...)... : String | Test.java:28:19:28:20 | in : String | provenance |  |
+| Test.java:27:24:27:31 | source(...) : Object | Test.java:27:16:27:31 | (...)... : String | provenance |  |
+| Test.java:28:10:28:21 | new File(...) : File | Test.java:29:9:29:11 | out | provenance |  |
+| Test.java:28:19:28:20 | in : String | Test.java:28:10:28:21 | new File(...) : File | provenance | MaD:1 |
+| Test.java:34:16:34:31 | (...)... : String | Test.java:35:19:35:20 | in : String | provenance |  |
+| Test.java:34:24:34:31 | source(...) : Object | Test.java:34:16:34:31 | (...)... : String | provenance |  |
+| Test.java:35:10:35:35 | new File(...) : File | Test.java:36:9:36:11 | out | provenance |  |
+| Test.java:35:19:35:20 | in : String | Test.java:35:10:35:35 | new File(...) : File | provenance | MaD:1 |
+| Test.java:41:13:41:25 | (...)... : URI | Test.java:42:19:42:20 | in : URI | provenance |  |
+| Test.java:41:18:41:25 | source(...) : Object | Test.java:41:13:41:25 | (...)... : URI | provenance |  |
+| Test.java:42:10:42:21 | new File(...) : File | Test.java:43:9:43:11 | out | provenance |  |
+| Test.java:42:19:42:20 | in : URI | Test.java:42:10:42:21 | new File(...) : File | provenance | MaD:1 |
+| Test.java:48:16:48:31 | (...)... : String | Test.java:49:31:49:32 | in : String | provenance |  |
+| Test.java:48:24:48:31 | source(...) : Object | Test.java:48:16:48:31 | (...)... : String | provenance |  |
+| Test.java:49:10:49:33 | new File(...) : File | Test.java:50:9:50:11 | out | provenance |  |
+| Test.java:49:31:49:32 | in : String | Test.java:49:10:49:33 | new File(...) : File | provenance | MaD:2 |
+| Test.java:55:16:55:31 | (...)... : String | Test.java:56:33:56:34 | in : String | provenance |  |
+| Test.java:55:24:55:31 | source(...) : Object | Test.java:55:16:55:31 | (...)... : String | provenance |  |
+| Test.java:56:10:56:35 | new File(...) : File | Test.java:57:9:57:11 | out | provenance |  |
+| Test.java:56:33:56:34 | in : String | Test.java:56:10:56:35 | new File(...) : File | provenance | MaD:2 |
+| Test.java:62:14:62:27 | (...)... : File | Test.java:63:10:63:11 | in : File | provenance |  |
+| Test.java:62:20:62:27 | source(...) : Object | Test.java:62:14:62:27 | (...)... : File | provenance |  |
+| Test.java:63:10:63:11 | in : File | Test.java:63:10:63:29 | getAbsoluteFile(...) : File | provenance | MaD:3 |
+| Test.java:63:10:63:29 | getAbsoluteFile(...) : File | Test.java:64:9:64:11 | out | provenance |  |
+| Test.java:69:14:69:27 | (...)... : File | Test.java:70:10:70:11 | in : File | provenance |  |
+| Test.java:69:20:69:27 | source(...) : Object | Test.java:69:14:69:27 | (...)... : File | provenance |  |
+| Test.java:70:10:70:11 | in : File | Test.java:70:10:70:29 | getAbsolutePath(...) : String | provenance | MaD:4 |
+| Test.java:70:10:70:29 | getAbsolutePath(...) : String | Test.java:71:9:71:11 | out | provenance |  |
+| Test.java:76:14:76:27 | (...)... : File | Test.java:77:10:77:11 | in : File | provenance |  |
+| Test.java:76:20:76:27 | source(...) : Object | Test.java:76:14:76:27 | (...)... : File | provenance |  |
+| Test.java:77:10:77:11 | in : File | Test.java:77:10:77:30 | getCanonicalFile(...) : File | provenance | MaD:5 |
+| Test.java:77:10:77:30 | getCanonicalFile(...) : File | Test.java:78:9:78:11 | out | provenance |  |
+| Test.java:83:14:83:27 | (...)... : File | Test.java:84:10:84:11 | in : File | provenance |  |
+| Test.java:83:20:83:27 | source(...) : Object | Test.java:83:14:83:27 | (...)... : File | provenance |  |
+| Test.java:84:10:84:11 | in : File | Test.java:84:10:84:30 | getCanonicalPath(...) : String | provenance | MaD:6 |
+| Test.java:84:10:84:30 | getCanonicalPath(...) : String | Test.java:85:9:85:11 | out | provenance |  |
+| Test.java:90:14:90:27 | (...)... : File | Test.java:91:10:91:11 | in : File | provenance |  |
+| Test.java:90:20:90:27 | source(...) : Object | Test.java:90:14:90:27 | (...)... : File | provenance |  |
+| Test.java:91:10:91:11 | in : File | Test.java:91:10:91:20 | toPath(...) : Path | provenance | MaD:7 |
+| Test.java:91:10:91:20 | toPath(...) : Path | Test.java:92:9:92:11 | out | provenance |  |
+| Test.java:97:14:97:27 | (...)... : File | Test.java:98:10:98:11 | in : File | provenance |  |
+| Test.java:97:20:97:27 | source(...) : Object | Test.java:97:14:97:27 | (...)... : File | provenance |  |
+| Test.java:98:10:98:11 | in : File | Test.java:98:10:98:22 | toString(...) : String | provenance | MaD:8 |
+| Test.java:98:10:98:22 | toString(...) : String | Test.java:99:9:99:11 | out | provenance |  |
+| Test.java:104:14:104:27 | (...)... : File | Test.java:105:10:105:11 | in : File | provenance |  |
+| Test.java:104:20:104:27 | source(...) : Object | Test.java:104:14:104:27 | (...)... : File | provenance |  |
+| Test.java:105:10:105:11 | in : File | Test.java:105:10:105:19 | toURI(...) : URI | provenance | MaD:9 |
+| Test.java:105:10:105:19 | toURI(...) : URI | Test.java:106:9:106:11 | out | provenance |  |
+| Test.java:111:16:111:31 | (...)... : String | Test.java:113:27:113:28 | in : String | provenance |  |
+| Test.java:111:24:111:31 | source(...) : Object | Test.java:111:16:111:31 | (...)... : String | provenance |  |
+| Test.java:113:10:113:45 | getPath(...) : Path | Test.java:114:9:114:11 | out | provenance |  |
+| Test.java:113:27:113:28 | in : String | Test.java:113:10:113:45 | getPath(...) : Path | provenance | MaD:10 |
+| Test.java:119:14:119:27 | (...)... : Path | Test.java:120:10:120:11 | in : Path | provenance |  |
+| Test.java:119:20:119:27 | source(...) : Object | Test.java:119:14:119:27 | (...)... : Path | provenance |  |
+| Test.java:120:10:120:11 | in : Path | Test.java:120:10:120:20 | toFile(...) : File | provenance | MaD:11 |
+| Test.java:120:10:120:20 | toFile(...) : File | Test.java:121:9:121:11 | out | provenance |  |
+| Test.java:126:14:126:27 | (...)... : Path | Test.java:127:10:127:11 | in : Path | provenance |  |
+| Test.java:126:20:126:27 | source(...) : Object | Test.java:126:14:126:27 | (...)... : Path | provenance |  |
+| Test.java:127:10:127:11 | in : Path | Test.java:127:10:127:23 | getParent(...) : Path | provenance | MaD:12 |
+| Test.java:127:10:127:23 | getParent(...) : Path | Test.java:128:9:128:11 | out | provenance |  |
+| Test.java:133:14:133:27 | (...)... : Path | Test.java:134:10:134:11 | in : Path | provenance |  |
+| Test.java:133:20:133:27 | source(...) : Object | Test.java:133:14:133:27 | (...)... : Path | provenance |  |
+| Test.java:134:10:134:11 | in : Path | Test.java:134:10:134:23 | normalize(...) : Path | provenance | MaD:13 |
+| Test.java:134:10:134:23 | normalize(...) : Path | Test.java:135:9:135:11 | out | provenance |  |
+| Test.java:140:14:140:27 | (...)... : Path | Test.java:142:27:142:28 | in : Path | provenance |  |
+| Test.java:140:20:140:27 | source(...) : Object | Test.java:140:14:140:27 | (...)... : Path | provenance |  |
+| Test.java:142:10:142:29 | resolve(...) : Path | Test.java:143:9:143:11 | out | provenance |  |
+| Test.java:142:27:142:28 | in : Path | Test.java:142:10:142:29 | resolve(...) : Path | provenance | MaD:14 |
+| Test.java:148:14:148:27 | (...)... : Path | Test.java:149:10:149:11 | in : Path | provenance |  |
+| Test.java:148:20:148:27 | source(...) : Object | Test.java:148:14:148:27 | (...)... : Path | provenance |  |
+| Test.java:149:10:149:11 | in : Path | Test.java:149:10:149:31 | resolve(...) : Path | provenance | MaD:15 |
+| Test.java:149:10:149:31 | resolve(...) : Path | Test.java:150:9:150:11 | out | provenance |  |
+| Test.java:155:14:155:27 | (...)... : Path | Test.java:156:10:156:11 | in : Path | provenance |  |
+| Test.java:155:20:155:27 | source(...) : Object | Test.java:155:14:155:27 | (...)... : Path | provenance |  |
+| Test.java:156:10:156:11 | in : Path | Test.java:156:10:156:33 | resolve(...) : Path | provenance | MaD:15 |
+| Test.java:156:10:156:33 | resolve(...) : Path | Test.java:157:9:157:11 | out | provenance |  |
+| Test.java:162:16:162:31 | (...)... : String | Test.java:164:27:164:28 | in : String | provenance |  |
+| Test.java:162:24:162:31 | source(...) : Object | Test.java:162:16:162:31 | (...)... : String | provenance |  |
+| Test.java:164:10:164:29 | resolve(...) : Path | Test.java:165:9:165:11 | out | provenance |  |
+| Test.java:164:27:164:28 | in : String | Test.java:164:10:164:29 | resolve(...) : Path | provenance | MaD:14 |
+| Test.java:170:14:170:27 | (...)... : Path | Test.java:171:10:171:11 | in : Path | provenance |  |
+| Test.java:170:20:170:27 | source(...) : Object | Test.java:170:14:170:27 | (...)... : Path | provenance |  |
+| Test.java:171:10:171:11 | in : Path | Test.java:171:10:171:28 | toAbsolutePath(...) : Path | provenance | MaD:16 |
+| Test.java:171:10:171:28 | toAbsolutePath(...) : Path | Test.java:172:9:172:11 | out | provenance |  |
+| Test.java:177:14:177:27 | (...)... : Path | Test.java:178:10:178:11 | in : Path | provenance |  |
+| Test.java:177:20:177:27 | source(...) : Object | Test.java:177:14:177:27 | (...)... : Path | provenance |  |
+| Test.java:178:10:178:11 | in : Path | Test.java:178:10:178:22 | toString(...) : String | provenance | MaD:17 |
+| Test.java:178:10:178:22 | toString(...) : String | Test.java:179:9:179:11 | out | provenance |  |
+| Test.java:184:14:184:27 | (...)... : Path | Test.java:185:10:185:11 | in : Path | provenance |  |
+| Test.java:184:20:184:27 | source(...) : Object | Test.java:184:14:184:27 | (...)... : Path | provenance |  |
+| Test.java:185:10:185:11 | in : Path | Test.java:185:10:185:19 | toUri(...) : URI | provenance | MaD:18 |
+| Test.java:185:10:185:19 | toUri(...) : URI | Test.java:186:9:186:11 | out | provenance |  |
+| Test.java:191:16:191:31 | (...)... : String | Test.java:192:20:192:21 | in : String | provenance |  |
+| Test.java:191:24:191:31 | source(...) : Object | Test.java:191:16:191:31 | (...)... : String | provenance |  |
+| Test.java:192:10:192:38 | get(...) : Path | Test.java:193:9:193:11 | out | provenance |  |
+| Test.java:192:20:192:21 | in : String | Test.java:192:10:192:38 | get(...) : Path | provenance | MaD:19 |
+| Test.java:198:13:198:25 | (...)... : URI | Test.java:199:20:199:21 | in : URI | provenance |  |
+| Test.java:198:18:198:25 | source(...) : Object | Test.java:198:13:198:25 | (...)... : URI | provenance |  |
+| Test.java:199:10:199:22 | get(...) : Path | Test.java:200:9:200:11 | out | provenance |  |
+| Test.java:199:20:199:21 | in : URI | Test.java:199:10:199:22 | get(...) : Path | provenance | MaD:19 |
+| Test.java:205:18:205:57 | (...)... : String[] [[]] : String | Test.java:206:34:206:35 | in : String[] [[]] : String | provenance |  |
+| Test.java:205:28:205:57 | {...} : String[] [[]] : String | Test.java:205:18:205:57 | (...)... : String[] [[]] : String | provenance |  |
+| Test.java:205:41:205:56 | (...)... : String | Test.java:205:28:205:57 | {...} : String[] [[]] : String | provenance |  |
+| Test.java:205:49:205:56 | source(...) : Object | Test.java:205:41:205:56 | (...)... : String | provenance |  |
+| Test.java:206:10:206:36 | get(...) : Path | Test.java:207:9:207:11 | out | provenance |  |
+| Test.java:206:34:206:35 | in : String[] [[]] : String | Test.java:206:10:206:36 | get(...) : Path | provenance | MaD:20 |
+nodes
+| Test.java:20:14:20:27 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:20:20:20:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:21:10:21:35 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:21:19:21:20 | in : File | semmle.label | in : File |
+| Test.java:22:9:22:11 | out | semmle.label | out |
+| Test.java:27:16:27:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:27:24:27:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:28:10:28:21 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:28:19:28:20 | in : String | semmle.label | in : String |
+| Test.java:29:9:29:11 | out | semmle.label | out |
+| Test.java:34:16:34:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:34:24:34:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:35:10:35:35 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:35:19:35:20 | in : String | semmle.label | in : String |
+| Test.java:36:9:36:11 | out | semmle.label | out |
+| Test.java:41:13:41:25 | (...)... : URI | semmle.label | (...)... : URI |
+| Test.java:41:18:41:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:42:10:42:21 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:42:19:42:20 | in : URI | semmle.label | in : URI |
+| Test.java:43:9:43:11 | out | semmle.label | out |
+| Test.java:48:16:48:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:48:24:48:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:49:10:49:33 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:49:31:49:32 | in : String | semmle.label | in : String |
+| Test.java:50:9:50:11 | out | semmle.label | out |
+| Test.java:55:16:55:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:55:24:55:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:56:10:56:35 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:56:33:56:34 | in : String | semmle.label | in : String |
+| Test.java:57:9:57:11 | out | semmle.label | out |
+| Test.java:62:14:62:27 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:62:20:62:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:63:10:63:11 | in : File | semmle.label | in : File |
+| Test.java:63:10:63:29 | getAbsoluteFile(...) : File | semmle.label | getAbsoluteFile(...) : File |
+| Test.java:64:9:64:11 | out | semmle.label | out |
+| Test.java:69:14:69:27 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:69:20:69:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:70:10:70:11 | in : File | semmle.label | in : File |
+| Test.java:70:10:70:29 | getAbsolutePath(...) : String | semmle.label | getAbsolutePath(...) : String |
+| Test.java:71:9:71:11 | out | semmle.label | out |
+| Test.java:76:14:76:27 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:76:20:76:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:77:10:77:11 | in : File | semmle.label | in : File |
+| Test.java:77:10:77:30 | getCanonicalFile(...) : File | semmle.label | getCanonicalFile(...) : File |
+| Test.java:78:9:78:11 | out | semmle.label | out |
+| Test.java:83:14:83:27 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:83:20:83:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:84:10:84:11 | in : File | semmle.label | in : File |
+| Test.java:84:10:84:30 | getCanonicalPath(...) : String | semmle.label | getCanonicalPath(...) : String |
+| Test.java:85:9:85:11 | out | semmle.label | out |
+| Test.java:90:14:90:27 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:90:20:90:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:91:10:91:11 | in : File | semmle.label | in : File |
+| Test.java:91:10:91:20 | toPath(...) : Path | semmle.label | toPath(...) : Path |
+| Test.java:92:9:92:11 | out | semmle.label | out |
+| Test.java:97:14:97:27 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:97:20:97:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:98:10:98:11 | in : File | semmle.label | in : File |
+| Test.java:98:10:98:22 | toString(...) : String | semmle.label | toString(...) : String |
+| Test.java:99:9:99:11 | out | semmle.label | out |
+| Test.java:104:14:104:27 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:104:20:104:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:105:10:105:11 | in : File | semmle.label | in : File |
+| Test.java:105:10:105:19 | toURI(...) : URI | semmle.label | toURI(...) : URI |
+| Test.java:106:9:106:11 | out | semmle.label | out |
+| Test.java:111:16:111:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:111:24:111:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:113:10:113:45 | getPath(...) : Path | semmle.label | getPath(...) : Path |
+| Test.java:113:27:113:28 | in : String | semmle.label | in : String |
+| Test.java:114:9:114:11 | out | semmle.label | out |
+| Test.java:119:14:119:27 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:119:20:119:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:120:10:120:11 | in : Path | semmle.label | in : Path |
+| Test.java:120:10:120:20 | toFile(...) : File | semmle.label | toFile(...) : File |
+| Test.java:121:9:121:11 | out | semmle.label | out |
+| Test.java:126:14:126:27 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:126:20:126:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:127:10:127:11 | in : Path | semmle.label | in : Path |
+| Test.java:127:10:127:23 | getParent(...) : Path | semmle.label | getParent(...) : Path |
+| Test.java:128:9:128:11 | out | semmle.label | out |
+| Test.java:133:14:133:27 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:133:20:133:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:134:10:134:11 | in : Path | semmle.label | in : Path |
+| Test.java:134:10:134:23 | normalize(...) : Path | semmle.label | normalize(...) : Path |
+| Test.java:135:9:135:11 | out | semmle.label | out |
+| Test.java:140:14:140:27 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:140:20:140:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:142:10:142:29 | resolve(...) : Path | semmle.label | resolve(...) : Path |
+| Test.java:142:27:142:28 | in : Path | semmle.label | in : Path |
+| Test.java:143:9:143:11 | out | semmle.label | out |
+| Test.java:148:14:148:27 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:148:20:148:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:149:10:149:11 | in : Path | semmle.label | in : Path |
+| Test.java:149:10:149:31 | resolve(...) : Path | semmle.label | resolve(...) : Path |
+| Test.java:150:9:150:11 | out | semmle.label | out |
+| Test.java:155:14:155:27 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:155:20:155:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:156:10:156:11 | in : Path | semmle.label | in : Path |
+| Test.java:156:10:156:33 | resolve(...) : Path | semmle.label | resolve(...) : Path |
+| Test.java:157:9:157:11 | out | semmle.label | out |
+| Test.java:162:16:162:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:162:24:162:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:164:10:164:29 | resolve(...) : Path | semmle.label | resolve(...) : Path |
+| Test.java:164:27:164:28 | in : String | semmle.label | in : String |
+| Test.java:165:9:165:11 | out | semmle.label | out |
+| Test.java:170:14:170:27 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:170:20:170:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:171:10:171:11 | in : Path | semmle.label | in : Path |
+| Test.java:171:10:171:28 | toAbsolutePath(...) : Path | semmle.label | toAbsolutePath(...) : Path |
+| Test.java:172:9:172:11 | out | semmle.label | out |
+| Test.java:177:14:177:27 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:177:20:177:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:178:10:178:11 | in : Path | semmle.label | in : Path |
+| Test.java:178:10:178:22 | toString(...) : String | semmle.label | toString(...) : String |
+| Test.java:179:9:179:11 | out | semmle.label | out |
+| Test.java:184:14:184:27 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:184:20:184:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:185:10:185:11 | in : Path | semmle.label | in : Path |
+| Test.java:185:10:185:19 | toUri(...) : URI | semmle.label | toUri(...) : URI |
+| Test.java:186:9:186:11 | out | semmle.label | out |
+| Test.java:191:16:191:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:191:24:191:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:192:10:192:38 | get(...) : Path | semmle.label | get(...) : Path |
+| Test.java:192:20:192:21 | in : String | semmle.label | in : String |
+| Test.java:193:9:193:11 | out | semmle.label | out |
+| Test.java:198:13:198:25 | (...)... : URI | semmle.label | (...)... : URI |
+| Test.java:198:18:198:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:199:10:199:22 | get(...) : Path | semmle.label | get(...) : Path |
+| Test.java:199:20:199:21 | in : URI | semmle.label | in : URI |
+| Test.java:200:9:200:11 | out | semmle.label | out |
+| Test.java:205:18:205:57 | (...)... : String[] [[]] : String | semmle.label | (...)... : String[] [[]] : String |
+| Test.java:205:28:205:57 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |
+| Test.java:205:41:205:56 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:205:49:205:56 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:206:10:206:36 | get(...) : Path | semmle.label | get(...) : Path |
+| Test.java:206:34:206:35 | in : String[] [[]] : String | semmle.label | in : String[] [[]] : String |
+| Test.java:207:9:207:11 | out | semmle.label | out |
+subpaths
+testFailures

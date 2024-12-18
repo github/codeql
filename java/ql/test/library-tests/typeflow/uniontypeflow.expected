@@ -19,6 +19,11 @@
 | UnionTypes.java:44:9:44:9 | x | 3 | A3 | false |
 | UnionTypes.java:45:7:45:7 | x | 2 | A1 | false |
 | UnionTypes.java:45:7:45:7 | x | 2 | A2 | true |
-| UnionTypes.java:51:7:51:7 | d | 3 | A1 | false |
-| UnionTypes.java:51:7:51:7 | d | 3 | A2 | false |
-| UnionTypes.java:51:7:51:7 | d | 3 | A3 | false |
+| UnionTypes.java:47:28:47:28 | x | 3 | A1 | false |
+| UnionTypes.java:47:28:47:28 | x | 3 | A2 | true |
+| UnionTypes.java:47:28:47:28 | x | 3 | A3 | false |
+| UnionTypes.java:48:23:48:23 | x | 2 | A1 | false |
+| UnionTypes.java:48:23:48:23 | x | 2 | A2 | true |
+| UnionTypes.java:55:7:55:7 | d | 3 | A1 | false |
+| UnionTypes.java:55:7:55:7 | d | 3 | A2 | false |
+| UnionTypes.java:55:7:55:7 | d | 3 | A3 | false |

@@ -30,7 +30,7 @@ where
       // exclude dummy passwords and templates
       not (
         sink.getNode().(Sink).(DefaultCredentialsSink).getKind() =
-          ["password", "credentials", "token"] and
+          ["password", "credentials", "token", "key"] and
         PasswordHeuristics::isDummyPassword(val)
         or
         sink.getNode().(Sink).getKind() = "authorization header" and

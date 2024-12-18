@@ -6,22 +6,25 @@ namespace Semmle.Util
 {
     public static class CommandLineExtensions
     {
+        public static bool IsFileArgument(string arg) => arg.StartsWith('@');
+
         /// <summary>
-        /// Archives the first "@" argument in a list of command line arguments.
-        /// Subsequent "@" arguments are ignored.
+        /// Archives the content of all the "@" arguments in a list of command line arguments.
         /// </summary>
-        /// <param name="commandLineArguments">The raw command line arguments.</param>
         /// <param name="textWriter">The writer to archive to.</param>
+        /// <param name="commandLineArguments">The raw command line arguments.</param>
         /// <returns>True iff the file was written.</returns>
-        public static bool WriteCommandLine(this IEnumerable<string> commandLineArguments, TextWriter textWriter)
+        public static bool WriteContentFromArgumentFile(this TextWriter textWriter, IEnumerable<string> commandLineArguments)
         {
             var found = false;
-            foreach (var arg in commandLineArguments.Where(arg => arg.StartsWith('@')).Select(arg => arg.Substring(1)))
+            foreach (var arg in commandLineArguments.Where(IsFileArgument).Select(arg => arg[1..]))
             {
                 string? line;
                 using var file = new StreamReader(arg);
                 while ((line = file.ReadLine()) is not null)
+                {
                     textWriter.WriteLine(line);
+                }
                 found = true;
             }
             return found;

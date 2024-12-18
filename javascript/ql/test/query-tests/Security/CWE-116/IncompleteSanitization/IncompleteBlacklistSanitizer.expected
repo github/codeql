@@ -65,3 +65,9 @@
 | tst.js:305:10:305:34 | s().rep ... ]/g,'') | This HTML sanitizer does not sanitize double quotes |
 | tst.js:309:10:318:3 | s().rep ... ;";\\n\\t}) | This HTML sanitizer does not sanitize single quotes |
 | tst.js:320:9:329:3 | s().rep ... ;";\\n\\t}) | This HTML sanitizer does not sanitize single quotes |
+| tst.js:333:2:333:40 | s().rep ... g"),'') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:333:2:333:40 | s().rep ... g"),'') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:333:2:333:40 | s().rep ... g"),'') | This HTML sanitizer does not sanitize single quotes |
+| tst.js:337:2:337:46 | s().rep ... ()),'') | This HTML sanitizer does not sanitize ampersands |
+| tst.js:337:2:337:46 | s().rep ... ()),'') | This HTML sanitizer does not sanitize double quotes |
+| tst.js:337:2:337:46 | s().rep ... ()),'') | This HTML sanitizer does not sanitize single quotes |

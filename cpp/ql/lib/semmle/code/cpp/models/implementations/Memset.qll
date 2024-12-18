@@ -8,9 +8,10 @@ import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.NonThrowing
 
 private class MemsetFunctionModel extends ArrayFunction, DataFlowFunction, AliasFunction,
-  SideEffectFunction
+  SideEffectFunction, NonCppThrowingFunction
 {
   MemsetFunctionModel() {
     this.hasGlobalOrStdOrBslName("memset")
@@ -22,11 +23,28 @@ private class MemsetFunctionModel extends ArrayFunction, DataFlowFunction, Alias
       ])
   }
 
+  /**
+   * Gets the index of the parameter that specifies the fill character to insert, if any.
+   */
+  private int getFillCharParameterIndex() {
+    (
+      this.hasGlobalOrStdOrBslName("memset")
+      or
+      this.hasGlobalOrStdName("wmemset")
+      or
+      this.hasGlobalName(["__builtin_memset", "__builtin_memset_chk"])
+    ) and
+    result = 1
+  }
+
   override predicate hasArrayOutput(int bufParam) { bufParam = 0 }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(0) and
     output.isReturnValue()
+    or
+    input.isParameter(this.getFillCharParameterIndex()) and
+    (output.isParameterDeref(0) or output.isReturnValueDeref())
   }
 
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {

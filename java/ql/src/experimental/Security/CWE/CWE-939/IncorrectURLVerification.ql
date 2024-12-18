@@ -72,8 +72,7 @@ class HostVerificationMethodCall extends MethodCall {
       exists(MethodCall ma, Method m, Field f |
         this.getArgument(0) = ma and
         ma.getMethod() = m and
-        m.hasName("getString") and
-        m.getDeclaringType().getQualifiedName() = "android.content.res.Resources" and
+        m.hasQualifiedName("android.content.res", "Resources", "getString") and
         ma.getArgument(0).(FieldRead).getField() = f and
         f.getDeclaringType() instanceof AndroidRString
       ) //Check resource properties in /res/values/strings.xml in Android mobile applications using res.getString(R.string.key)

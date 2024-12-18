@@ -1,0 +1,8 @@
+name: codeql/actions-queries
+version: 0.0.1-dev
+library: false
+groups: [actions, queries]
+extractor: actions
+dependencies:
+  codeql/actions-all: ${workspace}
+warnOnImplicitThis: true

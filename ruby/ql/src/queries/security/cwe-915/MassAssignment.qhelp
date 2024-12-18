@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+			Operations that allow for mass assignment (setting multiple attributes of an object using a hash), such as <code>ActiveRecord::Base.new</code>, should take care not to 
+            allow arbitrary parameters to be set by the user. Otherwise, unintended attributes may be set, such as an <code>is_admin</code> field for a <code>User</code> object.
+		</p>
+	</overview>
+	<recommendation>
+		<p>
+			When using a mass assignment operation from user supplied parameters, use <code>ActionController::Parameters#permit</code> to restrict the possible parameters
+            a user can supply, rather than <code>ActionController::Parameters#permit!</code>, which permits arbitrary parameters to be used for mass assignment.
+		</p>
+	</recommendation>
+	<example>
+		<p>
+			 In the following example, <code>permit!</code> is used which allows arbitrary parameters to be supplied by the user.
+		</p>
+		<sample src="examples/MassAssignmentBad.rb" />
+		<p>
+			
+		</p>
+		<p>
+            In the following example, only specific parameters are permitted, so the mass assignment is safe.
+		</p>
+		<sample src="examples/MassAssignmentGood.rb" />
+	</example>
+
+	<references>
+		<li>Rails guides: <a href="https://guides.rubyonrails.org/action_controller_overview.html#strong-parameters">Strong Parameters</a>.</li>
+	</references>
+</qhelp>

@@ -86,6 +86,12 @@ nodes
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
+| angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") |
+| angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") |
+| angular-tempate-url.js:13:30:13:31 | ev |
+| angular-tempate-url.js:13:30:13:31 | ev |
+| angular-tempate-url.js:14:26:14:27 | ev |
+| angular-tempate-url.js:14:26:14:32 | ev.data |
 | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) |
@@ -706,6 +712,18 @@ nodes
 | tooltip.jsx:11:25:11:30 | source |
 | tooltip.jsx:11:25:11:30 | source |
 | tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:23:38:23:43 | source |
 | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search |
 | translate.js:6:16:6:39 | documen ... .search |
@@ -1130,6 +1148,12 @@ nodes
 | tst.js:501:33:501:63 | decodeU ... n.hash) |
 | tst.js:501:43:501:62 | window.location.hash |
 | tst.js:501:43:501:62 | window.location.hash |
+| tst.js:508:7:508:39 | target |
+| tst.js:508:16:508:39 | documen ... .search |
+| tst.js:508:16:508:39 | documen ... .search |
+| tst.js:509:18:509:23 | target |
+| tst.js:509:18:509:54 | target. ... "), '') |
+| tst.js:509:18:509:54 | target. ... "), '') |
 | typeahead.js:20:13:20:45 | target |
 | typeahead.js:20:22:20:45 | documen ... .search |
 | typeahead.js:20:22:20:45 | documen ... .search |
@@ -1263,6 +1287,11 @@ edges
 | angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url |
 | angular2-client.ts:40:45:40:59 | this.router.url | angular2-client.ts:40:45:40:59 | this.router.url |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
+| angular-tempate-url.js:13:30:13:31 | ev | angular-tempate-url.js:14:26:14:27 | ev |
+| angular-tempate-url.js:13:30:13:31 | ev | angular-tempate-url.js:14:26:14:27 | ev |
+| angular-tempate-url.js:14:26:14:27 | ev | angular-tempate-url.js:14:26:14:32 | ev.data |
+| angular-tempate-url.js:14:26:14:32 | ev.data | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") |
+| angular-tempate-url.js:14:26:14:32 | ev.data | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:58:7:68 | window.name | classnames.js:7:47:7:69 | classNa ... w.name) |
@@ -1882,6 +1911,20 @@ edges
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
 | translate.js:6:7:6:39 | target | translate.js:7:42:7:47 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
@@ -2294,6 +2337,11 @@ edges
 | tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
 | tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
 | tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:508:7:508:39 | target | tst.js:509:18:509:23 | target |
+| tst.js:508:16:508:39 | documen ... .search | tst.js:508:7:508:39 | target |
+| tst.js:508:16:508:39 | documen ... .search | tst.js:508:7:508:39 | target |
+| tst.js:509:18:509:23 | target | tst.js:509:18:509:54 | target. ... "), '') |
+| tst.js:509:18:509:23 | target | tst.js:509:18:509:54 | target. ... "), '') |
 | typeahead.js:20:13:20:45 | target | typeahead.js:21:12:21:17 | target |
 | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target |
 | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target |
@@ -2381,6 +2429,7 @@ edges
 | angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url | Cross-site scripting vulnerability due to $@. | angular2-client.ts:38:44:38:58 | this.router.url | user-provided value |
 | angular2-client.ts:40:45:40:59 | this.router.url | angular2-client.ts:40:45:40:59 | this.router.url | angular2-client.ts:40:45:40:59 | this.router.url | Cross-site scripting vulnerability due to $@. | angular2-client.ts:40:45:40:59 | this.router.url | user-provided value |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | Cross-site scripting vulnerability due to $@. | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | user-provided value |
+| angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") | angular-tempate-url.js:13:30:13:31 | ev | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") | Cross-site scripting vulnerability due to $@. | angular-tempate-url.js:13:30:13:31 | ev | user-provided value |
 | classnames.js:7:31:7:84 | `<span  ... <span>` | classnames.js:7:58:7:68 | window.name | classnames.js:7:31:7:84 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:7:58:7:68 | window.name | user-provided value |
 | classnames.js:8:31:8:85 | `<span  ... <span>` | classnames.js:8:59:8:69 | window.name | classnames.js:8:31:8:85 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:8:59:8:69 | window.name | user-provided value |
 | classnames.js:9:31:9:85 | `<span  ... <span>` | classnames.js:9:59:9:69 | window.name | classnames.js:9:31:9:85 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:9:59:9:69 | window.name | user-provided value |
@@ -2486,6 +2535,7 @@ edges
 | string-manipulations.js:10:16:10:45 | String( ... n.href) | string-manipulations.js:10:23:10:44 | documen ... on.href | string-manipulations.js:10:16:10:45 | String( ... n.href) | Cross-site scripting vulnerability due to $@. | string-manipulations.js:10:23:10:44 | documen ... on.href | user-provided value |
 | tooltip.jsx:10:25:10:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:10:25:10:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
 | tooltip.jsx:11:25:11:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:11:25:11:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
+| tooltip.jsx:18:51:18:59 | provide() | tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:18:51:18:59 | provide() | Cross-site scripting vulnerability due to $@. | tooltip.jsx:22:20:22:30 | window.name | user-provided value |
 | translate.js:9:27:9:50 | searchP ... 'term') | translate.js:6:16:6:39 | documen ... .search | translate.js:9:27:9:50 | searchP ... 'term') | Cross-site scripting vulnerability due to $@. | translate.js:6:16:6:39 | documen ... .search | user-provided value |
 | trusted-types-lib.js:2:12:2:12 | x | trusted-types.js:13:20:13:30 | window.name | trusted-types-lib.js:2:12:2:12 | x | Cross-site scripting vulnerability due to $@. | trusted-types.js:13:20:13:30 | window.name | user-provided value |
 | trusted-types.js:3:67:3:67 | x | trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:67:3:67 | x | Cross-site scripting vulnerability due to $@. | trusted-types.js:4:20:4:30 | window.name | user-provided value |
@@ -2584,6 +2634,7 @@ edges
 | tst.js:491:23:491:45 | locatio ... bstr(1) | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) | Cross-site scripting vulnerability due to $@. | tst.js:491:23:491:35 | location.hash | user-provided value |
 | tst.js:494:18:494:40 | locatio ... bstr(1) | tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) | Cross-site scripting vulnerability due to $@. | tst.js:494:18:494:30 | location.hash | user-provided value |
 | tst.js:501:33:501:63 | decodeU ... n.hash) | tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) | Cross-site scripting vulnerability due to $@. | tst.js:501:43:501:62 | window.location.hash | user-provided value |
+| tst.js:509:18:509:54 | target. ... "), '') | tst.js:508:16:508:39 | documen ... .search | tst.js:509:18:509:54 | target. ... "), '') | Cross-site scripting vulnerability due to $@. | tst.js:508:16:508:39 | documen ... .search | user-provided value |
 | typeahead.js:25:18:25:20 | val | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:25:18:25:20 | val | Cross-site scripting vulnerability due to $@. | typeahead.js:20:22:20:45 | documen ... .search | user-provided value |
 | v-html.vue:2:8:2:23 | v-html=tainted | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted | Cross-site scripting vulnerability due to $@. | v-html.vue:6:42:6:58 | document.location | user-provided value |
 | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | various-concat-obfuscations.js:2:16:2:39 | documen ... .search | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | Cross-site scripting vulnerability due to $@. | various-concat-obfuscations.js:2:16:2:39 | documen ... .search | user-provided value |

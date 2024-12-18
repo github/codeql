@@ -1,3 +1,4 @@
 private import DataFlowImplSpecific
 private import codeql.dataflow.internal.DataFlowImpl
-import MakeImpl<PythonDataFlow>
+private import semmle.python.Files
+import MakeImpl<Location, PythonDataFlow>

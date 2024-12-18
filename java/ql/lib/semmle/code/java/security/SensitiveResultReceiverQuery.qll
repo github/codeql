@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SensitiveActions
+private import semmle.code.java.dataflow.FlowSinks
 
 private class ResultReceiverSendCall extends MethodCall {
   ResultReceiverSendCall() {
@@ -18,7 +19,7 @@ private class ResultReceiverSendCall extends MethodCall {
 }
 
 private module UntrustedResultReceiverConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node node) { node instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node node) {
     node.asExpr() = any(ResultReceiverSendCall c).getReceiver()
@@ -31,55 +32,28 @@ private predicate untrustedResultReceiverSend(DataFlow::Node src, ResultReceiver
   UntrustedResultReceiverFlow::flow(src, DataFlow::exprNode(call.getReceiver()))
 }
 
-deprecated private class SensitiveResultReceiverConf extends TaintTracking::Configuration {
-  SensitiveResultReceiverConf() { this = "SensitiveResultReceiverConf" }
-
-  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
-
-  override predicate isSink(DataFlow::Node node) {
+/**
+ * A sensitive result receiver sink node.
+ */
+private class SensitiveResultReceiverSink extends ApiSinkNode {
+  SensitiveResultReceiverSink() {
     exists(ResultReceiverSendCall call |
       untrustedResultReceiverSend(_, call) and
-      node.asExpr() = call.getSentData()
+      this.asExpr() = call.getSentData()
     )
-  }
-
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    super.allowImplicitRead(node, c)
-    or
-    this.isSink(node)
   }
 }
 
 private module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
-  predicate isSink(DataFlow::Node node) {
-    exists(ResultReceiverSendCall call |
-      untrustedResultReceiverSend(_, call) and
-      node.asExpr() = call.getSentData()
-    )
-  }
+  predicate isSink(DataFlow::Node node) { node instanceof SensitiveResultReceiverSink }
 
   predicate allowImplicitRead(DataFlow::Node n, DataFlow::ContentSet c) { isSink(n) and exists(c) }
 }
 
 /** Taint tracking flow for sensitive expressions flowing to untrusted result receivers. */
 module SensitiveResultReceiverFlow = TaintTracking::Global<SensitiveResultReceiverConfig>;
-
-/**
- * DEPRECATED: Use `isSensitiveResultReceiver` instead.
- *
- * Holds if there is a path from sensitive data at `src` to a result receiver at `sink`, and the receiver was obtained from an untrusted source `recSrc`.
- */
-deprecated predicate sensitiveResultReceiver(
-  DataFlow::PathNode src, DataFlow::PathNode sink, DataFlow::Node recSrc
-) {
-  exists(ResultReceiverSendCall call |
-    any(SensitiveResultReceiverConf c).hasFlowPath(src, sink) and
-    sink.getNode().asExpr() = call.getSentData() and
-    untrustedResultReceiverSend(recSrc, call)
-  )
-}
 
 /**
  * Holds if there is a path from sensitive data at `src` to a result receiver at `sink`, and the receiver was obtained from an untrusted source `recSrc`.

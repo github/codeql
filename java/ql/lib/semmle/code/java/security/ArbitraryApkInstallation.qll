@@ -4,6 +4,7 @@ import java
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.FlowSources
 
 /** A string literal that represents the MIME type for Android APKs. */
@@ -48,7 +49,7 @@ class SetDataMethod extends Method {
 }
 
 /** A dataflow sink for the URI of an intent. */
-class SetDataSink extends DataFlow::ExprNode {
+class SetDataSink extends ApiSinkNode, DataFlow::ExprNode {
   SetDataSink() {
     exists(MethodCall ma |
       this.getExpr() = ma.getQualifier() and
@@ -69,12 +70,12 @@ class UriConstructorMethod extends Method {
  * A dataflow source representing the URIs which an APK not controlled by the
  * application may come from. Including external storage and web URLs.
  */
-class ExternalApkSource extends DataFlow::Node {
+class ExternalApkSource extends ApiSourceNode {
   ExternalApkSource() {
     sourceNode(this, "android-external-storage-dir") or
     this.asExpr().(MethodCall).getMethod() instanceof UriConstructorMethod or
     this.asExpr().(StringLiteral).getValue().matches("file://%") or
-    this instanceof ThreatModelFlowSource
+    this instanceof ActiveThreatModelSource
   }
 }
 

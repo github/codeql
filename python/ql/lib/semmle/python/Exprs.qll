@@ -236,7 +236,7 @@ class Call extends Call_ {
   string getANamedArgumentName() {
     result = this.getAKeyword().getArg()
     or
-    result = this.getKwargs().(Dict).getAKey().(StrConst).getText()
+    result = this.getKwargs().(Dict).getAKey().(StringLiteral).getText()
   }
 
   /** Gets the positional argument count of this call, provided there is no more than one tuple (*) argument. */
@@ -299,7 +299,7 @@ class Repr extends Repr_ {
  * A bytes constant, such as `b'ascii'`. Note that unadorned string constants such as
  * `"hello"` are treated as Bytes for Python2, but Unicode for Python3.
  */
-class Bytes extends StrConst {
+class Bytes extends StringLiteral {
   /* syntax: b"hello" */
   Bytes() { not this.isUnicode() }
 
@@ -446,7 +446,7 @@ class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
  * A unicode string expression, such as `u"\u20ac"`. Note that unadorned string constants such as
  * "hello" are treated as Bytes for Python2, but Unicode for Python3.
  */
-class Unicode extends StrConst {
+class Unicode extends StringLiteral {
   /* syntax: "hello" */
   Unicode() { this.isUnicode() }
 
@@ -599,7 +599,7 @@ class Slice extends Slice_ {
 /**
  * Returns all string prefixes in the database that are explicitly marked as Unicode strings.
  *
- * Helper predicate for `StrConst::isUnicode`.
+ * Helper predicate for `StringLiteral::isUnicode`.
  */
 pragma[nomagic]
 private string unicode_prefix() {
@@ -610,7 +610,7 @@ private string unicode_prefix() {
 /**
  * Returns all string prefixes in the database that are _not_ explicitly marked as bytestrings.
  *
- * Helper predicate for `StrConst::isUnicode`.
+ * Helper predicate for `StringLiteral::isUnicode`.
  */
 pragma[nomagic]
 private string non_byte_prefix() {
@@ -618,12 +618,19 @@ private string non_byte_prefix() {
   not result.charAt(_) in ["b", "B"]
 }
 
-/** A string constant. This is a placeholder class -- use `StrConst` instead. */
-class Str = StrConst;
+/** DEPRECATED. Use `StringLiteral` instead. */
+deprecated class Str = StringLiteral;
+
+/** DEPRECATED. Use `StringLiteral` instead. */
+deprecated class StrConst = StringLiteral;
 
 /** A string constant. */
-class StrConst extends Str_, ImmutableLiteral {
+class StringLiteral extends Str_, ImmutableLiteral {
   /* syntax: "hello" */
+  /**
+   * Holds if this string is a unicode string, either by default (e.g. if Python 3), or with an
+   * explicit prefix.
+   */
   predicate isUnicode() {
     this.getPrefix() = unicode_prefix()
     or
@@ -652,6 +659,8 @@ class StrConst extends Str_, ImmutableLiteral {
   }
 
   override Object getLiteralObject() { none() }
+
+  override string toString() { result = "StringLiteral" }
 }
 
 private predicate name_consts(Name_ n, string id) {

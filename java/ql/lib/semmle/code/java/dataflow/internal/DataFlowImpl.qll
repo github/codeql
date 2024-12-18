@@ -1,3 +1,4 @@
 private import DataFlowImplSpecific
 private import codeql.dataflow.internal.DataFlowImpl
-import MakeImpl<JavaDataFlow>
+private import semmle.code.Location
+import MakeImpl<Location, JavaDataFlow>

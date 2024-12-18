@@ -1,4 +1,3 @@
 | Test.java:25:4:25:43 | printStackTrace(...) | $@ can be exposed to an external user. | Test.java:25:4:25:5 | ex | Error information |
 | Test.java:35:5:35:18 | printTrace(...) | $@ can be exposed to an external user. | Test.java:65:3:65:4 | ex | Error information |
 | Test.java:45:5:45:19 | printTrace2(...) | $@ can be exposed to an external user. | Test.java:71:3:71:4 | ex | Error information |
-| Test.java:55:5:55:19 | getMessage(...) | $@ can be exposed to an external user. | Test.java:55:5:55:19 | getMessage(...) | Error information |

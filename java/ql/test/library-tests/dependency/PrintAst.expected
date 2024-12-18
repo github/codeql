@@ -49,3 +49,39 @@ dependency/A.java:
 #   28|             0: [WildcardTypeAccess] ? ...
 #   28|               0: [TypeAccess] Number
 #   28|       5: [BlockStmt] { ... }
+#   29|     4: [Method] test3
+#   29|       3: [TypeAccess] void
+#-----|       4: (Parameters)
+#   29|         0: [Parameter] o
+#   29|           0: [TypeAccess] Object
+#   29|       5: [BlockStmt] { ... }
+#   30|         0: [IfStmt] if (...)
+#   30|           0: [InstanceOfExpr] ...instanceof...
+#   30|             0: [VarAccess] o
+#   30|             1: [TypeAccess] Used1
+#   30|           1: [ReturnStmt] return ...
+#   31|         1: [SwitchStmt] switch (...)
+#   31|           -1: [VarAccess] o
+#   32|           0: [PatternCase] case <Pattern>
+#-----|             0: (Pattern case declaration)
+#   32|               0: [TypeAccess] Used2
+#   32|               1: [LocalVariableDeclExpr] u2
+#   32|           1: [BreakStmt] break
+#   33|           2: [DefaultCase] default
+#   33|           3: [BreakStmt] break
+#   35|         2: [LocalVariableDeclStmt] var ...;
+#   35|           1: [LocalVariableDeclExpr] x
+#   35|             0: [SwitchExpr] switch (...)
+#   35|               -1: [VarAccess] o
+#   36|               0: [PatternCase] case <Pattern>
+#-----|                 0: (Pattern case declaration)
+#   36|                   0: [TypeAccess] Used3
+#   36|                   1: [LocalVariableDeclExpr] u3
+#   36|               1: [YieldStmt] yield ...
+#   36|                 0: [IntegerLiteral] 1
+#   37|               2: [DefaultCase] default
+#   37|               3: [YieldStmt] yield ...
+#   37|                 0: [IntegerLiteral] 2
+#   41|     5: [Class] Used1
+#   42|     6: [Class] Used2
+#   43|     7: [Class] Used3

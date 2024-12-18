@@ -1,11 +1,18 @@
 // This file contains auto-generated code.
-// Generated from `System.ComponentModel.Annotations, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.ComponentModel.Annotations, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace ComponentModel
     {
         namespace DataAnnotations
         {
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
+            public class AllowedValuesAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
+            {
+                public AllowedValuesAttribute(params object[] values) => throw null;
+                public override bool IsValid(object value) => throw null;
+                public object[] Values { get => throw null; }
+            }
             public class AssociatedMetadataTypeTypeDescriptionProvider : System.ComponentModel.TypeDescriptionProvider
             {
                 public AssociatedMetadataTypeTypeDescriptionProvider(System.Type type) => throw null;
@@ -22,6 +29,12 @@ namespace System
                 public System.Collections.Generic.IEnumerable<string> OtherKeyMembers { get => throw null; }
                 public string ThisKey { get => throw null; }
                 public System.Collections.Generic.IEnumerable<string> ThisKeyMembers { get => throw null; }
+            }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
+            public class Base64StringAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
+            {
+                public Base64StringAttribute() => throw null;
+                public override bool IsValid(object value) => throw null;
             }
             [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false)]
             public class CompareAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
@@ -83,6 +96,13 @@ namespace System
                 public System.ComponentModel.DataAnnotations.DisplayFormatAttribute DisplayFormat { get => throw null; set { } }
                 public virtual string GetDataTypeName() => throw null;
                 public override bool IsValid(object value) => throw null;
+            }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
+            public class DeniedValuesAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
+            {
+                public DeniedValuesAttribute(params object[] values) => throw null;
+                public override bool IsValid(object value) => throw null;
+                public object[] Values { get => throw null; }
             }
             [System.AttributeUsage((System.AttributeTargets)2500, AllowMultiple = false)]
             public sealed class DisplayAttribute : System.Attribute
@@ -178,6 +198,15 @@ namespace System
                 public KeyAttribute() => throw null;
             }
             [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
+            public class LengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
+            {
+                public LengthAttribute(int minimumLength, int maximumLength) => throw null;
+                public override string FormatErrorMessage(string name) => throw null;
+                public override bool IsValid(object value) => throw null;
+                public int MaximumLength { get => throw null; }
+                public int MinimumLength { get => throw null; }
+            }
+            [System.AttributeUsage((System.AttributeTargets)2432, AllowMultiple = false)]
             public class MaxLengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute
             {
                 public MaxLengthAttribute() => throw null;
@@ -216,7 +245,9 @@ namespace System
                 public override string FormatErrorMessage(string name) => throw null;
                 public override bool IsValid(object value) => throw null;
                 public object Maximum { get => throw null; }
+                public bool MaximumIsExclusive { get => throw null; set { } }
                 public object Minimum { get => throw null; }
+                public bool MinimumIsExclusive { get => throw null; set { } }
                 public System.Type OperandType { get => throw null; }
                 public bool ParseLimitsInInvariantCulture { get => throw null; set { } }
             }

@@ -5,9 +5,10 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.javaee.Persistence
 private import semmle.code.java.frameworks.MyBatis
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.FlowSinks
 
 /** A sink for database query language injection vulnerabilities. */
-abstract class QueryInjectionSink extends DataFlow::Node { }
+abstract class QueryInjectionSink extends ApiSinkNode { }
 
 /**
  * A unit class for adding additional taint steps.

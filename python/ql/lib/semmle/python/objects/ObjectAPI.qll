@@ -201,7 +201,7 @@ class ModuleValue extends Value instanceof ModuleObjectInternal {
     (
       not this.getPath().getExtension() = "py"
       or
-      exists(If i, Name name, StrConst main, Cmpop op |
+      exists(If i, Name name, StringLiteral main, Cmpop op |
         i.getScope() = this.getScope() and
         op instanceof Eq and
         i.getTest().(Compare).compares(name, op, main) and

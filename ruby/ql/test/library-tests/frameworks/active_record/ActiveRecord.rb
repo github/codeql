@@ -12,6 +12,23 @@ class User < ApplicationRecord
   def self.from(user_group_id)
     UserGroup.find_by(id: user_group_id).users
   end
+
+  def exec(q)
+    connection.create(q)
+    connection.delete(q)
+    connection.exec_query(q)
+    connection.exec_insert(q)
+    connection.exec_delete(q)
+    connection.exec_update(q)
+    connection.execute(q)
+    connection.insert(q)
+    connection.select_all(q)
+    connection.select_one(q)
+    connection.select_rows(q)
+    connection.select_value(q)
+    connection.select_values(q)
+    connection.update(q)
+  end
 end
 
 class Admin < User

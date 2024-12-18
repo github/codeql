@@ -1,13 +1,15 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
+import utils.test.InlineExpectationsTest
 
-module UntrustedFlowSourceTest implements TestSig {
-  string getARelevantTag() { result = "untrustedflowsource" }
+module RemoteFlowSourceTest implements TestSig {
+  string getARelevantTag() { result = "remoteflowsource" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "untrustedflowsource" and
+    tag = "remoteflowsource" and
     value = element and
-    exists(UntrustedFlowSource src | value = "\"" + src.toString() + "\"" |
+    exists(RemoteFlowSource src | value = "\"" + src.toString() + "\"" |
       src.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )
@@ -70,4 +72,4 @@ module TaintFlow implements TestSig {
   }
 }
 
-import MakeTest<MergeTests4<UntrustedFlowSourceTest, HeaderWriteTest, LoggerTest, TaintFlow>>
+import MakeTest<MergeTests4<RemoteFlowSourceTest, HeaderWriteTest, LoggerTest, TaintFlow>>

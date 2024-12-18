@@ -7,6 +7,8 @@ private import semmle.code.java.dataflow.SSA
 private import ContainerFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.InstanceAccess
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowNodes
 private import codeql.dataflow.VariableCapture as VariableCapture
@@ -39,8 +41,11 @@ private predicate fieldStep(Node node1, Node node2) {
   exists(Field f |
     // Taint fields through assigned values only if they're static
     f.isStatic() and
-    f.getAnAssignedValue() = node1.asExpr() and
     node2.(FieldValueNode).getField() = f
+  |
+    f.getAnAssignedValue() = node1.asExpr()
+    or
+    f.getAnAccess() = node1.(PostUpdateNode).getPreUpdateNode().asExpr()
   )
   or
   exists(Field f, FieldRead fr |
@@ -61,18 +66,22 @@ private predicate closureFlowStep(Expr e1, Expr e2) {
   )
 }
 
-private module CaptureInput implements VariableCapture::InputSig {
+private module CaptureInput implements VariableCapture::InputSig<Location> {
   private import java as J
-
-  class Location = J::Location;
 
   class BasicBlock instanceof J::BasicBlock {
     string toString() { result = super.toString() }
+
+    ControlFlowNode getNode(int i) { result = super.getNode(i) }
+
+    int length() { result = super.length() }
 
     Callable getEnclosingCallable() { result = super.getEnclosingCallable() }
 
     Location getLocation() { result = super.getLocation() }
   }
+
+  class ControlFlowNode = J::ControlFlowNode;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { bbIDominates(result, bb) }
 
@@ -103,7 +112,7 @@ private module CaptureInput implements VariableCapture::InputSig {
 
     Location getLocation() { result = super.getLocation() }
 
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i) }
+    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i).asExpr() }
   }
 
   class VariableWrite extends Expr instanceof VariableUpdate {
@@ -138,7 +147,14 @@ private module CaptureInput implements VariableCapture::InputSig {
   }
 
   class Callable extends J::Callable {
-    predicate isConstructor() { this instanceof Constructor }
+    predicate isConstructor() {
+      // InstanceInitializers are called from constructors and are equally likely
+      // to capture variables for the purpose of field initialization, so we treat
+      // them as constructors for the heuristic identification of whether to allow
+      // this-to-this summaries.
+      this instanceof Constructor or
+      this instanceof InstanceInitializer
+    }
   }
 }
 
@@ -146,7 +162,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class CapturedParameter = CaptureInput::CapturedParameter;
 
-module CaptureFlow = VariableCapture::Flow<CaptureInput>;
+module CaptureFlow = VariableCapture::Flow<Location, CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result = n.(CaptureNode).getSynthesizedCaptureNode()
@@ -178,6 +194,10 @@ private predicate captureStoreStep(Node node1, CapturedVariableContent c, Node n
 
 private predicate captureReadStep(Node node1, CapturedVariableContent c, Node node2) {
   CaptureFlow::readStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
+}
+
+private predicate captureClearsContent(Node node, CapturedVariableContent c) {
+  CaptureFlow::clearsContent(asClosureNode(node), c.getVariable())
 }
 
 predicate captureValueStep(Node node1, Node node2) {
@@ -234,6 +254,27 @@ predicate storeStep(Node node1, ContentSet f, Node node2) {
     pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
+// Manual join hacking, to avoid a parameters x fields product.
+pragma[noinline]
+private predicate hasNamedField(Record r, Field f, string name) {
+  f = r.getAField() and name = f.getName()
+}
+
+pragma[noinline]
+private predicate hasNamedCanonicalParameter(Record r, Parameter p, int idx, string name) {
+  p = r.getCanonicalConstructor().getParameter(idx) and name = p.getName()
+}
+
+private Field getLexicallyOrderedRecordField(Record r, int idx) {
+  result =
+    rank[idx + 1](Field f, int i, Parameter p, string name |
+      hasNamedCanonicalParameter(r, p, i, name) and
+      hasNamedField(r, f, name)
+    |
+      f order by i
+    )
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` via a read of `f`.
  * Thus, `node1` references an object with a field `f` whose value ends up in
@@ -256,6 +297,13 @@ predicate readStep(Node node1, ContentSet f, Node node2) {
     get.getMethod() = getter and
     node1.asExpr() = get.getQualifier() and
     node2.asExpr() = get
+  )
+  or
+  exists(RecordPatternExpr rpe, PatternExpr subPattern, int i |
+    node1.asExpr() = rpe and
+    subPattern = rpe.getSubPattern(i) and
+    node2.asExpr() = subPattern and
+    f.(FieldContent).getField() = getLexicallyOrderedRecordField(rpe.getType(), i)
   )
   or
   f instanceof ArrayContent and arrayReadStep(node1, node2, _)
@@ -285,6 +333,8 @@ predicate clearsContent(Node n, ContentSet c) {
   )
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  or
+  captureClearsContent(n, c)
 }
 
 /**
@@ -313,8 +363,12 @@ RefType getErasedRepr(Type t) {
   t instanceof NullType and result instanceof TypeObject
 }
 
-class DataFlowType extends SrcRefType {
+final private class SrcRefTypeFinal = SrcRefType;
+
+class DataFlowType extends SrcRefTypeFinal {
   DataFlowType() { this = getErasedRepr(_) }
+
+  string toString() { result = ppReprType(this) }
 }
 
 pragma[nomagic]
@@ -328,29 +382,46 @@ DataFlowType getNodeType(Node n) {
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DataFlowType t) {
+private string ppReprType(SrcRefType t) {
   if t.(BoxedType).getPrimitiveType().getName() = "double"
   then result = "Number"
   else result = t.toString()
-}
-
-pragma[nomagic]
-private predicate compatibleTypes0(DataFlowType t1, DataFlowType t2) {
-  erasedHaveIntersection(t1, t2)
 }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-bindingset[t1, t2]
-pragma[inline_late]
-predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { compatibleTypes0(t1, t2) }
+pragma[nomagic]
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { erasedHaveIntersection(t1, t2) }
 
 /** A node that performs a type cast. */
 class CastNode extends ExprNode {
-  CastNode() { this.getExpr() instanceof CastingExpr }
+  CastNode() {
+    this.getExpr() instanceof CastingExpr
+    or
+    exists(SsaExplicitUpdate upd |
+      upd.getDefiningExpr().(VariableAssign).getSource() =
+        [
+          any(SwitchStmt ss).getExpr(), any(SwitchExpr se).getExpr(),
+          any(InstanceOfExpr ioe).getExpr()
+        ] and
+      this.asExpr() = upd.getAFirstUse()
+    )
+  }
 }
+
+/** Holds if `n1` is the qualifier of a call to `clone()` and `n2` is the result. */
+predicate cloneStep(Node n1, Node n2) {
+  exists(MethodCall mc |
+    mc.getMethod() instanceof CloneMethod and
+    n1 = getInstanceArgument(mc) and
+    n2.asExpr() = mc
+  )
+}
+
+bindingset[node1, node2]
+predicate validParameterAliasStep(Node node1, Node node2) { not cloneStep(node1, node2) }
 
 private newtype TDataFlowCallable =
   TSrcCallable(Callable c) or
@@ -455,6 +526,12 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   override Location getLocation() { result = c.getLocation() }
 }
 
+class NodeRegion instanceof BasicBlock {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { n.asExpr().getBasicBlock() = this }
+}
+
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
 private predicate constantBooleanExpr(Expr e, boolean val) {
   e.(CompileTimeConstantExpr).getBooleanValue() = val
@@ -475,9 +552,9 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
 }
 
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) {
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
   exists(
     ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaImplicitInit param,
     Guard guard
@@ -490,7 +567,7 @@ predicate isUnreachableInCall(Node n, DataFlowCall call) {
     param.getAUse() = guard and
     // which controls `n` with the opposite value of `arg`
     guard
-        .controls(n.asExpr().getBasicBlock(),
+        .controls(nr,
           pragma[only_bind_into](pragma[only_bind_out](arg.getBooleanValue()).booleanNot()))
   )
 }
@@ -533,6 +610,91 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
+predicate knownSourceModel(Node source, string model) { sourceNode(source, _, model) }
+
+predicate knownSinkModel(Node sink, string model) { sinkNode(sink, _, model) }
+
+private predicate isTopLevel(Stmt s) {
+  any(Callable c).getBody() = s
+  or
+  exists(BlockStmt b | s = b.getAStmt() and isTopLevel(b))
+}
+
+private Stmt getAChainedBranch(IfStmt s) {
+  result = s.getThen()
+  or
+  exists(Stmt elseBranch | s.getElse() = elseBranch |
+    result = getAChainedBranch(elseBranch)
+    or
+    result = elseBranch and not elseBranch instanceof IfStmt
+  )
+}
+
+private newtype TDataFlowSecondLevelScope =
+  TTopLevelIfBranch(Stmt s) {
+    exists(IfStmt ifstmt | s = getAChainedBranch(ifstmt) and isTopLevel(ifstmt))
+  } or
+  TTopLevelSwitchCase(SwitchCase s) {
+    exists(SwitchStmt switchstmt | s = switchstmt.getACase() and isTopLevel(switchstmt))
+  }
+
+private SwitchCase getPrecedingCase(Stmt s) {
+  result = s
+  or
+  exists(SwitchStmt switch, int i |
+    s = switch.getStmt(i) and
+    not s instanceof SwitchCase and
+    result = getPrecedingCase(switch.getStmt(i - 1))
+  )
+}
+
+/**
+ * A second-level control-flow scope in a `switch` or a chained `if` statement.
+ *
+ * This is a `switch` case or a branch of a chained `if` statement, given that
+ * the `switch` or `if` statement is top level, that is, it is not nested inside
+ * other CFG constructs.
+ */
+class DataFlowSecondLevelScope extends TDataFlowSecondLevelScope {
+  /** Gets a textual representation of this element. */
+  string toString() {
+    exists(Stmt s | this = TTopLevelIfBranch(s) | result = s.toString())
+    or
+    exists(SwitchCase s | this = TTopLevelSwitchCase(s) | result = s.toString())
+  }
+
+  /**
+   * Gets a statement directly contained in this scope. For an `if` branch, this
+   * is the branch itself, and for a `switch case`, this is one the statements
+   * of that case branch.
+   */
+  private Stmt getAStmt() {
+    exists(Stmt s | this = TTopLevelIfBranch(s) | result = s)
+    or
+    exists(SwitchCase s | this = TTopLevelSwitchCase(s) |
+      result = s.getRuleStatement() or
+      s = getPrecedingCase(result)
+    )
+  }
+
+  /** Gets a data-flow node nested within this scope. */
+  Node getANode() { getRelatedExpr(result).getAnEnclosingStmt() = this.getAStmt() }
+}
+
+private Expr getRelatedExpr(Node n) {
+  n.asExpr() = result
+  or
+  exists(InstanceAccessExt iae | iae = n.(ImplicitInstanceAccess).getInstanceAccess() |
+    iae.isImplicitFieldQualifier(result) or
+    iae.isImplicitMethodQualifier(result)
+  )
+  or
+  getRelatedExpr(n.(PostUpdateNode).getPreUpdateNode()) = result
+}
+
+/** Gets the second-level scope containing the node `n`, if any. */
+DataFlowSecondLevelScope getSecondLevelScope(Node n) { result.getANode() = n }
+
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a
  * side-effect, resulting in a summary from `p` to itself.
@@ -541,7 +703,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
-  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  exists(DataFlowCallable c, ParameterPosition pos |
+    parameterNode(p, c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
+  )
   or
   CaptureFlow::heuristicAllowInstanceParameterReturnInSelf(p.(InstanceParameterNode).getCallable())
 }
@@ -595,7 +760,7 @@ ContentApprox getContentApprox(Content c) {
 /**
  * Holds if the the content `c` is a container.
  */
-predicate containerContent(Content c) {
+predicate containerContent(ContentSet c) {
   c instanceof ArrayContent or
   c instanceof CollectionContent or
   c instanceof MapKeyContent or

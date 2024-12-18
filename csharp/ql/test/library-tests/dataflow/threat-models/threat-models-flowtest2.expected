@@ -1,0 +1,37 @@
+models
+| 1 | Sink: System.Data.SqlClient; SqlCommand; false; SqlCommand; (System.String,System.Data.SqlClient.SqlConnection); ; Argument[0]; sql-injection; manual |
+| 2 | Source: My.Qltest; TestSources; false; ExecuteQuery; (System.String); ; ReturnValue; database; manual |
+| 3 | Source: System.Net.Sockets; TcpClient; false; GetStream; ; ; ReturnValue; remote; manual |
+| 4 | Summary: System.IO; Stream; true; Read; (System.Byte[],System.Int32,System.Int32); ; Argument[this]; Argument[0].Element; taint; manual |
+| 5 | Summary: System.Text; Encoding; true; GetString; (System.Byte[]); ; Argument[0].Element; ReturnValue; taint; manual |
+edges
+| Test.cs:12:45:12:49 | bytes : Byte[] [element] : Object | Test.cs:15:56:15:60 | access to parameter bytes : Byte[] [element] : Object | provenance |  |
+| Test.cs:15:56:15:60 | access to parameter bytes : Byte[] [element] : Object | Test.cs:15:20:15:61 | call to method GetString : String | provenance | MaD:5 |
+| Test.cs:23:33:23:38 | access to local variable stream : NetworkStream | Test.cs:25:29:25:34 | access to local variable stream : NetworkStream | provenance |  |
+| Test.cs:23:42:23:59 | call to method GetStream : NetworkStream | Test.cs:23:33:23:38 | access to local variable stream : NetworkStream | provenance | Src:MaD:3  |
+| Test.cs:25:29:25:34 | access to local variable stream : NetworkStream | Test.cs:25:41:25:46 | [post] access to local variable buffer : Byte[] [element] : Object | provenance | MaD:4 |
+| Test.cs:25:41:25:46 | [post] access to local variable buffer : Byte[] [element] : Object | Test.cs:28:99:28:104 | access to local variable buffer : Byte[] [element] : Object | provenance |  |
+| Test.cs:28:85:28:105 | call to method BytesToString : String | Test.cs:28:42:28:111 | ... + ... | provenance | Sink:MaD:1 |
+| Test.cs:28:99:28:104 | access to local variable buffer : Byte[] [element] : Object | Test.cs:12:45:12:49 | bytes : Byte[] [element] : Object | provenance |  |
+| Test.cs:28:99:28:104 | access to local variable buffer : Byte[] [element] : Object | Test.cs:28:85:28:105 | call to method BytesToString : String | provenance | MaD:5 |
+| Test.cs:34:20:34:25 | access to local variable result : String | Test.cs:37:42:37:96 | ... + ... | provenance | Sink:MaD:1 |
+| Test.cs:34:29:34:69 | call to method ExecuteQuery : String | Test.cs:34:20:34:25 | access to local variable result : String | provenance | Src:MaD:2  |
+nodes
+| Test.cs:12:45:12:49 | bytes : Byte[] [element] : Object | semmle.label | bytes : Byte[] [element] : Object |
+| Test.cs:15:20:15:61 | call to method GetString : String | semmle.label | call to method GetString : String |
+| Test.cs:15:56:15:60 | access to parameter bytes : Byte[] [element] : Object | semmle.label | access to parameter bytes : Byte[] [element] : Object |
+| Test.cs:23:33:23:38 | access to local variable stream : NetworkStream | semmle.label | access to local variable stream : NetworkStream |
+| Test.cs:23:42:23:59 | call to method GetStream : NetworkStream | semmle.label | call to method GetStream : NetworkStream |
+| Test.cs:25:29:25:34 | access to local variable stream : NetworkStream | semmle.label | access to local variable stream : NetworkStream |
+| Test.cs:25:41:25:46 | [post] access to local variable buffer : Byte[] [element] : Object | semmle.label | [post] access to local variable buffer : Byte[] [element] : Object |
+| Test.cs:28:42:28:111 | ... + ... | semmle.label | ... + ... |
+| Test.cs:28:85:28:105 | call to method BytesToString : String | semmle.label | call to method BytesToString : String |
+| Test.cs:28:99:28:104 | access to local variable buffer : Byte[] [element] : Object | semmle.label | access to local variable buffer : Byte[] [element] : Object |
+| Test.cs:34:20:34:25 | access to local variable result : String | semmle.label | access to local variable result : String |
+| Test.cs:34:29:34:69 | call to method ExecuteQuery : String | semmle.label | call to method ExecuteQuery : String |
+| Test.cs:37:42:37:96 | ... + ... | semmle.label | ... + ... |
+subpaths
+| Test.cs:28:99:28:104 | access to local variable buffer : Byte[] [element] : Object | Test.cs:12:45:12:49 | bytes : Byte[] [element] : Object | Test.cs:15:20:15:61 | call to method GetString : String | Test.cs:28:85:28:105 | call to method BytesToString : String |
+#select
+| Test.cs:23:42:23:59 | call to method GetStream : NetworkStream | Test.cs:28:42:28:111 | ... + ... |
+| Test.cs:34:29:34:69 | call to method ExecuteQuery : String | Test.cs:37:42:37:96 | ... + ... |

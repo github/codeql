@@ -3,7 +3,7 @@
  */
 
 import csharp
-import Taint::PathGraph
+import utils.test.ProvenancePathGraph::ShowProvenance<Taint::PathNode, Taint::PathGraph>
 
 module TaintConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr().getValue() = "tainted" }

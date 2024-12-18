@@ -1,0 +1,4 @@
+| test.swift:2:1:2:50 | MacroDecl | 0 | test.swift:1:2:1:26 | #freestanding(declaration) |
+| test.swift:4:1:4:15 | MacroDecl | 0 | test.swift:3:2:3:25 | #freestanding(expression) |
+| test.swift:7:1:7:15 | MacroDecl | 0 | test.swift:6:2:6:20 | @attached(extension) |
+| test.swift:7:1:7:15 | MacroDecl | 1 | test.swift:5:2:5:17 | @attached(member) |

@@ -1,3 +1,5 @@
+| assert_raises.py:9:13:9:19 | ExprStmt | This statement has no effect. |
+| assert_raises.py:11:13:11:16 | ExprStmt | This statement has no effect. |
 | test.py:24:1:24:3 | ExprStmt | This statement has no effect. |
 | test.py:25:1:25:13 | ExprStmt | This statement has no effect. |
 | test.py:26:1:26:6 | ExprStmt | This statement has no effect. |

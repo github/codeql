@@ -89,6 +89,18 @@ int compareLE(int a, int b) { if a <= b then result = 1 else result = 0 }
 bindingset[a, b]
 int compareGE(int a, int b) { if a >= b then result = 1 else result = 0 }
 
+/** Returns `a | b`. */
+bindingset[a, b]
+int bitOr(int a, int b) { result = a.bitOr(b) }
+
+/** Returns `a & b`. */
+bindingset[a, b]
+int bitAnd(int a, int b) { result = a.bitAnd(b) }
+
+/** Returns `a ^ b`. */
+bindingset[a, b]
+int bitXor(int a, int b) { result = a.bitXor(b) }
+
 /**
  * Returns `-a`. If the negation would overflow, there is no result.
  */

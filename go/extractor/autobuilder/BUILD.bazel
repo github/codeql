@@ -1,0 +1,26 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "autobuilder",
+    srcs = [
+        "autobuilder.go",
+        "build-environment.go",
+    ],
+    importpath = "github.com/github/codeql-go/extractor/autobuilder",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//go/extractor/diagnostics",
+        "//go/extractor/project",
+        "//go/extractor/toolchain",
+        "//go/extractor/util",
+    ],
+)
+
+go_test(
+    name = "autobuilder_test",
+    srcs = ["build-environment_test.go"],
+    embed = [":autobuilder"],
+    deps = ["//go/extractor/util"],
+)

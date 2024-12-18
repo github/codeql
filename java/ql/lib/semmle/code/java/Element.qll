@@ -36,6 +36,13 @@ class Element extends @element, Top {
    */
   predicate fromSource() { this.getCompilationUnit().isSourceFile() }
 
+  /**
+   * Holds if this element is from source and classified as a stub implementation.
+   * An implementation is considered a stub, if the the path to the
+   * source file contains `/stubs/`.
+   */
+  predicate isStub() { this.fromSource() and this.getFile().getAbsolutePath().matches("%/stubs/%") }
+
   /** Gets the compilation unit that this element belongs to. */
   CompilationUnit getCompilationUnit() { result = this.getFile() }
 
@@ -108,7 +115,7 @@ private predicate hasChildElement(Element parent, Element e) {
   or
   params(e, _, _, parent, _)
   or
-  fields(e, _, _, parent, _)
+  fields(e, _, _, parent)
   or
-  typeVars(e, _, _, _, parent)
+  typeVars(e, _, _, parent)
 }

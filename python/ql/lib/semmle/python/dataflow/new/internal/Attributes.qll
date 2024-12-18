@@ -40,7 +40,7 @@ abstract class AttrRef extends Node {
     or
     exists(LocalSourceNode nodeFrom |
       nodeFrom.flowsTo(this.getAttributeNameExpr()) and
-      attrName = nodeFrom.(CfgNode).getNode().getNode().(StrConst).getText()
+      attrName = nodeFrom.(CfgNode).getNode().getNode().(StringLiteral).getText()
     )
   }
 
@@ -178,7 +178,7 @@ private class SetAttrCallAsAttrWrite extends AttrWrite, CfgNode {
   override ExprNode getAttributeNameExpr() { result.asCfgNode() = node.getName() }
 
   override string getAttributeName() {
-    result = this.getAttributeNameExpr().(CfgNode).getNode().getNode().(StrConst).getText()
+    result = this.getAttributeNameExpr().(CfgNode).getNode().getNode().(StringLiteral).getText()
   }
 }
 
@@ -254,7 +254,7 @@ private class GetAttrCallAsAttrRead extends AttrRead, CfgNode {
   override ExprNode getAttributeNameExpr() { result.asCfgNode() = node.getName() }
 
   override string getAttributeName() {
-    result = this.getAttributeNameExpr().(CfgNode).getNode().getNode().(StrConst).getText()
+    result = this.getAttributeNameExpr().(CfgNode).getNode().getNode().(StringLiteral).getText()
   }
 }
 

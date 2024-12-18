@@ -305,6 +305,41 @@ module Http {
      * open redirect exploits; for example, a form field submitted in a POST request.
      */
     abstract class UnexploitableSource extends DataFlow::Node { }
+
+    private predicate sinkKindInfo(string kind, int rw) {
+      kind = "url-redirection" and
+      rw = -2
+      or
+      kind = "url-redirection[receiver]" and
+      rw = -1
+      or
+      sinkModel(_, _, _, _, _, _, _, kind, _, _) and
+      exists(string rwStr |
+        rwStr.toInt() = rw and
+        kind = "url-redirection[" + rwStr + "]"
+      )
+    }
+
+    private class DefaultHttpRedirect extends Range, DataFlow::CallNode {
+      DataFlow::ArgumentNode url;
+      int rw;
+
+      DefaultHttpRedirect() {
+        this = url.getCall() and
+        exists(string kind |
+          sinkKindInfo(kind, rw) and
+          sinkNode(url, kind)
+        )
+      }
+
+      override DataFlow::Node getUrl() { result = url.getACorrespondingSyntacticArgument() }
+
+      override Http::ResponseWriter getResponseWriter() {
+        rw = -1 and result.getANode() = this.getReceiver()
+        or
+        rw >= 0 and result.getANode() = this.getArgument(rw)
+      }
+    }
   }
 
   /**
@@ -346,6 +381,3 @@ module Http {
     predicate guardedBy(DataFlow::Node check) { super.guardedBy(check) }
   }
 }
-
-/** DEPRECATED: Alias for Http */
-deprecated module HTTP = Http;

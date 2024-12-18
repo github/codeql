@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.print.event", "PrintEvent", True, "PrintEvent", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.print.event", "PrintJobAttributeEvent", True, "PrintJobAttributeEvent", "(DocPrintJob,PrintJobAttributeSet)", "", "Argument[0]", "Argument[this].SyntheticField[java.util.EventObject.source]", "value", "dfc-generated"]
+      - ["javax.print.event", "PrintJobAttributeEvent", True, "getAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.print.event", "PrintJobAttributeEvent", True, "getPrintJob", "()", "", "Argument[this].SyntheticField[java.util.EventObject.source]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.print.event", "PrintJobEvent", True, "PrintJobEvent", "(DocPrintJob,int)", "", "Argument[0]", "Argument[this].SyntheticField[java.util.EventObject.source]", "value", "dfc-generated"]
+      - ["javax.print.event", "PrintJobEvent", True, "getPrintJob", "()", "", "Argument[this].SyntheticField[java.util.EventObject.source]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.print.event", "PrintServiceAttributeEvent", True, "PrintServiceAttributeEvent", "(PrintService,PrintServiceAttributeSet)", "", "Argument[0]", "Argument[this].SyntheticField[java.util.EventObject.source]", "value", "dfc-generated"]
+      - ["javax.print.event", "PrintServiceAttributeEvent", True, "getAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.print.event", "PrintServiceAttributeEvent", True, "getPrintService", "()", "", "Argument[this].SyntheticField[java.util.EventObject.source]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.print.event", "PrintJobAdapter", "printDataTransferCompleted", "(PrintJobEvent)", "summary", "df-generated"]
+      - ["javax.print.event", "PrintJobAdapter", "printJobCanceled", "(PrintJobEvent)", "summary", "df-generated"]
+      - ["javax.print.event", "PrintJobAdapter", "printJobCompleted", "(PrintJobEvent)", "summary", "df-generated"]
+      - ["javax.print.event", "PrintJobAdapter", "printJobFailed", "(PrintJobEvent)", "summary", "df-generated"]
+      - ["javax.print.event", "PrintJobAdapter", "printJobNoMoreEvents", "(PrintJobEvent)", "summary", "df-generated"]
+      - ["javax.print.event", "PrintJobAdapter", "printJobRequiresAttention", "(PrintJobEvent)", "summary", "df-generated"]
+      - ["javax.print.event", "PrintJobEvent", "getPrintEventType", "()", "summary", "df-generated"]

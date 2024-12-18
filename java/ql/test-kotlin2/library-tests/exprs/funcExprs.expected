@@ -1,0 +1,253 @@
+lambdaExpr
+| delegatedProperties.kt:6:32:9:9 | ...->... | stmt body | delegatedProperties.kt:6:32:9:9 | invoke | invoke() | delegatedProperties.kt:6:32:9:9 | new Function0<Integer>(...) { ... } |
+| funcExprs.kt:22:26:22:33 | ...->... | stmt body | funcExprs.kt:22:26:22:33 | invoke | invoke() | funcExprs.kt:22:26:22:33 | new Function0<Integer>(...) { ... } |
+| funcExprs.kt:23:26:23:33 | ...->... | stmt body | funcExprs.kt:23:26:23:33 | invoke | invoke() | funcExprs.kt:23:26:23:33 | new Function0<Object>(...) { ... } |
+| funcExprs.kt:24:26:24:33 | ...->... | stmt body | funcExprs.kt:24:26:24:33 | invoke | invoke() | funcExprs.kt:24:26:24:33 | new Function0<Object>(...) { ... } |
+| funcExprs.kt:25:29:25:38 | ...->... | stmt body | funcExprs.kt:25:29:25:38 | invoke | invoke(int) | funcExprs.kt:25:29:25:38 | new Function1<Integer,Integer>(...) { ... } |
+| funcExprs.kt:26:29:26:34 | ...->... | stmt body | funcExprs.kt:26:29:26:34 | invoke | invoke(int) | funcExprs.kt:26:29:26:34 | new Function1<Integer,Integer>(...) { ... } |
+| funcExprs.kt:27:29:27:42 | ...->... | stmt body | funcExprs.kt:27:29:27:42 | invoke | invoke(int) | funcExprs.kt:27:29:27:42 | new Function1<Integer,Integer>(...) { ... } |
+| funcExprs.kt:29:29:29:37 | ...->... | stmt body | funcExprs.kt:29:29:29:37 | invoke | invoke(java.lang.Object) | funcExprs.kt:29:29:29:37 | new Function1<Object,Object>(...) { ... } |
+| funcExprs.kt:30:28:30:50 | ...->... | stmt body | funcExprs.kt:30:28:30:50 | invoke | invoke(int,int) | funcExprs.kt:30:28:30:50 | new Function2<Integer,Integer,Integer>(...) { ... } |
+| funcExprs.kt:31:28:31:40 | ...->... | stmt body | funcExprs.kt:31:28:31:40 | invoke | invoke(int,int) | funcExprs.kt:31:28:31:40 | new Function2<Integer,Integer,Integer>(...) { ... } |
+| funcExprs.kt:32:28:32:44 | ...->... | stmt body | funcExprs.kt:32:28:32:44 | invoke | invoke(int,int) | funcExprs.kt:32:28:32:44 | new Function2<Integer,Integer,Integer>(...) { ... } |
+| funcExprs.kt:33:28:33:51 | ...->... | stmt body | funcExprs.kt:33:28:33:51 | invoke | invoke(int) | funcExprs.kt:33:28:33:51 | new Function1<Integer,Function1<Integer,Double>>(...) { ... } |
+| funcExprs.kt:33:37:33:47 | ...->... | stmt body | funcExprs.kt:33:37:33:47 | invoke | invoke(int) | funcExprs.kt:33:37:33:47 | new Function1<Integer,Double>(...) { ... } |
+| funcExprs.kt:35:29:35:112 | ...->... | stmt body | funcExprs.kt:35:29:35:112 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:35:29:35:112 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... } |
+| funcExprs.kt:36:29:36:117 | ...->... | stmt body | funcExprs.kt:36:29:36:117 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:36:29:36:117 | new FunctionN<String>(...) { ... } |
+| funcExprs.kt:75:12:75:22 | ...->... | stmt body | funcExprs.kt:75:12:75:22 | invoke | invoke(Class3.Generic) | funcExprs.kt:75:12:75:22 | new Function1<Generic<Generic<Integer>>,String>(...) { ... } |
+| funcExprs.kt:83:31:83:51 | ...->... | stmt body | funcExprs.kt:83:31:83:51 | invoke | invoke(int) | funcExprs.kt:83:31:83:51 | new Function1<Integer,String>(...) { ... } |
+| funcExprs.kt:86:39:86:59 | ...->... | stmt body | funcExprs.kt:86:39:86:59 | invoke | invoke(int) | funcExprs.kt:86:39:86:59 | new Function1<Integer,String>(...) { ... } |
+| funcExprs.kt:90:15:90:69 | ...->... | stmt body | funcExprs.kt:90:15:90:69 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:90:15:90:69 | new FunctionN<String>(...) { ... } |
+| funcExprs.kt:94:15:94:67 | ...->... | stmt body | funcExprs.kt:94:15:94:67 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:94:15:94:67 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,String>(...) { ... } |
+| samConversion.kt:2:31:2:45 | ...->... | stmt body | samConversion.kt:2:31:2:45 | invoke | invoke(int) | samConversion.kt:2:31:2:45 | new Function1<Integer,Boolean>(...) { ... } |
+| samConversion.kt:4:27:4:42 | ...->... | stmt body | samConversion.kt:4:27:4:42 | invoke | invoke(int,int) | samConversion.kt:4:27:4:42 | new Function2<Integer,Integer,Unit>(...) { ... } |
+| samConversion.kt:7:29:7:46 | ...->... | stmt body | samConversion.kt:7:29:7:46 | invoke | invoke(java.lang.String,int) | samConversion.kt:7:29:7:46 | new Function2<String,Integer,Boolean>(...) { ... } |
+| samConversion.kt:9:33:11:5 | ...->... | stmt body | samConversion.kt:9:33:11:5 | invoke | invoke(int) | samConversion.kt:9:33:11:5 | new Function1<Integer,Boolean>(...) { ... } |
+| samConversion.kt:11:12:13:5 | ...->... | stmt body | samConversion.kt:11:12:13:5 | invoke | invoke(int) | samConversion.kt:11:12:13:5 | new Function1<Integer,Boolean>(...) { ... } |
+| samConversion.kt:43:31:45:68 | ...->... | stmt body | samConversion.kt:43:31:45:68 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | samConversion.kt:43:31:45:68 | new FunctionN<Boolean>(...) { ... } |
+| samConversion.kt:46:32:46:44 | ...->... | stmt body | samConversion.kt:46:32:46:44 | invoke | invoke(int) | samConversion.kt:46:32:46:44 | new Function1<Integer,Boolean>(...) { ... } |
+| samConversion.kt:58:30:58:45 | ...->... | stmt body | samConversion.kt:58:30:58:45 | invoke | invoke(int,int) | samConversion.kt:58:30:58:45 | new Function2<Integer,Integer,Unit>(...) { ... } |
+memberRefExprs
+| funcExprs.kt:38:26:38:38 | ...::... | funcExprs.kt:38:26:38:38 | invoke | invoke() | funcExprs.kt:38:26:38:38 | new Function0<Integer>(...) { ... } |
+| funcExprs.kt:39:26:39:36 | ...::... | funcExprs.kt:39:26:39:36 | invoke | invoke() | funcExprs.kt:39:26:39:36 | new Function0<Integer>(...) { ... } |
+| funcExprs.kt:40:29:40:41 | ...::... | funcExprs.kt:40:29:40:41 | invoke | invoke(int) | funcExprs.kt:40:29:40:41 | new Function1<Integer,Integer>(...) { ... } |
+| funcExprs.kt:41:29:41:39 | ...::... | funcExprs.kt:41:29:41:39 | invoke | invoke(FuncRef,int) | funcExprs.kt:41:29:41:39 | new Function2<FuncRef,Integer,Integer>(...) { ... } |
+| funcExprs.kt:42:29:42:33 | ...::... | funcExprs.kt:42:29:42:33 | invoke | invoke(int) | funcExprs.kt:42:29:42:33 | new Function1<Integer,Integer>(...) { ... } |
+| funcExprs.kt:43:28:43:34 | ...::... | funcExprs.kt:43:28:43:34 | invoke | invoke(int,int) | funcExprs.kt:43:28:43:34 | new Function2<Integer,Integer,Integer>(...) { ... } |
+| funcExprs.kt:44:29:44:42 | ...::... | funcExprs.kt:44:29:44:42 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:44:29:44:42 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... } |
+| funcExprs.kt:45:29:45:42 | ...::... | funcExprs.kt:45:29:45:42 | invoke | invoke(java.lang.Object[]) | funcExprs.kt:45:29:45:42 | new FunctionN<String>(...) { ... } |
+| funcExprs.kt:46:30:46:41 | ...::... | funcExprs.kt:46:30:46:41 | invoke | invoke(java.lang.Object[]) | funcExprs.kt:46:30:46:41 | new FunctionN<String>(...) { ... } |
+| funcExprs.kt:49:26:49:32 | ...::... | funcExprs.kt:49:26:49:32 | invoke | invoke() | funcExprs.kt:49:26:49:32 | new Function0<Integer>(...) { ... } |
+| funcExprs.kt:51:8:51:16 | ...::... | funcExprs.kt:51:8:51:16 | invoke | invoke() | funcExprs.kt:51:8:51:16 | new Function0<FuncRef>(...) { ... } |
+| kFunctionInvoke.kt:8:44:8:47 | ...::... | kFunctionInvoke.kt:8:44:8:47 | invoke | invoke(java.lang.String) | kFunctionInvoke.kt:8:44:8:47 | new Function1<String,Unit>(...) { ... } |
+| samConversion.kt:5:27:5:31 | ...::... | samConversion.kt:5:27:5:31 | invoke | invoke(int,int) | samConversion.kt:5:27:5:31 | new Function2<Integer,Integer,Unit>(...) { ... } |
+| samConversion.kt:41:13:41:16 | ...::... | samConversion.kt:41:13:41:16 | invoke | invoke(java.lang.Object[]) | samConversion.kt:41:13:41:16 | new FunctionN<Boolean>(...) { ... } |
+lambda_modifiers
+| delegatedProperties.kt:6:32:9:9 | ...->... | delegatedProperties.kt:6:32:9:9 | invoke | final, override, public |
+| funcExprs.kt:22:26:22:33 | ...->... | funcExprs.kt:22:26:22:33 | invoke | final, override, public |
+| funcExprs.kt:23:26:23:33 | ...->... | funcExprs.kt:23:26:23:33 | invoke | final, override, public |
+| funcExprs.kt:24:26:24:33 | ...->... | funcExprs.kt:24:26:24:33 | invoke | final, override, public |
+| funcExprs.kt:25:29:25:38 | ...->... | funcExprs.kt:25:29:25:38 | invoke | final, override, public |
+| funcExprs.kt:26:29:26:34 | ...->... | funcExprs.kt:26:29:26:34 | invoke | final, override, public |
+| funcExprs.kt:27:29:27:42 | ...->... | funcExprs.kt:27:29:27:42 | invoke | final, override, public |
+| funcExprs.kt:29:29:29:37 | ...->... | funcExprs.kt:29:29:29:37 | invoke | final, override, public |
+| funcExprs.kt:30:28:30:50 | ...->... | funcExprs.kt:30:28:30:50 | invoke | final, override, public |
+| funcExprs.kt:31:28:31:40 | ...->... | funcExprs.kt:31:28:31:40 | invoke | final, override, public |
+| funcExprs.kt:32:28:32:44 | ...->... | funcExprs.kt:32:28:32:44 | invoke | final, override, public |
+| funcExprs.kt:33:28:33:51 | ...->... | funcExprs.kt:33:28:33:51 | invoke | final, override, public |
+| funcExprs.kt:33:37:33:47 | ...->... | funcExprs.kt:33:37:33:47 | invoke | final, override, public |
+| funcExprs.kt:35:29:35:112 | ...->... | funcExprs.kt:35:29:35:112 | invoke | final, override, public |
+| funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | final, public |
+| funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | override, public |
+| funcExprs.kt:75:12:75:22 | ...->... | funcExprs.kt:75:12:75:22 | invoke | final, override, public |
+| funcExprs.kt:83:31:83:51 | ...->... | funcExprs.kt:83:31:83:51 | invoke | final, override, public |
+| funcExprs.kt:86:39:86:59 | ...->... | funcExprs.kt:86:39:86:59 | invoke | final, override, public, suspend |
+| funcExprs.kt:90:15:90:69 | ...->... | funcExprs.kt:90:15:90:69 | invoke | final, public |
+| funcExprs.kt:90:15:90:69 | ...->... | funcExprs.kt:90:15:90:69 | invoke | override, public |
+| funcExprs.kt:94:15:94:67 | ...->... | funcExprs.kt:94:15:94:67 | invoke | final, override, public, suspend |
+| samConversion.kt:2:31:2:45 | ...->... | samConversion.kt:2:31:2:45 | invoke | final, override, public |
+| samConversion.kt:4:27:4:42 | ...->... | samConversion.kt:4:27:4:42 | invoke | final, override, public |
+| samConversion.kt:7:29:7:46 | ...->... | samConversion.kt:7:29:7:46 | invoke | final, override, public |
+| samConversion.kt:9:33:11:5 | ...->... | samConversion.kt:9:33:11:5 | invoke | final, override, public |
+| samConversion.kt:11:12:13:5 | ...->... | samConversion.kt:11:12:13:5 | invoke | final, override, public |
+| samConversion.kt:43:31:45:68 | ...->... | samConversion.kt:43:31:45:68 | invoke | final, public |
+| samConversion.kt:43:31:45:68 | ...->... | samConversion.kt:43:31:45:68 | invoke | override, public |
+| samConversion.kt:46:32:46:44 | ...->... | samConversion.kt:46:32:46:44 | invoke | final, override, public |
+| samConversion.kt:58:30:58:45 | ...->... | samConversion.kt:58:30:58:45 | invoke | final, override, public, suspend |
+anon_class_member_modifiers
+| delegatedProperties.kt:6:27:9:9 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:6:27:9:9 | get | override, public |
+| delegatedProperties.kt:6:27:9:9 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:6:27:9:9 | invoke | override, public |
+| delegatedProperties.kt:6:32:9:9 | new Function0<Integer>(...) { ... } | delegatedProperties.kt:6:32:9:9 | invoke | final, override, public |
+| delegatedProperties.kt:19:34:19:51 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:19:34:19:51 | get | override, public |
+| delegatedProperties.kt:19:34:19:51 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:19:34:19:51 | get | override, public |
+| delegatedProperties.kt:19:34:19:51 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:19:34:19:51 | invoke | override, public |
+| delegatedProperties.kt:19:34:19:51 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:19:34:19:51 | invoke | override, public |
+| delegatedProperties.kt:19:34:19:51 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:19:34:19:51 | set | override, public |
+| delegatedProperties.kt:19:34:19:51 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:19:34:19:51 | set | override, public |
+| delegatedProperties.kt:23:29:23:31 | new KProperty0<String>(...) { ... } | delegatedProperties.kt:23:29:23:31 | get | override, public |
+| delegatedProperties.kt:23:29:23:31 | new KProperty0<String>(...) { ... } | delegatedProperties.kt:23:29:23:31 | invoke | override, public |
+| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:26:13:26:28 | getCurValue | final, public |
+| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:26:13:26:28 | setCurValue | final, public |
+| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:27:13:27:88 | getValue | override, public |
+| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:28:13:30:13 | setValue | override, public |
+| delegatedProperties.kt:33:30:33:47 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:33:30:33:47 | get | override, public |
+| delegatedProperties.kt:33:30:33:47 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:33:30:33:47 | invoke | override, public |
+| delegatedProperties.kt:34:31:34:48 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:34:31:34:48 | get | override, public |
+| delegatedProperties.kt:34:31:34:48 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:34:31:34:48 | get | override, public |
+| delegatedProperties.kt:34:31:34:48 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:34:31:34:48 | invoke | override, public |
+| delegatedProperties.kt:34:31:34:48 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:34:31:34:48 | invoke | override, public |
+| delegatedProperties.kt:34:31:34:48 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:34:31:34:48 | set | override, public |
+| delegatedProperties.kt:34:31:34:48 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:34:31:34:48 | set | override, public |
+| delegatedProperties.kt:39:34:39:51 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:39:34:39:51 | get | override, public |
+| delegatedProperties.kt:39:34:39:51 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:39:34:39:51 | get | override, public |
+| delegatedProperties.kt:39:34:39:51 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:39:34:39:51 | invoke | override, public |
+| delegatedProperties.kt:39:34:39:51 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:39:34:39:51 | invoke | override, public |
+| delegatedProperties.kt:42:30:42:47 | new KMutableProperty1<Owner,Integer>(...) { ... } | delegatedProperties.kt:42:30:42:47 | get | override, public |
+| delegatedProperties.kt:42:30:42:47 | new KMutableProperty1<Owner,Integer>(...) { ... } | delegatedProperties.kt:42:30:42:47 | get | override, public |
+| delegatedProperties.kt:42:30:42:47 | new KMutableProperty1<Owner,Integer>(...) { ... } | delegatedProperties.kt:42:30:42:47 | invoke | override, public |
+| delegatedProperties.kt:42:30:42:47 | new KMutableProperty1<Owner,Integer>(...) { ... } | delegatedProperties.kt:42:30:42:47 | invoke | override, public |
+| delegatedProperties.kt:42:30:42:47 | new KMutableProperty1<Owner,Integer>(...) { ... } | delegatedProperties.kt:42:30:42:47 | set | override, public |
+| delegatedProperties.kt:42:30:42:47 | new KMutableProperty1<Owner,Integer>(...) { ... } | delegatedProperties.kt:42:30:42:47 | set | override, public |
+| delegatedProperties.kt:66:36:66:50 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:66:36:66:50 | get | override, public |
+| delegatedProperties.kt:66:36:66:50 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:66:36:66:50 | invoke | override, public |
+| delegatedProperties.kt:66:36:66:50 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:66:36:66:50 | set | override, public |
+| delegatedProperties.kt:66:36:66:50 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:66:36:66:50 | get | override, public |
+| delegatedProperties.kt:66:36:66:50 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:66:36:66:50 | get | override, public |
+| delegatedProperties.kt:66:36:66:50 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:66:36:66:50 | invoke | override, public |
+| delegatedProperties.kt:66:36:66:50 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:66:36:66:50 | invoke | override, public |
+| delegatedProperties.kt:66:36:66:50 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:66:36:66:50 | set | override, public |
+| delegatedProperties.kt:66:36:66:50 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:66:36:66:50 | set | override, public |
+| delegatedProperties.kt:67:36:67:53 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:67:36:67:53 | get | override, public |
+| delegatedProperties.kt:67:36:67:53 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:67:36:67:53 | get | override, public |
+| delegatedProperties.kt:67:36:67:53 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:67:36:67:53 | get | override, public |
+| delegatedProperties.kt:67:36:67:53 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:67:36:67:53 | invoke | override, public |
+| delegatedProperties.kt:67:36:67:53 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:67:36:67:53 | invoke | override, public |
+| delegatedProperties.kt:67:36:67:53 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:67:36:67:53 | invoke | override, public |
+| delegatedProperties.kt:67:36:67:53 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:67:36:67:53 | set | override, public |
+| delegatedProperties.kt:67:36:67:53 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:67:36:67:53 | set | override, public |
+| delegatedProperties.kt:67:36:67:53 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:67:36:67:53 | set | override, public |
+| delegatedProperties.kt:69:39:69:56 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:69:39:69:56 | get | override, public |
+| delegatedProperties.kt:69:39:69:56 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:69:39:69:56 | invoke | override, public |
+| delegatedProperties.kt:69:39:69:56 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:69:39:69:56 | set | override, public |
+| delegatedProperties.kt:69:39:69:56 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:69:39:69:56 | get | override, public |
+| delegatedProperties.kt:69:39:69:56 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:69:39:69:56 | get | override, public |
+| delegatedProperties.kt:69:39:69:56 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:69:39:69:56 | invoke | override, public |
+| delegatedProperties.kt:69:39:69:56 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:69:39:69:56 | invoke | override, public |
+| delegatedProperties.kt:69:39:69:56 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:69:39:69:56 | set | override, public |
+| delegatedProperties.kt:69:39:69:56 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:69:39:69:56 | set | override, public |
+| delegatedProperties.kt:70:39:70:59 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:70:39:70:59 | get | override, public |
+| delegatedProperties.kt:70:39:70:59 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:70:39:70:59 | get | override, public |
+| delegatedProperties.kt:70:39:70:59 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:70:39:70:59 | get | override, public |
+| delegatedProperties.kt:70:39:70:59 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:70:39:70:59 | invoke | override, public |
+| delegatedProperties.kt:70:39:70:59 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:70:39:70:59 | invoke | override, public |
+| delegatedProperties.kt:70:39:70:59 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:70:39:70:59 | invoke | override, public |
+| delegatedProperties.kt:70:39:70:59 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:70:39:70:59 | set | override, public |
+| delegatedProperties.kt:70:39:70:59 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:70:39:70:59 | set | override, public |
+| delegatedProperties.kt:70:39:70:59 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:70:39:70:59 | set | override, public |
+| delegatedProperties.kt:72:39:72:56 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:72:39:72:56 | get | override, public |
+| delegatedProperties.kt:72:39:72:56 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:72:39:72:56 | invoke | override, public |
+| delegatedProperties.kt:72:39:72:56 | new KProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:72:39:72:56 | get | override, public |
+| delegatedProperties.kt:72:39:72:56 | new KProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:72:39:72:56 | invoke | override, public |
+| delegatedProperties.kt:73:39:73:56 | new KProperty1<Base,Integer>(...) { ... } | delegatedProperties.kt:73:39:73:56 | get | override, public |
+| delegatedProperties.kt:73:39:73:56 | new KProperty1<Base,Integer>(...) { ... } | delegatedProperties.kt:73:39:73:56 | invoke | override, public |
+| delegatedProperties.kt:73:39:73:56 | new KProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:73:39:73:56 | get | override, public |
+| delegatedProperties.kt:73:39:73:56 | new KProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:73:39:73:56 | invoke | override, public |
+| delegatedProperties.kt:75:42:75:78 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:75:42:75:78 | get | override, public |
+| delegatedProperties.kt:75:42:75:78 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:75:42:75:78 | invoke | override, public |
+| delegatedProperties.kt:75:42:75:78 | new KProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:75:42:75:78 | get | override, public |
+| delegatedProperties.kt:75:42:75:78 | new KProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:75:42:75:78 | invoke | override, public |
+| delegatedProperties.kt:77:37:77:49 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:77:37:77:49 | get | override, public |
+| delegatedProperties.kt:77:37:77:49 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:77:37:77:49 | invoke | override, public |
+| delegatedProperties.kt:77:37:77:49 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:77:37:77:49 | set | override, public |
+| delegatedProperties.kt:77:37:77:49 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:77:37:77:49 | get | override, public |
+| delegatedProperties.kt:77:37:77:49 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:77:37:77:49 | get | override, public |
+| delegatedProperties.kt:77:37:77:49 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:77:37:77:49 | invoke | override, public |
+| delegatedProperties.kt:77:37:77:49 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:77:37:77:49 | invoke | override, public |
+| delegatedProperties.kt:77:37:77:49 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:77:37:77:49 | set | override, public |
+| delegatedProperties.kt:77:37:77:49 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:77:37:77:49 | set | override, public |
+| delegatedProperties.kt:79:21:79:38 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:79:21:79:38 | get | override, public |
+| delegatedProperties.kt:79:21:79:38 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:79:21:79:38 | invoke | override, public |
+| delegatedProperties.kt:79:21:79:38 | new KProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:79:21:79:38 | get | override, public |
+| delegatedProperties.kt:79:21:79:38 | new KProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:79:21:79:38 | invoke | override, public |
+| delegatedProperties.kt:82:40:82:54 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:82:40:82:54 | get | override, public |
+| delegatedProperties.kt:82:40:82:54 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:82:40:82:54 | get | override, public |
+| delegatedProperties.kt:82:40:82:54 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:82:40:82:54 | get | override, public |
+| delegatedProperties.kt:82:40:82:54 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:82:40:82:54 | invoke | override, public |
+| delegatedProperties.kt:82:40:82:54 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:82:40:82:54 | invoke | override, public |
+| delegatedProperties.kt:82:40:82:54 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:82:40:82:54 | invoke | override, public |
+| delegatedProperties.kt:82:40:82:54 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:82:40:82:54 | set | override, public |
+| delegatedProperties.kt:82:40:82:54 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:82:40:82:54 | set | override, public |
+| delegatedProperties.kt:82:40:82:54 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:82:40:82:54 | set | override, public |
+| delegatedProperties.kt:87:34:87:46 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | get | override, public |
+| delegatedProperties.kt:87:34:87:46 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | invoke | override, public |
+| delegatedProperties.kt:87:34:87:46 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | set | override, public |
+| delegatedProperties.kt:87:34:87:46 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | get | override, public |
+| delegatedProperties.kt:87:34:87:46 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | get | override, public |
+| delegatedProperties.kt:87:34:87:46 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | invoke | override, public |
+| delegatedProperties.kt:87:34:87:46 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | invoke | override, public |
+| delegatedProperties.kt:87:34:87:46 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | set | override, public |
+| delegatedProperties.kt:87:34:87:46 | new KMutableProperty1<MyClass,Integer>(...) { ... } | delegatedProperties.kt:87:34:87:46 | set | override, public |
+| exprs.kt:195:16:197:9 | new Interface1(...) { ... } | exprs.kt:196:13:196:49 | getA3 | final, public |
+| funcExprs.kt:22:26:22:33 | new Function0<Integer>(...) { ... } | funcExprs.kt:22:26:22:33 | invoke | final, override, public |
+| funcExprs.kt:23:26:23:33 | new Function0<Object>(...) { ... } | funcExprs.kt:23:26:23:33 | invoke | final, override, public |
+| funcExprs.kt:24:26:24:33 | new Function0<Object>(...) { ... } | funcExprs.kt:24:26:24:33 | invoke | final, override, public |
+| funcExprs.kt:25:29:25:38 | new Function1<Integer,Integer>(...) { ... } | funcExprs.kt:25:29:25:38 | invoke | final, override, public |
+| funcExprs.kt:26:29:26:34 | new Function1<Integer,Integer>(...) { ... } | funcExprs.kt:26:29:26:34 | invoke | final, override, public |
+| funcExprs.kt:27:29:27:42 | new Function1<Integer,Integer>(...) { ... } | funcExprs.kt:27:29:27:42 | invoke | final, override, public |
+| funcExprs.kt:29:29:29:37 | new Function1<Object,Object>(...) { ... } | funcExprs.kt:29:29:29:37 | invoke | final, override, public |
+| funcExprs.kt:30:28:30:50 | new Function2<Integer,Integer,Integer>(...) { ... } | funcExprs.kt:30:28:30:50 | invoke | final, override, public |
+| funcExprs.kt:31:28:31:40 | new Function2<Integer,Integer,Integer>(...) { ... } | funcExprs.kt:31:28:31:40 | invoke | final, override, public |
+| funcExprs.kt:32:28:32:44 | new Function2<Integer,Integer,Integer>(...) { ... } | funcExprs.kt:32:28:32:44 | invoke | final, override, public |
+| funcExprs.kt:33:28:33:51 | new Function1<Integer,Function1<Integer,Double>>(...) { ... } | funcExprs.kt:33:28:33:51 | invoke | final, override, public |
+| funcExprs.kt:33:37:33:47 | new Function1<Integer,Double>(...) { ... } | funcExprs.kt:33:37:33:47 | invoke | final, override, public |
+| funcExprs.kt:35:29:35:112 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... } | funcExprs.kt:35:29:35:112 | invoke | final, override, public |
+| funcExprs.kt:36:29:36:117 | new FunctionN<String>(...) { ... } | funcExprs.kt:36:29:36:117 | invoke | final, public |
+| funcExprs.kt:36:29:36:117 | new FunctionN<String>(...) { ... } | funcExprs.kt:36:29:36:117 | invoke | override, public |
+| funcExprs.kt:38:26:38:38 | new Function0<Integer>(...) { ... } | funcExprs.kt:38:26:38:38 | invoke | override, public |
+| funcExprs.kt:39:26:39:36 | new Function0<Integer>(...) { ... } | funcExprs.kt:39:26:39:36 | invoke | override, public |
+| funcExprs.kt:40:29:40:41 | new Function1<Integer,Integer>(...) { ... } | funcExprs.kt:40:29:40:41 | invoke | override, public |
+| funcExprs.kt:41:29:41:39 | new Function2<FuncRef,Integer,Integer>(...) { ... } | funcExprs.kt:41:29:41:39 | invoke | override, public |
+| funcExprs.kt:42:29:42:33 | new Function1<Integer,Integer>(...) { ... } | funcExprs.kt:42:29:42:33 | invoke | override, public |
+| funcExprs.kt:43:28:43:34 | new Function2<Integer,Integer,Integer>(...) { ... } | funcExprs.kt:43:28:43:34 | invoke | override, public |
+| funcExprs.kt:44:29:44:42 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... } | funcExprs.kt:44:29:44:42 | invoke | override, public |
+| funcExprs.kt:45:29:45:42 | new FunctionN<String>(...) { ... } | funcExprs.kt:45:29:45:42 | invoke | override, public |
+| funcExprs.kt:46:30:46:41 | new FunctionN<String>(...) { ... } | funcExprs.kt:46:30:46:41 | invoke | override, public |
+| funcExprs.kt:49:26:49:32 | new Function0<Integer>(...) { ... } | funcExprs.kt:49:26:49:32 | invoke | override, public |
+| funcExprs.kt:51:8:51:16 | new Function0<FuncRef>(...) { ... } | funcExprs.kt:51:8:51:16 | invoke | override, public |
+| funcExprs.kt:75:12:75:22 | new Function1<Generic<Generic<Integer>>,String>(...) { ... } | funcExprs.kt:75:12:75:22 | invoke | final, override, public |
+| funcExprs.kt:83:31:83:51 | new Function1<Integer,String>(...) { ... } | funcExprs.kt:83:31:83:51 | invoke | final, override, public |
+| funcExprs.kt:86:39:86:59 | new Function1<Integer,String>(...) { ... } | funcExprs.kt:86:39:86:59 | invoke | final, override, public, suspend |
+| funcExprs.kt:90:15:90:69 | new FunctionN<String>(...) { ... } | funcExprs.kt:90:15:90:69 | invoke | final, public |
+| funcExprs.kt:90:15:90:69 | new FunctionN<String>(...) { ... } | funcExprs.kt:90:15:90:69 | invoke | override, public |
+| funcExprs.kt:94:15:94:67 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,String>(...) { ... } | funcExprs.kt:94:15:94:67 | invoke | final, override, public, suspend |
+| kFunctionInvoke.kt:8:44:8:47 | new Function1<String,Unit>(...) { ... } | kFunctionInvoke.kt:8:44:8:47 | invoke | override, public |
+| samConversion.kt:2:18:2:45 | new IntPredicate(...) { ... } | samConversion.kt:2:18:2:45 | accept | final, override, public |
+| samConversion.kt:2:31:2:45 | new Function1<Integer,Boolean>(...) { ... } | samConversion.kt:2:31:2:45 | invoke | final, override, public |
+| samConversion.kt:4:14:4:42 | new InterfaceFn1(...) { ... } | samConversion.kt:4:14:4:42 | fn1 | final, override, public |
+| samConversion.kt:4:27:4:42 | new Function2<Integer,Integer,Unit>(...) { ... } | samConversion.kt:4:27:4:42 | invoke | final, override, public |
+| samConversion.kt:5:14:5:32 | new InterfaceFn1(...) { ... } | samConversion.kt:5:14:5:32 | fn1 | final, override, public |
+| samConversion.kt:5:27:5:31 | new Function2<Integer,Integer,Unit>(...) { ... } | samConversion.kt:5:27:5:31 | invoke | override, public |
+| samConversion.kt:7:13:7:46 | new InterfaceFnExt1(...) { ... } | samConversion.kt:7:13:7:46 | ext | final, override, public |
+| samConversion.kt:7:29:7:46 | new Function2<String,Integer,Boolean>(...) { ... } | samConversion.kt:7:29:7:46 | invoke | final, override, public |
+| samConversion.kt:9:13:13:6 | new IntPredicate(...) { ... } | samConversion.kt:9:13:13:6 | accept | final, override, public |
+| samConversion.kt:9:33:11:5 | new Function1<Integer,Boolean>(...) { ... } | samConversion.kt:9:33:11:5 | invoke | final, override, public |
+| samConversion.kt:11:12:13:5 | new Function1<Integer,Boolean>(...) { ... } | samConversion.kt:11:12:13:5 | invoke | final, override, public |
+| samConversion.kt:41:13:41:16 | new FunctionN<Boolean>(...) { ... } | samConversion.kt:41:13:41:16 | invoke | override, public |
+| samConversion.kt:42:13:42:32 | new BigArityPredicate(...) { ... } | samConversion.kt:42:13:42:32 | accept | final, override, public |
+| samConversion.kt:43:13:45:68 | new BigArityPredicate(...) { ... } | samConversion.kt:43:13:45:68 | accept | final, override, public |
+| samConversion.kt:43:31:45:68 | new FunctionN<Boolean>(...) { ... } | samConversion.kt:43:31:45:68 | invoke | final, public |
+| samConversion.kt:43:31:45:68 | new FunctionN<Boolean>(...) { ... } | samConversion.kt:43:31:45:68 | invoke | override, public |
+| samConversion.kt:46:13:46:44 | new SomePredicate<Integer>(...) { ... } | samConversion.kt:46:13:46:44 | fn | final, override, public |
+| samConversion.kt:46:32:46:44 | new Function1<Integer,Boolean>(...) { ... } | samConversion.kt:46:32:46:44 | invoke | final, override, public |
+| samConversion.kt:58:14:58:45 | new InterfaceFn1Sus(...) { ... } | samConversion.kt:58:14:58:45 | fn1 | final, override, public, suspend |
+| samConversion.kt:58:30:58:45 | new Function2<Integer,Integer,Unit>(...) { ... } | samConversion.kt:58:30:58:45 | invoke | final, override, public, suspend |
+| samConversion.kt:75:17:75:33 | new IntGetter(...) { ... } | samConversion.kt:75:17:75:33 | f | final, override, public |
+| samConversion.kt:75:27:75:32 | new KProperty0<Integer>(...) { ... } | samConversion.kt:75:27:75:32 | get | override, public |
+| samConversion.kt:75:27:75:32 | new KProperty0<Integer>(...) { ... } | samConversion.kt:75:27:75:32 | invoke | override, public |
+| samConversion.kt:76:17:76:55 | new PropertyRefsGetter(...) { ... } | samConversion.kt:76:17:76:55 | f | final, override, public |
+| samConversion.kt:76:36:76:54 | new KProperty1<PropertyRefsTest,Integer>(...) { ... } | samConversion.kt:76:36:76:54 | get | override, public |
+| samConversion.kt:76:36:76:54 | new KProperty1<PropertyRefsTest,Integer>(...) { ... } | samConversion.kt:76:36:76:54 | invoke | override, public |
+nonOverrideInvoke
+| funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | 23 |
+| funcExprs.kt:90:15:90:69 | ...->... | funcExprs.kt:90:15:90:69 | invoke | 23 |
+| samConversion.kt:43:31:45:68 | ...->... | samConversion.kt:43:31:45:68 | invoke | 23 |

@@ -163,7 +163,7 @@ module Public {
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -491,16 +491,16 @@ module Private {
     override string toString() { result = this.getSummaryNode().toString() }
 
     /** Holds if this summary node is the `i`th argument of `call`. */
-    predicate isArgumentOf(DataFlowCall call, int i) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), i)
+    predicate isArgumentOf(SummaryCall call, int i) {
+      FlowSummaryImpl::Private::summaryArgumentNode(call.getReceiver(), this.getSummaryNode(), i)
     }
 
     /** Holds if this summary node is a return node. */
     predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), _) }
 
     /** Holds if this summary node is an out node for `call`. */
-    predicate isOut(DataFlowCall call) {
-      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), _)
+    predicate isOut(SummaryCall call) {
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), _)
     }
   }
 

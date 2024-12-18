@@ -80,11 +80,15 @@ predicate reportableErrors(Diagnostic d, string msg, int sev) {
 predicate reportableWarnings(Diagnostic d, string msg, int sev) { knownWarnings(d, msg, sev) }
 
 /**
+ * Holds if compilation unit `f` is a source file.
+ */
+predicate extracted(CompilationUnit f) { exists(f.getRelativePath()) and f.fromSource() }
+
+/**
  * Holds if compilation unit `f` is a source file that has
  * no relevant extraction diagnostics associated with it.
  */
 predicate successfullyExtracted(CompilationUnit f) {
-  not exists(Diagnostic d | reportableDiagnostics(d, _, _) and d.getLocation().getFile() = f) and
-  exists(f.getRelativePath()) and
-  f.fromSource()
+  extracted(f) and
+  not exists(Diagnostic d | reportableDiagnostics(d, _, _) and d.getLocation().getFile() = f)
 }

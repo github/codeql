@@ -2,6 +2,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.widget.EditText;
 import androidx.security.crypto.MasterKey;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import java.nio.charset.StandardCharsets;
@@ -100,5 +101,12 @@ public class CleartextStorageSharedPrefsTest extends Activity {
 				context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
 		sharedPrefs.edit().putString("name", name).apply(); // Safe
 		sharedPrefs.edit().putString("password", password).apply(); // $hasCleartextStorageSharedPrefs
+	}
+
+	public void testSetSharedPrefs7(Context context, EditText name, EditText password) {
+		SharedPreferences sharedPrefs =
+				context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+		sharedPrefs.edit().putString("name", name.getText().toString()).apply(); // Safe
+		sharedPrefs.edit().putString("password", password.getText().toString()).apply(); // $hasCleartextStorageSharedPrefs
 	}
 }

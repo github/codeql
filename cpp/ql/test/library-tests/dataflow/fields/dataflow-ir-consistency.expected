@@ -14,31 +14,6 @@ localCallNodes
 postIsNotPre
 postHasUniquePre
 uniquePostUpdate
-| aliasing.cpp:70:11:70:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
-| aliasing.cpp:77:11:77:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
-| aliasing.cpp:84:11:84:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
-| aliasing.cpp:91:11:91:11 | definition of w indirection | Node has multiple PostUpdateNodes. |
-| clearning.cpp:54:3:54:3 | s indirection | Node has multiple PostUpdateNodes. |
-| clearning.cpp:61:3:61:3 | s indirection | Node has multiple PostUpdateNodes. |
-| clearning.cpp:90:3:90:3 | s indirection | Node has multiple PostUpdateNodes. |
-| clearning.cpp:104:2:104:2 | s indirection | Node has multiple PostUpdateNodes. |
-| clearning.cpp:111:4:111:4 | s indirection | Node has multiple PostUpdateNodes. |
-| clearning.cpp:118:2:118:2 | s indirection | Node has multiple PostUpdateNodes. |
-| clearning.cpp:125:2:125:2 | s indirection | Node has multiple PostUpdateNodes. |
-| clearning.cpp:132:2:132:2 | s indirection | Node has multiple PostUpdateNodes. |
-| clearning.cpp:139:4:139:4 | s indirection | Node has multiple PostUpdateNodes. |
-| clearning.cpp:165:3:165:3 | s indirection | Node has multiple PostUpdateNodes. |
-| clearning.cpp:172:3:172:3 | s indirection | Node has multiple PostUpdateNodes. |
-| complex.cpp:22:3:22:5 | this indirection | Node has multiple PostUpdateNodes. |
-| complex.cpp:25:7:25:7 | this indirection | Node has multiple PostUpdateNodes. |
-| complex.cpp:42:10:42:14 | inner indirection | Node has multiple PostUpdateNodes. |
-| complex.cpp:43:10:43:14 | inner indirection | Node has multiple PostUpdateNodes. |
-| complex.cpp:53:6:53:10 | inner indirection | Node has multiple PostUpdateNodes. |
-| complex.cpp:54:6:54:10 | inner indirection | Node has multiple PostUpdateNodes. |
-| complex.cpp:55:6:55:10 | inner indirection | Node has multiple PostUpdateNodes. |
-| complex.cpp:56:6:56:10 | inner indirection | Node has multiple PostUpdateNodes. |
-| struct_init.c:26:16:26:20 | definition of outer indirection | Node has multiple PostUpdateNodes. |
-| struct_init.c:41:16:41:20 | definition of outer indirection | Node has multiple PostUpdateNodes. |
 postIsInSameCallable
 reverseRead
 argHasPostUpdate
@@ -52,3 +27,5 @@ uniqueContentApprox
 identityLocalStep
 missingArgumentCall
 multipleArgumentCall
+lambdaCallEnclosingCallableMismatch
+speculativeStepAlreadyHasModel

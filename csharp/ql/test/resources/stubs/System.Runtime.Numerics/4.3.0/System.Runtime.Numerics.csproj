@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../System.Globalization/4.3.0/System.Globalization.csproj" />
+    <ProjectReference Include="../../System.Resources.ResourceManager/4.3.0/System.Resources.ResourceManager.csproj" />
+    <ProjectReference Include="../../System.Runtime/4.3.0/System.Runtime.csproj" />
+    <ProjectReference Include="../../System.Runtime.Extensions/4.3.0/System.Runtime.Extensions.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

@@ -14,6 +14,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.security.dataflow.PathInjectionCustomizations
 private import semmle.python.dataflow.new.FlowSummary
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * Provides models for the `flask` PyPI package.
@@ -39,6 +40,10 @@ module Flask {
                   "MethodView"
                 ])
               .getASubclass*()
+        or
+        result = ModelOutput::getATypeNode("flask.View~Subclass").getASubclass*()
+        or
+        result = ModelOutput::getATypeNode("flask.MethodView~Subclass").getASubclass*()
       }
     }
 
@@ -52,6 +57,8 @@ module Flask {
       API::Node subclassRef() {
         result =
           API::moduleImport("flask").getMember("views").getMember("MethodView").getASubclass*()
+        or
+        result = ModelOutput::getATypeNode("flask.MethodView~Subclass").getASubclass*()
       }
     }
   }
@@ -63,7 +70,10 @@ module Flask {
    */
   module FlaskApp {
     /** Gets a reference to the `flask.Flask` class. */
-    API::Node classRef() { result = API::moduleImport("flask").getMember("Flask") }
+    API::Node classRef() {
+      result = API::moduleImport("flask").getMember("Flask") or
+      result = ModelOutput::getATypeNode("flask.Flask~Subclass").getASubclass*()
+    }
 
     /** Gets a reference to an instance of `flask.Flask` (a flask application). */
     API::Node instance() { result = classRef().getReturn() }
@@ -80,6 +90,8 @@ module Flask {
       result = API::moduleImport("flask").getMember("Blueprint")
       or
       result = API::moduleImport("flask").getMember("blueprints").getMember("Blueprint")
+      or
+      result = ModelOutput::getATypeNode("flask.Blueprint~Subclass").getASubclass*()
     }
 
     /** Gets a reference to an instance of `flask.Blueprint`. */
@@ -87,7 +99,22 @@ module Flask {
   }
 
   /** Gets a reference to the `flask.request` object. */
-  API::Node request() { result = API::moduleImport("flask").getMember("request") }
+  API::Node request() {
+    result = API::moduleImport(["flask", "flask_restful"]).getMember("request")
+    or
+    result = sessionInterfaceRequestParam()
+  }
+
+  /** Gets a `request` parameter of an implementation of `open_session` in a subclass of `flask.sessions.SessionInterface` */
+  private API::Node sessionInterfaceRequestParam() {
+    result =
+      API::moduleImport("flask")
+          .getMember("sessions")
+          .getMember("SessionInterface")
+          .getASubclass+()
+          .getMember("open_session")
+          .getParameter(1)
+  }
 
   /**
    * Provides models for the `flask.Response` class
@@ -104,6 +131,8 @@ module Flask {
       result = API::moduleImport("flask").getMember("Response")
       or
       result = [FlaskApp::classRef(), FlaskApp::instance()].getMember("response_class")
+      or
+      result = ModelOutput::getATypeNode("flask.Response~Subclass").getASubclass*()
     }
 
     /**
@@ -204,6 +233,43 @@ module Flask {
 
     /** Gets a reference to an instance of `flask.Response`. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /** An `Headers` instance that is part of a Flask response. */
+    private class FlaskResponseHeadersInstances extends Werkzeug::Headers::InstanceSource {
+      FlaskResponseHeadersInstances() {
+        this.(DataFlow::AttrRead).getObject() = instance() and
+        this.(DataFlow::AttrRead).getAttributeName() = "headers"
+      }
+    }
+
+    /** A class instantiation of `Response` that sets response headers. */
+    private class ResponseClassHeadersWrite extends Http::Server::ResponseHeaderBulkWrite::Range,
+      ClassInstantiation
+    {
+      override DataFlow::Node getBulkArg() {
+        result = [this.getArg(2), this.getArgByName("headers")]
+      }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
+
+    /** A call to `make_response that sets response headers. */
+    private class MakeResponseHeadersWrite extends Http::Server::ResponseHeaderBulkWrite::Range,
+      FlaskMakeResponseCall
+    {
+      override DataFlow::Node getBulkArg() {
+        result = this.getArg(2)
+        or
+        strictcount(this.getArg(_)) = 2 and
+        result = this.getArg(1)
+      }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -279,6 +345,9 @@ module Flask {
           name = match.regexpCapture(werkzeug_rule_re(), 4)
         )
       )
+      or
+      // **kwargs
+      result = this.getARequestHandler().getKwarg()
     }
 
     override string getFramework() { result = "Flask" }
@@ -334,7 +403,7 @@ module Flask {
     }
   }
 
-  /** A request handler defined in a django view class, that has no known route. */
+  /** A request handler defined in a flask view class, that has no known route. */
   private class FlaskViewClassHandlerWithoutKnownRoute extends Http::Server::RequestHandler::Range {
     FlaskViewClassHandlerWithoutKnownRoute() {
       exists(FlaskViewClass vc | vc.getARequestHandler() = this) and
@@ -347,6 +416,12 @@ module Flask {
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
       result in [this.getArg(_), this.getArgByName(_)] and
       not result = this.getArg(0)
+      or
+      // *args
+      result = this.getVararg()
+      or
+      // **kwargs
+      result = this.getKwarg()
     }
 
     override string getFramework() { result = "Flask" }
@@ -508,9 +583,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.set_cookie
    */
-  class FlaskResponseSetCookieCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode
-  {
+  class FlaskResponseSetCookieCall extends Http::Server::SetCookieCall, DataFlow::MethodCallNode {
     FlaskResponseSetCookieCall() { this.calls(Flask::Response::instance(), "set_cookie") }
 
     override DataFlow::Node getHeaderArg() { none() }
@@ -615,7 +688,7 @@ module Flask {
             .getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
@@ -641,11 +714,23 @@ module Flask {
             .getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
       // Technically it's `Iterator[str]`, but list will do :)
       output = "ReturnValue.ListElement" and
       preservesValue = false
     }
+  }
+
+  /** A call to `flask.render_template_string` or `flask.stream_template_string` as a template construction sink. */
+  private class FlaskTemplateConstruction extends TemplateConstruction::Range, API::CallNode {
+    FlaskTemplateConstruction() {
+      this =
+        API::moduleImport("flask")
+            .getMember(["render_template_string", "stream_template_string"])
+            .getACall()
+    }
+
+    override DataFlow::Node getSourceArg() { result = this.getArg(0) }
   }
 }

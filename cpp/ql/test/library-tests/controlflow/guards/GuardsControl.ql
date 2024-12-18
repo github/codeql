@@ -7,10 +7,10 @@
 import cpp
 import semmle.code.cpp.controlflow.Guards
 
-from GuardCondition guard, boolean sense, int start, int end
+from GuardCondition guard, AbstractValue value, int start, int end
 where
   exists(BasicBlock block |
-    guard.controls(block, sense) and
+    guard.valueControls(block, value) and
     block.hasLocationInfo(_, start, _, end, _)
   )
-select guard, sense, start, end
+select guard, value, start, end

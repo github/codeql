@@ -24,7 +24,7 @@ predicate complex_all(Module m) {
   |
     not a.getValue() instanceof List
     or
-    exists(Expr e | e = a.getValue().(List).getAnElt() | not e instanceof StrConst)
+    exists(Expr e | e = a.getValue().(List).getAnElt() | not e instanceof StringLiteral)
   )
   or
   exists(Call c, GlobalVariable all |

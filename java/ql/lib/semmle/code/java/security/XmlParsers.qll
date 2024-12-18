@@ -2,7 +2,6 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow3
 private import semmle.code.java.dataflow.RangeUtils
 
 private module Frameworks {
@@ -263,9 +262,6 @@ Expr configOptionSupportDtd() {
     f.getDeclaringType() instanceof XmlInputFactory
   )
 }
-
-/** DEPRECATED: Alias for configOptionSupportDtd */
-deprecated Expr configOptionSupportDTD() { result = configOptionSupportDtd() }
 
 /**
  * A safely configured `XmlInputFactory`.
@@ -746,9 +742,6 @@ Expr configAccessExternalDtd() {
   )
 }
 
-/** DEPRECATED: Alias for configAccessExternalDtd */
-deprecated Expr configAccessExternalDTD() { result = configAccessExternalDtd() }
-
 /** A configuration specific for transformers. */
 Expr configAccessExternalStyleSheet() {
   result.(ConstantStringExpr).getStringValue() =
@@ -836,27 +829,6 @@ class TransformerFactoryConfig extends TransformerConfig {
       m.hasName("setAttribute")
     )
   }
-}
-
-/**
- * DEPRECATED.
- *
- * A dataflow configuration that identifies `TransformerFactory` and `SAXTransformerFactory`
- * instances that have been safely configured.
- */
-deprecated class SafeTransformerFactoryFlowConfig extends DataFlow3::Configuration {
-  SafeTransformerFactoryFlowConfig() { this = "XmlParsers::SafeTransformerFactoryFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeTransformerFactory }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall ma |
-      sink.asExpr() = ma.getQualifier() and
-      ma.getMethod().getDeclaringType() instanceof TransformerFactory
-    )
-  }
-
-  override int fieldFlowBranchLimit() { result = 0 }
 }
 
 /**

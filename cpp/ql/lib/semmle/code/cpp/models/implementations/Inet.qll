@@ -20,6 +20,8 @@ private class InetAton extends TaintFunction, ArrayFunction {
     output.isParameterDeref(1)
   }
 
+  override predicate isPartialWrite(FunctionOutput output) { output.isParameterDeref(1) }
+
   override predicate hasArrayInput(int bufParam) { bufParam = 0 }
 
   override predicate hasArrayOutput(int bufParam) { bufParam = 1 }

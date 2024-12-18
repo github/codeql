@@ -1,0 +1,1012 @@
+models
+| 1 | Summary: generatedtest; Test; false; getThrowable_messageDefault; (Object); ; Argument[0].SyntheticField[java.lang.Throwable.message]; ReturnValue; value; manual |
+| 2 | Summary: java.io; BufferedInputStream; false; BufferedInputStream; ; ; Argument[0]; Argument[this]; taint; manual |
+| 3 | Summary: java.io; BufferedReader; false; BufferedReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 4 | Summary: java.io; BufferedReader; true; readLine; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: java.io; ByteArrayInputStream; false; ByteArrayInputStream; ; ; Argument[0]; Argument[this]; taint; manual |
+| 6 | Summary: java.io; ByteArrayOutputStream; false; toByteArray; ; ; Argument[this]; ReturnValue; taint; manual |
+| 7 | Summary: java.io; ByteArrayOutputStream; false; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 8 | Summary: java.io; ByteArrayOutputStream; false; writeTo; ; ; Argument[this]; Argument[0]; taint; manual |
+| 9 | Summary: java.io; CharArrayReader; false; CharArrayReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 10 | Summary: java.io; CharArrayWriter; true; toCharArray; ; ; Argument[this]; ReturnValue; taint; manual |
+| 11 | Summary: java.io; DataInput; true; readFully; ; ; Argument[this]; Argument[0]; taint; manual |
+| 12 | Summary: java.io; DataInput; true; readLine; (); ; Argument[this]; ReturnValue; taint; manual |
+| 13 | Summary: java.io; DataInput; true; readUTF; (); ; Argument[this]; ReturnValue; taint; manual |
+| 14 | Summary: java.io; DataInputStream; false; DataInputStream; ; ; Argument[0]; Argument[this]; taint; manual |
+| 15 | Summary: java.io; File; false; File; ; ; Argument[0]; Argument[this]; taint; manual |
+| 16 | Summary: java.io; File; false; File; ; ; Argument[1]; Argument[this]; taint; manual |
+| 17 | Summary: java.io; File; true; getAbsoluteFile; ; ; Argument[this]; ReturnValue; taint; manual |
+| 18 | Summary: java.io; File; true; getAbsolutePath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 19 | Summary: java.io; File; true; getCanonicalFile; ; ; Argument[this]; ReturnValue; taint; manual |
+| 20 | Summary: java.io; File; true; getCanonicalPath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 21 | Summary: java.io; File; true; getName; (); ; Argument[this]; ReturnValue; taint; manual |
+| 22 | Summary: java.io; File; true; toPath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 23 | Summary: java.io; File; true; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 24 | Summary: java.io; File; true; toURI; ; ; Argument[this]; ReturnValue; taint; manual |
+| 25 | Summary: java.io; FilterOutputStream; true; FilterOutputStream; (OutputStream); ; Argument[0]; Argument[this]; taint; manual |
+| 26 | Summary: java.io; IOException; false; IOException; (String); ; Argument[0]; Argument[this].SyntheticField[java.lang.Throwable.message]; value; manual |
+| 27 | Summary: java.io; InputStream; true; read; (byte[]); ; Argument[this]; Argument[0]; taint; manual |
+| 28 | Summary: java.io; InputStream; true; read; (byte[],int,int); ; Argument[this]; Argument[0]; taint; manual |
+| 29 | Summary: java.io; InputStream; true; readAllBytes; ; ; Argument[this]; ReturnValue; taint; manual |
+| 30 | Summary: java.io; InputStream; true; readNBytes; (byte[],int,int); ; Argument[this]; Argument[0]; taint; manual |
+| 31 | Summary: java.io; InputStream; true; readNBytes; (int); ; Argument[this]; ReturnValue; taint; manual |
+| 32 | Summary: java.io; InputStream; true; transferTo; (OutputStream); ; Argument[this]; Argument[0]; taint; manual |
+| 33 | Summary: java.io; InputStreamReader; false; InputStreamReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 34 | Summary: java.io; ObjectInput; true; read; ; ; Argument[this]; Argument[0]; taint; manual |
+| 35 | Summary: java.io; ObjectInputStream; false; ObjectInputStream; ; ; Argument[0]; Argument[this]; taint; manual |
+| 36 | Summary: java.io; OutputStream; true; write; (byte[]); ; Argument[0]; Argument[this]; taint; manual |
+| 37 | Summary: java.io; OutputStream; true; write; (byte[],int,int); ; Argument[0]; Argument[this]; taint; manual |
+| 38 | Summary: java.io; OutputStream; true; write; (int); ; Argument[0]; Argument[this]; taint; manual |
+| 39 | Summary: java.io; Reader; true; read; ; ; Argument[this]; Argument[0]; taint; manual |
+| 40 | Summary: java.io; StringReader; false; StringReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 41 | Summary: java.io; Writer; true; write; ; ; Argument[0]; Argument[this]; taint; manual |
+edges
+| Test.java:50:21:50:42 | (...)... : InputStream | Test.java:51:34:51:35 | in : InputStream | provenance |  |
+| Test.java:50:21:50:42 | (...)... : InputStream | Test.java:52:9:52:11 | out | provenance | inputStreamWrapper |
+| Test.java:50:35:50:42 | source(...) : Object | Test.java:50:21:50:42 | (...)... : InputStream | provenance |  |
+| Test.java:51:10:51:36 | new BufferedInputStream(...) : BufferedInputStream | Test.java:52:9:52:11 | out | provenance |  |
+| Test.java:51:34:51:35 | in : InputStream | Test.java:51:10:51:36 | new BufferedInputStream(...) : BufferedInputStream | provenance | MaD:2 |
+| Test.java:57:21:57:42 | (...)... : InputStream | Test.java:58:34:58:35 | in : InputStream | provenance |  |
+| Test.java:57:21:57:42 | (...)... : InputStream | Test.java:59:9:59:11 | out | provenance | inputStreamWrapper |
+| Test.java:57:35:57:42 | source(...) : Object | Test.java:57:21:57:42 | (...)... : InputStream | provenance |  |
+| Test.java:58:10:58:39 | new BufferedInputStream(...) : BufferedInputStream | Test.java:59:9:59:11 | out | provenance |  |
+| Test.java:58:34:58:35 | in : InputStream | Test.java:58:10:58:39 | new BufferedInputStream(...) : BufferedInputStream | provenance | MaD:2 |
+| Test.java:64:16:64:32 | (...)... : Reader | Test.java:65:29:65:30 | in : Reader | provenance |  |
+| Test.java:64:25:64:32 | source(...) : Object | Test.java:64:16:64:32 | (...)... : Reader | provenance |  |
+| Test.java:65:10:65:31 | new BufferedReader(...) : BufferedReader | Test.java:66:9:66:11 | out | provenance |  |
+| Test.java:65:29:65:30 | in : Reader | Test.java:65:10:65:31 | new BufferedReader(...) : BufferedReader | provenance | MaD:3 |
+| Test.java:71:16:71:32 | (...)... : Reader | Test.java:72:29:72:30 | in : Reader | provenance |  |
+| Test.java:71:25:71:32 | source(...) : Object | Test.java:71:16:71:32 | (...)... : Reader | provenance |  |
+| Test.java:72:10:72:34 | new BufferedReader(...) : BufferedReader | Test.java:73:9:73:11 | out | provenance |  |
+| Test.java:72:29:72:30 | in : Reader | Test.java:72:10:72:34 | new BufferedReader(...) : BufferedReader | provenance | MaD:3 |
+| Test.java:78:24:78:48 | (...)... : BufferedReader | Test.java:79:10:79:11 | in : BufferedReader | provenance |  |
+| Test.java:78:41:78:48 | source(...) : Object | Test.java:78:24:78:48 | (...)... : BufferedReader | provenance |  |
+| Test.java:79:10:79:11 | in : BufferedReader | Test.java:79:10:79:22 | readLine(...) : String | provenance | MaD:4 |
+| Test.java:79:10:79:22 | readLine(...) : String | Test.java:80:9:80:11 | out | provenance |  |
+| Test.java:85:16:85:32 | (...)... : byte[] | Test.java:86:35:86:36 | in : byte[] | provenance |  |
+| Test.java:85:16:85:32 | (...)... : byte[] | Test.java:87:9:87:11 | out | provenance | inputStreamWrapper |
+| Test.java:85:25:85:32 | source(...) : Object | Test.java:85:16:85:32 | (...)... : byte[] | provenance |  |
+| Test.java:86:10:86:37 | new ByteArrayInputStream(...) : ByteArrayInputStream | Test.java:87:9:87:11 | out | provenance |  |
+| Test.java:86:35:86:36 | in : byte[] | Test.java:86:10:86:37 | new ByteArrayInputStream(...) : ByteArrayInputStream | provenance | MaD:5 |
+| Test.java:92:16:92:32 | (...)... : byte[] | Test.java:93:35:93:36 | in : byte[] | provenance |  |
+| Test.java:92:16:92:32 | (...)... : byte[] | Test.java:94:9:94:11 | out | provenance | inputStreamWrapper |
+| Test.java:92:25:92:32 | source(...) : Object | Test.java:92:16:92:32 | (...)... : byte[] | provenance |  |
+| Test.java:93:10:93:43 | new ByteArrayInputStream(...) : ByteArrayInputStream | Test.java:94:9:94:11 | out | provenance |  |
+| Test.java:93:35:93:36 | in : byte[] | Test.java:93:10:93:43 | new ByteArrayInputStream(...) : ByteArrayInputStream | provenance | MaD:5 |
+| Test.java:99:31:99:62 | (...)... : ByteArrayOutputStream | Test.java:100:10:100:11 | in : ByteArrayOutputStream | provenance |  |
+| Test.java:99:55:99:62 | source(...) : Object | Test.java:99:31:99:62 | (...)... : ByteArrayOutputStream | provenance |  |
+| Test.java:100:10:100:11 | in : ByteArrayOutputStream | Test.java:100:10:100:25 | toByteArray(...) : byte[] | provenance | MaD:6 |
+| Test.java:100:10:100:25 | toByteArray(...) : byte[] | Test.java:101:9:101:11 | out | provenance |  |
+| Test.java:106:31:106:62 | (...)... : ByteArrayOutputStream | Test.java:107:10:107:11 | in : ByteArrayOutputStream | provenance |  |
+| Test.java:106:55:106:62 | source(...) : Object | Test.java:106:31:106:62 | (...)... : ByteArrayOutputStream | provenance |  |
+| Test.java:107:10:107:11 | in : ByteArrayOutputStream | Test.java:107:10:107:36 | toString(...) : String | provenance | MaD:7 |
+| Test.java:107:10:107:36 | toString(...) : String | Test.java:108:9:108:11 | out | provenance |  |
+| Test.java:113:31:113:62 | (...)... : ByteArrayOutputStream | Test.java:114:10:114:11 | in : ByteArrayOutputStream | provenance |  |
+| Test.java:113:55:113:62 | source(...) : Object | Test.java:113:31:113:62 | (...)... : ByteArrayOutputStream | provenance |  |
+| Test.java:114:10:114:11 | in : ByteArrayOutputStream | Test.java:114:10:114:35 | toString(...) : String | provenance | MaD:7 |
+| Test.java:114:10:114:35 | toString(...) : String | Test.java:115:9:115:11 | out | provenance |  |
+| Test.java:120:31:120:62 | (...)... : ByteArrayOutputStream | Test.java:121:10:121:11 | in : ByteArrayOutputStream | provenance |  |
+| Test.java:120:55:120:62 | source(...) : Object | Test.java:120:31:120:62 | (...)... : ByteArrayOutputStream | provenance |  |
+| Test.java:121:10:121:11 | in : ByteArrayOutputStream | Test.java:121:10:121:22 | toString(...) : String | provenance | MaD:7 |
+| Test.java:121:10:121:22 | toString(...) : String | Test.java:122:9:122:11 | out | provenance |  |
+| Test.java:127:31:127:62 | (...)... : ByteArrayOutputStream | Test.java:128:10:128:11 | in : ByteArrayOutputStream | provenance |  |
+| Test.java:127:55:127:62 | source(...) : Object | Test.java:127:31:127:62 | (...)... : ByteArrayOutputStream | provenance |  |
+| Test.java:128:10:128:11 | in : ByteArrayOutputStream | Test.java:128:10:128:23 | toString(...) : String | provenance | MaD:7 |
+| Test.java:128:10:128:23 | toString(...) : String | Test.java:129:9:129:11 | out | provenance |  |
+| Test.java:134:31:134:62 | (...)... : ByteArrayOutputStream | Test.java:135:4:135:5 | in : ByteArrayOutputStream | provenance |  |
+| Test.java:134:55:134:62 | source(...) : Object | Test.java:134:31:134:62 | (...)... : ByteArrayOutputStream | provenance |  |
+| Test.java:135:4:135:5 | in : ByteArrayOutputStream | Test.java:135:15:135:17 | out [post update] : OutputStream | provenance | MaD:8 |
+| Test.java:135:15:135:17 | out [post update] : OutputStream | Test.java:136:9:136:11 | out | provenance |  |
+| Test.java:141:16:141:32 | (...)... : char[] | Test.java:142:30:142:31 | in : char[] | provenance |  |
+| Test.java:141:25:141:32 | source(...) : Object | Test.java:141:16:141:32 | (...)... : char[] | provenance |  |
+| Test.java:142:10:142:32 | new CharArrayReader(...) : CharArrayReader | Test.java:143:9:143:11 | out | provenance |  |
+| Test.java:142:30:142:31 | in : char[] | Test.java:142:10:142:32 | new CharArrayReader(...) : CharArrayReader | provenance | MaD:9 |
+| Test.java:148:16:148:32 | (...)... : char[] | Test.java:149:30:149:31 | in : char[] | provenance |  |
+| Test.java:148:25:148:32 | source(...) : Object | Test.java:148:16:148:32 | (...)... : char[] | provenance |  |
+| Test.java:149:10:149:38 | new CharArrayReader(...) : CharArrayReader | Test.java:150:9:150:11 | out | provenance |  |
+| Test.java:149:30:149:31 | in : char[] | Test.java:149:10:149:38 | new CharArrayReader(...) : CharArrayReader | provenance | MaD:9 |
+| Test.java:155:25:155:50 | (...)... : CharArrayWriter | Test.java:156:10:156:11 | in : CharArrayWriter | provenance |  |
+| Test.java:155:43:155:50 | source(...) : Object | Test.java:155:25:155:50 | (...)... : CharArrayWriter | provenance |  |
+| Test.java:156:10:156:11 | in : CharArrayWriter | Test.java:156:10:156:25 | toCharArray(...) : char[] | provenance | MaD:10 |
+| Test.java:156:10:156:25 | toCharArray(...) : char[] | Test.java:157:9:157:11 | out | provenance |  |
+| Test.java:162:19:162:38 | (...)... : DataInput | Test.java:163:4:163:5 | in : DataInput | provenance |  |
+| Test.java:162:31:162:38 | source(...) : Object | Test.java:162:19:162:38 | (...)... : DataInput | provenance |  |
+| Test.java:163:4:163:5 | in : DataInput | Test.java:163:17:163:19 | out [post update] : byte[] | provenance | MaD:11 |
+| Test.java:163:17:163:19 | out [post update] : byte[] | Test.java:164:9:164:11 | out | provenance |  |
+| Test.java:169:19:169:38 | (...)... : DataInput | Test.java:170:4:170:5 | in : DataInput | provenance |  |
+| Test.java:169:31:169:38 | source(...) : Object | Test.java:169:19:169:38 | (...)... : DataInput | provenance |  |
+| Test.java:170:4:170:5 | in : DataInput | Test.java:170:17:170:19 | out [post update] : byte[] | provenance | MaD:11 |
+| Test.java:170:17:170:19 | out [post update] : byte[] | Test.java:171:9:171:11 | out | provenance |  |
+| Test.java:176:25:176:50 | (...)... : DataInputStream | Test.java:177:4:177:5 | in : DataInputStream | provenance |  |
+| Test.java:176:43:176:50 | source(...) : Object | Test.java:176:25:176:50 | (...)... : DataInputStream | provenance |  |
+| Test.java:177:4:177:5 | in : DataInputStream | Test.java:177:17:177:19 | out [post update] : byte[] | provenance | MaD:11 |
+| Test.java:177:17:177:19 | out [post update] : byte[] | Test.java:178:9:178:11 | out | provenance |  |
+| Test.java:183:25:183:50 | (...)... : DataInputStream | Test.java:184:4:184:5 | in : DataInputStream | provenance |  |
+| Test.java:183:43:183:50 | source(...) : Object | Test.java:183:25:183:50 | (...)... : DataInputStream | provenance |  |
+| Test.java:184:4:184:5 | in : DataInputStream | Test.java:184:17:184:19 | out [post update] : byte[] | provenance | MaD:11 |
+| Test.java:184:17:184:19 | out [post update] : byte[] | Test.java:185:9:185:11 | out | provenance |  |
+| Test.java:190:27:190:54 | (...)... : ObjectInputStream | Test.java:191:4:191:5 | in : ObjectInputStream | provenance |  |
+| Test.java:190:47:190:54 | source(...) : Object | Test.java:190:27:190:54 | (...)... : ObjectInputStream | provenance |  |
+| Test.java:191:4:191:5 | in : ObjectInputStream | Test.java:191:17:191:19 | out [post update] : byte[] | provenance | MaD:11 |
+| Test.java:191:17:191:19 | out [post update] : byte[] | Test.java:192:9:192:11 | out | provenance |  |
+| Test.java:197:27:197:54 | (...)... : ObjectInputStream | Test.java:198:4:198:5 | in : ObjectInputStream | provenance |  |
+| Test.java:197:47:197:54 | source(...) : Object | Test.java:197:27:197:54 | (...)... : ObjectInputStream | provenance |  |
+| Test.java:198:4:198:5 | in : ObjectInputStream | Test.java:198:17:198:19 | out [post update] : byte[] | provenance | MaD:11 |
+| Test.java:198:17:198:19 | out [post update] : byte[] | Test.java:199:9:199:11 | out | provenance |  |
+| Test.java:204:19:204:38 | (...)... : DataInput | Test.java:205:10:205:11 | in : DataInput | provenance |  |
+| Test.java:204:31:204:38 | source(...) : Object | Test.java:204:19:204:38 | (...)... : DataInput | provenance |  |
+| Test.java:205:10:205:11 | in : DataInput | Test.java:205:10:205:22 | readLine(...) : String | provenance | MaD:12 |
+| Test.java:205:10:205:22 | readLine(...) : String | Test.java:206:9:206:11 | out | provenance |  |
+| Test.java:211:25:211:50 | (...)... : DataInputStream | Test.java:212:10:212:11 | in : DataInputStream | provenance |  |
+| Test.java:211:43:211:50 | source(...) : Object | Test.java:211:25:211:50 | (...)... : DataInputStream | provenance |  |
+| Test.java:212:10:212:11 | in : DataInputStream | Test.java:212:10:212:22 | readLine(...) : String | provenance | MaD:12 |
+| Test.java:212:10:212:22 | readLine(...) : String | Test.java:213:9:213:11 | out | provenance |  |
+| Test.java:218:27:218:54 | (...)... : ObjectInputStream | Test.java:219:10:219:11 | in : ObjectInputStream | provenance |  |
+| Test.java:218:27:218:54 | (...)... : ObjectInputStream | Test.java:220:9:220:11 | out | provenance | TypeObjectInputStream.read% |
+| Test.java:218:47:218:54 | source(...) : Object | Test.java:218:27:218:54 | (...)... : ObjectInputStream | provenance |  |
+| Test.java:219:10:219:11 | in : ObjectInputStream | Test.java:219:10:219:22 | readLine(...) : String | provenance | MaD:12 |
+| Test.java:219:10:219:22 | readLine(...) : String | Test.java:220:9:220:11 | out | provenance |  |
+| Test.java:225:19:225:38 | (...)... : DataInput | Test.java:226:10:226:11 | in : DataInput | provenance |  |
+| Test.java:225:31:225:38 | source(...) : Object | Test.java:225:19:225:38 | (...)... : DataInput | provenance |  |
+| Test.java:226:10:226:11 | in : DataInput | Test.java:226:10:226:21 | readUTF(...) : String | provenance | MaD:13 |
+| Test.java:226:10:226:21 | readUTF(...) : String | Test.java:227:9:227:11 | out | provenance |  |
+| Test.java:232:25:232:50 | (...)... : DataInputStream | Test.java:233:10:233:11 | in : DataInputStream | provenance |  |
+| Test.java:232:43:232:50 | source(...) : Object | Test.java:232:25:232:50 | (...)... : DataInputStream | provenance |  |
+| Test.java:233:10:233:11 | in : DataInputStream | Test.java:233:10:233:21 | readUTF(...) : String | provenance | MaD:13 |
+| Test.java:233:10:233:21 | readUTF(...) : String | Test.java:234:9:234:11 | out | provenance |  |
+| Test.java:239:27:239:54 | (...)... : ObjectInputStream | Test.java:240:10:240:11 | in : ObjectInputStream | provenance |  |
+| Test.java:239:27:239:54 | (...)... : ObjectInputStream | Test.java:241:9:241:11 | out | provenance | TypeObjectInputStream.read% |
+| Test.java:239:47:239:54 | source(...) : Object | Test.java:239:27:239:54 | (...)... : ObjectInputStream | provenance |  |
+| Test.java:240:10:240:11 | in : ObjectInputStream | Test.java:240:10:240:21 | readUTF(...) : String | provenance | MaD:13 |
+| Test.java:240:10:240:21 | readUTF(...) : String | Test.java:241:9:241:11 | out | provenance |  |
+| Test.java:246:21:246:42 | (...)... : InputStream | Test.java:247:30:247:31 | in : InputStream | provenance |  |
+| Test.java:246:21:246:42 | (...)... : InputStream | Test.java:248:9:248:11 | out | provenance | inputStreamWrapper |
+| Test.java:246:35:246:42 | source(...) : Object | Test.java:246:21:246:42 | (...)... : InputStream | provenance |  |
+| Test.java:247:10:247:32 | new DataInputStream(...) : DataInputStream | Test.java:248:9:248:11 | out | provenance |  |
+| Test.java:247:30:247:31 | in : InputStream | Test.java:247:10:247:32 | new DataInputStream(...) : DataInputStream | provenance | MaD:14 |
+| Test.java:253:14:253:28 | (...)... : File | Test.java:254:19:254:20 | in : File | provenance |  |
+| Test.java:253:21:253:28 | source(...) : Object | Test.java:253:14:253:28 | (...)... : File | provenance |  |
+| Test.java:254:10:254:36 | new File(...) : File | Test.java:255:9:255:11 | out | provenance |  |
+| Test.java:254:19:254:20 | in : File | Test.java:254:10:254:36 | new File(...) : File | provenance | MaD:15 |
+| Test.java:260:16:260:32 | (...)... : String | Test.java:261:19:261:20 | in : String | provenance |  |
+| Test.java:260:25:260:32 | source(...) : Object | Test.java:260:16:260:32 | (...)... : String | provenance |  |
+| Test.java:261:10:261:21 | new File(...) : File | Test.java:262:9:262:11 | out | provenance |  |
+| Test.java:261:19:261:20 | in : String | Test.java:261:10:261:21 | new File(...) : File | provenance | MaD:15 |
+| Test.java:267:16:267:32 | (...)... : String | Test.java:268:19:268:20 | in : String | provenance |  |
+| Test.java:267:25:267:32 | source(...) : Object | Test.java:267:16:267:32 | (...)... : String | provenance |  |
+| Test.java:268:10:268:36 | new File(...) : File | Test.java:269:9:269:11 | out | provenance |  |
+| Test.java:268:19:268:20 | in : String | Test.java:268:10:268:36 | new File(...) : File | provenance | MaD:15 |
+| Test.java:274:13:274:26 | (...)... : URI | Test.java:275:19:275:20 | in : URI | provenance |  |
+| Test.java:274:19:274:26 | source(...) : Object | Test.java:274:13:274:26 | (...)... : URI | provenance |  |
+| Test.java:275:10:275:21 | new File(...) : File | Test.java:276:9:276:11 | out | provenance |  |
+| Test.java:275:19:275:20 | in : URI | Test.java:275:10:275:21 | new File(...) : File | provenance | MaD:15 |
+| Test.java:281:16:281:32 | (...)... : String | Test.java:282:32:282:33 | in : String | provenance |  |
+| Test.java:281:25:281:32 | source(...) : Object | Test.java:281:16:281:32 | (...)... : String | provenance |  |
+| Test.java:282:10:282:34 | new File(...) : File | Test.java:283:9:283:11 | out | provenance |  |
+| Test.java:282:32:282:33 | in : String | Test.java:282:10:282:34 | new File(...) : File | provenance | MaD:16 |
+| Test.java:288:16:288:32 | (...)... : String | Test.java:289:34:289:35 | in : String | provenance |  |
+| Test.java:288:25:288:32 | source(...) : Object | Test.java:288:16:288:32 | (...)... : String | provenance |  |
+| Test.java:289:10:289:36 | new File(...) : File | Test.java:290:9:290:11 | out | provenance |  |
+| Test.java:289:34:289:35 | in : String | Test.java:289:10:289:36 | new File(...) : File | provenance | MaD:16 |
+| Test.java:295:14:295:28 | (...)... : File | Test.java:296:10:296:11 | in : File | provenance |  |
+| Test.java:295:21:295:28 | source(...) : Object | Test.java:295:14:295:28 | (...)... : File | provenance |  |
+| Test.java:296:10:296:11 | in : File | Test.java:296:10:296:29 | getAbsoluteFile(...) : File | provenance | MaD:17 |
+| Test.java:296:10:296:29 | getAbsoluteFile(...) : File | Test.java:297:9:297:11 | out | provenance |  |
+| Test.java:302:14:302:28 | (...)... : File | Test.java:303:10:303:11 | in : File | provenance |  |
+| Test.java:302:21:302:28 | source(...) : Object | Test.java:302:14:302:28 | (...)... : File | provenance |  |
+| Test.java:303:10:303:11 | in : File | Test.java:303:10:303:29 | getAbsolutePath(...) : String | provenance | MaD:18 |
+| Test.java:303:10:303:29 | getAbsolutePath(...) : String | Test.java:304:9:304:11 | out | provenance |  |
+| Test.java:309:14:309:28 | (...)... : File | Test.java:310:10:310:11 | in : File | provenance |  |
+| Test.java:309:21:309:28 | source(...) : Object | Test.java:309:14:309:28 | (...)... : File | provenance |  |
+| Test.java:310:10:310:11 | in : File | Test.java:310:10:310:30 | getCanonicalFile(...) : File | provenance | MaD:19 |
+| Test.java:310:10:310:30 | getCanonicalFile(...) : File | Test.java:311:9:311:11 | out | provenance |  |
+| Test.java:316:14:316:28 | (...)... : File | Test.java:317:10:317:11 | in : File | provenance |  |
+| Test.java:316:21:316:28 | source(...) : Object | Test.java:316:14:316:28 | (...)... : File | provenance |  |
+| Test.java:317:10:317:11 | in : File | Test.java:317:10:317:30 | getCanonicalPath(...) : String | provenance | MaD:20 |
+| Test.java:317:10:317:30 | getCanonicalPath(...) : String | Test.java:318:9:318:11 | out | provenance |  |
+| Test.java:323:14:323:28 | (...)... : File | Test.java:324:10:324:11 | in : File | provenance |  |
+| Test.java:323:21:323:28 | source(...) : Object | Test.java:323:14:323:28 | (...)... : File | provenance |  |
+| Test.java:324:10:324:11 | in : File | Test.java:324:10:324:21 | getName(...) : String | provenance | MaD:21 |
+| Test.java:324:10:324:21 | getName(...) : String | Test.java:325:9:325:11 | out | provenance |  |
+| Test.java:330:14:330:28 | (...)... : File | Test.java:331:10:331:11 | in : File | provenance |  |
+| Test.java:330:21:330:28 | source(...) : Object | Test.java:330:14:330:28 | (...)... : File | provenance |  |
+| Test.java:331:10:331:11 | in : File | Test.java:331:10:331:20 | toPath(...) : Path | provenance | MaD:22 |
+| Test.java:331:10:331:20 | toPath(...) : Path | Test.java:332:9:332:11 | out | provenance |  |
+| Test.java:337:14:337:28 | (...)... : File | Test.java:338:10:338:11 | in : File | provenance |  |
+| Test.java:337:21:337:28 | source(...) : Object | Test.java:337:14:337:28 | (...)... : File | provenance |  |
+| Test.java:338:10:338:11 | in : File | Test.java:338:10:338:22 | toString(...) : String | provenance | MaD:23 |
+| Test.java:338:10:338:22 | toString(...) : String | Test.java:339:9:339:11 | out | provenance |  |
+| Test.java:344:14:344:28 | (...)... : File | Test.java:345:10:345:11 | in : File | provenance |  |
+| Test.java:344:21:344:28 | source(...) : Object | Test.java:344:14:344:28 | (...)... : File | provenance |  |
+| Test.java:345:10:345:11 | in : File | Test.java:345:10:345:19 | toURI(...) : URI | provenance | MaD:24 |
+| Test.java:345:10:345:19 | toURI(...) : URI | Test.java:346:9:346:11 | out | provenance |  |
+| Test.java:351:22:351:44 | (...)... : OutputStream | Test.java:352:33:352:34 | in : OutputStream | provenance |  |
+| Test.java:351:37:351:44 | source(...) : Object | Test.java:351:22:351:44 | (...)... : OutputStream | provenance |  |
+| Test.java:352:10:352:35 | new FilterOutputStream(...) : FilterOutputStream | Test.java:353:9:353:11 | out | provenance |  |
+| Test.java:352:33:352:34 | in : OutputStream | Test.java:352:10:352:35 | new FilterOutputStream(...) : FilterOutputStream | provenance | MaD:25 |
+| Test.java:358:16:358:32 | (...)... : String | Test.java:359:26:359:27 | in : String | provenance |  |
+| Test.java:358:25:358:32 | source(...) : Object | Test.java:358:16:358:32 | (...)... : String | provenance |  |
+| Test.java:359:10:359:28 | new IOException(...) : IOException [java.lang.Throwable.message] : String | Test.java:360:37:360:39 | out : IOException [java.lang.Throwable.message] : String | provenance |  |
+| Test.java:359:26:359:27 | in : String | Test.java:359:10:359:28 | new IOException(...) : IOException [java.lang.Throwable.message] : String | provenance | MaD:26 |
+| Test.java:360:37:360:39 | out : IOException [java.lang.Throwable.message] : String | Test.java:360:9:360:40 | getThrowable_messageDefault(...) | provenance | MaD:1 |
+| Test.java:365:25:365:50 | (...)... : DataInputStream | Test.java:366:4:366:5 | in : DataInputStream | provenance |  |
+| Test.java:365:43:365:50 | source(...) : Object | Test.java:365:25:365:50 | (...)... : DataInputStream | provenance |  |
+| Test.java:366:4:366:5 | in : DataInputStream | Test.java:366:12:366:14 | out [post update] : byte[] | provenance | MaD:27 |
+| Test.java:366:12:366:14 | out [post update] : byte[] | Test.java:367:9:367:11 | out | provenance |  |
+| Test.java:372:27:372:54 | (...)... : FilterInputStream | Test.java:373:4:373:5 | in : FilterInputStream | provenance |  |
+| Test.java:372:47:372:54 | source(...) : Object | Test.java:372:27:372:54 | (...)... : FilterInputStream | provenance |  |
+| Test.java:373:4:373:5 | in : FilterInputStream | Test.java:373:12:373:14 | out [post update] : byte[] | provenance | MaD:27 |
+| Test.java:373:12:373:14 | out [post update] : byte[] | Test.java:374:9:374:11 | out | provenance |  |
+| Test.java:379:21:379:42 | (...)... : InputStream | Test.java:380:4:380:5 | in : InputStream | provenance |  |
+| Test.java:379:35:379:42 | source(...) : Object | Test.java:379:21:379:42 | (...)... : InputStream | provenance |  |
+| Test.java:380:4:380:5 | in : InputStream | Test.java:380:12:380:14 | out [post update] : byte[] | provenance | MaD:27 |
+| Test.java:380:12:380:14 | out [post update] : byte[] | Test.java:381:9:381:11 | out | provenance |  |
+| Test.java:386:29:386:58 | (...)... : BufferedInputStream | Test.java:387:4:387:5 | in : BufferedInputStream | provenance |  |
+| Test.java:386:51:386:58 | source(...) : Object | Test.java:386:29:386:58 | (...)... : BufferedInputStream | provenance |  |
+| Test.java:387:4:387:5 | in : BufferedInputStream | Test.java:387:12:387:14 | out [post update] : byte[] | provenance | MaD:28 |
+| Test.java:387:12:387:14 | out [post update] : byte[] | Test.java:388:9:388:11 | out | provenance |  |
+| Test.java:393:30:393:60 | (...)... : ByteArrayInputStream | Test.java:394:4:394:5 | in : ByteArrayInputStream | provenance |  |
+| Test.java:393:53:393:60 | source(...) : Object | Test.java:393:30:393:60 | (...)... : ByteArrayInputStream | provenance |  |
+| Test.java:394:4:394:5 | in : ByteArrayInputStream | Test.java:394:12:394:14 | out [post update] : byte[] | provenance | MaD:28 |
+| Test.java:394:12:394:14 | out [post update] : byte[] | Test.java:395:9:395:11 | out | provenance |  |
+| Test.java:400:25:400:50 | (...)... : DataInputStream | Test.java:401:4:401:5 | in : DataInputStream | provenance |  |
+| Test.java:400:43:400:50 | source(...) : Object | Test.java:400:25:400:50 | (...)... : DataInputStream | provenance |  |
+| Test.java:401:4:401:5 | in : DataInputStream | Test.java:401:12:401:14 | out [post update] : byte[] | provenance | MaD:28 |
+| Test.java:401:12:401:14 | out [post update] : byte[] | Test.java:402:9:402:11 | out | provenance |  |
+| Test.java:407:27:407:54 | (...)... : FilterInputStream | Test.java:408:4:408:5 | in : FilterInputStream | provenance |  |
+| Test.java:407:47:407:54 | source(...) : Object | Test.java:407:27:407:54 | (...)... : FilterInputStream | provenance |  |
+| Test.java:408:4:408:5 | in : FilterInputStream | Test.java:408:12:408:14 | out [post update] : byte[] | provenance | MaD:28 |
+| Test.java:408:12:408:14 | out [post update] : byte[] | Test.java:409:9:409:11 | out | provenance |  |
+| Test.java:414:21:414:42 | (...)... : InputStream | Test.java:415:4:415:5 | in : InputStream | provenance |  |
+| Test.java:414:35:414:42 | source(...) : Object | Test.java:414:21:414:42 | (...)... : InputStream | provenance |  |
+| Test.java:415:4:415:5 | in : InputStream | Test.java:415:12:415:14 | out [post update] : byte[] | provenance | MaD:28 |
+| Test.java:415:12:415:14 | out [post update] : byte[] | Test.java:416:9:416:11 | out | provenance |  |
+| Test.java:421:27:421:54 | (...)... : ObjectInputStream | Test.java:422:4:422:5 | in : ObjectInputStream | provenance |  |
+| Test.java:421:47:421:54 | source(...) : Object | Test.java:421:27:421:54 | (...)... : ObjectInputStream | provenance |  |
+| Test.java:422:4:422:5 | in : ObjectInputStream | Test.java:422:12:422:14 | out [post update] : byte[] | provenance | MaD:28 |
+| Test.java:422:4:422:5 | in : ObjectInputStream | Test.java:422:12:422:14 | out [post update] : byte[] | provenance | MaD:34 |
+| Test.java:422:12:422:14 | out [post update] : byte[] | Test.java:423:9:423:11 | out | provenance |  |
+| Test.java:428:30:428:60 | (...)... : ByteArrayInputStream | Test.java:429:10:429:11 | in : ByteArrayInputStream | provenance |  |
+| Test.java:428:53:428:60 | source(...) : Object | Test.java:428:30:428:60 | (...)... : ByteArrayInputStream | provenance |  |
+| Test.java:429:10:429:11 | in : ByteArrayInputStream | Test.java:429:10:429:26 | readAllBytes(...) : byte[] | provenance | MaD:29 |
+| Test.java:429:10:429:26 | readAllBytes(...) : byte[] | Test.java:430:9:430:11 | out | provenance |  |
+| Test.java:435:21:435:42 | (...)... : InputStream | Test.java:436:10:436:11 | in : InputStream | provenance |  |
+| Test.java:435:35:435:42 | source(...) : Object | Test.java:435:21:435:42 | (...)... : InputStream | provenance |  |
+| Test.java:436:10:436:11 | in : InputStream | Test.java:436:10:436:26 | readAllBytes(...) : byte[] | provenance | MaD:29 |
+| Test.java:436:10:436:26 | readAllBytes(...) : byte[] | Test.java:437:9:437:11 | out | provenance |  |
+| Test.java:442:30:442:60 | (...)... : ByteArrayInputStream | Test.java:443:4:443:5 | in : ByteArrayInputStream | provenance |  |
+| Test.java:442:53:442:60 | source(...) : Object | Test.java:442:30:442:60 | (...)... : ByteArrayInputStream | provenance |  |
+| Test.java:443:4:443:5 | in : ByteArrayInputStream | Test.java:443:18:443:20 | out [post update] : byte[] | provenance | MaD:30 |
+| Test.java:443:18:443:20 | out [post update] : byte[] | Test.java:444:9:444:11 | out | provenance |  |
+| Test.java:449:21:449:42 | (...)... : InputStream | Test.java:450:4:450:5 | in : InputStream | provenance |  |
+| Test.java:449:35:449:42 | source(...) : Object | Test.java:449:21:449:42 | (...)... : InputStream | provenance |  |
+| Test.java:450:4:450:5 | in : InputStream | Test.java:450:18:450:20 | out [post update] : byte[] | provenance | MaD:30 |
+| Test.java:450:18:450:20 | out [post update] : byte[] | Test.java:451:9:451:11 | out | provenance |  |
+| Test.java:456:21:456:42 | (...)... : InputStream | Test.java:457:10:457:11 | in : InputStream | provenance |  |
+| Test.java:456:35:456:42 | source(...) : Object | Test.java:456:21:456:42 | (...)... : InputStream | provenance |  |
+| Test.java:457:10:457:11 | in : InputStream | Test.java:457:10:457:25 | readNBytes(...) : byte[] | provenance | MaD:31 |
+| Test.java:457:10:457:25 | readNBytes(...) : byte[] | Test.java:458:9:458:11 | out | provenance |  |
+| Test.java:463:30:463:60 | (...)... : ByteArrayInputStream | Test.java:464:4:464:5 | in : ByteArrayInputStream | provenance |  |
+| Test.java:463:53:463:60 | source(...) : Object | Test.java:463:30:463:60 | (...)... : ByteArrayInputStream | provenance |  |
+| Test.java:464:4:464:5 | in : ByteArrayInputStream | Test.java:464:18:464:20 | out [post update] : OutputStream | provenance | MaD:32 |
+| Test.java:464:18:464:20 | out [post update] : OutputStream | Test.java:465:9:465:11 | out | provenance |  |
+| Test.java:470:21:470:42 | (...)... : InputStream | Test.java:471:4:471:5 | in : InputStream | provenance |  |
+| Test.java:470:35:470:42 | source(...) : Object | Test.java:470:21:470:42 | (...)... : InputStream | provenance |  |
+| Test.java:471:4:471:5 | in : InputStream | Test.java:471:18:471:20 | out [post update] : OutputStream | provenance | MaD:32 |
+| Test.java:471:18:471:20 | out [post update] : OutputStream | Test.java:472:9:472:11 | out | provenance |  |
+| Test.java:477:21:477:42 | (...)... : InputStream | Test.java:478:32:478:33 | in : InputStream | provenance |  |
+| Test.java:477:35:477:42 | source(...) : Object | Test.java:477:21:477:42 | (...)... : InputStream | provenance |  |
+| Test.java:478:10:478:34 | new InputStreamReader(...) : InputStreamReader | Test.java:479:9:479:11 | out | provenance |  |
+| Test.java:478:32:478:33 | in : InputStream | Test.java:478:10:478:34 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:33 |
+| Test.java:484:21:484:42 | (...)... : InputStream | Test.java:485:32:485:33 | in : InputStream | provenance |  |
+| Test.java:484:35:484:42 | source(...) : Object | Test.java:484:21:484:42 | (...)... : InputStream | provenance |  |
+| Test.java:485:10:485:50 | new InputStreamReader(...) : InputStreamReader | Test.java:486:9:486:11 | out | provenance |  |
+| Test.java:485:32:485:33 | in : InputStream | Test.java:485:10:485:50 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:33 |
+| Test.java:491:21:491:42 | (...)... : InputStream | Test.java:492:32:492:33 | in : InputStream | provenance |  |
+| Test.java:491:35:491:42 | source(...) : Object | Test.java:491:21:491:42 | (...)... : InputStream | provenance |  |
+| Test.java:492:10:492:57 | new InputStreamReader(...) : InputStreamReader | Test.java:493:9:493:11 | out | provenance |  |
+| Test.java:492:32:492:33 | in : InputStream | Test.java:492:10:492:57 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:33 |
+| Test.java:498:21:498:42 | (...)... : InputStream | Test.java:499:32:499:33 | in : InputStream | provenance |  |
+| Test.java:498:35:498:42 | source(...) : Object | Test.java:498:21:498:42 | (...)... : InputStream | provenance |  |
+| Test.java:499:10:499:49 | new InputStreamReader(...) : InputStreamReader | Test.java:500:9:500:11 | out | provenance |  |
+| Test.java:499:32:499:33 | in : InputStream | Test.java:499:10:499:49 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:33 |
+| Test.java:505:21:505:42 | (...)... : ObjectInput | Test.java:506:4:506:5 | in : ObjectInput | provenance |  |
+| Test.java:505:35:505:42 | source(...) : Object | Test.java:505:21:505:42 | (...)... : ObjectInput | provenance |  |
+| Test.java:506:4:506:5 | in : ObjectInput | Test.java:506:12:506:14 | out [post update] : byte[] | provenance | MaD:34 |
+| Test.java:506:12:506:14 | out [post update] : byte[] | Test.java:507:9:507:11 | out | provenance |  |
+| Test.java:512:21:512:42 | (...)... : ObjectInput | Test.java:513:4:513:5 | in : ObjectInput | provenance |  |
+| Test.java:512:35:512:42 | source(...) : Object | Test.java:512:21:512:42 | (...)... : ObjectInput | provenance |  |
+| Test.java:513:4:513:5 | in : ObjectInput | Test.java:513:12:513:14 | out [post update] : byte[] | provenance | MaD:34 |
+| Test.java:513:12:513:14 | out [post update] : byte[] | Test.java:514:9:514:11 | out | provenance |  |
+| Test.java:519:27:519:54 | (...)... : ObjectInputStream | Test.java:520:4:520:5 | in : ObjectInputStream | provenance |  |
+| Test.java:519:47:519:54 | source(...) : Object | Test.java:519:27:519:54 | (...)... : ObjectInputStream | provenance |  |
+| Test.java:520:4:520:5 | in : ObjectInputStream | Test.java:520:12:520:14 | out [post update] : byte[] | provenance | MaD:28 |
+| Test.java:520:4:520:5 | in : ObjectInputStream | Test.java:520:12:520:14 | out [post update] : byte[] | provenance | MaD:34 |
+| Test.java:520:12:520:14 | out [post update] : byte[] | Test.java:521:9:521:11 | out | provenance |  |
+| Test.java:526:21:526:42 | (...)... : InputStream | Test.java:527:32:527:33 | in : InputStream | provenance |  |
+| Test.java:526:21:526:42 | (...)... : InputStream | Test.java:528:9:528:11 | out | provenance | inputStreamWrapper |
+| Test.java:526:35:526:42 | source(...) : Object | Test.java:526:21:526:42 | (...)... : InputStream | provenance |  |
+| Test.java:527:10:527:34 | new ObjectInputStream(...) : ObjectInputStream | Test.java:528:9:528:11 | out | provenance |  |
+| Test.java:527:32:527:33 | in : InputStream | Test.java:527:10:527:34 | new ObjectInputStream(...) : ObjectInputStream | provenance | MaD:35 |
+| Test.java:533:16:533:32 | (...)... : byte[] | Test.java:534:14:534:15 | in : byte[] | provenance |  |
+| Test.java:533:25:533:32 | source(...) : Object | Test.java:533:16:533:32 | (...)... : byte[] | provenance |  |
+| Test.java:534:4:534:6 | out [post update] : FilterOutputStream | Test.java:535:9:535:11 | out | provenance |  |
+| Test.java:534:14:534:15 | in : byte[] | Test.java:534:4:534:6 | out [post update] : FilterOutputStream | provenance | MaD:36 |
+| Test.java:540:16:540:32 | (...)... : byte[] | Test.java:541:14:541:15 | in : byte[] | provenance |  |
+| Test.java:540:25:540:32 | source(...) : Object | Test.java:540:16:540:32 | (...)... : byte[] | provenance |  |
+| Test.java:541:4:541:6 | out [post update] : ObjectOutputStream | Test.java:542:9:542:11 | out | provenance |  |
+| Test.java:541:14:541:15 | in : byte[] | Test.java:541:4:541:6 | out [post update] : ObjectOutputStream | provenance | MaD:36 |
+| Test.java:547:16:547:32 | (...)... : byte[] | Test.java:548:14:548:15 | in : byte[] | provenance |  |
+| Test.java:547:25:547:32 | source(...) : Object | Test.java:547:16:547:32 | (...)... : byte[] | provenance |  |
+| Test.java:548:4:548:6 | out [post update] : OutputStream | Test.java:549:9:549:11 | out | provenance |  |
+| Test.java:548:14:548:15 | in : byte[] | Test.java:548:4:548:6 | out [post update] : OutputStream | provenance | MaD:36 |
+| Test.java:554:16:554:32 | (...)... : byte[] | Test.java:555:14:555:15 | in : byte[] | provenance |  |
+| Test.java:554:25:554:32 | source(...) : Object | Test.java:554:16:554:32 | (...)... : byte[] | provenance |  |
+| Test.java:555:4:555:6 | out [post update] : PrintStream | Test.java:556:9:556:11 | out | provenance |  |
+| Test.java:555:14:555:15 | in : byte[] | Test.java:555:4:555:6 | out [post update] : PrintStream | provenance | MaD:36 |
+| Test.java:561:16:561:32 | (...)... : byte[] | Test.java:562:14:562:15 | in : byte[] | provenance |  |
+| Test.java:561:25:561:32 | source(...) : Object | Test.java:561:16:561:32 | (...)... : byte[] | provenance |  |
+| Test.java:562:4:562:6 | out [post update] : ByteArrayOutputStream | Test.java:563:9:563:11 | out | provenance |  |
+| Test.java:562:14:562:15 | in : byte[] | Test.java:562:4:562:6 | out [post update] : ByteArrayOutputStream | provenance | MaD:37 |
+| Test.java:568:16:568:32 | (...)... : byte[] | Test.java:569:14:569:15 | in : byte[] | provenance |  |
+| Test.java:568:25:568:32 | source(...) : Object | Test.java:568:16:568:32 | (...)... : byte[] | provenance |  |
+| Test.java:569:4:569:6 | out [post update] : FilterOutputStream | Test.java:570:9:570:11 | out | provenance |  |
+| Test.java:569:14:569:15 | in : byte[] | Test.java:569:4:569:6 | out [post update] : FilterOutputStream | provenance | MaD:37 |
+| Test.java:575:16:575:32 | (...)... : byte[] | Test.java:576:14:576:15 | in : byte[] | provenance |  |
+| Test.java:575:25:575:32 | source(...) : Object | Test.java:575:16:575:32 | (...)... : byte[] | provenance |  |
+| Test.java:576:4:576:6 | out [post update] : ObjectOutputStream | Test.java:577:9:577:11 | out | provenance |  |
+| Test.java:576:14:576:15 | in : byte[] | Test.java:576:4:576:6 | out [post update] : ObjectOutputStream | provenance | MaD:37 |
+| Test.java:582:16:582:32 | (...)... : byte[] | Test.java:583:14:583:15 | in : byte[] | provenance |  |
+| Test.java:582:25:582:32 | source(...) : Object | Test.java:582:16:582:32 | (...)... : byte[] | provenance |  |
+| Test.java:583:4:583:6 | out [post update] : OutputStream | Test.java:584:9:584:11 | out | provenance |  |
+| Test.java:583:14:583:15 | in : byte[] | Test.java:583:4:583:6 | out [post update] : OutputStream | provenance | MaD:37 |
+| Test.java:589:16:589:32 | (...)... : byte[] | Test.java:590:14:590:15 | in : byte[] | provenance |  |
+| Test.java:589:25:589:32 | source(...) : Object | Test.java:589:16:589:32 | (...)... : byte[] | provenance |  |
+| Test.java:590:4:590:6 | out [post update] : PrintStream | Test.java:591:9:591:11 | out | provenance |  |
+| Test.java:590:14:590:15 | in : byte[] | Test.java:590:4:590:6 | out [post update] : PrintStream | provenance | MaD:37 |
+| Test.java:596:13:596:26 | (...)... : Number | Test.java:597:14:597:15 | in : Number | provenance |  |
+| Test.java:596:19:596:26 | source(...) : Object | Test.java:596:13:596:26 | (...)... : Number | provenance |  |
+| Test.java:597:4:597:6 | out [post update] : ByteArrayOutputStream | Test.java:598:9:598:11 | out | provenance |  |
+| Test.java:597:14:597:15 | in : Number | Test.java:597:4:597:6 | out [post update] : ByteArrayOutputStream | provenance | MaD:38 |
+| Test.java:603:13:603:26 | (...)... : Number | Test.java:604:14:604:15 | in : Number | provenance |  |
+| Test.java:603:19:603:26 | source(...) : Object | Test.java:603:13:603:26 | (...)... : Number | provenance |  |
+| Test.java:604:4:604:6 | out [post update] : FilterOutputStream | Test.java:605:9:605:11 | out | provenance |  |
+| Test.java:604:14:604:15 | in : Number | Test.java:604:4:604:6 | out [post update] : FilterOutputStream | provenance | MaD:38 |
+| Test.java:610:13:610:26 | (...)... : Number | Test.java:611:14:611:15 | in : Number | provenance |  |
+| Test.java:610:19:610:26 | source(...) : Object | Test.java:610:13:610:26 | (...)... : Number | provenance |  |
+| Test.java:611:4:611:6 | out [post update] : ObjectOutputStream | Test.java:612:9:612:11 | out | provenance |  |
+| Test.java:611:14:611:15 | in : Number | Test.java:611:4:611:6 | out [post update] : ObjectOutputStream | provenance | MaD:38 |
+| Test.java:617:13:617:26 | (...)... : Number | Test.java:618:14:618:15 | in : Number | provenance |  |
+| Test.java:617:19:617:26 | source(...) : Object | Test.java:617:13:617:26 | (...)... : Number | provenance |  |
+| Test.java:618:4:618:6 | out [post update] : OutputStream | Test.java:619:9:619:11 | out | provenance |  |
+| Test.java:618:14:618:15 | in : Number | Test.java:618:4:618:6 | out [post update] : OutputStream | provenance | MaD:38 |
+| Test.java:624:13:624:26 | (...)... : Number | Test.java:625:14:625:15 | in : Number | provenance |  |
+| Test.java:624:19:624:26 | source(...) : Object | Test.java:624:13:624:26 | (...)... : Number | provenance |  |
+| Test.java:625:4:625:6 | out [post update] : PrintStream | Test.java:626:9:626:11 | out | provenance |  |
+| Test.java:625:14:625:15 | in : Number | Test.java:625:4:625:6 | out [post update] : PrintStream | provenance | MaD:38 |
+| Test.java:631:25:631:50 | (...)... : CharArrayReader | Test.java:632:4:632:5 | in : CharArrayReader | provenance |  |
+| Test.java:631:43:631:50 | source(...) : Object | Test.java:631:25:631:50 | (...)... : CharArrayReader | provenance |  |
+| Test.java:632:4:632:5 | in : CharArrayReader | Test.java:632:12:632:14 | out [post update] : CharBuffer | provenance | MaD:39 |
+| Test.java:632:12:632:14 | out [post update] : CharBuffer | Test.java:633:9:633:11 | out | provenance |  |
+| Test.java:638:27:638:54 | (...)... : InputStreamReader | Test.java:639:4:639:5 | in : InputStreamReader | provenance |  |
+| Test.java:638:47:638:54 | source(...) : Object | Test.java:638:27:638:54 | (...)... : InputStreamReader | provenance |  |
+| Test.java:639:4:639:5 | in : InputStreamReader | Test.java:639:12:639:14 | out [post update] : CharBuffer | provenance | MaD:39 |
+| Test.java:639:12:639:14 | out [post update] : CharBuffer | Test.java:640:9:640:11 | out | provenance |  |
+| Test.java:645:16:645:32 | (...)... : Reader | Test.java:646:4:646:5 | in : Reader | provenance |  |
+| Test.java:645:25:645:32 | source(...) : Object | Test.java:645:16:645:32 | (...)... : Reader | provenance |  |
+| Test.java:646:4:646:5 | in : Reader | Test.java:646:12:646:14 | out [post update] : CharBuffer | provenance | MaD:39 |
+| Test.java:646:12:646:14 | out [post update] : CharBuffer | Test.java:647:9:647:11 | out | provenance |  |
+| Test.java:652:24:652:48 | (...)... : BufferedReader | Test.java:653:4:653:5 | in : BufferedReader | provenance |  |
+| Test.java:652:41:652:48 | source(...) : Object | Test.java:652:24:652:48 | (...)... : BufferedReader | provenance |  |
+| Test.java:653:4:653:5 | in : BufferedReader | Test.java:653:12:653:14 | out [post update] : char[] | provenance | MaD:39 |
+| Test.java:653:12:653:14 | out [post update] : char[] | Test.java:654:9:654:11 | out | provenance |  |
+| Test.java:659:25:659:50 | (...)... : CharArrayReader | Test.java:660:4:660:5 | in : CharArrayReader | provenance |  |
+| Test.java:659:43:659:50 | source(...) : Object | Test.java:659:25:659:50 | (...)... : CharArrayReader | provenance |  |
+| Test.java:660:4:660:5 | in : CharArrayReader | Test.java:660:12:660:14 | out [post update] : char[] | provenance | MaD:39 |
+| Test.java:660:12:660:14 | out [post update] : char[] | Test.java:661:9:661:11 | out | provenance |  |
+| Test.java:666:27:666:54 | (...)... : InputStreamReader | Test.java:667:4:667:5 | in : InputStreamReader | provenance |  |
+| Test.java:666:47:666:54 | source(...) : Object | Test.java:666:27:666:54 | (...)... : InputStreamReader | provenance |  |
+| Test.java:667:4:667:5 | in : InputStreamReader | Test.java:667:12:667:14 | out [post update] : char[] | provenance | MaD:39 |
+| Test.java:667:12:667:14 | out [post update] : char[] | Test.java:668:9:668:11 | out | provenance |  |
+| Test.java:673:16:673:32 | (...)... : Reader | Test.java:674:4:674:5 | in : Reader | provenance |  |
+| Test.java:673:25:673:32 | source(...) : Object | Test.java:673:16:673:32 | (...)... : Reader | provenance |  |
+| Test.java:674:4:674:5 | in : Reader | Test.java:674:12:674:14 | out [post update] : char[] | provenance | MaD:39 |
+| Test.java:674:12:674:14 | out [post update] : char[] | Test.java:675:9:675:11 | out | provenance |  |
+| Test.java:680:16:680:32 | (...)... : Reader | Test.java:681:4:681:5 | in : Reader | provenance |  |
+| Test.java:680:25:680:32 | source(...) : Object | Test.java:680:16:680:32 | (...)... : Reader | provenance |  |
+| Test.java:681:4:681:5 | in : Reader | Test.java:681:12:681:14 | out [post update] : char[] | provenance | MaD:39 |
+| Test.java:681:12:681:14 | out [post update] : char[] | Test.java:682:9:682:11 | out | provenance |  |
+| Test.java:687:22:687:44 | (...)... : StringReader | Test.java:688:4:688:5 | in : StringReader | provenance |  |
+| Test.java:687:37:687:44 | source(...) : Object | Test.java:687:22:687:44 | (...)... : StringReader | provenance |  |
+| Test.java:688:4:688:5 | in : StringReader | Test.java:688:12:688:14 | out [post update] : char[] | provenance | MaD:39 |
+| Test.java:688:12:688:14 | out [post update] : char[] | Test.java:689:9:689:11 | out | provenance |  |
+| Test.java:694:16:694:32 | (...)... : String | Test.java:695:27:695:28 | in : String | provenance |  |
+| Test.java:694:25:694:32 | source(...) : Object | Test.java:694:16:694:32 | (...)... : String | provenance |  |
+| Test.java:695:10:695:29 | new StringReader(...) : StringReader | Test.java:696:9:696:11 | out | provenance |  |
+| Test.java:695:27:695:28 | in : String | Test.java:695:10:695:29 | new StringReader(...) : StringReader | provenance | MaD:40 |
+| Test.java:701:16:701:32 | (...)... : String | Test.java:702:14:702:15 | in : String | provenance |  |
+| Test.java:701:25:701:32 | source(...) : Object | Test.java:701:16:701:32 | (...)... : String | provenance |  |
+| Test.java:702:4:702:6 | out [post update] : CharArrayWriter | Test.java:703:9:703:11 | out | provenance |  |
+| Test.java:702:14:702:15 | in : String | Test.java:702:4:702:6 | out [post update] : CharArrayWriter | provenance | MaD:41 |
+| Test.java:708:16:708:32 | (...)... : char[] | Test.java:709:14:709:15 | in : char[] | provenance |  |
+| Test.java:708:25:708:32 | source(...) : Object | Test.java:708:16:708:32 | (...)... : char[] | provenance |  |
+| Test.java:709:4:709:6 | out [post update] : CharArrayWriter | Test.java:710:9:710:11 | out | provenance |  |
+| Test.java:709:14:709:15 | in : char[] | Test.java:709:4:709:6 | out [post update] : CharArrayWriter | provenance | MaD:41 |
+| Test.java:715:13:715:26 | (...)... : Number | Test.java:716:14:716:15 | in : Number | provenance |  |
+| Test.java:715:19:715:26 | source(...) : Object | Test.java:715:13:715:26 | (...)... : Number | provenance |  |
+| Test.java:716:4:716:6 | out [post update] : CharArrayWriter | Test.java:717:9:717:11 | out | provenance |  |
+| Test.java:716:14:716:15 | in : Number | Test.java:716:4:716:6 | out [post update] : CharArrayWriter | provenance | MaD:41 |
+| Test.java:722:16:722:32 | (...)... : String | Test.java:723:14:723:15 | in : String | provenance |  |
+| Test.java:722:25:722:32 | source(...) : Object | Test.java:722:16:722:32 | (...)... : String | provenance |  |
+| Test.java:723:4:723:6 | out [post update] : PrintWriter | Test.java:724:9:724:11 | out | provenance |  |
+| Test.java:723:14:723:15 | in : String | Test.java:723:4:723:6 | out [post update] : PrintWriter | provenance | MaD:41 |
+| Test.java:729:16:729:32 | (...)... : String | Test.java:730:14:730:15 | in : String | provenance |  |
+| Test.java:729:25:729:32 | source(...) : Object | Test.java:729:16:729:32 | (...)... : String | provenance |  |
+| Test.java:730:4:730:6 | out [post update] : PrintWriter | Test.java:731:9:731:11 | out | provenance |  |
+| Test.java:730:14:730:15 | in : String | Test.java:730:4:730:6 | out [post update] : PrintWriter | provenance | MaD:41 |
+| Test.java:736:16:736:32 | (...)... : char[] | Test.java:737:14:737:15 | in : char[] | provenance |  |
+| Test.java:736:25:736:32 | source(...) : Object | Test.java:736:16:736:32 | (...)... : char[] | provenance |  |
+| Test.java:737:4:737:6 | out [post update] : PrintWriter | Test.java:738:9:738:11 | out | provenance |  |
+| Test.java:737:14:737:15 | in : char[] | Test.java:737:4:737:6 | out [post update] : PrintWriter | provenance | MaD:41 |
+| Test.java:743:16:743:32 | (...)... : char[] | Test.java:744:14:744:15 | in : char[] | provenance |  |
+| Test.java:743:25:743:32 | source(...) : Object | Test.java:743:16:743:32 | (...)... : char[] | provenance |  |
+| Test.java:744:4:744:6 | out [post update] : PrintWriter | Test.java:745:9:745:11 | out | provenance |  |
+| Test.java:744:14:744:15 | in : char[] | Test.java:744:4:744:6 | out [post update] : PrintWriter | provenance | MaD:41 |
+| Test.java:750:13:750:26 | (...)... : Number | Test.java:751:14:751:15 | in : Number | provenance |  |
+| Test.java:750:19:750:26 | source(...) : Object | Test.java:750:13:750:26 | (...)... : Number | provenance |  |
+| Test.java:751:4:751:6 | out [post update] : PrintWriter | Test.java:752:9:752:11 | out | provenance |  |
+| Test.java:751:14:751:15 | in : Number | Test.java:751:4:751:6 | out [post update] : PrintWriter | provenance | MaD:41 |
+| Test.java:757:16:757:32 | (...)... : String | Test.java:758:14:758:15 | in : String | provenance |  |
+| Test.java:757:25:757:32 | source(...) : Object | Test.java:757:16:757:32 | (...)... : String | provenance |  |
+| Test.java:758:4:758:6 | out [post update] : Writer | Test.java:759:9:759:11 | out | provenance |  |
+| Test.java:758:14:758:15 | in : String | Test.java:758:4:758:6 | out [post update] : Writer | provenance | MaD:41 |
+| Test.java:764:16:764:32 | (...)... : String | Test.java:765:14:765:15 | in : String | provenance |  |
+| Test.java:764:25:764:32 | source(...) : Object | Test.java:764:16:764:32 | (...)... : String | provenance |  |
+| Test.java:765:4:765:6 | out [post update] : Writer | Test.java:766:9:766:11 | out | provenance |  |
+| Test.java:765:14:765:15 | in : String | Test.java:765:4:765:6 | out [post update] : Writer | provenance | MaD:41 |
+| Test.java:771:16:771:32 | (...)... : char[] | Test.java:772:14:772:15 | in : char[] | provenance |  |
+| Test.java:771:25:771:32 | source(...) : Object | Test.java:771:16:771:32 | (...)... : char[] | provenance |  |
+| Test.java:772:4:772:6 | out [post update] : Writer | Test.java:773:9:773:11 | out | provenance |  |
+| Test.java:772:14:772:15 | in : char[] | Test.java:772:4:772:6 | out [post update] : Writer | provenance | MaD:41 |
+| Test.java:778:16:778:32 | (...)... : char[] | Test.java:779:14:779:15 | in : char[] | provenance |  |
+| Test.java:778:25:778:32 | source(...) : Object | Test.java:778:16:778:32 | (...)... : char[] | provenance |  |
+| Test.java:779:4:779:6 | out [post update] : Writer | Test.java:780:9:780:11 | out | provenance |  |
+| Test.java:779:14:779:15 | in : char[] | Test.java:779:4:779:6 | out [post update] : Writer | provenance | MaD:41 |
+| Test.java:785:13:785:26 | (...)... : Number | Test.java:786:14:786:15 | in : Number | provenance |  |
+| Test.java:785:19:785:26 | source(...) : Object | Test.java:785:13:785:26 | (...)... : Number | provenance |  |
+| Test.java:786:4:786:6 | out [post update] : Writer | Test.java:787:9:787:11 | out | provenance |  |
+| Test.java:786:14:786:15 | in : Number | Test.java:786:4:786:6 | out [post update] : Writer | provenance | MaD:41 |
+nodes
+| Test.java:50:21:50:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:50:35:50:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:51:10:51:36 | new BufferedInputStream(...) : BufferedInputStream | semmle.label | new BufferedInputStream(...) : BufferedInputStream |
+| Test.java:51:34:51:35 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:52:9:52:11 | out | semmle.label | out |
+| Test.java:57:21:57:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:57:35:57:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:58:10:58:39 | new BufferedInputStream(...) : BufferedInputStream | semmle.label | new BufferedInputStream(...) : BufferedInputStream |
+| Test.java:58:34:58:35 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:59:9:59:11 | out | semmle.label | out |
+| Test.java:64:16:64:32 | (...)... : Reader | semmle.label | (...)... : Reader |
+| Test.java:64:25:64:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:65:10:65:31 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
+| Test.java:65:29:65:30 | in : Reader | semmle.label | in : Reader |
+| Test.java:66:9:66:11 | out | semmle.label | out |
+| Test.java:71:16:71:32 | (...)... : Reader | semmle.label | (...)... : Reader |
+| Test.java:71:25:71:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:72:10:72:34 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
+| Test.java:72:29:72:30 | in : Reader | semmle.label | in : Reader |
+| Test.java:73:9:73:11 | out | semmle.label | out |
+| Test.java:78:24:78:48 | (...)... : BufferedReader | semmle.label | (...)... : BufferedReader |
+| Test.java:78:41:78:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:79:10:79:11 | in : BufferedReader | semmle.label | in : BufferedReader |
+| Test.java:79:10:79:22 | readLine(...) : String | semmle.label | readLine(...) : String |
+| Test.java:80:9:80:11 | out | semmle.label | out |
+| Test.java:85:16:85:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:85:25:85:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:86:10:86:37 | new ByteArrayInputStream(...) : ByteArrayInputStream | semmle.label | new ByteArrayInputStream(...) : ByteArrayInputStream |
+| Test.java:86:35:86:36 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:87:9:87:11 | out | semmle.label | out |
+| Test.java:92:16:92:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:92:25:92:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:93:10:93:43 | new ByteArrayInputStream(...) : ByteArrayInputStream | semmle.label | new ByteArrayInputStream(...) : ByteArrayInputStream |
+| Test.java:93:35:93:36 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:94:9:94:11 | out | semmle.label | out |
+| Test.java:99:31:99:62 | (...)... : ByteArrayOutputStream | semmle.label | (...)... : ByteArrayOutputStream |
+| Test.java:99:55:99:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:100:10:100:11 | in : ByteArrayOutputStream | semmle.label | in : ByteArrayOutputStream |
+| Test.java:100:10:100:25 | toByteArray(...) : byte[] | semmle.label | toByteArray(...) : byte[] |
+| Test.java:101:9:101:11 | out | semmle.label | out |
+| Test.java:106:31:106:62 | (...)... : ByteArrayOutputStream | semmle.label | (...)... : ByteArrayOutputStream |
+| Test.java:106:55:106:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:107:10:107:11 | in : ByteArrayOutputStream | semmle.label | in : ByteArrayOutputStream |
+| Test.java:107:10:107:36 | toString(...) : String | semmle.label | toString(...) : String |
+| Test.java:108:9:108:11 | out | semmle.label | out |
+| Test.java:113:31:113:62 | (...)... : ByteArrayOutputStream | semmle.label | (...)... : ByteArrayOutputStream |
+| Test.java:113:55:113:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:114:10:114:11 | in : ByteArrayOutputStream | semmle.label | in : ByteArrayOutputStream |
+| Test.java:114:10:114:35 | toString(...) : String | semmle.label | toString(...) : String |
+| Test.java:115:9:115:11 | out | semmle.label | out |
+| Test.java:120:31:120:62 | (...)... : ByteArrayOutputStream | semmle.label | (...)... : ByteArrayOutputStream |
+| Test.java:120:55:120:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:121:10:121:11 | in : ByteArrayOutputStream | semmle.label | in : ByteArrayOutputStream |
+| Test.java:121:10:121:22 | toString(...) : String | semmle.label | toString(...) : String |
+| Test.java:122:9:122:11 | out | semmle.label | out |
+| Test.java:127:31:127:62 | (...)... : ByteArrayOutputStream | semmle.label | (...)... : ByteArrayOutputStream |
+| Test.java:127:55:127:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:128:10:128:11 | in : ByteArrayOutputStream | semmle.label | in : ByteArrayOutputStream |
+| Test.java:128:10:128:23 | toString(...) : String | semmle.label | toString(...) : String |
+| Test.java:129:9:129:11 | out | semmle.label | out |
+| Test.java:134:31:134:62 | (...)... : ByteArrayOutputStream | semmle.label | (...)... : ByteArrayOutputStream |
+| Test.java:134:55:134:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:135:4:135:5 | in : ByteArrayOutputStream | semmle.label | in : ByteArrayOutputStream |
+| Test.java:135:15:135:17 | out [post update] : OutputStream | semmle.label | out [post update] : OutputStream |
+| Test.java:136:9:136:11 | out | semmle.label | out |
+| Test.java:141:16:141:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:141:25:141:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:142:10:142:32 | new CharArrayReader(...) : CharArrayReader | semmle.label | new CharArrayReader(...) : CharArrayReader |
+| Test.java:142:30:142:31 | in : char[] | semmle.label | in : char[] |
+| Test.java:143:9:143:11 | out | semmle.label | out |
+| Test.java:148:16:148:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:148:25:148:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:149:10:149:38 | new CharArrayReader(...) : CharArrayReader | semmle.label | new CharArrayReader(...) : CharArrayReader |
+| Test.java:149:30:149:31 | in : char[] | semmle.label | in : char[] |
+| Test.java:150:9:150:11 | out | semmle.label | out |
+| Test.java:155:25:155:50 | (...)... : CharArrayWriter | semmle.label | (...)... : CharArrayWriter |
+| Test.java:155:43:155:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:156:10:156:11 | in : CharArrayWriter | semmle.label | in : CharArrayWriter |
+| Test.java:156:10:156:25 | toCharArray(...) : char[] | semmle.label | toCharArray(...) : char[] |
+| Test.java:157:9:157:11 | out | semmle.label | out |
+| Test.java:162:19:162:38 | (...)... : DataInput | semmle.label | (...)... : DataInput |
+| Test.java:162:31:162:38 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:163:4:163:5 | in : DataInput | semmle.label | in : DataInput |
+| Test.java:163:17:163:19 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:164:9:164:11 | out | semmle.label | out |
+| Test.java:169:19:169:38 | (...)... : DataInput | semmle.label | (...)... : DataInput |
+| Test.java:169:31:169:38 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:170:4:170:5 | in : DataInput | semmle.label | in : DataInput |
+| Test.java:170:17:170:19 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:171:9:171:11 | out | semmle.label | out |
+| Test.java:176:25:176:50 | (...)... : DataInputStream | semmle.label | (...)... : DataInputStream |
+| Test.java:176:43:176:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:177:4:177:5 | in : DataInputStream | semmle.label | in : DataInputStream |
+| Test.java:177:17:177:19 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:178:9:178:11 | out | semmle.label | out |
+| Test.java:183:25:183:50 | (...)... : DataInputStream | semmle.label | (...)... : DataInputStream |
+| Test.java:183:43:183:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:184:4:184:5 | in : DataInputStream | semmle.label | in : DataInputStream |
+| Test.java:184:17:184:19 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:185:9:185:11 | out | semmle.label | out |
+| Test.java:190:27:190:54 | (...)... : ObjectInputStream | semmle.label | (...)... : ObjectInputStream |
+| Test.java:190:47:190:54 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:191:4:191:5 | in : ObjectInputStream | semmle.label | in : ObjectInputStream |
+| Test.java:191:17:191:19 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:192:9:192:11 | out | semmle.label | out |
+| Test.java:197:27:197:54 | (...)... : ObjectInputStream | semmle.label | (...)... : ObjectInputStream |
+| Test.java:197:47:197:54 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:198:4:198:5 | in : ObjectInputStream | semmle.label | in : ObjectInputStream |
+| Test.java:198:17:198:19 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:199:9:199:11 | out | semmle.label | out |
+| Test.java:204:19:204:38 | (...)... : DataInput | semmle.label | (...)... : DataInput |
+| Test.java:204:31:204:38 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:205:10:205:11 | in : DataInput | semmle.label | in : DataInput |
+| Test.java:205:10:205:22 | readLine(...) : String | semmle.label | readLine(...) : String |
+| Test.java:206:9:206:11 | out | semmle.label | out |
+| Test.java:211:25:211:50 | (...)... : DataInputStream | semmle.label | (...)... : DataInputStream |
+| Test.java:211:43:211:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:212:10:212:11 | in : DataInputStream | semmle.label | in : DataInputStream |
+| Test.java:212:10:212:22 | readLine(...) : String | semmle.label | readLine(...) : String |
+| Test.java:213:9:213:11 | out | semmle.label | out |
+| Test.java:218:27:218:54 | (...)... : ObjectInputStream | semmle.label | (...)... : ObjectInputStream |
+| Test.java:218:47:218:54 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:219:10:219:11 | in : ObjectInputStream | semmle.label | in : ObjectInputStream |
+| Test.java:219:10:219:22 | readLine(...) : String | semmle.label | readLine(...) : String |
+| Test.java:220:9:220:11 | out | semmle.label | out |
+| Test.java:225:19:225:38 | (...)... : DataInput | semmle.label | (...)... : DataInput |
+| Test.java:225:31:225:38 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:226:10:226:11 | in : DataInput | semmle.label | in : DataInput |
+| Test.java:226:10:226:21 | readUTF(...) : String | semmle.label | readUTF(...) : String |
+| Test.java:227:9:227:11 | out | semmle.label | out |
+| Test.java:232:25:232:50 | (...)... : DataInputStream | semmle.label | (...)... : DataInputStream |
+| Test.java:232:43:232:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:233:10:233:11 | in : DataInputStream | semmle.label | in : DataInputStream |
+| Test.java:233:10:233:21 | readUTF(...) : String | semmle.label | readUTF(...) : String |
+| Test.java:234:9:234:11 | out | semmle.label | out |
+| Test.java:239:27:239:54 | (...)... : ObjectInputStream | semmle.label | (...)... : ObjectInputStream |
+| Test.java:239:47:239:54 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:240:10:240:11 | in : ObjectInputStream | semmle.label | in : ObjectInputStream |
+| Test.java:240:10:240:21 | readUTF(...) : String | semmle.label | readUTF(...) : String |
+| Test.java:241:9:241:11 | out | semmle.label | out |
+| Test.java:246:21:246:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:246:35:246:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:247:10:247:32 | new DataInputStream(...) : DataInputStream | semmle.label | new DataInputStream(...) : DataInputStream |
+| Test.java:247:30:247:31 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:248:9:248:11 | out | semmle.label | out |
+| Test.java:253:14:253:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:253:21:253:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:254:10:254:36 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:254:19:254:20 | in : File | semmle.label | in : File |
+| Test.java:255:9:255:11 | out | semmle.label | out |
+| Test.java:260:16:260:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:260:25:260:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:261:10:261:21 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:261:19:261:20 | in : String | semmle.label | in : String |
+| Test.java:262:9:262:11 | out | semmle.label | out |
+| Test.java:267:16:267:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:267:25:267:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:268:10:268:36 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:268:19:268:20 | in : String | semmle.label | in : String |
+| Test.java:269:9:269:11 | out | semmle.label | out |
+| Test.java:274:13:274:26 | (...)... : URI | semmle.label | (...)... : URI |
+| Test.java:274:19:274:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:275:10:275:21 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:275:19:275:20 | in : URI | semmle.label | in : URI |
+| Test.java:276:9:276:11 | out | semmle.label | out |
+| Test.java:281:16:281:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:281:25:281:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:282:10:282:34 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:282:32:282:33 | in : String | semmle.label | in : String |
+| Test.java:283:9:283:11 | out | semmle.label | out |
+| Test.java:288:16:288:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:288:25:288:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:289:10:289:36 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:289:34:289:35 | in : String | semmle.label | in : String |
+| Test.java:290:9:290:11 | out | semmle.label | out |
+| Test.java:295:14:295:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:295:21:295:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:296:10:296:11 | in : File | semmle.label | in : File |
+| Test.java:296:10:296:29 | getAbsoluteFile(...) : File | semmle.label | getAbsoluteFile(...) : File |
+| Test.java:297:9:297:11 | out | semmle.label | out |
+| Test.java:302:14:302:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:302:21:302:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:303:10:303:11 | in : File | semmle.label | in : File |
+| Test.java:303:10:303:29 | getAbsolutePath(...) : String | semmle.label | getAbsolutePath(...) : String |
+| Test.java:304:9:304:11 | out | semmle.label | out |
+| Test.java:309:14:309:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:309:21:309:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:310:10:310:11 | in : File | semmle.label | in : File |
+| Test.java:310:10:310:30 | getCanonicalFile(...) : File | semmle.label | getCanonicalFile(...) : File |
+| Test.java:311:9:311:11 | out | semmle.label | out |
+| Test.java:316:14:316:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:316:21:316:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:317:10:317:11 | in : File | semmle.label | in : File |
+| Test.java:317:10:317:30 | getCanonicalPath(...) : String | semmle.label | getCanonicalPath(...) : String |
+| Test.java:318:9:318:11 | out | semmle.label | out |
+| Test.java:323:14:323:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:323:21:323:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:324:10:324:11 | in : File | semmle.label | in : File |
+| Test.java:324:10:324:21 | getName(...) : String | semmle.label | getName(...) : String |
+| Test.java:325:9:325:11 | out | semmle.label | out |
+| Test.java:330:14:330:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:330:21:330:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:331:10:331:11 | in : File | semmle.label | in : File |
+| Test.java:331:10:331:20 | toPath(...) : Path | semmle.label | toPath(...) : Path |
+| Test.java:332:9:332:11 | out | semmle.label | out |
+| Test.java:337:14:337:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:337:21:337:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:338:10:338:11 | in : File | semmle.label | in : File |
+| Test.java:338:10:338:22 | toString(...) : String | semmle.label | toString(...) : String |
+| Test.java:339:9:339:11 | out | semmle.label | out |
+| Test.java:344:14:344:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:344:21:344:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:345:10:345:11 | in : File | semmle.label | in : File |
+| Test.java:345:10:345:19 | toURI(...) : URI | semmle.label | toURI(...) : URI |
+| Test.java:346:9:346:11 | out | semmle.label | out |
+| Test.java:351:22:351:44 | (...)... : OutputStream | semmle.label | (...)... : OutputStream |
+| Test.java:351:37:351:44 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:352:10:352:35 | new FilterOutputStream(...) : FilterOutputStream | semmle.label | new FilterOutputStream(...) : FilterOutputStream |
+| Test.java:352:33:352:34 | in : OutputStream | semmle.label | in : OutputStream |
+| Test.java:353:9:353:11 | out | semmle.label | out |
+| Test.java:358:16:358:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:358:25:358:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:359:10:359:28 | new IOException(...) : IOException [java.lang.Throwable.message] : String | semmle.label | new IOException(...) : IOException [java.lang.Throwable.message] : String |
+| Test.java:359:26:359:27 | in : String | semmle.label | in : String |
+| Test.java:360:9:360:40 | getThrowable_messageDefault(...) | semmle.label | getThrowable_messageDefault(...) |
+| Test.java:360:37:360:39 | out : IOException [java.lang.Throwable.message] : String | semmle.label | out : IOException [java.lang.Throwable.message] : String |
+| Test.java:365:25:365:50 | (...)... : DataInputStream | semmle.label | (...)... : DataInputStream |
+| Test.java:365:43:365:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:366:4:366:5 | in : DataInputStream | semmle.label | in : DataInputStream |
+| Test.java:366:12:366:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:367:9:367:11 | out | semmle.label | out |
+| Test.java:372:27:372:54 | (...)... : FilterInputStream | semmle.label | (...)... : FilterInputStream |
+| Test.java:372:47:372:54 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:373:4:373:5 | in : FilterInputStream | semmle.label | in : FilterInputStream |
+| Test.java:373:12:373:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:374:9:374:11 | out | semmle.label | out |
+| Test.java:379:21:379:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:379:35:379:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:380:4:380:5 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:380:12:380:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:381:9:381:11 | out | semmle.label | out |
+| Test.java:386:29:386:58 | (...)... : BufferedInputStream | semmle.label | (...)... : BufferedInputStream |
+| Test.java:386:51:386:58 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:387:4:387:5 | in : BufferedInputStream | semmle.label | in : BufferedInputStream |
+| Test.java:387:12:387:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:388:9:388:11 | out | semmle.label | out |
+| Test.java:393:30:393:60 | (...)... : ByteArrayInputStream | semmle.label | (...)... : ByteArrayInputStream |
+| Test.java:393:53:393:60 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:394:4:394:5 | in : ByteArrayInputStream | semmle.label | in : ByteArrayInputStream |
+| Test.java:394:12:394:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:395:9:395:11 | out | semmle.label | out |
+| Test.java:400:25:400:50 | (...)... : DataInputStream | semmle.label | (...)... : DataInputStream |
+| Test.java:400:43:400:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:401:4:401:5 | in : DataInputStream | semmle.label | in : DataInputStream |
+| Test.java:401:12:401:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:402:9:402:11 | out | semmle.label | out |
+| Test.java:407:27:407:54 | (...)... : FilterInputStream | semmle.label | (...)... : FilterInputStream |
+| Test.java:407:47:407:54 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:408:4:408:5 | in : FilterInputStream | semmle.label | in : FilterInputStream |
+| Test.java:408:12:408:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:409:9:409:11 | out | semmle.label | out |
+| Test.java:414:21:414:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:414:35:414:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:415:4:415:5 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:415:12:415:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:416:9:416:11 | out | semmle.label | out |
+| Test.java:421:27:421:54 | (...)... : ObjectInputStream | semmle.label | (...)... : ObjectInputStream |
+| Test.java:421:47:421:54 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:422:4:422:5 | in : ObjectInputStream | semmle.label | in : ObjectInputStream |
+| Test.java:422:12:422:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:423:9:423:11 | out | semmle.label | out |
+| Test.java:428:30:428:60 | (...)... : ByteArrayInputStream | semmle.label | (...)... : ByteArrayInputStream |
+| Test.java:428:53:428:60 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:429:10:429:11 | in : ByteArrayInputStream | semmle.label | in : ByteArrayInputStream |
+| Test.java:429:10:429:26 | readAllBytes(...) : byte[] | semmle.label | readAllBytes(...) : byte[] |
+| Test.java:430:9:430:11 | out | semmle.label | out |
+| Test.java:435:21:435:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:435:35:435:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:436:10:436:11 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:436:10:436:26 | readAllBytes(...) : byte[] | semmle.label | readAllBytes(...) : byte[] |
+| Test.java:437:9:437:11 | out | semmle.label | out |
+| Test.java:442:30:442:60 | (...)... : ByteArrayInputStream | semmle.label | (...)... : ByteArrayInputStream |
+| Test.java:442:53:442:60 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:443:4:443:5 | in : ByteArrayInputStream | semmle.label | in : ByteArrayInputStream |
+| Test.java:443:18:443:20 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:444:9:444:11 | out | semmle.label | out |
+| Test.java:449:21:449:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:449:35:449:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:450:4:450:5 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:450:18:450:20 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:451:9:451:11 | out | semmle.label | out |
+| Test.java:456:21:456:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:456:35:456:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:457:10:457:11 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:457:10:457:25 | readNBytes(...) : byte[] | semmle.label | readNBytes(...) : byte[] |
+| Test.java:458:9:458:11 | out | semmle.label | out |
+| Test.java:463:30:463:60 | (...)... : ByteArrayInputStream | semmle.label | (...)... : ByteArrayInputStream |
+| Test.java:463:53:463:60 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:464:4:464:5 | in : ByteArrayInputStream | semmle.label | in : ByteArrayInputStream |
+| Test.java:464:18:464:20 | out [post update] : OutputStream | semmle.label | out [post update] : OutputStream |
+| Test.java:465:9:465:11 | out | semmle.label | out |
+| Test.java:470:21:470:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:470:35:470:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:471:4:471:5 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:471:18:471:20 | out [post update] : OutputStream | semmle.label | out [post update] : OutputStream |
+| Test.java:472:9:472:11 | out | semmle.label | out |
+| Test.java:477:21:477:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:477:35:477:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:478:10:478:34 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| Test.java:478:32:478:33 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:479:9:479:11 | out | semmle.label | out |
+| Test.java:484:21:484:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:484:35:484:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:485:10:485:50 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| Test.java:485:32:485:33 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:486:9:486:11 | out | semmle.label | out |
+| Test.java:491:21:491:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:491:35:491:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:492:10:492:57 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| Test.java:492:32:492:33 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:493:9:493:11 | out | semmle.label | out |
+| Test.java:498:21:498:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:498:35:498:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:499:10:499:49 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| Test.java:499:32:499:33 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:500:9:500:11 | out | semmle.label | out |
+| Test.java:505:21:505:42 | (...)... : ObjectInput | semmle.label | (...)... : ObjectInput |
+| Test.java:505:35:505:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:506:4:506:5 | in : ObjectInput | semmle.label | in : ObjectInput |
+| Test.java:506:12:506:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:507:9:507:11 | out | semmle.label | out |
+| Test.java:512:21:512:42 | (...)... : ObjectInput | semmle.label | (...)... : ObjectInput |
+| Test.java:512:35:512:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:513:4:513:5 | in : ObjectInput | semmle.label | in : ObjectInput |
+| Test.java:513:12:513:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:514:9:514:11 | out | semmle.label | out |
+| Test.java:519:27:519:54 | (...)... : ObjectInputStream | semmle.label | (...)... : ObjectInputStream |
+| Test.java:519:47:519:54 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:520:4:520:5 | in : ObjectInputStream | semmle.label | in : ObjectInputStream |
+| Test.java:520:12:520:14 | out [post update] : byte[] | semmle.label | out [post update] : byte[] |
+| Test.java:521:9:521:11 | out | semmle.label | out |
+| Test.java:526:21:526:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:526:35:526:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:527:10:527:34 | new ObjectInputStream(...) : ObjectInputStream | semmle.label | new ObjectInputStream(...) : ObjectInputStream |
+| Test.java:527:32:527:33 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:528:9:528:11 | out | semmle.label | out |
+| Test.java:533:16:533:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:533:25:533:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:534:4:534:6 | out [post update] : FilterOutputStream | semmle.label | out [post update] : FilterOutputStream |
+| Test.java:534:14:534:15 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:535:9:535:11 | out | semmle.label | out |
+| Test.java:540:16:540:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:540:25:540:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:541:4:541:6 | out [post update] : ObjectOutputStream | semmle.label | out [post update] : ObjectOutputStream |
+| Test.java:541:14:541:15 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:542:9:542:11 | out | semmle.label | out |
+| Test.java:547:16:547:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:547:25:547:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:548:4:548:6 | out [post update] : OutputStream | semmle.label | out [post update] : OutputStream |
+| Test.java:548:14:548:15 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:549:9:549:11 | out | semmle.label | out |
+| Test.java:554:16:554:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:554:25:554:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:555:4:555:6 | out [post update] : PrintStream | semmle.label | out [post update] : PrintStream |
+| Test.java:555:14:555:15 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:556:9:556:11 | out | semmle.label | out |
+| Test.java:561:16:561:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:561:25:561:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:562:4:562:6 | out [post update] : ByteArrayOutputStream | semmle.label | out [post update] : ByteArrayOutputStream |
+| Test.java:562:14:562:15 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:563:9:563:11 | out | semmle.label | out |
+| Test.java:568:16:568:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:568:25:568:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:569:4:569:6 | out [post update] : FilterOutputStream | semmle.label | out [post update] : FilterOutputStream |
+| Test.java:569:14:569:15 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:570:9:570:11 | out | semmle.label | out |
+| Test.java:575:16:575:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:575:25:575:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:576:4:576:6 | out [post update] : ObjectOutputStream | semmle.label | out [post update] : ObjectOutputStream |
+| Test.java:576:14:576:15 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:577:9:577:11 | out | semmle.label | out |
+| Test.java:582:16:582:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:582:25:582:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:583:4:583:6 | out [post update] : OutputStream | semmle.label | out [post update] : OutputStream |
+| Test.java:583:14:583:15 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:584:9:584:11 | out | semmle.label | out |
+| Test.java:589:16:589:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:589:25:589:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:590:4:590:6 | out [post update] : PrintStream | semmle.label | out [post update] : PrintStream |
+| Test.java:590:14:590:15 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:591:9:591:11 | out | semmle.label | out |
+| Test.java:596:13:596:26 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:596:19:596:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:597:4:597:6 | out [post update] : ByteArrayOutputStream | semmle.label | out [post update] : ByteArrayOutputStream |
+| Test.java:597:14:597:15 | in : Number | semmle.label | in : Number |
+| Test.java:598:9:598:11 | out | semmle.label | out |
+| Test.java:603:13:603:26 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:603:19:603:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:604:4:604:6 | out [post update] : FilterOutputStream | semmle.label | out [post update] : FilterOutputStream |
+| Test.java:604:14:604:15 | in : Number | semmle.label | in : Number |
+| Test.java:605:9:605:11 | out | semmle.label | out |
+| Test.java:610:13:610:26 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:610:19:610:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:611:4:611:6 | out [post update] : ObjectOutputStream | semmle.label | out [post update] : ObjectOutputStream |
+| Test.java:611:14:611:15 | in : Number | semmle.label | in : Number |
+| Test.java:612:9:612:11 | out | semmle.label | out |
+| Test.java:617:13:617:26 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:617:19:617:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:618:4:618:6 | out [post update] : OutputStream | semmle.label | out [post update] : OutputStream |
+| Test.java:618:14:618:15 | in : Number | semmle.label | in : Number |
+| Test.java:619:9:619:11 | out | semmle.label | out |
+| Test.java:624:13:624:26 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:624:19:624:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:625:4:625:6 | out [post update] : PrintStream | semmle.label | out [post update] : PrintStream |
+| Test.java:625:14:625:15 | in : Number | semmle.label | in : Number |
+| Test.java:626:9:626:11 | out | semmle.label | out |
+| Test.java:631:25:631:50 | (...)... : CharArrayReader | semmle.label | (...)... : CharArrayReader |
+| Test.java:631:43:631:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:632:4:632:5 | in : CharArrayReader | semmle.label | in : CharArrayReader |
+| Test.java:632:12:632:14 | out [post update] : CharBuffer | semmle.label | out [post update] : CharBuffer |
+| Test.java:633:9:633:11 | out | semmle.label | out |
+| Test.java:638:27:638:54 | (...)... : InputStreamReader | semmle.label | (...)... : InputStreamReader |
+| Test.java:638:47:638:54 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:639:4:639:5 | in : InputStreamReader | semmle.label | in : InputStreamReader |
+| Test.java:639:12:639:14 | out [post update] : CharBuffer | semmle.label | out [post update] : CharBuffer |
+| Test.java:640:9:640:11 | out | semmle.label | out |
+| Test.java:645:16:645:32 | (...)... : Reader | semmle.label | (...)... : Reader |
+| Test.java:645:25:645:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:646:4:646:5 | in : Reader | semmle.label | in : Reader |
+| Test.java:646:12:646:14 | out [post update] : CharBuffer | semmle.label | out [post update] : CharBuffer |
+| Test.java:647:9:647:11 | out | semmle.label | out |
+| Test.java:652:24:652:48 | (...)... : BufferedReader | semmle.label | (...)... : BufferedReader |
+| Test.java:652:41:652:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:653:4:653:5 | in : BufferedReader | semmle.label | in : BufferedReader |
+| Test.java:653:12:653:14 | out [post update] : char[] | semmle.label | out [post update] : char[] |
+| Test.java:654:9:654:11 | out | semmle.label | out |
+| Test.java:659:25:659:50 | (...)... : CharArrayReader | semmle.label | (...)... : CharArrayReader |
+| Test.java:659:43:659:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:660:4:660:5 | in : CharArrayReader | semmle.label | in : CharArrayReader |
+| Test.java:660:12:660:14 | out [post update] : char[] | semmle.label | out [post update] : char[] |
+| Test.java:661:9:661:11 | out | semmle.label | out |
+| Test.java:666:27:666:54 | (...)... : InputStreamReader | semmle.label | (...)... : InputStreamReader |
+| Test.java:666:47:666:54 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:667:4:667:5 | in : InputStreamReader | semmle.label | in : InputStreamReader |
+| Test.java:667:12:667:14 | out [post update] : char[] | semmle.label | out [post update] : char[] |
+| Test.java:668:9:668:11 | out | semmle.label | out |
+| Test.java:673:16:673:32 | (...)... : Reader | semmle.label | (...)... : Reader |
+| Test.java:673:25:673:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:674:4:674:5 | in : Reader | semmle.label | in : Reader |
+| Test.java:674:12:674:14 | out [post update] : char[] | semmle.label | out [post update] : char[] |
+| Test.java:675:9:675:11 | out | semmle.label | out |
+| Test.java:680:16:680:32 | (...)... : Reader | semmle.label | (...)... : Reader |
+| Test.java:680:25:680:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:681:4:681:5 | in : Reader | semmle.label | in : Reader |
+| Test.java:681:12:681:14 | out [post update] : char[] | semmle.label | out [post update] : char[] |
+| Test.java:682:9:682:11 | out | semmle.label | out |
+| Test.java:687:22:687:44 | (...)... : StringReader | semmle.label | (...)... : StringReader |
+| Test.java:687:37:687:44 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:688:4:688:5 | in : StringReader | semmle.label | in : StringReader |
+| Test.java:688:12:688:14 | out [post update] : char[] | semmle.label | out [post update] : char[] |
+| Test.java:689:9:689:11 | out | semmle.label | out |
+| Test.java:694:16:694:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:694:25:694:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:695:10:695:29 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| Test.java:695:27:695:28 | in : String | semmle.label | in : String |
+| Test.java:696:9:696:11 | out | semmle.label | out |
+| Test.java:701:16:701:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:701:25:701:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:702:4:702:6 | out [post update] : CharArrayWriter | semmle.label | out [post update] : CharArrayWriter |
+| Test.java:702:14:702:15 | in : String | semmle.label | in : String |
+| Test.java:703:9:703:11 | out | semmle.label | out |
+| Test.java:708:16:708:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:708:25:708:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:709:4:709:6 | out [post update] : CharArrayWriter | semmle.label | out [post update] : CharArrayWriter |
+| Test.java:709:14:709:15 | in : char[] | semmle.label | in : char[] |
+| Test.java:710:9:710:11 | out | semmle.label | out |
+| Test.java:715:13:715:26 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:715:19:715:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:716:4:716:6 | out [post update] : CharArrayWriter | semmle.label | out [post update] : CharArrayWriter |
+| Test.java:716:14:716:15 | in : Number | semmle.label | in : Number |
+| Test.java:717:9:717:11 | out | semmle.label | out |
+| Test.java:722:16:722:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:722:25:722:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:723:4:723:6 | out [post update] : PrintWriter | semmle.label | out [post update] : PrintWriter |
+| Test.java:723:14:723:15 | in : String | semmle.label | in : String |
+| Test.java:724:9:724:11 | out | semmle.label | out |
+| Test.java:729:16:729:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:729:25:729:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:730:4:730:6 | out [post update] : PrintWriter | semmle.label | out [post update] : PrintWriter |
+| Test.java:730:14:730:15 | in : String | semmle.label | in : String |
+| Test.java:731:9:731:11 | out | semmle.label | out |
+| Test.java:736:16:736:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:736:25:736:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:737:4:737:6 | out [post update] : PrintWriter | semmle.label | out [post update] : PrintWriter |
+| Test.java:737:14:737:15 | in : char[] | semmle.label | in : char[] |
+| Test.java:738:9:738:11 | out | semmle.label | out |
+| Test.java:743:16:743:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:743:25:743:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:744:4:744:6 | out [post update] : PrintWriter | semmle.label | out [post update] : PrintWriter |
+| Test.java:744:14:744:15 | in : char[] | semmle.label | in : char[] |
+| Test.java:745:9:745:11 | out | semmle.label | out |
+| Test.java:750:13:750:26 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:750:19:750:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:751:4:751:6 | out [post update] : PrintWriter | semmle.label | out [post update] : PrintWriter |
+| Test.java:751:14:751:15 | in : Number | semmle.label | in : Number |
+| Test.java:752:9:752:11 | out | semmle.label | out |
+| Test.java:757:16:757:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:757:25:757:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:758:4:758:6 | out [post update] : Writer | semmle.label | out [post update] : Writer |
+| Test.java:758:14:758:15 | in : String | semmle.label | in : String |
+| Test.java:759:9:759:11 | out | semmle.label | out |
+| Test.java:764:16:764:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:764:25:764:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:765:4:765:6 | out [post update] : Writer | semmle.label | out [post update] : Writer |
+| Test.java:765:14:765:15 | in : String | semmle.label | in : String |
+| Test.java:766:9:766:11 | out | semmle.label | out |
+| Test.java:771:16:771:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:771:25:771:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:772:4:772:6 | out [post update] : Writer | semmle.label | out [post update] : Writer |
+| Test.java:772:14:772:15 | in : char[] | semmle.label | in : char[] |
+| Test.java:773:9:773:11 | out | semmle.label | out |
+| Test.java:778:16:778:32 | (...)... : char[] | semmle.label | (...)... : char[] |
+| Test.java:778:25:778:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:779:4:779:6 | out [post update] : Writer | semmle.label | out [post update] : Writer |
+| Test.java:779:14:779:15 | in : char[] | semmle.label | in : char[] |
+| Test.java:780:9:780:11 | out | semmle.label | out |
+| Test.java:785:13:785:26 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:785:19:785:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:786:4:786:6 | out [post update] : Writer | semmle.label | out [post update] : Writer |
+| Test.java:786:14:786:15 | in : Number | semmle.label | in : Number |
+| Test.java:787:9:787:11 | out | semmle.label | out |
+subpaths
+testFailures

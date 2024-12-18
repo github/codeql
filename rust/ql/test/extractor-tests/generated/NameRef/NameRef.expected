@@ -1,0 +1,4 @@
+| gen_name_ref.rs:5:5:5:8 | todo | hasText: | yes |
+| gen_name_ref.rs:5:5:5:11 | $crate | hasText: | yes |
+| gen_name_ref.rs:5:5:5:11 | panic | hasText: | yes |
+| gen_name_ref.rs:5:5:5:11 | panicking | hasText: | yes |

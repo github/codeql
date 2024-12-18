@@ -4,13 +4,12 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Configuration.Provider", "ProviderBase", True, "Initialize", "(System.String,System.Collections.Specialized.NameValueCollection)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Configuration.Provider", "ProviderBase", True, "Initialize", "(System.String,System.Collections.Specialized.NameValueCollection)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
-      - ["System.Configuration.Provider", "ProviderBase", True, "get_Description", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Configuration.Provider", "ProviderBase", True, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Configuration.Provider", "ProviderCollection", False, "CopyTo", "(System.Configuration.Provider.ProviderBase[],System.Int32)", "", "Argument[this]", "Argument[0].Element", "taint", "df-generated"]
+      - ["System.Configuration.Provider", "ProviderBase", True, "Initialize", "(System.String,System.Collections.Specialized.NameValueCollection)", "", "Argument[0]", "Argument[this].SyntheticField[System.Configuration.Provider.ProviderBase._name]", "value", "dfc-generated"]
+      - ["System.Configuration.Provider", "ProviderBase", True, "get_Description", "()", "", "Argument[this].Property[System.Configuration.Provider.ProviderBase.Name]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Configuration.Provider", "ProviderBase", True, "get_Description", "()", "", "Argument[this].SyntheticField[System.Configuration.Provider.ProviderBase._name]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Configuration.Provider", "ProviderBase", True, "get_Name", "()", "", "Argument[this].SyntheticField[System.Configuration.Provider.ProviderBase._name]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Configuration.Provider", "ProviderCollection", False, "CopyTo", "(System.Configuration.Provider.ProviderBase[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "dfc-generated"]
       - ["System.Configuration.Provider", "ProviderCollection", False, "get_Item", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Configuration.Provider", "ProviderCollection", False, "get_SyncRoot", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

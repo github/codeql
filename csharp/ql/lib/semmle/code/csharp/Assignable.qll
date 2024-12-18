@@ -117,15 +117,6 @@ class AssignableRead extends AssignableAccess {
       cfn = this.getAnAdjacentReadSameVar()
     )
   }
-
-  /**
-   * Gets a reachable read of the same underlying assignable. That is, a read
-   * that can be reached from this read, and which is guaranteed to read the
-   * same value.
-   *
-   * This is the transitive closure of `getANextRead()`.
-   */
-  deprecated AssignableRead getAReachableRead() { result = this.getANextRead+() }
 }
 
 /**
@@ -402,6 +393,8 @@ private import AssignableInternal
  */
 class AssignableDefinition extends TAssignableDefinition {
   /**
+   * DEPRECATED: Use `this.getExpr().getAControlFlowNode()` instead.
+   *
    * Gets a control flow node that updates the targeted assignable when
    * reached.
    *
@@ -409,7 +402,9 @@ class AssignableDefinition extends TAssignableDefinition {
    * the definitions of `x` and `y` in `M(out x, out y)` and `(x, y) = (0, 1)`
    * relate to the same call to `M` and assignment node, respectively.
    */
-  ControlFlow::Node getAControlFlowNode() { result = this.getExpr().getAControlFlowNode() }
+  deprecated ControlFlow::Node getAControlFlowNode() {
+    result = this.getExpr().getAControlFlowNode()
+  }
 
   /**
    * Gets the underlying expression that updates the targeted assignable when
@@ -486,17 +481,13 @@ class AssignableDefinition extends TAssignableDefinition {
       exists(Ssa::ExplicitDefinition def | result = def.getAFirstReadAtNode(cfn) |
         this = def.getADefinition()
       )
+      or
+      exists(Ssa::ImplicitParameterDefinition def | result = def.getAFirstReadAtNode(cfn) |
+        this.(AssignableDefinitions::ImplicitParameterDefinition).getParameter() =
+          def.getParameter()
+      )
     )
   }
-
-  /**
-   * Gets a reachable read of the same underlying assignable. That is, a read
-   * that can be reached from this definition, and which is guaranteed to read
-   * the value assigned in this definition.
-   *
-   * This is the equivalent with `getAFirstRead().getANextRead*()`.
-   */
-  deprecated AssignableRead getAReachableRead() { result = this.getAFirstRead().getANextRead*() }
 
   /** Gets a textual representation of this assignable definition. */
   string toString() { none() }
@@ -568,7 +559,7 @@ module AssignableDefinitions {
     ControlFlow::BasicBlock bb, Parameter p, AssignableDefinition def
   ) {
     def = any(RefArg arg).getAnAnalyzableRefDef(p) and
-    bb.getANode() = def.getAControlFlowNode()
+    bb.getANode() = def.getExpr().getAControlFlowNode()
   }
 
   /**
@@ -680,7 +671,9 @@ module AssignableDefinitions {
     /** Gets the underlying parameter. */
     Parameter getParameter() { result = p }
 
-    override ControlFlow::Node getAControlFlowNode() { result = p.getCallable().getEntryPoint() }
+    deprecated override ControlFlow::Node getAControlFlowNode() {
+      result = p.getCallable().getEntryPoint()
+    }
 
     override Parameter getElement() { result = p }
 

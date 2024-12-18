@@ -24,7 +24,6 @@ import java
 import semmle.code.java.dataflow.FlowSteps
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking2
 import MissingHttpOnlyFlow::PathGraph
 
 /** Gets a regular expression for matching common names of sensitive cookies. */

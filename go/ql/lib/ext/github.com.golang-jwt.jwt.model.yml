@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/golang-jwt/jwt", "SigningMethod", True, "Sign", "", "", "Argument[1]", "credentials-key", "manual"]
+      - ["github.com/golang-jwt/jwt", "Token", True, "SignedString", "", "", "Argument[0]", "credentials-key", "manual"]
+      - ["github.com/golang-jwt/jwt", "Parser", True, "ParseUnverified", "", "", "Argument[0]", "jwt", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["github.com/golang-jwt/jwt", "", False, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/golang-jwt/jwt", "Parser", True, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/golang-jwt/jwt", "", False, "ParseWithClaims", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/golang-jwt/jwt", "Parser", True, "ParseWithClaims", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/golang-jwt/jwt", "", False, "ParseECPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/golang-jwt/jwt", "", False, "ParseECPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/golang-jwt/jwt", "", False, "ParseEdPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/golang-jwt/jwt", "", False, "ParseEdPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/golang-jwt/jwt", "", False, "ParseRSAPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/golang-jwt/jwt", "", False, "ParseRSAPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/golang-jwt/jwt", "", False, "RegisterSigningMethod", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]

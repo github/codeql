@@ -8,6 +8,6 @@
 
 import python
 
-from StrConst s
+from StringLiteral s
 where s.getPrefix().matches("%r%")
 select s

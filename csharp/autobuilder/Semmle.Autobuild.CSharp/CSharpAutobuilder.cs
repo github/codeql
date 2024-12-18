@@ -11,9 +11,12 @@ namespace Semmle.Autobuild.CSharp
     /// </summary>
     public class CSharpAutobuildOptions : AutobuildOptionsShared
     {
-        private const string extractorOptionPrefix = "CODEQL_EXTRACTOR_CSHARP_OPTION_";
+        private const string buildModeEnvironmentVariable = "CODEQL_EXTRACTOR_CSHARP_BUILD_MODE";
+        internal const string ExtractorOptionBuildless = "CODEQL_EXTRACTOR_CSHARP_OPTION_BUILDLESS";
+        internal const string ExtractorOptionBinlog = "CODEQL_EXTRACTOR_CSHARP_OPTION_BINLOG";
 
         public bool Buildless { get; }
+        public string? Binlog { get; }
 
         public override Language Language => Language.CSharp;
 
@@ -24,8 +27,11 @@ namespace Semmle.Autobuild.CSharp
         /// </summary>
         public CSharpAutobuildOptions(IBuildActions actions) : base(actions)
         {
-            Buildless = actions.GetEnvironmentVariable(lgtmPrefix + "BUILDLESS").AsBool("buildless", false) ||
-                actions.GetEnvironmentVariable(extractorOptionPrefix + "BUILDLESS").AsBool("buildless", false);
+            Buildless =
+                actions.GetEnvironmentVariable(ExtractorOptionBuildless).AsBool("buildless", false) ||
+                actions.GetEnvironmentVariable(buildModeEnvironmentVariable)?.ToLower() == "none";
+
+            Binlog = actions.GetEnvironmentVariable(ExtractorOptionBinlog);
         }
     }
 
@@ -44,21 +50,11 @@ namespace Semmle.Autobuild.CSharp
             var attempt = BuildScript.Failure;
             switch (GetCSharpBuildStrategy())
             {
-                case CSharpBuildStrategy.CustomBuildCommand:
-                    attempt = new BuildCommandRule(DotNetRule.WithDotNet).Analyse(this, false) & CheckExtractorRun(true);
-                    break;
                 case CSharpBuildStrategy.Buildless:
-                    attempt = DotNetRule.WithDotNet(this, (dotNetPath, env) =>
-                        {
-                            // No need to check that the extractor has been executed in buildless mode
-                            return new StandaloneBuildRule(dotNetPath).Analyse(this, false);
-                        });
-                    break;
-                case CSharpBuildStrategy.MSBuild:
-                    attempt = new MsBuildRule().Analyse(this, false) & CheckExtractorRun(true);
-                    break;
-                case CSharpBuildStrategy.DotNet:
-                    attempt = new DotNetRule().Analyse(this, false) & CheckExtractorRun(true);
+                    // No need to check that the extractor has been executed in buildless mode
+                    attempt = BuildScript.Bind(
+                        AddBuildlessWronglyConfiguredWarning() & AddBuildlessStartedDiagnostic() & new StandaloneBuildRule().Analyse(this, false),
+                        AddBuildlessEndedDiagnostic);
                     break;
                 case CSharpBuildStrategy.Auto:
                     attempt =
@@ -82,10 +78,91 @@ namespace Semmle.Autobuild.CSharp
                     return 0;
 
                 if (warnOnFailure)
-                    Log(Severity.Error, "No C# code detected during build.");
+                    Logger.LogError("No C# code detected during build.");
 
                 return 1;
             });
+
+        private BuildScript AddBuildlessWronglyConfiguredWarning()
+        {
+            return BuildScript.Create(actions =>
+            {
+                if (actions.GetEnvironmentVariable(CSharpAutobuildOptions.ExtractorOptionBuildless) is null)
+                {
+                    return 0;
+                }
+
+                AddDiagnostic(new DiagnosticMessage(
+                    Options.Language,
+                    "buildless/use-build-mode",
+                    "C# was extracted with the deprecated 'buildless' option, use build-mode instead",
+                    visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                    markdownMessage: "C# was extracted with the deprecated 'buildless' option, use build-mode instead.",
+                    severity: DiagnosticMessage.TspSeverity.Warning
+                ));
+                return 0;
+            });
+        }
+
+        private BuildScript AddBuildlessStartedDiagnostic()
+        {
+            return BuildScript.Create(actions =>
+            {
+                AddDiagnostic(new DiagnosticMessage(
+                    Options.Language,
+                    "buildless/mode-active",
+                    "C# was extracted with build-mode set to 'none'",
+                    visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                    markdownMessage: "C# was extracted with build-mode set to 'none'. This means that all C# source in the working directory will be scanned, with build tools, such as Nuget and Dotnet CLIs, only contributing information about external dependencies.",
+                    severity: DiagnosticMessage.TspSeverity.Note
+                ));
+
+                // For the time being we are adding an additional message regarding the binlog usage. In the future, we might want to remove the buildless messages altogether when the binlog option is specified.
+                if (actions.GetEnvironmentVariable(CSharpAutobuildOptions.ExtractorOptionBinlog) is not null)
+                {
+                    AddDiagnostic(new DiagnosticMessage(
+                        Options.Language,
+                        "buildless/binlog",
+                        "C# was extracted with the experimental 'binlog' option",
+                        visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                        markdownMessage: "C# was extracted with the experimental 'binlog' option.",
+                        severity: DiagnosticMessage.TspSeverity.Note
+                    ));
+                }
+
+                return 0;
+            });
+        }
+
+        private BuildScript AddBuildlessEndedDiagnostic(int buildResult)
+        {
+            return BuildScript.Create(actions =>
+            {
+                if (buildResult == 0)
+                {
+                    AddDiagnostic(new DiagnosticMessage(
+                        Options.Language,
+                        "buildless/complete",
+                        "C# analysis with build-mode 'none' completed",
+                        visibility: new DiagnosticMessage.TspVisibility(statusPage: false, cliSummaryTable: true, telemetry: true),
+                        markdownMessage: "C# analysis with build-mode 'none' completed.",
+                        severity: DiagnosticMessage.TspSeverity.Unknown
+                    ));
+                }
+                else
+                {
+                    AddDiagnostic(new DiagnosticMessage(
+                        Options.Language,
+                        "buildless/failed",
+                        "C# analysis with build-mode 'none' failed",
+                        visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                        markdownMessage: "C# analysis with build-mode 'none' failed.",
+                        severity: DiagnosticMessage.TspSeverity.Error
+                    ));
+                }
+                return buildResult;
+            });
+        }
 
         protected override void AutobuildFailureDiagnostic()
         {
@@ -199,32 +276,15 @@ namespace Semmle.Autobuild.CSharp
         /// </summary>
         private CSharpBuildStrategy GetCSharpBuildStrategy()
         {
-            if (Options.BuildCommand is not null)
-                return CSharpBuildStrategy.CustomBuildCommand;
-
             if (Options.Buildless)
                 return CSharpBuildStrategy.Buildless;
-
-            if (Options.MsBuildArguments is not null
-                || Options.MsBuildConfiguration is not null
-                || Options.MsBuildPlatform is not null
-                || Options.MsBuildTarget is not null)
-            {
-                return CSharpBuildStrategy.MSBuild;
-            }
-
-            if (Options.DotNetArguments is not null || Options.DotNetVersion is not null)
-                return CSharpBuildStrategy.DotNet;
 
             return CSharpBuildStrategy.Auto;
         }
 
         private enum CSharpBuildStrategy
         {
-            CustomBuildCommand,
             Buildless,
-            MSBuild,
-            DotNet,
             Auto
         }
     }

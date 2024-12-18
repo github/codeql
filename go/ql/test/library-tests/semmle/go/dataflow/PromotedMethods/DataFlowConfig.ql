@@ -1,6 +1,8 @@
 import go
-import TestUtilities.InlineExpectationsTest
-import TestUtilities.InlineFlowTest
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
+import utils.test.InlineExpectationsTest
+import utils.test.InlineFlowTest
 
 module ValueFlow = DataFlow::Global<DefaultFlowConfig>;
 

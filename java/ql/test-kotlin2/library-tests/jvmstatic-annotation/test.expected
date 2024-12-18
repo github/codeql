@@ -1,0 +1,74 @@
+staticMembers
+| JavaUser.java:1:14:1:21 | JavaUser | JavaUser.java:3:22:3:25 | test | Method |
+| test.kt:0:0:0:0 | TestKt | test.kt:49:1:67:1 | externalUser | Method |
+| test.kt:9:1:29:1 | HasCompanion | test.kt:11:3:27:3 | Companion | Class |
+| test.kt:9:1:29:1 | HasCompanion | test.kt:11:3:27:3 | Companion | Field |
+| test.kt:9:1:29:1 | HasCompanion | test.kt:13:5:13:71 | staticMethod | Method |
+| test.kt:9:1:29:1 | HasCompanion | test.kt:16:5:16:43 | getStaticProp | Method |
+| test.kt:9:1:29:1 | HasCompanion | test.kt:16:5:16:43 | setStaticProp | Method |
+| test.kt:9:1:29:1 | HasCompanion | test.kt:20:7:20:45 | getPropWithStaticGetter | Method |
+| test.kt:9:1:29:1 | HasCompanion | test.kt:25:7:25:60 | setPropWithStaticSetter | Method |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:31:1:47:1 | INSTANCE | Field |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:33:3:33:69 | staticMethod | Method |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:36:3:36:41 | getStaticProp | Method |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:36:3:36:41 | setStaticProp | Method |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:40:5:40:43 | getPropWithStaticGetter | Method |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:45:5:45:58 | setPropWithStaticSetter | Method |
+#select
+| test.kt:9:1:29:1 | HasCompanion | JavaUser.java:5:5:5:34 | staticMethod(...) | JavaUser.java:5:5:5:16 | HasCompanion | static |
+| test.kt:9:1:29:1 | HasCompanion | JavaUser.java:7:5:7:73 | setStaticProp(...) | JavaUser.java:7:5:7:16 | HasCompanion | static |
+| test.kt:9:1:29:1 | HasCompanion | JavaUser.java:8:45:8:72 | getStaticProp(...) | JavaUser.java:8:45:8:56 | HasCompanion | static |
+| test.kt:9:1:29:1 | HasCompanion | JavaUser.java:10:5:10:80 | setPropWithStaticSetter(...) | JavaUser.java:10:5:10:16 | HasCompanion | static |
+| test.kt:9:1:29:1 | HasCompanion | JavaUser.java:10:42:10:79 | getPropWithStaticGetter(...) | JavaUser.java:10:42:10:53 | HasCompanion | static |
+| test.kt:11:3:27:3 | Companion | JavaUser.java:6:5:6:47 | nonStaticMethod(...) | JavaUser.java:6:5:6:26 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | JavaUser.java:7:32:7:72 | getNonStaticProp(...) | JavaUser.java:7:32:7:53 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | JavaUser.java:8:5:8:73 | setNonStaticProp(...) | JavaUser.java:8:5:8:26 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | JavaUser.java:9:5:9:100 | setPropWithStaticGetter(...) | JavaUser.java:9:5:9:26 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | JavaUser.java:9:52:9:99 | getPropWithStaticSetter(...) | JavaUser.java:9:52:9:73 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:13:5:13:71 | staticMethod(...) | test.kt:13:5:13:71 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:13:54:13:71 | nonStaticMethod(...) | test.kt:13:54:13:71 | this | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:14:46:14:60 | staticMethod(...) | test.kt:14:46:14:60 | this | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:16:5:16:43 | getStaticProp(...) | test.kt:16:5:16:43 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:16:5:16:43 | setStaticProp(...) | test.kt:16:5:16:43 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:20:7:20:45 | getPropWithStaticGetter(...) | test.kt:20:7:20:45 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:20:26:20:45 | getPropWithStaticSetter(...) | test.kt:20:26:20:45 | this | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:21:24:21:47 | setPropWithStaticSetter(...) | test.kt:21:24:21:47 | this | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:24:15:24:34 | getPropWithStaticGetter(...) | test.kt:24:15:24:34 | this | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:25:7:25:60 | setPropWithStaticSetter(...) | test.kt:25:7:25:60 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:25:35:25:58 | setPropWithStaticGetter(...) | test.kt:25:35:25:58 | this | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:52:3:52:32 | staticMethod(...) | test.kt:52:3:52:14 | Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:53:3:53:35 | nonStaticMethod(...) | test.kt:53:3:53:14 | Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:54:3:54:54 | setStaticProp(...) | test.kt:54:3:54:14 | Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:54:29:54:54 | getNonStaticProp(...) | test.kt:54:29:54:40 | Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:55:3:55:54 | setNonStaticProp(...) | test.kt:55:3:55:14 | Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:55:32:55:54 | getStaticProp(...) | test.kt:55:32:55:43 | Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:56:3:56:71 | setPropWithStaticGetter(...) | test.kt:56:3:56:14 | Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:56:39:56:71 | getPropWithStaticSetter(...) | test.kt:56:39:56:50 | Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:57:3:57:71 | setPropWithStaticSetter(...) | test.kt:57:3:57:14 | Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:57:39:57:71 | getPropWithStaticGetter(...) | test.kt:57:39:57:50 | Companion | instance |
+| test.kt:31:1:47:1 | NonCompanion | JavaUser.java:13:5:13:34 | staticMethod(...) | JavaUser.java:13:5:13:16 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | JavaUser.java:14:5:14:46 | nonStaticMethod(...) | JavaUser.java:14:5:14:25 | NonCompanion.INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | JavaUser.java:15:5:15:72 | setStaticProp(...) | JavaUser.java:15:5:15:16 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | JavaUser.java:15:32:15:71 | getNonStaticProp(...) | JavaUser.java:15:32:15:52 | NonCompanion.INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | JavaUser.java:16:5:16:72 | setNonStaticProp(...) | JavaUser.java:16:5:16:25 | NonCompanion.INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | JavaUser.java:16:44:16:71 | getStaticProp(...) | JavaUser.java:16:44:16:55 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | JavaUser.java:17:5:17:98 | setPropWithStaticGetter(...) | JavaUser.java:17:5:17:25 | NonCompanion.INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | JavaUser.java:17:51:17:97 | getPropWithStaticSetter(...) | JavaUser.java:17:51:17:71 | NonCompanion.INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | JavaUser.java:18:5:18:80 | setPropWithStaticSetter(...) | JavaUser.java:18:5:18:16 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | JavaUser.java:18:42:18:79 | getPropWithStaticGetter(...) | JavaUser.java:18:42:18:53 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:33:52:33:69 | nonStaticMethod(...) | test.kt:33:52:33:69 | NonCompanion.INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:34:44:34:58 | staticMethod(...) | test.kt:34:44:34:58 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:40:24:40:43 | getPropWithStaticSetter(...) | test.kt:40:24:40:43 | NonCompanion.INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:41:22:41:45 | setPropWithStaticSetter(...) | test.kt:41:22:41:45 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:44:13:44:32 | getPropWithStaticGetter(...) | test.kt:44:13:44:32 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:45:33:45:56 | setPropWithStaticGetter(...) | test.kt:45:33:45:56 | NonCompanion.INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:60:3:60:32 | staticMethod(...) | test.kt:60:3:60:32 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:61:3:61:35 | nonStaticMethod(...) | test.kt:61:3:61:14 | INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:62:3:62:54 | setStaticProp(...) | test.kt:62:3:62:54 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:62:29:62:54 | getNonStaticProp(...) | test.kt:62:29:62:40 | INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:63:3:63:54 | setNonStaticProp(...) | test.kt:63:3:63:14 | INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:63:32:63:54 | getStaticProp(...) | test.kt:63:32:63:54 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:64:3:64:71 | setPropWithStaticGetter(...) | test.kt:64:3:64:14 | INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:64:39:64:71 | getPropWithStaticSetter(...) | test.kt:64:39:64:50 | INSTANCE | instance |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:65:3:65:71 | setPropWithStaticSetter(...) | test.kt:65:3:65:71 | NonCompanion | static |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:65:39:65:71 | getPropWithStaticGetter(...) | test.kt:65:39:65:71 | NonCompanion | static |

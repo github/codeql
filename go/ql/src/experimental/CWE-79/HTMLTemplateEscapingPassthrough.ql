@@ -36,7 +36,7 @@ class PassthroughTypeName extends string {
 }
 
 module UntrustedToPassthroughTypeConversionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   additional predicate isSinkToPassthroughType(DataFlow::TypeCastNode sink, PassthroughTypeName name) {
     exists(Type typ |
@@ -53,7 +53,7 @@ module UntrustedToPassthroughTypeConversionConfig implements DataFlow::ConfigSig
 }
 
 /**
- * Tracks taint flow for reasoning about when an `UntrustedFlowSource` is
+ * Tracks taint flow for reasoning about when a `ActiveThreatModelSource` is
  * converted into a special "passthrough" type which will not be escaped by the
  * template generator; this allows the injection of arbitrary content (html,
  * css, js) into the generated output of the templates.
@@ -109,13 +109,13 @@ predicate isSinkToTemplateExec(DataFlow::Node sink, DataFlow::CallNode call) {
 }
 
 module FromUntrustedToTemplateExecutionCallConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { isSinkToTemplateExec(sink, _) }
 }
 
 /**
- * Tracks taint flow from an `UntrustedFlowSource` into a template executor
+ * Tracks taint flow from a `ActiveThreatModelSource` into a template executor
  * call.
  */
 module FromUntrustedToTemplateExecutionCallFlow =

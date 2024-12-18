@@ -1,0 +1,8 @@
+| type_equivalences.kt:4:1:4:65 | fooUnit | file://:0:0:0:0 | void | 0 | type_equivalences.kt:4:13:4:19 | x | file://<external>/Unit.class:0:0:0:0 | Unit |
+| type_equivalences.kt:4:1:4:65 | fooUnit | file://:0:0:0:0 | void | 1 | type_equivalences.kt:4:22:4:33 | y | file://<external>/Par.class:0:0:0:0 | Par<Unit> |
+| type_equivalences.kt:5:1:5:65 | fooVoid | file://<external>/Void.class:0:0:0:0 | Void | 0 | type_equivalences.kt:5:13:5:19 | x | file://<external>/Void.class:0:0:0:0 | Void |
+| type_equivalences.kt:5:1:5:65 | fooVoid | file://<external>/Void.class:0:0:0:0 | Void | 1 | type_equivalences.kt:5:22:5:33 | y | file://<external>/Par.class:0:0:0:0 | Par<Void> |
+| type_equivalences.kt:6:1:6:80 | fooNothing | file://<external>/Void.class:0:0:0:0 | Void | 0 | type_equivalences.kt:6:16:6:25 | x | file://<external>/Void.class:0:0:0:0 | Void |
+| type_equivalences.kt:6:1:6:80 | fooNothing | file://<external>/Void.class:0:0:0:0 | Void | 1 | type_equivalences.kt:6:28:6:42 | y | file://<external>/Par.class:0:0:0:0 | Par<Void> |
+| type_equivalences.kt:7:1:7:60 | fooInt | file://:0:0:0:0 | int | 0 | type_equivalences.kt:7:12:7:17 | x | file://:0:0:0:0 | int |
+| type_equivalences.kt:7:1:7:60 | fooInt | file://:0:0:0:0 | int | 1 | type_equivalences.kt:7:20:7:30 | y | file://<external>/Par.class:0:0:0:0 | Par<Integer> |

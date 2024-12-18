@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Components, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Components, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -83,10 +83,20 @@ namespace Microsoft
                 public string ValueAttribute { get => throw null; }
             }
             [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
-            public sealed class CascadingParameterAttribute : System.Attribute
+            public sealed class CascadingParameterAttribute : Microsoft.AspNetCore.Components.CascadingParameterAttributeBase
             {
                 public CascadingParameterAttribute() => throw null;
                 public string Name { get => throw null; set { } }
+            }
+            public abstract class CascadingParameterAttributeBase : System.Attribute
+            {
+                protected CascadingParameterAttributeBase() => throw null;
+            }
+            public struct CascadingParameterInfo
+            {
+                public Microsoft.AspNetCore.Components.CascadingParameterAttributeBase Attribute { get => throw null; }
+                public string PropertyName { get => throw null; }
+                public System.Type PropertyType { get => throw null; }
             }
             [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = false)]
             public sealed class CascadingTypeParameterAttribute : System.Attribute
@@ -103,6 +113,15 @@ namespace Microsoft
                 public string Name { get => throw null; set { } }
                 public System.Threading.Tasks.Task SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView parameters) => throw null;
                 public TValue Value { get => throw null; set { } }
+            }
+            public class CascadingValueSource<TValue>
+            {
+                public CascadingValueSource(TValue value, bool isFixed) => throw null;
+                public CascadingValueSource(string name, TValue value, bool isFixed) => throw null;
+                public CascadingValueSource(System.Func<TValue> initialValueFactory, bool isFixed) => throw null;
+                public CascadingValueSource(string name, System.Func<TValue> initialValueFactory, bool isFixed) => throw null;
+                public System.Threading.Tasks.Task NotifyChangedAsync() => throw null;
+                public System.Threading.Tasks.Task NotifyChangedAsync(TValue newValue) => throw null;
             }
             public class ChangeEventArgs : System.EventArgs
             {
@@ -129,6 +148,7 @@ namespace Microsoft
                 void Microsoft.AspNetCore.Components.IComponent.Attach(Microsoft.AspNetCore.Components.RenderHandle renderHandle) => throw null;
                 protected virtual void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
                 public ComponentBase() => throw null;
+                protected System.Threading.Tasks.Task DispatchExceptionAsync(System.Exception exception) => throw null;
                 System.Threading.Tasks.Task Microsoft.AspNetCore.Components.IHandleEvent.HandleEventAsync(Microsoft.AspNetCore.Components.EventCallbackWorkItem callback, object arg) => throw null;
                 protected System.Threading.Tasks.Task InvokeAsync(System.Action workItem) => throw null;
                 protected System.Threading.Tasks.Task InvokeAsync(System.Func<System.Threading.Tasks.Task> workItem) => throw null;
@@ -194,7 +214,9 @@ namespace Microsoft
             {
                 public EventCallback(Microsoft.AspNetCore.Components.IHandleEvent receiver, System.MulticastDelegate @delegate) => throw null;
                 public static readonly Microsoft.AspNetCore.Components.EventCallback Empty;
+                public override bool Equals(object obj) => throw null;
                 public static readonly Microsoft.AspNetCore.Components.EventCallbackFactory Factory;
+                public override int GetHashCode() => throw null;
                 public bool HasDelegate { get => throw null; }
                 public System.Threading.Tasks.Task InvokeAsync(object arg) => throw null;
                 public System.Threading.Tasks.Task InvokeAsync() => throw null;
@@ -203,6 +225,8 @@ namespace Microsoft
             {
                 public EventCallback(Microsoft.AspNetCore.Components.IHandleEvent receiver, System.MulticastDelegate @delegate) => throw null;
                 public static readonly Microsoft.AspNetCore.Components.EventCallback<TValue> Empty;
+                public override bool Equals(object obj) => throw null;
+                public override int GetHashCode() => throw null;
                 public bool HasDelegate { get => throw null; }
                 public System.Threading.Tasks.Task InvokeAsync(TValue arg) => throw null;
                 public System.Threading.Tasks.Task InvokeAsync() => throw null;
@@ -323,6 +347,9 @@ namespace Microsoft
             {
                 Microsoft.AspNetCore.Components.IComponent CreateInstance(System.Type componentType);
             }
+            public interface IComponentRenderMode
+            {
+            }
             public interface IHandleAfterRender
             {
                 System.Threading.Tasks.Task OnAfterRenderAsync();
@@ -345,11 +372,13 @@ namespace Microsoft
             public sealed class InjectAttribute : System.Attribute
             {
                 public InjectAttribute() => throw null;
+                public object Key { get => throw null; set { } }
             }
             public interface IPersistentComponentStateStore
             {
                 System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, byte[]>> GetPersistedStateAsync();
                 System.Threading.Tasks.Task PersistStateAsync(System.Collections.Generic.IReadOnlyDictionary<string, byte[]> state);
+                virtual bool SupportsRenderMode(Microsoft.AspNetCore.Components.IComponentRenderMode renderMode) => throw null;
             }
             [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = true)]
             public sealed class LayoutAttribute : System.Attribute
@@ -403,6 +432,7 @@ namespace Microsoft
                 protected virtual void NavigateToCore(string uri, Microsoft.AspNetCore.Components.NavigationOptions options) => throw null;
                 protected void NotifyLocationChanged(bool isInterceptedLink) => throw null;
                 protected System.Threading.Tasks.ValueTask<bool> NotifyLocationChangingAsync(string uri, string state, bool isNavigationIntercepted) => throw null;
+                public virtual void Refresh(bool forceReload = default(bool)) => throw null;
                 public System.IDisposable RegisterLocationChangingHandler(System.Func<Microsoft.AspNetCore.Components.Routing.LocationChangingContext, System.Threading.Tasks.ValueTask> locationChangingHandler) => throw null;
                 protected virtual void SetNavigationLockState(bool value) => throw null;
                 public System.Uri ToAbsoluteUri(string relativeUri) => throw null;
@@ -486,6 +516,7 @@ namespace Microsoft
             {
                 public void PersistAsJson<TValue>(string key, TValue instance) => throw null;
                 public Microsoft.AspNetCore.Components.PersistingComponentStateSubscription RegisterOnPersisting(System.Func<System.Threading.Tasks.Task> callback) => throw null;
+                public Microsoft.AspNetCore.Components.PersistingComponentStateSubscription RegisterOnPersisting(System.Func<System.Threading.Tasks.Task> callback, Microsoft.AspNetCore.Components.IComponentRenderMode renderMode) => throw null;
                 public bool TryTakeFromJson<TValue>(string key, out TValue instance) => throw null;
             }
             public struct PersistingComponentStateSubscription : System.IDisposable
@@ -497,12 +528,22 @@ namespace Microsoft
             public struct RenderHandle
             {
                 public Microsoft.AspNetCore.Components.Dispatcher Dispatcher { get => throw null; }
+                public System.Threading.Tasks.Task DispatchExceptionAsync(System.Exception exception) => throw null;
                 public bool IsInitialized { get => throw null; }
                 public bool IsRenderingOnMetadataUpdate { get => throw null; }
                 public void Render(Microsoft.AspNetCore.Components.RenderFragment renderFragment) => throw null;
             }
             namespace Rendering
             {
+                public class ComponentState : System.IAsyncDisposable
+                {
+                    public Microsoft.AspNetCore.Components.IComponent Component { get => throw null; }
+                    public int ComponentId { get => throw null; }
+                    public ComponentState(Microsoft.AspNetCore.Components.RenderTree.Renderer renderer, int componentId, Microsoft.AspNetCore.Components.IComponent component, Microsoft.AspNetCore.Components.Rendering.ComponentState parentComponentState) => throw null;
+                    public virtual System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
+                    public Microsoft.AspNetCore.Components.Rendering.ComponentState LogicalParentComponentState { get => throw null; }
+                    public Microsoft.AspNetCore.Components.Rendering.ComponentState ParentComponentState { get => throw null; }
+                }
                 public sealed class RenderTreeBuilder : System.IDisposable
                 {
                     public void AddAttribute(int sequence, string name) => throw null;
@@ -513,7 +554,9 @@ namespace Microsoft
                     public void AddAttribute<TArgument>(int sequence, string name, Microsoft.AspNetCore.Components.EventCallback<TArgument> value) => throw null;
                     public void AddAttribute(int sequence, string name, object value) => throw null;
                     public void AddAttribute(int sequence, Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame frame) => throw null;
+                    public void AddComponentParameter(int sequence, string name, object value) => throw null;
                     public void AddComponentReferenceCapture(int sequence, System.Action<object> componentReferenceCaptureAction) => throw null;
+                    public void AddComponentRenderMode(Microsoft.AspNetCore.Components.IComponentRenderMode renderMode) => throw null;
                     public void AddContent(int sequence, string textContent) => throw null;
                     public void AddContent(int sequence, Microsoft.AspNetCore.Components.RenderFragment fragment) => throw null;
                     public void AddContent<TValue>(int sequence, Microsoft.AspNetCore.Components.RenderFragment<TValue> fragment, TValue value) => throw null;
@@ -523,6 +566,7 @@ namespace Microsoft
                     public void AddElementReferenceCapture(int sequence, System.Action<Microsoft.AspNetCore.Components.ElementReference> elementReferenceCaptureAction) => throw null;
                     public void AddMarkupContent(int sequence, string markupContent) => throw null;
                     public void AddMultipleAttributes(int sequence, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> attributes) => throw null;
+                    public void AddNamedEvent(string eventType, string assignedName) => throw null;
                     public void Clear() => throw null;
                     public void CloseComponent() => throw null;
                     public void CloseElement() => throw null;
@@ -537,6 +581,12 @@ namespace Microsoft
                     public void SetKey(object value) => throw null;
                     public void SetUpdatesAttributeName(string updatesAttributeName) => throw null;
                 }
+            }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = true)]
+            public abstract class RenderModeAttribute : System.Attribute
+            {
+                protected RenderModeAttribute() => throw null;
+                public abstract Microsoft.AspNetCore.Components.IComponentRenderMode Mode { get; }
             }
             namespace RenderTree
             {
@@ -556,30 +606,56 @@ namespace Microsoft
                     public readonly int Count;
                     public ArrayRange(T[] array, int count) => throw null;
                 }
+                [System.Flags]
+                public enum ComponentFrameFlags : byte
+                {
+                    HasCallerSpecifiedRenderMode = 1,
+                }
                 public class EventFieldInfo
                 {
                     public int ComponentId { get => throw null; set { } }
                     public EventFieldInfo() => throw null;
                     public object FieldValue { get => throw null; set { } }
                 }
+                public struct NamedEventChange
+                {
+                    public string AssignedName { get => throw null; }
+                    public Microsoft.AspNetCore.Components.RenderTree.NamedEventChangeType ChangeType { get => throw null; }
+                    public int ComponentId { get => throw null; }
+                    public NamedEventChange(Microsoft.AspNetCore.Components.RenderTree.NamedEventChangeType changeType, int componentId, int frameIndex, string eventType, string assignedName) => throw null;
+                    public string EventType { get => throw null; }
+                    public int FrameIndex { get => throw null; }
+                }
+                public enum NamedEventChangeType
+                {
+                    Added = 0,
+                    Removed = 1,
+                }
                 public struct RenderBatch
                 {
                     public Microsoft.AspNetCore.Components.RenderTree.ArrayRange<int> DisposedComponentIDs { get => throw null; }
                     public Microsoft.AspNetCore.Components.RenderTree.ArrayRange<ulong> DisposedEventHandlerIDs { get => throw null; }
+                    public Microsoft.AspNetCore.Components.RenderTree.ArrayRange<Microsoft.AspNetCore.Components.RenderTree.NamedEventChange>? NamedEventChanges { get => throw null; }
                     public Microsoft.AspNetCore.Components.RenderTree.ArrayRange<Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame> ReferenceFrames { get => throw null; }
                     public Microsoft.AspNetCore.Components.RenderTree.ArrayRange<Microsoft.AspNetCore.Components.RenderTree.RenderTreeDiff> UpdatedComponents { get => throw null; }
                 }
                 public abstract class Renderer : System.IAsyncDisposable, System.IDisposable
                 {
+                    protected virtual void AddPendingTask(Microsoft.AspNetCore.Components.Rendering.ComponentState componentState, System.Threading.Tasks.Task task) => throw null;
                     protected int AssignRootComponentId(Microsoft.AspNetCore.Components.IComponent component) => throw null;
+                    protected virtual Microsoft.AspNetCore.Components.Rendering.ComponentState CreateComponentState(int componentId, Microsoft.AspNetCore.Components.IComponent component, Microsoft.AspNetCore.Components.Rendering.ComponentState parentComponentState) => throw null;
                     public Renderer(System.IServiceProvider serviceProvider, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
                     public Renderer(System.IServiceProvider serviceProvider, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.AspNetCore.Components.IComponentActivator componentActivator) => throw null;
                     public abstract Microsoft.AspNetCore.Components.Dispatcher Dispatcher { get; }
                     public virtual System.Threading.Tasks.Task DispatchEventAsync(ulong eventHandlerId, Microsoft.AspNetCore.Components.RenderTree.EventFieldInfo fieldInfo, System.EventArgs eventArgs) => throw null;
+                    public virtual System.Threading.Tasks.Task DispatchEventAsync(ulong eventHandlerId, Microsoft.AspNetCore.Components.RenderTree.EventFieldInfo fieldInfo, System.EventArgs eventArgs, bool waitForQuiescence) => throw null;
                     protected virtual void Dispose(bool disposing) => throw null;
                     public void Dispose() => throw null;
                     public System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
                     protected Microsoft.AspNetCore.Components.ElementReferenceContext ElementReferenceContext { get => throw null; set { } }
+                    protected virtual Microsoft.AspNetCore.Components.IComponentRenderMode GetComponentRenderMode(Microsoft.AspNetCore.Components.IComponent component) => throw null;
+                    protected Microsoft.AspNetCore.Components.Rendering.ComponentState GetComponentState(int componentId) => throw null;
+                    protected Microsoft.AspNetCore.Components.Rendering.ComponentState GetComponentState(Microsoft.AspNetCore.Components.IComponent component) => throw null;
                     protected Microsoft.AspNetCore.Components.RenderTree.ArrayRange<Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame> GetCurrentRenderTreeFrames(int componentId) => throw null;
                     public System.Type GetEventArgsType(ulong eventHandlerId) => throw null;
                     protected abstract void HandleException(System.Exception exception);
@@ -588,6 +664,7 @@ namespace Microsoft
                     protected void RemoveRootComponent(int componentId) => throw null;
                     protected System.Threading.Tasks.Task RenderRootComponentAsync(int componentId) => throw null;
                     protected System.Threading.Tasks.Task RenderRootComponentAsync(int componentId, Microsoft.AspNetCore.Components.ParameterView initialParameters) => throw null;
+                    protected virtual Microsoft.AspNetCore.Components.IComponent ResolveComponentForRenderMode(System.Type componentType, int? parentComponentId, Microsoft.AspNetCore.Components.IComponentActivator componentActivator, Microsoft.AspNetCore.Components.IComponentRenderMode renderMode) => throw null;
                     public event System.UnhandledExceptionEventHandler UnhandledSynchronizationException;
                     protected abstract System.Threading.Tasks.Task UpdateDisplayAsync(in Microsoft.AspNetCore.Components.RenderTree.RenderBatch renderBatch);
                 }
@@ -624,10 +701,12 @@ namespace Microsoft
                     public string AttributeName { get => throw null; }
                     public object AttributeValue { get => throw null; }
                     public Microsoft.AspNetCore.Components.IComponent Component { get => throw null; }
+                    public Microsoft.AspNetCore.Components.RenderTree.ComponentFrameFlags ComponentFrameFlags { get => throw null; }
                     public int ComponentId { get => throw null; }
                     public object ComponentKey { get => throw null; }
                     public System.Action<object> ComponentReferenceCaptureAction { get => throw null; }
                     public int ComponentReferenceCaptureParentFrameIndex { get => throw null; }
+                    public Microsoft.AspNetCore.Components.IComponentRenderMode ComponentRenderMode { get => throw null; }
                     public int ComponentSubtreeLength { get => throw null; }
                     public System.Type ComponentType { get => throw null; }
                     public object ElementKey { get => throw null; }
@@ -637,6 +716,8 @@ namespace Microsoft
                     public int ElementSubtreeLength { get => throw null; }
                     public Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrameType FrameType { get => throw null; }
                     public string MarkupContent { get => throw null; }
+                    public string NamedEventAssignedName { get => throw null; }
+                    public string NamedEventType { get => throw null; }
                     public int RegionSubtreeLength { get => throw null; }
                     public int Sequence { get => throw null; }
                     public string TextContent { get => throw null; }
@@ -653,6 +734,8 @@ namespace Microsoft
                     ElementReferenceCapture = 6,
                     ComponentReferenceCapture = 7,
                     Markup = 8,
+                    ComponentRenderMode = 9,
+                    NamedEvent = 10,
                 }
             }
             [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = false)]
@@ -666,6 +749,7 @@ namespace Microsoft
                 public RouteData(System.Type pageType, System.Collections.Generic.IReadOnlyDictionary<string, object> routeValues) => throw null;
                 public System.Type PageType { get => throw null; }
                 public System.Collections.Generic.IReadOnlyDictionary<string, object> RouteValues { get => throw null; }
+                public string Template { get => throw null; set { } }
             }
             public class RouteView : Microsoft.AspNetCore.Components.IComponent
             {
@@ -685,6 +769,14 @@ namespace Microsoft
                 public interface INavigationInterception
                 {
                     System.Threading.Tasks.Task EnableNavigationInterceptionAsync();
+                }
+                public interface IRoutingStateProvider
+                {
+                    Microsoft.AspNetCore.Components.RouteData RouteData { get; }
+                }
+                public interface IScrollToLocationHash
+                {
+                    System.Threading.Tasks.Task RefreshScrollPositionForHash(string locationAbsolute);
                 }
                 public class LocationChangedEventArgs : System.EventArgs
                 {
@@ -723,11 +815,58 @@ namespace Microsoft
                     public System.Threading.Tasks.Task SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView parameters) => throw null;
                 }
             }
+            namespace Sections
+            {
+                public sealed class SectionContent : Microsoft.AspNetCore.Components.IComponent, System.IDisposable
+                {
+                    void Microsoft.AspNetCore.Components.IComponent.Attach(Microsoft.AspNetCore.Components.RenderHandle renderHandle) => throw null;
+                    public Microsoft.AspNetCore.Components.RenderFragment ChildContent { get => throw null; set { } }
+                    public SectionContent() => throw null;
+                    public void Dispose() => throw null;
+                    public object SectionId { get => throw null; set { } }
+                    public string SectionName { get => throw null; set { } }
+                    System.Threading.Tasks.Task Microsoft.AspNetCore.Components.IComponent.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView parameters) => throw null;
+                }
+                public sealed class SectionOutlet : Microsoft.AspNetCore.Components.IComponent, System.IDisposable
+                {
+                    void Microsoft.AspNetCore.Components.IComponent.Attach(Microsoft.AspNetCore.Components.RenderHandle renderHandle) => throw null;
+                    public SectionOutlet() => throw null;
+                    public void Dispose() => throw null;
+                    public object SectionId { get => throw null; set { } }
+                    public string SectionName { get => throw null; set { } }
+                    System.Threading.Tasks.Task Microsoft.AspNetCore.Components.IComponent.SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView parameters) => throw null;
+                }
+            }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false)]
+            public class StreamRenderingAttribute : System.Attribute
+            {
+                public StreamRenderingAttribute(bool enabled = default(bool)) => throw null;
+                public bool Enabled { get => throw null; }
+            }
             [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
-            public sealed class SupplyParameterFromQueryAttribute : System.Attribute
+            public sealed class SupplyParameterFromQueryAttribute : Microsoft.AspNetCore.Components.CascadingParameterAttributeBase
             {
                 public SupplyParameterFromQueryAttribute() => throw null;
                 public string Name { get => throw null; set { } }
+            }
+            public static partial class SupplyParameterFromQueryProviderServiceCollectionExtensions
+            {
+                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddSupplyValueFromQueryProvider(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
+            }
+        }
+    }
+    namespace Extensions
+    {
+        namespace DependencyInjection
+        {
+            public static partial class CascadingValueServiceCollectionExtensions
+            {
+                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddCascadingValue<TValue>(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection, System.Func<System.IServiceProvider, TValue> initialValueFactory) => throw null;
+                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddCascadingValue<TValue>(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection, string name, System.Func<System.IServiceProvider, TValue> initialValueFactory) => throw null;
+                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddCascadingValue<TValue>(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection, System.Func<System.IServiceProvider, Microsoft.AspNetCore.Components.CascadingValueSource<TValue>> sourceFactory) => throw null;
+                public static void TryAddCascadingValue<TValue>(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection, System.Func<System.IServiceProvider, TValue> valueFactory) => throw null;
+                public static void TryAddCascadingValue<TValue>(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection, string name, System.Func<System.IServiceProvider, TValue> valueFactory) => throw null;
+                public static void TryAddCascadingValue<TValue>(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection, System.Func<System.IServiceProvider, Microsoft.AspNetCore.Components.CascadingValueSource<TValue>> sourceFactory) => throw null;
             }
         }
     }

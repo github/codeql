@@ -44,15 +44,11 @@ runs:
         mkdir -p bazel-cache/{repository,disk}
         echo build --repository_cache=bazel-cache/repository --disk_cache=bazel-cache/disk > local.bazelrc
         echo test --test_output=errors >> local.bazelrc
-    # - name: Print unextracted entities
-    #   shell: bash
-    #   run: |
-    #     bazel run //swift/extractor/print_unextracted
     - uses: ./swift/actions/share-extractor-pack
     - name: Build Swift extractor
       shell: bash
       run: |
-        bazel run //swift:create-extractor-pack
+        bazel run //swift:install
     - name: Run codegen tests
       if : ${{ github.event_name == 'pull_request' }}
       shell: bash
@@ -62,7 +58,7 @@ runs:
       if: ${{ github.event_name == 'pull_request' }}
       shell: bash
       run: |
-        bazel test //swift/...
+        bazel test //swift/... --test_tag_filters=-override --test_output=errors
     - name: Evict bazel cache
       if: ${{ github.event_name != 'pull_request' }}
       shell: bash

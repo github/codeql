@@ -52,9 +52,14 @@ test_FileSystemAccess
 | tst.js:56:1:56:18 | shelljs.uniq(file) |
 | tst.js:57:1:57:26 | shelljs ...  file2) |
 | tst.js:58:1:58:32 | shelljs ...  file2) |
+| tst.js:60:1:60:17 | shelljs.cat(file) |
+| tst.js:60:1:60:41 | shelljs ... cement) |
+| tst.js:61:1:61:17 | shelljs.cat(file) |
 test_MissingFileSystemAccess
 test_SystemCommandExecution
 | tst.js:14:1:14:27 | shelljs ... ts, cb) |
+| tst.js:60:1:60:51 | shelljs ... ec(cmd) |
+| tst.js:61:1:61:27 | shelljs ... ec(cmd) |
 test_FileNameSource
 | tst.js:15:1:15:26 | shelljs ...  file2) |
 | tst.js:24:1:24:16 | shelljs.ls(file) |

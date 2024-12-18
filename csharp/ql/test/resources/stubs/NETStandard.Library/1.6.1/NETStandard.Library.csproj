@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Microsoft.NETCore.Platforms/1.1.0/Microsoft.NETCore.Platforms.csproj" />
+    <ProjectReference Include="../../Microsoft.Win32.Primitives/4.3.0/Microsoft.Win32.Primitives.csproj" />
+    <ProjectReference Include="../../System.AppContext/4.3.0/System.AppContext.csproj" />
+    <ProjectReference Include="../../System.Collections/4.3.0/System.Collections.csproj" />
+    <ProjectReference Include="../../System.Collections.Concurrent/4.3.0/System.Collections.Concurrent.csproj" />
+    <ProjectReference Include="../../System.Console/4.3.0/System.Console.csproj" />
+    <ProjectReference Include="../../System.Diagnostics.Debug/4.3.0/System.Diagnostics.Debug.csproj" />
+    <ProjectReference Include="../../System.Diagnostics.Tools/4.3.0/System.Diagnostics.Tools.csproj" />
+    <ProjectReference Include="../../System.Diagnostics.Tracing/4.3.0/System.Diagnostics.Tracing.csproj" />
+    <ProjectReference Include="../../System.Globalization/4.3.0/System.Globalization.csproj" />
+    <ProjectReference Include="../../System.Globalization.Calendars/4.3.0/System.Globalization.Calendars.csproj" />
+    <ProjectReference Include="../../System.IO/4.3.0/System.IO.csproj" />
+    <ProjectReference Include="../../System.IO.Compression/4.3.0/System.IO.Compression.csproj" />
+    <ProjectReference Include="../../System.IO.Compression.ZipFile/4.3.0/System.IO.Compression.ZipFile.csproj" />
+    <ProjectReference Include="../../System.IO.FileSystem/4.3.0/System.IO.FileSystem.csproj" />
+    <ProjectReference Include="../../System.IO.FileSystem.Primitives/4.3.0/System.IO.FileSystem.Primitives.csproj" />
+    <ProjectReference Include="../../System.Linq/4.3.0/System.Linq.csproj" />
+    <ProjectReference Include="../../System.Linq.Expressions/4.3.0/System.Linq.Expressions.csproj" />
+    <ProjectReference Include="../../System.Net.Http/4.3.0/System.Net.Http.csproj" />
+    <ProjectReference Include="../../System.Net.Primitives/4.3.0/System.Net.Primitives.csproj" />
+    <ProjectReference Include="../../System.Net.Sockets/4.3.0/System.Net.Sockets.csproj" />
+    <ProjectReference Include="../../System.ObjectModel/4.3.0/System.ObjectModel.csproj" />
+    <ProjectReference Include="../../System.Reflection/4.3.0/System.Reflection.csproj" />
+    <ProjectReference Include="../../System.Reflection.Extensions/4.3.0/System.Reflection.Extensions.csproj" />
+    <ProjectReference Include="../../System.Reflection.Primitives/4.3.0/System.Reflection.Primitives.csproj" />
+    <ProjectReference Include="../../System.Resources.ResourceManager/4.3.0/System.Resources.ResourceManager.csproj" />
+    <ProjectReference Include="../../System.Runtime/4.3.0/System.Runtime.csproj" />
+    <ProjectReference Include="../../System.Runtime.Extensions/4.3.0/System.Runtime.Extensions.csproj" />
+    <ProjectReference Include="../../System.Runtime.Handles/4.3.0/System.Runtime.Handles.csproj" />
+    <ProjectReference Include="../../System.Runtime.InteropServices/4.3.0/System.Runtime.InteropServices.csproj" />
+    <ProjectReference Include="../../System.Runtime.InteropServices.RuntimeInformation/4.3.0/System.Runtime.InteropServices.RuntimeInformation.csproj" />
+    <ProjectReference Include="../../System.Runtime.Numerics/4.3.0/System.Runtime.Numerics.csproj" />
+    <ProjectReference Include="../../System.Security.Cryptography.Algorithms/4.3.0/System.Security.Cryptography.Algorithms.csproj" />
+    <ProjectReference Include="../../System.Security.Cryptography.Encoding/4.3.0/System.Security.Cryptography.Encoding.csproj" />
+    <ProjectReference Include="../../System.Security.Cryptography.Primitives/4.3.0/System.Security.Cryptography.Primitives.csproj" />
+    <ProjectReference Include="../../System.Security.Cryptography.X509Certificates/4.3.0/System.Security.Cryptography.X509Certificates.csproj" />
+    <ProjectReference Include="../../System.Text.Encoding/4.3.0/System.Text.Encoding.csproj" />
+    <ProjectReference Include="../../System.Text.Encoding.Extensions/4.3.0/System.Text.Encoding.Extensions.csproj" />
+    <ProjectReference Include="../../System.Text.RegularExpressions/4.3.0/System.Text.RegularExpressions.csproj" />
+    <ProjectReference Include="../../System.Threading/4.3.0/System.Threading.csproj" />
+    <ProjectReference Include="../../System.Threading.Tasks/4.3.0/System.Threading.Tasks.csproj" />
+    <ProjectReference Include="../../System.Threading.Timer/4.3.0/System.Threading.Timer.csproj" />
+    <ProjectReference Include="../../System.Xml.ReaderWriter/4.3.0/System.Xml.ReaderWriter.csproj" />
+    <ProjectReference Include="../../System.Xml.XDocument/4.3.0/System.Xml.XDocument.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

@@ -115,7 +115,7 @@ Environments may be combined as follows:
 -  *Union*. This takes the union of the entry sets of the two environments.
 -  *Overriding union*. This takes the union of two environments, but if there are entries for a key in the first map, then no additional entries for that key are included from the second map.
 
-A *definite* environment has at most one entry for each key. Resolution is unique in a definite environment.
+A *definite* environment has only values that are *equal modulo weak aliasing* for each key.
 
 Global environments
 ~~~~~~~~~~~~~~~~~~~
@@ -334,7 +334,7 @@ For a *completely uninstantiated* parameter, the *bottom-up instantiation-resolu
 
 An entity is called *fully instantiated* if none of the *bottom-up instantiation-resolutions* of the parameters in the *relevant set of parameters* of the entity's *underlying completely uninstantiated* entity are parameters.
 
-Two *instantiated modules* or two *instantiation-nested* entities are considered *equivalent* if they have the same *underlying completely uninstantiated* entity and each parameter in its *relevant set of parameters* has the same *bottom-up instantiation-resolution* relative to either *instantiated module*.
+Two *instantiated modules* or two *instantiation-nested* entities are considered *equivalent* if they have the same *underlying completely uninstantiated* entity and each parameter in its *relevant set of parameters* has *bottom-up instantiation-resolution*s relative both *instantiated module*s that are *equivalent modulo weak aliases*.
 
 Module instantiation is applicative, meaning that *equivalent* *instantiated modules* and *equivalent* *instantiation-nested* entities are indistinguishable.
 
@@ -359,7 +359,7 @@ Kinds of types
 
 Types in QL are either *primitive* types, *database* types, *class* types, *character* types, *class domain* types, type *parameters*, or *instantiation-nested* types.
 
-The primitive types are ``boolean``, ``date``, ``float``, ``int``, and ``string``.
+The primitive types are ``boolean``, ``date``, ``float``, ``int``, ``string``, and ``QlBuiltins::BigInt``.
 
 Database types are supplied as part of the database. Each database type has a *name*, which is an identifier starting with an at sign (``@``, U+0040) followed by lower-case letter. Database types have some number of *base types*, which are other database types. In a valid database, the base types relation is non-cyclic.
 
@@ -433,7 +433,7 @@ Values are the fundamental data that QL programs compute over. This section spec
 Kinds of values
 ~~~~~~~~~~~~~~~
 
-There are six kinds of values in QL: one kind for each of the five primitive types, and *entities*. Each value has a type.
+There are seven kinds of values in QL: one kind for each of the six primitive types, and *entities*. Each value has a type.
 
 A boolean value is of type ``boolean``, and may have one of two distinct values: ``true`` or ``false``.
 
@@ -444,6 +444,8 @@ A float value is of type ``float``. Each float value is a binary 64-bit floating
 An integer value is of type ``int``. Each value is a 32-bit two's complement integer.
 
 A string is a finite sequence of 16-bit characters. The characters are interpreted as Unicode code points.
+
+A :ref:`big integer <bigint>` value is of type ``QlBuiltins::BigInt``. Each value is a signed arbitrary-range integer.
 
 The database includes a number of opaque entity values. Each such value has a type that is one of the database types, and an identifying integer. An entity value is written as the name of its database type followed by its identifying integer in parentheses. For example, ``@tree(12)``, ``@person(16)``, and ``@location(38132)`` are entity values. The identifying integers are left opaque to programmers in this specification, so an implementation of QL is free to use some other set of countable labels to identify its entities.
 
@@ -458,7 +460,7 @@ For dates, the ordering is chronological.
 
 For floats, the ordering is as specified in IEEE 754 when one exists, except that NaN is considered equal to itself and is ordered after all other floats, and negative zero is considered to be strictly less than positive zero.
 
-For integers, the ordering is as for two's complement integers.
+For integers (and :ref:`big integers <bigint>`), the ordering is numerical.
 
 For strings, the ordering is lexicographic.
 
@@ -1763,7 +1765,7 @@ The grammar given in this section is disambiguated first by precedence, and seco
 Aliases
 -------
 
-Aliases define new names for existing QL entities.
+Aliases define new names for existing QL bindings.
 
 ::
 
@@ -1772,7 +1774,19 @@ Aliases define new names for existing QL entities.
          |   qldoc? annotations "module" modulename "=" moduleExpr ";"
 
 
-An alias introduces a binding from the new name to the entity referred to by the right-hand side in the current module's declared predicate, type, or module environment respectively.
+An alias introduces a binding from the new name to the binding referred to by the right-hand side in the current module's visible predicate, type, or module environment respectively.
+
+An alias is called a *strong alias* if and only if it has the ``final`` annotation. Otherwise, it is called a *weak alias*.
+
+Two bindings `A`, `B` are called *equal modulo weak aliasing* if and only if one of the following conditions are satisfied:
+
+- `A` and `B` are the same binding or
+
+- `A`` is introduced by a *weak alias* for `C`, where `B` and `C` are *equal modulo weak aliasing* (or vice versa) or
+
+- `A` and `B` are introduced by the same strong alias and they are aliases for bindings that are *equal modulo weak aliasing*.
+
+Note that the third condition is only relevant in :ref:`Parameterized modules`, where the binding introduced by the alias can depend on instantiation parameters.
 
 Built-ins
 ---------

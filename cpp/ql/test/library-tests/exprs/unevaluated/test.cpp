@@ -62,3 +62,9 @@ Virtual getAVirtual();
 void test9() {
 	typeid(getAVirtual()); // unevaluated
 }
+
+void constExprIf() {
+  if constexpr(sizeof(int) == 4) { } // unevaluated
+}
+
+// semmle-extractor-options: -std=c++20

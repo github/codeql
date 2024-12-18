@@ -1,0 +1,5 @@
+| gen_closure_expr.rs:5:5:5:13 | \|...\| ... | hasParamList: | yes | getNumberOfAttrs: | 0 | hasBody: | yes | hasClosureBinder: | no | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isStatic: | no | hasRetType: | no |
+| gen_closure_expr.rs:6:5:6:34 | \|...\| ... | hasParamList: | yes | getNumberOfAttrs: | 0 | hasBody: | yes | hasClosureBinder: | no | isAsync: | no | isConst: | no | isGen: | no | isMove: | yes | isStatic: | no | hasRetType: | yes |
+| gen_closure_expr.rs:7:5:7:27 | \|...\| ... | hasParamList: | yes | getNumberOfAttrs: | 0 | hasBody: | yes | hasClosureBinder: | no | isAsync: | yes | isConst: | no | isGen: | no | isMove: | no | isStatic: | no | hasRetType: | no |
+| gen_closure_expr.rs:8:6:9:15 | \|...\| ... | hasParamList: | yes | getNumberOfAttrs: | 1 | hasBody: | yes | hasClosureBinder: | no | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isStatic: | no | hasRetType: | no |
+| gen_closure_expr.rs:10:6:11:23 | \|...\| ... | hasParamList: | yes | getNumberOfAttrs: | 1 | hasBody: | yes | hasClosureBinder: | no | isAsync: | no | isConst: | no | isGen: | no | isMove: | no | isStatic: | yes | hasRetType: | no |

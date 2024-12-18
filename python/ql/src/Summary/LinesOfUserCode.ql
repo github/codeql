@@ -8,6 +8,7 @@
  * @kind metric
  * @tags summary
  *       lines-of-code
+ *       debug
  * @id py/summary/lines-of-user-code
  */
 

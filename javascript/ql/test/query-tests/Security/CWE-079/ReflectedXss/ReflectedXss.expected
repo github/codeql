@@ -84,6 +84,26 @@ nodes
 | ReflectedXss.js:110:16:110:30 | request.query.p |
 | ReflectedXss.js:110:16:110:30 | request.query.p |
 | ReflectedXss.js:110:16:110:30 | request.query.p |
+| ReflectedXss.js:114:11:114:41 | queryKeys |
+| ReflectedXss.js:114:13:114:27 | keys: queryKeys |
+| ReflectedXss.js:114:13:114:27 | keys: queryKeys |
+| ReflectedXss.js:116:11:116:45 | keys |
+| ReflectedXss.js:116:18:116:26 | queryKeys |
+| ReflectedXss.js:116:18:116:45 | queryKe ... s?.keys |
+| ReflectedXss.js:116:31:116:45 | paramKeys?.keys |
+| ReflectedXss.js:116:31:116:45 | paramKeys?.keys |
+| ReflectedXss.js:118:11:118:61 | keyArray |
+| ReflectedXss.js:118:22:118:61 | typeof  ...  : keys |
+| ReflectedXss.js:118:49:118:54 | [keys] |
+| ReflectedXss.js:118:50:118:53 | keys |
+| ReflectedXss.js:118:58:118:61 | keys |
+| ReflectedXss.js:119:11:119:72 | invalidKeys |
+| ReflectedXss.js:119:25:119:32 | keyArray |
+| ReflectedXss.js:119:25:119:72 | keyArra ... s(key)) |
+| ReflectedXss.js:122:30:122:73 | `${inva ... telist` |
+| ReflectedXss.js:122:30:122:73 | `${inva ... telist` |
+| ReflectedXss.js:122:33:122:43 | invalidKeys |
+| ReflectedXss.js:122:33:122:54 | invalid ... n(', ') |
 | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id |
@@ -307,6 +327,26 @@ edges
 | ReflectedXss.js:103:76:103:83 | req.body | ReflectedXss.js:103:12:103:84 | markdow ... q.body) |
 | ReflectedXss.js:103:76:103:83 | req.body | ReflectedXss.js:103:12:103:84 | markdow ... q.body) |
 | ReflectedXss.js:110:16:110:30 | request.query.p | ReflectedXss.js:110:16:110:30 | request.query.p |
+| ReflectedXss.js:114:11:114:41 | queryKeys | ReflectedXss.js:116:18:116:26 | queryKeys |
+| ReflectedXss.js:114:13:114:27 | keys: queryKeys | ReflectedXss.js:114:11:114:41 | queryKeys |
+| ReflectedXss.js:114:13:114:27 | keys: queryKeys | ReflectedXss.js:114:11:114:41 | queryKeys |
+| ReflectedXss.js:116:11:116:45 | keys | ReflectedXss.js:118:50:118:53 | keys |
+| ReflectedXss.js:116:11:116:45 | keys | ReflectedXss.js:118:58:118:61 | keys |
+| ReflectedXss.js:116:18:116:26 | queryKeys | ReflectedXss.js:116:18:116:45 | queryKe ... s?.keys |
+| ReflectedXss.js:116:18:116:45 | queryKe ... s?.keys | ReflectedXss.js:116:11:116:45 | keys |
+| ReflectedXss.js:116:31:116:45 | paramKeys?.keys | ReflectedXss.js:116:18:116:45 | queryKe ... s?.keys |
+| ReflectedXss.js:116:31:116:45 | paramKeys?.keys | ReflectedXss.js:116:18:116:45 | queryKe ... s?.keys |
+| ReflectedXss.js:118:11:118:61 | keyArray | ReflectedXss.js:119:25:119:32 | keyArray |
+| ReflectedXss.js:118:22:118:61 | typeof  ...  : keys | ReflectedXss.js:118:11:118:61 | keyArray |
+| ReflectedXss.js:118:49:118:54 | [keys] | ReflectedXss.js:118:22:118:61 | typeof  ...  : keys |
+| ReflectedXss.js:118:50:118:53 | keys | ReflectedXss.js:118:49:118:54 | [keys] |
+| ReflectedXss.js:118:58:118:61 | keys | ReflectedXss.js:118:22:118:61 | typeof  ...  : keys |
+| ReflectedXss.js:119:11:119:72 | invalidKeys | ReflectedXss.js:122:33:122:43 | invalidKeys |
+| ReflectedXss.js:119:25:119:32 | keyArray | ReflectedXss.js:119:25:119:72 | keyArra ... s(key)) |
+| ReflectedXss.js:119:25:119:72 | keyArra ... s(key)) | ReflectedXss.js:119:11:119:72 | invalidKeys |
+| ReflectedXss.js:122:33:122:43 | invalidKeys | ReflectedXss.js:122:33:122:54 | invalid ... n(', ') |
+| ReflectedXss.js:122:33:122:54 | invalid ... n(', ') | ReflectedXss.js:122:30:122:73 | `${inva ... telist` |
+| ReflectedXss.js:122:33:122:54 | invalid ... n(', ') | ReflectedXss.js:122:30:122:73 | `${inva ... telist` |
 | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id |
@@ -461,6 +501,8 @@ edges
 | ReflectedXss.js:100:12:100:39 | markdow ... q.body) | ReflectedXss.js:100:31:100:38 | req.body | ReflectedXss.js:100:12:100:39 | markdow ... q.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:100:31:100:38 | req.body | user-provided value |
 | ReflectedXss.js:103:12:103:84 | markdow ... q.body) | ReflectedXss.js:103:76:103:83 | req.body | ReflectedXss.js:103:12:103:84 | markdow ... q.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:103:76:103:83 | req.body | user-provided value |
 | ReflectedXss.js:110:16:110:30 | request.query.p | ReflectedXss.js:110:16:110:30 | request.query.p | ReflectedXss.js:110:16:110:30 | request.query.p | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:110:16:110:30 | request.query.p | user-provided value |
+| ReflectedXss.js:122:30:122:73 | `${inva ... telist` | ReflectedXss.js:114:13:114:27 | keys: queryKeys | ReflectedXss.js:122:30:122:73 | `${inva ... telist` | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:114:13:114:27 | keys: queryKeys | user-provided value |
+| ReflectedXss.js:122:30:122:73 | `${inva ... telist` | ReflectedXss.js:116:31:116:45 | paramKeys?.keys | ReflectedXss.js:122:30:122:73 | `${inva ... telist` | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:116:31:116:45 | paramKeys?.keys | user-provided value |
 | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | user-provided value |

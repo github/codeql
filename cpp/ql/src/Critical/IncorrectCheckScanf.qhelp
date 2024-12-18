@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+This query finds calls of <tt>scanf</tt>-like functions with
+improper return-value checking. Specifically, it flags uses of <code>scanf</code> where the return value is only checked against zero.
+</p>
+<p>
+Functions in the <tt>scanf</tt> family return either <tt>EOF</tt> (a negative value)
+in case of IO failure, or the number of items successfully read from the
+input. Consequently, a simple check that the return value is nonzero
+is not enough.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Ensure that all uses of <tt>scanf</tt> check the return value against the expected number of arguments
+rather than just against zero.
+</p>
+</recommendation>
+
+<example>
+<p>The following examples show different ways of guarding a <tt>scanf</tt> output. In the BAD examples, the results are only checked against zero. In the GOOD examples, the results are checked against the expected number of matches instead.</p>
+<sample src="IncorrectCheckScanf.cpp" />
+</example>
+
+<references>
+<li>SEI CERT C++ Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/ERR62-CPP.+Detect+errors+when+converting+a+string+to+a+number">ERR62-CPP. Detect errors when converting a string to a number</a>.</li>
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/ERR33-C.+Detect+and+handle+standard+library+errors">ERR33-C. Detect and handle standard library errors</a>.</li>
+<li>cppreference.com: <a href="https://en.cppreference.com/w/c/io/fscanf">scanf, fscanf, sscanf, scanf_s, fscanf_s, sscanf_s</a>.</li>
+</references>
+</qhelp>

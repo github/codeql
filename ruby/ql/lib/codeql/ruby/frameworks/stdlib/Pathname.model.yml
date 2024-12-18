@@ -1,0 +1,34 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      - ['Pathname!', 'Method[new]', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[basename]', 'Argument[self]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[cleanpath]', 'Argument[self]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[dirname]', 'Argument[self]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[each_filename]', 'Argument[self]', 'Argument[block].Parameter[0]', 'taint']
+      - ['Pathname', 'Method[expand_path]', 'Argument[self]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[join]', 'Argument[self,any]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[parent]', 'Argument[self]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[realpath]', 'Argument[self]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[relative_path_from]', 'Argument[self]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[sub]', 'Argument[self]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[sub_ext]', 'Argument[self]', 'ReturnValue', 'taint']
+      - ['Pathname', 'Method[to_path]', 'Argument[self]', 'ReturnValue', 'taint']
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: typeModel
+    data:
+      - ['Pathname', 'Pathname', 'Method[+].ReturnValue']
+      - ['Pathname', 'Pathname', 'Method[/].ReturnValue']
+      - ['Pathname', 'Pathname', 'Method[basename].ReturnValue']
+      - ['Pathname', 'Pathname', 'Method[cleanpath].ReturnValue']
+      - ['Pathname', 'Pathname', 'Method[expand_path].ReturnValue']
+      - ['Pathname', 'Pathname', 'Method[join].ReturnValue']
+      - ['Pathname', 'Pathname', 'Method[realpath].ReturnValue']
+      - ['Pathname', 'Pathname', 'Method[relative_path_from].ReturnValue']
+      - ['Pathname', 'Pathname', 'Method[sub].ReturnValue']
+      - ['Pathname', 'Pathname', 'Method[sub_ext].ReturnValue']
+      - ['Pathname', 'Pathname', 'Method[to_path].ReturnValue']

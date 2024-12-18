@@ -1,0 +1,26 @@
+load("@codeql_kotlin_defaults//:defaults.bzl", "kotlin_extractor_defaults")
+load("@rules_kotlin//kotlin:core.bzl", "kt_kotlinc_options")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+load("//java/kotlin-extractor:versions.bzl", "get_language_version")
+
+_version = kotlin_extractor_defaults.extractor_version
+
+kt_kotlinc_options(
+    name = "kotlinc-options",
+    include_stdlibs = "none",
+    jvm_target = "1.8",
+    language_version = get_language_version(_version),
+)
+
+kt_jvm_library(
+    name = "plugin",
+    srcs = ["Plugin.kt"],
+    kotlinc_opts = ":kotlinc-options",
+    module_name = "test",
+    resource_strip_prefix = "%s/resources" % package_name(),
+    resources = glob(["resources/**"]),
+    deps = [
+        "@kotlin-compiler-%s" % _version,
+        "@kotlin-stdlib-%s" % _version,
+    ],
+)

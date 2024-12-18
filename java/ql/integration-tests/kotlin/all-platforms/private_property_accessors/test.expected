@@ -1,0 +1,7 @@
+| hasprops.kt:3:3:3:25 | getAccessorsPublic |
+| hasprops.kt:3:3:3:25 | setAccessorsPublic |
+| hasprops.kt:5:3:6:15 | getSetterPrivate |
+| hasprops.kt:6:5:6:15 | setSetterPrivate$private |
+| usesprops.kt:1:1:9:1 | user |
+| usesprops.kt:3:3:3:58 | useGetters |
+| usesprops.kt:5:3:7:3 | useSetter |

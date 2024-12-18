@@ -47,9 +47,6 @@ class LeftShiftExpr extends BinaryBitwiseOperation, @lshift_expr {
   override string getAPrimaryQlClass() { result = "LeftShiftExpr" }
 }
 
-/** DEPRECATED: Alias for LeftShiftExpr. */
-deprecated class LShiftExpr = LeftShiftExpr;
-
 /**
  * A right-shift operation, for example `x >> y`.
  */
@@ -58,9 +55,6 @@ class RightShiftExpr extends BinaryBitwiseOperation, @rshift_expr {
 
   override string getAPrimaryQlClass() { result = "RightShiftExpr" }
 }
-
-/** DEPRECATED: Alias for RightShiftExpr. */
-deprecated class RShiftExpr = RightShiftExpr;
 
 /**
  * An unsigned right-shift operation, for example `x >>> y`.

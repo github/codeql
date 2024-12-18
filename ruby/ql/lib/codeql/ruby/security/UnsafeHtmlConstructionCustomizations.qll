@@ -7,6 +7,8 @@
 private import ruby
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.core.Gem::Gem as Gem
+private import codeql.ruby.security.XSS::ReflectedXss as ReflectedXss
+private import codeql.ruby.typetracking.TypeTracking
 
 /**
  * Module containing sources, sinks, and sanitizers for HTML constructed from library input.
@@ -33,25 +35,25 @@ module UnsafeHtmlConstruction {
     abstract string getSinkType();
   }
 
-  private import codeql.ruby.security.XSS::ReflectedXss as ReflectedXss
+  /** A sanitizer for HTML constructed from library input vulnerabilities. */
+  abstract class Sanitizer extends DataFlow::Node { }
+
+  /** A sanitizer from the reflected-xss query, which is also a sanitizer for unsafe HTML construction. */
+  private class ReflectedXssSanitizers extends Sanitizer instanceof ReflectedXss::Sanitizer { }
 
   /** Gets a node that eventually ends up in the XSS `sink`. */
   private DataFlow::Node getANodeThatEndsInXssSink(ReflectedXss::Sink sink) {
-    result = getANodeThatEndsInXssSink(TypeTracker::TypeBackTracker::end(), sink)
+    result = getANodeThatEndsInXssSink(TypeBackTracker::end(), sink)
   }
-
-  private import codeql.ruby.typetracking.TypeTracker as TypeTracker
 
   /** Gets a node that is eventually ends up in the XSS `sink`, type-tracked with `t`. */
   private DataFlow::LocalSourceNode getANodeThatEndsInXssSink(
-    TypeTracker::TypeBackTracker t, ReflectedXss::Sink sink
+    TypeBackTracker t, ReflectedXss::Sink sink
   ) {
     t.start() and
     result = sink.getALocalSource()
     or
-    exists(TypeTracker::TypeBackTracker t2 |
-      result = getANodeThatEndsInXssSink(t2, sink).backtrack(t2, t)
-    )
+    exists(TypeBackTracker t2 | result = getANodeThatEndsInXssSink(t2, sink).backtrack(t2, t))
   }
 
   /**

@@ -40,7 +40,7 @@ namespace Semmle.Util
 
     public static class OptionsExtensions
     {
-        private static readonly string[] ExtractorOptions = new[] { "trap_compression", "cil" };
+        private static readonly string[] ExtractorOptions = ["trap_compression"];
         private static List<string> GetExtractorOptions()
         {
             var extractorOptions = new List<string>();

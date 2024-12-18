@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["jakarta.servlet.http", "HttpServletRequest", True, "getServletPath", "", "", "ReturnValue", "remote", "manual"]

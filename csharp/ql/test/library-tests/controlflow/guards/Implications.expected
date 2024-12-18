@@ -288,31 +288,31 @@
 | Guards.cs:72:31:72:31 | access to parameter s | non-empty | Guards.cs:71:17:71:20 | null | non-empty |
 | Guards.cs:72:31:72:31 | access to parameter s | non-null | Guards.cs:71:17:71:20 | null | non-null |
 | Guards.cs:72:31:72:31 | access to parameter s | null | Guards.cs:71:17:71:20 | null | null |
-| Guards.cs:78:13:78:26 | ... == ... | true | Guards.cs:78:15:78:21 | access to property Length | non-null |
-| Guards.cs:78:15:78:21 | access to property Length | non-null | Guards.cs:78:13:78:13 | access to parameter s | non-null |
-| Guards.cs:78:15:78:21 | access to property Length | null | Guards.cs:78:13:78:13 | access to parameter s | null |
-| Guards.cs:80:13:80:25 | ... > ... | true | Guards.cs:80:15:80:21 | access to property Length | non-null |
-| Guards.cs:80:15:80:21 | access to property Length | non-null | Guards.cs:80:13:80:13 | access to parameter s | non-null |
-| Guards.cs:80:15:80:21 | access to property Length | null | Guards.cs:80:13:80:13 | access to parameter s | null |
-| Guards.cs:82:13:82:26 | ... >= ... | true | Guards.cs:82:15:82:21 | access to property Length | non-null |
-| Guards.cs:82:15:82:21 | access to property Length | non-null | Guards.cs:82:13:82:13 | access to parameter s | non-null |
-| Guards.cs:82:15:82:21 | access to property Length | null | Guards.cs:82:13:82:13 | access to parameter s | null |
-| Guards.cs:84:13:84:26 | ... < ... | true | Guards.cs:84:15:84:21 | access to property Length | non-null |
-| Guards.cs:84:15:84:21 | access to property Length | non-null | Guards.cs:84:13:84:13 | access to parameter s | non-null |
-| Guards.cs:84:15:84:21 | access to property Length | null | Guards.cs:84:13:84:13 | access to parameter s | null |
-| Guards.cs:86:13:86:27 | ... <= ... | true | Guards.cs:86:15:86:21 | access to property Length | non-null |
-| Guards.cs:86:15:86:21 | access to property Length | non-null | Guards.cs:86:13:86:13 | access to parameter s | non-null |
-| Guards.cs:86:15:86:21 | access to property Length | null | Guards.cs:86:13:86:13 | access to parameter s | null |
-| Guards.cs:88:13:88:29 | ... != ... | false | Guards.cs:88:15:88:21 | access to property Length | null |
-| Guards.cs:88:13:88:29 | ... != ... | true | Guards.cs:88:15:88:21 | access to property Length | non-null |
-| Guards.cs:88:15:88:21 | access to property Length | non-null | Guards.cs:88:13:88:13 | access to parameter s | non-null |
-| Guards.cs:88:15:88:21 | access to property Length | null | Guards.cs:88:13:88:13 | access to parameter s | null |
-| Guards.cs:92:13:92:25 | ... - ... | non-null | Guards.cs:92:15:92:21 | access to property Length | non-null |
+| Guards.cs:78:13:78:21 | access to property Length | non-null | Guards.cs:78:13:78:13 | access to parameter s | non-null |
+| Guards.cs:78:13:78:21 | access to property Length | null | Guards.cs:78:13:78:13 | access to parameter s | null |
+| Guards.cs:78:13:78:26 | ... == ... | true | Guards.cs:78:13:78:21 | access to property Length | non-null |
+| Guards.cs:80:13:80:21 | access to property Length | non-null | Guards.cs:80:13:80:13 | access to parameter s | non-null |
+| Guards.cs:80:13:80:21 | access to property Length | null | Guards.cs:80:13:80:13 | access to parameter s | null |
+| Guards.cs:80:13:80:25 | ... > ... | true | Guards.cs:80:13:80:21 | access to property Length | non-null |
+| Guards.cs:82:13:82:21 | access to property Length | non-null | Guards.cs:82:13:82:13 | access to parameter s | non-null |
+| Guards.cs:82:13:82:21 | access to property Length | null | Guards.cs:82:13:82:13 | access to parameter s | null |
+| Guards.cs:82:13:82:26 | ... >= ... | true | Guards.cs:82:13:82:21 | access to property Length | non-null |
+| Guards.cs:84:13:84:21 | access to property Length | non-null | Guards.cs:84:13:84:13 | access to parameter s | non-null |
+| Guards.cs:84:13:84:21 | access to property Length | null | Guards.cs:84:13:84:13 | access to parameter s | null |
+| Guards.cs:84:13:84:26 | ... < ... | true | Guards.cs:84:13:84:21 | access to property Length | non-null |
+| Guards.cs:86:13:86:21 | access to property Length | non-null | Guards.cs:86:13:86:13 | access to parameter s | non-null |
+| Guards.cs:86:13:86:21 | access to property Length | null | Guards.cs:86:13:86:13 | access to parameter s | null |
+| Guards.cs:86:13:86:27 | ... <= ... | true | Guards.cs:86:13:86:21 | access to property Length | non-null |
+| Guards.cs:88:13:88:21 | access to property Length | non-null | Guards.cs:88:13:88:13 | access to parameter s | non-null |
+| Guards.cs:88:13:88:21 | access to property Length | null | Guards.cs:88:13:88:13 | access to parameter s | null |
+| Guards.cs:88:13:88:29 | ... != ... | false | Guards.cs:88:13:88:21 | access to property Length | null |
+| Guards.cs:88:13:88:29 | ... != ... | true | Guards.cs:88:13:88:21 | access to property Length | non-null |
+| Guards.cs:92:13:92:21 | access to property Length | non-null | Guards.cs:92:13:92:13 | access to parameter s | non-null |
+| Guards.cs:92:13:92:21 | access to property Length | null | Guards.cs:92:13:92:13 | access to parameter s | null |
+| Guards.cs:92:13:92:25 | ... - ... | non-null | Guards.cs:92:13:92:21 | access to property Length | non-null |
 | Guards.cs:92:13:92:25 | ... - ... | non-null | Guards.cs:92:25:92:25 | (...) ... | non-null |
-| Guards.cs:92:13:92:25 | ... - ... | null | Guards.cs:92:15:92:21 | access to property Length | null |
+| Guards.cs:92:13:92:25 | ... - ... | null | Guards.cs:92:13:92:21 | access to property Length | null |
 | Guards.cs:92:13:92:30 | ... != ... | false | Guards.cs:92:13:92:25 | ... - ... | non-null |
-| Guards.cs:92:15:92:21 | access to property Length | non-null | Guards.cs:92:13:92:13 | access to parameter s | non-null |
-| Guards.cs:92:15:92:21 | access to property Length | null | Guards.cs:92:13:92:13 | access to parameter s | null |
 | Guards.cs:96:13:96:19 | ... == ... | true | Guards.cs:96:13:96:13 | access to parameter s | non-null |
 | Guards.cs:104:13:104:45 | ... == ... | false | Guards.cs:104:13:104:37 | access to field Field | non-null |
 | Guards.cs:104:13:104:45 | ... == ... | true | Guards.cs:104:13:104:37 | access to field Field | null |
@@ -328,10 +328,10 @@
 | Guards.cs:118:27:118:36 | access to property Property | null | Guards.cs:117:22:117:25 | null | null |
 | Guards.cs:119:27:119:36 | access to property Property | non-null | Guards.cs:117:22:117:25 | null | non-null |
 | Guards.cs:119:27:119:36 | access to property Property | null | Guards.cs:117:22:117:25 | null | null |
-| Guards.cs:125:21:125:31 | call to method Equals | non-null | Guards.cs:125:18:125:19 | access to parameter s1 | non-null |
-| Guards.cs:125:21:125:31 | call to method Equals | null | Guards.cs:125:18:125:19 | access to parameter s1 | null |
-| Guards.cs:125:21:125:31 | call to method Equals | true | Guards.cs:125:18:125:19 | access to parameter s1 | non-null |
-| Guards.cs:125:21:125:31 | call to method Equals | true | Guards.cs:125:29:125:30 | access to parameter s1 | non-null |
+| Guards.cs:125:18:125:31 | call to method Equals | non-null | Guards.cs:125:18:125:19 | access to parameter s1 | non-null |
+| Guards.cs:125:18:125:31 | call to method Equals | null | Guards.cs:125:18:125:19 | access to parameter s1 | null |
+| Guards.cs:125:18:125:31 | call to method Equals | true | Guards.cs:125:18:125:19 | access to parameter s1 | non-null |
+| Guards.cs:125:18:125:31 | call to method Equals | true | Guards.cs:125:29:125:30 | access to parameter s1 | non-null |
 | Guards.cs:130:13:130:21 | ... is ... | false | Guards.cs:130:13:130:13 | access to parameter s | non-null |
 | Guards.cs:130:13:130:21 | ... is ... | true | Guards.cs:130:13:130:13 | access to parameter s | null |
 | Guards.cs:137:13:137:25 | ... is ... | false | Guards.cs:137:13:137:13 | access to parameter s | null |
@@ -396,10 +396,10 @@
 | Guards.cs:258:17:258:17 | access to local variable e | match access to constant B | Guards.cs:256:13:256:13 | access to parameter b | true |
 | Guards.cs:258:17:258:17 | access to local variable e | match access to constant B | Guards.cs:258:17:258:17 | access to local variable e | 1 |
 | Guards.cs:258:17:258:17 | access to local variable e | non-match access to constant B | Guards.cs:256:13:256:13 | access to parameter b | false |
-| Guards.cs:268:13:268:41 | call to operator == | true | Guards.cs:268:16:268:25 | call to method GetType | non-null |
-| Guards.cs:268:16:268:25 | call to method GetType | non-null | Guards.cs:268:13:268:14 | access to parameter o1 | non-null |
-| Guards.cs:270:16:270:25 | call to method GetType | non-null | Guards.cs:270:13:270:14 | access to parameter o1 | non-null |
-| Guards.cs:270:33:270:42 | call to method GetType | non-null | Guards.cs:270:30:270:31 | access to parameter o2 | non-null |
+| Guards.cs:268:13:268:25 | call to method GetType | non-null | Guards.cs:268:13:268:14 | access to parameter o1 | non-null |
+| Guards.cs:268:13:268:41 | call to operator == | true | Guards.cs:268:13:268:25 | call to method GetType | non-null |
+| Guards.cs:270:13:270:25 | call to method GetType | non-null | Guards.cs:270:13:270:14 | access to parameter o1 | non-null |
+| Guards.cs:270:30:270:42 | call to method GetType | non-null | Guards.cs:270:30:270:31 | access to parameter o2 | non-null |
 | Guards.cs:276:16:276:16 | access to parameter o | match "" | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:276:16:276:16 | access to parameter o | match Action<String> a | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:276:16:276:16 | access to parameter o | match access to type Action<Object> | Guards.cs:276:16:276:16 | access to parameter o | non-null |

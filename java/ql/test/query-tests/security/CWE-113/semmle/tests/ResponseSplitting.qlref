@@ -1,1 +1,2 @@
-Security/CWE/CWE-113/ResponseSplitting.ql
+query: Security/CWE/CWE-113/ResponseSplitting.ql
+postprocess: utils/test/PrettyPrintModels.ql

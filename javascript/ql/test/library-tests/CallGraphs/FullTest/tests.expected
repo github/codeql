@@ -135,6 +135,7 @@ test_getAFunctionValue
 | tst.js:3:1:3:1 | h | tst.js:3:5:3:17 | function() {} |
 | tst.js:3:1:3:17 | h = function() {} | tst.js:3:5:3:17 | function() {} |
 | tst.js:3:5:3:17 | function() {} | tst.js:3:5:3:17 | function() {} |
+| tst.js:4:1:4:1 | k | tst.js:2:9:2:21 | function() {} |
 | tst.js:4:1:4:5 | k = g | tst.js:2:9:2:21 | function() {} |
 | tst.js:4:5:4:5 | g | tst.js:2:9:2:21 | function() {} |
 | tst.js:6:1:6:1 | f | tst.js:1:1:1:15 | function f() {} |
@@ -142,13 +143,23 @@ test_getAFunctionValue
 | tst.js:8:1:8:1 | h | tst.js:3:5:3:17 | function() {} |
 | tst.js:9:1:9:1 | k | tst.js:2:9:2:21 | function() {} |
 | tst.js:11:1:20:1 | functio ... \\tf();\\n} | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
+| tst.js:11:12:11:12 | m | tst.js:2:9:2:21 | function() {} |
+| tst.js:11:12:11:12 | m | tst.js:2:9:2:21 | function() {} |
+| tst.js:12:6:12:6 | m | tst.js:2:9:2:21 | function() {} |
+| tst.js:12:6:12:27 | n | tst.js:2:9:2:21 | function() {} |
 | tst.js:12:6:12:27 | n | tst.js:12:15:12:27 | function() {} |
+| tst.js:12:10:12:10 | m | tst.js:2:9:2:21 | function() {} |
+| tst.js:12:10:12:10 | m | tst.js:2:9:2:21 | function() {} |
+| tst.js:12:10:12:10 | m | tst.js:2:9:2:21 | function() {} |
+| tst.js:12:10:12:27 | m \|\| function() {} | tst.js:2:9:2:21 | function() {} |
 | tst.js:12:10:12:27 | m \|\| function() {} | tst.js:12:15:12:27 | function() {} |
 | tst.js:12:15:12:27 | function() {} | tst.js:12:15:12:27 | function() {} |
 | tst.js:13:2:13:16 | function p() {} | tst.js:13:2:13:16 | function p() {} |
 | tst.js:13:11:13:11 | p | tst.js:13:2:13:16 | function p() {} |
+| tst.js:14:2:14:2 | m | tst.js:2:9:2:21 | function() {} |
 | tst.js:15:2:15:2 | l | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
 | tst.js:16:2:16:17 | arguments.callee | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
+| tst.js:17:2:17:2 | n | tst.js:2:9:2:21 | function() {} |
 | tst.js:17:2:17:2 | n | tst.js:12:15:12:27 | function() {} |
 | tst.js:18:2:18:2 | p | tst.js:13:2:13:16 | function p() {} |
 | tst.js:19:2:19:2 | f | tst.js:1:1:1:15 | function f() {} |
@@ -463,8 +474,10 @@ test_getACallee
 | tst.js:7:1:7:3 | g() | tst.js:2:9:2:21 | function() {} |
 | tst.js:8:1:8:3 | h() | tst.js:3:5:3:17 | function() {} |
 | tst.js:9:1:9:3 | k() | tst.js:2:9:2:21 | function() {} |
+| tst.js:14:2:14:4 | m() | tst.js:2:9:2:21 | function() {} |
 | tst.js:15:2:15:4 | l() | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
 | tst.js:16:2:16:19 | arguments.callee() | tst.js:11:1:20:1 | functio ... \\tf();\\n} |
+| tst.js:17:2:17:4 | n() | tst.js:2:9:2:21 | function() {} |
 | tst.js:17:2:17:4 | n() | tst.js:12:15:12:27 | function() {} |
 | tst.js:18:2:18:4 | p() | tst.js:13:2:13:16 | function p() {} |
 | tst.js:19:2:19:4 | f() | tst.js:1:1:1:15 | function f() {} |

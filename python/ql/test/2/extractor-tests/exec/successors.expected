@@ -1,0 +1,23 @@
+| test.py | 0 | Entry node for Module test | 1 | ControlFlowNode for FunctionExpr | normal |
+| test.py | 1 | ControlFlowNode for FunctionExpr | 1 | ControlFlowNode for f | normal |
+| test.py | 1 | ControlFlowNode for f | 0 | Exit node for Module test | normal |
+| test.py | 1 | ControlFlowNode for x | 2 | ControlFlowNode for exec | normal |
+| test.py | 1 | Entry node for Function f | 1 | ControlFlowNode for x | normal |
+| test.py | 2 | ControlFlowNode for StringLiteral | 2 | ControlFlowNode for exec() | normal |
+| test.py | 2 | ControlFlowNode for exec | 2 | ControlFlowNode for StringLiteral | normal |
+| test.py | 2 | ControlFlowNode for exec() | 3 | ControlFlowNode for x | normal |
+| test.py | 3 | ControlFlowNode for Return | 1 | Exit node for Function f | normal |
+| test.py | 3 | ControlFlowNode for x | 3 | ControlFlowNode for Return | normal |
+| unicode.py | 0 | Entry node for Module unicode | 1 | ControlFlowNode for ImportExpr | normal |
+| unicode.py | 1 | ControlFlowNode for ImportExpr | 1 | ControlFlowNode for ImportMember | normal |
+| unicode.py | 1 | ControlFlowNode for ImportMember | 1 | ControlFlowNode for unicode_literals | normal |
+| unicode.py | 1 | ControlFlowNode for unicode_literals | 3 | ControlFlowNode for FunctionExpr | normal |
+| unicode.py | 3 | ControlFlowNode for FunctionExpr | 3 | ControlFlowNode for f | normal |
+| unicode.py | 3 | ControlFlowNode for f | 0 | Exit node for Module unicode | normal |
+| unicode.py | 3 | ControlFlowNode for x | 4 | ControlFlowNode for exec | normal |
+| unicode.py | 3 | Entry node for Function f | 3 | ControlFlowNode for x | normal |
+| unicode.py | 4 | ControlFlowNode for StringLiteral | 4 | ControlFlowNode for exec() | normal |
+| unicode.py | 4 | ControlFlowNode for exec | 4 | ControlFlowNode for StringLiteral | normal |
+| unicode.py | 4 | ControlFlowNode for exec() | 5 | ControlFlowNode for x | normal |
+| unicode.py | 5 | ControlFlowNode for Return | 3 | Exit node for Function f | normal |
+| unicode.py | 5 | ControlFlowNode for x | 5 | ControlFlowNode for Return | normal |

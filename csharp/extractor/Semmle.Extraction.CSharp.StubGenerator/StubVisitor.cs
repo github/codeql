@@ -41,6 +41,7 @@ internal sealed class StubVisitor : SymbolVisitor
             (
                 t1 is INamedTypeSymbol named1 &&
                 t2 is INamedTypeSymbol named2 &&
+                (!SymbolEqualityComparer.Default.Equals(named1, named1.ConstructedFrom) || !SymbolEqualityComparer.Default.Equals(named2, named2.ConstructedFrom)) &&
                 EqualsModuloTupleElementNames(named1.ConstructedFrom, named2.ConstructedFrom) &&
                 named1.TypeArguments.Length == named2.TypeArguments.Length &&
                 named1.TypeArguments.Zip(named2.TypeArguments).All(p => EqualsModuloTupleElementNames(p.First, p.Second))
@@ -79,11 +80,11 @@ internal sealed class StubVisitor : SymbolVisitor
             stubWriter.Write(explicitInterfaceType.GetQualifiedName());
             stubWriter.Write('.');
             if (writeName)
-                stubWriter.Write(explicitInterfaceSymbol.GetName());
+                stubWriter.Write(EscapeIdentifier(explicitInterfaceSymbol.GetName()));
         }
         else if (writeName)
         {
-            stubWriter.Write(symbol.GetName());
+            stubWriter.Write(EscapeIdentifier(symbol.GetName()));
         }
     }
 
@@ -200,12 +201,14 @@ internal sealed class StubVisitor : SymbolVisitor
         }
     }
 
-    private static readonly HashSet<string> attributeAllowList = new() {
+    private static readonly HashSet<string> attributeAllowList = [
         "System.FlagsAttribute",
-        "System.AttributeUsageAttribute"
-    };
+        "System.AttributeUsageAttribute",
+        "System.Runtime.CompilerServices.InterpolatedStringHandlerAttribute",
+        "System.Runtime.CompilerServices.InterpolatedStringHandlerArgumentAttribute",
+    ];
 
-    private void StubAttribute(AttributeData a, string prefix)
+    private void StubAttribute(AttributeData a, string prefix, bool addNewLine)
     {
         if (a.AttributeClass is not INamedTypeSymbol @class)
             return;
@@ -231,14 +234,18 @@ internal sealed class StubVisitor : SymbolVisitor
             });
             stubWriter.Write(")");
         }
-        stubWriter.WriteLine("]");
+        stubWriter.Write("]");
+        if (addNewLine)
+        {
+            stubWriter.WriteLine();
+        }
     }
 
-    public void StubAttributes(IEnumerable<AttributeData> a, string prefix = "")
+    public void StubAttributes(IEnumerable<AttributeData> a, string prefix = "", bool addNewLine = true)
     {
         foreach (var attribute in a)
         {
-            StubAttribute(attribute, prefix);
+            StubAttribute(attribute, prefix, addNewLine);
         }
     }
 
@@ -291,7 +298,7 @@ internal sealed class StubVisitor : SymbolVisitor
         (symbol is INamedTypeSymbol named && named.TypeArguments.Any(IsUnsafe)) ||
         (symbol is IArrayTypeSymbol at && IsUnsafe(at.ElementType));
 
-    private static readonly HashSet<string> keywords = new() {
+    private static readonly HashSet<string> keywords = [
         "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked",
         "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else",
         "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach",
@@ -301,10 +308,10 @@ internal sealed class StubVisitor : SymbolVisitor
         "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try",
         "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void",
         "volatile", "while"
-    };
+    ];
 
     private static string EscapeIdentifier(string identifier) =>
-        keywords.Contains(identifier) ? "@" + identifier : identifier;
+        keywords.Contains(identifier) ? $"@{identifier}" : identifier;
 
     private static bool TryGetConstantValue(IFieldSymbol symbol, out string value)
     {
@@ -512,6 +519,8 @@ internal sealed class StubVisitor : SymbolVisitor
     {
         WriteCommaSep(parameters, parameter =>
         {
+            StubAttributes(parameter.GetAttributes(), addNewLine: false);
+
             switch (parameter.RefKind)
             {
                 case RefKind.None:
@@ -524,6 +533,9 @@ internal sealed class StubVisitor : SymbolVisitor
                     break;
                 case RefKind.In:
                     stubWriter.Write("in ");
+                    break;
+                case RefKind.RefReadOnlyParameter:
+                    stubWriter.Write("ref readonly ");
                     break;
                 default:
                     stubWriter.Write($"/* TODO: {parameter.RefKind} */");
@@ -545,6 +557,9 @@ internal sealed class StubVisitor : SymbolVisitor
         });
     }
 
+    private static bool ExcludeMethod(IMethodSymbol symbol) =>
+        symbol.Name == "<Clone>$";
+
     private void StubMethod(IMethodSymbol symbol, IMethodSymbol? explicitInterfaceSymbol, IMethodSymbol? baseCtor)
     {
         var methodKind = explicitInterfaceSymbol is null ? symbol.MethodKind : explicitInterfaceSymbol.MethodKind;
@@ -556,7 +571,7 @@ internal sealed class StubVisitor : SymbolVisitor
                 MethodKind.Ordinary
             };
 
-        if (!relevantMethods.Contains(methodKind))
+        if (!relevantMethods.Contains(methodKind) || ExcludeMethod(symbol))
             return;
 
         StubAttributes(symbol.GetAttributes());

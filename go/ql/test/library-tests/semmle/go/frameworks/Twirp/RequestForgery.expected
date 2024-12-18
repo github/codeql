@@ -1,26 +1,48 @@
+#select
+| server/main.go:30:38:30:48 | selection of Text | rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | server/main.go:30:38:30:48 | selection of Text | The $@ of this request depends on a $@. | server/main.go:30:38:30:48 | selection of Text | URL | rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | user-provided value |
+| server/main.go:30:38:30:48 | selection of Text | server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text | The $@ of this request depends on a $@. | server/main.go:30:38:30:48 | selection of Text | URL | server/main.go:19:56:19:61 | definition of params | user-provided value |
 edges
-| client/main.go:16:35:16:78 | &... | client/main.go:16:35:16:78 | &... |
-| client/main.go:16:35:16:78 | &... | server/main.go:19:56:19:61 | definition of params |
-| rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq | rpc/notes/service.twirp.go:477:44:477:51 | typedReq |
-| rpc/notes/service.twirp.go:477:44:477:51 | typedReq | server/main.go:19:56:19:61 | definition of params |
-| rpc/notes/service.twirp.go:554:6:554:13 | definition of typedReq | rpc/notes/service.twirp.go:558:44:558:51 | typedReq |
-| rpc/notes/service.twirp.go:558:44:558:51 | typedReq | server/main.go:19:56:19:61 | definition of params |
-| server/main.go:19:56:19:61 | definition of params | client/main.go:16:35:16:78 | &... |
-| server/main.go:19:56:19:61 | definition of params | rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq |
-| server/main.go:19:56:19:61 | definition of params | rpc/notes/service.twirp.go:554:6:554:13 | definition of typedReq |
-| server/main.go:19:56:19:61 | definition of params | server/main.go:19:56:19:61 | definition of params |
-| server/main.go:19:56:19:61 | definition of params | server/main.go:19:56:19:61 | definition of params |
-| server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text |
-| server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text |
+| client/main.go:16:35:16:78 | &... | server/main.go:19:56:19:61 | definition of params | provenance |  |
+| rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq | rpc/notes/service.twirp.go:477:44:477:51 | typedReq | provenance |  |
+| rpc/notes/service.twirp.go:477:44:477:51 | typedReq | server/main.go:19:56:19:61 | definition of params | provenance |  |
+| rpc/notes/service.twirp.go:493:2:493:2 | capture variable reqContent | rpc/notes/service.twirp.go:495:35:495:44 | reqContent | provenance |  |
+| rpc/notes/service.twirp.go:495:35:495:44 | reqContent | server/main.go:19:56:19:61 | definition of params | provenance |  |
+| rpc/notes/service.twirp.go:538:2:538:33 | ... := ...[0] | rpc/notes/service.twirp.go:544:27:544:29 | buf | provenance |  |
+| rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | rpc/notes/service.twirp.go:538:2:538:33 | ... := ...[0] | provenance | Src:MaD:1 MaD:3 |
+| rpc/notes/service.twirp.go:543:2:543:11 | definition of reqContent | rpc/notes/service.twirp.go:574:2:574:2 | capture variable reqContent | provenance |  |
+| rpc/notes/service.twirp.go:544:27:544:29 | buf | rpc/notes/service.twirp.go:543:2:543:11 | definition of reqContent | provenance | MaD:2 |
+| rpc/notes/service.twirp.go:554:6:554:13 | definition of typedReq | rpc/notes/service.twirp.go:558:44:558:51 | typedReq | provenance |  |
+| rpc/notes/service.twirp.go:558:44:558:51 | typedReq | server/main.go:19:56:19:61 | definition of params | provenance |  |
+| rpc/notes/service.twirp.go:574:2:574:2 | capture variable reqContent | rpc/notes/service.twirp.go:576:35:576:44 | reqContent | provenance |  |
+| rpc/notes/service.twirp.go:576:35:576:44 | reqContent | server/main.go:19:56:19:61 | definition of params | provenance |  |
+| server/main.go:19:56:19:61 | definition of params | server/main.go:19:56:19:61 | definition of params [Return] | provenance |  |
+| server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text | provenance |  |
+| server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text | provenance |  |
+| server/main.go:19:56:19:61 | definition of params [Return] | client/main.go:16:35:16:78 | &... | provenance |  |
+| server/main.go:19:56:19:61 | definition of params [Return] | rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq | provenance |  |
+| server/main.go:19:56:19:61 | definition of params [Return] | rpc/notes/service.twirp.go:493:2:493:2 | capture variable reqContent | provenance |  |
+| server/main.go:19:56:19:61 | definition of params [Return] | rpc/notes/service.twirp.go:554:6:554:13 | definition of typedReq | provenance |  |
+| server/main.go:19:56:19:61 | definition of params [Return] | rpc/notes/service.twirp.go:574:2:574:2 | capture variable reqContent | provenance |  |
+models
+| 1 | Source: net/http; Request; true; Body; ; ; ; remote; manual |
+| 2 | Summary: google.golang.org/protobuf/proto; ; false; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
+| 3 | Summary: io; ; false; ReadAll; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 nodes
 | client/main.go:16:35:16:78 | &... | semmle.label | &... |
 | rpc/notes/service.twirp.go:473:6:473:13 | definition of typedReq | semmle.label | definition of typedReq |
 | rpc/notes/service.twirp.go:477:44:477:51 | typedReq | semmle.label | typedReq |
+| rpc/notes/service.twirp.go:493:2:493:2 | capture variable reqContent | semmle.label | capture variable reqContent |
+| rpc/notes/service.twirp.go:495:35:495:44 | reqContent | semmle.label | reqContent |
+| rpc/notes/service.twirp.go:538:2:538:33 | ... := ...[0] | semmle.label | ... := ...[0] |
+| rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | semmle.label | selection of Body |
+| rpc/notes/service.twirp.go:543:2:543:11 | definition of reqContent | semmle.label | definition of reqContent |
+| rpc/notes/service.twirp.go:544:27:544:29 | buf | semmle.label | buf |
 | rpc/notes/service.twirp.go:554:6:554:13 | definition of typedReq | semmle.label | definition of typedReq |
 | rpc/notes/service.twirp.go:558:44:558:51 | typedReq | semmle.label | typedReq |
+| rpc/notes/service.twirp.go:574:2:574:2 | capture variable reqContent | semmle.label | capture variable reqContent |
+| rpc/notes/service.twirp.go:576:35:576:44 | reqContent | semmle.label | reqContent |
 | server/main.go:19:56:19:61 | definition of params | semmle.label | definition of params |
 | server/main.go:19:56:19:61 | definition of params | semmle.label | definition of params |
+| server/main.go:19:56:19:61 | definition of params [Return] | semmle.label | definition of params [Return] |
 | server/main.go:30:38:30:48 | selection of Text | semmle.label | selection of Text |
 subpaths
-#select
-| server/main.go:30:38:30:48 | selection of Text | server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text | The $@ of this request depends on a $@. | server/main.go:30:38:30:48 | selection of Text | URL | server/main.go:19:56:19:61 | definition of params | user-provided value |

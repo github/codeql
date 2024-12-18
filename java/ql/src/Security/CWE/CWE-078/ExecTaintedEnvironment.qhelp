@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Passing unvalidated user input into the environment variables of a subprocess can allow an attacker to execute malicious code.</p>
+</overview>
+
+<recommendation>
+<p>If possible, use hard-coded string literals to specify the environment variable or its value. 
+Instead of passing the user input directly to the
+process or library function, examine the user input and then choose
+among hard-coded string literals.</p>
+
+<p>If the applicable environment variables cannot be determined at
+compile time, then add code to verify that the user input string is
+safe before using it.</p>
+</recommendation>
+
+<example>
+<p>In the following (BAD) example, the environment variable <code>PATH</code> is set to the value of the user input <code>path</code> without validation.</p>
+
+<sample src="ExecTaintedEnvironmentValue.java" />
+
+<p>In the following (BAD) example, an environment variable is set with a name that is derived from the user input <code>var</code> without validation.</p>
+
+<sample src="ExecTaintedEnvironmentName.java" />
+<p>In the following (GOOD) example, the user's input is validated before being used to set the environment variable.</p>
+
+<sample src="ExecTaintedEnvironmentValidated.java" />
+
+<p>In the following (GOOD) example, the user's input is checked and used to determine an environment variable to add.</p>
+
+<sample src="ExecTaintedEnvironmentChecked.java" />
+</example>
+<references>
+  <li>
+    The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/environment/env.html">Environment Variables</a>.
+  </li>
+  <li>
+    OWASP: <a href="https://owasp.org/www-community/attacks/Command_Injection">Command injection</a>.
+  </li>
+</references>
+</qhelp>

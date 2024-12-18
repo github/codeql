@@ -22,7 +22,7 @@ predicate dict_key(Dict d, Expr k, string s) {
     // We use � to mark unrepresentable characters
     // so two instances of � may represent different strings in the source code
     not "�" = s.charAt(_) and
-    exists(StrConst c | c = k |
+    exists(StringLiteral c | c = k |
       s = "u\"" + c.getText() + "\"" and c.isUnicode()
       or
       s = "b\"" + c.getText() + "\"" and not c.isUnicode()

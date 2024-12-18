@@ -112,7 +112,7 @@ class ElementReferenceImpl extends MethodCallImpl, TElementReference {
 
   final override string getMethodNameImpl() { result = "[]" }
 
-  final override Block getBlockImpl() { none() }
+  final override Block getBlockImpl() { toGenerated(result) = g.getBlock() }
 }
 
 abstract class SuperCallImpl extends MethodCallImpl, TSuperCall { }

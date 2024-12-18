@@ -1,0 +1,8 @@
+| name |  kind   |
++------+---------+
+| baz  | file    |
+| baz  | module  |
+| foo  | file    |
+| foo  | module  |
+| main | file    |
+| sys  | special |

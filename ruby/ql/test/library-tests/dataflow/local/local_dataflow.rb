@@ -76,8 +76,8 @@ def test_case x
   end
 
   z = case source(1)
-    in 5 => b then sink(b) # $ hasTaintFlow=1
-    in a if a > 0 then sink(a) # $ hasTaintFlow=1
+    in 5 => b then sink(b) # $ hasValueFlow=1
+    in a if a > 0 then sink(a) # $ hasValueFlow=1
     in [c, *d, e ] then [
       sink(c), # $ hasTaintFlow=1
       sink(d), # $ hasTaintFlow=1
@@ -96,16 +96,16 @@ def and_or
   sink(b) # $ hasValueFlow=1 hasValueFlow=2
   
   a = source(1) && source(2)
-  sink(a) # $ hasValueFlow=1 hasValueFlow=2
+  sink(a) # $ hasValueFlow=2
   b = (source(1) and source(2))
-  sink(b) # $ hasValueFlow=1 hasValueFlow=2
+  sink(b) # $ hasValueFlow=2
 
   a = source(5)
   a ||= source(6)
   sink(a) # $ hasValueFlow=5 hasValueFlow=6
   b = source(7)
   b &&= source(8)
-  sink(b) # $ hasValueFlow=7 hasValueFlow=8
+  sink(b) # $ hasValueFlow=8
 end
 
 def object_dup

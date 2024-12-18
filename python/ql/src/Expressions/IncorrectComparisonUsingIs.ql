@@ -21,7 +21,7 @@ predicate comparison_using_is(Compare comp, ControlFlowNode left, Cmpop op, Cont
 }
 
 private predicate cpython_interned_value(Expr e) {
-  exists(string text | text = e.(StrConst).getText() |
+  exists(string text | text = e.(StringLiteral).getText() |
     text.length() = 0
     or
     text.length() = 1 and text.regexpMatch("[U+0000-U+00ff]")
@@ -34,7 +34,7 @@ private predicate cpython_interned_value(Expr e) {
 
 predicate uninterned_literal(Expr e) {
   (
-    e instanceof StrConst
+    e instanceof StringLiteral
     or
     e instanceof IntegerLiteral
     or

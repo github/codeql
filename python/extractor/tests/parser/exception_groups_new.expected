@@ -1,0 +1,156 @@
+Module: [1, 0] - [27, 0]
+  body: [
+    Try: [1, 0] - [1, 4]
+      body: [
+        Expr: [2, 4] - [2, 5]
+          value:
+            Name: [2, 4] - [2, 5]
+              variable: Variable('a', None)
+              ctx: Load
+        Expr: [3, 4] - [3, 5]
+          value:
+            Name: [3, 4] - [3, 5]
+              variable: Variable('b', None)
+              ctx: Load
+      ]
+      orelse: [
+        Expr: [17, 4] - [17, 5]
+          value:
+            Name: [17, 4] - [17, 5]
+              variable: Variable('s', None)
+              ctx: Load
+        Expr: [18, 4] - [18, 5]
+          value:
+            Name: [18, 4] - [18, 5]
+              variable: Variable('t', None)
+              ctx: Load
+      ]
+      handlers: [
+        ExceptGroupStmt: [4, 0] - [6, 5]
+          type:
+            Name: [4, 8] - [4, 9]
+              variable: Variable('c', None)
+              ctx: Load
+          name: None
+          body: [
+            Expr: [5, 4] - [5, 5]
+              value:
+                Name: [5, 4] - [5, 5]
+                  variable: Variable('d', None)
+                  ctx: Load
+            Expr: [6, 4] - [6, 5]
+              value:
+                Name: [6, 4] - [6, 5]
+                  variable: Variable('e', None)
+                  ctx: Load
+          ]
+        ExceptGroupStmt: [7, 0] - [9, 5]
+          type:
+            Name: [7, 8] - [7, 9]
+              variable: Variable('f', None)
+              ctx: Load
+          name:
+            Name: [7, 13] - [7, 14]
+              variable: Variable('g', None)
+              ctx: Store
+          body: [
+            Expr: [8, 4] - [8, 5]
+              value:
+                Name: [8, 4] - [8, 5]
+                  variable: Variable('h', None)
+                  ctx: Load
+            Expr: [9, 4] - [9, 5]
+              value:
+                Name: [9, 4] - [9, 5]
+                  variable: Variable('i', None)
+                  ctx: Load
+          ]
+        ExceptGroupStmt: [10, 0] - [12, 5]
+          type:
+            Tuple: [10, 9] - [10, 13]
+              elts: [
+                Name: [10, 9] - [10, 10]
+                  variable: Variable('j', None)
+                  ctx: Load
+                Name: [10, 12] - [10, 13]
+                  variable: Variable('k', None)
+                  ctx: Load
+              ]
+              ctx: Load
+              parenthesised: True
+          name: None
+          body: [
+            Expr: [11, 4] - [11, 5]
+              value:
+                Name: [11, 4] - [11, 5]
+                  variable: Variable('l', None)
+                  ctx: Load
+            Expr: [12, 4] - [12, 5]
+              value:
+                Name: [12, 4] - [12, 5]
+                  variable: Variable('m', None)
+                  ctx: Load
+          ]
+        ExceptGroupStmt: [13, 0] - [15, 5]
+          type:
+            Tuple: [13, 9] - [13, 13]
+              elts: [
+                Name: [13, 9] - [13, 10]
+                  variable: Variable('n', None)
+                  ctx: Load
+                Name: [13, 12] - [13, 13]
+                  variable: Variable('o', None)
+                  ctx: Load
+              ]
+              ctx: Load
+              parenthesised: True
+          name:
+            Name: [13, 18] - [13, 19]
+              variable: Variable('p', None)
+              ctx: Store
+          body: [
+            Expr: [14, 4] - [14, 5]
+              value:
+                Name: [14, 4] - [14, 5]
+                  variable: Variable('q', None)
+                  ctx: Load
+            Expr: [15, 4] - [15, 5]
+              value:
+                Name: [15, 4] - [15, 5]
+                  variable: Variable('r', None)
+                  ctx: Load
+          ]
+      ]
+      finalbody: [
+        Expr: [20, 4] - [20, 5]
+          value:
+            Name: [20, 4] - [20, 5]
+              variable: Variable('u', None)
+              ctx: Load
+        Expr: [21, 4] - [21, 5]
+          value:
+            Name: [21, 4] - [21, 5]
+              variable: Variable('v', None)
+              ctx: Load
+      ]
+    Try: [23, 0] - [23, 4]
+      body: [
+        Pass: [24, 4] - [24, 8]
+      ]
+      orelse: []
+      handlers: [
+        ExceptGroupStmt: [25, 0] - [26, 8]
+          type:
+            Name: [25, 8] - [25, 11]
+              variable: Variable('foo', None)
+              ctx: Load
+          name:
+            Name: [25, 15] - [25, 16]
+              variable: Variable('e', None)
+              ctx: Store
+          body: [
+            Pass: [26, 4] - [26, 8]
+          ]
+      ]
+      finalbody: []
+  ]

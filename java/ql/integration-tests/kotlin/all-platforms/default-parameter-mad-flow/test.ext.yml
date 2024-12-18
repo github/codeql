@@ -1,0 +1,28 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["", "ConstructorWithDefaults", True, "ConstructorWithDefaults", "(int,int)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["", "LibKt", True, "topLevelWithDefaults", "(int,int)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["", "LibKt", True, "extensionWithDefaults", "(String,int,int)", "", "Argument[1]", "ReturnValue", "value", "manual"]
+      - ["", "LibClass", True, "memberWithDefaults", "(int,int)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["", "LibClass", True, "extensionMemberWithDefaults", "(String,int,int)", "", "Argument[1]", "ReturnValue", "value", "manual"]
+      - ["", "LibClass", True, "multiParameterTest", "(int,int,int,int)", "", "Argument[0..1]", "ReturnValue", "value", "manual"]
+      - ["", "LibClass", True, "multiParameterExtensionTest", "(int,int,int,int)", "", "Argument[0, 1]", "ReturnValue", "value", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["", "LibKt", True, "topLevelArgSource", "(SomeToken,int)", "", "Argument[0]", "kotlinMadFlowTest", "manual"]
+      - ["", "LibKt", True, "extensionArgSource", "(String,SomeToken,int)", "", "Argument[1]", "kotlinMadFlowTest", "manual"]
+      - ["", "SourceClass", True, "memberArgSource", "(SomeToken,int)", "", "Argument[0]", "kotlinMadFlowTest", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["", "SinkClass", True, "SinkClass", "(int,int)", "", "Argument[0]", "kotlinMadFlowTest", "manual"]
+      - ["", "LibKt", True, "topLevelSink", "(int,int)", "", "Argument[0]", "kotlinMadFlowTest", "manual"]
+      - ["", "LibKt", True, "extensionSink", "(String,int,int)", "", "Argument[1]", "kotlinMadFlowTest", "manual"]
+      - ["", "SinkClass", True, "memberSink", "(int,int)", "", "Argument[0]", "kotlinMadFlowTest", "manual"]
+      - ["", "SinkClass", True, "extensionMemberSink", "(String,int,int)", "", "Argument[1]", "kotlinMadFlowTest", "manual"]

@@ -14,8 +14,17 @@
 | dependency/A.java:15:8:15:8 | E | java.lang.Object |
 | dependency/A.java:22:7:22:7 | F | java.lang.Object |
 | dependency/A.java:24:7:24:7 | G | java.lang.Throwable |
+| dependency/A.java:26:7:26:7 | H | dependency.H$Used1 |
+| dependency/A.java:26:7:26:7 | H | dependency.H$Used2 |
+| dependency/A.java:26:7:26:7 | H | dependency.H$Used3 |
 | dependency/A.java:26:7:26:7 | H | java.lang.Number |
 | dependency/A.java:26:7:26:7 | H | java.lang.Object |
 | dependency/A.java:26:7:26:7 | H | java.lang.String |
 | dependency/A.java:26:7:26:7 | H | java.util.Collection |
 | dependency/A.java:27:3:27:18 | T | java.lang.String |
+| dependency/A.java:41:22:41:26 | Used1 | dependency.H |
+| dependency/A.java:41:22:41:26 | Used1 | java.lang.Object |
+| dependency/A.java:42:22:42:26 | Used2 | dependency.H |
+| dependency/A.java:42:22:42:26 | Used2 | java.lang.Object |
+| dependency/A.java:43:22:43:26 | Used3 | dependency.H |
+| dependency/A.java:43:22:43:26 | Used3 | java.lang.Object |

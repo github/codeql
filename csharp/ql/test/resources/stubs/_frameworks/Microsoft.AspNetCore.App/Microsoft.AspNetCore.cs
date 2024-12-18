@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -41,6 +41,10 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.WebApplicationBuilder CreateBuilder() => throw null;
                 public static Microsoft.AspNetCore.Builder.WebApplicationBuilder CreateBuilder(string[] args) => throw null;
                 public static Microsoft.AspNetCore.Builder.WebApplicationBuilder CreateBuilder(Microsoft.AspNetCore.Builder.WebApplicationOptions options) => throw null;
+                public static Microsoft.AspNetCore.Builder.WebApplicationBuilder CreateEmptyBuilder(Microsoft.AspNetCore.Builder.WebApplicationOptions options) => throw null;
+                public static Microsoft.AspNetCore.Builder.WebApplicationBuilder CreateSlimBuilder() => throw null;
+                public static Microsoft.AspNetCore.Builder.WebApplicationBuilder CreateSlimBuilder(string[] args) => throw null;
+                public static Microsoft.AspNetCore.Builder.WebApplicationBuilder CreateSlimBuilder(Microsoft.AspNetCore.Builder.WebApplicationOptions options) => throw null;
                 System.Collections.Generic.ICollection<Microsoft.AspNetCore.Routing.EndpointDataSource> Microsoft.AspNetCore.Routing.IEndpointRouteBuilder.DataSources { get => throw null; }
                 void System.IDisposable.Dispose() => throw null;
                 public System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
@@ -59,13 +63,18 @@ namespace Microsoft
                 public System.Collections.Generic.ICollection<string> Urls { get => throw null; }
                 public Microsoft.AspNetCore.Builder.IApplicationBuilder Use(System.Func<Microsoft.AspNetCore.Http.RequestDelegate, Microsoft.AspNetCore.Http.RequestDelegate> middleware) => throw null;
             }
-            public sealed class WebApplicationBuilder
+            public sealed class WebApplicationBuilder : Microsoft.Extensions.Hosting.IHostApplicationBuilder
             {
                 public Microsoft.AspNetCore.Builder.WebApplication Build() => throw null;
                 public Microsoft.Extensions.Configuration.ConfigurationManager Configuration { get => throw null; }
+                Microsoft.Extensions.Configuration.IConfigurationManager Microsoft.Extensions.Hosting.IHostApplicationBuilder.Configuration { get => throw null; }
+                void Microsoft.Extensions.Hosting.IHostApplicationBuilder.ConfigureContainer<TContainerBuilder>(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<TContainerBuilder> factory, System.Action<TContainerBuilder> configure) => throw null;
                 public Microsoft.AspNetCore.Hosting.IWebHostEnvironment Environment { get => throw null; }
+                Microsoft.Extensions.Hosting.IHostEnvironment Microsoft.Extensions.Hosting.IHostApplicationBuilder.Environment { get => throw null; }
                 public Microsoft.AspNetCore.Builder.ConfigureHostBuilder Host { get => throw null; }
                 public Microsoft.Extensions.Logging.ILoggingBuilder Logging { get => throw null; }
+                public Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder Metrics { get => throw null; }
+                System.Collections.Generic.IDictionary<object, object> Microsoft.Extensions.Hosting.IHostApplicationBuilder.Properties { get => throw null; }
                 public Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get => throw null; }
                 public Microsoft.AspNetCore.Builder.ConfigureWebHostBuilder WebHost { get => throw null; }
             }

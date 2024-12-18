@@ -356,9 +356,7 @@ class ControlFlowNode extends @cfg_node, Locatable, NodeInStmtContainer {
  * A synthetic CFG node that does not correspond to a statement or expression;
  * examples include guard nodes and entry/exit nodes.
  */
-class SyntheticControlFlowNode extends @synthetic_cfg_node, ControlFlowNode {
-  override Location getLocation() { hasLocation(this, result) }
-}
+class SyntheticControlFlowNode extends @synthetic_cfg_node, ControlFlowNode { }
 
 /** A synthetic CFG node marking the entry point of a function or toplevel script. */
 class ControlFlowEntryNode extends SyntheticControlFlowNode, @entry_node {

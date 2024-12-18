@@ -2,11 +2,6 @@ extensions:
 
   - addsTo:
       pack: codeql/java-all
-      extensible: supportedThreatModels
-    data: []
-
-  - addsTo:
-      pack: codeql/java-all
       extensible: sourceModel
     data:
       - ["testlib", "TestSources", False, "executeQuery", "(String)", "", "ReturnValue", "database", "manual"]

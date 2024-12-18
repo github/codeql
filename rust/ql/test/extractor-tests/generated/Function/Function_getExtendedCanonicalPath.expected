@@ -1,0 +1,2 @@
+| gen_function.rs:3:1:4:38 | fn foo | crate::gen_function::foo |
+| gen_function.rs:7:5:7:13 | fn bar | crate::gen_function::Trait::bar |

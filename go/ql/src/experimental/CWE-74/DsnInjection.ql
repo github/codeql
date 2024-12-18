@@ -13,8 +13,8 @@ import go
 import DsnInjectionCustomizations
 import DsnInjectionFlow::PathGraph
 
-/** An untrusted flow source taken as a source for the `DsnInjection` taint-flow configuration. */
-private class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
+/** A remote flow source taken as a source for the `DsnInjection` taint-flow configuration. */
+private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
 from DsnInjectionFlow::PathNode source, DsnInjectionFlow::PathNode sink
 where DsnInjectionFlow::flowPath(source, sink)

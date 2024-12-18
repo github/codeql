@@ -17,6 +17,7 @@ private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 // modeling split over multiple files to keep this file from becoming too big
 private import semmle.python.frameworks.Stdlib.Urllib
 private import semmle.python.frameworks.Stdlib.Urllib2
+private import semmle.python.frameworks.data.ModelsAsData
 
 /** Provides models for the Python standard library. */
 module Stdlib {
@@ -181,8 +182,10 @@ module Stdlib {
    */
   module SplitResult {
     /** Gets a reference to the `urllib.parse.SplitResult` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("urllib").getMember("parse").getMember("SplitResult")
+      or
+      result = ModelOutput::getATypeNode("urllib.parse.SplitResult~Subclass").getASubclass*()
     }
 
     /**
@@ -251,9 +254,15 @@ module Stdlib {
    * See https://docs.python.org/3.9/library/logging.html#logging.Logger.
    */
   module Logger {
+    private import semmle.python.dataflow.new.internal.DataFlowDispatch as DD
+
     /** Gets a reference to the `logging.Logger` class or any subclass. */
-    private API::Node subclassRef() {
+    API::Node subclassRef() {
       result = API::moduleImport("logging").getMember("Logger").getASubclass*()
+      or
+      result = API::moduleImport("logging").getMember("getLoggerClass").getReturn().getASubclass*()
+      or
+      result = ModelOutput::getATypeNode("logging.Logger~Subclass").getASubclass*()
     }
 
     /**
@@ -271,6 +280,13 @@ module Stdlib {
     private class ClassInstantiation extends InstanceSource, DataFlow::CfgNode {
       ClassInstantiation() {
         this = subclassRef().getACall()
+        or
+        this =
+          DD::selfTracker(subclassRef()
+                .getAValueReachableFromSource()
+                .asExpr()
+                .(ClassExpr)
+                .getInnerScope())
         or
         this = API::moduleImport("logging").getMember("root").asSource()
         or
@@ -292,13 +308,15 @@ module Stdlib {
 }
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the Python standard library.
  *
  * This module is marked private as exposing it means committing to 1-year deprecation
  * policy, and the code is not in a polished enough state that we want to do so -- at
  * least not without having convincing use-cases for it :)
  */
-private module StdlibPrivate {
+module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // os
   // ---------------------------------------------------------------------------
@@ -331,7 +349,7 @@ private module StdlibPrivate {
    * Modeling of path related functions in the `os` module.
    * Wrapped in QL module to make it easy to fold/unfold.
    */
-  private module OsFileSystemAccessModeling {
+  module OsFileSystemAccessModeling {
     /**
      * A call to the `os.fsencode` function.
      *
@@ -388,7 +406,7 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3/library/os.html#os.open
      */
-    private class OsOpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
+    class OsOpenCall extends FileSystemAccess::Range, DataFlow::CallCfgNode {
       OsOpenCall() { this = os().getMember("open").getACall() }
 
       override DataFlow::Node getAPathArgument() {
@@ -1293,14 +1311,36 @@ private module StdlibPrivate {
   // pickle
   // ---------------------------------------------------------------------------
   /** Gets a reference to any of the `pickle` modules. */
-  API::Node pickle() { result = API::moduleImport(["pickle", "cPickle", "_pickle"]) }
+  API::Node pickle() {
+    result = API::moduleImport(["pickle", "cPickle", "_pickle"])
+    or
+    result = ModelOutput::getATypeNode("pickle~Alias")
+  }
+
+  /**
+   * Gets a reference to `pickle.load`
+   */
+  API::Node pickle_load() {
+    result = pickle().getMember("load")
+    or
+    result = ModelOutput::getATypeNode("pickle.load~Alias")
+  }
+
+  /**
+   * Gets a reference to `pickle.loads`
+   */
+  API::Node pickle_loads() {
+    result = pickle().getMember("loads")
+    or
+    result = ModelOutput::getATypeNode("pickle.loads~Alias")
+  }
 
   /**
    * A call to `pickle.load`
    * See https://docs.python.org/3/library/pickle.html#pickle.load
    */
-  private class PickleLoadCall extends Decoding::Range, DataFlow::CallCfgNode {
-    PickleLoadCall() { this = pickle().getMember("load").getACall() }
+  private class PickleLoadCall extends Decoding::Range, API::CallNode {
+    PickleLoadCall() { this = pickle_load().getACall() }
 
     override predicate mayExecuteInput() { any() }
 
@@ -1315,8 +1355,8 @@ private module StdlibPrivate {
    * A call to `pickle.loads`
    * See https://docs.python.org/3/library/pickle.html#pickle.loads
    */
-  private class PickleLoadsCall extends Decoding::Range, DataFlow::CallCfgNode {
-    PickleLoadsCall() { this = pickle().getMember("loads").getACall() }
+  private class PickleLoadsCall extends Decoding::Range, API::CallNode {
+    PickleLoadsCall() { this = pickle_loads().getACall() }
 
     override predicate mayExecuteInput() { any() }
 
@@ -1463,6 +1503,9 @@ private module StdlibPrivate {
     or
     // io.open is a special case, since it is an alias for the builtin `open`
     result = API::moduleImport("io").getMember("open")
+    or
+    // similarly, coecs.open calls the builtin `open`: https://github.com/python/cpython/blob/3.12/Lib/codecs.py#L918
+    result = API::moduleImport("codecs").getMember("open")
   }
 
   /**
@@ -1470,13 +1513,22 @@ private module StdlibPrivate {
    * See https://docs.python.org/3/library/functions.html#open
    */
   private class OpenCall extends FileSystemAccess::Range, Stdlib::FileLikeObject::InstanceSource,
-    DataFlow::CallCfgNode
+    ThreatModelSource::Range, DataFlow::CallCfgNode
   {
-    OpenCall() { this = getOpenFunctionRef().getACall() }
+    OpenCall() {
+      this = getOpenFunctionRef().getACall() and
+      // when analyzing stdlib code for os.py we wrongly assume that `os.open` is an
+      // alias of the builtins `open` function
+      not this instanceof OsFileSystemAccessModeling::OsOpenCall
+    }
 
     override DataFlow::Node getAPathArgument() {
       result in [this.getArg(0), this.getArgByName("file")]
     }
+
+    override string getThreatModel() { result = "file" }
+
+    override string getSourceType() { result = "open()" }
   }
 
   /**
@@ -1729,8 +1781,21 @@ private module StdlibPrivate {
      * See https://docs.python.org/3/library/cgi.html.
      */
     module FieldStorage {
-      /** Gets a reference to the `cgi.FieldStorage` class. */
-      API::Node classRef() { result = cgi().getMember("FieldStorage") }
+      /**
+       * DEPRECATED: Use `subclassRef` predicate instead.
+       *
+       * Gets a reference to the `cgi.FieldStorage` class.
+       */
+      deprecated API::Node classRef() {
+        result = API::moduleImport("cgi").getMember("FieldStorage")
+      }
+
+      /** Gets a reference to the `cgi.FieldStorage` class or any subclass. */
+      API::Node subclassRef() {
+        result = API::moduleImport("cgi").getMember("FieldStorage").getASubclass*()
+        or
+        result = ModelOutput::getATypeNode("cgi.FieldStorage~Subclass").getASubclass*()
+      }
 
       /**
        * A source of instances of `cgi.FieldStorage`, extend this class to model new instances.
@@ -1753,13 +1818,13 @@ private module StdlibPrivate {
       private class ClassInstantiation extends InstanceSource, RemoteFlowSource::Range,
         DataFlow::CallCfgNode
       {
-        ClassInstantiation() { this = classRef().getACall() }
+        ClassInstantiation() { this = subclassRef().getACall() }
 
         override string getSourceType() { result = "cgi.FieldStorage" }
       }
 
       /** Gets a reference to an instance of `cgi.FieldStorage`. */
-      API::Node instance() { result = classRef().getReturn() }
+      API::Node instance() { result = subclassRef().getReturn() }
 
       /** Gets a reference to the `getvalue` method on a `cgi.FieldStorage` instance. */
       API::Node getvalueRef() { result = instance().getMember("getvalue") }
@@ -1925,13 +1990,7 @@ private module StdlibPrivate {
         result = cgiHttpServer().getMember("CGIHTTPRequestHandler")
       }
     }
-
-    /** DEPRECATED: Alias for CgiHttpRequestHandler */
-    deprecated module CGIHTTPRequestHandler = CgiHttpRequestHandler;
   }
-
-  /** DEPRECATED: Alias for CgiHttpServer */
-  deprecated module CGIHTTPServer = CgiHttpServer;
 
   // ---------------------------------------------------------------------------
   // http (Python 3 only)
@@ -2000,9 +2059,6 @@ private module StdlibPrivate {
          */
         deprecated API::Node classRef() { result = server().getMember("CGIHTTPRequestHandler") }
       }
-
-      /** DEPRECATED: Alias for CgiHttpRequestHandler */
-      deprecated module CGIHTTPRequestHandler = CgiHttpRequestHandler;
     }
   }
 
@@ -2013,7 +2069,7 @@ private module StdlibPrivate {
    *  - https://docs.python.org/3.9/library/http.server.html#http.server.BaseHTTPRequestHandler
    *  - https://docs.python.org/2.7/library/basehttpserver.html#BaseHTTPServer.BaseHTTPRequestHandler
    */
-  private module HttpRequestHandler {
+  module BaseHttpRequestHandler {
     /** Gets a reference to the `BaseHttpRequestHandler` class or any subclass. */
     API::Node subclassRef() {
       result =
@@ -2027,6 +2083,9 @@ private module StdlibPrivate {
           API::moduleImport("http").getMember("server").getMember("SimpleHTTPRequestHandler"),
           API::moduleImport("http").getMember("server").getMember("CGIHTTPRequestHandler"),
         ].getASubclass*()
+      or
+      result =
+        ModelOutput::getATypeNode("http.server.BaseHTTPRequestHandler~Subclass").getASubclass*()
     }
 
     /** A HttpRequestHandler class definition (most likely in project code). */
@@ -2121,17 +2180,20 @@ private module StdlibPrivate {
   // wsgiref.simple_server
   // ---------------------------------------------------------------------------
   /** Provides models for the `wsgiref.simple_server` module. */
-  private module WsgirefSimpleServer {
+  module WsgirefSimpleServer {
+    API::Node subclassRef() {
+      result =
+        API::moduleImport("wsgiref")
+            .getMember("simple_server")
+            .getMember("WSGIServer")
+            .getASubclass*()
+      or
+      result =
+        ModelOutput::getATypeNode("wsgiref.simple_server.WSGIServer~Subclass").getASubclass*()
+    }
+
     class WsgiServerSubclass extends Class, SelfRefMixin {
-      WsgiServerSubclass() {
-        this.getParent() =
-          API::moduleImport("wsgiref")
-              .getMember("simple_server")
-              .getMember("WSGIServer")
-              .getASubclass*()
-              .asSource()
-              .asExpr()
-      }
+      WsgiServerSubclass() { this.getParent() = subclassRef().asSource().asExpr() }
     }
 
     /**
@@ -2144,23 +2206,35 @@ private module StdlibPrivate {
      * for how a request is processed and given to an application.
      */
     class WsgirefSimpleServerApplication extends Http::Server::RequestHandler::Range {
+      boolean validator;
+
       WsgirefSimpleServerApplication() {
         exists(DataFlow::Node appArg, DataFlow::CallCfgNode setAppCall |
           (
             setAppCall =
-              API::moduleImport("wsgiref")
-                  .getMember("simple_server")
-                  .getMember("WSGIServer")
-                  .getASubclass*()
-                  .getReturn()
-                  .getMember("set_app")
-                  .getACall()
+              WsgirefSimpleServer::subclassRef().getReturn().getMember("set_app").getACall() and
+            validator = false
             or
             setAppCall
                 .(DataFlow::MethodCallNode)
-                .calls(any(WsgiServerSubclass cls).getASelfRef(), "set_app")
+                .calls(any(WsgiServerSubclass cls).getASelfRef(), "set_app") and
+            validator = false
+            or
+            // assume an application that is passed to `wsgiref.validate.validator` is eventually passed to `set_app`
+            setAppCall =
+              API::moduleImport("wsgiref").getMember("validate").getMember("validator").getACall() and
+            validator = true
           ) and
           appArg in [setAppCall.getArg(0), setAppCall.getArgByName("application")]
+          or
+          // `make_server` calls `set_app`
+          setAppCall =
+            API::moduleImport("wsgiref")
+                .getMember("simple_server")
+                .getMember("make_server")
+                .getACall() and
+          appArg in [setAppCall.getArg(2), setAppCall.getArgByName("app")] and
+          validator = false
         |
           appArg = poorMansFunctionTracker(this)
         )
@@ -2169,6 +2243,9 @@ private module StdlibPrivate {
       override Parameter getARoutedParameter() { none() }
 
       override string getFramework() { result = "Stdlib: wsgiref.simple_server application" }
+
+      /** Holds if this simple server application was passed to `wsgiref.validate.validator`. */
+      predicate isValidated() { validator = true }
     }
 
     /**
@@ -2190,9 +2267,6 @@ private module StdlibPrivate {
         result = "Stdlib: wsgiref.simple_server application: WSGI environment parameter"
       }
     }
-
-    /** DEPRECATED: Alias for WsgiEnvirontParameter */
-    deprecated class WSGIEnvirontParameter = WsgiEnvirontParameter;
 
     /**
      * Gets a reference to the parameter of a `WsgirefSimpleServerApplication` that
@@ -2275,6 +2349,114 @@ private module StdlibPrivate {
 
       override string getMimetypeDefault() { none() }
     }
+
+    /**
+     * Provides models for the `wsgiref.headers.Headers` class
+     *
+     * See https://docs.python.org/3/library/wsgiref.html#module-wsgiref.headers.
+     */
+    module Headers {
+      /** Gets a reference to the `wsgiref.headers.Headers` class. */
+      API::Node classRef() {
+        result = API::moduleImport("wsgiref").getMember("headers").getMember("Headers")
+        or
+        result = ModelOutput::getATypeNode("wsgiref.headers.Headers~Subclass").getASubclass*()
+      }
+
+      /** Gets a reference to an instance of `wsgiref.headers.Headers`. */
+      private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+        t.start() and
+        result = classRef().getACall()
+        or
+        exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+      }
+
+      /** Gets a reference to an instance of `wsgiref.headers.Headers`. */
+      DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+      /** Holds if there exists an application that is validated by `wsgiref.validate.validator`. */
+      private predicate existsValidatedApplication() {
+        exists(WsgirefSimpleServerApplication app | app.isValidated())
+      }
+
+      /** A class instantiation of `wsgiref.headers.Headers`, conidered as a write to a response header. */
+      private class WsgirefHeadersInstantiation extends Http::Server::ResponseHeaderBulkWrite::Range,
+        DataFlow::CallCfgNode
+      {
+        WsgirefHeadersInstantiation() { this = classRef().getACall() }
+
+        override DataFlow::Node getBulkArg() {
+          result = [this.getArg(0), this.getArgByName("headers")]
+        }
+
+        // TODO: These checks perhaps could be made more precise.
+        override predicate nameAllowsNewline() { not existsValidatedApplication() }
+
+        override predicate valueAllowsNewline() { not existsValidatedApplication() }
+      }
+
+      /** A call to a method that writes to a response header. */
+      private class HeaderWriteCall extends Http::Server::ResponseHeaderWrite::Range,
+        DataFlow::MethodCallNode
+      {
+        HeaderWriteCall() {
+          this.calls(instance(), ["add_header", "set", "setdefault", "__setitem__"])
+        }
+
+        override DataFlow::Node getNameArg() { result = this.getArg(0) }
+
+        override DataFlow::Node getValueArg() { result = this.getArg(1) }
+
+        // TODO: These checks perhaps could be made more precise.
+        override predicate nameAllowsNewline() { not existsValidatedApplication() }
+
+        override predicate valueAllowsNewline() { not existsValidatedApplication() }
+      }
+
+      /** A dict-like write to a response header. */
+      private class HeaderWriteSubscript extends Http::Server::ResponseHeaderWrite::Range,
+        DataFlow::Node
+      {
+        DataFlow::Node name;
+        DataFlow::Node value;
+
+        HeaderWriteSubscript() {
+          exists(SubscriptNode subscript |
+            this.asCfgNode() = subscript and
+            value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+            name.asCfgNode() = subscript.getIndex() and
+            subscript.getObject() = instance().asCfgNode()
+          )
+        }
+
+        override DataFlow::Node getNameArg() { result = name }
+
+        override DataFlow::Node getValueArg() { result = value }
+
+        // TODO: These checks perhaps could be made more precise.
+        override predicate nameAllowsNewline() { not existsValidatedApplication() }
+
+        override predicate valueAllowsNewline() { not existsValidatedApplication() }
+      }
+
+      /**
+       * A call to a `start_response` function that sets the response headers.
+       */
+      private class WsgirefSimpleServerSetHeaders extends Http::Server::ResponseHeaderBulkWrite::Range,
+        DataFlow::CallCfgNode
+      {
+        WsgirefSimpleServerSetHeaders() { this.getFunction() = startResponse() }
+
+        override DataFlow::Node getBulkArg() {
+          result = [this.getArg(1), this.getArgByName("headers")]
+        }
+
+        // TODO: These checks perhaps could be made more precise.
+        override predicate nameAllowsNewline() { not existsValidatedApplication() }
+
+        override predicate valueAllowsNewline() { not existsValidatedApplication() }
+      }
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -2292,7 +2474,7 @@ private module StdlibPrivate {
    */
   module HttpConnection {
     /** Gets a reference to the `http.client.HttpConnection` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       exists(string className | className in ["HTTPConnection", "HTTPSConnection"] |
         // Python 3
         result = API::moduleImport("http").getMember("client").getMember(className)
@@ -2303,6 +2485,8 @@ private module StdlibPrivate {
         result =
           API::moduleImport("six").getMember("moves").getMember("http_client").getMember(className)
       )
+      or
+      result = ModelOutput::getATypeNode("http.client.HTTPConnection~Subclass").getASubclass*()
     }
 
     /**
@@ -2414,8 +2598,10 @@ private module StdlibPrivate {
    */
   module HttpResponse {
     /** Gets a reference to the `http.client.HttpResponse` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("http").getMember("client").getMember("HTTPResponse")
+      or
+      result = ModelOutput::getATypeNode("http.client.HTTPResponse~Subclass").getASubclass*()
     }
 
     /**
@@ -2751,7 +2937,7 @@ private module StdlibPrivate {
   /** Gets a call to `hashlib.new` with `algorithmName` as the first argument. */
   private API::CallNode hashlibNewCall(string algorithmName) {
     algorithmName =
-      result.getParameter(0, "name").getAValueReachingSink().asExpr().(StrConst).getText() and
+      result.getParameter(0, "name").getAValueReachingSink().asExpr().(StringLiteral).getText() and
     result = API::moduleImport("hashlib").getMember("new").getACall()
   }
 
@@ -2874,7 +3060,8 @@ private module StdlibPrivate {
       exists(string algorithmName | result.matchesName(algorithmName) |
         this.getDigestArg().asSink() = hashlibMember(algorithmName).asSource()
         or
-        this.getDigestArg().getAValueReachingSink().asExpr().(StrConst).getText() = algorithmName
+        this.getDigestArg().getAValueReachingSink().asExpr().(StringLiteral).getText() =
+          algorithmName
       )
     }
 
@@ -3067,6 +3254,237 @@ private module StdlibPrivate {
     }
 
     override string getName() { result = "re." + method }
+  }
+
+  /**
+   * A flow summary for compiled regex objects
+   *
+   * See https://docs.python.org/3.11/library/re.html#re-objects
+   */
+  class RePatternSummary extends SummarizedCallable {
+    RePatternSummary() { this = "re.Pattern" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("re").getMember("compile").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::moduleImport("re").getMember("compile").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input in ["Argument[0]", "Argument[pattern:]"] and
+      (
+        output = "ReturnValue.Attribute[pattern]" and
+        preservesValue = true
+        or
+        output = "ReturnValue" and
+        preservesValue = false
+      )
+    }
+  }
+
+  /**
+   * A base API node for regular expression functions.
+   * Either the `re` module or a compiled regular expression.
+   */
+  private API::Node re(boolean compiled) {
+    result = API::moduleImport("re") and
+    compiled = false
+    or
+    result = any(RePatternSummary c).getACall().(API::CallNode).getReturn() and
+    compiled = true
+  }
+
+  /**
+   * A flow summary for methods returning a `re.Match` object
+   *
+   * See https://docs.python.org/3/library/re.html#re.Match
+   */
+  class ReMatchSummary extends SummarizedCallable {
+    ReMatchSummary() { this = ["re.Match", "compiled re.Match"] }
+
+    override DataFlow::CallCfgNode getACall() {
+      exists(API::Node re, boolean compiled |
+        re = re(compiled) and
+        (
+          compiled = false and
+          this = "re.Match"
+          or
+          compiled = true and
+          this = "compiled re.Match"
+        )
+      |
+        result = re.getMember(["match", "search", "fullmatch"]).getACall()
+      )
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      exists(string arg |
+        this = "re.Match" and arg = "Argument[1]"
+        or
+        this = "compiled re.Match" and arg = "Argument[0]"
+      |
+        input in [arg, "Argument[string:]"] and
+        (
+          output = "ReturnValue.Attribute[string]" and
+          preservesValue = true
+          or
+          // indexing such as `match[g]` is the same as `match.group(g)`
+          // since you can index with both integers and strings, we model it as
+          // both list element and dictionary... a bit of a hack, but no way to model
+          // subscript operators directly with flow-summaries :|
+          output in ["ReturnValue.ListElement", "ReturnValue.DictionaryElementAny"] and
+          preservesValue = false
+        )
+      )
+      or
+      // regex pattern
+      (
+        this = "re.Match" and input in ["Argument[0]", "Argument[pattern:]"]
+        or
+        // for compiled regexes, this it is already stored in the `pattern` attribute
+        this = "compiled re.Match" and input = "Argument[self].Attribute[pattern]"
+      ) and
+      output = "ReturnValue.Attribute[re].Attribute[pattern]" and
+      preservesValue = true
+    }
+  }
+
+  /** An API node for a `re.Match` object */
+  private API::Node match() {
+    result = any(ReMatchSummary c).getACall().(API::CallNode).getReturn()
+    or
+    result = re(_).getMember("finditer").getReturn().getASubscript()
+  }
+
+  /**
+   * A flow summary for methods on a `re.Match` object
+   *
+   * See https://docs.python.org/3/library/re.html#re.Match
+   */
+  class ReMatchMethodsSummary extends SummarizedCallable {
+    string methodName;
+
+    ReMatchMethodsSummary() {
+      this = "re.Match." + methodName and
+      methodName in ["expand", "group", "groups", "groupdict"]
+    }
+
+    override DataFlow::CallCfgNode getACall() { result = match().getMember(methodName).getACall() }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      methodName = "expand" and
+      preservesValue = false and
+      (
+        input = "Argument[0]" and output = "ReturnValue"
+        or
+        input = "Argument[self].Attribute[string]" and
+        output = "ReturnValue"
+      )
+      or
+      methodName = "group" and
+      input = "Argument[self].Attribute[string]" and
+      output in ["ReturnValue", "ReturnValue.ListElement"] and
+      preservesValue = false
+      or
+      methodName = "groups" and
+      input = "Argument[self].Attribute[string]" and
+      output = "ReturnValue.ListElement" and
+      preservesValue = false
+      or
+      methodName = "groupdict" and
+      input = "Argument[self].Attribute[string]" and
+      output = "ReturnValue.DictionaryElementAny" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `re` methods not returning a `re.Match` object
+   *
+   * See https://docs.python.org/3/library/re.html#functions
+   */
+  class ReFunctionsSummary extends SummarizedCallable {
+    string methodName;
+
+    ReFunctionsSummary() {
+      methodName in ["split", "findall", "finditer", "sub", "subn"] and
+      this = ["re.", "compiled re."] + methodName
+    }
+
+    override DataFlow::CallCfgNode getACall() {
+      this = "re." + methodName and
+      result = API::moduleImport("re").getMember(methodName).getACall()
+      or
+      this = "compiled re." + methodName and
+      result =
+        any(RePatternSummary c)
+            .getACall()
+            .(API::CallNode)
+            .getReturn()
+            .getMember(methodName)
+            .getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      exists(int offset |
+        // for non-compiled regex the first argument is the pattern, so we need to
+        // account for this difference
+        this = "re." + methodName and offset = 0
+        or
+        this = "compiled re." + methodName and offset = 1
+      |
+        // flow from input string to results
+        exists(int arg | arg = methodName.(RegexExecutionMethod).getStringArgIndex() - offset |
+          preservesValue = false and
+          input in ["Argument[" + arg + "]", "Argument[string:]"] and
+          (
+            methodName in ["split", "findall", "finditer"] and
+            output = "ReturnValue.ListElement"
+            or
+            // TODO: Since we currently model iterables as tainted when their elements
+            // are, the result of findall, finditer, split needs to be tainted
+            methodName in ["split", "findall", "finditer"] and
+            output = "ReturnValue"
+            or
+            methodName = "sub" and
+            output = "ReturnValue"
+            or
+            methodName = "subn" and
+            output = "ReturnValue.TupleElement[0]"
+          )
+        )
+        or
+        // flow from replacement value for substitution
+        exists(string argumentSpec |
+          argumentSpec in ["Argument[" + (1 - offset) + "]", "Argument[repl:]"] and
+          // `repl` can also be a function
+          input = [argumentSpec, argumentSpec + ".ReturnValue"]
+        |
+          (
+            methodName = "sub" and output = "ReturnValue"
+            or
+            methodName = "subn" and output = "ReturnValue.TupleElement[0]"
+          ) and
+          preservesValue = false
+        )
+        or
+        // flow from input string to attribute on match object
+        exists(int arg | arg = methodName.(RegexExecutionMethod).getStringArgIndex() - offset |
+          input in ["Argument[" + arg + "]", "Argument[string:]"] and
+          methodName = "finditer" and
+          output = "ReturnValue.ListElement.Attribute[string]" and
+          preservesValue = true
+        )
+      )
+    }
   }
 
   /**
@@ -3328,8 +3746,10 @@ private module StdlibPrivate {
    */
   module StringIO {
     /** Gets a reference to the `io.StringIO` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("io").getMember(["StringIO", "BytesIO"])
+      or
+      result = ModelOutput::getATypeNode("io.StringIO~Subclass").getASubclass*()
     }
 
     /**
@@ -3379,6 +3799,12 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // xml.etree.ElementTree
   // ---------------------------------------------------------------------------
+  /** Gets a reference to the `xml.etree.ElementTree` class */
+  API::Node elementTreeClassRef() {
+    result = API::moduleImport("xml").getMember("etree").getMember("ElementTree").getASubclass*() or
+    result = ModelOutput::getATypeNode("xml.etree.ElementTree~Subclass").getASubclass*()
+  }
+
   /**
    * An instance of `xml.etree.ElementTree.ElementTree`.
    *
@@ -3386,20 +3812,10 @@ private module StdlibPrivate {
    */
   private API::Node elementTreeInstance() {
     //parse to a tree
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember("parse")
-          .getReturn()
+    result = elementTreeClassRef().getMember("parse").getReturn()
     or
     // construct a tree without parsing
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember("ElementTree")
-          .getReturn()
+    result = elementTreeClassRef().getMember("ElementTree").getReturn()
   }
 
   /**
@@ -3412,21 +3828,9 @@ private module StdlibPrivate {
     result = elementTreeInstance().getMember(["parse", "getroot"]).getReturn()
     or
     // parse directly to an element
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember(["fromstring", "fromstringlist", "XML"])
-          .getReturn()
+    result = elementTreeClassRef().getMember(["fromstring", "fromstringlist", "XML"]).getReturn()
     or
-    result =
-      API::moduleImport("xml")
-          .getMember("etree")
-          .getMember("ElementTree")
-          .getMember("XMLParser")
-          .getReturn()
-          .getMember("close")
-          .getReturn()
+    result = elementTreeClassRef().getMember("XMLParser").getReturn().getMember("close").getReturn()
   }
 
   /**
@@ -3471,12 +3875,7 @@ private module StdlibPrivate {
     /** A direct instantiation of `xml.etree` parsers. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
       ClassInstantiation() {
-        this =
-          API::moduleImport("xml")
-              .getMember("etree")
-              .getMember("ElementTree")
-              .getMember(["XMLParser", "XMLPullParser"])
-              .getACall()
+        this = elementTreeClassRef().getMember(["XMLParser", "XMLPullParser"]).getACall()
       }
     }
 
@@ -3533,9 +3932,7 @@ private module StdlibPrivate {
   private class XmlEtreeParsing extends DataFlow::CallCfgNode, XML::XmlParsing::Range {
     XmlEtreeParsing() {
       this =
-        API::moduleImport("xml")
-            .getMember("etree")
-            .getMember("ElementTree")
+        elementTreeClassRef()
             .getMember(["fromstring", "fromstringlist", "XML", "XMLID", "parse", "iterparse"])
             .getACall()
       or
@@ -3583,12 +3980,7 @@ private module StdlibPrivate {
    */
   private class FileAccessFromXmlEtreeParsing extends XmlEtreeParsing, FileSystemAccess::Range {
     FileAccessFromXmlEtreeParsing() {
-      this =
-        API::moduleImport("xml")
-            .getMember("etree")
-            .getMember("ElementTree")
-            .getMember(["parse", "iterparse"])
-            .getACall()
+      this = elementTreeClassRef().getMember(["parse", "iterparse"]).getACall()
       or
       this = elementTreeInstance().getMember("parse").getACall()
       // I considered whether we should try to reduce FPs from people passing file-like
@@ -3863,7 +4255,11 @@ private module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // Flow summaries for functions contructing containers
   // ---------------------------------------------------------------------------
-  /** A flow summary for `dict`. */
+  /**
+   * A flow summary for `dict`.
+   *
+   * see https://docs.python.org/3/library/stdtypes.html#dict
+   */
   class DictSummary extends SummarizedCallable {
     DictSummary() { this = "builtins.dict" }
 
@@ -3873,19 +4269,29 @@ private module StdlibPrivate {
       result = API::builtin("dict").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      // The positional argument contains a mapping.
+      // TODO: these values can be overwritten by keyword arguments
+      //  - dict mapping
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[0].DictionaryElement[" + key + "]" and
         output = "ReturnValue.DictionaryElement[" + key + "]" and
         preservesValue = true
       )
       or
+      //  - list-of-pairs mapping
+      input = "Argument[0].ListElement.TupleElement[1]" and
+      output = "ReturnValue.DictionaryElementAny" and
+      preservesValue = true
+      or
+      // The keyword arguments are added to the dictionary.
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[" + key + ":]" and
         output = "ReturnValue.DictionaryElement[" + key + "]" and
         preservesValue = true
       )
       or
+      // Imprecise content in the first argument ends up on the container itself.
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
@@ -3902,7 +4308,7 @@ private module StdlibPrivate {
       result = API::builtin("list").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[0].ListElement"
         or
@@ -3932,7 +4338,7 @@ private module StdlibPrivate {
       result = API::builtin("tuple").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
         input = "Argument[0].TupleElement[" + i.toString() + "]" and
         output = "ReturnValue.TupleElement[" + i.toString() + "]" and
@@ -3957,7 +4363,7 @@ private module StdlibPrivate {
       result = API::builtin("set").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[0].ListElement"
         or
@@ -3987,8 +4393,8 @@ private module StdlibPrivate {
       result = API::builtin("frozenset").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      any(SetSummary s).propagatesFlowExt(input, output, preservesValue)
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      any(SetSummary s).propagatesFlow(input, output, preservesValue)
     }
   }
 
@@ -4005,7 +4411,7 @@ private module StdlibPrivate {
       result = API::builtin("reversed").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[0].ListElement"
         or
@@ -4035,7 +4441,7 @@ private module StdlibPrivate {
       result = API::builtin("sorted").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(string content |
         content = "ListElement"
         or
@@ -4067,7 +4473,7 @@ private module StdlibPrivate {
       result = API::builtin("iter").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[0].ListElement"
         or
@@ -4097,7 +4503,7 @@ private module StdlibPrivate {
       result = API::builtin("next").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[0].ListElement"
         or
@@ -4130,28 +4536,42 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      exists(string content |
-        content = "ListElement"
-        or
-        content = "SetElement"
-        or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          content = "TupleElement[" + i.toString() + "]"
-        )
-        or
-        exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
-          content = "DictionaryElement[" + key + "]"
-        )
-      |
-        input = "Argument[self]." + content and
-        output = "ReturnValue." + content and
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      exists(DataFlow::Content c |
+        input = "Argument[self]." + c.getMaDRepresentation() and
+        output = "ReturnValue." + c.getMaDRepresentation() and
         preservesValue = true
       )
       or
       input = "Argument[self]" and
       output = "ReturnValue" and
       preservesValue = true
+    }
+  }
+
+  /** A flow summary for `copy.replace`. */
+  class ReplaceSummary extends SummarizedCallable {
+    ReplaceSummary() { this = "copy.replace" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("copy").getMember("replace").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::moduleImport("copy").getMember("replace").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      exists(CallNode c, string name, ControlFlowNode n, DataFlow::AttributeContent ac |
+        c.getFunction().(NameNode).getId() = "replace" or
+        c.getFunction().(AttrNode).getName() = "replace"
+      |
+        n = c.getArgByName(name) and
+        ac.getAttribute() = name and
+        input = "Argument[" + name + ":]" and
+        output = "ReturnValue." + ac.getMaDRepresentation() and
+        preservesValue = true
+      )
     }
   }
 
@@ -4172,7 +4592,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self].ListElement" and
       output = "ReturnValue" and
       preservesValue = true
@@ -4204,12 +4624,12 @@ private module StdlibPrivate {
 
     override DataFlow::CallCfgNode getACall() {
       result.(DataFlow::MethodCallNode).getMethodName() = "pop" and
-      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+      result.getArg(0).getALocalSource().asExpr().(StringLiteral).getText() = key
     }
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self].DictionaryElement[" + key + "]" and
       output = "ReturnValue" and
       preservesValue = true
@@ -4227,12 +4647,12 @@ private module StdlibPrivate {
 
     override DataFlow::CallCfgNode getACall() {
       result.(DataFlow::MethodCallNode).getMethodName() = "get" and
-      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+      result.getArg(0).getALocalSource().asExpr().(StringLiteral).getText() = key
     }
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self].DictionaryElement[" + key + "]" and
       output = "ReturnValue" and
       preservesValue = true
@@ -4254,7 +4674,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // default value
       input = "Argument[1]" and
       output = "ReturnValue" and
@@ -4277,7 +4697,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[self].DictionaryElement[" + key + "]" and
         output = "ReturnValue.TupleElement[1]" and
@@ -4303,7 +4723,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "setdefault"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // store/read steps with dictionary content of this is modeled in DataFlowPrivate
       input = "Argument[1]" and
       output = "ReturnValue" and
@@ -4327,12 +4747,12 @@ private module StdlibPrivate {
 
     override DataFlow::CallCfgNode getACall() {
       result.(DataFlow::MethodCallNode).getMethodName() = "setdefault" and
-      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+      result.getArg(0).getALocalSource().asExpr().(StringLiteral).getText() = key
     }
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // If key is in the dictionary, return its value.
       input = "Argument[self].DictionaryElement[" + key + "]" and
       output = "ReturnValue" and
@@ -4361,7 +4781,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "values"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[self].DictionaryElement[" + key + "]" and
         output = "ReturnValue.ListElement" and
@@ -4388,7 +4808,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "keys"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
       input = "Argument[self]" and
       output = "ReturnValue" and
@@ -4412,7 +4832,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "items"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[self].DictionaryElement[" + key + "]" and
         output = "ReturnValue.ListElement.TupleElement[1]" and
@@ -4442,7 +4862,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "append"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // newly added element added to this
       input = "Argument[0]" and
       output = "Argument[self].ListElement" and
@@ -4469,7 +4889,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "add"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // newly added element added to this
       input = "Argument[0]" and
       output = "Argument[self].SetElement" and
@@ -4499,7 +4919,7 @@ private module StdlibPrivate {
         API::moduleImport("os").getMember(["getenv", "getenvb"]).getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input in ["Argument[1]", "Argument[default:]"] and
       output = "ReturnValue" and
       preservesValue = true
@@ -4614,6 +5034,68 @@ private module StdlibPrivate {
       override DataFlow::Node getAPathArgument() { result = this.getCommand() }
 
       override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // html
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to 'html.escape'.
+   * See https://docs.python.org/3/library/html.html#html.escape
+   */
+  private class HtmlEscapeCall extends Escaping::Range, API::CallNode {
+    HtmlEscapeCall() {
+      this = API::moduleImport("html").getMember("escape").getACall() and
+      // if quote escaping is disabled, that might lead to XSS if the result is inserted
+      // in the attribute value of a tag, such as `<foo bar="escape_result">`. Since we
+      // don't know how values are being inserted, and we don't want to lose these
+      // results (FNs), we require quote escaping to be enabled. This might lead to some
+      // FPs, so we might need to revisit this in the future.
+      not this.getParameter(1, "quote")
+          .getAValueReachingSink()
+          .asExpr()
+          .(ImmutableLiteral)
+          .booleanValue() = false
+    }
+
+    override DataFlow::Node getAnInput() { result = this.getParameter(0, "s").asSink() }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getKind() { result = Escaping::getHtmlKind() }
+  }
+
+  // ---------------------------------------------------------------------------
+  // argparse
+  // ---------------------------------------------------------------------------
+  /**
+   * if result of `parse_args` is tainted (because it uses command-line arguments),
+   *    then the parsed values accesssed on any attribute lookup is also tainted.
+   */
+  private class ArgumentParserAnyAttributeStep extends TaintTracking::AdditionalTaintStep {
+    override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      nodeFrom =
+        API::moduleImport("argparse")
+            .getMember("ArgumentParser")
+            .getReturn()
+            .getMember("parse_args")
+            .getReturn()
+            .getAValueReachableFromSource() and
+      nodeTo.(DataFlow::AttrRead).getObject() = nodeFrom
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // sys
+  // ---------------------------------------------------------------------------
+  /**
+   * An access of `sys.stdin`/`sys.stdout`/`sys.stderr`, to get additional FileLike
+   * modeling.
+   */
+  private class SysStandardStreams extends Stdlib::FileLikeObject::InstanceSource, DataFlow::Node {
+    SysStandardStreams() {
+      this = API::moduleImport("sys").getMember(["stdin", "stdout", "stderr"]).asSource()
     }
   }
 }

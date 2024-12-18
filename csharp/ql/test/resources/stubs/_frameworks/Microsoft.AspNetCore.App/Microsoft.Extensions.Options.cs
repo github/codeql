@@ -1,16 +1,22 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Options, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Options, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
     {
         namespace DependencyInjection
         {
+            public static partial class OptionsBuilderExtensions
+            {
+                public static Microsoft.Extensions.Options.OptionsBuilder<TOptions> ValidateOnStart<TOptions>(this Microsoft.Extensions.Options.OptionsBuilder<TOptions> optionsBuilder) where TOptions : class => throw null;
+            }
             public static partial class OptionsServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddOptions(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
                 public static Microsoft.Extensions.Options.OptionsBuilder<TOptions> AddOptions<TOptions>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) where TOptions : class => throw null;
                 public static Microsoft.Extensions.Options.OptionsBuilder<TOptions> AddOptions<TOptions>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, string name) where TOptions : class => throw null;
+                public static Microsoft.Extensions.Options.OptionsBuilder<TOptions> AddOptionsWithValidateOnStart<TOptions>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, string name = default(string)) where TOptions : class => throw null;
+                public static Microsoft.Extensions.Options.OptionsBuilder<TOptions> AddOptionsWithValidateOnStart<TOptions, TValidateOptions>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, string name = default(string)) where TOptions : class where TValidateOptions : class, Microsoft.Extensions.Options.IValidateOptions<TOptions> => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection Configure<TOptions>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<TOptions> configureOptions) where TOptions : class => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection Configure<TOptions>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, string name, System.Action<TOptions> configureOptions) where TOptions : class => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection ConfigureAll<TOptions>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<TOptions> configureOptions) where TOptions : class => throw null;
@@ -135,6 +141,10 @@ namespace Microsoft
             {
                 void PostConfigure(string name, TOptions options);
             }
+            public interface IStartupValidator
+            {
+                void Validate();
+            }
             public interface IValidateOptions<TOptions> where TOptions : class
             {
                 Microsoft.Extensions.Options.ValidateOptionsResult Validate(string name, TOptions options);
@@ -215,6 +225,11 @@ namespace Microsoft
                 public string OptionsName { get => throw null; }
                 public System.Type OptionsType { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)12)]
+            public sealed class OptionsValidatorAttribute : System.Attribute
+            {
+                public OptionsValidatorAttribute() => throw null;
+            }
             public class OptionsWrapper<TOptions> : Microsoft.Extensions.Options.IOptions<TOptions> where TOptions : class
             {
                 public OptionsWrapper(TOptions options) => throw null;
@@ -281,6 +296,20 @@ namespace Microsoft
                 public string Name { get => throw null; }
                 public virtual void PostConfigure(string name, TOptions options) => throw null;
                 public void PostConfigure(TOptions options) => throw null;
+            }
+            [System.AttributeUsage((System.AttributeTargets)384)]
+            public sealed class ValidateEnumeratedItemsAttribute : System.Attribute
+            {
+                public ValidateEnumeratedItemsAttribute() => throw null;
+                public ValidateEnumeratedItemsAttribute(System.Type validator) => throw null;
+                public System.Type Validator { get => throw null; }
+            }
+            [System.AttributeUsage((System.AttributeTargets)384)]
+            public sealed class ValidateObjectMembersAttribute : System.Attribute
+            {
+                public ValidateObjectMembersAttribute() => throw null;
+                public ValidateObjectMembersAttribute(System.Type validator) => throw null;
+                public System.Type Validator { get => throw null; }
             }
             public class ValidateOptions<TOptions> : Microsoft.Extensions.Options.IValidateOptions<TOptions> where TOptions : class
             {
@@ -357,6 +386,16 @@ namespace Microsoft
                 public bool Skipped { get => throw null; set { } }
                 public bool Succeeded { get => throw null; set { } }
                 public static readonly Microsoft.Extensions.Options.ValidateOptionsResult Success;
+            }
+            public class ValidateOptionsResultBuilder
+            {
+                public void AddError(string error, string propertyName = default(string)) => throw null;
+                public void AddResult(Microsoft.Extensions.Options.ValidateOptionsResult result) => throw null;
+                public void AddResult(System.ComponentModel.DataAnnotations.ValidationResult result) => throw null;
+                public void AddResults(System.Collections.Generic.IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> results) => throw null;
+                public Microsoft.Extensions.Options.ValidateOptionsResult Build() => throw null;
+                public void Clear() => throw null;
+                public ValidateOptionsResultBuilder() => throw null;
             }
         }
     }

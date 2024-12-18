@@ -4,12 +4,6 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
-| builtin.c:5:5:5:11 | (no string representation) | Node should have one toString but has 0. |
-| misc.c:227:7:227:28 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:80:18:80:23 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:80:18:80:23 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:89:18:89:23 | (no string representation) | Node should have one toString but has 0. |
-| static_init_templates.cpp:89:18:89:23 | (no string representation) | Node should have one toString but has 0. |
 parameterCallable
 localFlowIsLocal
 readStepIsLocal
@@ -20,24 +14,6 @@ localCallNodes
 postIsNotPre
 postHasUniquePre
 uniquePostUpdate
-| allocators.cpp:4:24:4:26 | this indirection | Node has multiple PostUpdateNodes. |
-| cpp11.cpp:82:17:82:17 | this indirection | Node has multiple PostUpdateNodes. |
-| cpp11.cpp:82:17:82:55 | [...](...){...} indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:514:10:514:11 | definition of r2 indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:515:10:515:11 | definition of r3 indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:515:10:515:11 | definition of r3 indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:516:10:516:11 | definition of r4 indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:516:10:516:11 | definition of r4 indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:659:5:659:5 | this indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:659:5:659:5 | this indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:747:8:747:8 | this indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:750:3:750:6 | this indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:759:3:759:8 | this indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:768:3:768:9 | this indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:777:3:777:11 | this indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:786:3:786:11 | this indirection | Node has multiple PostUpdateNodes. |
-| ir.cpp:795:3:795:11 | this indirection | Node has multiple PostUpdateNodes. |
-| static_init_templates.cpp:240:7:240:7 | this indirection | Node has multiple PostUpdateNodes. |
 postIsInSameCallable
 reverseRead
 argHasPostUpdate
@@ -53,10 +29,12 @@ postWithInFlow
 | try_catch.cpp:7:8:7:8 | call to exception | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
-| ir.cpp:726:6:726:13 | TryCatch | 0 indirection | ir.cpp:737:22:737:22 | s indirection | Parameters with overlapping positions. |
-| ir.cpp:726:6:726:13 | TryCatch | 0 indirection | ir.cpp:740:24:740:24 | e indirection | Parameters with overlapping positions. |
+| ir.cpp:726:6:726:13 | TryCatch | *0 | ir.cpp:737:22:737:22 | *s | Parameters with overlapping positions. |
+| ir.cpp:726:6:726:13 | TryCatch | *0 | ir.cpp:740:24:740:24 | *e | Parameters with overlapping positions. |
 uniqueParameterNodePosition
 uniqueContentApprox
 identityLocalStep
 missingArgumentCall
 multipleArgumentCall
+lambdaCallEnclosingCallableMismatch
+speculativeStepAlreadyHasModel

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sinkModel
+    data: # namespace, type, subtypes, name, signature, ext, input, kind, provenance
+      - ["", "", False, "ymlSink", "", "", "Argument[0]", "test-sink", "manual"]

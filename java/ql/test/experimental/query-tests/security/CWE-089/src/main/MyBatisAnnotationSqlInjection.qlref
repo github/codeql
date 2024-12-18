@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-089/MyBatisAnnotationSqlInjection.ql
+query: experimental/Security/CWE/CWE-089/MyBatisAnnotationSqlInjection.ql
+postprocess: utils/test/PrettyPrintModels.ql

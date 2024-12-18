@@ -1,0 +1,18 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "toolchain",
+    srcs = ["toolchain.go"],
+    importpath = "github.com/github/codeql-go/extractor/toolchain",
+    visibility = ["//visibility:public"],
+    deps = ["//go/extractor/util"],
+)
+
+go_test(
+    name = "toolchain_test",
+    srcs = ["toolchain_test.go"],
+    embed = [":toolchain"],
+    deps = ["//go/extractor/util"],
+)

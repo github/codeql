@@ -9,3 +9,5 @@ extensions:
       - ["org.apache.commons.exec", "CommandLine", True, "addArguments", "(String,boolean)", "", "Argument[0]", "command-injection", "manual"]
       - ["org.apache.commons.exec", "CommandLine", True, "addArguments", "(String[])", "", "Argument[0]", "command-injection", "manual"]
       - ["org.apache.commons.exec", "CommandLine", True, "addArguments", "(String[],boolean)", "", "Argument[0]", "command-injection", "manual"]
+      - ["org.apache.commons.exec", "Executor", True, "execute", "(CommandLine,Map)", "", "Argument[1]", "environment-injection", "manual"]
+      - ["org.apache.commons.exec", "Executor", True, "execute", "(CommandLine,Map,ExecuteResultHandler)", "", "Argument[1]", "environment-injection", "manual"]

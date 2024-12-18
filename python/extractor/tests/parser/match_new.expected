@@ -1,0 +1,382 @@
+Module: [1, 0] - [43, 0]
+  body: [
+    Match: [1, 0] - [3, 19]
+      subject:
+        List: [1, 6] - [1, 11]
+          elts: [
+            Num: [1, 7] - [1, 8]
+              n: 1
+              text: '1'
+            Num: [1, 9] - [1, 10]
+              n: 2
+              text: '2'
+          ]
+          ctx: Load
+      cases: [
+        Case: [2, 4] - [3, 19]
+          pattern:
+            MatchSequencePattern: [2, 9] - [2, 15]
+              patterns: [
+                MatchCapturePattern: [2, 10] - [2, 11]
+                  variable:
+                    Name: [2, 10] - [2, 11]
+                      variable: Variable('a', None)
+                      ctx: Store
+                MatchCapturePattern: [2, 13] - [2, 14]
+                  variable:
+                    Name: [2, 13] - [2, 14]
+                      variable: Variable('b', None)
+                      ctx: Store
+              ]
+          guard: None
+          body: [
+            Expr: [3, 8] - [3, 19]
+              value:
+                Call: [3, 8] - [3, 19]
+                  func:
+                    Name: [3, 8] - [3, 13]
+                      variable: Variable('print', None)
+                      ctx: Load
+                  positional_args: [
+                    Name: [3, 14] - [3, 15]
+                      variable: Variable('b', None)
+                      ctx: Load
+                    Name: [3, 17] - [3, 18]
+                      variable: Variable('a', None)
+                      ctx: Load
+                  ]
+                  named_args: []
+          ]
+      ]
+    Match: [5, 0] - [15, 12]
+      subject:
+        BinOp: [5, 6] - [5, 10]
+          left:
+            Num: [5, 6] - [5, 7]
+              n: 1
+              text: '1'
+          op: Add
+          right:
+            Num: [5, 8] - [5, 10]
+              n: 2j
+              text: '2j'
+      cases: [
+        Case: [6, 4] - [7, 12]
+          pattern:
+            MatchLiteralPattern: [6, 9] - [6, 13]
+              literal:
+                BinOp: [6, 9] - [6, 13]
+                  left:
+                    Num: [6, 9] - [6, 10]
+                      n: 1
+                      text: '1'
+                  op: Add
+                  right:
+                    Num: [6, 11] - [6, 13]
+                      n: 2j
+                      text: '2j'
+          guard: None
+          body: [
+            Pass: [7, 8] - [7, 12]
+          ]
+        Case: [8, 4] - [9, 12]
+          pattern:
+            MatchLiteralPattern: [8, 9] - [8, 18]
+              literal:
+                BinOp: [8, 9] - [8, 18]
+                  left:
+                    UnaryOp: [8, 10] - [8, 11]
+                      op: USub
+                      operand:
+                        Num: [8, 10] - [8, 11]
+                          n: 1
+                          text: '1'
+                  op: Sub
+                  right:
+                    Num: [8, 12] - [8, 18]
+                      n: 26000000j
+                      text: '2.6e7j'
+          guard: None
+          body: [
+            Pass: [9, 8] - [9, 12]
+          ]
+        Case: [10, 4] - [11, 12]
+          pattern:
+            MatchLiteralPattern: [10, 9] - [10, 11]
+              literal:
+                UnaryOp: [10, 10] - [10, 11]
+                  op: USub
+                  operand:
+                    Num: [10, 10] - [10, 11]
+                      n: 1
+                      text: '1'
+          guard: None
+          body: [
+            Pass: [11, 8] - [11, 12]
+          ]
+        Case: [12, 4] - [13, 12]
+          pattern:
+            MatchLiteralPattern: [12, 9] - [12, 10]
+              literal:
+                Num: [12, 9] - [12, 10]
+                  n: 2
+                  text: '2'
+          guard: None
+          body: [
+            Pass: [13, 8] - [13, 12]
+          ]
+        Case: [14, 4] - [15, 12]
+          pattern:
+            MatchLiteralPattern: [14, 9] - [14, 16]
+              literal:
+                BinOp: [14, 9] - [14, 16]
+                  left:
+                    UnaryOp: [14, 10] - [14, 13]
+                      op: USub
+                      operand:
+                        Num: [14, 10] - [14, 13]
+                          n: 1.5
+                          text: '1.5'
+                  op: Add
+                  right:
+                    Num: [14, 14] - [14, 16]
+                      n: 5j
+                      text: '5j'
+          guard: None
+          body: [
+            Pass: [15, 8] - [15, 12]
+          ]
+      ]
+    Assign: [17, 0] - [17, 20]
+      targets: [
+        Name: [17, 4] - [17, 17]
+          variable: Variable('soft_keywords', None)
+          ctx: Store
+      ]
+      value:
+        FunctionExpr: [17, 0] - [17, 20]
+          name: 'soft_keywords'
+          args:
+            arguments
+              defaults: []
+              kw_defaults: []
+              annotations: []
+              varargannotation: None
+              kwargannotation: None
+              kw_annotations: []
+          returns: None
+          inner_scope:
+            Function: [17, 0] - [17, 20]
+              name: 'soft_keywords'
+              type_parameters: []
+              args: []
+              vararg: None
+              kwonlyargs: []
+              kwarg: None
+              body: [
+                Assign: [18, 4] - [18, 13]
+                  targets: [
+                    Name: [18, 4] - [18, 9]
+                      variable: Variable('match', None)
+                      ctx: Store
+                  ]
+                  value:
+                    Num: [18, 12] - [18, 13]
+                      n: 0
+                      text: '0'
+                Assign: [19, 4] - [19, 12]
+                  targets: [
+                    Name: [19, 4] - [19, 8]
+                      variable: Variable('case', None)
+                      ctx: Store
+                  ]
+                  value:
+                    Num: [19, 11] - [19, 12]
+                      n: 0
+                      text: '0'
+                Match: [20, 4] - [22, 17]
+                  subject:
+                    Name: [20, 10] - [20, 15]
+                      variable: Variable('match', None)
+                      ctx: Load
+                  cases: [
+                    Case: [21, 8] - [22, 17]
+                      pattern:
+                        MatchCapturePattern: [21, 13] - [21, 17]
+                          variable:
+                            Name: [21, 13] - [21, 17]
+                              variable: Variable('case', None)
+                              ctx: Store
+                      guard: None
+                      body: [
+                        Assign: [22, 12] - [22, 17]
+                          targets: [
+                            Name: [22, 12] - [22, 13]
+                              variable: Variable('x', None)
+                              ctx: Store
+                          ]
+                          value:
+                            Num: [22, 16] - [22, 17]
+                              n: 0
+                              text: '0'
+                      ]
+                  ]
+              ]
+    Match: [24, 0] - [26, 12]
+      subject:
+        Tuple: [24, 7] - [24, 10]
+          elts: [
+            Num: [24, 7] - [24, 8]
+              n: 0
+              text: '0'
+            Num: [24, 9] - [24, 10]
+              n: 1
+              text: '1'
+          ]
+          ctx: Load
+          parenthesised: True
+      cases: [
+        Case: [25, 4] - [26, 12]
+          pattern:
+            MatchSequencePattern: [25, 9] - [25, 12]
+              patterns: [
+                MatchStarPattern: [25, 9] - [25, 11]
+                  target:
+                    MatchCapturePattern: [25, 10] - [25, 11]
+                      variable:
+                        Name: [25, 10] - [25, 11]
+                          variable: Variable('x', None)
+                          ctx: Store
+              ]
+          guard: None
+          body: [
+            Pass: [26, 8] - [26, 12]
+          ]
+      ]
+    Match: [28, 0] - [30, 12]
+      subject:
+        Tuple: [28, 7] - [28, 10]
+          elts: [
+            Num: [28, 7] - [28, 8]
+              n: 2
+              text: '2'
+            Num: [28, 9] - [28, 10]
+              n: 3
+              text: '3'
+          ]
+          ctx: Load
+          parenthesised: True
+      cases: [
+        Case: [29, 4] - [30, 12]
+          pattern:
+            MatchSequencePattern: [29, 9] - [29, 14]
+              patterns: [
+                MatchStarPattern: [29, 10] - [29, 12]
+                  target:
+                    MatchCapturePattern: [29, 11] - [29, 12]
+                      variable:
+                        Name: [29, 11] - [29, 12]
+                          variable: Variable('x', None)
+                          ctx: Store
+              ]
+          guard: None
+          body: [
+            Pass: [30, 8] - [30, 12]
+          ]
+      ]
+    Match: [32, 0] - [34, 13]
+      subject:
+        Tuple: [32, 6] - [32, 10]
+          elts: [
+            Name: [32, 6] - [32, 7]
+              variable: Variable('w', None)
+              ctx: Load
+            Name: [32, 9] - [32, 10]
+              variable: Variable('x', None)
+              ctx: Load
+          ]
+          ctx: Load
+          parenthesised: True
+      cases: [
+        Case: [33, 4] - [34, 13]
+          pattern:
+            MatchSequencePattern: [33, 9] - [33, 13]
+              patterns: [
+                MatchCapturePattern: [33, 9] - [33, 10]
+                  variable:
+                    Name: [33, 9] - [33, 10]
+                      variable: Variable('y', None)
+                      ctx: Store
+                MatchCapturePattern: [33, 12] - [33, 13]
+                  variable:
+                    Name: [33, 12] - [33, 13]
+                      variable: Variable('z', None)
+                      ctx: Store
+              ]
+          guard: None
+          body: [
+            Assign: [34, 8] - [34, 13]
+              targets: [
+                Name: [34, 8] - [34, 9]
+                  variable: Variable('v', None)
+                  ctx: Store
+              ]
+              value:
+                Num: [34, 12] - [34, 13]
+                  n: 0
+                  text: '0'
+          ]
+      ]
+    Match: [36, 0] - [38, 12]
+      subject:
+        Tuple: [36, 6] - [36, 10]
+          elts: [
+            Name: [36, 6] - [36, 7]
+              variable: Variable('x', None)
+              ctx: Load
+            Name: [36, 9] - [36, 10]
+              variable: Variable('y', None)
+              ctx: Load
+          ]
+          ctx: Load
+          parenthesised: True
+      cases: [
+        Case: [37, 4] - [38, 12]
+          pattern:
+            MatchSequencePattern: [37, 9] - [37, 13]
+              patterns: [
+                MatchLiteralPattern: [37, 9] - [37, 10]
+                  literal:
+                    Num: [37, 9] - [37, 10]
+                      n: 1
+                      text: '1'
+                MatchLiteralPattern: [37, 12] - [37, 13]
+                  literal:
+                    Num: [37, 12] - [37, 13]
+                      n: 2
+                      text: '2'
+              ]
+          guard: None
+          body: [
+            Pass: [38, 8] - [38, 12]
+          ]
+      ]
+    Match: [40, 0] - [42, 12]
+      subject:
+        Name: [40, 6] - [40, 7]
+          variable: Variable('z', None)
+          ctx: Load
+      cases: [
+        Case: [41, 4] - [42, 12]
+          pattern:
+            MatchCapturePattern: [41, 9] - [41, 10]
+              variable:
+                Name: [41, 9] - [41, 10]
+                  variable: Variable('w', None)
+                  ctx: Store
+          guard: None
+          body: [
+            Pass: [42, 8] - [42, 12]
+          ]
+      ]
+  ]

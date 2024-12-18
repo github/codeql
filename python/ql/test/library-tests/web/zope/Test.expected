@@ -1,3 +1,0 @@
-| 12 | ControlFlowNode for implementer | class implementer | ../../../query-tests/Security/lib/zope/interface/__init__.py:5 |
-| 13 | ControlFlowNode for IThing | class IThing | test.py:4 |
-| 14 | ControlFlowNode for Thing | class Thing | test.py:9 |

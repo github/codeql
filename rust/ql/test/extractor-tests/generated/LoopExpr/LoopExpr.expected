@@ -1,0 +1,3 @@
+| gen_loop_expr.rs:5:5:7:5 | loop { ... } | hasLabel: | no | hasLoopBody: | yes | getNumberOfAttrs: | 0 |
+| gen_loop_expr.rs:8:5:11:5 | 'label: loop { ... } | hasLabel: | yes | hasLoopBody: | yes | getNumberOfAttrs: | 0 |
+| gen_loop_expr.rs:13:5:19:5 | loop { ... } | hasLabel: | no | hasLoopBody: | yes | getNumberOfAttrs: | 0 |

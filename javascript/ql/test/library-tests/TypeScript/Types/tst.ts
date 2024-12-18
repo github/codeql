@@ -234,7 +234,7 @@ module TS45 {
   }
 }
 
-import * as Foo3 from "./something.json" assert { type: "json" };
+import * as Foo3 from "./something.json" with { type: "json" };
 var foo = Foo3.foo;
 
 module TS46 {
@@ -481,4 +481,40 @@ module TS52 {
     type Pair3<T> = [first: T, T];
 
     console.log(["hello", "world"] satisfies Pair3<string>);
+}
+
+module TS54 {
+  function createStreetLight<C extends string>(colors: C[], defaultColor?: NoInfer<C>) {
+    return colors[0];
+  }
+
+  createStreetLight(["red", "yellow", "green"], "yellow");
+
+  const myObj = Object.groupBy([0, 1, 2, 3, 4, 5], (num, index) => {
+    return num % 2 === 0 ? "even": "odd";
+  });
+}
+
+module TS55 {
+  const strings = (["foo", 123])
+    .filter(s => typeof s === "string");
+
+  for (const str of strings) {
+    str.toLowerCase(); // <- string in 5.5, string | number in 5.4
+  }
+
+  function f1(obj: Record<string, unknown>, key: string) {
+    if (typeof obj[key] === "string") {
+      var str = obj[key].toUpperCase(); // Now okay, previously was error
+    }
+  }
+}
+
+namespace TS57{
+  declare const a: symbol;
+  export class A {
+      [a]() { return 1 };
+  }
+
+  declare const e1: A[typeof a]; // Now okay, previously was compilation error TS2538: Type 'symbol' cannot be used as an index type.
 }

@@ -3,8 +3,8 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
-private import semmle.code.csharp.security.dataflow.flowsources.Local
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.codedom.Compiler
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
@@ -17,27 +17,12 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for user input treated as code vulnerabilities.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for user input treated as code vulnerabilities.
  */
 abstract class Sanitizer extends DataFlow::ExprNode { }
-
-/**
- * DEPRECATED: Use `CodeInjection` instead.
- *
- * A taint-tracking configuration for user input treated as code vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "CodeInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
 
 /**
  * A taint-tracking configuration for user input treated as code vulnerabilities.
@@ -55,11 +40,22 @@ private module CodeInjectionConfig implements DataFlow::ConfigSig {
  */
 module CodeInjection = TaintTracking::Global<CodeInjectionConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
-/** A source of local user input. */
-class LocalSource extends Source instanceof LocalFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of local user input.
+ */
+deprecated class LocalSource extends DataFlow::Node instanceof LocalFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 

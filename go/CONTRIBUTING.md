@@ -33,7 +33,7 @@ Follow the steps below to help other users understand what your query does, and 
 
 2. **Format your code correctly**
 
-   All of the standard CodeQL queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all contributions follow the same formatting guidelines. If you use the CodeQL extension for Visual Studio Code, you can auto-format your query using the [Format Document command](https://codeql.github.com/docs/codeql-for-visual-studio-code/about-codeql-for-visual-studio-code/). For more information, see the [QL style guide](https://github.com/github/codeql/blob/main/docs/ql-style-guide.md).
+   All of the standard CodeQL queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all contributions follow the same formatting guidelines. If you use the CodeQL extension for Visual Studio Code, you can auto-format your query using the [Format Document command](https://docs.github.com/en/code-security/codeql-for-vs-code/). For more information, see the [QL style guide](https://github.com/github/codeql/blob/main/docs/ql-style-guide.md).
 
 3. **Make sure your query has the correct metadata**
 

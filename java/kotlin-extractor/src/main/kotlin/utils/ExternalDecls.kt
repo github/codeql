@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.declarations.IrExternalPackageFragment
 import org.jetbrains.kotlin.ir.util.isFileClass
-import org.jetbrains.kotlin.ir.util.parentClassOrNull
 
 fun isExternalDeclaration(d: IrDeclaration): Boolean {
     /*
@@ -15,9 +14,11 @@ fun isExternalDeclaration(d: IrDeclaration): Boolean {
             EXPRESSION_BODY
               CONST Int type=kotlin.Int value=-2147483648
     */
-    if (d.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
-        d.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB ||
-        d.origin.toString() == "FUNCTION_INTERFACE_CLASS") { // Treat kotlin.coroutines.* like ordinary library classes
+    if (
+        d.origin == IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB ||
+            d.origin == IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB ||
+            d.origin.toString() == "FUNCTION_INTERFACE_CLASS"
+    ) { // Treat kotlin.coroutines.* like ordinary library classes
         return true
     }
     /*
@@ -39,11 +40,11 @@ fun isExternalDeclaration(d: IrDeclaration): Boolean {
     return false
 }
 
-/**
- * Returns true if `d` is not itself a class, but is a member of an external file class.
- */
+/** Returns true if `d` is not itself a class, but is a member of an external file class. */
 fun isExternalFileClassMember(d: IrDeclaration): Boolean {
-    if (d is IrClass) { return false }
+    if (d is IrClass) {
+        return false
+    }
     val p = d.parent
     when (p) {
         is IrClass -> return p.isFileClass
@@ -53,4 +54,3 @@ fun isExternalFileClassMember(d: IrDeclaration): Boolean {
     }
     return false
 }
-

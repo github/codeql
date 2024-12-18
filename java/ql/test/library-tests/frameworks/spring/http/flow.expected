@@ -1,0 +1,407 @@
+models
+| 1 | Summary: java.util; List; false; of; (Object[]); ; Argument[0].ArrayElement; ReturnValue.Element; value; manual |
+| 2 | Summary: java.util; List; true; get; (int); ; Argument[this].Element; ReturnValue; value; manual |
+| 3 | Summary: java.util; Map; true; get; ; ; Argument[this].MapValue; ReturnValue; value; manual |
+| 4 | Summary: java.util; Optional; false; of; ; ; Argument[0]; ReturnValue.Element; value; manual |
+| 5 | Summary: org.springframework.http; HttpEntity; true; HttpEntity; (MultiValueMap); ; Argument[0].MapKey; Argument[this]; taint; manual |
+| 6 | Summary: org.springframework.http; HttpEntity; true; HttpEntity; (MultiValueMap); ; Argument[0].MapValue.Element; Argument[this]; taint; manual |
+| 7 | Summary: org.springframework.http; HttpEntity; true; HttpEntity; (Object); ; Argument[0]; Argument[this]; taint; manual |
+| 8 | Summary: org.springframework.http; HttpEntity; true; HttpEntity; (Object,MultiValueMap); ; Argument[0]; Argument[this]; taint; manual |
+| 9 | Summary: org.springframework.http; HttpEntity; true; HttpEntity; (Object,MultiValueMap); ; Argument[1].MapValue.Element; Argument[this]; taint; manual |
+| 10 | Summary: org.springframework.http; HttpEntity; true; getBody; ; ; Argument[this]; ReturnValue; taint; manual |
+| 11 | Summary: org.springframework.http; HttpEntity; true; getHeaders; ; ; Argument[this]; ReturnValue; taint; manual |
+| 12 | Summary: org.springframework.http; HttpHeaders; true; HttpHeaders; (MultiValueMap); ; Argument[0].MapKey; Argument[this]; taint; manual |
+| 13 | Summary: org.springframework.http; HttpHeaders; true; HttpHeaders; (MultiValueMap); ; Argument[0].MapValue.Element; Argument[this]; taint; manual |
+| 14 | Summary: org.springframework.http; HttpHeaders; true; add; (String,String); ; Argument[0..1]; Argument[this]; taint; manual |
+| 15 | Summary: org.springframework.http; HttpHeaders; true; addAll; (MultiValueMap); ; Argument[0].MapKey; Argument[this]; taint; manual |
+| 16 | Summary: org.springframework.http; HttpHeaders; true; addAll; (MultiValueMap); ; Argument[0].MapValue.Element; Argument[this]; taint; manual |
+| 17 | Summary: org.springframework.http; HttpHeaders; true; addAll; (String,List); ; Argument[0]; Argument[this]; taint; manual |
+| 18 | Summary: org.springframework.http; HttpHeaders; true; addAll; (String,List); ; Argument[1].Element; Argument[this]; taint; manual |
+| 19 | Summary: org.springframework.http; HttpHeaders; true; encodeBasicAuth; (String,String,Charset); ; Argument[0..1]; ReturnValue; taint; manual |
+| 20 | Summary: org.springframework.http; HttpHeaders; true; formatHeaders; (MultiValueMap); ; Argument[0].MapKey; ReturnValue; taint; manual |
+| 21 | Summary: org.springframework.http; HttpHeaders; true; formatHeaders; (MultiValueMap); ; Argument[0].MapValue.Element; ReturnValue; taint; manual |
+| 22 | Summary: org.springframework.http; HttpHeaders; true; get; (Object); ; Argument[this]; ReturnValue.Element; taint; manual |
+| 23 | Summary: org.springframework.http; HttpHeaders; true; getAccessControlAllowHeaders; (); ; Argument[this]; ReturnValue.Element; taint; manual |
+| 24 | Summary: org.springframework.http; HttpHeaders; true; getAccessControlAllowOrigin; (); ; Argument[this]; ReturnValue; taint; manual |
+| 25 | Summary: org.springframework.http; HttpHeaders; true; getAccessControlExposeHeaders; (); ; Argument[this]; ReturnValue.Element; taint; manual |
+| 26 | Summary: org.springframework.http; HttpHeaders; true; getAccessControlRequestHeaders; (); ; Argument[this]; ReturnValue.Element; taint; manual |
+| 27 | Summary: org.springframework.http; HttpHeaders; true; getCacheControl; (); ; Argument[this]; ReturnValue; taint; manual |
+| 28 | Summary: org.springframework.http; HttpHeaders; true; getConnection; (); ; Argument[this]; ReturnValue.Element; taint; manual |
+| 29 | Summary: org.springframework.http; HttpHeaders; true; getETag; (); ; Argument[this]; ReturnValue; taint; manual |
+| 30 | Summary: org.springframework.http; HttpHeaders; true; getFirst; (String); ; Argument[this]; ReturnValue; taint; manual |
+| 31 | Summary: org.springframework.http; HttpHeaders; true; getHost; (); ; Argument[this]; ReturnValue; taint; manual |
+| 32 | Summary: org.springframework.http; HttpHeaders; true; getIfMatch; (); ; Argument[this]; ReturnValue.Element; taint; manual |
+| 33 | Summary: org.springframework.http; HttpHeaders; true; getIfNoneMatch; (); ; Argument[this]; ReturnValue.Element; taint; manual |
+| 34 | Summary: org.springframework.http; HttpHeaders; true; getLocation; (); ; Argument[this]; ReturnValue; taint; manual |
+| 35 | Summary: org.springframework.http; HttpHeaders; true; getOrEmpty; (Object); ; Argument[this]; ReturnValue.Element; taint; manual |
+| 36 | Summary: org.springframework.http; HttpHeaders; true; getOrigin; (); ; Argument[this]; ReturnValue; taint; manual |
+| 37 | Summary: org.springframework.http; HttpHeaders; true; getPragma; (); ; Argument[this]; ReturnValue; taint; manual |
+| 38 | Summary: org.springframework.http; HttpHeaders; true; getUpgrade; (); ; Argument[this]; ReturnValue; taint; manual |
+| 39 | Summary: org.springframework.http; HttpHeaders; true; getValuesAsList; (String); ; Argument[this]; ReturnValue.Element; taint; manual |
+| 40 | Summary: org.springframework.http; HttpHeaders; true; getVary; (); ; Argument[this]; ReturnValue.Element; taint; manual |
+| 41 | Summary: org.springframework.http; RequestEntity; true; getUrl; (); ; Argument[this]; ReturnValue; taint; manual |
+| 42 | Summary: org.springframework.http; ResponseEntity$BodyBuilder; true; body; (Object); ; Argument[0]; ReturnValue; taint; manual |
+| 43 | Summary: org.springframework.http; ResponseEntity$BodyBuilder; true; body; (Object); ; Argument[this]; ReturnValue; taint; manual |
+| 44 | Summary: org.springframework.http; ResponseEntity$BodyBuilder; true; contentType; (MediaType); ; Argument[this]; ReturnValue; value; manual |
+| 45 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; allow; (HttpMethod[]); ; Argument[this]; ReturnValue; value; manual |
+| 46 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; build; (); ; Argument[this]; ReturnValue; taint; manual |
+| 47 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; eTag; (String); ; Argument[0]; Argument[this]; taint; manual |
+| 48 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; eTag; (String); ; Argument[this]; ReturnValue; value; manual |
+| 49 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; header; (String,String[]); ; Argument[0]; Argument[this]; taint; manual |
+| 50 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; header; (String,String[]); ; Argument[1].ArrayElement; Argument[this]; taint; manual |
+| 51 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; header; (String,String[]); ; Argument[this]; ReturnValue; value; manual |
+| 52 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; headers; (HttpHeaders); ; Argument[0]; Argument[this]; taint; manual |
+| 53 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; headers; (HttpHeaders); ; Argument[this]; ReturnValue; value; manual |
+| 54 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; lastModified; ; ; Argument[this]; ReturnValue; value; manual |
+| 55 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; location; (URI); ; Argument[0]; Argument[this]; taint; manual |
+| 56 | Summary: org.springframework.http; ResponseEntity$HeadersBuilder; true; location; (URI); ; Argument[this]; ReturnValue; value; manual |
+| 57 | Summary: org.springframework.http; ResponseEntity; true; ResponseEntity; (MultiValueMap,HttpStatus); ; Argument[0].MapKey; Argument[this]; taint; manual |
+| 58 | Summary: org.springframework.http; ResponseEntity; true; ResponseEntity; (MultiValueMap,HttpStatus); ; Argument[0].MapValue.Element; Argument[this]; taint; manual |
+| 59 | Summary: org.springframework.http; ResponseEntity; true; ResponseEntity; (Object,HttpStatus); ; Argument[0]; Argument[this]; taint; manual |
+| 60 | Summary: org.springframework.http; ResponseEntity; true; ResponseEntity; (Object,MultiValueMap,HttpStatus); ; Argument[0]; Argument[this]; taint; manual |
+| 61 | Summary: org.springframework.http; ResponseEntity; true; ResponseEntity; (Object,MultiValueMap,HttpStatus); ; Argument[1].MapKey; Argument[this]; taint; manual |
+| 62 | Summary: org.springframework.http; ResponseEntity; true; ResponseEntity; (Object,MultiValueMap,HttpStatus); ; Argument[1].MapValue.Element; Argument[this]; taint; manual |
+| 63 | Summary: org.springframework.http; ResponseEntity; true; ResponseEntity; (Object,MultiValueMap,int); ; Argument[0]; Argument[this]; taint; manual |
+| 64 | Summary: org.springframework.http; ResponseEntity; true; ResponseEntity; (Object,MultiValueMap,int); ; Argument[1].MapKey; Argument[this]; taint; manual |
+| 65 | Summary: org.springframework.http; ResponseEntity; true; ResponseEntity; (Object,MultiValueMap,int); ; Argument[1].MapValue.Element; Argument[this]; taint; manual |
+| 66 | Summary: org.springframework.http; ResponseEntity; true; created; (URI); ; Argument[0]; ReturnValue; taint; manual |
+| 67 | Summary: org.springframework.http; ResponseEntity; true; of; (Optional); ; Argument[0].Element; ReturnValue; taint; manual |
+| 68 | Summary: org.springframework.http; ResponseEntity; true; ok; (Object); ; Argument[0]; ReturnValue; taint; manual |
+| 69 | Summary: org.springframework.util; MultiValueMap; true; add; ; ; Argument[0]; Argument[this].MapKey; value; manual |
+| 70 | Summary: org.springframework.util; MultiValueMap; true; add; ; ; Argument[1]; Argument[this].MapValue.Element; value; manual |
+| 71 | Summary: org.springframework.util; MultiValueMap; true; addAll; (java.lang.Object,java.util.List); ; Argument[1].Element; Argument[this].MapValue.Element; value; manual |
+| 72 | Summary: org.springframework.util; MultiValueMap; true; addAll; (org.springframework.util.MultiValueMap); ; Argument[0].MapValue.Element; Argument[this].MapValue.Element; value; manual |
+| 73 | Summary: org.springframework.util; MultiValueMap; true; getFirst; ; ; Argument[this].MapValue.Element; ReturnValue; value; manual |
+edges
+| TestHttp.java:16:20:16:26 | taint(...) : String | TestHttp.java:17:29:17:29 | x : String | provenance |  |
+| TestHttp.java:16:20:16:26 | taint(...) : String | TestHttp.java:20:29:20:29 | x : String | provenance |  |
+| TestHttp.java:17:29:17:29 | x : String | TestHttp.java:17:14:17:30 | new HttpEntity<>(...) | provenance | MaD:7 |
+| TestHttp.java:20:29:20:29 | x : String | TestHttp.java:20:14:20:34 | new HttpEntity<>(...) | provenance | MaD:8 |
+| TestHttp.java:22:9:22:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:23:34:23:35 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | provenance |  |
+| TestHttp.java:22:9:22:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:24:37:24:38 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | provenance |  |
+| TestHttp.java:22:21:22:27 | taint(...) : String | TestHttp.java:22:9:22:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | provenance | MaD:70 |
+| TestHttp.java:23:34:23:35 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:23:14:23:36 | new HttpEntity<>(...) | provenance | MaD:9 |
+| TestHttp.java:24:37:24:38 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:24:14:24:39 | new HttpEntity<String>(...) | provenance | MaD:6 |
+| TestHttp.java:27:9:27:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:28:37:28:38 | m2 : LinkedMultiValueMap [<map.key>] : String | provenance |  |
+| TestHttp.java:27:16:27:22 | taint(...) : String | TestHttp.java:27:9:27:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | provenance | MaD:69 |
+| TestHttp.java:28:37:28:38 | m2 : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:28:14:28:39 | new HttpEntity<String>(...) | provenance | MaD:5 |
+| TestHttp.java:30:34:30:40 | taint(...) : HttpEntity | TestHttp.java:31:14:31:16 | ent : HttpEntity | provenance |  |
+| TestHttp.java:30:34:30:40 | taint(...) : HttpEntity | TestHttp.java:32:14:32:16 | ent : HttpEntity | provenance |  |
+| TestHttp.java:31:14:31:16 | ent : HttpEntity | TestHttp.java:31:14:31:26 | getBody(...) | provenance | MaD:10 |
+| TestHttp.java:32:14:32:16 | ent : HttpEntity | TestHttp.java:32:14:32:29 | getHeaders(...) | provenance | MaD:11 |
+| TestHttp.java:34:37:34:43 | taint(...) : RequestEntity | TestHttp.java:35:14:35:16 | req : RequestEntity | provenance |  |
+| TestHttp.java:35:14:35:16 | req : RequestEntity | TestHttp.java:35:14:35:25 | getUrl(...) | provenance | MaD:41 |
+| TestHttp.java:39:20:39:26 | taint(...) : String | TestHttp.java:40:14:40:33 | ok(...) | provenance | SpringResponseEntity |
+| TestHttp.java:39:20:39:26 | taint(...) : String | TestHttp.java:40:32:40:32 | x : String | provenance |  |
+| TestHttp.java:39:20:39:26 | taint(...) : String | TestHttp.java:41:44:41:44 | x : String | provenance |  |
+| TestHttp.java:39:20:39:26 | taint(...) : String | TestHttp.java:43:14:43:67 | body(...) | provenance | SpringResponseEntityBodyBuilder |
+| TestHttp.java:39:20:39:26 | taint(...) : String | TestHttp.java:43:66:43:66 | x : String | provenance |  |
+| TestHttp.java:39:20:39:26 | taint(...) : String | TestHttp.java:45:48:45:48 | x : String | provenance |  |
+| TestHttp.java:39:20:39:26 | taint(...) : String | TestHttp.java:46:63:46:63 | x : String | provenance |  |
+| TestHttp.java:39:20:39:26 | taint(...) : String | TestHttp.java:50:46:50:46 | x : String | provenance |  |
+| TestHttp.java:40:32:40:32 | x : String | TestHttp.java:40:14:40:33 | ok(...) | provenance | MaD:68 |
+| TestHttp.java:41:32:41:45 | of(...) : Optional [<element>] : String | TestHttp.java:41:14:41:46 | of(...) | provenance | MaD:67 |
+| TestHttp.java:41:44:41:44 | x : String | TestHttp.java:41:32:41:45 | of(...) : Optional [<element>] : String | provenance | MaD:4 |
+| TestHttp.java:43:66:43:66 | x : String | TestHttp.java:43:14:43:67 | body(...) | provenance | MaD:42 |
+| TestHttp.java:44:14:44:44 | created(...) : BodyBuilder | TestHttp.java:44:14:44:62 | contentType(...) : BodyBuilder | provenance | MaD:44 |
+| TestHttp.java:44:14:44:62 | contentType(...) : BodyBuilder | TestHttp.java:44:14:44:72 | body(...) | provenance | MaD:43 |
+| TestHttp.java:44:37:44:43 | taint(...) : URI | TestHttp.java:44:14:44:44 | created(...) : BodyBuilder | provenance | MaD:66 |
+| TestHttp.java:45:14:45:64 | header(...) : BodyBuilder | TestHttp.java:45:14:45:72 | build(...) | provenance | MaD:46 |
+| TestHttp.java:45:48:45:48 | x : String | TestHttp.java:45:14:45:64 | header(...) : BodyBuilder | provenance | MaD:49+MaD:51 |
+| TestHttp.java:46:14:46:64 | header(...) : BodyBuilder | TestHttp.java:46:14:46:72 | build(...) | provenance | MaD:46 |
+| TestHttp.java:46:14:46:64 | new ..[] { .. } : String[] [[]] : String | TestHttp.java:46:14:46:64 | header(...) : BodyBuilder | provenance | MaD:50+MaD:51 |
+| TestHttp.java:46:63:46:63 | x : String | TestHttp.java:46:14:46:64 | new ..[] { .. } : String[] [[]] : String | provenance |  |
+| TestHttp.java:48:9:48:9 | h [post update] : HttpHeaders | TestHttp.java:49:49:49:49 | h : HttpHeaders | provenance |  |
+| TestHttp.java:48:20:48:26 | taint(...) : String | TestHttp.java:48:9:48:9 | h [post update] : HttpHeaders | provenance | MaD:14 |
+| TestHttp.java:49:14:49:50 | headers(...) : BodyBuilder | TestHttp.java:49:14:49:58 | allow(...) : BodyBuilder | provenance | MaD:45 |
+| TestHttp.java:49:14:49:58 | allow(...) : BodyBuilder | TestHttp.java:49:14:49:66 | build(...) | provenance | MaD:46 |
+| TestHttp.java:49:49:49:49 | h : HttpHeaders | TestHttp.java:49:14:49:50 | headers(...) : BodyBuilder | provenance | MaD:52+MaD:53 |
+| TestHttp.java:50:14:50:47 | eTag(...) : BodyBuilder | TestHttp.java:50:14:50:55 | allow(...) : BodyBuilder | provenance | MaD:45 |
+| TestHttp.java:50:14:50:55 | allow(...) : BodyBuilder | TestHttp.java:50:14:50:63 | build(...) | provenance | MaD:46 |
+| TestHttp.java:50:46:50:46 | x : String | TestHttp.java:50:14:50:47 | eTag(...) : BodyBuilder | provenance | MaD:47+MaD:48 |
+| TestHttp.java:51:14:51:57 | location(...) : BodyBuilder | TestHttp.java:51:14:51:80 | lastModified(...) : BodyBuilder | provenance | MaD:54 |
+| TestHttp.java:51:14:51:80 | lastModified(...) : BodyBuilder | TestHttp.java:51:14:51:88 | build(...) | provenance | MaD:46 |
+| TestHttp.java:51:50:51:56 | taint(...) : URI | TestHttp.java:51:14:51:57 | location(...) : BodyBuilder | provenance | MaD:55+MaD:56 |
+| TestHttp.java:56:20:56:26 | taint(...) : String | TestHttp.java:59:33:59:33 | x : String | provenance |  |
+| TestHttp.java:56:20:56:26 | taint(...) : String | TestHttp.java:60:33:60:33 | x : String | provenance |  |
+| TestHttp.java:56:20:56:26 | taint(...) : String | TestHttp.java:61:33:61:33 | x : String | provenance |  |
+| TestHttp.java:59:33:59:33 | x : String | TestHttp.java:59:14:59:55 | new ResponseEntity<>(...) | provenance | MaD:59 |
+| TestHttp.java:60:33:60:33 | x : String | TestHttp.java:60:14:60:59 | new ResponseEntity<>(...) | provenance | MaD:60 |
+| TestHttp.java:61:33:61:33 | x : String | TestHttp.java:61:14:61:43 | new ResponseEntity<>(...) | provenance | MaD:63 |
+| TestHttp.java:63:9:63:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:64:38:64:39 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | provenance |  |
+| TestHttp.java:63:9:63:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:65:41:65:42 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | provenance |  |
+| TestHttp.java:63:9:63:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:66:38:66:39 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | provenance |  |
+| TestHttp.java:63:21:63:27 | taint(...) : String | TestHttp.java:63:9:63:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | provenance | MaD:70 |
+| TestHttp.java:64:38:64:39 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:64:14:64:61 | new ResponseEntity<>(...) | provenance | MaD:62 |
+| TestHttp.java:65:41:65:42 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:65:14:65:64 | new ResponseEntity<String>(...) | provenance | MaD:58 |
+| TestHttp.java:66:38:66:39 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:66:14:66:45 | new ResponseEntity<>(...) | provenance | MaD:65 |
+| TestHttp.java:69:9:69:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:70:38:70:39 | m2 : LinkedMultiValueMap [<map.key>] : String | provenance |  |
+| TestHttp.java:69:9:69:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:71:41:71:42 | m2 : LinkedMultiValueMap [<map.key>] : String | provenance |  |
+| TestHttp.java:69:9:69:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:72:38:72:39 | m2 : LinkedMultiValueMap [<map.key>] : String | provenance |  |
+| TestHttp.java:69:16:69:22 | taint(...) : String | TestHttp.java:69:9:69:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | provenance | MaD:69 |
+| TestHttp.java:70:38:70:39 | m2 : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:70:14:70:61 | new ResponseEntity<>(...) | provenance | MaD:61 |
+| TestHttp.java:71:41:71:42 | m2 : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:71:14:71:64 | new ResponseEntity<String>(...) | provenance | MaD:57 |
+| TestHttp.java:72:38:72:39 | m2 : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:72:14:72:45 | new ResponseEntity<>(...) | provenance | MaD:64 |
+| TestHttp.java:74:38:74:44 | taint(...) : ResponseEntity | TestHttp.java:75:14:75:16 | ent : ResponseEntity | provenance |  |
+| TestHttp.java:74:38:74:44 | taint(...) : ResponseEntity | TestHttp.java:76:14:76:16 | ent : ResponseEntity | provenance |  |
+| TestHttp.java:75:14:75:16 | ent : ResponseEntity | TestHttp.java:75:14:75:26 | getBody(...) | provenance | MaD:10 |
+| TestHttp.java:76:14:76:16 | ent : ResponseEntity | TestHttp.java:76:14:76:29 | getHeaders(...) | provenance | MaD:11 |
+| TestHttp.java:81:9:81:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:82:30:82:31 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | provenance |  |
+| TestHttp.java:81:9:81:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:97:19:97:20 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | provenance |  |
+| TestHttp.java:81:9:81:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:112:40:112:41 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | provenance |  |
+| TestHttp.java:81:21:81:27 | taint(...) : String | TestHttp.java:81:9:81:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | provenance | MaD:70 |
+| TestHttp.java:82:30:82:31 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:82:14:82:32 | new HttpHeaders(...) | provenance | MaD:13 |
+| TestHttp.java:85:9:85:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:86:30:86:31 | m2 : LinkedMultiValueMap [<map.key>] : String | provenance |  |
+| TestHttp.java:85:9:85:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:101:19:101:20 | m2 : LinkedMultiValueMap [<map.key>] : String | provenance |  |
+| TestHttp.java:85:9:85:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:113:40:113:41 | m2 : LinkedMultiValueMap [<map.key>] : String | provenance |  |
+| TestHttp.java:85:16:85:22 | taint(...) : String | TestHttp.java:85:9:85:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | provenance | MaD:69 |
+| TestHttp.java:86:30:86:31 | m2 : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:86:14:86:32 | new HttpHeaders(...) | provenance | MaD:12 |
+| TestHttp.java:89:9:89:10 | h1 [post update] : HttpHeaders | TestHttp.java:90:14:90:15 | h1 | provenance |  |
+| TestHttp.java:89:16:89:22 | taint(...) : String | TestHttp.java:89:9:89:10 | h1 [post update] : HttpHeaders | provenance | MaD:14 |
+| TestHttp.java:93:9:93:10 | h2 [post update] : HttpHeaders | TestHttp.java:94:14:94:15 | h2 | provenance |  |
+| TestHttp.java:93:9:93:10 | h2 [post update] : HttpHeaders [<map.value>, <element>] : String | TestHttp.java:94:14:94:15 | h2 | provenance |  |
+| TestHttp.java:93:21:93:27 | taint(...) : String | TestHttp.java:93:9:93:10 | h2 [post update] : HttpHeaders | provenance | MaD:14 |
+| TestHttp.java:93:21:93:27 | taint(...) : String | TestHttp.java:93:9:93:10 | h2 [post update] : HttpHeaders [<map.value>, <element>] : String | provenance | MaD:70 |
+| TestHttp.java:97:9:97:10 | h3 [post update] : HttpHeaders | TestHttp.java:98:14:98:15 | h3 | provenance |  |
+| TestHttp.java:97:9:97:10 | h3 [post update] : HttpHeaders [<map.value>, <element>] : String | TestHttp.java:98:14:98:15 | h3 | provenance |  |
+| TestHttp.java:97:19:97:20 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:97:9:97:10 | h3 [post update] : HttpHeaders | provenance | MaD:16 |
+| TestHttp.java:97:19:97:20 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:97:9:97:10 | h3 [post update] : HttpHeaders [<map.value>, <element>] : String | provenance | MaD:72 |
+| TestHttp.java:101:9:101:10 | h4 [post update] : HttpHeaders | TestHttp.java:102:14:102:15 | h4 | provenance |  |
+| TestHttp.java:101:19:101:20 | m2 : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:101:9:101:10 | h4 [post update] : HttpHeaders | provenance | MaD:15 |
+| TestHttp.java:105:9:105:10 | h5 [post update] : HttpHeaders | TestHttp.java:106:14:106:15 | h5 | provenance |  |
+| TestHttp.java:105:19:105:25 | taint(...) : String | TestHttp.java:105:9:105:10 | h5 [post update] : HttpHeaders | provenance | MaD:17 |
+| TestHttp.java:109:9:109:10 | h6 [post update] : HttpHeaders | TestHttp.java:110:14:110:15 | h6 | provenance |  |
+| TestHttp.java:109:9:109:10 | h6 [post update] : HttpHeaders [<map.value>, <element>] : Object | TestHttp.java:110:14:110:15 | h6 | provenance |  |
+| TestHttp.java:109:24:109:39 | of(...) : List [<element>] : Object | TestHttp.java:109:9:109:10 | h6 [post update] : HttpHeaders | provenance | MaD:18 |
+| TestHttp.java:109:24:109:39 | of(...) : List [<element>] : Object | TestHttp.java:109:9:109:10 | h6 [post update] : HttpHeaders [<map.value>, <element>] : Object | provenance | MaD:71 |
+| TestHttp.java:109:32:109:38 | taint(...) : String[] | TestHttp.java:109:24:109:39 | of(...) : List [<element>] : Object | provenance | MaD:1 |
+| TestHttp.java:112:40:112:41 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | TestHttp.java:112:14:112:42 | formatHeaders(...) | provenance | MaD:21 |
+| TestHttp.java:113:40:113:41 | m2 : LinkedMultiValueMap [<map.key>] : String | TestHttp.java:113:14:113:42 | formatHeaders(...) | provenance | MaD:20 |
+| TestHttp.java:115:42:115:48 | taint(...) : String | TestHttp.java:115:14:115:60 | encodeBasicAuth(...) | provenance | MaD:19 |
+| TestHttp.java:116:47:116:53 | taint(...) : String | TestHttp.java:116:14:116:60 | encodeBasicAuth(...) | provenance | MaD:19 |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:122:14:122:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:128:14:128:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:130:14:130:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:131:14:131:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:133:14:133:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:136:14:136:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:137:14:137:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:143:14:143:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:145:14:145:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:148:14:148:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:149:14:149:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:151:14:151:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:154:14:154:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:155:14:155:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:156:14:156:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:157:14:157:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:158:14:158:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:159:14:159:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | TestHttp.java:160:14:160:14 | h : HttpHeaders | provenance |  |
+| TestHttp.java:122:14:122:14 | h : HttpHeaders | TestHttp.java:122:14:122:24 | get(...) : List | provenance | MaD:3 |
+| TestHttp.java:122:14:122:14 | h : HttpHeaders | TestHttp.java:122:14:122:24 | get(...) : List [<element>] : Object | provenance | MaD:22 |
+| TestHttp.java:122:14:122:24 | get(...) : List | TestHttp.java:122:14:122:31 | get(...) | provenance | MaD:2 |
+| TestHttp.java:122:14:122:24 | get(...) : List [<element>] : Object | TestHttp.java:122:14:122:31 | get(...) | provenance | MaD:2 |
+| TestHttp.java:128:14:128:14 | h : HttpHeaders | TestHttp.java:128:14:128:45 | getAccessControlAllowHeaders(...) : List [<element>] : Object | provenance | MaD:23 |
+| TestHttp.java:128:14:128:45 | getAccessControlAllowHeaders(...) : List [<element>] : Object | TestHttp.java:128:14:128:52 | get(...) | provenance | MaD:2 |
+| TestHttp.java:130:14:130:14 | h : HttpHeaders | TestHttp.java:130:14:130:44 | getAccessControlAllowOrigin(...) | provenance | MaD:24 |
+| TestHttp.java:131:14:131:14 | h : HttpHeaders | TestHttp.java:131:14:131:46 | getAccessControlExposeHeaders(...) : List [<element>] : Object | provenance | MaD:25 |
+| TestHttp.java:131:14:131:46 | getAccessControlExposeHeaders(...) : List [<element>] : Object | TestHttp.java:131:14:131:53 | get(...) | provenance | MaD:2 |
+| TestHttp.java:133:14:133:14 | h : HttpHeaders | TestHttp.java:133:14:133:47 | getAccessControlRequestHeaders(...) : List [<element>] : Object | provenance | MaD:26 |
+| TestHttp.java:133:14:133:47 | getAccessControlRequestHeaders(...) : List [<element>] : Object | TestHttp.java:133:14:133:54 | get(...) | provenance | MaD:2 |
+| TestHttp.java:136:14:136:14 | h : HttpHeaders | TestHttp.java:136:14:136:32 | getCacheControl(...) | provenance | MaD:27 |
+| TestHttp.java:137:14:137:14 | h : HttpHeaders | TestHttp.java:137:14:137:30 | getConnection(...) : List [<element>] : Object | provenance | MaD:28 |
+| TestHttp.java:137:14:137:30 | getConnection(...) : List [<element>] : Object | TestHttp.java:137:14:137:37 | get(...) | provenance | MaD:2 |
+| TestHttp.java:143:14:143:14 | h : HttpHeaders | TestHttp.java:143:14:143:24 | getETag(...) | provenance | MaD:29 |
+| TestHttp.java:145:14:145:14 | h : HttpHeaders | TestHttp.java:145:14:145:28 | getFirst(...) | provenance | MaD:30 |
+| TestHttp.java:145:14:145:14 | h : HttpHeaders | TestHttp.java:145:14:145:28 | getFirst(...) | provenance | MaD:73 |
+| TestHttp.java:148:14:148:14 | h : HttpHeaders | TestHttp.java:148:14:148:24 | getHost(...) | provenance | MaD:31 |
+| TestHttp.java:149:14:149:14 | h : HttpHeaders | TestHttp.java:149:14:149:27 | getIfMatch(...) : List [<element>] : Object | provenance | MaD:32 |
+| TestHttp.java:149:14:149:27 | getIfMatch(...) : List [<element>] : Object | TestHttp.java:149:14:149:34 | get(...) | provenance | MaD:2 |
+| TestHttp.java:151:14:151:14 | h : HttpHeaders | TestHttp.java:151:14:151:31 | getIfNoneMatch(...) : List [<element>] : Object | provenance | MaD:33 |
+| TestHttp.java:151:14:151:31 | getIfNoneMatch(...) : List [<element>] : Object | TestHttp.java:151:14:151:38 | get(...) | provenance | MaD:2 |
+| TestHttp.java:154:14:154:14 | h : HttpHeaders | TestHttp.java:154:14:154:28 | getLocation(...) | provenance | MaD:34 |
+| TestHttp.java:155:14:155:14 | h : HttpHeaders | TestHttp.java:155:14:155:30 | getOrEmpty(...) : List [<element>] : Object | provenance | MaD:35 |
+| TestHttp.java:155:14:155:30 | getOrEmpty(...) : List [<element>] : Object | TestHttp.java:155:14:155:37 | get(...) | provenance | MaD:2 |
+| TestHttp.java:156:14:156:14 | h : HttpHeaders | TestHttp.java:156:14:156:26 | getOrigin(...) | provenance | MaD:36 |
+| TestHttp.java:157:14:157:14 | h : HttpHeaders | TestHttp.java:157:14:157:26 | getPragma(...) | provenance | MaD:37 |
+| TestHttp.java:158:14:158:14 | h : HttpHeaders | TestHttp.java:158:14:158:27 | getUpgrade(...) | provenance | MaD:38 |
+| TestHttp.java:159:14:159:14 | h : HttpHeaders | TestHttp.java:159:14:159:35 | getValuesAsList(...) : List [<element>] : Object | provenance | MaD:39 |
+| TestHttp.java:159:14:159:35 | getValuesAsList(...) : List [<element>] : Object | TestHttp.java:159:14:159:42 | get(...) | provenance | MaD:2 |
+| TestHttp.java:160:14:160:14 | h : HttpHeaders | TestHttp.java:160:14:160:24 | getVary(...) : List [<element>] : Object | provenance | MaD:40 |
+| TestHttp.java:160:14:160:24 | getVary(...) : List [<element>] : Object | TestHttp.java:160:14:160:31 | get(...) | provenance | MaD:2 |
+nodes
+| TestHttp.java:16:20:16:26 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:17:14:17:30 | new HttpEntity<>(...) | semmle.label | new HttpEntity<>(...) |
+| TestHttp.java:17:29:17:29 | x : String | semmle.label | x : String |
+| TestHttp.java:20:14:20:34 | new HttpEntity<>(...) | semmle.label | new HttpEntity<>(...) |
+| TestHttp.java:20:29:20:29 | x : String | semmle.label | x : String |
+| TestHttp.java:22:9:22:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | semmle.label | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String |
+| TestHttp.java:22:21:22:27 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:23:14:23:36 | new HttpEntity<>(...) | semmle.label | new HttpEntity<>(...) |
+| TestHttp.java:23:34:23:35 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | semmle.label | m1 : LinkedMultiValueMap [<map.value>, <element>] : String |
+| TestHttp.java:24:14:24:39 | new HttpEntity<String>(...) | semmle.label | new HttpEntity<String>(...) |
+| TestHttp.java:24:37:24:38 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | semmle.label | m1 : LinkedMultiValueMap [<map.value>, <element>] : String |
+| TestHttp.java:27:9:27:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | semmle.label | m2 [post update] : LinkedMultiValueMap [<map.key>] : String |
+| TestHttp.java:27:16:27:22 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:28:14:28:39 | new HttpEntity<String>(...) | semmle.label | new HttpEntity<String>(...) |
+| TestHttp.java:28:37:28:38 | m2 : LinkedMultiValueMap [<map.key>] : String | semmle.label | m2 : LinkedMultiValueMap [<map.key>] : String |
+| TestHttp.java:30:34:30:40 | taint(...) : HttpEntity | semmle.label | taint(...) : HttpEntity |
+| TestHttp.java:31:14:31:16 | ent : HttpEntity | semmle.label | ent : HttpEntity |
+| TestHttp.java:31:14:31:26 | getBody(...) | semmle.label | getBody(...) |
+| TestHttp.java:32:14:32:16 | ent : HttpEntity | semmle.label | ent : HttpEntity |
+| TestHttp.java:32:14:32:29 | getHeaders(...) | semmle.label | getHeaders(...) |
+| TestHttp.java:34:37:34:43 | taint(...) : RequestEntity | semmle.label | taint(...) : RequestEntity |
+| TestHttp.java:35:14:35:16 | req : RequestEntity | semmle.label | req : RequestEntity |
+| TestHttp.java:35:14:35:25 | getUrl(...) | semmle.label | getUrl(...) |
+| TestHttp.java:39:20:39:26 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:40:14:40:33 | ok(...) | semmle.label | ok(...) |
+| TestHttp.java:40:32:40:32 | x : String | semmle.label | x : String |
+| TestHttp.java:41:14:41:46 | of(...) | semmle.label | of(...) |
+| TestHttp.java:41:32:41:45 | of(...) : Optional [<element>] : String | semmle.label | of(...) : Optional [<element>] : String |
+| TestHttp.java:41:44:41:44 | x : String | semmle.label | x : String |
+| TestHttp.java:43:14:43:67 | body(...) | semmle.label | body(...) |
+| TestHttp.java:43:66:43:66 | x : String | semmle.label | x : String |
+| TestHttp.java:44:14:44:44 | created(...) : BodyBuilder | semmle.label | created(...) : BodyBuilder |
+| TestHttp.java:44:14:44:62 | contentType(...) : BodyBuilder | semmle.label | contentType(...) : BodyBuilder |
+| TestHttp.java:44:14:44:72 | body(...) | semmle.label | body(...) |
+| TestHttp.java:44:37:44:43 | taint(...) : URI | semmle.label | taint(...) : URI |
+| TestHttp.java:45:14:45:64 | header(...) : BodyBuilder | semmle.label | header(...) : BodyBuilder |
+| TestHttp.java:45:14:45:72 | build(...) | semmle.label | build(...) |
+| TestHttp.java:45:48:45:48 | x : String | semmle.label | x : String |
+| TestHttp.java:46:14:46:64 | header(...) : BodyBuilder | semmle.label | header(...) : BodyBuilder |
+| TestHttp.java:46:14:46:64 | new ..[] { .. } : String[] [[]] : String | semmle.label | new ..[] { .. } : String[] [[]] : String |
+| TestHttp.java:46:14:46:72 | build(...) | semmle.label | build(...) |
+| TestHttp.java:46:63:46:63 | x : String | semmle.label | x : String |
+| TestHttp.java:48:9:48:9 | h [post update] : HttpHeaders | semmle.label | h [post update] : HttpHeaders |
+| TestHttp.java:48:20:48:26 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:49:14:49:50 | headers(...) : BodyBuilder | semmle.label | headers(...) : BodyBuilder |
+| TestHttp.java:49:14:49:58 | allow(...) : BodyBuilder | semmle.label | allow(...) : BodyBuilder |
+| TestHttp.java:49:14:49:66 | build(...) | semmle.label | build(...) |
+| TestHttp.java:49:49:49:49 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:50:14:50:47 | eTag(...) : BodyBuilder | semmle.label | eTag(...) : BodyBuilder |
+| TestHttp.java:50:14:50:55 | allow(...) : BodyBuilder | semmle.label | allow(...) : BodyBuilder |
+| TestHttp.java:50:14:50:63 | build(...) | semmle.label | build(...) |
+| TestHttp.java:50:46:50:46 | x : String | semmle.label | x : String |
+| TestHttp.java:51:14:51:57 | location(...) : BodyBuilder | semmle.label | location(...) : BodyBuilder |
+| TestHttp.java:51:14:51:80 | lastModified(...) : BodyBuilder | semmle.label | lastModified(...) : BodyBuilder |
+| TestHttp.java:51:14:51:88 | build(...) | semmle.label | build(...) |
+| TestHttp.java:51:50:51:56 | taint(...) : URI | semmle.label | taint(...) : URI |
+| TestHttp.java:56:20:56:26 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:59:14:59:55 | new ResponseEntity<>(...) | semmle.label | new ResponseEntity<>(...) |
+| TestHttp.java:59:33:59:33 | x : String | semmle.label | x : String |
+| TestHttp.java:60:14:60:59 | new ResponseEntity<>(...) | semmle.label | new ResponseEntity<>(...) |
+| TestHttp.java:60:33:60:33 | x : String | semmle.label | x : String |
+| TestHttp.java:61:14:61:43 | new ResponseEntity<>(...) | semmle.label | new ResponseEntity<>(...) |
+| TestHttp.java:61:33:61:33 | x : String | semmle.label | x : String |
+| TestHttp.java:63:9:63:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | semmle.label | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String |
+| TestHttp.java:63:21:63:27 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:64:14:64:61 | new ResponseEntity<>(...) | semmle.label | new ResponseEntity<>(...) |
+| TestHttp.java:64:38:64:39 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | semmle.label | m1 : LinkedMultiValueMap [<map.value>, <element>] : String |
+| TestHttp.java:65:14:65:64 | new ResponseEntity<String>(...) | semmle.label | new ResponseEntity<String>(...) |
+| TestHttp.java:65:41:65:42 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | semmle.label | m1 : LinkedMultiValueMap [<map.value>, <element>] : String |
+| TestHttp.java:66:14:66:45 | new ResponseEntity<>(...) | semmle.label | new ResponseEntity<>(...) |
+| TestHttp.java:66:38:66:39 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | semmle.label | m1 : LinkedMultiValueMap [<map.value>, <element>] : String |
+| TestHttp.java:69:9:69:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | semmle.label | m2 [post update] : LinkedMultiValueMap [<map.key>] : String |
+| TestHttp.java:69:16:69:22 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:70:14:70:61 | new ResponseEntity<>(...) | semmle.label | new ResponseEntity<>(...) |
+| TestHttp.java:70:38:70:39 | m2 : LinkedMultiValueMap [<map.key>] : String | semmle.label | m2 : LinkedMultiValueMap [<map.key>] : String |
+| TestHttp.java:71:14:71:64 | new ResponseEntity<String>(...) | semmle.label | new ResponseEntity<String>(...) |
+| TestHttp.java:71:41:71:42 | m2 : LinkedMultiValueMap [<map.key>] : String | semmle.label | m2 : LinkedMultiValueMap [<map.key>] : String |
+| TestHttp.java:72:14:72:45 | new ResponseEntity<>(...) | semmle.label | new ResponseEntity<>(...) |
+| TestHttp.java:72:38:72:39 | m2 : LinkedMultiValueMap [<map.key>] : String | semmle.label | m2 : LinkedMultiValueMap [<map.key>] : String |
+| TestHttp.java:74:38:74:44 | taint(...) : ResponseEntity | semmle.label | taint(...) : ResponseEntity |
+| TestHttp.java:75:14:75:16 | ent : ResponseEntity | semmle.label | ent : ResponseEntity |
+| TestHttp.java:75:14:75:26 | getBody(...) | semmle.label | getBody(...) |
+| TestHttp.java:76:14:76:16 | ent : ResponseEntity | semmle.label | ent : ResponseEntity |
+| TestHttp.java:76:14:76:29 | getHeaders(...) | semmle.label | getHeaders(...) |
+| TestHttp.java:81:9:81:10 | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String | semmle.label | m1 [post update] : LinkedMultiValueMap [<map.value>, <element>] : String |
+| TestHttp.java:81:21:81:27 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:82:14:82:32 | new HttpHeaders(...) | semmle.label | new HttpHeaders(...) |
+| TestHttp.java:82:30:82:31 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | semmle.label | m1 : LinkedMultiValueMap [<map.value>, <element>] : String |
+| TestHttp.java:85:9:85:10 | m2 [post update] : LinkedMultiValueMap [<map.key>] : String | semmle.label | m2 [post update] : LinkedMultiValueMap [<map.key>] : String |
+| TestHttp.java:85:16:85:22 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:86:14:86:32 | new HttpHeaders(...) | semmle.label | new HttpHeaders(...) |
+| TestHttp.java:86:30:86:31 | m2 : LinkedMultiValueMap [<map.key>] : String | semmle.label | m2 : LinkedMultiValueMap [<map.key>] : String |
+| TestHttp.java:89:9:89:10 | h1 [post update] : HttpHeaders | semmle.label | h1 [post update] : HttpHeaders |
+| TestHttp.java:89:16:89:22 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:90:14:90:15 | h1 | semmle.label | h1 |
+| TestHttp.java:93:9:93:10 | h2 [post update] : HttpHeaders | semmle.label | h2 [post update] : HttpHeaders |
+| TestHttp.java:93:9:93:10 | h2 [post update] : HttpHeaders [<map.value>, <element>] : String | semmle.label | h2 [post update] : HttpHeaders [<map.value>, <element>] : String |
+| TestHttp.java:93:21:93:27 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:94:14:94:15 | h2 | semmle.label | h2 |
+| TestHttp.java:97:9:97:10 | h3 [post update] : HttpHeaders | semmle.label | h3 [post update] : HttpHeaders |
+| TestHttp.java:97:9:97:10 | h3 [post update] : HttpHeaders [<map.value>, <element>] : String | semmle.label | h3 [post update] : HttpHeaders [<map.value>, <element>] : String |
+| TestHttp.java:97:19:97:20 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | semmle.label | m1 : LinkedMultiValueMap [<map.value>, <element>] : String |
+| TestHttp.java:98:14:98:15 | h3 | semmle.label | h3 |
+| TestHttp.java:101:9:101:10 | h4 [post update] : HttpHeaders | semmle.label | h4 [post update] : HttpHeaders |
+| TestHttp.java:101:19:101:20 | m2 : LinkedMultiValueMap [<map.key>] : String | semmle.label | m2 : LinkedMultiValueMap [<map.key>] : String |
+| TestHttp.java:102:14:102:15 | h4 | semmle.label | h4 |
+| TestHttp.java:105:9:105:10 | h5 [post update] : HttpHeaders | semmle.label | h5 [post update] : HttpHeaders |
+| TestHttp.java:105:19:105:25 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:106:14:106:15 | h5 | semmle.label | h5 |
+| TestHttp.java:109:9:109:10 | h6 [post update] : HttpHeaders | semmle.label | h6 [post update] : HttpHeaders |
+| TestHttp.java:109:9:109:10 | h6 [post update] : HttpHeaders [<map.value>, <element>] : Object | semmle.label | h6 [post update] : HttpHeaders [<map.value>, <element>] : Object |
+| TestHttp.java:109:24:109:39 | of(...) : List [<element>] : Object | semmle.label | of(...) : List [<element>] : Object |
+| TestHttp.java:109:32:109:38 | taint(...) : String[] | semmle.label | taint(...) : String[] |
+| TestHttp.java:110:14:110:15 | h6 | semmle.label | h6 |
+| TestHttp.java:112:14:112:42 | formatHeaders(...) | semmle.label | formatHeaders(...) |
+| TestHttp.java:112:40:112:41 | m1 : LinkedMultiValueMap [<map.value>, <element>] : String | semmle.label | m1 : LinkedMultiValueMap [<map.value>, <element>] : String |
+| TestHttp.java:113:14:113:42 | formatHeaders(...) | semmle.label | formatHeaders(...) |
+| TestHttp.java:113:40:113:41 | m2 : LinkedMultiValueMap [<map.key>] : String | semmle.label | m2 : LinkedMultiValueMap [<map.key>] : String |
+| TestHttp.java:115:14:115:60 | encodeBasicAuth(...) | semmle.label | encodeBasicAuth(...) |
+| TestHttp.java:115:42:115:48 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:116:14:116:60 | encodeBasicAuth(...) | semmle.label | encodeBasicAuth(...) |
+| TestHttp.java:116:47:116:53 | taint(...) : String | semmle.label | taint(...) : String |
+| TestHttp.java:120:25:120:31 | taint(...) : HttpHeaders | semmle.label | taint(...) : HttpHeaders |
+| TestHttp.java:122:14:122:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:122:14:122:24 | get(...) : List | semmle.label | get(...) : List |
+| TestHttp.java:122:14:122:24 | get(...) : List [<element>] : Object | semmle.label | get(...) : List [<element>] : Object |
+| TestHttp.java:122:14:122:31 | get(...) | semmle.label | get(...) |
+| TestHttp.java:128:14:128:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:128:14:128:45 | getAccessControlAllowHeaders(...) : List [<element>] : Object | semmle.label | getAccessControlAllowHeaders(...) : List [<element>] : Object |
+| TestHttp.java:128:14:128:52 | get(...) | semmle.label | get(...) |
+| TestHttp.java:130:14:130:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:130:14:130:44 | getAccessControlAllowOrigin(...) | semmle.label | getAccessControlAllowOrigin(...) |
+| TestHttp.java:131:14:131:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:131:14:131:46 | getAccessControlExposeHeaders(...) : List [<element>] : Object | semmle.label | getAccessControlExposeHeaders(...) : List [<element>] : Object |
+| TestHttp.java:131:14:131:53 | get(...) | semmle.label | get(...) |
+| TestHttp.java:133:14:133:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:133:14:133:47 | getAccessControlRequestHeaders(...) : List [<element>] : Object | semmle.label | getAccessControlRequestHeaders(...) : List [<element>] : Object |
+| TestHttp.java:133:14:133:54 | get(...) | semmle.label | get(...) |
+| TestHttp.java:136:14:136:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:136:14:136:32 | getCacheControl(...) | semmle.label | getCacheControl(...) |
+| TestHttp.java:137:14:137:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:137:14:137:30 | getConnection(...) : List [<element>] : Object | semmle.label | getConnection(...) : List [<element>] : Object |
+| TestHttp.java:137:14:137:37 | get(...) | semmle.label | get(...) |
+| TestHttp.java:143:14:143:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:143:14:143:24 | getETag(...) | semmle.label | getETag(...) |
+| TestHttp.java:145:14:145:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:145:14:145:28 | getFirst(...) | semmle.label | getFirst(...) |
+| TestHttp.java:148:14:148:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:148:14:148:24 | getHost(...) | semmle.label | getHost(...) |
+| TestHttp.java:149:14:149:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:149:14:149:27 | getIfMatch(...) : List [<element>] : Object | semmle.label | getIfMatch(...) : List [<element>] : Object |
+| TestHttp.java:149:14:149:34 | get(...) | semmle.label | get(...) |
+| TestHttp.java:151:14:151:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:151:14:151:31 | getIfNoneMatch(...) : List [<element>] : Object | semmle.label | getIfNoneMatch(...) : List [<element>] : Object |
+| TestHttp.java:151:14:151:38 | get(...) | semmle.label | get(...) |
+| TestHttp.java:154:14:154:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:154:14:154:28 | getLocation(...) | semmle.label | getLocation(...) |
+| TestHttp.java:155:14:155:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:155:14:155:30 | getOrEmpty(...) : List [<element>] : Object | semmle.label | getOrEmpty(...) : List [<element>] : Object |
+| TestHttp.java:155:14:155:37 | get(...) | semmle.label | get(...) |
+| TestHttp.java:156:14:156:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:156:14:156:26 | getOrigin(...) | semmle.label | getOrigin(...) |
+| TestHttp.java:157:14:157:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:157:14:157:26 | getPragma(...) | semmle.label | getPragma(...) |
+| TestHttp.java:158:14:158:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:158:14:158:27 | getUpgrade(...) | semmle.label | getUpgrade(...) |
+| TestHttp.java:159:14:159:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:159:14:159:35 | getValuesAsList(...) : List [<element>] : Object | semmle.label | getValuesAsList(...) : List [<element>] : Object |
+| TestHttp.java:159:14:159:42 | get(...) | semmle.label | get(...) |
+| TestHttp.java:160:14:160:14 | h : HttpHeaders | semmle.label | h : HttpHeaders |
+| TestHttp.java:160:14:160:24 | getVary(...) : List [<element>] : Object | semmle.label | getVary(...) : List [<element>] : Object |
+| TestHttp.java:160:14:160:31 | get(...) | semmle.label | get(...) |
+subpaths
+testFailures

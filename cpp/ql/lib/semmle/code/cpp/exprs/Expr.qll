@@ -58,6 +58,25 @@ class Expr extends StmtParent, @expr {
   /** Gets the parent of this expression, if any. */
   Element getParent() { exprparents(underlyingElement(this), _, unresolveElement(result)) }
 
+  /**
+   * Gets the `n`th compiler-generated destructor call that is performed after this expression, in
+   * order of destruction.
+   */
+  DestructorCall getImplicitDestructorCall(int n) {
+    exists(Expr e |
+      e = this.(TemporaryObjectExpr).getExpr() and
+      synthetic_destructor_call(e, max(int i | synthetic_destructor_call(e, i, _)) - n, result)
+    )
+    or
+    not this = any(TemporaryObjectExpr temp).getExpr() and
+    synthetic_destructor_call(this, max(int i | synthetic_destructor_call(this, i, _)) - n, result)
+  }
+
+  /**
+   * Gets a compiler-generated destructor call that is performed after this expression.
+   */
+  DestructorCall getAnImplicitDestructorCall() { synthetic_destructor_call(this, _, result) }
+
   /** Gets the location of this expression. */
   override Location getLocation() {
     result = this.getExprLocationOverride()
@@ -285,9 +304,15 @@ class Expr extends StmtParent, @expr {
       e instanceof NoExceptExpr
       or
       e instanceof AlignofOperator
+      or
+      e instanceof DatasizeofOperator
     )
     or
     exists(Decltype d | d.getExpr() = this.getParentWithConversions*())
+    or
+    exists(ConstexprIfStmt constIf |
+      constIf.getControllingExpr() = this.getParentWithConversions*()
+    )
   }
 
   /**
@@ -608,6 +633,106 @@ class ParenthesisExpr extends Conversion, @parexpr {
 }
 
 /**
+ * A node representing a C11 `_Generic` selection expression.
+ *
+ * For example:
+ * ```
+ * _Generic(e, int: "int", default: "unknown")
+ * ```
+ */
+class C11GenericExpr extends Conversion, @c11_generic {
+  int associationCount;
+
+  C11GenericExpr() { associationCount = (count(this.getAChild()) - 1) / 2 }
+
+  override string toString() { result = "_Generic" }
+
+  override string getAPrimaryQlClass() { result = "C11GenericExpr" }
+
+  /**
+   * Gets the controlling expression of the generic selection.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * the result is `e`.
+   */
+  Expr getControllingExpr() { result = this.getChild(0) }
+
+  /**
+   * Gets the type of the `n`th element in the association list of the generic selection.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * the type of the 0th element is `int`. In the case of the default element the
+   * type will an instance of `VoidType`.
+   */
+  Type getAssociationType(int n) {
+    n in [0 .. associationCount - 1] and
+    result = this.getChild(n * 2 + 1).(TypeName).getType()
+  }
+
+  /**
+   * Gets the type of an element in the association list of the generic selection.
+   */
+  Type getAnAssociationType() { result = this.getAssociationType(_) }
+
+  /**
+   * Gets the expression of the `n`th element in the association list of
+   * the generic selection.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * the expression for 0th element is `"a"`, and the expression for the
+   * 1st element is `"b"`. For the selected expression, this predicate
+   * will yield a `ReuseExpr`, such that
+   * ```
+   * this.getAssociationExpr(n).(ReuseExpr).getReusedExpr() = this.getExpr()
+   * ```
+   */
+  Expr getAssociationExpr(int n) {
+    n in [0 .. associationCount - 1] and
+    result = this.getChild(n * 2 + 2)
+  }
+
+  /**
+   * Gets the expression of an element in the association list of the generic selection.
+   */
+  Expr getAnAssociationExpr() { result = this.getAssociationExpr(_) }
+
+  /**
+   * Holds if the `n`th element of the association list of the generic selection is the
+   * default element.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * this holds for 1.
+   */
+  predicate isDefaultAssociation(int n) { this.getAssociationType(n) instanceof VoidType }
+
+  /**
+   * Holds if the `n`th element of the association list of the generic selection is the
+   * one whose expression was selected.
+   *
+   * For example, with `e` of type `int` and
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * this holds for 0.
+   */
+  predicate isSelectedAssociation(int n) {
+    this.getAssociationExpr(n).(ReuseExpr).getReusedExpr() = this.getExpr()
+  }
+}
+
+/**
  * A C/C++ expression that could not be resolved, or that can no longer be
  * represented due to a database upgrade or downgrade.
  *
@@ -643,6 +768,8 @@ class AssumeExpr extends Expr, @assume {
 
 /**
  * A C/C++ comma expression.
+ *
+ * For example:
  * ```
  * int c = compute1(), compute2(), resulting_value;
  * ```
@@ -837,6 +964,16 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
   }
 
   /**
+   * Holds if the deallocation function is a destroying delete.
+   */
+  predicate isDestroyingDeleteDeallocation() {
+    exists(int form |
+      expr_deallocator(underlyingElement(this), _, form) and
+      form.bitAnd(4) != 0 // Bit two is the "destroying delete" bit
+    )
+  }
+
+  /**
    * Gets the type that is being allocated.
    *
    * For example, for `new int` the result is `int`.
@@ -930,6 +1067,16 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
    * gives nothing, as the 10 is considered part of the type.
    */
   Expr getExtent() { result = this.getChild(2) }
+
+  /**
+   * Gets the number of elements in the array, if available.
+   *
+   * For example, `new int[]{1,2,3}` has an array size of 3.
+   */
+  int getArraySize() {
+    result = this.getAllocatedType().(ArrayType).getArraySize() or
+    result = this.getInitializer().(ArrayAggregateLiteral).getArraySize()
+  }
 }
 
 private class TDeleteOrDeleteArrayExpr = @delete_expr or @delete_array_expr;
@@ -997,13 +1144,48 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   }
 
   /**
+   * Holds if the deallocation function is a destroying delete.
+   */
+  predicate isDestroyingDeleteDeallocation() {
+    exists(int form |
+      expr_deallocator(underlyingElement(this), _, form) and
+      form.bitAnd(4) != 0 // Bit two is the "destroying delete" bit
+    )
+  }
+
+  /**
    * Gets the object or array being deleted.
    */
   Expr getExpr() {
     // If there is a destructor call, the object being deleted is the qualifier
     // otherwise it is the third child.
-    result = this.getChild(3) or result = this.getDestructorCall().getQualifier()
+    exists(Expr exprWithReuse | exprWithReuse = this.getExprWithReuse() |
+      if not exprWithReuse instanceof ReuseExpr
+      then result = exprWithReuse
+      else result = this.getDestructorCall().getQualifier()
+    )
   }
+
+  /**
+   * Gets the object or array being deleted, and gets a `ReuseExpr` when there
+   * is a destructor call and the object is also the qualifier of the call.
+   *
+   * For example, given:
+   * ```
+   * struct HasDestructor { ~HasDestructor(); };
+   * struct PlainOldData { int x, char y; };
+   *
+   * void f(HasDestructor* hasDestructor, PlainOldData* pod) {
+   *   delete hasDestructor;
+   *   delete pod;
+   * }
+   * ```
+   * This predicate yields a `ReuseExpr` for `delete hasDestructor`, as the
+   * the deleted expression has a destructor, and that expression is also
+   * the qualifier of the destructor call. In the case of `delete pod` the
+   * predicate does not yield a `ReuseExpr`, as there is no destructor call.
+   */
+  Expr getExprWithReuse() { result = this.getChild(3) }
 }
 
 /**
@@ -1294,6 +1476,24 @@ class CoAwaitExpr extends UnaryOperation, @co_await {
   override string getOperator() { result = "co_await" }
 
   override int getPrecedence() { result = 16 }
+
+  /**
+   * Gets the Boolean expression that is used to decide if the enclosing
+   * coroutine should be suspended.
+   */
+  Expr getAwaitReady() { result = this.getChild(1) }
+
+  /**
+   * Gets the expression that represents the resume point if the enclosing
+   * coroutine was suspended.
+   */
+  Expr getAwaitResume() { result = this.getChild(2) }
+
+  /**
+   * Gets the expression that is evaluated when the enclosing coroutine is
+   * suspended.
+   */
+  Expr getAwaitSuspend() { result = this.getChild(3) }
 }
 
 /**
@@ -1308,4 +1508,50 @@ class CoYieldExpr extends UnaryOperation, @co_yield {
   override string getOperator() { result = "co_yield" }
 
   override int getPrecedence() { result = 2 }
+
+  /**
+   * Gets the Boolean expression that is used to decide if the enclosing
+   * coroutine should be suspended.
+   */
+  Expr getAwaitReady() { result = this.getChild(1) }
+
+  /**
+   * Gets the expression that represents the resume point if the enclosing
+   * coroutine was suspended.
+   */
+  Expr getAwaitResume() { result = this.getChild(2) }
+
+  /**
+   * Gets the expression that is evaluated when the enclosing coroutine is
+   * suspended.
+   */
+  Expr getAwaitSuspend() { result = this.getChild(3) }
+}
+
+/**
+ * An expression representing the re-use of another expression.
+ *
+ * In some specific cases an expression may be referred to outside its
+ * original context. A re-use expression wraps any such reference. A
+ * re-use expression can for example occur as the qualifier of an implicit
+ * destructor called on a temporary object, where the original use of the
+ * expression is in the definition of the temporary.
+ */
+class ReuseExpr extends Expr, @reuseexpr {
+  override string getAPrimaryQlClass() { result = "ReuseExpr" }
+
+  override string toString() { result = "reuse of " + this.getReusedExpr().toString() }
+
+  /**
+   * Gets the expression that is being re-used.
+   */
+  Expr getReusedExpr() { expr_reuse(underlyingElement(this), unresolveElement(result), _) }
+
+  override Type getType() { result = this.getReusedExpr().getType() }
+
+  override predicate isLValueCategory() { expr_reuse(underlyingElement(this), _, 3) }
+
+  override predicate isXValueCategory() { expr_reuse(underlyingElement(this), _, 2) }
+
+  override predicate isPRValueCategory() { expr_reuse(underlyingElement(this), _, 1) }
 }

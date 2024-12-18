@@ -1,4 +1,4 @@
-| test.py:46:12:46:18 | Str | This regular expression includes duplicate character 'A' in a set of characters. |
-| test.py:47:12:47:19 | Str | This regular expression includes duplicate character '0' in a set of characters. |
-| test.py:48:12:48:21 | Str | This regular expression includes duplicate character '-' in a set of characters. |
-| test.py:133:17:137:11 | Str | This regular expression includes duplicate character 'e' in a set of characters. |
+| test.py:46:12:46:18 | StringLiteral | This regular expression includes duplicate character 'A' in a set of characters. |
+| test.py:47:12:47:19 | StringLiteral | This regular expression includes duplicate character '0' in a set of characters. |
+| test.py:48:12:48:21 | StringLiteral | This regular expression includes duplicate character '-' in a set of characters. |
+| test.py:133:17:137:11 | StringLiteral | This regular expression includes duplicate character 'e' in a set of characters. |

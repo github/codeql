@@ -28,7 +28,7 @@ predicate divideByZeroSanitizerGuard(DataFlow::Node g, Expr e, boolean branch) {
 }
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(Function f, DataFlow::CallNode cn | cn = f.getACall() |

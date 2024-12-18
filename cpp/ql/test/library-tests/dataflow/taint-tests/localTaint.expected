@@ -1,7 +1,7 @@
-WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:4,6-14)
-WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:4,31-39)
-WARNING: Module DataFlow has been deprecated and may be removed in future (localTaint.ql:7,6-14)
-WARNING: Module TaintTracking has been deprecated and may be removed in future (localTaint.ql:6,3-16)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localTaint.ql:4,6-14)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localTaint.ql:4,31-39)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (localTaint.ql:7,6-14)
+WARNING: module 'TaintTracking' has been deprecated and may be removed in future (localTaint.ql:6,3-16)
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:10:14:10:14 | x |  |
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:11:15:11:15 | x |  |
 | arrayassignment.cpp:9:9:9:10 | 0 | arrayassignment.cpp:12:13:12:13 | x |  |
@@ -140,6 +140,812 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | arrayassignment.cpp:145:12:145:12 | 5 | arrayassignment.cpp:145:7:145:13 | access to array | TAINT |
 | arrayassignment.cpp:146:7:146:10 | arr3 | arrayassignment.cpp:146:7:146:13 | access to array |  |
 | arrayassignment.cpp:146:12:146:12 | 5 | arrayassignment.cpp:146:7:146:13 | access to array | TAINT |
+| atl.cpp:33:30:33:30 | 1 | atl.cpp:33:29:33:30 | - ... | TAINT |
+| atl.cpp:77:14:77:25 | call to source | atl.cpp:78:21:78:21 | x |  |
+| atl.cpp:78:21:78:21 | x | atl.cpp:78:21:78:22 | call to _U_STRINGorID | TAINT |
+| atl.cpp:78:21:78:22 | call to _U_STRINGorID | atl.cpp:79:10:79:10 | u |  |
+| atl.cpp:83:17:83:43 | call to indirect_source | atl.cpp:84:21:84:21 | y |  |
+| atl.cpp:84:21:84:21 | y | atl.cpp:84:21:84:22 | call to _U_STRINGorID | TAINT |
+| atl.cpp:84:21:84:22 | call to _U_STRINGorID | atl.cpp:85:10:85:10 | u |  |
+| atl.cpp:104:15:104:35 | call to indirect_source | atl.cpp:105:19:105:19 | x |  |
+| atl.cpp:105:19:105:19 | x | atl.cpp:105:19:105:20 | call to CA2AEX | TAINT |
+| atl.cpp:105:19:105:20 | call to CA2AEX | atl.cpp:106:29:106:29 | a |  |
+| atl.cpp:105:19:105:20 | call to CA2AEX | atl.cpp:107:10:107:10 | a |  |
+| atl.cpp:105:19:105:20 | call to CA2AEX | atl.cpp:108:10:108:10 | a |  |
+| atl.cpp:105:19:105:20 | call to CA2AEX | atl.cpp:109:3:109:3 | a |  |
+| atl.cpp:106:29:106:29 | ref arg a | atl.cpp:107:10:107:10 | a |  |
+| atl.cpp:106:29:106:29 | ref arg a | atl.cpp:108:10:108:10 | a |  |
+| atl.cpp:106:29:106:29 | ref arg a | atl.cpp:109:3:109:3 | a |  |
+| atl.cpp:107:10:107:10 | a [post update] | atl.cpp:108:10:108:10 | a |  |
+| atl.cpp:107:10:107:10 | a [post update] | atl.cpp:109:3:109:3 | a |  |
+| atl.cpp:108:10:108:10 | a [post update] | atl.cpp:109:3:109:3 | a |  |
+| atl.cpp:112:15:112:35 | call to indirect_source | atl.cpp:113:19:113:19 | x |  |
+| atl.cpp:113:19:113:23 | call to CA2AEX | atl.cpp:114:29:114:29 | a |  |
+| atl.cpp:113:19:113:23 | call to CA2AEX | atl.cpp:115:10:115:10 | a |  |
+| atl.cpp:113:19:113:23 | call to CA2AEX | atl.cpp:116:10:116:10 | a |  |
+| atl.cpp:113:19:113:23 | call to CA2AEX | atl.cpp:117:3:117:3 | a |  |
+| atl.cpp:114:29:114:29 | ref arg a | atl.cpp:115:10:115:10 | a |  |
+| atl.cpp:114:29:114:29 | ref arg a | atl.cpp:116:10:116:10 | a |  |
+| atl.cpp:114:29:114:29 | ref arg a | atl.cpp:117:3:117:3 | a |  |
+| atl.cpp:115:10:115:10 | a [post update] | atl.cpp:116:10:116:10 | a |  |
+| atl.cpp:115:10:115:10 | a [post update] | atl.cpp:117:3:117:3 | a |  |
+| atl.cpp:116:10:116:10 | a [post update] | atl.cpp:117:3:117:3 | a |  |
+| atl.cpp:130:14:130:34 | call to indirect_source | atl.cpp:132:20:132:20 | x |  |
+| atl.cpp:130:14:130:34 | call to indirect_source | atl.cpp:138:20:138:20 | x |  |
+| atl.cpp:132:20:132:20 | x | atl.cpp:132:20:132:21 | call to CA2CAEX | TAINT |
+| atl.cpp:132:20:132:21 | call to CA2CAEX | atl.cpp:133:30:133:30 | a |  |
+| atl.cpp:132:20:132:21 | call to CA2CAEX | atl.cpp:134:10:134:10 | a |  |
+| atl.cpp:132:20:132:21 | call to CA2CAEX | atl.cpp:135:10:135:10 | a |  |
+| atl.cpp:132:20:132:21 | call to CA2CAEX | atl.cpp:136:3:136:3 | a |  |
+| atl.cpp:138:20:138:24 | call to CA2CAEX | atl.cpp:139:30:139:30 | a |  |
+| atl.cpp:138:20:138:24 | call to CA2CAEX | atl.cpp:140:10:140:10 | a |  |
+| atl.cpp:138:20:138:24 | call to CA2CAEX | atl.cpp:141:10:141:10 | a |  |
+| atl.cpp:138:20:138:24 | call to CA2CAEX | atl.cpp:142:3:142:3 | a |  |
+| atl.cpp:156:14:156:34 | call to indirect_source | atl.cpp:158:19:158:19 | x |  |
+| atl.cpp:156:14:156:34 | call to indirect_source | atl.cpp:164:19:164:19 | x |  |
+| atl.cpp:158:19:158:19 | x | atl.cpp:158:19:158:20 | call to CA2WEX | TAINT |
+| atl.cpp:158:19:158:20 | call to CA2WEX | atl.cpp:159:30:159:30 | a |  |
+| atl.cpp:158:19:158:20 | call to CA2WEX | atl.cpp:160:10:160:10 | a |  |
+| atl.cpp:158:19:158:20 | call to CA2WEX | atl.cpp:161:10:161:10 | a |  |
+| atl.cpp:158:19:158:20 | call to CA2WEX | atl.cpp:162:3:162:3 | a |  |
+| atl.cpp:159:30:159:30 | ref arg a | atl.cpp:160:10:160:10 | a |  |
+| atl.cpp:159:30:159:30 | ref arg a | atl.cpp:161:10:161:10 | a |  |
+| atl.cpp:159:30:159:30 | ref arg a | atl.cpp:162:3:162:3 | a |  |
+| atl.cpp:160:10:160:10 | a [post update] | atl.cpp:161:10:161:10 | a |  |
+| atl.cpp:160:10:160:10 | a [post update] | atl.cpp:162:3:162:3 | a |  |
+| atl.cpp:160:12:160:16 | ref arg m_psz | atl.cpp:161:12:161:16 | m_psz |  |
+| atl.cpp:161:10:161:10 | a [post update] | atl.cpp:162:3:162:3 | a |  |
+| atl.cpp:164:19:164:23 | call to CA2WEX | atl.cpp:165:30:165:30 | a |  |
+| atl.cpp:164:19:164:23 | call to CA2WEX | atl.cpp:166:10:166:10 | a |  |
+| atl.cpp:164:19:164:23 | call to CA2WEX | atl.cpp:167:10:167:10 | a |  |
+| atl.cpp:164:19:164:23 | call to CA2WEX | atl.cpp:168:3:168:3 | a |  |
+| atl.cpp:165:30:165:30 | ref arg a | atl.cpp:166:10:166:10 | a |  |
+| atl.cpp:165:30:165:30 | ref arg a | atl.cpp:167:10:167:10 | a |  |
+| atl.cpp:165:30:165:30 | ref arg a | atl.cpp:168:3:168:3 | a |  |
+| atl.cpp:166:10:166:10 | a [post update] | atl.cpp:167:10:167:10 | a |  |
+| atl.cpp:166:10:166:10 | a [post update] | atl.cpp:168:3:168:3 | a |  |
+| atl.cpp:166:12:166:16 | ref arg m_psz | atl.cpp:167:12:167:16 | m_psz |  |
+| atl.cpp:167:10:167:10 | a [post update] | atl.cpp:168:3:168:3 | a |  |
+| atl.cpp:216:11:216:21 | call to source | atl.cpp:220:11:220:11 | x |  |
+| atl.cpp:219:20:219:20 | call to CAtlArray | atl.cpp:220:5:220:5 | a |  |
+| atl.cpp:219:20:219:20 | call to CAtlArray | atl.cpp:221:10:221:10 | a |  |
+| atl.cpp:219:20:219:20 | call to CAtlArray | atl.cpp:222:5:222:5 | a |  |
+| atl.cpp:219:20:219:20 | call to CAtlArray | atl.cpp:223:10:223:10 | a |  |
+| atl.cpp:219:20:219:20 | call to CAtlArray | atl.cpp:227:15:227:15 | a |  |
+| atl.cpp:219:20:219:20 | call to CAtlArray | atl.cpp:242:3:242:3 | a |  |
+| atl.cpp:220:5:220:5 | ref arg a | atl.cpp:221:10:221:10 | a |  |
+| atl.cpp:220:5:220:5 | ref arg a | atl.cpp:222:5:222:5 | a |  |
+| atl.cpp:220:5:220:5 | ref arg a | atl.cpp:223:10:223:10 | a |  |
+| atl.cpp:220:5:220:5 | ref arg a | atl.cpp:227:15:227:15 | a |  |
+| atl.cpp:220:5:220:5 | ref arg a | atl.cpp:242:3:242:3 | a |  |
+| atl.cpp:221:10:221:10 | ref arg a | atl.cpp:222:5:222:5 | a |  |
+| atl.cpp:221:10:221:10 | ref arg a | atl.cpp:223:10:223:10 | a |  |
+| atl.cpp:221:10:221:10 | ref arg a | atl.cpp:227:15:227:15 | a |  |
+| atl.cpp:221:10:221:10 | ref arg a | atl.cpp:242:3:242:3 | a |  |
+| atl.cpp:222:5:222:5 | ref arg a | atl.cpp:223:10:223:10 | a |  |
+| atl.cpp:222:5:222:5 | ref arg a | atl.cpp:227:15:227:15 | a |  |
+| atl.cpp:222:5:222:5 | ref arg a | atl.cpp:242:3:242:3 | a |  |
+| atl.cpp:223:10:223:10 | ref arg a | atl.cpp:227:15:227:15 | a |  |
+| atl.cpp:223:10:223:10 | ref arg a | atl.cpp:242:3:242:3 | a |  |
+| atl.cpp:225:20:225:21 | call to CAtlArray | atl.cpp:226:10:226:11 | a2 |  |
+| atl.cpp:225:20:225:21 | call to CAtlArray | atl.cpp:227:5:227:6 | a2 |  |
+| atl.cpp:225:20:225:21 | call to CAtlArray | atl.cpp:228:10:228:11 | a2 |  |
+| atl.cpp:225:20:225:21 | call to CAtlArray | atl.cpp:232:13:232:14 | a2 |  |
+| atl.cpp:225:20:225:21 | call to CAtlArray | atl.cpp:242:3:242:3 | a2 |  |
+| atl.cpp:226:10:226:11 | ref arg a2 | atl.cpp:227:5:227:6 | a2 |  |
+| atl.cpp:226:10:226:11 | ref arg a2 | atl.cpp:228:10:228:11 | a2 |  |
+| atl.cpp:226:10:226:11 | ref arg a2 | atl.cpp:232:13:232:14 | a2 |  |
+| atl.cpp:226:10:226:11 | ref arg a2 | atl.cpp:242:3:242:3 | a2 |  |
+| atl.cpp:227:5:227:6 | ref arg a2 | atl.cpp:228:10:228:11 | a2 |  |
+| atl.cpp:227:5:227:6 | ref arg a2 | atl.cpp:232:13:232:14 | a2 |  |
+| atl.cpp:227:5:227:6 | ref arg a2 | atl.cpp:242:3:242:3 | a2 |  |
+| atl.cpp:228:10:228:11 | ref arg a2 | atl.cpp:232:13:232:14 | a2 |  |
+| atl.cpp:228:10:228:11 | ref arg a2 | atl.cpp:242:3:242:3 | a2 |  |
+| atl.cpp:230:20:230:21 | call to CAtlArray | atl.cpp:231:10:231:11 | a3 |  |
+| atl.cpp:230:20:230:21 | call to CAtlArray | atl.cpp:232:5:232:6 | a3 |  |
+| atl.cpp:230:20:230:21 | call to CAtlArray | atl.cpp:233:10:233:11 | a3 |  |
+| atl.cpp:230:20:230:21 | call to CAtlArray | atl.cpp:235:10:235:11 | a3 |  |
+| atl.cpp:230:20:230:21 | call to CAtlArray | atl.cpp:236:11:236:12 | a3 |  |
+| atl.cpp:230:20:230:21 | call to CAtlArray | atl.cpp:240:26:240:27 | a3 |  |
+| atl.cpp:230:20:230:21 | call to CAtlArray | atl.cpp:242:3:242:3 | a3 |  |
+| atl.cpp:231:10:231:11 | ref arg a3 | atl.cpp:232:5:232:6 | a3 |  |
+| atl.cpp:231:10:231:11 | ref arg a3 | atl.cpp:233:10:233:11 | a3 |  |
+| atl.cpp:231:10:231:11 | ref arg a3 | atl.cpp:235:10:235:11 | a3 |  |
+| atl.cpp:231:10:231:11 | ref arg a3 | atl.cpp:236:11:236:12 | a3 |  |
+| atl.cpp:231:10:231:11 | ref arg a3 | atl.cpp:240:26:240:27 | a3 |  |
+| atl.cpp:231:10:231:11 | ref arg a3 | atl.cpp:242:3:242:3 | a3 |  |
+| atl.cpp:232:5:232:6 | ref arg a3 | atl.cpp:233:10:233:11 | a3 |  |
+| atl.cpp:232:5:232:6 | ref arg a3 | atl.cpp:235:10:235:11 | a3 |  |
+| atl.cpp:232:5:232:6 | ref arg a3 | atl.cpp:236:11:236:12 | a3 |  |
+| atl.cpp:232:5:232:6 | ref arg a3 | atl.cpp:240:26:240:27 | a3 |  |
+| atl.cpp:232:5:232:6 | ref arg a3 | atl.cpp:242:3:242:3 | a3 |  |
+| atl.cpp:233:10:233:11 | ref arg a3 | atl.cpp:235:10:235:11 | a3 |  |
+| atl.cpp:233:10:233:11 | ref arg a3 | atl.cpp:236:11:236:12 | a3 |  |
+| atl.cpp:233:10:233:11 | ref arg a3 | atl.cpp:240:26:240:27 | a3 |  |
+| atl.cpp:233:10:233:11 | ref arg a3 | atl.cpp:242:3:242:3 | a3 |  |
+| atl.cpp:235:10:235:11 | ref arg a3 | atl.cpp:236:11:236:12 | a3 |  |
+| atl.cpp:235:10:235:11 | ref arg a3 | atl.cpp:240:26:240:27 | a3 |  |
+| atl.cpp:235:10:235:11 | ref arg a3 | atl.cpp:242:3:242:3 | a3 |  |
+| atl.cpp:236:11:236:12 | ref arg a3 | atl.cpp:240:26:240:27 | a3 |  |
+| atl.cpp:236:11:236:12 | ref arg a3 | atl.cpp:242:3:242:3 | a3 |  |
+| atl.cpp:236:14:236:20 | call to GetData | atl.cpp:236:10:236:22 | * ... | TAINT |
+| atl.cpp:238:20:238:21 | call to CAtlArray | atl.cpp:239:10:239:11 | a4 |  |
+| atl.cpp:238:20:238:21 | call to CAtlArray | atl.cpp:240:5:240:6 | a4 |  |
+| atl.cpp:238:20:238:21 | call to CAtlArray | atl.cpp:241:10:241:11 | a4 |  |
+| atl.cpp:238:20:238:21 | call to CAtlArray | atl.cpp:242:3:242:3 | a4 |  |
+| atl.cpp:239:10:239:11 | ref arg a4 | atl.cpp:240:5:240:6 | a4 |  |
+| atl.cpp:239:10:239:11 | ref arg a4 | atl.cpp:241:10:241:11 | a4 |  |
+| atl.cpp:239:10:239:11 | ref arg a4 | atl.cpp:242:3:242:3 | a4 |  |
+| atl.cpp:240:5:240:6 | ref arg a4 | atl.cpp:241:10:241:11 | a4 |  |
+| atl.cpp:240:5:240:6 | ref arg a4 | atl.cpp:242:3:242:3 | a4 |  |
+| atl.cpp:240:26:240:27 | a3 | atl.cpp:240:25:240:27 | & ... |  |
+| atl.cpp:241:10:241:11 | ref arg a4 | atl.cpp:242:3:242:3 | a4 |  |
+| atl.cpp:244:20:244:21 | call to CAtlArray | atl.cpp:245:5:245:6 | a5 |  |
+| atl.cpp:244:20:244:21 | call to CAtlArray | atl.cpp:246:10:246:11 | a5 |  |
+| atl.cpp:244:20:244:21 | call to CAtlArray | atl.cpp:251:3:251:3 | a5 |  |
+| atl.cpp:245:5:245:6 | ref arg a5 | atl.cpp:246:10:246:11 | a5 |  |
+| atl.cpp:245:5:245:6 | ref arg a5 | atl.cpp:251:3:251:3 | a5 |  |
+| atl.cpp:246:10:246:11 | ref arg a5 | atl.cpp:251:3:251:3 | a5 |  |
+| atl.cpp:248:20:248:21 | call to CAtlArray | atl.cpp:249:5:249:6 | a6 |  |
+| atl.cpp:248:20:248:21 | call to CAtlArray | atl.cpp:250:10:250:11 | a6 |  |
+| atl.cpp:248:20:248:21 | call to CAtlArray | atl.cpp:251:3:251:3 | a6 |  |
+| atl.cpp:249:5:249:6 | ref arg a6 | atl.cpp:250:10:250:11 | a6 |  |
+| atl.cpp:249:5:249:6 | ref arg a6 | atl.cpp:251:3:251:3 | a6 |  |
+| atl.cpp:250:10:250:11 | ref arg a6 | atl.cpp:251:3:251:3 | a6 |  |
+| atl.cpp:296:11:296:21 | call to source | atl.cpp:300:18:300:18 | x |  |
+| atl.cpp:296:11:296:21 | call to source | atl.cpp:308:19:308:19 | x |  |
+| atl.cpp:296:11:296:21 | call to source | atl.cpp:317:29:317:29 | x |  |
+| atl.cpp:296:11:296:21 | call to source | atl.cpp:323:21:323:21 | x |  |
+| atl.cpp:296:11:296:21 | call to source | atl.cpp:331:30:331:30 | x |  |
+| atl.cpp:296:11:296:21 | call to source | atl.cpp:338:31:338:31 | x |  |
+| atl.cpp:296:11:296:21 | call to source | atl.cpp:343:44:343:44 | x |  |
+| atl.cpp:298:24:298:25 | 10 | atl.cpp:298:24:298:26 | call to CAtlList | TAINT |
+| atl.cpp:298:24:298:26 | call to CAtlList | atl.cpp:299:10:299:13 | list |  |
+| atl.cpp:298:24:298:26 | call to CAtlList | atl.cpp:300:5:300:8 | list |  |
+| atl.cpp:298:24:298:26 | call to CAtlList | atl.cpp:301:10:301:13 | list |  |
+| atl.cpp:298:24:298:26 | call to CAtlList | atl.cpp:304:24:304:27 | list |  |
+| atl.cpp:298:24:298:26 | call to CAtlList | atl.cpp:346:3:346:3 | list |  |
+| atl.cpp:299:10:299:13 | ref arg list | atl.cpp:300:5:300:8 | list |  |
+| atl.cpp:299:10:299:13 | ref arg list | atl.cpp:301:10:301:13 | list |  |
+| atl.cpp:299:10:299:13 | ref arg list | atl.cpp:304:24:304:27 | list |  |
+| atl.cpp:299:10:299:13 | ref arg list | atl.cpp:346:3:346:3 | list |  |
+| atl.cpp:300:5:300:8 | ref arg list | atl.cpp:301:10:301:13 | list |  |
+| atl.cpp:300:5:300:8 | ref arg list | atl.cpp:304:24:304:27 | list |  |
+| atl.cpp:300:5:300:8 | ref arg list | atl.cpp:346:3:346:3 | list |  |
+| atl.cpp:301:10:301:13 | ref arg list | atl.cpp:304:24:304:27 | list |  |
+| atl.cpp:301:10:301:13 | ref arg list | atl.cpp:346:3:346:3 | list |  |
+| atl.cpp:303:25:303:26 | 10 | atl.cpp:303:25:303:27 | call to CAtlList | TAINT |
+| atl.cpp:303:25:303:27 | call to CAtlList | atl.cpp:304:5:304:9 | list2 |  |
+| atl.cpp:303:25:303:27 | call to CAtlList | atl.cpp:305:10:305:14 | list2 |  |
+| atl.cpp:303:25:303:27 | call to CAtlList | atl.cpp:346:3:346:3 | list2 |  |
+| atl.cpp:304:5:304:9 | ref arg list2 | atl.cpp:305:10:305:14 | list2 |  |
+| atl.cpp:304:5:304:9 | ref arg list2 | atl.cpp:346:3:346:3 | list2 |  |
+| atl.cpp:304:24:304:27 | list | atl.cpp:304:23:304:27 | & ... |  |
+| atl.cpp:305:10:305:14 | ref arg list2 | atl.cpp:346:3:346:3 | list2 |  |
+| atl.cpp:307:25:307:26 | 10 | atl.cpp:307:25:307:27 | call to CAtlList | TAINT |
+| atl.cpp:307:25:307:27 | call to CAtlList | atl.cpp:308:5:308:9 | list3 |  |
+| atl.cpp:307:25:307:27 | call to CAtlList | atl.cpp:309:10:309:14 | list3 |  |
+| atl.cpp:307:25:307:27 | call to CAtlList | atl.cpp:312:24:312:28 | list3 |  |
+| atl.cpp:307:25:307:27 | call to CAtlList | atl.cpp:346:3:346:3 | list3 |  |
+| atl.cpp:308:5:308:9 | ref arg list3 | atl.cpp:309:10:309:14 | list3 |  |
+| atl.cpp:308:5:308:9 | ref arg list3 | atl.cpp:312:24:312:28 | list3 |  |
+| atl.cpp:308:5:308:9 | ref arg list3 | atl.cpp:346:3:346:3 | list3 |  |
+| atl.cpp:309:10:309:14 | ref arg list3 | atl.cpp:312:24:312:28 | list3 |  |
+| atl.cpp:309:10:309:14 | ref arg list3 | atl.cpp:346:3:346:3 | list3 |  |
+| atl.cpp:311:25:311:26 | 10 | atl.cpp:311:25:311:27 | call to CAtlList | TAINT |
+| atl.cpp:311:25:311:27 | call to CAtlList | atl.cpp:312:5:312:9 | list4 |  |
+| atl.cpp:311:25:311:27 | call to CAtlList | atl.cpp:313:10:313:14 | list4 |  |
+| atl.cpp:311:25:311:27 | call to CAtlList | atl.cpp:346:3:346:3 | list4 |  |
+| atl.cpp:312:5:312:9 | ref arg list4 | atl.cpp:313:10:313:14 | list4 |  |
+| atl.cpp:312:5:312:9 | ref arg list4 | atl.cpp:346:3:346:3 | list4 |  |
+| atl.cpp:312:24:312:28 | list3 | atl.cpp:312:23:312:28 | & ... |  |
+| atl.cpp:313:10:313:14 | ref arg list4 | atl.cpp:346:3:346:3 | list4 |  |
+| atl.cpp:316:27:316:28 | 10 | atl.cpp:316:27:316:29 | call to CAtlList | TAINT |
+| atl.cpp:316:27:316:29 | call to CAtlList | atl.cpp:317:18:317:22 | list5 |  |
+| atl.cpp:316:27:316:29 | call to CAtlList | atl.cpp:317:32:317:36 | list5 |  |
+| atl.cpp:316:27:316:29 | call to CAtlList | atl.cpp:318:12:318:16 | list5 |  |
+| atl.cpp:316:27:316:29 | call to CAtlList | atl.cpp:319:5:319:5 | list5 |  |
+| atl.cpp:317:18:317:22 | ref arg list5 | atl.cpp:318:12:318:16 | list5 |  |
+| atl.cpp:317:18:317:22 | ref arg list5 | atl.cpp:319:5:319:5 | list5 |  |
+| atl.cpp:317:24:317:27 | call to Find | atl.cpp:318:24:318:26 | pos |  |
+| atl.cpp:317:32:317:36 | ref arg list5 | atl.cpp:317:18:317:22 | list5 |  |
+| atl.cpp:317:32:317:36 | ref arg list5 | atl.cpp:318:12:318:16 | list5 |  |
+| atl.cpp:317:32:317:36 | ref arg list5 | atl.cpp:319:5:319:5 | list5 |  |
+| atl.cpp:318:12:318:16 | ref arg list5 | atl.cpp:319:5:319:5 | list5 |  |
+| atl.cpp:322:27:322:28 | 10 | atl.cpp:322:27:322:29 | call to CAtlList | TAINT |
+| atl.cpp:322:27:322:29 | call to CAtlList | atl.cpp:323:7:323:11 | list6 |  |
+| atl.cpp:322:27:322:29 | call to CAtlList | atl.cpp:324:18:324:22 | list6 |  |
+| atl.cpp:322:27:322:29 | call to CAtlList | atl.cpp:325:12:325:16 | list6 |  |
+| atl.cpp:322:27:322:29 | call to CAtlList | atl.cpp:326:5:326:5 | list6 |  |
+| atl.cpp:323:7:323:11 | ref arg list6 | atl.cpp:324:18:324:22 | list6 |  |
+| atl.cpp:323:7:323:11 | ref arg list6 | atl.cpp:325:12:325:16 | list6 |  |
+| atl.cpp:323:7:323:11 | ref arg list6 | atl.cpp:326:5:326:5 | list6 |  |
+| atl.cpp:324:18:324:22 | ref arg list6 | atl.cpp:325:12:325:16 | list6 |  |
+| atl.cpp:324:18:324:22 | ref arg list6 | atl.cpp:326:5:326:5 | list6 |  |
+| atl.cpp:324:24:324:32 | call to FindIndex | atl.cpp:325:24:325:26 | pos |  |
+| atl.cpp:325:12:325:16 | ref arg list6 | atl.cpp:326:5:326:5 | list6 |  |
+| atl.cpp:329:27:329:28 | 10 | atl.cpp:329:27:329:29 | call to CAtlList | TAINT |
+| atl.cpp:329:27:329:29 | call to CAtlList | atl.cpp:330:18:330:22 | list7 |  |
+| atl.cpp:329:27:329:29 | call to CAtlList | atl.cpp:331:7:331:11 | list7 |  |
+| atl.cpp:329:27:329:29 | call to CAtlList | atl.cpp:332:12:332:16 | list7 |  |
+| atl.cpp:329:27:329:29 | call to CAtlList | atl.cpp:333:5:333:5 | list7 |  |
+| atl.cpp:330:18:330:22 | ref arg list7 | atl.cpp:331:7:331:11 | list7 |  |
+| atl.cpp:330:18:330:22 | ref arg list7 | atl.cpp:332:12:332:16 | list7 |  |
+| atl.cpp:330:18:330:22 | ref arg list7 | atl.cpp:333:5:333:5 | list7 |  |
+| atl.cpp:330:24:330:38 | call to GetTailPosition | atl.cpp:331:25:331:27 | pos |  |
+| atl.cpp:331:7:331:11 | ref arg list7 | atl.cpp:332:12:332:16 | list7 |  |
+| atl.cpp:331:7:331:11 | ref arg list7 | atl.cpp:333:5:333:5 | list7 |  |
+| atl.cpp:332:12:332:16 | ref arg list7 | atl.cpp:333:5:333:5 | list7 |  |
+| atl.cpp:336:27:336:28 | 10 | atl.cpp:336:27:336:29 | call to CAtlList | TAINT |
+| atl.cpp:336:27:336:29 | call to CAtlList | atl.cpp:337:18:337:22 | list8 |  |
+| atl.cpp:336:27:336:29 | call to CAtlList | atl.cpp:338:7:338:11 | list8 |  |
+| atl.cpp:336:27:336:29 | call to CAtlList | atl.cpp:339:12:339:16 | list8 |  |
+| atl.cpp:336:27:336:29 | call to CAtlList | atl.cpp:340:5:340:5 | list8 |  |
+| atl.cpp:337:18:337:22 | ref arg list8 | atl.cpp:338:7:338:11 | list8 |  |
+| atl.cpp:337:18:337:22 | ref arg list8 | atl.cpp:339:12:339:16 | list8 |  |
+| atl.cpp:337:18:337:22 | ref arg list8 | atl.cpp:340:5:340:5 | list8 |  |
+| atl.cpp:337:24:337:38 | call to GetTailPosition | atl.cpp:338:26:338:28 | pos |  |
+| atl.cpp:338:7:338:11 | ref arg list8 | atl.cpp:339:12:339:16 | list8 |  |
+| atl.cpp:338:7:338:11 | ref arg list8 | atl.cpp:340:5:340:5 | list8 |  |
+| atl.cpp:339:12:339:16 | ref arg list8 | atl.cpp:340:5:340:5 | list8 |  |
+| atl.cpp:342:27:342:28 | 10 | atl.cpp:342:27:342:29 | call to CAtlList | TAINT |
+| atl.cpp:342:27:342:29 | call to CAtlList | atl.cpp:343:7:343:11 | list9 |  |
+| atl.cpp:342:27:342:29 | call to CAtlList | atl.cpp:343:19:343:23 | list9 |  |
+| atl.cpp:342:27:342:29 | call to CAtlList | atl.cpp:344:12:344:16 | list9 |  |
+| atl.cpp:342:27:342:29 | call to CAtlList | atl.cpp:345:5:345:5 | list9 |  |
+| atl.cpp:343:7:343:11 | ref arg list9 | atl.cpp:344:12:344:16 | list9 |  |
+| atl.cpp:343:7:343:11 | ref arg list9 | atl.cpp:345:5:345:5 | list9 |  |
+| atl.cpp:343:19:343:23 | ref arg list9 | atl.cpp:343:7:343:11 | list9 |  |
+| atl.cpp:343:19:343:23 | ref arg list9 | atl.cpp:344:12:344:16 | list9 |  |
+| atl.cpp:343:19:343:23 | ref arg list9 | atl.cpp:345:5:345:5 | list9 |  |
+| atl.cpp:344:12:344:16 | ref arg list9 | atl.cpp:345:5:345:5 | list9 |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:352:18:352:18 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:360:19:360:19 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:369:29:369:29 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:375:21:375:21 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:383:30:383:30 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:390:31:390:31 | p |  |
+| atl.cpp:348:12:348:31 | call to indirect_source | atl.cpp:395:44:395:44 | p |  |
+| atl.cpp:350:25:350:26 | 10 | atl.cpp:350:25:350:27 | call to CAtlList | TAINT |
+| atl.cpp:350:25:350:27 | call to CAtlList | atl.cpp:351:10:351:13 | list |  |
+| atl.cpp:350:25:350:27 | call to CAtlList | atl.cpp:352:5:352:8 | list |  |
+| atl.cpp:350:25:350:27 | call to CAtlList | atl.cpp:353:10:353:13 | list |  |
+| atl.cpp:350:25:350:27 | call to CAtlList | atl.cpp:356:24:356:27 | list |  |
+| atl.cpp:350:25:350:27 | call to CAtlList | atl.cpp:398:3:398:3 | list |  |
+| atl.cpp:351:10:351:13 | ref arg list | atl.cpp:352:5:352:8 | list |  |
+| atl.cpp:351:10:351:13 | ref arg list | atl.cpp:353:10:353:13 | list |  |
+| atl.cpp:351:10:351:13 | ref arg list | atl.cpp:356:24:356:27 | list |  |
+| atl.cpp:351:10:351:13 | ref arg list | atl.cpp:398:3:398:3 | list |  |
+| atl.cpp:352:5:352:8 | ref arg list | atl.cpp:353:10:353:13 | list |  |
+| atl.cpp:352:5:352:8 | ref arg list | atl.cpp:356:24:356:27 | list |  |
+| atl.cpp:352:5:352:8 | ref arg list | atl.cpp:398:3:398:3 | list |  |
+| atl.cpp:353:10:353:13 | ref arg list | atl.cpp:356:24:356:27 | list |  |
+| atl.cpp:353:10:353:13 | ref arg list | atl.cpp:398:3:398:3 | list |  |
+| atl.cpp:355:26:355:27 | 10 | atl.cpp:355:26:355:28 | call to CAtlList | TAINT |
+| atl.cpp:355:26:355:28 | call to CAtlList | atl.cpp:356:5:356:9 | list2 |  |
+| atl.cpp:355:26:355:28 | call to CAtlList | atl.cpp:357:10:357:14 | list2 |  |
+| atl.cpp:355:26:355:28 | call to CAtlList | atl.cpp:398:3:398:3 | list2 |  |
+| atl.cpp:356:5:356:9 | ref arg list2 | atl.cpp:357:10:357:14 | list2 |  |
+| atl.cpp:356:5:356:9 | ref arg list2 | atl.cpp:398:3:398:3 | list2 |  |
+| atl.cpp:356:24:356:27 | list | atl.cpp:356:23:356:27 | & ... |  |
+| atl.cpp:357:10:357:14 | ref arg list2 | atl.cpp:398:3:398:3 | list2 |  |
+| atl.cpp:359:26:359:27 | 10 | atl.cpp:359:26:359:28 | call to CAtlList | TAINT |
+| atl.cpp:359:26:359:28 | call to CAtlList | atl.cpp:360:5:360:9 | list3 |  |
+| atl.cpp:359:26:359:28 | call to CAtlList | atl.cpp:361:10:361:14 | list3 |  |
+| atl.cpp:359:26:359:28 | call to CAtlList | atl.cpp:364:24:364:28 | list3 |  |
+| atl.cpp:359:26:359:28 | call to CAtlList | atl.cpp:398:3:398:3 | list3 |  |
+| atl.cpp:360:5:360:9 | ref arg list3 | atl.cpp:361:10:361:14 | list3 |  |
+| atl.cpp:360:5:360:9 | ref arg list3 | atl.cpp:364:24:364:28 | list3 |  |
+| atl.cpp:360:5:360:9 | ref arg list3 | atl.cpp:398:3:398:3 | list3 |  |
+| atl.cpp:361:10:361:14 | ref arg list3 | atl.cpp:364:24:364:28 | list3 |  |
+| atl.cpp:361:10:361:14 | ref arg list3 | atl.cpp:398:3:398:3 | list3 |  |
+| atl.cpp:363:26:363:27 | 10 | atl.cpp:363:26:363:28 | call to CAtlList | TAINT |
+| atl.cpp:363:26:363:28 | call to CAtlList | atl.cpp:364:5:364:9 | list4 |  |
+| atl.cpp:363:26:363:28 | call to CAtlList | atl.cpp:365:10:365:14 | list4 |  |
+| atl.cpp:363:26:363:28 | call to CAtlList | atl.cpp:398:3:398:3 | list4 |  |
+| atl.cpp:364:5:364:9 | ref arg list4 | atl.cpp:365:10:365:14 | list4 |  |
+| atl.cpp:364:5:364:9 | ref arg list4 | atl.cpp:398:3:398:3 | list4 |  |
+| atl.cpp:364:24:364:28 | list3 | atl.cpp:364:23:364:28 | & ... |  |
+| atl.cpp:365:10:365:14 | ref arg list4 | atl.cpp:398:3:398:3 | list4 |  |
+| atl.cpp:368:28:368:29 | 10 | atl.cpp:368:28:368:30 | call to CAtlList | TAINT |
+| atl.cpp:368:28:368:30 | call to CAtlList | atl.cpp:369:18:369:22 | list5 |  |
+| atl.cpp:368:28:368:30 | call to CAtlList | atl.cpp:369:32:369:36 | list5 |  |
+| atl.cpp:368:28:368:30 | call to CAtlList | atl.cpp:370:12:370:16 | list5 |  |
+| atl.cpp:368:28:368:30 | call to CAtlList | atl.cpp:371:5:371:5 | list5 |  |
+| atl.cpp:369:18:369:22 | ref arg list5 | atl.cpp:370:12:370:16 | list5 |  |
+| atl.cpp:369:18:369:22 | ref arg list5 | atl.cpp:371:5:371:5 | list5 |  |
+| atl.cpp:369:24:369:27 | call to Find | atl.cpp:370:24:370:26 | pos |  |
+| atl.cpp:369:32:369:36 | ref arg list5 | atl.cpp:369:18:369:22 | list5 |  |
+| atl.cpp:369:32:369:36 | ref arg list5 | atl.cpp:370:12:370:16 | list5 |  |
+| atl.cpp:369:32:369:36 | ref arg list5 | atl.cpp:371:5:371:5 | list5 |  |
+| atl.cpp:370:12:370:16 | ref arg list5 | atl.cpp:371:5:371:5 | list5 |  |
+| atl.cpp:374:28:374:29 | 10 | atl.cpp:374:28:374:30 | call to CAtlList | TAINT |
+| atl.cpp:374:28:374:30 | call to CAtlList | atl.cpp:375:7:375:11 | list6 |  |
+| atl.cpp:374:28:374:30 | call to CAtlList | atl.cpp:376:18:376:22 | list6 |  |
+| atl.cpp:374:28:374:30 | call to CAtlList | atl.cpp:377:12:377:16 | list6 |  |
+| atl.cpp:374:28:374:30 | call to CAtlList | atl.cpp:378:5:378:5 | list6 |  |
+| atl.cpp:375:7:375:11 | ref arg list6 | atl.cpp:376:18:376:22 | list6 |  |
+| atl.cpp:375:7:375:11 | ref arg list6 | atl.cpp:377:12:377:16 | list6 |  |
+| atl.cpp:375:7:375:11 | ref arg list6 | atl.cpp:378:5:378:5 | list6 |  |
+| atl.cpp:376:18:376:22 | ref arg list6 | atl.cpp:377:12:377:16 | list6 |  |
+| atl.cpp:376:18:376:22 | ref arg list6 | atl.cpp:378:5:378:5 | list6 |  |
+| atl.cpp:376:24:376:32 | call to FindIndex | atl.cpp:377:24:377:26 | pos |  |
+| atl.cpp:377:12:377:16 | ref arg list6 | atl.cpp:378:5:378:5 | list6 |  |
+| atl.cpp:381:28:381:29 | 10 | atl.cpp:381:28:381:30 | call to CAtlList | TAINT |
+| atl.cpp:381:28:381:30 | call to CAtlList | atl.cpp:382:18:382:22 | list7 |  |
+| atl.cpp:381:28:381:30 | call to CAtlList | atl.cpp:383:7:383:11 | list7 |  |
+| atl.cpp:381:28:381:30 | call to CAtlList | atl.cpp:384:12:384:16 | list7 |  |
+| atl.cpp:381:28:381:30 | call to CAtlList | atl.cpp:385:5:385:5 | list7 |  |
+| atl.cpp:382:18:382:22 | ref arg list7 | atl.cpp:383:7:383:11 | list7 |  |
+| atl.cpp:382:18:382:22 | ref arg list7 | atl.cpp:384:12:384:16 | list7 |  |
+| atl.cpp:382:18:382:22 | ref arg list7 | atl.cpp:385:5:385:5 | list7 |  |
+| atl.cpp:382:24:382:38 | call to GetTailPosition | atl.cpp:383:25:383:27 | pos |  |
+| atl.cpp:383:7:383:11 | ref arg list7 | atl.cpp:384:12:384:16 | list7 |  |
+| atl.cpp:383:7:383:11 | ref arg list7 | atl.cpp:385:5:385:5 | list7 |  |
+| atl.cpp:384:12:384:16 | ref arg list7 | atl.cpp:385:5:385:5 | list7 |  |
+| atl.cpp:388:28:388:29 | 10 | atl.cpp:388:28:388:30 | call to CAtlList | TAINT |
+| atl.cpp:388:28:388:30 | call to CAtlList | atl.cpp:389:18:389:22 | list8 |  |
+| atl.cpp:388:28:388:30 | call to CAtlList | atl.cpp:390:7:390:11 | list8 |  |
+| atl.cpp:388:28:388:30 | call to CAtlList | atl.cpp:391:12:391:16 | list8 |  |
+| atl.cpp:388:28:388:30 | call to CAtlList | atl.cpp:392:5:392:5 | list8 |  |
+| atl.cpp:389:18:389:22 | ref arg list8 | atl.cpp:390:7:390:11 | list8 |  |
+| atl.cpp:389:18:389:22 | ref arg list8 | atl.cpp:391:12:391:16 | list8 |  |
+| atl.cpp:389:18:389:22 | ref arg list8 | atl.cpp:392:5:392:5 | list8 |  |
+| atl.cpp:389:24:389:38 | call to GetTailPosition | atl.cpp:390:26:390:28 | pos |  |
+| atl.cpp:390:7:390:11 | ref arg list8 | atl.cpp:391:12:391:16 | list8 |  |
+| atl.cpp:390:7:390:11 | ref arg list8 | atl.cpp:392:5:392:5 | list8 |  |
+| atl.cpp:391:12:391:16 | ref arg list8 | atl.cpp:392:5:392:5 | list8 |  |
+| atl.cpp:394:28:394:29 | 10 | atl.cpp:394:28:394:30 | call to CAtlList | TAINT |
+| atl.cpp:394:28:394:30 | call to CAtlList | atl.cpp:395:7:395:11 | list9 |  |
+| atl.cpp:394:28:394:30 | call to CAtlList | atl.cpp:395:19:395:23 | list9 |  |
+| atl.cpp:394:28:394:30 | call to CAtlList | atl.cpp:396:12:396:16 | list9 |  |
+| atl.cpp:394:28:394:30 | call to CAtlList | atl.cpp:397:5:397:5 | list9 |  |
+| atl.cpp:395:7:395:11 | ref arg list9 | atl.cpp:396:12:396:16 | list9 |  |
+| atl.cpp:395:7:395:11 | ref arg list9 | atl.cpp:397:5:397:5 | list9 |  |
+| atl.cpp:395:19:395:23 | ref arg list9 | atl.cpp:395:7:395:11 | list9 |  |
+| atl.cpp:395:19:395:23 | ref arg list9 | atl.cpp:396:12:396:16 | list9 |  |
+| atl.cpp:395:19:395:23 | ref arg list9 | atl.cpp:397:5:397:5 | list9 |  |
+| atl.cpp:396:12:396:16 | ref arg list9 | atl.cpp:397:5:397:5 | list9 |  |
+| atl.cpp:454:21:454:33 | new | atl.cpp:455:3:455:6 | safe |  |
+| atl.cpp:454:21:454:33 | new | atl.cpp:456:10:456:13 | safe |  |
+| atl.cpp:455:3:455:6 | safe [post update] | atl.cpp:456:10:456:13 | safe |  |
+| atl.cpp:455:3:455:40 | ... = ... | atl.cpp:455:9:455:14 | pvData [post update] |  |
+| atl.cpp:455:18:455:38 | call to indirect_source | atl.cpp:455:3:455:40 | ... = ... |  |
+| atl.cpp:460:13:460:33 | call to indirect_source | atl.cpp:462:16:462:16 | x |  |
+| atl.cpp:460:13:460:33 | call to indirect_source | atl.cpp:469:20:469:20 | x |  |
+| atl.cpp:460:13:460:33 | call to indirect_source | atl.cpp:473:16:473:16 | x |  |
+| atl.cpp:460:13:460:33 | call to indirect_source | atl.cpp:481:11:481:11 | x |  |
+| atl.cpp:460:13:460:33 | call to indirect_source | atl.cpp:495:20:495:20 | x |  |
+| atl.cpp:462:16:462:16 | x | atl.cpp:462:16:462:17 | call to CComBSTR | TAINT |
+| atl.cpp:462:16:462:17 | call to CComBSTR | atl.cpp:463:10:463:10 | b |  |
+| atl.cpp:462:16:462:17 | call to CComBSTR | atl.cpp:465:17:465:17 | b |  |
+| atl.cpp:462:16:462:17 | call to CComBSTR | atl.cpp:467:3:467:3 | b |  |
+| atl.cpp:463:10:463:10 | b [post update] | atl.cpp:465:17:465:17 | b |  |
+| atl.cpp:463:10:463:10 | b [post update] | atl.cpp:467:3:467:3 | b |  |
+| atl.cpp:463:12:463:16 | ref arg m_str | atl.cpp:466:13:466:17 | m_str |  |
+| atl.cpp:465:17:465:17 | b | atl.cpp:465:17:465:18 | call to CComBSTR |  |
+| atl.cpp:465:17:465:18 | call to CComBSTR | atl.cpp:466:10:466:11 | b2 |  |
+| atl.cpp:465:17:465:18 | call to CComBSTR | atl.cpp:467:3:467:3 | b2 |  |
+| atl.cpp:466:10:466:11 | b2 [post update] | atl.cpp:467:3:467:3 | b2 |  |
+| atl.cpp:469:16:469:21 | call to CComBSTR | atl.cpp:470:10:470:10 | b |  |
+| atl.cpp:469:16:469:21 | call to CComBSTR | atl.cpp:471:3:471:3 | b |  |
+| atl.cpp:470:10:470:10 | b [post update] | atl.cpp:471:3:471:3 | b |  |
+| atl.cpp:473:16:473:16 | x | atl.cpp:473:16:473:17 | call to CComBSTR | TAINT |
+| atl.cpp:473:16:473:17 | call to CComBSTR | atl.cpp:477:11:477:11 | b |  |
+| atl.cpp:473:16:473:17 | call to CComBSTR | atl.cpp:513:3:513:3 | b |  |
+| atl.cpp:475:14:475:15 | call to CComBSTR | atl.cpp:476:10:476:11 | b2 |  |
+| atl.cpp:475:14:475:15 | call to CComBSTR | atl.cpp:477:5:477:6 | b2 |  |
+| atl.cpp:475:14:475:15 | call to CComBSTR | atl.cpp:478:10:478:11 | b2 |  |
+| atl.cpp:475:14:475:15 | call to CComBSTR | atl.cpp:513:3:513:3 | b2 |  |
+| atl.cpp:476:10:476:11 | b2 [post update] | atl.cpp:477:5:477:6 | b2 |  |
+| atl.cpp:476:10:476:11 | b2 [post update] | atl.cpp:478:10:478:11 | b2 |  |
+| atl.cpp:476:10:476:11 | b2 [post update] | atl.cpp:513:3:513:3 | b2 |  |
+| atl.cpp:476:13:476:17 | ref arg m_str | atl.cpp:478:13:478:17 | m_str |  |
+| atl.cpp:477:5:477:6 | ref arg b2 | atl.cpp:478:10:478:11 | b2 |  |
+| atl.cpp:477:5:477:6 | ref arg b2 | atl.cpp:513:3:513:3 | b2 |  |
+| atl.cpp:478:10:478:11 | b2 [post update] | atl.cpp:513:3:513:3 | b2 |  |
+| atl.cpp:480:14:480:15 | call to CComBSTR | atl.cpp:481:5:481:6 | b3 |  |
+| atl.cpp:480:14:480:15 | call to CComBSTR | atl.cpp:482:10:482:11 | b3 |  |
+| atl.cpp:480:14:480:15 | call to CComBSTR | atl.cpp:483:28:483:29 | b3 |  |
+| atl.cpp:480:14:480:15 | call to CComBSTR | atl.cpp:484:13:484:14 | b3 |  |
+| atl.cpp:480:14:480:15 | call to CComBSTR | atl.cpp:513:3:513:3 | b3 |  |
+| atl.cpp:481:5:481:6 | ref arg b3 | atl.cpp:482:10:482:11 | b3 |  |
+| atl.cpp:481:5:481:6 | ref arg b3 | atl.cpp:483:28:483:29 | b3 |  |
+| atl.cpp:481:5:481:6 | ref arg b3 | atl.cpp:484:13:484:14 | b3 |  |
+| atl.cpp:481:5:481:6 | ref arg b3 | atl.cpp:513:3:513:3 | b3 |  |
+| atl.cpp:481:11:481:11 | x | atl.cpp:481:11:481:11 | call to CComBSTR | TAINT |
+| atl.cpp:482:10:482:11 | b3 [post update] | atl.cpp:483:28:483:29 | b3 |  |
+| atl.cpp:482:10:482:11 | b3 [post update] | atl.cpp:484:13:484:14 | b3 |  |
+| atl.cpp:482:10:482:11 | b3 [post update] | atl.cpp:513:3:513:3 | b3 |  |
+| atl.cpp:483:28:483:29 | ref arg b3 | atl.cpp:484:13:484:14 | b3 |  |
+| atl.cpp:483:28:483:29 | ref arg b3 | atl.cpp:513:3:513:3 | b3 |  |
+| atl.cpp:484:11:484:14 | * ... | atl.cpp:484:10:484:14 | * ... | TAINT |
+| atl.cpp:484:12:484:12 | call to operator& | atl.cpp:484:11:484:14 | * ... | TAINT |
+| atl.cpp:484:13:484:14 | ref arg b3 | atl.cpp:513:3:513:3 | b3 |  |
+| atl.cpp:486:14:486:15 | call to CComBSTR | atl.cpp:487:5:487:6 | b4 |  |
+| atl.cpp:486:14:486:15 | call to CComBSTR | atl.cpp:488:10:488:11 | b4 |  |
+| atl.cpp:486:14:486:15 | call to CComBSTR | atl.cpp:491:19:491:20 | b4 |  |
+| atl.cpp:486:14:486:15 | call to CComBSTR | atl.cpp:513:3:513:3 | b4 |  |
+| atl.cpp:487:5:487:6 | ref arg b4 | atl.cpp:488:10:488:11 | b4 |  |
+| atl.cpp:487:5:487:6 | ref arg b4 | atl.cpp:491:19:491:20 | b4 |  |
+| atl.cpp:487:5:487:6 | ref arg b4 | atl.cpp:513:3:513:3 | b4 |  |
+| atl.cpp:488:10:488:11 | b4 [post update] | atl.cpp:491:19:491:20 | b4 |  |
+| atl.cpp:488:10:488:11 | b4 [post update] | atl.cpp:513:3:513:3 | b4 |  |
+| atl.cpp:488:13:488:17 | ref arg m_str | atl.cpp:491:22:491:26 | m_str |  |
+| atl.cpp:490:14:490:15 | call to CComBSTR | atl.cpp:491:5:491:6 | b5 |  |
+| atl.cpp:490:14:490:15 | call to CComBSTR | atl.cpp:492:10:492:11 | b5 |  |
+| atl.cpp:490:14:490:15 | call to CComBSTR | atl.cpp:513:3:513:3 | b5 |  |
+| atl.cpp:491:5:491:6 | ref arg b5 | atl.cpp:492:10:492:11 | b5 |  |
+| atl.cpp:491:5:491:6 | ref arg b5 | atl.cpp:513:3:513:3 | b5 |  |
+| atl.cpp:491:19:491:20 | b4 [post update] | atl.cpp:513:3:513:3 | b4 |  |
+| atl.cpp:492:10:492:11 | b5 [post update] | atl.cpp:513:3:513:3 | b5 |  |
+| atl.cpp:494:14:494:15 | call to CComBSTR | atl.cpp:495:5:495:6 | b6 |  |
+| atl.cpp:494:14:494:15 | call to CComBSTR | atl.cpp:496:10:496:11 | b6 |  |
+| atl.cpp:494:14:494:15 | call to CComBSTR | atl.cpp:513:3:513:3 | b6 |  |
+| atl.cpp:495:5:495:6 | ref arg b6 | atl.cpp:496:10:496:11 | b6 |  |
+| atl.cpp:495:5:495:6 | ref arg b6 | atl.cpp:513:3:513:3 | b6 |  |
+| atl.cpp:496:10:496:11 | b6 [post update] | atl.cpp:513:3:513:3 | b6 |  |
+| atl.cpp:498:14:498:15 | call to CComBSTR | atl.cpp:499:5:499:6 | b7 |  |
+| atl.cpp:498:14:498:15 | call to CComBSTR | atl.cpp:500:10:500:11 | b7 |  |
+| atl.cpp:498:14:498:15 | call to CComBSTR | atl.cpp:503:19:503:20 | b7 |  |
+| atl.cpp:498:14:498:15 | call to CComBSTR | atl.cpp:513:3:513:3 | b7 |  |
+| atl.cpp:499:5:499:6 | ref arg b7 | atl.cpp:500:10:500:11 | b7 |  |
+| atl.cpp:499:5:499:6 | ref arg b7 | atl.cpp:503:19:503:20 | b7 |  |
+| atl.cpp:499:5:499:6 | ref arg b7 | atl.cpp:513:3:513:3 | b7 |  |
+| atl.cpp:500:10:500:11 | b7 [post update] | atl.cpp:503:19:503:20 | b7 |  |
+| atl.cpp:500:10:500:11 | b7 [post update] | atl.cpp:513:3:513:3 | b7 |  |
+| atl.cpp:500:13:500:17 | ref arg m_str | atl.cpp:503:22:503:26 | m_str |  |
+| atl.cpp:502:14:502:15 | call to CComBSTR | atl.cpp:503:5:503:6 | b8 |  |
+| atl.cpp:502:14:502:15 | call to CComBSTR | atl.cpp:504:10:504:11 | b8 |  |
+| atl.cpp:502:14:502:15 | call to CComBSTR | atl.cpp:513:3:513:3 | b8 |  |
+| atl.cpp:503:5:503:6 | ref arg b8 | atl.cpp:504:10:504:11 | b8 |  |
+| atl.cpp:503:5:503:6 | ref arg b8 | atl.cpp:513:3:513:3 | b8 |  |
+| atl.cpp:503:19:503:20 | b7 [post update] | atl.cpp:513:3:513:3 | b7 |  |
+| atl.cpp:504:10:504:11 | b8 [post update] | atl.cpp:513:3:513:3 | b8 |  |
+| atl.cpp:506:14:506:15 | call to CComBSTR | atl.cpp:508:5:508:6 | b9 |  |
+| atl.cpp:506:14:506:15 | call to CComBSTR | atl.cpp:509:5:509:6 | b9 |  |
+| atl.cpp:506:14:506:15 | call to CComBSTR | atl.cpp:512:10:512:11 | b9 |  |
+| atl.cpp:506:14:506:15 | call to CComBSTR | atl.cpp:513:3:513:3 | b9 |  |
+| atl.cpp:507:17:507:20 | safe | atl.cpp:509:21:509:24 | safe |  |
+| atl.cpp:507:17:507:20 | safe | atl.cpp:510:10:510:13 | safe |  |
+| atl.cpp:508:5:508:6 | ref arg b9 | atl.cpp:509:5:509:6 | b9 |  |
+| atl.cpp:508:5:508:6 | ref arg b9 | atl.cpp:512:10:512:11 | b9 |  |
+| atl.cpp:508:5:508:6 | ref arg b9 | atl.cpp:513:3:513:3 | b9 |  |
+| atl.cpp:509:5:509:6 | ref arg b9 | atl.cpp:512:10:512:11 | b9 |  |
+| atl.cpp:509:5:509:6 | ref arg b9 | atl.cpp:513:3:513:3 | b9 |  |
+| atl.cpp:509:20:509:24 | ref arg & ... | atl.cpp:509:21:509:24 | safe [inner post update] |  |
+| atl.cpp:509:20:509:24 | ref arg & ... | atl.cpp:510:10:510:13 | safe |  |
+| atl.cpp:509:21:509:24 | safe | atl.cpp:509:20:509:24 | & ... |  |
+| atl.cpp:512:10:512:11 | ref arg b9 | atl.cpp:513:3:513:3 | b9 |  |
+| atl.cpp:515:16:515:39 | call to indirect_source | atl.cpp:517:16:517:16 | w |  |
+| atl.cpp:515:16:515:39 | call to indirect_source | atl.cpp:521:15:521:15 | w |  |
+| atl.cpp:515:16:515:39 | call to indirect_source | atl.cpp:525:20:525:20 | w |  |
+| atl.cpp:517:16:517:16 | ref arg w | atl.cpp:521:15:521:15 | w |  |
+| atl.cpp:517:16:517:16 | ref arg w | atl.cpp:525:20:525:20 | w |  |
+| atl.cpp:517:16:517:16 | w | atl.cpp:517:16:517:17 | call to CComBSTR | TAINT |
+| atl.cpp:517:16:517:17 | call to CComBSTR | atl.cpp:518:10:518:10 | b |  |
+| atl.cpp:517:16:517:17 | call to CComBSTR | atl.cpp:523:3:523:3 | b |  |
+| atl.cpp:518:10:518:10 | b [post update] | atl.cpp:523:3:523:3 | b |  |
+| atl.cpp:520:14:520:15 | call to CComBSTR | atl.cpp:521:5:521:6 | b2 |  |
+| atl.cpp:520:14:520:15 | call to CComBSTR | atl.cpp:522:10:522:11 | b2 |  |
+| atl.cpp:520:14:520:15 | call to CComBSTR | atl.cpp:523:3:523:3 | b2 |  |
+| atl.cpp:521:5:521:6 | ref arg b2 | atl.cpp:522:10:522:11 | b2 |  |
+| atl.cpp:521:5:521:6 | ref arg b2 | atl.cpp:523:3:523:3 | b2 |  |
+| atl.cpp:521:15:521:15 | ref arg w | atl.cpp:525:20:525:20 | w |  |
+| atl.cpp:522:10:522:11 | b2 [post update] | atl.cpp:523:3:523:3 | b2 |  |
+| atl.cpp:525:16:525:21 | call to CComBSTR | atl.cpp:526:10:526:10 | b |  |
+| atl.cpp:525:16:525:21 | call to CComBSTR | atl.cpp:527:3:527:3 | b |  |
+| atl.cpp:526:10:526:10 | b [post update] | atl.cpp:527:3:527:3 | b |  |
+| atl.cpp:572:22:572:33 | call to getSafeArray | atl.cpp:573:8:573:11 | safe |  |
+| atl.cpp:572:22:572:33 | call to getSafeArray | atl.cpp:575:24:575:27 | safe |  |
+| atl.cpp:572:22:572:33 | call to getSafeArray | atl.cpp:586:11:586:14 | safe |  |
+| atl.cpp:573:8:573:11 | safe [post update] | atl.cpp:575:24:575:27 | safe |  |
+| atl.cpp:573:8:573:11 | safe [post update] | atl.cpp:586:11:586:14 | safe |  |
+| atl.cpp:575:24:575:27 | safe | atl.cpp:575:24:575:28 | call to CComSafeArray | TAINT |
+| atl.cpp:575:24:575:28 | call to CComSafeArray | atl.cpp:576:8:576:8 | c |  |
+| atl.cpp:575:24:575:28 | call to CComSafeArray | atl.cpp:577:8:577:8 | c |  |
+| atl.cpp:575:24:575:28 | call to CComSafeArray | atl.cpp:578:8:578:8 | c |  |
+| atl.cpp:575:24:575:28 | call to CComSafeArray | atl.cpp:579:8:579:8 | c |  |
+| atl.cpp:575:24:575:28 | call to CComSafeArray | atl.cpp:580:3:580:3 | c |  |
+| atl.cpp:576:8:576:8 | ref arg c | atl.cpp:577:8:577:8 | c |  |
+| atl.cpp:576:8:576:8 | ref arg c | atl.cpp:578:8:578:8 | c |  |
+| atl.cpp:576:8:576:8 | ref arg c | atl.cpp:579:8:579:8 | c |  |
+| atl.cpp:576:8:576:8 | ref arg c | atl.cpp:580:3:580:3 | c |  |
+| atl.cpp:577:8:577:8 | ref arg c | atl.cpp:578:8:578:8 | c |  |
+| atl.cpp:577:8:577:8 | ref arg c | atl.cpp:579:8:579:8 | c |  |
+| atl.cpp:577:8:577:8 | ref arg c | atl.cpp:580:3:580:3 | c |  |
+| atl.cpp:578:8:578:8 | ref arg c | atl.cpp:579:8:579:8 | c |  |
+| atl.cpp:578:8:578:8 | ref arg c | atl.cpp:580:3:580:3 | c |  |
+| atl.cpp:579:8:579:8 | c [post update] | atl.cpp:580:3:580:3 | c |  |
+| atl.cpp:582:24:582:24 | call to CComSafeArray | atl.cpp:583:10:583:10 | c |  |
+| atl.cpp:582:24:582:24 | call to CComSafeArray | atl.cpp:584:10:584:10 | c |  |
+| atl.cpp:582:24:582:24 | call to CComSafeArray | atl.cpp:585:10:585:10 | c |  |
+| atl.cpp:582:24:582:24 | call to CComSafeArray | atl.cpp:586:5:586:5 | c |  |
+| atl.cpp:582:24:582:24 | call to CComSafeArray | atl.cpp:587:10:587:10 | c |  |
+| atl.cpp:582:24:582:24 | call to CComSafeArray | atl.cpp:588:10:588:10 | c |  |
+| atl.cpp:582:24:582:24 | call to CComSafeArray | atl.cpp:589:10:589:10 | c |  |
+| atl.cpp:582:24:582:24 | call to CComSafeArray | atl.cpp:590:35:590:35 | c |  |
+| atl.cpp:582:24:582:24 | call to CComSafeArray | atl.cpp:591:3:591:3 | c |  |
+| atl.cpp:583:10:583:10 | ref arg c | atl.cpp:584:10:584:10 | c |  |
+| atl.cpp:583:10:583:10 | ref arg c | atl.cpp:585:10:585:10 | c |  |
+| atl.cpp:583:10:583:10 | ref arg c | atl.cpp:586:5:586:5 | c |  |
+| atl.cpp:583:10:583:10 | ref arg c | atl.cpp:587:10:587:10 | c |  |
+| atl.cpp:583:10:583:10 | ref arg c | atl.cpp:588:10:588:10 | c |  |
+| atl.cpp:583:10:583:10 | ref arg c | atl.cpp:589:10:589:10 | c |  |
+| atl.cpp:583:10:583:10 | ref arg c | atl.cpp:590:35:590:35 | c |  |
+| atl.cpp:583:10:583:10 | ref arg c | atl.cpp:591:3:591:3 | c |  |
+| atl.cpp:584:10:584:10 | ref arg c | atl.cpp:585:10:585:10 | c |  |
+| atl.cpp:584:10:584:10 | ref arg c | atl.cpp:586:5:586:5 | c |  |
+| atl.cpp:584:10:584:10 | ref arg c | atl.cpp:587:10:587:10 | c |  |
+| atl.cpp:584:10:584:10 | ref arg c | atl.cpp:588:10:588:10 | c |  |
+| atl.cpp:584:10:584:10 | ref arg c | atl.cpp:589:10:589:10 | c |  |
+| atl.cpp:584:10:584:10 | ref arg c | atl.cpp:590:35:590:35 | c |  |
+| atl.cpp:584:10:584:10 | ref arg c | atl.cpp:591:3:591:3 | c |  |
+| atl.cpp:585:10:585:10 | ref arg c | atl.cpp:586:5:586:5 | c |  |
+| atl.cpp:585:10:585:10 | ref arg c | atl.cpp:587:10:587:10 | c |  |
+| atl.cpp:585:10:585:10 | ref arg c | atl.cpp:588:10:588:10 | c |  |
+| atl.cpp:585:10:585:10 | ref arg c | atl.cpp:589:10:589:10 | c |  |
+| atl.cpp:585:10:585:10 | ref arg c | atl.cpp:590:35:590:35 | c |  |
+| atl.cpp:585:10:585:10 | ref arg c | atl.cpp:591:3:591:3 | c |  |
+| atl.cpp:586:5:586:5 | ref arg c | atl.cpp:587:10:587:10 | c |  |
+| atl.cpp:586:5:586:5 | ref arg c | atl.cpp:588:10:588:10 | c |  |
+| atl.cpp:586:5:586:5 | ref arg c | atl.cpp:589:10:589:10 | c |  |
+| atl.cpp:586:5:586:5 | ref arg c | atl.cpp:590:35:590:35 | c |  |
+| atl.cpp:586:5:586:5 | ref arg c | atl.cpp:591:3:591:3 | c |  |
+| atl.cpp:587:10:587:10 | ref arg c | atl.cpp:588:10:588:10 | c |  |
+| atl.cpp:587:10:587:10 | ref arg c | atl.cpp:589:10:589:10 | c |  |
+| atl.cpp:587:10:587:10 | ref arg c | atl.cpp:590:35:590:35 | c |  |
+| atl.cpp:587:10:587:10 | ref arg c | atl.cpp:591:3:591:3 | c |  |
+| atl.cpp:588:10:588:10 | ref arg c | atl.cpp:589:10:589:10 | c |  |
+| atl.cpp:588:10:588:10 | ref arg c | atl.cpp:590:35:590:35 | c |  |
+| atl.cpp:588:10:588:10 | ref arg c | atl.cpp:591:3:591:3 | c |  |
+| atl.cpp:589:10:589:10 | ref arg c | atl.cpp:590:35:590:35 | c |  |
+| atl.cpp:589:10:589:10 | ref arg c | atl.cpp:591:3:591:3 | c |  |
+| atl.cpp:590:35:590:35 | ref arg c | atl.cpp:591:3:591:3 | c |  |
+| atl.cpp:593:24:593:24 | call to CComSafeArray | atl.cpp:594:5:594:5 | c |  |
+| atl.cpp:593:24:593:24 | call to CComSafeArray | atl.cpp:595:10:595:10 | c |  |
+| atl.cpp:593:24:593:24 | call to CComSafeArray | atl.cpp:596:10:596:10 | c |  |
+| atl.cpp:593:24:593:24 | call to CComSafeArray | atl.cpp:597:10:597:10 | c |  |
+| atl.cpp:593:24:593:24 | call to CComSafeArray | atl.cpp:598:3:598:3 | c |  |
+| atl.cpp:594:5:594:5 | ref arg c | atl.cpp:595:10:595:10 | c |  |
+| atl.cpp:594:5:594:5 | ref arg c | atl.cpp:596:10:596:10 | c |  |
+| atl.cpp:594:5:594:5 | ref arg c | atl.cpp:597:10:597:10 | c |  |
+| atl.cpp:594:5:594:5 | ref arg c | atl.cpp:598:3:598:3 | c |  |
+| atl.cpp:595:10:595:10 | ref arg c | atl.cpp:596:10:596:10 | c |  |
+| atl.cpp:595:10:595:10 | ref arg c | atl.cpp:597:10:597:10 | c |  |
+| atl.cpp:595:10:595:10 | ref arg c | atl.cpp:598:3:598:3 | c |  |
+| atl.cpp:596:10:596:10 | ref arg c | atl.cpp:597:10:597:10 | c |  |
+| atl.cpp:596:10:596:10 | ref arg c | atl.cpp:598:3:598:3 | c |  |
+| atl.cpp:597:10:597:10 | ref arg c | atl.cpp:598:3:598:3 | c |  |
+| atl.cpp:600:24:600:24 | call to CComSafeArray | atl.cpp:601:5:601:5 | c |  |
+| atl.cpp:600:24:600:24 | call to CComSafeArray | atl.cpp:602:10:602:10 | c |  |
+| atl.cpp:600:24:600:24 | call to CComSafeArray | atl.cpp:603:10:603:10 | c |  |
+| atl.cpp:600:24:600:24 | call to CComSafeArray | atl.cpp:604:3:604:3 | c |  |
+| atl.cpp:601:5:601:5 | ref arg c | atl.cpp:602:10:602:10 | c |  |
+| atl.cpp:601:5:601:5 | ref arg c | atl.cpp:603:10:603:10 | c |  |
+| atl.cpp:601:5:601:5 | ref arg c | atl.cpp:604:3:604:3 | c |  |
+| atl.cpp:602:10:602:10 | ref arg c | atl.cpp:603:10:603:10 | c |  |
+| atl.cpp:602:10:602:10 | ref arg c | atl.cpp:604:3:604:3 | c |  |
+| atl.cpp:603:10:603:10 | ref arg c | atl.cpp:604:3:604:3 | c |  |
+| atl.cpp:665:13:665:33 | call to indirect_source | atl.cpp:666:11:666:11 | x |  |
+| atl.cpp:665:13:665:33 | call to indirect_source | atl.cpp:675:20:675:20 | x |  |
+| atl.cpp:665:13:665:33 | call to indirect_source | atl.cpp:680:14:680:14 | x |  |
+| atl.cpp:665:13:665:33 | call to indirect_source | atl.cpp:688:11:688:11 | x |  |
+| atl.cpp:665:13:665:33 | call to indirect_source | atl.cpp:694:15:694:15 | x |  |
+| atl.cpp:665:13:665:33 | call to indirect_source | atl.cpp:699:24:699:24 | x |  |
+| atl.cpp:665:13:665:33 | call to indirect_source | atl.cpp:705:30:705:30 | x |  |
+| atl.cpp:666:11:666:11 | ref arg x | atl.cpp:675:20:675:20 | x |  |
+| atl.cpp:666:11:666:11 | ref arg x | atl.cpp:680:14:680:14 | x |  |
+| atl.cpp:666:11:666:11 | ref arg x | atl.cpp:688:11:688:11 | x |  |
+| atl.cpp:666:11:666:11 | ref arg x | atl.cpp:694:15:694:15 | x |  |
+| atl.cpp:666:11:666:11 | ref arg x | atl.cpp:699:24:699:24 | x |  |
+| atl.cpp:666:11:666:11 | ref arg x | atl.cpp:705:30:705:30 | x |  |
+| atl.cpp:666:11:666:11 | x | atl.cpp:666:11:666:12 | call to CPathT | TAINT |
+| atl.cpp:666:11:666:12 | call to CPathT | atl.cpp:667:27:667:27 | p |  |
+| atl.cpp:666:11:666:12 | call to CPathT | atl.cpp:668:8:668:8 | p |  |
+| atl.cpp:666:11:666:12 | call to CPathT | atl.cpp:670:12:670:12 | p |  |
+| atl.cpp:667:27:667:27 | ref arg p | atl.cpp:668:8:668:8 | p |  |
+| atl.cpp:667:27:667:27 | ref arg p | atl.cpp:670:12:670:12 | p |  |
+| atl.cpp:668:8:668:8 | p [post update] | atl.cpp:670:12:670:12 | p |  |
+| atl.cpp:668:10:668:18 | ref arg m_strPath | atl.cpp:671:11:671:19 | m_strPath |  |
+| atl.cpp:670:12:670:12 | p | atl.cpp:670:12:670:13 | call to CPathT |  |
+| atl.cpp:670:12:670:13 | call to CPathT | atl.cpp:671:8:671:9 | p2 |  |
+| atl.cpp:674:11:674:11 | call to CPathT | atl.cpp:675:5:675:5 | p |  |
+| atl.cpp:674:11:674:11 | call to CPathT | atl.cpp:676:10:676:10 | p |  |
+| atl.cpp:675:5:675:5 | ref arg p | atl.cpp:676:10:676:10 | p |  |
+| atl.cpp:675:20:675:20 | ref arg x | atl.cpp:680:14:680:14 | x |  |
+| atl.cpp:675:20:675:20 | ref arg x | atl.cpp:688:11:688:11 | x |  |
+| atl.cpp:675:20:675:20 | ref arg x | atl.cpp:694:15:694:15 | x |  |
+| atl.cpp:675:20:675:20 | ref arg x | atl.cpp:699:24:699:24 | x |  |
+| atl.cpp:675:20:675:20 | ref arg x | atl.cpp:705:30:705:30 | x |  |
+| atl.cpp:679:11:679:11 | call to CPathT | atl.cpp:680:5:680:5 | p |  |
+| atl.cpp:679:11:679:11 | call to CPathT | atl.cpp:681:10:681:10 | p |  |
+| atl.cpp:679:11:679:11 | call to CPathT | atl.cpp:684:11:684:11 | p |  |
+| atl.cpp:680:5:680:5 | ref arg p | atl.cpp:681:10:681:10 | p |  |
+| atl.cpp:680:5:680:5 | ref arg p | atl.cpp:684:11:684:11 | p |  |
+| atl.cpp:680:14:680:14 | ref arg x | atl.cpp:688:11:688:11 | x |  |
+| atl.cpp:680:14:680:14 | ref arg x | atl.cpp:694:15:694:15 | x |  |
+| atl.cpp:680:14:680:14 | ref arg x | atl.cpp:699:24:699:24 | x |  |
+| atl.cpp:680:14:680:14 | ref arg x | atl.cpp:705:30:705:30 | x |  |
+| atl.cpp:681:10:681:10 | p [post update] | atl.cpp:684:11:684:11 | p |  |
+| atl.cpp:683:11:683:12 | call to CPathT | atl.cpp:684:5:684:6 | p2 |  |
+| atl.cpp:683:11:683:12 | call to CPathT | atl.cpp:685:10:685:11 | p2 |  |
+| atl.cpp:684:5:684:6 | ref arg p2 | atl.cpp:685:10:685:11 | p2 |  |
+| atl.cpp:684:11:684:11 | call to operator char *& | atl.cpp:684:8:684:8 | call to operator+= | TAINT |
+| atl.cpp:687:11:687:12 | call to CPathT | atl.cpp:688:5:688:6 | p3 |  |
+| atl.cpp:687:11:687:12 | call to CPathT | atl.cpp:689:10:689:11 | p3 |  |
+| atl.cpp:688:5:688:6 | ref arg p3 | atl.cpp:689:10:689:11 | p3 |  |
+| atl.cpp:688:11:688:11 | ref arg x | atl.cpp:694:15:694:15 | x |  |
+| atl.cpp:688:11:688:11 | ref arg x | atl.cpp:699:24:699:24 | x |  |
+| atl.cpp:688:11:688:11 | ref arg x | atl.cpp:705:30:705:30 | x |  |
+| atl.cpp:688:11:688:11 | x | atl.cpp:688:8:688:8 | call to operator+= | TAINT |
+| atl.cpp:693:11:693:11 | call to CPathT | atl.cpp:694:5:694:5 | p |  |
+| atl.cpp:693:11:693:11 | call to CPathT | atl.cpp:695:10:695:10 | p |  |
+| atl.cpp:694:5:694:5 | ref arg p | atl.cpp:695:10:695:10 | p |  |
+| atl.cpp:694:15:694:15 | ref arg x | atl.cpp:699:24:699:24 | x |  |
+| atl.cpp:694:15:694:15 | ref arg x | atl.cpp:705:30:705:30 | x |  |
+| atl.cpp:698:11:698:11 | call to CPathT | atl.cpp:699:5:699:5 | p |  |
+| atl.cpp:698:11:698:11 | call to CPathT | atl.cpp:700:10:700:10 | p |  |
+| atl.cpp:699:5:699:5 | ref arg p | atl.cpp:700:10:700:10 | p |  |
+| atl.cpp:699:24:699:24 | ref arg x | atl.cpp:705:30:705:30 | x |  |
+| atl.cpp:704:11:704:11 | call to CPathT | atl.cpp:705:15:705:15 | p |  |
+| atl.cpp:705:17:705:28 | call to CommonPrefix | atl.cpp:706:10:706:11 | p2 |  |
+| atl.cpp:705:17:705:28 | call to CommonPrefix | atl.cpp:707:10:707:11 | p2 |  |
+| atl.cpp:706:10:706:11 | p2 [post update] | atl.cpp:707:10:707:11 | p2 |  |
+| atl.cpp:734:11:734:21 | call to source | atl.cpp:737:11:737:11 | x |  |
+| atl.cpp:734:11:734:21 | call to source | atl.cpp:749:11:749:11 | x |  |
+| atl.cpp:734:11:734:21 | call to source | atl.cpp:753:23:753:23 | x |  |
+| atl.cpp:736:23:736:23 | call to CSimpleArray | atl.cpp:737:5:737:5 | a |  |
+| atl.cpp:736:23:736:23 | call to CSimpleArray | atl.cpp:738:10:738:10 | a |  |
+| atl.cpp:736:23:736:23 | call to CSimpleArray | atl.cpp:739:5:739:5 | a |  |
+| atl.cpp:736:23:736:23 | call to CSimpleArray | atl.cpp:740:10:740:10 | a |  |
+| atl.cpp:736:23:736:23 | call to CSimpleArray | atl.cpp:744:10:744:10 | a |  |
+| atl.cpp:736:23:736:23 | call to CSimpleArray | atl.cpp:746:3:746:3 | a |  |
+| atl.cpp:737:5:737:5 | ref arg a | atl.cpp:738:10:738:10 | a |  |
+| atl.cpp:737:5:737:5 | ref arg a | atl.cpp:739:5:739:5 | a |  |
+| atl.cpp:737:5:737:5 | ref arg a | atl.cpp:740:10:740:10 | a |  |
+| atl.cpp:737:5:737:5 | ref arg a | atl.cpp:744:10:744:10 | a |  |
+| atl.cpp:737:5:737:5 | ref arg a | atl.cpp:746:3:746:3 | a |  |
+| atl.cpp:738:10:738:10 | ref arg a | atl.cpp:739:5:739:5 | a |  |
+| atl.cpp:738:10:738:10 | ref arg a | atl.cpp:740:10:740:10 | a |  |
+| atl.cpp:738:10:738:10 | ref arg a | atl.cpp:744:10:744:10 | a |  |
+| atl.cpp:738:10:738:10 | ref arg a | atl.cpp:746:3:746:3 | a |  |
+| atl.cpp:739:5:739:5 | ref arg a | atl.cpp:740:10:740:10 | a |  |
+| atl.cpp:739:5:739:5 | ref arg a | atl.cpp:744:10:744:10 | a |  |
+| atl.cpp:739:5:739:5 | ref arg a | atl.cpp:746:3:746:3 | a |  |
+| atl.cpp:740:10:740:10 | ref arg a | atl.cpp:744:10:744:10 | a |  |
+| atl.cpp:740:10:740:10 | ref arg a | atl.cpp:746:3:746:3 | a |  |
+| atl.cpp:742:23:742:24 | call to CSimpleArray | atl.cpp:743:10:743:11 | a2 |  |
+| atl.cpp:742:23:742:24 | call to CSimpleArray | atl.cpp:744:5:744:6 | a2 |  |
+| atl.cpp:742:23:742:24 | call to CSimpleArray | atl.cpp:745:10:745:11 | a2 |  |
+| atl.cpp:742:23:742:24 | call to CSimpleArray | atl.cpp:746:3:746:3 | a2 |  |
+| atl.cpp:743:10:743:11 | ref arg a2 | atl.cpp:744:5:744:6 | a2 |  |
+| atl.cpp:743:10:743:11 | ref arg a2 | atl.cpp:745:10:745:11 | a2 |  |
+| atl.cpp:743:10:743:11 | ref arg a2 | atl.cpp:746:3:746:3 | a2 |  |
+| atl.cpp:744:5:744:6 | ref arg a2 | atl.cpp:745:10:745:11 | a2 |  |
+| atl.cpp:744:5:744:6 | ref arg a2 | atl.cpp:746:3:746:3 | a2 |  |
+| atl.cpp:744:10:744:10 | a | atl.cpp:744:5:744:6 | ref arg a2 | TAINT |
+| atl.cpp:744:10:744:10 | a | atl.cpp:744:8:744:8 | call to operator= | TAINT |
+| atl.cpp:745:10:745:11 | ref arg a2 | atl.cpp:746:3:746:3 | a2 |  |
+| atl.cpp:748:23:748:23 | call to CSimpleArray | atl.cpp:749:5:749:5 | a |  |
+| atl.cpp:748:23:748:23 | call to CSimpleArray | atl.cpp:750:10:750:10 | a |  |
+| atl.cpp:748:23:748:23 | call to CSimpleArray | atl.cpp:755:3:755:3 | a |  |
+| atl.cpp:749:5:749:5 | ref arg a | atl.cpp:750:10:750:10 | a |  |
+| atl.cpp:749:5:749:5 | ref arg a | atl.cpp:755:3:755:3 | a |  |
+| atl.cpp:750:10:750:10 | ref arg a | atl.cpp:755:3:755:3 | a |  |
+| atl.cpp:752:23:752:24 | call to CSimpleArray | atl.cpp:753:15:753:16 | a2 |  |
+| atl.cpp:752:23:752:24 | call to CSimpleArray | atl.cpp:754:10:754:11 | a2 |  |
+| atl.cpp:752:23:752:24 | call to CSimpleArray | atl.cpp:755:3:755:3 | a2 |  |
+| atl.cpp:753:18:753:21 | call to Find | atl.cpp:754:13:754:15 | pos |  |
+| atl.cpp:754:10:754:11 | ref arg a2 | atl.cpp:755:3:755:3 | a2 |  |
+| atl.cpp:779:16:779:31 | call to source | atl.cpp:782:20:782:20 | x |  |
+| atl.cpp:779:16:779:31 | call to source | atl.cpp:792:26:792:26 | x |  |
+| atl.cpp:779:16:779:31 | call to source | atl.cpp:797:32:797:32 | x |  |
+| atl.cpp:779:16:779:31 | call to source | atl.cpp:803:22:803:22 | x |  |
+| atl.cpp:779:16:779:31 | call to source | atl.cpp:808:30:808:30 | x |  |
+| atl.cpp:781:33:781:33 | call to CSimpleMap | atl.cpp:782:5:782:5 | a |  |
+| atl.cpp:781:33:781:33 | call to CSimpleMap | atl.cpp:783:10:783:10 | a |  |
+| atl.cpp:781:33:781:33 | call to CSimpleMap | atl.cpp:784:3:784:3 | a |  |
+| atl.cpp:782:5:782:5 | ref arg a | atl.cpp:783:10:783:10 | a |  |
+| atl.cpp:782:5:782:5 | ref arg a | atl.cpp:784:3:784:3 | a |  |
+| atl.cpp:783:10:783:10 | ref arg a | atl.cpp:784:3:784:3 | a |  |
+| atl.cpp:786:33:786:33 | call to CSimpleMap | atl.cpp:787:16:787:16 | a |  |
+| atl.cpp:786:33:786:33 | call to CSimpleMap | atl.cpp:788:10:788:10 | a |  |
+| atl.cpp:786:33:786:33 | call to CSimpleMap | atl.cpp:789:3:789:3 | a |  |
+| atl.cpp:787:18:787:24 | call to FindKey | atl.cpp:788:23:788:25 | pos |  |
+| atl.cpp:788:10:788:10 | ref arg a | atl.cpp:789:3:789:3 | a |  |
+| atl.cpp:791:33:791:33 | call to CSimpleMap | atl.cpp:792:16:792:16 | a |  |
+| atl.cpp:791:33:791:33 | call to CSimpleMap | atl.cpp:793:10:793:10 | a |  |
+| atl.cpp:791:33:791:33 | call to CSimpleMap | atl.cpp:794:3:794:3 | a |  |
+| atl.cpp:792:18:792:24 | call to FindVal | atl.cpp:793:23:793:25 | pos |  |
+| atl.cpp:793:10:793:10 | ref arg a | atl.cpp:794:3:794:3 | a |  |
+| atl.cpp:796:33:796:33 | call to CSimpleMap | atl.cpp:797:16:797:16 | a |  |
+| atl.cpp:796:33:796:33 | call to CSimpleMap | atl.cpp:799:10:799:10 | a |  |
+| atl.cpp:796:33:796:33 | call to CSimpleMap | atl.cpp:800:3:800:3 | a |  |
+| atl.cpp:797:16:797:16 | ref arg a | atl.cpp:799:10:799:10 | a |  |
+| atl.cpp:797:16:797:16 | ref arg a | atl.cpp:800:3:800:3 | a |  |
+| atl.cpp:797:18:797:30 | call to ReverseLookup | atl.cpp:798:10:798:12 | key |  |
+| atl.cpp:797:18:797:30 | call to ReverseLookup | atl.cpp:799:19:799:21 | key |  |
+| atl.cpp:798:10:798:12 | ref arg key | atl.cpp:799:19:799:21 | key |  |
+| atl.cpp:799:10:799:10 | ref arg a | atl.cpp:800:3:800:3 | a |  |
+| atl.cpp:802:33:802:33 | call to CSimpleMap | atl.cpp:803:5:803:5 | a |  |
+| atl.cpp:802:33:802:33 | call to CSimpleMap | atl.cpp:804:10:804:10 | a |  |
+| atl.cpp:802:33:802:33 | call to CSimpleMap | atl.cpp:805:3:805:3 | a |  |
+| atl.cpp:803:5:803:5 | ref arg a | atl.cpp:804:10:804:10 | a |  |
+| atl.cpp:803:5:803:5 | ref arg a | atl.cpp:805:3:805:3 | a |  |
+| atl.cpp:804:10:804:10 | ref arg a | atl.cpp:805:3:805:3 | a |  |
+| atl.cpp:807:33:807:33 | call to CSimpleMap | atl.cpp:808:5:808:5 | a |  |
+| atl.cpp:807:33:807:33 | call to CSimpleMap | atl.cpp:809:10:809:10 | a |  |
+| atl.cpp:807:33:807:33 | call to CSimpleMap | atl.cpp:810:3:810:3 | a |  |
+| atl.cpp:808:5:808:5 | ref arg a | atl.cpp:809:10:809:10 | a |  |
+| atl.cpp:808:5:808:5 | ref arg a | atl.cpp:810:3:810:3 | a |  |
+| atl.cpp:809:10:809:10 | ref arg a | atl.cpp:810:3:810:3 | a |  |
+| atl.cpp:851:13:851:33 | call to indirect_source | atl.cpp:853:16:853:16 | x |  |
+| atl.cpp:851:13:851:33 | call to indirect_source | atl.cpp:866:19:866:19 | x |  |
+| atl.cpp:851:13:851:33 | call to indirect_source | atl.cpp:872:23:872:23 | x |  |
+| atl.cpp:851:13:851:33 | call to indirect_source | atl.cpp:877:22:877:22 | x |  |
+| atl.cpp:851:13:851:33 | call to indirect_source | atl.cpp:882:22:882:22 | x |  |
+| atl.cpp:851:13:851:33 | call to indirect_source | atl.cpp:887:24:887:24 | x |  |
+| atl.cpp:851:13:851:33 | call to indirect_source | atl.cpp:892:21:892:21 | x |  |
+| atl.cpp:851:13:851:33 | call to indirect_source | atl.cpp:897:22:897:22 | x |  |
+| atl.cpp:852:8:852:10 | call to CUrl | atl.cpp:853:3:853:5 | url |  |
+| atl.cpp:852:8:852:10 | call to CUrl | atl.cpp:854:8:854:10 | url |  |
+| atl.cpp:852:8:852:10 | call to CUrl | atl.cpp:855:8:855:10 | url |  |
+| atl.cpp:852:8:852:10 | call to CUrl | atl.cpp:856:8:856:10 | url |  |
+| atl.cpp:852:8:852:10 | call to CUrl | atl.cpp:857:8:857:10 | url |  |
+| atl.cpp:852:8:852:10 | call to CUrl | atl.cpp:858:8:858:10 | url |  |
+| atl.cpp:852:8:852:10 | call to CUrl | atl.cpp:859:8:859:10 | url |  |
+| atl.cpp:852:8:852:10 | call to CUrl | atl.cpp:860:8:860:10 | url |  |
+| atl.cpp:852:8:852:10 | call to CUrl | atl.cpp:900:1:900:1 | url |  |
+| atl.cpp:853:3:853:5 | ref arg url | atl.cpp:854:8:854:10 | url |  |
+| atl.cpp:853:3:853:5 | ref arg url | atl.cpp:855:8:855:10 | url |  |
+| atl.cpp:853:3:853:5 | ref arg url | atl.cpp:856:8:856:10 | url |  |
+| atl.cpp:853:3:853:5 | ref arg url | atl.cpp:857:8:857:10 | url |  |
+| atl.cpp:853:3:853:5 | ref arg url | atl.cpp:858:8:858:10 | url |  |
+| atl.cpp:853:3:853:5 | ref arg url | atl.cpp:859:8:859:10 | url |  |
+| atl.cpp:853:3:853:5 | ref arg url | atl.cpp:860:8:860:10 | url |  |
+| atl.cpp:853:3:853:5 | ref arg url | atl.cpp:900:1:900:1 | url |  |
+| atl.cpp:863:10:863:13 | call to CUrl | atl.cpp:866:5:866:8 | url2 |  |
+| atl.cpp:863:10:863:13 | call to CUrl | atl.cpp:867:5:867:8 | url2 |  |
+| atl.cpp:863:10:863:13 | call to CUrl | atl.cpp:869:3:869:3 | url2 |  |
+| atl.cpp:864:11:864:13 | len | atl.cpp:867:29:867:31 | len |  |
+| atl.cpp:865:10:865:15 | buffer | atl.cpp:867:20:867:25 | buffer |  |
+| atl.cpp:865:10:865:15 | buffer | atl.cpp:868:10:868:15 | buffer |  |
+| atl.cpp:866:5:866:8 | ref arg url2 | atl.cpp:867:5:867:8 | url2 |  |
+| atl.cpp:866:5:866:8 | ref arg url2 | atl.cpp:869:3:869:3 | url2 |  |
+| atl.cpp:867:20:867:25 | ref arg buffer | atl.cpp:868:10:868:15 | buffer |  |
+| atl.cpp:867:28:867:31 | ref arg & ... | atl.cpp:867:29:867:31 | len [inner post update] |  |
+| atl.cpp:867:29:867:31 | len | atl.cpp:867:28:867:31 | & ... |  |
+| atl.cpp:871:10:871:13 | call to CUrl | atl.cpp:872:5:872:8 | url2 |  |
+| atl.cpp:871:10:871:13 | call to CUrl | atl.cpp:873:10:873:13 | url2 |  |
+| atl.cpp:871:10:871:13 | call to CUrl | atl.cpp:874:3:874:3 | url2 |  |
+| atl.cpp:872:5:872:8 | ref arg url2 | atl.cpp:873:10:873:13 | url2 |  |
+| atl.cpp:872:5:872:8 | ref arg url2 | atl.cpp:874:3:874:3 | url2 |  |
+| atl.cpp:876:10:876:13 | call to CUrl | atl.cpp:877:5:877:8 | url2 |  |
+| atl.cpp:876:10:876:13 | call to CUrl | atl.cpp:878:10:878:13 | url2 |  |
+| atl.cpp:876:10:876:13 | call to CUrl | atl.cpp:879:3:879:3 | url2 |  |
+| atl.cpp:877:5:877:8 | ref arg url2 | atl.cpp:878:10:878:13 | url2 |  |
+| atl.cpp:877:5:877:8 | ref arg url2 | atl.cpp:879:3:879:3 | url2 |  |
+| atl.cpp:881:10:881:13 | call to CUrl | atl.cpp:882:5:882:8 | url2 |  |
+| atl.cpp:881:10:881:13 | call to CUrl | atl.cpp:883:10:883:13 | url2 |  |
+| atl.cpp:881:10:881:13 | call to CUrl | atl.cpp:884:3:884:3 | url2 |  |
+| atl.cpp:882:5:882:8 | ref arg url2 | atl.cpp:883:10:883:13 | url2 |  |
+| atl.cpp:882:5:882:8 | ref arg url2 | atl.cpp:884:3:884:3 | url2 |  |
+| atl.cpp:886:10:886:13 | call to CUrl | atl.cpp:887:5:887:8 | url2 |  |
+| atl.cpp:886:10:886:13 | call to CUrl | atl.cpp:888:10:888:13 | url2 |  |
+| atl.cpp:886:10:886:13 | call to CUrl | atl.cpp:889:3:889:3 | url2 |  |
+| atl.cpp:887:5:887:8 | ref arg url2 | atl.cpp:888:10:888:13 | url2 |  |
+| atl.cpp:887:5:887:8 | ref arg url2 | atl.cpp:889:3:889:3 | url2 |  |
+| atl.cpp:891:10:891:13 | call to CUrl | atl.cpp:892:5:892:8 | url2 |  |
+| atl.cpp:891:10:891:13 | call to CUrl | atl.cpp:893:10:893:13 | url2 |  |
+| atl.cpp:891:10:891:13 | call to CUrl | atl.cpp:894:3:894:3 | url2 |  |
+| atl.cpp:892:5:892:8 | ref arg url2 | atl.cpp:893:10:893:13 | url2 |  |
+| atl.cpp:892:5:892:8 | ref arg url2 | atl.cpp:894:3:894:3 | url2 |  |
+| atl.cpp:896:10:896:13 | call to CUrl | atl.cpp:897:5:897:8 | url2 |  |
+| atl.cpp:896:10:896:13 | call to CUrl | atl.cpp:898:10:898:13 | url2 |  |
+| atl.cpp:896:10:896:13 | call to CUrl | atl.cpp:899:3:899:3 | url2 |  |
+| atl.cpp:897:5:897:8 | ref arg url2 | atl.cpp:898:10:898:13 | url2 |  |
+| atl.cpp:897:5:897:8 | ref arg url2 | atl.cpp:899:3:899:3 | url2 |  |
 | bsd.cpp:17:11:17:16 | call to source | bsd.cpp:20:18:20:18 | s |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:20:22:20:25 | addr |  |
 | bsd.cpp:18:12:18:15 | addr | bsd.cpp:23:8:23:11 | addr |  |
@@ -301,27 +1107,6 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:75:8:75:8 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:75:8:75:8 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
-| file://:0:0:0:0 | (unnamed parameter 0) | stl.h:389:9:389:9 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | structlikeclass.cpp:5:7:5:7 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | structlikeclass.cpp:5:7:5:7 | (unnamed parameter 0) |  |
 | file://:0:0:0:0 | (unnamed parameter 0) | taint.cpp:228:11:228:11 | (unnamed parameter 0) |  |
@@ -468,6 +1253,13 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | format.cpp:158:13:158:18 | call to wcslen | format.cpp:158:13:158:26 | ... / ... | TAINT |
 | format.cpp:158:13:158:26 | ... / ... | format.cpp:158:7:158:27 | ... + ... | TAINT |
 | format.cpp:158:26:158:26 | 2 | format.cpp:158:13:158:26 | ... / ... | TAINT |
+| format.cpp:162:12:162:22 | call to format | format.cpp:163:8:163:8 | s |  |
+| format.cpp:162:24:162:27 | {} | format.cpp:162:24:162:27 | call to basic_format_string | TAINT |
+| format.cpp:165:13:165:23 | call to format | format.cpp:166:8:166:9 | s2 |  |
+| format.cpp:165:25:165:38 | call to source | format.cpp:165:25:165:40 | call to basic_format_string | TAINT |
+| format.cpp:169:30:169:30 | s | format.cpp:171:60:171:60 | s |  |
+| format.cpp:170:11:170:16 | call to source | format.cpp:171:63:171:63 | x |  |
+| format.cpp:171:11:171:58 | call to same_signature_as_format_but_different_name | format.cpp:172:8:172:8 | y |  |
 | map.cpp:21:28:21:28 | call to pair | map.cpp:23:2:23:2 | a |  |
 | map.cpp:21:28:21:28 | call to pair | map.cpp:24:7:24:7 | a |  |
 | map.cpp:21:28:21:28 | call to pair | map.cpp:25:7:25:7 | a |  |
@@ -571,19 +1363,15 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | map.cpp:67:30:67:42 | call to pair | map.cpp:80:7:80:7 | l |  |
 | map.cpp:67:30:67:42 | call to pair | map.cpp:81:7:81:7 | l |  |
 | map.cpp:67:37:67:41 | 456 | map.cpp:67:30:67:42 | call to pair | TAINT |
-| map.cpp:68:3:68:3 | i | map.cpp:68:10:68:10 | ref arg j | TAINT |
 | map.cpp:68:3:68:3 | ref arg i | map.cpp:70:7:70:7 | i |  |
 | map.cpp:68:3:68:3 | ref arg i | map.cpp:71:7:71:7 | i |  |
 | map.cpp:68:3:68:3 | ref arg i | map.cpp:72:7:72:7 | i |  |
-| map.cpp:68:10:68:10 | j | map.cpp:68:3:68:3 | ref arg i | TAINT |
 | map.cpp:68:10:68:10 | ref arg j | map.cpp:73:7:73:7 | j |  |
 | map.cpp:68:10:68:10 | ref arg j | map.cpp:74:7:74:7 | j |  |
 | map.cpp:68:10:68:10 | ref arg j | map.cpp:75:7:75:7 | j |  |
-| map.cpp:69:2:69:2 | k | map.cpp:69:9:69:9 | ref arg l | TAINT |
 | map.cpp:69:2:69:2 | ref arg k | map.cpp:76:7:76:7 | k |  |
 | map.cpp:69:2:69:2 | ref arg k | map.cpp:77:7:77:7 | k |  |
 | map.cpp:69:2:69:2 | ref arg k | map.cpp:78:7:78:7 | k |  |
-| map.cpp:69:9:69:9 | l | map.cpp:69:2:69:2 | ref arg k | TAINT |
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:79:7:79:7 | l |  |
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:80:7:80:7 | l |  |
 | map.cpp:69:9:69:9 | ref arg l | map.cpp:81:7:81:7 | l |  |
@@ -1082,16 +1870,12 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | map.cpp:194:7:194:9 | m16 | map.cpp:194:7:194:9 | call to map |  |
 | map.cpp:195:7:195:9 | m17 | map.cpp:195:7:195:9 | call to map |  |
 | map.cpp:196:7:196:9 | m18 | map.cpp:196:7:196:9 | call to map |  |
-| map.cpp:197:2:197:4 | m15 | map.cpp:197:11:197:13 | ref arg m16 | TAINT |
 | map.cpp:197:2:197:4 | ref arg m15 | map.cpp:199:7:199:9 | m15 |  |
 | map.cpp:197:2:197:4 | ref arg m15 | map.cpp:252:1:252:1 | m15 |  |
-| map.cpp:197:11:197:13 | m16 | map.cpp:197:2:197:4 | ref arg m15 | TAINT |
 | map.cpp:197:11:197:13 | ref arg m16 | map.cpp:200:7:200:9 | m16 |  |
 | map.cpp:197:11:197:13 | ref arg m16 | map.cpp:252:1:252:1 | m16 |  |
-| map.cpp:198:2:198:4 | m17 | map.cpp:198:11:198:13 | ref arg m18 | TAINT |
 | map.cpp:198:2:198:4 | ref arg m17 | map.cpp:201:7:201:9 | m17 |  |
 | map.cpp:198:2:198:4 | ref arg m17 | map.cpp:252:1:252:1 | m17 |  |
-| map.cpp:198:11:198:13 | m18 | map.cpp:198:2:198:4 | ref arg m17 | TAINT |
 | map.cpp:198:11:198:13 | ref arg m18 | map.cpp:202:7:202:9 | m18 |  |
 | map.cpp:198:11:198:13 | ref arg m18 | map.cpp:252:1:252:1 | m18 |  |
 | map.cpp:199:7:199:9 | m15 | map.cpp:199:7:199:9 | call to map |  |
@@ -1764,16 +2548,12 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | map.cpp:343:7:343:9 | m16 | map.cpp:343:7:343:9 | call to unordered_map |  |
 | map.cpp:344:7:344:9 | m17 | map.cpp:344:7:344:9 | call to unordered_map |  |
 | map.cpp:345:7:345:9 | m18 | map.cpp:345:7:345:9 | call to unordered_map |  |
-| map.cpp:346:2:346:4 | m15 | map.cpp:346:11:346:13 | ref arg m16 | TAINT |
 | map.cpp:346:2:346:4 | ref arg m15 | map.cpp:348:7:348:9 | m15 |  |
 | map.cpp:346:2:346:4 | ref arg m15 | map.cpp:438:1:438:1 | m15 |  |
-| map.cpp:346:11:346:13 | m16 | map.cpp:346:2:346:4 | ref arg m15 | TAINT |
 | map.cpp:346:11:346:13 | ref arg m16 | map.cpp:349:7:349:9 | m16 |  |
 | map.cpp:346:11:346:13 | ref arg m16 | map.cpp:438:1:438:1 | m16 |  |
-| map.cpp:347:2:347:4 | m17 | map.cpp:347:11:347:13 | ref arg m18 | TAINT |
 | map.cpp:347:2:347:4 | ref arg m17 | map.cpp:350:7:350:9 | m17 |  |
 | map.cpp:347:2:347:4 | ref arg m17 | map.cpp:438:1:438:1 | m17 |  |
-| map.cpp:347:11:347:13 | m18 | map.cpp:347:2:347:4 | ref arg m17 | TAINT |
 | map.cpp:347:11:347:13 | ref arg m18 | map.cpp:351:7:351:9 | m18 |  |
 | map.cpp:347:11:347:13 | ref arg m18 | map.cpp:438:1:438:1 | m18 |  |
 | map.cpp:348:7:348:9 | m15 | map.cpp:348:7:348:9 | call to unordered_map |  |
@@ -2596,16 +3376,12 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | set.cpp:81:7:81:9 | s15 | set.cpp:81:7:81:9 | call to set |  |
 | set.cpp:82:2:82:4 | ref arg s12 | set.cpp:84:7:84:9 | s12 |  |
 | set.cpp:82:2:82:4 | ref arg s12 | set.cpp:126:1:126:1 | s12 |  |
-| set.cpp:82:2:82:4 | s12 | set.cpp:82:11:82:13 | ref arg s13 | TAINT |
 | set.cpp:82:11:82:13 | ref arg s13 | set.cpp:85:7:85:9 | s13 |  |
 | set.cpp:82:11:82:13 | ref arg s13 | set.cpp:126:1:126:1 | s13 |  |
-| set.cpp:82:11:82:13 | s13 | set.cpp:82:2:82:4 | ref arg s12 | TAINT |
 | set.cpp:83:2:83:4 | ref arg s14 | set.cpp:86:7:86:9 | s14 |  |
 | set.cpp:83:2:83:4 | ref arg s14 | set.cpp:126:1:126:1 | s14 |  |
-| set.cpp:83:2:83:4 | s14 | set.cpp:83:11:83:13 | ref arg s15 | TAINT |
 | set.cpp:83:11:83:13 | ref arg s15 | set.cpp:87:7:87:9 | s15 |  |
 | set.cpp:83:11:83:13 | ref arg s15 | set.cpp:126:1:126:1 | s15 |  |
-| set.cpp:83:11:83:13 | s15 | set.cpp:83:2:83:4 | ref arg s14 | TAINT |
 | set.cpp:84:7:84:9 | s12 | set.cpp:84:7:84:9 | call to set |  |
 | set.cpp:85:7:85:9 | s13 | set.cpp:85:7:85:9 | call to set |  |
 | set.cpp:86:7:86:9 | s14 | set.cpp:86:7:86:9 | call to set |  |
@@ -3083,16 +3859,12 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | set.cpp:193:7:193:9 | s15 | set.cpp:193:7:193:9 | call to unordered_set |  |
 | set.cpp:194:2:194:4 | ref arg s12 | set.cpp:196:7:196:9 | s12 |  |
 | set.cpp:194:2:194:4 | ref arg s12 | set.cpp:238:1:238:1 | s12 |  |
-| set.cpp:194:2:194:4 | s12 | set.cpp:194:11:194:13 | ref arg s13 | TAINT |
 | set.cpp:194:11:194:13 | ref arg s13 | set.cpp:197:7:197:9 | s13 |  |
 | set.cpp:194:11:194:13 | ref arg s13 | set.cpp:238:1:238:1 | s13 |  |
-| set.cpp:194:11:194:13 | s13 | set.cpp:194:2:194:4 | ref arg s12 | TAINT |
 | set.cpp:195:2:195:4 | ref arg s14 | set.cpp:198:7:198:9 | s14 |  |
 | set.cpp:195:2:195:4 | ref arg s14 | set.cpp:238:1:238:1 | s14 |  |
-| set.cpp:195:2:195:4 | s14 | set.cpp:195:11:195:13 | ref arg s15 | TAINT |
 | set.cpp:195:11:195:13 | ref arg s15 | set.cpp:199:7:199:9 | s15 |  |
 | set.cpp:195:11:195:13 | ref arg s15 | set.cpp:238:1:238:1 | s15 |  |
-| set.cpp:195:11:195:13 | s15 | set.cpp:195:2:195:4 | ref arg s14 | TAINT |
 | set.cpp:196:7:196:9 | s12 | set.cpp:196:7:196:9 | call to unordered_set |  |
 | set.cpp:197:7:197:9 | s13 | set.cpp:197:7:197:9 | call to unordered_set |  |
 | set.cpp:198:7:198:9 | s14 | set.cpp:198:7:198:9 | call to unordered_set |  |
@@ -3599,12 +4371,6 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | standalone_iterators.cpp:128:2:128:3 | it | standalone_iterators.cpp:128:5:128:5 | call to operator+= | TAINT |
 | standalone_iterators.cpp:128:2:128:3 | ref arg it | standalone_iterators.cpp:129:7:129:8 | it |  |
 | standalone_iterators.cpp:128:8:128:13 | call to source | standalone_iterators.cpp:128:2:128:3 | ref arg it | TAINT |
-| stl.h:75:8:75:8 | container | stl.h:75:8:75:8 | constructor init of field container | TAINT |
-| stl.h:75:8:75:8 | container | stl.h:75:8:75:8 | constructor init of field container | TAINT |
-| stl.h:75:8:75:8 | container | stl.h:75:8:75:8 | container |  |
-| stl.h:75:8:75:8 | container | stl.h:75:8:75:8 | container |  |
-| stl.h:75:8:75:8 | this | stl.h:75:8:75:8 | constructor init of field container [pre-this] |  |
-| stl.h:75:8:75:8 | this | stl.h:75:8:75:8 | constructor init of field container [pre-this] |  |
 | stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
 | stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
 | stl.h:95:69:95:69 | x | stl.h:95:69:95:69 | x |  |
@@ -3620,41 +4386,6 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
 | stl.h:292:30:292:40 | call to allocator | stl.h:292:21:292:41 | noexcept(...) | TAINT |
 | stl.h:292:53:292:63 | 0 | stl.h:292:46:292:64 | (no string representation) | TAINT |
-| stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
-| stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
-| stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
-| stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
-| stl.h:389:9:389:9 | constructor init of field first [post-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
-| stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
-| stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
-| stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
-| stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
-| stl.h:389:9:389:9 | constructor init of field first [pre-this] | stl.h:389:9:389:9 | constructor init of field second [pre-this] |  |
-| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | constructor init of field first | TAINT |
-| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | constructor init of field first | TAINT |
-| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | constructor init of field first | TAINT |
-| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | constructor init of field first | TAINT |
-| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | constructor init of field first | TAINT |
-| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | first |  |
-| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | first |  |
-| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | first |  |
-| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | first |  |
-| stl.h:389:9:389:9 | first | stl.h:389:9:389:9 | first |  |
-| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | constructor init of field second | TAINT |
-| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | constructor init of field second | TAINT |
-| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | constructor init of field second | TAINT |
-| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | constructor init of field second | TAINT |
-| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | constructor init of field second | TAINT |
-| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | second |  |
-| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | second |  |
-| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | second |  |
-| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | second |  |
-| stl.h:389:9:389:9 | second | stl.h:389:9:389:9 | second |  |
-| stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
-| stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
-| stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
-| stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
-| stl.h:389:9:389:9 | this | stl.h:389:9:389:9 | constructor init of field first [pre-this] |  |
 | stl.h:396:3:396:3 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
 | stl.h:396:3:396:3 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
 | stl.h:396:3:396:3 | this | stl.h:396:36:396:43 | constructor init of field first [pre-this] |  |
@@ -4105,13 +4836,9 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | string.cpp:272:17:272:25 | call to basic_string | string.cpp:280:2:280:3 | s4 |  |
 | string.cpp:272:17:272:25 | call to basic_string | string.cpp:285:7:285:8 | s4 |  |
 | string.cpp:279:2:279:3 | ref arg s1 | string.cpp:282:7:282:8 | s1 |  |
-| string.cpp:279:2:279:3 | s1 | string.cpp:279:10:279:11 | ref arg s2 | TAINT |
 | string.cpp:279:10:279:11 | ref arg s2 | string.cpp:283:7:283:8 | s2 |  |
-| string.cpp:279:10:279:11 | s2 | string.cpp:279:2:279:3 | ref arg s1 | TAINT |
 | string.cpp:280:2:280:3 | ref arg s4 | string.cpp:285:7:285:8 | s4 |  |
-| string.cpp:280:2:280:3 | s4 | string.cpp:280:10:280:11 | ref arg s3 | TAINT |
 | string.cpp:280:10:280:11 | ref arg s3 | string.cpp:284:7:284:8 | s3 |  |
-| string.cpp:280:10:280:11 | s3 | string.cpp:280:2:280:3 | ref arg s4 | TAINT |
 | string.cpp:289:17:289:22 | call to source | string.cpp:289:17:289:25 | call to basic_string | TAINT |
 | string.cpp:289:17:289:25 | call to basic_string | string.cpp:293:7:293:8 | s1 |  |
 | string.cpp:289:17:289:25 | call to basic_string | string.cpp:297:2:297:3 | s1 |  |
@@ -4361,6 +5088,8 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | string.cpp:446:17:446:17 | a | string.cpp:446:19:446:23 | call to begin | TAINT |
 | string.cpp:446:17:446:17 | ref arg a | string.cpp:446:8:446:8 | a |  |
 | string.cpp:446:17:446:17 | ref arg a | string.cpp:447:8:447:8 | a |  |
+| string.cpp:446:17:446:25 | call to iterator | string.cpp:446:8:446:8 | ref arg a | TAINT |
+| string.cpp:446:17:446:25 | call to iterator | string.cpp:446:10:446:15 | call to insert | TAINT |
 | string.cpp:446:19:446:23 | call to begin | string.cpp:446:17:446:25 | call to iterator | TAINT |
 | string.cpp:446:32:446:34 | 120 | string.cpp:446:8:446:8 | ref arg a | TAINT |
 | string.cpp:446:32:446:34 | 120 | string.cpp:446:10:446:15 | call to insert | TAINT |
@@ -4369,6 +5098,8 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | string.cpp:449:17:449:17 | b | string.cpp:449:19:449:23 | call to begin | TAINT |
 | string.cpp:449:17:449:17 | ref arg b | string.cpp:449:8:449:8 | b |  |
 | string.cpp:449:17:449:17 | ref arg b | string.cpp:450:8:450:8 | b |  |
+| string.cpp:449:17:449:25 | call to iterator | string.cpp:449:8:449:8 | ref arg b | TAINT |
+| string.cpp:449:17:449:25 | call to iterator | string.cpp:449:10:449:15 | call to insert | TAINT |
 | string.cpp:449:19:449:23 | call to begin | string.cpp:449:17:449:25 | call to iterator | TAINT |
 | string.cpp:449:32:449:46 | call to source | string.cpp:449:8:449:8 | ref arg b | TAINT |
 | string.cpp:449:32:449:46 | call to source | string.cpp:449:10:449:15 | call to insert | TAINT |
@@ -4396,6 +5127,8 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | string.cpp:459:17:459:17 | c | string.cpp:459:19:459:21 | call to end | TAINT |
 | string.cpp:459:17:459:17 | ref arg c | string.cpp:459:8:459:8 | c |  |
 | string.cpp:459:17:459:17 | ref arg c | string.cpp:460:8:460:8 | c |  |
+| string.cpp:459:17:459:23 | call to iterator | string.cpp:459:8:459:8 | ref arg c | TAINT |
+| string.cpp:459:17:459:23 | call to iterator | string.cpp:459:10:459:15 | call to insert | TAINT |
 | string.cpp:459:19:459:21 | call to end | string.cpp:459:17:459:23 | call to iterator | TAINT |
 | string.cpp:459:26:459:27 | ref arg s1 | string.cpp:459:38:459:39 | s1 |  |
 | string.cpp:459:26:459:27 | ref arg s1 | string.cpp:465:28:465:29 | s1 |  |
@@ -4413,6 +5146,8 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | string.cpp:462:17:462:17 | d | string.cpp:462:19:462:21 | call to end | TAINT |
 | string.cpp:462:17:462:17 | ref arg d | string.cpp:462:8:462:8 | d |  |
 | string.cpp:462:17:462:17 | ref arg d | string.cpp:463:8:463:8 | d |  |
+| string.cpp:462:17:462:23 | call to iterator | string.cpp:462:8:462:8 | ref arg d | TAINT |
+| string.cpp:462:17:462:23 | call to iterator | string.cpp:462:10:462:15 | call to insert | TAINT |
 | string.cpp:462:19:462:21 | call to end | string.cpp:462:17:462:23 | call to iterator | TAINT |
 | string.cpp:462:26:462:27 | ref arg s2 | string.cpp:462:38:462:39 | s2 |  |
 | string.cpp:462:26:462:27 | ref arg s2 | string.cpp:465:8:465:9 | s2 |  |
@@ -4432,6 +5167,8 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | string.cpp:465:18:465:19 | ref arg s2 | string.cpp:465:8:465:9 | s2 |  |
 | string.cpp:465:18:465:19 | ref arg s2 | string.cpp:466:8:466:9 | s2 |  |
 | string.cpp:465:18:465:19 | s2 | string.cpp:465:21:465:23 | call to end | TAINT |
+| string.cpp:465:18:465:25 | call to iterator | string.cpp:465:8:465:9 | ref arg s2 | TAINT |
+| string.cpp:465:18:465:25 | call to iterator | string.cpp:465:11:465:16 | call to insert | TAINT |
 | string.cpp:465:21:465:23 | call to end | string.cpp:465:18:465:25 | call to iterator | TAINT |
 | string.cpp:465:28:465:29 | ref arg s1 | string.cpp:465:40:465:41 | s1 |  |
 | string.cpp:465:28:465:29 | s1 | string.cpp:465:31:465:35 | call to begin | TAINT |
@@ -4887,13 +5624,9 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | stringstream.cpp:115:24:115:32 | call to basic_stringstream | stringstream.cpp:118:2:118:4 | ss4 |  |
 | stringstream.cpp:115:24:115:32 | call to basic_stringstream | stringstream.cpp:123:7:123:9 | ss4 |  |
 | stringstream.cpp:117:2:117:4 | ref arg ss1 | stringstream.cpp:120:7:120:9 | ss1 |  |
-| stringstream.cpp:117:2:117:4 | ss1 | stringstream.cpp:117:11:117:13 | ref arg ss2 | TAINT |
 | stringstream.cpp:117:11:117:13 | ref arg ss2 | stringstream.cpp:121:7:121:9 | ss2 |  |
-| stringstream.cpp:117:11:117:13 | ss2 | stringstream.cpp:117:2:117:4 | ref arg ss1 | TAINT |
 | stringstream.cpp:118:2:118:4 | ref arg ss4 | stringstream.cpp:123:7:123:9 | ss4 |  |
-| stringstream.cpp:118:2:118:4 | ss4 | stringstream.cpp:118:11:118:13 | ref arg ss3 | TAINT |
 | stringstream.cpp:118:11:118:13 | ref arg ss3 | stringstream.cpp:122:7:122:9 | ss3 |  |
-| stringstream.cpp:118:11:118:13 | ss3 | stringstream.cpp:118:2:118:4 | ref arg ss4 | TAINT |
 | stringstream.cpp:128:20:128:22 | call to basic_stringstream | stringstream.cpp:142:7:142:9 | ss1 |  |
 | stringstream.cpp:128:20:128:22 | call to basic_stringstream | stringstream.cpp:145:7:145:9 | ss1 |  |
 | stringstream.cpp:128:20:128:22 | call to basic_stringstream | stringstream.cpp:153:7:153:9 | ss1 |  |
@@ -5461,9 +6194,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | swap1.cpp:24:9:24:13 | this | swap1.cpp:24:31:24:34 | this |  |
 | swap1.cpp:24:23:24:26 | that | swap1.cpp:24:23:24:26 | that |  |
 | swap1.cpp:24:23:24:26 | that | swap1.cpp:24:36:24:39 | that |  |
-| swap1.cpp:24:31:24:34 | this | swap1.cpp:24:36:24:39 | ref arg that | TAINT |
 | swap1.cpp:24:36:24:39 | ref arg that | swap1.cpp:24:23:24:26 | that |  |
-| swap1.cpp:24:36:24:39 | that | swap1.cpp:24:31:24:34 | ref arg this | TAINT |
 | swap1.cpp:25:9:25:13 | this | swap1.cpp:25:36:25:52 | constructor init of field data1 [pre-this] |  |
 | swap1.cpp:25:28:25:31 | that | swap1.cpp:25:42:25:45 | that |  |
 | swap1.cpp:25:47:25:51 | data1 | swap1.cpp:25:36:25:52 | constructor init of field data1 | TAINT |
@@ -5473,36 +6204,28 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | swap1.cpp:29:23:29:27 | call to Class | swap1.cpp:30:18:30:20 | tmp |  |
 | swap1.cpp:29:24:29:27 | that | swap1.cpp:29:23:29:27 | call to Class |  |
 | swap1.cpp:30:13:30:16 | ref arg this | swap1.cpp:31:21:31:24 | this |  |
-| swap1.cpp:30:13:30:16 | this | swap1.cpp:30:18:30:20 | ref arg tmp | TAINT |
 | swap1.cpp:30:13:30:16 | this | swap1.cpp:31:21:31:24 | this |  |
-| swap1.cpp:30:18:30:20 | tmp | swap1.cpp:30:13:30:16 | ref arg this | TAINT |
 | swap1.cpp:31:21:31:24 | this | swap1.cpp:31:20:31:24 | * ... | TAINT |
 | swap1.cpp:34:16:34:24 | this | swap1.cpp:36:13:36:16 | this |  |
 | swap1.cpp:34:34:34:37 | that | swap1.cpp:34:34:34:37 | that |  |
 | swap1.cpp:34:34:34:37 | that | swap1.cpp:36:18:36:21 | that |  |
 | swap1.cpp:36:13:36:16 | ref arg this | swap1.cpp:37:21:37:24 | this |  |
-| swap1.cpp:36:13:36:16 | this | swap1.cpp:36:18:36:21 | ref arg that | TAINT |
 | swap1.cpp:36:13:36:16 | this | swap1.cpp:37:21:37:24 | this |  |
 | swap1.cpp:36:18:36:21 | ref arg that | swap1.cpp:34:34:34:37 | that |  |
-| swap1.cpp:36:18:36:21 | that | swap1.cpp:36:13:36:16 | ref arg this | TAINT |
 | swap1.cpp:37:21:37:24 | this | swap1.cpp:37:20:37:24 | * ... | TAINT |
 | swap1.cpp:40:16:40:26 | this | swap1.cpp:43:13:43:16 | this |  |
 | swap1.cpp:40:41:40:44 | that | swap1.cpp:42:24:42:27 | that |  |
 | swap1.cpp:42:23:42:27 | call to Class | swap1.cpp:43:18:43:20 | tmp |  |
 | swap1.cpp:42:24:42:27 | that | swap1.cpp:42:23:42:27 | call to Class |  |
 | swap1.cpp:43:13:43:16 | ref arg this | swap1.cpp:44:21:44:24 | this |  |
-| swap1.cpp:43:13:43:16 | this | swap1.cpp:43:18:43:20 | ref arg tmp | TAINT |
 | swap1.cpp:43:13:43:16 | this | swap1.cpp:44:21:44:24 | this |  |
-| swap1.cpp:43:18:43:20 | tmp | swap1.cpp:43:13:43:16 | ref arg this | TAINT |
 | swap1.cpp:44:21:44:24 | this | swap1.cpp:44:20:44:24 | * ... | TAINT |
 | swap1.cpp:47:16:47:26 | this | swap1.cpp:49:13:49:16 | this |  |
 | swap1.cpp:47:36:47:39 | that | swap1.cpp:47:36:47:39 | that |  |
 | swap1.cpp:47:36:47:39 | that | swap1.cpp:49:18:49:21 | that |  |
 | swap1.cpp:49:13:49:16 | ref arg this | swap1.cpp:50:21:50:24 | this |  |
-| swap1.cpp:49:13:49:16 | this | swap1.cpp:49:18:49:21 | ref arg that | TAINT |
 | swap1.cpp:49:13:49:16 | this | swap1.cpp:50:21:50:24 | this |  |
 | swap1.cpp:49:18:49:21 | ref arg that | swap1.cpp:47:36:47:39 | that |  |
-| swap1.cpp:49:18:49:21 | that | swap1.cpp:49:13:49:16 | ref arg this | TAINT |
 | swap1.cpp:50:21:50:24 | this | swap1.cpp:50:20:50:24 | * ... | TAINT |
 | swap1.cpp:53:14:53:17 | this | swap1.cpp:56:18:56:22 | this |  |
 | swap1.cpp:53:26:53:29 | that | swap1.cpp:53:26:53:29 | that |  |
@@ -5516,9 +6239,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | swap1.cpp:61:32:61:32 | y | swap1.cpp:61:32:61:32 | y |  |
 | swap1.cpp:61:32:61:32 | y | swap1.cpp:63:16:63:16 | y |  |
 | swap1.cpp:63:9:63:9 | ref arg x | swap1.cpp:61:22:61:22 | x |  |
-| swap1.cpp:63:9:63:9 | x | swap1.cpp:63:16:63:16 | ref arg y | TAINT |
 | swap1.cpp:63:16:63:16 | ref arg y | swap1.cpp:61:32:61:32 | y |  |
-| swap1.cpp:63:16:63:16 | y | swap1.cpp:63:9:63:9 | ref arg x | TAINT |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:71:5:71:5 | x |  |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:73:10:73:10 | x |  |
 | swap1.cpp:69:23:69:23 | x | swap1.cpp:76:9:76:9 | x |  |
@@ -5627,9 +6348,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | swap2.cpp:24:9:24:13 | this | swap2.cpp:24:31:24:34 | this |  |
 | swap2.cpp:24:23:24:26 | that | swap2.cpp:24:23:24:26 | that |  |
 | swap2.cpp:24:23:24:26 | that | swap2.cpp:24:36:24:39 | that |  |
-| swap2.cpp:24:31:24:34 | this | swap2.cpp:24:36:24:39 | ref arg that | TAINT |
 | swap2.cpp:24:36:24:39 | ref arg that | swap2.cpp:24:23:24:26 | that |  |
-| swap2.cpp:24:36:24:39 | that | swap2.cpp:24:31:24:34 | ref arg this | TAINT |
 | swap2.cpp:25:9:25:13 | this | swap2.cpp:25:36:25:52 | constructor init of field data1 [pre-this] |  |
 | swap2.cpp:25:28:25:31 | that | swap2.cpp:25:42:25:45 | that |  |
 | swap2.cpp:25:28:25:31 | that | swap2.cpp:25:61:25:64 | that |  |
@@ -5644,36 +6363,28 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | swap2.cpp:29:23:29:27 | call to Class | swap2.cpp:30:18:30:20 | tmp |  |
 | swap2.cpp:29:24:29:27 | that | swap2.cpp:29:23:29:27 | call to Class |  |
 | swap2.cpp:30:13:30:16 | ref arg this | swap2.cpp:31:21:31:24 | this |  |
-| swap2.cpp:30:13:30:16 | this | swap2.cpp:30:18:30:20 | ref arg tmp | TAINT |
 | swap2.cpp:30:13:30:16 | this | swap2.cpp:31:21:31:24 | this |  |
-| swap2.cpp:30:18:30:20 | tmp | swap2.cpp:30:13:30:16 | ref arg this | TAINT |
 | swap2.cpp:31:21:31:24 | this | swap2.cpp:31:20:31:24 | * ... | TAINT |
 | swap2.cpp:34:16:34:24 | this | swap2.cpp:36:13:36:16 | this |  |
 | swap2.cpp:34:34:34:37 | that | swap2.cpp:34:34:34:37 | that |  |
 | swap2.cpp:34:34:34:37 | that | swap2.cpp:36:18:36:21 | that |  |
 | swap2.cpp:36:13:36:16 | ref arg this | swap2.cpp:37:21:37:24 | this |  |
-| swap2.cpp:36:13:36:16 | this | swap2.cpp:36:18:36:21 | ref arg that | TAINT |
 | swap2.cpp:36:13:36:16 | this | swap2.cpp:37:21:37:24 | this |  |
 | swap2.cpp:36:18:36:21 | ref arg that | swap2.cpp:34:34:34:37 | that |  |
-| swap2.cpp:36:18:36:21 | that | swap2.cpp:36:13:36:16 | ref arg this | TAINT |
 | swap2.cpp:37:21:37:24 | this | swap2.cpp:37:20:37:24 | * ... | TAINT |
 | swap2.cpp:40:16:40:26 | this | swap2.cpp:43:13:43:16 | this |  |
 | swap2.cpp:40:41:40:44 | that | swap2.cpp:42:24:42:27 | that |  |
 | swap2.cpp:42:23:42:27 | call to Class | swap2.cpp:43:18:43:20 | tmp |  |
 | swap2.cpp:42:24:42:27 | that | swap2.cpp:42:23:42:27 | call to Class |  |
 | swap2.cpp:43:13:43:16 | ref arg this | swap2.cpp:44:21:44:24 | this |  |
-| swap2.cpp:43:13:43:16 | this | swap2.cpp:43:18:43:20 | ref arg tmp | TAINT |
 | swap2.cpp:43:13:43:16 | this | swap2.cpp:44:21:44:24 | this |  |
-| swap2.cpp:43:18:43:20 | tmp | swap2.cpp:43:13:43:16 | ref arg this | TAINT |
 | swap2.cpp:44:21:44:24 | this | swap2.cpp:44:20:44:24 | * ... | TAINT |
 | swap2.cpp:47:16:47:26 | this | swap2.cpp:49:13:49:16 | this |  |
 | swap2.cpp:47:36:47:39 | that | swap2.cpp:47:36:47:39 | that |  |
 | swap2.cpp:47:36:47:39 | that | swap2.cpp:49:18:49:21 | that |  |
 | swap2.cpp:49:13:49:16 | ref arg this | swap2.cpp:50:21:50:24 | this |  |
-| swap2.cpp:49:13:49:16 | this | swap2.cpp:49:18:49:21 | ref arg that | TAINT |
 | swap2.cpp:49:13:49:16 | this | swap2.cpp:50:21:50:24 | this |  |
 | swap2.cpp:49:18:49:21 | ref arg that | swap2.cpp:47:36:47:39 | that |  |
-| swap2.cpp:49:18:49:21 | that | swap2.cpp:49:13:49:16 | ref arg this | TAINT |
 | swap2.cpp:50:21:50:24 | this | swap2.cpp:50:20:50:24 | * ... | TAINT |
 | swap2.cpp:53:14:53:17 | this | swap2.cpp:56:18:56:22 | this |  |
 | swap2.cpp:53:26:53:29 | that | swap2.cpp:53:26:53:29 | that |  |
@@ -5695,9 +6406,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | swap2.cpp:61:32:61:32 | y | swap2.cpp:61:32:61:32 | y |  |
 | swap2.cpp:61:32:61:32 | y | swap2.cpp:63:16:63:16 | y |  |
 | swap2.cpp:63:9:63:9 | ref arg x | swap2.cpp:61:22:61:22 | x |  |
-| swap2.cpp:63:9:63:9 | x | swap2.cpp:63:16:63:16 | ref arg y | TAINT |
 | swap2.cpp:63:16:63:16 | ref arg y | swap2.cpp:61:32:61:32 | y |  |
-| swap2.cpp:63:16:63:16 | y | swap2.cpp:63:9:63:9 | ref arg x | TAINT |
 | swap2.cpp:69:23:69:23 | x | swap2.cpp:71:5:71:5 | x |  |
 | swap2.cpp:69:23:69:23 | x | swap2.cpp:73:10:73:10 | x |  |
 | swap2.cpp:69:23:69:23 | x | swap2.cpp:76:9:76:9 | x |  |
@@ -6490,6 +7199,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:607:10:607:16 | call to _strinc | taint.cpp:609:8:609:12 | dest1 |  |
 | taint.cpp:607:18:607:23 | source | taint.cpp:607:10:607:16 | call to _strinc | TAINT |
 | taint.cpp:607:26:607:31 | locale | taint.cpp:607:10:607:16 | call to _strinc | TAINT |
+| taint.cpp:607:26:607:31 | locale | taint.cpp:607:26:607:31 | ref arg locale | TAINT |
 | taint.cpp:607:26:607:31 | ref arg locale | taint.cpp:606:82:606:87 | locale |  |
 | taint.cpp:607:26:607:31 | ref arg locale | taint.cpp:611:25:611:30 | locale |  |
 | taint.cpp:608:7:608:11 | ref arg dest1 | taint.cpp:606:52:606:56 | dest1 |  |
@@ -6501,6 +7211,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:611:10:611:16 | call to _strinc | taint.cpp:613:8:613:12 | dest2 |  |
 | taint.cpp:611:18:611:22 | clean | taint.cpp:611:10:611:16 | call to _strinc | TAINT |
 | taint.cpp:611:25:611:30 | locale | taint.cpp:611:10:611:16 | call to _strinc | TAINT |
+| taint.cpp:611:25:611:30 | locale | taint.cpp:611:25:611:30 | ref arg locale | TAINT |
 | taint.cpp:611:25:611:30 | ref arg locale | taint.cpp:606:82:606:87 | locale |  |
 | taint.cpp:612:7:612:11 | ref arg dest2 | taint.cpp:606:65:606:69 | dest2 |  |
 | taint.cpp:612:7:612:11 | ref arg dest2 | taint.cpp:613:8:613:12 | dest2 |  |
@@ -6643,20 +7354,55 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:729:27:729:32 | endptr | taint.cpp:729:26:729:32 | & ... |  |
 | taint.cpp:731:7:731:12 | ref arg endptr | taint.cpp:732:8:732:13 | endptr |  |
 | taint.cpp:732:8:732:13 | endptr | taint.cpp:732:7:732:13 | * ... | TAINT |
-| taint.cpp:738:17:738:31 | call to indirect_source | taint.cpp:739:30:739:35 | source |  |
-| taint.cpp:739:22:739:28 | call to realloc | taint.cpp:740:7:740:10 | dest |  |
-| taint.cpp:739:30:739:35 | source | taint.cpp:739:22:739:28 | call to realloc | TAINT |
-| taint.cpp:743:40:743:45 | buffer | taint.cpp:744:5:744:10 | buffer |  |
-| taint.cpp:743:40:743:45 | buffer | taint.cpp:745:27:745:32 | buffer |  |
-| taint.cpp:744:4:744:10 | * ... | taint.cpp:744:3:744:10 | * ... | TAINT |
-| taint.cpp:744:5:744:10 | buffer | taint.cpp:744:4:744:10 | * ... | TAINT |
-| taint.cpp:744:14:744:19 | call to source | taint.cpp:744:3:744:21 | ... = ... |  |
-| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:743:40:743:45 | buffer |  |
-| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:745:3:745:37 | ... = ... |  |
-| taint.cpp:745:19:745:25 | call to realloc | taint.cpp:746:10:746:15 | buffer |  |
-| taint.cpp:745:27:745:32 | buffer | taint.cpp:745:19:745:25 | call to realloc | TAINT |
-| taint.cpp:746:9:746:15 | * ... | taint.cpp:746:8:746:15 | * ... | TAINT |
-| taint.cpp:746:10:746:15 | buffer | taint.cpp:746:9:746:15 | * ... | TAINT |
+| taint.cpp:739:17:739:31 | call to indirect_source | taint.cpp:740:30:740:35 | source |  |
+| taint.cpp:740:22:740:28 | call to realloc | taint.cpp:741:7:741:10 | dest |  |
+| taint.cpp:740:30:740:35 | source | taint.cpp:740:22:740:28 | call to realloc | TAINT |
+| taint.cpp:744:40:744:45 | buffer | taint.cpp:745:5:745:10 | buffer |  |
+| taint.cpp:744:40:744:45 | buffer | taint.cpp:746:27:746:32 | buffer |  |
+| taint.cpp:745:4:745:10 | * ... | taint.cpp:745:3:745:10 | * ... | TAINT |
+| taint.cpp:745:5:745:10 | buffer | taint.cpp:745:4:745:10 | * ... | TAINT |
+| taint.cpp:745:14:745:19 | call to source | taint.cpp:745:3:745:21 | ... = ... |  |
+| taint.cpp:746:19:746:25 | call to realloc | taint.cpp:744:40:744:45 | buffer |  |
+| taint.cpp:746:19:746:25 | call to realloc | taint.cpp:746:3:746:37 | ... = ... |  |
+| taint.cpp:746:19:746:25 | call to realloc | taint.cpp:747:10:747:15 | buffer |  |
+| taint.cpp:746:27:746:32 | buffer | taint.cpp:746:19:746:25 | call to realloc | TAINT |
+| taint.cpp:747:9:747:15 | * ... | taint.cpp:747:8:747:15 | * ... | TAINT |
+| taint.cpp:747:10:747:15 | buffer | taint.cpp:747:9:747:15 | * ... | TAINT |
+| taint.cpp:752:13:752:18 | call to malloc | taint.cpp:753:2:753:2 | a |  |
+| taint.cpp:752:13:752:18 | call to malloc | taint.cpp:754:22:754:22 | a |  |
+| taint.cpp:753:2:753:2 | a [post update] | taint.cpp:754:22:754:22 | a |  |
+| taint.cpp:753:2:753:16 | ... = ... | taint.cpp:753:5:753:5 | x [post update] |  |
+| taint.cpp:753:9:753:14 | call to source | taint.cpp:753:2:753:16 | ... = ... |  |
+| taint.cpp:754:14:754:20 | call to realloc | taint.cpp:755:7:755:8 | a2 |  |
+| taint.cpp:754:22:754:22 | a | taint.cpp:754:14:754:20 | call to realloc | TAINT |
+| taint.cpp:760:31:760:34 | path | taint.cpp:760:31:760:34 | path |  |
+| taint.cpp:760:31:760:34 | path | taint.cpp:761:10:761:13 | path |  |
+| taint.cpp:760:31:760:34 | path | taint.cpp:762:10:762:13 | path |  |
+| taint.cpp:760:43:760:46 | data | taint.cpp:760:43:760:46 | data |  |
+| taint.cpp:760:43:760:46 | data | taint.cpp:762:22:762:25 | data |  |
+| taint.cpp:761:10:761:13 | ref arg path | taint.cpp:760:31:760:34 | path |  |
+| taint.cpp:761:10:761:13 | ref arg path | taint.cpp:762:10:762:13 | path |  |
+| taint.cpp:761:16:761:19 | %s | taint.cpp:761:10:761:13 | ref arg path | TAINT |
+| taint.cpp:761:22:761:26 | abc | taint.cpp:761:10:761:13 | ref arg path | TAINT |
+| taint.cpp:762:10:762:13 | ref arg path | taint.cpp:760:31:760:34 | path |  |
+| taint.cpp:762:16:762:19 | %s | taint.cpp:762:10:762:13 | ref arg path | TAINT |
+| taint.cpp:762:22:762:25 | data | taint.cpp:762:10:762:13 | ref arg path | TAINT |
+| taint.cpp:762:22:762:25 | ref arg data | taint.cpp:760:43:760:46 | data |  |
+| taint.cpp:766:7:766:10 | path | taint.cpp:767:21:767:24 | path |  |
+| taint.cpp:766:7:766:10 | path | taint.cpp:768:8:768:11 | path |  |
+| taint.cpp:767:21:767:24 | ref arg path | taint.cpp:768:8:768:11 | path |  |
+| taint.cpp:768:8:768:11 | path | taint.cpp:768:7:768:11 | * ... |  |
+| taint.cpp:778:37:778:42 | call to source | taint.cpp:779:7:779:9 | obj |  |
+| taint.cpp:785:23:785:28 | source | taint.cpp:785:23:785:28 | source |  |
+| taint.cpp:785:23:785:28 | source | taint.cpp:786:18:786:23 | source |  |
+| taint.cpp:785:23:785:28 | source | taint.cpp:790:15:790:20 | source |  |
+| taint.cpp:786:12:786:16 | call to fopen | taint.cpp:787:7:787:7 | f |  |
+| taint.cpp:786:18:786:23 | source | taint.cpp:786:12:786:16 | call to fopen | TAINT |
+| taint.cpp:789:8:789:9 | f2 | taint.cpp:790:11:790:12 | f2 |  |
+| taint.cpp:789:8:789:9 | f2 | taint.cpp:791:7:791:8 | f2 |  |
+| taint.cpp:790:10:790:12 | ref arg & ... | taint.cpp:790:11:790:12 | f2 [inner post update] |  |
+| taint.cpp:790:10:790:12 | ref arg & ... | taint.cpp:791:7:791:8 | f2 |  |
+| taint.cpp:790:11:790:12 | f2 | taint.cpp:790:10:790:12 | & ... |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |
@@ -6664,7 +7410,6 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:23:55:23:55 | v |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:27:15:27:15 | v |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:35:1:35:1 | v |  |
-| vector.cpp:17:26:17:32 | source1 | vector.cpp:17:21:17:33 | call to vector | TAINT |
 | vector.cpp:19:14:19:14 | (__begin) | vector.cpp:19:14:19:14 | call to operator* | TAINT |
 | vector.cpp:19:14:19:14 | (__begin) | vector.cpp:19:14:19:14 | call to operator++ |  |
 | vector.cpp:19:14:19:14 | (__end) | vector.cpp:19:14:19:14 | call to iterator |  |
@@ -6726,7 +7471,6 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:27:15:27:15 | v | vector.cpp:27:15:27:15 | call to operator* | TAINT |
 | vector.cpp:31:33:31:45 | call to vector | vector.cpp:32:21:32:27 | const_v |  |
 | vector.cpp:31:33:31:45 | call to vector | vector.cpp:35:1:35:1 | const_v |  |
-| vector.cpp:31:38:31:44 | source1 | vector.cpp:31:33:31:45 | call to vector | TAINT |
 | vector.cpp:32:21:32:21 | (__begin) | vector.cpp:32:21:32:21 | call to operator* | TAINT |
 | vector.cpp:32:21:32:21 | (__begin) | vector.cpp:32:21:32:21 | call to operator++ |  |
 | vector.cpp:32:21:32:21 | (__range) | vector.cpp:32:21:32:21 | call to begin | TAINT |
@@ -6817,9 +7561,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:40:2:40:3 | ref arg v1 | vector.cpp:48:7:48:8 | v1 |  |
 | vector.cpp:40:2:40:3 | ref arg v1 | vector.cpp:49:7:49:8 | v1 |  |
 | vector.cpp:40:2:40:3 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
-| vector.cpp:40:2:40:3 | v1 | vector.cpp:40:4:40:4 | call to operator[] | TAINT |
 | vector.cpp:40:2:40:10 | ... = ... | vector.cpp:40:4:40:4 | call to operator[] [post update] |  |
-| vector.cpp:40:4:40:4 | call to operator[] [post update] | vector.cpp:40:2:40:3 | ref arg v1 | TAINT |
 | vector.cpp:40:10:40:10 | 0 | vector.cpp:40:2:40:10 | ... = ... |  |
 | vector.cpp:41:2:41:3 | ref arg v1 | vector.cpp:42:2:42:3 | v1 |  |
 | vector.cpp:41:2:41:3 | ref arg v1 | vector.cpp:43:2:43:3 | v1 |  |
@@ -6830,9 +7572,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:41:2:41:3 | ref arg v1 | vector.cpp:48:7:48:8 | v1 |  |
 | vector.cpp:41:2:41:3 | ref arg v1 | vector.cpp:49:7:49:8 | v1 |  |
 | vector.cpp:41:2:41:3 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
-| vector.cpp:41:2:41:3 | v1 | vector.cpp:41:4:41:4 | call to operator[] | TAINT |
 | vector.cpp:41:2:41:10 | ... = ... | vector.cpp:41:4:41:4 | call to operator[] [post update] |  |
-| vector.cpp:41:4:41:4 | call to operator[] [post update] | vector.cpp:41:2:41:3 | ref arg v1 | TAINT |
 | vector.cpp:41:10:41:10 | 0 | vector.cpp:41:2:41:10 | ... = ... |  |
 | vector.cpp:42:2:42:3 | ref arg v1 | vector.cpp:43:2:43:3 | v1 |  |
 | vector.cpp:42:2:42:3 | ref arg v1 | vector.cpp:44:7:44:8 | v1 |  |
@@ -6842,9 +7582,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:42:2:42:3 | ref arg v1 | vector.cpp:48:7:48:8 | v1 |  |
 | vector.cpp:42:2:42:3 | ref arg v1 | vector.cpp:49:7:49:8 | v1 |  |
 | vector.cpp:42:2:42:3 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
-| vector.cpp:42:2:42:3 | v1 | vector.cpp:42:4:42:4 | call to operator[] | TAINT |
 | vector.cpp:42:2:42:10 | ... = ... | vector.cpp:42:4:42:4 | call to operator[] [post update] |  |
-| vector.cpp:42:4:42:4 | call to operator[] [post update] | vector.cpp:42:2:42:3 | ref arg v1 | TAINT |
 | vector.cpp:42:10:42:10 | 0 | vector.cpp:42:2:42:10 | ... = ... |  |
 | vector.cpp:43:2:43:3 | ref arg v1 | vector.cpp:44:7:44:8 | v1 |  |
 | vector.cpp:43:2:43:3 | ref arg v1 | vector.cpp:45:7:45:8 | v1 |  |
@@ -6853,7 +7591,6 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:43:2:43:3 | ref arg v1 | vector.cpp:48:7:48:8 | v1 |  |
 | vector.cpp:43:2:43:3 | ref arg v1 | vector.cpp:49:7:49:8 | v1 |  |
 | vector.cpp:43:2:43:3 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
-| vector.cpp:43:15:43:15 | 1 | vector.cpp:43:2:43:3 | ref arg v1 | TAINT |
 | vector.cpp:44:7:44:8 | ref arg v1 | vector.cpp:45:7:45:8 | v1 |  |
 | vector.cpp:44:7:44:8 | ref arg v1 | vector.cpp:46:7:46:8 | v1 |  |
 | vector.cpp:44:7:44:8 | ref arg v1 | vector.cpp:47:7:47:8 | v1 |  |
@@ -6865,30 +7602,23 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:45:7:45:8 | ref arg v1 | vector.cpp:48:7:48:8 | v1 |  |
 | vector.cpp:45:7:45:8 | ref arg v1 | vector.cpp:49:7:49:8 | v1 |  |
 | vector.cpp:45:7:45:8 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
-| vector.cpp:45:7:45:8 | v1 | vector.cpp:45:9:45:9 | call to operator[] | TAINT |
 | vector.cpp:46:7:46:8 | ref arg v1 | vector.cpp:47:7:47:8 | v1 |  |
 | vector.cpp:46:7:46:8 | ref arg v1 | vector.cpp:48:7:48:8 | v1 |  |
 | vector.cpp:46:7:46:8 | ref arg v1 | vector.cpp:49:7:49:8 | v1 |  |
 | vector.cpp:46:7:46:8 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
-| vector.cpp:46:7:46:8 | v1 | vector.cpp:46:9:46:9 | call to operator[] | TAINT |
 | vector.cpp:47:7:47:8 | ref arg v1 | vector.cpp:48:7:48:8 | v1 |  |
 | vector.cpp:47:7:47:8 | ref arg v1 | vector.cpp:49:7:49:8 | v1 |  |
 | vector.cpp:47:7:47:8 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
-| vector.cpp:47:7:47:8 | v1 | vector.cpp:47:9:47:9 | call to operator[] | TAINT |
 | vector.cpp:48:7:48:8 | ref arg v1 | vector.cpp:49:7:49:8 | v1 |  |
 | vector.cpp:48:7:48:8 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
-| vector.cpp:48:7:48:8 | v1 | vector.cpp:48:10:48:14 | call to front | TAINT |
 | vector.cpp:49:7:49:8 | ref arg v1 | vector.cpp:101:1:101:1 | v1 |  |
-| vector.cpp:49:7:49:8 | v1 | vector.cpp:49:10:49:13 | call to back | TAINT |
 | vector.cpp:51:2:51:3 | ref arg v2 | vector.cpp:52:7:52:8 | v2 |  |
 | vector.cpp:51:2:51:3 | ref arg v2 | vector.cpp:53:7:53:8 | v2 |  |
 | vector.cpp:51:2:51:3 | ref arg v2 | vector.cpp:54:7:54:8 | v2 |  |
 | vector.cpp:51:2:51:3 | ref arg v2 | vector.cpp:55:7:55:8 | v2 |  |
 | vector.cpp:51:2:51:3 | ref arg v2 | vector.cpp:57:7:57:8 | v2 |  |
 | vector.cpp:51:2:51:3 | ref arg v2 | vector.cpp:101:1:101:1 | v2 |  |
-| vector.cpp:51:2:51:3 | v2 | vector.cpp:51:4:51:4 | call to operator[] | TAINT |
 | vector.cpp:51:2:51:17 | ... = ... | vector.cpp:51:4:51:4 | call to operator[] [post update] |  |
-| vector.cpp:51:4:51:4 | call to operator[] [post update] | vector.cpp:51:2:51:3 | ref arg v2 | TAINT |
 | vector.cpp:51:10:51:15 | call to source | vector.cpp:51:2:51:17 | ... = ... |  |
 | vector.cpp:52:7:52:8 | ref arg v2 | vector.cpp:53:7:53:8 | v2 |  |
 | vector.cpp:52:7:52:8 | ref arg v2 | vector.cpp:54:7:54:8 | v2 |  |
@@ -6899,14 +7629,11 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:53:7:53:8 | ref arg v2 | vector.cpp:55:7:55:8 | v2 |  |
 | vector.cpp:53:7:53:8 | ref arg v2 | vector.cpp:57:7:57:8 | v2 |  |
 | vector.cpp:53:7:53:8 | ref arg v2 | vector.cpp:101:1:101:1 | v2 |  |
-| vector.cpp:53:7:53:8 | v2 | vector.cpp:53:9:53:9 | call to operator[] | TAINT |
 | vector.cpp:54:7:54:8 | ref arg v2 | vector.cpp:55:7:55:8 | v2 |  |
 | vector.cpp:54:7:54:8 | ref arg v2 | vector.cpp:57:7:57:8 | v2 |  |
 | vector.cpp:54:7:54:8 | ref arg v2 | vector.cpp:101:1:101:1 | v2 |  |
-| vector.cpp:54:7:54:8 | v2 | vector.cpp:54:9:54:9 | call to operator[] | TAINT |
 | vector.cpp:55:7:55:8 | ref arg v2 | vector.cpp:57:7:57:8 | v2 |  |
 | vector.cpp:55:7:55:8 | ref arg v2 | vector.cpp:101:1:101:1 | v2 |  |
-| vector.cpp:55:7:55:8 | v2 | vector.cpp:55:9:55:9 | call to operator[] | TAINT |
 | vector.cpp:57:2:57:3 | ref arg v3 | vector.cpp:58:7:58:8 | v3 |  |
 | vector.cpp:57:2:57:3 | ref arg v3 | vector.cpp:59:7:59:8 | v3 |  |
 | vector.cpp:57:2:57:3 | ref arg v3 | vector.cpp:60:7:60:8 | v3 |  |
@@ -6921,20 +7648,15 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:59:7:59:8 | ref arg v3 | vector.cpp:60:7:60:8 | v3 |  |
 | vector.cpp:59:7:59:8 | ref arg v3 | vector.cpp:61:7:61:8 | v3 |  |
 | vector.cpp:59:7:59:8 | ref arg v3 | vector.cpp:101:1:101:1 | v3 |  |
-| vector.cpp:59:7:59:8 | v3 | vector.cpp:59:9:59:9 | call to operator[] | TAINT |
 | vector.cpp:60:7:60:8 | ref arg v3 | vector.cpp:61:7:61:8 | v3 |  |
 | vector.cpp:60:7:60:8 | ref arg v3 | vector.cpp:101:1:101:1 | v3 |  |
-| vector.cpp:60:7:60:8 | v3 | vector.cpp:60:9:60:9 | call to operator[] | TAINT |
 | vector.cpp:61:7:61:8 | ref arg v3 | vector.cpp:101:1:101:1 | v3 |  |
-| vector.cpp:61:7:61:8 | v3 | vector.cpp:61:9:61:9 | call to operator[] | TAINT |
 | vector.cpp:63:2:63:3 | ref arg v4 | vector.cpp:64:7:64:8 | v4 |  |
 | vector.cpp:63:2:63:3 | ref arg v4 | vector.cpp:65:7:65:8 | v4 |  |
 | vector.cpp:63:2:63:3 | ref arg v4 | vector.cpp:66:7:66:8 | v4 |  |
 | vector.cpp:63:2:63:3 | ref arg v4 | vector.cpp:67:7:67:8 | v4 |  |
 | vector.cpp:63:2:63:3 | ref arg v4 | vector.cpp:101:1:101:1 | v4 |  |
-| vector.cpp:63:2:63:3 | v4 | vector.cpp:63:4:63:4 | call to operator[] | TAINT |
 | vector.cpp:63:2:63:17 | ... = ... | vector.cpp:63:4:63:4 | call to operator[] [post update] |  |
-| vector.cpp:63:4:63:4 | call to operator[] [post update] | vector.cpp:63:2:63:3 | ref arg v4 | TAINT |
 | vector.cpp:63:10:63:15 | call to source | vector.cpp:63:2:63:17 | ... = ... |  |
 | vector.cpp:64:7:64:8 | ref arg v4 | vector.cpp:65:7:65:8 | v4 |  |
 | vector.cpp:64:7:64:8 | ref arg v4 | vector.cpp:66:7:66:8 | v4 |  |
@@ -6943,39 +7665,30 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:65:7:65:8 | ref arg v4 | vector.cpp:66:7:66:8 | v4 |  |
 | vector.cpp:65:7:65:8 | ref arg v4 | vector.cpp:67:7:67:8 | v4 |  |
 | vector.cpp:65:7:65:8 | ref arg v4 | vector.cpp:101:1:101:1 | v4 |  |
-| vector.cpp:65:7:65:8 | v4 | vector.cpp:65:9:65:9 | call to operator[] | TAINT |
 | vector.cpp:66:7:66:8 | ref arg v4 | vector.cpp:67:7:67:8 | v4 |  |
 | vector.cpp:66:7:66:8 | ref arg v4 | vector.cpp:101:1:101:1 | v4 |  |
-| vector.cpp:66:7:66:8 | v4 | vector.cpp:66:9:66:9 | call to operator[] | TAINT |
 | vector.cpp:67:7:67:8 | ref arg v4 | vector.cpp:101:1:101:1 | v4 |  |
-| vector.cpp:67:7:67:8 | v4 | vector.cpp:67:9:67:9 | call to operator[] | TAINT |
 | vector.cpp:69:2:69:3 | ref arg v5 | vector.cpp:70:7:70:8 | v5 |  |
 | vector.cpp:69:2:69:3 | ref arg v5 | vector.cpp:71:7:71:8 | v5 |  |
 | vector.cpp:69:2:69:3 | ref arg v5 | vector.cpp:72:7:72:8 | v5 |  |
 | vector.cpp:69:2:69:3 | ref arg v5 | vector.cpp:101:1:101:1 | v5 |  |
-| vector.cpp:69:15:69:20 | call to source | vector.cpp:69:2:69:3 | ref arg v5 | TAINT |
 | vector.cpp:70:7:70:8 | ref arg v5 | vector.cpp:71:7:71:8 | v5 |  |
 | vector.cpp:70:7:70:8 | ref arg v5 | vector.cpp:72:7:72:8 | v5 |  |
 | vector.cpp:70:7:70:8 | ref arg v5 | vector.cpp:101:1:101:1 | v5 |  |
 | vector.cpp:71:7:71:8 | ref arg v5 | vector.cpp:72:7:72:8 | v5 |  |
 | vector.cpp:71:7:71:8 | ref arg v5 | vector.cpp:101:1:101:1 | v5 |  |
-| vector.cpp:71:7:71:8 | v5 | vector.cpp:71:10:71:14 | call to front | TAINT |
 | vector.cpp:72:7:72:8 | ref arg v5 | vector.cpp:101:1:101:1 | v5 |  |
-| vector.cpp:72:7:72:8 | v5 | vector.cpp:72:10:72:13 | call to back | TAINT |
 | vector.cpp:74:2:74:3 | ref arg v6 | vector.cpp:75:7:75:8 | v6 |  |
 | vector.cpp:74:2:74:3 | ref arg v6 | vector.cpp:76:7:76:8 | v6 |  |
 | vector.cpp:74:2:74:3 | ref arg v6 | vector.cpp:101:1:101:1 | v6 |  |
-| vector.cpp:74:2:74:3 | v6 | vector.cpp:74:5:74:8 | call to data | TAINT |
 | vector.cpp:74:2:74:13 | access to array [post update] | vector.cpp:74:5:74:8 | call to data [inner post update] |  |
 | vector.cpp:74:2:74:24 | ... = ... | vector.cpp:74:2:74:13 | access to array [post update] |  |
 | vector.cpp:74:5:74:8 | call to data | vector.cpp:74:2:74:13 | access to array | TAINT |
-| vector.cpp:74:5:74:8 | call to data [inner post update] | vector.cpp:74:2:74:3 | ref arg v6 | TAINT |
 | vector.cpp:74:12:74:12 | 2 | vector.cpp:74:2:74:13 | access to array | TAINT |
 | vector.cpp:74:17:74:22 | call to source | vector.cpp:74:2:74:24 | ... = ... |  |
 | vector.cpp:75:7:75:8 | ref arg v6 | vector.cpp:76:7:76:8 | v6 |  |
 | vector.cpp:75:7:75:8 | ref arg v6 | vector.cpp:101:1:101:1 | v6 |  |
 | vector.cpp:76:7:76:8 | ref arg v6 | vector.cpp:101:1:101:1 | v6 |  |
-| vector.cpp:76:7:76:8 | v6 | vector.cpp:76:10:76:13 | call to data | TAINT |
 | vector.cpp:76:10:76:13 | call to data | vector.cpp:76:7:76:18 | access to array | TAINT |
 | vector.cpp:76:17:76:17 | 2 | vector.cpp:76:7:76:18 | access to array | TAINT |
 | vector.cpp:80:40:80:50 | call to iterator | vector.cpp:81:13:81:14 | it |  |
@@ -6990,17 +7703,12 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:81:3:81:4 | ref arg v7 | vector.cpp:84:7:84:8 | v7 |  |
 | vector.cpp:81:3:81:4 | ref arg v7 | vector.cpp:85:7:85:8 | v7 |  |
 | vector.cpp:81:3:81:4 | ref arg v7 | vector.cpp:101:1:101:1 | v7 |  |
-| vector.cpp:81:3:81:4 | v7 | vector.cpp:81:6:81:11 | call to insert | TAINT |
-| vector.cpp:81:17:81:22 | call to source | vector.cpp:81:3:81:4 | ref arg v7 | TAINT |
-| vector.cpp:81:17:81:22 | call to source | vector.cpp:81:6:81:11 | call to insert | TAINT |
 | vector.cpp:83:7:83:8 | ref arg v7 | vector.cpp:84:7:84:8 | v7 |  |
 | vector.cpp:83:7:83:8 | ref arg v7 | vector.cpp:85:7:85:8 | v7 |  |
 | vector.cpp:83:7:83:8 | ref arg v7 | vector.cpp:101:1:101:1 | v7 |  |
 | vector.cpp:84:7:84:8 | ref arg v7 | vector.cpp:85:7:85:8 | v7 |  |
 | vector.cpp:84:7:84:8 | ref arg v7 | vector.cpp:101:1:101:1 | v7 |  |
-| vector.cpp:84:7:84:8 | v7 | vector.cpp:84:10:84:14 | call to front | TAINT |
 | vector.cpp:85:7:85:8 | ref arg v7 | vector.cpp:101:1:101:1 | v7 |  |
-| vector.cpp:85:7:85:8 | v7 | vector.cpp:85:10:85:13 | call to back | TAINT |
 | vector.cpp:88:33:88:34 | v8 | vector.cpp:89:41:89:43 | v8c |  |
 | vector.cpp:89:41:89:43 | v8c | vector.cpp:89:45:89:49 | call to begin | TAINT |
 | vector.cpp:89:45:89:49 | call to begin | vector.cpp:90:13:90:14 | it |  |
@@ -7008,23 +7716,18 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:90:3:90:4 | ref arg v8 | vector.cpp:93:7:93:8 | v8 |  |
 | vector.cpp:90:3:90:4 | ref arg v8 | vector.cpp:94:7:94:8 | v8 |  |
 | vector.cpp:90:3:90:4 | ref arg v8 | vector.cpp:101:1:101:1 | v8 |  |
-| vector.cpp:90:3:90:4 | v8 | vector.cpp:90:6:90:11 | call to insert | TAINT |
 | vector.cpp:92:7:92:8 | ref arg v8 | vector.cpp:93:7:93:8 | v8 |  |
 | vector.cpp:92:7:92:8 | ref arg v8 | vector.cpp:94:7:94:8 | v8 |  |
 | vector.cpp:92:7:92:8 | ref arg v8 | vector.cpp:101:1:101:1 | v8 |  |
 | vector.cpp:93:7:93:8 | ref arg v8 | vector.cpp:94:7:94:8 | v8 |  |
 | vector.cpp:93:7:93:8 | ref arg v8 | vector.cpp:101:1:101:1 | v8 |  |
-| vector.cpp:93:7:93:8 | v8 | vector.cpp:93:10:93:14 | call to front | TAINT |
 | vector.cpp:94:7:94:8 | ref arg v8 | vector.cpp:101:1:101:1 | v8 |  |
-| vector.cpp:94:7:94:8 | v8 | vector.cpp:94:10:94:13 | call to back | TAINT |
 | vector.cpp:96:2:96:3 | ref arg v9 | vector.cpp:97:7:97:8 | v9 |  |
 | vector.cpp:96:2:96:3 | ref arg v9 | vector.cpp:98:7:98:8 | v9 |  |
 | vector.cpp:96:2:96:3 | ref arg v9 | vector.cpp:99:7:99:8 | v9 |  |
 | vector.cpp:96:2:96:3 | ref arg v9 | vector.cpp:100:7:100:8 | v9 |  |
 | vector.cpp:96:2:96:3 | ref arg v9 | vector.cpp:101:1:101:1 | v9 |  |
-| vector.cpp:96:2:96:3 | v9 | vector.cpp:96:5:96:6 | call to at | TAINT |
 | vector.cpp:96:2:96:20 | ... = ... | vector.cpp:96:5:96:6 | call to at [post update] |  |
-| vector.cpp:96:5:96:6 | call to at [post update] | vector.cpp:96:2:96:3 | ref arg v9 | TAINT |
 | vector.cpp:96:13:96:18 | call to source | vector.cpp:96:2:96:20 | ... = ... |  |
 | vector.cpp:97:7:97:8 | ref arg v9 | vector.cpp:98:7:98:8 | v9 |  |
 | vector.cpp:97:7:97:8 | ref arg v9 | vector.cpp:99:7:99:8 | v9 |  |
@@ -7033,12 +7736,9 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:98:7:98:8 | ref arg v9 | vector.cpp:99:7:99:8 | v9 |  |
 | vector.cpp:98:7:98:8 | ref arg v9 | vector.cpp:100:7:100:8 | v9 |  |
 | vector.cpp:98:7:98:8 | ref arg v9 | vector.cpp:101:1:101:1 | v9 |  |
-| vector.cpp:98:7:98:8 | v9 | vector.cpp:98:10:98:11 | call to at | TAINT |
 | vector.cpp:99:7:99:8 | ref arg v9 | vector.cpp:100:7:100:8 | v9 |  |
 | vector.cpp:99:7:99:8 | ref arg v9 | vector.cpp:101:1:101:1 | v9 |  |
-| vector.cpp:99:7:99:8 | v9 | vector.cpp:99:10:99:11 | call to at | TAINT |
 | vector.cpp:100:7:100:8 | ref arg v9 | vector.cpp:101:1:101:1 | v9 |  |
-| vector.cpp:100:7:100:8 | v9 | vector.cpp:100:10:100:11 | call to at | TAINT |
 | vector.cpp:104:22:104:24 | call to vector | vector.cpp:106:2:106:3 | v1 |  |
 | vector.cpp:104:22:104:24 | call to vector | vector.cpp:109:7:109:8 | v1 |  |
 | vector.cpp:104:22:104:24 | call to vector | vector.cpp:114:2:114:3 | v1 |  |
@@ -7061,12 +7761,10 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:106:2:106:3 | ref arg v1 | vector.cpp:114:2:114:3 | v1 |  |
 | vector.cpp:106:2:106:3 | ref arg v1 | vector.cpp:117:7:117:8 | v1 |  |
 | vector.cpp:106:2:106:3 | ref arg v1 | vector.cpp:121:1:121:1 | v1 |  |
-| vector.cpp:106:15:106:20 | call to source | vector.cpp:106:2:106:3 | ref arg v1 | TAINT |
 | vector.cpp:107:2:107:3 | ref arg v4 | vector.cpp:112:7:112:8 | v4 |  |
 | vector.cpp:107:2:107:3 | ref arg v4 | vector.cpp:115:10:115:11 | v4 |  |
 | vector.cpp:107:2:107:3 | ref arg v4 | vector.cpp:120:7:120:8 | v4 |  |
 | vector.cpp:107:2:107:3 | ref arg v4 | vector.cpp:121:1:121:1 | v4 |  |
-| vector.cpp:107:15:107:20 | call to source | vector.cpp:107:2:107:3 | ref arg v4 | TAINT |
 | vector.cpp:109:7:109:8 | ref arg v1 | vector.cpp:114:2:114:3 | v1 |  |
 | vector.cpp:109:7:109:8 | ref arg v1 | vector.cpp:117:7:117:8 | v1 |  |
 | vector.cpp:109:7:109:8 | ref arg v1 | vector.cpp:121:1:121:1 | v1 |  |
@@ -7081,16 +7779,12 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:112:7:112:8 | ref arg v4 | vector.cpp:121:1:121:1 | v4 |  |
 | vector.cpp:114:2:114:3 | ref arg v1 | vector.cpp:117:7:117:8 | v1 |  |
 | vector.cpp:114:2:114:3 | ref arg v1 | vector.cpp:121:1:121:1 | v1 |  |
-| vector.cpp:114:2:114:3 | v1 | vector.cpp:114:10:114:11 | ref arg v2 | TAINT |
 | vector.cpp:114:10:114:11 | ref arg v2 | vector.cpp:118:7:118:8 | v2 |  |
 | vector.cpp:114:10:114:11 | ref arg v2 | vector.cpp:121:1:121:1 | v2 |  |
-| vector.cpp:114:10:114:11 | v2 | vector.cpp:114:2:114:3 | ref arg v1 | TAINT |
 | vector.cpp:115:2:115:3 | ref arg v3 | vector.cpp:119:7:119:8 | v3 |  |
 | vector.cpp:115:2:115:3 | ref arg v3 | vector.cpp:121:1:121:1 | v3 |  |
-| vector.cpp:115:2:115:3 | v3 | vector.cpp:115:10:115:11 | ref arg v4 | TAINT |
 | vector.cpp:115:10:115:11 | ref arg v4 | vector.cpp:120:7:120:8 | v4 |  |
 | vector.cpp:115:10:115:11 | ref arg v4 | vector.cpp:121:1:121:1 | v4 |  |
-| vector.cpp:115:10:115:11 | v4 | vector.cpp:115:2:115:3 | ref arg v3 | TAINT |
 | vector.cpp:117:7:117:8 | ref arg v1 | vector.cpp:121:1:121:1 | v1 |  |
 | vector.cpp:118:7:118:8 | ref arg v2 | vector.cpp:121:1:121:1 | v2 |  |
 | vector.cpp:119:7:119:8 | ref arg v3 | vector.cpp:121:1:121:1 | v3 |  |
@@ -7119,18 +7813,15 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:126:2:126:3 | ref arg v1 | vector.cpp:135:2:135:3 | v1 |  |
 | vector.cpp:126:2:126:3 | ref arg v1 | vector.cpp:139:7:139:8 | v1 |  |
 | vector.cpp:126:2:126:3 | ref arg v1 | vector.cpp:143:1:143:1 | v1 |  |
-| vector.cpp:126:15:126:20 | call to source | vector.cpp:126:2:126:3 | ref arg v1 | TAINT |
 | vector.cpp:127:2:127:3 | ref arg v2 | vector.cpp:131:7:131:8 | v2 |  |
 | vector.cpp:127:2:127:3 | ref arg v2 | vector.cpp:136:2:136:3 | v2 |  |
 | vector.cpp:127:2:127:3 | ref arg v2 | vector.cpp:136:7:136:8 | v2 |  |
 | vector.cpp:127:2:127:3 | ref arg v2 | vector.cpp:140:7:140:8 | v2 |  |
 | vector.cpp:127:2:127:3 | ref arg v2 | vector.cpp:143:1:143:1 | v2 |  |
-| vector.cpp:127:15:127:20 | call to source | vector.cpp:127:2:127:3 | ref arg v2 | TAINT |
 | vector.cpp:128:2:128:3 | ref arg v3 | vector.cpp:132:7:132:8 | v3 |  |
 | vector.cpp:128:2:128:3 | ref arg v3 | vector.cpp:137:2:137:3 | v3 |  |
 | vector.cpp:128:2:128:3 | ref arg v3 | vector.cpp:141:7:141:8 | v3 |  |
 | vector.cpp:128:2:128:3 | ref arg v3 | vector.cpp:143:1:143:1 | v3 |  |
-| vector.cpp:128:15:128:20 | call to source | vector.cpp:128:2:128:3 | ref arg v3 | TAINT |
 | vector.cpp:130:7:130:8 | ref arg v1 | vector.cpp:135:2:135:3 | v1 |  |
 | vector.cpp:130:7:130:8 | ref arg v1 | vector.cpp:139:7:139:8 | v1 |  |
 | vector.cpp:130:7:130:8 | ref arg v1 | vector.cpp:143:1:143:1 | v1 |  |
@@ -7190,31 +7881,18 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:166:37:166:39 | call to vector | vector.cpp:170:3:170:4 | bb |  |
 | vector.cpp:166:37:166:39 | call to vector | vector.cpp:171:8:171:9 | bb |  |
 | vector.cpp:166:37:166:39 | call to vector | vector.cpp:172:2:172:2 | bb |  |
-| vector.cpp:168:3:168:4 | bb | vector.cpp:168:5:168:5 | call to operator[] | TAINT |
 | vector.cpp:168:3:168:4 | ref arg bb | vector.cpp:169:8:169:9 | bb |  |
 | vector.cpp:168:3:168:4 | ref arg bb | vector.cpp:170:3:170:4 | bb |  |
 | vector.cpp:168:3:168:4 | ref arg bb | vector.cpp:171:8:171:9 | bb |  |
 | vector.cpp:168:3:168:4 | ref arg bb | vector.cpp:172:2:172:2 | bb |  |
-| vector.cpp:168:5:168:5 | ref arg call to operator[] | vector.cpp:168:3:168:4 | ref arg bb | TAINT |
-| vector.cpp:168:19:168:19 | 0 | vector.cpp:168:5:168:5 | ref arg call to operator[] | TAINT |
-| vector.cpp:169:8:169:9 | bb | vector.cpp:169:10:169:10 | call to operator[] | TAINT |
 | vector.cpp:169:8:169:9 | ref arg bb | vector.cpp:170:3:170:4 | bb |  |
 | vector.cpp:169:8:169:9 | ref arg bb | vector.cpp:171:8:171:9 | bb |  |
 | vector.cpp:169:8:169:9 | ref arg bb | vector.cpp:172:2:172:2 | bb |  |
-| vector.cpp:169:10:169:10 | call to operator[] | vector.cpp:169:13:169:13 | call to operator[] | TAINT |
-| vector.cpp:169:10:169:10 | ref arg call to operator[] | vector.cpp:169:8:169:9 | ref arg bb | TAINT |
-| vector.cpp:170:3:170:4 | bb | vector.cpp:170:5:170:5 | call to operator[] | TAINT |
 | vector.cpp:170:3:170:4 | ref arg bb | vector.cpp:171:8:171:9 | bb |  |
 | vector.cpp:170:3:170:4 | ref arg bb | vector.cpp:172:2:172:2 | bb |  |
 | vector.cpp:170:3:170:21 | ... = ... | vector.cpp:170:8:170:8 | call to operator[] [post update] |  |
-| vector.cpp:170:5:170:5 | call to operator[] | vector.cpp:170:8:170:8 | call to operator[] | TAINT |
-| vector.cpp:170:5:170:5 | ref arg call to operator[] | vector.cpp:170:3:170:4 | ref arg bb | TAINT |
-| vector.cpp:170:8:170:8 | call to operator[] [post update] | vector.cpp:170:5:170:5 | ref arg call to operator[] | TAINT |
 | vector.cpp:170:14:170:19 | call to source | vector.cpp:170:3:170:21 | ... = ... |  |
-| vector.cpp:171:8:171:9 | bb | vector.cpp:171:10:171:10 | call to operator[] | TAINT |
 | vector.cpp:171:8:171:9 | ref arg bb | vector.cpp:172:2:172:2 | bb |  |
-| vector.cpp:171:10:171:10 | call to operator[] | vector.cpp:171:13:171:13 | call to operator[] | TAINT |
-| vector.cpp:171:10:171:10 | ref arg call to operator[] | vector.cpp:171:8:171:9 | ref arg bb | TAINT |
 | vector.cpp:175:20:175:21 | call to vector | vector.cpp:175:20:175:21 | {...} | TAINT |
 | vector.cpp:175:20:175:21 | {...} | vector.cpp:177:3:177:4 | cc |  |
 | vector.cpp:175:20:175:21 | {...} | vector.cpp:178:8:178:9 | cc |  |
@@ -7228,25 +7906,20 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:177:3:177:7 | ref arg access to array | vector.cpp:180:8:180:9 | cc |  |
 | vector.cpp:177:3:177:7 | ref arg access to array | vector.cpp:181:2:181:2 | cc |  |
 | vector.cpp:177:6:177:6 | 0 | vector.cpp:177:3:177:7 | access to array | TAINT |
-| vector.cpp:177:19:177:19 | 0 | vector.cpp:177:3:177:7 | ref arg access to array | TAINT |
 | vector.cpp:178:8:178:9 | cc | vector.cpp:178:8:178:12 | access to array |  |
-| vector.cpp:178:8:178:12 | access to array | vector.cpp:178:13:178:13 | call to operator[] | TAINT |
 | vector.cpp:178:8:178:12 | ref arg access to array | vector.cpp:178:8:178:9 | cc [inner post update] |  |
 | vector.cpp:178:8:178:12 | ref arg access to array | vector.cpp:179:3:179:4 | cc |  |
 | vector.cpp:178:8:178:12 | ref arg access to array | vector.cpp:180:8:180:9 | cc |  |
 | vector.cpp:178:8:178:12 | ref arg access to array | vector.cpp:181:2:181:2 | cc |  |
 | vector.cpp:178:11:178:11 | 0 | vector.cpp:178:8:178:12 | access to array | TAINT |
 | vector.cpp:179:3:179:4 | cc | vector.cpp:179:3:179:7 | access to array |  |
-| vector.cpp:179:3:179:7 | access to array | vector.cpp:179:8:179:8 | call to operator[] | TAINT |
 | vector.cpp:179:3:179:7 | ref arg access to array | vector.cpp:179:3:179:4 | cc [inner post update] |  |
 | vector.cpp:179:3:179:7 | ref arg access to array | vector.cpp:180:8:180:9 | cc |  |
 | vector.cpp:179:3:179:7 | ref arg access to array | vector.cpp:181:2:181:2 | cc |  |
 | vector.cpp:179:3:179:21 | ... = ... | vector.cpp:179:8:179:8 | call to operator[] [post update] |  |
 | vector.cpp:179:6:179:6 | 0 | vector.cpp:179:3:179:7 | access to array | TAINT |
-| vector.cpp:179:8:179:8 | call to operator[] [post update] | vector.cpp:179:3:179:7 | ref arg access to array | TAINT |
 | vector.cpp:179:14:179:19 | call to source | vector.cpp:179:3:179:21 | ... = ... |  |
 | vector.cpp:180:8:180:9 | cc | vector.cpp:180:8:180:12 | access to array |  |
-| vector.cpp:180:8:180:12 | access to array | vector.cpp:180:13:180:13 | call to operator[] | TAINT |
 | vector.cpp:180:8:180:12 | ref arg access to array | vector.cpp:180:8:180:9 | cc [inner post update] |  |
 | vector.cpp:180:8:180:12 | ref arg access to array | vector.cpp:181:2:181:2 | cc |  |
 | vector.cpp:180:11:180:11 | 0 | vector.cpp:180:8:180:12 | access to array | TAINT |
@@ -7264,29 +7937,22 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:187:3:187:4 | ref arg dd | vector.cpp:191:8:191:9 | dd |  |
 | vector.cpp:187:3:187:4 | ref arg dd | vector.cpp:192:8:192:9 | dd |  |
 | vector.cpp:187:3:187:4 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
-| vector.cpp:187:16:187:17 | mp | vector.cpp:187:3:187:4 | ref arg dd | TAINT |
-| vector.cpp:188:8:188:9 | dd | vector.cpp:188:10:188:10 | call to operator[] | TAINT |
 | vector.cpp:188:8:188:9 | ref arg dd | vector.cpp:189:8:189:9 | dd |  |
 | vector.cpp:188:8:188:9 | ref arg dd | vector.cpp:190:3:190:4 | dd |  |
 | vector.cpp:188:8:188:9 | ref arg dd | vector.cpp:191:8:191:9 | dd |  |
 | vector.cpp:188:8:188:9 | ref arg dd | vector.cpp:192:8:192:9 | dd |  |
 | vector.cpp:188:8:188:9 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
-| vector.cpp:189:8:189:9 | dd | vector.cpp:189:10:189:10 | call to operator[] | TAINT |
 | vector.cpp:189:8:189:9 | ref arg dd | vector.cpp:190:3:190:4 | dd |  |
 | vector.cpp:189:8:189:9 | ref arg dd | vector.cpp:191:8:191:9 | dd |  |
 | vector.cpp:189:8:189:9 | ref arg dd | vector.cpp:192:8:192:9 | dd |  |
 | vector.cpp:189:8:189:9 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
-| vector.cpp:190:3:190:4 | dd | vector.cpp:190:5:190:5 | call to operator[] | TAINT |
 | vector.cpp:190:3:190:4 | ref arg dd | vector.cpp:191:8:191:9 | dd |  |
 | vector.cpp:190:3:190:4 | ref arg dd | vector.cpp:192:8:192:9 | dd |  |
 | vector.cpp:190:3:190:4 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
 | vector.cpp:190:3:190:20 | ... = ... | vector.cpp:190:9:190:9 | a [post update] |  |
-| vector.cpp:190:5:190:5 | call to operator[] [post update] | vector.cpp:190:3:190:4 | ref arg dd | TAINT |
 | vector.cpp:190:13:190:18 | call to source | vector.cpp:190:3:190:20 | ... = ... |  |
-| vector.cpp:191:8:191:9 | dd | vector.cpp:191:10:191:10 | call to operator[] | TAINT |
 | vector.cpp:191:8:191:9 | ref arg dd | vector.cpp:192:8:192:9 | dd |  |
 | vector.cpp:191:8:191:9 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
-| vector.cpp:192:8:192:9 | dd | vector.cpp:192:10:192:10 | call to operator[] | TAINT |
 | vector.cpp:192:8:192:9 | ref arg dd | vector.cpp:193:2:193:2 | dd |  |
 | vector.cpp:196:21:196:22 | call to MyVectorContainer | vector.cpp:198:3:198:4 | ee |  |
 | vector.cpp:196:21:196:22 | call to MyVectorContainer | vector.cpp:199:8:199:9 | ee |  |
@@ -7300,22 +7966,17 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:198:6:198:7 | ref arg vs | vector.cpp:199:11:199:12 | vs |  |
 | vector.cpp:198:6:198:7 | ref arg vs | vector.cpp:200:6:200:7 | vs |  |
 | vector.cpp:198:6:198:7 | ref arg vs | vector.cpp:201:11:201:12 | vs |  |
-| vector.cpp:198:19:198:19 | 0 | vector.cpp:198:6:198:7 | ref arg vs | TAINT |
 | vector.cpp:199:8:199:9 | ee [post update] | vector.cpp:200:3:200:4 | ee |  |
 | vector.cpp:199:8:199:9 | ee [post update] | vector.cpp:201:8:201:9 | ee |  |
 | vector.cpp:199:8:199:9 | ee [post update] | vector.cpp:202:2:202:2 | ee |  |
 | vector.cpp:199:11:199:12 | ref arg vs | vector.cpp:200:6:200:7 | vs |  |
 | vector.cpp:199:11:199:12 | ref arg vs | vector.cpp:201:11:201:12 | vs |  |
-| vector.cpp:199:11:199:12 | vs | vector.cpp:199:13:199:13 | call to operator[] | TAINT |
 | vector.cpp:200:3:200:4 | ee [post update] | vector.cpp:201:8:201:9 | ee |  |
 | vector.cpp:200:3:200:4 | ee [post update] | vector.cpp:202:2:202:2 | ee |  |
 | vector.cpp:200:3:200:21 | ... = ... | vector.cpp:200:8:200:8 | call to operator[] [post update] |  |
 | vector.cpp:200:6:200:7 | ref arg vs | vector.cpp:201:11:201:12 | vs |  |
-| vector.cpp:200:6:200:7 | vs | vector.cpp:200:8:200:8 | call to operator[] | TAINT |
-| vector.cpp:200:8:200:8 | call to operator[] [post update] | vector.cpp:200:6:200:7 | ref arg vs | TAINT |
 | vector.cpp:200:14:200:19 | call to source | vector.cpp:200:3:200:21 | ... = ... |  |
 | vector.cpp:201:8:201:9 | ee [post update] | vector.cpp:202:2:202:2 | ee |  |
-| vector.cpp:201:11:201:12 | vs | vector.cpp:201:13:201:13 | call to operator[] | TAINT |
 | vector.cpp:205:34:205:35 | call to vector | vector.cpp:209:3:209:4 | ff |  |
 | vector.cpp:205:34:205:35 | call to vector | vector.cpp:210:8:210:9 | ff |  |
 | vector.cpp:205:34:205:35 | call to vector | vector.cpp:211:3:211:4 | ff |  |
@@ -7326,30 +7987,18 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:206:21:206:23 | call to MyVectorContainer | vector.cpp:213:2:213:2 | mvc |  |
 | vector.cpp:208:3:208:5 | mvc [post update] | vector.cpp:209:16:209:18 | mvc |  |
 | vector.cpp:208:3:208:5 | mvc [post update] | vector.cpp:213:2:213:2 | mvc |  |
-| vector.cpp:208:20:208:20 | 0 | vector.cpp:208:7:208:8 | ref arg vs | TAINT |
 | vector.cpp:209:3:209:4 | ref arg ff | vector.cpp:210:8:210:9 | ff |  |
 | vector.cpp:209:3:209:4 | ref arg ff | vector.cpp:211:3:211:4 | ff |  |
 | vector.cpp:209:3:209:4 | ref arg ff | vector.cpp:212:8:212:9 | ff |  |
 | vector.cpp:209:3:209:4 | ref arg ff | vector.cpp:213:2:213:2 | ff |  |
-| vector.cpp:209:16:209:18 | mvc | vector.cpp:209:3:209:4 | ref arg ff | TAINT |
-| vector.cpp:210:8:210:9 | ff | vector.cpp:210:10:210:10 | call to operator[] | TAINT |
 | vector.cpp:210:8:210:9 | ref arg ff | vector.cpp:211:3:211:4 | ff |  |
 | vector.cpp:210:8:210:9 | ref arg ff | vector.cpp:212:8:212:9 | ff |  |
 | vector.cpp:210:8:210:9 | ref arg ff | vector.cpp:213:2:213:2 | ff |  |
-| vector.cpp:210:10:210:10 | call to operator[] [post update] | vector.cpp:210:8:210:9 | ref arg ff | TAINT |
-| vector.cpp:210:14:210:15 | vs | vector.cpp:210:16:210:16 | call to operator[] | TAINT |
-| vector.cpp:211:3:211:4 | ff | vector.cpp:211:5:211:5 | call to operator[] | TAINT |
 | vector.cpp:211:3:211:4 | ref arg ff | vector.cpp:212:8:212:9 | ff |  |
 | vector.cpp:211:3:211:4 | ref arg ff | vector.cpp:213:2:213:2 | ff |  |
 | vector.cpp:211:3:211:24 | ... = ... | vector.cpp:211:11:211:11 | call to operator[] [post update] |  |
-| vector.cpp:211:5:211:5 | call to operator[] [post update] | vector.cpp:211:3:211:4 | ref arg ff | TAINT |
-| vector.cpp:211:9:211:10 | vs | vector.cpp:211:11:211:11 | call to operator[] | TAINT |
-| vector.cpp:211:11:211:11 | call to operator[] [post update] | vector.cpp:211:9:211:10 | ref arg vs | TAINT |
 | vector.cpp:211:17:211:22 | call to source | vector.cpp:211:3:211:24 | ... = ... |  |
-| vector.cpp:212:8:212:9 | ff | vector.cpp:212:10:212:10 | call to operator[] | TAINT |
 | vector.cpp:212:8:212:9 | ref arg ff | vector.cpp:213:2:213:2 | ff |  |
-| vector.cpp:212:10:212:10 | call to operator[] [post update] | vector.cpp:212:8:212:9 | ref arg ff | TAINT |
-| vector.cpp:212:14:212:15 | vs | vector.cpp:212:16:212:16 | call to operator[] | TAINT |
 | vector.cpp:235:19:235:20 | call to vector | vector.cpp:237:2:237:3 | v1 |  |
 | vector.cpp:235:19:235:20 | call to vector | vector.cpp:241:7:241:8 | v1 |  |
 | vector.cpp:235:19:235:20 | call to vector | vector.cpp:249:13:249:14 | v1 |  |
@@ -7368,16 +8017,13 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:237:2:237:3 | ref arg v1 | vector.cpp:249:13:249:14 | v1 |  |
 | vector.cpp:237:2:237:3 | ref arg v1 | vector.cpp:249:25:249:26 | v1 |  |
 | vector.cpp:237:2:237:3 | ref arg v1 | vector.cpp:277:1:277:1 | v1 |  |
-| vector.cpp:237:17:237:17 | 0 | vector.cpp:237:2:237:3 | ref arg v1 | TAINT |
 | vector.cpp:238:2:238:3 | ref arg v2 | vector.cpp:242:7:242:8 | v2 |  |
 | vector.cpp:238:2:238:3 | ref arg v2 | vector.cpp:277:1:277:1 | v2 |  |
-| vector.cpp:238:17:238:30 | call to source | vector.cpp:238:2:238:3 | ref arg v2 | TAINT |
 | vector.cpp:239:2:239:3 | ref arg v3 | vector.cpp:243:7:243:8 | v3 |  |
 | vector.cpp:239:2:239:3 | ref arg v3 | vector.cpp:250:13:250:14 | v3 |  |
 | vector.cpp:239:2:239:3 | ref arg v3 | vector.cpp:250:25:250:26 | v3 |  |
 | vector.cpp:239:2:239:3 | ref arg v3 | vector.cpp:251:8:251:9 | v3 |  |
 | vector.cpp:239:2:239:3 | ref arg v3 | vector.cpp:277:1:277:1 | v3 |  |
-| vector.cpp:239:15:239:20 | call to source | vector.cpp:239:2:239:3 | ref arg v3 | TAINT |
 | vector.cpp:241:7:241:8 | ref arg v1 | vector.cpp:249:13:249:14 | v1 |  |
 | vector.cpp:241:7:241:8 | ref arg v1 | vector.cpp:249:25:249:26 | v1 |  |
 | vector.cpp:241:7:241:8 | ref arg v1 | vector.cpp:277:1:277:1 | v1 |  |
@@ -7400,21 +8046,17 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:249:13:249:14 | ref arg v1 | vector.cpp:249:25:249:26 | v1 |  |
 | vector.cpp:249:13:249:14 | ref arg v1 | vector.cpp:277:1:277:1 | v1 |  |
 | vector.cpp:249:13:249:14 | v1 | vector.cpp:249:16:249:20 | call to begin | TAINT |
-| vector.cpp:249:16:249:20 | call to begin | vector.cpp:249:3:249:4 | ref arg v4 | TAINT |
 | vector.cpp:249:25:249:26 | ref arg v1 | vector.cpp:277:1:277:1 | v1 |  |
 | vector.cpp:249:25:249:26 | v1 | vector.cpp:249:28:249:30 | call to end | TAINT |
-| vector.cpp:249:28:249:30 | call to end | vector.cpp:249:3:249:4 | ref arg v4 | TAINT |
 | vector.cpp:250:3:250:4 | ref arg v5 | vector.cpp:258:8:258:9 | v5 |  |
 | vector.cpp:250:3:250:4 | ref arg v5 | vector.cpp:262:2:262:2 | v5 |  |
 | vector.cpp:250:13:250:14 | ref arg v3 | vector.cpp:250:25:250:26 | v3 |  |
 | vector.cpp:250:13:250:14 | ref arg v3 | vector.cpp:251:8:251:9 | v3 |  |
 | vector.cpp:250:13:250:14 | ref arg v3 | vector.cpp:277:1:277:1 | v3 |  |
 | vector.cpp:250:13:250:14 | v3 | vector.cpp:250:16:250:20 | call to begin | TAINT |
-| vector.cpp:250:16:250:20 | call to begin | vector.cpp:250:3:250:4 | ref arg v5 | TAINT |
 | vector.cpp:250:25:250:26 | ref arg v3 | vector.cpp:251:8:251:9 | v3 |  |
 | vector.cpp:250:25:250:26 | ref arg v3 | vector.cpp:277:1:277:1 | v3 |  |
 | vector.cpp:250:25:250:26 | v3 | vector.cpp:250:28:250:30 | call to end | TAINT |
-| vector.cpp:250:28:250:30 | call to end | vector.cpp:250:3:250:4 | ref arg v5 | TAINT |
 | vector.cpp:251:8:251:9 | ref arg v3 | vector.cpp:277:1:277:1 | v3 |  |
 | vector.cpp:251:8:251:9 | v3 | vector.cpp:251:11:251:15 | call to begin | TAINT |
 | vector.cpp:251:11:251:15 | call to begin | vector.cpp:251:3:251:17 | ... = ... |  |
@@ -7435,11 +8077,9 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:254:3:254:4 | ref arg i2 | vector.cpp:260:8:260:9 | i2 |  |
 | vector.cpp:255:3:255:4 | ref arg v6 | vector.cpp:261:8:261:9 | v6 |  |
 | vector.cpp:255:3:255:4 | ref arg v6 | vector.cpp:262:2:262:2 | v6 |  |
-| vector.cpp:255:13:255:14 | call to iterator | vector.cpp:255:3:255:4 | ref arg v6 | TAINT |
 | vector.cpp:255:13:255:14 | call to iterator [post update] | vector.cpp:277:1:277:1 | v3 |  |
 | vector.cpp:255:13:255:14 | i1 | vector.cpp:255:13:255:14 | call to iterator |  |
 | vector.cpp:255:13:255:14 | i1 [post update] | vector.cpp:277:1:277:1 | v3 |  |
-| vector.cpp:255:17:255:18 | call to iterator | vector.cpp:255:3:255:4 | ref arg v6 | TAINT |
 | vector.cpp:255:17:255:18 | i2 | vector.cpp:255:17:255:18 | call to iterator |  |
 | vector.cpp:257:8:257:9 | ref arg v4 | vector.cpp:262:2:262:2 | v4 |  |
 | vector.cpp:258:8:258:9 | ref arg v5 | vector.cpp:262:2:262:2 | v5 |  |
@@ -7456,13 +8096,10 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:267:28:267:29 | call to vector | vector.cpp:276:2:276:2 | v9 |  |
 | vector.cpp:269:3:269:4 | ref arg v7 | vector.cpp:273:8:273:9 | v7 |  |
 | vector.cpp:269:3:269:4 | ref arg v7 | vector.cpp:276:2:276:2 | v7 |  |
-| vector.cpp:269:18:269:31 | call to source | vector.cpp:269:3:269:4 | ref arg v7 | TAINT |
 | vector.cpp:270:3:270:4 | ref arg v8 | vector.cpp:274:8:274:9 | v8 |  |
 | vector.cpp:270:3:270:4 | ref arg v8 | vector.cpp:276:2:276:2 | v8 |  |
-| vector.cpp:270:18:270:35 | call to source | vector.cpp:270:3:270:4 | ref arg v8 | TAINT |
 | vector.cpp:271:3:271:4 | ref arg v9 | vector.cpp:275:8:275:9 | v9 |  |
 | vector.cpp:271:3:271:4 | ref arg v9 | vector.cpp:276:2:276:2 | v9 |  |
-| vector.cpp:271:18:271:34 | call to source | vector.cpp:271:3:271:4 | ref arg v9 | TAINT |
 | vector.cpp:273:8:273:9 | ref arg v7 | vector.cpp:276:2:276:2 | v7 |  |
 | vector.cpp:274:8:274:9 | ref arg v8 | vector.cpp:276:2:276:2 | v8 |  |
 | vector.cpp:275:8:275:9 | ref arg v9 | vector.cpp:276:2:276:2 | v9 |  |
@@ -7480,16 +8117,12 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:284:2:284:3 | ref arg v1 | vector.cpp:286:7:286:8 | v1 |  |
 | vector.cpp:284:2:284:3 | ref arg v1 | vector.cpp:287:7:287:8 | v1 |  |
 | vector.cpp:284:2:284:3 | ref arg v1 | vector.cpp:293:1:293:1 | v1 |  |
-| vector.cpp:284:15:284:20 | call to source | vector.cpp:284:2:284:3 | ref arg v1 | TAINT |
 | vector.cpp:285:7:285:8 | ref arg v1 | vector.cpp:286:7:286:8 | v1 |  |
 | vector.cpp:285:7:285:8 | ref arg v1 | vector.cpp:287:7:287:8 | v1 |  |
 | vector.cpp:285:7:285:8 | ref arg v1 | vector.cpp:293:1:293:1 | v1 |  |
 | vector.cpp:286:7:286:8 | ref arg v1 | vector.cpp:287:7:287:8 | v1 |  |
 | vector.cpp:286:7:286:8 | ref arg v1 | vector.cpp:293:1:293:1 | v1 |  |
-| vector.cpp:286:7:286:8 | v1 | vector.cpp:286:10:286:13 | call to data | TAINT |
-| vector.cpp:286:10:286:13 | ref arg call to data | vector.cpp:286:7:286:8 | ref arg v1 | TAINT |
 | vector.cpp:287:7:287:8 | ref arg v1 | vector.cpp:293:1:293:1 | v1 |  |
-| vector.cpp:287:7:287:8 | v1 | vector.cpp:287:10:287:13 | call to data | TAINT |
 | vector.cpp:287:10:287:13 | call to data | vector.cpp:287:7:287:18 | access to array | TAINT |
 | vector.cpp:287:17:287:17 | 2 | vector.cpp:287:7:287:18 | access to array | TAINT |
 | vector.cpp:289:2:289:13 | * ... [post update] | vector.cpp:289:7:289:10 | call to data [inner post update] |  |
@@ -7498,19 +8131,14 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:289:4:289:5 | ref arg v2 | vector.cpp:291:7:291:8 | v2 |  |
 | vector.cpp:289:4:289:5 | ref arg v2 | vector.cpp:292:7:292:8 | v2 |  |
 | vector.cpp:289:4:289:5 | ref arg v2 | vector.cpp:293:1:293:1 | v2 |  |
-| vector.cpp:289:4:289:5 | v2 | vector.cpp:289:7:289:10 | call to data | TAINT |
 | vector.cpp:289:7:289:10 | call to data | vector.cpp:289:2:289:13 | * ... | TAINT |
-| vector.cpp:289:7:289:10 | call to data [inner post update] | vector.cpp:289:4:289:5 | ref arg v2 | TAINT |
 | vector.cpp:289:17:289:30 | call to source | vector.cpp:289:2:289:32 | ... = ... |  |
 | vector.cpp:290:7:290:8 | ref arg v2 | vector.cpp:291:7:291:8 | v2 |  |
 | vector.cpp:290:7:290:8 | ref arg v2 | vector.cpp:292:7:292:8 | v2 |  |
 | vector.cpp:290:7:290:8 | ref arg v2 | vector.cpp:293:1:293:1 | v2 |  |
 | vector.cpp:291:7:291:8 | ref arg v2 | vector.cpp:292:7:292:8 | v2 |  |
 | vector.cpp:291:7:291:8 | ref arg v2 | vector.cpp:293:1:293:1 | v2 |  |
-| vector.cpp:291:7:291:8 | v2 | vector.cpp:291:10:291:13 | call to data | TAINT |
-| vector.cpp:291:10:291:13 | ref arg call to data | vector.cpp:291:7:291:8 | ref arg v2 | TAINT |
 | vector.cpp:292:7:292:8 | ref arg v2 | vector.cpp:293:1:293:1 | v2 |  |
-| vector.cpp:292:7:292:8 | v2 | vector.cpp:292:10:292:13 | call to data | TAINT |
 | vector.cpp:292:10:292:13 | call to data | vector.cpp:292:7:292:18 | access to array | TAINT |
 | vector.cpp:292:17:292:17 | 2 | vector.cpp:292:7:292:18 | access to array | TAINT |
 | vector.cpp:298:19:298:19 | call to vector | vector.cpp:305:7:305:7 | a |  |
@@ -7539,8 +8167,6 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:303:2:303:2 | ref arg d | vector.cpp:311:16:311:16 | d |  |
 | vector.cpp:303:2:303:2 | ref arg d | vector.cpp:312:7:312:7 | d |  |
 | vector.cpp:303:2:303:2 | ref arg d | vector.cpp:313:1:313:1 | d |  |
-| vector.cpp:303:14:303:19 | call to source | vector.cpp:303:2:303:2 | ref arg d | TAINT |
-| vector.cpp:305:7:305:7 | a | vector.cpp:305:9:305:14 | call to insert | TAINT |
 | vector.cpp:305:7:305:7 | ref arg a | vector.cpp:306:7:306:7 | a |  |
 | vector.cpp:305:7:305:7 | ref arg a | vector.cpp:311:25:311:25 | a |  |
 | vector.cpp:305:7:305:7 | ref arg a | vector.cpp:311:36:311:36 | a |  |
@@ -7555,16 +8181,11 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:305:25:305:25 | b | vector.cpp:305:27:305:31 | call to begin | TAINT |
 | vector.cpp:305:25:305:25 | ref arg b | vector.cpp:305:36:305:36 | b |  |
 | vector.cpp:305:25:305:25 | ref arg b | vector.cpp:313:1:313:1 | b |  |
-| vector.cpp:305:27:305:31 | call to begin | vector.cpp:305:7:305:7 | ref arg a | TAINT |
-| vector.cpp:305:27:305:31 | call to begin | vector.cpp:305:9:305:14 | call to insert | TAINT |
 | vector.cpp:305:36:305:36 | b | vector.cpp:305:38:305:40 | call to end | TAINT |
 | vector.cpp:305:36:305:36 | ref arg b | vector.cpp:313:1:313:1 | b |  |
-| vector.cpp:305:38:305:40 | call to end | vector.cpp:305:7:305:7 | ref arg a | TAINT |
-| vector.cpp:305:38:305:40 | call to end | vector.cpp:305:9:305:14 | call to insert | TAINT |
 | vector.cpp:306:7:306:7 | ref arg a | vector.cpp:311:25:311:25 | a |  |
 | vector.cpp:306:7:306:7 | ref arg a | vector.cpp:311:36:311:36 | a |  |
 | vector.cpp:306:7:306:7 | ref arg a | vector.cpp:313:1:313:1 | a |  |
-| vector.cpp:308:7:308:7 | c | vector.cpp:308:9:308:14 | call to insert | TAINT |
 | vector.cpp:308:7:308:7 | ref arg c | vector.cpp:309:7:309:7 | c |  |
 | vector.cpp:308:7:308:7 | ref arg c | vector.cpp:313:1:313:1 | c |  |
 | vector.cpp:308:16:308:16 | c | vector.cpp:308:18:308:20 | call to end | TAINT |
@@ -7578,17 +8199,12 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:308:25:308:25 | ref arg d | vector.cpp:311:16:311:16 | d |  |
 | vector.cpp:308:25:308:25 | ref arg d | vector.cpp:312:7:312:7 | d |  |
 | vector.cpp:308:25:308:25 | ref arg d | vector.cpp:313:1:313:1 | d |  |
-| vector.cpp:308:27:308:31 | call to begin | vector.cpp:308:7:308:7 | ref arg c | TAINT |
-| vector.cpp:308:27:308:31 | call to begin | vector.cpp:308:9:308:14 | call to insert | TAINT |
 | vector.cpp:308:36:308:36 | d | vector.cpp:308:38:308:40 | call to end | TAINT |
 | vector.cpp:308:36:308:36 | ref arg d | vector.cpp:311:7:311:7 | d |  |
 | vector.cpp:308:36:308:36 | ref arg d | vector.cpp:311:16:311:16 | d |  |
 | vector.cpp:308:36:308:36 | ref arg d | vector.cpp:312:7:312:7 | d |  |
 | vector.cpp:308:36:308:36 | ref arg d | vector.cpp:313:1:313:1 | d |  |
-| vector.cpp:308:38:308:40 | call to end | vector.cpp:308:7:308:7 | ref arg c | TAINT |
-| vector.cpp:308:38:308:40 | call to end | vector.cpp:308:9:308:14 | call to insert | TAINT |
 | vector.cpp:309:7:309:7 | ref arg c | vector.cpp:313:1:313:1 | c |  |
-| vector.cpp:311:7:311:7 | d | vector.cpp:311:9:311:14 | call to insert | TAINT |
 | vector.cpp:311:7:311:7 | ref arg d | vector.cpp:312:7:312:7 | d |  |
 | vector.cpp:311:7:311:7 | ref arg d | vector.cpp:313:1:313:1 | d |  |
 | vector.cpp:311:16:311:16 | d | vector.cpp:311:18:311:20 | call to end | TAINT |
@@ -7599,12 +8215,8 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:311:25:311:25 | a | vector.cpp:311:27:311:31 | call to begin | TAINT |
 | vector.cpp:311:25:311:25 | ref arg a | vector.cpp:311:36:311:36 | a |  |
 | vector.cpp:311:25:311:25 | ref arg a | vector.cpp:313:1:313:1 | a |  |
-| vector.cpp:311:27:311:31 | call to begin | vector.cpp:311:7:311:7 | ref arg d | TAINT |
-| vector.cpp:311:27:311:31 | call to begin | vector.cpp:311:9:311:14 | call to insert | TAINT |
 | vector.cpp:311:36:311:36 | a | vector.cpp:311:38:311:40 | call to end | TAINT |
 | vector.cpp:311:36:311:36 | ref arg a | vector.cpp:313:1:313:1 | a |  |
-| vector.cpp:311:38:311:40 | call to end | vector.cpp:311:7:311:7 | ref arg d | TAINT |
-| vector.cpp:311:38:311:40 | call to end | vector.cpp:311:9:311:14 | call to insert | TAINT |
 | vector.cpp:312:7:312:7 | ref arg d | vector.cpp:313:1:313:1 | d |  |
 | vector.cpp:316:19:316:20 | call to vector | vector.cpp:320:22:320:23 | v1 |  |
 | vector.cpp:316:19:316:20 | call to vector | vector.cpp:320:34:320:35 | v1 |  |
@@ -7619,29 +8231,24 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:318:2:318:3 | ref arg v2 | vector.cpp:321:34:321:35 | v2 |  |
 | vector.cpp:318:2:318:3 | ref arg v2 | vector.cpp:324:7:324:8 | v2 |  |
 | vector.cpp:318:2:318:3 | ref arg v2 | vector.cpp:327:1:327:1 | v2 |  |
-| vector.cpp:318:15:318:20 | call to source | vector.cpp:318:2:318:3 | ref arg v2 | TAINT |
 | vector.cpp:320:22:320:23 | ref arg v1 | vector.cpp:320:34:320:35 | v1 |  |
 | vector.cpp:320:22:320:23 | ref arg v1 | vector.cpp:323:7:323:8 | v1 |  |
 | vector.cpp:320:22:320:23 | ref arg v1 | vector.cpp:327:1:327:1 | v1 |  |
 | vector.cpp:320:22:320:23 | v1 | vector.cpp:320:25:320:29 | call to begin | TAINT |
 | vector.cpp:320:22:320:42 | call to vector | vector.cpp:325:7:325:8 | v3 |  |
 | vector.cpp:320:22:320:42 | call to vector | vector.cpp:327:1:327:1 | v3 |  |
-| vector.cpp:320:25:320:29 | call to begin | vector.cpp:320:22:320:42 | call to vector | TAINT |
 | vector.cpp:320:34:320:35 | ref arg v1 | vector.cpp:323:7:323:8 | v1 |  |
 | vector.cpp:320:34:320:35 | ref arg v1 | vector.cpp:327:1:327:1 | v1 |  |
 | vector.cpp:320:34:320:35 | v1 | vector.cpp:320:37:320:39 | call to end | TAINT |
-| vector.cpp:320:37:320:39 | call to end | vector.cpp:320:22:320:42 | call to vector | TAINT |
 | vector.cpp:321:22:321:23 | ref arg v2 | vector.cpp:321:34:321:35 | v2 |  |
 | vector.cpp:321:22:321:23 | ref arg v2 | vector.cpp:324:7:324:8 | v2 |  |
 | vector.cpp:321:22:321:23 | ref arg v2 | vector.cpp:327:1:327:1 | v2 |  |
 | vector.cpp:321:22:321:23 | v2 | vector.cpp:321:25:321:29 | call to begin | TAINT |
 | vector.cpp:321:22:321:42 | call to vector | vector.cpp:326:7:326:8 | v4 |  |
 | vector.cpp:321:22:321:42 | call to vector | vector.cpp:327:1:327:1 | v4 |  |
-| vector.cpp:321:25:321:29 | call to begin | vector.cpp:321:22:321:42 | call to vector | TAINT |
 | vector.cpp:321:34:321:35 | ref arg v2 | vector.cpp:324:7:324:8 | v2 |  |
 | vector.cpp:321:34:321:35 | ref arg v2 | vector.cpp:327:1:327:1 | v2 |  |
 | vector.cpp:321:34:321:35 | v2 | vector.cpp:321:37:321:39 | call to end | TAINT |
-| vector.cpp:321:37:321:39 | call to end | vector.cpp:321:22:321:42 | call to vector | TAINT |
 | vector.cpp:323:7:323:8 | ref arg v1 | vector.cpp:327:1:327:1 | v1 |  |
 | vector.cpp:324:7:324:8 | ref arg v2 | vector.cpp:327:1:327:1 | v2 |  |
 | vector.cpp:325:7:325:8 | ref arg v3 | vector.cpp:327:1:327:1 | v3 |  |
@@ -8079,9 +8686,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:472:10:472:14 | ref arg & ... | vector.cpp:472:12:472:12 | call to operator[] [inner post update] |  |
 | vector.cpp:472:11:472:11 | ref arg v | vector.cpp:473:8:473:8 | v |  |
 | vector.cpp:472:11:472:11 | ref arg v | vector.cpp:474:2:474:2 | v |  |
-| vector.cpp:472:11:472:11 | v | vector.cpp:472:12:472:12 | call to operator[] | TAINT |
 | vector.cpp:472:12:472:12 | call to operator[] | vector.cpp:472:10:472:14 | & ... |  |
-| vector.cpp:472:12:472:12 | call to operator[] [inner post update] | vector.cpp:472:11:472:11 | ref arg v | TAINT |
 | vector.cpp:472:17:472:18 | & ... | vector.cpp:472:3:472:8 | call to memcpy | TAINT |
 | vector.cpp:472:17:472:18 | & ... | vector.cpp:472:10:472:14 | ref arg & ... | TAINT |
 | vector.cpp:472:18:472:18 | s | vector.cpp:472:10:472:14 | ref arg & ... |  |
@@ -8104,11 +8709,9 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:483:8:483:9 | ref arg cs | vector.cpp:487:2:487:2 | cs |  |
 | vector.cpp:484:10:484:22 | & ... | vector.cpp:484:3:484:8 | call to memcpy |  |
 | vector.cpp:484:10:484:22 | ref arg & ... | vector.cpp:484:13:484:13 | call to operator[] [inner post update] |  |
-| vector.cpp:484:11:484:12 | cs | vector.cpp:484:13:484:13 | call to operator[] | TAINT |
 | vector.cpp:484:11:484:12 | ref arg cs | vector.cpp:486:8:486:9 | cs |  |
 | vector.cpp:484:11:484:12 | ref arg cs | vector.cpp:487:2:487:2 | cs |  |
 | vector.cpp:484:13:484:13 | call to operator[] | vector.cpp:484:10:484:22 | & ... |  |
-| vector.cpp:484:13:484:13 | call to operator[] [inner post update] | vector.cpp:484:11:484:12 | ref arg cs | TAINT |
 | vector.cpp:484:14:484:17 | offs | vector.cpp:484:14:484:21 | ... + ... | TAINT |
 | vector.cpp:484:21:484:21 | 1 | vector.cpp:484:14:484:21 | ... + ... | TAINT |
 | vector.cpp:484:25:484:27 | src | vector.cpp:484:29:484:33 | call to c_str | TAINT |
@@ -8124,7 +8727,6 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:491:30:491:32 | call to vector | vector.cpp:498:1:498:1 | v2 |  |
 | vector.cpp:493:2:493:3 | ref arg v1 | vector.cpp:494:7:494:8 | v1 |  |
 | vector.cpp:493:2:493:3 | ref arg v1 | vector.cpp:498:1:498:1 | v1 |  |
-| vector.cpp:493:18:493:23 | call to source | vector.cpp:493:2:493:3 | ref arg v1 | TAINT |
 | vector.cpp:494:7:494:8 | ref arg v1 | vector.cpp:498:1:498:1 | v1 |  |
 | vector.cpp:496:2:496:3 | ref arg v2 | vector.cpp:497:7:497:8 | v2 |  |
 | vector.cpp:496:2:496:3 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |
@@ -8133,8 +8735,6 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:496:13:496:14 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |
 | vector.cpp:496:13:496:14 | v2 | vector.cpp:496:16:496:20 | call to begin | TAINT |
 | vector.cpp:496:16:496:20 | call to begin | vector.cpp:496:13:496:22 | call to iterator | TAINT |
-| vector.cpp:496:25:496:30 | call to source | vector.cpp:496:2:496:3 | ref arg v2 | TAINT |
-| vector.cpp:496:25:496:30 | call to source | vector.cpp:496:5:496:11 | call to emplace | TAINT |
 | vector.cpp:497:7:497:8 | ref arg v2 | vector.cpp:498:1:498:1 | v2 |  |
 | vector.cpp:503:18:503:21 | {...} | vector.cpp:506:8:506:9 | as |  |
 | vector.cpp:503:18:503:21 | {...} | vector.cpp:507:8:507:9 | as |  |
@@ -8165,16 +8765,13 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:520:25:520:31 | call to vector | vector.cpp:526:8:526:9 | vs |  |
 | vector.cpp:520:25:520:31 | call to vector | vector.cpp:532:8:532:9 | vs |  |
 | vector.cpp:520:25:520:31 | call to vector | vector.cpp:533:2:533:2 | vs |  |
-| vector.cpp:520:30:520:30 | 0 | vector.cpp:520:25:520:31 | call to vector | TAINT |
 | vector.cpp:523:8:523:9 | ref arg vs | vector.cpp:524:8:524:9 | vs |  |
 | vector.cpp:523:8:523:9 | ref arg vs | vector.cpp:526:8:526:9 | vs |  |
 | vector.cpp:523:8:523:9 | ref arg vs | vector.cpp:532:8:532:9 | vs |  |
 | vector.cpp:523:8:523:9 | ref arg vs | vector.cpp:533:2:533:2 | vs |  |
-| vector.cpp:523:8:523:9 | vs | vector.cpp:523:10:523:10 | call to operator[] | TAINT |
 | vector.cpp:524:8:524:9 | ref arg vs | vector.cpp:526:8:526:9 | vs |  |
 | vector.cpp:524:8:524:9 | ref arg vs | vector.cpp:532:8:532:9 | vs |  |
 | vector.cpp:524:8:524:9 | ref arg vs | vector.cpp:533:2:533:2 | vs |  |
-| vector.cpp:524:8:524:9 | vs | vector.cpp:524:10:524:10 | call to operator[] | TAINT |
 | vector.cpp:526:8:526:9 | ref arg vs | vector.cpp:532:8:532:9 | vs |  |
 | vector.cpp:526:8:526:9 | ref arg vs | vector.cpp:533:2:533:2 | vs |  |
 | vector.cpp:526:8:526:9 | vs | vector.cpp:526:11:526:15 | call to begin | TAINT |
@@ -8202,4 +8799,50 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | vector.cpp:530:9:530:14 | call to source | vector.cpp:530:3:530:4 | ref arg it | TAINT |
 | vector.cpp:531:9:531:10 | it | vector.cpp:531:8:531:8 | call to operator* | TAINT |
 | vector.cpp:532:8:532:9 | ref arg vs | vector.cpp:533:2:533:2 | vs |  |
-| vector.cpp:532:8:532:9 | vs | vector.cpp:532:10:532:10 | call to operator[] | TAINT |
+| zmq.cpp:17:21:17:26 | socket | zmq.cpp:17:21:17:26 | socket |  |
+| zmq.cpp:17:35:17:46 | message_data | zmq.cpp:17:35:17:46 | message_data |  |
+| zmq.cpp:17:35:17:46 | message_data | zmq.cpp:20:35:20:46 | message_data |  |
+| zmq.cpp:17:35:17:46 | message_data | zmq.cpp:25:3:25:14 | message_data |  |
+| zmq.cpp:17:35:17:46 | message_data | zmq.cpp:26:8:26:19 | message_data |  |
+| zmq.cpp:17:35:17:46 | message_data | zmq.cpp:28:35:28:46 | message_data |  |
+| zmq.cpp:17:56:17:66 | message_len | zmq.cpp:20:49:20:59 | message_len |  |
+| zmq.cpp:17:56:17:66 | message_len | zmq.cpp:28:49:28:59 | message_len |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:20:26:20:32 | message |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:21:10:21:16 | message |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:22:24:22:30 | message |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:28:26:28:32 | message |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:29:10:29:16 | message |  |
+| zmq.cpp:18:13:18:19 | message | zmq.cpp:30:24:30:30 | message |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:20:26:20:32 | message [inner post update] |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:21:10:21:16 | message |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:22:24:22:30 | message |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:28:26:28:32 | message |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:29:10:29:16 | message |  |
+| zmq.cpp:20:25:20:32 | ref arg & ... | zmq.cpp:30:24:30:30 | message |  |
+| zmq.cpp:20:26:20:32 | message | zmq.cpp:20:25:20:32 | & ... |  |
+| zmq.cpp:20:35:20:46 | ref arg message_data | zmq.cpp:17:35:17:46 | message_data |  |
+| zmq.cpp:20:35:20:46 | ref arg message_data | zmq.cpp:25:3:25:14 | message_data |  |
+| zmq.cpp:20:35:20:46 | ref arg message_data | zmq.cpp:26:8:26:19 | message_data |  |
+| zmq.cpp:20:35:20:46 | ref arg message_data | zmq.cpp:28:35:28:46 | message_data |  |
+| zmq.cpp:22:23:22:30 | ref arg & ... | zmq.cpp:22:24:22:30 | message [inner post update] |  |
+| zmq.cpp:22:23:22:30 | ref arg & ... | zmq.cpp:28:26:28:32 | message |  |
+| zmq.cpp:22:23:22:30 | ref arg & ... | zmq.cpp:29:10:29:16 | message |  |
+| zmq.cpp:22:23:22:30 | ref arg & ... | zmq.cpp:30:24:30:30 | message |  |
+| zmq.cpp:22:24:22:30 | message | zmq.cpp:22:23:22:30 | & ... |  |
+| zmq.cpp:25:3:25:14 | message_data | zmq.cpp:25:3:25:17 | access to array | TAINT |
+| zmq.cpp:25:3:25:17 | access to array [post update] | zmq.cpp:17:35:17:46 | message_data |  |
+| zmq.cpp:25:3:25:17 | access to array [post update] | zmq.cpp:25:3:25:14 | message_data [inner post update] |  |
+| zmq.cpp:25:3:25:17 | access to array [post update] | zmq.cpp:26:8:26:19 | message_data |  |
+| zmq.cpp:25:3:25:17 | access to array [post update] | zmq.cpp:28:35:28:46 | message_data |  |
+| zmq.cpp:25:3:25:28 | ... = ... | zmq.cpp:25:3:25:17 | access to array [post update] |  |
+| zmq.cpp:25:16:25:16 | 0 | zmq.cpp:25:3:25:17 | access to array | TAINT |
+| zmq.cpp:25:21:25:26 | call to source | zmq.cpp:25:3:25:28 | ... = ... |  |
+| zmq.cpp:26:8:26:19 | ref arg message_data | zmq.cpp:17:35:17:46 | message_data |  |
+| zmq.cpp:26:8:26:19 | ref arg message_data | zmq.cpp:28:35:28:46 | message_data |  |
+| zmq.cpp:28:25:28:32 | ref arg & ... | zmq.cpp:28:26:28:32 | message [inner post update] |  |
+| zmq.cpp:28:25:28:32 | ref arg & ... | zmq.cpp:29:10:29:16 | message |  |
+| zmq.cpp:28:25:28:32 | ref arg & ... | zmq.cpp:30:24:30:30 | message |  |
+| zmq.cpp:28:26:28:32 | message | zmq.cpp:28:25:28:32 | & ... |  |
+| zmq.cpp:28:35:28:46 | ref arg message_data | zmq.cpp:17:35:17:46 | message_data |  |
+| zmq.cpp:30:23:30:30 | ref arg & ... | zmq.cpp:30:24:30:30 | message [inner post update] |  |
+| zmq.cpp:30:24:30:30 | message | zmq.cpp:30:23:30:30 | & ... |  |

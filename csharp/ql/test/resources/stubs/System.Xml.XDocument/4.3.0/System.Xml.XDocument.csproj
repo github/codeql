@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../System.Collections/4.3.0/System.Collections.csproj" />
+    <ProjectReference Include="../../System.Diagnostics.Debug/4.3.0/System.Diagnostics.Debug.csproj" />
+    <ProjectReference Include="../../System.Diagnostics.Tools/4.3.0/System.Diagnostics.Tools.csproj" />
+    <ProjectReference Include="../../System.Globalization/4.3.0/System.Globalization.csproj" />
+    <ProjectReference Include="../../System.IO/4.3.0/System.IO.csproj" />
+    <ProjectReference Include="../../System.Reflection/4.3.0/System.Reflection.csproj" />
+    <ProjectReference Include="../../System.Resources.ResourceManager/4.3.0/System.Resources.ResourceManager.csproj" />
+    <ProjectReference Include="../../System.Runtime/4.3.0/System.Runtime.csproj" />
+    <ProjectReference Include="../../System.Runtime.Extensions/4.3.0/System.Runtime.Extensions.csproj" />
+    <ProjectReference Include="../../System.Text.Encoding/4.3.0/System.Text.Encoding.csproj" />
+    <ProjectReference Include="../../System.Threading/4.3.0/System.Threading.csproj" />
+    <ProjectReference Include="../../System.Xml.ReaderWriter/4.3.0/System.Xml.ReaderWriter.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

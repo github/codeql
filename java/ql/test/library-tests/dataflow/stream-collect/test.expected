@@ -1,0 +1,94 @@
+models
+| 1 | Summary: java.lang; Iterable; true; iterator; (); ; Argument[this].Element; ReturnValue.Element; value; manual |
+| 2 | Summary: java.util; Arrays; false; stream; ; ; Argument[0].ArrayElement; ReturnValue.Element; value; manual |
+| 3 | Summary: java.util; Iterator; true; next; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 4 | Summary: java.util; List; true; get; (int); ; Argument[this].Element; ReturnValue; value; manual |
+| 5 | Summary: java.util; Map; true; get; ; ; Argument[this].MapValue; ReturnValue; value; manual |
+| 6 | Summary: java.util; Optional; false; get; ; ; Argument[this].Element; ReturnValue; value; manual |
+edges
+| A.java:10:19:10:43 | {...} : String[] [[]] : String | A.java:11:38:11:39 | xs : String[] [[]] : String | provenance |  |
+| A.java:10:34:10:41 | source(...) : String | A.java:10:19:10:43 | {...} : String[] [[]] : String | provenance |  |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | A.java:13:10:13:10 | s : Stream [<element>] : String | provenance |  |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | A.java:14:10:14:10 | s : Stream [<element>] : String | provenance |  |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | A.java:15:10:15:10 | s : Stream [<element>] : String | provenance |  |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | A.java:16:10:16:10 | s : Stream [<element>] : String | provenance |  |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | A.java:17:10:17:10 | s : Stream [<element>] : String | provenance |  |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | A.java:18:10:18:10 | s : Stream [<element>] : String | provenance |  |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | A.java:19:10:19:10 | s : Stream [<element>] : String | provenance |  |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | A.java:24:10:24:10 | s : Stream [<element>] : String | provenance |  |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | A.java:26:10:26:10 | s : Stream [<element>] : String | provenance |  |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | A.java:27:10:27:10 | s : Stream [<element>] : String | provenance |  |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | A.java:28:10:28:10 | s : Stream [<element>] : String | provenance |  |
+| A.java:11:38:11:39 | xs : String[] [[]] : String | A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | provenance | MaD:2 |
+| A.java:13:10:13:10 | s : Stream [<element>] : String | A.java:13:10:13:42 | collect(...) : Optional [<element>] : String | provenance | java.util.stream.collect()+Collectors.[toList,...] |
+| A.java:13:10:13:42 | collect(...) : Optional [<element>] : String | A.java:13:10:13:48 | get(...) | provenance | MaD:6 |
+| A.java:14:10:14:10 | s : Stream [<element>] : String | A.java:14:10:14:42 | collect(...) : Optional [<element>] : String | provenance | java.util.stream.collect()+Collectors.[toList,...] |
+| A.java:14:10:14:42 | collect(...) : Optional [<element>] : String | A.java:14:10:14:48 | get(...) | provenance | MaD:6 |
+| A.java:15:10:15:10 | s : Stream [<element>] : String | A.java:15:10:15:49 | collect(...) : Collection [<element>] : String | provenance | java.util.stream.collect()+Collectors.[toList,...] |
+| A.java:15:10:15:49 | collect(...) : Collection [<element>] : String | A.java:15:10:15:60 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
+| A.java:15:10:15:60 | iterator(...) : Iterator [<element>] : String | A.java:15:10:15:67 | next(...) | provenance | MaD:3 |
+| A.java:16:10:16:10 | s : Stream [<element>] : String | A.java:16:10:16:39 | collect(...) : List [<element>] : String | provenance | java.util.stream.collect()+Collectors.[toList,...] |
+| A.java:16:10:16:39 | collect(...) : List [<element>] : String | A.java:16:10:16:46 | get(...) | provenance | MaD:4 |
+| A.java:17:10:17:10 | s : Stream [<element>] : String | A.java:17:10:17:38 | collect(...) : Set [<element>] : String | provenance | java.util.stream.collect()+Collectors.[toList,...] |
+| A.java:17:10:17:38 | collect(...) : Set [<element>] : String | A.java:17:10:17:49 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
+| A.java:17:10:17:49 | iterator(...) : Iterator [<element>] : String | A.java:17:10:17:56 | next(...) | provenance | MaD:3 |
+| A.java:18:10:18:10 | s : Stream [<element>] : String | A.java:18:10:18:51 | collect(...) : List [<element>] : String | provenance | java.util.stream.collect()+Collectors.[toList,...] |
+| A.java:18:10:18:51 | collect(...) : List [<element>] : String | A.java:18:10:18:58 | get(...) | provenance | MaD:4 |
+| A.java:19:10:19:10 | s : Stream [<element>] : String | A.java:19:10:19:50 | collect(...) : Set [<element>] : String | provenance | java.util.stream.collect()+Collectors.[toList,...] |
+| A.java:19:10:19:50 | collect(...) : Set [<element>] : String | A.java:19:10:19:61 | iterator(...) : Iterator [<element>] : String | provenance | MaD:1 |
+| A.java:19:10:19:61 | iterator(...) : Iterator [<element>] : String | A.java:19:10:19:68 | next(...) | provenance | MaD:3 |
+| A.java:24:10:24:10 | s : Stream [<element>] : String | A.java:24:10:24:40 | collect(...) | provenance | java.util.stream.collect()+Collectors.joining |
+| A.java:26:10:26:10 | s : Stream [<element>] : String | A.java:26:10:26:47 | collect(...) : Map [<map.value>, <element>] : String | provenance | java.util.stream.collect()+Collectors.[groupingBy(Function),...] |
+| A.java:26:10:26:47 | collect(...) : Map [<map.value>, <element>] : String | A.java:26:10:26:57 | get(...) : List [<element>] : String | provenance | MaD:5 |
+| A.java:26:10:26:57 | get(...) : List [<element>] : String | A.java:26:10:26:64 | get(...) | provenance | MaD:4 |
+| A.java:27:10:27:10 | s : Stream [<element>] : String | A.java:27:10:27:57 | collect(...) : ConcurrentMap [<map.value>, <element>] : String | provenance | java.util.stream.collect()+Collectors.[groupingBy(Function),...] |
+| A.java:27:10:27:57 | collect(...) : ConcurrentMap [<map.value>, <element>] : String | A.java:27:10:27:67 | get(...) : List [<element>] : String | provenance | MaD:5 |
+| A.java:27:10:27:67 | get(...) : List [<element>] : String | A.java:27:10:27:74 | get(...) | provenance | MaD:4 |
+| A.java:28:10:28:10 | s : Stream [<element>] : String | A.java:28:10:28:51 | collect(...) : Map [<map.value>, <element>] : String | provenance | java.util.stream.collect()+Collectors.[groupingBy(Function),...] |
+| A.java:28:10:28:51 | collect(...) : Map [<map.value>, <element>] : String | A.java:28:10:28:61 | get(...) : List [<element>] : String | provenance | MaD:5 |
+| A.java:28:10:28:61 | get(...) : List [<element>] : String | A.java:28:10:28:68 | get(...) | provenance | MaD:4 |
+nodes
+| A.java:10:19:10:43 | {...} : String[] [[]] : String | semmle.label | {...} : String[] [[]] : String |
+| A.java:10:34:10:41 | source(...) : String | semmle.label | source(...) : String |
+| A.java:11:24:11:40 | stream(...) : Stream [<element>] : String | semmle.label | stream(...) : Stream [<element>] : String |
+| A.java:11:38:11:39 | xs : String[] [[]] : String | semmle.label | xs : String[] [[]] : String |
+| A.java:13:10:13:10 | s : Stream [<element>] : String | semmle.label | s : Stream [<element>] : String |
+| A.java:13:10:13:42 | collect(...) : Optional [<element>] : String | semmle.label | collect(...) : Optional [<element>] : String |
+| A.java:13:10:13:48 | get(...) | semmle.label | get(...) |
+| A.java:14:10:14:10 | s : Stream [<element>] : String | semmle.label | s : Stream [<element>] : String |
+| A.java:14:10:14:42 | collect(...) : Optional [<element>] : String | semmle.label | collect(...) : Optional [<element>] : String |
+| A.java:14:10:14:48 | get(...) | semmle.label | get(...) |
+| A.java:15:10:15:10 | s : Stream [<element>] : String | semmle.label | s : Stream [<element>] : String |
+| A.java:15:10:15:49 | collect(...) : Collection [<element>] : String | semmle.label | collect(...) : Collection [<element>] : String |
+| A.java:15:10:15:60 | iterator(...) : Iterator [<element>] : String | semmle.label | iterator(...) : Iterator [<element>] : String |
+| A.java:15:10:15:67 | next(...) | semmle.label | next(...) |
+| A.java:16:10:16:10 | s : Stream [<element>] : String | semmle.label | s : Stream [<element>] : String |
+| A.java:16:10:16:39 | collect(...) : List [<element>] : String | semmle.label | collect(...) : List [<element>] : String |
+| A.java:16:10:16:46 | get(...) | semmle.label | get(...) |
+| A.java:17:10:17:10 | s : Stream [<element>] : String | semmle.label | s : Stream [<element>] : String |
+| A.java:17:10:17:38 | collect(...) : Set [<element>] : String | semmle.label | collect(...) : Set [<element>] : String |
+| A.java:17:10:17:49 | iterator(...) : Iterator [<element>] : String | semmle.label | iterator(...) : Iterator [<element>] : String |
+| A.java:17:10:17:56 | next(...) | semmle.label | next(...) |
+| A.java:18:10:18:10 | s : Stream [<element>] : String | semmle.label | s : Stream [<element>] : String |
+| A.java:18:10:18:51 | collect(...) : List [<element>] : String | semmle.label | collect(...) : List [<element>] : String |
+| A.java:18:10:18:58 | get(...) | semmle.label | get(...) |
+| A.java:19:10:19:10 | s : Stream [<element>] : String | semmle.label | s : Stream [<element>] : String |
+| A.java:19:10:19:50 | collect(...) : Set [<element>] : String | semmle.label | collect(...) : Set [<element>] : String |
+| A.java:19:10:19:61 | iterator(...) : Iterator [<element>] : String | semmle.label | iterator(...) : Iterator [<element>] : String |
+| A.java:19:10:19:68 | next(...) | semmle.label | next(...) |
+| A.java:24:10:24:10 | s : Stream [<element>] : String | semmle.label | s : Stream [<element>] : String |
+| A.java:24:10:24:40 | collect(...) | semmle.label | collect(...) |
+| A.java:26:10:26:10 | s : Stream [<element>] : String | semmle.label | s : Stream [<element>] : String |
+| A.java:26:10:26:47 | collect(...) : Map [<map.value>, <element>] : String | semmle.label | collect(...) : Map [<map.value>, <element>] : String |
+| A.java:26:10:26:57 | get(...) : List [<element>] : String | semmle.label | get(...) : List [<element>] : String |
+| A.java:26:10:26:64 | get(...) | semmle.label | get(...) |
+| A.java:27:10:27:10 | s : Stream [<element>] : String | semmle.label | s : Stream [<element>] : String |
+| A.java:27:10:27:57 | collect(...) : ConcurrentMap [<map.value>, <element>] : String | semmle.label | collect(...) : ConcurrentMap [<map.value>, <element>] : String |
+| A.java:27:10:27:67 | get(...) : List [<element>] : String | semmle.label | get(...) : List [<element>] : String |
+| A.java:27:10:27:74 | get(...) | semmle.label | get(...) |
+| A.java:28:10:28:10 | s : Stream [<element>] : String | semmle.label | s : Stream [<element>] : String |
+| A.java:28:10:28:51 | collect(...) : Map [<map.value>, <element>] : String | semmle.label | collect(...) : Map [<map.value>, <element>] : String |
+| A.java:28:10:28:61 | get(...) : List [<element>] : String | semmle.label | get(...) : List [<element>] : String |
+| A.java:28:10:28:68 | get(...) | semmle.label | get(...) |
+subpaths
+testFailures

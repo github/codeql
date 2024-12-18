@@ -28,13 +28,13 @@ using it.
 In the following example, the function <code>run</code> runs a command directly from the result of a
 query:
 </p>
-<sample src="StoredCommand.go"/>
+<sample src="examples/StoredCommand.go"/>
 <p>
 The function extracts the name of a system command from the database query, and then runs it without
 any further checks, which can cause a command-injection vulnerability. A possible solution is to
 ensure that commands are checked against a whitelist:
 </p>
-<sample src="StoredCommandGood.go"/>
+<sample src="examples/StoredCommandGood.go"/>
 </example>
 
 <references>

@@ -612,7 +612,7 @@ module TaintTracking {
                 "italics", "link", "padEnd", "padStart", "repeat", "replace", "replaceAll", "slice",
                 "small", "split", "strike", "sub", "substr", "substring", "sup",
                 "toLocaleLowerCase", "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim",
-                "trimLeft", "trimRight"
+                "trimLeft", "trimRight", "toWellFormed"
               ]
             or
             // sorted, interesting, properties of Object.prototype
@@ -716,7 +716,7 @@ module TaintTracking {
 
   pragma[nomagic]
   private DataFlow::MethodCallNode matchMethodCall() {
-    result.getMethodName() = "match" and
+    result.getMethodName() = ["match", "matchAll"] and
     exists(DataFlow::AnalyzedNode analyzed |
       pragma[only_bind_into](analyzed) = result.getArgument(0).analyze() and
       analyzed.getAType() = TTRegExp()
@@ -870,19 +870,6 @@ module TaintTracking {
   }
 
   /**
-   * A taint propagating data flow edge arising from sorting.
-   */
-  private class SortTaintStep extends SharedTaintStep {
-    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::MethodCallNode call |
-        call.getMethodName() = "sort" and
-        pred = call.getReceiver() and
-        succ = call
-      )
-    }
-  }
-
-  /**
    * A taint step through an exception constructor, such as `x` to `new Error(x)`.
    */
   class ErrorConstructorTaintStep extends SharedTaintStep {
@@ -917,7 +904,7 @@ module TaintTracking {
      */
     private ControlFlowNode getACaptureSetter(DataFlow::Node input) {
       exists(DataFlow::MethodCallNode call | result = call.asExpr() |
-        call.getMethodName() = ["search", "replace", "replaceAll", "match"] and
+        call.getMethodName() = ["search", "replace", "replaceAll", "match", "matchAll"] and
         input = call.getReceiver()
         or
         call.getMethodName() = ["test", "exec"] and input = call.getArgument(0)
@@ -998,7 +985,7 @@ module TaintTracking {
         or
         // u.match(/re/) or u.match("re")
         base = expr and
-        m = "match" and
+        m = ["match", "matchAll"] and
         RegExp::isGenericRegExpSanitizer(RegExp::getRegExpFromNode(firstArg.flow()),
           sanitizedOutcome)
       )

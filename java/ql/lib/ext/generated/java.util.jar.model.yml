@@ -1,0 +1,58 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.util.jar", "Attributes$Name", True, "Name", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.util.jar", "Attributes", True, "Attributes", "(Attributes)", "", "Argument[0].MapKey", "Argument[this].SyntheticField[java.util.jar.Attributes.map].MapKey", "value", "dfc-generated"]
+      - ["java.util.jar", "Attributes", True, "Attributes", "(Attributes)", "", "Argument[0].MapValue", "Argument[this].SyntheticField[java.util.jar.Attributes.map].MapValue", "value", "dfc-generated"]
+      - ["java.util.jar", "Attributes", True, "getValue", "(Attributes$Name)", "", "Argument[this].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.jar", "Attributes", True, "getValue", "(Attributes$Name)", "", "Argument[this].SyntheticField[java.util.jar.Attributes.map].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.jar", "Attributes", True, "getValue", "(String)", "", "Argument[this].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.jar", "Attributes", True, "getValue", "(String)", "", "Argument[this].SyntheticField[java.util.jar.Attributes.map].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.jar", "Attributes", True, "putValue", "(String,String)", "", "Argument[1]", "Argument[this].MapValue", "value", "dfc-generated"]
+      - ["java.util.jar", "Attributes", True, "putValue", "(String,String)", "", "Argument[1]", "Argument[this].SyntheticField[java.util.jar.Attributes.map].MapValue", "value", "dfc-generated"]
+      - ["java.util.jar", "Attributes", True, "putValue", "(String,String)", "", "Argument[this].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.jar", "Attributes", True, "putValue", "(String,String)", "", "Argument[this].SyntheticField[java.util.jar.Attributes.map].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.jar", "JarEntry", True, "JarEntry", "(JarEntry)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.util.jar", "JarEntry", True, "JarEntry", "(ZipEntry)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.util.jar", "JarEntry", True, "getAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.jar", "JarEntry", True, "getCertificates", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.jar", "JarEntry", True, "getCodeSigners", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.jar", "JarEntry", True, "getRealName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.jar", "JarException", True, "JarException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.util.jar", "JarFile", True, "JarFile", "(File)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["java.util.jar", "JarFile", True, "JarFile", "(File,boolean)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["java.util.jar", "JarFile", True, "JarFile", "(File,boolean,int)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["java.util.jar", "JarFile", True, "JarFile", "(File,boolean,int,Runtime$Version)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["java.util.jar", "JarFile", True, "JarFile", "(String)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["java.util.jar", "JarFile", True, "JarFile", "(String,boolean)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["java.util.jar", "JarFile", True, "getJarEntry", "(String)", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["java.util.jar", "JarFile", True, "getManifest", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.jar", "JarFile", True, "getVersion", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.jar", "JarFile", True, "versionedStream", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["java.util.jar", "JarInputStream", True, "JarInputStream", "(InputStream)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["java.util.jar", "JarInputStream", True, "JarInputStream", "(InputStream,boolean)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["java.util.jar", "JarInputStream", True, "getManifest", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.jar", "JarInputStream", True, "getNextJarEntry", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.jar", "JarOutputStream", True, "JarOutputStream", "(OutputStream)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["java.util.jar", "JarOutputStream", True, "JarOutputStream", "(OutputStream,Manifest)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["java.util.jar", "Manifest", True, "Manifest", "(Manifest)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.util.jar", "Manifest", True, "getAttributes", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.jar", "Manifest", True, "getEntries", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.jar", "Manifest", True, "getMainAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util.jar", "Attributes", "Attributes", "(int)", "summary", "df-generated"]
+      - ["java.util.jar", "Attributes", "containsValue", "(Object)", "summary", "df-generated"]
+      - ["java.util.jar", "JarEntry", "JarEntry", "(String)", "summary", "df-generated"]
+      - ["java.util.jar", "JarFile", "baseVersion", "()", "summary", "df-generated"]
+      - ["java.util.jar", "JarFile", "isMultiRelease", "()", "summary", "df-generated"]
+      - ["java.util.jar", "JarFile", "runtimeVersion", "()", "summary", "df-generated"]
+      - ["java.util.jar", "Manifest", "Manifest", "(InputStream)", "summary", "df-generated"]
+      - ["java.util.jar", "Manifest", "clear", "()", "summary", "df-generated"]
+      - ["java.util.jar", "Manifest", "read", "(InputStream)", "summary", "df-generated"]
+      - ["java.util.jar", "Manifest", "write", "(OutputStream)", "summary", "df-generated"]

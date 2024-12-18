@@ -73,14 +73,14 @@ class MetricCallable extends Callable {
 // so there should be a branching point for each non-default switch
 // case (ignoring those that just fall through to the next case).
 private predicate branchingSwitchCase(ConstCase sc) {
-  not sc.(ControlFlowNode).getASuccessor() instanceof ConstCase and
-  not sc.(ControlFlowNode).getASuccessor() instanceof DefaultCase and
+  not sc.getControlFlowNode().getASuccessor().asStmt() instanceof SwitchCase and
   not defaultFallThrough(sc)
 }
 
 private predicate defaultFallThrough(ConstCase sc) {
-  exists(DefaultCase default | default.(ControlFlowNode).getASuccessor() = sc) or
-  defaultFallThrough(sc.(ControlFlowNode).getAPredecessor())
+  exists(DefaultCase default | default.getControlFlowNode().getASuccessor().asStmt() = sc)
+  or
+  defaultFallThrough(sc.getControlFlowNode().getAPredecessor().asStmt())
 }
 
 /** Holds if `stmt` is a branching statement used for the computation of cyclomatic complexity. */
@@ -90,6 +90,7 @@ private predicate branchingStmt(Stmt stmt) {
   stmt instanceof DoStmt or
   stmt instanceof ForStmt or
   stmt instanceof EnhancedForStmt or
+  stmt instanceof PatternCase or
   branchingSwitchCase(stmt) or
   stmt instanceof CatchClause
 }

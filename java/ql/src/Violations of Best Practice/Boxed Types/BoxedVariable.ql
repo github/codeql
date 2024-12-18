@@ -63,7 +63,7 @@ from LocalBoxedVar v
 where
   forall(Expr e | e = v.getAnAssignedValue() | e.getType() = v.getPrimitiveType()) and
   (
-    not v.getDeclExpr().getParent() instanceof EnhancedForStmt or
+    not v.getDeclExpr().hasImplicitInit() or
     v.getDeclExpr().getParent().(EnhancedForStmt).getExpr().getType().(Array).getComponentType() =
       v.getPrimitiveType()
   ) and

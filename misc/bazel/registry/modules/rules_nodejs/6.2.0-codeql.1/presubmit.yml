@@ -1,0 +1,14 @@
+bcr_test_module:
+  module_path: "e2e/smoke"
+  matrix:
+    bazel: ["7.x"]
+    platform: ["debian10", "macos", "ubuntu2004", "windows"]
+  tasks:
+    run_tests:
+      name: "Run test module"
+      bazel: ${{ bazel }}
+      platform: ${{ platform }}
+      test_targets:
+        - "//..."
+      test_flags:
+        - "--test_tag_filters=-skip-on-bazelci-windows"

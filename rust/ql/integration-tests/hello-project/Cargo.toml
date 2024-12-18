@@ -1,0 +1,7 @@
+[workspace]
+[package]
+name = "hello-cargo"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

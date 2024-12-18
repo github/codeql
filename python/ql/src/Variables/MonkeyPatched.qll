@@ -1,7 +1,7 @@
 import python
 
 predicate monkey_patched_builtin(string name) {
-  exists(AttrNode attr, SubscriptNode subscr, StrConst s |
+  exists(AttrNode attr, SubscriptNode subscr, StringLiteral s |
     subscr.isStore() and
     subscr.getIndex().getNode() = s and
     s.getText() = name and
@@ -9,7 +9,7 @@ predicate monkey_patched_builtin(string name) {
     attr.getObject("__dict__").pointsTo(Module::builtinModule())
   )
   or
-  exists(CallNode call, ControlFlowNode bltn, StrConst s |
+  exists(CallNode call, ControlFlowNode bltn, StringLiteral s |
     call.getArg(0) = bltn and
     bltn.pointsTo(Module::builtinModule()) and
     call.getArg(1).getNode() = s and

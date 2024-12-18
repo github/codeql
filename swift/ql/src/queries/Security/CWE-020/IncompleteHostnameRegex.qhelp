@@ -46,7 +46,7 @@
 
 		</p>
 
-		<sample src="IncompleteHostnameRegexBad.swift"/>
+		<sample src="IncompleteHostnameRegexBad.swift" language=""/>
 
 		<p>
 
@@ -63,7 +63,7 @@
 
 		</p>
 
-		<sample src="IncompleteHostnameRegexGood.swift"/>
+		<sample src="IncompleteHostnameRegexGood.swift" language=""/>
 
 	</example>
 

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.IO.Compression.ZipFile, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
+// Generated from `System.IO.Compression.ZipFile, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`.
 namespace System
 {
     namespace IO
@@ -8,9 +8,16 @@ namespace System
         {
             public static class ZipFile
             {
+                public static void CreateFromDirectory(string sourceDirectoryName, System.IO.Stream destination) => throw null;
+                public static void CreateFromDirectory(string sourceDirectoryName, System.IO.Stream destination, System.IO.Compression.CompressionLevel compressionLevel, bool includeBaseDirectory) => throw null;
+                public static void CreateFromDirectory(string sourceDirectoryName, System.IO.Stream destination, System.IO.Compression.CompressionLevel compressionLevel, bool includeBaseDirectory, System.Text.Encoding entryNameEncoding) => throw null;
                 public static void CreateFromDirectory(string sourceDirectoryName, string destinationArchiveFileName) => throw null;
                 public static void CreateFromDirectory(string sourceDirectoryName, string destinationArchiveFileName, System.IO.Compression.CompressionLevel compressionLevel, bool includeBaseDirectory) => throw null;
                 public static void CreateFromDirectory(string sourceDirectoryName, string destinationArchiveFileName, System.IO.Compression.CompressionLevel compressionLevel, bool includeBaseDirectory, System.Text.Encoding entryNameEncoding) => throw null;
+                public static void ExtractToDirectory(System.IO.Stream source, string destinationDirectoryName) => throw null;
+                public static void ExtractToDirectory(System.IO.Stream source, string destinationDirectoryName, bool overwriteFiles) => throw null;
+                public static void ExtractToDirectory(System.IO.Stream source, string destinationDirectoryName, System.Text.Encoding entryNameEncoding) => throw null;
+                public static void ExtractToDirectory(System.IO.Stream source, string destinationDirectoryName, System.Text.Encoding entryNameEncoding, bool overwriteFiles) => throw null;
                 public static void ExtractToDirectory(string sourceArchiveFileName, string destinationDirectoryName) => throw null;
                 public static void ExtractToDirectory(string sourceArchiveFileName, string destinationDirectoryName, bool overwriteFiles) => throw null;
                 public static void ExtractToDirectory(string sourceArchiveFileName, string destinationDirectoryName, System.Text.Encoding entryNameEncoding) => throw null;

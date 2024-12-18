@@ -605,7 +605,7 @@ struct String {
     String& operator=(String&&);
 
     const char* c_str() const;
-
+    char pop_back();
 private:
     const char* p;
 };
@@ -1055,26 +1055,75 @@ void Lambda(int x, const String& s) {
   lambda_inits(6);
 }
 
-template<typename T>
-struct vector {
-    struct iterator {
-        T* p;
-        iterator& operator++();
-        T& operator*() const;
+namespace std {
+    template<class T>
+    struct remove_const { typedef T type; };
 
-        bool operator!=(iterator right) const;
+    template<class T>
+    struct remove_const<const T> { typedef T type; };
+
+    // `remove_const_t<T>` removes any `const` specifier from `T`
+    template<class T>
+    using remove_const_t = typename remove_const<T>::type;
+
+    struct ptrdiff_t;
+
+    template<class I> struct iterator_traits;
+
+    template <class Category,
+              class value_type,
+              class difference_type = ptrdiff_t,
+              class pointer_type = value_type*,
+              class reference_type = value_type&>
+    struct iterator {
+        typedef Category iterator_category;
+
+        iterator();
+        iterator(iterator<Category, remove_const_t<value_type> > const &other); // non-const -> const conversion constructor
+
+        iterator &operator++();
+        iterator operator++(int);
+        iterator &operator--();
+        iterator operator--(int);
+        bool operator==(iterator other) const;
+        bool operator!=(iterator other) const;
+        reference_type operator*() const;
+        pointer_type operator->() const;
+        iterator operator+(int);
+        iterator operator-(int);
+        iterator &operator+=(int);
+        iterator &operator-=(int);
+        int operator-(iterator);
+        reference_type operator[](int);
     };
 
-    iterator begin() const;
-    iterator end() const;
-};
+    struct input_iterator_tag {};
+    struct forward_iterator_tag : public input_iterator_tag {};
+    struct bidirectional_iterator_tag : public forward_iterator_tag {};
+    struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
-template<typename T>
-bool operator==(typename vector<T>::iterator left, typename vector<T>::iterator right);
-template<typename T>
-bool operator!=(typename vector<T>::iterator left, typename vector<T>::iterator right);
+    struct output_iterator_tag {};
 
-void RangeBasedFor(const vector<int>& v) {
+    template<typename T>
+    struct vector {
+        vector(T);
+        ~vector();
+
+        using iterator = std::iterator<random_access_iterator_tag, T>;
+        using const_iterator = std::iterator<random_access_iterator_tag, const T>;
+
+        iterator begin() const;
+        iterator end() const;
+    };
+
+    template<typename T>
+    bool operator==(typename vector<T>::iterator left, typename vector<T>::iterator right);
+    template<typename T>
+    bool operator!=(typename vector<T>::iterator left, typename vector<T>::iterator right);
+
+}
+
+void RangeBasedFor(const std::vector<int>& v) {
     for (int e : v) {
         if (e > 0) {
             continue;
@@ -1884,6 +1933,20 @@ namespace missing_declaration_entries {
         Bar2<int> b;
         b.two_missing_variable_declaration_entries();
     }
+
+    template<typename T> struct Bar3 {
+
+        int two_more_missing_variable_declaration_entries() {
+            extern int g;
+            int z(float);
+            return g;
+        }
+    };
+
+    void test3() {
+        Bar3<int> b;
+        b.two_more_missing_variable_declaration_entries();
+    }
 }
 
 template<typename T> T global_template = 42;
@@ -2112,4 +2175,554 @@ char* test_strtod(char *s) {
   return end;
 }
 
-// semmle-extractor-options: -std=c++17 --clang
+struct HasOperatorBool {
+    operator bool();
+};
+
+void call_as_child_of_ConditionDeclExpr() {
+  if(HasOperatorBool b = HasOperatorBool()) {}
+}
+
+class ClassWithDestructor {
+    char *x;
+public:
+    ClassWithDestructor() { x = new char; }
+    ~ClassWithDestructor() { delete x; }
+
+    void set_x(char y) { *x = y; }
+    char get_x() { return *x; }
+    operator bool() const;
+};
+
+constexpr bool initialization_with_destructor_bool = true;
+
+void initialization_with_destructor(bool b, char c) {
+    if (ClassWithDestructor x; b)
+        x.set_x('a');
+
+    if constexpr (ClassWithDestructor x; initialization_with_destructor_bool)
+        x.set_x('a');
+
+    switch(ClassWithDestructor x; c) {
+        case 'a':
+          x.set_x('a');
+          break;
+        default:
+          x.set_x('b');
+          break;
+    }
+
+    ClassWithDestructor x;
+    for(std::vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys)
+      y.set_x('a');
+
+    for(std::vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys) {
+      y.set_x('a');
+      if (y.get_x() == 'b')
+        return;
+    }
+
+    for(std::vector<int> ys(1); int y : ys) {
+      if (y == 1)
+        return;
+    }
+
+    for(std::vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys) {
+      ClassWithDestructor z1;
+      ClassWithDestructor z2;
+    }
+}
+
+void static_variable_with_destructor_1() {
+    ClassWithDestructor a;
+    static ClassWithDestructor b;
+}
+
+void static_variable_with_destructor_2() {
+    static ClassWithDestructor a;
+    ClassWithDestructor b;
+}
+
+void static_variable_with_destructor_3() {
+    ClassWithDestructor a;
+    ClassWithDestructor b;
+    static ClassWithDestructor c;
+}
+
+static ClassWithDestructor global_class_with_destructor;
+
+namespace vacuous_destructor_call {
+    template<typename T>
+    T& get(T& t) { return t; }
+
+    template<typename T>
+    void call_destructor(T& t) {
+        get(t).~T();
+    }
+
+    void non_vacuous_destructor_call() {
+        ClassWithDestructor c;
+        call_destructor(c);
+    }
+
+    void vacuous_destructor_call() {
+        int i;
+        call_destructor(i);
+    }
+}
+
+void TryCatchDestructors(bool b) {
+  try {
+    String s;
+    if (b) {
+      throw "string literal";
+    }
+    String s2;
+  }
+  catch (const char* s) {
+    throw String(s);
+  }
+  catch (const String& e) {
+  }
+  catch (...) {
+    throw;
+  }
+}
+
+void IfDestructors(bool b) {
+    String s1;
+    if(b) {
+        String s2;
+    } else {
+        String s3;
+    }
+    String s4;
+}
+
+void ForDestructors() {
+    char c = 'a';
+    for(String s("hello"); c != 0; c = s.pop_back()) {
+        String s2;
+    }
+
+    for(String s : std::vector<String>(String("hello"))) {
+        String s2;
+    }
+    
+    for(String s("hello"), s2("world"); c != 0; c = s.pop_back()) {
+        c = 0;
+    }
+}
+
+void IfDestructors2(bool b) {
+    if(String s = String("hello"); b) {
+        int x = 0;
+    } else {
+        int y = 0;
+    }
+}
+
+class Bool {
+    public:
+    Bool(bool b_);
+    operator bool();
+    ~Bool();
+};
+
+void IfDestructors3(bool b) {
+    if(Bool B = Bool(b)) {
+        String s1;
+    } else {
+        String s2;
+    }
+}
+
+void WhileLoopDestructors(bool b) {
+    {
+        String s;
+        while(b) {
+            b = false;
+        }
+    }
+
+    {
+        while (Bool B = Bool(b)) {
+            b = false;
+        }
+    }
+}
+
+void VoidFunc() {}
+
+void IfReturnDestructors(bool b) {
+    String s;
+    if(b) {
+        return;
+    }
+    if(b) {
+        return VoidFunc();
+    }
+    s;
+}
+
+int IfReturnDestructors3(bool b) {
+    String s;
+    if(b) {
+        return 1;
+    }
+    return 0;
+}
+
+void VoidReturnDestructors() {
+    String s;
+    return VoidFunc();
+}
+
+namespace return_routine_type {
+    struct HasVoidToIntFunc
+    {
+        void VoidToInt(int);
+    };
+
+    typedef void (HasVoidToIntFunc::*VoidToIntMemberFunc)(int);
+
+    static VoidToIntMemberFunc GetVoidToIntFunc()
+    {
+        return &HasVoidToIntFunc::VoidToInt;
+    }
+
+}
+
+int small_operation_should_not_be_constant_folded() {
+    return 1 ^ 2;
+}
+
+#define BINOP2(x) (x ^ x)
+#define BINOP4(x) (BINOP2(x) ^ BINOP2(x))
+#define BINOP8(x) (BINOP4(x) ^ BINOP4(x))
+#define BINOP16(x) (BINOP8(x) ^ BINOP8(x))
+#define BINOP32(x) (BINOP16(x) ^ BINOP16(x))
+#define BINOP64(x) (BINOP32(x) ^ BINOP32(x))
+
+int large_operation_should_be_constant_folded() {
+    return BINOP64(1);
+}
+
+void initialization_with_temp_destructor() {
+    if (char x = ClassWithDestructor().get_x())
+        x++;
+
+    if (char x = ClassWithDestructor().get_x(); x)
+        x++;
+
+    if constexpr (char x = ClassWithDestructor().get_x(); initialization_with_destructor_bool)
+        x++;
+
+    switch(char x = ClassWithDestructor().get_x()) {
+        case 'a':
+          x++;
+    }
+
+    switch(char x = ClassWithDestructor().get_x(); x) {
+        case 'a':
+          x++;
+    }
+
+    for(char x = ClassWithDestructor().get_x(); char y : std::vector<char>(x))
+        y += x;
+}
+
+void param_with_destructor_by_value(ClassWithDestructor c) {
+    // The call to ~ClassWithDestructor::ClassWithDestructor() happens on the side of the caller
+}
+
+void param_with_destructor_by_pointer(ClassWithDestructor* c) {
+    // No destructor call should be here
+}
+
+void param_with_destructor_by_ref(ClassWithDestructor& c) {
+    // No destructor call should be here
+}
+
+void param_with_destructor_by_rref(ClassWithDestructor&& c) {
+    // No destructor call should be here
+}
+
+void rethrow_with_destruction(int x) {
+    ClassWithDestructor c;
+    throw;
+}
+
+struct ByValueConstructor {
+    ByValueConstructor(ClassWithDestructor);
+};
+
+void new_with_destructor(ClassWithDestructor a)
+{
+    ByValueConstructor* b = new ByValueConstructor(a);
+}
+
+namespace rvalue_conversion_with_destructor {
+    struct A {
+        unsigned a;
+    };
+
+    struct B
+    {
+        ~B();
+
+        inline A *operator->() const;
+    };
+
+    B get();
+
+    void test()
+    {
+        auto a = get()->a;
+    }
+}
+
+void destructor_without_block(bool b)
+{
+    if (b)
+      ClassWithDestructor c;
+
+    if (b)
+      ClassWithDestructor d;
+    else
+      ClassWithDestructor e;
+
+    while (b)
+      ClassWithDestructor f;
+
+    for(int i = 0; i < 42; ++i)
+      ClassWithDestructor g;
+}
+
+void destruction_in_switch_1(int c) {
+  switch (c) {
+    case 0: {
+      ClassWithDestructor x;
+      break;
+    }
+  }
+}
+
+void destruction_in_switch_2(int c) {
+  switch (ClassWithDestructor y; c) {
+    case 0: {
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
+void destruction_in_switch_3(int c) {
+  switch (ClassWithDestructor y; c) {
+    case 0: {
+      ClassWithDestructor x;
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
+void destructor_possibly_not_handled() {
+  ClassWithDestructor x;
+  try {
+    throw 42;
+  }
+  catch(char) {
+  }
+}
+
+ClassWithDestructor getClassWithDestructor();
+
+void this_inconsistency(bool b) {
+  if (const ClassWithDestructor& a = getClassWithDestructor())
+    ;
+}
+
+void constexpr_inconsistency(bool b) {
+  if constexpr (const ClassWithDestructor& a = getClassWithDestructor(); initialization_with_destructor_bool)
+    ;
+}
+
+void builtin_bitcast(unsigned long ul) {
+    double d = __builtin_bit_cast(double, ul);
+}
+
+void p_points_to_x_or_y(int a, int b) {
+    int x;
+    int y;
+    int* p;
+    if (a < b) {
+        p = &x;
+    } else {
+        p = &y;
+    }
+    *p = 5;
+    int z = x;
+    int w = y;
+}
+
+int phi_after_while() {
+  int r;
+  int *rP = &r;
+
+  while(predicateA()) {
+    int s = 0;
+    *rP = s;
+    rP = &s;
+  }
+
+  return r;
+}
+
+// This testcase will loop infinitely if the analysis attempts to propagate
+// phi inputs with a non-unknown bit offset.
+char *recursive_conditional_call_with_increment(char *d, bool b)
+{
+  if (b) {
+    d = recursive_conditional_call_with_increment(d, b);
+  }
+  d++;
+  return d;
+}
+
+struct Recursive
+{
+  Recursive *next;
+};
+
+static Recursive *merge(Recursive *a)
+{
+  Recursive *b;
+  Recursive **p = &b;
+
+  while (predicateA())
+  {
+    *p = a;
+    p = &a->next;
+  }
+  
+  return b;
+}
+
+void use_const_int(const int*);
+
+void escaping_pointer(bool b)
+{
+  int *data;
+  int l1, l2;
+  if (b)
+  {
+    data = &l1;
+  }
+  else
+  {
+    data = &l2;
+  }
+  use_const_int(data);
+}
+
+using int64_t = long long;
+#define NULL ((void *)0)
+
+void *malloc(unsigned long);
+void use_const_void_pointer(const void *);
+
+static void needs_chi_for_initialize_groups()
+{
+  if (predicateA())
+  {
+    int64_t *data = (int64_t *)malloc(100);
+    if (data != NULL)
+    {
+      data = (int64_t *)malloc(100);
+    }
+    use_const_void_pointer(data);
+  }
+  else
+  {
+    int64_t *data = (int64_t *)malloc(100);
+    if (data != NULL)
+    {
+      data = (int64_t *)malloc(200);
+    }
+    use_const_void_pointer(data);
+  }
+}
+
+void use_int(int);
+
+static void phi_with_single_input_at_merge(bool b)
+{
+  int *data = nullptr;
+  if(b) {
+    int intBuffer = 8;
+    data = &intBuffer;
+  }
+  use_int(*data);
+}
+
+void use(const char *fmt);
+
+#define call_use(format) use(format)
+
+#define twice_call_use(format) \
+  do                       \
+  {                        \
+    call_use(format);           \
+    call_use(format);           \
+  } while (0)
+
+void test(bool b)
+{
+  twice_call_use(b ? "" : "");
+}
+
+namespace concepts {
+
+int requires_use() {
+  int y = requires { sizeof(int) > 0; };
+  return y;
+}
+
+}
+
+void branch_on_integral_in_cpp(int x1, int x2) {
+  if (x1) {}
+  if(!x1) {}
+
+  int y = !x1;
+  if(y) {}
+  if(!y) {}
+
+  if(x1 && x2) {}
+  if(!x1 && x2) {}
+  if(x1 && !x2) {}
+  if(!x1 && !x2) {}
+  if(x1 || x2) {}
+  if(!x1 || x2) {}
+  if(x1 || !x2) {}
+  if(!x1 || !x2) {}
+
+  int x_1_and_2 = x1 && x2;
+  if(x_1_and_2) {}
+  if(!x_1_and_2) {}
+}
+
+struct WithBracketOperator {
+  const char& operator[](int pos) const;
+};
+
+char UseBracketOperator(const WithBracketOperator x, int i) {
+  return x[i];
+}
+
+// semmle-extractor-options: -std=c++20 --clang

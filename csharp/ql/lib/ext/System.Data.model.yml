@@ -54,6 +54,12 @@ extensions:
       - ["System.Data", "EnumerableRowCollectionExtensions", False, "Where<TRow>", "(System.Data.EnumerableRowCollection<TRow>,System.Func<TRow,System.Boolean>)", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Data", "IColumnMappingCollection", True, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Data", "IColumnMappingCollection", True, "set_Item", "(System.String,System.Object)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+      - ["System.Data", "IDataRecord", True, "GetString", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["System.Data", "IDataRecord", True, "GetValue", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["System.Data", "IDataRecord", True, "GetValues", "(System.Object[])", "", "Argument[this]", "Argument[0].Element", "taint", "manual"]
+      - ["System.Data", "IDataRecord", True, "get_Item", "(System.Int32)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["System.Data", "IDataRecord", True, "get_Item", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["System.Data", "IDbCommand", True, "ExecuteReader", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["System.Data", "IDataParameterCollection", True, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Data", "IDataParameterCollection", True, "set_Item", "(System.String,System.Object)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
       - ["System.Data", "ITableMappingCollection", True, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
@@ -73,3 +79,11 @@ extensions:
       - ["System.Data", "TypedTableBaseExtensions", False, "Select<TRow,S>", "(System.Data.TypedTableBase<TRow>,System.Func<TRow,S>)", "", "Argument[1].ReturnValue", "ReturnValue.Element", "value", "manual"]
       - ["System.Data", "TypedTableBaseExtensions", False, "Where<TRow>", "(System.Data.TypedTableBase<TRow>,System.Func<TRow,System.Boolean>)", "", "Argument[0].Element", "Argument[1].Parameter[0]", "value", "manual"]
       - ["System.Data", "TypedTableBaseExtensions", False, "Where<TRow>", "(System.Data.TypedTableBase<TRow>,System.Func<TRow,System.Boolean>)", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Data", "IDataRecord", "GetDataTypeName", "(System.Int32)", "summary", "manual"]
+      - ["System.Data", "IDataRecord", "GetGuid", "(System.Int32)", "summary", "manual"]
+      - ["System.Data", "IDataRecord", "GetName", "(System.Int32)", "summary", "manual"]

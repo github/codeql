@@ -1,21 +1,21 @@
 edges
-| impl/sub/notImported.rb:2:12:2:17 | target | impl/sub/notImported.rb:3:19:3:27 | #{...} |
-| impl/sub/other2.rb:2:12:2:17 | target | impl/sub/other2.rb:3:19:3:27 | #{...} |
-| impl/sub/other.rb:2:12:2:17 | target | impl/sub/other.rb:3:19:3:27 | #{...} |
-| impl/unsafeShell.rb:2:12:2:17 | target | impl/unsafeShell.rb:3:19:3:27 | #{...} |
-| impl/unsafeShell.rb:6:12:6:12 | x | impl/unsafeShell.rb:7:32:7:32 | x |
-| impl/unsafeShell.rb:15:47:15:64 | innocent_file_path | impl/unsafeShell.rb:20:21:20:41 | #{...} |
-| impl/unsafeShell.rb:23:15:23:23 | file_path | impl/unsafeShell.rb:26:19:26:30 | #{...} |
-| impl/unsafeShell.rb:33:12:33:17 | target | impl/unsafeShell.rb:34:19:34:27 | #{...} |
-| impl/unsafeShell.rb:37:10:37:10 | x | impl/unsafeShell.rb:38:19:38:22 | #{...} |
-| impl/unsafeShell.rb:47:16:47:21 | target | impl/unsafeShell.rb:48:19:48:27 | #{...} |
-| impl/unsafeShell.rb:51:17:51:17 | x | impl/unsafeShell.rb:52:14:52:14 | x |
-| impl/unsafeShell.rb:51:17:51:17 | x | impl/unsafeShell.rb:54:29:54:29 | x |
-| impl/unsafeShell.rb:57:21:57:21 | x | impl/unsafeShell.rb:58:23:58:23 | x |
-| impl/unsafeShell.rb:61:20:61:20 | x | impl/unsafeShell.rb:63:14:63:14 | x |
-| impl/unsafeShell.rb:63:5:63:7 | [post] arr [element] | impl/unsafeShell.rb:64:14:64:16 | arr |
-| impl/unsafeShell.rb:63:5:63:7 | [post] arr [element] | impl/unsafeShell.rb:68:14:68:16 | arr |
-| impl/unsafeShell.rb:63:14:63:14 | x | impl/unsafeShell.rb:63:5:63:7 | [post] arr [element] |
+| impl/sub/notImported.rb:2:12:2:17 | target | impl/sub/notImported.rb:3:19:3:27 | #{...} | provenance |  |
+| impl/sub/other2.rb:2:12:2:17 | target | impl/sub/other2.rb:3:19:3:27 | #{...} | provenance |  |
+| impl/sub/other.rb:2:12:2:17 | target | impl/sub/other.rb:3:19:3:27 | #{...} | provenance |  |
+| impl/unsafeShell.rb:2:12:2:17 | target | impl/unsafeShell.rb:3:19:3:27 | #{...} | provenance |  |
+| impl/unsafeShell.rb:6:12:6:12 | x | impl/unsafeShell.rb:7:32:7:32 | x | provenance |  |
+| impl/unsafeShell.rb:15:47:15:64 | innocent_file_path | impl/unsafeShell.rb:20:21:20:41 | #{...} | provenance |  |
+| impl/unsafeShell.rb:23:15:23:23 | file_path | impl/unsafeShell.rb:26:19:26:30 | #{...} | provenance |  |
+| impl/unsafeShell.rb:33:12:33:17 | target | impl/unsafeShell.rb:34:19:34:27 | #{...} | provenance |  |
+| impl/unsafeShell.rb:37:10:37:10 | x | impl/unsafeShell.rb:38:19:38:22 | #{...} | provenance |  |
+| impl/unsafeShell.rb:47:16:47:21 | target | impl/unsafeShell.rb:48:19:48:27 | #{...} | provenance |  |
+| impl/unsafeShell.rb:51:17:51:17 | x | impl/unsafeShell.rb:52:14:52:14 | x | provenance |  |
+| impl/unsafeShell.rb:51:17:51:17 | x | impl/unsafeShell.rb:54:29:54:29 | x | provenance |  |
+| impl/unsafeShell.rb:57:21:57:21 | x | impl/unsafeShell.rb:58:23:58:23 | x | provenance |  |
+| impl/unsafeShell.rb:61:20:61:20 | x | impl/unsafeShell.rb:63:14:63:14 | x | provenance |  |
+| impl/unsafeShell.rb:63:5:63:7 | [post] arr [element] | impl/unsafeShell.rb:64:14:64:16 | arr | provenance |  |
+| impl/unsafeShell.rb:63:5:63:7 | [post] arr [element] | impl/unsafeShell.rb:68:14:68:16 | arr | provenance |  |
+| impl/unsafeShell.rb:63:14:63:14 | x | impl/unsafeShell.rb:63:5:63:7 | [post] arr [element] | provenance |  |
 nodes
 | impl/sub/notImported.rb:2:12:2:17 | target | semmle.label | target |
 | impl/sub/notImported.rb:3:19:3:27 | #{...} | semmle.label | #{...} |

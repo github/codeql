@@ -1,0 +1,102 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+	<overview>
+		<p>
+			Content Delivery Networks (CDNs) are used to deliver content to users quickly and efficiently.
+
+			However, they can change hands or be operated by untrustworthy owners, risking the security of the sites that use them.
+
+			Some CDN domains are operated by entities that have used CDNs to deliver malware, which this query identifies.
+		</p>
+
+		<p>
+		    For example, <code>polyfill.io</code> was a popular JavaScript CDN,
+			used to support new web browser standards on older browsers.
+
+		    In February 2024 the domain was sold, and in June 2024 it was publicised that the domain
+		    had been used to serve malicious scripts. It was taken down later in that month, leaving a window
+			where sites that used the service could have been compromised.
+
+			The same operator runs several other CDNs, undermining trust in those too.
+		</p>
+
+		<p>
+			Including a resource from an untrusted source or using an untrusted channel may
+			allow an attacker to include arbitrary code in the response.
+			When including an external resource (for example, a <code>script</code> element) on a page,
+			it is important to ensure that the received data is not malicious.
+		</p>
+
+		<p>
+			Even when <code>https</code> is used, an untrustworthy operator might deliver malware.
+		</p>
+
+		<p>
+			See the [`CUSTOMIZING.md`](https://github.com/github/codeql/blob/main/javascript/ql/src/Security/CWE-830/CUSTOMIZING.md) file in the source code for this query for information on how to extend the list of untrusted domains used by this query.
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+			Carefully research the ownership of a Content Delivery Network (CDN) before using it in your application.
+		</p>
+
+		<p>
+			If you find code that originated from an untrusted domain in your application, you should review your logs to check for compromise.
+		</p>
+
+		<p>
+			To help mitigate the risk of including a script that could be compromised in the future, consider whether you need to
+			use polyfill or another library at all. Modern browsers do not require a polyfill, and other popular libraries were made redundant by enhancements to HTML 5.
+		</p>
+
+		<p>
+			If you do need a polyfill service or library, move to using a CDN that you trust.
+		</p>
+		
+		<p>
+			When you use a <code>script</code> or <code>link</code> element,
+			you should check for <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity">subresource integrity (SRI)</a>,
+			and pin to a hash of a version of the service that you can trust (for example, because you have audited it for security and unwanted features).
+		    
+			A dynamic service cannot be easily used with SRI. Nevertheless,
+			it is possible to list multiple acceptable SHA hashes in the <code>integrity</code> attribute,
+			such as hashes for the content required for the major browsers used by your users.
+		</p>
+
+		<p>
+			You can also choose to self-host an uncompromised version of the service or library.
+		</p>
+	</recommendation>
+
+	<example>
+		<p>
+			The following example loads the Polyfill.io library from the <code>polyfill.io</code> CDN. This use was open to malicious scripts being served by the CDN.
+		</p>
+
+		<sample src="polyfill-compromised.html" />
+
+		<p>
+			Instead, load the Polyfill library from a trusted CDN, as in the next example:
+		</p>
+
+		<sample src="polyfill-trusted.html" />
+
+		<p>
+			If you know which browsers are used by the majority of your users, you can list the hashes of the polyfills for those browsers:
+		</p>
+
+		<sample src="polyfill-sri.html" />
+
+	</example>
+
+	<references>
+		<li>Sansec: <a href="https://sansec.io/research/polyfill-supply-chain-attack">Polyfill supply chain attack hits 100K+ sites</a></li>
+		<li>Cloudflare: <a href="https://cdnjs.cloudflare.com/polyfill">Upgrade the web. Automatically. Delivers only the polyfills required by the user's web browser.</a></li>
+		<li>Fastly: <a href="https://community.fastly.com/t/new-options-for-polyfill-io-users/2540">New options for Polyfill.io users</a></li>
+		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Polyfill_(programming)">Polyfill (programming)</a></li>
+		<li>MDN Web Docs: <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity">Subresource Integrity</a></li>
+	</references>
+</qhelp>

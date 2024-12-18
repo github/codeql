@@ -1,3 +1,3 @@
 import go
 
-select any(UntrustedFlowSource src)
+select any(RemoteFlowSource src)

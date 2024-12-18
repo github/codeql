@@ -15,9 +15,11 @@ module Afero {
   string aferoPackage() { result = package("github.com/spf13/afero", "") }
 
   /**
+   * DEPRECATED: Use `FileSystemAccess::Range` instead.
+   *
    * The File system access sinks of [afero](https://github.com/spf13/afero) framework methods
    */
-  class AferoSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+  deprecated class AferoSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
     AferoSystemAccess() {
       exists(Method m |
         m.hasQualifiedName(aferoPackage(), "HttpFs",
@@ -63,7 +65,7 @@ module Afero {
       exists(Function f |
         f.hasQualifiedName(aferoPackage(),
           ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"]) and
-        this = f.getACall() and
+        this = pragma[only_bind_out](f.getACall()) and
         pathArg = 1 and
         not aferoSanitizer(this.getArgument(0))
       )
@@ -71,7 +73,7 @@ module Afero {
       exists(Method m |
         m.hasQualifiedName(aferoPackage(), "Afero",
           ["WriteReader", "SafeWriteReader", "WriteFile", "ReadFile", "ReadDir"]) and
-        this = m.getACall() and
+        this = pragma[only_bind_out](m.getACall()) and
         pathArg = 0 and
         not aferoSanitizer(this.getReceiver())
       )

@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int index, Extraction.Entities.Location location)
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int index, Location location)
         {
             var info = new ExpressionInfo(
                 cx,
@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.ARRAY_INIT,
                 parent,
                 index,
-                true,
+                isCompilerGenerated: true,
                 null);
 
             return new Expression(info);
@@ -132,7 +132,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var addMethod = Method.Create(Context, collectionInfo.Symbol as IMethodSymbol);
                 var voidType = AnnotatedTypeSymbol.CreateNotAnnotated(Context.Compilation.GetSpecialType(SpecialType.System_Void));
 
-                var invocation = new Expression(new ExpressionInfo(Context, voidType, Context.CreateLocation(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, false, null));
+                var invocation = new Expression(new ExpressionInfo(Context, voidType, Context.CreateLocation(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, isCompilerGenerated: true, null));
 
                 if (addMethod is not null)
                     trapFile.expr_call(invocation, addMethod);

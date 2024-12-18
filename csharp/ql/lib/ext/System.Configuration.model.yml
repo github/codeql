@@ -15,3 +15,8 @@ extensions:
       - ["System.Configuration", "SettingElementCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
       - ["System.Configuration", "SettingsPropertyCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
       - ["System.Configuration", "SettingsPropertyValueCollection", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Configuration", "ApplicationSettingsBase", "GetPreviousVersion", "(System.String)", "source", "manual"]

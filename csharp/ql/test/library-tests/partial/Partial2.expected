@@ -1,10 +1,10 @@
-| Partial.cs:1:15:1:26 | TwoPartClass | Partial.cs:3:18:3:39 | PartialMethodWithBody1 |
 | Partial.cs:1:15:1:26 | TwoPartClass | Partial.cs:4:18:4:42 | PartialMethodWithoutBody1 |
 | Partial.cs:1:15:1:26 | TwoPartClass | Partial.cs:5:17:5:23 | Method2 |
+| Partial.cs:1:15:1:26 | TwoPartClass | Partial.cs:10:18:10:39 | PartialMethodWithBody1 |
 | Partial.cs:1:15:1:26 | TwoPartClass | Partial.cs:11:17:11:23 | Method3 |
-| Partial.cs:8:15:8:26 | TwoPartClass | Partial.cs:3:18:3:39 | PartialMethodWithBody1 |
 | Partial.cs:8:15:8:26 | TwoPartClass | Partial.cs:4:18:4:42 | PartialMethodWithoutBody1 |
 | Partial.cs:8:15:8:26 | TwoPartClass | Partial.cs:5:17:5:23 | Method2 |
+| Partial.cs:8:15:8:26 | TwoPartClass | Partial.cs:10:18:10:39 | PartialMethodWithBody1 |
 | Partial.cs:8:15:8:26 | TwoPartClass | Partial.cs:11:17:11:23 | Method3 |
 | Partial.cs:14:15:14:33 | OnePartPartialClass | Partial.cs:16:18:16:42 | PartialMethodWithoutBody2 |
 | Partial.cs:14:15:14:33 | OnePartPartialClass | Partial.cs:17:17:17:23 | Method4 |

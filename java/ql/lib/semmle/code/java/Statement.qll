@@ -45,10 +45,10 @@ class Stmt extends StmtParent, ExprParent, @stmt {
   Stmt getAChild() { result.getParent() = this }
 
   /** Gets the basic block in which this statement occurs. */
-  BasicBlock getBasicBlock() { result.getANode() = this }
+  BasicBlock getBasicBlock() { result.getANode().asStmt() = this }
 
   /** Gets the `ControlFlowNode` corresponding to this statement. */
-  ControlFlowNode getControlFlowNode() { result = this }
+  ControlFlowNode getControlFlowNode() { result.asStmt() = this }
 
   /** Cast this statement to a class that provides access to metrics information. */
   MetricStmt getMetrics() { result = this }
@@ -383,19 +383,41 @@ class SwitchStmt extends Stmt, @switchstmt {
   Stmt getStmt(int index) { result = this.getAStmt() and result.getIndex() = index }
 
   /**
+   * Gets the `i`th case of this `switch` statement,
+   * which may be either a normal `case` or a `default`.
+   */
+  SwitchCase getCase(int i) {
+    result =
+      rank[i + 1](SwitchCase case, int idx | case.isNthChildOf(this, idx) | case order by idx)
+  }
+
+  /**
    * Gets a case of this `switch` statement,
    * which may be either a normal `case` or a `default`.
    */
-  SwitchCase getACase() { result = this.getAConstCase() or result = this.getDefaultCase() }
+  SwitchCase getACase() { result.getParent() = this }
 
-  /** Gets a (non-default) `case` of this `switch` statement. */
-  ConstCase getAConstCase() { result.getParent() = this }
+  /** Gets a (non-default) constant `case` of this `switch` statement. */
+  ConstCase getAConstCase() { result = this.getACase() }
 
-  /** Gets the `default` case of this switch statement, if any. */
-  DefaultCase getDefaultCase() { result.getParent() = this }
+  /** Gets a (non-default) pattern `case` of this `switch` statement. */
+  PatternCase getAPatternCase() { result = this.getACase() }
+
+  /**
+   * Gets the `default` case of this switch statement, if any.
+   *
+   * Note this may be `default` or `case null, default`.
+   */
+  DefaultCase getDefaultCase() { result = this.getACase() }
 
   /** Gets the expression of this `switch` statement. */
   Expr getExpr() { result.getParent() = this }
+
+  /** Holds if this switch has a case handling a null literal. */
+  predicate hasNullCase() {
+    this.getAConstCase().getValue(_) instanceof NullLiteral or
+    this.getACase() instanceof NullDefaultCase
+  }
 
   override string pp() { result = "switch (...)" }
 
@@ -404,6 +426,13 @@ class SwitchStmt extends Stmt, @switchstmt {
   override string getHalsteadID() { result = "SwitchStmt" }
 
   override string getAPrimaryQlClass() { result = "SwitchStmt" }
+}
+
+/**
+ * A `switch` statement or expression.
+ */
+class SwitchBlock extends StmtParent {
+  SwitchBlock() { this instanceof SwitchStmt or this instanceof SwitchExpr }
 }
 
 /**
@@ -426,6 +455,21 @@ class SwitchCase extends Stmt, @case {
    */
   Expr getSelectorExpr() {
     result = this.getSwitch().getExpr() or result = this.getSwitchExpr().getExpr()
+  }
+
+  /**
+   * Gets this case's ordinal in its switch block.
+   */
+  int getCaseIndex() {
+    this = any(SwitchStmt ss).getCase(result) or this = any(SwitchExpr se).getCase(result)
+  }
+
+  /**
+   * Holds if this is the `n`th case of switch block `parent`.
+   */
+  pragma[nomagic]
+  predicate isNthCaseOf(SwitchBlock parent, int n) {
+    this.getCaseIndex() = n and this.getParent() = parent
   }
 
   /**
@@ -462,17 +506,27 @@ class SwitchCase extends Stmt, @case {
   }
 }
 
-/** A constant `case` of a switch statement. */
+/**
+ * A constant `case` of a switch statement.
+ *
+ * Note this excludes `case null, default` even though that includes a null constant. It
+ * does however include plain `case null`.
+ */
 class ConstCase extends SwitchCase {
-  ConstCase() { exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
+  ConstCase() {
+    exists(Expr e | e.getParent() = this and e.getIndex() >= 0 and not e instanceof PatternExpr) and
+    // For backward compatibility, we don't include `case null, default:` here, on the assumption
+    // this will come as a surprise to CodeQL that predates that statement's validity.
+    not isNullDefaultCase(this)
+  }
 
   /** Gets the `case` constant at index 0. */
-  Expr getValue() { result.getParent() = this and result.getIndex() = 0 }
+  Expr getValue() { result.isNthChildOf(this, 0) }
 
   /**
-   * Gets the `case` constant at the specified index.
+   * Gets the `case` constant at index `i`.
    */
-  Expr getValue(int i) { result.getParent() = this and result.getIndex() = i and i >= 0 }
+  Expr getValue(int i) { result.isNthChildOf(this, i) and i >= 0 }
 
   override string pp() { result = "case ..." }
 
@@ -483,9 +537,51 @@ class ConstCase extends SwitchCase {
   override string getAPrimaryQlClass() { result = "ConstCase" }
 }
 
-/** A `default` case of a `switch` statement */
+/** A pattern case of a `switch` statement */
+class PatternCase extends SwitchCase {
+  PatternCase() { exists(PatternExpr pe | pe.isNthChildOf(this, _)) }
+
+  /**
+   * DEPRECATED: alias for getPattern(0)
+   */
+  deprecated PatternExpr getPattern() { result = this.getPattern(0) }
+
+  /**
+   * Gets this case's `n`th pattern.
+   */
+  PatternExpr getPattern(int n) { result.isNthChildOf(this, n) }
+
+  /**
+   * Gets any of this case's patterns.
+   */
+  PatternExpr getAPattern() { result = this.getPattern(_) }
+
+  /**
+   * Gets this case's sole pattern, if there is exactly one.
+   */
+  PatternExpr getUniquePattern() { result = unique(PatternExpr pe | pe = this.getAPattern()) }
+
+  /** Gets the guard applicable to this pattern case, if any. */
+  Expr getGuard() { result.isNthChildOf(this, -3) }
+
+  override string pp() { result = "case <Pattern>" }
+
+  override string toString() { result = "case <Pattern>" }
+
+  override string getHalsteadID() { result = "PatternCase" }
+
+  override string getAPrimaryQlClass() { result = "PatternCase" }
+}
+
+/**
+ * A `default` or `case null, default` case of a `switch` statement or expression.
+ */
 class DefaultCase extends SwitchCase {
-  DefaultCase() { not exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
+  DefaultCase() {
+    isNullDefaultCase(this)
+    or
+    not exists(Expr e | e.getParent() = this | e.getIndex() >= 0)
+  }
 
   override string pp() { result = "default" }
 
@@ -494,6 +590,19 @@ class DefaultCase extends SwitchCase {
   override string getHalsteadID() { result = "DefaultCase" }
 
   override string getAPrimaryQlClass() { result = "DefaultCase" }
+}
+
+/** A `case null, default` statement of a `switch` statement or expression. */
+class NullDefaultCase extends DefaultCase {
+  NullDefaultCase() { isNullDefaultCase(this) }
+
+  override string pp() { result = "case null, default" }
+
+  override string toString() { result = "case null, default" }
+
+  override string getHalsteadID() { result = "NullDefaultCase" }
+
+  override string getAPrimaryQlClass() { result = "NullDefaultCase" }
 }
 
 /** A `synchronized` statement. */

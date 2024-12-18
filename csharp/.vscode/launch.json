@@ -1,0 +1,82 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: Standalone Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Standalone/bin/Debug/net9.0/Semmle.Extraction.CSharp.Standalone.dll",
+            "args": [],
+            // Set the path to the folder that should be extracted:
+            "cwd": "${workspaceFolder}/ql/test/library-tests/standalone/standalonemode",
+            "env": {
+                "CODEQL_THREADS": "1",
+                "CODEQL_EXTRACTOR_CSHARP_OPTION_LOGGING_VERBOSITY": "progress+++",
+                "CODEQL_EXTRACTOR_CSHARP_OPTION_TRAP_COMPRESSION": "NONE",
+            },
+            "stopAtEntry": true,
+            "console": "internalConsole",
+            "justMyCode": false,
+            "symbolOptions": {
+                "searchPaths": [],
+                "searchMicrosoftSymbolServer": true,
+                "searchNuGetOrgSymbolServer": true
+            },
+            "sourceLinkOptions": {
+                "*": {
+                    "enabled": true
+                }
+            },
+            "suppressJITOptimizations": true
+        },
+        {
+            "name": "C#: Autobuild Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}/autobuilder/Semmle.Autobuild.CSharp/bin/Debug/net9.0/Semmle.Autobuild.CSharp.dll",
+            // Set the path to the folder that should be extracted:
+            "cwd": "${workspaceFolder}/ql/integration-tests/all-platforms/autobuild",
+            "stopAtEntry": true,
+            "args": [],
+            "env": {
+                // The below folders need to exist before debugging
+                "CODEQL_EXTRACTOR_CSHARP_TRAP_DIR": "${workspaceFolder}/ql/integration-tests/DB",
+                "CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR": "${workspaceFolder}/ql/integration-tests/DB",
+                "CODEQL_EXTRACTOR_CSHARP_DIAGNOSTIC_DIR": "${workspaceFolder}/ql/integration-tests/DB",
+                "CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR": "${workspaceFolder}/ql/integration-tests/DB",
+            }
+        },
+        {
+            "name": "C#: Binary Log Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Driver/bin/Debug/net9.0/Semmle.Extraction.CSharp.Driver.dll",
+            "stopAtEntry": true,
+            "args": [
+                "--binlog",
+                "${workspaceFolder}/ql/integration-tests/all-platforms/binlog/test.binlog"
+            ],
+            "env": {}
+        },
+        {
+            "name": "C#: Tracing Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Driver/bin/Debug/net9.0/Semmle.Extraction.CSharp.Driver.dll",
+            // Set the path to the folder that should be extracted:
+            "cwd": "${workspaceFolder}/ql/test/library-tests/dataflow/local",
+            "args": [
+                "LocalDataFlow.cs"
+            ],
+            "env": {},
+            "stopAtEntry": true,
+            "justMyCode": false,
+            "requireExactSource": false,
+            "suppressJITOptimizations": true
+        },
+    ]
+}

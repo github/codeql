@@ -33,7 +33,7 @@ module UnsafeShellCommandConstruction {
 
   /** A sink for shell command constructed from library input vulnerabilities. */
   abstract class Sink extends DataFlow::Node {
-    Sink() { not this.asExpr() instanceof StrConst } // filter out string constants, makes testing easier
+    Sink() { not this.asExpr() instanceof StringLiteral } // filter out string constants, makes testing easier
 
     /** Gets a description of how the string in this sink was constructed. */
     abstract string describe();
@@ -50,7 +50,7 @@ module UnsafeShellCommandConstruction {
     source = backtrackShellExec(TypeTracker::TypeBackTracker::end(), shellExec)
   }
 
-  import semmle.python.dataflow.new.TypeTracker as TypeTracker
+  import semmle.python.dataflow.new.TypeTracking as TypeTracker
 
   private DataFlow::LocalSourceNode backtrackShellExec(
     TypeTracker::TypeBackTracker t, Concepts::SystemCommandExecution shellExec
@@ -113,7 +113,7 @@ module UnsafeShellCommandConstruction {
 
     ArrayJoin() {
       call.getMethodName() = "join" and
-      unique( | | call.getArg(_)).asExpr().(Str).getText() = " " and
+      unique( | | call.getArg(_)).asExpr().(StringLiteral).getText() = " " and
       isUsedAsShellCommand(call, s) and
       (
         this = call.getArg(0) and

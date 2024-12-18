@@ -87,9 +87,6 @@ module XssThroughDom {
     override string getPropertyName() { result = prop }
   }
 
-  /** DEPRECATED: Alias for JQueryDomPropertySource */
-  deprecated class JQueryDOMPropertySource = JQueryDomPropertySource;
-
   /**
    * A source for text from the DOM from a `d3` method call.
    */

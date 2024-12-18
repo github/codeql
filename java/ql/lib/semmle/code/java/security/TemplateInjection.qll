@@ -4,22 +4,17 @@ import java
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A source for server-side template injection (SST) vulnerabilities.
  */
-abstract class TemplateInjectionSource extends DataFlow::Node {
-  /** Holds if this source has the specified `state`. */
-  predicate hasState(DataFlow::FlowState state) { state instanceof DataFlow::FlowStateEmpty }
-}
+abstract class TemplateInjectionSource extends DataFlow::Node { }
 
 /**
  * A sink for server-side template injection (SST) vulnerabilities.
  */
-abstract class TemplateInjectionSink extends DataFlow::Node {
-  /** Holds if this sink has the specified `state`. */
-  predicate hasState(DataFlow::FlowState state) { state instanceof DataFlow::FlowStateEmpty }
-}
+abstract class TemplateInjectionSink extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.
@@ -33,18 +28,6 @@ class TemplateInjectionAdditionalTaintStep extends Unit {
    * step for flows related to server-side template injection (SST) vulnerabilities.
    */
   predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
-
-  /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
-   * step for flows related toserver-side template injection (SST) vulnerabilities.
-   * This step is only applicable in `state1` and updates the flow state to `state2`.
-   */
-  predicate isAdditionalTaintStep(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
-  ) {
-    none()
-  }
 }
 
 /**
@@ -52,27 +35,12 @@ class TemplateInjectionAdditionalTaintStep extends Unit {
  */
 abstract class TemplateInjectionSanitizer extends DataFlow::Node { }
 
-/**
- * A sanitizer for server-side template injection (SST) vulnerabilities.
- * This sanitizer is only applicable when `TemplateInjectionSanitizerWithState::hasState`
- * holds for the flow state.
- */
-abstract class TemplateInjectionSanitizerWithState extends DataFlow::Node {
-  /** Holds if this sanitizer has the specified `state`. */
-  abstract predicate hasState(DataFlow::FlowState state);
-}
-
-private class DefaultTemplateInjectionSource extends TemplateInjectionSource instanceof ThreatModelFlowSource
+private class DefaultTemplateInjectionSource extends TemplateInjectionSource instanceof ActiveThreatModelSource
 { }
 
 private class DefaultTemplateInjectionSink extends TemplateInjectionSink {
   DefaultTemplateInjectionSink() { sinkNode(this, "template-injection") }
 }
 
-private class DefaultTemplateInjectionSanitizer extends TemplateInjectionSanitizer {
-  DefaultTemplateInjectionSanitizer() {
-    this.getType() instanceof PrimitiveType or
-    this.getType() instanceof BoxedType or
-    this.getType() instanceof NumericType
-  }
-}
+private class DefaultTemplateInjectionSanitizer extends TemplateInjectionSanitizer instanceof SimpleTypeSanitizer
+{ }

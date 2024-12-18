@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import FlowSinks
 private import Remote
 private import semmle.code.csharp.commons.Loggers
 private import semmle.code.csharp.frameworks.system.Web
@@ -16,7 +17,7 @@ private import semmle.code.csharp.dataflow.internal.ExternalFlow
  * which the application may have no access control. For example, files on a local or remote
  * filesystem (including log files and cookies).
  */
-abstract class ExternalLocationSink extends DataFlow::ExprNode { }
+abstract class ExternalLocationSink extends ApiSinkExprNode { }
 
 private class ExternalModelSink extends ExternalLocationSink {
   ExternalModelSink() { sinkNode(this, "file-content-store") }
@@ -27,8 +28,9 @@ private class ExternalModelSink extends ExternalLocationSink {
  */
 class LogMessageSink extends ExternalLocationSink {
   LogMessageSink() {
-    this.getExpr() = any(LoggerType i).getAMethod().getACall().getAnArgument()
-    or
+    this.getExpr() = any(LoggerType i).getAMethod().getACall().getAnArgument() or
+    this.getExpr() =
+      any(MethodCall call | call.getQualifier().getType() instanceof LoggerType).getAnArgument() or
     this.getExpr() =
       any(ExtensionMethodCall call |
         call.getTarget().(ExtensionMethod).getExtendedType() instanceof LoggerType

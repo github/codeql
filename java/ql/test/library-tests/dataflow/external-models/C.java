@@ -1,5 +1,7 @@
 package my.qltest;
 
+import my.qltest.external.Library;
+
 public class C {
   void foo() {
     Object arg1 = new Object();
@@ -25,26 +27,84 @@ public class C {
   }
 
   void fooGenerated() {
-    Object arg1 = new Object();
-    stepArgResGenerated(arg1);
+    Object arg = new Object();
 
-    Object arg2 = new Object();
-    // The summary for the first parameter is ignored, because it is generated and
-    // because there is hand written summary for the second parameter.
-    stepArgResGeneratedIgnored(arg1, arg2);
+    // The (generated) summary is ignored because the source code is available.
+    stepArgResGenerated(arg);
   }
 
-  Object stepArgRes(Object x) { return null; }
+  // Library functionality is emulated by placing the source code in a "stubs"
+  // folder. This means that a generated summary will be applied, if there
+  // doesn't exist a manual summary or manual summary neutral.
+  void fooLibrary() {
+    Object arg1 = new Object();
 
-  void stepArgArg(Object in, Object out) { }
+    Library lib = new Library();
 
-  void stepArgQual(Object x) { }
+    lib.apiStepArgResGenerated(arg1);
 
-  Object stepQualRes() { return null; }
+    Object arg2 = new Object();
 
-  void stepQualArg(Object out) { }
+    // The summary for the first parameter is ignored, because it is generated and
+    // because there is a manual summary for the second parameter.
+    lib.apiStepArgResGeneratedIgnored(arg1, arg2);
 
-  Object stepArgResGenerated(Object x) { return null; }
+    lib.apiStepArgQualGenerated(arg1);
 
-  Object stepArgResGeneratedIgnored(Object x, Object y) { return null; }
+    // The summary for the parameter is ignored, because it is generated and
+    // because there is a manual neutral summary model for this callable.
+    lib.apiStepArgQualGeneratedIgnored(arg1);
+
+    lib.getValue();
+  }
+
+  void fooPossibleLibraryDispatch(Library lib) {
+    Object arg1 = new Object();
+
+    lib.id(arg1);
+  }
+
+  void fooExplicitDispatch() {
+    Object arg1 = new Object();
+
+    MyLibrary lib = new MyLibrary();
+
+    lib.id(arg1);
+  }
+
+  void fooGeneric(MyGenericLibrary<String> lib) {
+    lib.get();
+  }
+
+  Object stepArgRes(Object x) {
+    return null;
+  }
+
+  void stepArgArg(Object in, Object out) {}
+
+  void stepArgQual(Object x) {}
+
+  Object stepQualRes() {
+    return null;
+  }
+
+  void stepQualArg(Object out) {}
+
+  Object stepArgResGenerated(Object x) {
+    return null;
+  }
+
+  class MyLibrary extends Library {
+    @Override
+    // Bad implementation of the id function.
+    public Object id(Object x) {
+      return null;
+    }
+  }
+
+  public class MyGenericLibrary<T> {
+    public T get() {
+      return null;
+    }
+  }
 }

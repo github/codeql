@@ -1,0 +1,174 @@
+#select
+| Files.java:10:33:10:68 | getProperty(...) | Files.java:10:33:10:68 | getProperty(...) : String | Files.java:15:17:15:23 | tempDir | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Files.java:10:33:10:68 | getProperty(...) | system temp directory |
+| Test.java:20:25:20:61 | createTempFile(...) | Test.java:20:25:20:61 | createTempFile(...) | Test.java:20:25:20:61 | createTempFile(...) | Local information disclosure vulnerability due to use of file readable by other local users. | Test.java:20:25:20:61 | createTempFile(...) | system temp directory |
+| Test.java:28:25:28:67 | createTempFile(...) | Test.java:28:25:28:67 | createTempFile(...) | Test.java:28:25:28:67 | createTempFile(...) | Local information disclosure vulnerability due to use of file readable by other local users. | Test.java:28:25:28:67 | createTempFile(...) | system temp directory |
+| Test.java:36:33:36:68 | getProperty(...) | Test.java:36:33:36:68 | getProperty(...) : String | Test.java:39:63:39:69 | tempDir | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:36:33:36:68 | getProperty(...) | system temp directory |
+| Test.java:50:47:50:82 | getProperty(...) | Test.java:50:47:50:82 | getProperty(...) : String | Test.java:53:63:53:74 | tempDirChild | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:50:47:50:82 | getProperty(...) | system temp directory |
+| Test.java:61:33:61:68 | getProperty(...) | Test.java:61:33:61:68 | getProperty(...) : String | Test.java:64:63:64:69 | tempDir | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:61:33:61:68 | getProperty(...) | system temp directory |
+| Test.java:75:33:75:68 | getProperty(...) | Test.java:75:33:75:68 | getProperty(...) : String | Test.java:78:63:78:69 | tempDir | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:75:33:75:68 | getProperty(...) | system temp directory |
+| Test.java:97:24:97:65 | createTempDir(...) | Test.java:97:24:97:65 | createTempDir(...) | Test.java:97:24:97:65 | createTempDir(...) | Local information disclosure vulnerability due to use of directory readable by other local users. | Test.java:97:24:97:65 | createTempDir(...) | system temp directory |
+| Test.java:110:38:110:73 | getProperty(...) | Test.java:110:38:110:73 | getProperty(...) : String | Test.java:113:9:113:20 | tempDirChild | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:110:38:110:73 | getProperty(...) | system temp directory |
+| Test.java:134:38:134:73 | getProperty(...) | Test.java:134:38:134:73 | getProperty(...) : String | Test.java:137:9:137:20 | tempDirChild | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:134:38:134:73 | getProperty(...) | system temp directory |
+| Test.java:158:38:158:73 | getProperty(...) | Test.java:158:38:158:73 | getProperty(...) : String | Test.java:159:21:159:41 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:158:38:158:73 | getProperty(...) | system temp directory |
+| Test.java:187:38:187:73 | getProperty(...) | Test.java:187:38:187:73 | getProperty(...) : String | Test.java:188:21:188:41 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:187:38:187:73 | getProperty(...) | system temp directory |
+| Test.java:204:38:204:73 | getProperty(...) | Test.java:204:38:204:73 | getProperty(...) : String | Test.java:207:33:207:44 | tempDirChild | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:204:38:204:73 | getProperty(...) | system temp directory |
+| Test.java:216:38:216:73 | getProperty(...) | Test.java:216:38:216:73 | getProperty(...) : String | Test.java:219:31:219:42 | tempDirChild | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:216:38:216:73 | getProperty(...) | system temp directory |
+| Test.java:228:38:228:73 | getProperty(...) | Test.java:228:38:228:73 | getProperty(...) : String | Test.java:231:26:231:46 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:228:38:228:73 | getProperty(...) | system temp directory |
+| Test.java:249:38:249:73 | getProperty(...) | Test.java:249:38:249:73 | getProperty(...) : String | Test.java:252:31:252:51 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:249:38:249:73 | getProperty(...) | system temp directory |
+| Test.java:260:38:260:73 | getProperty(...) | Test.java:260:38:260:73 | getProperty(...) : String | Test.java:263:33:263:53 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:260:38:260:73 | getProperty(...) | system temp directory |
+| Test.java:294:38:294:73 | getProperty(...) | Test.java:294:38:294:73 | getProperty(...) : String | Test.java:298:35:298:55 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:294:38:294:73 | getProperty(...) | system temp directory |
+| Test.java:313:38:313:73 | getProperty(...) | Test.java:313:38:313:73 | getProperty(...) : String | Test.java:316:35:316:55 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:313:38:313:73 | getProperty(...) | system temp directory |
+| Test.java:322:38:322:73 | getProperty(...) | Test.java:322:38:322:73 | getProperty(...) : String | Test.java:326:35:326:55 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:322:38:322:73 | getProperty(...) | system temp directory |
+| Test.java:350:38:350:73 | getProperty(...) | Test.java:350:38:350:73 | getProperty(...) : String | Test.java:355:35:355:55 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:350:38:350:73 | getProperty(...) | system temp directory |
+| Test.java:361:38:361:73 | getProperty(...) | Test.java:361:38:361:73 | getProperty(...) : String | Test.java:366:35:366:55 | toPath(...) | Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users. | Test.java:361:38:361:73 | getProperty(...) | system temp directory |
+edges
+| Files.java:10:24:10:69 | new File(...) : File | Files.java:14:37:14:43 | baseDir : File | provenance |  |
+| Files.java:10:33:10:68 | getProperty(...) : String | Files.java:10:24:10:69 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Files.java:14:28:14:64 | new File(...) : File | Files.java:15:17:15:23 | tempDir | provenance | Sink:MaD:2 |
+| Files.java:14:37:14:43 | baseDir : File | Files.java:14:28:14:64 | new File(...) : File | provenance | MaD:11 |
+| Test.java:36:24:36:69 | new File(...) : File | Test.java:39:63:39:69 | tempDir | provenance | Sink:MaD:1 |
+| Test.java:36:33:36:68 | getProperty(...) : String | Test.java:36:24:36:69 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:50:29:50:94 | new File(...) : File | Test.java:53:63:53:74 | tempDirChild | provenance | Sink:MaD:1 |
+| Test.java:50:38:50:83 | new File(...) : File | Test.java:50:29:50:94 | new File(...) : File | provenance | MaD:11 |
+| Test.java:50:47:50:82 | getProperty(...) : String | Test.java:50:38:50:83 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:61:24:61:69 | new File(...) : File | Test.java:61:24:61:88 | getCanonicalFile(...) : File | provenance | MaD:13 |
+| Test.java:61:24:61:88 | getCanonicalFile(...) : File | Test.java:64:63:64:69 | tempDir | provenance | Sink:MaD:1 |
+| Test.java:61:33:61:68 | getProperty(...) : String | Test.java:61:24:61:69 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:75:24:75:69 | new File(...) : File | Test.java:75:24:75:87 | getAbsoluteFile(...) : File | provenance | MaD:12 |
+| Test.java:75:24:75:87 | getAbsoluteFile(...) : File | Test.java:78:63:78:69 | tempDir | provenance | Sink:MaD:1 |
+| Test.java:75:33:75:68 | getProperty(...) : String | Test.java:75:24:75:69 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:110:29:110:84 | new File(...) : File | Test.java:113:9:113:20 | tempDirChild | provenance | Sink:MaD:2 |
+| Test.java:110:38:110:73 | getProperty(...) : String | Test.java:110:29:110:84 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:134:29:134:84 | new File(...) : File | Test.java:137:9:137:20 | tempDirChild | provenance | Sink:MaD:3 |
+| Test.java:134:38:134:73 | getProperty(...) : String | Test.java:134:29:134:84 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:158:29:158:88 | new File(...) : File | Test.java:159:21:159:32 | tempDirChild : File | provenance |  |
+| Test.java:158:38:158:73 | getProperty(...) : String | Test.java:158:29:158:88 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:159:21:159:32 | tempDirChild : File | Test.java:159:21:159:41 | toPath(...) | provenance | MaD:14 Sink:MaD:9 |
+| Test.java:187:29:187:88 | new File(...) : File | Test.java:188:21:188:32 | tempDirChild : File | provenance |  |
+| Test.java:187:38:187:73 | getProperty(...) : String | Test.java:187:29:187:88 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:188:21:188:32 | tempDirChild : File | Test.java:188:21:188:41 | toPath(...) | provenance | MaD:14 Sink:MaD:9 |
+| Test.java:204:29:204:104 | new File(...) : File | Test.java:204:29:204:113 | toPath(...) : Path | provenance | MaD:14 |
+| Test.java:204:29:204:113 | toPath(...) : Path | Test.java:207:33:207:44 | tempDirChild | provenance | Sink:MaD:7 |
+| Test.java:204:38:204:73 | getProperty(...) : String | Test.java:204:29:204:104 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:216:29:216:102 | new File(...) : File | Test.java:216:29:216:111 | toPath(...) : Path | provenance | MaD:14 |
+| Test.java:216:29:216:111 | toPath(...) : Path | Test.java:219:31:219:42 | tempDirChild | provenance | Sink:MaD:8 |
+| Test.java:216:38:216:73 | getProperty(...) : String | Test.java:216:29:216:102 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:228:29:228:100 | new File(...) : File | Test.java:231:26:231:37 | tempDirChild : File | provenance |  |
+| Test.java:228:38:228:73 | getProperty(...) : String | Test.java:228:29:228:100 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:231:26:231:37 | tempDirChild : File | Test.java:231:26:231:46 | toPath(...) | provenance | MaD:14 Sink:MaD:6 |
+| Test.java:249:29:249:101 | new File(...) : File | Test.java:252:31:252:42 | tempDirChild : File | provenance |  |
+| Test.java:249:38:249:73 | getProperty(...) : String | Test.java:249:29:249:101 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:252:31:252:42 | tempDirChild : File | Test.java:252:31:252:51 | toPath(...) | provenance | MaD:14 Sink:MaD:5 |
+| Test.java:260:29:260:109 | new File(...) : File | Test.java:263:33:263:44 | tempDirChild : File | provenance |  |
+| Test.java:260:38:260:73 | getProperty(...) : String | Test.java:260:29:260:109 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:263:33:263:44 | tempDirChild : File | Test.java:263:33:263:53 | toPath(...) | provenance | MaD:14 Sink:MaD:4 |
+| Test.java:294:29:294:101 | new File(...) : File | Test.java:298:35:298:46 | tempDirChild : File | provenance |  |
+| Test.java:294:38:294:73 | getProperty(...) : String | Test.java:294:29:294:101 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:298:35:298:46 | tempDirChild : File | Test.java:298:35:298:55 | toPath(...) | provenance | MaD:14 Sink:MaD:5 |
+| Test.java:313:29:313:101 | new File(...) : File | Test.java:316:35:316:46 | tempDirChild : File | provenance |  |
+| Test.java:313:38:313:73 | getProperty(...) : String | Test.java:313:29:313:101 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:316:35:316:46 | tempDirChild : File | Test.java:316:35:316:55 | toPath(...) | provenance | MaD:14 Sink:MaD:5 |
+| Test.java:322:29:322:101 | new File(...) : File | Test.java:326:35:326:46 | tempDirChild : File | provenance |  |
+| Test.java:322:38:322:73 | getProperty(...) : String | Test.java:322:29:322:101 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:326:35:326:46 | tempDirChild : File | Test.java:326:35:326:55 | toPath(...) | provenance | MaD:14 Sink:MaD:5 |
+| Test.java:350:29:350:101 | new File(...) : File | Test.java:355:35:355:46 | tempDirChild : File | provenance |  |
+| Test.java:350:38:350:73 | getProperty(...) : String | Test.java:350:29:350:101 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:355:35:355:46 | tempDirChild : File | Test.java:355:35:355:55 | toPath(...) | provenance | MaD:14 Sink:MaD:5 |
+| Test.java:361:29:361:101 | new File(...) : File | Test.java:366:35:366:46 | tempDirChild : File | provenance |  |
+| Test.java:361:38:361:73 | getProperty(...) : String | Test.java:361:29:361:101 | new File(...) : File | provenance | Src:MaD:10 MaD:11 |
+| Test.java:366:35:366:46 | tempDirChild : File | Test.java:366:35:366:55 | toPath(...) | provenance | MaD:14 Sink:MaD:5 |
+models
+| 1 | Sink: java.io; File; true; createTempFile; (String,String,File); ; Argument[2]; path-injection; ai-manual |
+| 2 | Sink: java.io; File; true; mkdir; (); ; Argument[this]; path-injection; manual |
+| 3 | Sink: java.io; File; true; mkdirs; (); ; Argument[this]; path-injection; manual |
+| 4 | Sink: java.nio.file; Files; false; createDirectories; ; ; Argument[0]; path-injection; manual |
+| 5 | Sink: java.nio.file; Files; false; createDirectory; ; ; Argument[0]; path-injection; manual |
+| 6 | Sink: java.nio.file; Files; false; createFile; ; ; Argument[0]; path-injection; manual |
+| 7 | Sink: java.nio.file; Files; false; newBufferedWriter; ; ; Argument[0]; path-injection; manual |
+| 8 | Sink: java.nio.file; Files; false; newOutputStream; ; ; Argument[0]; path-injection; manual |
+| 9 | Sink: java.nio.file; Files; false; write; ; ; Argument[0]; path-injection; manual |
+| 10 | Source: java.lang; System; false; getProperty; ; ; ReturnValue; environment; manual |
+| 11 | Summary: java.io; File; false; File; ; ; Argument[0]; Argument[this]; taint; manual |
+| 12 | Summary: java.io; File; true; getAbsoluteFile; ; ; Argument[this]; ReturnValue; taint; manual |
+| 13 | Summary: java.io; File; true; getCanonicalFile; ; ; Argument[this]; ReturnValue; taint; manual |
+| 14 | Summary: java.io; File; true; toPath; ; ; Argument[this]; ReturnValue; taint; manual |
+nodes
+| Files.java:10:24:10:69 | new File(...) : File | semmle.label | new File(...) : File |
+| Files.java:10:33:10:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Files.java:14:28:14:64 | new File(...) : File | semmle.label | new File(...) : File |
+| Files.java:14:37:14:43 | baseDir : File | semmle.label | baseDir : File |
+| Files.java:15:17:15:23 | tempDir | semmle.label | tempDir |
+| Test.java:20:25:20:61 | createTempFile(...) | semmle.label | createTempFile(...) |
+| Test.java:28:25:28:67 | createTempFile(...) | semmle.label | createTempFile(...) |
+| Test.java:36:24:36:69 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:36:33:36:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:39:63:39:69 | tempDir | semmle.label | tempDir |
+| Test.java:50:29:50:94 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:50:38:50:83 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:50:47:50:82 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:53:63:53:74 | tempDirChild | semmle.label | tempDirChild |
+| Test.java:61:24:61:69 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:61:24:61:88 | getCanonicalFile(...) : File | semmle.label | getCanonicalFile(...) : File |
+| Test.java:61:33:61:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:64:63:64:69 | tempDir | semmle.label | tempDir |
+| Test.java:75:24:75:69 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:75:24:75:87 | getAbsoluteFile(...) : File | semmle.label | getAbsoluteFile(...) : File |
+| Test.java:75:33:75:68 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:78:63:78:69 | tempDir | semmle.label | tempDir |
+| Test.java:97:24:97:65 | createTempDir(...) | semmle.label | createTempDir(...) |
+| Test.java:110:29:110:84 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:110:38:110:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:113:9:113:20 | tempDirChild | semmle.label | tempDirChild |
+| Test.java:134:29:134:84 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:134:38:134:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:137:9:137:20 | tempDirChild | semmle.label | tempDirChild |
+| Test.java:158:29:158:88 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:158:38:158:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:159:21:159:32 | tempDirChild : File | semmle.label | tempDirChild : File |
+| Test.java:159:21:159:41 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:187:29:187:88 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:187:38:187:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:188:21:188:32 | tempDirChild : File | semmle.label | tempDirChild : File |
+| Test.java:188:21:188:41 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:204:29:204:104 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:204:29:204:113 | toPath(...) : Path | semmle.label | toPath(...) : Path |
+| Test.java:204:38:204:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:207:33:207:44 | tempDirChild | semmle.label | tempDirChild |
+| Test.java:216:29:216:102 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:216:29:216:111 | toPath(...) : Path | semmle.label | toPath(...) : Path |
+| Test.java:216:38:216:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:219:31:219:42 | tempDirChild | semmle.label | tempDirChild |
+| Test.java:228:29:228:100 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:228:38:228:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:231:26:231:37 | tempDirChild : File | semmle.label | tempDirChild : File |
+| Test.java:231:26:231:46 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:249:29:249:101 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:249:38:249:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:252:31:252:42 | tempDirChild : File | semmle.label | tempDirChild : File |
+| Test.java:252:31:252:51 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:260:29:260:109 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:260:38:260:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:263:33:263:44 | tempDirChild : File | semmle.label | tempDirChild : File |
+| Test.java:263:33:263:53 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:270:25:270:63 | createTempFile(...) | semmle.label | createTempFile(...) |
+| Test.java:294:29:294:101 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:294:38:294:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:298:35:298:46 | tempDirChild : File | semmle.label | tempDirChild : File |
+| Test.java:298:35:298:55 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:313:29:313:101 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:313:38:313:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:316:35:316:46 | tempDirChild : File | semmle.label | tempDirChild : File |
+| Test.java:316:35:316:55 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:322:29:322:101 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:322:38:322:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:326:35:326:46 | tempDirChild : File | semmle.label | tempDirChild : File |
+| Test.java:326:35:326:55 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:350:29:350:101 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:350:38:350:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:355:35:355:46 | tempDirChild : File | semmle.label | tempDirChild : File |
+| Test.java:355:35:355:55 | toPath(...) | semmle.label | toPath(...) |
+| Test.java:361:29:361:101 | new File(...) : File | semmle.label | new File(...) : File |
+| Test.java:361:38:361:73 | getProperty(...) : String | semmle.label | getProperty(...) : String |
+| Test.java:366:35:366:46 | tempDirChild : File | semmle.label | tempDirChild : File |
+| Test.java:366:35:366:55 | toPath(...) | semmle.label | toPath(...) |
+subpaths

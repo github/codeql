@@ -14,6 +14,7 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.Sanitizers
 import ClientSuppliedIpUsedInSecurityCheckLib
 import ClientSuppliedIpUsedInSecurityCheckFlow::PathGraph
 
@@ -38,9 +39,7 @@ module ClientSuppliedIpUsedInSecurityCheckConfig implements DataFlow::ConfigSig 
       not aa.getIndexExpr().(CompileTimeConstantExpr).getIntValue() = 0
     )
     or
-    node.getType() instanceof PrimitiveType
-    or
-    node.getType() instanceof BoxedType
+    node instanceof SimpleTypeSanitizer
   }
 }
 

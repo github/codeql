@@ -74,6 +74,12 @@ taintFlow
 | test.js:249:28:249:35 | source() | test.js:249:28:249:35 | source() |
 | test.js:252:15:252:22 | source() | test.js:252:15:252:22 | source() |
 | test.js:254:32:254:39 | source() | test.js:254:32:254:39 | source() |
+| test.js:262:10:262:31 | this.ba ... ource() | test.js:262:10:262:31 | this.ba ... ource() |
+| test.js:265:6:265:39 | new MyS ... ource() | test.js:265:6:265:39 | new MyS ... ource() |
+| test.js:269:10:269:31 | this.ba ... ource() | test.js:269:10:269:31 | this.ba ... ource() |
+| test.js:272:6:272:40 | new MyS ... ource() | test.js:272:6:272:40 | new MyS ... ource() |
+| test.js:274:6:274:39 | testlib ... eName() | test.js:274:6:274:39 | testlib ... eName() |
+| test.js:277:8:277:31 | "danger ... .danger | test.js:277:8:277:31 | "danger ... .danger |
 isSink
 | test.js:54:18:54:25 | source() | test-sink |
 | test.js:55:22:55:29 | source() | test-sink |

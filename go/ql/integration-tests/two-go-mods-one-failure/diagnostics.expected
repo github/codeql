@@ -1,0 +1,28 @@
+{
+  "markdownMessage": "2 `go.mod` files were found:\n\n`subdir1/go.mod`, `subdir2/go.mod`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/multiple-go-mod-found-not-nested",
+    "name": "Multiple `go.mod` files found, not all nested under one root `go.mod` file"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "The following 1 Go project could not be extracted successfully:\n\n`subdir2`\n",
+  "severity": "warning",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/extraction-failed-for-project",
+    "name": "Unable to extract some Go projects"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

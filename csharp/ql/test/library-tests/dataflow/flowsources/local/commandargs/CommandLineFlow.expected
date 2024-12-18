@@ -1,0 +1,2 @@
+| CommandArgs.cs:25:18:25:21 | access to local variable arg1 | CommandArgs.cs:19:42:19:45 | args |
+| CommandArgs.cs:34:18:34:21 | access to local variable arg1 | CommandArgs.cs:31:33:31:64 | call to method GetCommandLineArgs |

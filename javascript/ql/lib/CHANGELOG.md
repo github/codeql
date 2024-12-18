@@ -1,3 +1,183 @@
+## 2.2.0
+
+### Major Analysis Improvements
+
+* The `js/incomplete-sanitization` query now also checks regular expressions constructed using `new RegExp(..)`. Previously it only checked regular expression literals.
+* Regular expression-based sanitisers implemented with `new RegExp(..)` are now detected in more cases.
+* Regular expression related queries now account for unknown flags.
+
+### Minor Analysis Improvements
+
+* Added taint-steps for `String.prototype.toWellFormed`.
+* Added taint-steps for `Map.groupBy` and `Object.groupBy`.
+* Added taint-steps for `Array.prototype.findLast`.
+* Added taint-steps for `Array.prototype.findLastIndex`.
+
+## 2.1.1
+
+### Minor Analysis Improvements
+
+* Added taint-steps for `Array.prototype.with`.
+* Added taint-steps for `Array.prototype.toSpliced`
+* Added taint-steps for `Array.prototype.toReversed`.
+* Added taint-steps for `Array.prototype.toSorted`.
+* Added support for `String.prototype.matchAll`.
+* Added taint-steps for `Array.prototype.reverse`
+
+## 2.1.0
+
+### New Features
+
+* Added support for custom threat-models, which can be used in most of our taint-tracking queries, see our [documentation](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models) for more details.
+
+## 2.0.2
+
+No user-facing changes.
+
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `isHTMLElement` and `getDOMName` predicates from the JSX library, use `isHtmlElement` and `getDomName` respectively instead.
+* Deleted the deprecated `getPackageJSON` predicate from the `SourceMappingComment` class, use `SourceMappingComment` instead.
+* Deleted many deprecated directives from the `Stmt.qll` file, use the `Directive::` module instead.
+* Deleted the deprecated `YAMLNode`, `YAMLValue`, and `YAMLScalar` classes from the YAML libraries, use `YamlNode`, `YamlValue`, and `YamlScalar` respectively instead.
+* Deleted the deprecated `getARouteHandlerExpr` predicate from `Connect.qll`, use `getARouteHandlerNode` instead.
+* Deleted the deprecated `getGWTVersion` predicate from `GWT.qll`, use `getGwtVersion` instead.
+* Deleted the deprecated `getOwnOptionsObject` predicate from  `Vue.qll`, use `getOwnOptions().getASink()` instead.
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.6.
+
+## 1.1.4
+
+No user-facing changes.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+No user-facing changes.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.5.
+
+### Minor Analysis Improvements
+
+* Enabled type-tracking to follow content through array methods
+* Improved modeling of `Array.prototype.splice` for when it is called with more than two arguments
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* Additional heuristics for a new sensitive data classification for private information (e.g. credit card numbers) have been added to the shared `SensitiveDataHeuristics.qll` library. This may result in additional results for queries that use sensitive data such as `js/clear-text-storage-sensitive-data` and `js/clear-text-logging`.
+
+### Bug Fixes
+
+* Fixed a bug where very large TypeScript files would cause database creation to crash. Large files over 10MB were already excluded from analysis, but the file size check was not applied to TypeScript files.
+
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getInput` predicate from the `CryptographicOperation` class. Use `getAnInput` instead.
+* Deleted the deprecated `RegExpPatterns` module from `Regexp.qll`.
+* Deleted the deprecated `semmle/javascript/security/BadTagFilterQuery.qll`, `semmle/javascript/security/OverlyLargeRangeQuery.qll`, `semmle/javascript/security/regexp/RegexpMatching.qll`, and `Security/CWE-020/HostnameRegexpShared.qll` files.
+
+### Minor Analysis Improvements
+
+* Improved detection of whether a file uses CommonJS module system.
+
+## 0.8.14
+
+No user-facing changes.
+
+## 0.8.13
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.4.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+No user-facing changes.
+
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.8.8
+
+No user-facing changes.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `CPU`, `TLD`, `SSA`, `ASM` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getMessageSuffix` predicates in `CodeInjectionCustomizations.qll`.
+* Deleted the deprecated `semmle/javascript/security/dataflow/ExternalAPIUsedWithUntrustedData.qll` file.
+* Deleted the deprecated `getANonHtmlHeaderDefinition` and `nonHtmlContentTypeHeader` predicates from `ReflectedXssCustomizations.qll`.
+* Deleted the deprecated `semmle/javascript/security/OverlyLargeRangeQuery.qll`, `semmle/javascript/security/regexp/ExponentialBackTracking.qll`, `semmle/javascript/security/regexp/NfaUtils.qll`, and `semmle/javascript/security/regexp/NfaUtils.qll` files.
+* Deleted the deprecated `Expressions/TypoDatabase.qll` file.
+* The diagnostic query `js/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned JavaScript and TypeScript files, now considers any JavaScript and TypeScript file seen during extraction, even one with some errors, to be extracted / scanned.
+
+## 0.8.6
+
+No user-facing changes.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Added models for the `sqlite` and `better-sqlite3` npm packages.
+* TypeScript 5.3 is now supported.
+
 ## 0.8.3
 
 No user-facing changes.

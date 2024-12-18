@@ -1,3 +1,7 @@
+/**
+ * DEPRECATED: Use `semmle.code.cpp.dataflow.new.DataFlow` instead.
+ */
+
 private import cpp
 private import DataFlowUtil
 private import DataFlowDispatch
@@ -211,24 +215,18 @@ predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
-Type getNodeType(Node n) {
-  suppressUnusedNode(n) and
+DataFlowType getNodeType(Node n) {
+  exists(n) and
   result instanceof VoidType // stub implementation
 }
-
-/** Gets a string representation of a type returned by `getNodeType`. */
-string ppReprType(Type t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
-predicate compatibleTypes(Type t1, Type t2) {
-  any() // stub implementation
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
+  t1 instanceof VoidType and t2 instanceof VoidType // stub implementation
 }
-
-private predicate suppressUnusedNode(Node n) { any() }
 
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers
@@ -238,11 +236,15 @@ class CastNode extends Node {
   CastNode() { none() } // stub implementation
 }
 
-class DataFlowCallable = Function;
+class DataFlowCallable extends Function { }
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = Type;
+final private class TypeFinal = Type;
+
+class DataFlowType extends TypeFinal {
+  string toString() { result = "" }
+}
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends Expr instanceof Call {
@@ -257,10 +259,16 @@ class DataFlowCall extends Expr instanceof Call {
   ExprNode getNode() { result.getExpr() = this }
 
   /** Gets the enclosing callable of this call. */
-  Function getEnclosingCallable() { result = this.getEnclosingFunction() }
+  DataFlowCallable getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
 
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
+class NodeRegion instanceof Unit {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { none() }
+}
+
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() } // stub implementation
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
@@ -281,6 +289,12 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+predicate knownSourceModel(Node source, string model) { none() }
+
+predicate knownSinkModel(Node sink, string model) { none() }
+
+class DataFlowSecondLevelScope = Unit;
 
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a

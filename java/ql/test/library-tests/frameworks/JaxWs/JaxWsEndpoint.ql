@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.frameworks.JaxWS
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module JaxWsEndpointTest implements TestSig {
   string getARelevantTag() { result = ["JaxWsEndpoint", "JaxWsEndpointRemoteMethod"] }

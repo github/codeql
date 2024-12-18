@@ -13,6 +13,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.Proxy.Type;
 import java.io.InputStream;
+import java.util.Map;
 
 import org.apache.http.client.methods.HttpGet;
 import javax.servlet.ServletException;
@@ -32,6 +33,14 @@ public class SpringSSRF extends HttpServlet {
             restTemplate.exchange(fooResourceUrl, HttpMethod.POST, request, String.class); // $ SSRF
             restTemplate.execute(fooResourceUrl, HttpMethod.POST, null, null, "test"); // $ SSRF
             restTemplate.getForObject(fooResourceUrl, String.class, "test"); // $ SSRF
+            restTemplate.getForObject("http://{foo}", String.class, fooResourceUrl); // $ SSRF
+            restTemplate.getForObject("http://{foo}/a/b", String.class, fooResourceUrl); // $ SSRF
+            restTemplate.getForObject("http://safe.com/{foo}", String.class, fooResourceUrl); // not bad - the tainted value does not affect the host
+            restTemplate.getForObject("http://{foo}", String.class, "safe.com", fooResourceUrl); // not bad - the tainted value is unused
+            restTemplate.getForObject("http://{foo}", String.class, Map.of("foo", fooResourceUrl)); // $ SSRF
+            restTemplate.getForObject("http://safe.com/{foo}", String.class, Map.of("foo", fooResourceUrl)); // not bad - the tainted value does not affect the host
+            restTemplate.getForObject("http://{foo}", String.class, Map.of("foo", "safe.com", "unused", fooResourceUrl)); // $ SPURIOUS: SSRF // not bad - the key for the tainted value is unused
+            restTemplate.getForObject("http://{foo}", String.class, Map.of("foo", "safe.com", fooResourceUrl, "unused")); // not bad - the tainted value is in a map key
             restTemplate.patchForObject(fooResourceUrl, new String("object"), String.class, "hi"); // $ SSRF
             restTemplate.postForEntity(new URI(fooResourceUrl), new String("object"), String.class); // $ SSRF
             restTemplate.postForLocation(fooResourceUrl, new String("object")); // $ SSRF

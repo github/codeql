@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["golang.org/x/crypto/ssh", "Session", True, "CombinedOutput", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["golang.org/x/crypto/ssh", "Session", True, "Output", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["golang.org/x/crypto/ssh", "Session", True, "Run", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["golang.org/x/crypto/ssh", "Session", True, "Start", "", "", "Argument[0]", "command-injection", "manual"]

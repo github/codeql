@@ -47,7 +47,7 @@ private class DataSummaries extends SummaryModelCsv {
         ";Data;true;trimmingPrefix(while:);;;Argument[-1];ReturnValue;taint",
         ";Data;true;withUnsafeMutableBytes(_:);;;Argument[-1];Argument[0].Parameter[0].CollectionElement;taint",
         ";Data;true;withUnsafeMutableBytes(_:);;;Argument[-1].CollectionElement;Argument[0].Parameter[0].CollectionElement;taint",
-        ";Data;true;withUnsafeMutableBytes(_:);;;Argument[0].Parameter[0].CollectionElement;Argument[-1].CollectionElement;value",
+        ";Data;true;withUnsafeMutableBytes(_:);;;Argument[0].Parameter[0].CollectionElement;Argument[-1].CollectionElement;taint",
         ";Data;true;withUnsafeMutableBytes(_:);;;Argument[0].ReturnValue;ReturnValue;value",
       ]
   }

@@ -77,4 +77,28 @@ func test(myPassword: String) {
 	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, password: myPassword, IV: myIV, encryptionSalt: myRandomSalt1, HMACSalt: myRandomSalt2) // GOOD
 	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, password: myPassword, IV: myIV, encryptionSalt: myConstantSalt1, HMACSalt: myRandomSalt2) // BAD
 	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, password: myPassword, IV: myIV, encryptionSalt: myRandomSalt1, HMACSalt: myConstantSalt2) // BAD
+
+	// appending constants
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(getARandomString() + getARandomString()), settings: myKeyDerivationSettings) // GOOD
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123" + getARandomString()), settings: myKeyDerivationSettings) // GOOD
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(getARandomString() + "abc"), settings: myKeyDerivationSettings) // GOOD
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123" + "abc"), settings: myKeyDerivationSettings) // BAD (constant salt) [NOT DETECTED]
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123\(getARandomString())abc"), settings: myKeyDerivationSettings) // GOOD
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123\("const"))abc"), settings: myKeyDerivationSettings) // BAD (constant salt) [NOT DETECTED]
+
+	var myMutableString1 = "123"
+	myMutableString1.append(getARandomString())
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(myMutableString1), settings: myKeyDerivationSettings) // GOOD
+
+	var myMutableString2 = getARandomString()
+	myMutableString2.append("abc")
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(myMutableString2), settings: myKeyDerivationSettings) // GOOD
+
+	var myMutableString3 = "123"
+	myMutableString3 += getARandomString()
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(myMutableString3), settings: myKeyDerivationSettings) // GOOD
+
+	var myMutableString4 = getARandomString()
+	myMutableString4 += "abc"
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(myMutableString4), settings: myKeyDerivationSettings) // GOOD
 }

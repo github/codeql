@@ -1,5 +1,5 @@
 name: codeql/go-all
-version: 0.7.4-dev
+version: 3.0.1-dev
 groups: go
 dbscheme: go.dbscheme
 extractor: go
@@ -8,6 +8,7 @@ upgrades: upgrades
 dependencies:
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
+  codeql/threat-models: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
 dataExtensions:

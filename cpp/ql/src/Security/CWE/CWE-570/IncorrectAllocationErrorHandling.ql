@@ -16,6 +16,7 @@
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.controlflow.Guards
+import semmle.code.cpp.models.implementations.NoexceptFunction
 
 /** Gets the `Constructor` invoked when `newExpr` allocates memory. */
 Constructor getConstructorForAllocation(NewOrNewArrayExpr newExpr) {
@@ -44,9 +45,8 @@ predicate deleteMayThrow(DeleteOrDeleteArrayExpr deleteExpr) {
  * like it might throw an exception, and the function does not have a `noexcept` or `throw()` specifier.
  */
 predicate functionMayThrow(Function f) {
-  (not exists(f.getBlock()) or stmtMayThrow(f.getBlock())) and
-  not f.isNoExcept() and
-  not f.isNoThrow()
+  not f instanceof NonCppThrowingFunction and
+  (not exists(f.getBlock()) or stmtMayThrow(f.getBlock()))
 }
 
 /** Holds if the evaluation of `stmt` may throw an exception. */
@@ -172,8 +172,7 @@ class ThrowingAllocator extends Function {
       not exists(Parameter p | p = this.getAParameter() |
         p.getUnspecifiedType().stripType() instanceof NoThrowType
       ) and
-      not this.isNoExcept() and
-      not this.isNoThrow()
+      not this instanceof NoexceptFunction
     )
   }
 }
@@ -215,18 +214,24 @@ predicate noThrowInTryBlock(NewOrNewArrayExpr newExpr, BadAllocCatchBlock catchB
  */
 predicate nullCheckInThrowingNew(NewOrNewArrayExpr newExpr, GuardCondition guard) {
   newExpr.getAllocator() instanceof ThrowingAllocator and
-  (
-    // Handles null comparisons.
-    guard.ensuresEq(globalValueNumber(newExpr).getAnExpr(), any(NullValue null), _, _, _)
-    or
-    // Handles `if(ptr)` and `if(!ptr)` cases.
-    guard = globalValueNumber(newExpr).getAnExpr()
-  )
+  // There can be many guard conditions that compares `newExpr` againgst 0.
+  // For example, for `if(!p)` both `p` and `!p` are guard conditions. To not
+  // produce duplicates results we pick the "first" guard condition according
+  // to some arbitrary ordering (i.e., location information). This means `!p` is the
+  // element that we use to construct the alert.
+  guard =
+    min(GuardCondition gc, int startline, int startcolumn, int endline, int endcolumn |
+      gc.comparesEq(globalValueNumber(newExpr).getAnExpr(), 0, _, _) and
+      gc.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn)
+    |
+      gc order by startline, startcolumn, endline, endcolumn
+    )
 }
 
 from NewOrNewArrayExpr newExpr, Element element, string msg, string elementString
 where
   not newExpr.isFromUninstantiatedTemplate(_) and
+  not newExpr.isFromTemplateInstantiation(_) and
   (
     noThrowInTryBlock(newExpr, element) and
     msg = "This allocation cannot throw. $@ is unnecessary." and

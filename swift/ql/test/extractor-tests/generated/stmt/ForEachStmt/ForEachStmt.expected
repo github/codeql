@@ -1,0 +1,3 @@
+| for.swift:4:5:6:5 | for ... in ... where ... { ... } | hasLabel: | no | getNumberOfVariables: | 2 | getPattern: | for.swift:4:9:4:9 | x | hasWhere: | yes | hasIteratorVar: | yes | hasNextCall: | yes | getBody: | for.swift:4:32:6:5 | { ... } |
+| for.swift:7:5:9:5 | for ... in ... { ... } | hasLabel: | no | getNumberOfVariables: | 2 | getPattern: | for.swift:7:9:7:9 | s | hasWhere: | no | hasIteratorVar: | yes | hasNextCall: | yes | getBody: | for.swift:7:23:9:5 | { ... } |
+| for.swift:13:5:17:5 | for ... in ... { ... } | hasLabel: | no | getNumberOfVariables: | 1 | getPattern: | for.swift:13:9:13:9 | x | hasWhere: | no | hasIteratorVar: | no | hasNextCall: | no | getBody: | for.swift:13:32:17:5 | { ... } |

@@ -14,13 +14,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         private ImplicitCast(ExpressionNodeInfo info)
-            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.CAST, info.Parent, info.Child, true, info.ExprValue))
+            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.CAST, info.Parent, info.Child, isCompilerGenerated: true, info.ExprValue))
         {
             Expr = Factory.Create(new ExpressionNodeInfo(Context, info.Node, this, 0));
         }
 
         private ImplicitCast(ExpressionNodeInfo info, IMethodSymbol method)
-            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue))
+            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, isCompilerGenerated: true, info.ExprValue))
         {
             Expr = Factory.Create(info.SetParent(this, 0));
 
@@ -51,9 +51,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 )
                 .FirstOrDefault();
 
-        // Creates a new generated expression with an implicit cast added, if needed.
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
-            Extraction.Entities.Location location)
+        /// <summary>
+        /// Creates a new generated expression with an implicit conversion added.
+        /// </summary>
+        public static Expression CreateGeneratedConversion(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
+            Location location)
         {
             ExpressionInfo create(ExprKind kind, string? v) =>
                 new ExpressionInfo(
@@ -63,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     kind,
                     parent,
                     childIndex,
-                    true,
+                    isCompilerGenerated: true,
                     v);
 
             var method = GetImplicitConversionMethod(type, value);
@@ -79,7 +81,27 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        // Creates a new expression, adding casts as required.
+        /// <summary>
+        /// Creates a new generated cast expression.
+        /// </summary>
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
+                    Location location)
+        {
+            var info = new ExpressionInfo(cx,
+                    AnnotatedTypeSymbol.CreateNotAnnotated(type),
+                    location,
+                    ExprKind.CAST,
+                    parent,
+                    childIndex,
+                    isCompilerGenerated: true,
+                    ValueAsString(value));
+
+            return new Expression(info);
+        }
+
+        /// <summary>
+        /// Creates a new expression, adding casts as required.
+        /// </summary>
         public static Expression Create(ExpressionNodeInfo info)
         {
             var resolvedType = info.ResolvedType;

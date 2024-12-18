@@ -18,40 +18,6 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Callable extends @callable, Element {
-    /**
-     * Gets the name of this callable, if it exists.
-     *
-     * The name includes argument labels of the callable, for example `myFunction(arg:)`.
-     */
-    string getName() { callable_names(this, result) }
-
-    /**
-     * Gets the self parameter of this callable, if it exists.
-     */
-    ParamDecl getSelfParam() { callable_self_params(this, result) }
-
-    /**
-     * Gets the `index`th parameter of this callable (0-based).
-     */
-    ParamDecl getParam(int index) { callable_params(this, index, result) }
-
-    /**
-     * Gets the body of this callable, if it exists.
-     *
-     * The body is absent within protocol declarations.
-     */
-    BraceStmt getBody() { callable_bodies(this, result) }
-
-    /**
-     * Gets the `index`th capture of this callable (0-based).
-     */
-    CapturedDecl getCapture(int index) { callable_captures(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class File extends @file, Element {
     /**
      * Gets the name of this file.
@@ -199,6 +165,40 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   */
+  class Callable extends @callable, AstNode {
+    /**
+     * Gets the name of this callable, if it exists.
+     *
+     * The name includes argument labels of the callable, for example `myFunction(arg:)`.
+     */
+    string getName() { callable_names(this, result) }
+
+    /**
+     * Gets the self parameter of this callable, if it exists.
+     */
+    ParamDecl getSelfParam() { callable_self_params(this, result) }
+
+    /**
+     * Gets the `index`th parameter of this callable (0-based).
+     */
+    ParamDecl getParam(int index) { callable_params(this, index, result) }
+
+    /**
+     * Gets the body of this callable, if it exists.
+     *
+     * The body is absent within protocol declarations.
+     */
+    BraceStmt getBody() { callable_bodies(this, result) }
+
+    /**
+     * Gets the `index`th capture of this callable (0-based).
+     */
+    CapturedDecl getCapture(int index) { callable_captures(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A component of a `KeyPathExpr`.
    */
   class KeyPathComponent extends @key_path_component, AstNode {
@@ -244,6 +244,34 @@ module Raw {
      * as the final output.
      */
     Type getComponentType() { key_path_components(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * The role of a macro, for example #freestanding(declaration) or @attached(member).
+   */
+  class MacroRole extends @macro_role, AstNode {
+    override string toString() { result = "MacroRole" }
+
+    /**
+     * Gets the kind of this macro role (declaration, expression, member, etc.).
+     */
+    int getKind() { macro_roles(this, result, _) }
+
+    /**
+     * Gets the #freestanding or @attached.
+     */
+    int getMacroSyntax() { macro_roles(this, _, result) }
+
+    /**
+     * Gets the `index`th conformance of this macro role (0-based).
+     */
+    TypeExpr getConformance(int index) { macro_role_conformances(this, index, result) }
+
+    /**
+     * Gets the `index`th name of this macro role (0-based).
+     */
+    string getName(int index) { macro_role_names(this, index, result) }
   }
 
   /**
@@ -555,6 +583,38 @@ module Raw {
      * Gets the precedence group of this infix operator declaration, if it exists.
      */
     PrecedenceGroupDecl getPrecedenceGroup() { infix_operator_decl_precedence_groups(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A declaration of a macro. Some examples:
+   *
+   * ```
+   * @freestanding(declaration)
+   * macro A() = #externalMacro(module: "A", type: "A")
+   * @freestanding(expression)
+   * macro B() = Builtin.B
+   * @attached(member)
+   * macro C() = C.C
+   * ```
+   */
+  class MacroDecl extends @macro_decl, GenericContext, ValueDecl {
+    override string toString() { result = "MacroDecl" }
+
+    /**
+     * Gets the name of this macro.
+     */
+    string getName() { macro_decls(this, result) }
+
+    /**
+     * Gets the `index`th parameter of this macro (0-based).
+     */
+    ParamDecl getParameter(int index) { macro_decl_parameters(this, index, result) }
+
+    /**
+     * Gets the `index`th role of this macro (0-based).
+     */
+    MacroRole getRole(int index) { macro_decl_roles(this, index, result) }
   }
 
   /**
@@ -1446,6 +1506,22 @@ module Raw {
      * Gets the sub expression of this make temporarily escapable expression.
      */
     Expr getSubExpr() { make_temporarily_escapable_exprs(this, _, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that materializes a pack during expansion. Appears around PackExpansionExpr.
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class MaterializePackExpr extends @materialize_pack_expr, Expr {
+    override string toString() { result = "MaterializePackExpr" }
+
+    /**
+     * Gets the sub expression of this materialize pack expression.
+     */
+    Expr getSubExpr() { materialize_pack_exprs(this, result) }
   }
 
   /**
@@ -2476,7 +2552,12 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Pattern extends @pattern, AstNode { }
+  class Pattern extends @pattern, AstNode {
+    /**
+     * Gets the type of this pattern, if it exists.
+     */
+    Type getType() { pattern_types(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -2763,6 +2844,24 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A statement that takes a non-copyable value and destructs its members/fields.
+   *
+   * The only valid syntax:
+   * ```
+   * destruct self
+   * ```
+   */
+  class DiscardStmt extends @discard_stmt, Stmt {
+    override string toString() { result = "DiscardStmt" }
+
+    /**
+     * Gets the sub expression of this discard statement.
+     */
+    Expr getSubExpr() { discard_stmts(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class FailStmt extends @fail_stmt, Stmt {
     override string toString() { result = "FailStmt" }
@@ -2826,6 +2925,27 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A statement implicitly wrapping values to be used in branches of if/switch expressions. For example in:
+   * ```
+   * let rank = switch value {
+   *     case 0..<0x80: 1
+   *     case 0x80..<0x0800: 2
+   *     default: 3
+   * }
+   * ```
+   * the literal expressions `1`, `2` and `3` are wrapped in `ThenStmt`.
+   */
+  class ThenStmt extends @then_stmt, Stmt {
+    override string toString() { result = "ThenStmt" }
+
+    /**
+     * Gets the result of this then statement.
+     */
+    Expr getResult() { then_stmts(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class ThrowStmt extends @throw_stmt, Stmt {
     override string toString() { result = "ThrowStmt" }
@@ -2882,6 +3002,11 @@ module Raw {
    */
   class ForEachStmt extends @for_each_stmt, LabeledStmt {
     override string toString() { result = "ForEachStmt" }
+
+    /**
+     * Gets the `index`th variable of this for each statement (0-based).
+     */
+    VarDecl getVariable(int index) { for_each_stmt_variables(this, index, result) }
 
     /**
      * Gets the pattern of this for each statement.

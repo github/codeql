@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Extensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Extensions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -11,12 +11,14 @@ namespace Microsoft
             {
                 public EndpointDescriptionAttribute(string description) => throw null;
                 public string Description { get => throw null; }
+                public override string ToString() => throw null;
             }
             [System.AttributeUsage((System.AttributeTargets)64, Inherited = false, AllowMultiple = false)]
             public sealed class EndpointSummaryAttribute : System.Attribute, Microsoft.AspNetCore.Http.Metadata.IEndpointSummaryMetadata
             {
                 public EndpointSummaryAttribute(string summary) => throw null;
                 public string Summary { get => throw null; }
+                public override string ToString() => throw null;
             }
             namespace Extensions
             {
@@ -127,6 +129,7 @@ namespace Microsoft
                 public static System.Threading.Tasks.ValueTask<TValue> ReadFromJsonAsync<TValue>(this Microsoft.AspNetCore.Http.HttpRequest request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<TValue> ReadFromJsonAsync<TValue>(this Microsoft.AspNetCore.Http.HttpRequest request, System.Text.Json.JsonSerializerOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<TValue> ReadFromJsonAsync<TValue>(this Microsoft.AspNetCore.Http.HttpRequest request, System.Text.Json.Serialization.Metadata.JsonTypeInfo<TValue> jsonTypeInfo, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask<object> ReadFromJsonAsync(this Microsoft.AspNetCore.Http.HttpRequest request, System.Text.Json.Serialization.Metadata.JsonTypeInfo jsonTypeInfo, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<object> ReadFromJsonAsync(this Microsoft.AspNetCore.Http.HttpRequest request, System.Type type, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<object> ReadFromJsonAsync(this Microsoft.AspNetCore.Http.HttpRequest request, System.Type type, System.Text.Json.JsonSerializerOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask<object> ReadFromJsonAsync(this Microsoft.AspNetCore.Http.HttpRequest request, System.Type type, System.Text.Json.Serialization.JsonSerializerContext context, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -137,6 +140,7 @@ namespace Microsoft
                 public static System.Threading.Tasks.Task WriteAsJsonAsync<TValue>(this Microsoft.AspNetCore.Http.HttpResponse response, TValue value, System.Text.Json.JsonSerializerOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task WriteAsJsonAsync<TValue>(this Microsoft.AspNetCore.Http.HttpResponse response, TValue value, System.Text.Json.JsonSerializerOptions options, string contentType, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task WriteAsJsonAsync<TValue>(this Microsoft.AspNetCore.Http.HttpResponse response, TValue value, System.Text.Json.Serialization.Metadata.JsonTypeInfo<TValue> jsonTypeInfo, string contentType = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.Task WriteAsJsonAsync(this Microsoft.AspNetCore.Http.HttpResponse response, object value, System.Text.Json.Serialization.Metadata.JsonTypeInfo jsonTypeInfo, string contentType = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task WriteAsJsonAsync(this Microsoft.AspNetCore.Http.HttpResponse response, object value, System.Type type, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task WriteAsJsonAsync(this Microsoft.AspNetCore.Http.HttpResponse response, object value, System.Type type, System.Text.Json.JsonSerializerOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task WriteAsJsonAsync(this Microsoft.AspNetCore.Http.HttpResponse response, object value, System.Type type, System.Text.Json.JsonSerializerOptions options, string contentType, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -202,6 +206,7 @@ namespace Microsoft
             {
                 public TagsAttribute(params string[] tags) => throw null;
                 public System.Collections.Generic.IReadOnlyList<string> Tags { get => throw null; }
+                public override string ToString() => throw null;
             }
         }
     }

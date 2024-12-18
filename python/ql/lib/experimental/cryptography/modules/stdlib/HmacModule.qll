@@ -62,9 +62,9 @@ module Hashes {
       then result = super.normalizeName("MD5")
       else (
         // Else get the string name, if its a string constant, or UNKNOWN if otherwise
-        result = super.normalizeName(this.asExpr().(StrConst).getText())
+        result = super.normalizeName(this.asExpr().(StringLiteral).getText())
         or
-        not this.asExpr() instanceof StrConst and result = unknownAlgorithm()
+        not this.asExpr() instanceof StringLiteral and result = unknownAlgorithm()
       )
     }
   }

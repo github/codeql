@@ -6,7 +6,7 @@
  * @id cs/hash-without-salt
  * @tags security
  *       experimental
- *       external/cwe-759
+ *       external/cwe/cwe-759
  */
 
 import csharp

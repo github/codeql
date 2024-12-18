@@ -1,0 +1,62 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Deserializing untrusted data using any method that allows the construction of
+arbitrary objects is easily exploitable and, in many cases, allows an attacker
+to execute arbitrary code.
+</p>
+</overview>
+
+<recommendation>
+
+<p>
+If deserializing an untrusted YAML document using the <code>psych</code> gem,
+prefer the <code>safe_load</code> and <code>safe_load_file</code> methods over
+<code>load</code> and <code>load_file</code>, as the former will safely
+handle untrusted data. Avoid passing untrusted data to the <code>load_stream</code>
+method. In <code>psych</code> version 4.0.0 and above, the <code>load</code> method can
+safely be used.
+</p>
+
+</recommendation>
+
+<example>
+<p>
+The following example calls the <code>Marshal.load</code>,
+<code>JSON.load</code>, <code>YAML.load</code>, and <code>Oj.load</code> methods
+on data from an HTTP request. Since these methods are capable of deserializing
+to arbitrary objects, this is inherently unsafe.
+</p>
+<sample src="examples/UnsafeDeserializationBad.rb"/>
+
+<p>
+Using <code>JSON.parse</code> and <code>YAML.safe_load</code> instead, as in the
+following example, removes the vulnerability. Similarly, calling
+<code>Oj.load</code> with any mode other than <code>:object</code> is safe, as
+is calling <code>Oj.safe_load</code>. Note that there is no safe way to deserialize
+untrusted data using <code>Marshal</code>.
+</p>
+<sample src="examples/UnsafeDeserializationGood.rb"/>
+</example>
+
+<references>
+
+<li>
+OWASP vulnerability description:
+<a href="https://www.owasp.org/index.php/Deserialization_of_untrusted_data">deserialization of untrusted data</a>.
+</li>
+<li>
+Ruby documentation: <a href="https://docs.ruby-lang.org/en/3.0.0/doc/security_rdoc.html">guidance on deserializing objects safely</a>.
+</li>
+<li>
+Ruby documentation: <a href="https://ruby-doc.org/stdlib-3.0.2/libdoc/yaml/rdoc/YAML.html#module-YAML-label-Security">security guidance on the YAML library</a>.
+</li>
+<li>
+You can read that how unsafe yaml load methods can lead to code executions:
+<a href="https://devcraft.io/2021/01/07/universal-deserialisation-gadget-for-ruby-2-x-3-x.html">Universal Deserialisation Gadget for Ruby 2.x-3.x </a>.
+</li>
+</references>
+
+</qhelp>

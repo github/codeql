@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../ServiceStack.Common/8.0.0/ServiceStack.Common.csproj" />
+    <ProjectReference Include="../../System.Collections.NonGeneric/4.3.0/System.Collections.NonGeneric.csproj" />
+    <ProjectReference Include="../../System.ComponentModel.Annotations/5.0.0/System.ComponentModel.Annotations.csproj" />
+    <ProjectReference Include="../../System.ComponentModel.Primitives/4.3.0/System.ComponentModel.Primitives.csproj" />
+    <ProjectReference Include="../../System.Dynamic.Runtime/4.3.0/System.Dynamic.Runtime.csproj" />
+    <ProjectReference Include="../../System.Memory/4.5.5/System.Memory.csproj" />
+    <ProjectReference Include="../../System.Reflection.Emit/4.7.0/System.Reflection.Emit.csproj" />
+    <ProjectReference Include="../../System.Reflection.Emit.Lightweight/4.7.0/System.Reflection.Emit.Lightweight.csproj" />
+    <ProjectReference Include="../../System.Reflection.TypeExtensions/4.7.0/System.Reflection.TypeExtensions.csproj" />
+    <ProjectReference Include="../../System.Xml.XmlDocument/4.3.0/System.Xml.XmlDocument.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

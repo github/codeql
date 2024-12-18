@@ -384,6 +384,37 @@ class BuiltInOperationIsConvertibleTo extends BuiltInOperation, @isconvtoexpr {
 }
 
 /**
+ * A C++ `__is_convertible` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if the first type can be converted to the second type.
+ * ```
+ * bool v = __is_convertible(MyType, OtherType);
+ * ```
+ */
+class BuiltInOperationIsConvertible extends BuiltInOperation, @isconvertible {
+  override string toString() { result = "__is_convertible" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsConvertible" }
+}
+
+/**
+ * A C++ `__is_nothrow_convertible` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if the first type can be converted to the second type and the
+ * conversion operator has an empty exception specification.
+ * ```
+ * bool v = __is_nothrow_convertible(MyType, OtherType);
+ * ```
+ */
+class BuiltInOperationIsNothrowConvertible extends BuiltInOperation, @isnothrowconvertible {
+  override string toString() { result = "__is_nothrow_convertible" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsNothrowConvertible" }
+}
+
+/**
  * A C++ `__is_empty` built-in operation (used by some implementations of the
  * `<type_traits>` header).
  *
@@ -647,8 +678,7 @@ class BuiltInOperationIsTriviallyAssignable extends BuiltInOperation, @istrivial
  * The `__is_nothrow_assignable` built-in operation (used by some
  * implementations of the `<type_traits>` header).
  *
- * Returns true if there exists a `C::operator =(const D& d) nothrow`
- * assignment operator (i.e, with an empty exception specification).
+ * Returns true if there exists an assignment operator with an empty exception specification.
  * ```
  * bool v = __is_nothrow_assignable(MyType1, MyType2);
  * ```
@@ -663,8 +693,7 @@ class BuiltInOperationIsNothrowAssignable extends BuiltInOperation, @isnothrowas
  * The `__is_assignable` built-in operation (used by some implementations
  * of the `<type_traits>` header).
  *
- * Returns true if there exists a `C::operator =(const D& d)` assignment
- * operator.
+ * Returns true if there exists an assignment operator.
  * ```
  * bool v = __is_assignable(MyType1, MyType2);
  * ```
@@ -673,6 +702,25 @@ class BuiltInOperationIsAssignable extends BuiltInOperation, @isassignable {
   override string toString() { result = "__is_assignable" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationIsAssignable" }
+}
+
+/**
+ * The `__is_assignable_no_precondition_check` built-in operation (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns true if there exists an assignment operator.
+ * ```
+ * bool v = __is_assignable_no_precondition_check(MyType1, MyType2);
+ * ```
+ */
+class BuiltInOperationIsAssignableNoPreconditionCheck extends BuiltInOperation,
+  @isassignablenopreconditioncheck
+{
+  override string toString() { result = "__is_assignable_no_precondition_check" }
+
+  override string getAPrimaryQlClass() {
+    result = "BuiltInOperationIsAssignableNoPreconditionCheck"
+  }
 }
 
 /**
@@ -706,6 +754,20 @@ class BuiltInOperationIsTriviallyCopyable extends BuiltInOperation, @istrivially
   override string toString() { result = "__is_trivially_copyable" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationIsTriviallyCopyable" }
+}
+
+/**
+ * The `__is_trivially_copy_assignable` built-in operation (used by some
+ * implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if instances of this type can be copied using a trivial
+ * copy operator.
+ */
+class BuiltInOperationIsTriviallyCopyAssignable extends BuiltInOperation, @istriviallycopyassignable
+{
+  override string toString() { result = "__is_trivially_copy_assignable" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsTriviallyCopyAssignable" }
 }
 
 /**
@@ -1063,6 +1125,24 @@ class BuiltInOperationIsSame extends BuiltInOperation, @issame {
 }
 
 /**
+ * A C++ `__is_same_as` built-in operation (used by some implementations of the
+ * `<type_traits>` header).
+ *
+ * Returns `true` if two types are the same.
+ * ```
+ * template<typename _Tp, typename _Up>
+ *   struct is_same
+ *   : public integral_constant<bool, __is_same_as(_Tp, _Up)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsSameAs extends BuiltInOperation, @issameas {
+  override string toString() { result = "__is_same_as" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsSameAs" }
+}
+
+/**
  * A C++ `__is_function` built-in operation (used by some implementations of the
  * `<type_traits>` header).
  *
@@ -1121,6 +1201,87 @@ class BuiltInOperationIsPointerInterconvertibleBaseOf extends BuiltInOperation,
 }
 
 /**
+ * A C++ `__is_pointer_interconvertible_with_class` built-in operation (used
+ * by some implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if a member pointer is pointer-interconvertible with a
+ * class type.
+ * ```
+ * template<typename _Tp, typename _Up>
+ * constexpr bool is_pointer_interconvertible_with_class(_Up _Tp::*mp) noexcept
+ *   = __is_pointer_interconvertible_with_class(_Tp, mp);
+ * ```
+ */
+class BuiltInOperationIsPointerInterconvertibleWithClass extends BuiltInOperation,
+  @ispointerinterconvertiblewithclass
+{
+  override string toString() { result = "__is_pointer_interconvertible_with_class" }
+
+  override string getAPrimaryQlClass() {
+    result = "BuiltInOperationIsPointerInterconvertibleWithClass"
+  }
+}
+
+/**
+ * A C++ `__builtin_is_pointer_interconvertible_with_class` built-in operation (used
+ * by some implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if a member pointer is pointer-interconvertible with a class type.
+ * ```
+ * template<typename _Tp, typename _Up>
+ * constexpr bool is_pointer_interconvertible_with_class(_Up _Tp::*mp) noexcept
+ *   = __builtin_is_pointer_interconvertible_with_class(mp);
+ * ```
+ */
+class BuiltInOperationBuiltInIsPointerInterconvertible extends BuiltInOperation,
+  @builtinispointerinterconvertiblewithclass
+{
+  override string toString() { result = "__builtin_is_pointer_interconvertible_with_class" }
+
+  override string getAPrimaryQlClass() {
+    result = "BuiltInOperationBuiltInIsPointerInterconvertible"
+  }
+}
+
+/**
+ * A C++ `__is_corresponding_member` built-in operation (used
+ * by some implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if two member pointers refer to corresponding
+ * members in the initial sequences of two class types.
+ * ```
+ * template<typename _Tp1, typename _Tp2, typename _Up1, typename _Up2>
+ * constexpr bool is_corresponding_member(_Up1 _Tp1::*mp1, _Up2 _Tp2::*mp2 ) noexcept
+ *   = __is_corresponding_member(_Tp1, _Tp2, mp1, mp2);
+ * ```
+ */
+class BuiltInOperationIsCorrespondingMember extends BuiltInOperation, @iscorrespondingmember {
+  override string toString() { result = "__is_corresponding_member" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsCorrespondingMember" }
+}
+
+/**
+ * A C++ `__builtin_is_corresponding_member` built-in operation (used
+ * by some implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if two member pointers refer to corresponding
+ * members in the initial sequences of two class types.
+ * ```
+ * template<typename _Tp1, typename _Tp2, typename _Up1, typename _Up2>
+ * constexpr bool is_corresponding_member(_Up1 _Tp1::*mp1, _Up2 _Tp2::*mp2 ) noexcept
+ *   = __builtin_is_corresponding_member(mp1, mp2);
+ * ```
+ */
+class BuiltInOperationBuiltInIsCorrespondingMember extends BuiltInOperation,
+  @builtiniscorrespondingmember
+{
+  override string toString() { result = "__builtin_is_corresponding_member" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationBuiltInIsCorrespondingMember" }
+}
+
+/**
  * A C++ `__is_array` built-in operation (used by some implementations of the
  * `<type_traits>` header).
  *
@@ -1136,6 +1297,42 @@ class BuiltInOperationIsArray extends BuiltInOperation, @isarray {
   override string toString() { result = "__is_array" }
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationIsArray" }
+}
+
+/**
+ * A C++ `__is_bounded_array` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is a bounded array type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_bounded_array
+ *   : public integral_constant<bool, __is_bounded_array(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsBoundedArray extends BuiltInOperation, @isboundedarray {
+  override string toString() { result = "__is_bounded_array" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsBoundedArray" }
+}
+
+/**
+ * A C++ `__is_unbounded_array` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is an unbounded array type.
+ * ```
+ * template<typename _Tp>
+ *   struct is_bounded_array
+ *   : public integral_constant<bool, __is_unbounded_array(_Tp)>
+ *   { };
+ * ```
+ */
+class BuiltInOperationIsUnboundedArray extends BuiltInOperation, @isunboundedarray {
+  override string toString() { result = "__is_unbounded_array" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsUnboundedArray" }
 }
 
 /**
@@ -1554,14 +1751,193 @@ class BuiltInBitCast extends BuiltInOperation, @builtinbitcast {
  *
  * Returns `true` if a type is a trivial type.
  * ```
- *  template<typename _Tp>
- *    struct is_trivial
- *    : public integral_constant<bool, __is_trivial(_Tp)>
- *    {};
+ * template<typename _Tp>
+ *   struct is_trivial
+ *   : public integral_constant<bool, __is_trivial(_Tp)>
+ *   {};
  * ```
  */
 class BuiltInIsTrivial extends BuiltInOperation, @istrivialexpr {
   override string toString() { result = "__is_trivial" }
 
   override string getAPrimaryQlClass() { result = "BuiltInIsTrivial" }
+}
+
+/**
+ * A C++ `__reference_constructs_from_temporary` built-in operation
+ * (used by some implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if a reference type `_Tp` is bound to an expression of
+ * type `_Up` in direct-initialization, and a temporary object is bound.
+ * ```
+ * template<typename _Tp, typename _Up>
+ *   struct reference_constructs_from_temporary
+ *   : public integral_constant<bool, __reference_constructs_from_temporary(_Tp, _Up)>
+ *   {};
+ * ```
+ */
+class BuiltInOperationReferenceConstructsFromTemporary extends BuiltInOperation,
+  @referenceconstructsfromtemporary
+{
+  override string toString() { result = "__reference_constructs_from_temporary" }
+
+  override string getAPrimaryQlClass() {
+    result = "BuiltInOperationReferenceConstructsFromTemporary"
+  }
+}
+
+/**
+ * A C++ `__reference_converts_from_temporary` built-in operation
+ * (used by some implementations of the `<type_traits>` header).
+ *
+ * Returns `true` if a reference type `_Tp` is bound to an expression of
+ * type `_Up` in copy-initialization, and a temporary object is bound.
+ * ```
+ * template<typename _Tp, typename _Up>
+ *   struct reference_converts_from_temporary
+ *   : public integral_constant<bool, __reference_converts_from_temporary(_Tp, _Up)>
+ *   {};
+ * ```
+ */
+class BuiltInOperationReferenceCovertsFromTemporary extends BuiltInOperation,
+  @referenceconvertsfromtemporary
+{
+  override string toString() { result = "__reference_converts_from_temporary" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationReferenceCovertsFromTemporary" }
+}
+
+/**
+ * A C++ `__reference_binds_to_temporary` built-in operation (used by some
+ * implementations of the `<tuple>` header).
+ *
+ * Returns `true` if a reference of type `Type1` is bound to an expression of
+ * type `Type1`, and a temporary object is bound.
+ * ```
+ * __reference_binds_to_temporary(Type1, Type2)
+ */
+class BuiltInOperationReferenceBindsToTemporary extends BuiltInOperation, @referencebindstotemporary
+{
+  override string toString() { result = "__reference_binds_to_temporary" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationReferenceBindsToTemporary" }
+}
+
+/**
+ * A C++ `__builtin_has_attribute` built-in operation.
+ *
+ * Returns `true` if a type or expression has been declared with the
+ * specified attribute.
+ * ```
+ * __attribute__ ((aligned(8))) int v;
+ * bool has_attribute = __builtin_has_attribute(v, aligned);
+ * ```
+ */
+class BuiltInOperationHasAttribute extends BuiltInOperation, @builtinhasattribute {
+  override string toString() { result = "__builtin_has_attribute" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationHasAttribute" }
+}
+
+/**
+ * A C++ `__is_referenceable` built-in operation.
+ *
+ * Returns `true` if a type can be referenced.
+ * ```
+ * bool is_referenceable = __is_referenceable(int);
+ * ```
+ */
+class BuiltInOperationIsReferenceable extends BuiltInOperation, @isreferenceable {
+  override string toString() { result = "__is_referenceable" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsReferenceable" }
+}
+
+/**
+ * The `__is_valid_winrt_type` built-in operation. This is a Microsoft extension.
+ *
+ * Returns `true` if the type is a valid WinRT type.
+ */
+class BuiltInOperationIsValidWinRtType extends BuiltInOperation, @isvalidwinrttype {
+  override string toString() { result = "__is_valid_winrt_type" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsValidWinRtType" }
+}
+
+/**
+ * The `__is_win_class` built-in operation. This is a Microsoft extension.
+ *
+ * Returns `true` if the class is a ref class.
+ */
+class BuiltInOperationIsWinClass extends BuiltInOperation, @iswinclass {
+  override string toString() { result = "__is_win_class" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsWinClass" }
+}
+
+/**
+ * The `__is_win_class` built-in operation. This is a Microsoft extension.
+ *
+ * Returns `true` if the class is an interface class.
+ */
+class BuiltInOperationIsWinInterface extends BuiltInOperation, @iswininterface {
+  override string toString() { result = "__is_win_interface" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsWinInterface" }
+}
+
+/**
+ * A C++ `__is_trivially_equality_comparable` built-in operation.
+ *
+ * Returns `true` if comparing two objects of type `_Tp` is equivalent to
+ * comparing their object representations.
+ *
+ * ```
+ * template<typename _Tp>
+ *   struct is_trivially_equality_comparable
+ *   : public integral_constant<bool, __is_trivially_equality_comparable(_Tp)>
+ *   {};
+ * ```
+ */
+class BuiltInOperationIsTriviallyEqualityComparable extends BuiltInOperation,
+  @istriviallyequalitycomparable
+{
+  override string toString() { result = "__is_trivially_equality_comparable" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsTriviallyEqualityComparable" }
+}
+
+/**
+ * A C++ `__is_scoped_enum` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a type is a scoped enum.
+ * ```
+ * template<typename _Tp>
+ * constexpr bool is_scoped_enum = __is_scoped_enum(_Tp);
+ * ```
+ */
+class BuiltInOperationIsScopedEnum extends BuiltInOperation, @isscopedenum {
+  override string toString() { result = "__is_scoped_enum" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsScopedEnum" }
+}
+
+/**
+ * A C++ `__is_trivially_relocatable` built-in operation.
+ *
+ * Returns `true` if moving an object of type `_Tp` is equivalent to
+ * copying the underlying bytes.
+ *
+ * ```
+ * template<typename _Tp>
+ *   struct is_trivially_relocatable
+ *   : public integral_constant<bool, __is_trivially_relocatable(_Tp)>
+ *   {};
+ * ```
+ */
+class BuiltInOperationIsTriviallyRelocatable extends BuiltInOperation, @istriviallyrelocatable {
+  override string toString() { result = "__is_trivially_relocatable" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsTriviallyRelocatable" }
 }

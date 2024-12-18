@@ -1,0 +1,23 @@
+edges
+| TestModel.cs:13:9:13:12 | [post] this access : TestModel [property Name] : String | TestModel.cs:14:16:14:21 | this access : TestModel [property Name] : String | provenance |  |
+| TestModel.cs:13:21:13:28 | call to method source : String | TestModel.cs:13:9:13:12 | [post] this access : TestModel [property Name] : String | provenance |  |
+| TestModel.cs:14:16:14:21 | this access : TestModel [property Name] : String | TestPage.cshtml.g.cs:63:35:63:48 | access to property Model : TestModel [property Name] : String | provenance |  |
+| TestModel.cs:14:16:14:21 | this access : TestModel [property Name] : String | TestPage.cshtml:5:16:5:20 | access to property Model : TestModel [property Name] : String | provenance |  |
+| TestModel.cs:18:9:18:12 | [post] this access : TestModel [property Name] : String | TestPage.cshtml.g.cs:63:35:63:48 | access to property Model : TestModel [property Name] : String | provenance |  |
+| TestModel.cs:18:9:18:12 | [post] this access : TestModel [property Name] : String | TestPage.cshtml:5:16:5:20 | access to property Model : TestModel [property Name] : String | provenance |  |
+| TestModel.cs:18:16:18:23 | call to method source : String | TestModel.cs:18:9:18:12 | [post] this access : TestModel [property Name] : String | provenance |  |
+| TestPage.cshtml.g.cs:63:35:63:48 | access to property Model : TestModel [property Name] : String | TestPage.cshtml:5:16:5:20 | access to property Model : TestModel [property Name] : String | provenance |  |
+| TestPage.cshtml:5:16:5:20 | access to property Model : TestModel [property Name] : String | TestPage.cshtml:5:16:5:25 | access to property Name | provenance |  |
+nodes
+| TestModel.cs:13:9:13:12 | [post] this access : TestModel [property Name] : String | semmle.label | [post] this access : TestModel [property Name] : String |
+| TestModel.cs:13:21:13:28 | call to method source : String | semmle.label | call to method source : String |
+| TestModel.cs:14:16:14:21 | this access : TestModel [property Name] : String | semmle.label | this access : TestModel [property Name] : String |
+| TestModel.cs:18:9:18:12 | [post] this access : TestModel [property Name] : String | semmle.label | [post] this access : TestModel [property Name] : String |
+| TestModel.cs:18:16:18:23 | call to method source : String | semmle.label | call to method source : String |
+| TestPage.cshtml.g.cs:63:35:63:48 | access to property Model : TestModel [property Name] : String | semmle.label | access to property Model : TestModel [property Name] : String |
+| TestPage.cshtml:5:16:5:20 | access to property Model : TestModel [property Name] : String | semmle.label | access to property Model : TestModel [property Name] : String |
+| TestPage.cshtml:5:16:5:25 | access to property Name | semmle.label | access to property Name |
+subpaths
+#select
+| TestPage.cshtml:5:16:5:25 | access to property Name | TestModel.cs:13:21:13:28 | call to method source : String | TestPage.cshtml:5:16:5:25 | access to property Name | Xss |
+| TestPage.cshtml:5:16:5:25 | access to property Name | TestModel.cs:18:16:18:23 | call to method source : String | TestPage.cshtml:5:16:5:25 | access to property Name | Xss |

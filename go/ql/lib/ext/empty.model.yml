@@ -1,0 +1,23 @@
+extensions:
+  # Make sure that the extensible model predicates have at least one definition
+  # to avoid errors about undefined extensionals.
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data: []
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data: []
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data: []
+  - addsTo:
+      pack: codeql/go-all
+      extensible: neutralModel
+    data: []
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data: []

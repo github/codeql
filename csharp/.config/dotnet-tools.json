@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "paket": {
+      "version": "9.0.2",
+      "commands": [
+        "paket"
+      ]
+    }
+  }
+}

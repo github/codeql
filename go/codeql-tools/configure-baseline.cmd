@@ -1,6 +1,4 @@
 @echo off
-if exist vendor\modules.txt (
-  type "%CODEQL_EXTRACTOR_GO_ROOT%\tools\baseline-config-vendor.json"
-) else (
-  type "%CODEQL_EXTRACTOR_GO_ROOT%\tools\baseline-config-empty.json"
-)
+
+type NUL && "%CODEQL_EXTRACTOR_GO_ROOT%/tools/%CODEQL_PLATFORM%/go-configure-baseline.exe"
+exit /b %ERRORLEVEL%

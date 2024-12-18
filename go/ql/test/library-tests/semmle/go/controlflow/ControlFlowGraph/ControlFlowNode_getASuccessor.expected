@@ -1369,85 +1369,111 @@
 | stmts.go:107:10:107:10 | true is false | stmts.go:106:3:106:7 | skip |
 | stmts.go:107:10:107:10 | true is true | stmts.go:107:2:107:11 | skip |
 | stmts.go:112:1:112:1 | entry | stmts.go:112:12:112:12 | argument corresponding to x |
-| stmts.go:112:1:125:1 | function declaration | stmts.go:128:6:128:11 | skip |
-| stmts.go:112:6:112:10 | skip | stmts.go:112:1:125:1 | function declaration |
+| stmts.go:112:1:137:1 | function declaration | stmts.go:140:6:140:11 | skip |
+| stmts.go:112:6:112:10 | skip | stmts.go:112:1:137:1 | function declaration |
 | stmts.go:112:12:112:12 | argument corresponding to x | stmts.go:112:12:112:12 | initialization of x |
 | stmts.go:112:12:112:12 | initialization of x | stmts.go:113:9:113:9 | skip |
 | stmts.go:113:9:113:9 | assignment to y | stmts.go:114:7:114:11 | case error |
-| stmts.go:113:9:113:9 | assignment to y | stmts.go:121:9:121:9 | skip |
 | stmts.go:113:9:113:9 | skip | stmts.go:113:14:113:14 | x |
 | stmts.go:113:14:113:14 | x | stmts.go:113:14:113:21 | type assertion |
 | stmts.go:113:14:113:21 | type assertion | stmts.go:113:9:113:9 | assignment to y |
+| stmts.go:114:2:115:16 | implicit type switch variable declaration | stmts.go:115:3:115:13 | selection of Println |
+| stmts.go:114:7:114:11 | case error | stmts.go:114:2:115:16 | implicit type switch variable declaration |
 | stmts.go:114:7:114:11 | case error | stmts.go:114:14:114:19 | case string |
-| stmts.go:114:7:114:11 | case error | stmts.go:115:3:115:13 | selection of Println |
-| stmts.go:114:14:114:19 | case string | stmts.go:115:3:115:13 | selection of Println |
+| stmts.go:114:14:114:19 | case string | stmts.go:114:2:115:16 | implicit type switch variable declaration |
 | stmts.go:114:14:114:19 | case string | stmts.go:116:7:116:13 | case float32 |
 | stmts.go:115:3:115:13 | selection of Println | stmts.go:115:15:115:15 | y |
-| stmts.go:115:3:115:16 | call to Println | stmts.go:121:9:121:9 | skip |
-| stmts.go:115:3:115:16 | call to Println | stmts.go:125:1:125:1 | exit |
+| stmts.go:115:3:115:16 | call to Println | stmts.go:123:9:123:9 | skip |
+| stmts.go:115:3:115:16 | call to Println | stmts.go:137:1:137:1 | exit |
 | stmts.go:115:15:115:15 | y | stmts.go:115:3:115:16 | call to Println |
-| stmts.go:116:7:116:13 | case float32 | stmts.go:117:3:117:7 | test5 |
-| stmts.go:116:7:116:13 | case float32 | stmts.go:121:9:121:9 | skip |
+| stmts.go:116:2:118:14 | implicit type switch variable declaration | stmts.go:117:3:117:7 | test5 |
+| stmts.go:116:7:116:13 | case float32 | stmts.go:116:2:118:14 | implicit type switch variable declaration |
+| stmts.go:116:7:116:13 | case float32 | stmts.go:119:2:120:7 | implicit type switch variable declaration |
 | stmts.go:117:3:117:7 | test5 | stmts.go:117:9:117:12 | true |
-| stmts.go:117:3:117:13 | call to test5 | stmts.go:125:1:125:1 | exit |
+| stmts.go:117:3:117:13 | call to test5 | stmts.go:137:1:137:1 | exit |
 | stmts.go:117:9:117:12 | true | stmts.go:117:3:117:13 | call to test5 |
 | stmts.go:118:3:118:7 | test5 | stmts.go:118:9:118:13 | false |
 | stmts.go:118:9:118:13 | false | stmts.go:118:3:118:14 | call to test5 |
-| stmts.go:121:9:121:9 | assignment to y | stmts.go:121:17:121:17 | y |
-| stmts.go:121:9:121:9 | skip | stmts.go:121:14:121:14 | x |
-| stmts.go:121:14:121:14 | x | stmts.go:121:9:121:9 | assignment to y |
-| stmts.go:121:17:121:17 | y | stmts.go:121:17:121:24 | type assertion |
-| stmts.go:121:17:121:24 | type assertion | stmts.go:123:3:123:7 | test5 |
-| stmts.go:123:3:123:7 | test5 | stmts.go:123:9:123:13 | false |
-| stmts.go:123:3:123:14 | call to test5 | stmts.go:125:1:125:1 | exit |
-| stmts.go:123:9:123:13 | false | stmts.go:123:3:123:14 | call to test5 |
-| stmts.go:128:1:128:1 | entry | stmts.go:128:13:128:13 | argument corresponding to f |
-| stmts.go:128:1:130:1 | function declaration | stmts.go:133:6:133:11 | skip |
-| stmts.go:128:6:128:11 | skip | stmts.go:128:1:130:1 | function declaration |
-| stmts.go:128:13:128:13 | argument corresponding to f | stmts.go:128:13:128:13 | initialization of f |
-| stmts.go:128:13:128:13 | initialization of f | stmts.go:129:5:129:5 | f |
-| stmts.go:129:2:129:7 | go statement | stmts.go:130:1:130:1 | exit |
-| stmts.go:129:5:129:5 | f | stmts.go:129:2:129:7 | go statement |
-| stmts.go:133:1:133:1 | entry | stmts.go:133:13:133:14 | argument corresponding to xs |
-| stmts.go:133:1:147:1 | function declaration | stmts.go:0:0:0:0 | exit |
-| stmts.go:133:6:133:11 | skip | stmts.go:133:1:147:1 | function declaration |
-| stmts.go:133:13:133:14 | argument corresponding to xs | stmts.go:133:13:133:14 | initialization of xs |
-| stmts.go:133:13:133:14 | initialization of xs | stmts.go:134:17:134:18 | xs |
-| stmts.go:134:2:139:2 | range statement[0] | stmts.go:134:6:134:6 | assignment to x |
-| stmts.go:134:6:134:6 | assignment to x | stmts.go:135:6:135:6 | x |
-| stmts.go:134:6:134:6 | skip | stmts.go:134:2:139:2 | range statement[0] |
-| stmts.go:134:17:134:18 | next key-value pair in range | stmts.go:134:6:134:6 | skip |
-| stmts.go:134:17:134:18 | next key-value pair in range | stmts.go:141:20:141:21 | xs |
-| stmts.go:134:17:134:18 | xs | stmts.go:134:17:134:18 | next key-value pair in range |
-| stmts.go:135:6:135:6 | x | stmts.go:135:10:135:10 | 5 |
-| stmts.go:135:6:135:10 | ...>... | stmts.go:135:10:135:10 | ...>... is false |
-| stmts.go:135:6:135:10 | ...>... | stmts.go:135:10:135:10 | ...>... is true |
-| stmts.go:135:10:135:10 | 5 | stmts.go:135:6:135:10 | ...>... |
-| stmts.go:135:10:135:10 | ...>... is false | stmts.go:138:3:138:11 | selection of Print |
-| stmts.go:135:10:135:10 | ...>... is true | stmts.go:136:4:136:11 | skip |
-| stmts.go:136:4:136:11 | skip | stmts.go:134:17:134:18 | next key-value pair in range |
-| stmts.go:138:3:138:11 | selection of Print | stmts.go:138:13:138:13 | x |
-| stmts.go:138:3:138:14 | call to Print | stmts.go:134:17:134:18 | next key-value pair in range |
-| stmts.go:138:3:138:14 | call to Print | stmts.go:147:1:147:1 | exit |
-| stmts.go:138:13:138:13 | x | stmts.go:138:3:138:14 | call to Print |
-| stmts.go:141:2:143:2 | range statement[0] | stmts.go:141:2:143:2 | range statement[1] |
-| stmts.go:141:2:143:2 | range statement[1] | stmts.go:141:6:141:6 | assignment to i |
-| stmts.go:141:6:141:6 | assignment to i | stmts.go:141:9:141:9 | assignment to v |
-| stmts.go:141:6:141:6 | skip | stmts.go:141:9:141:9 | skip |
-| stmts.go:141:9:141:9 | assignment to v | stmts.go:142:3:142:11 | selection of Print |
-| stmts.go:141:9:141:9 | skip | stmts.go:141:2:143:2 | range statement[0] |
-| stmts.go:141:20:141:21 | next key-value pair in range | stmts.go:141:6:141:6 | skip |
-| stmts.go:141:20:141:21 | next key-value pair in range | stmts.go:145:12:145:13 | xs |
-| stmts.go:141:20:141:21 | xs | stmts.go:141:20:141:21 | next key-value pair in range |
-| stmts.go:142:3:142:11 | selection of Print | stmts.go:142:13:142:13 | i |
-| stmts.go:142:3:142:17 | call to Print | stmts.go:141:20:141:21 | next key-value pair in range |
-| stmts.go:142:3:142:17 | call to Print | stmts.go:147:1:147:1 | exit |
-| stmts.go:142:13:142:13 | i | stmts.go:142:16:142:16 | v |
-| stmts.go:142:16:142:16 | v | stmts.go:142:3:142:17 | call to Print |
-| stmts.go:145:12:145:13 | next key-value pair in range | stmts.go:145:15:146:2 | skip |
-| stmts.go:145:12:145:13 | next key-value pair in range | stmts.go:147:1:147:1 | exit |
-| stmts.go:145:12:145:13 | xs | stmts.go:145:12:145:13 | next key-value pair in range |
-| stmts.go:145:15:146:2 | skip | stmts.go:145:12:145:13 | next key-value pair in range |
+| stmts.go:119:2:120:7 | implicit type switch variable declaration | stmts.go:120:3:120:3 | skip |
+| stmts.go:120:3:120:3 | skip | stmts.go:120:7:120:7 | y |
+| stmts.go:120:7:120:7 | y | stmts.go:123:9:123:9 | skip |
+| stmts.go:123:9:123:9 | assignment to y | stmts.go:123:17:123:17 | y |
+| stmts.go:123:9:123:9 | skip | stmts.go:123:14:123:14 | x |
+| stmts.go:123:14:123:14 | x | stmts.go:123:9:123:9 | assignment to y |
+| stmts.go:123:17:123:17 | y | stmts.go:123:17:123:24 | type assertion |
+| stmts.go:123:17:123:24 | type assertion | stmts.go:124:7:124:11 | case error |
+| stmts.go:124:7:124:11 | case error | stmts.go:124:14:124:19 | case string |
+| stmts.go:124:7:124:11 | case error | stmts.go:125:3:125:13 | selection of Println |
+| stmts.go:124:14:124:19 | case string | stmts.go:125:3:125:13 | selection of Println |
+| stmts.go:124:14:124:19 | case string | stmts.go:126:7:126:13 | case float32 |
+| stmts.go:125:3:125:13 | selection of Println | stmts.go:125:15:125:15 | y |
+| stmts.go:125:3:125:16 | call to Println | stmts.go:133:9:133:9 | skip |
+| stmts.go:125:3:125:16 | call to Println | stmts.go:137:1:137:1 | exit |
+| stmts.go:125:15:125:15 | y | stmts.go:125:3:125:16 | call to Println |
+| stmts.go:126:7:126:13 | case float32 | stmts.go:127:3:127:7 | test5 |
+| stmts.go:126:7:126:13 | case float32 | stmts.go:130:3:130:3 | skip |
+| stmts.go:127:3:127:7 | test5 | stmts.go:127:9:127:12 | true |
+| stmts.go:127:3:127:13 | call to test5 | stmts.go:137:1:137:1 | exit |
+| stmts.go:127:9:127:12 | true | stmts.go:127:3:127:13 | call to test5 |
+| stmts.go:128:3:128:7 | test5 | stmts.go:128:9:128:13 | false |
+| stmts.go:128:9:128:13 | false | stmts.go:128:3:128:14 | call to test5 |
+| stmts.go:130:3:130:3 | skip | stmts.go:130:7:130:7 | y |
+| stmts.go:130:7:130:7 | y | stmts.go:133:9:133:9 | skip |
+| stmts.go:133:9:133:9 | assignment to y | stmts.go:133:17:133:17 | y |
+| stmts.go:133:9:133:9 | skip | stmts.go:133:14:133:14 | x |
+| stmts.go:133:14:133:14 | x | stmts.go:133:9:133:9 | assignment to y |
+| stmts.go:133:17:133:17 | y | stmts.go:133:17:133:24 | type assertion |
+| stmts.go:133:17:133:24 | type assertion | stmts.go:135:3:135:7 | test5 |
+| stmts.go:135:3:135:7 | test5 | stmts.go:135:9:135:13 | false |
+| stmts.go:135:3:135:14 | call to test5 | stmts.go:137:1:137:1 | exit |
+| stmts.go:135:9:135:13 | false | stmts.go:135:3:135:14 | call to test5 |
+| stmts.go:140:1:140:1 | entry | stmts.go:140:13:140:13 | argument corresponding to f |
+| stmts.go:140:1:142:1 | function declaration | stmts.go:145:6:145:11 | skip |
+| stmts.go:140:6:140:11 | skip | stmts.go:140:1:142:1 | function declaration |
+| stmts.go:140:13:140:13 | argument corresponding to f | stmts.go:140:13:140:13 | initialization of f |
+| stmts.go:140:13:140:13 | initialization of f | stmts.go:141:5:141:5 | f |
+| stmts.go:141:2:141:7 | go statement | stmts.go:142:1:142:1 | exit |
+| stmts.go:141:5:141:5 | f | stmts.go:141:2:141:7 | go statement |
+| stmts.go:145:1:145:1 | entry | stmts.go:145:13:145:14 | argument corresponding to xs |
+| stmts.go:145:1:159:1 | function declaration | stmts.go:0:0:0:0 | exit |
+| stmts.go:145:6:145:11 | skip | stmts.go:145:1:159:1 | function declaration |
+| stmts.go:145:13:145:14 | argument corresponding to xs | stmts.go:145:13:145:14 | initialization of xs |
+| stmts.go:145:13:145:14 | initialization of xs | stmts.go:146:17:146:18 | xs |
+| stmts.go:146:2:151:2 | range statement[0] | stmts.go:146:6:146:6 | assignment to x |
+| stmts.go:146:6:146:6 | assignment to x | stmts.go:147:6:147:6 | x |
+| stmts.go:146:6:146:6 | skip | stmts.go:146:2:151:2 | range statement[0] |
+| stmts.go:146:17:146:18 | next key-value pair in range | stmts.go:146:6:146:6 | skip |
+| stmts.go:146:17:146:18 | next key-value pair in range | stmts.go:153:20:153:21 | xs |
+| stmts.go:146:17:146:18 | xs | stmts.go:146:17:146:18 | next key-value pair in range |
+| stmts.go:147:6:147:6 | x | stmts.go:147:10:147:10 | 5 |
+| stmts.go:147:6:147:10 | ...>... | stmts.go:147:10:147:10 | ...>... is false |
+| stmts.go:147:6:147:10 | ...>... | stmts.go:147:10:147:10 | ...>... is true |
+| stmts.go:147:10:147:10 | 5 | stmts.go:147:6:147:10 | ...>... |
+| stmts.go:147:10:147:10 | ...>... is false | stmts.go:150:3:150:11 | selection of Print |
+| stmts.go:147:10:147:10 | ...>... is true | stmts.go:148:4:148:11 | skip |
+| stmts.go:148:4:148:11 | skip | stmts.go:146:17:146:18 | next key-value pair in range |
+| stmts.go:150:3:150:11 | selection of Print | stmts.go:150:13:150:13 | x |
+| stmts.go:150:3:150:14 | call to Print | stmts.go:146:17:146:18 | next key-value pair in range |
+| stmts.go:150:3:150:14 | call to Print | stmts.go:159:1:159:1 | exit |
+| stmts.go:150:13:150:13 | x | stmts.go:150:3:150:14 | call to Print |
+| stmts.go:153:2:155:2 | range statement[0] | stmts.go:153:2:155:2 | range statement[1] |
+| stmts.go:153:2:155:2 | range statement[1] | stmts.go:153:6:153:6 | assignment to i |
+| stmts.go:153:6:153:6 | assignment to i | stmts.go:153:9:153:9 | assignment to v |
+| stmts.go:153:6:153:6 | skip | stmts.go:153:9:153:9 | skip |
+| stmts.go:153:9:153:9 | assignment to v | stmts.go:154:3:154:11 | selection of Print |
+| stmts.go:153:9:153:9 | skip | stmts.go:153:2:155:2 | range statement[0] |
+| stmts.go:153:20:153:21 | next key-value pair in range | stmts.go:153:6:153:6 | skip |
+| stmts.go:153:20:153:21 | next key-value pair in range | stmts.go:157:12:157:13 | xs |
+| stmts.go:153:20:153:21 | xs | stmts.go:153:20:153:21 | next key-value pair in range |
+| stmts.go:154:3:154:11 | selection of Print | stmts.go:154:13:154:13 | i |
+| stmts.go:154:3:154:17 | call to Print | stmts.go:153:20:153:21 | next key-value pair in range |
+| stmts.go:154:3:154:17 | call to Print | stmts.go:159:1:159:1 | exit |
+| stmts.go:154:13:154:13 | i | stmts.go:154:16:154:16 | v |
+| stmts.go:154:16:154:16 | v | stmts.go:154:3:154:17 | call to Print |
+| stmts.go:157:12:157:13 | next key-value pair in range | stmts.go:157:15:158:2 | skip |
+| stmts.go:157:12:157:13 | next key-value pair in range | stmts.go:159:1:159:1 | exit |
+| stmts.go:157:12:157:13 | xs | stmts.go:157:12:157:13 | next key-value pair in range |
+| stmts.go:157:15:158:2 | skip | stmts.go:157:12:157:13 | next key-value pair in range |
 | tst.go:0:0:0:0 | entry | tst.go:3:6:3:10 | skip |
 | tst.go:3:1:3:1 | entry | tst.go:3:12:3:12 | argument corresponding to x |
 | tst.go:3:1:12:1 | function declaration | tst.go:14:6:14:11 | skip |

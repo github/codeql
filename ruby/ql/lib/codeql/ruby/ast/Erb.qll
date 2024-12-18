@@ -256,10 +256,30 @@ class ErbOutputDirective extends ErbDirective {
 
   override ErbCode getToken() { toGenerated(result) = g.getChild() }
 
+  /**
+   * Holds if this is a raw Erb output directive.
+   * ```erb
+   * <%== foo %>
+   * ```
+   */
+  predicate isRaw() {
+    exists(Erb::Token t | t.getParentIndex() = 0 and t.getParent() = g and t.getValue() = "<%==")
+  }
+
   final override string toString() {
-    result = "<%=" + this.getToken().toString() + "%>"
+    this.isRaw() and
+    (
+      result = "<%==" + this.getToken().toString() + "%>"
+      or
+      not exists(this.getToken()) and result = "<%==%>"
+    )
     or
-    not exists(this.getToken()) and result = "<%=%>"
+    not this.isRaw() and
+    (
+      result = "<%=" + this.getToken().toString() + "%>"
+      or
+      not exists(this.getToken()) and result = "<%=%>"
+    )
   }
 
   final override string getAPrimaryQlClass() { result = "ErbOutputDirective" }

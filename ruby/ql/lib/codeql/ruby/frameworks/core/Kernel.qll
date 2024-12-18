@@ -43,7 +43,10 @@ module Kernel {
    * ```
    */
   private predicate isPublicKernelMethod(string method) {
-    method in ["class", "clone", "frozen?", "tap", "then", "yield_self", "send"]
+    method in [
+        "class", "clone", "frozen?", "tap", "then", "yield_self", "send", "public_send", "__send__",
+        "method", "public_method", "singleton_method"
+      ]
   }
 
   /**
@@ -167,7 +170,25 @@ module Kernel {
    * ```
    */
   class SendCallCodeExecution extends CodeExecution::Range, KernelMethodCall {
-    SendCallCodeExecution() { this.getMethodName() = "send" }
+    SendCallCodeExecution() { this.getMethodName() = ["send", "public_send", "__send__"] }
+
+    override DataFlow::Node getCode() { result = this.getArgument(0) }
+
+    override predicate runsArbitraryCode() { none() }
+  }
+
+  /**
+   * A call to `method`, `public_method` or `singleton_method` which returns a method object.
+   * To actually execute the method, the `call` method needs to be called on the object.
+   * ```ruby
+   * m = method("exit")
+   * m.call()
+   * ```
+   */
+  class MethodCallCodeExecution extends CodeExecution::Range, KernelMethodCall {
+    MethodCallCodeExecution() {
+      this.getMethodName() = ["method", "public_method", "singleton_method"]
+    }
 
     override DataFlow::Node getCode() { result = this.getArgument(0) }
 
@@ -177,7 +198,7 @@ module Kernel {
   private class TapSummary extends SimpleSummarizedCallable {
     TapSummary() { this = "tap" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
       output = ["ReturnValue", "Argument[block].Parameter[0]"] and
       preservesValue = true
@@ -219,7 +240,7 @@ module Kernel {
       )
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         // already an array
         input = "Argument[0].WithElement[0..]" and

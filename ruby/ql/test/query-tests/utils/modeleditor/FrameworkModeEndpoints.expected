@@ -1,0 +1,16 @@
+| lib/module.rb:1:1:7:3 | M1 | mylib | M1 |  |  | false | module.rb |  |
+| lib/module.rb:2:3:3:5 | foo | mylib | M1 | foo | (x,y) | false | module.rb |  |
+| lib/module.rb:5:3:6:5 | self_foo | mylib | M1! | self_foo | (x,y) | false | module.rb |  |
+| lib/mylib.rb:3:1:34:3 | A | mylib | A |  |  | false | mylib.rb |  |
+| lib/mylib.rb:4:3:6:5 | initialize | mylib | A! | new | (x,y) | false | mylib.rb |  |
+| lib/mylib.rb:8:3:12:5 | foo | mylib | A | foo | (x,y,key1:) | false | mylib.rb |  |
+| lib/mylib.rb:14:3:15:5 | bar | mylib | A | bar | (x) | false | mylib.rb |  |
+| lib/mylib.rb:17:3:18:5 | self_foo | mylib | A! | self_foo | (x,y) | false | mylib.rb |  |
+| lib/mylib.rb:25:3:33:5 | ANested | mylib | A::ANested |  |  | false | mylib.rb |  |
+| lib/mylib.rb:26:5:27:7 | foo | mylib | A::ANested | foo | (x,y) | false | mylib.rb |  |
+| lib/other.rb:3:1:8:3 | B | mylib | B |  |  | false | other.rb |  |
+| lib/other.rb:6:3:7:5 | foo | mylib | B | foo | (x,y) | false | other.rb |  |
+| lib/other.rb:10:1:12:3 | C | mylib | C |  |  | false | other.rb |  |
+| other_lib/lib/other_gem.rb:1:1:6:3 | OtherLib | other-lib | OtherLib |  |  | false | other_gem.rb |  |
+| other_lib/lib/other_gem.rb:2:5:5:7 | A | other-lib | OtherLib::A |  |  | false | other_gem.rb |  |
+| other_lib/lib/other_gem.rb:3:9:4:11 | foo | other-lib | OtherLib::A | foo | (x,y) | false | other_gem.rb |  |

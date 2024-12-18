@@ -61,10 +61,10 @@ class Expr extends ExprParent, @expr {
   Expr getAChildExpr() { exprs(result, _, _, this, _) }
 
   /** Gets the basic block in which this expression occurs, if any. */
-  BasicBlock getBasicBlock() { result.getANode() = this }
+  BasicBlock getBasicBlock() { result.getANode().asExpr() = this }
 
   /** Gets the `ControlFlowNode` corresponding to this expression. */
-  ControlFlowNode getControlFlowNode() { result = this }
+  ControlFlowNode getControlFlowNode() { result.asExpr() = this }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   string getHalsteadID() { result = this.toString() }
@@ -378,7 +378,17 @@ class ArrayInit extends Expr, @arrayinit {
   override string getAPrimaryQlClass() { result = "ArrayInit" }
 }
 
-/** A common super-class that represents all varieties of assignments. */
+/**
+ * A common super-class that represents many varieties of assignments.
+ *
+ * This does not cover unary assignments such as `i++`, and initialization of
+ * local variables at their declaration such as `int i = 0;`.
+ *
+ * To cover more cases of variable updates, see the classes `VariableAssign`,
+ * `VariableUpdate` and `VarWrite`. But consider that they don't cover array
+ * element assignments since there the assignment destination is not directly
+ * the array variable but instead an `ArrayAccess`.
+ */
 class Assignment extends Expr, @assignment {
   /** Gets the destination (left-hand side) of the assignment. */
   Expr getDest() { result.isNthChildOf(this, 0) }
@@ -501,9 +511,6 @@ class AssignLeftShiftExpr extends AssignOp, @assignlshiftexpr {
   override string getAPrimaryQlClass() { result = "AssignLeftShiftExpr" }
 }
 
-/** DEPRECATED: Alias for AssignLeftShiftExpr. */
-deprecated class AssignLShiftExpr = AssignLeftShiftExpr;
-
 /** A compound assignment expression using the `>>=` operator. */
 class AssignRightShiftExpr extends AssignOp, @assignrshiftexpr {
   override string getOp() { result = ">>=" }
@@ -511,18 +518,12 @@ class AssignRightShiftExpr extends AssignOp, @assignrshiftexpr {
   override string getAPrimaryQlClass() { result = "AssignRightShiftExpr" }
 }
 
-/** DEPRECATED: Alias for AssignRightShiftExpr. */
-deprecated class AssignRShiftExpr = AssignRightShiftExpr;
-
 /** A compound assignment expression using the `>>>=` operator. */
 class AssignUnsignedRightShiftExpr extends AssignOp, @assignurshiftexpr {
   override string getOp() { result = ">>>=" }
 
   override string getAPrimaryQlClass() { result = "AssignUnsignedRightShiftExpr" }
 }
-
-/** DEPRECATED: Alias for AssignUnsignedRightShiftExpr. */
-deprecated class AssignURShiftExpr = AssignUnsignedRightShiftExpr;
 
 /** A common super-class to represent constant literals. */
 class Literal extends Expr, @literal {
@@ -783,9 +784,6 @@ class LeftShiftExpr extends BinaryExpr, @lshiftexpr {
   override string getAPrimaryQlClass() { result = "LeftShiftExpr" }
 }
 
-/** DEPRECATED: Alias for LeftShiftExpr. */
-deprecated class LShiftExpr = LeftShiftExpr;
-
 /** A binary expression using the `>>` operator. */
 class RightShiftExpr extends BinaryExpr, @rshiftexpr {
   override string getOp() { result = " >> " }
@@ -793,18 +791,12 @@ class RightShiftExpr extends BinaryExpr, @rshiftexpr {
   override string getAPrimaryQlClass() { result = "RightShiftExpr" }
 }
 
-/** DEPRECATED: Alias for RightShiftExpr. */
-deprecated class RShiftExpr = RightShiftExpr;
-
 /** A binary expression using the `>>>` operator. */
 class UnsignedRightShiftExpr extends BinaryExpr, @urshiftexpr {
   override string getOp() { result = " >>> " }
 
   override string getAPrimaryQlClass() { result = "UnsignedRightShiftExpr" }
 }
-
-/** DEPRECATED: Alias for UnsignedRightShiftExpr. */
-deprecated class URShiftExpr = UnsignedRightShiftExpr;
 
 /** A binary expression using the `&` operator. */
 class AndBitwiseExpr extends BinaryExpr, @andbitexpr {
@@ -1510,16 +1502,32 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
   Stmt getStmt(int index) { result = this.getAStmt() and result.getIndex() = index }
 
   /**
+   * Gets the `i`th case of this `switch` expression,
+   * which may be either a normal `case` or a `default`.
+   */
+  SwitchCase getCase(int i) {
+    result =
+      rank[i + 1](SwitchCase case, int idx | case.isNthChildOf(this, idx) | case order by idx)
+  }
+
+  /**
    * Gets a case of this `switch` expression,
    * which may be either a normal `case` or a `default`.
    */
-  SwitchCase getACase() { result = this.getAConstCase() or result = this.getDefaultCase() }
+  SwitchCase getACase() { result.getParent() = this }
 
   /** Gets a (non-default) `case` of this `switch` expression. */
-  ConstCase getAConstCase() { result.getParent() = this }
+  ConstCase getAConstCase() { result = this.getACase() }
 
-  /** Gets the `default` case of this switch expression, if any. */
-  DefaultCase getDefaultCase() { result.getParent() = this }
+  /** Gets a (non-default) pattern `case` of this `switch` expression. */
+  PatternCase getAPatternCase() { result = this.getACase() }
+
+  /**
+   * Gets the `default` case of this switch statement, if any.
+   *
+   * Note this may be `default` or `case null, default`.
+   */
+  DefaultCase getDefaultCase() { result = this.getACase() }
 
   /** Gets the expression of this `switch` expression. */
   Expr getExpr() { result.getParent() = this }
@@ -1531,6 +1539,12 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
     exists(YieldStmt yield | yield.getTarget() = this and result = yield.getValue())
   }
 
+  /** Holds if this switch has a case handling a null literal. */
+  predicate hasNullCase() {
+    this.getAConstCase().getValue(_) instanceof NullLiteral or
+    this.getACase() instanceof NullDefaultCase
+  }
+
   /** Gets a printable representation of this expression. */
   override string toString() { result = "switch (...)" }
 
@@ -1540,27 +1554,63 @@ class SwitchExpr extends Expr, StmtParent, @switchexpr {
 /** An `instanceof` expression. */
 class InstanceOfExpr extends Expr, @instanceofexpr {
   /** Gets the expression on the left-hand side of the `instanceof` operator. */
-  Expr getExpr() {
-    if this.isPattern()
-    then result = this.getLocalVariableDeclExpr().getInit()
-    else result.isNthChildOf(this, 0)
-  }
+  Expr getExpr() { result.isNthChildOf(this, 0) }
+
+  /**
+   * Gets the pattern of an `x instanceof T pattern` expression, if any.
+   */
+  PatternExpr getPattern() { result.isNthChildOf(this, 2) }
 
   /**
    * Holds if this `instanceof` expression uses pattern matching.
    */
-  predicate isPattern() { exists(this.getLocalVariableDeclExpr()) }
+  predicate isPattern() { exists(this.getPattern()) }
 
   /**
-   * Gets the local variable declaration of this `instanceof` expression if pattern matching is used.
+   * Gets the local variable declaration of this `instanceof` expression if simple pattern matching is used.
+   *
+   * Note that this won't get anything when record pattern matching is used-- for more general patterns,
+   * use `getPattern`.
    */
-  LocalVariableDeclExpr getLocalVariableDeclExpr() { result.isNthChildOf(this, 0) }
+  LocalVariableDeclExpr getLocalVariableDeclExpr() {
+    result = this.getPattern().asBindingOrUnnamedPattern()
+  }
 
-  /** Gets the access to the type on the right-hand side of the `instanceof` operator. */
+  /**
+   * Gets the access to the type on the right-hand side of the `instanceof` operator.
+   *
+   * This does not match record patterns, which have a record pattern (use `getPattern`) not a type access.
+   */
   Expr getTypeName() { result.isNthChildOf(this, 1) }
 
-  /** Gets the type this `instanceof` expression checks for. */
-  RefType getCheckedType() { result = this.getTypeName().getType() }
+  /**
+   * Gets the type this `instanceof` expression checks for.
+   *
+   * For a match against a record pattern, this is the type of the outermost record type, and only holds if
+   * the record pattern matches that type unconditionally, i.e. it does not restrict field types more tightly
+   * than the fields' declared types and therefore match a subset of `rpe.getType()`.
+   */
+  RefType getCheckedType() {
+    result = this.getTypeName().getType()
+    or
+    exists(RecordPatternExpr rpe | rpe = this.getPattern().asRecordPattern() |
+      result = rpe.getType() and rpe.isUnrestricted()
+    )
+  }
+
+  /**
+   * Gets the type this `instanceof` expression checks for.
+   *
+   * For a match against a record pattern, this is the type of the outermost record type. Note that because
+   * the record match might additionally constrain field or sub-record fields to have a more specific type,
+   * and so while if the `instanceof` test passes we know that `this.getExpr()` has this type, if it fails
+   * we do not know that it doesn't.
+   */
+  RefType getSyntacticCheckedType() {
+    result = this.getTypeName().getType()
+    or
+    result = this.getPattern().asRecordPattern().getType()
+  }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "...instanceof..." }
@@ -1592,7 +1642,9 @@ class NotInstanceOfExpr extends Expr, @notinstanceofexpr {
  * A local variable declaration expression.
  *
  * Contexts in which such expressions may occur include
- * local variable declaration statements and `for` loops.
+ * local variable declaration statements, `for` loops,
+ * and binding patterns such as `if (x instanceof T t)` and
+ * `case String s:`.
  */
 class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   /** Gets an access to the variable declared by this local variable declaration expression. */
@@ -1612,24 +1664,105 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
     exists(EnhancedForStmt efs | efs.getVariable() = this | result.isNthChildOf(efs, -1))
     or
     exists(InstanceOfExpr ioe | this.getParent() = ioe | result.isNthChildOf(ioe, 1))
+    or
+    exists(PatternCase pc, int index, int typeAccessIdx | this.isNthChildOf(pc, index) |
+      (if index = 0 then typeAccessIdx = -2 else typeAccessIdx = (-3 - index)) and
+      result.isNthChildOf(pc, typeAccessIdx)
+    )
+    or
+    exists(RecordPatternExpr rpe, int index |
+      this.isNthChildOf(rpe, index) and result.isNthChildOf(rpe, -(index + 1))
+    )
   }
 
   /** Gets the name of the variable declared by this local variable declaration expression. */
   string getName() { result = this.getVariable().getName() }
 
-  /** Gets the initializer expression of this local variable declaration expression, if any. */
+  /** Holds if this is an anonymous local variable, `_` */
+  predicate isAnonymous() { this.getName() = "" }
+
+  /**
+   * Gets the switch statement or expression whose pattern declares this identifier, if any.
+   */
+  SwitchBlock getAssociatedSwitch() {
+    exists(PatternCase pc |
+      pc = result.(SwitchStmt).getAPatternCase()
+      or
+      pc = result.(SwitchExpr).getAPatternCase()
+    |
+      this = pc.getAPattern().getAChildExpr*()
+    )
+  }
+
+  /** Holds if this is a declaration stemming from a pattern switch case. */
+  predicate hasAssociatedSwitch() { exists(this.getAssociatedSwitch()) }
+
+  /**
+   * Gets the instanceof expression whose pattern declares this identifier, if any.
+   */
+  InstanceOfExpr getAssociatedInstanceOfExpr() { result.getPattern().getAChildExpr*() = this }
+
+  /** Holds if this is a declaration stemming from a pattern instanceof expression. */
+  predicate hasAssociatedInstanceOfExpr() { exists(this.getAssociatedInstanceOfExpr()) }
+
+  /**
+   * Gets the initializer expression of this local variable declaration expression, if any.
+   *
+   * Note this applies specifically to a syntactic initialization like `T varname = init`;
+   * to include also `e instanceof T varname` and `switch(e) ... case T varname`, which both
+   * have the effect of initializing `varname` to a known local expression without using
+   * that syntax, use `getInitOrPatternSource`.
+   */
   Expr getInit() { result.isNthChildOf(this, 0) }
+
+  /**
+   * Gets the local expression that initializes this variable declaration, if any.
+   *
+   * Note this includes explicit `T varname = init;`, as well as `e instanceof T varname`
+   * and `switch(e) ... case T varname`. To get only explicit initializers, use `getInit`.
+   *
+   * Note that record pattern variables like `e instance of T Record(T varname)` do not have
+   * either an explicit initializer or a pattern source.
+   */
+  Expr getInitOrPatternSource() {
+    result = this.getInit()
+    or
+    exists(SwitchStmt switch |
+      result = switch.getExpr() and
+      this = switch.getAPatternCase().getAPattern().asBindingOrUnnamedPattern()
+    )
+    or
+    exists(SwitchExpr switch |
+      result = switch.getExpr() and
+      this = switch.getAPatternCase().getAPattern().asBindingOrUnnamedPattern()
+    )
+    or
+    exists(InstanceOfExpr ioe |
+      result = ioe.getExpr() and
+      this = ioe.getPattern().asBindingOrUnnamedPattern()
+    )
+  }
 
   /** Holds if this variable declaration implicitly initializes the variable. */
   predicate hasImplicitInit() {
-    exists(CatchClause cc | cc.getVariable() = this) or
+    exists(CatchClause cc | cc.getVariable() = this)
+    or
     exists(EnhancedForStmt efs | efs.getVariable() = this)
+    or
+    this.getParent() instanceof RecordPatternExpr
   }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = this.getName() }
+  override string toString() {
+    if this.getName() = "" then result = "<anonymous local variable>" else result = this.getName()
+  }
 
   override string getAPrimaryQlClass() { result = "LocalVariableDeclExpr" }
+}
+
+/** A local variable declaration that occurs within a record pattern. */
+class RecordBindingVariableExpr extends LocalVariableDeclExpr {
+  RecordBindingVariableExpr() { this.getParent() instanceof RecordPatternExpr }
 }
 
 /** An update of a variable or an initialization of the variable. */
@@ -1650,6 +1783,9 @@ class VariableUpdate extends Expr {
 
 /**
  * An assignment to a variable or an initialization of the variable.
+ *
+ * This does not cover compound assignments such as `i += 1`, or unary
+ * assignments such as `i++`; use the class `VariableUpdate` for that.
  */
 class VariableAssign extends VariableUpdate {
   VariableAssign() {
@@ -1660,12 +1796,12 @@ class VariableAssign extends VariableUpdate {
   /**
    * Gets the source (right-hand side) of this assignment, if any.
    *
-   * An initialization in a `CatchClause` or `EnhancedForStmt` is implicit and
-   * does not have a source.
+   * An initialization in a `CatchClause`, `EnhancedForStmt` or `RecordPatternExpr`
+   * is implicit and does not have a source.
    */
   Expr getSource() {
     result = this.(AssignExpr).getSource() or
-    result = this.(LocalVariableDeclExpr).getInit()
+    result = this.(LocalVariableDeclExpr).getInitOrPatternSource()
   }
 }
 
@@ -1848,6 +1984,9 @@ class ExtensionReceiverAccess extends VarAccess {
 
 /**
  * A write access to a variable, which occurs as the destination of an assignment.
+ *
+ * This does not cover the initialization of local variables at their declaration,
+ * use the class `VariableUpdate` if you want to cover that as well.
  */
 class VarWrite extends VarAccess {
   VarWrite() { this.isVarWrite() }
@@ -1918,7 +2057,11 @@ class MethodCall extends Expr, Call, @methodaccess {
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = this.printAccess() }
+  override string toString() {
+    if exists(this.getMethod())
+    then result = this.printAccess()
+    else result = "<Call to unknown method>"
+  }
 
   /** Gets a printable representation of this expression. */
   string printAccess() { result = this.getMethod().getName() + "(...)" }
@@ -1981,11 +2124,17 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   /** Gets the compilation unit in which this type access occurs. */
   override CompilationUnit getCompilationUnit() { result = Expr.super.getCompilationUnit() }
 
-  /** Gets a printable representation of this expression. */
-  override string toString() {
+  private string toNormalString() {
     result = this.getQualifier().toString() + "." + this.getType().toString()
     or
     not this.hasQualifier() and result = this.getType().toString()
+  }
+
+  /** Gets a printable representation of this expression. */
+  override string toString() {
+    if this.getType() instanceof ErrorType
+    then result = "<TypeAccess of ErrorType>"
+    else result = this.toNormalString()
   }
 
   override string getAPrimaryQlClass() { result = "TypeAccess" }
@@ -2511,4 +2660,75 @@ class NotNullExpr extends UnaryExpr, @notnullexpr {
   override string toString() { result = "...!!" }
 
   override string getAPrimaryQlClass() { result = "NotNullExpr" }
+}
+
+/**
+ * A binding, unnamed or record pattern.
+ *
+ * Note binding and unnamed patterns are represented as `LocalVariableDeclExpr`s.
+ */
+class PatternExpr extends Expr {
+  PatternExpr() {
+    (
+      this.getParent() instanceof SwitchCase or
+      this.getParent() instanceof InstanceOfExpr or
+      this.getParent() instanceof RecordPatternExpr
+    ) and
+    (this instanceof LocalVariableDeclExpr or this instanceof RecordPatternExpr)
+  }
+
+  /**
+   * Gets this pattern cast to a binding or unnamed pattern.
+   */
+  LocalVariableDeclExpr asBindingOrUnnamedPattern() { result = this }
+
+  /**
+   * DEPRECATED: alias for `asBindingOrUnnamedPattern`.
+   */
+  deprecated LocalVariableDeclExpr asBindingPattern() { result = this.asBindingOrUnnamedPattern() }
+
+  /**
+   * Gets this pattern cast to a record pattern.
+   */
+  RecordPatternExpr asRecordPattern() { result = this }
+}
+
+/** A record pattern expr, as in `if (x instanceof SomeRecord(int field))`. */
+class RecordPatternExpr extends Expr, @recordpatternexpr {
+  override string toString() { result = this.getType().toString() + "(...)" }
+
+  override string getAPrimaryQlClass() { result = "RecordPatternExpr" }
+
+  /**
+   * Gets the `i`th subpattern of this record pattern.
+   */
+  PatternExpr getSubPattern(int i) { result.isNthChildOf(this, i) }
+
+  /**
+   * Holds if this record pattern matches any record of its type.
+   *
+   * For example, for `record R(Object o) { }`, pattern `R(Object o)` is unrestricted, whereas
+   * pattern `R(String s)` is not because it matches a subset of `R` instances, those containing `String`s.
+   */
+  predicate isUnrestricted() {
+    forall(PatternExpr subPattern, int idx | subPattern = this.getSubPattern(idx) |
+      subPattern.getType() =
+        this.getType().(Record).getCanonicalConstructor().getParameter(idx).getType() and
+      (
+        subPattern instanceof LocalVariableDeclExpr
+        or
+        subPattern.(RecordPatternExpr).isUnrestricted()
+      )
+    )
+  }
+
+  /**
+   * Holds if this record pattern declares any identifiers (i.e., at least one leaf declaration is named).
+   */
+  predicate declaresAnyIdentifiers() {
+    exists(PatternExpr subPattern | subPattern = this.getSubPattern(_) |
+      subPattern.asRecordPattern().declaresAnyIdentifiers() or
+      not subPattern.asBindingOrUnnamedPattern().isAnonymous()
+    )
+  }
 }

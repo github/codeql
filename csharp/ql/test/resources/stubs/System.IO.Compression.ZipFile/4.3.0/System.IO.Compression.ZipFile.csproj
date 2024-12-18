@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../System.Buffers/4.3.0/System.Buffers.csproj" />
+    <ProjectReference Include="../../System.IO/4.3.0/System.IO.csproj" />
+    <ProjectReference Include="../../System.IO.Compression/4.3.0/System.IO.Compression.csproj" />
+    <ProjectReference Include="../../System.IO.FileSystem/4.3.0/System.IO.FileSystem.csproj" />
+    <ProjectReference Include="../../System.IO.FileSystem.Primitives/4.3.0/System.IO.FileSystem.Primitives.csproj" />
+    <ProjectReference Include="../../System.Resources.ResourceManager/4.3.0/System.Resources.ResourceManager.csproj" />
+    <ProjectReference Include="../../System.Runtime/4.3.0/System.Runtime.csproj" />
+    <ProjectReference Include="../../System.Runtime.Extensions/4.3.0/System.Runtime.Extensions.csproj" />
+    <ProjectReference Include="../../System.Text.Encoding/4.3.0/System.Text.Encoding.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

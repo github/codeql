@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/java-all
-      extensible: experimentalSourceModel
-    data:
-      - ["jakarta.servlet.http", "HttpServletRequest", True, "getServletPath", "", "", "ReturnValue", "remote", "manual", "unsafe-url-forward"]

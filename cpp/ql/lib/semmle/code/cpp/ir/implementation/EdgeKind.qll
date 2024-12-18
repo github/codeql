@@ -8,7 +8,8 @@ private newtype TEdgeKind =
   TGotoEdge() or // Single successor (including fall-through)
   TTrueEdge() or // 'true' edge of conditional branch
   TFalseEdge() or // 'false' edge of conditional branch
-  TExceptionEdge() or // Thrown exception
+  TCppExceptionEdge() or // Thrown C++ exception
+  TSehExceptionEdge() or // Thrown SEH exception
   TDefaultEdge() or // 'default' label of switch
   TCaseEdge(string minValue, string maxValue) {
     // Case label of switch
@@ -20,16 +21,18 @@ private newtype TEdgeKind =
  * `Instruction` or `IRBlock` has at most one successor of any single
  * `EdgeKind`.
  */
-abstract class EdgeKind extends TEdgeKind {
+abstract private class EdgeKindImpl extends TEdgeKind {
   /** Gets a textual representation of this edge kind. */
   abstract string toString();
 }
+
+final class EdgeKind = EdgeKindImpl;
 
 /**
  * A "goto" edge, representing the unconditional successor of an `Instruction`
  * or `IRBlock`.
  */
-class GotoEdge extends EdgeKind, TGotoEdge {
+class GotoEdge extends EdgeKindImpl, TGotoEdge {
   final override string toString() { result = "Goto" }
 }
 
@@ -37,7 +40,7 @@ class GotoEdge extends EdgeKind, TGotoEdge {
  * A "true" edge, representing the successor of a conditional branch when the
  * condition is non-zero.
  */
-class TrueEdge extends EdgeKind, TTrueEdge {
+class TrueEdge extends EdgeKindImpl, TTrueEdge {
   final override string toString() { result = "True" }
 }
 
@@ -45,23 +48,42 @@ class TrueEdge extends EdgeKind, TTrueEdge {
  * A "false" edge, representing the successor of a conditional branch when the
  * condition is zero.
  */
-class FalseEdge extends EdgeKind, TFalseEdge {
+class FalseEdge extends EdgeKindImpl, TFalseEdge {
   final override string toString() { result = "False" }
 }
+
+abstract private class ExceptionEdgeImpl extends EdgeKindImpl { }
 
 /**
  * An "exception" edge, representing the successor of an instruction when that
  * instruction's evaluation throws an exception.
+ *
+ * Exception edges are expclitly sublcassed to `CppExceptionEdge` and `SehExceptionEdge`
+ * only. Further sublcasses, if required, should be added privately here for IR efficiency.
  */
-class ExceptionEdge extends EdgeKind, TExceptionEdge {
-  final override string toString() { result = "Exception" }
+final class ExceptionEdge = ExceptionEdgeImpl;
+
+/**
+ * An "exception" edge, representing the successor of an instruction when that
+ * instruction's evaluation throws a C++ exception.
+ */
+class CppExceptionEdge extends ExceptionEdgeImpl, TCppExceptionEdge {
+  final override string toString() { result = "C++ Exception" }
+}
+
+/**
+ * An "exception" edge, representing the successor of an instruction when that
+ * instruction's evaluation throws an SEH exception.
+ */
+class SehExceptionEdge extends ExceptionEdgeImpl, TSehExceptionEdge {
+  final override string toString() { result = "SEH Exception" }
 }
 
 /**
  * A "default" edge, representing the successor of a `Switch` instruction when
  * none of the case values matches the condition value.
  */
-class DefaultEdge extends EdgeKind, TDefaultEdge {
+class DefaultEdge extends EdgeKindImpl, TDefaultEdge {
   final override string toString() { result = "Default" }
 }
 
@@ -69,7 +91,7 @@ class DefaultEdge extends EdgeKind, TDefaultEdge {
  * A "case" edge, representing the successor of a `Switch` instruction when the
  * the condition value matches a corresponding `case` label.
  */
-class CaseEdge extends EdgeKind, TCaseEdge {
+class CaseEdge extends EdgeKindImpl, TCaseEdge {
   string minValue;
   string maxValue;
 
@@ -90,6 +112,15 @@ class CaseEdge extends EdgeKind, TCaseEdge {
    * Gets the largest value of the switch expression for which control will flow along this edge.
    */
   final string getMaxValue() { result = maxValue }
+
+  /**
+   * Gets the unique value of the switch expression for which control will
+   * flow along this edge, if any.
+   */
+  final string getValue() {
+    minValue = maxValue and
+    result = minValue
+  }
 }
 
 /**
@@ -112,9 +143,14 @@ module EdgeKind {
   FalseEdge falseEdge() { result = TFalseEdge() }
 
   /**
-   * Gets the single instance of the `ExceptionEdge` class.
+   * Gets the single instance of the `CppExceptionEdge` class.
    */
-  ExceptionEdge exceptionEdge() { result = TExceptionEdge() }
+  CppExceptionEdge cppExceptionEdge() { result = TCppExceptionEdge() }
+
+  /**
+   * Gets the single instance of the `SehExceptionEdge` class.
+   */
+  SehExceptionEdge sehExceptionEdge() { result = TSehExceptionEdge() }
 
   /**
    * Gets the single instance of the `DefaultEdge` class.

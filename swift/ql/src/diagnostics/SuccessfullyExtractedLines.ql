@@ -4,6 +4,7 @@
  * @kind metric
  * @id swift/diagnostics/successfully-extracted-lines
  * @tags summary
+ *       debug
  */
 
 import swift

@@ -1,0 +1,8 @@
+| Test.java:2:17:2:17 | m | m | m |
+| test.kt:3:9:4:18 | getX_prop | getX_prop | getX |
+| test.kt:6:5:6:19 | getX | getX | getX |
+| test.kt:8:5:10:19 | changeY | changeY | setY |
+| test.kt:8:5:10:19 | y | y | getY |
+| test.kt:12:5:13:15 | method | method | fn |
+| test.kt:17:5:17:14 | p | p | p |
+| test.kt:18:5:18:32 | w | w | q |

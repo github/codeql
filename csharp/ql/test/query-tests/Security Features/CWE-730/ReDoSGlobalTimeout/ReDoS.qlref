@@ -1,1 +1,2 @@
-Security Features/CWE-730/ReDoS.ql
+query: Security Features/CWE-730/ReDoS.ql
+postprocess: utils/test/PrettyPrintModels.ql

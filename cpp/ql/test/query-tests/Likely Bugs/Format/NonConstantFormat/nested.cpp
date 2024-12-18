@@ -18,7 +18,7 @@ extern "C" int snprintf ( char * s, int n, const char * format, ... );
 struct A {
   void do_print(const char *fmt0) {
     char buf[32];
-    snprintf(buf, 32, fmt0); // GOOD [FALSE POSITIVE]
+    snprintf(buf, 32, fmt0); // BAD, all paths from unknown const char*, not assuming literal
   }
 };
 
@@ -34,12 +34,12 @@ struct C {
   void do_some_printing(const char *fmt) {
     b.do_printing(fmt);
   }
-  const char *ext_fmt_str(void);
+  const char *ext_fmt_str(void); // NOTE: not assuming result is literal
 };
 
 void foo(void) {
   C c;
-  c.do_some_printing(c.ext_fmt_str()); // BAD [NOT DETECTED]
+  c.do_some_printing(c.ext_fmt_str()); 
 }
 
 struct some_class {
@@ -76,12 +76,12 @@ void diagnostic(const char *fmt, ...)
 }
 
 void bar(void) {
-    diagnostic (some_instance->get_fmt());  // BAD
+    diagnostic (some_instance->get_fmt());  // BAD const char* but not assuming literal
 }
 
 namespace ns {
 
-  class blab {
+  class blab { 
     void out1(void) {
       char *fmt = (char *)__builtin_alloca(10);
       diagnostic(fmt);  // BAD

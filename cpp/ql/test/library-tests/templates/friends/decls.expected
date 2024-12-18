@@ -1,9 +1,5 @@
 | file://:0:0:0:0 | (unnamed parameter 0) |
 | file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
 | file://:0:0:0:0 | C<char>'s friend |
 | file://:0:0:0:0 | C<int>'s friend |
 | file://:0:0:0:0 | auto |
@@ -24,10 +20,6 @@
 | friends.cpp:7:9:7:9 | C<TTT> |
 | friends.cpp:7:9:7:9 | C<char> |
 | friends.cpp:7:9:7:9 | C<int> |
-| friends.cpp:7:9:7:9 | operator= |
-| friends.cpp:7:9:7:9 | operator= |
-| friends.cpp:7:9:7:9 | operator= |
-| friends.cpp:7:9:7:9 | operator= |
 | friends.cpp:9:17:9:17 | f |
 | friends.cpp:9:17:9:19 | C<TTT>'s friend |
 | friends.cpp:9:21:9:26 | (unnamed parameter 0) |

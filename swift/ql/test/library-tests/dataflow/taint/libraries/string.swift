@@ -267,9 +267,9 @@ func taintThroughSimpleStringOperations() {
   }))
 
   sink(arg: [clean, clean].joined())
-  sink(arg: [tainted, clean].joined()) // $ MISSING: tainted=217
-  sink(arg: [clean, tainted].joined()) // $ MISSING: tainted=217
-  sink(arg: [tainted, tainted].joined()) // $ MISSING: tainted=217
+  sink(arg: [tainted, clean].joined()) // $ tainted=217
+  sink(arg: [clean, tainted].joined()) // $ tainted=217
+  sink(arg: [tainted, tainted].joined()) // $ tainted=217
 
   sink(arg: clean.description)
   sink(arg: tainted.description) // $ tainted=217
@@ -464,11 +464,11 @@ func taintFromUInt8Array() {
       sink(arg: buffer[0])
       sink(arg: taintedUInt8Values[0]) // $ tainted=450
       let _ = buffer.initialize(from: taintedUInt8Values)
-      sink(arg: buffer[0]) // $ MISSING: tainted=450
+      sink(arg: buffer[0]) // $ tainted=450
       return 256
     }
   )
-  sink(arg: r2) // $ MISSING: tainted=450
+  sink(arg: r2) // $ tainted=450
   let r3 = String(unsafeUninitializedCapacity: 256, initializingUTF8With: {
     (buffer: UnsafeMutableBufferPointer<UInt8>) -> Int in
       sink(arg: buffer[0])

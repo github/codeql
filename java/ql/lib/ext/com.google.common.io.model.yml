@@ -3,9 +3,11 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["com.google.common.io", "Files", False, "asByteSink", "(File,FileWriteMode[])", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["com.google.common.io", "Files", False, "asCharSink", "(File,Charset,FileWriteMode[])", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["com.google.common.io", "Files", False, "asCharSource", "(File,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["com.google.common.io", "Files", False, "copy", "(File,OutputStream)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["com.google.common.io", "Files", False, "newWriter", "(File,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["com.google.common.io", "Files", False, "readLines", "(File,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["com.google.common.io", "Files", False, "toByteArray", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["com.google.common.io", "Files", False, "toString", "(File,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]

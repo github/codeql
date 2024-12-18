@@ -23,6 +23,11 @@ typeInferenceMismatch
 | array-mutation.js:31:33:31:40 | source() | array-mutation.js:32:8:32:8 | h |
 | array-mutation.js:35:36:35:43 | source() | array-mutation.js:36:8:36:8 | i |
 | array-mutation.js:39:17:39:24 | source() | array-mutation.js:40:8:40:8 | j |
+| array-mutation.js:43:36:43:43 | source() | array-mutation.js:45:8:45:15 | kSpliced |
+| array-mutation.js:48:25:48:32 | source() | array-mutation.js:49:8:49:8 | l |
+| array-mutation.js:68:21:68:28 | source() | array-mutation.js:69:8:69:8 | q |
+| array-mutation.js:72:39:72:46 | source() | array-mutation.js:73:8:73:15 | rSpliced |
+| array-mutation.js:75:28:75:35 | source() | array-mutation.js:76:8:76:8 | r |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:17:8:17:13 | arr[1] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:22:8:22:13 | arr[6] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:27:8:27:13 | arr[0] |
@@ -154,6 +159,7 @@ typeInferenceMismatch
 | json-stringify.js:2:16:2:23 | source() | json-stringify.js:42:8:42:51 | JSON.st ... urce))) |
 | json-stringify.js:2:16:2:23 | source() | json-stringify.js:45:8:45:23 | fastJson(source) |
 | json-stringify.js:3:15:3:22 | source() | json-stringify.js:8:8:8:31 | jsonStr ... (taint) |
+| logical-and.js:2:17:2:24 | source() | logical-and.js:4:10:4:24 | "safe" && taint |
 | nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |
 | nested-props.js:9:18:9:25 | source() | nested-props.js:10:10:10:16 | obj.x.y |
 | nested-props.js:35:13:35:20 | source() | nested-props.js:36:10:36:20 | doLoad(obj) |
@@ -203,6 +209,10 @@ typeInferenceMismatch
 | static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:27:14:27:22 | RegExp.$1 |
 | static-capture-groups.js:32:17:32:24 | source() | static-capture-groups.js:38:10:38:18 | RegExp.$1 |
 | static-capture-groups.js:42:12:42:19 | source() | static-capture-groups.js:43:14:43:22 | RegExp.$1 |
+| string-immutable-operations.js:2:13:2:20 | source() | string-immutable-operations.js:3:10:3:25 | x.toWellFormed() |
+| string-immutable-operations.js:2:13:2:20 | source() | string-immutable-operations.js:6:10:6:20 | wellFormedX |
+| string-immutable-operations.js:2:13:2:20 | source() | string-immutable-operations.js:9:10:9:26 | concatWellFormedX |
+| string-immutable-operations.js:11:10:11:17 | source() | string-immutable-operations.js:11:10:11:32 | source( ... ormed() |
 | string-replace.js:3:13:3:20 | source() | string-replace.js:14:10:14:13 | data |
 | string-replace.js:3:13:3:20 | source() | string-replace.js:18:10:18:13 | data |
 | string-replace.js:3:13:3:20 | source() | string-replace.js:21:6:21:41 | safe(). ...  taint) |
@@ -232,6 +242,25 @@ typeInferenceMismatch
 | tst.js:2:13:2:20 | source() | tst.js:48:10:48:22 | new Buffer(x) |
 | tst.js:2:13:2:20 | source() | tst.js:51:10:51:31 | seriali ... ript(x) |
 | tst.js:2:13:2:20 | source() | tst.js:54:14:54:19 | unsafe |
+| tst.js:2:13:2:20 | source() | tst.js:61:10:61:20 | x.reverse() |
+| tst.js:2:13:2:20 | source() | tst.js:62:10:62:22 | x.toSpliced() |
+| tst.js:2:13:2:20 | source() | tst.js:64:10:64:21 | x.toSorted() |
+| tst.js:2:13:2:20 | source() | tst.js:66:10:66:16 | xSorted |
+| tst.js:2:13:2:20 | source() | tst.js:68:10:68:23 | x.toReversed() |
+| tst.js:2:13:2:20 | source() | tst.js:70:10:70:18 | xReversed |
+| tst.js:2:13:2:20 | source() | tst.js:72:10:72:31 | Map.gro ... z => z) |
+| tst.js:2:13:2:20 | source() | tst.js:74:10:74:34 | Object. ... z => z) |
+| tst.js:2:13:2:20 | source() | tst.js:78:55:78:58 | item |
+| tst.js:2:13:2:20 | source() | tst.js:79:14:79:20 | grouped |
+| tst.js:2:13:2:20 | source() | tst.js:100:10:100:17 | x.with() |
+| tst.js:2:13:2:20 | source() | tst.js:102:10:102:14 | xWith |
+| tst.js:75:22:75:29 | source() | tst.js:75:10:75:52 | Map.gro ... (item)) |
+| tst.js:75:22:75:29 | source() | tst.js:75:47:75:50 | item |
+| tst.js:82:23:82:30 | source() | tst.js:83:58:83:61 | item |
+| tst.js:82:23:82:30 | source() | tst.js:84:14:84:20 | grouped |
+| tst.js:87:22:87:29 | source() | tst.js:90:14:90:25 | taintedValue |
+| tst.js:93:22:93:29 | source() | tst.js:96:14:96:25 | taintedValue |
+| tst.js:93:22:93:29 | source() | tst.js:97:14:97:26 | map.get(true) |
 | xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |
 | xml.js:12:17:12:24 | source() | xml.js:13:14:13:19 | result |
 | xml.js:23:18:23:25 | source() | xml.js:20:14:20:17 | attr |

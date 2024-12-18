@@ -1,0 +1,54 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.util.regex", "MatchResult", True, "group", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["java.util.regex", "MatchResult", True, "group", "(int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.regex", "Matcher", False, "appendReplacement", "(StringBuilder,String)", "", "Argument[this].SyntheticField[java.util.regex.Matcher.text]", "Argument[0]", "taint", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "appendReplacement", "(StringBuilder,String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "appendTail", "(StringBuilder)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "appendTail", "(StringBuilder)", "", "Argument[this].SyntheticField[java.util.regex.Matcher.text]", "Argument[0]", "taint", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "appendTail", "(StringBuilder)", "", "Argument[this].SyntheticField[java.util.regex.Matcher.text]", "ReturnValue", "taint", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "quoteReplacement", "(String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "region", "(int,int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "reset", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "reset", "(CharSequence)", "", "Argument[0]", "Argument[this].SyntheticField[java.util.regex.Matcher.text]", "value", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "reset", "(CharSequence)", "", "Argument[0]", "ReturnValue.SyntheticField[java.util.regex.Matcher.text]", "value", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "reset", "(CharSequence)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "toMatchResult", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util.regex", "Matcher", False, "useAnchoringBounds", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "usePattern", "(Pattern)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.regex", "Matcher", False, "useTransparentBounds", "(boolean)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.regex", "PatternSyntaxException", True, "PatternSyntaxException", "(String,String,int)", "", "Argument[0]", "Argument[this].SyntheticField[java.util.regex.PatternSyntaxException.desc]", "value", "dfc-generated"]
+      - ["java.util.regex", "PatternSyntaxException", True, "PatternSyntaxException", "(String,String,int)", "", "Argument[1]", "Argument[this].SyntheticField[java.util.regex.PatternSyntaxException.pattern]", "value", "dfc-generated"]
+      - ["java.util.regex", "PatternSyntaxException", True, "getDescription", "()", "", "Argument[this].SyntheticField[java.util.regex.PatternSyntaxException.desc]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.util.regex", "PatternSyntaxException", True, "getPattern", "()", "", "Argument[this].SyntheticField[java.util.regex.PatternSyntaxException.pattern]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util.regex", "Matcher", "end", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "end", "(String)", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "end", "(int)", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "find", "(int)", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "groupCount", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "hasAnchoringBounds", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "hasTransparentBounds", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "hitEnd", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "lookingAt", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "matches", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "regionEnd", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "regionStart", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "requireEnd", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "results", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "start", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "start", "(String)", "summary", "df-generated"]
+      - ["java.util.regex", "Matcher", "start", "(int)", "summary", "df-generated"]
+      - ["java.util.regex", "Pattern", "asMatchPredicate", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Pattern", "asPredicate", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Pattern", "flags", "()", "summary", "df-generated"]
+      - ["java.util.regex", "Pattern", "matches", "(String,CharSequence)", "summary", "df-generated"]
+      - ["java.util.regex", "Pattern", "splitAsStream", "(CharSequence)", "summary", "df-generated"]
+      - ["java.util.regex", "PatternSyntaxException", "getIndex", "()", "summary", "df-generated"]

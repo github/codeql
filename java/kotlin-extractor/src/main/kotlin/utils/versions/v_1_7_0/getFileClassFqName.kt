@@ -1,10 +1,10 @@
 package com.github.codeql.utils.versions
 
-import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrMemberWithContainerSource
 import org.jetbrains.kotlin.load.kotlin.FacadeClassSource
+import org.jetbrains.kotlin.name.FqName
 
 fun getFileClassFqName(d: IrDeclaration): FqName? {
     // d is in a file class.

@@ -80,6 +80,10 @@ private Declaration getAnEnclosingDeclaration(Locatable ast) {
   or
   result = ast.(Parameter).getFunction()
   or
+  result = ast.(Parameter).getCatchBlock().getEnclosingFunction()
+  or
+  result = ast.(Parameter).getRequiresExpr().getEnclosingFunction()
+  or
   result = ast.(Expr).getEnclosingDeclaration()
   or
   result = ast.(Initializer).getDeclaration()
@@ -99,7 +103,10 @@ private newtype TPrintAstNode =
     stmt.getADeclarationEntry() = entry and
     shouldPrintDeclaration(stmt.getEnclosingFunction())
   } or
-  TParametersNode(Function func) { shouldPrintDeclaration(func) } or
+  TFunctionParametersNode(Function func) { shouldPrintDeclaration(func) } or
+  TRequiresExprParametersNode(RequiresExpr req) {
+    shouldPrintDeclaration(getAnEnclosingDeclaration(req))
+  } or
   TConstructorInitializersNode(Constructor ctor) {
     ctor.hasEntryPoint() and
     shouldPrintDeclaration(ctor)
@@ -286,9 +293,6 @@ abstract class BaseAstNode extends PrintAstNode {
    * Gets the AST represented by this node.
    */
   final Locatable getAst() { result = ast }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated Locatable getAST() { result = this.getAst() }
 }
 
 /**
@@ -306,7 +310,17 @@ class ExprNode extends AstNode {
 
   ExprNode() { expr = ast }
 
-  override AstNode getChildInternal(int childIndex) { result.getAst() = expr.getChild(childIndex) }
+  override PrintAstNode getChildInternal(int childIndex) {
+    result.(AstNode).getAst() = expr.getChild(childIndex)
+    or
+    childIndex = max(int index | exists(expr.getChild(index)) or index = 0) + 1 and
+    result.(AstNode).getAst() = expr.(ConditionDeclExpr).getInitializingExpr()
+    or
+    exists(int destructorIndex |
+      result.(AstNode).getAst() = expr.getImplicitDestructorCall(destructorIndex) and
+      childIndex = destructorIndex + max(int index | exists(expr.getChild(index)) or index = 0) + 2
+    )
+  }
 
   override string getProperty(string key) {
     result = super.getProperty(key)
@@ -322,7 +336,8 @@ class ExprNode extends AstNode {
   }
 
   override string getChildAccessorPredicateInternal(int childIndex) {
-    result = getChildAccessorWithoutConversions(ast, this.getChildInternal(childIndex).getAst())
+    result =
+      getChildAccessorWithoutConversions(ast, this.getChildInternal(childIndex).(AstNode).getAst())
   }
 
   /**
@@ -354,6 +369,8 @@ class ConversionNode extends ExprNode {
     childIndex = 0 and
     result.getAst() = conv.getExpr() and
     conv.getExpr() instanceof Conversion
+    or
+    result.getAst() = expr.getImplicitDestructorCall(childIndex - 1)
   }
 }
 
@@ -374,6 +391,21 @@ class CastNode extends ConversionNode {
 }
 
 /**
+ * A node representing a `C11GenericExpr`.
+ */
+class C11GenericNode extends ConversionNode {
+  C11GenericExpr generic;
+
+  C11GenericNode() { generic = conv }
+
+  override AstNode getChildInternal(int childIndex) {
+    result = super.getChildInternal(childIndex - count(generic.getAChild()))
+    or
+    result.getAst() = generic.getChild(childIndex)
+  }
+}
+
+/**
  * A node representing a `StmtExpr`.
  */
 class StmtExprNode extends ExprNode {
@@ -382,6 +414,26 @@ class StmtExprNode extends ExprNode {
   override AstNode getChildInternal(int childIndex) {
     childIndex = 0 and
     result.getAst() = expr.getStmt()
+  }
+}
+
+/**
+ * A node representing a `RequiresExpr`
+ */
+class RequiresExprNode extends ExprNode {
+  override RequiresExpr expr;
+
+  override PrintAstNode getChildInternal(int childIndex) {
+    result = super.getChildInternal(childIndex)
+    or
+    childIndex = -1 and
+    result.(RequiresExprParametersNode).getRequiresExpr() = expr
+  }
+
+  override string getChildAccessorPredicateInternal(int childIndex) {
+    result = super.getChildAccessorPredicateInternal(childIndex)
+    or
+    childIndex = -1 and result = "<params>"
   }
 }
 
@@ -439,10 +491,34 @@ class StmtNode extends AstNode {
         result.getAst() = child.(Stmt)
       )
     )
+    or
+    exists(int destructorIndex |
+      result.getAst() = stmt.getImplicitDestructorCall(destructorIndex) and
+      childIndex = destructorIndex + max(int index | exists(stmt.getChild(index)) or index = 0) + 1
+    )
   }
 
   override string getChildAccessorPredicateInternal(int childIndex) {
     result = getChildAccessorWithoutConversions(ast, this.getChildInternal(childIndex).getAst())
+  }
+}
+
+/**
+ * A node representing a child of a `Stmt` that is itself a `Stmt`.
+ */
+class ChildStmtNode extends StmtNode {
+  Stmt childStmt;
+
+  ChildStmtNode() { exists(Stmt parent | parent.getAChild() = childStmt and childStmt = ast) }
+
+  override BaseAstNode getChildInternal(int childIndex) {
+    result = super.getChildInternal(childIndex)
+    or
+    exists(int destructorIndex |
+      result.getAst() = childStmt.getImplicitDestructorCall(destructorIndex) and
+      childIndex =
+        destructorIndex + max(int index | exists(childStmt.getChild(index)) or index = 0) + 1
+    )
   }
 }
 
@@ -459,6 +535,22 @@ class DeclStmtNode extends StmtNode {
       declStmt.getDeclarationEntry(childIndex) = entry and
       result = TDeclarationEntryNode(declStmt, entry)
     )
+  }
+}
+
+/**
+ * A node representing a `Handler`.
+ */
+class HandlerNode extends ChildStmtNode {
+  Handler handler;
+
+  HandlerNode() { handler = stmt }
+
+  override BaseAstNode getChildInternal(int childIndex) {
+    result = super.getChildInternal(childIndex)
+    or
+    childIndex = -1 and
+    result.getAst() = handler.getParameter()
   }
 }
 
@@ -504,10 +596,10 @@ class InitializerNode extends AstNode {
 /**
  * A node representing the parameters of a `Function`.
  */
-class ParametersNode extends PrintAstNode, TParametersNode {
+class FunctionParametersNode extends PrintAstNode, TFunctionParametersNode {
   Function func;
 
-  ParametersNode() { this = TParametersNode(func) }
+  FunctionParametersNode() { this = TFunctionParametersNode(func) }
 
   final override string toString() { result = "" }
 
@@ -526,6 +618,33 @@ class ParametersNode extends PrintAstNode, TParametersNode {
    * Gets the `Function` for which this node represents the parameters.
    */
   final Function getFunction() { result = func }
+}
+
+/**
+ * A node representing the parameters of a `RequiresExpr`.
+ */
+class RequiresExprParametersNode extends PrintAstNode, TRequiresExprParametersNode {
+  RequiresExpr req;
+
+  RequiresExprParametersNode() { this = TRequiresExprParametersNode(req) }
+
+  final override string toString() { result = "" }
+
+  final override Location getLocation() { result = getRepresentativeLocation(req) }
+
+  override AstNode getChildInternal(int childIndex) {
+    result.getAst() = req.getParameter(childIndex)
+  }
+
+  override string getChildAccessorPredicateInternal(int childIndex) {
+    exists(this.getChildInternal(childIndex)) and
+    result = "getParameter(" + childIndex.toString() + ")"
+  }
+
+  /**
+   * Gets the `RequiresExpr` for which this node represents the parameters.
+   */
+  final RequiresExpr getRequiresExpr() { result = req }
 }
 
 /**
@@ -631,7 +750,7 @@ class FunctionNode extends FunctionOrGlobalOrNamespaceVariableNode {
 
   override PrintAstNode getChildInternal(int childIndex) {
     childIndex = 0 and
-    result.(ParametersNode).getFunction() = func
+    result.(FunctionParametersNode).getFunction() = func
     or
     childIndex = 1 and
     result.(ConstructorInitializersNode).getConstructor() = func
@@ -657,11 +776,22 @@ class FunctionNode extends FunctionOrGlobalOrNamespaceVariableNode {
 private string getChildAccessorWithoutConversions(Locatable parent, Element child) {
   shouldPrintDeclaration(getAnEnclosingDeclaration(parent)) and
   (
+    exists(Stmt s, int i | s.getChild(i) = parent |
+      exists(int n |
+        s.getChild(i).(Stmt).getImplicitDestructorCall(n) = child and
+        result = "getImplicitDestructorCall(" + n + ")"
+      )
+    )
+    or
     exists(Stmt s | s = parent |
       namedStmtChildPredicates(s, child, result)
       or
       not namedStmtChildPredicates(s, child, _) and
       exists(int n | s.getChild(n) = child and result = "getChild(" + n + ")")
+      or
+      exists(int n |
+        s.getImplicitDestructorCall(n) = child and result = "getImplicitDestructorCall(" + n + ")"
+      )
     )
     or
     exists(Expr expr | expr = parent |
@@ -669,6 +799,13 @@ private string getChildAccessorWithoutConversions(Locatable parent, Element chil
       or
       not namedExprChildPredicates(expr, child, _) and
       exists(int n | expr.getChild(n) = child and result = "getChild(" + n + ")")
+      or
+      expr.(ConditionDeclExpr).getInitializingExpr() = child and result = "getInitializingExpr()"
+      or
+      exists(int n |
+        expr.getImplicitDestructorCall(n) = child and
+        result = "getImplicitDestructorCall(" + n + ")"
+      )
     )
   )
 }
@@ -687,6 +824,8 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     s.(ConstexprIfStmt).getThen() = e and pred = "getThen()"
     or
     s.(ConstexprIfStmt).getElse() = e and pred = "getElse()"
+    or
+    s.(Handler).getParameter() = e and pred = "getParameter()"
     or
     s.(IfStmt).getInitialization() = e and pred = "getInitialization()"
     or
@@ -714,7 +853,9 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(ForStmt).getStmt() = e and pred = "getStmt()"
     or
-    s.(RangeBasedForStmt).getChild(0) = e and pred = "getChild(0)"
+    s.(RangeBasedForStmt).getInitialization() = e and pred = "getInitialization()"
+    or
+    s.(RangeBasedForStmt).getChild(1) = e and pred = "getChild(1)"
     or
     s.(RangeBasedForStmt).getBeginEndDeclaration() = e and pred = "getBeginEndDeclaration()"
     or
@@ -722,7 +863,7 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(RangeBasedForStmt).getUpdate() = e and pred = "getUpdate()"
     or
-    s.(RangeBasedForStmt).getChild(4) = e and pred = "getChild(4)"
+    s.(RangeBasedForStmt).getChild(5) = e and pred = "getChild(5)"
     or
     s.(RangeBasedForStmt).getStmt() = e and pred = "getStmt()"
     or
@@ -804,9 +945,27 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(BuiltInVarArgsStart).getLastNamedParameter() = ele and pred = "getLastNamedParameter()"
     or
-    expr.(Call).getQualifier() = ele and pred = "getQualifier()"
+    expr.(C11GenericExpr).getControllingExpr() = ele and pred = "getControllingExpr()"
     or
-    exists(int n | expr.(Call).getArgument(n) = ele and pred = "getArgument(" + n.toString() + ")")
+    exists(int n |
+      expr.(C11GenericExpr).getAssociationType(n) = ele.(TypeName).getType() and
+      pred = "getAssociationType(" + n + ")"
+      or
+      expr.(C11GenericExpr).getAssociationExpr(n) = ele and pred = "getAssociationExpr(" + n + ")"
+    )
+    or
+    // OverloadedArrayExpr::getArrayBase/0 also considers qualifiers, and is already handled below.
+    not expr.(OverloadedArrayExpr).getArrayBase() = expr.(Call).getQualifier() and
+    expr.(Call).getQualifier() = ele and
+    pred = "getQualifier()"
+    or
+    // OverloadedArrayExpr::getArrayBase/0 and OverloadedArrayExpr::getArrayOffset/0 also consider arguments, and are already handled below.
+    exists(int n, Expr arg | expr.(Call).getArgument(n) = arg |
+      not expr.(OverloadedArrayExpr).getArrayBase() = arg and
+      not expr.(OverloadedArrayExpr).getArrayOffset() = arg and
+      arg = ele and
+      pred = "getArgument(" + n.toString() + ")"
+    )
     or
     expr.(ExprCall).getExpr() = ele and pred = "getExpr()"
     or
@@ -814,11 +973,20 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(OverloadedArrayExpr).getArrayOffset() = ele and pred = "getArrayOffset()"
     or
-    expr.(OverloadedPointerDereferenceExpr).getExpr() = ele and pred = "getExpr()"
+    // OverloadedPointerDereferenceExpr::getExpr/0 also considers qualifiers, and is already handled above for all Call classes.
+    not expr.(OverloadedPointerDereferenceExpr).getQualifier() =
+      expr.(OverloadedPointerDereferenceExpr).getExpr() and
+    expr.(OverloadedPointerDereferenceExpr).getExpr() = ele and
+    pred = "getExpr()"
     or
     expr.(CommaExpr).getLeftOperand() = ele and pred = "getLeftOperand()"
     or
     expr.(CommaExpr).getRightOperand() = ele and pred = "getRightOperand()"
+    or
+    expr.(CompoundRequirementExpr).getExpr() = ele and pred = "getExpr()"
+    or
+    expr.(CompoundRequirementExpr).getReturnTypeRequirement() = ele and
+    pred = "getReturnTypeRequirement()"
     or
     expr.(ConditionDeclExpr).getVariableAccess() = ele and pred = "getVariableAccess()"
     or
@@ -830,7 +998,7 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(DeleteOrDeleteArrayExpr).getDestructorCall() = ele and pred = "getDestructorCall()"
     or
-    expr.(DeleteOrDeleteArrayExpr).getExpr() = ele and pred = "getExpr()"
+    expr.(DeleteOrDeleteArrayExpr).getExprWithReuse() = ele and pred = "getExprWithReuse()"
     or
     expr.(DestructorFieldDestruction).getExpr() = ele and pred = "getExpr()"
     or
@@ -839,6 +1007,8 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     expr.(FoldExpr).getPackExpr() = ele and pred = "getPackExpr()"
     or
     expr.(LambdaExpression).getInitializer() = ele and pred = "getInitializer()"
+    or
+    expr.(NestedRequirementExpr).getConstraint() = ele and pred = "getConstraint()"
     or
     expr.(NewOrNewArrayExpr).getAllocatorCall() = ele and pred = "getAllocatorCall()"
     or
@@ -878,6 +1048,11 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     expr.(ConditionalExpr).getElse() = ele and pred = "getElse()"
     or
     expr.(UnaryOperation).getOperand() = ele and pred = "getOperand()"
+    or
+    exists(int n |
+      expr.(RequiresExpr).getRequirement(n) = ele and
+      pred = "getRequirement(" + n + ")"
+    )
     or
     expr.(SizeofExprOperator).getExprOperand() = ele and pred = "getExprOperand()"
     or

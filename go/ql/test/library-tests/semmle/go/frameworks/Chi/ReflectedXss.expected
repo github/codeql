@@ -1,10 +1,20 @@
+#select
+| test.go:21:11:21:24 | type conversion | test.go:13:12:13:16 | selection of URL | test.go:21:11:21:24 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:13:12:13:16 | selection of URL | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:22:11:22:46 | type conversion | test.go:22:18:22:45 | call to URLParam | test.go:22:11:22:46 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:22:18:22:45 | call to URLParam | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:23:11:23:61 | type conversion | test.go:23:18:23:60 | call to URLParamFromCtx | test.go:23:11:23:61 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:23:18:23:60 | call to URLParamFromCtx | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:24:11:24:72 | type conversion | test.go:24:18:24:71 | call to URLParam | test.go:24:11:24:72 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:24:18:24:71 | call to URLParam | user-provided value | test.go:0:0:0:0 | test.go |  |
 edges
-| test.go:13:12:13:16 | selection of URL | test.go:13:12:13:21 | selection of Path |
-| test.go:13:12:13:21 | selection of Path | test.go:21:18:21:23 | hidden |
-| test.go:21:18:21:23 | hidden | test.go:21:11:21:24 | type conversion |
-| test.go:22:18:22:45 | call to URLParam | test.go:22:11:22:46 | type conversion |
-| test.go:23:18:23:60 | call to URLParamFromCtx | test.go:23:11:23:61 | type conversion |
-| test.go:24:18:24:71 | call to URLParam | test.go:24:11:24:72 | type conversion |
+| test.go:13:12:13:16 | selection of URL | test.go:13:12:13:21 | selection of Path | provenance | Src:MaD:4  |
+| test.go:13:12:13:21 | selection of Path | test.go:21:18:21:23 | hidden | provenance |  |
+| test.go:21:18:21:23 | hidden | test.go:21:11:21:24 | type conversion | provenance |  |
+| test.go:22:18:22:45 | call to URLParam | test.go:22:11:22:46 | type conversion | provenance | Src:MaD:1  |
+| test.go:23:18:23:60 | call to URLParamFromCtx | test.go:23:11:23:61 | type conversion | provenance | Src:MaD:2  |
+| test.go:24:18:24:71 | call to URLParam | test.go:24:11:24:72 | type conversion | provenance | Src:MaD:3  |
+models
+| 1 | Source: github.com/go-chi/chi; ; false; URLParam; ; ; ReturnValue; remote; manual |
+| 2 | Source: github.com/go-chi/chi; ; false; URLParamFromCtx; ; ; ReturnValue; remote; manual |
+| 3 | Source: github.com/go-chi/chi; Context; true; URLParam; ; ; ReturnValue; remote; manual |
+| 4 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
 nodes
 | test.go:13:12:13:16 | selection of URL | semmle.label | selection of URL |
 | test.go:13:12:13:21 | selection of Path | semmle.label | selection of Path |
@@ -17,8 +27,3 @@ nodes
 | test.go:24:11:24:72 | type conversion | semmle.label | type conversion |
 | test.go:24:18:24:71 | call to URLParam | semmle.label | call to URLParam |
 subpaths
-#select
-| test.go:21:11:21:24 | type conversion | test.go:13:12:13:16 | selection of URL | test.go:21:11:21:24 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:13:12:13:16 | selection of URL | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:22:11:22:46 | type conversion | test.go:22:18:22:45 | call to URLParam | test.go:22:11:22:46 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:22:18:22:45 | call to URLParam | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:23:11:23:61 | type conversion | test.go:23:18:23:60 | call to URLParamFromCtx | test.go:23:11:23:61 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:23:18:23:60 | call to URLParamFromCtx | user-provided value | test.go:0:0:0:0 | test.go |  |
-| test.go:24:11:24:72 | type conversion | test.go:24:18:24:71 | call to URLParam | test.go:24:11:24:72 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:24:18:24:71 | call to URLParam | user-provided value | test.go:0:0:0:0 | test.go |  |

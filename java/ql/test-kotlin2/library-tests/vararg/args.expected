@@ -1,0 +1,86 @@
+diag
+varargsParams
+| test.kt:8:15:8:28 | xs | file://:0:0:0:0 | int[] |
+| test.kt:12:26:12:39 | xs | file://:0:0:0:0 | int[] |
+| test.kt:20:24:20:37 | xs | file://:0:0:0:0 | int[] |
+| test.kt:24:50:24:63 | xs | file://:0:0:0:0 | int[] |
+| test.kt:28:37:28:50 | xs | file://:0:0:0:0 | int[] |
+| test.kt:50:5:50:31 | s | file://:0:0:0:0 | String[] |
+explicitVarargsArguments
+| test.kt:12:50:12:51 | xs | test.kt:12:44:12:52 | this(...) |
+| test.kt:38:25:38:29 | array | test.kt:38:5:38:30 | funWithOnlyVarArgs(...) |
+| test.kt:39:41:39:45 | array | test.kt:39:5:39:46 | funWithArgsAndVarArgs(...) |
+| test.kt:40:34:40:38 | array | test.kt:40:5:40:49 | funWithMiddleVarArgs(...) |
+| test.kt:44:27:44:31 | array | test.kt:44:5:44:32 | new HasVarargConstructor(...) |
+| test.kt:45:34:45:38 | array | test.kt:45:5:45:39 | new HasVarargConstructor(...) |
+| test.kt:55:15:55:35 | tmp0_s | test.kt:55:13:55:43 | new X(...) |
+implicitVarargsArguments
+| intList.kt:3:21:3:22 | 10 | intList.kt:3:14:3:31 | listOf(...) | 0 |
+| intList.kt:3:25:3:26 | 11 | intList.kt:3:14:3:31 | listOf(...) | 1 |
+| intList.kt:3:29:3:30 | 12 | intList.kt:3:14:3:31 | listOf(...) | 2 |
+| test.kt:16:69:16:69 | x | test.kt:16:48:16:70 | super(...) | 0 |
+| test.kt:33:21:33:22 | 10 | test.kt:33:14:33:31 | listOf(...) | 0 |
+| test.kt:33:25:33:26 | 11 | test.kt:33:14:33:31 | listOf(...) | 1 |
+| test.kt:33:29:33:30 | 12 | test.kt:33:14:33:31 | listOf(...) | 2 |
+| test.kt:35:24:35:25 | 20 | test.kt:35:5:35:34 | funWithOnlyVarArgs(...) | 0 |
+| test.kt:35:28:35:29 | 21 | test.kt:35:5:35:34 | funWithOnlyVarArgs(...) | 1 |
+| test.kt:35:32:35:33 | 22 | test.kt:35:5:35:34 | funWithOnlyVarArgs(...) | 2 |
+| test.kt:36:40:36:41 | 30 | test.kt:36:5:36:50 | funWithArgsAndVarArgs(...) | 0 |
+| test.kt:36:44:36:45 | 31 | test.kt:36:5:36:50 | funWithArgsAndVarArgs(...) | 1 |
+| test.kt:36:48:36:49 | 32 | test.kt:36:5:36:50 | funWithArgsAndVarArgs(...) | 2 |
+| test.kt:37:33:37:34 | 41 | test.kt:37:5:37:53 | funWithMiddleVarArgs(...) | 0 |
+| test.kt:37:37:37:38 | 42 | test.kt:37:5:37:53 | funWithMiddleVarArgs(...) | 1 |
+| test.kt:37:41:37:42 | 43 | test.kt:37:5:37:53 | funWithMiddleVarArgs(...) | 2 |
+| test.kt:41:26:41:27 | 51 | test.kt:41:5:41:36 | new HasVarargConstructor(...) | 0 |
+| test.kt:41:30:41:31 | 52 | test.kt:41:5:41:36 | new HasVarargConstructor(...) | 1 |
+| test.kt:41:34:41:35 | 53 | test.kt:41:5:41:36 | new HasVarargConstructor(...) | 2 |
+| test.kt:42:33:42:34 | 61 | test.kt:42:5:42:43 | new HasVarargConstructor(...) | 0 |
+| test.kt:42:37:42:38 | 62 | test.kt:42:5:42:43 | new HasVarargConstructor(...) | 1 |
+| test.kt:42:41:42:42 | 63 | test.kt:42:5:42:43 | new HasVarargConstructor(...) | 2 |
+#select
+| intList.kt:3:14:3:31 | listOf(...) | 0 | intList.kt:3:21:3:22 | 10 |
+| intList.kt:3:14:3:31 | listOf(...) | 1 | intList.kt:3:25:3:26 | 11 |
+| intList.kt:3:14:3:31 | listOf(...) | 2 | intList.kt:3:29:3:30 | 12 |
+| test.kt:9:5:9:19 | sink(...) | 0 | test.kt:9:10:9:18 | ...[...] |
+| test.kt:12:44:12:52 | this(...) | 0 | test.kt:12:50:12:51 | xs |
+| test.kt:16:48:16:70 | super(...) | 0 | test.kt:16:69:16:69 | x |
+| test.kt:21:5:21:19 | sink(...) | 0 | test.kt:21:10:21:18 | ...[...] |
+| test.kt:25:5:25:19 | sink(...) | 0 | test.kt:25:10:25:18 | ...[...] |
+| test.kt:29:5:29:19 | sink(...) | 0 | test.kt:29:10:29:18 | ...[...] |
+| test.kt:33:14:33:31 | listOf(...) | 0 | test.kt:33:21:33:22 | 10 |
+| test.kt:33:14:33:31 | listOf(...) | 1 | test.kt:33:25:33:26 | 11 |
+| test.kt:33:14:33:31 | listOf(...) | 2 | test.kt:33:29:33:30 | 12 |
+| test.kt:35:5:35:34 | funWithOnlyVarArgs(...) | 0 | test.kt:35:24:35:25 | 20 |
+| test.kt:35:5:35:34 | funWithOnlyVarArgs(...) | 1 | test.kt:35:28:35:29 | 21 |
+| test.kt:35:5:35:34 | funWithOnlyVarArgs(...) | 2 | test.kt:35:32:35:33 | 22 |
+| test.kt:36:5:36:50 | funWithArgsAndVarArgs(...) | 0 | test.kt:36:27:36:31 | "foo" |
+| test.kt:36:5:36:50 | funWithArgsAndVarArgs(...) | 1 | test.kt:36:34:36:37 | true |
+| test.kt:36:5:36:50 | funWithArgsAndVarArgs(...) | 2 | test.kt:36:40:36:41 | 30 |
+| test.kt:36:5:36:50 | funWithArgsAndVarArgs(...) | 3 | test.kt:36:44:36:45 | 31 |
+| test.kt:36:5:36:50 | funWithArgsAndVarArgs(...) | 4 | test.kt:36:48:36:49 | 32 |
+| test.kt:37:5:37:53 | funWithMiddleVarArgs(...) | 0 | test.kt:37:26:37:30 | "foo" |
+| test.kt:37:5:37:53 | funWithMiddleVarArgs(...) | 1 | test.kt:37:33:37:34 | 41 |
+| test.kt:37:5:37:53 | funWithMiddleVarArgs(...) | 2 | test.kt:37:37:37:38 | 42 |
+| test.kt:37:5:37:53 | funWithMiddleVarArgs(...) | 3 | test.kt:37:41:37:42 | 43 |
+| test.kt:37:5:37:53 | funWithMiddleVarArgs(...) | 4 | test.kt:37:49:37:52 | true |
+| test.kt:38:5:38:30 | funWithOnlyVarArgs(...) | 0 | test.kt:38:25:38:29 | array |
+| test.kt:39:5:39:46 | funWithArgsAndVarArgs(...) | 0 | test.kt:39:27:39:31 | "foo" |
+| test.kt:39:5:39:46 | funWithArgsAndVarArgs(...) | 1 | test.kt:39:34:39:37 | true |
+| test.kt:39:5:39:46 | funWithArgsAndVarArgs(...) | 2 | test.kt:39:41:39:45 | array |
+| test.kt:40:5:40:49 | funWithMiddleVarArgs(...) | 0 | test.kt:40:26:40:30 | "foo" |
+| test.kt:40:5:40:49 | funWithMiddleVarArgs(...) | 1 | test.kt:40:34:40:38 | array |
+| test.kt:40:5:40:49 | funWithMiddleVarArgs(...) | 2 | test.kt:40:45:40:48 | true |
+| test.kt:41:5:41:36 | new HasVarargConstructor(...) | 0 | test.kt:41:26:41:27 | 51 |
+| test.kt:41:5:41:36 | new HasVarargConstructor(...) | 1 | test.kt:41:30:41:31 | 52 |
+| test.kt:41:5:41:36 | new HasVarargConstructor(...) | 2 | test.kt:41:34:41:35 | 53 |
+| test.kt:42:5:42:43 | new HasVarargConstructor(...) | 0 | test.kt:42:26:42:30 | "foo" |
+| test.kt:42:5:42:43 | new HasVarargConstructor(...) | 1 | test.kt:42:33:42:34 | 61 |
+| test.kt:42:5:42:43 | new HasVarargConstructor(...) | 2 | test.kt:42:37:42:38 | 62 |
+| test.kt:42:5:42:43 | new HasVarargConstructor(...) | 3 | test.kt:42:41:42:42 | 63 |
+| test.kt:43:5:43:38 | new SuperclassHasVarargConstructor(...) | 0 | test.kt:43:36:43:37 | 91 |
+| test.kt:44:5:44:32 | new HasVarargConstructor(...) | 0 | test.kt:44:27:44:31 | array |
+| test.kt:45:5:45:39 | new HasVarargConstructor(...) | 0 | test.kt:45:26:45:30 | "foo" |
+| test.kt:45:5:45:39 | new HasVarargConstructor(...) | 1 | test.kt:45:34:45:38 | array |
+| test.kt:55:13:55:43 | new X(...) | 0 | test.kt:55:42:55:42 | 1 |
+| test.kt:55:13:55:43 | new X(...) | 1 | test.kt:55:15:55:35 | tmp0_s |
+| test.kt:55:19:55:35 | toTypedArray(...) | 0 | test.kt:55:19:55:20 | sl |

@@ -1,3 +1,4 @@
+| 1 | 14 | nullable.cs:1:14:1:21 | Nullable | nullable.cs:1:14:1:21 | call to constructor Object | Object |
 | 5 | 13 | nullable.cs:5:9:6:24 | if (...) ... | nullable.cs:5:13:5:21 | ... == ... | Boolean |
 | 5 | 13 | nullable.cs:5:13:5:21 | ... == ... | nullable.cs:5:13:5:13 | access to parameter x | Nullable<Int32> |
 | 5 | 18 | nullable.cs:5:13:5:21 | ... == ... | nullable.cs:5:18:5:21 | null | null |

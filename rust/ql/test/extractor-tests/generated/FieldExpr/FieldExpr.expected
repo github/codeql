@@ -1,0 +1,1 @@
+| gen_field_expr.rs:5:5:5:9 | x.foo | getNumberOfAttrs: | 0 | hasExpr: | yes | hasNameRef: | yes |

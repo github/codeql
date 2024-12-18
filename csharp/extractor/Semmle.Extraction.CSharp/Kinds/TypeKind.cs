@@ -1,7 +1,8 @@
-namespace Semmle.Extraction.Kinds  // lgtm[cs/similar-file]
+namespace Semmle.Extraction.Kinds
 {
     /// <summary>
     /// This enum has been auto-generated from the C# DB scheme - do not edit.
+    /// Auto-generate command: `genkindenum.pl type`
     /// </summary>
     public enum TypeKind
     {
@@ -35,6 +36,7 @@ namespace Semmle.Extraction.Kinds  // lgtm[cs/similar-file]
         ARGLIST = 30,
         UNKNOWN = 31,
         TUPLE = 32,
-        FUNCTION_POINTER = 33
+        FUNCTION_POINTER = 33,
+        INLINE_ARRAY = 34,
     }
 }

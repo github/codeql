@@ -9,3 +9,5 @@ paths-ignore:
   - '/python/'
   - '/javascript/ql/test'
   - '/javascript/extractor/tests'
+  - '/rust/ql/test'
+  - '/rust/ql/integration-tests'

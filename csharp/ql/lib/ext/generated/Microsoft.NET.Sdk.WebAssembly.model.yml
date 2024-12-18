@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.NET.Sdk.WebAssembly", "ConvertDllsToWebCil", True, "Execute", "()", "", "Argument[this].Property[Microsoft.NET.Sdk.WebAssembly.ConvertDllsToWebCil.Candidates]", "Argument[this].Property[Microsoft.NET.Sdk.WebAssembly.ConvertDllsToWebCil.WebCilCandidates]", "value", "dfc-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "ConvertDllsToWebCil", True, "Execute", "()", "", "Argument[this].Property[Microsoft.NET.Sdk.WebAssembly.ConvertDllsToWebCil.OutputPath]", "Argument[this].Field[Microsoft.NET.Sdk.WebAssembly.ConvertDllsToWebCil._fileWrites].Element", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.NET.Sdk.WebAssembly", "AssetsComputingHelper", "GetCandidateRelativePath", "(Microsoft.Build.Framework.ITaskItem)", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "AssetsComputingHelper", "GetCustomIcuAsset", "(Microsoft.Build.Framework.ITaskItem)", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "AssetsComputingHelper", "ShouldFilterCandidate", "(Microsoft.Build.Framework.ITaskItem,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.String,System.Boolean,System.Boolean,System.String)", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "AssetsComputingHelper", "TryGetAssetFilename", "(Microsoft.Build.Framework.ITaskItem,System.String)", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "BootJsonBuilderHelper", "BootJsonBuilderHelper", "(Microsoft.Build.Utilities.TaskLoggingHelper)", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "BootJsonBuilderHelper", "ComputeResourcesHash", "(Microsoft.NET.Sdk.WebAssembly.BootJsonData)", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "BootJsonBuilderHelper", "GetNativeResourceTargetInBootConfig", "(Microsoft.NET.Sdk.WebAssembly.BootJsonData,System.String)", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "ComputeWasmBuildAssets", "Execute", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "ComputeWasmPublishAssets", "Execute", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "ConvertDllsToWebCil", "get_FileWrites", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "FileHasher", "GetFileHash", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "GenerateWasmBootJson", "Execute", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Sdk.WebAssembly", "GenerateWasmBootJson", "WriteBootJson", "(System.IO.Stream,System.String)", "summary", "df-generated"]

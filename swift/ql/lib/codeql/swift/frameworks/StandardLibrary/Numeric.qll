@@ -35,6 +35,17 @@ private class NumericSummaries extends SummaryModelCsv {
         ";BinaryInteger;true;formatted();;;Argument[-1];ReturnValue;taint",
         ";BinaryInteger;true;formatted(_:);;;Argument[-1];ReturnValue;taint",
         ";BinaryInteger;true;quotientAndRemainder(dividingBy:);;;Argument[-1..0];ReturnValue.TupleElement[0,1];taint",
+        ";BinaryInteger;true;advanced(by:);;;Argument[-1..0];ReturnValue;taint",
+        ";BinaryInteger;true;distance(to:);;;Argument[-1..0];ReturnValue;taint",
+        ";SignedInteger;true;init(_:);;;Argument[0];ReturnValue;taint",
+        ";SignedInteger;true;init(exactly:);;;Argument[0];ReturnValue.OptionalSome;value",
+        ";UnsignedInteger;true;init(_:);;;Argument[0];ReturnValue;taint",
+        ";UnsignedInteger;true;init(exactly:);;;Argument[0];ReturnValue.OptionalSome;value",
+        ";FixedWidthInteger;true;init(_:);;;Argument[0];ReturnValue;taint",
+        ";FixedWidthInteger;true;init(clamping:);;;Argument[0];ReturnValue;taint",
+        ";FixedWidthInteger;true;init(truncatingIfNeeded:);;;Argument[0];ReturnValue;taint",
+        ";FixedWidthInteger;true;init(bitPattern:);;;Argument[0];ReturnValue;taint", // actually implemented in Int, UInt, Double etc.
+        ";FixedWidthInteger;true;init(truncating:);;;Argument[0];ReturnValue;taint", // actually implemented in Int, UInt, Double etc.
         ";FixedWidthInteger;true;init(_:radix:);;;Argument[0];ReturnValue.OptionalSome;taint",
         ";FixedWidthInteger;true;init(littleEndian:);;;Argument[0];ReturnValue;taint",
         ";FixedWidthInteger;true;init(bigEndian:);;;Argument[0];ReturnValue;taint",
@@ -92,7 +103,7 @@ private class NumericFieldsInheritTaint extends TaintInheritingContent,
         className = "BinaryInteger" and
         fieldName = "words"
         or
-        className = "Numeric" and
+        className = ["Numeric", "SignedInteger", "UnsignedInteger"] and
         fieldName = ["magnitude", "byteSwapped"]
         or
         className = "BinaryFloatingPoint" and

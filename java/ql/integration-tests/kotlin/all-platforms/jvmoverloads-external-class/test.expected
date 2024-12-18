@@ -1,0 +1,8 @@
+| test.kt:3:3:3:45 | f | test.kt:3:23:3:32 | x |
+| test.kt:3:3:3:45 | f | test.kt:3:35:3:40 | y |
+| test.kt:3:3:3:45 | f | test.kt:3:35:3:40 | y |
+| test.kt:3:3:3:45 | f$default | test.kt:3:3:3:45 | p0 |
+| test.kt:3:3:3:45 | f$default | test.kt:3:3:3:45 | p1 |
+| test.kt:3:3:3:45 | f$default | test.kt:3:3:3:45 | p2 |
+| test.kt:3:3:3:45 | f$default | test.kt:3:3:3:45 | p3 |
+| test.kt:3:3:3:45 | f$default | test.kt:3:3:3:45 | p4 |

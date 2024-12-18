@@ -2,12 +2,8 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: summaryModel
-    data:
-      - ["Microsoft.Extensions.FileProviders.Internal", "PhysicalDirectoryContents", False, "PhysicalDirectoryContents", "(System.String,Microsoft.Extensions.FileProviders.Physical.ExclusionFilters)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-  - addsTo:
-      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.FileProviders.Internal", "PhysicalDirectoryContents", "PhysicalDirectoryContents", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders.Internal", "PhysicalDirectoryContents", "PhysicalDirectoryContents", "(System.String,Microsoft.Extensions.FileProviders.Physical.ExclusionFilters)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileProviders.Internal", "PhysicalDirectoryContents", "get_Exists", "()", "summary", "df-generated"]

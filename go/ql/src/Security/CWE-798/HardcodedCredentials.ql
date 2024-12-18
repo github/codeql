@@ -14,6 +14,7 @@
  */
 
 import go
+import semmle.go.security.HardcodedCredentials
 import semmle.go.security.SensitiveActions
 
 /**
@@ -22,8 +23,8 @@ import semmle.go.security.SensitiveActions
  */
 predicate isSensitive(DataFlow::Node sink, SensitiveExpr::Classification type) {
   exists(Write write, string name |
-    write.getRhs() = sink and
-    name = write.getLhs().getName() and
+    pragma[only_bind_out](write).getRhs() = sink and
+    name = pragma[only_bind_out](write).getLhs().getName() and
     // allow obvious test password variables
     not name.regexpMatch(HeuristicNames::notSensitive())
   |
@@ -31,22 +32,34 @@ predicate isSensitive(DataFlow::Node sink, SensitiveExpr::Classification type) {
   )
 }
 
-from DataFlow::Node source, string message, DataFlow::Node sink, SensitiveExpr::Classification type
-where
+predicate sensitiveAssignment(
+  DataFlow::Node source, DataFlow::Node sink, SensitiveExpr::Classification type
+) {
   exists(string val | val = source.getStringValue() and val != "" |
-    isSensitive(sink, type) and
     DataFlow::localFlow(source, sink) and
+    isSensitive(sink, type) and
     // allow obvious dummy/test values
     not PasswordHeuristics::isDummyPassword(val) and
     not sink.asExpr().(Ident).getName().regexpMatch(HeuristicNames::notSensitive())
-  ) and
+  )
+}
+
+predicate hardcodedPrivateKey(DataFlow::Node node, SensitiveExpr::Classification type) {
+  node.getStringValue()
+      .regexpMatch("(?s)-+BEGIN\\b.*\\bPRIVATE KEY-+.+-+END\\b.*\\bPRIVATE KEY-+\n?") and
+  type = SensitiveExpr::certificate()
+}
+
+from DataFlow::Node source, string message, DataFlow::Node sink, SensitiveExpr::Classification type
+where
+  sensitiveAssignment(source, sink, type) and
   message = "Hard-coded $@."
   or
-  source
-      .getStringValue()
-      .regexpMatch("(?s)-+BEGIN\\b.*\\bPRIVATE KEY-+.+-+END\\b.*\\bPRIVATE KEY-+\n?") and
-  (source.asExpr() instanceof StringLit or source.asExpr() instanceof AddExpr) and
-  sink = source and
-  type = SensitiveExpr::certificate() and
+  hardcodedPrivateKey(source, type) and
+  source = sink and
   message = "Hard-coded private key."
+  or
+  HardcodedCredentials::Flow::flow(source, sink) and
+  type = SensitiveExpr::secret() and
+  message = "Hard-coded $@."
 select sink, message, source, type.toString()

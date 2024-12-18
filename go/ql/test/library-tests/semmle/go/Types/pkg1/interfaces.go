@@ -31,3 +31,8 @@ type AExtended interface {
 type A2 interface {
 	m()
 }
+
+type MixedExportedAndNot interface {
+	Exported()
+	notExported()
+}

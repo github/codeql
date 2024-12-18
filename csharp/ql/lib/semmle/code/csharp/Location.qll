@@ -50,6 +50,27 @@ class Location extends @location {
 
   /** Gets the 1-based column number (inclusive) where this location ends. */
   final int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
+
+  /** Holds if this location starts strictly before the specified location. */
+  bindingset[this, other]
+  pragma[inline_late]
+  predicate strictlyBefore(Location other) {
+    this.getFile() = other.getFile() and
+    (
+      this.getStartLine() < other.getStartLine()
+      or
+      this.getStartLine() = other.getStartLine() and this.getStartColumn() < other.getStartColumn()
+    )
+  }
+
+  /** Holds if this location starts before the specified location. */
+  bindingset[this, other]
+  pragma[inline_late]
+  predicate before(Location other) {
+    this.getStartLine() < other.getStartLine()
+    or
+    this.getStartLine() = other.getStartLine() and this.getStartColumn() <= other.getStartColumn()
+  }
 }
 
 /** An empty location. */
@@ -63,7 +84,7 @@ class EmptyLocation extends Location {
  */
 class SourceLocation extends Location, @location_default {
   /** Gets the location that takes into account `#line` directives, if any. */
-  Location getMappedLocation() {
+  SourceLocation getMappedLocation() {
     locations_mapped(this, result) and
     not exists(LineDirective l | l.getALocation() = this)
   }
@@ -89,12 +110,21 @@ class SourceLocation extends Location, @location_default {
 
 bindingset[version]
 private int versionField(string version, int field) {
-  exists(string format |
-    format = "(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)" or
-    format = "(\\d+)\\.(\\d+)\\.(\\d+)" or
-    format = "(\\d+)\\.(\\d+)"
+  exists(string format, int i |
+    format = "(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)|" + "(\\d+)\\.(\\d+)\\.(\\d+)|" + "(\\d+)\\.(\\d+)" and
+    result = version.regexpCapture(format, i).toInt()
   |
-    result = version.regexpCapture(format, field).toInt()
+    i = [1, 5, 8] and
+    field = 1
+    or
+    i = [2, 6, 9] and
+    field = 2
+    or
+    i = [3, 7] and
+    field = 3
+    or
+    i = 4 and
+    field = 4
   ) and
   result >= 0 and
   result <= 255
@@ -102,8 +132,19 @@ private int versionField(string version, int field) {
 
 /** An assembly version, for example `4.0.0.0` or `4.5`. */
 class Version extends string {
+  private int major;
+
   bindingset[this]
-  Version() { exists(versionField(this, 1)) }
+  Version() { major = versionField(this, 1) }
+
+  bindingset[this]
+  private int getVersionField(int field) {
+    field = 1 and
+    result = major
+    or
+    field in [2 .. 4] and
+    result = versionField(this, field)
+  }
 
   /**
    * Gets field `field` of this version.
@@ -111,13 +152,47 @@ class Version extends string {
    */
   bindingset[this]
   int getField(int field) {
-    field in [1 .. 4] and
-    if exists(versionField(this, field)) then result = versionField(this, field) else result = 0
+    result = this.getVersionField(field)
+    or
+    field in [2 .. 4] and
+    not exists(this.getVersionField(field)) and
+    result = 0
+  }
+
+  bindingset[this]
+  private string getCanonicalizedField(int field) {
+    exists(string s, int length |
+      s = this.getVersionField(field).toString() and
+      length = s.length()
+    |
+      // make each field consist of 3 digits
+      result = concat(int i | i in [1 .. 3 - length] | "0") + s
+    )
+  }
+
+  /**
+   * Gets a canonicalized version of this string, where lexicographical ordering
+   * corresponds to version ordering.
+   */
+  bindingset[this]
+  string getCanonicalizedVersion() {
+    exists(string res, int length |
+      res =
+        strictconcat(int field, string s |
+          s = this.getCanonicalizedField(field)
+        |
+          s, "." order by field
+        ) and
+      length = res.length()
+    |
+      // make each canonicalized version consist of 4 chunks of 3 digits separated by a dot
+      result = res + concat(int i | i = [1 .. 15 - length] / 4 and i > 0 | ".000")
+    )
   }
 
   /** Gets the major version, for example `1` in `1.2.3.4`. */
   bindingset[this]
-  int getMajor() { result = this.getField(1) }
+  int getMajor() { result = major }
 
   /** Gets the major revision, for example `2` in `1.2.3.4`. */
   bindingset[this]
@@ -143,9 +218,7 @@ class Version extends string {
    */
   bindingset[this, other]
   predicate isEarlierThan(Version other) {
-    exists(int i | this.getField(i) < other.getField(i) |
-      forall(int j | j in [1 .. i - 1] | this.getField(j) = other.getField(j))
-    )
+    this.getCanonicalizedVersion() < other.getCanonicalizedVersion()
   }
 
   /**

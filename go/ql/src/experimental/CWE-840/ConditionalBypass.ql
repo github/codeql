@@ -14,7 +14,7 @@ import go
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof UntrustedFlowSource
+    source instanceof ActiveThreatModelSource
     or
     source = any(Field f | f.hasQualifiedName("net/http", "Request", "Host")).getARead()
   }

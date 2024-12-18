@@ -4,6 +4,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -13,18 +14,6 @@ private import codeql.ruby.dataflow.BarrierGuards
 module CodeInjection {
   /** Flow states used to distinguish whether an attacker controls the entire string. */
   module FlowState {
-    /**
-     * Flow state used for normal tainted data, where an attacker might only control a substring.
-     * DEPRECATED: Use `Full()`
-     */
-    deprecated DataFlow::FlowState substring() { result = "substring" }
-
-    /**
-     * Flow state used for data that is entirely controlled by the attacker.
-     * DEPRECATED: Use `Full()`
-     */
-    deprecated DataFlow::FlowState full() { result = "full" }
-
     private newtype TState =
       TFull() or
       TSubString()
@@ -61,14 +50,6 @@ module CodeInjection {
    * A data flow source for "Code injection" vulnerabilities.
    */
   abstract class Source extends DataFlow::Node {
-    /**
-     * Gets a flow state for which this is a source.
-     * DEPRECATED: Use `getAState()`
-     */
-    deprecated DataFlow::FlowState getAFlowState() {
-      result = [FlowState::substring(), FlowState::full()]
-    }
-
     /** Gets a flow state for which this is a source. */
     FlowState::State getAState() {
       result instanceof FlowState::SubString or result instanceof FlowState::Full
@@ -79,14 +60,6 @@ module CodeInjection {
    * A data flow sink for "Code injection" vulnerabilities.
    */
   abstract class Sink extends DataFlow::Node {
-    /**
-     * Holds if this sink is safe for an attacker that only controls a substring.
-     * DEPRECATED: Use `getAState()`
-     */
-    deprecated DataFlow::FlowState getAFlowState() {
-      result = [FlowState::substring(), FlowState::full()]
-    }
-
     /** Holds if this sink is safe for an attacker that only controls a substring. */
     FlowState::State getAState() { any() }
   }
@@ -95,13 +68,6 @@ module CodeInjection {
    * A sanitizer for "Code injection" vulnerabilities.
    */
   abstract class Sanitizer extends DataFlow::Node {
-    /**
-     * Gets a flow state for which this is a sanitizer.
-     * Sanitizes all states if the result is empty.
-     * DEPRECATED: Use `getAState()`
-     */
-    deprecated DataFlow::FlowState getAFlowState() { none() }
-
     /**
      * Gets a flow state for which this is a sanitizer.
      * Sanitizes all states if the result is empty.
@@ -121,12 +87,6 @@ module CodeInjection {
     CodeExecution c;
 
     CodeExecutionAsSink() { this = c.getCode() }
-
-    deprecated override DataFlow::FlowState getAFlowState() {
-      if c.runsArbitraryCode()
-      then result = [FlowState::substring(), FlowState::full()] // If it runs arbitrary code then it's always vulnerable.
-      else result = FlowState::full() // If it "just" loads something, then it's only vulnerable if the attacker controls the entire string.
-    }
 
     override FlowState::State getAState() {
       if c.runsArbitraryCode()
@@ -152,8 +112,10 @@ module CodeInjection {
       )
     }
 
-    deprecated override DataFlow::FlowState getAFlowState() { result = FlowState::full() }
-
     override FlowState::State getAState() { result instanceof FlowState::Full }
+  }
+
+  private class ExternalCodeInjectionSink extends Sink {
+    ExternalCodeInjectionSink() { this = ModelOutput::getASinkNode("code-injection").asSink() }
   }
 }

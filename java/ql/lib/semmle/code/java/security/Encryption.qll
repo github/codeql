@@ -13,9 +13,6 @@ class SslClass extends RefType {
   }
 }
 
-/** DEPRECATED: Alias for SslClass */
-deprecated class SSLClass = SslClass;
-
 class X509TrustManager extends RefType {
   X509TrustManager() { this.hasQualifiedName("javax.net.ssl", "X509TrustManager") }
 }
@@ -29,47 +26,29 @@ class SslSocketFactory extends RefType {
   SslSocketFactory() { this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory") }
 }
 
-/** DEPRECATED: Alias for SslSocketFactory */
-deprecated class SSLSocketFactory = SslSocketFactory;
-
 class SslContext extends RefType {
   SslContext() { this.hasQualifiedName("javax.net.ssl", "SSLContext") }
 }
-
-/** DEPRECATED: Alias for SslContext */
-deprecated class SSLContext = SslContext;
 
 /** The `javax.net.ssl.SslSession` class. */
 class SslSession extends RefType {
   SslSession() { this.hasQualifiedName("javax.net.ssl", "SSLSession") }
 }
 
-/** DEPRECATED: Alias for SslSession */
-deprecated class SSLSession = SslSession;
-
 /** The `javax.net.ssl.SslEngine` class. */
 class SslEngine extends RefType {
   SslEngine() { this.hasQualifiedName("javax.net.ssl", "SSLEngine") }
 }
-
-/** DEPRECATED: Alias for SslEngine */
-deprecated class SSLEngine = SslEngine;
 
 /** The `javax.net.ssl.SslSocket` class. */
 class SslSocket extends RefType {
   SslSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
 }
 
-/** DEPRECATED: Alias for SslSocket */
-deprecated class SSLSocket = SslSocket;
-
 /** The `javax.net.ssl.SslParameters` class. */
 class SslParameters extends RefType {
   SslParameters() { this.hasQualifiedName("javax.net.ssl", "SSLParameters") }
 }
-
-/** DEPRECATED: Alias for SslParameters */
-deprecated class SSLParameters = SslParameters;
 
 class HostnameVerifier extends RefType {
   HostnameVerifier() { this.hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
@@ -244,10 +223,7 @@ string getAnInsecureHashAlgorithmName() {
 }
 
 private string rankedInsecureAlgorithm(int i) {
-  // In this case we know these are being used for encryption, so we want to match
-  // weak hash algorithms too.
-  result =
-    rank[i](string s | s = getAnInsecureAlgorithmName() or s = getAnInsecureHashAlgorithmName())
+  result = rank[i](string s | s = getAnInsecureAlgorithmName())
 }
 
 private string insecureAlgorithmString(int i) {
@@ -270,8 +246,8 @@ string getInsecureAlgorithmRegex() {
 string getASecureAlgorithmName() {
   result =
     [
-      "RSA", "SHA-?256", "SHA-?512", "CCM", "GCM", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
-      "Blowfish", "ECIES"
+      "RSA", "SHA-?(256|384|512)", "CCM", "GCM", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
+      "Blowfish", "ECIES", "SHA3-(256|384|512)"
     ]
 }
 
@@ -305,8 +281,7 @@ abstract class JavaxCryptoAlgoSpec extends CryptoAlgoSpec { }
 class JavaxCryptoCipher extends JavaxCryptoAlgoSpec {
   JavaxCryptoCipher() {
     exists(Method m | m.getAReference() = this |
-      m.getDeclaringType().getQualifiedName() = "javax.crypto.Cipher" and
-      m.getName() = "getInstance"
+      m.hasQualifiedName("javax.crypto", "Cipher", "getInstance")
     )
   }
 
@@ -316,7 +291,7 @@ class JavaxCryptoCipher extends JavaxCryptoAlgoSpec {
 class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
   JavaxCryptoSecretKey() {
     exists(Constructor c | c.getAReference() = this |
-      c.getDeclaringType().getQualifiedName() = "javax.crypto.spec.SecretKeySpec"
+      c.getDeclaringType().hasQualifiedName("javax.crypto.spec", "SecretKeySpec")
     )
   }
 
@@ -341,8 +316,7 @@ class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
 class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyAgreement() {
     exists(Method m | m.getAReference() = this |
-      m.getDeclaringType().getQualifiedName() = "javax.crypto.KeyAgreement" and
-      m.getName() = "getInstance"
+      m.hasQualifiedName("javax.crypto", "KeyAgreement", "getInstance")
     )
   }
 
@@ -352,8 +326,7 @@ class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
 class JavaxCryptoKeyFactory extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyFactory() {
     exists(Method m | m.getAReference() = this |
-      m.getDeclaringType().getQualifiedName() = "javax.crypto.SecretKeyFactory" and
-      m.getName() = "getInstance"
+      m.hasQualifiedName("javax.crypto", "SecretKeyFactory", "getInstance")
     )
   }
 
@@ -369,8 +342,7 @@ class JavaSecurityMessageDigest extends JavaSecurityAlgoSpec {
     )
     or
     exists(Method m | m.getAReference() = this |
-      m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
-      m.getName() = "getInstance"
+      m.hasQualifiedName("java.security", "MessageDigest", "getInstance")
     )
   }
 
@@ -380,7 +352,7 @@ class JavaSecurityMessageDigest extends JavaSecurityAlgoSpec {
 class JavaSecuritySignature extends JavaSecurityAlgoSpec {
   JavaSecuritySignature() {
     exists(Constructor c | c.getAReference() = this |
-      c.getDeclaringType().getQualifiedName() = "java.security.Signature"
+      c.getDeclaringType().hasQualifiedName("java.security", "Signature")
     )
   }
 

@@ -1,0 +1,98 @@
+{
+  "markdownMessage": "A Maven process was aborted because it didn't write to the console for 5 seconds. Consider either lenghtening the timeout if appropriate by setting CODEQL_EXTRACTOR_JAVA_BUILDLESS_CHILD_PROCESS_IDLE_TIMEOUT to a higher value or zero for no timeout, or else investigate why Maven timed out. Java analysis will continue, but the analysis may be of reduced quality.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/maven-timed-out",
+    "name": "Java analysis timed out running Maven"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Build tool(s) should have been able to provide a recommended classpath but the attempt failed. Extraction will continue, but external dependencies will be inferred from the Java package names used. Consider troubleshooting the build tool error or using a build mode other than 'none'.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/classpath-from-tool-failed",
+    "name": "Failed to extract dependency information from build tool tool Maven"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis used build tool Maven to pick a JDK version and/or to recommend external dependencies.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/using-build-tool-advice",
+    "name": "Java analysis used build tool Maven to pick a JDK version and/or to recommend external dependencies"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis used the system default JDK.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/jdk-system-default",
+    "name": "Java analysis used the system default JDK"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java analysis with build-mode 'none' completed.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/complete",
+    "name": "Java analysis with build-mode 'none' completed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Java was extracted with build-mode set to 'none'. This means that all Java source in the working directory will be scanned, with build tools such as Maven and Gradle only contributing information about external dependencies.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/mode-active",
+    "name": "Java was extracted with build-mode set to 'none'"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Running the Maven plugin `com.github.ferstl:depgraph-maven-plugin:4.0.3:graph` failed. This means precise dependency information will be unavailable, and so dependencies will be guessed based on Java package names. Consider investigating why this plugin fails to run.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/depgraph-maven-plugin-failed",
+    "name": "Java buildless mode failed to extract a dependency graph from Maven"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

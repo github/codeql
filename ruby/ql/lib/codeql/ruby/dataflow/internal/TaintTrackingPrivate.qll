@@ -5,6 +5,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.ruby.dataflow.SSA
+private import SsaImpl as SsaImpl
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -77,33 +78,41 @@ private module Cached {
    * in all global taint flow configurations.
    */
   cached
-  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    // value of `case` expression into variables in patterns
-    exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprNodes::InClauseCfgNode clause |
-      nodeFrom.asExpr() = case.getValue() and
-      clause = case.getBranch(_) and
-      nodeTo.(SsaDefinitionExtNode).getDefinitionExt().(Ssa::Definition).getControlFlowNode() =
-        variablesInPattern(clause.getPattern())
-    )
-    or
-    // operation involving `nodeFrom`
-    exists(CfgNodes::ExprNodes::OperationCfgNode op |
-      op = nodeTo.asExpr() and
-      op.getAnOperand() = nodeFrom.asExpr() and
-      not op.getExpr() =
-        any(Expr e |
-          // included in normal data-flow
-          e instanceof AssignExpr or
-          e instanceof BinaryLogicalOperation or
-          // has flow summary
-          e instanceof SplatExpr
-        )
-    )
+  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+    (
+      // value of `case` expression into variables in patterns
+      exists(
+        CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprCfgNode value,
+        CfgNodes::ExprNodes::InClauseCfgNode clause, Ssa::Definition def
+      |
+        nodeFrom.asExpr() = value and
+        value = case.getValue() and
+        clause = case.getBranch(_) and
+        def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt() and
+        def.getControlFlowNode() = variablesInPattern(clause.getPattern()) and
+        not def.(Ssa::WriteDefinition).assigns(value)
+      )
+      or
+      // operation involving `nodeFrom`
+      exists(CfgNodes::ExprNodes::OperationCfgNode op |
+        op = nodeTo.asExpr() and
+        op.getAnOperand() = nodeFrom.asExpr() and
+        not op.getExpr() =
+          any(Expr e |
+            // included in normal data-flow
+            e instanceof AssignExpr or
+            e instanceof BinaryLogicalOperation or
+            // has flow summary
+            e instanceof SplatExpr
+          )
+      )
+    ) and
+    model = ""
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-      nodeTo.(FlowSummaryNode).getSummaryNode(), false)
+      nodeTo.(FlowSummaryNode).getSummaryNode(), false, model)
     or
-    any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo) and model = "AdditionalTaintStep"
     or
     // Although flow through collections is modeled precisely using stores/reads, we still
     // allow flow out of a _tainted_ collection. This is needed in order to support taint-
@@ -114,7 +123,8 @@ private module Cached {
       c.isKnownOrUnknownElement(_)
       or
       c.isAnyElement()
-    )
+    ) and
+    model = ""
   }
 
   cached
@@ -131,7 +141,7 @@ private module Cached {
   cached
   predicate localTaintStepCached(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     DataFlow::localFlowStep(nodeFrom, nodeTo) or
-    defaultAdditionalTaintStep(nodeFrom, nodeTo) or
+    defaultAdditionalTaintStep(nodeFrom, nodeTo, _) or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
     summaryThroughStepTaint(nodeFrom, nodeTo, _)
@@ -139,3 +149,37 @@ private module Cached {
 }
 
 import Cached
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+  private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(
+      DataFlowDispatch::DataFlowCall call, MethodCall srcCall,
+      DataFlowDispatch::ArgumentPosition argpos, MethodCall mc
+    |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::viableCallable(call)) and
+      call.asCall().getExpr() = srcCall and
+      src.(ArgumentNode).argumentOf(call, argpos) and
+      call.asCall().getExpr() = mc and
+      not mc instanceof Operation and
+      not mc instanceof SetterMethodCall and
+      not mc instanceof ElementReference
+    |
+      not argpos.isSelf() and
+      sink.(DataFlowPublic::PostUpdateNode)
+          .getPreUpdateNode()
+          .(ArgumentNode)
+          .argumentOf(call, any(DataFlowDispatch::ArgumentPosition qualpos | qualpos.isSelf()))
+      or
+      sink.(OutNode).getCall(_) = call
+    )
+  }
+}

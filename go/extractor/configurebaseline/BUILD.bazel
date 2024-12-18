@@ -1,0 +1,11 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "configurebaseline",
+    srcs = ["configurebaseline.go"],
+    importpath = "github.com/github/codeql-go/extractor/configurebaseline",
+    visibility = ["//visibility:public"],
+    deps = ["//go/extractor/util"],
+)

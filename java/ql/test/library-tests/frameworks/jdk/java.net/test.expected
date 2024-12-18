@@ -1,0 +1,206 @@
+models
+| 1 | Summary: java.net; InetAddress; true; getByName; (String); ; Argument[0]; ReturnValue; taint; ai-manual |
+| 2 | Summary: java.net; InetSocketAddress; true; InetSocketAddress; (String,int); ; Argument[0]; Argument[this]; taint; ai-manual |
+| 3 | Summary: java.net; InetSocketAddress; true; createUnresolved; (String,int); ; Argument[0]; ReturnValue; taint; ai-manual |
+| 4 | Summary: java.net; URI; false; URI; (String); ; Argument[0]; Argument[this]; taint; manual |
+| 5 | Summary: java.net; URI; false; create; ; ; Argument[0]; ReturnValue; taint; manual |
+| 6 | Summary: java.net; URI; false; resolve; (String); ; Argument[0]; ReturnValue; taint; ai-manual |
+| 7 | Summary: java.net; URI; false; resolve; (URI); ; Argument[0]; ReturnValue; taint; ai-manual |
+| 8 | Summary: java.net; URI; false; toASCIIString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 9 | Summary: java.net; URI; false; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: java.net; URI; false; toURL; ; ; Argument[this]; ReturnValue; taint; manual |
+| 11 | Summary: java.net; URL; false; URL; (String); ; Argument[0]; Argument[this]; taint; manual |
+| 12 | Summary: java.net; URL; false; URL; (URL,String); ; Argument[0]; Argument[this]; taint; ai-manual |
+| 13 | Summary: java.net; URL; false; URL; (URL,String); ; Argument[1]; Argument[this]; taint; ai-manual |
+| 14 | Summary: java.net; URL; false; getPath; (); ; Argument[this].SyntheticField[java.net.URL.path]; ReturnValue; taint; ai-manual |
+| 15 | Summary: java.net; URL; false; toExternalForm; ; ; Argument[this]; ReturnValue; taint; manual |
+| 16 | Summary: java.net; URL; false; toURI; ; ; Argument[this]; ReturnValue; taint; manual |
+| 17 | Summary: java.net; URLDecoder; false; decode; ; ; Argument[0]; ReturnValue; taint; manual |
+edges
+| Test.java:24:16:24:32 | (...)... : String | Test.java:25:32:25:33 | in : String | provenance |  |
+| Test.java:24:25:24:32 | source(...) : Object | Test.java:24:16:24:32 | (...)... : String | provenance |  |
+| Test.java:25:10:25:34 | getByName(...) : InetAddress | Test.java:26:9:26:11 | out | provenance |  |
+| Test.java:25:32:25:33 | in : String | Test.java:25:10:25:34 | getByName(...) : InetAddress | provenance | MaD:1 |
+| Test.java:31:16:31:32 | (...)... : String | Test.java:32:32:32:33 | in : String | provenance |  |
+| Test.java:31:25:31:32 | source(...) : Object | Test.java:31:16:31:32 | (...)... : String | provenance |  |
+| Test.java:32:10:32:37 | new InetSocketAddress(...) : InetSocketAddress | Test.java:33:9:33:11 | out | provenance |  |
+| Test.java:32:32:32:33 | in : String | Test.java:32:10:32:37 | new InetSocketAddress(...) : InetSocketAddress | provenance | MaD:2 |
+| Test.java:38:16:38:32 | (...)... : String | Test.java:39:45:39:46 | in : String | provenance |  |
+| Test.java:38:25:38:32 | source(...) : Object | Test.java:38:16:38:32 | (...)... : String | provenance |  |
+| Test.java:39:10:39:50 | createUnresolved(...) : InetSocketAddress | Test.java:40:9:40:11 | out | provenance |  |
+| Test.java:39:45:39:46 | in : String | Test.java:39:10:39:50 | createUnresolved(...) : InetSocketAddress | provenance | MaD:3 |
+| Test.java:45:16:45:32 | (...)... : String | Test.java:46:18:46:19 | in : String | provenance |  |
+| Test.java:45:25:45:32 | source(...) : Object | Test.java:45:16:45:32 | (...)... : String | provenance |  |
+| Test.java:46:10:46:20 | new URI(...) : URI | Test.java:47:9:47:11 | out | provenance |  |
+| Test.java:46:18:46:19 | in : String | Test.java:46:10:46:20 | new URI(...) : URI | provenance | MaD:4 |
+| Test.java:52:16:52:32 | (...)... : String | Test.java:53:21:53:22 | in : String | provenance |  |
+| Test.java:52:25:52:32 | source(...) : Object | Test.java:52:16:52:32 | (...)... : String | provenance |  |
+| Test.java:53:10:53:23 | create(...) : URI | Test.java:54:9:54:11 | out | provenance |  |
+| Test.java:53:21:53:22 | in : String | Test.java:53:10:53:23 | create(...) : URI | provenance | MaD:5 |
+| Test.java:59:16:59:32 | (...)... : String | Test.java:61:27:61:28 | in : String | provenance |  |
+| Test.java:59:25:59:32 | source(...) : Object | Test.java:59:16:59:32 | (...)... : String | provenance |  |
+| Test.java:61:10:61:29 | resolve(...) : URI | Test.java:62:9:62:11 | out | provenance |  |
+| Test.java:61:27:61:28 | in : String | Test.java:61:10:61:29 | resolve(...) : URI | provenance | MaD:6 |
+| Test.java:67:13:67:26 | (...)... : URI | Test.java:69:27:69:28 | in : URI | provenance |  |
+| Test.java:67:19:67:26 | source(...) : Object | Test.java:67:13:67:26 | (...)... : URI | provenance |  |
+| Test.java:69:10:69:29 | resolve(...) : URI | Test.java:70:9:70:11 | out | provenance |  |
+| Test.java:69:27:69:28 | in : URI | Test.java:69:10:69:29 | resolve(...) : URI | provenance | MaD:7 |
+| Test.java:75:13:75:26 | (...)... : URI | Test.java:76:10:76:11 | in : URI | provenance |  |
+| Test.java:75:19:75:26 | source(...) : Object | Test.java:75:13:75:26 | (...)... : URI | provenance |  |
+| Test.java:76:10:76:11 | in : URI | Test.java:76:10:76:27 | toASCIIString(...) : String | provenance | MaD:8 |
+| Test.java:76:10:76:27 | toASCIIString(...) : String | Test.java:77:9:77:11 | out | provenance |  |
+| Test.java:82:13:82:26 | (...)... : URI | Test.java:83:10:83:11 | in : URI | provenance |  |
+| Test.java:82:19:82:26 | source(...) : Object | Test.java:82:13:82:26 | (...)... : URI | provenance |  |
+| Test.java:83:10:83:11 | in : URI | Test.java:83:10:83:22 | toString(...) : String | provenance | MaD:9 |
+| Test.java:83:10:83:22 | toString(...) : String | Test.java:84:9:84:11 | out | provenance |  |
+| Test.java:89:13:89:26 | (...)... : URI | Test.java:90:10:90:11 | in : URI | provenance |  |
+| Test.java:89:19:89:26 | source(...) : Object | Test.java:89:13:89:26 | (...)... : URI | provenance |  |
+| Test.java:90:10:90:11 | in : URI | Test.java:90:10:90:19 | toURL(...) : URL | provenance | MaD:10 |
+| Test.java:90:10:90:19 | toURL(...) : URL | Test.java:91:9:91:11 | out | provenance |  |
+| Test.java:97:13:97:26 | (...)... : URI | Test.java:98:10:98:11 | in : URI | provenance |  |
+| Test.java:97:19:97:26 | source(...) : Object | Test.java:97:13:97:26 | (...)... : URI | provenance |  |
+| Test.java:98:10:98:11 | in : URI | Test.java:98:10:98:19 | toURL(...) : URL | provenance | MaD:10 |
+| Test.java:98:10:98:19 | toURL(...) : URL | Test.java:99:9:99:11 | out : URL | provenance |  |
+| Test.java:99:9:99:11 | out : URL | Test.java:99:9:99:21 | getPath(...) | provenance | MaD:14 |
+| Test.java:104:16:104:32 | (...)... : String | Test.java:105:18:105:19 | in : String | provenance |  |
+| Test.java:104:25:104:32 | source(...) : Object | Test.java:104:16:104:32 | (...)... : String | provenance |  |
+| Test.java:105:10:105:20 | new URL(...) : URL | Test.java:106:9:106:11 | out | provenance |  |
+| Test.java:105:18:105:19 | in : String | Test.java:105:10:105:20 | new URL(...) : URL | provenance | MaD:11 |
+| Test.java:112:16:112:32 | (...)... : String | Test.java:113:18:113:19 | in : String | provenance |  |
+| Test.java:112:25:112:32 | source(...) : Object | Test.java:112:16:112:32 | (...)... : String | provenance |  |
+| Test.java:113:10:113:20 | new URL(...) : URL | Test.java:114:9:114:11 | out : URL | provenance |  |
+| Test.java:113:18:113:19 | in : String | Test.java:113:10:113:20 | new URL(...) : URL | provenance | MaD:11 |
+| Test.java:114:9:114:11 | out : URL | Test.java:114:9:114:21 | getPath(...) | provenance | MaD:14 |
+| Test.java:119:13:119:26 | (...)... : URL | Test.java:120:18:120:19 | in : URL | provenance |  |
+| Test.java:119:19:119:26 | source(...) : Object | Test.java:119:13:119:26 | (...)... : URL | provenance |  |
+| Test.java:120:10:120:26 | new URL(...) : URL | Test.java:121:9:121:11 | out | provenance |  |
+| Test.java:120:18:120:19 | in : URL | Test.java:120:10:120:26 | new URL(...) : URL | provenance | MaD:12 |
+| Test.java:126:16:126:32 | (...)... : String | Test.java:127:24:127:25 | in : String | provenance |  |
+| Test.java:126:25:126:32 | source(...) : Object | Test.java:126:16:126:32 | (...)... : String | provenance |  |
+| Test.java:127:10:127:26 | new URL(...) : URL | Test.java:128:9:128:11 | out | provenance |  |
+| Test.java:127:24:127:25 | in : String | Test.java:127:10:127:26 | new URL(...) : URL | provenance | MaD:13 |
+| Test.java:133:13:133:26 | (...)... : URL | Test.java:134:10:134:11 | in : URL | provenance |  |
+| Test.java:133:19:133:26 | source(...) : Object | Test.java:133:13:133:26 | (...)... : URL | provenance |  |
+| Test.java:134:10:134:11 | in : URL | Test.java:134:10:134:28 | toExternalForm(...) : String | provenance | MaD:15 |
+| Test.java:134:10:134:28 | toExternalForm(...) : String | Test.java:135:9:135:11 | out | provenance |  |
+| Test.java:140:13:140:26 | (...)... : URL | Test.java:141:10:141:11 | in : URL | provenance |  |
+| Test.java:140:19:140:26 | source(...) : Object | Test.java:140:13:140:26 | (...)... : URL | provenance |  |
+| Test.java:141:10:141:11 | in : URL | Test.java:141:10:141:19 | toURI(...) : URI | provenance | MaD:16 |
+| Test.java:141:10:141:19 | toURI(...) : URI | Test.java:142:9:142:11 | out | provenance |  |
+| Test.java:147:16:147:32 | (...)... : String | Test.java:148:28:148:29 | in : String | provenance |  |
+| Test.java:147:25:147:32 | source(...) : Object | Test.java:147:16:147:32 | (...)... : String | provenance |  |
+| Test.java:148:10:148:30 | decode(...) : String | Test.java:149:9:149:11 | out | provenance |  |
+| Test.java:148:28:148:29 | in : String | Test.java:148:10:148:30 | decode(...) : String | provenance | MaD:17 |
+| Test.java:154:16:154:32 | (...)... : String | Test.java:155:28:155:29 | in : String | provenance |  |
+| Test.java:154:25:154:32 | source(...) : Object | Test.java:154:16:154:32 | (...)... : String | provenance |  |
+| Test.java:155:10:155:46 | decode(...) : String | Test.java:156:9:156:11 | out | provenance |  |
+| Test.java:155:28:155:29 | in : String | Test.java:155:10:155:46 | decode(...) : String | provenance | MaD:17 |
+| Test.java:161:16:161:32 | (...)... : String | Test.java:162:28:162:29 | in : String | provenance |  |
+| Test.java:161:25:161:32 | source(...) : Object | Test.java:161:16:161:32 | (...)... : String | provenance |  |
+| Test.java:162:10:162:45 | decode(...) : String | Test.java:163:9:163:11 | out | provenance |  |
+| Test.java:162:28:162:29 | in : String | Test.java:162:10:162:45 | decode(...) : String | provenance | MaD:17 |
+nodes
+| Test.java:24:16:24:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:24:25:24:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:25:10:25:34 | getByName(...) : InetAddress | semmle.label | getByName(...) : InetAddress |
+| Test.java:25:32:25:33 | in : String | semmle.label | in : String |
+| Test.java:26:9:26:11 | out | semmle.label | out |
+| Test.java:31:16:31:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:31:25:31:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:32:10:32:37 | new InetSocketAddress(...) : InetSocketAddress | semmle.label | new InetSocketAddress(...) : InetSocketAddress |
+| Test.java:32:32:32:33 | in : String | semmle.label | in : String |
+| Test.java:33:9:33:11 | out | semmle.label | out |
+| Test.java:38:16:38:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:38:25:38:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:39:10:39:50 | createUnresolved(...) : InetSocketAddress | semmle.label | createUnresolved(...) : InetSocketAddress |
+| Test.java:39:45:39:46 | in : String | semmle.label | in : String |
+| Test.java:40:9:40:11 | out | semmle.label | out |
+| Test.java:45:16:45:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:45:25:45:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:46:10:46:20 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| Test.java:46:18:46:19 | in : String | semmle.label | in : String |
+| Test.java:47:9:47:11 | out | semmle.label | out |
+| Test.java:52:16:52:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:52:25:52:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:53:10:53:23 | create(...) : URI | semmle.label | create(...) : URI |
+| Test.java:53:21:53:22 | in : String | semmle.label | in : String |
+| Test.java:54:9:54:11 | out | semmle.label | out |
+| Test.java:59:16:59:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:59:25:59:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:61:10:61:29 | resolve(...) : URI | semmle.label | resolve(...) : URI |
+| Test.java:61:27:61:28 | in : String | semmle.label | in : String |
+| Test.java:62:9:62:11 | out | semmle.label | out |
+| Test.java:67:13:67:26 | (...)... : URI | semmle.label | (...)... : URI |
+| Test.java:67:19:67:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:69:10:69:29 | resolve(...) : URI | semmle.label | resolve(...) : URI |
+| Test.java:69:27:69:28 | in : URI | semmle.label | in : URI |
+| Test.java:70:9:70:11 | out | semmle.label | out |
+| Test.java:75:13:75:26 | (...)... : URI | semmle.label | (...)... : URI |
+| Test.java:75:19:75:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:76:10:76:11 | in : URI | semmle.label | in : URI |
+| Test.java:76:10:76:27 | toASCIIString(...) : String | semmle.label | toASCIIString(...) : String |
+| Test.java:77:9:77:11 | out | semmle.label | out |
+| Test.java:82:13:82:26 | (...)... : URI | semmle.label | (...)... : URI |
+| Test.java:82:19:82:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:83:10:83:11 | in : URI | semmle.label | in : URI |
+| Test.java:83:10:83:22 | toString(...) : String | semmle.label | toString(...) : String |
+| Test.java:84:9:84:11 | out | semmle.label | out |
+| Test.java:89:13:89:26 | (...)... : URI | semmle.label | (...)... : URI |
+| Test.java:89:19:89:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:90:10:90:11 | in : URI | semmle.label | in : URI |
+| Test.java:90:10:90:19 | toURL(...) : URL | semmle.label | toURL(...) : URL |
+| Test.java:91:9:91:11 | out | semmle.label | out |
+| Test.java:97:13:97:26 | (...)... : URI | semmle.label | (...)... : URI |
+| Test.java:97:19:97:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:98:10:98:11 | in : URI | semmle.label | in : URI |
+| Test.java:98:10:98:19 | toURL(...) : URL | semmle.label | toURL(...) : URL |
+| Test.java:99:9:99:11 | out : URL | semmle.label | out : URL |
+| Test.java:99:9:99:21 | getPath(...) | semmle.label | getPath(...) |
+| Test.java:104:16:104:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:104:25:104:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:105:10:105:20 | new URL(...) : URL | semmle.label | new URL(...) : URL |
+| Test.java:105:18:105:19 | in : String | semmle.label | in : String |
+| Test.java:106:9:106:11 | out | semmle.label | out |
+| Test.java:112:16:112:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:112:25:112:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:113:10:113:20 | new URL(...) : URL | semmle.label | new URL(...) : URL |
+| Test.java:113:18:113:19 | in : String | semmle.label | in : String |
+| Test.java:114:9:114:11 | out : URL | semmle.label | out : URL |
+| Test.java:114:9:114:21 | getPath(...) | semmle.label | getPath(...) |
+| Test.java:119:13:119:26 | (...)... : URL | semmle.label | (...)... : URL |
+| Test.java:119:19:119:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:120:10:120:26 | new URL(...) : URL | semmle.label | new URL(...) : URL |
+| Test.java:120:18:120:19 | in : URL | semmle.label | in : URL |
+| Test.java:121:9:121:11 | out | semmle.label | out |
+| Test.java:126:16:126:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:126:25:126:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:127:10:127:26 | new URL(...) : URL | semmle.label | new URL(...) : URL |
+| Test.java:127:24:127:25 | in : String | semmle.label | in : String |
+| Test.java:128:9:128:11 | out | semmle.label | out |
+| Test.java:133:13:133:26 | (...)... : URL | semmle.label | (...)... : URL |
+| Test.java:133:19:133:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:134:10:134:11 | in : URL | semmle.label | in : URL |
+| Test.java:134:10:134:28 | toExternalForm(...) : String | semmle.label | toExternalForm(...) : String |
+| Test.java:135:9:135:11 | out | semmle.label | out |
+| Test.java:140:13:140:26 | (...)... : URL | semmle.label | (...)... : URL |
+| Test.java:140:19:140:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:141:10:141:11 | in : URL | semmle.label | in : URL |
+| Test.java:141:10:141:19 | toURI(...) : URI | semmle.label | toURI(...) : URI |
+| Test.java:142:9:142:11 | out | semmle.label | out |
+| Test.java:147:16:147:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:147:25:147:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:148:10:148:30 | decode(...) : String | semmle.label | decode(...) : String |
+| Test.java:148:28:148:29 | in : String | semmle.label | in : String |
+| Test.java:149:9:149:11 | out | semmle.label | out |
+| Test.java:154:16:154:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:154:25:154:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:155:10:155:46 | decode(...) : String | semmle.label | decode(...) : String |
+| Test.java:155:28:155:29 | in : String | semmle.label | in : String |
+| Test.java:156:9:156:11 | out | semmle.label | out |
+| Test.java:161:16:161:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:161:25:161:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:162:10:162:45 | decode(...) : String | semmle.label | decode(...) : String |
+| Test.java:162:28:162:29 | in : String | semmle.label | in : String |
+| Test.java:163:9:163:11 | out | semmle.label | out |
+subpaths
+testFailures

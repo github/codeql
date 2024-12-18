@@ -12,6 +12,9 @@ int getConstantValue(Instruction instr) {
   or
   result = getConstantValue(instr.(CopyInstruction).getSourceValue())
   or
+  getConstantValue(instr.(LogicalNotInstruction).getUnary()) != 0 and
+  result = 0
+  or
   exists(PhiInstruction phi |
     phi = instr and
     result = unique(Operand op | op = phi.getAnInputOperand() | getConstantValue(op.getDef()))
@@ -26,28 +29,31 @@ private predicate binaryInstructionOperands(BinaryInstruction instr, int left, i
 
 pragma[noinline]
 private int getBinaryInstructionValue(BinaryInstruction instr) {
-  exists(int left, int right |
-    binaryInstructionOperands(instr, left, right) and
-    (
-      instr instanceof AddInstruction and result = add(left, right)
-      or
-      instr instanceof SubInstruction and result = sub(left, right)
-      or
-      instr instanceof MulInstruction and result = mul(left, right)
-      or
-      instr instanceof DivInstruction and result = div(left, right)
-      or
-      instr instanceof CompareEQInstruction and result = compareEQ(left, right)
-      or
-      instr instanceof CompareNEInstruction and result = compareNE(left, right)
-      or
-      instr instanceof CompareLTInstruction and result = compareLT(left, right)
-      or
-      instr instanceof CompareGTInstruction and result = compareGT(left, right)
-      or
-      instr instanceof CompareLEInstruction and result = compareLE(left, right)
-      or
-      instr instanceof CompareGEInstruction and result = compareGE(left, right)
-    )
+  exists(int left, int right | binaryInstructionOperands(instr, left, right) |
+    instr instanceof AddInstruction and result = add(left, right)
+    or
+    instr instanceof SubInstruction and result = sub(left, right)
+    or
+    instr instanceof MulInstruction and result = mul(left, right)
+    or
+    instr instanceof DivInstruction and result = div(left, right)
+    or
+    instr instanceof BitOrInstruction and result = bitOr(left, right)
+    or
+    instr instanceof BitAndInstruction and result = bitAnd(left, right)
+    or
+    instr instanceof BitXorInstruction and result = bitXor(left, right)
+    or
+    instr instanceof CompareEQInstruction and result = compareEQ(left, right)
+    or
+    instr instanceof CompareNEInstruction and result = compareNE(left, right)
+    or
+    instr instanceof CompareLTInstruction and result = compareLT(left, right)
+    or
+    instr instanceof CompareGTInstruction and result = compareGT(left, right)
+    or
+    instr instanceof CompareLEInstruction and result = compareLE(left, right)
+    or
+    instr instanceof CompareGEInstruction and result = compareGE(left, right)
   )
 }

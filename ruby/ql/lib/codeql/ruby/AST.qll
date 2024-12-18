@@ -18,6 +18,7 @@ private import ast.internal.Scope
 private import ast.internal.Synthesis
 private import ast.internal.TreeSitter
 private import Customizations
+private import Diagnostics
 
 cached
 private module Cached {
@@ -137,7 +138,12 @@ class AstNode extends TAstNode {
 
 /** A Ruby source file */
 class RubyFile extends File {
-  RubyFile() { ruby_ast_node_info(_, this, _, _) }
+  RubyFile() {
+    exists(Location loc |
+      ruby_ast_node_location(_, loc) and
+      this = loc.getFile()
+    )
+  }
 
   /** Gets a token in this file. */
   private Ruby::Token getAToken() { result.getLocation().getFile() = this }
@@ -160,4 +166,21 @@ class RubyFile extends File {
 
   /** Gets the number of lines of comments in this file. */
   int getNumberOfLinesOfComments() { result = count(int line | this.line(line, true)) }
+}
+
+/**
+ * A successfully extracted file, that is, a file that was extracted and
+ * contains no extraction errors or warnings.
+ */
+class SuccessfullyExtractedFile extends File {
+  SuccessfullyExtractedFile() {
+    not exists(Diagnostic d |
+      d.getLocation().getFile() = this and
+      (
+        d instanceof ExtractionError
+        or
+        d instanceof ExtractionWarning
+      )
+    )
+  }
 }

@@ -1,0 +1,6 @@
+| gen_tuple_pat.rs:5:9:5:14 | TuplePat | 0 | gen_tuple_pat.rs:5:10:5:10 | x |
+| gen_tuple_pat.rs:5:9:5:14 | TuplePat | 1 | gen_tuple_pat.rs:5:13:5:13 | y |
+| gen_tuple_pat.rs:6:9:6:22 | TuplePat | 0 | gen_tuple_pat.rs:6:10:6:10 | a |
+| gen_tuple_pat.rs:6:9:6:22 | TuplePat | 1 | gen_tuple_pat.rs:6:13:6:13 | b |
+| gen_tuple_pat.rs:6:9:6:22 | TuplePat | 2 | gen_tuple_pat.rs:6:16:6:17 | .. |
+| gen_tuple_pat.rs:6:9:6:22 | TuplePat | 3 | gen_tuple_pat.rs:6:21:6:21 | z |

@@ -7,13 +7,16 @@ import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.NonThrowing
 
 /**
  * The standard function `strcat` and its wide, sized, and Microsoft variants.
  *
  * Does not include `strlcat`, which is covered by `StrlcatFunction`
  */
-class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, SideEffectFunction {
+class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, SideEffectFunction,
+  NonCppThrowingFunction
+{
   StrcatFunction() {
     this.hasGlobalOrStdOrBslName([
         "strcat", // strcat(dst, src)

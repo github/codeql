@@ -1,0 +1,4 @@
+storeStepIsLocal
+| testapp/models.py:6:1:6:24 | [orm-model] Class Foo | testapp/views.py:14:16:14:32 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| testapp/models.py:11:1:11:24 | [orm-model] Class Bar | testapp/views.py:19:16:19:32 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |
+| testapp/models.py:11:1:11:24 | [orm-model] Class Bar | testapp/views.py:23:16:23:32 | ControlFlowNode for Attribute() | Store step does not preserve enclosing callable. |

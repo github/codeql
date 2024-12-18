@@ -23,6 +23,9 @@ defaults:
   run:
     working-directory: shared/tree-sitter-extractor
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest

@@ -30,4 +30,9 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.util.regex", "Matcher", "appendReplacement", "(StringBuffer,String)", "summary", "df-manual"]
+      - ["java.util.regex", "Matcher", "appendTail", "(StringBuffer)", "summary", "df-manual"]
       - ["java.util.regex", "Matcher", "find", "()", "summary", "manual"]
+      - ["java.util.regex", "Matcher", "pattern", "()", "summary", "df-manual"]
+      - ["java.util.regex", "Pattern", "compile", "(String,int)", "summary", "df-manual"]
+      - ["java.util.regex", "Pattern", "pattern", "()", "summary", "df-manual"]

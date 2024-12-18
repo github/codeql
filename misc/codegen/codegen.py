@@ -30,8 +30,8 @@ def _parse_args() -> argparse.Namespace:
 
     p = argparse.ArgumentParser(description="Code generation suite")
     p.add_argument("--generate", type=lambda x: x.split(","),
-                   help="specify what targets to generate as a comma separated list, choosing among dbscheme, ql, trap "
-                        "and cpp")
+                   help="specify what targets to generate as a comma separated list, choosing among dbscheme, ql, "
+                        "trap, cpp and rust")
     p.add_argument("--verbose", "-v", action="store_true", help="print more information")
     p.add_argument("--quiet", "-q", action="store_true", help="only print errors")
     p.add_argument("--configuration-file", "-c", type=_abspath, default=conf,
@@ -43,8 +43,8 @@ def _parse_args() -> argparse.Namespace:
                         "compute QL imports and in some comments and as root for relative paths provided as options. "
                         "If not provided it defaults to the directory of the configuration file, if any")
     path_arguments = [
-        p.add_argument("--schema", default="schema.py",
-                       help="input schema file (default %(default)s)"),
+        p.add_argument("--schema",
+                       help="input schema file (default schema.py)"),
         p.add_argument("--dbscheme",
                        help="output file for dbscheme generation, input file for trap generation"),
         p.add_argument("--ql-output",
@@ -54,8 +54,13 @@ def _parse_args() -> argparse.Namespace:
                             "generated qll file importing every class file"),
         p.add_argument("--ql-test-output",
                        help="output directory for QL generated extractor test files"),
+        p.add_argument("--ql-cfg-output",
+                       help="output directory for QL CFG layer (optional)."),
         p.add_argument("--cpp-output",
                        help="output directory for generated C++ files, required if trap or cpp is provided to "
+                            "--generate"),
+        p.add_argument("--rust-output",
+                       help="output directory for generated Rust files, required if rust is provided to "
                             "--generate"),
         p.add_argument("--generated-registry",
                        help="registry file containing information about checked-in generated code. A .gitattributes"
@@ -84,6 +89,8 @@ def _parse_args() -> argparse.Namespace:
                     setattr(opts, flag, getattr(defaults, flag))
         if opts.root_dir is None:
             opts.root_dir = opts.configuration_file.parent
+    if opts.schema is None:
+        opts.schema = "schema.py"
     if not opts.generate:
         p.error("Nothing to do, specify --generate")
     # absolutize all paths

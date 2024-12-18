@@ -1,16 +1,22 @@
+#select
+| ExponentialRegex.cs:15:40:15:48 | access to local variable userInput | ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:15:40:15:48 | access to local variable userInput | This regex operation with dangerous complexity depends on a $@. | ExponentialRegex.cs:11:28:11:50 | access to property QueryString | user-provided value |
+| ExponentialRegex.cs:16:42:16:50 | access to local variable userInput | ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:16:42:16:50 | access to local variable userInput | This regex operation with dangerous complexity depends on a $@. | ExponentialRegex.cs:11:28:11:50 | access to property QueryString | user-provided value |
+| ExponentialRegex.cs:19:139:19:147 | access to local variable userInput | ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:19:139:19:147 | access to local variable userInput | This regex operation with dangerous complexity depends on a $@. | ExponentialRegex.cs:11:28:11:50 | access to property QueryString | user-provided value |
+| ExponentialRegex.cs:22:43:22:51 | access to local variable userInput | ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:22:43:22:51 | access to local variable userInput | This regex operation with dangerous complexity depends on a $@. | ExponentialRegex.cs:11:28:11:50 | access to property QueryString | user-provided value |
+| ExponentialRegex.cs:24:21:24:29 | access to local variable userInput | ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:24:21:24:29 | access to local variable userInput | This regex operation with dangerous complexity depends on a $@. | ExponentialRegex.cs:11:28:11:50 | access to property QueryString | user-provided value |
 edges
-| ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:11:28:11:63 | access to indexer : String |
-| ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:15:40:15:48 | access to local variable userInput |
-| ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:16:42:16:50 | access to local variable userInput |
-| ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:19:139:19:147 | access to local variable userInput |
-| ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:22:43:22:51 | access to local variable userInput |
-| ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:24:21:24:29 | access to local variable userInput |
-| ExponentialRegex.cs:11:28:11:63 | access to indexer : String | ExponentialRegex.cs:15:40:15:48 | access to local variable userInput |
-| ExponentialRegex.cs:11:28:11:63 | access to indexer : String | ExponentialRegex.cs:16:42:16:50 | access to local variable userInput |
-| ExponentialRegex.cs:11:28:11:63 | access to indexer : String | ExponentialRegex.cs:19:139:19:147 | access to local variable userInput |
-| ExponentialRegex.cs:11:28:11:63 | access to indexer : String | ExponentialRegex.cs:22:43:22:51 | access to local variable userInput |
-| ExponentialRegex.cs:11:28:11:63 | access to indexer : String | ExponentialRegex.cs:24:21:24:29 | access to local variable userInput |
+| ExponentialRegex.cs:11:16:11:24 | access to local variable userInput : String | ExponentialRegex.cs:15:40:15:48 | access to local variable userInput | provenance |  |
+| ExponentialRegex.cs:11:16:11:24 | access to local variable userInput : String | ExponentialRegex.cs:16:42:16:50 | access to local variable userInput | provenance |  |
+| ExponentialRegex.cs:11:16:11:24 | access to local variable userInput : String | ExponentialRegex.cs:19:139:19:147 | access to local variable userInput | provenance |  |
+| ExponentialRegex.cs:11:16:11:24 | access to local variable userInput : String | ExponentialRegex.cs:22:43:22:51 | access to local variable userInput | provenance |  |
+| ExponentialRegex.cs:11:16:11:24 | access to local variable userInput : String | ExponentialRegex.cs:24:21:24:29 | access to local variable userInput | provenance |  |
+| ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:11:16:11:24 | access to local variable userInput : String | provenance |  |
+| ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:11:28:11:63 | access to indexer : String | provenance | MaD:1 |
+| ExponentialRegex.cs:11:28:11:63 | access to indexer : String | ExponentialRegex.cs:11:16:11:24 | access to local variable userInput : String | provenance |  |
+models
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
+| ExponentialRegex.cs:11:16:11:24 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
 | ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | ExponentialRegex.cs:11:28:11:63 | access to indexer : String | semmle.label | access to indexer : String |
 | ExponentialRegex.cs:15:40:15:48 | access to local variable userInput | semmle.label | access to local variable userInput |
@@ -19,9 +25,3 @@ nodes
 | ExponentialRegex.cs:22:43:22:51 | access to local variable userInput | semmle.label | access to local variable userInput |
 | ExponentialRegex.cs:24:21:24:29 | access to local variable userInput | semmle.label | access to local variable userInput |
 subpaths
-#select
-| ExponentialRegex.cs:15:40:15:48 | access to local variable userInput | ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:15:40:15:48 | access to local variable userInput | This regex operation with dangerous complexity depends on a $@. | ExponentialRegex.cs:11:28:11:50 | access to property QueryString | user-provided value |
-| ExponentialRegex.cs:16:42:16:50 | access to local variable userInput | ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:16:42:16:50 | access to local variable userInput | This regex operation with dangerous complexity depends on a $@. | ExponentialRegex.cs:11:28:11:50 | access to property QueryString | user-provided value |
-| ExponentialRegex.cs:19:139:19:147 | access to local variable userInput | ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:19:139:19:147 | access to local variable userInput | This regex operation with dangerous complexity depends on a $@. | ExponentialRegex.cs:11:28:11:50 | access to property QueryString | user-provided value |
-| ExponentialRegex.cs:22:43:22:51 | access to local variable userInput | ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:22:43:22:51 | access to local variable userInput | This regex operation with dangerous complexity depends on a $@. | ExponentialRegex.cs:11:28:11:50 | access to property QueryString | user-provided value |
-| ExponentialRegex.cs:24:21:24:29 | access to local variable userInput | ExponentialRegex.cs:11:28:11:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:24:21:24:29 | access to local variable userInput | This regex operation with dangerous complexity depends on a $@. | ExponentialRegex.cs:11:28:11:50 | access to property QueryString | user-provided value |

@@ -36,7 +36,8 @@ class SwiftDispatcher {
                               const swift::TypeBase*,
                               const swift::CapturedValue*,
                               const swift::PoundAvailableInfo*,
-                              const swift::AvailabilitySpec*>;
+                              const swift::AvailabilitySpec*,
+                              const swift::MacroRoleAttr*>;
 
  public:
   // all references and pointers passed as parameters to this constructor are supposed to outlive
@@ -334,9 +335,13 @@ class SwiftDispatcher {
   virtual void visit(const swift::TypeRepr* typeRepr, swift::Type type) = 0;
   virtual void visit(const swift::TypeBase* type) = 0;
   virtual void visit(const swift::CapturedValue* capture) = 0;
+  virtual void visit(const swift::MacroRoleAttr* attr) = 0;
 
   template <typename T>
-  requires(!std::derived_from<T, swift::TypeRepr>) void visit(const T* e, swift::Type) { visit(e); }
+    requires(!std::derived_from<T, swift::TypeRepr>)
+  void visit(const T* e, swift::Type) {
+    visit(e);
+  }
 
   const swift::SourceManager& sourceManager;
   SwiftExtractorState& state;

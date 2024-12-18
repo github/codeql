@@ -20,25 +20,64 @@
 | arguments.cs:39:27:39:27 | 0 | 0 |
 | arguments.cs:40:18:40:35 | array creation of type Int32[] | 0 |
 | arguments.cs:40:41:40:41 | 0 | 0 |
-| arguments.cs:45:12:45:32 | array creation of type Object[] | 0 |
-| arguments.cs:45:35:45:38 | null | 0 |
-| arguments.cs:55:21:55:21 | 1 | 0 |
-| arguments.cs:55:24:55:24 | 2 | 0 |
-| arguments.cs:56:10:56:13 | access to property Prop | 0 |
-| arguments.cs:56:16:56:25 | access to indexer | 0 |
-| arguments.cs:56:21:56:21 | 3 | 0 |
-| arguments.cs:56:24:56:24 | 4 | 0 |
-| arguments.cs:56:31:56:31 | 5 | 0 |
-| arguments.cs:56:34:56:34 | 6 | 0 |
-| arguments.cs:59:14:59:14 | 8 | 0 |
-| arguments.cs:59:17:59:17 | 9 | 0 |
-| arguments.cs:60:14:60:15 | 10 | 0 |
-| arguments.cs:60:14:60:15 | 10 | 0 |
-| arguments.cs:60:18:60:19 | 11 | 0 |
-| arguments.cs:60:18:60:19 | 11 | 0 |
-| arguments.cs:61:22:61:23 | 13 | 0 |
-| arguments.cs:61:26:61:27 | 14 | 0 |
-| arguments.cs:62:10:62:13 | access to property Prop | 0 |
-| arguments.cs:62:16:62:27 | access to indexer | 0 |
-| arguments.cs:62:21:62:22 | 15 | 0 |
-| arguments.cs:62:25:62:26 | 16 | 0 |
+| arguments.cs:42:12:42:12 | 0 | 0 |
+| arguments.cs:42:15:42:16 | (...) ... | 0 |
+| arguments.cs:42:19:42:20 | (...) ... | 0 |
+| arguments.cs:47:12:47:32 | array creation of type Object[] | 0 |
+| arguments.cs:47:35:47:38 | null | 0 |
+| arguments.cs:57:21:57:21 | 1 | 0 |
+| arguments.cs:57:24:57:24 | 2 | 0 |
+| arguments.cs:58:10:58:13 | access to property Prop | 0 |
+| arguments.cs:58:16:58:25 | access to indexer | 0 |
+| arguments.cs:58:21:58:21 | 3 | 0 |
+| arguments.cs:58:24:58:24 | 4 | 0 |
+| arguments.cs:58:31:58:31 | 5 | 0 |
+| arguments.cs:58:34:58:34 | 6 | 0 |
+| arguments.cs:61:14:61:14 | 8 | 0 |
+| arguments.cs:61:17:61:17 | 9 | 0 |
+| arguments.cs:62:14:62:15 | 10 | 0 |
+| arguments.cs:62:14:62:15 | 10 | 0 |
+| arguments.cs:62:18:62:19 | 11 | 0 |
+| arguments.cs:62:18:62:19 | 11 | 0 |
+| arguments.cs:63:22:63:23 | 13 | 0 |
+| arguments.cs:63:26:63:27 | 14 | 0 |
+| arguments.cs:64:10:64:13 | access to property Prop | 0 |
+| arguments.cs:64:16:64:27 | access to indexer | 0 |
+| arguments.cs:64:21:64:22 | 15 | 0 |
+| arguments.cs:64:25:64:26 | 16 | 0 |
+| arguments.cs:75:12:75:12 | 0 | 0 |
+| arguments.cs:75:15:75:21 | access to array element | 0 |
+| arguments.cs:75:20:75:20 | 0 | 0 |
+| arguments.cs:75:24:75:30 | access to array element | 0 |
+| arguments.cs:75:29:75:29 | 1 | 0 |
+| arguments.cs:76:12:76:12 | 0 | 0 |
+| arguments.cs:76:15:76:42 | array creation of type T[] | 0 |
+| arguments.cs:76:30:76:30 | 0 | 0 |
+| arguments.cs:76:39:76:39 | 1 | 0 |
+| arguments.cs:77:12:77:12 | 0 | 0 |
+| arguments.cs:77:15:77:18 | access to parameter args | 0 |
+| arguments.cs:78:18:78:21 | access to parameter args | 0 |
+| arguments.cs:78:27:78:27 | 0 | 0 |
+| arguments.cs:80:20:80:20 | 0 | 0 |
+| arguments.cs:80:23:80:25 | 1.1 | 0 |
+| arguments.cs:80:28:80:30 | 2.2 | 0 |
+| arguments.cs:81:20:81:20 | 0 | 0 |
+| arguments.cs:81:23:81:47 | array creation of type Double[] | 0 |
+| arguments.cs:83:20:83:20 | 0 | 0 |
+| arguments.cs:83:23:83:23 | (...) ... | 0 |
+| arguments.cs:83:26:83:26 | (...) ... | 0 |
+| arguments.cs:84:20:84:20 | 0 | 0 |
+| arguments.cs:84:23:84:43 | array creation of type Double[] | 0 |
+| arguments.cs:85:20:85:20 | 0 | 0 |
+| arguments.cs:85:23:85:43 | array creation of type Double[] | 0 |
+| lambdas.cs:8:12:8:12 | 1 | 0 |
+| lambdas.cs:11:12:11:12 | 2 | 0 |
+| lambdas.cs:11:15:11:15 | 3 | 0 |
+| lambdas.cs:12:12:12:12 | 4 | 0 |
+| lambdas.cs:13:12:13:12 | 5 | 0 |
+| lambdas.cs:13:15:13:15 | 6 | 0 |
+| lambdas.cs:17:12:17:12 | 7 | 0 |
+| lambdas.cs:17:15:17:15 | 8 | 0 |
+| lambdas.cs:17:18:17:18 | 9 | 0 |
+| lambdas.cs:25:16:25:16 | 4 | 0 |
+| lambdas.cs:25:22:25:22 | 5 | 0 |

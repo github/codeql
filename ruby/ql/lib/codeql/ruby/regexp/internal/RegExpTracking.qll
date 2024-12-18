@@ -17,7 +17,7 @@ private import codeql.ruby.AST as Ast
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.controlflow.CfgNodes
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
@@ -67,7 +67,7 @@ private signature module TypeTrackInputSig {
  * Provides a version of type tracking where we first prune for reachable nodes,
  * before doing the type tracking computation.
  */
-private module TypeTrack<TypeTrackInputSig Input> {
+private module PrunedTypeTrack<TypeTrackInputSig Input> {
   private predicate additionalStep(
     DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo
   ) {
@@ -130,10 +130,10 @@ private module TypeTrack<TypeTrackInputSig Input> {
     TypeTracker t, DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo
   ) {
     exists(StepSummary summary |
-      StepSummary::step(nodeFrom, nodeTo, summary) and
+      step(nodeFrom, nodeTo, summary) and
       reached(nodeFrom, t) and
       reached(nodeTo, result) and
-      result = t.append(summary)
+      result = append(t, summary)
     )
     or
     additionalStep(nodeFrom, nodeTo) and
@@ -195,7 +195,7 @@ private module StringTypeTrackInput implements TypeTrackInputSig {
  * This is used to figure out where `start` is evaluated as a regular expression against an input string,
  * or where `start` is compiled into a regular expression.
  */
-private predicate trackStrings = TypeTrack<StringTypeTrackInput>::track/2;
+private predicate trackStrings = PrunedTypeTrack<StringTypeTrackInput>::track/2;
 
 /** Holds if `strConst` flows to a regex compilation (tracked by `t`), where the resulting regular expression is stored in `reg`. */
 pragma[nomagic]
@@ -222,7 +222,7 @@ private module RegTypeTrackInput implements TypeTrackInputSig {
  * Gets a node that has been tracked from the regular expression `start` to some node.
  * This is used to figure out where `start` is executed against an input string.
  */
-private predicate trackRegs = TypeTrack<RegTypeTrackInput>::track/2;
+private predicate trackRegs = PrunedTypeTrack<RegTypeTrackInput>::track/2;
 
 /** Gets a node that references a regular expression. */
 private DataFlow::LocalSourceNode trackRegexpType(TypeTracker t) {

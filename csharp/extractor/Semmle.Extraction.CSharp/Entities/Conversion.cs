@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     .OfType<ConversionOperatorDeclarationSyntax>()
                     .Select(s => s.FixedLocation())
                     .Concat(Symbol.Locations)
-                    .FirstOrDefault();
+                    .BestOrDefault();
             }
         }
 

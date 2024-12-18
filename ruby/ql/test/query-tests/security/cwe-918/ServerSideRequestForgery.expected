@@ -1,9 +1,9 @@
 edges
-| ServerSideRequestForgery.rb:10:9:10:28 | users_service_domain | ServerSideRequestForgery.rb:11:31:11:62 | "#{...}/logins" |
-| ServerSideRequestForgery.rb:10:32:10:37 | call to params | ServerSideRequestForgery.rb:10:32:10:60 | ...[...] |
-| ServerSideRequestForgery.rb:10:32:10:60 | ...[...] | ServerSideRequestForgery.rb:10:9:10:28 | users_service_domain |
-| ServerSideRequestForgery.rb:15:33:15:38 | call to params | ServerSideRequestForgery.rb:15:33:15:44 | ...[...] |
-| ServerSideRequestForgery.rb:20:45:20:50 | call to params | ServerSideRequestForgery.rb:20:45:20:56 | ...[...] |
+| ServerSideRequestForgery.rb:10:9:10:28 | users_service_domain | ServerSideRequestForgery.rb:11:31:11:62 | "#{...}/logins" | provenance | AdditionalTaintStep |
+| ServerSideRequestForgery.rb:10:32:10:37 | call to params | ServerSideRequestForgery.rb:10:32:10:60 | ...[...] | provenance |  |
+| ServerSideRequestForgery.rb:10:32:10:60 | ...[...] | ServerSideRequestForgery.rb:10:9:10:28 | users_service_domain | provenance |  |
+| ServerSideRequestForgery.rb:15:33:15:38 | call to params | ServerSideRequestForgery.rb:15:33:15:44 | ...[...] | provenance |  |
+| ServerSideRequestForgery.rb:20:45:20:50 | call to params | ServerSideRequestForgery.rb:20:45:20:56 | ...[...] | provenance |  |
 nodes
 | ServerSideRequestForgery.rb:10:9:10:28 | users_service_domain | semmle.label | users_service_domain |
 | ServerSideRequestForgery.rb:10:32:10:37 | call to params | semmle.label | call to params |

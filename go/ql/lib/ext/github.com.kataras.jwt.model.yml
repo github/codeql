@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/kataras/jwt", "Keys", True, "Register", "", "", "Argument[3]", "credentials-key", "manual"]
+      - ["github.com/kataras/jwt", "", False, "Sign", "", "", "Argument[1]", "credentials-key", "manual"]
+      - ["github.com/kataras/jwt", "", False, "SignEncrypted", "", "", "Argument[1]", "credentials-key", "manual"]
+      - ["github.com/kataras/jwt", "", False, "SignEncryptedWithHeader", "", "", "Argument[1]", "credentials-key", "manual"]
+      - ["github.com/kataras/jwt", "", False, "SignWithHeader", "", "", "Argument[1]", "credentials-key", "manual"]

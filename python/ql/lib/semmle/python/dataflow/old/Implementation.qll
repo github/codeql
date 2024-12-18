@@ -410,7 +410,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
         call = node.asCfgNode() and
         call.getFunction().pointsTo(ObjectInternal::builtin("getattr")) and
         arg = call.getArg(0) and
-        attrname = call.getArg(1).getNode().(StrConst).getText() and
+        attrname = call.getArg(1).getNode().(StringLiteral).getText() and
         arg = srcnode.asCfgNode()
       |
         path = srcpath.fromAttribute(attrname) and

@@ -1,8 +1,8 @@
 edges
-| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:55:27:55:38 | fgets output argument | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | data indirection |
+| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:55:27:55:38 | fgets output argument | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | *data | provenance |  |
 nodes
 | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:55:27:55:38 | fgets output argument | semmle.label | fgets output argument |
-| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | data indirection | semmle.label | data indirection |
+| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | *data | semmle.label | *data |
 subpaths
 #select
-| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | data | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:55:27:55:38 | fgets output argument | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | data indirection | This argument to a file access function is derived from $@ and then passed to fopen(filename). | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:55:27:55:38 | fgets output argument | user input (string read by fgets) |
+| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | data | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:55:27:55:38 | fgets output argument | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | *data | This argument to a file access function is derived from $@ and then passed to fopen(filename). | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:55:27:55:38 | fgets output argument | user input (string read by fgets) |

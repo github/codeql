@@ -9,7 +9,6 @@
 
 import javascript
 private import AngularJS
-private import ServiceDefinitions
 
 /**
  * Holds if `nd` is an `angular.injector()` value

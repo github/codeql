@@ -118,19 +118,25 @@ module Twirp {
     override string getKind() { result = "URL" }
   }
 
+  bindingset[m]
+  pragma[inline_late]
+  private predicate implementsServiceType(Method m) {
+    m.implements(any(ServiceInterfaceType i).getNamedType().getMethod(_))
+  }
+
   /** A service handler. */
   class ServiceHandler extends Method {
     ServiceHandler() {
       exists(DataFlow::CallNode call |
         call.getTarget() instanceof ServerConstructor and
         this = call.getArgument(0).getType().getMethod(_) and
-        this.implements(any(ServiceInterfaceType i).getNamedType().getMethod(_))
+        implementsServiceType(this)
       )
     }
   }
 
   /** A request coming to the service handler. */
-  class Request extends UntrustedFlowSource::Range instanceof DataFlow::ParameterNode {
+  class Request extends RemoteFlowSource::Range instanceof DataFlow::ParameterNode {
     Request() {
       exists(ServiceHandler handler |
         this.asParameter().isParameterOf(handler.getFuncDecl(), 1) and

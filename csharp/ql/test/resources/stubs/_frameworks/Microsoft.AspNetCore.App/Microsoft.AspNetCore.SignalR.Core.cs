@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.SignalR.Core, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.SignalR.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -256,6 +256,7 @@ namespace Microsoft
                 public System.TimeSpan? KeepAliveInterval { get => throw null; set { } }
                 public int MaximumParallelInvocationsPerClient { get => throw null; set { } }
                 public long? MaximumReceiveMessageSize { get => throw null; set { } }
+                public long StatefulReconnectBufferSize { get => throw null; set { } }
                 public int? StreamBufferCapacity { get => throw null; set { } }
                 public System.Collections.Generic.IList<string> SupportedProtocols { get => throw null; set { } }
             }

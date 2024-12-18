@@ -5,7 +5,6 @@ extensions:
       extensible: summaryModel
     data:
       - ["System.Resources.Extensions", "DeserializingResourceReader", False, "DeserializingResourceReader", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Resources.Extensions", "DeserializingResourceReader", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Resources.Extensions", "PreserializedResourceWriter", False, "PreserializedResourceWriter", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Resources.Extensions", "PreserializedResourceWriter", False, "PreserializedResourceWriter", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:

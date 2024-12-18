@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Antlr3.Runtime/3.5.1/Antlr3.Runtime.csproj" />
+    <ProjectReference Include="../../Iesi.Collections/4.0.4/Iesi.Collections.csproj" />
+    <ProjectReference Include="../../Remotion.Linq/2.2.0/Remotion.Linq.csproj" />
+    <ProjectReference Include="../../Remotion.Linq.EagerFetching/2.2.0/Remotion.Linq.EagerFetching.csproj" />
+    <ProjectReference Include="../../System.Configuration.ConfigurationManager/6.0.0/System.Configuration.ConfigurationManager.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

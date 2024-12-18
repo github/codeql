@@ -1,6 +1,6 @@
 import javascript
 private import semmle.javascript.heuristics.AdditionalSources
-import testUtilities.ConsistencyChecking
+import utils.test.ConsistencyChecking
 
 class Taint extends TaintTracking::Configuration {
   Taint() { this = "Taint" }

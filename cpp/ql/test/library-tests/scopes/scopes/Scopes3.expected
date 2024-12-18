@@ -31,11 +31,5 @@
 | scopes.cpp:67:3:67:8 | ~Table |  | scopes.cpp:62:7:62:11 | Table | 8 |
 | scopes.cpp:68:9:68:14 | lookup |  | scopes.cpp:62:7:62:11 | Table | 8 |
 | scopes.cpp:69:8:69:13 | insert |  | scopes.cpp:62:7:62:11 | Table | 8 |
-| scopes.cpp:77:8:77:8 | H | Constructor | scopes.cpp:77:8:77:8 | H<long> | 4 |
-| scopes.cpp:77:8:77:8 | H | Constructor | scopes.cpp:77:8:77:8 | H<short> | 4 |
-| scopes.cpp:77:8:77:8 | operator= |  | scopes.cpp:77:8:77:8 | H<long> | 4 |
-| scopes.cpp:77:8:77:8 | operator= |  | scopes.cpp:77:8:77:8 | H<long> | 4 |
-| scopes.cpp:77:8:77:8 | operator= |  | scopes.cpp:77:8:77:8 | H<short> | 4 |
-| scopes.cpp:77:8:77:8 | operator= |  | scopes.cpp:77:8:77:8 | H<short> | 4 |
 | scopes.cpp:95:8:95:8 | operator= |  | scopes.cpp:95:8:95:8 | I | 3 |
 | scopes.cpp:95:8:95:8 | operator= |  | scopes.cpp:95:8:95:8 | I | 3 |

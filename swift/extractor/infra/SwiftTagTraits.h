@@ -43,6 +43,7 @@ MAP(swift::Stmt, StmtTag)
   MAP(swift::BraceStmt, BraceStmtTag)
   MAP(swift::ReturnStmt, ReturnStmtTag)
   MAP(swift::YieldStmt, YieldStmtTag)
+  MAP(swift::ThenStmt, ThenStmtTag)
   MAP(swift::DeferStmt, DeferStmtTag)
   MAP(swift::LabeledStmt, LabeledStmtTag)
     MAP(swift::LabeledConditionalStmt, LabeledConditionalStmtTag)
@@ -61,9 +62,7 @@ MAP(swift::Stmt, StmtTag)
   MAP(swift::FailStmt, FailStmtTag)
   MAP(swift::ThrowStmt, ThrowStmtTag)
   MAP(swift::PoundAssertStmt, PoundAssertStmtTag)
-#if CODEQL_SWIFT_VERSION_GE(5, 9)
-  MAP(swift::DiscardStmt, void) // TODO (introduced in 5.9)
-#endif
+  MAP(swift::DiscardStmt, DiscardStmtTag)
 
 MAP(swift::Argument, ArgumentTag)
 MAP(swift::KeyPathExpr::Component, KeyPathComponentTag)
@@ -176,6 +175,8 @@ MAP(swift::Expr, ExprTag)
     MAP(swift::LinearFunctionExtractOriginalExpr, LinearFunctionExtractOriginalExprTag)
     MAP(swift::LinearToDifferentiableFunctionExpr, LinearToDifferentiableFunctionExprTag)
     MAP(swift::ABISafeConversionExpr, AbiSafeConversionExprTag)  // different acronym convention
+    MAP(swift::ActorIsolationErasureExpr, void)  // TODO swift 6.0
+    MAP(swift::UnreachableExpr, void)  // TODO swift 6.0
   MAP(swift::ExplicitCastExpr, ExplicitCastExprTag)
     MAP(swift::CheckedCastExpr, CheckedCastExprTag)
       MAP(swift::ForcedCheckedCastExpr, ForcedCheckedCastExprTag)
@@ -195,13 +196,14 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::KeyPathDotExpr, KeyPathDotExprTag)
   MAP(swift::OneWayExpr, OneWayExprTag)
   MAP(swift::TapExpr, TapExprTag)
-  MAP(swift::TypeJoinExpr, void)  // TODO (introduced in 5.8)
-  MAP(swift::MacroExpansionExpr, void)  // TODO (introduced in 5.8)
+  MAP(swift::TypeJoinExpr, void)  // does not appear in a visible AST, skipping
+  MAP(swift::MacroExpansionExpr, void) // unexpanded macro in an expr context, skipping
   MAP(swift::CopyExpr, CopyExprTag)
   MAP(swift::ConsumeExpr, ConsumeExprTag)
-  MAP(swift::MaterializePackExpr, void)  // TODO (introduced in 5.9)
+  MAP(swift::MaterializePackExpr, MaterializePackExprTag)
   MAP(swift::SingleValueStmtExpr, SingleValueStmtExprTag)
-
+  MAP(swift::ExtractFunctionIsolationExpr, void)  // TODO swift 6.0
+  MAP(swift::CurrentContextIsolationExpr, void)  // TODO swift 6.0
 MAP(swift::Decl, DeclTag)
   MAP(swift::ValueDecl, ValueDeclTag)
     MAP(swift::TypeDecl, TypeDeclTag)
@@ -228,7 +230,7 @@ MAP(swift::Decl, DeclTag)
       MAP(swift::FuncDecl, AccessorOrNamedFunctionTag)
         MAP_CONCRETE(swift::FuncDecl, NamedFunctionTag)
         MAP(swift::AccessorDecl, AccessorTag)
-    MAP(swift::MacroDecl, void)  // TODO (introduced in 5.8)
+    MAP(swift::MacroDecl, MacroDeclTag)
     MAP(swift::EnumElementDecl, EnumElementDeclTag)
   MAP(swift::ExtensionDecl, ExtensionDeclTag)
   MAP(swift::TopLevelCodeDecl, TopLevelCodeDeclTag)
@@ -243,10 +245,8 @@ MAP(swift::Decl, DeclTag)
     MAP(swift::InfixOperatorDecl, InfixOperatorDeclTag)
     MAP(swift::PrefixOperatorDecl, PrefixOperatorDeclTag)
     MAP(swift::PostfixOperatorDecl, PostfixOperatorDeclTag)
-  MAP(swift::MacroExpansionDecl, void)  // TODO (introduced in 5.8)
-#if CODEQL_SWIFT_VERSION_GE(5, 9)
-  MAP(swift::MissingDecl, void)  // TODO (introduced in 5.9)
-#endif
+  MAP(swift::MacroExpansionDecl, void) // unexpanded macro in a decl context, skipping
+  MAP(swift::MissingDecl, void) // appears around an unexpanded macro, skipping
 
 MAP(swift::Pattern, PatternTag)
   MAP(swift::ParenPattern, ParenPatternTag)
@@ -335,6 +335,7 @@ MAP(swift::TypeBase, TypeTag)
   MAP(swift::PackExpansionType, PackExpansionTypeTag)
   MAP(swift::PackElementType, PackElementTypeTag)
   MAP(swift::TypeVariableType, void)  // created during type checking and only used for constraint checking
+  MAP(swift::ErrorUnionType, void)  // TODO swift 6.0
   MAP(swift::SugarType, SugarTypeTag)
     MAP(swift::ParenType, ParenTypeTag)
     MAP(swift::TypeAliasType, TypeAliasTypeTag)
@@ -350,6 +351,7 @@ MAP(swift::AvailabilitySpec, AvailabilitySpecTag)
   MAP(swift::OtherPlatformAvailabilitySpec, OtherAvailabilitySpecTag)
 
 MAP(swift::PoundAvailableInfo, AvailabilityInfoTag)
+MAP(swift::MacroRoleAttr, MacroRoleTag)
 
 // clang-format on
 #undef MAP

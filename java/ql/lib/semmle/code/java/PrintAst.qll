@@ -117,7 +117,11 @@ private newtype TPrintAstNode =
   TElementNode(Element el) { shouldPrint(el, _) } or
   TForInitNode(ForStmt fs) { shouldPrint(fs, _) and exists(fs.getAnInit()) } or
   TLocalVarDeclNode(LocalVariableDeclExpr lvde) {
-    shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
+    shouldPrint(lvde, _) and
+    (
+      lvde.getParent() instanceof SingleLocalVarDeclParent or
+      lvde.getParent() instanceof PatternCase
+    )
   } or
   TAnnotationsNode(Annotatable ann) {
     shouldPrint(ann, _) and
@@ -416,6 +420,23 @@ final class ForStmtNode extends ExprStmtNode {
 }
 
 /**
+ * A node representing a `PatternCase`.
+ */
+final class PatternCaseNode extends ExprStmtNode {
+  PatternCase pc;
+
+  PatternCaseNode() { pc = element }
+
+  override PrintAstNode getChild(int childIndex) {
+    result = super.getChild(childIndex) and
+    not result.(ElementNode).getElement() instanceof LocalVariableDeclExpr and
+    not result.(ElementNode).getElement() instanceof TypeAccess
+    or
+    result = TLocalVarDeclNode(pc.getPattern(childIndex))
+  }
+}
+
+/**
  * An element that can be the parent of up to one `LocalVariableDeclExpr` for which we want
  * to use a synthetic node to hold the variable declaration and its `TypeAccess`.
  */
@@ -438,7 +459,7 @@ private class SingleLocalVarDeclParent extends ExprOrStmt {
  * want to use a synthetic node to variable declaration and its type access.
  *
  * Excludes `LocalVariableDeclStmt` and `ForStmt`, as they can hold multiple declarations.
- * For these cases, either a synthetic node is not necassary or a different synthetic node is used.
+ * For these cases, either a synthetic node is not necessary or a different synthetic node is used.
  */
 final class SingleLocalVarDeclParentNode extends ExprStmtNode {
   SingleLocalVarDeclParent lvdp;
@@ -642,7 +663,11 @@ final class LocalVarDeclSynthNode extends PrintAstNode, TLocalVarDeclNode {
 
   LocalVarDeclSynthNode() { this = TLocalVarDeclNode(lvde) }
 
-  override string toString() { result = "(Single Local Variable Declaration)" }
+  override string toString() {
+    if lvde.getParent() instanceof PatternCase
+    then result = "(Pattern case declaration)"
+    else result = "(Single Local Variable Declaration)"
+  }
 
   override ElementNode getChild(int childIndex) {
     childIndex = 0 and

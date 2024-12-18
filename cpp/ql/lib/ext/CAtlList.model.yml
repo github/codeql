@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "CAtlList", True, "AddHead", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlList", True, "AddHeadList", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlList", True, "AddTail", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlList", True, "AddTailList", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlList", True, "GetAt", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["", "CAtlList", True, "GetHead", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["", "CAtlList", True, "GetTail", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["", "CAtlList", True, "InsertAfter", "", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlList", True, "InsertBefore", "", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CAtlList", True, "SetAt", "", "", "Argument[*@1]", "Argument[-1].Element[@]", "value", "manual"]

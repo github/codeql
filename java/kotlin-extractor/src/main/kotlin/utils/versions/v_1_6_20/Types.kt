@@ -3,5 +3,4 @@ package com.github.codeql.utils.versions
 import org.jetbrains.kotlin.backend.jvm.ir.isRawType
 import org.jetbrains.kotlin.ir.types.IrSimpleType
 
-
-fun IrSimpleType.isRawType() = this.isRawType()
+fun IrSimpleType.codeQlIsRawType() = this.isRawType()

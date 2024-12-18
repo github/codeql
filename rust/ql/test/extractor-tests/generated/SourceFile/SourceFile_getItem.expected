@@ -1,0 +1,2 @@
+| gen_source_file.rs:1:1:6:2 | SourceFile | 0 | gen_source_file.rs:3:1:6:1 | fn test_source_file |
+| lib.rs:1:1:1:20 | SourceFile | 0 | lib.rs:1:1:1:20 | mod gen_source_file |

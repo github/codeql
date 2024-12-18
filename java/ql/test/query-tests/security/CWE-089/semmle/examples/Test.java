@@ -210,12 +210,27 @@ abstract class Test {
 		}
 	}
 
+	private static void bindingVars(String[] args) throws IOException, SQLException {
+                // BAD: the category might have SQL special characters in it
+                {
+                        String category = args[1];
+                        Statement statement = connection.createStatement();
+			String prefix = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='";
+			String suffix = "' ORDER BY PRICE";
+			switch(prefix) {
+				case String prefixAlias when prefix.length() > 10 -> statement.executeQuery(prefixAlias + category + suffix);
+				default -> { }
+			}
+		}
+	}
+
 	public static void main(String[] args) throws IOException, SQLException {
 		tainted(args);
 		unescaped();
 		good(args);
 		controlledStrings();
 		tableNames(args);
+		bindingVars(args);
 	}
 }
 

@@ -1,0 +1,56 @@
+name: "rust"
+display_name: "Rust"
+version: 0.1.0
+column_kind: "utf8"
+legacy_qltest_extraction: true
+build_modes:
+  - none
+github_api_languages:
+  - Rust
+scc_languages:
+  - Rust
+file_types:
+  - name: rust
+    display_name: Rust files
+    extensions:
+      - .rs
+options:
+  trap:
+    title: Options pertaining to TRAP.
+    type: object
+    properties:
+      compression:
+        title: Controls compression for the TRAP files written by the extractor.
+        description: >
+          This option is only intended for use in debugging the extractor. Accepted
+          values are 'gzip' (to write gzip-compressed TRAP) and 'none'
+          (currently the default, to write uncompressed TRAP).
+        type: string
+        pattern: "^(none|gzip)$"
+  cargo_target_dir:
+    title: Directory to use for cargo output files.
+    description: >
+      This value is an optional path to use as `CARGO_TARGET_DIR` for the internal
+      cargo commands the extractor uses. Pointing it to a persistent directory may
+      reduce execution time of consecutive extractor runs. By default, a new scratch
+      directory is used for each run.
+    type: string
+  cargo_target:
+    title: Target architecture
+    description: >
+      Target architecture to use for analysis, analogous to `cargo --target`. By
+      default the host architecture is used.
+    type: string
+  cargo_features:
+    title: Cargo features to turn on
+    description: >
+      Comma-separated list of features to turn on. If any value is `*` all features
+      are turned on. By default only default cargo features are enabled. Can be
+      repeated.
+    type: array
+  cargo_cfg_overrides:
+    title: Cargo cfg overrides
+    description: >
+      Comma-separated list of cfg settings to enable, or disable if prefixed with `-`.
+      Can be repeated.
+    type: array

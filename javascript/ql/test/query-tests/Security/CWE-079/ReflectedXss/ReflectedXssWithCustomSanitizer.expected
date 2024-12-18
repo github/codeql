@@ -19,6 +19,8 @@
 | ReflectedXss.js:100:12:100:39 | markdow ... q.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:100:31:100:38 | req.body | user-provided value |
 | ReflectedXss.js:103:12:103:84 | markdow ... q.body) | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:103:76:103:83 | req.body | user-provided value |
 | ReflectedXss.js:110:16:110:30 | request.query.p | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:110:16:110:30 | request.query.p | user-provided value |
+| ReflectedXss.js:122:30:122:73 | `${inva ... telist` | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:114:13:114:27 | keys: queryKeys | user-provided value |
+| ReflectedXss.js:122:30:122:73 | `${inva ... telist` | Cross-site scripting vulnerability due to $@. | ReflectedXss.js:116:31:116:45 | paramKeys?.keys | user-provided value |
 | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to $@. | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | user-provided value |

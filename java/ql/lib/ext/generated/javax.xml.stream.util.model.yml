@@ -1,0 +1,58 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.stream.util", "EventReaderDelegate", True, "EventReaderDelegate", "(XMLEventReader)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.stream.util.EventReaderDelegate.reader]", "value", "dfc-generated"]
+      - ["javax.xml.stream.util", "EventReaderDelegate", True, "getParent", "()", "", "Argument[this].SyntheticField[javax.xml.stream.util.EventReaderDelegate.reader]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.stream.util", "EventReaderDelegate", True, "setParent", "(XMLEventReader)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.stream.util.EventReaderDelegate.reader]", "value", "dfc-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", True, "StreamReaderDelegate", "(XMLStreamReader)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.stream.util.StreamReaderDelegate.reader]", "value", "dfc-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", True, "getParent", "()", "", "Argument[this].SyntheticField[javax.xml.stream.util.StreamReaderDelegate.reader]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", True, "setParent", "(XMLStreamReader)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.stream.util.StreamReaderDelegate.reader]", "value", "dfc-generated"]
+      - ["javax.xml.stream.util", "XMLEventAllocator", True, "allocate", "(XMLStreamReader)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.stream.util", "XMLEventConsumer", True, "add", "(XMLEvent)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.stream.util", "EventReaderDelegate", "close", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "EventReaderDelegate", "getProperty", "(String)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "close", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getAttributeCount", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getAttributeLocalName", "(int)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getAttributeName", "(int)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getAttributeNamespace", "(int)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getAttributePrefix", "(int)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getAttributeType", "(int)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getAttributeValue", "(String,String)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getAttributeValue", "(int)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getEncoding", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getEventType", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getLocation", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getName", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getNamespaceCount", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getNamespacePrefix", "(int)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getNamespaceURI", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getNamespaceURI", "(String)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getNamespaceURI", "(int)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getPIData", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getPrefix", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getTextCharacters", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getTextCharacters", "(int,char[],int,int)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getTextLength", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getTextStart", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "getVersion", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "hasName", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "hasNext", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "hasText", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "isAttributeSpecified", "(int)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "isCharacters", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "isEndElement", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "isStandalone", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "isStartElement", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "isWhiteSpace", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "next", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "nextTag", "()", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "require", "(int,String,String)", "summary", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", "standaloneSet", "()", "summary", "df-generated"]

@@ -1,0 +1,8 @@
+| Test.java:1:14:1:17 | super(...) | java.lang.Object.Object |
+| Test.java:4:24:4:31 | super(...) | java.lang.Object.Object |
+| Test.java:5:24:5:34 | super(...) | java.lang.Object.Object |
+| Test.java:9:21:9:37 | new Alternative(...) | Test$Alternative.Alternative |
+| Test.java:10:12:10:31 | test(...) | Test.test |
+| Test.java:10:17:10:30 | new Specific(...) | Test$Specific.Specific |
+| Test.java:18:14:18:20 | get(...) | Test$Specific.get |
+| Test.java:22:31:22:37 | get(...) | Test$Specific.get |

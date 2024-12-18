@@ -27,6 +27,9 @@ public class Parameters
     public void M19([Optional, DecimalConstant(1, 0, 0, 0, 103)] decimal arg9) => throw null;
     public void M20([Optional, DefaultParameterValue(7)] MyStruct arg10) => throw null;
     public void M21([Optional, DefaultParameterValue("mystring")] MyStruct arg10) => throw null;
+    public void M22(nuint arg11 = 0) => throw null;
+    public void M23(nint arg12 = 0) => throw null;
+    public void M24([Optional, DefaultParameterValue(7)] object arg13) => throw null;
 
     public struct MyStruct
     {

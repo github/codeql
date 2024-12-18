@@ -1,0 +1,3504 @@
+;;;;;; Part 1: Definining ~all~ most of the nodes
+; This section contains all of the "simple" definitions. All of the places where a single
+; tree-sitter node corresponds to an AST node.
+
+; Create the module node first, so it always appears first in the output.
+(module) @mod
+{ let @mod.node = (ast-node @mod "Module") }
+
+(_) @anynode
+{
+    scan (node-type @anynode) {
+        "^(ERROR|MISSING)$" {
+            let @anynode.node = (ast-node @anynode "SyntaxErrorNode")
+            attr (@anynode.node) source = (source-text @anynode)
+        }
+    }
+}
+
+(parenthesized_expression) @nd
+{ let @nd.node = (ast-node @nd "Expr") }
+
+(assignment !type) @assign
+{ let @assign.node = (ast-node @assign "Assign") }
+
+[ (expression_list) (tuple) (tuple_pattern) (pattern_list) ] @tuple
+{ let @tuple.node = (ast-node @tuple "Tuple") }
+
+(list_pattern) @list
+{ let @list.node = (ast-node @list "List") }
+
+(call) @call { let @call.node = (ast-node @call "Call") }
+
+(for_statement) @for
+{ let @for.node = (ast-node @for "For") }
+
+[ (if_statement) (elif_clause) ] @if
+{ let @if.node = (ast-node @if "If") }
+
+(continue_statement) @continue
+{ let @continue.node = (ast-node @continue "Continue") }
+
+(break_statement) @break
+{ let @break.node = (ast-node @break "Break") }
+
+(pass_statement) @pass
+{ let @pass.node = (ast-node @pass "Pass") }
+
+(assert_statement) @assert
+{ let @assert.node = (ast-node @assert "Assert") }
+
+(assignment type: (_)) @assign
+{ let @assign.node = (ast-node @assign "AnnAssign") }
+
+(augmented_assignment) @assign
+{ let @assign.node = (ast-node @assign "AugAssign") }
+
+(delete_statement) @del
+{ let @del.node = (ast-node @del "Delete") }
+
+(global_statement) @global
+{ let @global.node = (ast-node @global "Global") }
+
+(nonlocal_statement) @nonlocal
+{ let @nonlocal.node = (ast-node @nonlocal "Nonlocal") }
+
+[(import_statement) (import_from_statement name: (_))] @import
+{ let @import.node = (ast-node @import "Import") }
+
+(import_from_statement (wildcard_import)) @importstar
+{ let @importstar.node = (ast-node @importstar "ImportFrom") }
+
+(raise_statement) @raise
+{ let @raise.node = (ast-node @raise "Raise") }
+
+(binary_operator) @binop
+{ let @binop.node = (ast-node @binop "BinOp") }
+
+(keyword_argument) @kwarg
+{ let @kwarg.node = (ast-node @kwarg "keyword") }
+
+[(function_definition) (class_definition) (decorated_definition)] @def
+{ let @def.node = (ast-node @def "Assign") }
+
+(decorator) @decorator
+{ let @decorator.node = (ast-node @decorator "Call") }
+
+(expression_statement) @stmt
+{ let @stmt.node = (ast-node @stmt "Expr") }
+
+[ (integer) (float) ] @num
+{ let @num.node = (ast-node @num "Num") }
+
+(identifier) @name
+{ let @name.node = (ast-node @name "Name") }
+
+(list) @list
+{ let @list.node = (ast-node @list "List") }
+
+[(list_splat) (list_splat_pattern)] @starred
+{ let @starred.node = (ast-node @starred "Starred") }
+
+(comment) @comment
+{ let @comment.node = (ast-node @comment "Comment") }
+
+[
+    (future_import_statement name: (_) @alias)
+    (import_from_statement name: (_) @alias)
+    (import_statement name: (_) @alias)
+]
+{ let @alias.node = (ast-node @alias "alias") }
+
+; A string _without_ interpolations is just a `Str`, _except_ if it's inside a string
+; concatenation, in which case it's a `StringPart`.
+(string !interpolation) @str
+{
+    var str_class = "Str"
+    if (instance-of (get-parent @str) "concatenated_string") {
+        set str_class = "StringPart"
+    }
+    let @str.node = (ast-node @str str_class)
+}
+
+(string interpolation: (_)) @fstring
+{ let @fstring.node = (ast-node @fstring "JoinedStr") }
+
+
+(string string_content: (_) @part)
+{ let @part.node = (ast-node @part "StringPart") }
+
+; A string concatenation that contains no interpolated expressions is just a `Str` (and its children
+; will be `StringPart`s). A string concatenation that contains interpolated expressions is a
+; `JoinedStr`, however.
+(concatenated_string
+    (string interpolation: (_))* @interpolations
+) @string
+{
+    var string_class = "Str"
+    ; Check if there are any interpolations in the string.
+    ; We cannot use an optional match in the above query, since it could match several times,
+    ; and subsequent definitions of `@string.node` would then fail.
+    for _ in @interpolations {
+        set string_class = "JoinedStr"
+    }
+    let @string.node = (ast-node @string string_class)
+}
+
+
+(string interpolation: (_)) @fstring
+{
+    if (not (instance-of (get-parent @fstring) "concatenated_string")) {
+        attr (@fstring.node) _fixup = #true
+    }
+}
+
+(pair) @kvpair
+{ let @kvpair.node = (ast-node @kvpair "KeyValuePair") }
+
+(dictionary) @dict
+{ let @dict.node = (ast-node @dict "Dict") }
+
+(dictionary_splat) @dictunpacking
+{ let @dictunpacking.node = (ast-node @dictunpacking "DictUnpacking") }
+
+(set) @set
+{ let @set.node = (ast-node @set "Set") }
+
+(boolean_operator) @boolop
+{ let @boolop.node = (ast-node @boolop "BoolOp") }
+
+(comparison_operator) @compop
+{ let @compop.node = (ast-node @compop "Compare") }
+
+[ (unary_operator) (not_operator) ] @unaryop
+{ let @unaryop.node = (ast-node @unaryop "UnaryOp") }
+
+(exec_statement) @exec
+{ let @exec.node = (ast-node @exec "Exec") }
+
+(print_statement) @print
+{ let @print.node = (ast-node @print "Print") }
+
+(return_statement) @return
+{ let @return.node = (ast-node @return "Return") }
+
+(yield . "from"? @from) @yield
+{
+    var yield_node = "Yield"
+    if some @from {
+        set yield_node = "YieldFrom"
+    }
+    let @yield.node = (ast-node @yield yield_node)
+}
+
+(ellipsis) @ellipsis
+{ let @ellipsis.node = (ast-node @ellipsis "Ellipsis") }
+
+(await) @await
+{ let @await.node = (ast-node @await "Await") }
+
+(try_statement) @try
+{ let @try.node = (ast-node @try "Try") }
+
+(except_clause) @except
+{ let @except.node = (ast-node @except "ExceptStmt") }
+
+(except_group_clause) @except
+{ let @except.node = (ast-node @except "ExceptGroupStmt") }
+
+(named_expression) @assignexpr
+{ let @assignexpr.node = (ast-node @assignexpr "AssignExpr") }
+
+(conditional_expression) @ifexp
+{ let @ifexp.node = (ast-node @ifexp "IfExp") }
+
+(subscript) @subscript
+{ let @subscript.node = (ast-node @subscript "Subscript") }
+
+(slice) @slice
+{ let @slice.node = (ast-node @slice "Slice") }
+
+(attribute) @attribute
+{ let @attribute.node = (ast-node @attribute "Attribute") }
+
+(while_statement) @while
+{ let @while.node = (ast-node @while "While") }
+
+(generator_expression) @generatorexp
+{ let @generatorexp.node = (ast-node @generatorexp "GeneratorExp") }
+
+(for_in_clause) @for
+{ let @for.node = (ast-node @for "For") }
+
+(if_clause) @if
+{ let @if.node = (ast-node @if "If") }
+
+(list_comprehension) @listcomp
+{ let @listcomp.node = (ast-node @listcomp "ListComp") }
+
+(set_comprehension) @setcomp
+{ let @setcomp.node = (ast-node @setcomp "SetComp") }
+
+(dictionary_comprehension) @dictcomp
+{ let @dictcomp.node = (ast-node @dictcomp "DictComp") }
+
+[ (with_statement) (with_item)] @with
+{ let @with.node = (ast-node @with "With") }
+
+(match_statement) @match
+{ let @match.node = (ast-node @match "Match") }
+
+; Do not create an AST node for 'cases', we just wire up the children instead.
+
+(case_block) @case
+{ let @case.node = (ast-node @case "Case") }
+
+(match_as_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchAsPattern") }
+
+(match_or_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchOrPattern") }
+
+(match_literal_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchLiteralPattern") }
+
+(match_capture_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchCapturePattern") }
+
+(match_wildcard_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchWildcardPattern") }
+
+(match_value_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchValuePattern") }
+
+(match_group_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchGroupPattern") }
+
+(match_sequence_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchSequencePattern") }
+
+(match_star_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchStarPattern") }
+
+(match_mapping_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchMappingPattern") }
+
+(match_double_star_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchDoubleStarPattern") }
+
+(match_key_value_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchKeyValuePattern") }
+
+(match_class_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchClassPattern") }
+
+; Do not create AST nodes for 'only_positionals', 'only_keywords',
+; 'partly_positionals', and 'partly_keywords'. We just wire up the children instead.
+
+(match_keyword_pattern) @pattern
+{ let @pattern.node = (ast-node @pattern "MatchKeywordPattern") }
+
+(guard) @guard
+{ let @guard.node = (ast-node @guard "Guard") }
+
+[(parameters) (lambda_parameters)] @params
+{ let @params.node = (ast-node @params "arguments") }
+
+[(false) (true) (none)] @const
+{ let @const.node = (ast-node @const "Name") }
+
+(lambda) @lambda
+{ let @lambda.node = (ast-node @lambda "Lambda") }
+
+(future_import_statement) @import
+{ let @import.node = (ast-node @import "Import") }
+
+(typevar_parameter) @typevar
+{ let @typevar.node = (ast-node @typevar "TypeVar") }
+
+(typevartuple_parameter) @typevartuple
+{ let @typevartuple.node = (ast-node @typevartuple "TypeVarTuple") }
+
+(paramspec_parameter) @paramspec
+{ let @paramspec.node = (ast-node @paramspec "ParamSpec") }
+
+(type_alias_statement) @typealias
+{ let @typealias.node = (ast-node @typealias "TypeAlias") }
+
+;;;;;; End of part 1.
+
+;;;;;; Part 2: The awkward bunch.
+
+;;;;;; Workarounds for node locations
+; These are (hopefully temporary) workarounds for the nodes for which the default start and end does
+; not agree with what our internal AST provides.
+; Once the new parser is in place, we can consider getting rid of these workarounds.
+
+
+;;; If
+; End position is set to the end of the `:` after the condition.
+[
+    (if_statement
+        condition: (_)
+        .
+        ":" @colon) @if
+    (elif_clause
+        condition: (_)
+        .
+        ":" @colon) @if
+]
+{
+    attr (@if.node) _location_end = (location-end @colon)
+}
+
+;;; For
+; Same as with `if`, we must include the `:` in the position.
+(for_statement
+    right: (_)
+    .
+    ":" @colon
+) @for
+{
+    attr (@for.node) _location_end = (location-end @colon)
+}
+
+;;; While
+; Same as with `if`, we must include the `:` in the position.
+(while_statement
+    condition: (_)
+    .
+    ":" @colon
+) @while
+{
+    attr (@while.node) _location_end = (location-end @colon)
+}
+
+;;; Tuples
+; In the Python AST tuple start and end positions are set to the start and end of the first and last
+; elements. In `tree-sitter-python`, the parentheses are included.
+[
+    (tuple . (comment)* . element: (_) @first)
+    (tuple_pattern . (comment)* . element: (_) @first)
+] @tuple
+{
+    attr (@tuple.node) _location_start = (location-start @first)
+}
+
+[
+    (tuple !trailing_comma element: (_) @last . (comment)* . ")" .)
+    (tuple trailing_comma: _ @last)
+    (tuple_pattern element: (_) @last .)
+] @tuple
+{
+
+    attr (@tuple.node) _location_end = (location-end @last)
+}
+
+;;; Try
+
+(try_statement ":" @colon) @try
+{ attr (@try.node) _location_end = (location-end @colon) }
+
+(except_clause ":" @colon) @except
+{ attr (@except.node) _location_end = (location-end @colon) }
+
+;;; GeneratorExp
+
+(generator_expression . "(" . (comment)* . (expression) @start [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @generatorexp
+{
+    attr (@generatorexp.node) _location_start = (location-start @start)
+    attr (@generatorexp.node) _location_end = (location-end @end)
+}
+
+(if_clause (expression) @expr) @if
+{
+    attr (@if.node) _location_start = (location-start @expr)
+    attr (@if.node) _location_end = (location-end @expr)
+}
+
+(generator_expression . "(" . (comment)* . (expression) @start (for_in_clause) @child [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @genexpr
+{
+    attr (@child.node) _location_start = (location-start @start)
+    attr (@child.node) _location_end = (location-end @end)
+}
+
+(generator_expression . "(" . (comment)* . (expression) @start (for_in_clause) @end . (comment)* . ")" .) @genexpr
+{
+    attr (@end.node) _location_start = (location-start @start)
+    attr (@end.node) _location_end = (location-end @end)
+}
+
+(list_comprehension (for_in_clause) @child) @genexpr
+{
+    attr (@child.node) _location_start = (location-start @genexpr)
+    attr (@child.node) _location_end = (location-end @genexpr)
+}
+
+(set_comprehension  (for_in_clause) @child) @genexpr
+{
+    attr (@child.node) _location_start = (location-start @genexpr)
+    attr (@child.node) _location_end = (location-end @genexpr)
+}
+
+(dictionary_comprehension (for_in_clause) @child) @genexpr
+{
+    attr (@child.node) _location_start = (location-start @genexpr)
+    attr (@child.node) _location_end = (location-end @genexpr)
+}
+
+;;; With
+
+(with_statement
+    "with" @start
+    (with_clause . (with_item) @first)
+    ":" @end
+)
+{
+    attr (@first.node) _location_start = (location-start @start)
+    attr (@first.node) _location_end = (location-end @end)
+}
+
+;;;;;; End of workarounds
+
+;;;;;; End of part 2
+
+;;;;;; Part 3: All of the simple nodes.
+
+;;;;;; Module
+
+; Nodes with a `body` field containing statements.
+(module (_) @stmt) @parent
+{
+    edge @parent.node -> @stmt.node
+    attr (@parent.node -> @stmt.node) body = (named-child-index @stmt)
+}
+
+;;;;;; Comments
+
+(comment) @comment
+{
+    attr (@comment.node) text = (source-text @comment)
+}
+
+;;;;;; Expressions
+
+(parenthesized_expression
+    inner: (_) @inner
+) @outer
+{
+    attr (@outer.node) _skip_to = @inner.node
+    attr (@inner.node) parenthesised = #true
+}
+
+(keyword_argument
+    name: (_) @name
+    value: (_) @value
+) @kwarg
+{
+    attr (@kwarg.node) arg = (source-text @name)
+    attr (@kwarg.node) value = @value.node
+}
+
+;;;;;; Num
+
+[ (integer) (float) ] @num
+{
+    ; As we must support a large variety of number literals, we simply forward the source string
+    ; representation to the Python AST reconstruction.
+    let source = (source-text @num)
+    attr (@num.node) n = source
+    attr (@num.node) text = source
+}
+
+;;;;;; End of Num
+
+;;;;;; Delete
+
+(delete_statement
+    target: (expression_list
+        element: (_) @target
+    )
+) @del
+{
+    edge @del.node -> @target.node
+    attr (@del.node -> @target.node) targets = (named-child-index @target)
+}
+
+(delete_statement target: (_) @target) @del
+{
+    attr (@target.node) ctx = "del"
+}
+
+(delete_statement [(identifier) (subscript) (attribute)] @id) @del
+{
+    edge @del.node -> @id.node
+    attr (@del.node -> @id.node) targets = 0
+}
+
+;;;;;; Name
+
+[(identifier) (false) (true) (none)] @id
+{
+    attr (@id.node) variable = (source-text @id)
+}
+
+;;;;;; End of Name
+
+;;;;;; Arguments
+[
+    (keyword_argument value: (_) @id)
+    (argument_list element: (_) @id)
+]
+{
+    attr (@id.node) ctx = "load"
+}
+
+[
+    (keyword_argument name: (_) @id)
+]
+{
+    attr (@id.node) ctx = "store"
+}
+
+;;;;;; End of Arguments
+
+;;;;;; BinOp
+
+(binary_operator
+    left: (_) @left
+    operator: _ @op
+    right: (_) @right
+) @bin
+{
+    attr (@bin.node) left = @left.node
+    attr (@bin.node) right = @right.node
+    attr (@bin.node) op = (source-text @op)
+    attr (@left.node) ctx = "load"
+    attr (@right.node) ctx = "load"
+}
+
+;;;;;; End of BinOp
+
+;;;;;; If
+
+; If.test
+[
+    (if_statement
+        condition: (_) @test) @if
+    (elif_clause
+        condition: (_) @test) @if
+]
+{
+    attr (@if.node) test = @test.node
+    attr (@test.node) ctx = "load"
+}
+
+; If.orelse - first `elif` clause
+(if_statement
+    consequence: (_)
+    . (comment)* .
+    (elif_clause) @elif
+) @if
+{
+    edge @if.node -> @elif.node
+    attr (@if.node -> @elif.node) orelse = 0
+}
+
+; If.orelse - link up adjacent `elif` clauses
+(
+    (elif_clause) @elif1
+    . (comment)* .
+    (elif_clause) @elif2
+)
+{
+    edge @elif1.node -> @elif2.node
+    attr (@elif1.node -> @elif2.node) orelse = 0
+}
+
+; If.orelse - match outer `else` up with last `elif` clause (i.e. innermost `if`)
+(if_statement
+    (elif_clause) @elif . (comment)* .
+    alternative: (else_clause body: (block (_) @orelse))
+)
+{
+    edge @elif.node -> @orelse.node
+    attr (@elif.node -> @orelse.node) orelse = (named-child-index @orelse)
+}
+
+; If.orelse - when there are no `elif` clauses.
+(if_statement
+    consequence: (_)
+    . (comment)* .
+    alternative: (else_clause body: (block (_) @orelse))
+) @if
+{
+    edge @if.node -> @orelse.node
+    attr (@if.node -> @orelse.node) orelse = (named-child-index @orelse)
+}
+
+; If.body
+
+[
+    (if_statement
+        consequence: (block (_) @stmt)) @parent
+    (elif_clause
+        consequence: (block (_) @stmt)) @parent
+]
+{
+    edge @parent.node -> @stmt.node
+    attr (@parent.node -> @stmt.node) body = (named-child-index @stmt)
+}
+
+;;;;;; end of If
+
+;;;;;; For statements
+
+(for_statement
+    left: (_) @left
+    right: (_) @right
+) @for
+{
+    attr (@for.node) target = @left.node
+    attr (@left.node) ctx = "store"
+    attr (@for.node) iter = @right.node
+    attr (@right.node) ctx = "load"
+}
+
+(for_statement
+    body: (block (_) @body)
+) @for
+{
+    edge @for.node -> @body.node
+    attr (@for.node -> @body.node) body = (named-child-index @body)
+}
+
+(for_statement
+    alternative: (else_clause body: (block (_) @orelse))
+) @for
+{
+    edge @for.node -> @orelse.node
+    attr (@for.node -> @orelse.node) orelse = (named-child-index @orelse)
+}
+
+(for_statement "async" "for" @for_keyword) @for
+{
+    attr (@for.node) is_async = #true
+    attr (@for.node) _location_start = (location-start @for_keyword)
+}
+
+;;;;;; end of For
+
+;;;;;; Call expressions (`a(b, c, *d, **e)`)
+
+(call function: (_) @func) @call
+{
+    attr (@call.node) func = @func.node
+    attr (@func.node) ctx = "load"
+}
+
+; Handle non-keyword arguments
+(call arguments: (argument_list element: (_) @arg)) @call
+{
+    if (not (or
+            (instance-of @arg "keyword_argument")
+            (instance-of @arg "dictionary_splat"))) {
+        edge @call.node -> @arg.node
+        attr (@call.node -> @arg.node) positional_args = (named-child-index @arg)
+    }
+}
+
+(call arguments: (argument_list element: (keyword_argument) @arg)) @call
+{
+    edge @call.node -> @arg.node
+    attr (@call.node -> @arg.node) named_args = (named-child-index @arg)
+}
+
+(call arguments: (argument_list element: (dictionary_splat) @arg)) @call
+{
+    edge @call.node -> @arg.node
+    attr (@call.node -> @arg.node) named_args = (named-child-index @arg)
+}
+
+(call arguments: (generator_expression) @gen) @call
+{
+    edge @call.node -> @gen.node
+    attr (@call.node -> @gen.node) positional_args = 0
+}
+
+
+;;;;;; end of Call (`a(b, c, *d, **e)`)
+
+
+;;;;;; End of part 3
+
+;;;;;; Part 4: All of the complicated bits (e.g. nodes that need additional synthesis)
+
+
+;;;;;; ListComp (`[a for b in c if d]`)
+; See GeneratorExp for details.
+
+(list_comprehension) @genexpr
+{
+    ; Synthesize the `genexpr` function
+    let @genexpr.fun = (ast-node @genexpr "Function")
+    attr (@genexpr.node) function = @genexpr.fun
+    attr (@genexpr.fun) name = "listcomp"
+
+    ; Synthesize the `.0` parameter
+    let @genexpr.arg = (ast-node @genexpr "Name")
+    attr (@genexpr.arg) variable = ".0"
+    attr (@genexpr.arg) ctx = "param"
+
+    edge @genexpr.fun -> @genexpr.arg
+    attr (@genexpr.fun -> @genexpr.arg) args = 0
+    attr (@genexpr.fun) kwonlyargs = #null
+    attr (@genexpr.fun) kwarg = #null
+
+    ; Synthesize the use of `.0` in the outermost `for`. This has a different context than the parameter
+    ; ("param" vs. "load") hence we must create another node.
+    let @genexpr.arg_use = (ast-node @genexpr "Name")
+    attr (@genexpr.arg_use) variable = ".0"
+    attr (@genexpr.arg_use) ctx = "load"
+}
+
+;;;;;; End of ListComp (`[a for b in c if d]`)
+
+;;;;;; SetComp (`{a for b in c if d}`)
+; See GeneratorExp for details.
+
+(set_comprehension) @genexpr
+{
+    ; Synthesize the `genexpr` function
+    let @genexpr.fun = (ast-node @genexpr "Function")
+    attr (@genexpr.node) function = @genexpr.fun
+    attr (@genexpr.fun) name = "setcomp"
+
+    ; Synthesize the `.0` parameter
+    let @genexpr.arg = (ast-node @genexpr "Name")
+    attr (@genexpr.arg) variable = ".0"
+    attr (@genexpr.arg) ctx = "param"
+
+    edge @genexpr.fun -> @genexpr.arg
+    attr (@genexpr.fun -> @genexpr.arg) args = 0
+    attr (@genexpr.fun) kwonlyargs = #null
+    attr (@genexpr.fun) kwarg = #null
+
+    ; Synthesize the use of `.0` in the outermost `for`. This has a different context than the parameter
+    ; ("param" vs. "load") hence we must create another node.
+    let @genexpr.arg_use = (ast-node @genexpr "Name")
+    attr (@genexpr.arg_use) variable = ".0"
+    attr (@genexpr.arg_use) ctx = "load"
+}
+
+
+;;;;;; End of SetComp (`{a for b in c if d}`)
+
+;;;;;; DictComp (`{a: b for c in d if e}`)
+; See GeneratorExp for details.
+
+(dictionary_comprehension
+    body: (pair
+        key: (_) @key
+        value: (_) @value
+    )
+) @genexpr
+{
+    ; Synthesize the `genexpr` function
+    let @genexpr.fun = (ast-node @genexpr "Function")
+    attr (@genexpr.node) function = @genexpr.fun
+    attr (@genexpr.fun) name = "dictcomp"
+
+    ; Synthesize the `.0` parameter
+    let @genexpr.arg = (ast-node @genexpr "Name")
+    attr (@genexpr.arg) variable = ".0"
+    attr (@genexpr.arg) ctx = "param"
+
+    edge @genexpr.fun -> @genexpr.arg
+    attr (@genexpr.fun -> @genexpr.arg) args = 0
+    attr (@genexpr.fun) kwonlyargs = #null
+    attr (@genexpr.fun) kwarg = #null
+
+    ; Synthesize the use of `.0` in the innermost `yield`. This has a different context than the parameter
+    ; ("param" vs. "load") hence we must create another node.
+    let @genexpr.arg_use = (ast-node @genexpr "Name")
+    attr (@genexpr.arg_use) variable = ".0"
+    attr (@genexpr.arg_use) ctx = "load"
+}
+
+;;;;;; End of DictComp (`{a: b for c in d if e}`)
+
+;;;;;; GeneratorExp (`(a for b in c if d)`)
+; The big one. This one will require quite a bit of setup.
+;
+; First of all, we need to explain what the old parser does to generator expressions.
+;
+; The following generator expression
+;
+; (a
+;     for b in c
+;         if d
+;         if e
+;     for f in g
+;         if h
+;         if i
+; )
+;
+; becomes
+;
+; def genexpr(.0):
+;     for b in .0:
+;         if e:
+;            if d:
+;                for f in g:
+;                   if i:
+;                       if h:
+;                           yield a
+;
+; where `.0` is a (very oddly named) variable.
+;
+; Note in particular the reversing of the `if`s, the way `c` is replaced with `.0`, and the way
+; `a` is used in the innermost `yield`.
+
+; First of all, we need to set up the generated function and its parameter. These both copy the location
+; information for the entire generator expression (yes, it is a wide parameter!) and so we must recreate the logic for
+; setting this location information correctly.
+
+(generator_expression . "(" . (comment)* . (expression) @start  [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @genexpr
+{
+    ; Synthesize the `genexpr` function
+    let @genexpr.fun = (ast-node @genexpr "Function")
+    attr (@genexpr.fun) _location_start = (location-start @start)
+    attr (@genexpr.fun) _location_end = (location-end @end)
+    attr (@genexpr.node) function = @genexpr.fun
+    attr (@genexpr.fun) name = "genexpr"
+
+    ; Synthesize the `.0` parameter
+    let @genexpr.arg = (ast-node @genexpr "Name")
+    attr (@genexpr.arg) _location_start = (location-start @start)
+    attr (@genexpr.arg) _location_end = (location-end @end)
+    attr (@genexpr.arg) variable = ".0"
+    attr (@genexpr.arg) ctx = "param"
+
+    edge @genexpr.fun -> @genexpr.arg
+    attr (@genexpr.fun -> @genexpr.arg) args = 0
+    attr (@genexpr.fun) kwonlyargs = #null
+    attr (@genexpr.fun) kwarg = #null
+
+    ; Default to true, but we'll set it to false if we're inside a call
+    var genexpr_parenthesised = #true
+
+    if (instance-of (get-parent @genexpr) "call") {
+        set genexpr_parenthesised = #null
+    }
+    attr (@genexpr.node) parenthesised = genexpr_parenthesised
+
+    ; Synthesize the use of `.0` in the outermost `for`. This has a different context than the parameter
+    ; ("param" vs. "load") hence we must create another node.
+    let @genexpr.arg_use = (ast-node @genexpr "Name")
+    attr (@genexpr.arg_use) _location_start = (location-start @start)
+    attr (@genexpr.arg_use) _location_end = (location-end @end)
+    attr (@genexpr.arg_use) variable = ".0"
+    attr (@genexpr.arg_use) ctx = "load"
+}
+
+; Link up the outermost `for`
+[
+    (generator_expression
+        body: (_) . (comment)* .
+        (for_in_clause
+            left: (_) @target
+            right: (_) @iterable
+        ) @forin
+    ) @genexpr
+    (list_comprehension
+        body: (_) . (comment)* .
+        (for_in_clause
+            left: (_) @target
+            right: (_) @iterable
+        ) @forin
+    ) @genexpr
+    (set_comprehension
+        body: (_) . (comment)* .
+        (for_in_clause
+            left: (_) @target
+            right: (_) @iterable
+        ) @forin
+    ) @genexpr
+    (dictionary_comprehension
+        body: (_) . (comment)* .
+        (for_in_clause
+            left: (_) @target
+            right: (_) @iterable
+        ) @forin
+    ) @genexpr
+]
+{
+    attr (@genexpr.node) iterable = @iterable.node
+    attr (@iterable.node) ctx = "load"
+    edge @genexpr.fun -> @forin.node
+    attr (@genexpr.fun -> @forin.node) body = 0
+
+    attr (@forin.node) target = @target.node
+    attr (@target.node) ctx = "store"
+    attr (@forin.node) iter = @genexpr.arg_use
+}
+
+; Set up all subsequent `for ... in ...`
+[
+    (generator_expression
+        body: (_)
+        [(for_in_clause) (if_clause)]
+        (for_in_clause left: (_) @target right: (_) @iter) @forin
+    )
+    (list_comprehension
+        body: (_)
+        [(for_in_clause) (if_clause)]
+        (for_in_clause left: (_) @target right: (_) @iter) @forin
+    )
+    (set_comprehension
+        body: (_)
+        [(for_in_clause) (if_clause)]
+        (for_in_clause left: (_) @target right: (_) @iter) @forin
+    )
+    (dictionary_comprehension
+        body: (_)
+        [(for_in_clause) (if_clause)]
+        (for_in_clause left: (_) @target right: (_) @iter) @forin
+    )
+]
+{
+    attr (@forin.node) target = @target.node
+    attr (@target.node) ctx = "store"
+    attr (@forin.node) iter = @iter.node
+    attr (@iter.node) ctx = "load"
+}
+
+; Set up each `if ...`
+(if_clause (expression) @test) @if
+{
+    attr (@if.node) test = @test.node
+    attr (@test.node) ctx = "load"
+}
+
+; Link adjacent `for` clauses together
+(_
+    (for_in_clause) @forin1
+    . (comment)* .
+    (for_in_clause) @forin2
+)
+{
+    edge @forin1.node -> @forin2.node
+    attr (@forin1.node -> @forin2.node) body = 0
+}
+
+; For the first `if` clause after a `for` clause, record both the `for` and `if` clauses in variables that we
+; will propagate along. That way, when we get to the last `if` clause, we can link it up with the `for`
+; clause, and we can link up the _first_ `if` clause with whatever follows the last `if` clause.
+(_
+    (for_in_clause) @forin
+    . (comment)* .
+    (if_clause) @if
+)
+{
+    let @if.for = @forin.node
+    let @if.first_if = @if.node
+}
+
+; Link up adjacent `if` clauses (note the reversed order!) and propagate the `for` and `first_if` values.
+(_
+    (if_clause) @if1
+    . (comment)* .
+    (if_clause) @if2
+)
+{
+    edge @if2.node -> @if1.node
+    attr (@if2.node -> @if1.node) body = 0
+    let @if2.for = @if1.for
+    let @if2.first_if = @if1.first_if
+}
+
+; After the last `if` in a chain, we hook it up as the body of its associated `for`, and hook up the _first_
+; `if` as the one that has the following `for` as its body.
+; The case where there is no `for` following the last `if` is handled later.
+(_
+    (if_clause) @if
+    . (comment)* .
+    (for_in_clause) @forin
+)
+{
+    edge @if.for -> @if.node
+    attr (@if.for -> @if.node) body = 0
+    edge @if.first_if -> @forin.node
+    attr (@if.first_if -> @forin.node) body = 0
+}
+
+; For everything except dictionary comprehensions, the innermost expression is just the `body` of the
+; comprehension.
+[
+    (generator_expression body: (_) @body) @genexpr
+    (list_comprehension body: (_) @body) @genexpr
+    (set_comprehension body: (_) @body) @genexpr
+]
+{
+    let @genexpr.result = @body.node
+}
+
+; For dict comprehensions, we build an explicit tuple using the key and value pair.
+(dictionary_comprehension
+    body: (pair
+        key: (_) @key
+        value: (_) @value
+    ) @body
+) @genexpr
+{
+    let tuple = (ast-node @body "Tuple")
+    edge tuple -> @key.node
+    attr (tuple -> @key.node) elts = 1
+    edge tuple -> @value.node
+    attr (tuple -> @value.node) elts = 0
+    ; TODO verify that it is correct to use a `(value, key)` tuple, and not a `(key, value)` tuple above.
+    ; That is what the current parser does...
+    attr (tuple) ctx = "load"
+    let @genexpr.result = tuple
+}
+
+; For the final clause, we need to hook it up with the rest of the expression.
+; If it's an `if` clause, we need to hook it up with the `yield` expression and with its associated
+; `for` clause.
+; If it's a `for` clause, we only need to create and hook it up with the `yield` expression.
+;
+; It would be tempting to use anchors here, but they just don't work. In particular, an anchor of
+; the form `. (comment)* . )` (which would be needed in order to handle the case where there are
+; comments after the last clause) cause the `tree-sitter` query engine to match _all_ clauses, not
+; just the last one.
+; Instead, we gather up all clauses in a list (these will be in the order they appear in the source
+; code), and extract the last element using a custom Rust function.
+[
+    (generator_expression
+        body: (_) @body
+        [(if_clause) (for_in_clause)]+ @last_candidates
+    ) @genexpr
+    (list_comprehension
+        body: (_) @body
+        [(if_clause) (for_in_clause)]+ @last_candidates
+    ) @genexpr
+    (set_comprehension
+        body: (_) @body
+        [(if_clause) (for_in_clause)]+ @last_candidates
+    ) @genexpr
+    (dictionary_comprehension
+        body: (_) @body
+        [(if_clause) (for_in_clause)]+ @last_candidates
+    ) @genexpr
+]
+{
+    let last = (get-last-element @last_candidates)
+
+    let expr = (ast-node @body "Expr")
+    let yield = (ast-node @body "Yield")
+
+    let @genexpr.expr = expr
+    let @genexpr.yield = yield
+
+    attr (expr) value = yield
+
+    attr (yield) value = @genexpr.result
+    attr (@body.node) ctx = "load"
+
+    if (instance-of last "if_clause") {
+        edge last.first_if -> expr
+        attr (last.first_if -> expr) body = 0
+
+        ; Hook up this `if` clause with its `for` clause
+        edge last.for -> last.node
+        attr (last.for -> last.node) body = 0
+    } else {
+        ; If the last clause is a `for`, we only have to create and hook up the `yield` expression.
+        edge last.node -> expr
+        attr (last.node -> expr) body = 0
+    }
+}
+
+; For whatever reason, we do not consider parentheses around the yielded expression if they are present, so
+; we must adapt the location accordingly.
+[
+    (generator_expression
+        body: (_ . "(" . _ @first)
+    )
+    (list_comprehension
+        body: (_ . "(" . _ @first)
+    )
+    (set_comprehension
+        body: (_ . "(" . _ @first)
+    )
+    (dictionary_comprehension
+        body: (_ . "(" . _ @first)
+    )
+] @genexpr
+{
+    attr (@genexpr.expr) _location_start = (location-start @first)
+    attr (@genexpr.yield) _location_start = (location-start @first)
+}
+
+; Annoyingly, setting the end location of the synthesized `Expr` and `Yield` is a big mess,
+; so we have to use mutable variables.
+[
+    (generator_expression body: (_) @body)
+    (list_comprehension body: (_) @body)
+    (set_comprehension body: (_) @body)
+    (dictionary_comprehension body: (_) @body)
+] @genexpr
+{
+    var @genexpr.body_end = (location-end @body)
+}
+
+
+; The reason we need to do this mutably is because the query `(_ _ @last . ")" .)`, despite the liberal use
+; of anchors, is broken (due to a bug in `tree-sitter`). Specifically, it will match both `b` and the
+; following `,` in the tuple expression `(a, b,)`. This means we cannot set the attribute in this stanza
+; (since overwriting attributes is not allowed) and so we instead write it to a mutable variable and set it
+; later. Because the order in which the captures are returned results in `b` being matched before `,` this
+; gives the correct behaviour.
+[
+    (generator_expression
+        body: (_ _ @last . ")" .)
+    )
+    (list_comprehension
+        body: (_ _ @last . ")" .)
+    )
+    (set_comprehension
+        body: (_ _ @last . ")" .)
+    )
+    (dictionary_comprehension
+        body: (_ _ @last . ")" .)
+    )
+] @genexpr
+{
+    set @genexpr.body_end = (location-end @last)
+}
+
+[
+    (generator_expression)
+    (list_comprehension)
+    (set_comprehension)
+    (dictionary_comprehension)
+] @genexpr
+{
+    attr (@genexpr.expr) _location_end = @genexpr.body_end
+    attr (@genexpr.yield) _location_end = @genexpr.body_end
+}
+
+
+;;;;;; End of GeneratorExp (`(a for b in c if d)`)
+
+
+
+
+;;;;;; Class statements
+; A class definition
+;
+; class Foo(*bases, **keywords): body
+;
+; is turned into an actual assignment statement, with the class name as the left-hand side.
+;
+; Foo = $classexpr(name='Foo', bases, keywords, inner_scope=$class(name='Foo', body))
+;
+; (with a suitably magical definition of the `$` prefix).
+;
+; So we have to synthesize both the outer assignment, and also the two representatives of the class.
+
+(class_definition
+    name: (identifier) @name
+    ":" @colon
+) @class
+{
+
+    ; To make it clearer that the outer node is an assignment, we create an alias for it.
+    let @class.assign = @class.node
+
+    ; We reuse the identifier as the left hand side of the assignment.
+    let @class.assign_lhs = @name.node
+
+    ; Synthesized nodes: the class_expr node, and the class node.
+
+    let @class.class_expr = (ast-node @class "ClassExpr")
+    let @class.inner_scope = (ast-node @class "Class")
+
+    ; Setting up the outer assignment
+    edge @class.assign -> @class.assign_lhs
+    attr (@class.assign -> @class.assign_lhs) targets = 0
+    attr (@class.assign) value = @class.class_expr
+    attr (@class.assign) _location_end = (location-end @colon)
+
+    attr (@class.assign_lhs) ctx = "store"
+
+    let class_name = (source-text @name)
+
+    ; The right hand side of the assignment, a `ClassExpr`.
+    attr (@class.class_expr) name = class_name
+    attr (@class.class_expr) inner_scope = @class.inner_scope
+    ; `bases` will be set elsewhere
+    ; `keywords` will be set elsewhere
+    attr (@class.class_expr) _location_end = (location-end @colon)
+
+    ; The inner scope of the class_expr, a `Class`.
+    attr (@class.inner_scope) name = class_name
+    ; body will be set in a separate stanza.
+    attr (@class.inner_scope) _location_end = (location-end @colon)
+
+}
+
+; Class.body
+(class_definition
+    body: (block (_) @stmt)
+) @class
+{
+    edge @class.inner_scope -> @stmt.node
+    attr (@class.inner_scope -> @stmt.node) body = (named-child-index @stmt)
+}
+
+; Class.bases - using `(_  !value !name)` as a proxy for all non-keyword arguments.
+; In particular, `keyword_argument` nodes have a `name` field, and `dictionary_splat`
+; nodes have a `value` field.
+(class_definition
+    superclasses: (argument_list element: (_ !value !name) @arg)
+) @class
+{
+    edge @class.class_expr -> @arg.node
+    attr (@class.class_expr -> @arg.node) bases = (named-child-index @arg)
+}
+
+; Class.keywords of the form `foo=bar`
+(class_definition
+    superclasses: (argument_list element: (keyword_argument) @arg)
+) @class
+{
+    edge @class.class_expr -> @arg.node
+    attr (@class.class_expr -> @arg.node) keywords = (named-child-index @arg)
+}
+
+; Class.keywords of the form `**kwargs`
+(class_definition
+    superclasses: (argument_list element: (dictionary_splat) @arg)
+) @class
+{
+    edge @class.class_expr -> @arg.node
+    attr (@class.class_expr -> @arg.node) keywords = (named-child-index @arg)
+}
+
+;;;;;; End of Class
+
+;;;;;; Assign statements
+; Assignment statements require a bit of interesting handling, since we represent a chained
+; assignment such as `a = b = 5` as a single `Assign` node with multiple targets and a single
+; right-hand side. This makes it somewhat complicated (but still doable) to determine the index of
+; any single target in the resulting list.
+;
+; The way we handle this is by explicitly propagating two variables inwards. The first variable
+; keeps track of the outermost node in a chain of assignments, and the second variable keeps track of
+; the index of the left-hand side of the current assignment.
+
+; Base case, for the outermost assignment we set the outermost node to this node, and the index to zero.
+(expression_statement (assignment !type) @assign) @expr
+{
+    let @assign.outermost_assignment = @assign.node
+    let @assign.target_index = 0
+}
+
+; Propagating the two variables inwards, increasing the index by one. Note that this depends on
+; having the query match from the outside in -- if this evaluation order ever changes, this will break.
+(assignment !type right: (assignment) @inner) @outer
+{
+    let @inner.outermost_assignment = @outer.outermost_assignment
+    let @inner.target_index = (plus @outer.target_index 1)
+}
+
+; Finally, with the above variables set, we can -- for each assignment -- create an edge from the
+; outermost assignment to it, and set its index to the index that we've calculated for this node.
+(assignment !type left: (_) @target) @assign
+{
+    edge @assign.outermost_assignment -> @target.node
+    attr (@assign.outermost_assignment -> @target.node) targets = @assign.target_index
+    attr (@target.node) ctx = "store"
+}
+
+; In addition to the above, we must ensure that the `value` attribute of the outermost assignment
+; points to the _innermost_ right-hand side. We do this by first setting the `value` attribute for
+; _all_ assignments...
+(assignment !type right: (_) @value) @assign
+{
+    attr (@assign.node) value = @value.node
+    attr (@value.node) ctx = "load"
+}
+
+; ... and then for assignments that are _inside_ other assigments, we use the `_skip_to` attribute
+; to jump across the outer assignment.
+;
+; Thus, the outermost assignment's `value` will point to its right-hand side, but this one will (if
+; it's an assignment itself) skip to _its_ right-hand side, and so on until we reach a right-hand side
+; that is not an assignment.
+(assignment !type right: (assignment right: (_) @inner) @outer)
+{
+    attr (@outer.node) _skip_to = @inner.node
+}
+
+;;;;;; End of Assign
+
+;;;;;; AnnAssign
+
+(assignment
+    left: (_) @target
+    type: (type (expression) @type)
+) @assign
+{
+    attr (@assign.node) target = @target.node
+    attr (@target.node) ctx = "store"
+    attr (@assign.node) annotation = @type.node
+    attr (@type.node) ctx = "load"
+}
+
+(assignment
+    left: (_) @target
+    type: (_)
+    right: (_) @value
+) @assign
+{
+    attr (@assign.node) value = @value.node
+    attr (@value.node) ctx = "load"
+}
+
+;;;;;; End of AnnAssign
+
+;;;;;; AugAssign
+
+(augmented_assignment
+    left: (_) @left
+    operator: _ @op
+    right: (_) @right
+) @augassign
+{
+    let binop = (ast-node @augassign "BinOp")
+    attr (@augassign.node) operation = binop
+    attr (binop) left = @left.node
+    attr (@left.node) ctx = "load" ; yes, it really is "load".
+    attr (binop) op = (source-text @op)
+    attr (binop) right = @right.node
+    attr (@right.node) ctx = "load"
+}
+
+;;;;;; End of AugAssign
+
+;;;;;; Global
+
+(global_statement (identifier) @name) @global
+{
+    edge @global.node -> @name.node
+    attr (@global.node -> @name.node) names = (named-child-index @name)
+    attr (@name.node) _is_literal = (source-text @name)
+}
+
+;;;;;; End of Global
+
+;;;;;; Nonlocal
+
+(nonlocal_statement (identifier) @name) @nonlocal
+{
+    edge @nonlocal.node -> @name.node
+    attr (@nonlocal.node -> @name.node) names = (named-child-index @name)
+    attr (@name.node) _is_literal = (source-text @name)
+}
+
+;;;;;; End of Nonlocal
+
+;;;;;; Import (`import ...`)
+
+; `import j1.j2 as j3, j4, ...` becomes
+;
+; Import:
+;   names: [
+;     alias:
+;       value:
+;         ImportExpr:
+;           level: 0 # always 0 for absolute imports
+;           name: 'j1.j2'
+;           top: False
+;       asname:
+;         Name:
+;           variable: Variable('j3', None)
+;           ctx: Store
+;     alias:
+;       value:
+;         ImportExpr:
+;           level: 0 # always 0 for absolute imports
+;           name: 'j4'
+;           top: True
+;       asname:
+;         Name:
+;           variable: Variable('j4', None)
+;           ctx: Store
+;   ...
+;   ]
+;
+; from
+;
+; module
+;   import_statement
+;     name: aliased_import
+;       name: dotted_name
+;         identifier # j1
+;         identifier # j2
+;       alias: identifier j3
+;     name: dotted_name
+;       identifier # j4
+;
+; This means we have to hang our `alias` nodes off of the `dotted_name` and
+; `aliased_import` nodes.
+
+; Import.names
+(import_statement name: (_) @name) @import
+{
+    edge @import.node -> @name.node
+    attr (@import.node -> @name.node) names = (named-child-index @name)
+}
+
+; Imports without an explicit alias -- extract the root module name
+(import_statement name: (dotted_name . (identifier) @first) @alias)
+{
+    let import_expr = (ast-node @alias "ImportExpr")
+    attr (import_expr) level = 0
+    attr (import_expr) name = (source-text @alias)
+    attr (import_expr) top = #true
+
+    attr (@alias.node) value = import_expr
+
+    attr (@alias.node) asname = @first.node
+    attr (@first.node) ctx = "store"
+}
+
+; Not strictly needed (but the AST reconstruction will complain otherwise) we
+; assign a context to each identifier in a dotted name (except the first part,
+; which already gets one elsewhere).
+(dotted_name (identifier) (identifier) @name)
+{
+    attr (@name.node) ctx = "load"
+}
+
+; For dotted imports `a.b.c` the location for the `Name` corresponding to the
+; `a` part covers the entire expression, so we explicitly match the final
+; element and set the location appropriately. If there is only one element,
+; this stanza doesn't fire, but in that case the location is actually correct
+; already.
+(import_statement
+    name: (dotted_name
+        .
+        (identifier) @first
+        (identifier) @last
+        .
+    )
+)
+{
+    attr (@first.node) _location_end = (location-end @last)
+}
+
+; Imports with an explicit alias
+(import_statement
+    (aliased_import
+        name: (dotted_name . (identifier) @first) @name
+        alias: (identifier) @asname
+    ) @alias
+)
+{
+    let import_expr = (ast-node @name "ImportExpr")
+    attr (import_expr) level = 0
+    attr (import_expr) name = (source-text @name)
+    attr (import_expr) top = #false
+
+    attr (@alias.node) value = import_expr
+
+    attr (@alias.node) asname = @asname.node
+    attr (@asname.node) ctx = "store"
+
+    attr (@first.node) ctx = "load"
+}
+
+;;;;;; End of Import (`import ...`)
+
+;;;;;; Import (`from ... import ...`)
+
+; Oh what a twisty mess these are. First, the prototypical layout of a
+; `from some_module import x1 as y1, x2, ...` statement is as follows:
+;
+; Import:
+;   names: [
+;     alias:
+;       value:
+;         ImportMember:
+;           module:
+;             ImportExpr;
+;               level: <number of dots before some_module>
+;               name: <name of some_module without dots>
+;               top: #false
+;           name: <name of x1>
+;        asname:
+;            Name:
+;              variable: Variable(<name of y1>, None)
+;              ctx: "store"
+;     alias:
+;       value:
+;         ImportMember:
+;           module:
+;             ImportExpr:
+;               level: <number of dots before some_module>
+;               name: <name of some_module without dots>
+;               top: #false
+;           name: <name of x2>
+;        asname:
+;          Name:
+;            variable: Variable(<name of x2>, None) # Note the reuse!
+;            ctx: "store"
+;     ...
+;   ]
+;
+; In particular, `alias` nodes are used even if no aliasing takes place.
+
+; Now, on the flip side we have the `tree-sitter-python` output. Here
+; the corresponding structure for `from ..some_module import x1 as y1, x2`
+; is as follows:
+;
+; module
+;   import_from_statement
+;     module_name: relative_import
+;       import_prefix # `..`
+;       dotted_name
+;         identifier # some_module
+;     name: aliased_import
+;       name: dotted_name
+;         identifier # x1
+;       alias: identifier # y1
+;     name: dotted_name
+;       identifier # x2
+;
+; Now, we need to pin our `alias` nodes on something, and the only thing we can
+; really rely on is whatever is in the `name` field of the
+; `import_from_statement`
+
+
+; Import.names
+[
+    (import_from_statement
+        name: (_) @alias
+    )
+    (future_import_statement
+        name: (_) @alias
+    )
+] @import
+{
+    edge @import.node -> @alias.node
+    attr (@import.node -> @alias.node) names = (named-child-index @alias)
+}
+
+; Setting up the synthesized nodes for `ImportMember` and `ImportExpr`
+; when the module name is _not_ a relative import.
+[
+    (import_from_statement
+        module_name: (dotted_name) @name
+        name: (_) @alias
+    )
+    (future_import_statement
+        "__future__" @name
+        name: (_) @alias
+    )
+]
+{
+    let @alias.import_member = (ast-node @alias "ImportMember")
+    let @alias.import_expr = (ast-node @name "ImportExpr")
+
+    attr (@alias.node) value = @alias.import_member
+    attr (@alias.import_member) module = @alias.import_expr
+    attr (@alias.import_expr) level = 0
+    attr (@alias.import_expr) name = (source-text @name)
+    attr (@alias.import_expr) top = #false
+}
+
+; Setting up the synthesized nodes for `ImportMember` and `ImportExpr`
+; when the module name _is_ a relative import.
+(import_from_statement
+    module_name: (relative_import name: (dotted_name) @name) @rel
+    name: (_) @alias
+)
+{
+    let @alias.import_member = (ast-node @alias "ImportMember")
+    let @alias.import_expr = (ast-node @rel "ImportExpr")
+
+    attr (@alias.node) value = @alias.import_member
+    attr (@alias.import_member) module = @alias.import_expr
+    ; ImportExpr.level is computed elsewhere
+    attr (@alias.import_expr) name = (source-text @name)
+    attr (@alias.import_expr) top = #false
+}
+
+; Setting up the synthesized nodes for `ImportMember` and `ImportExpr`
+; when the module is a relative import with no module name (e.g. `from . import ...`).
+(import_from_statement
+    module_name: (relative_import !name) @rel
+    name: (_) @alias
+)
+{
+    let @alias.import_member = (ast-node @alias "ImportMember")
+    let @alias.import_expr = (ast-node @rel "ImportExpr")
+
+    attr (@alias.node) value = @alias.import_member
+    attr (@alias.import_member) module = @alias.import_expr
+    ; ImportExpr.level is computed elsewhere
+    attr (@alias.import_expr) name = #null
+    attr (@alias.import_expr) top = #false
+}
+
+; Set the level for relative imports
+(import_from_statement
+    module_name: (relative_import (import_prefix) @prefix)
+    name: (_) @alias
+)
+{
+    var level = 0
+
+    ; Figure out the number of `.`s in the prefix.
+    scan (source-text @prefix) {
+        "\." {
+            set level = (plus level 1)
+        }
+    }
+
+    attr (@alias.import_expr) level = level
+}
+
+; Set aliases for non-aliased imports
+[
+    (import_from_statement
+        name:
+            (dotted_name (identifier) @name) @alias
+    )
+    (future_import_statement
+        name:
+            (dotted_name (identifier) @name) @alias
+    )
+]
+{
+    attr (@alias.node) asname = @name.node
+    attr (@alias.import_member) name = (source-text @name)
+    attr (@name.node) ctx = "store"
+}
+
+; Set aliases for aliased imports
+(import_from_statement
+    name:
+        (aliased_import
+            name: (dotted_name) @first
+            alias: (identifier) @asname
+        ) @alias
+)
+{
+    attr (@alias.node) asname = @asname.node
+    attr (@alias.import_member) name = (source-text @first)
+    attr (@asname.node) ctx = "store"
+}
+
+; Fix up remaining identifiers without contexts.
+(import_from_statement
+    module_name: (dotted_name . (identifier) @first)
+)
+{
+    attr (@first.node) ctx = "load"
+}
+
+(import_from_statement
+    module_name: (relative_import (dotted_name . (identifier) @first))
+)
+{
+    attr (@first.node) ctx = "load"
+}
+
+(import_from_statement
+    name: (aliased_import (dotted_name (identifier) @first))
+)
+{
+    attr (@first.node) ctx = "load"
+}
+
+(import_from_statement
+    module_name: (_) @name
+    (wildcard_import)
+) @importfrom
+{
+    let importexpr = (ast-node @name "ImportExpr")
+    let @importfrom.importexpr = importexpr
+    attr (@importfrom.node) module = importexpr
+    attr (importexpr) top = #false
+}
+
+; Absolute star import: `from a import *`
+(import_from_statement
+    module_name: (dotted_name) @name
+    (wildcard_import)
+) @importfrom
+{
+    attr (@importfrom.importexpr) name = (source-text @name)
+    attr (@importfrom.importexpr) level = 0
+}
+
+; Relative star import, with module name: `from ..a import *`
+(import_from_statement
+    module_name:
+        (relative_import
+            (dotted_name) @name
+        )
+    (wildcard_import)
+) @importfrom
+{
+    attr (@importfrom.importexpr) name = (source-text @name)
+}
+
+; Relative star import, without module name: `from ... import *`
+(import_from_statement
+    module_name:
+        (relative_import
+            (import_prefix) @prefix
+        )
+    (wildcard_import)
+) @importfrom
+{
+    var level = 0
+
+    ; Figure out the number of `.`s in the prefix.
+    scan (source-text @prefix) {
+        "\." {
+            set level = (plus level 1)
+        }
+    }
+
+    attr (@importfrom.importexpr) level = level
+}
+;;;;;; End of Import (`from ... import ...`)
+
+;;;;;; Raise (`raise ...`)
+; This one is interesting, since the `tree-sitter-python` grammar doesn't let
+; us distinguish between `raise foo` and `raise foo, bar`. At the level of the
+; `tree-sitter-python` output, both are `raise_statement` nodes with a single
+; child. In the latter case, the child is an `expression_list` but there's
+; currently no way to match _against_ a particular node type in a query.
+
+; To get around this, we instead do the matching inside the stanza itself.
+
+(raise_statement . (_) @exc) @raise
+{
+    if (not (instance-of @exc "expression_list") ) {
+        attr (@raise.node) exc = @exc.node
+    }
+    attr (@exc.node) ctx = "load"
+}
+
+; `raise ... from cause`
+(raise_statement
+    cause: (_) @cause
+) @raise
+{
+    attr (@raise.node) cause = @cause.node
+    attr (@cause.node) ctx = "load"
+}
+
+; `raise type, inst`
+(raise_statement (expression_list
+    . (_) @type
+    . (_) @inst
+)) @raise
+{
+    attr (@raise.node) type = @type.node
+    attr (@raise.node) inst = @inst.node
+}
+
+; `raise type, inst, tback`
+(raise_statement (expression_list
+    . (_)
+    . (_)
+    . (_) @tback
+    .
+)) @raise
+{
+    attr (@raise.node) tback = @tback.node
+}
+
+;;;;;; End of Raise (`raise ...`)
+
+;;;;;; Assert (`assert ...`)
+
+(assert_statement
+    . (_) @test
+) @assert
+{
+    attr (@assert.node) test = @test.node
+    attr (@test.node) ctx = "load"
+}
+
+(assert_statement
+    . (_)
+    . (_) @msg
+) @assert
+{
+    attr (@assert.node) msg = @msg.node
+    attr (@msg.node) ctx = "load"
+}
+
+;;;;;; End of Assert (`assert ...`)
+
+;;;;;; String (`"foo"`)
+
+; For regular strings, see the handling of `(string !interpolation)` below.
+
+; For concatenated strings, the necessary manipulations are quite complicated to express,
+; so we instead move this problem into the Python side of things. Thus, a concatenated
+; string only has to keep track of what its children are.
+(concatenated_string) @string
+{
+    attr (@string.node) _prefix = (string-prefix @string)
+    attr (@string.node) _fixup = #true
+}
+
+(concatenated_string (string) @part) @string
+{
+    edge @string.node -> @part.node
+    attr (@string.node -> @part.node) _children = (named-child-index @part)
+}
+
+;;;;;; End of String (`"foo"`)
+
+;;;;;; JoinedStr (`f"foo"`)
+
+; f-strings are quite complicated for a variety of reasons. First of all,
+; we need to synthesize empty strings to appear in-between interpolations
+; that are immediately adjacent. Thus, the string `f"{1}{2}"`, which has
+; a `tree-sitter-python` representation of the form
+;
+; (string (interpolation (integer)) (interpolation (integer)))
+;
+; needs to have three empty additional strings synthesized:
+; - `f"{`, before the `1`,
+; - `}{`, between the `1` and `2`, and
+; - `}"`, after the `2`.
+;
+; Because of this, children of an f-string are indexed using triples of integers.
+; The first component is either 0, 1, or 2, indicating whether this string appears at the
+; beginning, in between, or at the end of the f-string. (At the beginning and end, the other
+; two components are irrelevant.) The second component is the index of child, as seen by
+; `tree-sitter`. The third component allows us to insert empty strings between adjacent children
+; of the f-string. Thus, the string `f"{1}{2}"` has the following children at the given indices:
+; `f"{"` at `[0,0,0]`
+; `1`    at `[1,1,0]`
+; `}{`   at `[1,1,1]`
+; `2`    at `[1,2,0]`
+; `}"`   at `[2,0,0]`
+
+
+; First, we add any strings parts that appear either before or after an interpolation:
+[
+    (string
+            interpolation: (_)
+            string_content: (_) @part
+    )
+    (string
+            string_content: (_) @part
+            interpolation: (_)
+    )
+]  @fstring
+{
+    edge @fstring.node -> @part.node
+    attr (@fstring.node -> @part.node) values = [1, (named-child-index @part), 0]
+    let safe_string = (concatenate-strings (string-safe-prefix @fstring) (source-text @part) (string-quotes @fstring))
+    attr (@part.node) s = safe_string
+    attr (@part.node) text = safe_string
+}
+
+; In a similar fashion, any expressions that are interpolated:
+(string interpolation: (interpolation expression: (_) @part) @interp) @fstring
+{
+    edge @fstring.node -> @part.node
+    attr (@fstring.node -> @part.node) values = [1, (named-child-index @interp), 0]
+    attr (@part.node) ctx = "load"
+}
+
+; Any expressions inside the format specifier are appended at the end
+(string
+    interpolation: (interpolation
+        (format_specifier
+            (format_expression
+                expression: (_) @part
+            ) @format_expression
+        )
+    ) @interp
+) @fstring
+{
+    edge @fstring.node -> @part.node
+    attr (@fstring.node -> @part.node) values = [1, (named-child-index @interp), (plus 1 (named-child-index @format_expression))]
+    attr (@part.node) ctx = "load"
+}
+
+; Next, the empty string before the first interpolation:
+(string
+    .
+    (interpolation "{" @end)
+) @fstring
+{
+    let empty_string = (ast-node @fstring "StringPart")
+    edge @fstring.node -> empty_string
+    attr (@fstring.node -> empty_string) values = [0, 0, 0]
+    attr (empty_string) prefix = (string-prefix @fstring)
+    attr (empty_string) s = "\"\""
+    let quotes = (string-quotes @fstring)
+    attr (empty_string) text = (concatenate-strings quotes quotes)
+
+    attr (empty_string) _location_end = (location-end @end)
+}
+
+; Then, the empty string between two immediately adjacent interpolations:
+(string
+    (interpolation "}" @start) @before
+    .
+    (interpolation "{" @end)
+) @fstring
+{
+    let empty_string = (ast-node @fstring "StringPart")
+    edge @fstring.node -> empty_string
+    attr (@fstring.node -> empty_string) values = [1, (named-child-index @before), 1]
+    attr (empty_string) prefix = (string-prefix @fstring)
+    attr (empty_string) s = "\"\""
+    let quotes = (string-quotes @fstring)
+    attr (empty_string) text = (concatenate-strings quotes quotes)
+    attr (empty_string) _location_start = (location-start @start)
+    attr (empty_string) _location_end = (location-end @end)
+}
+
+; And finally, the empty string after the last interpolation:
+(string
+    (interpolation "}" @start)
+    .
+) @fstring
+{
+    let empty_string = (ast-node @fstring "StringPart")
+    edge @fstring.node -> empty_string
+    attr (@fstring.node -> empty_string) values = [2, 0, 0]
+    attr (empty_string) prefix = (string-prefix @fstring)
+    attr (empty_string) s = "\"\""
+    let quotes = (string-quotes @fstring)
+    attr (empty_string) text = (concatenate-strings quotes quotes)
+    attr (empty_string) _location_start = (location-start @start)
+}
+
+; If the f-string begins with a non-empty string, we must adjust the start and
+; end location of this part:
+(string
+    .
+    string_content: (_) @part
+    .
+    interpolation: (interpolation "{" @int_start)
+) @fstring
+{
+    attr (@part.node) prefix = (string-prefix @fstring)
+    attr (@part.node) _location_start = (location-start @fstring)
+    attr (@part.node) _location_end = (location-end @int_start)
+}
+
+; And similarly for any string that follows an interpolation:
+(string
+    interpolation: (interpolation "}" @int_end)
+    .
+    string_content: (_) @part) @fstring
+{
+    attr (@part.node) prefix = (string-prefix @fstring)
+    attr (@part.node) _location_start = (location-start @int_end)
+}
+
+; Finally, we must adjust the end of the last part:
+(string
+    interpolation: (_)
+    string_content: (_) @part
+    .
+) @fstring
+{
+    attr (@part.node) _location_end = (location-end @fstring)
+}
+
+; For f-strings without interpolations, we simply treat them as regular strings (or `StringPart`s if
+; they are part of a concatenation):
+(string !interpolation string_content: (_) @part) @fstring
+{
+    let safe_text = (concatenate-strings (string-safe-prefix @fstring) (source-text @part) (string-quotes @fstring))
+    if (instance-of (get-parent @fstring) "concatenated_string"){
+        ; StringPart
+        attr (@fstring.node) text = safe_text
+    }
+    else {
+        ; regular string
+        attr (@fstring.node) implicitly_concatenated_parts = #null
+    }
+    attr (@fstring.node) s = safe_text
+    attr (@fstring.node) prefix = (string-prefix @fstring)
+}
+
+; For f-strings without interpolations _or_ string-content, we simply treat them as regular empty strings:
+(string !interpolation !string_content) @fstring
+{
+    let empty_text = "\"\""
+    if (instance-of (get-parent @fstring) "concatenated_string"){
+        ; StringPart
+        attr (@fstring.node) text = empty_text
+    }
+    else {
+        ; regular string
+        attr (@fstring.node) implicitly_concatenated_parts = #null
+    }
+    attr (@fstring.node) s = empty_text
+    attr (@fstring.node) prefix = (string-prefix @fstring)
+}
+
+
+;;;;;; End of JoinedStr (`f"foo"`)
+
+
+
+;;;;;; List (`[...]`)
+
+(list element: (_) @elt) @list
+{
+    edge @list.node -> @elt.node
+    attr (@list.node -> @elt.node) elts = (named-child-index @elt)
+}
+
+;;;;;; End of List (`[...]`)
+
+;;;;;; Starred (`*some_sequence`)
+
+[
+    (list_splat (expression) @value)
+    (list_splat_pattern vararg: (_) @value)
+] @starred
+{
+    attr (@starred.node) value = @value.node
+    attr (@value.node) _inherited_ctx = @starred.node
+}
+
+;;;;;; End of Starred (`*some_sequence`)
+
+;;;;;; Dict (`{... : ..., ...}`)
+
+(dictionary element: (_) @item) @dict
+{
+    edge @dict.node -> @item.node
+    attr (@dict.node -> @item.node) items = (named-child-index @item)
+    attr (@item.node) ctx = "load"
+}
+
+(pair key: (_) @key value: (_) @value) @item
+{
+    attr (@item.node) key = @key.node
+    attr (@item.node) value = @value.node
+    attr (@key.node) ctx = "load"
+    attr (@value.node) ctx = "load"
+}
+
+;;;;;; End of Dict (`{... : ..., ...}`)
+
+;;;;;; DictUnpacking (`**some_dict`)
+
+(dictionary_splat (expression) @value) @dictunpacking
+{
+    attr (@dictunpacking.node) value = @value.node
+    attr (@value.node) ctx = "load"
+}
+
+;;;;;; End of DictUnpacking (`**some_dict`)
+
+;;;;;; Set (`{..., ...}`)
+
+(set element: (_) @elt) @set
+{
+    edge @set.node -> @elt.node
+    attr (@set.node -> @elt.node) elts = (named-child-index @elt)
+}
+
+;;;;;; End of Set (`{..., ...}`)
+
+
+;;;;;; BoolOp (`... and ...`, `... or ...`)
+
+; This is probably the single most complex thing in this file. Read it slowly.
+
+; First of all, the problem is that `tree-sitter-python` represents boolean operators as if they are binary,
+; whereas in Python they are really n-ary. This means we have to collapse nested `and`s and `or`s in order to
+; correctly create the intended AST structure.
+;
+; We have a structure like this:
+;
+;    or
+;   /  \
+; v_0   or
+;      /  \
+;    v_1  ...
+;           \
+;            or
+;           /  \
+;        v_n-1  v_n
+;
+; where each `v_i` may be a value or a subtree, but not an `or`.
+; From this we will produce a graph of the form:
+;
+; or -0-> v_0
+;    -1-> v_1
+;    ...
+;    -(n-1)-> v_n-1
+;    -n-> [or -skip_to->]* v_n
+;
+; where we see that the last node may be found by a series of `skip_to` edges along the nested `or` nodes,
+; if such are present.
+;
+; As an intermediate step, we will decorate the `or` nodes of the tree with a field `index`, and for the outermost
+; `or` node we will also set `last_index`, initially to 1 but we increment it each time we see a nested `or`, so it ends
+; up being `n`:
+;
+;    or index:0, last_index: n
+;   /  \
+; v_0   or index: 1
+;      /  \
+;    v_1  ...
+;           \
+;            or index: n-1
+;           /  \
+;        v_n-1  v_n
+;
+; This collapsing goes to the outermost operator (`and` or `or`)
+; and so the first step is to correctly identify these.
+
+; For the outermost nodes, we can now assign
+; some special variables that we will propagate inwards. Firstly, we record what the outermost node is (in
+; this case just the node itself), next the index of the value in its left argument (initially `0`), and
+; finally the index at which the _innermost_ right-hand-side value should appear in the resulting list of
+; values. This final variable is mutable, and will be updated as we go through the nested sequence of similar
+; operators.
+(boolean_operator operator: _ @op right: (_)) @boolop
+{
+    ; this binary operator is outermost if it does not have a parent performing the same operation (`and` or `or`)
+    if (not (is-boolean-operator (get-parent @boolop) (source-text @op))) {
+        let @boolop.outermost = @boolop
+        let @boolop.index = 0
+        var @boolop.innermost_index = 1
+    }
+}
+
+; Now, we propagate/modify the variables mentioned in the previous stanza. The `outermost` field is simply
+; propagated, and the `index` and `innermost_index` fields are propagated and updated respectively.
+;
+; We also set the `_skip_to` field on the inner operator, making it point to its right child. That way, the
+; `right` child of the _outermost_ operator will (once resolved) point to the _innermost_ `right` child (i.e. ; the last child in this nested sequence of operators).
+[
+    (boolean_operator
+        operator: "or"
+        right: (boolean_operator
+            operator: "or"
+            right: (_) @inner_right
+        ) @inner
+    )
+    (boolean_operator
+        operator: "and"
+        right: (boolean_operator
+            operator: "and"
+            right: (_) @inner_right
+        ) @inner
+    )
+] @outer
+{
+    let @inner.outermost = @outer.outermost
+    let @inner.index = (plus @outer.index 1)
+    attr (@inner.node) _skip_to = @inner_right.node
+    let outermost = @outer.outermost
+    set outermost.innermost_index = (plus outermost.innermost_index 1)
+}
+
+; For each boolean operator, we hook its left child up as a child of the outermost operator, at the index we
+; calculated previously.
+(boolean_operator left: (_) @value) @boolop
+{
+    edge @boolop.outermost.node -> @value.node
+    attr (@boolop.outermost.node -> @value.node) values = @boolop.index
+    attr (@value.node) ctx = "load"
+}
+
+; For the outermost boolean operator, we hook up its right child (which ultimately points to the innermost
+; right child) as a child at the index we calculated previously.
+(boolean_operator
+    operator: _ @op
+    right: (_) @value
+) @boolop
+{
+    ; this binary operator is outermost if it does not have a parent performing the same operation (`and` or `or`)
+    if (not (is-boolean-operator (get-parent @boolop) (source-text @op))) {
+        edge @boolop.node -> @value.node
+        attr (@boolop.node -> @value.node) values = @boolop.innermost_index
+    }
+}
+
+(boolean_operator right: (_) @value)
+{ attr (@value.node) ctx = "load" }
+
+(boolean_operator ["and" "or"] @op) @boolop
+{
+    attr (@boolop.node) op = (source-text @op)
+}
+
+;;;;;; End of BoolOp (`... and ...`, `... or ...`)
+
+;;;;;; Compare (`... < ...`, `... <= ...`, etc.)
+
+(comparison_operator . (primary_expression) @left) @compare
+{
+    attr (@compare.node) left = @left.node
+    attr (@left.node) ctx = "load"
+}
+
+; Hook up all of the compared values. These are simply the named children (except the first one,
+; which was handled above), as the operators are all unnamed.
+(comparison_operator (primary_expression) (primary_expression) @right) @compare
+{
+    edge @compare.node -> @right.node
+    attr (@compare.node -> @right.node) comparators = (named-child-index @right)
+    attr (@right.node) ctx = "load"
+}
+
+
+; Record the operators in the `ops` fields.
+;
+; A complication here is that we want to construct a field pointing to a list of
+; literals (and not AST nodes as we do almost everywhere else). To get around this,
+; we create a placeholder node for the operation, and then set the `_is_literal` field
+; to override it with a literal value.
+(comparison_operator ["<" "<=" ">" ">=" "==" "!=" "<>" "in" "is"] @op) @compare
+{
+    let @op.node = (ast-node @op "cmpop")
+    attr (@op.node) _is_literal = (node-type @op)
+    edge @compare.node -> @op.node
+    attr (@compare.node -> @op.node) ops = (unnamed-child-index @op)
+}
+
+; The `not in` and `is not` operators are complicated by the fact that the query
+; `(comparison_operator "not in" @op)`
+; matches _twice_ for each `not in` operator (in effect for both the `not` and `in` parts, even
+; though these should have been aliased to a single token). To avoid producing duplicate operators,
+; we only create an operator for _one_ of these matches, by checking whether the index is even.
+(comparison_operator "not in"+ @op) @compare
+{
+    for op in @op {
+        let index = (unnamed-child-index op)
+        if (eq (mod index 2) 0) {
+            let op.node = (ast-node op "cmpop")
+            attr (op.node) _is_literal = "not in"
+            edge @compare.node -> op.node
+            attr (@compare.node -> op.node) ops = index
+        }
+    }
+}
+
+(comparison_operator "is not"+ @op) @compare
+{
+    for op in @op {
+        let index = (unnamed-child-index op)
+        if (eq (mod index 2) 0) {
+            let op.node = (ast-node op "cmpop")
+            attr (op.node) _is_literal = "is not"
+            edge @compare.node -> op.node
+            attr (@compare.node -> op.node) ops = index
+        }
+    }
+}
+
+;;;;;; End of Compare (`... < ...`, `... <= ...`, etc.)
+
+;;;;;; UnaryOp (`-x`, `~x`, etc.., `not x`)
+
+[
+    (unary_operator argument: (_) @operand)
+    (not_operator argument: (_) @operand)
+] @unaryop
+{
+    attr (@unaryop.node) operand = @operand.node
+    attr (@operand.node) ctx = "load"
+}
+
+(unary_operator "~" @op) @unaryop
+{
+    attr (@unaryop.node) op = "~"
+}
+
+(unary_operator "+") @unaryop
+{
+    attr (@unaryop.node) op = "uadd"
+}
+
+(unary_operator "-") @unaryop
+{
+    attr (@unaryop.node) op = "usub"
+}
+
+
+(not_operator) @unaryop
+{
+    attr (@unaryop.node) op = "not"
+}
+
+;;;;;; End of UnaryOp (`-x`, `not x`)
+
+;;;;;; Exec (`exec ...`)
+
+(exec_statement (_) @body) @exec
+{
+    attr (@exec.node) body = @body.node
+}
+
+;;;;;; End of Exec (`exec ...`)
+
+;;;;;; Print (`print ...`)
+
+(print_statement argument: (_) @value) @print
+{
+    edge @print.node -> @value.node
+    attr (@print.node -> @value.node) values = (named-child-index @value)
+    attr (@value.node) ctx = "load"
+}
+
+(print_statement (chevron (_) @dest)) @print
+{
+    attr (@print.node) dest = @dest.node
+    attr (@dest.node) ctx = "load"
+}
+
+(print_statement ","? @comma .) @print
+{
+    var nl = #true
+    if some @comma
+    {
+        set nl = #false
+    }
+    attr (@print.node) nl = nl
+}
+
+;;;;;; End of Print (`print ...`)
+
+;;;;;; Return (`return ...`)
+
+(return_statement (_) @value) @return
+{
+    attr (@return.node) value = @value.node
+    attr (@value.node) ctx = "load"
+}
+
+;;;;;; End of Return (`return ...`)
+
+;;;;;; Yield and YieldFrom (`yield ...` and `yield from ...`)
+
+(yield (_) @value) @yield
+{
+    attr (@yield.node) value = @value.node
+    attr (@value.node) ctx = "load"
+}
+
+;;;;;; End of Yield and YieldFrom (`yield ...` and `yield from ...`)
+
+;;;;;; Await (`await ...`)
+
+(await (_) @value) @await
+{
+    attr (@await.node) value = @value.node
+    attr (@value.node) ctx = "load"
+}
+
+;;;;;; End of Await (`await ...`)
+
+;;;;;; Try (`try: ... except: ... else: ... finally: ...`)
+
+(try_statement body: (block (_) @stmt)) @try
+{
+    edge @try.node -> @stmt.node
+    attr (@try.node -> @stmt.node) body = (named-child-index @stmt)
+}
+
+(try_statement (except_clause) @except) @try
+{
+    edge @try.node -> @except.node
+    attr (@try.node -> @except.node) handlers = (named-child-index @except)
+}
+
+(try_statement (except_group_clause) @except) @try
+{
+    edge @try.node -> @except.node
+    attr (@try.node -> @except.node) handlers = (named-child-index @except)
+}
+
+(try_statement (else_clause body: (block (_) @stmt))) @try
+{
+    edge @try.node -> @stmt.node
+    attr (@try.node -> @stmt.node) orelse = (named-child-index @stmt)
+}
+
+(try_statement (finally_clause body: (block (_) @stmt))) @try
+{
+    edge @try.node -> @stmt.node
+    attr (@try.node -> @stmt.node) finalbody = (named-child-index @stmt)
+}
+
+(except_clause body: (block (_) @stmt)) @except
+{
+    edge @except.node -> @stmt.node
+    attr (@except.node -> @stmt.node) body = (named-child-index @stmt)
+}
+
+(except_clause type: (_) @type) @except
+{
+    attr (@except.node) type = @type.node
+    attr (@type.node) ctx = "load"
+}
+
+(except_clause alias: (_) @name) @except
+{
+    attr (@except.node) name = @name.node
+    attr (@name.node) ctx = "store"
+}
+
+(except_group_clause body: (block (_) @stmt)) @except
+{
+    edge @except.node -> @stmt.node
+    attr (@except.node -> @stmt.node) body = (named-child-index @stmt)
+}
+
+(except_group_clause type: (_) @type) @except
+{
+    attr (@except.node) type = @type.node
+    attr (@type.node) ctx = "load"
+}
+
+(except_group_clause alias: (_) @name) @except
+{
+    attr (@except.node) name = @name.node
+    attr (@name.node) ctx = "store"
+}
+
+;;;;;; End of Try (`try: ... except: ... else: ... finally: ...`)
+
+
+;;;;;; AssignExpr (`a := b`)
+
+(named_expression
+    name: (_) @name
+    value: (_) @value
+) @assignexpr
+{
+    attr (@assignexpr.node) target = @name.node
+    attr (@name.node) ctx = "store"
+    attr (@assignexpr.node) value = @value.node
+    attr (@value.node) ctx = "load"
+}
+
+;;;;;; End of AssignExpr (`a := b`)
+
+;;;;;; IfExpr (`a if b else c`)
+
+(conditional_expression
+    (expression) @body
+    (expression) @test
+    (expression) @orelse
+) @ifexp
+{
+    attr (@ifexp.node) body = @body.node
+    attr (@body.node) ctx = "load"
+    attr (@ifexp.node) test = @test.node
+    attr (@test.node) ctx = "load"
+    attr (@ifexp.node) orelse = @orelse.node
+    attr (@orelse.node) ctx = "load"
+}
+
+;;;;;; End of IfExpr (`a if b else c`)
+
+;;;;;; Attribute (`a.b`)
+
+(attribute
+    object: (_) @value
+    attribute: (_) @attr
+) @attribute
+{
+    attr (@attribute.node) value = @value.node
+    attr (@value.node) ctx = "load"
+    attr (@attribute.node) attr = (source-text @attr)
+    ; Not actually used, but we need to set it to something.
+    attr (@attr.node) ctx = "load"
+}
+
+;;;;;; End of Attribute (`a.b`)
+
+;;;;;; Subscript (`a[b]`)
+
+(subscript
+    value: (_) @value
+) @subscript
+{
+    attr (@subscript.node) value = @value.node
+    attr (@value.node) ctx = "load"
+}
+
+; Single subscript
+(subscript
+    value: (_)
+    .
+    subscript: (_) @index
+    .
+) @subscript
+{
+    attr (@subscript.node) index = @index.node
+    attr (@index.node) ctx = "load"
+}
+
+; For expressions of the form `a[b, c]` we must explicitly synthesize an internal tuple node
+; We do this and also hook it up:
+(subscript
+    value: (_)
+    .
+    subscript: (_) @first
+    .
+    subscript: (_)
+) @subscript
+{
+    let @subscript.tuple = (ast-node @first "Tuple")
+    attr (@subscript.tuple) ctx = "load"
+    attr (@subscript.node) index = @subscript.tuple
+    edge @subscript.tuple -> @first.node
+    attr (@subscript.tuple -> @first.node) elts = (named-child-index @first)
+    attr (@first.node) ctx = "load"
+}
+
+(subscript
+    value: (_)
+    .
+    subscript: (_)
+    subscript: (_) @elt
+) @subscript
+{
+    edge @subscript.tuple -> @elt.node
+    attr (@subscript.tuple -> @elt.node) elts = (named-child-index @elt)
+    attr (@elt.node) ctx = "load"
+}
+
+
+; Set the end position correctly
+(subscript
+    value: (_)
+    .
+    subscript: (_)
+    subscript: (_) @last
+    .
+) @subscript
+{
+    attr (@subscript.tuple) _location_end = (location-end @last)
+}
+
+
+
+;;;;;; End of Subscript (`a[b]`)
+
+;;;;;; Slice (`a:b:c`)
+
+(slice start: (_) @start) @slice
+{
+    attr (@slice.node) start = @start.node
+    attr (@start.node) ctx = "load"
+}
+
+(slice stop: (_) @stop) @slice
+{
+    attr (@slice.node) stop = @stop.node
+    attr (@stop.node) ctx = "load"
+}
+
+
+(slice step: (_) @step) @slice
+{
+    attr (@slice.node) step = @step.node
+    attr (@step.node) ctx = "load"
+}
+
+;;;;;; End of Slice (`a:b:c`)
+
+;;;;;; While (`while a: ... else: ...`)
+
+(while_statement condition: (_) @test) @while
+{
+    attr (@while.node) test = @test.node
+    attr (@test.node) ctx = "load"
+}
+
+(while_statement body: (block (_) @stmt)) @while
+{
+    edge @while.node -> @stmt.node
+    attr (@while.node -> @stmt.node) body = (named-child-index @stmt)
+}
+
+(while_statement alternative: (else_clause (block (_) @stmt))) @while
+{
+    edge @while.node -> @stmt.node
+    attr (@while.node -> @stmt.node) orelse = (named-child-index @stmt)
+}
+
+;;;;;; End of While (`while a: ... else: ...`)
+
+;;;;;; With (`with a as b, c as d: ...`)
+
+(with_statement (with_clause . (with_item) @first)) @with
+{
+    attr (@with.node) _skip_to = @first.node
+    let @with.first = @first.node
+}
+
+; Async status
+; NOTE: We only set the `is_async` field on the _first_ clause of the `with` statement,
+; as this is the behaviour of the old parser.
+(with_statement "async" "with" @with_keyword (with_clause . (with_item) @with))
+{
+    attr (@with.node) is_async = #true
+}
+
+(with_item
+    value: (_) @value
+) @with
+{
+    attr (@with.node) context_expr = @value.node
+    attr (@value.node) ctx = "load"
+}
+
+(with_item
+    alias: (_) @alias
+) @with
+{
+    attr (@with.node) optional_vars = @alias.node
+    attr (@alias.node) ctx = "store"
+}
+
+
+(with_clause
+    (with_item) @with1
+    . (comment)* .
+    (with_item) @with2
+)
+{
+    edge @with1.node -> @with2.node
+    attr (@with1.node -> @with2.node) body = 0
+}
+
+
+(with_statement
+    (with_clause
+        (with_item) @last
+        .
+        )
+    body: (block (_) @stmt)
+)
+{
+    edge @last.node -> @stmt.node
+    attr (@last.node -> @stmt.node) body = (named-child-index @stmt)
+}
+
+
+
+;;;;;; End of With (`with a as b, c as d: ...`)
+
+;;;;;; Match (`match a: ...`)
+
+(match_statement
+    subject: (_) @subject
+) @match
+{
+    attr (@match.node) subject = @subject.node
+    attr (@subject.node) ctx = "load"
+}
+
+(match_statement
+    cases: (cases (case_block) @case)
+) @match
+{
+    edge @match.node -> @case.node
+    attr (@match.node -> @case.node) cases = (named-child-index @case)
+}
+
+(case_block
+    pattern: (_) @pattern
+) @case
+{
+    attr (@case.node) pattern = @pattern.node
+}
+
+(case_block
+    guard: (_) @guard
+) @case
+{
+    attr (@case.node) guard = @guard.node
+}
+
+(guard
+    test: (_) @test
+) @guard
+{
+    attr (@guard.node) test = @test.node
+    attr (@test.node) ctx = "load"
+}
+
+(case_block
+    body: (block (_) @stmt)
+) @case
+{
+    edge @case.node -> @stmt.node
+    attr (@case.node -> @stmt.node) body = (named-child-index @stmt)
+}
+
+;;; The various pattern shapes need to have their children set up correctly
+
+
+(match_as_pattern
+    pattern: (_) @pattern
+) @match
+{
+    attr (@match.node) pattern = @pattern.node
+}
+
+(match_as_pattern
+    alias: (_) @alias
+) @match
+{
+    attr (@match.node) alias = @alias.node
+    attr (@alias.node) ctx = "store"
+}
+
+(match_or_pattern
+    (_) @pattern
+) @match_or_pattern
+{
+    edge @match_or_pattern.node -> @pattern.node
+    attr (@match_or_pattern.node -> @pattern.node) patterns = (named-child-index @pattern)
+}
+
+(match_literal_pattern !real (_) @literal) @match_literal_pattern
+{
+    attr (@match_literal_pattern.node) literal = @literal.node
+    attr (@literal.node) ctx = "load"
+}
+
+(match_literal_pattern
+    prefix_operator: _? @prefix_op
+    real: (_) @left
+    operator: _? @op
+    imaginary: (_)? @right
+) @match_literal_pattern
+{
+    ; Set `left_node` to point to the left hand side (or only part) of the literal,
+    ; synthesizing it if needed.
+    var left_node = #null
+    if some @prefix_op {
+        set left_node = (ast-node @left "UnaryOp")
+        attr (left_node) _start_location = (location-start @prefix_op)
+        attr (left_node) operand = @left.node
+        attr (left_node) op = "usub"
+    } else {
+        set left_node = @left.node
+    }
+    attr (left_node) ctx = "load"
+    ; Synthesize the binary operator node, if needed.
+    var literal_node = #null
+    if some @right {
+    ; Synthesize the node for the binary operation
+        set literal_node = (ast-node @match_literal_pattern "BinOp")
+        attr (literal_node) left = left_node
+        attr (literal_node) right = @right.node
+        attr (literal_node) op = (source-text @op)
+        attr (@right.node) ctx = "load"
+        attr (literal_node) ctx = "load"
+    } else {
+        set literal_node = left_node
+    }
+    attr (@match_literal_pattern.node) literal = literal_node
+}
+
+(match_capture_pattern (identifier) @pattern) @match_capture_pattern
+{
+    attr (@match_capture_pattern.node) variable = @pattern.node
+    attr (@pattern.node) ctx = "store"
+}
+
+; We have a structure where the match_value_pattern has a child for each
+; step in the attribute access.
+; We will turn each child into an actual attribute access of its predecessor.
+;
+; We start with (@match_value_pattern) -> id_1 .. id_n
+; result is
+; id_1 is a Name
+; for i > 1:
+; @id_i -skip-> Attribute -value-> @id_{i-1}
+;                         -attr-> #text
+; @match_value_pattern -value-> @id_n
+
+(match_value_pattern
+    (identifier) @obj
+    .
+    (identifier) @attr
+) @match_value_pattern
+{
+    let attribute = (ast-node @attr "Attribute")
+    attr (@attr.node) _skip_to = attribute
+    attr (attribute) value = @obj.node
+    attr (attribute) attr = (source-text @attr)
+    attr (attribute) ctx = "load"
+}
+
+; First id
+; this needs a ctx
+(match_value_pattern
+    .
+    (identifier) @id
+) @match_value_pattern
+{
+    attr (@id.node) ctx = "load"
+}
+
+; Last id
+; this should be linked from the pattern.
+(match_value_pattern
+    (identifier) @attr
+    .
+) @match_value_pattern
+{
+    attr (@match_value_pattern.node) value = @attr.node
+}
+
+; Group patterns only exist in the parser.
+; They are elided from the AST, where the information is
+; instead recorded in the field `parenthesised`.
+(match_group_pattern
+    content: (_) @pattern
+) @match_group_pattern
+{
+    attr (@match_group_pattern.node) _skip_to = @pattern.node
+    attr (@match_group_pattern.node) parenthesised = #true
+}
+
+(match_sequence_pattern
+    (_) @pattern
+) @match_sequence_pattern
+{
+    edge @match_sequence_pattern.node -> @pattern.node
+    attr (@match_sequence_pattern.node -> @pattern.node) patterns = (named-child-index @pattern)
+}
+
+(match_star_pattern
+    target: (_) @target
+) @match_star_pattern
+{
+    attr (@match_star_pattern.node) target = @target.node
+}
+
+(match_mapping_pattern
+    [
+        (match_key_value_pattern) @mapping
+        (match_double_star_pattern) @mapping
+    ]
+) @pattern
+{
+    edge @pattern.node -> @mapping.node
+    attr (@pattern.node -> @mapping.node) mappings = (named-child-index @mapping)
+}
+
+(match_double_star_pattern
+    target: (_) @target
+) @match_double_star_pattern
+{
+    attr (@match_double_star_pattern.node) target = @target.node
+}
+
+(match_key_value_pattern
+    key: (_) @key
+    value: (_) @value
+) @key_value
+{
+    attr (@key_value.node) key = @key.node
+    attr (@key_value.node) value = @value.node
+}
+
+; Similar situation to the match_value_pattern.
+; We have a structure where the match_class_pattern has a child for each
+; step in the attribute access.
+; We will turn each child into an actual attribute access of its predecessor.
+
+(pattern_class_name
+    (identifier) @obj
+    .
+    (identifier) @attr
+)
+{
+    let attribute = (ast-node @attr "Attribute")
+    attr (@attr.node) _skip_to = attribute
+    attr (attribute) value = @obj.node
+    attr (attribute) attr = (source-text @attr)
+    attr (attribute) ctx = "load"
+}
+
+; First id
+(pattern_class_name
+    .
+    (identifier) @id
+)
+{
+    attr (@id.node) ctx = "load"
+}
+
+; Last id
+; this should be linked from the pattern.
+(match_class_pattern
+    class: (pattern_class_name
+                (identifier) @attr
+                .
+            )
+) @match_class_pattern
+{
+    attr (@match_class_pattern.node) class_name = @attr.node
+}
+
+(match_class_pattern
+    (match_positional_pattern (_) @positional) @positional_pattern
+) @match_class_pattern
+{
+    edge @match_class_pattern.node -> @positional.node
+    attr (@match_class_pattern.node -> @positional.node) positional = (named-child-index @positional_pattern)
+}
+
+(match_class_pattern
+    (match_keyword_pattern) @keyword
+) @match_class_pattern
+{
+    edge @match_class_pattern.node -> @keyword.node
+    attr (@match_class_pattern.node -> @keyword.node) keyword = (named-child-index @keyword)
+}
+
+(match_keyword_pattern
+    attribute: (_) @attribute
+) @match_keyword_pattern
+{
+    attr (@match_keyword_pattern.node) attribute = @attribute.node
+    attr (@attribute.node) ctx = "load"
+}
+
+(match_keyword_pattern
+    value: (_) @pattern
+) @match_keyword_pattern
+{ attr (@match_keyword_pattern.node) value = @pattern.node}
+
+;;;;;; End of Match (`match a: ...`)
+
+;;;;;; Lambda (`lambda a: ...`)
+
+; Lambdas are tricky, much like function definitions.
+;
+; One complication is that we need to distinguish the cases where the parameter has a default value and
+; where it does not. This leads to an unfortunate explosion in mostly similar cases...
+
+
+(lambda body: (_) @body) @lambda
+{
+
+    ; Lambdas contain a `Function` much like regular functions.
+    let @lambda.function = (ast-node @lambda "Function")
+    attr (@lambda.function) name = "lambda"
+    attr (@lambda.node) inner_scope = @lambda.function
+
+    ; The single child of this function is a synthesised return statement.
+    let return = (ast-node @body "Return")
+    edge @lambda.function -> return
+    attr (@lambda.function -> return) body = 0
+
+    attr (return) value = @body.node
+    attr (@body.node) ctx = "load"
+}
+
+; Lambdas without parameters just get a dummy `arguments` child.
+(lambda !parameters) @lambda
+{
+    attr (@lambda.node) args = (ast-node @lambda "arguments")
+}
+
+(lambda parameters: (_) @params) @lambda
+{
+    attr (@lambda.node) args = @params.node
+}
+
+(lambda
+    parameters: (lambda_parameters
+        (list_splat_pattern vararg: (_) @vararg) @starred
+    )
+) @lambda
+{
+    attr (@lambda.function) vararg = @vararg.node
+    attr (@starred.node) ctx = "param" ; Not actually used
+    attr (@vararg.node) ctx = "param"
+}
+
+(lambda
+    parameters: (lambda_parameters
+        (dictionary_splat_pattern kwarg: (_) @kwarg)
+    )
+) @lambda
+{
+    attr (@lambda.function) kwarg = @kwarg.node
+    attr (@kwarg.node) ctx = "param"
+}
+
+(lambda
+    parameters: (lambda_parameters
+        [(list_splat_pattern) (keyword_separator)]? @is_kwarg
+        [
+            (identifier) @name
+            (default_parameter
+                name: (_) @name
+                value: (_) @value
+            )
+        ] @param
+    ) @params
+) @lambda
+{
+    let none = (ast-node @params "None")
+    attr (none) _is_literal = #null
+    attr (none) ctx = "load"
+    edge @params.node -> none
+
+    ; Even though lambda parameters cannot have annotations, we must still record this fact.
+    if some @is_kwarg {
+        attr (@params.node -> none) kw_annotations = (named-child-index @param)
+    } else {
+        attr (@params.node -> none) annotations = (named-child-index @param)
+    }
+
+    edge @lambda.function -> @name.node
+    attr (@name.node) ctx = "param"
+
+    if some @is_kwarg {
+        attr (@lambda.function -> @name.node) kwonlyargs = (named-child-index @param)
+    }
+    else { 
+        attr (@lambda.function -> @name.node) args = (named-child-index @param)
+    }
+
+    var default_node = none
+    if some @value {
+        set default_node = @value.node
+        edge @params.node -> default_node
+        attr (default_node) ctx = "load"
+    }
+    if some @is_kwarg {
+        attr (@params.node -> default_node) kw_defaults = (named-child-index @param)
+    } else {
+        attr (@params.node -> default_node) defaults = (named-child-index @param)
+    }
+}
+
+;;;;;; End of Lambda (`lambda a: ...`)
+
+;;;;;; Function (`def a(b, c): ...`)
+
+; Much like lambdas, the main difficulty here is that we need to account for the absence of the positional
+; argument separator. We do this using the exact same machinery.
+;
+; Also, all arguments can now also have a type/annotation, so get ready for _twice_ the number of cases.
+
+(function_definition
+    name: (_) @name
+    ":" @end
+) @funcdef
+{
+    let end = (location-end @end)
+
+    attr (@funcdef.node) _location_end = end
+
+    edge @funcdef.node -> @name.node
+    attr (@funcdef.node -> @name.node) targets = 0
+    attr (@name.node) ctx = "store"
+
+    let @funcdef.funcexpr = (ast-node @funcdef "FunctionExpr")
+    attr (@funcdef.funcexpr) _location_end = end
+    attr (@funcdef.node) value = @funcdef.funcexpr
+    attr (@funcdef.funcexpr) name = (source-text @name)
+
+    let @funcdef.function = (ast-node @funcdef "Function")
+    attr (@funcdef.function) _location_end = end
+    attr (@funcdef.function) name = (source-text @name)
+    attr (@funcdef.funcexpr) inner_scope = @funcdef.function
+}
+
+(function_definition
+    body: (block (_) @stmt)
+) @funcdef
+{
+    edge @funcdef.function -> @stmt.node
+    attr (@funcdef.function -> @stmt.node) body = (named-child-index @stmt)
+}
+
+(function_definition
+    parameters: (_) @params
+) @funcdef
+{
+    attr (@funcdef.funcexpr) args = @params.node
+}
+
+
+(function_definition
+    parameters: (parameters
+        [(list_splat_pattern) (keyword_separator)]? @is_kwarg
+        [
+            (identifier) @name
+            (default_parameter
+                name: (_) @name
+                value: (_) @value
+            )
+            (typed_parameter
+                (identifier) @name
+                .
+                type: (type (_) @type)
+            )
+            (typed_default_parameter
+                name: (_) @name
+                type: (type (_) @type)
+                value: (_) @value
+            )
+        ] @param
+    ) @params
+) @funcdef
+{
+    let none = (ast-node @params "None")
+    attr (none) _is_literal = #null
+    attr (none) ctx = "load"
+    edge @params.node -> none
+
+    var type_node = none
+    if some @type {
+        set type_node = @type.node
+        edge @params.node -> type_node
+        attr (type_node) ctx = "load"
+    }
+
+    if some @is_kwarg {
+        attr (@params.node -> type_node) kw_annotations = (named-child-index @param)
+    } else {
+        attr (@params.node -> type_node) annotations = (named-child-index @param)
+    }
+
+    edge @funcdef.function -> @name.node
+    attr (@name.node) ctx = "param"
+
+    if some @is_kwarg {
+        attr (@funcdef.function -> @name.node) kwonlyargs = (named-child-index @param)
+    }
+    else { 
+        attr (@funcdef.function -> @name.node) args = (named-child-index @param)
+    }
+
+    var default_node = none
+    if some @value {
+        set default_node = @value.node
+        edge @params.node -> default_node
+        attr (default_node) ctx = "load"
+    }
+    if some @is_kwarg {
+        attr (@params.node -> default_node) kw_defaults = (named-child-index @param)
+    } else {
+        attr (@params.node -> default_node) defaults = (named-child-index @param)
+    }
+}
+
+; `*args` argument
+(function_definition
+    parameters: (parameters
+        [
+            (list_splat_pattern vararg: (_) @name) @starred
+            (typed_parameter
+                (list_splat_pattern vararg: (_) @name) @starred
+                type: (type (_) @type)
+            )
+        ]
+    ) @params
+) @funcdef
+{
+    attr (@funcdef.function) vararg = @name.node
+    attr (@starred.node) ctx = "param" ; Not actually used
+    attr (@name.node) ctx = "param"
+    if some @type {
+        attr (@params.node) varargannotation = @type.node
+        attr (@type.node) ctx = "load"
+    }
+}
+
+; Return type
+(function_definition
+    return_type: (type (_) @type)
+) @funcdef
+{
+    attr (@funcdef.funcexpr) returns = @type.node
+    attr (@type.node) ctx = "load"
+}
+
+; `**kwargs` argument
+(function_definition
+    (parameters
+        [
+            (dictionary_splat_pattern kwarg: (identifier) @name)
+            (typed_parameter
+                (dictionary_splat_pattern kwarg: (identifier) @name)
+                type: (type (_) @type)
+            )
+        ]
+    ) @params
+) @funcdef
+{
+    attr (@funcdef.function) kwarg = @name.node
+    attr (@name.node) ctx = "param"
+    if some @type {
+        attr (@params.node) kwargannotation = @type.node
+        attr (@type.node) ctx = "load"
+    }
+}
+
+; Async status
+(function_definition "async" "def" @def_keyword) @funcdef
+{
+    let start = (location-start @def_keyword)
+    attr (@funcdef.function) is_async = #true
+    attr (@funcdef.node) _location_start = start
+    attr (@funcdef.function) _location_start = start
+    attr (@funcdef.funcexpr) _location_start = start
+}
+
+;;; Decorators
+
+(decorated_definition
+    . (decorator) @first
+    definition: (function_definition name: (_) @name ":" @end) @funcdef
+) @decorator
+{
+    attr (@decorator.node) value = @first.node
+    attr (@decorator.node) _location_start = (location-start @funcdef)
+    attr (@decorator.node) _location_end = (location-end @end)
+    edge @decorator.node -> @name.node
+    attr (@decorator.node -> @name.node) targets = 0
+}
+
+(decorated_definition
+    . (decorator) @first
+    definition: (class_definition name: (_) @name ":" @end) @funcdef
+) @decorator
+{
+    attr (@decorator.node) value = @first.node
+    attr (@decorator.node) _location_start = (location-start @funcdef)
+    attr (@decorator.node) _location_end = (location-end @end)
+    edge @decorator.node -> @name.node
+    attr (@decorator.node -> @name.node) targets = 0
+}
+
+(decorator (expression) @exp) @decorator
+{
+    attr (@decorator.node) _location_start = (location-start @exp)
+    attr (@exp.node) ctx = "load"
+}
+
+(decorated_definition
+    (decorator (expression) @exp1) @dec1
+    . (comment)* .
+    (decorator (expression) @exp2) @dec2
+) @decorator
+{
+    attr (@dec1.node) func = @exp1.node
+    edge @dec1.node -> @dec2.node
+    attr (@dec1.node -> @dec2.node) positional_args = 0
+}
+
+(decorated_definition
+    (decorator (expression) @exp) @last
+    . (comment)* .
+    definition: (function_definition) @funcdef
+) @decorator
+{
+    attr (@last.node) func = @exp.node
+    edge @last.node -> @funcdef.funcexpr
+    attr (@last.node -> @funcdef.funcexpr) positional_args = 0
+    attr (@last.node) _location_end = (location-end @exp)
+}
+
+(decorated_definition
+    (decorator (expression) @exp) @last
+    . (comment)* .
+    definition: (class_definition) @class
+) @decorator
+{
+    attr (@last.node) func = @exp.node
+    edge @last.node -> @class.class_expr
+    attr (@last.node -> @class.class_expr) positional_args = 0
+    attr (@last.node) _location_end = (location-end @exp)
+}
+
+;;; Type parameters
+
+(function_definition
+    type_parameters: (type_parameters type_parameter: (_) @param)
+) @funcdef
+{
+    edge @funcdef.function -> @param.node
+    attr (@funcdef.function -> @param.node) type_parameters = (named-child-index @param)
+}
+
+(class_definition
+    type_parameters: (type_parameters type_parameter: (_) @param)
+) @class
+{
+    edge @class.class_expr -> @param.node
+    attr (@class.class_expr -> @param.node) type_parameters = (named-child-index @param)
+}
+
+;;;;;; End of Function (`def a(b, c): ...`)
+
+;;;;;; TypeAlias (`type a[...] = ...`)
+
+(type_alias_statement
+    name: (_) @name
+    value: (_) @value
+) @type_alias
+{
+    attr (@name.node) ctx = "store"
+    attr (@value.node) ctx = "load"
+    attr (@type_alias.node) name = @name.node
+    attr (@type_alias.node) value = @value.node
+}
+
+(type_alias_statement
+    type_parameters: (type_parameters type_parameter: (_) @param)
+) @type_alias
+{
+    edge @type_alias.node -> @param.node
+    attr (@type_alias.node -> @param.node) type_parameters = (named-child-index @param)
+}
+
+;;;;;; End of TypeAlias (`type a[...] = ...`)
+
+;;;;;; Type parameters (`T: ..., *T, **T`)
+
+(typevar_parameter
+    name: (_) @name
+    bound: (_)? @bound
+    default: (_)? @default
+) @typevar
+{
+    attr (@name.node) ctx = "store"
+    attr (@typevar.node) name = @name.node
+    if some @bound {
+        attr (@bound.node) ctx = "load"
+        attr (@typevar.node) bound = @bound.node
+    }
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@typevar.node) default = @default.node
+    }
+}
+
+(typevartuple_parameter
+    name: (_) @name
+    default: (_)? @default
+) @typevartuple
+{
+    attr (@name.node) ctx = "store"
+    attr (@typevartuple.node) name = @name.node
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@typevartuple.node) default = @default.node
+    }
+}
+
+(paramspec_parameter
+    name: (_) @name
+    default: (_)? @default
+) @paramspec
+{
+    attr (@name.node) ctx = "store"
+    attr (@paramspec.node) name = @name.node
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@paramspec.node) default = @default.node
+    }
+}
+
+;;;;;; End of Type parameters (`T: ..., *T, **T`)
+
+; Nodes with an `elts` field
+[
+    ; Left hand side of an assignment such as `foo, bar = ...`
+    (pattern_list element: (_) @elt) @parent
+
+    ; Left hand side of an assignment such as `[foo, bar] = ...`
+    (list_pattern element: (_) @elt) @parent
+
+    ; An unadorned tuple (such as in `x = y, z`)
+    (expression_list element: (_) @elt) @parent
+
+    ; A regular tuple such as `(x, y, z)`
+    (tuple element: (_) @elt) @parent
+
+    (tuple_pattern element: (_) @elt) @parent
+]
+{
+    edge @parent.node -> @elt.node
+    attr (@parent.node -> @elt.node) elts = (named-child-index @elt)
+}
+
+
+
+; Expressions that do not produce an `Expr` node in the AST.
+(expression_statement [(assignment) (augmented_assignment)] @inner) @outer
+{
+    attr (@outer.node) _skip_to = @inner.node
+}
+
+; Expressions that may result in an `Expr` node in the AST
+; ("may" because of the `_skip_to` field).
+(expression_statement . (_) @expr . ) @stmt
+{
+    attr (@stmt.node) value = @expr.node
+    attr (@expr.node) ctx = "load"
+}
+
+
+;  Sequence expressions where the elements inherit the load/store context
+[
+    (list element: (_) @elt)
+    (tuple element: (_) @elt)
+    (tuple_pattern element: (_) @elt)
+    (pattern_list element: (_) @elt)
+    (list_pattern element: (_) @elt)
+    (expression_list element: (_) @elt)
+    (parenthesized_expression inner: (_) @elt)
+    (set element: (_) @elt)
+    (match_sequence_pattern (_) @elt)
+] @seq
+{
+    attr (@elt.node) _inherited_ctx = @seq.node
+}
+
+[(tuple element: (_)) (tuple_pattern)] @tup
+{
+    ; In order to avoid writing to the `parenthesised` attribute twice, we only set it here
+    ; if the surrounding expression is not a `parenthesized_expression`.
+    if (not (instance-of (get-parent @tup) "parenthesized_expression")) {
+        attr (@tup.node) parenthesised = #true
+    }
+}

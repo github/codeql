@@ -7,7 +7,6 @@
 | (Int32,String) | (int, string) | ValueTuple<int, string> | 2 | 0 | CSharp7.cs:95:19:95:19 | Item1 |
 | (Int32,String) | (int, string) | ValueTuple<int, string> | 2 | 1 | CSharp7.cs:95:22:95:37 | Item2 |
 | (String,Int32) | (string, int) | ValueTuple<string, int> | 2 | 0 | CSharp7.cs:82:17:82:17 | Item1 |
-| (String,Int32) | (string, int) | ValueTuple<string, int> | 2 | 0 | CSharp7.cs:101:19:101:38 | Item1 |
 | (String,Int32) | (string, int) | ValueTuple<string, int> | 2 | 1 | CSharp7.cs:82:23:82:23 | Item2 |
 | (String,String) | (string, string) | ValueTuple<string, string> | 2 | 0 | CSharp7.cs:87:19:87:27 | Item1 |
 | (String,String) | (string, string) | ValueTuple<string, string> | 2 | 1 | CSharp7.cs:87:30:87:33 | Item2 |

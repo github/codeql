@@ -8,6 +8,6 @@ import java
 module DataFlow {
   private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
   private import codeql.dataflow.DataFlow
-  import DataFlowMake<JavaDataFlow>
-  import semmle.code.java.dataflow.internal.DataFlowImpl1
+  import DataFlowMake<Location, JavaDataFlow>
+  import Public
 }

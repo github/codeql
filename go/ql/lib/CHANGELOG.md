@@ -1,8 +1,228 @@
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* A call to a method whose name starts with "Debug", "Error", "Fatal", "Info", "Log", "Output", "Panic", "Print", "Trace", "Warn" or "With" defined on an interface whose name ends in "logger" or "Logger" is now considered a LoggerCall. In particular, it is a sink for `go/clear-text-logging` and `go/log-injection`. This may lead to some more alerts in those queries.
+
+### Bug Fixes
+
+* Fixed a bug which meant that promoted fields and methods were missing when the embedded parent was not promoted due to a name clash.
+
+## 2.1.3
+
+### Minor Analysis Improvements
+
+* The `subtypes` column has been set to true in all models-as-data models except some tests. This means that existing models will apply in some cases where they didn't before, which may lead to more alerts.
+
+### Bug Fixes
+
+* The behaviour of the `subtypes` column in models-as-data now matches other languages more closely.
+* Fixed a bug which meant that some qualified names for promoted methods were not being recognised in some very specific circumstances.
+
+## 2.1.2
+
+### Minor Analysis Improvements
+
+* The AST viewer now shows type parameter declarations in the correct place in the AST.
+
+## 2.1.1
+
+### Minor Analysis Improvements
+
+* Added member predicates `StructTag.hasOwnFieldWithTag` and `Field.getTag`, which enable CodeQL queries to examine struct field tags.
+* Added member predicate `InterfaceType.hasPrivateMethodWithQualifiedName`, which enables CodeQL queries to distinguish interfaces with matching non-exported method names that are declared in different packages, and are therefore incompatible.
+* Local source models with the `stdin` source kind have been added for the variable `os.Stdin` and the functions `fmt.Scan`, `fmt.Scanf` and `fmt.Scanln`. You can optionally include threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see [Analyzing your code with CodeQL queries](https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data>) and [Customizing your advanced setup for code scanning](https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models).
+
+## 2.1.0
+
+### Deprecated APIs
+
+* The class `ThreatModelFlowSource` has been renamed to `ActiveThreatModelSource` to more clearly reflect it only contains the currently active threat model sources. `ThreatModelFlowSource` has been marked as deprecated.
+
+### Minor Analysis Improvements
+
+* A method in the method set of an embedded field of a struct should not be promoted to the method set of the struct if the struct has a method with the same name. This was not being enforced, which meant that there were two methods with the same qualified name, and models were sometimes being applied when they shouldn't have been. This has now been fixed.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+
+### Minor Analysis Improvements
+
+* When a function or type has more than one anonymous type parameters, they were mistakenly being treated as the same type parameter. This has now been fixed.
+* Local source models for reading and parsing environment variables have been added for the following libraries:
+  * os
+  * syscall
+  * github.com/caarlos0/env
+  * github.com/gobuffalo/envy
+  * github.com/hashicorp/go-envparse
+  * github.com/joho/godotenv
+  * github.com/kelseyhightower/envconfig
+* Local source models have been added for the APIs which open files in the `io/fs`, `io/ioutil` and `os` packages in the Go standard library. You can optionally include threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see [Analyzing your code with CodeQL queries](https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data>) and [Customizing your advanced setup for code scanning](https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models).
+
+### Bug Fixes
+
+* Golang vendor directories not at the root of a repository are now correctly excluded from the baseline Go file count. This means code coverage information will be more accurate.
+
+## 1.2.0
+
+### Major Analysis Improvements
+
+* Go 1.23 is now supported.
+
+## 1.1.5
+
+### Bug Fixes
+
+* Fixed an issue where `io/ioutil.WriteFile`'s non-path arguments incorrectly generated `go/path-injection` alerts when untrusted data was written to a file, or controlled the file's mode.
+
+## 1.1.4
+
+No user-facing changes.
+
+## 1.1.3
+
+### Minor Analysis Improvements
+
+* There was a bug which meant that the built-in function `clear` was considered as a sanitizer in some cases when it shouldn't have been. This has now been fixed, which may lead to more alerts.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* DataFlow queries which previously used `RemoteFlowSource` to define their sources have been modified to instead use `ThreatModelFlowSource`. This means these queries will now respect threat model configurations. The default threat model configuration is equivalent to `RemoteFlowSource`, so there should be no change in results for users using the default.
+* Added the `ThreatModelFlowSource` class to `FlowSources.qll`. The `ThreatModelFlowSource` class can be used to include sources which match the current *threat model* configuration. This is the first step in supporting threat modeling for Go.
+
+### Bug Fixes
+
+* Fixed dataflow via global variables other than via a direct write: for example, via a side-effect on a global, such as `io.copy(SomeGlobal, ...)` or via assignment to a field or array or slice cell of a global. This means that any data-flow query may return more results where global variables are involved.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### New Features
+
+* When writing models-as-data models, the receiver is now referred to as `Argument[receiver]` rather than `Argument[-1]`.
+* Neutral models are now supported. They have no effect except that a manual neutral summary model will stop a generated summary model from having any effect.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* A bug has been fixed which meant that the query `go/incorrect-integer-conversion` did not consider type assertions and type switches which use a defined type whose underlying type is an integer type. This may lead to fewer false positive alerts.
+* A bug has been fixed which meant flow was not followed through some ranged for loops. This may lead to more alerts being found.
+* Added value flow models for the built-in functions `append`, `copy`, `max` and `min` using Models-as-Data. Removed the old-style models for `max` and `min`.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Fixed a bug that stopped built-in functions from being referenced using the predicate `hasQualifiedName` because technically they do not belong to any package. Now you can use the empty string as the package, e.g. `f.hasQualifiedName("", "len")`.
+* Fixed a bug that stopped data flow models for built-in functions from having any effect because the package "" was not parsed correctly.
+* Fixed a bug that stopped data flow from being followed through variadic arguments to built-in functions or to functions called using a variable.
+
+## 0.8.0
+
+### Breaking Changes
+
+* Deleted the deprecated `CsvRemoteSource` alias. Use `MaDRemoteSource` instead.
+
+### Deprecated APIs
+
+* To make Go consistent with other language libraries, the `UntrustedFlowSource` name has been deprecated throughout. Use `RemoteFlowSource` instead, which replaces it. 
+* Where modules have classes named `UntrustedFlowAsSource`, these are also deprecated and the `Source` class in the same module or the `RemoteFlowSource` class should be used instead.
+
+## 0.7.14
+
+### Minor Analysis Improvements
+
+* Data flow through variables declared in statements of the form `x := y.(type)` at the beginning of type switches has been fixed, which may result in more alerts.
+* Added strings.ReplaceAll, http.ParseMultipartForm sanitizers and remove path sanitizer.
+
+## 0.7.13
+
+### Minor Analysis Improvements
+
+* The `CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO` option, which speeds up retrieval of dependency information, is now on by default. This was originally an external contribution by @xhd2015.
+* Added dataflow sources for the package `gopkg.in/macaron.v1`.
+
+## 0.7.12
+
+No user-facing changes.
+
+## 0.7.11
+
+No user-facing changes.
+
+## 0.7.10
+
+### Major Analysis Improvements
+
+* We have significantly improved the Go autobuilder to understand a greater range of project layouts, which allows Go source files to be analysed that could previously not be processed.
+* Go 1.22 has been included in the range of supported Go versions.
+
+### Bug Fixes
+
+* Fixed dataflow out of a `map` using a `range` statement.
+
+## 0.7.9
+
+No user-facing changes.
+
+## 0.7.8
+
+No user-facing changes.
+
+## 0.7.7
+
+### Deprecated APIs
+
+* The class `Fmt::AppenderOrSprinter` of the `Fmt.qll` module has been deprecated. Use the new `Fmt::AppenderOrSprinterFunc` class instead. Its taint flow features have been migrated to models-as-data.
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `TLD`, `HTTP`, `SQL`, `URL` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated and unused `Source` class from the `SharedXss` module of `Xss.qll`
+* Support for flow sources in [AWS Lambda function handlers](https://docs.aws.amazon.com/lambda/latest/dg/golang-handler.html) has been added.
+* Support for the [fasthttp framework](https://github.com/valyala/fasthttp/) has been added.
+
+## 0.7.6
+
+### Minor Analysis Improvements
+
+* The diagnostic query `go/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Go files, now considers any Go file seen during extraction, even one with some errors, to be extracted / scanned.
+* The XPath library, which is used for the XPath injection query (`go/xml/xpath-injection`), now includes support for `Parser` sinks from the [libxml2](https://github.com/lestrrat-go/libxml2) package.
+* `CallNode::getACallee` and related predicates now recognise more callees accessed via a function variable, in particular when the callee is stored into a global variable or is captured by an anonymous function. This may lead to new alerts where data-flow into such a callee is relevant.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### Bug Fixes
+
+* A bug has been fixed that meant that value flow through a slice expression was not tracked correctly. Taint flow was tracked correctly.
+
 ## 0.7.3
 
 ### Minor Analysis Improvements
 
-* Added the [gin cors](https://github.com/gin-contrib/cors) library to the CorsMisconfiguration.ql query
+* Added the [gin-contrib/cors](https://github.com/gin-contrib/cors) library to the experimental query "CORS misconfiguration" (`go/cors-misconfiguration`).
 
 ### Bug Fixes
 

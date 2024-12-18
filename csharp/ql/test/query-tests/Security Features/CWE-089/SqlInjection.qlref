@@ -1,1 +1,2 @@
-Security Features/CWE-089/SqlInjection.ql
+query: Security Features/CWE-089/SqlInjection.ql
+postprocess: utils/test/PrettyPrintModels.ql

@@ -12,3 +12,13 @@ function tooltips() {
         <ReactTooltip />
     </span>
 }
+
+function MyElement(props) {
+    const provide = props.provide;
+    return <div dangerouslySetInnerHTML={{__html: provide()}} />; // NOT OK
+}
+
+function useMyElement() {
+    const source = window.name;
+    return <MyElement provide={() => source} />;
+}

@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-200/SensitiveAndroidFileLeak.ql
+query: experimental/Security/CWE/CWE-200/SensitiveAndroidFileLeak.ql
+postprocess: utils/test/PrettyPrintModels.ql

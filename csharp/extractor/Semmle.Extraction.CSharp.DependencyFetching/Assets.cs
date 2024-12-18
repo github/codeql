@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -13,19 +14,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class Assets
     {
-        private readonly ProgressMonitor progressMonitor;
+        private readonly ILogger logger;
 
-        private static readonly string[] netFrameworks = new[] {
-            "microsoft.aspnetcore.app.ref",
-            "microsoft.netcore.app.ref",
-            "microsoft.netframework.referenceassemblies",
-            "microsoft.windowsdesktop.app.ref",
-            "netstandard.library.ref"
-        };
+        /// <summary>
+        /// Contains the dependencies found in the parsed assets files.
+        /// </summary>
+        public DependencyContainer Dependencies { get; } = new();
 
-        internal Assets(ProgressMonitor progressMonitor)
+        internal Assets(ILogger logger)
         {
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -43,7 +41,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         /// <summary>
         /// Add the package dependencies from the assets file to dependencies.
-        /// 
+        ///
         /// Parse a part of the JSon assets file and add the paths
         /// to the dependencies required for compilation (and collect
         /// information about used packages).
@@ -68,20 +66,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         ///     }
         ///   }
         /// }
-        /// 
-        /// Returns dependencies
-        ///   RequiredPaths = {
+        ///
+        /// Adds the following dependencies
+        ///   Paths: {
         ///     "castle.core/4.4.1/lib/netstandard1.5/Castle.Core.dll",
         ///     "json.net/1.0.33/lib/netstandard2.0/Json.Net.dll"
         ///   }
-        ///   UsedPackages = {
+        ///   Packages: {
         ///     "castle.core",
         ///     "json.net"
         ///   }
         /// </summary>
-        private DependencyContainer AddPackageDependencies(JObject json, DependencyContainer dependencies)
+        private void AddPackageDependencies(JObject json, string jsonPath)
         {
-            // If there are more than one framework we need to pick just one.
+            // If there is more than one framework we need to pick just one.
             // To ensure stability we pick one based on the lexicographic order of
             // the framework names.
             var references = json
@@ -93,8 +91,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (references is null)
             {
-                progressMonitor.LogDebug("No references found in the targets section in the assets file.");
-                return dependencies;
+                logger.LogDebug($"No references found in the targets section in '{jsonPath}'");
+                return;
             }
 
             // Find all the compile dependencies for each reference and
@@ -109,19 +107,81 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         return;
                     }
 
-                    // If this is a .NET framework reference then include everything.
-                    if (netFrameworks.Any(framework => name.StartsWith(framework)))
+                    if (info.Compile is null || !info.Compile.Any())
                     {
-                        dependencies.Add(name);
+                        // If this is a framework reference then include everything.
+                        if (FrameworkPackageNames.AllFrameworks.Any(framework => name.StartsWith(framework)))
+                        {
+                            Dependencies.AddFramework(name);
+                        }
+                        return;
                     }
-                    else
-                    {
-                        info.Compile?
-                            .ForEach(r => dependencies.Add(name, r.Key));
-                    }
-                });
 
-            return dependencies;
+                    info.Compile
+                        .ForEach(r => Dependencies.Add(name, r.Key));
+                });
+        }
+
+        /// <summary>
+        /// Add the framework dependencies from the assets file to dependencies.
+        ///
+        /// Example:
+        /// "project": {
+        ///    "version": "1.0.0",
+        ///    "frameworks": {
+        ///        "net7.0": {
+        ///            "frameworkReferences": {
+        ///                "Microsoft.AspNetCore.App": {
+        ///                    "privateAssets": "none"
+        ///                },
+        ///                "Microsoft.NETCore.App": {
+        ///                    "privateAssets": "all"
+        ///                }
+        ///            }
+        ///        }
+        ///    }
+        /// }
+        ///
+        /// Adds the following dependencies
+        ///   Paths: {
+        ///     "microsoft.aspnetcore.app.ref",
+        ///     "microsoft.netcore.app.ref"
+        ///   }
+        ///   Packages: {
+        ///     "microsoft.aspnetcore.app.ref",
+        ///     "microsoft.netcore.app.ref"
+        ///   }
+        /// </summary>
+        private void AddFrameworkDependencies(JObject json, string jsonPath)
+        {
+
+            var frameworks = json
+                .GetProperty("project")?
+                .GetProperty("frameworks");
+
+            if (frameworks is null)
+            {
+                logger.LogDebug($"No framework section in '{jsonPath}'.");
+                return;
+            }
+
+            // If there is more than one framework we need to pick just one.
+            // To ensure stability we pick one based on the lexicographic order of
+            // the framework names.
+            var references = frameworks
+                .Properties()?
+                .MaxBy(p => p.Name)?
+                .Value["frameworkReferences"] as JObject;
+
+            if (references is null)
+            {
+                logger.LogDebug($"No framework references in '{jsonPath}'.");
+                return;
+            }
+
+            references
+                .Properties()
+                .ForEach(f => Dependencies.AddFramework($"{f.Name}.Ref".ToLowerInvariant()));
         }
 
         /// <summary>
@@ -129,22 +189,23 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// (together with used package information) required for compilation.
         /// </summary>
         /// <returns>True if parsing succeeds, otherwise false.</returns>
-        public bool TryParse(string json, DependencyContainer dependencies)
+        public bool TryParse(string json, string jsonPath)
         {
             try
             {
                 var obj = JObject.Parse(json);
-                AddPackageDependencies(obj, dependencies);
+                AddPackageDependencies(obj, jsonPath);
+                AddFrameworkDependencies(obj, jsonPath);
                 return true;
             }
             catch (Exception e)
             {
-                progressMonitor.LogDebug($"Failed to parse assets file (unexpected error): {e.Message}");
+                logger.LogDebug($"Failed to parse assets file (unexpected error): {e.Message}");
                 return false;
             }
         }
 
-        private static bool TryReadAllText(string path, ProgressMonitor progressMonitor, [NotNullWhen(returnValue: true)] out string? content)
+        private static bool TryReadAllText(string path, ILogger logger, [NotNullWhen(returnValue: true)] out string? content)
         {
             try
             {
@@ -153,25 +214,30 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             catch (Exception e)
             {
-                progressMonitor.LogInfo($"Failed to read assets file '{path}': {e.Message}");
+                logger.LogInfo($"Failed to read assets file '{path}': {e.Message}");
                 content = null;
                 return false;
             }
         }
 
-        public static DependencyContainer GetCompilationDependencies(ProgressMonitor progressMonitor, IEnumerable<string> assets)
+        /// <summary>
+        /// Add the dependencies from the assets file to the dependencies.
+        /// </summary>
+        /// <param name="asset">Path to an assets file.</param>
+        public void AddDependencies(string asset)
         {
-            var parser = new Assets(progressMonitor);
-            var dependencies = new DependencyContainer();
-            assets.ForEach(asset =>
+            if (TryReadAllText(asset, logger, out var json))
             {
-                if (TryReadAllText(asset, progressMonitor, out var json))
-                {
-                    parser.TryParse(json, dependencies);
-                }
-            });
-            return dependencies;
+                TryParse(json, asset);
+            }
         }
+
+        /// <summary>
+        /// Add the dependencies from the assets files to the dependencies.
+        /// </summary>
+        /// <param name="assets">Collection of paths to assets files.</param>
+        public void AddDependenciesRange(IEnumerable<string> assets) =>
+            assets.ForEach(AddDependencies);
     }
 
     internal static class JsonExtensions

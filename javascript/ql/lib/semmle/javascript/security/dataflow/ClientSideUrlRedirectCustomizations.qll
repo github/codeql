@@ -38,9 +38,16 @@ module ClientSideUrlRedirect {
     DocumentUrl() { this = "document.url" }
   }
 
-  /** A source of remote user input, considered as a flow source for unvalidated URL redirects. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
-    RemoteFlowSourceAsSource() { not this.(ClientSideRemoteFlowSource).getKind().isPath() }
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+    ActiveThreatModelSourceAsSource() { not this.(ClientSideRemoteFlowSource).getKind().isPath() }
 
     override DataFlow::FlowLabel getAFlowLabel() {
       if this.(ClientSideRemoteFlowSource).getKind().isUrl()
@@ -233,6 +240,15 @@ module ClientSideUrlRedirect {
     NextRoutePushUrlSink() {
       this = NextJS::nextRouter().getAMemberCall(["push", "replace"]).getArgument(0)
     }
+
+    override predicate isXssSink() { any() }
+  }
+
+  /**
+   * A `templateUrl` member of an AngularJS directive.
+   */
+  private class AngularJSTemplateUrlSink extends Sink {
+    AngularJSTemplateUrlSink() { this = any(AngularJS::CustomDirective d).getMember("templateUrl") }
 
     override predicate isXssSink() { any() }
   }

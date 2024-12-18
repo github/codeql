@@ -1,0 +1,12 @@
+| classes.kt:111:9:113:9 | class ... | classes.kt:111:9:113:9 | Local1 | classes.kt:110:5:115:5 | fn1 | classes.kt:109:1:136:1 | C1 |
+| classes.kt:118:9:123:9 | class ... | classes.kt:118:9:123:9 |  | classes.kt:117:5:124:5 | fn2 | classes.kt:109:1:136:1 | C1 |
+| classes.kt:119:13:121:13 | class ... | classes.kt:119:13:121:13 | Local2 | classes.kt:118:9:123:9 | localFn | classes.kt:109:1:136:1 | C1 |
+| classes.kt:129:17:131:17 | class ... | classes.kt:129:17:131:17 | Local3 | classes.kt:128:13:133:13 | fn | classes.kt:127:16:134:9 | new Object(...) { ... } |
+| classes.kt:140:9:146:9 | class ... | classes.kt:140:9:146:9 |  | classes.kt:139:5:147:5 | func1 | classes.kt:138:1:148:1 | Cl0 |
+| classes.kt:141:13:145:13 | class ... | classes.kt:141:13:145:13 | Cl1 | classes.kt:140:9:146:9 | func2 | classes.kt:138:1:148:1 | Cl0 |
+| classes.kt:159:5:159:14 | class ... | classes.kt:159:5:159:14 | X | classes.kt:158:1:160:1 | fn1 | classes.kt:0:0:0:0 | ClassesKt |
+| generic_anonymous.kt:25:9:31:9 | class ... | generic_anonymous.kt:25:9:31:9 |  | generic_anonymous.kt:24:5:32:5 | func1 | generic_anonymous.kt:15:1:33:1 | Outer |
+| localClassField.kt:3:9:3:19 | class ... | localClassField.kt:3:9:3:19 | L | localClassField.kt:1:1:11:1 | A | localClassField.kt:1:1:11:1 | A |
+| localClassField.kt:8:9:8:19 | class ... | localClassField.kt:8:9:8:19 | L | localClassField.kt:1:1:11:1 | A | localClassField.kt:1:1:11:1 | A |
+| local_anonymous.kt:11:9:11:24 | class ... | local_anonymous.kt:11:9:11:24 |  | local_anonymous.kt:10:5:13:5 | fn2 | local_anonymous.kt:3:1:36:1 | Class1 |
+| local_anonymous.kt:25:9:25:27 | class ... | local_anonymous.kt:25:9:25:27 | LocalClass | local_anonymous.kt:24:5:27:5 | fn5 | local_anonymous.kt:3:1:36:1 | Class1 |

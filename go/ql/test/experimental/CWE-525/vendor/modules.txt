@@ -1,0 +1,42 @@
+# github.com/go-chi/chi/v5 v5.0.10
+## explicit
+github.com/go-chi/chi/v5
+# github.com/gofiber/fiber/v2 v2.51.0
+## explicit
+github.com/gofiber/fiber/v2
+# github.com/julienschmidt/httprouter v1.3.0
+## explicit
+github.com/julienschmidt/httprouter
+# github.com/andybalholm/brotli v1.0.5
+## explicit
+github.com/andybalholm/brotli
+# github.com/google/uuid v1.4.0
+## explicit
+github.com/google/uuid
+# github.com/klauspost/compress v1.16.7
+## explicit
+github.com/klauspost/compress
+# github.com/mattn/go-colorable v0.1.13
+## explicit
+github.com/mattn/go-colorable
+# github.com/mattn/go-isatty v0.0.20
+## explicit
+github.com/mattn/go-isatty
+# github.com/mattn/go-runewidth v0.0.15
+## explicit
+github.com/mattn/go-runewidth
+# github.com/rivo/uniseg v0.2.0
+## explicit
+github.com/rivo/uniseg
+# github.com/valyala/bytebufferpool v1.0.0
+## explicit
+github.com/valyala/bytebufferpool
+# github.com/valyala/fasthttp v1.50.0
+## explicit
+github.com/valyala/fasthttp
+# github.com/valyala/tcplisten v1.0.0
+## explicit
+github.com/valyala/tcplisten
+# golang.org/x/sys v0.14.0
+## explicit
+golang.org/x/sys

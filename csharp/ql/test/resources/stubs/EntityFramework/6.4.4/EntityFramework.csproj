@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Microsoft.CSharp/4.7.0/Microsoft.CSharp.csproj" />
+    <ProjectReference Include="../../System.CodeDom/4.7.0/System.CodeDom.csproj" />
+    <ProjectReference Include="../../System.ComponentModel.Annotations/5.0.0/System.ComponentModel.Annotations.csproj" />
+    <ProjectReference Include="../../System.Configuration.ConfigurationManager/6.0.0/System.Configuration.ConfigurationManager.csproj" />
+    <ProjectReference Include="../../System.Data.SqlClient/4.8.5/System.Data.SqlClient.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

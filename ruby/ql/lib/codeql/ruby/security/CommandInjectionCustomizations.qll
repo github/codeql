@@ -9,6 +9,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 module CommandInjection {
   /**
@@ -50,6 +51,12 @@ module CommandInjection {
       or
       // The method is also added as `String#shellescape`.
       this.(DataFlow::CallNode).getMethodName() = "shellescape"
+    }
+  }
+
+  private class ExternalCommandInjectionSink extends Sink {
+    ExternalCommandInjectionSink() {
+      this = ModelOutput::getASinkNode("command-injection").asSink()
     }
   }
 }

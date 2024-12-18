@@ -1,0 +1,27 @@
+load("@rules_rust//rust:defs.bzl", "rust_library")
+load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps")
+
+exports_files(["Cargo.toml"])
+
+rust_library(
+    name = "codeql-extractor",
+    srcs = glob([
+        "src/**/*.rs",
+    ]),
+    aliases = aliases(),
+    compile_data = [
+        "src/generator/prefix.dbscheme",
+    ],
+    deps = all_crate_deps(),
+)
+
+alias(
+    name = "tree-sitter-extractor",
+    actual = ":codeql-extractor",
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "dbscheme-prefix",
+    srcs = ["src/generator/prefix.dbscheme"],
+)

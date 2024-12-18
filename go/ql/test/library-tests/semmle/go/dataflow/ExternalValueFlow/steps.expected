@@ -1,0 +1,34 @@
+invalidModelRow
+#select
+| test.go:17:23:17:25 | arg | test.go:17:10:17:26 | call to StepArgRes |
+| test.go:18:27:18:29 | arg | test.go:18:2:18:30 | ... = ...[1] |
+| test.go:19:15:19:17 | arg | test.go:11:6:11:9 | definition of arg1 |
+| test.go:21:16:21:18 | arg | test.go:13:6:13:6 | definition of t |
+| test.go:22:10:22:10 | t | test.go:22:10:22:24 | call to StepQualRes |
+| test.go:23:2:23:2 | t | test.go:10:6:10:8 | definition of arg |
+| test.go:24:32:24:34 | arg | test.go:24:10:24:35 | call to StepArgResNoQual |
+| test.go:61:25:61:27 | src | test.go:61:12:61:28 | call to StepArgRes |
+| test.go:64:29:64:31 | src | test.go:64:2:64:32 | ... := ...[1] |
+| test.go:68:15:68:17 | src | test.go:67:6:67:11 | definition of taint3 |
+| test.go:76:21:76:23 | src | test.go:75:6:75:11 | definition of taint4 |
+| test.go:79:13:79:25 | type assertion | test.go:79:12:79:40 | call to StepQualRes |
+| test.go:83:3:83:15 | type assertion | test.go:82:6:82:11 | definition of taint6 |
+| test.go:86:34:86:36 | src | test.go:86:12:86:37 | call to StepArgResNoQual |
+| test.go:202:14:202:19 | srcInt | test.go:202:10:202:26 | call to max |
+| test.go:202:22:202:22 | 0 | test.go:202:10:202:26 | call to max |
+| test.go:202:25:202:25 | 1 | test.go:202:10:202:26 | call to max |
+| test.go:203:14:203:14 | 0 | test.go:203:10:203:26 | call to max |
+| test.go:203:17:203:22 | srcInt | test.go:203:10:203:26 | call to max |
+| test.go:203:25:203:25 | 1 | test.go:203:10:203:26 | call to max |
+| test.go:204:14:204:14 | 0 | test.go:204:10:204:26 | call to max |
+| test.go:204:17:204:17 | 1 | test.go:204:10:204:26 | call to max |
+| test.go:204:20:204:25 | srcInt | test.go:204:10:204:26 | call to max |
+| test.go:205:14:205:19 | srcInt | test.go:205:10:205:26 | call to min |
+| test.go:205:22:205:22 | 0 | test.go:205:10:205:26 | call to min |
+| test.go:205:25:205:25 | 1 | test.go:205:10:205:26 | call to min |
+| test.go:206:14:206:14 | 0 | test.go:206:10:206:26 | call to min |
+| test.go:206:17:206:22 | srcInt | test.go:206:10:206:26 | call to min |
+| test.go:206:25:206:25 | 1 | test.go:206:10:206:26 | call to min |
+| test.go:207:14:207:14 | 0 | test.go:207:10:207:26 | call to min |
+| test.go:207:17:207:17 | 1 | test.go:207:10:207:26 | call to min |
+| test.go:207:20:207:25 | srcInt | test.go:207:10:207:26 | call to min |

@@ -5,15 +5,19 @@
 import csharp
 private import codeql.ssa.Ssa as SsaImplCommon
 private import AssignableDefinitions
+private import semmle.code.csharp.controlflow.internal.PreSsa
+private import semmle.code.csharp.controlflow.Guards as Guards
 
-private module SsaInput implements SsaImplCommon::InputSig {
+private module SsaInput implements SsaImplCommon::InputSig<Location> {
   class BasicBlock = ControlFlow::BasicBlock;
+
+  class ControlFlowNode = ControlFlow::Node;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
+  class ExitBasicBlock extends BasicBlock, ControlFlow::BasicBlocks::ExitBlock { }
 
   class SourceVariable = Ssa::SourceVariable;
 
@@ -23,15 +27,12 @@ private module SsaInput implements SsaImplCommon::InputSig {
    *
    * This includes implicit writes via calls.
    */
-  predicate variableWrite(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  predicate variableWrite(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
     variableWriteDirect(bb, i, v, certain)
     or
     variableWriteQualifier(bb, i, v, certain)
     or
     updatesNamedFieldOrProp(bb, i, _, v, _) and
-    certain = false
-    or
-    updatesCapturedVariable(bb, i, _, v, _, _) and
     certain = false
   }
 
@@ -40,7 +41,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
    *
    * This includes implicit reads via calls.
    */
-  predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  predicate variableRead(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
     variableReadActual(bb, i, v) and
     certain = true
     or
@@ -49,7 +50,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
   }
 }
 
-private import SsaImplCommon::Make<SsaInput> as Impl
+import SsaImplCommon::Make<Location, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -108,7 +109,11 @@ private module SourceVariableImpl {
    */
   predicate isPlainFieldOrPropAccess(FieldOrPropAccess fpa, FieldOrProp fp, Callable c) {
     fieldOrPropAccessInCallable(fpa, fp, c) and
-    (ownFieldOrPropAccess(fpa) or fp.isStatic())
+    (
+      ownFieldOrPropAccess(fpa)
+      or
+      fp.isStatic() and not fp instanceof EnumConstant
+    )
   }
 
   /**
@@ -139,7 +144,7 @@ private module SourceVariableImpl {
     ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, AssignableDefinition ad
   ) {
     ad = v.getADefinition() and
-    ad.getAControlFlowNode() = bb.getNode(i) and
+    ad.getExpr().getAControlFlowNode() = bb.getNode(i) and
     // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
     not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second | first = ad |
       second.getAssignment() = first.getAssignment() and
@@ -233,7 +238,7 @@ private module SourceVariableImpl {
       def.getTarget() = lv and
       lv.isRef() and
       lv = v.getAssignable() and
-      bb.getNode(i) = def.getAControlFlowNode() and
+      bb.getNode(i) = def.getExpr().getAControlFlowNode() and
       not def.getAssignment() instanceof LocalVariableDeclAndInitExpr
     )
   }
@@ -310,7 +315,12 @@ private module CallGraph {
       c = any(DelegateCall dc | e = dc.getExpr()) and
       libraryDelegateCall = false
       or
-      c.getTarget().fromLibrary() and
+      exists(Callable target |
+        target = c.getTarget() and
+        not target.hasBody()
+      |
+        if target instanceof Accessor then not target.fromSource() else any()
+      ) and
       e = c.getAnArgument() and
       e.getType() instanceof SystemLinqExpressions::DelegateExtType and
       libraryDelegateCall = true
@@ -719,368 +729,10 @@ private module FieldOrPropsImpl {
   }
 }
 
-/**
- * As in the SSA construction for fields and properties, SSA construction
- * for captured variables relies on implicit update nodes at every call
- * site that conceivably could reach an update of the captured variable.
- * For example, there is an implicit update of `v` on line 4 in
- *
- * ```csharp
- * int M() {
- *   int i = 0;
- *   Action a = () => { i = 1; };
- *   a(); // implicit update of `v`
- *   return i;
- * }
- * ```
- *
- * We find update paths of the form:
- *
- * ```
- *   Call --(callEdge)-->* Callable(update of v)
- * ```
- *
- * For simplicity, and for performance reasons, we ignore cases where a path
- * goes through the callable that introduces `v`; such a path does not
- * represent an actual update, as a new copy of `v` is updated.
- */
-private module CapturedVariableImpl {
-  /**
-   * A local scope variable that is captured, and updated by at least one capturer.
-   */
-  private class CapturedWrittenLocalScopeVariable extends LocalScopeVariable {
-    CapturedWrittenLocalScopeVariable() {
-      exists(AssignableDefinition def | def.getTarget() = this |
-        def.getEnclosingCallable() != this.getCallable()
-      )
-    }
-  }
-
-  private class CapturedWrittenLocalScopeSourceVariable extends LocalScopeSourceVariable {
-    CapturedWrittenLocalScopeSourceVariable() {
-      this.getAssignable() instanceof CapturedWrittenLocalScopeVariable
-    }
-  }
-
-  private class CapturedWrittenLocalScopeVariableDefinition extends AssignableDefinition {
-    CapturedWrittenLocalScopeVariableDefinition() {
-      this.getTarget() instanceof CapturedWrittenLocalScopeVariable
-    }
-  }
-
-  /**
-   * Holds if `vdef` is an update of captured variable `v` in callable `c`
-   * that is relevant for SSA construction.
-   */
-  predicate relevantDefinition(
-    Callable c, CapturedWrittenLocalScopeVariable v,
-    CapturedWrittenLocalScopeVariableDefinition vdef
-  ) {
-    exists(ControlFlow::BasicBlock bb, CapturedWrittenLocalScopeSourceVariable sv |
-      vdef.getTarget() = v and
-      vdef.getEnclosingCallable() = c and
-      sv.getAssignable() = v and
-      bb.getNode(_) = vdef.getAControlFlowNode() and
-      c != v.getCallable()
-    )
-  }
-
-  /**
-   * Holds if `call` occurs in basic block `bb` at index `i`, captured variable
-   * `v` has an update somewhere, and `v` is likely to be live in `bb` at index
-   * `i`.
-   */
-  predicate updateCandidate(
-    ControlFlow::BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable v, Call call
-  ) {
-    FieldOrPropsImpl::callAt(bb, i, call) and
-    call.getEnclosingCallable() = v.getEnclosingCallable() and
-    exists(Assignable a |
-      a = v.getAssignable() and
-      relevantDefinition(_, a, _) and
-      not exists(AssignableDefinitions::OutRefDefinition def |
-        def.getCall() = call and
-        def.getTarget() = a
-      )
-    )
-  }
-
-  private predicate source(
-    Call call, CapturedWrittenLocalScopeSourceVariable v,
-    CapturedWrittenLocalScopeVariable captured, Callable c, boolean libraryDelegateCall
-  ) {
-    updateCandidate(_, _, v, call) and
-    c = getARuntimeTarget(call, libraryDelegateCall) and
-    captured = v.getAssignable() and
-    relevantDefinition(_, captured, _)
-  }
-
-  /**
-   * Holds if `c` is a relevant part of the call graph for
-   * `updatesCapturedVariable` based on following edges in forward direction.
-   */
-  private predicate reachableFromSource(Callable c) {
-    source(_, _, _, c, _)
-    or
-    exists(Callable mid | reachableFromSource(mid) | callEdge(mid, c))
-  }
-
-  private predicate sink(Callable c, CapturedWrittenLocalScopeVariable captured) {
-    reachableFromSource(c) and
-    relevantDefinition(c, captured, _)
-  }
-
-  private predicate prunedCallable(Callable c) {
-    sink(c, _)
-    or
-    exists(Callable mid | callEdge(c, mid) and prunedCallable(mid))
-  }
-
-  private predicate prunedEdge(Callable c1, Callable c2) {
-    prunedCallable(c1) and
-    prunedCallable(c2) and
-    callEdge(c1, c2)
-  }
-
-  private predicate edgePlus(Callable c1, Callable c2) = fastTC(prunedEdge/2)(c1, c2)
-
-  /**
-   * Holds if `call` may change the value of captured variable `v`. The actual
-   * update occurs in `writer`. That is, `writer` can be reached from `call`
-   * using zero or more additional calls (as indicated by `additionalCalls`).
-   * One of the intermediate callables may be the callable that introduces `v`,
-   * in which case `call` is not an actual update.
-   */
-  pragma[noopt]
-  predicate updatesCapturedVariableWriter(
-    Call call, CapturedWrittenLocalScopeSourceVariable v, Callable writer, boolean additionalCalls
-  ) {
-    exists(Callable src, CapturedWrittenLocalScopeVariable captured, boolean libraryDelegateCall |
-      source(call, v, captured, src, libraryDelegateCall) and
-      sink(writer, captured) and
-      (
-        src = writer and additionalCalls = libraryDelegateCall
-        or
-        edgePlus(src, writer) and additionalCalls = true
-      )
-    )
-  }
-}
-
-/**
- * Liveness analysis to restrict the size of the SSA representation for
- * captured variables.
- *
- * Example:
- *
- * ```csharp
- * void M() {
- *   int i = 0;
- *   void M2() {
- *     System.Console.WriteLine(i);
- *   }
- *   M2();
- * }
- * ```
- *
- * The definition of `i` on line 2 is live, because of the call to `M2` on
- * line 6. However, that call is not a direct read of `i`, so we account
- * for that by inserting an implicit read of `i` on line 6.
- *
- * The predicates in this module follow the same structure as those in
- * `CapturedVariableImpl`.
- */
-private module CapturedVariableLivenessImpl {
-  /**
-   * Holds if `c` is a callable that captures local scope variable `v`, and
-   * `c` may read the value of the captured variable.
-   */
-  private predicate capturerReads(Callable c, LocalScopeVariable v) {
-    exists(LocalScopeSourceVariable sv |
-      c = sv.getEnclosingCallable() and
-      v = sv.getAssignable() and
-      v.getCallable() != c
-    |
-      variableReadActual(_, _, sv)
-      or
-      refReadBeforeWrite(_, _, sv)
-    )
-  }
-
-  /**
-   * A local scope variable that is captured, and read by at least one capturer.
-   */
-  private class CapturedReadLocalScopeVariable extends LocalScopeVariable {
-    CapturedReadLocalScopeVariable() { capturerReads(_, this) }
-  }
-
-  private class CapturedReadLocalScopeSourceVariable extends LocalScopeSourceVariable {
-    CapturedReadLocalScopeSourceVariable() {
-      this.getAssignable() instanceof CapturedReadLocalScopeVariable
-    }
-  }
-
-  /**
-   * Holds if a write to captured source variable `v` may be read by a
-   * callable reachable from the call `c`.
-   */
-  private predicate implicitReadCandidate(
-    CapturedReadLocalScopeSourceVariable v, ControlFlow::Nodes::ElementNode c
-  ) {
-    exists(ControlFlow::BasicBlock bb, int i | variableWriteDirect(bb, i, v, _) |
-      c = bb.getNode(any(int j | j > i))
-      or
-      c = bb.getASuccessor+().getANode()
-    )
-  }
-
-  private predicate source(
-    ControlFlow::Nodes::ElementNode call, CapturedReadLocalScopeSourceVariable v,
-    CapturedReadLocalScopeVariable captured, Callable c, boolean libraryDelegateCall
-  ) {
-    implicitReadCandidate(v, call) and
-    c = getARuntimeTarget(call.getAstNode(), libraryDelegateCall) and
-    captured = v.getAssignable() and
-    capturerReads(_, captured)
-  }
-
-  /**
-   * Holds if `c` is a relevant part of the call graph for
-   * `readsCapturedVariable` based on following edges in forward direction.
-   */
-  private predicate reachableFromSource(Callable c) {
-    source(_, _, _, c, _)
-    or
-    exists(Callable mid | reachableFromSource(mid) | callEdge(mid, c))
-  }
-
-  private predicate sink(Callable c, CapturedReadLocalScopeVariable captured) {
-    reachableFromSource(c) and
-    capturerReads(c, captured)
-  }
-
-  private predicate prunedCallable(Callable c) {
-    sink(c, _)
-    or
-    exists(Callable mid | callEdge(c, mid) and prunedCallable(mid))
-  }
-
-  private predicate prunedEdge(Callable c1, Callable c2) {
-    prunedCallable(c1) and
-    prunedCallable(c2) and
-    callEdge(c1, c2)
-  }
-
-  private predicate edgePlus(Callable c1, Callable c2) = fastTC(prunedEdge/2)(c1, c2)
-
-  /**
-   * Holds if `call` may read the value of captured variable `v`. The actual
-   * read occurs in `reader`. That is, `reader` can be reached from `call`
-   * using zero or more additional calls (as indicated by `additionalCalls`).
-   * One of the intermediate callables may be a callable that writes to `v`,
-   * in which case `call` is not an actual read.
-   */
-  pragma[noopt]
-  private predicate readsCapturedVariable(
-    ControlFlow::Nodes::ElementNode call, CapturedReadLocalScopeSourceVariable v, Callable reader,
-    boolean additionalCalls
-  ) {
-    exists(Callable src, CapturedReadLocalScopeVariable captured, boolean libraryDelegateCall |
-      source(call, v, captured, src, libraryDelegateCall) and
-      sink(reader, captured) and
-      (
-        src = reader and additionalCalls = libraryDelegateCall
-        or
-        edgePlus(src, reader) and additionalCalls = true
-      )
-    )
-  }
-
-  /**
-   * Holds if captured local scope variable `v` is written inside the callable
-   * to which `bb` belongs, and the value may be read via `call` using zero or
-   * more additional calls (as indicated by `additionalCalls`).
-   *
-   * In this case a pseudo-read is inserted at the exit node at index `i` in `bb`,
-   * in order to make the write live.
-   *
-   * Example:
-   *
-   * ```csharp
-   * class C {
-   *   void M1() {
-   *     int i = 0;
-   *     void M2() { i = 2; };
-   *     M2();
-   *     System.Console.WriteLine(i);
-   *   }
-   * }
-   * ```
-   *
-   * The write to `i` inside `M2` on line 4 is live because of the implicit call
-   * definition on line 5.
-   */
-  predicate capturedReadOut(
-    ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable v, LocalScopeSourceVariable outer,
-    Call call, boolean additionalCalls
-  ) {
-    exists(
-      ControlFlow::Nodes::AnnotatedExitNode exit, ControlFlow::BasicBlock pred,
-      AssignableDefinition adef
-    |
-      exit.isNormal() and
-      variableDefinition(pred, _, v, adef) and
-      updatesCapturedVariable(_, _, call, outer, adef, additionalCalls) and
-      pred.getASuccessor*() = bb and
-      exit = bb.getNode(i)
-    )
-  }
-
-  /**
-   * Holds if a value written to captured local scope variable `outer` may be
-   * read as `inner` via `call`, at index `i` in basic block `bb`, using one or
-   * more calls (as indicated by `additionalCalls`).
-   *
-   * Example:
-   *
-   * ```csharp
-   * class C {
-   *   void M1() {
-   *     int i = 0;
-   *     void M2() => System.Console.WriteLine(i);
-   *     i = 1;
-   *     M2();
-   *   }
-   * }
-   * ```
-   *
-   * The write to `i` on line 5 is live because of the call to `M2` on line 6, which
-   * reaches the entry definition for `i` in `M2` on line 4.
-   */
-  predicate capturedReadIn(
-    ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable outer,
-    LocalScopeSourceVariable inner, ControlFlow::Nodes::ElementNode call, boolean additionalCalls
-  ) {
-    exists(Callable reader |
-      implicitReadCandidate(outer, call) and
-      readsCapturedVariable(call, outer, reader, additionalCalls) and
-      reader = inner.getEnclosingCallable() and
-      outer.getAssignable() = inner.getAssignable() and
-      call = bb.getNode(i)
-    )
-  }
-}
-
-private import CapturedVariableLivenessImpl
-
 private predicate variableReadPseudo(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
   outRefExitRead(bb, i, v)
   or
   refReadBeforeWrite(bb, i, v)
-  or
-  capturedReadOut(bb, i, v, _, _, _)
-  or
-  capturedReadIn(bb, i, v, _, _, _)
 }
 
 pragma[noinline]
@@ -1110,24 +762,6 @@ private predicate adjacentDefReachesRead(
   )
 }
 
-private predicate adjacentDefReachesReadExt(
-  DefinitionExt def, SsaInput::SourceVariable v, SsaInput::BasicBlock bb1, int i1,
-  SsaInput::BasicBlock bb2, int i2
-) {
-  Impl::adjacentDefReadExt(def, v, bb1, i1, bb2, i2) and
-  (
-    def.definesAt(v, bb1, i1, _)
-    or
-    SsaInput::variableRead(bb1, i1, v, true)
-  )
-  or
-  exists(SsaInput::BasicBlock bb3, int i3 |
-    adjacentDefReachesReadExt(def, v, bb1, i1, bb3, i3) and
-    SsaInput::variableRead(bb3, i3, v, false) and
-    Impl::adjacentDefReadExt(def, v, bb3, i3, bb2, i2)
-  )
-}
-
 /** Same as `adjacentDefRead`, but skips uncertain reads. */
 pragma[nomagic]
 private predicate adjacentDefSkipUncertainReads(
@@ -1139,32 +773,11 @@ private predicate adjacentDefSkipUncertainReads(
   )
 }
 
-/** Same as `adjacentDefReadExt`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate adjacentDefSkipUncertainReadsExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v |
-    adjacentDefReachesReadExt(def, v, bb1, i1, bb2, i2) and
-    SsaInput::variableRead(bb2, i2, v, true)
-  )
-}
-
 private predicate adjacentDefReachesUncertainRead(
   Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
   exists(SsaInput::SourceVariable v |
     adjacentDefReachesRead(def, v, bb1, i1, bb2, i2) and
-    SsaInput::variableRead(bb2, i2, v, false)
-  )
-}
-
-pragma[nomagic]
-private predicate adjacentDefReachesUncertainReadExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v |
-    adjacentDefReachesReadExt(def, v, bb1, i1, bb2, i2) and
     SsaInput::variableRead(bb2, i2, v, false)
   )
 }
@@ -1185,7 +798,7 @@ cached
 private module Cached {
   cached
   newtype TSourceVariable =
-    TLocalVar(Callable c, LocalScopeVariable v) {
+    TLocalVar(Callable c, PreSsa::SimpleLocalScopeVariable v) {
       c = v.getCallable()
       or
       // Local scope variables can be captured
@@ -1220,11 +833,14 @@ private module Cached {
   }
 
   cached
-  predicate implicitEntryDefinition(
-    ControlFlow::ControlFlow::BasicBlocks::EntryBlock bb, Ssa::SourceVariable v
-  ) {
-    exists(Callable c |
-      c = bb.getCallable() and
+  predicate implicitEntryDefinition(ControlFlow::ControlFlow::BasicBlock bb, Ssa::SourceVariable v) {
+    exists(ControlFlow::ControlFlow::BasicBlocks::EntryBlock entry, Callable c |
+      c = entry.getCallable() and
+      // In case `c` has multiple bodies, we want each body to get its own implicit
+      // entry definition. In case `c` doesn't have multiple bodies, the line below
+      // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`
+      // will be in the entry block.
+      bb = entry.getFirstNode().getASuccessor().getBasicBlock() and
       c = v.getEnclosingCallable()
     |
       // Captured variable
@@ -1236,6 +852,8 @@ private module Cached {
       or
       // Each tracked field and property has an implicit entry definition
       v instanceof PlainFieldOrPropSourceVariable
+      or
+      v.getAssignable() instanceof Parameter
     )
   }
 
@@ -1259,23 +877,6 @@ private module Cached {
     FieldOrPropsImpl::updatesNamedFieldOrProp(fp, c, setter)
   }
 
-  /**
-   * Holds if `call` may change the value of captured variable `v`. The actual
-   * update occurs in `def`.
-   */
-  cached
-  predicate updatesCapturedVariable(
-    ControlFlow::BasicBlock bb, int i, Call call, LocalScopeSourceVariable v,
-    AssignableDefinition def, boolean additionalCalls
-  ) {
-    CapturedVariableImpl::updateCandidate(bb, i, v, call) and
-    exists(Callable writer |
-      CapturedVariableImpl::relevantDefinition(writer, v.getAssignable(), def)
-    |
-      CapturedVariableImpl::updatesCapturedVariableWriter(call, v, writer, additionalCalls)
-    )
-  }
-
   cached
   predicate variableWriteQualifier(
     ControlFlow::BasicBlock bb, int i, QualifiedFieldOrPropSourceVariable v, boolean certain
@@ -1287,32 +888,6 @@ private module Cached {
     // definition should not give rise to an implicit qualifier definition
     // for `x.M.M`.
     not updatesNamedFieldOrProp(bb, i, _, v, _)
-  }
-
-  cached
-  predicate isCapturedVariableDefinitionFlowIn(
-    Ssa::ExplicitDefinition def, Ssa::ImplicitEntryDefinition edef,
-    ControlFlow::Nodes::ElementNode c, boolean additionalCalls
-  ) {
-    exists(Ssa::SourceVariable v, Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
-      v = def.getSourceVariable() and
-      capturedReadIn(_, _, v, edef.getSourceVariable(), c, additionalCalls) and
-      def = def0.getAnUltimateDefinition() and
-      Impl::ssaDefReachesRead(_, def0, bb, i) and
-      capturedReadIn(bb, i, v, _, _, _) and
-      c = bb.getNode(i)
-    )
-  }
-
-  cached
-  predicate isCapturedVariableDefinitionFlowOut(
-    Ssa::ExplicitDefinition def, Ssa::ImplicitCallDefinition cdef, boolean additionalCalls
-  ) {
-    exists(Ssa::Definition def0 |
-      def = def0.getAnUltimateDefinition() and
-      capturedReadOut(_, _, def0.getSourceVariable(), cdef.getSourceVariable(), cdef.getCall(),
-        additionalCalls)
-    )
   }
 
   cached
@@ -1357,19 +932,6 @@ private module Cached {
   }
 
   /**
-   * Holds if the value defined at SSA definition `def` can reach a read at `cfn`,
-   * without passing through any other read.
-   */
-  cached
-  predicate firstReadSameVarExt(DefinitionExt def, ControlFlow::Node cfn) {
-    exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1, _) and
-      adjacentDefSkipUncertainReadsExt(def, bb1, i1, bb2, i2) and
-      cfn = bb2.getNode(i2)
-    )
-  }
-
-  /**
    * Holds if the read at `cfn2` is a read of the same SSA definition `def`
    * as the read at `cfn1`, and `cfn2` can be reached from `cfn1` without
    * passing through another read.
@@ -1384,23 +946,6 @@ private module Cached {
     )
   }
 
-  /**
-   * Holds if the read at `cfn2` is a read of the same SSA definition `def`
-   * as the read at `cfn1`, and `cfn2` can be reached from `cfn1` without
-   * passing through another read.
-   */
-  cached
-  predicate adjacentReadPairSameVarExt(
-    DefinitionExt def, ControlFlow::Node cfn1, ControlFlow::Node cfn2
-  ) {
-    exists(ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2 |
-      cfn1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, _) and
-      adjacentDefSkipUncertainReadsExt(def, bb1, i1, bb2, i2) and
-      cfn2 = bb2.getNode(i2)
-    )
-  }
-
   cached
   predicate lastRefBeforeRedef(Definition def, ControlFlow::BasicBlock bb, int i, Definition next) {
     Impl::lastRefRedef(def, bb, i, next) and
@@ -1409,21 +954,6 @@ private module Cached {
     exists(SsaInput::BasicBlock bb0, int i0 |
       Impl::lastRefRedef(def, bb0, i0, next) and
       adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
-    )
-  }
-
-  cached
-  predicate lastRefBeforeRedefExt(
-    DefinitionExt def, ControlFlow::BasicBlock bb, int i, DefinitionExt next
-  ) {
-    exists(SsaInput::SourceVariable v |
-      Impl::lastRefRedefExt(def, v, bb, i, next) and
-      not SsaInput::variableRead(bb, i, v, false)
-    )
-    or
-    exists(SsaInput::BasicBlock bb0, int i0 |
-      Impl::lastRefRedefExt(def, _, bb0, i0, next) and
-      adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
     )
   }
 
@@ -1451,6 +981,41 @@ private module Cached {
       Impl::ssaDefReachesRead(_, def0, bb, i) and
       outRefExitRead(bb, i, v)
     )
+  }
+
+  cached
+  module DataFlowIntegration {
+    import DataFlowIntegrationImpl
+
+    cached
+    predicate localFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
+      DataFlowIntegrationImpl::localFlowStep(def, nodeFrom, nodeTo, isUseStep)
+    }
+
+    cached
+    predicate localMustFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo) {
+      DataFlowIntegrationImpl::localMustFlowStep(def, nodeFrom, nodeTo)
+    }
+
+    signature predicate guardChecksSig(Guards::Guard g, Expr e, Guards::AbstractValue v);
+
+    cached // nothing is actually cached
+    module BarrierGuard<guardChecksSig/3 guardChecks> {
+      private predicate guardChecksAdjTypes(
+        DataFlowIntegrationInput::Guard g, DataFlowIntegrationInput::Expr e, boolean branch
+      ) {
+        exists(Guards::AbstractValues::BooleanValue v |
+          guardChecks(g, e.getAstNode(), v) and
+          branch = v.getValue()
+        )
+      }
+
+      private Node getABarrierNodeImpl() {
+        result = DataFlowIntegrationImpl::BarrierGuard<guardChecksAdjTypes/3>::getABarrierNode()
+      }
+
+      predicate getABarrierNode = getABarrierNodeImpl/0;
+    }
   }
 }
 
@@ -1487,7 +1052,7 @@ class DefinitionExt extends Impl::DefinitionExt {
   override string toString() { result = this.(Ssa::Definition).toString() }
 
   /** Gets the location of this definition. */
-  Location getLocation() { result = this.(Ssa::Definition).getLocation() }
+  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
 
   /** Gets the enclosing callable of this definition. */
   Callable getEnclosingCallable() { result = this.(Ssa::Definition).getEnclosingCallable() }
@@ -1509,3 +1074,64 @@ class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
     result = this.getSourceVariable().getEnclosingCallable()
   }
 }
+
+private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
+  private import csharp as Cs
+  private import semmle.code.csharp.controlflow.BasicBlocks
+
+  class Expr extends ControlFlow::Node {
+    predicate hasCfgNode(ControlFlow::BasicBlock bb, int i) { this = bb.getNode(i) }
+  }
+
+  Expr getARead(Definition def) { exists(getAReadAtNode(def, result)) }
+
+  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
+    // exclude flow directly from RHS to SSA definition, as we instead want to
+    // go from RHS to matching assingnable definition, and from there to SSA definition
+    none()
+  }
+
+  class Parameter = Ssa::ImplicitParameterDefinition;
+
+  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { def = p }
+
+  /**
+   * Allows for flow into uncertain defintions that are not call definitions,
+   * as we, conservatively, consider such definitions to be certain.
+   */
+  predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
+    def instanceof Ssa::ExplicitDefinition
+    or
+    def =
+      any(Ssa::ImplicitQualifierDefinition qdef |
+        allowFlowIntoUncertainDef(qdef.getQualifierDefinition())
+      )
+  }
+
+  class Guard extends Guards::Guard {
+    predicate hasCfgNode(ControlFlow::BasicBlock bb, int i) {
+      this.getAControlFlowNode() = bb.getNode(i)
+    }
+  }
+
+  /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
+  predicate guardControlsBlock(Guard guard, ControlFlow::BasicBlock bb, boolean branch) {
+    exists(ConditionBlock conditionBlock, ControlFlow::SuccessorTypes::ConditionalSuccessor s |
+      guard.getAControlFlowNode() = conditionBlock.getLastNode() and
+      s.getValue() = branch and
+      conditionBlock.controls(bb, s)
+    )
+  }
+
+  /** Gets an immediate conditional successor of basic block `bb`, if any. */
+  ControlFlow::BasicBlock getAConditionalBasicBlockSuccessor(
+    ControlFlow::BasicBlock bb, boolean branch
+  ) {
+    exists(ControlFlow::SuccessorTypes::ConditionalSuccessor s |
+      result = bb.getASuccessorByType(s) and
+      s.getValue() = branch
+    )
+  }
+}
+
+private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;

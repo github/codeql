@@ -119,6 +119,8 @@ function RegisterExtractorPack(id)
         SwiftMatcher,
         CreatePatternMatcher({ '^lsregister$' }, MatchCompilerName, nil,
                 { trace = false }),
+        CreatePatternMatcher({ '^codesign$' }, MatchCompilerName, nil,
+                { trace = false }),
         CreatePatternMatcher({ '^sandbox%-exec$' }, MatchCompilerName, nil,
                 { trace = false }),
     }

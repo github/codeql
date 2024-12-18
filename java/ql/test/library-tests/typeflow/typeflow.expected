@@ -13,4 +13,10 @@
 | A.java:67:22:67:22 | x | Integer | false |
 | A.java:70:23:70:24 | x2 | Integer | false |
 | A.java:92:18:92:18 | n | Integer | false |
+| A.java:100:20:100:20 | n | Integer | false |
+| A.java:110:9:110:10 | o2 | String | false |
+| A.java:112:23:112:24 | cs | String | false |
+| A.java:116:13:116:14 | o2 | String | false |
+| A.java:117:49:117:50 | cs | String | false |
 | UnionTypes.java:45:7:45:7 | x | Inter | false |
+| UnionTypes.java:48:23:48:23 | x | Inter | false |

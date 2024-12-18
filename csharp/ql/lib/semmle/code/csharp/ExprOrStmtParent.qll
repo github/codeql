@@ -5,6 +5,7 @@
  */
 
 import csharp
+private import internal.Location
 
 /**
  * INTERNAL: Do not use.
@@ -51,19 +52,52 @@ class TopLevelExprParent extends Element, @top_level_expr_parent {
   final Expr getAChildExpr() { result = this.getChildExpr(_) }
 }
 
-private predicate hasNoSourceLocation(Element e) { not e.getALocation() instanceof SourceLocation }
+/** INTERNAL: Do not use. */
+Expr getExpressionBody(Callable c) {
+  result = c.getAChildExpr() and
+  not result = c.(Constructor).getInitializer()
+}
+
+/** INTERNAL: Do not use. */
+BlockStmt getStatementBody(Callable c) { result = c.getAChildStmt() }
+
+private ControlFlowElement getBody(Callable c) {
+  result = getExpressionBody(c) or
+  result = getStatementBody(c)
+}
+
+pragma[nomagic]
+private predicate hasNoSourceLocation(Element e) { not exists(getASourceLocation(e)) }
+
+pragma[nomagic]
+private Location getFirstSourceLocation(Element e) {
+  result =
+    min(Location l, string filepath, int startline, int startcolumn, int endline, int endcolumn |
+      l = getASourceLocation(e) and
+      l.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    |
+      l order by filepath, startline, startcolumn, endline, endcolumn
+    )
+}
 
 cached
 private module Cached {
   cached
   Location bestLocation(Element e) {
-    result = e.getALocation().(SourceLocation) and
-    not exists(e.getALocation().(SourceLocation).getMappedLocation())
-    or
-    result = e.getALocation().(SourceLocation).getMappedLocation()
+    (
+      if e.(Modifiable).isPartial() or e instanceof Namespace
+      then result = getASourceLocation(e)
+      else result = getFirstSourceLocation(e)
+    )
     or
     hasNoSourceLocation(e) and
-    result = min(Location l | l = e.getALocation() | l order by l.getFile().toString())
+    result =
+      min(Location l, string filepath |
+        l = e.getALocation() and
+        l.hasLocationInfo(filepath, _, _, _, _)
+      |
+        l order by filepath
+      )
     or
     not exists(e.getALocation()) and
     result instanceof EmptyLocation
@@ -161,20 +195,20 @@ private module Cached {
 
   private predicate parent(ControlFlowElement child, ExprOrStmtParent parent) {
     child = getAChild(parent) and
-    not child = any(Callable c).getBody()
+    not child = getBody(_)
   }
 
   /** Holds if the enclosing body of `cfe` is `body`. */
   cached
   predicate enclosingBody(ControlFlowElement cfe, ControlFlowElement body) {
-    body = any(Callable c).getBody() and
+    body = getBody(_) and
     parent*(enclosingStart(cfe), body)
   }
 
   /** Holds if the enclosing callable of `cfe` is `c`. */
   cached
   predicate enclosingCallable(ControlFlowElement cfe, Callable c) {
-    enclosingBody(cfe, c.getBody())
+    enclosingBody(cfe, getBody(c))
     or
     parent*(enclosingStart(cfe), c.(Constructor).getInitializer())
   }

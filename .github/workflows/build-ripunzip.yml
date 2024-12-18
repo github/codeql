@@ -1,0 +1,74 @@
+name: Build runzip
+
+on:
+  workflow_dispatch:
+    inputs:
+      ripunzip-version:
+        description: "what reference to checktout from google/runzip"
+        required: false
+        default: v1.2.1
+      openssl-version:
+        description: "what reference to checkout from openssl/openssl for Linux"
+        required: false
+        default: openssl-3.3.0
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04, macos-13, windows-2019]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: google/ripunzip
+          ref: ${{ inputs.ripunzip-version }}
+      # we need to avoid ripunzip dynamically linking into libssl
+      # see https://github.com/sfackler/rust-openssl/issues/183
+      - if: runner.os == 'Linux'
+        name: checkout openssl
+        uses: actions/checkout@v4
+        with:
+          repository: openssl/openssl
+          path: openssl
+          ref: ${{ inputs.openssl-version }}
+      - if: runner.os == 'Linux'
+        name: build and install openssl with fPIC
+        shell: bash
+        working-directory: openssl
+        run: |
+          ./config -fPIC --prefix=$HOME/.local --openssldir=$HOME/.local/ssl
+          make -j $(nproc)
+          make install_sw -j $(nproc)
+      - if: runner.os == 'Linux'
+        name: build (linux)
+        shell: bash
+        run: |
+          env OPENSSL_LIB_DIR=$HOME/.local/lib64 OPENSSL_INCLUDE_DIR=$HOME/.local/include OPENSSL_STATIC=yes cargo build --release
+          mv target/release/ripunzip ripunzip-linux
+      - if: runner.os == 'Windows'
+        name: build (windows)
+        shell: bash
+        run: |
+          cargo build --release
+          mv target/release/ripunzip ripunzip-windows
+      - name: build (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          rustup target install x86_64-apple-darwin
+          rustup target install aarch64-apple-darwin
+          cargo build --target x86_64-apple-darwin --release
+          cargo build --target aarch64-apple-darwin --release
+          lipo -create -output ripunzip-macos \
+            -arch x86_64 target/x86_64-apple-darwin/release/ripunzip \
+            -arch arm64 target/aarch64-apple-darwin/release/ripunzip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ripunzip-${{ runner.os }}
+          path: ripunzip-*
+      - name: Check built binary
+        shell: bash
+        run: |
+          ./ripunzip-* --version

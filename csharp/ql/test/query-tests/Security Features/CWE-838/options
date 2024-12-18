@@ -1,4 +1,4 @@
 semmle-extractor-options: /nostdlib /noconfig
 semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj
-semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/System.Data.SqlClient/4.8.3/System.Data.SqlClient.csproj
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/System.Data.SqlClient/4.8.5/System.Data.SqlClient.csproj
 semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs ${testdir}/../../../resources/stubs/System.Windows.cs

@@ -1,0 +1,385 @@
+# State machine specification for unified Python tokenizer
+# Handles all tokens for all versions of Python, including partial string tokens for handling f-strings.
+# Stating transition table is "default" and starting state is "0"
+#
+#
+
+
+#declarations
+prefix_chars = 'u' or 'U' or 'b' or 'B' or 'r' or 'R'
+one_to_nine = '1' or '2' or '3' or '4' or '5' or '6' or '7' or '8' or '9'
+digits = '0' or one_to_nine
+oct_digits = '0' or '1' or '2' or '3' or '4' or '5' or '6' or '7'
+hex_digits = digits or 'a' or 'A' or 'b' or 'B' or 'c' or 'C' or 'd' or 'D' or 'e' or 'E' or 'f' or 'F'
+feed = '\n' or '\r'
+
+#tables
+table default {
+    # 0 is starting state
+    0 -> whitespace_line for * do pushback;
+
+    #String prefix states
+
+    # When we encounter a prefix character, we are faced with the possibility
+    # that it is either the beginning of a string or of an identifier. With a
+    # single character of lookahead available, we therefore have to be in an
+    # intermediate state until we are able to determine which case we're in.
+
+    code -> maybe_string1 for prefix_chars do mark;
+    maybe_string1 -> maybe_string2 for prefix_chars
+    maybe_string1 or maybe_string2 -> quote_s for "'"
+    maybe_string1 or maybe_string2 -> quote_d for '"'
+    code -> quote_s for "'" do mark;
+    code -> quote_d for '"' do mark;
+    maybe_string1 or maybe_string2 -> in_identifier for * do pushback;
+
+    # In the following, `_s` means one single quote, `_ss` means two in a row,
+    # etc. Likewise `_d` indicates double quotes.
+
+    quote_s -> quote_ss for "'"
+    quote_d -> quote_dd for '"'
+    quote_s -> instring for * do pushback ; push(string_s);
+    quote_ss -> instring for "'" do push(string_sss);
+    quote_ss -> code for * do pushback ; emit(STRING);
+    quote_d -> instring for * do pushback ; push(string_d);
+    quote_dd -> instring for '"' do push(string_ddd);
+    quote_dd -> code for * do pushback ; emit(STRING);
+
+    #F-string prefix states
+
+    # The prefixes `u` and `b` are specific to Python 2, and f-strings are only
+    # valid for Python 3. Thus, the only potential prefixes are  permutations of
+    # `f` and `fr` (upper/lowercase notwithstanding).
+
+    code -> maybe_fstring1 for 'f' or 'F' do mark;
+    maybe_string1 -> maybe_fstring2 for 'f' or 'F'
+    maybe_fstring1 -> maybe_fstring2 for 'r' or 'R'
+    maybe_fstring1 or maybe_fstring2 -> fquote_s for "'"
+    maybe_fstring1 or maybe_fstring2 -> fquote_d for '"'
+    maybe_fstring1 or maybe_fstring2 -> in_identifier for * do pushback;
+    fquote_s -> fquote_ss for "'"
+    fquote_d -> fquote_dd for '"'
+    fquote_s -> instring for * do pushback ; push(fstring_start_s);
+    fquote_ss -> instring for "'" do push(fstring_start_sss);
+    fquote_ss -> code for * do pushback ; emit(STRING);
+    fquote_d -> instring for * do pushback ; push(fstring_start_d);
+    fquote_dd -> instring for '"' do push(fstring_start_ddd);
+    fquote_dd -> code for * do pushback ; emit(STRING);
+
+    #String states
+    instring -> instring for *
+    instring -> unicode_or_escape for '\\'
+        unicode_or_escape -> unicode_or_raw for 'N'
+            unicode_or_raw -> unicode for '{'
+            unicode_or_raw -> instring for *
+            unicode -> instring for '}'
+            unicode -> unicode for *
+        unicode_or_escape -> escape for * do pushback;
+
+    escape -> instring for feed do newline;
+    escape -> instring for *
+
+    # When inside a parenthesized expression, newlines indicate the continuation
+    # of the expression, and not a return to a context where statements may
+    # appear. This is captured using the `paren` table.
+
+    code -> code for '(' do emit(LPAR, "("); push(paren);
+    code -> code for '[' do emit(LSQB, "["); push(paren);
+    code -> code for '{' do emit(LBRACE, "{"); push(paren);
+    code -> code for ')' do emit(RPAR, ")");
+    code -> code for ']' do emit(RSQB, "]");
+    code -> code for '}' do emit(RBRACE, "}");
+    code -> code for '`' do emit(BACKQUOTE, '`');
+
+    # Operators
+    code -> assign for '=' do mark;
+    code -> le for '<' do mark;
+    code -> ge for '>' do mark;
+    code -> bang for '!' do mark;
+    le -> binop for '<'
+    le -> code for '>' do emit(OP);
+    ge -> binop for '>'
+    bang or le or ge or assign -> code for '=' do emit(OP);
+    le or ge or assign -> code for * do pushback; emit(OP);
+    bang -> code for 'r' or 'a' or 's' or 'd' do emit(CONVERSION);
+    code -> colon for ':'
+    colon -> code for '=' do emit(COLONEQUAL, ":=");
+    colon -> code for * do pushback; emit(COLON, ":");
+    code -> code for ',' do emit(COMMA, ",");
+    code -> code for ';' do emit(SEMI, ";");
+    code -> at for '@' do mark;
+    at -> code for '=' do emit(OP);
+    at -> code for * do pushback; emit(AT, "@");
+    code -> dot for '.' do mark;
+    dot -> float for digits
+    dot -> code for * do pushback; emit(DOT, ".");
+    binop or slash or star or dash -> code for '=' do emit(OP);
+    binop or slash or star or dash -> code for * do pushback; emit(OP);
+    code -> star for '*' do mark;
+    star -> binop for '*'
+    code -> slash for '/' do mark;
+    slash -> binop for '/'
+    code -> dash for  '-' do mark;
+    dash -> code for '>' do emit(RARROW);
+    code -> binop for '+' or '%' or '&' or '|' or '^' do mark;
+    code -> code for '~'  do emit(OP, '~');
+
+    # Numeric literals
+
+    # Python admits a large variety of numeric literals, and the handling of
+    # various constructs is a bit inconsistent. For instance, prefixed zeroes are
+    # not allowed in front of integer numerals (unless all digits are between 0
+    # and 7, in which case it is treated as an octal number), but _are_ allowed if
+    # there is some other context that makes it a float or complex number. Thus,
+    # `09` is invalid, but `09.` and `09j` are valid. This means we have to be
+    # very careful in what we commit to in our tokenization, hence the rather
+    # complicated construction below.
+
+    code -> int for one_to_nine do mark;
+    int -> int for digits
+    zero or zero_int or binary or octal or int or hex -> code for 'l' or 'L' do emit(NUMBER);
+    int -> int_sep for '_'
+    int_sep -> int for digits
+    int_sep -> error for * do emit(ERRORTOKEN);
+    code -> zero for '0' do mark;
+    zero -> zero_int for digits
+    zero -> zero_int_sep for '_'
+    zero_int -> zero_int for digits
+    zero_int -> zero_int_sep for '_'
+    zero_int_sep -> zero_int for digits
+    zero_int_sep -> error for * do emit(ERRORTOKEN);
+    zero -> octal for 'o' or 'O'
+    octal -> octal for oct_digits
+    octal -> octal_sep for '_'
+    octal_sep -> octal for oct_digits
+    octal_sep -> error for * do emit(ERRORTOKEN);
+    zero or octal or hex or binary -> code for * do pushback; emit(NUMBER);
+    zero -> binary for 'b' or 'B'
+    binary -> binary for '0' or '1'
+    binary -> binary_sep for '_'
+    binary_sep -> binary for '0' or '1'
+    binary_sep -> error for * do emit(ERRORTOKEN);
+    zero -> hex for 'x' or 'X'
+    hex -> hex for hex_digits
+    hex -> hex_sep for '_'
+    hex_sep -> hex for hex_digits
+    hex_sep -> error for * do emit(ERRORTOKEN);
+    zero or zero_int or int -> int_dot for '.'
+    zero_int or int -> code for * do pushback; emit(NUMBER);
+    int_dot or float -> float for digits
+    float -> float_sep for '_'
+    float_sep -> float for digits
+    float_sep -> error for * do emit(ERRORTOKEN);
+    int_dot -> code for * do pushback; emit(NUMBER);
+    float or zero or zero_int or int or int_dot -> float_e for 'e'
+    float or zero or zero_int or int or int_dot -> float_E for 'E'
+    # `1 if 1else 0` is valid syntax, so we cannot assume 'e' always indicates a float.
+    float_e -> code for 'l' do pushback; pushback; emit(NUMBER);
+    float_e or float_E -> float_E for '+' or '-'
+    float_e or float_E or float_x -> float_x for digits
+    float_x -> float_x_sep for '_'
+    float_x_sep -> float_x for digits
+    float_x_sep -> error for * do emit(ERRORTOKEN);
+    float or float_x -> code for * do pushback; emit(NUMBER);
+
+    # Identifiers (e.g. names and keywords)
+    code -> in_identifier for IDENTIFIER do mark;
+    in_identifier -> in_identifier for IDENTIFIER or digits or IDENTIFIER_CONTINUE
+    code -> dollar_name for '$' do mark;
+    dollar_name -> dollar_name for IDENTIFIER or digits or IDENTIFIER_CONTINUE
+    code -> in_identifier for '_' do mark;
+    in_identifier -> in_identifier for '_'
+    in_identifier -> code for * do pushback; emit(NAME);
+    dollar_name -> code for * do pushback; emit(DOLLARNAME);
+
+    # Comments
+    code -> line_end_comment for '#' do mark;
+    line_end_comment -> code for feed do pushback; emit(COMMENT);
+    line_end_comment -> line_end_comment for *
+    comment -> whitespace_line for feed do pushback; emit(COMMENT);
+    comment -> comment for *
+    code -> whitespace_line for feed do emit(NEWLINE, "\n"); newline;
+    whitespace_line -> whitespace_line for SPACE or '\t' or '\f'
+    whitespace_line -> whitespace_line for feed do newline;
+    whitespace_line -> code for * do emit_indent;
+    whitespace_line -> comment for '#' do mark;
+    code -> code for SPACE or '\t'
+
+    # Line continuations and error states.
+    code or float_e or float_E -> error for * do emit(ERRORTOKEN);
+    code -> pending_continuation for '\\'
+    pending_continuation -> line_continuation for feed do newline;
+    line_continuation -> code for * do pushback; mark;
+    pending_continuation -> error for * do emit(ERRORTOKEN);
+    error -> code for * do pushback;
+    code -> code for * do mark; emit(ERRORTOKEN);
+    zero or int_dot or zero_int or int or float or float_x -> code for 'j' or 'J' do emit(NUMBER);
+}
+
+table paren(default) {
+    code -> code for feed do mark; newline;
+    code -> code for ')' do emit(RPAR, ")"); pop;
+    code -> code for ']' do emit(RSQB, "]"); pop;
+    code -> code for '}' do emit(RBRACE, "}"); pop;
+}
+
+#String starting with '
+table string_s(default) {
+    instring -> code for "'" do pop; emit(STRING);
+    instring -> error for feed do pop; emit(ERRORTOKEN); newline;
+}
+
+#String starting with "
+table string_d(default) {
+    instring -> code for '"' do pop; emit(STRING);
+    instring -> error for feed do pop; emit(ERRORTOKEN); newline;
+}
+
+#String starting with '''
+table string_sss(default) {
+    instring -> string_x for "'"
+    instring -> instring for feed do newline;
+    string_x -> string_xx for "'"
+    string_x -> instring for feed do newline;
+    string_x -> instring for * do pushback;
+    string_xx -> code for "'" do pop; emit(STRING);
+    string_xx -> instring for feed do newline;
+    string_xx -> instring for * do pushback;
+}
+
+#String starting with """
+table string_ddd(default) {
+    instring -> string_x for '"'
+    instring -> instring for feed do newline;
+    string_x -> string_xx for '"'
+    string_x -> instring for feed do newline;
+    string_x -> instring for * do pushback;
+    string_xx -> code for '"' do pop; emit(STRING);
+    string_xx -> instring for feed do newline;
+    string_xx -> instring for * do pushback;
+}
+
+#F-string part common to all fstrings
+table fstring_sdsssddd(default) {
+    instring -> brace for '{'
+
+    escape -> brace for '{'
+
+    brace -> instring for '{'
+    brace -> code for * do pushback ; emit(FSTRING_MID); push(fstring_expr);
+}
+
+#F-string part common to ' and "
+table fstring_sd(fstring_sdsssddd) {
+    instring -> error for feed do pop; emit(ERRORTOKEN); newline;
+}
+
+#F-string start for string starting with '
+table fstring_start_s(fstring_sd) {
+    instring -> code for "'" do pop; emit(STRING);
+
+    # If this rule is removed or moved to a higher table, the QL tests start failing for unclear reasons.
+    # It's identical to a rule in default.
+    brace -> instring for '{'
+    brace -> code for * do pushback ; emit(FSTRING_START); pop; push(fstring_s); push(fstring_expr);
+}
+
+#F-string part for string starting with '
+table fstring_s(fstring_sd) {
+    instring -> code for "'" do pop; emit(FSTRING_END);
+}
+
+#F-string start for string starting with "
+table fstring_start_d(fstring_sd) {
+    instring -> code for '"' do pop; emit(STRING);
+
+    # If this rule is removed or moved to a higher table, the QL tests start failing for unclear reasons.
+    # It's identical to a rule in fstring_sdsssddd.
+    brace -> instring for '{'
+    brace -> code for * do pushback ; emit(FSTRING_START); pop; push(fstring_d); push(fstring_expr);
+}
+
+#F-string part for string starting with "
+table fstring_d(fstring_sd) {
+    instring -> code for '"' do pop; emit(FSTRING_END);
+}
+
+#F-string part common to ''' and """
+table fstring_sssddd(fstring_sdsssddd) {
+    instring -> instring for feed do newline;
+
+    string_x -> instring for feed do newline;
+    string_x -> instring for * do pushback;
+
+    string_xx -> instring for feed do newline;
+    string_xx -> instring for * do pushback;
+}
+
+#F-string start for string starting with '''
+table fstring_start_sss(fstring_sssddd) {
+    instring -> string_x for "'"
+
+    string_x -> string_xx for "'"
+
+    string_xx -> code for "'" do pop; emit(STRING);
+
+    brace -> instring for '{'
+    brace -> code for * do pushback ; emit(FSTRING_START); pop; push(fstring_sss); push(fstring_expr);
+}
+
+#F-string part for string starting with '''
+table fstring_sss(fstring_sssddd) {
+    instring -> string_x for "'"
+
+    string_x -> string_xx for "'"
+
+    string_xx -> code for "'" do pop; emit(FSTRING_END);
+}
+
+#F-string start for string starting with """
+table fstring_start_ddd(fstring_sssddd) {
+    instring -> string_x for '"'
+
+    string_x -> string_xx for '"'
+
+    string_xx -> code for '"' do pop; emit(STRING);
+
+    brace -> instring for '{'
+    brace -> code for * do pushback ; emit(FSTRING_START); pop; push(fstring_ddd); push(fstring_expr);
+}
+
+#F-string part for string starting with """
+table fstring_ddd(fstring_sssddd) {
+    instring -> string_x for '"'
+
+    string_x -> string_xx for '"'
+
+    string_xx -> code for '"' do pop; emit(FSTRING_END);
+}
+
+#Expression within an f-string
+table fstring_expr(paren) {
+    code -> instring for '}' do pop; mark;
+    code -> instring for ':' do emit(COLON); push(format_specifier);
+    instring -> instring for '}' do pop; mark;
+}
+
+fspec_type = 'b' or 'c' or 'd' or 'e' or 'E' or 'f' or 'F' or 'g' or 'G' or 'n' or 'o' or 's' or 'x' or 'X' or '%'
+fspec_align = '<' or '>' or '=' or '^'
+fspec_sign = '+' or '-' or ' '
+
+table format_specifier(default) {
+    instring -> code for '{' do emit(FSTRING_SPEC);
+    instring -> instring for '}' do pushback; emit(FSTRING_SPEC); pop;
+
+    code -> instring for '}' do mark;
+}
+
+
+
+#Special state for when dedents are pending.
+table pending_dedent(default) {
+    code -> code for * do pop; emit_indent;
+}
+
+start: default

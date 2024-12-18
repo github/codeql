@@ -37,9 +37,6 @@ class BddTest extends Test, @call_expr {
   }
 }
 
-/** DEPRECATED: Alias for BddTest */
-deprecated class BDDTest = BddTest;
-
 /**
  * Gets the test file for `f` with stem extension `stemExt`, where `stemExt` is "test" or "spec".
  * That is, a file named `<base>.<stemExt>.<ext>` in the

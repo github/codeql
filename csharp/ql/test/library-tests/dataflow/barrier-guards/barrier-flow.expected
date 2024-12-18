@@ -1,0 +1,18 @@
+models
+edges
+| BarrierFlow.cs:10:13:10:13 | access to local variable x : Object | BarrierFlow.cs:12:14:12:14 | access to local variable x | provenance |  |
+| BarrierFlow.cs:10:17:10:25 | call to method Source : Object | BarrierFlow.cs:10:13:10:13 | access to local variable x : Object | provenance |  |
+| BarrierFlow.cs:17:13:17:13 | access to local variable x : Object | BarrierFlow.cs:21:18:21:18 | access to local variable x | provenance |  |
+| BarrierFlow.cs:17:17:17:25 | call to method Source : Object | BarrierFlow.cs:17:13:17:13 | access to local variable x : Object | provenance |  |
+nodes
+| BarrierFlow.cs:10:13:10:13 | access to local variable x : Object | semmle.label | access to local variable x : Object |
+| BarrierFlow.cs:10:17:10:25 | call to method Source : Object | semmle.label | call to method Source : Object |
+| BarrierFlow.cs:12:14:12:14 | access to local variable x | semmle.label | access to local variable x |
+| BarrierFlow.cs:17:13:17:13 | access to local variable x : Object | semmle.label | access to local variable x : Object |
+| BarrierFlow.cs:17:17:17:25 | call to method Source : Object | semmle.label | call to method Source : Object |
+| BarrierFlow.cs:21:18:21:18 | access to local variable x | semmle.label | access to local variable x |
+subpaths
+testFailures
+#select
+| BarrierFlow.cs:12:14:12:14 | access to local variable x | BarrierFlow.cs:10:17:10:25 | call to method Source : Object | BarrierFlow.cs:12:14:12:14 | access to local variable x | $@ | BarrierFlow.cs:10:17:10:25 | call to method Source : Object | call to method Source : Object |
+| BarrierFlow.cs:21:18:21:18 | access to local variable x | BarrierFlow.cs:17:17:17:25 | call to method Source : Object | BarrierFlow.cs:21:18:21:18 | access to local variable x | $@ | BarrierFlow.cs:17:17:17:25 | call to method Source : Object | call to method Source : Object |

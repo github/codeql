@@ -29,31 +29,37 @@
 private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking as TT
 private import codeql.util.test.InlineExpectationsTest as IET
+private import codeql.util.Location
 
-signature module InputSig<DF::InputSig DataFlowLang> {
+signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowLang> {
   predicate defaultSource(DataFlowLang::Node source);
 
   predicate defaultSink(DataFlowLang::Node source);
 
+  bindingset[src, sink]
   string getArgString(DataFlowLang::Node src, DataFlowLang::Node sink);
+
+  /** Holds if the given extension tuple `madId` should pretty-print as `model`. */
+  predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model);
 }
 
 module InlineFlowTestMake<
-  DF::InputSig DataFlowLang, TT::InputSig<DataFlowLang> TaintTrackingLang,
-  IET::InlineExpectationsTestSig Test, InputSig<DataFlowLang> Impl>
+  LocationSig Location, DF::InputSig<Location> DataFlowLang,
+  TT::InputSig<Location, DataFlowLang> TaintTrackingLang, IET::InlineExpectationsTestSig Test,
+  InputSig<Location, DataFlowLang> Impl>
 {
-  private module DataFlow = DF::DataFlowMake<DataFlowLang>;
+  private module DataFlow = DF::DataFlowMake<Location, DataFlowLang>;
 
-  private module TaintTracking = TT::TaintFlowMake<DataFlowLang, TaintTrackingLang>;
+  private module TaintTracking = TT::TaintFlowMake<Location, DataFlowLang, TaintTrackingLang>;
 
   private module InlineExpectationsTest = IET::Make<Test>;
+
+  private import ProvenancePathGraph
 
   module DefaultFlowConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlowLang::Node source) { Impl::defaultSource(source) }
 
     predicate isSink(DataFlowLang::Node sink) { Impl::defaultSink(sink) }
-
-    int fieldFlowBranchLimit() { result = 1000 }
   }
 
   private module NoFlowConfig implements DataFlow::ConfigSig {
@@ -62,14 +68,40 @@ module InlineFlowTestMake<
     predicate isSink(DataFlowLang::Node sink) { none() }
   }
 
-  module FlowTest<DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig> {
-    module ValueFlow = DataFlow::Global<ValueFlowConfig>;
+  bindingset[src, sink]
+  signature string getArgStringSig(DataFlowLang::Node src, DataFlowLang::Node sink);
 
-    module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
+  private module DataFlowGlobal<DataFlow::ConfigSig Config> {
+    private import DataFlow::Global<Config> as G
+    import G
+
+    module PathGraphNoInterpretModel = G::PathGraph;
+
+    module PathGraph =
+      ShowProvenance<Impl::interpretModelForTest/2, PathNode, PathGraphNoInterpretModel>;
+  }
+
+  private module TaintTrackingGlobal<DataFlow::ConfigSig Config> {
+    private import TaintTracking::Global<Config> as G
+    import G
+
+    module PathGraphNoInterpretModel = G::PathGraph;
+
+    module PathGraph =
+      ShowProvenance<Impl::interpretModelForTest/2, PathNode, PathGraphNoInterpretModel>;
+  }
+
+  module FlowTestArgString<
+    DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig,
+    getArgStringSig/2 getArgString>
+  {
+    module ValueFlow = DataFlowGlobal<ValueFlowConfig>;
+
+    module TaintFlow = TaintTrackingGlobal<TaintFlowConfig>;
 
     private predicate hasLocationInfo(DataFlowLang::Node node, Test::Location location) {
       exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-        node.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+        node.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
         location.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       )
     }
@@ -82,7 +114,7 @@ module InlineFlowTestMake<
         exists(DataFlowLang::Node src, DataFlowLang::Node sink | ValueFlow::flow(src, sink) |
           hasLocationInfo(sink, location) and
           element = sink.toString() and
-          value = Impl::getArgString(src, sink)
+          value = getArgString(src, sink)
         )
         or
         tag = "hasTaintFlow" and
@@ -91,13 +123,17 @@ module InlineFlowTestMake<
         |
           hasLocationInfo(sink, location) and
           element = sink.toString() and
-          value = Impl::getArgString(src, sink)
+          value = getArgString(src, sink)
         )
       }
     }
 
     import InlineExpectationsTest::MakeTest<InlineTest>
-    import DataFlow::MergePathGraph<ValueFlow::PathNode, TaintFlow::PathNode, ValueFlow::PathGraph, TaintFlow::PathGraph>
+    private import DataFlow::MergePathGraph<ValueFlow::PathNode, TaintFlow::PathNode, ValueFlow::PathGraphNoInterpretModel, TaintFlow::PathGraphNoInterpretModel> as Merged
+    import Merged
+
+    module PathGraph =
+      ShowProvenance<Impl::interpretModelForTest/2, Merged::PathNode, Merged::PathGraph>;
 
     predicate flowPath(PathNode source, PathNode sink) {
       ValueFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) or
@@ -105,13 +141,27 @@ module InlineFlowTestMake<
     }
   }
 
+  module FlowTest<DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig> {
+    import FlowTestArgString<ValueFlowConfig, TaintFlowConfig, Impl::getArgString/2>
+  }
+
   module DefaultFlowTest = FlowTest<DefaultFlowConfig, DefaultFlowConfig>;
 
+  module ValueFlowTestArgString<DataFlow::ConfigSig ValueFlowConfig, getArgStringSig/2 getArgString>
+  {
+    import FlowTestArgString<ValueFlowConfig, NoFlowConfig, getArgString/2>
+  }
+
   module ValueFlowTest<DataFlow::ConfigSig ValueFlowConfig> {
-    import FlowTest<ValueFlowConfig, NoFlowConfig>
+    import ValueFlowTestArgString<ValueFlowConfig, Impl::getArgString/2>
+  }
+
+  module TaintFlowTestArgString<DataFlow::ConfigSig TaintFlowConfig, getArgStringSig/2 getArgString>
+  {
+    import FlowTestArgString<NoFlowConfig, TaintFlowConfig, getArgString/2>
   }
 
   module TaintFlowTest<DataFlow::ConfigSig TaintFlowConfig> {
-    import FlowTest<NoFlowConfig, TaintFlowConfig>
+    import TaintFlowTestArgString<TaintFlowConfig, Impl::getArgString/2>
   }
 }

@@ -17,12 +17,6 @@ module CodeInjection {
    */
   abstract class Sink extends DataFlow::Node {
     /**
-     * DEPRECATED: Use `getMessagePrefix()` instead.
-     * Gets the substitute for `X` in the message `User-provided value flows to X`.
-     */
-    deprecated string getMessageSuffix() { result = "this location and is interpreted as code" }
-
-    /**
      * Gets the prefix for the message `X depends on a user-provided value.`.
      */
     string getMessagePrefix() { result = "This code execution" }
@@ -33,8 +27,15 @@ module CodeInjection {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a flow source for code injection. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * An expression which may be interpreted as an AngularJS expression.
@@ -127,11 +128,6 @@ module CodeInjection {
         tag.isInNestedTemplateContext(templateType) and
         this = tag.asDataFlowNode()
       )
-    }
-
-    deprecated override string getMessageSuffix() {
-      result =
-        "this location and is interpreted by " + templateType + ", which may evaluate it as code"
     }
 
     override string getMessagePrefix() {
@@ -321,10 +317,6 @@ module CodeInjection {
 
   /** A sink for code injection via template injection. */
   abstract private class TemplateSink extends Sink {
-    deprecated override string getMessageSuffix() {
-      result = "this location and is interpreted as a template, which may contain code"
-    }
-
     override string getMessagePrefix() { result = "Template, which may contain code," }
   }
 

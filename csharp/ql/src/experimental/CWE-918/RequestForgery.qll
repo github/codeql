@@ -5,7 +5,7 @@ module RequestForgery {
   import semmle.code.csharp.frameworks.System
   import semmle.code.csharp.frameworks.system.Web
   import semmle.code.csharp.frameworks.Format
-  import semmle.code.csharp.security.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
   /**
    * A data flow source for server side request forgery vulnerabilities.
@@ -22,39 +22,6 @@ module RequestForgery {
    * server side request forgery vulnerabilities.
    */
   abstract private class Barrier extends DataFlow::Node { }
-
-  /**
-   * DEPRECATED: Use `RequestForgeryFlow` instead.
-   *
-   * A data flow configuration for detecting server side request forgery vulnerabilities.
-   */
-  deprecated class RequestForgeryConfiguration extends DataFlow::Configuration {
-    RequestForgeryConfiguration() { this = "Server Side Request forgery" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isAdditionalFlowStep(DataFlow::Node prev, DataFlow::Node succ) {
-      interpolatedStringFlowStep(prev, succ)
-      or
-      stringReplaceStep(prev, succ)
-      or
-      uriCreationStep(prev, succ)
-      or
-      formatConvertStep(prev, succ)
-      or
-      toStringStep(prev, succ)
-      or
-      stringConcatStep(prev, succ)
-      or
-      stringFormatStep(prev, succ)
-      or
-      pathCombineStep(prev, succ)
-    }
-
-    override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
-  }
 
   /**
    * A data flow configuration for detecting server side request forgery vulnerabilities.
@@ -91,10 +58,9 @@ module RequestForgery {
   module RequestForgeryFlow = DataFlow::Global<RequestForgeryFlowConfig>;
 
   /**
-   * A remote data flow source taken as a source
-   * for Server Side Request Forgery(SSRF) Vulnerabilities.
+   * A dataflow source for Server Side Request Forgery(SSRF) Vulnerabilities.
    */
-  private class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
   /**
    * An url argument to a `HttpRequestMessage` constructor call

@@ -4,7 +4,8 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.Xml
 private import semmle.code.csharp.security.Sanitizers
 
@@ -18,7 +19,7 @@ abstract class Source extends DataFlow::Node { }
  * A data flow sink for untrusted user input processed as XML without validation against a known
  * schema.
  */
-abstract class Sink extends DataFlow::ExprNode {
+abstract class Sink extends ApiSinkExprNode {
   /** Gets a string describing the reason why this is a sink. */
   abstract string getReason();
 }
@@ -29,29 +30,13 @@ abstract class Sink extends DataFlow::ExprNode {
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `MissingXxmlValidation` instead.
- *
- * A taint-tracking configuration for untrusted user input processed as XML without validation against a
- * known schema.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "MissingXMLValidation" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for untrusted user input processed as XML without validation against a
  * known schema.
  */
 private module MissingXmlValidationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isSink(DataFlow::Node sink) { exists(sink.(Sink).getReason()) }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
@@ -62,8 +47,17 @@ private module MissingXmlValidationConfig implements DataFlow::ConfigSig {
  */
 module MissingXmlValidation = TaintTracking::Global<MissingXmlValidationConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ActiveThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/**
+ * A source supported by the current threat model.
+ */
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * The input argument to a call to `XmlReader.Create` where the input will not be validated against

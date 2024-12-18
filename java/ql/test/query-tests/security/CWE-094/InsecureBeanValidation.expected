@@ -1,8 +1,11 @@
+#select
+| InsecureBeanValidation.java:11:64:11:68 | value | InsecureBeanValidation.java:7:28:7:40 | object : String | InsecureBeanValidation.java:11:64:11:68 | value | Custom constraint error message contains an unsanitized $@. | InsecureBeanValidation.java:7:28:7:40 | object : String | user-provided value |
 edges
-| InsecureBeanValidation.java:7:28:7:40 | object : String | InsecureBeanValidation.java:11:64:11:68 | value |
+| InsecureBeanValidation.java:7:28:7:40 | object : String | InsecureBeanValidation.java:11:64:11:68 | value | provenance | Src:MaD:2 Sink:MaD:1 |
+models
+| 1 | Sink: javax.validation; ConstraintValidatorContext; true; buildConstraintViolationWithTemplate; ; ; Argument[0]; bean-validation; manual |
+| 2 | Source: javax.validation; ConstraintValidator; true; isValid; ; ; Parameter[0]; remote; manual |
 nodes
 | InsecureBeanValidation.java:7:28:7:40 | object : String | semmle.label | object : String |
 | InsecureBeanValidation.java:11:64:11:68 | value | semmle.label | value |
 subpaths
-#select
-| InsecureBeanValidation.java:11:64:11:68 | value | InsecureBeanValidation.java:7:28:7:40 | object : String | InsecureBeanValidation.java:11:64:11:68 | value | Custom constraint error message contains an unsanitized $@. | InsecureBeanValidation.java:7:28:7:40 | object : String | user-provided value |

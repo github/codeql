@@ -59,6 +59,28 @@ class Stmt extends StmtParent, @stmt {
     )
   }
 
+  /**
+   * Gets the `n`th compiler-generated destructor call that is performed after this statement, in
+   * order of destruction.
+   *
+   * For instance, in the following code, `getImplicitDestructorCall(0)` for the block will be the
+   * destructor call for `c2`:
+   * ```cpp
+   * {
+   *      MyClass c1;
+   *      MyClass c2;
+   * }
+   * ```
+   */
+  DestructorCall getImplicitDestructorCall(int n) {
+    synthetic_destructor_call(this, max(int i | synthetic_destructor_call(this, i, _)) - n, result)
+  }
+
+  /**
+   * Gets a compiler-generated destructor call that is performed after this statement.
+   */
+  DestructorCall getAnImplicitDestructorCall() { synthetic_destructor_call(this, _, result) }
+
   override Location getLocation() { stmts(underlyingElement(this), _, result) }
 
   override string toString() { none() }
@@ -871,6 +893,26 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
   override string getAPrimaryQlClass() { result = "RangeBasedForStmt" }
 
   /**
+   * Gets the initialization statement of this 'for' statement, if any.
+   *
+   * For example, for
+   * ```
+   * for (int x = y; auto z : ... ) { }
+   * ```
+   * the result is `int x = y;`.
+   *
+   * Does not hold if the initialization statement is missing or an empty statement, as in
+   * ```
+   * for (auto z : ...) { }
+   * ```
+   * or
+   * ```
+   * for (; auto z : ) { }
+   * ```
+   */
+  Stmt getInitialization() { for_initialization(underlyingElement(this), unresolveElement(result)) }
+
+  /**
    * Gets the 'body' statement of this range-based 'for' statement.
    *
    * For example, for
@@ -879,7 +921,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * ```
    * the result is the `BlockStmt` `{ y += x; }`.
    */
-  override Stmt getStmt() { result = this.getChild(5) }
+  override Stmt getStmt() { result = this.getChild(6) }
 
   override string toString() { result = "for(...:...) ..." }
 
@@ -892,7 +934,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * ```
    * the result is `int x`.
    */
-  LocalVariable getVariable() { result = this.getChild(4).(DeclStmt).getADeclaration() }
+  LocalVariable getVariable() { result = this.getChild(5).(DeclStmt).getADeclaration() }
 
   /**
    * Gets the expression giving the range to iterate over.
@@ -906,7 +948,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
   Expr getRange() { result = this.getRangeVariable().getInitializer().getExpr() }
 
   /** Gets the compiler-generated `__range` variable after desugaring. */
-  LocalVariable getRangeVariable() { result = this.getChild(0).(DeclStmt).getADeclaration() }
+  LocalVariable getRangeVariable() { result = this.getChild(1).(DeclStmt).getADeclaration() }
 
   /**
    * Gets the compiler-generated `__begin != __end` which is the
@@ -914,7 +956,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * It will be either an `NEExpr` or a call to a user-defined
    * `operator!=`.
    */
-  override Expr getCondition() { result = this.getChild(2) }
+  override Expr getCondition() { result = this.getChild(3) }
 
   override Expr getControllingExpr() { result = this.getCondition() }
 
@@ -923,7 +965,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * `__end`, initializing them to the values they have before entering the
    * desugared loop.
    */
-  DeclStmt getBeginEndDeclaration() { result = this.getChild(1) }
+  DeclStmt getBeginEndDeclaration() { result = this.getChild(2) }
 
   /** Gets the compiler-generated `__begin` variable after desugaring. */
   LocalVariable getBeginVariable() { result = this.getBeginEndDeclaration().getDeclaration(0) }
@@ -937,7 +979,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * be either a `PrefixIncrExpr` or a call to a user-defined
    * `operator++`.
    */
-  Expr getUpdate() { result = this.getChild(3) }
+  Expr getUpdate() { result = this.getChild(4) }
 
   /** Gets the compiler-generated `__begin` variable after desugaring. */
   LocalVariable getAnIterationVariable() { result = this.getBeginVariable() }

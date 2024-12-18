@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -19,65 +18,36 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Paths to search. Directories are searched recursively. Files are added directly to the
         /// assembly cache.
         /// </param>
-        /// <param name="progressMonitor">Callback for progress.</param>
-        public AssemblyCache(IEnumerable<string> paths, ProgressMonitor progressMonitor)
+        /// <param name="logger">Callback for progress.</param>
+        public AssemblyCache(IEnumerable<AssemblyLookupLocation> paths, IEnumerable<string> frameworkPaths, ILogger logger)
         {
+            this.logger = logger;
             foreach (var path in paths)
             {
-                if (File.Exists(path))
-                {
-                    pendingDllsToIndex.Enqueue(path);
-                    continue;
-                }
-
-                if (Directory.Exists(path))
-                {
-                    progressMonitor.FindingFiles(path);
-                    AddReferenceDirectory(path);
-                }
-                else
-                {
-                    progressMonitor.LogInfo("AssemblyCache: Path not found: " + path);
-                }
+                dllsToIndex.AddRange(path.GetDlls(logger));
             }
-            IndexReferences();
+            IndexReferences(frameworkPaths);
         }
-
-        /// <summary>
-        /// Finds all assemblies nested within a directory
-        /// and adds them to its index.
-        /// (Indexing is performed at a later stage by IndexReferences()).
-        /// </summary>
-        /// <param name="dir">The directory to index.</param>
-        private void AddReferenceDirectory(string dir)
-        {
-            foreach (var dll in new DirectoryInfo(dir).EnumerateFiles("*.dll", SearchOption.AllDirectories))
-            {
-                pendingDllsToIndex.Enqueue(dll.FullName);
-            }
-        }
-
-        private static readonly Version emptyVersion = new Version(0, 0, 0, 0);
 
         /// <summary>
         /// Indexes all DLLs we have located.
         /// Because this is a potentially time-consuming operation, it is put into a separate stage.
         /// </summary>
-        private void IndexReferences()
+        private void IndexReferences(IEnumerable<string> frameworkPaths)
         {
+            logger.LogInfo($"Indexing {dllsToIndex.Count} assemblies...");
+
             // Read all of the files
-            foreach (var filename in pendingDllsToIndex)
+            foreach (var filename in dllsToIndex)
             {
                 IndexReference(filename);
             }
 
-            // Index "assemblyInfo" by version string
-            // The OrderBy is used to ensure that we by default select the highest version number.
+            logger.LogInfo($"Read {assemblyInfoByFileName.Count} assembly infos");
+
             foreach (var info in assemblyInfoByFileName.Values
                 .OrderBy(info => info.Name)
-                .ThenBy(info => info.NetCoreVersion ?? emptyVersion)
-                .ThenBy(info => info.Version ?? emptyVersion)
-                .ThenBy(info => info.Filename))
+                .OrderAssemblyInfosByPreference(frameworkPaths))
             {
                 foreach (var index in info.IndexStrings)
                 {
@@ -90,24 +60,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             try
             {
+                logger.LogDebug($"Reading assembly info from {filename}");
                 var info = AssemblyInfo.ReadFromFile(filename);
                 assemblyInfoByFileName[filename] = info;
             }
             catch (AssemblyLoadException)
             {
-                failedAssemblyInfoFileNames.Add(filename);
+                logger.LogInfo($"Couldn't read assembly info from {filename}");
             }
         }
-
-        /// <summary>
-        /// The number of DLLs which are assemblies.
-        /// </summary>
-        public int AssemblyCount => assemblyInfoByFileName.Count;
-
-        /// <summary>
-        /// The number of DLLs which weren't assemblies. (E.g. C++).
-        /// </summary>
-        public int NonAssemblyCount => failedAssemblyInfoFileNames.Count;
 
         /// <summary>
         /// Given an assembly id, determine its full info.
@@ -120,8 +81,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (failedAssemblyInfoIds.Contains(id))
                 throw new AssemblyLoadException();
 
-            string assemblyName;
-            (id, assemblyName) = AssemblyInfo.ComputeSanitizedAssemblyInfo(id);
+            (id, var assemblyName) = AssemblyInfo.ComputeSanitizedAssemblyInfo(id);
 
             // Look up the id in our references map.
             if (assemblyInfoById.TryGetValue(id, out var result))
@@ -171,17 +131,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             throw new AssemblyLoadException();
         }
 
-        private readonly Queue<string> pendingDllsToIndex = new Queue<string>();
+        private readonly List<string> dllsToIndex = new List<string>();
 
-        private readonly Dictionary<string, AssemblyInfo> assemblyInfoByFileName = new Dictionary<string, AssemblyInfo>();
-
-        // List of DLLs which are not assemblies.
-        // We probably don't need to keep this
-        private readonly List<string> failedAssemblyInfoFileNames = new List<string>();
+        private readonly Dictionary<string, AssemblyInfo> assemblyInfoByFileName = [];
 
         // Map from assembly id (in various formats) to the full info.
-        private readonly Dictionary<string, AssemblyInfo> assemblyInfoById = new Dictionary<string, AssemblyInfo>();
+        private readonly Dictionary<string, AssemblyInfo> assemblyInfoById = [];
 
-        private readonly HashSet<string> failedAssemblyInfoIds = new HashSet<string>();
+        private readonly HashSet<string> failedAssemblyInfoIds = [];
+
+        private readonly ILogger logger;
     }
 }

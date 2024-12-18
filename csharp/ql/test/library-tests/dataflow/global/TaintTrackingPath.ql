@@ -4,7 +4,7 @@
 
 import csharp
 import Common
-import Taint::PathGraph
+import utils.test.ProvenancePathGraph::ShowProvenance<Taint::PathNode, Taint::PathGraph>
 
 module Taint = TaintTracking::Global<FlowConfig>;
 

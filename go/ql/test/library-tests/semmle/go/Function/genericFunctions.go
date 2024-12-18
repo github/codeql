@@ -146,3 +146,9 @@ func callFunctionsInAnotherPackage() {
 	_ = anotherpkg.GenericFunctionInAnotherPackage[string]("world")
 	_ = anotherpkg.GenericFunctionInAnotherPackage("world")
 }
+
+func multipleAnonymousTypeParamsFunc[_ any, _ string, _ any]() {}
+
+type multipleAnonymousTypeParamsType[_ any, _ string, _ any] struct{}
+
+func (x multipleAnonymousTypeParamsType[_, _, _]) f() {}

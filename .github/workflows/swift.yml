@@ -6,6 +6,7 @@ on:
       - "swift/**"
       - "misc/bazel/**"
       - "misc/codegen/**"
+      - "shared/**"
       - "*.bazel*"
       - .github/workflows/swift.yml
       - .github/actions/**
@@ -22,10 +23,12 @@ on:
       - "swift/**"
       - "misc/bazel/**"
       - "misc/codegen/**"
+      - "shared/**"
       - "*.bazel*"
       - .github/workflows/swift.yml
       - .github/actions/**
       - codeql-workspace.yml
+      - .pre-commit-config.yaml
       - "!**/*.md"
       - "!**/*.qhelp"
     branches:
@@ -33,46 +36,40 @@ on:
       - rc/*
       - codeql-cli-*
 
+permissions:
+  contents: read
+
 jobs:
   # not using a matrix as you cannot depend on a specific job in a matrix, and we want to start linux checks
   # without waiting for the macOS build
   build-and-test-macos:
-    runs-on: macos-12-xl
+    if: github.repository_owner == 'github'
+    runs-on: macos-13-xlarge
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
   build-and-test-linux:
-    runs-on: ubuntu-latest-xl
+    if: github.repository_owner == 'github'
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
-  qltests-linux:
-    needs: build-and-test-linux
-    runs-on: ubuntu-latest-xl
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./swift/actions/run-ql-tests
   qltests-macos:
-    if : ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.repository_owner == 'github' && github.event_name == 'pull_request' }}
     needs: build-and-test-macos
-    runs-on: macos-12-xl
+    runs-on: macos-13-xlarge
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/run-ql-tests
-  integration-tests-linux:
-    needs: build-and-test-linux
-    runs-on: ubuntu-latest-xl
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./swift/actions/run-integration-tests
-  integration-tests-macos:
+  clang-format:
     if : ${{ github.event_name == 'pull_request' }}
-    needs: build-and-test-macos
-    runs-on: macos-12-xl
-    timeout-minutes: 60
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./swift/actions/run-integration-tests
+      - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
+        name: Check that python code is properly formatted
+        with:
+          extra_args: clang-format --all-files
   codegen:
     if : ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
@@ -82,19 +79,19 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version-file: 'swift/.python-version'
-      - uses: pre-commit/action@v3.0.0
+      - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
         name: Check that python code is properly formatted
         with:
           extra_args: autopep8 --all-files
       - uses: ./.github/actions/fetch-codeql
-      - uses: pre-commit/action@v3.0.0
+      - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
         name: Check that QL generated code was checked in
         with:
           extra_args: swift-codegen --all-files
       - name: Generate C++ files
         run: |
           bazel run //swift/codegen:codegen -- --generate=trap,cpp --cpp-output=$PWD/generated-cpp-files
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: swift-generated-cpp-files
           path: generated-cpp-files/**
@@ -105,3 +102,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/fetch-codeql
       - uses: ./swift/actions/database-upgrade-scripts
+  check-no-override:
+    if : github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - shell: bash
+        run: bazel test //swift/... --test_tag_filters=override --test_output=errors

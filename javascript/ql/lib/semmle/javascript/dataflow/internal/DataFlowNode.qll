@@ -27,9 +27,16 @@ newtype TNode =
     exists(decl.getASpecifier().getImportedName())
   } or
   THtmlAttributeNode(HTML::Attribute attr) or
+  TXmlAttributeNode(XmlAttribute attr) or
   TFunctionReturnNode(Function f) or
   TExceptionalFunctionReturnNode(Function f) or
   TExceptionalInvocationReturnNode(InvokeExpr e) or
   TGlobalAccessPathRoot() or
   TTemplatePlaceholderTag(Templating::TemplatePlaceholderTag tag) or
-  TReflectiveParametersNode(Function f)
+  TReflectiveParametersNode(Function f) or
+  TForbiddenRecursionGuard() {
+    none() and
+    // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+    // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+    (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
+  }

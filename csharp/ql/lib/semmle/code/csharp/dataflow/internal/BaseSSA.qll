@@ -14,7 +14,7 @@ module BaseSsa {
   private predicate definitionAt(
     AssignableDefinition def, ControlFlow::BasicBlock bb, int i, SsaInput::SourceVariable v
   ) {
-    bb.getNode(i) = def.getAControlFlowNode() and
+    bb.getNode(i) = def.getExpr().getAControlFlowNode() and
     v = def.getTarget() and
     // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
     not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second | first = def |
@@ -24,8 +24,30 @@ module BaseSsa {
     )
   }
 
-  private module SsaInput implements SsaImplCommon::InputSig {
+  private predicate implicitEntryDef(
+    Callable c, ControlFlow::BasicBlocks::EntryBlock bb, SsaInput::SourceVariable v
+  ) {
+    exists(ControlFlow::ControlFlow::BasicBlocks::EntryBlock entry |
+      c = entry.getCallable() and
+      // In case `c` has multiple bodies, we want each body to get its own implicit
+      // entry definition. In case `c` doesn't have multiple bodies, the line below
+      // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`
+      // will be in the entry block.
+      bb = entry.getFirstNode().getASuccessor().getBasicBlock() and
+      c = v.getCallable()
+    |
+      v.isReadonlyCapturedBy(c)
+      or
+      v instanceof Parameter
+    )
+  }
+
+  private module SsaInput implements SsaImplCommon::InputSig<Location> {
+    private import semmle.code.csharp.controlflow.internal.PreSsa
+
     class BasicBlock = ControlFlow::BasicBlock;
+
+    class ControlFlowNode = ControlFlow::Node;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = bb.getImmediateDominator()
@@ -33,22 +55,19 @@ module BaseSsa {
 
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-    class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
+    class ExitBasicBlock extends BasicBlock, ControlFlow::BasicBlocks::ExitBlock { }
 
-    pragma[noinline]
-    private Callable getAnAssigningCallable(LocalScopeVariable v) {
-      result = any(AssignableDefinition def | def.getTarget() = v).getEnclosingCallable()
-    }
-
-    class SourceVariable extends LocalScopeVariable {
-      SourceVariable() { not getAnAssigningCallable(this) != getAnAssigningCallable(this) }
-    }
+    class SourceVariable = PreSsa::SimpleLocalScopeVariable;
 
     predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       exists(AssignableDefinition def |
         definitionAt(def, bb, i, v) and
         if def.isCertain() then certain = true else certain = false
       )
+      or
+      implicitEntryDef(_, bb, v) and
+      i = -1 and
+      certain = true
     }
 
     predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
@@ -60,7 +79,7 @@ module BaseSsa {
     }
   }
 
-  private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+  private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
   class Definition extends SsaImpl::Definition {
     final AssignableRead getARead() {
@@ -77,6 +96,13 @@ module BaseSsa {
       )
     }
 
+    final predicate isImplicitEntryDefinition(SsaInput::SourceVariable v) {
+      exists(ControlFlow::BasicBlock bb |
+        this.definesAt(v, bb, -1) and
+        implicitEntryDef(_, bb, v)
+      )
+    }
+
     private Definition getAPhiInputOrPriorDefinition() {
       result = this.(PhiNode).getAnInput() or
       SsaImpl::uncertainWriteDefinitionInput(this, result)
@@ -87,7 +113,15 @@ module BaseSsa {
       not result instanceof PhiNode
     }
 
-    Location getLocation() { result = this.getDefinition().getLocation() }
+    override Location getLocation() {
+      result = this.getDefinition().getLocation()
+      or
+      exists(Callable c, SsaInput::BasicBlock bb, SsaInput::SourceVariable v |
+        this.definesAt(v, bb, -1) and
+        implicitEntryDef(c, bb, v) and
+        result = c.getLocation()
+      )
+    }
   }
 
   class PhiNode extends SsaImpl::PhiNode, Definition {

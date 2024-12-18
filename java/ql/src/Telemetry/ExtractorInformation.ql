@@ -8,6 +8,7 @@
 
 import java
 import semmle.code.java.Diagnostics
+import DatabaseQuality
 
 extensible predicate extractorInformationSkipKey(string key);
 
@@ -97,6 +98,12 @@ where
     totalNumberOfLinesByExtension(key, value) or
     numberOfLinesOfCodeByExtension(key, value) or
     extractorDiagnostics(key, value) or
-    extractorTotalDiagnostics(key, value)
+    extractorTotalDiagnostics(key, value) or
+    CallTargetStatsReport::numberOfOk(key, value) or
+    CallTargetStatsReport::numberOfNotOk(key, value) or
+    CallTargetStatsReport::percentageOfOk(key, any(float x | value = x.floor())) or
+    ExprTypeStatsReport::numberOfOk(key, value) or
+    ExprTypeStatsReport::numberOfNotOk(key, value) or
+    ExprTypeStatsReport::percentageOfOk(key, any(float x | value = x.floor()))
   )
 select key, value

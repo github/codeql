@@ -1,0 +1,3 @@
+| gen_module.rs:3:1:4:8 | mod foo | repo::test |
+| gen_module.rs:5:1:7:1 | mod bar | repo::test |
+| lib.rs:1:1:1:15 | mod gen_module | repo::test |

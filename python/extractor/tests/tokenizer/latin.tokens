@@ -1,0 +1,5 @@
+1,0-1,27:           STRING         '"Any old stuff can go here"'
+1,27-1,28:          NEWLINE        '\n'
+2,0-2,24:           COMMENT        '# -*- coding: latin1 -*-'
+3,0-3,8:            COMMENT        '# Günter'
+5,0-5,0:            ENDMARKER      ''

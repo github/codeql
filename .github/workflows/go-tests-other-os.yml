@@ -7,76 +7,29 @@ on:
       - .github/workflows/go-tests-other-os.yml
       - .github/actions/**
       - codeql-workspace.yml
-env:
-  GO_VERSION: '~1.21.0'
+      - MODULE.bazel
+      - .bazelrc
+      - misc/bazel/**
+
+permissions:
+  contents: read
+
 jobs:
   test-mac:
     name: Test MacOS
     runs-on: macos-latest
     steps:
-      - name: Set up Go ${{ env.GO_VERSION }}
-        uses: actions/setup-go@v4
-        with:
-          go-version: ${{ env.GO_VERSION }}
-        id: go
-
       - name: Check out code
         uses: actions/checkout@v4
-
-      - name: Set up CodeQL CLI
-        uses: ./.github/actions/fetch-codeql
-
-      - name: Enable problem matchers in repository
-        shell: bash
-        run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
-
-      - name: Build
-        run: |
-          cd go
-          make
-
-      - name: Cache compilation cache
-        id: query-cache
-        uses: ./.github/actions/cache-query-compilation
-        with:
-          key: go-qltest
-      - name: Test
-        run: |
-          cd go
-          make test cache="${{ steps.query-cache.outputs.cache-dir }}"
+      - name: Run tests
+        uses: ./go/actions/test
 
   test-win:
+    if: github.repository_owner == 'github'
     name: Test Windows
     runs-on: windows-latest-xl
     steps:
-      - name: Set up Go ${{ env.GO_VERSION }}
-        uses: actions/setup-go@v4
-        with:
-          go-version: ${{ env.GO_VERSION }}
-        id: go
-
       - name: Check out code
         uses: actions/checkout@v4
-
-      - name: Set up CodeQL CLI
-        uses: ./.github/actions/fetch-codeql
-
-      - name: Enable problem matchers in repository
-        shell: bash
-        run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
-
-      - name: Build
-        run: |
-          cd go
-          make
-
-      - name: Cache compilation cache
-        id: query-cache
-        uses: ./.github/actions/cache-query-compilation
-        with:
-          key: go-qltest
-
-      - name: Test
-        run: |
-          cd go
-          make test cache="${{ steps.query-cache.outputs.cache-dir }}"
+      - name: Run tests
+        uses: ./go/actions/test

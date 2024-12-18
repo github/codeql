@@ -1,0 +1,2 @@
+| gen_ref_pat.rs:6:9:6:28 | &mut ... | isMut: | yes | hasPat: | yes |
+| gen_ref_pat.rs:7:9:7:21 | &...::None | isMut: | no | hasPat: | yes |

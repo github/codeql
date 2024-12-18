@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         internal SwitchCase(Context cx, SwitchExpressionArmSyntax arm, Switch parent, int child) :
             base(new ExpressionInfo(
                 cx, cx.GetType(arm.Expression), cx.CreateLocation(arm.GetLocation()),
-                ExprKind.SWITCH_CASE, parent, child, false, null))
+                ExprKind.SWITCH_CASE, parent, child, isCompilerGenerated: false, null))
         {
             Expressions.Pattern.Create(cx, arm.Pattern, this, 0);
             if (arm.WhenClause is WhenClauseSyntax when)

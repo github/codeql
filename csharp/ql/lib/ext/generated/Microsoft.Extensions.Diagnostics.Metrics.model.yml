@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", True, "Initialize", "(Microsoft.Extensions.Diagnostics.Metrics.IObservableInstrumentsSource)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", True, "InstrumentPublished", "(System.Diagnostics.Metrics.Instrument,System.Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderConfigurationExtensions", False, "AddConfiguration", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder,Microsoft.Extensions.Configuration.IConfiguration)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "AddListener", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder,Microsoft.Extensions.Diagnostics.Metrics.IMetricsListener)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "AddListener<T>", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "ClearListeners", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "DisableMetrics", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder,System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "DisableMetrics", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder,System.String,System.String,System.String,Microsoft.Extensions.Diagnostics.Metrics.MeterScope)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "DisableMetrics", "(Microsoft.Extensions.Diagnostics.Metrics.MetricsOptions,System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "DisableMetrics", "(Microsoft.Extensions.Diagnostics.Metrics.MetricsOptions,System.String,System.String,System.String,Microsoft.Extensions.Diagnostics.Metrics.MeterScope)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "EnableMetrics", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder,System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "EnableMetrics", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder,System.String,System.String,System.String,Microsoft.Extensions.Diagnostics.Metrics.MeterScope)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "EnableMetrics", "(Microsoft.Extensions.Diagnostics.Metrics.MetricsOptions,System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "EnableMetrics", "(Microsoft.Extensions.Diagnostics.Metrics.MetricsOptions,System.String,System.String,System.String,Microsoft.Extensions.Diagnostics.Metrics.MeterScope)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "ConsoleMetrics", "get_DebugListenerName", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsBuilder", "get_Services", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", "GetMeasurementHandlers", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", "MeasurementsCompleted", "(System.Diagnostics.Metrics.Instrument,System.Object)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", "get_Name", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "IObservableInstrumentsSource", "RecordObservableInstruments", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "InstrumentRule", "InstrumentRule", "(System.String,System.String,System.String,Microsoft.Extensions.Diagnostics.Metrics.MeterScope,System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "InstrumentRule", "get_Enable", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "InstrumentRule", "get_InstrumentName", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "InstrumentRule", "get_ListenerName", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "InstrumentRule", "get_MeterName", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "InstrumentRule", "get_Scopes", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderConsoleExtensions", "AddDebugConsole", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsOptions", "get_Rules", "()", "summary", "df-generated"]

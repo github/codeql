@@ -1,0 +1,28 @@
+{
+  "markdownMessage": "1 `go.work` file was found:\n\n`modules/go.work`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/go-work-found",
+    "name": "`go.work` file found"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "2 `go.mod` files were found:\n\n`modules/subdir1/go.mod`, `modules/subdir2/go.mod`",
+  "severity": "note",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/multiple-go-mod-found-not-nested",
+    "name": "Multiple `go.mod` files found, not all nested under one root `go.mod` file"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

@@ -10,28 +10,6 @@ private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 import InsecureDownloadCustomizations::InsecureDownload
 
-/**
- * A taint tracking configuration for download of sensitive file through insecure connection.
- *
- * DEPRECATED: Use `InsecureDownloadFlow`.
- */
-deprecated class Configuration extends DataFlow::Configuration {
-  Configuration() { this = "InsecureDownload" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState label) {
-    source.(Source).getALabel() = label
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState label) {
-    sink.(Sink).getALabel() = label
-  }
-
-  override predicate isBarrier(DataFlow::Node node) {
-    super.isBarrier(node) or
-    node instanceof Sanitizer
-  }
-}
-
 private module InsecureDownloadConfig implements DataFlow::StateConfigSig {
   class FlowState = Label::State;
 

@@ -607,6 +607,3 @@ module Http {
     }
   }
 }
-
-/** DEPRECATED: Alias for Http */
-deprecated module HTTP = Http;

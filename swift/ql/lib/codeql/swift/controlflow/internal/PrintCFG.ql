@@ -7,52 +7,45 @@
  * @tags ide-contextual-queries/print-cfg
  */
 
-private import codeql.IDEContextual
+private import codeql.swift.elements.File
 private import codeql.swift.controlflow.ControlFlowGraph
-private import codeql.swift.controlflow.internal.ControlFlowGraphImpl::TestOutput
+private import codeql.swift.controlflow.internal.ControlFlowGraphImpl as Impl
+private import codeql.swift.controlflow.internal.ControlFlowGraphImplSpecific
 
 /**
  * Gets the source file to generate a CFG from.
  */
 external string selectedSourceFile();
 
+private predicate selectedSourceFileAlias = selectedSourceFile/0;
+
 /**
  * Gets the source line to generate a CFG from.
  */
-external string selectedSourceLine();
+external int selectedSourceLine();
+
+private predicate selectedSourceLineAlias = selectedSourceLine/0;
 
 /**
  * Gets the source column to generate a CFG from.
  */
-external string selectedSourceColumn();
+external int selectedSourceColumn();
 
-bindingset[file, line, column]
-private CfgScope smallestEnclosingScope(File file, int line, int column) {
-  result =
-    min(Location loc, CfgScope scope |
-      loc = scope.getLocation() and
-      (
-        loc.getStartLine() < line
-        or
-        loc.getStartLine() = line and loc.getStartColumn() <= column
-      ) and
-      (
-        loc.getEndLine() > line
-        or
-        loc.getEndLine() = line and loc.getEndColumn() >= column
-      ) and
-      loc.getFile() = file
-    |
-      scope
-      order by
-        loc.getStartLine() desc, loc.getStartColumn() desc, loc.getEndLine(), loc.getEndColumn()
-    )
-}
+private predicate selectedSourceColumnAlias = selectedSourceColumn/0;
 
-class MyRelevantNode extends RelevantNode {
-  MyRelevantNode() {
-    this.getScope() =
-      smallestEnclosingScope(getFileBySourceArchiveName(selectedSourceFile()),
-        selectedSourceLine().toInt(), selectedSourceColumn().toInt())
+module ViewCfgQueryInput implements Impl::ViewCfgQueryInputSig<File> {
+  predicate selectedSourceFile = selectedSourceFileAlias/0;
+
+  predicate selectedSourceLine = selectedSourceLineAlias/0;
+
+  predicate selectedSourceColumn = selectedSourceColumnAlias/0;
+
+  predicate cfgScopeSpan(
+    CfgInput::CfgScope scope, File file, int startLine, int startColumn, int endLine, int endColumn
+  ) {
+    file = scope.getFile() and
+    scope.getLocation().hasLocationInfo(_, startLine, startColumn, endLine, endColumn)
   }
 }
+
+import Impl::ViewCfgQuery<File, ViewCfgQueryInput>

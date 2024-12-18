@@ -269,8 +269,8 @@ void DeclTranslator::fillOperatorDecl(const swift::OperatorDecl& decl,
 
 void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl& entry) {
   entry.name = decl.getNameStr().str();
-  for (auto& typeLoc : decl.getInherited()) {
-    if (auto type = typeLoc.getType()) {
+  for (auto& inherited : decl.getInherited().getEntries()) {
+    if (auto type = inherited.getType()) {
       entry.inherited_types.push_back(dispatcher.fetchLabel(type));
     }
   }
@@ -289,7 +289,7 @@ void DeclTranslator::fillIterableDeclContext(const swift::IterableDeclContext& d
 
 void DeclTranslator::fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry) {
   entry.name = decl.getNameStr().str();
-  entry.type = dispatcher.fetchLabel(decl.getType());
+  entry.type = dispatcher.fetchLabel(decl.getTypeInContext());
   entry.parent_pattern = dispatcher.fetchOptionalLabel(decl.getParentPattern());
   entry.parent_initializer = dispatcher.fetchOptionalLabel(decl.getParentInitializer());
   if (decl.hasAttachedPropertyWrapper()) {
@@ -374,4 +374,32 @@ codeql::CapturedDecl DeclTranslator::translateCapturedValue(const swift::Capture
   entry.is_escaping = !capture.isNoEscape();
   return entry;
 }
+
+codeql::MacroDecl DeclTranslator::translateMacroDecl(const swift::MacroDecl& decl) {
+  auto entry = createEntry(decl);
+  fillValueDecl(decl, entry);
+  fillGenericContext(decl, entry);
+  entry.name = constructName(decl.getName());
+  for (auto attr : decl.getAttrs().getAttributes<swift::MacroRoleAttr>()) {
+    entry.roles.emplace_back(dispatcher.fetchLabel(attr));
+  }
+  if (decl.getParameterList()) {
+    for (auto param : *decl.getParameterList()) {
+      entry.parameters.emplace_back(dispatcher.fetchLabel(param));
+    }
+  }
+  return entry;
+}
+
+codeql::MacroRole DeclTranslator::translateMacroRoleAttr(const swift::MacroRoleAttr& attr) {
+  auto entry = dispatcher.createEntry(attr);
+  entry.kind = static_cast<uint32_t>(attr.getMacroRole());
+  entry.macro_syntax = static_cast<uint8_t>(attr.getMacroSyntax());
+  entry.conformances = dispatcher.fetchRepeatedLabels(attr.getConformances());
+  for (auto& declName : attr.getNames()) {
+    entry.names.emplace_back(constructName(declName.getName()));
+  }
+  return entry;
+}
+
 }  // namespace codeql

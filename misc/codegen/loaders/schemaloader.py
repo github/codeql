@@ -1,4 +1,5 @@
 """ schema loader """
+import sys
 
 import inflection
 import typing
@@ -36,26 +37,29 @@ def _get_class(cls: type) -> schema.Class:
     if cls.__name__ != to_underscore_and_back:
         raise schema.Error(f"Class name must be upper camel-case, without capitalized acronyms, found {cls.__name__} "
                            f"instead of {to_underscore_and_back}")
-    if len({b._group for b in cls.__bases__ if hasattr(b, "_group")}) > 1:
+    if len({g for g in (getattr(b, f"{schema.inheritable_pragma_prefix}group", None)
+                        for b in cls.__bases__) if g}) > 1:
         raise schema.Error(f"Bases with mixed groups for {cls.__name__}")
-    if any(getattr(b, "_null", False) for b in cls.__bases__):
+    pragmas = {
+        # dir and getattr inherit from bases
+        a[len(schema.inheritable_pragma_prefix):]: getattr(cls, a)
+        for a in dir(cls) if a.startswith(schema.inheritable_pragma_prefix)
+    }
+    pragmas |= cls.__dict__.get("_pragmas", {})
+    derived = {d.__name__ for d in cls.__subclasses__()}
+    if "null" in pragmas and derived:
         raise schema.Error(f"Null class cannot be derived")
     return schema.Class(name=cls.__name__,
                         bases=[b.__name__ for b in cls.__bases__ if b is not object],
-                        derived={d.__name__ for d in cls.__subclasses__()},
-                        # getattr to inherit from bases
-                        group=getattr(cls, "_group", ""),
-                        hideable=getattr(cls, "_hideable", False),
-                        test_with=_get_name(getattr(cls, "_test_with", None)),
+                        derived=derived,
+                        pragmas=pragmas,
+                        cfg=cls.__cfg__ if hasattr(cls, "__cfg__") else False,
                         # in the following we don't use `getattr` to avoid inheriting
-                        pragmas=cls.__dict__.get("_pragmas", []),
-                        synth=cls.__dict__.get("_synth", None),
                         properties=[
                             a | _PropertyNamer(n)
                             for n, a in cls.__dict__.get("__annotations__", {}).items()
                         ],
                         doc=schema.split_doc(cls.__doc__),
-                        default_doc_name=cls.__dict__.get("_doc_name"),
                         )
 
 
@@ -100,32 +104,35 @@ def _fill_synth_information(classes: typing.Dict[str, schema.Class]):
     fill_is_synth(root)
 
     for name, cls in classes.items():
-        if cls.synth is None and is_synth[name]:
-            cls.synth = True
+        if is_synth[name]:
+            cls.mark_synth()
 
 
 def _fill_hideable_information(classes: typing.Dict[str, schema.Class]):
     """ Update the class map propagating the `hideable` attribute upwards in the hierarchy """
-    todo = [cls for cls in classes.values() if cls.hideable]
+    todo = [cls for cls in classes.values() if "ql_hideable" in cls.pragmas]
     while todo:
         cls = todo.pop()
         for base in cls.bases:
             supercls = classes[base]
-            if not supercls.hideable:
-                supercls.hideable = True
+            if "ql_hideable" not in supercls.pragmas:
+                supercls.pragmas["ql_hideable"] = None
                 todo.append(supercls)
 
 
 def _check_test_with(classes: typing.Dict[str, schema.Class]):
     for cls in classes.values():
-        if cls.test_with is not None and classes[cls.test_with].test_with is not None:
-            raise schema.Error(f"{cls.name} has test_with {cls.test_with} which in turn "
-                               f"has test_with {classes[cls.test_with].test_with}, use that directly")
+        test_with = typing.cast(str, cls.pragmas.get("qltest_test_with"))
+        transitive_test_with = test_with and classes[test_with].pragmas.get("qltest_test_with")
+        if test_with and transitive_test_with:
+            raise schema.Error(f"{cls.name} has test_with {test_with} which in turn "
+                               f"has test_with {transitive_test_with}, use that directly")
 
 
 def load(m: types.ModuleType) -> schema.Schema:
     includes = set()
     classes = {}
+    imported_classes = {}
     known = {"int", "string", "boolean"}
     known.update(n for n in m.__dict__ if not n.startswith("__"))
     import misc.codegen.lib.schemadefs as defs
@@ -133,10 +140,15 @@ def load(m: types.ModuleType) -> schema.Schema:
     for name, data in m.__dict__.items():
         if hasattr(defs, name):
             continue
-        if name == "__includes":
-            includes = set(data)
+        if name == "includes":
+            includes = data
             continue
-        if name.startswith("__"):
+        if name.startswith("__") or name == "_":
+            continue
+        if isinstance(data, types.ModuleType):
+            continue
+        if isinstance(data, schema.ImportedClass):
+            imported_classes[name] = data
             continue
         cls = _get_class(data)
         if classes and not cls.bases:
@@ -144,21 +156,24 @@ def load(m: types.ModuleType) -> schema.Schema:
                 f"Only one root class allowed, found second root {name}")
         cls.check_types(known)
         classes[name] = cls
-        if getattr(data, "_null", False):
+        if "null" in cls.pragmas:
+            del cls.pragmas["null"]
             if null is not None:
                 raise schema.Error(f"Null class {null} already defined, second null class {name} not allowed")
             null = name
-            cls.is_null_class = True
 
     _fill_synth_information(classes)
     _fill_hideable_information(classes)
     _check_test_with(classes)
 
-    return schema.Schema(includes=includes, classes=_toposort_classes_by_group(classes), null=null)
+    return schema.Schema(includes=includes, classes=imported_classes | _toposort_classes_by_group(classes), null=null)
 
 
 def load_file(path: pathlib.Path) -> schema.Schema:
-    spec = importlib.util.spec_from_file_location("schema", path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    assert path.suffix in ("", ".py")
+    sys.path.insert(0, str(path.parent))
+    try:
+        module = importlib.import_module(path.with_suffix("").name)
+    finally:
+        sys.path.remove(str(path.parent))
     return load(module)

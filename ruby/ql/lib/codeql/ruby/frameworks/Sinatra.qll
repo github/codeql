@@ -133,7 +133,7 @@ module Sinatra {
   /**
    * A synthetic global representing the hash of local variables passed to an ERB template.
    */
-  class ErbLocalsHashSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
+  class ErbLocalsHashSyntheticGlobal extends string {
     private string id;
     private MethodCall erbCall;
     private ErbFile erbFile;
@@ -172,7 +172,7 @@ module Sinatra {
 
     override MethodCall getACall() { result = any(ErbCall c).asExpr().getExpr() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[locals:]" and
       output = "SyntheticGlobal[" + any(ErbLocalsHashSyntheticGlobal global) + "]" and
       preservesValue = true
@@ -207,7 +207,7 @@ module Sinatra {
       result.getReceiver() instanceof SelfVariableReadAccess
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "SyntheticGlobal[" + global + "].Element[:" + local + "]" and
       output = "ReturnValue" and
       preservesValue = true
@@ -279,19 +279,23 @@ module Sinatra {
         filter.getApp() = route.getApp() and
         // the filter applies to all routes
         not filter.hasPattern() and
-        blockPostUpdate(pred, filter.getBody()) and
-        blockSelfParameterNode(succ, route.getBody().asExpr().getExpr())
+        blockPostSelf(pred, filter.getBody()) and
+        blockSelf(succ, route.getBody().asExpr().getExpr())
       )
     }
   }
 
-  /** Holds if `n` is a post-update node for the block `b`. */
-  private predicate blockPostUpdate(DataFlow::PostUpdateNode n, DataFlow::BlockNode b) {
-    n.getPreUpdateNode() = b
+  /** Holds if `n` is a post-update node referencing `self` in the block `b`. */
+  private predicate blockPostSelf(DataFlow::PostUpdateNode n, DataFlow::BlockNode b) {
+    exists(SelfVariableAccessCfgNode self |
+      n.getPreUpdateNode().asExpr() = self and
+      self.getScope() = b.asExpr().getAstNode()
+    )
   }
 
-  /** Holds if `n` is a `self` parameter belonging to block `b`. */
-  private predicate blockSelfParameterNode(DataFlowPrivate::LambdaSelfReferenceNode n, Block b) {
-    n.getCallable() = b
+  /** Holds if `n` is a node referencing `self` in the block `b`. */
+  private predicate blockSelf(DataFlow::VariableAccessNode self, Block b) {
+    self.getExprNode().getBasicBlock().getScope() = b and
+    self.asVariableAccessAstNode().getVariable() instanceof SelfVariable
   }
 }

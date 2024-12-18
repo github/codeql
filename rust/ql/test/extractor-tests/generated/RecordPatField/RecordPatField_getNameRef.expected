@@ -1,0 +1,2 @@
+| gen_record_pat_field.rs:5:15:5:18 | RecordPatField | gen_record_pat_field.rs:5:15:5:15 | a |
+| gen_record_pat_field.rs:5:21:5:24 | RecordPatField | gen_record_pat_field.rs:5:21:5:21 | b |

@@ -1,18 +1,16 @@
-testFailures
-| string_flow.rb:85:10:85:10 | a | Unexpected result: hasValueFlow=a |
-| string_flow.rb:227:10:227:10 | a | Unexpected result: hasValueFlow=a |
+models
 edges
-| string_flow.rb:2:5:2:5 | a | string_flow.rb:3:21:3:21 | a |
-| string_flow.rb:2:9:2:18 | call to source | string_flow.rb:2:5:2:5 | a |
-| string_flow.rb:3:21:3:21 | a | string_flow.rb:3:10:3:22 | call to new |
-| string_flow.rb:83:5:83:5 | a | string_flow.rb:84:5:84:5 | a |
-| string_flow.rb:83:9:83:18 | call to source | string_flow.rb:83:5:83:5 | a |
-| string_flow.rb:84:5:84:5 | [post] a | string_flow.rb:85:10:85:10 | a |
-| string_flow.rb:84:5:84:5 | a | string_flow.rb:84:5:84:5 | [post] a |
-| string_flow.rb:223:5:223:5 | a | string_flow.rb:225:10:225:10 | a |
-| string_flow.rb:223:9:223:18 | call to source | string_flow.rb:223:5:223:5 | a |
-| string_flow.rb:225:10:225:10 | [post] a | string_flow.rb:227:10:227:10 | a |
-| string_flow.rb:225:10:225:10 | a | string_flow.rb:225:10:225:10 | [post] a |
+| string_flow.rb:2:5:2:5 | a | string_flow.rb:3:21:3:21 | a | provenance |  |
+| string_flow.rb:2:9:2:18 | call to source | string_flow.rb:2:5:2:5 | a | provenance |  |
+| string_flow.rb:3:21:3:21 | a | string_flow.rb:3:10:3:22 | call to new | provenance |  |
+| string_flow.rb:83:5:83:5 | a | string_flow.rb:84:5:84:5 | a | provenance |  |
+| string_flow.rb:83:9:83:18 | call to source | string_flow.rb:83:5:83:5 | a | provenance |  |
+| string_flow.rb:84:5:84:5 | [post] a | string_flow.rb:85:10:85:10 | a | provenance |  |
+| string_flow.rb:84:5:84:5 | a | string_flow.rb:84:5:84:5 | [post] a | provenance |  |
+| string_flow.rb:223:5:223:5 | a | string_flow.rb:225:10:225:10 | a | provenance |  |
+| string_flow.rb:223:9:223:18 | call to source | string_flow.rb:223:5:223:5 | a | provenance |  |
+| string_flow.rb:225:10:225:10 | [post] a | string_flow.rb:227:10:227:10 | a | provenance |  |
+| string_flow.rb:225:10:225:10 | a | string_flow.rb:225:10:225:10 | [post] a | provenance |  |
 nodes
 | string_flow.rb:2:5:2:5 | a | semmle.label | a |
 | string_flow.rb:2:9:2:18 | call to source | semmle.label | call to source |
@@ -29,6 +27,9 @@ nodes
 | string_flow.rb:225:10:225:10 | a | semmle.label | a |
 | string_flow.rb:227:10:227:10 | a | semmle.label | a |
 subpaths
+testFailures
+| string_flow.rb:85:10:85:10 | a | Unexpected result: hasValueFlow=a |
+| string_flow.rb:227:10:227:10 | a | Unexpected result: hasValueFlow=a |
 #select
 | string_flow.rb:3:10:3:22 | call to new | string_flow.rb:2:9:2:18 | call to source | string_flow.rb:3:10:3:22 | call to new | $@ | string_flow.rb:2:9:2:18 | call to source | call to source |
 | string_flow.rb:85:10:85:10 | a | string_flow.rb:83:9:83:18 | call to source | string_flow.rb:85:10:85:10 | a | $@ | string_flow.rb:83:9:83:18 | call to source | call to source |

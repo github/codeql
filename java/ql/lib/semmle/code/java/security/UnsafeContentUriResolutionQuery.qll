@@ -6,31 +6,10 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.UnsafeContentUriResolution
 
 /**
- * DEPRECATED: Use `UnsafeContentUriResolutionFlow` instead.
- *
- * A taint-tracking configuration to find paths from remote sources to content URI resolutions.
- */
-deprecated class UnsafeContentResolutionConf extends TaintTracking::Configuration {
-  UnsafeContentResolutionConf() { this = "UnsafeContentResolutionConf" }
-
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ContentUriResolutionSink }
-
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof ContentUriResolutionSanitizer
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(ContentUriResolutionAdditionalTaintStep s).step(node1, node2)
-  }
-}
-
-/**
  * A taint-tracking configuration to find paths from remote sources to content URI resolutions.
  */
 module UnsafeContentResolutionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ContentUriResolutionSink }
 
@@ -41,6 +20,8 @@ module UnsafeContentResolutionConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(ContentUriResolutionAdditionalTaintStep s).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Taint-tracking flow to find paths from remote sources to content URI resolutions. */

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.HttpOverrides, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.HttpOverrides, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -22,12 +22,14 @@ namespace Microsoft
                 public string ForwardedForHeaderName { get => throw null; set { } }
                 public Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders ForwardedHeaders { get => throw null; set { } }
                 public string ForwardedHostHeaderName { get => throw null; set { } }
+                public string ForwardedPrefixHeaderName { get => throw null; set { } }
                 public string ForwardedProtoHeaderName { get => throw null; set { } }
                 public int? ForwardLimit { get => throw null; set { } }
                 public System.Collections.Generic.IList<Microsoft.AspNetCore.HttpOverrides.IPNetwork> KnownNetworks { get => throw null; }
                 public System.Collections.Generic.IList<System.Net.IPAddress> KnownProxies { get => throw null; }
                 public string OriginalForHeaderName { get => throw null; set { } }
                 public string OriginalHostHeaderName { get => throw null; set { } }
+                public string OriginalPrefixHeaderName { get => throw null; set { } }
                 public string OriginalProtoHeaderName { get => throw null; set { } }
                 public bool RequireHeaderSymmetry { get => throw null; set { } }
             }
@@ -62,15 +64,18 @@ namespace Microsoft
                 XForwardedFor = 1,
                 XForwardedHost = 2,
                 XForwardedProto = 4,
-                All = 7,
+                XForwardedPrefix = 8,
+                All = 15,
             }
             public static class ForwardedHeadersDefaults
             {
                 public static string XForwardedForHeaderName { get => throw null; }
                 public static string XForwardedHostHeaderName { get => throw null; }
+                public static string XForwardedPrefixHeaderName { get => throw null; }
                 public static string XForwardedProtoHeaderName { get => throw null; }
                 public static string XOriginalForHeaderName { get => throw null; }
                 public static string XOriginalHostHeaderName { get => throw null; }
+                public static string XOriginalPrefixHeaderName { get => throw null; }
                 public static string XOriginalProtoHeaderName { get => throw null; }
             }
             public class ForwardedHeadersMiddleware
@@ -88,8 +93,10 @@ namespace Microsoft
             {
                 public bool Contains(System.Net.IPAddress address) => throw null;
                 public IPNetwork(System.Net.IPAddress prefix, int prefixLength) => throw null;
+                public static Microsoft.AspNetCore.HttpOverrides.IPNetwork Parse(System.ReadOnlySpan<char> networkSpan) => throw null;
                 public System.Net.IPAddress Prefix { get => throw null; }
                 public int PrefixLength { get => throw null; }
+                public static bool TryParse(System.ReadOnlySpan<char> networkSpan, out Microsoft.AspNetCore.HttpOverrides.IPNetwork network) => throw null;
             }
         }
     }

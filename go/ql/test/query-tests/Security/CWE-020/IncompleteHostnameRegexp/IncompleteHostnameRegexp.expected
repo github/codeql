@@ -1,12 +1,25 @@
+#select
+| IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:12:38:12:39 | re | This regular expression has an unescaped dot before ')?example.com', so it might match more hosts than expected when $@. | IncompleteHostnameRegexp.go:12:38:12:39 | re | the regular expression is used |
+| main.go:40:60:40:79 | "^test2.github.com$" | main.go:40:60:40:79 | "^test2.github.com$" | main.go:40:60:40:79 | "^test2.github.com$" | This regular expression has an unescaped dot before 'github.com', so it might match more hosts than expected when $@. | main.go:40:60:40:79 | "^test2.github.com$" | the regular expression is used |
+| main.go:45:15:45:39 | `https://www.example.com` | main.go:45:15:45:39 | `https://www.example.com` | main.go:45:15:45:39 | `https://www.example.com` | This regular expression has an unescaped dot before 'example.com', so it might match more hosts than expected when $@. | main.go:45:15:45:39 | `https://www.example.com` | the regular expression is used |
+| main.go:49:21:49:45 | `https://www.example.com` | main.go:49:21:49:45 | `https://www.example.com` | main.go:65:15:65:23 | localVar3 | This regular expression has an unescaped dot before 'example.com', so it might match more hosts than expected when $@. | main.go:65:15:65:23 | localVar3 | the regular expression is used |
+| main.go:56:15:56:34 | ...+... | main.go:56:15:56:34 | ...+... | main.go:56:15:56:34 | ...+... | This regular expression has an unescaped dot before 'example.com', so it might match more hosts than expected when $@. | main.go:56:15:56:34 | ...+... | the regular expression is used |
+| main.go:58:15:58:42 | ...+... | main.go:58:15:58:42 | ...+... | main.go:58:15:58:42 | ...+... | This regular expression has an unescaped dot before 'example.com', so it might match more hosts than expected when $@. | main.go:58:15:58:42 | ...+... | the regular expression is used |
 edges
-| IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:12:38:12:39 | re |
+| IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:12:38:12:39 | re | provenance | Sink:MaD:2 |
+| main.go:49:21:49:45 | `https://www.example.com` | main.go:62:15:62:25 | sourceConst | provenance |  |
+| main.go:62:15:62:25 | sourceConst | main.go:65:15:65:23 | localVar3 | provenance | Sink:MaD:1 |
+models
+| 1 | Sink: regexp; ; false; Match; ; ; Argument[0]; regex-use[1]; manual |
+| 2 | Sink: regexp; ; false; MatchString; ; ; Argument[0]; regex-use[1]; manual |
 nodes
 | IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | semmle.label | "^((www\|beta).)?example.com/" |
 | IncompleteHostnameRegexp.go:12:38:12:39 | re | semmle.label | re |
-| main.go:39:60:39:79 | "^test2.github.com$" | semmle.label | "^test2.github.com$" |
-| main.go:44:15:44:39 | `https://www.example.com` | semmle.label | `https://www.example.com` |
+| main.go:40:60:40:79 | "^test2.github.com$" | semmle.label | "^test2.github.com$" |
+| main.go:45:15:45:39 | `https://www.example.com` | semmle.label | `https://www.example.com` |
+| main.go:49:21:49:45 | `https://www.example.com` | semmle.label | `https://www.example.com` |
+| main.go:56:15:56:34 | ...+... | semmle.label | ...+... |
+| main.go:58:15:58:42 | ...+... | semmle.label | ...+... |
+| main.go:62:15:62:25 | sourceConst | semmle.label | sourceConst |
+| main.go:65:15:65:23 | localVar3 | semmle.label | localVar3 |
 subpaths
-#select
-| IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:12:38:12:39 | re | This regular expression has an unescaped dot before ')?example.com', so it might match more hosts than expected when $@. | IncompleteHostnameRegexp.go:12:38:12:39 | re | the regular expression is used |
-| main.go:39:60:39:79 | "^test2.github.com$" | main.go:39:60:39:79 | "^test2.github.com$" | main.go:39:60:39:79 | "^test2.github.com$" | This regular expression has an unescaped dot before 'github.com', so it might match more hosts than expected when $@. | main.go:39:60:39:79 | "^test2.github.com$" | the regular expression is used |
-| main.go:44:15:44:39 | `https://www.example.com` | main.go:44:15:44:39 | `https://www.example.com` | main.go:44:15:44:39 | `https://www.example.com` | This regular expression has an unescaped dot before 'example.com', so it might match more hosts than expected when $@. | main.go:44:15:44:39 | `https://www.example.com` | the regular expression is used |

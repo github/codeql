@@ -1,0 +1,26 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "CComSafeArray", True, "CComSafeArray", "(const CComSafeArray &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CComSafeArray", True, "CComSafeArray", "(const SAFEARRAY &)", "", "Argument[*0]", "Argument[-1].Field[*m_psa]", "value", "manual"]
+      - ["", "CComSafeArray", True, "CComSafeArray", "(const SAFEARRAY *)", "", "Argument[*0]", "Argument[-1].Field[*m_psa]", "value", "manual"]
+      - ["", "CComSafeArray", True, "Add", "(const SAFEARRAY *)", "", "Argument[*0]", "Argument[-1].Field[*m_psa]", "value", "manual"]
+      - ["", "CComSafeArray<T>", True, "Add", "(const T &,BOOL)", "", "Argument[*@0]", "Argument[-1].Field[*m_psa].Field[*@pvData]", "value", "manual"]
+      - ["", "CComSafeArray", True, "Attach", "", "", "Argument[*0]", "Argument[-1].Field[*m_psa]", "value", "manual"]
+      - ["", "CComSafeArray", True, "CopyFrom", "", "", "Argument[*0]", "Argument[-1].Field[*m_psa]", "value", "manual"]
+      - ["", "CComSafeArray", True, "CopyTo", "", "", "Argument[-1].Field[*m_psa]", "Argument[*0]", "value", "manual"]
+      - ["", "CComSafeArray", True, "GetAt", "", "", "Argument[-1].Field[*m_psa].Field[*@pvData]", "ReturnValue[*@]", "value", "manual"]
+      - ["", "CComSafeArray", True, "GetLowerBound", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["", "CComSafeArray", True, "GetSafeArrayPtr", "", "", "Argument[-1].Field[*m_psa]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CComSafeArray", True, "GetUpperBound", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["", "CComSafeArray", True, "MultiDimGetAt", "", "", "Argument[-1].Field[*m_psa].Field[*@pvData]", "Argument[*@1]", "value", "manual"]
+      - ["", "CComSafeArray", True, "MultiDimSetAt", "", "", "Argument[*@1]", "Argument[-1].Field[*m_psa].Field[*@pvData]", "value", "manual"]
+      - ["", "CComSafeArray", True, "SetAt", "", "", "Argument[*@1]", "Argument[-1].Field[*m_psa].Field[*@pvData]", "value", "manual"]
+      - ["", "CComSafeArray", True, "operator LPSAFEARRAY", "", "", "Argument[-1].Field[*m_psa]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CComSafeArray", True, "operator[]", "", "", "Argument[-1].Field[*m_psa].Field[*@pvData]", "ReturnValue[*@]", "value", "manual"]
+      - ["", "CComSafeArray", True, "operator=", "(const CComSafeArray &)", "", "Argument[*0].Field[*m_psa]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CComSafeArray", True, "operator=", "(const CComSafeArray &)", "", "Argument[*0].Field[*m_psa]", "Argument[-1].Field[*m_psa]", "value", "manual"]
+      - ["", "CComSafeArray", True, "operator=", "(const SAFEARRAY *)", "", "Argument[*0]", "Argument[-1].Field[*m_psa]", "value", "manual"]
+      - ["", "CComSafeArray", True, "operator=", "(const SAFEARRAY *)", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]

@@ -37,11 +37,17 @@ abstract class IsUnixGuard extends Guard { }
  */
 abstract class IsSpecificUnixVariant extends Guard { }
 
+private DataFlow::Node osNameFlow() {
+  result.asExpr() = getSystemProperty("os.name")
+  or
+  TaintTracking::localTaintStep(osNameFlow(), result)
+}
+
 /**
  * Holds when `ma` compares the current OS against the string constant `osString`.
  */
 private predicate isOsFromSystemProp(MethodCall ma, string osString) {
-  TaintTracking::localExprTaint(getSystemProperty("os.name"), ma.getQualifier()) and // Call from System.getProperty (or equivalent) to some partial match method
+  osNameFlow().asExpr() = ma.getQualifier() and // Call from System.getProperty (or equivalent) to some partial match method
   exists(StringPartialMatchMethod m, CompileTimeConstantExpr matchedStringConstant |
     m = ma.getMethod() and
     matchedStringConstant.getStringValue().toLowerCase() = osString

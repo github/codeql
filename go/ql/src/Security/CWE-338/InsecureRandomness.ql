@@ -25,7 +25,7 @@ where
       min(InsecureRandomness::Flow::PathNode sink2, int line |
         InsecureRandomness::Flow::flowPath(_, sink2) and
         sink2.getNode().getRoot() = sink.getNode().getRoot() and
-        sink2.hasLocationInfo(_, line, _, _, _)
+        line = sink2.getLocation().getStartLine()
       |
         sink2 order by line
       )

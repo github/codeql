@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import subprocess
 import json
 import csv
@@ -8,7 +10,7 @@ import argparse
 
 """
 This script collects CodeQL queries that are part of code scanning query packs
-and prints CSV data to stdout that describes which packs contain which queries.
+and prints CSV data to stdout that describes which suites in the pack contain which queries.
 
 Errors are printed to stderr. This script requires that 'git' and 'codeql' commands
 are on the PATH. It'll try to automatically set the CodeQL search path correctly,
@@ -52,7 +54,7 @@ class CodeQL:
         except:
             self.proc.kill()
 
-    def command(self, args): 
+    def command(self, args):
         data = json.dumps(args)
         data_bytes = data.encode('utf-8')
         self.proc.stdin.write(data_bytes)
@@ -159,7 +161,7 @@ with CodeQL() as codeql:
         csvwriter = csv.writer(sys.stdout)
         csvwriter.writerow([
             "Query filename", "Suite", "Query name", "Query ID",
-            "Kind", "Severity", "Precision", "Tags"
+            "Kind", "Severity", "Precision", "Tags", "Security score"
         ])
 
         # Iterate over all languages and packs, and resolve which queries are part of those packs
@@ -198,5 +200,6 @@ with CodeQL() as codeql:
                         get_query_metadata('kind', meta, queryfile_nwo),
                         get_query_metadata('problem.severity', meta, queryfile_nwo),
                         get_query_metadata('precision', meta, queryfile_nwo),
-                        get_query_metadata('tags', meta, queryfile_nwo)
+                        get_query_metadata('tags', meta, queryfile_nwo),
+                        get_query_metadata('security-severity', meta, queryfile_nwo),
                     ])

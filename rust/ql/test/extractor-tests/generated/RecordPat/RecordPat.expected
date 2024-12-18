@@ -1,0 +1,2 @@
+| gen_record_pat.rs:6:9:6:26 | Foo {...} | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasPath: | yes | hasRecordPatFieldList: | yes |
+| gen_record_pat.rs:7:9:7:18 | Foo {...} | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasPath: | yes | hasRecordPatFieldList: | yes |

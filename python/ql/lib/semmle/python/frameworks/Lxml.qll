@@ -10,15 +10,25 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides classes modeling security-relevant aspects of the `lxml` PyPI package
  *
  * See
  * - https://pypi.org/project/lxml/
  * - https://lxml.de/tutorial.html
  */
-private module Lxml {
+module Lxml {
+  /** Gets a reference to the `lxml.etree` module */
+  API::Node etreeRef() {
+    result = API::moduleImport("lxml").getMember("etree")
+    or
+    result = ModelOutput::getATypeNode("lxml.etree~Alias")
+  }
+
   // ---------------------------------------------------------------------------
   // XPath
   // ---------------------------------------------------------------------------
@@ -34,9 +44,7 @@ private module Lxml {
    * - https://lxml.de/apidoc/lxml.etree.html#lxml.etree.ETXPath
    */
   private class XPathClassCall extends XML::XPathConstruction::Range, DataFlow::CallCfgNode {
-    XPathClassCall() {
-      this = API::moduleImport("lxml").getMember("etree").getMember(["XPath", "ETXPath"]).getACall()
-    }
+    XPathClassCall() { this = etreeRef().getMember(["XPath", "ETXPath"]).getACall() }
 
     override DataFlow::Node getXPath() { result in [this.getArg(0), this.getArgByName("path")] }
 
@@ -62,20 +70,11 @@ private module Lxml {
     XPathCall() {
       exists(API::Node parseResult |
         parseResult =
-          API::moduleImport("lxml")
-              .getMember("etree")
-              .getMember(["parse", "fromstring", "fromstringlist", "HTML", "XML"])
-              .getReturn()
+          etreeRef().getMember(["parse", "fromstring", "fromstringlist", "HTML", "XML"]).getReturn()
         or
         // TODO: lxml.etree.parseid(<text>)[0] will contain the root element from parsing <text>
         // but we don't really have a way to model that nicely.
-        parseResult =
-          API::moduleImport("lxml")
-              .getMember("etree")
-              .getMember("XMLParser")
-              .getReturn()
-              .getMember("close")
-              .getReturn()
+        parseResult = etreeRef().getMember("XMLParser").getReturn().getMember("close").getReturn()
       |
         this = parseResult.getMember("xpath").getACall()
       )
@@ -87,14 +86,7 @@ private module Lxml {
   }
 
   class XPathEvaluatorCall extends XML::XPathExecution::Range, DataFlow::CallCfgNode {
-    XPathEvaluatorCall() {
-      this =
-        API::moduleImport("lxml")
-            .getMember("etree")
-            .getMember("XPathEvaluator")
-            .getReturn()
-            .getACall()
-    }
+    XPathEvaluatorCall() { this = etreeRef().getMember("XPathEvaluator").getReturn().getACall() }
 
     override DataFlow::Node getXPath() { result = this.getArg(0) }
 
@@ -130,9 +122,7 @@ private module Lxml {
      * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.XMLParser
      */
     private class LxmlParser extends InstanceSource, API::CallNode {
-      LxmlParser() {
-        this = API::moduleImport("lxml").getMember("etree").getMember("XMLParser").getACall()
-      }
+      LxmlParser() { this = etreeRef().getMember("XMLParser").getACall() }
 
       // NOTE: it's not possible to change settings of a parser after constructing it
       override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
@@ -162,10 +152,7 @@ private module Lxml {
      * See https://lxml.de/apidoc/lxml.etree.html?highlight=xmlparser#lxml.etree.get_default_parser
      */
     private class LxmlDefaultParser extends InstanceSource, DataFlow::CallCfgNode {
-      LxmlDefaultParser() {
-        this =
-          API::moduleImport("lxml").getMember("etree").getMember("get_default_parser").getACall()
-      }
+      LxmlDefaultParser() { this = etreeRef().getMember("get_default_parser").getACall() }
 
       override predicate vulnerableTo(XML::XmlParsingVulnerabilityKind kind) {
         // as highlighted by
@@ -240,7 +227,7 @@ private module Lxml {
 
     LxmlParsing() {
       functionName in ["fromstring", "fromstringlist", "XML", "XMLID", "parse", "parseid"] and
-      this = API::moduleImport("lxml").getMember("etree").getMember(functionName).getACall()
+      this = etreeRef().getMember(functionName).getACall()
     }
 
     override DataFlow::Node getAnInput() {
@@ -309,9 +296,7 @@ private module Lxml {
   private class LxmlIterparseCall extends API::CallNode, XML::XmlParsing::Range,
     FileSystemAccess::Range
   {
-    LxmlIterparseCall() {
-      this = API::moduleImport("lxml").getMember("etree").getMember("iterparse").getACall()
-    }
+    LxmlIterparseCall() { this = etreeRef().getMember("iterparse").getACall() }
 
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("source")] }
 

@@ -9,23 +9,35 @@ Accessing files using paths constructed from user-controlled data can allow an a
 unexpected resources. This can result in sensitive information being revealed or deleted, or an
 attacker being able to influence behavior by modifying unexpected files.
 </p>
+<p>
+Paths that are naively constructed from data controlled by a user may be absolute paths,
+or may contain unexpected special characters such as "..". Such a path could point anywhere
+on the file system.
+</p>
 </overview>
 
 <recommendation>
 <p>
-Validate user input before using it to construct a file path, either using an off-the-shelf library
-or by performing custom validation.
+Validate user input before using it to construct a file path.
 </p>
 <p>
-Ideally, follow these rules:
+Common validation methods include checking that the normalized path is relative and
+does not contain any ".." components, or checking that the path is contained within a safe folder. The method you should use depends on how the path is used in the application, and whether the path should be a single path component.
 </p>
-<ul>
-<li>Do not allow more than a single "." character.</li>
-<li>Do not allow directory separators such as "/" or "\" (depending on the file system).</li>
-<li>Do not rely on simply replacing problematic sequences such as "../". For example, after
-applying this filter to ".../...//", the resulting string would still be "../".</li>
-<li>Use an allowlist of known good patterns.</li>
-</ul>
+<p>
+If the path should be a single path component (such as a file name), you can check for the
+existence of any path separators ("/" or "\"), or ".." sequences in the input, and reject
+the input if any are found.
+</p>
+<p>
+Note that removing "../" sequences is <i>not</i> sufficient, since the input could still
+contain a path separator followed by "..". For example, the input ".../...//" would still
+result in the string "../" if only "../" sequences are removed.
+</p>
+<p>
+Finally, the simplest (but most restrictive) option is to use an allow list of safe patterns
+and make sure that the user input matches one of these patterns.
+</p>
 </recommendation>
 
 <example>
@@ -43,6 +55,27 @@ password file. This file would then be sent back to the user, giving them access
 information.
 </p>
 <sample src="TaintedPath.go" />
+<p>
+If the input should only be a file name, you can check that it doesn't contain any
+path separators or ".." sequences.
+</p>
+<sample src="TaintedPathGood.go" />
+<p>
+Note that this approach is only suitable if the input is expected to be a single file name.
+</p>
+<p>
+If the input can be a path with multiple components, you can make it safe by verifying
+that the path is within a specific directory that is considered safe.
+You can do this by resolving the input with respect to that directory, and then checking
+that the resulting path is still within it.
+</p>
+<sample src="TaintedPathGood2.go" />
+<p>
+Note that <code>/home/user</code> is just an example, you should replace it with the actual
+safe directory in your application. Also, while in this example the path of the safe
+directory is absolute, this may not always be the case, and you may need to resolve it
+first before checking the input.
+</p>
 </example>
 
 <references>

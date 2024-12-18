@@ -1,0 +1,1 @@
+| test.kt:6:3:9:3 | throw ... | test.kt:6:3:9:3 | new NoWhenBranchMatchedException(...) |

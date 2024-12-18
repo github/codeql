@@ -1,0 +1,11 @@
+| test.py:41:1:41:33 | Entry definition for SsaSourceVariable NONSOURCE | test.py:42:10:42:18 | ControlFlowNode for NONSOURCE |
+| test.py:41:1:41:33 | Entry definition for SsaSourceVariable SINK | test.py:44:5:44:8 | ControlFlowNode for SINK |
+| test.py:41:1:41:33 | Entry definition for SsaSourceVariable SOURCE | test.py:42:21:42:26 | ControlFlowNode for SOURCE |
+| test.py:42:5:42:5 | ControlFlowNode for x | test.py:43:9:43:9 | ControlFlowNode for x |
+| test.py:42:10:42:26 | ControlFlowNode for Tuple | test.py:42:5:42:5 | ControlFlowNode for x |
+| test.py:43:5:43:5 | ControlFlowNode for y | test.py:44:10:44:10 | ControlFlowNode for y |
+| test.py:43:9:43:12 | ControlFlowNode for Subscript | test.py:43:5:43:5 | ControlFlowNode for y |
+| test.py:208:1:208:53 | Entry definition for SsaSourceVariable SINK | test.py:210:5:210:8 | ControlFlowNode for SINK |
+| test.py:208:1:208:53 | Entry definition for SsaSourceVariable SOURCE | test.py:209:25:209:30 | ControlFlowNode for SOURCE |
+| test.py:209:5:209:5 | ControlFlowNode for x | test.py:210:10:210:10 | ControlFlowNode for x |
+| test.py:209:9:209:68 | ControlFlowNode for ListComp | test.py:209:5:209:5 | ControlFlowNode for x |

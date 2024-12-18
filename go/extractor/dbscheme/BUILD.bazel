@@ -1,0 +1,17 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "dbscheme",
+    srcs = [
+        "dbscheme.go",
+        "tables.go",
+    ],
+    importpath = "github.com/github/codeql-go/extractor/dbscheme",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//go/extractor/trap",
+        "@org_golang_x_tools//go/packages",
+    ],
+)

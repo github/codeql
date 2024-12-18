@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.pac4j.jwt.config.encryption", "SecretEncryptionConfiguration", True, "SecretEncryptionConfiguration", "", "", "Argument[0]", "credentials-key", "manual"]
+      - ["org.pac4j.jwt.config.encryption", "SecretEncryptionConfiguration", True, "setSecret", "", "", "Argument[0]", "credentials-key", "manual"]
+      - ["org.pac4j.jwt.config.encryption", "SecretEncryptionConfiguration", True, "setSecretBase64", "", "", "Argument[0]", "credentials-key", "manual"]
+      - ["org.pac4j.jwt.config.encryption", "SecretEncryptionConfiguration", True, "setSecretBytes", "", "", "Argument[0]", "credentials-key", "manual"]

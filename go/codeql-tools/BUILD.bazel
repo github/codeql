@@ -1,0 +1,15 @@
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
+
+codeql_pkg_files(
+    name = "codeql-tools",
+    srcs = glob(
+        ["*"],
+        exclude = [
+            "*.sh",
+            "BUILD.bazel",
+        ],
+    ),
+    exes = glob(["*.sh"]),
+    prefix = "tools",
+    visibility = ["//go:__pkg__"],
+)

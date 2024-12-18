@@ -1,9 +1,157 @@
+## 1.2.5
+
+No user-facing changes.
+
+## 1.2.4
+
+No user-facing changes.
+
+## 1.2.3
+
+No user-facing changes.
+
+## 1.2.2
+
+No user-facing changes.
+
+## 1.2.1
+
+No user-facing changes.
+
+## 1.2.0
+
+### Major Analysis Improvements
+
+- Added a new query (`js/actions/actions-artifact-leak`) to detect GitHub Actions artifacts that may leak the GITHUB_TOKEN token.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Message events in the browser are now properly classified as client-side taint sources. Previously they were
+  incorrectly classified as server-side taint sources, which resulted in some alerts being reported by
+  the wrong query, such as server-side URL redirection instead of client-side URL redirection.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### New Queries
+
+* Added a new query, `js/insecure-helmet-configuration`, to detect instances where Helmet middleware is configured with important security features disabled.
+
+### Minor Analysis Improvements
+
+* Added a new query, `js/functionality-from-untrusted-domain`, which detects uses in HTML and JavaScript scripts from untrusted domains, including the `polyfill.io` content delivery network
+  * it can be extended to detect other compromised scripts using user-provided data extensions of the `untrustedDomain` predicate, which takes one string argument with the domain to warn on (and will warn on any subdomains too).
+* Modified existing query, `js/functionality-from-untrusted-source`, to allow adding this new query, but reusing the same logic
+  * Added the ability to use data extensions to require SRI on CDN hostnames using the `isCdnDomainWithCheckingRequired` predicate, which takes one string argument of the full hostname to require SRI for.
+* Created a new library, `semmle.javascript.security.FunctionalityFromUntrustedSource`, to support both queries.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* Added a new experimental query, `js/cors-misconfiguration`, which detects misconfigured CORS HTTP headers in the `cors` and `apollo` libraries. 
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+## 0.8.16
+
+No user-facing changes.
+
+## 0.8.15
+
+### Minor Analysis Improvements
+
+* The JavaScript extractor will on longer report syntax errors related to "strict mode".
+  Files containing such errors are now being fully analyzed along with other sources files.
+  This improves our support for source files that technically break the "strict mode" rules,
+  but where a build steps transforms the code such that it ends up working at runtime.
+
+## 0.8.14
+
+### Minor Analysis Improvements
+
+* `API::Node#getInstance()` now includes instances of subclasses, include transitive subclasses.
+  The same changes applies to uses of the `Instance` token in data extensions.
+
+## 0.8.13
+
+### Query Metadata Changes
+
+* The `@precision` of the `js/unsafe-external-link` has been reduced to `low` to reflect the fact that modern browsers do not expose the opening window for such links. This mitigates the potential security risk of having a link with `target="_blank"`.
+
+### Minor Analysis Improvements
+
+* The call graph has been improved, leading to more alerts for data flow based queries.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+No user-facing changes.
+
+## 0.8.9
+
+### Bug Fixes
+
+* The left operand of the `&&` operator no longer propagates data flow by default.
+
+## 0.8.8
+
+No user-facing changes.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Added support for [doT](https://github.com/olado/doT) templates. 
+
+## 0.8.6
+
+No user-facing changes.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Added django URLs to detected "safe" URL patterns in `js/unsafe-external-link`. 
+
 ## 0.8.3
 
 ### Query Metadata Changes
 
-* Lower the severity of log-injection to medium.
-* Increase the severity of XSS to high.
+* Lower the security severity of log-injection to medium.
+* Increase the security severity of XSS to high.
 
 ## 0.8.2
 

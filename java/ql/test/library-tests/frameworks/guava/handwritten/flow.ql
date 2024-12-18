@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module TaintFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { n.asExpr().(MethodCall).getMethod().hasName("taint") }
@@ -18,8 +18,6 @@ module ValueFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node n) {
     exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
-
-  int fieldFlowBranchLimit() { result = 100 }
 }
 
 module ValueFlow = DataFlow::Global<ValueFlowConfig>;

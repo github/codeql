@@ -39,6 +39,6 @@ where
   ) and
   // Also, any value that `v` is initialized to is a new container,
   forall(Expr e | e = v.getAnAssignedValue() | e instanceof ClassInstanceExpr) and
-  // and `v` is not implicitly initialized by a for-each loop.
-  not exists(EnhancedForStmt efs | efs.getVariable().getVariable() = v)
+  // and `v` is not implicitly initialized
+  not v.(LocalVariableDecl).getDeclExpr().hasImplicitInit()
 select v, "The contents of this container are never accessed."

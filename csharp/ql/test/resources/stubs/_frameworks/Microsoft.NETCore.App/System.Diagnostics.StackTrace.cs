@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Diagnostics.StackTrace, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Diagnostics.StackTrace, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Diagnostics
@@ -34,6 +34,7 @@ namespace System
         {
             public StackTrace() => throw null;
             public StackTrace(bool fNeedFileInfo) => throw null;
+            public StackTrace(System.Collections.Generic.IEnumerable<System.Diagnostics.StackFrame> frames) => throw null;
             public StackTrace(System.Diagnostics.StackFrame frame) => throw null;
             public StackTrace(System.Exception e) => throw null;
             public StackTrace(System.Exception e, bool fNeedFileInfo) => throw null;

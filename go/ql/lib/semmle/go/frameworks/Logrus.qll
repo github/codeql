@@ -15,7 +15,9 @@ module Logrus {
   }
 
   bindingset[result]
-  private string getAnEntryUpdatingMethodName() { result.regexpMatch("With(Error|Fields?|Time)") }
+  private string getAnEntryUpdatingMethodName() {
+    result = ["WithError", "WithField", "WithFields", "WithTime"]
+  }
 
   private class LogFunction extends Function {
     LogFunction() {
@@ -24,12 +26,6 @@ module Logrus {
         this.(Method).hasQualifiedName(packagePath(), ["Entry", "Logger"], name)
       )
     }
-  }
-
-  private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
-    LogCall() { this = any(LogFunction f).getACall() }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   private class StringFormatters extends StringOps::Formatting::Range instanceof LogFunction {

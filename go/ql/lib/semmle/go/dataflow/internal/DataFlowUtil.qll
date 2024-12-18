@@ -104,7 +104,7 @@ predicate isReturnedWithError(Node node) {
  * (intra-procedural) step.
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo)
+  simpleLocalFlowStep(nodeFrom, nodeTo, _)
   or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural
@@ -118,14 +118,16 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
 cached
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  basicLocalFlowStep(nodeFrom, nodeTo)
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+  basicLocalFlowStep(nodeFrom, nodeTo) and
+  model = ""
   or
   // step through function model
-  any(FunctionModel m).flowStep(nodeFrom, nodeTo)
+  any(FunctionModel m).flowStep(nodeFrom, nodeTo) and
+  model = "FunctionModel"
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
 /**
@@ -282,9 +284,11 @@ signature predicate guardChecksSig(Node g, Expr e, boolean branch);
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var | result = var.getAUse() |
+    exists(ControlFlow::ConditionGuardNode guard, SsaWithFields var |
+      result = pragma[only_bind_out](var).getAUse()
+    |
       guards(_, guard, _, var) and
-      guard.dominates(result.getBasicBlock())
+      pragma[only_bind_out](guard).dominates(result.getBasicBlock())
     )
   }
 
@@ -337,6 +341,21 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     localFlow(pragma[only_bind_out](outp.getNode(c)), resNode)
   }
 
+  private predicate onlyPossibleReturnSatisfyingProperty(
+    FuncDecl fd, FunctionOutput outp, Node ret, DataFlow::Property p
+  ) {
+    exists(boolean b |
+      onlyPossibleReturnOfBool(fd, outp, ret, b) and
+      p.isBoolean(b)
+    )
+    or
+    onlyPossibleReturnOfNonNil(fd, outp, ret) and
+    p.isNonNil()
+    or
+    onlyPossibleReturnOfNil(fd, outp, ret) and
+    p.isNil()
+  }
+
   /**
    * Holds if whenever `p` holds of output `outp` of function `f`, this node
    * is known to validate the input `inp` of `f`.
@@ -351,24 +370,14 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   ) {
     exists(FuncDecl fd, Node arg, Node ret |
       fd.getFunction() = f and
-      localFlow(inp.getExitNode(fd), arg) and
-      ret = outp.getEntryNode(fd) and
+      localFlow(inp.getExitNode(fd), pragma[only_bind_out](arg)) and
       (
         // Case: a function like "if someBarrierGuard(arg) { return true } else { return false }"
         exists(ControlFlow::ConditionGuardNode guard |
-          guards(g, guard, arg) and
-          guard.dominates(ret.getBasicBlock())
+          guards(g, pragma[only_bind_out](guard), arg) and
+          guard.dominates(pragma[only_bind_out](ret).getBasicBlock())
         |
-          exists(boolean b |
-            onlyPossibleReturnOfBool(fd, outp, ret, b) and
-            p.isBoolean(b)
-          )
-          or
-          onlyPossibleReturnOfNonNil(fd, outp, ret) and
-          p.isNonNil()
-          or
-          onlyPossibleReturnOfNil(fd, outp, ret) and
-          p.isNil()
+          onlyPossibleReturnSatisfyingProperty(fd, outp, ret, p)
         )
         or
         // Case: a function like "return someBarrierGuard(arg)"

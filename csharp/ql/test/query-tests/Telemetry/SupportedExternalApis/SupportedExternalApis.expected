@@ -8,4 +8,5 @@
 | System#DateTime.AddDays(System.Double) | 1 |
 | System#DateTime.DateTime(System.Int32,System.Int32,System.Int32) | 1 |
 | System#Guid.Parse(System.String) | 1 |
+| System.Web#HtmlString.HtmlString(System.String) | 1 |
 | System.Web#HttpResponse.WriteFile(System.String) | 1 |

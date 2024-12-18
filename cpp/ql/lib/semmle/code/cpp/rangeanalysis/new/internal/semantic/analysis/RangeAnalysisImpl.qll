@@ -173,11 +173,11 @@ private module ModulusAnalysisInstantiated implements ModulusAnalysisSig<Sem> {
 }
 
 module ConstantStage =
-  RangeStage<SemLocation, Sem, FloatDelta, ConstantBounds, FloatOverflow, CppLangImplConstant,
+  RangeStage<SemLocation, Sem, FloatDelta, AllBounds, FloatOverflow, CppLangImplConstant,
     SignAnalysis, ModulusAnalysisInstantiated>;
 
 module RelativeStage =
-  RangeStage<SemLocation, Sem, FloatDelta, RelativeBounds, FloatOverflow, CppLangImplRelative,
+  RangeStage<SemLocation, Sem, FloatDelta, AllBounds, FloatOverflow, CppLangImplRelative,
     SignAnalysis, ModulusAnalysisInstantiated>;
 
 private newtype TSemReason =

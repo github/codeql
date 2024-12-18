@@ -5,13 +5,29 @@
 | Capture.cs:72:15:72:20 | access to local variable sink30 |
 | Capture.cs:84:15:84:20 | access to local variable sink31 |
 | Capture.cs:93:15:93:20 | access to local variable sink32 |
-| Capture.cs:122:15:122:20 | access to local variable sink40 |
-| Capture.cs:133:15:133:20 | access to local variable sink33 |
-| Capture.cs:145:15:145:20 | access to local variable sink34 |
-| Capture.cs:154:15:154:20 | access to local variable sink35 |
-| Capture.cs:161:15:161:20 | access to local variable sink36 |
-| Capture.cs:169:15:169:20 | access to local variable sink37 |
-| Capture.cs:195:15:195:20 | access to local variable sink38 |
+| Capture.cs:124:15:124:20 | access to local variable sink40 |
+| Capture.cs:135:15:135:20 | access to local variable sink33 |
+| Capture.cs:147:15:147:20 | access to local variable sink34 |
+| Capture.cs:156:15:156:20 | access to local variable sink35 |
+| Capture.cs:163:15:163:20 | access to local variable sink36 |
+| Capture.cs:171:15:171:20 | access to local variable sink37 |
+| Capture.cs:197:15:197:20 | access to local variable sink38 |
+| Capture.cs:206:19:206:19 | access to parameter s |
+| Capture.cs:217:19:217:19 | access to parameter s |
+| Capture.cs:231:19:231:19 | access to local variable x |
+| Capture.cs:234:15:234:15 | access to local variable x |
+| Capture.cs:246:19:246:25 | access to field Field |
+| Capture.cs:251:15:251:21 | access to field Field |
+| Capture.cs:268:15:268:21 | access to field Field |
+| Capture.cs:273:30:273:30 | access to parameter x |
+| Capture.cs:284:23:284:23 | access to local variable x |
+| Capture.cs:292:15:292:15 | access to local variable x |
+| Capture.cs:301:19:301:28 | access to field Field |
+| Capture.cs:306:15:306:24 | access to field Field |
+| Capture.cs:312:15:312:15 | access to local variable x |
+| Capture.cs:319:19:319:19 | access to local variable x |
+| Capture.cs:330:47:330:47 | access to local variable x |
+| Capture.cs:341:45:341:45 | access to local variable x |
 | GlobalDataFlow.cs:19:15:19:29 | access to field SinkField0 |
 | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 |
 | GlobalDataFlow.cs:45:50:45:59 | access to parameter sinkParam2 |
@@ -51,21 +67,23 @@
 | GlobalDataFlow.cs:329:15:329:25 | access to parameter sinkParam11 |
 | GlobalDataFlow.cs:404:15:404:20 | access to local variable sink11 |
 | GlobalDataFlow.cs:427:41:427:46 | access to local variable sink20 |
-| GlobalDataFlow.cs:478:15:478:20 | access to local variable sink45 |
-| GlobalDataFlow.cs:486:32:486:32 | access to parameter s |
-| GlobalDataFlow.cs:508:15:508:22 | access to field field |
-| GlobalDataFlow.cs:509:15:509:22 | access to field field |
-| GlobalDataFlow.cs:515:15:515:22 | access to field field |
-| GlobalDataFlow.cs:516:15:516:22 | access to field field |
-| GlobalDataFlow.cs:517:15:517:22 | access to field field |
-| GlobalDataFlow.cs:526:15:526:21 | access to field field |
+| GlobalDataFlow.cs:461:15:461:20 | access to local variable sink45 |
+| GlobalDataFlow.cs:469:32:469:32 | access to parameter s |
+| GlobalDataFlow.cs:491:15:491:22 | access to field field |
+| GlobalDataFlow.cs:492:15:492:22 | access to field field |
+| GlobalDataFlow.cs:498:15:498:22 | access to field field |
+| GlobalDataFlow.cs:499:15:499:22 | access to field field |
+| GlobalDataFlow.cs:500:15:500:22 | access to field field |
+| GlobalDataFlow.cs:509:15:509:21 | access to field field |
+| GlobalDataFlow.cs:516:15:516:21 | access to field field |
+| GlobalDataFlow.cs:517:15:517:21 | access to field field |
+| GlobalDataFlow.cs:531:15:531:21 | access to field field |
+| GlobalDataFlow.cs:532:15:532:21 | access to field field |
 | GlobalDataFlow.cs:533:15:533:21 | access to field field |
-| GlobalDataFlow.cs:534:15:534:21 | access to field field |
-| GlobalDataFlow.cs:548:15:548:21 | access to field field |
-| GlobalDataFlow.cs:549:15:549:21 | access to field field |
-| GlobalDataFlow.cs:550:15:550:21 | access to field field |
-| GlobalDataFlow.cs:556:15:556:22 | access to field field |
-| GlobalDataFlow.cs:564:15:564:21 | access to field field |
+| GlobalDataFlow.cs:539:15:539:22 | access to field field |
+| GlobalDataFlow.cs:547:15:547:21 | access to field field |
+| MultiImplementationA.cs:7:39:7:39 | access to parameter x |
+| MultiImplementationB.cs:5:39:5:39 | access to parameter x |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x |

@@ -2,7 +2,7 @@
  * @name Potentially uninitialized local variable
  * @description Reading from a local variable that has not been assigned to
  *              will typically yield garbage.
- * @kind problem
+ * @kind path-problem
  * @id cpp/uninitialized-local
  * @problem.severity warning
  * @security-severity 7.8
@@ -15,6 +15,7 @@
 import cpp
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.MustFlow
+import PathGraph
 
 /**
  * Auxiliary predicate: Types that don't require initialization
@@ -56,12 +57,15 @@ VariableAccess commonException() {
   // Finally, exclude functions that contain assembly blocks. It's
   // anyone's guess what happens in those.
   containsInlineAssembly(result.getEnclosingFunction())
+  or
+  exists(Call c | c.getQualifier() = result | c.getTarget().isStatic())
 }
 
 predicate isSinkImpl(Instruction sink, VariableAccess va) {
   exists(LoadInstruction load |
     va = load.getUnconvertedResultExpression() and
     not va = commonException() and
+    not va.getTarget().(LocalVariable).getFunction().hasErrors() and
     sink = load.getSourceValue()
   )
 }
@@ -87,4 +91,4 @@ where
   conf.hasFlowPath(source, sink) and
   isSinkImpl(sink.getInstruction(), va) and
   v = va.getTarget()
-select va, "The variable $@ may not be initialized at this access.", v, v.getName()
+select va, source, sink, "The variable $@ may not be initialized at this access.", v, v.getName()

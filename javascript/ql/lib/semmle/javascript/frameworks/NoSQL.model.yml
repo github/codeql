@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      # In Mongo version 2.x, a client and a database handle were the same concept, but in 3.x
+      # they were separated. To handle everything with a single model, we treat them as the same here.
+      - ['mongodb.Db', 'mongodb.MongoClient', '']
+      # 'marsdb' has no typings and is archived.
+      # We just model is as a variant of 'mongoose'.
+      - ['mongoose.Model', 'marsdb', 'Member[Collection].Instance']
+      - ['mongoose.Query', 'marsdb', 'Member[Collection].Instance']
+      - ['mongoose.Query', 'mongoose.Query', 'Member[sortFunc].ReturnValue']

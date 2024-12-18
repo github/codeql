@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>This rule finds a dereference of a function parameter, whose value comes from another function call that may return NULL, without checks in the meantime.</p>
+</overview>
+
+<recommendation>
+<p>A check should be added between the return of the function which may return NULL, and its use by the function dereferencing ths pointer.</p>
+</recommendation>
+
+<example>
+<sample src="DerefNullResult.cpp" />
+</example>
+
+<references>
+<li>
+  <a href="https://www.owasp.org/index.php/Null_Dereference">
+    Null Dereference
+  </a> 
+</li>
+</references>
+
+</qhelp>

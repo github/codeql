@@ -1,0 +1,2 @@
+| gen_ref_pat.rs:6:9:6:28 | &mut ... | gen_ref_pat.rs:6:14:6:28 | ...::Some(...) |
+| gen_ref_pat.rs:7:9:7:21 | &...::None | gen_ref_pat.rs:7:10:7:21 | ...::None |

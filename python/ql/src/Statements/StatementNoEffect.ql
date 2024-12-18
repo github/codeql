@@ -121,7 +121,7 @@ predicate python2_print(Expr e) {
 
 predicate no_effect(Expr e) {
   // strings can be used as comments
-  not e instanceof StrConst and
+  not e instanceof StringLiteral and
   not e.hasSideEffects() and
   forall(Expr sub | sub = e.getASubExpression*() |
     not side_effecting_binary(sub) and

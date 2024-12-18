@@ -85,10 +85,15 @@ newtype TInstructionTag =
   // The next three cases handle generation of branching for __except handling.
   TryExceptCompareNegativeOneBranch() or
   TryExceptCompareZeroBranch() or
-  TryExceptCompareOneBranch()
+  TryExceptCompareOneBranch() or
+  ImplicitDestructorTag(int index) {
+    exists(Expr e | exists(e.getImplicitDestructorCall(index))) or
+    exists(Stmt s | exists(s.getImplicitDestructorCall(index)))
+  } or
+  CoAwaitBranchTag()
 
 class InstructionTag extends TInstructionTag {
-  final string toString() { result = "Tag" }
+  final string toString() { result = getInstructionTagId(this) }
 }
 
 /**
@@ -182,6 +187,8 @@ string getInstructionTagId(TInstructionTag tag) {
   or
   tag = BoolConversionCompareTag() and result = "BoolConvComp"
   or
+  tag = ResultCopyTag() and result = "ResultCopy"
+  or
   tag = LoadTag() and result = "Load" // Implicit load due to lvalue-to-rvalue conversion
   or
   tag = CatchTag() and result = "Catch"
@@ -255,4 +262,10 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = TryExceptCompareZeroBranch() and result = "TryExceptCompareZeroBranch"
   or
   tag = TryExceptCompareOneBranch() and result = "TryExceptCompareOneBranch"
+  or
+  exists(int index |
+    tag = ImplicitDestructorTag(index) and result = "ImplicitDestructor(" + index + ")"
+  )
+  or
+  tag = CoAwaitBranchTag() and result = "CoAwaitBranch"
 }

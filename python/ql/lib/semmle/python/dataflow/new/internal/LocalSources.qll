@@ -71,7 +71,9 @@ class LocalSourceNode extends Node {
     or
     // We include all scope entry definitions, as these act as the local source within the scope they
     // enter.
-    this.asVar() instanceof ScopeEntryDefinition
+    this instanceof ScopeEntryDefinitionNode
+    or
+    this instanceof ParameterNode
   }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
@@ -118,6 +120,11 @@ class LocalSourceNode extends Node {
   CallCfgNode getACall() { Cached::call(this, result) }
 
   /**
+   * Gets a node that has this node as its annotation.
+   */
+  Node getAnAnnotatedInstance() { Cached::annotatedInstance(this, result) }
+
+  /**
    * Gets an awaited value from this node.
    */
   Node getAnAwaited() { Cached::await(this, result) }
@@ -151,7 +158,7 @@ class LocalSourceNode extends Node {
    * See `TypeBackTracker` for more details about how to use this.
    */
   pragma[inline]
-  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t = t2.step(result, this) }
 }
 
 /**
@@ -165,7 +172,7 @@ class LocalSourceNodeNotModuleVariableNode extends LocalSourceNode {
   LocalSourceNodeNotModuleVariableNode() {
     this instanceof ExprNode
     or
-    this.asVar() instanceof ScopeEntryDefinition
+    this instanceof ScopeEntryDefinitionNode
   }
 }
 
@@ -238,9 +245,9 @@ private module Cached {
    * Helper predicate for `hasLocalSource`. Removes any steps go to module variable reads, as these
    * are already local source nodes in their own right.
    */
-  cached
+  pragma[nomagic]
   private predicate localSourceFlowStep(Node nodeFrom, Node nodeTo) {
-    simpleLocalFlowStep(nodeFrom, nodeTo) and
+    simpleLocalFlowStep(nodeFrom, nodeTo, _) and
     not nodeTo = any(ModuleVariableNode v).getARead()
   }
 
@@ -270,6 +277,17 @@ private module Cached {
     exists(CfgNode n |
       func.flowsTo(n) and
       n = call.getFunction()
+    )
+  }
+
+  cached
+  predicate annotatedInstance(LocalSourceNode node, Node instance) {
+    exists(ExprNode n | node.flowsTo(n) |
+      instance.asCfgNode().getNode() =
+        any(AnnAssign ann | ann.getAnnotation() = n.asExpr()).getTarget()
+      or
+      instance.asCfgNode().getNode() =
+        any(Parameter p | p.getAnnotation() = n.asCfgNode().getNode())
     )
   }
 

@@ -126,7 +126,10 @@ class ControlFlowNode extends @py_flow_node {
   cached
   string toString() {
     Stages::AST::ref() and
-    exists(Scope s | s.getEntryNode() = this | result = "Entry node for " + s.toString())
+    // Since modules can have ambigous names, entry nodes can too, if we do not collate them.
+    exists(Scope s | s.getEntryNode() = this |
+      result = "Entry node for " + concat( | | s.toString(), ",")
+    )
     or
     exists(Scope s | s.getANormalExit() = this | result = "Exit node for " + s.toString())
     or

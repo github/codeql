@@ -22,15 +22,15 @@ class SourceCall extends DataFlow::Node, MyClass {
   SourceCall() { this.asCfgNode().(CallNode).getFunction().(NameNode).getId() = "source" }
 }
 
-class SharedConfig extends TaintTracking::Configuration {
-  SharedConfig() { this = "SharedConfig" }
+private module SharedConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof SourceCall }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof SourceCall }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(CallNode call |
       call.getFunction().(NameNode).getId() = "sink" and
       call.getArg(0) = sink.asCfgNode()
     )
   }
 }
+
+module SharedFlow = TaintTracking::Global<SharedConfig>;

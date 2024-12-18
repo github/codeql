@@ -1,0 +1,72 @@
+| Test.java:1:14:1:17 | super(...) | Test.java:1:14:1:17 | Exit |
+| Test.java:1:14:1:17 | { ... } | Test.java:1:14:1:17 | super(...) |
+| Test.java:3:40:20:3 | { ... } | Test.java:5:5:5:34 | var ...; |
+| Test.java:5:5:5:34 | var ...; | Test.java:5:26:5:33 | source(...) |
+| Test.java:5:12:5:33 | directTaint | Test.java:6:5:6:36 | var ...; |
+| Test.java:5:26:5:33 | source(...) | Test.java:5:12:5:33 | directTaint |
+| Test.java:6:5:6:36 | var ...; | Test.java:6:28:6:35 | source(...) |
+| Test.java:6:12:6:35 | indirectTaint | Test.java:8:5:8:103 | var ...; |
+| Test.java:6:28:6:35 | source(...) | Test.java:6:12:6:35 | indirectTaint |
+| Test.java:8:5:8:103 | var ...; | Test.java:8:16:8:102 | ...?...:... |
+| Test.java:8:12:8:102 | o | Test.java:10:5:10:30 | if (...) |
+| Test.java:8:16:8:18 | inp | Test.java:8:22:8:32 | directTaint |
+| Test.java:8:16:8:18 | inp | Test.java:8:56:8:68 | indirectTaint |
+| Test.java:8:16:8:102 | ...?...:... | Test.java:8:16:8:18 | inp |
+| Test.java:8:22:8:32 | directTaint | Test.java:8:12:8:102 | o |
+| Test.java:8:36:8:102 | new Outer(...) | Test.java:8:12:8:102 | o |
+| Test.java:8:46:8:84 | new Inner(...) | Test.java:8:87:8:101 | "not tainted 2" |
+| Test.java:8:56:8:68 | indirectTaint | Test.java:8:71:8:83 | "not tainted" |
+| Test.java:8:71:8:83 | "not tainted" | Test.java:8:46:8:84 | new Inner(...) |
+| Test.java:8:87:8:101 | "not tainted 2" | Test.java:8:36:8:102 | new Outer(...) |
+| Test.java:10:5:10:30 | if (...) | Test.java:10:9:10:9 | o |
+| Test.java:10:9:10:9 | o | Test.java:10:9:10:29 | ...instanceof... |
+| Test.java:10:9:10:29 | ...instanceof... | Test.java:10:29:10:29 | s |
+| Test.java:10:9:10:29 | ...instanceof... | Test.java:14:5:14:92 | if (...) |
+| Test.java:10:29:10:29 | s | Test.java:10:32:12:5 | { ... } |
+| Test.java:10:32:12:5 | { ... } | Test.java:11:7:11:14 | <Expr>; |
+| Test.java:11:7:11:13 | sink(...) | Test.java:14:5:14:92 | if (...) |
+| Test.java:11:7:11:14 | <Expr>; | Test.java:11:12:11:12 | s |
+| Test.java:11:12:11:12 | s | Test.java:11:7:11:13 | sink(...) |
+| Test.java:14:5:14:92 | if (...) | Test.java:14:9:14:9 | o |
+| Test.java:14:9:14:9 | o | Test.java:14:9:14:91 | ...instanceof... |
+| Test.java:14:9:14:91 | ...instanceof... | Test.java:3:22:3:25 | Exit |
+| Test.java:14:9:14:91 | ...instanceof... | Test.java:14:41:14:47 | tainted |
+| Test.java:14:22:14:91 | Outer(...) | Test.java:14:94:18:5 | { ... } |
+| Test.java:14:28:14:67 | Inner(...) | Test.java:14:77:14:90 | alsoNotTainted |
+| Test.java:14:41:14:47 | tainted | Test.java:14:57:14:66 | notTainted |
+| Test.java:14:57:14:66 | notTainted | Test.java:14:28:14:67 | Inner(...) |
+| Test.java:14:77:14:90 | alsoNotTainted | Test.java:14:22:14:91 | Outer(...) |
+| Test.java:14:94:18:5 | { ... } | Test.java:15:7:15:20 | <Expr>; |
+| Test.java:15:7:15:19 | sink(...) | Test.java:16:7:16:23 | <Expr>; |
+| Test.java:15:7:15:20 | <Expr>; | Test.java:15:12:15:18 | tainted |
+| Test.java:15:12:15:18 | tainted | Test.java:15:7:15:19 | sink(...) |
+| Test.java:16:7:16:22 | sink(...) | Test.java:17:7:17:27 | <Expr>; |
+| Test.java:16:7:16:23 | <Expr>; | Test.java:16:12:16:21 | notTainted |
+| Test.java:16:12:16:21 | notTainted | Test.java:16:7:16:22 | sink(...) |
+| Test.java:17:7:17:26 | sink(...) | Test.java:3:22:3:25 | Exit |
+| Test.java:17:7:17:27 | <Expr>; | Test.java:17:12:17:25 | alsoNotTainted |
+| Test.java:17:12:17:25 | alsoNotTainted | Test.java:17:7:17:26 | sink(...) |
+| Test.java:22:33:22:53 | { ... } | Test.java:22:42:22:50 | "tainted" |
+| Test.java:22:35:22:51 | return ... | Test.java:22:24:22:29 | Exit |
+| Test.java:22:42:22:50 | "tainted" | Test.java:22:35:22:51 | return ... |
+| Test.java:23:40:23:42 | { ... } | Test.java:23:22:23:25 | Exit |
+| Test.java:27:8:27:12 | ...=... | Test.java:27:8:27:12 | <Expr>; |
+| Test.java:27:8:27:12 | ...=... | Test.java:27:8:27:12 | Exit |
+| Test.java:27:8:27:12 | <Expr>; | Test.java:27:8:27:12 | this |
+| Test.java:27:8:27:12 | <Expr>; | Test.java:27:8:27:12 | this |
+| Test.java:27:8:27:12 | i | Test.java:27:8:27:12 | ...=... |
+| Test.java:27:8:27:12 | otherField | Test.java:27:8:27:12 | ...=... |
+| Test.java:27:8:27:12 | super(...) | Test.java:27:8:27:12 | <Expr>; |
+| Test.java:27:8:27:12 | this | Test.java:27:8:27:12 | i |
+| Test.java:27:8:27:12 | this | Test.java:27:8:27:12 | otherField |
+| Test.java:27:8:27:12 | { ... } | Test.java:27:8:27:12 | super(...) |
+| Test.java:28:8:28:12 | ...=... | Test.java:28:8:28:12 | <Expr>; |
+| Test.java:28:8:28:12 | ...=... | Test.java:28:8:28:12 | Exit |
+| Test.java:28:8:28:12 | <Expr>; | Test.java:28:8:28:12 | this |
+| Test.java:28:8:28:12 | <Expr>; | Test.java:28:8:28:12 | this |
+| Test.java:28:8:28:12 | nonTaintedField | Test.java:28:8:28:12 | ...=... |
+| Test.java:28:8:28:12 | super(...) | Test.java:28:8:28:12 | <Expr>; |
+| Test.java:28:8:28:12 | taintedField | Test.java:28:8:28:12 | ...=... |
+| Test.java:28:8:28:12 | this | Test.java:28:8:28:12 | nonTaintedField |
+| Test.java:28:8:28:12 | this | Test.java:28:8:28:12 | taintedField |
+| Test.java:28:8:28:12 | { ... } | Test.java:28:8:28:12 | super(...) |

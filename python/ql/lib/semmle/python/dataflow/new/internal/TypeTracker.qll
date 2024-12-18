@@ -1,6 +1,7 @@
 /** Step Summaries and Type Tracking */
 
 private import TypeTrackerSpecific
+private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
 
 cached
 private module Cached {
@@ -8,60 +9,74 @@ private module Cached {
    * A description of a step on an inter-procedural data flow path.
    */
   cached
-  newtype TStepSummary =
+  deprecated newtype TStepSummary =
     LevelStep() or
     CallStep() or
     ReturnStep() or
-    StoreStep(TypeTrackerContent content) { basicStoreStep(_, _, content) } or
-    LoadStep(TypeTrackerContent content) { basicLoadStep(_, _, content) } or
-    LoadStoreStep(TypeTrackerContent load, TypeTrackerContent store) {
-      basicLoadStoreStep(_, _, load, store)
+    deprecated StoreStep(TypeTrackerContent content) {
+      exists(DataFlowPublic::AttributeContent dfc | dfc.getAttribute() = content |
+        basicStoreStep(_, _, dfc)
+      )
     } or
-    WithContent(ContentFilter filter) { basicWithContentStep(_, _, filter) } or
-    WithoutContent(ContentFilter filter) { basicWithoutContentStep(_, _, filter) } or
+    deprecated LoadStep(TypeTrackerContent content) {
+      exists(DataFlowPublic::AttributeContent dfc | dfc.getAttribute() = content |
+        basicLoadStep(_, _, dfc)
+      )
+    } or
+    deprecated LoadStoreStep(TypeTrackerContent load, TypeTrackerContent store) {
+      exists(DataFlowPublic::AttributeContent dfcLoad, DataFlowPublic::AttributeContent dfcStore |
+        dfcLoad.getAttribute() = load and dfcStore.getAttribute() = store
+      |
+        basicLoadStoreStep(_, _, dfcLoad, dfcStore)
+      )
+    } or
+    deprecated WithContent(ContentFilter filter) { basicWithContentStep(_, _, filter) } or
+    deprecated WithoutContent(ContentFilter filter) { basicWithoutContentStep(_, _, filter) } or
     JumpStep()
 
   cached
-  newtype TTypeTracker =
-    MkTypeTracker(Boolean hasCall, OptionalTypeTrackerContent content) {
+  deprecated newtype TTypeTracker =
+    deprecated MkTypeTracker(Boolean hasCall, OptionalTypeTrackerContent content) {
       content = noContent()
       or
       // Restrict `content` to those that might eventually match a load.
       // We can't rely on `basicStoreStep` since `startInContent` might be used with
       // a content that has no corresponding store.
-      exists(TypeTrackerContent loadContents |
+      exists(DataFlowPublic::AttributeContent loadContents |
         (
           basicLoadStep(_, _, loadContents)
           or
           basicLoadStoreStep(_, _, loadContents, _)
         ) and
-        compatibleContents(content, loadContents)
+        compatibleContents(content, loadContents.getAttribute())
       )
     }
 
   cached
-  newtype TTypeBackTracker =
-    MkTypeBackTracker(Boolean hasReturn, OptionalTypeTrackerContent content) {
+  deprecated newtype TTypeBackTracker =
+    deprecated MkTypeBackTracker(Boolean hasReturn, OptionalTypeTrackerContent content) {
       content = noContent()
       or
       // As in MkTypeTracker, restrict `content` to those that might eventually match a store.
-      exists(TypeTrackerContent storeContent |
+      exists(DataFlowPublic::AttributeContent storeContent |
         (
           basicStoreStep(_, _, storeContent)
           or
           basicLoadStoreStep(_, _, _, storeContent)
         ) and
-        compatibleContents(storeContent, content)
+        compatibleContents(storeContent.getAttribute(), content)
       )
     }
 
   /** Gets a type tracker with no content and the call bit set to the given value. */
   cached
-  TypeTracker noContentTypeTracker(boolean hasCall) { result = MkTypeTracker(hasCall, noContent()) }
+  deprecated TypeTracker noContentTypeTracker(boolean hasCall) {
+    result = MkTypeTracker(hasCall, noContent())
+  }
 
   /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
   cached
-  TypeTracker append(TypeTracker tt, StepSummary step) {
+  deprecated TypeTracker append(TypeTracker tt, StepSummary step) {
     exists(Boolean hasCall, OptionalTypeTrackerContent currentContents |
       tt = MkTypeTracker(hasCall, currentContents)
     |
@@ -108,13 +123,13 @@ private module Cached {
   }
 
   pragma[nomagic]
-  private TypeBackTracker noContentTypeBackTracker(boolean hasReturn) {
+  deprecated private TypeBackTracker noContentTypeBackTracker(boolean hasReturn) {
     result = MkTypeBackTracker(hasReturn, noContent())
   }
 
   /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
   cached
-  TypeBackTracker prepend(TypeBackTracker tbt, StepSummary step) {
+  deprecated TypeBackTracker prepend(TypeBackTracker tbt, StepSummary step) {
     exists(Boolean hasReturn, OptionalTypeTrackerContent content |
       tbt = MkTypeBackTracker(hasReturn, content)
     |
@@ -167,7 +182,9 @@ private module Cached {
    * Steps contained in this predicate should _not_ depend on the call graph.
    */
   cached
-  predicate stepNoCall(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
+  deprecated predicate stepNoCall(
+    TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary
+  ) {
     exists(Node mid | nodeFrom.flowsTo(mid) and smallstepNoCall(mid, nodeTo, summary))
   }
 
@@ -176,12 +193,14 @@ private module Cached {
    * inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   cached
-  predicate stepCall(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
+  deprecated predicate stepCall(
+    TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary
+  ) {
     exists(Node mid | nodeFrom.flowsTo(mid) and smallstepCall(mid, nodeTo, summary))
   }
 
   cached
-  predicate smallstepNoCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
+  deprecated predicate smallstepNoCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
     jumpStep(nodeFrom, nodeTo) and
     summary = JumpStep()
     or
@@ -192,7 +211,10 @@ private module Cached {
       flowsToStoreStep(nodeFrom, nodeTo, content) and
       summary = StoreStep(content)
       or
-      basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
+      exists(DataFlowPublic::AttributeContent dfc | dfc.getAttribute() = content |
+        basicLoadStep(nodeFrom, nodeTo, dfc)
+      ) and
+      summary = LoadStep(content)
     )
     or
     exists(TypeTrackerContent loadContent, TypeTrackerContent storeContent |
@@ -210,7 +232,7 @@ private module Cached {
   }
 
   cached
-  predicate smallstepCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
+  deprecated predicate smallstepCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
     callStep(nodeFrom, nodeTo) and summary = CallStep()
     or
     returnStep(nodeFrom, nodeTo) and
@@ -223,25 +245,27 @@ private module Cached {
 
 private import Cached
 
-private predicate step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
+deprecated private predicate step(
+  TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary
+) {
   stepNoCall(nodeFrom, nodeTo, summary)
   or
   stepCall(nodeFrom, nodeTo, summary)
 }
 
 pragma[nomagic]
-private predicate stepProj(TypeTrackingNode nodeFrom, StepSummary summary) {
+deprecated private predicate stepProj(TypeTrackingNode nodeFrom, StepSummary summary) {
   step(nodeFrom, _, summary)
 }
 
-private predicate smallstep(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
+deprecated private predicate smallstep(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
   smallstepNoCall(nodeFrom, nodeTo, summary)
   or
   smallstepCall(nodeFrom, nodeTo, summary)
 }
 
 pragma[nomagic]
-private predicate smallstepProj(Node nodeFrom, StepSummary summary) {
+deprecated private predicate smallstepProj(Node nodeFrom, StepSummary summary) {
   smallstep(nodeFrom, _, summary)
 }
 
@@ -270,21 +294,31 @@ private predicate smallstepProj(Node nodeFrom, StepSummary summary) {
  * function. This means we will track the fact that `x.attr` can have the type of `y` into the
  * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.
  */
-private predicate flowsToStoreStep(
+deprecated private predicate flowsToStoreStep(
   Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContent content
 ) {
-  exists(Node obj | nodeTo.flowsTo(obj) and basicStoreStep(nodeFrom, obj, content))
+  exists(Node obj |
+    nodeTo.flowsTo(obj) and
+    exists(DataFlowPublic::AttributeContent dfc | dfc.getAttribute() = content |
+      basicStoreStep(nodeFrom, obj, dfc)
+    )
+  )
 }
 
 /**
  * Holds if `loadContent` is loaded from `nodeFrom` and written to `storeContent` of `nodeTo`.
  */
-private predicate flowsToLoadStoreStep(
+deprecated private predicate flowsToLoadStoreStep(
   Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContent loadContent,
   TypeTrackerContent storeContent
 ) {
   exists(Node obj |
-    nodeTo.flowsTo(obj) and basicLoadStoreStep(nodeFrom, obj, loadContent, storeContent)
+    nodeTo.flowsTo(obj) and
+    exists(DataFlowPublic::AttributeContent loadDfc, DataFlowPublic::AttributeContent storeDfc |
+      loadDfc.getAttribute() = loadContent and storeDfc.getAttribute() = storeContent
+    |
+      basicLoadStoreStep(nodeFrom, obj, loadDfc, storeDfc)
+    )
   )
 }
 
@@ -293,7 +327,7 @@ private predicate flowsToLoadStoreStep(
  *
  * A description of a step on an inter-procedural data flow path.
  */
-class StepSummary extends TStepSummary {
+deprecated class StepSummary extends TStepSummary {
   /** Gets a textual representation of this step summary. */
   string toString() {
     this instanceof LevelStep and result = "level"
@@ -316,7 +350,7 @@ class StepSummary extends TStepSummary {
 }
 
 /** Provides predicates for updating step summaries (`StepSummary`s). */
-module StepSummary {
+deprecated module StepSummary {
   predicate append = Cached::append/2;
 
   /**
@@ -378,8 +412,6 @@ module StepSummary {
     smallstepCall(nodeFrom, nodeTo, summary)
   }
 
-  deprecated predicate localSourceStoreStep = flowsToStoreStep/3;
-
   /** Gets the step summary for a level step. */
   StepSummary levelStep() { result = LevelStep() }
 
@@ -411,6 +443,8 @@ module StepSummary {
 }
 
 /**
+ * DEPRECATED: Use `semmle.python.dataflow.new.TypeTracking` instead.
+ *
  * A summary of the steps needed to track a value to a given dataflow node.
  *
  * This can be used to track objects that implement a certain API in order to
@@ -437,7 +471,7 @@ module StepSummary {
  * `t = t2.step(myType(t2), result)`. If you additionally want to track individual
  * intra-procedural steps, use `t = t2.smallstep(myCallback(t2), result)`.
  */
-class TypeTracker extends TTypeTracker {
+deprecated class TypeTracker extends TTypeTracker {
   Boolean hasCall;
   OptionalTypeTrackerContent content;
 
@@ -565,7 +599,7 @@ class TypeTracker extends TTypeTracker {
 }
 
 /** Provides predicates for implementing custom `TypeTracker`s. */
-module TypeTracker {
+deprecated module TypeTracker {
   /**
    * Gets a valid end point of type tracking.
    */
@@ -580,15 +614,17 @@ module TypeTracker {
 }
 
 pragma[nomagic]
-private predicate backStepProj(TypeTrackingNode nodeTo, StepSummary summary) {
+deprecated private predicate backStepProj(TypeTrackingNode nodeTo, StepSummary summary) {
   step(_, nodeTo, summary)
 }
 
-private predicate backSmallstepProj(TypeTrackingNode nodeTo, StepSummary summary) {
+deprecated private predicate backSmallstepProj(TypeTrackingNode nodeTo, StepSummary summary) {
   smallstep(_, nodeTo, summary)
 }
 
 /**
+ * DEPRECATED: Use `semmle.python.dataflow.new.TypeTracking` instead.
+ *
  * A summary of the steps needed to back-track a use of a value to a given dataflow node.
  *
  * This can for example be used to track callbacks that are passed to a certain API,
@@ -618,7 +654,7 @@ private predicate backSmallstepProj(TypeTrackingNode nodeTo, StepSummary summary
  * `t2 = t.step(result, myCallback(t2))`. If you additionally want to track individual
  * intra-procedural steps, use `t2 = t.smallstep(result, myCallback(t2))`.
  */
-class TypeBackTracker extends TTypeBackTracker {
+deprecated class TypeBackTracker extends TTypeBackTracker {
   Boolean hasReturn;
   OptionalTypeTrackerContent content;
 
@@ -747,7 +783,7 @@ class TypeBackTracker extends TTypeBackTracker {
 }
 
 /** Provides predicates for implementing custom `TypeBackTracker`s. */
-module TypeBackTracker {
+deprecated module TypeBackTracker {
   /**
    * Gets a valid end point of type back-tracking.
    */
@@ -768,14 +804,14 @@ module TypeBackTracker {
  * `stepCall` relation (`stepNoCall` not being recursive, can be join-ordered in the
  * same way as in `stepInlineLate`).
  */
-module CallGraphConstruction {
+deprecated module CallGraphConstruction {
   /** The input to call graph construction. */
   signature module InputSig {
     /** A state to track during type tracking. */
     class State;
 
     /** Holds if type tracking should start at `start` in state `state`. */
-    predicate start(Node start, State state);
+    deprecated predicate start(Node start, State state);
 
     /**
      * Holds if type tracking should use the step from `nodeFrom` to `nodeTo`,
@@ -784,7 +820,7 @@ module CallGraphConstruction {
      * Implementing this predicate using `StepSummary::[small]stepNoCall` yields
      * standard type tracking.
      */
-    predicate stepNoCall(Node nodeFrom, Node nodeTo, StepSummary summary);
+    deprecated predicate stepNoCall(Node nodeFrom, Node nodeTo, StepSummary summary);
 
     /**
      * Holds if type tracking should use the step from `nodeFrom` to `nodeTo`,
@@ -793,7 +829,7 @@ module CallGraphConstruction {
      * Implementing this predicate using `StepSummary::[small]stepCall` yields
      * standard type tracking.
      */
-    predicate stepCall(Node nodeFrom, Node nodeTo, StepSummary summary);
+    deprecated predicate stepCall(Node nodeFrom, Node nodeTo, StepSummary summary);
 
     /** A projection of an element from the state space. */
     class StateProj;
@@ -802,25 +838,25 @@ module CallGraphConstruction {
     StateProj stateProj(State state);
 
     /** Holds if type tracking should stop at `n` when we are tracking projected state `stateProj`. */
-    predicate filter(Node n, StateProj stateProj);
+    deprecated predicate filter(Node n, StateProj stateProj);
   }
 
   /** Provides the `track` predicate for use in call graph construction. */
   module Make<InputSig Input> {
     pragma[nomagic]
-    private predicate stepNoCallProj(Node nodeFrom, StepSummary summary) {
+    deprecated private predicate stepNoCallProj(Node nodeFrom, StepSummary summary) {
       Input::stepNoCall(nodeFrom, _, summary)
     }
 
     pragma[nomagic]
-    private predicate stepCallProj(Node nodeFrom, StepSummary summary) {
+    deprecated private predicate stepCallProj(Node nodeFrom, StepSummary summary) {
       Input::stepCall(nodeFrom, _, summary)
     }
 
     bindingset[nodeFrom, t]
     pragma[inline_late]
     pragma[noopt]
-    private TypeTracker stepNoCallInlineLate(
+    deprecated private TypeTracker stepNoCallInlineLate(
       TypeTracker t, TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo
     ) {
       exists(StepSummary summary |
@@ -837,7 +873,7 @@ module CallGraphConstruction {
     }
 
     pragma[nomagic]
-    private Node track(Input::State state, TypeTracker t) {
+    deprecated private Node track(Input::State state, TypeTracker t) {
       t.start() and Input::start(result, state)
       or
       exists(Input::StateProj stateProj |
@@ -855,12 +891,12 @@ module CallGraphConstruction {
 
     bindingset[t, summary]
     pragma[inline_late]
-    private TypeTracker appendInlineLate(TypeTracker t, StepSummary summary) {
+    deprecated private TypeTracker appendInlineLate(TypeTracker t, StepSummary summary) {
       result = t.append(summary)
     }
 
     pragma[nomagic]
-    private Node trackCall(Input::State state, TypeTracker t, StepSummary summary) {
+    deprecated private Node trackCall(Input::State state, TypeTracker t, StepSummary summary) {
       exists(TypeTracker t2 |
         // non-linear recursion
         result = track(state, t2) and
@@ -871,7 +907,7 @@ module CallGraphConstruction {
 
     /** Gets a node that can be reached from _some_ start node in state `state`. */
     pragma[nomagic]
-    Node track(Input::State state) { result = track(state, TypeTracker::end()) }
+    deprecated Node track(Input::State state) { result = track(state, TypeTracker::end()) }
   }
 
   /** A simple version of `CallGraphConstruction` that uses standard type tracking. */
@@ -882,15 +918,15 @@ module CallGraphConstruction {
       class State;
 
       /** Holds if type tracking should start at `start` in state `state`. */
-      predicate start(Node start, State state);
+      deprecated predicate start(Node start, State state);
 
       /** Holds if type tracking should stop at `n`. */
-      predicate filter(Node n);
+      deprecated predicate filter(Node n);
     }
 
     /** Provides the `track` predicate for use in call graph construction. */
     module Make<InputSig Input> {
-      private module I implements CallGraphConstruction::InputSig {
+      deprecated private module I implements CallGraphConstruction::InputSig {
         private import codeql.util.Unit
 
         class State = Input::State;
@@ -915,7 +951,7 @@ module CallGraphConstruction {
         }
       }
 
-      import CallGraphConstruction::Make<I>
+      deprecated import CallGraphConstruction::Make<I>
     }
   }
 }

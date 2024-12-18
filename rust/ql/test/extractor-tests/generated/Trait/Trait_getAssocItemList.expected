@@ -1,0 +1,2 @@
+| gen_trait.rs:3:1:8:1 | trait Frobinizable | gen_trait.rs:4:20:8:1 | AssocItemList |
+| gen_trait.rs:10:1:10:57 | trait Foo | gen_trait.rs:10:56:10:57 | AssocItemList |

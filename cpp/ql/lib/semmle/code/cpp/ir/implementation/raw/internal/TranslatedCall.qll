@@ -3,6 +3,7 @@ private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.models.interfaces.SideEffect
+private import semmle.code.cpp.models.interfaces.Throwing
 private import InstructionTag
 private import SideEffects
 private import TranslatedElement
@@ -26,7 +27,7 @@ private CallInstruction getTranslatedCallInstruction(Call call) {
  * of a higher-level constructor (e.g. the allocator call in a `NewExpr`).
  */
 abstract class TranslatedCall extends TranslatedExpr {
-  final override TranslatedElement getChild(int id) {
+  final override TranslatedElement getChildInternal(int id) {
     // We choose the child's id in the order of evaluation.
     // The qualifier is evaluated before the call target, because the value of
     // the call target may depend on the value of the qualifier for virtual
@@ -40,11 +41,17 @@ abstract class TranslatedCall extends TranslatedExpr {
     id = this.getNumberOfArguments() and result = this.getSideEffects()
   }
 
-  final override Instruction getFirstInstruction() {
+  final override Instruction getFirstInstruction(EdgeKind kind) {
     if exists(this.getQualifier())
-    then result = this.getQualifier().getFirstInstruction()
-    else result = this.getFirstCallTargetInstruction()
+    then result = this.getQualifier().getFirstInstruction(kind)
+    else result = this.getFirstCallTargetInstruction(kind)
   }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getSideEffects().getALastInstruction()
+  }
+
+  override TranslatedElement getLastChild() { result = this.getSideEffects() }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = CallTag() and
@@ -52,34 +59,43 @@ abstract class TranslatedCall extends TranslatedExpr {
     resultType = getTypeForPRValue(this.getCallResultType())
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getQualifier() and
-    result = this.getFirstCallTargetInstruction()
+    result = this.getFirstCallTargetInstruction(kind)
     or
     child = this.getCallTarget() and
-    result = this.getFirstArgumentOrCallInstruction()
+    result = this.getFirstArgumentOrCallInstruction(kind)
     or
     exists(int argIndex |
       child = this.getArgument(argIndex) and
       if exists(this.getArgument(argIndex + 1))
-      then result = this.getArgument(argIndex + 1).getFirstInstruction()
-      else result = this.getInstruction(CallTag())
+      then result = this.getArgument(argIndex + 1).getFirstInstruction(kind)
+      else (
+        result = this.getInstruction(CallTag()) and kind instanceof GotoEdge
+      )
     )
     or
     child = this.getSideEffects() and
     if this.isNoReturn()
     then
+      kind instanceof GotoEdge and
       result =
         any(UnreachedInstruction instr |
           this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction()
         )
-    else result = this.getParent().getChildSuccessor(this)
+    else (
+      not this.mustThrowException() and
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      this.mayThrowException() and
+      kind instanceof CppExceptionEdge and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+    )
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    kind instanceof GotoEdge and
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = CallTag() and
-    result = this.getSideEffects().getFirstInstruction()
+    result = this.getSideEffects().getFirstInstruction(kind)
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -99,6 +115,16 @@ abstract class TranslatedCall extends TranslatedExpr {
   }
 
   final override Instruction getResult() { result = this.getInstruction(CallTag()) }
+
+  /**
+   * Holds if the evaluation of this call may throw an exception.
+   */
+  abstract predicate mayThrowException();
+
+  /**
+   * Holds if the evaluation of this call always throws an exception.
+   */
+  abstract predicate mustThrowException();
 
   /**
    * Gets the result type of the call.
@@ -121,8 +147,8 @@ abstract class TranslatedCall extends TranslatedExpr {
    * it can be overridden by a subclass for cases where there is a call target
    * that is not computed from an expression (e.g. a direct call).
    */
-  Instruction getFirstCallTargetInstruction() {
-    result = this.getCallTarget().getFirstInstruction()
+  Instruction getFirstCallTargetInstruction(EdgeKind kind) {
+    result = this.getCallTarget().getFirstInstruction(kind)
   }
 
   /**
@@ -159,10 +185,12 @@ abstract class TranslatedCall extends TranslatedExpr {
    * If there are any arguments, gets the first instruction of the first
    * argument. Otherwise, returns the call instruction.
    */
-  final Instruction getFirstArgumentOrCallInstruction() {
+  final Instruction getFirstArgumentOrCallInstruction(EdgeKind kind) {
     if this.hasArguments()
-    then result = this.getArgument(0).getFirstInstruction()
-    else result = this.getInstruction(CallTag())
+    then result = this.getArgument(0).getFirstInstruction(kind)
+    else (
+      kind instanceof GotoEdge and result = this.getInstruction(CallTag())
+    )
   }
 
   /**
@@ -188,9 +216,6 @@ abstract class TranslatedSideEffects extends TranslatedElement {
 
   final override Locatable getAst() { result = this.getExpr() }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override Declaration getFunction() { result = getEnclosingDeclaration(this.getExpr()) }
 
   final override TranslatedElement getChild(int i) {
@@ -203,27 +228,43 @@ abstract class TranslatedSideEffects extends TranslatedElement {
       )
   }
 
-  final override Instruction getChildSuccessor(TranslatedElement te) {
+  final override Instruction getChildSuccessorInternal(TranslatedElement te, EdgeKind kind) {
     exists(int i |
       this.getChild(i) = te and
       if exists(this.getChild(i + 1))
-      then result = this.getChild(i + 1).getFirstInstruction()
-      else result = this.getParent().getChildSuccessor(this)
+      then result = this.getChild(i + 1).getFirstInstruction(kind)
+      else result = this.getParent().getChildSuccessor(this, kind)
     )
+  }
+
+  override TranslatedElement getLastChild() {
+    result = this.getChild(max(int i | exists(this.getChild(i))))
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
     none()
   }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getChild(0).getFirstInstruction()
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getChild(0).getFirstInstruction(kind)
     or
     // Some functions, like `std::move()`, have no side effects whatsoever.
-    not exists(this.getChild(0)) and result = this.getParent().getChildSuccessor(this)
+    not exists(this.getChild(0)) and
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+  override Instruction getALastInstructionInternal() {
+    if exists(this.getAChild())
+    then result = this.getChild(max(int i | exists(this.getChild(i)))).getALastInstruction()
+    else
+      // If there are no side effects, the "last" instruction should be the parent call's last
+      // instruction, so that implicit destructors can be inserted in the right place.
+      result = this.getParent().getInstruction(CallTag())
+  }
+
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    none()
+  }
 
   /** Gets the primary instruction to be associated with each side effect instruction. */
   abstract Instruction getPrimaryInstruction();
@@ -235,8 +276,9 @@ abstract class TranslatedSideEffects extends TranslatedElement {
  * (`TranslatedAllocatorCall`).
  */
 abstract class TranslatedDirectCall extends TranslatedCall {
-  final override Instruction getFirstCallTargetInstruction() {
-    result = this.getInstruction(CallTargetTag())
+  final override Instruction getFirstCallTargetInstruction(EdgeKind kind) {
+    result = this.getInstruction(CallTargetTag()) and
+    kind instanceof GotoEdge
   }
 
   final override Instruction getCallTargetResult() { result = this.getInstruction(CallTargetTag()) }
@@ -249,12 +291,11 @@ abstract class TranslatedDirectCall extends TranslatedCall {
     resultType = getFunctionGLValueType()
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    result = TranslatedCall.super.getInstructionSuccessor(tag, kind)
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    result = TranslatedCall.super.getInstructionSuccessorInternal(tag, kind)
     or
     tag = CallTargetTag() and
-    kind instanceof GotoEdge and
-    result = this.getFirstArgumentOrCallInstruction()
+    result = this.getFirstArgumentOrCallInstruction(kind)
   }
 }
 
@@ -290,6 +331,15 @@ class TranslatedExprCall extends TranslatedCallExpr {
   override TranslatedExpr getCallTarget() {
     result = getTranslatedExpr(expr.getExpr().getFullyConverted())
   }
+
+  final override predicate mayThrowException() {
+    // We assume that a call to a function pointer will not throw an exception.
+    // This is not sound in general, but this will greatly reduce the number of
+    // exceptional edges.
+    none()
+  }
+
+  final override predicate mustThrowException() { none() }
 }
 
 /**
@@ -311,6 +361,18 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
     exists(this.getQualifier()) and
     not exists(MemberFunction func | expr.getTarget() = func and func.isStatic())
   }
+
+  final override predicate mayThrowException() {
+    expr.getTarget().(ThrowingFunction).mayThrowException(_)
+    or
+    expr.getTarget() instanceof AlwaysSehThrowingFunction
+  }
+
+  final override predicate mustThrowException() {
+    expr.getTarget().(ThrowingFunction).mayThrowException(true)
+    or
+    expr.getTarget() instanceof AlwaysSehThrowingFunction
+  }
 }
 
 /**
@@ -326,6 +388,16 @@ class TranslatedStructorCall extends TranslatedFunctionCall {
     exists(StructorCallContext context |
       context = this.getParent() and
       result = context.getReceiver()
+    )
+    or
+    exists(Stmt parent |
+      expr = parent.getAnImplicitDestructorCall() and
+      result = getTranslatedExpr(expr.getQualifier().getFullyConverted()).getResult()
+    )
+    or
+    exists(Expr parent |
+      expr = parent.getAnImplicitDestructorCall() and
+      result = getTranslatedExpr(expr.getQualifier().getFullyConverted()).getResult()
     )
   }
 
@@ -376,9 +448,16 @@ private int initializeAllocationGroup() { result = 3 }
 abstract class TranslatedSideEffect extends TranslatedElement {
   final override TranslatedElement getChild(int n) { none() }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    none()
+  }
 
-  final override Instruction getFirstInstruction() {
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(OnlyInstructionTag()) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getALastInstructionInternal() {
     result = this.getInstruction(OnlyInstructionTag())
   }
 
@@ -387,10 +466,9 @@ abstract class TranslatedSideEffect extends TranslatedElement {
     this.sideEffectInstruction(opcode, type)
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    result = this.getParent().getChildSuccessor(this) and
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    result = this.getParent().getChildSuccessor(this, kind) and
+    tag = OnlyInstructionTag()
   }
 
   final override Declaration getFunction() { result = this.getParent().getFunction() }
@@ -539,9 +617,6 @@ class TranslatedArgumentExprSideEffect extends TranslatedArgumentSideEffect,
 
   final override Locatable getAst() { result = arg }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override Type getIndirectionType() {
     result = arg.getUnspecifiedType().(DerivedType).getBaseType()
     or
@@ -574,9 +649,6 @@ class TranslatedStructorQualifierSideEffect extends TranslatedArgumentSideEffect
 
   final override Locatable getAst() { result = call }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override Type getIndirectionType() { result = call.getTarget().getDeclaringType() }
 
   final override string getArgString() { result = "this" }
@@ -597,9 +669,6 @@ class TranslatedCallSideEffect extends TranslatedSideEffect, TTranslatedCallSide
   TranslatedCallSideEffect() { this = TTranslatedCallSideEffect(expr, sideEffectOpcode) }
 
   override Locatable getAst() { result = expr }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   override Expr getPrimaryExpr() { result = expr }
 
@@ -638,9 +707,6 @@ class TranslatedAllocationSideEffect extends TranslatedSideEffect, TTranslatedAl
   TranslatedAllocationSideEffect() { this = TTranslatedAllocationSideEffect(expr) }
 
   override Locatable getAst() { result = expr }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   override Expr getPrimaryExpr() { result = expr }
 

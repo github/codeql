@@ -3,7 +3,7 @@
  */
 
 import csharp
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import PathGraph
 
 module TypesConfig implements DataFlow::ConfigSig {
@@ -18,8 +18,6 @@ module TypesConfig implements DataFlow::ConfigSig {
       mc.getAnArgument() = sink.asExpr()
     )
   }
-
-  int fieldFlowBranchLimit() { result = 1000 }
 }
 
 import ValueFlowTest<TypesConfig>

@@ -1,0 +1,13 @@
+name: secrets-in-artifacts
+on:
+  pull_request:
+jobs:
+  a-job: # VULNERABLE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # v4.3.2
+        with:
+          name: file
+          path: .

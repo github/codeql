@@ -1,1 +1,2 @@
-Security Features/CWE-838/InappropriateEncoding.ql
+query: Security Features/CWE-838/InappropriateEncoding.ql
+postprocess: utils/test/PrettyPrintModels.ql

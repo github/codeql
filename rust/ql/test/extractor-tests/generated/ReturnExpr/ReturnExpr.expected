@@ -1,0 +1,2 @@
+| gen_return_expr.rs:5:5:5:13 | return 42 | getNumberOfAttrs: | 0 | hasExpr: | yes |
+| gen_return_expr.rs:8:5:8:10 | return | getNumberOfAttrs: | 0 | hasExpr: | no |

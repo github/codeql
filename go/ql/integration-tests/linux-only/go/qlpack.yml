@@ -1,5 +1,0 @@
-dependencies:
-  codeql/go-all: '*'
-  codeql/go-tests: '*'
-  codeql/go-queries: '*'
-warnOnImplicitThis: true

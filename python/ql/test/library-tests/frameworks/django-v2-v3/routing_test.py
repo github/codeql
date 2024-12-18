@@ -150,3 +150,40 @@ class UnknownViewSubclass(UnknownViewSuperclass):
 urlpatterns = [
     path("UnknownViewSubclass/", UnknownViewSubclass.as_view()),  # $ routeSetup="UnknownViewSubclass/"
 ]
+
+################################################################################
+# Routing to *args and **kwargs
+################################################################################
+
+def kwargs_param(request, **kwargs): # $ requestHandler routedParameter=kwargs
+    ensure_tainted(
+        kwargs, # $ tainted
+        kwargs["foo"], # $ tainted
+        kwargs["bar"]  # $ tainted
+    )
+
+    ensure_tainted(request) # $ tainted
+
+
+def star_args_param(request, *args): # $ requestHandler routedParameter=args
+    ensure_tainted(
+        args, # $ tainted
+        args[0], # $ tainted
+        args[1], # $ tainted
+    )
+    ensure_tainted(request) # $ tainted
+
+
+def star_args_param_check(request, foo, bar): # $ requestHandler routedParameter=foo routedParameter=bar
+    ensure_tainted(
+        foo, # $ tainted
+        bar, # $ tainted
+    )
+    ensure_tainted(request) # $ tainted
+
+
+urlpatterns = [
+    path("test-kwargs_param/<foo>/<bar>", kwargs_param),  # $ routeSetup="test-kwargs_param/<foo>/<bar>"
+    re_path("test-star_args_param/([^/]+)/(.+)", star_args_param),  # $ routeSetup="test-star_args_param/([^/]+)/(.+)"
+    re_path("test-star_args_param_check/([^/]+)/(.+)", star_args_param_check),  # $ routeSetup="test-star_args_param_check/([^/]+)/(.+)"
+]

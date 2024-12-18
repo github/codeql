@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["nhooyr.io/websocket", "Conn", True, "Read", "", "", "ReturnValue[1]", "remote", "manual"]
+      - ["nhooyr.io/websocket", "Conn", True, "Reader", "", "", "ReturnValue[1]", "remote", "manual"]

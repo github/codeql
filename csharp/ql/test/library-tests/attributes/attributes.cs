@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -107,6 +108,7 @@ public class MyAttributeUsage
     [return: My3Attribute(6)]
     public static int operator +(MyAttributeUsage a, MyAttributeUsage b) => 0;
 
+    [My3Attribute(15)]
     public int this[int x]
     {
         [My3Attribute(7)]
@@ -119,6 +121,7 @@ public class MyAttributeUsage
     }
 
     private int p;
+    [My3Attribute(16)]
     public int Prop1
     {
         [method: My3Attribute(11)]
@@ -149,4 +152,11 @@ class Class1
 
     [Params(args: new[] { 1 }, s2: "b", s1: "a")]
     public void M4() { }
+}
+
+[Experimental("MyExperimentalClassId")]
+public class MyExperimentalClass
+{
+    [Experimental("MyExperimentalMethodId")]
+    public void MyExperimentalMethod() { }
 }

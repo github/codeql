@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.security.auth.x500", "X500Principal", False, "getEncoded", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.security.auth.x500", "X500Principal", False, "getName", "()", "", "Argument[this].SyntheticField[javax.security.auth.x500.X500Principal.thisX500Name].SyntheticField[sun.security.x509.X500Name.rfc1779Dn]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500Principal", False, "getName", "()", "", "Argument[this].SyntheticField[javax.security.auth.x500.X500Principal.thisX500Name].SyntheticField[sun.security.x509.X500Name.rfc2253Dn]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500Principal", False, "getName", "(String)", "", "Argument[this].SyntheticField[javax.security.auth.x500.X500Principal.thisX500Name].SyntheticField[sun.security.x509.X500Name.rfc1779Dn]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500Principal", False, "getName", "(String)", "", "Argument[this].SyntheticField[javax.security.auth.x500.X500Principal.thisX500Name].SyntheticField[sun.security.x509.X500Name.rfc2253Dn]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500Principal", False, "getName", "(String,Map)", "", "Argument[1].MapValue", "Argument[this].SyntheticField[javax.security.auth.x500.X500Principal.thisX500Name].SyntheticField[sun.security.x509.X500Name.rfc1779Dn]", "taint", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500Principal", False, "getName", "(String,Map)", "", "Argument[1].MapValue", "Argument[this].SyntheticField[javax.security.auth.x500.X500Principal.thisX500Name].SyntheticField[sun.security.x509.X500Name.rfc2253Dn]", "taint", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500Principal", False, "getName", "(String,Map)", "", "Argument[1].MapValue", "ReturnValue", "taint", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500Principal", False, "getName", "(String,Map)", "", "Argument[this].SyntheticField[javax.security.auth.x500.X500Principal.thisX500Name].SyntheticField[sun.security.x509.X500Name.rfc1779Dn]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500Principal", False, "getName", "(String,Map)", "", "Argument[this].SyntheticField[javax.security.auth.x500.X500Principal.thisX500Name].SyntheticField[sun.security.x509.X500Name.rfc2253Dn]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500PrivateCredential", False, "X500PrivateCredential", "(X509Certificate,PrivateKey)", "", "Argument[0]", "Argument[this].SyntheticField[javax.security.auth.x500.X500PrivateCredential.cert]", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500PrivateCredential", False, "X500PrivateCredential", "(X509Certificate,PrivateKey)", "", "Argument[1]", "Argument[this].SyntheticField[javax.security.auth.x500.X500PrivateCredential.key]", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500PrivateCredential", False, "X500PrivateCredential", "(X509Certificate,PrivateKey,String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.security.auth.x500.X500PrivateCredential.cert]", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500PrivateCredential", False, "X500PrivateCredential", "(X509Certificate,PrivateKey,String)", "", "Argument[1]", "Argument[this].SyntheticField[javax.security.auth.x500.X500PrivateCredential.key]", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500PrivateCredential", False, "X500PrivateCredential", "(X509Certificate,PrivateKey,String)", "", "Argument[2]", "Argument[this].SyntheticField[javax.security.auth.x500.X500PrivateCredential.alias]", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500PrivateCredential", False, "getAlias", "()", "", "Argument[this].SyntheticField[javax.security.auth.x500.X500PrivateCredential.alias]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500PrivateCredential", False, "getCertificate", "()", "", "Argument[this].SyntheticField[javax.security.auth.x500.X500PrivateCredential.cert]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.security.auth.x500", "X500PrivateCredential", False, "getPrivateKey", "()", "", "Argument[this].SyntheticField[javax.security.auth.x500.X500PrivateCredential.key]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.security.auth.x500", "X500Principal", "X500Principal", "(InputStream)", "summary", "df-generated"]
+      - ["javax.security.auth.x500", "X500Principal", "X500Principal", "(String)", "summary", "df-generated"]
+      - ["javax.security.auth.x500", "X500Principal", "X500Principal", "(String,Map)", "summary", "df-generated"]
+      - ["javax.security.auth.x500", "X500Principal", "X500Principal", "(byte[])", "summary", "df-generated"]
+      - ["javax.security.auth.x500", "X500PrivateCredential", "destroy", "()", "summary", "df-generated"]
+      - ["javax.security.auth.x500", "X500PrivateCredential", "isDestroyed", "()", "summary", "df-generated"]

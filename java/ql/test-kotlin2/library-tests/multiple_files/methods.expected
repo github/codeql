@@ -1,0 +1,4 @@
+| file1.kt:3:5:12:5 | fun1 | Class1.fun1 | file1.kt:2:1:13:1 | Class1 |
+| file2.kt:3:5:3:18 | fun2 | Class2.fun2 | file2.kt:2:1:4:1 | Class2 |
+| file3.kt:5:1:6:1 | fun3 | MyJvmName.fun3 | file3.kt:0:0:0:0 | MyJvmName |
+| file4.kt:4:1:5:1 | fun4 | File4Kt.fun4 | file4.kt:0:0:0:0 | File4Kt |

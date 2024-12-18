@@ -1,0 +1,4 @@
+| test.kt:4:5:6:5 | keySet | 0 | java.util.concurrent.ConcurrentHashMap$KeySetView<K,V> |
+| test.kt:8:5:10:5 | keySet | 1 | java.util.concurrent.ConcurrentHashMap$KeySetView<K,V> |
+| test.kt:17:5:19:5 | keySet | 0 | java.util.Set<K> |
+| test.kt:21:5:23:5 | keySet | 1 | java.util.concurrent.OtherConcurrentHashMap$KeySetView<K,V> |

@@ -88,15 +88,6 @@ module SsaSource {
     lhs.getBasicBlock().dominates(defn.getBasicBlock())
   }
 
-  /** Holds if `v` is defined by a `for` statement, the definition being `defn` */
-  cached
-  deprecated predicate iteration_defined_variable(
-    Variable v, ControlFlowNode defn, ControlFlowNode sequence
-  ) {
-    exists(ForNode for | for.iterates(defn, sequence)) and
-    defn.(NameNode).defines(v)
-  }
-
   /** Holds if `v` is a parameter variable and `defn` is the CFG node for that parameter. */
   cached
   predicate parameter_definition(Variable v, ControlFlowNode defn) {

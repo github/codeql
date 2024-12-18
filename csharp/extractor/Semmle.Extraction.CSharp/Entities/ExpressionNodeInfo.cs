@@ -115,20 +115,15 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private Extraction.Entities.Location? cachedLocation;
+        private Location? cachedLocation;
 
-        public Extraction.Entities.Location Location
+        public Location Location
         {
             get
             {
                 if (cachedLocation is null)
                     cachedLocation = Context.CreateLocation(CodeAnalysisLocation);
                 return cachedLocation;
-            }
-
-            set
-            {
-                cachedLocation = value;
             }
         }
 
@@ -198,7 +193,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public bool IsBoolLiteral()
         {
-            return TryGetBoolValueFromLiteral(out var _);
+            return TryGetBoolValueFromLiteral(out _);
         }
     }
 }

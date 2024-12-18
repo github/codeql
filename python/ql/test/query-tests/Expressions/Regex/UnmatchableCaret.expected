@@ -1,4 +1,4 @@
-| test.py:4:12:4:19 | Str | This regular expression includes an unmatchable caret at offset 1. |
-| test.py:5:12:5:23 | Str | This regular expression includes an unmatchable caret at offset 5. |
-| test.py:6:12:6:21 | Str | This regular expression includes an unmatchable caret at offset 2. |
-| test.py:79:12:79:27 | Str | This regular expression includes an unmatchable caret at offset 8. |
+| test.py:4:12:4:19 | StringLiteral | This regular expression includes an unmatchable caret at offset 1. |
+| test.py:5:12:5:23 | StringLiteral | This regular expression includes an unmatchable caret at offset 5. |
+| test.py:6:12:6:21 | StringLiteral | This regular expression includes an unmatchable caret at offset 2. |
+| test.py:79:12:79:27 | StringLiteral | This regular expression includes an unmatchable caret at offset 8. |

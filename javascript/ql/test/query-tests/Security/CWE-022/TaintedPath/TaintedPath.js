@@ -60,18 +60,6 @@ var server = http.createServer(function(req, res) {
   res.write(fs.readFileSync(pathModule.toNamespacedPath(path)));
 });
 
-angular.module('myApp', [])
-    .directive('myCustomer', function() {
-        return {
-            templateUrl: "SAFE" // OK
-        }
-    })
-    .directive('myCustomer', function() {
-        return {
-            templateUrl: Cookie.get("unsafe") // NOT OK
-        }
-    })
-
 var server = http.createServer(function(req, res) {
     // tests for a few uri-libraries
     res.write(fs.readFileSync(require("querystringify").parse(req.url).query)); // NOT OK
@@ -92,10 +80,6 @@ var server = http.createServer(function(req, res) {
 
 })();
 
-addEventListener('message', (ev) => {
-  Cookie.set("unsafe", ev.data);
-});
-
 var server = http.createServer(function(req, res) {
 	let path = url.parse(req.url, true).query.path;
 
@@ -110,25 +94,25 @@ var server = http.createServer(function(req, res) {
 
 var server = http.createServer(function(req, res) {
   let path = url.parse(req.url, true).query.path;
-  
+
   if (path) { // sanitization
     path = path.replace(/[\]\[*,;'"`<>\\?\/]/g, ''); // remove all invalid characters from states plus slashes
     path = path.replace(/\.\./g, ''); // remove all ".."
   }
-  
+
   res.write(fs.readFileSync(path));  // OK. Is sanitized above.
 });
 
 var server = http.createServer(function(req, res) {
   let path = url.parse(req.url, true).query.path;
-  
+
   if (!path) {
-    
+
   } else { // sanitization
 	  path = path.replace(/[\]\[*,;'"`<>\\?\/]/g, ''); // remove all invalid characters from states plus slashes
     path = path.replace(/\.\./g, ''); // remove all ".."
   }
-  
+
   res.write(fs.readFileSync(path));  // OK. Is sanitized above.
 });
 
@@ -142,15 +126,15 @@ var server = http.createServer(function(req, res) {
   let path = url.parse(req.url, true).query.path;
 
   fs.readFileSync(path); // NOT OK
-  
+
   var split = path.split("/");
-  
+
   fs.readFileSync(split.join("/")); // NOT OK
 
   fs.readFileSync(prefix + split[split.length - 1]) // OK
 
   fs.readFileSync(split[x]) // NOT OK
-  fs.readFileSync(prefix + split[x]) // NOT OK 
+  fs.readFileSync(prefix + split[x]) // NOT OK
 
   var concatted = prefix.concat(split);
   fs.readFileSync(concatted.join("/")); // NOT OK
@@ -158,13 +142,13 @@ var server = http.createServer(function(req, res) {
   var concatted2 = split.concat(prefix);
   fs.readFileSync(concatted2.join("/")); // NOT OK
 
-  fs.readFileSync(split.pop()); // NOT OK 
+  fs.readFileSync(split.pop()); // NOT OK
 
 });
 
 var server = http.createServer(function(req, res) {
   let path = url.parse(req.url, true).query.path;
-  
+
   // Removal of forward-slash or dots.
   res.write(fs.readFileSync(path.replace(/[\]\[*,;'"`<>\\?\/]/g, ''))); // OK.
   res.write(fs.readFileSync(path.replace(/[abcd]/g, ''))); // NOT OK
@@ -213,3 +197,25 @@ var server = http.createServer(function(req, res) {
   cp.execFileSync("foobar", ["args"], {cwd: path}); // NOT OK
   cp.execFileSync("foobar", {cwd: path}); // NOT OK
 });
+
+var server = http.createServer(function(req, res) {
+  let path = url.parse(req.url, true).query.path;
+
+  // Removal of forward-slash or dots.
+  res.write(fs.readFileSync(path.replace(new RegExp("[\\]\\[*,;'\"`<>\\?/]", 'g'), ''))); // OK
+  res.write(fs.readFileSync(path.replace(new RegExp("[\\]\\[*,;'\"`<>\\?/]", ''), ''))); // NOT OK.
+  res.write(fs.readFileSync(path.replace(new RegExp("[\\]\\[*,;'\"`<>\\?/]", unknownFlags()), ''))); // OK -- Might be okay depending on what unknownFlags evaluates to.
+});
+
+var server = http.createServer(function(req, res) {
+  let path = url.parse(req.url, true).query.path;
+
+  res.write(fs.readFileSync(path.replace(new RegExp("[.]", 'g'), ''))); // NOT OK (can be absolute)
+
+  if (!pathModule.isAbsolute(path)) {
+    res.write(fs.readFileSync(path.replace(new RegExp("[.]", ''), ''))); // NOT OK
+    res.write(fs.readFileSync(path.replace(new RegExp("[.]", 'g'), ''))); // OK
+    res.write(fs.readFileSync(path.replace(new RegExp("[.]", unknownFlags()), ''))); // OK
+  }
+});
+  

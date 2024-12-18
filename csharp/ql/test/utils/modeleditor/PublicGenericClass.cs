@@ -13,4 +13,9 @@ public class PublicGenericClass<T, T2> : PublicGenericInterface<T>
     {
         Console.WriteLine(arg);
     }
+
+    public TNode summaryStuff<TNode>(TNode arg)
+    {
+        return arg;
+    }
 }

@@ -1,6 +1,6 @@
 // Semmle test cases for rule CWE-457.
 
-void use(int data);
+void use(...);
 
 void test1() {
 	int foo = 1;
@@ -156,11 +156,12 @@ int absCorrect2(int i) {
 	return j; // correct: j always initialized before use
 }
 
+typedef __builtin_va_list va_list;
+#define va_start(v, l)	__builtin_va_start(v,l)
+#define va_end(v)	__builtin_va_end(v)
+#define va_arg(v, l)	__builtin_va_arg(v,l)
+#define va_copy(d, s)	__builtin_va_copy(d,s)
 
-typedef void *va_list;
-#define va_start(ap, parmN)
-#define va_end(ap)
-#define va_arg(ap, type) ((type)0)
 #define NULL 0
 
 // Variadic initialisation
@@ -176,7 +177,7 @@ void init(int val, ...) {
 void test15() {
   int foo;
   init(42, &foo, NULL);
-  use(foo); //GOOD -- initialised by `init`
+  use(foo); // GOOD -- initialised by `init`
 }
 
 // Variadic non-initialisation
@@ -190,6 +191,13 @@ void test16() {
   int foo;
   nonInit(42, &foo, NULL);
   use(foo); // BAD (NOT REPORTED)
+}
+
+void test_va_copy(va_list va) {
+  va_list va2;
+  va_copy(va2, va); // GOOD -- this is an initialization
+  use(va2);
+  va_end(va2);
 }
 
 bool test17(bool b) {
@@ -532,4 +540,64 @@ int non_exhaustive_switch_2(State s) {
 		return y; // GOOD (y is not initialized when s = StateC, but if s = StateC we won't reach this point)
 	}
 	return 0;
+}
+
+class StaticMethodClass{
+    public:
+    static int get(){
+        return 1;
+    }
+};
+
+int static_method_false_positive(){
+    StaticMethodClass *t;
+	int i = t->get(); // GOOD: the `get` method is static and this is equivalent to StaticMethodClass::get()
+}
+
+struct LinkedList
+{
+  LinkedList* next;
+};
+
+bool getBool();
+
+void test45() {
+  LinkedList *r, *s, **rP = &r;
+
+  while(getBool())
+  {
+    s = new LinkedList;
+    *rP = s;
+    rP = &s->next;
+  }
+
+  *rP = NULL;
+  use(r); // GOOD
+}
+
+void test46()
+{
+  LinkedList *r, **rP = &r;
+
+  while (getBool())
+  {
+    LinkedList *s = nullptr;
+    *rP = s;
+    rP = &s->next;
+  }
+
+  *rP = nullptr;
+  use(r);
+}
+
+namespace std {
+	float remquo(float, float, int*);
+}
+
+void test47() {
+	float x = 1.0f;
+	float y = 2.0f;
+	int quo;
+	std::remquo(x, y, &quo);
+	use(quo); // GOOD
 }

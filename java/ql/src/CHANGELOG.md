@@ -1,3 +1,198 @@
+## 1.1.10
+
+### Minor Analysis Improvements
+
+* Added SHA-384 to the list of secure hashing algorithms. As a result the `java/potentially-weak-cryptographic-algorithm` query should no longer flag up uses of SHA-384.
+* Added SHA3 to the list of secure hashing algorithms. As a result the `java/potentially-weak-cryptographic-algorithm` query should no longer flag up uses of SHA3.
+* The `java/weak-cryptographic-algorithm` query has been updated to no longer report uses of hash functions such as `MD5` and `SHA1` even if they are known to be weak. These hash algorithms are used very often in non-sensitive contexts, making the query too imprecise in practice. The `java/potentially-weak-cryptographic-algorithm` query has been updated to report these uses instead.
+
+## 1.1.9
+
+No user-facing changes.
+
+## 1.1.8
+
+No user-facing changes.
+
+## 1.1.7
+
+No user-facing changes.
+
+## 1.1.6
+
+### Minor Analysis Improvements
+
+* Added taint summary model for `org.springframework.core.io.InputStreamSource#getInputStream()`.
+
+## 1.1.5
+
+No user-facing changes.
+
+## 1.1.4
+
+No user-facing changes.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Variables names containing the string "tokenizer" (case-insensitively) are no longer sources for the `java/sensitive-log` query. They normally relate to things like `java.util.StringTokenizer`, which are not sensitive information. This should fix some false positive alerts.
+* The query "Unused classes and interfaces" (`java/unused-reference-type`) now recognizes that if a method of a class has an annotation then it may be accessed reflectively. This should remove false positive alerts, especially for JUnit 4-style tests annotated with `@test`.
+* Alerts about exposing `exception.getMessage()` in servlet responses are now split out of `java/stack-trace-exposure` into its own query `java/error-message-exposure`.
+* Added the extensible abstract class `SensitiveLoggerSource`. Now this class can be extended to add more sources to the `java/sensitive-log` query or for customizations overrides.
+
+## 1.1.1
+
+### Minor Analysis Improvements
+
+* The heuristic to enable certain Android queries has been improved. Now it ignores Android Manifests which don't define an activity, content provider or service. We also only consider files which are under a folder containing such an Android Manifest for these queries. This should remove some false positive alerts.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* The query `java/weak-cryptographic-algorithm` no longer alerts about `RSA/ECB` algorithm strings.
+
+### Minor Analysis Improvements
+
+* The query `java/tainted-permissions-check` now uses threat models. This means that `local` sources are no longer included by default for this query, but can be added by enabling the `local` threat model.
+* Added more `org.apache.commons.io.FileUtils`-related sinks to the path injection query.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+### Minor Analysis Improvements
+
+* The query `java/spring-disabled-csrf-protection` detects disabling CSRF via `ServerHttpSecurity$CsrfSpec::disable`.
+* Added more `java.io.File`-related sinks to the path injection query.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+* Removed `local` query variants. The results pertaining to local sources can be found using the non-local counterpart query. As an example, the results previously found by `java/unvalidated-url-redirection-local` can be found by `java/unvalidated-url-redirection`, if the `local` threat model is enabled. The removed queries are `java/path-injection-local`, `java/command-line-injection-local`, `java/xss-local`, `java/sql-injection-local`, `java/http-response-splitting-local`, `java/improper-validation-of-array-construction-local`, `java/improper-validation-of-array-index-local`, `java/tainted-format-string-local`, `java/tainted-arithmetic-local`, `java/unvalidated-url-redirection-local`, `java/xxe-local` and `java/tainted-numeric-cast-local`.
+
+### Minor Analysis Improvements
+
+* The alert message for the query "Trust boundary violation" (`java/trust-boundary-violation`) has been updated to include a link to the remote source.
+* The sanitizer of the query `java/zipslip` has been improved to include nodes that are safe due to having certain safe types. This reduces false positives. 
+
+## 0.8.16
+
+No user-facing changes.
+
+## 0.8.15
+
+No user-facing changes.
+
+## 0.8.14
+
+### Minor Analysis Improvements
+
+* The `java/unknown-javadoc-parameter` now accepts `@param` tags that apply to the parameters of a
+  record.
+
+## 0.8.13
+
+### New Queries
+
+* The query `java/unsafe-url-forward-dispatch-load` has been promoted from experimental to the main query pack as `java/unvalidated-url-forward`. Its results will now appear by default. This query was originally submitted as an experimental query [by @haby0](https://github.com/github/codeql/pull/6240) and [by @luchua-bc](https://github.com/github/codeql/pull/7286).
+
+### Major Analysis Improvements
+
+* The `java/missing-case-in-switch` query now gives only a single alert for each switch statement, giving some examples of the missing cases as well as a count of how many are missing.
+
+### Minor Analysis Improvements
+
+* Variables named `tokenImage` are no longer sources for  the `java/sensitive-log` query. This is because this variable name is used in parsing code generated by JavaCC, so it causes a large number of false positive alerts.
+* Added sanitizers for relative URLs, `List.contains()`, and checking the host of a URI to the `java/ssrf` and `java/unvalidated-url-redirection` queries.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### New Queries
+
+* Added a new query `java/android/insecure-local-key-gen` for finding instances of keys generated for biometric authentication in an insecure way.
+
+### Minor Analysis Improvements
+
+* To reduce the number of false positives in the query "Insertion of sensitive information into log files" (`java/sensitive-log`), variables with names that contain "null" (case-insensitively) are no longer considered sources of sensitive information.
+
+## 0.8.9
+
+### New Queries
+
+* Added a new query `java/android/insecure-local-authentication` for finding uses of biometric authentication APIs that do not make use of a `KeyStore`-backed key and thus may be bypassed.
+
+### Query Metadata Changes
+
+* The `security-severity` score of the query `java/relative-path-command` has been reduced to better adjust it to the specific conditions needed for exploitation.
+
+### Major Analysis Improvements
+
+* The sinks of the queries `java/path-injection` and `java/path-injection-local` have been reworked. Path creation sinks have been converted to summaries instead, while sinks now are actual file read/write operations only. This has reduced the false positive ratio of both queries.
+
+### Minor Analysis Improvements
+
+* The sanitizer for the path injection queries has been improved to handle more cases where `equals` is used to check an exact path match.
+* The query `java/unvalidated-url-redirection` now sanitizes results following the same logic as the query `java/ssrf`. URLs where the destination cannot be controlled externally are no longer reported.
+
+## 0.8.8
+
+### New Queries
+
+* Added a new query `java/android/sensitive-text` to detect instances of sensitive data being exposed through text fields without being properly masked. 
+* Added a new query `java/android/sensitive-notification` to detect instances of sensitive data being exposed through Android notifications. 
+
+## 0.8.7
+
+### New Queries
+
+* Added the `java/exec-tainted-environment` query, to detect the injection of environment variables names or values from remote input.
+
+### Minor Analysis Improvements
+
+* A manual neutral summary model for a callable now blocks all generated summary models for that callable from having any effect.
+
+## 0.8.6
+
+### New Queries
+
+* Added the `java/insecure-randomness` query to detect uses of weakly random values which an attacker may be able to predict. Also added the `crypto-parameter` sink kind for sinks which represent the parameters and keys of cryptographic operations. 
+
+### Minor Analysis Improvements
+
+* Modified the `java/potentially-weak-cryptographic-algorithm` query to include the use of weak cryptographic algorithms from configuration values specified in properties files.
+* The query `java/android/missing-certificate-pinning` should no longer alert about requests pointing to the local filesystem.
+* Removed some spurious sinks related to `com.opensymphony.xwork2.TextProvider.getText` from the query `java/ognl-injection`.
+
+### Bug Fixes
+
+* The three queries `java/insufficient-key-size`, `java/server-side-template-injection`, and `java/android/implicit-pendingintents` had accidentally general extension points allowing arbitrary string-based flow state. This has been fixed and the old extension points have been deprecated where possible, and otherwise updated.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+No user-facing changes.
+
 ## 0.8.3
 
 ### Minor Analysis Improvements

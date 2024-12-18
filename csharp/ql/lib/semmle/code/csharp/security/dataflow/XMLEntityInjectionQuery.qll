@@ -3,7 +3,8 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.text.RegularExpressions
 private import semmle.code.csharp.security.xml.InsecureXMLQuery as InsecureXml
@@ -14,12 +15,12 @@ private import semmle.code.csharp.security.Sanitizers
  */
 abstract class Source extends DataFlow::Node { }
 
-private class RemoteSource extends Source instanceof RemoteFlowSource { }
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * A data flow sink for untrusted user input used in XML processing.
  */
-abstract class Sink extends DataFlow::ExprNode {
+abstract class Sink extends ApiSinkExprNode {
   /**
    * Gets the reason for the insecurity of this sink.
    */
@@ -42,26 +43,6 @@ private class InsecureXmlSink extends Sink {
  * A sanitizer for untrusted user input used in XML processing.
  */
 abstract class Sanitizer extends DataFlow::Node { }
-
-/**
- * DEPRECATED: Use `XmlEntityInjection` instead.
- *
- * A taint-tracking configuration for untrusted user input used in XML processing.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "XMLInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  override predicate hasFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
-    super.hasFlowPath(source, sink) and
-    exists(sink.getNode().(Sink).getReason())
-  }
-}
 
 /**
  * A taint-tracking configuration for untrusted user input used in XML processing.

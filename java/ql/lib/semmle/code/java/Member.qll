@@ -737,10 +737,17 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
   /** Gets the number of fields declared in this declaration. */
   int getNumField() { result = max(int idx | fieldDeclaredIn(_, this, idx) | idx) + 1 }
 
+  private string stringifyType() {
+    // Necessary because record fields are missing their type access.
+    if exists(this.getTypeAccess())
+    then result = this.getTypeAccess().toString()
+    else result = this.getAField().getType().toString()
+  }
+
   override string toString() {
     if this.getNumField() = 1
-    then result = this.getTypeAccess() + " " + this.getField(0) + ";"
-    else result = this.getTypeAccess() + " " + this.getField(0) + ", ...;"
+    then result = this.stringifyType() + " " + this.getField(0) + ";"
+    else result = this.stringifyType() + " " + this.getField(0) + ", ...;"
   }
 
   override string getAPrimaryQlClass() { result = "FieldDeclaration" }
@@ -749,13 +756,13 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
 /** A class or instance field. */
 class Field extends Member, ExprParent, @field, Variable {
   /** Gets the declared type of this field. */
-  override Type getType() { fields(this, _, result, _, _) }
+  override Type getType() { fields(this, _, result, _) }
 
   /** Gets the Kotlin type of this field. */
   override KotlinType getKotlinType() { fieldsKotlinType(this, result) }
 
   /** Gets the type in which this field is declared. */
-  override RefType getDeclaringType() { fields(this, _, _, result, _) }
+  override RefType getDeclaringType() { fields(this, _, _, result) }
 
   /**
    * Gets the field declaration in which this field is declared.
@@ -787,18 +794,12 @@ class Field extends Member, ExprParent, @field, Variable {
   }
 
   /**
-   * Gets the source declaration of this field.
-   *
-   * For fields that are members of a parameterized
-   * instance of a generic type, the source declaration is the
-   * corresponding field in the generic type.
-   *
-   * For all other fields, the source declaration is the field itself.
+   * DEPRECATED: The result is always `this`.
    */
-  Field getSourceDeclaration() { fields(this, _, _, _, result) }
+  deprecated Field getSourceDeclaration() { result = this }
 
-  /** Holds if this field is the same as its source declaration. */
-  predicate isSourceDeclaration() { this.getSourceDeclaration() = this }
+  /** DEPRECATED: This always holds. */
+  deprecated predicate isSourceDeclaration() { any() }
 
   override predicate isPublic() {
     Member.super.isPublic()

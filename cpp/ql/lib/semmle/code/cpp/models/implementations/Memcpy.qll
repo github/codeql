@@ -9,13 +9,14 @@ import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.NonThrowing
 
 /**
  * The standard functions `memcpy`, `memmove` and `bcopy`; and the gcc variant
  * `__builtin___memcpy_chk`.
  */
 private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffectFunction,
-  AliasFunction
+  AliasFunction, NonCppThrowingFunction
 {
   MemcpyFunction() {
     // memcpy(dest, src, num)

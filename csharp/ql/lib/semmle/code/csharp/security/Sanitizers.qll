@@ -55,7 +55,7 @@ class UrlSanitizedExpr extends Expr {
  */
 class SimpleTypeSanitizedExpr extends DataFlow::ExprNode {
   SimpleTypeSanitizedExpr() {
-    exists(Type t | t = this.getType() |
+    exists(Type t | t = this.getType() or t = this.getType().(NullableType).getUnderlyingType() |
       t instanceof SimpleType or
       t instanceof SystemDateTimeStruct
     )

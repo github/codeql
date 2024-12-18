@@ -111,7 +111,7 @@ This query finds the filename argument passed in each call to ``File.open``:
 
     import codeql.ruby.DataFlow
     import codeql.ruby.ApiGraphs
-    
+
     from DataFlow::CallNode call
     where call = API::getTopLevelMember("File").getAMethodCall("open")
     select call.getArgument(0)
@@ -126,7 +126,7 @@ So we use local data flow to find all expressions that flow into the argument:
 
     import codeql.ruby.DataFlow
     import codeql.ruby.ApiGraphs
-    
+
     from DataFlow::CallNode call, DataFlow::ExprNode expr
     where
       call = API::getTopLevelMember("File").getAMethodCall("open") and
@@ -143,7 +143,7 @@ We can update the query to specify that ``expr`` is an instance of a ``LocalSour
 
     import codeql.ruby.DataFlow
     import codeql.ruby.ApiGraphs
-    
+
     from DataFlow::CallNode call, DataFlow::ExprNode expr
     where
       call = API::getTopLevelMember("File").getAMethodCall("open") and
@@ -158,7 +158,7 @@ That would allow us to use the member predicate ``flowsTo`` on ``LocalSourceNode
 
     import codeql.ruby.DataFlow
     import codeql.ruby.ApiGraphs
-    
+
     from DataFlow::CallNode call, DataFlow::ExprNode expr
     where
       call = API::getTopLevelMember("File").getAMethodCall("open") and
@@ -171,7 +171,7 @@ As an alternative, we can ask more directly that ``expr`` is a local source of t
 
     import codeql.ruby.DataFlow
     import codeql.ruby.ApiGraphs
-    
+
     from DataFlow::CallNode call, DataFlow::ExprNode expr
     where
       call = API::getTopLevelMember("File").getAMethodCall("open") and
@@ -190,7 +190,7 @@ This query finds instances where a parameter is used as the name when opening a 
 
     import codeql.ruby.DataFlow
     import codeql.ruby.ApiGraphs
-    
+
     from DataFlow::CallNode call, DataFlow::ParameterNode p
     where
       call = API::getTopLevelMember("File").getAMethodCall("open") and
@@ -206,7 +206,7 @@ This query finds calls to ``File.open`` where the file name is derived from a pa
     import codeql.ruby.DataFlow
     import codeql.ruby.TaintTracking
     import codeql.ruby.ApiGraphs
-    
+
     from DataFlow::CallNode call, DataFlow::ParameterNode p
     where
       call = API::getTopLevelMember("File").getAMethodCall("open") and
@@ -327,17 +327,17 @@ The following global taint-tracking query finds path arguments in filesystem acc
     import codeql.ruby.TaintTracking
     import codeql.ruby.Concepts
     import codeql.ruby.dataflow.RemoteFlowSources
-    
+
     module RemoteToFileConfiguration implements DataFlow::ConfigSig {
       predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-    
+
       predicate isSink(DataFlow::Node sink) {
         sink = any(FileSystemAccess fa).getAPathArgument()
       }
     }
 
     module RemoteToFileFlow = TaintTracking::Global<RemoteToFileConfiguration>;
-    
+
     from DataFlow::Node input, DataFlow::Node fileAccess
     where RemoteToFileFlow::flow(input, fileAccess)
     select fileAccess, "This file access uses data from $@.", input, "user-controllable input."
@@ -352,7 +352,7 @@ The following global data-flow query finds calls to ``File.open`` where the file
     import codeql.ruby.DataFlow
     import codeql.ruby.controlflow.CfgNodes
     import codeql.ruby.ApiGraphs
-    
+
     module EnvironmentToFileConfiguration implements DataFlow::ConfigSig {
       predicate isSource(DataFlow::Node source) {
         exists(ExprNodes::ConstantReadAccessCfgNode env |
@@ -367,7 +367,7 @@ The following global data-flow query finds calls to ``File.open`` where the file
     }
 
     module EnvironmentToFileFlow = DataFlow::Global<EnvironmentToFileConfiguration>;
-    
+
     from DataFlow::Node environment, DataFlow::Node fileOpen
     where EnvironmentToFileFlow::flow(environment, fileOpen)
     select fileOpen, "This call to 'File.open' uses data from $@.", environment,
@@ -376,7 +376,7 @@ The following global data-flow query finds calls to ``File.open`` where the file
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/ruby-further-reading.rst

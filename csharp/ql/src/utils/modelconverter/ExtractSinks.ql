@@ -12,7 +12,7 @@ from
   string name, string signature0, string signature, string ext, string input, string kind,
   string provenance
 where
-  sinkModel(namespace0, type0, subtypes, name0, signature0, ext, input, kind, provenance) and
+  sinkModel(namespace0, type0, subtypes, name0, signature0, ext, input, kind, provenance, _) and
   interpretCallable(namespace0, namespace, type0, type, name0, name, signature0, signature)
 select namespace, type, subtypes, name, signature, ext, input, kind, provenance order by
     namespace, type, name, signature, input, kind

@@ -117,3 +117,14 @@ const server4 = http.createServer((req, res) => {
         server.start();
     }
 });
+
+const serverMatchAll = http.createServer((req, res) => {
+    let username = url.parse(req.url, true).query.username;
+    let otherStr = username.matchAll(/.*/g)[0]; // BAD
+    console.log(otherStr);
+});
+
+const serverMatchAl2l = http.createServer((req, res) => {
+    const result = url.parse(req.url, true).query.username.matchAll(/(\d+)/g); // BAD
+    console.log("First captured group:", RegExp.$1);
+});

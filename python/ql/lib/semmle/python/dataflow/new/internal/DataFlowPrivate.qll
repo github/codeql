@@ -3,6 +3,7 @@ private import DataFlowPublic
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportResolution
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.python.frameworks.data.ModelsAsData
 // Since we allow extra data-flow steps from modeled frameworks, we import these
 // up-front, to ensure these are included. This provides a more seamless experience from
 // a user point of view, since they don't need to know they need to import a specific
@@ -17,6 +18,7 @@ private import semmle.python.Frameworks
 import MatchUnpacking
 import IterableUnpacking
 import DataFlowDispatch
+import VariableCapture as VariableCapture
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -167,6 +169,26 @@ private predicate synthDictSplatArgumentNodeStoreStep(
 }
 
 /**
+ * Holds if `nodeFrom` is the value yielded by the `yield` found at `nodeTo`.
+ *
+ * For example, in
+ * ```python
+ * for x in l:
+ *   yield x.name
+ * ```
+ * data from `x.name` is stored into the `yield` (and can subsequently be read out of the iterable).
+ */
+predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+  exists(Yield yield |
+    nodeTo.asCfgNode() = yield.getAFlowNode() and
+    nodeFrom.asCfgNode() = yield.getValue().getAFlowNode() and
+    // TODO: Consider if this will also need to transfer dictionary content
+    // once dictionary comprehensions are supported.
+    c instanceof ListElementContent
+  )
+}
+
+/**
  * Ensures that the a `**kwargs` parameter will not contain elements with names of
  * keyword parameters.
  *
@@ -254,6 +276,12 @@ abstract class PostUpdateNodeImpl extends Node {
   abstract Node getPreUpdateNode();
 }
 
+/**
+ * A post-update node synthesised for an existing control flow node.
+ * Add to `TSyntheticPostUpdateNode` to get the synthetic post-update node synthesised.
+ *
+ * Synthetic post-update nodes for synthetic nodes need to be listed one by one.
+ */
 class SyntheticPostUpdateNode extends PostUpdateNodeImpl, TSyntheticPostUpdateNode {
   ControlFlowNode node;
 
@@ -268,6 +296,11 @@ class SyntheticPostUpdateNode extends PostUpdateNodeImpl, TSyntheticPostUpdateNo
   override Location getLocation() { result = node.getLocation() }
 }
 
+/**
+ * An existsing control flow node being the post-update node of a synthetic pre-update node.
+ *
+ * Synthetic post-update nodes for synthetic nodes need to be listed one by one.
+ */
 class NonSyntheticPostUpdateNode extends PostUpdateNodeImpl, CfgNode {
   SyntheticPreUpdateNode pre;
 
@@ -281,28 +314,33 @@ class DataFlowExpr = Expr;
 /**
  * A module to compute local flow.
  *
- * Flow will generally go from control flow nodes into essa variables at definitions,
+ * Flow will generally go from control flow nodes for expressions into
+ * control flow nodes for variables at definitions,
  * and from there via use-use flow to other control flow nodes.
  *
  * Some syntaxtic constructs are handled separately.
  */
 module LocalFlow {
-  /** Holds if `nodeFrom` is the control flow node defining the essa variable `nodeTo`. */
+  /** Holds if `nodeFrom` is the expression defining the value for the variable `nodeTo`. */
   predicate definitionFlowStep(Node nodeFrom, Node nodeTo) {
     // Definition
     //   `x = f(42)`
-    //   nodeFrom is `f(42)`, cfg node
-    //   nodeTo is `x`, essa var
-    nodeFrom.(CfgNode).getNode() =
-      nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue()
+    //   nodeFrom is `f(42)`
+    //   nodeTo is `x`
+    exists(AssignmentDefinition def |
+      nodeFrom.(CfgNode).getNode() = def.getValue() and
+      nodeTo.(CfgNode).getNode() = def.getDefiningNode()
+    )
     or
     // With definition
     //   `with f(42) as x:`
-    //   nodeFrom is `f(42)`, cfg node
-    //   nodeTo is `x`, essa var
-    exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
+    //   nodeFrom is `f(42)`
+    //   nodeTo is `x`
+    exists(With with, ControlFlowNode contextManager, WithDefinition withDef, ControlFlowNode var |
+      var = withDef.getDefiningNode()
+    |
       nodeFrom.(CfgNode).getNode() = contextManager and
-      nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
+      nodeTo.(CfgNode).getNode() = var and
       // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
       with.getContextExpr() = contextManager.getNode() and
       with.getOptionalVars() = var.getNode() and
@@ -312,34 +350,6 @@ module LocalFlow {
       // both:
       // * `foo = x.foo(); await foo.async_method(); foo.close()` and
       // * `async with x.foo() as foo: await foo.async_method()`.
-    )
-    or
-    // Async with var definition
-    //  `async with f(42) as x:`
-    //  nodeFrom is `x`, cfg node
-    //  nodeTo is `x`, essa var
-    //
-    // This makes the cfg node the local source of the awaited value.
-    //
-    // We have this step in addition to the step above, to handle cases where the QL
-    // modeling of `f(42)` requires a `.getAwaited()` step (in API graphs) when not
-    // using `async with`, so you can do both:
-    // * `foo = await x.foo(); await foo.async_method(); foo.close()` and
-    // * `async with x.foo() as foo: await foo.async_method()`.
-    exists(With with, ControlFlowNode var |
-      nodeFrom.(CfgNode).getNode() = var and
-      nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
-      with.getOptionalVars() = var.getNode() and
-      with.isAsync()
-    )
-    or
-    // Parameter definition
-    //   `def foo(x):`
-    //   nodeFrom is `x`, cfgNode
-    //   nodeTo is `x`, essa var
-    exists(ParameterDefinition pd |
-      nodeFrom.(CfgNode).getNode() = pd.getDefiningNode() and
-      nodeTo.(EssaNode).getVar() = pd.getVariable()
     )
   }
 
@@ -372,9 +382,15 @@ module LocalFlow {
     // First use after definition
     //   `y = 42`
     //   `x = f(y)`
-    //   nodeFrom is `y` on first line, essa var
-    //   nodeTo is `y` on second line, cfg node
-    defToFirstUse(nodeFrom.asVar(), nodeTo.asCfgNode())
+    //   nodeFrom is `y` on first line
+    //   nodeTo is `y` on second line
+    exists(EssaDefinition def |
+      nodeFrom.(CfgNode).getNode() = def.(EssaNodeDefinition).getDefiningNode()
+      or
+      nodeFrom.(ScopeEntryDefinitionNode).getDefinition() = def
+    |
+      AdjacentUses::firstUse(def, nodeTo.(CfgNode).getNode())
+    )
     or
     // Next use after use
     //   `x = f(y)`
@@ -487,10 +503,12 @@ import StepRelationTransformations
  *
  * It includes flow steps from flow summaries.
  */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+  simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo) and model = ""
   or
-  summaryFlowSteps(nodeFrom, nodeTo)
+  summaryLocalStep(nodeFrom, nodeTo, model)
+  or
+  variableCaptureLocalFlowStep(nodeFrom, nodeTo) and model = ""
 }
 
 /**
@@ -501,17 +519,22 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
  * or at runtime when callables in the module are called.
  */
 predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
-  IncludePostUpdateFlow<PhaseDependentFlow<LocalFlow::localFlowStep/2>::step/2>::step(nodeFrom,
-    nodeTo)
+  LocalFlow::localFlowStep(nodeFrom, nodeTo)
 }
 
-private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {
+private predicate summaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
-predicate summaryFlowSteps(Node nodeFrom, Node nodeTo) {
-  IncludePostUpdateFlow<PhaseDependentFlow<summaryLocalStep/2>::step/2>::step(nodeFrom, nodeTo)
+predicate variableCaptureLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  // Blindly applying use-use flow can result in a node that steps to itself, for
+  // example in while-loops. To uphold dataflow consistency checks, we don't want
+  // that. However, we do want to allow `[post] n` to `n` (to handle while loops), so
+  // we should only do the filtering after `IncludePostUpdateFlow` has ben applied.
+  IncludePostUpdateFlow<PhaseDependentFlow<VariableCapture::valueStep/2>::step/2>::step(nodeFrom,
+    nodeTo) and
+  nodeFrom != nodeTo
 }
 
 /** `ModuleVariable`s are accessed via jump steps at runtime. */
@@ -542,7 +565,7 @@ newtype TDataFlowType = TAnyFlow()
 
 class DataFlowType extends TDataFlowType {
   /** Gets a textual representation of this element. */
-  string toString() { result = "DataFlowType" }
+  string toString() { result = "" }
 }
 
 /** A node that performs a type cast. */
@@ -565,35 +588,26 @@ predicate neverSkipInPathGraph(Node n) {
   // ```
   // we would end up saying that the path MUST not skip the x in `y = x`, which is just
   // annoying and doesn't help the path explanation become clearer.
-  n.asVar() instanceof EssaDefinition and
-  // For a parameter we have flow from ControlFlowNode to SSA node, and then onwards
-  // with use-use flow, and since the CFN is already part of the path graph, we don't
-  // want to force showing the SSA node as well.
-  not n.asVar() instanceof ParameterDefinition
+  n.asCfgNode() = any(EssaNodeDefinition def).getDefiningNode()
 }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
-predicate localMustFlowStep(Node node1, Node node2) { none() }
+predicate localMustFlowStep(Node nodeFrom, Node nodeTo) { none() }
 
 /**
  * Gets the type of `node`.
  */
 DataFlowType getNodeType(Node node) {
   result = TAnyFlow() and
-  // Suppress unused variable warning
-  node = node
+  exists(node)
 }
-
-/** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DataFlowType t) { none() }
 
 //--------
 // Extra flow
@@ -655,23 +669,35 @@ predicate jumpStepNotSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
 // Field flow
 //--------
 /**
- * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
- * content `c`.
+ * Subset of `storeStep` that should be shared with type-tracking.
+ *
+ * NOTE: This does not include attributeStoreStep right now, since it has its' own
+ * modeling in the type-tracking library (which is slightly different due to
+ * PostUpdateNodes).
+ *
+ * As of 2024-04-02 the type-tracking library only supports precise content, so there is
+ * no reason to include steps for list content right now.
  */
-predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
-  listStoreStep(nodeFrom, c, nodeTo)
-  or
-  setStoreStep(nodeFrom, c, nodeTo)
-  or
+predicate storeStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
   tupleStoreStep(nodeFrom, c, nodeTo)
   or
   dictStoreStep(nodeFrom, c, nodeTo)
   or
   moreDictStoreSteps(nodeFrom, c, nodeTo)
   or
-  comprehensionStoreStep(nodeFrom, c, nodeTo)
-  or
   iterableUnpackingStoreStep(nodeFrom, c, nodeTo)
+}
+
+/**
+ * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
+ * content `c`.
+ */
+predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+  storeStepCommon(nodeFrom, c, nodeTo)
+  or
+  listStoreStep(nodeFrom, c, nodeTo)
+  or
+  setStoreStep(nodeFrom, c, nodeTo)
   or
   attributeStoreStep(nodeFrom, c, nodeTo)
   or
@@ -685,6 +711,40 @@ predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
   or
   synthDictSplatArgumentNodeStoreStep(nodeFrom, c, nodeTo)
+  or
+  yieldStoreStep(nodeFrom, c, nodeTo)
+  or
+  VariableCapture::storeStep(nodeFrom, c, nodeTo)
+}
+
+/**
+ * A synthesized data flow node representing a closure object that tracks
+ * captured variables.
+ */
+class SynthCaptureNode extends Node, TSynthCaptureNode {
+  private VariableCapture::Flow::SynthesizedCaptureNode cn;
+
+  SynthCaptureNode() { this = TSynthCaptureNode(cn) }
+
+  /** Gets the `SynthesizedCaptureNode` that this node represents. */
+  VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
+
+  override Scope getScope() { result = cn.getEnclosingCallable() }
+
+  override Location getLocation() { result = cn.getLocation() }
+
+  override string toString() { result = cn.toString() }
+}
+
+private class SynthCapturePostUpdateNode extends PostUpdateNodeImpl, SynthCaptureNode {
+  private SynthCaptureNode pre;
+
+  SynthCapturePostUpdateNode() {
+    VariableCapture::Flow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+      pre.getSynthesizedCaptureNode())
+  }
+
+  override Node getPreUpdateNode() { result = pre }
 }
 
 /**
@@ -779,7 +839,7 @@ predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeT
   exists(KeyValuePair item |
     item = nodeTo.asCfgNode().(DictNode).getNode().(Dict).getAnItem() and
     nodeFrom.getNode().getNode() = item.getValue() and
-    c.getKey() = item.getKey().(StrConst).getS()
+    c.getKey() = item.getKey().(StringLiteral).getS()
   )
 }
 
@@ -790,16 +850,18 @@ predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeT
  * TODO: Once TaintTracking no longer uses `dictStoreStep`, unify the two predicates.
  */
 private predicate moreDictStoreSteps(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
+  // NOTE: It's important to add logic to the newtype definition of
+  // DictionaryElementContent if you add new cases here.
   exists(SubscriptNode subscript |
     nodeTo.(PostUpdateNode).getPreUpdateNode().asCfgNode() = subscript.getObject() and
     nodeFrom.asCfgNode() = subscript.(DefinitionNode).getValue() and
-    c.getKey() = subscript.getIndex().getNode().(StrConst).getText()
+    c.getKey() = subscript.getIndex().getNode().(StringLiteral).getText()
   )
   or
   // see https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
   exists(MethodCallNode call |
     call.calls(nodeTo.(PostUpdateNode).getPreUpdateNode(), "setdefault") and
-    call.getArg(0).asExpr().(StrConst).getText() = c.getKey() and
+    call.getArg(0).asExpr().(StringLiteral).getText() = c.getKey() and
     nodeFrom = call.getArg(1)
   )
 }
@@ -808,33 +870,8 @@ predicate dictClearStep(Node node, DictionaryElementContent c) {
   exists(SubscriptNode subscript |
     subscript instanceof DefinitionNode and
     node.asCfgNode() = subscript.getObject() and
-    c.getKey() = subscript.getIndex().getNode().(StrConst).getText()
+    c.getKey() = subscript.getIndex().getNode().(StringLiteral).getText()
   )
-}
-
-/** Data flows from an element expression in a comprehension to the comprehension. */
-predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
-  // Comprehension
-  //   `[x+1 for x in l]`
-  //   nodeFrom is `x+1`, cfg node
-  //   nodeTo is `[x+1 for x in l]`, cfg node
-  //   c denotes list or set or dictionary without index
-  //
-  // List
-  nodeTo.getNode().getNode().(ListComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof ListElementContent
-  or
-  // Set
-  nodeTo.getNode().getNode().(SetComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof SetElementContent
-  or
-  // Dictionary
-  nodeTo.getNode().getNode().(DictComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof DictionaryElementAnyContent
-  or
-  // Generator
-  nodeTo.getNode().getNode().(GeneratorExp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof ListElementContent
 }
 
 /**
@@ -871,12 +908,19 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, Node nodeTo) {
 }
 
 /**
- * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
+ * Subset of `readStep` that should be shared with type-tracking.
  */
-predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+predicate readStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
+}
+
+/**
+ * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
+ */
+predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+  readStepCommon(nodeFrom, c, nodeTo)
   or
   matchReadStep(nodeFrom, c, nodeTo)
   or
@@ -888,6 +932,8 @@ predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
     nodeTo.(FlowSummaryNode).getSummaryNode())
   or
   synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
+  or
+  VariableCapture::readStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -909,14 +955,14 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
       nodeTo.getNode().(SubscriptNode).getIndex().getNode().(IntegerLiteral).getValue()
     or
     c.(DictionaryElementContent).getKey() =
-      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
+      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StringLiteral).getS()
   )
 }
 
 predicate forReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
   exists(ForTarget target |
     nodeFrom.asExpr() = target.getSource() and
-    nodeTo.asVar().(EssaNodeDefinition).getDefiningNode() = target
+    nodeTo.asCfgNode() = target
   ) and
   (
     c instanceof ListElementContent
@@ -958,6 +1004,8 @@ predicate clearsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
   dictSplatParameterNodeClearStep(n, c)
+  or
+  VariableCapture::clearsContent(n, c)
 }
 
 /**
@@ -976,29 +1024,19 @@ predicate attributeClearStep(Node n, AttributeContent c) {
   exists(PostUpdateNode post | post.getPreUpdateNode() = n | attributeStoreStep(_, c, post))
 }
 
+class NodeRegion instanceof Unit {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { none() }
+}
+
 //--------
 // Fancy context-sensitive guards
 //--------
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
-
-//--------
-// Virtual dispatch with call context
-//--------
-/**
- * Gets a viable dispatch target of `call` in the context `ctx`. This is
- * restricted to those `call`s for which a context might make a difference.
- */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
-
-/**
- * Holds if the set of viable implementations that can be called by `call`
- * might be improved by knowing the call context. This is the case if the qualifier accesses a parameter of
- * the enclosing callable `c` (including the implicit `this` parameter).
- */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high
@@ -1017,6 +1055,10 @@ predicate nodeIsHidden(Node n) {
   n instanceof SynthDictSplatArgumentNode
   or
   n instanceof SynthDictSplatParameterNode
+  or
+  n instanceof SynthCaptureNode
+  or
+  n instanceof SynthCapturedVariablesParameterNode
 }
 
 class LambdaCallKind = Unit;
@@ -1044,6 +1086,16 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
+predicate knownSourceModel(Node source, string model) {
+  source = ModelOutput::getASourceNode(_, model).asSource()
+}
+
+predicate knownSinkModel(Node sink, string model) {
+  sink = ModelOutput::getASinkNode(_, model).asSink()
+}
+
+class DataFlowSecondLevelScope = Unit;
+
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a
  * side-effect, resulting in a summary from `p` to itself.
@@ -1052,7 +1104,15 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
-  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  exists(DataFlowCallable c, ParameterPosition pos |
+    p.(ParameterNodeImpl).isParameterOf(c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asLibraryCallable(), pos)
+  )
+  or
+  exists(Function f |
+    VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(f) and
+    p = TSynthCapturedVariablesParameterNode(f)
+  )
 }
 
 /** An approximated `Content`. */

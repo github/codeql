@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Text.Encoding.Extensions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Text.Encoding.Extensions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Text
@@ -27,6 +27,8 @@ namespace System
             public override int GetMaxCharCount(int byteCount) => throw null;
             public override string GetString(byte[] bytes, int byteIndex, int byteCount) => throw null;
             public override bool IsSingleByte { get => throw null; }
+            public override bool TryGetBytes(System.ReadOnlySpan<char> chars, System.Span<byte> bytes, out int bytesWritten) => throw null;
+            public override bool TryGetChars(System.ReadOnlySpan<byte> bytes, System.Span<char> chars, out int charsWritten) => throw null;
         }
         public class UnicodeEncoding : System.Text.Encoding
         {
@@ -129,6 +131,8 @@ namespace System
             public override byte[] GetPreamble() => throw null;
             public override string GetString(byte[] bytes, int index, int count) => throw null;
             public override System.ReadOnlySpan<byte> Preamble { get => throw null; }
+            public override bool TryGetBytes(System.ReadOnlySpan<char> chars, System.Span<byte> bytes, out int bytesWritten) => throw null;
+            public override bool TryGetChars(System.ReadOnlySpan<byte> bytes, System.Span<char> chars, out int charsWritten) => throw null;
         }
     }
 }

@@ -1,13 +1,13 @@
 Partial.cs:
 #    1| [Class] TwoPartClass
-#    3|   5: [Method] PartialMethodWithBody1
-#    3|     -1: [TypeMention] Void
-#   10|     4: [BlockStmt] {...}
-#    4|   6: [Method] PartialMethodWithoutBody1
+#    4|   5: [Method] PartialMethodWithoutBody1
 #    4|     -1: [TypeMention] Void
-#    5|   7: [Method] Method2
+#    5|   6: [Method] Method2
 #    5|     -1: [TypeMention] Void
 #    5|     4: [BlockStmt] {...}
+#   10|   7: [Method] PartialMethodWithBody1
+#    3|     -1: [TypeMention] Void
+#   10|     4: [BlockStmt] {...}
 #   11|   8: [Method] Method3
 #   11|     -1: [TypeMention] Void
 #   11|     4: [BlockStmt] {...}

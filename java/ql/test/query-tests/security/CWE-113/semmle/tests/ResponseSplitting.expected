@@ -1,8 +1,19 @@
+#select
+| ResponseSplitting.java:23:23:23:28 | cookie | ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:23:23:23:28 | cookie | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:22:39:22:66 | getParameter(...) | user-provided value |
+| ResponseSplitting.java:28:38:28:72 | getParameter(...) | ResponseSplitting.java:28:38:28:72 | getParameter(...) | ResponseSplitting.java:28:38:28:72 | getParameter(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:28:38:28:72 | getParameter(...) | user-provided value |
+| ResponseSplitting.java:29:38:29:72 | getParameter(...) | ResponseSplitting.java:29:38:29:72 | getParameter(...) | ResponseSplitting.java:29:38:29:72 | getParameter(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:29:38:29:72 | getParameter(...) | user-provided value |
+| ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | ResponseSplitting.java:53:14:53:48 | getParameter(...) : String | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:53:14:53:48 | getParameter(...) | user-provided value |
 edges
-| ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | ResponseSplitting.java:23:23:23:28 | cookie |
-| ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie |
-| ResponseSplitting.java:53:14:53:48 | getParameter(...) : String | ResponseSplitting.java:59:27:59:27 | t : String |
-| ResponseSplitting.java:59:27:59:27 | t : String | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) |
+| ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | ResponseSplitting.java:23:23:23:28 | cookie | provenance | Sink:MaD:1 |
+| ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | provenance | Src:MaD:3 MaD:5 |
+| ResponseSplitting.java:53:14:53:48 | getParameter(...) : String | ResponseSplitting.java:59:27:59:27 | t : String | provenance | Src:MaD:3  |
+| ResponseSplitting.java:59:27:59:27 | t : String | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | provenance | MaD:4 Sink:MaD:2 |
+models
+| 1 | Sink: javax.servlet.http; HttpServletResponse; false; addCookie; ; ; Argument[0]; response-splitting; manual |
+| 2 | Sink: javax.servlet.http; HttpServletResponse; false; setHeader; ; ; Argument[0..1]; response-splitting; manual |
+| 3 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 4 | Summary: java.lang; String; false; replaceFirst; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: javax.servlet.http; Cookie; false; Cookie; ; ; Argument[1]; Argument[this]; taint; manual |
 nodes
 | ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | semmle.label | new Cookie(...) : Cookie |
 | ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -13,8 +24,3 @@ nodes
 | ResponseSplitting.java:59:27:59:27 | t : String | semmle.label | t : String |
 | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | semmle.label | replaceFirst(...) |
 subpaths
-#select
-| ResponseSplitting.java:23:23:23:28 | cookie | ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:23:23:23:28 | cookie | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:22:39:22:66 | getParameter(...) | user-provided value |
-| ResponseSplitting.java:28:38:28:72 | getParameter(...) | ResponseSplitting.java:28:38:28:72 | getParameter(...) | ResponseSplitting.java:28:38:28:72 | getParameter(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:28:38:28:72 | getParameter(...) | user-provided value |
-| ResponseSplitting.java:29:38:29:72 | getParameter(...) | ResponseSplitting.java:29:38:29:72 | getParameter(...) | ResponseSplitting.java:29:38:29:72 | getParameter(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:29:38:29:72 | getParameter(...) | user-provided value |
-| ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | ResponseSplitting.java:53:14:53:48 | getParameter(...) : String | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | This header depends on a $@, which may cause a response-splitting vulnerability. | ResponseSplitting.java:53:14:53:48 | getParameter(...) | user-provided value |

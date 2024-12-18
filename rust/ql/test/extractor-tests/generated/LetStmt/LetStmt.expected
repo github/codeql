@@ -1,0 +1,6 @@
+| gen_let_stmt.rs:5:5:5:15 | let ... = 42 | getNumberOfAttrs: | 0 | hasInitializer: | yes | hasLetElse: | no | hasPat: | yes | hasTypeRepr: | no |
+| gen_let_stmt.rs:6:5:6:20 | let ... = 42 | getNumberOfAttrs: | 0 | hasInitializer: | yes | hasLetElse: | no | hasPat: | yes | hasTypeRepr: | yes |
+| gen_let_stmt.rs:7:5:7:15 | let ... | getNumberOfAttrs: | 0 | hasInitializer: | no | hasLetElse: | no | hasPat: | yes | hasTypeRepr: | yes |
+| gen_let_stmt.rs:8:5:8:10 | let ... | getNumberOfAttrs: | 0 | hasInitializer: | no | hasLetElse: | no | hasPat: | yes | hasTypeRepr: | no |
+| gen_let_stmt.rs:9:5:9:24 | let ... = ... | getNumberOfAttrs: | 0 | hasInitializer: | yes | hasLetElse: | no | hasPat: | yes | hasTypeRepr: | no |
+| gen_let_stmt.rs:10:5:12:6 | let ... = ... else {...} | getNumberOfAttrs: | 0 | hasInitializer: | yes | hasLetElse: | yes | hasPat: | yes | hasTypeRepr: | no |

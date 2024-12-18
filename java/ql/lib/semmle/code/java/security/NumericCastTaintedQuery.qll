@@ -85,7 +85,7 @@ private predicate smallExpr(Expr e) {
  * numeric cast.
  */
 module NumericCastFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() and
@@ -102,6 +102,8 @@ module NumericCastFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -113,7 +115,7 @@ module NumericCastFlow = TaintTracking::Global<NumericCastFlowConfig>;
  * A taint-tracking configuration for reasoning about local user input that is
  * used in a numeric cast.
  */
-module NumericCastLocalFlowConfig implements DataFlow::ConfigSig {
+deprecated module NumericCastLocalFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) {
@@ -134,6 +136,8 @@ module NumericCastLocalFlowConfig implements DataFlow::ConfigSig {
 }
 
 /**
+ * DEPRECATED: Use `NumericCastFlow` instead and configure threat model sources to include `local`.
+ *
  * Taint-tracking flow for local user input that is used in a numeric cast.
  */
-module NumericCastLocalFlow = TaintTracking::Global<NumericCastLocalFlowConfig>;
+deprecated module NumericCastLocalFlow = TaintTracking::Global<NumericCastLocalFlowConfig>;

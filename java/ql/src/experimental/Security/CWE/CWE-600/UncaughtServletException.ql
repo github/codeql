@@ -65,9 +65,9 @@ class UncaughtServletExceptionSink extends DataFlow::ExprNode {
   }
 }
 
-/** Taint configuration of uncaught exceptions caused by user provided data from `ThreatModelFlowSource` */
+/** Taint configuration of uncaught exceptions caused by user provided data from `ActiveThreatModelSource` */
 module UncaughtServletExceptionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UncaughtServletExceptionSink }
 }

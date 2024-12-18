@@ -423,7 +423,7 @@ private module Cached {
       or
       s = any(StringComponentImpl c).getValue()
     } or
-    TSymbol(string s) { isString(_, s) or isSymbolExpr(_, s) } or
+    TSymbol(string s) { isSymbolExpr(_, s) } or
     TRegExp(string s, string flags) {
       isRegExp(_, s, flags)
       or
@@ -560,6 +560,10 @@ private predicate isArrayExpr(Expr e, ArrayLiteralCfgNode arr) {
   // Note(hmac): I don't think this is necessary, as `getSource` will not return
   // results if the source is a phi node.
   forex(ExprCfgNode n | n = e.getAControlFlowNode() | isArrayConstant(n, arr))
+  or
+  // if `e` is an array, then `e.freeze` is also an array
+  e.(MethodCall).getMethodName() = "freeze" and
+  isArrayExpr(e.(MethodCall).getReceiver(), arr)
 }
 
 private class TokenConstantAccess extends ConstantAccess, TTokenConstantAccess {

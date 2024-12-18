@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../ServiceStack.Common/8.0.0/ServiceStack.Common.csproj" />
+    <ProjectReference Include="../../ServiceStack.Interfaces/8.0.0/ServiceStack.Interfaces.csproj" />
+    <ProjectReference Include="../../ServiceStack.OrmLite/8.0.0/ServiceStack.OrmLite.csproj" />
+    <ProjectReference Include="../../ServiceStack.Text/8.0.0/ServiceStack.Text.csproj" />
+    <ProjectReference Include="../../System.Data.SqlClient/4.8.5/System.Data.SqlClient.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

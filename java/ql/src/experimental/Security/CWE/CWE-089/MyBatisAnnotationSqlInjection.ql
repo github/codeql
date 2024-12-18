@@ -17,18 +17,15 @@ import MyBatisCommonLib
 import MyBatisAnnotationSqlInjectionLib
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.security.Sanitizers
 import MyBatisAnnotationSqlInjectionFlow::PathGraph
 
 private module MyBatisAnnotationSqlInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof MyBatisAnnotatedMethodCallArgument }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
-    node.getType() instanceof NumberType
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodCall ma |

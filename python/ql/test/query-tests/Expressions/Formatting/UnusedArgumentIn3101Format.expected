@@ -1,4 +1,4 @@
-| test.py:29:1:29:50 | Attribute() | Too many arguments for string format. Format $@ requires only 2, but 3 are provided. | test.py:5:20:5:29 | Str | "{0}, {1}" |
-| test.py:30:1:30:51 | format() | Too many arguments for string format. Format $@ requires only 2, but 3 are provided. | test.py:10:20:10:29 | Str | "{0}, {1}" |
-| test.py:32:1:32:50 | Attribute() | Too many arguments for string format. Format $@ requires only 2, but 3 are provided. | test.py:6:20:6:27 | Str | "{}, {}" |
-| test.py:33:1:33:51 | format() | Too many arguments for string format. Format $@ requires only 2, but 3 are provided. | test.py:11:20:11:27 | Str | "{}, {}" |
+| test.py:29:1:29:50 | Attribute() | Too many arguments for string format. Format $@ requires only 2, but 3 are provided. | test.py:5:20:5:29 | StringLiteral | "{0}, {1}" |
+| test.py:30:1:30:51 | format() | Too many arguments for string format. Format $@ requires only 2, but 3 are provided. | test.py:10:20:10:29 | StringLiteral | "{0}, {1}" |
+| test.py:32:1:32:50 | Attribute() | Too many arguments for string format. Format $@ requires only 2, but 3 are provided. | test.py:6:20:6:27 | StringLiteral | "{}, {}" |
+| test.py:33:1:33:51 | format() | Too many arguments for string format. Format $@ requires only 2, but 3 are provided. | test.py:11:20:11:27 | StringLiteral | "{}, {}" |

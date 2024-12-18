@@ -1,7 +1,8 @@
 import AliasAnalysis
 private import SimpleSSAImports
 import SimpleSSAPublicImports
-private import AliasConfiguration
+import AliasConfiguration
+private import codeql.util.Unit
 
 private predicate isTotalAccess(Allocation var, AddressOperand addrOperand, IRType type) {
   exists(Instruction constantBase, int bitOffset |
@@ -48,7 +49,7 @@ predicate canReuseSsaForVariable(IRAutomaticVariable var) {
 
 private newtype TMemoryLocation = MkMemoryLocation(Allocation var) { isVariableModeled(var) }
 
-private MemoryLocation getMemoryLocation(Allocation var) { result.getAllocation() = var }
+private MemoryLocation getMemoryLocation(Allocation var) { result.getAnAllocation() = var }
 
 class MemoryLocation extends TMemoryLocation {
   Allocation var;
@@ -57,7 +58,7 @@ class MemoryLocation extends TMemoryLocation {
 
   final string toString() { result = var.getAllocationString() }
 
-  final Allocation getAllocation() { result = var }
+  final Allocation getAnAllocation() { result = var }
 
   final Language::Location getLocation() { result = var.getLocation() }
 
@@ -70,12 +71,43 @@ class MemoryLocation extends TMemoryLocation {
   final string getUniqueId() { result = var.getUniqueId() }
 
   final predicate canReuseSsa() { canReuseSsaForVariable(var) }
-
-  /** DEPRECATED: Alias for canReuseSsa */
-  deprecated predicate canReuseSSA() { this.canReuseSsa() }
 }
 
 predicate canReuseSsaForOldResult(Instruction instr) { none() }
+
+abstract class VariableGroup extends Unit {
+  abstract Allocation getAnAllocation();
+
+  string toString() { result = "{" + strictconcat(this.getAnAllocation().toString(), ", ") + "}" }
+
+  abstract Language::Location getLocation();
+
+  abstract IRFunction getIRFunction();
+
+  abstract Language::LanguageType getType();
+
+  abstract int getInitializationOrder();
+}
+
+class GroupedMemoryLocation extends MemoryLocation {
+  VariableGroup vg;
+
+  GroupedMemoryLocation() { none() }
+
+  /** Gets an allocation of this memory location. */
+  Allocation getAnAllocation() { result = vg.getAnAllocation() }
+
+  /** Gets the set of allocations associated with this memory location. */
+  VariableGroup getGroup() { result = vg }
+
+  predicate isMayAccess() { none() }
+
+  /** Holds if this memory location represents all the enclosing allocations. */
+  predicate isAll() { none() }
+
+  /** Holds if this memory location represents one or more of the enclosing allocations. */
+  predicate isSome() { none() }
+}
 
 /**
  * Represents a set of `MemoryLocation`s that cannot overlap with

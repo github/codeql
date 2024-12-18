@@ -1,0 +1,6 @@
+| implicit2.c:1:7:1:7 | g | file://:0:0:0:0 | float |
+| implicit2.c:1:7:1:7 | g | file://:0:0:0:0 | int |
+| implicit.c:1:6:1:6 | f | file://:0:0:0:0 | void |
+| implicit.c:3:5:3:5 | g | file://:0:0:0:0 | float |
+| implicit.c:3:5:3:5 | g | file://:0:0:0:0 | int |
+| implicit.cpp:3:6:3:6 | f | file://:0:0:0:0 | void |

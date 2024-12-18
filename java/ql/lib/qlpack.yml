@@ -1,5 +1,5 @@
 name: codeql/java-all
-version: 0.8.4-dev
+version: 5.0.1-dev
 groups: java
 dbscheme: config/semmlecode.dbscheme
 extractor: java
@@ -13,7 +13,9 @@ dependencies:
   codeql/threat-models: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/typetracking: ${workspace}
+  codeql/typeflow: ${workspace}
   codeql/util: ${workspace}
+  codeql/xml: ${workspace}
 dataExtensions:
   - ext/*.model.yml
   - ext/generated/*.model.yml

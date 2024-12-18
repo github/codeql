@@ -15,7 +15,7 @@ module Public {
   import DataFlowPublic
 }
 
-module SwiftDataFlow implements InputSig {
+module SwiftDataFlow implements InputSig<Swift::Location> {
   import Private
   import Public
 

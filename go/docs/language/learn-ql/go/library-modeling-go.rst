@@ -13,14 +13,14 @@ Sources
 -------
 
 To mark a source of data that is controlled by an untrusted user, we
-create a class extending ``UntrustedFlowSource::Range``. Inheritance and
+create a class extending ``RemoteFlowSource::Range``. Inheritance and
 the characteristic predicate of the class should be used to specify
 exactly the dataflow node that introduces the data. Here is a short
 example from ``Mux.qll``.
 
 .. code-block:: ql
 
-   class RequestVars extends DataFlow::UntrustedFlowSource::Range, DataFlow::CallNode {
+   class RequestVars extends DataFlow::RemoteFlowSource::Range, DataFlow::CallNode {
      RequestVars() { this.getTarget().hasQualifiedName("github.com/gorilla/mux", "Vars") }
    }
 

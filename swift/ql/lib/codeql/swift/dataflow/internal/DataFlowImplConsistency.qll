@@ -8,6 +8,6 @@ private import DataFlowImplSpecific
 private import TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
 
-private module Input implements InputSig<SwiftDataFlow> { }
+private module Input implements InputSig<Location, SwiftDataFlow> { }
 
-module Consistency = MakeConsistency<SwiftDataFlow, SwiftTaintTracking, Input>;
+module Consistency = MakeConsistency<Location, SwiftDataFlow, SwiftTaintTracking, Input>;

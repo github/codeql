@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.frameworks.MyBatis
 
@@ -10,7 +11,7 @@ private import semmle.code.java.frameworks.MyBatis
  *
  * Extend this class to add your own OGNL injection sinks.
  */
-abstract class OgnlInjectionSink extends DataFlow::Node { }
+abstract class OgnlInjectionSink extends ApiSinkNode { }
 
 /**
  * A unit class for adding additional taint steps.

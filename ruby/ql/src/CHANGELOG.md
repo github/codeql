@@ -1,3 +1,130 @@
+## 1.1.8
+
+No user-facing changes.
+
+## 1.1.7
+
+No user-facing changes.
+
+## 1.1.6
+
+No user-facing changes.
+
+## 1.1.5
+
+### Minor Analysis Improvements
+
+* The `rb/diagnostics/extraction-errors` diagnostic query has been split into `rb/diagnostics/extraction-errors` and `rb/diagnostics/extraction-warnings`, counting extraction errors and warnings respectively.
+
+## 1.1.4
+
+No user-facing changes.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+No user-facing changes.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### New Queries
+
+* Added a new query, `rb/weak-sensitive-data-hashing`, to detect cases where sensitive data is hashed using a weak cryptographic hashing algorithm.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+## 0.8.16
+
+No user-facing changes.
+
+## 0.8.15
+
+No user-facing changes.
+
+## 0.8.14
+
+### New Queries
+
+* Added a new query, `rb/insecure-mass-assignment`, for finding instances of mass assignment operations accepting arbitrary parameters from remote user input.
+* Added a new query, `rb/csrf-protection-not-enabled`, to detect cases where Cross-Site Request Forgery protection is not enabled in Ruby on Rails controllers.
+
+## 0.8.13
+
+No user-facing changes.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Calls to `Object#method`, `Object#public_method` and `Object#singleton_method` with untrusted data are now recognised as sinks for code injection.
+* Added additional request sources for Ruby on Rails.
+
+## 0.8.9
+
+No user-facing changes.
+
+## 0.8.8
+
+### New Queries
+
+* Added a new experimental query, `rb/insecure-randomness`, to detect when application uses random values that are not cryptographically secure.
+
+### Minor Analysis Improvements
+
+* Added new unsafe deserialization sinks for the ox gem.
+* Added an additional unsafe deserialization sink for the oj gem.
+
+## 0.8.7
+
+No user-facing changes.
+
+## 0.8.6
+
+No user-facing changes.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+No user-facing changes.
+
 ## 0.8.3
 
 No user-facing changes.

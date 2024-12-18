@@ -1,0 +1,47 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.nio.file.spi", "FileSystemProvider", True, "getFileAttributeView", "(Path,Class,LinkOption[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "getFileAttributeView", "(Path,Class,LinkOption[])", "", "Argument[2].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "getFileStore", "(Path)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "getFileSystem", "(URI)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "getPath", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newAsynchronousFileChannel", "(Path,Set,ExecutorService,FileAttribute[])", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newByteChannel", "(Path,Set,FileAttribute[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newDirectoryStream", "(Path,DirectoryStream$Filter)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newDirectoryStream", "(Path,DirectoryStream$Filter)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newFileChannel", "(Path,Set,FileAttribute[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newFileSystem", "(Path,Map)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newFileSystem", "(Path,Map)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newFileSystem", "(Path,Map)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newFileSystem", "(URI,Map)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newFileSystem", "(URI,Map)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newFileSystem", "(URI,Map)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newFileSystem", "(URI,Map)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newInputStream", "(Path,OpenOption[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "newOutputStream", "(Path,OpenOption[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "readAttributes", "(Path,Class,LinkOption[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "readAttributes", "(Path,String,LinkOption[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "readAttributes", "(Path,String,LinkOption[])", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", True, "readSymbolicLink", "(Path)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.nio.file.spi", "FileSystemProvider", "checkAccess", "(Path,AccessMode[])", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "copy", "(Path,Path,CopyOption[])", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "createDirectory", "(Path,FileAttribute[])", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "createLink", "(Path,Path)", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "createSymbolicLink", "(Path,Path,FileAttribute[])", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "delete", "(Path)", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "deleteIfExists", "(Path)", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "getScheme", "()", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "installedProviders", "()", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "isHidden", "(Path)", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "isSameFile", "(Path,Path)", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "move", "(Path,Path,CopyOption[])", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileSystemProvider", "setAttribute", "(Path,String,Object,LinkOption[])", "summary", "df-generated"]
+      - ["java.nio.file.spi", "FileTypeDetector", "probeContentType", "(Path)", "summary", "df-generated"]

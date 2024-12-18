@@ -86,6 +86,12 @@ nodes
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
+| angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") |
+| angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") |
+| angular-tempate-url.js:13:30:13:31 | ev |
+| angular-tempate-url.js:13:30:13:31 | ev |
+| angular-tempate-url.js:14:26:14:27 | ev |
+| angular-tempate-url.js:14:26:14:32 | ev.data |
 | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) |
@@ -718,6 +724,18 @@ nodes
 | tooltip.jsx:11:25:11:30 | source |
 | tooltip.jsx:11:25:11:30 | source |
 | tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:23:38:23:43 | source |
 | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search |
 | translate.js:6:16:6:39 | documen ... .search |
@@ -1142,6 +1160,12 @@ nodes
 | tst.js:501:33:501:63 | decodeU ... n.hash) |
 | tst.js:501:43:501:62 | window.location.hash |
 | tst.js:501:43:501:62 | window.location.hash |
+| tst.js:508:7:508:39 | target |
+| tst.js:508:16:508:39 | documen ... .search |
+| tst.js:508:16:508:39 | documen ... .search |
+| tst.js:509:18:509:23 | target |
+| tst.js:509:18:509:54 | target. ... "), '') |
+| tst.js:509:18:509:54 | target. ... "), '') |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
@@ -1313,6 +1337,11 @@ edges
 | angular2-client.ts:38:44:38:58 | this.router.url | angular2-client.ts:38:44:38:58 | this.router.url |
 | angular2-client.ts:40:45:40:59 | this.router.url | angular2-client.ts:40:45:40:59 | this.router.url |
 | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | angular2-client.ts:44:44:44:76 | routeSn ... ('foo') |
+| angular-tempate-url.js:13:30:13:31 | ev | angular-tempate-url.js:14:26:14:27 | ev |
+| angular-tempate-url.js:13:30:13:31 | ev | angular-tempate-url.js:14:26:14:27 | ev |
+| angular-tempate-url.js:14:26:14:27 | ev | angular-tempate-url.js:14:26:14:32 | ev.data |
+| angular-tempate-url.js:14:26:14:32 | ev.data | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") |
+| angular-tempate-url.js:14:26:14:32 | ev.data | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:47:7:69 | classNa ... w.name) | classnames.js:7:31:7:84 | `<span  ... <span>` |
 | classnames.js:7:58:7:68 | window.name | classnames.js:7:47:7:69 | classNa ... w.name) |
@@ -1944,6 +1973,20 @@ edges
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
 | translate.js:6:7:6:39 | target | translate.js:7:42:7:47 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
@@ -2356,6 +2399,11 @@ edges
 | tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
 | tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
 | tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:508:7:508:39 | target | tst.js:509:18:509:23 | target |
+| tst.js:508:16:508:39 | documen ... .search | tst.js:508:7:508:39 | target |
+| tst.js:508:16:508:39 | documen ... .search | tst.js:508:7:508:39 | target |
+| tst.js:509:18:509:23 | target | tst.js:509:18:509:54 | target. ... "), '') |
+| tst.js:509:18:509:23 | target | tst.js:509:18:509:54 | target. ... "), '') |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |

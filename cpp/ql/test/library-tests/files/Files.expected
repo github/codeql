@@ -1,4 +1,4 @@
-| c.c | library-tests/files/c.c | CFile, MetricFile | C |  |  |
-| files1.cpp | library-tests/files/files1.cpp | CppFile, MetricFile | C++ | swap | t |
-| files1.h | library-tests/files/files1.h | HeaderFile, MetricFile |  | swap |  |
-| files2.cpp | library-tests/files/files2.cpp | CppFile, MetricFile | C++ | g | x, y |
+| c.c | c.c | CFile, MetricFile | C |  |  |
+| files1.cpp | files1.cpp | CppFile, MetricFile | C++ | swap | t |
+| files1.h | files1.h | HeaderFile, MetricFile |  | swap |  |
+| files2.cpp | files2.cpp | CppFile, MetricFile | C++ | g | x, y |

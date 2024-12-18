@@ -87,13 +87,13 @@
  *    This is adequate as the route through `TIterableElement(sequence)` does not transfer precise content.
  *
  * 5. [Read] Content is read from `sequence` to its elements.
- *    a) If the element is a plain variable, the target is the corresponding essa node.
+ *    a) If the element is a plain variable, the target is the corresponding control flow node.
  *
  *    b) If the element is itself a sequence, with control-flow node `seq`, the target is `TIterableSequence(seq)`.
  *
  *    c) If the element is a starred variable, with control-flow node `v`, the target is `TIterableElement(v)`.
  *
- * 6. [Store] Content is stored from `TIterableElement(v)` to the essa variable for `v`, with
+ * 6. [Store] Content is stored from `TIterableElement(v)` to the control flow node for variable `v`, with
  *    content type `ListElementContent`.
  *
  * 7. [Flow, Read, Store] Steps 2 through 7 are repeated for all recursive elements which are sequences.
@@ -187,7 +187,7 @@ class ForTarget extends ControlFlowNode {
     )
     or
     exists(Comp comp |
-      source = comp.getIterable() and
+      source = comp.getFunction().getArg(0) and
       this.getNode() = comp.getNthInnerLoop(0).getTarget()
     )
   }
@@ -313,7 +313,7 @@ predicate iterableUnpackingConvertingStoreStep(Node nodeFrom, Content c, Node no
  * Step 5
  * For a sequence node inside an iterable unpacking, data flows from the sequence to its elements. There are
  * three cases for what `toNode` should be:
- *    a) If the element is a plain variable, `toNode` is the corresponding essa node.
+ *    a) If the element is a plain variable, `toNode` is the corresponding control flow node.
  *
  *    b) If the element is itself a sequence, with control-flow node `seq`, `toNode` is `TIterableSequence(seq)`.
  *
@@ -351,20 +351,25 @@ predicate iterableUnpackingElementReadStep(Node nodeFrom, Content c, Node nodeTo
           nodeTo = TIterableElementNode(element)
         else
           // Step 5a
-          nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = element
+          exists(MultiAssignmentDefinition mad | element = mad.getDefiningNode() |
+            nodeTo.(CfgNode).getNode() = element
+          )
     )
   )
 }
 
 /**
  * Step 6
- * Data flows from `TIterableElement(v)` to the essa variable for `v`, with
+ * Data flows from `TIterableElement(v)` to the control flow node for variable `v`, with
  * content type `ListElementContent`.
  */
 predicate iterableUnpackingStarredElementStoreStep(Node nodeFrom, Content c, Node nodeTo) {
-  exists(ControlFlowNode starred | starred.getNode() instanceof Starred |
+  exists(ControlFlowNode starred, MultiAssignmentDefinition mad |
+    starred.getNode() instanceof Starred and
+    starred = mad.getDefiningNode()
+  |
     nodeFrom = TIterableElementNode(starred) and
-    nodeTo.asVar().getDefinition().(MultiAssignmentDefinition).getDefiningNode() = starred and
+    nodeTo.asCfgNode() = starred and
     c instanceof ListElementContent
   )
 }

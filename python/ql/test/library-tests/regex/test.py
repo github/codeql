@@ -55,6 +55,15 @@ re.compile("", re.VERBOSE+re.DOTALL)
 # re.X is an alias for re.VERBOSE
 re.compile("", re.X)
 
+#Inline flags; 'a', 'L' and 'u' are mutually exclusive
+re.compile("(?aimsx)a+")
+re.compile("(?ui)a+")
+re.compile(b"(?Li)a+")
+#Group with inline flags; TODO: these are not properly parsed and handled yet
+re.compile("(?aimsx:a+)")
+re.compile("(?-imsx:a+)")
+re.compile("(?a-imsx:a+)")
+
 #empty choice
 re.compile(r'|x')
 re.compile(r'x|')

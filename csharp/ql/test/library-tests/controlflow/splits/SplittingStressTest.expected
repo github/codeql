@@ -1,4 +1,6 @@
 countSplits
+| SplittingStressTest.cs:1:7:1:25 | call to constructor Object | 1 |
+| SplittingStressTest.cs:1:7:1:25 | {...} | 1 |
 | SplittingStressTest.cs:4:5:168:5 | {...} | 1 |
 | SplittingStressTest.cs:5:9:6:13 | if (...) ... | 1 |
 | SplittingStressTest.cs:5:13:5:14 | access to parameter b1 | 1 |

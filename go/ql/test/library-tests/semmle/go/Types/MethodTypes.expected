@@ -30,6 +30,7 @@
 | interface.go:95:6:95:8 | i18 | StringA | func() string |
 | interface.go:101:6:101:8 | i19 | StringB | func() string |
 | interface.go:105:6:105:8 | i20 | StringB | func() string |
+| main.go:17:6:17:20 | EmbedsNameClash | NCMethod | func()  |
 | pkg1/embedding.go:19:6:19:13 | embedder | f | func() int |
 | pkg1/embedding.go:22:6:22:16 | ptrembedder | f | func() int |
 | pkg1/embedding.go:22:6:22:16 | ptrembedder | g | func() int |
@@ -48,6 +49,12 @@
 | pkg1/interfaces.go:26:6:26:14 | AExtended | m | func()  |
 | pkg1/interfaces.go:26:6:26:14 | AExtended | n | func()  |
 | pkg1/interfaces.go:31:6:31:7 | A2 | m | func()  |
-| pkg1/tst.go:3:6:3:6 | T | half | func() Foo |
-| pkg1/tst.go:14:6:14:7 | T3 | half | func() Foo |
-| pkg1/tst.go:19:6:19:7 | T4 | half | func() Foo |
+| pkg1/interfaces.go:35:6:35:24 | MixedExportedAndNot | Exported | func()  |
+| pkg1/interfaces.go:35:6:35:24 | MixedExportedAndNot | notExported | func()  |
+| pkg1/promotedStructs.go:22:6:22:12 | SEmbedS | SMethod | func() interface { } |
+| pkg1/tst.go:5:6:5:6 | T | half | func() Foo |
+| pkg1/tst.go:16:6:16:7 | T3 | half | func() Foo |
+| pkg1/tst.go:21:6:21:7 | T4 | half | func() Foo |
+| pkg1/tst.go:61:6:61:14 | NameClash | NCMethod | func()  |
+| pkg2/tst.go:11:6:11:24 | MixedExportedAndNot | Exported | func()  |
+| pkg2/tst.go:11:6:11:24 | MixedExportedAndNot | notExported | func()  |

@@ -256,3 +256,25 @@ function fuzzy() {
   fuzzyCall(source()); // OK - does not come from 'testlib'
   require('blah').fuzzyCall(source()); // OK - does not come from 'testlib'
 }
+
+class MySubclass extends testlib.BaseClass {
+  foo() {
+    sink(this.baseclassSource()); // NOT OK
+  }
+}
+sink(new MySubclass().baseclassSource()); // NOT OK
+
+class MySubclass2 extends MySubclass {
+  foo2() {
+    sink(this.baseclassSource()); // NOT OK
+  }
+}
+sink(new MySubclass2().baseclassSource()); // NOT OK
+
+sink(testlib.parenthesizedPackageName()); // NOT OK
+
+function dangerConstant() {
+  sink("danger-constant".danger); // NOT OK
+  sink("danger-constant".safe); // OK
+  sink("danger-constant"); // OK
+}

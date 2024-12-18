@@ -13,6 +13,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.frameworks.Stdlib
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -25,6 +26,74 @@ private import semmle.python.frameworks.Stdlib
  */
 module Starlette {
   /**
+   * Provides models for the `starlette.app` class
+   */
+  module App {
+    /** Gets import of `starlette.app`. */
+    API::Node cls() { result = API::moduleImport("starlette").getMember("app") }
+
+    /** Gets a reference to a Starlette application (an instance of `starlette.app`). */
+    API::Node instance() { result = cls().getAnInstance() }
+  }
+
+  /**
+   * A call to any of the execute methods on a `app.add_middleware`.
+   */
+  class AddMiddlewareCall extends DataFlow::CallCfgNode {
+    AddMiddlewareCall() {
+      this = [App::instance().getMember("add_middleware").getACall(), Middleware::instance()]
+    }
+
+    /**
+     * Gets the string corresponding to the middleware
+     */
+    string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
+  }
+
+  /**
+   * A call to any of the execute methods on a `app.add_middleware` with CORSMiddleware.
+   */
+  class AddCorsMiddlewareCall extends AddMiddlewareCall, Http::Server::CorsMiddleware::Range {
+    /**
+     * Gets the string corresponding to the middleware
+     */
+    override string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
+
+    override DataFlow::Node getOrigins() { result = this.getArgByName("allow_origins") }
+
+    override DataFlow::Node getCredentialsAllowed() {
+      result = this.getArgByName("allow_credentials")
+    }
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS methods
+     */
+    DataFlow::Node getMethods() { result = this.getArgByName("allow_methods") }
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS headers
+     */
+    DataFlow::Node getHeaders() { result = this.getArgByName("allow_headers") }
+  }
+
+  /**
+   * Provides models for the `starlette.middleware.Middleware` class
+   *
+   * See https://www.starlette.io/.
+   */
+  module Middleware {
+    /** Gets a reference to the `starlette.middleware.Middleware` class. */
+    API::Node classRef() {
+      result = API::moduleImport("starlette").getMember("middleware").getMember("Middleware")
+      or
+      result = ModelOutput::getATypeNode("starlette.middleware.Middleware~Subclass").getASubclass*()
+    }
+
+    /** Gets a reference to an instance of `starlette.middleware.Middleware`. */
+    DataFlow::Node instance() { result = classRef().getACall() }
+  }
+
+  /**
    * Provides models for the `starlette.websockets.WebSocket` class
    *
    * See https://www.starlette.io/websockets/.
@@ -35,6 +104,8 @@ module Starlette {
       result = API::moduleImport("starlette").getMember("websockets").getMember("WebSocket")
       or
       result = API::moduleImport("fastapi").getMember("WebSocket")
+      or
+      result = ModelOutput::getATypeNode("starlette.websockets.WebSocket~Subclass").getASubclass*()
     }
 
     /**
@@ -100,8 +171,10 @@ module Starlette {
    */
   module Url {
     /** Gets a reference to the `starlette.requests.URL` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("starlette").getMember("requests").getMember("URL")
+      or
+      result = ModelOutput::getATypeNode("starlette.requests.URL~Subclass").getASubclass*()
     }
 
     /**
@@ -160,9 +233,6 @@ module Starlette {
       }
     }
   }
-
-  /** DEPRECATED: Alias for Url */
-  deprecated module URL = Url;
 
   /**
    * A call to the `starlette.responses.FileResponse` constructor as a sink for Filesystem access.

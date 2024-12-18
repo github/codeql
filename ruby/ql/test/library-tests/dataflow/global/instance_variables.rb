@@ -70,7 +70,7 @@ foo3 = Foo.new
 foo3.set_field(taint(22))
 sink(foo3.field) # $ hasValueFlow=22
 
-foo4 = "hello"
+foo4 = 4
 foo4.other = taint(23)
 sink(foo4.other) # no field flow for constants
 

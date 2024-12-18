@@ -74,7 +74,7 @@ private module Sendgrid {
 
     private DataFlow::Node sendgridContent(DataFlow::CallCfgNode contentCall, string mime) {
       mime in ["text/plain", "text/html", "text/x-amp-html"] and
-      exists(StrConst mimeNode |
+      exists(StringLiteral mimeNode |
         mimeNode.getText() = mime and
         DataFlow::exprNode(mimeNode).(DataFlow::LocalSourceNode).flowsTo(contentCall.getArg(0)) and
         result = contentCall.getArg(1)
@@ -122,8 +122,12 @@ private module Sendgrid {
         contentElement =
           this.getKeywordParameter("request_body").getSubscript("content").getASubscript()
       |
-        contentElement.getSubscript("type").getAValueReachingSink().asExpr().(StrConst).getText() =
-          ["text/html", "text/x-amp-html"] and
+        contentElement
+            .getSubscript("type")
+            .getAValueReachingSink()
+            .asExpr()
+            .(StringLiteral)
+            .getText() = ["text/html", "text/x-amp-html"] and
         result = contentElement.getSubscript("value").getAValueReachingSink()
       )
       or

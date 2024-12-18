@@ -1,1 +1,2 @@
-Security/CWE/CWE-190/ArithmeticWithExtremeValues.ql
+query: Security/CWE/CWE-190/ArithmeticWithExtremeValues.ql
+postprocess: utils/test/PrettyPrintModels.ql

@@ -157,27 +157,14 @@ class ExternalApiDataNode extends DataFlow::Node {
   ExternalApiDataNode() {
     exists(InterestingExternalApiCall call | this = call.getArgument(_)) and
     // Not already modeled as a taint step
-    not TaintTrackingPrivate::defaultAdditionalTaintStep(this, _) and
+    not TaintTrackingPrivate::defaultAdditionalTaintStep(this, _, _) and
     // for `list.append(x)`, we have a additional taint step from x -> [post] list.
     // Since we have modeled this explicitly, I don't see any cases where we would want to report this.
     not exists(DataFlow::PostUpdateNode post |
       post.getPreUpdateNode() = this and
-      TaintTrackingPrivate::defaultAdditionalTaintStep(_, post)
+      TaintTrackingPrivate::defaultAdditionalTaintStep(_, post, _)
     )
   }
-}
-
-/**
- * DEPRECATED: Use `XmlBombFlow` module instead.
- *
- * A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s.
- */
-deprecated class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
-  UntrustedDataToExternalApiConfig() { this = "UntrustedDataToExternalAPIConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
 
 private module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {

@@ -9,3 +9,4 @@
 | tst.js:35:13:35:43 | crypto. ... an(512) | Creation of an asymmetric key uses 512 bits, which is below 2048 and considered breakable. |
 | tst.js:39:13:39:33 | new Nod ... : 512}) | Creation of an asymmetric RSA key uses 512 bits, which is below 2048 and considered breakable. |
 | tst.js:43:1:43:31 | key.gen ...  65537) | Creation of an asymmetric RSA key uses 512 bits, which is below 2048 and considered breakable. |
+| tst.xsjs:3:14:3:71 | crypto. ... 1024 }) | Creation of an asymmetric RSA key uses 1024 bits, which is below 2048 and considered breakable. |

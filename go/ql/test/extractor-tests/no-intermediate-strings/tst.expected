@@ -1,0 +1,11 @@
+| tst.go:4:6:4:8 | "a" | a |
+| tst.go:4:6:4:14 | ...+... | <no string value stored> |
+| tst.go:4:6:4:20 | ...+... | <no string value stored> |
+| tst.go:4:6:4:26 | ...+... | <no string value stored> |
+| tst.go:4:6:4:32 | ...+... | <no string value stored> |
+| tst.go:4:6:4:38 | ...+... | abcdef |
+| tst.go:4:12:4:14 | "b" | b |
+| tst.go:4:18:4:20 | "c" | c |
+| tst.go:4:24:4:26 | "d" | d |
+| tst.go:4:30:4:32 | "e" | e |
+| tst.go:4:36:4:38 | "f" | f |

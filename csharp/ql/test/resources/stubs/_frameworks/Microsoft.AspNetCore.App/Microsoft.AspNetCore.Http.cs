@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -17,6 +17,17 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Http.Features.IFeatureCollection ServerFeatures { get => throw null; }
                 public Microsoft.AspNetCore.Builder.IApplicationBuilder Use(System.Func<Microsoft.AspNetCore.Http.RequestDelegate, Microsoft.AspNetCore.Http.RequestDelegate> middleware) => throw null;
             }
+            public static partial class RequestTimeoutsIApplicationBuilderExtensions
+            {
+                public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseRequestTimeouts(this Microsoft.AspNetCore.Builder.IApplicationBuilder builder) => throw null;
+            }
+            public static partial class RequestTimeoutsIEndpointConventionBuilderExtensions
+            {
+                public static Microsoft.AspNetCore.Builder.IEndpointConventionBuilder DisableRequestTimeout(this Microsoft.AspNetCore.Builder.IEndpointConventionBuilder builder) => throw null;
+                public static Microsoft.AspNetCore.Builder.IEndpointConventionBuilder WithRequestTimeout(this Microsoft.AspNetCore.Builder.IEndpointConventionBuilder builder, System.TimeSpan timeout) => throw null;
+                public static Microsoft.AspNetCore.Builder.IEndpointConventionBuilder WithRequestTimeout(this Microsoft.AspNetCore.Builder.IEndpointConventionBuilder builder, string policyName) => throw null;
+                public static Microsoft.AspNetCore.Builder.IEndpointConventionBuilder WithRequestTimeout(this Microsoft.AspNetCore.Builder.IEndpointConventionBuilder builder, Microsoft.AspNetCore.Http.Timeouts.RequestTimeoutPolicy policy) => throw null;
+            }
         }
         namespace Http
         {
@@ -26,7 +37,9 @@ namespace Microsoft
                 public override bool Equals(object obj) => throw null;
                 public override int GetHashCode() => throw null;
                 public string Host { get => throw null; }
+                public bool IsNamedPipe { get => throw null; }
                 public bool IsUnixPipe { get => throw null; }
+                public string NamedPipeName { get => throw null; }
                 public static Microsoft.AspNetCore.Http.BindingAddress Parse(string address) => throw null;
                 public string PathBase { get => throw null; }
                 public int Port { get => throw null; }
@@ -338,6 +351,42 @@ namespace Microsoft
                 public System.IO.Stream Stream { get => throw null; }
                 public System.IO.Pipelines.PipeWriter Writer { get => throw null; }
             }
+            namespace Timeouts
+            {
+                [System.AttributeUsage((System.AttributeTargets)68)]
+                public sealed class DisableRequestTimeoutAttribute : System.Attribute
+                {
+                    public DisableRequestTimeoutAttribute() => throw null;
+                }
+                public interface IHttpRequestTimeoutFeature
+                {
+                    void DisableTimeout();
+                    System.Threading.CancellationToken RequestTimeoutToken { get; }
+                }
+                [System.AttributeUsage((System.AttributeTargets)68)]
+                public sealed class RequestTimeoutAttribute : System.Attribute
+                {
+                    public RequestTimeoutAttribute(int milliseconds) => throw null;
+                    public RequestTimeoutAttribute(string policyName) => throw null;
+                    public string PolicyName { get => throw null; }
+                    public System.TimeSpan? Timeout { get => throw null; }
+                }
+                public sealed class RequestTimeoutOptions
+                {
+                    public Microsoft.AspNetCore.Http.Timeouts.RequestTimeoutOptions AddPolicy(string policyName, System.TimeSpan timeout) => throw null;
+                    public Microsoft.AspNetCore.Http.Timeouts.RequestTimeoutOptions AddPolicy(string policyName, Microsoft.AspNetCore.Http.Timeouts.RequestTimeoutPolicy policy) => throw null;
+                    public RequestTimeoutOptions() => throw null;
+                    public Microsoft.AspNetCore.Http.Timeouts.RequestTimeoutPolicy DefaultPolicy { get => throw null; set { } }
+                    public System.Collections.Generic.IDictionary<string, Microsoft.AspNetCore.Http.Timeouts.RequestTimeoutPolicy> Policies { get => throw null; }
+                }
+                public sealed class RequestTimeoutPolicy
+                {
+                    public RequestTimeoutPolicy() => throw null;
+                    public System.TimeSpan? Timeout { get => throw null; set { } }
+                    public int? TimeoutStatusCode { get => throw null; set { } }
+                    public Microsoft.AspNetCore.Http.RequestDelegate WriteTimeoutResponse { get => throw null; set { } }
+                }
+            }
         }
     }
     namespace Extensions
@@ -347,6 +396,11 @@ namespace Microsoft
             public static partial class HttpServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddHttpContextAccessor(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
+            }
+            public static partial class RequestTimeoutsIServiceCollectionExtensions
+            {
+                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddRequestTimeouts(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
+                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddRequestTimeouts(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.Http.Timeouts.RequestTimeoutOptions> configure) => throw null;
             }
         }
     }

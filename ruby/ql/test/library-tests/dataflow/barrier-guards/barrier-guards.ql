@@ -1,10 +1,11 @@
+import codeql.ruby.dataflow.internal.DataFlowPrivate
 import codeql.ruby.dataflow.internal.DataFlowPublic
 import codeql.ruby.dataflow.BarrierGuards
 import codeql.ruby.controlflow.CfgNodes
 import codeql.ruby.controlflow.ControlFlowGraph
 import codeql.ruby.controlflow.BasicBlocks
 import codeql.ruby.DataFlow
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 query predicate newStyleBarrierGuards(DataFlow::Node n) {
   n instanceof StringConstCompareBarrier or
@@ -25,6 +26,7 @@ module BarrierGuardTest implements TestSig {
     tag = "guarded" and
     exists(DataFlow::Node n |
       newStyleBarrierGuards(n) and
+      not n instanceof SsaInputNode and
       location = n.getLocation() and
       element = n.toString() and
       value = ""

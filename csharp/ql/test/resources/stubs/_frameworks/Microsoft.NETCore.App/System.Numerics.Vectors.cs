@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Numerics.Vectors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Numerics.Vectors, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Numerics
@@ -58,11 +58,19 @@ namespace System
             public static System.Numerics.Matrix4x4 CreateFromQuaternion(System.Numerics.Quaternion quaternion) => throw null;
             public static System.Numerics.Matrix4x4 CreateFromYawPitchRoll(float yaw, float pitch, float roll) => throw null;
             public static System.Numerics.Matrix4x4 CreateLookAt(System.Numerics.Vector3 cameraPosition, System.Numerics.Vector3 cameraTarget, System.Numerics.Vector3 cameraUpVector) => throw null;
+            public static System.Numerics.Matrix4x4 CreateLookAtLeftHanded(System.Numerics.Vector3 cameraPosition, System.Numerics.Vector3 cameraTarget, System.Numerics.Vector3 cameraUpVector) => throw null;
+            public static System.Numerics.Matrix4x4 CreateLookTo(System.Numerics.Vector3 cameraPosition, System.Numerics.Vector3 cameraDirection, System.Numerics.Vector3 cameraUpVector) => throw null;
+            public static System.Numerics.Matrix4x4 CreateLookToLeftHanded(System.Numerics.Vector3 cameraPosition, System.Numerics.Vector3 cameraDirection, System.Numerics.Vector3 cameraUpVector) => throw null;
             public static System.Numerics.Matrix4x4 CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane) => throw null;
+            public static System.Numerics.Matrix4x4 CreateOrthographicLeftHanded(float width, float height, float zNearPlane, float zFarPlane) => throw null;
             public static System.Numerics.Matrix4x4 CreateOrthographicOffCenter(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane) => throw null;
+            public static System.Numerics.Matrix4x4 CreateOrthographicOffCenterLeftHanded(float left, float right, float bottom, float top, float zNearPlane, float zFarPlane) => throw null;
             public static System.Numerics.Matrix4x4 CreatePerspective(float width, float height, float nearPlaneDistance, float farPlaneDistance) => throw null;
             public static System.Numerics.Matrix4x4 CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance) => throw null;
+            public static System.Numerics.Matrix4x4 CreatePerspectiveFieldOfViewLeftHanded(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance) => throw null;
+            public static System.Numerics.Matrix4x4 CreatePerspectiveLeftHanded(float width, float height, float nearPlaneDistance, float farPlaneDistance) => throw null;
             public static System.Numerics.Matrix4x4 CreatePerspectiveOffCenter(float left, float right, float bottom, float top, float nearPlaneDistance, float farPlaneDistance) => throw null;
+            public static System.Numerics.Matrix4x4 CreatePerspectiveOffCenterLeftHanded(float left, float right, float bottom, float top, float nearPlaneDistance, float farPlaneDistance) => throw null;
             public static System.Numerics.Matrix4x4 CreateReflection(System.Numerics.Plane value) => throw null;
             public static System.Numerics.Matrix4x4 CreateRotationX(float radians) => throw null;
             public static System.Numerics.Matrix4x4 CreateRotationX(float radians, System.Numerics.Vector3 centerPoint) => throw null;
@@ -79,6 +87,8 @@ namespace System
             public static System.Numerics.Matrix4x4 CreateShadow(System.Numerics.Vector3 lightDirection, System.Numerics.Plane plane) => throw null;
             public static System.Numerics.Matrix4x4 CreateTranslation(System.Numerics.Vector3 position) => throw null;
             public static System.Numerics.Matrix4x4 CreateTranslation(float xPosition, float yPosition, float zPosition) => throw null;
+            public static System.Numerics.Matrix4x4 CreateViewport(float x, float y, float width, float height, float minDepth, float maxDepth) => throw null;
+            public static System.Numerics.Matrix4x4 CreateViewportLeftHanded(float x, float y, float width, float height, float minDepth, float maxDepth) => throw null;
             public static System.Numerics.Matrix4x4 CreateWorld(System.Numerics.Vector3 position, System.Numerics.Vector3 forward, System.Numerics.Vector3 up) => throw null;
             public Matrix4x4(System.Numerics.Matrix3x2 value) => throw null;
             public Matrix4x4(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44) => throw null;
@@ -190,29 +200,29 @@ namespace System
         }
         public static class Vector
         {
-            public static System.Numerics.Vector<T> Abs<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<T> Add<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static System.Numerics.Vector<T> AndNot<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static System.Numerics.Vector<TTo> As<TFrom, TTo>(this System.Numerics.Vector<TFrom> vector) where TFrom : struct where TTo : struct => throw null;
-            public static System.Numerics.Vector<byte> AsVectorByte<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<double> AsVectorDouble<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<short> AsVectorInt16<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<int> AsVectorInt32<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<long> AsVectorInt64<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<nint> AsVectorNInt<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<nuint> AsVectorNUInt<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<sbyte> AsVectorSByte<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<float> AsVectorSingle<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<ushort> AsVectorUInt16<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<uint> AsVectorUInt32<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<ulong> AsVectorUInt64<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<T> BitwiseAnd<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static System.Numerics.Vector<T> BitwiseOr<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
+            public static System.Numerics.Vector<T> Abs<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<T> Add<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static System.Numerics.Vector<T> AndNot<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static System.Numerics.Vector<TTo> As<TFrom, TTo>(this System.Numerics.Vector<TFrom> vector) => throw null;
+            public static System.Numerics.Vector<byte> AsVectorByte<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<double> AsVectorDouble<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<short> AsVectorInt16<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<int> AsVectorInt32<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<long> AsVectorInt64<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<nint> AsVectorNInt<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<nuint> AsVectorNUInt<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<sbyte> AsVectorSByte<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<float> AsVectorSingle<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<ushort> AsVectorUInt16<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<uint> AsVectorUInt32<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<ulong> AsVectorUInt64<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<T> BitwiseAnd<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static System.Numerics.Vector<T> BitwiseOr<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<double> Ceiling(System.Numerics.Vector<double> value) => throw null;
             public static System.Numerics.Vector<float> Ceiling(System.Numerics.Vector<float> value) => throw null;
             public static System.Numerics.Vector<float> ConditionalSelect(System.Numerics.Vector<int> condition, System.Numerics.Vector<float> left, System.Numerics.Vector<float> right) => throw null;
             public static System.Numerics.Vector<double> ConditionalSelect(System.Numerics.Vector<long> condition, System.Numerics.Vector<double> left, System.Numerics.Vector<double> right) => throw null;
-            public static System.Numerics.Vector<T> ConditionalSelect<T>(System.Numerics.Vector<T> condition, System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
+            public static System.Numerics.Vector<T> ConditionalSelect<T>(System.Numerics.Vector<T> condition, System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<double> ConvertToDouble(System.Numerics.Vector<long> value) => throw null;
             public static System.Numerics.Vector<double> ConvertToDouble(System.Numerics.Vector<ulong> value) => throw null;
             public static System.Numerics.Vector<int> ConvertToInt32(System.Numerics.Vector<float> value) => throw null;
@@ -221,51 +231,58 @@ namespace System
             public static System.Numerics.Vector<float> ConvertToSingle(System.Numerics.Vector<uint> value) => throw null;
             public static System.Numerics.Vector<uint> ConvertToUInt32(System.Numerics.Vector<float> value) => throw null;
             public static System.Numerics.Vector<ulong> ConvertToUInt64(System.Numerics.Vector<double> value) => throw null;
-            public static System.Numerics.Vector<T> Divide<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static T Dot<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
+            public static System.Numerics.Vector<T> Divide<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static System.Numerics.Vector<T> Divide<T>(System.Numerics.Vector<T> left, T right) => throw null;
+            public static T Dot<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<long> Equals(System.Numerics.Vector<double> left, System.Numerics.Vector<double> right) => throw null;
             public static System.Numerics.Vector<int> Equals(System.Numerics.Vector<int> left, System.Numerics.Vector<int> right) => throw null;
             public static System.Numerics.Vector<long> Equals(System.Numerics.Vector<long> left, System.Numerics.Vector<long> right) => throw null;
             public static System.Numerics.Vector<int> Equals(System.Numerics.Vector<float> left, System.Numerics.Vector<float> right) => throw null;
-            public static System.Numerics.Vector<T> Equals<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static bool EqualsAll<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static bool EqualsAny<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
+            public static System.Numerics.Vector<T> Equals<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static bool EqualsAll<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static bool EqualsAny<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<double> Floor(System.Numerics.Vector<double> value) => throw null;
             public static System.Numerics.Vector<float> Floor(System.Numerics.Vector<float> value) => throw null;
+            public static T GetElement<T>(this System.Numerics.Vector<T> vector, int index) => throw null;
             public static System.Numerics.Vector<long> GreaterThan(System.Numerics.Vector<double> left, System.Numerics.Vector<double> right) => throw null;
             public static System.Numerics.Vector<int> GreaterThan(System.Numerics.Vector<int> left, System.Numerics.Vector<int> right) => throw null;
             public static System.Numerics.Vector<long> GreaterThan(System.Numerics.Vector<long> left, System.Numerics.Vector<long> right) => throw null;
             public static System.Numerics.Vector<int> GreaterThan(System.Numerics.Vector<float> left, System.Numerics.Vector<float> right) => throw null;
-            public static System.Numerics.Vector<T> GreaterThan<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static bool GreaterThanAll<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static bool GreaterThanAny<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
+            public static System.Numerics.Vector<T> GreaterThan<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static bool GreaterThanAll<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static bool GreaterThanAny<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<long> GreaterThanOrEqual(System.Numerics.Vector<double> left, System.Numerics.Vector<double> right) => throw null;
             public static System.Numerics.Vector<int> GreaterThanOrEqual(System.Numerics.Vector<int> left, System.Numerics.Vector<int> right) => throw null;
             public static System.Numerics.Vector<long> GreaterThanOrEqual(System.Numerics.Vector<long> left, System.Numerics.Vector<long> right) => throw null;
             public static System.Numerics.Vector<int> GreaterThanOrEqual(System.Numerics.Vector<float> left, System.Numerics.Vector<float> right) => throw null;
-            public static System.Numerics.Vector<T> GreaterThanOrEqual<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static bool GreaterThanOrEqualAll<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static bool GreaterThanOrEqualAny<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
+            public static System.Numerics.Vector<T> GreaterThanOrEqual<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static bool GreaterThanOrEqualAll<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static bool GreaterThanOrEqualAny<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static bool IsHardwareAccelerated { get => throw null; }
             public static System.Numerics.Vector<long> LessThan(System.Numerics.Vector<double> left, System.Numerics.Vector<double> right) => throw null;
             public static System.Numerics.Vector<int> LessThan(System.Numerics.Vector<int> left, System.Numerics.Vector<int> right) => throw null;
             public static System.Numerics.Vector<long> LessThan(System.Numerics.Vector<long> left, System.Numerics.Vector<long> right) => throw null;
             public static System.Numerics.Vector<int> LessThan(System.Numerics.Vector<float> left, System.Numerics.Vector<float> right) => throw null;
-            public static System.Numerics.Vector<T> LessThan<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static bool LessThanAll<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static bool LessThanAny<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
+            public static System.Numerics.Vector<T> LessThan<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static bool LessThanAll<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static bool LessThanAny<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<long> LessThanOrEqual(System.Numerics.Vector<double> left, System.Numerics.Vector<double> right) => throw null;
             public static System.Numerics.Vector<int> LessThanOrEqual(System.Numerics.Vector<int> left, System.Numerics.Vector<int> right) => throw null;
             public static System.Numerics.Vector<long> LessThanOrEqual(System.Numerics.Vector<long> left, System.Numerics.Vector<long> right) => throw null;
             public static System.Numerics.Vector<int> LessThanOrEqual(System.Numerics.Vector<float> left, System.Numerics.Vector<float> right) => throw null;
-            public static System.Numerics.Vector<T> LessThanOrEqual<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static bool LessThanOrEqualAll<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static bool LessThanOrEqualAny<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static System.Numerics.Vector<T> Max<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static System.Numerics.Vector<T> Min<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static System.Numerics.Vector<T> Multiply<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static System.Numerics.Vector<T> Multiply<T>(System.Numerics.Vector<T> left, T right) where T : struct => throw null;
-            public static System.Numerics.Vector<T> Multiply<T>(T left, System.Numerics.Vector<T> right) where T : struct => throw null;
+            public static System.Numerics.Vector<T> LessThanOrEqual<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static bool LessThanOrEqualAll<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static bool LessThanOrEqualAny<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static unsafe System.Numerics.Vector<T> Load<T>(T* source) => throw null;
+            public static unsafe System.Numerics.Vector<T> LoadAligned<T>(T* source) => throw null;
+            public static unsafe System.Numerics.Vector<T> LoadAlignedNonTemporal<T>(T* source) => throw null;
+            public static System.Numerics.Vector<T> LoadUnsafe<T>(ref readonly T source) => throw null;
+            public static System.Numerics.Vector<T> LoadUnsafe<T>(ref readonly T source, nuint elementOffset) => throw null;
+            public static System.Numerics.Vector<T> Max<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static System.Numerics.Vector<T> Min<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static System.Numerics.Vector<T> Multiply<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static System.Numerics.Vector<T> Multiply<T>(System.Numerics.Vector<T> left, T right) => throw null;
+            public static System.Numerics.Vector<T> Multiply<T>(T left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<float> Narrow(System.Numerics.Vector<double> low, System.Numerics.Vector<double> high) => throw null;
             public static System.Numerics.Vector<sbyte> Narrow(System.Numerics.Vector<short> low, System.Numerics.Vector<short> high) => throw null;
             public static System.Numerics.Vector<short> Narrow(System.Numerics.Vector<int> low, System.Numerics.Vector<int> high) => throw null;
@@ -273,8 +290,8 @@ namespace System
             public static System.Numerics.Vector<byte> Narrow(System.Numerics.Vector<ushort> low, System.Numerics.Vector<ushort> high) => throw null;
             public static System.Numerics.Vector<ushort> Narrow(System.Numerics.Vector<uint> low, System.Numerics.Vector<uint> high) => throw null;
             public static System.Numerics.Vector<uint> Narrow(System.Numerics.Vector<ulong> low, System.Numerics.Vector<ulong> high) => throw null;
-            public static System.Numerics.Vector<T> Negate<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<T> OnesComplement<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
+            public static System.Numerics.Vector<T> Negate<T>(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<T> OnesComplement<T>(System.Numerics.Vector<T> value) => throw null;
             public static System.Numerics.Vector<byte> ShiftLeft(System.Numerics.Vector<byte> value, int shiftCount) => throw null;
             public static System.Numerics.Vector<short> ShiftLeft(System.Numerics.Vector<short> value, int shiftCount) => throw null;
             public static System.Numerics.Vector<int> ShiftLeft(System.Numerics.Vector<int> value, int shiftCount) => throw null;
@@ -300,9 +317,15 @@ namespace System
             public static System.Numerics.Vector<ushort> ShiftRightLogical(System.Numerics.Vector<ushort> value, int shiftCount) => throw null;
             public static System.Numerics.Vector<uint> ShiftRightLogical(System.Numerics.Vector<uint> value, int shiftCount) => throw null;
             public static System.Numerics.Vector<ulong> ShiftRightLogical(System.Numerics.Vector<ulong> value, int shiftCount) => throw null;
-            public static System.Numerics.Vector<T> SquareRoot<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
-            public static System.Numerics.Vector<T> Subtract<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
-            public static T Sum<T>(System.Numerics.Vector<T> value) where T : struct => throw null;
+            public static System.Numerics.Vector<T> SquareRoot<T>(System.Numerics.Vector<T> value) => throw null;
+            public static unsafe void Store<T>(this System.Numerics.Vector<T> source, T* destination) => throw null;
+            public static unsafe void StoreAligned<T>(this System.Numerics.Vector<T> source, T* destination) => throw null;
+            public static unsafe void StoreAlignedNonTemporal<T>(this System.Numerics.Vector<T> source, T* destination) => throw null;
+            public static void StoreUnsafe<T>(this System.Numerics.Vector<T> source, ref T destination) => throw null;
+            public static void StoreUnsafe<T>(this System.Numerics.Vector<T> source, ref T destination, nuint elementOffset) => throw null;
+            public static System.Numerics.Vector<T> Subtract<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static T Sum<T>(System.Numerics.Vector<T> value) => throw null;
+            public static T ToScalar<T>(this System.Numerics.Vector<T> vector) => throw null;
             public static void Widen(System.Numerics.Vector<byte> source, out System.Numerics.Vector<ushort> low, out System.Numerics.Vector<ushort> high) => throw null;
             public static void Widen(System.Numerics.Vector<short> source, out System.Numerics.Vector<int> low, out System.Numerics.Vector<int> high) => throw null;
             public static void Widen(System.Numerics.Vector<int> source, out System.Numerics.Vector<long> low, out System.Numerics.Vector<long> high) => throw null;
@@ -310,10 +333,26 @@ namespace System
             public static void Widen(System.Numerics.Vector<float> source, out System.Numerics.Vector<double> low, out System.Numerics.Vector<double> high) => throw null;
             public static void Widen(System.Numerics.Vector<ushort> source, out System.Numerics.Vector<uint> low, out System.Numerics.Vector<uint> high) => throw null;
             public static void Widen(System.Numerics.Vector<uint> source, out System.Numerics.Vector<ulong> low, out System.Numerics.Vector<ulong> high) => throw null;
-            public static System.Numerics.Vector<T> Xor<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) where T : struct => throw null;
+            public static System.Numerics.Vector<ushort> WidenLower(System.Numerics.Vector<byte> source) => throw null;
+            public static System.Numerics.Vector<int> WidenLower(System.Numerics.Vector<short> source) => throw null;
+            public static System.Numerics.Vector<long> WidenLower(System.Numerics.Vector<int> source) => throw null;
+            public static System.Numerics.Vector<short> WidenLower(System.Numerics.Vector<sbyte> source) => throw null;
+            public static System.Numerics.Vector<double> WidenLower(System.Numerics.Vector<float> source) => throw null;
+            public static System.Numerics.Vector<uint> WidenLower(System.Numerics.Vector<ushort> source) => throw null;
+            public static System.Numerics.Vector<ulong> WidenLower(System.Numerics.Vector<uint> source) => throw null;
+            public static System.Numerics.Vector<ushort> WidenUpper(System.Numerics.Vector<byte> source) => throw null;
+            public static System.Numerics.Vector<int> WidenUpper(System.Numerics.Vector<short> source) => throw null;
+            public static System.Numerics.Vector<long> WidenUpper(System.Numerics.Vector<int> source) => throw null;
+            public static System.Numerics.Vector<short> WidenUpper(System.Numerics.Vector<sbyte> source) => throw null;
+            public static System.Numerics.Vector<double> WidenUpper(System.Numerics.Vector<float> source) => throw null;
+            public static System.Numerics.Vector<uint> WidenUpper(System.Numerics.Vector<ushort> source) => throw null;
+            public static System.Numerics.Vector<ulong> WidenUpper(System.Numerics.Vector<uint> source) => throw null;
+            public static System.Numerics.Vector<T> WithElement<T>(this System.Numerics.Vector<T> vector, int index, T value) => throw null;
+            public static System.Numerics.Vector<T> Xor<T>(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
         }
-        public struct Vector<T> : System.IEquatable<System.Numerics.Vector<T>>, System.IFormattable where T : struct
+        public struct Vector<T> : System.IEquatable<System.Numerics.Vector<T>>, System.IFormattable
         {
+            public static System.Numerics.Vector<T> AllBitsSet { get => throw null; }
             public void CopyTo(System.Span<byte> destination) => throw null;
             public void CopyTo(System.Span<T> destination) => throw null;
             public void CopyTo(T[] destination) => throw null;
@@ -334,6 +373,7 @@ namespace System
             public static System.Numerics.Vector<T> operator &(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<T> operator |(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<T> operator /(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static System.Numerics.Vector<T> operator /(System.Numerics.Vector<T> left, T right) => throw null;
             public static bool operator ==(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<T> operator ^(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static explicit operator System.Numerics.Vector<byte>(System.Numerics.Vector<T> value) => throw null;
@@ -349,12 +389,16 @@ namespace System
             public static explicit operator System.Numerics.Vector<uint>(System.Numerics.Vector<T> value) => throw null;
             public static explicit operator System.Numerics.Vector<ulong>(System.Numerics.Vector<T> value) => throw null;
             public static bool operator !=(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
+            public static System.Numerics.Vector<T> operator <<(System.Numerics.Vector<T> value, int shiftCount) => throw null;
             public static System.Numerics.Vector<T> operator *(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<T> operator *(System.Numerics.Vector<T> value, T factor) => throw null;
             public static System.Numerics.Vector<T> operator *(T factor, System.Numerics.Vector<T> value) => throw null;
             public static System.Numerics.Vector<T> operator ~(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<T> operator >>(System.Numerics.Vector<T> value, int shiftCount) => throw null;
             public static System.Numerics.Vector<T> operator -(System.Numerics.Vector<T> left, System.Numerics.Vector<T> right) => throw null;
             public static System.Numerics.Vector<T> operator -(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<T> operator +(System.Numerics.Vector<T> value) => throw null;
+            public static System.Numerics.Vector<T> operator >>>(System.Numerics.Vector<T> value, int shiftCount) => throw null;
             public T this[int index] { get => throw null; }
             public override string ToString() => throw null;
             public string ToString(string format) => throw null;

@@ -29,4 +29,4 @@ where
   // does NOT hold.
   if disablingNode.getLocation() = origin.getLocation() then ending = "." else ending = " by $@."
 select request, "This request may run without certificate validation because $@" + ending,
-  disablingNode, "the request is disabled", origin, "this value"
+  disablingNode, "validation is disabled", origin, "this value"

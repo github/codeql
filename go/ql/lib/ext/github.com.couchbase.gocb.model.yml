@@ -1,0 +1,45 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["gocb1", "fixed-version:github.com/couchbase/gocb"]
+      - ["gocb1", "fixed-version:gopkg.in/couchbase/gocb.v1"]
+      - ["gocb1", "fixed-version:github.com/couchbaselabs/gocb"]
+      - ["gocb2", "github.com/couchbase/gocb/v2"]
+      - ["gocb2", "gopkg.in/couchbase/gocb.v2"]
+      - ["gocb2", "github.com/couchbaselabs/gocb/v2"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:gocb1", "Bucket", True, "ExecuteN1qlQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+      - ["group:gocb1", "Bucket", True, "ExecuteAnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+      - ["group:gocb1", "Cluster", True, "ExecuteN1qlQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+      - ["group:gocb1", "Cluster", True, "ExecuteAnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+      - ["group:gocb2", "Cluster", True, "AnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+      - ["group:gocb2", "Cluster", True, "Query", "", "", "Argument[0]", "nosql-injection", "manual"]
+      - ["group:gocb2", "Scope", True, "AnalyticsQuery", "", "", "Argument[0]", "nosql-injection", "manual"]
+      - ["group:gocb2", "Scope", True, "Query", "", "", "Argument[0]", "nosql-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["group:gocb1", "", False, "NewAnalyticsQuery", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "", False, "NewN1qlQuery", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "AnalyticsQuery", True, "ContextId", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "AnalyticsQuery", True, "Deferred", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "AnalyticsQuery", True, "Pretty", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "AnalyticsQuery", True, "Priority", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "AnalyticsQuery", True, "RawParam", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "AnalyticsQuery", True, "ServerSideTimeout", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "N1qlQuery", True, "AdHoc", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "N1qlQuery", True, "Consistency", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "N1qlQuery", True, "ConsistentWith", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "N1qlQuery", True, "Custom", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "N1qlQuery", True, "PipelineBatch", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "N1qlQuery", True, "PipelineCap", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "N1qlQuery", True, "Profile", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "N1qlQuery", True, "ReadOnly", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "N1qlQuery", True, "ScanCap", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["group:gocb1", "N1qlQuery", True, "Timeout", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

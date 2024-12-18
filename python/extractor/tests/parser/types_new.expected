@@ -1,0 +1,434 @@
+Module: [1, 0] - [23, 0]
+  body: [
+    TypeAlias: [1, 0] - [1, 34]
+      name:
+        Name: [1, 5] - [1, 6]
+          variable: Variable('T', None)
+          ctx: Store
+      type_parameters: [
+        TypeVar: [1, 7] - [1, 9]
+          name:
+            Name: [1, 7] - [1, 9]
+              variable: Variable('T1', None)
+              ctx: Store
+          bound: None
+          default: None
+        TypeVar: [1, 11] - [1, 17]
+          name:
+            Name: [1, 11] - [1, 13]
+              variable: Variable('T2', None)
+              ctx: Store
+          bound:
+            Name: [1, 15] - [1, 17]
+              variable: Variable('E1', None)
+              ctx: Load
+          default: None
+        TypeVarTuple: [1, 19] - [1, 22]
+          name:
+            Name: [1, 20] - [1, 22]
+              variable: Variable('T3', None)
+              ctx: Store
+          default: None
+        ParamSpec: [1, 24] - [1, 28]
+          name:
+            Name: [1, 26] - [1, 28]
+              variable: Variable('T4', None)
+              ctx: Store
+          default: None
+      ]
+      value:
+        Name: [1, 32] - [1, 34]
+          variable: Variable('T5', None)
+          ctx: Load
+    Assign: [3, 0] - [3, 31]
+      targets: [
+        Name: [3, 4] - [3, 5]
+          variable: Variable('f', None)
+          ctx: Store
+      ]
+      value:
+        FunctionExpr: [3, 0] - [3, 31]
+          name: 'f'
+          args:
+            arguments
+              defaults: []
+              kw_defaults: []
+              annotations: []
+              varargannotation: None
+              kwargannotation: None
+              kw_annotations: []
+          returns: None
+          inner_scope:
+            Function: [3, 0] - [3, 31]
+              name: 'f'
+              type_parameters: [
+                TypeVar: [3, 6] - [3, 8]
+                  name:
+                    Name: [3, 6] - [3, 8]
+                      variable: Variable('T6', None)
+                      ctx: Store
+                  bound: None
+                  default: None
+                TypeVar: [3, 10] - [3, 16]
+                  name:
+                    Name: [3, 10] - [3, 12]
+                      variable: Variable('T7', None)
+                      ctx: Store
+                  bound:
+                    Name: [3, 14] - [3, 16]
+                      variable: Variable('E2', None)
+                      ctx: Load
+                  default: None
+                TypeVarTuple: [3, 18] - [3, 21]
+                  name:
+                    Name: [3, 19] - [3, 21]
+                      variable: Variable('T8', None)
+                      ctx: Store
+                  default: None
+                ParamSpec: [3, 23] - [3, 27]
+                  name:
+                    Name: [3, 25] - [3, 27]
+                      variable: Variable('T9', None)
+                      ctx: Store
+                  default: None
+              ]
+              args: []
+              vararg: None
+              kwonlyargs: []
+              kwarg: None
+              body: [
+                Expr: [3, 32] - [3, 35]
+                  value:
+                    Ellipsis: [3, 32] - [3, 35]
+              ]
+    Assign: [5, 0] - [5, 35]
+      targets: [
+        Name: [5, 6] - [5, 7]
+          variable: Variable('C', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [5, 0] - [5, 35]
+          name: 'C'
+          type_parameters: [
+            TypeVar: [5, 8] - [5, 11]
+              name:
+                Name: [5, 8] - [5, 11]
+                  variable: Variable('T10', None)
+                  ctx: Store
+              bound: None
+              default: None
+            TypeVar: [5, 13] - [5, 20]
+              name:
+                Name: [5, 13] - [5, 16]
+                  variable: Variable('T11', None)
+                  ctx: Store
+              bound:
+                Name: [5, 18] - [5, 20]
+                  variable: Variable('E3', None)
+                  ctx: Load
+              default: None
+            TypeVarTuple: [5, 22] - [5, 26]
+              name:
+                Name: [5, 23] - [5, 26]
+                  variable: Variable('T12', None)
+                  ctx: Store
+              default: None
+            ParamSpec: [5, 28] - [5, 33]
+              name:
+                Name: [5, 30] - [5, 33]
+                  variable: Variable('T13', None)
+                  ctx: Store
+              default: None
+          ]
+          bases: []
+          keywords: []
+          inner_scope:
+            Class: [5, 0] - [5, 35]
+              name: 'C'
+              body: [
+                Expr: [5, 36] - [5, 39]
+                  value:
+                    Ellipsis: [5, 36] - [5, 39]
+              ]
+    Assign: [10, 0] - [10, 22]
+      targets: [
+        Name: [10, 6] - [10, 10]
+          variable: Variable('Foo1', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [10, 0] - [10, 22]
+          name: 'Foo1'
+          type_parameters: [
+            TypeVar: [10, 11] - [10, 20]
+              name:
+                Name: [10, 11] - [10, 14]
+                  variable: Variable('T14', None)
+                  ctx: Store
+              bound: None
+              default:
+                Name: [10, 17] - [10, 20]
+                  variable: Variable('str', None)
+                  ctx: Load
+          ]
+          bases: []
+          keywords: []
+          inner_scope:
+            Class: [10, 0] - [10, 22]
+              name: 'Foo1'
+              body: [
+                Expr: [10, 23] - [10, 26]
+                  value:
+                    Ellipsis: [10, 23] - [10, 26]
+              ]
+    Assign: [13, 0] - [13, 30]
+      targets: [
+        Name: [13, 6] - [13, 10]
+          variable: Variable('Baz1', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [13, 0] - [13, 30]
+          name: 'Baz1'
+          type_parameters: [
+            ParamSpec: [13, 11] - [13, 28]
+              name:
+                Name: [13, 13] - [13, 15]
+                  variable: Variable('P1', None)
+                  ctx: Store
+              default:
+                List: [13, 18] - [13, 28]
+                  elts: [
+                    Name: [13, 19] - [13, 22]
+                      variable: Variable('int', None)
+                      ctx: Load
+                    Name: [13, 24] - [13, 27]
+                      variable: Variable('str', None)
+                      ctx: Load
+                  ]
+                  ctx: Load
+          ]
+          bases: []
+          keywords: []
+          inner_scope:
+            Class: [13, 0] - [13, 30]
+              name: 'Baz1'
+              body: [
+                Expr: [13, 31] - [13, 34]
+                  value:
+                    Ellipsis: [13, 31] - [13, 34]
+              ]
+    Assign: [16, 0] - [16, 37]
+      targets: [
+        Name: [16, 6] - [16, 10]
+          variable: Variable('Qux1', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [16, 0] - [16, 37]
+          name: 'Qux1'
+          type_parameters: [
+            TypeVarTuple: [16, 11] - [16, 35]
+              name:
+                Name: [16, 12] - [16, 15]
+                  variable: Variable('Ts1', None)
+                  ctx: Store
+              default:
+                Starred: [16, 18] - [16, 35]
+                  value:
+                    Subscript: [16, 19] - [16, 35]
+                      value:
+                        Name: [16, 19] - [16, 24]
+                          variable: Variable('tuple', None)
+                          ctx: Load
+                      index:
+                        Tuple: [16, 25] - [16, 34]
+                          elts: [
+                            Name: [16, 25] - [16, 28]
+                              variable: Variable('int', None)
+                              ctx: Load
+                            Name: [16, 30] - [16, 34]
+                              variable: Variable('bool', None)
+                              ctx: Load
+                          ]
+                          ctx: Load
+                      ctx: Load
+                  ctx: Load
+          ]
+          bases: []
+          keywords: []
+          inner_scope:
+            Class: [16, 0] - [16, 37]
+              name: 'Qux1'
+              body: [
+                Expr: [16, 38] - [16, 41]
+                  value:
+                    Ellipsis: [16, 38] - [16, 41]
+              ]
+    TypeAlias: [19, 0] - [19, 40]
+      name:
+        Name: [19, 5] - [19, 9]
+          variable: Variable('Foo2', None)
+          ctx: Store
+      type_parameters: [
+        TypeVar: [19, 10] - [19, 13]
+          name:
+            Name: [19, 10] - [19, 13]
+              variable: Variable('T15', None)
+              ctx: Store
+          bound: None
+          default: None
+        TypeVar: [19, 15] - [19, 23]
+          name:
+            Name: [19, 15] - [19, 17]
+              variable: Variable('U1', None)
+              ctx: Store
+          bound: None
+          default:
+            Name: [19, 20] - [19, 23]
+              variable: Variable('str', None)
+              ctx: Load
+      ]
+      value:
+        Subscript: [19, 27] - [19, 40]
+          value:
+            Name: [19, 27] - [19, 31]
+              variable: Variable('Bar1', None)
+              ctx: Load
+          index:
+            Tuple: [19, 32] - [19, 39]
+              elts: [
+                Name: [19, 32] - [19, 35]
+                  variable: Variable('T15', None)
+                  ctx: Load
+                Name: [19, 37] - [19, 39]
+                  variable: Variable('U1', None)
+                  ctx: Load
+              ]
+              ctx: Load
+          ctx: Load
+    TypeAlias: [20, 0] - [20, 41]
+      name:
+        Name: [20, 5] - [20, 9]
+          variable: Variable('Baz2', None)
+          ctx: Store
+      type_parameters: [
+        ParamSpec: [20, 10] - [20, 27]
+          name:
+            Name: [20, 12] - [20, 14]
+              variable: Variable('P2', None)
+              ctx: Store
+          default:
+            List: [20, 17] - [20, 27]
+              elts: [
+                Name: [20, 18] - [20, 21]
+                  variable: Variable('int', None)
+                  ctx: Load
+                Name: [20, 23] - [20, 26]
+                  variable: Variable('str', None)
+                  ctx: Load
+              ]
+              ctx: Load
+      ]
+      value:
+        Subscript: [20, 31] - [20, 41]
+          value:
+            Name: [20, 31] - [20, 35]
+              variable: Variable('Spam', None)
+              ctx: Load
+          index:
+            BinOp: [20, 36] - [20, 40]
+              left:
+                Name: [20, 36] - [20, 36]
+                  variable: Variable('', None)
+                  ctx: Load
+              op: Pow
+              right:
+                Name: [20, 38] - [20, 40]
+                  variable: Variable('P2', None)
+                  ctx: Load
+          ctx: Load
+    TypeAlias: [21, 0] - [21, 41]
+      name:
+        Name: [21, 5] - [21, 9]
+          variable: Variable('Qux2', None)
+          ctx: Store
+      type_parameters: [
+        TypeVarTuple: [21, 10] - [21, 28]
+          name:
+            Name: [21, 11] - [21, 14]
+              variable: Variable('Ts2', None)
+              ctx: Store
+          default:
+            Starred: [21, 17] - [21, 28]
+              value:
+                Subscript: [21, 18] - [21, 28]
+                  value:
+                    Name: [21, 18] - [21, 23]
+                      variable: Variable('tuple', None)
+                      ctx: Load
+                  index:
+                    Name: [21, 24] - [21, 27]
+                      variable: Variable('str', None)
+                      ctx: Load
+                  ctx: Load
+              ctx: Load
+      ]
+      value:
+        Subscript: [21, 32] - [21, 41]
+          value:
+            Name: [21, 32] - [21, 35]
+              variable: Variable('Ham', None)
+              ctx: Load
+          index:
+            Starred: [21, 36] - [21, 40]
+              value:
+                Name: [21, 37] - [21, 40]
+                  variable: Variable('Ts2', None)
+                  ctx: Load
+              ctx: Load
+          ctx: Load
+    TypeAlias: [22, 0] - [22, 39]
+      name:
+        Name: [22, 5] - [22, 8]
+          variable: Variable('Rab', None)
+          ctx: Store
+      type_parameters: [
+        TypeVar: [22, 9] - [22, 11]
+          name:
+            Name: [22, 9] - [22, 11]
+              variable: Variable('U2', None)
+              ctx: Store
+          bound: None
+          default: None
+        TypeVar: [22, 13] - [22, 22]
+          name:
+            Name: [22, 13] - [22, 16]
+              variable: Variable('T15', None)
+              ctx: Store
+          bound: None
+          default:
+            Name: [22, 19] - [22, 22]
+              variable: Variable('str', None)
+              ctx: Load
+      ]
+      value:
+        Subscript: [22, 26] - [22, 39]
+          value:
+            Name: [22, 26] - [22, 30]
+              variable: Variable('Bar2', None)
+              ctx: Load
+          index:
+            Tuple: [22, 31] - [22, 38]
+              elts: [
+                Name: [22, 31] - [22, 34]
+                  variable: Variable('T15', None)
+                  ctx: Load
+                Name: [22, 36] - [22, 38]
+                  variable: Variable('U2', None)
+                  ctx: Load
+              ]
+              ctx: Load
+          ctx: Load
+  ]

@@ -1,0 +1,3 @@
+The files in this directory where originally taken from http://github.com/bazelbuild/bazel-central-registry and are
+a derivative work thereof, distributed under the Apache 2.0 license, with the following exceptions:
+* the `fix.py` file was added under the MIT license as the rest of the `codeql` repository.

@@ -90,7 +90,7 @@ end
 Another potential fix is to use the popular <code>sanitize</code> gem. 
 It keeps most of the safe HTML tags while removing all unsafe tags and attributes.
 </p>
-<sample language="javascript">
+<sample language="ruby">
 require 'sanitize'
 
 def sanitize_html(input)

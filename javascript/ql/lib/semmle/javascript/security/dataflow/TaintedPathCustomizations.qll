@@ -221,10 +221,10 @@ module TaintedPath {
       this instanceof StringReplaceCall and
       input = this.getReceiver() and
       output = this and
-      not exists(RegExpLiteral literal, RegExpTerm term |
-        this.(StringReplaceCall).getRegExp().asExpr() = literal and
-        this.(StringReplaceCall).isGlobal() and
-        literal.getRoot() = term
+      not exists(DataFlow::RegExpCreationNode regexp, RegExpTerm term |
+        this.(StringReplaceCall).getRegExp() = regexp and
+        this.(StringReplaceCall).maybeGlobal() and
+        regexp.getRoot() = term
       |
         term.getAMatchedString() = "/" or
         term.getAMatchedString() = "." or
@@ -305,9 +305,9 @@ module TaintedPath {
       input = this.getReceiver() and
       output = this and
       this.isGlobal() and
-      exists(RegExpLiteral literal, RegExpTerm term |
-        this.getRegExp().asExpr() = literal and
-        literal.getRoot() = term and
+      exists(DataFlow::RegExpCreationNode regexp, RegExpTerm term |
+        this.getRegExp() = regexp and
+        regexp.getRoot() = term and
         not term.getAMatchedString() = "/"
       |
         term.getAMatchedString() = "." or
@@ -572,16 +572,15 @@ module TaintedPath {
   }
 
   /**
-   * A source of remote user input, considered as a flow source for
-   * tainted-path vulnerabilities.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() {
-      exists(RemoteFlowSource src |
-        this = src and
-        not src instanceof ClientSideRemoteFlowSource
-      )
-    }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+    ActiveThreatModelSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
   }
 
   /**
@@ -653,10 +652,11 @@ module TaintedPath {
   }
 
   /**
-   * A `templateUrl` member of an AngularJS directive.
+   * DEPRECATED. This is no longer seen as a path-injection sink. It is tentatively handled
+   * by the client-side URL redirection query for now.
    */
-  class AngularJSTemplateUrlSink extends Sink, DataFlow::ValueNode {
-    AngularJSTemplateUrlSink() { this = any(AngularJS::CustomDirective d).getMember("templateUrl") }
+  deprecated class AngularJSTemplateUrlSink extends DataFlow::ValueNode instanceof Sink {
+    AngularJSTemplateUrlSink() { none() }
   }
 
   /**

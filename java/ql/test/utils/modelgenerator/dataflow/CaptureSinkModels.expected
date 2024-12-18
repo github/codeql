@@ -1,5 +1,2 @@
-| p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];path-injection;df-generated |
-| p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[0];path-injection;df-generated |
-| p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[1];path-injection;df-generated |
-| p;Sinks;true;readUrl;(URL,Charset);;Argument[0];request-forgery;df-generated |
-| p;Sources;true;readUrl;(URL);;Argument[0];request-forgery;df-generated |
+unexpectedModel
+expectedModel

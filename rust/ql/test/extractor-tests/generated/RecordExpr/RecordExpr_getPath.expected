@@ -1,0 +1,4 @@
+| gen_record_expr.rs:5:17:5:34 | Foo {...} | gen_record_expr.rs:5:17:5:19 | Foo |
+| gen_record_expr.rs:6:18:6:38 | Foo {...} | gen_record_expr.rs:6:18:6:20 | Foo |
+| gen_record_expr.rs:7:5:7:22 | Foo {...} | gen_record_expr.rs:7:5:7:7 | Foo |
+| gen_record_expr.rs:8:5:8:14 | Foo {...} | gen_record_expr.rs:8:5:8:7 | Foo |

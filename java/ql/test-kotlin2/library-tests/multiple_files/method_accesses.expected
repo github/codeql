@@ -1,0 +1,5 @@
+| file1.kt:4:9:4:23 | fun2(...) | file2.kt:3:5:3:18 | fun2 | Class2.fun2 | file2.kt:2:1:4:1 | Class2 |
+| file1.kt:5:9:5:14 | fun3(...) | file3.kt:5:1:6:1 | fun3 | MyJvmName.fun3 | file3.kt:0:0:0:0 | MyJvmName |
+| file1.kt:6:9:6:14 | fun4(...) | file4.kt:4:1:5:1 | fun4 | File4Kt.fun4 | file4.kt:0:0:0:0 | File4Kt |
+| file1.kt:11:29:11:56 | toArray(...) | file://<external>/CollectionToArray.class:0:0:0:0 | toArray | kotlin.jvm.internal.CollectionToArray.toArray | file://:0:0:0:0 | CollectionToArray |
+| file1.kt:11:47:11:55 | listOf(...) | file://<external>/CollectionsKt.class:0:0:0:0 | listOf | kotlin.collections.CollectionsKt.listOf | file://:0:0:0:0 | CollectionsKt |

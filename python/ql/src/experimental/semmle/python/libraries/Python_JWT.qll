@@ -38,7 +38,7 @@ private module Python_Jwt {
     override DataFlow::Node getAlgorithm() { result = this.verifyCall().getArg(2) }
 
     override string getAlgorithmString() {
-      exists(StrConst str |
+      exists(StringLiteral str |
         DataFlow::exprNode(str).(DataFlow::LocalSourceNode).flowsTo(this.getAlgorithm()) and
         result = str.getText()
       )

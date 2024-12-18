@@ -16,9 +16,12 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.filters.Tests
+private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
+private import semmle.python.dataflow.new.internal.Builtins::Builtins as Builtins
+private import semmle.python.frameworks.data.ModelsAsData
 
 bindingset[char, fraction]
-predicate fewer_characters_than(StrConst str, string char, float fraction) {
+predicate fewer_characters_than(StringLiteral str, string char, float fraction) {
   exists(string text, int chars |
     text = str.getText() and
     chars = count(int i | text.charAt(i) = char)
@@ -30,26 +33,24 @@ predicate fewer_characters_than(StrConst str, string char, float fraction) {
 }
 
 predicate possible_reflective_name(string name) {
-  exists(any(ModuleValue m).attr(name))
+  any(Function f).getName() = name
   or
-  exists(any(ClassValue c).lookup(name))
+  any(Class c).getName() = name
   or
-  any(ClassValue c).getName() = name
+  any(Module m).getName() = name
   or
-  exists(Module::named(name))
-  or
-  exists(Value::named(name))
+  exists(Builtins::likelyBuiltin(name))
 }
 
-int char_count(StrConst str) { result = count(string c | c = str.getText().charAt(_)) }
+int char_count(StringLiteral str) { result = count(string c | c = str.getText().charAt(_)) }
 
-predicate capitalized_word(StrConst str) { str.getText().regexpMatch("[A-Z][a-z]+") }
+predicate capitalized_word(StringLiteral str) { str.getText().regexpMatch("[A-Z][a-z]+") }
 
-predicate format_string(StrConst str) { str.getText().matches("%{%}%") }
+predicate format_string(StringLiteral str) { str.getText().matches("%{%}%") }
 
 predicate maybeCredential(ControlFlowNode f) {
   /* A string that is not too short and unlikely to be text or an identifier. */
-  exists(StrConst str | str = f.getNode() |
+  exists(StringLiteral str | str = f.getNode() |
     /* At least 10 characters */
     str.getText().length() > 9 and
     /* Not too much whitespace */
@@ -80,11 +81,18 @@ class HardcodedValueSource extends DataFlow::Node {
 
 class CredentialSink extends DataFlow::Node {
   CredentialSink() {
+    exists(string s | s.matches("credentials-%") |
+      // Actual sink-type will be things like `credentials-password` or `credentials-username`
+      this = ModelOutput::getASinkNode(s).asSink()
+    )
+    or
     exists(string name |
       name.regexpMatch(getACredentialRegex()) and
       not name.matches("%file")
     |
-      any(FunctionValue func).getNamedArgumentForCall(_, name) = this.asCfgNode()
+      exists(DataFlowDispatch::ArgumentPosition pos | pos.isKeyword(name) |
+        this.(DataFlow::ArgumentNode).argumentOf(_, pos)
+      )
       or
       exists(Keyword k | k.getArg() = name and k.getValue().getAFlowNode() = this.asCfgNode())
       or

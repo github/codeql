@@ -1,0 +1,21 @@
+| All Nuget feeds reachable | 1.0 |
+| Failed project restore with package source error | 1.0 |
+| Failed solution restore with package source error | 0.0 |
+| Fallback nuget restore | 1.0 |
+| NuGet feed responsiveness checked | 1.0 |
+| Project files on filesystem | 1.0 |
+| Reachable fallback Nuget feed count | 1.0 |
+| Resolved assembly conflicts | 7.0 |
+| Resource extraction enabled | 0.0 |
+| Restored .NET framework variants | 0.0 |
+| Restored projects through solution files | 0.0 |
+| Solution files on filesystem | 1.0 |
+| Source files generated | 0.0 |
+| Source files on filesystem | 1.0 |
+| Successfully ran fallback nuget restore | 1.0 |
+| Successfully restored project files | 0.0 |
+| Successfully restored solution files | 1.0 |
+| Unresolved references | 0.0 |
+| UseWPF set | 0.0 |
+| UseWindowsForms set | 0.0 |
+| WebView extraction enabled | 1.0 |

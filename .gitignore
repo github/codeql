@@ -7,8 +7,8 @@
 .cache
 
 # qltest projects and artifacts
-*/ql/test/**/*.testproj
-*/ql/test/**/*.actual
+*.actual
+*/ql/test*/**/*.testproj
 */ql/test/**/go.sum
 
 # Visual studio temporaries, except a file used by QL4VS
@@ -39,6 +39,9 @@
 # local bazel options
 /local.bazelrc
 
+# generated cmake directory
+/.bazel-cmake
+
 # CLion project files
 /.clwb
 
@@ -59,3 +62,12 @@ node_modules/
 
 # Temporary folders for working with generated models
 .model-temp
+
+# bazel-built in-tree extractor packs
+/*/extractor-pack
+
+# Jetbrains IDE files
+.idea
+
+# cargo build directory
+/target

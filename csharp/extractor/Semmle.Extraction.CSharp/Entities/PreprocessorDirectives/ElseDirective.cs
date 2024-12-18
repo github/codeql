@@ -18,6 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
+            trapFile.WriteSubId(start);
             trapFile.Write(Symbol.IsActive);
             trapFile.Write(',');
             trapFile.Write(Symbol.BranchTaken);

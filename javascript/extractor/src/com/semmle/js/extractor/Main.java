@@ -41,7 +41,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2023-10-13";
+  public static final String EXTRACTOR_VERSION = "2024-10-29";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -527,7 +527,6 @@ public class Main {
       // extract files that are supported, match the layout (if any), pass the includeMatcher,
       // and do not pass the excludeMatcher
       if (fileExtractor.supports(root)
-          && extractorOutputConfig.shouldExtract(root)
           && (explicit || includeMatcher.matches(path) && !excludeMatcher.matches(path))) {
         files.add(normalizeFile(root));
       }

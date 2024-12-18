@@ -1,0 +1,2 @@
+query: Security/CWE/CWE-940/AndroidIntentRedirection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

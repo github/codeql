@@ -25,3 +25,24 @@ MyOtherStream.prototype.instanceProp = 1; /* def=moduleImport("classes").getMemb
 MyOtherStream.classProp = 1; /* def=moduleImport("classes").getMember("exports").getMember("MyOtherStream").getMember("classProp") */
 
 module.exports.MyOtherStream = MyOtherStream;
+
+
+// function-style class without .prototype reference
+function MyThirdStream() { /* use=moduleImport("classes").getMember("exports").getMember("MyThirdStream").getInstance() */
+}
+let instance = new MyThirdStream(); /* use=moduleImport("classes").getMember("exports").getMember("MyThirdStream").getInstance() */
+
+module.exports.MyThirdStream = MyThirdStream;
+
+
+// function-style class without .prototype reference (through global variable)
+(function(f) {
+    foo.bar = function() { /* use=moduleImport("classes").getMember("exports").getMember("bar").getInstance() */
+    }
+})(foo = foo || {});
+
+(function(f) {
+    let x = new f.bar(); /* use=moduleImport("classes").getMember("exports").getMember("bar").getInstance() */
+})(foo = foo || {});
+
+module.exports.bar = foo.bar;

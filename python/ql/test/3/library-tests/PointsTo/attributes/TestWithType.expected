@@ -143,23 +143,23 @@
 | 92 | ControlFlowNode for FunctionExpr | Function meth1 | builtin-class function | 92 |
 | 92 | ControlFlowNode for meth1 | Function meth1 | builtin-class function | 92 |
 | 93 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 93 |
-| 93 | ControlFlowNode for Str | str u'a' | builtin-class str | 93 |
+| 93 | ControlFlowNode for StringLiteral | str u'a' | builtin-class str | 93 |
 | 93 | ControlFlowNode for self | self | class F | 92 |
 | 93 | ControlFlowNode for self | self | class F | 98 |
 | 93 | ControlFlowNode for setattr | Builtin-function setattr | builtin-class builtin_function_or_method | 93 |
 | 93 | ControlFlowNode for setattr() | NoneType None | builtin-class NoneType | 93 |
 | 94 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 94 |
-| 94 | ControlFlowNode for Str | str u'b' | builtin-class str | 94 |
+| 94 | ControlFlowNode for StringLiteral | str u'b' | builtin-class str | 94 |
 | 94 | ControlFlowNode for self | self | class F | 92 |
 | 94 | ControlFlowNode for self | self | class F | 98 |
 | 94 | ControlFlowNode for setattr | Builtin-function setattr | builtin-class builtin_function_or_method | 94 |
 | 94 | ControlFlowNode for setattr() | NoneType None | builtin-class NoneType | 94 |
-| 95 | ControlFlowNode for Str | str u'a' | builtin-class str | 95 |
+| 95 | ControlFlowNode for StringLiteral | str u'a' | builtin-class str | 95 |
 | 95 | ControlFlowNode for getattr | Builtin-function getattr | builtin-class builtin_function_or_method | 95 |
 | 95 | ControlFlowNode for getattr() | int 0 | builtin-class int | 93 |
 | 95 | ControlFlowNode for self | self | class F | 92 |
 | 95 | ControlFlowNode for self | self | class F | 98 |
-| 96 | ControlFlowNode for Str | str u'b' | builtin-class str | 96 |
+| 96 | ControlFlowNode for StringLiteral | str u'b' | builtin-class str | 96 |
 | 96 | ControlFlowNode for getattr | Builtin-function getattr | builtin-class builtin_function_or_method | 96 |
 | 96 | ControlFlowNode for getattr() | int 1 | builtin-class int | 94 |
 | 96 | ControlFlowNode for self | self | class F | 92 |
@@ -167,27 +167,27 @@
 | 98 | ControlFlowNode for FunctionExpr | Function meth2 | builtin-class function | 98 |
 | 98 | ControlFlowNode for meth2 | Function meth2 | builtin-class function | 98 |
 | 99 | ControlFlowNode for FloatLiteral | float 7.0 | builtin-class float | 99 |
-| 99 | ControlFlowNode for Str | str u'a' | builtin-class str | 99 |
+| 99 | ControlFlowNode for StringLiteral | str u'a' | builtin-class str | 99 |
 | 99 | ControlFlowNode for self | self | class F | 98 |
 | 99 | ControlFlowNode for setattr | Builtin-function setattr | builtin-class builtin_function_or_method | 99 |
 | 99 | ControlFlowNode for setattr() | NoneType None | builtin-class NoneType | 99 |
 | 100 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 100 |
-| 100 | ControlFlowNode for Str | str u'c' | builtin-class str | 100 |
+| 100 | ControlFlowNode for StringLiteral | str u'c' | builtin-class str | 100 |
 | 100 | ControlFlowNode for self | self | class F | 98 |
 | 100 | ControlFlowNode for setattr | Builtin-function setattr | builtin-class builtin_function_or_method | 100 |
 | 100 | ControlFlowNode for setattr() | NoneType None | builtin-class NoneType | 100 |
 | 101 | ControlFlowNode for Attribute | Attribute | builtin-class method | 101 |
 | 101 | ControlFlowNode for Attribute() | NoneType None | builtin-class NoneType | 92 |
 | 101 | ControlFlowNode for self | self | class F | 98 |
-| 102 | ControlFlowNode for Str | str u'a' | builtin-class str | 102 |
+| 102 | ControlFlowNode for StringLiteral | str u'a' | builtin-class str | 102 |
 | 102 | ControlFlowNode for getattr | Builtin-function getattr | builtin-class builtin_function_or_method | 102 |
 | 102 | ControlFlowNode for getattr() | int 0 | builtin-class int | 93 |
 | 102 | ControlFlowNode for self | self | class F | 98 |
-| 103 | ControlFlowNode for Str | str u'b' | builtin-class str | 103 |
+| 103 | ControlFlowNode for StringLiteral | str u'b' | builtin-class str | 103 |
 | 103 | ControlFlowNode for getattr | Builtin-function getattr | builtin-class builtin_function_or_method | 103 |
 | 103 | ControlFlowNode for getattr() | int 1 | builtin-class int | 94 |
 | 103 | ControlFlowNode for self | self | class F | 98 |
-| 104 | ControlFlowNode for Str | str u'c' | builtin-class str | 104 |
+| 104 | ControlFlowNode for StringLiteral | str u'c' | builtin-class str | 104 |
 | 104 | ControlFlowNode for getattr | Builtin-function getattr | builtin-class builtin_function_or_method | 104 |
 | 104 | ControlFlowNode for getattr() | int 2 | builtin-class int | 100 |
 | 104 | ControlFlowNode for self | self | class F | 98 |
@@ -197,7 +197,7 @@
 | 108 | ControlFlowNode for FunctionExpr | Function __init__ | builtin-class function | 108 |
 | 108 | ControlFlowNode for __init__ | Function __init__ | builtin-class function | 108 |
 | 109 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 109 |
-| 109 | ControlFlowNode for Str | str u'x' | builtin-class str | 109 |
+| 109 | ControlFlowNode for StringLiteral | str u'x' | builtin-class str | 109 |
 | 109 | ControlFlowNode for self | self | class G | 108 |
 | 109 | ControlFlowNode for setattr | Builtin-function setattr | builtin-class builtin_function_or_method | 109 |
 | 109 | ControlFlowNode for setattr() | NoneType None | builtin-class NoneType | 109 |

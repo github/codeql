@@ -10,3 +10,4 @@
 | test.cpp:112:1:112:1 | return ... | Function g14 should return a value of type int but does not return a value here |
 | test.cpp:134:2:134:36 | ExprStmt | Function g16 should return a value of type int but does not return a value here |
 | test.cpp:141:3:141:37 | ExprStmt | Function g17 should return a value of type int but does not return a value here |
+| test.cpp:189:2:189:16 | ExprStmt | Function g23 should return a value of type int but does not return a value here |

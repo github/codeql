@@ -20,7 +20,7 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
   /**
    * Holds if the AST for `e` should be printed. By default, holds for all.
    */
-  predicate shouldPrint(Locatable e) { not e instanceof Diagnostics }
+  predicate shouldPrint(Locatable e) { not e instanceof Diagnostics and not e instanceof MacroRole }
 }
 
 private predicate shouldPrint(Locatable e) { any(PrintAstConfiguration config).shouldPrint(e) }

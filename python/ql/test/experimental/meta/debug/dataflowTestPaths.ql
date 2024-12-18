@@ -9,7 +9,7 @@
 // 3. if necessary, look at partial paths by (un)commenting appropriate lines
 import python
 import semmle.python.dataflow.new.DataFlow
-import experimental.dataflow.testConfig
+import utils.test.dataflow.testConfig
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }

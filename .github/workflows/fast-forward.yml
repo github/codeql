@@ -7,13 +7,14 @@ name: Fast-forward tracking branch for selected CodeQL version
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   fast-forward:
     name: Fast-forward tracking branch for selected CodeQL version
     runs-on: ubuntu-latest
     if: github.repository == 'github/codeql'
-    permissions:
-      contents: write
     env:
       BRANCH_NAME: 'lgtm.com'
     steps:

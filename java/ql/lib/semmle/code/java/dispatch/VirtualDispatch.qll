@@ -194,13 +194,12 @@ private module Dispatch {
    */
   private predicate impossibleDispatchTarget(MethodCall source, Method tgt) {
     tgt = viableImpl_v1_cand(source) and
-    exists(InstanceOfExpr ioe, BaseSsaVariable v, Expr q, RefType t |
+    exists(Guard typeTest, BaseSsaVariable v, Expr q, RefType t |
       source.getQualifier() = q and
       v.getAUse() = q and
-      guardControls_v1(ioe, q.getBasicBlock(), false) and
-      ioe.getExpr() = v.getAUse() and
-      ioe.getCheckedType().getErasure() = t and
-      tgt.getDeclaringType().getSourceDeclaration().getASourceSupertype*() = t
+      typeTest.appliesTypeTest(v.getAUse(), t, false) and
+      guardControls_v1(typeTest, q.getBasicBlock(), false) and
+      tgt.getDeclaringType().getSourceDeclaration().getASourceSupertype*() = t.getErasure()
     )
   }
 
@@ -303,8 +302,3 @@ private module Dispatch {
 }
 
 import Dispatch
-
-/**
- * DEPRECATED: Use `TypeFlow` instead.
- */
-deprecated Expr variableTrack(Expr use) { result = use }

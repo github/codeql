@@ -45,4 +45,9 @@ public class SupportedExternalApis
         Console.SetError(Console.Out); // Has no flow summary, supported as neutral summary model
         var x = Console.Read(); // Known source
     }
+
+    public void M6()
+    {
+        var html = new HtmlString("html"); // Supported HtmlSink defined in QL.
+    }
 }

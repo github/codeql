@@ -16,7 +16,7 @@ For a more general introduction to modeling data flow, see ":ref:`About data flo
 Data flow nodes
 ---------------
 
-Both local and global data flow, as well as taint tracking, work on a representation of the program known as the :ref:`data flow graph <data-flow-graph>`. 
+Both local and global data flow, as well as taint tracking, work on a representation of the program known as the :ref:`data flow graph <data-flow-graph>`.
 Nodes on the data flow flow graph may also correspond to nodes on the abstract syntax tree, but they are not the same.
 While AST nodes belong to class ``ASTNode`` and its subclasses, data flow nodes belong to class ``DataFlow::Node`` and its subclasses:
 
@@ -557,7 +557,7 @@ Exercise 4
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/java-further-reading.rst

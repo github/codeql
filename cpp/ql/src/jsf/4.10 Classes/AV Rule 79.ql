@@ -126,13 +126,13 @@ class Resource extends MemberVariable {
   }
 
   private predicate calledFromDestructor(Function f) {
-    f instanceof Destructor and f.getDeclaringType() = this.getDeclaringType()
+    pragma[only_bind_into](f) instanceof Destructor and
+    f.getDeclaringType() = this.getDeclaringType()
     or
-    exists(Function mid, FunctionCall fc |
+    exists(Function mid |
       this.calledFromDestructor(mid) and
-      fc.getEnclosingFunction() = mid and
-      fc.getTarget() = f and
-      f.getDeclaringType() = this.getDeclaringType()
+      mid.calls(f) and
+      pragma[only_bind_out](f.getDeclaringType()) = pragma[only_bind_out](this.getDeclaringType())
     )
   }
 

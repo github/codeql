@@ -64,7 +64,7 @@ predicate numDepends(RefType t, RefType dep, int value) {
         elem = fa and
         fa.getEnclosingCallable().getDeclaringType() = t
       |
-        usesType(fa.getField().getSourceDeclaration().getDeclaringType(), dep)
+        usesType(fa.getField().getDeclaringType(), dep)
       )
       or
       // the type of a local variable declared in `t`,
@@ -101,6 +101,13 @@ predicate numDepends(RefType t, RefType dep, int value) {
         t = ioe.getEnclosingCallable().getDeclaringType()
       |
         usesType(ioe.getCheckedType(), dep)
+        or
+        usesType(ioe.getPattern().getAChildExpr*().getType(), dep)
+      )
+      or
+      // the type accessed in a pattern-switch case statement in `t`.
+      exists(PatternCase pc | elem = pc and t = pc.getEnclosingCallable().getDeclaringType() |
+        usesType(pc.getAPattern().getAChildExpr*().getType(), dep)
       )
     )
 }

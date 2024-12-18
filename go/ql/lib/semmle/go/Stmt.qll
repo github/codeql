@@ -747,13 +747,25 @@ class IfStmt extends @ifstmt, Stmt, ScopeNode {
  * ```
  */
 class CaseClause extends @caseclause, Stmt, ScopeNode {
-  /** Gets the `i`th expression of this `case` clause (0-based). */
+  /**
+   * Gets the `i`th expression of this `case` clause (0-based).
+   *
+   * Note that the default clause does not have any expressions.
+   */
   Expr getExpr(int i) { result = this.getChildExpr(-(i + 1)) }
 
-  /** Gets an expression of this `case` clause. */
+  /**
+   * Gets an expression of this `case` clause, if any.
+   *
+   * Note that the default clause does not have any expressions.
+   */
   Expr getAnExpr() { result = this.getAChildExpr() }
 
-  /** Gets the number of expressions of this `case` clause. */
+  /**
+   * Gets the number of expressions of this `case` clause.
+   *
+   * Note that the default clause does not have any expressions.
+   */
   int getNumExpr() { result = this.getNumChildExpr() }
 
   /** Gets the `i`th statement of this `case` clause (0-based). */
@@ -764,6 +776,16 @@ class CaseClause extends @caseclause, Stmt, ScopeNode {
 
   /** Gets the number of statements of this `case` clause. */
   int getNumStmt() { result = this.getNumChildStmt() }
+
+  /**
+   * Gets the implicitly declared variable for this `case` clause, if any.
+   *
+   * This exists for case clauses in type switch statements which declare a
+   * variable in the guard.
+   */
+  LocalVariable getImplicitlyDeclaredVariable() {
+    not exists(result.getDeclaration()) and result.getScope().(LocalScope).getNode() = this
+  }
 
   override predicate mayHaveSideEffects() {
     this.getAnExpr().mayHaveSideEffects() or

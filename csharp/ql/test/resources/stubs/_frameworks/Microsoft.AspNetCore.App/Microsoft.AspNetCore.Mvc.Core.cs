@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.Core, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -687,6 +687,7 @@ namespace Microsoft
                 public virtual Microsoft.AspNetCore.Mvc.ContentResult Content(string content, string contentType, System.Text.Encoding contentEncoding) => throw null;
                 public virtual Microsoft.AspNetCore.Mvc.ContentResult Content(string content, Microsoft.Net.Http.Headers.MediaTypeHeaderValue contentType) => throw null;
                 public Microsoft.AspNetCore.Mvc.ControllerContext ControllerContext { get => throw null; set { } }
+                public virtual Microsoft.AspNetCore.Mvc.CreatedResult Created() => throw null;
                 public virtual Microsoft.AspNetCore.Mvc.CreatedResult Created(string uri, object value) => throw null;
                 public virtual Microsoft.AspNetCore.Mvc.CreatedResult Created(System.Uri uri, object value) => throw null;
                 public virtual Microsoft.AspNetCore.Mvc.CreatedAtActionResult CreatedAtAction(string actionName, object value) => throw null;
@@ -940,6 +941,7 @@ namespace Microsoft
             }
             public class CreatedResult : Microsoft.AspNetCore.Mvc.ObjectResult
             {
+                public CreatedResult() : base(default(object)) => throw null;
                 public CreatedResult(string location, object value) : base(default(object)) => throw null;
                 public CreatedResult(System.Uri location, object value) : base(default(object)) => throw null;
                 public string Location { get => throw null; set { } }
@@ -1856,6 +1858,10 @@ namespace Microsoft
                 public bool IsReusable { get => throw null; }
                 public int Order { get => throw null; set { } }
             }
+            public class MiddlewareFilterAttribute<T> : Microsoft.AspNetCore.Mvc.MiddlewareFilterAttribute
+            {
+                public MiddlewareFilterAttribute() : base(default(System.Type)) => throw null;
+            }
             [System.AttributeUsage((System.AttributeTargets)2204, AllowMultiple = false, Inherited = true)]
             public class ModelBinderAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ModelBinding.IBinderTypeProviderMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IBindingSourceMetadata, Microsoft.AspNetCore.Mvc.ModelBinding.IModelNameProvider
             {
@@ -1864,6 +1870,10 @@ namespace Microsoft
                 public ModelBinderAttribute() => throw null;
                 public ModelBinderAttribute(System.Type binderType) => throw null;
                 public string Name { get => throw null; set { } }
+            }
+            public class ModelBinderAttribute<TBinder> : Microsoft.AspNetCore.Mvc.ModelBinderAttribute where TBinder : Microsoft.AspNetCore.Mvc.ModelBinding.IModelBinder
+            {
+                public ModelBinderAttribute() => throw null;
             }
             namespace ModelBinding
             {
@@ -2679,6 +2689,10 @@ namespace Microsoft
                 public ModelMetadataTypeAttribute(System.Type type) => throw null;
                 public System.Type MetadataType { get => throw null; }
             }
+            public class ModelMetadataTypeAttribute<T> : Microsoft.AspNetCore.Mvc.ModelMetadataTypeAttribute
+            {
+                public ModelMetadataTypeAttribute() : base(default(System.Type)) => throw null;
+            }
             public class MvcOptions : System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.Infrastructure.ICompatibilitySwitch>, System.Collections.IEnumerable
             {
                 public bool AllowEmptyInputInBodyModelBinding { get => throw null; set { } }
@@ -2779,6 +2793,10 @@ namespace Microsoft
                 public int StatusCode { get => throw null; }
                 public System.Type Type { get => throw null; set { } }
             }
+            public class ProducesAttribute<T> : Microsoft.AspNetCore.Mvc.ProducesAttribute
+            {
+                public ProducesAttribute() : base(default(System.Type)) => throw null;
+            }
             [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = false, Inherited = true)]
             public sealed class ProducesDefaultResponseTypeAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDefaultResponseMetadataProvider, Microsoft.AspNetCore.Mvc.ApiExplorer.IApiResponseMetadataProvider, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
             {
@@ -2803,6 +2821,11 @@ namespace Microsoft
                 void Microsoft.AspNetCore.Mvc.ApiExplorer.IApiResponseMetadataProvider.SetContentTypes(Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection contentTypes) => throw null;
                 public int StatusCode { get => throw null; set { } }
                 public System.Type Type { get => throw null; set { } }
+            }
+            public class ProducesResponseTypeAttribute<T> : Microsoft.AspNetCore.Mvc.ProducesResponseTypeAttribute
+            {
+                public ProducesResponseTypeAttribute(int statusCode) : base(default(int)) => throw null;
+                public ProducesResponseTypeAttribute(int statusCode, string contentType, params string[] additionalContentTypes) : base(default(int)) => throw null;
             }
             public class RedirectResult : Microsoft.AspNetCore.Mvc.ActionResult, Microsoft.AspNetCore.Mvc.IActionResult, Microsoft.AspNetCore.Mvc.ViewFeatures.IKeepTempDataResult
             {
@@ -2872,22 +2895,32 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Mvc.IUrlHelper UrlHelper { get => throw null; set { } }
             }
             [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
-            public class RequestFormLimitsAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IFilterFactory, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
+            public class RequestFormLimitsAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IFilterFactory, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Http.Metadata.IFormOptionsMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
             {
                 public bool BufferBody { get => throw null; set { } }
+                bool? Microsoft.AspNetCore.Http.Metadata.IFormOptionsMetadata.BufferBody { get => throw null; }
                 public long BufferBodyLengthLimit { get => throw null; set { } }
+                long? Microsoft.AspNetCore.Http.Metadata.IFormOptionsMetadata.BufferBodyLengthLimit { get => throw null; }
                 public Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata CreateInstance(System.IServiceProvider serviceProvider) => throw null;
                 public RequestFormLimitsAttribute() => throw null;
                 public bool IsReusable { get => throw null; }
                 public int KeyLengthLimit { get => throw null; set { } }
+                int? Microsoft.AspNetCore.Http.Metadata.IFormOptionsMetadata.KeyLengthLimit { get => throw null; }
                 public int MemoryBufferThreshold { get => throw null; set { } }
+                int? Microsoft.AspNetCore.Http.Metadata.IFormOptionsMetadata.MemoryBufferThreshold { get => throw null; }
                 public long MultipartBodyLengthLimit { get => throw null; set { } }
+                long? Microsoft.AspNetCore.Http.Metadata.IFormOptionsMetadata.MultipartBodyLengthLimit { get => throw null; }
                 public int MultipartBoundaryLengthLimit { get => throw null; set { } }
+                int? Microsoft.AspNetCore.Http.Metadata.IFormOptionsMetadata.MultipartBoundaryLengthLimit { get => throw null; }
                 public int MultipartHeadersCountLimit { get => throw null; set { } }
+                int? Microsoft.AspNetCore.Http.Metadata.IFormOptionsMetadata.MultipartHeadersCountLimit { get => throw null; }
                 public int MultipartHeadersLengthLimit { get => throw null; set { } }
+                int? Microsoft.AspNetCore.Http.Metadata.IFormOptionsMetadata.MultipartHeadersLengthLimit { get => throw null; }
                 public int Order { get => throw null; set { } }
                 public int ValueCountLimit { get => throw null; set { } }
+                int? Microsoft.AspNetCore.Http.Metadata.IFormOptionsMetadata.ValueCountLimit { get => throw null; }
                 public int ValueLengthLimit { get => throw null; set { } }
+                int? Microsoft.AspNetCore.Http.Metadata.IFormOptionsMetadata.ValueLengthLimit { get => throw null; }
             }
             [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public class RequestSizeLimitAttribute : System.Attribute, Microsoft.AspNetCore.Mvc.Filters.IFilterFactory, Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata, Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter, Microsoft.AspNetCore.Http.Metadata.IRequestSizeLimitMetadata
@@ -3032,6 +3065,10 @@ namespace Microsoft
                 public int Order { get => throw null; set { } }
                 public System.Type ServiceType { get => throw null; }
             }
+            public class ServiceFilterAttribute<TFilter> : Microsoft.AspNetCore.Mvc.ServiceFilterAttribute where TFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+            {
+                public ServiceFilterAttribute() : base(default(System.Type)) => throw null;
+            }
             public class SignInResult : Microsoft.AspNetCore.Mvc.ActionResult
             {
                 public string AuthenticationScheme { get => throw null; set { } }
@@ -3072,6 +3109,10 @@ namespace Microsoft
                 public System.Type ImplementationType { get => throw null; }
                 public bool IsReusable { get => throw null; set { } }
                 public int Order { get => throw null; set { } }
+            }
+            public class TypeFilterAttribute<TFilter> : Microsoft.AspNetCore.Mvc.TypeFilterAttribute where TFilter : Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+            {
+                public TypeFilterAttribute() : base(default(System.Type)) => throw null;
             }
             public class UnauthorizedObjectResult : Microsoft.AspNetCore.Mvc.ObjectResult
             {
@@ -3125,7 +3166,7 @@ namespace Microsoft
                 public ValidationProblemDetails() => throw null;
                 public ValidationProblemDetails(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary modelState) => throw null;
                 public ValidationProblemDetails(System.Collections.Generic.IDictionary<string, string[]> errors) => throw null;
-                public System.Collections.Generic.IDictionary<string, string[]> Errors { get => throw null; }
+                public System.Collections.Generic.IDictionary<string, string[]> Errors { get => throw null; set { } }
             }
             namespace ViewFeatures
             {

@@ -23,7 +23,8 @@ module SmtpLib {
 
   private DataFlow::CallCfgNode mimeText(string mimetype) {
     result = smtpMimeTextInstance().getACall() and
-    [result.getArg(1), result.getArgByName("_subtype")].asExpr().(StrConst).getText() = mimetype
+    [result.getArg(1), result.getArgByName("_subtype")].asExpr().(StringLiteral).getText() =
+      mimetype
   }
 
   /**

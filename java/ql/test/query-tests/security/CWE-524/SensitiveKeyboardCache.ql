@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.SensitiveKeyboardCacheQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module SensitiveKeyboardCacheTest implements TestSig {
   string getARelevantTag() { result = "hasResult" }

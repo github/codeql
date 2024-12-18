@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
@@ -22,21 +22,6 @@ abstract class Sink extends DataFlow::ExprNode { }
  * A sanitizer for user input treated as code vulnerabilities.
  */
 abstract class Sanitizer extends DataFlow::ExprNode { }
-
-/**
- * DEPRECATED: Use `CommandInjection` instead.
- *
- * A taint-tracking configuration for command injection vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "CommandInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
 
 /**
  * A taint-tracking configuration for command injection vulnerabilities.
@@ -64,8 +49,15 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
  */
 module CommandInjection = TaintTracking::Global<CommandInjectionConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** Command Injection sinks defined through Models as Data. */
 private class ExternalCommandInjectionExprSink extends Sink {

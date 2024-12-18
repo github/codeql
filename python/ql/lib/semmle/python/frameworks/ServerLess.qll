@@ -8,7 +8,7 @@
  */
 
 import python
-import codeql.serverless.ServerLess
+private import codeql.serverless.ServerLess
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.RemoteFlowSources
 

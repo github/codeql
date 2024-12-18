@@ -42,6 +42,12 @@ namespace My.Qltest
             gen.StepGeneric2(false);
 
             new Sub().StepOverride("string");
+
+            object arg4 = new object();
+            Library.StepArgReturnGenerated(arg4);
+
+            object arg5 = new object();
+            Library.StepArgReturnGeneratedIgnored(arg5);
         }
 
         object StepArgRes(object x) { return null; }

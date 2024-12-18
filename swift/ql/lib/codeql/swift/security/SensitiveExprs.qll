@@ -6,8 +6,11 @@
 
 import swift
 import internal.SensitiveDataHeuristics
+private import codeql.swift.dataflow.DataFlow
+private import codeql.swift.dataflow.ExternalFlow
 
 private newtype TSensitiveDataType =
+  TPassword() or
   TCredential() or
   TPrivateInfo()
 
@@ -24,18 +27,33 @@ abstract class SensitiveDataType extends TSensitiveDataType {
 }
 
 /**
- * The type of sensitive expression for passwords and other credentials.
+ * The type of sensitive expression for passwords.
+ */
+class SensitivePassword extends SensitiveDataType, TPassword {
+  override string toString() { result = "password" }
+
+  override string getRegexp() {
+    result = HeuristicNames::maybeSensitiveRegexp(SensitiveDataClassification::password())
+    or
+    result = "(?is).*pass.?phrase.*"
+  }
+}
+
+/**
+ * The type of sensitive expression for credentials and secrets other than passwords.
  */
 class SensitiveCredential extends SensitiveDataType, TCredential {
   override string toString() { result = "credential" }
 
   override string getRegexp() {
     exists(SensitiveDataClassification classification |
+      not classification = SensitiveDataClassification::password() and // covered by `SensitivePassword`
       not classification = SensitiveDataClassification::id() and // not accurate enough
+      not classification = SensitiveDataClassification::private() and // covered by `SensitivePrivateInfo`
       result = HeuristicNames::maybeSensitiveRegexp(classification)
     )
     or
-    result = "(?is).*((account|accnt|licen(se|ce)).?(id|key)|one.?time.?code|pass.?phrase).*"
+    result = "(?is).*((account|accnt|licen(se|ce)).?(id|key)|one.?time.?code).*"
   }
 }
 
@@ -46,32 +64,10 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
   override string toString() { result = "private information" }
 
   override string getRegexp() {
+    // we've had good results for the e-mail heuristic in Swift, which isn't part of the default regex. Add it in.
     result =
-      "(?is).*(" +
-        // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
-        // Government identifiers, such as Social Security Numbers
-        "social.?security|employer.?identification|national.?insurance|resident.?id|" +
-        "passport.?(num|no)|" +
-        // Contact information, such as home addresses
-        "post.?code|zip.?code|home.?addr|" +
-        // and telephone numbers
-        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax).?(num|no|phone)|" + "emergency.?contact|" +
-        // Geographic location - where the user is (or was)
-        "l(atitude|ongitude)|nationality|" +
-        // Financial data - such as credit card numbers, salary, bank accounts, and debts
-        "(credit|debit|bank|visa).?(card|num|no|acc(ou?)nt)|acc(ou)?nt.?(no|num|credit)|" +
-        "salary|billing|credit.?(rating|score)|" +
-        // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
-        "e(mail|_mail)|" +
-        // Health - medical conditions, insurance status, prescription records
-        "birth.?da(te|y)|da(te|y).?(of.?)?birth|" +
-        "medical|(health|care).?plan|healthkit|appointment|prescription|" +
-        "blood.?(type|alcohol|glucose|pressure)|heart.?(rate|rhythm)|body.?(mass|fat)|" +
-        "menstrua|pregnan|insulin|inhaler|" +
-        // Relationships - work and family
-        "employ(er|ee)|spouse|maiden.?name" +
-        // ---
-        ").*"
+      HeuristicNames::maybeSensitiveRegexp(SensitiveDataClassification::private())
+          .replaceAll(".*(", ".*(e(mail|_mail)|")
   }
 }
 
@@ -172,6 +168,23 @@ class SensitiveExpr extends Expr {
     ) and
     // do not mark as sensitive it if it is probably safe
     not label.regexpMatch(regexpProbablySafe())
+    or
+    (
+      // modeled sensitive password
+      sourceNode(DataFlow::exprNode(this), "sensitive-password") and
+      sensitiveType = TPassword() and
+      label = "password"
+      or
+      // modeled sensitive credential
+      sourceNode(DataFlow::exprNode(this), "sensitive-credential") and
+      sensitiveType = TCredential() and
+      label = "credential"
+      or
+      // modeled sensitive private information
+      sourceNode(DataFlow::exprNode(this), "sensitive-private-info") and
+      sensitiveType = TPrivateInfo() and
+      label = "private information"
+    )
   }
 
   /**

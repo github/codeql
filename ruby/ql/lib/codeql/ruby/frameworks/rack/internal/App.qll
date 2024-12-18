@@ -6,7 +6,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.TypeTracking
 private import Response::Private as RP
 
 /**
@@ -39,31 +39,6 @@ private RP::PotentialResponseNode trackRackResponse(PotentialRequestHandler call
  * Provides modeling for Rack applications.
  */
 module App {
-  /**
-   * DEPRECATED: Use `RequestHandler` instead.
-   * A class that may be a rack application.
-   * This is a class that has a `call` method that takes a single argument
-   * (traditionally called `env`) and returns a rack-compatible response.
-   */
-  deprecated class AppCandidate extends DataFlow::ClassNode {
-    private RequestHandler call;
-    private RP::PotentialResponseNode resp;
-
-    AppCandidate() {
-      call = this.getInstanceMethod("call") and
-      call.getNumberOfParameters() = 1 and
-      resp = trackRackResponse(call)
-    }
-
-    /**
-     * Gets the environment of the request, which is the lone parameter to the `call` method.
-     */
-    DataFlow::ParameterNode getEnv() { result = call.getParameter(0) }
-
-    /** Gets the response returned from a request to this application. */
-    RP::PotentialResponseNode getResponse() { result = resp }
-  }
-
   /**
    * A callable node that looks like it implements the rack specification.
    */

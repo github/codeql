@@ -1,5 +1,7 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
+import utils.test.InlineExpectationsTest
 
 module LoggerTest implements TestSig {
   string getARelevantTag() { result = "logger" }

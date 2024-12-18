@@ -15,15 +15,11 @@ abstract private class MaxIntOrMaxUint extends DeclaredConstant {
    */
   predicate isBoundFor(int b, int architectureBitSize, float strictnessOffset) {
     // 2.pow(x) - 1 - strictnessOffset <= 2.pow(b) - 1
-    exists(int x |
-      x = this.getOrder(architectureBitSize) and
-      b = validBitSize() and
-      (
-        strictnessOffset = 0 and x <= b
-        or
-        strictnessOffset = 1 and x <= b - 1
-      )
-    )
+    // For the values that we are restricting `b` to, `strictnessOffset` has no
+    // effect on the result, so we can ignore it.
+    b = validBitSize() and
+    strictnessOffset = [0, 1] and
+    this.getOrder(architectureBitSize) <= b
   }
 }
 
@@ -55,132 +51,6 @@ int getIntTypeBitSize(File file, int architectureSpecificBitSize) {
   or
   not file.constrainsIntBitSize(_) and
   result = architectureSpecificBitSize
-}
-
-/**
- * Holds if converting from an integer types with size `sourceBitSize` to
- * one with size `sinkBitSize` can produce unexpected values, where 0 means
- * architecture-dependent.
- *
- * Architecture-dependent bit sizes can be 32 or 64. To catch flows that
- * only manifest on 64-bit architectures we consider an
- * architecture-dependent source bit size to be 64. To catch flows that
- * only happen on 32-bit architectures we consider an
- * architecture-dependent sink bit size to be 32. We exclude the case where
- * both source and sink have architecture-dependent bit sizes.
- */
-private predicate isIncorrectIntegerConversion(int sourceBitSize, int sinkBitSize) {
-  sourceBitSize in [16, 32, 64] and
-  sinkBitSize in [8, 16, 32] and
-  sourceBitSize > sinkBitSize
-  or
-  // Treat `sourceBitSize = 0` like `sourceBitSize = 64`, and exclude `sinkBitSize = 0`
-  sourceBitSize = 0 and
-  sinkBitSize in [8, 16, 32]
-  or
-  // Treat `sinkBitSize = 0` like `sinkBitSize = 32`, and exclude `sourceBitSize = 0`
-  sourceBitSize = 64 and
-  sinkBitSize = 0
-}
-
-/**
- * DEPRECATED: use `Flow` instead.
- *
- * A taint-tracking configuration for reasoning about when an integer
- * obtained from parsing a string flows to a type conversion to a smaller
- * integer types, which could cause unexpected values.
- */
-deprecated class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
-  boolean sinkIsSigned;
-  int sourceBitSize;
-  int sinkBitSize;
-
-  ConversionWithoutBoundsCheckConfig() {
-    sinkIsSigned in [true, false] and
-    isIncorrectIntegerConversion(sourceBitSize, sinkBitSize) and
-    this = "ConversionWithoutBoundsCheckConfig" + sourceBitSize + sinkIsSigned + sinkBitSize
-  }
-
-  /** Gets the bit size of the source. */
-  int getSourceBitSize() { result = sourceBitSize }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(
-      DataFlow::CallNode c, IntegerParser::Range ip, int apparentBitSize, int effectiveBitSize
-    |
-      c.getTarget() = ip and source = c.getResult(0)
-    |
-      (
-        apparentBitSize = ip.getTargetBitSize()
-        or
-        // If we are reading a variable, check if it is
-        // `strconv.IntSize`, and use 0 if it is.
-        exists(DataFlow::Node rawBitSize | rawBitSize = ip.getTargetBitSizeInput().getNode(c) |
-          if rawBitSize = any(Strconv::IntSize intSize).getARead()
-          then apparentBitSize = 0
-          else apparentBitSize = rawBitSize.getIntValue()
-        )
-      ) and
-      (
-        if apparentBitSize = 0
-        then effectiveBitSize = getIntTypeBitSize(source.getFile(), 0)
-        else effectiveBitSize = apparentBitSize
-      ) and
-      // `effectiveBitSize` could be any value between 0 and 64, but we
-      // can round it up to the nearest size of an integer type without
-      // changing behavior.
-      sourceBitSize = min(int b | b in [0, 8, 16, 32, 64] and b >= effectiveBitSize)
-    )
-  }
-
-  /**
-   * Holds if `sink` is a typecast to an integer type with size `bitSize` (where
-   * 0 represents architecture-dependent) and the expression being typecast is
-   * not also in a right-shift expression. We allow this case because it is
-   * a common pattern to serialise `byte(v)`, `byte(v >> 8)`, and so on.
-   */
-  predicate isSinkWithBitSize(DataFlow::TypeCastNode sink, int bitSize) {
-    sink.asExpr() instanceof ConversionExpr and
-    exists(IntegerType integerType | sink.getResultType().getUnderlyingType() = integerType |
-      (
-        bitSize = integerType.getSize()
-        or
-        not exists(integerType.getSize()) and
-        bitSize = getIntTypeBitSize(sink.getFile(), 0)
-      ) and
-      if integerType instanceof SignedIntegerType then sinkIsSigned = true else sinkIsSigned = false
-    ) and
-    not exists(ShrExpr shrExpr |
-      shrExpr.getLeftOperand().getGlobalValueNumber() =
-        sink.getOperand().asExpr().getGlobalValueNumber() or
-      shrExpr.getLeftOperand().(AndExpr).getAnOperand().getGlobalValueNumber() =
-        sink.getOperand().asExpr().getGlobalValueNumber()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    // We use the argument of the type conversion as the configuration sink so that we
-    // can sanitize the result of the conversion to prevent flow on to further sinks
-    // without needing to use `isSanitizerOut`, which doesn't work with flow states
-    // (and therefore the legacy `TaintTracking::Configuration` class).
-    this.isSinkWithBitSize(sink.getASuccessor(), sinkBitSize)
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    // To catch flows that only happen on 32-bit architectures we
-    // consider an architecture-dependent sink bit size to be 32.
-    exists(UpperBoundCheckGuard g, int bitSize |
-      if sinkBitSize != 0 then bitSize = sinkBitSize else bitSize = 32
-    |
-      node = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g) and
-      if sinkIsSigned = true then g.isBoundFor(bitSize, 32) else g.isBoundFor(bitSize - 1, 32)
-    )
-    or
-    exists(int bitSize |
-      isIncorrectIntegerConversion(sourceBitSize, bitSize) and
-      this.isSinkWithBitSize(node, bitSize)
-    )
-  }
 }
 
 private int validBitSize() { result = [7, 8, 15, 16, 31, 32, 63, 64] }
@@ -262,13 +132,14 @@ private class MaxValueState extends TMaxValueState {
  * A node that blocks some flow states and transforms some others as they flow
  * through it.
  */
-abstract class BarrierFlowStateTransformer extends DataFlow::Node {
+abstract class FlowStateTransformer extends DataFlow::Node {
   /**
-   * Holds if this should be a barrier for `flowstate`.
+   * Holds if this should be a barrier for a flow state with bit size `bitSize`
+   * and architecture bit size `architectureBitSize`.
    *
    * This includes flow states which are transformed into other flow states.
    */
-  abstract predicate barrierFor(MaxValueState flowstate);
+  abstract predicate barrierFor(int bitSize, int architectureBitSize);
 
   /**
    * Gets the flow state that `flowstate` is transformed into.
@@ -279,7 +150,20 @@ abstract class BarrierFlowStateTransformer extends DataFlow::Node {
    * transform(transform(x)) = transform(x)
    * ```
    */
-  abstract MaxValueState transform(MaxValueState flowstate);
+  MaxValueState transform(MaxValueState state) {
+    this.barrierFor(state.getBitSize(), state.getSinkBitSize()) and
+    result.getBitSize() =
+      max(int bitsize |
+        bitsize = validBitSize() and
+        bitsize < state.getBitSize() and
+        not this.barrierFor(bitsize, state.getSinkBitSize())
+      ) and
+    (
+      result.getArchitectureBitSize() = state.getArchitectureBitSize()
+      or
+      state.architectureBitSizeUnknown() and result.architectureBitSizeUnknown()
+    )
+  }
 }
 
 private predicate upperBoundCheckGuard(DataFlow::Node g, Expr e, boolean branch) {
@@ -376,30 +260,68 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
  * for all flow states and would not transform any flow states, thus
  * effectively blocking them.
  */
-class UpperBoundCheck extends BarrierFlowStateTransformer {
+class UpperBoundCheck extends FlowStateTransformer {
   UpperBoundCheckGuard g;
 
   UpperBoundCheck() {
     this = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g)
   }
 
-  override predicate barrierFor(MaxValueState flowstate) {
-    g.isBoundFor(flowstate.getBitSize(), flowstate.getSinkBitSize())
+  override predicate barrierFor(int bitSize, int architectureBitSize) {
+    g.isBoundFor(bitSize, architectureBitSize)
+  }
+}
+
+private predicate integerTypeBound(IntegerType it, int bitSize, int architectureBitSize) {
+  bitSize = validBitSize() and
+  architectureBitSize = [32, 64] and
+  exists(int offset | if it instanceof SignedIntegerType then offset = 1 else offset = 0 |
+    if it instanceof IntType or it instanceof UintType
+    then bitSize >= architectureBitSize - offset
+    else bitSize >= it.getSize() - offset
+  )
+}
+
+/**
+ * An expression which a type assertion guarantees will have a particular
+ * integer type.
+ *
+ * If this is a checked type expression then this value will only be used if
+ * the type assertion succeeded. If it is not checked then there will be a
+ * run-time panic if the type assertion fails, so we can assume it succeeded.
+ */
+class TypeAssertionCheck extends DataFlow::ExprNode, FlowStateTransformer {
+  IntegerType it;
+
+  TypeAssertionCheck() {
+    exists(TypeAssertExpr tae |
+      this = DataFlow::exprNode(tae.getExpr()) and
+      it = tae.getTypeExpr().getType().getUnderlyingType()
+    )
   }
 
-  override MaxValueState transform(MaxValueState state) {
-    this.barrierFor(state) and
-    result.getBitSize() =
-      max(int bitsize |
-        bitsize = validBitSize() and
-        bitsize < state.getBitSize() and
-        not g.isBoundFor(bitsize, state.getSinkBitSize())
-      ) and
-    (
-      result.getArchitectureBitSize() = state.getArchitectureBitSize()
-      or
-      state.architectureBitSizeUnknown() and result.architectureBitSizeUnknown()
+  override predicate barrierFor(int bitSize, int architectureBitSize) {
+    integerTypeBound(it, bitSize, architectureBitSize)
+  }
+}
+
+/**
+ * The implicit definition of a variable with integer type for a case clause of
+ * a type switch statement which declares a variable in its guard, which has
+ * effectively had a checked type assertion.
+ */
+class TypeSwitchVarFlowStateTransformer extends DataFlow::SsaNode, FlowStateTransformer {
+  IntegerType it;
+
+  TypeSwitchVarFlowStateTransformer() {
+    exists(IR::TypeSwitchImplicitVariableInstruction insn, LocalVariable lv | insn.writes(lv, _) |
+      this.getSourceVariable() = lv and
+      it = lv.getType().getUnderlyingType()
     )
+  }
+
+  override predicate barrierFor(int bitSize, int architectureBitSize) {
+    integerTypeBound(it, bitSize, architectureBitSize)
   }
 }
 
@@ -501,7 +423,10 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
 
   predicate isBarrier(DataFlow::Node node, FlowState state) {
     // Safely guarded by a barrier guard.
-    exists(BarrierFlowStateTransformer bfst | node = bfst and bfst.barrierFor(state))
+    exists(FlowStateTransformer fst |
+      node = fst and
+      fst.barrierFor(state.getBitSize(), state.getSinkBitSize())
+    )
     or
     // When there is a flow from a source to a sink, do not allow the flow to
     // continue to a further sink.
@@ -511,9 +436,9 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    // Create additional flow steps for `BarrierFlowStateTransformer`s
-    state2 = node2.(BarrierFlowStateTransformer).transform(state1) and
-    DataFlow::simpleLocalFlowStep(node1, node2)
+    // Create additional flow steps for `FlowStateTransformer`s
+    state2 = node2.(FlowStateTransformer).transform(state1) and
+    DataFlow::simpleLocalFlowStep(node1, node2, _)
   }
 }
 
@@ -521,7 +446,7 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
  * Tracks taint flow from an integer obtained from parsing a string that flows
  * to a type conversion to a smaller integer type, which could cause data loss.
  */
-module Flow = TaintTracking::GlobalWithState<ConversionWithoutBoundsCheckConfig>;
+module Flow = DataFlow::GlobalWithState<ConversionWithoutBoundsCheckConfig>;
 
 /** Gets a string describing the size of the integer parsed. */
 deprecated string describeBitSize(int bitSize, int intTypeBitSize) {
