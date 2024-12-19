@@ -45,7 +45,7 @@ jobs:
       - name: Clippy
         shell: bash
         run: |
-          cargo clippy -- -D warnings
+          cargo clippy --no-deps -- -D warnings
   rust-code:
     runs-on: ubuntu-latest
     defaults:
@@ -64,7 +64,7 @@ jobs:
       - name: Clippy
         shell: bash
         run: |
-          cargo clippy -- -D warnings
+          cargo clippy --no-deps -- -D warnings
   rust-codegen:
     runs-on: ubuntu-latest
     steps:
