@@ -97,8 +97,8 @@ rust_library(
         "@vendor__ra_ap_syntax-0.0.248//:ra_ap_syntax",
         "@vendor__ra_ap_vfs-0.0.248//:ra_ap_vfs",
         "@vendor__rustc-hash-2.1.0//:rustc_hash",
-        "@vendor__semver-1.0.23//:semver",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__semver-1.0.24//:semver",
+        "@vendor__tracing-0.1.41//:tracing",
         "@vendor__triomphe-0.1.14//:triomphe",
     ],
 )

@@ -86,6 +86,6 @@ rust_library(
         "@vendor__rustc-hash-2.1.0//:rustc_hash",
         "@vendor__rustc_apfloat-0.2.1-llvm-462a31f5a5ab//:rustc_apfloat",
         "@vendor__smallvec-1.13.2//:smallvec",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__tracing-0.1.41//:tracing",
     ],
 )

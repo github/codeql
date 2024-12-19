@@ -83,13 +83,13 @@ rust_library(
     }),
     version = "0.0.248",
     deps = [
-        "@vendor__crossbeam-channel-0.5.13//:crossbeam_channel",
+        "@vendor__crossbeam-channel-0.5.14//:crossbeam_channel",
         "@vendor__fst-0.4.7//:fst",
-        "@vendor__indexmap-2.6.0//:indexmap",
+        "@vendor__indexmap-2.7.0//:indexmap",
         "@vendor__nohash-hasher-0.2.0//:nohash_hasher",
         "@vendor__ra_ap_paths-0.0.248//:ra_ap_paths",
         "@vendor__ra_ap_stdx-0.0.248//:ra_ap_stdx",
         "@vendor__rustc-hash-2.1.0//:rustc_hash",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__tracing-0.1.41//:tracing",
     ],
 )
