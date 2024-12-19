@@ -164,6 +164,10 @@
 | ViableCallable.cs:145:9:145:20 | dynamic call to method M3 | M3 | C9`1 |
 | ViableCallable.cs:149:9:149:14 | dynamic call to method M5 | M5 | C8 |
 | ViableCallable.cs:149:9:149:14 | dynamic call to method M5 | M5 | C9`1 |
+| ViableCallable.cs:150:9:150:15 | dynamic call to method M5 | M5 | C8 |
+| ViableCallable.cs:150:9:150:15 | dynamic call to method M5 | M5 | C9`1 |
+| ViableCallable.cs:151:9:151:20 | dynamic call to method M5 | M5 | C8 |
+| ViableCallable.cs:151:9:151:20 | dynamic call to method M5 | M5 | C9`1 |
 | ViableCallable.cs:154:9:154:16 | dynamic call to method M3 | M3 | C8 |
 | ViableCallable.cs:154:9:154:16 | dynamic call to method M3 | M3 | C9`1 |
 | ViableCallable.cs:154:9:154:16 | dynamic call to method M3 | M3 | C10 |
@@ -176,6 +180,12 @@
 | ViableCallable.cs:158:9:158:16 | dynamic call to method M5 | M5 | C8 |
 | ViableCallable.cs:158:9:158:16 | dynamic call to method M5 | M5 | C9`1 |
 | ViableCallable.cs:158:9:158:16 | dynamic call to method M5 | M5 | C10 |
+| ViableCallable.cs:159:9:159:17 | dynamic call to method M5 | M5 | C8 |
+| ViableCallable.cs:159:9:159:17 | dynamic call to method M5 | M5 | C9`1 |
+| ViableCallable.cs:159:9:159:17 | dynamic call to method M5 | M5 | C10 |
+| ViableCallable.cs:160:9:160:22 | dynamic call to method M5 | M5 | C8 |
+| ViableCallable.cs:160:9:160:22 | dynamic call to method M5 | M5 | C9`1 |
+| ViableCallable.cs:160:9:160:22 | dynamic call to method M5 | M5 | C10 |
 | ViableCallable.cs:162:9:162:17 | dynamic access to member Prop1 | set_Prop1 | C8 |
 | ViableCallable.cs:162:9:162:17 | dynamic access to member Prop1 | set_Prop1 | C9`1 |
 | ViableCallable.cs:162:9:162:17 | dynamic access to member Prop1 | set_Prop1 | C10 |

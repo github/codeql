@@ -335,6 +335,10 @@
 | ViableCallable.cs:148:13:148:22 | call to method Mock<C8> | ViableCallable.Mock<C8>() |
 | ViableCallable.cs:149:9:149:14 | dynamic call to method M5 | C8.M5(params IEnumerable<double>) |
 | ViableCallable.cs:149:9:149:14 | dynamic call to method M5 | C9`1.M5(params IEnumerable<T>) |
+| ViableCallable.cs:150:9:150:15 | dynamic call to method M5 | C8.M5(params IEnumerable<double>) |
+| ViableCallable.cs:150:9:150:15 | dynamic call to method M5 | C9`1.M5(params IEnumerable<T>) |
+| ViableCallable.cs:151:9:151:20 | dynamic call to method M5 | C8.M5(params IEnumerable<double>) |
+| ViableCallable.cs:151:9:151:20 | dynamic call to method M5 | C9`1.M5(params IEnumerable<T>) |
 | ViableCallable.cs:154:9:154:16 | dynamic call to method M3 | C8.M3(params Double[]) |
 | ViableCallable.cs:154:9:154:16 | dynamic call to method M3 | C9`1.M3(params T[]) |
 | ViableCallable.cs:154:9:154:16 | dynamic call to method M3 | C10.M3(params Double[]) |
@@ -349,6 +353,12 @@
 | ViableCallable.cs:158:9:158:16 | dynamic call to method M5 | C8.M5(params IEnumerable<double>) |
 | ViableCallable.cs:158:9:158:16 | dynamic call to method M5 | C9`1.M5(params IEnumerable<T>) |
 | ViableCallable.cs:158:9:158:16 | dynamic call to method M5 | C10.M5(params IEnumerable<double>) |
+| ViableCallable.cs:159:9:159:17 | dynamic call to method M5 | C8.M5(params IEnumerable<double>) |
+| ViableCallable.cs:159:9:159:17 | dynamic call to method M5 | C9`1.M5(params IEnumerable<T>) |
+| ViableCallable.cs:159:9:159:17 | dynamic call to method M5 | C10.M5(params IEnumerable<double>) |
+| ViableCallable.cs:160:9:160:22 | dynamic call to method M5 | C8.M5(params IEnumerable<double>) |
+| ViableCallable.cs:160:9:160:22 | dynamic call to method M5 | C9`1.M5(params IEnumerable<T>) |
+| ViableCallable.cs:160:9:160:22 | dynamic call to method M5 | C10.M5(params IEnumerable<double>) |
 | ViableCallable.cs:162:9:162:17 | dynamic access to member Prop1 | C8.set_Prop1(string) |
 | ViableCallable.cs:162:9:162:17 | dynamic access to member Prop1 | C9`1.set_Prop1(string) |
 | ViableCallable.cs:162:9:162:17 | dynamic access to member Prop1 | C10.set_Prop1(bool) |

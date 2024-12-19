@@ -147,8 +147,8 @@ public class ViableCallable
         // Viable callables: C8.M5(), C9.M5()
         d = Mock<C8>();
         d.M5();
-        d.M5(0); // MISSING DYNAMIC TARGET
-        d.M5(0, 0.0); // MISSING DYNAMIC TARGET
+        d.M5(0);
+        d.M5(0, 0.0);
 
         // Viable callables: {C8,C9,C10}.M3()
         dyn.M3();
@@ -156,8 +156,8 @@ public class ViableCallable
         dyn.M3(0, 0.0);
         // Viable callables: {C8,C9,C10}.M5()
         dyn.M5();
-        dyn.M5(0); // MISSING DYNAMIC TARGET
-        dyn.M5(0, 0.0); // MISSING DYNAMIC TARGET
+        dyn.M5(0);
+        dyn.M5(0, 0.0);
         // Viable callables: {C8,C9,C10}.{get_Prop1(),set_Prop1()}
         dyn.Prop1 = dyn.Prop1;
         // Viable callables: {C2,C3,C6,C7,C8,C9,C10}.{get_Item(),set_Item()}
