@@ -424,7 +424,11 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
   Callable getATarget(boolean static) {
     result = dc.getADynamicTarget().getUnboundDeclaration() and static = false
     or
-    result = dc.getAStaticTarget().getUnboundDeclaration() and static = true
+    result = dc.getAStaticTarget().getUnboundDeclaration() and
+    static = true and
+    // In reflection calls, _all_ methods with matching names and arities are considered
+    // static targets, so we need to exclude them
+    not dc.isReflection()
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }

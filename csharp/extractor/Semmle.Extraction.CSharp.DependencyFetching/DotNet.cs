@@ -27,11 +27,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             Info();
         }
 
-        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory) : this(new DotNetCliInvoker(logger, Path.Combine(dotNetPath ?? string.Empty, "dotnet")), logger, tempWorkingDirectory) { }
+        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Combine(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, tempWorkingDirectory) { }
 
         internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger) => new DotNet(dotnetCliInvoker, logger);
 
-        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory) => new DotNet(logger, dotNetPath, tempWorkingDirectory);
+        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) => new DotNet(logger, dotNetPath, tempWorkingDirectory, dependabotProxy);
 
         private void Info()
         {

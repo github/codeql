@@ -7,6 +7,7 @@
  */
 
 import rust
+import codeql.rust.Concepts
 import codeql.rust.Diagnostics
 import Stats
 
@@ -20,13 +21,21 @@ where
   or
   key = "Extraction warnings" and value = count(ExtractionWarning w)
   or
-  key = "Files extracted - total" and value = count(File f | exists(f.getRelativePath()))
+  key = "Files extracted - total" and value = count(ExtractedFile f | exists(f.getRelativePath()))
   or
   key = "Files extracted - with errors" and
-  value = count(File f | exists(f.getRelativePath()) and not f instanceof SuccessfullyExtractedFile)
+  value =
+    count(ExtractedFile f |
+      exists(f.getRelativePath()) and not f instanceof SuccessfullyExtractedFile
+    )
   or
   key = "Files extracted - without errors" and
   value = count(SuccessfullyExtractedFile f | exists(f.getRelativePath()))
+  or
+  key = "Files extracted - without errors %" and
+  value =
+    (count(SuccessfullyExtractedFile f | exists(f.getRelativePath())) * 100) /
+      count(ExtractedFile f | exists(f.getRelativePath()))
   or
   key = "Lines of code extracted" and value = getLinesOfCode()
   or
@@ -37,4 +46,14 @@ where
   key = "Inconsistencies - CFG" and value = getTotalCfgInconsistencies()
   or
   key = "Inconsistencies - data flow" and value = getTotalDataFlowInconsistencies()
-select key, value
+  or
+  key = "Macro calls - total" and value = count(MacroCall mc)
+  or
+  key = "Macro calls - resolved" and value = count(MacroCall mc | mc.hasExpanded())
+  or
+  key = "Macro calls - unresolved" and value = count(MacroCall mc | not mc.hasExpanded())
+  or
+  key = "Taint sources - total" and value = count(ThreatModelSource s)
+  or
+  key = "Taint sources - active" and value = count(ActiveThreatModelSource s)
+select key, value order by key

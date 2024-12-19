@@ -384,10 +384,10 @@ private module ArrayLibraries {
   }
 
   /**
-   * Gets a call to `Array.prototype.find` or a polyfill implementing the same functionality.
+   * Gets a call to `Array.prototype.find` or `Array.prototype.findLast` or a polyfill implementing the same functionality.
    */
   DataFlow::CallNode arrayFindCall(DataFlow::Node array) {
-    result.(DataFlow::MethodCallNode).getMethodName() = "find" and
+    result.(DataFlow::MethodCallNode).getMethodName() in ["find", "findLast"] and
     array = result.getReceiver()
     or
     result = DataFlow::moduleImport(["array.prototype.find", "array-find"]).getACall() and
@@ -480,6 +480,33 @@ private module ArrayLibraries {
         call.getMethodName() in ["toSorted", "toReversed", "with"] and
         pred = call.getReceiver() and
         succ = call
+      )
+    }
+  }
+
+  /**
+   * Defines a data flow step that tracks the flow of data through callback functions in arrays.
+   */
+  private class ArrayCallBackDataFlowStep extends PreCallGraphStep {
+    override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["findLast", "find", "findLastIndex"] and
+        prop = arrayLikeElement() and
+        obj = call.getReceiver() and
+        element = call.getCallback(0).getParameter(0)
+      )
+    }
+  }
+
+  /**
+   * This step models the propagation of data from the array to the callback function's parameter.
+   */
+  private class ArrayCallBackDataTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node obj, DataFlow::Node element) {
+      exists(DataFlow::MethodCallNode call |
+        call.getMethodName() = ["findLast", "find", "findLastIndex"] and
+        obj = call.getReceiver() and
+        element = call.getCallback(0).getParameter(0)
       )
     }
   }

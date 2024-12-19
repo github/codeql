@@ -676,4 +676,9 @@ namespace std {
 	using format_string = basic_format_string<char>; // simplified from `char, std::type_identity_t<Args>...`
 
 	template<class... Args> string format( format_string fmt, Args&&... args );
+
+	// This function has the same signature as `format`, but a different name. It should NOT be able to use
+	// the model for `format`.
+	template <typename... Args>
+	int same_signature_as_format_but_different_name(format_string, Args &&...args);
 }

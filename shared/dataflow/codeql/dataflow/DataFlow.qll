@@ -869,7 +869,9 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
 
     private signature predicate collapseCandidateSig(Node node, string toString);
 
-    private signature predicate stepSig(InputPathNode node1, InputPathNode node2);
+    private signature predicate stepSig(
+      InputPathNode node1, InputPathNode node2, string key, string val
+    );
 
     private signature predicate subpathStepSig(
       InputPathNode arg, InputPathNode param, InputPathNode ret, InputPathNode out
@@ -887,22 +889,28 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
      * used to perform the opposite direction.
      */
     private module MakeDiscriminatorPass<
-      collapseCandidateSig/2 collapseCandidate, stepSig/2 step, subpathStepSig/4 subpathStep>
+      collapseCandidateSig/2 collapseCandidate, stepSig/4 step, subpathStepSig/4 subpathStep>
     {
       /**
-       * Gets the number of `(node, toString)` pairs reachable in one step from `pathNode`.
+       * Gets the number of `(key, val, node, toString)` tuples reachable in one step from `pathNode`.
+       *
+       * That is, two edges are counted as one if their target nodes are the same after projection, and the edges have the
+       * same `(key, val)`.
        */
       private int getOutDegreeFromPathNode(InputPathNode pathNode) {
-        result = count(Node node, string toString | step(pathNode, getAPathNode(node, toString)))
+        result =
+          count(Node node, string toString, string key, string val |
+            step(pathNode, getAPathNode(node, toString), key, val)
+          )
       }
 
       /**
-       * Gets the number of `(node2, toString2)` pairs reachable in one step from path nodes corresponding to `(node, toString)`.
+       * Gets the number of `(key, val, node2, toString2)` pairs reachable in one step from path nodes corresponding to `(node, toString)`.
        */
       private int getOutDegreeFromNode(Node node, string toString) {
         result =
-          strictcount(Node node2, string toString2 |
-            step(getAPathNode(node, toString), getAPathNode(node2, toString2))
+          strictcount(Node node2, string toString2, string key, string val |
+            step(getAPathNode(node, toString), getAPathNode(node2, toString2), key, val)
           )
       }
 
@@ -927,11 +935,15 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
           )
       }
 
-      /** Gets a successor of `node` including subpath flow-through. */
+      /** Gets a successor of `node`, including subpath flow-through, but not enter or exit subpath steps. */
       InputPathNode stepEx(InputPathNode node) {
-        step(node, result)
+        step(node, result, _, _) and
+        not result = enterSubpathStep(node) and
+        not result = exitSubpathStep(node)
         or
-        subpathStep(node, _, _, result) // assuming the input is pruned properly, all subpaths have flow-through
+        // Assuming the input is pruned properly, all subpaths have flow-through.
+        // This step should be in 'step' as well, but include it here for clarity as we rely on it.
+        subpathStep(node, _, _, result)
       }
 
       InputPathNode enterSubpathStep(InputPathNode node) { subpathStep(node, result, _, _) }
@@ -961,13 +973,13 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
           // Retain flow state if one of the successors requires it to be retained
           discriminatedPathNode(stepEx(getAPathNode(node, toString)), hasEnter)
           or
-          // Enter a subpath
-          discriminatedPathNode(enterSubpathStep(getAPathNode(node, toString)), _) and
-          hasEnter = true
-          or
-          // Exit a subpath
-          discriminatedPathNode(exitSubpathStep(getAPathNode(node, toString)), false) and
+          // Propagate backwards from parameter to argument
+          discriminatedPathNode(enterSubpathStep(getAPathNode(node, toString)), false) and
           hasEnter = false
+          or
+          // Propagate backwards from out to return
+          discriminatedPathNode(exitSubpathStep(getAPathNode(node, toString)), _) and
+          hasEnter = true
         )
       }
 
@@ -988,19 +1000,19 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       predicate discriminatedPathNode(InputPathNode pathNode) { discriminatedPathNode(pathNode, _) }
     }
 
-    private predicate initialCandidate(Node node, string toString) {
-      exists(getAPathNode(node, toString))
+    private InputPathNode getUniqPathNode(Node node, string toString) {
+      result = unique(InputPathNode pathNode | pathNode = getAPathNode(node, toString))
     }
 
-    private predicate edgesProj(InputPathNode node1, InputPathNode node2) {
-      Graph::edges(node1, node2, _, _)
+    private predicate initialCandidate(Node node, string toString) {
+      exists(getAPathNode(node, toString)) and not exists(getUniqPathNode(node, toString))
     }
 
     private module Pass1 =
-      MakeDiscriminatorPass<initialCandidate/2, edgesProj/2, Graph::subpaths/4>;
+      MakeDiscriminatorPass<initialCandidate/2, Graph::edges/4, Graph::subpaths/4>;
 
-    private predicate edgesRev(InputPathNode node1, InputPathNode node2) {
-      Graph::edges(node2, node1, _, _)
+    private predicate edgesRev(InputPathNode node1, InputPathNode node2, string key, string val) {
+      Graph::edges(node2, node1, key, val)
     }
 
     private predicate subpathsRev(
@@ -1010,10 +1022,12 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     }
 
     private module Pass2 =
-      MakeDiscriminatorPass<Pass1::discriminatedPair/2, edgesRev/2, subpathsRev/4>;
+      MakeDiscriminatorPass<Pass1::discriminatedPair/2, edgesRev/4, subpathsRev/4>;
 
     private newtype TPathNode =
-      TPreservedPathNode(InputPathNode node) { Pass2::discriminatedPathNode(node) } or
+      TPreservedPathNode(InputPathNode node) {
+        Pass2::discriminatedPathNode(node) or node = getUniqPathNode(_, _)
+      } or
       TCollapsedPathNode(Node node, string toString) {
         initialCandidate(node, toString) and
         not Pass2::discriminatedPair(node, toString)
@@ -1060,7 +1074,6 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       }
 
       query predicate edges(PathNode node1, PathNode node2, string key, string val) {
-        // TODO: ensure deduplication preserves key/val sequence?
         Graph::edges(node1.getAnOriginalPathNode(), node2.getAnOriginalPathNode(), key, val)
       }
 

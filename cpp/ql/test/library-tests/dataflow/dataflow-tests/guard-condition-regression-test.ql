@@ -1,4 +1,4 @@
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import cpp
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.controlflow.IRGuards

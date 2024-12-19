@@ -113,7 +113,7 @@ private PatternCase getClosestPrecedingPatternCase(SwitchCase case) {
 private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pred) {
   pred = sc.getControlFlowNode().getAPredecessor() and
   (
-    pred.(Expr).getParent*() = sc.getSelectorExpr()
+    pred.asExpr().getParent*() = sc.getSelectorExpr()
     or
     // Ambiguous: in the case of `case String _ when x: case "SomeConstant":`, the guard `x`
     // passing edge will fall through into the constant case, and the guard failing edge
@@ -122,7 +122,7 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
     exists(PatternCase previousPatternCase |
       previousPatternCase = getClosestPrecedingPatternCase(sc)
     |
-      pred.(Expr).getParent*() = previousPatternCase.getGuard() and
+      pred.asExpr().getParent*() = previousPatternCase.getGuard() and
       // Check there is any statement in between the previous pattern case and this one,
       // or the case is a rule, so there is no chance of a fall-through.
       (
@@ -133,7 +133,7 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
     or
     // Unambigious: on the test-passing edge there must be at least one intervening
     // declaration node, including anonymous `_` declarations.
-    pred = getClosestPrecedingPatternCase(sc)
+    pred.asStmt() = getClosestPrecedingPatternCase(sc)
   )
 }
 

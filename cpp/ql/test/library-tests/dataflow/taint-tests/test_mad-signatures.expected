@@ -1,4 +1,91 @@
 signatureMatches
+| atl.cpp:69:3:69:15 | _U_STRINGorID | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:69:3:69:15 | _U_STRINGorID | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:70:3:70:15 | _U_STRINGorID | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:257:3:257:10 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:257:3:257:10 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:257:3:257:10 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:257:3:257:10 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:407:8:407:8 | operator= | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:407:8:407:8 | operator= | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:409:3:409:10 | CComBSTR | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:409:3:409:10 | CComBSTR | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:411:3:411:10 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:411:3:411:10 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 1 |
+| atl.cpp:412:3:412:10 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:412:3:412:10 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 1 |
+| atl.cpp:413:3:413:10 | CComBSTR | (LPCOLESTR) | CComBSTR | Append | 0 |
+| atl.cpp:413:3:413:10 | CComBSTR | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:414:3:414:10 | CComBSTR | (LPCSTR) | CComBSTR | Append | 0 |
+| atl.cpp:414:3:414:10 | CComBSTR | (LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:415:3:415:10 | CComBSTR | (CComBSTR &&) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:418:11:418:16 | Append | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:418:11:418:16 | Append | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:419:11:419:16 | Append | (wchar_t) | CComBSTR | Append | 0 |
+| atl.cpp:420:11:420:16 | Append | (char) | CComBSTR | Append | 0 |
+| atl.cpp:421:11:421:16 | Append | (LPCOLESTR) | CComBSTR | Append | 0 |
+| atl.cpp:421:11:421:16 | Append | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:422:11:422:16 | Append | (LPCSTR) | CComBSTR | Append | 0 |
+| atl.cpp:422:11:422:16 | Append | (LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:423:11:423:16 | Append | (LPCOLESTR,int) | CComBSTR | Append | 0 |
+| atl.cpp:423:11:423:16 | Append | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:425:11:425:21 | AppendBytes | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:426:11:426:21 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
+| atl.cpp:426:11:426:21 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
+| atl.cpp:426:11:426:21 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
+| atl.cpp:438:8:438:17 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:438:8:438:17 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 1 |
+| atl.cpp:439:8:439:17 | LoadString | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:439:8:439:17 | LoadString | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:447:13:447:22 | operator+= | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:447:13:447:22 | operator+= | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:448:13:448:22 | operator+= | (LPCOLESTR) | CComBSTR | Append | 0 |
+| atl.cpp:448:13:448:22 | operator+= | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:538:3:538:15 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
+| atl.cpp:538:3:538:15 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
+| atl.cpp:538:3:538:15 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
+| atl.cpp:542:11:542:13 | Add | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
+| atl.cpp:542:11:542:13 | Add | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
+| atl.cpp:542:11:542:13 | Add | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
+| atl.cpp:544:11:544:13 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 0 |
+| atl.cpp:544:11:544:13 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 1 |
+| atl.cpp:763:8:763:10 | Add | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:763:8:763:10 | Add | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:763:8:763:10 | Add | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:763:8:763:10 | Add | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:763:8:763:10 | Add | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:763:8:763:10 | Add | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:763:8:763:10 | Add | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:763:8:763:10 | Add | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:774:8:774:12 | SetAt | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:774:8:774:12 | SetAt | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:774:8:774:12 | SetAt | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:774:8:774:12 | SetAt | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:774:8:774:12 | SetAt | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:774:8:774:12 | SetAt | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:774:8:774:12 | SetAt | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:774:8:774:12 | SetAt | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:775:8:775:17 | SetAtIndex | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| atl.cpp:840:15:840:26 | SetExtraInfo | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:841:15:841:25 | SetHostName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:842:15:842:25 | SetPassword | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:845:15:845:27 | SetSchemeName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:846:15:846:24 | SetUrlPath | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:847:15:847:25 | SetUserName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| constructor_delegation.cpp:10:2:10:8 | MyValue | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| standalone_iterators.cpp:103:27:103:36 | operator+= | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 | stl.h:182:17:182:22 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
 | stl.h:182:17:182:22 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
 | stl.h:182:17:182:22 | assign | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
@@ -265,7 +352,27 @@ signatureMatches
 | stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 0 |
 | stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 1 |
 | stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:683:6:683:48 | same_signature_as_format_but_different_name | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:683:6:683:48 | same_signature_as_format_but_different_name | (format_string,Args &&) |  | format<Args> | 1 |
+| string.cpp:20:6:20:9 | sink | (char) | CComBSTR | Append | 0 |
+| taint.cpp:4:6:4:21 | arithAssignments | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:249:13:249:13 | _FUN | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:249:13:249:13 | operator() | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:302:6:302:14 | myAssign2 | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:307:6:307:14 | myAssign3 | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:312:6:312:14 | myAssign4 | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:523:7:523:13 | _strset | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (LPCOLESTR,int) | CComBSTR | Append | 1 |
 getSignatureParameterName
+| (CAtlFile &) | CAtlFile | CAtlFile | 0 | CAtlFile & |
+| (CComBSTR &&) | CComBSTR | CComBSTR | 0 | CComBSTR && |
+| (CRegKey &) | CRegKey | CRegKey | 0 | CRegKey & |
+| (DWORD &,LPCTSTR) | CRegKey | QueryValue | 0 | DWORD & |
+| (DWORD &,LPCTSTR) | CRegKey | QueryValue | 1 | LPCTSTR |
+| (HANDLE) | CAtlFile | CAtlFile | 0 | HANDLE |
+| (HINSTANCE,UINT) | CComBSTR | LoadString | 0 | HINSTANCE |
+| (HINSTANCE,UINT) | CComBSTR | LoadString | 1 | UINT |
+| (HKEY) | CRegKey | CRegKey | 0 | HKEY |
 | (InputIt,InputIt) | deque | assign<InputIt> | 0 | func:0 |
 | (InputIt,InputIt) | deque | assign<InputIt> | 1 | func:0 |
 | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 | func:0 |
@@ -286,6 +393,33 @@ getSignatureParameterName
 | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 0 | func:0 |
 | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 1 | func:0 |
 | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 | const class:1 & |
+| (LPCOLESTR) | CComBSTR | Append | 0 | LPCOLESTR |
+| (LPCOLESTR) | CComBSTR | CComBSTR | 0 | LPCOLESTR |
+| (LPCOLESTR,int) | CComBSTR | Append | 0 | LPCOLESTR |
+| (LPCOLESTR,int) | CComBSTR | Append | 1 | int |
+| (LPCSTR) | CComBSTR | Append | 0 | LPCSTR |
+| (LPCSTR) | CComBSTR | CComBSTR | 0 | LPCSTR |
+| (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 | LPCTSTR |
+| (LPCTSTR,DWORD *,void *,ULONG *) | CRegKey | QueryValue | 0 | LPCTSTR |
+| (LPCTSTR,DWORD *,void *,ULONG *) | CRegKey | QueryValue | 1 | DWORD * |
+| (LPCTSTR,DWORD *,void *,ULONG *) | CRegKey | QueryValue | 2 | void * |
+| (LPCTSTR,DWORD *,void *,ULONG *) | CRegKey | QueryValue | 3 | ULONG * |
+| (LPTSTR,LPCTSTR,DWORD *) | CRegKey | QueryValue | 0 | LPTSTR |
+| (LPTSTR,LPCTSTR,DWORD *) | CRegKey | QueryValue | 1 | LPCTSTR |
+| (LPTSTR,LPCTSTR,DWORD *) | CRegKey | QueryValue | 2 | DWORD * |
+| (UINT) | CComBSTR | LoadString | 0 | UINT |
+| (UINT) | _U_STRINGorID | _U_STRINGorID | 0 | UINT |
+| (char) | CComBSTR | Append | 0 | char |
+| (const CComBSTR &) | CComBSTR | Append | 0 | const CComBSTR & |
+| (const CComBSTR &) | CComBSTR | CComBSTR | 0 | const CComBSTR & |
+| (const CComSafeArray &) | CComSafeArray | CComSafeArray | 0 | const CComSafeArray & |
+| (const CComSafeArray &) | CComSafeArray | operator= | 0 | const CComSafeArray & |
+| (const SAFEARRAY &) | CComSafeArray | CComSafeArray | 0 | const SAFEARRAY & |
+| (const SAFEARRAY *) | CComSafeArray | Add | 0 | const SAFEARRAY * |
+| (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 | const SAFEARRAY * |
+| (const SAFEARRAY *) | CComSafeArray | operator= | 0 | const SAFEARRAY * |
+| (const T &,BOOL) | CComSafeArray<T> | Add | 0 | const class:0 & |
+| (const T &,BOOL) | CComSafeArray<T> | Add | 1 | BOOL |
 | (const deque &) | deque | deque | 0 | const deque & |
 | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 0 | const deque & |
 | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 | const class:1 & |
@@ -346,6 +480,10 @@ getSignatureParameterName
 | (forward_list &&) | forward_list | forward_list | 0 | forward_list && |
 | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 | forward_list && |
 | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 | const class:1 & |
+| (int,LPCOLESTR) | CComBSTR | CComBSTR | 0 | int |
+| (int,LPCOLESTR) | CComBSTR | CComBSTR | 1 | LPCOLESTR |
+| (int,LPCSTR) | CComBSTR | CComBSTR | 0 | int |
+| (int,LPCSTR) | CComBSTR | CComBSTR | 1 | LPCSTR |
 | (list &&) | list | list | 0 | list && |
 | (list &&,const Allocator &) | list<T,Allocator> | list | 0 | list && |
 | (list &&,const Allocator &) | list<T,Allocator> | list | 1 | const class:1 & |
@@ -372,11 +510,294 @@ getSignatureParameterName
 | (vector &&) | vector | vector | 0 | vector && |
 | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 0 | vector && |
 | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:1 & |
+| (wchar_t) | CComBSTR | Append | 0 | wchar_t |
 getParameterTypeName
+| arrayassignment.cpp:3:6:3:9 | sink | 0 | int |
+| arrayassignment.cpp:4:6:4:9 | sink | 0 | MyInt |
+| arrayassignment.cpp:5:6:5:9 | sink | 0 | MyArray |
+| arrayassignment.cpp:37:7:37:7 | MyInt | 0 | const MyInt & |
+| arrayassignment.cpp:44:9:44:17 | operator= | 0 | const int & |
+| arrayassignment.cpp:45:9:45:17 | operator= | 0 | const MyInt & |
+| arrayassignment.cpp:83:7:83:7 | MyArray | 0 | MyArray && |
+| arrayassignment.cpp:83:7:83:7 | MyArray | 0 | const MyArray & |
+| arrayassignment.cpp:83:7:83:7 | operator= | 0 | MyArray && |
+| arrayassignment.cpp:83:7:83:7 | operator= | 0 | const MyArray & |
+| arrayassignment.cpp:88:7:88:9 | get | 0 | int |
+| arrayassignment.cpp:90:7:90:16 | operator[] | 0 | int |
+| arrayassignment.cpp:124:6:124:9 | sink | 0 | int * |
+| atl.cpp:28:8:28:8 | operator= | 0 | __POSITION && |
+| atl.cpp:28:8:28:8 | operator= | 0 | const __POSITION & |
+| atl.cpp:50:16:50:16 | operator= | 0 | const tagSAFEARRAYBOUND & |
+| atl.cpp:50:16:50:16 | operator= | 0 | tagSAFEARRAYBOUND && |
+| atl.cpp:55:16:55:16 | operator= | 0 | const tagVARIANT & |
+| atl.cpp:55:16:55:16 | operator= | 0 | tagVARIANT && |
+| atl.cpp:59:16:59:16 | operator= | 0 | const tagSAFEARRAY & |
+| atl.cpp:59:16:59:16 | operator= | 0 | tagSAFEARRAY && |
+| atl.cpp:68:8:68:8 | _U_STRINGorID | 0 | _U_STRINGorID && |
+| atl.cpp:68:8:68:8 | _U_STRINGorID | 0 | const _U_STRINGorID & |
+| atl.cpp:68:8:68:8 | operator= | 0 | _U_STRINGorID && |
+| atl.cpp:68:8:68:8 | operator= | 0 | const _U_STRINGorID & |
+| atl.cpp:69:3:69:15 | _U_STRINGorID | 0 | UINT |
+| atl.cpp:70:3:70:15 | _U_STRINGorID | 0 | LPCTSTR |
+| atl.cpp:194:10:194:12 | Add | 0 | INARGTYPclass:0 |
+| atl.cpp:196:10:196:15 | Append | 0 | const CAtlArray & |
+| atl.cpp:197:8:197:11 | Copy | 0 | const CAtlArray & |
+| atl.cpp:199:6:199:10 | GetAt | 0 | size_t |
+| atl.cpp:203:8:203:20 | InsertArrayAt | 0 | size_t |
+| atl.cpp:203:8:203:20 | InsertArrayAt | 1 | const CAtlArray * |
+| atl.cpp:204:8:204:15 | InsertAt | 0 | size_t |
+| atl.cpp:204:8:204:15 | InsertAt | 1 | INARGTYPclass:0 |
+| atl.cpp:204:8:204:15 | InsertAt | 2 | size_t |
+| atl.cpp:209:8:209:16 | SetAtGrow | 0 | size_t |
+| atl.cpp:209:8:209:16 | SetAtGrow | 1 | INARGTYPclass:0 |
+| atl.cpp:211:6:211:15 | operator[] | 0 | size_t |
+| atl.cpp:257:3:257:10 | CAtlList | 0 | UINT |
+| atl.cpp:257:3:257:10 | CAtlList | 0 | UINT |
+| atl.cpp:260:12:260:18 | AddHead | 0 | INARGTYPclass:0 |
+| atl.cpp:260:12:260:18 | AddHead | 0 | INARGTYPclass:0 |
+| atl.cpp:261:8:261:18 | AddHeadList | 0 | const CAtlList * |
+| atl.cpp:261:8:261:18 | AddHeadList | 0 | const CAtlList * |
+| atl.cpp:263:12:263:18 | AddTail | 0 | INARGTYPclass:0 |
+| atl.cpp:263:12:263:18 | AddTail | 0 | INARGTYPclass:0 |
+| atl.cpp:264:8:264:18 | AddTailList | 0 | const CAtlList * |
+| atl.cpp:264:8:264:18 | AddTailList | 0 | const CAtlList * |
+| atl.cpp:265:12:265:15 | Find | 0 | INARGTYPclass:0 |
+| atl.cpp:265:12:265:15 | Find | 0 | INARGTYPclass:0 |
+| atl.cpp:265:12:265:15 | Find | 1 | POSITION |
+| atl.cpp:265:12:265:15 | Find | 1 | POSITION |
+| atl.cpp:266:12:266:20 | FindIndex | 0 | size_t |
+| atl.cpp:266:12:266:20 | FindIndex | 0 | size_t |
+| atl.cpp:267:6:267:10 | GetAt | 0 | POSITION |
+| atl.cpp:267:6:267:10 | GetAt | 0 | POSITION |
+| atl.cpp:280:12:280:22 | InsertAfter | 0 | POSITION |
+| atl.cpp:280:12:280:22 | InsertAfter | 0 | POSITION |
+| atl.cpp:280:12:280:22 | InsertAfter | 1 | INARGTYPclass:0 |
+| atl.cpp:280:12:280:22 | InsertAfter | 1 | INARGTYPclass:0 |
+| atl.cpp:281:12:281:23 | InsertBefore | 0 | POSITION |
+| atl.cpp:281:12:281:23 | InsertBefore | 0 | POSITION |
+| atl.cpp:281:12:281:23 | InsertBefore | 1 | INARGTYPclass:0 |
+| atl.cpp:281:12:281:23 | InsertBefore | 1 | INARGTYPclass:0 |
+| atl.cpp:291:8:291:12 | SetAt | 0 | POSITION |
+| atl.cpp:291:8:291:12 | SetAt | 0 | POSITION |
+| atl.cpp:291:8:291:12 | SetAt | 1 | INARGTYPclass:0 |
+| atl.cpp:291:8:291:12 | SetAt | 1 | INARGTYPclass:0 |
+| atl.cpp:401:8:401:8 | operator= | 0 | IUnknown && |
+| atl.cpp:401:8:401:8 | operator= | 0 | const IUnknown & |
+| atl.cpp:403:8:403:8 | operator= | 0 | ISequentialStream && |
+| atl.cpp:403:8:403:8 | operator= | 0 | const ISequentialStream & |
+| atl.cpp:405:8:405:8 | operator= | 0 | IStream && |
+| atl.cpp:405:8:405:8 | operator= | 0 | const IStream & |
+| atl.cpp:407:8:407:8 | operator= | 0 | const CComBSTR & |
+| atl.cpp:409:3:409:10 | CComBSTR | 0 | const CComBSTR & |
+| atl.cpp:410:3:410:10 | CComBSTR | 0 | int |
+| atl.cpp:411:3:411:10 | CComBSTR | 0 | int |
+| atl.cpp:411:3:411:10 | CComBSTR | 1 | LPCOLESTR |
+| atl.cpp:412:3:412:10 | CComBSTR | 0 | int |
+| atl.cpp:412:3:412:10 | CComBSTR | 1 | LPCSTR |
+| atl.cpp:413:3:413:10 | CComBSTR | 0 | LPCOLESTR |
+| atl.cpp:414:3:414:10 | CComBSTR | 0 | LPCSTR |
+| atl.cpp:415:3:415:10 | CComBSTR | 0 | CComBSTR && |
+| atl.cpp:418:11:418:16 | Append | 0 | const CComBSTR & |
+| atl.cpp:419:11:419:16 | Append | 0 | wchar_t |
+| atl.cpp:420:11:420:16 | Append | 0 | char |
+| atl.cpp:421:11:421:16 | Append | 0 | LPCOLESTR |
+| atl.cpp:422:11:422:16 | Append | 0 | LPCSTR |
+| atl.cpp:423:11:423:16 | Append | 0 | LPCOLESTR |
+| atl.cpp:423:11:423:16 | Append | 1 | int |
+| atl.cpp:424:11:424:20 | AppendBSTR | 0 | BSTR |
+| atl.cpp:425:11:425:21 | AppendBytes | 0 | const char * |
+| atl.cpp:425:11:425:21 | AppendBytes | 1 | int |
+| atl.cpp:426:11:426:21 | ArrayToBSTR | 0 | const SAFEARRAY * |
+| atl.cpp:427:11:427:20 | AssignBSTR | 0 | const BSTR |
+| atl.cpp:428:8:428:13 | Attach | 0 | BSTR |
+| atl.cpp:429:11:429:21 | BSTRToArray | 0 | LPSAFEARRAY * |
+| atl.cpp:432:11:432:16 | CopyTo | 0 | BSTR * |
+| atl.cpp:434:11:434:16 | CopyTo | 0 | VARIANT * |
+| atl.cpp:438:8:438:17 | LoadString | 0 | HINSTANCE |
+| atl.cpp:438:8:438:17 | LoadString | 1 | UINT |
+| atl.cpp:439:8:439:17 | LoadString | 0 | UINT |
+| atl.cpp:440:11:440:24 | ReadFromStream | 0 | IStream * |
+| atl.cpp:442:11:442:23 | WriteToStream | 0 | IStream * |
+| atl.cpp:447:13:447:22 | operator+= | 0 | const CComBSTR & |
+| atl.cpp:448:13:448:22 | operator+= | 0 | LPCOLESTR |
+| atl.cpp:538:3:538:15 | CComSafeArray | 0 | const SAFEARRAY * |
+| atl.cpp:542:11:542:13 | Add | 0 | const SAFEARRAY * |
+| atl.cpp:544:11:544:13 | Add | 0 | const class:0 & |
+| atl.cpp:544:11:544:13 | Add | 1 | BOOL |
+| atl.cpp:552:6:552:10 | GetAt | 0 | LONG |
+| atl.cpp:563:11:563:15 | SetAt | 0 | LONG |
+| atl.cpp:563:11:563:15 | SetAt | 1 | const class:0 & |
+| atl.cpp:563:11:563:15 | SetAt | 2 | BOOL |
+| atl.cpp:565:6:565:15 | operator[] | 0 | long |
+| atl.cpp:566:6:566:15 | operator[] | 0 | int |
+| atl.cpp:610:3:610:8 | CPathT | 0 | PCXSTR |
+| atl.cpp:611:3:611:8 | CPathT | 0 | const CPathT & |
+| atl.cpp:615:8:615:19 | AddExtension | 0 | PCXSTR |
+| atl.cpp:616:8:616:13 | Append | 0 | PCXSTR |
+| atl.cpp:619:8:619:14 | Combine | 0 | PCXSTR |
+| atl.cpp:619:8:619:14 | Combine | 1 | PCXSTR |
+| atl.cpp:620:22:620:33 | CommonPrefix | 0 | PCXSTR |
+| atl.cpp:657:23:657:32 | operator+= | 0 | PCXSTR |
+| atl.cpp:717:8:717:10 | Add | 0 | const class:0 & |
+| atl.cpp:718:7:718:10 | Find | 0 | const class:0 & |
+| atl.cpp:729:6:729:15 | operator[] | 0 | int |
+| atl.cpp:730:21:730:29 | operator= | 0 | const CSimpleArray & |
+| atl.cpp:763:8:763:10 | Add | 0 | const class:0 & |
+| atl.cpp:763:8:763:10 | Add | 1 | const class:1 & |
+| atl.cpp:764:7:764:13 | FindKey | 0 | const class:0 & |
+| atl.cpp:765:7:765:13 | FindVal | 0 | const class:1 & |
+| atl.cpp:768:9:768:18 | GetValueAt | 0 | int |
+| atl.cpp:769:8:769:13 | Lookup | 0 | const class:0 & |
+| atl.cpp:773:8:773:20 | ReverseLookup | 0 | const class:1 & |
+| atl.cpp:774:8:774:12 | SetAt | 0 | const class:0 & |
+| atl.cpp:774:8:774:12 | SetAt | 1 | const class:1 & |
+| atl.cpp:775:8:775:17 | SetAtIndex | 0 | int |
+| atl.cpp:775:8:775:17 | SetAtIndex | 1 | const class:0 & |
+| atl.cpp:775:8:775:17 | SetAtIndex | 2 | const class:1 & |
+| atl.cpp:814:9:814:17 | operator= | 0 | const CUrl & |
+| atl.cpp:816:3:816:6 | CUrl | 0 | const CUrl & |
+| atl.cpp:819:15:819:26 | Canonicalize | 0 | DWORD |
+| atl.cpp:822:8:822:15 | CrackUrl | 0 | LPCTSTR |
+| atl.cpp:822:8:822:15 | CrackUrl | 1 | DWORD |
+| atl.cpp:823:15:823:23 | CreateUrl | 0 | LPTSTR |
+| atl.cpp:823:15:823:23 | CreateUrl | 1 | DWORD * |
+| atl.cpp:823:15:823:23 | CreateUrl | 2 | DWORD |
+| atl.cpp:840:15:840:26 | SetExtraInfo | 0 | LPCTSTR |
+| atl.cpp:841:15:841:25 | SetHostName | 0 | LPCTSTR |
+| atl.cpp:842:15:842:25 | SetPassword | 0 | LPCTSTR |
+| atl.cpp:843:15:843:27 | SetPortNumber | 0 | ATL_URL_PORT |
+| atl.cpp:844:15:844:23 | SetScheme | 0 | ATL_URL_SCHEME |
+| atl.cpp:845:15:845:27 | SetSchemeName | 0 | LPCTSTR |
+| atl.cpp:846:15:846:24 | SetUrlPath | 0 | LPCTSTR |
+| atl.cpp:847:15:847:25 | SetUserName | 0 | LPCTSTR |
+| bsd.cpp:6:8:6:8 | operator= | 0 | const sockaddr & |
+| bsd.cpp:6:8:6:8 | operator= | 0 | sockaddr && |
+| bsd.cpp:12:5:12:10 | accept | 0 | int |
+| bsd.cpp:12:5:12:10 | accept | 1 | sockaddr * |
+| bsd.cpp:12:5:12:10 | accept | 2 | int * |
+| bsd.cpp:14:6:14:9 | sink | 0 | sockaddr |
+| constructor_delegation.cpp:5:7:5:7 | MyValue | 0 | MyValue && |
+| constructor_delegation.cpp:5:7:5:7 | MyValue | 0 | const MyValue & |
+| constructor_delegation.cpp:5:7:5:7 | operator= | 0 | MyValue && |
+| constructor_delegation.cpp:5:7:5:7 | operator= | 0 | const MyValue & |
+| constructor_delegation.cpp:8:2:8:8 | MyValue | 0 | int |
+| constructor_delegation.cpp:9:2:9:8 | MyValue | 0 | int |
+| constructor_delegation.cpp:9:2:9:8 | MyValue | 1 | bool |
+| constructor_delegation.cpp:10:2:10:8 | MyValue | 0 | int |
+| constructor_delegation.cpp:10:2:10:8 | MyValue | 1 | int |
+| constructor_delegation.cpp:11:2:11:8 | MyValue | 0 | int |
+| constructor_delegation.cpp:11:2:11:8 | MyValue | 1 | bool |
+| constructor_delegation.cpp:11:2:11:8 | MyValue | 2 | bool |
+| constructor_delegation.cpp:16:7:16:7 | MyDerivedValue | 0 | MyDerivedValue && |
+| constructor_delegation.cpp:16:7:16:7 | MyDerivedValue | 0 | const MyDerivedValue & |
+| constructor_delegation.cpp:16:7:16:7 | operator= | 0 | MyDerivedValue && |
+| constructor_delegation.cpp:16:7:16:7 | operator= | 0 | const MyDerivedValue & |
+| constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | 0 | bool |
+| constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | 1 | int |
+| copyableclass.cpp:8:2:8:16 | MyCopyableClass | 0 | int |
+| copyableclass.cpp:9:2:9:16 | MyCopyableClass | 0 | const MyCopyableClass & |
+| copyableclass.cpp:10:19:10:27 | operator= | 0 | const MyCopyableClass & |
+| copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | 0 | int |
+| copyableclass_declonly.cpp:9:2:9:24 | MyCopyableClassDeclOnly | 0 | const MyCopyableClassDeclOnly & |
+| copyableclass_declonly.cpp:10:27:10:35 | operator= | 0 | const MyCopyableClassDeclOnly & |
+| file://:0:0:0:0 | operator delete | 0 | void * |
+| file://:0:0:0:0 | operator new | 0 | unsigned long |
+| file://:0:0:0:0 | operator= | 0 | __va_list_tag && |
+| file://:0:0:0:0 | operator= | 0 | const __va_list_tag & |
+| format.cpp:3:16:3:16 | operator= | 0 | FILE && |
+| format.cpp:3:16:3:16 | operator= | 0 | const FILE & |
+| format.cpp:5:5:5:12 | snprintf | 0 | char * |
+| format.cpp:5:5:5:12 | snprintf | 1 | size_t |
+| format.cpp:5:5:5:12 | snprintf | 2 | const char * |
+| format.cpp:6:5:6:11 | sprintf | 0 | char * |
+| format.cpp:6:5:6:11 | sprintf | 1 | const char * |
+| format.cpp:7:5:7:12 | swprintf | 0 | wchar_t * |
+| format.cpp:7:5:7:12 | swprintf | 1 | size_t |
+| format.cpp:7:5:7:12 | swprintf | 2 | const wchar_t * |
+| format.cpp:14:5:14:13 | vsnprintf | 0 | char * |
+| format.cpp:14:5:14:13 | vsnprintf | 1 | size_t |
+| format.cpp:14:5:14:13 | vsnprintf | 2 | const char * |
+| format.cpp:14:5:14:13 | vsnprintf | 3 | va_list |
+| format.cpp:16:5:16:13 | mysprintf | 0 | char * |
+| format.cpp:16:5:16:13 | mysprintf | 1 | size_t |
+| format.cpp:16:5:16:13 | mysprintf | 2 | const char * |
+| format.cpp:28:5:28:10 | sscanf | 0 | const char * |
+| format.cpp:28:5:28:10 | sscanf | 1 | const char * |
+| format.cpp:142:8:142:13 | strlen | 0 | const char * |
+| format.cpp:143:8:143:13 | wcslen | 0 | const wchar_t * |
+| format.cpp:169:6:169:9 | test | 0 | format_string |
+| map.cpp:8:6:8:9 | sink | 0 | char * |
+| map.cpp:9:6:9:9 | sink | 0 | const char * |
+| map.cpp:10:6:10:9 | sink | 0 | bool |
+| map.cpp:11:6:11:9 | sink | 0 | pair |
+| map.cpp:12:6:12:9 | sink | 0 | map, allocator<pair<char *const, char *>>> |
+| map.cpp:13:6:13:9 | sink | 0 | iterator |
+| map.cpp:14:6:14:9 | sink | 0 | unordered_map, equal_to<char *>, allocator<pair<char *const, char *>>> |
+| map.cpp:15:6:15:9 | sink | 0 | iterator |
+| map.cpp:16:6:16:9 | sink | 0 | unordered_map, hash<char *>, equal_to<char *>, allocator<pair<char *const, pair<int, int>>>> |
+| map.cpp:17:6:17:9 | sink | 0 | iterator |
+| map.cpp:442:7:442:19 | indirect_sink | 0 | int * |
+| movableclass.cpp:5:7:5:7 | MyMovableClass | 0 | const MyMovableClass & |
+| movableclass.cpp:5:7:5:7 | operator= | 0 | const MyMovableClass & |
+| movableclass.cpp:8:2:8:15 | MyMovableClass | 0 | int |
+| movableclass.cpp:9:2:9:15 | MyMovableClass | 0 | MyMovableClass && |
+| movableclass.cpp:13:18:13:26 | operator= | 0 | MyMovableClass && |
+| set.cpp:8:6:8:9 | sink | 0 | char * |
+| set.cpp:9:6:9:9 | sink | 0 | set, allocator<char *>> |
+| set.cpp:10:6:10:9 | sink | 0 | iterator |
+| set.cpp:11:6:11:9 | sink | 0 | unordered_set, equal_to<char *>, allocator<char *>> |
+| set.cpp:12:6:12:9 | sink | 0 | iterator |
+| smart_pointer.cpp:4:6:4:9 | sink | 0 | int |
+| smart_pointer.cpp:5:6:5:9 | sink | 0 | int * |
 | smart_pointer.cpp:7:27:7:30 | sink | 0 | shared_ptr & |
 | smart_pointer.cpp:7:27:7:30 | sink | 0 | shared_ptr & |
 | smart_pointer.cpp:8:27:8:30 | sink | 0 | unique_ptr & |
 | smart_pointer.cpp:8:27:8:30 | sink | 0 | unique_ptr & |
+| smart_pointer.cpp:60:8:60:8 | operator= | 0 | A && |
+| smart_pointer.cpp:60:8:60:8 | operator= | 0 | const A & |
+| smart_pointer.cpp:70:6:70:14 | getNumber | 0 | shared_ptr |
+| smart_pointer.cpp:80:8:80:8 | operator= | 0 | B && |
+| smart_pointer.cpp:80:8:80:8 | operator= | 0 | const B & |
+| smart_pointer.cpp:86:6:86:24 | test_operator_arrow | 0 | unique_ptr |
+| smart_pointer.cpp:86:6:86:24 | test_operator_arrow | 1 | unique_ptr |
+| smart_pointer.cpp:97:6:97:12 | taint_x | 0 | A * |
+| smart_pointer.cpp:107:8:107:8 | C | 0 | C && |
+| smart_pointer.cpp:107:8:107:8 | C | 0 | const C & |
+| smart_pointer.cpp:107:8:107:8 | operator= | 0 | C && |
+| smart_pointer.cpp:107:8:107:8 | operator= | 0 | const C & |
+| smart_pointer.cpp:112:6:112:19 | taint_x_shared | 0 | shared_ptr |
+| smart_pointer.cpp:116:6:116:24 | taint_x_shared_cref | 0 | const shared_ptr & |
+| smart_pointer.cpp:120:6:120:18 | getNumberCRef | 0 | const shared_ptr & |
+| smart_pointer.cpp:124:5:124:27 | nested_shared_ptr_taint | 0 | shared_ptr |
+| smart_pointer.cpp:124:5:124:27 | nested_shared_ptr_taint | 1 | unique_ptr> |
+| smart_pointer.cpp:132:5:132:32 | nested_shared_ptr_taint_cref | 0 | shared_ptr |
+| smart_pointer.cpp:132:5:132:32 | nested_shared_ptr_taint_cref | 1 | unique_ptr> |
+| standalone_iterators.cpp:5:6:5:9 | sink | 0 | int |
+| standalone_iterators.cpp:7:7:7:7 | operator= | 0 | const int_iterator_by_typedefs & |
+| standalone_iterators.cpp:7:7:7:7 | operator= | 0 | int_iterator_by_typedefs && |
+| standalone_iterators.cpp:16:30:16:39 | operator++ | 0 | int |
+| standalone_iterators.cpp:20:7:20:7 | operator= | 0 | const int_iterator_by_trait & |
+| standalone_iterators.cpp:20:7:20:7 | operator= | 0 | int_iterator_by_trait && |
+| standalone_iterators.cpp:23:27:23:36 | operator++ | 0 | int |
+| standalone_iterators.cpp:36:7:36:7 | operator= | 0 | const non_iterator & |
+| standalone_iterators.cpp:36:7:36:7 | operator= | 0 | non_iterator && |
+| standalone_iterators.cpp:39:18:39:27 | operator++ | 0 | int |
+| standalone_iterators.cpp:43:6:43:18 | test_typedefs | 0 | int_iterator_by_typedefs |
+| standalone_iterators.cpp:49:6:49:15 | test_trait | 0 | int_iterator_by_trait |
+| standalone_iterators.cpp:55:6:55:22 | test_non_iterator | 0 | non_iterator |
+| standalone_iterators.cpp:63:7:63:7 | operator= | 0 | const insert_iterator_by_trait & |
+| standalone_iterators.cpp:63:7:63:7 | operator= | 0 | insert_iterator_by_trait && |
+| standalone_iterators.cpp:66:30:66:39 | operator++ | 0 | int |
+| standalone_iterators.cpp:68:30:68:39 | operator-- | 0 | int |
+| standalone_iterators.cpp:70:31:70:39 | operator= | 0 | int |
+| standalone_iterators.cpp:82:7:82:7 | container | 0 | const container & |
+| standalone_iterators.cpp:82:7:82:7 | container | 0 | container && |
+| standalone_iterators.cpp:82:7:82:7 | operator= | 0 | const container & |
+| standalone_iterators.cpp:82:7:82:7 | operator= | 0 | container && |
+| standalone_iterators.cpp:88:6:88:9 | sink | 0 | container |
+| standalone_iterators.cpp:102:6:102:9 | sink | 0 | insert_iterator_by_trait |
+| standalone_iterators.cpp:103:27:103:36 | operator+= | 0 | insert_iterator_by_trait & |
+| standalone_iterators.cpp:103:27:103:36 | operator+= | 1 | int |
 | stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
 | stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
 | stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
@@ -407,6 +828,16 @@ getParameterTypeName
 | stl.h:61:13:61:22 | operator+= | 0 | int |
 | stl.h:62:13:62:22 | operator-= | 0 | int |
 | stl.h:64:18:64:27 | operator[] | 0 | int |
+| stl.h:67:9:67:9 | operator= | 0 | const input_iterator_tag & |
+| stl.h:67:9:67:9 | operator= | 0 | input_iterator_tag && |
+| stl.h:68:9:68:9 | operator= | 0 | const forward_iterator_tag & |
+| stl.h:68:9:68:9 | operator= | 0 | forward_iterator_tag && |
+| stl.h:69:9:69:9 | operator= | 0 | bidirectional_iterator_tag && |
+| stl.h:69:9:69:9 | operator= | 0 | const bidirectional_iterator_tag & |
+| stl.h:70:9:70:9 | operator= | 0 | const random_access_iterator_tag & |
+| stl.h:70:9:70:9 | operator= | 0 | random_access_iterator_tag && |
+| stl.h:72:9:72:9 | operator= | 0 | const output_iterator_tag & |
+| stl.h:72:9:72:9 | operator= | 0 | output_iterator_tag && |
 | stl.h:86:22:86:41 | back_insert_iterator | 0 | class:0 & |
 | stl.h:86:22:86:41 | back_insert_iterator | 0 | class:0 & |
 | stl.h:88:25:88:33 | operator= | 0 | value_type && |
@@ -729,12 +1160,264 @@ getParameterTypeName
 | stl.h:678:33:678:38 | format | 0 | format_string |
 | stl.h:678:33:678:38 | format | 1 | func:0 && |
 | stl.h:678:33:678:38 | format | 1 | func:0 && |
+| stl.h:683:6:683:48 | same_signature_as_format_but_different_name | 0 | format_string |
+| stl.h:683:6:683:48 | same_signature_as_format_but_different_name | 1 | func:0 && |
+| string.cpp:17:6:17:9 | sink | 0 | const char * |
+| string.cpp:18:6:18:9 | sink | 0 | const string & |
+| string.cpp:19:6:19:9 | sink | 0 | const char * |
+| string.cpp:19:6:19:9 | sink | 1 | const char * |
+| string.cpp:20:6:20:9 | sink | 0 | char |
+| string.cpp:21:6:21:9 | sink | 0 | iterator |
+| stringstream.cpp:13:6:13:9 | sink | 0 | int |
+| stringstream.cpp:15:6:15:9 | sink | 0 | const string & |
 | stringstream.cpp:18:6:18:9 | sink | 0 | const basic_ostream> & |
 | stringstream.cpp:21:6:21:9 | sink | 0 | const basic_istream> & |
 | stringstream.cpp:24:6:24:9 | sink | 0 | const basic_iostream> & |
+| stringstream.cpp:26:6:26:29 | test_stringstream_string | 0 | int |
+| stringstream.cpp:70:6:70:26 | test_stringstream_int | 0 | int |
+| structlikeclass.cpp:5:7:5:7 | StructLikeClass | 0 | StructLikeClass && |
+| structlikeclass.cpp:5:7:5:7 | StructLikeClass | 0 | const StructLikeClass & |
+| structlikeclass.cpp:5:7:5:7 | operator= | 0 | StructLikeClass && |
+| structlikeclass.cpp:5:7:5:7 | operator= | 0 | const StructLikeClass & |
+| structlikeclass.cpp:8:2:8:16 | StructLikeClass | 0 | int |
 | swap1.cpp:14:9:14:9 | move | 0 | func:0 & |
+| swap1.cpp:24:9:24:13 | Class | 0 | Class && |
+| swap1.cpp:25:9:25:13 | Class | 0 | const Class & |
+| swap1.cpp:27:16:27:24 | operator= | 0 | const Class & |
+| swap1.cpp:34:16:34:24 | operator= | 0 | Class && |
+| swap1.cpp:40:16:40:26 | copy_assign | 0 | const Class & |
+| swap1.cpp:47:16:47:26 | move_assign | 0 | Class && |
+| swap1.cpp:53:14:53:17 | swap | 0 | Class & |
+| swap1.cpp:61:10:61:13 | swap | 0 | Class & |
+| swap1.cpp:61:10:61:13 | swap | 1 | Class & |
 | swap2.cpp:14:9:14:9 | move | 0 | func:0 & |
+| swap2.cpp:24:9:24:13 | Class | 0 | Class && |
+| swap2.cpp:25:9:25:13 | Class | 0 | const Class & |
+| swap2.cpp:27:16:27:24 | operator= | 0 | const Class & |
+| swap2.cpp:34:16:34:24 | operator= | 0 | Class && |
+| swap2.cpp:40:16:40:26 | copy_assign | 0 | const Class & |
+| swap2.cpp:47:16:47:26 | move_assign | 0 | Class && |
+| swap2.cpp:53:14:53:17 | swap | 0 | Class & |
+| swap2.cpp:61:10:61:13 | swap | 0 | Class & |
+| swap2.cpp:61:10:61:13 | swap | 1 | Class & |
 | swap.h:4:20:4:23 | swap | 0 | func:0 & |
 | swap.h:4:20:4:23 | swap | 1 | func:0 & |
+| taint.cpp:4:6:4:21 | arithAssignments | 0 | int |
+| taint.cpp:4:6:4:21 | arithAssignments | 1 | int |
+| taint.cpp:22:5:22:13 | increment | 0 | int |
+| taint.cpp:23:5:23:8 | zero | 0 | int |
+| taint.cpp:69:7:69:7 | MyClass | 0 | MyClass && |
+| taint.cpp:69:7:69:7 | MyClass | 0 | const MyClass & |
+| taint.cpp:69:7:69:7 | operator= | 0 | MyClass && |
+| taint.cpp:69:7:69:7 | operator= | 0 | const MyClass & |
+| taint.cpp:100:6:100:15 | array_test | 0 | int |
+| taint.cpp:142:5:142:10 | select | 0 | int |
+| taint.cpp:142:5:142:10 | select | 1 | int |
+| taint.cpp:142:5:142:10 | select | 2 | int |
+| taint.cpp:150:6:150:12 | fn_test | 0 | int |
+| taint.cpp:156:7:156:12 | strcpy | 0 | char * |
+| taint.cpp:156:7:156:12 | strcpy | 1 | const char * |
+| taint.cpp:157:7:157:12 | strcat | 0 | char * |
+| taint.cpp:157:7:157:12 | strcat | 1 | const char * |
+| taint.cpp:180:7:180:12 | callee | 0 | int * |
+| taint.cpp:190:7:190:12 | memcpy | 0 | void * |
+| taint.cpp:190:7:190:12 | memcpy | 1 | void * |
+| taint.cpp:190:7:190:12 | memcpy | 2 | int |
+| taint.cpp:192:6:192:16 | test_memcpy | 0 | int * |
+| taint.cpp:228:11:228:11 | (unnamed constructor) | 0 | const lambda [] type at line 233, col. 11 & |
+| taint.cpp:228:11:228:11 | (unnamed constructor) | 0 | lambda [] type at line 233, col. 11 && |
+| taint.cpp:228:11:228:11 | operator= | 0 | const lambda [] type at line 233, col. 11 & |
+| taint.cpp:235:11:235:11 | (unnamed constructor) | 0 | const lambda [] type at line 240, col. 11 & |
+| taint.cpp:235:11:235:11 | (unnamed constructor) | 0 | lambda [] type at line 240, col. 11 && |
+| taint.cpp:235:11:235:11 | operator= | 0 | const lambda [] type at line 240, col. 11 & |
+| taint.cpp:243:11:243:11 | (unnamed constructor) | 0 | const lambda [] type at line 248, col. 11 & |
+| taint.cpp:243:11:243:11 | (unnamed constructor) | 0 | lambda [] type at line 248, col. 11 && |
+| taint.cpp:243:11:243:11 | operator= | 0 | const lambda [] type at line 248, col. 11 & |
+| taint.cpp:249:11:249:11 | (unnamed constructor) | 0 | const lambda [] type at line 254, col. 11 & |
+| taint.cpp:249:11:249:11 | (unnamed constructor) | 0 | lambda [] type at line 254, col. 11 && |
+| taint.cpp:249:11:249:11 | operator= | 0 | const lambda [] type at line 254, col. 11 & |
+| taint.cpp:249:13:249:13 | _FUN | 0 | int |
+| taint.cpp:249:13:249:13 | _FUN | 1 | int |
+| taint.cpp:249:13:249:13 | operator() | 0 | int |
+| taint.cpp:249:13:249:13 | operator() | 1 | int |
+| taint.cpp:255:11:255:11 | (unnamed constructor) | 0 | const lambda [] type at line 260, col. 11 & |
+| taint.cpp:255:11:255:11 | (unnamed constructor) | 0 | lambda [] type at line 260, col. 11 && |
+| taint.cpp:255:11:255:11 | operator= | 0 | const lambda [] type at line 260, col. 11 & |
+| taint.cpp:255:13:255:13 | _FUN | 0 | int & |
+| taint.cpp:255:13:255:13 | _FUN | 1 | int & |
+| taint.cpp:255:13:255:13 | _FUN | 2 | int & |
+| taint.cpp:255:13:255:13 | operator() | 0 | int & |
+| taint.cpp:255:13:255:13 | operator() | 1 | int & |
+| taint.cpp:255:13:255:13 | operator() | 2 | int & |
+| taint.cpp:266:5:266:6 | id | 0 | int |
+| taint.cpp:297:6:297:14 | myAssign1 | 0 | int & |
+| taint.cpp:297:6:297:14 | myAssign1 | 1 | int & |
+| taint.cpp:302:6:302:14 | myAssign2 | 0 | int & |
+| taint.cpp:302:6:302:14 | myAssign2 | 1 | int |
+| taint.cpp:307:6:307:14 | myAssign3 | 0 | int * |
+| taint.cpp:307:6:307:14 | myAssign3 | 1 | int |
+| taint.cpp:312:6:312:14 | myAssign4 | 0 | int * |
+| taint.cpp:312:6:312:14 | myAssign4 | 1 | int |
+| taint.cpp:320:6:320:16 | myNotAssign | 0 | int & |
+| taint.cpp:320:6:320:16 | myNotAssign | 1 | int & |
+| taint.cpp:361:7:361:12 | strdup | 0 | const char * |
+| taint.cpp:362:7:362:13 | strndup | 0 | const char * |
+| taint.cpp:362:7:362:13 | strndup | 1 | size_t |
+| taint.cpp:363:10:363:15 | wcsdup | 0 | const wchar_t * |
+| taint.cpp:364:7:364:13 | strdupa | 0 | const char * |
+| taint.cpp:365:7:365:14 | strndupa | 0 | const char * |
+| taint.cpp:365:7:365:14 | strndupa | 1 | size_t |
+| taint.cpp:367:6:367:16 | test_strdup | 0 | char * |
+| taint.cpp:379:6:379:17 | test_strndup | 0 | int |
+| taint.cpp:387:6:387:16 | test_wcsdup | 0 | wchar_t * |
+| taint.cpp:397:6:397:17 | test_strdupa | 0 | char * |
+| taint.cpp:409:6:409:18 | test_strndupa | 0 | int |
+| taint.cpp:419:7:419:7 | MyClass2 | 0 | MyClass2 && |
+| taint.cpp:419:7:419:7 | MyClass2 | 0 | const MyClass2 & |
+| taint.cpp:419:7:419:7 | operator= | 0 | MyClass2 && |
+| taint.cpp:419:7:419:7 | operator= | 0 | const MyClass2 & |
+| taint.cpp:421:2:421:9 | MyClass2 | 0 | int |
+| taint.cpp:422:7:422:15 | setMember | 0 | int |
+| taint.cpp:428:7:428:7 | MyClass3 | 0 | MyClass3 && |
+| taint.cpp:428:7:428:7 | MyClass3 | 0 | const MyClass3 & |
+| taint.cpp:428:7:428:7 | operator= | 0 | MyClass3 && |
+| taint.cpp:428:7:428:7 | operator= | 0 | const MyClass3 & |
+| taint.cpp:430:2:430:9 | MyClass3 | 0 | const char * |
+| taint.cpp:431:7:431:15 | setString | 0 | const char * |
+| taint.cpp:474:6:474:9 | swop | 0 | int & |
+| taint.cpp:474:6:474:9 | swop | 1 | int & |
+| taint.cpp:500:5:500:12 | getdelim | 0 | char ** |
+| taint.cpp:500:5:500:12 | getdelim | 1 | size_t * |
+| taint.cpp:500:5:500:12 | getdelim | 2 | int |
+| taint.cpp:500:5:500:12 | getdelim | 3 | FILE * |
+| taint.cpp:502:6:502:18 | test_getdelim | 0 | FILE * |
+| taint.cpp:512:7:512:12 | strtok | 0 | char * |
+| taint.cpp:512:7:512:12 | strtok | 1 | const char * |
+| taint.cpp:514:6:514:16 | test_strtok | 0 | char * |
+| taint.cpp:523:7:523:13 | _strset | 0 | char * |
+| taint.cpp:523:7:523:13 | _strset | 1 | int |
+| taint.cpp:525:6:525:18 | test_strset_1 | 0 | char * |
+| taint.cpp:525:6:525:18 | test_strset_1 | 1 | char |
+| taint.cpp:531:6:531:18 | test_strset_2 | 0 | char * |
+| taint.cpp:538:7:538:13 | mempcpy | 0 | void * |
+| taint.cpp:538:7:538:13 | mempcpy | 1 | const void * |
+| taint.cpp:538:7:538:13 | mempcpy | 2 | size_t |
+| taint.cpp:540:6:540:17 | test_mempcpy | 0 | int * |
+| taint.cpp:548:7:548:13 | memccpy | 0 | void * |
+| taint.cpp:548:7:548:13 | memccpy | 1 | const void * |
+| taint.cpp:548:7:548:13 | memccpy | 2 | int |
+| taint.cpp:548:7:548:13 | memccpy | 3 | size_t |
+| taint.cpp:550:6:550:17 | test_memccpy | 0 | int * |
+| taint.cpp:558:7:558:12 | strcat | 0 | char * |
+| taint.cpp:558:7:558:12 | strcat | 1 | const char * |
+| taint.cpp:560:6:560:16 | test_strcat | 0 | char * |
+| taint.cpp:560:6:560:16 | test_strcat | 1 | char * |
+| taint.cpp:560:6:560:16 | test_strcat | 2 | char * |
+| taint.cpp:560:6:560:16 | test_strcat | 3 | char * |
+| taint.cpp:570:16:570:25 | _mbsncat_l | 0 | unsigned char * |
+| taint.cpp:570:16:570:25 | _mbsncat_l | 1 | const unsigned char * |
+| taint.cpp:570:16:570:25 | _mbsncat_l | 2 | int |
+| taint.cpp:570:16:570:25 | _mbsncat_l | 3 | _locale_t |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 0 | unsigned char * |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 1 | const unsigned char * |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 2 | unsigned char * |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 3 | _locale_t |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 4 | _locale_t |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 5 | int |
+| taint.cpp:589:7:589:12 | strsep | 0 | char ** |
+| taint.cpp:589:7:589:12 | strsep | 1 | const char * |
+| taint.cpp:591:6:591:16 | test_strsep | 0 | char * |
+| taint.cpp:602:7:602:13 | _strinc | 0 | const char * |
+| taint.cpp:602:7:602:13 | _strinc | 1 | _locale_t |
+| taint.cpp:603:16:603:22 | _mbsinc | 0 | const unsigned char * |
+| taint.cpp:604:16:604:22 | _strdec | 0 | const unsigned char * |
+| taint.cpp:604:16:604:22 | _strdec | 1 | const unsigned char * |
+| taint.cpp:606:6:606:17 | test__strinc | 0 | char * |
+| taint.cpp:606:6:606:17 | test__strinc | 1 | char * |
+| taint.cpp:606:6:606:17 | test__strinc | 2 | char * |
+| taint.cpp:606:6:606:17 | test__strinc | 3 | char * |
+| taint.cpp:606:6:606:17 | test__strinc | 4 | _locale_t |
+| taint.cpp:616:6:616:17 | test__mbsinc | 0 | unsigned char * |
+| taint.cpp:616:6:616:17 | test__mbsinc | 1 | char * |
+| taint.cpp:616:6:616:17 | test__mbsinc | 2 | unsigned char * |
+| taint.cpp:616:6:616:17 | test__mbsinc | 3 | char * |
+| taint.cpp:626:6:626:17 | test__strdec | 0 | const unsigned char * |
+| taint.cpp:626:6:626:17 | test__strdec | 1 | unsigned char * |
+| taint.cpp:626:6:626:17 | test__strdec | 2 | unsigned char * |
+| taint.cpp:626:6:626:17 | test__strdec | 3 | unsigned char * |
+| taint.cpp:626:6:626:17 | test__strdec | 4 | unsigned char * |
+| taint.cpp:645:14:645:22 | _strnextc | 0 | const char * |
+| taint.cpp:647:6:647:19 | test__strnextc | 0 | const char * |
+| taint.cpp:659:7:659:7 | operator= | 0 | C_no_const_member_function && |
+| taint.cpp:659:7:659:7 | operator= | 0 | const C_no_const_member_function & |
+| taint.cpp:665:6:665:25 | test_no_const_member | 0 | char * |
+| taint.cpp:671:7:671:7 | operator= | 0 | C_const_member_function && |
+| taint.cpp:671:7:671:7 | operator= | 0 | const C_const_member_function & |
+| taint.cpp:677:6:677:27 | test_with_const_member | 0 | char * |
+| taint.cpp:683:6:683:20 | argument_source | 0 | void * |
+| taint.cpp:685:8:685:8 | operator= | 0 | const two_members & |
+| taint.cpp:685:8:685:8 | operator= | 0 | two_members && |
+| taint.cpp:707:8:707:14 | strncpy | 0 | char * |
+| taint.cpp:707:8:707:14 | strncpy | 1 | const char * |
+| taint.cpp:707:8:707:14 | strncpy | 2 | unsigned long |
+| taint.cpp:709:6:709:17 | test_strncpy | 0 | char * |
+| taint.cpp:709:6:709:17 | test_strncpy | 1 | char * |
+| taint.cpp:725:10:725:15 | strtol | 0 | const char * |
+| taint.cpp:725:10:725:15 | strtol | 1 | char ** |
+| taint.cpp:725:10:725:15 | strtol | 2 | int |
+| taint.cpp:727:6:727:16 | test_strtol | 0 | char * |
+| taint.cpp:735:7:735:12 | malloc | 0 | size_t |
+| taint.cpp:736:7:736:13 | realloc | 0 | void * |
+| taint.cpp:736:7:736:13 | realloc | 1 | size_t |
+| taint.cpp:744:6:744:32 | test_realloc_2_indirections | 0 | int ** |
+| taint.cpp:751:9:751:9 | operator= | 0 | A && |
+| taint.cpp:751:9:751:9 | operator= | 0 | const A & |
+| taint.cpp:758:5:758:11 | sprintf | 0 | char * |
+| taint.cpp:758:5:758:11 | sprintf | 1 | const char * |
+| taint.cpp:760:6:760:23 | call_sprintf_twice | 0 | char * |
+| taint.cpp:760:6:760:23 | call_sprintf_twice | 1 | char * |
+| taint.cpp:771:8:771:8 | operator= | 0 | TaintInheritingContentObject && |
+| taint.cpp:771:8:771:8 | operator= | 0 | const TaintInheritingContentObject & |
+| taint.cpp:775:30:775:35 | source | 0 | bool |
+| taint.cpp:782:7:782:11 | fopen | 0 | const char * |
+| taint.cpp:782:7:782:11 | fopen | 1 | const char * |
+| taint.cpp:783:5:783:11 | fopen_s | 0 | FILE ** |
+| taint.cpp:783:5:783:11 | fopen_s | 1 | const char * |
+| taint.cpp:783:5:783:11 | fopen_s | 2 | const char * |
+| taint.cpp:785:6:785:15 | fopen_test | 0 | char * |
+| vector.cpp:13:6:13:9 | sink | 0 | int |
 | vector.cpp:14:27:14:30 | sink | 0 | vector> & |
 | vector.cpp:14:27:14:30 | sink | 0 | vector> & |
+| vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | 0 | int |
+| vector.cpp:37:6:37:23 | test_element_taint | 0 | int |
+| vector.cpp:145:8:145:8 | operator= | 0 | MyPair && |
+| vector.cpp:145:8:145:8 | operator= | 0 | const MyPair & |
+| vector.cpp:150:8:150:8 | MyVectorContainer | 0 | const MyVectorContainer & |
+| vector.cpp:150:8:150:8 | operator= | 0 | MyVectorContainer && |
+| vector.cpp:150:8:150:8 | operator= | 0 | const MyVectorContainer & |
+| vector.cpp:216:6:216:9 | sink | 0 | iterator & |
+| vector.cpp:231:6:231:9 | sink | 0 | vector> & |
+| vector.cpp:232:6:232:9 | sink | 0 | vector> & |
+| vector.cpp:279:6:279:9 | sink | 0 | int * |
+| vector.cpp:295:6:295:9 | sink | 0 | iterator |
+| vector.cpp:329:6:329:33 | taint_vector_output_iterator | 0 | iterator |
+| vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | 0 | iterator |
+| vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | 1 | int |
+| vector.cpp:337:6:337:32 | test_vector_output_iterator | 0 | int |
+| vector.cpp:417:6:417:25 | test_vector_inserter | 0 | char * |
+| vector.cpp:454:7:454:12 | memcpy | 0 | void * |
+| vector.cpp:454:7:454:12 | memcpy | 1 | const void * |
+| vector.cpp:454:7:454:12 | memcpy | 2 | size_t |
+| vector.cpp:461:6:461:9 | sink | 0 | vector> & |
+| vector.cpp:462:6:462:9 | sink | 0 | string & |
+| zmq.cpp:9:8:9:8 | operator= | 0 | const zmq_msg_t & |
+| zmq.cpp:9:8:9:8 | operator= | 0 | zmq_msg_t && |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 0 | zmq_msg_t * |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 1 | void * |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 2 | size_t |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 3 | zmq_free_fn * |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 4 | void * |
+| zmq.cpp:15:7:15:18 | zmq_msg_data | 0 | zmq_msg_t * |
+| zmq.cpp:17:6:17:13 | test_zmc | 0 | void * |
+| zmq.cpp:17:6:17:13 | test_zmc | 1 | char * |
+| zmq.cpp:17:6:17:13 | test_zmc | 2 | size_t |

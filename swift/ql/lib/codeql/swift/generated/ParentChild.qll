@@ -3873,14 +3873,15 @@ private module Impl {
     ForEachStmt e, int index, string partialPredicateCall
   ) {
     exists(
-      int b, int bLabeledStmt, int n, int nPattern, int nWhere, int nIteratorVar, int nNextCall,
-      int nBody
+      int b, int bLabeledStmt, int n, int nVariable, int nPattern, int nWhere, int nIteratorVar,
+      int nNextCall, int nBody
     |
       b = 0 and
       bLabeledStmt =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
       n = bLabeledStmt and
-      nPattern = n + 1 and
+      nVariable = n + 1 + max(int i | i = -1 or exists(e.getVariable(i)) | i) and
+      nPattern = nVariable + 1 and
       nWhere = nPattern + 1 and
       nIteratorVar = nWhere + 1 and
       nNextCall = nIteratorVar + 1 and
@@ -3890,7 +3891,12 @@ private module Impl {
         or
         result = getImmediateChildOfLabeledStmt(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediatePattern() and partialPredicateCall = "Pattern()"
+        result = e.getVariable(index - n) and
+        partialPredicateCall = "Variable(" + (index - n).toString() + ")"
+        or
+        index = nVariable and
+        result = e.getImmediatePattern() and
+        partialPredicateCall = "Pattern()"
         or
         index = nPattern and result = e.getImmediateWhere() and partialPredicateCall = "Where()"
         or

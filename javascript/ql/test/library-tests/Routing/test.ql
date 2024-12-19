@@ -1,5 +1,5 @@
 import javascript
-deprecated import testUtilities.ConsistencyChecking
+deprecated import utils.test.ConsistencyChecking
 
 API::Node testInstance() { result = API::moduleImport("@example/test").getInstance() }
 

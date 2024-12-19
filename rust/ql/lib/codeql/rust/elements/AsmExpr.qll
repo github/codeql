@@ -4,6 +4,7 @@
  */
 
 private import internal.AsmExprImpl
+import codeql.rust.elements.AsmPiece
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 

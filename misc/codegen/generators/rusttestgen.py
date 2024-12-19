@@ -56,6 +56,8 @@ def generate(opts, renderer):
                          registry=opts.ql_test_output / ".generated_tests.list",
                          force=opts.force) as renderer:
         for cls in schema.classes.values():
+            if cls.imported:
+                continue
             if (qlgen.should_skip_qltest(cls, schema.classes) or
                     "rust_skip_doc_test" in cls.pragmas):
                 continue

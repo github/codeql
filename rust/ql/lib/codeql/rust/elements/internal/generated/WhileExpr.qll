@@ -7,10 +7,8 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Attr
-import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.Expr
-import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-import codeql.rust.elements.Label
+import codeql.rust.elements.internal.LoopingExprImpl::Impl as LoopingExprImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `WhileExpr` and should not
@@ -25,7 +23,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::WhileExpr` class directly.
    * Use the subclass `WhileExpr`, where the following predicates are available.
    */
-  class WhileExpr extends Synth::TWhileExpr, ExprImpl::Expr {
+  class WhileExpr extends Synth::TWhileExpr, LoopingExprImpl::LoopingExpr {
     override string getAPrimaryQlClass() { result = "WhileExpr" }
 
     /**
@@ -58,33 +56,5 @@ module Generated {
      * Holds if `getCondition()` exists.
      */
     final predicate hasCondition() { exists(this.getCondition()) }
-
-    /**
-     * Gets the label of this while expression, if it exists.
-     */
-    Label getLabel() {
-      result =
-        Synth::convertLabelFromRaw(Synth::convertWhileExprToRaw(this).(Raw::WhileExpr).getLabel())
-    }
-
-    /**
-     * Holds if `getLabel()` exists.
-     */
-    final predicate hasLabel() { exists(this.getLabel()) }
-
-    /**
-     * Gets the loop body of this while expression, if it exists.
-     */
-    BlockExpr getLoopBody() {
-      result =
-        Synth::convertBlockExprFromRaw(Synth::convertWhileExprToRaw(this)
-              .(Raw::WhileExpr)
-              .getLoopBody())
-    }
-
-    /**
-     * Holds if `getLoopBody()` exists.
-     */
-    final predicate hasLoopBody() { exists(this.getLoopBody()) }
   }
 }

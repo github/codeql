@@ -1,7 +1,7 @@
 import javascript
 import semmle.javascript.security.dataflow.RequestForgeryQuery as RequestForgery
 import semmle.javascript.security.dataflow.ClientSideRequestForgeryQuery as ClientSideRequestForgery
-deprecated import testUtilities.ConsistencyChecking
+deprecated import utils.test.ConsistencyChecking
 
 query predicate resultInWrongFile(DataFlow::Node node) {
   exists(string filePattern |

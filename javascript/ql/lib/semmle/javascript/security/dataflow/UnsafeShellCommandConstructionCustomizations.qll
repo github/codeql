@@ -266,7 +266,7 @@ module UnsafeShellCommandConstruction {
   class ReplaceQuotesSanitizer extends Sanitizer, StringReplaceCall {
     ReplaceQuotesSanitizer() {
       this.getAReplacedString() = "'" and
-      this.isGlobal() and
+      this.maybeGlobal() and
       this.getRawReplacement().mayHaveStringValue(["'\\''", ""])
     }
   }

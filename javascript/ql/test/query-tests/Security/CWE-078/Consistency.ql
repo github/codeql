@@ -1,5 +1,5 @@
 import javascript
-deprecated import testUtilities.ConsistencyChecking
+deprecated import utils.test.ConsistencyChecking
 import semmle.javascript.security.dataflow.CommandInjectionQuery as CommandInjection
 import semmle.javascript.security.dataflow.IndirectCommandInjectionQuery as IndirectCommandInjection
 import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironmentQuery as ShellCommandInjectionFromEnvironment

@@ -1,7 +1,10 @@
 import javascript
 
 module TestConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source.asExpr().getStringValue() = "source" }
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr().getStringValue() = "source" or
+    source.(DataFlow::CallNode).getCalleeName() = "source"
+  }
 
   predicate isSink(DataFlow::Node sink) {
     sink = any(DataFlow::CallNode call | call.getCalleeName() = "sink").getAnArgument()

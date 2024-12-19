@@ -269,7 +269,7 @@ namespace Semmle.Extraction.CSharp
                 AnalyseNamespace(cx, memberNamespace);
             }
 
-            foreach (var memberType in ns.GetTypeMembers())
+            foreach (var memberType in ns.GetTypeMembers().ExtractionCandidates())
             {
                 Entities.Type.Create(cx, memberType).ExtractRecursive();
             }

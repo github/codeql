@@ -13,6 +13,9 @@ JsonToItemsTaskFactory,,,11,,,,,,,,,,,,,,,,,,,1,10
 Microsoft.Android.Build,,1,14,,,,,,,,,,,,,1,,,,,,12,2
 Microsoft.Apple.Build,,,7,,,,,,,,,,,,,,,,,,,7,
 Microsoft.ApplicationBlocks.Data,28,,,,,,,,,,,,28,,,,,,,,,,
+Microsoft.AspNetCore.Components,2,2,2,,,,,,,2,,,,,,,,,2,,,1,1
+Microsoft.AspNetCore.Mvc,,,2,,,,,,,,,,,,,,,,,,,,2
+Microsoft.AspNetCore.WebUtilities,,,2,,,,,,,,,,,,,,,,,,,2,
 Microsoft.CSharp,,,2,,,,,,,,,,,,,,,,,,,2,
 Microsoft.Diagnostics.Tools.Pgo,,,25,,,,,,,,,,,,,,,,,,,2,23
 Microsoft.DotNet.Build.Tasks,,,10,,,,,,,,,,,,,,,,,,,8,2
@@ -32,6 +35,7 @@ Microsoft.Extensions.Logging,,,91,,,,,,,,,,,,,,,,,,,25,66
 Microsoft.Extensions.Options,,,68,,,,,,,,,,,,,,,,,,,44,24
 Microsoft.Extensions.Primitives,,,73,,,,,,,,,,,,,,,,,,,67,6
 Microsoft.Interop,,,159,,,,,,,,,,,,,,,,,,,75,84
+Microsoft.JSInterop,2,,,,,,,,,,2,,,,,,,,,,,,
 Microsoft.NET.Build.Tasks,,,5,,,,,,,,,,,,,,,,,,,3,2
 Microsoft.NET.Sdk.WebAssembly,,,2,,,,,,,,,,,,,,,,,,,1,1
 Microsoft.NET.WebAssembly.Webcil,,,6,,,,,,,,,,,,,,,,,,,6,
@@ -43,5 +47,5 @@ MySql.Data.MySqlClient,48,,,,,,,,,,,,48,,,,,,,,,,
 Newtonsoft.Json,,,91,,,,,,,,,,,,,,,,,,,73,18
 ServiceStack,194,,7,27,,,,,75,,,,92,,,,,,,,,7,
 SourceGenerators,,,5,,,,,,,,,,,,,,,,,,,,5
-System,54,47,10818,,6,5,5,,,4,1,,33,2,,6,15,17,4,3,,5511,5307
+System,54,47,10819,,6,5,5,,,4,1,,33,2,,6,15,17,4,3,,5512,5307
 Windows.Security.Cryptography.Core,1,,,,,,,1,,,,,,,,,,,,,,,

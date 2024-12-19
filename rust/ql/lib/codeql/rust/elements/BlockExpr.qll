@@ -5,8 +5,7 @@
 
 private import internal.BlockExprImpl
 import codeql.rust.elements.Attr
-import codeql.rust.elements.Expr
-import codeql.rust.elements.Label
+import codeql.rust.elements.LabelableExpr
 import codeql.rust.elements.StmtList
 
 /**

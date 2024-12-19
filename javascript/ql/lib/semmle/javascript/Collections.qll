@@ -151,4 +151,32 @@ private module CollectionDataFlow {
       )
     }
   }
+
+  /**
+   * A step for a call to `groupBy` on an iterable object.
+   */
+  private class GroupByTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate heapStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(DataFlow::MethodCallNode call |
+        call = DataFlow::globalVarRef(["Map", "Object"]).getAMemberCall("groupBy") and
+        pred = call.getArgument(0) and
+        (succ = call.getCallback(1).getParameter(0) or succ = call)
+      )
+    }
+  }
+
+  /**
+   * A step for handling data flow and taint tracking for the groupBy method on iterable objects.
+   * Ensures propagation of taint and data flow through the groupBy operation.
+   */
+  private class GroupByDataFlowStep extends PreCallGraphStep {
+    override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
+      exists(DataFlow::MethodCallNode call |
+        call = DataFlow::globalVarRef("Map").getAMemberCall("groupBy") and
+        pred = call.getArgument(0) and
+        succ = call and
+        prop = mapValueUnknownKey()
+      )
+    }
+  }
 }

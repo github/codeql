@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "CSimpleArray", True, "CSimpleArray", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CSimpleArray", True, "Add", "", "", "Argument[*0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CSimpleArray", True, "GetData", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["", "CSimpleArray", True, "SetAtIndex", "", "", "Argument[*1]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CSimpleArray", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["", "CSimpleArray", True, "operator=", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CSimpleArray", True, "operator=", "", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]

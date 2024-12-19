@@ -458,3 +458,13 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
+
+/**
+ * Holds if the the content `c` is a container.
+ */
+predicate containerContent(ContentSet c) {
+  c instanceof ArrayContent or
+  c instanceof CollectionContent or
+  c instanceof MapKeyContent or
+  c instanceof MapValueContent
+}

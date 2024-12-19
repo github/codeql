@@ -1,5 +1,5 @@
 import java
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import semmle.code.java.security.TaintedPathQuery
 import TaintFlowTestArgString<TaintedPathConfig, getArgString/2>
 

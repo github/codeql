@@ -1,3 +1,3 @@
 import javascript
-deprecated import testUtilities.ConsistencyChecking
+deprecated import utils.test.ConsistencyChecking
 import semmle.javascript.security.dataflow.UnsafeJQueryPluginQuery as UnsafeJqueryPlugin

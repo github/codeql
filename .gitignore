@@ -8,7 +8,7 @@
 
 # qltest projects and artifacts
 *.actual
-*/ql/test/**/*.testproj
+*/ql/test*/**/*.testproj
 */ql/test/**/go.sum
 
 # Visual studio temporaries, except a file used by QL4VS

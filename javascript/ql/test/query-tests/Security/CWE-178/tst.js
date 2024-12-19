@@ -93,3 +93,16 @@ app.use(/\/summonerByName|\/currentGame/,apiLimit1, apiLimit2);
 app.get('/currentGame', function (req, res) {
     res.send("FOO");
 });
+
+app.get(
+    new RegExp('^/bar(.*)?', unknownFlag()), // OK - Might be OK if the unknown flag evaluates to case insensitive one
+    unknown(),
+    function(req, res, next) {
+        if (req.params.blah) {
+            next();
+        }
+    }
+);
+
+app.get('/bar/*', (req, res) => { // OK - not a middleware
+});

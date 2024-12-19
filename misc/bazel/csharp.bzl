@@ -2,7 +2,7 @@ load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary", "csharp_library", "cshar
 load("@rules_pkg//pkg:mappings.bzl", "strip_prefix")
 load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
 
-TARGET_FRAMEWORK = "net8.0"
+TARGET_FRAMEWORK = "net9.0"
 
 def _gen_assembly_info(name):
     assembly_info_gen = name + "-assembly-info"

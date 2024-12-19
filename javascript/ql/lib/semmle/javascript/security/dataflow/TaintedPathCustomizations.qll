@@ -360,10 +360,10 @@ module TaintedPath {
       this instanceof StringReplaceCall and
       input = this.getReceiver() and
       output = this and
-      not exists(RegExpLiteral literal, RegExpTerm term |
-        this.(StringReplaceCall).getRegExp().asExpr() = literal and
-        this.(StringReplaceCall).isGlobal() and
-        literal.getRoot() = term
+      not exists(DataFlow::RegExpCreationNode regexp, RegExpTerm term |
+        this.(StringReplaceCall).getRegExp() = regexp and
+        this.(StringReplaceCall).maybeGlobal() and
+        regexp.getRoot() = term
       |
         term.getAMatchedString() = "/" or
         term.getAMatchedString() = "." or
@@ -444,9 +444,9 @@ module TaintedPath {
       input = this.getReceiver() and
       output = this and
       this.isGlobal() and
-      exists(RegExpLiteral literal, RegExpTerm term |
-        this.getRegExp().asExpr() = literal and
-        literal.getRoot() = term and
+      exists(DataFlow::RegExpCreationNode regexp, RegExpTerm term |
+        this.getRegExp() = regexp and
+        regexp.getRoot() = term and
         not term.getAMatchedString() = "/"
       |
         term.getAMatchedString() = "." or

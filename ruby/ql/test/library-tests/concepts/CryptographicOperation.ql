@@ -1,6 +1,6 @@
 import codeql.ruby.AST
 import codeql.ruby.Concepts
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module CryptographicOperationTest implements TestSig {
   string getARelevantTag() {

@@ -1,3 +1,3 @@
 import javascript
 import semmle.javascript.security.dataflow.UnsafeDeserializationQuery
-deprecated import testUtilities.ConsistencyChecking
+deprecated import utils.test.ConsistencyChecking

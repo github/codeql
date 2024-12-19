@@ -7,7 +7,7 @@ private import internal.OffsetOfExprImpl
 import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.NameRef
-import codeql.rust.elements.TypeRef
+import codeql.rust.elements.TypeRepr
 
 /**
  *  An `offset_of` expression. For example:

@@ -6,9 +6,9 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Path
 import codeql.rust.elements.PathSegment
-import codeql.rust.elements.internal.ResolvableImpl::Impl as ResolvableImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Path` and should not
@@ -18,12 +18,13 @@ module Generated {
   /**
    * A path. For example:
    * ```rust
+   * use some_crate::some_module::some_item;
    * foo::bar;
    * ```
    * INTERNAL: Do not reference the `Generated::Path` class directly.
    * Use the subclass `Path`, where the following predicates are available.
    */
-  class Path extends Synth::TPath, ResolvableImpl::Resolvable {
+  class Path extends Synth::TPath, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "Path" }
 
     /**

@@ -2,12 +2,12 @@
 import codeql.rust.elements
 import TestUtils
 
-from MatchExpr x, int getNumberOfAttrs, string hasExpr, string hasMatchArmList
+from MatchExpr x, int getNumberOfAttrs, string hasScrutinee, string hasMatchArmList
 where
   toBeTested(x) and
   not x.isUnknown() and
   getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
+  (if x.hasScrutinee() then hasScrutinee = "yes" else hasScrutinee = "no") and
   if x.hasMatchArmList() then hasMatchArmList = "yes" else hasMatchArmList = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasMatchArmList:",
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasScrutinee:", hasScrutinee, "hasMatchArmList:",
   hasMatchArmList
