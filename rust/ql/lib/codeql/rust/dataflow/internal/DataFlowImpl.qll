@@ -14,6 +14,7 @@ private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 
+
 /**
  * A return kind. A return kind describes how a value can be returned from a
  * callable.
@@ -45,6 +46,10 @@ final class DataFlowCallable extends TDataFlowCallable {
 
   /** Gets the location of this callable. */
   Location getLocation() { result = this.asCfgScope().getLocation() }
+
+  //** TODO JB1: Move to subclass, monkey patching for #153 */
+  int totalorder(){ none() }
+  //** TODO JB1: end stubs for #153 */
 }
 
 final class DataFlowCall extends TDataFlowCall {
@@ -86,6 +91,12 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   Location getLocation() { result = this.asCallBaseExprCfgNode().getLocation() }
+
+  //** TODO JB1: Move to subclass, monkey patching for #153 */
+  DataFlowCallable getARuntimeTarget(){ none() }
+  Node::ArgumentNode getAnArgumentNode(){ none() }
+  int totalorder(){ none() }
+  //** TODO JB1: end stubs for #153 */
 }
 
 /**
@@ -989,6 +1000,10 @@ module RustDataFlow implements InputSig<Location> {
     string toString() { result = "NodeRegion" }
 
     predicate contains(Node n) { none() }
+
+    //** TODO JB1: Move to subclass, monkey patching for #153 */
+    int totalOrder(){ none() }
+    //** TODO JB1: end stubs for #153 */
   }
 
   /**
