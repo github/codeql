@@ -1,0 +1,3 @@
+src/lib.rs
+src/maybe_ignore/a_source.rs
+src/maybe_ignore/mod.rs

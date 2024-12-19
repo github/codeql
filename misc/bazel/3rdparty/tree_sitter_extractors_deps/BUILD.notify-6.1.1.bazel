@@ -87,7 +87,7 @@ rust_library(
     deps = [
         "@vendor__crossbeam-channel-0.5.14//:crossbeam_channel",
         "@vendor__filetime-0.2.25//:filetime",
-        "@vendor__libc-0.2.168//:libc",
+        "@vendor__libc-0.2.169//:libc",
         "@vendor__log-0.4.22//:log",
         "@vendor__walkdir-2.5.0//:walkdir",
     ] + select({
