@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/util
+      extensible: restrictAlertsTo
+    data:
+      - ["dummy", 1, 1]
