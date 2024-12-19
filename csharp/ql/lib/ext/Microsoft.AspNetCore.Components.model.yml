@@ -10,9 +10,14 @@ extensions:
       extensible: summaryModel
     data:
       - ["Microsoft.AspNetCore.Components", "NavigationManager", True, "ToAbsoluteUri", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.Components", "NavigationManagerExtensions", True, "GetUriWithQueryParameter", "", "", "Argument[1..2]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.Components", "NavigationManagerExtensions", True, "GetUriWithQueryParameters", "", "", "Argument[1].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "ReturnValue", "taint", "manual"]
+      - ["Microsoft.AspNetCore.Components", "NavigationManagerExtensions", True, "GetUriWithQueryParameters", "", "", "Argument[1].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "ReturnValue", "taint", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
       - ["Microsoft.AspNetCore.Components", "MarkupString", False, "MarkupString", "(System.String)", "", "Argument[0]", "html-injection", "manual"]
       - ["Microsoft.AspNetCore.Components", "MarkupString", False, "op_Explicit", "(System.String)", "", "Argument[0]", "html-injection", "manual"]
+      - ["Microsoft.AspNetCore.Components", "NavigationManager", True, "NavigateTo", "", "", "Argument[0]", "url-redirection", "manual"]
+      - ["Microsoft.AspNetCore.Components", "NavigationManager", True, "NavigateToCore", "", "", "Argument[0]", "url-redirection", "manual"]
