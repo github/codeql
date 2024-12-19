@@ -5,7 +5,6 @@
 import csharp
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
-private import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 abstract private class AbstractSanitizerMethod extends Method { }
 
@@ -453,26 +452,14 @@ private module ZipSlipConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // If the sink is a method call, and the source is an argument to that method call
+    exists(MethodCall mc | succ.asExpr() = mc and pred.asExpr() = mc.getAnArgument())
+  }
 }
 
 /**
  * A taint tracking module for Zip Slip.
  */
 module ZipSlip = TaintTracking::Global<ZipSlipConfig>;
-
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "ZipSlipTaintTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node node) { node instanceof Source }
-
-  override predicate isSink(DataFlow::Node node) { node instanceof Sink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    super.isAdditionalTaintStep(pred, succ)
-    or
-    // If the sink is a method call, and the source is an argument to that method call
-    exists(MethodCall mc | succ.asExpr() = mc and pred.asExpr() = mc.getAnArgument())
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
