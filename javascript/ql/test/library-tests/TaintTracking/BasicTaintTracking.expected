@@ -35,7 +35,6 @@ legacyDataFlowDifference
 | spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y | only flow with NEW data flow library |
 | spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y | only flow with NEW data flow library |
 | tst.js:2:13:2:20 | source() | tst.js:17:10:17:10 | a | only flow with OLD data flow library |
-| tst.js:82:23:82:30 | source() | tst.js:83:58:83:61 | item | only flow with OLD data flow library |
 | tst.js:82:23:82:30 | source() | tst.js:84:14:84:20 | grouped | only flow with OLD data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
 consistencyIssue
@@ -321,6 +320,7 @@ flow
 | tst.js:2:13:2:20 | source() | tst.js:102:10:102:14 | xWith |
 | tst.js:75:22:75:29 | source() | tst.js:75:10:75:52 | Map.gro ... (item)) |
 | tst.js:75:22:75:29 | source() | tst.js:75:47:75:50 | item |
+| tst.js:82:23:82:30 | source() | tst.js:83:58:83:61 | item |
 | tst.js:87:22:87:29 | source() | tst.js:90:14:90:25 | taintedValue |
 | tst.js:93:22:93:29 | source() | tst.js:96:14:96:25 | taintedValue |
 | tst.js:93:22:93:29 | source() | tst.js:97:14:97:26 | map.get(true) |
