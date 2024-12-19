@@ -15,14 +15,14 @@ private import codeql.rust.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 
 
-/** @JB1 Remove, stubbed for #153 */
+//** @JB1 Remove, stubbed for #153 */
 /** A data-flow node that represents a call argument. */
 abstract class ArgumentNode extends Node {
 
   /** Gets the call in which this node is an argument. */
   final DataFlowCall getCall() { none() }
 }
-/** @JB1 end stub for #153 */
+//** @JB1 end stub for #153 */
 
 /**
  * A return kind. A return kind describes how a value can be returned from a
@@ -55,6 +55,10 @@ final class DataFlowCallable extends TDataFlowCallable {
 
   /** Gets the location of this callable. */
   Location getLocation() { result = this.asCfgScope().getLocation() }
+
+  //** TODO JB1: Move to subclass, monkey patching for #153 */
+  int totalorder(){ none() }
+  //** TODO JB1: end stubs for #153 */
 }
 
 final class DataFlowCall extends TDataFlowCall {
@@ -1005,6 +1009,10 @@ module RustDataFlow implements InputSig<Location> {
     string toString() { result = "NodeRegion" }
 
     predicate contains(Node n) { none() }
+
+    //** TODO JB1: Move to subclass, monkey patching for #153 */
+    int totalOrder(){ none() }
+    //** TODO JB1: end stubs for #153 */
   }
 
   /**
