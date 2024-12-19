@@ -1,98 +1,30 @@
 nodes
-| src/validator.js:8:21:8:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:8:21:8:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:8:39:8:54 | req.query.search |
-| src/validator.js:8:39:8:54 | req.query.search |
-| src/validator.js:11:21:11:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:11:21:11:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:11:34:11:47 | req.query.type |
-| src/validator.js:11:34:11:47 | req.query.type |
-| src/validator.js:14:21:14:57 | `<h1>Em ... !</h1>` |
-| src/validator.js:14:21:14:57 | `<h1>Em ... !</h1>` |
-| src/validator.js:14:35:14:49 | req.query.email |
-| src/validator.js:14:35:14:49 | req.query.email |
-| src/validator.js:17:21:17:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:17:21:17:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:17:34:17:47 | req.query.type |
-| src/validator.js:17:34:17:47 | req.query.type |
-| src/validator.js:20:21:20:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:20:21:20:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:20:39:20:54 | req.query.search |
-| src/validator.js:20:39:20:54 | req.query.search |
-| src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:43:27:58 | req.query.search |
-| src/validator.js:27:43:27:58 | req.query.search |
-| src/validator.js:27:65:27:78 | req.query.type |
-| src/validator.js:27:65:27:78 | req.query.type |
-| src/validator.js:27:97:27:111 | req.query.email |
-| src/validator.js:27:97:27:111 | req.query.email |
-| src/validator.js:32:21:32:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:32:21:32:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:32:39:32:54 | req.query.search |
-| src/validator.js:32:39:32:54 | req.query.search |
-| src/validator.js:35:21:35:60 | `<h1>Se ... !</h1>` |
-| src/validator.js:35:21:35:60 | `<h1>Se ... !</h1>` |
-| src/validator.js:35:39:35:52 | req.query.name |
-| src/validator.js:35:39:35:52 | req.query.name |
-| src/validator.js:38:21:38:60 | `<h1>Se ... !</h1>` |
-| src/validator.js:38:21:38:60 | `<h1>Se ... !</h1>` |
-| src/validator.js:38:39:38:52 | req.query.name |
-| src/validator.js:38:39:38:52 | req.query.name |
+| src/validator.js:38:21:38:62 | `<h1>Se ... !</h1>` |
+| src/validator.js:38:21:38:62 | `<h1>Se ... !</h1>` |
+| src/validator.js:38:39:38:54 | req.query.search |
+| src/validator.js:38:39:38:54 | req.query.search |
+| src/validator.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:41:39:41:52 | req.query.name |
+| src/validator.js:41:39:41:52 | req.query.name |
+| src/validator.js:44:21:44:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:44:21:44:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:44:39:44:52 | req.query.name |
+| src/validator.js:44:39:44:52 | req.query.name |
 edges
-| src/validator.js:8:39:8:54 | req.query.search | src/validator.js:8:21:8:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:8:39:8:54 | req.query.search | src/validator.js:8:21:8:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:8:39:8:54 | req.query.search | src/validator.js:8:21:8:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:8:39:8:54 | req.query.search | src/validator.js:8:21:8:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:11:34:11:47 | req.query.type | src/validator.js:11:21:11:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:11:34:11:47 | req.query.type | src/validator.js:11:21:11:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:11:34:11:47 | req.query.type | src/validator.js:11:21:11:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:11:34:11:47 | req.query.type | src/validator.js:11:21:11:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:14:35:14:49 | req.query.email | src/validator.js:14:21:14:57 | `<h1>Em ... !</h1>` |
-| src/validator.js:14:35:14:49 | req.query.email | src/validator.js:14:21:14:57 | `<h1>Em ... !</h1>` |
-| src/validator.js:14:35:14:49 | req.query.email | src/validator.js:14:21:14:57 | `<h1>Em ... !</h1>` |
-| src/validator.js:14:35:14:49 | req.query.email | src/validator.js:14:21:14:57 | `<h1>Em ... !</h1>` |
-| src/validator.js:17:34:17:47 | req.query.type | src/validator.js:17:21:17:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:17:34:17:47 | req.query.type | src/validator.js:17:21:17:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:17:34:17:47 | req.query.type | src/validator.js:17:21:17:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:17:34:17:47 | req.query.type | src/validator.js:17:21:17:55 | `<h1>Ty ... !</h1>` |
-| src/validator.js:20:39:20:54 | req.query.search | src/validator.js:20:21:20:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:20:39:20:54 | req.query.search | src/validator.js:20:21:20:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:20:39:20:54 | req.query.search | src/validator.js:20:21:20:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:20:39:20:54 | req.query.search | src/validator.js:20:21:20:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:27:43:27:58 | req.query.search | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:43:27:58 | req.query.search | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:43:27:58 | req.query.search | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:43:27:58 | req.query.search | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:65:27:78 | req.query.type | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:65:27:78 | req.query.type | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:65:27:78 | req.query.type | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:65:27:78 | req.query.type | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:97:27:111 | req.query.email | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:97:27:111 | req.query.email | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:97:27:111 | req.query.email | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:27:97:27:111 | req.query.email | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` |
-| src/validator.js:32:39:32:54 | req.query.search | src/validator.js:32:21:32:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:32:39:32:54 | req.query.search | src/validator.js:32:21:32:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:32:39:32:54 | req.query.search | src/validator.js:32:21:32:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:32:39:32:54 | req.query.search | src/validator.js:32:21:32:62 | `<h1>Se ... !</h1>` |
-| src/validator.js:35:39:35:52 | req.query.name | src/validator.js:35:21:35:60 | `<h1>Se ... !</h1>` |
-| src/validator.js:35:39:35:52 | req.query.name | src/validator.js:35:21:35:60 | `<h1>Se ... !</h1>` |
-| src/validator.js:35:39:35:52 | req.query.name | src/validator.js:35:21:35:60 | `<h1>Se ... !</h1>` |
-| src/validator.js:35:39:35:52 | req.query.name | src/validator.js:35:21:35:60 | `<h1>Se ... !</h1>` |
-| src/validator.js:38:39:38:52 | req.query.name | src/validator.js:38:21:38:60 | `<h1>Se ... !</h1>` |
-| src/validator.js:38:39:38:52 | req.query.name | src/validator.js:38:21:38:60 | `<h1>Se ... !</h1>` |
-| src/validator.js:38:39:38:52 | req.query.name | src/validator.js:38:21:38:60 | `<h1>Se ... !</h1>` |
-| src/validator.js:38:39:38:52 | req.query.name | src/validator.js:38:21:38:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:38:39:38:54 | req.query.search | src/validator.js:38:21:38:62 | `<h1>Se ... !</h1>` |
+| src/validator.js:38:39:38:54 | req.query.search | src/validator.js:38:21:38:62 | `<h1>Se ... !</h1>` |
+| src/validator.js:38:39:38:54 | req.query.search | src/validator.js:38:21:38:62 | `<h1>Se ... !</h1>` |
+| src/validator.js:38:39:38:54 | req.query.search | src/validator.js:38:21:38:62 | `<h1>Se ... !</h1>` |
+| src/validator.js:41:39:41:52 | req.query.name | src/validator.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:41:39:41:52 | req.query.name | src/validator.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:41:39:41:52 | req.query.name | src/validator.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:41:39:41:52 | req.query.name | src/validator.js:41:21:41:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:44:39:44:52 | req.query.name | src/validator.js:44:21:44:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:44:39:44:52 | req.query.name | src/validator.js:44:21:44:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:44:39:44:52 | req.query.name | src/validator.js:44:21:44:60 | `<h1>Se ... !</h1>` |
+| src/validator.js:44:39:44:52 | req.query.name | src/validator.js:44:21:44:60 | `<h1>Se ... !</h1>` |
 #select
-| src/validator.js:8:21:8:62 | `<h1>Se ... !</h1>` | src/validator.js:8:39:8:54 | req.query.search | src/validator.js:8:21:8:62 | `<h1>Se ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:8:39:8:54 | req.query.search | user-provided value |
-| src/validator.js:11:21:11:55 | `<h1>Ty ... !</h1>` | src/validator.js:11:34:11:47 | req.query.type | src/validator.js:11:21:11:55 | `<h1>Ty ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:11:34:11:47 | req.query.type | user-provided value |
-| src/validator.js:14:21:14:57 | `<h1>Em ... !</h1>` | src/validator.js:14:35:14:49 | req.query.email | src/validator.js:14:21:14:57 | `<h1>Em ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:14:35:14:49 | req.query.email | user-provided value |
-| src/validator.js:17:21:17:55 | `<h1>Ty ... !</h1>` | src/validator.js:17:34:17:47 | req.query.type | src/validator.js:17:21:17:55 | `<h1>Ty ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:17:34:17:47 | req.query.type | user-provided value |
-| src/validator.js:20:21:20:62 | `<h1>Se ... !</h1>` | src/validator.js:20:39:20:54 | req.query.search | src/validator.js:20:21:20:62 | `<h1>Se ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:20:39:20:54 | req.query.search | user-provided value |
-| src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` | src/validator.js:27:43:27:58 | req.query.search | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:27:43:27:58 | req.query.search | user-provided value |
-| src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` | src/validator.js:27:65:27:78 | req.query.type | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:27:65:27:78 | req.query.type | user-provided value |
-| src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` | src/validator.js:27:97:27:111 | req.query.email | src/validator.js:27:25:27:118 | `<h1>Se ... }</h2>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:27:97:27:111 | req.query.email | user-provided value |
-| src/validator.js:32:21:32:62 | `<h1>Se ... !</h1>` | src/validator.js:32:39:32:54 | req.query.search | src/validator.js:32:21:32:62 | `<h1>Se ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:32:39:32:54 | req.query.search | user-provided value |
-| src/validator.js:35:21:35:60 | `<h1>Se ... !</h1>` | src/validator.js:35:39:35:52 | req.query.name | src/validator.js:35:21:35:60 | `<h1>Se ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:35:39:35:52 | req.query.name | user-provided value |
-| src/validator.js:38:21:38:60 | `<h1>Se ... !</h1>` | src/validator.js:38:39:38:52 | req.query.name | src/validator.js:38:21:38:60 | `<h1>Se ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:38:39:38:52 | req.query.name | user-provided value |
+| src/validator.js:38:21:38:62 | `<h1>Se ... !</h1>` | src/validator.js:38:39:38:54 | req.query.search | src/validator.js:38:21:38:62 | `<h1>Se ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:38:39:38:54 | req.query.search | user-provided value |
+| src/validator.js:41:21:41:60 | `<h1>Se ... !</h1>` | src/validator.js:41:39:41:52 | req.query.name | src/validator.js:41:21:41:60 | `<h1>Se ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:41:39:41:52 | req.query.name | user-provided value |
+| src/validator.js:44:21:44:60 | `<h1>Se ... !</h1>` | src/validator.js:44:39:44:52 | req.query.name | src/validator.js:44:21:44:60 | `<h1>Se ... !</h1>` | Cross-site scripting vulnerability due to a $@. | src/validator.js:44:39:44:52 | req.query.name | user-provided value |
