@@ -23,22 +23,46 @@ permissions:
   contents: read
 
 jobs:
-  rust-code:
+  rust-ast-generator:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: rust/ast-generator
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Inject sources
+        shell: bash
+        run: |
+          bazel run //rust/ast-generator:inject_sources
       - name: Format
-        working-directory: rust/extractor
         shell: bash
         run: |
           cargo fmt --check
       - name: Compilation
-        working-directory: rust/extractor
         shell: bash
         run: cargo check
       - name: Clippy
+        shell: bash
+        run: |
+          cargo clippy --fix
+          git diff --exit-code
+  rust-code:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
         working-directory: rust/extractor
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Format
+        shell: bash
+        run: |
+          cargo fmt --check
+      - name: Compilation
+        shell: bash
+        run: cargo check
+      - name: Clippy
         shell: bash
         run: |
           cargo clippy --fix
