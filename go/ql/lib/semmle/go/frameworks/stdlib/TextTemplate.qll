@@ -88,7 +88,7 @@ module TextTemplate {
   private class ExecuteTemplateFieldReader extends DataFlow::ImplicitFieldReadNode {
     override predicate shouldImplicitlyReadAllFields(DataFlow::Node n) {
       exists(ExecuteTemplateMethod m, DataFlow::MethodCallNode cn |
-        cn.getACalleeIncludingExternals().asFunction() = m and
+        cn.getTarget() = m and
         n = cn.getArgument(m.getInputArgIdx())
       )
     }
