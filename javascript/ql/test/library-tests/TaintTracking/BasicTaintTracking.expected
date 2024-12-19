@@ -35,7 +35,6 @@ legacyDataFlowDifference
 | spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y | only flow with NEW data flow library |
 | spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y | only flow with NEW data flow library |
 | tst.js:2:13:2:20 | source() | tst.js:17:10:17:10 | a | only flow with OLD data flow library |
-| tst.js:82:23:82:30 | source() | tst.js:84:14:84:20 | grouped | only flow with OLD data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
 consistencyIssue
 | nested-props.js:20 | expected an alert, but found none | NOT OK - but not found | Consistency |
@@ -315,12 +314,13 @@ flow
 | tst.js:2:13:2:20 | source() | tst.js:72:10:72:31 | Map.gro ... z => z) |
 | tst.js:2:13:2:20 | source() | tst.js:74:10:74:34 | Object. ... z => z) |
 | tst.js:2:13:2:20 | source() | tst.js:78:55:78:58 | item |
-| tst.js:2:13:2:20 | source() | tst.js:79:14:79:20 | grouped |
+| tst.js:2:13:2:20 | source() | tst.js:79:14:79:35 | grouped ... nown()) |
 | tst.js:2:13:2:20 | source() | tst.js:100:10:100:17 | x.with() |
 | tst.js:2:13:2:20 | source() | tst.js:102:10:102:14 | xWith |
 | tst.js:75:22:75:29 | source() | tst.js:75:10:75:52 | Map.gro ... (item)) |
 | tst.js:75:22:75:29 | source() | tst.js:75:47:75:50 | item |
 | tst.js:82:23:82:30 | source() | tst.js:83:58:83:61 | item |
+| tst.js:82:23:82:30 | source() | tst.js:84:14:84:35 | grouped ... nown()) |
 | tst.js:87:22:87:29 | source() | tst.js:90:14:90:25 | taintedValue |
 | tst.js:93:22:93:29 | source() | tst.js:96:14:96:25 | taintedValue |
 | tst.js:93:22:93:29 | source() | tst.js:97:14:97:26 | map.get(true) |
