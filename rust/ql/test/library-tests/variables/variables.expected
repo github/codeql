@@ -105,6 +105,8 @@ variable
 | variables.rs:523:9:523:9 | z |
 | variables.rs:532:15:532:18 | self |
 | variables.rs:538:11:538:11 | a |
+| variables.rs:554:9:554:22 | var_from_macro |
+| variables.rs:555:9:555:25 | var_in_macro |
 variableAccess
 | variables.rs:4:20:4:20 | s | variables.rs:3:14:3:14 | s |
 | variables.rs:8:20:8:20 | i | variables.rs:7:14:7:14 | i |
@@ -274,6 +276,7 @@ variableAccess
 | variables.rs:533:6:533:9 | self | variables.rs:532:15:532:18 | self |
 | variables.rs:539:3:539:3 | a | variables.rs:538:11:538:11 | a |
 | variables.rs:541:13:541:13 | a | variables.rs:538:11:538:11 | a |
+| variables.rs:556:15:556:28 | var_from_macro | variables.rs:554:9:554:22 | var_from_macro |
 variableWriteAccess
 | variables.rs:23:5:23:6 | x2 | variables.rs:21:13:21:14 | x2 |
 | variables.rs:30:5:30:5 | x | variables.rs:28:13:28:13 | x |
@@ -433,6 +436,7 @@ variableReadAccess
 | variables.rs:533:6:533:9 | self | variables.rs:532:15:532:18 | self |
 | variables.rs:539:3:539:3 | a | variables.rs:538:11:538:11 | a |
 | variables.rs:541:13:541:13 | a | variables.rs:538:11:538:11 | a |
+| variables.rs:556:15:556:28 | var_from_macro | variables.rs:554:9:554:22 | var_from_macro |
 variableInitializer
 | variables.rs:16:9:16:10 | x1 | variables.rs:16:14:16:16 | "a" |
 | variables.rs:21:13:21:14 | x2 | variables.rs:21:18:21:18 | 4 |
@@ -486,6 +490,8 @@ variableInitializer
 | variables.rs:519:9:519:9 | x | variables.rs:519:13:519:14 | 16 |
 | variables.rs:523:9:523:9 | z | variables.rs:523:13:523:14 | 17 |
 | variables.rs:538:11:538:11 | a | variables.rs:538:15:538:33 | MyStruct {...} |
+| variables.rs:554:9:554:22 | var_from_macro | variables.rs:555:9:555:25 | MacroExpr |
+| variables.rs:555:9:555:25 | var_in_macro | variables.rs:555:23:555:24 | 37 |
 capturedVariable
 | variables.rs:400:9:400:9 | x |
 | variables.rs:410:13:410:13 | x |

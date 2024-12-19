@@ -145,6 +145,7 @@ definition
 | variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x |
 | variables.rs:523:9:523:9 | z | variables.rs:523:9:523:9 | z |
 | variables.rs:532:10:532:18 | SelfParam | variables.rs:532:15:532:18 | self |
+| variables.rs:554:9:554:22 | var_from_macro | variables.rs:554:9:554:22 | var_from_macro |
 read
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s | variables.rs:4:20:4:20 | s |
 | variables.rs:7:14:7:14 | i | variables.rs:7:14:7:14 | i | variables.rs:8:20:8:20 | i |
@@ -282,6 +283,7 @@ read
 | variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:521:15:521:15 | x |
 | variables.rs:523:9:523:9 | z | variables.rs:523:9:523:9 | z | variables.rs:524:20:524:20 | z |
 | variables.rs:532:10:532:18 | SelfParam | variables.rs:532:15:532:18 | self | variables.rs:533:6:533:9 | self |
+| variables.rs:554:9:554:22 | var_from_macro | variables.rs:554:9:554:22 | var_from_macro | variables.rs:556:15:556:28 | var_from_macro |
 firstRead
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s | variables.rs:4:20:4:20 | s |
 | variables.rs:7:14:7:14 | i | variables.rs:7:14:7:14 | i | variables.rs:8:20:8:20 | i |
@@ -392,6 +394,7 @@ firstRead
 | variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:520:20:520:20 | x |
 | variables.rs:523:9:523:9 | z | variables.rs:523:9:523:9 | z | variables.rs:524:20:524:20 | z |
 | variables.rs:532:10:532:18 | SelfParam | variables.rs:532:15:532:18 | self | variables.rs:533:6:533:9 | self |
+| variables.rs:554:9:554:22 | var_from_macro | variables.rs:554:9:554:22 | var_from_macro | variables.rs:556:15:556:28 | var_from_macro |
 lastRead
 | variables.rs:3:14:3:14 | s | variables.rs:3:14:3:14 | s | variables.rs:4:20:4:20 | s |
 | variables.rs:7:14:7:14 | i | variables.rs:7:14:7:14 | i | variables.rs:8:20:8:20 | i |
@@ -503,6 +506,7 @@ lastRead
 | variables.rs:519:9:519:9 | x | variables.rs:519:9:519:9 | x | variables.rs:521:15:521:15 | x |
 | variables.rs:523:9:523:9 | z | variables.rs:523:9:523:9 | z | variables.rs:524:20:524:20 | z |
 | variables.rs:532:10:532:18 | SelfParam | variables.rs:532:15:532:18 | self | variables.rs:533:6:533:9 | self |
+| variables.rs:554:9:554:22 | var_from_macro | variables.rs:554:9:554:22 | var_from_macro | variables.rs:556:15:556:28 | var_from_macro |
 adjacentReads
 | variables.rs:35:9:35:10 | x3 | variables.rs:35:9:35:10 | x3 | variables.rs:36:15:36:16 | x3 | variables.rs:38:9:38:10 | x3 |
 | variables.rs:43:9:43:10 | x4 | variables.rs:43:9:43:10 | x4 | variables.rs:44:15:44:16 | x4 | variables.rs:49:15:49:16 | x4 |
@@ -654,3 +658,4 @@ assigns
 | variables.rs:514:5:514:5 | a | variables.rs:514:9:514:17 | [...] |
 | variables.rs:519:9:519:9 | x | variables.rs:519:13:519:14 | 16 |
 | variables.rs:523:9:523:9 | z | variables.rs:523:13:523:14 | 17 |
+| variables.rs:554:9:554:22 | var_from_macro | variables.rs:555:9:555:25 | MacroExpr |
