@@ -24,6 +24,14 @@ module ConditionalBypassConfig implements DataFlow::ConfigSig {
     // comparing a tainted expression against a constant gives a tainted result
     node2.asExpr().(Comparison).hasOperands(node1.asExpr(), any(ConstantExpr c))
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/javascript/security/dataflow/ConditionalBypassQuery.qll:104: Flow call outside 'select' clause
+    // ql/lib/semmle/javascript/security/dataflow/ConditionalBypassQuery.qll:113: Flow call outside 'select' clause
+    // ql/lib/semmle/javascript/security/dataflow/ConditionalBypassQuery.qll:115: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**

@@ -51,6 +51,8 @@ module NosqlInjectionConfig implements DataFlow::StateConfigSig {
     state1.isTaint() and
     state2 = state1
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

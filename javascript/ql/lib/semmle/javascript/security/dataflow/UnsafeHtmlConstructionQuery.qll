@@ -60,6 +60,8 @@ module UnsafeHtmlConstructionConfig implements DataFlow::StateConfigSig {
   }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

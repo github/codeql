@@ -41,6 +41,8 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
     contents = DataFlow::ContentSet::anyProperty() and
     isSink(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

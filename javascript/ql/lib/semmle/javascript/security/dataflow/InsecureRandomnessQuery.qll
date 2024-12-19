@@ -40,6 +40,8 @@ module InsecureRandomnessConfig implements DataFlow::ConfigSig {
     // taint steps as additional flow steps.
     TaintTracking::defaultTaintStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

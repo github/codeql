@@ -283,6 +283,15 @@ module PropNameTrackingConfig implements DataFlow::StateConfigSig {
     // flows through any contents, apart from a capture content.
     result = 1
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-915/PrototypePollutingFunction.ql:516: Flow call outside 'select' clause
+    // ql/src/Security/CWE-915/PrototypePollutingFunction.ql:519: Flow call outside 'select' clause
+    // ql/src/Security/CWE-915/PrototypePollutingFunction.ql:520: Flow call outside 'select' clause
+    // ql/src/Security/CWE-915/PrototypePollutingFunction.ql:524: Flow call outside 'select' clause
+    none()
+  }
 }
 
 class FlowState = PropNameTrackingConfig::FlowState;
