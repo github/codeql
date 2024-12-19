@@ -1,16 +1,19 @@
 diff --git a/xtask/src/codegen/grammar.rs b/xtask/src/codegen/grammar.rs
-index e7534582f2..8bc9237737 100644
+index e7534582f2..49c96f1be3 100644
 --- a/xtask/src/codegen/grammar.rs
 +++ b/xtask/src/codegen/grammar.rs
-@@ -3,6 +3,7 @@
+@@ -3,7 +3,9 @@
  //! Specifically, it generates the `SyntaxKind` enum and a number of newtype
  //! wrappers around `SyntaxNode` which implement `syntax::AstNode`.
  
+-#![allow(clippy::disallowed_types)]
 +#![allow(warnings)]
- #![allow(clippy::disallowed_types)]
++#![allow(clippy)]
++#![cfg_attr(any(), rustfmt::skip)]
  
  use std::{
-@@ -23,7 +24,7 @@ use crate::{
+     collections::{BTreeSet, HashSet},
+@@ -23,7 +25,7 @@ use crate::{
      project_root,
  };
  
@@ -19,7 +22,7 @@ index e7534582f2..8bc9237737 100644
  use self::ast_src::{AstEnumSrc, AstNodeSrc, AstSrc, Cardinality, Field, KindsSrc};
  
  pub(crate) fn generate(check: bool) {
-@@ -624,7 +625,7 @@ fn pluralize(s: &str) -> String {
+@@ -624,7 +626,7 @@ fn pluralize(s: &str) -> String {
  }
  
  impl Field {
@@ -28,7 +31,7 @@ index e7534582f2..8bc9237737 100644
          matches!(self, Field::Node { cardinality: Cardinality::Many, .. })
      }
      fn token_kind(&self) -> Option<proc_macro2::TokenStream> {
-@@ -636,7 +637,7 @@ impl Field {
+@@ -636,7 +638,7 @@ impl Field {
              _ => None,
          }
      }
@@ -37,7 +40,7 @@ index e7534582f2..8bc9237737 100644
          match self {
              Field::Token(name) => {
                  let name = match name.as_str() {
-@@ -682,7 +683,7 @@ impl Field {
+@@ -682,7 +684,7 @@ impl Field {
              }
          }
      }
@@ -46,7 +49,7 @@ index e7534582f2..8bc9237737 100644
          match self {
              Field::Token(_) => format_ident!("SyntaxToken"),
              Field::Node { ty, .. } => format_ident!("{}", ty),
-@@ -699,7 +700,7 @@ fn clean_token_name(name: &str) -> String {
+@@ -699,7 +701,7 @@ fn clean_token_name(name: &str) -> String {
      }
  }
  
@@ -55,3 +58,16 @@ index e7534582f2..8bc9237737 100644
      let mut res = AstSrc {
          tokens:
              "Whitespace Comment String ByteString CString IntNumber FloatNumber Char Byte Ident"
+diff --git a/xtask/src/codegen/grammar/ast_src.rs b/xtask/src/codegen/grammar/ast_src.rs
+index 9269d15423..babe7ca1bf 100644
+--- a/xtask/src/codegen/grammar/ast_src.rs
++++ b/xtask/src/codegen/grammar/ast_src.rs
+@@ -1,5 +1,8 @@
+ //! Defines input for code generation process.
+ 
++#![allow(clippy)]
++#![cfg_attr(any(), rustfmt::skip)]
++
+ use quote::ToTokens;
+ 
+ use crate::codegen::grammar::to_upper_snake_case;
