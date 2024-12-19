@@ -5,6 +5,9 @@ extensions:
     data:
       - ["Microsoft.AspNetCore.Components", "NavigationManager", True, "get_BaseUri", "", "", "ReturnValue", "remote", "manual"]
       - ["Microsoft.AspNetCore.Components", "NavigationManager", True, "get_Uri", "", "", "ReturnValue", "remote", "manual"]
+      - ["Microsoft.AspNetCore.Components", "ParameterAttribute", False, "", "", "Attribute.Getter", "ReturnValue", "remote", "manual"]
+      - ["Microsoft.AspNetCore.Components", "SupplyParameterFromFormAttribute", False, "", "", "Attribute.Getter", "ReturnValue", "remote", "manual"]
+      - ["Microsoft.AspNetCore.Components", "SupplyParameterFromQueryAttribute", False, "", "", "Attribute.Getter", "ReturnValue", "remote", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel
