@@ -321,6 +321,7 @@
 | Microsoft.AspNetCore.Components;LayoutComponentBase;set_Body;(Microsoft.AspNetCore.Components.RenderFragment);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components;LayoutView;set_ChildContent;(Microsoft.AspNetCore.Components.RenderFragment);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components;NavigationManager;RegisterLocationChangingHandler;(System.Func<Microsoft.AspNetCore.Components.Routing.LocationChangingContext,System.Threading.Tasks.ValueTask>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
+| Microsoft.AspNetCore.Components;NavigationManager;ToAbsoluteUri;(System.String);Argument[0];ReturnValue;taint;manual |
 | Microsoft.AspNetCore.Components;NavigationManager;add_LocationChanged;(System.EventHandler<Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components;NavigationManager;remove_LocationChanged;(System.EventHandler<Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components;PersistentComponentState;RegisterOnPersisting;(System.Func<System.Threading.Tasks.Task>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
