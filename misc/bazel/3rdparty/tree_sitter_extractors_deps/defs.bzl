@@ -318,6 +318,8 @@ _NORMAL_DEPENDENCIES = {
             "ungrammar": Label("@vendor__ungrammar-1.16.1//:ungrammar"),
         },
     },
+    "rust/autobuild": {
+    },
     "rust/extractor": {
         _COMMON_CONDITION: {
             "anyhow": Label("@vendor__anyhow-1.0.94//:anyhow"),
@@ -386,6 +388,8 @@ _NORMAL_ALIASES = {
             "@vendor__ra_ap_stdx-0.0.248//:ra_ap_stdx": "stdx",
         },
     },
+    "rust/autobuild": {
+    },
     "rust/extractor": {
         _COMMON_CONDITION: {
         },
@@ -405,6 +409,8 @@ _NORMAL_DEV_DEPENDENCIES = {
     },
     "rust/ast-generator": {
     },
+    "rust/autobuild": {
+    },
     "rust/extractor": {
     },
     "rust/extractor/macros": {
@@ -423,6 +429,8 @@ _NORMAL_DEV_ALIASES = {
     },
     "rust/ast-generator": {
     },
+    "rust/autobuild": {
+    },
     "rust/extractor": {
     },
     "rust/extractor/macros": {
@@ -438,6 +446,8 @@ _PROC_MACRO_DEPENDENCIES = {
     },
     "rust/ast-generator": {
     },
+    "rust/autobuild": {
+    },
     "rust/extractor": {
     },
     "rust/extractor/macros": {
@@ -450,6 +460,8 @@ _PROC_MACRO_ALIASES = {
     "ruby/extractor": {
     },
     "rust/ast-generator": {
+    },
+    "rust/autobuild": {
     },
     "rust/extractor": {
     },
@@ -464,6 +476,8 @@ _PROC_MACRO_DEV_DEPENDENCIES = {
     },
     "rust/ast-generator": {
     },
+    "rust/autobuild": {
+    },
     "rust/extractor": {
     },
     "rust/extractor/macros": {
@@ -476,6 +490,8 @@ _PROC_MACRO_DEV_ALIASES = {
     "ruby/extractor": {
     },
     "rust/ast-generator": {
+    },
+    "rust/autobuild": {
     },
     "rust/extractor": {
     },
@@ -492,6 +508,8 @@ _BUILD_DEPENDENCIES = {
     },
     "rust/ast-generator": {
     },
+    "rust/autobuild": {
+    },
     "rust/extractor": {
     },
     "rust/extractor/macros": {
@@ -504,6 +522,8 @@ _BUILD_ALIASES = {
     "ruby/extractor": {
     },
     "rust/ast-generator": {
+    },
+    "rust/autobuild": {
     },
     "rust/extractor": {
     },
@@ -518,6 +538,8 @@ _BUILD_PROC_MACRO_DEPENDENCIES = {
     },
     "rust/ast-generator": {
     },
+    "rust/autobuild": {
+    },
     "rust/extractor": {
     },
     "rust/extractor/macros": {
@@ -530,6 +552,8 @@ _BUILD_PROC_MACRO_ALIASES = {
     "ruby/extractor": {
     },
     "rust/ast-generator": {
+    },
+    "rust/autobuild": {
     },
     "rust/extractor": {
     },
@@ -875,12 +899,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor__cc-1.2.4",
-        sha256 = "9157bbaa6b165880c27a4293a474c91cdcf265cc68cc829bf10be0964a391caf",
+        name = "vendor__cc-1.2.5",
+        sha256 = "c31a0499c1dc64f458ad13872de75c0eb7e3fdb0e67964610c914b034fc5956e",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/cc/1.2.4/download"],
-        strip_prefix = "cc-1.2.4",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cc-1.2.4.bazel"),
+        urls = ["https://static.crates.io/crates/cc/1.2.5/download"],
+        strip_prefix = "cc-1.2.5",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cc-1.2.5.bazel"),
     )
 
     maybe(
@@ -1645,12 +1669,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor__libc-0.2.168",
-        sha256 = "5aaeb2981e0606ca11d79718f8bb01164f1d6ed75080182d3abf017e6d244b6d",
+        name = "vendor__libc-0.2.169",
+        sha256 = "b5aba8db14291edd000dfcc4d620c7ebfb122c613afb886ca8803fa4e128a20a",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/libc/0.2.168/download"],
-        strip_prefix = "libc-0.2.168",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.libc-0.2.168.bazel"),
+        urls = ["https://static.crates.io/crates/libc/0.2.169/download"],
+        strip_prefix = "libc-0.2.169",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.libc-0.2.169.bazel"),
     )
 
     maybe(
