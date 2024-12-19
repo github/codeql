@@ -35,6 +35,8 @@ legacyDataFlowDifference
 | spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y | only flow with NEW data flow library |
 | spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y | only flow with NEW data flow library |
 | tst.js:2:13:2:20 | source() | tst.js:17:10:17:10 | a | only flow with OLD data flow library |
+| tst.js:82:23:82:30 | source() | tst.js:83:58:83:61 | item | only flow with OLD data flow library |
+| tst.js:82:23:82:30 | source() | tst.js:84:14:84:20 | grouped | only flow with OLD data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
 consistencyIssue
 | nested-props.js:20 | expected an alert, but found none | NOT OK - but not found | Consistency |
@@ -273,6 +275,10 @@ flow
 | static-capture-groups.js:2:17:2:24 | source() | static-capture-groups.js:27:14:27:22 | RegExp.$1 |
 | static-capture-groups.js:32:17:32:24 | source() | static-capture-groups.js:38:10:38:18 | RegExp.$1 |
 | static-capture-groups.js:42:12:42:19 | source() | static-capture-groups.js:43:14:43:22 | RegExp.$1 |
+| string-immutable-operations.js:2:13:2:20 | source() | string-immutable-operations.js:3:10:3:25 | x.toWellFormed() |
+| string-immutable-operations.js:2:13:2:20 | source() | string-immutable-operations.js:6:10:6:20 | wellFormedX |
+| string-immutable-operations.js:2:13:2:20 | source() | string-immutable-operations.js:9:10:9:26 | concatWellFormedX |
+| string-immutable-operations.js:11:10:11:17 | source() | string-immutable-operations.js:11:10:11:32 | source( ... ormed() |
 | string-replace.js:3:13:3:20 | source() | string-replace.js:14:10:14:13 | data |
 | string-replace.js:3:13:3:20 | source() | string-replace.js:18:10:18:13 | data |
 | string-replace.js:3:13:3:20 | source() | string-replace.js:21:6:21:41 | safe(). ...  taint) |
@@ -307,8 +313,17 @@ flow
 | tst.js:2:13:2:20 | source() | tst.js:66:10:66:16 | xSorted |
 | tst.js:2:13:2:20 | source() | tst.js:68:10:68:23 | x.toReversed() |
 | tst.js:2:13:2:20 | source() | tst.js:70:10:70:18 | xReversed |
-| tst.js:2:13:2:20 | source() | tst.js:72:10:72:17 | x.with() |
-| tst.js:2:13:2:20 | source() | tst.js:74:10:74:14 | xWith |
+| tst.js:2:13:2:20 | source() | tst.js:72:10:72:31 | Map.gro ... z => z) |
+| tst.js:2:13:2:20 | source() | tst.js:74:10:74:34 | Object. ... z => z) |
+| tst.js:2:13:2:20 | source() | tst.js:78:55:78:58 | item |
+| tst.js:2:13:2:20 | source() | tst.js:79:14:79:20 | grouped |
+| tst.js:2:13:2:20 | source() | tst.js:100:10:100:17 | x.with() |
+| tst.js:2:13:2:20 | source() | tst.js:102:10:102:14 | xWith |
+| tst.js:75:22:75:29 | source() | tst.js:75:10:75:52 | Map.gro ... (item)) |
+| tst.js:75:22:75:29 | source() | tst.js:75:47:75:50 | item |
+| tst.js:87:22:87:29 | source() | tst.js:90:14:90:25 | taintedValue |
+| tst.js:93:22:93:29 | source() | tst.js:96:14:96:25 | taintedValue |
+| tst.js:93:22:93:29 | source() | tst.js:97:14:97:26 | map.get(true) |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:8:10:8:17 | captured |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x |
 | xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |

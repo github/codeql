@@ -80,8 +80,8 @@ function test() {
     }
     {
         const list = [source()];
-        const grouped = Map.groupBy(list, (item) => sink(item)); // NOT OK
-        sink(grouped); // NOT OK
+        const grouped = Map.groupBy(list, (item) => sink(item)); // NOT OK [INCONSISTENCY]
+        sink(grouped); // NOT OK [INCONSISTENCY]
     }
     {
         const data = source();
