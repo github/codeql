@@ -2417,6 +2417,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     override string toString() { result = "param update " + pos }
   }
 
+  class ReturnKindExtOption = Option<ReturnKindExt>::Option;
+
   /** A callable tagged with a relevant return kind. */
   class ReturnPosition extends TReturnPosition0 {
     private DataFlowCallable c;
