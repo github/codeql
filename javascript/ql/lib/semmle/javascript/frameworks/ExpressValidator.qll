@@ -55,7 +55,13 @@ module ExpressValidator {
     /**
      * Gets the route handler that is validated.
      */
-    Express::RouteHandler getRouteHandler() { Routing::getRouteHandler(result).isGuardedBy(this) }
+    Express::RouteHandler getRouteHandler() {
+      exists(Express::RouteSetup route |
+        this.getAstNode().getParent*() = route.getARouteHandlerNode().getAstNode()
+      |
+        result = route.getLastRouteHandlerNode()
+      )
+    }
 
     /**
      * Gets the parameter that is validated and is secure
@@ -101,8 +107,8 @@ module ExpressValidator {
    * These are a list of source nodes that are automatically sanitized by the
    * express-validator library.
    */
-  class ExpressValidationSanitizer extends Shared::Sanitizer {
-    ExpressValidationSanitizer() {
+  class ExpressValidatorSanitizer extends DataFlow::Node {
+    ExpressValidatorSanitizer() {
       exists(ExpressValidator::MiddlewareInstance middleware |
         this = middleware.getSecureRequestInputAccess()
       )
