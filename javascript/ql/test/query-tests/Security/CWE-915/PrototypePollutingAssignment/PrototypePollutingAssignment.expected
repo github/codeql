@@ -106,6 +106,8 @@ edges
 | tst.js:102:17:102:38 | String( ... y.data) | tst.js:102:9:102:38 | taint | provenance |  |
 | tst.js:102:24:102:37 | req.query.data | tst.js:102:17:102:38 | String( ... y.data) | provenance | Config |
 | tst.js:105:12:105:16 | taint | tst.js:105:5:105:17 | object[taint] | provenance | Config |
+| tst.js:130:9:130:19 | req.query.x | tst.js:130:9:130:52 | req.que ... '), '') | provenance | Config |
+| tst.js:130:9:130:52 | req.que ... '), '') | tst.js:130:5:130:53 | obj[req ... ), '')] | provenance | Config |
 nodes
 | lib.js:1:38:1:40 | obj | semmle.label | obj |
 | lib.js:1:43:1:46 | path | semmle.label | path |
@@ -232,6 +234,9 @@ nodes
 | tst.js:102:24:102:37 | req.query.data | semmle.label | req.query.data |
 | tst.js:105:5:105:17 | object[taint] | semmle.label | object[taint] |
 | tst.js:105:12:105:16 | taint | semmle.label | taint |
+| tst.js:130:5:130:53 | obj[req ... ), '')] | semmle.label | obj[req ... ), '')] |
+| tst.js:130:9:130:19 | req.query.x | semmle.label | req.query.x |
+| tst.js:130:9:130:52 | req.que ... '), '') | semmle.label | req.que ... '), '') |
 subpaths
 | tst.js:14:27:14:31 | taint | tst.js:55:29:55:32 | prop | tst.js:56:12:56:33 | obj ? o ...  : null | tst.js:14:5:14:32 | unsafeG ...  taint) |
 #select
@@ -261,3 +266,4 @@ subpaths
 | tst.js:94:5:94:37 | obj[req ... ', '')] | tst.js:94:9:94:19 | req.query.x | tst.js:94:5:94:37 | obj[req ... ', '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:94:9:94:19 | req.query.x | user controlled input |
 | tst.js:97:5:97:46 | obj[req ... g, '')] | tst.js:97:9:97:19 | req.query.x | tst.js:97:5:97:46 | obj[req ... g, '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:97:9:97:19 | req.query.x | user controlled input |
 | tst.js:105:5:105:17 | object[taint] | tst.js:102:24:102:37 | req.query.data | tst.js:105:5:105:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:102:24:102:37 | req.query.data | user controlled input |
+| tst.js:130:5:130:53 | obj[req ... ), '')] | tst.js:130:9:130:19 | req.query.x | tst.js:130:5:130:53 | obj[req ... ), '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:130:9:130:19 | req.query.x | user controlled input |
