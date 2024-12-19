@@ -28,6 +28,8 @@ module SsrfConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrierOut(DataFlow::Node node) { strictSanitizingPrefixEdge(node, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module SsrfFlow = TaintTracking::Global<SsrfConfig>;

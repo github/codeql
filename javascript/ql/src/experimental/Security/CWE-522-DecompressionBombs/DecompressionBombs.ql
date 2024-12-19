@@ -24,6 +24,8 @@ module DecompressionBombConfig implements DataFlow::ConfigSig {
       addstep.isAdditionalTaintStep(node1, node2)
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module DecompressionBombFlow = TaintTracking::Global<DecompressionBombConfig>;

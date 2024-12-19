@@ -30,6 +30,8 @@ module XssThroughDomConfig implements DataFlow::ConfigSig {
     node2 = DataFlow::globalVarRef("URL").getAMemberCall("createObjectURL") and
     node1 = node2.(DataFlow::InvokeNode).getArgument(0)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

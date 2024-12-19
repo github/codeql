@@ -24,6 +24,8 @@ module FileAccessToHttpConfig implements DataFlow::ConfigSig {
     isSink(node) and
     contents = DataFlow::ContentSet::anyProperty()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

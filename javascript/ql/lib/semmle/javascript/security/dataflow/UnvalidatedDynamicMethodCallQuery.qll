@@ -78,6 +78,8 @@ module UnvalidatedDynamicMethodCallConfig implements DataFlow::StateConfigSig {
     TaintTracking::defaultTaintStep(node1, node2) and
     state1 = state2
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

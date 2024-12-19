@@ -34,6 +34,8 @@ module HardcodedDataInterpretedAsCodeConfig implements DataFlow::StateConfigSig 
     state1 = [FlowState::modified(), FlowState::unmodified()] and
     state2 = FlowState::modified()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -17,6 +17,8 @@ module HostHeaderPoisoningConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node node) { exists(EmailSender email | node = email.getABody()) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

@@ -33,6 +33,8 @@ module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
   }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

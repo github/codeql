@@ -44,6 +44,8 @@ module ZipSlipConfig implements DataFlow::StateConfigSig {
   ) {
     TaintedPath::isAdditionalFlowStep(node1, state1, node2, state2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** A taint tracking configuration for unsafe archive extraction. */

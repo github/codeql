@@ -33,6 +33,8 @@ module DeepObjectResourceExhaustionConfig implements DataFlow::StateConfigSig {
   ) {
     TaintedObject::isAdditionalFlowStep(node1, state1, node2, state2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
