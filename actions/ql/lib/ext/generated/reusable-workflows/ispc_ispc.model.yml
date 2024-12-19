@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ispc/ispc/.github/workflows/reusable.rebuild.yml", "*", "input.version", "code-injection", "generated"]

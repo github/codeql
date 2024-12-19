@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["akhileshns/heroku-deploy", "*", "input.branch", "output.status", "taint", "manual"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["akhileshns/heroku-deploy", "*", "input.heroku_app_name", "command-injection", "manual"]
+      - ["akhileshns/heroku-deploy", "*", "input.buildpack", "command-injection", "manual"]
+      - ["akhileshns/heroku-deploy", "*", "input.region", "command-injection", "manual"]
+      - ["akhileshns/heroku-deploy", "*", "input.stack", "command-injection", "manual"]
+      - ["akhileshns/heroku-deploy", "*", "input.team", "command-injection", "manual"]
+      - ["akhileshns/heroku-deploy", "*", "input.docker_heroku_process_type", "command-injection", "manual"]
+      - ["akhileshns/heroku-deploy", "*", "input.docker_build_args", "command-injection", "manual"]
+      - ["akhileshns/heroku-deploy", "*", "input.branch", "command-injection", "manual"]
+      - ["akhileshns/heroku-deploy", "*", "input.appdir", "command-injection", "manual"]
+      - ["akhileshns/heroku-deploy", "*", "input.heroku_api_key", "command-injection", "manual"]
+      - ["akhileshns/heroku-deploy", "*", "input.heroku_email", "command-injection", "manual"]

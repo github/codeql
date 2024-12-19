@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["manusa/actions-setup-minikube", "*", "input.kubernetes_version", "command-injection", "manual"]
+      - ["manusa/actions-setup-minikube", "*", "input.driver", "command-injection", "manual"]
+      - ["manusa/actions-setup-minikube", "*", "input.container_runtime", "command-injection", "manual"]
+      - ["manusa/actions-setup-minikube", "*", "input.start_args", "command-injection", "manual"]

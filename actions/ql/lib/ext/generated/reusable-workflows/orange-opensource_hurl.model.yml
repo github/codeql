@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["orange-opensource/hurl/.github/workflows/update-branch-version.yml", "*", "input.new_version", "code-injection", "generated"]

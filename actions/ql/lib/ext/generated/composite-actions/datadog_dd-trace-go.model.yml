@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["datadog/dd-trace-go", "*", "input.files", "code-injection", "generated"]
+     - ["datadog/dd-trace-go", "*", "input.tags", "code-injection", "generated"]
+     - ["datadog/dd-trace-go", "*", "input.service", "code-injection", "generated"]
+     - ["datadog/dd-trace-go", "*", "input.dd-api-key", "code-injection", "generated"]

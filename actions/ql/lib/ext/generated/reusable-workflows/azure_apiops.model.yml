@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["azure/apiops/tools/github_workflows/run-publisher-with-env.yaml", "*", "input.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH", "code-injection", "generated"]

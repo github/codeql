@@ -1,0 +1,161 @@
+# Issues_workflow.yaml (https://github.com/Bughalla/dynamods_dynamo/blob/1c1d3e29ee9bca81b43d78f22bf953100ef67009/.github/workflows/Issues_workflow.yaml#L128-L128)
+name: Issue Workflow
+on: 
+  issues:
+    types: [opened,edited]
+permissions: {}
+jobs: 
+  #This job will check the issue to determine if it should be moved to a different repository
+  redirectIssue:
+    name: Check for issue transfer
+    runs-on: ubuntu-latest
+    env:
+      #The 'content_analysis_response' variable is used to store the script response on step one, 
+      #and then checked on step two to know if adding any labels is necessary.
+      #The initial 'undefined' value will be overridden when the script runs.
+      content_analysis_response: undefined
+      ISSUE_TITLE: ${{github.event.issue.title}}
+      ISSUE_BODY: ${{github.event.issue.body}}
+    outputs:
+      result: ${{env.content_analysis_response}}
+    steps:
+      - uses: actions/checkout@v4
+
+      #Detect if the issue_title follows the regex expression
+      - name: Check Issue Title
+        uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match
+        with:
+          text: ${{github.event.issue.title}}
+          regex: '^[A-Za-z0-9 _.]*$'
+          flags: g
+
+      #If the regex output is '' means that the issue title contains special chars
+      - name: Exit Job
+        if: ${{ steps.regex-match.outputs.match == '' }}
+        run: |
+          echo "Bad Issue Title Format"
+          exit 1
+
+      #Remove the " character in the issue title and replaced with -
+      - name: Remove conflicting chars
+        uses: frabert/replace-string-action@v2.5
+        id: remove_quotations
+        with:
+          pattern: "\""
+          string:  ${{env.ISSUE_TITLE}}
+          replace-with: '-'
+          flags: g    
+
+      #According to the issue_title returns a specific label 
+      - name: Check Information
+        id: check-info
+        env:
+          ISSUE_TITLE_PARSED: ${{steps.remove_quotations.outputs.replaced}}
+        run: |
+          echo "content_analysis_response=$(pwsh .\\.github\\scripts\\title_analyzer.ps1)" >> $GITHUB_ENV
+
+      #labels the issue based in the text returned in content_analysis_response var
+      - name: Label issue
+        if: env.content_analysis_response != 'Valid'
+        #Uses DYNAMOBOTTOKEN to allow interaction between repos
+        run: |
+          curl -v -u admin:${{ secrets.DYNAMOBOTTOKEN }} -d '{"labels": ["${{env.content_analysis_response}}"]}' ${{ github.event.issue.url }}/labels
+  
+  #This job will scan the issue content to determing if more information is needed and act acordingly
+  #Will only run if the "redirectIssue" job outputted a 'Valid' result
+  checkIssueInformation:
+    if: needs.redirectIssue.outputs.result == 'Valid'
+    name: Check for missing information
+    #Wait for the previous job to finish as it needs its output
+    needs: redirectIssue
+    runs-on: ubuntu-latest
+    env:
+      #The 'analysis_response' variable is used to store the script response on step one, 
+      #and then checked on step two to know if adding the label and comment is necessary.
+      #The initial 'undefined' value will be overridden when the script runs.
+      analysis_response: undefined
+      #Greetings for valid issues
+      greetings_comment: "Thank you for submitting the issue to us. We are sorry to
+        see you get stuck with your workflow. While waiting for our team member to respond,
+        please feel free to browse our forum at https://forum.dynamobim.com/ for more Dynamo related information."
+      #Comment intro
+      comment_intro: "Hello ${{ github.actor }}, thank you for submitting this issue! 
+        We are super excited that you want to help us make Dynamo all that it can be."
+      #issue_coment holds the comment format, while the missing information will be provided by analysis_response
+      needs_more_info_comment: "However, we need some more information in order for the Dynamo
+        team to investigate any further.\\n\\n"
+      #comment to be used if the issue is closed due to the template being empty
+      close_issue_comment: "However, given that there has been no additional information added, 
+        this issue will be closed for now. Please reopen and provide additional 
+        information if you wish the Dynamo team to investigate further.\\n\\n"
+      #Info asked from the user in bot comments
+      info_needed: "Additional information:\\n
+        - Filling in of the provided Template (What did you do, What did you expect to see, 
+        What did you see instead, What packages or external references (if any) were used)\\n
+        - Attaching the Stack Trace (Error message that shows up when Dynamo crashes - You can copy and paste this into the Github Issue)\\n
+        - Upload a .DYN file that showcases the issue in action and any additional needed files, such as Revit 
+        (Note: If you cannot share a project, you can recreate this in a quick mock-up file)\\n
+        - Upload a Screenshot of the error messages you see (Hover over the offending node and showcase 
+        said errors message in the screenshot)\\n
+        - Reproducible steps on how to create the error in question."
+      #Text to ask for specific missing information (complemented by the analysis response)
+      specific_info: "Can you please fill in the following to the best of your ability:"
+      #template file name
+      template: "ISSUE_TEMPLATE.md"
+      #label to tag the issue with if its missing information
+      issue_label: needs more info
+      #amount of sections from the template that can be missing information for the issue to still be considered complete
+      acceptable_missing_info: 1
+    steps:
+      #Checkout the repo
+      - uses: actions/checkout@v4
+
+      #Removes conflicting characters before using the issue content as a script parameter
+      - name: Remove conflicting chars
+        env:
+          ISSUE_BODY: ${{github.event.issue.body}}
+        uses: frabert/replace-string-action@v2.5
+        id: remove_quotations
+        with:
+          pattern: "\""
+          string: ${{env.ISSUE_BODY}}
+          replace-with: '-'
+          flags: g
+
+      #Checks for missing information inside the issue content
+      - name: Check Information
+        id: check-info
+        env:
+          ISSUE_BODY: ${{ steps.remove_quotations.outputs.replaced }}
+        run: |
+          echo "analysis_response=$(pwsh .\\.github\\scripts\\issue_analyzer.ps1 "${{ env.template }}" "${{ env.acceptable_missing_info }}" )" >> $GITHUB_ENV
+      
+      #Closes the issue if the analysis response is "Empty"
+      - name: Close issue
+        if: env.analysis_response == 'Empty'
+        run: |
+          curl -v -u admin:${{ secrets.GITHUB_TOKEN }} -d '{"body": "${{env.comment_intro}} ${{env.close_issue_comment}} ${{env.info_needed}}"}' ${{ github.event.issue.url }}/comments
+          curl -v -u admin:${{ secrets.GITHUB_TOKEN }} -X PATCH -d '{"state": "closed"}' ${{ github.event.issue.url }}
+      
+      #Adds the "needs more info" label if needed
+      - name: Label and comment issue
+        if: ((env.analysis_response != 'Valid') && (env.analysis_response != 'Empty') && (github.event.action == 'opened'))
+        run: |
+          curl -v -u admin:${{ secrets.GITHUB_TOKEN }} -d '{"labels": ["${{env.issue_label}}"]}' ${{ github.event.issue.url }}/labels
+          curl -v -u admin:${{ secrets.GITHUB_TOKEN }} -d '{"body": "${{env.comment_intro}} ${{env.needs_more_info_comment}} ${{env.specific_info}} ${{env.analysis_response}}.\n\n${{env.info_needed}}"}' ${{ github.event.issue.url }}/comments
+      
+      #Removes the "needs more info" label if the issue has the missing information
+      - name: Unlabel updated issue
+        if: env.analysis_response == 'Valid' && github.event.action == 'edited'
+        run: |
+          echo urldecode ${{env.issue_label}}
+          curl -v -u admin:${{ secrets.GITHUB_TOKEN }} -X DELETE ${{ github.event.issue.url }}/labels/$(echo -ne "${{env.issue_label}}" | xxd -plain | tr -d '\n' | sed 's/\(..\)/%\1/g')
+      
+      #Adds greetings message
+      - name: Greetings
+        if: env.analysis_response == 'Valid' && github.event.action == 'opened'
+        run: |
+          curl -v -u admin:${{ secrets.GITHUB_TOKEN }} -d '{"body": "${{env.greetings_comment}}"}' ${{ github.event.issue.url }}/comments
+
+  

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["com-lihaoyi/mill/.github/workflows/run-mill-action.yml", "*", "input.millargs", "code-injection", "generated"]
+     - ["com-lihaoyi/mill/.github/workflows/run-mill-action.yml", "*", "input.buildcmd", "code-injection", "generated"]

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["solo-io/gloo", "*", "input.base-ref", "code-injection", "generated"]

@@ -1,0 +1,84 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: untrustedEventPropertiesDataModel 
+    data:
+      # TITLE
+      - ["github\\.event\\.issue\\.title", "title"]
+      - ["github\\.event\\.pull_request\\.title", "title"]
+      - ["github\\.event\\.discussion\\.title", "title"]
+      - ["github\\.event\\.pages\\[[0-9]+\\]\\.page_name", "title"]
+      - ["github\\.event\\.pages\\[[0-9]+\\]\\.title", "title"]
+      - ["github\\.event\\.workflow_run\\.display_title", "title"]
+      - ["github\\.event\\.changes\\.title\\.from", "title"]
+      # URL
+      - ["github\\.event\\.pull_request\\.head\\.repo\\.homepage", "url"]
+      # TEXT
+      - ["github\\.event\\.issue\\.body", "text"]
+      - ["github\\.event\\.pull_request\\.body", "text"]
+      - ["github\\.event\\.discussion\\.body", "text"]
+      - ["github\\.event\\.review\\.body", "text"]
+      - ["github\\.event\\.comment\\.body", "text"]
+      - ["github\\.event\\.commits\\[[0-9]+\\]\\.message", "text"]
+      - ["github\\.event\\.head_commit\\.message", "text"]
+      - ["github\\.event\\.workflow_run\\.head_commit\\.message", "text"]
+      - ["github\\.event\\.pull_request\\.head\\.repo\\.description", "text"]
+      - ["github\\.event\\.workflow_run\\.head_repository\\.description", "text"]
+      - ["github\\.event\\.changes\\.body\\.from", "title"]
+      # BRANCH
+      - ["github\\.event\\.pull_request\\.head\\.repo\\.default_branch", "branch"]
+      - ["github\\.event\\.pull_request\\.head\\.ref", "branch"]
+      - ["github\\.event\\.workflow_run\\.head_branch", "branch"]
+      - ["github\\.event\\.workflow_run\\.pull_requests\\[[0-9]+\\]\\.head\\.ref", "branch"]
+      - ["github\\.event\\.merge_group\\.head_ref", "branch"]
+      - ["github\\.event\\.changes\\.head\\.ref\\.from", "branch"]
+      # LABEL
+      - ["github\\.event\\.pull_request\\.head\\.label", "label"]
+      # EMAIL
+      - ["github\\.event\\.head_commit\\.author\\.email", "email"]
+      - ["github\\.event\\.head_commit\\.committer\\.email", "email"]
+      - ["github\\.event\\.commits\\[[0-9]+\\]\\.author\\.email", "email"]
+      - ["github\\.event\\.commits\\[[0-9]+\\]\\.committer\\.email", "email"]
+      - ["github\\.event\\.merge_group\\.committer\\.email", "email"]
+      - ["github\\.event\\.workflow_run\\.head_commit\\.author\\.email", "email"]
+      - ["github\\.event\\.workflow_run\\.head_commit\\.committer\\.email", "email"]
+      # USERNAME
+      - ["github\\.event\\.head_commit\\.author\\.name", "username"]
+      - ["github\\.event\\.head_commit\\.committer\\.name", "username"]
+      - ["github\\.event\\.commits\\[[0-9]+\\]\\.author\\.name", "username"]
+      - ["github\\.event\\.commits\\[[0-9]+\\]\\.committer\\.name", "username"]
+      - ["github\\.event\\.merge_group\\.committer\\.name", "username"]
+      - ["github\\.event\\.workflow_run\\.head_commit\\.author\\.name", "username"]
+      - ["github\\.event\\.workflow_run\\.head_commit\\.committer\\.name", "username"]
+      # PATH
+      - ["github\\.event\\.workflow\\.path", "path"]
+      - ["github\\.event\\.workflow_run\\.path", "path"]
+      - ["github\\.event\\.workflow_run\\.referenced_workflows\\.path", "path"]
+      # JSON
+      - ["github", "json"]
+      - ["github\\.event", "json"]
+      - ["github\\.event\\.comment", "json"]
+      - ["github\\.event\\.commits", "json"]
+      - ["github\\.event\\.discussion", "json"]
+      - ["github\\.event\\.head_commit", "json"]
+      - ["github\\.event\\.head_commit\\.author", "json"]
+      - ["github\\.event\\.head_commit\\.committer", "json"]
+      - ["github\\.event\\.issue", "json"]
+      - ["github\\.event\\.merge_group", "json"]
+      - ["github\\.event\\.merge_group\\.committer", "json"]
+      - ["github\\.event\\.pull_request", "json"]
+      - ["github\\.event\\.pull_request\\.head", "json"]
+      - ["github\\.event\\.pull_request\\.head\\.repo", "json"]
+      - ["github\\.event\\.pages", "json"]
+      - ["github\\.event\\.review", "json"]
+      - ["github\\.event\\.workflow", "json"]
+      - ["github\\.event\\.workflow_run", "json"]
+      - ["github\\.event\\.workflow_run\\.head_branch", "json"]
+      - ["github\\.event\\.workflow_run\\.head_commit", "json"]
+      - ["github\\.event\\.workflow_run\\.head_commit\\.author", "json"]
+      - ["github\\.event\\.workflow_run\\.head_commit\\.committer", "json"]
+      - ["github\\.event\\.workflow_run\\.head_repository", "json"]
+      - ["github\\.event\\.workflow_run\\.pull_requests", "json"]
+      - ["github\\.event\\.changes", "json"]
+
+

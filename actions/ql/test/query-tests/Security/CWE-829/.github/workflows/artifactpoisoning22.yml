@@ -1,0 +1,21 @@
+name: Pull Request Open
+
+on: 
+  workflow_run:
+    workflows: ["Prev"]
+    types:
+      - completed
+
+jobs:
+  Download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dawidd6/action-download-artifact@v2
+        with:
+          name: artifact_name
+          workflow: wf.yml
+      - name: Run command
+        run: sh cmd
+
+
+

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      - ["trilom/file-changes-action", "*", "output.files", "filename", "manual"]
+      - ["trilom/file-changes-action", "*", "output.files_added", "filename", "manual"]
+      - ["trilom/file-changes-action", "*", "output.files_modified", "filename", "manual"]
+      - ["trilom/file-changes-action", "*", "output.files_removed", "filename", "manual"]
