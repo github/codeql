@@ -127,7 +127,8 @@ module ReflectedXss {
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 
-  private class ExpressValidatorSanitizer extends Sanitizer instanceof ExpressValidator::ExpressValidatorSanitizer { }
+  private class ExpressValidatorSanitizer extends Sanitizer instanceof ExpressValidator::ExpressValidatorSanitizer
+  { }
 
   /** A third-party controllable request input, considered as a flow source for reflected XSS. */
   class ThirdPartyRequestInputAccessAsSource extends Source {
