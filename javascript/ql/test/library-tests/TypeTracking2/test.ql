@@ -1,6 +1,6 @@
 import javascript
-import testUtilities.InlineSummaries
-import testUtilities.InlineExpectationsTest
+import utils.test.InlineSummaries
+import utils.test.InlineExpectationsTest
 
 private DataFlow::SourceNode typeTrack(DataFlow::TypeTracker t, string name) {
   t.start() and

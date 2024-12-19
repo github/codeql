@@ -44,4 +44,4 @@ private module InlineTestSources implements TestSig {
 }
 
 import MakeTest<InlineTestSources>
-deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import utils.test.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>

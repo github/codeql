@@ -1,6 +1,6 @@
 import javascript
 import semmle.javascript.dataflow.InferredTypes
-deprecated import testUtilities.ConsistencyChecking
+deprecated import utils.test.ConsistencyChecking
 
 DataFlow::CallNode getACall(string name) {
   result.getCalleeName() = name
@@ -39,7 +39,7 @@ deprecated class LegacyConfig extends TaintTracking::Configuration {
   }
 }
 
-deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import utils.test.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
 class BasicSanitizerGuard extends DataFlow::CallNode {
   BasicSanitizerGuard() { this = getACall("isSafe") }

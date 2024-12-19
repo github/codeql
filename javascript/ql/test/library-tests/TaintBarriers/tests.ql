@@ -25,4 +25,4 @@ query predicate taintedSink(DataFlow::Node source, DataFlow::Node sink) {
   TestFlow::flow(source, sink)
 }
 
-deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, ExampleConfiguration>
+deprecated import utils.test.LegacyDataFlowDiff::DataFlowDiff<TestFlow, ExampleConfiguration>

@@ -93,7 +93,7 @@ deprecated class IsSanitizedGuardLegacy extends IsSanitizedGuard,
   }
 }
 
-deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import utils.test.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
 from DataFlow::Node source, DataFlow::Node sink
 where TestFlow::flow(source, sink)
