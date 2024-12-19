@@ -9,5 +9,5 @@ ungrammar = "1.16.1"
 proc-macro2 = "1.0.47"
 quote = "1.0.20"
 either = "1.9.0"
-ra_ap_stdx = "0.0.248"
+stdx = {package = "ra_ap_stdx", version = "0.0.248"}
 itertools = "0.12.0"

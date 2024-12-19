@@ -82,14 +82,14 @@ rust_library(
     }),
     version = "0.0.248",
     deps = [
-        "@vendor__indexmap-2.6.0//:indexmap",
+        "@vendor__indexmap-2.7.0//:indexmap",
         "@vendor__itertools-0.12.1//:itertools",
         "@vendor__lock_api-0.4.12//:lock_api",
         "@vendor__oorandom-11.1.4//:oorandom",
         "@vendor__parking_lot-0.12.3//:parking_lot",
         "@vendor__rustc-hash-2.1.0//:rustc_hash",
         "@vendor__smallvec-1.13.2//:smallvec",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__tracing-0.1.41//:tracing",
         "@vendor__triomphe-0.1.14//:triomphe",
     ],
 )

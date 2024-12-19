@@ -89,6 +89,6 @@ rust_library(
         "@vendor__drop_bomb-0.1.5//:drop_bomb",
         "@vendor__ra-ap-rustc_lexer-0.80.0//:ra_ap_rustc_lexer",
         "@vendor__ra_ap_limit-0.0.248//:ra_ap_limit",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__tracing-0.1.41//:tracing",
     ],
 )

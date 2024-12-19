@@ -84,6 +84,6 @@ rust_library(
     deps = [
         "@vendor__bitflags-2.6.0//:bitflags",
         "@vendor__ra-ap-rustc_index-0.80.0//:ra_ap_rustc_index",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__tracing-0.1.41//:tracing",
     ],
 )

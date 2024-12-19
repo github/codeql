@@ -91,8 +91,8 @@ rust_library(
     }),
     version = "0.0.248",
     deps = [
-        "@vendor__anyhow-1.0.93//:anyhow",
-        "@vendor__crossbeam-channel-0.5.13//:crossbeam_channel",
+        "@vendor__anyhow-1.0.94//:anyhow",
+        "@vendor__crossbeam-channel-0.5.14//:crossbeam_channel",
         "@vendor__itertools-0.12.1//:itertools",
         "@vendor__ra_ap_hir_expand-0.0.248//:ra_ap_hir_expand",
         "@vendor__ra_ap_ide_db-0.0.248//:ra_ap_ide_db",
@@ -104,6 +104,6 @@ rust_library(
         "@vendor__ra_ap_tt-0.0.248//:ra_ap_tt",
         "@vendor__ra_ap_vfs-0.0.248//:ra_ap_vfs",
         "@vendor__ra_ap_vfs-notify-0.0.248//:ra_ap_vfs_notify",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__tracing-0.1.41//:tracing",
     ],
 )

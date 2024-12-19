@@ -89,6 +89,6 @@ rust_library(
         "@vendor__ra_ap_intern-0.0.248//:ra_ap_intern",
         "@vendor__ra_ap_tt-0.0.248//:ra_ap_tt",
         "@vendor__rustc-hash-2.1.0//:rustc_hash",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__tracing-0.1.41//:tracing",
     ],
 )
