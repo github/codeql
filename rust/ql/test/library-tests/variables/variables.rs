@@ -541,6 +541,21 @@ fn ref_methodcall_receiver() {
   print_i64(a.val); // $ read_access=a
 }
 
+macro_rules! let_in_macro {
+    ($e:expr) => {
+        {
+            let var_in_macro = $e;
+            var_in_macro
+        }
+    };
+}
+
+fn macro_invocation() {
+    let var_from_macro =
+        let_in_macro!(37); // $ MISSING: read_access=var_in_macro
+    print_i64(var_from_macro); // $ read_access=var_from_macro
+}
+
 fn main() {
     immutable_variable();
     mutable_variable();
@@ -575,4 +590,5 @@ fn main() {
     structs();
     ref_arg();
     ref_methodcall_receiver();
+    macro_invocation();
 }
