@@ -14,6 +14,16 @@ private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 
+
+/** @JB1 Remove, stubbed for #153 */
+/** A data-flow node that represents a call argument. */
+abstract class ArgumentNode extends Node {
+
+  /** Gets the call in which this node is an argument. */
+  final DataFlowCall getCall() { none() }
+}
+/** @JB1 end stub for #153 */
+
 /**
  * A return kind. A return kind describes how a value can be returned from a
  * callable.
@@ -86,6 +96,12 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   Location getLocation() { result = this.asCallBaseExprCfgNode().getLocation() }
+
+  //** TODO JB1: Move to subclass, monkey patching for #153 */
+  DataFlowCallable getARuntimeTarget(){ none() }
+  ArgumentNode getAnArgumentNode(){ none() }
+  int totalorder(){ none() }
+  //** TODO JB1: end stubs for #153 */
 }
 
 /**
