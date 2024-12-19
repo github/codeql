@@ -34,7 +34,7 @@ jobs:
       - name: Inject sources
         shell: bash
         run: |
-          bazel run //rust/ast-generator:inject_sources
+          bazel run //rust/ast-generator:inject-sources
       - name: Format
         shell: bash
         run: |
