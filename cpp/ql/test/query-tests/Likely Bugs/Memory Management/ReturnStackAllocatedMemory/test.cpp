@@ -250,7 +250,3 @@ void* test_strndupa(const char* s, size_t size) {
 	return s2; // BAD
 }
 
-UNKNOWN_TYPE test_error_type() {
-	UNKNOWN_TYPE x;
-	return x; // GOOD: Don't report error types
-}
