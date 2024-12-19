@@ -191,6 +191,7 @@
 | Microsoft.AspNetCore.Components.Forms;ValidationMessageStore;get_Item;(System.Linq.Expressions.Expression<System.Func<System.Object>>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components.RenderTree;Renderer;add_UnhandledSynchronizationException;(System.UnhandledExceptionEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components.RenderTree;Renderer;remove_UnhandledSynchronizationException;(System.UnhandledExceptionEventHandler);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
+| Microsoft.AspNetCore.Components.Rendering;RenderTreeBuilder;AddComponentParameter;(System.Int32,System.String,System.Object);Argument[2];Argument[1];taint;manual |
 | Microsoft.AspNetCore.Components.Rendering;RenderTreeBuilder;AddComponentReferenceCapture;(System.Int32,System.Action<System.Object>);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components.Rendering;RenderTreeBuilder;AddContent;(System.Int32,Microsoft.AspNetCore.Components.RenderFragment);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components.Rendering;RenderTreeBuilder;AddContent<TValue>;(System.Int32,Microsoft.AspNetCore.Components.RenderFragment<TValue>,TValue);Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
@@ -321,6 +322,7 @@
 | Microsoft.AspNetCore.Components;LayoutComponentBase;set_Body;(Microsoft.AspNetCore.Components.RenderFragment);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components;LayoutView;set_ChildContent;(Microsoft.AspNetCore.Components.RenderFragment);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components;NavigationManager;RegisterLocationChangingHandler;(System.Func<Microsoft.AspNetCore.Components.Routing.LocationChangingContext,System.Threading.Tasks.ValueTask>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
+| Microsoft.AspNetCore.Components;NavigationManager;ToAbsoluteUri;(System.String);Argument[0];ReturnValue;taint;manual |
 | Microsoft.AspNetCore.Components;NavigationManager;add_LocationChanged;(System.EventHandler<Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components;NavigationManager;remove_LocationChanged;(System.EventHandler<Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Microsoft.AspNetCore.Components;PersistentComponentState;RegisterOnPersisting;(System.Func<System.Threading.Tasks.Task>);Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
