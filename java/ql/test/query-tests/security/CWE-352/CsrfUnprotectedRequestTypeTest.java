@@ -371,13 +371,33 @@ public class CsrfUnprotectedRequestTypeTest {
 		myBatisService.bad10(user);
 	}
 
-    // Test name-based heuristic
+    // Test name-based heuristic for method names that imply a state-change
+    @GetMapping(value = "transfer")
+	public String transfer(@RequestParam String user) { return "transfer"; } // $ hasCsrfUnprotectedRequestType
 
-    // BAD: method name implies a state-change
-    @GetMapping(value = "delete")
-	public String delete(@RequestParam String user) { // $ hasCsrfUnprotectedRequestType
-		return "delete";
-	}
+    @GetMapping(value = "transfer")
+	public String transferData(@RequestParam String user) { return "transfer"; } // $ hasCsrfUnprotectedRequestType
+
+    @GetMapping(value = "transfer")
+	public String doTransfer(@RequestParam String user) { return "transfer"; } // $ hasCsrfUnprotectedRequestType
+
+    @GetMapping(value = "transfer")
+	public String doTransferAllData(@RequestParam String user) { return "transfer"; } // $ hasCsrfUnprotectedRequestType
+
+    @GetMapping(value = "transfer")
+	public String doDataTransfer(@RequestParam String user) { return "transfer"; } // $ hasCsrfUnprotectedRequestType
+
+    @GetMapping(value = "transfer")
+	public String transfered(@RequestParam String user) { return "transfer"; } // OK: we look for 'transfer' only
+
+    @GetMapping(value = "transfer")
+	public String dotransfer(@RequestParam String user) { return "transfer"; } // OK: we look for 'transfer' within camelCase only
+
+    @GetMapping(value = "transfer")
+	public String doTransferdata(@RequestParam String user) { return "transfer"; } // OK: we look for 'transfer' within camelCase only
+
+    @GetMapping(value = "transfer")
+	public String getTransfer(@RequestParam String user) { return "transfer"; } // OK: starts with 'get'
 
     // Test Stapler web methods with name-based heuristic
 
