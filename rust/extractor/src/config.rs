@@ -10,7 +10,6 @@ use figment::{
     Figment,
 };
 use itertools::Itertools;
-use log::warn;
 use num_traits::Zero;
 use ra_ap_cfg::{CfgAtom, CfgDiff};
 use ra_ap_intern::Symbol;
@@ -18,6 +17,7 @@ use ra_ap_paths::Utf8PathBuf;
 use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource};
 use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
+use std::collections::HashSet;
 use std::fmt::Debug;
 use std::ops::Not;
 use std::path::PathBuf;
@@ -132,33 +132,26 @@ fn to_cfg_override(spec: &str) -> CfgAtom {
 }
 
 fn to_cfg_overrides(specs: &Vec<String>) -> CfgOverrides {
-    let mut enabled_cfgs = Vec::new();
-    let mut disabled_cfgs = Vec::new();
-    let mut has_test_explicitly_enabled = false;
+    let mut enabled_cfgs = HashSet::new();
+    enabled_cfgs.insert(to_cfg_override("test"));
+    let mut disabled_cfgs = HashSet::new();
     for spec in specs {
         if let Some(spec) = spec.strip_prefix("-") {
-            disabled_cfgs.push(to_cfg_override(spec));
+            let cfg = to_cfg_override(spec);
+            enabled_cfgs.remove(&cfg);
+            disabled_cfgs.insert(cfg);
         } else {
-            enabled_cfgs.push(to_cfg_override(spec));
-            if spec == "test" {
-                has_test_explicitly_enabled = true;
-            }
+            let cfg = to_cfg_override(spec);
+            disabled_cfgs.remove(&cfg);
+            enabled_cfgs.insert(cfg);
         }
     }
-    if !has_test_explicitly_enabled {
-        disabled_cfgs.push(to_cfg_override("test"));
-    }
-    if let Some(global) = CfgDiff::new(enabled_cfgs, disabled_cfgs) {
-        CfgOverrides {
-            global,
-            ..Default::default()
-        }
-    } else {
-        warn!("non-disjoint cfg overrides, ignoring: {}", specs.join(", "));
-        CfgOverrides {
-            global: CfgDiff::new(Vec::new(), vec![to_cfg_override("test")])
-                .expect("disabling one cfg should always succeed"),
-            ..Default::default()
-        }
+    let enabled_cfgs = enabled_cfgs.into_iter().collect();
+    let disabled_cfgs = disabled_cfgs.into_iter().collect();
+    let global = CfgDiff::new(enabled_cfgs, disabled_cfgs)
+        .expect("There should be no duplicate cfgs by construction");
+    CfgOverrides {
+        global,
+        ..Default::default()
     }
 }
