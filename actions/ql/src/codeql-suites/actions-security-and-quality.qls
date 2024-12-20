@@ -1,11 +1,2 @@
-- description: Security-and-quality queries for Actions
-- queries: '.'
-- include:
-    problem.severity: 
-      - error
-      - recommendation
-- exclude:
-    tags contain:
-      - experimental
-      - debug
-      
+- description: Security-and-quality queries for GitHub Actions
+- import: codeql-suites/actions-security-extended.qls
