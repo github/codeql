@@ -19,7 +19,7 @@ def test_cfg_overrides(codeql, rust):
     codeql.database.create(extractor_option=f"cargo_cfg_overrides={overrides}")
 
 @pytest.mark.ql_test(expected=".override.expected")
-def test_ducplicate_cfg_overrides(codeql, rust):
+def test_duplicate_cfg_overrides(codeql, rust):
     overrides = ",".join((
         "cfg_flag",
         "cfg_key=value",
