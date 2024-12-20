@@ -7,10 +7,10 @@ UNKNOWN_TYPE test_error_value() {
 
 void* test_error_pointer() {
 	UNKNOWN_TYPE x;
-	return &x; // GOOD: Don't know what &x means
+	return &x; // BAD [FALSE NEGATIVE]
 }
 
 int* test_error_pointer_member() {
 	UNKNOWN_TYPE x;
-	return &x.y; // GOOD: Don't know what x.y means
+	return &x.y; // BAD [FALSE NEGATIVE]
 }
