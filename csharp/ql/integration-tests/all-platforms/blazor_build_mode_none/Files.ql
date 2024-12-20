@@ -7,13 +7,14 @@ private string getPath(File f) {
   )
   or
   exists(int index1, int index2, string pattern |
-    pattern = "Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator" and
+    pattern =
+      "Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator" and
     index1 = f.getRelativePath().indexOf(pattern) and
     index2 =
       f.getRelativePath()
           .indexOf("_ql_csharp_ql_integration_tests_all_platforms_blazor_build_mode_none_") and
     result =
-      f.getRelativePath().substring(0, index1 + pattern.length()) + "/[...]" +
+      "[...]/" + f.getRelativePath().substring(index1, index1 + pattern.length()) + "/[...]" +
         f.getRelativePath().substring(index2, f.getRelativePath().length())
   )
 }
