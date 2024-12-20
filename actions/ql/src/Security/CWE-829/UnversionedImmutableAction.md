@@ -2,12 +2,11 @@
 
 ## Description
 
-Using an immutable action without indicating proper semantic version will result in the version being resolved to a tag that is mutable. This means the action code can change between runs and without the user's knowledge. Using an immutable action with proper semantic versioning will resolve to the exact version
-of the action stored in the GitHub package registry. The action code will not change between runs.
+This action is eligible for Immutable Actions, a new GitHub feature that is currently only available for internal users. Immutable Actions are released as packages in the GitHub package registry instead of resolved from a pinned SHA at the repository. The Immutable Action provides the same immutability as pinning the version to a SHA but with improved readability and additional security guarantees.
 
 ## Recommendations
 
-When using [immutable actions](https://github.com/github/package-registry-team/blob/main/docs/immutable-actions/immutable-actions-howto.md) use the full semantic version of the action. This will ensure that the action is resolved to the exact version stored in the GitHub package registry. This will prevent the action code from changing between runs.
+For internal users: when using [immutable actions](https://github.com/github/package-registry-team/blob/main/docs/immutable-actions/immutable-actions-howto.md) use the full semantic version of the action. This will ensure that the action is resolved to the exact version stored in the GitHub package registry.
 
 ## Examples
 
