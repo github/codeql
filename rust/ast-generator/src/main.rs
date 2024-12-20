@@ -9,8 +9,7 @@ use std::env;
 use ungrammar::Grammar;
 
 fn project_root() -> PathBuf {
-    let dir =
-        env::var("CARGO_MANIFEST_DIR").unwrap().to_owned();
+    let dir = env::var("CARGO_MANIFEST_DIR").unwrap().to_owned();
     PathBuf::from(dir).parent().unwrap().to_owned()
 }
 
@@ -593,7 +592,7 @@ impl Translator<'_> {{
 fn main() -> std::io::Result<()> {
     let grammar = PathBuf::from("..").join(env::args().nth(1).expect("grammar file path required"));
     let grammar: Grammar = fs::read_to_string(&grammar)
-        .expect(&format!("Failed to parse grammar file: {}", grammar.display()))
+        .unwrap_or_else(|_| panic!("Failed to parse grammar file: {}", grammar.display()))
         .parse()
         .expect("Failed to parse grammar");
     let mut grammar = codegen::grammar::lower(&grammar);
