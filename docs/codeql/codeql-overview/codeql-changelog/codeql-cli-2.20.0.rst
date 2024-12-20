@@ -46,7 +46,7 @@ Minor Analysis Improvements
 C/C++
 """""
 
-*   The "Call to function with fewer arguments than declared parameters" query (:code:`cpp/too-few-arguments`) query no longer produces results if the function has been implicitly declared.
+*   The "Call to function with fewer arguments than declared parameters" query (:code:`cpp/too-few-arguments`) no longer produces results if the function has been implicitly declared.
 
 C#
 ""
