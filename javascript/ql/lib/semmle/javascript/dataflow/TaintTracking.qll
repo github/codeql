@@ -27,6 +27,13 @@ module TaintTracking {
   import AdditionalTaintSteps
 
   /**
+   * DEPRECATED.
+   * Subclasses of this class should be replaced by a module implementing the new `ConfigSig` or `StateConfigSig` interface.
+   * See the [migration guide](https://codeql.github.com/docs/codeql-language-guides/migrating-javascript-dataflow-queries) for more details.
+   *
+   * When migrating a `TaintTracking::Configuration` to `DataFlow::ConfigSig`, use `TaintTracking::Global<...>` instead of `DataFlow::Global<...>`.
+   *
+   * #### Legacy documentation
    * A data flow tracking configuration that considers taint propagation through
    * objects, arrays, promises and strings in addition to standard data flow.
    *

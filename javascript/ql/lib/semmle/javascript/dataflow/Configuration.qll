@@ -76,6 +76,11 @@ private import semmle.javascript.internal.CachedStages
 private import AdditionalFlowSteps
 
 /**
+ * DEPRECATED.
+ * Subclasses of this class should be replaced by a module implementing the new `ConfigSig` or `StateConfigSig` interface.
+ * See the [migration guide](https://codeql.github.com/docs/codeql-language-guides/migrating-javascript-dataflow-queries) for more details.
+ *
+ * #### Legacy documentation
  * A data flow tracking configuration for finding inter-procedural paths from
  * sources to sinks.
  *
