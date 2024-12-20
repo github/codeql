@@ -178,7 +178,7 @@ Deprecated APIs
 C/C++
 """""
 
-*   The :code:`NonThrowing` class (:code:`semmle.code.cpp.models.interfaces.NonThrowing`) has been deprecated. Please use the :code:`NonCppThrowingFunction` class instead.
+*   The :code:`NonThrowingFunction` class (:code:`semmle.code.cpp.models.interfaces.NonThrowing.NonThrowingFunction`) has been deprecated. Please use the :code:`NonCppThrowingFunction` class instead.
 
 Shared Libraries
 ----------------
