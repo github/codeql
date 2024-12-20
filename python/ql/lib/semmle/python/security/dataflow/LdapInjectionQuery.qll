@@ -20,12 +20,7 @@ private module LdapInjectionDnConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof DnSanitizer }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Security/CWE-090/LdapInjection.ql:26: Column 1 does not select a source or sink originating from the flow call on line 21
-    // ql/src/Security/CWE-090/LdapInjection.ql:27: Column 5 does not select a source or sink originating from the flow call on line 21
-    none()
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "LDAP injection via the distinguished name (DN) parameter" vulnerabilities. */
@@ -38,12 +33,7 @@ private module LdapInjectionFilterConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof FilterSanitizer }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Security/CWE-090/LdapInjection.ql:26: Column 1 does not select a source or sink originating from the flow call on line 24
-    // ql/src/Security/CWE-090/LdapInjection.ql:27: Column 5 does not select a source or sink originating from the flow call on line 24
-    none()
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "LDAP injection via the filter parameter" vulnerabilities. */

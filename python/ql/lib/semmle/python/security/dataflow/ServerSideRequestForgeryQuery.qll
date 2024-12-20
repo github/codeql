@@ -30,11 +30,12 @@ private module FullServerSideRequestForgeryConfig implements DataFlow::ConfigSig
     node instanceof FullUrlControlSanitizer
   }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/lib/semmle/python/security/dataflow/ServerSideRequestForgeryQuery.qll:47: Flow call outside 'select' clause
-    // ql/src/Security/CWE-918/FullServerSideRequestForgery.ql:24: Column 1 selects sink.getRequest
-    none()
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getRequest().getLocation()
   }
 }
 
@@ -66,10 +67,12 @@ private module PartialServerSideRequestForgeryConfig implements DataFlow::Config
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // ql/src/Security/CWE-918/PartialServerSideRequestForgery.ql:24: Column 1 selects sink.getRequest
-    none()
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getRequest().getLocation()
   }
 }
 

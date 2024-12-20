@@ -34,11 +34,7 @@ module NormalHashFunction {
       sensitiveDataExtraStepForCalls(node1, node2)
     }
 
-    predicate observeDiffInformedIncrementalMode() {
-      // TODO(diff-informed): Manually verify if config can be diff-informed.
-      // ql/lib/semmle/python/security/dataflow/WeakSensitiveDataHashingQuery.qll:88: Flow call outside 'select' clause
-      none()
-    }
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Global taint-tracking for detecting "use of a broken or weak cryptographic hashing algorithm on sensitive data" vulnerabilities. */
@@ -70,11 +66,7 @@ module ComputationallyExpensiveHashFunction {
       sensitiveDataExtraStepForCalls(node1, node2)
     }
 
-    predicate observeDiffInformedIncrementalMode() {
-      // TODO(diff-informed): Manually verify if config can be diff-informed.
-      // ql/lib/semmle/python/security/dataflow/WeakSensitiveDataHashingQuery.qll:95: Flow call outside 'select' clause
-      none()
-    }
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Global taint-tracking for detecting "use of a broken or weak cryptographic hashing algorithm on passwords" vulnerabilities. */
