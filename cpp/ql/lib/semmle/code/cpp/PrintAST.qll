@@ -1056,6 +1056,8 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(SizeofExprOperator).getExprOperand() = ele and pred = "getExprOperand()"
     or
+    expr.(SizeofPackExprOperator).getExprOperand() = ele and pred = "getExprOperand()"
+    or
     expr.(StmtExpr).getStmt() = ele and pred = "getStmt()"
     or
     expr.(ThrowExpr).getExpr() = ele and pred = "getExpr()"
