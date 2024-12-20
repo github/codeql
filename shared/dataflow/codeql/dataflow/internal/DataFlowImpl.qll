@@ -2261,10 +2261,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           returnAp = apNone()
           or
           // flow through a callable
-          exists(DataFlowCall call, ParamNodeEx p, Ap innerReturnAp |
-            revFlowThrough(call, returnCtx, p, state, _, returnAp, ap, innerReturnAp) and
-            flowThroughIntoCall(call, node, p, ap, innerReturnAp)
-          )
+          revFlowThrough(_, returnCtx, state, returnAp, ap, node)
           or
           // flow out of a callable
           exists(ReturnPosition pos |
@@ -2413,11 +2410,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate revFlowThrough(
-          DataFlowCall call, ReturnCtx returnCtx, ParamNodeEx p, FlowState state,
-          ReturnPosition pos, ApOption returnAp, Ap ap, Ap innerReturnAp
+          DataFlowCall call, ReturnCtx returnCtx, FlowState state, ApOption returnAp, Ap ap,
+          ArgNodeEx arg
         ) {
-          revFlowParamToReturn(p, state, pos, innerReturnAp, ap) and
-          revFlowIsReturned(call, returnCtx, returnAp, pos, innerReturnAp)
+          exists(ParamNodeEx p, ReturnPosition pos, Ap innerReturnAp |
+            flowThroughIntoCall(call, arg, p, ap, innerReturnAp) and
+            revFlowParamToReturn(p, state, pos, innerReturnAp, ap) and
+            revFlowIsReturned(call, returnCtx, returnAp, pos, innerReturnAp)
+          )
         }
 
         /**
@@ -2544,21 +2544,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
-        private predicate revFlowThroughArg(
-          DataFlowCall call, ArgNodeEx arg, FlowState state, ReturnCtx returnCtx, ApOption returnAp,
-          Ap ap
-        ) {
-          exists(ParamNodeEx p, Ap innerReturnAp |
-            revFlowThrough(call, returnCtx, p, state, _, returnAp, ap, innerReturnAp) and
-            flowThroughIntoCall(call, arg, p, ap, innerReturnAp)
-          )
-        }
-
-        pragma[nomagic]
         predicate callMayFlowThroughRev(DataFlowCall call) {
           exists(ArgNodeEx arg, FlowState state, ReturnCtx returnCtx, ApOption returnAp, Ap ap |
             revFlow(arg, state, returnCtx, returnAp, ap) and
-            revFlowThroughArg(call, arg, state, returnCtx, returnAp, ap)
+            revFlowThrough(call, returnCtx, state, returnAp, ap, arg)
           )
         }
 
