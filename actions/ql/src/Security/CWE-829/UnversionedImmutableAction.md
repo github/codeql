@@ -2,7 +2,7 @@
 
 ## Description
 
-This action is eligible for a new GitHub feature called Immutable Actions that is currently only available for internal users but will be publicly available soon. Immutable Actions are released as packages in the GitHub package registry instead of resolved from a pinned SHA at the repository. The immutable action provides the same immutability as pinning the version to a SHA but with improved readability.
+This action is eligible for Immutable Actions, a new GitHub feature that is currently only available for internal users. Immutable Actions are released as packages in the GitHub package registry instead of resolved from a pinned SHA at the repository. The Immutable Action provides the same immutability as pinning the version to a SHA but with improved readability and additional security guarantees.
 
 ## Recommendations
 
