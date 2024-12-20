@@ -8,6 +8,7 @@ private import semmle.code.java.frameworks.Jdbc
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dispatch.VirtualDispatch
 private import semmle.code.java.dataflow.TaintTracking
+import CallGraph
 
 /** A method that is not protected from CSRF by default. */
 abstract class CsrfUnprotectedMethod extends Method { }
@@ -24,12 +25,11 @@ private class SpringCsrfUnprotectedMethod extends CsrfUnprotectedMethod instance
     or
     this.hasAnnotation("org.springframework.web.bind.annotation", "RequestMapping") and
     (
-      this.getAnAnnotation().getAnEnumConstantArrayValue("method").getName() =
-        ["GET", "HEAD", "OPTIONS", "TRACE"]
+      this.getMethod() = ["GET", "HEAD", "OPTIONS", "TRACE"]
       or
       // If no request type is specified with `@RequestMapping`, then all request types
       // are possible, so we treat this as unsafe; example: @RequestMapping(value = "test").
-      not exists(this.getAnAnnotation().getAnArrayValue("method"))
+      not exists(this.getMethod())
     )
   }
 }
@@ -49,12 +49,42 @@ private class StaplerCsrfUnprotectedMethod extends CsrfUnprotectedMethod instanc
   }
 }
 
+/** Gets a word that is interesting because it may indicate a state change. */
+private string getAnInterestingWord() {
+  result =
+    [
+      "post", "put", "patch", "delete", "remove", "create", "add", "update", "edit", "publish",
+      "unpublish", "fill", "move", "transfer", "logout", "login", "access", "connect", "connection",
+      "register", "submit"
+    ]
+}
+
+/**
+ * Gets the regular expression used for matching strings that look like they
+ * contain an interesting word.
+ */
+private string getInterestingWordRegex() {
+  result = "(^|\\w+(?=[A-Z]))((?i)" + concat(getAnInterestingWord(), "|") + ")($|(?![a-z])\\w+)"
+}
+
+/** Gets a word that is uninteresting because it likely does not indicate a state change. */
+private string getAnUninterestingWord() {
+  result = ["get", "show", "view", "list", "query", "find"]
+}
+
+/**
+ * Gets the regular expression used for matching strings that look like they
+ * contain an uninteresting word.
+ */
+private string getUninterestingWordRegex() {
+  result = "^(" + concat(getAnUninterestingWord(), "|") + ")(?![a-z])\\w*"
+}
+
 /** A method that appears to change application state based on its name. */
-private class NameStateChangeMethod extends Method {
-  NameStateChangeMethod() {
-    this.getName()
-        .regexpMatch("(^|\\w+(?=[A-Z]))((?i)post|put|patch|delete|remove|create|add|update|edit|(un|)publish|fill|move|transfer|log(out|in)|access|connect(|ion)|register|submit)($|(?![a-z])\\w+)") and
-    not this.getName().regexpMatch("^(get|show|view|list|query|find)(?![a-z])\\w*")
+private class NameBasedStateChangeMethod extends Method {
+  NameBasedStateChangeMethod() {
+    this.getName().regexpMatch(getInterestingWordRegex()) and
+    not this.getName().regexpMatch(getUninterestingWordRegex())
   }
 }
 
@@ -91,9 +121,9 @@ private class PreparedStatementDatabaseUpdateMethod extends DatabaseUpdateMethod
   }
 }
 
-/** A method found via the sql-injection models which may update a SQL database. */
-private class SqlInjectionMethod extends DatabaseUpdateMethod {
-  SqlInjectionMethod() {
+/** A method found via the sql-injection sink models which may update a database. */
+private class SqlInjectionDatabaseUpdateMethod extends DatabaseUpdateMethod {
+  SqlInjectionDatabaseUpdateMethod() {
     exists(DataFlow::Node n | this = n.asExpr().(Argument).getCall().getCallee() |
       sinkNode(n, "sql-injection") and
       // do not include `executeQuery` since it is typically used with a select statement
@@ -106,9 +136,10 @@ private class SqlInjectionMethod extends DatabaseUpdateMethod {
 }
 
 /**
- * A taint-tracking configuration for reasoning about SQL queries that update a database.
+ * A taint-tracking configuration for reasoning about SQL statements that update
+ * a database via a call to an `execute` method.
  */
-module SqlExecuteConfig implements DataFlow::ConfigSig {
+private module SqlExecuteConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(StringLiteral sl | source.asExpr() = sl |
       sl.getValue().regexpMatch("^(?i)(insert|update|delete).*")
@@ -117,16 +148,19 @@ module SqlExecuteConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(Method m | m = sink.asExpr().(Argument).getCall().getCallee() |
-      m instanceof SqlInjectionMethod and
+      m instanceof SqlInjectionDatabaseUpdateMethod and
       m.hasName("execute")
     )
   }
 }
 
-/** Tracks flow from SQL queries that update a database to the argument of an execute method call. */
-module SqlExecuteFlow = TaintTracking::Global<SqlExecuteConfig>;
+/**
+ * Tracks flow from SQL statements that update a database to the argument of
+ * an `execute` method call.
+ */
+private module SqlExecuteFlow = TaintTracking::Global<SqlExecuteConfig>;
 
-/** Provides classes and predicates representing call paths. */
+/** Provides classes and predicates representing call graph paths. */
 module CallGraph {
   private newtype TCallPathNode =
     TMethod(Method m) or
@@ -178,20 +212,19 @@ module CallGraph {
   predicate edges(CallPathNode pred, CallPathNode succ) { pred.getASuccessor() = succ }
 }
 
-import CallGraph
-
 /**
- * Holds if `src` is an unprotected request handler that reaches a
- * `sink` that updates a database.
+ * Holds if `sourceMethod` is an unprotected request handler that reaches a
+ * `sinkMethodCall` that updates a database.
  */
-predicate unprotectedDatabaseUpdate(CallPathNode sourceMethod, CallPathNode sinkMethodCall) {
+private predicate unprotectedDatabaseUpdate(CallPathNode sourceMethod, CallPathNode sinkMethodCall) {
   sourceMethod.asMethod() instanceof CsrfUnprotectedMethod and
   exists(CallPathNode sinkMethod |
     sinkMethod.asMethod() instanceof DatabaseUpdateMethod and
     sinkMethodCall.getASuccessor() = pragma[only_bind_into](sinkMethod) and
     sourceMethod.getASuccessor+() = pragma[only_bind_into](sinkMethodCall) and
+    // exclude SQL `execute` calls that do not update database
     if
-      sinkMethod.asMethod() instanceof SqlInjectionMethod and
+      sinkMethod.asMethod() instanceof SqlInjectionDatabaseUpdateMethod and
       sinkMethod.asMethod().hasName("execute")
     then
       exists(SqlExecuteFlow::PathNode executeSink | SqlExecuteFlow::flowPath(_, executeSink) |
@@ -202,22 +235,22 @@ predicate unprotectedDatabaseUpdate(CallPathNode sourceMethod, CallPathNode sink
 }
 
 /**
- * Holds if `src` is an unprotected request handler that appears to
+ * Holds if `sourceMethod` is an unprotected request handler that appears to
  * change application state based on its name.
  */
-private predicate unprotectedHeuristicStateChange(CallPathNode sourceMethod, CallPathNode sinkMethod) {
+private predicate unprotectedNameBasedStateChange(CallPathNode sourceMethod, CallPathNode sinkMethod) {
   sourceMethod.asMethod() instanceof CsrfUnprotectedMethod and
-  sinkMethod.asMethod() instanceof NameStateChangeMethod and
+  sinkMethod.asMethod() instanceof NameBasedStateChangeMethod and
   sinkMethod = sourceMethod and
   // exclude any alerts that update a database
   not unprotectedDatabaseUpdate(sourceMethod, _)
 }
 
 /**
- * Holds if `src` is an unprotected request handler that may
+ * Holds if `source` is an unprotected request handler that may
  * change an application's state.
  */
 predicate unprotectedStateChange(CallPathNode source, CallPathNode sink) {
   unprotectedDatabaseUpdate(source, sink) or
-  unprotectedHeuristicStateChange(source, sink)
+  unprotectedNameBasedStateChange(source, sink)
 }
