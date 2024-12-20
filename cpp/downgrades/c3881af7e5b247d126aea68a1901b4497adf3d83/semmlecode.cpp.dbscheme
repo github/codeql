@@ -1994,10 +1994,10 @@ uuidof_bind(
     int type_id: @type ref
 );
 
-@sizeof_or_alignof = @runtime_sizeof | @runtime_alignof | @datasizeof | @sizeof_pack;
+@runtime_sizeof_or_alignof = @runtime_sizeof | @runtime_alignof | @datasizeof;
 
 sizeof_bind(
-    unique int expr: @sizeof_or_alignof ref,
+    unique int expr: @runtime_sizeof_or_alignof ref,
     int type_id: @type ref
 );
 
