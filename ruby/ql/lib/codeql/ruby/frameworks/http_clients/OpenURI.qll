@@ -110,6 +110,13 @@ private module OpenUriDisablesCertificateValidationConfig implements DataFlow::C
     or
     sink = any(OpenUriKernelOpenRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // lib/codeql/ruby/frameworks/http_clients/OpenURI.qll:48: Flow call outside 'select' clause
+    // lib/codeql/ruby/frameworks/http_clients/OpenURI.qll:95: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module OpenUriDisablesCertificateValidationFlow =

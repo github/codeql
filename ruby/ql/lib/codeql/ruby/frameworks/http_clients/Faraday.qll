@@ -99,6 +99,12 @@ private module FaradayDisablesCertificateValidationConfig implements DataFlow::S
   predicate isSink(DataFlow::Node sink, FlowState state) {
     sink = any(FaradayHttpRequest req).getCertificateValidationControllingValue(state)
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // lib/codeql/ruby/frameworks/http_clients/Faraday.qll:80: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module FaradayDisablesCertificateValidationFlow =

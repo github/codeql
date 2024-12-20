@@ -16,6 +16,12 @@ private module SensitiveGetQueryConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // src/queries/security/cwe-598/SensitiveGetQuery.ql:21: Column 3 does not select a source or sink originating from the flow call on line 20
+    none()
+  }
 }
 
 /**

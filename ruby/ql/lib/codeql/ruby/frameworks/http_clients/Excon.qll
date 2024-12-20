@@ -118,6 +118,12 @@ private module ExconDisablesCertificateValidationConfig implements DataFlow::Con
   predicate isSink(DataFlow::Node sink) {
     sink = any(ExconHttpRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // lib/codeql/ruby/frameworks/http_clients/Excon.qll:74: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module ExconDisablesCertificateValidationFlow =

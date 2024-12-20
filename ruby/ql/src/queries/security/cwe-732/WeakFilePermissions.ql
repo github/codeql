@@ -54,6 +54,8 @@ private module PermissivePermissionsConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(FileSystemPermissionModification mod | mod.getAPermissionNode() = sink)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 private module PermissivePermissionsFlow = DataFlow::Global<PermissivePermissionsConfig>;

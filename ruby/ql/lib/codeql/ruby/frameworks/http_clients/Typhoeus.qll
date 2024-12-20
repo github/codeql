@@ -64,6 +64,12 @@ private module TyphoeusDisablesCertificateValidationConfig implements DataFlow::
   predicate isSink(DataFlow::Node sink) {
     sink = any(TyphoeusHttpRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // lib/codeql/ruby/frameworks/http_clients/Typhoeus.qll:53: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module TyphoeusDisablesCertificateValidationFlow =

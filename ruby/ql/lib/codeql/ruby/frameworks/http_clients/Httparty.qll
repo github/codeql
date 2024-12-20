@@ -70,6 +70,12 @@ private module HttpartyDisablesCertificateValidationConfig implements DataFlow::
   predicate isSink(DataFlow::Node sink) {
     sink = any(HttpartyRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // lib/codeql/ruby/frameworks/http_clients/Httparty.qll:59: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module HttpartyDisablesCertificateValidationFlow =

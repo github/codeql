@@ -73,6 +73,12 @@ private module RestClientDisablesCertificateValidationConfig implements DataFlow
   predicate isSink(DataFlow::Node sink) {
     sink = any(RestClientHttpRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // lib/codeql/ruby/frameworks/http_clients/RestClient.qll:60: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module RestClientDisablesCertificateValidationFlow =

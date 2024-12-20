@@ -52,6 +52,12 @@ module Pathname {
             ]
         )
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // lib/codeql/ruby/frameworks/stdlib/Pathname.qll:30: Flow call outside 'select' clause
+      none()
+    }
   }
 
   private module PathnameFlow = DataFlow::Global<PathnameConfig>;

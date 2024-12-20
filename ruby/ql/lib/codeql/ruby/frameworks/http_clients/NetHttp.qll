@@ -103,6 +103,12 @@ private module NetHttpDisablesCertificateValidationConfig implements DataFlow::C
   predicate isSink(DataFlow::Node sink) {
     sink = any(NetHttpRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // lib/codeql/ruby/frameworks/http_clients/NetHttp.qll:90: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module NetHttpDisablesCertificateValidationFlow =

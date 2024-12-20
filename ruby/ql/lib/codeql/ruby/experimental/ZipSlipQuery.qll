@@ -29,6 +29,8 @@ private module ZipSlipConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof ZipSlip::Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
