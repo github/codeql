@@ -75,9 +75,7 @@ private module RestClientDisablesCertificateValidationConfig implements DataFlow
   }
 
   predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // lib/codeql/ruby/frameworks/http_clients/RestClient.qll:60: Flow call outside 'select' clause
-    none()
+    none() // Used for a library model
   }
 }
 

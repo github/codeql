@@ -105,9 +105,7 @@ private module NetHttpDisablesCertificateValidationConfig implements DataFlow::C
   }
 
   predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // lib/codeql/ruby/frameworks/http_clients/NetHttp.qll:90: Flow call outside 'select' clause
-    none()
+    none() // Used for a library model
   }
 }
 

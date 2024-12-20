@@ -120,9 +120,7 @@ private module ExconDisablesCertificateValidationConfig implements DataFlow::Con
   }
 
   predicate observeDiffInformedIncrementalMode() {
-    // TODO(diff-informed): Manually verify if config can be diff-informed.
-    // lib/codeql/ruby/frameworks/http_clients/Excon.qll:74: Flow call outside 'select' clause
-    none()
+    none() // Used for a library model
   }
 }
 
