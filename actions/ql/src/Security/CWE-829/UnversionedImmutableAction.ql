@@ -7,6 +7,7 @@
  * @id actions/unversioned-immutable-action
  * @tags security
  *       actions
+ *       internal
  *       external/cwe/cwe-829
  */
 
