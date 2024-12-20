@@ -1,3 +1,4 @@
+/actions/ @github/codeql-dynamic
 /cpp/ @github/codeql-c-analysis
 /csharp/ @github/codeql-csharp
 /csharp/autobuilder/Semmle.Autobuild.Cpp @github/codeql-c-extractor
