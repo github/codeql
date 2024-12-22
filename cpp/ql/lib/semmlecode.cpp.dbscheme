@@ -861,6 +861,21 @@ variable_template_argument_value(
     int arg_value: @expr ref
 );
 
+template_template_instantiation(
+    unique int to: @usertype ref,
+    int from: @usertype ref
+);
+template_template_argument(
+    int type_id: @usertype ref,
+    int index: int ref,
+    int arg_type: @type ref
+);
+template_template_argument_value(
+    int type_id: @usertype ref,
+    int index: int ref,
+    int arg_value: @expr ref
+);
+
 routinetypes(
     unique int id: @routinetype,
     int return_type: @type ref

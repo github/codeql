@@ -75,6 +75,18 @@ class TemplateTemplateParameter extends TypeTemplateParameter {
   TemplateTemplateParameter() { usertypes(underlyingElement(this), _, 8) }
 
   override string getAPrimaryQlClass() { result = "TemplateTemplateParameter" }
+
+  /**
+   * Gets a class instantiated from this template template parameter.
+   *
+   * For example for `Container<T>` in the following code, the results is
+   * `Container<Elem>`:
+   * ```
+   * template <template <typename T> class Container, class Elem>
+   * void foo(const Container<Elem> &value) { }
+   * ```
+   */
+  Class getAnInstantiation() { result.isConstructedFrom(this) }
 }
 
 /**
@@ -89,4 +101,33 @@ class AutoType extends TypeTemplateParameter {
   override string getAPrimaryQlClass() { result = "AutoType" }
 
   override Location getLocation() { result instanceof UnknownDefaultLocation }
+}
+
+/**
+ * A class that is an instantiation of a template template parameter.  For example,
+ * in the following code there is a `Container<Elem>` instantiation:
+ * ```
+ * template <template <typename T> class Container, class Elem>
+ * void foo(const Container<Elem> &value) { }
+ * ```
+ * For the `Container` template itself, see `TemplateTemplateParameter`.
+ */
+class TemplateTemplateParameterInstantiation extends Class {
+  TemplateTemplateParameter ttp;
+
+  TemplateTemplateParameterInstantiation() { ttp.getAnInstantiation() = this }
+
+  override string getAPrimaryQlClass() { result = "TemplateTemplateParameterInstantiation" }
+
+  /**
+   * Gets the template template parameter from which this instantiation was instantiated.
+   *
+   * For example for `Container<Elem>` in the following code, the result is
+   * `Container<T>`:
+   * ```
+   * template <template <typename T> class Container, class Elem>
+   * void foo(const Container<Elem> &value) { }
+   * ```
+   */
+  TemplateTemplateParameter getTemplate() { result = ttp }
 }
