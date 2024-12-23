@@ -159,3 +159,32 @@ class ConceptIdExpr extends RequirementExpr, @concept_id {
 
   override string getAPrimaryQlClass() { result = "ConceptIdExpr" }
 }
+
+/**
+ * A C++ concept.
+ *
+ * For example:
+ * ```cpp
+ * template<class T>
+ * concept C = true;
+ * ```
+ */
+class Concept extends Declaration, @concept_template {
+  override string getAPrimaryQlClass() { result = "Concept" }
+
+  override Location getLocation() { concept_templates(underlyingElement(this), _, result) }
+
+  override string getName() { concept_templates(underlyingElement(this), result, _) }
+
+  /**
+   * Get the constraint expression of the concept.
+   *
+   * For example, in
+   * ```cpp
+   * template<class T>
+   * concept C = true;
+   * ```
+   * the constraint expression is `true`.
+   */
+  Expr getExpr() { result.getParent() = this }
+}
