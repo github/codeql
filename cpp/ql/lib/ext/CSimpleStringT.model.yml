@@ -36,6 +36,7 @@ extensions:
       - ["", "CSimpleStringT", True, "operator+=", "(wchar_t)", "", "Argument[0]", "ReturnValue[*]", "taint", "manual"]
       - ["", "CSimpleStringT", True, "operator+=", "(wchar_t)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["", "CSimpleStringT", True, "operator=", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CSimpleStringT", True, "operator=", "", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
       - ["", "CSimpleStringT", True, "GetAt", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["", "CSimpleStringT", True, "GetBuffer", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
       - ["", "CSimpleStringT", True, "GetBufferSetLength", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]

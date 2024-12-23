@@ -19,3 +19,4 @@ extensions:
       - ["", "CUrl", True, "SetUrlPath", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
       - ["", "CUrl", True, "SetUserName", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
       - ["", "CUrl", True, "operator=", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CUrl", True, "operator=", "", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
