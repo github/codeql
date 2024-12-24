@@ -883,6 +883,11 @@ concept_templates(
     string name: string ref,
     int location: @location_default ref
 );
+concept_instantiation(
+    unique int to: @concept_id ref,
+    int from: @concept_template ref
+);
+is_type_constraint(int concept_id: @concept_id ref);
 concept_template_argument(
     int concept_id: @concept ref,
     int index: int ref,
