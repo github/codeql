@@ -88,6 +88,10 @@ private Declaration getAnEnclosingDeclaration(Locatable ast) {
   or
   result = ast.(Initializer).getDeclaration()
   or
+  exists(ConceptIdExpr concept | ast = concept.getATemplateArgument() |
+    result = concept.getEnclosingFunction()
+  )
+  or
   result = ast
 }
 
@@ -106,6 +110,12 @@ private newtype TPrintAstNode =
   TFunctionParametersNode(Function func) { shouldPrintDeclaration(func) } or
   TRequiresExprParametersNode(RequiresExpr req) {
     shouldPrintDeclaration(getAnEnclosingDeclaration(req))
+  } or
+  TConceptIdExprArgumentsNode(ConceptIdExpr concept) {
+    shouldPrintDeclaration(getAnEnclosingDeclaration(concept))
+  } or
+  TConceptIdExprTypeArgumentNode(Type type, ConceptIdExpr concept, int childIndex) {
+    type = concept.getTemplateArgument(childIndex)
   } or
   TConstructorInitializersNode(Constructor ctor) {
     ctor.hasEntryPoint() and
@@ -358,6 +368,26 @@ class StringLiteralNode extends ExprNode {
 }
 
 /**
+ * A node representing a `ConceptIdExpr`.
+ */
+class ConceptIdExprNode extends ExprNode {
+  override ConceptIdExpr expr;
+
+  override PrintAstNode getChildInternal(int childIndex) {
+    result = super.getChildInternal(childIndex)
+    or
+    childIndex = -1 and
+    result.(ConceptIdExprArgumentsNode).getConceptIdExpr() = expr
+  }
+
+  override string getChildAccessorPredicateInternal(int childIndex) {
+    result = super.getChildAccessorPredicateInternal(childIndex)
+    or
+    childIndex = -1 and result = "<args>"
+  }
+}
+
+/**
  * A node representing a `Conversion`.
  */
 class ConversionNode extends ExprNode {
@@ -590,6 +620,63 @@ class InitializerNode extends AstNode {
   override string getChildAccessorPredicateInternal(int childIndex) {
     childIndex = 0 and
     result = "getExpr()"
+  }
+}
+
+/**
+ * A node representing the arguments of a `ConceptIdExpr`.
+ */
+class ConceptIdExprArgumentsNode extends PrintAstNode, TConceptIdExprArgumentsNode {
+  ConceptIdExpr concept;
+
+  ConceptIdExprArgumentsNode() { this = TConceptIdExprArgumentsNode(concept) }
+
+  final override string toString() { result = "" }
+
+  final override Location getLocation() { result = getRepresentativeLocation(concept) }
+
+  override PrintAstNode getChildInternal(int childIndex) {
+    exists(Locatable arg | arg = concept.getTemplateArgument(childIndex) |
+      result.(ConceptIdExprTypeArgumentNode).isArgumentNode(arg, concept, childIndex)
+      or
+      result.(ExprNode).getAst() = arg
+    )
+  }
+
+  override string getChildAccessorPredicateInternal(int childIndex) {
+    exists(this.getChildInternal(childIndex)) and
+    result = "getTemplateArgument(" + childIndex.toString() + ")"
+  }
+
+  /**
+   * Gets the `ConceptIdExpr` for which this node represents the parameters.
+   */
+  final ConceptIdExpr getConceptIdExpr() { result = concept }
+}
+
+/**
+ * A node representing a type argument of a `ConceptIdExpr`.
+ */
+class ConceptIdExprTypeArgumentNode extends PrintAstNode, TConceptIdExprTypeArgumentNode {
+  Type type;
+  ConceptIdExpr concept;
+  int index;
+
+  ConceptIdExprTypeArgumentNode() { this = TConceptIdExprTypeArgumentNode(type, concept, index) }
+
+  final override string toString() { result = qlClass(type) + type.toString() }
+
+  final override Location getLocation() { result = getRepresentativeLocation(type) }
+
+  override AstNode getChildInternal(int childIndex) { none() }
+
+  override string getChildAccessorPredicateInternal(int childIndex) { none() }
+
+  /**
+   * Holds if `t` is the `i`th template argument of `c`.
+   */
+  predicate isArgumentNode(Type t, ConceptIdExpr c, int i) {
+    type = t and concept = c and index = i
   }
 }
 
