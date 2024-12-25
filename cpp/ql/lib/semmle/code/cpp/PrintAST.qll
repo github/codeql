@@ -88,6 +88,10 @@ private Declaration getAnEnclosingDeclaration(Locatable ast) {
   or
   result = ast.(Initializer).getDeclaration()
   or
+  exists(ConceptIdExpr concept | ast = concept.getATemplateArgument() |
+    result = concept.getEnclosingFunction()
+  )
+  or
   result = ast
 }
 
@@ -106,6 +110,9 @@ private newtype TPrintAstNode =
   TFunctionParametersNode(Function func) { shouldPrintDeclaration(func) } or
   TRequiresExprParametersNode(RequiresExpr req) {
     shouldPrintDeclaration(getAnEnclosingDeclaration(req))
+  } or
+  TConceptIdExprArgumentsNode(ConceptIdExpr concept) {
+    shouldPrintDeclaration(getAnEnclosingDeclaration(concept))
   } or
   TConstructorInitializersNode(Constructor ctor) {
     ctor.hasEntryPoint() and
@@ -358,6 +365,26 @@ class StringLiteralNode extends ExprNode {
 }
 
 /**
+ * A node representing a `ConceptIdExpr`.
+ */
+class ConceptIdExprNode extends ExprNode {
+  override ConceptIdExpr expr;
+
+  override PrintAstNode getChildInternal(int childIndex) {
+    result = super.getChildInternal(childIndex)
+    or
+    childIndex = -1 and
+    result.(ConceptIdExprArgumentsNode).getConceptIdExpr() = expr
+  }
+
+  override string getChildAccessorPredicateInternal(int childIndex) {
+    result = super.getChildAccessorPredicateInternal(childIndex)
+    or
+    childIndex = -1 and result = "<args>"
+  }
+}
+
+/**
  * A node representing a `Conversion`.
  */
 class ConversionNode extends ExprNode {
@@ -575,6 +602,19 @@ class ParameterNode extends AstNode {
 }
 
 /**
+ * A node representing a `Type`.
+ */
+class TypeNode extends AstNode {
+  Type t;
+
+  TypeNode() { t = ast }
+
+  final override PrintAstNode getChildInternal(int childIndex) { none() }
+
+  final override string getChildAccessorPredicateInternal(int childIndex) { none() }
+}
+
+/**
  * A node representing an `Initializer`.
  */
 class InitializerNode extends AstNode {
@@ -591,6 +631,33 @@ class InitializerNode extends AstNode {
     childIndex = 0 and
     result = "getExpr()"
   }
+}
+
+/**
+ * A node representing the arguments of a `ConceptIdExpr`.
+ */
+class ConceptIdExprArgumentsNode extends PrintAstNode, TConceptIdExprArgumentsNode {
+  ConceptIdExpr concept;
+
+  ConceptIdExprArgumentsNode() { this = TConceptIdExprArgumentsNode(concept) }
+
+  final override string toString() { result = "" }
+
+  final override Location getLocation() { result = getRepresentativeLocation(concept) }
+
+  override AstNode getChildInternal(int childIndex) {
+    result.getAst() = concept.getTemplateArgument(childIndex)
+  }
+
+  override string getChildAccessorPredicateInternal(int childIndex) {
+    exists(this.getChildInternal(childIndex)) and
+    result = "getTemplateArgument(" + childIndex.toString() + ")"
+  }
+
+  /**
+   * Gets the `ConceptIdExpr` for which this node represents the parameters.
+   */
+  final ConceptIdExpr getConceptIdExpr() { result = concept }
 }
 
 /**
