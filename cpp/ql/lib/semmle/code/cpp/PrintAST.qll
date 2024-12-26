@@ -114,6 +114,9 @@ private newtype TPrintAstNode =
   TConceptIdExprArgumentsNode(ConceptIdExpr concept) {
     shouldPrintDeclaration(getAnEnclosingDeclaration(concept))
   } or
+  TConceptIdExprTypeArgumentNode(Type type, ConceptIdExpr concept, int childIndex) {
+    type = concept.getTemplateArgument(childIndex)
+  } or
   TConstructorInitializersNode(Constructor ctor) {
     ctor.hasEntryPoint() and
     shouldPrintDeclaration(ctor)
@@ -602,19 +605,6 @@ class ParameterNode extends AstNode {
 }
 
 /**
- * A node representing a `Type`.
- */
-class TypeNode extends AstNode {
-  Type t;
-
-  TypeNode() { t = ast }
-
-  final override PrintAstNode getChildInternal(int childIndex) { none() }
-
-  final override string getChildAccessorPredicateInternal(int childIndex) { none() }
-}
-
-/**
  * A node representing an `Initializer`.
  */
 class InitializerNode extends AstNode {
@@ -645,8 +635,12 @@ class ConceptIdExprArgumentsNode extends PrintAstNode, TConceptIdExprArgumentsNo
 
   final override Location getLocation() { result = getRepresentativeLocation(concept) }
 
-  override AstNode getChildInternal(int childIndex) {
-    result.getAst() = concept.getTemplateArgument(childIndex)
+  override PrintAstNode getChildInternal(int childIndex) {
+    exists(Locatable arg | arg = concept.getTemplateArgument(childIndex) |
+      result.(ConceptIdExprTypeArgumentNode).isArgumentNode(arg, concept, childIndex)
+      or
+      result.(ExprNode).getAst() = arg
+    )
   }
 
   override string getChildAccessorPredicateInternal(int childIndex) {
@@ -658,6 +652,32 @@ class ConceptIdExprArgumentsNode extends PrintAstNode, TConceptIdExprArgumentsNo
    * Gets the `ConceptIdExpr` for which this node represents the parameters.
    */
   final ConceptIdExpr getConceptIdExpr() { result = concept }
+}
+
+/**
+ * A node representing a type argument of a `ConceptIdExpr`.
+ */
+class ConceptIdExprTypeArgumentNode extends PrintAstNode, TConceptIdExprTypeArgumentNode {
+  Type type;
+  ConceptIdExpr concept;
+  int index;
+
+  ConceptIdExprTypeArgumentNode() { this = TConceptIdExprTypeArgumentNode(type, concept, index) }
+
+  final override string toString() { result = qlClass(type) + type.toString() }
+
+  final override Location getLocation() { result = getRepresentativeLocation(type) }
+
+  override AstNode getChildInternal(int childIndex) { none() }
+
+  override string getChildAccessorPredicateInternal(int childIndex) { none() }
+
+  /**
+   * Holds if `t` is the `i`th template argument of `c`.
+   */
+  predicate isArgumentNode(Type t, ConceptIdExpr c, int i) {
+    type = t and concept = c and index = i
+  }
 }
 
 /**
