@@ -480,6 +480,19 @@ fun_decl_typedef_type(
     int typedeftype_id: @usertype ref
 );
 
+/*
+case @fun_requires.kind of
+  1 = @template_attached
+| 2 = @function_attached
+;
+*/
+
+fun_requires(
+    int id: @fun_decl ref,
+    int kind: int ref,
+    int constraint: @expr ref
+);
+
 param_decl_bind(
     unique int id: @var_decl ref,
     int index: int ref,
@@ -501,6 +514,10 @@ var_decl_specifiers(
     string name: string ref
 )
 is_structured_binding(unique int id: @variable ref);
+var_requires(
+    int id: @var_decl ref,
+    int constraint: @expr ref
+);
 
 type_decls(
     unique int id: @type_decl,
@@ -510,6 +527,10 @@ type_decls(
 type_def(unique int id: @type_decl ref);
 type_decl_top(
     unique int type_decl: @type_decl ref
+);
+type_requires(
+    int id: @type_decl ref,
+    int constraint: @expr ref
 );
 
 namespace_decls(
@@ -788,6 +809,11 @@ usertype_uuid(
 
 nontype_template_parameters(
     int id: @expr ref
+);
+
+type_template_type_constraint(
+    int id: @usertype ref,
+    int constraint: @expr ref
 );
 
 mangled_name(

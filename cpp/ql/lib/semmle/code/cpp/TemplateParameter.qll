@@ -59,6 +59,13 @@ class TypeTemplateParameter extends UserType, TemplateParameterImpl {
   override string getAPrimaryQlClass() { result = "TypeTemplateParameter" }
 
   override predicate involvesTemplateParameter() { any() }
+
+  /**
+   * Get the type constraint of this type template parameter.
+   */
+  Expr getTypeConstraint() {
+    type_template_type_constraint(underlyingElement(this), unresolveElement(result))
+  }
 }
 
 /**

@@ -278,6 +278,11 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
 
   /** Holds if this declaration is a template specialization. */
   predicate isSpecialization() { var_specialized(underlyingElement(this)) }
+
+  /**
+   * Gets the requires clause if this declaration is a template with such a clause.
+   */
+  Expr getRequiresClause() { var_requires(underlyingElement(this), unresolveElement(result)) }
 }
 
 /**
