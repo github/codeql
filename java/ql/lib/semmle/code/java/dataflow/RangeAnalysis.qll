@@ -287,40 +287,21 @@ module Modulus implements ModulusAnalysisSig<Sem> {
   class ModBound = Bound;
 
   private import codeql.rangeanalysis.ModulusAnalysis as Mod
-  import Mod::ModulusAnalysis<Location, Sem, IntDelta, Bounds>
+  import Mod::ModulusAnalysis<Location, Sem, Bounds>
 }
 
-module IntDelta implements DeltaSig {
-  class Delta = int;
-
-  bindingset[d]
-  bindingset[result]
-  float toFloat(Delta d) { result = d }
-
-  bindingset[d]
-  bindingset[result]
-  int toInt(Delta d) { result = d }
-
-  bindingset[n]
-  bindingset[result]
-  Delta fromInt(int n) { result = n }
-
-  bindingset[f]
-  Delta fromFloat(float f) { result = f }
-}
-
-module JavaLangImpl implements LangSig<Sem, IntDelta> {
+module JavaLangImpl implements LangSig<Sem> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
-  predicate hasConstantBound(Sem::Expr e, int bound, boolean upper) {
+  predicate hasConstantBound(Sem::Expr e, QlBuiltins::BigInt bound, boolean upper) {
     (
       e.(MethodCall).getMethod() instanceof StringLengthMethod or
       e.(MethodCall).getMethod() instanceof CollectionSizeMethod or
       e.(MethodCall).getMethod() instanceof MapSizeMethod or
       e.(FieldRead).getField() instanceof ArrayLengthField
     ) and
-    bound = 0 and
+    bound = 0.toBigInt() and
     upper = false
     or
     exists(Method read |
@@ -329,25 +310,27 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
       read.hasName("read") and
       read.getNumberOfParameters() = 0
     |
-      upper = true and bound = 255
+      upper = true and bound = 255.toBigInt()
       or
-      upper = false and bound = -1
+      upper = false and bound = -1.toBigInt()
     )
   }
 
   /**
    * Holds if `e2 >= e1 + delta` (if `upper = false`) or `e2 <= e1 + delta` (if `upper = true`).
    */
-  predicate additionalBoundFlowStep(Sem::Expr e2, Sem::Expr e1, int delta, boolean upper) {
+  predicate additionalBoundFlowStep(
+    Sem::Expr e2, Sem::Expr e1, QlBuiltins::BigInt delta, boolean upper
+  ) {
     exists(RandomDataSource rds |
       e2 = rds.getOutput() and
       (
         e1 = rds.getUpperBoundExpr() and
-        delta = -1 and
+        delta = -1.toBigInt() and
         upper = true
         or
         e1 = rds.getLowerBoundExpr() and
-        delta = 0 and
+        delta = 0.toBigInt() and
         upper = false
       )
     )
@@ -362,7 +345,7 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
       ) and
       m.getDeclaringType().hasQualifiedName("java.lang", "Math") and
       e1 = ma.getAnArgument() and
-      delta = 0
+      delta = 0.toBigInt()
     )
   }
 
@@ -371,7 +354,7 @@ module JavaLangImpl implements LangSig<Sem, IntDelta> {
   predicate javaCompatibility() { any() }
 }
 
-module Bounds implements BoundSig<Location, Sem, IntDelta> {
+module Bounds implements BoundSig<Location, Sem> {
   class SemBound = Bound;
 
   class SemZeroBound = ZeroBound;
@@ -381,14 +364,13 @@ module Bounds implements BoundSig<Location, Sem, IntDelta> {
   }
 }
 
-module Overflow implements OverflowSig<Sem, IntDelta> {
+module Overflow implements OverflowSig<Sem> {
   predicate semExprDoesNotOverflow(boolean positively, Sem::Expr expr) {
     positively = [true, false] and exists(expr)
   }
 }
 
-module Range =
-  RangeStage<Location, Sem, IntDelta, Bounds, Overflow, JavaLangImpl, SignInp, Modulus>;
+module Range = RangeStage<Location, Sem, Bounds, Overflow, JavaLangImpl, SignInp, Modulus>;
 
 predicate bounded = Range::semBounded/5;
 

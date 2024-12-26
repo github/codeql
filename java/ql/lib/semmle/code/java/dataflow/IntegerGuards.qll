@@ -8,7 +8,7 @@ private import RangeUtils
 private import RangeAnalysis
 
 /** Gets an expression that might have the value `i`. */
-private Expr exprWithIntValue(int i) {
+private Expr exprWithIntValue(QlBuiltins::BigInt i) {
   result.(ConstantIntegerExpr).getIntValue() = i or
   result.(ChooseExpr).getAResultExpr() = exprWithIntValue(i)
 }
@@ -21,14 +21,14 @@ class IntComparableExpr extends Expr {
   IntComparableExpr() { this instanceof VarRead or this instanceof MethodCall }
 
   /** Gets an integer that is directly assigned to the expression in case of a variable; or zero. */
-  int relevantInt() {
+  QlBuiltins::BigInt relevantInt() {
     exists(SsaExplicitUpdate ssa, SsaSourceVariable v |
       this = v.getAnAccess() and
       ssa.getSourceVariable() = v and
       ssa.getDefiningExpr().(VariableAssign).getSource() = exprWithIntValue(result)
     )
     or
-    result = 0
+    result = 0.toBigInt()
   }
 }
 
@@ -41,7 +41,7 @@ class IntComparableExpr extends Expr {
  * is true, and different from `k` if `is_k` is false.
  */
 pragma[nomagic]
-Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
+Expr integerGuard(IntComparableExpr e, boolean branch, QlBuiltins::BigInt k, boolean is_k) {
   exists(EqualityTest eqtest, boolean polarity |
     eqtest = result and
     eqtest.hasOperands(e, any(ConstantIntegerExpr c | c.getIntValue() = k)) and
@@ -53,7 +53,7 @@ Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
     )
   )
   or
-  exists(EqualityTest eqtest, int val, Expr c, boolean upper |
+  exists(EqualityTest eqtest, QlBuiltins::BigInt val, Expr c, boolean upper |
     k = e.relevantInt() and
     eqtest = result and
     eqtest.hasOperands(e, c) and
@@ -67,7 +67,7 @@ Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
     branch = eqtest.polarity()
   )
   or
-  exists(ComparisonExpr comp, Expr c, int val, boolean upper |
+  exists(ComparisonExpr comp, Expr c, QlBuiltins::BigInt val, boolean upper |
     k = e.relevantInt() and
     comp = result and
     comp.hasOperands(e, c) and
@@ -132,8 +132,8 @@ Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
  * If `branch_with_lower_bound_k` is true then `result` is equivalent to `k <= x`
  * and if it is false then `result` is equivalent to `k > x`.
  */
-Expr intBoundGuard(VarRead x, boolean branch_with_lower_bound_k, int k) {
-  exists(ComparisonExpr comp, ConstantIntegerExpr c, int val |
+Expr intBoundGuard(VarRead x, boolean branch_with_lower_bound_k, QlBuiltins::BigInt k) {
+  exists(ComparisonExpr comp, ConstantIntegerExpr c, QlBuiltins::BigInt val |
     comp = result and
     comp.hasOperands(x, c) and
     c.getIntValue() = val and
@@ -143,7 +143,7 @@ Expr intBoundGuard(VarRead x, boolean branch_with_lower_bound_k, int k) {
     comp.getLesserOperand() = c and
     comp.isStrict() and
     branch_with_lower_bound_k = true and
-    val + 1 = k
+    val + 1.toBigInt() = k
     or
     // c <= x
     comp.getLesserOperand() = c and
@@ -161,6 +161,6 @@ Expr intBoundGuard(VarRead x, boolean branch_with_lower_bound_k, int k) {
     comp.getGreaterOperand() = c and
     not comp.isStrict() and
     branch_with_lower_bound_k = false and
-    val + 1 = k
+    val + 1.toBigInt() = k
   )
 }

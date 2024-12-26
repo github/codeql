@@ -85,12 +85,13 @@ class SemIntegerLiteralExpr extends SemNumericLiteralExpr {
    * If the value is outside the range of an `int`, use `getApproximateFloatValue()` to get a value
    * that is equal to the actual integer value, within rounding error.
    */
-  final int getIntValue() { Specific::integerLiteral(this, _, result) }
+  final QlBuiltins::BigInt getIntValue() { Specific::integerLiteral(this, _, result) }
 
   final override float getApproximateFloatValue() {
-    result = this.getIntValue()
+    result = this.getIntValue().toString().toFloat()
     or
-    Specific::largeIntegerLiteral(this, _, result)
+    Specific::largeIntegerLiteral(this, _,
+      any(QlBuiltins::BigInt b | result = b.toString().toFloat()))
   }
 }
 

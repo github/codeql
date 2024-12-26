@@ -1,3 +1,8 @@
+#define NULL nullptr
+char *malloc(int);
+void printf(const char *, ...);
+int snprintf(char *, int, const char *);
+
 char * create (int arg) {
     if (arg > 42) {
         // this function may return NULL

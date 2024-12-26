@@ -29,25 +29,25 @@ private string getDirectionString(boolean d) {
 }
 
 bindingset[value]
-private string getOffsetString(float value) {
-  if value >= 0 then result = "+" + value.toString() else result = value.toString()
+private string getOffsetString(QlBuiltins::BigInt value) {
+  if value >= 0.toBigInt() then result = "+" + value.toString() else result = value.toString()
 }
 
 bindingset[s]
 string quote(string s) { if s.matches("% %") then result = "\"" + s + "\"" else result = s }
 
 bindingset[delta]
-private string getBoundString(SemBound b, float delta) {
+private string getBoundString(SemBound b, QlBuiltins::BigInt delta) {
   b instanceof SemZeroBound and result = delta.toString()
   or
   result = strictconcat(b.(SemSsaBound).getAVariable().toString(), " | ") + getOffsetString(delta)
 }
 
 private string getARangeString(SemExpr e) {
-  exists(SemBound b, float delta, boolean upper |
+  exists(SemBound b, QlBuiltins::BigInt delta, boolean upper |
     semBounded(e, b, delta, upper, _) and
     if semBounded(e, b, delta, upper.booleanNot(), _)
-    then delta != 0 and result = "==" + getBoundString(b, delta)
+    then delta != 0.toBigInt() and result = "==" + getBoundString(b, delta)
     else result = getDirectionString(upper) + getBoundString(b, delta)
   )
 }

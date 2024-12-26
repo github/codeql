@@ -21,7 +21,7 @@ import semmle.code.java.dataflow.RangeAnalysis
  * Holds if the index expression of `aa` is less than or equal to the array length plus `k`.
  */
 predicate boundedArrayAccess(ArrayAccess aa, int k) {
-  exists(SsaVariable arr, Expr index, Bound b, int delta |
+  exists(SsaVariable arr, Expr index, Bound b, QlBuiltins::BigInt delta |
     aa.getIndexExpr() = index and
     aa.getArray() = arr.getAUse() and
     bounded(index, b, delta, true, _)
@@ -30,28 +30,28 @@ predicate boundedArrayAccess(ArrayAccess aa, int k) {
       len.getField() instanceof ArrayLengthField and
       len.getQualifier() = arr.getAUse() and
       b.getExpr() = len and
-      k = delta
+      k = delta.toInt()
     )
     or
     exists(ArrayCreationExpr arraycreation | arraycreation = getArrayDef(arr) |
-      k = delta and
+      k = delta.toInt() and
       arraycreation.getDimension(0) = b.getExpr()
       or
       exists(int arrlen |
         arraycreation.getFirstDimensionSize() = arrlen and
         b instanceof ZeroBound and
-        k = delta - arrlen
+        k = (delta - arrlen.toBigInt()).toInt()
       )
     )
   )
   or
-  exists(Field arr, Expr index, int delta, int arrlen |
+  exists(Field arr, Expr index, QlBuiltins::BigInt delta, int arrlen |
     aa.getIndexExpr() = index and
     aa.getArray() = arr.getAnAccess() and
     bounded(index, any(ZeroBound z), delta, true, _) and
     arr.isFinal() and
     arr.getInitializer().(ArrayCreationExpr).getFirstDimensionSize() = arrlen and
-    k = delta - arrlen
+    k = (delta - arrlen.toBigInt()).toInt()
   )
 }
 

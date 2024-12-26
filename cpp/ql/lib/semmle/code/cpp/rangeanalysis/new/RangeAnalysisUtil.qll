@@ -10,7 +10,7 @@ private import semmle.code.cpp.ir.IR
 
 pragma[nomagic]
 private Instruction getABoundIn(SemBound b, IRFunction func) {
-  getSemanticExpr(result) = b.getExpr(0) and
+  getSemanticExpr(result) = b.getExpr(0.toBigInt()) and
   result.getEnclosingIRFunction() = func
 }
 
@@ -18,7 +18,7 @@ private Instruction getABoundIn(SemBound b, IRFunction func) {
  * Holds if `i <= b + delta`.
  */
 pragma[inline]
-private predicate boundedImplCand(Instruction i, Instruction b, int delta) {
+private predicate boundedImplCand(Instruction i, Instruction b, QlBuiltins::BigInt delta) {
   exists(SemBound bound, IRFunction func |
     semBounded(getSemanticExpr(i), bound, delta, true, _) and
     b = getABoundIn(bound, func) and
@@ -31,8 +31,8 @@ private predicate boundedImplCand(Instruction i, Instruction b, int delta) {
  * this condition.
  */
 pragma[inline]
-private predicate boundedImpl(Instruction i, Instruction b, int delta) {
-  delta = min(int cand | boundedImplCand(i, b, cand))
+private predicate boundedImpl(Instruction i, Instruction b, QlBuiltins::BigInt delta) {
+  delta = min(QlBuiltins::BigInt cand | boundedImplCand(i, b, cand))
 }
 
 /**
@@ -42,7 +42,9 @@ private predicate boundedImpl(Instruction i, Instruction b, int delta) {
  */
 bindingset[i]
 pragma[inline_late]
-predicate bounded1(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
+predicate bounded1(Instruction i, Instruction b, QlBuiltins::BigInt delta) {
+  boundedImpl(i, b, delta)
+}
 
 /**
  * Holds if `i <= b + delta`.
@@ -51,7 +53,9 @@ predicate bounded1(Instruction i, Instruction b, int delta) { boundedImpl(i, b, 
  */
 bindingset[b]
 pragma[inline_late]
-predicate bounded2(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
+predicate bounded2(Instruction i, Instruction b, QlBuiltins::BigInt delta) {
+  boundedImpl(i, b, delta)
+}
 
 /** Holds if `i <= b + delta`. */
 predicate bounded = boundedImpl/3;

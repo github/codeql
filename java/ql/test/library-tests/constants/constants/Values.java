@@ -31,7 +31,7 @@ class Values {
         byte downcast_byte_5 = (byte) (-214); // 42
         short downcast_short = (short) 32768; // -32768
         int cast_of_non_constant = (int) '*'; //42
-        long cast_to_long = (long) 42; //Not handled
+        long cast_to_long = (long) 42; // 42
 
         int unary_plus = +42; //42
         int parameter_plus = +notConstant; //Not constant

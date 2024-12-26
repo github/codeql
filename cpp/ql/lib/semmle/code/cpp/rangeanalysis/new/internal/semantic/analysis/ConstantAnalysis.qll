@@ -7,7 +7,7 @@ private import ConstantAnalysisSpecific as Specific
 
 /** An expression that always has the same integer value. */
 pragma[nomagic]
-private predicate constantIntegerExpr(SemExpr e, int val) {
+private predicate constantIntegerExpr(SemExpr e, QlBuiltins::BigInt val) {
   // An integer literal
   e.(SemIntegerLiteralExpr).getIntValue() = val
   or
@@ -27,5 +27,5 @@ class SemConstantIntegerExpr extends SemExpr {
   SemConstantIntegerExpr() { constantIntegerExpr(this, _) }
 
   /** Gets the integer value of this expression. */
-  int getIntValue() { constantIntegerExpr(this, result) }
+  QlBuiltins::BigInt getIntValue() { constantIntegerExpr(this, result) }
 }

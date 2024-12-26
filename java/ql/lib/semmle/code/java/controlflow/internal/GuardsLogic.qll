@@ -386,9 +386,9 @@ private predicate guardImpliesNotEqual2(
     (
       guard = directNullGuard(v0, branch, false) and val = TAbsValNull()
       or
-      exists(int k |
+      exists(QlBuiltins::BigInt k |
         guard = integerGuard(v0.getAUse(), branch, k, false) and
-        val = TAbsValInt(k)
+        val = TAbsValInt(k.toInt())
       )
     ) and
     (v = v0 or equalVarsInBlock(guard.getBasicBlock(), v0, v))

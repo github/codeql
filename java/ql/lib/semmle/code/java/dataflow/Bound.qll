@@ -20,10 +20,10 @@ abstract class Bound extends TBound {
   abstract string toString();
 
   /** Gets an expression that equals this bound plus `delta`. */
-  abstract Expr getExpr(int delta);
+  abstract Expr getExpr(QlBuiltins::BigInt delta);
 
   /** Gets an expression that equals this bound. */
-  Expr getExpr() { result = this.getExpr(0) }
+  Expr getExpr() { result = this.getExpr(0.toBigInt()) }
 
   /** Gets the location of this bound. */
   abstract Location getLocation();
@@ -36,7 +36,9 @@ abstract class Bound extends TBound {
 class ZeroBound extends Bound, TBoundZero {
   override string toString() { result = "0" }
 
-  override Expr getExpr(int delta) { result.(ConstantIntegerExpr).getIntValue() = delta }
+  override Expr getExpr(QlBuiltins::BigInt delta) {
+    result.(ConstantIntegerExpr).getIntValue() = delta
+  }
 
   override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
 }
@@ -50,7 +52,9 @@ class SsaBound extends Bound, TBoundSsa {
 
   override string toString() { result = this.getSsa().toString() }
 
-  override Expr getExpr(int delta) { result = this.getSsa().getAUse() and delta = 0 }
+  override Expr getExpr(QlBuiltins::BigInt delta) {
+    result = this.getSsa().getAUse() and delta = 0.toBigInt()
+  }
 
   override Location getLocation() { result = this.getSsa().getLocation() }
 }
@@ -62,7 +66,9 @@ class SsaBound extends Bound, TBoundSsa {
 class ExprBound extends Bound, TBoundExpr {
   override string toString() { result = this.getExpr().toString() }
 
-  override Expr getExpr(int delta) { this = TBoundExpr(result) and delta = 0 }
+  override Expr getExpr(QlBuiltins::BigInt delta) {
+    this = TBoundExpr(result) and delta = 0.toBigInt()
+  }
 
   override Location getLocation() { result = this.getExpr().getLocation() }
 }
