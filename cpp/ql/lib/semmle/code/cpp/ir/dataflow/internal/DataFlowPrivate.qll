@@ -1436,7 +1436,7 @@ private predicate localFlowStepWithSummaries(Node node1, Node node2) {
   or
   readStep(node1, _, node2)
   or
-  DataFlowImplCommon::argumentValueFlowsThrough(node1, _, node2, _)
+  DataFlowImplCommon::argumentValueFlowsThroughExposedForCppOnly(node1, _, node2, _)
 }
 
 /** Holds if `node` flows to a node that is used in a `SwitchInstruction`. */

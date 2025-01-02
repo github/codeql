@@ -2293,12 +2293,14 @@ edges
 | array_flow.rb:1622:5:1622:5 | [post] a [element, element 0] | array_flow.rb:1623:10:1623:10 | a [element, element 0] | provenance |  |
 | array_flow.rb:1622:5:1622:5 | [post] a [element, element 0] | array_flow.rb:1626:10:1626:10 | a [element, element 0] | provenance |  |
 | array_flow.rb:1622:5:1622:5 | [post] a [element, element 0] | array_flow.rb:1627:10:1627:10 | a [element, element 0] | provenance |  |
-| array_flow.rb:1622:5:1622:8 | [post] ...[...] [element 0] | array_flow.rb:1622:5:1622:5 | [post] a [element, element 0] | provenance |  |
+| array_flow.rb:1622:5:1622:8 | ...[...] [Reverse] [element 0] | array_flow.rb:1622:5:1622:5 | [post] a [element, element 0] | provenance |  |
+| array_flow.rb:1622:5:1622:8 | [post] ...[...] [element 0] | array_flow.rb:1622:5:1622:8 | ...[...] [Reverse] [element 0] | provenance |  |
 | array_flow.rb:1622:15:1622:27 | call to source | array_flow.rb:1622:5:1622:8 | [post] ...[...] [element 0] | provenance |  |
 | array_flow.rb:1623:10:1623:10 | a [element, element 0] | array_flow.rb:1623:10:1623:13 | ...[...] [element 0] | provenance |  |
 | array_flow.rb:1623:10:1623:13 | ...[...] [element 0] | array_flow.rb:1623:10:1623:16 | ...[...] | provenance |  |
 | array_flow.rb:1625:5:1625:5 | [post] a [element 1, element 0] | array_flow.rb:1626:10:1626:10 | a [element 1, element 0] | provenance |  |
-| array_flow.rb:1625:5:1625:8 | [post] ...[...] [element 0] | array_flow.rb:1625:5:1625:5 | [post] a [element 1, element 0] | provenance |  |
+| array_flow.rb:1625:5:1625:8 | ...[...] [Reverse] [element 0] | array_flow.rb:1625:5:1625:5 | [post] a [element 1, element 0] | provenance |  |
+| array_flow.rb:1625:5:1625:8 | [post] ...[...] [element 0] | array_flow.rb:1625:5:1625:8 | ...[...] [Reverse] [element 0] | provenance |  |
 | array_flow.rb:1625:15:1625:27 | call to source | array_flow.rb:1625:5:1625:8 | [post] ...[...] [element 0] | provenance |  |
 | array_flow.rb:1626:10:1626:10 | a [element 1, element 0] | array_flow.rb:1626:10:1626:13 | ...[...] [element 0] | provenance |  |
 | array_flow.rb:1626:10:1626:10 | a [element, element 0] | array_flow.rb:1626:10:1626:13 | ...[...] [element 0] | provenance |  |
@@ -4792,12 +4794,14 @@ nodes
 | array_flow.rb:1617:10:1617:10 | c [element] | semmle.label | c [element] |
 | array_flow.rb:1617:10:1617:13 | ...[...] | semmle.label | ...[...] |
 | array_flow.rb:1622:5:1622:5 | [post] a [element, element 0] | semmle.label | [post] a [element, element 0] |
+| array_flow.rb:1622:5:1622:8 | ...[...] [Reverse] [element 0] | semmle.label | ...[...] [Reverse] [element 0] |
 | array_flow.rb:1622:5:1622:8 | [post] ...[...] [element 0] | semmle.label | [post] ...[...] [element 0] |
 | array_flow.rb:1622:15:1622:27 | call to source | semmle.label | call to source |
 | array_flow.rb:1623:10:1623:10 | a [element, element 0] | semmle.label | a [element, element 0] |
 | array_flow.rb:1623:10:1623:13 | ...[...] [element 0] | semmle.label | ...[...] [element 0] |
 | array_flow.rb:1623:10:1623:16 | ...[...] | semmle.label | ...[...] |
 | array_flow.rb:1625:5:1625:5 | [post] a [element 1, element 0] | semmle.label | [post] a [element 1, element 0] |
+| array_flow.rb:1625:5:1625:8 | ...[...] [Reverse] [element 0] | semmle.label | ...[...] [Reverse] [element 0] |
 | array_flow.rb:1625:5:1625:8 | [post] ...[...] [element 0] | semmle.label | [post] ...[...] [element 0] |
 | array_flow.rb:1625:15:1625:27 | call to source | semmle.label | call to source |
 | array_flow.rb:1626:10:1626:10 | a [element 1, element 0] | semmle.label | a [element 1, element 0] |

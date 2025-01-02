@@ -49,25 +49,33 @@ edges
 | minizipTest.cpp:24:41:24:47 | *access to array | minizipTest.cpp:24:29:24:38 | **zip_reader | provenance | Config |
 | minizipTest.cpp:24:41:24:47 | *access to array | minizipTest.cpp:24:29:24:38 | *zip_reader | provenance | Config |
 | zlibTest.cpp:16:26:16:30 | *input | zlibTest.cpp:20:25:20:39 | *input | provenance |  |
+| zlibTest.cpp:16:26:16:30 | *input [Reverse] | zlibTest.cpp:20:25:20:39 | *input [Reverse] | provenance |  |
 | zlibTest.cpp:20:25:20:39 | *input | zlibTest.cpp:16:26:16:30 | *input | provenance |  |
 | zlibTest.cpp:20:25:20:39 | *input | zlibTest.cpp:24:17:24:26 | & ... | provenance | Config |
 | zlibTest.cpp:20:25:20:39 | *input | zlibTest.cpp:25:13:25:22 | & ... | provenance | Config |
+| zlibTest.cpp:20:25:20:39 | *input [Reverse] | zlibTest.cpp:16:26:16:30 | *input [Reverse] | provenance |  |
 | zlibTest.cpp:24:17:24:26 | & ... | zlibTest.cpp:25:13:25:22 | & ... | provenance |  |
 | zlibTest.cpp:37:25:37:32 | *fileName | zlibTest.cpp:38:29:38:36 | *fileName | provenance |  |
+| zlibTest.cpp:37:25:37:32 | *fileName [Reverse] | zlibTest.cpp:38:29:38:36 | *fileName [Reverse] | provenance |  |
 | zlibTest.cpp:38:22:38:27 | call to gzopen | zlibTest.cpp:38:22:38:27 | call to gzopen | provenance |  |
 | zlibTest.cpp:38:22:38:27 | call to gzopen | zlibTest.cpp:41:20:41:26 | inFileZ | provenance |  |
 | zlibTest.cpp:38:29:38:36 | *fileName | zlibTest.cpp:37:25:37:32 | *fileName | provenance |  |
 | zlibTest.cpp:38:29:38:36 | *fileName | zlibTest.cpp:38:22:38:27 | call to gzopen | provenance | Config |
+| zlibTest.cpp:38:29:38:36 | *fileName [Reverse] | zlibTest.cpp:37:25:37:32 | *fileName [Reverse] | provenance |  |
 | zlibTest.cpp:47:26:47:33 | *fileName | zlibTest.cpp:48:29:48:36 | *fileName | provenance |  |
+| zlibTest.cpp:47:26:47:33 | *fileName [Reverse] | zlibTest.cpp:48:29:48:36 | *fileName [Reverse] | provenance |  |
 | zlibTest.cpp:48:22:48:27 | call to gzopen | zlibTest.cpp:48:22:48:27 | call to gzopen | provenance |  |
 | zlibTest.cpp:48:22:48:27 | call to gzopen | zlibTest.cpp:51:38:51:44 | inFileZ | provenance |  |
 | zlibTest.cpp:48:29:48:36 | *fileName | zlibTest.cpp:47:26:47:33 | *fileName | provenance |  |
 | zlibTest.cpp:48:29:48:36 | *fileName | zlibTest.cpp:48:22:48:27 | call to gzopen | provenance | Config |
+| zlibTest.cpp:48:29:48:36 | *fileName [Reverse] | zlibTest.cpp:47:26:47:33 | *fileName [Reverse] | provenance |  |
 | zlibTest.cpp:57:25:57:32 | *fileName | zlibTest.cpp:58:29:58:36 | *fileName | provenance |  |
+| zlibTest.cpp:57:25:57:32 | *fileName [Reverse] | zlibTest.cpp:58:29:58:36 | *fileName [Reverse] | provenance |  |
 | zlibTest.cpp:58:22:58:27 | call to gzopen | zlibTest.cpp:58:22:58:27 | call to gzopen | provenance |  |
 | zlibTest.cpp:58:22:58:27 | call to gzopen | zlibTest.cpp:62:25:62:31 | inFileZ | provenance |  |
 | zlibTest.cpp:58:29:58:36 | *fileName | zlibTest.cpp:57:25:57:32 | *fileName | provenance |  |
 | zlibTest.cpp:58:29:58:36 | *fileName | zlibTest.cpp:58:22:58:27 | call to gzopen | provenance | Config |
+| zlibTest.cpp:58:29:58:36 | *fileName [Reverse] | zlibTest.cpp:57:25:57:32 | *fileName [Reverse] | provenance |  |
 | zlibTest.cpp:71:26:71:30 | *input | zlibTest.cpp:71:26:71:30 | *input | provenance |  |
 | zlibTest.cpp:71:26:71:30 | *input | zlibTest.cpp:77:45:77:59 | *input | provenance |  |
 | zlibTest.cpp:80:33:80:36 | **argv | zlibTest.cpp:80:33:80:36 | **argv | provenance |  |
@@ -78,34 +86,76 @@ edges
 | zlibTest.cpp:80:33:80:36 | **argv | zlibTest.cpp:85:19:85:25 | *access to array | provenance |  |
 | zlibTest.cpp:81:19:81:25 | *access to array | zlibTest.cpp:47:26:47:33 | *fileName | provenance |  |
 | zlibTest.cpp:81:19:81:25 | *access to array | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument | provenance |  |
+| zlibTest.cpp:81:19:81:25 | *access to array [Reverse] | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
+| zlibTest.cpp:81:19:81:25 | *access to array [Reverse] | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
 | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument | zlibTest.cpp:80:33:80:36 | **argv | provenance |  |
-| zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument | zlibTest.cpp:80:33:80:36 | **argv [Return] | provenance |  |
+| zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
 | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument | zlibTest.cpp:82:18:82:24 | *access to array | provenance |  |
 | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument | zlibTest.cpp:83:19:83:25 | *access to array | provenance |  |
 | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument | zlibTest.cpp:84:18:84:24 | *access to array | provenance |  |
 | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument | zlibTest.cpp:85:19:85:25 | *access to array | provenance |  |
+| zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | zlibTest.cpp:47:26:47:33 | *fileName [Reverse] | provenance |  |
+| zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | zlibTest.cpp:81:19:81:25 | *access to array [Reverse] | provenance |  |
+| zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | zlibTest.cpp:81:19:81:25 | *access to array [Reverse] | provenance |  |
 | zlibTest.cpp:82:18:82:24 | *access to array | zlibTest.cpp:57:25:57:32 | *fileName | provenance |  |
 | zlibTest.cpp:82:18:82:24 | *access to array | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument | provenance |  |
+| zlibTest.cpp:82:18:82:24 | *access to array [Reverse] | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
+| zlibTest.cpp:82:18:82:24 | *access to array [Reverse] | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
+| zlibTest.cpp:82:18:82:24 | *access to array [Reverse] | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | provenance |  |
+| zlibTest.cpp:82:18:82:24 | *access to array [Reverse] | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | provenance |  |
 | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument | zlibTest.cpp:80:33:80:36 | **argv | provenance |  |
-| zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument | zlibTest.cpp:80:33:80:36 | **argv [Return] | provenance |  |
+| zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
+| zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | provenance |  |
 | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument | zlibTest.cpp:83:19:83:25 | *access to array | provenance |  |
 | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument | zlibTest.cpp:84:18:84:24 | *access to array | provenance |  |
 | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument | zlibTest.cpp:85:19:85:25 | *access to array | provenance |  |
+| zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | zlibTest.cpp:57:25:57:32 | *fileName [Reverse] | provenance |  |
+| zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | zlibTest.cpp:82:18:82:24 | *access to array [Reverse] | provenance |  |
+| zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | zlibTest.cpp:82:18:82:24 | *access to array [Reverse] | provenance |  |
 | zlibTest.cpp:83:19:83:25 | *access to array | zlibTest.cpp:16:26:16:30 | *input | provenance |  |
 | zlibTest.cpp:83:19:83:25 | *access to array | zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument | provenance |  |
+| zlibTest.cpp:83:19:83:25 | *access to array [Reverse] | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
+| zlibTest.cpp:83:19:83:25 | *access to array [Reverse] | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
+| zlibTest.cpp:83:19:83:25 | *access to array [Reverse] | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | provenance |  |
+| zlibTest.cpp:83:19:83:25 | *access to array [Reverse] | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | provenance |  |
+| zlibTest.cpp:83:19:83:25 | *access to array [Reverse] | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | provenance |  |
+| zlibTest.cpp:83:19:83:25 | *access to array [Reverse] | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | provenance |  |
 | zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument | zlibTest.cpp:80:33:80:36 | **argv | provenance |  |
-| zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument | zlibTest.cpp:80:33:80:36 | **argv [Return] | provenance |  |
+| zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
+| zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | provenance |  |
+| zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | provenance |  |
 | zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument | zlibTest.cpp:84:18:84:24 | *access to array | provenance |  |
 | zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument | zlibTest.cpp:85:19:85:25 | *access to array | provenance |  |
+| zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument [Reverse] | zlibTest.cpp:16:26:16:30 | *input [Reverse] | provenance |  |
+| zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument [Reverse] | zlibTest.cpp:83:19:83:25 | *access to array [Reverse] | provenance |  |
+| zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument [Reverse] | zlibTest.cpp:83:19:83:25 | *access to array [Reverse] | provenance |  |
 | zlibTest.cpp:84:18:84:24 | *access to array | zlibTest.cpp:37:25:37:32 | *fileName | provenance |  |
 | zlibTest.cpp:84:18:84:24 | *access to array | zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument | provenance |  |
+| zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument [Reverse] | provenance |  |
 | zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument | zlibTest.cpp:80:33:80:36 | **argv | provenance |  |
-| zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument | zlibTest.cpp:80:33:80:36 | **argv [Return] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument | zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument [Reverse] | provenance |  |
 | zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument | zlibTest.cpp:85:19:85:25 | *access to array | provenance |  |
+| zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument [Reverse] | zlibTest.cpp:37:25:37:32 | *fileName [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument [Reverse] | zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | provenance |  |
+| zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument [Reverse] | zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | provenance |  |
 | zlibTest.cpp:85:19:85:25 | *access to array | zlibTest.cpp:71:26:71:30 | *input | provenance |  |
 | zlibTest.cpp:85:19:85:25 | *access to array | zlibTest.cpp:85:19:85:25 | InflateString output argument | provenance |  |
 | zlibTest.cpp:85:19:85:25 | InflateString output argument | zlibTest.cpp:80:33:80:36 | **argv | provenance |  |
-| zlibTest.cpp:85:19:85:25 | InflateString output argument | zlibTest.cpp:80:33:80:36 | **argv [Return] | provenance |  |
+| zlibTest.cpp:85:19:85:25 | InflateString output argument | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | provenance |  |
+| zlibTest.cpp:85:19:85:25 | InflateString output argument | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | provenance |  |
+| zlibTest.cpp:85:19:85:25 | InflateString output argument | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | provenance |  |
+| zlibTest.cpp:85:19:85:25 | InflateString output argument | zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument [Reverse] | provenance |  |
+| zlibTest.cpp:85:19:85:25 | InflateString output argument | zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument [Reverse] | provenance |  |
 | zstdTest.cpp:26:39:26:42 | **argv | zstdTest.cpp:27:35:27:41 | *access to array | provenance |  |
 | zstdTest.cpp:26:39:26:42 | *argv | zstdTest.cpp:27:35:27:41 | *access to array | provenance |  |
 | zstdTest.cpp:27:23:27:33 | call to fopen_orDie | zstdTest.cpp:27:23:27:33 | call to fopen_orDie | provenance |  |
@@ -161,41 +211,65 @@ nodes
 | minizipTest.cpp:28:13:28:19 | *access to array | semmle.label | *access to array |
 | zlibTest.cpp:16:26:16:30 | *input | semmle.label | *input |
 | zlibTest.cpp:16:26:16:30 | *input | semmle.label | *input |
+| zlibTest.cpp:16:26:16:30 | *input [Reverse] | semmle.label | *input [Reverse] |
+| zlibTest.cpp:16:26:16:30 | *input [Reverse] | semmle.label | *input [Reverse] |
 | zlibTest.cpp:20:25:20:39 | *input | semmle.label | *input |
+| zlibTest.cpp:20:25:20:39 | *input [Reverse] | semmle.label | *input [Reverse] |
 | zlibTest.cpp:24:17:24:26 | & ... | semmle.label | & ... |
 | zlibTest.cpp:25:13:25:22 | & ... | semmle.label | & ... |
 | zlibTest.cpp:37:25:37:32 | *fileName | semmle.label | *fileName |
 | zlibTest.cpp:37:25:37:32 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:37:25:37:32 | *fileName [Reverse] | semmle.label | *fileName [Reverse] |
+| zlibTest.cpp:37:25:37:32 | *fileName [Reverse] | semmle.label | *fileName [Reverse] |
 | zlibTest.cpp:38:22:38:27 | call to gzopen | semmle.label | call to gzopen |
 | zlibTest.cpp:38:22:38:27 | call to gzopen | semmle.label | call to gzopen |
 | zlibTest.cpp:38:29:38:36 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:38:29:38:36 | *fileName [Reverse] | semmle.label | *fileName [Reverse] |
 | zlibTest.cpp:41:20:41:26 | inFileZ | semmle.label | inFileZ |
 | zlibTest.cpp:47:26:47:33 | *fileName | semmle.label | *fileName |
 | zlibTest.cpp:47:26:47:33 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:47:26:47:33 | *fileName [Reverse] | semmle.label | *fileName [Reverse] |
+| zlibTest.cpp:47:26:47:33 | *fileName [Reverse] | semmle.label | *fileName [Reverse] |
 | zlibTest.cpp:48:22:48:27 | call to gzopen | semmle.label | call to gzopen |
 | zlibTest.cpp:48:22:48:27 | call to gzopen | semmle.label | call to gzopen |
 | zlibTest.cpp:48:29:48:36 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:48:29:48:36 | *fileName [Reverse] | semmle.label | *fileName [Reverse] |
 | zlibTest.cpp:51:38:51:44 | inFileZ | semmle.label | inFileZ |
 | zlibTest.cpp:57:25:57:32 | *fileName | semmle.label | *fileName |
 | zlibTest.cpp:57:25:57:32 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:57:25:57:32 | *fileName [Reverse] | semmle.label | *fileName [Reverse] |
+| zlibTest.cpp:57:25:57:32 | *fileName [Reverse] | semmle.label | *fileName [Reverse] |
 | zlibTest.cpp:58:22:58:27 | call to gzopen | semmle.label | call to gzopen |
 | zlibTest.cpp:58:22:58:27 | call to gzopen | semmle.label | call to gzopen |
 | zlibTest.cpp:58:29:58:36 | *fileName | semmle.label | *fileName |
+| zlibTest.cpp:58:29:58:36 | *fileName [Reverse] | semmle.label | *fileName [Reverse] |
 | zlibTest.cpp:62:25:62:31 | inFileZ | semmle.label | inFileZ |
 | zlibTest.cpp:71:26:71:30 | *input | semmle.label | *input |
 | zlibTest.cpp:71:26:71:30 | *input | semmle.label | *input |
 | zlibTest.cpp:77:45:77:59 | *input | semmle.label | *input |
 | zlibTest.cpp:80:33:80:36 | **argv | semmle.label | **argv |
 | zlibTest.cpp:80:33:80:36 | **argv | semmle.label | **argv |
-| zlibTest.cpp:80:33:80:36 | **argv [Return] | semmle.label | **argv [Return] |
+| zlibTest.cpp:80:33:80:36 | **argv [Reverse] | semmle.label | **argv [Reverse] |
 | zlibTest.cpp:81:19:81:25 | *access to array | semmle.label | *access to array |
+| zlibTest.cpp:81:19:81:25 | *access to array [Reverse] | semmle.label | *access to array [Reverse] |
+| zlibTest.cpp:81:19:81:25 | *access to array [Reverse] | semmle.label | *access to array [Reverse] |
 | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument | semmle.label | UnsafeGzfread output argument |
+| zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | semmle.label | UnsafeGzfread output argument [Reverse] |
 | zlibTest.cpp:82:18:82:24 | *access to array | semmle.label | *access to array |
+| zlibTest.cpp:82:18:82:24 | *access to array [Reverse] | semmle.label | *access to array [Reverse] |
+| zlibTest.cpp:82:18:82:24 | *access to array [Reverse] | semmle.label | *access to array [Reverse] |
 | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument | semmle.label | UnsafeGzgets output argument |
+| zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | semmle.label | UnsafeGzgets output argument [Reverse] |
 | zlibTest.cpp:83:19:83:25 | *access to array | semmle.label | *access to array |
+| zlibTest.cpp:83:19:83:25 | *access to array [Reverse] | semmle.label | *access to array [Reverse] |
+| zlibTest.cpp:83:19:83:25 | *access to array [Reverse] | semmle.label | *access to array [Reverse] |
 | zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument | semmle.label | UnsafeInflate output argument |
+| zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument [Reverse] | semmle.label | UnsafeInflate output argument [Reverse] |
 | zlibTest.cpp:84:18:84:24 | *access to array | semmle.label | *access to array |
+| zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | semmle.label | *access to array [Reverse] |
+| zlibTest.cpp:84:18:84:24 | *access to array [Reverse] | semmle.label | *access to array [Reverse] |
 | zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument | semmle.label | UnsafeGzread output argument |
+| zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument [Reverse] | semmle.label | UnsafeGzread output argument [Reverse] |
 | zlibTest.cpp:85:19:85:25 | *access to array | semmle.label | *access to array |
 | zlibTest.cpp:85:19:85:25 | InflateString output argument | semmle.label | InflateString output argument |
 | zstdTest.cpp:26:39:26:42 | **argv | semmle.label | **argv |
@@ -216,12 +290,20 @@ subpaths
 | main.cpp:9:27:9:30 | **argv | libarchiveTests.cpp:30:45:30:48 | **argv | libarchiveTests.cpp:30:45:30:48 | **argv | main.cpp:9:27:9:30 | libarchive_test output argument |
 | main.cpp:10:24:10:27 | **argv | minizipTest.cpp:12:42:12:45 | **argv | minizipTest.cpp:12:42:12:45 | **argv | main.cpp:10:24:10:27 | minizip_test output argument |
 | main.cpp:11:21:11:24 | **argv | zlibTest.cpp:80:33:80:36 | **argv | zlibTest.cpp:80:33:80:36 | **argv | main.cpp:11:21:11:24 | zlib_test output argument |
-| main.cpp:11:21:11:24 | **argv | zlibTest.cpp:80:33:80:36 | **argv | zlibTest.cpp:80:33:80:36 | **argv [Return] | main.cpp:11:21:11:24 | zlib_test output argument |
-| main.cpp:11:21:11:24 | **argv | zlibTest.cpp:80:33:80:36 | **argv | zlibTest.cpp:80:33:80:36 | **argv [Return] | main.cpp:11:21:11:24 | zlib_test output argument |
+| main.cpp:11:21:11:24 | **argv | zlibTest.cpp:80:33:80:36 | **argv | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | main.cpp:11:21:11:24 | zlib_test output argument |
+| main.cpp:11:21:11:24 | **argv | zlibTest.cpp:80:33:80:36 | **argv | zlibTest.cpp:80:33:80:36 | **argv [Reverse] | main.cpp:11:21:11:24 | zlib_test output argument |
 | zlibTest.cpp:81:19:81:25 | *access to array | zlibTest.cpp:47:26:47:33 | *fileName | zlibTest.cpp:47:26:47:33 | *fileName | zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument |
+| zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | zlibTest.cpp:47:26:47:33 | *fileName [Reverse] | zlibTest.cpp:47:26:47:33 | *fileName [Reverse] | zlibTest.cpp:81:19:81:25 | *access to array [Reverse] |
+| zlibTest.cpp:81:19:81:25 | UnsafeGzfread output argument [Reverse] | zlibTest.cpp:47:26:47:33 | *fileName [Reverse] | zlibTest.cpp:47:26:47:33 | *fileName [Reverse] | zlibTest.cpp:81:19:81:25 | *access to array [Reverse] |
 | zlibTest.cpp:82:18:82:24 | *access to array | zlibTest.cpp:57:25:57:32 | *fileName | zlibTest.cpp:57:25:57:32 | *fileName | zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument |
+| zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | zlibTest.cpp:57:25:57:32 | *fileName [Reverse] | zlibTest.cpp:57:25:57:32 | *fileName [Reverse] | zlibTest.cpp:82:18:82:24 | *access to array [Reverse] |
+| zlibTest.cpp:82:18:82:24 | UnsafeGzgets output argument [Reverse] | zlibTest.cpp:57:25:57:32 | *fileName [Reverse] | zlibTest.cpp:57:25:57:32 | *fileName [Reverse] | zlibTest.cpp:82:18:82:24 | *access to array [Reverse] |
 | zlibTest.cpp:83:19:83:25 | *access to array | zlibTest.cpp:16:26:16:30 | *input | zlibTest.cpp:16:26:16:30 | *input | zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument |
+| zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument [Reverse] | zlibTest.cpp:16:26:16:30 | *input [Reverse] | zlibTest.cpp:16:26:16:30 | *input [Reverse] | zlibTest.cpp:83:19:83:25 | *access to array [Reverse] |
+| zlibTest.cpp:83:19:83:25 | UnsafeInflate output argument [Reverse] | zlibTest.cpp:16:26:16:30 | *input [Reverse] | zlibTest.cpp:16:26:16:30 | *input [Reverse] | zlibTest.cpp:83:19:83:25 | *access to array [Reverse] |
 | zlibTest.cpp:84:18:84:24 | *access to array | zlibTest.cpp:37:25:37:32 | *fileName | zlibTest.cpp:37:25:37:32 | *fileName | zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument |
+| zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument [Reverse] | zlibTest.cpp:37:25:37:32 | *fileName [Reverse] | zlibTest.cpp:37:25:37:32 | *fileName [Reverse] | zlibTest.cpp:84:18:84:24 | *access to array [Reverse] |
+| zlibTest.cpp:84:18:84:24 | UnsafeGzread output argument [Reverse] | zlibTest.cpp:37:25:37:32 | *fileName [Reverse] | zlibTest.cpp:37:25:37:32 | *fileName [Reverse] | zlibTest.cpp:84:18:84:24 | *access to array [Reverse] |
 | zlibTest.cpp:85:19:85:25 | *access to array | zlibTest.cpp:71:26:71:30 | *input | zlibTest.cpp:71:26:71:30 | *input | zlibTest.cpp:85:19:85:25 | InflateString output argument |
 #select
 | brotliTest.cpp:18:35:18:53 | *access to array | main.cpp:7:33:7:36 | **argv | brotliTest.cpp:18:35:18:53 | *access to array | The decompression output of $@ is not limited | brotliTest.cpp:18:5:18:27 | call to BrotliDecoderDecompress | BrotliDecoderDecompress |

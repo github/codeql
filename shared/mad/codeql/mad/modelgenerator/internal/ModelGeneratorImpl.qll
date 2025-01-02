@@ -289,8 +289,9 @@ module MakeModelGenerator<
     private DataFlow::ReturnKindExt kind;
 
     ReturnNodeExt() {
-      kind = DataFlow::getValueReturnPosition(this).getKind() or
-      kind = DataFlow::getParamReturnPosition(this, _).getKind()
+      kind = DataFlow::getValueReturnPosition(this).getKind()
+      or
+      kind = DataFlow::getParamReturnPosition(this).getKind()
     }
 
     /**
@@ -454,11 +455,19 @@ module MakeModelGenerator<
       state.(TaintRead).getStep() = 0
     }
 
-    predicate isSink(DataFlow::Node sink, FlowState state) {
-      sink instanceof ReturnNodeExt and
+    private DataFlow::ReturnKindExt isReturnSink(ReturnNodeExt sink, FlowState state) {
       not isOwnInstanceAccessNode(sink) and
       not exists(captureQualifierFlow(sink.(NodeExtended).getAsExprEnclosingCallable())) and
-      (state instanceof TaintRead or state instanceof TaintStore)
+      (state instanceof TaintRead or state instanceof TaintStore) and
+      result = sink.getKind()
+    }
+
+    predicate isSink(DataFlow::Node sink, FlowState state) {
+      isReturnSink(sink, state) instanceof DataFlow::ValueReturnKind
+    }
+
+    predicate isSinkReverse(DataFlow::Node sink, FlowState state) {
+      isReturnSink(sink, state) instanceof DataFlow::ParamUpdateReturnKind
     }
 
     predicate isAdditionalFlowStep(
@@ -555,8 +564,17 @@ module MakeModelGenerator<
         source.(NodeExtended).getEnclosingCallable() instanceof DataFlowSummaryTargetApi
       }
 
+      private DataFlow::ReturnKindExt isReturnSink(ReturnNodeExt sink) {
+        sink.getEnclosingCallable() instanceof DataFlowSummaryTargetApi and
+        result = sink.getKind()
+      }
+
       predicate isSink(DataFlow::Node sink) {
-        sink.(ReturnNodeExt).getEnclosingCallable() instanceof DataFlowSummaryTargetApi
+        isReturnSink(sink) instanceof DataFlow::ValueReturnKind
+      }
+
+      predicate isSinkReverse(DataFlow::Node sink) {
+        isReturnSink(sink) instanceof DataFlow::ParamUpdateReturnKind
       }
 
       predicate isAdditionalFlowStep = isAdditionalContentFlowStep/2;
@@ -966,8 +984,17 @@ module MakeModelGenerator<
       )
     }
 
+    private DataFlow::ReturnKindExt isReturnSink(ReturnNodeExt sink) {
+      sink.getEnclosingCallable() instanceof DataFlowSummaryTargetApi and
+      result = sink.getKind()
+    }
+
     predicate isSink(DataFlow::Node sink) {
-      sink.(ReturnNodeExt).getEnclosingCallable() instanceof DataFlowSourceTargetApi
+      isReturnSink(sink) instanceof DataFlow::ValueReturnKind
+    }
+
+    predicate isSinkReverse(DataFlow::Node sink) {
+      isReturnSink(sink) instanceof DataFlow::ParamUpdateReturnKind
     }
 
     DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSinkCallContext }

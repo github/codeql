@@ -8,7 +8,6 @@ private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
 private import DataFlowImplSpecific as DataFlowImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
-private import DataFlowImplCommon
 private import codeql.swift.dataflow.ExternalFlow
 
 module Input implements InputSig<Location, DataFlowImplSpecific::SwiftDataFlow> {

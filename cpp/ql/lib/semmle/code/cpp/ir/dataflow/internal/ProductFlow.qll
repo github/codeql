@@ -546,7 +546,7 @@ module ProductFlow {
       Flow1::PathGraph::edges(pred1, succ1, _, _) and
       exists(ReturnKindExt returnKind |
         succ1.getNode() = getAnOutNodeExt(call, returnKind) and
-        returnKind = getParamReturnPosition(_, pred1.asParameterReturnNode()).getKind()
+        returnKind = getParamReturnPosition(pred1.asParameterReturnNode()).getKind()
       )
     }
 
@@ -574,7 +574,7 @@ module ProductFlow {
       Flow2::PathGraph::edges(pred2, succ2, _, _) and
       exists(ReturnKindExt returnKind |
         succ2.getNode() = getAnOutNodeExt(call, returnKind) and
-        returnKind = getParamReturnPosition(_, pred2.asParameterReturnNode()).getKind()
+        returnKind = getParamReturnPosition(pred2.asParameterReturnNode()).getKind()
       )
     }
 

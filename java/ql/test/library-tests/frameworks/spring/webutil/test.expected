@@ -167,7 +167,7 @@ models
 | 166 | Summary: org.springframework.web.util; WebUtils; false; setSessionAttribute; ; ; Argument[2]; Argument[0]; taint; manual |
 edges
 | Test.java:44:30:44:34 | m : Map [<map.value>] : Object | Test.java:44:45:44:45 | m : Map [<map.value>] : Object | provenance |  |
-| Test.java:44:39:44:47 | this <constr(this)> [post update] : StubUriTemplateVariables [<map.value>] : Object | Test.java:44:5:44:28 | parameter this [Return] : StubUriTemplateVariables [<map.value>] : Object | provenance |  |
+| Test.java:44:39:44:47 | this <constr(this)> [post update] : StubUriTemplateVariables [<map.value>] : Object | Test.java:44:5:44:28 | parameter this [Reverse] : StubUriTemplateVariables [<map.value>] : Object | provenance |  |
 | Test.java:44:45:44:45 | m : Map [<map.value>] : Object | Test.java:44:39:44:47 | this <constr(this)> [post update] : StubUriTemplateVariables [<map.value>] : Object | provenance | MaD:2 |
 | Test.java:46:19:46:26 | parameter this : StubUriTemplateVariables [<map.value>] : Object | Test.java:46:50:46:53 | this : StubUriTemplateVariables [<map.value>] : Object | provenance |  |
 | Test.java:46:50:46:53 | this : StubUriTemplateVariables [<map.value>] : Object | Test.java:46:50:46:63 | get(...) : Object | provenance | MaD:7 |
@@ -1650,7 +1650,7 @@ edges
 | Test.java:2565:33:2565:35 | out [post update] : HttpServletRequest | Test.java:2566:9:2566:11 | out | provenance |  |
 | Test.java:2565:44:2565:45 | in : Object | Test.java:2565:33:2565:35 | out [post update] : HttpServletRequest | provenance | MaD:166 |
 nodes
-| Test.java:44:5:44:28 | parameter this [Return] : StubUriTemplateVariables [<map.value>] : Object | semmle.label | parameter this [Return] : StubUriTemplateVariables [<map.value>] : Object |
+| Test.java:44:5:44:28 | parameter this [Reverse] : StubUriTemplateVariables [<map.value>] : Object | semmle.label | parameter this [Reverse] : StubUriTemplateVariables [<map.value>] : Object |
 | Test.java:44:30:44:34 | m : Map [<map.value>] : Object | semmle.label | m : Map [<map.value>] : Object |
 | Test.java:44:39:44:47 | this <constr(this)> [post update] : StubUriTemplateVariables [<map.value>] : Object | semmle.label | this <constr(this)> [post update] : StubUriTemplateVariables [<map.value>] : Object |
 | Test.java:44:45:44:45 | m : Map [<map.value>] : Object | semmle.label | m : Map [<map.value>] : Object |
@@ -3438,10 +3438,10 @@ subpaths
 | Test.java:1146:47:1146:54 | source(...) : Object | Test.java:54:40:54:53 | element : Object | Test.java:54:65:54:110 | new LinkedMultiValueMap<>(...) : LinkedMultiValueMap [<map.key>] : Object | Test.java:1146:23:1146:55 | newMultiValueMapWithKey(...) : LinkedMultiValueMap [<map.key>] : Object |
 | Test.java:1154:49:1154:56 | source(...) : Object | Test.java:55:42:55:55 | element : Object | Test.java:55:134:55:134 | m : LinkedMultiValueMap [<map.value>] : Object | Test.java:1154:23:1154:57 | newMultiValueMapWithValue(...) : LinkedMultiValueMap [<map.value>] : Object |
 | Test.java:1162:49:1162:56 | source(...) : Object | Test.java:55:42:55:55 | element : Object | Test.java:55:134:55:134 | m : LinkedMultiValueMap [<map.value>] : Object | Test.java:1162:23:1162:57 | newMultiValueMapWithValue(...) : LinkedMultiValueMap [<map.value>] : Object |
-| Test.java:1302:73:1302:94 | of(...) : Map [<map.value>] : Object | Test.java:44:30:44:34 | m : Map [<map.value>] : Object | Test.java:44:5:44:28 | parameter this [Return] : StubUriTemplateVariables [<map.value>] : Object | Test.java:1302:44:1302:95 | new StubUriTemplateVariables(...) : StubUriTemplateVariables [<map.value>] : Object |
+| Test.java:1302:73:1302:94 | of(...) : Map [<map.value>] : Object | Test.java:44:30:44:34 | m : Map [<map.value>] : Object | Test.java:44:5:44:28 | parameter this [Reverse] : StubUriTemplateVariables [<map.value>] : Object | Test.java:1302:44:1302:95 | new StubUriTemplateVariables(...) : StubUriTemplateVariables [<map.value>] : Object |
 | Test.java:1303:10:1303:11 | in : StubUriTemplateVariables [<map.value>] : Object | Test.java:46:19:46:26 | parameter this : StubUriTemplateVariables [<map.value>] : Object | Test.java:46:50:46:63 | get(...) : Object | Test.java:1303:10:1303:26 | getValue(...) : Object |
 | Test.java:1337:29:1337:36 | source(...) : Object | Test.java:53:22:53:35 | element : Object | Test.java:53:47:53:67 | of(...) : Map [<map.value>] : Object | Test.java:1337:13:1337:37 | newMapWithValue(...) : Map [<map.value>] : Object |
-| Test.java:1353:73:1353:94 | of(...) : Map [<map.value>] : Object | Test.java:44:30:44:34 | m : Map [<map.value>] : Object | Test.java:44:5:44:28 | parameter this [Return] : StubUriTemplateVariables [<map.value>] : Object | Test.java:1353:44:1353:95 | new StubUriTemplateVariables(...) : StubUriTemplateVariables [<map.value>] : Object |
+| Test.java:1353:73:1353:94 | of(...) : Map [<map.value>] : Object | Test.java:44:30:44:34 | m : Map [<map.value>] : Object | Test.java:44:5:44:28 | parameter this [Reverse] : StubUriTemplateVariables [<map.value>] : Object | Test.java:1353:44:1353:95 | new StubUriTemplateVariables(...) : StubUriTemplateVariables [<map.value>] : Object |
 | Test.java:1398:20:1398:41 | (...)... : List [<element>] : Object | Test.java:49:20:49:39 | container : List [<element>] : Object | Test.java:49:51:49:77 | next(...) : Object | Test.java:1398:9:1398:42 | getElement(...) |
 | Test.java:1398:38:1398:40 | out : MultiValueMap [<map.value>, <element>] : Object | Test.java:51:20:51:29 | m : MultiValueMap [<map.value>, <element>] : Object | Test.java:51:41:51:51 | get(...) : Object [<element>] : Object | Test.java:1398:26:1398:41 | getMapValue(...) : Object [<element>] : Object |
 | Test.java:1405:19:1405:21 | out : MultiValueMap [<map.key>] : Object | Test.java:50:18:50:27 | m : MultiValueMap [<map.key>] : Object | Test.java:50:39:50:66 | next(...) : Object | Test.java:1405:9:1405:22 | getMapKey(...) |

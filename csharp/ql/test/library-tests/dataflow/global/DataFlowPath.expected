@@ -39,7 +39,8 @@ edges
 | Capture.cs:79:26:79:39 | "taint source" : String | Capture.cs:81:13:81:13 | [post] access to local function M : M [captured sink31] : String | provenance |  |
 | Capture.cs:81:13:81:13 | [post] access to local function M : M [captured sink31] : String | Capture.cs:83:9:83:19 | [post] access to local function CaptureOut2 : CaptureOut2 [captured sink31] : String | provenance |  |
 | Capture.cs:83:9:83:19 | [post] access to local function CaptureOut2 : CaptureOut2 [captured sink31] : String | Capture.cs:84:15:84:20 | access to local variable sink31 | provenance |  |
-| Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | provenance |  |
+| Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | provenance | MaD:3 |
+| Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | provenance | MaD:4 |
 | Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | provenance | heuristic-callback |
 | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | Capture.cs:93:15:93:20 | access to local variable sink32 | provenance |  |
 | Capture.cs:114:23:117:13 | [post] (...) => ... : (...) => ... [captured sink40] : String | Capture.cs:123:9:123:33 | [post] access to local function CaptureOutMultipleLambdas : CaptureOutMultipleLambdas [captured sink40] : String | provenance |  |
@@ -96,7 +97,7 @@ edges
 | Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:231:19:231:19 | access to local variable x | provenance | MaD:1 |
 | Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:231:19:231:19 | access to local variable x | provenance | heuristic-callback |
 | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | Capture.cs:234:15:234:15 | access to local variable x | provenance |  |
-| Capture.cs:232:17:232:30 | "taint source" : String | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | provenance |  |
+| Capture.cs:232:17:232:30 | "taint source" : String | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | provenance | MaD:1 |
 | Capture.cs:232:17:232:30 | "taint source" : String | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | provenance | heuristic-callback |
 | Capture.cs:242:9:242:9 | [post] access to local variable c : Capture [field Field] : String | Capture.cs:249:9:249:9 | access to local variable a : Action [captured c, field Field] : String | provenance |  |
 | Capture.cs:242:9:242:9 | [post] access to local variable c : Capture [field Field] : String | Capture.cs:251:15:251:15 | access to local variable c : Capture [field Field] : String | provenance |  |
@@ -141,8 +142,8 @@ edges
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured s] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured s] : String | provenance |  |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
-| Capture.cs:350:34:350:34 | a [Return] : (...) => ... [captured sink40] : String | Capture.cs:114:23:117:13 | [post] (...) => ... : (...) => ... [captured sink40] : String | provenance |  |
-| Capture.cs:352:9:352:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | Capture.cs:350:34:350:34 | a [Return] : (...) => ... [captured sink40] : String | provenance |  |
+| Capture.cs:350:34:350:34 | a [Reverse] : (...) => ... [captured sink40] : String | Capture.cs:114:23:117:13 | [post] (...) => ... : (...) => ... [captured sink40] : String | provenance |  |
+| Capture.cs:352:9:352:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | Capture.cs:350:34:350:34 | a [Reverse] : (...) => ... [captured sink40] : String | provenance |  |
 | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured s] : String | Capture.cs:217:19:217:19 | access to parameter s | provenance |  |
 | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | Capture.cs:55:27:58:17 | (...) => ... : (...) => ... [captured sink39] : String | provenance |  |
 | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | Capture.cs:57:27:57:32 | access to parameter sink39 | provenance |  |
@@ -421,20 +422,20 @@ edges
 | GlobalDataFlow.cs:469:21:469:21 | s : String | GlobalDataFlow.cs:469:32:469:32 | access to parameter s | provenance |  |
 | GlobalDataFlow.cs:470:15:470:17 | access to parameter arg : String | GlobalDataFlow.cs:469:21:469:21 | s : String | provenance |  |
 | GlobalDataFlow.cs:473:28:473:41 | "taint source" : String | GlobalDataFlow.cs:466:53:466:55 | arg : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:490:25:490:26 | [post] access to local variable x1 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:490:30:490:31 | [post] access to local variable x2 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:497:31:497:32 | [post] access to local variable y1 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:497:36:497:37 | [post] access to local variable y2 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:497:42:497:43 | [post] access to local variable y3 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:508:33:508:33 | [post] access to local variable x : SubSimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:515:20:515:20 | [post] access to parameter x : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:515:25:515:25 | [post] access to local variable y : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:527:20:527:20 | [post] access to local variable x : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:528:20:528:20 | [post] access to local variable y : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:529:18:529:18 | [post] access to local variable z : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:538:20:538:21 | [post] access to parameter sc : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:546:24:546:24 | [post] access to local variable x : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:490:25:490:26 | [post] access to local variable x1 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:490:30:490:31 | [post] access to local variable x2 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:497:31:497:32 | [post] access to local variable y1 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:497:36:497:37 | [post] access to local variable y2 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:497:42:497:43 | [post] access to local variable y3 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:508:33:508:33 | [post] access to local variable x : SubSimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:515:20:515:20 | [post] access to parameter x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:515:25:515:25 | [post] access to local variable y : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:527:20:527:20 | [post] access to local variable x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:528:20:528:20 | [post] access to local variable y : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:529:18:529:18 | [post] access to local variable z : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:538:20:538:21 | [post] access to parameter sc : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | GlobalDataFlow.cs:546:24:546:24 | [post] access to local variable x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:483:20:483:33 | "taint source" : String | GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:490:25:490:26 | [post] access to local variable x1 : SimpleClass [field field] : String | GlobalDataFlow.cs:491:15:491:16 | access to local variable x1 : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:490:30:490:31 | [post] access to local variable x2 : SimpleClass [field field] : String | GlobalDataFlow.cs:492:15:492:16 | access to local variable x2 : SimpleClass [field field] : String | provenance |  |
@@ -644,7 +645,7 @@ nodes
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured s] : String | semmle.label | a : (...) => ... [captured s] : String |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | semmle.label | a : (...) => ... [captured sink39] : String |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | semmle.label | a : (...) => ... [captured sink39] : String |
-| Capture.cs:350:34:350:34 | a [Return] : (...) => ... [captured sink40] : String | semmle.label | a [Return] : (...) => ... [captured sink40] : String |
+| Capture.cs:350:34:350:34 | a [Reverse] : (...) => ... [captured sink40] : String | semmle.label | a [Reverse] : (...) => ... [captured sink40] : String |
 | Capture.cs:352:9:352:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | semmle.label | [post] access to parameter a : (...) => ... [captured sink40] : String |
 | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured s] : String | semmle.label | access to parameter a : (...) => ... [captured s] : String |
 | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | semmle.label | access to parameter a : (...) => ... [captured sink39] : String |
@@ -877,7 +878,7 @@ nodes
 | GlobalDataFlow.cs:469:32:469:32 | access to parameter s | semmle.label | access to parameter s |
 | GlobalDataFlow.cs:470:15:470:17 | access to parameter arg : String | semmle.label | access to parameter arg : String |
 | GlobalDataFlow.cs:473:28:473:41 | "taint source" : String | semmle.label | "taint source" : String |
-| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | semmle.label | sc [Return] : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Reverse] : SimpleClass [field field] : String | semmle.label | sc [Reverse] : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | semmle.label | [post] access to parameter sc : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:483:20:483:33 | "taint source" : String | semmle.label | "taint source" : String |
 | GlobalDataFlow.cs:490:25:490:26 | [post] access to local variable x1 : SimpleClass [field field] : String | semmle.label | [post] access to local variable x1 : SimpleClass [field field] : String |

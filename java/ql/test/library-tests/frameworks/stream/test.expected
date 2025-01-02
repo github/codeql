@@ -299,25 +299,25 @@ edges
 | Test.java:232:33:232:33 | x : Object | Test.java:232:44:232:44 | x | provenance |  |
 | Test.java:238:18:238:18 | a : Object[] [[]] : Object | Test.java:238:32:238:32 | a : Object[] [[]] : Object | provenance |  |
 | Test.java:238:32:238:32 | a : Object[] [[]] : Object | Test.java:238:32:238:35 | ...[...] | provenance |  |
-| Test.java:239:18:239:19 | a1 [Return] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:14 |
-| Test.java:239:18:239:19 | a1 [Return] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:239:18:239:19 | a1 [Return] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:14 |
-| Test.java:239:18:239:19 | a1 [Return] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:239:18:239:19 | a1 [Return] : Object[] [[]] : Object | Test.java:254:18:254:19 | a1 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:239:18:239:19 | a1 [Return] : Object[] [[]] : Object | Test.java:254:22:254:23 | a2 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:239:18:239:19 | a1 [Return] : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:239:18:239:19 | a1 [Return] : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:239:22:239:23 | a2 [Return] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:14 |
-| Test.java:239:22:239:23 | a2 [Return] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:239:22:239:23 | a2 [Return] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:14 |
-| Test.java:239:22:239:23 | a2 [Return] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:239:22:239:23 | a2 [Return] : Object[] [[]] : Object | Test.java:254:18:254:19 | a1 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:239:22:239:23 | a2 [Return] : Object[] [[]] : Object | Test.java:254:22:254:23 | a2 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:239:22:239:23 | a2 [Return] : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:239:22:239:23 | a2 [Return] : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
-| Test.java:240:21:240:22 | a1 [post update] : Object[] [[]] : Object | Test.java:239:18:239:19 | a1 [Return] : Object[] [[]] : Object | provenance |  |
+| Test.java:239:18:239:19 | a1 [Reverse] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:14 |
+| Test.java:239:18:239:19 | a1 [Reverse] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:239:18:239:19 | a1 [Reverse] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:14 |
+| Test.java:239:18:239:19 | a1 [Reverse] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:239:18:239:19 | a1 [Reverse] : Object[] [[]] : Object | Test.java:254:18:254:19 | a1 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:239:18:239:19 | a1 [Reverse] : Object[] [[]] : Object | Test.java:254:22:254:23 | a2 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:239:18:239:19 | a1 [Reverse] : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:239:18:239:19 | a1 [Reverse] : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:239:22:239:23 | a2 [Reverse] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:14 |
+| Test.java:239:22:239:23 | a2 [Reverse] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:239:22:239:23 | a2 [Reverse] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:14 |
+| Test.java:239:22:239:23 | a2 [Reverse] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:239:22:239:23 | a2 [Reverse] : Object[] [[]] : Object | Test.java:254:18:254:19 | a1 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:239:22:239:23 | a2 [Reverse] : Object[] [[]] : Object | Test.java:254:22:254:23 | a2 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:239:22:239:23 | a2 [Reverse] : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:239:22:239:23 | a2 [Reverse] : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | provenance | MaD:14+MaD:12 |
+| Test.java:240:21:240:22 | a1 [post update] : Object[] [[]] : Object | Test.java:239:18:239:19 | a1 [Reverse] : Object[] [[]] : Object | provenance |  |
 | Test.java:240:29:240:47 | source(...) : Object | Test.java:240:21:240:22 | a1 [post update] : Object[] [[]] : Object | provenance |  |
-| Test.java:241:21:241:22 | a2 [post update] : Object[] [[]] : Object | Test.java:239:22:239:23 | a2 [Return] : Object[] [[]] : Object | provenance |  |
+| Test.java:241:21:241:22 | a2 [post update] : Object[] [[]] : Object | Test.java:239:22:239:23 | a2 [Reverse] : Object[] [[]] : Object | provenance |  |
 | Test.java:241:29:241:47 | source(...) : Object | Test.java:241:21:241:22 | a2 [post update] : Object[] [[]] : Object | provenance |  |
 | Test.java:248:28:257:18 | collect(...) : Object[] [[]] : Object | Test.java:258:18:258:20 | out : Object[] [[]] : Object | provenance |  |
 | Test.java:249:23:249:58 | new Object[] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:11 |
@@ -333,18 +333,18 @@ edges
 | Test.java:249:23:249:58 | {...} : Object[] [[]] : Object | Test.java:249:23:249:58 | new Object[] : Object[] [[]] : Object | provenance |  |
 | Test.java:249:38:249:56 | source(...) : Object | Test.java:249:23:249:58 | {...} : Object[] [[]] : Object | provenance |  |
 | Test.java:250:18:250:18 | a : Object[] [[]] : Object | Test.java:251:26:251:26 | a : Object[] [[]] : Object | provenance |  |
-| Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:12 |
-| Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:12+MaD:14 |
-| Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | Test.java:248:28:257:18 | collect(...) : Object[] [[]] : Object | provenance | MaD:12 |
-| Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | Test.java:248:28:257:18 | collect(...) : Object[] [[]] : Object | provenance | MaD:13 |
-| Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:12 |
-| Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:12+MaD:14 |
-| Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | Test.java:254:18:254:19 | a1 : Object[] [[]] : Object | provenance | MaD:12 |
-| Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | Test.java:254:22:254:23 | a2 : Object[] [[]] : Object | provenance | MaD:12 |
-| Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | provenance | MaD:12 |
-| Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | provenance | MaD:12 |
+| Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:12 |
+| Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | Test.java:238:18:238:18 | a : Object[] [[]] : Object | provenance | MaD:12+MaD:14 |
+| Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | Test.java:248:28:257:18 | collect(...) : Object[] [[]] : Object | provenance | MaD:12 |
+| Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | Test.java:248:28:257:18 | collect(...) : Object[] [[]] : Object | provenance | MaD:13 |
+| Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:12 |
+| Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | Test.java:250:18:250:18 | a : Object[] [[]] : Object | provenance | MaD:12+MaD:14 |
+| Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | Test.java:254:18:254:19 | a1 : Object[] [[]] : Object | provenance | MaD:12 |
+| Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | Test.java:254:22:254:23 | a2 : Object[] [[]] : Object | provenance | MaD:12 |
+| Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | provenance | MaD:12 |
+| Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | provenance | MaD:12 |
 | Test.java:251:26:251:26 | a : Object[] [[]] : Object | Test.java:251:26:251:29 | ...[...] | provenance |  |
-| Test.java:252:21:252:21 | a [post update] : Object[] [[]] : Object | Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | provenance |  |
+| Test.java:252:21:252:21 | a [post update] : Object[] [[]] : Object | Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | provenance |  |
 | Test.java:252:28:252:46 | source(...) : Object | Test.java:252:21:252:21 | a [post update] : Object[] [[]] : Object | provenance |  |
 | Test.java:254:18:254:19 | a1 : Object[] [[]] : Object | Test.java:255:26:255:27 | a1 : Object[] [[]] : Object | provenance |  |
 | Test.java:254:22:254:23 | a2 : Object[] [[]] : Object | Test.java:256:26:256:27 | a2 : Object[] [[]] : Object | provenance |  |
@@ -359,14 +359,14 @@ edges
 | Test.java:262:28:262:29 | in : Stream [<element>] : Object | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | provenance | MaD:15 |
 | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object | Test.java:269:18:269:20 | out : Object[] [[]] : Object | provenance |  |
 | Test.java:264:21:264:21 | x : Object | Test.java:264:36:264:36 | x : Object | provenance |  |
-| Test.java:264:29:264:29 | a [post update] : Object[] [[]] : Object | Test.java:264:18:264:18 | a [Return] : Object[] [[]] : Object | provenance |  |
+| Test.java:264:29:264:29 | a [post update] : Object[] [[]] : Object | Test.java:264:18:264:18 | a [Reverse] : Object[] [[]] : Object | provenance |  |
 | Test.java:264:36:264:36 | x : Object | Test.java:264:29:264:29 | a [post update] : Object[] [[]] : Object | provenance |  |
 | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | Test.java:267:29:267:30 | a1 : Object[] [[]] : Object | provenance |  |
 | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | Test.java:266:29:266:30 | a2 : Object[] [[]] : Object | provenance |  |
-| Test.java:266:21:266:22 | a1 [post update] : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 [Return] : Object[] [[]] : Object | provenance |  |
+| Test.java:266:21:266:22 | a1 [post update] : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 [Reverse] : Object[] [[]] : Object | provenance |  |
 | Test.java:266:29:266:30 | a2 : Object[] [[]] : Object | Test.java:266:29:266:33 | ...[...] : Object | provenance |  |
 | Test.java:266:29:266:33 | ...[...] : Object | Test.java:266:21:266:22 | a1 [post update] : Object[] [[]] : Object | provenance |  |
-| Test.java:267:21:267:22 | a2 [post update] : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 [Return] : Object[] [[]] : Object | provenance |  |
+| Test.java:267:21:267:22 | a2 [post update] : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 [Reverse] : Object[] [[]] : Object | provenance |  |
 | Test.java:267:29:267:30 | a1 : Object[] [[]] : Object | Test.java:267:29:267:33 | ...[...] : Object | provenance |  |
 | Test.java:267:29:267:33 | ...[...] : Object | Test.java:267:21:267:22 | a2 [post update] : Object[] [[]] : Object | provenance |  |
 | Test.java:269:18:269:20 | out : Object[] [[]] : Object | Test.java:269:18:269:23 | ...[...] | provenance |  |
@@ -776,8 +776,8 @@ nodes
 | Test.java:238:18:238:18 | a : Object[] [[]] : Object | semmle.label | a : Object[] [[]] : Object |
 | Test.java:238:32:238:32 | a : Object[] [[]] : Object | semmle.label | a : Object[] [[]] : Object |
 | Test.java:238:32:238:35 | ...[...] | semmle.label | ...[...] |
-| Test.java:239:18:239:19 | a1 [Return] : Object[] [[]] : Object | semmle.label | a1 [Return] : Object[] [[]] : Object |
-| Test.java:239:22:239:23 | a2 [Return] : Object[] [[]] : Object | semmle.label | a2 [Return] : Object[] [[]] : Object |
+| Test.java:239:18:239:19 | a1 [Reverse] : Object[] [[]] : Object | semmle.label | a1 [Reverse] : Object[] [[]] : Object |
+| Test.java:239:22:239:23 | a2 [Reverse] : Object[] [[]] : Object | semmle.label | a2 [Reverse] : Object[] [[]] : Object |
 | Test.java:240:21:240:22 | a1 [post update] : Object[] [[]] : Object | semmle.label | a1 [post update] : Object[] [[]] : Object |
 | Test.java:240:29:240:47 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:241:21:241:22 | a2 [post update] : Object[] [[]] : Object | semmle.label | a2 [post update] : Object[] [[]] : Object |
@@ -787,7 +787,7 @@ nodes
 | Test.java:249:23:249:58 | {...} : Object[] [[]] : Object | semmle.label | {...} : Object[] [[]] : Object |
 | Test.java:249:38:249:56 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:250:18:250:18 | a : Object[] [[]] : Object | semmle.label | a : Object[] [[]] : Object |
-| Test.java:250:18:250:18 | a [Return] : Object[] [[]] : Object | semmle.label | a [Return] : Object[] [[]] : Object |
+| Test.java:250:18:250:18 | a [Reverse] : Object[] [[]] : Object | semmle.label | a [Reverse] : Object[] [[]] : Object |
 | Test.java:251:26:251:26 | a : Object[] [[]] : Object | semmle.label | a : Object[] [[]] : Object |
 | Test.java:251:26:251:29 | ...[...] | semmle.label | ...[...] |
 | Test.java:252:21:252:21 | a [post update] : Object[] [[]] : Object | semmle.label | a [post update] : Object[] [[]] : Object |
@@ -804,14 +804,14 @@ nodes
 | Test.java:261:43:261:61 | source(...) : Object | semmle.label | source(...) : Object |
 | Test.java:262:28:262:29 | in : Stream [<element>] : Object | semmle.label | in : Stream [<element>] : Object |
 | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object | semmle.label | collect(...) : Object[] [[]] : Object |
-| Test.java:264:18:264:18 | a [Return] : Object[] [[]] : Object | semmle.label | a [Return] : Object[] [[]] : Object |
+| Test.java:264:18:264:18 | a [Reverse] : Object[] [[]] : Object | semmle.label | a [Reverse] : Object[] [[]] : Object |
 | Test.java:264:21:264:21 | x : Object | semmle.label | x : Object |
 | Test.java:264:29:264:29 | a [post update] : Object[] [[]] : Object | semmle.label | a [post update] : Object[] [[]] : Object |
 | Test.java:264:36:264:36 | x : Object | semmle.label | x : Object |
 | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | semmle.label | a1 : Object[] [[]] : Object |
-| Test.java:265:18:265:19 | a1 [Return] : Object[] [[]] : Object | semmle.label | a1 [Return] : Object[] [[]] : Object |
+| Test.java:265:18:265:19 | a1 [Reverse] : Object[] [[]] : Object | semmle.label | a1 [Reverse] : Object[] [[]] : Object |
 | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | semmle.label | a2 : Object[] [[]] : Object |
-| Test.java:265:22:265:23 | a2 [Return] : Object[] [[]] : Object | semmle.label | a2 [Return] : Object[] [[]] : Object |
+| Test.java:265:22:265:23 | a2 [Reverse] : Object[] [[]] : Object | semmle.label | a2 [Reverse] : Object[] [[]] : Object |
 | Test.java:266:21:266:22 | a1 [post update] : Object[] [[]] : Object | semmle.label | a1 [post update] : Object[] [[]] : Object |
 | Test.java:266:29:266:30 | a2 : Object[] [[]] : Object | semmle.label | a2 : Object[] [[]] : Object |
 | Test.java:266:29:266:33 | ...[...] : Object | semmle.label | ...[...] : Object |
@@ -1037,9 +1037,9 @@ subpaths
 | Test.java:201:34:201:36 | out : Object[] [[]] : Object | Test.java:16:27:16:35 | array : Object[] [[]] : Object | Test.java:16:47:16:54 | ...[...] : Object | Test.java:201:18:201:37 | getArrayElement(...) |
 | Test.java:208:34:208:36 | out : Object[] [[]] : Object | Test.java:16:27:16:35 | array : Object[] [[]] : Object | Test.java:16:47:16:54 | ...[...] : Object | Test.java:208:18:208:37 | getArrayElement(...) |
 | Test.java:215:29:215:31 | out : List [<element>] : Object | Test.java:18:22:18:35 | it : List [<element>] : Object | Test.java:18:47:18:66 | next(...) : Object | Test.java:215:18:215:32 | getElement(...) |
-| Test.java:262:28:262:29 | in : Stream [<element>] : Object | Test.java:264:21:264:21 | x : Object | Test.java:264:18:264:18 | a [Return] : Object[] [[]] : Object | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object |
-| Test.java:262:28:262:29 | in : Stream [<element>] : Object | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 [Return] : Object[] [[]] : Object | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object |
-| Test.java:262:28:262:29 | in : Stream [<element>] : Object | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 [Return] : Object[] [[]] : Object | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object |
+| Test.java:262:28:262:29 | in : Stream [<element>] : Object | Test.java:264:21:264:21 | x : Object | Test.java:264:18:264:18 | a [Reverse] : Object[] [[]] : Object | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object |
+| Test.java:262:28:262:29 | in : Stream [<element>] : Object | Test.java:265:18:265:19 | a1 : Object[] [[]] : Object | Test.java:265:22:265:23 | a2 [Reverse] : Object[] [[]] : Object | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object |
+| Test.java:262:28:262:29 | in : Stream [<element>] : Object | Test.java:265:22:265:23 | a2 : Object[] [[]] : Object | Test.java:265:18:265:19 | a1 [Reverse] : Object[] [[]] : Object | Test.java:262:28:268:18 | collect(...) : Object[] [[]] : Object |
 | Test.java:289:29:289:31 | out : Stream [<element>] : Object | Test.java:17:22:17:38 | s : Stream [<element>] : Object | Test.java:17:50:17:68 | next(...) : Object | Test.java:289:18:289:32 | getElement(...) |
 | Test.java:319:29:319:31 | out : Stream [<element>] : Object | Test.java:17:22:17:38 | s : Stream [<element>] : Object | Test.java:17:50:17:68 | next(...) : Object | Test.java:319:18:319:32 | getElement(...) |
 | Test.java:335:29:335:31 | out : Stream [<element>] : Object | Test.java:17:22:17:38 | s : Stream [<element>] : Object | Test.java:17:50:17:68 | next(...) : Object | Test.java:335:18:335:32 | getElement(...) |
