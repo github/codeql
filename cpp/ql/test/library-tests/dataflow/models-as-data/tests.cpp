@@ -456,12 +456,12 @@ void test_function_pointers() {
 template<typename X>
 struct StructWithTypedefInParameter {
 	typedef X Type;
-	X& parameter_ref_to_return_ref(const Type& x); // $ MISSING: interpretElement
+	X& parameter_ref_to_return_ref(const Type& x); // $ interpretElement
 };
 
 void test_parameter_ref_to_return_ref() {
 	int x = source();
 	StructWithTypedefInParameter<int> s;
 	int y = s.parameter_ref_to_return_ref(x);
-	sink(y); // $ MISSING: ir
+	sink(y); // $ ir
 }
