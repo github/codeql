@@ -991,7 +991,7 @@ void test_CSimpleStringT() {
   sink(s4.GetBuffer()); // $ ir
   sink(s4.GetBufferSetLength(10)); // $ ir
 
-  sink(s4.LockBuffer());
+  sink(s4.LockBuffer()); // $ ir
 
   CSimpleStringT<char> s7;
   s7.SetAt(0, source<char>());
