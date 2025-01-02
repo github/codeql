@@ -33,3 +33,7 @@ query predicate hasNullableRefTypeConstraint(TypeParameter tp, TypeParameterCons
 query predicate hasNotNullConstraint(TypeParameter tp, TypeParameterConstraints tpc) {
   typeParameterContraints(tp, tpc) and tpc.hasNotNullTypeConstraint()
 }
+
+query predicate hasAllowRefLikeTypeConstraint(TypeParameter tp, TypeParameterConstraints tpc) {
+  typeParameterContraints(tp, tpc) and tpc.hasAllowRefLikeTypeConstraint()
+}

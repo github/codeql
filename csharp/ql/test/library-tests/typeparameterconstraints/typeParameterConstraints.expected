@@ -20,3 +20,5 @@ hasUnmanagedTypeConstraint
 hasNullableRefTypeConstraint
 hasNotNullConstraint
 | TypeParameterConstraints.cs:14:20:14:21 | T5 | file://:0:0:0:0 | where T5: ... |
+hasAllowRefLikeTypeConstraint
+| TypeParameterConstraints.cs:18:20:18:21 | T7 | file://:0:0:0:0 | where T7: ... |

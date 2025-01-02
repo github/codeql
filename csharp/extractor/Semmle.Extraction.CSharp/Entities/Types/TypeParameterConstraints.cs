@@ -43,6 +43,9 @@ namespace Semmle.Extraction.CSharp.Entities
             if (Symbol.HasNotNullConstraint)
                 trapFile.general_type_parameter_constraints(this, 6);
 
+            if (Symbol.AllowsRefLikeType)
+                trapFile.general_type_parameter_constraints(this, 7);
+
             foreach (var abase in Symbol.GetAnnotatedTypeConstraints())
             {
                 var t = Type.Create(Context, abase.Symbol);
