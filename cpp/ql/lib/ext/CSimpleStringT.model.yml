@@ -12,7 +12,7 @@ extensions:
       - ["", "CSimpleStringT", True, "CopyChars", "(XCHAR *,size_t,const XCHAR *,int)", "", "Argument[*2]", "Argument[*0]", "value", "manual"]
       - ["", "CSimpleStringT", True, "CopyCharsOverlapped", "(XCHAR *,const XCHAR *,int)", "", "Argument[*1]", "Argument[*0]", "value", "manual"]
       - ["", "CSimpleStringT", True, "GetString", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
-      - ["", "CSimpleStringT", True, "LockString", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CSimpleStringT", True, "LockBuffer", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
       - ["", "CSimpleStringT", True, "SetAt", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
       - ["", "CSimpleStringT", True, "SetString", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
       - ["", "CSimpleStringT", True, "operator PCXSTR", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
