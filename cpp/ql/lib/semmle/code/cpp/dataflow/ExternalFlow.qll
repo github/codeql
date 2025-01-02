@@ -491,6 +491,10 @@ string getParameterTypeWithoutTemplateArguments(Function f, int n) {
     parseAngles(s, base, _, specifiers) and
     result = base + specifiers
   )
+  or
+  f.isVarargs() and
+  n = f.getNumberOfParameters() and
+  result = "..."
 }
 
 /**
