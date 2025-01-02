@@ -79,14 +79,14 @@ abstract private class ParamsCollectionTypeImpl extends ValueOrRefType {
   abstract Type getElementType();
 }
 
-private class AddArrayType extends ParamsCollectionTypeImpl instanceof ArrayType {
+private class ParamsArrayType extends ParamsCollectionTypeImpl instanceof ArrayType {
   override Type getElementType() { result = ArrayType.super.getElementType() }
 }
 
-private class AddCollectionTypes extends ParamsCollectionTypeImpl {
+private class ParamsConstructedCollectionTypes extends ParamsCollectionTypeImpl {
   private ConstructedType base;
 
-  AddCollectionTypes() {
+  ParamsConstructedCollectionTypes() {
     exists(UnboundGenericType unboundbase |
       base = this.getABaseType*() and unboundbase = base.getUnboundGeneric()
     |
