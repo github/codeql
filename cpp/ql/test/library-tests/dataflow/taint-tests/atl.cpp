@@ -1155,7 +1155,7 @@ void test_CStringT() {
   sink(s14.GetString()); // $ ir
 
   CStringT<char> s15;
-  s15.AppendFormat(42, source<char>());
+  s15.AppendFormat(42, indirect_source<char>());
   sink(s15.GetString()); // $ ir
 
   CStringT<char> s16;
