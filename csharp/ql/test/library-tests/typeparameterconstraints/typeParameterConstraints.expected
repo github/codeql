@@ -18,3 +18,5 @@ hasValueTypeConstraint
 hasUnmanagedTypeConstraint
 | TypeParameterConstraints.cs:10:20:10:21 | T3 | file://:0:0:0:0 | where T3: ... |
 hasNullableRefTypeConstraint
+hasNotNullConstraint
+| TypeParameterConstraints.cs:14:20:14:21 | T5 | file://:0:0:0:0 | where T5: ... |

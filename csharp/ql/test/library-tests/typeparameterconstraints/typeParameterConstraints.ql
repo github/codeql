@@ -29,3 +29,7 @@ query predicate hasUnmanagedTypeConstraint(TypeParameter tp, TypeParameterConstr
 query predicate hasNullableRefTypeConstraint(TypeParameter tp, TypeParameterConstraints tpc) {
   typeParameterContraints(tp, tpc) and tpc.hasNullableRefTypeConstraint()
 }
+
+query predicate hasNotNullConstraint(TypeParameter tp, TypeParameterConstraints tpc) {
+  typeParameterContraints(tp, tpc) and tpc.hasNotNullTypeConstraint()
+}

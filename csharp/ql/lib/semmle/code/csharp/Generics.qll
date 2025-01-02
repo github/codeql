@@ -287,6 +287,9 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
   /** Holds if these constraints include a nullable reference type constraint. */
   predicate hasNullableRefTypeConstraint() { general_type_parameter_constraints(this, 5) }
 
+  /** Holds if these constraints include a not-null type constraint. */
+  predicate hasNotNullTypeConstraint() { general_type_parameter_constraints(this, 6) }
+
   /** Gets a textual representation of these constraints. */
   override string toString() { result = "where " + this.getTypeParameter().getName() + ": ..." }
 
