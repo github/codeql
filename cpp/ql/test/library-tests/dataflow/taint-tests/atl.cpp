@@ -1133,7 +1133,7 @@ void test_CStringT() {
   CStringT<wchar_t> s10(wc);
   sink(s10.GetString()); // $ ir
 
-  sink(&s1); // $ ast ir
+  sink(static_cast<CSimpleStringT<char>&>(s1)); // $ ast ir
 
   auto bstr = s1.AllocSysString();
   sink(bstr); // $ ir
