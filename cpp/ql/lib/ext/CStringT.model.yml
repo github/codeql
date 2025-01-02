@@ -3,8 +3,8 @@ extensions:
       pack: codeql/cpp-all
       extensible: summaryModel
     data: # TODO this model can be improved a lot once we have MapKey content # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
-      - ["", "CStringT", True, "CStringT", "(const VARIANT &)", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
-      - ["", "CStringT", True, "CStringT", "(const VARIANT &,IAtlStringMgr *)", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CStringT", True, "CStringT", "(const VARIANT &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CStringT", True, "CStringT", "(const VARIANT &,IAtlStringMgr *)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
       - ["", "CStringT", True, "CStringT", "(const CStringT &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
       - ["", "CStringT", True, "CStringT", "(const CSimpleStringT &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
       - ["", "CStringT", True, "CStringT", "(const XCHAR *)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
