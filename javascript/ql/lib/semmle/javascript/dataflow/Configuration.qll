@@ -67,6 +67,7 @@
  * Finally, we build `PathNode`s for all nodes that appear on a path
  * computed by `onPath`.
  */
+deprecated module;
 
 private import javascript
 private import internal.FlowSteps
