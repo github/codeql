@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.OgnlInjectionQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module OgnlInjectionTest implements TestSig {
   string getARelevantTag() { result = "hasOgnlInjection" }

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["lensesio/stream-reactor/.github/workflows/build.yml", "*", "input.version", "code-injection", "generated"]

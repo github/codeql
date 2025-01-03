@@ -145,6 +145,12 @@ extractor_steps(
   @abi
 | @addressable
 | @arg_list
+| @asm_dir_spec
+| @asm_operand
+| @asm_operand_expr
+| @asm_option
+| @asm_piece
+| @asm_reg_spec
 | @assoc_item
 | @assoc_item_list
 | @attr
@@ -162,7 +168,6 @@ extractor_steps(
 | @item_list
 | @label
 | @let_else
-| @lifetime
 | @macro_items
 | @macro_stmts
 | @match_arm
@@ -170,9 +175,9 @@ extractor_steps(
 | @match_guard
 | @meta
 | @name
-| @name_ref
 | @param_base
 | @param_list
+| @parenthesized_arg_list
 | @pat
 | @path
 | @path_segment
@@ -194,6 +199,8 @@ extractor_steps(
 | @type_bound
 | @type_bound_list
 | @type_repr
+| @use_bound_generic_arg
+| @use_bound_generic_args
 | @use_tree
 | @use_tree_list
 | @variant_list
@@ -246,6 +253,58 @@ arg_list_args(
   int id: @arg_list ref,
   int index: int ref,
   int arg: @expr ref
+);
+
+asm_dir_specs(
+  unique int id: @asm_dir_spec
+);
+
+@asm_operand =
+  @asm_const
+| @asm_label
+| @asm_reg_operand
+| @asm_sym
+;
+
+asm_operand_exprs(
+  unique int id: @asm_operand_expr
+);
+
+#keyset[id]
+asm_operand_expr_in_exprs(
+  int id: @asm_operand_expr ref,
+  int in_expr: @expr ref
+);
+
+#keyset[id]
+asm_operand_expr_out_exprs(
+  int id: @asm_operand_expr ref,
+  int out_expr: @expr ref
+);
+
+asm_options(
+  unique int id: @asm_option
+);
+
+#keyset[id]
+asm_option_is_raw(
+  int id: @asm_option ref
+);
+
+@asm_piece =
+  @asm_clobber_abi
+| @asm_operand_named
+| @asm_options_list
+;
+
+asm_reg_specs(
+  unique int id: @asm_reg_spec
+);
+
+#keyset[id]
+asm_reg_spec_name_refs(
+  int id: @asm_reg_spec ref,
+  int name_ref: @name_ref ref
 );
 
 @assoc_item =
@@ -465,16 +524,6 @@ let_else_block_exprs(
   int block_expr: @block_expr ref
 );
 
-lifetimes(
-  unique int id: @lifetime
-);
-
-#keyset[id]
-lifetime_texts(
-  int id: @lifetime ref,
-  string text: string ref
-);
-
 macro_items(
   unique int id: @macro_items
 );
@@ -597,16 +646,6 @@ name_texts(
   string text: string ref
 );
 
-name_refs(
-  unique int id: @name_ref
-);
-
-#keyset[id]
-name_ref_texts(
-  int id: @name_ref ref,
-  string text: string ref
-);
-
 @param_base =
   @param
 | @self_param
@@ -640,6 +679,17 @@ param_list_params(
 param_list_self_params(
   int id: @param_list ref,
   int self_param: @self_param ref
+);
+
+parenthesized_arg_lists(
+  unique int id: @parenthesized_arg_list
+);
+
+#keyset[id, index]
+parenthesized_arg_list_type_args(
+  int id: @parenthesized_arg_list ref,
+  int index: int ref,
+  int type_arg: @type_arg ref
 );
 
 @pat =
@@ -694,9 +744,9 @@ path_segment_name_refs(
 );
 
 #keyset[id]
-path_segment_param_lists(
+path_segment_parenthesized_arg_lists(
   int id: @path_segment ref,
-  int param_list: @param_list ref
+  int parenthesized_arg_list: @parenthesized_arg_list ref
 );
 
 #keyset[id]
@@ -964,12 +1014,6 @@ type_bounds(
 );
 
 #keyset[id]
-type_bound_generic_param_lists(
-  int id: @type_bound ref,
-  int generic_param_list: @generic_param_list ref
-);
-
-#keyset[id]
 type_bound_is_async(
   int id: @type_bound ref
 );
@@ -989,6 +1033,12 @@ type_bound_lifetimes(
 type_bound_type_reprs(
   int id: @type_bound ref,
   int type_repr: @type_repr ref
+);
+
+#keyset[id]
+type_bound_use_bound_generic_args(
+  int id: @type_bound ref,
+  int use_bound_generic_args: @use_bound_generic_args ref
 );
 
 type_bound_lists(
@@ -1018,6 +1068,22 @@ type_bound_list_bounds(
 | @slice_type_repr
 | @tuple_type_repr
 ;
+
+@use_bound_generic_arg =
+  @lifetime
+| @name_ref
+;
+
+use_bound_generic_args(
+  unique int id: @use_bound_generic_args
+);
+
+#keyset[id, index]
+use_bound_generic_args_use_bound_generic_args(
+  int id: @use_bound_generic_args ref,
+  int index: int ref,
+  int use_bound_generic_arg: @use_bound_generic_arg ref
+);
 
 use_trees(
   unique int id: @use_tree
@@ -1151,8 +1217,34 @@ array_type_repr_element_type_reprs(
   int element_type_repr: @type_repr ref
 );
 
+asm_clobber_abis(
+  unique int id: @asm_clobber_abi
+);
+
+asm_consts(
+  unique int id: @asm_const
+);
+
+#keyset[id]
+asm_const_exprs(
+  int id: @asm_const ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
+asm_const_is_const(
+  int id: @asm_const ref
+);
+
 asm_exprs(
   unique int id: @asm_expr
+);
+
+#keyset[id, index]
+asm_expr_asm_pieces(
+  int id: @asm_expr ref,
+  int index: int ref,
+  int asm_piece: @asm_piece ref
 );
 
 #keyset[id, index]
@@ -1162,10 +1254,80 @@ asm_expr_attrs(
   int attr: @attr ref
 );
 
-#keyset[id]
-asm_expr_exprs(
+#keyset[id, index]
+asm_expr_templates(
   int id: @asm_expr ref,
-  int expr: @expr ref
+  int index: int ref,
+  int template: @expr ref
+);
+
+asm_labels(
+  unique int id: @asm_label
+);
+
+#keyset[id]
+asm_label_block_exprs(
+  int id: @asm_label ref,
+  int block_expr: @block_expr ref
+);
+
+asm_operand_nameds(
+  unique int id: @asm_operand_named
+);
+
+#keyset[id]
+asm_operand_named_asm_operands(
+  int id: @asm_operand_named ref,
+  int asm_operand: @asm_operand ref
+);
+
+#keyset[id]
+asm_operand_named_names(
+  int id: @asm_operand_named ref,
+  int name: @name ref
+);
+
+asm_options_lists(
+  unique int id: @asm_options_list
+);
+
+#keyset[id, index]
+asm_options_list_asm_options(
+  int id: @asm_options_list ref,
+  int index: int ref,
+  int asm_option: @asm_option ref
+);
+
+asm_reg_operands(
+  unique int id: @asm_reg_operand
+);
+
+#keyset[id]
+asm_reg_operand_asm_dir_specs(
+  int id: @asm_reg_operand ref,
+  int asm_dir_spec: @asm_dir_spec ref
+);
+
+#keyset[id]
+asm_reg_operand_asm_operand_exprs(
+  int id: @asm_reg_operand ref,
+  int asm_operand_expr: @asm_operand_expr ref
+);
+
+#keyset[id]
+asm_reg_operand_asm_reg_specs(
+  int id: @asm_reg_operand ref,
+  int asm_reg_spec: @asm_reg_spec ref
+);
+
+asm_syms(
+  unique int id: @asm_sym
+);
+
+#keyset[id]
+asm_sym_paths(
+  int id: @asm_sym ref,
+  int path: @path ref
 );
 
 assoc_type_args(
@@ -1794,6 +1956,16 @@ let_stmt_type_reprs(
   int type_repr: @type_repr ref
 );
 
+lifetimes(
+  unique int id: @lifetime
+);
+
+#keyset[id]
+lifetime_texts(
+  int id: @lifetime ref,
+  string text: string ref
+);
+
 lifetime_args(
   unique int id: @lifetime_arg
 );
@@ -1905,6 +2077,16 @@ match_expr_scrutinees(
 match_expr_match_arm_lists(
   int id: @match_expr ref,
   int match_arm_list: @match_arm_list ref
+);
+
+name_refs(
+  unique int id: @name_ref
+);
+
+#keyset[id]
+name_ref_texts(
+  int id: @name_ref ref,
+  string text: string ref
 );
 
 never_type_reprs(
@@ -2224,6 +2406,11 @@ return_expr_exprs(
 
 self_params(
   unique int id: @self_param
+);
+
+#keyset[id]
+self_param_is_ref(
+  int id: @self_param ref
 );
 
 #keyset[id]
@@ -3003,6 +3190,11 @@ static_is_mut(
 
 #keyset[id]
 static_is_static(
+  int id: @static ref
+);
+
+#keyset[id]
+static_is_unsafe(
   int id: @static ref
 );
 

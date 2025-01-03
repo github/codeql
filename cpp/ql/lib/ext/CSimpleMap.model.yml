@@ -10,3 +10,4 @@ extensions:
       - ["", "CSimpleMap", True, "SetAtIndex", "", "", "Argument[*@2]", "Argument[-1].Element[@]", "value", "manual"]
       - ["", "CSimpleMap", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
       - ["", "CSimpleMap", True, "operator=", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["", "CSimpleMap", True, "operator=", "", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]

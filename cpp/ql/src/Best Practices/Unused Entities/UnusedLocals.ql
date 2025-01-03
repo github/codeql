@@ -26,7 +26,7 @@ import cpp
  */
 class TemplateDependentType extends Type {
   TemplateDependentType() {
-    this instanceof TemplateParameter
+    this instanceof TypeTemplateParameter
     or
     exists(TemplateDependentType t |
       this.refersToDirectly(t) and

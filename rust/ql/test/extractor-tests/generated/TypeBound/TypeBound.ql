@@ -3,15 +3,17 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  TypeBound x, string hasGenericParamList, string isAsync, string isConst, string hasLifetime,
-  string hasTypeRepr
+  TypeBound x, string isAsync, string isConst, string hasLifetime, string hasTypeRepr,
+  string hasUseBoundGenericArgs
 where
   toBeTested(x) and
   not x.isUnknown() and
-  (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
   (if x.isAsync() then isAsync = "yes" else isAsync = "no") and
   (if x.isConst() then isConst = "yes" else isConst = "no") and
   (if x.hasLifetime() then hasLifetime = "yes" else hasLifetime = "no") and
-  if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
-select x, "hasGenericParamList:", hasGenericParamList, "isAsync:", isAsync, "isConst:", isConst,
-  "hasLifetime:", hasLifetime, "hasTypeRepr:", hasTypeRepr
+  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
+  if x.hasUseBoundGenericArgs()
+  then hasUseBoundGenericArgs = "yes"
+  else hasUseBoundGenericArgs = "no"
+select x, "isAsync:", isAsync, "isConst:", isConst, "hasLifetime:", hasLifetime, "hasTypeRepr:",
+  hasTypeRepr, "hasUseBoundGenericArgs:", hasUseBoundGenericArgs

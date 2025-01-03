@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["freeradius/freeradius-server", "*", "input.gcc_ver", "code-injection", "generated"]
+     - ["freeradius/freeradius-server", "*", "input.llvm_ver", "code-injection", "generated"]
+     - ["freeradius/freeradius-server", "*", "input.sql_mysql_test_server", "code-injection", "generated"]

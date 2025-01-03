@@ -11,6 +11,7 @@ typedef void* PVOID;
 typedef bool BOOL;
 typedef char* PSTR, *LPSTR;
 typedef const char* LPCTSTR;
+typedef const wchar_t* LPCWSTR;
 typedef unsigned short WORD;
 typedef unsigned long DWORD;
 typedef void* HANDLE;
@@ -897,4 +898,345 @@ void test_CUrl() {
     url2.SetUserName(x);
     sink(url2); // $ ir
   }
+}
+
+struct IAtlStringMgr {}; // simplified
+
+using XCHAR = char;
+using YCHAR = wchar_t;
+
+template <typename BaseType>
+struct CSimpleStringT {
+  using PCXSTR = const BaseType*; // simplified
+  using PXSTR = BaseType*; // simplified
+
+  CSimpleStringT() throw();
+  CSimpleStringT(const XCHAR* pchSrc, int nLength, IAtlStringMgr* pStringMgr);
+  CSimpleStringT(PCXSTR pszSrc, IAtlStringMgr* pStringMgr);
+  CSimpleStringT(const CSimpleStringT& strSrc);
+
+  ~CSimpleStringT() throw();
+
+  void Append(const CSimpleStringT& strSrc);
+  void Append(PCXSTR pszSrc, int nLength);
+  void Append(PCXSTR pszSrc);
+
+  void AppendChar(XCHAR ch);
+
+  static void CopyChars(XCHAR* pchDest, const XCHAR* pchSrc, int nChars) throw();
+  static void CopyChars(XCHAR* pchDest, size_t nDestLen, const XCHAR* pchSrc, int nChars) throw();
+  static void CopyCharsOverlapped(XCHAR* pchDest, const XCHAR* pchSrc, int nChars) throw();
+
+  XCHAR GetAt(int iChar) const;
+  PXSTR GetBuffer(int nMinBufferLength);
+  PXSTR GetBuffer();
+  PXSTR GetBufferSetLength(int nLength);
+
+  PCXSTR GetString() const throw();
+  PXSTR LockBuffer();
+  void SetAt(int iChar, XCHAR ch);
+  void SetString(PCXSTR pszSrc, int nLength);
+  void SetString(PCXSTR pszSrc);
+  operator PCXSTR() const throw();
+  XCHAR operator[](int iChar) const;
+
+  CSimpleStringT& operator+=(PCXSTR pszSrc);
+  CSimpleStringT& operator+=(const CSimpleStringT& strSrc);
+  CSimpleStringT& operator+=(char ch);
+  CSimpleStringT& operator+=(unsigned char ch);
+  CSimpleStringT& operator+=(wchar_t ch);
+
+  CSimpleStringT& operator=(PCXSTR pszSrc);
+  CSimpleStringT& operator=(const CSimpleStringT& strSrc);
+};
+
+void test_CSimpleStringT() {
+  char* x = indirect_source<char>();
+
+  CSimpleStringT<char> s1(x, 10, nullptr);
+  sink(s1.GetString()); // $ ir
+
+  CSimpleStringT<char> s2(x, nullptr);
+  sink(s2.GetString()); // $ ir
+
+  CSimpleStringT<char> s3(s2);
+  sink(s3.GetString()); // $ ir
+
+  CSimpleStringT<char> s4;
+  s4.Append(indirect_source<char>());
+  sink(s4.GetString()); // $ ir
+
+  CSimpleStringT<char> s5;
+  s5.Append(s4);
+  sink(s5.GetString()); // $ ir
+
+  CSimpleStringT<char> s6;
+  s6.Append(indirect_source<char>(), 42);
+  sink(s6.GetString()); // $ ir
+
+  char buffer1[128];
+  CSimpleStringT<char>::CopyChars(buffer1, x, 10);
+  sink(buffer1); // $ ast ir
+
+  char buffer2[128];
+  CSimpleStringT<char>::CopyChars(buffer2, 128, x, 10);
+  sink(buffer2); // $ ast ir
+
+  char buffer3[128];
+  CSimpleStringT<char>::CopyCharsOverlapped(buffer3, x, 10);
+  sink(buffer3); // $ ast ir
+
+  sink(s4.GetAt(0)); // $ ir
+  sink(s4.GetBuffer(10)); // $ ir
+  sink(s4.GetBuffer()); // $ ir
+  sink(s4.GetBufferSetLength(10)); // $ ir
+
+  sink(s4.LockBuffer()); // $ ir
+
+  CSimpleStringT<char> s7;
+  s7.SetAt(0, source<char>());
+  sink(s7.GetAt(0)); // $ ir
+
+  CSimpleStringT<char> s8;
+  s8.SetString(indirect_source<char>());
+  sink(s8.GetAt(0)); // $ ir
+
+  CSimpleStringT<char> s9;
+  s9.SetString(indirect_source<char>(), 1024);
+  sink(s9.GetAt(0)); // $ ir
+
+  sink(static_cast<CSimpleStringT<char>::PCXSTR>(s1)); // $ ir
+  
+  sink(s1[0]); // $ ir
+}
+
+template<typename T>
+struct MakeOther {};
+
+template<>
+struct MakeOther<char> {
+  using other_t = wchar_t;
+};
+
+template<>
+struct MakeOther<wchar_t> {
+  using other_t = char;
+};
+
+template<typename BaseType>
+struct CStringT : public CSimpleStringT<BaseType> {
+  using XCHAR = BaseType; // simplified
+  using YCHAR = typename MakeOther<BaseType>::other_t; // simplified
+  using PCXSTR = typename CSimpleStringT<BaseType>::PCXSTR;
+  using PXSTR = typename CSimpleStringT<BaseType>::PXSTR;
+  CStringT() throw();
+
+  CStringT(IAtlStringMgr* pStringMgr) throw();
+  CStringT(const VARIANT& varSrc);
+  CStringT(const VARIANT& varSrc, IAtlStringMgr* pStringMgr);
+  CStringT(const CStringT& strSrc);
+  CStringT(const CSimpleStringT<BaseType>& strSrc);
+  CStringT(const XCHAR* pszSrc);
+  CStringT(const YCHAR* pszSrc);
+  CStringT(LPCSTR pszSrc, IAtlStringMgr* pStringMgr);
+  CStringT(LPCWSTR pszSrc, IAtlStringMgr* pStringMgr);
+  CStringT(const unsigned char* pszSrc);
+  CStringT(char* pszSrc);
+  CStringT(unsigned char* pszSrc);
+  CStringT(wchar_t* pszSrc);
+  CStringT(const unsigned char* pszSrc, IAtlStringMgr* pStringMgr);
+  CStringT(char ch, int nLength = 1);
+  CStringT(wchar_t ch, int nLength = 1);
+  CStringT(const XCHAR* pch, int nLength);
+  CStringT(const YCHAR* pch, int nLength);
+  CStringT(const XCHAR* pch, int nLength, IAtlStringMgr* pStringMgr);
+  CStringT(const YCHAR* pch, int nLength, IAtlStringMgr* pStringMgr);
+
+  operator CSimpleStringT<BaseType> &();
+
+  ~CStringT() throw();
+
+  BSTR AllocSysString() const;
+  void AppendFormat(PCXSTR pszFormat, ...);
+  void AppendFormat(UINT nFormatID, ...);
+  int Delete(int iIndex, int nCount = 1);
+  int Find(PCXSTR pszSub, int iStart=0) const throw();
+  int Find(XCHAR ch, int iStart=0) const throw();
+  int FindOneOf(PCXSTR pszCharSet) const throw();
+  void Format(UINT nFormatID, ...);
+  void Format(PCXSTR pszFormat, ...);
+  BOOL GetEnvironmentVariable(PCXSTR pszVar);
+  int Insert(int iIndex, PCXSTR psz);
+  int Insert(int iIndex, XCHAR ch);
+  CStringT Left(int nCount) const;
+  BOOL LoadString(HINSTANCE hInstance, UINT nID, WORD wLanguageID);
+  BOOL LoadString(HINSTANCE hInstance, UINT nID);
+  BOOL LoadString(UINT nID);
+  CStringT& MakeLower();
+  CStringT& MakeReverse();
+  CStringT& MakeUpper();
+  CStringT Mid(int iFirst, int nCount) const;
+  CStringT Mid(int iFirst) const;
+  int Replace(PCXSTR pszOld, PCXSTR pszNew);
+  int Replace(XCHAR chOld, XCHAR chNew);
+  CStringT Right(int nCount) const;
+  BSTR SetSysString(BSTR* pbstr) const;
+  CStringT SpanExcluding(PCXSTR pszCharSet) const;
+  CStringT SpanIncluding(PCXSTR pszCharSet) const;
+  CStringT Tokenize(PCXSTR pszTokens, int& iStart) const;
+  CStringT& Trim(XCHAR chTarget);
+  CStringT& Trim(PCXSTR pszTargets);
+  CStringT& Trim();
+  CStringT& TrimLeft(XCHAR chTarget);
+  CStringT& TrimLeft(PCXSTR pszTargets);
+  CStringT& TrimLeft();
+  CStringT& TrimRight(XCHAR chTarget);
+  CStringT& TrimRight(PCXSTR pszTargets);
+  CStringT& TrimRight();
+};
+
+void test_CStringT() {
+  VARIANT v = source<VARIANT>();
+
+  CStringT<char> s1(v);
+  sink(s1.GetString()); // $ ir
+
+  CStringT<char> s2(v, nullptr);
+  sink(s2.GetString()); // $ ir
+
+  CStringT<char> s3(s2);
+  sink(s3.GetString()); // $ ir
+
+  char* x = indirect_source<char>();
+  CStringT<char> s4(x);
+  sink(s4.GetString()); // $ ir
+
+  wchar_t* y = indirect_source<wchar_t>();
+  CStringT<wchar_t> s5(y);
+  sink(s5.GetString()); // $ ir
+
+  CStringT<char> s6(x, nullptr);
+  sink(s6.GetString()); // $ ir
+
+  CStringT<wchar_t> s7(y, nullptr);
+  sink(s7.GetString()); // $ ir
+
+  unsigned char* ucs = indirect_source<unsigned char>();
+  CStringT<char> s8(ucs);
+  sink(s8.GetString()); // $ ir
+
+  char c = source<char>();
+  CStringT<char> s9(c);
+  sink(s9.GetString()); // $ ir
+
+  wchar_t wc = source<wchar_t>();
+  CStringT<wchar_t> s10(wc);
+  sink(s10.GetString()); // $ ir
+
+  sink(static_cast<CSimpleStringT<char>&>(s1)); // $ ast ir
+
+  auto bstr = s1.AllocSysString();
+  sink(bstr); // $ ir
+
+  CStringT<char> s11;
+  s11.AppendFormat("%d", source<int>());
+  sink(s11.GetString()); // $ ir
+
+  CStringT<char> s12;
+  s12.AppendFormat(indirect_source<char>());
+  sink(s12.GetString()); // $ ir
+
+  CStringT<char> s13;
+  s13.AppendFormat(source<UINT>());
+  sink(s13.GetString()); // $ ir
+
+  CStringT<char> s14;
+  s14.AppendFormat(42, source<char>());
+  sink(s14.GetString()); // $ ir
+
+  CStringT<char> s15;
+  s15.AppendFormat(42, indirect_source<char>());
+  sink(s15.GetString()); // $ ir
+
+  CStringT<char> s16;
+  s16.AppendFormat("%s", indirect_source<char>());
+
+  CStringT<char> s17;
+  s17.Insert(0, x);
+  sink(s17.GetString()); // $ ir
+
+  CStringT<char> s18;
+  s18.Insert(0, source<char>());
+  sink(s18.GetString()); // $ ir
+
+  sink(s1.Left(42).GetString()); // $ ir
+
+  CStringT<char> s20;
+  s20.LoadString(source<UINT>());
+  sink(s20.GetString()); // $ ir
+
+  sink(s1.MakeLower().GetString()); // $ ir
+  sink(s1.MakeReverse().GetString()); // $ ir
+  sink(s1.MakeUpper().GetString()); // $ ir
+  sink(s1.Mid(0, 42).GetString()); // $ ir
+
+  CStringT<char> s21;
+  s21.Replace("abc", x);
+  sink(s21.GetString()); // $ ir
+
+  CStringT<char> s22;
+  s22.Replace('\n', source<char>());
+  sink(s22.GetString()); // $ ir
+
+  sink(s2.Right(42).GetString()); // $ ir
+
+  BSTR bstr2;
+  s1.SetSysString(&bstr2);
+  sink(bstr2); // $ ast ir
+
+  sink(s1.SpanExcluding("abc").GetString()); // $ ir
+  sink(s1.SpanIncluding("abc").GetString()); // $ ir
+  
+  int start = 0;
+  sink(s1.Tokenize("abc", start).GetString()); // $ ir
+
+  sink(s1.Trim('a').GetString()); // $ ir
+  sink(s1.Trim("abc").GetString()); // $ ir
+  sink(s1.Trim().GetString()); // $ ir
+  sink(s1.TrimLeft('a').GetString()); // $ ir
+  sink(s1.TrimLeft("abc").GetString()); // $ ir
+  sink(s1.TrimLeft().GetString()); // $ ir
+  sink(s1.TrimRight('a').GetString()); // $ ir
+  sink(s1.TrimRight("abc").GetString()); // $ ir
+  sink(s1.TrimRight().GetString()); // $ ir
+}
+
+struct CStringData {
+  void* data() throw();
+};
+
+void test_CStringData() {
+  CStringData d = source<CStringData>();
+  sink(d.data()); // $ ir
+}
+
+template<typename TCharType>
+struct CStrBufT {
+  typedef CSimpleStringT<TCharType> StringType;
+
+  using PCXSTR = typename StringType::PCXSTR;
+  using PXSTR = typename StringType::PXSTR;
+
+  CStrBufT(StringType& str, int nMinLength, DWORD dwFlags);
+  CStrBufT(StringType& str);
+
+  operator PCXSTR() const throw();
+  operator PXSTR() throw();
+};
+
+void test_CStrBufT() {
+  CStringT<char> s = source<CStringT<char>>();
+  CStrBufT<char> b(s, 42, 0);
+  sink(static_cast<CStrBufT<char>::PCXSTR>(b)); // $ ir
+  sink(static_cast<CStrBufT<char>::PXSTR>(b)); // $ ir
 }

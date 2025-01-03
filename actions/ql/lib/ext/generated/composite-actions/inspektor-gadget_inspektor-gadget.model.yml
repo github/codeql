@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.runtime", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.registry", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.container-image", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.gadget_tag", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.gadget_repository", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.dnstester_image", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.image_tag", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.container_repo", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.kubernetes_architecture", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.kubernetes_distribution", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.test-step-conclusion", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.test-summary-suffix", "code-injection", "generated"]
+     - ["inspektor-gadget/inspektor-gadget", "*", "input.test-log-file", "code-injection", "generated"]

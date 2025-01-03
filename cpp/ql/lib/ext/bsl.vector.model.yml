@@ -39,6 +39,7 @@ extensions:
       - ["bsl", "vector", True, "insert<InputIt>", "(const_iterator,InputIt,InputIt)", "", "Argument[1].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
       - ["bsl", "vector", True, "insert<InputIt>", "(const_iterator,InputIt,InputIt)", "", "Argument[1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
       - ["bsl", "vector", True, "operator=", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["bsl", "vector", True, "operator=", "", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]
       - ["bsl", "vector", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
       - ["bsl", "vector", True, "push_back", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
       - ["bsl", "vector", True, "rbegin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]

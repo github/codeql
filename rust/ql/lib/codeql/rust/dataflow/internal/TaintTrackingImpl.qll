@@ -59,7 +59,10 @@ module RustTaintTracking implements InputSig<Location, RustDataFlow> {
   bindingset[node]
   predicate defaultImplicitTaintRead(Node::Node node, ContentSet cs) {
     exists(node) and
-    cs.(SingletonContentSet).getContent() instanceof ArrayElementContent
+    exists(Content c | c = cs.(SingletonContentSet).getContent() |
+      c instanceof ArrayElementContent or
+      c instanceof ReferenceContent
+    )
   }
 
   /**

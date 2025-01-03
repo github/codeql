@@ -177,6 +177,95 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfAsmDirSpec(AsmDirSpec e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmOperand(AsmOperand e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmOperandExpr(
+    AsmOperandExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n, int nInExpr, int nOutExpr |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nInExpr = n + 1 and
+      nOutExpr = nInExpr + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getInExpr() and partialPredicateCall = "InExpr()"
+        or
+        index = nInExpr and result = e.getOutExpr() and partialPredicateCall = "OutExpr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmOption(AsmOption e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmPiece(AsmPiece e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmRegSpec(AsmRegSpec e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n, int nNameRef |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nNameRef = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getNameRef() and partialPredicateCall = "NameRef()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfAssocItem(AssocItem e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n |
       b = 0 and
@@ -471,19 +560,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfLifetime(Lifetime e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int n |
-      b = 0 and
-      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
-      n = bAstNode and
-      (
-        none()
-        or
-        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfMacroItems(MacroItems e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n, int nItem |
       b = 0 and
@@ -621,19 +697,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfNameRef(NameRef e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int n |
-      b = 0 and
-      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
-      n = bAstNode and
-      (
-        none()
-        or
-        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfParamBase(ParamBase e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n, int nAttr, int nTypeRepr |
       b = 0 and
@@ -674,6 +737,25 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfParenthesizedArgList(
+    ParenthesizedArgList e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n, int nTypeArg |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nTypeArg = n + 1 + max(int i | i = -1 or exists(e.getTypeArg(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        result = e.getTypeArg(index - n) and
+        partialPredicateCall = "TypeArg(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
   private Element getImmediateChildOfPat(Pat e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n |
       b = 0 and
@@ -710,16 +792,16 @@ private module Impl {
     PathSegment e, int index, string partialPredicateCall
   ) {
     exists(
-      int b, int bAstNode, int n, int nGenericArgList, int nNameRef, int nParamList, int nPathType,
-      int nRetType, int nReturnTypeSyntax, int nTypeRepr
+      int b, int bAstNode, int n, int nGenericArgList, int nNameRef, int nParenthesizedArgList,
+      int nPathType, int nRetType, int nReturnTypeSyntax, int nTypeRepr
     |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
       nGenericArgList = n + 1 and
       nNameRef = nGenericArgList + 1 and
-      nParamList = nNameRef + 1 and
-      nPathType = nParamList + 1 and
+      nParenthesizedArgList = nNameRef + 1 and
+      nPathType = nParenthesizedArgList + 1 and
       nRetType = nPathType + 1 and
       nReturnTypeSyntax = nRetType + 1 and
       nTypeRepr = nReturnTypeSyntax + 1 and
@@ -732,9 +814,13 @@ private module Impl {
         or
         index = nGenericArgList and result = e.getNameRef() and partialPredicateCall = "NameRef()"
         or
-        index = nNameRef and result = e.getParamList() and partialPredicateCall = "ParamList()"
+        index = nNameRef and
+        result = e.getParenthesizedArgList() and
+        partialPredicateCall = "ParenthesizedArgList()"
         or
-        index = nParamList and result = e.getPathType() and partialPredicateCall = "PathType()"
+        index = nParenthesizedArgList and
+        result = e.getPathType() and
+        partialPredicateCall = "PathType()"
         or
         index = nPathType and result = e.getRetType() and partialPredicateCall = "RetType()"
         or
@@ -1045,27 +1131,25 @@ private module Impl {
   }
 
   private Element getImmediateChildOfTypeBound(TypeBound e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int n, int nGenericParamList, int nLifetime, int nTypeRepr |
+    exists(int b, int bAstNode, int n, int nLifetime, int nTypeRepr, int nUseBoundGenericArgs |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
-      nGenericParamList = n + 1 and
-      nLifetime = nGenericParamList + 1 and
+      nLifetime = n + 1 and
       nTypeRepr = nLifetime + 1 and
+      nUseBoundGenericArgs = nTypeRepr + 1 and
       (
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
         or
-        index = n and
-        result = e.getGenericParamList() and
-        partialPredicateCall = "GenericParamList()"
-        or
-        index = nGenericParamList and
-        result = e.getLifetime() and
-        partialPredicateCall = "Lifetime()"
+        index = n and result = e.getLifetime() and partialPredicateCall = "Lifetime()"
         or
         index = nLifetime and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
+        or
+        index = nTypeRepr and
+        result = e.getUseBoundGenericArgs() and
+        partialPredicateCall = "UseBoundGenericArgs()"
       )
     )
   }
@@ -1098,6 +1182,40 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfUseBoundGenericArg(
+    UseBoundGenericArg e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfUseBoundGenericArgs(
+    UseBoundGenericArgs e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n, int nUseBoundGenericArg |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nUseBoundGenericArg = n + 1 + max(int i | i = -1 or exists(e.getUseBoundGenericArg(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        result = e.getUseBoundGenericArg(index - n) and
+        partialPredicateCall = "UseBoundGenericArg(" + (index - n).toString() + ")"
       )
     )
   }
@@ -1298,22 +1416,162 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfAsmClobberAbi(
+    AsmClobberAbi e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAsmPiece, int n |
+      b = 0 and
+      bAsmPiece = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAsmPiece(e, i, _)) | i) and
+      n = bAsmPiece and
+      (
+        none()
+        or
+        result = getImmediateChildOfAsmPiece(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmConst(AsmConst e, int index, string partialPredicateCall) {
+    exists(int b, int bAsmOperand, int n, int nExpr |
+      b = 0 and
+      bAsmOperand =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAsmOperand(e, i, _)) | i) and
+      n = bAsmOperand and
+      nExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAsmOperand(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getExpr() and partialPredicateCall = "Expr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfAsmExpr(AsmExpr e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nAttr, int nExpr |
+    exists(int b, int bExpr, int n, int nAsmPiece, int nAttr, int nTemplate |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
-      nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
-      nExpr = nAttr + 1 and
+      nAsmPiece = n + 1 + max(int i | i = -1 or exists(e.getAsmPiece(i)) | i) and
+      nAttr = nAsmPiece + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
+      nTemplate = nAttr + 1 + max(int i | i = -1 or exists(e.getTemplate(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
-        result = e.getAttr(index - n) and
-        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
+        result = e.getAsmPiece(index - n) and
+        partialPredicateCall = "AsmPiece(" + (index - n).toString() + ")"
         or
-        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
+        result = e.getAttr(index - nAsmPiece) and
+        partialPredicateCall = "Attr(" + (index - nAsmPiece).toString() + ")"
+        or
+        result = e.getTemplate(index - nAttr) and
+        partialPredicateCall = "Template(" + (index - nAttr).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmLabel(AsmLabel e, int index, string partialPredicateCall) {
+    exists(int b, int bAsmOperand, int n, int nBlockExpr |
+      b = 0 and
+      bAsmOperand =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAsmOperand(e, i, _)) | i) and
+      n = bAsmOperand and
+      nBlockExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAsmOperand(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getBlockExpr() and partialPredicateCall = "BlockExpr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmOperandNamed(
+    AsmOperandNamed e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAsmPiece, int n, int nAsmOperand, int nName |
+      b = 0 and
+      bAsmPiece = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAsmPiece(e, i, _)) | i) and
+      n = bAsmPiece and
+      nAsmOperand = n + 1 and
+      nName = nAsmOperand + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAsmPiece(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getAsmOperand() and partialPredicateCall = "AsmOperand()"
+        or
+        index = nAsmOperand and result = e.getName() and partialPredicateCall = "Name()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmOptionsList(
+    AsmOptionsList e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAsmPiece, int n, int nAsmOption |
+      b = 0 and
+      bAsmPiece = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAsmPiece(e, i, _)) | i) and
+      n = bAsmPiece and
+      nAsmOption = n + 1 + max(int i | i = -1 or exists(e.getAsmOption(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfAsmPiece(e, index - b, partialPredicateCall)
+        or
+        result = e.getAsmOption(index - n) and
+        partialPredicateCall = "AsmOption(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmRegOperand(
+    AsmRegOperand e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAsmOperand, int n, int nAsmDirSpec, int nAsmOperandExpr, int nAsmRegSpec |
+      b = 0 and
+      bAsmOperand =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAsmOperand(e, i, _)) | i) and
+      n = bAsmOperand and
+      nAsmDirSpec = n + 1 and
+      nAsmOperandExpr = nAsmDirSpec + 1 and
+      nAsmRegSpec = nAsmOperandExpr + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAsmOperand(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getAsmDirSpec() and partialPredicateCall = "AsmDirSpec()"
+        or
+        index = nAsmDirSpec and
+        result = e.getAsmOperandExpr() and
+        partialPredicateCall = "AsmOperandExpr()"
+        or
+        index = nAsmOperandExpr and
+        result = e.getAsmRegSpec() and
+        partialPredicateCall = "AsmRegSpec()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfAsmSym(AsmSym e, int index, string partialPredicateCall) {
+    exists(int b, int bAsmOperand, int n, int nPath |
+      b = 0 and
+      bAsmOperand =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAsmOperand(e, i, _)) | i) and
+      n = bAsmOperand and
+      nPath = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfAsmOperand(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getPath() and partialPredicateCall = "Path()"
       )
     )
   }
@@ -1971,6 +2229,20 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfLifetime(Lifetime e, int index, string partialPredicateCall) {
+    exists(int b, int bUseBoundGenericArg, int n |
+      b = 0 and
+      bUseBoundGenericArg =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfUseBoundGenericArg(e, i, _)) | i) and
+      n = bUseBoundGenericArg and
+      (
+        none()
+        or
+        result = getImmediateChildOfUseBoundGenericArg(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfLifetimeArg(
     LifetimeArg e, int index, string partialPredicateCall
   ) {
@@ -2124,6 +2396,20 @@ private module Impl {
         index = nScrutinee and
         result = e.getMatchArmList() and
         partialPredicateCall = "MatchArmList()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfNameRef(NameRef e, int index, string partialPredicateCall) {
+    exists(int b, int bUseBoundGenericArg, int n |
+      b = 0 and
+      bUseBoundGenericArg =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfUseBoundGenericArg(e, i, _)) | i) and
+      n = bUseBoundGenericArg and
+      (
+        none()
+        or
+        result = getImmediateChildOfUseBoundGenericArg(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -3759,6 +4045,14 @@ private module Impl {
     or
     result = getImmediateChildOfArgList(e, index, partialAccessor)
     or
+    result = getImmediateChildOfAsmDirSpec(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAsmOperandExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAsmOption(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAsmRegSpec(e, index, partialAccessor)
+    or
     result = getImmediateChildOfAssocItemList(e, index, partialAccessor)
     or
     result = getImmediateChildOfAttr(e, index, partialAccessor)
@@ -3779,8 +4073,6 @@ private module Impl {
     or
     result = getImmediateChildOfLetElse(e, index, partialAccessor)
     or
-    result = getImmediateChildOfLifetime(e, index, partialAccessor)
-    or
     result = getImmediateChildOfMacroItems(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroStmts(e, index, partialAccessor)
@@ -3795,9 +4087,9 @@ private module Impl {
     or
     result = getImmediateChildOfName(e, index, partialAccessor)
     or
-    result = getImmediateChildOfNameRef(e, index, partialAccessor)
-    or
     result = getImmediateChildOfParamList(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfParenthesizedArgList(e, index, partialAccessor)
     or
     result = getImmediateChildOfPath(e, index, partialAccessor)
     or
@@ -3831,6 +4123,8 @@ private module Impl {
     or
     result = getImmediateChildOfTypeBoundList(e, index, partialAccessor)
     or
+    result = getImmediateChildOfUseBoundGenericArgs(e, index, partialAccessor)
+    or
     result = getImmediateChildOfUseTree(e, index, partialAccessor)
     or
     result = getImmediateChildOfUseTreeList(e, index, partialAccessor)
@@ -3847,7 +4141,21 @@ private module Impl {
     or
     result = getImmediateChildOfArrayTypeRepr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfAsmClobberAbi(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAsmConst(e, index, partialAccessor)
+    or
     result = getImmediateChildOfAsmExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAsmLabel(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAsmOperandNamed(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAsmOptionsList(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAsmRegOperand(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAsmSym(e, index, partialAccessor)
     or
     result = getImmediateChildOfAssocTypeArg(e, index, partialAccessor)
     or
@@ -3901,6 +4209,8 @@ private module Impl {
     or
     result = getImmediateChildOfLetStmt(e, index, partialAccessor)
     or
+    result = getImmediateChildOfLifetime(e, index, partialAccessor)
+    or
     result = getImmediateChildOfLifetimeArg(e, index, partialAccessor)
     or
     result = getImmediateChildOfLifetimeParam(e, index, partialAccessor)
@@ -3916,6 +4226,8 @@ private module Impl {
     result = getImmediateChildOfMacroTypeRepr(e, index, partialAccessor)
     or
     result = getImmediateChildOfMatchExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfNameRef(e, index, partialAccessor)
     or
     result = getImmediateChildOfNeverTypeRepr(e, index, partialAccessor)
     or

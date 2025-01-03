@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/reuse_latest_release_binaries.yml", "*", "input.the_path", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/reuse_latest_release_binaries.yml", "*", "input.last_commit", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/reuse_latest_release_binaries.yml", "*", "input.binary_name_stem", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_wamrc.yml", "*", "input.ver_num", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_wamrc.yml", "*", "input.runner", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_wamr_vscode_ext.yml", "*", "input.ver_num", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_wamr_sdk.yml", "*", "input.ver_num", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_wamr_sdk.yml", "*", "input.runner", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_wamr_sdk.yml", "*", "input.config_file", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_wamr_sdk.yml", "*", "input.wasi_sdk_url", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_wamr_sdk.yml", "*", "input.wamr_app_framework_url", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_wamr_lldb.yml", "*", "input.ver_num", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_wamr_lldb.yml", "*", "input.runner", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_wamr_lldb.yml", "*", "input.wasi_sdk_url", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_llvm_libraries.yml", "*", "input.arch", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_llvm_libraries.yml", "*", "input.os", "code-injection", "generated"]
+     - ["bytecodealliance/wasm-micro-runtime/.github/workflows/build_iwasm_release.yml", "*", "input.ver_num", "code-injection", "generated"]

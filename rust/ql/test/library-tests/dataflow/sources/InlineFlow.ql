@@ -1,7 +1,7 @@
 import rust
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.Concepts
-import utils.InlineFlowTest
+import utils.test.InlineFlowTest
 
 /**
  * Configuration for flow from any threat model source to an argument of the function `sink`.

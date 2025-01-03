@@ -1,7 +1,7 @@
 import go
 import semmle.go.dataflow.ExternalFlow
 import ModelValidation
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import DefaultFlowTest
 
 class SummaryModelTest extends DataFlow::FunctionModel {

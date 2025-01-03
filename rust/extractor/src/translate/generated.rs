@@ -21,6 +21,23 @@ impl Translator<'_> {
         }
     }
 
+    pub(crate) fn emit_asm_operand(&mut self, node: ast::AsmOperand) -> Label<generated::AsmOperand> {
+        match node {
+            ast::AsmOperand::AsmConst(inner) => self.emit_asm_const(inner).into(),
+            ast::AsmOperand::AsmLabel(inner) => self.emit_asm_label(inner).into(),
+            ast::AsmOperand::AsmRegOperand(inner) => self.emit_asm_reg_operand(inner).into(),
+            ast::AsmOperand::AsmSym(inner) => self.emit_asm_sym(inner).into(),
+        }
+    }
+
+    pub(crate) fn emit_asm_piece(&mut self, node: ast::AsmPiece) -> Label<generated::AsmPiece> {
+        match node {
+            ast::AsmPiece::AsmClobberAbi(inner) => self.emit_asm_clobber_abi(inner).into(),
+            ast::AsmPiece::AsmOperandNamed(inner) => self.emit_asm_operand_named(inner).into(),
+            ast::AsmPiece::AsmOptions(inner) => self.emit_asm_options(inner).into(),
+        }
+    }
+
     pub(crate) fn emit_assoc_item(&mut self, node: ast::AssocItem) -> Label<generated::AssocItem> {
         match node {
             ast::AssocItem::Const(inner) => self.emit_const(inner).into(),
@@ -152,6 +169,13 @@ impl Translator<'_> {
         }
     }
 
+    pub(crate) fn emit_use_bound_generic_arg(&mut self, node: ast::UseBoundGenericArg) -> Label<generated::UseBoundGenericArg> {
+        match node {
+            ast::UseBoundGenericArg::Lifetime(inner) => self.emit_lifetime(inner).into(),
+            ast::UseBoundGenericArg::NameRef(inner) => self.emit_name_ref(inner).into(),
+        }
+    }
+
     pub(crate) fn emit_item(&mut self, node: ast::Item) -> Label<generated::Item> {
         match node {
             ast::Item::Const(inner) => self.emit_const(inner).into(),
@@ -228,16 +252,156 @@ impl Translator<'_> {
         label
     }
 
-    pub(crate) fn emit_asm_expr(&mut self, node: ast::AsmExpr) -> Label<generated::AsmExpr> {
-        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+    pub(crate) fn emit_asm_clobber_abi(&mut self, node: ast::AsmClobberAbi) -> Label<generated::AsmClobberAbi> {
+        let label = self.trap.emit(generated::AsmClobberAbi {
+            id: TrapId::Star,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(AsmClobberAbi, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_asm_const(&mut self, node: ast::AsmConst) -> Label<generated::AsmConst> {
         let expr = node.expr().map(|x| self.emit_expr(x));
+        let is_const = node.const_token().is_some();
+        let label = self.trap.emit(generated::AsmConst {
+            id: TrapId::Star,
+            expr,
+            is_const,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(AsmConst, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_asm_dir_spec(&mut self, node: ast::AsmDirSpec) -> Label<generated::AsmDirSpec> {
+        let label = self.trap.emit(generated::AsmDirSpec {
+            id: TrapId::Star,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(AsmDirSpec, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_asm_expr(&mut self, node: ast::AsmExpr) -> Label<generated::AsmExpr> {
+        let asm_pieces = node.asm_pieces().map(|x| self.emit_asm_piece(x)).collect();
+        let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+        let template = node.template().map(|x| self.emit_expr(x)).collect();
         let label = self.trap.emit(generated::AsmExpr {
             id: TrapId::Star,
+            asm_pieces,
             attrs,
-            expr,
+            template,
         });
         self.emit_location(label, &node);
         emit_detached!(AsmExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_asm_label(&mut self, node: ast::AsmLabel) -> Label<generated::AsmLabel> {
+        let block_expr = node.block_expr().map(|x| self.emit_block_expr(x));
+        let label = self.trap.emit(generated::AsmLabel {
+            id: TrapId::Star,
+            block_expr,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(AsmLabel, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_asm_operand_expr(&mut self, node: ast::AsmOperandExpr) -> Label<generated::AsmOperandExpr> {
+        let in_expr = node.in_expr().map(|x| self.emit_expr(x));
+        let out_expr = node.out_expr().map(|x| self.emit_expr(x));
+        let label = self.trap.emit(generated::AsmOperandExpr {
+            id: TrapId::Star,
+            in_expr,
+            out_expr,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(AsmOperandExpr, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_asm_operand_named(&mut self, node: ast::AsmOperandNamed) -> Label<generated::AsmOperandNamed> {
+        let asm_operand = node.asm_operand().map(|x| self.emit_asm_operand(x));
+        let name = node.name().map(|x| self.emit_name(x));
+        let label = self.trap.emit(generated::AsmOperandNamed {
+            id: TrapId::Star,
+            asm_operand,
+            name,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(AsmOperandNamed, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_asm_option(&mut self, node: ast::AsmOption) -> Label<generated::AsmOption> {
+        let is_raw = node.raw_token().is_some();
+        let label = self.trap.emit(generated::AsmOption {
+            id: TrapId::Star,
+            is_raw,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(AsmOption, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_asm_options(&mut self, node: ast::AsmOptions) -> Label<generated::AsmOptionsList> {
+        let asm_options = node.asm_options().map(|x| self.emit_asm_option(x)).collect();
+        let label = self.trap.emit(generated::AsmOptionsList {
+            id: TrapId::Star,
+            asm_options,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(AsmOptionsList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_asm_reg_operand(&mut self, node: ast::AsmRegOperand) -> Label<generated::AsmRegOperand> {
+        let asm_dir_spec = node.asm_dir_spec().map(|x| self.emit_asm_dir_spec(x));
+        let asm_operand_expr = node.asm_operand_expr().map(|x| self.emit_asm_operand_expr(x));
+        let asm_reg_spec = node.asm_reg_spec().map(|x| self.emit_asm_reg_spec(x));
+        let label = self.trap.emit(generated::AsmRegOperand {
+            id: TrapId::Star,
+            asm_dir_spec,
+            asm_operand_expr,
+            asm_reg_spec,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(AsmRegOperand, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_asm_reg_spec(&mut self, node: ast::AsmRegSpec) -> Label<generated::AsmRegSpec> {
+        let name_ref = node.name_ref().map(|x| self.emit_name_ref(x));
+        let label = self.trap.emit(generated::AsmRegSpec {
+            id: TrapId::Star,
+            name_ref,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(AsmRegSpec, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_asm_sym(&mut self, node: ast::AsmSym) -> Label<generated::AsmSym> {
+        let path = node.path().map(|x| self.emit_path(x));
+        let label = self.trap.emit(generated::AsmSym {
+            id: TrapId::Star,
+            path,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(AsmSym, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }
@@ -1438,6 +1602,18 @@ impl Translator<'_> {
         label
     }
 
+    pub(crate) fn emit_parenthesized_arg_list(&mut self, node: ast::ParenthesizedArgList) -> Label<generated::ParenthesizedArgList> {
+        let type_args = node.type_args().map(|x| self.emit_type_arg(x)).collect();
+        let label = self.trap.emit(generated::ParenthesizedArgList {
+            id: TrapId::Star,
+            type_args,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(ParenthesizedArgList, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
     pub(crate) fn emit_path(&mut self, node: ast::Path) -> Label<generated::Path> {
         let qualifier = node.qualifier().map(|x| self.emit_path(x));
         let part = node.segment().map(|x| self.emit_path_segment(x));
@@ -1481,7 +1657,7 @@ impl Translator<'_> {
     pub(crate) fn emit_path_segment(&mut self, node: ast::PathSegment) -> Label<generated::PathSegment> {
         let generic_arg_list = node.generic_arg_list().map(|x| self.emit_generic_arg_list(x));
         let name_ref = node.name_ref().map(|x| self.emit_name_ref(x));
-        let param_list = node.param_list().map(|x| self.emit_param_list(x));
+        let parenthesized_arg_list = node.parenthesized_arg_list().map(|x| self.emit_parenthesized_arg_list(x));
         let path_type = node.path_type().map(|x| self.emit_path_type(x));
         let ret_type = node.ret_type().map(|x| self.emit_ret_type(x));
         let return_type_syntax = node.return_type_syntax().map(|x| self.emit_return_type_syntax(x));
@@ -1490,7 +1666,7 @@ impl Translator<'_> {
             id: TrapId::Star,
             generic_arg_list,
             name_ref,
-            param_list,
+            parenthesized_arg_list,
             path_type,
             ret_type,
             return_type_syntax,
@@ -1812,6 +1988,7 @@ impl Translator<'_> {
 
     pub(crate) fn emit_self_param(&mut self, node: ast::SelfParam) -> Label<generated::SelfParam> {
         let attrs = node.attrs().map(|x| self.emit_attr(x)).collect();
+        let is_ref = node.amp_token().is_some();
         let is_mut = node.mut_token().is_some();
         let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
         let name = node.name().map(|x| self.emit_name(x));
@@ -1819,6 +1996,7 @@ impl Translator<'_> {
         let label = self.trap.emit(generated::SelfParam {
             id: TrapId::Star,
             attrs,
+            is_ref,
             is_mut,
             lifetime,
             name,
@@ -1873,6 +2051,7 @@ impl Translator<'_> {
         let body = node.body().map(|x| self.emit_expr(x));
         let is_mut = node.mut_token().is_some();
         let is_static = node.static_token().is_some();
+        let is_unsafe = node.unsafe_token().is_some();
         let name = node.name().map(|x| self.emit_name(x));
         let type_repr = node.ty().map(|x| self.emit_type(x));
         let visibility = node.visibility().map(|x| self.emit_visibility(x));
@@ -1882,6 +2061,7 @@ impl Translator<'_> {
             body,
             is_mut,
             is_static,
+            is_unsafe,
             name,
             type_repr,
             visibility,
@@ -2123,18 +2303,18 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_type_bound(&mut self, node: ast::TypeBound) -> Label<generated::TypeBound> {
-        let generic_param_list = node.generic_param_list().map(|x| self.emit_generic_param_list(x));
         let is_async = node.async_token().is_some();
         let is_const = node.const_token().is_some();
         let lifetime = node.lifetime().map(|x| self.emit_lifetime(x));
         let type_repr = node.ty().map(|x| self.emit_type(x));
+        let use_bound_generic_args = node.use_bound_generic_args().map(|x| self.emit_use_bound_generic_args(x));
         let label = self.trap.emit(generated::TypeBound {
             id: TrapId::Star,
-            generic_param_list,
             is_async,
             is_const,
             lifetime,
             type_repr,
+            use_bound_generic_args,
         });
         self.emit_location(label, &node);
         emit_detached!(TypeBound, self, node, label);
@@ -2218,6 +2398,18 @@ impl Translator<'_> {
         });
         self.emit_location(label, &node);
         emit_detached!(Use, self, node, label);
+        self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
+        label
+    }
+
+    pub(crate) fn emit_use_bound_generic_args(&mut self, node: ast::UseBoundGenericArgs) -> Label<generated::UseBoundGenericArgs> {
+        let use_bound_generic_args = node.use_bound_generic_args().map(|x| self.emit_use_bound_generic_arg(x)).collect();
+        let label = self.trap.emit(generated::UseBoundGenericArgs {
+            id: TrapId::Star,
+            use_bound_generic_args,
+        });
+        self.emit_location(label, &node);
+        emit_detached!(UseBoundGenericArgs, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         label
     }

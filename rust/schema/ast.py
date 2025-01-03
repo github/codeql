@@ -2,6 +2,12 @@
 
 from .prelude import *
 
+class AsmOperand(AstNode):
+   pass
+
+class AsmPiece(AstNode):
+   pass
+
 class AssocItem(AstNode):
    pass
 
@@ -29,6 +35,9 @@ class Stmt(AstNode):
 class TypeRepr(AstNode):
    pass
 
+class UseBoundGenericArg(AstNode):
+   pass
+
 class Item(Stmt):
    pass
 
@@ -47,9 +56,48 @@ class ArrayTypeRepr(TypeRepr):
    const_arg: optional["ConstArg"] | child
    element_type_repr: optional["TypeRepr"] | child
 
-class AsmExpr(Expr):
-   attrs: list["Attr"] | child
+class AsmClobberAbi(AsmPiece):
+   pass
+
+class AsmConst(AsmOperand):
    expr: optional["Expr"] | child
+   is_const: predicate
+
+class AsmDirSpec(AstNode):
+   pass
+
+class AsmExpr(Expr):
+   asm_pieces: list["AsmPiece"] | child
+   attrs: list["Attr"] | child
+   template: list["Expr"] | child
+
+class AsmLabel(AsmOperand):
+   block_expr: optional["BlockExpr"] | child
+
+class AsmOperandExpr(AstNode):
+   in_expr: optional["Expr"] | child
+   out_expr: optional["Expr"] | child
+
+class AsmOperandNamed(AsmPiece):
+   asm_operand: optional["AsmOperand"] | child
+   name: optional["Name"] | child
+
+class AsmOption(AstNode):
+   is_raw: predicate
+
+class AsmOptionsList(AsmPiece):
+   asm_options: list["AsmOption"] | child
+
+class AsmRegOperand(AsmOperand):
+   asm_dir_spec: optional["AsmDirSpec"] | child
+   asm_operand_expr: optional["AsmOperandExpr"] | child
+   asm_reg_spec: optional["AsmRegSpec"] | child
+
+class AsmRegSpec(AstNode):
+   name_ref: optional["NameRef"] | child
+
+class AsmSym(AsmOperand):
+   path: optional["Path"] | child
 
 class AssocItemList(AstNode):
    assoc_items: list["AssocItem"] | child
@@ -296,7 +344,7 @@ class LetStmt(Stmt):
    pat: optional["Pat"] | child
    type_repr: optional["TypeRepr"] | child
 
-class Lifetime(AstNode):
+class Lifetime(UseBoundGenericArg):
    text: optional[string]
 
 class LifetimeArg(GenericArg):
@@ -393,7 +441,7 @@ class Module(Item):
 class Name(AstNode):
    text: optional[string]
 
-class NameRef(AstNode):
+class NameRef(UseBoundGenericArg):
    text: optional[string]
 
 class NeverTypeRepr(TypeRepr):
@@ -426,6 +474,9 @@ class ParenPat(Pat):
 class ParenTypeRepr(TypeRepr):
    type_repr: optional["TypeRepr"] | child
 
+class ParenthesizedArgList(AstNode):
+   type_args: list["TypeArg"] | child
+
 class Path(AstNode):
    qualifier: optional["Path"] | child
    part: optional["PathSegment"] | child
@@ -440,7 +491,7 @@ class PathPat(Pat):
 class PathSegment(AstNode):
    generic_arg_list: optional["GenericArgList"] | child
    name_ref: optional["NameRef"] | child
-   param_list: optional["ParamList"] | child
+   parenthesized_arg_list: optional["ParenthesizedArgList"] | child
    path_type: optional["PathTypeRepr"] | child
    ret_type: optional["RetTypeRepr"] | child
    return_type_syntax: optional["ReturnTypeSyntax"] | child
@@ -540,6 +591,7 @@ class ReturnTypeSyntax(AstNode):
 
 class SelfParam(AstNode):
    attrs: list["Attr"] | child
+   is_ref: predicate
    is_mut: predicate
    lifetime: optional["Lifetime"] | child
    name: optional["Name"] | child
@@ -560,6 +612,7 @@ class Static(ExternItem,Item):
    body: optional["Expr"] | child
    is_mut: predicate
    is_static: predicate
+   is_unsafe: predicate
    name: optional["Name"] | child
    type_repr: optional["TypeRepr"] | child
    visibility: optional["Visibility"] | child
@@ -639,11 +692,11 @@ class TypeArg(GenericArg):
    type_repr: optional["TypeRepr"] | child
 
 class TypeBound(AstNode):
-   generic_param_list: optional["GenericParamList"] | child
    is_async: predicate
    is_const: predicate
    lifetime: optional["Lifetime"] | child
    type_repr: optional["TypeRepr"] | child
+   use_bound_generic_args: optional["UseBoundGenericArgs"] | child
 
 class TypeBoundList(AstNode):
    bounds: list["TypeBound"] | child
@@ -669,6 +722,9 @@ class Use(Item):
    attrs: list["Attr"] | child
    use_tree: optional["UseTree"] | child
    visibility: optional["Visibility"] | child
+
+class UseBoundGenericArgs(AstNode):
+   use_bound_generic_args: list["UseBoundGenericArg"] | child
 
 class UseTree(AstNode):
    path: optional["Path"] | child

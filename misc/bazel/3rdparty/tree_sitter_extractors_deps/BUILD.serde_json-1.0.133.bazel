@@ -85,10 +85,10 @@ rust_library(
     }),
     version = "1.0.133",
     deps = [
-        "@vendor__itoa-1.0.11//:itoa",
+        "@vendor__itoa-1.0.14//:itoa",
         "@vendor__memchr-2.7.4//:memchr",
         "@vendor__ryu-1.0.18//:ryu",
-        "@vendor__serde-1.0.214//:serde",
+        "@vendor__serde-1.0.216//:serde",
         "@vendor__serde_json-1.0.133//:build_script_build",
     ],
 )

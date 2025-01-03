@@ -52,6 +52,7 @@ extensions:
       - ["bsl", "list", True, "list", "(const list &)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
       - ["bsl", "list", True, "list", "(list &&)", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
       - ["bsl", "list", True, "operator=", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["bsl", "list", True, "operator=", "", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]
       - ["bsl", "list", True, "push_back", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
       - ["bsl", "list", True, "push_front", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
       - ["bsl", "list", True, "rbegin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]

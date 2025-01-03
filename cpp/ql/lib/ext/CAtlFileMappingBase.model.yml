@@ -11,3 +11,4 @@ extensions:
       - ["", "CAtlFileMappingBase", True, "MapSharedMem", "", "", "Argument[*1]", "Argument[-1]", "taint", "manual"]
       - ["", "CAtlFileMappingBase", True, "OpenMapping", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
       - ["", "CAtlFileMappingBase", True, "operator=", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CAtlFileMappingBase", True, "operator=", "", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
