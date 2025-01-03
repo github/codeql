@@ -45,3 +45,6 @@ class C<T1, T2, T3, T4, T5, T6>
         x1 = x15; // not a boxing conversion
     }
 }
+
+// Ref structs can't be converted to a dynamic, object or valuetype.
+ref struct S { }

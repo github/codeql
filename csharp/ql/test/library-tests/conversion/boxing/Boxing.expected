@@ -117,6 +117,9 @@
 | Nullable<Int32> | Object |
 | Nullable<Int32> | ValueType |
 | Nullable<Int32> | dynamic |
+| S | Object |
+| S | ValueType |
+| S | dynamic |
 | T1 | Object |
 | T1 | dynamic |
 | T3 | Object |
