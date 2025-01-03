@@ -68,14 +68,14 @@ fn format_args_built_in() {
     let s = source(88);
 
     let formatted1 = fmt::format(format_args!("Hello {}!", s));
-    sink(formatted1); // $ MISSING: hasTaintFlow=88
+    sink(formatted1); // $ hasTaintFlow=88
 
     let formatted2 = fmt::format(format_args!("Hello {s}!"));
-    sink(formatted2); // $ MISSING: hasTaintFlow=88
+    sink(formatted2); // $ hasTaintFlow=88
 
     let width = source_usize(10);
     let formatted3 = fmt::format(format_args!("Hello {:width$}!", "World"));
-    sink(formatted3); // $ MISSING: hasTaintFlow=10
+    sink(formatted3); // $ hasTaintFlow=10
 }
 
 fn format_macro() {
