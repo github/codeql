@@ -649,11 +649,14 @@ predicate convBoxing(Type fromType, Type toType) {
 }
 
 private predicate convBoxingValueType(ValueType fromType, Type toType) {
-  toType instanceof ObjectType
-  or
-  toType instanceof DynamicType
-  or
-  toType instanceof SystemValueTypeClass
+  (
+    toType instanceof ObjectType
+    or
+    toType instanceof DynamicType
+    or
+    toType instanceof SystemValueTypeClass
+  ) and
+  not fromType.(Struct).isRef()
   or
   toType = fromType.getABaseInterface+()
 }
