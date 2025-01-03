@@ -13,3 +13,7 @@ extensions:
       - ["lang:core", "<crate::result::Result>::unwrap_or", "Argument[0]", "ReturnValue", "value", "manual"]
       # String
       - ["lang:alloc", "<crate::string::String>::as_str", "Argument[self]", "ReturnValue", "taint", "manual"]
+      # Hint
+      - ["lang:core", "crate::hint::must_use", "Argument[0]", "ReturnValue", "value", "manual"]
+      # Fmt
+      - ["lang:alloc", "crate::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]
