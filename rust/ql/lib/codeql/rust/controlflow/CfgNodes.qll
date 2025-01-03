@@ -173,6 +173,16 @@ final class MethodCallExprCfgNode extends CallExprBaseCfgNode, Nodes::MethodCall
  */
 final class CallExprCfgNode extends CallExprBaseCfgNode, Nodes::CallExprCfgNode { }
 
+final class MacroCallCfgNode extends Nodes::MacroCallCfgNode {
+  private MacroCallChildMapping node;
+
+  MacroCallCfgNode() { node = this.getAstNode() }
+
+  CfgNode getExpandedNode() {
+    any(ChildMapping mapping).hasCfgChild(node, node.getExpanded(), this, result)
+  }
+}
+
 /**
  * A record expression. For example:
  * ```rust

@@ -408,7 +408,7 @@ macro_rules! get_source {
 
 fn macro_invocation() {
     let s = get_source!(37);
-    sink(s); // $ MISSING: hasValueFlow=37
+    sink(s); // $ hasValueFlow=37
 }
 
 fn main() {
