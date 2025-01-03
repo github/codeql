@@ -253,7 +253,7 @@ module DomBasedXss {
 
   /**
    * A write to the `innerHTML` property of a DOM element, viewed as an XSS sink.
-   * 
+   *
    * Uses the Angular Renderer2 API, instead of the default `Element.innerHTML` property.
    */
   class AngularRender2SetPropertyInnerHtmlSink extends Sink {
