@@ -656,7 +656,7 @@ private predicate convBoxingValueType(ValueType fromType, Type toType) {
     or
     toType instanceof SystemValueTypeClass
   ) and
-  not fromType.(Struct).isRef()
+  not fromType.isRefLikeType()
   or
   toType = fromType.getABaseInterface+()
 }

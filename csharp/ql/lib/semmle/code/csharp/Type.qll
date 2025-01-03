@@ -48,6 +48,11 @@ class Type extends Member, TypeContainer, @type {
 
   /** Holds if this type is a value type, or a type parameter that is a value type. */
   predicate isValueType() { none() }
+
+  /**
+   * Holds if this type is a ref like type.
+   */
+  predicate isRefLikeType() { none() }
 }
 
 pragma[nomagic]
@@ -704,13 +709,36 @@ class Enum extends ValueType, @enum_type {
  * ```
  */
 class Struct extends ValueType, @struct_type {
-  /** Holds if this `struct` has a `ref` modifier. */
-  predicate isRef() { this.hasModifier("ref") }
+  /**
+   * DEPRECATED: Use `instanceof RefStruct` instead.
+   *
+   * Holds if this `struct` has a `ref` modifier.
+   */
+  deprecated predicate isRef() { this.hasModifier("ref") }
 
   /** Holds if this `struct` has a `readonly` modifier. */
   predicate isReadonly() { this.hasModifier("readonly") }
 
   override string getAPrimaryQlClass() { result = "Struct" }
+}
+
+/**
+ * A `ref struct`, for example
+ *
+ * ```csharp
+ * ref struct S {
+ *  ...
+ * }
+ * ```
+ */
+class RefStruct extends Struct {
+  RefStruct() { this.hasModifier("ref") }
+
+  override string getAPrimaryQlClass() { result = "RefStruct" }
+
+  override predicate isValueType() { none() }
+
+  override predicate isRefLikeType() { any() }
 }
 
 /**
