@@ -774,7 +774,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
 
 /**
  * Holds if `arg` is a `params` argument of `c`, for parameter `p`, and `arg` will
- * be wrapped in an array by the C# compiler.
+ * be wrapped in an collection by the C# compiler.
  */
 private predicate isParamsArg(Call c, Expr arg, Parameter p) {
   exists(Callable target, int numArgs |
@@ -1645,7 +1645,7 @@ private module ArgumentNodes {
   }
 
   /**
-   * A data-flow node that represents the implicit array creation in a call to a
+   * A data-flow node that represents the implicit collection creation in a call to a
    * callable with a `params` parameter. For example, there is an implicit array
    * creation `new [] { "a", "b", "c" }` in
    *
@@ -1684,7 +1684,7 @@ private module ArgumentNodes {
 
     override Location getLocationImpl() { result = callCfn.getLocation() }
 
-    override string toStringImpl() { result = "[implicit array creation] " + callCfn }
+    override string toStringImpl() { result = "[implicit collection creation] " + callCfn }
   }
 
   private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNodeImpl {

@@ -158,3 +158,21 @@ class SystemCollectionsGenericIDictionaryInterface extends SystemCollectionsGene
     this.getNumberOfTypeParameters() = 2
   }
 }
+
+/** The ``System.Collections.Generic.IReadOnlyCollection`1`` interface. */
+class SystemCollectionsGenericIReadOnlyCollectionTInterface extends SystemCollectionsGenericUnboundGenericInterface
+{
+  SystemCollectionsGenericIReadOnlyCollectionTInterface() {
+    this.hasName("IReadOnlyCollection`1") and
+    this.getNumberOfTypeParameters() = 1
+  }
+}
+
+/** The ``System.Collections.Generic.IReadOnlyList`1`` interface. */
+class SystemCollectionsGenericIReadOnlyListTInterface extends SystemCollectionsGenericUnboundGenericInterface
+{
+  SystemCollectionsGenericIReadOnlyListTInterface() {
+    this.hasName("IReadOnlyList`1") and
+    this.getNumberOfTypeParameters() = 1
+  }
+}

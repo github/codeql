@@ -33,6 +33,7 @@
 | StringBuilder | AppendFormat(string, object, object, object) | arg2 |
 | StringBuilder | AppendFormat(string, params Object[]) | args |
 | StringBuilder | AppendFormat(string, params ReadOnlySpan<object>) | args |
+| Strings | MyReadOnlyStringFormat(string, params ReadOnlySpan<object>) | args |
 | Strings | MyStringFormat(string, params Object[]) | args |
 | TextWriter | Write(string, object) | arg0 |
 | TextWriter | Write(string, object, object) | arg0 |
