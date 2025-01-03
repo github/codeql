@@ -36,7 +36,7 @@ where
   doubleCheckedLocking(if1, if2, sync, f) and
   a.getEnclosingStmt().getEnclosingStmt*() = if2.getThen() and
   se.getEnclosingStmt().getEnclosingStmt*() = sync.getBlock() and
-  a.(ControlFlowNode).getASuccessor+() = se and
+  a.getControlFlowNode().getASuccessor+().asExpr() = se and
   a.getDest().(FieldAccess).getField() = f
 select a,
   "Potential race condition. This assignment to $@ is visible to other threads before the subsequent statements are executed.",

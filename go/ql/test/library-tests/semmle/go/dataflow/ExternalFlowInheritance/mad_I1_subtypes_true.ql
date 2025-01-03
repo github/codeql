@@ -1,6 +1,6 @@
 import go
 import ModelValidation
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import MakeTest<FlowTest>
 
 module Config implements DataFlow::ConfigSig {

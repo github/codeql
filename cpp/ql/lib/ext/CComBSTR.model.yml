@@ -1,0 +1,33 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "CComBSTR", True, "CComBSTR", "(LPCSTR)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CComBSTR", True, "CComBSTR", "(LPCOLESTR)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CComBSTR", True, "CComBSTR", "(int,LPCSTR)", "", "Argument[*1]", "Argument[-1]", "value", "manual"]
+      - ["", "CComBSTR", True, "CComBSTR", "(int,LPCOLESTR)", "", "Argument[*1]", "Argument[-1]", "value", "manual"]
+      - ["", "CComBSTR", True, "CComBSTR", "(const CComBSTR &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CComBSTR", True, "CComBSTR", "(CComBSTR &&)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CComBSTR", True, "Append", "(const CComBSTR &)", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "Append", "(wchar_t)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "Append", "(char)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "Append", "(LPCOLESTR)", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "Append", "(LPCSTR)", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "Append", "(LPCOLESTR,int)", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "AppendBytes", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "AppendBSTR", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "ArrayToBSTR", "", "", "Argument[*0].Field[*pvData]", "Argument[-1]", "value", "manual"]
+      - ["", "CComBSTR", True, "AssignBSTR", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CComBSTR", True, "Attach", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CComBSTR", True, "BSTRToArray", "", "", "Argument[-1]", "Argument[**0].Field[*pvData]", "value", "manual"]
+      - ["", "CComBSTR", True, "Copy", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CComBSTR", True, "CopyTo", "", "", "Argument[-1]", "Argument[*0]", "value", "manual"]
+      - ["", "CComBSTR", True, "LoadString", "(HINSTANCE,UINT)", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "LoadString", "(UINT)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "ReadFromStream", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CComBSTR", True, "WriteToStream", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["", "CComBSTR", True, "operator BSTR", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "CComBSTR", True, "operator&", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CComBSTR", True, "operator+=", "", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "CComBSTR", True, "operator+=", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]

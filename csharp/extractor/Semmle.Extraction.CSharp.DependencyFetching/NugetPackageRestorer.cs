@@ -268,7 +268,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var isWindows = fileContent.UseWindowsForms || fileContent.UseWpf;
 
-            var sync = new object();
+            var sync = new Lock();
             var projectGroups = projects.GroupBy(Path.GetDirectoryName);
             Parallel.ForEach(projectGroups, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, projectGroup =>
             {
@@ -350,7 +350,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Fallback nuget restore", notYetDownloadedPackages.Count.ToString()));
 
             var successCount = 0;
-            var sync = new object();
+            var sync = new Lock();
 
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, package =>
             {
@@ -604,6 +604,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, _) =>
                     {
+                        if (chain is null || cert is null)
+                        {
+                            var msg = cert is null && chain is null
+                                ? "certificate and chain"
+                                : chain is null
+                                    ? "chain"
+                                    : "certificate";
+                            logger.LogWarning($"Dependabot proxy certificate validation failed due to missing {msg}");
+                            return false;
+                        }
                         chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
                         chain.ChainPolicy.CustomTrustStore.Add(this.dependabotProxy.Certificate);
                         return chain.Build(cert);

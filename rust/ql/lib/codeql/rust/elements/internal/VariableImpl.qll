@@ -139,6 +139,9 @@ module Impl {
      */
     IdentPat getPat() { variableDecl(definingNode, result, name) }
 
+    /** Gets the enclosing CFG scope for this variable declaration. */
+    CfgScope getEnclosingCfgScope() { result = definingNode.getEnclosingCfgScope() }
+
     /** Gets the `let` statement that introduces this variable, if any. */
     LetStmt getLetStmt() { this.getPat() = result.getPat() }
 
@@ -174,7 +177,7 @@ module Impl {
         not p.hasQualifier() and
         ps = p.getPart() and
         not ps.hasGenericArgList() and
-        not ps.hasParamList() and
+        not ps.hasParenthesizedArgList() and
         not ps.hasPathType() and
         not ps.hasReturnTypeSyntax() and
         name_ = ps.getNameRef().getText()
@@ -452,7 +455,7 @@ module Impl {
     Variable getVariable() { result = v }
 
     /** Holds if this access is a capture. */
-    predicate isCapture() { this.getEnclosingCfgScope() != v.getPat().getEnclosingCfgScope() }
+    predicate isCapture() { this.getEnclosingCfgScope() != v.getEnclosingCfgScope() }
 
     override string toString() { result = name }
 
@@ -467,7 +470,8 @@ module Impl {
       assignmentExprDescendant(mid) and
       getImmediateParent(e) = mid and
       not mid.(PrefixExpr).getOperatorName() = "*" and
-      not mid instanceof FieldExpr
+      not mid instanceof FieldExpr and
+      not mid instanceof IndexExpr
     )
   }
 

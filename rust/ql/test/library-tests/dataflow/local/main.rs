@@ -100,7 +100,7 @@ fn tuple_match() {
     let a = (2, source(38), 2);
     let (a0, a1, a2) = a;
     sink(a0);
-    sink(a1); // $ MISSING: hasValueFlow=38
+    sink(a1); // $ hasValueFlow=38
     sink(a2);
 }
 
@@ -225,6 +225,14 @@ fn option_unwrap() {
     sink(s1.unwrap()); // $ hasValueFlow=19
 }
 
+fn option_unwrap_or() {
+    let s1 = Some(source(46));
+    sink(s1.unwrap_or(0)); // $ hasValueFlow=46
+
+    let s2 = Some(0);
+    sink(s2.unwrap_or(source(47))); // $ hasValueFlow=47
+}
+
 fn option_questionmark() -> Option<i64> {
     let s1 = Some(source(20));
     let s2 = Some(2);
@@ -330,34 +338,66 @@ fn custom_record_enum_pattern_match_unqualified() {
 }
 
 // -----------------------------------------------------------------------------
-// Data flow through closures
+// Data flow through arrays
 
-fn closure_flow_out() {
-    let f = |cond| if cond { source(92) } else { 0 };
-    sink(f(true)); // $ hasValueFlow=92
+fn array_lookup() {
+    let arr1 = [1, 2, source(94)];
+    let n1 = arr1[2];
+    sink(n1); // $ hasValueFlow=94
+
+    let arr2 = [source(20); 10];
+    let n2 = arr2[4];
+    sink(n2); // $ hasValueFlow=20
+
+    let arr3 = [1, 2, 3];
+    let n3 = arr3[2];
+    sink(n3);
 }
 
-fn closure_flow_in() {
-    let f = |cond, data|
-        if cond {
-            sink(data); // $ hasValueFlow=87
-        } else {
-            sink(0)
-        };
-    let a = source(87);
-    f(true, a);
+fn array_for_loop() {
+    let arr1 = [1, 2, source(43)];
+    for n1 in arr1 {
+        sink(n1); // $ hasValueFlow=43
+    }
+
+    let arr2 = [1, 2, 3];
+    for n2 in arr2 {
+        sink(n2);
+    }
 }
 
-fn closure_flow_through() {
-    let f = |cond, data|
-        if cond {
-            data
-        } else {
-            0
-        };
-    let a = source(43);
-    let b = f(true, a);
-    sink(b); // $ hasValueFlow=43
+fn array_slice_pattern() {
+    let arr1 = [1, 2, source(43)];
+    match arr1 {
+        [a, b, c] => {
+            sink(a); // $ SPURIOUS: hasValueFlow=43
+            sink(b); // $ SPURIOUS: hasValueFlow=43
+            sink(c); // $ hasValueFlow=43
+        }
+    }
+}
+
+fn array_assignment() {
+    let mut mut_arr = [1, 2, 3];
+    sink(mut_arr[1]);
+
+    mut_arr[1] = source(55);
+    let d = mut_arr[1];
+    sink(d); // $ hasValueFlow=55
+    sink(mut_arr[0]); // $ SPURIOUS: hasValueFlow=55
+}
+
+// Test data flow inconsistency occuring with captured variables and `continue`
+// in a loop.
+pub fn captured_variable_and_continue(names: Vec<(bool, Option<String>)>) {
+  let default_name = source(83).to_string();
+  for (cond, name) in names {
+    if cond {
+      let n = name.unwrap_or_else(|| default_name.to_string());
+      sink(n.len() as i64);
+      continue;
+    }
+  }
 }
 
 fn main() {
@@ -380,6 +420,7 @@ fn main() {
     option_pattern_match_qualified();
     option_pattern_match_unqualified();
     option_unwrap();
+    option_unwrap_or();
     option_questionmark();
     let _ = result_questionmark();
     custom_tuple_enum_pattern_match_qualified();
@@ -389,7 +430,9 @@ fn main() {
     block_expression1();
     block_expression2(true);
     block_expression3(true);
-    closure_flow_out();
-    closure_flow_in();
-    closure_flow_through();
+    array_lookup();
+    array_for_loop();
+    array_slice_pattern();
+    array_assignment();
+    captured_variable_and_continue(vec![]);
 }

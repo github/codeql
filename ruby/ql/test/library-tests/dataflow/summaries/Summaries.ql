@@ -8,7 +8,7 @@ import codeql.ruby.dataflow.FlowSummary
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.internal.FlowSummaryImpl
 import codeql.ruby.frameworks.data.ModelsAsData
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import PathGraph
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {

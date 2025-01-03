@@ -81,6 +81,7 @@
             "description": "Language",
             "options":
             [
+                "actions",
                 "go",
                 "java",
                 "javascript",

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["nexus-mods/nexusmods.app/.github/workflows/build-windows-pupnet.yaml", "*", "input.AppVersion", "code-injection", "generated"]
+     - ["nexus-mods/nexusmods.app/.github/workflows/build-windows-pupnet.yaml", "*", "input.PupNetVersion", "code-injection", "generated"]
+     - ["nexus-mods/nexusmods.app/.github/workflows/build-linux-pupnet.yaml", "*", "input.AppVersion", "code-injection", "generated"]
+     - ["nexus-mods/nexusmods.app/.github/workflows/build-linux-pupnet.yaml", "*", "input.PupNetVersion", "code-injection", "generated"]

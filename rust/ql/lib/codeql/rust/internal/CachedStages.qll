@@ -35,10 +35,6 @@ module Stages {
    */
   cached
   module AstStage {
-    private import codeql.rust.controlflow.internal.Splitting
-    private import codeql.rust.controlflow.internal.SuccessorType
-    private import codeql.rust.controlflow.internal.ControlFlowGraphImpl
-
     /**
      * Always holds.
      * Ensures that a predicate is evaluated as part of the AST stage.
@@ -96,6 +92,36 @@ module Stages {
       exists(AstCfgNode n)
       or
       exists(CallExprCfgNode n | exists(n.getFunction()))
+    }
+  }
+
+  /**
+   * The data flow stage.
+   */
+  cached
+  module DataFlowStage {
+    private import codeql.rust.dataflow.internal.DataFlowImpl
+    private import codeql.rust.dataflow.internal.TaintTrackingImpl
+
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the data flow stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DO NOT USE!
+     *
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      exists(Node n)
+      or
+      RustTaintTracking::defaultAdditionalTaintStep(_, _, _)
     }
   }
 }

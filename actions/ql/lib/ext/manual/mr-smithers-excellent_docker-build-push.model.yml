@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["mr-smithers-excellent/docker-build-push", "*", "input.tags", "command-injection", "manual"]
+      - ["mr-smithers-excellent/docker-build-push", "*", "input.buildArgs", "command-injection", "manual"]
+      - ["mr-smithers-excellent/docker-build-push", "*", "input.labels", "command-injection", "manual"]
+      - ["mr-smithers-excellent/docker-build-push", "*", "input.target", "command-injection", "manual"]
+      - ["mr-smithers-excellent/docker-build-push", "*", "input.directory", "command-injection", "manual"]
+      - ["mr-smithers-excellent/docker-build-push", "*", "input.platform", "command-injection", "manual"]
+      - ["mr-smithers-excellent/docker-build-push", "*", "input.image", "command-injection", "manual"]
+      - ["mr-smithers-excellent/docker-build-push", "*", "input.registry", "command-injection", "manual"]
+      - ["mr-smithers-excellent/docker-build-push", "*", "input.dockerfile", "command-injection", "manual"]
+      - ["mr-smithers-excellent/docker-build-push", "*", "input.githubOrg", "command-injection", "manual"]
+      - ["mr-smithers-excellent/docker-build-push", "*", "input.username", "command-injection", "manual"]

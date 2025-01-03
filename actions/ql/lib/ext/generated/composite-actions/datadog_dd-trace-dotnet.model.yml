@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["datadog/dd-trace-dotnet", "*", "input.command", "code-injection", "generated"]
+     - ["datadog/dd-trace-dotnet", "*", "input.baseImage", "code-injection", "generated"]
+     - ["datadog/dd-trace-dotnet", "*", "input.aas_github_token", "code-injection", "generated"]
+     - ["datadog/dd-trace-dotnet", "*", "input.artifacts_path", "code-injection", "generated"]
+     - ["datadog/dd-trace-dotnet", "*", "input.github_token", "code-injection", "generated"]

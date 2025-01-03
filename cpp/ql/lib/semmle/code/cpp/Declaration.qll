@@ -187,7 +187,7 @@ class Declaration extends Locatable, @declaration {
       this instanceof Parameter or
       this instanceof ProxyClass or
       this instanceof LocalVariable or
-      this instanceof TemplateParameter or
+      this instanceof TypeTemplateParameter or
       this.(UserType).isLocal()
     )
   }

@@ -2,6 +2,7 @@
 | [...]/csharp/tools/[...]/Humanizer.dll |
 | [...]/csharp/tools/[...]/MessagePack.Annotations.dll |
 | [...]/csharp/tools/[...]/MessagePack.dll |
+| [...]/csharp/tools/[...]/Microsoft.Bcl.AsyncInterfaces.dll |
 | [...]/csharp/tools/[...]/Microsoft.Build.Framework.dll |
 | [...]/csharp/tools/[...]/Microsoft.Build.Utilities.Core.dll |
 | [...]/csharp/tools/[...]/Microsoft.Build.dll |
@@ -18,7 +19,6 @@
 | [...]/csharp/tools/[...]/Microsoft.VisualBasic.dll |
 | [...]/csharp/tools/[...]/Microsoft.Win32.Primitives.dll |
 | [...]/csharp/tools/[...]/Microsoft.Win32.Registry.dll |
-| [...]/csharp/tools/[...]/Microsoft.Win32.SystemEvents.dll |
 | [...]/csharp/tools/[...]/Mono.Posix.NETStandard.dll |
 | [...]/csharp/tools/[...]/Newtonsoft.Json.dll |
 | [...]/csharp/tools/[...]/StructuredLogger.dll |
@@ -58,7 +58,6 @@
 | [...]/csharp/tools/[...]/System.Diagnostics.Tools.dll |
 | [...]/csharp/tools/[...]/System.Diagnostics.TraceSource.dll |
 | [...]/csharp/tools/[...]/System.Diagnostics.Tracing.dll |
-| [...]/csharp/tools/[...]/System.Drawing.Common.dll |
 | [...]/csharp/tools/[...]/System.Drawing.Primitives.dll |
 | [...]/csharp/tools/[...]/System.Drawing.dll |
 | [...]/csharp/tools/[...]/System.Dynamic.Runtime.dll |
@@ -155,7 +154,6 @@
 | [...]/csharp/tools/[...]/System.Security.Cryptography.ProtectedData.dll |
 | [...]/csharp/tools/[...]/System.Security.Cryptography.X509Certificates.dll |
 | [...]/csharp/tools/[...]/System.Security.Cryptography.dll |
-| [...]/csharp/tools/[...]/System.Security.Permissions.dll |
 | [...]/csharp/tools/[...]/System.Security.Principal.Windows.dll |
 | [...]/csharp/tools/[...]/System.Security.Principal.dll |
 | [...]/csharp/tools/[...]/System.Security.SecureString.dll |
@@ -183,7 +181,6 @@
 | [...]/csharp/tools/[...]/System.ValueTuple.dll |
 | [...]/csharp/tools/[...]/System.Web.HttpUtility.dll |
 | [...]/csharp/tools/[...]/System.Web.dll |
-| [...]/csharp/tools/[...]/System.Windows.Extensions.dll |
 | [...]/csharp/tools/[...]/System.Windows.dll |
 | [...]/csharp/tools/[...]/System.Xml.Linq.dll |
 | [...]/csharp/tools/[...]/System.Xml.ReaderWriter.dll |

@@ -1,0 +1,17 @@
+# https://github.com/AdnaneKhan/ActionsTOCTOU/blob/main/.github/workflows/label_victim.yml
+name: Label Trigger Test
+on:
+  pull_request_target:
+    types: [labeled]
+    branches: [main]
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'safe-to-test')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - run: bash label_example/tests.sh

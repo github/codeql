@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data:
+      - ["", "CStrBufT", True, "CStrBufT", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CStrBufT", True, "operator PCXSTR", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CStrBufT", True, "operator PXSTR", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]

@@ -44,7 +44,7 @@
 | Test.kt:21:3:24:11 | true | Test.kt:24:11:24:11 | z |
 | Test.kt:21:3:24:11 | when ... | Test.kt:21:3:24:11 | ... -> ... |
 | Test.kt:21:7:21:7 | x | Test.kt:21:11:21:11 | 0 |
-| Test.kt:21:7:21:11 | ... < ... | Test.kt:2:2:79:2 | test |
+| Test.kt:21:7:21:11 | ... < ... | Test.kt:2:2:79:2 | Exit |
 | Test.kt:21:7:21:11 | ... < ... | Test.kt:21:3:24:11 | ... -> ... |
 | Test.kt:21:7:21:11 | ... < ... | Test.kt:22:4:22:4 | <Expr>; |
 | Test.kt:21:11:21:11 | 0 | Test.kt:21:7:21:11 | ... < ... |
@@ -142,7 +142,7 @@
 | Test.kt:92:4:93:9 | <Expr>; | Test.kt:92:4:93:9 | when ... |
 | Test.kt:92:4:93:9 | when ... | Test.kt:92:4:93:9 | ... -> ... |
 | Test.kt:92:8:92:8 | a | Test.kt:92:13:92:14 | 10 |
-| Test.kt:92:8:92:14 | ... (value equals) ... | Test.kt:81:2:98:2 | test2 |
+| Test.kt:92:8:92:14 | ... (value equals) ... | Test.kt:81:2:98:2 | Exit |
 | Test.kt:92:8:92:14 | ... (value equals) ... | Test.kt:93:5:93:9 | break |
 | Test.kt:92:8:92:14 | ... (value equals) ... | Test.kt:94:4:95:12 | <Expr>; |
 | Test.kt:92:13:92:14 | 10 | Test.kt:92:8:92:14 | ... (value equals) ... |

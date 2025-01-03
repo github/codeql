@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # TODO this model can be improved a lot once we have MapKey content # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "CUrl", True, "CUrl", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CUrl", True, "CrackUrl", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CUrl", True, "CreateUrl", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]
+      - ["", "CUrl", True, "GetExtraInfo", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "CUrl", True, "GetHostName", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "CUrl", True, "GetPassword", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "CUrl", True, "GetSchemeName", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "CUrl", True, "GetUrlPath", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "CUrl", True, "GetUserName", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "CUrl", True, "SetExtraInfo", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CUrl", True, "SetHostName", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CUrl", True, "SetPassword", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CUrl", True, "SetSchemeName", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CUrl", True, "SetUrlPath", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CUrl", True, "SetUserName", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CUrl", True, "operator=", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CUrl", True, "operator=", "", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]

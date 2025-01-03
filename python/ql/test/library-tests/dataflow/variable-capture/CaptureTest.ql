@@ -1,7 +1,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
-import TestUtilities.InlineExpectationsTest
-import TestUtilities.dataflow.testConfig
+import utils.test.InlineExpectationsTest
+import utils.test.dataflow.testConfig
 
 module CaptureTest implements TestSig {
   string getARelevantTag() { result = "captured" }

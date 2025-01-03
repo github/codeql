@@ -1,6 +1,6 @@
 import rust
 import codeql.rust.security.SqlInjectionExtensions
-import utils.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module SqlSinksTest implements TestSig {
   string getARelevantTag() { result = "sql-sink" }

@@ -19,10 +19,10 @@ edges
 | test.rs:11:23:11:34 | ...::new | test.rs:11:23:11:36 | ...::new(...) |  |
 | test.rs:11:23:11:36 | ...::new(...) | test.rs:11:13:11:19 | map |  |
 | test.rs:12:9:12:11 | map | test.rs:12:20:12:21 | 37 |  |
-| test.rs:12:9:12:27 | ... .insert(...) | test.rs:10:22:13:5 | { ... } |  |
+| test.rs:12:9:12:27 | map.insert(...) | test.rs:10:22:13:5 | { ... } |  |
 | test.rs:12:9:12:28 | ExprStmt | test.rs:12:9:12:11 | map |  |
 | test.rs:12:20:12:21 | 37 | test.rs:12:24:12:26 | "a" |  |
-| test.rs:12:24:12:26 | "a" | test.rs:12:9:12:27 | ... .insert(...) |  |
+| test.rs:12:24:12:26 | "a" | test.rs:12:9:12:27 | map.insert(...) |  |
 | test.rs:18:5:24:5 | enter fn next | test.rs:18:13:18:13 | n |  |
 | test.rs:18:5:24:5 | exit fn next (normal) | test.rs:18:5:24:5 | exit fn next |  |
 | test.rs:18:13:18:13 | n | test.rs:18:13:18:18 | ...: i64 | match |
@@ -194,8 +194,8 @@ edges
 | test.rs:99:19:99:25 | Some(...) | test.rs:99:9:103:9 | while ... { ... } | no-match |
 | test.rs:99:19:99:25 | Some(...) | test.rs:99:24:99:24 | x | match |
 | test.rs:99:24:99:24 | x | test.rs:100:17:100:17 | x | match |
-| test.rs:99:29:99:32 | iter | test.rs:99:29:99:39 | ... .next(...) |  |
-| test.rs:99:29:99:39 | ... .next(...) | test.rs:99:19:99:25 | Some(...) |  |
+| test.rs:99:29:99:32 | iter | test.rs:99:29:99:39 | iter.next(...) |  |
+| test.rs:99:29:99:39 | iter.next(...) | test.rs:99:19:99:25 | Some(...) |  |
 | test.rs:99:41:103:9 | { ... } | test.rs:99:15:99:39 | let ... = ... |  |
 | test.rs:100:13:102:13 | if ... {...} | test.rs:99:41:103:9 | { ... } |  |
 | test.rs:100:17:100:17 | x | test.rs:100:22:100:22 | 5 |  |
@@ -631,8 +631,8 @@ edges
 | test.rs:292:87:294:5 | { ... } | test.rs:292:5:294:5 | exit fn test_question_mark_operator_1 (normal) |  |
 | test.rs:293:9:293:10 | Ok | test.rs:293:12:293:12 | s |  |
 | test.rs:293:9:293:33 | Ok(...) | test.rs:292:87:294:5 | { ... } |  |
-| test.rs:293:12:293:12 | s | test.rs:293:12:293:27 | ... .parse(...) |  |
-| test.rs:293:12:293:27 | ... .parse(...) | test.rs:293:12:293:28 | TryExpr |  |
+| test.rs:293:12:293:12 | s | test.rs:293:12:293:27 | s.parse(...) |  |
+| test.rs:293:12:293:27 | s.parse(...) | test.rs:293:12:293:28 | TryExpr |  |
 | test.rs:293:12:293:28 | TryExpr | test.rs:292:5:294:5 | exit fn test_question_mark_operator_1 (normal) | return |
 | test.rs:293:12:293:28 | TryExpr | test.rs:293:32:293:32 | 4 | match |
 | test.rs:293:12:293:32 | ... + ... | test.rs:293:9:293:33 | Ok(...) |  |

@@ -190,7 +190,7 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       override predicate relevantChild(AstNode child) {
         none()
         or
-        child = this.getExpr()
+        child = this.getTemplate(_)
       }
     }
 
@@ -211,6 +211,21 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       AsmExpr getAsmExpr() { result = node }
 
       /**
+       * Gets the `index`th asm piece of this asm expression (0-based).
+       */
+      AsmPiece getAsmPiece(int index) { result = node.getAsmPiece(index) }
+
+      /**
+       * Gets any of the asm pieces of this asm expression.
+       */
+      AsmPiece getAnAsmPiece() { result = this.getAsmPiece(_) }
+
+      /**
+       * Gets the number of asm pieces of this asm expression.
+       */
+      int getNumberOfAsmPieces() { result = count(int i | exists(this.getAsmPiece(i))) }
+
+      /**
        * Gets the `index`th attr of this asm expression (0-based).
        */
       Attr getAttr(int index) { result = node.getAttr(index) }
@@ -226,16 +241,21 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
       /**
-       * Gets the expression of this asm expression, if it exists.
+       * Gets the `index`th template of this asm expression (0-based).
        */
-      ExprCfgNode getExpr() {
-        any(ChildMapping mapping).hasCfgChild(node, node.getExpr(), this, result)
+      ExprCfgNode getTemplate(int index) {
+        any(ChildMapping mapping).hasCfgChild(node, node.getTemplate(index), this, result)
       }
 
       /**
-       * Holds if `getExpr()` exists.
+       * Gets any of the templates of this asm expression.
        */
-      predicate hasExpr() { exists(this.getExpr()) }
+      ExprCfgNode getATemplate() { result = this.getTemplate(_) }
+
+      /**
+       * Gets the number of templates of this asm expression.
+       */
+      int getNumberOfTemplates() { result = count(int i | exists(this.getTemplate(i))) }
     }
 
     final private class ParentAwaitExpr extends ParentAstNode, AwaitExpr {
@@ -701,6 +721,66 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Gets the number of attrs of this call expression base.
        */
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+    }
+
+    final private class ParentCastExpr extends ParentAstNode, CastExpr {
+      override predicate relevantChild(AstNode child) {
+        none()
+        or
+        child = this.getExpr()
+      }
+    }
+
+    /**
+     * A type cast expression. For example:
+     * ```rust
+     * value as u64;
+     * ```
+     */
+    final class CastExprCfgNode extends CfgNodeFinal, ExprCfgNode {
+      private CastExpr node;
+
+      CastExprCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `CastExpr`. */
+      CastExpr getCastExpr() { result = node }
+
+      /**
+       * Gets the `index`th attr of this cast expression (0-based).
+       */
+      Attr getAttr(int index) { result = node.getAttr(index) }
+
+      /**
+       * Gets any of the attrs of this cast expression.
+       */
+      Attr getAnAttr() { result = this.getAttr(_) }
+
+      /**
+       * Gets the number of attrs of this cast expression.
+       */
+      int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+      /**
+       * Gets the expression of this cast expression, if it exists.
+       */
+      ExprCfgNode getExpr() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getExpr(), this, result)
+      }
+
+      /**
+       * Holds if `getExpr()` exists.
+       */
+      predicate hasExpr() { exists(this.getExpr()) }
+
+      /**
+       * Gets the type representation of this cast expression, if it exists.
+       */
+      TypeRepr getTypeRepr() { result = node.getTypeRepr() }
+
+      /**
+       * Holds if `getTypeRepr()` exists.
+       */
+      predicate hasTypeRepr() { exists(this.getTypeRepr()) }
     }
 
     final private class ParentConstBlockPat extends ParentAstNode, ConstBlockPat {
@@ -2118,16 +2198,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Gets the number of attrs of this path expression.
        */
       int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
-
-      /**
-       * Gets the path of this path expression, if it exists.
-       */
-      Path getPath() { result = node.getPath() }
-
-      /**
-       * Holds if `getPath()` exists.
-       */
-      predicate hasPath() { exists(this.getPath()) }
     }
 
     final private class ParentPathExprBase extends ParentAstNode, PathExprBase {
@@ -2166,16 +2236,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
 
       /** Gets the underlying `PathPat`. */
       PathPat getPathPat() { result = node }
-
-      /**
-       * Gets the path of this path pattern, if it exists.
-       */
-      Path getPath() { result = node.getPath() }
-
-      /**
-       * Holds if `getPath()` exists.
-       */
-      predicate hasPath() { exists(this.getPath()) }
     }
 
     final private class ParentPrefixExpr extends ParentAstNode, PrefixExpr {
@@ -2404,16 +2464,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       RecordExpr getRecordExpr() { result = node }
 
       /**
-       * Gets the path of this record expression, if it exists.
-       */
-      Path getPath() { result = node.getPath() }
-
-      /**
-       * Holds if `getPath()` exists.
-       */
-      predicate hasPath() { exists(this.getPath()) }
-
-      /**
        * Gets the record expression field list of this record expression, if it exists.
        */
       RecordExprFieldList getRecordExprFieldList() { result = node.getRecordExprFieldList() }
@@ -2444,16 +2494,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
 
       /** Gets the underlying `RecordPat`. */
       RecordPat getRecordPat() { result = node }
-
-      /**
-       * Gets the path of this record pattern, if it exists.
-       */
-      Path getPath() { result = node.getPath() }
-
-      /**
-       * Holds if `getPath()` exists.
-       */
-      predicate hasPath() { exists(this.getPath()) }
 
       /**
        * Gets the record pattern field list of this record pattern, if it exists.
@@ -2675,8 +2715,13 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
     /**
      * A `self` parameter. For example `self` in:
      * ```rust
-     * fn push(&mut self, value: T) {
-     *   // ...
+     * struct X;
+     * impl X {
+     *   fn one(&self) {}
+     *   fn two(&mut self) {}
+     *   fn three(self) {}
+     *   fn four(mut self) {}
+     *   fn five<'a>(&'a self) {}
      * }
      * ```
      */
@@ -2687,6 +2732,11 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
 
       /** Gets the underlying `SelfParam`. */
       SelfParam getSelfParam() { result = node }
+
+      /**
+       * Holds if this self parameter is reference.
+       */
+      predicate isRef() { node.isRef() }
 
       /**
        * Holds if this self parameter is mut.
@@ -2947,16 +2997,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Gets the number of fields of this tuple struct pattern.
        */
       int getNumberOfFields() { result = count(int i | exists(this.getField(i))) }
-
-      /**
-       * Gets the path of this tuple struct pattern, if it exists.
-       */
-      Path getPath() { result = node.getPath() }
-
-      /**
-       * Holds if `getPath()` exists.
-       */
-      predicate hasPath() { exists(this.getPath()) }
     }
 
     final private class ParentUnderscoreExpr extends ParentAstNode, UnderscoreExpr {
@@ -3209,14 +3249,13 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           cfgNode
         )
       or
-      pred = "getExpr" and
+      pred = "getTemplate" and
       parent =
         any(Nodes::AsmExprCfgNode cfgNode, AsmExpr astNode |
           astNode = cfgNode.getAsmExpr() and
-          child = getDesugared(astNode.getExpr()) and
-          i = -1 and
+          child = getDesugared(astNode.getTemplate(i)) and
           hasCfgNode(child) and
-          not child = cfgNode.getExpr().getAstNode()
+          not child = cfgNode.getTemplate(i).getAstNode()
         |
           cfgNode
         )
@@ -3301,6 +3340,18 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           i = -1 and
           hasCfgNode(child) and
           not child = cfgNode.getFunction().getAstNode()
+        |
+          cfgNode
+        )
+      or
+      pred = "getExpr" and
+      parent =
+        any(Nodes::CastExprCfgNode cfgNode, CastExpr astNode |
+          astNode = cfgNode.getCastExpr() and
+          child = getDesugared(astNode.getExpr()) and
+          i = -1 and
+          hasCfgNode(child) and
+          not child = cfgNode.getExpr().getAstNode()
         |
           cfgNode
         )
