@@ -1,6 +1,6 @@
 import javascript
 private import semmle.javascript.dataflow.internal.StepSummary
-deprecated import testUtilities.LegacyDataFlowDiff
+deprecated import utils.test.LegacyDataFlowDiff
 
 module ValueFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {

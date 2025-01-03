@@ -22,6 +22,6 @@ deprecated class LegacyConfig extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { TestConfig::isSink(sink) }
 }
 
-deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import utils.test.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
 query predicate dataFlow = TestFlow::flow/2;

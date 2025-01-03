@@ -1,6 +1,6 @@
 import javascript
 import semmle.javascript.security.dataflow.ClientSideUrlRedirectQuery
-import testUtilities.ConsistencyChecking
+import utils.test.ConsistencyChecking
 
 deprecated class ClientSideUrlRedirectConsistency extends ConsistencyConfiguration {
   ClientSideUrlRedirectConsistency() { this = "ClientSideUrlRedirectConsistency" }

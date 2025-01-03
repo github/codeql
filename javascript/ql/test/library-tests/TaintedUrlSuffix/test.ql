@@ -1,5 +1,5 @@
 import javascript
-import testUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.javascript.security.TaintedUrlSuffix
 
 module TestConfig implements DataFlow::StateConfigSig {

@@ -118,3 +118,23 @@ class MapSet extends SummarizedCallable {
     )
   }
 }
+
+class MapGroupBy extends SummarizedCallable {
+  MapGroupBy() { this = "Map#groupBy" }
+
+  override DataFlow::CallNode getACallSimple() {
+    result = mapConstructorRef().getAMemberCall("groupBy") and
+    result.getNumArgument() = 2
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    preservesValue = true and
+    (
+      input = "Argument[0].ArrayElement" and
+      output = ["Argument[1].Parameter[0]", "ReturnValue.MapValue.ArrayElement"]
+      or
+      input = "Argument[1].ReturnValue" and
+      output = "ReturnValue.MapKey"
+    )
+  }
+}

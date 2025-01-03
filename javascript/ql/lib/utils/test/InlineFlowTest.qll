@@ -11,7 +11,7 @@ private import semmle.javascript.frameworks.data.internal.ApiGraphModelsExtensio
 private import internal.InlineExpectationsTestImpl
 
 private module FlowTestImpl implements InputSig<Location, JSDataFlow> {
-  import testUtilities.InlineFlowTestUtil
+  import utils.test.InlineFlowTestUtil
 
   bindingset[src, sink]
   string getArgString(DataFlow::Node src, DataFlow::Node sink) {

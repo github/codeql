@@ -321,7 +321,6 @@ nodes
 | tests.js:306:34:306:41 | dst[key] | semmle.label | dst[key] |
 | tests.js:306:38:306:40 | key | semmle.label | key |
 | tests.js:306:44:306:48 | value | semmle.label | value |
-| tests.js:306:44:306:48 | value | semmle.label | value |
 | tests.js:308:17:308:19 | dst | semmle.label | dst |
 | tests.js:308:21:308:23 | key | semmle.label | key |
 | tests.js:308:28:308:32 | value | semmle.label | value |
@@ -339,7 +338,6 @@ nodes
 | tests.js:320:38:320:40 | dst | semmle.label | dst |
 | tests.js:320:38:320:45 | dst[key] | semmle.label | dst[key] |
 | tests.js:320:42:320:44 | key | semmle.label | key |
-| tests.js:320:48:320:52 | value | semmle.label | value |
 | tests.js:320:48:320:52 | value | semmle.label | value |
 | tests.js:322:17:322:19 | dst | semmle.label | dst |
 | tests.js:322:21:322:23 | key | semmle.label | key |
@@ -553,7 +551,6 @@ nodes
 | tests.js:498:21:498:28 | src[key] | semmle.label | src[key] |
 | tests.js:498:21:498:28 | src[key] | semmle.label | src[key] |
 | tests.js:498:25:498:27 | key | semmle.label | key |
-| tests.js:500:38:500:42 | value | semmle.label | value |
 | tests.js:500:38:500:42 | value | semmle.label | value |
 | tests.js:502:17:502:19 | key | semmle.label | key |
 | tests.js:502:24:502:28 | value | semmle.label | value |
@@ -998,7 +995,6 @@ edges
 | tests.js:306:34:306:41 | dst[key] | tests.js:301:27:301:29 | dst | provenance |  |
 | tests.js:306:38:306:40 | key | tests.js:306:34:306:41 | dst[key] | provenance | Config |
 | tests.js:306:44:306:48 | value | tests.js:301:32:301:34 | src | provenance |  |
-| tests.js:306:44:306:48 | value | tests.js:301:32:301:34 | src | provenance |  |
 | tests.js:314:31:314:33 | dst | tests.js:320:38:320:40 | dst | provenance |  |
 | tests.js:314:31:314:33 | dst | tests.js:322:17:322:19 | dst | provenance |  |
 | tests.js:314:36:314:38 | src | tests.js:318:25:318:27 | src | provenance |  |
@@ -1019,7 +1015,6 @@ edges
 | tests.js:320:38:320:40 | dst | tests.js:320:38:320:45 | dst[key] | provenance | Config |
 | tests.js:320:38:320:45 | dst[key] | tests.js:314:31:314:33 | dst | provenance |  |
 | tests.js:320:42:320:44 | key | tests.js:320:38:320:45 | dst[key] | provenance | Config |
-| tests.js:320:48:320:52 | value | tests.js:314:36:314:38 | src | provenance |  |
 | tests.js:320:48:320:52 | value | tests.js:314:36:314:38 | src | provenance |  |
 | tests.js:328:25:328:27 | dst | tests.js:336:32:336:34 | dst | provenance |  |
 | tests.js:328:25:328:27 | dst | tests.js:338:17:338:19 | dst | provenance |  |
@@ -1265,7 +1260,6 @@ edges
 | tests.js:498:21:498:28 | src[key] | tests.js:498:13:498:28 | value | provenance |  |
 | tests.js:498:21:498:28 | src[key] | tests.js:498:13:498:28 | value | provenance |  |
 | tests.js:498:25:498:27 | key | tests.js:498:21:498:28 | src[key] | provenance | Config |
-| tests.js:500:38:500:42 | value | tests.js:494:32:494:34 | src | provenance |  |
 | tests.js:500:38:500:42 | value | tests.js:494:32:494:34 | src | provenance |  |
 | tests.js:508:30:508:32 | dst | tests.js:513:33:513:35 | dst | provenance |  |
 | tests.js:508:30:508:32 | dst | tests.js:517:35:517:37 | dst | provenance |  |

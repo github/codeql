@@ -27,6 +27,7 @@ legacyDataFlowDifference
 | spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y | only flow with NEW data flow library |
 | tst.js:2:13:2:20 | source() | tst.js:35:14:35:16 | ary | only flow with NEW data flow library |
 | tst.js:2:13:2:20 | source() | tst.js:41:14:41:16 | ary | only flow with NEW data flow library |
+| tst.js:82:23:82:30 | source() | tst.js:83:58:83:61 | item | only flow with NEW data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
 flow
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
@@ -190,4 +191,8 @@ flow
 | tst.js:2:13:2:20 | source() | tst.js:35:14:35:16 | ary |
 | tst.js:2:13:2:20 | source() | tst.js:41:14:41:16 | ary |
 | tst.js:2:13:2:20 | source() | tst.js:54:14:54:19 | unsafe |
+| tst.js:2:13:2:20 | source() | tst.js:79:14:79:35 | grouped ... nown()) |
+| tst.js:82:23:82:30 | source() | tst.js:83:58:83:61 | item |
+| tst.js:93:22:93:29 | source() | tst.js:96:14:96:25 | taintedValue |
+| tst.js:93:22:93:29 | source() | tst.js:97:14:97:26 | map.get(true) |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x |

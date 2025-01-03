@@ -39,6 +39,6 @@ deprecated class LegacyConfig extends DataFlow::Configuration {
   }
 }
 
-deprecated import testUtilities.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+deprecated import utils.test.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
 
 query predicate flow = TestFlow::flow/2;

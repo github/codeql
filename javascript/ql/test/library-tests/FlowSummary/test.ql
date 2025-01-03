@@ -1,6 +1,6 @@
 import javascript
-deprecated import testUtilities.ConsistencyChecking
-import testUtilities.InlineSummaries
+deprecated import utils.test.ConsistencyChecking
+import utils.test.InlineSummaries
 
 DataFlow::CallNode getACall(string name) {
   result.getCalleeName() = name

@@ -1,3 +1,3 @@
 import javascript
-import testUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import DefaultFlowTest
