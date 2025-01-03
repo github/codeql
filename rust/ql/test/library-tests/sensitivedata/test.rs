@@ -27,21 +27,21 @@ fn test_passwords(
 	ms: &MyStruct
 ) {
 	// passwords
-	sink(password); // $ MISSING: sensitive=password
-	sink(passwd); // $ MISSING: sensitive=password
-	sink(my_password); // $ MISSING: sensitive=password
-	sink(password_str); // $ MISSING: sensitive=password
+	sink(password); // $ sensitive=password
+	sink(passwd); // $ sensitive=password
+	sink(my_password); // $ sensitive=password
+	sink(password_str); // $ sensitive=password
 	sink(pass_phrase); // $ MISSING: sensitive=password
 	sink(auth_key); // $ MISSING: sensitive=password
-	sink(authenticationkey); // $ MISSING: sensitive=password
-	sink(authKey); // $ MISSING: sensitive=password
+	sink(authenticationkey); // $ sensitive=password
+	sink(authKey); // $ sensitive=password
 
 	sink(ms); // $ MISSING: sensitive=password
 	sink(ms.password.as_str()); // $ MISSING: sensitive=password
 
-	sink(get_password()); // $ MISSING: sensitive=password
+	sink(get_password()); // $ sensitive=password
 	let password2 = get_string();
-	sink(password2); // $ MISSING: sensitive=password
+	sink(password2); // $ sensitive=password
 
 	// not passwords
 	sink(harmless);
@@ -69,25 +69,25 @@ fn test_credentials(
 	ms: &MyStruct
 ) {
 	// credentials
-	sink(account_key); // $ MISSING: sensitive=secret
-	sink(accnt_key); // $ MISSING: sensitive=secret
+	sink(account_key); // $ sensitive=id
+	sink(accnt_key); // $ sensitive=id
 	sink(license_key); // $ MISSING: sensitive=secret
-	sink(secret_key); // $ MISSING: sensitive=secret
+	sink(secret_key); // $ sensitive=secret
 
-	sink(ms.get_certificate()); // $ MISSING: sensitive=certificate
+	sink(ms.get_certificate()); // $ sensitive=certificate
 
-	sink(generate_secret_key()); // $ MISSING: sensitive=secret
+	sink(generate_secret_key()); // $ sensitive=secret
 	sink(get_secure_key()); // $ MISSING: sensitive=secret
 	sink(get_private_key()); // $ MISSING: sensitive=secret
-	sink(get_secret_token()); // $ MISSING: sensitive=secret
+	sink(get_secret_token()); // $ sensitive=secret
 
 	// not credentials
 	sink(is_secret);
-	sink(num_accounts);
-	sink(uid);
+	sink(num_accounts); // $ SPURIOUS: sensitive=id
+	sink(uid); // $ SPURIOUS: sensitive=id
 
-	sink(ms.get_certificate_url());
-	sink(ms.get_certificate_file());
+	sink(ms.get_certificate_url()); // $ SPURIOUS: sensitive=certificate
+	sink(ms.get_certificate_file()); // $ SPURIOUS: sensitive=certificate
 
 	sink(get_public_key());
 	sink(get_next_token());
