@@ -1,6 +1,14 @@
 extensions:
   - addsTo:
       pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["database/sql/driver", "Queryer", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql/driver", "QueryerContext", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql/driver", "Stmt", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["database/sql/driver", "StmtQueryContext", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: sinkModel
     data:
       - ["database/sql/driver", "Execer", True, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
