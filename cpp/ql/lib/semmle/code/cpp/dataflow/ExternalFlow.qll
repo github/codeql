@@ -974,18 +974,19 @@ private Element interpretElement0(
   )
 }
 
-/** Gets the source/sink/summary element corresponding to the supplied parameters. */
-Element interpretElement(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext
-) {
-  elementSpec(namespace, type, subtypes, name, signature, ext) and
-  exists(Element e | e = interpretElement0(namespace, type, subtypes, name, signature) |
-    ext = "" and result = e
-  )
-}
-
 cached
 private module Cached {
+  /** Gets the source/sink/summary element corresponding to the supplied parameters. */
+  cached
+  Element interpretElement(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  ) {
+    elementSpec(namespace, type, subtypes, name, signature, ext) and
+    exists(Element e | e = interpretElement0(namespace, type, subtypes, name, signature) |
+      ext = "" and result = e
+    )
+  }
+
   /**
    * Holds if `node` is specified as a source with the given kind in a CSV flow
    * model.
