@@ -2,7 +2,7 @@ import rust
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.TaintTracking
 import codeql.rust.security.DanglingPointerExtensions
-import utils.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module PointerDereferenceFlow = TaintTracking::Global<PointerDereferenceConfig>;
 

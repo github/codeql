@@ -1,4 +1,4 @@
 query: queries/security/CWE-825/DanglingPointerAccess.ql
 postprocess:
- - utils/PrettyPrintModels.ql
- - utils/InlineExpectationsTestQuery.ql
+ - utils/test/PrettyPrintModels.ql
+ - utils/test/InlineExpectationsTestQuery.ql
