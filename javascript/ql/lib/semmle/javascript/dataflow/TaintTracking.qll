@@ -8,9 +8,6 @@
  * substrings. As for data flow configurations, additional flow edges can be
  * specified, and conversely certain nodes or edges can be designated as taint
  * _sanitizers_ that block flow.
- *
- * NOTE: The API of this library is not stable yet and may change in
- *       the future.
  */
 
 import javascript

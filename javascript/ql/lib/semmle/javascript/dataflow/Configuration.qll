@@ -6,10 +6,6 @@
  * Additional data flow edges can be specified, and conversely certain nodes or
  * edges can be designated as _barriers_ that block flow.
  *
- * NOTE: The API of this library is not stable yet and may change in
- *       the future.
- *
- *
  * # Technical overview
  *
  * This module implements a summarization-based inter-procedural data flow
