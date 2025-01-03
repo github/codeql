@@ -186,10 +186,14 @@ final class CallExprCfgNode extends CallExprBaseCfgNode, Nodes::CallExprCfgNode 
 final class FormatArgsExprCfgNode extends Nodes::FormatArgsExprCfgNode {
   private FormatArgsExprChildMapping node;
 
+  FormatArgsExprCfgNode() { node = this.getAstNode() }
+
+  /** Gets the `i`th argument of this format arguments expression (0-based). */
   ExprCfgNode getArgumentExpr(int i) {
     any(ChildMapping mapping).hasCfgChild(node, node.getArg(i).getExpr(), this, result)
   }
 
+  /** Gets a format argument of the `i`th format of this format arguments expression (0-based). */
   FormatTemplateVariableAccessCfgNode getFormatTemplateVariableAccess(int i) {
     exists(FormatTemplateVariableAccess v |
       v.getArgument() = node.getFormat(i).getArgument() and
@@ -199,11 +203,18 @@ final class FormatArgsExprCfgNode extends Nodes::FormatArgsExprCfgNode {
   }
 }
 
+/**
+ * A MacroCall. For example:
+ * ```rust
+ * todo!()
+ * ```
+ */
 final class MacroCallCfgNode extends Nodes::MacroCallCfgNode {
   private MacroCallChildMapping node;
 
   MacroCallCfgNode() { node = this.getAstNode() }
 
+  /** Gets the CFG node for the expansion of this macro call, if it exists. */
   CfgNode getExpandedNode() {
     any(ChildMapping mapping).hasCfgChild(node, node.getExpanded(), this, result)
   }
