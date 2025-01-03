@@ -588,3 +588,33 @@ public class C20 : I3<C20>
         c.M13();
     }
 }
+
+public class C21
+{
+    public interface I
+    {
+        void M();
+    }
+
+    public class A1 : I
+    {
+        public void M() { }
+    }
+
+    public ref struct A2 : I
+    {
+        public void M() { }
+    }
+
+    public void Run1<T>(T t) where T : I
+    {
+        // Viable callable: A1.M() [also reports A2.M(); false positive]
+        t.M();
+    }
+
+    public void Run2<T>(T t) where T : I, allows ref struct
+    {
+        // Viable callable: {A1, A2}.M()
+        t.M();
+    }
+}
