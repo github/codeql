@@ -54,5 +54,5 @@ struct S3 : I2 { }
 ref struct RS : I2 { }
 class C7 : I2 { }
 
-class NormalConstraint<T> where T : I2 { } // False positive: Allows T to be `RS`.
+class NormalConstraint<T> where T : I2 { }
 class NegativeConstraint<T> where T : I2, allows ref struct { }

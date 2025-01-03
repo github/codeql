@@ -608,7 +608,7 @@ public class C21
 
     public void Run1<T>(T t) where T : I
     {
-        // Viable callable: A1.M() [also reports A2.M(); false positive]
+        // Viable callable: A1.M()
         t.M();
     }
 

@@ -8,7 +8,6 @@ constrainedTypeParameterSubsumes
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:32:12:32:19 | (T8, T9) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:53:8:53:9 | S3 |
-| Unification.cs:8:10:8:11 | T2 | Unification.cs:54:12:54:13 | RS |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:1:11:1:12 | I1 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:6:7:6:8 | C0 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<C0> |
@@ -103,12 +102,10 @@ constrainedTypeParameterSubsumes
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:32:12:32:19 | (T8, T9) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:53:8:53:9 | S3 |
-| Unification.cs:12:25:12:27 | T6d | Unification.cs:54:12:54:13 | RS |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<S2> |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:24:12:24:13 | Tm |
 | Unification.cs:57:24:57:24 | T | Unification.cs:52:11:52:12 | I2 |
 | Unification.cs:57:24:57:24 | T | Unification.cs:53:8:53:9 | S3 |
-| Unification.cs:57:24:57:24 | T | Unification.cs:54:12:54:13 | RS |
 | Unification.cs:57:24:57:24 | T | Unification.cs:55:7:55:8 | C7 |
 | Unification.cs:57:24:57:24 | T | Unification.cs:57:24:57:24 | T |
 | Unification.cs:57:24:57:24 | T | Unification.cs:58:26:58:26 | T |
@@ -129,7 +126,6 @@ constrainedTypeParameterUnifiable
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:32:12:32:19 | (T8, T9) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:53:8:53:9 | S3 |
-| Unification.cs:8:10:8:11 | T2 | Unification.cs:54:12:54:13 | RS |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:1:11:1:12 | I1 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:6:7:6:8 | C0 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<C0> |
@@ -232,13 +228,11 @@ constrainedTypeParameterUnifiable
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:32:12:32:19 | (T8, T9) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:53:8:53:9 | S3 |
-| Unification.cs:12:25:12:27 | T6d | Unification.cs:54:12:54:13 | RS |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<S2> |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<T2> |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:24:12:24:13 | Tm |
 | Unification.cs:57:24:57:24 | T | Unification.cs:52:11:52:12 | I2 |
 | Unification.cs:57:24:57:24 | T | Unification.cs:53:8:53:9 | S3 |
-| Unification.cs:57:24:57:24 | T | Unification.cs:54:12:54:13 | RS |
 | Unification.cs:57:24:57:24 | T | Unification.cs:55:7:55:8 | C7 |
 | Unification.cs:57:24:57:24 | T | Unification.cs:57:24:57:24 | T |
 | Unification.cs:57:24:57:24 | T | Unification.cs:58:26:58:26 | T |

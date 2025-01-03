@@ -506,6 +506,5 @@
 | ViableCallable.cs:585:9:585:15 | call to method M12 | I3<T>.M12() |
 | ViableCallable.cs:588:9:588:15 | call to method M13 | I3<T>.M13() |
 | ViableCallable.cs:612:9:612:13 | call to method M | C21+A1.M() |
-| ViableCallable.cs:612:9:612:13 | call to method M | C21+A2.M() |
 | ViableCallable.cs:618:9:618:13 | call to method M | C21+A1.M() |
 | ViableCallable.cs:618:9:618:13 | call to method M | C21+A2.M() |
