@@ -185,7 +185,9 @@ private class ExternalRemoteFlowSource extends RemoteFlowSource {
   override string getSourceType() { result = ap.getSourceType() }
 }
 
-// Angular @Input() decorator on a member declaration.
+/**
+ *  Angular @Input() decorator on a member declaration.
+ */
 class InputMember extends MemberDeclaration {
   InputMember() {
     exists(Decorator decorator, Expr expr |
@@ -196,7 +198,9 @@ class InputMember extends MemberDeclaration {
   }
 }
 
-// Use of an Angular @Input() member.
+/**
+ * Use of an Angular @Input() member, modelled as `InputMember`.
+ */
 class InputMemberUse extends DataFlow::Node {
   InputMemberUse() {
     exists(InputMember member, string memberName, ThisExpr ta, FieldAccess fa |
@@ -208,8 +212,11 @@ class InputMemberUse extends DataFlow::Node {
   }
 }
 
+/**
+ * A remote flow source that is a member of an Angular component class.
+ */
 private class AngularInputUse extends RemoteFlowSource {
-  AngularInputUse() { exists(InputMemberUse inputUse | this = inputUse) }
+  AngularInputUse() { this instanceof InputMemberUse }
 
   override string getSourceType() { result = "Angular @Input()" }
 }
