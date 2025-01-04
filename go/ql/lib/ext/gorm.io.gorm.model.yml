@@ -10,9 +10,9 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
-      - ["group:gorm", "ConnPool", True, "QueryContext", "", "", "ReturnValue", "manual"]
-      - ["group:gorm", "ConnPool", True, "QueryRowContext", "", "", "ReturnValue", "manual"]
-      - ["group:gorm", "DB", True, "Association", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gorm", "Association", True, "Find", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gorm", "ConnPool", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:gorm", "ConnPool", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
       - ["group:gorm", "DB", True, "Find", "", "", "Argument[0]", "database", "manual"]
       - ["group:gorm", "DB", True, "FindInBatches", "", "", "Argument[0]", "database", "manual"]
       - ["group:gorm", "DB", True, "First", "", "", "Argument[0]", "database", "manual"]
