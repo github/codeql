@@ -8,6 +8,21 @@ extensions:
       - ["gorm", "github.com/go-gorm/gorm"]
   - addsTo:
       pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["group:gorm", "ConnPool", True, "QueryContext", "", "", "ReturnValue", "manual"]
+      - ["group:gorm", "ConnPool", True, "QueryRowContext", "", "", "ReturnValue", "manual"]
+      - ["group:gorm", "DB", True, "Association", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gorm", "DB", True, "Find", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gorm", "DB", True, "FindInBatches", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gorm", "DB", True, "First", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gorm", "DB", True, "FirstOrCreate", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gorm", "DB", True, "FirstOrInit", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gorm", "DB", True, "Last", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gorm", "DB", True, "Scan", "", "", "Argument[0]", "database", "manual"]
+      - ["group:gorm", "DB", True, "Take", "", "", "Argument[0]", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
       extensible: sinkModel
     data:
       - ["group:gorm", "DB", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
