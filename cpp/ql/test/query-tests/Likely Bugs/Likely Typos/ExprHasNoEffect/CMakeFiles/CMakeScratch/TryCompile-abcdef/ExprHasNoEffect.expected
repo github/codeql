@@ -1,1 +1,0 @@
-| CheckFunctionExists.c:6:3:6:8 | call to strlen | This expression has no effect (because $@ has no external side effects). | CheckFunctionExists.c:3:8:3:13 | strlen | strlen |
