@@ -305,9 +305,9 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A FormatArgsArg. For example:
+   * A FormatArgsArg. For example the `"world"` in:
    * ```rust
-   * todo!()
+   * format_args!("Hello, {}!", "world")
    * ```
    */
   class FormatArgsArg extends @format_args_arg, AstNode {
