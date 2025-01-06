@@ -266,7 +266,7 @@ module DomBasedXss {
               .getMember("setProperty")
               .getACall() and
         this = setProperty.getParameter(2).asSink() and
-        setProperty.getParameter(1).asSink().asExpr().(StringLiteral).getValue() = "innerHTML"
+        setProperty.getArgument(1).getStringValue() = "innerHTML"
       )
     }
   }
