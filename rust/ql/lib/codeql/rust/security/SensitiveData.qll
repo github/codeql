@@ -15,7 +15,7 @@ private import codeql.rust.dataflow.DataFlow
 cached
 abstract class SensitiveData extends DataFlow::Node {
   /**
-   * Gets a classification of the kind of sensitive data this expression might contain.
+   * Gets the classification of sensitive data this expression might contain.
    */
   cached
   abstract SensitiveDataClassification getClassification();
@@ -35,7 +35,7 @@ private class SensitiveDataFunction extends Function {
 }
 
 /**
- * A function call that might produce sensitive data.
+ * A function call data flow node that might produce sensitive data.
  */
 private class SensitiveDataCall extends SensitiveData {
   SensitiveDataClassification classification;
@@ -67,7 +67,7 @@ private class SensitiveDataVariable extends Variable {
 }
 
 /**
- * A variable access that might produce sensitive data.
+ * A variable access data flow node that might produce sensitive data.
  */
 private class SensitiveVariableAccess extends SensitiveData {
   SensitiveDataClassification classification;
