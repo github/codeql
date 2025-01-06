@@ -24,6 +24,17 @@ deprecated private class ConcreteMaybeFromProto extends MaybeFromProto {
   ConcreteMaybeFromProto() { this = this }
 }
 
+/** Gets a data flow node referring to an instance of `Map`. */
+private DataFlow::SourceNode mapObject(DataFlow::TypeTracker t) {
+  t.start() and
+  result = DataFlow::globalVarRef("Map").getAnInstantiation()
+  or
+  exists(DataFlow::TypeTracker t2 | result = mapObject(t2).track(t2, t))
+}
+
+/** Gets a data flow node referring to an instance of `Map`. */
+private DataFlow::SourceNode mapObject() { result = mapObject(DataFlow::TypeTracker::end()) }
+
 /**
  * A taint-tracking configuration for reasoning about unvalidated dynamic method calls.
  */
@@ -67,7 +78,9 @@ module UnvalidatedDynamicMethodCallConfig implements DataFlow::StateConfigSig {
       not PropertyInjection::hasUnsafeMethods(read.getBase().getALocalSource())
     )
     or
-    exists(DataFlow::SourceNode base, DataFlow::CallNode get | get = base.getAMethodCall("get") |
+    exists(DataFlow::CallNode get |
+      get = mapObject().getAMethodCall("get") and
+      get.getNumArgument() = 1 and
       node1 = get.getArgument(0) and
       node2 = get
     ) and
