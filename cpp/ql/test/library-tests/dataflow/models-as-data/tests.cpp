@@ -468,11 +468,11 @@ void test_parameter_ref_to_return_ref() {
 
 using INT = int;
 
-int receive_array(INT a[20]); // $ MISSING: interpretElement
+int receive_array(INT a[20]); // $ interpretElement
 
 void test_receive_array() {
 	int x = source();
 	int array[10] = {x};
 	int y = receive_array(array);
-	sink(y); // $ MISSING: ir
+	sink(y); // $ ir
 }

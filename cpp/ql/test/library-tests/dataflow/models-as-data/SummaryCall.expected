@@ -30,6 +30,7 @@ summarizedCallables
 | tests.cpp:436:6:436:25 | madCallArg0WithValue |
 | tests.cpp:437:5:437:36 | madCallReturnValueIgnoreFunction |
 | tests.cpp:459:5:459:31 | parameter_ref_to_return_ref |
+| tests.cpp:471:5:471:17 | receive_array |
 sourceCallables
 | tests.cpp:3:5:3:10 | source |
 | tests.cpp:4:6:4:14 | sourcePtr |
@@ -231,7 +232,6 @@ sourceCallables
 | tests.cpp:464:36:464:36 | s |
 | tests.cpp:465:6:465:6 | y |
 | tests.cpp:469:7:469:9 | INT |
-| tests.cpp:471:5:471:17 | receive_array |
 | tests.cpp:471:23:471:23 | a |
 | tests.cpp:473:6:473:23 | test_receive_array |
 | tests.cpp:474:6:474:6 | x |
