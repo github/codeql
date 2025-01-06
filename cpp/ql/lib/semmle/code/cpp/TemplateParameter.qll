@@ -79,7 +79,7 @@ class TemplateTemplateParameter extends TypeTemplateParameter {
   /**
    * Gets a class instantiated from this template template parameter.
    *
-   * For example for `Container<T>` in the following code, the results is
+   * For example for `Container<T>` in the following code, the result is
    * `Container<Elem>`:
    * ```
    * template <template <typename T> class Container, class Elem>
