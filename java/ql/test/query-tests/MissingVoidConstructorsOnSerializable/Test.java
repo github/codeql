@@ -1,21 +1,21 @@
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
-class NonSerialzable { 
+class NonSerializable { 
 
   // Has no default constructor
-  public NonSerialzable(int x) { }
+  public NonSerializable(int x) { }
 
 }
 
 // BAD: Serializable but its parent cannot be instantiated
-class A extends NonSerialzable implements Serializable { 
+class A extends NonSerializable implements Serializable { 
   public A() { super(1); }
 }
 
 // GOOD: writeReplaces itself, so unlikely to be deserialized
 // according to default rules.
-class B extends NonSerialzable implements Serializable { 
+class B extends NonSerializable implements Serializable { 
   public B() { super(2); }
 
   public Object writeReplace() throws ObjectStreamException {
