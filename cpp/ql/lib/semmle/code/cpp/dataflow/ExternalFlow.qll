@@ -555,7 +555,7 @@ string getParameterTypeWithoutTemplateArguments(Function f, int n) {
   exists(string s, string base, string specifiers, Type t |
     t = f.getParameter(n).getType() and
     // The name of the string can either be the possibly typedefed name
-    // or an alternartive name where typedefs has been resolved.
+    // or an alternative name where typedefs has been resolved.
     // `getTypeName(t, _)` is almost equal to `t.resolveTypedefs().getName()`,
     // except  that `t.resolveTypedefs()` doesn't have a result when the
     // resulting type doesn't appear in the database.
