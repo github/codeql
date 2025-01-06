@@ -277,6 +277,12 @@ module PropNameTrackingConfig implements DataFlow::StateConfigSig {
     node instanceof DataFlow::VarAccessBarrier or
     node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
   }
+
+  int accessPathLimit() {
+    // Speed up the query. For the pattern we're looking for the value rarely
+    // flows through any contents, apart from a capture content.
+    result = 1
+  }
 }
 
 class FlowState = PropNameTrackingConfig::FlowState;
