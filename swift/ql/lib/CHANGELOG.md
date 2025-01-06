@@ -1,3 +1,9 @@
+## 3.1.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.0.2.
+
 ## 3.0.0
 
 ### Breaking Changes
