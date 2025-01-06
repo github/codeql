@@ -25,7 +25,7 @@ where
     not c.isPrivate()
   ) and
   // Assume if an object replaces itself prior to serialization,
-  // then it is unlikely to be directly deserialized.
+  // then it is unlikely to be directly deserialized.
   // That means it won't need to comply with default serialization rules,
   // such as non-serializable super-classes having a no-argument constructor.
   not exists(Method m |
