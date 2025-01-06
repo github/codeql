@@ -1335,6 +1335,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           string toString();
         }
 
+        class ApTrace {
+          string toString();
+        }
+
+        class ApTraceNil extends ApTrace;
+
         class Ap {
           string toString();
         }
@@ -1347,6 +1353,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         Typ getTyp(DataFlowType t);
 
         bindingset[c, tail]
+        ApTrace apTrCons(Content c, ApTrace tail);
+
+        /**
+         * Gets a non-nil access path trace representing `cons` followed by a
+         * read step of `c`. Nil is excluded since the cons-cand automaton
+         * built during forward is better capable of determining whether nil is
+         * a possible tail.
+         */
+        bindingset[c, cons]
+        ApTrace apTrTail(Content c, ApTrace cons);
+
+        bindingset[c, tail]
         Ap apCons(Content c, Ap tail);
 
         /**
@@ -1356,15 +1374,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          */
         class ApHeadContent;
 
-        ApHeadContent getHeadContent(Ap ap);
+        ApHeadContent getConsHeadContent(ApTrace ap);
+
+        ApHeadContent getTailHeadContent(ApTrace ap);
 
         ApHeadContent projectToHeadContent(Content c);
-
-        class ApOption;
-
-        ApOption apNone();
-
-        ApOption apSome(Ap ap);
 
         class Cc {
           string toString();
@@ -1421,10 +1435,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         );
 
         bindingset[node, state, t0, ap]
-        predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t);
+        predicate filter(NodeEx node, FlowState state, Typ t0, ApTrace ap, Typ t);
+
+        bindingset[node, ap]
+        predicate filter(NodeEx node, Ap ap);
 
         bindingset[node, ap, isStoreStep]
-        predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep);
+        predicate stepFilter(NodeEx node, ApTrace ap, boolean isStoreStep);
 
         bindingset[t1, t2]
         predicate typecheck(Typ t1, Typ t2);
@@ -1443,6 +1460,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           exists(string ppt | ppt = stored.toString() |
             if stored.isNone() or ppt = "" then result = "" else result = " : " + ppt
           )
+        }
+
+        bindingset[ap]
+        private boolean isNilTrace(ApTrace ap) {
+          if ap instanceof ApTraceNil then result = true else result = false
         }
 
         bindingset[ap]
@@ -1468,17 +1490,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         }
 
         pragma[nomagic]
-        private predicate compatibleContainer0(ApHeadContent apc, DataFlowType containerType) {
-          exists(DataFlowType containerType0, Content c |
-            PrevStage::storeStepCand(_, c, _, _, containerType0) and
-            not isTopType(containerType0) and
-            compatibleTypesCached(containerType0, containerType) and
-            apc = projectToHeadContent(c)
-          )
-        }
-
-        pragma[nomagic]
-        private predicate topTypeContent(ApHeadContent apc) {
+        private predicate consTopTypeContentStore(ApHeadContent apc) {
           exists(DataFlowType containerType0, Content c |
             PrevStage::storeStepCand(_, c, _, _, containerType0) and
             isTopType(containerType0) and
@@ -1486,12 +1498,127 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
-        bindingset[apc, containerType]
-        pragma[inline_late]
-        private predicate compatibleContainer(ApHeadContent apc, DataFlowType containerType) {
-          compatibleContainer0(apc, containerType)
+        pragma[nomagic]
+        private predicate consTopTypeContentRead(ApHeadContent apc) {
+          exists(NodeEx n, DataFlowType containerType0, Content c |
+            PrevStage::readStepCand(n, c, _) and
+            containerType0 = n.getDataFlowType() and
+            isTopType(containerType0) and
+            apc = projectToHeadContent(c)
+          )
         }
 
+        pragma[nomagic]
+        private predicate tailTopTypeContentStore(ApHeadContent apc) {
+          exists(DataFlowType contentType0, Content c |
+            PrevStage::storeStepCand(_, c, _, contentType0, _) and
+            isTopType(contentType0) and
+            apc = projectToHeadContent(c)
+          )
+        }
+
+        pragma[nomagic]
+        private predicate tailTopTypeContentRead(ApHeadContent apc) {
+          exists(NodeEx n, DataFlowType contentType0, Content c |
+            PrevStage::readStepCand(_, c, n) and
+            contentType0 = n.getDataFlowType() and
+            isTopType(contentType0) and
+            apc = projectToHeadContent(c)
+          )
+        }
+
+        pragma[nomagic]
+        private predicate consCompatibleContainerStore(ApHeadContent apc, DataFlowType containerType) {
+          exists(DataFlowType containerType0, Content c |
+            PrevStage::storeStepCand(_, c, _, _, containerType0) and
+            not consTopTypeContentStore(apc) and
+            compatibleTypesCached(containerType0, containerType) and
+            apc = projectToHeadContent(c)
+          )
+        }
+
+        pragma[nomagic]
+        private predicate consCompatibleContainerRead(ApHeadContent apc, DataFlowType containerType) {
+          exists(NodeEx n, DataFlowType containerType0, Content c |
+            PrevStage::readStepCand(n, c, _) and
+            containerType0 = n.getDataFlowType() and
+            not consTopTypeContentRead(apc) and
+            compatibleTypesCached(containerType0, containerType) and
+            apc = projectToHeadContent(c)
+          )
+        }
+
+        pragma[nomagic]
+        private predicate tailCompatibleContentStore(ApHeadContent apc, DataFlowType contentType) {
+          exists(DataFlowType contentType0, Content c |
+            PrevStage::storeStepCand(_, c, _, contentType0, _) and
+            not tailTopTypeContentStore(apc) and
+            compatibleTypesCached(contentType0, contentType) and
+            apc = projectToHeadContent(c)
+          )
+        }
+
+        pragma[nomagic]
+        private predicate tailCompatibleContentRead(ApHeadContent apc, DataFlowType contentType) {
+          exists(NodeEx n, DataFlowType contentType0, Content c |
+            PrevStage::readStepCand(_, c, n) and
+            contentType0 = n.getDataFlowType() and
+            not tailTopTypeContentRead(apc) and
+            compatibleTypesCached(contentType0, contentType) and
+            apc = projectToHeadContent(c)
+          )
+        }
+
+        bindingset[apc, containerType]
+        pragma[inline_late]
+        private predicate consCompatibleContainer(ApHeadContent apc, DataFlowType containerType) {
+          (
+            consCompatibleContainerStore(apc, containerType) or
+            consTopTypeContentStore(apc)
+          ) and
+          (
+            consCompatibleContainerRead(apc, containerType) or
+            consTopTypeContentRead(apc)
+          )
+        }
+
+        bindingset[apc, contentType]
+        pragma[inline_late]
+        private predicate tailCompatibleContent(ApHeadContent apc, DataFlowType contentType) {
+          (
+            tailCompatibleContentStore(apc, contentType) or
+            tailTopTypeContentStore(apc)
+          ) and
+          (
+            tailCompatibleContentRead(apc, contentType) or
+            tailTopTypeContentRead(apc)
+          )
+        }
+
+        // pragma[nomagic]
+        // private predicate compatibleContainer0(ApHeadContent apc, DataFlowType containerType) {
+        //   exists(DataFlowType containerType0, Content c |
+        //     PrevStage::storeStepCand(_, c, _, _, containerType0) and
+        //     not isTopType(containerType0) and
+        //     compatibleTypesCached(containerType0, containerType) and
+        //     apc = projectToHeadContent(c)
+        //   )
+        // }
+        // bindingset[apc, containerType]
+        // pragma[inline_late]
+        // private predicate compatibleContainer(ApHeadContent apc, DataFlowType containerType) {
+        //   compatibleContainer0(apc, containerType)
+        // }
+        // pragma[nomagic]
+        // private predicate compatibleContainer0_2(ApHeadContent apc, DataFlowType containerType) {
+        //   exists(DataFlowType containerType0, NodeEx n, Content c |
+        //     PrevStage::readStepCand(n, c, _) and
+        //     containerType0 = n.getDataFlowType() and
+        //     not isTopType(containerType0) and
+        //     compatibleTypesCached(containerType0, containerType) and
+        //     apc = projectToHeadContent(c)
+        //   )
+        // }
         /**
          * Holds if `node` is reachable with access path `ap` from a source.
          *
@@ -1501,74 +1628,90 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          */
         pragma[nomagic]
         additional predicate fwdFlow(
-          NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored
+          NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, ApTrace ap,
+          TypOption stored
         ) {
           fwdFlow1(node, state, cc, summaryCtx, _, t, ap, stored)
         }
 
         private predicate fwdFlow1(
-          NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, Typ t, Ap ap,
+          NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, Typ t, ApTrace ap,
           TypOption stored
         ) {
           exists(ApApprox apa |
-            fwdFlow0(node, state, cc, summaryCtx, t0, ap, apa, stored) and
+            fwdFlow0(node, state, cc, summaryCtx, t0, ap, stored) and
             PrevStage::revFlow(node, state, apa) and
+            fwdFlowApaMatch(ap, apa) and
             filter(node, state, t0, ap, t) and
             (
               if node instanceof CastingNodeEx
               then
-                ap instanceof ApNil or
-                compatibleContainer(getHeadContent(ap), node.getDataFlowType()) or
-                topTypeContent(getHeadContent(ap))
-              else any()
+                // ap instanceof ApTraceNil or
+                // consCompatibleContainer(getConsHeadContent(ap), node.getDataFlowType()) or
+                // tailCompatibleContent(getTailHeadContent(ap), node.getDataFlowType())
+                (
+                  consCompatibleContainer(getConsHeadContent(ap), node.getDataFlowType()) or
+                  not exists(getConsHeadContent(ap))
+                ) and
+                (
+                  tailCompatibleContent(getTailHeadContent(ap), node.getDataFlowType()) or
+                  not exists(getTailHeadContent(ap))
+                )
+              else
+                // compatibleContainer(getConsHeadContent(ap), node.getDataFlowType()) or
+                // topTypeContent(getConsHeadContent(ap)) or
+                // not exists(getConsHeadContent(ap))
+                any()
             )
           )
         }
 
         pragma[nomagic]
         private predicate fwdFlow0(
-          NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa,
+          NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, ApTrace ap,
           TypOption stored
         ) {
           sourceNode(node, state) and
           (if hasSourceCallCtx() then cc = ccSomeCall() else cc = ccNone()) and
           summaryCtx = TSummaryCtxNone() and
           t = getNodeTyp(node) and
-          ap instanceof ApNil and
-          apa = getApprox(ap) and
+          ap instanceof ApTraceNil and
+          // apa = getApprox(ap) and
           stored.isNone()
           or
           exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
             fwdFlow(mid, state0, cc, summaryCtx, t0, ap, stored) and
-            apa = getApprox(ap) and
+            // apa = getApprox(ap) and
             localCc = getLocalCc(cc)
           |
             localStep(mid, state0, node, state, true, _, localCc, _) and
             t = t0
             or
             localStep(mid, state0, node, state, false, t, localCc, _) and
-            ap instanceof ApNil
+            ap instanceof ApTraceNil
           )
           or
           fwdFlowJump(node, state, t, ap, stored) and
-          apa = getApprox(ap) and
+          // apa = getApprox(ap) and
           cc = ccNone() and
           summaryCtx = TSummaryCtxNone()
           or
           // store
-          exists(Content c, Ap ap0 |
+          exists(Content c, ApTrace ap0 |
             fwdFlowStore(_, _, ap0, _, c, t, stored, node, state, cc, summaryCtx) and
-            ap = apCons(c, ap0) and
-            apa = getApprox(ap)
+            ap = apTrCons(c, ap0)
+            //  and
+            // apa = getApprox(ap)
           )
           or
           // read
-          fwdFlowRead(_, _, _, _, _, node, t, ap, stored, state, cc, summaryCtx) and
-          apa = getApprox(ap)
+          fwdFlowRead(_, _, _, _, _, node, t, ap, _, stored, state, cc, summaryCtx)
           or
+          // and
+          // apa = getApprox(ap)
           // flow into a callable without summary context
           fwdFlowInNoFlowThrough(node, state, cc, t, ap, stored) and
-          apa = getApprox(ap) and
+          // apa = getApprox(ap) and
           summaryCtx = TSummaryCtxNone() and
           // When the call contexts of source and sink needs to match then there's
           // never any reason to enter a callable except to find a summary. See also
@@ -1577,26 +1720,27 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           or
           // flow into a callable with summary context (non-linear recursion)
           fwdFlowInFlowThrough(node, state, cc, t, ap, stored) and
-          apa = getApprox(ap) and
+          // apa = getApprox(ap) and
           summaryCtx = TSummaryCtxSome(node, state, t, ap, stored)
           or
           // flow out of a callable
-          fwdFlowOut(_, _, node, state, cc, summaryCtx, t, ap, stored) and
-          apa = getApprox(ap)
+          fwdFlowOut(_, _, node, state, cc, summaryCtx, t, ap, stored)
           or
+          // and
+          // apa = getApprox(ap)
           // flow through a callable
           exists(DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow |
             fwdFlowThrough(call, cc, state, summaryCtx, t, ap, stored, ret) and
             flowThroughOutOfCall(call, ret, node, allowsFieldFlow) and
-            apa = getApprox(ap) and
+            // apa = getApprox(ap) and
             not inBarrier(node, state) and
-            if allowsFieldFlow = false then ap instanceof ApNil else any()
+            if allowsFieldFlow = false then ap instanceof ApTraceNil else any()
           )
         }
 
         private newtype TSummaryCtx =
           TSummaryCtxNone() or
-          TSummaryCtxSome(ParamNodeEx p, FlowState state, Typ t, Ap ap, TypOption stored) {
+          TSummaryCtxSome(ParamNodeEx p, FlowState state, Typ t, ApTrace ap, TypOption stored) {
             fwdFlowInFlowThrough(p, state, _, t, ap, stored)
           }
 
@@ -1624,7 +1768,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           private ParamNodeEx p;
           private FlowState state;
           private Typ t;
-          private Ap ap;
+          private ApTrace ap;
           private TypOption stored;
 
           SummaryCtxSome() { this = TSummaryCtxSome(p, state, t, ap, stored) }
@@ -1640,7 +1784,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           override Location getLocation() { result = p.getLocation() }
         }
 
-        private predicate fwdFlowJump(NodeEx node, FlowState state, Typ t, Ap ap, TypOption stored) {
+        private predicate fwdFlowJump(
+          NodeEx node, FlowState state, Typ t, ApTrace ap, TypOption stored
+        ) {
           exists(NodeEx mid |
             fwdFlow(mid, state, _, _, t, ap, stored) and
             jumpStepEx(mid, node)
@@ -1650,21 +1796,21 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             fwdFlow(mid, state, _, _, _, ap, stored) and
             additionalJumpStep(mid, node, _) and
             t = getNodeTyp(node) and
-            ap instanceof ApNil
+            ap instanceof ApTraceNil
           )
           or
           exists(NodeEx mid, FlowState state0 |
             fwdFlow(mid, state0, _, _, _, ap, stored) and
             additionalJumpStateStep(mid, state0, node, state, _) and
             t = getNodeTyp(node) and
-            ap instanceof ApNil
+            ap instanceof ApTraceNil
           )
         }
 
         pragma[nomagic]
         private predicate fwdFlowStore(
-          NodeEx node1, Typ t1, Ap ap1, TypOption stored1, Content c, Typ t2, TypOption stored2,
-          NodeEx node2, FlowState state, Cc cc, SummaryCtx summaryCtx
+          NodeEx node1, Typ t1, ApTrace ap1, TypOption stored1, Content c, Typ t2,
+          TypOption stored2, NodeEx node2, FlowState state, Cc cc, SummaryCtx summaryCtx
         ) {
           exists(DataFlowType contentType, DataFlowType containerType |
             fwdFlow(node1, state, cc, summaryCtx, t1, ap1, stored1) and
@@ -1675,7 +1821,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             // We need to typecheck stores here, since reverse flow through a getter
             // might have a different type here compared to inside the getter.
             typecheck(t1, getTyp(contentType)) and
-            if ap1 instanceof ApNil then stored2.asSome() = t1 else stored2 = stored1
+            if ap1 instanceof ApTraceNil then stored2.asSome() = t1 else stored2 = stored1
           )
         }
 
@@ -1685,9 +1831,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
          * `cons`.
          */
         pragma[nomagic]
-        private predicate fwdFlowConsCand(Typ t2, Ap cons, Content c, Typ t1, Ap tail) {
+        private predicate fwdFlowConsCand(Typ t2, ApTrace cons, Content c, Typ t1, ApTrace tail) {
           fwdFlowStore(_, t1, tail, _, c, t2, _, _, _, _, _) and
-          cons = apCons(c, tail)
+          cons = apTrCons(c, tail)
+          or
+          exists(ApTrace cons0 |
+            fwdFlowConsCand(t2, cons0, c, t1, tail) and
+            fwdFlowApRepr(cons, cons0)
+          )
         }
 
         pragma[nomagic]
@@ -1704,44 +1855,83 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowRead0(
-          Typ t, Ap ap, TypOption stored, Content c, NodeEx node1, NodeEx node2, FlowState state,
-          Cc cc, SummaryCtx summaryCtx
+          Typ t, ApTrace ap, TypOption stored, Content c, NodeEx node1, NodeEx node2,
+          FlowState state, Cc cc, SummaryCtx summaryCtx
         ) {
           exists(ApHeadContent apc |
             fwdFlow(node1, state, cc, summaryCtx, t, ap, stored) and
             not outBarrier(node1, state) and
-            not inBarrier(node2, state) and
-            apc = getHeadContent(ap) and
+            not inBarrier(node2, state)
+          |
+            apc = getConsHeadContent(ap) and
             readStepCand0(node1, apc, c, node2)
+            or
+            not exists(getConsHeadContent(ap)) and
+            not ap instanceof ApTraceNil and
+            PrevStage::readStepCand(node1, c, node2)
           )
         }
 
         pragma[nomagic]
         private predicate fwdFlowRead(
-          NodeEx node1, Typ t1, Ap ap1, TypOption stored1, Content c, NodeEx node2, Typ t2, Ap ap2,
-          TypOption stored2, FlowState state, Cc cc, SummaryCtx summaryCtx
+          NodeEx node1, Typ t1, ApTrace ap1, TypOption stored1, Content c, NodeEx node2, Typ t2,
+          ApTrace ap2repr, ApTrace ap2, TypOption stored2, FlowState state, Cc cc,
+          SummaryCtx summaryCtx
         ) {
           exists(Typ ct1, Typ ct2 |
             fwdFlowRead0(t1, ap1, stored1, c, node1, node2, state, cc, summaryCtx) and
             fwdFlowConsCand(ct1, ap1, c, ct2, ap2) and
             typecheck(t1, ct1) and
             typecheck(t2, ct2) and
-            if ap2 instanceof ApNil
-            then stored2.isNone() and stored1.asSome() = t2
+            if ap2 instanceof ApTraceNil
+            then stored2.isNone() and stored1.asSome() = t2 and ap2repr instanceof ApTraceNil
             else (
-              stored2 = stored1 and t2 = getNodeTyp(node2)
+              stored2 = stored1 and t2 = getNodeTyp(node2) and ap2repr = apTrTail(c, ap1)
+              // Implied by apTail definition:
+              // and not ap2repr instanceof ApTraceNil
             )
+          )
+        }
+
+        /** Holds if `apRepr` is constructed using `apTail` to represent one or more `ap`. */
+        pragma[nomagic]
+        private predicate fwdFlowApRepr(ApTrace apRepr, ApTrace ap) {
+          fwdFlowRead(_, _, _, _, _, _, _, apRepr, ap, _, _, _, _) and
+          apRepr != ap
+        }
+
+        /**
+         * Holds if the forward-flow-constructed `apTr` (that is, using both
+         * `apCons` and `apTail`) corresponds to `ap`, which is
+         * constructed purely using `apCons`.
+         */
+        pragma[nomagic]
+        private predicate translateTrace(ApTrace apTr, Ap ap) {
+          apTr instanceof ApTraceNil and ap instanceof ApNil
+          or
+          exists(Content c, ApTrace trTail, Ap tail |
+            fwdFlowConsCand(_, apTr, c, _, trTail) and
+            translateTrace(trTail, tail) and
+            ap = apCons(c, tail)
+          )
+        }
+
+        pragma[nomagic]
+        private predicate fwdFlowApaMatch(ApTrace ap, ApApprox apa) {
+          exists(Ap ap2 |
+            translateTrace(ap, ap2) and
+            apa = getApprox(ap2)
           )
         }
 
         pragma[nomagic]
         private predicate fwdFlowIntoArg(
-          ArgNodeEx arg, FlowState state, Cc outercc, SummaryCtx summaryCtx, Typ t, Ap ap,
+          ArgNodeEx arg, FlowState state, Cc outercc, SummaryCtx summaryCtx, Typ t, ApTrace ap,
           boolean emptyAp, TypOption stored, boolean cc
         ) {
           fwdFlow(arg, state, outercc, summaryCtx, t, ap, stored) and
           (if instanceofCcCall(outercc) then cc = true else cc = false) and
-          emptyAp = isNil(ap)
+          emptyAp = isNilTrace(ap)
         }
 
         private signature predicate flowThroughSig();
@@ -1829,8 +2019,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[inline]
           private predicate fwdFlowInCand(
             DataFlowCall call, ArgNodeEx arg, FlowState state, Cc outercc, DataFlowCallable inner,
-            ParamNodeEx p, SummaryCtx summaryCtx, Typ t, Ap ap, boolean emptyAp, TypOption stored,
-            boolean cc
+            ParamNodeEx p, SummaryCtx summaryCtx, Typ t, ApTrace ap, boolean emptyAp,
+            TypOption stored, boolean cc
           ) {
             fwdFlowIntoArg(arg, state, outercc, summaryCtx, t, ap, emptyAp, stored, cc) and
             (
@@ -1846,7 +2036,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[inline]
           private predicate fwdFlowInCandTypeFlowDisabled(
             DataFlowCall call, ArgNodeEx arg, FlowState state, Cc outercc, DataFlowCallable inner,
-            ParamNodeEx p, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored, boolean cc
+            ParamNodeEx p, SummaryCtx summaryCtx, Typ t, ApTrace ap, TypOption stored, boolean cc
           ) {
             not enableTypeFlow() and
             fwdFlowInCand(call, arg, state, outercc, inner, p, summaryCtx, t, ap, _, stored, cc)
@@ -1883,7 +2073,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[inline]
           predicate fwdFlowIn(
             DataFlowCall call, ArgNodeEx arg, DataFlowCallable inner, ParamNodeEx p,
-            FlowState state, Cc outercc, CcCall innercc, SummaryCtx summaryCtx, Typ t, Ap ap,
+            FlowState state, Cc outercc, CcCall innercc, SummaryCtx summaryCtx, Typ t, ApTrace ap,
             TypOption stored, boolean cc
           ) {
             // type flow disabled: linear recursion
@@ -1905,7 +2095,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowInNoFlowThrough(
-          ParamNodeEx p, FlowState state, CcCall innercc, Typ t, Ap ap, TypOption stored
+          ParamNodeEx p, FlowState state, CcCall innercc, Typ t, ApTrace ap, TypOption stored
         ) {
           FwdFlowInNoThrough::fwdFlowIn(_, _, _, p, state, _, innercc, _, t, ap, stored, _)
         }
@@ -1916,7 +2106,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowInFlowThrough(
-          ParamNodeEx p, FlowState state, CcCall innercc, Typ t, Ap ap, TypOption stored
+          ParamNodeEx p, FlowState state, CcCall innercc, Typ t, ApTrace ap, TypOption stored
         ) {
           FwdFlowInThrough::fwdFlowIn(_, _, _, p, state, _, innercc, _, t, ap, stored, _)
         }
@@ -1958,7 +2148,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowIntoRet(
-          RetNodeEx ret, FlowState state, CcNoCall cc, SummaryCtx summaryCtx, Typ t, Ap ap,
+          RetNodeEx ret, FlowState state, CcNoCall cc, SummaryCtx summaryCtx, Typ t, ApTrace ap,
           TypOption stored
         ) {
           instanceofCcNoCall(cc) and
@@ -1994,13 +2184,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[inline]
         private predicate fwdFlowOut(
           DataFlowCall call, DataFlowCallable inner, NodeEx out, FlowState state, CcNoCall outercc,
-          SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored
+          SummaryCtx summaryCtx, Typ t, ApTrace ap, TypOption stored
         ) {
           exists(RetNodeEx ret, CcNoCall innercc, boolean allowsFieldFlow |
             fwdFlowIntoRet(ret, state, innercc, summaryCtx, t, ap, stored) and
             fwdFlowOutValidEdge(call, ret, innercc, inner, out, outercc, allowsFieldFlow) and
             not inBarrier(out, state) and
-            if allowsFieldFlow = false then ap instanceof ApNil else any()
+            if allowsFieldFlow = false then ap instanceof ApTraceNil else any()
           )
         }
 
@@ -2014,7 +2204,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[nomagic]
           private predicate dataFlowTakenCallEdgeIn0(
             DataFlowCall call, DataFlowCallable c, ParamNodeEx p, FlowState state, CcCall innercc,
-            Typ t, Ap ap, TypOption stored, boolean cc
+            Typ t, ApTrace ap, TypOption stored, boolean cc
           ) {
             FwdFlowInNoThrough::fwdFlowIn(call, _, c, p, state, _, innercc, _, t, ap, stored, cc)
             or
@@ -2023,7 +2213,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[nomagic]
           private predicate fwdFlow1Param(
-            ParamNodeEx p, FlowState state, CcCall cc, Typ t0, Ap ap, TypOption stored
+            ParamNodeEx p, FlowState state, CcCall cc, Typ t0, ApTrace ap, TypOption stored
           ) {
             instanceofCcCall(cc) and
             fwdFlow1(p, state, cc, _, t0, _, ap, stored)
@@ -2031,7 +2221,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[nomagic]
           predicate dataFlowTakenCallEdgeIn(DataFlowCall call, DataFlowCallable c, boolean cc) {
-            exists(ParamNodeEx p, FlowState state, CcCall innercc, Typ t, Ap ap, TypOption stored |
+            exists(
+              ParamNodeEx p, FlowState state, CcCall innercc, Typ t, ApTrace ap, TypOption stored
+            |
               dataFlowTakenCallEdgeIn0(call, c, p, state, innercc, t, ap, stored, cc) and
               fwdFlow1Param(p, state, innercc, t, ap, stored)
             )
@@ -2040,14 +2232,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[nomagic]
           private predicate dataFlowTakenCallEdgeOut0(
             DataFlowCall call, DataFlowCallable c, NodeEx node, FlowState state, Cc cc, Typ t,
-            Ap ap, TypOption stored
+            ApTrace ap, TypOption stored
           ) {
             fwdFlowOut(call, c, node, state, cc, _, t, ap, stored)
           }
 
           pragma[nomagic]
           private predicate fwdFlow1Out(
-            NodeEx node, FlowState state, Cc cc, Typ t0, Ap ap, TypOption stored
+            NodeEx node, FlowState state, Cc cc, Typ t0, ApTrace ap, TypOption stored
           ) {
             fwdFlow1(node, state, cc, _, t0, _, ap, stored) and
             PrevStage::callEdgeReturn(_, _, _, _, node, _)
@@ -2055,7 +2247,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           pragma[nomagic]
           predicate dataFlowTakenCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
-            exists(NodeEx node, FlowState state, Cc cc, Typ t, Ap ap, TypOption stored |
+            exists(NodeEx node, FlowState state, Cc cc, Typ t, ApTrace ap, TypOption stored |
               dataFlowTakenCallEdgeOut0(call, c, node, state, cc, t, ap, stored) and
               fwdFlow1Out(node, state, cc, t, ap, stored)
             )
@@ -2088,10 +2280,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowRetFromArg(
-          RetNodeEx ret, FlowState state, CcCall ccc, SummaryCtxSome summaryCtx, Typ t, Ap ap,
+          RetNodeEx ret, FlowState state, CcCall ccc, SummaryCtxSome summaryCtx, Typ t, ApTrace ap,
           TypOption stored
         ) {
-          exists(ReturnKindExt kind, ParamNodeEx p, Ap argAp |
+          exists(ReturnKindExt kind, ParamNodeEx p, ApTrace argAp |
             instanceofCcCall(ccc) and
             fwdFlow(pragma[only_bind_into](ret), state, ccc, summaryCtx, t, ap, stored) and
             summaryCtx =
@@ -2106,7 +2298,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[inline]
         private predicate fwdFlowThrough0(
           DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
-          SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored, RetNodeEx ret,
+          SummaryCtx summaryCtx, Typ t, ApTrace ap, TypOption stored, RetNodeEx ret,
           SummaryCtxSome innerSummaryCtx
         ) {
           fwdFlowRetFromArg(ret, state, ccc, innerSummaryCtx, t, ap, stored) and
@@ -2115,7 +2307,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowThrough(
-          DataFlowCall call, Cc cc, FlowState state, SummaryCtx summaryCtx, Typ t, Ap ap,
+          DataFlowCall call, Cc cc, FlowState state, SummaryCtx summaryCtx, Typ t, ApTrace ap,
           TypOption stored, RetNodeEx ret
         ) {
           fwdFlowThrough0(call, _, cc, state, _, summaryCtx, t, ap, stored, ret, _)
@@ -2124,7 +2316,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate fwdFlowIsEntered0(
           DataFlowCall call, ArgNodeEx arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx,
-          ParamNodeEx p, FlowState state, Typ t, Ap ap, TypOption stored
+          ParamNodeEx p, FlowState state, Typ t, ApTrace ap, TypOption stored
         ) {
           FwdFlowInThrough::fwdFlowIn(call, arg, _, p, state, cc, innerCc, summaryCtx, t, ap,
             stored, _)
@@ -2139,27 +2331,43 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           DataFlowCall call, ArgNodeEx arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx,
           SummaryCtxSome innerSummaryCtx
         ) {
-          exists(ParamNodeEx p, FlowState state, Typ t, Ap ap, TypOption stored |
+          exists(ParamNodeEx p, FlowState state, Typ t, ApTrace ap, TypOption stored |
             fwdFlowIsEntered0(call, arg, cc, innerCc, summaryCtx, p, state, t, ap, stored) and
             innerSummaryCtx = TSummaryCtxSome(p, state, t, ap, stored)
           )
         }
 
+        private module ApOption = Option<Ap>;
+
+        private class ApOption = ApOption::Option;
+
+        private ApOption apNone() { result.isNone() }
+
+        private ApOption apSome(Ap ap) { result = ApOption::some(ap) }
+
         pragma[nomagic]
         private predicate storeStepFwd(NodeEx node1, Ap ap1, Content c, NodeEx node2, Ap ap2) {
-          fwdFlowStore(node1, _, ap1, _, c, _, _, node2, _, _, _) and
-          ap2 = apCons(c, ap1) and
-          readStepFwd(_, ap2, c, _, _)
+          exists(ApTrace ap1fwd |
+            fwdFlowStore(node1, _, ap1fwd, _, c, _, _, node2, _, _, _) and
+            translateTrace(ap1fwd, ap1) and
+            ap2 = apCons(c, ap1) and
+            readStepFwd(_, ap2, c, _, _)
+          )
         }
 
         pragma[nomagic]
         private predicate readStepFwd(NodeEx n1, Ap ap1, Content c, NodeEx n2, Ap ap2) {
-          fwdFlowRead(n1, _, ap1, _, c, n2, _, ap2, _, _, _, _)
+          exists(ApTrace ap1fwd, ApTrace ap2fwd |
+            fwdFlowRead(n1, _, ap1fwd, _, c, n2, _, ap2fwd, _, _, _, _, _) and
+            // // canonicalAp(ap1fwd, ap1) and
+            translateTrace(ap2fwd, ap2) and
+            ap1 = apCons(c, ap2)
+          )
         }
 
         pragma[nomagic]
         private predicate returnFlowsThrough0(
-          DataFlowCall call, FlowState state, CcCall ccc, Ap ap, RetNodeEx ret,
+          DataFlowCall call, FlowState state, CcCall ccc, ApTrace ap, RetNodeEx ret,
           SummaryCtxSome innerSummaryCtx
         ) {
           fwdFlowThrough0(call, _, _, state, ccc, _, _, ap, _, ret, innerSummaryCtx)
@@ -2168,11 +2376,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate returnFlowsThrough(
           RetNodeEx ret, ReturnPosition pos, FlowState state, CcCall ccc, ParamNodeEx p, Typ argT,
-          Ap argAp, TypOption argStored, Ap ap
+          ApTrace argApFwd, Ap argAp, TypOption argStored, Ap ap
         ) {
-          exists(DataFlowCall call, boolean allowsFieldFlow |
-            returnFlowsThrough0(call, state, ccc, ap, ret,
-              TSummaryCtxSome(p, _, argT, argAp, argStored)) and
+          exists(DataFlowCall call, boolean allowsFieldFlow, ApTrace apFwd |
+            translateTrace(argApFwd, argAp) and
+            translateTrace(apFwd, ap) and
+            returnFlowsThrough0(call, state, ccc, apFwd, ret,
+              TSummaryCtxSome(p, _, argT, argApFwd, argStored)) and
             flowThroughOutOfCall(call, ret, _, allowsFieldFlow) and
             pos = ret.getReturnPosition() and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
@@ -2183,11 +2393,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private predicate flowThroughIntoCall(
           DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, Ap argAp, Ap ap
         ) {
-          exists(Typ argT, TypOption argStored |
+          exists(Typ argT, TypOption argStored, ApTrace argApFwd |
             returnFlowsThrough(_, _, _, _, pragma[only_bind_into](p), pragma[only_bind_into](argT),
-              pragma[only_bind_into](argAp), pragma[only_bind_into](argStored), ap) and
-            flowIntoCallTaken(call, _, pragma[only_bind_into](arg), p, isNil(argAp)) and
-            fwdFlow(arg, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
+              pragma[only_bind_into](argApFwd), argAp, pragma[only_bind_into](argStored), ap) and
+            flowIntoCallTaken(call, _, pragma[only_bind_into](arg), p, isNilTrace(argApFwd)) and
+            fwdFlow(arg, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argApFwd),
               pragma[only_bind_into](argStored))
           )
         }
@@ -2196,8 +2406,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private predicate flowIntoCallAp(
           DataFlowCall call, DataFlowCallable c, ArgNodeEx arg, ParamNodeEx p, Ap ap
         ) {
-          flowIntoCallTaken(call, c, arg, p, isNil(ap)) and
-          fwdFlow(arg, _, _, _, _, ap, _)
+          exists(ApTrace apFwd |
+            flowIntoCallTaken(call, c, arg, p, isNil(ap)) and
+            translateTrace(apFwd, ap) and
+            fwdFlow(arg, _, _, _, _, apFwd, _)
+          )
         }
 
         pragma[nomagic]
@@ -2205,14 +2418,17 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnPosition pos, NodeEx out,
           Ap ap, boolean allowsFieldFlow
         ) {
-          PrevStage::callEdgeReturn(call, c, ret, _, out, allowsFieldFlow) and
-          fwdFlow(ret, _, _, _, _, ap, _) and
-          pos = ret.getReturnPosition() and
-          (if allowsFieldFlow = false then ap instanceof ApNil else any()) and
-          (
-            // both directions are needed for flow-through
-            FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
-            FwdTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
+          exists(ApTrace apFwd |
+            PrevStage::callEdgeReturn(call, c, ret, _, out, allowsFieldFlow) and
+            translateTrace(apFwd, ap) and
+            fwdFlow(ret, _, _, _, _, apFwd, _) and
+            pos = ret.getReturnPosition() and
+            (if allowsFieldFlow = false then ap instanceof ApNil else any()) and
+            (
+              // both directions are needed for flow-through
+              FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
+              FwdTypeFlowInput::dataFlowTakenCallEdgeOut(call, c)
+            )
           )
         }
 
@@ -2228,15 +2444,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         additional predicate revFlow(
           NodeEx node, FlowState state, ReturnCtx returnCtx, ApOption returnAp, Ap ap
         ) {
-          revFlow0(node, state, returnCtx, returnAp, ap) and
-          fwdFlow(node, state, _, _, _, ap, _)
+          exists(ApTrace apFwd |
+            revFlow0(node, state, returnCtx, returnAp, ap) and
+            filter(node, ap) and
+            PrevStage::revFlow(node, state, getApprox(ap)) and
+            translateTrace(apFwd, ap) and
+            fwdFlow(node, state, _, _, _, apFwd, _) // TODO: check join-order perf
+          )
         }
 
         pragma[nomagic]
         private predicate revFlow0(
           NodeEx node, FlowState state, ReturnCtx returnCtx, ApOption returnAp, Ap ap
         ) {
-          fwdFlow(node, state, _, _, _, ap, _) and
+          fwdFlow(node, state, _, _, _, any(ApTraceNil nil), _) and
           sinkNode(node, state) and
           (
             if hasSinkCallCtx()
@@ -2287,7 +2508,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           // flow out of a callable
           exists(ReturnPosition pos |
             revFlowOut(_, node, pos, state, _, _, _, ap) and
-            if returnFlowsThrough(node, pos, state, _, _, _, _, _, ap)
+            if returnFlowsThrough(node, pos, state, _, _, _, _, _, _, ap)
             then (
               returnCtx = TReturnCtxMaybeFlowThrough(pos) and
               returnAp = apSome(ap)
@@ -2363,7 +2584,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           }
 
           predicate dataFlowNonCallEntry(DataFlowCallable c, boolean cc) {
-            exists(NodeEx node, FlowState state, ApNil nil |
+            exists(NodeEx node, FlowState state, ApTraceNil nil |
               fwdFlow(node, state, _, _, _, nil, _) and
               sinkNode(node, state) and
               (if hasSinkCallCtx() then cc = true else cc = false) and
@@ -2449,7 +2670,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           exists(RetNodeEx ret, FlowState state, CcCall ccc |
             revFlowOut(call, ret, pos, state, returnCtx, _, returnAp, ap) and
-            returnFlowsThrough(ret, pos, state, ccc, _, _, _, _, ap) and
+            returnFlowsThrough(ret, pos, state, ccc, _, _, _, _, _, ap) and
             matchesCall(ccc, call)
           )
         }
@@ -2494,7 +2715,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           exists(Content head, Ap tail |
             consCand(head, tail) and
             ap = apCons(head, tail)
+            // ap.isCons(head, tail)
           )
+        }
+
+        additional predicate fwdTraceConsCand(Content c, ApTrace ap) {
+          fwdFlowStore(_, _, ap, _, c, _, _, _, _, _, _)
         }
 
         additional predicate consCand(Content c, Ap ap) {
@@ -2513,7 +2739,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate parameterMayFlowThroughAp(ParamNodeEx p, Ap ap) {
           exists(ReturnPosition pos |
-            returnFlowsThrough(_, pos, _, _, p, _, ap, _, _) and
+            returnFlowsThrough(_, pos, _, _, p, _, _, ap, _, _) and
             parameterFlowsThroughRev(p, ap, pos, _)
           )
         }
@@ -2526,31 +2752,29 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
-        pragma[nomagic]
-        private predicate nodeMayUseSummary0(NodeEx n, ParamNodeEx p, FlowState state, Ap ap) {
-          exists(Ap ap0 |
-            parameterMayFlowThrough(p, _) and
-            revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, ap0) and
-            fwdFlow(n, state, any(CcCall ccc), TSummaryCtxSome(p, _, _, ap, _), _, ap0, _)
-          )
-        }
-
-        /**
-         * Holds if `ap` is recorded as the summary context for flow reaching `node`
-         * and remains relevant for the following pruning stage.
-         */
-        pragma[nomagic]
-        additional predicate nodeMayUseSummary(NodeEx n, FlowState state, Ap ap) {
-          exists(ParamNodeEx p |
-            parameterMayFlowThroughAp(p, ap) and
-            nodeMayUseSummary0(n, p, state, ap)
-          )
-        }
-
+        // pragma[nomagic]
+        // private predicate nodeMayUseSummary0(NodeEx n, ParamNodeEx p, FlowState state, Ap ap) {
+        //   exists(Ap ap0 |
+        //     parameterMayFlowThrough(p, _) and
+        //     revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, ap0) and
+        //     fwdFlow(n, state, any(CcCall ccc), TSummaryCtxSome(p, _, _, ap, _), _, ap0.getAnApTrace(), _)
+        //   )
+        // }
+        // /**
+        //  * Holds if `ap` is recorded as the summary context for flow reaching `node`
+        //  * and remains relevant for the following pruning stage.
+        //  */
+        // pragma[nomagic]
+        // additional predicate nodeMayUseSummary(NodeEx n, FlowState state, Ap ap) {
+        //   exists(ParamNodeEx p |
+        //     parameterMayFlowThroughAp(p, ap) and
+        //     nodeMayUseSummary0(n, p, state, ap)
+        //   )
+        // }
         pragma[nomagic]
         predicate returnMayFlowThrough(RetNodeEx ret, ReturnKindExt kind) {
           exists(ParamNodeEx p, ReturnPosition pos, Ap argAp, Ap ap |
-            returnFlowsThrough(ret, pos, _, _, p, _, argAp, _, ap) and
+            returnFlowsThrough(ret, pos, _, _, p, _, _, argAp, _, ap) and
             parameterFlowsThroughRev(p, argAp, pos, ap) and
             kind = pos.getKind()
           )
@@ -2820,11 +3044,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         additional module Graph {
           private newtype TPathNode =
             TPathNodeMid(
-              NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap,
+              NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, ApTrace ap,
               TypOption stored
             ) {
-              fwdFlow(node, state, cc, summaryCtx, t, ap, stored) and
-              revFlow(node, state, _, _, ap)
+              exists(Ap ap2 |
+                fwdFlow(node, state, cc, summaryCtx, t, ap, stored) and
+                revFlow(node, state, _, _, ap2) and
+                translateTrace(ap, ap2)
+              )
             } or
             TPathNodeSink(NodeEx node, FlowState state) {
               exists(PathNodeMid sink |
@@ -2963,7 +3190,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             Cc cc;
             SummaryCtx summaryCtx;
             Typ t;
-            Ap ap;
+            ApTrace ap;
             TypOption stored;
 
             PathNodeMid() { this = TPathNodeMid(node, state, cc, summaryCtx, t, ap, stored) }
@@ -3062,12 +3289,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               (if hasSourceCallCtx() then cc = ccSomeCall() else cc = ccNone()) and
               summaryCtx = TSummaryCtxNone() and
               t = getNodeTyp(node) and
-              ap instanceof ApNil
+              ap instanceof ApTraceNil
             }
 
             predicate isAtSink() {
               sinkNode(node, state) and
-              ap instanceof ApNil and
+              ap instanceof ApTraceNil and
               // For `FeatureHasSinkCallContext` the condition `cc instanceof CallContextNoCall`
               // is exactly what we need to check.
               // For `FeatureEqualSourceSinkCallContext` the initial call
@@ -3124,7 +3351,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[nomagic]
           private predicate fwdFlowInStep(
             ArgNodeEx arg, ParamNodeEx p, FlowState state, Cc outercc, CcCall innercc,
-            SummaryCtx outerSummaryCtx, SummaryCtx innerSummaryCtx, Typ t, Ap ap, TypOption stored
+            SummaryCtx outerSummaryCtx, SummaryCtx innerSummaryCtx, Typ t, ApTrace ap,
+            TypOption stored
           ) {
             FwdFlowInNoThrough::fwdFlowIn(_, arg, _, p, state, outercc, innercc, outerSummaryCtx, t,
               ap, stored, _) and
@@ -3138,7 +3366,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[nomagic]
           private predicate fwdFlowThroughStep0(
             DataFlowCall call, ArgNodeEx arg, Cc cc, FlowState state, CcCall ccc,
-            SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored, RetNodeEx ret,
+            SummaryCtx summaryCtx, Typ t, ApTrace ap, TypOption stored, RetNodeEx ret,
             SummaryCtxSome innerSummaryCtx
           ) {
             fwdFlowThrough0(call, arg, cc, state, ccc, summaryCtx, t, ap, stored, ret,
@@ -3148,14 +3376,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           bindingset[node, state, cc, summaryCtx, t, ap, stored]
           pragma[inline_late]
           private PathNodeImpl mkPathNode(
-            NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap,
+            NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, ApTrace ap,
             TypOption stored
           ) {
             result = TPathNodeMid(node, state, cc, summaryCtx, t, ap, stored)
           }
 
           private PathNodeImpl typeStrengthenToPathNode(
-            NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, Ap ap,
+            NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, ApTrace ap,
             TypOption stored
           ) {
             exists(Typ t |
@@ -3167,11 +3395,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[nomagic]
           private predicate fwdFlowThroughStep1(
             PathNodeImpl pn1, PathNodeImpl pn2, PathNodeImpl pn3, DataFlowCall call, Cc cc,
-            FlowState state, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored, RetNodeEx ret
+            FlowState state, SummaryCtx summaryCtx, Typ t, ApTrace ap, TypOption stored,
+            RetNodeEx ret
           ) {
             exists(
               FlowState state0, ArgNodeEx arg, SummaryCtxSome innerSummaryCtx, ParamNodeEx p,
-              Typ innerArgT, Ap innerArgAp, TypOption innerArgStored, CcCall ccc
+              Typ innerArgT, ApTrace innerArgAp, TypOption innerArgStored, CcCall ccc
             |
               fwdFlowThroughStep0(call, arg, cc, state, ccc, summaryCtx, t, ap, stored, ret,
                 innerSummaryCtx) and
@@ -3187,19 +3416,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           pragma[nomagic]
           private predicate fwdFlowThroughStep2(
             PathNodeImpl pn1, PathNodeImpl pn2, PathNodeImpl pn3, NodeEx node, Cc cc,
-            FlowState state, SummaryCtx summaryCtx, Typ t, Ap ap, TypOption stored
+            FlowState state, SummaryCtx summaryCtx, Typ t, ApTrace ap, TypOption stored
           ) {
             exists(DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow |
               fwdFlowThroughStep1(pn1, pn2, pn3, call, cc, state, summaryCtx, t, ap, stored, ret) and
               flowThroughOutOfCall(call, ret, node, allowsFieldFlow) and
               not inBarrier(node, state) and
-              if allowsFieldFlow = false then ap instanceof ApNil else any()
+              if allowsFieldFlow = false then ap instanceof ApTraceNil else any()
             )
           }
 
           private predicate localStep(
             PathNodeImpl pn1, NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t,
-            Ap ap, TypOption stored, string label, boolean isStoreStep
+            ApTrace ap, TypOption stored, string label, boolean isStoreStep
           ) {
             exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
               pn1 = TPathNodeMid(mid, state0, cc, summaryCtx, t0, ap, stored) and
@@ -3210,22 +3439,22 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               t = t0
               or
               localStep(mid, state0, node, state, false, t, localCc, label) and
-              ap instanceof ApNil
+              ap instanceof ApTraceNil
             )
             or
             // store
-            exists(NodeEx mid, Content c, Typ t0, Ap ap0, TypOption stored0 |
+            exists(NodeEx mid, Content c, Typ t0, ApTrace ap0, TypOption stored0 |
               pn1 = TPathNodeMid(mid, state, cc, summaryCtx, t0, ap0, stored0) and
               fwdFlowStore(mid, t0, ap0, stored0, c, t, stored, node, state, cc, summaryCtx) and
-              ap = apCons(c, ap0) and
+              ap = apTrCons(c, ap0) and
               label = "" and
               isStoreStep = true
             )
             or
             // read
-            exists(NodeEx mid, Typ t0, Ap ap0, TypOption stored0 |
+            exists(NodeEx mid, Typ t0, ApTrace ap0, TypOption stored0 |
               pn1 = TPathNodeMid(mid, state, cc, summaryCtx, t0, ap0, stored0) and
-              fwdFlowRead(mid, t0, ap0, stored0, _, node, t, ap, stored, state, cc, summaryCtx) and
+              fwdFlowRead(mid, t0, ap0, stored0, _, node, t, ap, _, stored, state, cc, summaryCtx) and
               label = "" and
               isStoreStep = false
             )
@@ -3233,7 +3462,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           private predicate localStep(PathNodeImpl pn1, PathNodeImpl pn2, string label) {
             exists(
-              NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, Ap ap,
+              NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, ApTrace ap,
               TypOption stored, boolean isStoreStep
             |
               localStep(pn1, node, state, cc, summaryCtx, t0, ap, stored, label, isStoreStep) and
@@ -3265,7 +3494,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
           private predicate nonLocalStep(
             PathNodeImpl pn1, NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t,
-            Ap ap, TypOption stored, string label
+            ApTrace ap, TypOption stored, string label
           ) {
             // jump
             exists(NodeEx mid, FlowState state0, Typ t0 |
@@ -3285,11 +3514,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               not outBarrier(mid, state) and
               not inBarrier(node, state) and
               t = getNodeTyp(node) and
-              ap instanceof ApNil
+              ap instanceof ApTraceNil
               or
               additionalJumpStateStep(mid, state0, node, state, label) and
               t = getNodeTyp(node) and
-              ap instanceof ApNil
+              ap instanceof ApTraceNil
             )
             or
             // flow into a callable
@@ -3307,13 +3536,13 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
               fwdFlowOutValidEdge(_, ret, innercc, _, node, cc, allowsFieldFlow) and
               not inBarrier(node, state) and
               label = "" and
-              if allowsFieldFlow = false then ap instanceof ApNil else any()
+              if allowsFieldFlow = false then ap instanceof ApTraceNil else any()
             )
           }
 
           private predicate nonLocalStep(PathNodeImpl pn1, PathNodeImpl pn2, string label) {
             exists(
-              NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, Ap ap,
+              NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, ApTrace ap,
               TypOption stored
             |
               nonLocalStep(pn1, node, state, cc, summaryCtx, t0, ap, stored, label) and
@@ -3331,7 +3560,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out
           ) {
             exists(
-              NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, Ap ap,
+              NodeEx node, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t0, ApTrace ap,
               TypOption stored, PathNodeImpl out0
             |
               fwdFlowThroughStep2(arg, par, ret, node, cc, state, summaryCtx, t0, ap, stored) and
@@ -3612,7 +3841,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           conscand = count(Content f0, Ap ap | fwdConsCand(f0, ap)) and
           states = count(FlowState state | fwdFlow(_, state, _, _, _, _, _)) and
           tuples =
-            count(NodeEx n, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap,
+            count(NodeEx n, FlowState state, Cc cc, SummaryCtx summaryCtx, Typ t, ApTrace ap,
               TypOption stored | fwdFlow(n, state, cc, summaryCtx, t, ap, stored)) and
           calledges =
             count(DataFlowCall call, DataFlowCallable c |
@@ -3697,6 +3926,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ApNil() { this = false }
       }
 
+      class ApTrace = Ap;
+
+      class ApTraceNil = ApNil;
+
       bindingset[result, ap]
       PrevStage::Ap getApprox(Ap ap) { any() }
 
@@ -3709,18 +3942,25 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         if tail = true then Config::accessPathLimit() > 1 else any()
       }
 
+      bindingset[c, cons]
+      ApTrace apTrTail(Content c, ApTrace cons) {
+        cons = true and
+        result = true and
+        exists(c) and
+        Config::accessPathLimit() > 1
+      }
+
+      predicate apTrCons = apCons/2;
+
       class ApHeadContent = Unit;
 
       pragma[inline]
-      ApHeadContent getHeadContent(Ap ap) { exists(result) and ap = true }
+      ApHeadContent getConsHeadContent(ApTrace ap) { exists(result) and ap = true }
+
+      pragma[inline]
+      ApHeadContent getTailHeadContent(ApTrace ap) { none() }
 
       ApHeadContent projectToHeadContent(Content c) { any() }
-
-      class ApOption = BooleanOption;
-
-      ApOption apNone() { result = TBooleanNone() }
-
-      ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
 
       import CachedCallContextSensitivity
       import NoLocalCallContext
@@ -3752,7 +3992,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       bindingset[node, state, t0, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+      predicate filter(NodeEx node, FlowState state, Typ t0, ApTrace ap, Typ t) {
         PrevStage::revFlowState(state) and
         t0 = t and
         exists(ap) and
@@ -3765,8 +4005,11 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
       }
 
+      bindingset[node, ap]
+      predicate filter(NodeEx node, Ap ap) { any() }
+
       bindingset[node, ap, isStoreStep]
-      predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) { any() }
+      predicate stepFilter(NodeEx node, ApTrace ap, boolean isStoreStep) { any() }
 
       bindingset[t1, t2]
       predicate typecheck(Typ t1, Typ t2) { any() }
@@ -3785,25 +4028,37 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class ApNil = ApproxAccessPathFrontNil;
 
+      class ApTrace = ApproxAccessPathFrontTrace;
+
+      class ApTraceNil = ApNil;
+
       PrevStage::Ap getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
 
       Typ getTyp(DataFlowType t) { any() }
 
+      // Ap apCons(Content c, Ap tail) { result.getAHead() = c and exists(tail) }
       bindingset[c, tail]
-      Ap apCons(Content c, Ap tail) { result.getAHead() = c and exists(tail) }
+      ApTrace apTrCons(Content c, ApTrace tail) { result.isApproxConsOf(c) and exists(tail) }
+
+      bindingset[c, cons]
+      ApTrace apTrTail(Content c, ApTrace cons) {
+        (cons.isApproxConsOf(c) or cons instanceof ApproxAccessPathFrontTail) and
+        result.isApproxTailOf(c)
+      }
+
+      bindingset[c, tail]
+      Ap apCons(Content c, Ap tail) { result.isApproxConsOf(c) and exists(tail) }
 
       class ApHeadContent = ContentApprox;
 
+      // ApHeadContent getConsHeadContent(ApTrace ap) { result = ap.getHead() }
       pragma[noinline]
-      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
+      ApHeadContent getConsHeadContent(ApTrace ap) { ap.isConsOf(result) }
+
+      pragma[noinline]
+      ApHeadContent getTailHeadContent(ApTrace ap) { ap.isTailOf(result) }
 
       predicate projectToHeadContent = getContentApproxCached/1;
-
-      class ApOption = ApproxAccessPathFrontOption;
-
-      ApOption apNone() { result = TApproxAccessPathFrontNone() }
-
-      ApOption apSome(Ap ap) { result = TApproxAccessPathFrontSome(ap) }
 
       private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
         predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
@@ -3858,28 +4113,32 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           PrevStage::revFlow(node) and
           PrevStage::readStepCand(_, c, _) and
           expectsContentEx(node, c) and
-          c = ap.getAHead()
+          ap.isApproxConsOf(c)
         )
       }
 
       bindingset[node, state, t0, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+      predicate filter(NodeEx node, FlowState state, Typ t0, ApTrace ap, Typ t) {
         exists(state) and
-        // We can get away with not using type strengthening here, since we aren't
-        // going to use the tracked types in the construction of Stage 4 access
-        // paths. For Stage 4 and onwards, the tracked types must be consistent as
-        // the cons candidates including types are used to construct subsequent
-        // access path approximations.
         t0 = t and
         (
           notExpectsContent(node)
           or
           expectsContentCand(node, ap)
+          or
+          expectsContentCand(node, _) and ap instanceof ApproxAccessPathFrontTail
         )
       }
 
+      bindingset[node, ap]
+      predicate filter(NodeEx node, Ap ap) {
+        notExpectsContent(node)
+        or
+        expectsContentCand(node, ap)
+      }
+
       bindingset[node, ap, isStoreStep]
-      predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) { any() }
+      predicate stepFilter(NodeEx node, ApTrace ap, boolean isStoreStep) { any() }
 
       bindingset[t1, t2]
       predicate typecheck(Typ t1, Typ t2) { any() }
@@ -3910,25 +4169,35 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class ApNil = AccessPathFrontNil;
 
+      class ApTrace = AccessPathFrontTrace;
+
+      class ApTraceNil = ApNil;
+
       PrevStage::Ap getApprox(Ap ap) { result = ap.toApprox() }
 
       Typ getTyp(DataFlowType t) { any() }
 
       bindingset[c, tail]
-      Ap apCons(Content c, Ap tail) { result.getHead() = c and exists(tail) }
+      ApTrace apTrCons(Content c, ApTrace tail) { result.isConsOf(c) and exists(tail) }
+
+      bindingset[c, cons]
+      ApTrace apTrTail(Content c, ApTrace cons) {
+        (cons.isConsOf(c) or cons instanceof AccessPathFrontTail) and
+        result.isTailOf(c)
+      }
+
+      bindingset[c, tail]
+      Ap apCons(Content c, Ap tail) { result.isConsOf(c) and exists(tail) }
 
       class ApHeadContent = Content;
 
       pragma[noinline]
-      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
+      ApHeadContent getConsHeadContent(ApTrace ap) { ap.isConsOf(result) }
+
+      pragma[noinline]
+      ApHeadContent getTailHeadContent(ApTrace ap) { ap.isTailOf(result) }
 
       ApHeadContent projectToHeadContent(Content c) { result = c }
-
-      class ApOption = AccessPathFrontOption;
-
-      ApOption apNone() { result = TAccessPathFrontNone() }
-
-      ApOption apSome(Ap ap) { result = TAccessPathFrontSome(ap) }
 
       import BooleanCallContext
 
@@ -3967,12 +4236,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         // When `node` is the target of a store, we interpret `clearsContent` as
         // only pertaining to _earlier_ store steps. In this case, we need to postpone
         // checking `clearsContent` to the step creation.
-        clearContent(node, ap.getHead(), false)
+        clearContent(node, getConsHeadContent(ap), false)
       }
 
       pragma[nomagic]
-      private predicate clearExceptStore(NodeEx node, Ap ap) {
-        clearContent(node, ap.getHead(), true)
+      private predicate clearExceptStore(NodeEx node, ApTrace ap) {
+        // best effort: if we have a tail-head trace then we can't check the
+        // content, but this will be handled in the final stage
+        clearContent(node, getConsHeadContent(ap), true)
       }
 
       pragma[nomagic]
@@ -3981,15 +4252,27 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           PrevStage::revFlow(node) and
           PrevStage::readStepCand(_, c, _) and
           expectsContentEx(node, c) and
-          c = ap.getHead()
+          ap.isConsOf(c)
         )
       }
 
       bindingset[node, state, t0, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+      predicate filter(NodeEx node, FlowState state, Typ t0, ApTrace ap, Typ t) {
         exists(state) and
         not clear(node, ap) and
         t0 = t and
+        (
+          notExpectsContent(node)
+          or
+          expectsContentCand(node, ap)
+          or
+          expectsContentCand(node, _) and ap instanceof AccessPathFrontTail
+        )
+      }
+
+      bindingset[node, ap]
+      predicate filter(NodeEx node, Ap ap) {
+        not clear(node, ap) and
         (
           notExpectsContent(node)
           or
@@ -3998,7 +4281,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       bindingset[node, ap, isStoreStep]
-      predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) {
+      predicate stepFilter(NodeEx node, ApTrace ap, boolean isStoreStep) {
         if clearExceptStore(node, ap) then isStoreStep = true else any()
       }
 
@@ -4008,41 +4291,81 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private module Stage4 = MkStage<Stage3>::Stage<Stage4Param>;
 
-    /**
-     * Holds if a length 2 access path approximation with the head `c` is expected
-     * to be expensive.
-     */
-    private predicate expensiveLen2unfolding(Content c) {
-      exists(int tails, int nodes, int apLimit, int tupleLimit |
-        tails = strictcount(AccessPathFront apf | Stage4::consCand(c, apf)) and
-        nodes =
-          strictcount(NodeEx n, FlowState state |
-            Stage4::revFlow(n, state, any(AccessPathFrontHead apf | apf.getHead() = c))
-            or
-            Stage4::nodeMayUseSummary(n, state, any(AccessPathFrontHead apf | apf.getHead() = c))
-          ) and
-        accessPathApproxCostLimits(apLimit, tupleLimit) and
-        apLimit < tails and
-        tupleLimit < (tails - 1) * nodes and
-        not forceHighPrecision(c)
-      )
-    }
-
-    private newtype TAccessPathApprox =
+    // /**
+    //  * Holds if a length 2 access path approximation with the head `c` is expected
+    //  * to be expensive.
+    //  */
+    // private predicate expensiveLen2unfolding(Content c) {
+    //   exists(int tails, int nodes, int apLimit, int tupleLimit |
+    //     tails = strictcount(AccessPathFront apf | Stage4::consCand(c, apf)) and
+    //     nodes =
+    //       strictcount(NodeEx n, FlowState state |
+    //         Stage4::revFlow(n, state, any(AccessPathFrontHead apf | apf.getHead() = c))
+    //         or
+    //         Stage4::nodeMayUseSummary(n, state, any(AccessPathFrontHead apf | apf.getHead() = c))
+    //       ) and
+    //     accessPathApproxCostLimits(apLimit, tupleLimit) and
+    //     apLimit < tails and
+    //     tupleLimit < (tails - 1) * nodes and
+    //     not forceHighPrecision(c)
+    //   )
+    // }
+    // private newtype TAccessPathApprox =
+    //   TNil() or
+    //   TConsNil(Content c) {
+    //     Stage4::consCand(c, TFrontNil()) and
+    //     not expensiveLen2unfolding(c)
+    //   } or
+    //   TConsCons(Content c1, Content c2, int len) {
+    //     Stage4::consCand(c1, TFrontHead(c2)) and
+    //     len in [2 .. Config::accessPathLimit()] and
+    //     not expensiveLen2unfolding(c1)
+    //   } or
+    //   TCons1(Content c, int len) {
+    //     len in [1 .. Config::accessPathLimit()] and
+    //     expensiveLen2unfolding(c)
+    //   }
+    private newtype TAccessPathApproxTrace =
       TNil() or
-      TConsNil(Content c) {
-        Stage4::consCand(c, TFrontNil()) and
-        not expensiveLen2unfolding(c)
-      } or
+      TConsNil(Content c) { Stage4::consCand(c, TFrontNil()) } or
       TConsCons(Content c1, Content c2, int len) {
         Stage4::consCand(c1, TFrontHead(c2)) and
-        len in [2 .. Config::accessPathLimit()] and
-        not expensiveLen2unfolding(c1)
+        len in [2 .. Config::accessPathLimit()]
       } or
-      TCons1(Content c, int len) {
-        len in [1 .. Config::accessPathLimit()] and
-        expensiveLen2unfolding(c)
+      TTailConsCons(Content tc1, Content c2, int len) {
+        Stage4::consCand(tc1, TFrontHead(c2)) and
+        len in [2 .. Config::accessPathLimit() - 1]
+      } or
+      TTailTail(Content tc1, Content tc2, int len) {
+        Stage4::consCand(tc2, TFrontHead(tc1)) and
+        len in [1 .. Config::accessPathLimit() - 2]
+      } or
+      TConsTail(Content c1, Content tc2, int len) {
+        Stage4::fwdTraceConsCand(c1, TFrontTail(tc2)) and
+        len in [2 .. Config::accessPathLimit() - 1]
+      } or
+      TTailConsTail(Content tc1, Content tc2, int len) {
+        Stage4::fwdTraceConsCand(tc1, TFrontTail(tc2)) and
+        len in [1 .. Config::accessPathLimit() - 2]
       }
+
+    // private class TAccessPathApprox = TNil or TConsNil or TConsCons;
+    /**
+     * A trace of an `AccessPathApprox`. This tracks the last two store/read steps.
+     */
+    abstract private class AccessPathApproxTrace extends TAccessPathApproxTrace {
+      abstract string toString();
+
+      abstract Content getConsHead();
+
+      abstract Content getTailHead();
+
+      abstract int len();
+
+      abstract AccessPathApproxTrace traceCons(Content c);
+
+      abstract AccessPathApproxTrace traceTail(Content c);
+    }
 
     /**
      * Conceptually a list of `Content`s, but only the first two elements of
@@ -4051,50 +4374,60 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      * of dereference operations needed to get from the value in the node to
      * the tracked object.
      */
-    abstract private class AccessPathApprox extends TAccessPathApprox {
-      abstract string toString();
-
-      abstract Content getHead();
-
-      abstract int len();
-
+    abstract private class AccessPathApprox extends AccessPathApproxTrace {
       abstract AccessPathFront getFront();
 
       /** Holds if this is a representation of `head` followed by `tail`. */
       abstract predicate isCons(Content head, AccessPathApprox tail);
     }
 
-    private class AccessPathApproxNil extends AccessPathApprox, TNil {
+    private class AccessPathApproxNil extends AccessPathApprox, AccessPathApproxTrace, TNil {
       override string toString() { result = "" }
 
-      override Content getHead() { none() }
+      override Content getConsHead() { none() }
+
+      override Content getTailHead() { none() }
 
       override int len() { result = 0 }
 
       override AccessPathFront getFront() { result = TFrontNil() }
 
       override predicate isCons(Content head, AccessPathApprox tail) { none() }
+
+      override AccessPathApproxTrace traceCons(Content c) { result = TConsNil(c) }
+
+      override AccessPathApproxTrace traceTail(Content c) { none() }
     }
 
     abstract private class AccessPathApproxCons extends AccessPathApprox { }
 
-    private class AccessPathApproxConsNil extends AccessPathApproxCons, TConsNil {
-      private Content c;
+    private class AccessPathApproxConsNil extends AccessPathApproxCons, AccessPathApproxTrace,
+      TConsNil
+    {
+      private Content c1;
 
-      AccessPathApproxConsNil() { this = TConsNil(c) }
+      AccessPathApproxConsNil() { this = TConsNil(c1) }
 
-      override string toString() { result = "[" + c.toString() + "]" }
+      override string toString() { result = "[" + c1.toString() + "]" }
 
-      override Content getHead() { result = c }
+      override Content getConsHead() { result = c1 }
+
+      override Content getTailHead() { none() }
 
       override int len() { result = 1 }
 
-      override AccessPathFront getFront() { result = TFrontHead(c) }
+      override AccessPathFront getFront() { result = TFrontHead(c1) }
 
-      override predicate isCons(Content head, AccessPathApprox tail) { head = c and tail = TNil() }
+      override predicate isCons(Content head, AccessPathApprox tail) { head = c1 and tail = TNil() }
+
+      override AccessPathApproxTrace traceCons(Content c) { result = TConsCons(c, c1, 2) }
+
+      override AccessPathApproxTrace traceTail(Content c) { result = TNil() and c = c1 }
     }
 
-    private class AccessPathApproxConsCons extends AccessPathApproxCons, TConsCons {
+    private class AccessPathApproxConsCons extends AccessPathApproxCons, AccessPathApproxTrace,
+      TConsCons
+    {
       private Content c1;
       private Content c2;
       private int len;
@@ -4107,7 +4440,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         else result = "[" + c1.toString() + ", " + c2.toString() + ", ... (" + len.toString() + ")]"
       }
 
-      override Content getHead() { result = c1 }
+      override Content getConsHead() { result = c1 }
+
+      override Content getTailHead() { none() }
 
       override int len() { result = len }
 
@@ -4120,61 +4455,155 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           or
           len = 2 and
           tail = TConsNil(c2)
-          or
-          tail = TCons1(c2, len - 1)
+          // or
+          // tail = TCons1(c2, len - 1)
         )
+      }
+
+      override AccessPathApproxTrace traceCons(Content c) { result = TConsCons(c, c1, len + 1) }
+
+      override AccessPathApproxTrace traceTail(Content c) {
+        result = TConsNil(c2) and c = c1 and len = 2
+        or
+        result = TTailConsCons(c1, c2, len - 1) and c = c1
       }
     }
 
-    private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
-      private Content c;
+    private class AccessPathApproxTailConsCons extends AccessPathApproxTrace, TTailConsCons {
+      private Content tc1;
+      private Content c2;
       private int len;
 
-      AccessPathApproxCons1() { this = TCons1(c, len) }
+      AccessPathApproxTailConsCons() { this = TTailConsCons(tc1, c2, len) }
 
       override string toString() {
-        if len = 1
-        then result = "[" + c.toString() + "]"
-        else result = "[" + c.toString() + ", ... (" + len.toString() + ")]"
+        result = "[" + tc1.toString() + "].[" + c2.toString() + ", ... (" + len.toString() + ")]"
       }
 
-      override Content getHead() { result = c }
+      override Content getConsHead() { result = c2 }
+
+      override Content getTailHead() { result = tc1 }
 
       override int len() { result = len }
 
-      override AccessPathFront getFront() { result = TFrontHead(c) }
+      override AccessPathApproxTrace traceCons(Content c) { result = TConsCons(c, c2, len + 1) }
 
-      override predicate isCons(Content head, AccessPathApprox tail) {
-        head = c and
-        (
-          exists(Content c2 | Stage4::consCand(c, TFrontHead(c2)) |
-            tail = TConsCons(c2, _, len - 1)
-            or
-            len = 2 and
-            tail = TConsNil(c2)
-            or
-            tail = TCons1(c2, len - 1)
-          )
-          or
-          len = 1 and
-          Stage4::consCand(c, TFrontNil()) and
-          tail = TNil()
-        )
+      override AccessPathApproxTrace traceTail(Content c) {
+        c = c2 and
+        result = TTailTail(c, tc1, len - 1)
       }
     }
 
-    private newtype TAccessPathApproxOption =
-      TAccessPathApproxNone() or
-      TAccessPathApproxSome(AccessPathApprox apa)
+    private class AccessPathApproxTailTail extends AccessPathApproxTrace, TTailTail {
+      private Content tc1;
+      private Content tc2;
+      private int len;
 
-    private class AccessPathApproxOption extends TAccessPathApproxOption {
-      string toString() {
-        this = TAccessPathApproxNone() and result = "<none>"
-        or
-        this = TAccessPathApproxSome(any(AccessPathApprox apa | result = apa.toString()))
+      AccessPathApproxTailTail() { this = TTailTail(tc1, tc2, len) }
+
+      override string toString() {
+        result = "[" + tc2.toString() + ", " + tc1.toString() + "].[ ... (" + len.toString() + ")]"
+      }
+
+      override Content getConsHead() { none() }
+
+      override Content getTailHead() { result = tc1 }
+
+      override int len() { result = len }
+
+      override AccessPathApproxTrace traceCons(Content c) { result = TConsTail(c, tc1, len + 1) }
+
+      override AccessPathApproxTrace traceTail(Content c) { result = TTailTail(c, tc1, len - 1) }
+    }
+
+    private class AccessPathApproxConsTail extends AccessPathApproxTrace, TConsTail {
+      private Content c1;
+      private Content tc2;
+      private int len;
+
+      AccessPathApproxConsTail() { this = TConsTail(c1, tc2, len) }
+
+      override string toString() {
+        result = "[" + c1.toString() + ", ... (" + len.toString() + ")]"
+      }
+
+      override Content getConsHead() { result = c1 }
+
+      override Content getTailHead() { none() }
+
+      override int len() { result = len }
+
+      override AccessPathApproxTrace traceCons(Content c) { result = TConsCons(c, c1, len + 1) }
+
+      override AccessPathApproxTrace traceTail(Content c) {
+        result = TTailConsTail(c, tc2, len - 1) and c = c1
       }
     }
 
+    private class AccessPathApproxTailConsTail extends AccessPathApproxTrace, TTailConsTail {
+      private Content tc1;
+      private Content tc2;
+      private int len;
+
+      AccessPathApproxTailConsTail() { this = TTailConsTail(tc1, tc2, len) }
+
+      override string toString() {
+        result = "[" + tc1.toString() + "].[ ... (" + len.toString() + ")]"
+      }
+
+      override Content getConsHead() { none() }
+
+      override Content getTailHead() { result = tc1 }
+
+      override int len() { result = len }
+
+      override AccessPathApproxTrace traceCons(Content c) { result = TConsTail(c, tc1, len + 1) }
+
+      override AccessPathApproxTrace traceTail(Content c) { result = TTailTail(c, tc1, len - 1) }
+    }
+
+    // TTailTail(Content tc1, Content tc2, int len) {
+    //   Stage4::consCand(tc2, TFrontHead(tc1)) and
+    //   len in [1 .. Config::accessPathLimit() - 2]
+    // } or
+    // TConsTail(Content c1, Content tc2, int len) {
+    //   Stage4::fwdTraceConsCand(c1, TFrontTail(tc2)) and
+    //   len in [2 .. Config::accessPathLimit() - 1]
+    // } or
+    // TTailConsTail(Content tc1, Content tc2, int len) {
+    //   Stage4::fwdTraceConsCand(tc1, TFrontTail(tc2)) and
+    //   len in [1 .. Config::accessPathLimit() - 2]
+    // }
+    // private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
+    //   private Content c;
+    //   private int len;
+    //   AccessPathApproxCons1() { this = TCons1(c, len) }
+    //   override string toString() {
+    //     if len = 1
+    //     then result = "[" + c.toString() + "]"
+    //     else result = "[" + c.toString() + ", ... (" + len.toString() + ")]"
+    //   }
+    //   override Content getHead() { result = c }
+    //   override int len() { result = len }
+    //   override AccessPathFront getFront() { result = TFrontHead(c) }
+    //   override predicate isCons(Content head, AccessPathApprox tail) {
+    //     head = c and
+    //     (
+    //       exists(Content c2 | Stage4::consCand(c, TFrontHead(c2)) |
+    //         tail = TConsCons(c2, _, len - 1)
+    //         or
+    //         len = 2 and
+    //         tail = TConsNil(c2)
+    //         or
+    //         tail = TCons1(c2, len - 1)
+    //       )
+    //       or
+    //       len = 1 and
+    //       Stage4::consCand(c, TFrontNil()) and
+    //       tail = TNil()
+    //     )
+    //   }
+    // }
     private module Stage5Param implements MkStage<Stage4>::StageParam {
       private module PrevStage = Stage4;
 
@@ -4184,10 +4613,20 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class ApNil = AccessPathApproxNil;
 
+      class ApTrace = AccessPathApproxTrace;
+
+      class ApTraceNil = ApNil;
+
       pragma[nomagic]
       PrevStage::Ap getApprox(Ap ap) { result = ap.getFront() }
 
       Typ getTyp(DataFlowType t) { result = t }
+
+      bindingset[c, tail]
+      ApTrace apTrCons(Content c, ApTrace tail) { result = tail.traceCons(c) }
+
+      bindingset[c, cons]
+      ApTrace apTrTail(Content c, ApTrace cons) { result = cons.traceTail(c) }
 
       bindingset[c, tail]
       Ap apCons(Content c, Ap tail) { result.isCons(c, tail) }
@@ -4195,15 +4634,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       class ApHeadContent = Content;
 
       pragma[noinline]
-      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
+      ApHeadContent getConsHeadContent(ApTrace ap) { result = ap.getConsHead() }
+
+      pragma[noinline]
+      ApHeadContent getTailHeadContent(ApTrace ap) { result = ap.getTailHead() }
 
       ApHeadContent projectToHeadContent(Content c) { result = c }
-
-      class ApOption = AccessPathApproxOption;
-
-      ApOption apNone() { result = TAccessPathApproxNone() }
-
-      ApOption apSome(Ap ap) { result = TAccessPathApproxSome(ap) }
 
       private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
         predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
@@ -4223,19 +4659,24 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         PrevStage::LocalFlowBigStep<Stage3Param::localFlowBigStep/8>::localFlowBigStepTc/8;
 
       bindingset[node, state, t0, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+      predicate filter(NodeEx node, FlowState state, Typ t0, ApTrace ap, Typ t) {
         strengthenType(node, t0, t) and
         exists(state) and
         exists(ap)
       }
 
+      bindingset[node, ap]
+      predicate filter(NodeEx node, Ap ap) { any() }
+
       pragma[nomagic]
-      private predicate clearExceptStore(NodeEx node, Ap ap) {
-        Stage4Param::clearContent(node, ap.getHead(), true)
+      private predicate clearExceptStore(NodeEx node, ApTrace ap) {
+        // best effort: if we have a tail-head trace then we can't check the
+        // content, but this will be handled in the final stage
+        Stage4Param::clearContent(node, ap.getConsHead(), true)
       }
 
       bindingset[node, ap, isStoreStep]
-      predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) {
+      predicate stepFilter(NodeEx node, ApTrace ap, boolean isStoreStep) {
         if clearExceptStore(node, ap) then isStoreStep = true else any()
       }
 
@@ -4245,43 +4686,39 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     private module Stage5 = MkStage<Stage4>::Stage<Stage5Param>;
 
-    pragma[nomagic]
-    private predicate stage5ConsCand(Content c, AccessPathFront apf, int len) {
-      Stage5::consCand(c, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
-    }
-
-    /**
-     * Gets the number of length 2 access path approximations that correspond to `apa`.
-     */
-    private int count1to2unfold(AccessPathApproxCons1 apa) {
-      exists(Content c, int len |
-        c = apa.getHead() and
-        len = apa.len() and
-        result = strictcount(AccessPathFront apf | stage5ConsCand(c, apf, len))
-      )
-    }
-
-    private int countNodesUsingAccessPath(AccessPathApprox apa) {
-      result =
-        strictcount(NodeEx n, FlowState state |
-          Stage5::revFlow(n, state, apa) or Stage5::nodeMayUseSummary(n, state, apa)
-        )
-    }
-
-    /**
-     * Holds if a length 2 access path approximation matching `apa` is expected
-     * to be expensive.
-     */
-    private predicate expensiveLen1to2unfolding(AccessPathApproxCons1 apa) {
-      exists(int aps, int nodes, int apLimit, int tupleLimit |
-        aps = count1to2unfold(apa) and
-        nodes = countNodesUsingAccessPath(apa) and
-        accessPathCostLimits(apLimit, tupleLimit) and
-        apLimit < aps and
-        tupleLimit < (aps - 1) * nodes
-      )
-    }
-
+    // pragma[nomagic]
+    // private predicate stage5ConsCand(Content c, AccessPathFront apf, int len) {
+    //   Stage5::consCand(c, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
+    // }
+    // /**
+    //  * Gets the number of length 2 access path approximations that correspond to `apa`.
+    //  */
+    // private int count1to2unfold(AccessPathApproxCons1 apa) {
+    //   exists(Content c, int len |
+    //     c = apa.getHead() and
+    //     len = apa.len() and
+    //     result = strictcount(AccessPathFront apf | stage5ConsCand(c, apf, len))
+    //   )
+    // }
+    // private int countNodesUsingAccessPath(AccessPathApprox apa) {
+    //   result =
+    //     strictcount(NodeEx n, FlowState state |
+    //       Stage5::revFlow(n, state, apa) or Stage5::nodeMayUseSummary(n, state, apa)
+    //     )
+    // }
+    // /**
+    //  * Holds if a length 2 access path approximation matching `apa` is expected
+    //  * to be expensive.
+    //  */
+    // private predicate expensiveLen1to2unfolding(AccessPathApproxCons1 apa) {
+    //   exists(int aps, int nodes, int apLimit, int tupleLimit |
+    //     aps = count1to2unfold(apa) and
+    //     nodes = countNodesUsingAccessPath(apa) and
+    //     accessPathCostLimits(apLimit, tupleLimit) and
+    //     apLimit < aps and
+    //     tupleLimit < (aps - 1) * nodes
+    //   )
+    // }
     private predicate hasTail(AccessPathApprox apa, AccessPathApprox tail) {
       exists(Content head |
         apa.isCons(head, tail) and
@@ -4289,86 +4726,82 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       )
     }
 
-    private predicate forceUnfold(AccessPathApprox apa) {
-      forceHighPrecision(apa.getHead())
-      or
-      exists(Content c2 |
-        apa = TConsCons(_, c2, _) and
-        forceHighPrecision(c2)
-      )
-    }
-
-    /**
-     * Holds with `unfold = false` if a precise head-tail representation of `apa` is
-     * expected to be expensive. Holds with `unfold = true` otherwise.
-     */
-    private predicate evalUnfold(AccessPathApprox apa, boolean unfold) {
-      if forceUnfold(apa)
-      then unfold = true
-      else
-        exists(int aps, int nodes, int apLimit, int tupleLimit |
-          aps = countPotentialAps(apa) and
-          nodes = countNodesUsingAccessPath(apa) and
-          accessPathCostLimits(apLimit, tupleLimit) and
-          if apLimit < aps and tupleLimit < (aps - 1) * nodes then unfold = false else unfold = true
-        )
-    }
-
-    /**
-     * Gets the number of `AccessPath`s that correspond to `apa`.
-     */
-    private int countAps(AccessPathApprox apa) {
-      evalUnfold(apa, false) and
-      result = 1 and
-      (not apa instanceof AccessPathApproxCons1 or expensiveLen1to2unfolding(apa))
-      or
-      evalUnfold(apa, false) and
-      result = count1to2unfold(apa) and
-      not expensiveLen1to2unfolding(apa)
-      or
-      evalUnfold(apa, true) and
-      result = countPotentialAps(apa)
-    }
-
-    /**
-     * Gets the number of `AccessPath`s that would correspond to `apa` assuming
-     * that it is expanded to a precise head-tail representation.
-     */
-    language[monotonicAggregates]
-    private int countPotentialAps(AccessPathApprox apa) {
-      apa instanceof AccessPathApproxNil and result = 1
-      or
-      result = strictsum(AccessPathApprox tail | hasTail(apa, tail) | countAps(tail))
-    }
-
+    // private predicate forceUnfold(AccessPathApprox apa) {
+    //   forceHighPrecision(apa.getHead())
+    //   or
+    //   exists(Content c2 |
+    //     apa = TConsCons(_, c2, _) and
+    //     forceHighPrecision(c2)
+    //   )
+    // }
+    // /**
+    //  * Holds with `unfold = false` if a precise head-tail representation of `apa` is
+    //  * expected to be expensive. Holds with `unfold = true` otherwise.
+    //  */
+    // private predicate evalUnfold(AccessPathApprox apa, boolean unfold) {
+    //   if forceUnfold(apa)
+    //   then unfold = true
+    //   else
+    //     exists(int aps, int nodes, int apLimit, int tupleLimit |
+    //       aps = countPotentialAps(apa) and
+    //       nodes = countNodesUsingAccessPath(apa) and
+    //       accessPathCostLimits(apLimit, tupleLimit) and
+    //       if apLimit < aps and tupleLimit < (aps - 1) * nodes then unfold = false else unfold = true
+    //     )
+    // }
+    // /**
+    //  * Gets the number of `AccessPath`s that correspond to `apa`.
+    //  */
+    // private int countAps(AccessPathApprox apa) {
+    //   evalUnfold(apa, false) and
+    //   result = 1 and
+    //   (not apa instanceof AccessPathApproxCons1 or expensiveLen1to2unfolding(apa))
+    //   or
+    //   evalUnfold(apa, false) and
+    //   result = count1to2unfold(apa) and
+    //   not expensiveLen1to2unfolding(apa)
+    //   or
+    //   evalUnfold(apa, true) and
+    //   result = countPotentialAps(apa)
+    // }
+    // /**
+    //  * Gets the number of `AccessPath`s that would correspond to `apa` assuming
+    //  * that it is expanded to a precise head-tail representation.
+    //  */
+    // language[monotonicAggregates]
+    // private int countPotentialAps(AccessPathApprox apa) {
+    //   apa instanceof AccessPathApproxNil and result = 1
+    //   or
+    //   result = strictsum(AccessPathApprox tail | hasTail(apa, tail) | countAps(tail))
+    // }
     private newtype TAccessPath =
       TAccessPathNil() or
       TAccessPathCons(Content head, AccessPath tail) {
         exists(AccessPathApproxCons apa |
-          not evalUnfold(apa, false) and
-          head = apa.getHead() and
+          // not evalUnfold(apa, false) and
+          head = apa.getConsHead() and
           hasTail(apa, tail.getApprox())
         )
-      } or
-      TAccessPathCons2(Content head1, Content head2, int len) {
-        exists(AccessPathApproxCons apa, AccessPathApprox tail |
-          evalUnfold(apa, false) and
-          not expensiveLen1to2unfolding(apa) and
-          apa.len() = len and
-          hasTail(apa, tail) and
-          head1 = apa.getHead() and
-          head2 = tail.getHead()
-        )
-      } or
-      TAccessPathCons1(Content head, int len) {
-        exists(AccessPathApproxCons apa |
-          evalUnfold(apa, false) and
-          expensiveLen1to2unfolding(apa) and
-          apa.len() = len and
-          head = apa.getHead()
-        )
-      }
+      } //or
 
+    // TAccessPathCons2(Content head1, Content head2, int len) {
+    //   exists(AccessPathApproxCons apa, AccessPathApprox tail |
+    //     evalUnfold(apa, false) and
+    //     not expensiveLen1to2unfolding(apa) and
+    //     apa.len() = len and
+    //     hasTail(apa, tail) and
+    //     head1 = apa.getHead() and
+    //     head2 = tail.getHead()
+    //   )
+    // } or
+    // TAccessPathCons1(Content head, int len) {
+    //   exists(AccessPathApproxCons apa |
+    //     evalUnfold(apa, false) and
+    //     expensiveLen1to2unfolding(apa) and
+    //     apa.len() = len and
+    //     head = apa.getHead()
+    //   )
+    // }
     private module Stage6Param implements MkStage<Stage5>::StageParam {
       private module PrevStage = Stage5;
 
@@ -4378,6 +4811,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       class ApNil = AccessPathNil;
 
+      class ApTrace = Ap;
+
+      class ApTraceNil = ApNil;
+
       pragma[nomagic]
       PrevStage::Ap getApprox(Ap ap) { result = ap.getApprox() }
 
@@ -4386,20 +4823,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       bindingset[c, tail]
       Ap apCons(Content c, Ap tail) { result.isCons(c, tail) }
 
+      predicate apTrCons = apCons/2;
+
+      Ap apTrTail(Content c, Ap cons) { cons = apCons(c, result) and not result instanceof ApNil }
+
       class ApHeadContent = Content;
 
       pragma[noinline]
-      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
+      ApHeadContent getConsHeadContent(ApTrace ap) { result = ap.getHead() }
+
+      pragma[inline]
+      ApHeadContent getTailHeadContent(ApTrace ap) { none() }
 
       ApHeadContent projectToHeadContent(Content c) { result = c }
-
-      private module ApOption = Option<AccessPath>;
-
-      class ApOption = ApOption::Option;
-
-      ApOption apNone() { result.isNone() }
-
-      ApOption apSome(Ap ap) { result = ApOption::some(ap) }
 
       private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
         predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
@@ -4419,19 +4855,24 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         PrevStage::LocalFlowBigStep<Stage5Param::localStep/8>::localFlowBigStepTc/8;
 
       bindingset[node, state, t0, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+      predicate filter(NodeEx node, FlowState state, Typ t0, ApTrace ap, Typ t) {
         strengthenType(node, t0, t) and
         exists(state) and
         exists(ap)
       }
 
+      bindingset[node, ap]
+      predicate filter(NodeEx node, Ap ap) { any() }
+
       pragma[nomagic]
-      private predicate clearExceptStore(NodeEx node, Ap ap) {
+      private predicate clearExceptStore(NodeEx node, ApTrace ap) {
+        // In this stage we have precise access path and can therefore finally
+        // check this precisely.
         Stage4Param::clearContent(node, ap.getHead(), true)
       }
 
       bindingset[node, ap, isStoreStep]
-      predicate stepFilter(NodeEx node, Ap ap, boolean isStoreStep) {
+      predicate stepFilter(NodeEx node, ApTrace ap, boolean isStoreStep) {
         if clearExceptStore(node, ap) then isStoreStep = true else any()
       }
 
@@ -4498,8 +4939,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         result = TConsNil(head_) and tail_ = TAccessPathNil()
         or
         result = TConsCons(head_, tail_.getHead(), this.length())
-        or
-        result = TCons1(head_, this.length())
+        // or
+        // result = TCons1(head_, this.length())
       }
 
       override int length() { result = 1 + tail_.length() }
@@ -4510,18 +4951,18 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         result = head_.toString() + "]"
         or
         result = head_ + ", " + tail_.(AccessPathCons).toStringImpl(needsSuffix)
-        or
-        exists(Content c2, Content c3, int len | tail_ = TAccessPathCons2(c2, c3, len) |
-          result = head_ + ", " + c2 + ", " + c3 + ", ... (" and len > 2 and needsSuffix = true
-          or
-          result = head_ + ", " + c2 + ", " + c3 + "]" and len = 2 and needsSuffix = false
-        )
-        or
-        exists(Content c2, int len | tail_ = TAccessPathCons1(c2, len) |
-          result = head_ + ", " + c2 + ", ... (" and len > 1 and needsSuffix = true
-          or
-          result = head_ + ", " + c2 + "]" and len = 1 and needsSuffix = false
-        )
+        // or
+        // exists(Content c2, Content c3, int len | tail_ = TAccessPathCons2(c2, c3, len) |
+        //   result = head_ + ", " + c2 + ", " + c3 + ", ... (" and len > 2 and needsSuffix = true
+        //   or
+        //   result = head_ + ", " + c2 + ", " + c3 + "]" and len = 2 and needsSuffix = false
+        // )
+        // or
+        // exists(Content c2, int len | tail_ = TAccessPathCons1(c2, len) |
+        //   result = head_ + ", " + c2 + ", ... (" and len > 1 and needsSuffix = true
+        //   or
+        //   result = head_ + ", " + c2 + "]" and len = 1 and needsSuffix = false
+        // )
       }
 
       override string toString() {
@@ -4531,67 +4972,51 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
     }
 
-    private class AccessPathCons2 extends AccessPath, TAccessPathCons2 {
-      private Content head1;
-      private Content head2;
-      private int len;
-
-      AccessPathCons2() { this = TAccessPathCons2(head1, head2, len) }
-
-      override Content getHead() { result = head1 }
-
-      override predicate isCons(Content head, AccessPath tail) {
-        head = head1 and
-        Stage5::consCand(head1, tail.getApprox()) and
-        tail.getHead() = head2 and
-        tail.length() = len - 1
-      }
-
-      override AccessPathFrontHead getFront() { result = TFrontHead(head1) }
-
-      override AccessPathApproxCons getApprox() {
-        result = TConsCons(head1, head2, len) or
-        result = TCons1(head1, len)
-      }
-
-      override int length() { result = len }
-
-      override string toString() {
-        if len = 2
-        then result = "[" + head1.toString() + ", " + head2.toString() + "]"
-        else
-          result =
-            "[" + head1.toString() + ", " + head2.toString() + ", ... (" + len.toString() + ")]"
-      }
-    }
-
-    private class AccessPathCons1 extends AccessPath, TAccessPathCons1 {
-      private Content head_;
-      private int len;
-
-      AccessPathCons1() { this = TAccessPathCons1(head_, len) }
-
-      override Content getHead() { result = head_ }
-
-      override predicate isCons(Content head, AccessPath tail) {
-        head = head_ and
-        Stage5::consCand(head_, tail.getApprox()) and
-        tail.length() = len - 1
-      }
-
-      override AccessPathFrontHead getFront() { result = TFrontHead(head_) }
-
-      override AccessPathApproxCons getApprox() { result = TCons1(head_, len) }
-
-      override int length() { result = len }
-
-      override string toString() {
-        if len = 1
-        then result = "[" + head_.toString() + "]"
-        else result = "[" + head_.toString() + ", ... (" + len.toString() + ")]"
-      }
-    }
-
+    // private class AccessPathCons2 extends AccessPath, TAccessPathCons2 {
+    //   private Content head1;
+    //   private Content head2;
+    //   private int len;
+    //   AccessPathCons2() { this = TAccessPathCons2(head1, head2, len) }
+    //   override Content getHead() { result = head1 }
+    //   override predicate isCons(Content head, AccessPath tail) {
+    //     head = head1 and
+    //     Stage5::consCand(head1, tail.getApprox()) and
+    //     tail.getHead() = head2 and
+    //     tail.length() = len - 1
+    //   }
+    //   override AccessPathFrontHead getFront() { result = TFrontHead(head1) }
+    //   override AccessPathApproxCons getApprox() {
+    //     result = TConsCons(head1, head2, len) or
+    //     result = TCons1(head1, len)
+    //   }
+    //   override int length() { result = len }
+    //   override string toString() {
+    //     if len = 2
+    //     then result = "[" + head1.toString() + ", " + head2.toString() + "]"
+    //     else
+    //       result =
+    //         "[" + head1.toString() + ", " + head2.toString() + ", ... (" + len.toString() + ")]"
+    //   }
+    // }
+    // private class AccessPathCons1 extends AccessPath, TAccessPathCons1 {
+    //   private Content head_;
+    //   private int len;
+    //   AccessPathCons1() { this = TAccessPathCons1(head_, len) }
+    //   override Content getHead() { result = head_ }
+    //   override predicate isCons(Content head, AccessPath tail) {
+    //     head = head_ and
+    //     Stage5::consCand(head_, tail.getApprox()) and
+    //     tail.length() = len - 1
+    //   }
+    //   override AccessPathFrontHead getFront() { result = TFrontHead(head_) }
+    //   override AccessPathApproxCons getApprox() { result = TCons1(head_, len) }
+    //   override int length() { result = len }
+    //   override string toString() {
+    //     if len = 1
+    //     then result = "[" + head_.toString() + "]"
+    //     else result = "[" + head_.toString() + ", ... (" + len.toString() + ")]"
+    //   }
+    // }
     private module S6Graph = Stage6::Graph;
 
     private module S6 = S6Graph::Public;
