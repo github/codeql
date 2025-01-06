@@ -1059,10 +1059,8 @@ private class AngularRenderer2AttributeDefinition extends DOM::AttributeDefiniti
   override string getName() { result = propertyNode.getStringValue() }
 
   // override DOM::ElementDefinition getElement() { /* TODO */ }
-
   DataFlow::Node getElementNode() { result = elementNode }
 
   override DataFlow::Node getValueNode() { result = valueNode }
-
   //override predicate mayHaveTemplateValue() { /* TODO */ }
 }
