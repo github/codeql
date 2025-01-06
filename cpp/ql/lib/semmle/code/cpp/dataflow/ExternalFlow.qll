@@ -557,7 +557,7 @@ string getParameterTypeWithoutTemplateArguments(Function f, int n) {
     // The name of the string can either be the possibly typedefed name
     // or an alternative name where typedefs has been resolved.
     // `getTypeName(t, _)` is almost equal to `t.resolveTypedefs().getName()`,
-    // except  that `t.resolveTypedefs()` doesn't have a result when the
+    // except that `t.resolveTypedefs()` doesn't have a result when the
     // resulting type doesn't appear in the database.
     s = [t.getName(), getTypeName(t, _)] and
     parseAngles(s, base, _, specifiers) and
