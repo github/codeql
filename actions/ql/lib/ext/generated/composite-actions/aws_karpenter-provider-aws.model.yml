@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["aws/karpenter-provider-aws", "*", "input.account_id", "code-injection", "generated"]
+     - ["aws/karpenter-provider-aws", "*", "input.cluster_name", "code-injection", "generated"]

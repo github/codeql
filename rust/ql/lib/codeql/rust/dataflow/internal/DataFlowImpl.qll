@@ -712,6 +712,11 @@ private class CapturedVariableContent extends Content, TCapturedVariableContent 
   override string toString() { result = "captured " + v }
 }
 
+/** A value referred to by a reference. */
+final class ReferenceContent extends Content, TReferenceContent {
+  override string toString() { result = "&ref" }
+}
+
 /**
  * An element in an array.
  */
@@ -1005,6 +1010,12 @@ module RustDataFlow implements InputSig<Location> {
         node2.asPat() = pat.getField(pos)
       )
       or
+      exists(TuplePatCfgNode pat, int pos |
+        pos = c.(TuplePositionContent).getPosition() and
+        node1.asPat() = pat and
+        node2.asPat() = pat.getField(pos)
+      )
+      or
       exists(RecordPatCfgNode pat, string field |
         pat = node1.asPat() and
         (
@@ -1017,6 +1028,9 @@ module RustDataFlow implements InputSig<Location> {
         ) and
         node2.asPat() = pat.getFieldPat(field)
       )
+      or
+      c instanceof ReferenceContent and
+      node1.asPat().(RefPatCfgNode).getPat() = node2.asPat()
       or
       exists(FieldExprCfgNode access |
         // Read of a tuple entry
@@ -1049,6 +1063,13 @@ module RustDataFlow implements InputSig<Location> {
         node2.asExpr() = try and
         c.(VariantPositionContent).getVariantCanonicalPath(0).getExtendedCanonicalPath() =
           ["crate::option::Option::Some", "crate::result::Result::Ok"]
+      )
+      or
+      exists(PrefixExprCfgNode deref |
+        c instanceof ReferenceContent and
+        deref.getOperatorName() = "*" and
+        node1.asExpr() = deref.getExpr() and
+        node2.asExpr() = deref
       )
       or
       VariableCapture::readStep(node1, c, node2)
@@ -1126,6 +1147,12 @@ module RustDataFlow implements InputSig<Location> {
       assignment.getLhs() = index and
       node1.asExpr() = assignment.getRhs() and
       node2.(PostUpdateNode).getPreUpdateNode().asExpr() = index.getBase()
+    )
+    or
+    exists(RefExprCfgNode ref |
+      c instanceof ReferenceContent and
+      node1.asExpr() = ref.getExpr() and
+      node2.asExpr() = ref
     )
     or
     VariableCapture::storeStep(node1, c, node2)
@@ -1395,7 +1422,8 @@ private module Cached {
       e =
         [
           any(IndexExprCfgNode i).getBase(), any(FieldExprCfgNode access).getExpr(),
-          any(TryExprCfgNode try).getExpr()
+          any(TryExprCfgNode try).getExpr(),
+          any(PrefixExprCfgNode pe | pe.getOperatorName() = "*").getExpr()
         ]
     } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
@@ -1495,7 +1523,8 @@ private module Cached {
     TStructFieldContent(StructCanonicalPath s, string field) {
       field = s.getStruct().getFieldList().(RecordFieldList).getAField().getName().getText()
     } or
-    TCapturedVariableContent(VariableCapture::CapturedVariable v)
+    TCapturedVariableContent(VariableCapture::CapturedVariable v) or
+    TReferenceContent()
 
   cached
   newtype TContentSet = TSingletonContentSet(Content c)

@@ -110,8 +110,8 @@ rust_library(
             "@vendor__windows-core-0.52.0//:windows_core",  # cfg(target_os = "windows")
         ],
         "@rules_rust//rust/platform:wasm32-unknown-unknown": [
-            "@vendor__js-sys-0.3.72//:js_sys",  # cfg(all(target_arch = "wasm32", target_os = "unknown"))
-            "@vendor__wasm-bindgen-0.2.95//:wasm_bindgen",  # cfg(all(target_arch = "wasm32", target_os = "unknown"))
+            "@vendor__js-sys-0.3.76//:js_sys",  # cfg(all(target_arch = "wasm32", target_os = "unknown"))
+            "@vendor__wasm-bindgen-0.2.99//:wasm_bindgen",  # cfg(all(target_arch = "wasm32", target_os = "unknown"))
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
             "@vendor__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))

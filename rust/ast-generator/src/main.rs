@@ -10,8 +10,7 @@ use std::env;
 use ungrammar::Grammar;
 
 fn project_root() -> PathBuf {
-    let dir =
-        env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| env!("CARGO_MANIFEST_DIR").to_owned());
+    let dir = env::var("CARGO_MANIFEST_DIR").unwrap().to_owned();
     PathBuf::from(dir).parent().unwrap().to_owned()
 }
 
@@ -601,10 +600,11 @@ impl Translator<'_> {{
 }
 
 fn main() -> std::io::Result<()> {
-    let grammar: Grammar = fs::read_to_string(project_root().join("ast-generator/rust.ungram"))
-        .unwrap()
+    let grammar = PathBuf::from("..").join(env::args().nth(1).expect("grammar file path required"));
+    let grammar: Grammar = fs::read_to_string(&grammar)
+        .unwrap_or_else(|_| panic!("Failed to parse grammar file: {}", grammar.display()))
         .parse()
-        .unwrap();
+        .expect("Failed to parse grammar");
     let mut grammar = codegen::grammar::lower(&grammar);
 
     grammar.enums.retain(|x| x.name != "Adt");

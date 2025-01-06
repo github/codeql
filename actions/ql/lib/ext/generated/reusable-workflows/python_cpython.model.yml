@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["python/cpython/.github/workflows/reusable-ubuntu.yml", "*", "input.options", "code-injection", "generated"]
+     - ["python/cpython/.github/workflows/reusable-tsan.yml", "*", "input.options", "code-injection", "generated"]

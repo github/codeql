@@ -39,6 +39,7 @@ extensions:
       - ["std", "vector", True, "insert<InputIt>", "(const_iterator,InputIt,InputIt)", "", "Argument[1].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
       - ["std", "vector", True, "insert<InputIt>", "(const_iterator,InputIt,InputIt)", "", "Argument[1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]
       - ["std", "vector", True, "operator=", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "vector", True, "operator=", "", "", "Argument[*0].Element[@]", "ReturnValue[*].Element[@]", "value", "manual"]
       - ["std", "vector", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
       - ["std", "vector", True, "push_back", "", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
       - ["std", "vector", True, "rbegin", "", "", "Argument[-1].Element[@]", "ReturnValue.Element[@]", "value", "manual"]

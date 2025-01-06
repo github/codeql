@@ -33,7 +33,7 @@ filegroup(
 # Workspace Member Dependencies
 alias(
     name = "anyhow",
-    actual = "@vendor__anyhow-1.0.93//:anyhow",
+    actual = "@vendor__anyhow-1.0.94//:anyhow",
     tags = ["manual"],
 )
 
@@ -45,13 +45,13 @@ alias(
 
 alias(
     name = "chrono",
-    actual = "@vendor__chrono-0.4.38//:chrono",
+    actual = "@vendor__chrono-0.4.39//:chrono",
     tags = ["manual"],
 )
 
 alias(
     name = "clap",
-    actual = "@vendor__clap-4.5.20//:clap",
+    actual = "@vendor__clap-4.5.23//:clap",
     tags = ["manual"],
 )
 
@@ -81,7 +81,7 @@ alias(
 
 alias(
     name = "flate2",
-    actual = "@vendor__flate2-1.0.34//:flate2",
+    actual = "@vendor__flate2-1.0.35//:flate2",
     tags = ["manual"],
 )
 
@@ -135,7 +135,7 @@ alias(
 
 alias(
     name = "proc-macro2",
-    actual = "@vendor__proc-macro2-1.0.89//:proc_macro2",
+    actual = "@vendor__proc-macro2-1.0.92//:proc_macro2",
     tags = ["manual"],
 )
 
@@ -218,7 +218,7 @@ alias(
 )
 
 alias(
-    name = "ra_ap_stdx",
+    name = "stdx",
     actual = "@vendor__ra_ap_stdx-0.0.248//:ra_ap_stdx",
     tags = ["manual"],
 )
@@ -255,7 +255,7 @@ alias(
 
 alias(
     name = "serde",
-    actual = "@vendor__serde-1.0.214//:serde",
+    actual = "@vendor__serde-1.0.216//:serde",
     tags = ["manual"],
 )
 
@@ -279,25 +279,25 @@ alias(
 
 alias(
     name = "syn",
-    actual = "@vendor__syn-2.0.87//:syn",
+    actual = "@vendor__syn-2.0.90//:syn",
     tags = ["manual"],
 )
 
 alias(
     name = "tracing",
-    actual = "@vendor__tracing-0.1.40//:tracing",
+    actual = "@vendor__tracing-0.1.41//:tracing",
     tags = ["manual"],
 )
 
 alias(
     name = "tracing-subscriber",
-    actual = "@vendor__tracing-subscriber-0.3.18//:tracing_subscriber",
+    actual = "@vendor__tracing-subscriber-0.3.19//:tracing_subscriber",
     tags = ["manual"],
 )
 
 alias(
     name = "tree-sitter",
-    actual = "@vendor__tree-sitter-0.24.4//:tree_sitter",
+    actual = "@vendor__tree-sitter-0.24.5//:tree_sitter",
     tags = ["manual"],
 )
 

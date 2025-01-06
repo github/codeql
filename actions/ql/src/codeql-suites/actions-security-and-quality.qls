@@ -1,0 +1,2 @@
+- description: Security-and-quality queries for GitHub Actions
+- import: codeql-suites/actions-security-extended.qls

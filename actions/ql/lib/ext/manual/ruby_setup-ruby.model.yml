@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["ruby/setup-ruby", "*", "input.ruby-version", "output.ruby-prefix", "taint", "manual"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["ruby/setup-ruby", "*", "input.ruby-version", "command-injection", "manual"]

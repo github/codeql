@@ -11,6 +11,7 @@ crates_vendor(
         "//rust/extractor:Cargo.toml",
         "//rust/extractor/macros:Cargo.toml",
         "//rust/ast-generator:Cargo.toml",
+        "//rust/autobuild:Cargo.toml",
         "//shared/tree-sitter-extractor:Cargo.toml",
     ],
     mode = "remote",

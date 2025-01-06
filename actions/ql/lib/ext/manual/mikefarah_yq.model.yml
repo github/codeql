@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["mikefarah/yq", "*", "input.cmd", "code-injection", "manual"]
+

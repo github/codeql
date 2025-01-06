@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["googlecloudplatform/magic-modules", "*", "input.repo", "code-injection", "generated"]

@@ -1,4 +1,4 @@
-// semmle-extractor-options: -fblocks
+// semmle-extractor-options: --edg --blocks
 #ifdef COMPILABLE_TEST
 #include <stdio.h>
 #else

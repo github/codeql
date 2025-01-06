@@ -88,7 +88,7 @@ rust_library(
     }),
     version = "0.0.248",
     deps = [
-        "@vendor__anyhow-1.0.93//:anyhow",
+        "@vendor__anyhow-1.0.94//:anyhow",
         "@vendor__cargo_metadata-0.18.1//:cargo_metadata",
         "@vendor__itertools-0.12.1//:itertools",
         "@vendor__la-arena-0.3.1//:la_arena",
@@ -100,10 +100,10 @@ rust_library(
         "@vendor__ra_ap_stdx-0.0.248//:ra_ap_stdx",
         "@vendor__ra_ap_toolchain-0.0.248//:ra_ap_toolchain",
         "@vendor__rustc-hash-2.1.0//:rustc_hash",
-        "@vendor__semver-1.0.23//:semver",
-        "@vendor__serde-1.0.214//:serde",
+        "@vendor__semver-1.0.24//:semver",
+        "@vendor__serde-1.0.216//:serde",
         "@vendor__serde_json-1.0.133//:serde_json",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__tracing-0.1.41//:tracing",
         "@vendor__triomphe-0.1.14//:triomphe",
     ],
 )

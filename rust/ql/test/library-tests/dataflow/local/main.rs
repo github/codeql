@@ -100,7 +100,7 @@ fn tuple_match() {
     let a = (2, source(38), 2);
     let (a0, a1, a2) = a;
     sink(a0);
-    sink(a1); // $ MISSING: hasValueFlow=38
+    sink(a1); // $ hasValueFlow=38
     sink(a2);
 }
 
@@ -223,6 +223,14 @@ fn option_pattern_match_unqualified() {
 fn option_unwrap() {
     let s1 = Some(source(19));
     sink(s1.unwrap()); // $ hasValueFlow=19
+}
+
+fn option_unwrap_or() {
+    let s1 = Some(source(46));
+    sink(s1.unwrap_or(0)); // $ hasValueFlow=46
+
+    let s2 = Some(0);
+    sink(s2.unwrap_or(source(47))); // $ hasValueFlow=47
 }
 
 fn option_questionmark() -> Option<i64> {
@@ -379,24 +387,6 @@ fn array_assignment() {
     sink(mut_arr[0]); // $ SPURIOUS: hasValueFlow=55
 }
 
-// -----------------------------------------------------------------------------
-// Data flow through mutable borrows
-
-fn read_through_borrow() {
-    let a = source(21);
-    let b = &a;
-    let c = *b;
-    sink(c); // $ MISSING: hasValueFlow=21
-}
-
-fn write_through_borrow() {
-    let mut a = 1;
-    sink(a);
-    let b = &mut a;
-    *b = source(39);
-    sink(a); // $ MISSING: hasValueFlow=39
-}
-
 // Test data flow inconsistency occuring with captured variables and `continue`
 // in a loop.
 pub fn captured_variable_and_continue(names: Vec<(bool, Option<String>)>) {
@@ -430,6 +420,7 @@ fn main() {
     option_pattern_match_qualified();
     option_pattern_match_unqualified();
     option_unwrap();
+    option_unwrap_or();
     option_questionmark();
     let _ = result_questionmark();
     custom_tuple_enum_pattern_match_qualified();
@@ -443,7 +434,5 @@ fn main() {
     array_for_loop();
     array_slice_pattern();
     array_assignment();
-    read_through_borrow();
-    write_through_borrow();
     captured_variable_and_continue(vec![]);
 }

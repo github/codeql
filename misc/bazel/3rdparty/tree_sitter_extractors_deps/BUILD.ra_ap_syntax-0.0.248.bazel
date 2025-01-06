@@ -85,7 +85,7 @@ rust_library(
     deps = [
         "@vendor__cov-mark-2.0.0//:cov_mark",
         "@vendor__either-1.13.0//:either",
-        "@vendor__indexmap-2.6.0//:indexmap",
+        "@vendor__indexmap-2.7.0//:indexmap",
         "@vendor__itertools-0.12.1//:itertools",
         "@vendor__ra-ap-rustc_lexer-0.80.0//:ra_ap_rustc_lexer",
         "@vendor__ra_ap_parser-0.0.248//:ra_ap_parser",
@@ -93,7 +93,8 @@ rust_library(
         "@vendor__rowan-0.15.15//:rowan",
         "@vendor__rustc-hash-2.1.0//:rustc_hash",
         "@vendor__smol_str-0.3.2//:smol_str",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__tracing-0.1.41//:tracing",
         "@vendor__triomphe-0.1.14//:triomphe",
     ],
 )
+exports_files(["rust.ungram"])

@@ -1,0 +1,2 @@
+- description: Security-extended queries for GitHub Actions
+- import: codeql-suites/actions-code-scanning.qls

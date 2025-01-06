@@ -6,6 +6,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.Collections
 private import RuntimeCallable
 
 /** A call. */
@@ -1137,7 +1138,7 @@ private module Internal {
         if p.isParams()
         then (
           j >= i and
-          paramType = p.getType().(ArrayType).getElementType()
+          paramType = p.getType().(ParamsCollectionType).getElementType()
         ) else (
           i = j and
           paramType = p.getType()

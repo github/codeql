@@ -99,7 +99,7 @@ rust_library(
         "@vendor__either-1.13.0//:either",
         "@vendor__fst-0.4.7//:fst",
         "@vendor__hashbrown-0.14.5//:hashbrown",
-        "@vendor__indexmap-2.6.0//:indexmap",
+        "@vendor__indexmap-2.7.0//:indexmap",
         "@vendor__itertools-0.12.1//:itertools",
         "@vendor__la-arena-0.3.1//:la_arena",
         "@vendor__ra-ap-rustc_abi-0.80.0//:ra_ap_rustc_abi",
@@ -118,7 +118,7 @@ rust_library(
         "@vendor__rustc_apfloat-0.2.1-llvm-462a31f5a5ab//:rustc_apfloat",
         "@vendor__smallvec-1.13.2//:smallvec",
         "@vendor__text-size-1.1.1//:text_size",
-        "@vendor__tracing-0.1.40//:tracing",
+        "@vendor__tracing-0.1.41//:tracing",
         "@vendor__triomphe-0.1.14//:triomphe",
     ],
 )

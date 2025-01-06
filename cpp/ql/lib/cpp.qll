@@ -35,6 +35,7 @@ import semmle.code.cpp.Field
 import semmle.code.cpp.Function
 import semmle.code.cpp.MemberFunction
 import semmle.code.cpp.Parameter
+import semmle.code.cpp.TemplateParameter
 import semmle.code.cpp.Variable
 import semmle.code.cpp.Initializer
 import semmle.code.cpp.FriendDecl

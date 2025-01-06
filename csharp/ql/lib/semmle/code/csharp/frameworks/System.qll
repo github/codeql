@@ -755,3 +755,19 @@ class SystemNotImplementedExceptionClass extends SystemClass {
 class SystemDateTimeStruct extends SystemStruct {
   SystemDateTimeStruct() { this.hasName("DateTime") }
 }
+
+/** The `System.Span<T>` struct. */
+class SystemSpanStruct extends SystemUnboundGenericStruct {
+  SystemSpanStruct() {
+    this.hasName("Span`1") and
+    this.getNumberOfTypeParameters() = 1
+  }
+}
+
+/** The `System.ReadOnlySpan<T>` struct. */
+class SystemReadOnlySpanStruct extends SystemUnboundGenericStruct {
+  SystemReadOnlySpanStruct() {
+    this.hasName("ReadOnlySpan`1") and
+    this.getNumberOfTypeParameters() = 1
+  }
+}

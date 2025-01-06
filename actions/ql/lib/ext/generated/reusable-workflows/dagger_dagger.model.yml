@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["dagger/dagger/.github/workflows/_hack_make.yml", "*", "input.mage-targets", "code-injection", "generated"]
+     - ["dagger/dagger/.github/workflows/_hack_make.yml", "*", "input.dev-engine", "code-injection", "generated"]

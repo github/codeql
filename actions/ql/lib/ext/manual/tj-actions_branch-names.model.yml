@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      # https://github.com/tj-actions/branch-names
+      - ["tj-actions/branch-names", "*", "output.current_branch", "branch", "manual"]
+      - ["tj-actions/branch-names", "*", "output.head_ref_branch", "branch", "manual"]

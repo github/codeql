@@ -12,9 +12,13 @@ private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.rust.dataflow.internal.ModelsAsData as MaD
 private import internal.InlineExpectationsTestImpl as InlineExpectationsTestImpl
 
-// Holds if the target expression of `call` is a path and the string representation of the path is `name`.
+/**
+ * Holds if the target expression of `call` is a path and the string
+ * representation of the path has `name` as a prefix.
+ */
+bindingset[name]
 private predicate callTargetName(CallExprCfgNode call, string name) {
-  call.getFunction().(PathExprCfgNode).toString() = name
+  call.getFunction().(PathExprCfgNode).toString().matches(name + "%")
 }
 
 private module FlowTestImpl implements InputSig<Location, RustDataFlow> {

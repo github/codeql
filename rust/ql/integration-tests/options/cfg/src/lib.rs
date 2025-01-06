@@ -11,7 +11,10 @@ fn cfg_no_flag() {}
 fn cfg_no_key() {}
 
 #[cfg(test)]
-fn test() {}
+mod tests {
+    #[test]
+    fn test() {}
+}
 
 #[cfg(target_pointer_width = "64")]
 fn pointer_width_64() {}

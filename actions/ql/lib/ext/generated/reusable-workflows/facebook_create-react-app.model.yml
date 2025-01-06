@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["facebook/create-react-app/.github/workflows/e2e-base.yml", "*", "input.testScript", "code-injection", "generated"]
