@@ -157,9 +157,9 @@ class Expr extends StmtParent, @expr {
     if exists(this.getDbValueText())
     then result = this.getDbValueText()
     else
-      exists(Expr e |
+      exists(Expr e, string v | pragma[only_bind_into](v) = this.getValue() |
         e = this.getConversion() and
-        e.getValue() = this.getValue() and
+        e.getValue() = pragma[only_bind_into](v) and
         result = e.getValueTextFollowingConversions()
       )
   }

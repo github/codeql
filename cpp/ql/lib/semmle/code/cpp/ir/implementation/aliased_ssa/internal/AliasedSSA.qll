@@ -926,7 +926,12 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
               // And otherwise we assign it a memory location that groups all the relevant memory locations into one.
               result = getGroupedMemoryLocation(var, unbindBool(isMayAccess), false)
           )
-        else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
+        else
+          exists(IRFunction f |
+            pragma[only_bind_into](f) = pragma[only_bind_into](instr).getEnclosingIRFunction()
+          |
+            result = TUnknownMemoryLocation(f, isMayAccess)
+          )
       )
       or
       kind instanceof EntireAllocationMemoryAccess and
@@ -935,10 +940,18 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
           unbindBool(isMayAccess))
       or
       kind instanceof EscapedMemoryAccess and
-      result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
+      exists(IRFunction f |
+        pragma[only_bind_into](f) = pragma[only_bind_into](instr).getEnclosingIRFunction()
+      |
+        result = TAllAliasedMemory(f, isMayAccess)
+      )
       or
       kind instanceof NonLocalMemoryAccess and
-      result = TAllNonLocalMemory(instr.getEnclosingIRFunction(), isMayAccess)
+      exists(IRFunction f |
+        pragma[only_bind_into](f) = pragma[only_bind_into](instr).getEnclosingIRFunction()
+      |
+        result = TAllNonLocalMemory(f, isMayAccess)
+      )
     )
   )
 }

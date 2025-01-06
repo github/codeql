@@ -111,7 +111,9 @@ private predicate hasDefaultSideEffect(Call call, ParameterIndex i, boolean buff
       ) and
       (
         isWrite = true and
-        not isConstPointerLike(call.getTarget().getParameter(i).getUnderlyingType())
+        exists(Function f | pragma[only_bind_into](f) = pragma[only_bind_into](call).getTarget() |
+          not isConstPointerLike(f.getParameter(i).getUnderlyingType())
+        )
         or
         isWrite = false
       )
