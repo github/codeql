@@ -74,6 +74,10 @@ class RecordPatChildMapping extends ParentAstNode, RecordPat {
   }
 }
 
+class MacroCallChildMapping extends ParentAstNode, MacroCall {
+  override predicate relevantChild(AstNode child) { child = this.getExpanded() }
+}
+
 class FormatArgsExprChildMapping extends ParentAstNode, CfgImpl::ExprTrees::FormatArgsExprTree {
   override predicate relevantChild(AstNode child) { child = this.getChildNode(_) }
 }

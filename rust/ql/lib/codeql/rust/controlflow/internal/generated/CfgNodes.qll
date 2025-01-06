@@ -1021,9 +1021,56 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       predicate hasPat() { exists(this.getPat()) }
     }
 
+    final private class ParentFormatArgsArg extends ParentAstNode, FormatArgsArg {
+      override predicate relevantChild(AstNode child) {
+        none()
+        or
+        child = this.getExpr()
+      }
+    }
+
+    /**
+     * A FormatArgsArg. For example the `"world"` in:
+     * ```rust
+     * format_args!("Hello, {}!", "world")
+     * ```
+     */
+    final class FormatArgsArgCfgNode extends CfgNodeFinal {
+      private FormatArgsArg node;
+
+      FormatArgsArgCfgNode() { node = this.getAstNode() }
+
+      /** Gets the underlying `FormatArgsArg`. */
+      FormatArgsArg getFormatArgsArg() { result = node }
+
+      /**
+       * Gets the expression of this format arguments argument, if it exists.
+       */
+      ExprCfgNode getExpr() {
+        any(ChildMapping mapping).hasCfgChild(node, node.getExpr(), this, result)
+      }
+
+      /**
+       * Holds if `getExpr()` exists.
+       */
+      predicate hasExpr() { exists(this.getExpr()) }
+
+      /**
+       * Gets the name of this format arguments argument, if it exists.
+       */
+      Name getName() { result = node.getName() }
+
+      /**
+       * Holds if `getName()` exists.
+       */
+      predicate hasName() { exists(this.getName()) }
+    }
+
     final private class ParentFormatArgsExpr extends ParentAstNode, FormatArgsExpr {
       override predicate relevantChild(AstNode child) {
         none()
+        or
+        child = this.getArg(_)
         or
         child = this.getTemplate()
       }
@@ -1050,12 +1097,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       /**
        * Gets the `index`th argument of this format arguments expression (0-based).
        */
-      FormatArgsArg getArg(int index) { result = node.getArg(index) }
+      FormatArgsArgCfgNode getArg(int index) {
+        any(ChildMapping mapping).hasCfgChild(node, node.getArg(index), this, result)
+      }
 
       /**
        * Gets any of the arguments of this format arguments expression.
        */
-      FormatArgsArg getAnArg() { result = this.getArg(_) }
+      FormatArgsArgCfgNode getAnArg() { result = this.getArg(_) }
 
       /**
        * Gets the number of arguments of this format arguments expression.
@@ -3400,6 +3449,29 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           i = -1 and
           hasCfgNode(child) and
           not child = cfgNode.getPat().getAstNode()
+        |
+          cfgNode
+        )
+      or
+      pred = "getExpr" and
+      parent =
+        any(Nodes::FormatArgsArgCfgNode cfgNode, FormatArgsArg astNode |
+          astNode = cfgNode.getFormatArgsArg() and
+          child = getDesugared(astNode.getExpr()) and
+          i = -1 and
+          hasCfgNode(child) and
+          not child = cfgNode.getExpr().getAstNode()
+        |
+          cfgNode
+        )
+      or
+      pred = "getArg" and
+      parent =
+        any(Nodes::FormatArgsExprCfgNode cfgNode, FormatArgsExpr astNode |
+          astNode = cfgNode.getFormatArgsExpr() and
+          child = getDesugared(astNode.getArg(i)) and
+          hasCfgNode(child) and
+          not child = cfgNode.getArg(i).getAstNode()
         |
           cfgNode
         )

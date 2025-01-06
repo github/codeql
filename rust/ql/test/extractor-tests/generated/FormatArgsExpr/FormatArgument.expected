@@ -1,3 +1,6 @@
+| gen_format.rs:7:22:7:26 | value | getParent: | gen_format.rs:7:21:7:46 | {value:#width$.precision$} | hasVariable: | yes |
+| gen_format.rs:7:29:7:33 | width | getParent: | gen_format.rs:7:21:7:46 | {value:#width$.precision$} | hasVariable: | yes |
+| gen_format.rs:7:36:7:44 | precision | getParent: | gen_format.rs:7:21:7:46 | {value:#width$.precision$} | hasVariable: | yes |
 | gen_format_args_expr.rs:7:20:7:20 | b | getParent: | gen_format_args_expr.rs:7:19:7:21 | {b} | hasVariable: | no |
 | gen_format_args_expr.rs:7:28:7:28 | a | getParent: | gen_format_args_expr.rs:7:27:7:31 | {a:?} | hasVariable: | no |
 | gen_format_args_expr.rs:9:20:9:20 | x | getParent: | gen_format_args_expr.rs:9:19:9:21 | {x} | hasVariable: | yes |
