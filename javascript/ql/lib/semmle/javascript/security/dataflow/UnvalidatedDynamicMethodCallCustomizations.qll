@@ -182,7 +182,11 @@ module UnvalidatedDynamicMethodCall {
       exists(InvokeExpr invk |
         this = invk.getCallee().flow() and
         // don't flag invocations inside a try-catch
-        not invk.getASuccessor() instanceof CatchClause
+        not invk.getASuccessor() instanceof CatchClause and
+        // Filter out `foo.bar()` calls as they usually aren't interesting.
+        // Technically this could be reachable if preceded by `foo.bar = obj[taint]`
+        // but such sinks are more likely to be FPs and also slow down the query.
+        not invk.getCallee() instanceof DotExpr
       )
     }
 
