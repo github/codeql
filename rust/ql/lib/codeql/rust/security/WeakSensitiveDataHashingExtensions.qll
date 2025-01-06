@@ -10,6 +10,7 @@
 
 import rust
 private import codeql.rust.Concepts
+private import codeql.rust.security.SensitiveData
 private import codeql.rust.dataflow.DataFlow
 
 /**
@@ -23,7 +24,7 @@ module NormalHashFunction {
   /**
    * A data flow source for "use of a broken or weak cryptographic hashing algorithm on sensitive
    * data" vulnerabilities that does not require computationally expensive hashing. That is, a
-   * piece of sensitive data.
+   * piece of sensitive data that is not a password.
    */
   abstract class Source extends DataFlow::Node {
     Source() { not this instanceof ComputationallyExpensiveHashFunction::Source }
@@ -52,7 +53,19 @@ module NormalHashFunction {
    */
   abstract class Barrier extends DataFlow::Node { }
 
-  // TODO: SensitiveDataSourceAsSource
+  /**
+   * A flow source modelled by the `SensitiveData` library.
+   */
+  class SensitiveDataAsSource extends Source instanceof SensitiveData {
+    SensitiveDataAsSource() {
+      not this.(SensitiveData).getClassification() = SensitiveDataClassification::password() and // (covered in ComputationallyExpensiveHashFunction)
+      not this.(SensitiveData).getClassification() = SensitiveDataClassification::id() // (not accurate enough)
+    }
+
+    override SensitiveDataClassification getClassification() {
+      result = this.(SensitiveData).getClassification()
+    }
+  }
 
   /**
    * A flow sink modelled by the `Cryptography` module.
@@ -117,7 +130,18 @@ module ComputationallyExpensiveHashFunction {
    */
   abstract class Barrier extends DataFlow::Node { }
 
-  // TODO: PasswordSourceAsSource
+  /**
+   * A flow source modelled by the `SensitiveData` library.
+   */
+  class PasswordAsSource extends Source instanceof SensitiveData {
+    PasswordAsSource() {
+      this.(SensitiveData).getClassification() = SensitiveDataClassification::password()
+    }
+
+    override SensitiveDataClassification getClassification() {
+      result = this.(SensitiveData).getClassification()
+    }
+  }
 
   /**
    * A flow sink modelled by the `Cryptography` module.
