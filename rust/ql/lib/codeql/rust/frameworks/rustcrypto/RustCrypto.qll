@@ -5,6 +5,9 @@
 private import rust
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowSource
+private import codeql.rust.dataflow.FlowSink
+private import codeql.rust.dataflow.internal.DataFlowImpl
 
 bindingset[algorithmName]
 private string simplifyAlgorithmName(string algorithmName) {
@@ -54,4 +57,29 @@ class StreamCipherInit extends Cryptography::CryptographicOperation::Range {
   override DataFlow::Node getAnInput() { none() }
 
   override Cryptography::BlockMode getBlockMode() { result = "" }
+}
+
+/**
+ * An externally modelled operation that hashes data, for example a call to `md5::Md5::digest(data)`.
+ */
+class ModelledHashOperation extends Cryptography::CryptographicOperation::Range {
+  DataFlow::Node input;
+  CallExpr call;
+  string algorithmName;
+
+  ModelledHashOperation() {
+    sinkNode(input, "hasher-input") and
+    call = input.(Node::FlowSummaryNode).getSinkElement().getCall() and
+    call = this.asExpr().getExpr() and
+    algorithmName =
+      call.getFunction().(PathExpr).getPath().getQualifier().getPart().getNameRef().getText()
+  }
+
+  override DataFlow::Node getInitialization() { result = this }
+
+  override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(algorithmName) }
+
+  override DataFlow::Node getAnInput() { result = input }
+
+  override Cryptography::BlockMode getBlockMode() { none() } // (does not apply for hashing)
 }
