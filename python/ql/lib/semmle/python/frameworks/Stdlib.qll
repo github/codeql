@@ -4576,7 +4576,7 @@ module StdlibPrivate {
         )
         // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
       ) and
-      output = "Argument[0].Parameter[0]" and
+      (output = "Argument[0].Parameter[0]" or output = "ReturnValue.ListElement") and
       preservesValue = true
     }
   }

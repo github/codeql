@@ -366,3 +366,111 @@ def test_next_dict():
     i = iter(d)
     n = next(i)
     SINK(n) #$ MISSING: flow="SOURCE, l:-3 -> n"
+
+### map
+
+@expects(4)
+def test_map_list():
+    l1 = [SOURCE]
+    l2 = [NONSOURCE]
+
+    def f(p1,p2):
+        SINK(p1)  #$ flow="SOURCE, l:-4 -> p1"
+        SINK_F(p2)
+
+        return p1,p2
+
+    rl = list(map(f, l1, l2))
+    SINK(rl[0][0]) #$ flow="SOURCE, l:-10 -> rl[0][0]"
+    SINK_F(rl[0][1])
+
+@expects(4)
+def test_map_set():
+    s1 = {SOURCE}
+    s2 = {NONSOURCE}
+
+    def f(p1,p2):
+        SINK(p1)  #$ flow="SOURCE, l:-4 -> p1"
+        SINK_F(p2)
+
+        return p1,p2
+
+    rl = list(map(f, s1, s2))
+    SINK(rl[0][0]) #$ flow="SOURCE, l:-10 -> rl[0][0]"
+    SINK_F(rl[0][1])
+
+@expects(4)
+def test_map_tuple():
+    t1 = (SOURCE,)
+    t2 = (NONSOURCE,)
+
+    def f(p1,p2):
+        SINK(p1)  #$ flow="SOURCE, l:-4 -> p1"
+        SINK_F(p2)
+
+        return p1,p2
+
+    rl = list(map(f, t1, t2))
+    SINK(rl[0][0]) #$ flow="SOURCE, l:-10 -> rl[0][0]"
+    SINK_F(rl[0][1])
+
+@expects(4)
+def test_map_dict():
+    d1 = {SOURCE: "v1"}
+    d2 = {NONSOURCE: "v2"}
+
+    def f(p1,p2):
+        SINK(p1)  #$ MISSING: flow="SOURCE, l:-4 -> p1"
+        SINK_F(p2)
+
+        return p1,p2
+
+    rl = list(map(f, d1, d2))
+    SINK(rl[0][0]) #$ MISSING: flow="SOURCE, l:-10 -> rl[0][0]"
+    SINK_F(rl[0][1])
+
+### filter 
+
+@expects(2)
+def test_filter_list():
+    l = [SOURCE]
+
+    def f(p):
+        SINK(p) #$ flow="SOURCE, l:-3 -> p"
+        return True 
+
+    rl = list(filter(f,l))
+    SINK(rl[0]) #$ flow="SOURCE, l:-7 -> rl[0]"
+
+@expects(2)
+def test_filter_set():
+    s = {SOURCE}
+
+    def f(p):
+        SINK(p) #$ flow="SOURCE, l:-3 -> p"
+        return True 
+
+    rl = list(filter(f,s))
+    SINK(rl[0]) #$ flow="SOURCE, l:-7 -> rl[0]"
+
+@expects(2)
+def test_filter_tuple():
+    t = (SOURCE,)
+
+    def f(p):
+        SINK(p) #$ flow="SOURCE, l:-3 -> p"
+        return True 
+
+    rl = list(filter(f,t))
+    SINK(rl[0]) #$ flow="SOURCE, l:-7 -> rl[0]"
+
+@expects(2)
+def test_filter_dict():
+    d = {SOURCE: "v"}
+
+    def f(p):
+        SINK(p) #$ MISSING: flow="SOURCE, l:-3 -> p"
+        return True 
+
+    rl = list(filter(f,d))
+    SINK(rl[0]) #$ MISSING: flow="SOURCE, l:-7 -> rl[0]"
