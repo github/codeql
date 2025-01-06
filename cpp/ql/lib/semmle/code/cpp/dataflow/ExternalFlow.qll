@@ -504,7 +504,7 @@ private string withSpecifiers(string s, Type t) {
 }
 
 /**
- * Gets the string version of `t`. The boolean `needsSpace` is `true`
+ * Gets the string version of `t`, after resolving typedefs. The boolean `needsSpace` is `true`
  * if a space should be appended before concatenating any additional symbols
  * (such as `*` or `&`) when recursively constructing the type name.
  */
