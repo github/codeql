@@ -492,7 +492,7 @@ private string withVolatile(string s, Type t) {
 }
 
 /**
- * Returns `s` prefixed with appropriate speciiers from `t`, or `s` if `t` has
+ * Returns `s` prefixed with appropriate specifiers from `t`, or `s` if `t` has
  * no relevant specifiers.
  */
 bindingset[s, t]
