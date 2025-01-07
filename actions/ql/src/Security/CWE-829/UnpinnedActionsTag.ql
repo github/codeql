@@ -20,7 +20,7 @@ private predicate isPinnedCommit(string version) { version.regexpMatch("^[A-Fa-f
 bindingset[nwo]
 private predicate isTrustedOwner(string nwo) {
   // Gets the segment before the first '/' in the name with owner(nwo) string
-  trustedActionsOwner(nwo.substring(0, nwo.indexOf("/")))
+  trustedActionsOwnerDataModel(nwo.substring(0, nwo.indexOf("/")))
 }
 
 from UsesStep uses, string nwo, string version, Workflow workflow, string name
