@@ -557,7 +557,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         )
         or
         // flow into a callable
-        fwdFlowInParam(_, node, _) and
+        fwdFlowIn(_, _, _, node) and
         cc = true
         or
         // flow out of a callable
@@ -595,11 +595,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       }
 
       pragma[nomagic]
-      private predicate fwdFlowInParam(DataFlowCall call, ParamNodeEx p, Cc cc) {
-        fwdFlowIn(call, _, cc, p)
-      }
-
-      pragma[nomagic]
       private ReturnKindExtOption getDisallowedReturnKind(ParamNodeEx p) {
         if allowParameterReturnInSelfEx(p)
         then result.isNone()
@@ -614,7 +609,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         DataFlowCall call, ReturnKindExtOption disallowReturnKind, Cc cc
       ) {
         exists(ParamNodeEx p |
-          fwdFlowInParam(call, p, cc) and
+          fwdFlowIn(call, _, cc, p) and
           disallowReturnKind = getDisallowedReturnKind(p)
         )
       }
