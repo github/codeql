@@ -1,3 +1,9 @@
+## 3.0.1
+
+### Minor Analysis Improvements
+
+* Added a `commandargs` local source model for the `os.Args` variable.
+
 ## 3.0.0
 
 ### Breaking Changes
