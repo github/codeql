@@ -63,8 +63,7 @@ extensible predicate vulnerableActionsDataModel(
  */
 extensible predicate immutableActionsDataModel(string action);
 
-
-/** 
+/**
  * Holds for trusted Actions owners.
  */
 extensible predicate trustedActionsOwnerDataModel(string owner);
