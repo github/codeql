@@ -1067,13 +1067,13 @@ class _:
     """
 
 
-@annotate(FormatArgsArg)
+@annotate(FormatArgsArg, cfg = True)
 @qltest.test_with(FormatArgsExpr)
 class _:
     """
-    A FormatArgsArg. For example:
+    A FormatArgsArg. For example the `"world"` in:
     ```rust
-    todo!()
+    format_args!("Hello, {}!", "world")
     ```
     """
 
@@ -1870,6 +1870,10 @@ class Format(Locatable):
     A format element in a formatting template. For example the `{}` in:
     ```rust
     println!("Hello {}", "world");
+    ```
+    or the `{value:#width$.precision$}` in:
+    ```rust
+    println!("Value {value:#width$.precision$}");
     ```
     """
     parent: FormatArgsExpr

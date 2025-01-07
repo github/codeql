@@ -13,5 +13,9 @@ import codeql.rust.elements.Locatable
  * ```rust
  * println!("Hello {}", "world");
  * ```
+ * or the `{value:#width$.precision$}` in:
+ * ```rust
+ * println!("Value {value:#width$.precision$}");
+ * ```
  */
 final class Format = Impl::Format;

@@ -23,6 +23,10 @@ module Impl {
    * ```rust
    * println!("Hello {}", "world");
    * ```
+   * or the `{value:#width$.precision$}` in:
+   * ```rust
+   * println!("Value {value:#width$.precision$}");
+   * ```
    */
   class Format extends Generated::Format {
     private Raw::FormatArgsExpr parent;

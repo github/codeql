@@ -1,7 +1,13 @@
+use std::fmt;
+
 // Taint tests for strings
 
 fn source(i: i64) -> String {
     format!("{}", i)
+}
+
+fn source_usize(i: usize) -> usize {
+    i
 }
 
 fn source_slice(_i: i64) -> &'static str {
@@ -18,7 +24,7 @@ fn sink(s: String) {
 
 fn string_slice() {
     let s = source(35);
-    let sliced = &s[1..3];
+    let sliced = &s[1..2];
     sink_slice(sliced); // $ hasTaintFlow=35
 }
 
@@ -58,16 +64,28 @@ fn as_str() {
     sink_slice(s.as_str()); // $ hasTaintFlow=67
 }
 
-fn string_format() {
+fn format_args_built_in() {
+    let s = source(88);
+
+    let formatted1 = fmt::format(format_args!("Hello {}!", s));
+    sink(formatted1); // $ hasTaintFlow=88
+
+    let formatted2 = fmt::format(format_args!("Hello {s}!"));
+    sink(formatted2); // $ hasTaintFlow=88
+
+    let width = source_usize(10);
+    let formatted3 = fmt::format(format_args!("Hello {:width$}!", "World"));
+    sink(formatted3); // $ hasTaintFlow=10
+}
+
+fn format_macro() {
     let s1 = source(34);
     let s2 = "2";
     let s3 = "3";
 
-    let s4 = format!("{s1} and {s3}");
-    let s5 = format!("{s2} and {s3}");
-
-    sink_slice(&s4); // $ MISSING: hasTaintFlow=34
-    sink_slice(&s5);
+    sink(format!("{}", s1)); // $ MISSING: hasTaintFlow=34
+    sink(format!("{s1} and {s3}")); // $ MISSING: hasTaintFlow=34
+    sink(format!("{s2} and {s3}"));
 }
 
 fn main() {
@@ -77,5 +95,6 @@ fn main() {
     string_from();
     as_str();
     string_to_string();
-    string_format();
+    format_args_built_in();
+    format_macro();
 }

@@ -152,6 +152,8 @@ edges
 | main.rs:385:13:385:19 | mut_arr [array[]] | main.rs:385:13:385:22 | mut_arr[1] | provenance |  |
 | main.rs:385:13:385:22 | mut_arr[1] | main.rs:385:9:385:9 | d | provenance |  |
 | main.rs:387:10:387:16 | mut_arr [array[]] | main.rs:387:10:387:19 | mut_arr[0] | provenance |  |
+| main.rs:410:9:410:9 | s | main.rs:411:10:411:10 | s | provenance |  |
+| main.rs:410:25:410:26 | source(...) | main.rs:410:9:410:9 | s | provenance |  |
 nodes
 | main.rs:15:10:15:18 | source(...) | semmle.label | source(...) |
 | main.rs:19:9:19:9 | s | semmle.label | s |
@@ -330,6 +332,9 @@ nodes
 | main.rs:386:10:386:10 | d | semmle.label | d |
 | main.rs:387:10:387:16 | mut_arr [array[]] | semmle.label | mut_arr [array[]] |
 | main.rs:387:10:387:19 | mut_arr[0] | semmle.label | mut_arr[0] |
+| main.rs:410:9:410:9 | s | semmle.label | s |
+| main.rs:410:25:410:26 | source(...) | semmle.label | source(...) |
+| main.rs:411:10:411:10 | s | semmle.label | s |
 subpaths
 testFailures
 #select
@@ -368,3 +373,4 @@ testFailures
 | main.rs:375:18:375:18 | c | main.rs:370:23:370:32 | source(...) | main.rs:375:18:375:18 | c | $@ | main.rs:370:23:370:32 | source(...) | source(...) |
 | main.rs:386:10:386:10 | d | main.rs:384:18:384:27 | source(...) | main.rs:386:10:386:10 | d | $@ | main.rs:384:18:384:27 | source(...) | source(...) |
 | main.rs:387:10:387:19 | mut_arr[0] | main.rs:384:18:384:27 | source(...) | main.rs:387:10:387:19 | mut_arr[0] | $@ | main.rs:384:18:384:27 | source(...) | source(...) |
+| main.rs:411:10:411:10 | s | main.rs:410:25:410:26 | source(...) | main.rs:411:10:411:10 | s | $@ | main.rs:410:25:410:26 | source(...) | source(...) |

@@ -570,10 +570,13 @@ class Class extends UserType {
   /**
    * Holds if this class, struct or union is constructed from another class as
    * a result of template instantiation. It originates either from a class
-   * template or from a class nested in a class template.
+   * template, a class nested in a class template, or a template template
+   * parameter.
    */
-  predicate isConstructedFrom(Class c) {
-    class_instantiation(underlyingElement(this), unresolveElement(c))
+  predicate isConstructedFrom(UserType t) {
+    class_instantiation(underlyingElement(this), unresolveElement(t))
+    or
+    template_template_instantiation(underlyingElement(this), unresolveElement(t))
   }
 
   /**

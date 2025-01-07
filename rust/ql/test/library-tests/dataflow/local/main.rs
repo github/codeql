@@ -400,6 +400,17 @@ pub fn captured_variable_and_continue(names: Vec<(bool, Option<String>)>) {
   }
 }
 
+macro_rules! get_source {
+    ($e:expr) => {
+        source($e)
+    };
+}
+
+fn macro_invocation() {
+    let s = get_source!(37);
+    sink(s); // $ hasValueFlow=37
+}
+
 fn main() {
     direct();
     variable_usage();
@@ -435,4 +446,5 @@ fn main() {
     array_slice_pattern();
     array_assignment();
     captured_variable_and_continue(vec![]);
+    macro_invocation();
 }
