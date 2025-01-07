@@ -876,24 +876,6 @@ template_template_argument_value(
     int arg_value: @expr ref
 );
 
-@concept = @concept_template | @concept_id;
-
-concept_templates(
-    unique int concept_id: @concept_template,
-    string name: string ref,
-    int location: @location_default ref
-);
-concept_template_argument(
-    int concept_id: @concept ref,
-    int index: int ref,
-    int arg_type: @type ref
-);
-concept_template_argument_value(
-    int concept_id: @concept ref,
-    int index: int ref,
-    int arg_value: @expr ref
-);
-
 routinetypes(
     unique int id: @routinetype,
     int return_type: @type ref
@@ -1124,8 +1106,7 @@ frienddecls(
              | @declaredtype
              | @variable
              | @enumconstant
-             | @frienddecl
-             | @concept_template;
+             | @frienddecl;
 
 @member = @membervariable
         | @function
