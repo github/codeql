@@ -9,7 +9,7 @@
             "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Standalone/bin/Debug/net9.0/Semmle.Extraction.CSharp.Standalone.dll",
             "args": [],
             // Set the path to the folder that should be extracted:
-            "cwd": "${workspaceFolder}/ql/test/library-tests/standalone/standalonemode",
+            "cwd": "${workspaceFolder}/ql/test/library-tests/testdataflow",
             "env": {
                 "CODEQL_THREADS": "1",
                 "CODEQL_EXTRACTOR_CSHARP_OPTION_LOGGING_VERBOSITY": "progress+++",
@@ -68,9 +68,9 @@
             "preLaunchTask": "dotnet: build",
             "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Driver/bin/Debug/net9.0/Semmle.Extraction.CSharp.Driver.dll",
             // Set the path to the folder that should be extracted:
-            "cwd": "${workspaceFolder}/ql/test/library-tests/dataflow/local",
+            "cwd": "${workspaceFolder}/ql/test/library-tests/testdataflow",
             "args": [
-                "LocalDataFlow.cs"
+                "stringinterpolated.cs"
             ],
             "env": {},
             "stopAtEntry": true,

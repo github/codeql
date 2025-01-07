@@ -108,7 +108,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return CreateFromNode(info);
         }
 
-        public static Expression CreateFromNode(ExpressionNodeInfo info) => Expressions.ImplicitCast.Create(info);
+        public static Expression CreateFromNode(ExpressionNodeInfo info) => Expressions.Implicit.Create(info);
 
         /// <summary>
         /// Creates an expression from a syntax node.
@@ -208,7 +208,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (type.SpecialType is SpecialType.None)
             {
-                return ImplicitCast.CreateGeneratedConversion(cx, parent, childIndex, type, defaultValue, location);
+                return Implicit.CreateGeneratedConversion(cx, parent, childIndex, type, defaultValue, location);
             }
 
             if (type.SpecialType is SpecialType.System_DateTime)
@@ -220,7 +220,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 type.SpecialType is SpecialType.System_IntPtr ||
                 type.SpecialType is SpecialType.System_UIntPtr)
             {
-                return ImplicitCast.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+                return Implicit.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
             }
 
             // const literal:

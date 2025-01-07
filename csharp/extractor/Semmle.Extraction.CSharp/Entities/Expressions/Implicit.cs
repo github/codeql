@@ -5,36 +5,30 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    internal sealed class ImplicitCast : Expression
+    internal sealed class Implicit : Expression
     {
-        public Expression Expr
-        {
-            get;
-            private set;
-        }
-
-        private ImplicitCast(ExpressionNodeInfo info)
+        private Implicit(ExpressionNodeInfo info)
             : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.CAST, info.Parent, info.Child, isCompilerGenerated: true, info.ExprValue))
         {
-            Expr = Factory.Create(new ExpressionNodeInfo(Context, info.Node, this, 0));
+            Factory.Create(new ExpressionNodeInfo(Context, info.Node, this, 0));
         }
 
-        private ImplicitCast(ExpressionNodeInfo info, IMethodSymbol method)
-            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, isCompilerGenerated: true, info.ExprValue))
+        private Implicit(ExpressionNodeInfo info, IMethodSymbol method, ExprKind kind, int child)
+            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, kind, info.Parent, info.Child, isCompilerGenerated: true, info.ExprValue))
         {
-            Expr = Factory.Create(info.SetParent(this, 0));
+            Factory.Create(info.SetParent(this, child));
 
-            AddOperatorCall(method);
+            AddCall(method);
         }
 
-        private ImplicitCast(ExpressionInfo info, IMethodSymbol method, object value) : base(info)
+        private Implicit(ExpressionInfo info, IMethodSymbol method, object value) : base(info)
         {
-            Expr = Literal.CreateGenerated(Context, this, 0, method.Parameters[0].Type, value, info.Location);
+            Literal.CreateGenerated(Context, this, 0, method.Parameters[0].Type, value, info.Location);
 
-            AddOperatorCall(method);
+            AddCall(method);
         }
 
-        private void AddOperatorCall(IMethodSymbol method)
+        private void AddCall(IMethodSymbol method)
         {
             var target = Method.Create(Context, method);
             Context.TrapWriter.Writer.expr_call(this, target);
@@ -72,13 +66,28 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (method is not null)
             {
                 var info = create(ExprKind.OPERATOR_INVOCATION, null);
-                return new ImplicitCast(info, method, value);
+                return new Implicit(info, method, value);
             }
             else
             {
                 cx.ModelError(location, "Failed to resolve target for implicit operator invocation for a parameter default.");
                 return new Expression(create(ExprKind.UNKNOWN, ValueAsString(value)));
             }
+        }
+
+        /// <summary>
+        /// Gets the `ToString` method for the given type.
+        /// </summary>
+        private static IMethodSymbol? GetToStringMethod(ITypeSymbol type)
+        {
+            return type
+                .GetMembers()
+                .OfType<IMethodSymbol>()
+                .Where(method =>
+                    method.GetName() == "ToString" &&
+                    method.Parameters.Length == 0
+                )
+                .FirstOrDefault();
         }
 
         /// <summary>
@@ -130,7 +139,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 }
 
                 if (resolvedType.Symbol is not null)
-                    return new ImplicitCast(info, conversion.MethodSymbol);
+                    return new Implicit(info, conversion.MethodSymbol, ExprKind.OPERATOR_INVOCATION, 0);
             }
 
             var implicitUpcast = conversion.IsImplicit &&
@@ -144,7 +153,19 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (!conversion.IsIdentity && !implicitUpcast)
             {
-                return new ImplicitCast(info);
+                return new Implicit(info);
+            }
+
+            // Implicit call to ToString.
+            if (!conversion.IsIdentity &&
+                resolvedType.Symbol is not null &&
+                implicitUpcast && // Maybe write the condition explicitly.
+                info.Parent is Expression par && // TODO: Only choose a specific set of parents (maybe BinaryExpression and StringInterpolation expressions?)
+                par.Type.HasValue && par.Type.Value.Symbol?.SpecialType == SpecialType.System_String)
+            {
+                return GetToStringMethod(resolvedType.Symbol) is IMethodSymbol toString
+                    ? new Implicit(info, toString, ExprKind.METHOD_INVOCATION, -1)
+                    : Factory.Create(info);
             }
 
             if (conversion.IsIdentity && conversion.IsImplicit &&
@@ -153,7 +174,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 // int[] -> int*
                 // string -> char*
-                return new ImplicitCast(info);
+                return new Implicit(info);
             }
 
             // Default: Just create the expression without a conversion.

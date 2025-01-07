@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private Access(ExpressionNodeInfo info, ISymbol symbol, bool implicitThis, IEntity target)
             : base(info.SetKind(AccessKind(info.Context, symbol)))
         {
-            if (!(target is null))
+            if (target is not null)
             {
                 Context.TrapWriter.Writer.expr_access(this, target);
             }
