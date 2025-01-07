@@ -15,8 +15,6 @@ extensions:
       - ["github.com/jmoiron/sqlx", "Conn", True, "SelectContext", "", "", "Argument[1]", "database", "manual"]
       - ["github.com/jmoiron/sqlx", "DB", True, "Get", "", "", "Argument[0]", "database", "manual"]
       - ["github.com/jmoiron/sqlx", "DB", True, "GetContext", "", "", "Argument[1]", "database", "manual"]
-      - ["github.com/jmoiron/sqlx", "DB", True, "QueryRowxContext", "", "", "ReturnValue", "database", "manual"]
-      - ["github.com/jmoiron/sqlx", "DB", True, "QueryxContext", "", "", "ReturnValue[0]", "database", "manual"]
       - ["github.com/jmoiron/sqlx", "DB", True, "NamedQuery", "", "", "ReturnValue[0]", "database", "manual"]
       - ["github.com/jmoiron/sqlx", "DB", True, "NamedQueryContext", "", "", "ReturnValue[0]", "database", "manual"]
       - ["github.com/jmoiron/sqlx", "DB", True, "QueryRowx", "", "", "ReturnValue[0]", "database", "manual"]
