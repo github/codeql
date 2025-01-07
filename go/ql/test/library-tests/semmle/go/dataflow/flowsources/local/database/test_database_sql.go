@@ -18,6 +18,9 @@ func testConnQuery(conn *sql.Conn) {
 		var id int
 		var name string
 		err = rows.Scan(&id, &name)
+		if err != nil {
+			return
+		}
 
 		sink(id, name) // $ hasTaintFlow="id" hasTaintFlow="name"
 	}
@@ -49,6 +52,10 @@ func testDBQuery(db *sql.DB) {
 		var id int
 		var name string
 		err = rows.Scan(&id, &name)
+
+		if err != nil {
+			return
+		}
 
 		sink(id, name) // $ hasTaintFlow="id" hasTaintFlow="name"
 	}
@@ -84,6 +91,10 @@ func testStmtQuery(stmt *sql.Stmt) {
 		var name string
 		err = rows.Scan(&id, &name)
 
+		if err != nil {
+			return
+		}
+
 		sink(id, name) // $ hasTaintFlow="id" hasTaintFlow="name"
 	}
 
@@ -93,6 +104,10 @@ func testStmtQuery(stmt *sql.Stmt) {
 	var name string
 
 	err = row.Scan(&id, &name)
+
+	if err != nil {
+		return
+	}
 
 	sink(id, name) // $ hasTaintFlow="id" hasTaintFlow="name"
 
@@ -117,6 +132,10 @@ func testTxQuery(tx *sql.Tx) {
 		var name string
 		err = rows.Scan(&id, &name)
 
+		if err != nil {
+			return
+		}
+
 		sink(id, name) // $ hasTaintFlow="id" hasTaintFlow="name"
 	}
 
@@ -126,6 +145,10 @@ func testTxQuery(tx *sql.Tx) {
 	var name string
 
 	err = row.Scan(&id, &name)
+
+	if err != nil {
+		return
+	}
 
 	sink(id, name) // $ hasTaintFlow="id" hasTaintFlow="name"
 
