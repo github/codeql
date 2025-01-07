@@ -612,6 +612,8 @@ predicate nodeIsHidden(Node node) {
   or
   node instanceof FlowSummaryIntermediateAwaitStoreNode
   or
+  node instanceof FlowSummaryDefaultExceptionalReturn
+  or
   node instanceof CaptureNode
   or
   // Hide function expressions, as capture-flow causes them to appear in unhelpful ways

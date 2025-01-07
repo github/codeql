@@ -153,6 +153,8 @@ module ExceptionXssConfig implements DataFlow::StateConfigSig {
     canThrowSensitiveInformation(node1) and
     node2 = getExceptionTarget(node1)
   }
+
+  int accessPathLimit() { result = 1 }
 }
 
 /**
