@@ -894,12 +894,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       pragma[nomagic]
       predicate revFlow(NodeEx node) { revFlow(node, _) }
 
-      pragma[nomagic]
-      predicate revFlowAp(NodeEx node, Ap ap) {
-        revFlow(node) and
-        exists(ap)
-      }
-
       bindingset[node, state]
       predicate revFlow(NodeEx node, FlowState state, Ap ap) {
         revFlow(node, _) and
@@ -1277,8 +1271,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       class ApNil extends Ap;
 
       predicate revFlow(NodeEx node);
-
-      predicate revFlowAp(NodeEx node, Ap ap);
 
       bindingset[node, state]
       predicate revFlow(NodeEx node, FlowState state, Ap ap);
@@ -2456,15 +2448,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           )
         }
 
-        additional predicate revFlow(NodeEx node, FlowState state) { revFlow(node, state, _, _, _) }
-
         predicate revFlow(NodeEx node, FlowState state, Ap ap) { revFlow(node, state, _, _, ap) }
 
         pragma[nomagic]
         predicate revFlow(NodeEx node) { revFlow(node, _, _, _, _) }
-
-        pragma[nomagic]
-        predicate revFlowAp(NodeEx node, Ap ap) { revFlow(node, _, _, _, ap) }
 
         private predicate fwdConsCand(Content c, Ap ap) { storeStepFwd(_, ap, c, _, _) }
 
@@ -2620,7 +2607,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
            */
           private class FlowCheckNode extends NodeEx {
             FlowCheckNode() {
-              revFlow(this, _, _) and
+              revFlow(this) and
               (
                 flowCheckNode(this) or
                 Config::neverSkip(this.asNode())
