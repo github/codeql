@@ -560,16 +560,12 @@ impl<'a> Translator<'a> {
     }
 
     pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
-        let Some(sema) = self.semantics else {
-            return false;
-        };
-        for attr in item.attrs() {
-            if let Some((name, tokens)) = attr.as_simple_call() {
-                if name == "cfg" && sema.check_cfg_attr(&tokens) == Some(false) {
-                    return true;
-                }
-            }
-        }
-        false
+        self.semantics.is_some_and(|sema| {
+            item.attrs().any(|attr| {
+                attr.as_simple_call().is_some_and(|(name, tokens)| {
+                    name == "cfg" && sema.check_cfg_attr(&tokens) == Some(false)
+                })
+            })
+        })
     }
 }

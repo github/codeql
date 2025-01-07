@@ -4,7 +4,6 @@ use std::{fs, path::PathBuf};
 pub mod codegen;
 mod flags;
 use codegen::grammar::ast_src::{AstNodeSrc, AstSrc, Field};
-use itertools::Itertools;
 use std::collections::{BTreeMap, BTreeSet};
 use std::env;
 use ungrammar::Grammar;
