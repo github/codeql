@@ -75,6 +75,7 @@ private import internal.AccessPaths
 private import semmle.javascript.Unit
 private import semmle.javascript.internal.CachedStages
 private import AdditionalFlowSteps
+private import internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * A data flow tracking configuration for finding inter-procedural paths from
@@ -1794,39 +1795,7 @@ deprecated class MidPathNode extends PathNode, MkMidNode {
    * Holds if this node is hidden from paths in path explanation queries, except
    * in cases where it is the source or sink.
    */
-  predicate isHidden() { PathNode::shouldNodeBeHidden(nd) }
-}
-
-/** Companion module to the `PathNode` class. */
-module PathNode {
-  /** Holds if `nd` should be hidden in data flow paths. */
-  predicate shouldNodeBeHidden(DataFlow::Node nd) {
-    // TODO: move to DataFlowPrivate
-    // Skip phi, refinement, and capture nodes
-    nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof
-      SsaImplicitDefinition
-    or
-    // Skip SSA definition of parameter as its location coincides with the parameter node
-    nd = DataFlow::ssaDefinitionNode(Ssa::definition(any(SimpleParameter p)))
-    or
-    // Skip to the top of big left-leaning string concatenation trees.
-    nd = any(AddExpr add).flow() and
-    nd = any(AddExpr add).getAnOperand().flow()
-    or
-    // Skip the exceptional return on functions, as this highlights the entire function.
-    nd = any(DataFlow::FunctionNode f).getExceptionalReturn()
-    or
-    // Skip the special return node for functions, as this highlights the entire function (and the returned expr is the previous node).
-    nd = any(DataFlow::FunctionNode f).getReturnNode()
-    or
-    // Skip the synthetic 'this' node, as a ThisExpr will be the next node anyway
-    nd = DataFlow::thisNode(_)
-    or
-    // Skip captured variable nodes as the successor will be a use of that variable anyway.
-    nd = DataFlow::capturedVariableNode(_)
-    or
-    nd instanceof DataFlow::FunctionSelfReferenceNode
-  }
+  predicate isHidden() { DataFlowPrivate::nodeIsHidden(nd) }
 }
 
 /**
