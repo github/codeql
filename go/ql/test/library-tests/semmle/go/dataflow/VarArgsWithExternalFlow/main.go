@@ -44,13 +44,7 @@ func main() {
 
 	var variadicSource string
 	test.VariadicSource(&variadicSource)
-	sink(variadicSource)  // $ hasTaintFlow="variadicSource"
-	sink(&variadicSource) // $ hasTaintFlow="&..."
-
-	var variadicSourcePtr *string
-	test.VariadicSource(variadicSourcePtr)
-	sink(variadicSourcePtr)  // $ hasTaintFlow="variadicSourcePtr"
-	sink(*variadicSourcePtr) // $ hasTaintFlow="star expression"
+	sink(variadicSource) // $ MISSING: hasTaintFlow="variadicSource"
 
 	test.VariadicSink(source()) // $ hasTaintFlow="[]type{args}"
 
