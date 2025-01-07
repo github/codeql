@@ -320,13 +320,13 @@ module Lxml {
     override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
   }
 
-  /** Provides models for instances of the `lxml.etree.Element` class. */
+  /** Provides models for the `lxml.etree.Element` class. */
   module Element {
     /** Gets a reference to the `Element` class. */
     API::Node classRef() { result = etreeRef().getMember(["Element", "_Element"]) }
 
     /**
-     * A source of instances of `lxml.etree.Element` instances, extend this class to model new instances.
+     * A source of `lxml.etree.Element` instances, extend this class to model new instances.
      *
      * This can include instantiations of the class, return values from function
      * calls, or a special parameter that will be set when functions are called by an external
@@ -408,7 +408,7 @@ module Lxml {
         |
           call.calls(nodeFrom,
             // We consider a node to be tainted if there could be taint anywhere in the element tree;
-            // So sibling nodes (e.g. `getnext`) are also tainted.
+            // so sibling nodes (e.g. `getnext`) are also tainted.
             // This ensures nodes like `elem[0].getnext()` are tracked.
             [
               "cssselect", "find", "findall", "findtext", "get", "getchildren", "getiterator",
@@ -425,13 +425,13 @@ module Lxml {
     }
   }
 
-  /** Provides models for instances of the `lxml.etree.ElementTree` class. */
+  /** Provides models for the `lxml.etree.ElementTree` class. */
   module ElementTree {
     /** Gets a reference to the `ElementTree` class. */
     API::Node classRef() { result = etreeRef().getMember(["ElementTree", "_ElementTree"]) }
 
     /**
-     * A source of instances of `lxml.etree.ElementTree` instances, extend this class to model new instances.
+     * A source of `lxml.etree.ElementTree` instances; extend this class to model new instances.
      *
      * This can include instantiations of the class, return values from function
      * calls, or a special parameter that will be set when functions are called by an external
@@ -452,7 +452,7 @@ module Lxml {
       ElementTreeInstance() { this = classRef().getAnInstance() }
     }
 
-    /** The result of a parst operation that returns an `ElementTree`. */
+    /** The result of a parse operation that returns an `ElementTree`. */
     private class ParseResult extends InstanceSource {
       ParseResult() { this = etreeRef().getMember("parse").getReturn() }
     }
