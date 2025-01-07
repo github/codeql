@@ -1,5 +1,5 @@
 name: codeql/actions-all
-version: 0.4.0
+version: 0.4.0-dev
 library: true
 warnOnImplicitThis: true
 dependencies:
