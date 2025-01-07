@@ -138,15 +138,15 @@ def test():
     def func2(x):
         return x 
 
-    def func3(x) -> ET.Element:
+    def func3(x) -> ET.ElementTree:
         return x
 
     ensure_tainted(
         func2(tree), # $ tainted
-        func2(tree).text, # $ MISSING:tainted - type tracking not tracked through flow preserving calls
-        func3(tree).text, # $ MISSING:tainted - this includes if there is a type hint annotation on the return
+        func2(tree).getroot().text, # $ MISSING:tainted - type tracking not tracked through flow preserving calls
+        func3(tree).getroot().text, # $ MISSING:tainted - this includes if there is a type hint annotation on the return
         typing.cast(ET.ElementTree, tree), # $ tainted
-        typing.cast(ET.ElementTree, tree).text, # $ MISSING:tainted - this includes for flow summary models
+        typing.cast(ET.ElementTree, tree).getroot().text, # $ MISSING:tainted - this includes for flow summary models
 
     )
     
