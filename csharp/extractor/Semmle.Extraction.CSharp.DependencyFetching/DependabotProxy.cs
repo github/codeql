@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using Semmle.Util;
 using Semmle.Util.Logging;
+using Newtonsoft.Json;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -84,6 +85,39 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"Stored Dependabot proxy certificate at {result.CertificatePath}");
 
                 result.Certificate = X509Certificate2.CreateFromPem(cert);
+            }
+
+            // Try to obtain the list of private registry URLs.
+            var registryURLs = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ProxyURLs);
+
+            if (!string.IsNullOrWhiteSpace(registryURLs))
+            {
+                try
+                {
+                    // The value of the environment variable should be a JSON array of objects, such as:
+                    // [ { "type": "nuget_feed", "url": "https://nuget.pkg.github.com/org/index.json" } ]
+                    var array = JsonConvert.DeserializeObject<List<RegistryConfig>>(registryURLs);
+                    if (array != null)
+                    {
+                        foreach (RegistryConfig config in array)
+                        {
+                            // The array contains all configured private registries, not just ones for C#.
+                            // We ignore the non-C# ones here.
+                            if (!config.Type.Equals("nuget_feed"))
+                            {
+                                logger.LogDebug($"Ignoring registry at '{config.URL}' since it is not of type 'nuget_feed'.");
+                                continue;
+                            }
+
+                            logger.LogInfo($"Found private registry at '{config.URL}'");
+                            result.RegistryURLs.Add(config.URL);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"Unable to parse '{EnvironmentVariableNames.ProxyURLs}': {ex.Message}");
+                }
             }
 
             return result;
