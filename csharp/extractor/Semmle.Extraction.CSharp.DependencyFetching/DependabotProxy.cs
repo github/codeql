@@ -1,5 +1,5 @@
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using Semmle.Util;
@@ -9,6 +9,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     public class DependabotProxy : IDisposable
     {
+        /// <summary>
+        /// Represents configurations for package registries.
+        /// </summary>
+        public struct RegistryConfig
+        {
+            /// <summary>
+            /// The type of package registry.
+            /// </summary>
+            public string Type { get; set; }
+            /// <summary>
+            /// The URL of the package registry.
+            /// </summary>
+            public string URL { get; set; }
+        }
+
         private readonly string host;
         private readonly string port;
 
@@ -16,6 +31,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// The full address of the Dependabot proxy, if available.
         /// </summary>
         internal string Address { get; }
+        /// <summary>
+        /// The URLs of package registries that are configured for the proxy.
+        /// </summary>
+        internal HashSet<string> RegistryURLs { get; }
         /// <summary>
         /// The path to the temporary file where the certificate is stored.
         /// </summary>
@@ -75,6 +94,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.host = host;
             this.port = port;
             this.Address = $"http://{this.host}:{this.port}";
+            this.RegistryURLs = new HashSet<string>();
         }
 
         public void Dispose()
