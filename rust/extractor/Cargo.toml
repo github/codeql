@@ -5,7 +5,7 @@ edition = "2021"
 
 # When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
-anyhow = "1.0.86"
+anyhow = "1.0.95"
 clap = { version = "4.5.16", features = ["derive"] }
 figment = { version = "0.10.19", features = ["env", "yaml"] }
 log = "0.4.22"

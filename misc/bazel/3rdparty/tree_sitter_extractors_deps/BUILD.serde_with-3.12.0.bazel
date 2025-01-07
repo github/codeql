@@ -11,23 +11,11 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_load_cargo",
+    name = "serde_with",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
-    aliases = {
-        "@vendor__ra_ap_hir_expand-0.0.248//:ra_ap_hir_expand": "hir_expand",
-        "@vendor__ra_ap_ide_db-0.0.248//:ra_ap_ide_db": "ide_db",
-        "@vendor__ra_ap_intern-0.0.248//:ra_ap_intern": "intern",
-        "@vendor__ra_ap_paths-0.0.248//:ra_ap_paths": "paths",
-        "@vendor__ra_ap_proc_macro_api-0.0.248//:ra_ap_proc_macro_api": "proc_macro_api",
-        "@vendor__ra_ap_project_model-0.0.248//:ra_ap_project_model": "project_model",
-        "@vendor__ra_ap_span-0.0.248//:ra_ap_span": "span",
-        "@vendor__ra_ap_tt-0.0.248//:ra_ap_tt": "tt",
-        "@vendor__ra_ap_vfs-0.0.248//:ra_ap_vfs": "vfs",
-        "@vendor__ra_ap_vfs-notify-0.0.248//:ra_ap_vfs_notify": "vfs_notify",
-    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -40,14 +28,24 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "alloc",
+        "default",
+        "macros",
+        "std",
+    ],
     crate_root = "src/lib.rs",
     edition = "2021",
+    proc_macro_deps = [
+        "@vendor__serde_derive-1.0.216//:serde_derive",
+        "@vendor__serde_with_macros-3.12.0//:serde_with_macros",
+    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_load-cargo",
+        "crate-name=serde_with",
         "manual",
         "noclippy",
         "norustfmt",
@@ -89,21 +87,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.248",
+    version = "3.12.0",
     deps = [
-        "@vendor__anyhow-1.0.95//:anyhow",
-        "@vendor__crossbeam-channel-0.5.14//:crossbeam_channel",
-        "@vendor__itertools-0.12.1//:itertools",
-        "@vendor__ra_ap_hir_expand-0.0.248//:ra_ap_hir_expand",
-        "@vendor__ra_ap_ide_db-0.0.248//:ra_ap_ide_db",
-        "@vendor__ra_ap_intern-0.0.248//:ra_ap_intern",
-        "@vendor__ra_ap_paths-0.0.248//:ra_ap_paths",
-        "@vendor__ra_ap_proc_macro_api-0.0.248//:ra_ap_proc_macro_api",
-        "@vendor__ra_ap_project_model-0.0.248//:ra_ap_project_model",
-        "@vendor__ra_ap_span-0.0.248//:ra_ap_span",
-        "@vendor__ra_ap_tt-0.0.248//:ra_ap_tt",
-        "@vendor__ra_ap_vfs-0.0.248//:ra_ap_vfs",
-        "@vendor__ra_ap_vfs-notify-0.0.248//:ra_ap_vfs_notify",
-        "@vendor__tracing-0.1.41//:tracing",
+        "@vendor__serde-1.0.216//:serde",
     ],
 )

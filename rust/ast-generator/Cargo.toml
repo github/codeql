@@ -11,3 +11,6 @@ quote = "1.0.20"
 either = "1.9.0"
 stdx = {package = "ra_ap_stdx", version = "0.0.248"}
 itertools = "0.12.0"
+mustache = "0.9.0"
+serde = { version = "1.0.216", features = ["derive"] }
+anyhow = "1.0.95"

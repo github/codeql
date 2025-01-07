@@ -88,7 +88,7 @@ rust_library(
     }),
     version = "0.0.248",
     deps = [
-        "@vendor__anyhow-1.0.94//:anyhow",
+        "@vendor__anyhow-1.0.95//:anyhow",
         "@vendor__cargo_metadata-0.18.1//:cargo_metadata",
         "@vendor__itertools-0.12.1//:itertools",
         "@vendor__la-arena-0.3.1//:la_arena",

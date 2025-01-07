@@ -33,7 +33,7 @@ filegroup(
 # Workspace Member Dependencies
 alias(
     name = "anyhow",
-    actual = "@vendor__anyhow-1.0.94//:anyhow",
+    actual = "@vendor__anyhow-1.0.95//:anyhow",
     tags = ["manual"],
 )
 
@@ -118,6 +118,12 @@ alias(
 alias(
     name = "log",
     actual = "@vendor__log-0.4.22//:log",
+    tags = ["manual"],
+)
+
+alias(
+    name = "mustache",
+    actual = "@vendor__mustache-0.9.0//:mustache",
     tags = ["manual"],
 )
 
@@ -267,7 +273,7 @@ alias(
 
 alias(
     name = "serde_with",
-    actual = "@vendor__serde_with-3.11.0//:serde_with",
+    actual = "@vendor__serde_with-3.12.0//:serde_with",
     tags = ["manual"],
 )
 
