@@ -18,8 +18,8 @@ bindingset[version]
 private predicate isPinnedCommit(string version) { version.regexpMatch("^[A-Fa-f0-9]{40}$") }
 
 bindingset[nwo]
-private predicate isTrustedOwner(string nwo) {  
-  // Gets the segment before the first '/' in the name with owner(nwo) string 
+private predicate isTrustedOwner(string nwo) {
+  // Gets the segment before the first '/' in the name with owner(nwo) string
   trustedActionsOwner(nwo.substring(0, nwo.indexOf("/")))
 }
 
