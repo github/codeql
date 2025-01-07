@@ -14,3 +14,4 @@ dataExtensions:
   - ext/manual/*.model.yml
   - ext/generated/**/*.model.yml
   - ext/config/*.yml
+  - codeql/actions/security/owner/**/*.model.yml

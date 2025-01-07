@@ -17,14 +17,15 @@ import codeql.actions.security.UseOfUnversionedImmutableAction
 bindingset[version]
 private predicate isPinnedCommit(string version) { version.regexpMatch("^[A-Fa-f0-9]{40}$") }
 
-bindingset[repo]
-private predicate isTrustedOrg(string repo) {
-  repo.matches(["actions", "github", "advanced-security"] + "/%")
+bindingset[nwo]
+private predicate isTrustedOwner(string nwo) {  
+  // Gets the segment before the first '/' in the name with owner(nwo) string 
+  trustedActionsOwner(nwo.substring(0, nwo.indexOf("/")))
 }
 
-from UsesStep uses, string repo, string version, Workflow workflow, string name
+from UsesStep uses, string nwo, string version, Workflow workflow, string name
 where
-  uses.getCallee() = repo and
+  uses.getCallee() = nwo and
   uses.getEnclosingWorkflow() = workflow and
   (
     workflow.getName() = name
@@ -32,9 +33,9 @@ where
     not exists(workflow.getName()) and workflow.getLocation().getFile().getBaseName() = name
   ) and
   uses.getVersion() = version and
-  not isTrustedOrg(repo) and
+  not isTrustedOwner(nwo) and
   not isPinnedCommit(version) and
-  not isImmutableAction(uses, repo)
+  not isImmutableAction(uses, nwo)
 select uses.getCalleeNode(),
-  "Unpinned 3rd party Action '" + name + "' step $@ uses '" + repo + "' with ref '" + version +
+  "Unpinned 3rd party Action '" + name + "' step $@ uses '" + nwo + "' with ref '" + version +
     "', not a pinned commit hash", uses, uses.toString()
