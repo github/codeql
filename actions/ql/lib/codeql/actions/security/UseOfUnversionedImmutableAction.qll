@@ -11,7 +11,6 @@ class UnversionedImmutableAction extends UsesStep {
 
 // The following predicate is extended in data extensions under actions/ql/lib/codeql/actions/security/owner/
 // and can be extended with custom model packs as necessary.
-
 /** Holds for actions owner defined in data extensions */
 extensible predicate trustedActionsOwner(string owner);
 
