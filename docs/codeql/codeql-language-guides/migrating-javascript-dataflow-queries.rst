@@ -97,8 +97,9 @@ Taint tracking
 For configuration classes extending ``TaintTracking::Configuration``, the migration is similar but with a few differences:
 
 - The ``TaintTracking::Global`` module should be used instead of ``DataFlow::Global``.
-- The ``isSanitizer`` predicate should be renamed to ``isBarrier``.
-- The ``isAdditionalTaintStep`` predicate should be renamed to ``isAdditionalFlowStep``.
+- Some predicates originating from ``TaintTracking::Configuration`` should be renamed to match the ``DataFlow::ConfigSig`` interface:
+  - ``isSanitizer`` should be renamed to ``isBarrier``.
+  - ``isAdditionalTaintStep`` should be renamed to ``isAdditionalFlowStep``.
 
 Note that there is no such thing as ``TaintTracking::ConfigSig``. The ``DataFlow::ConfigSig`` interface is used for both data flow and taint tracking.
 
@@ -107,6 +108,8 @@ For example:
 .. code-block:: ql
 
     class MyConfig extends TaintTracking::Configuration {
+      MyConfig() { this = "MyConfig" }
+
       predicate isSanitizer(DataFlow::Node node) { ... }
       predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) { ... }
       ...
