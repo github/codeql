@@ -12,7 +12,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "serde_json",
+    name = "serde",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -30,18 +30,23 @@ rust_library(
         ],
     ),
     crate_features = [
+        "alloc",
         "default",
+        "derive",
+        "serde_derive",
         "std",
-        "unbounded_depth",
     ],
     crate_root = "src/lib.rs",
-    edition = "2021",
+    edition = "2018",
+    proc_macro_deps = [
+        "@vendor__serde_derive-1.0.217//:serde_derive",
+    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=serde_json",
+        "crate-name=serde",
         "manual",
         "noclippy",
         "norustfmt",
@@ -83,13 +88,9 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "1.0.133",
+    version = "1.0.217",
     deps = [
-        "@vendor__itoa-1.0.14//:itoa",
-        "@vendor__memchr-2.7.4//:memchr",
-        "@vendor__ryu-1.0.18//:ryu",
-        "@vendor__serde-1.0.216//:serde",
-        "@vendor__serde_json-1.0.133//:build_script_build",
+        "@vendor__serde-1.0.217//:build_script_build",
     ],
 )
 
@@ -113,9 +114,11 @@ cargo_build_script(
         ],
     ),
     crate_features = [
+        "alloc",
         "default",
+        "derive",
+        "serde_derive",
         "std",
-        "unbounded_depth",
     ],
     crate_name = "build_script_build",
     crate_root = "build.rs",
@@ -131,19 +134,19 @@ cargo_build_script(
             "WORKSPACE.bazel",
         ],
     ),
-    edition = "2021",
-    pkg_name = "serde_json",
+    edition = "2018",
+    pkg_name = "serde",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=serde_json",
+        "crate-name=serde",
         "manual",
         "noclippy",
         "norustfmt",
     ],
-    version = "1.0.133",
+    version = "1.0.217",
     visibility = ["//visibility:private"],
 )
 

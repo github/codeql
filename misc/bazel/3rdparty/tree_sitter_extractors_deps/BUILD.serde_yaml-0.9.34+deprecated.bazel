@@ -82,7 +82,7 @@ rust_library(
         "@vendor__indexmap-2.7.0//:indexmap",
         "@vendor__itoa-1.0.14//:itoa",
         "@vendor__ryu-1.0.18//:ryu",
-        "@vendor__serde-1.0.216//:serde",
+        "@vendor__serde-1.0.217//:serde",
         "@vendor__unsafe-libyaml-0.2.11//:unsafe_libyaml",
     ],
 )

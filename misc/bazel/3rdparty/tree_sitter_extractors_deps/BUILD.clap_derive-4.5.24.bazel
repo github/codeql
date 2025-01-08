@@ -6,12 +6,12 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//rust:defs.bzl", "rust_library")
+load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
 
 package(default_visibility = ["//visibility:public"])
 
-rust_library(
-    name = "clap",
+rust_proc_macro(
+    name = "clap_derive",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,26 +29,16 @@ rust_library(
         ],
     ),
     crate_features = [
-        "color",
         "default",
-        "derive",
-        "error-context",
-        "help",
-        "std",
-        "suggestions",
-        "usage",
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
-    proc_macro_deps = [
-        "@vendor__clap_derive-4.5.18//:clap_derive",
-    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=clap",
+        "crate-name=clap_derive",
         "manual",
         "noclippy",
         "norustfmt",
@@ -90,8 +80,11 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "4.5.23",
+    version = "4.5.24",
     deps = [
-        "@vendor__clap_builder-4.5.23//:clap_builder",
+        "@vendor__heck-0.5.0//:heck",
+        "@vendor__proc-macro2-1.0.92//:proc_macro2",
+        "@vendor__quote-1.0.38//:quote",
+        "@vendor__syn-2.0.95//:syn",
     ],
 )

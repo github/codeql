@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "itertools",
+    name = "clap",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,18 +29,26 @@ rust_library(
         ],
     ),
     crate_features = [
+        "color",
         "default",
-        "use_alloc",
-        "use_std",
+        "derive",
+        "error-context",
+        "help",
+        "std",
+        "suggestions",
+        "usage",
     ],
     crate_root = "src/lib.rs",
-    edition = "2018",
+    edition = "2021",
+    proc_macro_deps = [
+        "@vendor__clap_derive-4.5.24//:clap_derive",
+    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=itertools",
+        "crate-name=clap",
         "manual",
         "noclippy",
         "norustfmt",
@@ -82,8 +90,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.13.0",
+    version = "4.5.24",
     deps = [
-        "@vendor__either-1.13.0//:either",
+        "@vendor__clap_builder-4.5.24//:clap_builder",
     ],
 )

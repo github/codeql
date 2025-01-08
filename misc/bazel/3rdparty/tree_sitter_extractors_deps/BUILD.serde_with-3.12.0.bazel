@@ -6,13 +6,12 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "anyhow",
+    name = "serde_with",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -30,17 +29,23 @@ rust_library(
         ],
     ),
     crate_features = [
+        "alloc",
         "default",
+        "macros",
         "std",
     ],
     crate_root = "src/lib.rs",
-    edition = "2018",
+    edition = "2021",
+    proc_macro_deps = [
+        "@vendor__serde_derive-1.0.217//:serde_derive",
+        "@vendor__serde_with_macros-3.12.0//:serde_with_macros",
+    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=anyhow",
+        "crate-name=serde_with",
         "manual",
         "noclippy",
         "norustfmt",
@@ -82,67 +87,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "1.0.94",
+    version = "3.12.0",
     deps = [
-        "@vendor__anyhow-1.0.94//:build_script_build",
+        "@vendor__serde-1.0.217//:serde",
     ],
-)
-
-cargo_build_script(
-    name = "_bs",
-    srcs = glob(
-        include = ["**/*.rs"],
-        allow_empty = True,
-    ),
-    compile_data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            "**/*.rs",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
-        ],
-    ),
-    crate_features = [
-        "default",
-        "std",
-    ],
-    crate_name = "build_script_build",
-    crate_root = "build.rs",
-    data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
-        ],
-    ),
-    edition = "2018",
-    pkg_name = "anyhow",
-    rustc_flags = [
-        "--cap-lints=allow",
-    ],
-    tags = [
-        "cargo-bazel",
-        "crate-name=anyhow",
-        "manual",
-        "noclippy",
-        "norustfmt",
-    ],
-    version = "1.0.94",
-    visibility = ["//visibility:private"],
-)
-
-alias(
-    name = "build_script_build",
-    actual = ":_bs",
-    tags = ["manual"],
 )

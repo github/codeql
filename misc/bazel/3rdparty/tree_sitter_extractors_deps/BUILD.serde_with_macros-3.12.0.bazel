@@ -6,12 +6,12 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//rust:defs.bzl", "rust_library")
+load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
 
 package(default_visibility = ["//visibility:public"])
 
-rust_library(
-    name = "serde_with",
+rust_proc_macro(
+    name = "serde_with_macros",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -28,24 +28,14 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "alloc",
-        "default",
-        "macros",
-        "std",
-    ],
     crate_root = "src/lib.rs",
     edition = "2021",
-    proc_macro_deps = [
-        "@vendor__serde_derive-1.0.216//:serde_derive",
-        "@vendor__serde_with_macros-3.11.0//:serde_with_macros",
-    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=serde_with",
+        "crate-name=serde_with_macros",
         "manual",
         "noclippy",
         "norustfmt",
@@ -87,8 +77,11 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "3.11.0",
+    version = "3.12.0",
     deps = [
-        "@vendor__serde-1.0.216//:serde",
+        "@vendor__darling-0.20.10//:darling",
+        "@vendor__proc-macro2-1.0.92//:proc_macro2",
+        "@vendor__quote-1.0.38//:quote",
+        "@vendor__syn-2.0.95//:syn",
     ],
 )

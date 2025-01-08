@@ -86,7 +86,7 @@ rust_library(
     version = "1.0.24",
     deps = [
         "@vendor__semver-1.0.24//:build_script_build",
-        "@vendor__serde-1.0.216//:serde",
+        "@vendor__serde-1.0.217//:serde",
     ],
 )
 
