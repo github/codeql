@@ -4,7 +4,7 @@ func source() string {
 	return "untrusted data"
 }
 
-func sink(any) {
+func sink(string) {
 }
 
 type A struct {
@@ -17,10 +17,6 @@ func functionWithSliceParameter(s []string) string {
 
 func functionWithVarArgsParameter(s ...string) string {
 	return s[1]
-}
-
-func functionWithVarArgsOutParameter(in string, out ...*string) {
-	*out[0] = in
 }
 
 func functionWithSliceOfStructsParameter(s []A) string {
@@ -41,12 +37,6 @@ func main() {
 	sink(functionWithSliceParameter(sSlice))      // $ hasValueFlow="call to functionWithSliceParameter"
 	sink(functionWithVarArgsParameter(sSlice...)) // $ hasValueFlow="call to functionWithVarArgsParameter"
 	sink(functionWithVarArgsParameter(s0, s1))    // $ hasValueFlow="call to functionWithVarArgsParameter"
-
-	var out1 *string
-	var out2 *string
-	functionWithVarArgsOutParameter(source(), out1, out2)
-	sink(out1) // $ MISSING: hasValueFlow="out1"
-	sink(out2) // $ MISSING: hasValueFlow="out2"
 
 	sliceOfStructs := []A{{f: source()}}
 	sink(sliceOfStructs[0].f) // $ hasValueFlow="selection of f"

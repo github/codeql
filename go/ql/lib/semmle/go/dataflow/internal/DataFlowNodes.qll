@@ -845,9 +845,6 @@ module Public {
         or
         preupd = getAWrittenNode()
         or
-        preupd instanceof ImplicitVarargsSlice and
-        mutableType(preupd.(ImplicitVarargsSlice).getType().(SliceType).getElementType())
-        or
         preupd = any(ArgumentNode arg).getACorrespondingSyntacticArgument() and
         mutableType(preupd.getType())
       ) and
