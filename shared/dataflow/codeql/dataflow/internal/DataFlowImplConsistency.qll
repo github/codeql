@@ -14,6 +14,9 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowL
   /** Holds if `call` should be excluded from the consistency test `uniqueCallEnclosingCallable`. */
   default predicate uniqueCallEnclosingCallableExclude(DataFlowLang::DataFlowCall call) { none() }
 
+  /** Holds if `n` should be excluded from the consistency test `uniqueType`. */
+  default predicate uniqueTypeExclude(DataFlowLang::Node n) { none() }
+
   /** Holds if `n` should be excluded from the consistency test `uniqueNodeLocation`. */
   default predicate uniqueNodeLocationExclude(DataFlowLang::Node n) { none() }
 
@@ -123,6 +126,7 @@ module MakeConsistency<
       n instanceof RelevantNode and
       c = count(getNodeType(n)) and
       c != 1 and
+      not Input::uniqueTypeExclude(n) and
       msg = "Node should have one type but has " + c + "."
     )
   }

@@ -279,6 +279,8 @@ class Declaration extends Locatable, @declaration {
     variable_template_argument(underlyingElement(this), index, unresolveElement(result))
     or
     template_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
+    concept_template_argument(underlyingElement(this), index, unresolveElement(result))
   }
 
   private Expr getTemplateArgumentValue(int index) {
@@ -289,6 +291,8 @@ class Declaration extends Locatable, @declaration {
     variable_template_argument_value(underlyingElement(this), index, unresolveElement(result))
     or
     template_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    concept_template_argument_value(underlyingElement(this), index, unresolveElement(result))
   }
 }
 

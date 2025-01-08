@@ -91,7 +91,7 @@ rust_library(
     }),
     version = "0.0.248",
     deps = [
-        "@vendor__anyhow-1.0.94//:anyhow",
+        "@vendor__anyhow-1.0.95//:anyhow",
         "@vendor__crossbeam-channel-0.5.14//:crossbeam_channel",
         "@vendor__itertools-0.12.1//:itertools",
         "@vendor__ra_ap_hir_expand-0.0.248//:ra_ap_hir_expand",
