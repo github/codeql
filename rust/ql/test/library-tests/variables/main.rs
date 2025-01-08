@@ -561,10 +561,13 @@ macro_rules! let_in_macro2 {
 
 fn macro_invocation() {
     let var_from_macro = // var_from_macro1
-        let_in_macro!(37); // $ MISSING: read_access=var_in_macro
+        let_in_macro!(37); // $ read_access=var_in_macro
     print_i64(var_from_macro); // $ read_access=var_from_macro1
     let var_in_macro = 33; // var_in_macro1
-    print_i64(let_in_macro2!(var_in_macro)); // $ read_access=var_in_macro1
+    // Our analysis does not currently respect the hygiene rules of Rust macros
+    // (https://veykril.github.io/tlborm/decl-macros/minutiae/hygiene.html), because
+    // all we have access to is the expanded AST
+    print_i64(let_in_macro2!(var_in_macro)); // $ MISSING: read_access=var_in_macro1 $ SPURIOUS: read_access=var_in_macro
     print_i64(var_in_macro); // $ read_access=var_in_macro1
 }
 
