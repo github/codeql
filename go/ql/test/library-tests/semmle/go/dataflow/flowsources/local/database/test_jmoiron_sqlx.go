@@ -102,6 +102,118 @@ func test_sqlx_DB(db *sqlx.DB) {
 	db.Select(&user5, "SELECT * FROM users WHERE id = 1") // $ source
 }
 
+func test_sqlx_NamedStmt(stmt *sqlx.NamedStmt) {
+	example, err := stmt.Query("SELECT * FROM users") // $ source
+	ignore(example, err)
+
+	rows, err := stmt.Queryx("SELECT * FROM users") // $ source
+
+	if err != nil {
+		return
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var id int
+		var name string
+		err = rows.Scan(&id, &name)
+
+		if err != nil {
+			return
+		}
+
+		sink(id, name) // $ hasTaintFlow="id" hasTaintFlow="name"
+
+		valmap := make(map[string]interface{})
+		rows.MapScan(valmap)
+
+		id = valmap["id"].(int)
+		sink(id) // $ hasTaintFlow="id"
+
+		var user User
+		rows.StructScan(&user)
+		sink(user) // $ hasTaintFlow="user"
+	}
+
+	row := stmt.QueryRowx("SELECT * FROM users WHERE id = 1") // $ source
+
+	userMap := make(map[string]interface{})
+	row.MapScan(userMap)
+
+	id := userMap["id"].(int)
+	sink(id) // $ hasTaintFlow="id"
+
+	var user User
+	row.StructScan(&user)
+	sink(user) // $ hasTaintFlow="user"
+
+	var user2 User
+	stmt.Get(&user2, "SELECT * FROM users WHERE id = 1") // $ source
+
+	var user3 User
+	stmt.GetContext(nil, &user3, "SELECT * FROM users WHERE id = 1") // $ source
+
+	var user4 User
+	stmt.Select(&user4, "SELECT * FROM users WHERE id = 1") // $ source
+}
+
+func test_sqlx_Stmt(stmt *sqlx.Stmt) {
+	example, err := stmt.Query("SELECT * FROM users") // $ source
+	ignore(example, err)
+
+	rows, err := stmt.Queryx("SELECT * FROM users") // $ source
+
+	if err != nil {
+		return
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var id int
+		var name string
+		err = rows.Scan(&id, &name)
+
+		if err != nil {
+			return
+		}
+
+		sink(id, name) // $ hasTaintFlow="id" hasTaintFlow="name"
+
+		valmap := make(map[string]interface{})
+		rows.MapScan(valmap)
+
+		id = valmap["id"].(int)
+		sink(id) // $ hasTaintFlow="id"
+
+		var user User
+		rows.StructScan(&user)
+		sink(user) // $ hasTaintFlow="user"
+	}
+
+	row := stmt.QueryRowx("SELECT * FROM users WHERE id = 1") // $ source
+
+	userMap := make(map[string]interface{})
+	row.MapScan(userMap)
+
+	id := userMap["id"].(int)
+	sink(id) // $ hasTaintFlow="id"
+
+	var user User
+	row.StructScan(&user)
+	sink(user) // $ hasTaintFlow="user"
+
+	var user2 User
+	stmt.Get(&user2, "SELECT * FROM users WHERE id = 1") // $ source
+
+	var user3 User
+	stmt.GetContext(nil, &user3, "SELECT * FROM users WHERE id = 1") // $ source
+
+	var user4 User
+	stmt.Select(&user4, "SELECT * FROM users WHERE id = 1") // $ source
+}
+
 func test_sqlx_Tx(tx *sqlx.Tx) {
 	example, err := tx.Query("SELECT * FROM users") // $ source
 	ignore(example, err)
@@ -162,116 +274,4 @@ func test_sqlx_Tx(tx *sqlx.Tx) {
 
 	var user5 User
 	tx.Select(&user5, "SELECT * FROM users WHERE id = 1") // $ source
-}
-
-func test_sqlx_Stmt(stmt *sqlx.Stmt) {
-	example, err := stmt.Query("SELECT * FROM users") // $ source
-	ignore(example, err)
-
-	rows, err := stmt.Queryx("SELECT * FROM users") // $ source
-
-	if err != nil {
-		return
-	}
-
-	defer rows.Close()
-
-	for rows.Next() {
-		var id int
-		var name string
-		err = rows.Scan(&id, &name)
-
-		if err != nil {
-			return
-		}
-
-		sink(id, name) // $ hasTaintFlow="id" hasTaintFlow="name"
-
-		valmap := make(map[string]interface{})
-		rows.MapScan(valmap)
-
-		id = valmap["id"].(int)
-		sink(id) // $ hasTaintFlow="id"
-
-		var user User
-		rows.StructScan(&user)
-		sink(user) // $ hasTaintFlow="user"
-	}
-
-	row := stmt.QueryRowx("SELECT * FROM users WHERE id = 1") // $ source
-
-	userMap := make(map[string]interface{})
-	row.MapScan(userMap)
-
-	id := userMap["id"].(int)
-	sink(id) // $ hasTaintFlow="id"
-
-	var user User
-	row.StructScan(&user)
-	sink(user) // $ hasTaintFlow="user"
-
-	var user2 User
-	stmt.Get(&user2, "SELECT * FROM users WHERE id = 1") // $ source
-
-	var user3 User
-	stmt.GetContext(nil, &user3, "SELECT * FROM users WHERE id = 1") // $ source
-
-	var user4 User
-	stmt.Select(&user4, "SELECT * FROM users WHERE id = 1") // $ source
-}
-
-func test_sqlx_NamedStmt(stmt *sqlx.NamedStmt) {
-	example, err := stmt.Query("SELECT * FROM users") // $ source
-	ignore(example, err)
-
-	rows, err := stmt.Queryx("SELECT * FROM users") // $ source
-
-	if err != nil {
-		return
-	}
-
-	defer rows.Close()
-
-	for rows.Next() {
-		var id int
-		var name string
-		err = rows.Scan(&id, &name)
-
-		if err != nil {
-			return
-		}
-
-		sink(id, name) // $ hasTaintFlow="id" hasTaintFlow="name"
-
-		valmap := make(map[string]interface{})
-		rows.MapScan(valmap)
-
-		id = valmap["id"].(int)
-		sink(id) // $ hasTaintFlow="id"
-
-		var user User
-		rows.StructScan(&user)
-		sink(user) // $ hasTaintFlow="user"
-	}
-
-	row := stmt.QueryRowx("SELECT * FROM users WHERE id = 1") // $ source
-
-	userMap := make(map[string]interface{})
-	row.MapScan(userMap)
-
-	id := userMap["id"].(int)
-	sink(id) // $ hasTaintFlow="id"
-
-	var user User
-	row.StructScan(&user)
-	sink(user) // $ hasTaintFlow="user"
-
-	var user2 User
-	stmt.Get(&user2, "SELECT * FROM users WHERE id = 1") // $ source
-
-	var user3 User
-	stmt.GetContext(nil, &user3, "SELECT * FROM users WHERE id = 1") // $ source
-
-	var user4 User
-	stmt.Select(&user4, "SELECT * FROM users WHERE id = 1") // $ source
 }
