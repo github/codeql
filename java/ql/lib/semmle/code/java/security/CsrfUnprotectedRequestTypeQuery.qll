@@ -25,11 +25,11 @@ private class SpringCsrfUnprotectedMethod extends CsrfUnprotectedMethod instance
     or
     this.hasAnnotation("org.springframework.web.bind.annotation", "RequestMapping") and
     (
-      this.getMethod() = ["GET", "HEAD", "OPTIONS", "TRACE"]
+      this.getMethodValue() = ["GET", "HEAD", "OPTIONS", "TRACE"]
       or
       // If no request type is specified with `@RequestMapping`, then all request types
       // are possible, so we treat this as unsafe; example: @RequestMapping(value = "test").
-      not exists(this.getMethod())
+      not exists(this.getMethodValue())
     )
   }
 }
