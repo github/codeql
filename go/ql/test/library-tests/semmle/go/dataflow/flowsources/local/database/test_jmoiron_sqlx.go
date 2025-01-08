@@ -44,6 +44,36 @@ func test_sqlx_ctx(ctx context.Context, q sqlx.ExtContext) {
 	sink(user2) // $ hasTaintFlow="user2"
 }
 
+func test_sqlx_Conn(conn *sqlx.Conn) {
+	var user User
+	conn.GetContext(nil, &user, "SELECT * FROM users WHERE id = 1") // $ source
+
+	var user2 User
+	conn.SelectContext(nil, &user2, "SELECT * FROM users WHERE id = 1") // $ source
+
+	row := conn.QueryRowxContext(nil, "SELECT * FROM users WHERE id = 1") // $ source
+
+	userMap := make(map[string]interface{})
+	row.MapScan(userMap)
+	id := userMap["id"].(int)
+	sink(id) // $ hasTaintFlow="id"
+
+	rows, err := conn.QueryxContext(nil, "SELECT * FROM users WHERE id = 1") // $ source
+	ignore(err)
+
+	for rows.Next() {
+		var id int
+		var name string
+		err = rows.Scan(&id, &name)
+
+		if err != nil {
+			return
+		}
+
+		sink(id, name) // $ hasTaintFlow="id" hasTaintFlow="name"
+	}
+}
+
 func test_sqlx_DB(db *sqlx.DB) {
 	example, err := db.Query("SELECT * FROM users") // $ source
 	ignore(example, err)
