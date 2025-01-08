@@ -3,10 +3,10 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
-      - ["github.com/jmoiron/sqlx", "", True, "NamedQuery", "", "", "ReturnValue[0]", "database", "manual"]
-      - ["github.com/jmoiron/sqlx", "", True, "NamedQueryContext", "", "", "ReturnValue[0]", "database", "manual"]
       - ["github.com/jmoiron/sqlx", "", True, "Get", "", "", "Argument[1]", "database", "manual"]
       - ["github.com/jmoiron/sqlx", "", True, "GetContext", "", "", "Argument[2]", "database", "manual"]
+      - ["github.com/jmoiron/sqlx", "", True, "NamedQuery", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["github.com/jmoiron/sqlx", "", True, "NamedQueryContext", "", "", "ReturnValue[0]", "database", "manual"]
       - ["github.com/jmoiron/sqlx", "", True, "Select", "", "", "Argument[1]", "database", "manual"]
       - ["github.com/jmoiron/sqlx", "", True, "SelectContext", "", "", "Argument[2]", "database", "manual"]
       - ["github.com/jmoiron/sqlx", "Conn", True, "GetContext", "", "", "Argument[1]", "database", "manual"]
