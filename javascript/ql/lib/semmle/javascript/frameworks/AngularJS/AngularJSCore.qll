@@ -1032,35 +1032,3 @@ private class BindCall extends DataFlow::PartialInvokeNode::Range, DataFlow::Cal
     result = this.getArgument(0)
   }
 }
-
-/**
- * A DOM attribute write, using the AngularJS Renderer2 API: a call to `Renderer2.setProperty`.
- */
-private class AngularRenderer2AttributeDefinition extends DOM::AttributeDefinition {
-  DataFlow::Node propertyNode;
-  DataFlow::Node valueNode;
-  DataFlow::Node elementNode;
-
-  AngularRenderer2AttributeDefinition() {
-    exists(API::CallNode setProperty |
-      setProperty =
-        API::moduleImport("@angular/core")
-            .getMember("Renderer2")
-            .getInstance()
-            .getMember("setProperty")
-            .getACall() and
-      elementNode = setProperty.getArgument(0) and
-      propertyNode = setProperty.getArgument(1) and
-      valueNode = setProperty.getArgument(2) and
-      this = setProperty.asExpr()
-    )
-  }
-
-  override string getName() { result = propertyNode.getStringValue() }
-
-  // override DOM::ElementDefinition getElement() { /* TODO */ }
-  DataFlow::Node getElementNode() { result = elementNode }
-
-  override DataFlow::Node getValueNode() { result = valueNode }
-  //override predicate mayHaveTemplateValue() { /* TODO */ }
-}
