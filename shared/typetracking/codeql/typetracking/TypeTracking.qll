@@ -14,6 +14,7 @@ signature module TypeTrackingInput<LocationSig Location> {
     /** Gets a textual representation of this node. */
     string toString();
 
+    /** Gets the source location of this node. */
     Location getLocation();
   }
 
