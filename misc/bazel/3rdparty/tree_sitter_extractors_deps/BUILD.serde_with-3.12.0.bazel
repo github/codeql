@@ -37,7 +37,7 @@ rust_library(
     crate_root = "src/lib.rs",
     edition = "2021",
     proc_macro_deps = [
-        "@vendor__serde_derive-1.0.216//:serde_derive",
+        "@vendor__serde_derive-1.0.217//:serde_derive",
         "@vendor__serde_with_macros-3.12.0//:serde_with_macros",
     ],
     rustc_flags = [
@@ -89,6 +89,6 @@ rust_library(
     }),
     version = "3.12.0",
     deps = [
-        "@vendor__serde-1.0.216//:serde",
+        "@vendor__serde-1.0.217//:serde",
     ],
 )

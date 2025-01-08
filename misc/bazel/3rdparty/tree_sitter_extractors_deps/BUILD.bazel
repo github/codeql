@@ -51,7 +51,7 @@ alias(
 
 alias(
     name = "clap",
-    actual = "@vendor__clap-4.5.23//:clap",
+    actual = "@vendor__clap-4.5.24//:clap",
     tags = ["manual"],
 )
 
@@ -87,7 +87,7 @@ alias(
 
 alias(
     name = "glob",
-    actual = "@vendor__glob-0.3.1//:glob",
+    actual = "@vendor__glob-0.3.2//:glob",
     tags = ["manual"],
 )
 
@@ -98,14 +98,8 @@ alias(
 )
 
 alias(
-    name = "itertools-0.12.1",
-    actual = "@vendor__itertools-0.12.1//:itertools",
-    tags = ["manual"],
-)
-
-alias(
-    name = "itertools-0.13.0",
-    actual = "@vendor__itertools-0.13.0//:itertools",
+    name = "itertools",
+    actual = "@vendor__itertools-0.14.0//:itertools",
     tags = ["manual"],
 )
 
@@ -147,7 +141,7 @@ alias(
 
 alias(
     name = "quote",
-    actual = "@vendor__quote-1.0.37//:quote",
+    actual = "@vendor__quote-1.0.38//:quote",
     tags = ["manual"],
 )
 
@@ -261,13 +255,13 @@ alias(
 
 alias(
     name = "serde",
-    actual = "@vendor__serde-1.0.216//:serde",
+    actual = "@vendor__serde-1.0.217//:serde",
     tags = ["manual"],
 )
 
 alias(
     name = "serde_json",
-    actual = "@vendor__serde_json-1.0.133//:serde_json",
+    actual = "@vendor__serde_json-1.0.135//:serde_json",
     tags = ["manual"],
 )
 
@@ -285,7 +279,7 @@ alias(
 
 alias(
     name = "syn",
-    actual = "@vendor__syn-2.0.90//:syn",
+    actual = "@vendor__syn-2.0.95//:syn",
     tags = ["manual"],
 )
 
@@ -303,7 +297,7 @@ alias(
 
 alias(
     name = "tree-sitter",
-    actual = "@vendor__tree-sitter-0.24.5//:tree_sitter",
+    actual = "@vendor__tree-sitter-0.24.6//:tree_sitter",
     tags = ["manual"],
 )
 
