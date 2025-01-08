@@ -2006,7 +2006,6 @@ deprecated private class CallAgainstEqualityCheck extends DerivedBarrierGuardNod
  * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
  */
 class VarAccessBarrier extends DataFlow::Node {
-  // TODO: This does not work in dataflow2 when the variable is captured, since the capture-flow library bypasses the refinement node.
   VarAccessBarrier() {
     exists(ConditionGuardNode guard, SsaRefinementNode refinement |
       this = DataFlow::ssaDefinitionNode(refinement) and
