@@ -6,7 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func test_sqlx(q sqlx.Queryer) {
+func test_sqlx(q sqlx.Ext) {
 	var user User
 
 	err := sqlx.Get(q, &user, "SELECT * FROM users WHERE id = 1") // $ source
@@ -18,9 +18,11 @@ func test_sqlx(q sqlx.Queryer) {
 	rows, err := sqlx.NamedQuery(q, "SELECT * FROM users WHERE id = :id", map[string]any{"id": 1}) // $ source
 	ignore(err)
 
-	rows.StructScan(&user)
+	var user2 User
 
-	sink(user) // $ hasTaintFlow="user"
+	rows.StructScan(&user2)
+
+	sink(user2) // $ hasTaintFlow="user2"
 }
 
 func test_sqlx_ctx(ctx context.Context, q sqlx.ExtContext) {
@@ -35,9 +37,11 @@ func test_sqlx_ctx(ctx context.Context, q sqlx.ExtContext) {
 	rows, err := sqlx.NamedQueryContext(ctx, q, "SELECT * FROM users WHERE id = :id", map[string]any{"id": 1}) // $ source
 	ignore(err)
 
-	rows.StructScan(&user)
+	var user2 User
 
-	sink(user) // $ hasTaintFlow="user"
+	rows.StructScan(&user2)
+
+	sink(user2) // $ hasTaintFlow="user2"
 }
 
 func test_sqlx_DB(db *sqlx.DB) {
