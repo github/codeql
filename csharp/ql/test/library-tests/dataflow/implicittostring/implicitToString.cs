@@ -23,7 +23,7 @@ public class TestClass
     {
         var x1 = new MyClass();
         var x2 = "Hello" + x1;
-        Sink(x2); // MISSING
+        Sink(x2);
     }
 
     public void M3()
