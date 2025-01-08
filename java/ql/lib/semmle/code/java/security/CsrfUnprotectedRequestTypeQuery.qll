@@ -215,27 +215,31 @@ module CallGraph {
   predicate edges(CallPathNode pred, CallPathNode succ) { pred.getASuccessor() = succ }
 }
 
-/**
- * Holds if `sourceMethod` is an unprotected request handler that reaches a
- * `sinkMethodCall` that updates a database.
- */
-private predicate unprotectedDatabaseUpdate(CallPathNode sourceMethod, CallPathNode sinkMethodCall) {
-  sourceMethod.asMethod() instanceof CsrfUnprotectedMethod and
+/** Holds if `sourceMethod` is an unprotected request handler. */
+private predicate source(CallPathNode sourceMethod) {
+  sourceMethod.asMethod() instanceof CsrfUnprotectedMethod
+}
+
+/** Holds if `sinkMethodCall` updates a database. */
+private predicate sink(CallPathNode sinkMethodCall) {
   exists(CallPathNode sinkMethod |
     sinkMethod.asMethod() instanceof DatabaseUpdateMethod and
-    sinkMethodCall.getASuccessor() = pragma[only_bind_into](sinkMethod) and
-    sourceMethod.getASuccessor+() = pragma[only_bind_into](sinkMethodCall) and
+    sinkMethodCall.getASuccessor() = sinkMethod and
     // exclude SQL `execute` calls that do not update database
     if
       sinkMethod.asMethod() instanceof SqlInjectionDatabaseUpdateMethod and
       sinkMethod.asMethod().hasName("execute")
-    then
-      exists(SqlExecuteFlow::PathNode executeSink | SqlExecuteFlow::flowPath(_, executeSink) |
-        sinkMethodCall.asCall() = executeSink.getNode().asExpr().(Argument).getCall()
-      )
+    then SqlExecuteFlow::flowToExpr(sinkMethodCall.asCall().getAnArgument())
     else any()
   )
 }
+
+/**
+ * Holds if `sourceMethod` is an unprotected request handler that reaches a
+ * `sinkMethodCall` that updates a database.
+ */
+private predicate unprotectedDatabaseUpdate(CallPathNode sourceMethod, CallPathNode sinkMethodCall) =
+  doublyBoundedFastTC(CallGraph::edges/2, source/1, sink/1)(sourceMethod, sinkMethodCall)
 
 /**
  * Holds if `sourceMethod` is an unprotected request handler that appears to
