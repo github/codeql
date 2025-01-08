@@ -6,28 +6,16 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//rust:defs.bzl", "rust_library")
+load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
 
 package(default_visibility = ["//visibility:public"])
 
-rust_library(
-    name = "ra_ap_hir_def",
+rust_proc_macro(
+    name = "ra_salsa_macros",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
-    aliases = {
-        "@vendor__ra_ap_base_db-0.0.256//:ra_ap_base_db": "base_db",
-        "@vendor__ra_ap_cfg-0.0.256//:ra_ap_cfg": "cfg",
-        "@vendor__ra_ap_hir_expand-0.0.256//:ra_ap_hir_expand": "hir_expand",
-        "@vendor__ra_ap_intern-0.0.256//:ra_ap_intern": "intern",
-        "@vendor__ra_ap_limit-0.0.256//:ra_ap_limit": "limit",
-        "@vendor__ra_ap_mbe-0.0.256//:ra_ap_mbe": "mbe",
-        "@vendor__ra_ap_span-0.0.256//:ra_ap_span": "span",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx": "stdx",
-        "@vendor__ra_ap_syntax-0.0.256//:ra_ap_syntax": "syntax",
-        "@vendor__ra_ap_tt-0.0.256//:ra_ap_tt": "tt",
-    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -47,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_hir_def",
+        "crate-name=ra_ap_salsa-macros",
         "manual",
         "noclippy",
         "norustfmt",
@@ -89,36 +77,11 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.256",
+    version = "0.0.257",
     deps = [
-        "@vendor__arrayvec-0.7.6//:arrayvec",
-        "@vendor__bitflags-2.6.0//:bitflags",
-        "@vendor__cov-mark-2.0.0//:cov_mark",
-        "@vendor__dashmap-5.5.3//:dashmap",
-        "@vendor__drop_bomb-0.1.5//:drop_bomb",
-        "@vendor__either-1.13.0//:either",
-        "@vendor__fst-0.4.7//:fst",
-        "@vendor__hashbrown-0.14.5//:hashbrown",
-        "@vendor__indexmap-2.7.0//:indexmap",
-        "@vendor__itertools-0.12.1//:itertools",
-        "@vendor__la-arena-0.3.1//:la_arena",
-        "@vendor__ra-ap-rustc_abi-0.87.0//:ra_ap_rustc_abi",
-        "@vendor__ra-ap-rustc_parse_format-0.87.0//:ra_ap_rustc_parse_format",
-        "@vendor__ra_ap_base_db-0.0.256//:ra_ap_base_db",
-        "@vendor__ra_ap_cfg-0.0.256//:ra_ap_cfg",
-        "@vendor__ra_ap_hir_expand-0.0.256//:ra_ap_hir_expand",
-        "@vendor__ra_ap_intern-0.0.256//:ra_ap_intern",
-        "@vendor__ra_ap_limit-0.0.256//:ra_ap_limit",
-        "@vendor__ra_ap_mbe-0.0.256//:ra_ap_mbe",
-        "@vendor__ra_ap_span-0.0.256//:ra_ap_span",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx",
-        "@vendor__ra_ap_syntax-0.0.256//:ra_ap_syntax",
-        "@vendor__ra_ap_tt-0.0.256//:ra_ap_tt",
-        "@vendor__rustc-hash-2.1.0//:rustc_hash",
-        "@vendor__rustc_apfloat-0.2.1-llvm-462a31f5a5ab//:rustc_apfloat",
-        "@vendor__smallvec-1.13.2//:smallvec",
-        "@vendor__text-size-1.1.1//:text_size",
-        "@vendor__tracing-0.1.41//:tracing",
-        "@vendor__triomphe-0.1.14//:triomphe",
+        "@vendor__heck-0.4.1//:heck",
+        "@vendor__proc-macro2-1.0.92//:proc_macro2",
+        "@vendor__quote-1.0.38//:quote",
+        "@vendor__syn-2.0.95//:syn",
     ],
 )

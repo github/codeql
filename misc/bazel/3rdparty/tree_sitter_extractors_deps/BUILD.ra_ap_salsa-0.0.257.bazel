@@ -11,20 +11,11 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_project_model",
+    name = "ra_salsa",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
-    aliases = {
-        "@vendor__ra_ap_base_db-0.0.256//:ra_ap_base_db": "base_db",
-        "@vendor__ra_ap_cfg-0.0.256//:ra_ap_cfg": "cfg",
-        "@vendor__ra_ap_intern-0.0.256//:ra_ap_intern": "intern",
-        "@vendor__ra_ap_paths-0.0.256//:ra_ap_paths": "paths",
-        "@vendor__ra_ap_span-0.0.256//:ra_ap_span": "span",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx": "stdx",
-        "@vendor__ra_ap_toolchain-0.0.256//:ra_ap_toolchain": "toolchain",
-    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -40,14 +31,14 @@ rust_library(
     crate_root = "src/lib.rs",
     edition = "2021",
     proc_macro_deps = [
-        "@vendor__serde_derive-1.0.217//:serde_derive",
+        "@vendor__ra_ap_salsa-macros-0.0.257//:ra_salsa_macros",
     ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_project_model",
+        "crate-name=ra_ap_salsa",
         "manual",
         "noclippy",
         "norustfmt",
@@ -89,23 +80,15 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.256",
+    version = "0.0.257",
     deps = [
-        "@vendor__anyhow-1.0.95//:anyhow",
-        "@vendor__cargo_metadata-0.18.1//:cargo_metadata",
+        "@vendor__indexmap-2.7.0//:indexmap",
         "@vendor__itertools-0.12.1//:itertools",
-        "@vendor__la-arena-0.3.1//:la_arena",
-        "@vendor__ra_ap_base_db-0.0.256//:ra_ap_base_db",
-        "@vendor__ra_ap_cfg-0.0.256//:ra_ap_cfg",
-        "@vendor__ra_ap_intern-0.0.256//:ra_ap_intern",
-        "@vendor__ra_ap_paths-0.0.256//:ra_ap_paths",
-        "@vendor__ra_ap_span-0.0.256//:ra_ap_span",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx",
-        "@vendor__ra_ap_toolchain-0.0.256//:ra_ap_toolchain",
+        "@vendor__lock_api-0.4.12//:lock_api",
+        "@vendor__oorandom-11.1.4//:oorandom",
+        "@vendor__parking_lot-0.12.3//:parking_lot",
         "@vendor__rustc-hash-2.1.0//:rustc_hash",
-        "@vendor__semver-1.0.24//:semver",
-        "@vendor__serde-1.0.217//:serde",
-        "@vendor__serde_json-1.0.135//:serde_json",
+        "@vendor__smallvec-1.13.2//:smallvec",
         "@vendor__tracing-0.1.41//:tracing",
         "@vendor__triomphe-0.1.14//:triomphe",
     ],

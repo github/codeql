@@ -11,19 +11,11 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_syntax_bridge",
+    name = "ra_ap_toolchain",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
-    aliases = {
-        "@vendor__ra_ap_intern-0.0.256//:ra_ap_intern": "intern",
-        "@vendor__ra_ap_parser-0.0.256//:ra_ap_parser": "parser",
-        "@vendor__ra_ap_span-0.0.256//:ra_ap_span": "span",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx": "stdx",
-        "@vendor__ra_ap_syntax-0.0.256//:ra_ap_syntax": "syntax",
-        "@vendor__ra_ap_tt-0.0.256//:ra_ap_tt": "tt",
-    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -43,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_syntax-bridge",
+        "crate-name=ra_ap_toolchain",
         "manual",
         "noclippy",
         "norustfmt",
@@ -85,15 +77,9 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.256",
+    version = "0.0.257",
     deps = [
-        "@vendor__ra_ap_intern-0.0.256//:ra_ap_intern",
-        "@vendor__ra_ap_parser-0.0.256//:ra_ap_parser",
-        "@vendor__ra_ap_span-0.0.256//:ra_ap_span",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx",
-        "@vendor__ra_ap_syntax-0.0.256//:ra_ap_syntax",
-        "@vendor__ra_ap_tt-0.0.256//:ra_ap_tt",
-        "@vendor__rustc-hash-2.1.0//:rustc_hash",
-        "@vendor__tracing-0.1.41//:tracing",
+        "@vendor__camino-1.1.9//:camino",
+        "@vendor__home-0.5.11//:home",
     ],
 )

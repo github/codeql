@@ -11,14 +11,15 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_syntax",
+    name = "ra_ap_vfs_notify",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
     aliases = {
-        "@vendor__ra_ap_parser-0.0.256//:ra_ap_parser": "parser",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx": "stdx",
+        "@vendor__ra_ap_paths-0.0.257//:ra_ap_paths": "paths",
+        "@vendor__ra_ap_stdx-0.0.257//:ra_ap_stdx": "stdx",
+        "@vendor__ra_ap_vfs-0.0.257//:ra_ap_vfs": "vfs",
     },
     compile_data = glob(
         include = ["**"],
@@ -39,7 +40,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_syntax",
+        "crate-name=ra_ap_vfs-notify",
         "manual",
         "noclippy",
         "norustfmt",
@@ -81,20 +82,16 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.256",
+    version = "0.0.257",
     deps = [
-        "@vendor__cov-mark-2.0.0//:cov_mark",
-        "@vendor__either-1.13.0//:either",
-        "@vendor__indexmap-2.7.0//:indexmap",
-        "@vendor__itertools-0.12.1//:itertools",
-        "@vendor__ra-ap-rustc_lexer-0.87.0//:ra_ap_rustc_lexer",
-        "@vendor__ra_ap_parser-0.0.256//:ra_ap_parser",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx",
-        "@vendor__rowan-0.15.15//:rowan",
+        "@vendor__crossbeam-channel-0.5.14//:crossbeam_channel",
+        "@vendor__notify-6.1.1//:notify",
+        "@vendor__ra_ap_paths-0.0.257//:ra_ap_paths",
+        "@vendor__ra_ap_stdx-0.0.257//:ra_ap_stdx",
+        "@vendor__ra_ap_vfs-0.0.257//:ra_ap_vfs",
+        "@vendor__rayon-1.10.0//:rayon",
         "@vendor__rustc-hash-2.1.0//:rustc_hash",
-        "@vendor__smol_str-0.3.2//:smol_str",
         "@vendor__tracing-0.1.41//:tracing",
-        "@vendor__triomphe-0.1.14//:triomphe",
+        "@vendor__walkdir-2.5.0//:walkdir",
     ],
 )
-exports_files(["rust.ungram"])

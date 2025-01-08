@@ -11,17 +11,18 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_proc_macro_api",
+    name = "ra_ap_syntax_bridge",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
     aliases = {
-        "@vendor__ra_ap_intern-0.0.256//:ra_ap_intern": "intern",
-        "@vendor__ra_ap_paths-0.0.256//:ra_ap_paths": "paths",
-        "@vendor__ra_ap_span-0.0.256//:ra_ap_span": "span",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx": "stdx",
-        "@vendor__ra_ap_tt-0.0.256//:ra_ap_tt": "tt",
+        "@vendor__ra_ap_intern-0.0.257//:ra_ap_intern": "intern",
+        "@vendor__ra_ap_parser-0.0.257//:ra_ap_parser": "parser",
+        "@vendor__ra_ap_span-0.0.257//:ra_ap_span": "span",
+        "@vendor__ra_ap_stdx-0.0.257//:ra_ap_stdx": "stdx",
+        "@vendor__ra_ap_syntax-0.0.257//:ra_ap_syntax": "syntax",
+        "@vendor__ra_ap_tt-0.0.257//:ra_ap_tt": "tt",
     },
     compile_data = glob(
         include = ["**"],
@@ -37,15 +38,12 @@ rust_library(
     ),
     crate_root = "src/lib.rs",
     edition = "2021",
-    proc_macro_deps = [
-        "@vendor__serde_derive-1.0.217//:serde_derive",
-    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_proc_macro_api",
+        "crate-name=ra_ap_syntax-bridge",
         "manual",
         "noclippy",
         "norustfmt",
@@ -87,17 +85,15 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.256",
+    version = "0.0.257",
     deps = [
-        "@vendor__indexmap-2.7.0//:indexmap",
-        "@vendor__ra_ap_intern-0.0.256//:ra_ap_intern",
-        "@vendor__ra_ap_paths-0.0.256//:ra_ap_paths",
-        "@vendor__ra_ap_span-0.0.256//:ra_ap_span",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx",
-        "@vendor__ra_ap_tt-0.0.256//:ra_ap_tt",
+        "@vendor__ra_ap_intern-0.0.257//:ra_ap_intern",
+        "@vendor__ra_ap_parser-0.0.257//:ra_ap_parser",
+        "@vendor__ra_ap_span-0.0.257//:ra_ap_span",
+        "@vendor__ra_ap_stdx-0.0.257//:ra_ap_stdx",
+        "@vendor__ra_ap_syntax-0.0.257//:ra_ap_syntax",
+        "@vendor__ra_ap_tt-0.0.257//:ra_ap_tt",
         "@vendor__rustc-hash-2.1.0//:rustc_hash",
-        "@vendor__serde-1.0.217//:serde",
-        "@vendor__serde_json-1.0.135//:serde_json",
         "@vendor__tracing-0.1.41//:tracing",
     ],
 )

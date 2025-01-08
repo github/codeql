@@ -11,11 +11,15 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_limit",
+    name = "ra_ap_tt",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
+    aliases = {
+        "@vendor__ra_ap_intern-0.0.257//:ra_ap_intern": "intern",
+        "@vendor__ra_ap_stdx-0.0.257//:ra_ap_stdx": "stdx",
+    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -35,7 +39,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_limit",
+        "crate-name=ra_ap_tt",
         "manual",
         "noclippy",
         "norustfmt",
@@ -77,5 +81,12 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.256",
+    version = "0.0.257",
+    deps = [
+        "@vendor__arrayvec-0.7.6//:arrayvec",
+        "@vendor__ra-ap-rustc_lexer-0.87.0//:ra_ap_rustc_lexer",
+        "@vendor__ra_ap_intern-0.0.257//:ra_ap_intern",
+        "@vendor__ra_ap_stdx-0.0.257//:ra_ap_stdx",
+        "@vendor__text-size-1.1.1//:text_size",
+    ],
 )

@@ -6,16 +6,20 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
+load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
-rust_proc_macro(
-    name = "ra_salsa_macros",
+rust_library(
+    name = "ra_ap_vfs",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
+    aliases = {
+        "@vendor__ra_ap_paths-0.0.257//:ra_ap_paths": "paths",
+        "@vendor__ra_ap_stdx-0.0.257//:ra_ap_stdx": "stdx",
+    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -35,7 +39,7 @@ rust_proc_macro(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_salsa-macros",
+        "crate-name=ra_ap_vfs",
         "manual",
         "noclippy",
         "norustfmt",
@@ -77,11 +81,15 @@ rust_proc_macro(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.256",
+    version = "0.0.257",
     deps = [
-        "@vendor__heck-0.4.1//:heck",
-        "@vendor__proc-macro2-1.0.92//:proc_macro2",
-        "@vendor__quote-1.0.38//:quote",
-        "@vendor__syn-2.0.95//:syn",
+        "@vendor__crossbeam-channel-0.5.14//:crossbeam_channel",
+        "@vendor__fst-0.4.7//:fst",
+        "@vendor__indexmap-2.7.0//:indexmap",
+        "@vendor__nohash-hasher-0.2.0//:nohash_hasher",
+        "@vendor__ra_ap_paths-0.0.257//:ra_ap_paths",
+        "@vendor__ra_ap_stdx-0.0.257//:ra_ap_stdx",
+        "@vendor__rustc-hash-2.1.0//:rustc_hash",
+        "@vendor__tracing-0.1.41//:tracing",
     ],
 )

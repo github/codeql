@@ -11,14 +11,15 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_vfs",
+    name = "ra_ap_span",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
     aliases = {
-        "@vendor__ra_ap_paths-0.0.256//:ra_ap_paths": "paths",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx": "stdx",
+        "@vendor__ra_ap_stdx-0.0.257//:ra_ap_stdx": "stdx",
+        "@vendor__ra_ap_syntax-0.0.257//:ra_ap_syntax": "syntax",
+        "@vendor__ra_ap_vfs-0.0.257//:ra_ap_vfs": "vfs",
     },
     compile_data = glob(
         include = ["**"],
@@ -32,6 +33,10 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "default",
+        "ra-salsa",
+    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_flags = [
@@ -39,7 +44,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_vfs",
+        "crate-name=ra_ap_span",
         "manual",
         "noclippy",
         "norustfmt",
@@ -81,15 +86,15 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.256",
+    version = "0.0.257",
     deps = [
-        "@vendor__crossbeam-channel-0.5.14//:crossbeam_channel",
-        "@vendor__fst-0.4.7//:fst",
-        "@vendor__indexmap-2.7.0//:indexmap",
-        "@vendor__nohash-hasher-0.2.0//:nohash_hasher",
-        "@vendor__ra_ap_paths-0.0.256//:ra_ap_paths",
-        "@vendor__ra_ap_stdx-0.0.256//:ra_ap_stdx",
+        "@vendor__hashbrown-0.14.5//:hashbrown",
+        "@vendor__la-arena-0.3.1//:la_arena",
+        "@vendor__ra_ap_salsa-0.0.257//:ra_salsa",
+        "@vendor__ra_ap_stdx-0.0.257//:ra_ap_stdx",
+        "@vendor__ra_ap_syntax-0.0.257//:ra_ap_syntax",
+        "@vendor__ra_ap_vfs-0.0.257//:ra_ap_vfs",
         "@vendor__rustc-hash-2.1.0//:rustc_hash",
-        "@vendor__tracing-0.1.41//:tracing",
+        "@vendor__text-size-1.1.1//:text_size",
     ],
 )
