@@ -71,7 +71,7 @@ impl<'a> RustAnalyzer<'a> {
         let no_semantics_reason;
         match self {
             RustAnalyzer::WithSemantics { vfs, semantics } => {
-                if let Some(file_id) = path_to_file_id(path, vfs) {
+                for file_id in path_to_file_ids(path, vfs) {
                     if let Ok(input) = std::panic::catch_unwind(|| semantics.db.file_text(file_id))
                     {
                         let file_id = EditionedFileId::current_edition(file_id);
@@ -95,10 +95,8 @@ impl<'a> RustAnalyzer<'a> {
                         file_id,
                         path.to_string_lossy()
                     );
-                    no_semantics_reason = "no text available for the file in the project";
-                } else {
-                    no_semantics_reason = "file not found in project";
                 }
+                no_semantics_reason = "file or file text not found in project";
             }
             RustAnalyzer::WithoutSemantics { reason } => {
                 no_semantics_reason = reason;
@@ -197,7 +195,10 @@ fn canonicalize_if_on_windows(path: &Path) -> Option<PathBuf> {
     }
 }
 
-pub(crate) fn path_to_file_id(path: &Path, vfs: &Vfs) -> Option<FileId> {
+pub(crate) fn path_to_file_ids<'a>(
+    path: &'_ Path,
+    vfs: &'a Vfs,
+) -> impl Iterator<Item = FileId> + use<'a> {
     // There seems to be some flaky inconsistencies around paths on Windows, where sometimes paths
     // are registered in `vfs` without the `//?/` long path prefix. Then it happens that paths with
     // that prefix are not found. To work around that, on Windows after failing to find `path` as
@@ -212,5 +213,4 @@ pub(crate) fn path_to_file_id(path: &Path, vfs: &Vfs) -> Option<FileId> {
                 .map(VfsPath::from)
                 .and_then(|x| vfs.file_id(&x))
         })
-        .next()
 }

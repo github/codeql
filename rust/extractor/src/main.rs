@@ -1,5 +1,5 @@
 use crate::diagnostics::{emit_extraction_diagnostics, ExtractionStep};
-use crate::rust_analyzer::path_to_file_id;
+use crate::rust_analyzer::path_to_file_ids;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
@@ -126,12 +126,13 @@ impl<'a> Extractor<'a> {
         vfs: &Vfs,
     ) -> Result<(), String> {
         let before = Instant::now();
-        let Some(id) = path_to_file_id(file, vfs) else {
-            return Err("not included in files loaded from manifest".to_string());
+        if path_to_file_ids(file, vfs)
+            .filter_map(|id| semantics.file_to_module_def(id))
+            .next()
+            .is_none()
+        {
+            return Err("not included in modules loaded from manifest".to_string());
         };
-        if semantics.file_to_module_def(id).is_none() {
-            return Err("not included as a module".to_string());
-        }
         self.steps.push(ExtractionStep::load_source(before, file));
         Ok(())
     }
