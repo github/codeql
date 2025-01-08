@@ -1,3 +1,39 @@
+## 2.2.0
+
+### Major Analysis Improvements
+
+* The `js/incomplete-sanitization` query now also checks regular expressions constructed using `new RegExp(..)`. Previously it only checked regular expression literals.
+* Regular expression-based sanitisers implemented with `new RegExp(..)` are now detected in more cases.
+* Regular expression related queries now account for unknown flags.
+
+### Minor Analysis Improvements
+
+* Added taint-steps for `String.prototype.toWellFormed`.
+* Added taint-steps for `Map.groupBy` and `Object.groupBy`.
+* Added taint-steps for `Array.prototype.findLast`.
+* Added taint-steps for `Array.prototype.findLastIndex`.
+
+## 2.1.1
+
+### Minor Analysis Improvements
+
+* Added taint-steps for `Array.prototype.with`.
+* Added taint-steps for `Array.prototype.toSpliced`
+* Added taint-steps for `Array.prototype.toReversed`.
+* Added taint-steps for `Array.prototype.toSorted`.
+* Added support for `String.prototype.matchAll`.
+* Added taint-steps for `Array.prototype.reverse`
+
+## 2.1.0
+
+### New Features
+
+* Added support for custom threat-models, which can be used in most of our taint-tracking queries, see our [documentation](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models) for more details.
+
+## 2.0.2
+
+No user-facing changes.
+
 ## 2.0.1
 
 No user-facing changes.

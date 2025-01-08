@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "CPathT", True, "CPathT", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CPathT", True, "AddExtension", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CPathT", True, "Append", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CPathT", True, "Combine", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CPathT", True, "Combine", "", "", "Argument[*1]", "Argument[-1]", "taint", "manual"]
+      - ["", "CPathT", True, "CommonPrefix", "", "", "Argument[*0]", "ReturnValue", "taint", "manual"]
+      - ["", "CPathT", True, "CommonPrefix", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["", "CPathT", True, "GetExtension", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "CPathT", True, "RelativePathTo", "", "", "Argument[*0]", "ReturnValue[-1]", "taint", "manual"]
+      - ["", "CPathT", True, "RelativePathTo", "", "", "Argument[*2]", "ReturnValue[-1]", "taint", "manual"]
+      - ["", "CPathT", True, "RenameExtension", "", "", "Argument[*0]", "ReturnValue[-1]", "taint", "manual"]
+      # Note: These don't work currently since we cannot use the template parameter in the name of the function
+      # - ["", "CPathT<T>", True, "operator const T &", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      # - ["", "CPathT<T>", True, "operator T &", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CPathT", True, "operator PCXSTR", "", "", "Argument[-1]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CPathT", True, "operator+=", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "CPathT", True, "operator+=", "", "", "Argument[*0]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "CPathT", True, "operator+=", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]

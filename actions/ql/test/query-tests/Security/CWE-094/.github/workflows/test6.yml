@@ -1,0 +1,16 @@
+name: Test
+on:
+  issue_comment:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          {
+            echo "recreate_vm=${{ contains(github.event.comment.body, 'recreate-vm') }}"
+          } >> $GITHUB_OUTPUT
+

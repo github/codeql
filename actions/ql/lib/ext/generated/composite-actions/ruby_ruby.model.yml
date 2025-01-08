@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ruby/ruby", "*", "input.builddir", "code-injection", "generated"]
+     - ["ruby/ruby", "*", "input.srcdir", "code-injection", "generated"]
+     - ["ruby/ruby", "*", "input.test-opts", "code-injection", "generated"]
+     - ["ruby/ruby", "*", "input.report-path", "code-injection", "generated"]
+     - ["ruby/ruby", "*", "input.launchable-token", "code-injection", "generated"]

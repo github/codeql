@@ -6,7 +6,7 @@ extensions:
       # path-injection
       - ["net/http", "", False, "ServeFile", "", "", "Argument[2]", "path-injection", "manual"]
       # url-redirection
-      - ["net/http", "", True, "Redirect", "", "", "Argument[2]", "url-redirection[0]", "manual"]
+      - ["net/http", "", False, "Redirect", "", "", "Argument[2]", "url-redirection[0]", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: summaryModel

@@ -21,10 +21,9 @@ namespace Semmle.Extraction.CSharp.Entities
             NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
         /// <summary>
-        /// Creates a named type entity from a tuple type. Unlike `Create`, this
+        /// Creates a named type entity from a tuple type. Unlike <see cref="Create"/>, this
         /// will create an entity for the underlying `System.ValueTuple` struct.
-        /// For example, `(int, string)` will result in an entity for
-        /// `System.ValueTuple<int, string>`.
+        /// For example, `(int, string)` will result in an entity for `System.ValueTuple&lt;int, string&gt;`.
         /// </summary>
         public static NamedType CreateNamedTypeFromTupleType(Context cx, INamedTypeSymbol type) =>
             UnderlyingTupleTypeFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(type), typeof(TupleType)), type);
@@ -101,7 +100,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override IEnumerable<Type> TypeMentions => TypeArguments;
 
-        public override IEnumerable<Extraction.Entities.Location> Locations
+        public override IEnumerable<Location> Locations
         {
             get
             {

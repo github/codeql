@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Semmle.Util.Logging;
-using Semmle.Extraction.CSharp.DependencyFetching;
-
 namespace Semmle.Extraction.CSharp.Standalone
 {
     public class Program

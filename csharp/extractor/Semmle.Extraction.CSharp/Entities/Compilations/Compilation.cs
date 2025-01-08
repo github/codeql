@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Semmle.Extraction.Entities;
 using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.Entities

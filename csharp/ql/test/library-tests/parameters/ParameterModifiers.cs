@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class ParameterModifiers
 {
@@ -15,4 +16,6 @@ public class ParameterModifiers
     public void M5(params object[] p5) { }
 
     public void M6(ref readonly object p6) { }
+
+    public void M7(params IEnumerable<object> p7) { }
 }

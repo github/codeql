@@ -29,15 +29,19 @@ private module ValidationMethod<DataFlow::guardChecksSig/3 validationGuard> {
    */
   private predicate validationMethod(Method m, int arg) {
     exists(
-      Guard g, SsaImplicitInit var, ControlFlowNode exit, ControlFlowNode normexit, boolean branch
+      Guard g, SsaImplicitInit var, ControlFlow::ExitNode exit, ControlFlowNode normexit,
+      boolean branch
     |
       validationGuard(g, var.getAUse(), branch) and
       var.isParameterDefinition(m.getParameter(arg)) and
-      exit = m and
+      exit.getEnclosingCallable() = m and
       normexit.getANormalSuccessor() = exit and
       1 = strictcount(ControlFlowNode n | n.getANormalSuccessor() = exit)
     |
-      g.(ConditionNode).getABranchSuccessor(branch) = exit or
+      exists(ConditionNode conditionNode |
+        g = conditionNode.getCondition() and conditionNode.getABranchSuccessor(branch) = exit
+      )
+      or
       g.controls(normexit.getBasicBlock(), branch)
     )
   }
@@ -332,4 +336,19 @@ private Method getSourceMethod(Method m) {
   or
   not exists(Method src | m = src.getKotlinParameterDefaultsProxy()) and
   result = m
+}
+
+/**
+ * A sanitizer that protects against path injection vulnerabilities
+ * by extracting the final component of the user provided path.
+ *
+ * TODO: convert this class to models-as-data if sanitizer support is added
+ */
+private class FileGetNameSanitizer extends PathInjectionSanitizer {
+  FileGetNameSanitizer() {
+    exists(MethodCall mc |
+      mc.getMethod().hasQualifiedName("java.io", "File", "getName") and
+      this.asExpr() = mc
+    )
+  }
 }

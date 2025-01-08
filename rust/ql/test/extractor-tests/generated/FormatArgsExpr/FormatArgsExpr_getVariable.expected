@@ -1,0 +1,5 @@
+| gen_format_args_expr.rs:9:17:9:28 | FormatArgsExpr | 1 | gen_format_args_expr.rs:9:20:9:20 | x |
+| gen_format_args_expr.rs:9:17:9:28 | FormatArgsExpr | 3 | gen_format_args_expr.rs:9:25:9:25 | y |
+| gen_format_argument.rs:5:14:5:47 | FormatArgsExpr | 1 | gen_format_argument.rs:5:22:5:26 | value |
+| gen_format_argument.rs:5:14:5:47 | FormatArgsExpr | 1 | gen_format_argument.rs:5:29:5:33 | width |
+| gen_format_argument.rs:5:14:5:47 | FormatArgsExpr | 1 | gen_format_argument.rs:5:36:5:44 | precision |

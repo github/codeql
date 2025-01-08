@@ -1,0 +1,11 @@
+| gen_format.rs:5:21:5:22 | {} | getParent: | gen_format.rs:5:14:5:32 | FormatArgsExpr | getIndex: | 1 | hasArgument: | no |
+| gen_format.rs:7:21:7:46 | {value:#width$.precision$} | getParent: | gen_format.rs:7:14:7:47 | FormatArgsExpr | getIndex: | 1 | hasArgument: | yes |
+| gen_format_args_arg.rs:5:26:5:27 | {} | getParent: | gen_format_args_arg.rs:5:17:5:39 | FormatArgsExpr | getIndex: | 1 | hasArgument: | no |
+| gen_format_args_expr.rs:6:19:6:20 | {} | getParent: | gen_format_args_expr.rs:6:17:6:37 | FormatArgsExpr | getIndex: | 1 | hasArgument: | no |
+| gen_format_args_expr.rs:6:26:6:29 | {:?} | getParent: | gen_format_args_expr.rs:6:17:6:37 | FormatArgsExpr | getIndex: | 3 | hasArgument: | no |
+| gen_format_args_expr.rs:7:19:7:21 | {b} | getParent: | gen_format_args_expr.rs:7:17:7:43 | FormatArgsExpr | getIndex: | 1 | hasArgument: | yes |
+| gen_format_args_expr.rs:7:27:7:31 | {a:?} | getParent: | gen_format_args_expr.rs:7:17:7:43 | FormatArgsExpr | getIndex: | 3 | hasArgument: | yes |
+| gen_format_args_expr.rs:9:19:9:21 | {x} | getParent: | gen_format_args_expr.rs:9:17:9:28 | FormatArgsExpr | getIndex: | 1 | hasArgument: | yes |
+| gen_format_args_expr.rs:9:24:9:26 | {y} | getParent: | gen_format_args_expr.rs:9:17:9:28 | FormatArgsExpr | getIndex: | 3 | hasArgument: | yes |
+| gen_format_argument.rs:5:21:5:46 | {value:#width$.precision$} | getParent: | gen_format_argument.rs:5:14:5:47 | FormatArgsExpr | getIndex: | 1 | hasArgument: | yes |
+| gen_format_argument.rs:7:21:7:30 | {0:#1$.2$} | getParent: | gen_format_argument.rs:7:14:7:56 | FormatArgsExpr | getIndex: | 1 | hasArgument: | yes |

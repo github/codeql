@@ -49,7 +49,7 @@ def _get_field(cls: schema.Class, p: schema.Property) -> rust.Field:
 
 
 def _get_properties(
-    cls: schema.Class, lookup: dict[str, schema.Class],
+    cls: schema.Class, lookup: dict[str, schema.ClassBase],
 ) -> typing.Iterable[tuple[schema.Class, schema.Property]]:
     for b in cls.bases:
         yield from _get_properties(lookup[b], lookup)
@@ -58,12 +58,14 @@ def _get_properties(
 
 
 def _get_ancestors(
-    cls: schema.Class, lookup: dict[str, schema.Class]
+    cls: schema.Class, lookup: dict[str, schema.ClassBase]
 ) -> typing.Iterable[schema.Class]:
     for b in cls.bases:
         base = lookup[b]
-        yield base
-        yield from _get_ancestors(base, lookup)
+        if not base.imported:
+            base = typing.cast(schema.Class, base)
+            yield base
+            yield from _get_ancestors(base, lookup)
 
 
 class Processor:
@@ -71,7 +73,7 @@ class Processor:
         self._classmap = data.classes
 
     def _get_class(self, name: str) -> rust.Class:
-        cls = self._classmap[name]
+        cls = typing.cast(schema.Class, self._classmap[name])
         properties = [
             (c, p)
             for c, p in _get_properties(cls, self._classmap)
@@ -101,8 +103,10 @@ class Processor:
     def get_classes(self):
         ret = {"": []}
         for k, cls in self._classmap.items():
-            if not cls.synth:
+            if not cls.imported and not cls.synth:
                 ret.setdefault(cls.group, []).append(self._get_class(cls.name))
+            elif cls.imported:
+                ret[""].append(rust.Class(name=cls.name))
         return ret
 
 

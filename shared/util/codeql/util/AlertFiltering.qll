@@ -17,6 +17,9 @@ private import codeql.util.Location
  * - endLine: End line number (starting with 1, inclusive) to restrict alerts to.
  *
  * If startLine and endLine are both 0, accept alerts anywhere in the file.
+ *
+ * A query should either completely ignore this predicate (i.e., perform no filtering whatsoever),
+ * or only return alerts that meet the filtering criteria as specified above.
  */
 extensible predicate restrictAlertsTo(string filePath, int startLine, int endLine);
 

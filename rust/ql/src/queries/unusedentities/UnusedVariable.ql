@@ -9,11 +9,11 @@
  */
 
 import rust
+import UnusedVariable
 
 from Variable v
 where
-  not exists(v.getAnAccess()) and
-  not exists(v.getInitializer()) and
-  not v.getName().charAt(0) = "_" and
-  exists(File f | f.getBaseName() = "main.rs" | v.getLocation().getFile() = f) // temporarily severely limit results
-select v, "Variable is not used."
+  isUnused(v) and
+  not isAllowableUnused(v) and
+  not v instanceof DiscardVariable
+select v, "Variable '" + v + "' is not used."

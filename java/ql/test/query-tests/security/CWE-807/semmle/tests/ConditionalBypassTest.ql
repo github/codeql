@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.ConditionalBypassQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module ConditionalBypassTest implements TestSig {
   string getARelevantTag() { result = "hasConditionalBypassTest" }

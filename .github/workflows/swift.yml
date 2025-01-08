@@ -44,27 +44,20 @@ jobs:
   # without waiting for the macOS build
   build-and-test-macos:
     if: github.repository_owner == 'github'
-    runs-on: macos-12-xl
+    runs-on: macos-13-xlarge
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
   build-and-test-linux:
     if: github.repository_owner == 'github'
-    runs-on: ubuntu-latest-xl
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
-  qltests-linux:
-    if: github.repository_owner == 'github'
-    needs: build-and-test-linux
-    runs-on: ubuntu-latest-xl
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./swift/actions/run-ql-tests
   qltests-macos:
     if: ${{ github.repository_owner == 'github' && github.event_name == 'pull_request' }}
     needs: build-and-test-macos
-    runs-on: macos-12-xl
+    runs-on: macos-13-xlarge
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/run-ql-tests
@@ -98,7 +91,7 @@ jobs:
       - name: Generate C++ files
         run: |
           bazel run //swift/codegen:codegen -- --generate=trap,cpp --cpp-output=$PWD/generated-cpp-files
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: swift-generated-cpp-files
           path: generated-cpp-files/**
@@ -109,3 +102,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/fetch-codeql
       - uses: ./swift/actions/database-upgrade-scripts
+  check-no-override:
+    if : github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - shell: bash
+        run: bazel test //swift/... --test_tag_filters=override --test_output=errors

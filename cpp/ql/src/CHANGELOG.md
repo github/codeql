@@ -1,3 +1,32 @@
+## 1.3.0
+
+### New Queries
+
+* Added a new high-precision quality query, `cpp/guarded-free`, which detects useless NULL pointer checks before calls to `free`. A variation of this query was originally contributed as an [experimental query by @mario-campos](https://github.com/github/codeql/pull/16331).
+
+### Minor Analysis Improvements
+
+* The "Call to function with fewer arguments than declared parameters" query (`cpp/too-few-arguments`) no longer produces results if the function has been implicitly declared.
+
+## 1.2.7
+
+No user-facing changes.
+
+## 1.2.6
+
+### Minor Analysis Improvements
+
+* Remove results from the `cpp/wrong-type-format-argument` ("Wrong type of arguments to formatting function") query if the argument is the return value of an implicitly declared function.
+
+## 1.2.5
+
+### Minor Analysis Improvements
+
+* The `cpp/unclear-array-index-validation` ("Unclear validation of array index") query has been improved to reduce false positives and increase true positives.
+* Fixed false positives in the `cpp/uninitialized-local` ("Potentially uninitialized local variable") query if there are extraction errors in the function.
+* The `cpp/incorrect-string-type-conversion` query now produces fewer false positives caused by failure to detect byte arrays.
+* The `cpp/incorrect-string-type-conversion` query now produces fewer false positives caused by failure to recognize dynamic checks prior to possible dangerous widening.
+
 ## 1.2.4
 
 ### Minor Analysis Improvements

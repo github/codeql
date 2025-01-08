@@ -3,6 +3,7 @@ private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.Unification
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -238,6 +239,47 @@ class PropertyContent extends Content, TPropertyContent {
   override Location getLocation() { result = p.getLocation() }
 }
 
+/** A reference to a dynamic property. */
+class DynamicPropertyContent extends Content, TDynamicPropertyContent {
+  private DynamicProperty name;
+
+  DynamicPropertyContent() { this = TDynamicPropertyContent(name) }
+
+  /** Gets an access of this dynamic property. */
+  DynamicMemberAccess getAnAccess() { result = name.getAnAccess() }
+
+  override string toString() { result = "dynamic property " + name }
+
+  override EmptyLocation getLocation() { any() }
+
+  /** Gets the name that is referenced. */
+  string getName() { result = name }
+}
+
+/**
+ * A reference to the index of an argument of a delegate call.
+ */
+class DelegateCallArgumentContent extends Content, TDelegateCallArgumentContent {
+  private int i;
+
+  DelegateCallArgumentContent() { this = TDelegateCallArgumentContent(i) }
+
+  override string toString() { result = "delegate argument at position " + i }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
+ * A reference to the return of a delegate call.
+ */
+class DelegateCallReturnContent extends Content, TDelegateCallReturnContent {
+  DelegateCallReturnContent() { this = TDelegateCallReturnContent() }
+
+  override string toString() { result = "delegate return" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
 /**
  * A reference to a synthetic field corresponding to a
  * primary constructor parameter.
@@ -299,6 +341,19 @@ class ContentSet extends TContentSet {
    */
   predicate isProperty(Property p) { this = TPropertyContentSet(p) }
 
+  /** Holds if this content set represents the dynamic property `name`. */
+  predicate isDynamicProperty(string name) { this = TDynamicPropertyContentSet(name) }
+
+  /**
+   * Holds if this content set represents the `i`th argument of a delegate call.
+   */
+  predicate isDelegateCallArgument(int i) { this.isSingleton(TDelegateCallArgumentContent(i)) }
+
+  /**
+   * Holds if this content set represents the return of a delegate call.
+   */
+  predicate isDelegateCallReturn() { this.isSingleton(TDelegateCallReturnContent()) }
+
   /** Holds if this content set represents the field `f`. */
   predicate isField(Field f) { this.isSingleton(TFieldContent(f)) }
 
@@ -313,6 +368,8 @@ class ContentSet extends TContentSet {
     this.isSingleton(result)
     or
     this.isProperty(result.(PropertyContent).getProperty())
+    or
+    this.isDynamicProperty(result.(DynamicPropertyContent).getName())
   }
 
   /** Gets a content that may be read from when reading from this set. */
@@ -327,6 +384,17 @@ class ContentSet extends TContentSet {
       or
       overridesOrImplementsSourceDecl(p1, p2)
     )
+    or
+    exists(FieldOrProperty p |
+      this = p.getContentSet() and
+      result.(DynamicPropertyContent).getName() = p.getName()
+    )
+    or
+    this.isDynamicProperty([
+        result.(DynamicPropertyContent).getName(),
+        result.(PropertyContent).getProperty().getName(),
+        result.(FieldContent).getField().getName()
+      ])
   }
 
   /** Gets a textual representation of this content set. */
@@ -339,6 +407,11 @@ class ContentSet extends TContentSet {
     exists(Property p |
       this.isProperty(p) and
       result = "property " + p.getName()
+    )
+    or
+    exists(string name |
+      this.isDynamicProperty(name) and
+      result = "dynamic property " + name
     )
   }
 
@@ -353,5 +426,8 @@ class ContentSet extends TContentSet {
       this.isProperty(p) and
       result = p.getLocation()
     )
+    or
+    this.isDynamicProperty(_) and
+    result instanceof EmptyLocation
   }
 }

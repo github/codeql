@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["jurplel/install-qt-action", "*", "input.version", "command-injection", "manual"]
+      - ["jurplel/install-qt-action", "*", "input.arch", "command-injection", "manual"]
+      - ["jurplel/install-qt-action", "*", "input.dir", "command-injection", "manual"]
+      - ["jurplel/install-qt-action", "*", "input.aqtversion", "command-injection", "manual"]
+      - ["jurplel/install-qt-action", "*", "input.py7zrversion", "command-injection", "manual"]
+      - ["jurplel/install-qt-action", "*", "input.extra", "command-injection", "manual"]

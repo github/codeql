@@ -1,0 +1,15 @@
+[workspace]
+
+[package]
+name = "CWE-089-Test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+reqwest = { version = "0.12.9", features = ["blocking"] }
+sqlx = { version = "0.8", features = ["mysql", "sqlite", "postgres", "runtime-async-std", "tls-native-tls"] }
+futures = { version = "0.3" }
+
+[[bin]]
+name = "sqlx"
+path = "./sqlx.rs"

@@ -727,7 +727,10 @@ module Public {
     override string getNodeKind() { result = "external parameter node" }
 
     override Type getType() {
-      result = this.getSummarizedCallable().getType().getParameterType(this.getPos())
+      result =
+        this.getSummarizedCallable()
+            .getType()
+            .getParameterType(pragma[only_bind_into](this.getPos()))
       or
       this.getPos() = -1 and
       result = this.getSummarizedCallable().asFunction().(Method).getReceiverType()
@@ -841,6 +844,9 @@ module Public {
         preupd = any(PointerDereferenceNode deref).getOperand()
         or
         preupd = getAWrittenNode()
+        or
+        preupd instanceof ImplicitVarargsSlice and
+        mutableType(preupd.(ImplicitVarargsSlice).getType().(SliceType).getElementType())
         or
         preupd = any(ArgumentNode arg).getACorrespondingSyntacticArgument() and
         mutableType(preupd.getType())

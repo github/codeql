@@ -1,0 +1,3 @@
+| gen_trait.rs:4:20:8:1 | AssocItemList | 0 | gen_trait.rs:5:3:5:18 | TypeAlias |
+| gen_trait.rs:4:20:8:1 | AssocItemList | 1 | gen_trait.rs:6:3:6:20 | TypeAlias |
+| gen_trait.rs:4:20:8:1 | AssocItemList | 2 | gen_trait.rs:7:3:7:72 | fn frobinize_with |

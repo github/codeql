@@ -3,9 +3,9 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Text
-private import semmle.code.csharp.dataflow.DataFlow2
 
 /** A method that formats a string, for example `string.Format()`. */
 class FormatMethod extends Method {
@@ -107,7 +107,9 @@ class StringFormatItemParameter extends Parameter {
 }
 
 private Type getParameterType(Parameter p) {
-  if p.isParams() then result = p.getType().(ArrayType).getElementType() else result = p.getType()
+  if p.isParams()
+  then result = p.getType().(ParamsCollectionType).getElementType()
+  else result = p.getType()
 }
 
 /** Regex for a valid insert. */

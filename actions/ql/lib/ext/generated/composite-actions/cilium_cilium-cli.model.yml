@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["cilium/cilium-cli", "*", "input.binary-name", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.binary-dir", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.ci-version", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.release-version", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.repository", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.go-mod-directory", "code-injection", "generated"]
+     - ["cilium/cilium-cli", "*", "input.local-path", "code-injection", "generated"]

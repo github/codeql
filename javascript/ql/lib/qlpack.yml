@@ -1,5 +1,5 @@
 name: codeql/javascript-all
-version: 2.0.2-dev
+version: 2.2.1-dev
 groups: javascript
 dbscheme: semmlecode.javascript.dbscheme
 extractor: javascript
@@ -9,6 +9,7 @@ dependencies:
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
   codeql/regex: ${workspace}
+  codeql/threat-models: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
   codeql/xml: ${workspace}
@@ -17,4 +18,5 @@ dataExtensions:
   - semmle/javascript/frameworks/**/model.yml
   - semmle/javascript/frameworks/**/*.model.yml
   - semmle/javascript/security/domains/**/*.model.yml
+  - ext/*.model.yml
 warnOnImplicitThis: true

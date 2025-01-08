@@ -8,14 +8,13 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.Abi
 import codeql.rust.elements.internal.AssocItemImpl::Impl as AssocItemImpl
-import codeql.rust.elements.Attr
 import codeql.rust.elements.BlockExpr
+import codeql.rust.elements.internal.CallableImpl::Impl as CallableImpl
 import codeql.rust.elements.internal.ExternItemImpl::Impl as ExternItemImpl
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
-import codeql.rust.elements.ParamList
-import codeql.rust.elements.RetType
+import codeql.rust.elements.RetTypeRepr
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
@@ -39,7 +38,7 @@ module Generated {
    * Use the subclass `Function`, where the following predicates are available.
    */
   class Function extends Synth::TFunction, AssocItemImpl::AssocItem, ExternItemImpl::ExternItem,
-    ItemImpl::Item
+    ItemImpl::Item, CallableImpl::Callable
   {
     override string getAPrimaryQlClass() { result = "Function" }
 
@@ -54,24 +53,6 @@ module Generated {
      * Holds if `getAbi()` exists.
      */
     final predicate hasAbi() { exists(this.getAbi()) }
-
-    /**
-     * Gets the `index`th attr of this function (0-based).
-     */
-    Attr getAttr(int index) {
-      result =
-        Synth::convertAttrFromRaw(Synth::convertFunctionToRaw(this).(Raw::Function).getAttr(index))
-    }
-
-    /**
-     * Gets any of the attrs of this function.
-     */
-    final Attr getAnAttr() { result = this.getAttr(_) }
-
-    /**
-     * Gets the number of attrs of this function.
-     */
-    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the body of this function, if it exists.
@@ -140,26 +121,13 @@ module Generated {
     final predicate hasName() { exists(this.getName()) }
 
     /**
-     * Gets the parameter list of this function, if it exists.
-     */
-    ParamList getParamList() {
-      result =
-        Synth::convertParamListFromRaw(Synth::convertFunctionToRaw(this)
-              .(Raw::Function)
-              .getParamList())
-    }
-
-    /**
-     * Holds if `getParamList()` exists.
-     */
-    final predicate hasParamList() { exists(this.getParamList()) }
-
-    /**
      * Gets the ret type of this function, if it exists.
      */
-    RetType getRetType() {
+    RetTypeRepr getRetType() {
       result =
-        Synth::convertRetTypeFromRaw(Synth::convertFunctionToRaw(this).(Raw::Function).getRetType())
+        Synth::convertRetTypeReprFromRaw(Synth::convertFunctionToRaw(this)
+              .(Raw::Function)
+              .getRetType())
     }
 
     /**

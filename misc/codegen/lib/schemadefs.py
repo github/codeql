@@ -1,13 +1,12 @@
 from typing import (
     Callable as _Callable,
     Dict as _Dict,
+    Iterable as _Iterable,
     ClassVar as _ClassVar,
 )
 from misc.codegen.lib import schema as _schema
 import inspect as _inspect
 from dataclasses import dataclass as _dataclass
-
-from misc.codegen.lib.schema import Property
 
 _set = set
 
@@ -68,14 +67,17 @@ def include(source: str):
     _inspect.currentframe().f_back.f_locals.setdefault("includes", []).append(source)
 
 
+imported = _schema.ImportedClass
+
+
 @_dataclass
 class _Namespace:
     """ simple namespacing mechanism """
-    name: str
+    _name: str
 
     def add(self, pragma: "_PragmaBase", key: str | None = None):
         self.__dict__[pragma.pragma] = pragma
-        pragma.pragma = key or f"{self.name}_{pragma.pragma}"
+        pragma.pragma = key or f"{self._name}_{pragma.pragma}"
 
 
 @_dataclass
@@ -86,7 +88,7 @@ class _SynthModifier(_schema.PropertyModifier, _Namespace):
         prop.synth = self.synth
 
     def negate(self) -> _schema.PropertyModifier:
-        return _SynthModifier(self.name, False)
+        return _SynthModifier(self._name, False)
 
 
 qltest = _Namespace("qltest")
@@ -238,6 +240,7 @@ qltest.add(_ParametrizedClassPragma("test_with", inherited=True, factory=_schema
 ql.add(_ParametrizedClassPragma("default_doc_name", factory=lambda doc: doc))
 ql.add(_ClassPragma("hideable", inherited=True))
 ql.add(_Pragma("internal"))
+ql.add(_ParametrizedPragma("name", factory=lambda name: name))
 
 cpp.add(_Pragma("skip"))
 
@@ -255,30 +258,24 @@ synth.add(_ParametrizedClassPragma("on_arguments", factory=lambda **kwargs:
                                    _schema.SynthInfo(on_arguments={k: _schema.get_type_name(t) for k, t in kwargs.items()})), key="synth")
 
 
+@_dataclass(frozen=True)
 class _PropertyModifierList(_schema.PropertyModifier):
-    def __init__(self):
-        self._mods = []
+    _mods: tuple[_schema.PropertyModifier, ...]
 
     def __or__(self, other: _schema.PropertyModifier):
-        self._mods.append(other)
-        return self
+        return _PropertyModifierList(self._mods + (other,))
 
-    def modify(self, prop: Property):
+    def modify(self, prop: _schema.Property):
         for m in self._mods:
             m.modify(prop)
 
 
-class _PropertyAnnotation:
-    def __or__(self, other: _schema.PropertyModifier):
-        return _PropertyModifierList() | other
-
-
-_ = _PropertyAnnotation()
+_ = _PropertyModifierList(())
 
 drop = object()
 
 
-def annotate(annotated_cls: type, replace_bases: _Dict[type, type] | None = None) -> _Callable[[type], _PropertyAnnotation]:
+def annotate(annotated_cls: type, add_bases: _Iterable[type] | None = None, replace_bases: _Dict[type, type] | None = None, cfg: bool = False) -> _Callable[[type], _PropertyModifierList]:
     """
     Add or modify schema annotations after a class has been defined previously.
 
@@ -286,7 +283,7 @@ def annotate(annotated_cls: type, replace_bases: _Dict[type, type] | None = None
 
     `replace_bases` can be used to replace bases on the annotated class.
     """
-    def decorator(cls: type) -> _PropertyAnnotation:
+    def decorator(cls: type) -> _PropertyModifierList:
         if cls.__name__ != "_":
             raise _schema.Error("Annotation classes must be named _")
         if cls.__doc__ is not None:
@@ -295,6 +292,9 @@ def annotate(annotated_cls: type, replace_bases: _Dict[type, type] | None = None
             _ClassPragma(p, value=v)(annotated_cls)
         if replace_bases:
             annotated_cls.__bases__ = tuple(replace_bases.get(b, b) for b in annotated_cls.__bases__)
+        if add_bases:
+            annotated_cls.__bases__ += tuple(add_bases)
+        annotated_cls.__cfg__ = cfg
         for a in dir(cls):
             if a.startswith(_schema.inheritable_pragma_prefix):
                 setattr(annotated_cls, a, getattr(cls, a))
@@ -303,7 +303,7 @@ def annotate(annotated_cls: type, replace_bases: _Dict[type, type] | None = None
                 del annotated_cls.__annotations__[p]
             elif p in annotated_cls.__annotations__:
                 annotated_cls.__annotations__[p] |= a
-            elif isinstance(a, (_PropertyAnnotation, _PropertyModifierList)):
+            elif isinstance(a, (_PropertyModifierList, _PropertyModifierList)):
                 raise _schema.Error(f"annotated property {p} not present in annotated class "
                                     f"{annotated_cls.__name__}")
             else:

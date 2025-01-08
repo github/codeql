@@ -1,3 +1,4 @@
+load("@rules_python//python:defs.bzl", "py_test")
 load("//swift:rules.bzl", "swift_cc_binary")
 
 swift_cc_binary(

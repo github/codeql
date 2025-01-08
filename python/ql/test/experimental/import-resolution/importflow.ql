@@ -1,7 +1,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.python.dataflow.new.internal.ImportResolution
 
 /** A string that appears on the right hand side of an assignment. */

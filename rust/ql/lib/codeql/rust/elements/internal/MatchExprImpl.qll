@@ -28,9 +28,14 @@ module Impl {
    * ```
    */
   class MatchExpr extends Generated::MatchExpr {
+    override string toString() {
+      result = "match " + this.getScrutinee().toAbbreviatedString() + " { ... }"
+    }
+
     /**
      * Gets the `index`th arm of this match expression.
      */
+    pragma[nomagic]
     MatchArm getArm(int index) { result = this.getMatchArmList().getArm(index) }
 
     /**
@@ -41,6 +46,7 @@ module Impl {
     /**
      * Gets the number of arms of this match expression.
      */
+    pragma[nomagic]
     int getNumberOfArms() { result = this.getMatchArmList().getNumberOfArms() }
 
     /**

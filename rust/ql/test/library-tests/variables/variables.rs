@@ -8,6 +8,10 @@ fn print_i64(i: i64) { // i
     println!("{}", i); // $ read_access=i
 }
 
+fn print_i64_ref(i: &i64) {
+    print_i64(*i) // $ read_access=i
+}
+
 fn immutable_variable() {
     let x1 = "a"; // x1
     print_str(x1); // $ read_access=x1
@@ -18,6 +22,13 @@ fn mutable_variable() {
     print_i64(x2); // $ read_access=x2
     x2 = 5; // $ write_access=x2
     print_i64(x2); // $ read_access=x2
+}
+
+fn mutable_variable_immutable_borrow() {
+    let mut x = 1;
+    print_i64_ref(&x); // $ access=x
+    x = 2; // $ write_access=x
+    print_i64_ref(&x); // $ access=x
 }
 
 fn variable_shadow1() {
@@ -106,7 +117,7 @@ fn match_pattern1() {
         =>
         {
             print_i64(y1)// $ read_access=y1_2
-        } 
+        }
         None => print_str("NONE"),
     }
 
@@ -385,23 +396,50 @@ fn alias() {
     print_i64(x); // $ read_access=x
 }
 
-fn capture_mut() {
-    let mut x = 10; // x
-    let mut cap = || {
+fn capture_immut() {
+    let x = 100; // x
+    // Captures immutable value by immutable reference
+    let cap = || {
         print_i64(x); // $ read_access=x
-        x += 1; // $ access=x
     };
     cap(); // $ read_access=cap
     print_i64(x); // $ read_access=x
 }
 
-fn capture_immut() {
-    let x = 100; // x
-    let mut cap = || {
+fn capture_mut() {
+    let mut x = 1; // x
+    // Captures mutable value by immutable reference
+    let closure1 = || {
         print_i64(x); // $ read_access=x
     };
-    cap(); // $ read_access=cap
+    closure1(); // $ read_access=closure1
     print_i64(x); // $ read_access=x
+
+    let mut y = 2; // y
+    // Captures mutable value by mutable reference
+    let mut closure2 = || {
+        y = 3; // $ write_access=y
+    };
+    closure2(); // $ read_access=closure2
+    print_i64(y); // $ read_access=y
+
+    let mut z = 2; // z
+    // Captures mutable value by mutable reference and calls mutating method
+    let mut closure3 = || {
+        z.add_assign(1); // $ read_access=z
+    };
+    closure3(); // $ read_access=closure3
+    print_i64(z); // $ read_access=z
+}
+
+async fn async_block_capture() {
+    let mut i: i64 = 0; // i
+    let block = async {
+        i = 1; // $ write_access=i
+    };
+    // The await below causes write to `i`
+    block.await; // $ read_access=block
+    print_i64(i); // $ read_access=i
 }
 
 fn phi(b : bool) {
@@ -442,7 +480,20 @@ struct MyStruct {
 
 impl MyStruct {
     fn my_get(&mut self) -> i64 {
-        return self.val;
+        return self.val; // $ read_access=self
+    }
+
+    fn id(self) -> Self {
+        self // $ read_access=self
+    }
+
+    fn my_method(&mut self) {
+        let mut f = |n| {
+            // Capture of `self`
+            self.val += n; // $ read_access=self read_access=n
+        };
+        f(3); // $ read_access=f
+        f(4); // $ read_access=f
     }
 }
 
@@ -455,17 +506,22 @@ fn structs() {
     print_i64(a.my_get()); // $ read_access=a
 }
 
-fn ref_param(x: &i64) {
-    print_i64(*x) // $ read_access=x
+fn arrays() {
+    let mut a = [1, 2, 3]; // a
+    print_i64(a[0]); // $ read_access=a
+    a[1] = 5; // $ read_access=a
+    print_i64(a[1]); // $ read_access=a
+    a = [4, 5, 6]; // $ write_access=a
+    print_i64(a[2]); // $ read_access=a
 }
 
 fn ref_arg() {
     let x = 16; // x
-    ref_param(&x); // $ access=x
+    print_i64_ref(&x); // $ access=x
     print_i64(x); // $ read_access=x
 
     let z = 17; // z
-    ref_param(&z); // $ access=z
+    print_i64_ref(&z); // $ access=z
 }
 
 trait Bar {
@@ -474,7 +530,7 @@ trait Bar {
 
 impl MyStruct {
   fn bar(&mut self) {
-    *self = MyStruct { val: 3 };
+    *self = MyStruct { val: 3 }; // $ read_access=self
   }
 }
 
@@ -485,9 +541,25 @@ fn ref_methodcall_receiver() {
   print_i64(a.val); // $ read_access=a
 }
 
+macro_rules! let_in_macro {
+    ($e:expr) => {
+        {
+            let var_in_macro = $e;
+            var_in_macro
+        }
+    };
+}
+
+fn macro_invocation() {
+    let var_from_macro =
+        let_in_macro!(37); // $ MISSING: read_access=var_in_macro
+    print_i64(var_from_macro); // $ read_access=var_from_macro
+}
+
 fn main() {
     immutable_variable();
     mutable_variable();
+    mutable_variable_immutable_borrow();
     variable_shadow1();
     variable_shadow2();
     let_pattern1();
@@ -514,7 +586,9 @@ fn main() {
     alias();
     capture_mut();
     capture_immut();
+    async_block_capture();
     structs();
     ref_arg();
     ref_methodcall_receiver();
+    macro_invocation();
 }

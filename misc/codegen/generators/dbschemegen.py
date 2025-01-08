@@ -110,7 +110,8 @@ def cls_to_dbscheme(cls: schema.Class, lookup: typing.Dict[str, schema.Class], a
 
 def get_declarations(data: schema.Schema):
     add_or_none_except = data.root_class.name if data.null else None
-    declarations = [d for cls in data.classes.values() for d in cls_to_dbscheme(cls, data.classes, add_or_none_except)]
+    declarations = [d for cls in data.classes.values() if not cls.imported for d in cls_to_dbscheme(cls,
+                                                                                                    data.classes, add_or_none_except)]
     if data.null:
         property_classes = {
             prop.type for cls in data.classes.values() for prop in cls.properties

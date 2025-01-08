@@ -1,3 +1,21 @@
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated inline expectation test API that was based on the `InlineExpectationsTest` class.
+
+## 1.0.12
+
+No user-facing changes.
+
+## 1.0.11
+
+No user-facing changes.
+
+## 1.0.10
+
+No user-facing changes.
+
 ## 1.0.9
 
 No user-facing changes.

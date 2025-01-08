@@ -1,0 +1,27 @@
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      publish_docs:
+        description: "pub"
+        default: true
+        type: boolean
+
+jobs:
+  Docs:
+    if: github.repository == 'test/test'
+    runs-on: macos-14
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.head_ref || github.ref }}
+          fetch-depth: 0
+      - run: |
+          # NOT VULNERABLE
+          python docs/build_docs.py

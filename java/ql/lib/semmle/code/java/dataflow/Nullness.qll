@@ -130,8 +130,8 @@ predicate dereference(Expr e) {
  * The `VarAccess` is included for nicer error reporting.
  */
 private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
-  dereference(result) and
-  result = sameValue(v, va)
+  dereference(result.asExpr()) and
+  result.asExpr() = sameValue(v, va)
 }
 
 /**
@@ -141,16 +141,16 @@ private ControlFlowNode varDereference(SsaVariable v, VarAccess va) {
 private ControlFlowNode ensureNotNull(SsaVariable v) {
   result = varDereference(v, _)
   or
-  result.(AssertStmt).getExpr() = nullGuard(v, true, false)
+  result.asStmt().(AssertStmt).getExpr() = nullGuard(v, true, false)
   or
-  exists(AssertTrueMethod m | result = m.getACheck(nullGuard(v, true, false)))
+  exists(AssertTrueMethod m | result.asCall() = m.getACheck(nullGuard(v, true, false)))
   or
-  exists(AssertFalseMethod m | result = m.getACheck(nullGuard(v, false, false)))
+  exists(AssertFalseMethod m | result.asCall() = m.getACheck(nullGuard(v, false, false)))
   or
-  exists(AssertNotNullMethod m | result = m.getACheck(v.getAUse()))
+  exists(AssertNotNullMethod m | result.asCall() = m.getACheck(v.getAUse()))
   or
   exists(AssertThatMethod m, MethodCall ma |
-    result = m.getACheck(v.getAUse()) and ma.getControlFlowNode() = result
+    result.asCall() = m.getACheck(v.getAUse()) and ma.getControlFlowNode() = result
   |
     ma.getAnArgument().(MethodCall).getMethod().getName() = "notNullValue"
   )
@@ -279,10 +279,10 @@ private predicate enhancedForEarlyExit(EnhancedForStmt for, ControlFlowNode n1, 
   exists(Expr forExpr |
     n1.getANormalSuccessor() = n2 and
     for.getExpr() = forExpr and
-    forExpr.getAChildExpr*() = n1 and
-    not forExpr.getAChildExpr*() = n2 and
-    n1.getANormalSuccessor() = for.getVariable() and
-    not n2 = for.getVariable()
+    forExpr.getAChildExpr*() = n1.asExpr() and
+    not forExpr.getAChildExpr*() = n2.asExpr() and
+    n1.getANormalSuccessor().asExpr() = for.getVariable() and
+    not n2.asExpr() = for.getVariable()
   )
 }
 
@@ -343,7 +343,7 @@ private predicate nullVarStep(
   not impossibleEdge(mid, bb) and
   not exists(boolean branch | nullGuard(midssa, branch, false).hasBranchEdge(mid, bb, branch)) and
   not (leavingFinally(mid, bb, true) and midstoredcompletion = true) and
-  if bb.getFirstNode() = any(TryStmt try | | try.getFinally())
+  if bb.getFirstNode().asStmt() = any(TryStmt try | | try.getFinally())
   then
     if bb.getFirstNode() = mid.getLastNode().getANormalSuccessor()
     then storedcompletion = false

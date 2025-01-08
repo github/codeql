@@ -1,14 +1,12 @@
 import go
-import semmle.go.dataflow.ExternalFlow
 import ModelValidation
-import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import MakeTest<FlowTest>
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { sourceNode(source, "qltest") }
 
-  predicate isSink(DataFlow::Node sink) { sink = any(FileSystemAccess fsa).getAPathArgument() }
+  predicate isSink(DataFlow::Node sink) { sinkNode(sink, "qltest") }
 }
 
 module Flow = TaintTracking::Global<Config>;

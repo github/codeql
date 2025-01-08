@@ -1,5 +1,5 @@
 import python
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.DataFlowDispatch as TT
 
 /** Holds when `call` is resolved to `callable` using points-to based call-graph. */
@@ -31,10 +31,7 @@ predicate typeTrackerCallEdge(CallNode call, Function callable) {
 predicate typeTrackerClassCall(CallNode call, Function callable) {
   exists(call.getLocation().getFile().getRelativePath()) and
   exists(callable.getLocation().getFile().getRelativePath()) and
-  exists(TT::NormalCall cc |
-    cc = TT::TNormalCall(call, _, any(TT::TCallType t | t instanceof TT::CallTypeClass)) and
-    TT::TFunction(callable) = TT::viableCallable(cc)
-  )
+  TT::resolveCall(call, callable, any(TT::TCallType t | t instanceof TT::CallTypeClass))
 }
 
 module CallGraphTest implements TestSig {

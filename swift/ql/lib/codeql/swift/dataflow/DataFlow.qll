@@ -7,5 +7,5 @@ module DataFlow {
   private import codeql.dataflow.DataFlow
   private import codeql.swift.elements.Location
   import DataFlowMake<Location, SwiftDataFlow>
-  import internal.DataFlowImpl1
+  import Public
 }

@@ -6,6 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.internal.AddressableImpl::Impl as AddressableImpl
 import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
 
 /**
@@ -21,5 +22,5 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Item` class directly.
    * Use the subclass `Item`, where the following predicates are available.
    */
-  class Item extends Synth::TItem, StmtImpl::Stmt { }
+  class Item extends Synth::TItem, StmtImpl::Stmt, AddressableImpl::Addressable { }
 }

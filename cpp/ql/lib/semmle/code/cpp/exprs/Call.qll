@@ -149,6 +149,11 @@ class Call extends Expr, NameQualifiableElement, TCall {
     variableAddressEscapesTreeNonConst(va, this.getQualifier().getFullyConverted()) and
     i = -1
   }
+
+  /** Holds if this expression could be the return value of an implicitly declared function. */
+  predicate mayBeFromImplicitlyDeclaredFunction() {
+    this.getTarget().getADeclarationEntry().isImplicit()
+  }
 }
 
 /**

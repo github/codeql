@@ -472,7 +472,7 @@ class Function extends ValueEntity, @functionobject {
   /** Gets a parameter of this function. */
   Parameter getAParameter() { result = this.getParameter(_) }
 
-  /** Gets the `i`th reslt variable of this function. */
+  /** Gets the `i`th result variable of this function. */
   ResultVariable getResult(int i) { result.isResultOf(this.getFuncDecl(), i) }
 
   /** Gets a result variable of this function. */
@@ -519,13 +519,7 @@ class Method extends Function {
    * Gets the receiver base type of this method, that is, either the base type of the receiver type
    * if it is a pointer type, or the receiver type itself if it is not a pointer type.
    */
-  Type getReceiverBaseType() {
-    exists(Type recv | recv = this.getReceiverType() |
-      if recv instanceof PointerType
-      then result = recv.(PointerType).getBaseType()
-      else result = recv
-    )
-  }
+  Type getReceiverBaseType() { result = lookThroughPointerType(this.getReceiverType()) }
 
   /** Holds if this method has name `m` and belongs to the method set of type `tp` or `*tp`. */
   private predicate isIn(NamedType tp, string m) {

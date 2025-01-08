@@ -6,12 +6,11 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Attr
+import codeql.rust.elements.internal.CallableImpl::Impl as CallableImpl
 import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-import codeql.rust.elements.ParamList
-import codeql.rust.elements.RetType
+import codeql.rust.elements.RetTypeRepr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `ClosureExpr` and should not
@@ -32,28 +31,8 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::ClosureExpr` class directly.
    * Use the subclass `ClosureExpr`, where the following predicates are available.
    */
-  class ClosureExpr extends Synth::TClosureExpr, ExprImpl::Expr {
+  class ClosureExpr extends Synth::TClosureExpr, ExprImpl::Expr, CallableImpl::Callable {
     override string getAPrimaryQlClass() { result = "ClosureExpr" }
-
-    /**
-     * Gets the `index`th attr of this closure expression (0-based).
-     */
-    Attr getAttr(int index) {
-      result =
-        Synth::convertAttrFromRaw(Synth::convertClosureExprToRaw(this)
-              .(Raw::ClosureExpr)
-              .getAttr(index))
-    }
-
-    /**
-     * Gets any of the attrs of this closure expression.
-     */
-    final Attr getAnAttr() { result = this.getAttr(_) }
-
-    /**
-     * Gets the number of attrs of this closure expression.
-     */
-    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the body of this closure expression, if it exists.
@@ -109,26 +88,11 @@ module Generated {
     predicate isStatic() { Synth::convertClosureExprToRaw(this).(Raw::ClosureExpr).isStatic() }
 
     /**
-     * Gets the parameter list of this closure expression, if it exists.
-     */
-    ParamList getParamList() {
-      result =
-        Synth::convertParamListFromRaw(Synth::convertClosureExprToRaw(this)
-              .(Raw::ClosureExpr)
-              .getParamList())
-    }
-
-    /**
-     * Holds if `getParamList()` exists.
-     */
-    final predicate hasParamList() { exists(this.getParamList()) }
-
-    /**
      * Gets the ret type of this closure expression, if it exists.
      */
-    RetType getRetType() {
+    RetTypeRepr getRetType() {
       result =
-        Synth::convertRetTypeFromRaw(Synth::convertClosureExprToRaw(this)
+        Synth::convertRetTypeReprFromRaw(Synth::convertClosureExprToRaw(this)
               .(Raw::ClosureExpr)
               .getRetType())
     }

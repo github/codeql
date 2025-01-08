@@ -38,14 +38,20 @@ jobs:
           path: codeql-main
           ref: main
       - uses: ./codeql-main/.github/actions/fetch-codeql
+      # compute the shortname of the project that does not contain any special (disk) characters
+      - run: |
+          echo "SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}" >> $GITHUB_OUTPUT
+        env: 
+          SLUG: ${{ matrix.slug }}
+        id: shortname
       - name: Download database
         env:
           SLUG: ${{ matrix.slug }}
           GH_TOKEN: ${{ github.token }}
+          SHORTNAME: ${{ steps.shortname.outputs.SHORTNAME }}
         run: |
           set -x
           mkdir lib-dbs
-          SHORTNAME=${SLUG//[^a-zA-Z0-9_]/}
           gh api -H "Accept: application/zip" "/repos/${SLUG}/code-scanning/codeql/databases/java" > "$SHORTNAME.zip"
           unzip -q -d "${SHORTNAME}-db" "${SHORTNAME}.zip"
           mkdir "lib-dbs/$SHORTNAME/"
@@ -93,14 +99,14 @@ jobs:
             name="diff_${basename/.model.yml/""}"
             (diff -w -u $m $t | diff2html -i stdin -F $MODELS/$name.html) || true
           done
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: models
+          name: models-${{ steps.shortname.outputs.SHORTNAME }}
           path: tmp-models/**/**/*.model.yml
           retention-days: 20
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: diffs
+          name: diffs-${{ steps.shortname.outputs.SHORTNAME }}
           path: tmp-models/*.html
           # An html file is only produced if the generated models differ.
           if-no-files-found: ignore

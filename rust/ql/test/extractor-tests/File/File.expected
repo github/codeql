@@ -1,3 +1,4 @@
-| a_file.rs:0:0:0:0 | a_file.rs |
-| another_file.rs:0:0:0:0 | another_file.rs |
-| lib.rs:0:0:0:0 | lib.rs |
+| Cargo.toml:0:0:0:0 | Cargo.toml | fromSource: no |
+| a_file.rs:0:0:0:0 | a_file.rs | fromSource: yes |
+| another_file.rs:0:0:0:0 | another_file.rs | fromSource: yes |
+| lib.rs:0:0:0:0 | lib.rs | fromSource: yes |

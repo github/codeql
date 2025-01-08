@@ -1,0 +1,21 @@
+name: Actor
+
+on: pull_request
+
+permissions:
+  contents: write
+
+jobs:
+  template-oss:
+    name: test
+    if: github.repository_owner == 'npm' && github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - run: |
+          ./cmd

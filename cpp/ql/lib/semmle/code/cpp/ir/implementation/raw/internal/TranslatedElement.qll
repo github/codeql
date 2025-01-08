@@ -196,6 +196,8 @@ private predicate isInvalidFunction(Function func) {
     expr.getEnclosingFunction() = func and
     not exists(expr.getType())
   )
+  or
+  count(func.getEntryPoint().getLocation()) > 1
 }
 
 /**

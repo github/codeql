@@ -11,7 +11,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.NonThrowing
 
 private class MemsetFunctionModel extends ArrayFunction, DataFlowFunction, AliasFunction,
-  SideEffectFunction, NonThrowingFunction
+  SideEffectFunction, NonCppThrowingFunction
 {
   MemsetFunctionModel() {
     this.hasGlobalOrStdOrBslName("memset")

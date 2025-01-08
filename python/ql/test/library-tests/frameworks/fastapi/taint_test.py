@@ -187,3 +187,38 @@ async def websocket_test(websocket: WebSocket): # $ requestHandler routedParamet
 
     async for data in  websocket.iter_json():
         ensure_tainted(data) # $ tainted
+
+
+# --- Request ---
+
+import starlette.requests
+from fastapi import Request
+
+
+assert Request == starlette.requests.Request
+
+@app.websocket("/req") # $ routeSetup="/req"
+async def request_test(request: Request): # $ requestHandler routedParameter=request
+    ensure_tainted(
+        request, # $ tainted
+
+        await request.body(), # $ tainted
+
+        await request.json(), # $ tainted
+        await request.json()["key"], # $ tainted
+
+        # form() returns a FormData (which is a starlette ImmutableMultiDict)
+        await request.form(), # $ tainted
+        await request.form()["key"], # $ tainted
+        await request.form().getlist("key"), # $ MISSING: tainted
+        await request.form().getlist("key")[0], # $ MISSING: tainted
+        # data in the form could be an starlette.datastructures.UploadFile
+        await request.form()["file"].filename, # $ MISSING: tainted
+        await request.form().getlist("file")[0].filename, # $ MISSING: tainted
+
+        request.cookies, # $ tainted
+        request.cookies["key"], # $ tainted
+    )
+
+    async for chunk in request.stream():
+        ensure_tainted(chunk) # $ tainted

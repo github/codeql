@@ -7,8 +7,11 @@ extensions:
       - ["System.IO.Enumeration", "FileSystemEntry", False, "ToFileSystemInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEntry", False, "ToSpecifiedFullPath", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEntry", False, "get_FileName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", False, "get_Current", "()", "", "Argument[this].Property[System.IO.Enumeration.FileSystemEnumerator`1.Current]", "ReturnValue", "value", "dfc-generated"]
       - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.Enumeration", "FileSystemName", False, "TranslateWin32Expression", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", True, "ShouldIncludeEntry", "(System.IO.Enumeration.FileSystemEntry)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", True, "ShouldRecurseIntoEntry", "(System.IO.Enumeration.FileSystemEntry)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.IO.Enumeration", "FileSystemName", False, "TranslateWin32Expression", "(System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -21,6 +24,7 @@ extensions:
       - ["System.IO.Enumeration", "FileSystemEntry", "get_LastAccessTimeUtc", "()", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEntry", "get_LastWriteTimeUtc", "()", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEntry", "get_Length", "()", "summary", "df-generated"]
+      - ["System.IO.Enumeration", "FileSystemEnumerable<TResult>", "FileSystemEnumerable", "(System.String,System.IO.Enumeration.FileSystemEnumerable<TResult>+FindTransform,System.IO.EnumerationOptions)", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "ContinueOnError", "(System.Int32)", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "Dispose", "()", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "Dispose", "(System.Boolean)", "summary", "df-generated"]
@@ -28,8 +32,6 @@ extensions:
       - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "MoveNext", "()", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "OnDirectoryFinished", "(System.ReadOnlySpan<System.Char>)", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "Reset", "()", "summary", "df-generated"]
-      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "ShouldIncludeEntry", "(System.IO.Enumeration.FileSystemEntry)", "summary", "df-generated"]
-      - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "ShouldRecurseIntoEntry", "(System.IO.Enumeration.FileSystemEntry)", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemEnumerator<TResult>", "TransformEntry", "(System.IO.Enumeration.FileSystemEntry)", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemName", "MatchesSimpleExpression", "(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.Boolean)", "summary", "df-generated"]
       - ["System.IO.Enumeration", "FileSystemName", "MatchesWin32Expression", "(System.ReadOnlySpan<System.Char>,System.ReadOnlySpan<System.Char>,System.Boolean)", "summary", "df-generated"]

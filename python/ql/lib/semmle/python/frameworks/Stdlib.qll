@@ -4537,27 +4537,41 @@ module StdlibPrivate {
     override DataFlow::ArgumentNode getACallback() { none() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      exists(string content |
-        content = "ListElement"
-        or
-        content = "SetElement"
-        or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          content = "TupleElement[" + i.toString() + "]"
-        )
-        or
-        exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
-          content = "DictionaryElement[" + key + "]"
-        )
-      |
-        input = "Argument[self]." + content and
-        output = "ReturnValue." + content and
+      exists(DataFlow::Content c |
+        input = "Argument[self]." + c.getMaDRepresentation() and
+        output = "ReturnValue." + c.getMaDRepresentation() and
         preservesValue = true
       )
       or
       input = "Argument[self]" and
       output = "ReturnValue" and
       preservesValue = true
+    }
+  }
+
+  /** A flow summary for `copy.replace`. */
+  class ReplaceSummary extends SummarizedCallable {
+    ReplaceSummary() { this = "copy.replace" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("copy").getMember("replace").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::moduleImport("copy").getMember("replace").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      exists(CallNode c, string name, ControlFlowNode n, DataFlow::AttributeContent ac |
+        c.getFunction().(NameNode).getId() = "replace" or
+        c.getFunction().(AttrNode).getName() = "replace"
+      |
+        n = c.getArgByName(name) and
+        ac.getAttribute() = name and
+        input = "Argument[" + name + ":]" and
+        output = "ReturnValue." + ac.getMaDRepresentation() and
+        preservesValue = true
+      )
     }
   }
 

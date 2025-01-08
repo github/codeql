@@ -27,11 +27,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             Info();
         }
 
-        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory) : this(new DotNetCliInvoker(logger, Path.Combine(dotNetPath ?? string.Empty, "dotnet")), logger, tempWorkingDirectory) { }
+        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Combine(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, tempWorkingDirectory) { }
 
         internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger) => new DotNet(dotnetCliInvoker, logger);
 
-        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory) => new DotNet(logger, dotNetPath, tempWorkingDirectory);
+        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) => new DotNet(logger, dotNetPath, tempWorkingDirectory, dependabotProxy);
 
         private void Info()
         {
@@ -131,7 +131,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         // The version number should be kept in sync with the version .NET version used for building the application.
-        public const string LatestDotNetSdkVersion = "8.0.101";
+        public const string LatestDotNetSdkVersion = "9.0.100";
 
         /// <summary>
         /// Returns a script for downloading relevant versions of the

@@ -448,7 +448,8 @@ def test_single_class_property(generate_classes, is_child, prev_child):
                 ql.Property(singular="Foo", type="Bar", tablename="my_objects",
                             tableparams=[
                                 "this", "result"],
-                            prev_child=prev_child, doc="foo of this my object"),
+                            prev_child=prev_child, doc="foo of this my object",
+                            type_is_codegen_class=True),
             ],
         )),
         "Bar.qll": (a_ql_class_public(name="Bar"), a_ql_stub(name="Bar"), a_ql_class(name="Bar", final=True, imports=[stub_import_prefix + "Bar"])),
@@ -1006,6 +1007,7 @@ def test_hideable_property(generate_classes):
                                  final=True, properties=[
                                  ql.Property(singular="X", type="MyObject", tablename="others",
                                              type_is_hideable=True,
+                                             type_is_codegen_class=True,
                                              tableparams=["this", "result"], doc="x of this other"),
                                  ])),
     }

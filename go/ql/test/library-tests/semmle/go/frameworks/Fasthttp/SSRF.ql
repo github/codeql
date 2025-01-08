@@ -1,6 +1,6 @@
 import go
 import semmle.go.security.RequestForgery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module FasthttpTest implements TestSig {
   string getARelevantTag() { result = "SsrfSink" }

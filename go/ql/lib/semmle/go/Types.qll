@@ -446,11 +446,7 @@ class StructType extends @structtype, CompositeType {
       if n = ""
       then (
         isEmbedded = true and
-        (
-          name = tp.(NamedType).getName()
-          or
-          name = tp.(PointerType).getBaseType().(NamedType).getName()
-        )
+        name = lookThroughPointerType(tp).(NamedType).getName()
       ) else (
         isEmbedded = false and
         name = n
@@ -500,14 +496,15 @@ class StructType extends @structtype, CompositeType {
   Field getFieldOfEmbedded(Field embeddedParent, string name, int depth, boolean isEmbedded) {
     // embeddedParent is a field of 'this' at depth 'depth - 1'
     this.hasFieldCand(_, embeddedParent, depth - 1, true) and
-    // embeddedParent's type has the result field
-    exists(StructType embeddedType, Type fieldType |
-      fieldType = embeddedParent.getType().getUnderlyingType() and
-      pragma[only_bind_into](embeddedType) =
-        [fieldType, fieldType.(PointerType).getBaseType().getUnderlyingType()]
-    |
-      result = embeddedType.getOwnField(name, isEmbedded)
-    )
+    // embeddedParent's type has the result field. Note that it is invalid Go
+    // to have an embedded field with a named type whose underlying type is a
+    // pointer, so we don't have to have
+    // `lookThroughPointerType(embeddedParent.getType().getUnderlyingType())`.
+    result =
+      lookThroughPointerType(embeddedParent.getType())
+          .getUnderlyingType()
+          .(StructType)
+          .getOwnField(name, isEmbedded)
   }
 
   /**
@@ -518,9 +515,7 @@ class StructType extends @structtype, CompositeType {
     this.hasFieldCand(_, embeddedParent, depth - 1, true) and
     result.getName() = name and
     (
-      result.getReceiverBaseType() = embeddedParent.getType()
-      or
-      result.getReceiverBaseType() = embeddedParent.getType().(PointerType).getBaseType()
+      result.getReceiverBaseType() = lookThroughPointerType(embeddedParent.getType())
       or
       methodhosts(result, embeddedParent.getType())
     )
@@ -529,8 +524,12 @@ class StructType extends @structtype, CompositeType {
   private predicate hasFieldCand(string name, Field f, int depth, boolean isEmbedded) {
     f = this.getOwnField(name, isEmbedded) and depth = 0
     or
-    not this.hasOwnField(_, name, _, _) and
-    f = this.getFieldOfEmbedded(_, name, depth, isEmbedded)
+    f = this.getFieldOfEmbedded(_, name, depth, isEmbedded) and
+    // If this is a cyclic field and this is not the first time we see this embedded field
+    // then don't include it as a field candidate to avoid non-termination.
+    not exists(Type t | lookThroughPointerType(t) = lookThroughPointerType(f.getType()) |
+      this.hasOwnField(_, name, t, _)
+    )
   }
 
   private predicate hasMethodCand(string name, Method m, int depth) {
@@ -547,15 +546,7 @@ class StructType extends @structtype, CompositeType {
   predicate hasField(string name, Type tp) {
     exists(int mindepth |
       mindepth = min(int depth | this.hasFieldCand(name, _, depth, _)) and
-      tp = unique(Field f | f = this.getFieldCand(name, mindepth, _)).getType()
-    )
-  }
-
-  private Field getFieldCand(string name, int depth, boolean isEmbedded) {
-    result = this.getOwnField(name, isEmbedded) and depth = 0
-    or
-    exists(Type embedded | this.hasEmbeddedField(embedded, depth - 1) |
-      result = embedded.getUnderlyingType().(StructType).getOwnField(name, isEmbedded)
+      tp = unique(Field f | this.hasFieldCand(name, f, mindepth, _)).getType()
     )
   }
 
@@ -570,9 +561,9 @@ class StructType extends @structtype, CompositeType {
    * The depth of a field `f` declared in this type is zero.
    */
   Field getFieldAtDepth(string name, int depth) {
-    depth = min(int depthCand | exists(this.getFieldCand(name, depthCand, _))) and
-    result = this.getFieldCand(name, depth, _) and
-    strictcount(this.getFieldCand(name, depth, _)) = 1
+    depth = min(int depthCand | this.hasFieldCand(name, _, depthCand, _)) and
+    this.hasFieldCand(name, result, depth, _) and
+    strictcount(Field f | this.hasFieldCand(name, f, depth, _)) = 1
   }
 
   Method getMethodAtDepth(string name, int depth) {
@@ -642,6 +633,16 @@ class PointerType extends @pointertype, CompositeType {
   override string pp() { result = "* " + this.getBaseType().pp() }
 
   override string toString() { result = "pointer type" }
+}
+
+/**
+ * Gets the base type if `t` is a pointer type, otherwise `t` itself.
+ */
+Type lookThroughPointerType(Type t) {
+  not t instanceof PointerType and
+  result = t
+  or
+  result = t.(PointerType).getBaseType()
 }
 
 private newtype TTypeSetTerm =

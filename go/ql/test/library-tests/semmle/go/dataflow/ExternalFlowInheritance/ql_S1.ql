@@ -1,14 +1,32 @@
 import go
-import semmle.go.dataflow.ExternalFlow
 import ModelValidation
-import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import MakeTest<FlowTest>
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) {
+    exists(Method m |
+      m.hasQualifiedName("github.com/nonexistent/test", "S1", "Source") and
+      source = m.getACall().getResult()
+    )
+    or
+    exists(Field f |
+      f.hasQualifiedName("github.com/nonexistent/test", "S1", "SourceField") and
+      source = f.getARead()
+    )
+  }
 
-  predicate isSink(DataFlow::Node sink) { sink = any(FileSystemAccess fsa).getAPathArgument() }
+  predicate isSink(DataFlow::Node sink) {
+    exists(Method m |
+      m.hasQualifiedName("github.com/nonexistent/test", "S1", "Sink") and
+      sink = m.getACall().getArgument(0)
+    )
+    or
+    exists(Field f |
+      f.hasQualifiedName("github.com/nonexistent/test", "S1", "SinkField") and
+      any(DataFlow::Write w).writesField(_, f, sink)
+    )
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;
@@ -27,30 +45,10 @@ module FlowTest implements TestSig {
   }
 }
 
-class MySource extends RemoteFlowSource::Range instanceof DataFlow::Node {
-  MySource() {
-    exists(Method m |
-      m.hasQualifiedName("github.com/nonexistent/test", "S1", "Source") and
-      this = m.getACall().getResult()
-    )
-  }
-}
-
 class MyStep extends DataFlow::FunctionModel, Method {
   MyStep() { this.hasQualifiedName("github.com/nonexistent/test", "S1", "Step") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(0) and output.isResult()
   }
-}
-
-class MySink extends FileSystemAccess::Range, DataFlow::CallNode {
-  MySink() {
-    exists(Method m |
-      m.hasQualifiedName("github.com/nonexistent/test", "S1", "Sink") and
-      this = m.getACall()
-    )
-  }
-
-  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 }

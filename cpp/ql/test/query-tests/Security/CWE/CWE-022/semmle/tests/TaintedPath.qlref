@@ -1,1 +1,2 @@
-Security/CWE/CWE-022/TaintedPath.ql
+query: Security/CWE/CWE-022/TaintedPath.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

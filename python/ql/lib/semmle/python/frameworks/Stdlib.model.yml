@@ -45,7 +45,7 @@ extensions:
       # See https://docs.python.org/3/library/contextlib.html#contextlib.ExitStack
       - ["contextlib.ExitStack", "Member[enter_context]", "Argument[0,cm:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/copy.html#copy.deepcopy
-      - ["copy", "Member[copy,deepcopy]", "Argument[0,x:]", "ReturnValue", "value"]
+      - ["copy", "Member[copy,deepcopy,replace]", "Argument[0,x:]", "ReturnValue", "value"]
       # See
       #  - https://docs.python.org/3/library/ctypes.html#ctypes.create_string_buffer
       #  - https://docs.python.org/3/library/ctypes.html#ctypes.create_unicode_buffer
@@ -65,6 +65,10 @@ extensions:
       - ["getopt", "Member[getopt]", "Argument[1,shortopts:,2,longopts:]", "ReturnValue.TupleElement[0].ListElement.TupleElement[0]", "taint"]
       # See https://docs.python.org/3/library/gettext.html#gettext.gettext
       - ["gettext", "Member[gettext]", "Argument[0,message:]", "ReturnValue", "taint"]
+      # See 
+      #  - https://docs.python.org/3/library/glob.html#glob.glob
+      #  - https://docs.python.org/3/library/glob.html#glob.iglob
+      - ["glob", "Member[glob,iglob]", "Argument[0,pathname:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/gzip.html#gzip.GzipFile
       - ["gzip.GzipFile!", "Subclass.Call", "Argument[0,filename:]", "ReturnValue", "taint"]
       # See
@@ -88,6 +92,8 @@ extensions:
       - ["nturl2path", "Member[url2pathname]", "Argument[0,url:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/optparse.html#optparse.OptionParser.parse_args
       - ["optparse.OptionParser", "Member[parse_args]", "Argument[0,args:,1,values:]", "ReturnValue.TupleElement[0,1]", "taint"]
+      # See https://docs.python.org/3/library/os.html#os.walk
+      - ["os", "Member[walk]", "Argument[0,top:]", "ReturnValue", "taint"]
       # See https://github.com/python/cpython/blob/3.10/Lib/pathlib.py#L972-L973
       - ["pathlib.Path", ".Member[__enter__]", "Argument[self]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/os.html#os.PathLike.__fspath__

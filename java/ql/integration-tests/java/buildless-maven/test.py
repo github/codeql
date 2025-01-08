@@ -1,7 +1,9 @@
+import os
+import os.path
+
 def test(codeql, java):
-    codeql.database.create(
+    codeql.database.create(build_mode = "none",
         _env={
-            "CODEQL_EXTRACTOR_JAVA_OPTION_BUILDLESS": "true",
-            "CODEQL_EXTRACTOR_JAVA_OPTION_BUILDLESS_CLASSPATH_FROM_BUILD_FILES": "true",
+            "_JAVA_OPTIONS": "-Duser.home=" + os.path.join(os.getcwd(), "empty-home")
         }
     )

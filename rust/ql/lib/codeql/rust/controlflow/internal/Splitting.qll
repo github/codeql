@@ -4,8 +4,10 @@ private import Scope
 
 cached
 private module Cached {
+  private import codeql.rust.internal.CachedStages
+
   cached
-  newtype TSplitKind = TConditionalCompletionSplitKind()
+  newtype TSplitKind = TConditionalCompletionSplitKind() { Stages::CfgStage::ref() }
 
   cached
   newtype TSplit = TConditionalCompletionSplit(ConditionalCompletion c)
@@ -69,7 +71,13 @@ module ConditionalCompletionSplitting {
       child = parent.(LogicalNotExpr).getExpr() and
       childCompletion.getDual() = parentCompletion
       or
-      childCompletion = parentCompletion and
+      (
+        childCompletion = parentCompletion
+        or
+        // needed for `let` expressions
+        childCompletion.(MatchCompletion).getValue() =
+          parentCompletion.(BooleanCompletion).getValue()
+      ) and
       (
         child = parent.(BinaryLogicalOperation).getAnOperand()
         or

@@ -1244,4 +1244,13 @@ module NodeJSLib {
       result = moduleImport().getAPropertyRead(member)
     }
   }
+
+  /** A read of `process.env`, considered as a threat-model source. */
+  private class ProcessEnvThreatSource extends ThreatModelSource::Range {
+    ProcessEnvThreatSource() { this = NodeJSLib::process().getAPropertyRead("env") }
+
+    override string getThreatModel() { result = "environment" }
+
+    override string getSourceType() { result = "process.env" }
+  }
 }

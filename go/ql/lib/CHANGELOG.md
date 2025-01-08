@@ -1,3 +1,42 @@
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* A call to a method whose name starts with "Debug", "Error", "Fatal", "Info", "Log", "Output", "Panic", "Print", "Trace", "Warn" or "With" defined on an interface whose name ends in "logger" or "Logger" is now considered a LoggerCall. In particular, it is a sink for `go/clear-text-logging` and `go/log-injection`. This may lead to some more alerts in those queries.
+
+### Bug Fixes
+
+* Fixed a bug which meant that promoted fields and methods were missing when the embedded parent was not promoted due to a name clash.
+
+## 2.1.3
+
+### Minor Analysis Improvements
+
+* The `subtypes` column has been set to true in all models-as-data models except some tests. This means that existing models will apply in some cases where they didn't before, which may lead to more alerts.
+
+### Bug Fixes
+
+* The behaviour of the `subtypes` column in models-as-data now matches other languages more closely.
+* Fixed a bug which meant that some qualified names for promoted methods were not being recognised in some very specific circumstances.
+
+## 2.1.2
+
+### Minor Analysis Improvements
+
+* The AST viewer now shows type parameter declarations in the correct place in the AST.
+
+## 2.1.1
+
+### Minor Analysis Improvements
+
+* Added member predicates `StructTag.hasOwnFieldWithTag` and `Field.getTag`, which enable CodeQL queries to examine struct field tags.
+* Added member predicate `InterfaceType.hasPrivateMethodWithQualifiedName`, which enables CodeQL queries to distinguish interfaces with matching non-exported method names that are declared in different packages, and are therefore incompatible.
+* Local source models with the `stdin` source kind have been added for the variable `os.Stdin` and the functions `fmt.Scan`, `fmt.Scanf` and `fmt.Scanln`. You can optionally include threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see [Analyzing your code with CodeQL queries](https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data>) and [Customizing your advanced setup for code scanning](https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models).
+
 ## 2.1.0
 
 ### Deprecated APIs

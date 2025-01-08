@@ -4,11 +4,10 @@
  */
 
 private import internal.ClosureExprImpl
-import codeql.rust.elements.Attr
+import codeql.rust.elements.Callable
 import codeql.rust.elements.ClosureBinder
 import codeql.rust.elements.Expr
-import codeql.rust.elements.ParamList
-import codeql.rust.elements.RetType
+import codeql.rust.elements.RetTypeRepr
 
 /**
  * A closure expression. For example:

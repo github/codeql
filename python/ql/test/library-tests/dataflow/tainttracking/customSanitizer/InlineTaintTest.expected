@@ -1,7 +1,6 @@
 argumentToEnsureNotTaintedNotMarkedAsSpurious
 untaintedArgumentToEnsureTaintedNotMarkedAsMissing
 testFailures
-failures
 isSanitizer
 | test.py:21:39:21:39 | ControlFlowNode for s |
 | test.py:34:39:34:39 | ControlFlowNode for s |

@@ -1,0 +1,39 @@
+models
+edges
+| main.rs:9:13:9:19 | ...: ... | main.rs:10:11:10:11 | s | provenance |  |
+| main.rs:10:11:10:11 | s | main.rs:9:30:14:1 | { ... } | provenance |  |
+| main.rs:21:9:21:9 | s | main.rs:22:10:22:10 | s | provenance |  |
+| main.rs:21:13:21:21 | source(...) | main.rs:21:9:21:9 | s | provenance |  |
+| main.rs:26:9:26:9 | s | main.rs:27:22:27:22 | s | provenance |  |
+| main.rs:26:13:26:21 | source(...) | main.rs:26:9:26:9 | s | provenance |  |
+| main.rs:27:9:27:9 | s | main.rs:28:10:28:10 | s | provenance |  |
+| main.rs:27:13:27:23 | sanitize(...) | main.rs:27:9:27:9 | s | provenance |  |
+| main.rs:27:22:27:22 | s | main.rs:9:13:9:19 | ...: ... | provenance |  |
+| main.rs:27:22:27:22 | s | main.rs:27:13:27:23 | sanitize(...) | provenance |  |
+| main.rs:32:9:32:9 | s | main.rs:33:10:33:10 | s | provenance |  |
+| main.rs:32:13:32:21 | source(...) | main.rs:32:9:32:9 | s | provenance |  |
+nodes
+| main.rs:9:13:9:19 | ...: ... | semmle.label | ...: ... |
+| main.rs:9:30:14:1 | { ... } | semmle.label | { ... } |
+| main.rs:10:11:10:11 | s | semmle.label | s |
+| main.rs:17:10:17:18 | source(...) | semmle.label | source(...) |
+| main.rs:21:9:21:9 | s | semmle.label | s |
+| main.rs:21:13:21:21 | source(...) | semmle.label | source(...) |
+| main.rs:22:10:22:10 | s | semmle.label | s |
+| main.rs:26:9:26:9 | s | semmle.label | s |
+| main.rs:26:13:26:21 | source(...) | semmle.label | source(...) |
+| main.rs:27:9:27:9 | s | semmle.label | s |
+| main.rs:27:13:27:23 | sanitize(...) | semmle.label | sanitize(...) |
+| main.rs:27:22:27:22 | s | semmle.label | s |
+| main.rs:28:10:28:10 | s | semmle.label | s |
+| main.rs:32:9:32:9 | s | semmle.label | s |
+| main.rs:32:13:32:21 | source(...) | semmle.label | source(...) |
+| main.rs:33:10:33:10 | s | semmle.label | s |
+subpaths
+| main.rs:27:22:27:22 | s | main.rs:9:13:9:19 | ...: ... | main.rs:9:30:14:1 | { ... } | main.rs:27:13:27:23 | sanitize(...) |
+testFailures
+#select
+| main.rs:17:10:17:18 | source(...) | main.rs:17:10:17:18 | source(...) | main.rs:17:10:17:18 | source(...) | $@ | main.rs:17:10:17:18 | source(...) | source(...) |
+| main.rs:22:10:22:10 | s | main.rs:21:13:21:21 | source(...) | main.rs:22:10:22:10 | s | $@ | main.rs:21:13:21:21 | source(...) | source(...) |
+| main.rs:28:10:28:10 | s | main.rs:26:13:26:21 | source(...) | main.rs:28:10:28:10 | s | $@ | main.rs:26:13:26:21 | source(...) | source(...) |
+| main.rs:33:10:33:10 | s | main.rs:32:13:32:21 | source(...) | main.rs:33:10:33:10 | s | $@ | main.rs:32:13:32:21 | source(...) | source(...) |
