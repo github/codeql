@@ -34,7 +34,7 @@ private module FlowTestImpl implements InputSig<Location, RustDataFlow> {
     or
     sourceNode(src, _) and
     exists(CallExprBase call |
-      call = src.(Node::FlowSummaryNode).getSourceNode().getCall() and
+      call = src.(Node::FlowSummaryNode).getSourceElement().getCall() and
       result = call.getArgList().getArg(0).toString()
     )
   }

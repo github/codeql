@@ -191,13 +191,15 @@ module Node {
       result = this.getSummaryNode().getSummarizedCallable()
     }
 
-    /** Gets the source node that this node belongs to, if any */
-    FlowSummaryImpl::Public::SourceNode getSourceNode() {
-      result = this.getSummaryNode().getSourceNode()
+    /** Gets the AST source node that this node belongs to, if any */
+    FlowSummaryImpl::Public::SourceElement getSourceElement() {
+      result = this.getSummaryNode().getSourceElement()
     }
 
-    /** Gets the sink node that this node belongs to, if any */
-    FlowSummaryImpl::Public::SinkNode getSinkNode() { result = this.getSummaryNode().getSinkNode() }
+    /** Gets the AST sink node that this node belongs to, if any */
+    FlowSummaryImpl::Public::SinkElement getSinkElement() {
+      result = this.getSummaryNode().getSinkElement()
+    }
 
     /** Holds is this node is a source node of kind `kind`. */
     predicate isSource(string kind) {
@@ -210,9 +212,9 @@ module Node {
     }
 
     override CfgScope getCfgScope() {
-      result = this.getSummaryNode().getSourceNode().getEnclosingCfgScope()
+      result = this.getSummaryNode().getSourceElement().getEnclosingCfgScope()
       or
-      result = this.getSummaryNode().getSinkNode().getEnclosingCfgScope()
+      result = this.getSummaryNode().getSinkElement().getEnclosingCfgScope()
     }
 
     override DataFlowCallable getEnclosingCallable() {
@@ -225,9 +227,9 @@ module Node {
       exists(this.getSummarizedCallable()) and
       result instanceof EmptyLocation
       or
-      result = this.getSourceNode().getLocation()
+      result = this.getSourceElement().getLocation()
       or
-      result = this.getSinkNode().getLocation()
+      result = this.getSinkElement().getLocation()
     }
 
     override string toString() { result = this.getSummaryNode().toString() }

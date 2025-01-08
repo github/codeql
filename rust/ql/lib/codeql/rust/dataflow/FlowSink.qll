@@ -13,7 +13,7 @@ private module Sinks {
 /** Provides the `Range` class used to define the extent of `FlowSink`. */
 module FlowSink {
   /** A flow source. */
-  abstract class Range extends Impl::Public::SinkNode {
+  abstract class Range extends Impl::Public::SinkElement {
     bindingset[this]
     Range() { any() }
 

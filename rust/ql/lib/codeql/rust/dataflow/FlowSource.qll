@@ -13,7 +13,7 @@ private module Sources {
 /** Provides the `Range` class used to define the extent of `FlowSource`. */
 module FlowSource {
   /** A flow source. */
-  abstract class Range extends Impl::Public::SourceNode {
+  abstract class Range extends Impl::Public::SourceElement {
     bindingset[this]
     Range() { any() }
 

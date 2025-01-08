@@ -183,11 +183,11 @@ private module TypesInput implements Impl::Private::TypesInputSig {
     )
   }
 
-  DataFlowType getSourceNodeType(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
+  DataFlowType getSourceType(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
     none()
   }
 
-  DataFlowType getSinkNodeType(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
+  DataFlowType getSinkType(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 private module StepsInput implements Impl::Private::StepsInputSig {
