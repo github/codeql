@@ -183,16 +183,21 @@ module CallGraph {
       [viableCallable(this.asCall()), this.asCall().getCallee()] = result.asMethod()
     }
 
+    pragma[nomagic]
+    private predicate canTargetDatabaseUpdateMethod() {
+      exists(CallPathNode p |
+        p = this.getACallee() and
+        p.asMethod() instanceof DatabaseUpdateMethod
+      )
+    }
+
     /** Gets a successor node of this `CallPathNode`, if any. */
     CallPathNode getASuccessor() {
       this.asMethod() = result.asCall().getEnclosingCallable()
       or
       result = this.getACallee() and
       (
-        exists(CallPathNode p |
-          p = this.getACallee() and
-          p.asMethod() instanceof DatabaseUpdateMethod
-        )
+        this.canTargetDatabaseUpdateMethod()
         implies
         result.asMethod() instanceof DatabaseUpdateMethod
       )
