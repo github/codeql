@@ -36,7 +36,6 @@ rust_library(
         "Win32_System",
         "Win32_System_Com",
         "Win32_System_Console",
-        "Win32_System_SystemInformation",
         "Win32_UI",
         "Win32_UI_Shell",
         "default",

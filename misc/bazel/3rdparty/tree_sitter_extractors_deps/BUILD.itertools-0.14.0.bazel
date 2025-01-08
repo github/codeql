@@ -6,12 +6,12 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
+load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
-rust_proc_macro(
-    name = "clap_derive",
+rust_library(
+    name = "itertools",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -30,15 +30,17 @@ rust_proc_macro(
     ),
     crate_features = [
         "default",
+        "use_alloc",
+        "use_std",
     ],
     crate_root = "src/lib.rs",
-    edition = "2021",
+    edition = "2018",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=clap_derive",
+        "crate-name=itertools",
         "manual",
         "noclippy",
         "norustfmt",
@@ -80,11 +82,8 @@ rust_proc_macro(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "4.5.18",
+    version = "0.14.0",
     deps = [
-        "@vendor__heck-0.5.0//:heck",
-        "@vendor__proc-macro2-1.0.92//:proc_macro2",
-        "@vendor__quote-1.0.37//:quote",
-        "@vendor__syn-2.0.90//:syn",
+        "@vendor__either-1.13.0//:either",
     ],
 )
