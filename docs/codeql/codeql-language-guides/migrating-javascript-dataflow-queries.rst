@@ -207,7 +207,7 @@ There's an important change from the old data flow library when using flow state
 
 When using ``TaintTracking::GlobalWithState``, all flow states can propagate along taint steps.
 In the old data flow library, only the ``taint`` flow label could propagate along taint steps.
-A straight-forward translation of such a query may therefore result in new flow paths being found, which might be unexpected.
+A straightforward translation of such a query may therefore result in new flow paths being found, which might be unexpected.
 
 To emulate the old behavior, use ``DataFlow::GlobalWithState`` instead of ``TaintTracking::GlobalWithState``,
 and manually add taint steps using ``isAdditionalFlowStep``. The predicate ``TaintTracking::defaultTaintStep`` can be used to access to the set of taint steps.
