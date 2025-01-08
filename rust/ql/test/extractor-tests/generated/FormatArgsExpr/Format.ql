@@ -2,11 +2,12 @@
 import codeql.rust.elements
 import TestUtils
 
-from Format x, FormatArgsExpr getParent, int getIndex, string hasArgument
+from Format x, FormatArgsExpr getParent, int getIndex, int getNumberOfArguments
 where
   toBeTested(x) and
   not x.isUnknown() and
   getParent = x.getParent() and
   getIndex = x.getIndex() and
-  if x.hasArgument() then hasArgument = "yes" else hasArgument = "no"
-select x, "getParent:", getParent, "getIndex:", getIndex, "hasArgument:", hasArgument
+  getNumberOfArguments = x.getNumberOfArguments()
+select x, "getParent:", getParent, "getIndex:", getIndex, "getNumberOfArguments:",
+  getNumberOfArguments

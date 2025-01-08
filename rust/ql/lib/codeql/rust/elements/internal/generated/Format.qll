@@ -41,13 +41,18 @@ module Generated {
     int getIndex() { none() }
 
     /**
-     * Gets the argument of this format, if it exists.
+     * Gets the `index`th argument of this format (0-based).
      */
-    FormatArgument getArgument() { none() }
+    FormatArgument getArgument(int index) { none() }
 
     /**
-     * Holds if `getArgument()` exists.
+     * Gets any of the arguments of this format.
      */
-    final predicate hasArgument() { exists(this.getArgument()) }
+    final FormatArgument getAnArgument() { result = this.getArgument(_) }
+
+    /**
+     * Gets the number of arguments of this format.
+     */
+    final int getNumberOfArguments() { result = count(int i | exists(this.getArgument(i))) }
   }
 }

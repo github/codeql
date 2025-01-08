@@ -196,7 +196,7 @@ final class FormatArgsExprCfgNode extends Nodes::FormatArgsExprCfgNode {
   /** Gets a format argument of the `i`th format of this format arguments expression (0-based). */
   FormatTemplateVariableAccessCfgNode getFormatTemplateVariableAccess(int i) {
     exists(FormatTemplateVariableAccess v |
-      v.getArgument() = node.getFormat(i).getArgument() and
+      v.getArgument() = node.getFormat(i).getArgument(_) and
       result.getFormatTemplateVariableAccess() = v and
       any(ChildMapping mapping).hasCfgChild(node, v, this, result)
     )

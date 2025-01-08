@@ -1878,7 +1878,7 @@ class Format(Locatable):
     """
     parent: FormatArgsExpr
     index: int
-    argument: optional["FormatArgument"] | child
+    argument: list["FormatArgument"] | child
 
 
 @synth.on_arguments(parent=FormatArgsExpr, index=int, kind=int, name=string, positional=boolean, offset=int)

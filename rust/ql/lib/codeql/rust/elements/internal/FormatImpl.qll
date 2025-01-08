@@ -42,7 +42,9 @@ module Impl {
 
     override int getIndex() { result = index }
 
-    override FormatArgument getArgument() { result.getParent() = this }
+    override FormatArgument getArgument(int i) {
+      result.getParent() = this and i = result.getPosition()
+    }
 
     /**
      * Gets the name or position reference of this format, if any. For example `name` and `0` in:

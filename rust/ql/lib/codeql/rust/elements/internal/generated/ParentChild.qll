@@ -73,13 +73,14 @@ private module Impl {
       b = 0 and
       bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
       n = bLocatable and
-      nArgument = n + 1 and
+      nArgument = n + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getArgument() and partialPredicateCall = "Argument()"
+        result = e.getArgument(index - n) and
+        partialPredicateCall = "Argument(" + (index - n).toString() + ")"
       )
     )
   }

@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from Format x
+from Format x, int index
 where toBeTested(x) and not x.isUnknown()
-select x, x.getArgument()
+select x, index, x.getArgument(index)
