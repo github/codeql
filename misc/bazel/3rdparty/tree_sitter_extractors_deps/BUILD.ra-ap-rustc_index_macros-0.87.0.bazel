@@ -6,12 +6,12 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//rust:defs.bzl", "rust_library")
+load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
 
 package(default_visibility = ["//visibility:public"])
 
-rust_library(
-    name = "windows_sys",
+rust_proc_macro(
+    name = "ra_ap_rustc_index_macros",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -28,19 +28,6 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "Win32",
-        "Win32_Foundation",
-        "Win32_Storage",
-        "Win32_Storage_FileSystem",
-        "Win32_System",
-        "Win32_System_Com",
-        "Win32_System_Console",
-        "Win32_System_SystemInformation",
-        "Win32_UI",
-        "Win32_UI_Shell",
-        "default",
-    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_flags = [
@@ -48,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=windows-sys",
+        "crate-name=ra-ap-rustc_index_macros",
         "manual",
         "noclippy",
         "norustfmt",
@@ -90,8 +77,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.59.0",
+    version = "0.87.0",
     deps = [
-        "@vendor__windows-targets-0.52.6//:windows_targets",
+        "@vendor__proc-macro2-1.0.92//:proc_macro2",
+        "@vendor__quote-1.0.38//:quote",
+        "@vendor__syn-2.0.95//:syn",
     ],
 )

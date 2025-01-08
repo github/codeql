@@ -11,11 +11,15 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "windows_sys",
+    name = "ra_ap_cfg",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
+    aliases = {
+        "@vendor__ra_ap_intern-0.0.256//:ra_ap_intern": "intern",
+        "@vendor__ra_ap_tt-0.0.256//:ra_ap_tt": "tt",
+    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -29,17 +33,7 @@ rust_library(
         ],
     ),
     crate_features = [
-        "Win32",
-        "Win32_Foundation",
-        "Win32_Storage",
-        "Win32_Storage_FileSystem",
-        "Win32_System",
-        "Win32_System_Com",
-        "Win32_System_Console",
-        "Win32_System_SystemInformation",
-        "Win32_UI",
-        "Win32_UI_Shell",
-        "default",
+        "tt",
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
@@ -48,7 +42,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=windows-sys",
+        "crate-name=ra_ap_cfg",
         "manual",
         "noclippy",
         "norustfmt",
@@ -90,8 +84,11 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.59.0",
+    version = "0.0.256",
     deps = [
-        "@vendor__windows-targets-0.52.6//:windows_targets",
+        "@vendor__ra_ap_intern-0.0.256//:ra_ap_intern",
+        "@vendor__ra_ap_tt-0.0.256//:ra_ap_tt",
+        "@vendor__rustc-hash-2.1.0//:rustc_hash",
+        "@vendor__tracing-0.1.41//:tracing",
     ],
 )

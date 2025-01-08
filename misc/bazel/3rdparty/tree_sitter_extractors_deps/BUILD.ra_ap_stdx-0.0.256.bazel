@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "windows_sys",
+    name = "ra_ap_stdx",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -28,19 +28,6 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "Win32",
-        "Win32_Foundation",
-        "Win32_Storage",
-        "Win32_Storage_FileSystem",
-        "Win32_System",
-        "Win32_System_Com",
-        "Win32_System_Console",
-        "Win32_System_SystemInformation",
-        "Win32_UI",
-        "Win32_UI_Shell",
-        "default",
-    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_flags = [
@@ -48,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=windows-sys",
+        "crate-name=ra_ap_stdx",
         "manual",
         "noclippy",
         "norustfmt",
@@ -90,8 +77,26 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-none": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.59.0",
+    version = "0.0.256",
     deps = [
-        "@vendor__windows-targets-0.52.6//:windows_targets",
-    ],
+        "@vendor__always-assert-0.2.0//:always_assert",
+        "@vendor__crossbeam-channel-0.5.14//:crossbeam_channel",
+        "@vendor__itertools-0.12.1//:itertools",
+        "@vendor__jod-thread-0.1.2//:jod_thread",
+        "@vendor__libc-0.2.169//:libc",
+    ] + select({
+        "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
+            "@vendor__miow-0.6.0//:miow",  # cfg(windows)
+            "@vendor__windows-sys-0.52.0//:windows_sys",  # cfg(windows)
+        ],
+        "@rules_rust//rust/platform:i686-pc-windows-msvc": [
+            "@vendor__miow-0.6.0//:miow",  # cfg(windows)
+            "@vendor__windows-sys-0.52.0//:windows_sys",  # cfg(windows)
+        ],
+        "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
+            "@vendor__miow-0.6.0//:miow",  # cfg(windows)
+            "@vendor__windows-sys-0.52.0//:windows_sys",  # cfg(windows)
+        ],
+        "//conditions:default": [],
+    }),
 )
