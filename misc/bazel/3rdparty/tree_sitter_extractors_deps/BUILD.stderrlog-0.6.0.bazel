@@ -84,7 +84,7 @@ rust_library(
     }),
     version = "0.6.0",
     deps = [
-        "@vendor__chrono-0.4.38//:chrono",
+        "@vendor__chrono-0.4.39//:chrono",
         "@vendor__is-terminal-0.4.13//:is_terminal",
         "@vendor__log-0.4.22//:log",
         "@vendor__termcolor-1.1.3//:termcolor",

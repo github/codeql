@@ -112,4 +112,4 @@ co_returnable_value co_yield_and_return_value(int i) {
 
 
 
-// semmle-extractor-options: --edg --c++20
+// semmle-extractor-options: -std=c++20

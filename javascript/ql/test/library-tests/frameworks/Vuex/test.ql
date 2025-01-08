@@ -1,5 +1,5 @@
 import javascript
-import testUtilities.ConsistencyChecking
+import utils.test.ConsistencyChecking
 
 class BasicTaint extends TaintTracking::Configuration {
   BasicTaint() { this = "BasicTaint" }

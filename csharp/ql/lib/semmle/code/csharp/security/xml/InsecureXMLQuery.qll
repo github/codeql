@@ -150,8 +150,6 @@ module XmlSettings {
 
 /** Provides predicates related to `System.Xml.XmlReader`. */
 module XmlReader {
-  private import semmle.code.csharp.dataflow.DataFlow2
-
   private class InsecureXmlReaderCreate extends InsecureXmlProcessing, MethodCall {
     InsecureXmlReaderCreate() {
       this.getTarget().hasFullyQualifiedName("System.Xml.XmlReader", "Create")

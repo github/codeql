@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SqlInjectionQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 private class SourceMethodSource extends RemoteFlowSource {
   SourceMethodSource() { this.asExpr().(MethodCall).getMethod().hasName("source") }

@@ -25,11 +25,9 @@ import semmle.go.controlflow.BasicBlocks
 import semmle.go.controlflow.ControlFlowGraph
 import semmle.go.controlflow.IR
 import semmle.go.dataflow.DataFlow
-import semmle.go.dataflow.DataFlow2
 import semmle.go.dataflow.GlobalValueNumbering
 import semmle.go.dataflow.SSA
 import semmle.go.dataflow.TaintTracking
-import semmle.go.dataflow.TaintTracking2
 import semmle.go.frameworks.Afero
 import semmle.go.frameworks.AwsLambda
 import semmle.go.frameworks.Beego

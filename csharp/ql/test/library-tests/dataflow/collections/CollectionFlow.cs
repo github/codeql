@@ -35,6 +35,8 @@ public class CollectionFlow
 
     public static void SinkParams<T>(params T[] args) => Sink(args[0]);
 
+    public static void SinkCollectionParams<T>(params IEnumerable<T> args) => Sink(args.First());
+
     public void ArrayInitializerFlow()
     {
         var a = new A();
@@ -382,6 +384,14 @@ public class CollectionFlow
         SinkParams(null, other); // no flow
         SinkParams(null, other, null); // no flow
         SinkParams(new A[] { other }); // no flow
+    }
+
+    public void ParamsCollectionFlow()
+    {
+        SinkCollectionParams(new A()); // flow
+        SinkCollectionParams(null, new A()); // flow
+        SinkCollectionParams(null, new A(), null); // flow
+        SinkCollectionParams([new A()]); // flow
     }
 
     public void ListAddClearNoFlow()

@@ -1234,7 +1234,12 @@
 /test/extractor-tests/generated/stmt/DoStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/FailStmt/FailStmt.ql linguist-generated
 /test/extractor-tests/generated/stmt/FallthroughStmt/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/stmt/ForEachStmt/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/stmt/ForEachStmt/ForEachStmt.ql linguist-generated
+/test/extractor-tests/generated/stmt/ForEachStmt/ForEachStmt_getIteratorVar.ql linguist-generated
+/test/extractor-tests/generated/stmt/ForEachStmt/ForEachStmt_getLabel.ql linguist-generated
+/test/extractor-tests/generated/stmt/ForEachStmt/ForEachStmt_getNextCall.ql linguist-generated
+/test/extractor-tests/generated/stmt/ForEachStmt/ForEachStmt_getVariable.ql linguist-generated
+/test/extractor-tests/generated/stmt/ForEachStmt/ForEachStmt_getWhere.ql linguist-generated
 /test/extractor-tests/generated/stmt/GuardStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/IfStmt/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/stmt/PoundAssertStmt/PoundAssertStmt.ql linguist-generated

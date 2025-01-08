@@ -3,5 +3,5 @@ extensions:
       pack: codeql/go-all
       extensible: sourceModel
     data:
-      - ["github.com/gobwas/ws", "", True, "ReadFrame", "", "", "ReturnValue[0]", "remote", "manual"]
-      - ["github.com/gobwas/ws", "", True, "ReadHeader", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/gobwas/ws", "", False, "ReadFrame", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/gobwas/ws", "", False, "ReadHeader", "", "", "ReturnValue[0]", "remote", "manual"]

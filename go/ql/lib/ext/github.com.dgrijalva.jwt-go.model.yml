@@ -10,12 +10,12 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["github.com/dgrijalva/jwt-go", "", True, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", False, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["github.com/dgrijalva/jwt-go", "Parser", True, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["github.com/dgrijalva/jwt-go", "", True, "ParseWithClaims", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", False, "ParseWithClaims", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["github.com/dgrijalva/jwt-go", "Parser", True, "ParseWithClaims", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["github.com/dgrijalva/jwt-go", "", True, "ParseECPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["github.com/dgrijalva/jwt-go", "", True, "ParseECPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["github.com/dgrijalva/jwt-go", "", True, "ParseRSAPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["github.com/dgrijalva/jwt-go", "", True, "ParseRSAPrivateKeyFromPEMWithPassword", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["github.com/dgrijalva/jwt-go", "", True, "ParseRSAPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", False, "ParseECPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", False, "ParseECPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", False, "ParseRSAPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", False, "ParseRSAPrivateKeyFromPEMWithPassword", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", False, "ParseRSAPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]

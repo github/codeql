@@ -3,9 +3,11 @@ name = "ast-generator"
 version = "0.1.0"
 edition = "2021"
 
-# When updating these dependencies, run `misc/bazel/3rdparty/update_cargo_deps.sh`
+# When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
 ungrammar = "1.16.1"
-proc-macro2 = "1.0.33"
-quote = "1.0.12"
-itertools = "0.10.1"
+proc-macro2 = "1.0.92"
+quote = "1.0.38"
+either = "1.13.0"
+stdx = {package = "ra_ap_stdx", version = "0.0.248"}
+itertools = "0.14.0"

@@ -11,4 +11,5 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
+      - ["System.Net.Http.Metrics", "HttpMetricsEnrichmentContext", "AddCallback", "(System.Net.Http.HttpRequestMessage,System.Action<System.Net.Http.Metrics.HttpMetricsEnrichmentContext>)", "summary", "df-generated"]
       - ["System.Net.Http.Metrics", "HttpMetricsEnrichmentContext", "AddCustomTag", "(System.String,System.Object)", "summary", "df-generated"]

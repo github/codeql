@@ -1,0 +1,5 @@
+| gen_self_param.rs:6:10:6:14 | SelfParam | gen_self_param.rs:6:11:6:14 | self |
+| gen_self_param.rs:7:10:7:18 | SelfParam | gen_self_param.rs:7:15:7:18 | self |
+| gen_self_param.rs:8:12:8:15 | SelfParam | gen_self_param.rs:8:12:8:15 | self |
+| gen_self_param.rs:9:11:9:18 | SelfParam | gen_self_param.rs:9:15:9:18 | self |
+| gen_self_param.rs:10:15:10:22 | SelfParam | gen_self_param.rs:10:19:10:22 | self |

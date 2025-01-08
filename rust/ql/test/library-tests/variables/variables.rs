@@ -117,7 +117,7 @@ fn match_pattern1() {
         =>
         {
             print_i64(y1)// $ read_access=y1_2
-        } 
+        }
         None => print_str("NONE"),
     }
 
@@ -480,7 +480,20 @@ struct MyStruct {
 
 impl MyStruct {
     fn my_get(&mut self) -> i64 {
-        return self.val;
+        return self.val; // $ read_access=self
+    }
+
+    fn id(self) -> Self {
+        self // $ read_access=self
+    }
+
+    fn my_method(&mut self) {
+        let mut f = |n| {
+            // Capture of `self`
+            self.val += n; // $ read_access=self read_access=n
+        };
+        f(3); // $ read_access=f
+        f(4); // $ read_access=f
     }
 }
 
@@ -491,6 +504,15 @@ fn structs() {
     print_i64(a.my_get()); // $ read_access=a
     a = MyStruct { val: 2 }; // $ write_access=a
     print_i64(a.my_get()); // $ read_access=a
+}
+
+fn arrays() {
+    let mut a = [1, 2, 3]; // a
+    print_i64(a[0]); // $ read_access=a
+    a[1] = 5; // $ read_access=a
+    print_i64(a[1]); // $ read_access=a
+    a = [4, 5, 6]; // $ write_access=a
+    print_i64(a[2]); // $ read_access=a
 }
 
 fn ref_arg() {
@@ -508,7 +530,7 @@ trait Bar {
 
 impl MyStruct {
   fn bar(&mut self) {
-    *self = MyStruct { val: 3 };
+    *self = MyStruct { val: 3 }; // $ read_access=self
   }
 }
 
@@ -517,6 +539,21 @@ fn ref_methodcall_receiver() {
   a.bar(); // $ read_access=a
   // prints 3, not 1
   print_i64(a.val); // $ read_access=a
+}
+
+macro_rules! let_in_macro {
+    ($e:expr) => {
+        {
+            let var_in_macro = $e;
+            var_in_macro
+        }
+    };
+}
+
+fn macro_invocation() {
+    let var_from_macro =
+        let_in_macro!(37); // $ MISSING: read_access=var_in_macro
+    print_i64(var_from_macro); // $ read_access=var_from_macro
 }
 
 fn main() {
@@ -553,4 +590,5 @@ fn main() {
     structs();
     ref_arg();
     ref_methodcall_receiver();
+    macro_invocation();
 }

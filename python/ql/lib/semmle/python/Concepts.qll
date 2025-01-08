@@ -861,6 +861,31 @@ class LdapFilterEscaping extends Escaping {
   LdapFilterEscaping() { super.getKind() = Escaping::getLdapFilterKind() }
 }
 
+/**
+ * A data-flow node that constructs a template in a templating engine.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `TemplateConstruction::Range` instead.
+ */
+class TemplateConstruction extends DataFlow::Node instanceof TemplateConstruction::Range {
+  /** Gets the argument that specifies the template source. */
+  DataFlow::Node getSourceArg() { result = super.getSourceArg() }
+}
+
+/** Provides classes for modeling template construction APIs. */
+module TemplateConstruction {
+  /**
+   * A data-flow node that constructs a template in a templating engine.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `TemplateConstruction` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the template source. */
+    abstract DataFlow::Node getSourceArg();
+  }
+}
+
 /** Provides classes for modeling HTTP-related APIs. */
 module Http {
   /** Gets an HTTP verb, in upper case */

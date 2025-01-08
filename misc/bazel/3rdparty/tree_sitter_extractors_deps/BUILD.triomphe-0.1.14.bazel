@@ -85,7 +85,7 @@ rust_library(
     }),
     version = "0.1.14",
     deps = [
-        "@vendor__serde-1.0.214//:serde",
+        "@vendor__serde-1.0.217//:serde",
         "@vendor__stable_deref_trait-1.2.0//:stable_deref_trait",
     ],
 )

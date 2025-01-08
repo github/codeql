@@ -1,4 +1,4 @@
-| TestDeclarations.java:1:7:1:22 | super(...) | TestDeclarations.java:1:7:1:22 | TestDeclarations |
+| TestDeclarations.java:1:7:1:22 | super(...) | TestDeclarations.java:1:7:1:22 | Exit |
 | TestDeclarations.java:1:7:1:22 | { ... } | TestDeclarations.java:1:7:1:22 | super(...) |
 | TestDeclarations.java:2:30:24:2 | { ... } | TestDeclarations.java:4:3:4:11 | var ...; |
 | TestDeclarations.java:4:3:4:11 | var ...; | TestDeclarations.java:4:7:4:7 | b |
@@ -39,7 +39,7 @@
 | TestDeclarations.java:17:8:17:14 | ... == ... | TestDeclarations.java:7:9:7:12 | true |
 | TestDeclarations.java:17:8:17:14 | ... == ... | TestDeclarations.java:18:12:18:12 | c |
 | TestDeclarations.java:17:13:17:14 | 20 | TestDeclarations.java:17:8:17:14 | ... == ... |
-| TestDeclarations.java:18:5:18:13 | return ... | TestDeclarations.java:2:6:2:21 | declarationTests |
+| TestDeclarations.java:18:5:18:13 | return ... | TestDeclarations.java:2:6:2:21 | Exit |
 | TestDeclarations.java:18:12:18:12 | c | TestDeclarations.java:18:5:18:13 | return ... |
 | TestDeclarations.java:20:3:20:10 | var ...; | TestDeclarations.java:20:7:20:7 | x |
 | TestDeclarations.java:20:7:20:7 | x | TestDeclarations.java:20:9:20:9 | y |
@@ -50,5 +50,5 @@
 | TestDeclarations.java:22:3:22:7 | ...=... | TestDeclarations.java:23:10:23:10 | b |
 | TestDeclarations.java:22:3:22:8 | <Expr>; | TestDeclarations.java:22:7:22:7 | 4 |
 | TestDeclarations.java:22:7:22:7 | 4 | TestDeclarations.java:22:3:22:7 | ...=... |
-| TestDeclarations.java:23:3:23:11 | return ... | TestDeclarations.java:2:6:2:21 | declarationTests |
+| TestDeclarations.java:23:3:23:11 | return ... | TestDeclarations.java:2:6:2:21 | Exit |
 | TestDeclarations.java:23:10:23:10 | b | TestDeclarations.java:23:3:23:11 | return ... |

@@ -9,5 +9,6 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.decl.PatternBindingDecl
+import codeql.swift.elements.decl.VarDecl
 
 final class ForEachStmt = Impl::ForEachStmt;

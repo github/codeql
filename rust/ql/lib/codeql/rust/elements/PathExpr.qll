@@ -5,7 +5,7 @@
 
 private import internal.PathExprImpl
 import codeql.rust.elements.Attr
-import codeql.rust.elements.Path
+import codeql.rust.elements.PathAstNode
 import codeql.rust.elements.PathExprBase
 
 /**
@@ -14,7 +14,7 @@ import codeql.rust.elements.PathExprBase
  * let x = variable;
  * let x = foo::bar;
  * let y = <T>::foo;
- * let z = <TypeRef as Trait>::foo;
+ * let z = <TypeRepr as Trait>::foo;
  * ```
  */
 final class PathExpr = Impl::PathExpr;

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["coursier/cache-action", "*", "input.path", "env.COURSIER_CACHE", "taint", "manual"]

@@ -12,21 +12,6 @@ def test_property_has_first_table_param_marked():
     assert [p.param for p in prop.tableparams] == tableparams
 
 
-@pytest.mark.parametrize("type,expected", [
-    ("Foo", True),
-    ("Bar", True),
-    ("foo", False),
-    ("bar", False),
-    (None, False),
-])
-def test_property_is_a_class(type, expected):
-    tableparams = ["a", "result", "b"]
-    expected_tableparams = ["a", "result" if expected else "result", "b"]
-    prop = ql.Property("Prop", type, tableparams=tableparams)
-    assert prop.type_is_class is expected
-    assert [p.param for p in prop.tableparams] == expected_tableparams
-
-
 indefinite_getters = [
     ("Argument", "getAnArgument"),
     ("Element", "getAnElement"),

@@ -1,0 +1,53 @@
+edges
+| test.rs:5:5:11:5 | enter fn test_and_if_let | test.rs:5:24:5:24 | a |  |
+| test.rs:5:5:11:5 | exit fn test_and_if_let (normal) | test.rs:5:5:11:5 | exit fn test_and_if_let |  |
+| test.rs:5:24:5:24 | a | test.rs:5:24:5:30 | ...: bool | match |
+| test.rs:5:24:5:30 | ...: bool | test.rs:5:33:5:33 | b |  |
+| test.rs:5:33:5:33 | b | test.rs:5:33:5:47 | ...: Option::<...> | match |
+| test.rs:5:33:5:47 | ...: Option::<...> | test.rs:5:50:5:50 | c |  |
+| test.rs:5:50:5:50 | c | test.rs:5:50:5:56 | ...: bool | match |
+| test.rs:5:50:5:56 | ...: bool | test.rs:6:12:6:12 | a |  |
+| test.rs:5:67:11:5 | { ... } | test.rs:5:5:11:5 | exit fn test_and_if_let (normal) |  |
+| test.rs:6:9:10:9 | if ... {...} else {...} | test.rs:5:67:11:5 | { ... } |  |
+| test.rs:6:12:6:12 | a | test.rs:6:12:6:31 | [boolean(false)] ... && ... | false |
+| test.rs:6:12:6:12 | a | test.rs:6:17:6:31 | let ... = b | true |
+| test.rs:6:12:6:31 | [boolean(false)] ... && ... | test.rs:9:13:9:17 | false | false |
+| test.rs:6:12:6:31 | [boolean(true)] ... && ... | test.rs:7:13:7:13 | d | true |
+| test.rs:6:17:6:31 | let ... = b | test.rs:6:31:6:31 | b |  |
+| test.rs:6:21:6:27 | Some(...) | test.rs:6:12:6:31 | [boolean(false)] ... && ... | no-match |
+| test.rs:6:21:6:27 | Some(...) | test.rs:6:26:6:26 | d | match |
+| test.rs:6:26:6:26 | d | test.rs:6:12:6:31 | [boolean(true)] ... && ... | match |
+| test.rs:6:31:6:31 | b | test.rs:6:21:6:27 | Some(...) |  |
+| test.rs:6:33:8:9 | { ... } | test.rs:6:9:10:9 | if ... {...} else {...} |  |
+| test.rs:7:13:7:13 | d | test.rs:6:33:8:9 | { ... } |  |
+| test.rs:8:16:10:9 | { ... } | test.rs:6:9:10:9 | if ... {...} else {...} |  |
+| test.rs:9:13:9:17 | false | test.rs:8:16:10:9 | { ... } |  |
+| test.rs:13:5:21:5 | enter fn test_and_if_let2 | test.rs:13:25:13:25 | a |  |
+| test.rs:13:5:21:5 | exit fn test_and_if_let2 (normal) | test.rs:13:5:21:5 | exit fn test_and_if_let2 |  |
+| test.rs:13:25:13:25 | a | test.rs:13:25:13:31 | ...: bool | match |
+| test.rs:13:25:13:31 | ...: bool | test.rs:13:34:13:34 | b |  |
+| test.rs:13:34:13:34 | b | test.rs:13:34:13:39 | ...: i64 | match |
+| test.rs:13:34:13:39 | ...: i64 | test.rs:13:42:13:42 | c |  |
+| test.rs:13:42:13:42 | c | test.rs:13:42:13:48 | ...: bool | match |
+| test.rs:13:42:13:48 | ...: bool | test.rs:14:12:14:12 | a |  |
+| test.rs:13:59:21:5 | { ... } | test.rs:13:5:21:5 | exit fn test_and_if_let2 (normal) |  |
+| test.rs:14:9:20:9 | if ... {...} else {...} | test.rs:13:59:21:5 | { ... } |  |
+| test.rs:14:12:14:12 | a | test.rs:14:12:14:25 | [boolean(false)] ... && ... | false |
+| test.rs:14:12:14:12 | a | test.rs:14:17:14:25 | let ... = b | true |
+| test.rs:14:12:14:25 | [boolean(false)] ... && ... | test.rs:14:12:15:16 | [boolean(false)] ... && ... | false |
+| test.rs:14:12:14:25 | [boolean(true)] ... && ... | test.rs:15:16:15:16 | c | true |
+| test.rs:14:12:15:16 | [boolean(false)] ... && ... | test.rs:19:13:19:17 | false | false |
+| test.rs:14:12:15:16 | [boolean(true)] ... && ... | test.rs:17:13:17:13 | d | true |
+| test.rs:14:17:14:25 | let ... = b | test.rs:14:25:14:25 | b |  |
+| test.rs:14:21:14:21 | d | test.rs:14:12:14:25 | [boolean(true)] ... && ... | match |
+| test.rs:14:25:14:25 | b | test.rs:14:21:14:21 | d |  |
+| test.rs:15:16:15:16 | c | test.rs:14:12:15:16 | [boolean(false)] ... && ... | false |
+| test.rs:15:16:15:16 | c | test.rs:14:12:15:16 | [boolean(true)] ... && ... | true |
+| test.rs:16:9:18:9 | { ... } | test.rs:14:9:20:9 | if ... {...} else {...} |  |
+| test.rs:17:13:17:13 | d | test.rs:17:17:17:17 | 0 |  |
+| test.rs:17:13:17:17 | ... > ... | test.rs:16:9:18:9 | { ... } |  |
+| test.rs:17:17:17:17 | 0 | test.rs:17:13:17:17 | ... > ... |  |
+| test.rs:18:16:20:9 | { ... } | test.rs:14:9:20:9 | if ... {...} else {...} |  |
+| test.rs:19:13:19:17 | false | test.rs:18:16:20:9 | { ... } |  |
+breakTarget
+continueTarget

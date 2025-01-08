@@ -5,7 +5,7 @@
 
 private import internal.RecordExprImpl
 import codeql.rust.elements.Expr
-import codeql.rust.elements.Path
+import codeql.rust.elements.PathAstNode
 import codeql.rust.elements.RecordExprFieldList
 
 /**

@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.context", "code-injection", "generated"]
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.tags", "code-injection", "generated"]
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.image-name", "code-injection", "generated"]
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.image-uuid", "code-injection", "generated"]
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.staging-repo", "code-injection", "generated"]
+     - ["mosaicml/composer/.github/workflows/docker-configure-build-push.yaml", "*", "input.staging", "code-injection", "generated"]

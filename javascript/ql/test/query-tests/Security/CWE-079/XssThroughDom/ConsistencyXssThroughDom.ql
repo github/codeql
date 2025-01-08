@@ -1,3 +1,3 @@
 import javascript
-import testUtilities.ConsistencyChecking
+import utils.test.ConsistencyChecking
 import semmle.javascript.security.dataflow.XssThroughDomQuery as ThroughDomXss

@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.StaticInitializationVectorQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module StaticInitializationVectorTest implements TestSig {
   string getARelevantTag() { result = "staticInitializationVector" }

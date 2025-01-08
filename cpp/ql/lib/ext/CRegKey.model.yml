@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "CRegKey", True, "CRegKey", "(CRegKey &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["", "CRegKey", True, "CRegKey", "(HKEY)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CRegKey", True, "Create", "", "", "Argument[*1]", "Argument[-1]", "taint", "manual"]
+      - ["", "CRegKey", True, "Attach", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["", "CRegKey", True, "QueryBinaryValue", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "CRegKey", True, "QueryDWORDValue", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "CRegKey", True, "QueryMultiStringValue", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "CRegKey", True, "QueryQWORDValue", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "CRegKey", True, "QueryStringValue", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "CRegKey", True, "QueryValue", "(LPCTSTR,DWORD *,void *,ULONG *)", "", "Argument[*0]", "Argument[*2]", "taint", "manual"]
+      - ["", "CRegKey", True, "QueryValue", "(DWORD &,LPCTSTR)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["", "CRegKey", True, "QueryValue", "(LPTSTR,LPCTSTR,DWORD *)", "", "Argument[*1]", "Argument[*0]", "taint", "manual"]
+      - ["", "CRegKey", True, "operator HKEY", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["", "CRegKey", True, "operator=", "", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["", "CRegKey", True, "operator=", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]

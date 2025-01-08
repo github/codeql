@@ -44,6 +44,14 @@ private module Input implements InputSig<Location, RubyDataFlow> {
       n.getASplit() instanceof Split::ConditionalCompletionSplit
     )
   }
+
+  predicate uniqueTypeExclude(Node n) {
+    n =
+      any(DataFlow::CallNode call |
+        Private::isStandardNewCall(call.getExprNode(), _, _) and
+        not call.getReceiver().asExpr().getExpr() instanceof ConstantReadAccess
+      )
+  }
 }
 
 import MakeConsistency<Location, RubyDataFlow, RubyTaintTracking, Input>

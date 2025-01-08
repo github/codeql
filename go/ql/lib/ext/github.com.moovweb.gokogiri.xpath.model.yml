@@ -9,4 +9,4 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
-      - ["group:gokogiri/xpath", "", True, "Compile", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["group:gokogiri/xpath", "", False, "Compile", "", "", "Argument[0]", "xpath-injection", "manual"]

@@ -23,6 +23,10 @@ module Impl {
    * ```rust
    * println!("Hello {}", "world");
    * ```
+   * or the `{value:#width$.precision$}` in:
+   * ```rust
+   * println!("Value {value:#width$.precision$}");
+   * ```
    */
   class Format extends Generated::Format {
     private Raw::FormatArgsExpr parent;
@@ -37,6 +41,8 @@ module Impl {
     override FormatArgsExpr getParent() { result = Synth::convertFormatArgsExprFromRaw(parent) }
 
     override int getIndex() { result = index }
+
+    override FormatArgument getArgument() { result.getParent() = this }
 
     /**
      * Gets the name or position reference of this format, if any. For example `name` and `0` in:

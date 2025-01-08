@@ -1,5 +1,5 @@
 import javascript
-import testUtilities.ConsistencyChecking
+import utils.test.ConsistencyChecking
 
 class GeneratorFlowConfig extends DataFlow::Configuration {
   GeneratorFlowConfig() { this = "GeneratorFlowConfig" }

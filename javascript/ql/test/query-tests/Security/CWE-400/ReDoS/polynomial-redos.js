@@ -136,4 +136,8 @@ app.use(function(req, res) {
     modified3.replace(/hh+I/g, "b"); // NOT OK
 
     tainted.match(/(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)(AA|BB)C.*X/); // NOT OK
+	
+	modified3.replace(new RegExp("hh+I", "g"), "b"); // NOT OK
+	modified3.replace(new RegExp("hh+I", unknownFlags()), "b"); // NOT OK
+	modified3.replace(new RegExp("hh+I", ""), "b"); // NOT OK
 });

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["laion-ai/open-assistant/.github/workflows/docker-build.yaml", "*", "input.context", "code-injection", "generated"]

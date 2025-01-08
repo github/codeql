@@ -1,0 +1,14 @@
+name: Pull Request Open
+
+on:
+  pull_request_target:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.changes.body.from }}"
+      - run: echo "${{ github.event.changes.title.from }}"
+      - run: echo "${{ github.event.changes.head.ref.from }}"
+      - run: echo "${{ toJson(github.event.changes) }}"
+

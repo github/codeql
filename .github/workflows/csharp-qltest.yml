@@ -5,8 +5,10 @@ on:
     paths:
       - "csharp/**"
       - "shared/**"
+      - "misc/bazel/**"
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
+      - "MODULE.bazel"
     branches:
       - main
       - "rc/*"
@@ -14,9 +16,11 @@ on:
     paths:
       - "csharp/**"
       - "shared/**"
+      - "misc/bazel/**"
       - .github/workflows/csharp-qltest.yml
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
+      - "MODULE.bazel"
     branches:
       - main
       - "rc/*"
@@ -39,14 +43,14 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.101
+          dotnet-version: 9.0.100
       - name: Extractor unit tests
         run: |
           dotnet tool restore
-          dotnet test -p:RuntimeFrameworkVersion=8.0.1 extractor/Semmle.Util.Tests
-          dotnet test -p:RuntimeFrameworkVersion=8.0.1 extractor/Semmle.Extraction.Tests
-          dotnet test -p:RuntimeFrameworkVersion=8.0.1 autobuilder/Semmle.Autobuild.CSharp.Tests
-          dotnet test -p:RuntimeFrameworkVersion=8.0.1 autobuilder/Semmle.Autobuild.Cpp.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.0 extractor/Semmle.Util.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.0 extractor/Semmle.Extraction.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.0 autobuilder/Semmle.Autobuild.CSharp.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.0 autobuilder/Semmle.Autobuild.Cpp.Tests
         shell: bash
   stubgentest:
     runs-on: ubuntu-latest

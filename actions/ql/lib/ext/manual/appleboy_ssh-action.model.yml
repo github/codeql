@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["appleboy/ssh-action", "*", "input.script", "code-injection", "manual"]
+      - ["appleboy/ssh-action", "*", "input.envs", "envvar-injection", "manual"]
+

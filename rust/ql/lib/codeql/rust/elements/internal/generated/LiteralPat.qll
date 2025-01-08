@@ -29,7 +29,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "LiteralPat" }
 
     /**
-     * Gets the literal of this literal pat, if it exists.
+     * Gets the literal of this literal pattern, if it exists.
      */
     LiteralExpr getLiteral() {
       result =

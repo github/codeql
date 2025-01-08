@@ -4,15 +4,15 @@
  */
 
 private import internal.ParamImpl
-import codeql.rust.elements.AstNode
-import codeql.rust.elements.Attr
+import codeql.rust.elements.ParamBase
 import codeql.rust.elements.Pat
-import codeql.rust.elements.TypeRef
 
 /**
- * A Param. For example:
+ * A parameter in a function or method. For example `x` in:
  * ```rust
- * todo!()
+ * fn new(x: T) -> Foo<T> {
+ *   // ...
+ * }
  * ```
  */
 final class Param = Impl::Param;

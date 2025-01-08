@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["emqx/emqx", "*", "input.profile", "code-injection", "generated"]
+     - ["emqx/emqx", "*", "input.otp", "code-injection", "generated"]
+     - ["emqx/emqx", "*", "input.os", "code-injection", "generated"]

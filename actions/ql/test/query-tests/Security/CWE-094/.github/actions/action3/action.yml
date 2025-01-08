@@ -1,0 +1,9 @@
+name: 'Test'
+description: 'Test'
+runs:
+  using: 'composite'
+  steps:
+    - shell: bash
+      env:
+        FOO: ${{ secrets.FOO}}
+      run: echo '${{ github.event.pull_request.body }}'

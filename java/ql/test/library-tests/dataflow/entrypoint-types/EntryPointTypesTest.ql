@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 class TestRemoteFlowSource extends RemoteFlowSource {
   TestRemoteFlowSource() { this.asParameter().hasName("source") }

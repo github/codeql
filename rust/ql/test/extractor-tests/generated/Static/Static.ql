@@ -4,7 +4,8 @@ import TestUtils
 
 from
   Static x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasBody, string isMut, string isStatic, string hasName, string hasTy, string hasVisibility
+  string hasBody, string isMut, string isStatic, string isUnsafe, string hasName,
+  string hasTypeRepr, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -18,9 +19,11 @@ where
   (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
   (if x.isStatic() then isStatic = "yes" else isStatic = "no") and
+  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
-  (if x.hasTy() then hasTy = "yes" else hasTy = "no") and
+  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
   "getNumberOfAttrs:", getNumberOfAttrs, "hasBody:", hasBody, "isMut:", isMut, "isStatic:",
-  isStatic, "hasName:", hasName, "hasTy:", hasTy, "hasVisibility:", hasVisibility
+  isStatic, "isUnsafe:", isUnsafe, "hasName:", hasName, "hasTypeRepr:", hasTypeRepr,
+  "hasVisibility:", hasVisibility
